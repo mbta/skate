@@ -6,9 +6,10 @@
     "deploy": "webpack --mode production",
     "build": "webpack --mode development",
     "watch": "webpack --mode development --watch",
-    "format": "npm run format:ts && npm run format:ts",
+    "format": "npm run format:ts && npm run format:ts && npm run format:css",
     "format:js": "prettier --write {.,**}/*.{js,json}",
-    "format:ts": "prettier --write {.,**}/*.{ts,tsx} && tslint --fix -p ."
+    "format:ts": "prettier --write {.,**}/*.{ts,tsx} && tslint --fix -p .",
+    "format:css": "prettier --write {.,**}/*.{css,scss}"
   },
   "dependencies": {
     "phoenix": "file:../deps/phoenix",
@@ -22,8 +23,10 @@
     "copy-webpack-plugin": "^4.5.0",
     "css-loader": "^0.28.10",
     "mini-css-extract-plugin": "^0.4.0",
+    "node-sass": "^4.11.0",
     "optimize-css-assets-webpack-plugin": "^4.0.0",
     "prettier": "^1.16.4",
+    "sass-loader": "^7.1.0",
     "ts-loader": "^5.3.3",
     "tslint": "^5.14.0",
     "tslint-config-prettier": "^1.18.0",

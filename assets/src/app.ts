@@ -3,7 +3,7 @@
 // its own CSS file.
 declare function require(name: string): string
 // tslint:disable-next-line
-require("../css/app.css")
+require("../css/app.scss")
 
 // webpack automatically bundles all modules in your
 // entry points. Those entry points can be configured
