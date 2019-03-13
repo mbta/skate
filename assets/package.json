@@ -2,10 +2,13 @@
   "repository": {},
   "license": "MIT",
   "scripts": {
+    "check": "tsc --noEmit && tslint -p .",
     "deploy": "webpack --mode production",
     "build": "webpack --mode development",
     "watch": "webpack --mode development --watch",
-    "format:js": "prettier --write {.,**}/*.{js,json}"
+    "format": "npm run format:ts && npm run format:ts",
+    "format:js": "prettier --write {.,**}/*.{js,json}",
+    "format:ts": "prettier --write {.,**}/*.{ts,tsx} && tslint --fix -p ."
   },
   "dependencies": {
     "phoenix": "file:../deps/phoenix",
@@ -14,12 +17,18 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
+    "@types/phoenix": "^1.4.0",
     "babel-loader": "^8.0.0",
     "copy-webpack-plugin": "^4.5.0",
     "css-loader": "^0.28.10",
     "mini-css-extract-plugin": "^0.4.0",
     "optimize-css-assets-webpack-plugin": "^4.0.0",
     "prettier": "^1.16.4",
+    "ts-loader": "^5.3.3",
+    "tslint": "^5.14.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-react": "^3.6.0",
+    "typescript": "^3.3.3333",
     "uglifyjs-webpack-plugin": "^1.2.4",
     "webpack": "4.4.0",
     "webpack-cli": "^2.0.10"

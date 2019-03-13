@@ -13,7 +13,7 @@ module.exports = (env, options) => ({
     ],
   },
   entry: {
-    "./js/app.js": ["./js/app.js"].concat(glob.sync("./vendor/**/*.js")),
+    "./js/app.ts": ["./src/app.ts"].concat(glob.sync("./vendor/**/*.js")),
   },
   output: {
     filename: "app.js",
@@ -29,10 +29,21 @@ module.exports = (env, options) => ({
         },
       },
       {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        use: [{
+          loader: "babel-loader",
+        },{loader: "ts-loader"}]
+      },
+      {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
     ],
+  },
+  resolve: {
+    extensions: [".ts", ".tsx", ".js", ".jsx"],
+    modules: ["deps", "node_modules"],
   },
   plugins: [
     new MiniCssExtractPlugin({ filename: "../css/app.css" }),
