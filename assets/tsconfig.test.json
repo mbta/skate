@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.json",
+  // compile the JSX directly when testing, since we aren't going through webpack
+  "compilerOptions": {
+    "jsx": "react"
+  }
+}
