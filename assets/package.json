@@ -65,6 +65,7 @@
     "setupFilesAfterEnv": [
       "<rootDir>/tests/setup.ts"
     ],
+    "collectCoverage": true,
     "globals": {
       "ts-jest": {
         "tsConfig": "./tsconfig.test.json"
