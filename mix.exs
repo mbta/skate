@@ -48,7 +48,8 @@ defmodule Skate.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:excoveralls, "~> 0.10", only: :test},
-      {:dialyxir, "~> 0.5", only: [:dev, :test]}
+      {:dialyxir, "~> 0.5", only: [:dev, :test], runtime: false},
+      {:distillery, "~> 2.0", runtime: false}
     ]
   end
 end
