@@ -7,6 +7,9 @@
 # General application configuration
 use Mix.Config
 
+config :skate,
+  gtfs_url: "https://cdn.mbta.com/MBTA_GTFS.zip"
+
 # Configures the endpoint
 config :skate, SkateWeb.Endpoint,
   url: [host: "localhost"],
