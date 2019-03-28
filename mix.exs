@@ -49,7 +49,9 @@ defmodule Skate.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:excoveralls, "~> 0.10", only: :test},
       {:dialyxir, "~> 0.5", only: [:dev, :test], runtime: false},
-      {:distillery, "~> 2.0", runtime: false}
+      {:distillery, "~> 2.0", runtime: false},
+      {:httpoison, "~> 1.5.0"},
+      {:csv, "~> 2.3.0"}
     ]
   end
 end

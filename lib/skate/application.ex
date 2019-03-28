@@ -6,12 +6,15 @@ defmodule Skate.Application do
   use Application
 
   def start(_type, _args) do
+    import Supervisor.Spec
+
     # List all child processes to be supervised
     children = [
       # Start the endpoint when the application starts
-      SkateWeb.Endpoint
+      SkateWeb.Endpoint,
       # Starts a worker by calling: Skate.Worker.start_link(arg)
       # {Skate.Worker, arg},
+      worker(Gtfs, [Application.get_env(:skate, :gtfs_url)])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
