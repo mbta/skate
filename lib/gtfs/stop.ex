@@ -9,6 +9,8 @@ defmodule Gtfs.Stop do
     :id
   ]
 
+  @derive Jason.Encoder
+
   defstruct [
     :id
   ]

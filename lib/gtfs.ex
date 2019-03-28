@@ -2,15 +2,25 @@ defmodule Gtfs do
   use GenServer
   require Logger
 
-  @type state :: %{
+  @type t :: %{
           stops: [Gtfs.Stop.t()]
         }
+
+  @type state :: t
 
   # Client functions
 
   @spec start_link(String.t()) :: GenServer.on_start()
   def start_link(url) do
-    GenServer.start_link(__MODULE__, url)
+    GenServer.start_link(__MODULE__, url, name: __MODULE__)
+  end
+
+  @doc """
+  Returns all of GTFS, with each file as an item in a map
+  """
+  @spec gtfs() :: t()
+  def gtfs() do
+    GenServer.call(__MODULE__, :state)
   end
 
   # GenServer callbacks
@@ -37,6 +47,11 @@ defmodule Gtfs do
         Logger.warn(fn -> "Unexpected response from #{url} : #{inspect(response)}" end)
         {:stop, response}
     end
+  end
+
+  @impl true
+  def handle_call(:state, _from, state) do
+    {:reply, state, state}
   end
 
   # Takes in the binary data of a zip file, and a list of files to extract
