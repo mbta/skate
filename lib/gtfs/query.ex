@@ -7,8 +7,8 @@ defmodule Gtfs.Query do
           optional(:server) => GenServer.server()
         }
 
-  @spec all_stops(opts()) :: [Gtfs.Stop.t()]
-  def all_stops(opts \\ %{}) do
-    Gtfs.gtfs(opts).stops
+  @spec all_routes(opts()) :: [Gtfs.Route.t()]
+  def all_routes(opts \\ %{}) do
+    Gtfs.gtfs(opts).routes
   end
 end

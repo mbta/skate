@@ -22,6 +22,6 @@ defmodule SkateWeb.Router do
   scope "/api", SkateWeb do
     pipe_through :api
 
-    get "/stop-list", StopListController, :index
+    get "/routes", RouteController, :index
   end
 end

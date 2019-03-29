@@ -1,22 +1,22 @@
 defmodule Gtfs.QueryTest do
   use ExUnit.Case, async: true
 
-  alias Gtfs.Stop
+  alias Gtfs.Route
 
   alias Gtfs.Query
 
-  describe "all_stops" do
-    test "all_stops" do
+  describe "all_routes" do
+    test "all_routes" do
       {:ok, pid} =
         Gtfs.start_mocked(%{
-          "stops.txt" => [
-            "stop_id,stop_name",
-            "place-sstat,South Station"
+          "routes.txt" => [
+            "route_id,route_long_name",
+            "Red,Red Line"
           ]
         })
 
-      assert Query.all_stops(server: pid) == [
-               %Stop{id: "place-sstat"}
+      assert Query.all_routes(server: pid) == [
+               %Route{id: "Red"}
              ]
     end
   end
