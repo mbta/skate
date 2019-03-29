@@ -3,8 +3,12 @@ defmodule Gtfs.Query do
   Logic for queries to make against gtfs data
   """
 
-  @spec all_stops() :: [Gtfs.Stop.t()]
-  def all_stops() do
-    Gtfs.gtfs().stops
+  @type opts :: %{
+          optional(:server) => GenServer.server()
+        }
+
+  @spec all_stops(opts()) :: [Gtfs.Stop.t()]
+  def all_stops(opts \\ %{}) do
+    Gtfs.gtfs(opts).stops
   end
 end
