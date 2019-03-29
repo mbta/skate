@@ -3,15 +3,24 @@ defmodule Gtfs do
   require Logger
 
   @type t :: %__MODULE__{
-          stops: [Gtfs.Stop.t()]
+          routes: [Gtfs.Route.t()],
+          stop_times: [Gtfs.StopTime.t()],
+          stops: [Gtfs.Stop.t()],
+          trips: [Gtfs.Trip.t()]
         }
 
   @enforce_keys [
-    :stops
+    :routes,
+    :stop_times,
+    :stops,
+    :trips
   ]
 
   defstruct [
-    :stops
+    :routes,
+    :stop_times,
+    :stops,
+    :trips
   ]
 
   @type state :: t
@@ -83,7 +92,10 @@ defmodule Gtfs do
     case HTTPoison.get(url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: zip_binary}} ->
         file_list = [
-          "stops.txt"
+          "routes.txt",
+          "stop_times.txt",
+          "stops.txt",
+          "trips.txt"
         ]
 
         unzip_files(zip_binary, file_list)
@@ -117,7 +129,10 @@ defmodule Gtfs do
   @spec parse_files(files()) :: t()
   defp parse_files(files) do
     %__MODULE__{
-      stops: parse_csv(files["stops.txt"], &Gtfs.Stop.from_csv_row/1)
+      routes: parse_csv(files["routes.txt"], &Gtfs.Route.from_csv_row/1),
+      stop_times: parse_csv(files["stop_times.txt"], &Gtfs.StopTime.from_csv_row/1),
+      stops: parse_csv(files["stops.txt"], &Gtfs.Stop.from_csv_row/1),
+      trips: parse_csv(files["trips.txt"], &Gtfs.Trip.from_csv_row/1)
     }
   end
 
