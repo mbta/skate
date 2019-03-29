@@ -77,7 +77,6 @@ defmodule Gtfs do
       files ->
         state = parse_files(files)
         Logger.info(fn -> "Successfully loaded gtfs" end)
-        IO.inspect(state, label: :state)
         {:ok, state}
     end
   end
