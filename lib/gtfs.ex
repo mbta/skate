@@ -5,6 +5,7 @@ defmodule Gtfs do
   alias Gtfs.Route
   alias Gtfs.Stop
   alias Gtfs.StopTime
+  alias Gtfs.Timepoint
   alias Gtfs.Trip
 
   @type t :: %__MODULE__{
@@ -54,11 +55,34 @@ defmodule Gtfs do
     GenServer.call(server, :all_routes)
   end
 
+  @spec timepoints_on_route(Route.id(), GenServer.server() | nil) :: [Timepoint.id()]
+  def timepoints_on_route(route_id, server \\ nil) do
+    server = server || __MODULE__
+    GenServer.call(server, {:timepoints_on_route, route_id})
+  end
+
   # Queries (Server)
 
   @impl true
   def handle_call(:all_routes, _from, {:loaded, gtfs_data} = state) do
     {:reply, gtfs_data.routes, state}
+  end
+
+  def handle_call({:timepoints_on_route, route_id}, _from, {:loaded, gtfs_data} = state) do
+    trip_ids =
+      gtfs_data.trips
+      |> Enum.filter(fn trip -> trip.route_id == route_id end)
+      |> Enum.map(fn trip -> trip.id end)
+      |> MapSet.new()
+
+    timepoint_ids =
+      gtfs_data.stop_times
+      |> Enum.filter(fn stop_time -> stop_time.trip_id in trip_ids end)
+      |> Enum.map(fn stop_time -> stop_time.timepoint_id end)
+      |> Enum.uniq()
+      |> List.delete("")
+
+    {:reply, timepoint_ids, state}
   end
 
   # Initialization (Client)

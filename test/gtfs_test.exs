@@ -20,4 +20,24 @@ defmodule GtfsTest do
              ]
     end
   end
+
+  describe "timepoints_on_route" do
+    test "timepoints_on_route" do
+      {:ok, pid} =
+        Gtfs.start_mocked(%{
+          "trips.txt" => [
+            "trip_id,route_id",
+            "red-trip,Red",
+            "blue-trip,Blue"
+          ],
+          "stop_times.txt" => [
+            "trip_id,stop_id,checkpoint_id",
+            "red-trip,stop,check",
+            "blue-trip,stop,other"
+          ]
+        })
+
+      assert Gtfs.timepoints_on_route("Red", pid) == ["check"]
+    end
+  end
 end
