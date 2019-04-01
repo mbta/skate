@@ -3,27 +3,27 @@ defmodule Gtfs.StopTime do
   alias Gtfs.Stop
 
   @type t :: %__MODULE__{
-          trip: Trip.id(),
-          stop: Stop.id()
+          trip_id: Trip.id(),
+          stop_id: Stop.id()
         }
 
   @enforce_keys [
-    :trip,
-    :stop
+    :trip_id,
+    :stop_id
   ]
 
   @derive Jason.Encoder
 
   defstruct [
-    :trip,
-    :stop
+    :trip_id,
+    :stop_id
   ]
 
   @spec from_csv_row(%{required(String.t()) => String.t()}) :: t()
   def from_csv_row(row) do
     %__MODULE__{
-      trip: row["trip_id"],
-      stop: row["stop_id"]
+      trip_id: row["trip_id"],
+      stop_id: row["stop_id"]
     }
   end
 end
