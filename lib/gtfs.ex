@@ -23,7 +23,7 @@ defmodule Gtfs do
     :trips
   ]
 
-  @type state :: t
+  @type state :: :not_loaded | {:loaded, t()}
 
   @type query_opts :: %{
           optional(:server) => GenServer.server()
@@ -63,27 +63,33 @@ defmodule Gtfs do
   @spec gtfs(query_opts()) :: t()
   def gtfs(opts) do
     server = opts[:server] || __MODULE__
-    GenServer.call(server, :state)
+    GenServer.call(server, :gtfs_data)
   end
 
   # GenServer callbacks
 
   @impl true
   def init(files_source) do
+    {:ok, :not_loaded, {:continue, {:load_gtfs, files_source}}}
+  end
+
+  @impl true
+  def handle_continue({:load_gtfs, files_source}, :not_loaded) do
     case fetch_files(files_source) do
       {:error, error} ->
         {:stop, error}
 
       files ->
-        state = parse_files(files)
+        data = parse_files(files)
+        state = {:loaded, data}
         Logger.info(fn -> "Successfully loaded gtfs" end)
-        {:ok, state}
+        {:noreply, state}
     end
   end
 
   @impl true
-  def handle_call(:state, _from, state) do
-    {:reply, state, state}
+  def handle_call(:gtfs_data, _from, {:loaded, data} = state) do
+    {:reply, data, state}
   end
 
   @spec fetch_files(files_source()) :: files() | {:error, any()}
