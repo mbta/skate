@@ -1,7 +1,10 @@
 defmodule Gtfs.StopTime do
+  alias Gtfs.Trip
+  alias Gtfs.Stop
+
   @type t :: %__MODULE__{
-          trip: Gtfs.Trip.id(),
-          stop: Gtfs.Stop.id()
+          trip: Trip.id(),
+          stop: Stop.id()
         }
 
   @enforce_keys [

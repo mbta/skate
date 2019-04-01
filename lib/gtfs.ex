@@ -2,24 +2,29 @@ defmodule Gtfs do
   use GenServer
   require Logger
 
+  alias Gtfs.Route
+  alias Gtfs.Stop
+  alias Gtfs.StopTime
+  alias Gtfs.Trip
+
   @type t :: %__MODULE__{
-          routes: [Gtfs.Route.t()],
-          stop_times: [Gtfs.StopTime.t()],
-          stops: [Gtfs.Stop.t()],
-          trips: [Gtfs.Trip.t()]
+          routes: [Route.t()],
+          stops: [Stop.t()],
+          stop_times: [StopTime.t()],
+          trips: [Trip.t()]
         }
 
   @enforce_keys [
     :routes,
-    :stop_times,
     :stops,
+    :stop_times,
     :trips
   ]
 
   defstruct [
     :routes,
-    :stop_times,
     :stops,
+    :stop_times,
     :trips
   ]
 
@@ -134,10 +139,10 @@ defmodule Gtfs do
   @spec parse_files(files()) :: t()
   defp parse_files(files) do
     %__MODULE__{
-      routes: parse_csv(files["routes.txt"], &Gtfs.Route.from_csv_row/1),
-      stop_times: parse_csv(files["stop_times.txt"], &Gtfs.StopTime.from_csv_row/1),
-      stops: parse_csv(files["stops.txt"], &Gtfs.Stop.from_csv_row/1),
-      trips: parse_csv(files["trips.txt"], &Gtfs.Trip.from_csv_row/1)
+      routes: parse_csv(files["routes.txt"], &Route.from_csv_row/1),
+      stops: parse_csv(files["stops.txt"], &Stop.from_csv_row/1),
+      stop_times: parse_csv(files["stop_times.txt"], &StopTime.from_csv_row/1),
+      trips: parse_csv(files["trips.txt"], &Trip.from_csv_row/1)
     }
   end
 

@@ -1,9 +1,11 @@
 defmodule Gtfs.Trip do
+  alias Gtfs.Route
+
   @type id :: String.t()
 
   @type t :: %__MODULE__{
           id: id(),
-          route: Gtfs.Route.id()
+          route: Route.id()
         }
 
   @enforce_keys [
