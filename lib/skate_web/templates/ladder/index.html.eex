@@ -1,0 +1,9 @@
+<ul>
+  <%= for route <- @conn.assigns.routes do %>
+    <li>
+      <a href="/ladder/<%= route.id %>">
+        <%= route.id %>
+      </a>
+    </li>
+  <% end %>
+</ul>
