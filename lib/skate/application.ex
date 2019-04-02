@@ -8,6 +8,8 @@ defmodule Skate.Application do
   def start(_type, _args) do
     import Supervisor.Spec
 
+    runtime_config()
+
     # List all child processes to be supervised
     children = [
       # Start the endpoint when the application starts
@@ -21,6 +23,18 @@ defmodule Skate.Application do
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Skate.Supervisor]
     Supervisor.start_link(children, opts)
+  end
+
+  def runtime_config() do
+    environment_variables = [
+      gtfs_url: "SKATE_GTFS_URL"
+    ]
+    for {application_key, environment_key} <- environment_variables do
+      if value = System.get_env(environment_key) do
+        Application.put_env(:skate, application_key, value)
+      end
+    end
+    :ok
   end
 
   # Tell Phoenix to update the endpoint configuration
