@@ -48,14 +48,6 @@ defmodule Gtfs do
 
   # Queries (Client)
 
-  @doc """
-  exposed for testing
-  """
-  @spec state(GenServer.server()) :: state()
-  def state(server) do
-    GenServer.call(server, :state)
-  end
-
   @spec all_routes(GenServer.server() | nil) :: [Route.t()]
   def all_routes(server \\ nil) do
     server = server || __MODULE__
@@ -65,10 +57,6 @@ defmodule Gtfs do
   # Queries (Server)
 
   @impl true
-  def handle_call(:state, _from, state) do
-    {:reply, state, state}
-  end
-
   def handle_call(:all_routes, _from, {:loaded, gtfs_data} = state) do
     {:reply, gtfs_data.routes, state}
   end

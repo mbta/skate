@@ -29,11 +29,13 @@ defmodule Skate.Application do
     environment_variables = [
       gtfs_url: "SKATE_GTFS_URL"
     ]
+
     for {application_key, environment_key} <- environment_variables do
       if value = System.get_env(environment_key) do
         Application.put_env(:skate, application_key, value)
       end
     end
+
     :ok
   end
 
