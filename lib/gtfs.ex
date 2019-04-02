@@ -30,10 +30,6 @@ defmodule Gtfs do
 
   @type state :: :not_loaded | {:loaded, t()}
 
-  @type query_opts :: %{
-          optional(:server) => GenServer.server()
-        }
-
   @type files :: %{optional(String.t()) => binary()}
 
   @type files_source :: {:url, String.t()} | {:mocked_files, mocked_files()}
@@ -50,7 +46,34 @@ defmodule Gtfs do
   """
   @type mocked_files :: %{optional(String.t()) => [binary()]}
 
-  # Client functions
+  # Queries (Client)
+
+  @doc """
+  exposed for testing
+  """
+  @spec state(GenServer.server()) :: state()
+  def state(server) do
+    GenServer.call(server, :state)
+  end
+
+  @spec all_routes(GenServer.server() | nil) :: [Route.t()]
+  def all_routes(server \\ nil) do
+    server = server || __MODULE__
+    GenServer.call(server, :all_routes)
+  end
+
+  # Queries (Server)
+
+  @impl true
+  def handle_call(:state, _from, state) do
+    {:reply, state, state}
+  end
+
+  def handle_call(:all_routes, _from, {:loaded, gtfs_data} = state) do
+    {:reply, gtfs_data.routes, state}
+  end
+
+  # Initialization (Client)
 
   @spec start_link(String.t()) :: GenServer.on_start()
   def start_link(url) do
@@ -62,16 +85,7 @@ defmodule Gtfs do
     GenServer.start_link(__MODULE__, {:mocked_files, mocked_files})
   end
 
-  @doc """
-  Returns all of GTFS, with each file as an item in a map
-  """
-  @spec gtfs(query_opts()) :: t()
-  def gtfs(opts) do
-    server = opts[:server] || __MODULE__
-    GenServer.call(server, :gtfs_data)
-  end
-
-  # GenServer callbacks
+  # Initialization (Server)
 
   @impl true
   def init(files_source) do
@@ -90,11 +104,6 @@ defmodule Gtfs do
         Logger.info(fn -> "Successfully loaded gtfs" end)
         {:noreply, state}
     end
-  end
-
-  @impl true
-  def handle_call(:gtfs_data, _from, {:loaded, data} = state) do
-    {:reply, data, state}
   end
 
   @spec fetch_files(files_source()) :: files() | {:error, any()}
