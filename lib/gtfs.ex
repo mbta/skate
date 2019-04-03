@@ -3,19 +3,23 @@ defmodule Gtfs do
   require Logger
 
   alias Gtfs.Route
+  alias Gtfs.RoutePattern
   alias Gtfs.Stop
   alias Gtfs.StopTime
+  alias Gtfs.Timepoint
   alias Gtfs.Trip
 
   @type t :: %__MODULE__{
           routes: [Route.t()],
+          route_patterns: [RoutePattern.t()],
           stops: [Stop.t()],
-          stop_times: [StopTime.t()],
+          stop_times: %{optional(Trip.id()) => [StopTime.t()]},
           trips: [Trip.t()]
         }
 
   @enforce_keys [
     :routes,
+    :route_patterns,
     :stops,
     :stop_times,
     :trips
@@ -23,6 +27,7 @@ defmodule Gtfs do
 
   defstruct [
     :routes,
+    :route_patterns,
     :stops,
     :stop_times,
     :trips
@@ -54,11 +59,30 @@ defmodule Gtfs do
     GenServer.call(server, :all_routes)
   end
 
+  @spec timepoints_on_route(Route.id(), GenServer.server() | nil) :: [Timepoint.id()]
+  def timepoints_on_route(route_id, server \\ nil) do
+    server = server || __MODULE__
+    GenServer.call(server, {:timepoints_on_route, route_id})
+  end
+
   # Queries (Server)
 
   @impl true
   def handle_call(:all_routes, _from, {:loaded, gtfs_data} = state) do
     {:reply, gtfs_data.routes, state}
+  end
+
+  def handle_call({:timepoints_on_route, route_id}, _from, {:loaded, gtfs_data} = state) do
+    timepoint_ids =
+      gtfs_data.route_patterns
+      |> Enum.filter(fn route_pattern -> route_pattern.route_id == route_id end)
+      |> Enum.map(fn route_pattern -> route_pattern.representative_trip_id end)
+      |> Enum.flat_map(fn trip_id -> gtfs_data.stop_times[trip_id] end)
+      |> Enum.map(fn stop_time -> stop_time.timepoint_id end)
+      |> Enum.uniq()
+      |> List.delete("")
+
+    {:reply, timepoint_ids, state}
   end
 
   # Initialization (Client)
@@ -100,6 +124,7 @@ defmodule Gtfs do
       {:ok, %HTTPoison.Response{status_code: 200, body: zip_binary}} ->
         file_list = [
           "routes.txt",
+          "route_patterns.txt",
           "stop_times.txt",
           "stops.txt",
           "trips.txt"
@@ -137,8 +162,11 @@ defmodule Gtfs do
   defp parse_files(files) do
     %__MODULE__{
       routes: parse_csv(files["routes.txt"], &Route.from_csv_row/1),
+      route_patterns: parse_csv(files["route_patterns.txt"], &RoutePattern.from_csv_row/1),
       stops: parse_csv(files["stops.txt"], &Stop.from_csv_row/1),
-      stop_times: parse_csv(files["stop_times.txt"], &StopTime.from_csv_row/1),
+      stop_times:
+        parse_csv(files["stop_times.txt"], &StopTime.from_csv_row/1)
+        |> Enum.group_by(fn stop_time -> stop_time.trip_id end),
       trips: parse_csv(files["trips.txt"], &Trip.from_csv_row/1)
     }
   end

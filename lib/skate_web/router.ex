@@ -17,11 +17,14 @@ defmodule SkateWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/ladder", LadderController, :index
+    get "/ladder/:route_id", LadderController, :show
   end
 
   scope "/api", SkateWeb do
     pipe_through :api
 
     get "/routes", RouteController, :index
+    get "/routes/:route_id", RouteController, :show
   end
 end
