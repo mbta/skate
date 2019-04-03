@@ -19,8 +19,9 @@ defmodule SkateWeb.Router do
     get "/", PageController, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", SkateWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", SkateWeb do
+    pipe_through :api
+
+    get "/routes", RouteController, :index
+  end
 end

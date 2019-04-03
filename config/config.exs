@@ -7,6 +7,10 @@
 # General application configuration
 use Mix.Config
 
+config :skate,
+  # Default. Can be configured via environment variable, which is loaded in application.ex
+  gtfs_url: "https://cdn.mbta.com/MBTA_GTFS.zip"
+
 # Configures the endpoint
 config :skate, SkateWeb.Endpoint,
   url: [host: "localhost"],
