@@ -73,16 +73,38 @@ defmodule Gtfs do
   end
 
   def handle_call({:timepoints_on_route, route_id}, _from, {:loaded, gtfs_data} = state) do
-    timepoint_ids =
+    route_patterns_by_direction =
       gtfs_data.route_patterns
       |> Enum.filter(fn route_pattern -> route_pattern.route_id == route_id end)
-      |> Enum.map(fn route_pattern -> route_pattern.representative_trip_id end)
-      |> Enum.flat_map(fn trip_id -> gtfs_data.stop_times[trip_id] end)
-      |> Enum.map(fn stop_time -> stop_time.timepoint_id end)
-      |> Enum.uniq()
-      |> List.delete("")
+      |> Enum.group_by(fn route_pattern -> route_pattern.direction_id end)
 
-    {:reply, timepoint_ids, state}
+    timepoints_by_direction =
+      Helpers.map_values(route_patterns_by_direction, fn route_patterns ->
+        timepoints_for_route_patterns(route_patterns, gtfs_data)
+      end)
+
+    merged_timepoint_ids =
+      Helpers.merge_lists([
+        Enum.reverse(Map.get(timepoints_by_direction, 0, [])),
+        Map.get(timepoints_by_direction, 1, [])
+      ])
+
+    {:reply, merged_timepoint_ids, state}
+  end
+
+  # All route_patterns should be in the same direction
+  @spec timepoints_for_route_patterns([RoutePattern.t()], t()) :: [Timepoint.id()]
+  defp timepoints_for_route_patterns(route_patterns, gtfs_data) do
+    route_patterns
+    |> Enum.map(fn route_pattern ->
+      stop_times = gtfs_data.stop_times[route_pattern.representative_trip_id]
+
+      stop_times
+      |> Enum.sort_by(fn stop_time -> stop_time.stop_sequence end)
+      |> Enum.map(fn stop_time -> stop_time.timepoint_id end)
+      |> Enum.filter(fn timepoint_id -> timepoint_id != nil end)
+    end)
+    |> Helpers.merge_lists()
   end
 
   # Initialization (Client)
