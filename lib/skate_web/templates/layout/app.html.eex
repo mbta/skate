@@ -4,9 +4,16 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
     <title>Skate</title>
+
+    <link rel="apple-touch-icon" href="<%= Routes.static_path(@conn, "/images/mbta-logo-t-180.png") %>" type="image/png">
+    <link rel="icon" href="<%= Routes.static_path(@conn, "/images/mbta-logo-t-favicon.png") %>" sizes="32x32" type="image/png">
+    <link rel="icon" href="<%= Routes.static_path(@conn, "/favicon.ico") %>" sizes="16x16" type="image/vnd.microsoft.icon">
+
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
   </head>
+
   <body>
     <main role="main" class="container">
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
