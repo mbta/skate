@@ -3,6 +3,7 @@ defmodule Gtfs do
   require Logger
 
   alias Gtfs.Route
+  alias Gtfs.RoutePattern
   alias Gtfs.Stop
   alias Gtfs.StopTime
   alias Gtfs.Timepoint
@@ -10,6 +11,7 @@ defmodule Gtfs do
 
   @type t :: %__MODULE__{
           routes: [Route.t()],
+          route_patterns: [RoutePattern.t()],
           stops: [Stop.t()],
           stop_times: [StopTime.t()],
           trips: [Trip.t()]
@@ -17,6 +19,7 @@ defmodule Gtfs do
 
   @enforce_keys [
     :routes,
+    :route_patterns,
     :stops,
     :stop_times,
     :trips
@@ -24,6 +27,7 @@ defmodule Gtfs do
 
   defstruct [
     :routes,
+    :route_patterns,
     :stops,
     :stop_times,
     :trips
@@ -124,6 +128,7 @@ defmodule Gtfs do
       {:ok, %HTTPoison.Response{status_code: 200, body: zip_binary}} ->
         file_list = [
           "routes.txt",
+          "route_patterns.txt",
           "stop_times.txt",
           "stops.txt",
           "trips.txt"
@@ -161,6 +166,7 @@ defmodule Gtfs do
   defp parse_files(files) do
     %__MODULE__{
       routes: parse_csv(files["routes.txt"], &Route.from_csv_row/1),
+      route_patterns: parse_csv(files["route_patterns.txt"], &RoutePattern.from_csv_row/1),
       stops: parse_csv(files["stops.txt"], &Stop.from_csv_row/1),
       stop_times: parse_csv(files["stop_times.txt"], &StopTime.from_csv_row/1),
       trips: parse_csv(files["trips.txt"], &Trip.from_csv_row/1)
