@@ -74,9 +74,9 @@ defmodule Gtfs do
 
   def handle_call({:timepoints_on_route, route_id}, _from, {:loaded, gtfs_data} = state) do
     trip_ids =
-      gtfs_data.trips
-      |> Enum.filter(fn trip -> trip.route_id == route_id end)
-      |> Enum.map(fn trip -> trip.id end)
+      gtfs_data.route_patterns
+      |> Enum.filter(fn route_pattern -> route_pattern.route_id == route_id end)
+      |> Enum.map(fn route_pattern -> route_pattern.representative_trip_id end)
       |> MapSet.new()
 
     timepoint_ids =
