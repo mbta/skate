@@ -13,7 +13,7 @@ defmodule Gtfs do
           routes: [Route.t()],
           route_patterns: [RoutePattern.t()],
           stops: [Stop.t()],
-          stop_times: [StopTime.t()],
+          stop_times: %{optional(Trip.id()) => [StopTime.t()]},
           trips: [Trip.t()]
         }
 
@@ -73,15 +73,11 @@ defmodule Gtfs do
   end
 
   def handle_call({:timepoints_on_route, route_id}, _from, {:loaded, gtfs_data} = state) do
-    trip_ids =
+    timepoint_ids =
       gtfs_data.route_patterns
       |> Enum.filter(fn route_pattern -> route_pattern.route_id == route_id end)
       |> Enum.map(fn route_pattern -> route_pattern.representative_trip_id end)
-      |> MapSet.new()
-
-    timepoint_ids =
-      gtfs_data.stop_times
-      |> Enum.filter(fn stop_time -> stop_time.trip_id in trip_ids end)
+      |> Enum.flat_map(fn trip_id -> gtfs_data.stop_times[trip_id] end)
       |> Enum.map(fn stop_time -> stop_time.timepoint_id end)
       |> Enum.uniq()
       |> List.delete("")
@@ -168,7 +164,9 @@ defmodule Gtfs do
       routes: parse_csv(files["routes.txt"], &Route.from_csv_row/1),
       route_patterns: parse_csv(files["route_patterns.txt"], &RoutePattern.from_csv_row/1),
       stops: parse_csv(files["stops.txt"], &Stop.from_csv_row/1),
-      stop_times: parse_csv(files["stop_times.txt"], &StopTime.from_csv_row/1),
+      stop_times:
+        parse_csv(files["stop_times.txt"], &StopTime.from_csv_row/1)
+        |> Enum.group_by(fn stop_time -> stop_time.trip_id end),
       trips: parse_csv(files["trips.txt"], &Trip.from_csv_row/1)
     }
   end
