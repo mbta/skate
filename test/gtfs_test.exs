@@ -31,10 +31,10 @@ defmodule GtfsTest do
             "blue-pattern,Blue,1,blue-trip"
           ],
           "stop_times.txt" => [
-            "trip_id,stop_id,stop_sequence,checkpoint_id",
-            "red-trip,stop,1,check",
-            "red-trip,stop2,2,",
-            "blue-trip,stop,1,other"
+            "trip_id,stop_sequence,checkpoint_id",
+            "red-trip,1,check",
+            "red-trip,2,",
+            "blue-trip,1,other"
           ]
         })
 
@@ -51,14 +51,14 @@ defmodule GtfsTest do
             "p3,route,1,t3"
           ],
           "stop_times.txt" => [
-            "trip_id,stop_id,stop_sequence,checkpoint_id",
-            "t1,stop,11,c1",
-            "t1,stop,12,c2",
-            "t3,stop,31,c4",
-            "t3,stop,32,c5",
-            "t2,stop,21,c2",
-            "t2,stop,22,c3",
-            "t2,stop,23,c4"
+            "trip_id,stop_sequence,checkpoint_id",
+            "t1,11,c1",
+            "t1,12,c2",
+            "t3,31,c4",
+            "t3,32,c5",
+            "t2,21,c2",
+            "t2,22,c3",
+            "t2,23,c4"
           ]
         })
 
@@ -74,11 +74,11 @@ defmodule GtfsTest do
             "p1,route,1,t1"
           ],
           "stop_times.txt" => [
-            "trip_id,stop_id,stop_sequence,checkpoint_id",
-            "t0,stop,1,downtown",
-            "t0,stop,2,suburb",
-            "t1,stop,1,exurb",
-            "t1,stop,2,suburb"
+            "trip_id,stop_sequence,checkpoint_id",
+            "t0,1,downtown",
+            "t0,2,suburb",
+            "t1,1,exurb",
+            "t1,2,suburb"
           ]
         })
 

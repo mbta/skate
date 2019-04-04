@@ -5,7 +5,6 @@ defmodule Gtfs do
   alias Gtfs.Route
   alias Gtfs.RoutePattern
   alias Gtfs.Stop
-  alias Gtfs.StopTime
   alias Gtfs.Timepoint
   alias Gtfs.Trip
 
@@ -13,7 +12,7 @@ defmodule Gtfs do
           routes: [Route.t()],
           route_patterns: [RoutePattern.t()],
           stops: [Stop.t()],
-          stop_times: %{optional(Trip.id()) => [StopTime.t()]},
+          trip_timepoints: %{optional(Trip.id()) => [Timepoint.id()]},
           trips: [Trip.t()]
         }
 
@@ -21,7 +20,7 @@ defmodule Gtfs do
     :routes,
     :route_patterns,
     :stops,
-    :stop_times,
+    :trip_timepoints,
     :trips
   ]
 
@@ -29,7 +28,7 @@ defmodule Gtfs do
     :routes,
     :route_patterns,
     :stops,
-    :stop_times,
+    :trip_timepoints,
     :trips
   ]
 
@@ -96,14 +95,8 @@ defmodule Gtfs do
   @spec timepoints_for_route_patterns([RoutePattern.t()], t()) :: [Timepoint.id()]
   defp timepoints_for_route_patterns(route_patterns, gtfs_data) do
     route_patterns
-    |> Enum.map(fn route_pattern ->
-      stop_times = gtfs_data.stop_times[route_pattern.representative_trip_id]
-
-      stop_times
-      |> Enum.sort_by(fn stop_time -> stop_time.stop_sequence end)
-      |> Enum.map(fn stop_time -> stop_time.timepoint_id end)
-      |> Enum.filter(fn timepoint_id -> timepoint_id != nil end)
-    end)
+    |> Enum.map(fn route_pattern -> route_pattern.representative_trip_id end)
+    |> Enum.map(fn trip_id -> gtfs_data.trip_timepoints[trip_id] end)
     |> Helpers.merge_lists()
   end
 
@@ -186,11 +179,25 @@ defmodule Gtfs do
       routes: parse_csv(files["routes.txt"], &Route.from_csv_row/1),
       route_patterns: parse_csv(files["route_patterns.txt"], &RoutePattern.from_csv_row/1),
       stops: parse_csv(files["stops.txt"], &Stop.from_csv_row/1),
-      stop_times:
-        parse_csv(files["stop_times.txt"], &StopTime.from_csv_row/1)
-        |> Enum.group_by(fn stop_time -> stop_time.trip_id end),
+      trip_timepoints:
+        files["stop_times.txt"]
+        |> parse_csv()
+        |> trip_timepoints_from_csv(),
       trips: parse_csv(files["trips.txt"], &Trip.from_csv_row/1)
     }
+  end
+
+  @spec trip_timepoints_from_csv([%{optional(String.t()) => String.t()}]) ::
+          %{optional(Trip.id()) => Timepoint.id()}
+  defp trip_timepoints_from_csv(stop_times_csv) do
+    stop_times_csv
+    |> Enum.filter(fn stop_time_row -> stop_time_row["checkpoint_id"] != "" end)
+    |> Enum.group_by(fn stop_time_row -> stop_time_row["trip_id"] end)
+    |> Helpers.map_values(fn stop_times_on_trip ->
+      stop_times_on_trip
+      |> Enum.sort_by(fn stop_time_row -> stop_time_row["stop_sequence"] end)
+      |> Enum.map(fn stop_time_row -> stop_time_row["checkpoint_id"] end)
+    end)
   end
 
   @doc """
@@ -206,6 +213,8 @@ defmodule Gtfs do
   @spec parse_csv(binary() | nil, (%{required(String.t()) => String.t()} -> row_struct)) ::
           [row_struct]
         when row_struct: var
+  def parse_csv(file_binary, row_decoder \\ & &1)
+
   def parse_csv(nil, _row_decoder) do
     []
   end
