@@ -1,6 +1,6 @@
 {
   "defaultSeverity": "error",
-  "extends": ["tslint:recommended", "tslint-config-prettier"],
+  "extends": ["tslint:recommended", "tslint-config-prettier", "tslint-react"],
   "jsRules": {},
   "rules": {
     "quotemark": [true, "double", "jsx-double", "avoid-escape"],
@@ -13,7 +13,9 @@
         "esSpecCompliant": "true"
       }
     ],
-    "interface-name": [true, "never-prefix"]
+    "interface-name": [true, "never-prefix"],
+    "jsx-no-lambda": false,
+    "jsx-no-multiline-js": false
   },
   "rulesDirectory": []
 }
