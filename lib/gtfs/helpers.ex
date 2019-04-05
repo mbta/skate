@@ -1,8 +1,8 @@
-defmodule Helpers do
+defmodule Gtfs.Helpers do
   @doc """
   Apply a function to all of the vaues in a map
 
-  iex> Helpers.map_values(%{a: 1, b: 2}, fn x -> x+1 end)
+  iex> Gtfs.Helpers.map_values(%{a: 1, b: 2}, fn x -> x+1 end)
   %{a: 2, b: 3}
   """
   @spec map_values(%{optional(key) => value1}, (value1 -> value2)) :: %{optional(key) => value2}
@@ -16,16 +16,16 @@ defmodule Helpers do
   @doc """
   Returns a single list that attempts to keep items in order
 
-  iex> Helpers.merge_lists([[:b, :c], [:a, :b]])
+  iex> Gtfs.Helpers.merge_lists([[:b, :c], [:a, :b]])
   [:a, :b, :c]
 
-  iex> Helpers.merge_lists([[:c, :a], [:a, :b], [:b, :c]])
+  iex> Gtfs.Helpers.merge_lists([[:c, :a], [:a, :b], [:b, :c]])
   [:c, :a, :b]
 
-  iex> Helpers.merge_lists([[:a, :b]])
+  iex> Gtfs.Helpers.merge_lists([[:a, :b]])
   [:a, :b]
 
-  iex> Helpers.merge_lists([])
+  iex> Gtfs.Helpers.merge_lists([])
   []
   """
   @spec merge_lists([[any()]]) :: [any()]

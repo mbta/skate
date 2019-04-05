@@ -2,6 +2,8 @@ defmodule Gtfs do
   use GenServer
   require Logger
 
+  alias Gtfs.Helpers
+
   alias Gtfs.Route
   alias Gtfs.RoutePattern
   alias Gtfs.Stop
