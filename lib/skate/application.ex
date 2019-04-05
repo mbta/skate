@@ -16,12 +16,13 @@ defmodule Skate.Application do
       SkateWeb.Endpoint,
       # Starts a worker by calling: Skate.Worker.start_link(arg)
       # {Skate.Worker, arg},
+      worker(Gtfs.HealthServer, []),
       worker(Gtfs, [Application.get_env(:skate, :gtfs_url)])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Skate.Supervisor]
+    opts = [strategy: :one_for_all, name: Skate.Supervisor]
     Supervisor.start_link(children, opts)
   end
 

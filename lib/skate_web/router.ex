@@ -14,6 +14,11 @@ defmodule SkateWeb.Router do
   end
 
   scope "/", SkateWeb do
+    # no pipe
+    get "/_health", HealthController, :index
+  end
+
+  scope "/", SkateWeb do
     pipe_through :browser
 
     get "/", PageController, :index

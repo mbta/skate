@@ -2,6 +2,7 @@ defmodule Gtfs do
   use GenServer
   require Logger
 
+  alias Gtfs.HealthServer
   alias Gtfs.Helpers
 
   alias Gtfs.Route
@@ -106,25 +107,30 @@ defmodule Gtfs do
 
   @spec start_link(String.t()) :: GenServer.on_start()
   def start_link(url) do
-    GenServer.start_link(__MODULE__, {:url, url}, name: __MODULE__)
+    GenServer.start_link(
+      __MODULE__,
+      {{:url, url}, HealthServer.default_server()},
+      name: __MODULE__
+    )
   end
 
-  @spec start_mocked(mocked_files) :: pid()
-  def start_mocked(mocked_files) do
+  @spec start_mocked(mocked_files, pid() | nil) :: pid()
+  def start_mocked(mocked_files, health_server_pid \\ nil) do
     {:ok, pid} =
-      GenServer.start_link(__MODULE__, {:mocked_files, mocked_files})
+      GenServer.start_link(__MODULE__, {{:mocked_files, mocked_files}, health_server_pid})
+
     pid
   end
 
   # Initialization (Server)
 
   @impl true
-  def init(files_source) do
-    {:ok, :not_loaded, {:continue, {:load_gtfs, files_source}}}
+  def init({files_source, health_server_pid}) do
+    {:ok, :not_loaded, {:continue, {:load_gtfs, files_source, health_server_pid}}}
   end
 
   @impl true
-  def handle_continue({:load_gtfs, files_source}, :not_loaded) do
+  def handle_continue({:load_gtfs, files_source, health_server_pid}, :not_loaded) do
     case fetch_files(files_source) do
       {:error, error} ->
         {:stop, error}
@@ -133,6 +139,11 @@ defmodule Gtfs do
         data = parse_files(files)
         state = {:loaded, data}
         Logger.info(fn -> "Successfully loaded gtfs" end)
+
+        if health_server_pid do
+          HealthServer.loaded(health_server_pid)
+        end
+
         {:noreply, state}
     end
   end
