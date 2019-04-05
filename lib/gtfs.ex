@@ -109,9 +109,11 @@ defmodule Gtfs do
     GenServer.start_link(__MODULE__, {:url, url}, name: __MODULE__)
   end
 
-  @spec start_mocked(mocked_files) :: GenServer.on_start()
+  @spec start_mocked(mocked_files) :: pid()
   def start_mocked(mocked_files) do
-    GenServer.start_link(__MODULE__, {:mocked_files, mocked_files})
+    {:ok, pid} =
+      GenServer.start_link(__MODULE__, {:mocked_files, mocked_files})
+    pid
   end
 
   # Initialization (Server)
