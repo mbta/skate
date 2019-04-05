@@ -1,4 +1,5 @@
 defmodule Gtfs.RoutePattern do
+  alias Gtfs.Direction
   alias Gtfs.Route
   alias Gtfs.Trip
 
@@ -7,12 +8,14 @@ defmodule Gtfs.RoutePattern do
   @type t :: %__MODULE__{
           id: id(),
           route_id: Route.id(),
+          direction_id: Direction.id(),
           representative_trip_id: Trip.id()
         }
 
   @enforce_keys [
     :id,
     :route_id,
+    :direction_id,
     :representative_trip_id
   ]
 
@@ -21,6 +24,7 @@ defmodule Gtfs.RoutePattern do
   defstruct [
     :id,
     :route_id,
+    :direction_id,
     :representative_trip_id
   ]
 
@@ -29,6 +33,7 @@ defmodule Gtfs.RoutePattern do
     %__MODULE__{
       id: row["route_pattern_id"],
       route_id: row["route_id"],
+      direction_id: Direction.from_string(row["direction_id"]),
       representative_trip_id: row["representative_trip_id"]
     }
   end
