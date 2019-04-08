@@ -20,12 +20,12 @@ interface SetRoutesAction {
 
 type Action = SetRoutesAction
 
-const setRoutes = (routes: Route[]): SetRoutesAction => ({
+export const setRoutes = (routes: Route[]): SetRoutesAction => ({
   type: "SET_ROUTES",
   payload: { routes },
 })
 
-function reducer(state: State, action: Action): State {
+export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "SET_ROUTES":
       return {
@@ -41,10 +41,7 @@ const App = (): JSX.Element => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   useEffect(() => {
-    Api.fetchRoutes()
-      .then((routes: Route[]) =>
-        dispatch(setRoutes(routes))
-      )
+    Api.fetchRoutes().then((routes: Route[]) => dispatch(setRoutes(routes)))
   }, [])
 
   return (
