@@ -1,6 +1,6 @@
 {
   "defaultSeverity": "error",
-  "extends": ["tslint:recommended", "tslint-config-prettier"],
+  "extends": ["tslint:recommended", "tslint-config-prettier", "tslint-react"],
   "jsRules": {},
   "rules": {
     "quotemark": [true, "double", "jsx-double", "avoid-escape"],
@@ -8,11 +8,23 @@
     "trailing-comma": [
       true,
       {
-        "multiline": "always",
+        "multiline": {
+          "properties": "always",
+          "arrays": "always",
+          "exports": "always",
+          "functions": "never",
+          "imports": "always",
+          "objects": "always",
+          "typeLiterals": "never"
+        },
         "singleline": "never",
         "esSpecCompliant": "true"
       }
-    ]
+    ],
+    "interface-name": [true, "never-prefix"],
+    "jsx-no-lambda": false,
+    "jsx-no-multiline-js": false,
+    "object-literal-sort-keys": { "options": "match-declaration-order" }
   },
   "rulesDirectory": []
 }

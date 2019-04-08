@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders 1`] = `
+Array [
+  <h1>
+    Skate
+  </h1>,
+  <div
+    className="m-route-picker"
+  >
+    <h2>
+      Routes
+    </h2>
+    loading...
+  </div>,
+]
+`;
