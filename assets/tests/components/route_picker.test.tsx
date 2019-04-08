@@ -3,7 +3,7 @@ import renderer from "react-test-renderer"
 import RoutePicker from "../../src/components/route_picker"
 import { Route } from "../../src/skate"
 
-it("renders a list of routes", () => {
+test("renders a list of routes", () => {
   const routes: Route[] = [
     { id: "28" },
     { id: "39" },
@@ -17,7 +17,7 @@ it("renders a list of routes", () => {
   expect(tree).toMatchSnapshot()
 })
 
-it("renders a loading message while waiting ƒor routes", () => {
+test("renders a loading message while waiting ƒor routes", () => {
   const tree = renderer.create(<RoutePicker routes={null} />).toJSON()
 
   expect(tree).toMatchSnapshot()

@@ -1,47 +1,38 @@
-import jest from "jest"
 import { fetchRoutes } from "../src/api"
 
-const mockFetch = data =>
-  jest.fn(() =>
-    Promise.resolve({
-      ok: true,
-      status: 200,
-      json: () => data,
-    }),
-  )
-
-// const mockFetch = data =>
-// jest.fn().mockImplementation(() =>
-//   Promise.resolve({
-//     ok: true,
-//     status: 200,
-//     json: () => data,
-//   }),
-// )
+declare global {
+  interface Window {
+    /* eslint-disable typescript/no-explicit-any */
+    fetch: (uri: string) => Promise<any>
+  }
+}
 
 describe("fetchRoutes", () => {
-  it("fetches route data", () => {
-    window.fetch = mockFetch({
-      data: [
+  test("fetches a list of routes", done => {
+    window.fetch = () =>
+      Promise.resolve({
+        json: () => ({
+          data: [
+            { id: "28" },
+            { id: "39" },
+            { id: "71" },
+            { id: "73" },
+            { id: "111" },
+          ],
+        }),
+        ok: true,
+        status: 200,
+      })
+
+    fetchRoutes().then(routes => {
+      expect(routes).toEqual([
         { id: "28" },
         { id: "39" },
         { id: "71" },
         { id: "73" },
         { id: "111" },
-      ],
+      ])
+      done()
     })
-
-    const routes = fetchRoutes()
-
-    expect(routes).toEqual([
-      { id: "28" },
-      { id: "39" },
-      { id: "71" },
-      { id: "73" },
-      { id: "111" },
-    ])
-
-    // expect(window.fetch).toHaveBeenCalledTimes(1)
-    expect(mockFetch.mock.calls.length).toBe(2)
   })
 })

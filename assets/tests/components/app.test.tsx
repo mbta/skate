@@ -3,14 +3,14 @@ import renderer from "react-test-renderer"
 import App, { reducer, setRoutes } from "../../src/components/app"
 import { Route } from "../../src/skate"
 
-it("renders", () => {
+test("renders", () => {
   const tree = renderer.create(<App />).toJSON()
 
   expect(tree).toMatchSnapshot()
 })
 
 describe("reducer", () => {
-  it("handles setRoutes by setting list of stops", () => {
+  test("handles setRoutes by setting list of stops", () => {
     const routes: Route[] = [{ id: "1" }, { id: "2" }, { id: "3" }]
     const initialState = {
       routes: null,
