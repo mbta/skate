@@ -8,7 +8,15 @@
     "trailing-comma": [
       true,
       {
-        "multiline": "always",
+        "multiline": {
+          "properties": "always",
+          "arrays": "always",
+          "exports": "always",
+          "functions": "never",
+          "imports": "always",
+          "objects": "always",
+          "typeLiterals": "never"
+        },
         "singleline": "never",
         "esSpecCompliant": "true"
       }
