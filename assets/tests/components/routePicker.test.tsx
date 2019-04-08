@@ -1,6 +1,6 @@
 import React from "react"
 import renderer from "react-test-renderer"
-import RoutePicker from "../../src/components/route_picker"
+import RoutePicker from "../../src/components/routePicker"
 import { Route } from "../../src/skate"
 
 test("renders a list of routes", () => {

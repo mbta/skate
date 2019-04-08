@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer } from "react"
 import * as Api from "../api"
 import { Route } from "../skate.d"
-import RoutePicker from "./route_picker"
+import RoutePicker from "./routePicker"
 
 interface State {
   routes: null | Route[]

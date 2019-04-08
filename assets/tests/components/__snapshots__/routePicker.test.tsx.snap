@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders a list of routes 1`] = `
+<div
+  className="m-route-picker"
+>
+  <h2>
+    Routes
+  </h2>
+  <div
+    className="m-route-picker__route"
+  >
+    28
+  </div>
+  <div
+    className="m-route-picker__route"
+  >
+    39
+  </div>
+  <div
+    className="m-route-picker__route"
+  >
+    71
+  </div>
+  <div
+    className="m-route-picker__route"
+  >
+    73
+  </div>
+  <div
+    className="m-route-picker__route"
+  >
+    111
+  </div>
+</div>
+`;
+
+exports[`renders a loading message while waiting ƒor routes 1`] = `
+<div
+  className="m-route-picker"
+>
+  <h2>
+    Routes
+  </h2>
+  loading...
+</div>
+`;
