@@ -15,6 +15,7 @@ export const fetchRoutes = (): Promise<Route[]> =>
     .then((response: Response) => response.json())
     .then(({ data: routes }: RoutesRequestResponse) => routes)
     .catch(error => {
+      // tslint:disable-next-line: no-console
       console.log(`Error loading routes`, error)
       throw error
     })
