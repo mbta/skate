@@ -15,7 +15,8 @@
     ],
     "interface-name": [true, "never-prefix"],
     "jsx-no-lambda": false,
-    "jsx-no-multiline-js": false
+    "jsx-no-multiline-js": false,
+    "object-literal-sort-keys": { "options": "match-declaration-order" }
   },
   "rulesDirectory": []
 }
