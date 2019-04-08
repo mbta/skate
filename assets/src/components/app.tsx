@@ -1,15 +1,30 @@
-import * as React from "react"
+import React, { useReducer } from "react"
 import { Route } from "../skate.d"
 import RoutePicker from "./route_picker"
 
-const routes: Route[] = [{ id: "1" }, { id: "66" }]
+interface State {
+  routes: null | Route[],
+}
 
-const App = (): JSX.Element => (
-  <>
-    <h1>Skate</h1>
+const initialState: State = {
+  routes: null,
+}
 
-    <RoutePicker routes={routes} />
-  </>
-)
+function reducer(state: State, _action: Function) {
+  return state
+}
+
+
+const App = (): JSX.Element => {
+  const [state, _dispatch] = useReducer(reducer, initialState)
+
+  return (
+    <>
+      <h1>Skate</h1>
+
+      <RoutePicker routes={state.routes} />
+    </>
+  )
+}
 
 export default App
