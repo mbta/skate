@@ -84,5 +84,21 @@ defmodule GtfsTest do
 
       assert Gtfs.timepoints_on_route("route", pid) == ["exurb", "suburb", "downtown"]
     end
+
+    test "gracefully returns [] for route without timepoints" do
+      pid =
+        Gtfs.start_mocked(%{
+          "route_patterns.txt" => [
+            "route_pattern_id,route_id,direction_id,representative_trip_id",
+            "pattern,route,0,trip"
+          ],
+          "stop_times.txt" => [
+            "trip_id,stop_sequence,checkpoint_id",
+            "trip,0,"
+          ]
+        })
+
+      assert Gtfs.timepoints_on_route("route", pid) == []
+    end
   end
 end

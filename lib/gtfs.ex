@@ -99,7 +99,7 @@ defmodule Gtfs do
   defp timepoints_for_route_patterns(route_patterns, gtfs_data) do
     route_patterns
     |> Enum.map(fn route_pattern -> route_pattern.representative_trip_id end)
-    |> Enum.map(fn trip_id -> gtfs_data.trip_timepoints[trip_id] end)
+    |> Enum.map(fn trip_id -> Map.get(gtfs_data.trip_timepoints, trip_id, []) end)
     |> Helpers.merge_lists()
   end
 
