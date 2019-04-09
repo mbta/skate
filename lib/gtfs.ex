@@ -131,14 +131,21 @@ defmodule Gtfs do
 
   @impl true
   def handle_continue({:load_gtfs, files_source, health_server_pid}, :not_loaded) do
+    start_time = Time.utc_now()
+
     case fetch_files(files_source) do
       {:error, error} ->
+        Logger.info(fn ->
+          "Error loading gtfs, time=#{Time.diff(Time.utc_now(), start_time, :millisecond)}"
+        end)
         {:stop, error}
 
       files ->
         data = parse_files(files)
         state = {:loaded, data}
-        Logger.info(fn -> "Successfully loaded gtfs" end)
+        Logger.info(fn ->
+          "Successfully loaded gtfs, time=#{Time.diff(Time.utc_now(), start_time, :millisecond)}"
+        end)
 
         if health_server_pid do
           HealthServer.loaded(health_server_pid)
