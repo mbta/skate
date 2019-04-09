@@ -1,3 +1,5 @@
 export interface Route {
-  id: string
+  id: RouteId
 }
+
+export type RouteId = string

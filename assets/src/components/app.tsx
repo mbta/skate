@@ -1,41 +1,8 @@
 import React, { useEffect, useReducer } from "react"
 import * as Api from "../api"
 import { Route } from "../skate.d"
+import { initialState, reducer, setRoutes } from "../state"
 import RoutePicker from "./routePicker"
-
-interface State {
-  routes: null | Route[]
-}
-
-const initialState: State = {
-  routes: null,
-}
-
-interface SetRoutesAction {
-  type: "SET_ROUTES"
-  payload: {
-    routes: Route[]
-  }
-}
-
-type Action = SetRoutesAction
-
-export const setRoutes = (routes: Route[]): SetRoutesAction => ({
-  type: "SET_ROUTES",
-  payload: { routes },
-})
-
-export const reducer = (state: State, action: Action): State => {
-  switch (action.type) {
-    case "SET_ROUTES":
-      return {
-        ...state,
-        routes: action.payload.routes,
-      }
-    default:
-      return state
-  }
-}
 
 const App = (): JSX.Element => {
   const [state, dispatch] = useReducer(reducer, initialState)
@@ -48,7 +15,11 @@ const App = (): JSX.Element => {
     <>
       <h1>Skate</h1>
 
-      <RoutePicker routes={state.routes} />
+      <RoutePicker
+        routes={state.routes}
+        selectedRouteIds={state.selectedRouteIds}
+        dispatch={dispatch}
+      />
     </>
   )
 }
