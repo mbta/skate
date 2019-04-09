@@ -1,6 +1,11 @@
 {
   "defaultSeverity": "error",
-  "extends": ["tslint:recommended", "tslint-config-prettier", "tslint-react"],
+  "extends": [
+    "tslint:recommended",
+    "tslint-config-prettier",
+    "tslint-react",
+    "tslint-react-hooks"
+  ],
   "jsRules": {},
   "rules": {
     "quotemark": [true, "double", "jsx-double", "avoid-escape"],
@@ -24,7 +29,8 @@
     "interface-name": [true, "never-prefix"],
     "jsx-no-lambda": false,
     "jsx-no-multiline-js": false,
-    "object-literal-sort-keys": { "options": "match-declaration-order" }
+    "object-literal-sort-keys": { "options": "match-declaration-order" },
+    "react-hooks-nesting": "error"
   },
   "rulesDirectory": []
 }
