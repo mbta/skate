@@ -37,4 +37,7 @@ defmodule Gtfs.RoutePattern do
       representative_trip_id: row["representative_trip_id"]
     }
   end
+
+  @spec member_of_routes?(MapSet.t(id()), %{required(String.t()) => String.t()}) :: boolean
+  def member_of_routes?(route_ids, row), do: Enum.member?(route_ids, row["route_id"])
 end

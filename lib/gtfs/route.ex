@@ -21,4 +21,7 @@ defmodule Gtfs.Route do
       id: row["route_id"]
     }
   end
+
+  @spec bus_route?(%{required(String.t()) => String.t()}) :: boolean
+  def bus_route?(row), do: row["route_type"] == "3"
 end
