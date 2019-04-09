@@ -7,7 +7,7 @@ defmodule GtfsTest do
 
   describe "all_routes" do
     test "all_routes" do
-      {:ok, pid} =
+      pid =
         Gtfs.start_mocked(%{
           "routes.txt" => [
             "route_id,route_long_name",
@@ -23,7 +23,7 @@ defmodule GtfsTest do
 
   describe "timepoints_on_route" do
     test "timepoints_on_route" do
-      {:ok, pid} =
+      pid =
         Gtfs.start_mocked(%{
           "route_patterns.txt" => [
             "route_pattern_id,route_id,direction_id,representative_trip_id",
@@ -42,7 +42,7 @@ defmodule GtfsTest do
     end
 
     test "merges multiple trips into a coherent order" do
-      {:ok, pid} =
+      pid =
         Gtfs.start_mocked(%{
           "route_patterns.txt" => [
             "route_pattern_id,route_id,direction_id,representative_trip_id",
@@ -66,7 +66,7 @@ defmodule GtfsTest do
     end
 
     test "merges stops from both directions, flipping direction 0" do
-      {:ok, pid} =
+      pid =
         Gtfs.start_mocked(%{
           "route_patterns.txt" => [
             "route_pattern_id,route_id,direction_id,representative_trip_id",
