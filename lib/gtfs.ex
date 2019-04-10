@@ -267,9 +267,9 @@ defmodule Gtfs do
     file_stream
     |> IO.binstream(:line)
     |> CSV.decode(headers: true)
-    |> Stream.flat_map(fn {:ok, row} ->
-      if row_filter.(row) do
-        [row_decoder.(row)]
+    |> Stream.flat_map(fn {:ok, csv_row} ->
+      if row_filter.(csv_row) do
+        [row_decoder.(csv_row)]
       else
         []
       end

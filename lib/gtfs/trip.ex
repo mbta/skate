@@ -21,13 +21,13 @@ defmodule Gtfs.Trip do
   ]
 
   @spec from_csv_row(%{required(String.t()) => String.t()}) :: t()
-  def from_csv_row(row) do
+  def from_csv_row(trip_row) do
     %__MODULE__{
-      id: row["trip_id"],
-      route_id: row["route_id"]
+      id: trip_row["trip_id"],
+      route_id: trip_row["route_id"]
     }
   end
 
   @spec in_id_set?(%{required(String.t()) => String.t()}, MapSet.t(id())) :: boolean
-  def in_id_set?(row, id_set), do: MapSet.member?(id_set, row["route_id"])
+  def in_id_set?(trip_row, id_set), do: MapSet.member?(id_set, trip_row["route_id"])
 end
