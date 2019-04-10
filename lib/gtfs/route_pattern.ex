@@ -38,6 +38,6 @@ defmodule Gtfs.RoutePattern do
     }
   end
 
-  @spec member_of_routes?(MapSet.t(id()), %{required(String.t()) => String.t()}) :: boolean
-  def member_of_routes?(route_ids, row), do: Enum.member?(route_ids, row["route_id"])
+  @spec in_id_set?(%{required(String.t()) => String.t()}, MapSet.t(id())) :: boolean
+  def in_id_set?(row, id_set), do: MapSet.member?(id_set, row["route_id"])
 end

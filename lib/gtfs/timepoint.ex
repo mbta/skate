@@ -6,14 +6,15 @@ defmodule Gtfs.Timepoint do
   @type id :: String.t()
 
   @type csv_row :: %{required(String.t()) => String.t()}
+  @type id_set :: MapSet.t(id())
 
-  @spec includes_a_checkpoint_and_member_of_trips?(MapSet.t(id()), csv_row) :: boolean
-  def includes_a_checkpoint_and_member_of_trips?(trip_ids, row),
-    do: includes_a_checkpoint?(row) && member_of_trips?(trip_ids, row)
+  @spec includes_a_checkpoint_and_in_id_set?(csv_row, id_set) :: boolean
+  def includes_a_checkpoint_and_in_id_set?(row, id_set),
+    do: includes_a_checkpoint?(row) && in_id_set?(row, id_set)
 
   @spec includes_a_checkpoint?(csv_row) :: boolean
   defp includes_a_checkpoint?(row), do: row["checkpoint_id"] != ""
 
-  @spec member_of_trips?(MapSet.t(id()), csv_row) :: boolean
-  defp member_of_trips?(trip_ids, row), do: Enum.member?(trip_ids, row["trip_id"])
+  @spec in_id_set?(csv_row, id_set) :: boolean
+  defp in_id_set?(row, id_set), do: MapSet.member?(id_set, row["trip_id"])
 end

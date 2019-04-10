@@ -202,27 +202,27 @@ defmodule Gtfs do
   @spec parse_files(files()) :: t()
   defp parse_files(files) do
     bus_routes = parse_csv(files["routes.txt"], &Route.bus_route?/1, &Route.from_csv_row/1)
-    bus_route_ids = bus_routes |> Enum.map(& &1.id) |> MapSet.new()
+    bus_route_ids = MapSet.new(bus_routes, & &1.id)
 
     bus_route_patterns =
       parse_csv(
         files["route_patterns.txt"],
-        &RoutePattern.member_of_routes?(bus_route_ids, &1),
+        &RoutePattern.in_id_set?(&1, bus_route_ids),
         &RoutePattern.from_csv_row/1
       )
 
     bus_trips =
       parse_csv(
         files["trips.txt"],
-        &Trip.member_of_routes?(bus_route_ids, &1),
+        &Trip.in_id_set?(&1, bus_route_ids),
         &Trip.from_csv_row/1
       )
 
-    bus_trip_ids = bus_trips |> Enum.map(& &1.id) |> MapSet.new()
+    bus_trip_ids = MapSet.new(bus_trips, & &1.id)
 
     bus_trip_timepoints =
       files["stop_times.txt"]
-      |> parse_csv(&Timepoint.includes_a_checkpoint_and_member_of_trips?(bus_trip_ids, &1))
+      |> parse_csv(&Timepoint.includes_a_checkpoint_and_in_id_set?(&1, bus_trip_ids))
       |> trip_timepoints_from_csv()
 
     all_stops = parse_csv(files["stops.txt"], fn _row -> true end, &Stop.from_csv_row/1)
