@@ -17,7 +17,13 @@ defmodule Skate.Application do
       # Starts a worker by calling: Skate.Worker.start_link(arg)
       # {Skate.Worker, arg},
       worker(Gtfs.HealthServer, []),
-      worker(Gtfs, [Application.get_env(:skate, :gtfs_url)])
+      worker(Gtfs, [Application.get_env(:skate, :gtfs_url)]),
+      worker(Realtime.Server, [
+        [
+          url: Application.get_env(:skate, :concentrate_vehicle_positions_url),
+          poll_delay: 3000
+        ]
+      ])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
@@ -28,7 +34,8 @@ defmodule Skate.Application do
 
   def runtime_config() do
     environment_variables = [
-      gtfs_url: "SKATE_GTFS_URL"
+      gtfs_url: "SKATE_GTFS_URL",
+      concentrate_vehicle_positions_url: "SKATE_CONCENTRATE_VEHICLE_POSITIONS_URL"
     ]
 
     for {application_key, environment_key} <- environment_variables do
