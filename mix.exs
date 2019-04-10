@@ -51,6 +51,7 @@ defmodule Skate.MixProject do
       {:dialyxir, "~> 0.5", only: [:dev, :test], runtime: false},
       {:distillery, "~> 2.0", runtime: false},
       {:httpoison, "~> 1.5.0"},
+      {:bypass, "~> 1.0.0", only: :test},
       {:csv, "~> 2.3.0"}
     ]
   end

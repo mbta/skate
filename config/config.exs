@@ -9,7 +9,8 @@ use Mix.Config
 
 config :skate,
   # Default. Can be configured via environment variable, which is loaded in application.ex
-  gtfs_url: "https://cdn.mbta.com/MBTA_GTFS.zip"
+  gtfs_url: "https://cdn.mbta.com/MBTA_GTFS.zip",
+  concentrate_vehicle_positions_url: "https://cdn.mbta.com/realtime/VehiclePositions.json"
 
 # Configures the endpoint
 config :skate, SkateWeb.Endpoint,
