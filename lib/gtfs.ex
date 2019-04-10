@@ -222,7 +222,10 @@ defmodule Gtfs do
 
     bus_trip_timepoints =
       files["stop_times.txt"]
-      |> Csv.parse(&Timepoint.includes_a_checkpoint_and_in_trip_id_set?(&1, bus_trip_ids))
+      |> Csv.parse([
+        &Timepoint.includes_a_checkpoint?(&1),
+        &Timepoint.in_trip_id_set?(&1, bus_trip_ids)
+      ])
       |> Timepoint.trip_timepoints_from_csv()
 
     all_stops = Csv.parse(files["stops.txt"], fn _row -> true end, &Stop.from_csv_row/1)

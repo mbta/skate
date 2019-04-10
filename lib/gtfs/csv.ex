@@ -15,18 +15,21 @@ defmodule Gtfs.Csv do
   """
   @spec parse(
           binary() | nil,
-          (row -> boolean),
+          [(row -> boolean)] | (row -> boolean),
           (row -> row_struct)
         ) ::
           [row_struct]
         when row_struct: var
-  def parse(file_binary, row_filter, row_decoder \\ & &1)
+  def parse(file_binary, row_filters, row_decoder \\ & &1)
 
-  def parse(nil, _row_filter, _row_decoder) do
+  def parse(nil, _row_filters, _row_decoder) do
     []
   end
 
-  def parse(file_binary, row_filter, row_decoder) do
+  def parse(file_binary, row_filter, row_decoder) when not is_list(row_filter),
+    do: parse(file_binary, [row_filter], row_decoder)
+
+  def parse(file_binary, row_filters, row_decoder) do
     {:ok, file_stream} =
       file_binary
       |> StringIO.open()
@@ -35,7 +38,7 @@ defmodule Gtfs.Csv do
     |> IO.binstream(:line)
     |> CSV.decode(headers: true)
     |> Stream.flat_map(fn {:ok, csv_row} ->
-      if row_filter.(csv_row) do
+      if Enum.all?(row_filters, fn row_filter -> row_filter.(csv_row) end) do
         [row_decoder.(csv_row)]
       else
         []
