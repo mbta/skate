@@ -207,14 +207,14 @@ defmodule Gtfs do
     bus_route_patterns =
       Csv.parse(
         files["route_patterns.txt"],
-        &RoutePattern.csv_row_in_route_id_set?(&1, bus_route_ids),
+        &RoutePattern.row_in_route_id_set?(&1, bus_route_ids),
         &RoutePattern.from_csv_row/1
       )
 
     bus_trips =
       Csv.parse(
         files["trips.txt"],
-        &Trip.csv_row_in_route_id_set?(&1, bus_route_ids),
+        &Trip.row_in_route_id_set?(&1, bus_route_ids),
         &Trip.from_csv_row/1
       )
 
@@ -223,8 +223,8 @@ defmodule Gtfs do
     bus_trip_timepoints =
       files["stop_times.txt"]
       |> Csv.parse([
-        &Timepoint.csv_row_includes_a_checkpoint?(&1),
-        &Timepoint.csv_row_in_trip_id_set?(&1, bus_trip_ids)
+        &Timepoint.row_includes_a_checkpoint?(&1),
+        &Timepoint.row_in_trip_id_set?(&1, bus_trip_ids)
       ])
       |> Timepoint.trip_timepoints_from_csv()
 

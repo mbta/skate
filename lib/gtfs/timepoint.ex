@@ -22,9 +22,9 @@ defmodule Gtfs.Timepoint do
     end)
   end
 
-  @spec csv_row_includes_a_checkpoint?(Csv.row()) :: boolean
-  def csv_row_includes_a_checkpoint?(row), do: row["checkpoint_id"] != ""
+  @spec row_includes_a_checkpoint?(Csv.row()) :: boolean
+  def row_includes_a_checkpoint?(row), do: row["checkpoint_id"] != ""
 
-  @spec csv_row_in_trip_id_set?(Csv.row(), trip_id_set) :: boolean
-  def csv_row_in_trip_id_set?(row, trip_id_set), do: MapSet.member?(trip_id_set, row["trip_id"])
+  @spec row_in_trip_id_set?(Csv.row(), trip_id_set) :: boolean
+  def row_in_trip_id_set?(row, trip_id_set), do: MapSet.member?(trip_id_set, row["trip_id"])
 end
