@@ -4,6 +4,8 @@ defmodule Gtfs.Timepoint do
   """
 
   alias Gtfs.Csv
+  alias Gtfs.Helpers
+  alias Gtfs.Trip
 
   @type id :: String.t()
 
@@ -12,6 +14,18 @@ defmodule Gtfs.Timepoint do
   @spec includes_a_checkpoint_and_in_id_set?(Csv.row(), id_set) :: boolean
   def includes_a_checkpoint_and_in_id_set?(timepoint_row, id_set),
     do: includes_a_checkpoint?(timepoint_row) && in_id_set?(timepoint_row, id_set)
+
+  @spec trip_timepoints_from_csv([%{optional(String.t()) => String.t()}]) ::
+          %{optional(Trip.id()) => id()}
+  def trip_timepoints_from_csv(stop_times_csv) do
+    stop_times_csv
+    |> Enum.group_by(fn stop_time_row -> stop_time_row["trip_id"] end)
+    |> Helpers.map_values(fn stop_times_on_trip ->
+      stop_times_on_trip
+      |> Enum.sort_by(fn stop_time_row -> stop_time_row["stop_sequence"] end)
+      |> Enum.map(fn stop_time_row -> stop_time_row["checkpoint_id"] end)
+    end)
+  end
 
   @spec includes_a_checkpoint?(Csv.row()) :: boolean
   defp includes_a_checkpoint?(timepoint_row), do: timepoint_row["checkpoint_id"] != ""

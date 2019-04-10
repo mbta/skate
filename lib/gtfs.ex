@@ -223,7 +223,7 @@ defmodule Gtfs do
     bus_trip_timepoints =
       files["stop_times.txt"]
       |> Csv.parse(&Timepoint.includes_a_checkpoint_and_in_id_set?(&1, bus_trip_ids))
-      |> trip_timepoints_from_csv()
+      |> Timepoint.trip_timepoints_from_csv()
 
     all_stops = Csv.parse(files["stops.txt"], fn _row -> true end, &Stop.from_csv_row/1)
 
@@ -234,17 +234,5 @@ defmodule Gtfs do
       trip_timepoints: bus_trip_timepoints,
       trips: bus_trips
     }
-  end
-
-  @spec trip_timepoints_from_csv([%{optional(String.t()) => String.t()}]) ::
-          %{optional(Trip.id()) => Timepoint.id()}
-  defp trip_timepoints_from_csv(stop_times_csv) do
-    stop_times_csv
-    |> Enum.group_by(fn stop_time_row -> stop_time_row["trip_id"] end)
-    |> Helpers.map_values(fn stop_times_on_trip ->
-      stop_times_on_trip
-      |> Enum.sort_by(fn stop_time_row -> stop_time_row["stop_sequence"] end)
-      |> Enum.map(fn stop_time_row -> stop_time_row["checkpoint_id"] end)
-    end)
   end
 end

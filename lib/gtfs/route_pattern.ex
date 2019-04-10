@@ -40,5 +40,6 @@ defmodule Gtfs.RoutePattern do
   end
 
   @spec in_id_set?(Csv.row(), MapSet.t(id())) :: boolean
-  def in_id_set?(route_pattern_row, id_set), do: MapSet.member?(id_set, route_pattern_row["route_id"])
+  def in_id_set?(route_pattern_row, id_set),
+    do: MapSet.member?(id_set, route_pattern_row["route_id"])
 end
