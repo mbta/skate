@@ -25,5 +25,12 @@ defmodule Gtfs.Route do
   end
 
   @spec bus_route_row?(Csv.row()) :: boolean
-  def bus_route_row?(row), do: row["route_type"] == "3"
+  def bus_route_row?(row) do
+    # Verify that "route_type" exists on the row, especially to prevent issues while testing
+    if row["route_type"] == nil do
+      raise ArgumentError, message: "route_type is required on route rows"
+    end
+
+    row["route_type"] == "3"
+  end
 end
