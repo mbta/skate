@@ -1,4 +1,4 @@
-import { Route } from "../src/skate.d"
+import { Route, Timepoint } from "../src/skate.d"
 import * as State from "../src/state"
 
 const initialState = State.initialState
@@ -42,6 +42,25 @@ describe("reducer", () => {
       selectedRouteIds: ["28"],
     }
     const newState = reducer(state, State.deselectRoute("39"))
+    expect(newState).toEqual(expectedState)
+  })
+
+  test("setTimepointsForRoute", () => {
+    const timepoints: Timepoint[] = [{ id: "1" }, { id: "2" }, { id: "3" }]
+    const state = {
+      ...initialState,
+      timepointsByRoute: {},
+    }
+    const expectedState = {
+      ...state,
+      timepointsByRoute: {
+        "28": timepoints,
+      },
+    }
+    const newState = reducer(
+      state,
+      State.setTimepointsForRoute("28", timepoints)
+    )
     expect(newState).toEqual(expectedState)
   })
 })

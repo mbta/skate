@@ -3,3 +3,13 @@ export interface Route {
 }
 
 export type RouteId = string
+
+export interface Timepoint {
+  id: TimepointId
+}
+
+export type TimepointId = string
+
+export interface TimepointsByRoute {
+  [routeId: string]: Timepoint[]
+}

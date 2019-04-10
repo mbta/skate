@@ -2,25 +2,37 @@ import React, { useEffect, useReducer } from "react"
 import * as Api from "../api"
 import { Route } from "../skate.d"
 import { initialState, reducer, setRoutes } from "../state"
+import RouteLadders from "./routeLadders"
 import RoutePicker from "./routePicker"
 
 const App = (): JSX.Element => {
   const [state, dispatch] = useReducer(reducer, initialState)
+  const { routes, selectedRouteIds, timepointsByRoute } = state
 
   useEffect(() => {
-    Api.fetchRoutes().then((routes: Route[]) => dispatch(setRoutes(routes)))
+    Api.fetchRoutes().then((newRoutes: Route[]) =>
+      dispatch(setRoutes(newRoutes))
+    )
   }, [])
 
-  return (
-    <>
-      <h1>Skate</h1>
+  const selectedRoutes = (routes || []).filter(route =>
+    selectedRouteIds.includes(route.id)
+  )
 
+  return (
+    <div className="m-app">
       <RoutePicker
-        routes={state.routes}
-        selectedRouteIds={state.selectedRouteIds}
+        routes={routes}
+        selectedRouteIds={selectedRouteIds}
         dispatch={dispatch}
       />
-    </>
+
+      <RouteLadders
+        routes={selectedRoutes}
+        dispatch={dispatch}
+        timepointsByRoute={timepointsByRoute}
+      />
+    </div>
   )
 }
 

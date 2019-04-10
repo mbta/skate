@@ -1,1 +1,50 @@
-/* This file is for your main application css. */
+.m-app {
+  display: flex;
+}
+
+.m-route-ladders {
+  display: flex;
+  margin-top: 3rem;
+}
+
+.m-route-ladder {
+  margin: 0 2rem;
+  width: 10rem;
+}
+
+.m-route-ladder__route-name {
+  background-color: whitesmoke;
+  border: 1px solid dimgray;
+  margin-bottom: 1rem;
+  padding: 0.2rem 0.5rem;
+  text-align: center;
+}
+
+.m-route-ladder__timepoints {
+  list-style-type: none;
+  padding: 0;
+}
+
+.m-route-ladder__timepoint {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.m-route-ladder__timepoint-stop {
+  height: 60px;
+  width: 20px;
+
+  svg {
+    fill: none;
+    stroke: dimgray;
+    stroke-width: 1;
+  }
+}
+
+.m-route-ladder__timepoint-name {
+  margin: 0 1rem;
+  text-align: center;
+  text-transform: uppercase;
+  min-width: 5rem;
+}
