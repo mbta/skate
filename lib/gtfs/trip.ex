@@ -1,4 +1,5 @@
 defmodule Gtfs.Trip do
+  alias Gtfs.Csv
   alias Gtfs.Route
 
   @type id :: String.t()
@@ -20,7 +21,7 @@ defmodule Gtfs.Trip do
     :route_id
   ]
 
-  @spec from_csv_row(%{required(String.t()) => String.t()}) :: t()
+  @spec from_csv_row(Csv.row()) :: t()
   def from_csv_row(trip_row) do
     %__MODULE__{
       id: trip_row["trip_id"],
@@ -28,6 +29,6 @@ defmodule Gtfs.Trip do
     }
   end
 
-  @spec in_id_set?(%{required(String.t()) => String.t()}, MapSet.t(id())) :: boolean
+  @spec in_id_set?(Csv.row(), MapSet.t(id())) :: boolean
   def in_id_set?(trip_row, id_set), do: MapSet.member?(id_set, trip_row["route_id"])
 end

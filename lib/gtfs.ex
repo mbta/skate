@@ -2,9 +2,9 @@ defmodule Gtfs do
   use GenServer
   require Logger
 
+  alias Gtfs.Csv
   alias Gtfs.HealthServer
   alias Gtfs.Helpers
-
   alias Gtfs.Route
   alias Gtfs.RoutePattern
   alias Gtfs.Stop
@@ -201,18 +201,18 @@ defmodule Gtfs do
 
   @spec parse_files(files()) :: t()
   defp parse_files(files) do
-    bus_routes = parse_csv(files["routes.txt"], &Route.bus_route?/1, &Route.from_csv_row/1)
+    bus_routes = Csv.parse(files["routes.txt"], &Route.bus_route?/1, &Route.from_csv_row/1)
     bus_route_ids = MapSet.new(bus_routes, & &1.id)
 
     bus_route_patterns =
-      parse_csv(
+      Csv.parse(
         files["route_patterns.txt"],
         &RoutePattern.in_id_set?(&1, bus_route_ids),
         &RoutePattern.from_csv_row/1
       )
 
     bus_trips =
-      parse_csv(
+      Csv.parse(
         files["trips.txt"],
         &Trip.in_id_set?(&1, bus_route_ids),
         &Trip.from_csv_row/1
@@ -222,10 +222,10 @@ defmodule Gtfs do
 
     bus_trip_timepoints =
       files["stop_times.txt"]
-      |> parse_csv(&Timepoint.includes_a_checkpoint_and_in_id_set?(&1, bus_trip_ids))
+      |> Csv.parse(&Timepoint.includes_a_checkpoint_and_in_id_set?(&1, bus_trip_ids))
       |> trip_timepoints_from_csv()
 
-    all_stops = parse_csv(files["stops.txt"], fn _row -> true end, &Stop.from_csv_row/1)
+    all_stops = Csv.parse(files["stops.txt"], fn _row -> true end, &Stop.from_csv_row/1)
 
     %__MODULE__{
       routes: bus_routes,
@@ -234,47 +234,6 @@ defmodule Gtfs do
       trip_timepoints: bus_trip_timepoints,
       trips: bus_trips
     }
-  end
-
-  @doc """
-  Takes binary csv data, a function to filter each row, and a function to parse each row, and returns the list of results.
-  The rows will be passed to the parser as maps with string keys and values.
-  e.g. %{"col1" => "1", "col2" => "x"}
-
-  iex> Gtfs.parse_csv("col1,col2\\n1,x\\n2,y\\n3,z", fn row -> row["col2"] != "y" end, fn row -> String.to_integer(row["col1"]) end)
-  [1, 3]
-
-  exposed for testing
-  """
-  @spec parse_csv(
-          binary() | nil,
-          (%{required(String.t()) => String.t()} -> boolean),
-          (%{required(String.t()) => String.t()} -> row_struct)
-        ) ::
-          [row_struct]
-        when row_struct: var
-  def parse_csv(file_binary, row_filter, row_decoder \\ & &1)
-
-  def parse_csv(nil, _row_filter, _row_decoder) do
-    []
-  end
-
-  def parse_csv(file_binary, row_filter, row_decoder) do
-    {:ok, file_stream} =
-      file_binary
-      |> StringIO.open()
-
-    file_stream
-    |> IO.binstream(:line)
-    |> CSV.decode(headers: true)
-    |> Stream.flat_map(fn {:ok, csv_row} ->
-      if row_filter.(csv_row) do
-        [row_decoder.(csv_row)]
-      else
-        []
-      end
-    end)
-    |> Enum.to_list()
   end
 
   @spec trip_timepoints_from_csv([%{optional(String.t()) => String.t()}]) ::
