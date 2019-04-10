@@ -267,8 +267,13 @@ defmodule Gtfs do
     file_stream
     |> IO.binstream(:line)
     |> CSV.decode(headers: true)
-    |> Stream.filter(fn {:ok, row} -> row_filter.(row) end)
-    |> Stream.map(fn {:ok, row} -> row_decoder.(row) end)
+    |> Stream.flat_map(fn {:ok, row} ->
+      if row_filter.(row) do
+        [row_decoder.(row)]
+      else
+        []
+      end
+    end)
     |> Enum.to_list()
   end
 
