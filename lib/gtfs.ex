@@ -2,9 +2,9 @@ defmodule Gtfs do
   use GenServer
   require Logger
 
+  alias Gtfs.Csv
   alias Gtfs.HealthServer
   alias Gtfs.Helpers
-
   alias Gtfs.Route
   alias Gtfs.RoutePattern
   alias Gtfs.Stop
@@ -131,14 +131,25 @@ defmodule Gtfs do
 
   @impl true
   def handle_continue({:load_gtfs, files_source, health_server_pid}, :not_loaded) do
+    start_time = Time.utc_now()
+
     case fetch_files(files_source) do
       {:error, error} ->
+        Logger.info(fn ->
+          "Error loading gtfs, time_in_ms=#{Time.diff(Time.utc_now(), start_time, :millisecond)}"
+        end)
+
         {:stop, error}
 
       files ->
         data = parse_files(files)
         state = {:loaded, data}
-        Logger.info(fn -> "Successfully loaded gtfs" end)
+
+        Logger.info(fn ->
+          "Successfully loaded gtfs, time_in_ms=#{
+            Time.diff(Time.utc_now(), start_time, :millisecond)
+          }"
+        end)
 
         if health_server_pid do
           HealthServer.loaded(health_server_pid)
@@ -190,58 +201,41 @@ defmodule Gtfs do
 
   @spec parse_files(files()) :: t()
   defp parse_files(files) do
+    bus_routes = Csv.parse(files["routes.txt"], &Route.bus_route_row?/1, &Route.from_csv_row/1)
+    bus_route_ids = MapSet.new(bus_routes, & &1.id)
+
+    bus_route_patterns =
+      Csv.parse(
+        files["route_patterns.txt"],
+        &RoutePattern.row_in_route_id_set?(&1, bus_route_ids),
+        &RoutePattern.from_csv_row/1
+      )
+
+    bus_trips =
+      Csv.parse(
+        files["trips.txt"],
+        &Trip.row_in_route_id_set?(&1, bus_route_ids),
+        &Trip.from_csv_row/1
+      )
+
+    bus_trip_ids = MapSet.new(bus_trips, & &1.id)
+
+    bus_trip_timepoints =
+      files["stop_times.txt"]
+      |> Csv.parse([
+        &Timepoint.row_includes_a_checkpoint?(&1),
+        &Timepoint.row_in_trip_id_set?(&1, bus_trip_ids)
+      ])
+      |> Timepoint.trip_timepoints_from_csv()
+
+    all_stops = Csv.parse(files["stops.txt"], fn _row -> true end, &Stop.from_csv_row/1)
+
     %__MODULE__{
-      routes: parse_csv(files["routes.txt"], &Route.from_csv_row/1),
-      route_patterns: parse_csv(files["route_patterns.txt"], &RoutePattern.from_csv_row/1),
-      stops: parse_csv(files["stops.txt"], &Stop.from_csv_row/1),
-      trip_timepoints:
-        files["stop_times.txt"]
-        |> parse_csv()
-        |> trip_timepoints_from_csv(),
-      trips: parse_csv(files["trips.txt"], &Trip.from_csv_row/1)
+      routes: bus_routes,
+      route_patterns: bus_route_patterns,
+      stops: all_stops,
+      trip_timepoints: bus_trip_timepoints,
+      trips: bus_trips
     }
-  end
-
-  @spec trip_timepoints_from_csv([%{optional(String.t()) => String.t()}]) ::
-          %{optional(Trip.id()) => Timepoint.id()}
-  defp trip_timepoints_from_csv(stop_times_csv) do
-    stop_times_csv
-    |> Enum.filter(fn stop_time_row -> stop_time_row["checkpoint_id"] != "" end)
-    |> Enum.group_by(fn stop_time_row -> stop_time_row["trip_id"] end)
-    |> Helpers.map_values(fn stop_times_on_trip ->
-      stop_times_on_trip
-      |> Enum.sort_by(fn stop_time_row -> stop_time_row["stop_sequence"] end)
-      |> Enum.map(fn stop_time_row -> stop_time_row["checkpoint_id"] end)
-    end)
-  end
-
-  @doc """
-  Takes binary csv data, and a function to parse each row, and returns the list of results
-  The rows will be passed to the parser as maps with string keys and values.
-  e.g. %{"col1" => "1", "col2" => "x"}
-
-  iex> Gtfs.parse_csv("col1,col2\\n1,x\\n2,y", fn row -> String.to_integer(row["col1"]) end)
-  [1, 2]
-
-  exposed for testing
-  """
-  @spec parse_csv(binary() | nil, (%{required(String.t()) => String.t()} -> row_struct)) ::
-          [row_struct]
-        when row_struct: var
-  def parse_csv(file_binary, row_decoder \\ & &1)
-
-  def parse_csv(nil, _row_decoder) do
-    []
-  end
-
-  def parse_csv(file_binary, row_decoder) do
-    {:ok, file_stream} =
-      file_binary
-      |> StringIO.open()
-
-    file_stream
-    |> IO.binstream(:line)
-    |> CSV.decode(headers: true)
-    |> Enum.map(fn {:ok, row} -> row_decoder.(row) end)
   end
 end
