@@ -11,9 +11,9 @@ defmodule Gtfs.Timepoint do
 
   @type id_set :: MapSet.t(id())
 
-  @spec includes_a_checkpoint_and_in_id_set?(Csv.row(), id_set) :: boolean
-  def includes_a_checkpoint_and_in_id_set?(row, id_set),
-    do: includes_a_checkpoint?(row) && in_id_set?(row, id_set)
+  @spec includes_a_checkpoint_and_in_trip_id_set?(Csv.row(), id_set) :: boolean
+  def includes_a_checkpoint_and_in_trip_id_set?(row, trip_id_set),
+    do: includes_a_checkpoint?(row) && in_trip_id_set?(row, trip_id_set)
 
   @spec trip_timepoints_from_csv([Csv.row()]) :: %{optional(Trip.id()) => id()}
   def trip_timepoints_from_csv(stop_times_csv) do
@@ -29,6 +29,6 @@ defmodule Gtfs.Timepoint do
   @spec includes_a_checkpoint?(Csv.row()) :: boolean
   defp includes_a_checkpoint?(row), do: row["checkpoint_id"] != ""
 
-  @spec in_id_set?(Csv.row(), id_set) :: boolean
-  defp in_id_set?(row, id_set), do: MapSet.member?(id_set, row["trip_id"])
+  @spec in_trip_id_set?(Csv.row(), id_set) :: boolean
+  defp in_trip_id_set?(row, trip_id_set), do: MapSet.member?(trip_id_set, row["trip_id"])
 end

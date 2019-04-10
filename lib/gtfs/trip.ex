@@ -29,6 +29,6 @@ defmodule Gtfs.Trip do
     }
   end
 
-  @spec in_id_set?(Csv.row(), MapSet.t(id())) :: boolean
-  def in_id_set?(row, id_set), do: MapSet.member?(id_set, row["route_id"])
+  @spec in_route_id_set?(Csv.row(), MapSet.t(id())) :: boolean
+  def in_route_id_set?(row, route_id_set), do: MapSet.member?(route_id_set, row["route_id"])
 end
