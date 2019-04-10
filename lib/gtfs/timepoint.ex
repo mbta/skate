@@ -15,8 +15,7 @@ defmodule Gtfs.Timepoint do
   def includes_a_checkpoint_and_in_id_set?(timepoint_row, id_set),
     do: includes_a_checkpoint?(timepoint_row) && in_id_set?(timepoint_row, id_set)
 
-  @spec trip_timepoints_from_csv([%{optional(String.t()) => String.t()}]) ::
-          %{optional(Trip.id()) => id()}
+  @spec trip_timepoints_from_csv([Csv.row()]) :: %{optional(Trip.id()) => id()}
   def trip_timepoints_from_csv(stop_times_csv) do
     stop_times_csv
     |> Enum.group_by(fn stop_time_row -> stop_time_row["trip_id"] end)
