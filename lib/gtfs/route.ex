@@ -18,12 +18,12 @@ defmodule Gtfs.Route do
   ]
 
   @spec from_csv_row(Csv.row()) :: t()
-  def from_csv_row(route_row) do
+  def from_csv_row(row) do
     %__MODULE__{
-      id: route_row["route_id"]
+      id: row["route_id"]
     }
   end
 
-  @spec bus_route?(Csv.row()) :: boolean
-  def bus_route?(route_row), do: route_row["route_type"] == "3"
+  @spec bus_route_row?(Csv.row()) :: boolean
+  def bus_route_row?(row), do: row["route_type"] == "3"
 end

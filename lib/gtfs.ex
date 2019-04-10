@@ -201,7 +201,7 @@ defmodule Gtfs do
 
   @spec parse_files(files()) :: t()
   defp parse_files(files) do
-    bus_routes = Csv.parse(files["routes.txt"], &Route.bus_route?/1, &Route.from_csv_row/1)
+    bus_routes = Csv.parse(files["routes.txt"], &Route.bus_route_row?/1, &Route.from_csv_row/1)
     bus_route_ids = MapSet.new(bus_routes, & &1.id)
 
     bus_route_patterns =

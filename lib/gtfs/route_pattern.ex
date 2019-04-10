@@ -30,16 +30,16 @@ defmodule Gtfs.RoutePattern do
   ]
 
   @spec from_csv_row(Csv.row()) :: t()
-  def from_csv_row(route_pattern_row) do
+  def from_csv_row(row) do
     %__MODULE__{
-      id: route_pattern_row["route_pattern_id"],
-      route_id: route_pattern_row["route_id"],
-      direction_id: Direction.from_string(route_pattern_row["direction_id"]),
-      representative_trip_id: route_pattern_row["representative_trip_id"]
+      id: row["route_pattern_id"],
+      route_id: row["route_id"],
+      direction_id: Direction.from_string(row["direction_id"]),
+      representative_trip_id: row["representative_trip_id"]
     }
   end
 
   @spec in_id_set?(Csv.row(), MapSet.t(id())) :: boolean
-  def in_id_set?(route_pattern_row, id_set),
-    do: MapSet.member?(id_set, route_pattern_row["route_id"])
+  def in_id_set?(row, id_set),
+    do: MapSet.member?(id_set, row["route_id"])
 end
