@@ -12,8 +12,6 @@ defmodule Gtfs.Csv do
 
   iex> Gtfs.Csv.parse("col1,col2\\n1,x\\n2,y\\n3,z", fn row -> row["col2"] != "y" end, fn row -> String.to_integer(row["col1"]) end)
   [1, 3]
-
-  exposed for testing
   """
   @spec parse(
           binary() | nil,
