@@ -8,33 +8,8 @@ const dispatch = () => undefined
 test("renders a route ladder", () => {
   const routes: Route[] = [{ id: "1" }, { id: "28" }]
   const timepointsByRoute: TimepointsByRouteId = {
-    "1": [
-      { id: "WASMA" },
-      { id: "MELWA" },
-      { id: "HHGAT" },
-      { id: "MAPUT" },
-      { id: "CNTSQ" },
-      { id: "MIT" },
-      { id: "HYNES" },
-      { id: "MASTA" },
-      { id: "DUDLY" },
-    ],
-    "28": [
-      { id: "MATPN" },
-      { id: "WELLH" },
-      { id: "MORTN" },
-      { id: "HRUGG" },
-      { id: "BLTAL" },
-      { id: "ROXBS" },
-      { id: "FRNPK" },
-      { id: "GHALL" },
-      { id: "LATAC" },
-      { id: "WARWL" },
-      { id: "DUDLY" },
-      { id: "LOUIS" },
-      { id: "MALCX" },
-      { id: "RUGG" },
-    ],
+    "1": [{ id: "WASMA" }, { id: "MELWA" }, { id: "HHGAT" }],
+    "28": [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }],
   }
 
   const tree = renderer
