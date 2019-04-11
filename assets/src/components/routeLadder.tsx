@@ -11,7 +11,7 @@ interface Props {
 }
 
 const TimepointStop = () => (
-  <div className="m-route-ladder__timepoint-stop">
+  <div className="m-route-ladder__stop">
     <svg height="60" width="20">
       <line x1="10" y1="0" x2="10" y2="25" />
       <circle cx="10" cy="30" r="5" />
