@@ -1,13 +1,13 @@
 import React, { useEffect } from "react"
 import { fetchTimepointsForRoute } from "../api"
-import { Route, Timepoint, TimepointsByRoute } from "../skate"
+import { Route, Timepoint, TimepointsByRouteId } from "../skate"
 import { Dispatch, setTimepointsForRoute } from "../state"
 import Loading from "./loading"
 
 interface Props {
   route: Route
   dispatch: Dispatch
-  timepointsByRoute: TimepointsByRoute
+  timepointsByRoute: TimepointsByRouteId
 }
 
 const TimepointStop = () => (

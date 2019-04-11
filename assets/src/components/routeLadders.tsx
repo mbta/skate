@@ -1,12 +1,12 @@
 import React from "react"
-import { Route, TimepointsByRoute } from "../skate"
+import { Route, TimepointsByRouteId } from "../skate"
 import { Dispatch } from "../state"
 import RouteLadder from "./routeLadder"
 
 interface Props {
   routes: Route[]
   dispatch: Dispatch
-  timepointsByRoute: TimepointsByRoute
+  timepointsByRoute: TimepointsByRouteId
 }
 
 const RouteLadders = ({ routes, dispatch, timepointsByRoute }: Props) => (

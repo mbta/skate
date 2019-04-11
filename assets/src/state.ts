@@ -1,10 +1,10 @@
 import { Dispatch as ReactDispatch } from "react"
-import { Route, RouteId, Timepoint, TimepointsByRoute } from "./skate.d"
+import { Route, RouteId, Timepoint, TimepointsByRouteId } from "./skate.d"
 
 export interface State {
   routes: null | Route[]
   selectedRouteIds: RouteId[]
-  timepointsByRoute: TimepointsByRoute
+  timepointsByRoute: TimepointsByRouteId
 }
 
 export const initialState: State = {

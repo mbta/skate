@@ -10,6 +10,6 @@ export interface Timepoint {
 
 export type TimepointId = string
 
-export interface TimepointsByRoute {
+export interface TimepointsByRouteId {
   [routeId: string]: Timepoint[]
 }
