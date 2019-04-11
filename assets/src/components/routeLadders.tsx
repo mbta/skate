@@ -1,22 +1,22 @@
 import React from "react"
-import { Route, TimepointsByRouteId } from "../skate"
-import { Dispatch } from "../state"
+import { Route } from "../skate"
+import { Dispatch, TimepointsForRouteId } from "../state"
 import RouteLadder from "./routeLadder"
 
 interface Props {
   routes: Route[]
   dispatch: Dispatch
-  timepointsByRoute: TimepointsByRouteId
+  timepointsForRouteId: TimepointsForRouteId
 }
 
-const RouteLadders = ({ routes, dispatch, timepointsByRoute }: Props) => (
+const RouteLadders = ({ routes, dispatch, timepointsForRouteId }: Props) => (
   <div className="m-route-ladders">
     {routes.map(route => (
       <RouteLadder
         key={route.id}
         route={route}
         dispatch={dispatch}
-        timepointsByRoute={timepointsByRoute}
+        timepointsForRouteId={timepointsForRouteId}
       />
     ))}
   </div>

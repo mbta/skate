@@ -1,13 +1,18 @@
 import React, { useEffect, useReducer } from "react"
 import * as Api from "../api"
 import { Route } from "../skate.d"
-import { initialState, reducer, setRoutes } from "../state"
+import {
+  initialState,
+  reducer,
+  setRoutes,
+  timepointsForRouteId,
+} from "../state"
 import RouteLadders from "./routeLadders"
 import RoutePicker from "./routePicker"
 
 const App = (): JSX.Element => {
   const [state, dispatch] = useReducer(reducer, initialState)
-  const { routes, selectedRouteIds, timepointsByRoute } = state
+  const { routes, selectedRouteIds } = state
 
   useEffect(() => {
     Api.fetchRoutes().then((newRoutes: Route[]) =>
@@ -30,7 +35,7 @@ const App = (): JSX.Element => {
       <RouteLadders
         routes={selectedRoutes}
         dispatch={dispatch}
-        timepointsByRoute={timepointsByRoute}
+        timepointsForRouteId={timepointsForRouteId(state)}
       />
     </div>
   )

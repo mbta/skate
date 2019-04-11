@@ -104,3 +104,9 @@ export const reducer = (state: State, action: Action): State => {
       return state
   }
 }
+
+export type TimepointsForRouteId = (routeId: RouteId) => Timepoint[]
+
+export const timepointsForRouteId = (
+  state: State
+): TimepointsForRouteId => routeId => state.timepointsByRoute[routeId]
