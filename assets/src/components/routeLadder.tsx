@@ -1,18 +1,17 @@
 import React, { useEffect } from "react"
 import { fetchTimepointsForRoute } from "../api"
-import { Route, Timepoint } from "../skate"
+import { LoadableTimepoints, Route, Timepoint } from "../skate"
 import {
   Dispatch,
   setLoadingTimepointsForRoute,
   setTimepointsForRoute,
-  TimepointsForRouteId,
 } from "../state"
 import Loading from "./loading"
 
 interface Props {
   route: Route
+  timepoints: LoadableTimepoints | undefined
   dispatch: Dispatch
-  timepointsForRouteId: TimepointsForRouteId
 }
 
 const TimepointStop = () => (
@@ -33,9 +32,7 @@ const Timepoint = ({ timepoint }: { timepoint: Timepoint }) => (
   </li>
 )
 
-const RouteLadder = ({ route, dispatch, timepointsForRouteId }: Props) => {
-  const timepoints = timepointsForRouteId(route.id)
-
+const RouteLadder = ({ route, timepoints, dispatch }: Props) => {
   useEffect(() => {
     if (timepoints === undefined) {
       dispatch(setLoadingTimepointsForRoute(route.id))

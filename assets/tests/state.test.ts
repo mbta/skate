@@ -48,11 +48,11 @@ describe("reducer", () => {
   test("setLoadingTimepointsForRoute", () => {
     const state = {
       ...initialState,
-      timepointsByRoute: {},
+      timepointsByRouteId: {},
     }
     const expectedState = {
       ...state,
-      timepointsByRoute: {
+      timepointsByRouteId: {
         "28": null,
       },
     }
@@ -64,11 +64,11 @@ describe("reducer", () => {
     const timepoints: Timepoint[] = [{ id: "1" }, { id: "2" }, { id: "3" }]
     const state = {
       ...initialState,
-      timepointsByRoute: {},
+      timepointsByRouteId: {},
     }
     const expectedState = {
       ...state,
-      timepointsByRoute: {
+      timepointsByRouteId: {
         "28": timepoints,
       },
     }

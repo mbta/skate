@@ -2,7 +2,6 @@ import React from "react"
 import renderer, { act } from "react-test-renderer"
 import RouteLadder from "../../src/components/routeLadder"
 import { Route } from "../../src/skate"
-import { TimepointsForRouteId } from "../../src/state"
 
 declare global {
   interface Window {
@@ -15,19 +14,11 @@ const dispatch = () => undefined
 
 test("renders a route ladder", () => {
   const route: Route = { id: "28" }
-  const timepointsForRouteId: TimepointsForRouteId = () => [
-    { id: "MATPN" },
-    { id: "WELLH" },
-    { id: "MORTN" },
-  ]
+  const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
 
   const tree = renderer
     .create(
-      <RouteLadder
-        route={route}
-        dispatch={dispatch}
-        timepointsForRouteId={timepointsForRouteId}
-      />
+      <RouteLadder route={route} timepoints={timepoints} dispatch={dispatch} />
     )
     .toJSON()
 
@@ -36,15 +27,11 @@ test("renders a route ladder", () => {
 
 test("displays loading if we are fetching the timepoints", () => {
   const route: Route = { id: "28" }
-  const timepointsForRouteId: TimepointsForRouteId = () => null
+  const timepoints = null
 
   const tree = renderer
     .create(
-      <RouteLadder
-        route={route}
-        dispatch={dispatch}
-        timepointsForRouteId={timepointsForRouteId}
-      />
+      <RouteLadder route={route} timepoints={timepoints} dispatch={dispatch} />
     )
     .toJSON()
 
@@ -54,7 +41,7 @@ test("displays loading if we are fetching the timepoints", () => {
 test("fetches timepoints for this route if we don't yet have them", () => {
   const mockDispatch = jest.fn()
   const route: Route = { id: "28" }
-  const timepointsForRouteId: TimepointsForRouteId = () => undefined
+  const timepoints = undefined
 
   window.fetch = () =>
     Promise.resolve({
@@ -70,8 +57,8 @@ test("fetches timepoints for this route if we don't yet have them", () => {
       .create(
         <RouteLadder
           route={route}
+          timepoints={timepoints}
           dispatch={mockDispatch}
-          timepointsForRouteId={timepointsForRouteId}
         />
       )
       .toJSON()
@@ -87,7 +74,7 @@ test("fetches timepoints for this route if we don't yet have them", () => {
 test("does not fetch timepoints for this route if we are currently loading them", () => {
   const mockDispatch = jest.fn()
   const route: Route = { id: "28" }
-  const timepointsForRouteId: TimepointsForRouteId = () => null
+  const timepoints = null
 
   window.fetch = () =>
     Promise.resolve({
@@ -103,8 +90,8 @@ test("does not fetch timepoints for this route if we are currently loading them"
       .create(
         <RouteLadder
           route={route}
+          timepoints={timepoints}
           dispatch={mockDispatch}
-          timepointsForRouteId={timepointsForRouteId}
         />
       )
       .toJSON()
