@@ -1,8 +1,0 @@
-<a href="/ladder"><< Back</a>
-<ul>
-  <%= for timepoint_id <- @conn.assigns.timepoint_ids do %>
-    <li>
-      <%= timepoint_id %>
-    </li>
-  <% end %>
-</ul>

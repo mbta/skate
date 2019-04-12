@@ -22,8 +22,6 @@ defmodule SkateWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-    get "/ladder", LadderController, :index
-    get "/ladder/:route_id", LadderController, :show
   end
 
   scope "/api", SkateWeb do
