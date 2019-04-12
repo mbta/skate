@@ -1,5 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`displays loading if we are fetching the timepoints 1`] = `
+<div
+  className="m-route-ladder"
+>
+  <div
+    className="m-route-ladder__route-name"
+  >
+    28
+  </div>
+  loading...
+</div>
+`;
+
 exports[`renders a route ladder 1`] = `
 <div
   className="m-route-ladder"

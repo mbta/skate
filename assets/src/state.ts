@@ -134,7 +134,9 @@ export const reducer = (state: State, action: Action): State => {
   }
 }
 
-export type TimepointsForRouteId = (routeId: RouteId) => LoadableTimepoints
+export type TimepointsForRouteId = (
+  routeId: RouteId
+) => LoadableTimepoints | undefined
 
 export const timepointsForRouteId = (
   state: State
