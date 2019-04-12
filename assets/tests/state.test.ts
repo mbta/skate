@@ -45,6 +45,21 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
+  test("setLoadingTimepointsForRoute", () => {
+    const state = {
+      ...initialState,
+      timepointsByRoute: {},
+    }
+    const expectedState = {
+      ...state,
+      timepointsByRoute: {
+        "28": null,
+      },
+    }
+    const newState = reducer(state, State.setLoadingTimepointsForRoute("28"))
+    expect(newState).toEqual(expectedState)
+  })
+
   test("setTimepointsForRoute", () => {
     const timepoints: Timepoint[] = [{ id: "1" }, { id: "2" }, { id: "3" }]
     const state = {
