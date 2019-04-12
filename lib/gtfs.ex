@@ -2,6 +2,7 @@ defmodule Gtfs do
   use GenServer
   require Logger
 
+  alias Gtfs.CacheFile
   alias Gtfs.Csv
   alias Gtfs.HealthServer
   alias Gtfs.Helpers
@@ -142,7 +143,7 @@ defmodule Gtfs do
         {:stop, error}
 
       files ->
-        data = parse_files(files)
+        data = retrive_data(files, mocked_files?(files_source))
         state = {:loaded, data}
 
         Logger.info(fn ->
@@ -158,6 +159,10 @@ defmodule Gtfs do
         {:noreply, state}
     end
   end
+
+  @spec mocked_files?(files_source()) :: boolean
+  defp mocked_files?({:mocked_files, _}), do: true
+  defp mocked_files?(_), do: false
 
   @spec fetch_files(files_source()) :: files() | {:error, any()}
   defp fetch_files({:url, url}) do
@@ -182,6 +187,31 @@ defmodule Gtfs do
   defp fetch_files({:mocked_files, mocked_files}) do
     for {file_name, lines} <- mocked_files, into: %{} do
       {file_name, Enum.join(lines, "\n")}
+    end
+  end
+
+  @spec retrive_data(files(), boolean) :: t()
+  defp retrive_data(files, mocked_files?) do
+    if !mocked_files? && CacheFile.should_use_file?() do
+      Logger.info("Loading gfts data from cached file")
+
+      case CacheFile.load_gtfs() do
+        {:ok, state} ->
+          Logger.info("Loaded gtfs data from cached file")
+          state
+
+        _ ->
+          Logger.info("Loading gtfs data remote files")
+          state = parse_files(files)
+          Logger.info("Loaded gtfs data remote files")
+          CacheFile.save_gtfs(state)
+          state
+      end
+    else
+      Logger.info("Loading gtfs data remote files")
+      state = parse_files(files)
+      Logger.info("Loaded gtfs data remote files")
+      state
     end
   end
 

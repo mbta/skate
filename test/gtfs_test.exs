@@ -3,8 +3,6 @@ defmodule GtfsTest do
 
   alias Gtfs.Route
 
-  doctest Gtfs
-
   describe "all_routes" do
     test "maps each row to a Route" do
       pid =
