@@ -46,7 +46,7 @@ test("fetches timepoints for this route if we don't yet have them", () => {
   window.fetch = () =>
     Promise.resolve({
       json: () => ({
-        data: [{ id: "28" }, { id: "39" }, { id: "71" }],
+        data: ["MATPN", "WELLH", "MORTN"],
       }),
       ok: true,
       status: 200,
@@ -79,7 +79,7 @@ test("does not fetch timepoints for this route if we are currently loading them"
   window.fetch = () =>
     Promise.resolve({
       json: () => ({
-        data: [{ id: "28" }, { id: "39" }, { id: "71" }],
+        data: ["MATPN", "WELLH", "MORTN"],
       }),
       ok: true,
       status: 200,
