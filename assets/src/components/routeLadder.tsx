@@ -44,7 +44,7 @@ const RouteLadder = ({ route, dispatch, timepointsForRouteId }: Props) => {
         dispatch(setTimepointsForRoute(route.id, newTimepoints))
       )
     }
-  })
+  }, [])
 
   return (
     <div className="m-route-ladder">
