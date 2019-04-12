@@ -1,5 +1,11 @@
 import { Dispatch as ReactDispatch } from "react"
-import { Route, RouteId, Timepoint, TimepointsByRouteId } from "./skate.d"
+import {
+  LoadableTimepoints,
+  Route,
+  RouteId,
+  Timepoint,
+  TimepointsByRouteId,
+} from "./skate.d"
 
 export interface State {
   routes: null | Route[]
@@ -49,6 +55,13 @@ export const deselectRoute = (routeId: RouteId): DeselectRouteAction => ({
   payload: { routeId },
 })
 
+interface SetLoadingTimepointsForRouteAction {
+  type: "SET_LOADING_TIMEPOINTS_FOR_ROUTE"
+  payload: {
+    routeId: RouteId
+  }
+}
+
 interface SetTimepointsForRouteAction {
   type: "SET_TIMEPOINTS_FOR_ROUTE"
   payload: {
@@ -56,6 +69,13 @@ interface SetTimepointsForRouteAction {
     timepoints: Timepoint[]
   }
 }
+
+export const setLoadingTimepointsForRoute = (
+  routeId: RouteId
+): SetLoadingTimepointsForRouteAction => ({
+  type: "SET_LOADING_TIMEPOINTS_FOR_ROUTE",
+  payload: { routeId },
+})
 
 export const setTimepointsForRoute = (
   routeId: RouteId,
@@ -69,6 +89,7 @@ type Action =
   | SetRoutesAction
   | SelectRouteAction
   | DeselectRouteAction
+  | SetLoadingTimepointsForRouteAction
   | SetTimepointsForRouteAction
 
 export type Dispatch = ReactDispatch<Action>
@@ -92,6 +113,14 @@ export const reducer = (state: State, action: Action): State => {
           id => id !== action.payload.routeId
         ),
       }
+    case "SET_LOADING_TIMEPOINTS_FOR_ROUTE":
+      return {
+        ...state,
+        timepointsByRoute: {
+          ...state.timepointsByRoute,
+          [action.payload.routeId]: null,
+        },
+      }
     case "SET_TIMEPOINTS_FOR_ROUTE":
       return {
         ...state,
@@ -105,7 +134,7 @@ export const reducer = (state: State, action: Action): State => {
   }
 }
 
-export type TimepointsForRouteId = (routeId: RouteId) => Timepoint[]
+export type TimepointsForRouteId = (routeId: RouteId) => LoadableTimepoints
 
 export const timepointsForRouteId = (
   state: State
