@@ -18,6 +18,7 @@ defmodule Skate.Application do
       # {Skate.Worker, arg},
       worker(Gtfs.HealthServer, []),
       worker(Gtfs, [Application.get_env(:skate, :gtfs_url)]),
+      {Registry, keys: :duplicate, name: Realtime.Server.registry_name()},
       worker(Realtime.Server, [
         [
           url: Application.get_env(:skate, :concentrate_vehicle_positions_url),
