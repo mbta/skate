@@ -201,18 +201,21 @@ defmodule Gtfs do
           state
 
         _ ->
-          Logger.info("Loading gtfs data remote files")
-          state = parse_files(files)
-          Logger.info("Loaded gtfs data remote files")
+          state = load_remote_files(files)
           CacheFile.save_gtfs(state)
           state
       end
     else
-      Logger.info("Loading gtfs data remote files")
-      state = parse_files(files)
-      Logger.info("Loaded gtfs data remote files")
-      state
+      load_remote_files(files)
     end
+  end
+
+  @spec load_remote_files(files()) :: t()
+  defp load_remote_files(files) do
+    Logger.info("Loading gtfs data remote files")
+    result = parse_files(files)
+    Logger.info("Loaded gtfs data remote files")
+    result
   end
 
   # Takes in the binary data of a zip file, and a list of files to extract
