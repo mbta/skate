@@ -76,15 +76,6 @@ test("does not fetch timepoints for this route if we are currently loading them"
   const route: Route = { id: "28" }
   const timepoints = null
 
-  window.fetch = () =>
-    Promise.resolve({
-      json: () => ({
-        data: ["MATPN", "WELLH", "MORTN"],
-      }),
-      ok: true,
-      status: 200,
-    })
-
   act(() => {
     renderer
       .create(
