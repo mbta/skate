@@ -8,9 +8,9 @@ export interface Timepoint {
   id: TimepointId
 }
 
-// A null value (as opposed to undefined) indicates that we are currently
-// loading the timepoints
-export type LoadableTimepoints = Timepoint[] | null
+// An undefined value indicates that the timepoints need to be loaded
+// A null value indicates that we are currently loading the timepoints
+export type LoadableTimepoints = Timepoint[] | null | undefined
 
 export type TimepointId = string
 

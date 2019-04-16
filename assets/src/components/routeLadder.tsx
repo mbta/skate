@@ -10,7 +10,7 @@ import Loading from "./loading"
 
 interface Props {
   route: Route
-  timepoints: LoadableTimepoints | undefined
+  timepoints: LoadableTimepoints
   dispatch: Dispatch
 }
 

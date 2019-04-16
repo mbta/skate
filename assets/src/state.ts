@@ -56,6 +56,13 @@ interface SetLoadingTimepointsForRouteAction {
   }
 }
 
+export const setLoadingTimepointsForRoute = (
+  routeId: RouteId
+): SetLoadingTimepointsForRouteAction => ({
+  type: "SET_LOADING_TIMEPOINTS_FOR_ROUTE",
+  payload: { routeId },
+})
+
 interface SetTimepointsForRouteAction {
   type: "SET_TIMEPOINTS_FOR_ROUTE"
   payload: {
@@ -63,13 +70,6 @@ interface SetTimepointsForRouteAction {
     timepoints: Timepoint[]
   }
 }
-
-export const setLoadingTimepointsForRoute = (
-  routeId: RouteId
-): SetLoadingTimepointsForRouteAction => ({
-  type: "SET_LOADING_TIMEPOINTS_FOR_ROUTE",
-  payload: { routeId },
-})
 
 export const setTimepointsForRoute = (
   routeId: RouteId,
