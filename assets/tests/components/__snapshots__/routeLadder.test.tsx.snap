@@ -5,9 +5,19 @@ exports[`displays loading if we are fetching the timepoints 1`] = `
   className="m-route-ladder"
 >
   <div
-    className="m-route-ladder__route-name"
+    className="m-route-ladder__header"
   >
-    28
+    <div
+      className="m-route-ladder__route-name"
+    >
+      28
+    </div>
+    <button
+      className="m-route-ladder__close"
+      onClick={[Function]}
+    >
+      ✖
+    </button>
   </div>
   loading...
 </div>
@@ -18,9 +28,19 @@ exports[`renders a route ladder 1`] = `
   className="m-route-ladder"
 >
   <div
-    className="m-route-ladder__route-name"
+    className="m-route-ladder__header"
   >
-    28
+    <div
+      className="m-route-ladder__route-name"
+    >
+      28
+    </div>
+    <button
+      className="m-route-ladder__close"
+      onClick={[Function]}
+    >
+      ✖
+    </button>
   </div>
   <ol
     className="m-route-ladder__timepoints"
