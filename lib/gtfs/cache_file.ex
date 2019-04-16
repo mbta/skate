@@ -106,7 +106,7 @@ defmodule Gtfs.CacheFile do
     Path.join([@directory, filename])
   end
 
-  @spec binary_to_term(String.t()) :: {:ok, term()} | {:error, atom}
+  @spec binary_to_term(binary()) :: {:ok, term()} | {:error, atom}
   defp binary_to_term(bin) do
     try do
       {:ok, :erlang.binary_to_term(bin)}
