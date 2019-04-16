@@ -10,6 +10,8 @@ test("renders a route ladder", () => {
   const timepointsByRouteId: TimepointsByRouteId = {
     "1": [{ id: "WASMA" }, { id: "MELWA" }, { id: "HHGAT" }],
     "28": [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }],
+    "71": undefined,
+    "73": null,
   }
 
   const tree = renderer
