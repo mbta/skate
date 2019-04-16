@@ -1,6 +1,9 @@
 defmodule Realtime.Server do
   @moduledoc """
   Fetches live data from RTR, and forwards it to connected clients.
+
+  Uses a global regsitry, with the server's pid as the key.
+  Each subscriber's route_ids are stored as the value of their registry entries.
   """
 
   use GenServer
@@ -10,19 +13,19 @@ defmodule Realtime.Server do
 
   @type opts :: [url: String.t(), poll_delay: integer()]
 
-  @type subscriptions :: %{optional(pid()) => [Route.id()]}
-
   @type vehicles :: %{optional(Route.id()) => [Realtime.Vehicle.t()]}
 
   @type state :: %{
           url: String.t(),
           poll_delay: integer(),
-          subscriptions: subscriptions(),
           vehicles_timestamp: integer() | nil,
           vehicles: vehicles()
         }
 
   # Client functions
+
+  @spec registry_name() :: Registry.registry()
+  def registry_name(), do: Realtime.Registry
 
   @spec start_link(opts()) :: GenServer.on_start()
   def start_link(opts) do
@@ -35,10 +38,16 @@ defmodule Realtime.Server do
     pid
   end
 
+  @doc """
+  The subscribing process will get a message when there's new data, with the form
+  {:new_realtime_data, vehicles()}
+  """
   @spec subscribe([Route.id()], GenServer.server()) :: vehicles()
   def subscribe(route_ids, server \\ nil) do
     server = server || __MODULE__
-    GenServer.call(server, {:subscribe, route_ids, self()})
+    {registry_key, vehicles} = GenServer.call(server, {:subscribe, route_ids})
+    Registry.register(Realtime.Registry, registry_key, route_ids)
+    vehicles
   end
 
   # GenServer callbacks
@@ -48,7 +57,6 @@ defmodule Realtime.Server do
     initial_state = %{
       url: url,
       poll_delay: poll_delay,
-      subscriptions: Map.new(),
       vehicles_timestamp: nil,
       vehicles: Map.new()
     }
@@ -73,7 +81,7 @@ defmodule Realtime.Server do
     new_state =
       case fetch(state.url) do
         {:ok, vehicles} ->
-          broadcast(vehicles, state.subscriptions)
+          broadcast(vehicles)
           %{state | vehicles: vehicles}
 
         _ ->
@@ -84,16 +92,11 @@ defmodule Realtime.Server do
     {:noreply, new_state}
   end
 
-  def handle_info({:DOWN, _monitor_ref, :process, pid, _reason}, state) do
-    {:noreply, %{state | subscriptions: Map.delete(state.subscriptions, pid)}}
-  end
-
   @impl true
-  def handle_call({:subscribe, route_ids, pid}, _from, state) do
-    Process.monitor(pid)
-
-    {:reply, Map.take(state.vehicles, route_ids),
-     %{state | subscriptions: Map.put(state.subscriptions, pid, route_ids)}}
+  def handle_call({:subscribe, route_ids}, _from, state) do
+    registry_key = self()
+    vehicles = Map.take(state.vehicles, route_ids)
+    {:reply, {registry_key, vehicles}, state}
   end
 
   @spec fetch(String.t()) :: {:ok, vehicles()} | {:error, any()}
@@ -115,14 +118,15 @@ defmodule Realtime.Server do
     end
   end
 
-  @spec broadcast(vehicles(), subscriptions()) :: :ok
-  defp broadcast(vehicles, subscriptions) do
-    Enum.each(
-      subscriptions,
-      fn {pid, route_ids} ->
+  @spec broadcast(vehicles()) :: :ok
+  defp broadcast(vehicles) do
+    registry_key = self()
+
+    Registry.dispatch(registry_name(), registry_key, fn entries ->
+      for {pid, route_ids} <- entries do
         send(pid, {:new_realtime_data, Map.take(vehicles, route_ids)})
       end
-    )
+    end)
   end
 
   @spec decode_data(term()) :: vehicles()

@@ -58,15 +58,4 @@ defmodule Realtime.ServerTest do
       "Client didn't receive vehicle positions the second time"
     )
   end
-
-  test "closed clients don't get message", %{server_pid: server_pid} do
-    Server.subscribe(["1"], server_pid)
-    send(server_pid, {:DOWN, :_monitor_ref, :process, self(), "closed for testing"})
-
-    refute_receive(
-      {:new_realtime_data, _new_data},
-      200,
-      "Closed client shouldn't have gotten vehicle positions"
-    )
-  end
 end
