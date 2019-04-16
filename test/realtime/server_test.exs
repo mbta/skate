@@ -12,8 +12,8 @@ defmodule Realtime.ServerTest do
       Plug.Conn.resp(conn, 200, sample_data)
     end)
 
-    server_pid =
-      Server.start_mocked(
+    {:ok, server_pid} =
+      Server.start_link(
         url: url,
         poll_delay: 100
       )

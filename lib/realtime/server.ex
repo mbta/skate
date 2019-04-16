@@ -27,15 +27,13 @@ defmodule Realtime.Server do
   @spec registry_name() :: Registry.registry()
   def registry_name(), do: Realtime.Registry
 
+  @spec default_name() :: GenServer.name()
+  def default_name(), do: Realtime.Server
+
   @spec start_link(opts()) :: GenServer.on_start()
   def start_link(opts) do
-    GenServer.start_link(__MODULE__, opts, name: __MODULE__)
-  end
-
-  @spec start_mocked(opts()) :: pid()
-  def start_mocked(opts) do
-    {:ok, pid} = GenServer.start_link(__MODULE__, opts)
-    pid
+    {start_link_opts, server_opts} = Keyword.split(opts, [:name])
+    GenServer.start_link(__MODULE__, server_opts, start_link_opts)
   end
 
   @doc """
@@ -44,7 +42,7 @@ defmodule Realtime.Server do
   """
   @spec subscribe([Route.id()], GenServer.server()) :: vehicles()
   def subscribe(route_ids, server \\ nil) do
-    server = server || __MODULE__
+    server = server || default_name()
     {registry_key, vehicles} = GenServer.call(server, {:subscribe, route_ids})
     Registry.register(Realtime.Registry, registry_key, route_ids)
     vehicles

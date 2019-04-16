@@ -22,7 +22,8 @@ defmodule Skate.Application do
       worker(Realtime.Server, [
         [
           url: Application.get_env(:skate, :concentrate_vehicle_positions_url),
-          poll_delay: 3000
+          poll_delay: 3000,
+          name: Realtime.Server.default_name()
         ]
       ])
     ]
