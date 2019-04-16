@@ -143,7 +143,7 @@ defmodule Gtfs do
         {:stop, error}
 
       files ->
-        data = retrive_data(files, mocked_files?(files_source))
+        data = retrieve_data(files, mocked_files?(files_source))
         state = {:loaded, data}
 
         Logger.info(fn ->
@@ -190,8 +190,8 @@ defmodule Gtfs do
     end
   end
 
-  @spec retrive_data(files(), boolean) :: t()
-  defp retrive_data(files, mocked_files?) do
+  @spec retrieve_data(files(), boolean) :: t()
+  defp retrieve_data(files, mocked_files?) do
     if !mocked_files? && CacheFile.should_use_file?() do
       Logger.info("Loading gfts data from cached file")
 
