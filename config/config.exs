@@ -12,6 +12,8 @@ config :skate,
   gtfs_url: "https://cdn.mbta.com/MBTA_GTFS.zip",
   concentrate_vehicle_positions_url: "https://cdn.mbta.com/realtime/VehiclePositions.json"
 
+config :skate, Gtfs.CacheFile, cache_filename: nil
+
 # Configures the endpoint
 config :skate, SkateWeb.Endpoint,
   url: [host: "localhost"],

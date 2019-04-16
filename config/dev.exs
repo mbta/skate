@@ -1,5 +1,7 @@
 use Mix.Config
 
+config :skate, Gtfs.CacheFile, cache_filename: "dev_cache.terms"
+
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #

@@ -9,12 +9,7 @@ defmodule Gtfs.CacheFile do
   """
   require Logger
 
-  alias Gtfs.Helpers.EnvHelper
-
   @directory Path.join([File.cwd!(), "priv/gtfs_cache"])
-
-  @dev_filename "dev_cache.terms"
-  @test_filename "test_cache.terms"
 
   @doc """
   The application should use the file to load state for GTFS
@@ -27,7 +22,7 @@ defmodule Gtfs.CacheFile do
   """
   @spec should_use_file?() :: boolean
   def should_use_file? do
-    EnvHelper.is_env?(:dev) || EnvHelper.is_env?(:test)
+    Application.get_env(:skate, __MODULE__)[:cache_filename] != nil
   end
 
   @doc """
@@ -100,11 +95,7 @@ defmodule Gtfs.CacheFile do
   """
   @spec cache_filename() :: String.t() | nil
   def cache_filename() do
-    cond do
-      EnvHelper.is_env?(:dev) -> @dev_filename
-      EnvHelper.is_env?(:test) -> @test_filename
-      true -> nil
-    end
+    Application.get_env(:skate, __MODULE__)[:cache_filename]
   end
 
   @doc """
