@@ -6,7 +6,7 @@ defmodule Gtfs.CacheFileTest do
   doctest CacheFile
 
   test "should_use_file?/0 returns true if there is a `cache_filename` application env var configured" do
-    assert CacheFile.should_use_file?
+    assert CacheFile.should_use_file?()
   end
 
   describe "load_gtfs/1" do

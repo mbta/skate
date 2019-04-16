@@ -134,37 +134,75 @@ defmodule Gtfs do
   def handle_continue({:load_gtfs, files_source, health_server_pid}, :not_loaded) do
     start_time = Time.utc_now()
 
-    case fetch_files(files_source) do
+    with {:ok, data} <- fetch_gtfs(files_source) do
+      state = {:loaded, data}
+
+      Logger.info(fn ->
+        "Successfully loaded gtfs, time_in_ms=#{
+          Time.diff(Time.utc_now(), start_time, :millisecond)
+        }"
+      end)
+
+      if health_server_pid do
+        HealthServer.loaded(health_server_pid)
+      end
+
+      {:noreply, state}
+    else
       {:error, error} ->
         Logger.info(fn ->
           "Error loading gtfs, time_in_ms=#{Time.diff(Time.utc_now(), start_time, :millisecond)}"
         end)
 
         {:stop, error}
-
-      files ->
-        data = retrieve_data(files, mocked_files?(files_source))
-        state = {:loaded, data}
-
-        Logger.info(fn ->
-          "Successfully loaded gtfs, time_in_ms=#{
-            Time.diff(Time.utc_now(), start_time, :millisecond)
-          }"
-        end)
-
-        if health_server_pid do
-          HealthServer.loaded(health_server_pid)
-        end
-
-        {:noreply, state}
     end
   end
 
-  @spec mocked_files?(files_source()) :: boolean
-  defp mocked_files?({:mocked_files, _}), do: true
-  defp mocked_files?(_), do: false
+  @spec fetch_gtfs(files_source()) :: {:ok, t()} | {:error, any()}
+  defp fetch_gtfs({:mocked_files, mocked_files}) do
+    data =
+      mocked_files
+      |> files_from_mocked()
+      |> parse_files()
 
-  @spec fetch_files(files_source()) :: files() | {:error, any()}
+    {:ok, data}
+  end
+
+  defp fetch_gtfs(files_source) do
+    if CacheFile.should_use_file?() do
+      Logger.info("Loading gfts data from cached file")
+
+      with {:ok, state} <- CacheFile.load_gtfs() do
+        {:ok, state}
+      else
+        _ ->
+          with {:ok, state} <- fetch_and_parse_data(files_source) do
+            CacheFile.save_gtfs(state)
+            {:ok, state}
+          else
+            {:error, error} ->
+              {:error, error}
+          end
+      end
+    else
+      fetch_and_parse_data(files_source)
+    end
+  end
+
+  @spec fetch_and_parse_data(files_source()) :: {:ok, t()} | {:error, any()}
+  defp fetch_and_parse_data(files_source) do
+    Logger.info("Loading gtfs data remote files")
+
+    with {:files, files} <- fetch_files(files_source) do
+      data = parse_files(files)
+      {:ok, data}
+    else
+      {:error, error} ->
+        {:error, error}
+    end
+  end
+
+  @spec fetch_files(files_source()) :: {:files, files()} | {:error, any()}
   defp fetch_files({:url, url}) do
     case HTTPoison.get(url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: zip_binary}} ->
@@ -176,7 +214,8 @@ defmodule Gtfs do
           "trips.txt"
         ]
 
-        unzip_files(zip_binary, file_list)
+        unzipped_files = unzip_files(zip_binary, file_list)
+        {:files, unzipped_files}
 
       response ->
         Logger.warn(fn -> "Unexpected response from #{url} : #{inspect(response)}" end)
@@ -184,38 +223,11 @@ defmodule Gtfs do
     end
   end
 
-  defp fetch_files({:mocked_files, mocked_files}) do
+  @spec files_from_mocked(mocked_files()) :: files()
+  defp files_from_mocked(mocked_files) do
     for {file_name, lines} <- mocked_files, into: %{} do
       {file_name, Enum.join(lines, "\n")}
     end
-  end
-
-  @spec retrieve_data(files(), boolean) :: t()
-  defp retrieve_data(files, mocked_files?) do
-    if !mocked_files? && CacheFile.should_use_file?() do
-      Logger.info("Loading gfts data from cached file")
-
-      case CacheFile.load_gtfs() do
-        {:ok, state} ->
-          Logger.info("Loaded gtfs data from cached file")
-          state
-
-        _ ->
-          state = load_remote_files(files)
-          CacheFile.save_gtfs(state)
-          state
-      end
-    else
-      load_remote_files(files)
-    end
-  end
-
-  @spec load_remote_files(files()) :: t()
-  defp load_remote_files(files) do
-    Logger.info("Loading gtfs data remote files")
-    result = parse_files(files)
-    Logger.info("Loaded gtfs data remote files")
-    result
   end
 
   # Takes in the binary data of a zip file, and a list of files to extract
