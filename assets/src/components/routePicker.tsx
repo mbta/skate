@@ -1,6 +1,7 @@
 import React from "react"
 import { Route, RouteId } from "../skate.d"
 import { deselectRoute, Dispatch, selectRoute } from "../state"
+import Loading from "./loading"
 
 interface Props {
   routes: null | Route[]
@@ -13,18 +14,21 @@ const RoutePicker = ({ routes, selectedRouteIds, dispatch }: Props) => (
     <h2>Selected Routes</h2>
     {selectedRouteIds.length === 0
       ? "none"
-      : selectedRoutesList(selectedRouteIds, dispatch)
-    }
+      : selectedRoutesList(selectedRouteIds, dispatch)}
 
     <h2>Routes</h2>
-    {routes === null
-      ? "loading..."
-      : routesList(routes, selectedRouteIds, dispatch)
-    }
+    {routes === null ? (
+      <Loading />
+    ) : (
+      routesList(routes, selectedRouteIds, dispatch)
+    )}
   </div>
 )
 
-const selectedRoutesList = (selectedRouteIds: RouteId[], dispatch: Dispatch) => (
+const selectedRoutesList = (
+  selectedRouteIds: RouteId[],
+  dispatch: Dispatch
+) => (
   <ul>
     {selectedRouteIds.map(routeId => (
       <li key={routeId}>
@@ -39,24 +43,29 @@ const selectedRoutesList = (selectedRouteIds: RouteId[], dispatch: Dispatch) => 
   </ul>
 )
 
-const routesList = (routes: Route[], selectedRouteIds: RouteId[], dispatch: Dispatch) => (
+const routesList = (
+  routes: Route[],
+  selectedRouteIds: RouteId[],
+  dispatch: Dispatch
+) => (
   <ul>
     {routes.map(route => (
       <li key={route.id}>
-        {selectedRouteIds.includes(route.id)
-          ? <button
+        {selectedRouteIds.includes(route.id) ? (
+          <button
             className="m-route-picker__route-list-button--selected"
             onClick={() => dispatch(deselectRoute(route.id))}
           >
             *{route.id}
           </button>
-          : <button
+        ) : (
+          <button
             className="m-route-picker__route-list-button--deselected"
             onClick={() => dispatch(selectRoute(route.id))}
           >
             {route.id}
           </button>
-        }
+        )}
       </li>
     ))}
   </ul>
