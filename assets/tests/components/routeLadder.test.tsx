@@ -1,7 +1,9 @@
+import { mount } from "enzyme"
 import React from "react"
 import renderer, { act } from "react-test-renderer"
 import RouteLadder from "../../src/components/routeLadder"
 import { Route } from "../../src/skate"
+import { deselectRoute } from "../../src/state"
 
 declare global {
   interface Window {
@@ -89,4 +91,21 @@ test("does not fetch timepoints for this route if we are currently loading them"
   })
 
   expect(mockDispatch.mock.calls.length).toBe(0)
+})
+
+test("clicking the close button deselects that route", () => {
+  const mockDispatch = jest.fn()
+  const route: Route = { id: "28" }
+  const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
+
+  const wrapper = mount(
+    <RouteLadder
+      route={route}
+      timepoints={timepoints}
+      dispatch={mockDispatch}
+    />
+  )
+  wrapper.find(".m-route-ladder__close").simulate("click")
+
+  expect(mockDispatch).toHaveBeenCalledWith(deselectRoute("28"))
 })

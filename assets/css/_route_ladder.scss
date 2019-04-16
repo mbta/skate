@@ -3,12 +3,23 @@
   width: 10rem;
 }
 
-.m-route-ladder__route-name {
+.m-route-ladder__header {
   background-color: whitesmoke;
   border: 1px solid dimgray;
+  display: flex;
   margin-bottom: 1rem;
   padding: 0.2rem 0.5rem;
   text-align: center;
+}
+
+.m-route-ladder__route-name {
+  flex-grow: 1;
+}
+
+.m-route-ladder__close {
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 .m-route-ladder__timepoints {

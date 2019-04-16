@@ -2,6 +2,7 @@ import React, { useEffect } from "react"
 import { fetchTimepointsForRoute } from "../api"
 import { LoadableTimepoints, Route, Timepoint } from "../skate"
 import {
+  deselectRoute,
   Dispatch,
   setLoadingTimepointsForRoute,
   setTimepointsForRoute,
@@ -13,6 +14,19 @@ interface Props {
   timepoints: LoadableTimepoints
   dispatch: Dispatch
 }
+
+const Header = ({ route, dispatch }: { route: Route; dispatch: Dispatch }) => (
+  <div className="m-route-ladder__header">
+    <div className="m-route-ladder__route-name">{route.id}</div>
+
+    <button
+      className="m-route-ladder__close"
+      onClick={() => dispatch(deselectRoute(route.id))}
+    >
+      ✖
+    </button>
+  </div>
+)
 
 const TimepointStop = () => (
   <div className="m-route-ladder__stop">
@@ -45,7 +59,7 @@ const RouteLadder = ({ route, timepoints, dispatch }: Props) => {
 
   return (
     <div className="m-route-ladder">
-      <div className="m-route-ladder__route-name">{route.id}</div>
+      <Header route={route} dispatch={dispatch} />
 
       {timepoints ? (
         <ol className="m-route-ladder__timepoints">
