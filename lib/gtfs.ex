@@ -172,13 +172,13 @@ defmodule Gtfs do
     if CacheFile.should_use_file?() do
       Logger.info("Loading gfts data from cached file")
 
-      with {:ok, state} <- CacheFile.load_gtfs() do
-        {:ok, state}
+      with {:ok, data} <- CacheFile.load_gtfs() do
+        {:ok, data}
       else
         _ ->
-          with {:ok, state} <- fetch_and_parse_data(files_source) do
-            CacheFile.save_gtfs(state)
-            {:ok, state}
+          with {:ok, data} <- fetch_and_parse_data(files_source) do
+            CacheFile.save_gtfs(data)
+            {:ok, data}
           else
             {:error, error} ->
               {:error, error}
