@@ -168,7 +168,7 @@ defmodule Gtfs do
     {:ok, data}
   end
 
-  defp fetch_gtfs(files_source) do
+  defp fetch_gtfs({:url, url}) do
     if CacheFile.should_use_file?() do
       Logger.info("Loading gfts data from cached file")
 
@@ -176,7 +176,7 @@ defmodule Gtfs do
         {:ok, data}
       else
         _ ->
-          with {:ok, data} <- fetch_and_parse_data(files_source) do
+          with {:ok, data} <- fetch_and_parse_data(url) do
             CacheFile.save_gtfs(data)
             {:ok, data}
           else
@@ -185,15 +185,15 @@ defmodule Gtfs do
           end
       end
     else
-      fetch_and_parse_data(files_source)
+      fetch_and_parse_data(url)
     end
   end
 
-  @spec fetch_and_parse_data(files_source()) :: {:ok, t()} | {:error, any()}
-  defp fetch_and_parse_data(files_source) do
+  @spec fetch_and_parse_data(String.t()) :: {:ok, t()} | {:error, any()}
+  defp fetch_and_parse_data(url) do
     Logger.info("Loading gtfs data remote files")
 
-    with {:files, files} <- fetch_files(files_source) do
+    with {:files, files} <- fetch_files(url) do
       data = parse_files(files)
       {:ok, data}
     else
@@ -202,8 +202,8 @@ defmodule Gtfs do
     end
   end
 
-  @spec fetch_files(files_source()) :: {:files, files()} | {:error, any()}
-  defp fetch_files({:url, url}) do
+  @spec fetch_files(String.t()) :: {:files, files()} | {:error, any()}
+  defp fetch_files(url) do
     case HTTPoison.get(url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: zip_binary}} ->
         file_list = [
