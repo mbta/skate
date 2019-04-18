@@ -12,7 +12,7 @@ defmodule Gtfs.CacheFile do
   @directory Path.join([File.cwd!(), "priv/gtfs_cache"])
 
   @doc """
-  The application should use the file to load state for GTFS
+  The application should use the file to load data for GTFS
   if the the envs are :dev or :test.
 
     iex> Mix.env
@@ -49,9 +49,9 @@ defmodule Gtfs.CacheFile do
     Logger.info(fn -> "Loading gtfs cache from file #{filepath}" end)
 
     with {:ok, binary_cache} <- File.read(filepath),
-         {:ok, state} when is_map(state) <- binary_to_term(binary_cache) do
+         {:ok, data} when is_map(data) <- binary_to_term(binary_cache) do
       Logger.info(fn -> "Loaded gtfs cache from file #{filepath}" end)
-      {:ok, state}
+      {:ok, data}
     else
       _ ->
         Logger.info(fn -> "Failed to load gtfs cache from file #{filepath}" end)
@@ -68,21 +68,21 @@ defmodule Gtfs.CacheFile do
   Attempt to save a cache file.
   """
   @spec save_gtfs(Gtfs.t()) :: :ok | {:error, any}
-  def save_gtfs(state) do
+  def save_gtfs(data) do
     filename = cache_filename()
 
     if is_binary(filename) do
       filepath = generate_filepath(filename)
       Logger.info(fn -> "Saving gtfs cache to file #{filepath}" end)
-      save_gtfs(state, filepath)
+      save_gtfs(data, filepath)
     else
       {:error, :cache_file_not_saved}
     end
   end
 
   @spec save_gtfs(Gtfs.t(), String.t()) :: :ok | {:error, any}
-  def save_gtfs(state, filepath) when is_map(state) and is_binary(filepath) do
-    bin = :erlang.term_to_binary(state)
+  def save_gtfs(data, filepath) when is_map(data) and is_binary(filepath) do
+    bin = :erlang.term_to_binary(data)
     File.write(filepath, bin)
   end
 
