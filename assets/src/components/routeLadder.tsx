@@ -1,9 +1,9 @@
-import React, { useEffect } from "react"
+import React, { useContext, useEffect } from "react"
 import { fetchTimepointsForRoute } from "../api"
+import DispatchContext from "../contexts/dispatchContext"
 import { LoadableTimepoints, Route, Timepoint } from "../skate"
 import {
   deselectRoute,
-  Dispatch,
   setLoadingTimepointsForRoute,
   setTimepointsForRoute,
 } from "../state"
@@ -12,21 +12,24 @@ import Loading from "./loading"
 interface Props {
   route: Route
   timepoints: LoadableTimepoints
-  dispatch: Dispatch
 }
 
-const Header = ({ route, dispatch }: { route: Route; dispatch: Dispatch }) => (
-  <div className="m-route-ladder__header">
-    <div className="m-route-ladder__route-name">{route.id}</div>
+const Header = ({ route }: { route: Route }) => {
+  const dispatch = useContext(DispatchContext)
 
-    <button
-      className="m-route-ladder__close"
-      onClick={() => dispatch(deselectRoute(route.id))}
-    >
-      ✖
-    </button>
-  </div>
-)
+  return (
+    <div className="m-route-ladder__header">
+      <div className="m-route-ladder__route-name">{route.id}</div>
+
+      <button
+        className="m-route-ladder__close"
+        onClick={() => dispatch(deselectRoute(route.id))}
+      >
+        ✖
+      </button>
+    </div>
+  )
+}
 
 const TimepointStop = () => (
   <div className="m-route-ladder__stop">
@@ -46,7 +49,9 @@ const Timepoint = ({ timepoint }: { timepoint: Timepoint }) => (
   </li>
 )
 
-const RouteLadder = ({ route, timepoints, dispatch }: Props) => {
+const RouteLadder = ({ route, timepoints }: Props) => {
+  const dispatch = useContext(DispatchContext)
+
   useEffect(() => {
     if (timepoints === undefined) {
       dispatch(setLoadingTimepointsForRoute(route.id))
@@ -59,7 +64,7 @@ const RouteLadder = ({ route, timepoints, dispatch }: Props) => {
 
   return (
     <div className="m-route-ladder">
-      <Header route={route} dispatch={dispatch} />
+      <Header route={route} />
 
       {timepoints ? (
         <ol className="m-route-ladder__timepoints">

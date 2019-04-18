@@ -1,11 +1,10 @@
-import { shallow } from "enzyme"
+import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import RoutePicker from "../../src/components/routePicker"
+import DispatchProvider from "../../src/providers/dispatchProvider"
 import { Route, RouteId } from "../../src/skate"
 import { deselectRoute, selectRoute } from "../../src/state"
-
-const emptyDispatch = () => undefined
 
 test("renders a list of routes", () => {
   const routes: Route[] = [
@@ -17,25 +16,17 @@ test("renders a list of routes", () => {
   ]
   const selectedRouteIds: RouteId[] = ["28", "39"]
 
-  const tree = renderer.create(
-    <RoutePicker
-      routes={routes}
-      selectedRouteIds={selectedRouteIds}
-      dispatch={emptyDispatch}
-    />
-  ).toJSON()
+  const tree = renderer
+    .create(<RoutePicker routes={routes} selectedRouteIds={selectedRouteIds} />)
+    .toJSON()
 
   expect(tree).toMatchSnapshot()
 })
 
 test("renders a loading/empty state", () => {
-  const tree = renderer.create(
-    <RoutePicker
-      routes={null}
-      selectedRouteIds={[]}
-      dispatch={emptyDispatch}
-    />
-  ).toJSON()
+  const tree = renderer
+    .create(<RoutePicker routes={null} selectedRouteIds={[]} />)
+    .toJSON()
 
   expect(tree).toMatchSnapshot()
 })
@@ -44,12 +35,10 @@ test("clicking a route selects it", () => {
   const mockDispatch = jest.fn()
   const routes = [{ id: "id" }]
 
-  const routePicker = shallow(
-    <RoutePicker
-      routes={routes}
-      selectedRouteIds={[]}
-      dispatch={mockDispatch}
-    />
+  const routePicker = mount(
+    <DispatchProvider dispatch={mockDispatch}>
+      <RoutePicker routes={routes} selectedRouteIds={[]} />
+    </DispatchProvider>
   )
 
   routePicker
@@ -64,12 +53,10 @@ test("clicking a selected route deselects it", () => {
   const mockDispatch = jest.fn()
   const routes = [{ id: "id" }]
 
-  const routePicker = shallow(
-    <RoutePicker
-      routes={routes}
-      selectedRouteIds={["id"]}
-      dispatch={mockDispatch}
-    />
+  const routePicker = mount(
+    <DispatchProvider dispatch={mockDispatch}>
+      <RoutePicker routes={routes} selectedRouteIds={["id"]} />
+    </DispatchProvider>
   )
 
   routePicker
@@ -84,12 +71,10 @@ test("clicking in the list of selected routes deselects a route", () => {
   const mockDispatch = jest.fn()
   const routes = [{ id: "id" }]
 
-  const routePicker = shallow(
-    <RoutePicker
-      routes={routes}
-      selectedRouteIds={["id"]}
-      dispatch={mockDispatch}
-    />
+  const routePicker = mount(
+    <DispatchProvider dispatch={mockDispatch}>
+      <RoutePicker routes={routes} selectedRouteIds={["id"]} />
+    </DispatchProvider>
   )
 
   routePicker

@@ -1,74 +1,87 @@
-import React from "react"
+import React, { useContext } from "react"
+import DispatchContext from "../contexts/dispatchContext"
 import { Route, RouteId } from "../skate.d"
-import { deselectRoute, Dispatch, selectRoute } from "../state"
+import { deselectRoute, selectRoute } from "../state"
 import Loading from "./loading"
 
 interface Props {
   routes: null | Route[]
   selectedRouteIds: RouteId[]
-  dispatch: Dispatch
 }
 
-const RoutePicker = ({ routes, selectedRouteIds, dispatch }: Props) => (
+const RoutePicker = ({ routes, selectedRouteIds }: Props) => (
   <div className="m-route-picker">
     <h2>Selected Routes</h2>
-    {selectedRouteIds.length === 0
-      ? "none"
-      : selectedRoutesList(selectedRouteIds, dispatch)}
+    {selectedRouteIds.length === 0 ? (
+      "none"
+    ) : (
+      <SelectedRoutesList selectedRouteIds={selectedRouteIds} />
+    )}
 
     <h2>Routes</h2>
     {routes === null ? (
       <Loading />
     ) : (
-      routesList(routes, selectedRouteIds, dispatch)
+      <RoutesList routes={routes} selectedRouteIds={selectedRouteIds} />
     )}
   </div>
 )
 
-const selectedRoutesList = (
-  selectedRouteIds: RouteId[],
-  dispatch: Dispatch
-) => (
-  <ul>
-    {selectedRouteIds.map(routeId => (
-      <li key={routeId}>
-        <button
-          className="m-route-picker__selected-routes-button"
-          onClick={() => dispatch(deselectRoute(routeId))}
-        >
-          {routeId}
-        </button>
-      </li>
-    ))}
-  </ul>
-)
+const SelectedRoutesList = ({
+  selectedRouteIds,
+}: {
+  selectedRouteIds: RouteId[]
+}) => {
+  const dispatch = useContext(DispatchContext)
 
-const routesList = (
-  routes: Route[],
-  selectedRouteIds: RouteId[],
-  dispatch: Dispatch
-) => (
-  <ul>
-    {routes.map(route => (
-      <li key={route.id}>
-        {selectedRouteIds.includes(route.id) ? (
+  return (
+    <ul>
+      {selectedRouteIds.map(routeId => (
+        <li key={routeId}>
           <button
-            className="m-route-picker__route-list-button--selected"
-            onClick={() => dispatch(deselectRoute(route.id))}
+            className="m-route-picker__selected-routes-button"
+            onClick={() => dispatch(deselectRoute(routeId))}
           >
-            *{route.id}
+            {routeId}
           </button>
-        ) : (
-          <button
-            className="m-route-picker__route-list-button--deselected"
-            onClick={() => dispatch(selectRoute(route.id))}
-          >
-            {route.id}
-          </button>
-        )}
-      </li>
-    ))}
-  </ul>
-)
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+const RoutesList = ({
+  routes,
+  selectedRouteIds,
+}: {
+  routes: Route[]
+  selectedRouteIds: RouteId[]
+}) => {
+  const dispatch = useContext(DispatchContext)
+
+  return (
+    <ul>
+      {routes.map(route => (
+        <li key={route.id}>
+          {selectedRouteIds.includes(route.id) ? (
+            <button
+              className="m-route-picker__route-list-button--selected"
+              onClick={() => dispatch(deselectRoute(route.id))}
+            >
+              *{route.id}
+            </button>
+          ) : (
+            <button
+              className="m-route-picker__route-list-button--deselected"
+              onClick={() => dispatch(selectRoute(route.id))}
+            >
+              {route.id}
+            </button>
+          )}
+        </li>
+      ))}
+    </ul>
+  )
+}
 
 export default RoutePicker

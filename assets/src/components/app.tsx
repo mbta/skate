@@ -1,5 +1,6 @@
 import React, { useEffect, useReducer } from "react"
 import * as Api from "../api"
+import DispatchProvider from "../providers/dispatchProvider"
 import { Route } from "../skate.d"
 import { initialState, reducer, setRoutes } from "../state"
 import RouteLadders from "./routeLadders"
@@ -20,19 +21,16 @@ const App = (): JSX.Element => {
   )
 
   return (
-    <div className="m-app">
-      <RoutePicker
-        routes={routes}
-        selectedRouteIds={selectedRouteIds}
-        dispatch={dispatch}
-      />
+    <DispatchProvider dispatch={dispatch}>
+      <div className="m-app">
+        <RoutePicker routes={routes} selectedRouteIds={selectedRouteIds} />
 
-      <RouteLadders
-        routes={selectedRoutes}
-        dispatch={dispatch}
-        timepointsByRouteId={timepointsByRouteId}
-      />
-    </div>
+        <RouteLadders
+          routes={selectedRoutes}
+          timepointsByRouteId={timepointsByRouteId}
+        />
+      </div>
+    </DispatchProvider>
   )
 }
 

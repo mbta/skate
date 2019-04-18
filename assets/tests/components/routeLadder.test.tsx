@@ -2,6 +2,7 @@ import { mount } from "enzyme"
 import React from "react"
 import renderer, { act } from "react-test-renderer"
 import RouteLadder from "../../src/components/routeLadder"
+import DispatchProvider from "../../src/providers/dispatchProvider"
 import { Route } from "../../src/skate"
 import { deselectRoute } from "../../src/state"
 
@@ -12,16 +13,12 @@ declare global {
   }
 }
 
-const dispatch = () => undefined
-
 test("renders a route ladder", () => {
   const route: Route = { id: "28" }
   const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
 
   const tree = renderer
-    .create(
-      <RouteLadder route={route} timepoints={timepoints} dispatch={dispatch} />
-    )
+    .create(<RouteLadder route={route} timepoints={timepoints} />)
     .toJSON()
 
   expect(tree).toMatchSnapshot()
@@ -32,9 +29,7 @@ test("displays loading if we are fetching the timepoints", () => {
   const timepoints = null
 
   const tree = renderer
-    .create(
-      <RouteLadder route={route} timepoints={timepoints} dispatch={dispatch} />
-    )
+    .create(<RouteLadder route={route} timepoints={timepoints} />)
     .toJSON()
 
   expect(tree).toMatchSnapshot()
@@ -57,11 +52,9 @@ test("fetches timepoints for this route if we don't yet have them", () => {
   act(() => {
     renderer
       .create(
-        <RouteLadder
-          route={route}
-          timepoints={timepoints}
-          dispatch={mockDispatch}
-        />
+        <DispatchProvider dispatch={mockDispatch}>
+          <RouteLadder route={route} timepoints={timepoints} />
+        </DispatchProvider>
       )
       .toJSON()
   })
@@ -81,11 +74,9 @@ test("does not fetch timepoints for this route if we are currently loading them"
   act(() => {
     renderer
       .create(
-        <RouteLadder
-          route={route}
-          timepoints={timepoints}
-          dispatch={mockDispatch}
-        />
+        <DispatchProvider dispatch={mockDispatch}>
+          <RouteLadder route={route} timepoints={timepoints} />
+        </DispatchProvider>
       )
       .toJSON()
   })
@@ -99,11 +90,9 @@ test("clicking the close button deselects that route", () => {
   const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
 
   const wrapper = mount(
-    <RouteLadder
-      route={route}
-      timepoints={timepoints}
-      dispatch={mockDispatch}
-    />
+    <DispatchProvider dispatch={mockDispatch}>
+      <RouteLadder route={route} timepoints={timepoints} />
+    </DispatchProvider>
   )
   wrapper.find(".m-route-ladder__close").simulate("click")
 
