@@ -59,11 +59,6 @@ defmodule Gtfs.CacheFile do
     end
   end
 
-  def load_gtfs(_) do
-    Logger.info(fn -> "Failed to load gtfs cache from file" end)
-    {:error, :cache_not_loaded}
-  end
-
   @doc """
   Attempt to save a cache file.
   """
