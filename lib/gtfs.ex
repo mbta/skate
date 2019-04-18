@@ -176,7 +176,7 @@ defmodule Gtfs do
         {:ok, data}
       else
         _ ->
-          with {:ok, data} <- fetch_and_parse_data(url) do
+          with {:ok, data} <- gtfs_from_url(url) do
             CacheFile.save_gtfs(data)
             {:ok, data}
           else
@@ -185,15 +185,15 @@ defmodule Gtfs do
           end
       end
     else
-      fetch_and_parse_data(url)
+      gtfs_from_url(url)
     end
   end
 
-  @spec fetch_and_parse_data(String.t()) :: {:ok, t()} | {:error, any()}
-  defp fetch_and_parse_data(url) do
+  @spec gtfs_from_url(String.t()) :: {:ok, t()} | {:error, any()}
+  defp gtfs_from_url(url) do
     Logger.info("Loading gtfs data remote files")
 
-    with {:files, files} <- fetch_files(url) do
+    with {:files, files} <- fetch_remote_files(url) do
       data = parse_files(files)
       {:ok, data}
     else
@@ -202,8 +202,8 @@ defmodule Gtfs do
     end
   end
 
-  @spec fetch_files(String.t()) :: {:files, files()} | {:error, any()}
-  defp fetch_files(url) do
+  @spec fetch_remote_files(String.t()) :: {:files, files()} | {:error, any()}
+  defp fetch_remote_files(url) do
     case HTTPoison.get(url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: zip_binary}} ->
         file_list = [
