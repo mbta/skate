@@ -47,6 +47,11 @@
   justify-content: center;
   margin-top: -3px;
 
+  &:first-of-type {
+    margin-top: 0;
+    padding-top: 3px;
+  }
+
   &:last-of-type {
     svg line {
       display: none;
