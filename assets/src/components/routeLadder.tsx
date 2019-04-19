@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react"
 import { fetchTimepointsForRoute } from "../api"
 import DispatchContext from "../contexts/dispatchContext"
+import { closeIcon } from "../helpers/icon"
 import { LoadableTimepoints, Route, Timepoint } from "../skate"
 import {
   deselectRoute,
@@ -23,7 +24,7 @@ const Header = ({ route }: { route: Route }) => {
         className="m-route-ladder__close"
         onClick={() => dispatch(deselectRoute(route.id))}
       >
-        ✖
+        {closeIcon("m-route-ladder__close-icon")}
       </button>
 
       <div className="m-route-ladder__route-name">{route.id}</div>
