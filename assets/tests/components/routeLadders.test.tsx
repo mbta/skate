@@ -3,8 +3,6 @@ import renderer from "react-test-renderer"
 import RouteLadders from "../../src/components/routeLadders"
 import { Route, TimepointsByRouteId } from "../../src/skate"
 
-const dispatch = () => undefined
-
 test("renders a route ladder", () => {
   const routes: Route[] = [{ id: "1" }, { id: "28" }]
   const timepointsByRouteId: TimepointsByRouteId = {
@@ -16,11 +14,7 @@ test("renders a route ladder", () => {
 
   const tree = renderer
     .create(
-      <RouteLadders
-        routes={routes}
-        dispatch={dispatch}
-        timepointsByRouteId={timepointsByRouteId}
-      />
+      <RouteLadders routes={routes} timepointsByRouteId={timepointsByRouteId} />
     )
     .toJSON()
 
