@@ -2,6 +2,7 @@ defmodule Gtfs.CacheFileTest do
   use ExUnit.Case, async: true
 
   alias Gtfs.CacheFile
+  alias Gtfs.Route
 
   doctest CacheFile
 
@@ -11,11 +12,18 @@ defmodule Gtfs.CacheFileTest do
 
   describe "load_gtfs/1" do
     test "returns {:ok, term} for a map" do
-      term_map = %{load_gtfs_1_test: true}
+      data = %Gtfs{
+        routes: [%Route{id: "1"}],
+        route_patterns: [],
+        stops: [],
+        trip_timepoints: %{},
+        trips: []
+      }
+
       filepath = CacheFile.generate_filepath("load_gtfs_1_test_map.terms")
 
-      assert CacheFile.save_gtfs(term_map, filepath) == :ok
-      assert CacheFile.load_gtfs(filepath) == {:ok, term_map}
+      assert CacheFile.save_gtfs(data, filepath) == :ok
+      assert CacheFile.load_gtfs(filepath) == {:ok, data}
     end
 
     test "returns error for non-map" do

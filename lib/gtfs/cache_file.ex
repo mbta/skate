@@ -63,7 +63,7 @@ defmodule Gtfs.CacheFile do
   Attempt to save a cache file.
   """
   @spec save_gtfs(Gtfs.t()) :: :ok | {:error, any}
-  def save_gtfs(data) do
+  def save_gtfs(%Gtfs{} = data) do
     filename = cache_filename()
 
     if is_binary(filename) do
