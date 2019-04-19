@@ -19,14 +19,14 @@ const Header = ({ route }: { route: Route }) => {
 
   return (
     <div className="m-route-ladder__header">
-      <div className="m-route-ladder__route-name">{route.id}</div>
-
       <button
         className="m-route-ladder__close"
         onClick={() => dispatch(deselectRoute(route.id))}
       >
         ✖
       </button>
+
+      <div className="m-route-ladder__route-name">{route.id}</div>
     </div>
   )
 }
@@ -34,9 +34,8 @@ const Header = ({ route }: { route: Route }) => {
 const TimepointStop = () => (
   <div className="m-route-ladder__stop">
     <svg height="60" width="20">
-      <line x1="10" y1="0" x2="10" y2="25" />
-      <circle cx="10" cy="30" r="5" />
-      <line x1="10" y1="35" x2="10" y2="60" />
+      <line x1="10" y1="3" x2="10" y2="60" />
+      <circle cx="10" cy="3" r="3" />
     </svg>
   </div>
 )
