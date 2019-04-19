@@ -22,7 +22,7 @@ defmodule Gtfs.CacheFile do
   """
   @spec should_use_file?() :: boolean
   def should_use_file? do
-    Application.get_env(:skate, __MODULE__)[:cache_filename] != nil
+    cache_filename() != nil
   end
 
   @doc """
