@@ -204,7 +204,7 @@ defmodule Gtfs do
 
   @spec fetch_remote_files(String.t()) :: {:files, files()} | {:error, any()}
   defp fetch_remote_files(url) do
-    case HTTPoison.get(url) do
+    case fetch_url(url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: zip_binary}} ->
         file_list = [
           "routes.txt",
@@ -222,6 +222,9 @@ defmodule Gtfs do
         {:error, response}
     end
   end
+
+  @spec fetch_url(String.t()) :: {:ok, HTTPoison.Response.t()} | {:error, HTTPoison.Error.t()}
+  def fetch_url(url), do: HTTPoison.get(url)
 
   @spec files_from_mocked(mocked_files()) :: files()
   defp files_from_mocked(mocked_files) do
