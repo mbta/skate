@@ -11,14 +11,8 @@ interface Props {
 
 const RoutePicker = ({ routes, selectedRouteIds }: Props) => (
   <div className="m-route-picker">
-    <h2>Selected Routes</h2>
-    {selectedRouteIds.length === 0 ? (
-      "none"
-    ) : (
-      <SelectedRoutesList selectedRouteIds={selectedRouteIds} />
-    )}
+    <SelectedRoutesList selectedRouteIds={selectedRouteIds} />
 
-    <h2>Routes</h2>
     {routes === null ? (
       <Loading />
     ) : (
@@ -35,7 +29,7 @@ const SelectedRoutesList = ({
   const dispatch = useContext(DispatchContext)
 
   return (
-    <ul>
+    <ul className="m-route-picker__selected-routes">
       {selectedRouteIds.map(routeId => (
         <li key={routeId}>
           <button
@@ -56,31 +50,41 @@ const RoutesList = ({
 }: {
   routes: Route[]
   selectedRouteIds: RouteId[]
+}) => (
+  <ul className="m-route-picker__route-list">
+    {routes.map(route => (
+      <li key={route.id}>
+        <RouteListButton
+          route={route}
+          isSelected={selectedRouteIds.includes(route.id)}
+        />
+      </li>
+    ))}
+  </ul>
+)
+
+const RouteListButton = ({
+  route,
+  isSelected,
+}: {
+  route: Route
+  isSelected: boolean
 }) => {
   const dispatch = useContext(DispatchContext)
+  const selectedClass = isSelected
+    ? "m-route-picker__route-list-button--selected"
+    : ""
+  const clickHandler = isSelected
+    ? () => dispatch(deselectRoute(route.id))
+    : () => dispatch(selectRoute(route.id))
 
   return (
-    <ul>
-      {routes.map(route => (
-        <li key={route.id}>
-          {selectedRouteIds.includes(route.id) ? (
-            <button
-              className="m-route-picker__route-list-button--selected"
-              onClick={() => dispatch(deselectRoute(route.id))}
-            >
-              *{route.id}
-            </button>
-          ) : (
-            <button
-              className="m-route-picker__route-list-button--deselected"
-              onClick={() => dispatch(selectRoute(route.id))}
-            >
-              {route.id}
-            </button>
-          )}
-        </li>
-      ))}
-    </ul>
+    <button
+      className={`m-route-picker__route-list-button ${selectedClass}`}
+      onClick={clickHandler}
+    >
+      {route.id}
+    </button>
   )
 }
 

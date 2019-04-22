@@ -1,12 +1,21 @@
 @import "colors";
+
 @import "inter_ui";
+
 @import "route_ladder";
 @import "route_ladders";
+@import "route_picker";
 
 body {
   background-color: $pale-grey;
-  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: $font-family;
   font-size: 16px;
+  margin: 0;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
 }
 
 .m-app {
