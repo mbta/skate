@@ -35,7 +35,7 @@ const Header = ({ route }: { route: Route }) => {
 const TimepointStop = () => (
   <div className="m-route-ladder__stop">
     <svg height="60" width="20">
-      <line x1="10" y1="3" x2="10" y2="60" />
+      <line x1="10" y1="4" x2="10" y2="60" />
       <circle cx="10" cy="4" r="3" />
     </svg>
   </div>

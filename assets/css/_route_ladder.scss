@@ -45,7 +45,7 @@
 .m-route-ladder__timepoint {
   display: flex;
   justify-content: center;
-  margin-top: -3px;
+  margin-top: -4px;
 
   &:first-of-type {
     margin-top: 0;
@@ -71,7 +71,7 @@
     line {
       fill: none;
       stroke: $light-periwinkle;
-      stroke-width: 8;
+      stroke-width: 7;
     }
   }
 }
