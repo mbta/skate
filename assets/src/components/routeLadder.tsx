@@ -1,13 +1,8 @@
-import React, { useContext, useEffect } from "react"
-import { fetchTimepointsForRoute } from "../api"
+import React, { useContext } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import { closeIcon } from "../helpers/icon"
 import { LoadableTimepoints, Route, Timepoint } from "../skate"
-import {
-  deselectRoute,
-  setLoadingTimepointsForRoute,
-  setTimepointsForRoute,
-} from "../state"
+import { deselectRoute } from "../state"
 import Loading from "./loading"
 
 interface Props {
@@ -49,34 +44,20 @@ const Timepoint = ({ timepoint }: { timepoint: Timepoint }) => (
   </li>
 )
 
-const RouteLadder = ({ route, timepoints }: Props) => {
-  const dispatch = useContext(DispatchContext)
+const RouteLadder = ({ route, timepoints }: Props) => (
+  <div className="m-route-ladder">
+    <Header route={route} />
 
-  useEffect(() => {
-    if (timepoints === undefined) {
-      dispatch(setLoadingTimepointsForRoute(route.id))
-
-      fetchTimepointsForRoute(route.id).then((newTimepoints: Timepoint[]) =>
-        dispatch(setTimepointsForRoute(route.id, newTimepoints))
-      )
-    }
-  }, [])
-
-  return (
-    <div className="m-route-ladder">
-      <Header route={route} />
-
-      {timepoints ? (
-        <ol className="m-route-ladder__timepoints">
-          {timepoints.map(timepoint => (
-            <Timepoint key={timepoint.id} timepoint={timepoint} />
-          ))}
-        </ol>
-      ) : (
-        <Loading />
-      )}
-    </div>
-  )
-}
+    {timepoints ? (
+      <ol className="m-route-ladder__timepoints">
+        {timepoints.map(timepoint => (
+          <Timepoint key={timepoint.id} timepoint={timepoint} />
+        ))}
+      </ol>
+    ) : (
+      <Loading />
+    )}
+  </div>
+)
 
 export default RouteLadder

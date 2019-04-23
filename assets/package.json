@@ -58,6 +58,7 @@
     "webpack-cli": "^3.3.0"
   },
   "jest": {
+    "clearMocks": true,
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
