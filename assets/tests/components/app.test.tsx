@@ -29,3 +29,24 @@ test("fetches routes", () => {
 
   expect(mockFetchRoutes).toHaveBeenCalled()
 })
+
+test("doesn't re-fetch routes", () => {
+  const mockFetchRoutes = jest.spyOn(Api, "fetchRoutes")
+  const mockFetchRoutesImplementation: () => Promise<Route[]> = () => ({
+    [Symbol.toStringTag]: "Promise",
+    catch: jest.fn(),
+    finally: jest.fn(),
+    then: jest.fn(),
+  })
+  mockFetchRoutes.mockImplementation(mockFetchRoutesImplementation)
+
+  const numCallsBefore = (Api.fetchRoutes as jest.Mock).mock.calls.length
+
+  act(() => {
+    const app = mount(<App />)
+    app.update()
+  })
+
+  const numCallsAfter = (Api.fetchRoutes as jest.Mock).mock.calls.length
+  expect(numCallsAfter - numCallsBefore).toBe(1)
+})
