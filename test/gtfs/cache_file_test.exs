@@ -10,10 +10,28 @@ defmodule Gtfs.CacheFileTest do
     assert CacheFile.should_use_file?()
   end
 
-  describe "load_gtfs/1" do
-    test "returns {:ok, term} for a map" do
+  describe "save_gtfs/1 and load_gtfs/1" do
+    test "saves to the default file, returns {:ok, term} for a map" do
       data = %Gtfs{
         routes: [%Route{id: "1"}],
+        route_patterns: [],
+        stops: [],
+        trip_timepoints: %{},
+        trips: []
+      }
+
+      filepath = CacheFile.cache_filename() |> CacheFile.generate_filepath()
+
+      assert CacheFile.save_gtfs(data) == :ok
+
+      assert CacheFile.load_gtfs(filepath) == {:ok, data}
+
+      File.rm!(filepath)
+    end
+
+    test "saves to a requested file, returns {:ok, term} for a map" do
+      data = %Gtfs{
+        routes: [%Route{id: "2"}],
         route_patterns: [],
         stops: [],
         trip_timepoints: %{},
@@ -23,10 +41,13 @@ defmodule Gtfs.CacheFileTest do
       filepath = CacheFile.generate_filepath("load_gtfs_1_test_map.terms")
 
       assert CacheFile.save_gtfs(data, filepath) == :ok
+
       assert CacheFile.load_gtfs(filepath) == {:ok, data}
+
+      File.rm!(filepath)
     end
 
-    test "returns error for non-map" do
+    test "saving returns error for non-map" do
       payload = [:non_map]
       filepath = CacheFile.generate_filepath("load_gtfs_1_test_map.terms")
 
