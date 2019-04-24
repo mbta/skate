@@ -1,5 +1,13 @@
+@import "colors";
+@import "inter_ui";
 @import "route_ladder";
 @import "route_ladders";
+
+body {
+  background-color: $pale-grey;
+  font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+}
 
 .m-app {
   display: flex;

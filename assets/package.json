@@ -43,6 +43,9 @@
     "prettier": "^1.16.4",
     "react-test-renderer": "^16.8.6",
     "sass-loader": "^7.1.0",
+    "svg-inline-loader": "^0.8.0",
+    "svgo": "^1.2.2",
+    "svgo-loader": "^2.2.0",
     "ts-jest": "^24.0.0",
     "ts-loader": "^5.3.3",
     "tslint": "^5.14.0",
@@ -70,6 +73,9 @@
       "json",
       "node"
     ],
+    "moduleNameMapper": {
+      "\\.svg$": "<rootDir>/tests/testHelpers/svgStubber.js"
+    },
     "setupFilesAfterEnv": [
       "<rootDir>/tests/setup.ts"
     ],

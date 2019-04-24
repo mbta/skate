@@ -10,17 +10,24 @@ exports[`renders a route ladder 1`] = `
     <div
       className="m-route-ladder__header"
     >
+      <button
+        className="m-route-ladder__close"
+        onClick={[Function]}
+      >
+        <span
+          className="m-route-ladder__close-icon"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
       <div
         className="m-route-ladder__route-name"
       >
         1
       </div>
-      <button
-        className="m-route-ladder__close"
-        onClick={[Function]}
-      >
-        ✖
-      </button>
     </div>
     <ol
       className="m-route-ladder__timepoints"
@@ -38,19 +45,13 @@ exports[`renders a route ladder 1`] = `
             <line
               x1="10"
               x2="10"
-              y1="0"
-              y2="25"
+              y1="4"
+              y2="60"
             />
             <circle
               cx="10"
-              cy="30"
-              r="5"
-            />
-            <line
-              x1="10"
-              x2="10"
-              y1="35"
-              y2="60"
+              cy="4"
+              r="3"
             />
           </svg>
         </div>
@@ -69,19 +70,13 @@ exports[`renders a route ladder 1`] = `
             <line
               x1="10"
               x2="10"
-              y1="0"
-              y2="25"
+              y1="4"
+              y2="60"
             />
             <circle
               cx="10"
-              cy="30"
-              r="5"
-            />
-            <line
-              x1="10"
-              x2="10"
-              y1="35"
-              y2="60"
+              cy="4"
+              r="3"
             />
           </svg>
         </div>
@@ -99,19 +94,13 @@ exports[`renders a route ladder 1`] = `
             <line
               x1="10"
               x2="10"
-              y1="0"
-              y2="25"
+              y1="4"
+              y2="60"
             />
             <circle
               cx="10"
-              cy="30"
-              r="5"
-            />
-            <line
-              x1="10"
-              x2="10"
-              y1="35"
-              y2="60"
+              cy="4"
+              r="3"
             />
           </svg>
         </div>
@@ -130,19 +119,13 @@ exports[`renders a route ladder 1`] = `
             <line
               x1="10"
               x2="10"
-              y1="0"
-              y2="25"
+              y1="4"
+              y2="60"
             />
             <circle
               cx="10"
-              cy="30"
-              r="5"
-            />
-            <line
-              x1="10"
-              x2="10"
-              y1="35"
-              y2="60"
+              cy="4"
+              r="3"
             />
           </svg>
         </div>
@@ -160,19 +143,13 @@ exports[`renders a route ladder 1`] = `
             <line
               x1="10"
               x2="10"
-              y1="0"
-              y2="25"
+              y1="4"
+              y2="60"
             />
             <circle
               cx="10"
-              cy="30"
-              r="5"
-            />
-            <line
-              x1="10"
-              x2="10"
-              y1="35"
-              y2="60"
+              cy="4"
+              r="3"
             />
           </svg>
         </div>
@@ -191,19 +168,13 @@ exports[`renders a route ladder 1`] = `
             <line
               x1="10"
               x2="10"
-              y1="0"
-              y2="25"
+              y1="4"
+              y2="60"
             />
             <circle
               cx="10"
-              cy="30"
-              r="5"
-            />
-            <line
-              x1="10"
-              x2="10"
-              y1="35"
-              y2="60"
+              cy="4"
+              r="3"
             />
           </svg>
         </div>
@@ -216,17 +187,24 @@ exports[`renders a route ladder 1`] = `
     <div
       className="m-route-ladder__header"
     >
+      <button
+        className="m-route-ladder__close"
+        onClick={[Function]}
+      >
+        <span
+          className="m-route-ladder__close-icon"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
       <div
         className="m-route-ladder__route-name"
       >
         28
       </div>
-      <button
-        className="m-route-ladder__close"
-        onClick={[Function]}
-      >
-        ✖
-      </button>
     </div>
     <ol
       className="m-route-ladder__timepoints"
@@ -244,19 +222,13 @@ exports[`renders a route ladder 1`] = `
             <line
               x1="10"
               x2="10"
-              y1="0"
-              y2="25"
+              y1="4"
+              y2="60"
             />
             <circle
               cx="10"
-              cy="30"
-              r="5"
-            />
-            <line
-              x1="10"
-              x2="10"
-              y1="35"
-              y2="60"
+              cy="4"
+              r="3"
             />
           </svg>
         </div>
@@ -275,19 +247,13 @@ exports[`renders a route ladder 1`] = `
             <line
               x1="10"
               x2="10"
-              y1="0"
-              y2="25"
+              y1="4"
+              y2="60"
             />
             <circle
               cx="10"
-              cy="30"
-              r="5"
-            />
-            <line
-              x1="10"
-              x2="10"
-              y1="35"
-              y2="60"
+              cy="4"
+              r="3"
             />
           </svg>
         </div>
@@ -305,19 +271,13 @@ exports[`renders a route ladder 1`] = `
             <line
               x1="10"
               x2="10"
-              y1="0"
-              y2="25"
+              y1="4"
+              y2="60"
             />
             <circle
               cx="10"
-              cy="30"
-              r="5"
-            />
-            <line
-              x1="10"
-              x2="10"
-              y1="35"
-              y2="60"
+              cy="4"
+              r="3"
             />
           </svg>
         </div>
@@ -336,19 +296,13 @@ exports[`renders a route ladder 1`] = `
             <line
               x1="10"
               x2="10"
-              y1="0"
-              y2="25"
+              y1="4"
+              y2="60"
             />
             <circle
               cx="10"
-              cy="30"
-              r="5"
-            />
-            <line
-              x1="10"
-              x2="10"
-              y1="35"
-              y2="60"
+              cy="4"
+              r="3"
             />
           </svg>
         </div>
@@ -366,19 +320,13 @@ exports[`renders a route ladder 1`] = `
             <line
               x1="10"
               x2="10"
-              y1="0"
-              y2="25"
+              y1="4"
+              y2="60"
             />
             <circle
               cx="10"
-              cy="30"
-              r="5"
-            />
-            <line
-              x1="10"
-              x2="10"
-              y1="35"
-              y2="60"
+              cy="4"
+              r="3"
             />
           </svg>
         </div>
@@ -397,19 +345,13 @@ exports[`renders a route ladder 1`] = `
             <line
               x1="10"
               x2="10"
-              y1="0"
-              y2="25"
+              y1="4"
+              y2="60"
             />
             <circle
               cx="10"
-              cy="30"
-              r="5"
-            />
-            <line
-              x1="10"
-              x2="10"
-              y1="35"
-              y2="60"
+              cy="4"
+              r="3"
             />
           </svg>
         </div>
