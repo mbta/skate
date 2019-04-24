@@ -1,8 +1,9 @@
 .m-route-picker {
   background-color: $light-periwinkle;
+  display: flex;
+  flex-direction: column;
   height: 100%;
   left: inherit;
-  overflow-y: scroll;
   padding: 1rem;
   position: fixed;
   top: inherit;
@@ -12,10 +13,15 @@
 
 .m-route-picker__selected-routes {
   display: flex;
+  flex-shrink: 0;
   flex-wrap: wrap;
   margin-bottom: 2rem;
   margin-top: 0;
   min-height: 2rem;
+}
+
+.m-route-picker__route-list {
+  overflow-y: scroll;
 }
 
 .m-route-picker__selected-routes-button,
