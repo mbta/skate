@@ -17,7 +17,8 @@ defmodule Skate.MixProject do
         "coveralls.json": :test,
         "coveralls.html": :test
       ],
-      elixirc_options: [warnings_as_errors: true]
+      elixirc_options: [warnings_as_errors: true],
+      dialyzer: [plt_add_apps: [:mix]]
     ]
   end
 

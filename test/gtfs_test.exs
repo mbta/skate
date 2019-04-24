@@ -3,8 +3,6 @@ defmodule GtfsTest do
 
   alias Gtfs.Route
 
-  doctest Gtfs
-
   describe "all_routes" do
     test "maps each row to a Route" do
       pid =
@@ -169,5 +167,16 @@ defmodule GtfsTest do
 
       assert Gtfs.timepoints_on_route("route", pid) == []
     end
+  end
+
+  test "fetch_url/1 requests data from the given URL" do
+    bypass = Bypass.open()
+    url = "http://localhost:#{bypass.port}/MBTA_GTFS.zip"
+
+    Bypass.expect(bypass, fn conn ->
+      Plug.Conn.resp(conn, 200, "test-data")
+    end)
+
+    assert {:ok, %HTTPoison.Response{body: "test-data", status_code: 200}} = Gtfs.fetch_url(url)
   end
 end

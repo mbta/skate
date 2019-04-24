@@ -2,6 +2,7 @@ defmodule Gtfs do
   use GenServer
   require Logger
 
+  alias Gtfs.CacheFile
   alias Gtfs.Csv
   alias Gtfs.HealthServer
   alias Gtfs.Helpers
@@ -133,35 +134,77 @@ defmodule Gtfs do
   def handle_continue({:load_gtfs, files_source, health_server_pid}, :not_loaded) do
     start_time = Time.utc_now()
 
-    case fetch_files(files_source) do
+    with {:ok, data} <- fetch_gtfs(files_source) do
+      state = {:loaded, data}
+
+      Logger.info(fn ->
+        "Successfully loaded gtfs, time_in_ms=#{
+          Time.diff(Time.utc_now(), start_time, :millisecond)
+        }"
+      end)
+
+      if health_server_pid do
+        HealthServer.loaded(health_server_pid)
+      end
+
+      {:noreply, state}
+    else
       {:error, error} ->
         Logger.info(fn ->
           "Error loading gtfs, time_in_ms=#{Time.diff(Time.utc_now(), start_time, :millisecond)}"
         end)
 
         {:stop, error}
-
-      files ->
-        data = parse_files(files)
-        state = {:loaded, data}
-
-        Logger.info(fn ->
-          "Successfully loaded gtfs, time_in_ms=#{
-            Time.diff(Time.utc_now(), start_time, :millisecond)
-          }"
-        end)
-
-        if health_server_pid do
-          HealthServer.loaded(health_server_pid)
-        end
-
-        {:noreply, state}
     end
   end
 
-  @spec fetch_files(files_source()) :: files() | {:error, any()}
-  defp fetch_files({:url, url}) do
-    case HTTPoison.get(url) do
+  @spec fetch_gtfs(files_source()) :: {:ok, t()} | {:error, any()}
+  defp fetch_gtfs({:mocked_files, mocked_files}) do
+    data =
+      mocked_files
+      |> files_from_mocked()
+      |> parse_files()
+
+    {:ok, data}
+  end
+
+  defp fetch_gtfs({:url, url}) do
+    if CacheFile.should_use_file?() do
+      Logger.info("Loading gfts data from cached file")
+
+      with {:ok, data} <- CacheFile.load_gtfs() do
+        {:ok, data}
+      else
+        _ ->
+          with {:ok, data} <- gtfs_from_url(url) do
+            CacheFile.save_gtfs(data)
+            {:ok, data}
+          else
+            {:error, error} ->
+              {:error, error}
+          end
+      end
+    else
+      gtfs_from_url(url)
+    end
+  end
+
+  @spec gtfs_from_url(String.t()) :: {:ok, t()} | {:error, any()}
+  defp gtfs_from_url(url) do
+    Logger.info("Loading gtfs data remote files")
+
+    with {:files, files} <- fetch_remote_files(url) do
+      data = parse_files(files)
+      {:ok, data}
+    else
+      {:error, error} ->
+        {:error, error}
+    end
+  end
+
+  @spec fetch_remote_files(String.t()) :: {:files, files()} | {:error, any()}
+  defp fetch_remote_files(url) do
+    case fetch_url(url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: zip_binary}} ->
         file_list = [
           "routes.txt",
@@ -171,7 +214,8 @@ defmodule Gtfs do
           "trips.txt"
         ]
 
-        unzip_files(zip_binary, file_list)
+        unzipped_files = unzip_files(zip_binary, file_list)
+        {:files, unzipped_files}
 
       response ->
         Logger.warn(fn -> "Unexpected response from #{url} : #{inspect(response)}" end)
@@ -179,7 +223,11 @@ defmodule Gtfs do
     end
   end
 
-  defp fetch_files({:mocked_files, mocked_files}) do
+  @spec fetch_url(String.t()) :: {:ok, HTTPoison.Response.t()} | {:error, HTTPoison.Error.t()}
+  def fetch_url(url), do: HTTPoison.get(url)
+
+  @spec files_from_mocked(mocked_files()) :: files()
+  defp files_from_mocked(mocked_files) do
     for {file_name, lines} <- mocked_files, into: %{} do
       {file_name, Enum.join(lines, "\n")}
     end
