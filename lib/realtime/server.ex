@@ -3,7 +3,7 @@ defmodule Realtime.Server do
   Fetches live data from RTR, and forwards it to connected clients.
 
   Uses a global regsitry, with the server's pid as the key.
-  Each subscriber's route_ids are stored as the value of their registry entries.
+  Each subscriber's route_id is stored as the value of their registry entries.
   """
 
   use GenServer
@@ -40,11 +40,11 @@ defmodule Realtime.Server do
   The subscribing process will get a message when there's new data, with the form
   {:new_realtime_data, vehicles()}
   """
-  @spec subscribe([Route.id()], GenServer.server()) :: vehicles()
-  def subscribe(route_ids, server \\ nil) do
+  @spec subscribe(Route.id(), GenServer.server()) :: vehicles()
+  def subscribe(route_id, server \\ nil) do
     server = server || default_name()
-    {registry_key, vehicles} = GenServer.call(server, {:subscribe, route_ids})
-    Registry.register(Realtime.Registry, registry_key, route_ids)
+    {registry_key, vehicles} = GenServer.call(server, {:subscribe, route_id})
+    Registry.register(Realtime.Registry, registry_key, route_id)
     vehicles
   end
 
@@ -91,9 +91,9 @@ defmodule Realtime.Server do
   end
 
   @impl true
-  def handle_call({:subscribe, route_ids}, _from, state) do
+  def handle_call({:subscribe, route_id}, _from, state) do
     registry_key = self()
-    vehicles = Map.take(state.vehicles, route_ids)
+    vehicles = Map.get(state.vehicles, route_id, [])
     {:reply, {registry_key, vehicles}, state}
   end
 
@@ -121,8 +121,8 @@ defmodule Realtime.Server do
     registry_key = self()
 
     Registry.dispatch(registry_name(), registry_key, fn entries ->
-      for {pid, route_ids} <- entries do
-        send(pid, {:new_realtime_data, Map.take(vehicles, route_ids)})
+      for {pid, route_id} <- entries do
+        send(pid, {:new_realtime_data, Map.get(vehicles, route_id, [])})
       end
     end)
   end

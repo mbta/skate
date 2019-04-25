@@ -23,6 +23,8 @@ defmodule Realtime.Vehicle do
     :stop_id
   ]
 
+  @derive Jason.Encoder
+
   defstruct [
     :id,
     :label,

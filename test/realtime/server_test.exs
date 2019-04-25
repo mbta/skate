@@ -22,12 +22,13 @@ defmodule Realtime.ServerTest do
   end
 
   test "clients get vehicles when subscribing", %{server_pid: server_pid} do
-    data = Server.subscribe(["1"], server_pid)
-    assert %{"1" => [_at_least_one_vehicle | _rest]} = data
+    data = Server.subscribe("1", server_pid)
+    assert [at_least_one_vehicle | _rest] = data
+    assert at_least_one_vehicle.route_id == "1"
   end
 
   test "subscribed clients get data pushed to them", %{server_pid: server_pid} do
-    Server.subscribe(["1"], server_pid)
+    Server.subscribe("1", server_pid)
 
     assert_receive(
       {:new_realtime_data, data},
@@ -35,16 +36,11 @@ defmodule Realtime.ServerTest do
       "Client didn't receive vehicle positions"
     )
 
-    assert %{"1" => [_at_least_one_vehicle | _rest]} = data
-  end
-
-  test "clients don't get routes they didn't subscribe to", %{server_pid: server_pid} do
-    data = Server.subscribe(["4"], server_pid)
-    refute match?(%{"1" => _vehicles}, data)
+    assert [_at_least_one_vehicle | _rest] = data
   end
 
   test "subscribed clients get repeated messages", %{server_pid: server_pid} do
-    Server.subscribe(["1"], server_pid)
+    Server.subscribe("1", server_pid)
 
     assert_receive(
       {:new_realtime_data, _new_data},
