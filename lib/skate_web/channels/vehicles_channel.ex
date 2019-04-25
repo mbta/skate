@@ -2,7 +2,6 @@ defmodule SkateWeb.VehiclesChannel do
   use SkateWeb, :channel
 
   def join("vehicles:" <> route_id, _message, socket) do
-    socket = assign(socket, :route_id, route_id)
     vehicles = Realtime.Server.subscribe(route_id)
     {:ok, %{vehicles: vehicles}, socket}
   end
