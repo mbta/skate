@@ -7,13 +7,9 @@ exports[`renders 1`] = `
   <div
     className="m-route-picker"
   >
-    <h2>
-      Selected Routes
-    </h2>
-    none
-    <h2>
-      Routes
-    </h2>
+    <ul
+      className="m-route-picker__selected-routes"
+    />
     loading...
   </div>
   <div

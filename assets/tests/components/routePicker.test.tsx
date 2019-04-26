@@ -42,7 +42,7 @@ test("clicking a route selects it", () => {
   )
 
   routePicker
-    .find(".m-route-picker__route-list-button--deselected")
+    .find(".m-route-picker__route-list-button")
     .first()
     .simulate("click")
 

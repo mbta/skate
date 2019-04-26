@@ -1,0 +1,55 @@
+.m-route-picker {
+  background-color: $light-periwinkle;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  left: inherit;
+  padding: 1rem;
+  position: fixed;
+  top: inherit;
+  width: 7.5rem;
+  z-index: 1;
+}
+
+.m-route-picker__selected-routes {
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  margin-top: 0;
+  min-height: 2rem;
+}
+
+.m-route-picker__route-list {
+  overflow-y: scroll;
+}
+
+.m-route-picker__selected-routes-button,
+.m-route-picker__route-list-button {
+  border: none;
+  border-radius: 4px;
+  color: $dark;
+  cursor: pointer;
+  font-family: $font-family;
+  font-size: 0.8125rem;
+  font-weight: bold;
+  padding: 0.3125rem;
+}
+
+.m-route-picker__selected-routes-button {
+  background-color: $sunflower;
+  margin-bottom: 0.25rem;
+  margin-right: 0.25rem;
+  min-width: 2rem;
+}
+
+.m-route-picker__route-list-button {
+  background-color: transparentize($color: $white, $amount: 0.5);
+  margin-bottom: 0.25rem;
+  width: 100%;
+  word-break: break-word;
+
+  &--selected {
+    background-color: $sunflower;
+  }
+}
