@@ -2,7 +2,7 @@ defmodule SkateWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  channel "vehicles:*", SkateWeb.VehiclesChannel
+  channel("vehicles:*", SkateWeb.VehiclesChannel)
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After

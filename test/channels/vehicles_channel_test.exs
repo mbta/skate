@@ -48,7 +48,18 @@ defmodule SkateWeb.VehiclesChannelTest do
           route_id: "345",
           trip_id: "456",
           current_status: :in_transit_to,
-          stop_id: "567"
+          stop_id: "567",
+          status: %{
+            stop_granularity: %{
+              current_status: :in_transit_to,
+              stop_id: "567"
+            },
+            timepoint_granularity: %{
+              current_status: :in_transit_to,
+              timepoint_id: "tp2",
+              percent_of_the_way: 60
+            }
+          }
         }
       ]
 
