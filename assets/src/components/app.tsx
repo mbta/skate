@@ -1,8 +1,8 @@
-import React, { useEffect, useReducer } from "react"
-import * as Api from "../api"
+import React, { useReducer } from "react"
+import { useFetchRoutes } from "../hooks/useFetchRoutes"
+import { useFetchTimepoints } from "../hooks/useFetchTimepoints"
 import DispatchProvider from "../providers/dispatchProvider"
-import { Route } from "../skate.d"
-import { initialState, reducer, setRoutes } from "../state"
+import { initialState, reducer } from "../state"
 import RouteLadders from "./routeLadders"
 import RoutePicker from "./routePicker"
 
@@ -10,11 +10,8 @@ const App = (): JSX.Element => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const { routes, selectedRouteIds, timepointsByRouteId } = state
 
-  useEffect(() => {
-    Api.fetchRoutes().then((newRoutes: Route[]) =>
-      dispatch(setRoutes(newRoutes))
-    )
-  }, [])
+  useFetchRoutes(dispatch)
+  useFetchTimepoints(selectedRouteIds, timepointsByRouteId, dispatch)
 
   const selectedRoutes = (routes || []).filter(route =>
     selectedRouteIds.includes(route.id)
