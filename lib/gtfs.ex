@@ -78,8 +78,8 @@ defmodule Gtfs do
   def handle_call({:timepoints_on_route, route_id}, _from, {:loaded, gtfs_data} = state) do
     route_patterns_by_direction =
       gtfs_data.route_patterns
-      |> Enum.filter(fn route_pattern -> route_pattern.route_id == route_id end)
-      |> Enum.group_by(fn route_pattern -> route_pattern.direction_id end)
+      |> RoutePattern.for_route_id(route_id)
+      |> RoutePattern.by_direction()
 
     timepoints_by_direction =
       Helpers.map_values(route_patterns_by_direction, fn route_patterns ->

@@ -31,4 +31,92 @@ defmodule Gtfs.RoutePatternTest do
       refute RoutePattern.row_in_route_id_set?(@csv_row, MapSet.new(["1", "2"]))
     end
   end
+
+  describe "for_route_id/2" do
+    test "filters by the given route ID" do
+      route_patterns = [
+        %RoutePattern{
+          id: "1",
+          route_id: "10",
+          direction_id: 0,
+          representative_trip_id: "22"
+        },
+        %RoutePattern{
+          id: "2",
+          route_id: "15",
+          direction_id: 0,
+          representative_trip_id: "21"
+        },
+        %RoutePattern{
+          id: "3",
+          route_id: "10",
+          direction_id: 1,
+          representative_trip_id: "20"
+        }
+      ]
+
+      assert RoutePattern.for_route_id(route_patterns, "10") == [
+               %RoutePattern{
+                 id: "1",
+                 route_id: "10",
+                 direction_id: 0,
+                 representative_trip_id: "22"
+               },
+               %RoutePattern{
+                 id: "3",
+                 route_id: "10",
+                 direction_id: 1,
+                 representative_trip_id: "20"
+               }
+             ]
+    end
+  end
+
+  describe "by_direction/1" do
+    route_patterns = [
+      %RoutePattern{
+        id: "1",
+        route_id: "10",
+        direction_id: 0,
+        representative_trip_id: "22"
+      },
+      %RoutePattern{
+        id: "2",
+        route_id: "10",
+        direction_id: 1,
+        representative_trip_id: "21"
+      },
+      %RoutePattern{
+        id: "3",
+        route_id: "10",
+        direction_id: 1,
+        representative_trip_id: "20"
+      }
+    ]
+
+    assert RoutePattern.by_direction(route_patterns) == %{
+             0 => [
+               %RoutePattern{
+                 id: "1",
+                 route_id: "10",
+                 direction_id: 0,
+                 representative_trip_id: "22"
+               }
+             ],
+             1 => [
+               %RoutePattern{
+                 id: "2",
+                 route_id: "10",
+                 direction_id: 1,
+                 representative_trip_id: "21"
+               },
+               %RoutePattern{
+                 id: "3",
+                 route_id: "10",
+                 direction_id: 1,
+                 representative_trip_id: "20"
+               }
+             ]
+           }
+  end
 end
