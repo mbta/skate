@@ -9,6 +9,7 @@ defmodule Gtfs do
   alias Gtfs.Route
   alias Gtfs.RoutePattern
   alias Gtfs.Stop
+  alias Gtfs.StopTime
   alias Gtfs.Timepoint
   alias Gtfs.Trip
 
@@ -16,6 +17,7 @@ defmodule Gtfs do
           routes: [Route.t()],
           route_patterns: [RoutePattern.t()],
           stops: [Stop.t()],
+          trip_stops: %{Trip.id() => [Stop.id()]},
           trip_timepoints: %{optional(Trip.id()) => [Timepoint.id()]},
           trips: [Trip.t()]
         }
@@ -24,6 +26,7 @@ defmodule Gtfs do
     :routes,
     :route_patterns,
     :stops,
+    :trip_stops,
     :trip_timepoints,
     :trips
   ]
@@ -32,6 +35,7 @@ defmodule Gtfs do
     :routes,
     :route_patterns,
     :stops,
+    :trip_stops,
     :trip_timepoints,
     :trips
   ]
@@ -259,6 +263,7 @@ defmodule Gtfs do
       routes: bus_routes,
       route_patterns: bus_route_patterns(files["route_patterns.txt"], bus_route_ids),
       stops: all_stops(files["stops.txt"]),
+      trip_stops: bus_trip_stops(files["stop_times.txt"], bus_trip_ids),
       trip_timepoints: bus_trip_timepoints(files["stop_times.txt"], bus_trip_ids),
       trips: bus_trips
     }
@@ -285,15 +290,20 @@ defmodule Gtfs do
   @spec all_stops(binary()) :: [Stop.t()]
   defp all_stops(stops_data), do: Csv.parse(stops_data, fn _row -> true end, &Stop.from_csv_row/1)
 
-  @spec bus_trip_timepoints(binary(), MapSet.t(Trip.id())) :: %{
-          optional(Trip.id()) => [Timepoint.id()]
-        }
+  @spec bus_trip_stops(binary(), MapSet.t(Trip.id())) :: %{Trip.id() => [Timepoint.id()]}
+  defp bus_trip_stops(stop_times_data, bus_trip_ids) do
+    stop_times_data
+    |> Csv.parse(&StopTime.row_in_trip_id_set?(&1, bus_trip_ids))
+    |> StopTime.trip_stops_from_csv()
+  end
+
+  @spec bus_trip_timepoints(binary(), MapSet.t(Trip.id())) :: %{Trip.id() => [Timepoint.id()]}
   defp bus_trip_timepoints(stop_times_data, bus_trip_ids) do
     stop_times_data
     |> Csv.parse([
-      &Timepoint.row_includes_a_checkpoint?(&1),
-      &Timepoint.row_in_trip_id_set?(&1, bus_trip_ids)
+      &StopTime.row_includes_a_checkpoint?(&1),
+      &StopTime.row_in_trip_id_set?(&1, bus_trip_ids)
     ])
-    |> Timepoint.trip_timepoints_from_csv()
+    |> StopTime.trip_timepoints_from_csv()
   end
 end

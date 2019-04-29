@@ -1,7 +1,7 @@
-defmodule Gtfs.TimepointTest do
+defmodule Gtfs.StopTimeTest do
   use ExUnit.Case, async: true
 
-  alias Gtfs.Timepoint
+  alias Gtfs.StopTime
 
   @csv_rows [
     %{
@@ -67,29 +67,29 @@ defmodule Gtfs.TimepointTest do
   ]
 
   describe "trip_timepoints_from_csv/1" do
-    test "builds a Timepoint struct from a list of stop time csv rows" do
+    test "builds a StopTime struct from a list of stop time csv rows" do
       assert %{
                "39770780" => ["dudly", "melwa"],
                "39770783" => ["bbsta", "", "hunbv"]
-             } = Timepoint.trip_timepoints_from_csv(@csv_rows)
+             } = StopTime.trip_timepoints_from_csv(@csv_rows)
     end
   end
 
   describe "row_includes_a_checkpoint?/1" do
     test "returns whether the row includes a value in the checkpoint column" do
-      assert Timepoint.row_includes_a_checkpoint?(Enum.at(@csv_rows, 4))
-      refute Timepoint.row_includes_a_checkpoint?(Enum.at(@csv_rows, 3))
+      assert StopTime.row_includes_a_checkpoint?(Enum.at(@csv_rows, 4))
+      refute StopTime.row_includes_a_checkpoint?(Enum.at(@csv_rows, 3))
     end
   end
 
   describe "row_in_trip_id_set?/2" do
     test "returns whether the row's trip id is in the given set" do
-      assert Timepoint.row_in_trip_id_set?(
+      assert StopTime.row_in_trip_id_set?(
                List.first(@csv_rows),
                MapSet.new(["39770779", "39770780"])
              )
 
-      refute Timepoint.row_in_trip_id_set?(List.first(@csv_rows), MapSet.new(["1", "2"]))
+      refute StopTime.row_in_trip_id_set?(List.first(@csv_rows), MapSet.new(["1", "2"]))
     end
   end
 end
