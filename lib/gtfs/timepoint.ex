@@ -1,6 +1,8 @@
 defmodule Gtfs.Timepoint do
   @moduledoc """
-  In GTFS, timepoints are known as "checkpoints"
+  A key stop along a route.
+
+  In GTFS, timepoints are known as "checkpoints".
   """
 
   alias Gtfs.Csv
@@ -11,7 +13,7 @@ defmodule Gtfs.Timepoint do
 
   @type trip_id_set :: MapSet.t(Trip.id())
 
-  @spec trip_timepoints_from_csv([Csv.row()]) :: %{optional(Trip.id()) => id()}
+  @spec trip_timepoints_from_csv([Csv.row()]) :: %{optional(Trip.id()) => [id()]}
   def trip_timepoints_from_csv(stop_times_csv) do
     stop_times_csv
     |> Enum.group_by(fn stop_time_row -> stop_time_row["trip_id"] end)
