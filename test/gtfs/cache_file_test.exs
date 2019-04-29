@@ -2,6 +2,7 @@ defmodule Gtfs.CacheFileTest do
   use ExUnit.Case, async: true
 
   alias Gtfs.CacheFile
+  alias Gtfs.Data
   alias Gtfs.Route
 
   doctest CacheFile
@@ -12,10 +13,11 @@ defmodule Gtfs.CacheFileTest do
 
   describe "save_gtfs/1 and load_gtfs/1" do
     test "saves to the default file, returns {:ok, term} for a map" do
-      data = %Gtfs{
+      data = %Data{
         routes: [%Route{id: "1"}],
         route_patterns: [],
         stops: [],
+        trip_stops: %{},
         trip_timepoints: %{},
         trips: []
       }
@@ -30,10 +32,11 @@ defmodule Gtfs.CacheFileTest do
     end
 
     test "saves to a requested file, returns {:ok, term} for a map" do
-      data = %Gtfs{
+      data = %Data{
         routes: [%Route{id: "2"}],
         route_patterns: [],
         stops: [],
+        trip_stops: %{},
         trip_timepoints: %{},
         trips: []
       }
