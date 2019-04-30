@@ -1,5 +1,11 @@
 import React, { useContext } from "react"
 import DispatchContext from "../contexts/dispatchContext"
+import {
+  filterRoutes,
+  RouteFilter,
+  RouteFilterData,
+  useRouteFilter,
+} from "../hooks/useRouteFilter"
 import { Route, RouteId } from "../skate.d"
 import { deselectRoute, selectRoute } from "../state"
 import Loading from "./loading"
@@ -9,17 +15,28 @@ interface Props {
   selectedRouteIds: RouteId[]
 }
 
-const RoutePicker = ({ routes, selectedRouteIds }: Props) => (
-  <div className="m-route-picker">
-    <SelectedRoutesList selectedRouteIds={selectedRouteIds} />
+const RoutePicker = ({ routes, selectedRouteIds }: Props) => {
+  const routeFilterData: RouteFilterData = useRouteFilter()
 
-    {routes === null ? (
-      <Loading />
-    ) : (
-      <RoutesList routes={routes} selectedRouteIds={selectedRouteIds} />
-    )}
-  </div>
-)
+  const filteredRoutes = filterRoutes(routes || [], routeFilterData)
+
+  return (
+    <div className="m-route-picker">
+      <SelectedRoutesList selectedRouteIds={selectedRouteIds} />
+
+      <RouteFilter {...routeFilterData} />
+
+      {routes === null ? (
+        <Loading />
+      ) : (
+        <RoutesList
+          routes={filteredRoutes}
+          selectedRouteIds={selectedRouteIds}
+        />
+      )}
+    </div>
+  )
+}
 
 const SelectedRoutesList = ({
   selectedRouteIds,

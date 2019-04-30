@@ -10,6 +10,45 @@ exports[`renders 1`] = `
     <ul
       className="m-route-picker__selected-routes"
     />
+    <div
+      className="m-route-filter"
+    >
+      <select
+        className="m-route-filter__type"
+        onChange={[Function]}
+        value="id"
+      >
+        <option
+          value="id"
+        >
+          Route ID
+        </option>
+      </select>
+      <div
+        className="m-route-filter__text"
+      >
+        <input
+          className="m-route-filter__input"
+          onChange={[Function]}
+          onKeyDown={[Function]}
+          type="text"
+          value=""
+        />
+        <button
+          className="m-route-filter__clear"
+          onClick={[Function]}
+        >
+          <span
+            className="m-route-filter__clear-icon"
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "SVG",
+              }
+            }
+          />
+        </button>
+      </div>
+    </div>
     loading...
   </div>
   <div
