@@ -66,8 +66,17 @@ defmodule Gtfs.StopTimeTest do
     }
   ]
 
+  describe "trip_stops_from_csv/1" do
+    test "builds a trip stops map from a list of stop time csv rows" do
+      assert %{
+               "39770780" => ["64", "3"],
+               "39770783" => ["23391", "173", "11388"]
+             } = StopTime.trip_stops_from_csv(@csv_rows)
+    end
+  end
+
   describe "trip_timepoints_from_csv/1" do
-    test "builds a StopTime struct from a list of stop time csv rows" do
+    test "builds a trip timepoints map from a list of stop time csv rows" do
       assert %{
                "39770780" => ["dudly", "melwa"],
                "39770783" => ["bbsta", "", "hunbv"]
