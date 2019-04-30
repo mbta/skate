@@ -69,6 +69,26 @@ describe("filterRoutes", () => {
 })
 
 describe("RouteFilter", () => {
+  test("changing the filter type updates the route filter", () => {
+    const mockRouteFilter: RouteFilterData = {
+      filterType: "id",
+      filterText: "",
+      handleTypeChange: jest.fn(),
+      handleTextInput: jest.fn(),
+      clearTextInput: jest.fn(),
+    }
+    const routePicker = mount(<RouteFilter {...mockRouteFilter} />)
+
+    const testEvent = {
+      currentTarget: {
+        value: "new-type",
+      },
+    } as React.ChangeEvent<HTMLSelectElement>
+    routePicker.find(".m-route-filter__type").simulate("change", testEvent)
+
+    expect(mockRouteFilter.handleTypeChange).toHaveBeenCalled()
+  })
+
   test("inputting filter text updates the route filter", () => {
     const mockRouteFilter: RouteFilterData = {
       filterType: "id",
