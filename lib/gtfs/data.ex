@@ -25,8 +25,7 @@ defmodule Gtfs.Data do
         }
 
   @type trip_stops :: %{Trip.id() => [Stop.id()]}
-
-  @type trip_timepoints :: %{Trip.id() => [Timepoint.id()]}
+  @type trip_timepoints :: %{Trip.id() => [Timepoint.t()]}
 
   @enforce_keys [
     :routes,
@@ -72,15 +71,17 @@ defmodule Gtfs.Data do
       ) do
     route_patterns_by_direction = route_patterns_by_direction(route_patterns, route_id)
 
-    timepoints_by_direction =
+    timepoint_ids_by_direction =
       Helpers.map_values(route_patterns_by_direction, fn route_patterns ->
-        timepoints_for_route_patterns(route_patterns, trip_timepoints)
+        route_patterns
+        |> timepoints_for_route_patterns(trip_timepoints)
+        |> Enum.map(& &1.id)
       end)
 
     merged_timepoint_ids =
       Helpers.merge_lists([
-        timepoints_by_direction |> Map.get(0, []) |> Enum.reverse(),
-        Map.get(timepoints_by_direction, 1, [])
+        timepoint_ids_by_direction |> Map.get(0, []) |> Enum.reverse(),
+        Map.get(timepoint_ids_by_direction, 1, [])
       ])
 
     merged_timepoint_ids
@@ -149,7 +150,7 @@ defmodule Gtfs.Data do
 
   # All route_patterns should be in the same direction
   @spec timepoints_for_route_patterns([RoutePattern.t()], trip_timepoints()) :: [
-          Timepoint.id()
+          Timepoint.t()
         ]
   defp timepoints_for_route_patterns(route_patterns, trip_timepoints) do
     route_patterns

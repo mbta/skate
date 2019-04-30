@@ -4,6 +4,7 @@ defmodule Gtfs.DataTest do
   alias Gtfs.Data
   alias Gtfs.Route
   alias Gtfs.RoutePattern
+  alias Gtfs.Timepoint
   alias Gtfs.Trip
 
   test "all_routes/1returns all the routes" do
@@ -45,9 +46,9 @@ defmodule Gtfs.DataTest do
       stops: [],
       trip_stops: %{},
       trip_timepoints: %{
-        "t1" => ["tp1"],
-        "t2" => ["tp2", "tp3"],
-        "t3" => ["tp4"]
+        "t1" => [%Timepoint{id: "tp1", stop_id: "s1"}],
+        "t2" => [%Timepoint{id: "tp2", stop_id: "s2"}, %Timepoint{id: "tp3", stop_id: "s3"}],
+        "t3" => [%Timepoint{id: "tp4", stop_id: "s4"}]
       },
       trips: [
         %Trip{
