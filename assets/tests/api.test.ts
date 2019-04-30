@@ -1,5 +1,7 @@
 import { fetchRoutes, fetchTimepointsForRoute } from "../src/api"
 
+// tslint:disable no-empty
+
 declare global {
   interface Window {
     /* eslint-disable typescript/no-explicit-any */
@@ -32,10 +34,18 @@ describe("fetchRoutes", () => {
         status: 500,
       })
 
+    const spyConsoleError = jest.spyOn(console, "error")
+    spyConsoleError.mockImplementationOnce(() => {})
+
     fetchRoutes()
-      .then(() => done("fetchRoutes did not throw an error"))
+      .then(() => {
+        spyConsoleError.mockRestore()
+        done("fetchRoutes did not throw an error")
+      })
       .catch(error => {
         expect(error).not.toBeUndefined()
+        expect(spyConsoleError).toHaveBeenCalled()
+        spyConsoleError.mockRestore()
         done()
       })
   })
@@ -70,10 +80,18 @@ describe("fetchTimepointsForRoute", () => {
         status: 500,
       })
 
+    const spyConsoleError = jest.spyOn(console, "error")
+    spyConsoleError.mockImplementationOnce(() => {})
+
     fetchTimepointsForRoute("28")
-      .then(() => done("fetchTimepointsForRoute did not throw an error"))
+      .then(() => {
+        spyConsoleError.mockRestore()
+        done("fetchTimepointsForRoute did not throw an error")
+      })
       .catch(error => {
         expect(error).not.toBeUndefined()
+        expect(spyConsoleError).toHaveBeenCalled()
+        spyConsoleError.mockRestore()
         done()
       })
   })
