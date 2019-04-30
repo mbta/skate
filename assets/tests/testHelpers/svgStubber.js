@@ -1,1 +1,1 @@
-module.exports = "SVG";
+module.exports = "SVG"

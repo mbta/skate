@@ -2,33 +2,14 @@
   "defaultSeverity": "error",
   "extends": [
     "tslint:recommended",
-    "tslint-config-prettier",
     "tslint-react",
-    "tslint-react-hooks"
+    "tslint-react-hooks",
+    "tslint-config-prettier"
   ],
   "jsRules": {},
   "rules": {
-    "quotemark": [true, "double", "jsx-double", "avoid-escape"],
-    "semicolon": [true, "never"],
-    "trailing-comma": [
-      true,
-      {
-        "multiline": {
-          "properties": "always",
-          "arrays": "always",
-          "exports": "always",
-          "functions": "never",
-          "imports": "always",
-          "objects": "always",
-          "typeLiterals": "never"
-        },
-        "singleline": "never",
-        "esSpecCompliant": "true"
-      }
-    ],
     "interface-name": [true, "never-prefix"],
     "jsx-no-lambda": false,
-    "jsx-no-multiline-js": false,
     "object-literal-sort-keys": { "options": "match-declaration-order" },
     "react-hooks-nesting": "error",
     "variable-name": [
