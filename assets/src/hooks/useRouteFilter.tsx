@@ -22,8 +22,6 @@ export const filterRoutes = (
   switch (filterType) {
     case "id":
       return allRoutes.filter((route: Route) => route.id.includes(filterText))
-    default:
-      return allRoutes
   }
 }
 
