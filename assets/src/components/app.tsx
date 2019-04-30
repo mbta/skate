@@ -1,6 +1,8 @@
 import React, { useReducer } from "react"
 import useRoutes from "../hooks/useRoutes"
+import useSocket from "../hooks/useSocket"
 import useTimepoints from "../hooks/useTimepoints"
+import useVehicles from "../hooks/useVehicles"
 import DispatchProvider from "../providers/dispatchProvider"
 import { Route, TimepointsByRouteId } from "../skate.d"
 import { initialState, reducer } from "../state"
@@ -15,6 +17,8 @@ const App = (): JSX.Element => {
   const timepointsByRouteId: TimepointsByRouteId = useTimepoints(
     selectedRouteIds
   )
+  const socket = useSocket()
+  const vehiclesByRouteId = useVehicles(socket, selectedRouteIds)
 
   const selectedRoutes = (routes || []).filter(route =>
     selectedRouteIds.includes(route.id)
@@ -28,6 +32,7 @@ const App = (): JSX.Element => {
         <RouteLadders
           routes={selectedRoutes}
           timepointsByRouteId={timepointsByRouteId}
+          vehiclesByRouteId={vehiclesByRouteId}
         />
       </div>
     </DispatchProvider>

@@ -1,13 +1,14 @@
 import React, { useContext } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import { closeIcon } from "../helpers/icon"
-import { LoadableTimepoints, Route, Timepoint } from "../skate"
+import { LoadableTimepoints, Route, Timepoint, Vehicle } from "../skate"
 import { deselectRoute } from "../state"
 import Loading from "./loading"
 
 interface Props {
   route: Route
   timepoints: LoadableTimepoints
+  vehicles: Vehicle[]
 }
 
 const Header = ({ route }: { route: Route }) => {
@@ -44,7 +45,20 @@ const Timepoint = ({ timepoint }: { timepoint: Timepoint }) => (
   </li>
 )
 
-const RouteLadder = ({ route, timepoints }: Props) => (
+const Vehicle = ({ vehicle }: { vehicle: Vehicle }) => (
+  <ul style={{ border: "1px solid black" }}>
+    <li>id {vehicle.id}</li>
+    <li>label {vehicle.label}</li>
+    <li>timestamp {vehicle.timestamp}</li>
+    <li>direction_id {vehicle.direction_id}</li>
+    <li>route_id {vehicle.route_id}</li>
+    <li>trip_id {vehicle.trip_id}</li>
+    <li>current_status {vehicle.current_status}</li>
+    <li>stop_id {vehicle.stop_id}</li>
+  </ul>
+)
+
+const RouteLadder = ({ route, timepoints, vehicles }: Props) => (
   <div className="m-route-ladder">
     <Header route={route} />
 
@@ -57,6 +71,9 @@ const RouteLadder = ({ route, timepoints }: Props) => (
     ) : (
       <Loading />
     )}
+    {vehicles.map(vehicle => (
+      <Vehicle key={vehicle.id} vehicle={vehicle} />
+    ))}
   </div>
 )
 

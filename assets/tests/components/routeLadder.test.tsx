@@ -11,7 +11,7 @@ test("renders a route ladder", () => {
   const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
 
   const tree = renderer
-    .create(<RouteLadder route={route} timepoints={timepoints} />)
+    .create(<RouteLadder route={route} timepoints={timepoints} vehicles={[]} />)
     .toJSON()
 
   expect(tree).toMatchSnapshot()
@@ -22,7 +22,7 @@ test("displays loading if we are fetching the timepoints", () => {
   const timepoints = null
 
   const tree = renderer
-    .create(<RouteLadder route={route} timepoints={timepoints} />)
+    .create(<RouteLadder route={route} timepoints={timepoints} vehicles={[]} />)
     .toJSON()
 
   expect(tree).toMatchSnapshot()
@@ -35,7 +35,7 @@ test("clicking the close button deselects that route", () => {
 
   const wrapper = mount(
     <DispatchProvider dispatch={mockDispatch}>
-      <RouteLadder route={route} timepoints={timepoints} />
+      <RouteLadder route={route} timepoints={timepoints} vehicles={[]} />
     </DispatchProvider>
   )
   wrapper.find(".m-route-ladder__close").simulate("click")
