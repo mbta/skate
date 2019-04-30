@@ -2,6 +2,7 @@ defmodule GtfsTest do
   use ExUnit.Case, async: true
 
   alias Gtfs.Route
+  alias Gtfs.Timepoint
 
   describe "all_routes" do
     test "maps each row to a Route" do
@@ -57,7 +58,7 @@ defmodule GtfsTest do
           ]
         })
 
-      assert Gtfs.timepoints_on_route("39", pid) == ["check"]
+      assert Gtfs.timepoints_on_route("39", pid) == [%Timepoint{id: "check", stop_id: nil}]
     end
 
     test "filters out non-bus trips, route patterns, and timepoints" do
@@ -85,7 +86,7 @@ defmodule GtfsTest do
           ]
         })
 
-      assert Gtfs.timepoints_on_route("39", pid) == ["check"]
+      assert Gtfs.timepoints_on_route("39", pid) == [%Timepoint{id: "check", stop_id: nil}]
       assert Gtfs.timepoints_on_route("Blue", pid) == []
     end
 
@@ -120,7 +121,13 @@ defmodule GtfsTest do
           ]
         })
 
-      assert Gtfs.timepoints_on_route("route", pid) == ["c1", "c2", "c3", "c4", "c5"]
+      assert Gtfs.timepoints_on_route("route", pid) == [
+               %Timepoint{id: "c1", stop_id: nil},
+               %Timepoint{id: "c2", stop_id: nil},
+               %Timepoint{id: "c3", stop_id: nil},
+               %Timepoint{id: "c4", stop_id: nil},
+               %Timepoint{id: "c5", stop_id: nil}
+             ]
     end
 
     test "merges stops from both directions, flipping direction 0" do
@@ -149,7 +156,11 @@ defmodule GtfsTest do
           ]
         })
 
-      assert Gtfs.timepoints_on_route("route", pid) == ["exurb", "suburb", "downtown"]
+      assert Gtfs.timepoints_on_route("route", pid) == [
+               %Timepoint{id: "exurb", stop_id: nil},
+               %Timepoint{id: "suburb", stop_id: nil},
+               %Timepoint{id: "downtown", stop_id: nil}
+             ]
     end
 
     test "gracefully returns [] for route without timepoints" do

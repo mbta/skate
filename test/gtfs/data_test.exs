@@ -62,7 +62,10 @@ defmodule Gtfs.DataTest do
       ]
     }
 
-    assert Data.timepoints_on_route(data, "r1") == ["tp1", "tp4"]
+    assert Data.timepoints_on_route(data, "r1") == [
+             %Timepoint{id: "tp1", stop_id: "s1"},
+             %Timepoint{id: "tp4", stop_id: "s4"}
+           ]
   end
 
   test "stops_on_route/2 returns all stops for this route (either direction), sorted" do

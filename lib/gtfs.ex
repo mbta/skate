@@ -18,7 +18,7 @@ defmodule Gtfs do
     GenServer.call(server, :all_routes)
   end
 
-  @spec timepoints_on_route(Route.id(), GenServer.server() | nil) :: [Timepoint.id()]
+  @spec timepoints_on_route(Route.id(), GenServer.server() | nil) :: [Timepoint.t()]
   def timepoints_on_route(route_id, server \\ nil) do
     server = server || __MODULE__
     GenServer.call(server, {:timepoints_on_route, route_id})

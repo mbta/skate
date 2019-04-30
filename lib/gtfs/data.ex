@@ -64,7 +64,7 @@ defmodule Gtfs.Data do
   @spec all_routes(t()) :: [Route.t()]
   def all_routes(%__MODULE__{routes: routes}), do: routes
 
-  @spec timepoints_on_route(t(), Route.id()) :: [Timepoint.id()]
+  @spec timepoints_on_route(t(), Route.id()) :: [Timepoint.t()]
   def timepoints_on_route(
         %__MODULE__{route_patterns: route_patterns, trip_timepoints: trip_timepoints},
         route_id
@@ -73,9 +73,7 @@ defmodule Gtfs.Data do
 
     timepoint_ids_by_direction =
       Helpers.map_values(route_patterns_by_direction, fn route_patterns ->
-        route_patterns
-        |> timepoints_for_route_patterns(trip_timepoints)
-        |> Enum.map(& &1.id)
+        timepoints_for_route_patterns(route_patterns, trip_timepoints)
       end)
 
     merged_timepoint_ids =
