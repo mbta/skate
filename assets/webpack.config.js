@@ -9,15 +9,15 @@ module.exports = (env, options) => ({
   optimization: {
     minimizer: [
       new UglifyJsPlugin({ cache: true, parallel: true, sourceMap: false }),
-      new OptimizeCSSAssetsPlugin({})
-    ]
+      new OptimizeCSSAssetsPlugin({}),
+    ],
   },
   entry: {
-    "./js/app.tsx": ["./src/app.tsx"].concat(glob.sync("./vendor/**/*.js"))
+    "./js/app.tsx": ["./src/app.tsx"].concat(glob.sync("./vendor/**/*.js")),
   },
   output: {
     filename: "app.js",
-    path: path.resolve(__dirname, "../priv/static/js")
+    path: path.resolve(__dirname, "../priv/static/js"),
   },
   module: {
     rules: [
@@ -25,20 +25,20 @@ module.exports = (env, options) => ({
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader"
-        }
+          loader: "babel-loader",
+        },
       },
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
         use: [
           {
-            loader: "babel-loader"
+            loader: "babel-loader",
           },
           {
-            loader: "ts-loader"
-          }
-        ]
+            loader: "ts-loader",
+          },
+        ],
       },
       {
         test: /\.s?css$/,
@@ -48,15 +48,15 @@ module.exports = (env, options) => ({
             loader: "css-loader",
             options: {
               autoprefixer: {
-                browsers: ["last 2 versions"]
+                browsers: ["last 2 versions"],
               },
-              plugins: () => [autoprefixer]
-            }
+              plugins: () => [autoprefixer],
+            },
           },
           {
-            loader: "sass-loader"
-          }
-        ]
+            loader: "sass-loader",
+          },
+        ],
       },
       {
         test: /\.svg$/,
@@ -65,19 +65,19 @@ module.exports = (env, options) => ({
           {
             loader: "svgo-loader",
             options: {
-              externalConfig: "svgo.yml"
-            }
-          }
-        ]
-      }
-    ]
+              externalConfig: "svgo.yml",
+            },
+          },
+        ],
+      },
+    ],
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
-    modules: ["deps", "node_modules"]
+    modules: ["deps", "node_modules"],
   },
   plugins: [
     new MiniCssExtractPlugin({ filename: "../css/app.css" }),
-    new CopyWebpackPlugin([{ from: "static/", to: "../" }])
-  ]
+    new CopyWebpackPlugin([{ from: "static/", to: "../" }]),
+  ],
 })

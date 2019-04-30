@@ -2,17 +2,17 @@
   "repository": {},
   "license": "MIT",
   "scripts": {
-    "check": "tsc --noEmit && tslint -p .",
     "deploy": "webpack --mode production",
     "build": "webpack --mode development",
     "watch": "webpack --mode development --watch",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:update": "jest -u",
-    "format": "npm run format:ts && npm run format:ts && npm run format:css",
-    "format:js": "prettier --write {.,**}/*.{js,json}",
-    "format:ts": "prettier --write {.,**}/*.{ts,tsx} && tslint --fix -p .",
-    "format:css": "prettier --write {.,**}/*.{css,scss}"
+    "check": "tsc --noEmit && npm run lint:check && npm run format:check",
+    "lint": "tslint --fix -p .",
+    "lint:check": "tslint -p .",
+    "format": "prettier --write {.,**}/*.{js,json,ts,tsx,css,scss}",
+    "format:check": "prettier --check {.,**}/*.{js,json,ts,tsx,css,scss}"
   },
   "dependencies": {
     "phoenix": "file:../deps/phoenix",
