@@ -14,7 +14,11 @@ test("renders a route ladder", () => {
 
   const tree = renderer
     .create(
-      <RouteLadders routes={routes} timepointsByRouteId={timepointsByRouteId} />
+      <RouteLadders
+        routes={routes}
+        timepointsByRouteId={timepointsByRouteId}
+        vehiclesByRouteId={{}}
+      />
     )
     .toJSON()
 

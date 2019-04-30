@@ -1,17 +1,24 @@
 import React, { useReducer } from "react"
-import { useFetchRoutes } from "../hooks/useFetchRoutes"
-import { useFetchTimepoints } from "../hooks/useFetchTimepoints"
+import useRoutes from "../hooks/useRoutes"
+import useSocket from "../hooks/useSocket"
+import useTimepoints from "../hooks/useTimepoints"
+import useVehicles from "../hooks/useVehicles"
 import DispatchProvider from "../providers/dispatchProvider"
+import { Route, TimepointsByRouteId } from "../skate.d"
 import { initialState, reducer } from "../state"
 import RouteLadders from "./routeLadders"
 import RoutePicker from "./routePicker"
 
 const App = (): JSX.Element => {
   const [state, dispatch] = useReducer(reducer, initialState)
-  const { routes, selectedRouteIds, timepointsByRouteId } = state
+  const { selectedRouteIds } = state
 
-  useFetchRoutes(dispatch)
-  useFetchTimepoints(selectedRouteIds, timepointsByRouteId, dispatch)
+  const routes: Route[] | null = useRoutes()
+  const timepointsByRouteId: TimepointsByRouteId = useTimepoints(
+    selectedRouteIds
+  )
+  const socket = useSocket()
+  const vehiclesByRouteId = useVehicles(socket, selectedRouteIds)
 
   const selectedRoutes = (routes || []).filter(route =>
     selectedRouteIds.includes(route.id)
@@ -25,6 +32,7 @@ const App = (): JSX.Element => {
         <RouteLadders
           routes={selectedRoutes}
           timepointsByRouteId={timepointsByRouteId}
+          vehiclesByRouteId={vehiclesByRouteId}
         />
       </div>
     </DispatchProvider>

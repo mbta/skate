@@ -1,29 +1,13 @@
 import { Dispatch as ReactDispatch } from "react"
-import { Route, RouteId, Timepoint, TimepointsByRouteId } from "./skate.d"
+import { RouteId } from "./skate.d"
 
 export interface State {
-  routes: null | Route[]
   selectedRouteIds: RouteId[]
-  timepointsByRouteId: TimepointsByRouteId
 }
 
 export const initialState: State = {
-  routes: null,
   selectedRouteIds: [],
-  timepointsByRouteId: {},
 }
-
-interface SetRoutesAction {
-  type: "SET_ROUTES"
-  payload: {
-    routes: Route[]
-  }
-}
-
-export const setRoutes = (routes: Route[]): SetRoutesAction => ({
-  type: "SET_ROUTES",
-  payload: { routes },
-})
 
 interface SelectRouteAction {
   type: "SELECT_ROUTE"
@@ -49,52 +33,12 @@ export const deselectRoute = (routeId: RouteId): DeselectRouteAction => ({
   payload: { routeId },
 })
 
-interface SetLoadingTimepointsForRouteAction {
-  type: "SET_LOADING_TIMEPOINTS_FOR_ROUTE"
-  payload: {
-    routeId: RouteId
-  }
-}
-
-export const setLoadingTimepointsForRoute = (
-  routeId: RouteId
-): SetLoadingTimepointsForRouteAction => ({
-  type: "SET_LOADING_TIMEPOINTS_FOR_ROUTE",
-  payload: { routeId },
-})
-
-interface SetTimepointsForRouteAction {
-  type: "SET_TIMEPOINTS_FOR_ROUTE"
-  payload: {
-    routeId: RouteId
-    timepoints: Timepoint[]
-  }
-}
-
-export const setTimepointsForRoute = (
-  routeId: RouteId,
-  timepoints: Timepoint[]
-): SetTimepointsForRouteAction => ({
-  type: "SET_TIMEPOINTS_FOR_ROUTE",
-  payload: { routeId, timepoints },
-})
-
-type Action =
-  | SetRoutesAction
-  | SelectRouteAction
-  | DeselectRouteAction
-  | SetLoadingTimepointsForRouteAction
-  | SetTimepointsForRouteAction
+type Action = SelectRouteAction | DeselectRouteAction
 
 export type Dispatch = ReactDispatch<Action>
 
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case "SET_ROUTES":
-      return {
-        ...state,
-        routes: action.payload.routes,
-      }
     case "SELECT_ROUTE":
       return {
         ...state,
@@ -106,22 +50,6 @@ export const reducer = (state: State, action: Action): State => {
         selectedRouteIds: state.selectedRouteIds.filter(
           id => id !== action.payload.routeId
         ),
-      }
-    case "SET_LOADING_TIMEPOINTS_FOR_ROUTE":
-      return {
-        ...state,
-        timepointsByRouteId: {
-          ...state.timepointsByRouteId,
-          [action.payload.routeId]: null,
-        },
-      }
-    case "SET_TIMEPOINTS_FOR_ROUTE":
-      return {
-        ...state,
-        timepointsByRouteId: {
-          ...state.timepointsByRouteId,
-          [action.payload.routeId]: action.payload.timepoints,
-        },
       }
     default:
       return state

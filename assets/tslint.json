@@ -30,7 +30,15 @@
     "jsx-no-lambda": false,
     "jsx-no-multiline-js": false,
     "object-literal-sort-keys": { "options": "match-declaration-order" },
-    "react-hooks-nesting": "error"
+    "react-hooks-nesting": "error",
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore",
+      "require-const-for-all-caps",
+      "allow-pascal-case"
+    ]
   },
   "rulesDirectory": []
 }
