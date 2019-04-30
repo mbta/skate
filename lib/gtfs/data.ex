@@ -18,10 +18,14 @@ defmodule Gtfs.Data do
           routes: [Route.t()],
           route_patterns: [RoutePattern.t()],
           stops: [Stop.t()],
-          trip_stops: %{Trip.id() => [Stop.id()]},
-          trip_timepoints: %{optional(Trip.id()) => [Timepoint.id()]},
+          trip_stops: trip_stops(),
+          trip_timepoints: trip_timepoints,
           trips: [Trip.t()]
         }
+
+  @type trip_stops :: %{Trip.id() => [Stop.id()]}
+
+  @type trip_timepoints :: %{Trip.id() => [Timepoint.id()]}
 
   @enforce_keys [
     :routes,
@@ -116,7 +120,9 @@ defmodule Gtfs.Data do
   end
 
   # All route_patterns should be in the same direction
-  @spec timepoints_for_route_patterns([RoutePattern.t()], t()) :: [Timepoint.id()]
+  @spec timepoints_for_route_patterns([RoutePattern.t()], trip_timepoints()) :: [
+          Timepoint.id()
+        ]
   defp timepoints_for_route_patterns(route_patterns, trip_timepoints) do
     route_patterns
     |> Enum.map(fn route_pattern -> route_pattern.representative_trip_id end)
@@ -221,14 +227,14 @@ defmodule Gtfs.Data do
   @spec all_stops(binary()) :: [Stop.t()]
   defp all_stops(stops_data), do: Csv.parse(stops_data, fn _row -> true end, &Stop.from_csv_row/1)
 
-  @spec bus_trip_stops(binary(), MapSet.t(Trip.id())) :: %{Trip.id() => [Timepoint.id()]}
+  @spec bus_trip_stops(binary(), MapSet.t(Trip.id())) :: trip_stops()
   defp bus_trip_stops(stop_times_data, bus_trip_ids) do
     stop_times_data
     |> Csv.parse(&StopTime.row_in_trip_id_set?(&1, bus_trip_ids))
     |> StopTime.trip_stops_from_csv()
   end
 
-  @spec bus_trip_timepoints(binary(), MapSet.t(Trip.id())) :: %{Trip.id() => [Timepoint.id()]}
+  @spec bus_trip_timepoints(binary(), MapSet.t(Trip.id())) :: trip_timepoints()
   defp bus_trip_timepoints(stop_times_data, bus_trip_ids) do
     stop_times_data
     |> Csv.parse([

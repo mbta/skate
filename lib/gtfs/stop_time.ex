@@ -4,17 +4,16 @@ defmodule Gtfs.StopTime do
   """
 
   alias Gtfs.Csv
+  alias Gtfs.Data
   alias Gtfs.Helpers
-  alias Gtfs.Stop
-  alias Gtfs.Timepoint
   alias Gtfs.Trip
 
   @type trip_id_set :: MapSet.t(Trip.id())
 
-  @spec trip_stops_from_csv([Csv.row()]) :: %{Trip.id() => [Stop.id()]}
+  @spec trip_stops_from_csv([Csv.row()]) :: Data.trip_stops()
   def trip_stops_from_csv(stop_times_csv), do: by_trip_pid_mapped_to(stop_times_csv, "stop_id")
 
-  @spec trip_timepoints_from_csv([Csv.row()]) :: %{optional(Trip.id()) => [Timepoint.id()]}
+  @spec trip_timepoints_from_csv([Csv.row()]) :: Data.trip_timepoints()
   def trip_timepoints_from_csv(stop_times_csv),
     do: by_trip_pid_mapped_to(stop_times_csv, "checkpoint_id")
 
