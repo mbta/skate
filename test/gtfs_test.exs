@@ -168,4 +168,37 @@ defmodule GtfsTest do
       assert Gtfs.timepoints_on_route("route", pid) == []
     end
   end
+
+  describe "stops_on_route/2" do
+    test "returns all the stops on this route, both direction" do
+      pid =
+        Gtfs.start_mocked(%{
+          "routes.txt" => [
+            "route_id,route_type",
+            "route,3"
+          ],
+          "route_patterns.txt" => [
+            "route_pattern_id,route_id,direction_id,representative_trip_id",
+            "p0,route,0,t0",
+            "p1,route,1,t1"
+          ],
+          "trips.txt" => [
+            "route_id,trip_id",
+            "route,t0",
+            "route,t1"
+          ],
+          "stop_times.txt" => [
+            "trip_id,stop_id,stop_sequence,checkpoint_id",
+            "t0,s1,1,downtown",
+            "t0,s2,2,",
+            "t0,s3,3,suburb",
+            "t1,s4,1,exurb",
+            "t1,s5,2,",
+            "t1,s3,3,suburb"
+          ]
+        })
+
+      assert Gtfs.stops_on_route("route", pid) == ["s4", "s5", "s3", "s2", "s1"]
+    end
+  end
 end
