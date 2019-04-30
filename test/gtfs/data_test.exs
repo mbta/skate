@@ -64,6 +64,51 @@ defmodule Gtfs.DataTest do
     assert Data.timepoints_on_route(data, "r1") == ["tp1", "tp4"]
   end
 
+  test "stops_on_route/2 returns all stops for this route (either direction), sorted" do
+    data = %Data{
+      routes: [%Route{id: "r1"}, %Route{id: "r2"}],
+      route_patterns: [
+        %RoutePattern{
+          id: "rp1",
+          route_id: "r1",
+          direction_id: 0,
+          representative_trip_id: "t1"
+        },
+        %RoutePattern{
+          id: "rp2",
+          route_id: "r2",
+          direction_id: 0,
+          representative_trip_id: "t2"
+        },
+        %RoutePattern{
+          id: "rp3",
+          route_id: "r1",
+          direction_id: 1,
+          representative_trip_id: "t3"
+        }
+      ],
+      stops: [],
+      trip_stops: %{
+        "t1" => ["s1"],
+        "t2" => ["s2", "s3"],
+        "t3" => ["s4"]
+      },
+      trip_timepoints: %{},
+      trips: [
+        %Trip{
+          id: "t1",
+          route_id: "r1"
+        },
+        %Trip{
+          id: "t2",
+          route_id: "r2"
+        }
+      ]
+    }
+
+    assert Data.stops_on_route(data, "r1") == ["s1", "s4"]
+  end
+
   test "fetch_url/1 requests data from the given URL" do
     bypass = Bypass.open()
     url = "http://localhost:#{bypass.port}/MBTA_GTFS.zip"
