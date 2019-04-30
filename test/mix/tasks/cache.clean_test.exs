@@ -1,6 +1,7 @@
 defmodule Mix.Tasks.Cache.CleanTest do
   use ExUnit.Case, async: true
 
+  alias ExUnit.CaptureIO
   alias Gtfs.CacheFile
   alias Mix.Tasks.Cache
 
@@ -10,8 +11,11 @@ defmodule Mix.Tasks.Cache.CleanTest do
     File.touch(@test_cache_filepath)
     assert File.exists?(@test_cache_filepath)
 
-    Cache.Clean.run([])
+    execute_run = fn ->
+      Cache.Clean.run([])
+    end
 
+    assert CaptureIO.capture_io(execute_run) =~ "Deleting cache file"
     refute File.exists?(@test_cache_filepath)
   end
 end
