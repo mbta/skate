@@ -77,7 +77,7 @@ defmodule Realtime.Vehicle do
       }
     }
   """
-  @spec decode(term()) :: t()
+  @spec decode(term(), keyword) :: t()
   def decode(%{} = json, opts \\ []) do
     _opts = Keyword.merge(@default_opts, opts)
     stop_times_on_route_fn = Keyword.get(opts, :stop_times_on_route_fn)
