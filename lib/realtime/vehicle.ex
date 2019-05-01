@@ -1,19 +1,7 @@
 defmodule Realtime.Vehicle do
-  alias Gtfs.{Direction, Route, Stop, Timepoint, Trip}
+  alias Gtfs.{Direction, Route, Stop, StopTime, Trip}
 
   @type current_status() :: :in_transit_to | :stopped_at
-
-  @type stop_timepoint_status() :: %{
-          stop_granularity: %{
-            current_status: current_status(),
-            stop_id: Stop.id()
-          },
-          timepoint_granularity: %{
-            current_status: current_status(),
-            timepoint_id: Timepoint.id(),
-            percent_of_the_way: non_neg_integer()
-          }
-        }
 
   @type t() :: %__MODULE__{
           id: String.t(),
@@ -22,9 +10,11 @@ defmodule Realtime.Vehicle do
           direction_id: Direction.id(),
           route_id: Route.id(),
           trip_id: Trip.id(),
-          current_status: current_status(),
+          current_stop_status: current_status(),
           stop_id: Stop.id(),
-          status: stop_timepoint_status()
+          current_timepoint_status: current_status(),
+          timepoint_id: StopTime.timepoint_id(),
+          percent_of_the_way_to_timepoint: non_neg_integer()
         }
 
   @enforce_keys [
@@ -34,9 +24,11 @@ defmodule Realtime.Vehicle do
     :direction_id,
     :route_id,
     :trip_id,
-    :current_status,
+    :current_stop_status,
     :stop_id,
-    :status
+    :current_timepoint_status,
+    :timepoint_id,
+    :percent_of_the_way_to_timepoint
   ]
 
   @derive Jason.Encoder
@@ -48,17 +40,16 @@ defmodule Realtime.Vehicle do
     :direction_id,
     :route_id,
     :trip_id,
-    :current_status,
+    :current_stop_status,
     :stop_id,
-    :status
+    :current_timepoint_status,
+    :timepoint_id,
+    :percent_of_the_way_to_timepoint
   ]
 
   @default_opts [
-    stops_on_route_fn: &Gtfs.stops_on_route/1,
-    timepoints_on_route_fn: &Gtfs.timepoints_on_route/1
+    stop_times_on_route_fn: &Gtfs.stop_times_on_route/1
   ]
-
-  @empty_timepoint %Timepoint{id: "", stop_id: ""}
 
   @doc """
     Argument is an Elixir object. Pass it through Jason before this function.
@@ -88,9 +79,8 @@ defmodule Realtime.Vehicle do
   """
   @spec decode(term()) :: t()
   def decode(%{} = json, opts \\ []) do
-    opts = Keyword.merge(@default_opts, opts)
-    stops_on_route_fn = Keyword.get(opts, :stops_on_route_fn)
-    timepoints_on_route_fn = Keyword.get(opts, :timepoints_on_route_fn)
+    _opts = Keyword.merge(@default_opts, opts)
+    stop_times_on_route_fn = Keyword.get(opts, :stop_times_on_route_fn)
 
     id = json["id"]
     label = json["vehicle"]["vehicle"]["label"]
@@ -98,31 +88,23 @@ defmodule Realtime.Vehicle do
     direction_id = json["vehicle"]["trip"]["direction_id"]
     route_id = json["vehicle"]["trip"]["route_id"]
     trip_id = json["vehicle"]["trip"]["trip_id"]
-    current_status = decode_current_status(json["vehicle"]["current_status"])
+    current_stop_status = decode_current_status(json["vehicle"]["current_status"])
     stop_id = json["vehicle"]["stop_id"]
 
-    stops_on_route =
+    stop_times_on_route =
       try do
-        stops_on_route_fn.(route_id)
+        stop_times_on_route_fn.(route_id)
       catch
         # Handle Gtfs server timeouts gracefully
         :exit, _ ->
           []
       end
 
-    timepoints_on_route =
-      try do
-        timepoints_on_route_fn.(route_id)
-      catch
-        # Handle Gtfs server timeouts gracefully
-        :exit, _ ->
-          []
-      end
-
-    ordered_stops = if direction_id == 0, do: Enum.reverse(stops_on_route), else: stops_on_route
+    ordered_stop_times =
+      if direction_id == 0, do: Enum.reverse(stop_times_on_route), else: stop_times_on_route
 
     {percent_of_the_way_to_next_timepoint, next_timepoint} =
-      percent_of_the_way_to_next_timepoint(ordered_stops, timepoints_on_route, stop_id)
+      percent_of_the_way_to_next_timepoint(ordered_stop_times, stop_id)
 
     %__MODULE__{
       id: id,
@@ -131,73 +113,66 @@ defmodule Realtime.Vehicle do
       direction_id: direction_id,
       route_id: route_id,
       trip_id: trip_id,
-      current_status: current_status,
+      current_stop_status: current_stop_status,
       stop_id: stop_id,
-      status: %{
-        stop_granularity: %{
-          current_status: current_status,
-          stop_id: stop_id
-        },
-        timepoint_granularity: %{
-          current_status: timepoint_status(current_status, percent_of_the_way_to_next_timepoint),
-          timepoint_id: next_timepoint.id,
-          percent_of_the_way: percent_of_the_way_to_next_timepoint
-        }
-      }
+      current_timepoint_status:
+        timepoint_status(current_stop_status, percent_of_the_way_to_next_timepoint),
+      timepoint_id: next_timepoint && next_timepoint.timepoint_id,
+      percent_of_the_way_to_timepoint: percent_of_the_way_to_next_timepoint
     }
   end
 
-  @spec percent_of_the_way_to_next_timepoint([Stop.id()], [Timepoint.t()], Stop.id()) :: {
+  @spec percent_of_the_way_to_next_timepoint([StopTime.t()], Stop.id()) :: {
           non_neg_integer(),
-          Timepoint.t()
+          StopTime.t() | nil
         }
+  def percent_of_the_way_to_next_timepoint(stop_times, _stop_id)
+      when is_list(stop_times) and length(stop_times) == 0,
+      do: {0, nil}
 
-  def percent_of_the_way_to_next_timepoint(stop_ids, _timepoints, _stop_id)
-      when is_list(stop_ids) and length(stop_ids) == 0,
-      do: {0, @empty_timepoint}
+  def percent_of_the_way_to_next_timepoint(stop_times, stop_id) do
+    {past_stop_times, current_stop_time, future_stop_times} =
+      split_stop_times(stop_times, stop_id)
 
-  def percent_of_the_way_to_next_timepoint(stop_ids, timepoints, stop_id) do
-    {past_stop_ids, future_stop_ids} = split_stops(stop_ids, stop_id)
-
-    next_timepoint_stop_id =
-      Enum.find([stop_id | future_stop_ids], &is_a_timepoint?(&1, timepoints))
-
-    next_timepoint =
-      Enum.find(timepoints, &(&1.stop_id == next_timepoint_stop_id)) || @empty_timepoint
-
-    count_to_previous_timepoint = count_to_timepoint(past_stop_ids, timepoints)
-    count_to_next_timepoint = count_to_timepoint(future_stop_ids, timepoints)
+    next_timepoint_stop_time =
+      Enum.find([current_stop_time | future_stop_times], &is_a_timepoint?(&1))
 
     {
-      percent_of_the_way(count_to_previous_timepoint, count_to_next_timepoint),
-      next_timepoint
+      percent_of_the_way(
+        count_to_timepoint(past_stop_times),
+        count_to_timepoint(future_stop_times)
+      ),
+      next_timepoint_stop_time
     }
   end
 
-  @spec split_stops([Stop.id()], Stop.id()) :: {[Stop.id()], [Stop.id()]}
-  defp split_stops(stop_ids, stop_id) do
-    stop_index = Enum.find_index(stop_ids, &(&1 == stop_id))
-    split_stops_on_index(stop_ids, stop_index)
+  @spec split_stop_times([StopTime.t()], Stop.id()) ::
+          {[StopTime.t()], StopTime.t() | nil, [StopTime.t()]}
+  defp split_stop_times(stop_times, stop_id) do
+    index = Enum.find_index(stop_times, &(&1.stop_id == stop_id))
+    split_stop_times_on_index(stop_times, index)
   end
 
-  @spec split_stops_on_index([Stop.id()], non_neg_integer() | nil) :: {[Stop.id()], [Stop.id()]}
-  defp split_stops_on_index(_stop_ids, nil), do: {[], []}
+  @spec split_stop_times_on_index([StopTime.t()], non_neg_integer() | nil) ::
+          {[StopTime.t()], StopTime.t() | nil, [StopTime.t()]}
+  defp split_stop_times_on_index(_stop_times, nil), do: {[], nil, []}
 
-  defp split_stops_on_index(stop_ids, index) do
-    {past, [_current | future]} = Enum.split(stop_ids, index)
+  defp split_stop_times_on_index(stop_times, index) do
+    {past, [current | future]} = Enum.split(stop_times, index)
 
-    {Enum.reverse(past), future}
+    {Enum.reverse(past), current, future}
   end
 
-  @spec count_to_timepoint([Stop.id()], [Timepoint.t()]) :: non_neg_integer()
-  defp count_to_timepoint(stop_ids, timepoints) do
-    count = Enum.find_index(stop_ids, &is_a_timepoint?(&1, timepoints))
+  @spec count_to_timepoint([StopTime.t()]) :: non_neg_integer()
+  defp count_to_timepoint(stop_times) do
+    count = Enum.find_index(stop_times, &is_a_timepoint?(&1))
 
     if is_number(count), do: count + 1, else: 0
   end
 
-  @spec is_a_timepoint?(Stop.id(), [Timepoint.t()]) :: boolean
-  defp is_a_timepoint?(stop_id, timepoints), do: Enum.any?(timepoints, &(&1.stop_id == stop_id))
+  @spec is_a_timepoint?(StopTime.t()) :: boolean
+  defp is_a_timepoint?(nil), do: false
+  defp is_a_timepoint?(stop_time), do: stop_time.timepoint_id != ""
 
   @spec percent_of_the_way(non_neg_integer(), non_neg_integer()) :: non_neg_integer()
   defp percent_of_the_way(past_count, future_count) do

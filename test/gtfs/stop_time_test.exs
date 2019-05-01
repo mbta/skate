@@ -2,7 +2,6 @@ defmodule Gtfs.StopTimeTest do
   use ExUnit.Case, async: true
 
   alias Gtfs.StopTime
-  alias Gtfs.Timepoint
 
   @csv_rows [
     %{
@@ -67,28 +66,19 @@ defmodule Gtfs.StopTimeTest do
     }
   ]
 
-  describe "trip_stops_from_csv/1" do
+  describe "trip_stop_times_from_csv/1" do
     test "builds a trip stops map from a list of stop time csv rows" do
-      assert %{
-               "39770780" => ["64", "3"],
-               "39770783" => ["23391", "173", "11388"]
-             } = StopTime.trip_stops_from_csv(@csv_rows)
-    end
-  end
-
-  describe "trip_timepoints_from_csv/1" do
-    test "builds a trip timepoints map from a list of stop time csv rows" do
-      assert %{
+      assert StopTime.trip_stop_times_from_csv(@csv_rows) == %{
                "39770780" => [
-                 %Timepoint{id: "dudly", stop_id: "64"},
-                 %Timepoint{id: "melwa", stop_id: "3"}
+                 %StopTime{stop_id: "64", timepoint_id: "dudly"},
+                 %StopTime{stop_id: "3", timepoint_id: "melwa"}
                ],
                "39770783" => [
-                 %Timepoint{id: "bbsta", stop_id: "23391"},
-                 %Timepoint{id: "", stop_id: "173"},
-                 %Timepoint{id: "hunbv", stop_id: "11388"}
+                 %StopTime{stop_id: "23391", timepoint_id: "bbsta"},
+                 %StopTime{stop_id: "173", timepoint_id: ""},
+                 %StopTime{stop_id: "11388", timepoint_id: "hunbv"}
                ]
-             } = StopTime.trip_timepoints_from_csv(@csv_rows)
+             }
     end
   end
 

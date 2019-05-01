@@ -17,8 +17,7 @@ defmodule Gtfs.CacheFileTest do
         routes: [%Route{id: "1"}],
         route_patterns: [],
         stops: [],
-        trip_stops: %{},
-        trip_timepoints: %{},
+        trip_stop_times: %{},
         trips: []
       }
 
@@ -36,8 +35,7 @@ defmodule Gtfs.CacheFileTest do
         routes: [%Route{id: "2"}],
         route_patterns: [],
         stops: [],
-        trip_stops: %{},
-        trip_timepoints: %{},
+        trip_stop_times: %{},
         trips: []
       }
 
