@@ -65,46 +65,12 @@ defmodule Gtfs.Data do
   def all_routes(%__MODULE__{routes: routes}), do: routes
 
   @spec timepoints_on_route(t(), Route.id()) :: [Timepoint.t()]
-  def timepoints_on_route(
-        %__MODULE__{route_patterns: route_patterns, trip_timepoints: trip_timepoints},
-        route_id
-      ) do
-    route_patterns_by_direction = route_patterns_by_direction(route_patterns, route_id)
-
-    timepoint_ids_by_direction =
-      Helpers.map_values(route_patterns_by_direction, fn route_patterns ->
-        timepoints_for_route_patterns(route_patterns, trip_timepoints)
-      end)
-
-    merged_timepoint_ids =
-      Helpers.merge_lists([
-        timepoint_ids_by_direction |> Map.get(0, []) |> Enum.reverse(),
-        Map.get(timepoint_ids_by_direction, 1, [])
-      ])
-
-    merged_timepoint_ids
-  end
+  def timepoints_on_route(%__MODULE__{} = data, route_id),
+    do: items_on_route(data, route_id, &timepoints_for_route_patterns/2)
 
   @spec stops_on_route(t(), Route.id()) :: [Stop.id()]
-  def stops_on_route(
-        %__MODULE__{route_patterns: route_patterns, trip_stops: trip_stops},
-        route_id
-      ) do
-    route_patterns_by_direction = route_patterns_by_direction(route_patterns, route_id)
-
-    stops_by_direction =
-      Helpers.map_values(route_patterns_by_direction, fn route_patterns ->
-        stops_for_route_patterns(route_patterns, trip_stops)
-      end)
-
-    merged_stop_ids =
-      Helpers.merge_lists([
-        stops_by_direction |> Map.get(0, []) |> Enum.reverse(),
-        Map.get(stops_by_direction, 1, [])
-      ])
-
-    merged_stop_ids
-  end
+  def stops_on_route(%__MODULE__{} = data, route_id),
+    do: items_on_route(data, route_id, &stops_for_route_patterns/2)
 
   @spec fetch_gtfs(files_source()) :: {:ok, t()} | {:error, any()}
   def fetch_gtfs({:mocked_files, mocked_files}) do
@@ -137,6 +103,26 @@ defmodule Gtfs.Data do
     end
   end
 
+  @spec items_on_route(t(), Route.id(), ([RoutePattern.t()], t() -> [item])) :: [item]
+        when item: var
+  defp items_on_route(
+         %__MODULE__{route_patterns: route_patterns} = data,
+         route_id,
+         items_for_route_patterns_fn
+       ) do
+    items_by_direction =
+      route_patterns
+      |> route_patterns_by_direction(route_id)
+      |> Helpers.map_values(fn route_patterns ->
+        items_for_route_patterns_fn.(route_patterns, data)
+      end)
+
+    Helpers.merge_lists([
+      items_by_direction |> Map.get(0, []) |> Enum.reverse(),
+      Map.get(items_by_direction, 1, [])
+    ])
+  end
+
   @spec route_patterns_by_direction([RoutePattern.t()], Route.id()) :: %{
           Direction.id() => [RoutePattern.t()]
         }
@@ -147,10 +133,8 @@ defmodule Gtfs.Data do
   end
 
   # All route_patterns should be in the same direction
-  @spec timepoints_for_route_patterns([RoutePattern.t()], trip_timepoints()) :: [
-          Timepoint.t()
-        ]
-  defp timepoints_for_route_patterns(route_patterns, trip_timepoints) do
+  @spec timepoints_for_route_patterns([RoutePattern.t()], t()) :: [Timepoint.t()]
+  defp timepoints_for_route_patterns(route_patterns, %__MODULE__{trip_timepoints: trip_timepoints}) do
     route_patterns
     |> Enum.map(fn route_pattern -> route_pattern.representative_trip_id end)
     |> Enum.map(fn trip_id -> Map.get(trip_timepoints, trip_id, []) end)
@@ -158,8 +142,8 @@ defmodule Gtfs.Data do
   end
 
   # All route_patterns should be in the same direction
-  @spec stops_for_route_patterns([RoutePattern.t()], trip_stops()) :: [Stop.id()]
-  defp stops_for_route_patterns(route_patterns, trip_stops) do
+  @spec stops_for_route_patterns([RoutePattern.t()], t()) :: [Stop.id()]
+  defp stops_for_route_patterns(route_patterns, %__MODULE__{trip_stops: trip_stops}) do
     route_patterns
     |> Enum.map(fn route_pattern -> route_pattern.representative_trip_id end)
     |> Enum.map(fn trip_id -> Map.get(trip_stops, trip_id, []) end)
