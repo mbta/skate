@@ -32,12 +32,11 @@ defmodule Realtime.VehicleTest do
   describe "decode/1" do
     test "translates JSON data into a Vehicle struct" do
       opts = [
-        # Vehicle is traveling in the oposite direction from the way the stops are ordered
-        stop_times_on_route_fn: fn _ ->
+        stop_times_on_trip_fn: fn _trip_id ->
           [
-            %StopTime{stop_id: "6555", timepoint_id: "tp2"},
+            %StopTime{stop_id: "6553", timepoint_id: "tp1"},
             %StopTime{stop_id: "6554", timepoint_id: ""},
-            %StopTime{stop_id: "6553", timepoint_id: "tp1"}
+            %StopTime{stop_id: "6555", timepoint_id: "tp2"}
           ]
         end
       ]

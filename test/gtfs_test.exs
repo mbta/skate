@@ -170,7 +170,7 @@ defmodule GtfsTest do
     end
   end
 
-  describe "stop_times_on_route/2" do
+  describe "stop_times_on_trip/2" do
     test "returns all the stops on this route, both direction" do
       pid =
         Gtfs.start_mocked(%{
@@ -199,12 +199,10 @@ defmodule GtfsTest do
           ]
         })
 
-      assert Gtfs.stop_times_on_route("route", pid) == [
+      assert Gtfs.stop_times_on_trip("t1", pid) == [
                %StopTime{stop_id: "s4", timepoint_id: "exurb"},
                %StopTime{stop_id: "s5", timepoint_id: ""},
-               %StopTime{stop_id: "s3", timepoint_id: "suburb"},
-               %StopTime{stop_id: "s2", timepoint_id: ""},
-               %StopTime{stop_id: "s1", timepoint_id: "downtown"}
+               %StopTime{stop_id: "s3", timepoint_id: "suburb"}
              ]
     end
   end

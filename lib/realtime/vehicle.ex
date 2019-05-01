@@ -48,7 +48,7 @@ defmodule Realtime.Vehicle do
   ]
 
   @default_opts [
-    stop_times_on_route_fn: &Gtfs.stop_times_on_route/1
+    stop_times_on_trip_fn: &Gtfs.stop_times_on_trip/1
   ]
 
   @doc """
@@ -80,7 +80,7 @@ defmodule Realtime.Vehicle do
   @spec decode(term(), keyword) :: t()
   def decode(%{} = json, opts \\ []) do
     _opts = Keyword.merge(@default_opts, opts)
-    stop_times_on_route_fn = Keyword.get(opts, :stop_times_on_route_fn)
+    stop_times_on_trip_fn = Keyword.get(opts, :stop_times_on_trip_fn)
 
     id = json["id"]
     label = json["vehicle"]["vehicle"]["label"]
@@ -91,20 +91,17 @@ defmodule Realtime.Vehicle do
     current_stop_status = decode_current_status(json["vehicle"]["current_status"])
     stop_id = json["vehicle"]["stop_id"]
 
-    stop_times_on_route =
+    stop_times_on_trip =
       try do
-        stop_times_on_route_fn.(route_id)
+        stop_times_on_trip_fn.(trip_id)
       catch
         # Handle Gtfs server timeouts gracefully
         :exit, _ ->
           []
       end
 
-    ordered_stop_times =
-      if direction_id == 0, do: Enum.reverse(stop_times_on_route), else: stop_times_on_route
-
     {percent_of_the_way_to_next_timepoint, next_timepoint_stop_time} =
-      percent_of_the_way_to_next_timepoint(ordered_stop_times, stop_id)
+      percent_of_the_way_to_next_timepoint(stop_times_on_trip, stop_id)
 
     %__MODULE__{
       id: id,
