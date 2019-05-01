@@ -126,9 +126,7 @@ defmodule Realtime.Vehicle do
           non_neg_integer(),
           StopTime.t() | nil
         }
-  def percent_of_the_way_to_next_timepoint(stop_times, _stop_id)
-      when is_list(stop_times) and length(stop_times) == 0,
-      do: {0, nil}
+  def percent_of_the_way_to_next_timepoint([], _stop_id), do: {0, nil}
 
   def percent_of_the_way_to_next_timepoint(stop_times, stop_id) do
     {past_stop_times, current_stop_time, future_stop_times} =
