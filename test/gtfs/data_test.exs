@@ -112,15 +112,4 @@ defmodule Gtfs.DataTest do
 
     assert Data.stops_on_route(data, "r1") == ["s1", "s4"]
   end
-
-  test "fetch_url/1 requests data from the given URL" do
-    bypass = Bypass.open()
-    url = "http://localhost:#{bypass.port}/MBTA_GTFS.zip"
-
-    Bypass.expect(bypass, fn conn ->
-      Plug.Conn.resp(conn, 200, "test-data")
-    end)
-
-    assert {:ok, %HTTPoison.Response{body: "test-data", status_code: 200}} = Data.fetch_url(url)
-  end
 end
