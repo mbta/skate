@@ -1,13 +1,13 @@
 import React, { useContext } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import { closeIcon } from "../helpers/icon"
-import { LoadableTimepoints, Route, Timepoint, Vehicle } from "../skate"
+import { LoadableTimepoints, Route, TimepointId, Vehicle } from "../skate"
 import { deselectRoute } from "../state"
 import Loading from "./loading"
 
 interface Props {
   route: Route
-  timepoints: LoadableTimepoints
+  timepointIds: LoadableTimepoints
   vehicles: Vehicle[]
 }
 
@@ -37,10 +37,10 @@ const TimepointStop = () => (
   </div>
 )
 
-const Timepoint = ({ timepoint }: { timepoint: Timepoint }) => (
+const Timepoint = ({ timepointId }: { timepointId: TimepointId }) => (
   <li className="m-route-ladder__timepoint">
     <TimepointStop />
-    <div className="m-route-ladder__timepoint-name">{timepoint.id}</div>
+    <div className="m-route-ladder__timepoint-name">{timepointId}</div>
     <TimepointStop />
   </li>
 )
@@ -58,14 +58,14 @@ const Vehicle = ({ vehicle }: { vehicle: Vehicle }) => (
   </ul>
 )
 
-const RouteLadder = ({ route, timepoints, vehicles }: Props) => (
+const RouteLadder = ({ route, timepointIds, vehicles }: Props) => (
   <div className="m-route-ladder">
     <Header route={route} />
 
-    {timepoints ? (
+    {timepointIds ? (
       <ol className="m-route-ladder__timepoints">
-        {timepoints.map(timepoint => (
-          <Timepoint key={timepoint.id} timepoint={timepoint} />
+        {timepointIds.map(timepointId => (
+          <Timepoint key={timepointId} timepointId={timepointId} />
         ))}
       </ol>
     ) : (

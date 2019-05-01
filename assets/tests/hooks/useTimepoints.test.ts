@@ -1,14 +1,14 @@
 import { renderHook } from "react-hooks-testing-library"
 import * as Api from "../../src/api"
 import useTimepoints from "../../src/hooks/useTimepoints"
-import { Timepoint, TimepointsByRouteId } from "../../src/skate"
+import { TimepointId, TimepointsByRouteId } from "../../src/skate"
 import { instantPromise, mockUseStateOnce } from "../testHelpers/mockHelpers"
 
 // tslint:disable: react-hooks-nesting no-empty
 
 jest.mock("../../src/api", () => ({
   __esModule: true,
-  fetchTimepointsForRoute: jest.fn(() => new Promise<Timepoint[]>(() => {})),
+  fetchTimepointsForRoute: jest.fn(() => new Promise<TimepointId[]>(() => {})),
 }))
 
 describe("useTimepoints", () => {
@@ -25,22 +25,24 @@ describe("useTimepoints", () => {
   })
 
   test("returns timepoints when the api call returns", () => {
-    const timepoints = ["t1", "t2"]
+    const timepointIds = ["t1", "t2"]
     const mockFetchTimepoints: jest.Mock = Api.fetchTimepointsForRoute as jest.Mock
-    mockFetchTimepoints.mockImplementationOnce(() => instantPromise(timepoints))
+    mockFetchTimepoints.mockImplementationOnce(() =>
+      instantPromise(timepointIds)
+    )
 
     const { result } = renderHook(() => {
       return useTimepoints(["1"])
     })
 
-    expect(result.current).toEqual({ "1": timepoints })
+    expect(result.current).toEqual({ "1": timepointIds })
   })
 
   test("does not refetch timepoints that are loading or loaded", () => {
     const selectedRouteIds = ["2", "3"]
     const timepointsByRouteId: TimepointsByRouteId = {
       2: null,
-      3: [{ id: "t3" }],
+      3: ["t3"],
     }
 
     const mockFetchTimepoints: jest.Mock = Api.fetchTimepointsForRoute as jest.Mock

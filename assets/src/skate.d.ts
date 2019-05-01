@@ -12,13 +12,9 @@ export type RouteId = string
 
 export type StopId = string
 
-export interface Timepoint {
-  id: TimepointId
-}
-
-// An undefined value indicates that the timepoints need to be loaded
-// A null value indicates that we are currently loading the timepoints
-export type LoadableTimepoints = Timepoint[] | null | undefined
+// An undefined value indicates that the timepointIds need to be loaded
+// A null value indicates that we are currently loading the timepointIds
+export type LoadableTimepoints = TimepointId[] | null | undefined
 
 export type TimepointId = string
 

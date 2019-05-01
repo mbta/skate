@@ -6,8 +6,8 @@ import { Route, TimepointsByRouteId } from "../../src/skate"
 test("renders a route ladder", () => {
   const routes: Route[] = [{ id: "1" }, { id: "28" }]
   const timepointsByRouteId: TimepointsByRouteId = {
-    "1": [{ id: "WASMA" }, { id: "MELWA" }, { id: "HHGAT" }],
-    "28": [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }],
+    "1": ["WASMA", "MELWA", "HHGAT"],
+    "28": ["MATPN", "WELLH", "MORTN"],
     "71": undefined,
     "73": null,
   }

@@ -1,10 +1,10 @@
-import { Route, RouteId, Timepoint, TimepointId } from "./skate.d"
+import { Route, RouteId, TimepointId } from "./skate.d"
 
 interface RoutesResponse {
   data: Route[]
 }
 
-interface TimepointsForRouteResponse {
+interface TimepointsResponse {
   data: TimepointId[]
 }
 
@@ -30,13 +30,11 @@ export const fetchRoutes = (): Promise<Route[]> =>
 
 export const fetchTimepointsForRoute = (
   routeId: RouteId
-): Promise<Timepoint[]> =>
+): Promise<TimepointId[]> =>
   fetch(`/api/routes/${routeId}`)
     .then(checkResponseStatus)
     .then(parseJson)
-    .then(({ data: timepointIds }: TimepointsForRouteResponse) =>
-      timepointIds.map(timepointId => ({ id: timepointId }))
-    )
+    .then(({ data: timepointIds }: TimepointsResponse) => timepointIds)
     .catch(error => {
       // tslint:disable-next-line: no-console
       console.error(error)

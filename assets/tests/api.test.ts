@@ -52,7 +52,7 @@ describe("fetchRoutes", () => {
 })
 
 describe("fetchTimepointsForRoute", () => {
-  test("fetches a list of timepoints for a route", done => {
+  test("fetches a list of timepointIds for a route", done => {
     window.fetch = () =>
       Promise.resolve({
         json: () => ({
@@ -62,12 +62,8 @@ describe("fetchTimepointsForRoute", () => {
         status: 200,
       })
 
-    fetchTimepointsForRoute("28").then(timepoints => {
-      expect(timepoints).toEqual([
-        { id: "MATPN" },
-        { id: "WELLH" },
-        { id: "MORTN" },
-      ])
+    fetchTimepointsForRoute("28").then(timepointIds => {
+      expect(timepointIds).toEqual(["MATPN", "WELLH", "MORTN"])
       done()
     })
   })
