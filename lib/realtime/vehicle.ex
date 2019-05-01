@@ -101,8 +101,23 @@ defmodule Realtime.Vehicle do
     current_status = decode_current_status(json["vehicle"]["current_status"])
     stop_id = json["vehicle"]["stop_id"]
 
-    stops_on_route = stops_on_route_fn.(route_id)
-    timepoints_on_route = timepoints_on_route_fn.(route_id)
+    stops_on_route =
+      try do
+        stops_on_route_fn.(route_id)
+      catch
+        # Handle Gtfs server timeouts gracefully
+        :exit, _ ->
+          []
+      end
+
+    timepoints_on_route =
+      try do
+        timepoints_on_route_fn.(route_id)
+      catch
+        # Handle Gtfs server timeouts gracefully
+        :exit, _ ->
+          []
+      end
 
     ordered_stops = if direction_id == 0, do: Enum.reverse(stops_on_route), else: stops_on_route
 
