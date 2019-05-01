@@ -19,6 +19,8 @@ defmodule Gtfs.Timepoint do
     :stop_id
   ]
 
+  @derive Jason.Encoder
+
   defstruct [
     :id,
     :stop_id
