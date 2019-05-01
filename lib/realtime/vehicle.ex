@@ -103,7 +103,7 @@ defmodule Realtime.Vehicle do
     ordered_stop_times =
       if direction_id == 0, do: Enum.reverse(stop_times_on_route), else: stop_times_on_route
 
-    {percent_of_the_way_to_next_timepoint, next_timepoint} =
+    {percent_of_the_way_to_next_timepoint, next_timepoint_stop_time} =
       percent_of_the_way_to_next_timepoint(ordered_stop_times, stop_id)
 
     %__MODULE__{
@@ -116,8 +116,8 @@ defmodule Realtime.Vehicle do
       current_stop_status: current_stop_status,
       stop_id: stop_id,
       current_timepoint_status:
-        timepoint_status(current_stop_status, percent_of_the_way_to_next_timepoint),
-      timepoint_id: next_timepoint && next_timepoint.timepoint_id,
+        timepoint_status(current_stop_status, next_timepoint_stop_time, stop_id),
+      timepoint_id: next_timepoint_stop_time && next_timepoint_stop_time.timepoint_id,
       percent_of_the_way_to_timepoint: percent_of_the_way_to_next_timepoint
     }
   end
@@ -184,11 +184,11 @@ defmodule Realtime.Vehicle do
     end
   end
 
-  @spec timepoint_status(current_status(), integer) :: current_status()
-  defp timepoint_status(:in_transit_to, _percent_of_the_way), do: :in_transit_to
+  @spec timepoint_status(current_status(), StopTime.t(), Stop.id()) :: current_status()
+  defp timepoint_status(:in_transit_to, _next_timepoint_stop_time, _stop_id), do: :in_transit_to
 
-  defp timepoint_status(:stopped_at, percent_of_the_way),
-    do: if(percent_of_the_way == 100, do: :stopped_at, else: :in_transit_to)
+  defp timepoint_status(:stopped_at, next_timepoint_stop_time, stop_id),
+    do: if(next_timepoint_stop_time.stop_id == stop_id, do: :stopped_at, else: :in_transit_to)
 
   @spec decode_current_status(String.t()) :: current_status()
   defp decode_current_status("IN_TRANSIT_TO"), do: :in_transit_to
