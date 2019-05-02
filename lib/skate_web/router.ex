@@ -1,6 +1,12 @@
 defmodule SkateWeb.Router do
   use SkateWeb, :router
 
+  pipeline :redirect_prod_http do
+    if Application.get_env(:skate, :redirect_http?) do
+      plug(Plug.SSL, rewrite_on: [:x_forwarded_proto])
+    end
+  end
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -14,12 +20,13 @@ defmodule SkateWeb.Router do
   end
 
   scope "/", SkateWeb do
-    # no pipe
+    pipe_through :redirect_prod_http
+
     get "/_health", HealthController, :index
   end
 
   scope "/", SkateWeb do
-    pipe_through :browser
+    pipe_through [:redirect_prod_http, :browser]
 
     get "/", PageController, :index
   end

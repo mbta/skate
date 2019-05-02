@@ -23,6 +23,8 @@ config :skate, :websocket_check_origin, [
 # Do not print debug messages in production
 config :logger, level: :info
 
+config :skate, :redirect_http?, true
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key
