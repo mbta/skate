@@ -184,6 +184,8 @@ defmodule Realtime.Vehicle do
   @spec timepoint_status(current_status(), StopTime.t(), Stop.id()) :: current_status()
   defp timepoint_status(:in_transit_to, _next_timepoint_stop_time, _stop_id), do: :in_transit_to
 
+  defp timepoint_status(:stopped_at, nil, _stop_id), do: :in_transit_to
+
   defp timepoint_status(:stopped_at, next_timepoint_stop_time, stop_id),
     do: if(next_timepoint_stop_time.stop_id == stop_id, do: :stopped_at, else: :in_transit_to)
 
