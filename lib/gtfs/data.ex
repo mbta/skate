@@ -53,22 +53,17 @@ defmodule Gtfs.Data do
         %__MODULE__{route_patterns: route_patterns} = data,
         route_id
       ) do
-    stop_times_by_direction =
+    timepoint_ids_by_direction =
       route_patterns
       |> route_patterns_by_direction(route_id)
       |> Helpers.map_values(fn route_patterns ->
-        representative_trip_ids_for_route_patterns(route_patterns, data)
+        timepoint_ids_for_route_patterns(route_patterns, data)
       end)
 
-    stop_times =
-      Helpers.merge_lists([
-        stop_times_by_direction |> Map.get(0, []) |> Enum.reverse(),
-        Map.get(stop_times_by_direction, 1, [])
-      ])
-
-    stop_times
-    |> Enum.reject(&(&1.timepoint_id == ""))
-    |> Enum.map(& &1.timepoint_id)
+    Helpers.merge_lists([
+      timepoint_ids_by_direction |> Map.get(0, []) |> Enum.reverse(),
+      Map.get(timepoint_ids_by_direction, 1, [])
+    ])
   end
 
   @spec parse_files(files()) :: t()
@@ -98,12 +93,13 @@ defmodule Gtfs.Data do
   end
 
   # All route_patterns should be in the same direction
-  @spec representative_trip_ids_for_route_patterns([RoutePattern.t()], t()) :: [StopTime.t()]
-  defp representative_trip_ids_for_route_patterns(route_patterns, data) do
+  @spec timepoint_ids_for_route_patterns([RoutePattern.t()], t()) :: [StopTime.t()]
+  defp timepoint_ids_for_route_patterns(route_patterns, data) do
     route_patterns
     |> Enum.map(fn route_pattern -> route_pattern.representative_trip_id end)
-    |> Enum.map(fn trip_id -> stop_times_on_trip(data, trip_id) end)
-    |> Helpers.merge_lists()
+    |> Enum.flat_map(fn trip_id -> stop_times_on_trip(data, trip_id) end)
+    |> Enum.reject(&(&1.timepoint_id == ""))
+    |> Enum.map(& &1.timepoint_id)
   end
 
   @spec bus_trips(binary(), MapSet.t(Route.id())) :: [Trip.t()]

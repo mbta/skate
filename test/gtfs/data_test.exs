@@ -99,7 +99,10 @@ defmodule Gtfs.DataTest do
           %StopTime{stop_id: "s2", timepoint_id: "tp2"},
           %StopTime{stop_id: "s3", timepoint_id: "tp3"}
         ],
-        "t3" => [%StopTime{stop_id: "s4", timepoint_id: "tp4"}]
+        "t3" => [
+          %StopTime{stop_id: "s4", timepoint_id: "tp4"},
+          %StopTime{stop_id: "s5", timepoint_id: "tp1"}
+        ]
       },
       trips: [
         %Trip{
@@ -113,6 +116,6 @@ defmodule Gtfs.DataTest do
       ]
     }
 
-    assert Data.timepoint_ids_on_route(data, "r1") == ["tp1", "tp4"]
+    assert Data.timepoint_ids_on_route(data, "r1") == ["tp4", "tp1"]
   end
 end
