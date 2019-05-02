@@ -29,20 +29,17 @@ defmodule Gtfs do
   # Queries (Client)
 
   @spec all_routes(GenServer.server() | nil) :: [Route.t()]
-  def all_routes(server \\ nil) do
-    server = server || __MODULE__
+  def all_routes(server \\ __MODULE__) do
     GenServer.call(server, :all_routes)
   end
 
   @spec timepoint_ids_on_route(Route.id(), GenServer.server() | nil) :: [StopTime.timepoint_id()]
-  def timepoint_ids_on_route(route_id, server \\ nil) do
-    server = server || __MODULE__
+  def timepoint_ids_on_route(route_id, server \\ __MODULE__) do
     GenServer.call(server, {:timepoint_ids_on_route, route_id})
   end
 
   @spec stop_times_on_trip(Trip.id(), GenServer.server() | nil) :: [Stop.id()]
-  def stop_times_on_trip(trip_id, server \\ nil) do
-    server = server || __MODULE__
+  def stop_times_on_trip(trip_id, server \\ __MODULE__) do
     GenServer.call(server, {:stop_times_on_trip, trip_id})
   end
 
