@@ -144,16 +144,7 @@ defmodule Realtime.Vehicle do
   @spec split_stop_times([StopTime.t()], Stop.id()) ::
           {[StopTime.t()], StopTime.t() | nil, [StopTime.t()]}
   defp split_stop_times(stop_times, stop_id) do
-    index = Enum.find_index(stop_times, &(&1.stop_id == stop_id))
-    split_stop_times_on_index(stop_times, index)
-  end
-
-  @spec split_stop_times_on_index([StopTime.t()], non_neg_integer() | nil) ::
-          {[StopTime.t()], StopTime.t() | nil, [StopTime.t()]}
-  defp split_stop_times_on_index(_stop_times, nil), do: {[], nil, []}
-
-  defp split_stop_times_on_index(stop_times, index) do
-    {past, [current | future]} = Enum.split(stop_times, index)
+    {past, [current | future]} = Enum.split_while(stop_times, &(&1.stop_id != stop_id))
 
     {Enum.reverse(past), current, future}
   end
