@@ -48,10 +48,6 @@ defmodule Realtime.Vehicle do
     :percent_of_the_way_to_timepoint
   ]
 
-  @default_opts [
-    stop_times_on_trip_fn: &Gtfs.stop_times_on_trip/1
-  ]
-
   @doc """
     Argument is an Elixir object. Pass it through Jason before this function.
     json format for vehicles:
@@ -78,10 +74,10 @@ defmodule Realtime.Vehicle do
       }
     }
   """
-  @spec decode(term(), keyword) :: t()
-  def decode(%{} = json, opts \\ []) do
-    opts = Keyword.merge(@default_opts, opts)
-    stop_times_on_trip_fn = Keyword.get(opts, :stop_times_on_trip_fn)
+  @spec decode(term()) :: t()
+  def decode(%{} = json) do
+    stop_times_on_trip_fn =
+      Application.get_env(:realtime, :stop_times_on_trip_fn) || (&Gtfs.stop_times_on_trip/1)
 
     id = json["id"]
     label = json["vehicle"]["vehicle"]["label"]

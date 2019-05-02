@@ -1,9 +1,24 @@
 defmodule Realtime.ServerTest do
   use ExUnit.Case, async: true
 
+  alias Gtfs.StopTime
   alias Realtime.Server
 
   setup do
+    real_stop_times_on_trip_fn = Application.get_env(:realtime, :stop_times_on_trip_fn)
+
+    on_exit(fn ->
+      Application.put_env(:realtime, :stop_times_on_trip_fn, real_stop_times_on_trip_fn)
+    end)
+
+    Application.put_env(:realtime, :stop_times_on_trip_fn, fn _trip_id ->
+      [
+        %StopTime{stop_id: "6553", timepoint_id: "tp1"},
+        %StopTime{stop_id: "6554", timepoint_id: ""},
+        %StopTime{stop_id: "6555", timepoint_id: "tp2"}
+      ]
+    end)
+
     bypass = Bypass.open()
     url = "http://localhost:#{bypass.port}/VehiclePositions.json"
 
@@ -23,6 +38,7 @@ defmodule Realtime.ServerTest do
 
   test "clients get vehicles when subscribing", %{server_pid: server_pid} do
     data = Server.subscribe("1", server_pid)
+
     assert [at_least_one_vehicle | _rest] = data
     assert at_least_one_vehicle.route_id == "1"
   end
