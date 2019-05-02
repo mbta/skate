@@ -4,13 +4,7 @@ defmodule Gtfs.Data do
   """
   require Logger
 
-  alias Gtfs.Csv
-  alias Gtfs.Helpers
-  alias Gtfs.Route
-  alias Gtfs.RoutePattern
-  alias Gtfs.Stop
-  alias Gtfs.StopTime
-  alias Gtfs.Trip
+  alias Gtfs.{Csv, Helpers, Route, RoutePattern, Stop, StopTime, Trip}
 
   @type t :: %__MODULE__{
           routes: [Route.t()],
