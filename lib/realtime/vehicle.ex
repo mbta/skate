@@ -2,6 +2,8 @@ defmodule Realtime.Vehicle do
   alias Gtfs.{Direction, Route, Stop, StopTime, Trip}
 
   @type current_status() :: :in_transit_to | :stopped_at
+  @type stop_time_or_nil :: StopTime.t() | nil
+  @type timepoint_id_or_nil :: StopTime.timepoint_id() | nil
 
   @type t() :: %__MODULE__{
           id: String.t(),
@@ -13,7 +15,7 @@ defmodule Realtime.Vehicle do
           current_stop_status: current_status(),
           stop_id: Stop.id(),
           current_timepoint_status: current_status(),
-          timepoint_id: StopTime.timepoint_id(),
+          timepoint_id: timepoint_id_or_nil,
           percent_of_the_way_to_timepoint: non_neg_integer()
         }
 
@@ -27,7 +29,6 @@ defmodule Realtime.Vehicle do
     :current_stop_status,
     :stop_id,
     :current_timepoint_status,
-    :timepoint_id,
     :percent_of_the_way_to_timepoint
   ]
 
@@ -144,10 +145,19 @@ defmodule Realtime.Vehicle do
   @spec split_stop_times([StopTime.t()], Stop.id()) ::
           {[StopTime.t()], StopTime.t() | nil, [StopTime.t()]}
   defp split_stop_times(stop_times, stop_id) do
-    {past, [current | future]} = Enum.split_while(stop_times, &(&1.stop_id != stop_id))
-
-    {Enum.reverse(past), current, future}
+    stop_times
+    |> split_on_stop_id(stop_id)
+    |> past_current_future()
   end
+
+  @spec split_on_stop_id([StopTime.t()], Stop.id()) :: {[StopTime.t()], [StopTime.t()]}
+  defp split_on_stop_id(stop_times, stop_id),
+    do: Enum.split_while(stop_times, &(&1.stop_id != stop_id))
+
+  @spec past_current_future({[StopTime.t()], [StopTime.t()]}) ::
+          {[StopTime.t()], StopTime.t() | nil, [StopTime.t()]}
+  defp past_current_future({past, [current | future]}), do: {Enum.reverse(past), current, future}
+  defp past_current_future({past, future}), do: {Enum.reverse(past), nil, future}
 
   @spec count_to_timepoint([StopTime.t()]) :: non_neg_integer()
   defp count_to_timepoint(stop_times) do
@@ -172,7 +182,7 @@ defmodule Realtime.Vehicle do
     end
   end
 
-  @spec timepoint_status(current_status(), StopTime.t(), Stop.id()) :: current_status()
+  @spec timepoint_status(current_status(), stop_time_or_nil(), Stop.id()) :: current_status()
   defp timepoint_status(:in_transit_to, _next_timepoint_stop_time, _stop_id), do: :in_transit_to
 
   defp timepoint_status(:stopped_at, nil, _stop_id), do: :in_transit_to
@@ -185,7 +195,7 @@ defmodule Realtime.Vehicle do
   defp decode_current_status("INCOMING_AT"), do: :in_transit_to
   defp decode_current_status("STOPPED_AT"), do: :stopped_at
 
-  @spec next_timepoint_id(StopTime.t() | nil) :: StopTime.timepoint_id() | nil
+  @spec next_timepoint_id(stop_time_or_nil()) :: timepoint_id_or_nil()
   defp next_timepoint_id(nil), do: nil
   defp next_timepoint_id(%StopTime{timepoint_id: timepoint_id}), do: timepoint_id
 end
