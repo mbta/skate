@@ -82,13 +82,6 @@ defmodule Gtfs.StopTimeTest do
     end
   end
 
-  describe "row_includes_a_checkpoint?/1" do
-    test "returns whether the row includes a value in the checkpoint column" do
-      assert StopTime.row_includes_a_checkpoint?(Enum.at(@csv_rows, 4))
-      refute StopTime.row_includes_a_checkpoint?(Enum.at(@csv_rows, 3))
-    end
-  end
-
   describe "row_in_trip_id_set?/2" do
     test "returns whether the row's trip id is in the given set" do
       assert StopTime.row_in_trip_id_set?(
