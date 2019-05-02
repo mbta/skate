@@ -19,7 +19,7 @@ defmodule Gtfs.DataTest do
     assert Data.all_routes(data) == [%Route{id: "1"}, %Route{id: "2"}]
   end
 
-  test "all_trips/1 returns all the routes" do
+  test "all_trips/1 returns all the trips" do
     data = %Data{
       routes: [],
       route_patterns: [],
