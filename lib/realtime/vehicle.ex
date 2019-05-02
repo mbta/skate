@@ -114,7 +114,7 @@ defmodule Realtime.Vehicle do
       stop_id: stop_id,
       current_timepoint_status:
         timepoint_status(current_stop_status, next_timepoint_stop_time, stop_id),
-      timepoint_id: next_timepoint_stop_time && next_timepoint_stop_time.timepoint_id,
+      timepoint_id: next_timepoint_id(next_timepoint_stop_time),
       percent_of_the_way_to_timepoint: percent_of_the_way_to_next_timepoint
     }
   end
@@ -191,4 +191,8 @@ defmodule Realtime.Vehicle do
   defp decode_current_status("IN_TRANSIT_TO"), do: :in_transit_to
   defp decode_current_status("INCOMING_AT"), do: :in_transit_to
   defp decode_current_status("STOPPED_AT"), do: :stopped_at
+
+  @spec next_timepoint_id(StopTime.t() | nil) :: StopTime.timepoint_id() | nil
+  defp next_timepoint_id(nil), do: nil
+  defp next_timepoint_id(%StopTime{timepoint_id: timepoint_id}), do: timepoint_id
 end
