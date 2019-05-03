@@ -14,6 +14,8 @@ config :skate,
 
 config :skate, Gtfs.CacheFile, cache_filename: nil
 
+config :skate, :redirect_http?, false
+
 # Configures the endpoint
 config :skate, SkateWeb.Endpoint,
   url: [host: "localhost"],
