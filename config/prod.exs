@@ -15,6 +15,11 @@ config :skate, SkateWeb.Endpoint,
   url: [host: {:system, "HOST"}, port: 80],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
+config :skate, :websocket_check_origin, [
+  "https://*.mbta.com",
+  "https://*.mbtace.com"
+]
+
 # Do not print debug messages in production
 config :logger, level: :info
 
