@@ -26,6 +26,20 @@ exports[`displays loading if we are fetching the timepoints 1`] = `
       28
     </div>
   </div>
+  <button
+    className="m-route-ladder__reverse"
+    onClick={[Function]}
+  >
+    <span
+      className="m-route-ladder__reverse-icon"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "SVG",
+        }
+      }
+    />
+    Reverse
+  </button>
   loading...
 </div>
 `;
@@ -56,6 +70,20 @@ exports[`renders a route ladder 1`] = `
       28
     </div>
   </div>
+  <button
+    className="m-route-ladder__reverse"
+    onClick={[Function]}
+  >
+    <span
+      className="m-route-ladder__reverse-icon"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "SVG",
+        }
+      }
+    />
+    Reverse
+  </button>
   <ol
     className="m-route-ladder__timepoints"
   >

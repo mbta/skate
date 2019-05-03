@@ -1,6 +1,6 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import DispatchContext from "../contexts/dispatchContext"
-import { closeIcon } from "../helpers/icon"
+import { closeIcon, reverseIcon, reverseIconReversed } from "../helpers/icon"
 import { LoadableTimepoints, Route, Timepoint, Vehicle } from "../skate"
 import { deselectRoute } from "../state"
 import Loading from "./loading"
@@ -58,23 +58,40 @@ const Vehicle = ({ vehicle }: { vehicle: Vehicle }) => (
   </ul>
 )
 
-const RouteLadder = ({ route, timepoints, vehicles }: Props) => (
-  <div className="m-route-ladder">
-    <Header route={route} />
+const RouteLadder = ({ route, timepoints, vehicles }: Props) => {
+  const [shouldReverseStops, setShouldReverseStops] = useState(false)
 
-    {timepoints ? (
-      <ol className="m-route-ladder__timepoints">
-        {timepoints.map(timepoint => (
-          <Timepoint key={timepoint.id} timepoint={timepoint} />
-        ))}
-      </ol>
-    ) : (
-      <Loading />
-    )}
-    {vehicles.map(vehicle => (
-      <Vehicle key={vehicle.id} vehicle={vehicle} />
-    ))}
-  </div>
-)
+  const swapReverse = () => setShouldReverseStops(!shouldReverseStops)
+
+  const orderedTimepoints: LoadableTimepoints =
+    // Use slice to make a copy of the array before destructively reversing
+    timepoints && shouldReverseStops ? timepoints.slice().reverse() : timepoints
+
+  return (
+    <div className="m-route-ladder">
+      <Header route={route} />
+
+      <button className="m-route-ladder__reverse" onClick={swapReverse}>
+        {shouldReverseStops
+          ? reverseIconReversed("m-route-ladder__reverse-icon")
+          : reverseIcon("m-route-ladder__reverse-icon")}
+        Reverse
+      </button>
+
+      {orderedTimepoints ? (
+        <ol className="m-route-ladder__timepoints">
+          {orderedTimepoints.map(timepoint => (
+            <Timepoint key={timepoint.id} timepoint={timepoint} />
+          ))}
+        </ol>
+      ) : (
+        <Loading />
+      )}
+      {vehicles.map(vehicle => (
+        <Vehicle key={vehicle.id} vehicle={vehicle} />
+      ))}
+    </div>
+  )
+}
 
 export default RouteLadder
