@@ -3,42 +3,14 @@ defmodule Gtfs do
   require Logger
 
   alias Gtfs.CacheFile
-  alias Gtfs.Csv
+  alias Gtfs.Data
   alias Gtfs.HealthServer
-  alias Gtfs.Helpers
   alias Gtfs.Route
-  alias Gtfs.RoutePattern
   alias Gtfs.Stop
-  alias Gtfs.Timepoint
+  alias Gtfs.StopTime
   alias Gtfs.Trip
 
-  @type t :: %__MODULE__{
-          routes: [Route.t()],
-          route_patterns: [RoutePattern.t()],
-          stops: [Stop.t()],
-          trip_timepoints: %{optional(Trip.id()) => [Timepoint.id()]},
-          trips: [Trip.t()]
-        }
-
-  @enforce_keys [
-    :routes,
-    :route_patterns,
-    :stops,
-    :trip_timepoints,
-    :trips
-  ]
-
-  defstruct [
-    :routes,
-    :route_patterns,
-    :stops,
-    :trip_timepoints,
-    :trips
-  ]
-
-  @type state :: :not_loaded | {:loaded, t()}
-
-  @type files :: %{optional(String.t()) => binary()}
+  @type state :: :not_loaded | {:loaded, Data.t()}
 
   @type files_source :: {:url, String.t()} | {:mocked_files, mocked_files()}
 
@@ -57,51 +29,33 @@ defmodule Gtfs do
   # Queries (Client)
 
   @spec all_routes(GenServer.server() | nil) :: [Route.t()]
-  def all_routes(server \\ nil) do
-    server = server || __MODULE__
+  def all_routes(server \\ __MODULE__) do
     GenServer.call(server, :all_routes)
   end
 
-  @spec timepoints_on_route(Route.id(), GenServer.server() | nil) :: [Timepoint.id()]
-  def timepoints_on_route(route_id, server \\ nil) do
-    server = server || __MODULE__
-    GenServer.call(server, {:timepoints_on_route, route_id})
+  @spec timepoint_ids_on_route(Route.id(), GenServer.server() | nil) :: [StopTime.timepoint_id()]
+  def timepoint_ids_on_route(route_id, server \\ __MODULE__) do
+    GenServer.call(server, {:timepoint_ids_on_route, route_id})
+  end
+
+  @spec stop_times_on_trip(Trip.id(), GenServer.server() | nil) :: [Stop.id()]
+  def stop_times_on_trip(trip_id, server \\ __MODULE__) do
+    GenServer.call(server, {:stop_times_on_trip, trip_id})
   end
 
   # Queries (Server)
 
   @impl true
   def handle_call(:all_routes, _from, {:loaded, gtfs_data} = state) do
-    {:reply, gtfs_data.routes, state}
+    {:reply, Data.all_routes(gtfs_data), state}
   end
 
-  def handle_call({:timepoints_on_route, route_id}, _from, {:loaded, gtfs_data} = state) do
-    route_patterns_by_direction =
-      gtfs_data.route_patterns
-      |> Enum.filter(fn route_pattern -> route_pattern.route_id == route_id end)
-      |> Enum.group_by(fn route_pattern -> route_pattern.direction_id end)
-
-    timepoints_by_direction =
-      Helpers.map_values(route_patterns_by_direction, fn route_patterns ->
-        timepoints_for_route_patterns(route_patterns, gtfs_data)
-      end)
-
-    merged_timepoint_ids =
-      Helpers.merge_lists([
-        Enum.reverse(Map.get(timepoints_by_direction, 0, [])),
-        Map.get(timepoints_by_direction, 1, [])
-      ])
-
-    {:reply, merged_timepoint_ids, state}
+  def handle_call({:timepoint_ids_on_route, route_id}, _from, {:loaded, gtfs_data} = state) do
+    {:reply, Data.timepoint_ids_on_route(gtfs_data, route_id), state}
   end
 
-  # All route_patterns should be in the same direction
-  @spec timepoints_for_route_patterns([RoutePattern.t()], t()) :: [Timepoint.id()]
-  defp timepoints_for_route_patterns(route_patterns, gtfs_data) do
-    route_patterns
-    |> Enum.map(fn route_pattern -> route_pattern.representative_trip_id end)
-    |> Enum.map(fn trip_id -> Map.get(gtfs_data.trip_timepoints, trip_id, []) end)
-    |> Helpers.merge_lists()
+  def handle_call({:stop_times_on_trip, trip_id}, _from, {:loaded, gtfs_data} = state) do
+    {:reply, Data.stop_times_on_trip(gtfs_data, trip_id), state}
   end
 
   # Initialization (Client)
@@ -115,7 +69,7 @@ defmodule Gtfs do
     )
   end
 
-  @spec start_mocked(mocked_files, pid() | nil) :: pid()
+  @spec start_mocked(mocked_files(), pid() | nil) :: pid()
   def start_mocked(mocked_files, health_server_pid \\ nil) do
     {:ok, pid} =
       GenServer.start_link(__MODULE__, {{:mocked_files, mocked_files}, health_server_pid})
@@ -158,12 +112,12 @@ defmodule Gtfs do
     end
   end
 
-  @spec fetch_gtfs(files_source()) :: {:ok, t()} | {:error, any()}
+  @spec fetch_gtfs(files_source()) :: {:ok, Data.t()} | {:error, any()}
   defp fetch_gtfs({:mocked_files, mocked_files}) do
     data =
       mocked_files
       |> files_from_mocked()
-      |> parse_files()
+      |> Data.parse_files()
 
     {:ok, data}
   end
@@ -189,12 +143,12 @@ defmodule Gtfs do
     end
   end
 
-  @spec gtfs_from_url(String.t()) :: {:ok, t()} | {:error, any()}
+  @spec gtfs_from_url(String.t()) :: {:ok, Data.t()} | {:error, any()}
   defp gtfs_from_url(url) do
     Logger.info("Loading gtfs data remote files")
 
     with {:files, files} <- fetch_remote_files(url) do
-      data = parse_files(files)
+      data = Data.parse_files(files)
       {:ok, data}
     else
       {:error, error} ->
@@ -202,7 +156,7 @@ defmodule Gtfs do
     end
   end
 
-  @spec fetch_remote_files(String.t()) :: {:files, files()} | {:error, any()}
+  @spec fetch_remote_files(String.t()) :: {:files, Data.files()} | {:error, any()}
   defp fetch_remote_files(url) do
     case fetch_url(url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: zip_binary}} ->
@@ -226,7 +180,7 @@ defmodule Gtfs do
   @spec fetch_url(String.t()) :: {:ok, HTTPoison.Response.t()} | {:error, HTTPoison.Error.t()}
   def fetch_url(url), do: HTTPoison.get(url)
 
-  @spec files_from_mocked(mocked_files()) :: files()
+  @spec files_from_mocked(mocked_files()) :: Data.files()
   defp files_from_mocked(mocked_files) do
     for {file_name, lines} <- mocked_files, into: %{} do
       {file_name, Enum.join(lines, "\n")}
@@ -235,7 +189,7 @@ defmodule Gtfs do
 
   # Takes in the binary data of a zip file, and a list of files to extract
   # Returns a map from those file names to the data in each file
-  @spec unzip_files(binary(), [String.t()]) :: files()
+  @spec unzip_files(binary(), [String.t()]) :: Data.files()
   defp unzip_files(zip_binary, file_names) do
     # erlang needs file names as charlists.
     file_names = Enum.map(file_names, &String.to_charlist/1)
@@ -245,45 +199,5 @@ defmodule Gtfs do
     # Convert filenames back from charlists to strings
     |> Enum.map(fn {file_name, data} -> {to_string(file_name), data} end)
     |> Map.new()
-  end
-
-  @spec parse_files(files()) :: t()
-  defp parse_files(files) do
-    bus_routes = Csv.parse(files["routes.txt"], &Route.bus_route_row?/1, &Route.from_csv_row/1)
-    bus_route_ids = MapSet.new(bus_routes, & &1.id)
-
-    bus_route_patterns =
-      Csv.parse(
-        files["route_patterns.txt"],
-        &RoutePattern.row_in_route_id_set?(&1, bus_route_ids),
-        &RoutePattern.from_csv_row/1
-      )
-
-    bus_trips =
-      Csv.parse(
-        files["trips.txt"],
-        &Trip.row_in_route_id_set?(&1, bus_route_ids),
-        &Trip.from_csv_row/1
-      )
-
-    bus_trip_ids = MapSet.new(bus_trips, & &1.id)
-
-    bus_trip_timepoints =
-      files["stop_times.txt"]
-      |> Csv.parse([
-        &Timepoint.row_includes_a_checkpoint?(&1),
-        &Timepoint.row_in_trip_id_set?(&1, bus_trip_ids)
-      ])
-      |> Timepoint.trip_timepoints_from_csv()
-
-    all_stops = Csv.parse(files["stops.txt"], fn _row -> true end, &Stop.from_csv_row/1)
-
-    %__MODULE__{
-      routes: bus_routes,
-      route_patterns: bus_route_patterns,
-      stops: all_stops,
-      trip_timepoints: bus_trip_timepoints,
-      trips: bus_trips
-    }
   end
 end

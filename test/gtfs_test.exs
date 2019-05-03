@@ -2,6 +2,7 @@ defmodule GtfsTest do
   use ExUnit.Case, async: true
 
   alias Gtfs.Route
+  alias Gtfs.StopTime
 
   describe "all_routes" do
     test "maps each row to a Route" do
@@ -32,8 +33,8 @@ defmodule GtfsTest do
     end
   end
 
-  describe "timepoints_on_route" do
-    test "timepoints_on_route" do
+  describe "timepoint_ids_on_route" do
+    test "timepoint_ids_on_route" do
       pid =
         Gtfs.start_mocked(%{
           "routes.txt" => [
@@ -57,7 +58,7 @@ defmodule GtfsTest do
           ]
         })
 
-      assert Gtfs.timepoints_on_route("39", pid) == ["check"]
+      assert Gtfs.timepoint_ids_on_route("39", pid) == ["check"]
     end
 
     test "filters out non-bus trips, route patterns, and timepoints" do
@@ -85,8 +86,8 @@ defmodule GtfsTest do
           ]
         })
 
-      assert Gtfs.timepoints_on_route("39", pid) == ["check"]
-      assert Gtfs.timepoints_on_route("Blue", pid) == []
+      assert Gtfs.timepoint_ids_on_route("39", pid) == ["check"]
+      assert Gtfs.timepoint_ids_on_route("Blue", pid) == []
     end
 
     test "merges multiple trips into a coherent order" do
@@ -120,7 +121,7 @@ defmodule GtfsTest do
           ]
         })
 
-      assert Gtfs.timepoints_on_route("route", pid) == ["c1", "c2", "c3", "c4", "c5"]
+      assert Gtfs.timepoint_ids_on_route("route", pid) == ["c1", "c2", "c3", "c4", "c5"]
     end
 
     test "merges stops from both directions, flipping direction 0" do
@@ -149,7 +150,7 @@ defmodule GtfsTest do
           ]
         })
 
-      assert Gtfs.timepoints_on_route("route", pid) == ["exurb", "suburb", "downtown"]
+      assert Gtfs.timepoint_ids_on_route("route", pid) == ["exurb", "suburb", "downtown"]
     end
 
     test "gracefully returns [] for route without timepoints" do
@@ -165,7 +166,44 @@ defmodule GtfsTest do
           ]
         })
 
-      assert Gtfs.timepoints_on_route("route", pid) == []
+      assert Gtfs.timepoint_ids_on_route("route", pid) == []
+    end
+  end
+
+  describe "stop_times_on_trip/2" do
+    test "returns all the stops on this route, both direction" do
+      pid =
+        Gtfs.start_mocked(%{
+          "routes.txt" => [
+            "route_id,route_type",
+            "route,3"
+          ],
+          "route_patterns.txt" => [
+            "route_pattern_id,route_id,direction_id,representative_trip_id",
+            "p0,route,0,t0",
+            "p1,route,1,t1"
+          ],
+          "trips.txt" => [
+            "route_id,trip_id",
+            "route,t0",
+            "route,t1"
+          ],
+          "stop_times.txt" => [
+            "trip_id,stop_id,stop_sequence,checkpoint_id",
+            "t0,s1,1,downtown",
+            "t0,s2,2,",
+            "t0,s3,3,suburb",
+            "t1,s4,1,exurb",
+            "t1,s5,2,",
+            "t1,s3,3,suburb"
+          ]
+        })
+
+      assert Gtfs.stop_times_on_trip("t1", pid) == [
+               %StopTime{stop_id: "s4", timepoint_id: "exurb"},
+               %StopTime{stop_id: "s5", timepoint_id: ""},
+               %StopTime{stop_id: "s3", timepoint_id: "suburb"}
+             ]
     end
   end
 

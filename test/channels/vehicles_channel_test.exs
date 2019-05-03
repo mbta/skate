@@ -1,12 +1,27 @@
 defmodule SkateWeb.VehiclesChannelTest do
   use SkateWeb.ChannelCase
 
+  alias Gtfs.StopTime
   alias Phoenix.Socket
   alias Realtime.Vehicle
   alias SkateWeb.{UserSocket, VehiclesChannel}
 
   describe "join/3" do
     setup do
+      real_stop_times_on_trip_fn = Application.get_env(:realtime, :stop_times_on_trip_fn)
+
+      on_exit(fn ->
+        Application.put_env(:realtime, :stop_times_on_trip_fn, real_stop_times_on_trip_fn)
+      end)
+
+      Application.put_env(:realtime, :stop_times_on_trip_fn, fn _trip_id ->
+        [
+          %StopTime{stop_id: "6553", timepoint_id: "tp1"},
+          %StopTime{stop_id: "6554", timepoint_id: ""},
+          %StopTime{stop_id: "6555", timepoint_id: "tp2"}
+        ]
+      end)
+
       socket = socket(UserSocket, "", %{})
 
       {:ok, socket: socket}
@@ -30,6 +45,20 @@ defmodule SkateWeb.VehiclesChannelTest do
 
   describe "handle_info/2" do
     setup do
+      real_stop_times_on_trip_fn = Application.get_env(:realtime, :stop_times_on_trip_fn)
+
+      on_exit(fn ->
+        Application.put_env(:realtime, :stop_times_on_trip_fn, real_stop_times_on_trip_fn)
+      end)
+
+      Application.put_env(:realtime, :stop_times_on_trip_fn, fn _trip_id ->
+        [
+          %StopTime{stop_id: "6553", timepoint_id: "tp1"},
+          %StopTime{stop_id: "6554", timepoint_id: ""},
+          %StopTime{stop_id: "6555", timepoint_id: "tp2"}
+        ]
+      end)
+
       {:ok, _, socket} =
         UserSocket
         |> socket("", %{})
@@ -47,8 +76,11 @@ defmodule SkateWeb.VehiclesChannelTest do
           direction_id: "234",
           route_id: "345",
           trip_id: "456",
-          current_status: :in_transit_to,
-          stop_id: "567"
+          current_stop_status: :in_transit_to,
+          stop_id: "567",
+          current_timepoint_status: :in_transit_to,
+          timepoint_id: "tp2",
+          percent_of_the_way_to_timepoint: 60
         }
       ]
 
