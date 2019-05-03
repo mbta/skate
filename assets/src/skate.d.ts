@@ -33,11 +33,22 @@ export interface Vehicle {
   direction_id: Direction
   route_id: RouteId
   trip_id: TripId
-  current_status: VehicleStatus
-  stop_id: StopId
+  stop_status: VehicleStopStatus
+  timepoint_status: VehicleTimepointStatus | null
 }
 
 export type VehicleId = string
+
+export interface VehicleStopStatus {
+  status: VehicleStatus
+  stop_id: StopId
+}
+
+export interface VehicleTimepointStatus {
+  status: VehicleStatus
+  timepoint_id: TimepointId
+  percent_of_the_way_to_timepoint: number
+}
 
 export type VehiclesByRouteId = ByRouteId<Vehicle[]>
 

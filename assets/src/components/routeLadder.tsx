@@ -58,8 +58,18 @@ const Vehicle = ({ vehicle }: { vehicle: Vehicle }) => (
     <li>direction_id {vehicle.direction_id}</li>
     <li>route_id {vehicle.route_id}</li>
     <li>trip_id {vehicle.trip_id}</li>
-    <li>current_status {vehicle.current_status}</li>
-    <li>stop_id {vehicle.stop_id}</li>
+    <li>
+      stop_status
+      {vehicle.stop_status.status}
+      {vehicle.stop_status.stop_id}
+    </li>
+    <li>
+      timepoint_status
+      {vehicle.timepoint_status && vehicle.timepoint_status.status}
+      {vehicle.timepoint_status && vehicle.timepoint_status.timepoint_id}
+      {vehicle.timepoint_status &&
+        vehicle.timepoint_status.percent_of_the_way_to_timepoint}
+    </li>
   </ul>
 )
 
