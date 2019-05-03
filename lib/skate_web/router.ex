@@ -20,8 +20,6 @@ defmodule SkateWeb.Router do
   end
 
   scope "/", SkateWeb do
-    pipe_through :redirect_prod_http
-
     get "/_health", HealthController, :index
   end
 
