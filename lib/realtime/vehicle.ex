@@ -159,7 +159,7 @@ defmodule Realtime.Vehicle do
   defp count_to_timepoint(stop_times) do
     count = Enum.find_index(stop_times, &is_a_timepoint?(&1))
 
-    if is_number(count), do: count + 1, else: 0
+    if is_number(count), do: count + 1, else: length(stop_times)
   end
 
   @spec is_a_timepoint?(StopTime.t()) :: boolean
