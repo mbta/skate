@@ -93,7 +93,7 @@ defmodule Gtfs.DataTest do
       trip_stop_times: %{
         "t1" => [
           %StopTime{stop_id: "s1", timepoint_id: "tp1"},
-          %StopTime{stop_id: "s7", timepoint_id: ""}
+          %StopTime{stop_id: "s7", timepoint_id: nil}
         ],
         "t2" => [
           %StopTime{stop_id: "s2", timepoint_id: "tp2"},

@@ -201,7 +201,7 @@ defmodule GtfsTest do
 
       assert Gtfs.stop_times_on_trip("t1", pid) == [
                %StopTime{stop_id: "s4", timepoint_id: "exurb"},
-               %StopTime{stop_id: "s5", timepoint_id: ""},
+               %StopTime{stop_id: "s5", timepoint_id: nil},
                %StopTime{stop_id: "s3", timepoint_id: "suburb"}
              ]
     end

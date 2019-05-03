@@ -75,7 +75,8 @@ defmodule Gtfs.StopTimeTest do
                ],
                "39770783" => [
                  %StopTime{stop_id: "23391", timepoint_id: "bbsta"},
-                 %StopTime{stop_id: "173", timepoint_id: ""},
+                 # Does not allow empty strings for timepoint_id
+                 %StopTime{stop_id: "173", timepoint_id: nil},
                  %StopTime{stop_id: "11388", timepoint_id: "hunbv"}
                ]
              }

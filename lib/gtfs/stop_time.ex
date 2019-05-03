@@ -27,7 +27,7 @@ defmodule Gtfs.StopTime do
     :stop_id
   ]
 
-  @type timepoint_id :: String.t()
+  @type timepoint_id :: String.t() | nil
 
   @type trip_id_set :: MapSet.t(Trip.id())
 
@@ -39,9 +39,13 @@ defmodule Gtfs.StopTime do
       stop_times_on_trip
       |> Enum.sort_by(fn stop_time_row -> stop_time_row["stop_sequence"] end)
       |> Enum.map(fn stop_time_row ->
+        # Use nil instead of an empty string for timepoint_id if there is no checkpoint_id
+        timepoint_id =
+          if stop_time_row["checkpoint_id"] == "", do: nil, else: stop_time_row["checkpoint_id"]
+
         %__MODULE__{
           stop_id: stop_time_row["stop_id"],
-          timepoint_id: stop_time_row["checkpoint_id"]
+          timepoint_id: timepoint_id
         }
       end)
     end)

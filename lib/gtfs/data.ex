@@ -98,7 +98,7 @@ defmodule Gtfs.Data do
     route_patterns
     |> Enum.map(fn route_pattern -> route_pattern.representative_trip_id end)
     |> Enum.flat_map(fn trip_id -> stop_times_on_trip(data, trip_id) end)
-    |> Enum.reject(&(&1.timepoint_id == ""))
+    |> Enum.reject(&(&1.timepoint_id == nil))
     |> Enum.map(& &1.timepoint_id)
   end
 
