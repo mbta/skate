@@ -54,11 +54,15 @@ defmodule Realtime.VehicleTest do
                direction_id: 0,
                route_id: "505",
                trip_id: "39984755",
-               current_stop_status: :in_transit_to,
-               stop_id: "6555",
-               current_timepoint_status: :in_transit_to,
-               timepoint_id: "tp2",
-               percent_of_the_way_to_timepoint: 100
+               stop_status: %{
+                 status: :in_transit_to,
+                 stop_id: "6555"
+               },
+               timepoint_status: %{
+                 status: :in_transit_to,
+                 timepoint_id: "tp2",
+                 percent_of_the_way_to_timepoint: 100
+               }
              }
     end
   end

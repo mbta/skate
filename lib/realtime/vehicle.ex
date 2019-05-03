@@ -1,22 +1,28 @@
 defmodule Realtime.Vehicle do
   alias Gtfs.{Direction, Route, Stop, StopTime, Trip}
 
-  @type current_status() :: :in_transit_to | :stopped_at
-  @type stop_time_or_nil :: StopTime.t() | nil
-  @type timepoint_id_or_nil :: StopTime.timepoint_id() | nil
+  @type current_status :: :in_transit_to | :stopped_at
+  @type stop_status :: %{
+          status: current_status(),
+          stop_id: Stop.id()
+        }
+  @type timepoint_status ::
+          %{
+            status: current_status(),
+            timepoint_id: StopTime.timepoint_id() | nil,
+            percent_of_the_way_to_timepoint: non_neg_integer()
+          }
+          | nil
 
-  @type t() :: %__MODULE__{
+  @type t :: %__MODULE__{
           id: String.t(),
           label: String.t(),
           timestamp: integer(),
           direction_id: Direction.id(),
           route_id: Route.id(),
           trip_id: Trip.id(),
-          current_stop_status: current_status(),
-          stop_id: Stop.id(),
-          current_timepoint_status: current_status(),
-          timepoint_id: timepoint_id_or_nil,
-          percent_of_the_way_to_timepoint: non_neg_integer()
+          stop_status: stop_status(),
+          timepoint_status: timepoint_status()
         }
 
   @enforce_keys [
@@ -26,10 +32,7 @@ defmodule Realtime.Vehicle do
     :direction_id,
     :route_id,
     :trip_id,
-    :current_stop_status,
-    :stop_id,
-    :current_timepoint_status,
-    :percent_of_the_way_to_timepoint
+    :stop_status
   ]
 
   @derive Jason.Encoder
@@ -41,11 +44,8 @@ defmodule Realtime.Vehicle do
     :direction_id,
     :route_id,
     :trip_id,
-    :current_stop_status,
-    :stop_id,
-    :current_timepoint_status,
-    :timepoint_id,
-    :percent_of_the_way_to_timepoint
+    :stop_status,
+    :timepoint_status
   ]
 
   @doc """
@@ -97,8 +97,19 @@ defmodule Realtime.Vehicle do
           []
       end
 
-    {percent_of_the_way_to_next_timepoint, next_timepoint_stop_time} =
-      percent_of_the_way_to_next_timepoint(stop_times_on_trip, stop_id)
+    timepoint_status =
+      with {percent_of_the_way_to_next_timepoint, next_timepoint_stop_time} <-
+             percent_of_the_way_to_next_timepoint(stop_times_on_trip, stop_id) do
+        %{
+          status:
+            current_timepoint_status(current_stop_status, next_timepoint_stop_time, stop_id),
+          timepoint_id: next_timepoint_stop_time && next_timepoint_stop_time.timepoint_id,
+          percent_of_the_way_to_timepoint: percent_of_the_way_to_next_timepoint
+        }
+      else
+        nil ->
+          nil
+      end
 
     %__MODULE__{
       id: id,
@@ -107,19 +118,16 @@ defmodule Realtime.Vehicle do
       direction_id: direction_id,
       route_id: route_id,
       trip_id: trip_id,
-      current_stop_status: current_stop_status,
-      stop_id: stop_id,
-      current_timepoint_status:
-        timepoint_status(current_stop_status, next_timepoint_stop_time, stop_id),
-      timepoint_id: next_timepoint_id(next_timepoint_stop_time),
-      percent_of_the_way_to_timepoint: percent_of_the_way_to_next_timepoint
+      stop_status: %{
+        status: current_stop_status,
+        stop_id: stop_id
+      },
+      timepoint_status: timepoint_status
     }
   end
 
-  @spec percent_of_the_way_to_next_timepoint([StopTime.t()], Stop.id()) :: {
-          non_neg_integer(),
-          StopTime.t() | nil
-        }
+  @spec percent_of_the_way_to_next_timepoint([StopTime.t()], Stop.id()) ::
+          {non_neg_integer(), StopTime.t() | nil} | nil
   def percent_of_the_way_to_next_timepoint([], _stop_id), do: {0, nil}
 
   def percent_of_the_way_to_next_timepoint(stop_times, stop_id) do
@@ -155,20 +163,18 @@ defmodule Realtime.Vehicle do
     )
   end
 
-  @spec timepoint_status(current_status(), stop_time_or_nil(), Stop.id()) :: current_status()
-  defp timepoint_status(:in_transit_to, _next_timepoint_stop_time, _stop_id), do: :in_transit_to
+  @spec current_timepoint_status(current_status(), StopTime.t() | nil, Stop.id()) ::
+          current_status()
+  defp current_timepoint_status(:in_transit_to, _next_timepoint_stop_time, _stop_id),
+    do: :in_transit_to
 
-  defp timepoint_status(:stopped_at, nil, _stop_id), do: :in_transit_to
+  defp current_timepoint_status(:stopped_at, nil, _stop_id), do: :in_transit_to
 
-  defp timepoint_status(:stopped_at, next_timepoint_stop_time, stop_id),
+  defp current_timepoint_status(:stopped_at, next_timepoint_stop_time, stop_id),
     do: if(next_timepoint_stop_time.stop_id == stop_id, do: :stopped_at, else: :in_transit_to)
 
   @spec decode_current_status(String.t()) :: current_status()
   defp decode_current_status("IN_TRANSIT_TO"), do: :in_transit_to
   defp decode_current_status("INCOMING_AT"), do: :in_transit_to
   defp decode_current_status("STOPPED_AT"), do: :stopped_at
-
-  @spec next_timepoint_id(stop_time_or_nil()) :: timepoint_id_or_nil()
-  defp next_timepoint_id(nil), do: nil
-  defp next_timepoint_id(%StopTime{timepoint_id: timepoint_id}), do: timepoint_id
 end
