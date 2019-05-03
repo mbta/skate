@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import { closeIcon, reverseIcon, reverseIconReversed } from "../helpers/icon"
-import { LoadableTimepoints, Route, Timepoint, Vehicle } from "../skate"
+import { LoadableTimepoints, Route, Timepoint, Vehicle } from "../skate.d"
 import { deselectRoute } from "../state"
 import Loading from "./loading"
 
@@ -9,6 +9,11 @@ interface Props {
   route: Route
   timepoints: LoadableTimepoints
   vehicles: Vehicle[]
+}
+
+enum StopListDirection {
+  ZeroToOne,
+  OneToZero,
 }
 
 const Header = ({ route }: { route: Route }) => {
@@ -59,22 +64,35 @@ const Vehicle = ({ vehicle }: { vehicle: Vehicle }) => (
 )
 
 const RouteLadder = ({ route, timepoints, vehicles }: Props) => {
-  const [shouldReverseStops, setShouldReverseStops] = useState(false)
+  const initialDirection: StopListDirection = StopListDirection.ZeroToOne
+  const [ladderDirection, setStopListDirection] = useState<StopListDirection>(
+    initialDirection
+  )
 
-  const swapReverse = () => setShouldReverseStops(!shouldReverseStops)
+  const reverseStopListDirection = () =>
+    setStopListDirection(
+      ladderDirection === StopListDirection.ZeroToOne
+        ? StopListDirection.OneToZero
+        : StopListDirection.ZeroToOne
+    )
 
   const orderedTimepoints: LoadableTimepoints =
     // Use slice to make a copy of the array before destructively reversing
-    timepoints && shouldReverseStops ? timepoints.slice().reverse() : timepoints
+    timepoints && ladderDirection === StopListDirection.OneToZero
+      ? timepoints.slice().reverse()
+      : timepoints
 
   return (
     <div className="m-route-ladder">
       <Header route={route} />
 
-      <button className="m-route-ladder__reverse" onClick={swapReverse}>
-        {shouldReverseStops
-          ? reverseIconReversed("m-route-ladder__reverse-icon")
-          : reverseIcon("m-route-ladder__reverse-icon")}
+      <button
+        className="m-route-ladder__reverse"
+        onClick={reverseStopListDirection}
+      >
+        {ladderDirection === StopListDirection.OneToZero
+          ? reverseIcon("m-route-ladder__reverse-icon")
+          : reverseIconReversed("m-route-ladder__reverse-icon")}
         Reverse
       </button>
 
