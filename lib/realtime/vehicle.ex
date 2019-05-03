@@ -123,43 +123,24 @@ defmodule Realtime.Vehicle do
   def percent_of_the_way_to_next_timepoint([], _stop_id), do: {0, nil}
 
   def percent_of_the_way_to_next_timepoint(stop_times, stop_id) do
-    {past_stop_times, current_stop_time, future_stop_times} =
-      split_stop_times(stop_times, stop_id)
+    {past_stop_times, future_stop_times} = Enum.split_while(stop_times, &(&1.stop_id != stop_id))
 
-    next_timepoint_stop_time =
-      Enum.find([current_stop_time | future_stop_times], &is_a_timepoint?(&1))
+    next_timepoint_stop_time = Enum.find(future_stop_times, &is_a_timepoint?(&1))
 
     {
       percent_of_the_way(
-        count_to_timepoint(past_stop_times),
+        count_to_timepoint(Enum.reverse(past_stop_times)) + 1,
         count_to_timepoint(future_stop_times)
       ),
       next_timepoint_stop_time
     }
   end
 
-  @spec split_stop_times([StopTime.t()], Stop.id()) ::
-          {[StopTime.t()], StopTime.t() | nil, [StopTime.t()]}
-  defp split_stop_times(stop_times, stop_id) do
-    stop_times
-    |> split_on_stop_id(stop_id)
-    |> past_current_future()
-  end
-
-  @spec split_on_stop_id([StopTime.t()], Stop.id()) :: {[StopTime.t()], [StopTime.t()]}
-  defp split_on_stop_id(stop_times, stop_id),
-    do: Enum.split_while(stop_times, &(&1.stop_id != stop_id))
-
-  @spec past_current_future({[StopTime.t()], [StopTime.t()]}) ::
-          {[StopTime.t()], StopTime.t() | nil, [StopTime.t()]}
-  defp past_current_future({past, [current | future]}), do: {Enum.reverse(past), current, future}
-  defp past_current_future({past, future}), do: {Enum.reverse(past), nil, future}
-
   @spec count_to_timepoint([StopTime.t()]) :: non_neg_integer()
   defp count_to_timepoint(stop_times) do
     count = Enum.find_index(stop_times, &is_a_timepoint?(&1))
 
-    if is_number(count), do: count + 1, else: length(stop_times)
+    if is_number(count), do: count, else: length(stop_times)
   end
 
   @spec is_a_timepoint?(StopTime.t()) :: boolean
@@ -168,14 +149,10 @@ defmodule Realtime.Vehicle do
 
   @spec percent_of_the_way(non_neg_integer(), non_neg_integer()) :: non_neg_integer()
   defp percent_of_the_way(past_count, future_count) do
-    if past_count + future_count == 0 do
-      0
-    else
-      Kernel.trunc(
-        past_count / (past_count + future_count) *
-          100
-      )
-    end
+    Kernel.trunc(
+      past_count / (past_count + future_count) *
+        100
+    )
   end
 
   @spec timepoint_status(current_status(), stop_time_or_nil(), Stop.id()) :: current_status()

@@ -76,7 +76,7 @@ defmodule Realtime.VehicleTest do
         },
         %StopTime{
           stop_id: "s3",
-          timepoint_id: ""
+          timepoint_id: "tp3"
         },
         %StopTime{
           stop_id: "s4",
@@ -92,13 +92,13 @@ defmodule Realtime.VehicleTest do
         }
       ]
 
-      stop_id = "s1"
+      stop_id = "s3"
 
       assert Vehicle.percent_of_the_way_to_next_timepoint(stop_times, stop_id) == {
-               0,
+               100,
                %StopTime{
-                 stop_id: "s1",
-                 timepoint_id: "tp1"
+                 stop_id: "s3",
+                 timepoint_id: "tp3"
                }
              }
     end
