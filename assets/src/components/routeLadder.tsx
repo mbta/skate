@@ -1,20 +1,16 @@
 import React, { useContext, useState } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import { reverseIcon, reverseIconReversed } from "../helpers/icon"
-import { LoadableTimepoints, Route, Timepoint, Vehicle } from "../skate.d"
+import { LoadableTimepoints, Route, Vehicle } from "../skate"
 import { deselectRoute, selectVehicle } from "../state"
 import CloseButton from "./closeButton"
+import Ladder, { flipLadderDirection, LadderDirection } from "./ladder"
 import Loading from "./loading"
 
 interface Props {
   route: Route
   timepoints: LoadableTimepoints
   vehicles: Vehicle[]
-}
-
-enum StopListDirection {
-  ZeroToOne,
-  OneToZero,
 }
 
 const Header = ({ route }: { route: Route }) => {
@@ -28,23 +24,6 @@ const Header = ({ route }: { route: Route }) => {
     </div>
   )
 }
-
-const TimepointStop = () => (
-  <div className="m-route-ladder__stop">
-    <svg height="60" width="20">
-      <line x1="10" y1="4" x2="10" y2="60" />
-      <circle cx="10" cy="4" r="3" />
-    </svg>
-  </div>
-)
-
-const Timepoint = ({ timepoint }: { timepoint: Timepoint }) => (
-  <li className="m-route-ladder__timepoint">
-    <TimepointStop />
-    <div className="m-route-ladder__timepoint-name">{timepoint.id}</div>
-    <TimepointStop />
-  </li>
-)
 
 const Vehicle = ({ vehicle }: { vehicle: Vehicle }) => {
   const dispatch = useContext(DispatchContext)
@@ -83,32 +62,19 @@ const Vehicle = ({ vehicle }: { vehicle: Vehicle }) => {
         <em>timepoint:</em>{" "}
         {vehicle.timepoint_status && vehicle.timepoint_status.timepoint_id},
         <br />
-        <em>percent:</em>{" "}
+        <em>fraction before:</em>{" "}
         {vehicle.timepoint_status &&
-          vehicle.timepoint_status.percent_of_the_way_to_timepoint}
+          vehicle.timepoint_status.fraction_until_timepoint}
       </li>
     </ul>
   )
 }
 
 const RouteLadder = ({ route, timepoints, vehicles }: Props) => {
-  const initialDirection: StopListDirection = StopListDirection.ZeroToOne
-  const [ladderDirection, setStopListDirection] = useState<StopListDirection>(
+  const initialDirection: LadderDirection = LadderDirection.ZeroToOne
+  const [ladderDirection, setLadderDirection] = useState<LadderDirection>(
     initialDirection
   )
-
-  const reverseStopListDirection = () =>
-    setStopListDirection(
-      ladderDirection === StopListDirection.ZeroToOne
-        ? StopListDirection.OneToZero
-        : StopListDirection.ZeroToOne
-    )
-
-  const orderedTimepoints: LoadableTimepoints =
-    // Use slice to make a copy of the array before destructively reversing
-    timepoints && ladderDirection === StopListDirection.OneToZero
-      ? timepoints.slice().reverse()
-      : timepoints
 
   return (
     <div className="m-route-ladder">
@@ -116,20 +82,20 @@ const RouteLadder = ({ route, timepoints, vehicles }: Props) => {
 
       <button
         className="m-route-ladder__reverse"
-        onClick={reverseStopListDirection}
+        onClick={() => setLadderDirection(flipLadderDirection)}
       >
-        {ladderDirection === StopListDirection.OneToZero
+        {ladderDirection === LadderDirection.OneToZero
           ? reverseIcon("m-route-ladder__reverse-icon")
           : reverseIconReversed("m-route-ladder__reverse-icon")}
         Reverse
       </button>
 
-      {orderedTimepoints ? (
-        <ol className="m-route-ladder__timepoints">
-          {orderedTimepoints.map(timepoint => (
-            <Timepoint key={timepoint.id} timepoint={timepoint} />
-          ))}
-        </ol>
+      {timepoints ? (
+        <Ladder
+          timepoints={timepoints}
+          vehicles={vehicles}
+          ladderDirection={ladderDirection}
+        />
       ) : (
         <Loading />
       )}

@@ -20,7 +20,7 @@ const vehicle: Vehicle = {
   timepoint_status: {
     status: "in_transit_to",
     timepoint_id: "tp1",
-    percent_of_the_way_to_timepoint: 50,
+    fraction_until_timepoint: 0.5,
   },
 }
 

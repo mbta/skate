@@ -1,0 +1,26 @@
+.m-ladder {
+  margin: auto;
+}
+
+.m-ladder__line {
+  fill: none;
+  stroke: $light-periwinkle;
+  stroke-width: 7;
+}
+
+.m-ladder__stop-circle {
+  fill: $white;
+  stroke: $light-periwinkle;
+  stroke-width: 1;
+}
+
+.m-ladder__timepoint-name {
+  fill: $blue-grey;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.m-ladder__label {
+  font-size: 0.75rem;
+}

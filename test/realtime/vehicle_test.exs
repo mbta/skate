@@ -61,14 +61,14 @@ defmodule Realtime.VehicleTest do
                timepoint_status: %{
                  status: :in_transit_to,
                  timepoint_id: "tp2",
-                 percent_of_the_way_to_timepoint: 100
+                 fraction_until_timepoint: 0.0
                }
              }
     end
   end
 
-  describe "percent_of_the_way_to_next_timepoint/3" do
-    test "returns 100 if the stop is a timepoint, plus the timepoint" do
+  describe "fraction_until_timepoint/3" do
+    test "returns 0.0 if the stop is a timepoint, plus the timepoint" do
       stop_times = [
         %StopTime{
           stop_id: "s1",
@@ -98,8 +98,8 @@ defmodule Realtime.VehicleTest do
 
       stop_id = "s3"
 
-      assert Vehicle.percent_of_the_way_to_next_timepoint(stop_times, stop_id) == {
-               100,
+      assert Vehicle.fraction_until_timepoint(stop_times, stop_id) == {
+               0.0,
                %StopTime{
                  stop_id: "s3",
                  timepoint_id: "tp3"
@@ -137,9 +137,9 @@ defmodule Realtime.VehicleTest do
 
       stop_id = "s3"
 
-      assert Vehicle.percent_of_the_way_to_next_timepoint(stop_times, stop_id) ==
+      assert Vehicle.fraction_until_timepoint(stop_times, stop_id) ==
                {
-                 40,
+                 0.6,
                  %StopTime{
                    stop_id: "s6",
                    timepoint_id: "tp2"

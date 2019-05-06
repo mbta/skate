@@ -83,7 +83,7 @@ defmodule SkateWeb.VehiclesChannelTest do
           timepoint_status: %{
             status: :in_transit_to,
             timepoint_id: "tp2",
-            percent_of_the_way_to_timepoint: 60
+            fraction_until_timepoint: 0.4
           }
         }
       ]
