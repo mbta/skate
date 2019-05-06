@@ -2,8 +2,18 @@
 
 exports[`RoutePicker renders a list of routes 1`] = `
 <div
-  className="m-route-picker"
+  className="m-route-picker visible"
 >
+  <div
+    className="m-route-picker__tab"
+  >
+    <button
+      className="m-route-picker__tab-button"
+      onClick={[Function]}
+    >
+      &lt;
+    </button>
+  </div>
   <ul
     className="m-route-picker__selected-routes"
   >
@@ -112,8 +122,18 @@ exports[`RoutePicker renders a list of routes 1`] = `
 
 exports[`RoutePicker renders a loading/empty state 1`] = `
 <div
-  className="m-route-picker"
+  className="m-route-picker visible"
 >
+  <div
+    className="m-route-picker__tab"
+  >
+    <button
+      className="m-route-picker__tab-button"
+      onClick={[Function]}
+    >
+      &lt;
+    </button>
+  </div>
   <ul
     className="m-route-picker__selected-routes"
   />
