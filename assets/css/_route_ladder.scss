@@ -8,7 +8,6 @@
   border-radius: 4px;
   font-size: 1.25rem;
   font-weight: bolder;
-  margin-bottom: 2rem;
   padding: 0.4rem 0;
   position: relative;
   text-align: center;
@@ -34,6 +33,28 @@
   svg {
     stroke: $dark;
     fill: $dark;
+  }
+}
+
+.m-route-ladder__reverse {
+  background: none;
+  border: none;
+  color: $charcoal-grey;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  margin-top: 0.5rem;
+  padding: 0;
+}
+
+.m-route-ladder__reverse-icon {
+  display: inline-block;
+  height: 0.625rem;
+  margin-right: 0.25rem;
+  width: 0.625rem;
+
+  svg {
+    stroke: $charcoal-grey;
+    fill: $charcoal-grey;
   }
 }
 
