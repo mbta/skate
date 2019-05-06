@@ -17,7 +17,7 @@ defmodule SkateWeb.VehiclesChannelTest do
       Application.put_env(:realtime, :stop_times_on_trip_fn, fn _trip_id ->
         [
           %StopTime{stop_id: "6553", timepoint_id: "tp1"},
-          %StopTime{stop_id: "6554", timepoint_id: ""},
+          %StopTime{stop_id: "6554", timepoint_id: nil},
           %StopTime{stop_id: "6555", timepoint_id: "tp2"}
         ]
       end)
@@ -54,7 +54,7 @@ defmodule SkateWeb.VehiclesChannelTest do
       Application.put_env(:realtime, :stop_times_on_trip_fn, fn _trip_id ->
         [
           %StopTime{stop_id: "6553", timepoint_id: "tp1"},
-          %StopTime{stop_id: "6554", timepoint_id: ""},
+          %StopTime{stop_id: "6554", timepoint_id: nil},
           %StopTime{stop_id: "6555", timepoint_id: "tp2"}
         ]
       end)

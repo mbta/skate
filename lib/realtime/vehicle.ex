@@ -99,10 +99,11 @@ defmodule Realtime.Vehicle do
 
     timepoint_status =
       with {percent_of_the_way_to_next_timepoint, next_timepoint_stop_time} <-
-             percent_of_the_way_to_next_timepoint(stop_times_on_trip, stop_id) do
+             percent_of_the_way_to_next_timepoint(stop_times_on_trip, stop_id),
+           current_timepoint_status <-
+             current_timepoint_status(current_stop_status, next_timepoint_stop_time, stop_id) do
         %{
-          status:
-            current_timepoint_status(current_stop_status, next_timepoint_stop_time, stop_id),
+          status: current_timepoint_status,
           timepoint_id: next_timepoint_stop_time && next_timepoint_stop_time.timepoint_id,
           percent_of_the_way_to_timepoint: percent_of_the_way_to_next_timepoint
         }
@@ -152,8 +153,7 @@ defmodule Realtime.Vehicle do
   end
 
   @spec is_a_timepoint?(StopTime.t()) :: boolean
-  defp is_a_timepoint?(nil), do: false
-  defp is_a_timepoint?(stop_time), do: stop_time.timepoint_id != ""
+  defp is_a_timepoint?(%StopTime{timepoint_id: timepoint_id}), do: timepoint_id != nil
 
   @spec percent_of_the_way(non_neg_integer(), non_neg_integer()) :: non_neg_integer()
   defp percent_of_the_way(past_count, future_count) do

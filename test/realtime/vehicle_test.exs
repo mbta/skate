@@ -40,7 +40,7 @@ defmodule Realtime.VehicleTest do
       Application.put_env(:realtime, :stop_times_on_trip_fn, fn _trip_id ->
         [
           %StopTime{stop_id: "6553", timepoint_id: "tp1"},
-          %StopTime{stop_id: "6554", timepoint_id: ""},
+          %StopTime{stop_id: "6554", timepoint_id: nil},
           %StopTime{stop_id: "6555", timepoint_id: "tp2"}
         ]
       end)
@@ -76,7 +76,7 @@ defmodule Realtime.VehicleTest do
         },
         %StopTime{
           stop_id: "s2",
-          timepoint_id: ""
+          timepoint_id: nil
         },
         %StopTime{
           stop_id: "s3",
@@ -84,11 +84,11 @@ defmodule Realtime.VehicleTest do
         },
         %StopTime{
           stop_id: "s4",
-          timepoint_id: ""
+          timepoint_id: nil
         },
         %StopTime{
           stop_id: "s5",
-          timepoint_id: ""
+          timepoint_id: nil
         },
         %StopTime{
           stop_id: "s6",
@@ -115,19 +115,19 @@ defmodule Realtime.VehicleTest do
         },
         %StopTime{
           stop_id: "s2",
-          timepoint_id: ""
+          timepoint_id: nil
         },
         %StopTime{
           stop_id: "s3",
-          timepoint_id: ""
+          timepoint_id: nil
         },
         %StopTime{
           stop_id: "s4",
-          timepoint_id: ""
+          timepoint_id: nil
         },
         %StopTime{
           stop_id: "s5",
-          timepoint_id: ""
+          timepoint_id: nil
         },
         %StopTime{
           stop_id: "s6",
