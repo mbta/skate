@@ -30,7 +30,7 @@ defmodule SkateWeb.Router do
   end
 
   scope "/api", SkateWeb do
-    pipe_through(:api)
+    pipe_through :api
 
     get("/routes", RouteController, :index)
     get("/routes/:route_id", RouteController, :show)
