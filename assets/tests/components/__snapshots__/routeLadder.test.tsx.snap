@@ -237,3 +237,353 @@ exports[`renders a route ladder 1`] = `
   </ol>
 </div>
 `;
+
+exports[`renders a route ladder with vehicles 1`] = `
+<div
+  className="m-route-ladder"
+>
+  <div
+    className="m-route-ladder__header"
+  >
+    <button
+      className="m-route-ladder__close"
+      onClick={[Function]}
+    >
+      <span
+        className="m-route-ladder__close-icon"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
+        }
+      />
+    </button>
+    <div
+      className="m-route-ladder__route-name"
+    >
+      28
+    </div>
+  </div>
+  <ol
+    className="m-route-ladder__timepoints"
+  >
+    <li
+      className="m-route-ladder__timepoint"
+    >
+      <div
+        className="m-route-ladder__stop"
+      >
+        <svg
+          height="60"
+          width="20"
+        >
+          <line
+            x1="10"
+            x2="10"
+            y1="4"
+            y2="60"
+          />
+          <circle
+            cx="10"
+            cy="4"
+            r="3"
+          />
+        </svg>
+      </div>
+      <div
+        className="m-route-ladder__timepoint-name"
+      >
+        MATPN
+      </div>
+      <div
+        className="m-route-ladder__stop"
+      >
+        <svg
+          height="60"
+          width="20"
+        >
+          <line
+            x1="10"
+            x2="10"
+            y1="4"
+            y2="60"
+          />
+          <circle
+            cx="10"
+            cy="4"
+            r="3"
+          />
+        </svg>
+      </div>
+    </li>
+    <li
+      className="m-route-ladder__timepoint"
+    >
+      <div
+        className="m-route-ladder__stop"
+      >
+        <svg
+          height="60"
+          width="20"
+        >
+          <line
+            x1="10"
+            x2="10"
+            y1="4"
+            y2="60"
+          />
+          <circle
+            cx="10"
+            cy="4"
+            r="3"
+          />
+        </svg>
+      </div>
+      <div
+        className="m-route-ladder__timepoint-name"
+      >
+        WELLH
+      </div>
+      <div
+        className="m-route-ladder__stop"
+      >
+        <svg
+          height="60"
+          width="20"
+        >
+          <line
+            x1="10"
+            x2="10"
+            y1="4"
+            y2="60"
+          />
+          <circle
+            cx="10"
+            cy="4"
+            r="3"
+          />
+        </svg>
+      </div>
+    </li>
+    <li
+      className="m-route-ladder__timepoint"
+    >
+      <div
+        className="m-route-ladder__stop"
+      >
+        <svg
+          height="60"
+          width="20"
+        >
+          <line
+            x1="10"
+            x2="10"
+            y1="4"
+            y2="60"
+          />
+          <circle
+            cx="10"
+            cy="4"
+            r="3"
+          />
+        </svg>
+      </div>
+      <div
+        className="m-route-ladder__timepoint-name"
+      >
+        MORTN
+      </div>
+      <div
+        className="m-route-ladder__stop"
+      >
+        <svg
+          height="60"
+          width="20"
+        >
+          <line
+            x1="10"
+            x2="10"
+            y1="4"
+            y2="60"
+          />
+          <circle
+            cx="10"
+            cy="4"
+            r="3"
+          />
+        </svg>
+      </div>
+    </li>
+  </ol>
+  <ul
+    style={
+      Object {
+        "border": "1px solid black",
+      }
+    }
+  >
+    <li>
+      <em>
+        id:
+      </em>
+       
+      y1818
+    </li>
+    <li>
+      <em>
+        label:
+      </em>
+       
+      1818
+    </li>
+    <li>
+      <em>
+        timestamp:
+      </em>
+       
+      1557160307
+    </li>
+    <li>
+      <em>
+        direction_id:
+      </em>
+       
+      0
+    </li>
+    <li>
+      <em>
+        route_id:
+      </em>
+       
+      1
+    </li>
+    <li>
+      <em>
+        trip_id:
+      </em>
+       
+      39914237
+    </li>
+    <li>
+      <em>
+        stop status:
+      </em>
+       
+      in_transit_to
+      ,
+      <br />
+      <em>
+        stop:
+      </em>
+       
+      57
+    </li>
+    <li>
+      <em>
+        timepoint status:
+      </em>
+       
+      in_transit_to
+      ,
+      <br />
+      <em>
+        timepoint:
+      </em>
+       
+      MATPN
+      ,
+      <br />
+      <em>
+        percent:
+      </em>
+       
+      50
+    </li>
+  </ul>
+  <ul
+    style={
+      Object {
+        "border": "1px solid black",
+      }
+    }
+  >
+    <li>
+      <em>
+        id:
+      </em>
+       
+      y0479
+    </li>
+    <li>
+      <em>
+        label:
+      </em>
+       
+      0479
+    </li>
+    <li>
+      <em>
+        timestamp:
+      </em>
+       
+      1557160347
+    </li>
+    <li>
+      <em>
+        direction_id:
+      </em>
+       
+      1
+    </li>
+    <li>
+      <em>
+        route_id:
+      </em>
+       
+      1
+    </li>
+    <li>
+      <em>
+        trip_id:
+      </em>
+       
+      39914128
+    </li>
+    <li>
+      <em>
+        stop status:
+      </em>
+       
+      in_transit_to
+      ,
+      <br />
+      <em>
+        stop:
+      </em>
+       
+      59
+    </li>
+    <li>
+      <em>
+        timepoint status:
+      </em>
+       
+      in_transit_to
+      ,
+      <br />
+      <em>
+        timepoint:
+      </em>
+       
+      MORTN
+      ,
+      <br />
+      <em>
+        percent:
+      </em>
+       
+      100
+    </li>
+  </ul>
+</div>
+`;
