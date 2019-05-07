@@ -46,7 +46,7 @@ export interface VehicleStopStatus {
 
 export interface VehicleTimepointStatus {
   status: VehicleStatus
-  timepoint_id: TimepointId
+  timepoint_id: TimepointId | null
   percent_of_the_way_to_timepoint: number
 }
 

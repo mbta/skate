@@ -13,7 +13,7 @@ defmodule Gtfs.StopTime do
   alias Gtfs.Trip
 
   @type t :: %__MODULE__{
-          timepoint_id: timepoint_id(),
+          timepoint_id: possible_timepoint_id(),
           stop_id: Stop.id()
         }
 
@@ -27,9 +27,8 @@ defmodule Gtfs.StopTime do
     :stop_id
   ]
 
-  @type timepoint_id :: String.t() | nil
-
-  @type trip_id_set :: MapSet.t(Trip.id())
+  @type timepoint_id :: String.t()
+  @type possible_timepoint_id :: timepoint_id | nil
 
   @spec trip_stop_times_from_csv([Csv.row()]) :: Data.trip_stop_times()
   def trip_stop_times_from_csv(stop_times_csv) do
@@ -51,6 +50,6 @@ defmodule Gtfs.StopTime do
     end)
   end
 
-  @spec row_in_trip_id_set?(Csv.row(), trip_id_set) :: boolean
+  @spec row_in_trip_id_set?(Csv.row(), MapSet.t(Trip.id())) :: boolean
   def row_in_trip_id_set?(row, trip_id_set), do: MapSet.member?(trip_id_set, row["trip_id"])
 end

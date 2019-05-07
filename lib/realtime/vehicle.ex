@@ -9,7 +9,7 @@ defmodule Realtime.Vehicle do
   @type timepoint_status ::
           %{
             status: current_status(),
-            timepoint_id: StopTime.timepoint_id() | nil,
+            timepoint_id: StopTime.possible_timepoint_id(),
             percent_of_the_way_to_timepoint: non_neg_integer()
           }
           | nil

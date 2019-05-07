@@ -68,7 +68,7 @@ defmodule Realtime.VehicleTest do
   end
 
   describe "percent_of_the_way_to_next_timepoint/3" do
-    test "returns 0 if the stop is a timepoint, plus the timepoint" do
+    test "returns 100 if the stop is a timepoint, plus the timepoint" do
       stop_times = [
         %StopTime{
           stop_id: "s1",
