@@ -97,7 +97,8 @@ defmodule Gtfs.Data do
   defp timepoint_ids_for_route_patterns(route_patterns, data) do
     route_patterns
     |> Enum.map(fn route_pattern -> route_pattern.representative_trip_id end)
-    |> Enum.flat_map(fn trip_id -> stop_times_on_trip(data, trip_id) end)
+    |> Enum.map(fn trip_id -> stop_times_on_trip(data, trip_id) end)
+    |> Helpers.merge_lists()
     |> Enum.reject(&(&1.timepoint_id == nil))
     |> Enum.map(& &1.timepoint_id)
   end

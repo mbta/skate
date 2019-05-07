@@ -36,7 +36,7 @@ defmodule Gtfs.StopTime do
     |> Enum.group_by(fn stop_time_row -> stop_time_row["trip_id"] end)
     |> Helpers.map_values(fn stop_times_on_trip ->
       stop_times_on_trip
-      |> Enum.sort_by(fn stop_time_row -> stop_time_row["stop_sequence"] end)
+      |> Enum.sort_by(&stop_sequence_integer/1)
       |> Enum.map(fn stop_time_row ->
         # Use nil instead of an empty string for timepoint_id if there is no checkpoint_id
         timepoint_id =
@@ -52,4 +52,7 @@ defmodule Gtfs.StopTime do
 
   @spec row_in_trip_id_set?(Csv.row(), MapSet.t(Trip.id())) :: boolean
   def row_in_trip_id_set?(row, trip_id_set), do: MapSet.member?(trip_id_set, row["trip_id"])
+
+  @spec stop_sequence_integer(Csv.row()) :: integer()
+  def stop_sequence_integer(stop_time_row), do: String.to_integer(stop_time_row["stop_sequence"])
 end
