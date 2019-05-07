@@ -9,6 +9,8 @@ defmodule Gtfs.CacheFile do
   """
   require Logger
 
+  alias Gtfs.Data
+
   @directory Path.join([File.cwd!(), "priv/gtfs_cache"])
 
   @doc """
@@ -35,7 +37,7 @@ defmodule Gtfs.CacheFile do
   The validation for loading this file must be appended in later code. No
   such validator currently exists.
   """
-  @spec load_gtfs() :: {:ok, Gtfs.t()} | {:error, atom}
+  @spec load_gtfs() :: {:ok, Data.t()} | {:error, atom}
   def load_gtfs() do
     Logger.info(fn -> "Loading gtfs cache from default path" end)
 
@@ -44,7 +46,7 @@ defmodule Gtfs.CacheFile do
     |> load_gtfs()
   end
 
-  @spec load_gtfs(String.t()) :: {:ok, Gtfs.t()} | {:error, atom}
+  @spec load_gtfs(String.t()) :: {:ok, Data.t()} | {:error, atom}
   def load_gtfs(filepath) when is_binary(filepath) do
     Logger.info(fn -> "Loading gtfs cache from file #{filepath}" end)
 
@@ -62,8 +64,8 @@ defmodule Gtfs.CacheFile do
   @doc """
   Attempt to save a cache file.
   """
-  @spec save_gtfs(Gtfs.t()) :: :ok | {:error, any}
-  def save_gtfs(%Gtfs{} = data) do
+  @spec save_gtfs(Data.t()) :: :ok | {:error, any}
+  def save_gtfs(%Data{} = data) do
     filename = cache_filename()
 
     if is_binary(filename) do
@@ -75,7 +77,7 @@ defmodule Gtfs.CacheFile do
     end
   end
 
-  @spec save_gtfs(Gtfs.t(), String.t()) :: :ok | {:error, any}
+  @spec save_gtfs(Data.t(), String.t()) :: :ok | {:error, any}
   def save_gtfs(data, filepath) when is_map(data) and is_binary(filepath) do
     bin = :erlang.term_to_binary(data)
     File.write(filepath, bin)

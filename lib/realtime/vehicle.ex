@@ -1,15 +1,28 @@
 defmodule Realtime.Vehicle do
-  @type current_status() :: :in_transit_to | :stopped_at
+  alias Gtfs.{Direction, Route, Stop, StopTime, Trip}
 
-  @type t() :: %__MODULE__{
+  @type current_status :: :in_transit_to | :stopped_at
+  @type stop_status :: %{
+          status: current_status(),
+          stop_id: Stop.id()
+        }
+  @type timepoint_status ::
+          %{
+            status: current_status(),
+            timepoint_id: StopTime.possible_timepoint_id(),
+            percent_of_the_way_to_timepoint: non_neg_integer()
+          }
+          | nil
+
+  @type t :: %__MODULE__{
           id: String.t(),
           label: String.t(),
           timestamp: integer(),
-          direction_id: Gtfs.Direction.id(),
-          route_id: Gtfs.Route.id(),
-          trip_id: Gtfs.Trip.id(),
-          current_status: current_status(),
-          stop_id: Gtfs.Stop.id()
+          direction_id: Direction.id(),
+          route_id: Route.id(),
+          trip_id: Trip.id(),
+          stop_status: stop_status(),
+          timepoint_status: timepoint_status()
         }
 
   @enforce_keys [
@@ -19,8 +32,7 @@ defmodule Realtime.Vehicle do
     :direction_id,
     :route_id,
     :trip_id,
-    :current_status,
-    :stop_id
+    :stop_status
   ]
 
   @derive Jason.Encoder
@@ -32,8 +44,8 @@ defmodule Realtime.Vehicle do
     :direction_id,
     :route_id,
     :trip_id,
-    :current_status,
-    :stop_id
+    :stop_status,
+    :timepoint_status
   ]
 
   @doc """
@@ -64,17 +76,102 @@ defmodule Realtime.Vehicle do
   """
   @spec decode(term()) :: t()
   def decode(%{} = json) do
+    stop_times_on_trip_fn =
+      Application.get_env(:realtime, :stop_times_on_trip_fn, &Gtfs.stop_times_on_trip/1)
+
+    id = json["id"]
+    label = json["vehicle"]["vehicle"]["label"]
+    timestamp = json["vehicle"]["timestamp"]
+    direction_id = json["vehicle"]["trip"]["direction_id"]
+    route_id = json["vehicle"]["trip"]["route_id"]
+    trip_id = json["vehicle"]["trip"]["trip_id"]
+    current_stop_status = decode_current_status(json["vehicle"]["current_status"])
+    stop_id = json["vehicle"]["stop_id"]
+
+    stop_times_on_trip =
+      try do
+        stop_times_on_trip_fn.(trip_id)
+      catch
+        # Handle Gtfs server timeouts gracefully
+        :exit, _ ->
+          []
+      end
+
+    timepoint_status =
+      with {percent_of_the_way_to_next_timepoint, next_timepoint_stop_time} <-
+             percent_of_the_way_to_next_timepoint(stop_times_on_trip, stop_id),
+           current_timepoint_status <-
+             current_timepoint_status(current_stop_status, next_timepoint_stop_time, stop_id) do
+        %{
+          status: current_timepoint_status,
+          timepoint_id: next_timepoint_stop_time && next_timepoint_stop_time.timepoint_id,
+          percent_of_the_way_to_timepoint: percent_of_the_way_to_next_timepoint
+        }
+      else
+        nil ->
+          nil
+      end
+
     %__MODULE__{
-      id: json["id"],
-      label: json["vehicle"]["vehicle"]["label"],
-      timestamp: json["vehicle"]["timestamp"],
-      direction_id: json["vehicle"]["trip"]["direction_id"],
-      route_id: json["vehicle"]["trip"]["route_id"],
-      trip_id: json["vehicle"]["trip"]["trip_id"],
-      current_status: decode_current_status(json["vehicle"]["current_status"]),
-      stop_id: json["vehicle"]["stop_id"]
+      id: id,
+      label: label,
+      timestamp: timestamp,
+      direction_id: direction_id,
+      route_id: route_id,
+      trip_id: trip_id,
+      stop_status: %{
+        status: current_stop_status,
+        stop_id: stop_id
+      },
+      timepoint_status: timepoint_status
     }
   end
+
+  @spec percent_of_the_way_to_next_timepoint([StopTime.t()], Stop.id()) ::
+          {non_neg_integer(), StopTime.t() | nil} | nil
+  def percent_of_the_way_to_next_timepoint([], _stop_id), do: {0, nil}
+
+  def percent_of_the_way_to_next_timepoint(stop_times, stop_id) do
+    {past_stop_times, future_stop_times} = Enum.split_while(stop_times, &(&1.stop_id != stop_id))
+
+    next_timepoint_stop_time = Enum.find(future_stop_times, &is_a_timepoint?(&1))
+
+    {
+      percent_of_the_way(
+        count_to_timepoint(Enum.reverse(past_stop_times)) + 1,
+        count_to_timepoint(future_stop_times)
+      ),
+      next_timepoint_stop_time
+    }
+  end
+
+  @spec count_to_timepoint([StopTime.t()]) :: non_neg_integer()
+  defp count_to_timepoint(stop_times) do
+    count = Enum.find_index(stop_times, &is_a_timepoint?(&1))
+
+    if is_number(count), do: count, else: length(stop_times)
+  end
+
+  @spec is_a_timepoint?(StopTime.t()) :: boolean
+  defp is_a_timepoint?(%StopTime{timepoint_id: timepoint_id}), do: timepoint_id != nil
+
+  @spec percent_of_the_way(non_neg_integer(), non_neg_integer()) :: non_neg_integer()
+  defp percent_of_the_way(past_count, future_count) do
+    Kernel.trunc(
+      past_count / (past_count + future_count) *
+        100
+    )
+  end
+
+  @spec current_timepoint_status(current_status(), StopTime.t() | nil, Stop.id()) ::
+          current_status()
+  defp current_timepoint_status(:in_transit_to, _next_timepoint_stop_time, _stop_id),
+    do: :in_transit_to
+
+  defp current_timepoint_status(:stopped_at, nil, _stop_id), do: :in_transit_to
+
+  defp current_timepoint_status(:stopped_at, next_timepoint_stop_time, stop_id),
+    do: if(next_timepoint_stop_time.stop_id == stop_id, do: :stopped_at, else: :in_transit_to)
 
   @spec decode_current_status(String.t()) :: current_status()
   defp decode_current_status("IN_TRANSIT_TO"), do: :in_transit_to

@@ -52,14 +52,37 @@ const Timepoint = ({ timepoint }: { timepoint: Timepoint }) => (
 
 const Vehicle = ({ vehicle }: { vehicle: Vehicle }) => (
   <ul style={{ border: "1px solid black" }}>
-    <li>id {vehicle.id}</li>
-    <li>label {vehicle.label}</li>
-    <li>timestamp {vehicle.timestamp}</li>
-    <li>direction_id {vehicle.direction_id}</li>
-    <li>route_id {vehicle.route_id}</li>
-    <li>trip_id {vehicle.trip_id}</li>
-    <li>current_status {vehicle.current_status}</li>
-    <li>stop_id {vehicle.stop_id}</li>
+    <li>
+      <em>id:</em> {vehicle.id}
+    </li>
+    <li>
+      <em>label:</em> {vehicle.label}
+    </li>
+    <li>
+      <em>timestamp:</em> {vehicle.timestamp}
+    </li>
+    <li>
+      <em>direction_id:</em> {vehicle.direction_id}
+    </li>
+    <li>
+      <em>route_id:</em> {vehicle.route_id}
+    </li>
+    <li>
+      <em>trip_id:</em> {vehicle.trip_id}
+    </li>
+    <li>
+      <em>stop status:</em> {vehicle.stop_status.status},<br />
+      <em>stop:</em> {vehicle.stop_status.stop_id}
+    </li>
+    <li>
+      <em>timepoint status:</em>{" "}
+      {vehicle.timepoint_status && vehicle.timepoint_status.status},<br />
+      <em>timepoint:</em>{" "}
+      {vehicle.timepoint_status && vehicle.timepoint_status.timepoint_id},<br />
+      <em>percent:</em>{" "}
+      {vehicle.timepoint_status &&
+        vehicle.timepoint_status.percent_of_the_way_to_timepoint}
+    </li>
   </ul>
 )
 
