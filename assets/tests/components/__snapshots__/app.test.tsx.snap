@@ -14,7 +14,14 @@ exports[`renders 1`] = `
         className="m-route-picker__tab-button"
         onClick={[Function]}
       >
-        &lt;
+        <span
+          className="m-route-picker__tab-button-icon"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
       </button>
     </div>
     <ul

@@ -11,7 +11,14 @@ exports[`RoutePicker renders a list of routes 1`] = `
       className="m-route-picker__tab-button"
       onClick={[Function]}
     >
-      &lt;
+      <span
+        className="m-route-picker__tab-button-icon"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
+        }
+      />
     </button>
   </div>
   <ul
@@ -131,7 +138,14 @@ exports[`RoutePicker renders a loading/empty state 1`] = `
       className="m-route-picker__tab-button"
       onClick={[Function]}
     >
-      &lt;
+      <span
+        className="m-route-picker__tab-button-icon"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
+        }
+      />
     </button>
   </div>
   <ul

@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react"
 import DispatchContext from "../contexts/dispatchContext"
+import { collapseIcon, expandIcon } from "../helpers/icon"
 import {
   filterRoutes,
   RouteFilter,
@@ -52,7 +53,9 @@ const Tab = ({
 }) => (
   <div className="m-route-picker__tab">
     <button className="m-route-picker__tab-button" onClick={toggleVisibility}>
-      {isVisible ? "<" : ">"}
+      {isVisible
+        ? collapseIcon("m-route-picker__tab-button-icon")
+        : expandIcon("m-route-picker__tab-button-icon")}
     </button>
   </div>
 )
