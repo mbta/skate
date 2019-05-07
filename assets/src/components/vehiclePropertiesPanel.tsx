@@ -1,0 +1,48 @@
+import React, { useContext } from "react"
+import DispatchContext from "../contexts/dispatchContext"
+import { Vehicle } from "../skate.d"
+import { deselectVehicle } from "../state"
+import CloseButton from "./closeButton"
+
+interface Props {
+  selectedVehicle: Vehicle
+}
+
+const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
+  const dispatch = useContext(DispatchContext)
+
+  const hideMe = () => dispatch(deselectVehicle())
+
+  return (
+    <>
+      <div className="m-vehicle-properties-panel">
+        <div className="m-vehicle-properties-panel__header">
+          <CloseButton onClick={hideMe} />
+        </div>
+
+        <dl className="m-vehicle-properties-panel__vehicle-properties">
+          <div
+            role="listitem"
+            className="m-vehicle-properties-panel__vehicle-property"
+          >
+            <dt>Vehicle</dt>
+            <dd>{selectedVehicle.label}</dd>
+          </div>
+        </dl>
+
+        <hr />
+
+        <button className="m-vehicle-properties-panel__close" onClick={hideMe}>
+          Close vehicle properties
+        </button>
+      </div>
+
+      <div
+        className="m-vehicle-properties-panel__modal-overlay"
+        onClick={hideMe}
+      />
+    </>
+  )
+}
+
+export default VehiclePropertiesPanel

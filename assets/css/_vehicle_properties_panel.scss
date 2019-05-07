@@ -1,0 +1,70 @@
+.m-vehicle-properties-panel {
+  background-color: $pale-grey;
+  height: 100%;
+  max-width: 100%;
+  position: fixed;
+  right: 0;
+  top: inherit;
+  width: 23.5rem;
+  z-index: 1001;
+
+  hr {
+    border: none;
+    border-top: solid 2px $lighter-grey;
+    margin: 0 1.25rem;
+  }
+}
+
+.m-vehicle-properties-panel__header {
+  margin-top: 0.5rem;
+  min-height: 2rem;
+
+  .m-close-button {
+    position: absolute;
+    right: 0.875rem;
+    top: 0.875rem;
+  }
+}
+
+dl.m-vehicle-properties-panel__vehicle-properties {
+  margin-bottom: 2rem;
+
+  dt,
+  dl {
+    width: 50%;
+  }
+
+  dt {
+    font-size: 0.8125rem;
+    font-weight: bold;
+    text-align: right;
+    text-transform: uppercase;
+  }
+
+  dd {
+    font-size: 0.875rem;
+    margin-left: 0.5rem;
+  }
+}
+
+.m-vehicle-properties-panel__vehicle-property {
+  display: flex;
+}
+
+.m-vehicle-properties-panel__close {
+  background-color: $white;
+  border-radius: 4px;
+  display: block;
+  margin: 2rem auto 0;
+  padding: 0.5rem 3rem;
+}
+
+.m-vehicle-properties-panel__modal-overlay {
+  background-color: transparentize($dark, 0.59);
+  height: 100%;
+  left: inherit;
+  position: fixed;
+  top: inherit;
+  width: 100%;
+  z-index: 1000;
+}

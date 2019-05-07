@@ -8,10 +8,11 @@ import { Route, TimepointsByRouteId } from "../skate.d"
 import { initialState, reducer } from "../state"
 import RouteLadders from "./routeLadders"
 import RoutePicker from "./routePicker"
+import VehiclePropertiesPanel from "./vehiclePropertiesPanel"
 
 const App = (): JSX.Element => {
   const [state, dispatch] = useReducer(reducer, initialState)
-  const { selectedRouteIds } = state
+  const { selectedRouteIds, selectedVehicle } = state
 
   const routes: Route[] | null = useRoutes()
   const timepointsByRouteId: TimepointsByRouteId = useTimepoints(
@@ -34,6 +35,10 @@ const App = (): JSX.Element => {
           timepointsByRouteId={timepointsByRouteId}
           vehiclesByRouteId={vehiclesByRouteId}
         />
+
+        {selectedVehicle && (
+          <VehiclePropertiesPanel selectedVehicle={selectedVehicle} />
+        )}
       </div>
     </DispatchProvider>
   )

@@ -11,24 +11,11 @@
   padding: 0.4rem 0;
   position: relative;
   text-align: center;
-}
 
-.m-route-ladder__close {
-  color: $dark;
-  font-size: 1rem;
-  position: absolute;
-  right: 0.5rem;
-  top: 0.5rem;
-}
-
-.m-route-ladder__close-icon {
-  display: inline-block;
-  height: 0.625rem;
-  width: 0.625rem;
-
-  svg {
-    stroke: $dark;
-    fill: $dark;
+  .m-close-button {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
   }
 }
 

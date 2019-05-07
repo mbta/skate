@@ -8,11 +8,11 @@ exports[`displays loading if we are fetching the timepoints 1`] = `
     className="m-route-ladder__header"
   >
     <button
-      className="m-route-ladder__close"
+      className="m-close-button"
       onClick={[Function]}
     >
       <span
-        className="m-route-ladder__close-icon"
+        className="m-close-button__icon"
         dangerouslySetInnerHTML={
           Object {
             "__html": "SVG",
@@ -52,11 +52,11 @@ exports[`renders a route ladder 1`] = `
     className="m-route-ladder__header"
   >
     <button
-      className="m-route-ladder__close"
+      className="m-close-button"
       onClick={[Function]}
     >
       <span
-        className="m-route-ladder__close-icon"
+        className="m-close-button__icon"
         dangerouslySetInnerHTML={
           Object {
             "__html": "SVG",
@@ -246,11 +246,11 @@ exports[`renders a route ladder with vehicles 1`] = `
     className="m-route-ladder__header"
   >
     <button
-      className="m-route-ladder__close"
+      className="m-close-button"
       onClick={[Function]}
     >
       <span
-        className="m-route-ladder__close-icon"
+        className="m-close-button__icon"
         dangerouslySetInnerHTML={
           Object {
             "__html": "SVG",
@@ -430,6 +430,8 @@ exports[`renders a route ladder with vehicles 1`] = `
     </li>
   </ol>
   <ul
+    className="m-route-ladder__vehicle"
+    onClick={[Function]}
     style={
       Object {
         "border": "1px solid black",
@@ -515,6 +517,8 @@ exports[`renders a route ladder with vehicles 1`] = `
     </li>
   </ul>
   <ul
+    className="m-route-ladder__vehicle"
+    onClick={[Function]}
     style={
       Object {
         "border": "1px solid black",
