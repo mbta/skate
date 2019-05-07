@@ -14,11 +14,8 @@
 }
 
 .m-route-ladder__close {
-  background: none;
-  border: none;
   color: $dark;
   font-size: 1rem;
-  padding: 0;
   position: absolute;
   right: 0.5rem;
   top: 0.5rem;
@@ -36,12 +33,9 @@
 }
 
 .m-route-ladder__reverse {
-  background: none;
-  border: none;
   color: $charcoal-grey;
   font-size: 0.8125rem;
   margin-top: 0.5rem;
-  padding: 0;
 }
 
 .m-route-ladder__reverse-icon {
