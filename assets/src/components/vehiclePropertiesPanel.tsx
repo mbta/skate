@@ -25,12 +25,16 @@ const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
             role="listitem"
             className="m-vehicle-properties-panel__vehicle-property"
           >
-            <dt>Vehicle</dt>
-            <dd>{selectedVehicle.label}</dd>
+            <dt className="m-vehicle-properties-panel__vehicle-property-label">
+              Vehicle
+            </dt>
+            <dd className="m-vehicle-properties-panel__vehicle-property-value">
+              {selectedVehicle.label}
+            </dd>
           </div>
         </dl>
 
-        <hr />
+        <hr className="m-vehicle-properties-panel__divider" />
 
         <button className="m-vehicle-properties-panel__close" onClick={hideMe}>
           Close vehicle properties

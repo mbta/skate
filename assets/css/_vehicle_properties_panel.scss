@@ -7,12 +7,6 @@
   top: inherit;
   width: 23.5rem;
   z-index: 1001;
-
-  hr {
-    border: none;
-    border-top: solid 2px $lighter-grey;
-    margin: 0 1.25rem;
-  }
 }
 
 .m-vehicle-properties-panel__header {
@@ -28,27 +22,33 @@
 
 dl.m-vehicle-properties-panel__vehicle-properties {
   margin-bottom: 2rem;
-
-  dt,
-  dl {
-    width: 50%;
-  }
-
-  dt {
-    font-size: 0.8125rem;
-    font-weight: bold;
-    text-align: right;
-    text-transform: uppercase;
-  }
-
-  dd {
-    font-size: 0.875rem;
-    margin-left: 0.5rem;
-  }
 }
 
 .m-vehicle-properties-panel__vehicle-property {
   display: flex;
+}
+
+.m-vehicle-properties-panel__vehicle-property-label,
+.m-vehicle-properties-panel__vehicle-property-value {
+  width: 50%;
+}
+
+.m-vehicle-properties-panel__vehicle-property-label {
+  font-size: 0.8125rem;
+  font-weight: bold;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.m-vehicle-properties-panel__vehicle-property-value {
+  font-size: 0.875rem;
+  margin-left: 0.5rem;
+}
+
+.m-vehicle-properties-panel__divider {
+  border: none;
+  border-top: solid 2px $lighter-grey;
+  margin: 0 1.25rem;
 }
 
 .m-vehicle-properties-panel__close {

@@ -29,15 +29,21 @@ Array [
         className="m-vehicle-properties-panel__vehicle-property"
         role="listitem"
       >
-        <dt>
+        <dt
+          className="m-vehicle-properties-panel__vehicle-property-label"
+        >
           Vehicle
         </dt>
-        <dd>
+        <dd
+          className="m-vehicle-properties-panel__vehicle-property-value"
+        >
           v1-label
         </dd>
       </div>
     </dl>
-    <hr />
+    <hr
+      className="m-vehicle-properties-panel__divider"
+    />
     <button
       className="m-vehicle-properties-panel__close"
       onClick={[Function]}
