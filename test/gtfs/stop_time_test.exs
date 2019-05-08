@@ -29,6 +29,18 @@ defmodule Gtfs.StopTimeTest do
       "checkpoint_id" => "melwa"
     },
     %{
+      "trip_id" => "39770780",
+      "arrival_time" => "05:20:00",
+      "departure_time" => "05:20:00",
+      "stop_id" => "4",
+      "stop_sequence" => "10",
+      "stop_headsign" => "",
+      "pickup_type" => "0",
+      "drop_off_type" => "0",
+      "timepoint" => "0",
+      "checkpoint_id" => "tenner"
+    },
+    %{
       "trip_id" => "39770783",
       "arrival_time" => "10:15:00",
       "departure_time" => "10:15:00",
@@ -71,7 +83,8 @@ defmodule Gtfs.StopTimeTest do
       assert StopTime.trip_stop_times_from_csv(@csv_rows) == %{
                "39770780" => [
                  %StopTime{stop_id: "64", timepoint_id: "dudly"},
-                 %StopTime{stop_id: "3", timepoint_id: "melwa"}
+                 %StopTime{stop_id: "3", timepoint_id: "melwa"},
+                 %StopTime{stop_id: "4", timepoint_id: "tenner"}
                ],
                "39770783" => [
                  %StopTime{stop_id: "23391", timepoint_id: "bbsta"},
@@ -91,6 +104,12 @@ defmodule Gtfs.StopTimeTest do
              )
 
       refute StopTime.row_in_trip_id_set?(List.first(@csv_rows), MapSet.new(["1", "2"]))
+    end
+  end
+
+  describe "stop_sequence_integer/1" do
+    test "returns the stop_sequency value as an integer" do
+      assert StopTime.stop_sequence_integer(List.first(@csv_rows)) == 1
     end
   end
 end
