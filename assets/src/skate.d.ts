@@ -12,6 +12,8 @@ export type RouteId = string
 
 export type StopId = string
 
+export type SwipeDirection = "Down" | "Left" | "Right" | "Up"
+
 export interface Timepoint {
   id: TimepointId
 }

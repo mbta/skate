@@ -1,6 +1,7 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import DispatchContext from "../contexts/dispatchContext"
-import { Vehicle } from "../skate.d"
+import detectSwipe from "../helpers/detectSwipe"
+import { SwipeDirection, Vehicle } from "../skate.d"
 import { deselectVehicle } from "../state"
 import CloseButton from "./closeButton"
 
@@ -13,9 +14,22 @@ const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
 
   const hideMe = () => dispatch(deselectVehicle())
 
+  useEffect(() => {
+    const handleSwipe = (swipeDirection: SwipeDirection) => {
+      if (swipeDirection === "Right") {
+        hideMe()
+      }
+    }
+
+    return detectSwipe("m-vehicle-properties-panel", handleSwipe)
+  })
+
   return (
     <>
-      <div className="m-vehicle-properties-panel">
+      <div
+        id="m-vehicle-properties-panel"
+        className="m-vehicle-properties-panel"
+      >
         <div className="m-vehicle-properties-panel__header">
           <CloseButton onClick={hideMe} />
         </div>
