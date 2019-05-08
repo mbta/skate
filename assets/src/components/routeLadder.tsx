@@ -53,7 +53,7 @@ const Vehicle = ({ vehicle }: { vehicle: Vehicle }) => {
     <ul
       className="m-route-ladder__vehicle"
       style={{ border: "1px solid black" }}
-      onClick={() => dispatch(selectVehicle(vehicle))}
+      onClick={() => dispatch(selectVehicle(vehicle.id))}
     >
       <li>
         <em>id:</em> {vehicle.id}

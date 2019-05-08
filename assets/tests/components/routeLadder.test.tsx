@@ -137,5 +137,5 @@ test("clicking a vehicle selects that vehicle", () => {
   )
   wrapper.find(".m-route-ladder__vehicle").simulate("click")
 
-  expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
+  expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle.id))
 })

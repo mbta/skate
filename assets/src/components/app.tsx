@@ -4,15 +4,29 @@ import useSocket from "../hooks/useSocket"
 import useTimepoints from "../hooks/useTimepoints"
 import useVehicles from "../hooks/useVehicles"
 import DispatchProvider from "../providers/dispatchProvider"
-import { Route, TimepointsByRouteId } from "../skate.d"
+import {
+  Route,
+  TimepointsByRouteId,
+  Vehicle,
+  VehicleId,
+  VehiclesByRouteId,
+} from "../skate.d"
 import { initialState, reducer } from "../state"
 import RouteLadders from "./routeLadders"
 import RoutePicker from "./routePicker"
 import VehiclePropertiesPanel from "./vehiclePropertiesPanel"
 
+const findSelectedVehicle = (
+  vehiclesByRouteId: VehiclesByRouteId,
+  selectedVehicleId: VehicleId | undefined
+): Vehicle | undefined =>
+  Object.values(vehiclesByRouteId)
+    .reduce((acc, vehicles) => acc.concat(vehicles), [])
+    .find(vehicle => vehicle.id === selectedVehicleId)
+
 const App = (): JSX.Element => {
   const [state, dispatch] = useReducer(reducer, initialState)
-  const { selectedRouteIds, selectedVehicle } = state
+  const { selectedRouteIds, selectedVehicleId } = state
 
   const routes: Route[] | null = useRoutes()
   const timepointsByRouteId: TimepointsByRouteId = useTimepoints(
@@ -23,6 +37,11 @@ const App = (): JSX.Element => {
 
   const selectedRoutes = (routes || []).filter(route =>
     selectedRouteIds.includes(route.id)
+  )
+
+  const selectedVehicle = findSelectedVehicle(
+    vehiclesByRouteId,
+    selectedVehicleId
   )
 
   return (

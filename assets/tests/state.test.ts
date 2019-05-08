@@ -1,4 +1,4 @@
-import { Vehicle } from "../src/skate"
+import { VehicleId } from "../src/skate"
 import * as State from "../src/state"
 
 const initialState = State.initialState
@@ -32,59 +32,27 @@ describe("reducer", () => {
   })
 
   test("selectVehicle", () => {
-    const vehicle: Vehicle = {
-      id: "v1",
-      label: "v1-label",
-      timestamp: 123,
-      direction_id: 0,
-      route_id: "r1",
-      trip_id: "t1",
-      stop_status: {
-        status: "in_transit_to",
-        stop_id: "s1",
-      },
-      timepoint_status: {
-        status: "in_transit_to",
-        timepoint_id: "tp1",
-        percent_of_the_way_to_timepoint: 50,
-      },
-    }
+    const vehicleId: VehicleId = "v1"
     const state = initialState
     const expectedState = {
       ...state,
-      selectedVehicle: vehicle,
+      selectedVehicleId: vehicleId,
     }
 
-    const newState = reducer(state, State.selectVehicle(vehicle))
+    const newState = reducer(state, State.selectVehicle(vehicleId))
 
     expect(newState).toEqual(expectedState)
   })
 
   test("deselectVehicle", () => {
-    const initialVehicle: Vehicle = {
-      id: "v1",
-      label: "v1-label",
-      timestamp: 123,
-      direction_id: 0,
-      route_id: "r1",
-      trip_id: "t1",
-      stop_status: {
-        status: "in_transit_to",
-        stop_id: "s1",
-      },
-      timepoint_status: {
-        status: "in_transit_to",
-        timepoint_id: "tp1",
-        percent_of_the_way_to_timepoint: 50,
-      },
-    }
+    const initialVehicleId: VehicleId = "v1"
     const state = {
       ...initialState,
-      selectVehicle: initialVehicle,
+      selectVehicle: initialVehicleId,
     }
     const expectedState = {
       ...state,
-      selectedVehicle: undefined,
+      selectedVehicleId: undefined,
     }
 
     const newState = reducer(state, State.deselectVehicle())

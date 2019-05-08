@@ -1,14 +1,14 @@
 import { Dispatch as ReactDispatch } from "react"
-import { RouteId, Vehicle } from "./skate.d"
+import { RouteId, VehicleId } from "./skate.d"
 
 export interface State {
   selectedRouteIds: RouteId[]
-  selectedVehicle?: Vehicle
+  selectedVehicleId?: VehicleId
 }
 
 export const initialState: State = {
   selectedRouteIds: [],
-  selectedVehicle: undefined,
+  selectedVehicleId: undefined,
 }
 
 interface SelectRouteAction {
@@ -38,13 +38,13 @@ export const deselectRoute = (routeId: RouteId): DeselectRouteAction => ({
 interface SelectVehicleAction {
   type: "SELECT_VEHICLE"
   payload: {
-    vehicle: Vehicle
+    vehicleId: VehicleId
   }
 }
 
-export const selectVehicle = (vehicle: Vehicle): SelectVehicleAction => ({
+export const selectVehicle = (vehicleId: VehicleId): SelectVehicleAction => ({
   type: "SELECT_VEHICLE",
-  payload: { vehicle },
+  payload: { vehicleId },
 })
 
 interface DeselectVehicleAction {
@@ -80,12 +80,12 @@ export const reducer = (state: State, action: Action): State => {
     case "SELECT_VEHICLE":
       return {
         ...state,
-        selectedVehicle: action.payload.vehicle,
+        selectedVehicleId: action.payload.vehicleId,
       }
     case "DESELECT_VEHICLE":
       return {
         ...state,
-        selectedVehicle: undefined,
+        selectedVehicleId: undefined,
       }
     default:
       return state
