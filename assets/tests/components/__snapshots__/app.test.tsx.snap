@@ -5,8 +5,25 @@ exports[`renders 1`] = `
   className="m-app"
 >
   <div
-    className="m-route-picker"
+    className="m-route-picker visible"
   >
+    <div
+      className="m-route-picker__tab"
+    >
+      <button
+        className="m-route-picker__tab-button"
+        onClick={[Function]}
+      >
+        <span
+          className="m-route-picker__tab-button-icon"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
     <ul
       className="m-route-picker__selected-routes"
     />

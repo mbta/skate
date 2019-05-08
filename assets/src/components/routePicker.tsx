@@ -1,5 +1,6 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import DispatchContext from "../contexts/dispatchContext"
+import { collapseIcon, expandIcon } from "../helpers/icon"
 import {
   filterRoutes,
   RouteFilter,
@@ -17,11 +18,16 @@ interface Props {
 
 const RoutePicker = ({ routes, selectedRouteIds }: Props) => {
   const routeFilterData: RouteFilterData = useRouteFilter()
+  const [isVisible, setIsVisible] = useState(true)
 
   const filteredRoutes = filterRoutes(routes || [], routeFilterData)
 
+  const toggleVisibility = () => setIsVisible(!isVisible)
+
   return (
-    <div className="m-route-picker">
+    <div className={`m-route-picker ${isVisible ? "visible" : "hidden"}`}>
+      <Tab isVisible={isVisible} toggleVisibility={toggleVisibility} />
+
       <SelectedRoutesList selectedRouteIds={selectedRouteIds} />
 
       <RouteFilter {...routeFilterData} />
@@ -37,6 +43,22 @@ const RoutePicker = ({ routes, selectedRouteIds }: Props) => {
     </div>
   )
 }
+
+const Tab = ({
+  isVisible,
+  toggleVisibility,
+}: {
+  isVisible: boolean
+  toggleVisibility: () => void
+}) => (
+  <div className="m-route-picker__tab">
+    <button className="m-route-picker__tab-button" onClick={toggleVisibility}>
+      {isVisible
+        ? collapseIcon("m-route-picker__tab-button-icon")
+        : expandIcon("m-route-picker__tab-button-icon")}
+    </button>
+  </div>
+)
 
 const SelectedRoutesList = ({
   selectedRouteIds,

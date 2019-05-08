@@ -1,6 +1,6 @@
 import { mount } from "enzyme"
 import React from "react"
-import renderer from "react-test-renderer"
+import renderer, { act } from "react-test-renderer"
 import RoutePicker from "../../src/components/routePicker"
 import DispatchProvider from "../../src/providers/dispatchProvider"
 import { Route, RouteId } from "../../src/skate"
@@ -32,6 +32,19 @@ describe("RoutePicker", () => {
       .toJSON()
 
     expect(tree).toMatchSnapshot()
+  })
+
+  test("clicking the collapse button hides the route picker", () => {
+    const wrapper = mount(<RoutePicker routes={null} selectedRouteIds={[]} />)
+    expect(wrapper.find(".m-route-picker").hasClass("visible")).toBeTruthy()
+    expect(wrapper.find(".m-route-picker").hasClass("hiddden")).toBeFalsy()
+
+    act(() => {
+      wrapper.find(".m-route-picker__tab-button").simulate("click")
+    })
+
+    expect(wrapper.find(".m-route-picker").hasClass("visible")).toBeFalsy()
+    expect(wrapper.find(".m-route-picker").hasClass("hidden")).toBeTruthy()
   })
 
   test("clicking a route selects it", () => {
