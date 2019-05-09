@@ -90,6 +90,10 @@ defmodule Realtime.Server do
     {:noreply, new_state}
   end
 
+  # If we get a reply after we've already timed out, ignore it
+  @impl true
+  def handle_info({reference, _}, state) when is_reference(reference), do: {:noreply, state}
+
   @impl true
   def handle_call({:subscribe, route_id}, _from, state) do
     registry_key = self()
