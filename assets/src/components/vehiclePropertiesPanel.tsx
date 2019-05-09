@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react"
 import DispatchContext from "../contexts/dispatchContext"
-import detectSwipe from "../helpers/detectSwipe"
-import { SwipeDirection, Vehicle } from "../skate.d"
+import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
+import { Vehicle } from "../skate.d"
 import { deselectVehicle } from "../state"
 import CloseButton from "./closeButton"
 

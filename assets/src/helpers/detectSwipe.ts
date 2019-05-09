@@ -1,5 +1,3 @@
-import { SwipeDirection } from "../skate.d"
-
 const MIN_X = 30 // Min x swipe for horizontal swipe
 const MAX_X = 30 // Max x difference for vertical swipe
 const MIN_Y = 50 // Min y swipe for vertical swipe
@@ -11,6 +9,8 @@ interface Position {
   x: number
   y: number
 }
+
+export type SwipeDirection = "Down" | "Left" | "Right" | "Up"
 
 const detectSwipe = (elementId: string, callback: Callback) => {
   let startingPosition: Position
