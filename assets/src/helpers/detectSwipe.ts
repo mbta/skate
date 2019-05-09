@@ -72,17 +72,15 @@ const diff = (end: Position, start: Position): Position => ({
 const directionOfMovement = (
   movement: Position
 ): SwipeDirection | undefined => {
-  let swipeDirection: SwipeDirection | undefined
-
   if (Math.abs(movement.x) > MIN_X && Math.abs(movement.y) < MAX_Y) {
     // Horizontal movement
-    swipeDirection = movement.x > 0 ? "Right" : "Left"
+    return movement.x > 0 ? "Right" : "Left"
   } else if (Math.abs(movement.y) > MIN_Y && Math.abs(movement.x) < MAX_X) {
     // Vertical movement
-    swipeDirection = movement.y > 0 ? "Down" : "Up"
+    return movement.y > 0 ? "Down" : "Up"
+  } else {
+    return undefined
   }
-
-  return swipeDirection
 }
 
 export default detectSwipe
