@@ -5,6 +5,8 @@ const MAX_Y = 60 // Max y difference for horizontal swipe
 
 type Callback = (swipeDirection: SwipeDirection) => void
 
+type CleanupFunction = () => void
+
 interface Position {
   x: number
   y: number
@@ -12,7 +14,10 @@ interface Position {
 
 export type SwipeDirection = "Down" | "Left" | "Right" | "Up"
 
-const detectSwipe = (elementId: string, callback: Callback) => {
+const detectSwipe = (
+  elementId: string,
+  callback: Callback
+): CleanupFunction => {
   let startingPosition: Position
   let endingPosition: Position
 
@@ -52,7 +57,7 @@ const detectSwipe = (elementId: string, callback: Callback) => {
   }
 }
 
-const firstTouchPosition = (event: TouchEvent) => {
+const firstTouchPosition = (event: TouchEvent): Position => {
   const { screenX, screenY } = event.touches[0]
   return { x: screenX, y: screenY }
 }
@@ -62,7 +67,9 @@ const diff = (end: Position, start: Position): Position => ({
   y: end.y - start.y,
 })
 
-const directionOfMovement = (movement: Position) => {
+const directionOfMovement = (
+  movement: Position
+): SwipeDirection | undefined => {
   let swipeDirection: SwipeDirection | undefined
 
   if (Math.abs(movement.x) > MIN_X && Math.abs(movement.y) < MAX_Y) {
