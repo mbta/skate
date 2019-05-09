@@ -23,7 +23,9 @@ const detectSwipe = (
 
   const handleTouchStart = (event: TouchEvent) => {
     event.preventDefault()
-    startingPosition = firstTouchPosition(event)
+    const position = firstTouchPosition(event)
+    startingPosition = position
+    endingPosition = position
   }
 
   const handleTouchMove = (event: TouchEvent) => {
