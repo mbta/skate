@@ -1,8 +1,9 @@
 import React, { useContext, useState } from "react"
 import DispatchContext from "../contexts/dispatchContext"
-import { closeIcon, reverseIcon, reverseIconReversed } from "../helpers/icon"
+import { reverseIcon, reverseIconReversed } from "../helpers/icon"
 import { LoadableTimepoints, Route, Timepoint, Vehicle } from "../skate.d"
-import { deselectRoute } from "../state"
+import { deselectRoute, selectVehicle } from "../state"
+import CloseButton from "./closeButton"
 import Loading from "./loading"
 
 interface Props {
@@ -21,12 +22,7 @@ const Header = ({ route }: { route: Route }) => {
 
   return (
     <div className="m-route-ladder__header">
-      <button
-        className="m-route-ladder__close"
-        onClick={() => dispatch(deselectRoute(route.id))}
-      >
-        {closeIcon("m-route-ladder__close-icon")}
-      </button>
+      <CloseButton onClick={() => dispatch(deselectRoute(route.id))} />
 
       <div className="m-route-ladder__route-name">{route.id}</div>
     </div>
@@ -50,41 +46,50 @@ const Timepoint = ({ timepoint }: { timepoint: Timepoint }) => (
   </li>
 )
 
-const Vehicle = ({ vehicle }: { vehicle: Vehicle }) => (
-  <ul style={{ border: "1px solid black" }}>
-    <li>
-      <em>id:</em> {vehicle.id}
-    </li>
-    <li>
-      <em>label:</em> {vehicle.label}
-    </li>
-    <li>
-      <em>timestamp:</em> {vehicle.timestamp}
-    </li>
-    <li>
-      <em>direction_id:</em> {vehicle.direction_id}
-    </li>
-    <li>
-      <em>route_id:</em> {vehicle.route_id}
-    </li>
-    <li>
-      <em>trip_id:</em> {vehicle.trip_id}
-    </li>
-    <li>
-      <em>stop status:</em> {vehicle.stop_status.status},<br />
-      <em>stop:</em> {vehicle.stop_status.stop_id}
-    </li>
-    <li>
-      <em>timepoint status:</em>{" "}
-      {vehicle.timepoint_status && vehicle.timepoint_status.status},<br />
-      <em>timepoint:</em>{" "}
-      {vehicle.timepoint_status && vehicle.timepoint_status.timepoint_id},<br />
-      <em>percent:</em>{" "}
-      {vehicle.timepoint_status &&
-        vehicle.timepoint_status.percent_of_the_way_to_timepoint}
-    </li>
-  </ul>
-)
+const Vehicle = ({ vehicle }: { vehicle: Vehicle }) => {
+  const dispatch = useContext(DispatchContext)
+
+  return (
+    <ul
+      className="m-route-ladder__vehicle"
+      style={{ border: "1px solid black" }}
+      onClick={() => dispatch(selectVehicle(vehicle.id))}
+    >
+      <li>
+        <em>id:</em> {vehicle.id}
+      </li>
+      <li>
+        <em>label:</em> {vehicle.label}
+      </li>
+      <li>
+        <em>timestamp:</em> {vehicle.timestamp}
+      </li>
+      <li>
+        <em>direction_id:</em> {vehicle.direction_id}
+      </li>
+      <li>
+        <em>route_id:</em> {vehicle.route_id}
+      </li>
+      <li>
+        <em>trip_id:</em> {vehicle.trip_id}
+      </li>
+      <li>
+        <em>stop status:</em> {vehicle.stop_status.status},<br />
+        <em>stop:</em> {vehicle.stop_status.stop_id}
+      </li>
+      <li>
+        <em>timepoint status:</em>{" "}
+        {vehicle.timepoint_status && vehicle.timepoint_status.status},<br />
+        <em>timepoint:</em>{" "}
+        {vehicle.timepoint_status && vehicle.timepoint_status.timepoint_id},
+        <br />
+        <em>percent:</em>{" "}
+        {vehicle.timepoint_status &&
+          vehicle.timepoint_status.percent_of_the_way_to_timepoint}
+      </li>
+    </ul>
+  )
+}
 
 const RouteLadder = ({ route, timepoints, vehicles }: Props) => {
   const initialDirection: StopListDirection = StopListDirection.ZeroToOne

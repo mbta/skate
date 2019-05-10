@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
+Array [
+  <div
+    className="m-vehicle-properties-panel"
+    id="m-vehicle-properties-panel"
+  >
+    <div
+      className="m-vehicle-properties-panel__header"
+    >
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className="m-close-button__icon"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <dl
+      className="m-vehicle-properties-panel__vehicle-properties"
+    >
+      <div
+        className="m-vehicle-properties-panel__vehicle-property"
+        role="listitem"
+      >
+        <dt
+          className="m-vehicle-properties-panel__vehicle-property-label"
+        >
+          Vehicle
+        </dt>
+        <dd
+          className="m-vehicle-properties-panel__vehicle-property-value"
+        >
+          v1-label
+        </dd>
+      </div>
+    </dl>
+    <hr
+      className="m-vehicle-properties-panel__divider"
+    />
+    <button
+      className="m-vehicle-properties-panel__close"
+      onClick={[Function]}
+    >
+      Close vehicle properties
+    </button>
+  </div>,
+  <div
+    className="m-vehicle-properties-panel__modal-overlay"
+    onClick={[Function]}
+  />,
+]
+`;

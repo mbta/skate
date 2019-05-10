@@ -1,12 +1,14 @@
 import { Dispatch as ReactDispatch } from "react"
-import { RouteId } from "./skate.d"
+import { RouteId, VehicleId } from "./skate.d"
 
 export interface State {
   selectedRouteIds: RouteId[]
+  selectedVehicleId?: VehicleId
 }
 
 export const initialState: State = {
   selectedRouteIds: [],
+  selectedVehicleId: undefined,
 }
 
 interface SelectRouteAction {
@@ -33,7 +35,31 @@ export const deselectRoute = (routeId: RouteId): DeselectRouteAction => ({
   payload: { routeId },
 })
 
-type Action = SelectRouteAction | DeselectRouteAction
+interface SelectVehicleAction {
+  type: "SELECT_VEHICLE"
+  payload: {
+    vehicleId: VehicleId
+  }
+}
+
+export const selectVehicle = (vehicleId: VehicleId): SelectVehicleAction => ({
+  type: "SELECT_VEHICLE",
+  payload: { vehicleId },
+})
+
+interface DeselectVehicleAction {
+  type: "DESELECT_VEHICLE"
+}
+
+export const deselectVehicle = (): DeselectVehicleAction => ({
+  type: "DESELECT_VEHICLE",
+})
+
+type Action =
+  | SelectRouteAction
+  | DeselectRouteAction
+  | SelectVehicleAction
+  | DeselectVehicleAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -50,6 +76,16 @@ export const reducer = (state: State, action: Action): State => {
         selectedRouteIds: state.selectedRouteIds.filter(
           id => id !== action.payload.routeId
         ),
+      }
+    case "SELECT_VEHICLE":
+      return {
+        ...state,
+        selectedVehicleId: action.payload.vehicleId,
+      }
+    case "DESELECT_VEHICLE":
+      return {
+        ...state,
+        selectedVehicleId: undefined,
       }
     default:
       return state

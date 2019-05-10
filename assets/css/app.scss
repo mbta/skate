@@ -2,10 +2,12 @@
 
 @import "inter_ui";
 
+@import "close_button";
 @import "route_ladder";
 @import "route_ladders";
 @import "route_picker";
 @import "route_filter";
+@import "vehicle_properties_panel";
 
 body {
   background-color: $pale-grey;
