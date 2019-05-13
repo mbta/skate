@@ -55,6 +55,7 @@ config :skate,
   ],
   reporters: [
     Concentrate.Reporter.VehicleLatency,
+    Concentrate.Reporter.VehiclePositions,
     Concentrate.Reporter.StopTimeUpdateLatency,
     Concentrate.Reporter.Latency
   ],

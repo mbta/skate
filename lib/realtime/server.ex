@@ -48,6 +48,11 @@ defmodule Realtime.Server do
     vehicles
   end
 
+  @spec update_vehicles(vehicles()) :: term()
+  def update_vehicles(vehicles) do
+    GenServer.cast(__MODULE__, {:update_vehicles, vehicles})
+  end
+
   # GenServer callbacks
 
   @impl true
@@ -59,69 +64,77 @@ defmodule Realtime.Server do
       vehicles: Map.new()
     }
 
-    {:ok, initial_state, {:continue, :poll}}
+    # {:ok, initial_state, {:continue, :poll}}
+    {:ok, initial_state}
   end
 
-  @impl true
-  def handle_continue(:poll, state) do
-    case fetch(state.url) do
-      {:ok, vehicles} ->
-        Process.send_after(self(), :poll, state.poll_delay)
-        {:noreply, %{state | vehicles: vehicles}}
+  # @impl true
+  # def handle_continue(:poll, state) do
+  #   case fetch(state.url) do
+  #     {:ok, vehicles} ->
+  #       Process.send_after(self(), :poll, state.poll_delay)
+  #       {:noreply, %{state | vehicles: vehicles}}
 
-      {:error, error} ->
-        {:stop, error}
-    end
-  end
+  #     {:error, error} ->
+  #       {:stop, error}
+  #   end
+  # end
 
-  @impl true
-  def handle_info(:poll, state) do
-    new_state =
-      case fetch(state.url) do
-        {:ok, vehicles} ->
-          broadcast(vehicles)
-          %{state | vehicles: vehicles}
+  # @impl true
+  # def handle_info(:poll, state) do
+  #   new_state =
+  #     case fetch(state.url) do
+  #       {:ok, vehicles} ->
+  #         broadcast(vehicles)
+  #         %{state | vehicles: vehicles}
 
-        _ ->
-          state
-      end
+  #       _ ->
+  #         state
+  #     end
 
-    Process.send_after(self(), :poll, state.poll_delay)
-    {:noreply, new_state}
-  end
+  #   Process.send_after(self(), :poll, state.poll_delay)
+  #   {:noreply, new_state}
+  # end
 
   # If we get a reply after we've already timed out, ignore it
-  @impl true
+  @impl GenServer
   def handle_info({reference, _}, state) when is_reference(reference), do: {:noreply, state}
 
-  @impl true
+  @impl GenServer
   def handle_call({:subscribe, route_id}, _from, state) do
     registry_key = self()
     vehicles = Map.get(state.vehicles, route_id, [])
     {:reply, {registry_key, vehicles}, state}
   end
 
-  @spec fetch(String.t()) :: {:ok, vehicles()} | {:error, any()}
-  defp fetch(url) do
-    case HTTPoison.get(url) do
-      {:ok, %HTTPoison.Response{status_code: 200, body: json_string}} ->
-        case Jason.decode(json_string) do
-          {:ok, json} ->
-            {:ok, decode_data(json)}
-
-          {:error, error} ->
-            Logger.warn(fn -> "Failed to decode json : #{inspect(error)}" end)
-            {:error, error}
-        end
-
-      response ->
-        Logger.warn(fn -> "Unexpected response from #{url} : #{inspect(response)}" end)
-        {:error, response}
-    end
+  @impl true
+  def handle_cast({:update_vehicles, vehicles}, state) do
+    broadcast(vehicles)
+    new_state = %{state | vehicles: vehicles}
+    {:noreply, new_state}
   end
 
+  # @spec fetch(String.t()) :: {:ok, vehicles()} | {:error, any()}
+  # defp fetch(url) do
+  #   case HTTPoison.get(url) do
+  #     {:ok, %HTTPoison.Response{status_code: 200, body: json_string}} ->
+  #       case Jason.decode(json_string) do
+  #         {:ok, json} ->
+  #           {:ok, decode_data(json)}
+
+  #         {:error, error} ->
+  #           Logger.warn(fn -> "Failed to decode json : #{inspect(error)}" end)
+  #           {:error, error}
+  #       end
+
+  #     response ->
+  #       Logger.warn(fn -> "Unexpected response from #{url} : #{inspect(response)}" end)
+  #       {:error, response}
+  #   end
+  # end
+
   @spec broadcast(vehicles()) :: :ok
-  defp broadcast(vehicles) do
+  def broadcast(vehicles) do
     registry_key = self()
 
     Registry.dispatch(registry_name(), registry_key, fn entries ->
@@ -131,10 +144,10 @@ defmodule Realtime.Server do
     end)
   end
 
-  @spec decode_data(term()) :: vehicles()
-  def decode_data(json) do
-    json["entity"]
-    |> Enum.map(&Realtime.Vehicle.decode/1)
-    |> Enum.group_by(fn vehicle -> vehicle.route_id end)
-  end
+  # @spec decode_data(term()) :: vehicles()
+  # def decode_data(json) do
+  #   json["entity"]
+  #   |> Enum.map(&Realtime.Vehicle.decode/1)
+  #   |> Enum.group_by(fn vehicle -> vehicle.route_id end)
+  # end
 end

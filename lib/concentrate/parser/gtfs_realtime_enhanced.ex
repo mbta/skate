@@ -88,6 +88,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
   end
 
   def decode_vehicle(vp) do
+    operator = Map.get(vp, "operator", %{})
     position = Map.get(vp, "position", %{})
     vehicle = Map.get(vp, "vehicle", %{})
 
@@ -108,7 +109,11 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
             odometer: Map.get(position, "odometer"),
             status: vehicle_status(Map.get(vp, "current_status")),
             stop_sequence: Map.get(vp, "current_stop_sequence"),
-            last_updated: Map.get(vp, "timestamp")
+            last_updated: Map.get(vp, "timestamp"),
+            block_id: Map.get(vp, "block_id"),
+            operator_id: Map.get(operator, "id"),
+            operator_name: Map.get(operator, "name"),
+            run_id: Map.get(vp, "run_id")
           )
         ]
 

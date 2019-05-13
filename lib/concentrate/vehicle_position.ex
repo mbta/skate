@@ -16,6 +16,10 @@ defmodule Concentrate.VehiclePosition do
     :speed,
     :odometer,
     :stop_sequence,
+    :block_id,
+    :operator_id,
+    :operator_name,
+    :run_id,
     :last_updated,
     status: :IN_TRANSIT_TO
   ])
@@ -61,7 +65,11 @@ defmodule Concentrate.VehiclePosition do
           bearing: first_value(second.bearing, first.bearing),
           speed: first_value(second.speed, first.speed),
           odometer: first_value(second.odometer, first.odometer),
-          stop_sequence: first_value(second.stop_sequence, first.stop_sequence)
+          stop_sequence: first_value(second.stop_sequence, first.stop_sequence),
+          block_id: first_value(second.block_id, first.block_id),
+          operator_id: first_value(second.operator_id, first.operator_id),
+          operator_name: first_value(second.operator_name, first.operator_name),
+          run_id: first_value(second.run_id, first.run_id)
       }
     end
 

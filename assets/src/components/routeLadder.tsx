@@ -53,6 +53,33 @@ const Vehicle = ({ vehicle }: { vehicle: Vehicle }) => {
         <em>trip_id:</em> {vehicle.trip_id}
       </li>
       <li>
+        <em>latitude:</em> {vehicle.latitude}
+      </li>
+      <li>
+        <em>longitude:</em> {vehicle.longitude}
+      </li>
+      <li>
+        <em>bearing:</em> {vehicle.bearing}
+      </li>
+      <li>
+        <em>speed:</em> {vehicle.speed}
+      </li>
+      <li>
+        <em>stop_sequence:</em> {vehicle.stop_sequence}
+      </li>
+      <li>
+        <em>block_id:</em> {vehicle.block_id}
+      </li>
+      <li>
+        <em>operator_id:</em> {vehicle.operator_id}
+      </li>
+      <li>
+        <em>operator_name:</em> {vehicle.operator_name}
+      </li>
+      <li>
+        <em>run_id:</em> {vehicle.run_id}
+      </li>
+      <li>
         <em>stop status:</em> {vehicle.stop_status.status},<br />
         <em>stop:</em> {vehicle.stop_status.stop_id}
       </li>

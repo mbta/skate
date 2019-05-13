@@ -26,6 +26,15 @@ defmodule Realtime.Vehicle do
           direction_id: Direction.id(),
           route_id: Route.id(),
           trip_id: Trip.id(),
+          latitude: float() | nil,
+          longitude: float() | nil,
+          bearing: integer() | nil,
+          speed: integer() | nil,
+          stop_sequence: integer() | nil,
+          block_id: String.t() | nil,
+          operator_id: String.t() | nil,
+          operator_name: String.t() | nil,
+          run_id: String.t() | nil,
           stop_status: stop_status(),
           timepoint_status: timepoint_status()
         }
@@ -37,6 +46,15 @@ defmodule Realtime.Vehicle do
     :direction_id,
     :route_id,
     :trip_id,
+    :latitude,
+    :longitude,
+    :bearing,
+    :speed,
+    :stop_sequence,
+    :block_id,
+    :operator_id,
+    :operator_name,
+    :run_id,
     :stop_status
   ]
 
@@ -49,6 +67,15 @@ defmodule Realtime.Vehicle do
     :direction_id,
     :route_id,
     :trip_id,
+    :latitude,
+    :longitude,
+    :bearing,
+    :speed,
+    :stop_sequence,
+    :block_id,
+    :operator_id,
+    :operator_name,
+    :run_id,
     :stop_status,
     :timepoint_status
   ]
@@ -81,17 +108,117 @@ defmodule Realtime.Vehicle do
   """
   @spec decode(term()) :: t()
   def decode(%{} = json) do
+    feed_properties = %{
+      id: json["id"],
+      label: json["vehicle"]["vehicle"]["label"],
+      timestamp: json["vehicle"]["timestamp"],
+      direction_id: json["vehicle"]["trip"]["direction_id"],
+      route_id: json["vehicle"]["trip"]["route_id"],
+      trip_id: json["vehicle"]["trip"]["trip_id"],
+      latitude: nil,
+      longitude: nil,
+      bearing: nil,
+      speed: nil,
+      stop_sequence: nil,
+      block_id: nil,
+      operator_id: nil,
+      operator_name: nil,
+      run_id: nil,
+      current_stop_status: decode_current_status(json["vehicle"]["current_status"]),
+      stop_id: json["vehicle"]["stop_id"]
+    }
+
+    full_struct(feed_properties)
+  end
+
+  @spec from_vehicle_position_and_trip_update(map(), map()) :: t()
+  def from_vehicle_position_and_trip_update(
+        %{
+          id: id,
+          trip_id: trip_id,
+          stop_id: stop_id,
+          label: label,
+          latitude: latitude,
+          longitude: longitude,
+          bearing: bearing,
+          speed: speed,
+          stop_sequence: stop_sequence,
+          block_id: block_id,
+          operator_id: operator_id,
+          operator_name: operator_name,
+          run_id: run_id,
+          last_updated: last_updated,
+          status: status
+        },
+        %{
+          route_id: route_id,
+          direction_id: direction_id
+        }
+      ) do
+    feed_properties = %{
+      id: id,
+      label: label,
+      timestamp: last_updated,
+      direction_id: direction_id,
+      route_id: route_id,
+      trip_id: trip_id,
+      latitude: latitude,
+      longitude: longitude,
+      bearing: bearing,
+      speed: speed,
+      stop_sequence: stop_sequence,
+      block_id: block_id,
+      operator_id: operator_id,
+      operator_name: operator_name,
+      run_id: run_id,
+      current_stop_status: decode_current_status(status),
+      stop_id: stop_id
+    }
+
+    full_struct(feed_properties)
+  end
+
+  @type feed_properties :: %{
+          id: String.t(),
+          label: String.t(),
+          timestamp: integer(),
+          direction_id: Direction.id(),
+          route_id: Route.id(),
+          trip_id: Trip.id(),
+          latitude: float() | nil,
+          longitude: float() | nil,
+          bearing: integer() | nil,
+          speed: integer() | nil,
+          stop_sequence: integer() | nil,
+          block_id: String.t() | nil,
+          operator_id: String.t() | nil,
+          operator_name: String.t() | nil,
+          run_id: String.t() | nil,
+          current_stop_status: current_status(),
+          stop_id: String.t()
+        }
+  @spec full_struct(feed_properties()) :: t()
+  defp full_struct(%{
+         id: id,
+         label: label,
+         timestamp: timestamp,
+         direction_id: direction_id,
+         route_id: route_id,
+         trip_id: trip_id,
+         latitude: latitude,
+         longitude: longitude,
+         bearing: bearing,
+         speed: speed,
+         stop_sequence: stop_sequence,
+         block_id: block_id,
+         operator_id: operator_id,
+         operator_name: operator_name,
+         run_id: run_id,
+         current_stop_status: current_stop_status,
+         stop_id: stop_id
+       }) do
     stop_times_on_trip_fn =
       Application.get_env(:realtime, :stop_times_on_trip_fn, &Gtfs.stop_times_on_trip/1)
-
-    id = json["id"]
-    label = json["vehicle"]["vehicle"]["label"]
-    timestamp = json["vehicle"]["timestamp"]
-    direction_id = json["vehicle"]["trip"]["direction_id"]
-    route_id = json["vehicle"]["trip"]["route_id"]
-    trip_id = json["vehicle"]["trip"]["trip_id"]
-    current_stop_status = decode_current_status(json["vehicle"]["current_status"])
-    stop_id = json["vehicle"]["stop_id"]
 
     stop_times_on_trip =
       try do
@@ -124,6 +251,15 @@ defmodule Realtime.Vehicle do
       direction_id: direction_id,
       route_id: route_id,
       trip_id: trip_id,
+      latitude: latitude,
+      longitude: longitude,
+      bearing: bearing,
+      speed: speed,
+      stop_sequence: stop_sequence,
+      block_id: block_id,
+      operator_id: operator_id,
+      operator_name: operator_name,
+      run_id: run_id,
       stop_status: %{
         status: current_stop_status,
         stop_id: stop_id
@@ -172,8 +308,11 @@ defmodule Realtime.Vehicle do
   defp current_timepoint_status(:stopped_at, next_timepoint_stop_time, stop_id),
     do: if(next_timepoint_stop_time.stop_id == stop_id, do: :stopped_at, else: :in_transit_to)
 
-  @spec decode_current_status(String.t()) :: current_status()
+  @spec decode_current_status(String.t() | atom()) :: current_status()
   defp decode_current_status("IN_TRANSIT_TO"), do: :in_transit_to
+  defp decode_current_status(:IN_TRANSIT_TO), do: :in_transit_to
   defp decode_current_status("INCOMING_AT"), do: :in_transit_to
+  defp decode_current_status(:INCOMING_AT), do: :in_transit_to
   defp decode_current_status("STOPPED_AT"), do: :stopped_at
+  defp decode_current_status(:STOPPED_AT), do: :stopped_at
 end

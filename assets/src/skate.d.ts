@@ -33,6 +33,15 @@ export interface Vehicle {
   direction_id: Direction
   route_id: RouteId
   trip_id: TripId
+  latitude?: number
+  longitude?: number
+  bearing?: number
+  speed?: number
+  stop_sequence?: number
+  block_id?: string
+  operator_id?: string
+  operator_name?: string
+  run_id?: string
   stop_status: VehicleStopStatus
   timepoint_status: VehicleTimepointStatus | null
 }
