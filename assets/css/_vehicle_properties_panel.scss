@@ -2,6 +2,7 @@
   background-color: $pale-grey;
   height: 100%;
   max-width: 100%;
+  padding: 1rem;
   position: fixed;
   right: 0;
   top: inherit;
@@ -10,14 +11,8 @@
 }
 
 .m-vehicle-properties-panel__header {
-  margin-top: 0.5rem;
-  min-height: 2rem;
-
-  .m-close-button {
-    position: absolute;
-    right: 0.875rem;
-    top: 0.875rem;
-  }
+  display: flex;
+  justify-content: flex-end;
 }
 
 dl.m-vehicle-properties-panel__vehicle-properties {
@@ -48,7 +43,11 @@ dl.m-vehicle-properties-panel__vehicle-properties {
 .m-vehicle-properties-panel__divider {
   border: none;
   border-top: solid 2px $lighter-grey;
-  margin: 0 1.25rem;
+}
+
+.m-vehicle-properties-panel__link {
+  color: $light-blue;
+  text-decoration: none;
 }
 
 .m-vehicle-properties-panel__close {

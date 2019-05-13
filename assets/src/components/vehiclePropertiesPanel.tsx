@@ -24,6 +24,10 @@ const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
     return detectSwipe("m-vehicle-properties-panel", handleSwipe)
   })
 
+  const directionsUrl = `https://www.google.com/maps/dir/?api=1\
+&destination=${selectedVehicle.latitude.toString()},${selectedVehicle.longitude.toString()}\
+&travelmode=driving`
+
   return (
     <>
       <div
@@ -49,6 +53,10 @@ const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
         </dl>
 
         <hr className="m-vehicle-properties-panel__divider" />
+
+        <a className="m-vehicle-properties-panel__link" href={directionsUrl}>
+          Directions
+        </a>
 
         <button className="m-vehicle-properties-panel__close" onClick={hideMe}>
           Close vehicle properties

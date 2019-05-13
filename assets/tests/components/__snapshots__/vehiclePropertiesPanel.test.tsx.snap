@@ -45,6 +45,12 @@ Array [
     <hr
       className="m-vehicle-properties-panel__divider"
     />
+    <a
+      className="m-vehicle-properties-panel__link"
+      href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+    >
+      Directions
+    </a>
     <button
       className="m-vehicle-properties-panel__close"
       onClick={[Function]}
