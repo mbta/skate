@@ -47,8 +47,7 @@ export interface VehicleStopStatus {
 }
 
 export interface VehicleTimepointStatus {
-  status: VehicleStatus
-  timepoint_id: TimepointId | null
+  timepoint_id: TimepointId
   fraction_until_timepoint: number
 }
 

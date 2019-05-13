@@ -3,7 +3,7 @@ import React from "react"
 import renderer from "react-test-renderer"
 import Ladder, { LadderDirection } from "../../src/components/ladder"
 import DispatchProvider from "../../src/providers/dispatchProvider"
-import { Vehicle } from "../../src/skate"
+import { Timepoint, Vehicle } from "../../src/skate"
 import { selectVehicle } from "../../src/state"
 
 test("renders a ladder", () => {
@@ -23,7 +23,6 @@ test("renders a ladder", () => {
         stop_id: "stop",
       },
       timepoint_status: {
-        status: "in_transit_to",
         timepoint_id: "t1",
         fraction_until_timepoint: 0.5,
       },
@@ -42,7 +41,6 @@ test("renders a ladder", () => {
         stop_id: "stop",
       },
       timepoint_status: {
-        status: "in_transit_to",
         timepoint_id: "t2",
         fraction_until_timepoint: 0.75,
       },
@@ -96,7 +94,6 @@ test("highlights a selected vehicle", () => {
         stop_id: "stop",
       },
       timepoint_status: {
-        status: "in_transit_to",
         timepoint_id: "t1",
         fraction_until_timepoint: 0.5,
       },
@@ -115,7 +112,6 @@ test("highlights a selected vehicle", () => {
         stop_id: "stop",
       },
       timepoint_status: {
-        status: "in_transit_to",
         timepoint_id: "t2",
         fraction_until_timepoint: 0.75,
       },
@@ -155,7 +151,6 @@ test("clicking a vehicle selects that vehicle", () => {
       stop_id: "stop",
     },
     timepoint_status: {
-      status: "in_transit_to",
       timepoint_id: "t1",
       fraction_until_timepoint: 0.5,
     },
@@ -176,4 +171,39 @@ test("clicking a vehicle selects that vehicle", () => {
   wrapper.find(".m-ladder__vehicle").simulate("click")
 
   expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle.id))
+})
+
+test("renders a ladder with no timepoints", () => {
+  const timepoints: Timepoint[] = []
+  const vehicles: Vehicle[] = [
+    {
+      id: "upward",
+      label: "upward",
+      timestamp: 0,
+      latitude: 0,
+      longitude: 0,
+      direction_id: 1,
+      route_id: "route",
+      trip_id: "trip",
+      stop_status: {
+        status: "in_transit_to",
+        stop_id: "stop",
+      },
+      timepoint_status: null,
+    },
+  ]
+  const ladderDirection = LadderDirection.OneToZero
+
+  const tree = renderer
+    .create(
+      <Ladder
+        timepoints={timepoints}
+        vehicles={vehicles}
+        ladderDirection={ladderDirection}
+        selectedVehicleId={undefined}
+      />
+    )
+    .toJSON()
+
+  expect(tree).toMatchSnapshot()
 })

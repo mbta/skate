@@ -42,7 +42,6 @@ test("renders a route ladder with vehicles", () => {
         stop_id: "57",
       },
       timepoint_status: {
-        status: "in_transit_to",
         timepoint_id: "MATPN",
         fraction_until_timepoint: 0.5,
       },
@@ -61,7 +60,6 @@ test("renders a route ladder with vehicles", () => {
         stop_id: "59",
       },
       timepoint_status: {
-        status: "in_transit_to",
         timepoint_id: "MORTN",
         fraction_until_timepoint: 0.0,
       },

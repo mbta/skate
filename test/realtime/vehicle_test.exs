@@ -61,7 +61,6 @@ defmodule Realtime.VehicleTest do
                  stop_id: "6555"
                },
                timepoint_status: %{
-                 status: :in_transit_to,
                  timepoint_id: "tp2",
                  fraction_until_timepoint: 0.0
                }
@@ -69,7 +68,7 @@ defmodule Realtime.VehicleTest do
     end
   end
 
-  describe "fraction_until_timepoint/3" do
+  describe "timepoint_status/3" do
     test "returns 0.0 if the stop is a timepoint, plus the timepoint" do
       stop_times = [
         %StopTime{
@@ -100,12 +99,9 @@ defmodule Realtime.VehicleTest do
 
       stop_id = "s3"
 
-      assert Vehicle.fraction_until_timepoint(stop_times, stop_id) == {
-               0.0,
-               %StopTime{
-                 stop_id: "s3",
-                 timepoint_id: "tp3"
-               }
+      assert Vehicle.timepoint_status(stop_times, stop_id) == %{
+               timepoint_id: "tp3",
+               fraction_until_timepoint: 0.0
              }
     end
 
@@ -139,14 +135,51 @@ defmodule Realtime.VehicleTest do
 
       stop_id = "s3"
 
-      assert Vehicle.fraction_until_timepoint(stop_times, stop_id) ==
-               {
-                 0.6,
-                 %StopTime{
-                   stop_id: "s6",
-                   timepoint_id: "tp2"
-                 }
-               }
+      assert Vehicle.timepoint_status(stop_times, stop_id) == %{
+               timepoint_id: "tp2",
+               fraction_until_timepoint: 0.6
+             }
+    end
+
+    test "returns 0.0 if the stop is the first timepoint" do
+      stop_times = [
+        %StopTime{
+          stop_id: "s1",
+          timepoint_id: "tp1"
+        },
+        %StopTime{
+          stop_id: "s2",
+          timepoint_id: nil
+        },
+        %StopTime{
+          stop_id: "s3",
+          timepoint_id: "tp3"
+        }
+      ]
+
+      stop_id = "s1"
+
+      assert Vehicle.timepoint_status(stop_times, stop_id) == %{
+               timepoint_id: "tp1",
+               fraction_until_timepoint: 0.0
+             }
+    end
+
+    test "returns nil if on a route without timepoints" do
+      stop_times = [
+        %StopTime{
+          stop_id: "s1",
+          timepoint_id: nil
+        },
+        %StopTime{
+          stop_id: "s2",
+          timepoint_id: nil
+        }
+      ]
+
+      stop_id = "s2"
+
+      assert Vehicle.timepoint_status(stop_times, stop_id) == nil
     end
   end
 end

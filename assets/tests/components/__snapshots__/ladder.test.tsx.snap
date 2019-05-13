@@ -263,3 +263,45 @@ exports[`renders a ladder 1`] = `
   </g>
 </svg>
 `;
+
+exports[`renders a ladder with no timepoints 1`] = `
+<svg
+  className="m-ladder"
+  height={500}
+  viewBox="-90 -40 180 500"
+  width={180}
+>
+  <line
+    className="m-ladder__line"
+    x1={-40}
+    x2={-40}
+    y1="0"
+    y2={420}
+  />
+  <line
+    className="m-ladder__line"
+    x1={40}
+    x2={40}
+    y1="0"
+    y2={420}
+  />
+  <g
+    className="m-ladder__vehicle"
+    onClick={[Function]}
+  >
+    <polygon
+      className="m-ladder__vehicle-triangle "
+      points="60,-20 45,0 75,0"
+    />
+    <text
+      className="m-ladder__vehicle-label"
+      dominantBaseline="middle"
+      textAnchor="middle"
+      x={60}
+      y={8}
+    >
+      upward
+    </text>
+  </g>
+</svg>
+`;
