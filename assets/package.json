@@ -11,8 +11,8 @@
     "check": "tsc --noEmit && npm run lint:check && npm run format:check",
     "lint": "tslint --fix -p .",
     "lint:check": "tslint -p .",
-    "format": "prettier --write {.,**}/*.{js,json,ts,tsx,css,scss}",
-    "format:check": "prettier --check {.,**}/*.{js,json,ts,tsx,css,scss}"
+    "format": "prettier --write \"{.,**}/*.{js,json,ts,tsx,css,scss}\"",
+    "format:check": "prettier --check \"{.,**}/*.{js,json,ts,tsx,css,scss}\""
   },
   "dependencies": {
     "phoenix": "file:../deps/phoenix",
