@@ -22,10 +22,14 @@ test("renders a route ladder with vehicles", () => {
   const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
   const vehicles: Vehicle[] = [
     {
-      direction_id: 0,
       id: "y1818",
       label: "1818",
+      timestamp: 1557160307,
+      latitude: 0,
+      longitude: 0,
+      direction_id: 0,
       route_id: "1",
+      trip_id: "39914237",
       stop_status: {
         status: "in_transit_to",
         stop_id: "57",
@@ -35,14 +39,16 @@ test("renders a route ladder with vehicles", () => {
         timepoint_id: "MATPN",
         fraction_until_timepoint: 0.5,
       },
-      timestamp: 1557160307,
-      trip_id: "39914237",
     },
     {
-      direction_id: 1,
       id: "y0479",
       label: "0479",
+      timestamp: 1557160347,
+      latitude: 0,
+      longitude: 0,
+      direction_id: 1,
       route_id: "1",
+      trip_id: "39914128",
       stop_status: {
         status: "in_transit_to",
         stop_id: "59",
@@ -52,8 +58,6 @@ test("renders a route ladder with vehicles", () => {
         timepoint_id: "MORTN",
         fraction_until_timepoint: 0.0,
       },
-      timestamp: 1557160347,
-      trip_id: "39914128",
     },
   ]
 
@@ -116,6 +120,8 @@ test("clicking a vehicle selects that vehicle", () => {
     id: "v1",
     label: "v1-label",
     timestamp: 123,
+    latitude: 0,
+    longitude: 0,
     direction_id: 0,
     route_id: "r1",
     trip_id: "t1",

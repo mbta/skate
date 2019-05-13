@@ -23,6 +23,8 @@ defmodule Realtime.Vehicle do
           id: String.t(),
           label: String.t(),
           timestamp: integer(),
+          latitude: float(),
+          longitude: float(),
           direction_id: Direction.id(),
           route_id: Route.id(),
           trip_id: Trip.id(),
@@ -34,6 +36,8 @@ defmodule Realtime.Vehicle do
     :id,
     :label,
     :timestamp,
+    :latitude,
+    :longitude,
     :direction_id,
     :route_id,
     :trip_id,
@@ -46,6 +50,8 @@ defmodule Realtime.Vehicle do
     :id,
     :label,
     :timestamp,
+    :latitude,
+    :longitude,
     :direction_id,
     :route_id,
     :trip_id,
@@ -84,11 +90,6 @@ defmodule Realtime.Vehicle do
     stop_times_on_trip_fn =
       Application.get_env(:realtime, :stop_times_on_trip_fn, &Gtfs.stop_times_on_trip/1)
 
-    id = json["id"]
-    label = json["vehicle"]["vehicle"]["label"]
-    timestamp = json["vehicle"]["timestamp"]
-    direction_id = json["vehicle"]["trip"]["direction_id"]
-    route_id = json["vehicle"]["trip"]["route_id"]
     trip_id = json["vehicle"]["trip"]["trip_id"]
     current_stop_status = decode_current_status(json["vehicle"]["current_status"])
     stop_id = json["vehicle"]["stop_id"]
@@ -118,11 +119,13 @@ defmodule Realtime.Vehicle do
       end
 
     %__MODULE__{
-      id: id,
-      label: label,
-      timestamp: timestamp,
-      direction_id: direction_id,
-      route_id: route_id,
+      id: json["id"],
+      label: json["vehicle"]["vehicle"]["label"],
+      timestamp: json["vehicle"]["timestamp"],
+      latitude: json["vehicle"]["position"]["latitude"],
+      longitude: json["vehicle"]["position"]["longitude"],
+      direction_id: json["vehicle"]["trip"]["direction_id"],
+      route_id: json["vehicle"]["trip"]["route_id"],
       trip_id: trip_id,
       stop_status: %{
         status: current_stop_status,

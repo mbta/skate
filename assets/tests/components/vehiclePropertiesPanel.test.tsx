@@ -10,6 +10,8 @@ const vehicle: Vehicle = {
   id: "v1",
   label: "v1-label",
   timestamp: 123,
+  latitude: 0,
+  longitude: 0,
   direction_id: 0,
   route_id: "r1",
   trip_id: "t1",

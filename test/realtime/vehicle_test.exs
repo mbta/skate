@@ -51,6 +51,8 @@ defmodule Realtime.VehicleTest do
                id: "y0507",
                label: "0507",
                timestamp: 1_554_927_574,
+               latitude: 42.35277354,
+               longitude: -71.0593878,
                direction_id: 0,
                route_id: "505",
                trip_id: "39984755",

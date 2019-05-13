@@ -44,6 +44,12 @@ const Vehicle = ({ vehicle }: { vehicle: Vehicle }) => {
         <em>timestamp:</em> {vehicle.timestamp}
       </li>
       <li>
+        <em>latitude:</em> {vehicle.latitude}
+      </li>
+      <li>
+        <em>longitude:</em> {vehicle.longitude}
+      </li>
+      <li>
         <em>direction_id:</em> {vehicle.direction_id}
       </li>
       <li>
