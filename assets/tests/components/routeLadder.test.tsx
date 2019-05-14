@@ -33,7 +33,7 @@ test("renders a route ladder with vehicles", () => {
       timepoint_status: {
         status: "in_transit_to",
         timepoint_id: "MATPN",
-        percent_of_the_way_to_timepoint: 50,
+        fraction_until_timepoint: 0.5,
       },
       timestamp: 1557160307,
       trip_id: "39914237",
@@ -50,7 +50,7 @@ test("renders a route ladder with vehicles", () => {
       timepoint_status: {
         status: "in_transit_to",
         timepoint_id: "MORTN",
-        percent_of_the_way_to_timepoint: 100,
+        fraction_until_timepoint: 0.0,
       },
       timestamp: 1557160347,
       trip_id: "39914128",
@@ -104,7 +104,7 @@ test("clicking the reverse button reverses the order of the timepoints", () => {
   })
 
   expect(
-    wrapper.find(".m-route-ladder__timepoint-name").map(node => node.text())
+    wrapper.find(".m-ladder__timepoint-name").map(node => node.text())
   ).toEqual(["MORTN", "WELLH", "MATPN"])
 })
 
@@ -126,7 +126,7 @@ test("clicking a vehicle selects that vehicle", () => {
     timepoint_status: {
       status: "in_transit_to",
       timepoint_id: "tp1",
-      percent_of_the_way_to_timepoint: 50,
+      fraction_until_timepoint: 0.5,
     },
   }
 

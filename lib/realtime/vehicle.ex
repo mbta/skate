@@ -6,11 +6,16 @@ defmodule Realtime.Vehicle do
           status: current_status(),
           stop_id: Stop.id()
         }
+  @typedoc """
+  fraction_until_timepoint ranges
+    from 0.0 (inclusive) if the vehicle is at the given timepoint
+    to 1.0 (exclusive) if the vehicle has just left the previous timepoint
+  """
   @type timepoint_status ::
           %{
             status: current_status(),
             timepoint_id: StopTime.possible_timepoint_id(),
-            percent_of_the_way_to_timepoint: non_neg_integer()
+            fraction_until_timepoint: float()
           }
           | nil
 
@@ -98,14 +103,14 @@ defmodule Realtime.Vehicle do
       end
 
     timepoint_status =
-      with {percent_of_the_way_to_next_timepoint, next_timepoint_stop_time} <-
-             percent_of_the_way_to_next_timepoint(stop_times_on_trip, stop_id),
+      with {fraction_until_timepoint, next_timepoint_stop_time} <-
+             fraction_until_timepoint(stop_times_on_trip, stop_id),
            current_timepoint_status <-
              current_timepoint_status(current_stop_status, next_timepoint_stop_time, stop_id) do
         %{
           status: current_timepoint_status,
           timepoint_id: next_timepoint_stop_time && next_timepoint_stop_time.timepoint_id,
-          percent_of_the_way_to_timepoint: percent_of_the_way_to_next_timepoint
+          fraction_until_timepoint: fraction_until_timepoint
         }
       else
         nil ->
@@ -127,20 +132,22 @@ defmodule Realtime.Vehicle do
     }
   end
 
-  @spec percent_of_the_way_to_next_timepoint([StopTime.t()], Stop.id()) ::
-          {non_neg_integer(), StopTime.t() | nil} | nil
-  def percent_of_the_way_to_next_timepoint([], _stop_id), do: {0, nil}
+  @spec fraction_until_timepoint([StopTime.t()], Stop.id()) ::
+          {float(), StopTime.t() | nil} | nil
+  def fraction_until_timepoint([], _stop_id), do: {0.0, nil}
 
-  def percent_of_the_way_to_next_timepoint(stop_times, stop_id) do
+  def fraction_until_timepoint(stop_times, stop_id) do
     {past_stop_times, future_stop_times} = Enum.split_while(stop_times, &(&1.stop_id != stop_id))
 
     next_timepoint_stop_time = Enum.find(future_stop_times, &is_a_timepoint?(&1))
 
+    future_count = count_to_timepoint(future_stop_times)
+
+    # past_count needs +1 for the step between the current timepoint and the first of the past stops
+    past_count = count_to_timepoint(Enum.reverse(past_stop_times)) + 1
+
     {
-      percent_of_the_way(
-        count_to_timepoint(Enum.reverse(past_stop_times)) + 1,
-        count_to_timepoint(future_stop_times)
-      ),
+      future_count / (future_count + past_count),
       next_timepoint_stop_time
     }
   end
@@ -154,14 +161,6 @@ defmodule Realtime.Vehicle do
 
   @spec is_a_timepoint?(StopTime.t()) :: boolean
   defp is_a_timepoint?(%StopTime{timepoint_id: timepoint_id}), do: timepoint_id != nil
-
-  @spec percent_of_the_way(non_neg_integer(), non_neg_integer()) :: non_neg_integer()
-  defp percent_of_the_way(past_count, future_count) do
-    Kernel.trunc(
-      past_count / (past_count + future_count) *
-        100
-    )
-  end
 
   @spec current_timepoint_status(current_status(), StopTime.t() | nil, Stop.id()) ::
           current_status()
