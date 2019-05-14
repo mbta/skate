@@ -8,7 +8,7 @@ defmodule Concentrate.Supervisor do
   * one for the pipeline
   """
   def start_link do
-    config = Application.get_all_env(:concentrate)
+    config = Application.get_all_env(:skate)
 
     Supervisor.start_link(children(config), strategy: :rest_for_one)
   end

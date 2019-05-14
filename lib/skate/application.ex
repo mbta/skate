@@ -8,6 +8,7 @@ defmodule Skate.Application do
   def start(_type, _args) do
     import Supervisor.Spec
 
+    Concentrate.Config.setup()
     runtime_config()
 
     # List all child processes to be supervised
@@ -18,6 +19,7 @@ defmodule Skate.Application do
       # {Skate.Worker, arg},
       worker(Gtfs.HealthServer, []),
       worker(Gtfs, [Application.get_env(:skate, :gtfs_url)]),
+      worker(Concentrate.Supervisor, []),
       {Registry, keys: :duplicate, name: Realtime.Server.registry_name()},
       worker(Realtime.Server, [
         [

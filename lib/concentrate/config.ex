@@ -1,16 +1,13 @@
-defmodule Concentrate.Application do
+defmodule Concentrate.Config do
   @moduledoc """
-  Application entry point for Concentrate
+  Configuration parsing for Concentrate
   """
-  use Application
 
-  def start(_type, _args) do
+  def setup() do
     "CONCENTRATE_JSON"
     |> System.get_env()
     |> parse_json_configuration
     |> Enum.each(&update_configuration/1)
-
-    Concentrate.Supervisor.start_link()
   end
 
   def parse_json_configuration(nil) do
@@ -151,6 +148,6 @@ defmodule Concentrate.Application do
   end
 
   defp update_configuration({key, value}) do
-    Application.put_env(:concentrate, key, value)
+    Application.put_env(:skate, key, value)
   end
 end

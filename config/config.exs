@@ -23,6 +23,57 @@ config :skate, SkateWeb.Endpoint,
   render_errors: [view: SkateWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Skate.PubSub, adapter: Phoenix.PubSub.PG2]
 
+config :skate,
+  sources: [
+    gtfs_realtime: [
+      vehicle_positions: "https://cdn.mbta.com/realtime/VehiclePositions.pb",
+      trip_updates: "https://cdn.mbta.com/realtime/TripUpdates.pb"
+    ]
+  ],
+  alerts: [
+    url: "https://cdn.mbta.com/realtime/Alerts.pb"
+  ],
+  gtfs: [
+    url: "https://cdn.mbta.com/MBTA_GTFS.zip"
+  ],
+  filters: [
+    Concentrate.Filter.VehicleWithNoTrip,
+    Concentrate.Filter.RoundSpeedToInteger,
+    Concentrate.Filter.IncludeRouteDirection
+  ],
+  group_filters: [
+    Concentrate.GroupFilter.TimeOutOfRange,
+    Concentrate.GroupFilter.RemoveUnneededTimes,
+    Concentrate.GroupFilter.VehiclePastStop,
+    Concentrate.GroupFilter.Shuttle,
+    Concentrate.GroupFilter.SkippedDepartures,
+    Concentrate.GroupFilter.CancelledTrip,
+    Concentrate.GroupFilter.ClosedStop,
+    Concentrate.GroupFilter.VehicleAtSkippedStop,
+    Concentrate.GroupFilter.VehicleStopMatch,
+    Concentrate.GroupFilter.SkippedStopOnAddedTrip
+  ],
+  reporters: [
+    Concentrate.Reporter.VehicleLatency,
+    Concentrate.Reporter.StopTimeUpdateLatency,
+    Concentrate.Reporter.Latency
+  ],
+  encoders: [
+    files: [
+      {"TripUpdates.pb", Concentrate.Encoder.TripUpdates},
+      {"TripUpdates.json", Concentrate.Encoder.TripUpdates.JSON},
+      {"VehiclePositions.pb", Concentrate.Encoder.VehiclePositions},
+      {"VehiclePositions.json", Concentrate.Encoder.VehiclePositions.JSON},
+      {"TripUpdates_enhanced.json", Concentrate.Encoder.TripUpdatesEnhanced}
+    ]
+  ],
+  sinks: [
+    filesystem: [directory: "/tmp"]
+  ],
+  file_tap: [
+    enabled?: false
+  ]
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
