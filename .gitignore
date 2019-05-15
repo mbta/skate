@@ -44,3 +44,5 @@ node_modules
 
 # dev and test cache files for faster loading
 *.terms
+
+.DS_Store
