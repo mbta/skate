@@ -53,6 +53,7 @@ const App = (): JSX.Element => {
           routes={selectedRoutes}
           timepointsByRouteId={timepointsByRouteId}
           vehiclesByRouteId={vehiclesByRouteId}
+          selectedVehicleId={selectedVehicleId}
         />
 
         {selectedVehicle && (

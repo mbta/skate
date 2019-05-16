@@ -294,32 +294,42 @@ exports[`renders a route ladder with vehicles 1`] = `
     >
       MORTN
     </text>
-    <polygon
-      fill="black"
-      points="60,95 45,115 75,115"
-    />
-    <text
-      className="m-ladder__label"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x={60}
-      y={123}
+    <g
+      className="m-ladder__vehicle"
+      onClick={[Function]}
     >
-      1818
-    </text>
-    <polygon
-      fill="black"
-      points="-60,430 -45,410 -75,410"
-    />
-    <text
-      className="m-ladder__label"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x={-60}
-      y={405}
+      <polygon
+        className="m-ladder__vehicle-triangle "
+        points="60,95 45,115 75,115"
+      />
+      <text
+        className="m-ladder__vehicle-label"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x={60}
+        y={123}
+      >
+        1818
+      </text>
+    </g>
+    <g
+      className="m-ladder__vehicle"
+      onClick={[Function]}
     >
-      0479
-    </text>
+      <polygon
+        className="m-ladder__vehicle-triangle "
+        points="-60,430 -45,410 -75,410"
+      />
+      <text
+        className="m-ladder__vehicle-label"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x={-60}
+        y={405}
+      >
+        0479
+      </text>
+    </g>
   </svg>
   <ul
     className="m-route-ladder__vehicle"
