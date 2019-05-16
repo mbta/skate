@@ -353,6 +353,20 @@ exports[`renders a route ladder with vehicles 1`] = `
     </li>
     <li>
       <em>
+        latitude:
+      </em>
+       
+      0
+    </li>
+    <li>
+      <em>
+        longitude:
+      </em>
+       
+      0
+    </li>
+    <li>
+      <em>
         direction_id:
       </em>
        
@@ -437,6 +451,20 @@ exports[`renders a route ladder with vehicles 1`] = `
       </em>
        
       1557160347
+    </li>
+    <li>
+      <em>
+        latitude:
+      </em>
+       
+      0
+    </li>
+    <li>
+      <em>
+        longitude:
+      </em>
+       
+      0
     </li>
     <li>
       <em>

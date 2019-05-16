@@ -30,6 +30,8 @@ export interface Vehicle {
   id: VehicleId
   label: string
   timestamp: number
+  latitude: number
+  longitude: number
   direction_id: Direction
   route_id: RouteId
   trip_id: TripId
