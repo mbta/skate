@@ -15,6 +15,11 @@
   justify-content: flex-end;
 }
 
+.m-vehicle-properties-panel__title {
+  flex: 1 1 auto;
+  text-align: center;
+}
+
 dl.m-vehicle-properties-panel__vehicle-properties {
   margin-bottom: 2rem;
 }

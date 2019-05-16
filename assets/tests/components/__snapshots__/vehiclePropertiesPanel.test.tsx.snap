@@ -9,6 +9,11 @@ Array [
     <div
       className="m-vehicle-properties-panel__header"
     >
+      <div
+        className="m-vehicle-properties-panel__title"
+      >
+        r1_4 headsign
+      </div>
       <button
         className="m-close-button"
         onClick={[Function]}
