@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import { reverseIcon, reverseIconReversed } from "../helpers/icon"
-import { LoadableTimepoints, Route, Vehicle } from "../skate"
+import { LoadableTimepoints, Route, Vehicle, VehicleId } from "../skate"
 import { deselectRoute, selectVehicle } from "../state"
 import CloseButton from "./closeButton"
 import Ladder, { flipLadderDirection, LadderDirection } from "./ladder"
@@ -11,6 +11,7 @@ interface Props {
   route: Route
   timepoints: LoadableTimepoints
   vehicles: Vehicle[]
+  selectedVehicleId: VehicleId | undefined
 }
 
 const Header = ({ route }: { route: Route }) => {
@@ -76,7 +77,12 @@ const Vehicle = ({ vehicle }: { vehicle: Vehicle }) => {
   )
 }
 
-const RouteLadder = ({ route, timepoints, vehicles }: Props) => {
+const RouteLadder = ({
+  route,
+  timepoints,
+  vehicles,
+  selectedVehicleId,
+}: Props) => {
   const initialDirection: LadderDirection = LadderDirection.ZeroToOne
   const [ladderDirection, setLadderDirection] = useState<LadderDirection>(
     initialDirection
@@ -101,6 +107,7 @@ const RouteLadder = ({ route, timepoints, vehicles }: Props) => {
           timepoints={timepoints}
           vehicles={vehicles}
           ladderDirection={ladderDirection}
+          selectedVehicleId={selectedVehicleId}
         />
       ) : (
         <Loading />

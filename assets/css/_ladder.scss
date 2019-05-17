@@ -21,6 +21,21 @@
   text-transform: uppercase;
 }
 
-.m-ladder__label {
-  font-size: 0.75rem;
+.m-ladder__vehicle {
+  cursor: pointer;
+}
+
+.m-ladder__vehicle-triangle {
+  fill: $blue-grey;
+  stroke: none;
+
+  &.selected {
+    stroke: $dark;
+    stroke-width: 2;
+  }
+}
+
+.m-ladder__vehicle-label {
+  color: $dark;
+  font-size: 0.5625rem;
 }

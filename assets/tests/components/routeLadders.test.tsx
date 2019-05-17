@@ -18,6 +18,7 @@ test("renders a route ladder", () => {
         routes={routes}
         timepointsByRouteId={timepointsByRouteId}
         vehiclesByRouteId={{}}
+        selectedVehicleId={undefined}
       />
     )
     .toJSON()

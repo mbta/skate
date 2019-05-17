@@ -1,5 +1,7 @@
-import React from "react"
-import { Timepoint, TimepointId, Vehicle } from "../skate"
+import React, { useContext } from "react"
+import DispatchContext from "../contexts/dispatchContext"
+import { Timepoint, TimepointId, Vehicle, VehicleId } from "../skate"
+import { selectVehicle } from "../state"
 
 // Timepoints come from the API in the ZeroToOne direction
 export enum LadderDirection {
@@ -24,9 +26,15 @@ export interface Props {
   timepoints: Timepoint[]
   vehicles: Vehicle[]
   ladderDirection: LadderDirection
+  selectedVehicleId: VehicleId | undefined
 }
 
-const Ladder = ({ timepoints, vehicles, ladderDirection }: Props) => {
+const Ladder = ({
+  timepoints,
+  vehicles,
+  ladderDirection,
+  selectedVehicleId,
+}: Props) => {
   // (0, 0) is in the center of the first timepoint
   const viewBox = [-WIDTH / 2, -MARGIN_TOP_BOTTOM, WIDTH, HEIGHT].join(" ")
   const timepointSpacingY =
@@ -54,6 +62,7 @@ const Ladder = ({ timepoints, vehicles, ladderDirection }: Props) => {
           timepoints={orderedTimepoints}
           timepointSpacingY={timepointSpacingY}
           ladderDirection={ladderDirection}
+          selectedVehicleId={selectedVehicleId}
         />
       ))}
     </svg>
@@ -117,12 +126,15 @@ const LadderVehicle = ({
   timepoints,
   timepointSpacingY,
   ladderDirection,
+  selectedVehicleId,
 }: {
   vehicle: Vehicle
   timepoints: Timepoint[]
   timepointSpacingY: number
   ladderDirection: LadderDirection
+  selectedVehicleId: VehicleId | undefined
 }) => {
+  const dispatch = useContext(DispatchContext)
   const vehicleDirection: VehicleDirection =
     (vehicle.direction_id === 1) ===
     (ladderDirection === LadderDirection.ZeroToOne)
@@ -135,11 +147,21 @@ const LadderVehicle = ({
   const y =
     yForVehicle(vehicle, timepoints, timepointSpacingY, vehicleDirection) || -10
   const textY = vehicleDirection === VehicleDirection.Up ? y + 18 : y - 15
+  const isSelected = vehicle.id === selectedVehicleId
+
   return (
-    <>
-      <Triangle x={x} y={y} vehicleDirection={vehicleDirection} />
+    <g
+      className="m-ladder__vehicle"
+      onClick={() => dispatch(selectVehicle(vehicle.id))}
+    >
+      <Triangle
+        x={x}
+        y={y}
+        vehicleDirection={vehicleDirection}
+        isSelected={isSelected}
+      />
       <text
-        className="m-ladder__label"
+        className="m-ladder__vehicle-label"
         x={x}
         y={textY}
         textAnchor="middle"
@@ -147,7 +169,7 @@ const LadderVehicle = ({
       >
         {vehicle.label}
       </text>
-    </>
+    </g>
   )
 }
 
@@ -186,17 +208,25 @@ const Triangle = ({
   x,
   y,
   vehicleDirection,
+  isSelected,
 }: {
   x: number
   y: number
   vehicleDirection: VehicleDirection
+  isSelected: boolean
 }) => {
   const points =
     vehicleDirection === VehicleDirection.Up
       ? [[x, y - 10], [x - 15, y + 10], [x + 15, y + 10]]
       : [[x, y + 10], [x + 15, y - 10], [x - 15, y - 10]]
   const pointsString = points.map(xy => xy.join(",")).join(" ")
-  return <polygon points={pointsString} fill="black" />
+  const selectedClass = isSelected ? "selected" : ""
+  return (
+    <polygon
+      className={`m-ladder__vehicle-triangle ${selectedClass}`}
+      points={pointsString}
+    />
+  )
 }
 
 export default Ladder
