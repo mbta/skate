@@ -15,6 +15,8 @@ const vehicle: Vehicle = {
   direction_id: 0,
   route_id: "r1",
   trip_id: "t1",
+  headsign: "headsign",
+  via_variant: "4",
   stop_status: {
     status: "in_transit_to",
     stop_id: "s1",

@@ -398,6 +398,20 @@ exports[`renders a route ladder with vehicles 1`] = `
     </li>
     <li>
       <em>
+        headsign:
+      </em>
+       
+      h0
+    </li>
+    <li>
+      <em>
+        variant:
+      </em>
+       
+      4
+    </li>
+    <li>
+      <em>
         stop status:
       </em>
        
@@ -489,6 +503,18 @@ exports[`renders a route ladder with vehicles 1`] = `
       </em>
        
       39914128
+    </li>
+    <li>
+      <em>
+        headsign:
+      </em>
+       
+    </li>
+    <li>
+      <em>
+        variant:
+      </em>
+       
     </li>
     <li>
       <em>

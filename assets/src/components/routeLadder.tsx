@@ -60,6 +60,12 @@ const Vehicle = ({ vehicle }: { vehicle: Vehicle }) => {
         <em>trip_id:</em> {vehicle.trip_id}
       </li>
       <li>
+        <em>headsign:</em> {vehicle.headsign}
+      </li>
+      <li>
+        <em>variant:</em> {vehicle.via_variant}
+      </li>
+      <li>
         <em>stop status:</em> {vehicle.stop_status.status},<br />
         <em>stop:</em> {vehicle.stop_status.stop_id}
       </li>

@@ -3,6 +3,7 @@ defmodule GtfsTest do
 
   alias Gtfs.Route
   alias Gtfs.StopTime
+  alias Gtfs.Trip
 
   describe "all_routes" do
     test "maps each row to a Route" do
@@ -47,8 +48,8 @@ defmodule GtfsTest do
             "blue-pattern,Blue,1,blue-trip"
           ],
           "trips.txt" => [
-            "route_id,trip_id",
-            "39,39-trip"
+            "route_id,trip_id,route_pattern_id",
+            "39,39-trip,39-_-0"
           ],
           "stop_times.txt" => [
             "trip_id,stop_sequence,checkpoint_id",
@@ -75,8 +76,8 @@ defmodule GtfsTest do
             "blue-pattern,Blue,1,blue-trip"
           ],
           "trips.txt" => [
-            "route_id,trip_id",
-            "39,39-trip"
+            "route_id,trip_id,route_pattern_id",
+            "39,39-trip,39-_-0"
           ],
           "stop_times.txt" => [
             "trip_id,stop_sequence,checkpoint_id",
@@ -104,10 +105,10 @@ defmodule GtfsTest do
             "p3,route,1,t3"
           ],
           "trips.txt" => [
-            "route_id,trip_id",
-            "route,t1",
-            "route,t2",
-            "route,t3"
+            "route_id,trip_id,route_pattern_id",
+            "route,t1,route-_-0",
+            "route,t2,route-_-0",
+            "route,t3,route-_-0"
           ],
           "stop_times.txt" => [
             "trip_id,stop_sequence,checkpoint_id",
@@ -137,9 +138,9 @@ defmodule GtfsTest do
             "p1,route,1,t1"
           ],
           "trips.txt" => [
-            "route_id,trip_id",
-            "route,t0",
-            "route,t1"
+            "route_id,trip_id,route_pattern_id",
+            "route,t0,route-_-0",
+            "route,t1,route-_-0"
           ],
           "stop_times.txt" => [
             "trip_id,stop_sequence,checkpoint_id",
@@ -170,8 +171,8 @@ defmodule GtfsTest do
     end
   end
 
-  describe "stop_times_on_trip/2" do
-    test "returns all the stops on this route, both direction" do
+  describe "trip" do
+    test "returns the trip, including stop_times" do
       pid =
         Gtfs.start_mocked(%{
           "routes.txt" => [
@@ -180,30 +181,37 @@ defmodule GtfsTest do
           ],
           "route_patterns.txt" => [
             "route_pattern_id,route_id,direction_id,representative_trip_id",
-            "p0,route,0,t0",
             "p1,route,1,t1"
           ],
           "trips.txt" => [
-            "route_id,trip_id",
-            "route,t0",
-            "route,t1"
+            "route_id,trip_id,trip_headsign,route_pattern_id",
+            "route,t1,h1,route-_-0"
           ],
           "stop_times.txt" => [
             "trip_id,stop_id,stop_sequence,checkpoint_id",
-            "t0,s1,1,downtown",
-            "t0,s2,2,",
-            "t0,s3,3,suburb",
             "t1,s4,1,exurb",
             "t1,s5,2,",
             "t1,s3,3,suburb"
           ]
         })
 
-      assert Gtfs.stop_times_on_trip("t1", pid) == [
-               %StopTime{stop_id: "s4", timepoint_id: "exurb"},
-               %StopTime{stop_id: "s5", timepoint_id: nil},
-               %StopTime{stop_id: "s3", timepoint_id: "suburb"}
-             ]
+      assert Gtfs.trip("t1", pid) == %Trip{
+               id: "t1",
+               route_id: "route",
+               # Shuttles do not have route_pattern_ids
+               headsign: "h1",
+               route_pattern_id: "route-_-0",
+               stop_times: [
+                 %StopTime{stop_id: "s4", timepoint_id: "exurb"},
+                 %StopTime{stop_id: "s5", timepoint_id: nil},
+                 %StopTime{stop_id: "s3", timepoint_id: "suburb"}
+               ]
+             }
+    end
+
+    test "returns nil if the trip doesn't exist" do
+      pid = Gtfs.start_mocked(%{})
+      assert Gtfs.trip("39-trip", pid) == nil
     end
   end
 

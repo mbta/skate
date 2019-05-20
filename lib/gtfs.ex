@@ -6,7 +6,6 @@ defmodule Gtfs do
   alias Gtfs.Data
   alias Gtfs.HealthServer
   alias Gtfs.Route
-  alias Gtfs.Stop
   alias Gtfs.StopTime
   alias Gtfs.Trip
 
@@ -39,9 +38,15 @@ defmodule Gtfs do
     GenServer.call(server, {:timepoint_ids_on_route, route_id})
   end
 
-  @spec stop_times_on_trip(Trip.id(), GenServer.server() | nil) :: [Stop.id()]
-  def stop_times_on_trip(trip_id, server \\ __MODULE__) do
-    GenServer.call(server, {:stop_times_on_trip, trip_id})
+  @spec trip(Trip.id(), GenServer.server() | nil) :: Trip.t() | nil
+  def trip(trip_id, server \\ __MODULE__) do
+    try do
+      GenServer.call(server, {:trip, trip_id})
+    catch
+      # Handle Gtfs server timeouts gracefully
+      :exit, _ ->
+        nil
+    end
   end
 
   # Queries (Server)
@@ -55,8 +60,8 @@ defmodule Gtfs do
     {:reply, Data.timepoint_ids_on_route(gtfs_data, route_id), state}
   end
 
-  def handle_call({:stop_times_on_trip, trip_id}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.stop_times_on_trip(gtfs_data, trip_id), state}
+  def handle_call({:trip, trip_id}, _from, {:loaded, gtfs_data} = state) do
+    {:reply, Data.trip(gtfs_data, trip_id), state}
   end
 
   # Initialization (Client)

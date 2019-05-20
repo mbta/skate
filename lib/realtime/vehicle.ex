@@ -1,5 +1,5 @@
 defmodule Realtime.Vehicle do
-  alias Gtfs.{Direction, Route, Stop, StopTime, Trip}
+  alias Gtfs.{Direction, Route, RoutePattern, Stop, StopTime, Trip}
 
   @type current_status :: :in_transit_to | :stopped_at
   @type stop_status :: %{
@@ -26,6 +26,8 @@ defmodule Realtime.Vehicle do
           direction_id: Direction.id(),
           route_id: Route.id(),
           trip_id: Trip.id(),
+          headsign: String.t() | nil,
+          via_variant: RoutePattern.via_variant() | nil,
           stop_status: stop_status(),
           timepoint_status: timepoint_status() | nil
         }
@@ -53,6 +55,8 @@ defmodule Realtime.Vehicle do
     :direction_id,
     :route_id,
     :trip_id,
+    :headsign,
+    :via_variant,
     :stop_status,
     :timepoint_status
   ]
@@ -85,21 +89,16 @@ defmodule Realtime.Vehicle do
   """
   @spec decode(term()) :: t()
   def decode(%{} = json) do
-    stop_times_on_trip_fn =
-      Application.get_env(:realtime, :stop_times_on_trip_fn, &Gtfs.stop_times_on_trip/1)
+    trip_fn = Application.get_env(:realtime, :trip_fn, &Gtfs.trip/1)
 
     trip_id = json["vehicle"]["trip"]["trip_id"]
     current_stop_status = decode_current_status(json["vehicle"]["current_status"])
     stop_id = json["vehicle"]["stop_id"]
 
-    stop_times_on_trip =
-      try do
-        stop_times_on_trip_fn.(trip_id)
-      catch
-        # Handle Gtfs server timeouts gracefully
-        :exit, _ ->
-          []
-      end
+    trip = trip_fn.(trip_id)
+    headsign = trip && trip.headsign
+    via_variant = trip && trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id)
+    stop_times_on_trip = (trip && trip.stop_times) || []
 
     timepoint_status = timepoint_status(stop_times_on_trip, stop_id)
 
@@ -112,6 +111,8 @@ defmodule Realtime.Vehicle do
       direction_id: json["vehicle"]["trip"]["direction_id"],
       route_id: json["vehicle"]["trip"]["route_id"],
       trip_id: trip_id,
+      headsign: headsign,
+      via_variant: via_variant,
       stop_status: %{
         status: current_stop_status,
         stop_id: stop_id
