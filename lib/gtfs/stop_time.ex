@@ -13,7 +13,7 @@ defmodule Gtfs.StopTime do
   alias Gtfs.Trip
 
   @type t :: %__MODULE__{
-          timepoint_id: possible_timepoint_id(),
+          timepoint_id: timepoint_id() | nil,
           stop_id: Stop.id()
         }
 
@@ -28,7 +28,6 @@ defmodule Gtfs.StopTime do
   ]
 
   @type timepoint_id :: String.t()
-  @type possible_timepoint_id :: timepoint_id | nil
 
   @spec trip_stop_times_from_csv([Csv.row()]) :: Data.trip_stop_times()
   def trip_stop_times_from_csv(stop_times_csv) do

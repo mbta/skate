@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import DispatchContext from "../contexts/dispatchContext"
-import { Timepoint, TimepointId, Vehicle, VehicleId } from "../skate"
+import { Timepoint, Vehicle, VehicleId } from "../skate"
 import { selectVehicle } from "../state"
 
 // Timepoints come from the API in the ZeroToOne direction
@@ -186,19 +186,16 @@ const yForVehicle = (
 ): number | null => {
   const timepoint_status = vehicle.timepoint_status
   if (timepoint_status) {
-    const timepoint_id: TimepointId | null = timepoint_status.timepoint_id
-    if (timepoint_id) {
-      const timepointIndex = timepoints.findIndex(
-        timepoint => timepoint.id === timepoint_id
+    const timepointIndex = timepoints.findIndex(
+      timepoint => timepoint.id === timepoint_status.timepoint_id
+    )
+    if (timepointIndex !== -1) {
+      const fractionDirection = direction === VehicleDirection.Up ? +1 : -1
+      return (
+        timepointSpacingY *
+        (timepointIndex +
+          timepoint_status.fraction_until_timepoint * fractionDirection)
       )
-      if (timepointIndex !== -1) {
-        const fractionDirection = direction === VehicleDirection.Up ? +1 : -1
-        return (
-          timepointSpacingY *
-          (timepointIndex +
-            timepoint_status.fraction_until_timepoint * fractionDirection)
-        )
-      }
     }
   }
   return null

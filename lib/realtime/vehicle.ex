@@ -13,11 +13,9 @@ defmodule Realtime.Vehicle do
   """
   @type timepoint_status ::
           %{
-            status: current_status(),
-            timepoint_id: StopTime.possible_timepoint_id(),
+            timepoint_id: StopTime.timepoint_id(),
             fraction_until_timepoint: float()
           }
-          | nil
 
   @type t :: %__MODULE__{
           id: String.t(),
@@ -29,7 +27,7 @@ defmodule Realtime.Vehicle do
           route_id: Route.id(),
           trip_id: Trip.id(),
           stop_status: stop_status(),
-          timepoint_status: timepoint_status()
+          timepoint_status: timepoint_status() | nil
         }
 
   @enforce_keys [
@@ -103,20 +101,7 @@ defmodule Realtime.Vehicle do
           []
       end
 
-    timepoint_status =
-      with {fraction_until_timepoint, next_timepoint_stop_time} <-
-             fraction_until_timepoint(stop_times_on_trip, stop_id),
-           current_timepoint_status <-
-             current_timepoint_status(current_stop_status, next_timepoint_stop_time, stop_id) do
-        %{
-          status: current_timepoint_status,
-          timepoint_id: next_timepoint_stop_time && next_timepoint_stop_time.timepoint_id,
-          fraction_until_timepoint: fraction_until_timepoint
-        }
-      else
-        nil ->
-          nil
-      end
+    timepoint_status = timepoint_status(stop_times_on_trip, stop_id)
 
     %__MODULE__{
       id: json["id"],
@@ -135,24 +120,24 @@ defmodule Realtime.Vehicle do
     }
   end
 
-  @spec fraction_until_timepoint([StopTime.t()], Stop.id()) ::
-          {float(), StopTime.t() | nil} | nil
-  def fraction_until_timepoint([], _stop_id), do: {0.0, nil}
-
-  def fraction_until_timepoint(stop_times, stop_id) do
+  @spec timepoint_status([StopTime.t()], Stop.id()) :: timepoint_status() | nil
+  def timepoint_status(stop_times, stop_id) do
     {past_stop_times, future_stop_times} = Enum.split_while(stop_times, &(&1.stop_id != stop_id))
 
-    next_timepoint_stop_time = Enum.find(future_stop_times, &is_a_timepoint?(&1))
+    case Enum.find(future_stop_times, &is_a_timepoint?(&1)) do
+      %StopTime{timepoint_id: next_timepoint_id} ->
+        # past_count needs +1 for the step between the current timepoint and the first of the past stops
+        past_count = count_to_timepoint(Enum.reverse(past_stop_times)) + 1
+        future_count = count_to_timepoint(future_stop_times)
 
-    future_count = count_to_timepoint(future_stop_times)
+        %{
+          timepoint_id: next_timepoint_id,
+          fraction_until_timepoint: future_count / (future_count + past_count)
+        }
 
-    # past_count needs +1 for the step between the current timepoint and the first of the past stops
-    past_count = count_to_timepoint(Enum.reverse(past_stop_times)) + 1
-
-    {
-      future_count / (future_count + past_count),
-      next_timepoint_stop_time
-    }
+      nil ->
+        nil
+    end
   end
 
   @spec count_to_timepoint([StopTime.t()]) :: non_neg_integer()
@@ -164,16 +149,6 @@ defmodule Realtime.Vehicle do
 
   @spec is_a_timepoint?(StopTime.t()) :: boolean
   defp is_a_timepoint?(%StopTime{timepoint_id: timepoint_id}), do: timepoint_id != nil
-
-  @spec current_timepoint_status(current_status(), StopTime.t() | nil, Stop.id()) ::
-          current_status()
-  defp current_timepoint_status(:in_transit_to, _next_timepoint_stop_time, _stop_id),
-    do: :in_transit_to
-
-  defp current_timepoint_status(:stopped_at, nil, _stop_id), do: :in_transit_to
-
-  defp current_timepoint_status(:stopped_at, next_timepoint_stop_time, stop_id),
-    do: if(next_timepoint_stop_time.stop_id == stop_id, do: :stopped_at, else: :in_transit_to)
 
   @spec decode_current_status(String.t()) :: current_status()
   defp decode_current_status("IN_TRANSIT_TO"), do: :in_transit_to

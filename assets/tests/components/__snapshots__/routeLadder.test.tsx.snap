@@ -412,13 +412,6 @@ exports[`renders a route ladder with vehicles 1`] = `
     </li>
     <li>
       <em>
-        timepoint status:
-      </em>
-       
-      in_transit_to
-      ,
-      <br />
-      <em>
         timepoint:
       </em>
        
@@ -512,13 +505,6 @@ exports[`renders a route ladder with vehicles 1`] = `
       59
     </li>
     <li>
-      <em>
-        timepoint status:
-      </em>
-       
-      in_transit_to
-      ,
-      <br />
       <em>
         timepoint:
       </em>

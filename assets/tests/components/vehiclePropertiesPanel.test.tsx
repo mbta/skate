@@ -20,7 +20,6 @@ const vehicle: Vehicle = {
     stop_id: "s1",
   },
   timepoint_status: {
-    status: "in_transit_to",
     timepoint_id: "tp1",
     fraction_until_timepoint: 0.5,
   },

@@ -64,8 +64,6 @@ const Vehicle = ({ vehicle }: { vehicle: Vehicle }) => {
         <em>stop:</em> {vehicle.stop_status.stop_id}
       </li>
       <li>
-        <em>timepoint status:</em>{" "}
-        {vehicle.timepoint_status && vehicle.timepoint_status.status},<br />
         <em>timepoint:</em>{" "}
         {vehicle.timepoint_status && vehicle.timepoint_status.timepoint_id},
         <br />
