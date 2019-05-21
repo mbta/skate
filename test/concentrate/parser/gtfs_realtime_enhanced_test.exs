@@ -132,4 +132,18 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
                )
     end
   end
+
+  describe "date/1" do
+    test "parses an epoch string" do
+      assert GTFSRealtimeEnhanced.date("20190517") == {2019, 5, 17}
+    end
+
+    test "parses an ISO 8601:2004 string" do
+      assert GTFSRealtimeEnhanced.date("2015-01-23") == {2015, 1, 23}
+    end
+
+    test "returns nil when passed nil" do
+      assert GTFSRealtimeEnhanced.date(nil) == nil
+    end
+  end
 end
