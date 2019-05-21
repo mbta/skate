@@ -11,6 +11,7 @@ require("../css/app.scss")
 //
 // Import dependencies
 //
+import "@babel/polyfill"
 import "phoenix_html"
 import * as React from "react"
 import ReactDOM from "react-dom"
