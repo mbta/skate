@@ -33,7 +33,6 @@ defmodule Concentrate.Consumer.VehiclePositions do
   @spec vehicles_by_route_id([Merge.trip_group()]) :: Server.vehicles_by_route_id()
   defp vehicles_by_route_id(groups) do
     groups
-    |> Enum.filter(&has_vehicle_positions?/1)
     |> Enum.flat_map(&vehicle_positions_with_trip_update/1)
     |> Enum.map(fn {vehicle_position, trip_update} ->
       Vehicle.from_vehicle_position_and_trip_update(vehicle_position, trip_update)
@@ -41,10 +40,6 @@ defmodule Concentrate.Consumer.VehiclePositions do
     |> Enum.reject(&is_nil(&1))
     |> Enum.group_by(& &1.route_id)
   end
-
-  @spec has_vehicle_positions?(Merge.trip_group()) :: boolean
-  defp has_vehicle_positions?({_, [_vp | _rest], _}), do: true
-  defp has_vehicle_positions?({_, _, _}), do: false
 
   @type vehile_position_trip_update_pair :: {VehiclePosition.t(), TripUpdate.t()}
   @spec vehicle_positions_with_trip_update(Merge.trip_group()) ::
