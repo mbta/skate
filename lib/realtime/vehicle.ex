@@ -189,11 +189,8 @@ defmodule Realtime.Vehicle do
   @spec is_a_timepoint?(StopTime.t()) :: boolean
   defp is_a_timepoint?(%StopTime{timepoint_id: timepoint_id}), do: timepoint_id != nil
 
-  @spec decode_current_status(String.t() | atom()) :: current_status()
-  defp decode_current_status("IN_TRANSIT_TO"), do: :in_transit_to
+  @spec decode_current_status(atom()) :: current_status()
   defp decode_current_status(:IN_TRANSIT_TO), do: :in_transit_to
-  defp decode_current_status("INCOMING_AT"), do: :in_transit_to
   defp decode_current_status(:INCOMING_AT), do: :in_transit_to
-  defp decode_current_status("STOPPED_AT"), do: :stopped_at
   defp decode_current_status(:STOPPED_AT), do: :stopped_at
 end
