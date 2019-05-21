@@ -8,4 +8,4 @@ config :skate, SkateWeb.Endpoint,
   http: [port: 4002],
   server: false
 
-config :logger, level: :info
+config :logger, level: :warn
