@@ -43,7 +43,8 @@ defmodule Concentrate.Consumer.VehiclePositions do
   end
 
   @spec has_vehicle_positions?(Merge.trip_group()) :: boolean
-  defp has_vehicle_positions?({_, vehicle_positions, _}), do: length(vehicle_positions) > 0
+  defp has_vehicle_positions?({_, [_vp | _rest], _}), do: true
+  defp has_vehicle_positions?({_, _, _}), do: false
 
   @type vehile_position_trip_update_pair :: {VehiclePosition.t(), TripUpdate.t()}
   @spec vehicle_positions_with_trip_update(Merge.trip_group()) ::
