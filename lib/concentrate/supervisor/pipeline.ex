@@ -30,7 +30,7 @@ defmodule Concentrate.Supervisor.Pipeline do
         source_child(
           :gtfs_realtime,
           opts[:concentrate_vehicle_positions_url],
-          Concentrate.Parser.GTFSRealtime
+          Concentrate.Parser.GTFSRealtimeEnhanced
         )
       else
         nil
