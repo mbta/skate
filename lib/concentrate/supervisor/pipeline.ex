@@ -5,8 +5,7 @@ defmodule Concentrate.Supervisor.Pipeline do
   Children:
   * one per file we're fetching
   * one to merge multiple files into a single output stream
-  * one per file to build output files
-  * one supervisor sink to save files
+  * one for each consumer
   """
   import Supervisor, only: [child_spec: 2]
 
@@ -23,7 +22,6 @@ defmodule Concentrate.Supervisor.Pipeline do
     consumers = consumers()
 
     Enum.concat([source_children, merge, consumers])
-    # Enum.concat([source_children, merge])
   end
 
   def sources(opts) do
