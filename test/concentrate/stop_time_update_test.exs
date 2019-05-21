@@ -75,5 +75,95 @@ defmodule Concentrate.StopTimeUpdateTest do
       assert Mergeable.merge(first, second) == expected
       assert Mergeable.merge(second, first) == expected
     end
+
+    test "merge/2 takes the non-nil arrival/departure time if the one is nil" do
+      first =
+        StopTimeUpdate.new(
+          trip_id: "trip",
+          stop_id: "stop",
+          arrival_time: nil
+        )
+
+      second =
+        StopTimeUpdate.new(
+          trip_id: "trip",
+          stop_id: "stop-01",
+          arrival_time: 1
+        )
+
+      expected =
+        StopTimeUpdate.new(
+          trip_id: "trip",
+          stop_id: "stop-01",
+          arrival_time: 1
+        )
+
+      assert Mergeable.merge(first, second) == expected
+      assert Mergeable.merge(second, first) == expected
+    end
+
+    test "merge/2 takes the arrival/departure time if both are the same" do
+      first =
+        StopTimeUpdate.new(
+          trip_id: "trip",
+          stop_id: "stop",
+          arrival_time: 1
+        )
+
+      second =
+        StopTimeUpdate.new(
+          trip_id: "trip",
+          stop_id: "stop-01",
+          arrival_time: 1
+        )
+
+      expected =
+        StopTimeUpdate.new(
+          trip_id: "trip",
+          stop_id: "stop-01",
+          arrival_time: 1
+        )
+
+      assert Mergeable.merge(first, second) == expected
+      assert Mergeable.merge(second, first) == expected
+    end
+  end
+
+  describe "time/1" do
+    test "returns arrival time if present" do
+      stop_time_update =
+        StopTimeUpdate.new(
+          arrival_time: 123,
+          departure_time: 456
+        )
+
+      assert StopTimeUpdate.time(stop_time_update) == 123
+    end
+
+    test "returns departure time if arrival time is not present" do
+      stop_time_update = StopTimeUpdate.new(departure_time: 456)
+
+      assert StopTimeUpdate.time(stop_time_update) == 456
+    end
+  end
+
+  describe "skip/1" do
+    test "returns a StopTimeUpdate with schedule_relationship set to :SKIPPED and the arrival_time and departure_time cleared" do
+      initial =
+        StopTimeUpdate.new(
+          schedule_relationship: :ADDED,
+          arrival_time: 123,
+          departure_time: 456
+        )
+
+      expected =
+        StopTimeUpdate.new(
+          schedule_relationship: :SKIPPED,
+          arrival_time: nil,
+          departure_time: nil
+        )
+
+      assert StopTimeUpdate.skip(initial) == expected
+    end
   end
 end
