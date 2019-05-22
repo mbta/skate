@@ -87,38 +87,76 @@ exports[`highlights a selected vehicle 1`] = `
   <g
     className="m-ladder__vehicle"
     onClick={[Function]}
+    transform="translate(47,315) rotate(0,16,13)"
   >
-    <polygon
-      className="m-ladder__vehicle-triangle selected"
-      points="60,305 45,325 75,325"
-    />
-    <text
-      className="m-ladder__vehicle-label"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x={60}
-      y={333}
+    <g
+      className="m-ladder__vehicle-icon"
+      transform="scale(0.625)"
     >
-      upward
-    </text>
+      <path
+        className="m-ladder__vehicle-triangle selected"
+        d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+      />
+    </g>
+    <svg
+      className="m-ladder__vehicle-label"
+      x="0"
+      y="26"
+    >
+      <rect
+        className="m-ladder__vehicle-label-background"
+        height="11"
+        rx="5.5"
+        ry="5.5"
+        width="30"
+      />
+      <text
+        className="m-ladder__vehicle-label-text"
+        textAnchor="inherit"
+        transform="rotate(0,15,6)"
+        x="5"
+        y="9"
+      >
+        upward
+      </text>
+    </svg>
   </g>
   <g
     className="m-ladder__vehicle"
     onClick={[Function]}
+    transform="translate(-77,-157.5) rotate(180,16,13)"
   >
-    <polygon
-      className="m-ladder__vehicle-triangle "
-      points="-60,-147.5 -45,-167.5 -75,-167.5"
-    />
-    <text
-      className="m-ladder__vehicle-label"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x={-60}
-      y={-172.5}
+    <g
+      className="m-ladder__vehicle-icon"
+      transform="scale(0.625)"
     >
-      downward
-    </text>
+      <path
+        className="m-ladder__vehicle-triangle "
+        d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+      />
+    </g>
+    <svg
+      className="m-ladder__vehicle-label"
+      x="0"
+      y="26"
+    >
+      <rect
+        className="m-ladder__vehicle-label-background"
+        height="11"
+        rx="5.5"
+        ry="5.5"
+        width="30"
+      />
+      <text
+        className="m-ladder__vehicle-label-text"
+        textAnchor="inherit"
+        transform="rotate(180,15,6)"
+        x="5"
+        y="9"
+      >
+        downward
+      </text>
+    </svg>
   </g>
 </svg>
 `;
@@ -210,56 +248,113 @@ exports[`renders a ladder 1`] = `
   <g
     className="m-ladder__vehicle"
     onClick={[Function]}
+    transform="translate(47,315) rotate(0,16,13)"
   >
-    <polygon
-      className="m-ladder__vehicle-triangle "
-      points="60,305 45,325 75,325"
-    />
-    <text
-      className="m-ladder__vehicle-label"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x={60}
-      y={333}
+    <g
+      className="m-ladder__vehicle-icon"
+      transform="scale(0.625)"
     >
-      upward
-    </text>
+      <path
+        className="m-ladder__vehicle-triangle "
+        d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+      />
+    </g>
+    <svg
+      className="m-ladder__vehicle-label"
+      x="0"
+      y="26"
+    >
+      <rect
+        className="m-ladder__vehicle-label-background"
+        height="11"
+        rx="5.5"
+        ry="5.5"
+        width="30"
+      />
+      <text
+        className="m-ladder__vehicle-label-text"
+        textAnchor="inherit"
+        transform="rotate(0,15,6)"
+        x="5"
+        y="9"
+      >
+        upward
+      </text>
+    </svg>
   </g>
   <g
     className="m-ladder__vehicle"
     onClick={[Function]}
+    transform="translate(-77,-157.5) rotate(180,16,13)"
   >
-    <polygon
-      className="m-ladder__vehicle-triangle "
-      points="-60,-147.5 -45,-167.5 -75,-167.5"
-    />
-    <text
-      className="m-ladder__vehicle-label"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x={-60}
-      y={-172.5}
+    <g
+      className="m-ladder__vehicle-icon"
+      transform="scale(0.625)"
     >
-      downward
-    </text>
+      <path
+        className="m-ladder__vehicle-triangle "
+        d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+      />
+    </g>
+    <svg
+      className="m-ladder__vehicle-label"
+      x="0"
+      y="26"
+    >
+      <rect
+        className="m-ladder__vehicle-label-background"
+        height="11"
+        rx="5.5"
+        ry="5.5"
+        width="30"
+      />
+      <text
+        className="m-ladder__vehicle-label-text"
+        textAnchor="inherit"
+        transform="rotate(180,15,6)"
+        x="5"
+        y="9"
+      >
+        downward
+      </text>
+    </svg>
   </g>
   <g
     className="m-ladder__vehicle"
     onClick={[Function]}
+    transform="translate(-77,-10) rotate(180,16,13)"
   >
-    <polygon
-      className="m-ladder__vehicle-triangle "
-      points="-60,0 -45,-20 -75,-20"
-    />
-    <text
-      className="m-ladder__vehicle-label"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x={-60}
-      y={-25}
+    <g
+      className="m-ladder__vehicle-icon"
+      transform="scale(0.625)"
     >
-      notimepoint
-    </text>
+      <path
+        className="m-ladder__vehicle-triangle "
+        d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+      />
+    </g>
+    <svg
+      className="m-ladder__vehicle-label"
+      x="0"
+      y="26"
+    >
+      <rect
+        className="m-ladder__vehicle-label-background"
+        height="11"
+        rx="5.5"
+        ry="5.5"
+        width="30"
+      />
+      <text
+        className="m-ladder__vehicle-label-text"
+        textAnchor="inherit"
+        transform="rotate(180,15,6)"
+        x="5"
+        y="9"
+      >
+        notimepoint
+      </text>
+    </svg>
   </g>
 </svg>
 `;
@@ -288,20 +383,39 @@ exports[`renders a ladder with no timepoints 1`] = `
   <g
     className="m-ladder__vehicle"
     onClick={[Function]}
+    transform="translate(47,-10) rotate(0,16,13)"
   >
-    <polygon
-      className="m-ladder__vehicle-triangle "
-      points="60,-20 45,0 75,0"
-    />
-    <text
-      className="m-ladder__vehicle-label"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x={60}
-      y={8}
+    <g
+      className="m-ladder__vehicle-icon"
+      transform="scale(0.625)"
     >
-      upward
-    </text>
+      <path
+        className="m-ladder__vehicle-triangle "
+        d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+      />
+    </g>
+    <svg
+      className="m-ladder__vehicle-label"
+      x="0"
+      y="26"
+    >
+      <rect
+        className="m-ladder__vehicle-label-background"
+        height="11"
+        rx="5.5"
+        ry="5.5"
+        width="30"
+      />
+      <text
+        className="m-ladder__vehicle-label-text"
+        textAnchor="inherit"
+        transform="rotate(0,15,6)"
+        x="5"
+        y="9"
+      >
+        upward
+      </text>
+    </svg>
   </g>
 </svg>
 `;

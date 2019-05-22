@@ -297,38 +297,76 @@ exports[`renders a route ladder with vehicles 1`] = `
     <g
       className="m-ladder__vehicle"
       onClick={[Function]}
+      transform="translate(47,105) rotate(0,16,13)"
     >
-      <polygon
-        className="m-ladder__vehicle-triangle "
-        points="60,95 45,115 75,115"
-      />
-      <text
-        className="m-ladder__vehicle-label"
-        dominantBaseline="middle"
-        textAnchor="middle"
-        x={60}
-        y={123}
+      <g
+        className="m-ladder__vehicle-icon"
+        transform="scale(0.625)"
       >
-        1818
-      </text>
+        <path
+          className="m-ladder__vehicle-triangle "
+          d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+        />
+      </g>
+      <svg
+        className="m-ladder__vehicle-label"
+        x="0"
+        y="26"
+      >
+        <rect
+          className="m-ladder__vehicle-label-background"
+          height="11"
+          rx="5.5"
+          ry="5.5"
+          width="30"
+        />
+        <text
+          className="m-ladder__vehicle-label-text"
+          textAnchor="inherit"
+          transform="rotate(0,15,6)"
+          x="5"
+          y="9"
+        >
+          1818
+        </text>
+      </svg>
     </g>
     <g
       className="m-ladder__vehicle"
       onClick={[Function]}
+      transform="translate(-77,420) rotate(180,16,13)"
     >
-      <polygon
-        className="m-ladder__vehicle-triangle "
-        points="-60,430 -45,410 -75,410"
-      />
-      <text
-        className="m-ladder__vehicle-label"
-        dominantBaseline="middle"
-        textAnchor="middle"
-        x={-60}
-        y={405}
+      <g
+        className="m-ladder__vehicle-icon"
+        transform="scale(0.625)"
       >
-        0479
-      </text>
+        <path
+          className="m-ladder__vehicle-triangle "
+          d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+        />
+      </g>
+      <svg
+        className="m-ladder__vehicle-label"
+        x="0"
+        y="26"
+      >
+        <rect
+          className="m-ladder__vehicle-label-background"
+          height="11"
+          rx="5.5"
+          ry="5.5"
+          width="30"
+        />
+        <text
+          className="m-ladder__vehicle-label-text"
+          textAnchor="inherit"
+          transform="rotate(180,15,6)"
+          x="5"
+          y="9"
+        >
+          0479
+        </text>
+      </svg>
     </g>
   </svg>
   <ul
