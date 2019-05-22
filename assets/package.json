@@ -57,6 +57,7 @@
     "typescript": "^3.3.3333",
     "uglifyjs-webpack-plugin": "^1.2.4",
     "webpack": "4.4.0",
+    "webpack-bundle-analyzer": "^3.3.2",
     "webpack-cli": "^3.3.0"
   },
   "jest": {
