@@ -22,19 +22,16 @@ const detectSwipe = (
   let endingPosition: Position
 
   const handleTouchStart = (event: TouchEvent) => {
-    event.preventDefault()
     const position = firstTouchPosition(event)
     startingPosition = position
     endingPosition = position
   }
 
   const handleTouchMove = (event: TouchEvent) => {
-    event.preventDefault()
     endingPosition = firstTouchPosition(event)
   }
 
-  const handleTouchEnd = (event: TouchEvent) => {
-    event.preventDefault()
+  const handleTouchEnd = () => {
     const movement = diff(endingPosition, startingPosition)
     const swipeDirection = directionOfMovement(movement)
     if (swipeDirection) {
