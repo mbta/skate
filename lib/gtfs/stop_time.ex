@@ -7,7 +7,6 @@ defmodule Gtfs.StopTime do
   @derive Jason.Encoder
 
   alias Gtfs.Csv
-  alias Gtfs.Data
   alias Gtfs.Helpers
   alias Gtfs.Stop
   alias Gtfs.Trip
@@ -29,7 +28,7 @@ defmodule Gtfs.StopTime do
 
   @type timepoint_id :: String.t()
 
-  @spec trip_stop_times_from_csv([Csv.row()]) :: Data.trip_stop_times()
+  @spec trip_stop_times_from_csv([Csv.row()]) :: %{Trip.id() => [t()]}
   def trip_stop_times_from_csv(stop_times_csv) do
     stop_times_csv
     |> Enum.group_by(fn stop_time_row -> stop_time_row["trip_id"] end)

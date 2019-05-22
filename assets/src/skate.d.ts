@@ -35,6 +35,8 @@ export interface Vehicle {
   direction_id: Direction
   route_id: RouteId
   trip_id: TripId
+  headsign: string | null
+  via_variant: ViaVariant | null
   stop_status: VehicleStopStatus
   timepoint_status: VehicleTimepointStatus | null
 }
@@ -54,3 +56,5 @@ export interface VehicleTimepointStatus {
 export type VehiclesByRouteId = ByRouteId<Vehicle[]>
 
 export type VehicleStatus = "in_transit_to" | "stopped_at"
+
+export type ViaVariant = string

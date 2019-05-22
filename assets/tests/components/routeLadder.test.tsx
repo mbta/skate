@@ -37,6 +37,8 @@ test("renders a route ladder with vehicles", () => {
       direction_id: 0,
       route_id: "1",
       trip_id: "39914237",
+      headsign: "h0",
+      via_variant: "4",
       stop_status: {
         status: "in_transit_to",
         stop_id: "57",
@@ -55,6 +57,8 @@ test("renders a route ladder with vehicles", () => {
       direction_id: 1,
       route_id: "1",
       trip_id: "39914128",
+      headsign: null,
+      via_variant: null,
       stop_status: {
         status: "in_transit_to",
         stop_id: "59",

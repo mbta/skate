@@ -1,7 +1,9 @@
 import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
-import VehiclePropertiesPanel from "../../src/components/vehiclePropertiesPanel"
+import VehiclePropertiesPanel, {
+  routeVariantText,
+} from "../../src/components/vehiclePropertiesPanel"
 import DispatchProvider from "../../src/providers/dispatchProvider"
 import { Vehicle } from "../../src/skate"
 import { deselectVehicle } from "../../src/state"
@@ -15,6 +17,8 @@ const vehicle: Vehicle = {
   direction_id: 0,
   route_id: "r1",
   trip_id: "t1",
+  headsign: "headsign",
+  via_variant: "4",
   stop_status: {
     status: "in_transit_to",
     stop_id: "s1",
@@ -60,5 +64,21 @@ describe("VehiclePropertiesPanel", () => {
     wrapper.find(".m-vehicle-properties-panel__close").simulate("click")
 
     expect(mockDispatch).toHaveBeenCalledWith(deselectVehicle())
+  })
+})
+
+describe("routeVariantText", () => {
+  test("has variant and headsign", () => {
+    expect(routeVariantText("39", "X", "Forest Hills")).toEqual(
+      "39_X Forest Hills"
+    )
+  })
+
+  test("missing variant and headsign", () => {
+    expect(routeVariantText("39", null, null)).toEqual("39_")
+  })
+
+  test("doesn't show underscore variant character", () => {
+    expect(routeVariantText("39", "_", null)).toEqual("39_")
   })
 })

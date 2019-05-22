@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
-import { Vehicle } from "../skate.d"
+import { RouteId, Vehicle, ViaVariant } from "../skate.d"
 import { deselectVehicle } from "../state"
 import CloseButton from "./closeButton"
 
@@ -28,6 +28,12 @@ const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
 &destination=${selectedVehicle.latitude.toString()},${selectedVehicle.longitude.toString()}\
 &travelmode=driving`
 
+  const titleText: string = routeVariantText(
+    selectedVehicle.route_id,
+    selectedVehicle.via_variant,
+    selectedVehicle.headsign
+  )
+
   return (
     <>
       <div
@@ -35,6 +41,7 @@ const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
         className="m-vehicle-properties-panel"
       >
         <div className="m-vehicle-properties-panel__header">
+          <div className="m-vehicle-properties-panel__title">{titleText}</div>
           <CloseButton onClick={hideMe} />
         </div>
 
@@ -69,6 +76,16 @@ const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
       />
     </>
   )
+}
+
+export const routeVariantText = (
+  routeId: RouteId,
+  viaVariant: ViaVariant | null,
+  headsign: string | null
+): string => {
+  const viaVariantFormatted = viaVariant && viaVariant !== "_" ? viaVariant : ""
+  const headsignFormatted = headsign ? ` ${headsign}` : ""
+  return `${routeId}_${viaVariantFormatted}${headsignFormatted}`
 }
 
 export default VehiclePropertiesPanel

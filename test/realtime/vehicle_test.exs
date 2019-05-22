@@ -1,6 +1,7 @@
 defmodule Realtime.VehicleTest do
   use ExUnit.Case, async: true
 
+  alias Gtfs.Trip
   alias Gtfs.StopTime
   alias Realtime.Vehicle
 
@@ -31,18 +32,24 @@ defmodule Realtime.VehicleTest do
 
   describe "decode/1" do
     test "translates JSON data into a Vehicle struct" do
-      real_stop_times_on_trip_fn = Application.get_env(:realtime, :stop_times_on_trip_fn)
+      real_trip_fn = Application.get_env(:realtime, :trip_fn)
 
       on_exit(fn ->
-        Application.put_env(:realtime, :stop_times_on_trip_fn, real_stop_times_on_trip_fn)
+        Application.put_env(:realtime, :trip_fn, real_trip_fn)
       end)
 
-      Application.put_env(:realtime, :stop_times_on_trip_fn, fn _trip_id ->
-        [
-          %StopTime{stop_id: "6553", timepoint_id: "tp1"},
-          %StopTime{stop_id: "6554", timepoint_id: nil},
-          %StopTime{stop_id: "6555", timepoint_id: "tp2"}
-        ]
+      Application.put_env(:realtime, :trip_fn, fn "39984755" ->
+        %Trip{
+          id: "39984755",
+          route_id: "505",
+          headsign: "headsign",
+          route_pattern_id: "505-_-0",
+          stop_times: [
+            %StopTime{stop_id: "6553", timepoint_id: "tp1"},
+            %StopTime{stop_id: "6554", timepoint_id: nil},
+            %StopTime{stop_id: "6555", timepoint_id: "tp2"}
+          ]
+        }
       end)
 
       input = Jason.decode!(@vehicle_json_string)
@@ -56,6 +63,8 @@ defmodule Realtime.VehicleTest do
                direction_id: 0,
                route_id: "505",
                trip_id: "39984755",
+               headsign: "headsign",
+               via_variant: "_",
                stop_status: %{
                  status: :in_transit_to,
                  stop_id: "6555"

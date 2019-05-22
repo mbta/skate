@@ -121,4 +121,18 @@ defmodule Gtfs.RoutePatternTest do
              }
     end
   end
+
+  describe "via_variant/1" do
+    test "gets via_variant out of route_pattern_id" do
+      assert RoutePattern.via_variant("116-4-1") == "4"
+    end
+
+    test "works with underscores" do
+      assert RoutePattern.via_variant("116-_-0") == "_"
+    end
+
+    test "works with route_ids that have hyphens" do
+      assert RoutePattern.via_variant("Green-B-3-1") == "3"
+    end
+  end
 end
