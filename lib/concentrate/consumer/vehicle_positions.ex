@@ -8,9 +8,6 @@ defmodule Concentrate.Consumer.VehiclePositions do
   alias Concentrate.{Merge, TripUpdate, VehiclePosition}
   alias Realtime.{Server, Vehicle}
 
-  # alias Concentrate.{Reporter, TripUpdate, VehiclePosition}
-  # alias Realtime.{Server, Vehicle}
-
   def start_link(opts) do
     GenStage.start_link(__MODULE__, opts)
   end
