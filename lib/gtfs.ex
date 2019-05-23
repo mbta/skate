@@ -2,12 +2,7 @@ defmodule Gtfs do
   use GenServer
   require Logger
 
-  alias Gtfs.CacheFile
-  alias Gtfs.Data
-  alias Gtfs.HealthServer
-  alias Gtfs.Route
-  alias Gtfs.StopTime
-  alias Gtfs.Trip
+  alias Gtfs.{CacheFile, Data, HealthServer, Route, Stop, StopTime, Trip}
 
   @type state :: :not_loaded | {:loaded, Data.t()}
 
@@ -27,18 +22,21 @@ defmodule Gtfs do
 
   # Queries (Client)
 
-  @spec all_routes(GenServer.server() | nil) :: [Route.t()]
+  @spec all_routes() :: [Route.t()]
+  @spec all_routes(GenServer.server()) :: [Route.t()]
   def all_routes(server \\ __MODULE__) do
     GenServer.call(server, :all_routes)
   end
 
   # Timepoint IDs on a route, sorted in order of stop sequence
-  @spec timepoint_ids_on_route(Route.id(), GenServer.server() | nil) :: [StopTime.timepoint_id()]
+  @spec timepoint_ids_on_route(Route.id()) :: [StopTime.timepoint_id()]
+  @spec timepoint_ids_on_route(Route.id(), GenServer.server()) :: [StopTime.timepoint_id()]
   def timepoint_ids_on_route(route_id, server \\ __MODULE__) do
     GenServer.call(server, {:timepoint_ids_on_route, route_id})
   end
 
-  @spec trip(Trip.id(), GenServer.server() | nil) :: Trip.t() | nil
+  @spec trip(Trip.id()) :: Trip.t() | nil
+  @spec trip(Trip.id(), GenServer.server()) :: Trip.t() | nil
   def trip(trip_id, server \\ __MODULE__) do
     try do
       GenServer.call(server, {:trip, trip_id})
@@ -47,6 +45,12 @@ defmodule Gtfs do
       :exit, _ ->
         nil
     end
+  end
+
+  @spec stop(Stop.id()) :: Stop.t() | nil
+  @spec stop(Stop.id(), GenServer.server()) :: Stop.t() | nil
+  def stop(stop_id, server \\ __MODULE__) do
+    GenServer.call(server, {:stop, stop_id})
   end
 
   # Queries (Server)
@@ -62,6 +66,10 @@ defmodule Gtfs do
 
   def handle_call({:trip, trip_id}, _from, {:loaded, gtfs_data} = state) do
     {:reply, Data.trip(gtfs_data, trip_id), state}
+  end
+
+  def handle_call({:stop, stop_id}, _from, {:loaded, gtfs_data} = state) do
+    {:reply, Data.stop(gtfs_data, stop_id), state}
   end
 
   # Initialization (Client)

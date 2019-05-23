@@ -45,4 +45,7 @@ node_modules
 # dev and test cache files for faster loading
 *.terms
 
+# ENV variables
+.env
+
 .DS_Store

@@ -10,7 +10,10 @@ use Mix.Config
 config :skate,
   # Default. Can be configured via environment variable, which is loaded in application.ex
   gtfs_url: "https://cdn.mbta.com/MBTA_GTFS.zip",
-  concentrate_vehicle_positions_url: "https://cdn.mbta.com/realtime/VehiclePositions.json"
+  concentrate_vehicle_positions_url:
+    {:system, "CONCENTRATE_VEHICLE_POSITIONS_URL",
+     "https://cdn.mbta.com/realtime/VehiclePositions.json"},
+  busloc_url: {:system, "BUSLOC_URL", nil}
 
 config :skate, Gtfs.CacheFile, cache_filename: nil
 

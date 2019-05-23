@@ -1,9 +1,7 @@
 defmodule GtfsTest do
   use ExUnit.Case, async: true
 
-  alias Gtfs.Route
-  alias Gtfs.StopTime
-  alias Gtfs.Trip
+  alias Gtfs.{Route, Stop, StopTime, Trip}
 
   describe "all_routes" do
     test "maps each row to a Route" do
@@ -212,6 +210,24 @@ defmodule GtfsTest do
     test "returns nil if the trip doesn't exist" do
       pid = Gtfs.start_mocked(%{})
       assert Gtfs.trip("39-trip", pid) == nil
+    end
+  end
+
+  describe "stop/2" do
+    test "returns the stop for this stop ID" do
+      pid =
+        Gtfs.start_mocked(%{
+          "stops.txt" => [
+            "stop_id,parent_station",
+            "1,",
+            "2,3"
+          ]
+        })
+
+      assert Gtfs.stop("2", pid) == %Stop{
+               id: "2",
+               parent_station_id: "3"
+             }
     end
   end
 

@@ -18,7 +18,7 @@ defmodule Skate.MixProject do
         "coveralls.html": :test
       ],
       elixirc_options: [warnings_as_errors: true],
-      dialyzer: [plt_add_apps: [:mix]]
+      dialyzer: [plt_add_apps: [:mix], ignore_warnings: ".dialyzer.ignore-warnings"]
     ]
   end
 
@@ -49,11 +49,13 @@ defmodule Skate.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:excoveralls, "~> 0.10", only: :test},
+      {:gen_stage, "~> 0.14.1"},
       {:dialyxir, "~> 0.5", only: [:dev, :test], runtime: false},
       {:distillery, "~> 2.0", runtime: false},
       {:httpoison, "~> 1.5.0"},
       {:bypass, "~> 1.0.0", only: :test},
-      {:csv, "~> 2.3.0"}
+      {:csv, "~> 2.3.0"},
+      {:stream_data, "~> 0.4.3", only: :test}
     ]
   end
 end

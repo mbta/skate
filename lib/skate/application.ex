@@ -18,14 +18,18 @@ defmodule Skate.Application do
       # {Skate.Worker, arg},
       worker(Gtfs.HealthServer, []),
       worker(Gtfs, [Application.get_env(:skate, :gtfs_url)]),
-      {Registry, keys: :duplicate, name: Realtime.Server.registry_name()},
-      worker(Realtime.Server, [
+      worker(
+        Concentrate.Supervisor,
         [
-          url: Application.get_env(:skate, :concentrate_vehicle_positions_url),
-          poll_delay: 3000,
-          name: Realtime.Server.default_name()
+          [
+            concentrate_vehicle_positions_url:
+              get_config_string(:concentrate_vehicle_positions_url),
+            busloc_url: get_config_string(:busloc_url)
+          ]
         ]
-      ])
+      ),
+      {Registry, keys: :duplicate, name: Realtime.Server.registry_name()},
+      worker(Realtime.Server, [[name: Realtime.Server.default_name()]])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
@@ -54,5 +58,13 @@ defmodule Skate.Application do
   def config_change(changed, _new, removed) do
     SkateWeb.Endpoint.config_change(changed, removed)
     :ok
+  end
+
+  @spec get_config_string(atom) :: String.t() | integer | nil
+  def get_config_string(name) do
+    case Application.get_env(:skate, name) do
+      {:system, env_var, default} -> System.get_env(env_var) || default
+      value -> value
+    end
   end
 end
