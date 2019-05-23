@@ -92,65 +92,38 @@ defmodule Realtime.Vehicle do
     nil
   end
 
-  def from_vehicle_position_and_trip_update(
-        %VehiclePosition{
-          id: id,
-          trip_id: trip_id,
-          stop_id: stop_id,
-          label: label,
-          latitude: latitude,
-          longitude: longitude,
-          bearing: bearing,
-          speed: speed,
-          stop_sequence: stop_sequence,
-          block_id: block_id,
-          operator_id: operator_id,
-          operator_name: operator_name,
-          run_id: run_id,
-          last_updated: last_updated,
-          status: status
-        },
-        "vehicle": { "id": "y0507", "label": "0507" }
-      }
-    }
+  def from_vehicle_position_and_trip_update(vehicle_position, trip_update) do
     trip_fn = Application.get_env(:realtime, :trip_fn, &Gtfs.trip/1)
 
-    current_stop_status = decode_current_status(status)
-
+    trip_id = VehiclePosition.trip_id(vehicle_position)
     trip = trip_fn.(trip_id)
     headsign = trip && trip.headsign
     via_variant = trip && trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id)
     stop_times_on_trip = (trip && trip.stop_times) || []
 
-    stop_times_on_trip =
-      try do
-        stop_times_on_trip_fn.(trip_id)
-      catch
-        # Handle Gtfs server timeouts gracefully
-        :exit, _ ->
-          []
-      end
+    current_stop_status = decode_current_status(VehiclePosition.status(vehicle_position))
 
+    stop_id = VehiclePosition.stop_id(vehicle_position)
     timepoint_status = timepoint_status(stop_times_on_trip, stop_id)
 
     %__MODULE__{
-      id: id,
-      label: label,
-      timestamp: last_updated,
-      latitude: latitude,
-      longitude: longitude,
-      direction_id: direction_id,
-      route_id: route_id,
+      id: VehiclePosition.id(vehicle_position),
+      label: VehiclePosition.label(vehicle_position),
+      timestamp: VehiclePosition.last_updated(vehicle_position),
+      latitude: VehiclePosition.latitude(vehicle_position),
+      longitude: VehiclePosition.longitude(vehicle_position),
+      direction_id: TripUpdate.direction_id(trip_update),
+      route_id: TripUpdate.route_id(trip_update),
       trip_id: trip_id,
       headsign: headsign,
       via_variant: via_variant,
-      bearing: bearing,
-      speed: speed,
-      stop_sequence: stop_sequence,
-      block_id: block_id,
-      operator_id: operator_id,
-      operator_name: operator_name,
-      run_id: run_id,
+      bearing: VehiclePosition.bearing(vehicle_position),
+      speed: VehiclePosition.speed(vehicle_position),
+      stop_sequence: VehiclePosition.stop_sequence(vehicle_position),
+      block_id: VehiclePosition.block_id(vehicle_position),
+      operator_id: VehiclePosition.operator_id(vehicle_position),
+      operator_name: VehiclePosition.operator_name(vehicle_position),
+      run_id: VehiclePosition.run_id(vehicle_position),
       stop_status: %{
         status: current_stop_status,
         stop_id: stop_id
