@@ -122,7 +122,6 @@ defmodule Gtfs.DataTest do
             parent_station_id: "3"
           }
         },
-        trip_stop_times: %{},
         trips: []
       }
 
@@ -146,7 +145,6 @@ defmodule Gtfs.DataTest do
             parent_station_id: "3"
           }
         },
-        trip_stop_times: %{},
         trips: []
       }
 
