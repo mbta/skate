@@ -112,16 +112,16 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
-        stops: [
-          %Stop{
+        stops: %{
+          "1" => %Stop{
             id: "1",
             parent_station_id: nil
           },
-          %Stop{
+          "2" => %Stop{
             id: "2",
             parent_station_id: "3"
           }
-        ],
+        },
         trip_stop_times: %{},
         trips: []
       }
@@ -136,16 +136,16 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
-        stops: [
-          %Stop{
+        stops: %{
+          "1" => %Stop{
             id: "1",
             parent_station_id: nil
           },
-          %Stop{
+          "2" => %Stop{
             id: "2",
             parent_station_id: "3"
           }
-        ],
+        },
         trip_stop_times: %{},
         trips: []
       }

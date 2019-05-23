@@ -9,9 +9,11 @@ defmodule Gtfs.Data do
   @type t :: %__MODULE__{
           routes: [Route.t()],
           route_patterns: [RoutePattern.t()],
-          stops: [Stop.t()],
+          stops: stops_by_id,
           trips: %{Trip.id() => Trip.t()}
         }
+
+  @type stops_by_id :: %{Stop.id() => Stop.t()}
 
   @enforce_keys [
     :routes,
@@ -54,7 +56,7 @@ defmodule Gtfs.Data do
   def trip(%__MODULE__{trips: trips}, trip_id), do: trips[trip_id]
 
   @spec stop(t(), Stop.id()) :: Stop.t() | nil
-  def stop(%__MODULE__{stops: stops}, stop_id), do: Enum.find(stops, &(&1.id == stop_id))
+  def stop(%__MODULE__{stops: stops}, stop_id), do: Map.get(stops, stop_id)
 
   @spec parse_files(files()) :: t()
   def parse_files(files) do
@@ -64,7 +66,7 @@ defmodule Gtfs.Data do
     %__MODULE__{
       routes: bus_routes,
       route_patterns: bus_route_patterns(files["route_patterns.txt"], bus_route_ids),
-      stops: all_stops(files["stops.txt"]),
+      stops: all_stops_by_id(files["stops.txt"]),
       trips: bus_trips(files["trips.txt"], files["stop_times.txt"], bus_route_ids)
     }
   end
@@ -98,8 +100,14 @@ defmodule Gtfs.Data do
     )
   end
 
-  @spec all_stops(binary()) :: [Stop.t()]
-  defp all_stops(stops_data), do: Csv.parse(stops_data, fn _row -> true end, &Stop.from_csv_row/1)
+  @spec all_stops_by_id(binary()) :: stops_by_id()
+  defp all_stops_by_id(stops_data) do
+    stops_data
+    |> Csv.parse(fn _row -> true end, &Stop.from_csv_row/1)
+    |> Enum.reduce(%{}, fn stop, acc ->
+      Map.put(acc, stop.id, stop)
+    end)
+  end
 
   @spec bus_trips(binary(), binary(), MapSet.t(Route.id())) :: %{Trip.id() => Trip.t()}
   defp bus_trips(trips_data, stop_times_data, bus_route_ids) do
