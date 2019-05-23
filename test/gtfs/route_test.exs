@@ -62,5 +62,27 @@ defmodule Gtfs.RouteTest do
       assert Route.bus_route_row?(bus_csv_row)
       refute Route.bus_route_row?(subway_csv_row)
     end
+
+    test "ensures a `route_type` property" do
+      bad_csv_row = %{
+        "route_id" => "39",
+        "agency_id" => "1",
+        "route_short_name" => "39",
+        "route_long_name" => "Forest Hills - Back Bay Station",
+        "route_desc" => "Key Bus",
+        "route_type" => nil,
+        "route_url" => "https://www.mbta.com/schedules/39",
+        "route_color" => "FFC72C",
+        "route_text_color" => "000000",
+        "route_sort_order" => "50390",
+        "route_fare_class" => "Local Bus",
+        "line_id" => "line-39",
+        "listed_route" => ""
+      }
+
+      assert_raise ArgumentError, fn ->
+        Route.bus_route_row?(bad_csv_row)
+      end
+    end
   end
 end
