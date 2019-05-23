@@ -1,11 +1,7 @@
 defmodule Gtfs.DataTest do
   use ExUnit.Case, async: true
 
-  alias Gtfs.Data
-  alias Gtfs.Route
-  alias Gtfs.RoutePattern
-  alias Gtfs.StopTime
-  alias Gtfs.Trip
+  alias Gtfs.{Data, Route, RoutePattern, Stop, StopTime, Trip}
 
   test "all_routes/1 returns all the routes" do
     data = %Data{
@@ -109,5 +105,52 @@ defmodule Gtfs.DataTest do
     }
 
     assert Data.timepoint_ids_on_route(data, "r1") == ["tp4", "tp1"]
+  end
+
+  describe "stop/2" do
+    test "returns the stop for the given stop ID" do
+      data = %Data{
+        routes: [],
+        route_patterns: [],
+        stops: [
+          %Stop{
+            id: "1",
+            parent_station_id: nil
+          },
+          %Stop{
+            id: "2",
+            parent_station_id: "3"
+          }
+        ],
+        trip_stop_times: %{},
+        trips: []
+      }
+
+      assert Data.stop(data, "2") == %Stop{
+               id: "2",
+               parent_station_id: "3"
+             }
+    end
+
+    test "returns nil if the given stop ID is not found" do
+      data = %Data{
+        routes: [],
+        route_patterns: [],
+        stops: [
+          %Stop{
+            id: "1",
+            parent_station_id: nil
+          },
+          %Stop{
+            id: "2",
+            parent_station_id: "3"
+          }
+        ],
+        trip_stop_times: %{},
+        trips: []
+      }
+
+      assert Data.stop(data, "4") == nil
+    end
   end
 end

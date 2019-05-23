@@ -65,6 +65,13 @@ defmodule SkateWeb.VehiclesChannelTest do
           direction_id: "234",
           route_id: "345",
           trip_id: "456",
+          bearing: nil,
+          speed: nil,
+          stop_sequence: nil,
+          block_id: nil,
+          operator_id: nil,
+          operator_name: nil,
+          run_id: nil,
           stop_status: %{
             status: :in_transit_to,
             stop_id: "567"

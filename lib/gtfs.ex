@@ -2,12 +2,7 @@ defmodule Gtfs do
   use GenServer
   require Logger
 
-  alias Gtfs.CacheFile
-  alias Gtfs.Data
-  alias Gtfs.HealthServer
-  alias Gtfs.Route
-  alias Gtfs.StopTime
-  alias Gtfs.Trip
+  alias Gtfs.{CacheFile, Data, HealthServer, Route, Stop, StopTime, Trip}
 
   @type state :: :not_loaded | {:loaded, Data.t()}
 
@@ -49,6 +44,11 @@ defmodule Gtfs do
     end
   end
 
+  @spec stop(Stop.id(), GenServer.server() | nil) :: Stop.t() | nil
+  def stop(stop_id, server \\ __MODULE__) do
+    GenServer.call(server, {:stop, stop_id})
+  end
+
   # Queries (Server)
 
   @impl true
@@ -62,6 +62,10 @@ defmodule Gtfs do
 
   def handle_call({:trip, trip_id}, _from, {:loaded, gtfs_data} = state) do
     {:reply, Data.trip(gtfs_data, trip_id), state}
+  end
+
+  def handle_call({:stop, stop_id}, _from, {:loaded, gtfs_data} = state) do
+    {:reply, Data.stop(gtfs_data, stop_id), state}
   end
 
   # Initialization (Client)

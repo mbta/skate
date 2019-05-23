@@ -1,4 +1,5 @@
 defmodule Realtime.Vehicle do
+  alias Concentrate.{TripUpdate, VehiclePosition}
   alias Gtfs.{Direction, Route, RoutePattern, Stop, StopTime, Trip}
 
   @type current_status :: :in_transit_to | :stopped_at
@@ -28,6 +29,13 @@ defmodule Realtime.Vehicle do
           trip_id: Trip.id(),
           headsign: String.t() | nil,
           via_variant: RoutePattern.via_variant() | nil,
+          bearing: integer() | nil,
+          speed: integer() | nil,
+          stop_sequence: integer() | nil,
+          block_id: String.t() | nil,
+          operator_id: String.t() | nil,
+          operator_name: String.t() | nil,
+          run_id: String.t() | nil,
           stop_status: stop_status(),
           timepoint_status: timepoint_status() | nil
         }
@@ -41,6 +49,13 @@ defmodule Realtime.Vehicle do
     :direction_id,
     :route_id,
     :trip_id,
+    :bearing,
+    :speed,
+    :stop_sequence,
+    :block_id,
+    :operator_id,
+    :operator_name,
+    :run_id,
     :stop_status
   ]
 
@@ -57,62 +72,85 @@ defmodule Realtime.Vehicle do
     :trip_id,
     :headsign,
     :via_variant,
+    :bearing,
+    :speed,
+    :stop_sequence,
+    :block_id,
+    :operator_id,
+    :operator_name,
+    :run_id,
     :stop_status,
     :timepoint_status
   ]
 
-  @doc """
-    Argument is an Elixir object. Pass it through Jason before this function.
-    json format for vehicles:
-    {
-      "id": "y0507",
-      "vehicle": {
-        "current_status": "IN_TRANSIT_TO",
-        "current_stop_sequence": 3,
-        "position": {
-          "bearing": 0,
-          "latitude": 42.35277354,
-          "longitude": -71.0593878
-        },
-        "stop_id": "6555",
-        "timestamp": 1554927574,
-        "trip": {
-          "direction_id": 0,
-          "route_id": "505",
-          "schedule_relationship": "SCHEDULED",
-          "start_date": "20190410",
-          "trip_id": "39984755"
+  @spec from_vehicle_position_and_trip_update(map() | nil, map() | nil) :: t()
+  def from_vehicle_position_and_trip_update(nil, _trip_update) do
+    nil
+  end
+
+  def from_vehicle_position_and_trip_update(_vehicle_position, nil) do
+    nil
+  end
+
+  def from_vehicle_position_and_trip_update(
+        %VehiclePosition{
+          id: id,
+          trip_id: trip_id,
+          stop_id: stop_id,
+          label: label,
+          latitude: latitude,
+          longitude: longitude,
+          bearing: bearing,
+          speed: speed,
+          stop_sequence: stop_sequence,
+          block_id: block_id,
+          operator_id: operator_id,
+          operator_name: operator_name,
+          run_id: run_id,
+          last_updated: last_updated,
+          status: status
         },
         "vehicle": { "id": "y0507", "label": "0507" }
       }
     }
-  """
-  @spec decode(term()) :: t()
-  def decode(%{} = json) do
     trip_fn = Application.get_env(:realtime, :trip_fn, &Gtfs.trip/1)
 
-    trip_id = json["vehicle"]["trip"]["trip_id"]
-    current_stop_status = decode_current_status(json["vehicle"]["current_status"])
-    stop_id = json["vehicle"]["stop_id"]
+    current_stop_status = decode_current_status(status)
 
     trip = trip_fn.(trip_id)
     headsign = trip && trip.headsign
     via_variant = trip && trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id)
     stop_times_on_trip = (trip && trip.stop_times) || []
 
+    stop_times_on_trip =
+      try do
+        stop_times_on_trip_fn.(trip_id)
+      catch
+        # Handle Gtfs server timeouts gracefully
+        :exit, _ ->
+          []
+      end
+
     timepoint_status = timepoint_status(stop_times_on_trip, stop_id)
 
     %__MODULE__{
-      id: json["id"],
-      label: json["vehicle"]["vehicle"]["label"],
-      timestamp: json["vehicle"]["timestamp"],
-      latitude: json["vehicle"]["position"]["latitude"],
-      longitude: json["vehicle"]["position"]["longitude"],
-      direction_id: json["vehicle"]["trip"]["direction_id"],
-      route_id: json["vehicle"]["trip"]["route_id"],
+      id: id,
+      label: label,
+      timestamp: last_updated,
+      latitude: latitude,
+      longitude: longitude,
+      direction_id: direction_id,
+      route_id: route_id,
       trip_id: trip_id,
       headsign: headsign,
       via_variant: via_variant,
+      bearing: bearing,
+      speed: speed,
+      stop_sequence: stop_sequence,
+      block_id: block_id,
+      operator_id: operator_id,
+      operator_name: operator_name,
+      run_id: run_id,
       stop_status: %{
         status: current_stop_status,
         stop_id: stop_id
@@ -151,8 +189,11 @@ defmodule Realtime.Vehicle do
   @spec is_a_timepoint?(StopTime.t()) :: boolean
   defp is_a_timepoint?(%StopTime{timepoint_id: timepoint_id}), do: timepoint_id != nil
 
-  @spec decode_current_status(String.t()) :: current_status()
+  @spec decode_current_status(String.t() | atom()) :: current_status()
   defp decode_current_status("IN_TRANSIT_TO"), do: :in_transit_to
+  defp decode_current_status(:IN_TRANSIT_TO), do: :in_transit_to
   defp decode_current_status("INCOMING_AT"), do: :in_transit_to
+  defp decode_current_status(:INCOMING_AT), do: :in_transit_to
   defp decode_current_status("STOPPED_AT"), do: :stopped_at
+  defp decode_current_status(:STOPPED_AT), do: :stopped_at
 end

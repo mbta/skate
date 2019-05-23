@@ -5,6 +5,8 @@ defmodule Skate.Application do
 
   use Application
 
+  alias Gtfs.ConfigHelper
+
   def start(_type, _args) do
     import Supervisor.Spec
 
@@ -18,14 +20,18 @@ defmodule Skate.Application do
       # {Skate.Worker, arg},
       worker(Gtfs.HealthServer, []),
       worker(Gtfs, [Application.get_env(:skate, :gtfs_url)]),
-      {Registry, keys: :duplicate, name: Realtime.Server.registry_name()},
-      worker(Realtime.Server, [
+      worker(
+        Concentrate.Supervisor,
         [
-          url: Application.get_env(:skate, :concentrate_vehicle_positions_url),
-          poll_delay: 3000,
-          name: Realtime.Server.default_name()
+          [
+            concentrate_vehicle_positions_url:
+              ConfigHelper.get_string(:concentrate_vehicle_positions_url),
+            busloc_url: ConfigHelper.get_string(:busloc_url)
+          ]
         ]
-      ])
+      ),
+      {Registry, keys: :duplicate, name: Realtime.Server.registry_name()},
+      worker(Realtime.Server, [[name: Realtime.Server.default_name()]])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

@@ -53,6 +53,9 @@ defmodule Gtfs.Data do
   @spec trip(t(), Trip.id()) :: Trip.t() | nil
   def trip(%__MODULE__{trips: trips}, trip_id), do: trips[trip_id]
 
+  @spec stop(t(), Stop.id()) :: Stop.t() | nil
+  def stop(%__MODULE__{stops: stops}, stop_id), do: Enum.find(stops, &(&1.id == stop_id))
+
   @spec parse_files(files()) :: t()
   def parse_files(files) do
     bus_routes = Csv.parse(files["routes.txt"], &Route.bus_route_row?/1, &Route.from_csv_row/1)

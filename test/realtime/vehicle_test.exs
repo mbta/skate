@@ -1,37 +1,12 @@
 defmodule Realtime.VehicleTest do
   use ExUnit.Case, async: true
 
-  alias Gtfs.Trip
-  alias Gtfs.StopTime
+  alias Concentrate.{TripUpdate, VehiclePosition}
+  alias Gtfs.{StopTime, Trip}
   alias Realtime.Vehicle
 
-  @vehicle_json_string """
-  {
-    "id": "y0507",
-    "vehicle": {
-      "current_status": "IN_TRANSIT_TO",
-      "current_stop_sequence": 3,
-      "position": {
-        "bearing": 0,
-        "latitude": 42.35277354,
-        "longitude": -71.0593878
-      },
-      "stop_id": "6555",
-      "timestamp": 1554927574,
-      "trip": {
-        "direction_id": 0,
-        "route_id": "505",
-        "schedule_relationship": "SCHEDULED",
-        "start_date": "20190410",
-        "trip_id": "39984755"
-      },
-      "vehicle": { "id": "y0507", "label": "0507" }
-    }
-  }
-  """
-
-  describe "decode/1" do
-    test "translates JSON data into a Vehicle struct" do
+  describe "from_vehicle_position_and_trip_update/2" do
+    setup do
       real_trip_fn = Application.get_env(:realtime, :trip_fn)
 
       on_exit(fn ->
@@ -51,29 +26,111 @@ defmodule Realtime.VehicleTest do
           ]
         }
       end)
+    end
 
-      input = Jason.decode!(@vehicle_json_string)
+    test "translates Concentrate VehiclePosition and TripUpdate data into a Vehicle struct" do
+      vehicle_position = %VehiclePosition{
+        bearing: 0,
+        block_id: "S28-2",
+        id: "y1261",
+        label: "1261",
+        last_updated: 1_558_364_020,
+        latitude: 42.31777347,
+        license_plate: nil,
+        longitude: -71.08206019,
+        odometer: nil,
+        operator_id: "72032",
+        operator_name: "MAUPIN",
+        run_id: "138-1038",
+        speed: 0.0,
+        status: :IN_TRANSIT_TO,
+        stop_id: "392",
+        stop_sequence: 25,
+        trip_id: "39875910"
+      }
 
-      assert Vehicle.decode(input) == %Vehicle{
-               id: "y0507",
-               label: "0507",
-               timestamp: 1_554_927_574,
-               latitude: 42.35277354,
-               longitude: -71.0593878,
-               direction_id: 0,
-               route_id: "505",
-               trip_id: "39984755",
-               headsign: "headsign",
-               via_variant: "_",
-               stop_status: %{
-                 status: :in_transit_to,
-                 stop_id: "6555"
-               },
-               timepoint_status: %{
-                 timepoint_id: "tp2",
-                 fraction_until_timepoint: 0.0
-               }
-             }
+      trip_update = %TripUpdate{
+        direction_id: 1,
+        route_id: "28",
+        schedule_relationship: :SCHEDULED,
+        start_date: {2019, 5, 20},
+        start_time: nil,
+        trip_id: "39875910"
+      }
+
+      expected_result = %Vehicle{
+        id: "y1261",
+        label: "1261",
+        timestamp: 1_558_364_020,
+        latitude: 42.31777347,
+        longitude: -71.08206019,
+        direction_id: 1,
+        route_id: "28",
+        trip_id: "39875910",
+        headsign: "headsign",
+        via_variant: "_",
+        bearing: 0,
+        speed: 0.0,
+        stop_sequence: 25,
+        block_id: "S28-2",
+        operator_id: "72032",
+        operator_name: "MAUPIN",
+        run_id: "138-1038",
+        stop_status: %{
+          status: :in_transit_to,
+          stop_id: "392"
+        },
+        timepoint_status: nil
+      }
+
+      result = Vehicle.from_vehicle_position_and_trip_update(vehicle_position, trip_update)
+
+      assert result == expected_result
+    end
+
+    test "returns nil if not given a VehiclePosition" do
+      vehicle_position = nil
+
+      trip_update = %TripUpdate{
+        direction_id: 1,
+        route_id: "28",
+        schedule_relationship: :SCHEDULED,
+        start_date: {2019, 5, 20},
+        start_time: nil,
+        trip_id: "39875910"
+      }
+
+      result = Vehicle.from_vehicle_position_and_trip_update(vehicle_position, trip_update)
+
+      assert result == nil
+    end
+
+    test "returns nil if not given a TripUpdate" do
+      vehicle_position = %VehiclePosition{
+        bearing: 0,
+        block_id: "S28-2",
+        id: "y1261",
+        label: "1261",
+        last_updated: 1_558_364_020,
+        latitude: 42.31777347,
+        license_plate: nil,
+        longitude: -71.08206019,
+        odometer: nil,
+        operator_id: "72032",
+        operator_name: "MAUPIN",
+        run_id: "138-1038",
+        speed: 0.0,
+        status: :IN_TRANSIT_TO,
+        stop_id: "392",
+        stop_sequence: 25,
+        trip_id: "39875910"
+      }
+
+      trip_update = nil
+
+      result = Vehicle.from_vehicle_position_and_trip_update(vehicle_position, trip_update)
+
+      assert result == nil
     end
   end
 
