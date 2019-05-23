@@ -1,7 +1,6 @@
 defmodule Realtime.ServerTest do
   use ExUnit.Case, async: true
 
-  alias Gtfs.StopTime
   alias Realtime.{Server, Vehicle}
 
   @vehicles_by_route_id %{

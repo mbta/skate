@@ -6,13 +6,13 @@ defmodule Concentrate.Supervisor.PipelineTest do
 
   describe "children/1" do
     setup do
-      real_stop_times_on_trip_fn = Application.get_env(:realtime, :stop_times_on_trip_fn)
+      real_trip_fn = Application.get_env(:realtime, :trip_fn)
 
       on_exit(fn ->
-        Application.put_env(:realtime, :stop_times_on_trip_fn, real_stop_times_on_trip_fn)
+        Application.put_env(:realtime, :trip_fn, real_trip_fn)
       end)
 
-      Application.put_env(:realtime, :stop_times_on_trip_fn, fn _trip_id -> [] end)
+      Application.put_env(:realtime, :trip_fn, fn _trip_id -> nil end)
     end
 
     test "builds the right number of children" do

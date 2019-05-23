@@ -46,7 +46,7 @@ defmodule Realtime.VehicleTest do
         status: :IN_TRANSIT_TO,
         stop_id: "392",
         stop_sequence: 25,
-        trip_id: "39875910"
+        trip_id: "39984755"
       }
 
       trip_update = %TripUpdate{
@@ -55,7 +55,7 @@ defmodule Realtime.VehicleTest do
         schedule_relationship: :SCHEDULED,
         start_date: {2019, 5, 20},
         start_time: nil,
-        trip_id: "39875910"
+        trip_id: "39984755"
       }
 
       expected_result = %Vehicle{
@@ -66,7 +66,7 @@ defmodule Realtime.VehicleTest do
         longitude: -71.08206019,
         direction_id: 1,
         route_id: "28",
-        trip_id: "39875910",
+        trip_id: "39984755",
         headsign: "headsign",
         via_variant: "_",
         bearing: 0,
@@ -97,7 +97,7 @@ defmodule Realtime.VehicleTest do
         schedule_relationship: :SCHEDULED,
         start_date: {2019, 5, 20},
         start_time: nil,
-        trip_id: "39875910"
+        trip_id: "39984755"
       }
 
       result = Vehicle.from_vehicle_position_and_trip_update(vehicle_position, trip_update)
@@ -123,7 +123,7 @@ defmodule Realtime.VehicleTest do
         status: :IN_TRANSIT_TO,
         stop_id: "392",
         stop_sequence: 25,
-        trip_id: "39875910"
+        trip_id: "39984755"
       }
 
       trip_update = nil
