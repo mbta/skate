@@ -80,7 +80,8 @@ defmodule Realtime.VehicleTest do
           status: :in_transit_to,
           stop_id: "392"
         },
-        timepoint_status: nil
+        timepoint_status: nil,
+        route_status: :on_route
       }
 
       result = Vehicle.from_vehicle_position_and_trip_update(vehicle_position, trip_update)
@@ -246,6 +247,44 @@ defmodule Realtime.VehicleTest do
       stop_id = "s2"
 
       assert Vehicle.timepoint_status(stop_times, stop_id) == nil
+    end
+  end
+
+  describe "route_status/3" do
+    setup do
+      trip = %Trip{
+        id: "t1",
+        route_id: "r1",
+        headsign: "Trip 1",
+        stop_times: [
+          %StopTime{
+            stop_id: "s1",
+            timepoint_id: "s1"
+          },
+          %StopTime{
+            stop_id: "s2",
+            timepoint_id: nil
+          }
+        ]
+      }
+
+      {:ok, trip: trip}
+    end
+
+    test "returns :incoming if the trip is nil" do
+      assert Vehicle.route_status(:in_transit_to, "s1", nil) == :incoming
+    end
+
+    test "returns :on_route if :stopped_at any stop", %{trip: trip} do
+      assert Vehicle.route_status(:stopped_at, "s1", trip) == :on_route
+    end
+
+    test "returns :incoming if :in_transit_to the first stop of the trip", %{trip: trip} do
+      assert Vehicle.route_status(:in_transit_to, "s1", trip) == :incoming
+    end
+
+    test "returns :on_route if :in_transit_to any other stop", %{trip: trip} do
+      assert Vehicle.route_status(:in_transit_to, "s2", trip) == :on_route
     end
   end
 end

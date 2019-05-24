@@ -28,7 +28,8 @@ defmodule Realtime.ServerTest do
         timepoint_status: %{
           timepoint_id: "tp1",
           fraction_until_timepoint: 0.2
-        }
+        },
+        route_status: :on_route
       }
     ],
     "66" => [
@@ -55,7 +56,8 @@ defmodule Realtime.ServerTest do
         timepoint_status: %{
           timepoint_id: "tp2",
           fraction_until_timepoint: 0.9
-        }
+        },
+        route_status: :on_route
       }
     ]
   }
