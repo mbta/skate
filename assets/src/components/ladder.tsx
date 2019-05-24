@@ -139,14 +139,18 @@ const LadderVehicle = ({
     (ladderDirection === LadderDirection.ZeroToOne)
       ? VehicleDirection.Down
       : VehicleDirection.Up
-  const x = vehicleDirection === VehicleDirection.Up ? 47 : -77
+  const centerOfTriangleX = 16
+  const centerOfTriangleY = 13
+  const widthOfTriangle = centerOfTriangleX * 2
+  const x =
+    vehicleDirection === VehicleDirection.Up
+      ? 15 + widthOfTriangle
+      : -(48 + widthOfTriangle)
   const y =
     yForVehicle(vehicle, timepoints, timepointSpacingY, vehicleDirection) || -10
   const isSelected = vehicle.id === selectedVehicleId
 
   const rotation = vehicleDirection === VehicleDirection.Down ? 180 : 0
-  const centerOfTriangleX = 16
-  const centerOfTriangleY = 13
 
   return (
     <g
