@@ -124,7 +124,7 @@ exports[`highlights a selected vehicle 1`] = `
   <g
     className="m-ladder__vehicle"
     onClick={[Function]}
-    transform="translate(-77,-157.5) rotate(180,16,13)"
+    transform="translate(-80,-157.5) rotate(180,16,13)"
   >
     <g
       className="m-ladder__vehicle-icon"
@@ -285,7 +285,7 @@ exports[`renders a ladder 1`] = `
   <g
     className="m-ladder__vehicle"
     onClick={[Function]}
-    transform="translate(-77,-157.5) rotate(180,16,13)"
+    transform="translate(-80,-157.5) rotate(180,16,13)"
   >
     <g
       className="m-ladder__vehicle-icon"
@@ -322,7 +322,7 @@ exports[`renders a ladder 1`] = `
   <g
     className="m-ladder__vehicle"
     onClick={[Function]}
-    transform="translate(-77,-10) rotate(180,16,13)"
+    transform="translate(-80,-10) rotate(180,16,13)"
   >
     <g
       className="m-ladder__vehicle-icon"

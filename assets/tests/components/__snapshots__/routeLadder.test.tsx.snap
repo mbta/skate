@@ -334,7 +334,7 @@ exports[`renders a route ladder with vehicles 1`] = `
     <g
       className="m-ladder__vehicle"
       onClick={[Function]}
-      transform="translate(-77,420) rotate(180,16,13)"
+      transform="translate(-80,420) rotate(180,16,13)"
     >
       <g
         className="m-ladder__vehicle-icon"
