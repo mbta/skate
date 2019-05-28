@@ -47,6 +47,7 @@ test("renders a route ladder with vehicles", () => {
         timepoint_id: "MATPN",
         fraction_until_timepoint: 0.5,
       },
+      route_status: "on_route",
     },
     {
       id: "y0479",
@@ -67,6 +68,69 @@ test("renders a route ladder with vehicles", () => {
         timepoint_id: "MORTN",
         fraction_until_timepoint: 0.0,
       },
+      route_status: "on_route",
+    },
+  ]
+
+  const tree = renderer
+    .create(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehicles={vehicles}
+        selectedVehicleId={undefined}
+      />
+    )
+    .toJSON()
+
+  expect(tree).toMatchSnapshot()
+})
+
+test("renders a route ladder with vehicles in the incoming box", () => {
+  const route: Route = { id: "28" }
+  const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
+  const vehicles: Vehicle[] = [
+    {
+      id: "y1818",
+      label: "1818",
+      timestamp: 1557160307,
+      latitude: 0,
+      longitude: 0,
+      direction_id: 0,
+      route_id: "1",
+      trip_id: "39914237",
+      headsign: "h0",
+      via_variant: "4",
+      stop_status: {
+        status: "in_transit_to",
+        stop_id: "57",
+      },
+      timepoint_status: {
+        timepoint_id: "MATPN",
+        fraction_until_timepoint: 0.5,
+      },
+      route_status: "incoming",
+    },
+    {
+      id: "y0479",
+      label: "0479",
+      timestamp: 1557160347,
+      latitude: 0,
+      longitude: 0,
+      direction_id: 1,
+      route_id: "1",
+      trip_id: "39914128",
+      headsign: null,
+      via_variant: null,
+      stop_status: {
+        status: "in_transit_to",
+        stop_id: "59",
+      },
+      timepoint_status: {
+        timepoint_id: "MORTN",
+        fraction_until_timepoint: 0.0,
+      },
+      route_status: "incoming",
     },
   ]
 

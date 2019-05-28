@@ -10,6 +10,20 @@ export enum LadderDirection {
   OneToZero,
 }
 
+export enum VehicleDirection {
+  Up,
+  Down,
+}
+
+export const vehicleDirectionOnLadder = (
+  vehicle: Vehicle,
+  ladderDirection: LadderDirection
+) =>
+  (vehicle.direction_id === 1) ===
+  (ladderDirection === LadderDirection.ZeroToOne)
+    ? VehicleDirection.Down
+    : VehicleDirection.Up
+
 export const flipLadderDirection = (
   ladderDirection: LadderDirection
 ): LadderDirection =>
@@ -135,11 +149,10 @@ const LadderVehicle = ({
   selectedVehicleId: VehicleId | undefined
 }) => {
   const dispatch = useContext(DispatchContext)
-  const vehicleDirection: VehicleDirection =
-    (vehicle.direction_id === 1) ===
-    (ladderDirection === LadderDirection.ZeroToOne)
-      ? VehicleDirection.Down
-      : VehicleDirection.Up
+  const vehicleDirection: VehicleDirection = vehicleDirectionOnLadder(
+    vehicle,
+    ladderDirection
+  )
   const centerOfVehicleGroupX = 16
   const centerOfVehicleGroupY = 13
   const widthOfVehicleGroup = centerOfVehicleGroupX * 2
@@ -161,11 +174,6 @@ const LadderVehicle = ({
       <VehicleLabel vehicle={vehicle} rotation={rotation} x={0} y={26} />
     </g>
   )
-}
-
-enum VehicleDirection {
-  Up,
-  Down,
 }
 
 const yForVehicle = (

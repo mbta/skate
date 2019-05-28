@@ -27,6 +27,7 @@ const vehicle: Vehicle = {
     timepoint_id: "tp1",
     fraction_until_timepoint: 0.5,
   },
+  route_status: "on_route",
 }
 
 describe("VehiclePropertiesPanel", () => {

@@ -36,3 +36,35 @@
     fill: $charcoal-grey;
   }
 }
+
+.m-incoming-box {
+  align-items: center;
+  background-color: transparentize($color: $white, $amount: 0.5);
+  color: $dark;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.8125rem;
+  min-height: 4.25rem;
+  padding: 0.5rem;
+  width: 12em;
+}
+
+.m-incoming-box__header {
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+}
+
+.m-incoming-box__vehicle {
+  display: flex;
+  margin-bottom: 0.125rem;
+}
+
+.m-incoming-box__vehicle-icon {
+  margin-right: 0.5rem;
+}
+
+.m-incoming-box__vehicle-icon-svg {
+  height: 14px;
+  width: 18px;
+}

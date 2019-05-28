@@ -90,11 +90,11 @@ exports[`highlights a selected vehicle 1`] = `
     transform="translate(47,315) rotate(0,16,13)"
   >
     <g
-      className="m-ladder__vehicle-icon"
+      className="m-vehicle-icon"
       transform="scale(0.625)"
     >
       <path
-        className="m-ladder__vehicle-triangle selected"
+        className="m-vehicle-icon__triangle selected"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
       />
     </g>
@@ -127,11 +127,11 @@ exports[`highlights a selected vehicle 1`] = `
     transform="translate(-80,-157.5) rotate(180,16,13)"
   >
     <g
-      className="m-ladder__vehicle-icon"
+      className="m-vehicle-icon"
       transform="scale(0.625)"
     >
       <path
-        className="m-ladder__vehicle-triangle "
+        className="m-vehicle-icon__triangle "
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
       />
     </g>
@@ -251,11 +251,11 @@ exports[`renders a ladder 1`] = `
     transform="translate(47,315) rotate(0,16,13)"
   >
     <g
-      className="m-ladder__vehicle-icon"
+      className="m-vehicle-icon"
       transform="scale(0.625)"
     >
       <path
-        className="m-ladder__vehicle-triangle "
+        className="m-vehicle-icon__triangle "
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
       />
     </g>
@@ -288,11 +288,11 @@ exports[`renders a ladder 1`] = `
     transform="translate(-80,-157.5) rotate(180,16,13)"
   >
     <g
-      className="m-ladder__vehicle-icon"
+      className="m-vehicle-icon"
       transform="scale(0.625)"
     >
       <path
-        className="m-ladder__vehicle-triangle "
+        className="m-vehicle-icon__triangle "
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
       />
     </g>
@@ -325,11 +325,11 @@ exports[`renders a ladder 1`] = `
     transform="translate(-80,-10) rotate(180,16,13)"
   >
     <g
-      className="m-ladder__vehicle-icon"
+      className="m-vehicle-icon"
       transform="scale(0.625)"
     >
       <path
-        className="m-ladder__vehicle-triangle "
+        className="m-vehicle-icon__triangle "
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
       />
     </g>
@@ -386,11 +386,11 @@ exports[`renders a ladder with no timepoints 1`] = `
     transform="translate(47,-10) rotate(0,16,13)"
   >
     <g
-      className="m-ladder__vehicle-icon"
+      className="m-vehicle-icon"
       transform="scale(0.625)"
     >
       <path
-        className="m-ladder__vehicle-triangle "
+        className="m-vehicle-icon__triangle "
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
       />
     </g>

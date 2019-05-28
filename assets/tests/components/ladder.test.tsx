@@ -28,6 +28,7 @@ test("renders a ladder", () => {
         timepoint_id: "t1",
         fraction_until_timepoint: 0.5,
       },
+      route_status: "on_route",
     },
     {
       id: "downward",
@@ -48,6 +49,7 @@ test("renders a ladder", () => {
         timepoint_id: "t2",
         fraction_until_timepoint: 0.75,
       },
+      route_status: "on_route",
     },
     {
       id: "notimepoint",
@@ -65,6 +67,7 @@ test("renders a ladder", () => {
         stop_id: "stop",
       },
       timepoint_status: null,
+      route_status: "on_route",
     },
   ]
   const ladderDirection = LadderDirection.OneToZero
@@ -105,6 +108,7 @@ test("highlights a selected vehicle", () => {
         timepoint_id: "t1",
         fraction_until_timepoint: 0.5,
       },
+      route_status: "on_route",
     },
     {
       id: "downward",
@@ -125,6 +129,7 @@ test("highlights a selected vehicle", () => {
         timepoint_id: "t2",
         fraction_until_timepoint: 0.75,
       },
+      route_status: "incoming",
     },
   ]
   const ladderDirection = LadderDirection.OneToZero
@@ -166,6 +171,7 @@ test("clicking a vehicle selects that vehicle", () => {
       timepoint_id: "t1",
       fraction_until_timepoint: 0.5,
     },
+    route_status: "on_route",
   }
 
   const ladderDirection = LadderDirection.OneToZero
@@ -204,6 +210,7 @@ test("renders a ladder with no timepoints", () => {
         stop_id: "stop",
       },
       timepoint_status: null,
+      route_status: "on_route",
     },
   ]
   const ladderDirection = LadderDirection.OneToZero

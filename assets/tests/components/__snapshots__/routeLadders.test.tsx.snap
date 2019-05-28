@@ -127,6 +127,15 @@ exports[`renders a route ladder 1`] = `
         HHGAT
       </text>
     </svg>
+    <div
+      className="m-incoming-box"
+    >
+      <div
+        className="m-incoming-box__header"
+      >
+        Incoming
+      </div>
+    </div>
   </div>
   <div
     className="m-route-ladder"
@@ -251,6 +260,15 @@ exports[`renders a route ladder 1`] = `
         MORTN
       </text>
     </svg>
+    <div
+      className="m-incoming-box"
+    >
+      <div
+        className="m-incoming-box__header"
+      >
+        Incoming
+      </div>
+    </div>
   </div>
 </div>
 `;
