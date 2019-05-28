@@ -19,7 +19,6 @@ export const flipLadderDirection = (
 const HEIGHT = 500
 const WIDTH = 180
 const CENTER_TO_LINE = 40 // x-distance between the center of the ladder and the center of the line
-const CENTER_TO_VEHICLE = 60 // x-distance between the center of the ladder and the center of the vehicles
 const MARGIN_TOP_BOTTOM = 40 // space between the top of the route and the top of the viewbox
 
 export interface Props {
@@ -140,35 +139,25 @@ const LadderVehicle = ({
     (ladderDirection === LadderDirection.ZeroToOne)
       ? VehicleDirection.Down
       : VehicleDirection.Up
+  const centerOfVehicleGroupX = 16
+  const centerOfVehicleGroupY = 13
+  const widthOfVehicleGroup = centerOfVehicleGroupX * 2
   const x =
-    vehicleDirection === VehicleDirection.Up
-      ? CENTER_TO_VEHICLE
-      : -CENTER_TO_VEHICLE
+    vehicleDirection === VehicleDirection.Up ? 47 : -(48 + widthOfVehicleGroup)
   const y =
     yForVehicle(vehicle, timepoints, timepointSpacingY, vehicleDirection) || -10
-  const textY = vehicleDirection === VehicleDirection.Up ? y + 18 : y - 15
   const isSelected = vehicle.id === selectedVehicleId
+
+  const rotation = vehicleDirection === VehicleDirection.Down ? 180 : 0
 
   return (
     <g
       className="m-ladder__vehicle"
+      transform={`translate(${x},${y}) rotate(${rotation},${centerOfVehicleGroupX},${centerOfVehicleGroupY})`}
       onClick={() => dispatch(selectVehicle(vehicle.id))}
     >
-      <Triangle
-        x={x}
-        y={y}
-        vehicleDirection={vehicleDirection}
-        isSelected={isSelected}
-      />
-      <text
-        className="m-ladder__vehicle-label"
-        x={x}
-        y={textY}
-        textAnchor="middle"
-        dominantBaseline="middle"
-      >
-        {vehicle.label}
-      </text>
+      <Triangle isSelected={isSelected} />
+      <VehicleLabel vehicle={vehicle} rotation={rotation} x={0} y={26} />
     </g>
   )
 }
@@ -201,29 +190,47 @@ const yForVehicle = (
   return null
 }
 
-const Triangle = ({
-  x,
-  y,
-  vehicleDirection,
-  isSelected,
-}: {
-  x: number
-  y: number
-  vehicleDirection: VehicleDirection
-  isSelected: boolean
-}) => {
-  const points =
-    vehicleDirection === VehicleDirection.Up
-      ? [[x, y - 10], [x - 15, y + 10], [x + 15, y + 10]]
-      : [[x, y + 10], [x + 15, y - 10], [x - 15, y - 10]]
-  const pointsString = points.map(xy => xy.join(",")).join(" ")
+const Triangle = ({ isSelected }: { isSelected: boolean }) => {
   const selectedClass = isSelected ? "selected" : ""
   return (
-    <polygon
-      className={`m-ladder__vehicle-triangle ${selectedClass}`}
-      points={pointsString}
-    />
+    <g className="m-ladder__vehicle-icon" transform={`scale(0.625)`}>
+      <path
+        className={`m-ladder__vehicle-triangle ${selectedClass}`}
+        d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+      />
+    </g>
   )
 }
+
+const VehicleLabel = ({
+  vehicle,
+  rotation,
+  x,
+  y,
+}: {
+  vehicle: Vehicle
+  rotation: number
+  x: number
+  y: number
+}) => (
+  <svg className="m-ladder__vehicle-label" x={x} y={y}>
+    <rect
+      className="m-ladder__vehicle-label-background"
+      rx="5.5"
+      ry="5.5"
+      width="30"
+      height="11"
+    />
+    <text
+      className="m-ladder__vehicle-label-text"
+      textAnchor="inherit"
+      x="5"
+      y="9"
+      transform={`rotate(${rotation},15,6)`}
+    >
+      {vehicle.label}
+    </text>
+  </svg>
+)
 
 export default Ladder
