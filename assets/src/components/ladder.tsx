@@ -2,6 +2,7 @@ import React, { useContext } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import { Timepoint, Vehicle, VehicleId } from "../skate"
 import { selectVehicle } from "../state"
+import VehicleIcon from "./vehicleIcon"
 
 // Timepoints come from the API in the ZeroToOne direction
 export enum LadderDirection {
@@ -156,7 +157,7 @@ const LadderVehicle = ({
       transform={`translate(${x},${y}) rotate(${rotation},${centerOfVehicleGroupX},${centerOfVehicleGroupY})`}
       onClick={() => dispatch(selectVehicle(vehicle.id))}
     >
-      <Triangle isSelected={isSelected} />
+      <VehicleIcon isSelected={isSelected} scale={0.625} />
       <VehicleLabel vehicle={vehicle} rotation={rotation} x={0} y={26} />
     </g>
   )
@@ -188,18 +189,6 @@ const yForVehicle = (
     }
   }
   return null
-}
-
-const Triangle = ({ isSelected }: { isSelected: boolean }) => {
-  const selectedClass = isSelected ? "selected" : ""
-  return (
-    <g className="m-ladder__vehicle-icon" transform={`scale(0.625)`}>
-      <path
-        className={`m-ladder__vehicle-triangle ${selectedClass}`}
-        d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-      />
-    </g>
-  )
 }
 
 const VehicleLabel = ({

@@ -1,0 +1,9 @@
+.m-vehicle-icon__triangle {
+  fill: $blue-grey;
+  stroke: $pale-grey;
+  stroke-width: 2;
+
+  &.selected {
+    stroke: $dark;
+  }
+}
