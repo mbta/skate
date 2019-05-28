@@ -54,6 +54,14 @@ const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
           <tbody>
             <tr>
               <th className="m-vehicle-properties-panel__vehicle-property-label">
+                Run
+              </th>
+              <td className="m-vehicle-properties-panel__vehicle-property-value">
+                {selectedVehicle.run_id}
+              </td>
+            </tr>
+            <tr>
+              <th className="m-vehicle-properties-panel__vehicle-property-label">
                 Vehicle
               </th>
               <td className="m-vehicle-properties-panel__vehicle-property-value">

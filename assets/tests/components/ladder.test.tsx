@@ -12,6 +12,7 @@ test("renders a ladder", () => {
     {
       id: "upward",
       label: "upward",
+      run_id: "run-1",
       timestamp: 0,
       latitude: 0,
       longitude: 0,
@@ -34,6 +35,7 @@ test("renders a ladder", () => {
     {
       id: "downward",
       label: "downward",
+      run_id: "run-2",
       timestamp: 0,
       latitude: 0,
       longitude: 0,
@@ -56,6 +58,7 @@ test("renders a ladder", () => {
     {
       id: "notimepoint",
       label: "notimepoint",
+      run_id: "run-3",
       timestamp: 0,
       latitude: 0,
       longitude: 0,
@@ -95,6 +98,7 @@ test("highlights a selected vehicle", () => {
     {
       id: "upward",
       label: "upward",
+      run_id: "run-1",
       timestamp: 0,
       latitude: 0,
       longitude: 0,
@@ -117,6 +121,7 @@ test("highlights a selected vehicle", () => {
     {
       id: "downward",
       label: "downward",
+      run_id: "run-2",
       timestamp: 0,
       latitude: 0,
       longitude: 0,
@@ -160,6 +165,7 @@ test("clicking a vehicle selects that vehicle", () => {
   const vehicle: Vehicle = {
     id: "upward",
     label: "upward",
+    run_id: "run-1",
     timestamp: 0,
     latitude: 0,
     longitude: 0,
@@ -203,6 +209,7 @@ test("renders a ladder with no timepoints", () => {
     {
       id: "upward",
       label: "upward",
+      run_id: "run-1",
       timestamp: 0,
       latitude: 0,
       longitude: 0,

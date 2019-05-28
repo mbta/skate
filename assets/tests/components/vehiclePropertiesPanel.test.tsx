@@ -11,6 +11,7 @@ import { deselectVehicle } from "../../src/state"
 const vehicle: Vehicle = {
   id: "v1",
   label: "v1-label",
+  run_id: "run-1",
   timestamp: 123,
   latitude: 0,
   longitude: 0,
