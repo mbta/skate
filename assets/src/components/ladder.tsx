@@ -157,7 +157,7 @@ const LadderVehicle = ({
       onClick={() => dispatch(selectVehicle(vehicle.id))}
     >
       <Triangle isSelected={isSelected} />
-      <VehicleLabel vehicle={vehicle} rotation={rotation} />
+      <VehicleLabel vehicle={vehicle} rotation={rotation} x={0} y={26} />
     </g>
   )
 }
@@ -205,11 +205,15 @@ const Triangle = ({ isSelected }: { isSelected: boolean }) => {
 const VehicleLabel = ({
   vehicle,
   rotation,
+  x,
+  y,
 }: {
   vehicle: Vehicle
   rotation: number
+  x: number
+  y: number
 }) => (
-  <svg className="m-ladder__vehicle-label" x="0" y="26">
+  <svg className="m-ladder__vehicle-label" x={x} y={y}>
     <rect
       className="m-ladder__vehicle-label-background"
       rx="5.5"

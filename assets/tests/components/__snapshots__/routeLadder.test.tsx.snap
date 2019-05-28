@@ -310,8 +310,8 @@ exports[`renders a route ladder with vehicles 1`] = `
       </g>
       <svg
         className="m-ladder__vehicle-label"
-        x="0"
-        y="26"
+        x={0}
+        y={26}
       >
         <rect
           className="m-ladder__vehicle-label-background"
@@ -347,8 +347,8 @@ exports[`renders a route ladder with vehicles 1`] = `
       </g>
       <svg
         className="m-ladder__vehicle-label"
-        x="0"
-        y="26"
+        x={0}
+        y={26}
       >
         <rect
           className="m-ladder__vehicle-label-background"

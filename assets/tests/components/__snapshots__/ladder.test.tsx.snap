@@ -100,8 +100,8 @@ exports[`highlights a selected vehicle 1`] = `
     </g>
     <svg
       className="m-ladder__vehicle-label"
-      x="0"
-      y="26"
+      x={0}
+      y={26}
     >
       <rect
         className="m-ladder__vehicle-label-background"
@@ -137,8 +137,8 @@ exports[`highlights a selected vehicle 1`] = `
     </g>
     <svg
       className="m-ladder__vehicle-label"
-      x="0"
-      y="26"
+      x={0}
+      y={26}
     >
       <rect
         className="m-ladder__vehicle-label-background"
@@ -261,8 +261,8 @@ exports[`renders a ladder 1`] = `
     </g>
     <svg
       className="m-ladder__vehicle-label"
-      x="0"
-      y="26"
+      x={0}
+      y={26}
     >
       <rect
         className="m-ladder__vehicle-label-background"
@@ -298,8 +298,8 @@ exports[`renders a ladder 1`] = `
     </g>
     <svg
       className="m-ladder__vehicle-label"
-      x="0"
-      y="26"
+      x={0}
+      y={26}
     >
       <rect
         className="m-ladder__vehicle-label-background"
@@ -335,8 +335,8 @@ exports[`renders a ladder 1`] = `
     </g>
     <svg
       className="m-ladder__vehicle-label"
-      x="0"
-      y="26"
+      x={0}
+      y={26}
     >
       <rect
         className="m-ladder__vehicle-label-background"
@@ -396,8 +396,8 @@ exports[`renders a ladder with no timepoints 1`] = `
     </g>
     <svg
       className="m-ladder__vehicle-label"
-      x="0"
-      y="26"
+      x={0}
+      y={26}
     >
       <rect
         className="m-ladder__vehicle-label-background"
