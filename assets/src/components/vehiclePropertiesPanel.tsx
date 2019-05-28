@@ -10,6 +10,19 @@ interface Props {
 }
 
 const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
+  const {
+    label,
+    run_id,
+    longitude,
+    latitude,
+    route_id,
+    headsign,
+    via_variant,
+    operator_id,
+    operator_name,
+    stop_status,
+  } = selectedVehicle
+
   const dispatch = useContext(DispatchContext)
 
   const hideMe = () => dispatch(deselectVehicle())
@@ -25,13 +38,13 @@ const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
   })
 
   const directionsUrl = `https://www.google.com/maps/dir/?api=1\
-&destination=${selectedVehicle.latitude.toString()},${selectedVehicle.longitude.toString()}\
+&destination=${latitude.toString()},${longitude.toString()}\
 &travelmode=driving`
 
   const routeVariantText: string = formatRouteVariant(
-    selectedVehicle.route_id,
-    selectedVehicle.via_variant,
-    selectedVehicle.headsign
+    route_id,
+    via_variant,
+    headsign
   )
 
   return (
@@ -41,9 +54,7 @@ const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
         className="m-vehicle-properties-panel"
       >
         <div className="m-vehicle-properties-panel__header">
-          <div className="m-vehicle-properties-panel__label">
-            {selectedVehicle.label}
-          </div>
+          <div className="m-vehicle-properties-panel__label">{label}</div>
           <div className="m-vehicle-properties-panel__variant">
             {routeVariantText}
           </div>
@@ -57,7 +68,7 @@ const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
                 Run
               </th>
               <td className="m-vehicle-properties-panel__vehicle-property-value">
-                {selectedVehicle.run_id}
+                {run_id}
               </td>
             </tr>
             <tr>
@@ -65,7 +76,15 @@ const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
                 Vehicle
               </th>
               <td className="m-vehicle-properties-panel__vehicle-property-value">
-                {selectedVehicle.label}
+                {label}
+              </td>
+            </tr>
+            <tr>
+              <th className="m-vehicle-properties-panel__vehicle-property-label">
+                Operator
+              </th>
+              <td className="m-vehicle-properties-panel__vehicle-property-value">
+                {operator_name} #{operator_id}
               </td>
             </tr>
           </tbody>
@@ -76,7 +95,7 @@ const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
             Next Stop
           </div>
           <div className="m-vehicle-properties-panel__vehicle-property-value">
-            {selectedVehicle.stop_status.stop_name}
+            {stop_status.stop_name}
           </div>
           <a className="m-vehicle-properties-panel__link" href={directionsUrl}>
             Directions

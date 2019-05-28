@@ -21,6 +21,8 @@ test("renders a ladder", () => {
       trip_id: "trip",
       headsign: null,
       via_variant: null,
+      operator_id: "op1",
+      operator_name: "SMITH",
       stop_status: {
         status: "in_transit_to",
         stop_id: "stop",
@@ -44,6 +46,8 @@ test("renders a ladder", () => {
       trip_id: "trip",
       headsign: null,
       via_variant: null,
+      operator_id: "op2",
+      operator_name: "JONES",
       stop_status: {
         status: "in_transit_to",
         stop_id: "stop",
@@ -67,6 +71,8 @@ test("renders a ladder", () => {
       trip_id: "trip",
       headsign: null,
       via_variant: null,
+      operator_id: "op3",
+      operator_name: "XI",
       stop_status: {
         status: "in_transit_to",
         stop_id: "stop",
@@ -107,6 +113,8 @@ test("highlights a selected vehicle", () => {
       trip_id: "trip",
       headsign: null,
       via_variant: null,
+      operator_id: "op1",
+      operator_name: "SMITH",
       stop_status: {
         status: "in_transit_to",
         stop_id: "stop",
@@ -130,6 +138,8 @@ test("highlights a selected vehicle", () => {
       trip_id: "trip",
       headsign: null,
       via_variant: null,
+      operator_id: "op2",
+      operator_name: "JONES",
       stop_status: {
         status: "in_transit_to",
         stop_id: "stop",
@@ -174,6 +184,8 @@ test("clicking a vehicle selects that vehicle", () => {
     trip_id: "trip",
     headsign: null,
     via_variant: null,
+    operator_id: "op1",
+    operator_name: "SMITH",
     stop_status: {
       status: "in_transit_to",
       stop_id: "stop",
@@ -218,6 +230,8 @@ test("renders a ladder with no timepoints", () => {
       trip_id: "trip",
       headsign: null,
       via_variant: null,
+      operator_id: "op1",
+      operator_name: "SMITH",
       stop_status: {
         status: "in_transit_to",
         stop_id: "stop",

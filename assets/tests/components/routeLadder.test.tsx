@@ -40,6 +40,8 @@ test("renders a route ladder with vehicles", () => {
       trip_id: "39914237",
       headsign: "h0",
       via_variant: "4",
+      operator_id: "op1",
+      operator_name: "SMITH",
       stop_status: {
         status: "in_transit_to",
         stop_id: "57",
@@ -63,6 +65,8 @@ test("renders a route ladder with vehicles", () => {
       trip_id: "39914128",
       headsign: null,
       via_variant: null,
+      operator_id: "op2",
+      operator_name: "JONES",
       stop_status: {
         status: "in_transit_to",
         stop_id: "59",
@@ -106,6 +110,8 @@ test("renders a route ladder with vehicles in the incoming box", () => {
       trip_id: "39914237",
       headsign: "h0",
       via_variant: "4",
+      operator_id: "op1",
+      operator_name: "SMITH",
       stop_status: {
         status: "in_transit_to",
         stop_id: "57",
@@ -129,6 +135,8 @@ test("renders a route ladder with vehicles in the incoming box", () => {
       trip_id: "39914128",
       headsign: null,
       via_variant: null,
+      operator_id: "op2",
+      operator_name: "JONES",
       stop_status: {
         status: "in_transit_to",
         stop_id: "59",
@@ -232,6 +240,8 @@ test("clicking an incoming vehicle selects that vehicle", () => {
     trip_id: "trip",
     headsign: null,
     via_variant: null,
+    operator_id: "op1",
+    operator_name: "SMITH",
     stop_status: {
       status: "in_transit_to",
       stop_id: "stop",

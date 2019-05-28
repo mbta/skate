@@ -20,6 +20,8 @@ const vehicle: Vehicle = {
   trip_id: "t1",
   headsign: "headsign",
   via_variant: "4",
+  operator_id: "op1",
+  operator_name: "SMITH",
   stop_status: {
     status: "in_transit_to",
     stop_id: "s1",

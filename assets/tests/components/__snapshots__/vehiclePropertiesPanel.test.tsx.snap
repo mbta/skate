@@ -61,6 +61,20 @@ Array [
             v1-label
           </td>
         </tr>
+        <tr>
+          <th
+            className="m-vehicle-properties-panel__vehicle-property-label"
+          >
+            Operator
+          </th>
+          <td
+            className="m-vehicle-properties-panel__vehicle-property-value"
+          >
+            SMITH
+             #
+            op1
+          </td>
+        </tr>
       </tbody>
     </table>
     <div
