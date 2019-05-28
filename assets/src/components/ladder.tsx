@@ -139,13 +139,11 @@ const LadderVehicle = ({
     (ladderDirection === LadderDirection.ZeroToOne)
       ? VehicleDirection.Down
       : VehicleDirection.Up
-  const centerOfTriangleX = 16
-  const centerOfTriangleY = 13
-  const widthOfTriangle = centerOfTriangleX * 2
+  const centerOfVehicleGroupX = 16
+  const centerOfVehicleGroupY = 13
+  const widthOfVehicleGroup = centerOfVehicleGroupX * 2
   const x =
-    vehicleDirection === VehicleDirection.Up
-      ? 15 + widthOfTriangle
-      : -(48 + widthOfTriangle)
+    vehicleDirection === VehicleDirection.Up ? 47 : -(48 + widthOfVehicleGroup)
   const y =
     yForVehicle(vehicle, timepoints, timepointSpacingY, vehicleDirection) || -10
   const isSelected = vehicle.id === selectedVehicleId
@@ -155,7 +153,7 @@ const LadderVehicle = ({
   return (
     <g
       className="m-ladder__vehicle"
-      transform={`translate(${x},${y}) rotate(${rotation},${centerOfTriangleX},${centerOfTriangleY})`}
+      transform={`translate(${x},${y}) rotate(${rotation},${centerOfVehicleGroupX},${centerOfVehicleGroupY})`}
       onClick={() => dispatch(selectVehicle(vehicle.id))}
     >
       <Triangle isSelected={isSelected} />
