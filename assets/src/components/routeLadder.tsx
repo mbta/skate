@@ -15,13 +15,22 @@ interface Props {
   selectedVehicleId: VehicleId | undefined
 }
 
-const partitionVehiclesByRouteStatus = (vehicles: Vehicle[]): Vehicle[][] =>
+interface PartitionedVehicles {
+  onRouteVehicles: Vehicle[]
+  incomingVehicles: Vehicle[]
+}
+const partitionVehiclesByRouteStatus = (
+  vehicles: Vehicle[]
+): PartitionedVehicles =>
   vehicles.reduce(
-    ([onRouteVehicles, incomingVehicles]: Vehicle[][], vehicle: Vehicle) =>
+    (
+      { onRouteVehicles, incomingVehicles }: PartitionedVehicles,
+      vehicle: Vehicle
+    ) =>
       vehicle.route_status === "on_route"
-        ? [[...onRouteVehicles, vehicle], incomingVehicles]
-        : [onRouteVehicles, [...incomingVehicles, vehicle]],
-    [[], []]
+        ? { onRouteVehicles: [...onRouteVehicles, vehicle], incomingVehicles }
+        : { onRouteVehicles, incomingVehicles: [...incomingVehicles, vehicle] },
+    { onRouteVehicles: [], incomingVehicles: [] }
   )
 
 const Header = ({ route }: { route: Route }) => {
@@ -47,7 +56,7 @@ const RouteLadder = ({
     initialDirection
   )
 
-  const [onRouteVehicles, incomingVehicles] = partitionVehiclesByRouteStatus(
+  const { onRouteVehicles, incomingVehicles } = partitionVehiclesByRouteStatus(
     vehicles
   )
 
