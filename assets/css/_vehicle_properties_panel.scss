@@ -26,8 +26,19 @@
   border-left: 1px solid $light-periwinkle;
   flex: 1 1 auto;
   font-size: 1.25rem;
-  font-weight: bold;
   padding: 1rem;
+}
+
+.m-vehicle-properties-panel__inbound-outbound {
+  color: $dark;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+}
+
+.m-vehicle-properties-panel__variant-name {
+  font-weight: bold;
 }
 
 .m-vehicle-properties-panel__header > button {

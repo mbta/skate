@@ -14,14 +14,88 @@ describe("fetchRoutes", () => {
     window.fetch = () =>
       Promise.resolve({
         json: () => ({
-          data: [{ id: "28" }, { id: "39" }, { id: "71" }],
+          data: [
+            {
+              id: "28",
+              directions: {
+                0: {
+                  route_id: "28",
+                  direction_id: "0",
+                  direction_name: "Outbound",
+                  direction_destination: "Mattapan",
+                },
+                1: {
+                  route_id: "28",
+                  direction_id: "1",
+                  direction_name: "Inbound",
+                  direction_destination: "Mattapan",
+                },
+              },
+            },
+            {
+              id: "39",
+              directions: {
+                0: {
+                  route_id: "39",
+                  direction_id: "0",
+                  direction_name: "Outbound",
+                  direction_destination: "Forest Hills",
+                },
+                1: {
+                  route_id: "39",
+                  direction_id: "1",
+                  direction_name: "Inbound",
+                  direction_destination: "Back Bay Station",
+                },
+              },
+            },
+            {
+              id: "71",
+              directions: {
+                0: {
+                  route_id: "71",
+                  direction_id: "0",
+                  direction_name: "Outbound",
+                  direction_destination: "Watertown Square",
+                },
+                1: {
+                  route_id: "71",
+                  direction_id: "1",
+                  direction_name: "Inbound",
+                  direction_destination: "Harvard",
+                },
+              },
+            },
+          ],
         }),
         ok: true,
         status: 200,
       })
 
     fetchRoutes().then(routes => {
-      expect(routes).toEqual([{ id: "28" }, { id: "39" }, { id: "71" }])
+      expect(routes).toEqual([
+        {
+          id: "28",
+          directionNames: {
+            "0": "Outbound",
+            "1": "Inbound",
+          },
+        },
+        {
+          id: "39",
+          directionNames: {
+            "0": "Outbound",
+            "1": "Inbound",
+          },
+        },
+        {
+          id: "71",
+          directionNames: {
+            "0": "Outbound",
+            "1": "Inbound",
+          },
+        },
+      ])
       done()
     })
   })

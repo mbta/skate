@@ -1,25 +1,33 @@
 import React, { useContext, useEffect } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
-import { Vehicle } from "../skate.d"
+import { Route, Vehicle } from "../skate.d"
 import { deselectVehicle } from "../state"
 import CloseButton from "./closeButton"
 
 interface Props {
   selectedVehicle: Vehicle
+  selectedVehicleRoute?: Route
 }
 
 const Header = ({
   vehicle,
+  selectedVehicleRoute,
   hideMe,
 }: {
   vehicle: Vehicle
+  selectedVehicleRoute?: Route
   hideMe: () => void
 }) => (
   <div className="m-vehicle-properties-panel__header">
     <div className="m-vehicle-properties-panel__label">{vehicle.label}</div>
     <div className="m-vehicle-properties-panel__variant">
-      {formatRouteVariant(vehicle)}
+      <div className="m-vehicle-properties-panel__inbound-outbound">
+        {directionName(vehicle, selectedVehicleRoute)}
+      </div>
+      <div className="m-vehicle-properties-panel__variant-name">
+        {formatRouteVariant(vehicle)}
+      </div>
     </div>
     <CloseButton onClick={hideMe} />
   </div>
@@ -81,7 +89,10 @@ const Location = ({
   </div>
 )
 
-const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
+const VehiclePropertiesPanel = ({
+  selectedVehicle,
+  selectedVehicleRoute,
+}: Props) => {
   const dispatch = useContext(DispatchContext)
 
   const hideMe = () => dispatch(deselectVehicle())
@@ -102,7 +113,11 @@ const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
         id="m-vehicle-properties-panel"
         className="m-vehicle-properties-panel"
       >
-        <Header vehicle={selectedVehicle} hideMe={hideMe} />
+        <Header
+          vehicle={selectedVehicle}
+          selectedVehicleRoute={selectedVehicleRoute}
+          hideMe={hideMe}
+        />
 
         <Properties vehicle={selectedVehicle} />
 
@@ -127,6 +142,12 @@ export const formatRouteVariant = (vehicle: Vehicle): string => {
   const headsignFormatted = headsign ? ` ${headsign}` : ""
   return `${routeId}_${viaVariantFormatted}${headsignFormatted}`
 }
+
+const directionName = (
+  { direction_id }: Vehicle,
+  selectedVehicleRoute?: Route
+): string =>
+  selectedVehicleRoute ? selectedVehicleRoute.directionNames[direction_id] : ""
 
 const directionsUrl = (
   latitude: number,

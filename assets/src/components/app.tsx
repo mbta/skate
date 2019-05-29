@@ -43,6 +43,11 @@ const App = (): JSX.Element => {
     vehiclesByRouteId,
     selectedVehicleId
   )
+  const vehicleRoute = (
+    allRoutes: Route[] | null,
+    vehicle: Vehicle | undefined
+  ): Route | undefined =>
+    (allRoutes || []).find(route => route.id === (vehicle && vehicle.route_id))
 
   return (
     <DispatchProvider dispatch={dispatch}>
@@ -57,7 +62,10 @@ const App = (): JSX.Element => {
         />
 
         {selectedVehicle && (
-          <VehiclePropertiesPanel selectedVehicle={selectedVehicle} />
+          <VehiclePropertiesPanel
+            selectedVehicle={selectedVehicle}
+            selectedVehicleRoute={vehicleRoute(routes, selectedVehicle)}
+          />
         )}
       </div>
     </DispatchProvider>

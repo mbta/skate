@@ -1,7 +1,22 @@
 import { Route, RouteId, Timepoint, TimepointId } from "./skate.d"
 
 interface RoutesResponse {
-  data: Route[]
+  data: RouteData[]
+}
+
+interface RouteData {
+  id: string
+  directions: {
+    0: DirectionData
+    1: DirectionData
+  }
+}
+
+interface DirectionData {
+  route_id: string
+  direction_id: string
+  direction_name: string
+  direction_destination: string
 }
 
 interface TimepointsForRouteResponse {
@@ -17,11 +32,22 @@ const checkResponseStatus = (response: Response) => {
 
 const parseJson = (response: Response) => response.json()
 
+const parseRouteData = ({ id, directions }: RouteData): Route => ({
+  id,
+  directionNames: {
+    0: directions[0].direction_name,
+    1: directions[1].direction_name,
+  },
+})
+
+const parseRoutesData = (routesData: RouteData[]): Route[] =>
+  routesData.map(parseRouteData)
+
 export const fetchRoutes = (): Promise<Route[]> =>
   fetch("/api/routes")
     .then(checkResponseStatus)
     .then(parseJson)
-    .then(({ data: routes }: RoutesResponse) => routes)
+    .then(({ data: routes }: RoutesResponse) => parseRoutesData(routes))
     .catch(error => {
       // tslint:disable-next-line: no-console
       console.error(error)

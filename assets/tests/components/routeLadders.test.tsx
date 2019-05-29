@@ -4,7 +4,10 @@ import RouteLadders from "../../src/components/routeLadders"
 import { Route, TimepointsByRouteId } from "../../src/skate"
 
 test("renders a route ladder", () => {
-  const routes: Route[] = [{ id: "1" }, { id: "28" }]
+  const routes: Route[] = [
+    { id: "1", directionNames: { 0: "Outbound", 1: "Inbound" } },
+    { id: "28", directionNames: { 0: "Outbound", 1: "Inbound" } },
+  ]
   const timepointsByRouteId: TimepointsByRouteId = {
     "1": [{ id: "WASMA" }, { id: "MELWA" }, { id: "HHGAT" }],
     "28": [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }],
