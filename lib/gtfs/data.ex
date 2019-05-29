@@ -84,11 +84,15 @@ defmodule Gtfs.Data do
   @spec timepoint_ids_for_route_patterns([RoutePattern.t()], t()) :: [StopTime.timepoint_id()]
   defp timepoint_ids_for_route_patterns(route_patterns, data) do
     route_patterns
-    |> Enum.map(fn route_pattern -> route_pattern.representative_trip_id end)
-    |> Enum.map(fn trip_id -> trip(data, trip_id).stop_times end)
+    |> Enum.map(fn route_pattern ->
+      trip_id = route_pattern.representative_trip_id
+      trip = trip(data, trip_id)
+
+      trip.stop_times
+      |> Enum.map(fn stop_time -> stop_time.timepoint_id end)
+      |> Enum.filter(& &1)
+    end)
     |> Helpers.merge_lists()
-    |> Enum.reject(&(&1.timepoint_id == nil))
-    |> Enum.map(& &1.timepoint_id)
   end
 
   @spec bus_route_patterns(binary(), MapSet.t(Route.id())) :: [RoutePattern.t()]
