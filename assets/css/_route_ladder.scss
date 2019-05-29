@@ -39,7 +39,7 @@
 
 .m-incoming-box {
   align-items: center;
-  background-color: transparentize($color: $white, $amount: 0.5);
+  background-color: $lightest-grey;
   color: $dark;
   display: flex;
   flex-direction: column;
