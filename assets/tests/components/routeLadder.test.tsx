@@ -4,7 +4,7 @@ import renderer, { act } from "react-test-renderer"
 import RouteLadder from "../../src/components/routeLadder"
 import DispatchProvider from "../../src/providers/dispatchProvider"
 import { Route, Vehicle } from "../../src/skate"
-import { deselectRoute } from "../../src/state"
+import { deselectRoute, selectVehicle } from "../../src/state"
 
 test("renders a route ladder", () => {
   const route: Route = { id: "28" }
@@ -205,4 +205,46 @@ test("clicking the reverse button reverses the order of the timepoints", () => {
   expect(
     wrapper.find(".m-ladder__timepoint-name").map(node => node.text())
   ).toEqual(["MORTN", "WELLH", "MATPN"])
+})
+
+test("clicking an incoming vehicle selects that vehicle", () => {
+  const mockDispatch = jest.fn()
+
+  const route: Route = { id: "28" }
+  const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
+  const vehicle: Vehicle = {
+    id: "v1",
+    label: "v1",
+    timestamp: 0,
+    latitude: 0,
+    longitude: 0,
+    direction_id: 1,
+    route_id: "28",
+    trip_id: "trip",
+    headsign: null,
+    via_variant: null,
+    stop_status: {
+      status: "in_transit_to",
+      stop_id: "stop",
+    },
+    timepoint_status: {
+      timepoint_id: "MATPN",
+      fraction_until_timepoint: 0.5,
+    },
+    route_status: "incoming",
+  }
+
+  const wrapper = mount(
+    <DispatchProvider dispatch={mockDispatch}>
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehicles={[vehicle]}
+        selectedVehicleId={undefined}
+      />
+    </DispatchProvider>
+  )
+  wrapper.find(".m-incoming-box__vehicle").simulate("click")
+
+  expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle.id))
 })

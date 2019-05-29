@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import { reverseIcon, reverseIconReversed } from "../helpers/icon"
 import { LoadableTimepoints, Route, Vehicle, VehicleId } from "../skate"
-import { deselectRoute } from "../state"
+import { deselectRoute, selectVehicle } from "../state"
 import CloseButton from "./closeButton"
 import Ladder, {
   flipLadderDirection,
@@ -44,21 +44,28 @@ const Header = ({ route }: { route: Route }) => {
 const IncomingBoxVehicle = ({
   vehicle,
   ladderDirection,
+  selectedVehicleId,
 }: {
   vehicle: Vehicle
   ladderDirection: LadderDirection
+  selectedVehicleId: VehicleId | undefined
 }) => {
+  const dispatch = useContext(DispatchContext)
+  const isSelected = vehicle.id === selectedVehicleId
   const rotation =
     vehicleDirectionOnLadder(vehicle, ladderDirection) === VehicleDirection.Down
       ? 180
       : 0
 
   return (
-    <div className="m-incoming-box__vehicle" key={vehicle.id}>
+    <div
+      className="m-incoming-box__vehicle"
+      onClick={() => dispatch(selectVehicle(vehicle.id))}
+    >
       <div className="m-incoming-box__vehicle-icon">
         <svg className="m-incoming-box__vehicle-icon-svg">
           <g transform={`rotate(${rotation},9,7)`}>
-            <VehicleIcon scale={0.38} />
+            <VehicleIcon isSelected={isSelected} scale={0.38} />
           </g>
         </svg>
       </div>
@@ -70,15 +77,18 @@ const IncomingBoxVehicle = ({
 const IncomingBox = ({
   vehicles,
   ladderDirection,
+  selectedVehicleId,
 }: {
   vehicles: Vehicle[]
   ladderDirection: LadderDirection
+  selectedVehicleId: VehicleId | undefined
 }) => (
   <div className="m-incoming-box">
     {vehicles.map(vehicle => (
       <IncomingBoxVehicle
         vehicle={vehicle}
         ladderDirection={ladderDirection}
+        selectedVehicleId={selectedVehicleId}
         key={vehicle.id}
       />
     ))}
@@ -125,6 +135,7 @@ const RouteLadder = ({
           <IncomingBox
             vehicles={incomingVehicles}
             ladderDirection={ladderDirection}
+            selectedVehicleId={selectedVehicleId}
           />
         </>
       ) : (

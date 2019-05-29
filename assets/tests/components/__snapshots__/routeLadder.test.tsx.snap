@@ -507,6 +507,7 @@ exports[`renders a route ladder with vehicles in the incoming box 1`] = `
   >
     <div
       className="m-incoming-box__vehicle"
+      onClick={[Function]}
     >
       <div
         className="m-incoming-box__vehicle-icon"
@@ -537,6 +538,7 @@ exports[`renders a route ladder with vehicles in the incoming box 1`] = `
     </div>
     <div
       className="m-incoming-box__vehicle"
+      onClick={[Function]}
     >
       <div
         className="m-incoming-box__vehicle-icon"
