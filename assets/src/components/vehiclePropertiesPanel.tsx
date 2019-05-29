@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
-import { RouteId, Vehicle, ViaVariant } from "../skate.d"
+import { Vehicle } from "../skate.d"
 import { deselectVehicle } from "../state"
 import CloseButton from "./closeButton"
 
@@ -9,20 +9,79 @@ interface Props {
   selectedVehicle: Vehicle
 }
 
-const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
-  const {
-    label,
-    run_id,
-    longitude,
-    latitude,
-    route_id,
-    headsign,
-    via_variant,
-    operator_id,
-    operator_name,
-    stop_status,
-  } = selectedVehicle
+const Header = ({
+  vehicle,
+  hideMe,
+}: {
+  vehicle: Vehicle
+  hideMe: () => void
+}) => (
+  <div className="m-vehicle-properties-panel__header">
+    <div className="m-vehicle-properties-panel__label">{vehicle.label}</div>
+    <div className="m-vehicle-properties-panel__variant">
+      {formatRouteVariant(vehicle)}
+    </div>
+    <CloseButton onClick={hideMe} />
+  </div>
+)
 
+const Properties = ({
+  vehicle: { run_id, label, operator_id, operator_name },
+}: {
+  vehicle: Vehicle
+}) => (
+  <table className="m-vehicle-properties-panel__vehicle-properties">
+    <tbody>
+      <tr>
+        <th className="m-vehicle-properties-panel__vehicle-property-label">
+          Run
+        </th>
+        <td className="m-vehicle-properties-panel__vehicle-property-value">
+          {run_id}
+        </td>
+      </tr>
+      <tr>
+        <th className="m-vehicle-properties-panel__vehicle-property-label">
+          Vehicle
+        </th>
+        <td className="m-vehicle-properties-panel__vehicle-property-value">
+          {label}
+        </td>
+      </tr>
+      <tr>
+        <th className="m-vehicle-properties-panel__vehicle-property-label">
+          Operator
+        </th>
+        <td className="m-vehicle-properties-panel__vehicle-property-value">
+          {operator_name} #{operator_id}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+)
+
+const Location = ({
+  vehicle: { latitude, longitude, stop_status },
+}: {
+  vehicle: Vehicle
+}) => (
+  <div className="m-vehicle-properties-panel__location">
+    <div className="m-vehicle-properties-panel__vehicle-property-label">
+      Next Stop
+    </div>
+    <div className="m-vehicle-properties-panel__vehicle-property-value">
+      {stop_status.stop_name}
+    </div>
+    <a
+      className="m-vehicle-properties-panel__link"
+      href={directionsUrl(latitude, longitude)}
+    >
+      Directions
+    </a>
+  </div>
+)
+
+const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
   const dispatch = useContext(DispatchContext)
 
   const hideMe = () => dispatch(deselectVehicle())
@@ -37,70 +96,17 @@ const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
     return detectSwipe("m-vehicle-properties-panel", handleSwipe)
   })
 
-  const directionsUrl = `https://www.google.com/maps/dir/?api=1\
-&destination=${latitude.toString()},${longitude.toString()}\
-&travelmode=driving`
-
-  const routeVariantText: string = formatRouteVariant(
-    route_id,
-    via_variant,
-    headsign
-  )
-
   return (
     <>
       <div
         id="m-vehicle-properties-panel"
         className="m-vehicle-properties-panel"
       >
-        <div className="m-vehicle-properties-panel__header">
-          <div className="m-vehicle-properties-panel__label">{label}</div>
-          <div className="m-vehicle-properties-panel__variant">
-            {routeVariantText}
-          </div>
-          <CloseButton onClick={hideMe} />
-        </div>
+        <Header vehicle={selectedVehicle} hideMe={hideMe} />
 
-        <table className="m-vehicle-properties-panel__vehicle-properties">
-          <tbody>
-            <tr>
-              <th className="m-vehicle-properties-panel__vehicle-property-label">
-                Run
-              </th>
-              <td className="m-vehicle-properties-panel__vehicle-property-value">
-                {run_id}
-              </td>
-            </tr>
-            <tr>
-              <th className="m-vehicle-properties-panel__vehicle-property-label">
-                Vehicle
-              </th>
-              <td className="m-vehicle-properties-panel__vehicle-property-value">
-                {label}
-              </td>
-            </tr>
-            <tr>
-              <th className="m-vehicle-properties-panel__vehicle-property-label">
-                Operator
-              </th>
-              <td className="m-vehicle-properties-panel__vehicle-property-value">
-                {operator_name} #{operator_id}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <Properties vehicle={selectedVehicle} />
 
-        <div className="m-vehicle-properties-panel__location">
-          <div className="m-vehicle-properties-panel__vehicle-property-label">
-            Next Stop
-          </div>
-          <div className="m-vehicle-properties-panel__vehicle-property-value">
-            {stop_status.stop_name}
-          </div>
-          <a className="m-vehicle-properties-panel__link" href={directionsUrl}>
-            Directions
-          </a>
-        </div>
+        <Location vehicle={selectedVehicle} />
 
         <button className="m-vehicle-properties-panel__close" onClick={hideMe}>
           Close
@@ -115,14 +121,18 @@ const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
   )
 }
 
-export const formatRouteVariant = (
-  routeId: RouteId,
-  viaVariant: ViaVariant | null,
-  headsign: string | null
-): string => {
+export const formatRouteVariant = (vehicle: Vehicle): string => {
+  const { route_id: routeId, via_variant: viaVariant, headsign } = vehicle
   const viaVariantFormatted = viaVariant && viaVariant !== "_" ? viaVariant : ""
   const headsignFormatted = headsign ? ` ${headsign}` : ""
   return `${routeId}_${viaVariantFormatted}${headsignFormatted}`
 }
+
+const directionsUrl = (
+  latitude: number,
+  longitude: number
+) => `https://www.google.com/maps/dir/?api=1\
+&destination=${latitude.toString()},${longitude.toString()}\
+&travelmode=driving`
 
 export default VehiclePropertiesPanel

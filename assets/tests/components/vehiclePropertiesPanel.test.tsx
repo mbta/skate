@@ -16,10 +16,10 @@ const vehicle: Vehicle = {
   latitude: 0,
   longitude: 0,
   direction_id: 0,
-  route_id: "r1",
+  route_id: "39",
   trip_id: "t1",
-  headsign: "headsign",
-  via_variant: "4",
+  headsign: "Forest Hills",
+  via_variant: "X",
   operator_id: "op1",
   operator_name: "SMITH",
   stop_status: {
@@ -74,16 +74,24 @@ describe("VehiclePropertiesPanel", () => {
 
 describe("formatRouteVariant", () => {
   test("has variant and headsign", () => {
-    expect(formatRouteVariant("39", "X", "Forest Hills")).toEqual(
-      "39_X Forest Hills"
-    )
+    expect(formatRouteVariant(vehicle)).toEqual("39_X Forest Hills")
   })
 
   test("missing variant and headsign", () => {
-    expect(formatRouteVariant("39", null, null)).toEqual("39_")
+    const testVehicle: Vehicle = {
+      ...vehicle,
+      headsign: null,
+      via_variant: null,
+    }
+    expect(formatRouteVariant(testVehicle)).toEqual("39_")
   })
 
   test("doesn't show underscore variant character", () => {
-    expect(formatRouteVariant("39", "_", null)).toEqual("39_")
+    const testVehicle: Vehicle = {
+      ...vehicle,
+      headsign: null,
+      via_variant: "_",
+    }
+    expect(formatRouteVariant(testVehicle)).toEqual("39_")
   })
 })
