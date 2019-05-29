@@ -18,7 +18,7 @@ export enum VehicleDirection {
 export const vehicleDirectionOnLadder = (
   vehicle: Vehicle,
   ladderDirection: LadderDirection
-) =>
+): VehicleDirection =>
   (vehicle.direction_id === 1) ===
   (ladderDirection === LadderDirection.ZeroToOne)
     ? VehicleDirection.Down
