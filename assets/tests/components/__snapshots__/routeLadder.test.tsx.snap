@@ -170,13 +170,7 @@ exports[`renders a route ladder 1`] = `
   </svg>
   <div
     className="m-incoming-box"
-  >
-    <div
-      className="m-incoming-box__header"
-    >
-      Incoming
-    </div>
-  </div>
+  />
 </div>
 `;
 
@@ -380,13 +374,7 @@ exports[`renders a route ladder with vehicles 1`] = `
   </svg>
   <div
     className="m-incoming-box"
-  >
-    <div
-      className="m-incoming-box__header"
-    >
-      Incoming
-    </div>
-  </div>
+  />
 </div>
 `;
 
@@ -517,11 +505,6 @@ exports[`renders a route ladder with vehicles in the incoming box 1`] = `
   <div
     className="m-incoming-box"
   >
-    <div
-      className="m-incoming-box__header"
-    >
-      Incoming
-    </div>
     <div
       className="m-incoming-box__vehicle"
     >

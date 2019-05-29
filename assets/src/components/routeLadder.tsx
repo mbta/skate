@@ -75,7 +75,6 @@ const IncomingBox = ({
   ladderDirection: LadderDirection
 }) => (
   <div className="m-incoming-box">
-    <div className="m-incoming-box__header">Incoming</div>
     {vehicles.map(vehicle => (
       <IncomingBoxVehicle
         vehicle={vehicle}
