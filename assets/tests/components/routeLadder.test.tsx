@@ -31,6 +31,7 @@ test("renders a route ladder with vehicles", () => {
     {
       id: "y1818",
       label: "1818",
+      run_id: "run-1",
       timestamp: 1557160307,
       latitude: 0,
       longitude: 0,
@@ -53,6 +54,7 @@ test("renders a route ladder with vehicles", () => {
     {
       id: "y0479",
       label: "0479",
+      run_id: "run-2",
       timestamp: 1557160347,
       latitude: 0,
       longitude: 0,
@@ -95,6 +97,7 @@ test("renders a route ladder with vehicles in the incoming box", () => {
     {
       id: "y1818",
       label: "1818",
+      run_id: "run1",
       timestamp: 1557160307,
       latitude: 0,
       longitude: 0,
@@ -117,6 +120,7 @@ test("renders a route ladder with vehicles in the incoming box", () => {
     {
       id: "y0479",
       label: "0479",
+      run_id: "run2",
       timestamp: 1557160347,
       latitude: 0,
       longitude: 0,
@@ -219,6 +223,7 @@ test("clicking an incoming vehicle selects that vehicle", () => {
   const vehicle: Vehicle = {
     id: "v1",
     label: "v1",
+    run_id: "run1",
     timestamp: 0,
     latitude: 0,
     longitude: 0,

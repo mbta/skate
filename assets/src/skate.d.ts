@@ -29,6 +29,7 @@ export type TripId = string
 export interface Vehicle {
   id: VehicleId
   label: string
+  run_id: string
   timestamp: number
   latitude: number
   longitude: number
