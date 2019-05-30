@@ -10,7 +10,12 @@ Array [
       className="m-vehicle-properties-panel__header"
     >
       <div
-        className="m-vehicle-properties-panel__title"
+        className="m-vehicle-properties-panel__label"
+      >
+        v1-label
+      </div>
+      <div
+        className="m-vehicle-properties-panel__variant"
       >
         r1_4 headsign
       </div>
@@ -28,39 +33,49 @@ Array [
         />
       </button>
     </div>
-    <dl
+    <table
       className="m-vehicle-properties-panel__vehicle-properties"
     >
-      <div
-        className="m-vehicle-properties-panel__vehicle-property"
-        role="listitem"
-      >
-        <dt
-          className="m-vehicle-properties-panel__vehicle-property-label"
-        >
-          Vehicle
-        </dt>
-        <dd
-          className="m-vehicle-properties-panel__vehicle-property-value"
-        >
-          v1-label
-        </dd>
-      </div>
-    </dl>
-    <hr
-      className="m-vehicle-properties-panel__divider"
-    />
-    <a
-      className="m-vehicle-properties-panel__link"
-      href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+      <tbody>
+        <tr>
+          <th
+            className="m-vehicle-properties-panel__vehicle-property-label"
+          >
+            Vehicle
+          </th>
+          <td
+            className="m-vehicle-properties-panel__vehicle-property-value"
+          >
+            v1-label
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div
+      className="m-vehicle-properties-panel__location"
     >
-      Directions
-    </a>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-label"
+      >
+        Next Stop
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-value"
+      >
+        Stop Name
+      </div>
+      <a
+        className="m-vehicle-properties-panel__link"
+        href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+      >
+        Directions
+      </a>
+    </div>
     <button
       className="m-vehicle-properties-panel__close"
       onClick={[Function]}
     >
-      Close vehicle properties
+      Close
     </button>
   </div>,
   <div

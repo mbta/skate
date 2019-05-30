@@ -2,7 +2,7 @@ import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import VehiclePropertiesPanel, {
-  routeVariantText,
+  formatRouteVariant,
 } from "../../src/components/vehiclePropertiesPanel"
 import DispatchProvider from "../../src/providers/dispatchProvider"
 import { Vehicle } from "../../src/skate"
@@ -22,6 +22,7 @@ const vehicle: Vehicle = {
   stop_status: {
     status: "in_transit_to",
     stop_id: "s1",
+    stop_name: "Stop Name",
   },
   timepoint_status: {
     timepoint_id: "tp1",
@@ -68,18 +69,18 @@ describe("VehiclePropertiesPanel", () => {
   })
 })
 
-describe("routeVariantText", () => {
+describe("formatRouteVariant", () => {
   test("has variant and headsign", () => {
-    expect(routeVariantText("39", "X", "Forest Hills")).toEqual(
+    expect(formatRouteVariant("39", "X", "Forest Hills")).toEqual(
       "39_X Forest Hills"
     )
   })
 
   test("missing variant and headsign", () => {
-    expect(routeVariantText("39", null, null)).toEqual("39_")
+    expect(formatRouteVariant("39", null, null)).toEqual("39_")
   })
 
   test("doesn't show underscore variant character", () => {
-    expect(routeVariantText("39", "_", null)).toEqual("39_")
+    expect(formatRouteVariant("39", "_", null)).toEqual("39_")
   })
 })

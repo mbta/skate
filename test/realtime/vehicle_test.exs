@@ -82,7 +82,8 @@ defmodule Realtime.VehicleTest do
         run_id: "138-1038",
         stop_status: %{
           status: :in_transit_to,
-          stop_id: "392"
+          stop_id: "392",
+          stop_name: "392"
         },
         timepoint_status: nil,
         route_status: :on_route

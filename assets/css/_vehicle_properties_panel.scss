@@ -2,7 +2,6 @@
   background-color: $pale-grey;
   height: 100%;
   max-width: 100%;
-  padding: 1rem;
   position: fixed;
   right: 0;
   top: inherit;
@@ -12,55 +11,70 @@
 
 .m-vehicle-properties-panel__header {
   display: flex;
-  justify-content: flex-end;
 }
 
-.m-vehicle-properties-panel__title {
-  flex: 1 1 auto;
+.m-vehicle-properties-panel__label {
+  flex: 0 0 auto;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 1rem;
   text-align: center;
+  width: 4rem;
 }
 
-dl.m-vehicle-properties-panel__vehicle-properties {
-  margin-bottom: 2rem;
+.m-vehicle-properties-panel__variant {
+  border-left: 1px solid $light-periwinkle;
+  flex: 1 1 auto;
+  font-size: 1.25rem;
+  font-weight: bold;
+  padding: 1rem;
 }
 
-.m-vehicle-properties-panel__vehicle-property {
-  display: flex;
+.m-vehicle-properties-panel__header > button {
+  flex: 0 0 auto;
+  padding: 1rem;
 }
 
-.m-vehicle-properties-panel__vehicle-property-label,
-.m-vehicle-properties-panel__vehicle-property-value {
-  width: 50%;
+.m-vehicle-properties-panel__vehicle-properties {
+  border-top: 1px solid $light-periwinkle;
+  padding: 1rem;
+  width: 100%;
 }
 
 .m-vehicle-properties-panel__vehicle-property-label {
-  font-size: 0.8125rem;
-  font-weight: bold;
-  text-align: right;
+  color: $blue-grey;
+  font-size: 0.75rem;
+  font-weight: normal;
+  margin-bottom: 0.5rem;
+  text-align: left;
   text-transform: uppercase;
+  width: 6rem;
 }
 
 .m-vehicle-properties-panel__vehicle-property-value {
   font-size: 0.875rem;
-  margin-left: 0.5rem;
+  margin-bottom: 1rem;
 }
 
-.m-vehicle-properties-panel__divider {
-  border: none;
-  border-top: solid 2px $lighter-grey;
+.m-vehicle-properties-panel__location {
+  border-top: 1px solid $light-periwinkle;
+  padding: 1rem;
 }
 
 .m-vehicle-properties-panel__link {
   color: $light-blue;
+  font-size: 0.875rem;
+  font-weight: 500;
   text-decoration: none;
 }
 
 .m-vehicle-properties-panel__close {
-  background-color: $white;
+  background-color: $light-periwinkle;
   border-radius: 4px;
   display: block;
-  margin: 2rem auto 0;
+  margin: 1rem;
   padding: 0.5rem 3rem;
+  width: calc(100% - 2rem);
 }
 
 .m-vehicle-properties-panel__modal-overlay {

@@ -42,6 +42,7 @@ test("renders a route ladder with vehicles", () => {
       stop_status: {
         status: "in_transit_to",
         stop_id: "57",
+        stop_name: "57",
       },
       timepoint_status: {
         timepoint_id: "MATPN",
@@ -63,6 +64,7 @@ test("renders a route ladder with vehicles", () => {
       stop_status: {
         status: "in_transit_to",
         stop_id: "59",
+        stop_name: "59",
       },
       timepoint_status: {
         timepoint_id: "MORTN",
@@ -104,6 +106,7 @@ test("renders a route ladder with vehicles in the incoming box", () => {
       stop_status: {
         status: "in_transit_to",
         stop_id: "57",
+        stop_name: "stop",
       },
       timepoint_status: {
         timepoint_id: "MATPN",
@@ -125,6 +128,7 @@ test("renders a route ladder with vehicles in the incoming box", () => {
       stop_status: {
         status: "in_transit_to",
         stop_id: "59",
+        stop_name: "stop",
       },
       timepoint_status: {
         timepoint_id: "MORTN",
@@ -226,6 +230,7 @@ test("clicking an incoming vehicle selects that vehicle", () => {
     stop_status: {
       status: "in_transit_to",
       stop_id: "stop",
+      stop_name: "stop",
     },
     timepoint_status: {
       timepoint_id: "MATPN",

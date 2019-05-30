@@ -74,7 +74,8 @@ defmodule SkateWeb.VehiclesChannelTest do
           run_id: nil,
           stop_status: %{
             status: :in_transit_to,
-            stop_id: "567"
+            stop_id: "567",
+            stop_name: "567"
           },
           timepoint_status: %{
             timepoint_id: "tp2",

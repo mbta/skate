@@ -25,6 +25,7 @@ defmodule Gtfs.StopTid do
     test "returns the parent_station_id if the stop has one" do
       stop = %Stop{
         id: "1",
+        name: "name",
         parent_station_id: "2"
       }
 
@@ -34,6 +35,7 @@ defmodule Gtfs.StopTid do
     test "returns the id of this stop if parent_station_id is nil" do
       stop = %Stop{
         id: "1",
+        name: "name",
         parent_station_id: nil
       }
 
@@ -49,6 +51,7 @@ defmodule Gtfs.StopTid do
     test "builds a trip stops map from a list of stop time csv rows" do
       assert Stop.from_csv_row(@csv_row) == %Stop{
                id: "1",
+               name: "Washington St opp Ruggles St",
                parent_station_id: nil
              }
     end

@@ -47,6 +47,7 @@ export type VehicleId = string
 export interface VehicleStopStatus {
   status: VehicleStatus
   stop_id: StopId
+  stop_name: string
 }
 
 export interface VehicleTimepointStatus {
