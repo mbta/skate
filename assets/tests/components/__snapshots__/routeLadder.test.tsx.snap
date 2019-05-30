@@ -168,6 +168,9 @@ exports[`renders a route ladder 1`] = `
       MORTN
     </text>
   </svg>
+  <div
+    className="m-incoming-box"
+  />
 </div>
 `;
 
@@ -300,11 +303,11 @@ exports[`renders a route ladder with vehicles 1`] = `
       transform="translate(47,105) rotate(0,16,13)"
     >
       <g
-        className="m-ladder__vehicle-icon"
+        className="m-vehicle-icon"
         transform="scale(0.625)"
       >
         <path
-          className="m-ladder__vehicle-triangle "
+          className="m-vehicle-icon__triangle "
           d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         />
       </g>
@@ -337,11 +340,11 @@ exports[`renders a route ladder with vehicles 1`] = `
       transform="translate(-80,420) rotate(180,16,13)"
     >
       <g
-        className="m-ladder__vehicle-icon"
+        className="m-vehicle-icon"
         transform="scale(0.625)"
       >
         <path
-          className="m-ladder__vehicle-triangle "
+          className="m-vehicle-icon__triangle "
           d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         />
       </g>
@@ -369,219 +372,201 @@ exports[`renders a route ladder with vehicles 1`] = `
       </svg>
     </g>
   </svg>
-  <ul
-    className="m-route-ladder__vehicle"
-    onClick={[Function]}
-    style={
-      Object {
-        "border": "1px solid black",
-      }
-    }
+  <div
+    className="m-incoming-box"
+  />
+</div>
+`;
+
+exports[`renders a route ladder with vehicles in the incoming box 1`] = `
+<div
+  className="m-route-ladder"
+>
+  <div
+    className="m-route-ladder__header"
   >
-    <li>
-      <em>
-        id:
-      </em>
-       
-      y1818
-    </li>
-    <li>
-      <em>
-        label:
-      </em>
-       
-      1818
-    </li>
-    <li>
-      <em>
-        timestamp:
-      </em>
-       
-      1557160307
-    </li>
-    <li>
-      <em>
-        latitude:
-      </em>
-       
-      0
-    </li>
-    <li>
-      <em>
-        longitude:
-      </em>
-       
-      0
-    </li>
-    <li>
-      <em>
-        direction_id:
-      </em>
-       
-      0
-    </li>
-    <li>
-      <em>
-        route_id:
-      </em>
-       
-      1
-    </li>
-    <li>
-      <em>
-        trip_id:
-      </em>
-       
-      39914237
-    </li>
-    <li>
-      <em>
-        headsign:
-      </em>
-       
-      h0
-    </li>
-    <li>
-      <em>
-        variant:
-      </em>
-       
-      4
-    </li>
-    <li>
-      <em>
-        stop status:
-      </em>
-       
-      in_transit_to
-      ,
-      <br />
-      <em>
-        stop:
-      </em>
-       
-      57
-    </li>
-    <li>
-      <em>
-        timepoint:
-      </em>
-       
+    <button
+      className="m-close-button"
+      onClick={[Function]}
+    >
+      <span
+        className="m-close-button__icon"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
+        }
+      />
+    </button>
+    <div
+      className="m-route-ladder__route-name"
+    >
+      28
+    </div>
+  </div>
+  <button
+    className="m-route-ladder__reverse"
+    onClick={[Function]}
+  >
+    <span
+      className="m-route-ladder__reverse-icon"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "SVG",
+        }
+      }
+    />
+    Reverse
+  </button>
+  <svg
+    className="m-ladder"
+    height={500}
+    viewBox="-90 -40 180 500"
+    width={180}
+  >
+    <line
+      className="m-ladder__line"
+      x1={-40}
+      x2={-40}
+      y1="0"
+      y2={420}
+    />
+    <line
+      className="m-ladder__line"
+      x1={40}
+      x2={40}
+      y1="0"
+      y2={420}
+    />
+    <circle
+      className="m-ladder__stop-circle"
+      cx={-40}
+      cy={0}
+      r="3"
+    />
+    <circle
+      className="m-ladder__stop-circle"
+      cx={40}
+      cy={0}
+      r="3"
+    />
+    <text
+      className="m-ladder__timepoint-name"
+      dominantBaseline="middle"
+      textAnchor="middle"
+      x="0"
+      y={0}
+    >
       MATPN
-      ,
-      <br />
-      <em>
-        fraction before:
-      </em>
-       
-      0.5
-    </li>
-  </ul>
-  <ul
-    className="m-route-ladder__vehicle"
-    onClick={[Function]}
-    style={
-      Object {
-        "border": "1px solid black",
-      }
-    }
-  >
-    <li>
-      <em>
-        id:
-      </em>
-       
-      y0479
-    </li>
-    <li>
-      <em>
-        label:
-      </em>
-       
-      0479
-    </li>
-    <li>
-      <em>
-        timestamp:
-      </em>
-       
-      1557160347
-    </li>
-    <li>
-      <em>
-        latitude:
-      </em>
-       
-      0
-    </li>
-    <li>
-      <em>
-        longitude:
-      </em>
-       
-      0
-    </li>
-    <li>
-      <em>
-        direction_id:
-      </em>
-       
-      1
-    </li>
-    <li>
-      <em>
-        route_id:
-      </em>
-       
-      1
-    </li>
-    <li>
-      <em>
-        trip_id:
-      </em>
-       
-      39914128
-    </li>
-    <li>
-      <em>
-        headsign:
-      </em>
-       
-    </li>
-    <li>
-      <em>
-        variant:
-      </em>
-       
-    </li>
-    <li>
-      <em>
-        stop status:
-      </em>
-       
-      in_transit_to
-      ,
-      <br />
-      <em>
-        stop:
-      </em>
-       
-      59
-    </li>
-    <li>
-      <em>
-        timepoint:
-      </em>
-       
+    </text>
+    <circle
+      className="m-ladder__stop-circle"
+      cx={-40}
+      cy={210}
+      r="3"
+    />
+    <circle
+      className="m-ladder__stop-circle"
+      cx={40}
+      cy={210}
+      r="3"
+    />
+    <text
+      className="m-ladder__timepoint-name"
+      dominantBaseline="middle"
+      textAnchor="middle"
+      x="0"
+      y={210}
+    >
+      WELLH
+    </text>
+    <circle
+      className="m-ladder__stop-circle"
+      cx={-40}
+      cy={420}
+      r="3"
+    />
+    <circle
+      className="m-ladder__stop-circle"
+      cx={40}
+      cy={420}
+      r="3"
+    />
+    <text
+      className="m-ladder__timepoint-name"
+      dominantBaseline="middle"
+      textAnchor="middle"
+      x="0"
+      y={420}
+    >
       MORTN
-      ,
-      <br />
-      <em>
-        fraction before:
-      </em>
-       
-      0
-    </li>
-  </ul>
+    </text>
+  </svg>
+  <div
+    className="m-incoming-box"
+  >
+    <div
+      className="m-incoming-box__vehicle"
+      onClick={[Function]}
+    >
+      <div
+        className="m-incoming-box__vehicle-icon"
+      >
+        <svg
+          className="m-incoming-box__vehicle-icon-svg"
+        >
+          <g
+            transform="rotate(0,9,7)"
+          >
+            <g
+              className="m-vehicle-icon"
+              transform="scale(0.38)"
+            >
+              <path
+                className="m-vehicle-icon__triangle "
+                d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              />
+            </g>
+          </g>
+        </svg>
+      </div>
+      <div
+        className="m-incoming-box__vehicle-label"
+      >
+        1818
+      </div>
+    </div>
+    <div
+      className="m-incoming-box__vehicle"
+      onClick={[Function]}
+    >
+      <div
+        className="m-incoming-box__vehicle-icon"
+      >
+        <svg
+          className="m-incoming-box__vehicle-icon-svg"
+        >
+          <g
+            transform="rotate(180,9,7)"
+          >
+            <g
+              className="m-vehicle-icon"
+              transform="scale(0.38)"
+            >
+              <path
+                className="m-vehicle-icon__triangle "
+                d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              />
+            </g>
+          </g>
+        </svg>
+      </div>
+      <div
+        className="m-incoming-box__vehicle-label"
+      >
+        0479
+      </div>
+    </div>
+  </div>
 </div>
 `;

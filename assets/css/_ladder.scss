@@ -25,16 +25,6 @@
   cursor: pointer;
 }
 
-.m-ladder__vehicle-triangle {
-  fill: $blue-grey;
-  stroke: $pale-grey;
-  stroke-width: 2;
-
-  &.selected {
-    stroke: $dark;
-  }
-}
-
 .m-ladder__vehicle-label-background {
   fill: $pale-grey;
   stroke: none;

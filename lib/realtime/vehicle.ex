@@ -17,6 +17,7 @@ defmodule Realtime.Vehicle do
             timepoint_id: StopTime.timepoint_id(),
             fraction_until_timepoint: float()
           }
+  @type route_status :: :incoming | :on_route
 
   @type t :: %__MODULE__{
           id: String.t(),
@@ -37,7 +38,8 @@ defmodule Realtime.Vehicle do
           operator_name: String.t() | nil,
           run_id: String.t() | nil,
           stop_status: stop_status(),
-          timepoint_status: timepoint_status() | nil
+          timepoint_status: timepoint_status() | nil,
+          route_status: route_status()
         }
 
   @enforce_keys [
@@ -56,7 +58,8 @@ defmodule Realtime.Vehicle do
     :operator_id,
     :operator_name,
     :run_id,
-    :stop_status
+    :stop_status,
+    :route_status
   ]
 
   @derive Jason.Encoder
@@ -80,7 +83,8 @@ defmodule Realtime.Vehicle do
     :operator_name,
     :run_id,
     :stop_status,
-    :timepoint_status
+    :timepoint_status,
+    :route_status
   ]
 
   @spec from_vehicle_position_and_trip_update(map() | nil, map() | nil) :: t()
@@ -128,7 +132,8 @@ defmodule Realtime.Vehicle do
         status: current_stop_status,
         stop_id: stop_id
       },
-      timepoint_status: timepoint_status
+      timepoint_status: timepoint_status,
+      route_status: route_status(current_stop_status, stop_id, trip)
     }
   end
 
@@ -149,6 +154,19 @@ defmodule Realtime.Vehicle do
 
       nil ->
         nil
+    end
+  end
+
+  @spec route_status(current_status(), Stop.id(), Trip.t() | nil) :: route_status()
+  def route_status(_status, _stop_id, nil), do: :incoming
+
+  def route_status(:stopped_at, _stop_id, _trip), do: :on_route
+
+  def route_status(:in_transit_to, stop_id, %Trip{stop_times: [first_stop_time | _rest]}) do
+    if first_stop_time.stop_id == stop_id do
+      :incoming
+    else
+      :on_route
     end
   end
 

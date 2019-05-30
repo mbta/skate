@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`allows a selected class to be controlled 1`] = `
+<g
+  className="m-vehicle-icon"
+  transform="scale(1)"
+>
+  <path
+    className="m-vehicle-icon__triangle selected"
+    d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+  />
+</g>
+`;
+
+exports[`allows you to scale the icon 1`] = `
+<g
+  className="m-vehicle-icon"
+  transform="scale(0.5)"
+>
+  <path
+    className="m-vehicle-icon__triangle "
+    d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+  />
+</g>
+`;
+
+exports[`renders a triange vehicle icon 1`] = `
+<g
+  className="m-vehicle-icon"
+  transform="scale(1)"
+>
+  <path
+    className="m-vehicle-icon__triangle "
+    d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+  />
+</g>
+`;
