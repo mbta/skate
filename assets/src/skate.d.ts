@@ -38,6 +38,8 @@ export interface Vehicle {
   trip_id: TripId
   headsign: string | null
   via_variant: ViaVariant | null
+  operator_id: string
+  operator_name: string
   stop_status: VehicleStopStatus
   timepoint_status: VehicleTimepointStatus | null
   route_status: VehicleRouteStatus
