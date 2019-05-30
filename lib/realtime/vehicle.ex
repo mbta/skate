@@ -5,7 +5,8 @@ defmodule Realtime.Vehicle do
   @type current_status :: :in_transit_to | :stopped_at
   @type stop_status :: %{
           status: current_status(),
-          stop_id: Stop.id()
+          stop_id: Stop.id(),
+          stop_name: String.t()
         }
   @typedoc """
   fraction_until_timepoint ranges
@@ -108,6 +109,8 @@ defmodule Realtime.Vehicle do
     current_stop_status = decode_current_status(VehiclePosition.status(vehicle_position))
 
     stop_id = VehiclePosition.stop_id(vehicle_position)
+    stop = Gtfs.stop(stop_id)
+    stop_name = if stop, do: stop.name, else: stop_id
     timepoint_status = timepoint_status(stop_times_on_trip, stop_id)
 
     %__MODULE__{
@@ -130,7 +133,8 @@ defmodule Realtime.Vehicle do
       run_id: VehiclePosition.run_id(vehicle_position),
       stop_status: %{
         status: current_stop_status,
-        stop_id: stop_id
+        stop_id: stop_id,
+        stop_name: stop_name
       },
       timepoint_status: timepoint_status,
       route_status: route_status(current_stop_status, stop_id, trip)

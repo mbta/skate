@@ -52,11 +52,11 @@ defmodule Gtfs.Data do
     ])
   end
 
+  @spec stop(t(), Stop.id()) :: Stop.t() | nil
+  def stop(%__MODULE__{stops: stops}, stop_id), do: stops[stop_id]
+
   @spec trip(t(), Trip.id()) :: Trip.t() | nil
   def trip(%__MODULE__{trips: trips}, trip_id), do: trips[trip_id]
-
-  @spec stop(t(), Stop.id()) :: Stop.t() | nil
-  def stop(%__MODULE__{stops: stops}, stop_id), do: Map.get(stops, stop_id)
 
   @spec parse_files(files()) :: t()
   def parse_files(files) do
@@ -104,9 +104,7 @@ defmodule Gtfs.Data do
   defp all_stops_by_id(stops_data) do
     stops_data
     |> Csv.parse(fn _row -> true end, &Stop.from_csv_row/1)
-    |> Enum.reduce(%{}, fn stop, acc ->
-      Map.put(acc, stop.id, stop)
-    end)
+    |> Map.new(fn stop -> {stop.id, stop} end)
   end
 
   @spec bus_trips(binary(), binary(), MapSet.t(Route.id())) :: %{Trip.id() => Trip.t()}

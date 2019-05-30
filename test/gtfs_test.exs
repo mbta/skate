@@ -32,6 +32,25 @@ defmodule GtfsTest do
     end
   end
 
+  describe "stop" do
+    test "returns stop" do
+      pid =
+        Gtfs.start_mocked(%{
+          "stops.txt" => [
+            "stop_id,stop_name,parent_station",
+            "id,name,parent"
+          ]
+        })
+
+      assert Gtfs.stop("id", pid) == %Stop{id: "id", name: "name", parent_station_id: "parent"}
+    end
+
+    test "returns nil if stop doesn't exist" do
+      pid = Gtfs.start_mocked(%{})
+      assert Gtfs.stop("id", pid) == nil
+    end
+  end
+
   describe "timepoint_ids_on_route" do
     test "timepoint_ids_on_route" do
       pid =
@@ -218,14 +237,15 @@ defmodule GtfsTest do
       pid =
         Gtfs.start_mocked(%{
           "stops.txt" => [
-            "stop_id,parent_station",
-            "1,",
-            "2,3"
+            "stop_id,stop_name,parent_station",
+            "1,One,",
+            "2,Two,3"
           ]
         })
 
       assert Gtfs.stop("2", pid) == %Stop{
                id: "2",
+               name: "Two",
                parent_station_id: "3"
              }
     end

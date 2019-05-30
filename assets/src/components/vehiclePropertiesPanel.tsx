@@ -28,7 +28,7 @@ const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
 &destination=${selectedVehicle.latitude.toString()},${selectedVehicle.longitude.toString()}\
 &travelmode=driving`
 
-  const titleText: string = routeVariantText(
+  const routeVariantText: string = formatRouteVariant(
     selectedVehicle.route_id,
     selectedVehicle.via_variant,
     selectedVehicle.headsign
@@ -41,32 +41,42 @@ const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
         className="m-vehicle-properties-panel"
       >
         <div className="m-vehicle-properties-panel__header">
-          <div className="m-vehicle-properties-panel__title">{titleText}</div>
+          <div className="m-vehicle-properties-panel__label">
+            {selectedVehicle.label}
+          </div>
+          <div className="m-vehicle-properties-panel__variant">
+            {routeVariantText}
+          </div>
           <CloseButton onClick={hideMe} />
         </div>
 
-        <dl className="m-vehicle-properties-panel__vehicle-properties">
-          <div
-            role="listitem"
-            className="m-vehicle-properties-panel__vehicle-property"
-          >
-            <dt className="m-vehicle-properties-panel__vehicle-property-label">
-              Vehicle
-            </dt>
-            <dd className="m-vehicle-properties-panel__vehicle-property-value">
-              {selectedVehicle.label}
-            </dd>
+        <table className="m-vehicle-properties-panel__vehicle-properties">
+          <tbody>
+            <tr>
+              <th className="m-vehicle-properties-panel__vehicle-property-label">
+                Vehicle
+              </th>
+              <td className="m-vehicle-properties-panel__vehicle-property-value">
+                {selectedVehicle.label}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div className="m-vehicle-properties-panel__location">
+          <div className="m-vehicle-properties-panel__vehicle-property-label">
+            Next Stop
           </div>
-        </dl>
-
-        <hr className="m-vehicle-properties-panel__divider" />
-
-        <a className="m-vehicle-properties-panel__link" href={directionsUrl}>
-          Directions
-        </a>
+          <div className="m-vehicle-properties-panel__vehicle-property-value">
+            {selectedVehicle.stop_status.stop_name}
+          </div>
+          <a className="m-vehicle-properties-panel__link" href={directionsUrl}>
+            Directions
+          </a>
+        </div>
 
         <button className="m-vehicle-properties-panel__close" onClick={hideMe}>
-          Close vehicle properties
+          Close
         </button>
       </div>
 
@@ -78,7 +88,7 @@ const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
   )
 }
 
-export const routeVariantText = (
+export const formatRouteVariant = (
   routeId: RouteId,
   viaVariant: ViaVariant | null,
   headsign: string | null

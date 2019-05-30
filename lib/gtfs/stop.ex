@@ -5,11 +5,13 @@ defmodule Gtfs.Stop do
 
   @type t :: %__MODULE__{
           id: id(),
+          name: String.t(),
           parent_station_id: id() | nil
         }
 
   @enforce_keys [
     :id,
+    :name,
     :parent_station_id
   ]
 
@@ -17,6 +19,7 @@ defmodule Gtfs.Stop do
 
   defstruct [
     :id,
+    :name,
     :parent_station_id
   ]
 
@@ -31,6 +34,7 @@ defmodule Gtfs.Stop do
 
     %__MODULE__{
       id: row["stop_id"],
+      name: row["stop_name"],
       parent_station_id: parent_station_id
     }
   end

@@ -7,43 +7,11 @@ defmodule Gtfs.DataTest do
     data = %Data{
       routes: [%Route{id: "1"}, %Route{id: "2"}],
       route_patterns: [],
-      stops: [],
+      stops: %{},
       trips: %{}
     }
 
     assert Data.all_routes(data) == [%Route{id: "1"}, %Route{id: "2"}]
-  end
-
-  test "trip/1 returns the trip" do
-    data = %Data{
-      routes: [],
-      route_patterns: [],
-      stops: [],
-      trips: %{
-        "t1" => %Trip{
-          id: "t1",
-          route_id: "r1",
-          headsign: "h",
-          route_pattern_id: "r1-_-0",
-          stop_times: [
-            %StopTime{stop_id: "s1", timepoint_id: nil}
-          ]
-        }
-      }
-    }
-
-    assert %Trip{id: "t1"} = Data.trip(data, "t1")
-  end
-
-  test "trip/1 returns nil if the trip doesn't exist" do
-    data = %Data{
-      routes: [],
-      route_patterns: [],
-      stops: [],
-      trips: %{}
-    }
-
-    assert Data.trip(data, "t1") == nil
   end
 
   test "timepoint_ids_on_route/2 returns all timepoint IDs for this route (either direction), sorted" do
@@ -69,7 +37,7 @@ defmodule Gtfs.DataTest do
           representative_trip_id: "t3"
         }
       ],
-      stops: [],
+      stops: %{},
       trips: %{
         "t1" => %Trip{
           id: "t1",
@@ -115,10 +83,12 @@ defmodule Gtfs.DataTest do
         stops: %{
           "1" => %Stop{
             id: "1",
+            name: "One",
             parent_station_id: nil
           },
           "2" => %Stop{
             id: "2",
+            name: "Two",
             parent_station_id: "3"
           }
         },
@@ -127,6 +97,7 @@ defmodule Gtfs.DataTest do
 
       assert Data.stop(data, "2") == %Stop{
                id: "2",
+               name: "Two",
                parent_station_id: "3"
              }
     end
@@ -138,10 +109,12 @@ defmodule Gtfs.DataTest do
         stops: %{
           "1" => %Stop{
             id: "1",
+            name: "One",
             parent_station_id: nil
           },
           "2" => %Stop{
             id: "2",
+            name: "Two",
             parent_station_id: "3"
           }
         },
@@ -149,6 +122,40 @@ defmodule Gtfs.DataTest do
       }
 
       assert Data.stop(data, "4") == nil
+    end
+  end
+
+  describe "trip" do
+    test "trip/1 returns the trip" do
+      data = %Data{
+        routes: [],
+        route_patterns: [],
+        stops: %{},
+        trips: %{
+          "t1" => %Trip{
+            id: "t1",
+            route_id: "r1",
+            headsign: "h",
+            route_pattern_id: "r1-_-0",
+            stop_times: [
+              %StopTime{stop_id: "s1", timepoint_id: nil}
+            ]
+          }
+        }
+      }
+
+      assert %Trip{id: "t1"} = Data.trip(data, "t1")
+    end
+
+    test "trip/1 returns nil if the trip doesn't exist" do
+      data = %Data{
+        routes: [],
+        route_patterns: [],
+        stops: %{},
+        trips: %{}
+      }
+
+      assert Data.trip(data, "t1") == nil
     end
   end
 end

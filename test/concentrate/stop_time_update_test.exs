@@ -11,12 +11,14 @@ defmodule Concentrate.StopTimeUpdateTest do
           "child_id" ->
             %Stop{
               id: "child_id",
+              name: "stop name",
               parent_station_id: "parent_id"
             }
 
           "other" ->
             %Stop{
               id: "other",
+              name: "other stop",
               parent_station_id: nil
             }
 

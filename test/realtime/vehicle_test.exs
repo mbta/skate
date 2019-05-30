@@ -13,18 +13,22 @@ defmodule Realtime.VehicleTest do
         Application.put_env(:realtime, :trip_fn, real_trip_fn)
       end)
 
-      Application.put_env(:realtime, :trip_fn, fn "39984755" ->
-        %Trip{
-          id: "39984755",
-          route_id: "505",
-          headsign: "headsign",
-          route_pattern_id: "505-_-0",
-          stop_times: [
-            %StopTime{stop_id: "6553", timepoint_id: "tp1"},
-            %StopTime{stop_id: "6554", timepoint_id: nil},
-            %StopTime{stop_id: "6555", timepoint_id: "tp2"}
-          ]
-        }
+      Application.put_env(:realtime, :trip_fn, fn trip_id ->
+        if trip_id == "39984755" do
+          %Trip{
+            id: "39984755",
+            route_id: "505",
+            headsign: "headsign",
+            route_pattern_id: "505-_-0",
+            stop_times: [
+              %StopTime{stop_id: "6553", timepoint_id: "tp1"},
+              %StopTime{stop_id: "6554", timepoint_id: nil},
+              %StopTime{stop_id: "6555", timepoint_id: "tp2"}
+            ]
+          }
+        else
+          nil
+        end
       end)
     end
 
@@ -78,7 +82,8 @@ defmodule Realtime.VehicleTest do
         run_id: "138-1038",
         stop_status: %{
           status: :in_transit_to,
-          stop_id: "392"
+          stop_id: "392",
+          stop_name: "392"
         },
         timepoint_status: nil,
         route_status: :on_route

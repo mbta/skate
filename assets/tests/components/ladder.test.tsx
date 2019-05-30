@@ -23,6 +23,7 @@ test("renders a ladder", () => {
       stop_status: {
         status: "in_transit_to",
         stop_id: "stop",
+        stop_name: "stop",
       },
       timepoint_status: {
         timepoint_id: "t1",
@@ -44,6 +45,7 @@ test("renders a ladder", () => {
       stop_status: {
         status: "in_transit_to",
         stop_id: "stop",
+        stop_name: "stop",
       },
       timepoint_status: {
         timepoint_id: "t2",
@@ -65,6 +67,7 @@ test("renders a ladder", () => {
       stop_status: {
         status: "in_transit_to",
         stop_id: "stop",
+        stop_name: "stop",
       },
       timepoint_status: null,
       route_status: "on_route",
@@ -103,6 +106,7 @@ test("highlights a selected vehicle", () => {
       stop_status: {
         status: "in_transit_to",
         stop_id: "stop",
+        stop_name: "stop",
       },
       timepoint_status: {
         timepoint_id: "t1",
@@ -124,6 +128,7 @@ test("highlights a selected vehicle", () => {
       stop_status: {
         status: "in_transit_to",
         stop_id: "stop",
+        stop_name: "stop",
       },
       timepoint_status: {
         timepoint_id: "t2",
@@ -166,6 +171,7 @@ test("clicking a vehicle selects that vehicle", () => {
     stop_status: {
       status: "in_transit_to",
       stop_id: "stop",
+      stop_name: "stop",
     },
     timepoint_status: {
       timepoint_id: "t1",
@@ -208,6 +214,7 @@ test("renders a ladder with no timepoints", () => {
       stop_status: {
         status: "in_transit_to",
         stop_id: "stop",
+        stop_name: "stop",
       },
       timepoint_status: null,
       route_status: "on_route",
