@@ -30,12 +30,9 @@ defmodule Gtfs.Csv do
     do: parse(file_binary, [row_filter], row_decoder)
 
   def parse(file_binary, row_filters, row_decoder) do
-    {:ok, file_stream} =
-      file_binary
-      |> StringIO.open()
-
-    file_stream
-    |> IO.binstream(:line)
+    file_binary
+    |> String.split("\n")
+    |> Enum.reject(&(&1 == ""))
     |> CSV.decode(headers: true)
     |> Stream.flat_map(fn {:ok, csv_row} ->
       if Enum.all?(row_filters, fn row_filter -> row_filter.(csv_row) end) do
