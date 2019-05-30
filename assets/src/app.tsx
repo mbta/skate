@@ -15,11 +15,11 @@ import "@babel/polyfill"
 import "phoenix_html"
 import * as React from "react"
 import ReactDOM from "react-dom"
-import App from "./components/app"
+import AppStateWrapper from "./components/appStateWrapper"
 
 // Import local files
 //
 // Local files can be imported directly using relative paths, for example:
 // import socket from "./socket"
 
-ReactDOM.render(<App />, document.getElementById("app"))
+ReactDOM.render(<AppStateWrapper />, document.getElementById("app"))
