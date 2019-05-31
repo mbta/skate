@@ -25,7 +25,6 @@
 .m-vehicle-properties-panel__variant {
   border-left: 1px solid $light-periwinkle;
   flex: 1 1 auto;
-  font-size: 1.25rem;
   padding: 1rem;
 }
 
@@ -38,6 +37,7 @@
 }
 
 .m-vehicle-properties-panel__variant-name {
+  font-size: 1.25rem;
   font-weight: bold;
 }
 
