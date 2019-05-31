@@ -24,7 +24,22 @@ test("renders with routes", () => {
       <App
         routes={routes}
         timepointsByRouteId={{}}
-        selectedRouteIds={[]}
+        selectedRouteIds={["1"]}
+        vehiclesByRouteId={{}}
+        selectedVehicleId={undefined}
+      />
+    )
+    .toJSON()
+  expect(tree).toMatchSnapshot()
+})
+
+test("renders with selectedRoutes in different order than routes data", () => {
+  const tree = renderer
+    .create(
+      <App
+        routes={routes}
+        timepointsByRouteId={{}}
+        selectedRouteIds={["28", "1"]}
         vehiclesByRouteId={{}}
         selectedVehicleId={undefined}
       />
