@@ -10,15 +10,13 @@ defmodule Gtfs.DirectionTest do
       csv_row = %{
         "route_id" => "66",
         "direction_id" => "0",
-        "direction" => "Outbound",
-        "direction_destination" => "Harvard"
+        "direction" => "Outbound"
       }
 
       expected = %Direction{
         route_id: "66",
         direction_id: 0,
-        direction_name: "Outbound",
-        direction_destination: "Harvard"
+        direction_name: "Outbound"
       }
 
       assert Direction.from_csv_row(csv_row) == expected

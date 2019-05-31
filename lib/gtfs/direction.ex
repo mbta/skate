@@ -6,15 +6,13 @@ defmodule Gtfs.Direction do
   @type t :: %__MODULE__{
           route_id: Route.id(),
           direction_id: id(),
-          direction_name: String.t(),
-          direction_destination: String.t()
+          direction_name: String.t()
         }
 
   @enforce_keys [
     :route_id,
     :direction_id,
-    :direction_name,
-    :direction_destination
+    :direction_name
   ]
 
   @derive Jason.Encoder
@@ -22,8 +20,7 @@ defmodule Gtfs.Direction do
   defstruct [
     :route_id,
     :direction_id,
-    :direction_name,
-    :direction_destination
+    :direction_name
   ]
 
   @spec from_csv_row(Csv.row()) :: t()
@@ -31,8 +28,7 @@ defmodule Gtfs.Direction do
     %__MODULE__{
       route_id: row["route_id"],
       direction_id: id_from_string(row["direction_id"]),
-      direction_name: row["direction"],
-      direction_destination: row["direction_destination"]
+      direction_name: row["direction"]
     }
   end
 

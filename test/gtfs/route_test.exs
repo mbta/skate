@@ -26,14 +26,12 @@ defmodule Gtfs.RouteTest do
           0 => %Direction{
             route_id: "39",
             direction_id: 0,
-            direction_name: "Outbound",
-            direction_destination: "Forest Hills"
+            direction_name: "Outbound"
           },
           1 => %Direction{
             route_id: "39",
             direction_id: 1,
-            direction_name: "Inbound",
-            direction_destination: "Back Bay Station"
+            direction_name: "Inbound"
           }
         }
       }
@@ -44,14 +42,12 @@ defmodule Gtfs.RouteTest do
           0 => %Direction{
             route_id: "39",
             direction_id: 0,
-            direction_name: "Outbound",
-            direction_destination: "Forest Hills"
+            direction_name: "Outbound"
           },
           1 => %Direction{
             route_id: "39",
             direction_id: 1,
-            direction_name: "Inbound",
-            direction_destination: "Back Bay Station"
+            direction_name: "Inbound"
           }
         }
       }

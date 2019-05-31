@@ -23,13 +23,11 @@ defmodule GtfsTest do
                  id: "39",
                  directions: %{
                    0 => %Gtfs.Direction{
-                     direction_destination: "Forest Hills",
                      direction_id: 0,
                      direction_name: "Outbound",
                      route_id: "39"
                    },
                    1 => %Gtfs.Direction{
-                     direction_destination: "Back Bay Station",
                      direction_id: 1,
                      direction_name: "Inbound",
                      route_id: "39"

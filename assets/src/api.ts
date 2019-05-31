@@ -16,7 +16,6 @@ interface DirectionData {
   route_id: string
   direction_id: string
   direction_name: string
-  direction_destination: string
 }
 
 interface TimepointsForRouteResponse {
