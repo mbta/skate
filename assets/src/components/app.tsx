@@ -19,6 +19,11 @@ interface Props {
   selectedVehicleId: VehicleId | undefined
 }
 
+const findRouteById = (
+  routes: Route[] | null,
+  routeId: RouteId
+): Route | undefined => (routes || []).find(route => route.id === routeId)
+
 const findSelectedVehicle = (
   vehiclesByRouteId: VehiclesByRouteId,
   selectedVehicleId: VehicleId | undefined
@@ -40,9 +45,9 @@ const App = ({
   vehiclesByRouteId,
   selectedVehicleId,
 }: Props) => {
-  const selectedRoutes = (routes || []).filter(route =>
-    selectedRouteIds.includes(route.id)
-  )
+  const selectedRoutes: Route[] = selectedRouteIds
+    .map(routeId => findRouteById(routes, routeId))
+    .filter(route => route) as Route[]
 
   const selectedVehicle = findSelectedVehicle(
     vehiclesByRouteId,
