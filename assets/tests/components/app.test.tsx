@@ -10,10 +10,8 @@ test("renders the empty state", () => {
         routes={null}
         timepointsByRouteId={{}}
         selectedRouteIds={[]}
-        selectedRoutes={[]}
         vehiclesByRouteId={{}}
         selectedVehicleId={undefined}
-        selectedVehicle={undefined}
       />
     )
     .toJSON()
@@ -27,10 +25,8 @@ test("renders with routes", () => {
         routes={routes}
         timepointsByRouteId={{}}
         selectedRouteIds={[]}
-        selectedRoutes={[]}
         vehiclesByRouteId={{}}
         selectedVehicleId={undefined}
-        selectedVehicle={undefined}
       />
     )
     .toJSON()
@@ -44,10 +40,8 @@ test("renders with timepoints", () => {
         routes={routes}
         timepointsByRouteId={timepointsByRouteId}
         selectedRouteIds={[]}
-        selectedRoutes={[]}
         vehiclesByRouteId={{}}
         selectedVehicleId={undefined}
-        selectedVehicle={undefined}
       />
     )
     .toJSON()
@@ -61,10 +55,8 @@ test("renders with vehicles", () => {
         routes={routes}
         timepointsByRouteId={timepointsByRouteId}
         selectedRouteIds={[]}
-        selectedRoutes={[]}
         vehiclesByRouteId={{ "28": [vehicle] }}
         selectedVehicleId={undefined}
-        selectedVehicle={undefined}
       />
     )
     .toJSON()
@@ -78,10 +70,8 @@ test("renders with a selected vehicle", () => {
         routes={routes}
         timepointsByRouteId={timepointsByRouteId}
         selectedRouteIds={[]}
-        selectedRoutes={[]}
         vehiclesByRouteId={{ "28": [vehicle] }}
         selectedVehicleId="28"
-        selectedVehicle={vehicle}
       />
     )
     .toJSON()

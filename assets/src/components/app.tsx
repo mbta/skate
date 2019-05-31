@@ -15,11 +15,17 @@ interface Props {
   routes: Route[] | null
   timepointsByRouteId: TimepointsByRouteId
   selectedRouteIds: RouteId[]
-  selectedRoutes: Route[]
   vehiclesByRouteId: VehiclesByRouteId
   selectedVehicleId: VehicleId | undefined
-  selectedVehicle: Vehicle | undefined
 }
+
+const findSelectedVehicle = (
+  vehiclesByRouteId: VehiclesByRouteId,
+  selectedVehicleId: VehicleId | undefined
+): Vehicle | undefined =>
+  Object.values(vehiclesByRouteId)
+    .reduce((acc, vehicles) => acc.concat(vehicles), [])
+    .find(vehicle => vehicle.id === selectedVehicleId)
 
 const vehicleRoute = (
   allRoutes: Route[] | null,
@@ -31,28 +37,37 @@ const App = ({
   routes,
   timepointsByRouteId,
   selectedRouteIds,
-  selectedRoutes,
   vehiclesByRouteId,
   selectedVehicleId,
-  selectedVehicle,
-}: Props) => (
-  <div className="m-app">
-    <RoutePicker routes={routes} selectedRouteIds={selectedRouteIds} />
+}: Props) => {
+  const selectedRoutes = (routes || []).filter(route =>
+    selectedRouteIds.includes(route.id)
+  )
 
-    <RouteLadders
-      routes={selectedRoutes}
-      timepointsByRouteId={timepointsByRouteId}
-      vehiclesByRouteId={vehiclesByRouteId}
-      selectedVehicleId={selectedVehicleId}
-    />
+  const selectedVehicle = findSelectedVehicle(
+    vehiclesByRouteId,
+    selectedVehicleId
+  )
 
-    {selectedVehicle && (
-      <VehiclePropertiesPanel
-        selectedVehicle={selectedVehicle}
-        selectedVehicleRoute={vehicleRoute(routes, selectedVehicle)}
+  return (
+    <div className="m-app">
+      <RoutePicker routes={routes} selectedRouteIds={selectedRouteIds} />
+
+      <RouteLadders
+        routes={selectedRoutes}
+        timepointsByRouteId={timepointsByRouteId}
+        vehiclesByRouteId={vehiclesByRouteId}
+        selectedVehicleId={selectedVehicleId}
       />
-    )}
-  </div>
-)
+
+      {selectedVehicle && (
+        <VehiclePropertiesPanel
+          selectedVehicle={selectedVehicle}
+          selectedVehicleRoute={vehicleRoute(routes, selectedVehicle)}
+        />
+      )}
+    </div>
+  )
+}
 
 export default App
