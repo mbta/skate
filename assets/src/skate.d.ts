@@ -1,5 +1,3 @@
-import { directive } from "@babel/types"
-
 export interface ByRouteId<T> {
   [routeId: string]: T
 }
