@@ -20,6 +20,7 @@ defmodule Concentrate.Producer.HTTP.StateMachine do
               hackney: [pool: :http_producer_pool]
             ],
             headers: %{"accept-encoding" => "gzip"},
+            params: %{},
             fetch_after: @default_fetch_after,
             content_warning_timeout: @default_content_warning_timeout,
             last_success: :never,
@@ -38,7 +39,7 @@ defmodule Concentrate.Producer.HTTP.StateMachine do
     state =
       struct!(
         state,
-        Keyword.take(opts, ~w(get_opts fetch_after content_warning_timeout headers)a)
+        Keyword.take(opts, ~w(get_opts fetch_after content_warning_timeout headers params)a)
       )
 
     state = %{state | last_success: now() - state.fetch_after - 1}
@@ -113,7 +114,7 @@ defmodule Concentrate.Producer.HTTP.StateMachine do
 
   defp handle_message(machine, {:fetch, url}) do
     message =
-      case HTTPoison.get(url, machine.headers, machine.get_opts) do
+      case HTTPoison.get(url, machine.headers, machine.get_opts ++ [params: machine.params]) do
         {:ok, %HTTPoison.Response{} = response} ->
           {:http_response, response}
 

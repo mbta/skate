@@ -5,7 +5,7 @@ defmodule Gtfs.Direction do
 
   @type t :: %__MODULE__{
           route_id: Route.id(),
-          direction_id: id(),
+          direction_id: id() | nil,
           direction_name: String.t()
         }
 
@@ -39,8 +39,11 @@ defmodule Gtfs.Direction do
   0
   iex> Gtfs.Direction.id_from_string("1")
   1
+  iex> Gtfs.Direction.id_from_string(nil)
+  nil
   """
-  @spec id_from_string(String.t()) :: id()
+  @spec id_from_string(String.t() | nil) :: id() | nil
   def id_from_string("0"), do: 0
   def id_from_string("1"), do: 1
+  def id_from_string(_), do: nil
 end

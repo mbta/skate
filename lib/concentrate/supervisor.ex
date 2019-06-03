@@ -6,7 +6,11 @@ defmodule Concentrate.Supervisor do
   * one for the pipeline
   """
 
-  @type opts :: [concentrate_vehicle_positions_url: String.t(), busloc_url: String.t()]
+  @type opts :: [
+          busloc_url: String.t(),
+          swiftly_authorization_key: String.t(),
+          swiftly_realtime_vehicles_url: String.t()
+        ]
 
   @spec start_link(opts()) :: Supervisor.on_start()
   def start_link(opts) do

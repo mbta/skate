@@ -38,6 +38,15 @@ defmodule Realtime.Vehicle do
           operator_id: String.t() | nil,
           operator_name: String.t() | nil,
           run_id: String.t() | nil,
+          headsign: String.t() | nil,
+          headway_secs: float() | nil,
+          previous_vehicle_id: String.t() | nil,
+          previous_vehicle_schedule_adherence_secs: float() | nil,
+          previous_vehicle_schedule_adherence_string: String.t() | nil,
+          route_id: String.t() | nil,
+          schedule_adherence_secs: float() | nil,
+          schedule_adherence_string: String.t() | nil,
+          scheduled_headway_secs: float() | nil,
           stop_status: stop_status(),
           timepoint_status: timepoint_status() | nil,
           scheduled_timepoint_status: timepoint_status() | nil,
@@ -84,6 +93,15 @@ defmodule Realtime.Vehicle do
     :operator_id,
     :operator_name,
     :run_id,
+    :headsign,
+    :headway_secs,
+    :previous_vehicle_id,
+    :previous_vehicle_schedule_adherence_secs,
+    :previous_vehicle_schedule_adherence_string,
+    :route_id,
+    :schedule_adherence_secs,
+    :schedule_adherence_string,
+    :scheduled_headway_secs,
     :stop_status,
     :timepoint_status,
     :scheduled_timepoint_status,
@@ -104,15 +122,16 @@ defmodule Realtime.Vehicle do
 
     trip_id = VehiclePosition.trip_id(vehicle_position)
     trip = trip_fn.(trip_id)
-    headsign = trip && trip.headsign
+    headsign = VehiclePosition.headsign(vehicle_position) || (trip && trip.headsign)
     via_variant = trip && trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id)
     stop_times_on_trip = (trip && trip.stop_times) || []
 
     current_stop_status = decode_current_status(VehiclePosition.status(vehicle_position))
 
     stop_id = VehiclePosition.stop_id(vehicle_position)
-    stop = Gtfs.stop(stop_id)
-    stop_name = if stop, do: stop.name, else: stop_id
+
+    stop_name = stop_name(vehicle_position, stop_id)
+
     timepoint_status = timepoint_status(stop_times_on_trip, stop_id)
 
     %__MODULE__{
@@ -121,8 +140,9 @@ defmodule Realtime.Vehicle do
       timestamp: VehiclePosition.last_updated(vehicle_position),
       latitude: VehiclePosition.latitude(vehicle_position),
       longitude: VehiclePosition.longitude(vehicle_position),
-      direction_id: TripUpdate.direction_id(trip_update),
-      route_id: TripUpdate.route_id(trip_update),
+      direction_id:
+        VehiclePosition.direction_id(vehicle_position) || TripUpdate.direction_id(trip_update),
+      route_id: VehiclePosition.route_id(vehicle_position) || TripUpdate.route_id(trip_update),
       trip_id: trip_id,
       headsign: headsign,
       via_variant: via_variant,
@@ -133,6 +153,15 @@ defmodule Realtime.Vehicle do
       operator_id: VehiclePosition.operator_id(vehicle_position),
       operator_name: VehiclePosition.operator_name(vehicle_position),
       run_id: VehiclePosition.run_id(vehicle_position),
+      headway_secs: VehiclePosition.headway_secs(vehicle_position),
+      previous_vehicle_id: VehiclePosition.previous_vehicle_id(vehicle_position),
+      previous_vehicle_schedule_adherence_secs:
+        VehiclePosition.previous_vehicle_schedule_adherence_secs(vehicle_position),
+      previous_vehicle_schedule_adherence_string:
+        VehiclePosition.previous_vehicle_schedule_adherence_string(vehicle_position),
+      schedule_adherence_secs: VehiclePosition.schedule_adherence_secs(vehicle_position),
+      schedule_adherence_string: VehiclePosition.schedule_adherence_string(vehicle_position),
+      scheduled_headway_secs: VehiclePosition.scheduled_headway_secs(vehicle_position),
       stop_status: %{
         status: current_stop_status,
         stop_id: stop_id,
@@ -193,6 +222,23 @@ defmodule Realtime.Vehicle do
               (next_timepoint.time - previous_timepoint.time)
         }
     end
+  end
+
+  @spec stop_name(map() | nil, String.t() | nil) :: String.t() | nil
+  defp stop_name(vehicle_position, stop_id) do
+    vp_stop_name = VehiclePosition.stop_name(vehicle_position)
+
+    if vp_stop_name != nil do
+      vp_stop_name
+    else
+      stop_name_from_stop(stop_id)
+    end
+  end
+
+  @spec stop_name_from_stop(String.t() | nil) :: String.t() | nil
+  defp stop_name_from_stop(stop_id) do
+    stop = Gtfs.stop(stop_id)
+    if stop, do: stop.name, else: stop_id
   end
 
   @spec count_to_timepoint([StopTime.t()]) :: non_neg_integer()

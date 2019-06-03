@@ -45,6 +45,16 @@ export interface Vehicle {
   via_variant: ViaVariant | null
   operator_id: string
   operator_name: string
+  bearing: number
+  speed: number
+  block_id: string
+  headway_secs: number
+  previous_vehicle_id: string
+  previous_vehicle_schedule_adherence_secs: number
+  previous_vehicle_schedule_adherence_string: string
+  schedule_adherence_secs: number
+  schedule_adherence_string: string
+  scheduled_headway_secs: number
   stop_status: VehicleStopStatus
   timepoint_status: VehicleTimepointStatus | null
   scheduled_timepoint_status: VehicleTimepointStatus | null

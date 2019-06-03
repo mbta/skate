@@ -17,9 +17,9 @@ defmodule Concentrate.Supervisor.PipelineTest do
 
     test "builds the right number of children" do
       opts = [
-        concentrate_vehicle_positions_url:
-          "http://example.com/concentrate_vehicle_positions.json",
-        busloc_url: "http://example.com/busloc.json"
+        busloc_url: "http://example.com/busloc.json",
+        swiftly_authorization_key: "12345",
+        swiftly_realtime_vehicles_url: "http://example.com/swiftly_realtime_vehicles.json"
       ]
 
       actual = Pipeline.children(opts)

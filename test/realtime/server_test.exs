@@ -72,15 +72,6 @@ defmodule Realtime.ServerTest do
 
       Application.put_env(:realtime, :trip_fn, fn _trip_id -> nil end)
 
-      bypass = Bypass.open()
-      url = "http://localhost:#{bypass.port}/VehiclePositions.json"
-      Application.put_env(:skate, "CONCENTRATE_VEHICLE_POSITIONS_URL", url)
-
-      Bypass.stub(bypass, "GET", url, fn conn ->
-        sample_data = File.read!(__DIR__ <> "/concentrate_VehiclePositions.json")
-        Plug.Conn.resp(conn, 200, sample_data)
-      end)
-
       {:ok, server_pid} = Server.start_link([])
 
       Server.update_vehicles(@vehicles_by_route_id, server_pid)
