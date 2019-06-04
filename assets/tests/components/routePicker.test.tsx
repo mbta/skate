@@ -9,11 +9,11 @@ import { deselectRoute, selectRoute } from "../../src/state"
 describe("RoutePicker", () => {
   test("renders a list of routes", () => {
     const routes: Route[] = [
-      { id: "28" },
-      { id: "39" },
-      { id: "71" },
-      { id: "73" },
-      { id: "111" },
+      { id: "28", directionNames: { 0: "Outbound", 1: "Inbound" } },
+      { id: "39", directionNames: { 0: "Outbound", 1: "Inbound" } },
+      { id: "71", directionNames: { 0: "Outbound", 1: "Inbound" } },
+      { id: "73", directionNames: { 0: "Outbound", 1: "Inbound" } },
+      { id: "111", directionNames: { 0: "Outbound", 1: "Inbound" } },
     ]
     const selectedRouteIds: RouteId[] = ["28", "39"]
 
@@ -49,7 +49,9 @@ describe("RoutePicker", () => {
 
   test("clicking a route selects it", () => {
     const mockDispatch = jest.fn()
-    const routes = [{ id: "id" }]
+    const routes = [
+      { id: "id", directionNames: { 0: "Outbound", 1: "Inbound" } },
+    ]
 
     const routePicker = mount(
       <DispatchProvider dispatch={mockDispatch}>
@@ -67,7 +69,9 @@ describe("RoutePicker", () => {
 
   test("clicking a selected route deselects it", () => {
     const mockDispatch = jest.fn()
-    const routes = [{ id: "id" }]
+    const routes = [
+      { id: "id", directionNames: { 0: "Outbound", 1: "Inbound" } },
+    ]
 
     const routePicker = mount(
       <DispatchProvider dispatch={mockDispatch}>
@@ -85,7 +89,9 @@ describe("RoutePicker", () => {
 
   test("clicking in the list of selected routes deselects a route", () => {
     const mockDispatch = jest.fn()
-    const routes = [{ id: "id" }]
+    const routes = [
+      { id: "id", directionNames: { 0: "Outbound", 1: "Inbound" } },
+    ]
 
     const routePicker = mount(
       <DispatchProvider dispatch={mockDispatch}>

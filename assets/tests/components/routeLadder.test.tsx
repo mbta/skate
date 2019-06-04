@@ -7,7 +7,10 @@ import { Route, Vehicle } from "../../src/skate"
 import { deselectRoute, selectVehicle } from "../../src/state"
 
 test("renders a route ladder", () => {
-  const route: Route = { id: "28" }
+  const route: Route = {
+    id: "28",
+    directionNames: { 0: "Outbound", 1: "Inbound" },
+  }
   const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
 
   const tree = renderer
@@ -25,7 +28,10 @@ test("renders a route ladder", () => {
 })
 
 test("renders a route ladder with vehicles", () => {
-  const route: Route = { id: "28" }
+  const route: Route = {
+    id: "28",
+    directionNames: { 0: "Outbound", 1: "Inbound" },
+  }
   const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
   const vehicles: Vehicle[] = [
     {
@@ -95,7 +101,10 @@ test("renders a route ladder with vehicles", () => {
 })
 
 test("renders a route ladder with vehicles in the incoming box", () => {
-  const route: Route = { id: "28" }
+  const route: Route = {
+    id: "28",
+    directionNames: { 0: "Outbound", 1: "Inbound" },
+  }
   const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
   const vehicles: Vehicle[] = [
     {
@@ -165,7 +174,10 @@ test("renders a route ladder with vehicles in the incoming box", () => {
 })
 
 test("displays loading if we are fetching the timepoints", () => {
-  const route: Route = { id: "28" }
+  const route: Route = {
+    id: "28",
+    directionNames: { 0: "Outbound", 1: "Inbound" },
+  }
   const timepoints = null
 
   const tree = renderer
@@ -184,7 +196,10 @@ test("displays loading if we are fetching the timepoints", () => {
 
 test("clicking the close button deselects that route", () => {
   const mockDispatch = jest.fn()
-  const route: Route = { id: "28" }
+  const route: Route = {
+    id: "28",
+    directionNames: { 0: "Outbound", 1: "Inbound" },
+  }
   const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
 
   const wrapper = mount(
@@ -203,7 +218,10 @@ test("clicking the close button deselects that route", () => {
 })
 
 test("clicking the reverse button reverses the order of the timepoints", () => {
-  const route: Route = { id: "28" }
+  const route: Route = {
+    id: "28",
+    directionNames: { 0: "Outbound", 1: "Inbound" },
+  }
   const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
 
   const wrapper = mount(
@@ -226,7 +244,10 @@ test("clicking the reverse button reverses the order of the timepoints", () => {
 test("clicking an incoming vehicle selects that vehicle", () => {
   const mockDispatch = jest.fn()
 
-  const route: Route = { id: "28" }
+  const route: Route = {
+    id: "28",
+    directionNames: { 0: "Outbound", 1: "Inbound" },
+  }
   const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
   const vehicle: Vehicle = {
     id: "v1",

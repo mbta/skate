@@ -1,20 +1,23 @@
-import React, { useReducer } from "react"
-import useRoutes from "../hooks/useRoutes"
-import useSocket from "../hooks/useSocket"
-import useTimepoints from "../hooks/useTimepoints"
-import useVehicles from "../hooks/useVehicles"
-import DispatchProvider from "../providers/dispatchProvider"
+import React from "react"
 import {
   Route,
+  RouteId,
   TimepointsByRouteId,
   Vehicle,
   VehicleId,
   VehiclesByRouteId,
-} from "../skate.d"
-import { initialState, reducer } from "../state"
+} from "../skate"
 import RouteLadders from "./routeLadders"
 import RoutePicker from "./routePicker"
 import VehiclePropertiesPanel from "./vehiclePropertiesPanel"
+
+interface Props {
+  routes: Route[] | null
+  timepointsByRouteId: TimepointsByRouteId
+  selectedRouteIds: RouteId[]
+  vehiclesByRouteId: VehiclesByRouteId
+  selectedVehicleId: VehicleId | undefined
+}
 
 const findSelectedVehicle = (
   vehiclesByRouteId: VehiclesByRouteId,
@@ -24,17 +27,19 @@ const findSelectedVehicle = (
     .reduce((acc, vehicles) => acc.concat(vehicles), [])
     .find(vehicle => vehicle.id === selectedVehicleId)
 
-const App = (): JSX.Element => {
-  const [state, dispatch] = useReducer(reducer, initialState)
-  const { selectedRouteIds, selectedVehicleId } = state
+const vehicleRoute = (
+  allRoutes: Route[] | null,
+  vehicle: Vehicle | undefined
+): Route | undefined =>
+  (allRoutes || []).find(route => route.id === (vehicle && vehicle.route_id))
 
-  const routes: Route[] | null = useRoutes()
-  const timepointsByRouteId: TimepointsByRouteId = useTimepoints(
-    selectedRouteIds
-  )
-  const socket = useSocket()
-  const vehiclesByRouteId = useVehicles(socket, selectedRouteIds)
-
+const App = ({
+  routes,
+  timepointsByRouteId,
+  selectedRouteIds,
+  vehiclesByRouteId,
+  selectedVehicleId,
+}: Props) => {
   const selectedRoutes = (routes || []).filter(route =>
     selectedRouteIds.includes(route.id)
   )
@@ -45,22 +50,23 @@ const App = (): JSX.Element => {
   )
 
   return (
-    <DispatchProvider dispatch={dispatch}>
-      <div className="m-app">
-        <RoutePicker routes={routes} selectedRouteIds={selectedRouteIds} />
+    <div className="m-app">
+      <RoutePicker routes={routes} selectedRouteIds={selectedRouteIds} />
 
-        <RouteLadders
-          routes={selectedRoutes}
-          timepointsByRouteId={timepointsByRouteId}
-          vehiclesByRouteId={vehiclesByRouteId}
-          selectedVehicleId={selectedVehicleId}
+      <RouteLadders
+        routes={selectedRoutes}
+        timepointsByRouteId={timepointsByRouteId}
+        vehiclesByRouteId={vehiclesByRouteId}
+        selectedVehicleId={selectedVehicleId}
+      />
+
+      {selectedVehicle && (
+        <VehiclePropertiesPanel
+          selectedVehicle={selectedVehicle}
+          selectedVehicleRoute={vehicleRoute(routes, selectedVehicle)}
         />
-
-        {selectedVehicle && (
-          <VehiclePropertiesPanel selectedVehicle={selectedVehicle} />
-        )}
-      </div>
-    </DispatchProvider>
+      )}
+    </div>
   )
 }
 

@@ -1,26 +1,34 @@
 defmodule Gtfs.Route do
-  alias Gtfs.Csv
+  alias Gtfs.{Csv, Data, Direction}
 
   @type id :: String.t()
 
   @type t :: %__MODULE__{
-          id: id()
+          id: id(),
+          directions: directions_by_id()
         }
 
+  @type directions_by_id :: %{Direction.id() => Direction.t()}
+
   @enforce_keys [
-    :id
+    :id,
+    :directions
   ]
 
   @derive Jason.Encoder
 
   defstruct [
-    :id
+    :id,
+    :directions
   ]
 
-  @spec from_csv_row(Csv.row()) :: t()
-  def from_csv_row(row) do
+  @spec from_csv_row(Csv.row(), Data.directions_by_route_and_id()) :: t()
+  def from_csv_row(row, directions_by_route_id) do
+    id = row["route_id"]
+
     %__MODULE__{
-      id: row["route_id"]
+      id: id,
+      directions: Map.get(directions_by_route_id, id)
     }
   end
 

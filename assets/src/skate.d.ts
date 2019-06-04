@@ -2,10 +2,15 @@ export interface ByRouteId<T> {
   [routeId: string]: T
 }
 
-export type Direction = 0 | 1
+export type DirectionId = 0 | 1
+export type DirectionName = string
 
 export interface Route {
   id: RouteId
+  directionNames: {
+    0: DirectionName
+    1: DirectionName
+  }
 }
 
 export type RouteId = string
@@ -33,7 +38,7 @@ export interface Vehicle {
   timestamp: number
   latitude: number
   longitude: number
-  direction_id: Direction
+  direction_id: DirectionId
   route_id: RouteId
   trip_id: TripId
   headsign: string | null

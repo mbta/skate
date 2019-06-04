@@ -1,7 +1,7 @@
 defmodule Gtfs.RouteTest do
   use ExUnit.Case, async: true
 
-  alias Gtfs.Route
+  alias Gtfs.{Direction, Route}
 
   describe "from_csv_row/1" do
     test "builds a Route struct from a csv row" do
@@ -21,7 +21,38 @@ defmodule Gtfs.RouteTest do
         "listed_route" => ""
       }
 
-      assert %Route{id: "39"} = Route.from_csv_row(csv_row)
+      directions_by_route_id = %{
+        "39" => %{
+          0 => %Direction{
+            route_id: "39",
+            direction_id: 0,
+            direction_name: "Outbound"
+          },
+          1 => %Direction{
+            route_id: "39",
+            direction_id: 1,
+            direction_name: "Inbound"
+          }
+        }
+      }
+
+      expected = %Route{
+        id: "39",
+        directions: %{
+          0 => %Direction{
+            route_id: "39",
+            direction_id: 0,
+            direction_name: "Outbound"
+          },
+          1 => %Direction{
+            route_id: "39",
+            direction_id: 1,
+            direction_name: "Inbound"
+          }
+        }
+      }
+
+      assert Route.from_csv_row(csv_row, directions_by_route_id) == expected
     end
   end
 

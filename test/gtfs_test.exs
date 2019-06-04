@@ -7,6 +7,11 @@ defmodule GtfsTest do
     test "maps each row to a Route" do
       pid =
         Gtfs.start_mocked(%{
+          "directions.txt" => [
+            "route_id,direction_id,direction,direction_destination",
+            "39,0,Outbound,Forest Hills",
+            "39,1,Inbound,Back Bay Station"
+          ],
           "routes.txt" => [
             "route_id,route_long_name,route_type",
             "39,Forest Hills - Back Bay Station,3"
@@ -14,7 +19,21 @@ defmodule GtfsTest do
         })
 
       assert Gtfs.all_routes(pid) == [
-               %Route{id: "39"}
+               %Route{
+                 id: "39",
+                 directions: %{
+                   0 => %Gtfs.Direction{
+                     direction_id: 0,
+                     direction_name: "Outbound",
+                     route_id: "39"
+                   },
+                   1 => %Gtfs.Direction{
+                     direction_id: 1,
+                     direction_name: "Inbound",
+                     route_id: "39"
+                   }
+                 }
+               }
              ]
     end
 
@@ -28,7 +47,7 @@ defmodule GtfsTest do
           ]
         })
 
-      refute Enum.member?(Gtfs.all_routes(pid), %Route{id: "Red"})
+      refute Enum.member?(Gtfs.all_routes(pid), %Route{id: "Red", directions: %{}})
     end
   end
 
@@ -188,6 +207,25 @@ defmodule GtfsTest do
     end
   end
 
+  describe "stop/2" do
+    test "returns the stop for this stop ID" do
+      pid =
+        Gtfs.start_mocked(%{
+          "stops.txt" => [
+            "stop_id,stop_name,parent_station",
+            "1,One,",
+            "2,Two,3"
+          ]
+        })
+
+      assert Gtfs.stop("2", pid) == %Stop{
+               id: "2",
+               name: "Two",
+               parent_station_id: "3"
+             }
+    end
+  end
+
   describe "trip" do
     test "returns the trip, including stop_times" do
       pid =
@@ -229,25 +267,6 @@ defmodule GtfsTest do
     test "returns nil if the trip doesn't exist" do
       pid = Gtfs.start_mocked(%{})
       assert Gtfs.trip("39-trip", pid) == nil
-    end
-  end
-
-  describe "stop/2" do
-    test "returns the stop for this stop ID" do
-      pid =
-        Gtfs.start_mocked(%{
-          "stops.txt" => [
-            "stop_id,stop_name,parent_station",
-            "1,One,",
-            "2,Two,3"
-          ]
-        })
-
-      assert Gtfs.stop("2", pid) == %Stop{
-               id: "2",
-               name: "Two",
-               parent_station_id: "3"
-             }
     end
   end
 

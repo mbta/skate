@@ -17,7 +17,16 @@ Array [
       <div
         className="m-vehicle-properties-panel__variant"
       >
-        r1_4 headsign
+        <div
+          className="m-vehicle-properties-panel__inbound-outbound"
+        >
+          
+        </div>
+        <div
+          className="m-vehicle-properties-panel__variant-name"
+        >
+          39_X Forest Hills
+        </div>
       </div>
       <button
         className="m-close-button"

@@ -9,11 +9,13 @@ defmodule Gtfs.Data do
   @type t :: %__MODULE__{
           routes: [Route.t()],
           route_patterns: [RoutePattern.t()],
-          stops: stops_by_id,
+          stops: stops_by_id(),
           trips: %{Trip.id() => Trip.t()}
         }
 
   @type stops_by_id :: %{Stop.id() => Stop.t()}
+
+  @type directions_by_route_and_id :: %{Route.id() => Route.directions_by_id()}
 
   @enforce_keys [
     :routes,
@@ -60,7 +62,15 @@ defmodule Gtfs.Data do
 
   @spec parse_files(files()) :: t()
   def parse_files(files) do
-    bus_routes = Csv.parse(files["routes.txt"], &Route.bus_route_row?/1, &Route.from_csv_row/1)
+    directions_by_route_id = directions_by_route_id(files["directions.txt"])
+
+    bus_routes =
+      Csv.parse(
+        files["routes.txt"],
+        &Route.bus_route_row?/1,
+        &Route.from_csv_row(&1, directions_by_route_id)
+      )
+
     bus_route_ids = MapSet.new(bus_routes, & &1.id)
 
     %__MODULE__{
@@ -93,6 +103,19 @@ defmodule Gtfs.Data do
       |> Enum.filter(& &1)
     end)
     |> Helpers.merge_lists()
+  end
+
+  @spec directions_by_route_id(binary()) :: directions_by_route_and_id()
+  defp directions_by_route_id(directions_data) do
+    directions_data
+    |> Csv.parse(fn _row -> true end, &Direction.from_csv_row/1)
+    |> Enum.reduce(%{}, fn direction, acc ->
+      put_in(
+        acc,
+        Enum.map([direction.route_id, direction.direction_id], &Access.key(&1, %{})),
+        direction
+      )
+    end)
   end
 
   @spec bus_route_patterns(binary(), MapSet.t(Route.id())) :: [RoutePattern.t()]

@@ -181,6 +181,7 @@ defmodule Gtfs do
     case fetch_url(url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: zip_binary}} ->
         file_list = [
+          "directions.txt",
           "routes.txt",
           "route_patterns.txt",
           "stop_times.txt",
