@@ -15,7 +15,7 @@ exports[`renders a route ladder 1`] = `
         onClick={[Function]}
       >
         <span
-          className="m-close-button__icon"
+          className=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "SVG",
@@ -142,7 +142,7 @@ exports[`renders a route ladder 1`] = `
         onClick={[Function]}
       >
         <span
-          className="m-close-button__icon"
+          className=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "SVG",

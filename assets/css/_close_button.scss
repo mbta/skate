@@ -1,16 +1,5 @@
 .m-close-button {
-  color: $dark;
+  @include button-icon(0.9rem);
   font-size: 1rem;
   padding: 0;
-}
-
-.m-close-button__icon {
-  display: inline-block;
-  height: 0.9rem;
-  width: 0.9rem;
-
-  svg {
-    stroke: $dark;
-    fill: $dark;
-  }
 }

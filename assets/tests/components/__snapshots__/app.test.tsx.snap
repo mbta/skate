@@ -15,7 +15,7 @@ exports[`renders the empty state 1`] = `
         onClick={[Function]}
       >
         <span
-          className="m-route-picker__tab-button-icon"
+          className=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "SVG",
@@ -56,7 +56,7 @@ exports[`renders the empty state 1`] = `
           onClick={[Function]}
         >
           <span
-            className="m-route-filter__clear-icon"
+            className=""
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -89,7 +89,7 @@ exports[`renders with a selected vehicle 1`] = `
         onClick={[Function]}
       >
         <span
-          className="m-route-picker__tab-button-icon"
+          className=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "SVG",
@@ -130,7 +130,7 @@ exports[`renders with a selected vehicle 1`] = `
           onClick={[Function]}
         >
           <span
-            className="m-route-filter__clear-icon"
+            className=""
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -182,7 +182,7 @@ exports[`renders with routes 1`] = `
         onClick={[Function]}
       >
         <span
-          className="m-route-picker__tab-button-icon"
+          className=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "SVG",
@@ -232,7 +232,7 @@ exports[`renders with routes 1`] = `
           onClick={[Function]}
         >
           <span
-            className="m-route-filter__clear-icon"
+            className=""
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -277,7 +277,7 @@ exports[`renders with routes 1`] = `
           onClick={[Function]}
         >
           <span
-            className="m-close-button__icon"
+            className=""
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -326,7 +326,7 @@ exports[`renders with selectedRoutes in different order than routes data 1`] = `
         onClick={[Function]}
       >
         <span
-          className="m-route-picker__tab-button-icon"
+          className=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "SVG",
@@ -384,7 +384,7 @@ exports[`renders with selectedRoutes in different order than routes data 1`] = `
           onClick={[Function]}
         >
           <span
-            className="m-route-filter__clear-icon"
+            className=""
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -429,7 +429,7 @@ exports[`renders with selectedRoutes in different order than routes data 1`] = `
           onClick={[Function]}
         >
           <span
-            className="m-close-button__icon"
+            className=""
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -470,7 +470,7 @@ exports[`renders with selectedRoutes in different order than routes data 1`] = `
           onClick={[Function]}
         >
           <span
-            className="m-close-button__icon"
+            className=""
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -519,7 +519,7 @@ exports[`renders with timepoints 1`] = `
         onClick={[Function]}
       >
         <span
-          className="m-route-picker__tab-button-icon"
+          className=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "SVG",
@@ -560,7 +560,7 @@ exports[`renders with timepoints 1`] = `
           onClick={[Function]}
         >
           <span
-            className="m-route-filter__clear-icon"
+            className=""
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -612,7 +612,7 @@ exports[`renders with vehicles 1`] = `
         onClick={[Function]}
       >
         <span
-          className="m-route-picker__tab-button-icon"
+          className=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "SVG",
@@ -653,7 +653,7 @@ exports[`renders with vehicles 1`] = `
           onClick={[Function]}
         >
           <span
-            className="m-route-filter__clear-icon"
+            className=""
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",

@@ -15,7 +15,7 @@ exports[`renders 1`] = `
         onClick={[Function]}
       >
         <span
-          className="m-route-picker__tab-button-icon"
+          className=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "SVG",
@@ -56,7 +56,7 @@ exports[`renders 1`] = `
           onClick={[Function]}
         >
           <span
-            className="m-route-filter__clear-icon"
+            className=""
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",

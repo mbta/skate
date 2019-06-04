@@ -1,5 +1,6 @@
 .m-vehicle-properties-panel {
-  background-color: $pale-grey;
+  background-color: $color-bg-base;
+  box-shadow: $modal-box-shadow;
   height: 100%;
   max-width: 100%;
   position: fixed;
@@ -14,31 +15,26 @@
 }
 
 .m-vehicle-properties-panel__label {
+  @include font-header-big;
   flex: 0 0 auto;
-  font-size: 1.5rem;
-  font-weight: bold;
   padding: 1rem;
   text-align: center;
   width: 4rem;
 }
 
 .m-vehicle-properties-panel__variant {
-  border-left: 1px solid $light-periwinkle;
+  border-left: 1px solid $color-rule;
   flex: 1 1 auto;
   padding: 1rem;
 }
 
 .m-vehicle-properties-panel__inbound-outbound {
-  color: $dark;
-  font-size: 0.875rem;
-  font-weight: 500;
+  @include font-emph;
   margin-bottom: 0.4rem;
-  text-transform: uppercase;
 }
 
 .m-vehicle-properties-panel__variant-name {
-  font-size: 1.25rem;
-  font-weight: bold;
+  @include font-header;
 }
 
 .m-vehicle-properties-panel__header > button {
@@ -47,49 +43,41 @@
 }
 
 .m-vehicle-properties-panel__vehicle-properties {
-  border-top: 1px solid $light-periwinkle;
+  border-top: 1px solid $color-rule;
   padding: 1rem;
   width: 100%;
 }
 
 .m-vehicle-properties-panel__vehicle-property-label {
-  color: $blue-grey;
-  font-size: 0.75rem;
-  font-weight: normal;
+  @include font-label;
   margin-bottom: 0.5rem;
   text-align: left;
-  text-transform: uppercase;
   width: 6rem;
 }
 
 .m-vehicle-properties-panel__vehicle-property-value {
-  font-size: 0.875rem;
+  @include font-body;
   margin-bottom: 1rem;
 }
 
 .m-vehicle-properties-panel__location {
-  border-top: 1px solid $light-periwinkle;
+  border-top: 1px solid $color-rule;
   padding: 1rem;
 }
 
 .m-vehicle-properties-panel__link {
-  color: $light-blue;
-  font-size: 0.875rem;
-  font-weight: 500;
-  text-decoration: none;
+  @include font-link;
 }
 
 .m-vehicle-properties-panel__close {
-  background-color: $light-periwinkle;
-  border-radius: 4px;
+  @include button-simple;
   display: block;
   margin: 1rem;
-  padding: 0.5rem 3rem;
   width: calc(100% - 2rem);
 }
 
 .m-vehicle-properties-panel__modal-overlay {
-  background-color: transparentize($dark, 0.8);
+  background-color: $modal-overlay-color;
   height: 100%;
   left: inherit;
   position: fixed;

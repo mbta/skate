@@ -83,7 +83,7 @@ export const RouteFilter = ({
           onKeyDown={blurOnEnter}
         />
         <button className="m-route-filter__clear" onClick={clearTextInput}>
-          {circleXIcon("m-route-filter__clear-icon")}
+          {circleXIcon()}
         </button>
       </div>
     </div>

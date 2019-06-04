@@ -53,9 +53,7 @@ const Tab = ({
 }) => (
   <div className="m-route-picker__tab">
     <button className="m-route-picker__tab-button" onClick={toggleVisibility}>
-      {isVisible
-        ? collapseIcon("m-route-picker__tab-button-icon")
-        : expandIcon("m-route-picker__tab-button-icon")}
+      {isVisible ? collapseIcon() : expandIcon()}
     </button>
   </div>
 )

@@ -4,38 +4,54 @@
 
 .m-ladder__line {
   fill: none;
-  stroke: $light-periwinkle;
+  stroke: $color-line-normal;
   stroke-width: 7;
 }
 
 .m-ladder__stop-circle {
   fill: $white;
-  stroke: $light-periwinkle;
+  stroke: $color-line-normal;
   stroke-width: 1;
 }
 
 .m-ladder__timepoint-name {
-  fill: $blue-grey;
-  font-size: 0.75rem;
-  font-weight: bold;
-  text-transform: uppercase;
+  @include font-timepoint;
 }
 
 .m-ladder__vehicle {
   cursor: pointer;
+
+  &:hover {
+    .m-vehicle-icon__triangle {
+      stroke: $color-secondary-light;
+    }
+
+    .m-ladder__vehicle-label-background {
+      fill: $color-secondary-light;
+    }
+  }
+
+  &.selected {
+    .m-vehicle-icon__triangle {
+      stroke: $color-secondary-medium;
+    }
+
+    .m-ladder__vehicle-label-background {
+      fill: $color-secondary-medium;
+    }
+  }
 }
 
 .m-ladder__vehicle-label-background {
-  fill: $pale-grey;
+  fill: $color-bg-base;
   stroke: none;
 }
 
 .m-ladder__vehicle-label-text {
-  color: $dark;
-  font-size: 0.5625rem;
+  @include font-tiny;
 }
 
 .m-ladder__scheduled-line {
-  stroke: $light-periwinkle;
+  stroke: $color-vehicle-normal-line;
   stroke-width: 2;
 }

@@ -33,7 +33,7 @@ Array [
         onClick={[Function]}
       >
         <span
-          className="m-close-button__icon"
+          className=""
           dangerouslySetInnerHTML={
             Object {
               "__html": "SVG",

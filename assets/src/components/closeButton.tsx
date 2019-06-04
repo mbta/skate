@@ -7,7 +7,7 @@ interface Props {
 
 const CloseButton = ({ onClick }: Props) => (
   <button className="m-close-button" onClick={onClick}>
-    {closeIcon("m-close-button__icon")}
+    {closeIcon()}
   </button>
 )
 

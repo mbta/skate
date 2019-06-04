@@ -1,5 +1,5 @@
 import React from "react"
-import { closeIcon } from "../../src/helpers/icon"
+import { closeIcon, reverseIcon } from "../../src/helpers/icon"
 
 describe("closeIcon", () => {
   it("renders an accessibility icon with a class name", () => {
@@ -14,7 +14,7 @@ describe("closeIcon", () => {
       />
     )
 
-    const result = closeIcon(className)
+    const result = reverseIcon(className)
 
     expect(result).toEqual(expected)
   })

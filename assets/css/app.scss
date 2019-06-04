@@ -1,6 +1,6 @@
-@import "colors";
-
+@import "base";
 @import "inter_ui";
+@import "ui_kit";
 
 @import "close_button";
 @import "incoming_box";
@@ -13,25 +13,9 @@
 @import "vehicle_properties_panel";
 
 body {
-  background-color: $pale-grey;
+  background-color: $color-bg-base;
   font-family: $font-family;
   font-size: 16px;
-  margin: 0;
-}
-
-button {
-  background: none;
-  border: none;
-  color: inherit;
-  cursor: pointer;
-  font: inherit;
-  padding: 0;
-}
-
-ol,
-ul {
-  list-style-type: none;
-  padding: 0;
 }
 
 .m-app {

@@ -12,17 +12,13 @@ import reverseIconSvg from "../../static/images/icon-reverse-normal.svg"
 import reverseIconReversedSvg from "../../static/images/icon-reverse-reversed.svg"
 import renderSvg from "./renderSvg"
 
-export const circleXIcon = (className: string = ""): JSX.Element =>
-  renderSvg(className, circleXIconSvg)
+export const circleXIcon = (): JSX.Element => renderSvg("", circleXIconSvg)
 
-export const closeIcon = (className: string = ""): JSX.Element =>
-  renderSvg(className, closeIconSvg)
+export const closeIcon = (): JSX.Element => renderSvg("", closeIconSvg)
 
-export const collapseIcon = (className: string = ""): JSX.Element =>
-  renderSvg(className, collapseIconSvg)
+export const collapseIcon = (): JSX.Element => renderSvg("", collapseIconSvg)
 
-export const expandIcon = (className: string = ""): JSX.Element =>
-  renderSvg(className, expandIconSvg)
+export const expandIcon = (): JSX.Element => renderSvg("", expandIconSvg)
 
 export const reverseIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, reverseIconSvg)

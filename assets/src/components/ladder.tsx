@@ -173,7 +173,7 @@ const LadderVehicle = ({
     timepointSpacingY,
     vehicleDirection
   )
-  const isSelected = vehicle.id === selectedVehicleId
+  const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
 
   const rotation = vehicleDirection === VehicleDirection.Down ? 180 : 0
 
@@ -188,12 +188,12 @@ const LadderVehicle = ({
         />
       )}
       <g
-        className="m-ladder__vehicle"
+        className={`m-ladder__vehicle ${selectedClass}`}
         transform={`translate(${x},${vehicleY -
           centerOfVehicleGroupY}) rotate(${rotation},${centerOfVehicleGroupX},${centerOfVehicleGroupY})`}
         onClick={() => dispatch(selectVehicle(vehicle.id))}
       >
-        <VehicleIcon isSelected={isSelected} scale={0.625} />
+        <VehicleIcon scale={0.625} />
         <VehicleLabel vehicle={vehicle} rotation={rotation} x={0} y={26} />
       </g>
     </g>

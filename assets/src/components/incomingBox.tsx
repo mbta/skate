@@ -19,26 +19,26 @@ const IncomingBoxVehicle = ({
   selectedVehicleId: VehicleId | undefined
 }) => {
   const dispatch = useContext(DispatchContext)
-  const isSelected = vehicle.id === selectedVehicleId
+  const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
   const rotation =
     vehicleDirectionOnLadder(vehicle, ladderDirection) === VehicleDirection.Down
       ? 180
       : 0
 
   return (
-    <div
-      className="m-incoming-box__vehicle"
+    <button
+      className={"m-incoming-box__vehicle " + selectedClass}
       onClick={() => dispatch(selectVehicle(vehicle.id))}
     >
       <div className="m-incoming-box__vehicle-icon">
         <svg className="m-incoming-box__vehicle-icon-svg">
           <g transform={`rotate(${rotation},9,7)`}>
-            <VehicleIcon isSelected={isSelected} scale={0.38} />
+            <VehicleIcon scale={0.38} />
           </g>
         </svg>
       </div>
       <div className="m-incoming-box__vehicle-label">{vehicle.label}</div>
-    </div>
+    </button>
   )
 }
 
