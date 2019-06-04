@@ -4,10 +4,10 @@
 }
 
 .m-route-ladder__header {
-  background-color: $sunflower;
+  @include font-header;
+  background-color: $color-primary;
   border-radius: 4px;
-  font-size: 1.25rem;
-  font-weight: bolder;
+  color: $color-font-light;
   padding: 0.4rem 0;
   position: relative;
   text-align: center;
@@ -20,19 +20,11 @@
 }
 
 .m-route-ladder__reverse {
-  color: $charcoal-grey;
-  font-size: 0.8125rem;
+  @include font-small;
+  @include button-icon(0.625rem);
   margin-top: 0.5rem;
 }
 
 .m-route-ladder__reverse-icon {
-  display: inline-block;
-  height: 0.625rem;
   margin-right: 0.25rem;
-  width: 0.625rem;
-
-  svg {
-    stroke: $charcoal-grey;
-    fill: $charcoal-grey;
-  }
 }

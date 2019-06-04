@@ -1,19 +1,26 @@
 .m-incoming-box {
-  align-items: center;
-  background-color: $lightest-grey;
-  color: $dark;
+  background-color: $color-bg-light;
   display: flex;
   flex-direction: column;
-  font-size: 0.8125rem;
   min-height: 2.5rem;
-  padding: 0.5rem;
   width: 12em;
 }
 
 .m-incoming-box__vehicle {
-  cursor: pointer;
+  @include font-body;
+  justify-content: center;
   display: flex;
-  margin-bottom: 0.125rem;
+  padding: 0.25rem;
+  width: 100%;
+
+  &:focus,
+  &:hover {
+    background-color: $color-secondary-light;
+  }
+
+  &.selected {
+    background-color: $color-secondary-medium;
+  }
 }
 
 .m-incoming-box__vehicle-icon {

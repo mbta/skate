@@ -1,0 +1,198 @@
+// colors
+
+$white: #ffffff;
+$black: #000000;
+
+$color-bg-light: #f7f8f9;
+$color-bg-base: #f2f3f5;
+$color-bg-medium: #d5d8e0;
+
+$color-component-light: $color-bg-medium;
+$color-component-medium: #8b8d91;
+$color-component-dark: #1c1e23;
+
+$color-primary: #586f7c;
+$color-secondary-dark: #4db6ac;
+$color-secondary-medium: #b8dbd9;
+$color-secondary-light: #d4e7e7;
+
+$color-font-dark: $color-component-dark;
+$color-font-grey: $color-component-medium;
+$color-font-link: $color-secondary-dark;
+$color-font-light: $white;
+
+$color-rule: $color-component-light;
+
+$color-vehicle-normal: $color-component-medium;
+$color-vehicle-normal-line: $color-component-light;
+$color-vehicle-ontime: #8bcf00;
+$color-vehicle-late: #46a5e7;
+$color-vehicle-early: #e45d32;
+$color-vehicle-ghost: $color-bg-base;
+$color-vehicle-ghost-border: $color-component-dark;
+$color-vehicle-nonrevenue: #8f7ed6;
+$color-vehicle-invalid: $color-component-dark;
+$color-vehicle-selected-border: $color-component-dark;
+
+$color-line-normal: $color-component-light;
+$color-line-bunched: #ff66bc;
+$color-line-bunched-light: #ffcce9;
+$color-line-gapped: #00c6ed;
+$color-line-gapped-light: #75e8ff;
+
+// type styles
+
+@mixin font-header-big {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+@mixin font-header {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+@mixin font-body {
+  font-size: 0.875rem;
+}
+
+@mixin font-emph {
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+@mixin font-link {
+  color: $color-font-link;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+
+  &:focus,
+  &:hover {
+    font-weight: 700;
+  }
+}
+
+@mixin font-small {
+  font-size: 0.75rem;
+}
+
+@mixin font-tiny {
+  font-size: 0.5625rem;
+}
+
+@mixin font-label {
+  color: $color-font-grey;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+@mixin font-timepoint {
+  // uses fill instead of color because it's in an svg
+  fill: $color-font-grey;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+// button styles
+
+@mixin button-base {
+  background-color: $color-bg-base;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  padding: 0.3125rem;
+
+  &:focus,
+  &:hover {
+    background-color: $color-secondary-medium;
+  }
+}
+
+@mixin button-simple {
+  @include button-base;
+  background-color: $color-component-light;
+}
+
+@mixin button-light {
+  @include button-base;
+  background-color: $color-bg-base;
+}
+
+@mixin button-primary {
+  @include button-base;
+  background-color: $color-primary;
+  color: $color-font-light;
+
+  &:focus,
+  &:hover {
+    color: $color-font-dark;
+  }
+}
+
+@mixin button-secondary {
+  @include button-base;
+  background-color: $color-secondary-dark;
+}
+
+@mixin button-icon($size) {
+  // Typical HTML: <button><span><svg/></span>optional text</button>
+  // @include this in the button's styles
+  span {
+    display: inline-block;
+    height: $size;
+    width: $size;
+
+    svg {
+      stroke: currentColor;
+      fill: currentColor;
+    }
+  }
+
+  &:focus,
+  &:hover {
+    color: $color-secondary-dark;
+
+    svg {
+      stroke: $color-secondary-dark;
+      fill: $color-secondary-dark;
+    }
+  }
+}
+
+// input styles
+
+select {
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat, repeat;
+  background-position: right 0.7em top 50%, 0 0;
+  background-size: 0.65em auto, 100%;
+
+  &:focus,
+  &:hover {
+    color: $color-secondary-dark;
+  }
+}
+
+input {
+  background-color: $white;
+  border: 2px solid transparent;
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  line-height: 1rem;
+  padding: 0.5rem 1rem 0.5rem 0.8125rem;
+
+  &:hover {
+    border: 2px solid $color-secondary-light;
+  }
+
+  &:focus {
+    border: 2px solid $color-secondary-medium;
+  }
+}
+
+// modals
+$modal-overlay-color: transparentize($color-component-dark, 0.8);
+$modal-box-shadow: 0 0 2rem 0 transparentize($black, 0.5);

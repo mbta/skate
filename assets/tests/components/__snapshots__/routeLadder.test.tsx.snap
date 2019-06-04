@@ -12,7 +12,7 @@ exports[`displays loading if we are fetching the timepoints 1`] = `
       onClick={[Function]}
     >
       <span
-        className="m-close-button__icon"
+        className=""
         dangerouslySetInnerHTML={
           Object {
             "__html": "SVG",
@@ -56,7 +56,7 @@ exports[`renders a route ladder 1`] = `
       onClick={[Function]}
     >
       <span
-        className="m-close-button__icon"
+        className=""
         dangerouslySetInnerHTML={
           Object {
             "__html": "SVG",
@@ -186,7 +186,7 @@ exports[`renders a route ladder with vehicles 1`] = `
       onClick={[Function]}
     >
       <span
-        className="m-close-button__icon"
+        className=""
         dangerouslySetInnerHTML={
           Object {
             "__html": "SVG",
@@ -222,7 +222,7 @@ exports[`renders a route ladder with vehicles 1`] = `
   >
     <g>
       <g
-        className="m-ladder__vehicle"
+        className="m-ladder__vehicle "
         onClick={[Function]}
         transform="translate(47,92) rotate(0,16,13)"
       >
@@ -231,7 +231,7 @@ exports[`renders a route ladder with vehicles 1`] = `
           transform="scale(0.625)"
         >
           <path
-            className="m-vehicle-icon__triangle "
+            className="m-vehicle-icon__triangle"
             d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
           />
         </g>
@@ -268,7 +268,7 @@ exports[`renders a route ladder with vehicles 1`] = `
         y2={420}
       />
       <g
-        className="m-ladder__vehicle"
+        className="m-ladder__vehicle "
         onClick={[Function]}
         transform="translate(-80,407) rotate(180,16,13)"
       >
@@ -277,7 +277,7 @@ exports[`renders a route ladder with vehicles 1`] = `
           transform="scale(0.625)"
         >
           <path
-            className="m-vehicle-icon__triangle "
+            className="m-vehicle-icon__triangle"
             d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
           />
         </g>
@@ -401,7 +401,7 @@ exports[`renders a route ladder with vehicles in the incoming box 1`] = `
       onClick={[Function]}
     >
       <span
-        className="m-close-button__icon"
+        className=""
         dangerouslySetInnerHTML={
           Object {
             "__html": "SVG",
@@ -516,8 +516,8 @@ exports[`renders a route ladder with vehicles in the incoming box 1`] = `
   <div
     className="m-incoming-box"
   >
-    <div
-      className="m-incoming-box__vehicle"
+    <button
+      className="m-incoming-box__vehicle "
       onClick={[Function]}
     >
       <div
@@ -534,7 +534,7 @@ exports[`renders a route ladder with vehicles in the incoming box 1`] = `
               transform="scale(0.38)"
             >
               <path
-                className="m-vehicle-icon__triangle "
+                className="m-vehicle-icon__triangle"
                 d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               />
             </g>
@@ -546,9 +546,9 @@ exports[`renders a route ladder with vehicles in the incoming box 1`] = `
       >
         1818
       </div>
-    </div>
-    <div
-      className="m-incoming-box__vehicle"
+    </button>
+    <button
+      className="m-incoming-box__vehicle "
       onClick={[Function]}
     >
       <div
@@ -565,7 +565,7 @@ exports[`renders a route ladder with vehicles in the incoming box 1`] = `
               transform="scale(0.38)"
             >
               <path
-                className="m-vehicle-icon__triangle "
+                className="m-vehicle-icon__triangle"
                 d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
               />
             </g>
@@ -577,7 +577,7 @@ exports[`renders a route ladder with vehicles in the incoming box 1`] = `
       >
         0479
       </div>
-    </div>
+    </button>
   </div>
 </div>
 `;
