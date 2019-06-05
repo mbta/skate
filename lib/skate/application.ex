@@ -61,10 +61,10 @@ defmodule Skate.Application do
     :ok
   end
 
-  @spec get_config_string(atom) :: String.t() | integer | nil
+  @spec get_config_string(atom) :: String.t() | nil
   def get_config_string(name) do
     case Application.get_env(:skate, name) do
-      {:system, env_var, default} -> System.get_env(env_var) || default
+      {:system, env_var} -> System.get_env(env_var)
       value -> value
     end
   end
