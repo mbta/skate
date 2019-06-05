@@ -1,4 +1,10 @@
-import { Route, RouteId, Timepoint, TimepointId } from "./skate.d"
+import {
+  DirectionName,
+  Route,
+  RouteId,
+  Timepoint,
+  TimepointId,
+} from "./skate.d"
 
 interface RoutesResponse {
   data: RouteData[]
@@ -6,16 +12,10 @@ interface RoutesResponse {
 
 interface RouteData {
   id: string
-  directions: {
-    0: DirectionData
-    1: DirectionData
+  direction_names: {
+    "0": DirectionName
+    "1": DirectionName
   }
-}
-
-interface DirectionData {
-  route_id: string
-  direction_id: string
-  direction_name: string
 }
 
 interface TimepointsForRouteResponse {
@@ -31,12 +31,9 @@ const checkResponseStatus = (response: Response) => {
 
 const parseJson = (response: Response) => response.json()
 
-const parseRouteData = ({ id, directions }: RouteData): Route => ({
+const parseRouteData = ({ id, direction_names }: RouteData): Route => ({
   id,
-  directionNames: {
-    0: directions[0].direction_name,
-    1: directions[1].direction_name,
-  },
+  directionNames: direction_names,
 })
 
 const parseRoutesData = (routesData: RouteData[]): Route[] =>

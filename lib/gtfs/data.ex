@@ -15,7 +15,7 @@ defmodule Gtfs.Data do
 
   @type stops_by_id :: %{Stop.id() => Stop.t()}
 
-  @type directions_by_route_and_id :: %{Route.id() => Route.directions_by_id()}
+  @type directions_by_route_and_id :: %{Route.id() => %{Direction.id() => Direction.t()}}
 
   @enforce_keys [
     :routes,

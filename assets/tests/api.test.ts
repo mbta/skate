@@ -17,47 +17,23 @@ describe("fetchRoutes", () => {
           data: [
             {
               id: "28",
-              directions: {
-                0: {
-                  route_id: "28",
-                  direction_id: "0",
-                  direction_name: "Outbound",
-                },
-                1: {
-                  route_id: "28",
-                  direction_id: "1",
-                  direction_name: "Inbound",
-                },
+              direction_names: {
+                0: "Outbound",
+                1: "Inbound",
               },
             },
             {
               id: "39",
-              directions: {
-                0: {
-                  route_id: "39",
-                  direction_id: "0",
-                  direction_name: "Outbound",
-                },
-                1: {
-                  route_id: "39",
-                  direction_id: "1",
-                  direction_name: "Inbound",
-                },
+              direction_names: {
+                0: "Outbound",
+                1: "Inbound",
               },
             },
             {
               id: "71",
-              directions: {
-                0: {
-                  route_id: "71",
-                  direction_id: "0",
-                  direction_name: "Outbound",
-                },
-                1: {
-                  route_id: "71",
-                  direction_id: "1",
-                  direction_name: "Inbound",
-                },
+              direction_names: {
+                0: "Outbound",
+                1: "Inbound",
               },
             },
           ],

@@ -1,38 +1,22 @@
 defmodule Gtfs.DataTest do
   use ExUnit.Case, async: true
 
-  alias Gtfs.{Data, Direction, Route, RoutePattern, Stop, StopTime, Trip}
+  alias Gtfs.{Data, Route, RoutePattern, Stop, StopTime, Trip}
 
   test "all_routes/1 returns all the routes" do
     routes = [
       %Route{
         id: "39",
-        directions: %{
-          0 => %Direction{
-            route_id: "39",
-            direction_id: 0,
-            direction_name: "Outbound"
-          },
-          1 => %Direction{
-            route_id: "39",
-            direction_id: 1,
-            direction_name: "Inbound"
-          }
+        direction_names: %{
+          0 => "Outbound",
+          1 => "Inbound"
         }
       },
       %Route{
         id: "66",
-        directions: %{
-          0 => %Direction{
-            route_id: "39",
-            direction_id: 0,
-            direction_name: "Outbound"
-          },
-          1 => %Direction{
-            route_id: "39",
-            direction_id: 1,
-            direction_name: "Inbound"
-          }
+        direction_names: %{
+          0 => "Outbound",
+          1 => "Inbound"
         }
       }
     ]
@@ -50,7 +34,7 @@ defmodule Gtfs.DataTest do
   describe "timepoint_ids_on_route/2" do
     test "returns all timepoint IDs for this route (either direction), sorted" do
       data = %Data{
-        routes: [%Route{id: "r1", directions: %{}}, %Route{id: "r2", directions: %{}}],
+        routes: [%Route{id: "r1", direction_names: %{}}, %Route{id: "r2", direction_names: %{}}],
         route_patterns: [
           %RoutePattern{
             id: "rp1",
@@ -111,7 +95,7 @@ defmodule Gtfs.DataTest do
 
     test "groups timepoints together even when they're on different stops" do
       data = %Data{
-        routes: [%Route{id: "r1", directions: %{}}],
+        routes: [%Route{id: "r1", direction_names: %{}}],
         route_patterns: [
           %RoutePattern{
             id: "rp1",
