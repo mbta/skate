@@ -39,13 +39,7 @@ defmodule GtfsTest do
           ]
         })
 
-      refute Enum.member?(Gtfs.all_routes(pid), %Route{
-               id: "Red",
-               direction_names: %{
-                 0 => "Outbound",
-                 1 => "Inbound"
-               }
-             })
+      refute Enum.any?(Gtfs.all_routes(pid), &(&1.id == "Red"))
     end
   end
 
