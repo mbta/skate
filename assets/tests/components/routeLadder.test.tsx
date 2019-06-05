@@ -57,6 +57,7 @@ test("renders a route ladder with vehicles", () => {
         timepoint_id: "MATPN",
         fraction_until_timepoint: 0.5,
       },
+      scheduled_timepoint_status: null,
       route_status: "on_route",
     },
     {
@@ -79,6 +80,10 @@ test("renders a route ladder with vehicles", () => {
         stop_name: "59",
       },
       timepoint_status: {
+        timepoint_id: "MORTN",
+        fraction_until_timepoint: 0.0,
+      },
+      scheduled_timepoint_status: {
         timepoint_id: "MORTN",
         fraction_until_timepoint: 0.0,
       },
@@ -130,6 +135,7 @@ test("renders a route ladder with vehicles in the incoming box", () => {
         timepoint_id: "MATPN",
         fraction_until_timepoint: 0.5,
       },
+      scheduled_timepoint_status: null,
       route_status: "incoming",
     },
     {
@@ -155,6 +161,7 @@ test("renders a route ladder with vehicles in the incoming box", () => {
         timepoint_id: "MORTN",
         fraction_until_timepoint: 0.0,
       },
+      scheduled_timepoint_status: null,
       route_status: "incoming",
     },
   ]
@@ -272,6 +279,7 @@ test("clicking an incoming vehicle selects that vehicle", () => {
       timepoint_id: "MATPN",
       fraction_until_timepoint: 0.5,
     },
+    scheduled_timepoint_status: null,
     route_status: "incoming",
   }
 

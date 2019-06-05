@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import DispatchContext from "../contexts/dispatchContext"
-import { Timepoint, Vehicle, VehicleId } from "../skate"
+import { Timepoint, Vehicle, VehicleId, VehicleTimepointStatus } from "../skate"
 import { selectVehicle } from "../state"
 import VehicleIcon from "./vehicleIcon"
 
@@ -62,13 +62,6 @@ const Ladder = ({
 
   return (
     <svg className="m-ladder" height={HEIGHT} width={WIDTH} viewBox={viewBox}>
-      <RoadLines />
-      {orderedTimepoints.map((timepoint: Timepoint, index: number) => {
-        const y = timepointSpacingY * index
-        return (
-          <LadderTimepoint key={timepoint.id} timepoint={timepoint} y={y} />
-        )
-      })}
       {vehicles.map((vehicle: Vehicle) => (
         <LadderVehicle
           key={vehicle.id}
@@ -79,6 +72,13 @@ const Ladder = ({
           selectedVehicleId={selectedVehicleId}
         />
       ))}
+      <RoadLines />
+      {orderedTimepoints.map((timepoint: Timepoint, index: number) => {
+        const y = timepointSpacingY * index
+        return (
+          <LadderTimepoint key={timepoint.id} timepoint={timepoint} y={y} />
+        )
+      })}
     </svg>
   )
 }
@@ -158,41 +158,64 @@ const LadderVehicle = ({
   const widthOfVehicleGroup = centerOfVehicleGroupX * 2
   const x =
     vehicleDirection === VehicleDirection.Up ? 47 : -(48 + widthOfVehicleGroup)
-  const y =
-    yForVehicle(vehicle, timepoints, timepointSpacingY, vehicleDirection) || -10
+  const vehicleY =
+    timepointStatusY(
+      vehicle.timepoint_status,
+      timepoints,
+      timepointSpacingY,
+      vehicleDirection
+    ) || -10
+  const roadLineX =
+    vehicleDirection === VehicleDirection.Up ? CENTER_TO_LINE : -CENTER_TO_LINE
+  const scheduledY = timepointStatusY(
+    vehicle.scheduled_timepoint_status,
+    timepoints,
+    timepointSpacingY,
+    vehicleDirection
+  )
   const isSelected = vehicle.id === selectedVehicleId
 
   const rotation = vehicleDirection === VehicleDirection.Down ? 180 : 0
 
   return (
-    <g
-      className="m-ladder__vehicle"
-      transform={`translate(${x},${y}) rotate(${rotation},${centerOfVehicleGroupX},${centerOfVehicleGroupY})`}
-      onClick={() => dispatch(selectVehicle(vehicle.id))}
-    >
-      <VehicleIcon isSelected={isSelected} scale={0.625} />
-      <VehicleLabel vehicle={vehicle} rotation={rotation} x={0} y={26} />
+    <g>
+      {scheduledY && (
+        <ScheduledLine
+          vehicleX={x + centerOfVehicleGroupX}
+          vehicleY={vehicleY}
+          roadLineX={roadLineX}
+          scheduledY={scheduledY}
+        />
+      )}
+      <g
+        className="m-ladder__vehicle"
+        transform={`translate(${x},${vehicleY -
+          centerOfVehicleGroupY}) rotate(${rotation},${centerOfVehicleGroupX},${centerOfVehicleGroupY})`}
+        onClick={() => dispatch(selectVehicle(vehicle.id))}
+      >
+        <VehicleIcon isSelected={isSelected} scale={0.625} />
+        <VehicleLabel vehicle={vehicle} rotation={rotation} x={0} y={26} />
+      </g>
     </g>
   )
 }
 
-const yForVehicle = (
-  vehicle: Vehicle,
+const timepointStatusY = (
+  timepointStatus: VehicleTimepointStatus | null,
   timepoints: Timepoint[],
   timepointSpacingY: number,
   direction: VehicleDirection
 ): number | null => {
-  const timepoint_status = vehicle.timepoint_status
-  if (timepoint_status) {
+  if (timepointStatus) {
     const timepointIndex = timepoints.findIndex(
-      timepoint => timepoint.id === timepoint_status.timepoint_id
+      timepoint => timepoint.id === timepointStatus.timepoint_id
     )
     if (timepointIndex !== -1) {
       const fractionDirection = direction === VehicleDirection.Up ? +1 : -1
       return (
         timepointSpacingY *
         (timepointIndex +
-          timepoint_status.fraction_until_timepoint * fractionDirection)
+          timepointStatus.fraction_until_timepoint * fractionDirection)
       )
     }
   }
@@ -228,6 +251,26 @@ const VehicleLabel = ({
       {vehicle.label}
     </text>
   </svg>
+)
+
+const ScheduledLine = ({
+  vehicleX,
+  vehicleY,
+  roadLineX,
+  scheduledY,
+}: {
+  vehicleX: number
+  vehicleY: number
+  roadLineX: number
+  scheduledY: number
+}) => (
+  <line
+    className="m-ladder__scheduled-line"
+    x1={vehicleX}
+    y1={vehicleY}
+    x2={roadLineX}
+    y2={scheduledY}
+  />
 )
 
 export default Ladder

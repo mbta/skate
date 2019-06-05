@@ -47,6 +47,7 @@ export interface Vehicle {
   operator_name: string
   stop_status: VehicleStopStatus
   timepoint_status: VehicleTimepointStatus | null
+  scheduled_timepoint_status: VehicleTimepointStatus | null
   route_status: VehicleRouteStatus
 }
 

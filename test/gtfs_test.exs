@@ -80,10 +80,10 @@ defmodule GtfsTest do
             "39,39-trip,39-_-0"
           ],
           "stop_times.txt" => [
-            "trip_id,stop_sequence,checkpoint_id",
-            "39-trip,1,check",
-            "39-trip,2,",
-            "blue-trip,1,other"
+            "trip_id,arrival_time,departure_time,stop_sequence,checkpoint_id",
+            "39-trip,,00:00:00,1,check",
+            "39-trip,,00:00:00,2,",
+            "blue-trip,,00:00:00,1,other"
           ]
         })
 
@@ -108,10 +108,10 @@ defmodule GtfsTest do
             "39,39-trip,39-_-0"
           ],
           "stop_times.txt" => [
-            "trip_id,stop_sequence,checkpoint_id",
-            "39-trip,1,check",
-            "39-trip,2,",
-            "blue-trip,1,check"
+            "trip_id,arrival_time,departure_time,stop_sequence,checkpoint_id",
+            "39-trip,,00:00:00,1,check",
+            "39-trip,,00:00:00,2,",
+            "blue-trip,,00:00:00,1,check"
           ]
         })
 
@@ -139,14 +139,14 @@ defmodule GtfsTest do
             "route,t3,route-_-0"
           ],
           "stop_times.txt" => [
-            "trip_id,stop_sequence,checkpoint_id",
-            "t1,11,c1",
-            "t1,12,c2",
-            "t3,31,c4",
-            "t3,32,c5",
-            "t2,21,c2",
-            "t2,22,c3",
-            "t2,23,c4"
+            "trip_id,arrival_time,departure_time,stop_sequence,checkpoint_id",
+            "t1,,00:00:00,11,c1",
+            "t1,,00:00:00,12,c2",
+            "t3,,00:00:00,31,c4",
+            "t3,,00:00:00,32,c5",
+            "t2,,00:00:00,21,c2",
+            "t2,,00:00:00,22,c3",
+            "t2,,00:00:00,23,c4"
           ]
         })
 
@@ -171,11 +171,11 @@ defmodule GtfsTest do
             "route,t1,route-_-0"
           ],
           "stop_times.txt" => [
-            "trip_id,stop_sequence,checkpoint_id",
-            "t0,1,downtown",
-            "t0,2,suburb",
-            "t1,1,exurb",
-            "t1,2,suburb"
+            "trip_id,arrival_time,departure_time,stop_sequence,checkpoint_id",
+            "t0,,00:00:00,1,downtown",
+            "t0,,00:00:00,2,suburb",
+            "t1,,00:00:00,1,exurb",
+            "t1,,00:00:00,2,suburb"
           ]
         })
 
@@ -190,8 +190,8 @@ defmodule GtfsTest do
             "pattern,route,0,trip"
           ],
           "stop_times.txt" => [
-            "trip_id,stop_sequence,checkpoint_id",
-            "trip,0,"
+            "trip_id,arrival_time,departure_time,stop_sequence,checkpoint_id",
+            "trip,,00:00:01,0,"
           ]
         })
 
@@ -235,10 +235,10 @@ defmodule GtfsTest do
             "route,t1,h1,route-_-0"
           ],
           "stop_times.txt" => [
-            "trip_id,stop_id,stop_sequence,checkpoint_id",
-            "t1,s4,1,exurb",
-            "t1,s5,2,",
-            "t1,s3,3,suburb"
+            "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
+            "t1,,00:00:01,s4,1,exurb",
+            "t1,,00:00:02,s5,2,",
+            "t1,,00:00:03,s3,3,suburb"
           ]
         })
 
@@ -249,9 +249,9 @@ defmodule GtfsTest do
                headsign: "h1",
                route_pattern_id: "route-_-0",
                stop_times: [
-                 %StopTime{stop_id: "s4", timepoint_id: "exurb"},
-                 %StopTime{stop_id: "s5", timepoint_id: nil},
-                 %StopTime{stop_id: "s3", timepoint_id: "suburb"}
+                 %StopTime{stop_id: "s4", time: 1, timepoint_id: "exurb"},
+                 %StopTime{stop_id: "s5", time: 2, timepoint_id: nil},
+                 %StopTime{stop_id: "s3", time: 3, timepoint_id: "suburb"}
                ]
              }
     end

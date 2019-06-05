@@ -32,6 +32,7 @@ test("renders a ladder", () => {
         timepoint_id: "t1",
         fraction_until_timepoint: 0.5,
       },
+      scheduled_timepoint_status: null,
       route_status: "on_route",
     },
     {
@@ -57,6 +58,10 @@ test("renders a ladder", () => {
         timepoint_id: "t2",
         fraction_until_timepoint: 0.75,
       },
+      scheduled_timepoint_status: {
+        timepoint_id: "t2",
+        fraction_until_timepoint: 0.75,
+      },
       route_status: "on_route",
     },
     {
@@ -79,6 +84,7 @@ test("renders a ladder", () => {
         stop_name: "stop",
       },
       timepoint_status: null,
+      scheduled_timepoint_status: null,
       route_status: "on_route",
     },
   ]
@@ -124,6 +130,7 @@ test("highlights a selected vehicle", () => {
         timepoint_id: "t1",
         fraction_until_timepoint: 0.5,
       },
+      scheduled_timepoint_status: null,
       route_status: "on_route",
     },
     {
@@ -149,6 +156,7 @@ test("highlights a selected vehicle", () => {
         timepoint_id: "t2",
         fraction_until_timepoint: 0.75,
       },
+      scheduled_timepoint_status: null,
       route_status: "incoming",
     },
   ]
@@ -195,6 +203,7 @@ test("clicking a vehicle selects that vehicle", () => {
       timepoint_id: "t1",
       fraction_until_timepoint: 0.5,
     },
+    scheduled_timepoint_status: null,
     route_status: "on_route",
   }
 
@@ -238,6 +247,7 @@ test("renders a ladder with no timepoints", () => {
         stop_name: "stop",
       },
       timepoint_status: null,
+      scheduled_timepoint_status: null,
       route_status: "on_route",
     },
   ]

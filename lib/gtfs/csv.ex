@@ -33,8 +33,8 @@ defmodule Gtfs.Csv do
     file_binary
     |> String.split("\n")
     |> Enum.reject(&(&1 == ""))
-    |> CSV.decode(headers: true)
-    |> Stream.flat_map(fn {:ok, csv_row} ->
+    |> CSV.decode!(headers: true)
+    |> Stream.flat_map(fn csv_row ->
       if Enum.all?(row_filters, fn row_filter -> row_filter.(csv_row) end) do
         [row_decoder.(csv_row)]
       else

@@ -40,6 +40,7 @@ defmodule Realtime.Vehicle do
           run_id: String.t() | nil,
           stop_status: stop_status(),
           timepoint_status: timepoint_status() | nil,
+          scheduled_timepoint_status: timepoint_status() | nil,
           route_status: route_status()
         }
 
@@ -85,6 +86,7 @@ defmodule Realtime.Vehicle do
     :run_id,
     :stop_status,
     :timepoint_status,
+    :scheduled_timepoint_status,
     :route_status
   ]
 
@@ -137,6 +139,11 @@ defmodule Realtime.Vehicle do
         stop_name: stop_name
       },
       timepoint_status: timepoint_status,
+      scheduled_timepoint_status:
+        scheduled_timepoint_status(
+          stop_times_on_trip,
+          Util.Time.now()
+        ),
       route_status: route_status(current_stop_status, stop_id, trip)
     }
   end
@@ -161,16 +168,30 @@ defmodule Realtime.Vehicle do
     end
   end
 
-  @spec route_status(current_status(), Stop.id(), Trip.t() | nil) :: route_status()
-  def route_status(_status, _stop_id, nil), do: :incoming
+  @spec scheduled_timepoint_status([StopTime.t()], Util.Time.timestamp()) ::
+          timepoint_status() | nil
+  def scheduled_timepoint_status([], _now) do
+    nil
+  end
 
-  def route_status(:stopped_at, _stop_id, _trip), do: :on_route
+  def scheduled_timepoint_status(stop_times_on_trip, now) do
+    trip_start = List.first(stop_times_on_trip).time
+    now_time_of_day = Util.Time.nearest_time_of_day_for_timestamp(now, trip_start)
+    timepoints = Enum.filter(stop_times_on_trip, &is_a_timepoint?/1)
 
-  def route_status(:in_transit_to, stop_id, %Trip{stop_times: [first_stop_time | _rest]}) do
-    if first_stop_time.stop_id == stop_id do
-      :incoming
-    else
-      :on_route
+    case Realtime.Helpers.find_and_previous(timepoints, fn timepoint ->
+           timepoint.time >= now_time_of_day
+         end) do
+      nil ->
+        nil
+
+      {previous_timepoint, next_timepoint} ->
+        %{
+          timepoint_id: next_timepoint.timepoint_id,
+          fraction_until_timepoint:
+            (next_timepoint.time - now_time_of_day) /
+              (next_timepoint.time - previous_timepoint.time)
+        }
     end
   end
 
@@ -188,4 +209,17 @@ defmodule Realtime.Vehicle do
   defp decode_current_status(:IN_TRANSIT_TO), do: :in_transit_to
   defp decode_current_status(:INCOMING_AT), do: :in_transit_to
   defp decode_current_status(:STOPPED_AT), do: :stopped_at
+
+  @spec route_status(current_status(), Stop.id(), Trip.t() | nil) :: route_status()
+  def route_status(_status, _stop_id, nil), do: :incoming
+
+  def route_status(:stopped_at, _stop_id, _trip), do: :on_route
+
+  def route_status(:in_transit_to, stop_id, %Trip{stop_times: [first_stop_time | _rest]}) do
+    if first_stop_time.stop_id == stop_id do
+      :incoming
+    else
+      :on_route
+    end
+  end
 end

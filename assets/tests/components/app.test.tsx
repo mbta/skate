@@ -123,8 +123,12 @@ const vehicle: Vehicle = {
     stop_name: "stop",
   },
   timepoint_status: {
-    timepoint_id: "MATPN",
+    timepoint_id: "WELLH",
     fraction_until_timepoint: 0.5,
+  },
+  scheduled_timepoint_status: {
+    timepoint_id: "MORTN",
+    fraction_until_timepoint: 0.8,
   },
   route_status: "incoming",
 }
