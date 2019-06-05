@@ -118,6 +118,7 @@ const vehicle: Vehicle = {
   operator_id: "op1",
   operator_name: "SMITH",
   speed: 50.0,
+  bearing: 33,
   block_id: "block-1",
   headway_secs: 859.1,
   previous_vehicle_id: "v2",
