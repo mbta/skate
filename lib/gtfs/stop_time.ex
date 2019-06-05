@@ -12,18 +12,20 @@ defmodule Gtfs.StopTime do
   alias Gtfs.Trip
 
   @type t :: %__MODULE__{
-          timepoint_id: timepoint_id() | nil,
-          stop_id: Stop.id()
+          stop_id: Stop.id(),
+          time: Util.Time.time_of_day(),
+          timepoint_id: timepoint_id() | nil
         }
 
   @enforce_keys [
-    :timepoint_id,
-    :stop_id
+    :stop_id,
+    :time
   ]
 
   defstruct [
-    :timepoint_id,
-    :stop_id
+    :stop_id,
+    :time,
+    :timepoint_id
   ]
 
   @type timepoint_id :: String.t()
@@ -36,12 +38,21 @@ defmodule Gtfs.StopTime do
       stop_times_on_trip
       |> Enum.sort_by(&stop_sequence_integer/1)
       |> Enum.map(fn stop_time_row ->
+        time_string =
+          if stop_time_row["arrival_time"] == "" do
+            stop_time_row["departure_time"]
+          else
+            stop_time_row["arrival_time"]
+          end
+
+        time = Util.Time.parse_hhmmss(time_string)
         # Use nil instead of an empty string for timepoint_id if there is no checkpoint_id
         timepoint_id =
           if stop_time_row["checkpoint_id"] == "", do: nil, else: stop_time_row["checkpoint_id"]
 
         %__MODULE__{
           stop_id: stop_time_row["stop_id"],
+          time: time,
           timepoint_id: timepoint_id
         }
       end)

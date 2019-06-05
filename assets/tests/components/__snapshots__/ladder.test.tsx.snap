@@ -7,6 +7,84 @@ exports[`highlights a selected vehicle 1`] = `
   viewBox="-90 -40 180 500"
   width={180}
 >
+  <g>
+    <g
+      className="m-ladder__vehicle"
+      onClick={[Function]}
+      transform="translate(47,302) rotate(0,16,13)"
+    >
+      <g
+        className="m-vehicle-icon"
+        transform="scale(0.625)"
+      >
+        <path
+          className="m-vehicle-icon__triangle selected"
+          d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+        />
+      </g>
+      <svg
+        className="m-ladder__vehicle-label"
+        x={0}
+        y={26}
+      >
+        <rect
+          className="m-ladder__vehicle-label-background"
+          height="11"
+          rx="5.5"
+          ry="5.5"
+          width="30"
+        />
+        <text
+          className="m-ladder__vehicle-label-text"
+          textAnchor="inherit"
+          transform="rotate(0,15,6)"
+          x="5"
+          y="9"
+        >
+          upward
+        </text>
+      </svg>
+    </g>
+  </g>
+  <g>
+    <g
+      className="m-ladder__vehicle"
+      onClick={[Function]}
+      transform="translate(-80,-170.5) rotate(180,16,13)"
+    >
+      <g
+        className="m-vehicle-icon"
+        transform="scale(0.625)"
+      >
+        <path
+          className="m-vehicle-icon__triangle "
+          d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+        />
+      </g>
+      <svg
+        className="m-ladder__vehicle-label"
+        x={0}
+        y={26}
+      >
+        <rect
+          className="m-ladder__vehicle-label-background"
+          height="11"
+          rx="5.5"
+          ry="5.5"
+          width="30"
+        />
+        <text
+          className="m-ladder__vehicle-label-text"
+          textAnchor="inherit"
+          transform="rotate(180,15,6)"
+          x="5"
+          y="9"
+        >
+          downward
+        </text>
+      </svg>
+    </g>
+  </g>
   <line
     className="m-ladder__line"
     x1={-40}
@@ -84,80 +162,6 @@ exports[`highlights a selected vehicle 1`] = `
   >
     t0
   </text>
-  <g
-    className="m-ladder__vehicle"
-    onClick={[Function]}
-    transform="translate(47,315) rotate(0,16,13)"
-  >
-    <g
-      className="m-vehicle-icon"
-      transform="scale(0.625)"
-    >
-      <path
-        className="m-vehicle-icon__triangle selected"
-        d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-      />
-    </g>
-    <svg
-      className="m-ladder__vehicle-label"
-      x={0}
-      y={26}
-    >
-      <rect
-        className="m-ladder__vehicle-label-background"
-        height="11"
-        rx="5.5"
-        ry="5.5"
-        width="30"
-      />
-      <text
-        className="m-ladder__vehicle-label-text"
-        textAnchor="inherit"
-        transform="rotate(0,15,6)"
-        x="5"
-        y="9"
-      >
-        upward
-      </text>
-    </svg>
-  </g>
-  <g
-    className="m-ladder__vehicle"
-    onClick={[Function]}
-    transform="translate(-80,-157.5) rotate(180,16,13)"
-  >
-    <g
-      className="m-vehicle-icon"
-      transform="scale(0.625)"
-    >
-      <path
-        className="m-vehicle-icon__triangle "
-        d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-      />
-    </g>
-    <svg
-      className="m-ladder__vehicle-label"
-      x={0}
-      y={26}
-    >
-      <rect
-        className="m-ladder__vehicle-label-background"
-        height="11"
-        rx="5.5"
-        ry="5.5"
-        width="30"
-      />
-      <text
-        className="m-ladder__vehicle-label-text"
-        textAnchor="inherit"
-        transform="rotate(180,15,6)"
-        x="5"
-        y="9"
-      >
-        downward
-      </text>
-    </svg>
-  </g>
 </svg>
 `;
 
@@ -168,6 +172,130 @@ exports[`renders a ladder 1`] = `
   viewBox="-90 -40 180 500"
   width={180}
 >
+  <g>
+    <g
+      className="m-ladder__vehicle"
+      onClick={[Function]}
+      transform="translate(47,302) rotate(0,16,13)"
+    >
+      <g
+        className="m-vehicle-icon"
+        transform="scale(0.625)"
+      >
+        <path
+          className="m-vehicle-icon__triangle "
+          d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+        />
+      </g>
+      <svg
+        className="m-ladder__vehicle-label"
+        x={0}
+        y={26}
+      >
+        <rect
+          className="m-ladder__vehicle-label-background"
+          height="11"
+          rx="5.5"
+          ry="5.5"
+          width="30"
+        />
+        <text
+          className="m-ladder__vehicle-label-text"
+          textAnchor="inherit"
+          transform="rotate(0,15,6)"
+          x="5"
+          y="9"
+        >
+          upward
+        </text>
+      </svg>
+    </g>
+  </g>
+  <g>
+    <line
+      className="m-ladder__scheduled-line"
+      x1={-64}
+      x2={-40}
+      y1={-157.5}
+      y2={-157.5}
+    />
+    <g
+      className="m-ladder__vehicle"
+      onClick={[Function]}
+      transform="translate(-80,-170.5) rotate(180,16,13)"
+    >
+      <g
+        className="m-vehicle-icon"
+        transform="scale(0.625)"
+      >
+        <path
+          className="m-vehicle-icon__triangle "
+          d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+        />
+      </g>
+      <svg
+        className="m-ladder__vehicle-label"
+        x={0}
+        y={26}
+      >
+        <rect
+          className="m-ladder__vehicle-label-background"
+          height="11"
+          rx="5.5"
+          ry="5.5"
+          width="30"
+        />
+        <text
+          className="m-ladder__vehicle-label-text"
+          textAnchor="inherit"
+          transform="rotate(180,15,6)"
+          x="5"
+          y="9"
+        >
+          downward
+        </text>
+      </svg>
+    </g>
+  </g>
+  <g>
+    <g
+      className="m-ladder__vehicle"
+      onClick={[Function]}
+      transform="translate(-80,-23) rotate(180,16,13)"
+    >
+      <g
+        className="m-vehicle-icon"
+        transform="scale(0.625)"
+      >
+        <path
+          className="m-vehicle-icon__triangle "
+          d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+        />
+      </g>
+      <svg
+        className="m-ladder__vehicle-label"
+        x={0}
+        y={26}
+      >
+        <rect
+          className="m-ladder__vehicle-label-background"
+          height="11"
+          rx="5.5"
+          ry="5.5"
+          width="30"
+        />
+        <text
+          className="m-ladder__vehicle-label-text"
+          textAnchor="inherit"
+          transform="rotate(180,15,6)"
+          x="5"
+          y="9"
+        >
+          notimepoint
+        </text>
+      </svg>
+    </g>
+  </g>
   <line
     className="m-ladder__line"
     x1={-40}
@@ -245,117 +373,6 @@ exports[`renders a ladder 1`] = `
   >
     t0
   </text>
-  <g
-    className="m-ladder__vehicle"
-    onClick={[Function]}
-    transform="translate(47,315) rotate(0,16,13)"
-  >
-    <g
-      className="m-vehicle-icon"
-      transform="scale(0.625)"
-    >
-      <path
-        className="m-vehicle-icon__triangle "
-        d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-      />
-    </g>
-    <svg
-      className="m-ladder__vehicle-label"
-      x={0}
-      y={26}
-    >
-      <rect
-        className="m-ladder__vehicle-label-background"
-        height="11"
-        rx="5.5"
-        ry="5.5"
-        width="30"
-      />
-      <text
-        className="m-ladder__vehicle-label-text"
-        textAnchor="inherit"
-        transform="rotate(0,15,6)"
-        x="5"
-        y="9"
-      >
-        upward
-      </text>
-    </svg>
-  </g>
-  <g
-    className="m-ladder__vehicle"
-    onClick={[Function]}
-    transform="translate(-80,-157.5) rotate(180,16,13)"
-  >
-    <g
-      className="m-vehicle-icon"
-      transform="scale(0.625)"
-    >
-      <path
-        className="m-vehicle-icon__triangle "
-        d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-      />
-    </g>
-    <svg
-      className="m-ladder__vehicle-label"
-      x={0}
-      y={26}
-    >
-      <rect
-        className="m-ladder__vehicle-label-background"
-        height="11"
-        rx="5.5"
-        ry="5.5"
-        width="30"
-      />
-      <text
-        className="m-ladder__vehicle-label-text"
-        textAnchor="inherit"
-        transform="rotate(180,15,6)"
-        x="5"
-        y="9"
-      >
-        downward
-      </text>
-    </svg>
-  </g>
-  <g
-    className="m-ladder__vehicle"
-    onClick={[Function]}
-    transform="translate(-80,-10) rotate(180,16,13)"
-  >
-    <g
-      className="m-vehicle-icon"
-      transform="scale(0.625)"
-    >
-      <path
-        className="m-vehicle-icon__triangle "
-        d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-      />
-    </g>
-    <svg
-      className="m-ladder__vehicle-label"
-      x={0}
-      y={26}
-    >
-      <rect
-        className="m-ladder__vehicle-label-background"
-        height="11"
-        rx="5.5"
-        ry="5.5"
-        width="30"
-      />
-      <text
-        className="m-ladder__vehicle-label-text"
-        textAnchor="inherit"
-        transform="rotate(180,15,6)"
-        x="5"
-        y="9"
-      >
-        notimepoint
-      </text>
-    </svg>
-  </g>
 </svg>
 `;
 
@@ -366,6 +383,45 @@ exports[`renders a ladder with no timepoints 1`] = `
   viewBox="-90 -40 180 500"
   width={180}
 >
+  <g>
+    <g
+      className="m-ladder__vehicle"
+      onClick={[Function]}
+      transform="translate(47,-23) rotate(0,16,13)"
+    >
+      <g
+        className="m-vehicle-icon"
+        transform="scale(0.625)"
+      >
+        <path
+          className="m-vehicle-icon__triangle "
+          d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+        />
+      </g>
+      <svg
+        className="m-ladder__vehicle-label"
+        x={0}
+        y={26}
+      >
+        <rect
+          className="m-ladder__vehicle-label-background"
+          height="11"
+          rx="5.5"
+          ry="5.5"
+          width="30"
+        />
+        <text
+          className="m-ladder__vehicle-label-text"
+          textAnchor="inherit"
+          transform="rotate(0,15,6)"
+          x="5"
+          y="9"
+        >
+          upward
+        </text>
+      </svg>
+    </g>
+  </g>
   <line
     className="m-ladder__line"
     x1={-40}
@@ -380,42 +436,5 @@ exports[`renders a ladder with no timepoints 1`] = `
     y1="0"
     y2={420}
   />
-  <g
-    className="m-ladder__vehicle"
-    onClick={[Function]}
-    transform="translate(47,-10) rotate(0,16,13)"
-  >
-    <g
-      className="m-vehicle-icon"
-      transform="scale(0.625)"
-    >
-      <path
-        className="m-vehicle-icon__triangle "
-        d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-      />
-    </g>
-    <svg
-      className="m-ladder__vehicle-label"
-      x={0}
-      y={26}
-    >
-      <rect
-        className="m-ladder__vehicle-label-background"
-        height="11"
-        rx="5.5"
-        ry="5.5"
-        width="30"
-      />
-      <text
-        className="m-ladder__vehicle-label-text"
-        textAnchor="inherit"
-        transform="rotate(0,15,6)"
-        x="5"
-        y="9"
-      >
-        upward
-      </text>
-    </svg>
-  </g>
 </svg>
 `;

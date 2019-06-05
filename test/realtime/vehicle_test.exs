@@ -21,9 +21,9 @@ defmodule Realtime.VehicleTest do
             headsign: "headsign",
             route_pattern_id: "505-_-0",
             stop_times: [
-              %StopTime{stop_id: "6553", timepoint_id: "tp1"},
-              %StopTime{stop_id: "6554", timepoint_id: nil},
-              %StopTime{stop_id: "6555", timepoint_id: "tp2"}
+              %StopTime{stop_id: "6553", time: 0, timepoint_id: "tp1"},
+              %StopTime{stop_id: "6554", time: 0, timepoint_id: nil},
+              %StopTime{stop_id: "6555", time: 0, timepoint_id: "tp2"}
             ]
           }
         else
@@ -140,31 +140,37 @@ defmodule Realtime.VehicleTest do
     end
   end
 
-  describe "timepoint_status/3" do
+  describe "timepoint_status/2" do
     test "returns 0.0 if the stop is a timepoint, plus the timepoint" do
       stop_times = [
         %StopTime{
           stop_id: "s1",
+          time: 0,
           timepoint_id: "tp1"
         },
         %StopTime{
           stop_id: "s2",
+          time: 0,
           timepoint_id: nil
         },
         %StopTime{
           stop_id: "s3",
+          time: 0,
           timepoint_id: "tp3"
         },
         %StopTime{
           stop_id: "s4",
+          time: 0,
           timepoint_id: nil
         },
         %StopTime{
           stop_id: "s5",
+          time: 0,
           timepoint_id: nil
         },
         %StopTime{
           stop_id: "s6",
+          time: 0,
           timepoint_id: "tp2"
         }
       ]
@@ -181,26 +187,32 @@ defmodule Realtime.VehicleTest do
       stop_times = [
         %StopTime{
           stop_id: "s1",
+          time: 0,
           timepoint_id: "tp1"
         },
         %StopTime{
           stop_id: "s2",
+          time: 0,
           timepoint_id: nil
         },
         %StopTime{
           stop_id: "s3",
+          time: 0,
           timepoint_id: nil
         },
         %StopTime{
           stop_id: "s4",
+          time: 0,
           timepoint_id: nil
         },
         %StopTime{
           stop_id: "s5",
+          time: 0,
           timepoint_id: nil
         },
         %StopTime{
           stop_id: "s6",
+          time: 0,
           timepoint_id: "tp2"
         }
       ]
@@ -217,14 +229,17 @@ defmodule Realtime.VehicleTest do
       stop_times = [
         %StopTime{
           stop_id: "s1",
+          time: 0,
           timepoint_id: "tp1"
         },
         %StopTime{
           stop_id: "s2",
+          time: 0,
           timepoint_id: nil
         },
         %StopTime{
           stop_id: "s3",
+          time: 0,
           timepoint_id: "tp3"
         }
       ]
@@ -241,10 +256,12 @@ defmodule Realtime.VehicleTest do
       stop_times = [
         %StopTime{
           stop_id: "s1",
+          time: 0,
           timepoint_id: nil
         },
         %StopTime{
           stop_id: "s2",
+          time: 0,
           timepoint_id: nil
         }
       ]
@@ -252,6 +269,80 @@ defmodule Realtime.VehicleTest do
       stop_id = "s2"
 
       assert Vehicle.timepoint_status(stop_times, stop_id) == nil
+    end
+  end
+
+  describe "scheduled_timepoint_status/2" do
+    test "returns the next timepoint it's scheduled to be at" do
+      stop_times = [
+        %StopTime{
+          stop_id: "1",
+          time: Util.Time.parse_hhmmss("12:05:00"),
+          timepoint_id: "1"
+        },
+        %StopTime{
+          stop_id: "2",
+          time: Util.Time.parse_hhmmss("12:10:00"),
+          timepoint_id: "2"
+        },
+        %StopTime{
+          stop_id: "3",
+          time: Util.Time.parse_hhmmss("12:20:00"),
+          timepoint_id: "3"
+        }
+      ]
+
+      # 2019-01-01 12:17:30 EST
+      now = 1_546_363_050
+
+      assert Vehicle.scheduled_timepoint_status(stop_times, now) == %{
+               timepoint_id: "3",
+               fraction_until_timepoint: 0.25
+             }
+    end
+
+    test "returns nil if the trip is in the future" do
+      stop_times = [
+        %StopTime{
+          stop_id: "1",
+          time: Util.Time.parse_hhmmss("13:05:00"),
+          timepoint_id: "1"
+        },
+        %StopTime{
+          stop_id: "2",
+          time: Util.Time.parse_hhmmss("13:10:00"),
+          timepoint_id: "2"
+        }
+      ]
+
+      # 2019-01-01 12:17:30 EST
+      now = 1_546_363_050
+      assert Vehicle.scheduled_timepoint_status(stop_times, now) == nil
+    end
+
+    test "returns nil if the trip is in the past" do
+      stop_times = [
+        %StopTime{
+          stop_id: "1",
+          time: Util.Time.parse_hhmmss("11:05:00"),
+          timepoint_id: "1"
+        },
+        %StopTime{
+          stop_id: "2",
+          time: Util.Time.parse_hhmmss("11:10:00"),
+          timepoint_id: "2"
+        }
+      ]
+
+      # 2019-01-01 12:17:30 EST
+      now = 1_546_363_050
+      assert Vehicle.scheduled_timepoint_status(stop_times, now) == nil
+    end
+
+    test "returns nil if we can't find the trip's stop_times" do
+      # 2019-01-01 12:17:30 EST
+      now = 1_546_363_050
+      assert Vehicle.scheduled_timepoint_status([], now) == nil
     end
   end
 
@@ -264,10 +355,12 @@ defmodule Realtime.VehicleTest do
         stop_times: [
           %StopTime{
             stop_id: "s1",
+            time: 0,
             timepoint_id: "s1"
           },
           %StopTime{
             stop_id: "s2",
+            time: 0,
             timepoint_id: nil
           }
         ]

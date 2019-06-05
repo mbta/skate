@@ -79,8 +79,8 @@ defmodule Gtfs.DataTest do
             headsign: "h1",
             route_pattern_id: "rp1",
             stop_times: [
-              %StopTime{stop_id: "s1", timepoint_id: "tp1"},
-              %StopTime{stop_id: "s7", timepoint_id: nil}
+              %StopTime{stop_id: "s1", time: 1, timepoint_id: "tp1"},
+              %StopTime{stop_id: "s7", time: 2, timepoint_id: nil}
             ]
           },
           "t2" => %Trip{
@@ -89,8 +89,8 @@ defmodule Gtfs.DataTest do
             headsign: "h2",
             route_pattern_id: "rp2",
             stop_times: [
-              %StopTime{stop_id: "s2", timepoint_id: "tp2"},
-              %StopTime{stop_id: "s3", timepoint_id: "tp3"}
+              %StopTime{stop_id: "s2", time: 1, timepoint_id: "tp2"},
+              %StopTime{stop_id: "s3", time: 2, timepoint_id: "tp3"}
             ]
           },
           "t3" => %Trip{
@@ -99,8 +99,8 @@ defmodule Gtfs.DataTest do
             headsign: "h3",
             route_pattern_id: "rp3",
             stop_times: [
-              %StopTime{stop_id: "s4", timepoint_id: "tp4"},
-              %StopTime{stop_id: "s5", timepoint_id: "tp1"}
+              %StopTime{stop_id: "s4", time: 1, timepoint_id: "tp4"},
+              %StopTime{stop_id: "s5", time: 2, timepoint_id: "tp1"}
             ]
           }
         }
@@ -134,8 +134,8 @@ defmodule Gtfs.DataTest do
             headsign: "h1",
             route_pattern_id: "rp1",
             stop_times: [
-              %StopTime{stop_id: "s1", timepoint_id: "t1"},
-              %StopTime{stop_id: "s3b", timepoint_id: "t3"}
+              %StopTime{stop_id: "s1", time: 1, timepoint_id: "t1"},
+              %StopTime{stop_id: "s3b", time: 2, timepoint_id: "t3"}
             ]
           },
           "t2" => %Trip{
@@ -144,10 +144,10 @@ defmodule Gtfs.DataTest do
             headsign: "h2",
             route_pattern_id: "rp2",
             stop_times: [
-              %StopTime{stop_id: "s1", timepoint_id: "t1"},
-              %StopTime{stop_id: "s2", timepoint_id: "t2"},
-              %StopTime{stop_id: "s3a", timepoint_id: "t3"},
-              %StopTime{stop_id: "s4", timepoint_id: "t4"}
+              %StopTime{stop_id: "s1", time: 1, timepoint_id: "t1"},
+              %StopTime{stop_id: "s2", time: 2, timepoint_id: "t2"},
+              %StopTime{stop_id: "s3a", time: 3, timepoint_id: "t3"},
+              %StopTime{stop_id: "s4", time: 4, timepoint_id: "t4"}
             ]
           }
         }
@@ -220,7 +220,7 @@ defmodule Gtfs.DataTest do
             headsign: "h",
             route_pattern_id: "r1-_-0",
             stop_times: [
-              %StopTime{stop_id: "s1", timepoint_id: nil}
+              %StopTime{stop_id: "s1", time: 1, timepoint_id: nil}
             ]
           }
         }
