@@ -14,7 +14,7 @@ defmodule Gtfs.CacheFileTest do
   describe "save_gtfs/1 and load_gtfs/1" do
     test "saves to the default file, returns {:ok, term} for a map" do
       data = %Data{
-        routes: [%Route{id: "1", directions: %{}}],
+        routes: [%Route{id: "1", direction_names: %{}}],
         route_patterns: [],
         stops: %{},
         trips: %{}
@@ -31,7 +31,7 @@ defmodule Gtfs.CacheFileTest do
 
     test "saves to a requested file, returns {:ok, term} for a map" do
       data = %Data{
-        routes: [%Route{id: "2", directions: %{}}],
+        routes: [%Route{id: "2", direction_names: %{}}],
         route_patterns: [],
         stops: %{},
         trips: %{}
