@@ -42,7 +42,7 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehicles do
       operator_id: operator_id,
       operator_name: operator_name,
       stop_name: Map.get(vehicle_data, "nextStopName"),
-      direction_id: vehicle_data |> Map.get("directionId") |> Direction.id_from_string(),
+      direction_id: vehicle_data |> Map.get("directionId") |> direction_id_from_string(),
       headsign: Map.get(vehicle_data, "headsign"),
       headway_secs: Map.get(vehicle_data, "headwaySecs"),
       previous_vehicle_id: Map.get(vehicle_data, "previousVehicleId"),
@@ -66,4 +66,7 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehicles do
       _ -> {nil, nil}
     end
   end
+
+  defp direction_id_from_string(nil), do: nil
+  defp direction_id_from_string(direction_string), do: Direction.id_from_string(direction_string)
 end
