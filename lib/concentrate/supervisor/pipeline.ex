@@ -61,13 +61,7 @@ defmodule Concentrate.Supervisor.Pipeline do
     {child_ids(children), children}
   end
 
-  defp source_child(source, url, parser, opts \\ [])
-
-  defp source_child(_source, nil, _parser, _opts) do
-    nil
-  end
-
-  defp source_child(source, url, parser, opts) do
+  defp source_child(source, url, parser, opts \\ []) do
     child_spec(
       {
         Concentrate.Producer.HTTP,
