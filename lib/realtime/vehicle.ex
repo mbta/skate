@@ -122,7 +122,7 @@ defmodule Realtime.Vehicle do
 
     trip_id = VehiclePosition.trip_id(vehicle_position)
     trip = trip_fn.(trip_id)
-    headsign = VehiclePosition.headsign(vehicle_position) || (trip && trip.headsign)
+    headsign = trip && trip.headsign
     via_variant = trip && trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id)
     stop_times_on_trip = (trip && trip.stop_times) || []
 
