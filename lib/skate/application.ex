@@ -22,9 +22,9 @@ defmodule Skate.Application do
         Concentrate.Supervisor,
         [
           [
-            concentrate_vehicle_positions_url:
-              get_config_string(:concentrate_vehicle_positions_url),
-            busloc_url: get_config_string(:busloc_url)
+            busloc_url: get_config_string(:busloc_url),
+            swiftly_authorization_key: get_config_string(:swiftly_authorization_key),
+            swiftly_realtime_vehicles_url: get_config_string(:swiftly_realtime_vehicles_url)
           ]
         ]
       ),
@@ -41,7 +41,8 @@ defmodule Skate.Application do
   def runtime_config() do
     environment_variables = [
       gtfs_url: "SKATE_GTFS_URL",
-      concentrate_vehicle_positions_url: "SKATE_CONCENTRATE_VEHICLE_POSITIONS_URL"
+      swiftly_authorization_key: "SWIFTLY_AUTHORIZATION_KEY",
+      swiftly_realtime_vehicles_url: "SWIFTLY_REALTIME_VEHICLES_URL"
     ]
 
     for {application_key, environment_key} <- environment_variables do
@@ -60,10 +61,10 @@ defmodule Skate.Application do
     :ok
   end
 
-  @spec get_config_string(atom) :: String.t() | integer | nil
+  @spec get_config_string(atom) :: String.t() | nil
   def get_config_string(name) do
     case Application.get_env(:skate, name) do
-      {:system, env_var, default} -> System.get_env(env_var) || default
+      {:system, env_var} -> System.get_env(env_var)
       value -> value
     end
   end

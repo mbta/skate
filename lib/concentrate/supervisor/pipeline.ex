@@ -25,18 +25,7 @@ defmodule Concentrate.Supervisor.Pipeline do
   end
 
   def sources(opts) do
-    realtime_child =
-      if opts[:concentrate_vehicle_positions_url] do
-        source_child(
-          :gtfs_realtime,
-          opts[:concentrate_vehicle_positions_url],
-          Concentrate.Parser.GTFSRealtimeEnhanced
-        )
-      else
-        nil
-      end
-
-    enhanced_child =
+    realtime_enhanced_child =
       if opts[:busloc_url] do
         source_child(
           :gtfs_realtime_enhanced,
@@ -47,20 +36,36 @@ defmodule Concentrate.Supervisor.Pipeline do
         nil
       end
 
+    swiftly_child =
+      if opts[:swiftly_realtime_vehicles_url] && opts[:swiftly_authorization_key] do
+        source_child(
+          :swiftly_realtime_vehicles,
+          opts[:swiftly_realtime_vehicles_url],
+          Concentrate.Parser.SwiftlyRealtimeVehicles,
+          headers: %{
+            "Authorization" => opts[:swiftly_authorization_key]
+          },
+          params: %{
+            unassigned: "true",
+            verbose: "true"
+          }
+        )
+      else
+        nil
+      end
+
     children =
-      [realtime_child, enhanced_child]
+      [realtime_enhanced_child, swiftly_child]
       |> Enum.reject(&is_nil/1)
 
     {child_ids(children), children}
   end
 
-  defp source_child(_source, nil, _parser), do: nil
-
-  defp source_child(source, url, parser) do
+  defp source_child(source, url, parser, opts \\ []) do
     child_spec(
       {
         Concentrate.Producer.HTTP,
-        {url, [name: source, parser: parser]}
+        {url, [name: source, parser: parser] ++ opts}
       },
       id: source
     )
