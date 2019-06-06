@@ -61,11 +61,9 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehicles do
   defp operator_details(nil), do: {nil, nil}
 
   defp operator_details(operator_string) do
-    if String.match?(operator_string, ~r/ - /) do
-      [operator_name, operator_id] = String.split(operator_string, " - ")
-      {operator_name, operator_id}
-    else
-      {nil, nil}
+    case String.split(operator_string, " - ") do
+      [operator_name, operator_id] -> {operator_name, operator_id}
+      _ -> {nil, nil}
     end
   end
 end
