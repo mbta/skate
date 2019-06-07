@@ -3,3 +3,45 @@
   stroke: $color-bg-base;
   stroke-width: 2;
 }
+
+.m-vehicle-icon__label-background {
+  fill: $color-bg-base;
+}
+
+.m-vehicle-icon__label {
+  fill: currentColor;
+}
+
+.m-vehicle-icon__variant {
+  fill: $color-font-light;
+}
+
+.m-vehicle-icon--small {
+  .m-vehicle-icon__label {
+    @include font-tiny;
+  }
+
+  .m-vehicle-icon__variant {
+    @include font-tiny;
+  }
+}
+
+.m-vehicle-icon--medium {
+  .m-vehicle-icon__label {
+    @include font-tiny;
+  }
+
+  .m-vehicle-icon__variant {
+    @include font-small;
+  }
+}
+
+.m-vehicle-icon--large {
+  .m-vehicle-icon__label {
+    @include font-header-big;
+  }
+
+  .m-vehicle-icon__variant {
+    @include font-big;
+  }
+}

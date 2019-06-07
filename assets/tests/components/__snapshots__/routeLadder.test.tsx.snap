@@ -224,45 +224,50 @@ exports[`renders a route ladder with vehicles 1`] = `
       <g
         className="m-ladder__vehicle "
         onClick={[Function]}
-        transform="translate(47,92) rotate(0,16,13)"
+        transform="translate(63,105)"
       >
         <g
-          className="m-vehicle-icon"
-          transform="scale(0.625)"
-        >
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-          />
-        </g>
-        <svg
-          className="m-ladder__vehicle-label"
-          x={0}
-          y={26}
+          className="m-vehicle-icon m-vehicle-icon--medium"
         >
           <rect
-            className="m-ladder__vehicle-label-background"
-            height="11"
-            rx="5.5"
-            ry="5.5"
-            width="30"
+            className="m-vehicle-icon__label-background"
+            height={11}
+            rx={5.5}
+            ry={5.5}
+            width={26}
+            x={-13}
+            y={11.5}
           />
           <text
-            className="m-ladder__vehicle-label-text"
-            textAnchor="inherit"
-            transform="rotate(0,15,6)"
-            x="5"
-            y="9"
+            className="m-vehicle-icon__label"
+            dominantBaseline="central"
+            textAnchor="middle"
+            x="0"
+            y={17}
           >
             1818
           </text>
-        </svg>
+          <path
+            className="m-vehicle-icon__triangle"
+            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            transform="scale(0.625) rotate(0) translate(-24,-22)"
+          />
+          <text
+            className="m-vehicle-icon__variant"
+            dominantBaseline="alphabetic"
+            textAnchor="middle"
+            x={0}
+            y={8.5}
+          >
+            4
+          </text>
+        </g>
       </g>
     </g>
     <g>
       <line
         className="m-ladder__scheduled-line"
-        x1={-64}
+        x1={-63}
         x2={-40}
         y1={420}
         y2={420}
@@ -270,39 +275,35 @@ exports[`renders a route ladder with vehicles 1`] = `
       <g
         className="m-ladder__vehicle "
         onClick={[Function]}
-        transform="translate(-80,407) rotate(180,16,13)"
+        transform="translate(-63,420)"
       >
         <g
-          className="m-vehicle-icon"
-          transform="scale(0.625)"
-        >
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-          />
-        </g>
-        <svg
-          className="m-ladder__vehicle-label"
-          x={0}
-          y={26}
+          className="m-vehicle-icon m-vehicle-icon--medium"
         >
           <rect
-            className="m-ladder__vehicle-label-background"
-            height="11"
-            rx="5.5"
-            ry="5.5"
-            width="30"
+            className="m-vehicle-icon__label-background"
+            height={11}
+            rx={5.5}
+            ry={5.5}
+            width={26}
+            x={-13}
+            y={-22.5}
           />
           <text
-            className="m-ladder__vehicle-label-text"
-            textAnchor="inherit"
-            transform="rotate(180,15,6)"
-            x="5"
-            y="9"
+            className="m-vehicle-icon__label"
+            dominantBaseline="central"
+            textAnchor="middle"
+            x="0"
+            y={-17}
           >
             0479
           </text>
-        </svg>
+          <path
+            className="m-vehicle-icon__triangle"
+            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            transform="scale(0.625) rotate(180) translate(-24,-22)"
+          />
+        </g>
       </g>
     </g>
     <line
@@ -439,45 +440,50 @@ exports[`renders a route ladder with vehicles in the incoming box 1`] = `
       <g
         className="m-ladder__vehicle "
         onClick={[Function]}
-        transform="translate(47,92) rotate(0,16,13)"
+        transform="translate(63,105)"
       >
         <g
-          className="m-vehicle-icon"
-          transform="scale(0.625)"
-        >
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-          />
-        </g>
-        <svg
-          className="m-ladder__vehicle-label"
-          x={0}
-          y={26}
+          className="m-vehicle-icon m-vehicle-icon--medium"
         >
           <rect
-            className="m-ladder__vehicle-label-background"
-            height="11"
-            rx="5.5"
-            ry="5.5"
-            width="30"
+            className="m-vehicle-icon__label-background"
+            height={11}
+            rx={5.5}
+            ry={5.5}
+            width={26}
+            x={-13}
+            y={11.5}
           />
           <text
-            className="m-ladder__vehicle-label-text"
-            textAnchor="inherit"
-            transform="rotate(0,15,6)"
-            x="5"
-            y="9"
+            className="m-vehicle-icon__label"
+            dominantBaseline="central"
+            textAnchor="middle"
+            x="0"
+            y={17}
           >
             1818
           </text>
-        </svg>
+          <path
+            className="m-vehicle-icon__triangle"
+            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            transform="scale(0.625) rotate(0) translate(-24,-22)"
+          />
+          <text
+            className="m-vehicle-icon__variant"
+            dominantBaseline="alphabetic"
+            textAnchor="middle"
+            x={0}
+            y={8.5}
+          >
+            4
+          </text>
+        </g>
       </g>
     </g>
     <g>
       <line
         className="m-ladder__scheduled-line"
-        x1={-64}
+        x1={-63}
         x2={-40}
         y1={420}
         y2={420}
@@ -485,39 +491,35 @@ exports[`renders a route ladder with vehicles in the incoming box 1`] = `
       <g
         className="m-ladder__vehicle "
         onClick={[Function]}
-        transform="translate(-80,407) rotate(180,16,13)"
+        transform="translate(-63,420)"
       >
         <g
-          className="m-vehicle-icon"
-          transform="scale(0.625)"
-        >
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-          />
-        </g>
-        <svg
-          className="m-ladder__vehicle-label"
-          x={0}
-          y={26}
+          className="m-vehicle-icon m-vehicle-icon--medium"
         >
           <rect
-            className="m-ladder__vehicle-label-background"
-            height="11"
-            rx="5.5"
-            ry="5.5"
-            width="30"
+            className="m-vehicle-icon__label-background"
+            height={11}
+            rx={5.5}
+            ry={5.5}
+            width={26}
+            x={-13}
+            y={-22.5}
           />
           <text
-            className="m-ladder__vehicle-label-text"
-            textAnchor="inherit"
-            transform="rotate(180,15,6)"
-            x="5"
-            y="9"
+            className="m-vehicle-icon__label"
+            dominantBaseline="central"
+            textAnchor="middle"
+            x="0"
+            y={-17}
           >
             0479
           </text>
-        </svg>
+          <path
+            className="m-vehicle-icon__triangle"
+            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            transform="scale(0.625) rotate(180) translate(-24,-22)"
+          />
+        </g>
       </g>
     </g>
     <line
