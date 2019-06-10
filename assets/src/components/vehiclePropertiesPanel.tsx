@@ -34,7 +34,7 @@ const Header = ({
 )
 
 const Properties = ({
-  vehicle: { run_id, label, operator_id, operator_name },
+  vehicle: { runId, label, operatorId, operatorName },
 }: {
   vehicle: Vehicle
 }) => (
@@ -45,7 +45,7 @@ const Properties = ({
           Run
         </th>
         <td className="m-vehicle-properties-panel__vehicle-property-value">
-          {run_id}
+          {runId}
         </td>
       </tr>
       <tr>
@@ -61,7 +61,7 @@ const Properties = ({
           Operator
         </th>
         <td className="m-vehicle-properties-panel__vehicle-property-value">
-          {operator_name} #{operator_id}
+          {operatorName} #{operatorId}
         </td>
       </tr>
     </tbody>
@@ -69,7 +69,7 @@ const Properties = ({
 )
 
 const Location = ({
-  vehicle: { latitude, longitude, stop_status },
+  vehicle: { latitude, longitude, stopStatus },
 }: {
   vehicle: Vehicle
 }) => (
@@ -78,7 +78,7 @@ const Location = ({
       Next Stop
     </div>
     <div className="m-vehicle-properties-panel__vehicle-property-value">
-      {stop_status.stop_name}
+      {stopStatus.stopName}
     </div>
     <a
       className="m-vehicle-properties-panel__link"
@@ -137,17 +137,17 @@ const VehiclePropertiesPanel = ({
 }
 
 export const formatRouteVariant = (vehicle: Vehicle): string => {
-  const { route_id: routeId, via_variant: viaVariant, headsign } = vehicle
+  const { routeId, viaVariant, headsign } = vehicle
   const viaVariantFormatted = viaVariant && viaVariant !== "_" ? viaVariant : ""
   const headsignFormatted = headsign ? ` ${headsign}` : ""
   return `${routeId}_${viaVariantFormatted}${headsignFormatted}`
 }
 
 const directionName = (
-  { direction_id }: Vehicle,
+  { directionId }: Vehicle,
   selectedVehicleRoute?: Route
 ): string =>
-  selectedVehicleRoute ? selectedVehicleRoute.directionNames[direction_id] : ""
+  selectedVehicleRoute ? selectedVehicleRoute.directionNames[directionId] : ""
 
 const directionsUrl = (
   latitude: number,

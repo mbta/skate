@@ -11,38 +11,37 @@ import { deselectVehicle } from "../../src/state"
 const vehicle: Vehicle = {
   id: "v1",
   label: "v1-label",
-  run_id: "run-1",
+  runId: "run-1",
   timestamp: 123,
   latitude: 0,
   longitude: 0,
-  direction_id: 0,
-  route_id: "39",
-  trip_id: "t1",
+  directionId: 0,
+  routeId: "39",
+  tripId: "t1",
   headsign: "Forest Hills",
-  via_variant: "X",
-  operator_id: "op1",
-  operator_name: "SMITH",
+  viaVariant: "X",
+  operatorId: "op1",
+  operatorName: "SMITH",
   speed: 50.0,
   bearing: 33,
-  block_id: "block-1",
-  headway_secs: 859.1,
-  previous_vehicle_id: "v2",
-  previous_vehicle_schedule_adherence_secs: 59,
-  previous_vehicle_schedule_adherence_string: "59.0 sec (late)",
-  schedule_adherence_secs: 0,
-  schedule_adherence_string: "0.0 sec (ontime)",
-  scheduled_headway_secs: 120,
-  stop_status: {
+  blockId: "block-1",
+  headwaySecs: 859.1,
+  previousVehicleId: "v2",
+  scheduleAdherenceSecs: 0,
+  scheduleAdherenceString: "0.0 sec (ontime)",
+  scheduleAdherenceStatus: "on-time",
+  scheduledHeadwaySecs: 120,
+  stopStatus: {
     status: "in_transit_to",
-    stop_id: "s1",
-    stop_name: "Stop Name",
+    stopId: "s1",
+    stopName: "Stop Name",
   },
-  timepoint_status: {
-    timepoint_id: "tp1",
-    fraction_until_timepoint: 0.5,
+  timepointStatus: {
+    timepointId: "tp1",
+    fractionUntilTimepoint: 0.5,
   },
-  scheduled_timepoint_status: null,
-  route_status: "on_route",
+  scheduledTimepointStatus: null,
+  routeStatus: "on_route",
 }
 
 describe("VehiclePropertiesPanel", () => {
@@ -92,7 +91,7 @@ describe("formatRouteVariant", () => {
     const testVehicle: Vehicle = {
       ...vehicle,
       headsign: null,
-      via_variant: null,
+      viaVariant: null,
     }
     expect(formatRouteVariant(testVehicle)).toEqual("39_")
   })
@@ -101,7 +100,7 @@ describe("formatRouteVariant", () => {
     const testVehicle: Vehicle = {
       ...vehicle,
       headsign: null,
-      via_variant: "_",
+      viaVariant: "_",
     }
     expect(formatRouteVariant(testVehicle)).toEqual("39_")
   })

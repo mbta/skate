@@ -19,7 +19,7 @@ export const vehicleDirectionOnLadder = (
   vehicle: Vehicle,
   ladderDirection: LadderDirection
 ): VehicleDirection =>
-  (vehicle.direction_id === 1) ===
+  (vehicle.directionId === 1) ===
   (ladderDirection === LadderDirection.ZeroToOne)
     ? VehicleDirection.Down
     : VehicleDirection.Up
@@ -160,7 +160,7 @@ const LadderVehicle = ({
     vehicleDirection === VehicleDirection.Up ? 47 : -(48 + widthOfVehicleGroup)
   const vehicleY =
     timepointStatusY(
-      vehicle.timepoint_status,
+      vehicle.timepointStatus,
       timepoints,
       timepointSpacingY,
       vehicleDirection
@@ -168,7 +168,7 @@ const LadderVehicle = ({
   const roadLineX =
     vehicleDirection === VehicleDirection.Up ? CENTER_TO_LINE : -CENTER_TO_LINE
   const scheduledY = timepointStatusY(
-    vehicle.scheduled_timepoint_status,
+    vehicle.scheduledTimepointStatus,
     timepoints,
     timepointSpacingY,
     vehicleDirection
@@ -208,14 +208,14 @@ const timepointStatusY = (
 ): number | null => {
   if (timepointStatus) {
     const timepointIndex = timepoints.findIndex(
-      timepoint => timepoint.id === timepointStatus.timepoint_id
+      timepoint => timepoint.id === timepointStatus.timepointId
     )
     if (timepointIndex !== -1) {
       const fractionDirection = direction === VehicleDirection.Up ? +1 : -1
       return (
         timepointSpacingY *
         (timepointIndex +
-          timepointStatus.fraction_until_timepoint * fractionDirection)
+          timepointStatus.fractionUntilTimepoint * fractionDirection)
       )
     }
   }

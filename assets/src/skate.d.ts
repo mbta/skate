@@ -15,6 +15,8 @@ export interface Route {
 
 export type RouteId = string
 
+export type ScheduleAdherenceStatus = "on-time" | "early" | "late"
+
 export type StopId = string
 
 export interface Timepoint {
@@ -34,44 +36,43 @@ export type TripId = string
 export interface Vehicle {
   id: VehicleId
   label: string
-  run_id: string
+  runId: string
   timestamp: number
   latitude: number
   longitude: number
-  direction_id: DirectionId
-  route_id: RouteId
-  trip_id: TripId
+  directionId: DirectionId
+  routeId: RouteId
+  tripId: TripId
   headsign: string | null
-  via_variant: ViaVariant | null
-  operator_id: string
-  operator_name: string
+  viaVariant: ViaVariant | null
+  operatorId: string
+  operatorName: string
   bearing: number
   speed: number
-  block_id: string
-  headway_secs: number
-  previous_vehicle_id: string
-  previous_vehicle_schedule_adherence_secs: number
-  previous_vehicle_schedule_adherence_string: string
-  schedule_adherence_secs: number
-  schedule_adherence_string: string
-  scheduled_headway_secs: number
-  stop_status: VehicleStopStatus
-  timepoint_status: VehicleTimepointStatus | null
-  scheduled_timepoint_status: VehicleTimepointStatus | null
-  route_status: VehicleRouteStatus
+  blockId: string
+  headwaySecs: number
+  previousVehicleId: string
+  scheduleAdherenceSecs: number
+  scheduleAdherenceString: string
+  scheduleAdherenceStatus: ScheduleAdherenceStatus
+  scheduledHeadwaySecs: number
+  stopStatus: VehicleStopStatus
+  timepointStatus: VehicleTimepointStatus | null
+  scheduledTimepointStatus: VehicleTimepointStatus | null
+  routeStatus: VehicleRouteStatus
 }
 
 export type VehicleId = string
 
 export interface VehicleStopStatus {
   status: VehicleStatus
-  stop_id: StopId
-  stop_name: string
+  stopId: StopId
+  stopName: string
 }
 
 export interface VehicleTimepointStatus {
-  timepoint_id: TimepointId
-  fraction_until_timepoint: number
+  timepointId: TimepointId
+  fractionUntilTimepoint: number
 }
 
 export type VehiclesByRouteId = ByRouteId<Vehicle[]>

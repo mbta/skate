@@ -27,7 +27,7 @@ const partitionVehiclesByRouteStatus = (
       { onRouteVehicles, incomingVehicles }: PartitionedVehicles,
       vehicle: Vehicle
     ) =>
-      vehicle.route_status === "on_route"
+      vehicle.routeStatus === "on_route"
         ? { onRouteVehicles: [...onRouteVehicles, vehicle], incomingVehicles }
         : { onRouteVehicles, incomingVehicles: [...incomingVehicles, vehicle] },
     { onRouteVehicles: [], incomingVehicles: [] }

@@ -36,7 +36,7 @@ const vehicleRoute = (
   allRoutes: Route[] | null,
   vehicle: Vehicle | undefined
 ): Route | undefined =>
-  (allRoutes || []).find(route => route.id === (vehicle && vehicle.route_id))
+  (allRoutes || []).find(route => route.id === (vehicle && vehicle.routeId))
 
 const App = ({
   routes,
