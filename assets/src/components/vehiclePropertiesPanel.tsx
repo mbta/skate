@@ -10,6 +10,66 @@ interface Props {
   selectedVehicleRoute?: Route
 }
 
+const ScheduleAdherenceStatusIcon = ({
+  vehicle: { scheduleAdherenceStatus },
+}: {
+  vehicle: Vehicle
+}) => (
+  <div
+    className={`m-vehicle-properties-panel__schedule-adherence-status-icon ${scheduleAdherenceStatus}`}
+  >
+    <svg width="10" height="10">
+      <circle cx="5" cy="5" r="5" />
+    </svg>
+  </div>
+)
+
+const ScheduleAdherenceStatusString = ({
+  vehicle: { scheduleAdherenceStatus },
+}: {
+  vehicle: Vehicle
+}) => (
+  <div className="m-vehicle-properties-panel__schedule-adherence-status-string">
+    {scheduleAdherenceStatus}
+  </div>
+)
+
+const minutes = (seconds: number): number => Math.floor(seconds / 60)
+
+const earlyOrLateLabel = ({
+  scheduleAdherenceSecs,
+  scheduleAdherenceStatus,
+}: Vehicle): string =>
+  `(${minutes(scheduleAdherenceSecs)} min ${scheduleAdherenceStatus})`
+
+const scheduleAdherenceLabelString = (vehicle: Vehicle): string => {
+  const { scheduleAdherenceStatus } = vehicle
+  if (
+    scheduleAdherenceStatus === "early" ||
+    scheduleAdherenceStatus === "late"
+  ) {
+    return earlyOrLateLabel(vehicle)
+  } else {
+    return ""
+  }
+}
+
+const ScheduleAdherenceLabel = ({ vehicle }: { vehicle: Vehicle }) => (
+  <div className="m-vehicle-properties-panel__schedule-adherencbe-lael">
+    {scheduleAdherenceLabelString(vehicle)}
+  </div>
+)
+
+const ScheduleAdherence = ({ vehicle }: { vehicle: Vehicle }) => {
+  return (
+    <div className="m-vehicle-properties-panel__schedule-adherence">
+      <ScheduleAdherenceStatusIcon vehicle={vehicle} />
+      <ScheduleAdherenceStatusString vehicle={vehicle} />
+      <ScheduleAdherenceLabel vehicle={vehicle} />
+    </div>
+  )
+}
+
 const Header = ({
   vehicle,
   selectedVehicleRoute,
@@ -28,6 +88,7 @@ const Header = ({
       <div className="m-vehicle-properties-panel__variant-name">
         {formatRouteVariant(vehicle)}
       </div>
+      <ScheduleAdherence vehicle={vehicle} />
     </div>
     <CloseButton onClick={hideMe} />
   </div>

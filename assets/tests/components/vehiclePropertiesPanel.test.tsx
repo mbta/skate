@@ -53,6 +53,32 @@ describe("VehiclePropertiesPanel", () => {
     expect(tree).toMatchSnapshot()
   })
 
+  test("renders for an early vehicle", () => {
+    const earlyVehicle: Vehicle = {
+      ...vehicle,
+      scheduleAdherenceSecs: -61,
+      scheduleAdherenceStatus: "early",
+    }
+    const tree = renderer
+      .create(<VehiclePropertiesPanel selectedVehicle={earlyVehicle} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders for a late vehicle", () => {
+    const earlyVehicle: Vehicle = {
+      ...vehicle,
+      scheduleAdherenceSecs: 361,
+      scheduleAdherenceStatus: "late",
+    }
+    const tree = renderer
+      .create(<VehiclePropertiesPanel selectedVehicle={earlyVehicle} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
   test("clicking the X close button deselects the vehicle", () => {
     const mockDispatch = jest.fn()
 
