@@ -55,7 +55,7 @@ const scheduleAdherenceLabelString = (vehicle: Vehicle): string => {
 }
 
 const ScheduleAdherenceLabel = ({ vehicle }: { vehicle: Vehicle }) => (
-  <div className="m-vehicle-properties-panel__schedule-adherencbe-lael">
+  <div className="m-vehicle-properties-panel__schedule-adherence-label">
     {scheduleAdherenceLabelString(vehicle)}
   </div>
 )
