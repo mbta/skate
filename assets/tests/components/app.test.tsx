@@ -1,96 +1,115 @@
 import React from "react"
 import renderer from "react-test-renderer"
-import App from "../../src/components/app"
+import App, { findRouteById } from "../../src/components/app"
 import { Route, TimepointsByRouteId, Vehicle } from "../../src/skate"
 
-test("renders the empty state", () => {
-  const tree = renderer
-    .create(
-      <App
-        routes={null}
-        timepointsByRouteId={{}}
-        selectedRouteIds={[]}
-        vehiclesByRouteId={{}}
-        selectedVehicleId={undefined}
-      />
-    )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
+describe("App", () => {
+  test("renders the empty state", () => {
+    const tree = renderer
+      .create(
+        <App
+          routes={null}
+          timepointsByRouteId={{}}
+          selectedRouteIds={[]}
+          vehiclesByRouteId={{}}
+          selectedVehicleId={undefined}
+        />
+      )
+      .toJSON()
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders with routes", () => {
+    const tree = renderer
+      .create(
+        <App
+          routes={routes}
+          timepointsByRouteId={{}}
+          selectedRouteIds={["1"]}
+          vehiclesByRouteId={{}}
+          selectedVehicleId={undefined}
+        />
+      )
+      .toJSON()
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders with selectedRoutes in different order than routes data", () => {
+    const tree = renderer
+      .create(
+        <App
+          routes={routes}
+          timepointsByRouteId={{}}
+          selectedRouteIds={["28", "1"]}
+          vehiclesByRouteId={{}}
+          selectedVehicleId={undefined}
+        />
+      )
+      .toJSON()
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders with timepoints", () => {
+    const tree = renderer
+      .create(
+        <App
+          routes={routes}
+          timepointsByRouteId={timepointsByRouteId}
+          selectedRouteIds={[]}
+          vehiclesByRouteId={{}}
+          selectedVehicleId={undefined}
+        />
+      )
+      .toJSON()
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders with vehicles", () => {
+    const tree = renderer
+      .create(
+        <App
+          routes={routes}
+          timepointsByRouteId={timepointsByRouteId}
+          selectedRouteIds={[]}
+          vehiclesByRouteId={{ "28": [vehicle] }}
+          selectedVehicleId={undefined}
+        />
+      )
+      .toJSON()
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders with a selected vehicle", () => {
+    const tree = renderer
+      .create(
+        <App
+          routes={routes}
+          timepointsByRouteId={timepointsByRouteId}
+          selectedRouteIds={[]}
+          vehiclesByRouteId={{ "28": [vehicle] }}
+          selectedVehicleId="28"
+        />
+      )
+      .toJSON()
+    expect(tree).toMatchSnapshot()
+  })
 })
 
-test("renders with routes", () => {
-  const tree = renderer
-    .create(
-      <App
-        routes={routes}
-        timepointsByRouteId={{}}
-        selectedRouteIds={["1"]}
-        vehiclesByRouteId={{}}
-        selectedVehicleId={undefined}
-      />
-    )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
-})
+describe("findRouteById", () => {
+  test("finds a route in a list by its id", () => {
+    expect(findRouteById(routes, "28")).toEqual({
+      id: "28",
+      directionNames: { 0: "Outbound", 1: "Inbound" },
+    })
+  })
 
-test("renders with selectedRoutes in different order than routes data", () => {
-  const tree = renderer
-    .create(
-      <App
-        routes={routes}
-        timepointsByRouteId={{}}
-        selectedRouteIds={["28", "1"]}
-        vehiclesByRouteId={{}}
-        selectedVehicleId={undefined}
-      />
-    )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
-})
+  test("returns undefined if the route isn't found", () => {
+    expect(findRouteById(routes, "missing")).toEqual(undefined)
+  })
 
-test("renders with timepoints", () => {
-  const tree = renderer
-    .create(
-      <App
-        routes={routes}
-        timepointsByRouteId={timepointsByRouteId}
-        selectedRouteIds={[]}
-        vehiclesByRouteId={{}}
-        selectedVehicleId={undefined}
-      />
-    )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
-})
-
-test("renders with vehicles", () => {
-  const tree = renderer
-    .create(
-      <App
-        routes={routes}
-        timepointsByRouteId={timepointsByRouteId}
-        selectedRouteIds={[]}
-        vehiclesByRouteId={{ "28": [vehicle] }}
-        selectedVehicleId={undefined}
-      />
-    )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
-})
-
-test("renders with a selected vehicle", () => {
-  const tree = renderer
-    .create(
-      <App
-        routes={routes}
-        timepointsByRouteId={timepointsByRouteId}
-        selectedRouteIds={[]}
-        vehiclesByRouteId={{ "28": [vehicle] }}
-        selectedVehicleId="28"
-      />
-    )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
+  test("returns undefined if routes is null", () => {
+    expect(findRouteById(null, "does not matter")).toEqual(undefined)
+  })
 })
 
 const routes: Route[] = [

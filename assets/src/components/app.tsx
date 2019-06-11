@@ -19,7 +19,7 @@ interface Props {
   selectedVehicleId: VehicleId | undefined
 }
 
-const findRouteById = (
+export const findRouteById = (
   routes: Route[] | null,
   routeId: RouteId
 ): Route | undefined => (routes || []).find(route => route.id === routeId)

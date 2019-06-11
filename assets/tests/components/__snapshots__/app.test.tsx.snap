@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders the empty state 1`] = `
+exports[`App renders the empty state 1`] = `
 <div
   className="m-app"
 >
@@ -74,7 +74,7 @@ exports[`renders the empty state 1`] = `
 </div>
 `;
 
-exports[`renders with a selected vehicle 1`] = `
+exports[`App renders with a selected vehicle 1`] = `
 <div
   className="m-app"
 >
@@ -167,7 +167,7 @@ exports[`renders with a selected vehicle 1`] = `
 </div>
 `;
 
-exports[`renders with routes 1`] = `
+exports[`App renders with routes 1`] = `
 <div
   className="m-app"
 >
@@ -311,7 +311,7 @@ exports[`renders with routes 1`] = `
 </div>
 `;
 
-exports[`renders with selectedRoutes in different order than routes data 1`] = `
+exports[`App renders with selectedRoutes in different order than routes data 1`] = `
 <div
   className="m-app"
 >
@@ -504,7 +504,7 @@ exports[`renders with selectedRoutes in different order than routes data 1`] = `
 </div>
 `;
 
-exports[`renders with timepoints 1`] = `
+exports[`App renders with timepoints 1`] = `
 <div
   className="m-app"
 >
@@ -597,7 +597,7 @@ exports[`renders with timepoints 1`] = `
 </div>
 `;
 
-exports[`renders with vehicles 1`] = `
+exports[`App renders with vehicles 1`] = `
 <div
   className="m-app"
 >
