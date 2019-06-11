@@ -50,7 +50,7 @@ Array [
             on-time
           </div>
           <div
-            className="m-vehicle-properties-panel__schedule-adherencbe-lael"
+            className="m-vehicle-properties-panel__schedule-adherence-label"
           >
             
           </div>
@@ -198,7 +198,7 @@ Array [
             late
           </div>
           <div
-            className="m-vehicle-properties-panel__schedule-adherencbe-lael"
+            className="m-vehicle-properties-panel__schedule-adherence-label"
           >
             (6 min late)
           </div>
@@ -346,9 +346,9 @@ Array [
             early
           </div>
           <div
-            className="m-vehicle-properties-panel__schedule-adherencbe-lael"
+            className="m-vehicle-properties-panel__schedule-adherence-label"
           >
-            (-2 min early)
+            (2 min early)
           </div>
         </div>
       </div>
