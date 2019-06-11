@@ -47,13 +47,13 @@
 .m-vehicle-properties-panel__schedule-adherence-status-icon {
   margin-right: 0.4rem;
 
-  &.on-time {
+  .on-time & {
     fill: $color-vehicle-ontime;
   }
-  &.early {
+  .early & {
     fill: $color-vehicle-early;
   }
-  &.late {
+  .late & {
     fill: $color-vehicle-late;
   }
 }
@@ -62,6 +62,12 @@
   font-weight: bold;
   margin-right: 0.3rem;
   text-transform: uppercase;
+}
+
+.m-vehicle-properties-panel__schedule-adherence-label {
+  .on-time & {
+    color: $color-component-medium;
+  }
 }
 
 .m-vehicle-properties-panel__header > button {

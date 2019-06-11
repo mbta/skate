@@ -10,14 +10,8 @@ interface Props {
   selectedVehicleRoute?: Route
 }
 
-const ScheduleAdherenceStatusIcon = ({
-  vehicle: { scheduleAdherenceStatus },
-}: {
-  vehicle: Vehicle
-}) => (
-  <div
-    className={`m-vehicle-properties-panel__schedule-adherence-status-icon ${scheduleAdherenceStatus}`}
-  >
+const ScheduleAdherenceStatusIcon = () => (
+  <div className="m-vehicle-properties-panel__schedule-adherence-status-icon">
     <svg width="10" height="10">
       <circle cx="5" cy="5" r="5" />
     </svg>
@@ -36,23 +30,15 @@ const ScheduleAdherenceStatusString = ({
 
 const minutes = (seconds: number): number => Math.abs(Math.floor(seconds / 60))
 
-const earlyOrLateLabel = ({
-  scheduleAdherenceSecs,
-  scheduleAdherenceStatus,
-}: Vehicle): string =>
-  `(${minutes(scheduleAdherenceSecs)} min ${scheduleAdherenceStatus})`
+const earlyOrLate = (scheduleAdherenceSecs: number): string =>
+  scheduleAdherenceSecs <= 0 ? "early" : "late"
 
-const scheduleAdherenceLabelString = (vehicle: Vehicle): string => {
-  const { scheduleAdherenceStatus } = vehicle
-  if (
-    scheduleAdherenceStatus === "early" ||
-    scheduleAdherenceStatus === "late"
-  ) {
-    return earlyOrLateLabel(vehicle)
-  } else {
-    return ""
-  }
-}
+const scheduleAdherenceLabelString = ({
+  scheduleAdherenceSecs,
+}: Vehicle): string =>
+  `(${minutes(scheduleAdherenceSecs)} min ${earlyOrLate(
+    scheduleAdherenceSecs
+  )})`
 
 const ScheduleAdherenceLabel = ({ vehicle }: { vehicle: Vehicle }) => (
   <div className="m-vehicle-properties-panel__schedule-adherence-label">
@@ -60,15 +46,17 @@ const ScheduleAdherenceLabel = ({ vehicle }: { vehicle: Vehicle }) => (
   </div>
 )
 
-const ScheduleAdherence = ({ vehicle }: { vehicle: Vehicle }) => {
-  return (
-    <div className="m-vehicle-properties-panel__schedule-adherence">
-      <ScheduleAdherenceStatusIcon vehicle={vehicle} />
-      <ScheduleAdherenceStatusString vehicle={vehicle} />
-      <ScheduleAdherenceLabel vehicle={vehicle} />
-    </div>
-  )
-}
+const ScheduleAdherence = ({ vehicle }: { vehicle: Vehicle }) => (
+  <div
+    className={`m-vehicle-properties-panel__schedule-adherence ${
+      vehicle.scheduleAdherenceStatus
+    }`}
+  >
+    <ScheduleAdherenceStatusIcon />
+    <ScheduleAdherenceStatusString vehicle={vehicle} />
+    <ScheduleAdherenceLabel vehicle={vehicle} />
+  </div>
+)
 
 const Header = ({
   vehicle,

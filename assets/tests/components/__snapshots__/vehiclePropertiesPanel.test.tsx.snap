@@ -28,10 +28,10 @@ Array [
           39_X Forest Hills
         </div>
         <div
-          className="m-vehicle-properties-panel__schedule-adherence"
+          className="m-vehicle-properties-panel__schedule-adherence on-time"
         >
           <div
-            className="m-vehicle-properties-panel__schedule-adherence-status-icon on-time"
+            className="m-vehicle-properties-panel__schedule-adherence-status-icon"
           >
             <svg
               height="10"
@@ -52,7 +52,7 @@ Array [
           <div
             className="m-vehicle-properties-panel__schedule-adherence-label"
           >
-            
+            (0 min early)
           </div>
         </div>
       </div>
@@ -176,10 +176,10 @@ Array [
           39_X Forest Hills
         </div>
         <div
-          className="m-vehicle-properties-panel__schedule-adherence"
+          className="m-vehicle-properties-panel__schedule-adherence late"
         >
           <div
-            className="m-vehicle-properties-panel__schedule-adherence-status-icon late"
+            className="m-vehicle-properties-panel__schedule-adherence-status-icon"
           >
             <svg
               height="10"
@@ -324,10 +324,10 @@ Array [
           39_X Forest Hills
         </div>
         <div
-          className="m-vehicle-properties-panel__schedule-adherence"
+          className="m-vehicle-properties-panel__schedule-adherence early"
         >
           <div
-            className="m-vehicle-properties-panel__schedule-adherence-status-icon early"
+            className="m-vehicle-properties-panel__schedule-adherence-status-icon"
           >
             <svg
               height="10"
