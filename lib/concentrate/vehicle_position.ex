@@ -4,6 +4,8 @@ defmodule Concentrate.VehiclePosition do
   """
   import Concentrate.StructHelpers
 
+  alias Concentrate.{DataDiscrepancy, VehiclePosition}
+
   defstruct_accessors([
     :id,
     :trip_id,
@@ -33,6 +35,8 @@ defmodule Concentrate.VehiclePosition do
     :schedule_adherence_secs,
     :schedule_adherence_string,
     :scheduled_headway_secs,
+    :source,
+    :data_discrepancies,
     status: :IN_TRANSIT_TO
   ])
 
@@ -68,7 +72,13 @@ defmodule Concentrate.VehiclePosition do
     defp do_merge(first, second) do
       %{
         second
-        | trip_id: first_value(second.trip_id, first.trip_id),
+        | trip_id:
+            swiftly_priority(
+              VehiclePosition.source(second),
+              second.trip_id,
+              VehiclePosition.source(first),
+              first.trip_id
+            ),
           stop_id: first_value(second.stop_id, first.stop_id),
           label: first_value(second.label, first.label),
           license_plate: first_value(second.license_plate, first.license_plate),
@@ -98,17 +108,76 @@ defmodule Concentrate.VehiclePosition do
               second.previous_vehicle_schedule_adherence_string,
               first.previous_vehicle_schedule_adherence_string
             ),
-          route_id: first_value(second.route_id, first.route_id),
+          route_id:
+            swiftly_priority(
+              VehiclePosition.source(second),
+              second.route_id,
+              VehiclePosition.source(first),
+              first.route_id
+            ),
           schedule_adherence_secs:
             first_value(second.schedule_adherence_secs, first.schedule_adherence_secs),
           schedule_adherence_string:
             first_value(second.schedule_adherence_string, first.schedule_adherence_string),
           scheduled_headway_secs:
-            first_value(second.scheduled_headway_secs, first.scheduled_headway_secs)
+            first_value(second.scheduled_headway_secs, first.scheduled_headway_secs),
+          source: merge_sources(first, second),
+          data_discrepancies: discrepancies(first, second)
       }
     end
 
     defp first_value(value, _) when not is_nil(value), do: value
     defp first_value(_, value), do: value
+
+    defp swiftly_priority("swiftly", nil, _, value), do: value
+
+    defp swiftly_priority("swiftly", value, _, _), do: value
+
+    defp swiftly_priority(other_source, other_value, "swiftly", value),
+      do: swiftly_priority("swiftly", value, other_source, other_value)
+
+    defp swiftly_priority(_, first_value, _, second_value),
+      do: first_value(first_value, second_value)
+
+    defp merge_sources(first, second) do
+      [VehiclePosition.source(first), VehiclePosition.source(second)]
+      |> Enum.sort()
+      |> Enum.join("|")
+    end
+
+    defp discrepancies(first, second) do
+      attributes = [
+        {:trip_id, &VehiclePosition.trip_id/1},
+        {:route_id, &VehiclePosition.route_id/1}
+      ]
+
+      for {key, accessor_fn} <- attributes,
+          {first_val, second_val} <- do_discrepancies(accessor_fn, first, second) do
+        %DataDiscrepancy{
+          attribute: key,
+          sources: [
+            %{
+              id: VehiclePosition.source(first),
+              value: first_val
+            },
+            %{
+              id: VehiclePosition.source(second),
+              value: second_val
+            }
+          ]
+        }
+      end
+    end
+
+    defp do_discrepancies(accessor_fn, first, second) do
+      first_val = accessor_fn.(first)
+      second_val = accessor_fn.(second)
+
+      if first_val != second_val do
+        [{first_val, second_val}]
+      else
+        []
+      end
+    end
   end
 end
