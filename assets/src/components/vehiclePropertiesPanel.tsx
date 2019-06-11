@@ -34,7 +34,7 @@ const ScheduleAdherenceStatusString = ({
   </div>
 )
 
-const minutes = (seconds: number): number => Math.floor(seconds / 60)
+const minutes = (seconds: number): number => Math.abs(Math.floor(seconds / 60))
 
 const earlyOrLateLabel = ({
   scheduleAdherenceSecs,
