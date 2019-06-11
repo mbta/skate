@@ -13,7 +13,18 @@ import {
   VehicleTimepointStatus,
 } from "../skate.d"
 
-export interface VehicleData {
+export interface VehicleStopStatusData {
+  status: VehicleStatus
+  stop_id: string
+  stop_name: string
+}
+
+export interface VehicleTimepointStatusData {
+  timepoint_id: string
+  fraction_until_timepoint: number
+}
+
+interface VehicleData {
   id: string
   label: string
   run_id: string
@@ -39,17 +50,6 @@ export interface VehicleData {
   timepoint_status: VehicleTimepointStatusData | null
   scheduled_timepoint_status: VehicleTimepointStatusData | null
   route_status: VehicleRouteStatus
-}
-
-export interface VehicleStopStatusData {
-  status: VehicleStatus
-  stop_id: string
-  stop_name: string
-}
-
-export interface VehicleTimepointStatusData {
-  timepoint_id: string
-  fraction_until_timepoint: number
 }
 
 interface State {
