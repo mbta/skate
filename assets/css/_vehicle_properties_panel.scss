@@ -37,6 +37,38 @@
   @include font-header;
 }
 
+.m-vehicle-properties-panel__schedule-adherence {
+  @include font-small;
+  display: flex;
+  margin-top: 0.7rem;
+}
+
+.m-vehicle-properties-panel__schedule-adherence-status-icon {
+  margin-right: 0.4rem;
+
+  .on-time & {
+    fill: $color-vehicle-ontime;
+  }
+  .early & {
+    fill: $color-vehicle-early;
+  }
+  .late & {
+    fill: $color-vehicle-late;
+  }
+}
+
+.m-vehicle-properties-panel__schedule-adherence-status-string {
+  font-weight: bold;
+  margin-right: 0.3rem;
+  text-transform: uppercase;
+}
+
+.m-vehicle-properties-panel__schedule-adherence-label {
+  .on-time & {
+    color: $color-component-medium;
+  }
+}
+
 .m-vehicle-properties-panel__header > button {
   flex: 0 0 auto;
   padding: 1rem;

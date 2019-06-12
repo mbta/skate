@@ -27,6 +27,330 @@ Array [
         >
           39_X Forest Hills
         </div>
+        <div
+          className="m-vehicle-properties-panel__schedule-adherence on-time"
+        >
+          <div
+            className="m-vehicle-properties-panel__schedule-adherence-status-icon"
+          >
+            <svg
+              height="10"
+              width="10"
+            >
+              <circle
+                cx="5"
+                cy="5"
+                r="5"
+              />
+            </svg>
+          </div>
+          <div
+            className="m-vehicle-properties-panel__schedule-adherence-status-string"
+          >
+            on-time
+          </div>
+          <div
+            className="m-vehicle-properties-panel__schedule-adherence-label"
+          >
+            (0 min early)
+          </div>
+        </div>
+      </div>
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <table
+      className="m-vehicle-properties-panel__vehicle-properties"
+    >
+      <tbody>
+        <tr>
+          <th
+            className="m-vehicle-properties-panel__vehicle-property-label"
+          >
+            Run
+          </th>
+          <td
+            className="m-vehicle-properties-panel__vehicle-property-value"
+          >
+            run-1
+          </td>
+        </tr>
+        <tr>
+          <th
+            className="m-vehicle-properties-panel__vehicle-property-label"
+          >
+            Vehicle
+          </th>
+          <td
+            className="m-vehicle-properties-panel__vehicle-property-value"
+          >
+            v1-label
+          </td>
+        </tr>
+        <tr>
+          <th
+            className="m-vehicle-properties-panel__vehicle-property-label"
+          >
+            Operator
+          </th>
+          <td
+            className="m-vehicle-properties-panel__vehicle-property-value"
+          >
+            SMITH
+             #
+            op1
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div
+      className="m-vehicle-properties-panel__location"
+    >
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-label"
+      >
+        Next Stop
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-value"
+      >
+        Stop Name
+      </div>
+      <a
+        className="m-vehicle-properties-panel__link"
+        href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+      >
+        Directions
+      </a>
+    </div>
+    <button
+      className="m-vehicle-properties-panel__close"
+      onClick={[Function]}
+    >
+      Close
+    </button>
+  </div>,
+  <div
+    className="m-vehicle-properties-panel__modal-overlay"
+    onClick={[Function]}
+  />,
+]
+`;
+
+exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
+Array [
+  <div
+    className="m-vehicle-properties-panel"
+    id="m-vehicle-properties-panel"
+  >
+    <div
+      className="m-vehicle-properties-panel__header"
+    >
+      <div
+        className="m-vehicle-properties-panel__label"
+      >
+        v1-label
+      </div>
+      <div
+        className="m-vehicle-properties-panel__variant"
+      >
+        <div
+          className="m-vehicle-properties-panel__inbound-outbound"
+        >
+          
+        </div>
+        <div
+          className="m-vehicle-properties-panel__variant-name"
+        >
+          39_X Forest Hills
+        </div>
+        <div
+          className="m-vehicle-properties-panel__schedule-adherence late"
+        >
+          <div
+            className="m-vehicle-properties-panel__schedule-adherence-status-icon"
+          >
+            <svg
+              height="10"
+              width="10"
+            >
+              <circle
+                cx="5"
+                cy="5"
+                r="5"
+              />
+            </svg>
+          </div>
+          <div
+            className="m-vehicle-properties-panel__schedule-adherence-status-string"
+          >
+            late
+          </div>
+          <div
+            className="m-vehicle-properties-panel__schedule-adherence-label"
+          >
+            (6 min late)
+          </div>
+        </div>
+      </div>
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <table
+      className="m-vehicle-properties-panel__vehicle-properties"
+    >
+      <tbody>
+        <tr>
+          <th
+            className="m-vehicle-properties-panel__vehicle-property-label"
+          >
+            Run
+          </th>
+          <td
+            className="m-vehicle-properties-panel__vehicle-property-value"
+          >
+            run-1
+          </td>
+        </tr>
+        <tr>
+          <th
+            className="m-vehicle-properties-panel__vehicle-property-label"
+          >
+            Vehicle
+          </th>
+          <td
+            className="m-vehicle-properties-panel__vehicle-property-value"
+          >
+            v1-label
+          </td>
+        </tr>
+        <tr>
+          <th
+            className="m-vehicle-properties-panel__vehicle-property-label"
+          >
+            Operator
+          </th>
+          <td
+            className="m-vehicle-properties-panel__vehicle-property-value"
+          >
+            SMITH
+             #
+            op1
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div
+      className="m-vehicle-properties-panel__location"
+    >
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-label"
+      >
+        Next Stop
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-value"
+      >
+        Stop Name
+      </div>
+      <a
+        className="m-vehicle-properties-panel__link"
+        href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+      >
+        Directions
+      </a>
+    </div>
+    <button
+      className="m-vehicle-properties-panel__close"
+      onClick={[Function]}
+    >
+      Close
+    </button>
+  </div>,
+  <div
+    className="m-vehicle-properties-panel__modal-overlay"
+    onClick={[Function]}
+  />,
+]
+`;
+
+exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
+Array [
+  <div
+    className="m-vehicle-properties-panel"
+    id="m-vehicle-properties-panel"
+  >
+    <div
+      className="m-vehicle-properties-panel__header"
+    >
+      <div
+        className="m-vehicle-properties-panel__label"
+      >
+        v1-label
+      </div>
+      <div
+        className="m-vehicle-properties-panel__variant"
+      >
+        <div
+          className="m-vehicle-properties-panel__inbound-outbound"
+        >
+          
+        </div>
+        <div
+          className="m-vehicle-properties-panel__variant-name"
+        >
+          39_X Forest Hills
+        </div>
+        <div
+          className="m-vehicle-properties-panel__schedule-adherence early"
+        >
+          <div
+            className="m-vehicle-properties-panel__schedule-adherence-status-icon"
+          >
+            <svg
+              height="10"
+              width="10"
+            >
+              <circle
+                cx="5"
+                cy="5"
+                r="5"
+              />
+            </svg>
+          </div>
+          <div
+            className="m-vehicle-properties-panel__schedule-adherence-status-string"
+          >
+            early
+          </div>
+          <div
+            className="m-vehicle-properties-panel__schedule-adherence-label"
+          >
+            (2 min early)
+          </div>
+        </div>
       </div>
       <button
         className="m-close-button"

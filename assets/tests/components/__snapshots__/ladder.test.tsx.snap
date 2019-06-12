@@ -47,6 +47,13 @@ exports[`highlights a selected vehicle 1`] = `
     </g>
   </g>
   <g>
+    <line
+      className="m-ladder__scheduled-line"
+      x1={-64}
+      x2={-40}
+      y1={-157.5}
+      y2={-157.5}
+    />
     <g
       className="m-ladder__vehicle "
       onClick={[Function]}

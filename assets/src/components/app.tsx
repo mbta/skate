@@ -19,7 +19,7 @@ interface Props {
   selectedVehicleId: VehicleId | undefined
 }
 
-const findRouteById = (
+export const findRouteById = (
   routes: Route[] | null,
   routeId: RouteId
 ): Route | undefined => (routes || []).find(route => route.id === routeId)
@@ -36,7 +36,7 @@ const vehicleRoute = (
   allRoutes: Route[] | null,
   vehicle: Vehicle | undefined
 ): Route | undefined =>
-  (allRoutes || []).find(route => route.id === (vehicle && vehicle.route_id))
+  (allRoutes || []).find(route => route.id === (vehicle && vehicle.routeId))
 
 const App = ({
   routes,

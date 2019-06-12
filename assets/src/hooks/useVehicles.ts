@@ -1,6 +1,56 @@
 import { Channel, Socket } from "phoenix"
 import { Dispatch as ReactDispatch, useEffect, useReducer } from "react"
-import { ByRouteId, RouteId, Vehicle, VehiclesByRouteId } from "../skate.d"
+import {
+  ByRouteId,
+  DirectionId,
+  RouteId,
+  ScheduleAdherenceStatus,
+  Vehicle,
+  VehicleRouteStatus,
+  VehiclesByRouteId,
+  VehicleStatus,
+  VehicleStopStatus,
+  VehicleTimepointStatus,
+} from "../skate.d"
+
+export interface VehicleStopStatusData {
+  status: VehicleStatus
+  stop_id: string
+  stop_name: string
+}
+
+export interface VehicleTimepointStatusData {
+  timepoint_id: string
+  fraction_until_timepoint: number
+}
+
+interface VehicleData {
+  id: string
+  label: string
+  run_id: string
+  timestamp: number
+  latitude: number
+  longitude: number
+  direction_id: DirectionId
+  route_id: RouteId
+  trip_id: string
+  headsign: string | null
+  via_variant: string | null
+  operator_id: string
+  operator_name: string
+  bearing: number
+  speed: number
+  block_id: string
+  headway_secs: number
+  previous_vehicle_id: string
+  schedule_adherence_secs: number
+  schedule_adherence_string: string
+  scheduled_headway_secs: number
+  stop_status: VehicleStopStatusData
+  timepoint_status: VehicleTimepointStatusData | null
+  scheduled_timepoint_status: VehicleTimepointStatusData | null
+  route_status: VehicleRouteStatus
+}
 
 interface State {
   channelsByRouteId: ByRouteId<Channel>
@@ -97,12 +147,89 @@ const reducer = (state: State, action: Action): State => {
   }
 }
 
+const scheduleAdherenceStatus = (
+  scheduleAdherenceSecs: number
+): ScheduleAdherenceStatus => {
+  const oneMinuteInSeconds = 60
+  const sixMinutesInSeconds = 360
+
+  if (scheduleAdherenceSecs < -oneMinuteInSeconds) {
+    return "early"
+  } else if (scheduleAdherenceSecs > sixMinutesInSeconds) {
+    return "late"
+  } else {
+    return "on-time"
+  }
+}
+
+const vehicleStopStatusFromData = (
+  vehicleStopStatusData: VehicleStopStatusData
+): VehicleStopStatus => ({
+  status: vehicleStopStatusData.status,
+  stopId: vehicleStopStatusData.stop_id,
+  stopName: vehicleStopStatusData.stop_name,
+})
+
+const vehicleTimepointStatusFromData = (
+  vehicleTimepointStatusData: VehicleTimepointStatusData | null
+): VehicleTimepointStatus | null => {
+  if (vehicleTimepointStatusData) {
+    return {
+      fractionUntilTimepoint:
+        vehicleTimepointStatusData.fraction_until_timepoint,
+      timepointId: vehicleTimepointStatusData.timepoint_id,
+    }
+  } else {
+    return null
+  }
+}
+
+const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
+  id: vehicleData.id,
+  label: vehicleData.label,
+  runId: vehicleData.run_id,
+  timestamp: vehicleData.timestamp,
+  latitude: vehicleData.latitude,
+  longitude: vehicleData.longitude,
+  directionId: vehicleData.direction_id,
+  routeId: vehicleData.route_id,
+  tripId: vehicleData.trip_id,
+  headsign: vehicleData.headsign,
+  viaVariant: vehicleData.via_variant,
+  operatorId: vehicleData.operator_id,
+  operatorName: vehicleData.operator_name,
+  bearing: vehicleData.bearing,
+  speed: vehicleData.speed,
+  blockId: vehicleData.block_id,
+  headwaySecs: vehicleData.headway_secs,
+  previousVehicleId: vehicleData.previous_vehicle_id,
+  scheduleAdherenceSecs: vehicleData.schedule_adherence_secs,
+  scheduleAdherenceString: vehicleData.schedule_adherence_string,
+  scheduleAdherenceStatus: scheduleAdherenceStatus(
+    vehicleData.schedule_adherence_secs
+  ),
+  scheduledHeadwaySecs: vehicleData.scheduled_headway_secs,
+  stopStatus: vehicleStopStatusFromData(vehicleData.stop_status),
+  timepointStatus: vehicleTimepointStatusFromData(vehicleData.timepoint_status),
+  scheduledTimepointStatus: vehicleTimepointStatusFromData(
+    vehicleData.scheduled_timepoint_status
+  ),
+  routeStatus: vehicleData.route_status,
+})
+
 const subscribe = (
   socket: Socket,
   routeId: RouteId,
   dispatch: Dispatch
 ): Channel => {
-  const handleVehicles = ({ vehicles }: { vehicles: Vehicle[] }) => {
+  const handleVehicles = ({
+    vehicles: vehiclesData,
+  }: {
+    vehicles: VehicleData[]
+  }) => {
+    const vehicles = vehiclesData.map(vehicleData =>
+      vehicleFromData(vehicleData)
+    )
     dispatch(setVehiclesForRoute(routeId, vehicles))
   }
 
