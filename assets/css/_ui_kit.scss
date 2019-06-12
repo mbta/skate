@@ -52,6 +52,10 @@ $color-line-gapped-light: #75e8ff;
   font-weight: 700;
 }
 
+@mixin font-big {
+  font-size: 1.25rem;
+}
+
 @mixin font-body {
   font-size: 0.875rem;
 }

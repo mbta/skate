@@ -2,7 +2,7 @@ import React, { useContext } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import { Timepoint, Vehicle, VehicleId, VehicleTimepointStatus } from "../skate"
 import { selectVehicle } from "../state"
-import VehicleIcon from "./vehicleIcon"
+import { Orientation, Size, VehicleIconSvgNode } from "./vehicleIcon"
 
 // Timepoints come from the API in the ZeroToOne direction
 export enum LadderDirection {
@@ -153,11 +153,7 @@ const LadderVehicle = ({
     vehicle,
     ladderDirection
   )
-  const centerOfVehicleGroupX = 16
-  const centerOfVehicleGroupY = 13
-  const widthOfVehicleGroup = centerOfVehicleGroupX * 2
-  const x =
-    vehicleDirection === VehicleDirection.Up ? 47 : -(48 + widthOfVehicleGroup)
+  const x = vehicleDirection === VehicleDirection.Up ? 63 : -63
   const vehicleY =
     timepointStatusY(
       vehicle.timepointStatus,
@@ -175,13 +171,16 @@ const LadderVehicle = ({
   )
   const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
 
-  const rotation = vehicleDirection === VehicleDirection.Down ? 180 : 0
+  const orientation =
+    vehicleDirection === VehicleDirection.Down
+      ? Orientation.Down
+      : Orientation.Up
 
   return (
     <g>
       {scheduledY && (
         <ScheduledLine
-          vehicleX={x + centerOfVehicleGroupX}
+          vehicleX={x}
           vehicleY={vehicleY}
           roadLineX={roadLineX}
           scheduledY={scheduledY}
@@ -189,12 +188,15 @@ const LadderVehicle = ({
       )}
       <g
         className={`m-ladder__vehicle ${selectedClass}`}
-        transform={`translate(${x},${vehicleY -
-          centerOfVehicleGroupY}) rotate(${rotation},${centerOfVehicleGroupX},${centerOfVehicleGroupY})`}
+        transform={`translate(${x},${vehicleY})`}
         onClick={() => dispatch(selectVehicle(vehicle.id))}
       >
-        <VehicleIcon scale={0.625} />
-        <VehicleLabel vehicle={vehicle} rotation={rotation} x={0} y={26} />
+        <VehicleIconSvgNode
+          size={Size.Medium}
+          orientation={orientation}
+          label={vehicle.label}
+          variant={vehicle.viaVariant}
+        />
       </g>
     </g>
   )
@@ -221,37 +223,6 @@ const timepointStatusY = (
   }
   return null
 }
-
-const VehicleLabel = ({
-  vehicle,
-  rotation,
-  x,
-  y,
-}: {
-  vehicle: Vehicle
-  rotation: number
-  x: number
-  y: number
-}) => (
-  <svg className="m-ladder__vehicle-label" x={x} y={y}>
-    <rect
-      className="m-ladder__vehicle-label-background"
-      rx="5.5"
-      ry="5.5"
-      width="30"
-      height="11"
-    />
-    <text
-      className="m-ladder__vehicle-label-text"
-      textAnchor="inherit"
-      x="5"
-      y="9"
-      transform={`rotate(${rotation},15,6)`}
-    >
-      {vehicle.label}
-    </text>
-  </svg>
-)
 
 const ScheduledLine = ({
   vehicleX,

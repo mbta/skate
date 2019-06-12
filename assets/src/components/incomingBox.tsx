@@ -7,7 +7,7 @@ import {
   VehicleDirection,
   vehicleDirectionOnLadder,
 } from "./ladder"
-import VehicleIcon from "./vehicleIcon"
+import VehicleIcon, { Orientation, Size } from "./vehicleIcon"
 
 const IncomingBoxVehicle = ({
   vehicle,
@@ -20,23 +20,21 @@ const IncomingBoxVehicle = ({
 }) => {
   const dispatch = useContext(DispatchContext)
   const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
-  const rotation =
+  const orientation =
     vehicleDirectionOnLadder(vehicle, ladderDirection) === VehicleDirection.Down
-      ? 180
-      : 0
+      ? Orientation.Down
+      : Orientation.Up
 
   return (
     <button
       className={"m-incoming-box__vehicle " + selectedClass}
       onClick={() => dispatch(selectVehicle(vehicle.id))}
     >
-      <div className="m-incoming-box__vehicle-icon">
-        <svg className="m-incoming-box__vehicle-icon-svg">
-          <g transform={`rotate(${rotation},9,7)`}>
-            <VehicleIcon scale={0.38} />
-          </g>
-        </svg>
-      </div>
+      <VehicleIcon
+        size={Size.Small}
+        orientation={orientation}
+        variant={vehicle.viaVariant}
+      />
       <div className="m-incoming-box__vehicle-label">{vehicle.label}</div>
     </button>
   )
