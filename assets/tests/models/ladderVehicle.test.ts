@@ -139,6 +139,30 @@ describe("byDirectionAndY", () => {
 
     expect(array.sort(byDirectionAndY)).toEqual(expected)
   })
+
+  test("sorts all vehicles traveling down ahead of all those traveling up", () => {
+    const down = { y: 1, vehicleDirection: VehicleDirection.Down }
+    const up = { y: 1, vehicleDirection: VehicleDirection.Up }
+
+    expect(byDirectionAndY(down, up)).toEqual(-1)
+    expect(byDirectionAndY(up, down)).toEqual(1)
+  })
+
+  test("while traveling down, vehicles with a higher y are in front", () => {
+    const front = { y: 2, vehicleDirection: VehicleDirection.Down }
+    const back = { y: 1, vehicleDirection: VehicleDirection.Down }
+
+    expect(byDirectionAndY(front, back)).toEqual(-1)
+    expect(byDirectionAndY(back, front)).toEqual(1)
+  })
+
+  test("while traveling up, vehicles with a lower y are in front", () => {
+    const front = { y: 1, vehicleDirection: VehicleDirection.Up }
+    const back = { y: 2, vehicleDirection: VehicleDirection.Up }
+
+    expect(byDirectionAndY(front, back)).toEqual(-1)
+    expect(byDirectionAndY(back, front)).toEqual(1)
+  })
 })
 
 describe("areOverlapping", () => {
