@@ -40,6 +40,15 @@ type YFunc = (
   direction: VehicleDirection
 ) => number | null
 
+/**
+ * The LadderVehicle data has some order dependency in how the properties are calculated.
+ * E.g. In order to calculate x we need to know what lane the vehicle is in.
+ *
+ * Steps:
+ *  1) Calculate VehicleOnLadder --> the properties that don't depend on anything else
+ *  2) Calculate the lane property
+ *  3) Calculate the x property
+ */
 export const ladderVehiclesFromVehicles = (
   vehicles: Vehicle[],
   ladderDirection: LadderDirection,
