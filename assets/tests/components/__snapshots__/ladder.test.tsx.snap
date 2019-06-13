@@ -4,8 +4,8 @@ exports[`highlights a selected vehicle 1`] = `
 <svg
   className="m-ladder"
   height={500}
-  viewBox="-90 -40 180 500"
-  width={180}
+  viewBox="-93.6 -40 187.2 500"
+  width={187.2}
 >
   <g>
     <g
@@ -47,13 +47,13 @@ exports[`highlights a selected vehicle 1`] = `
       className="m-ladder__scheduled-line"
       x1={-63}
       x2={-40}
-      y1={-157.5}
-      y2={-157.5}
+      y1={262.5}
+      y2={262.5}
     />
     <g
       className="m-ladder__vehicle "
       onClick={[Function]}
-      transform="translate(-63,-157.5)"
+      transform="translate(-63,262.5)"
     >
       <g
         className="m-vehicle-icon m-vehicle-icon--medium"
@@ -168,8 +168,8 @@ exports[`renders a ladder 1`] = `
 <svg
   className="m-ladder"
   height={500}
-  viewBox="-90 -40 180 500"
-  width={180}
+  viewBox="-93.6 -40 187.2 500"
+  width={187.2}
 >
   <g>
     <g
@@ -207,48 +207,6 @@ exports[`renders a ladder 1`] = `
     </g>
   </g>
   <g>
-    <line
-      className="m-ladder__scheduled-line"
-      x1={-63}
-      x2={-40}
-      y1={-157.5}
-      y2={-157.5}
-    />
-    <g
-      className="m-ladder__vehicle "
-      onClick={[Function]}
-      transform="translate(-63,-157.5)"
-    >
-      <g
-        className="m-vehicle-icon m-vehicle-icon--medium"
-      >
-        <rect
-          className="m-vehicle-icon__label-background"
-          height={11}
-          rx={5.5}
-          ry={5.5}
-          width={26}
-          x={-13}
-          y={-22.5}
-        />
-        <text
-          className="m-vehicle-icon__label"
-          dominantBaseline="central"
-          textAnchor="middle"
-          x="0"
-          y={-17}
-        >
-          downward
-        </text>
-        <path
-          className="m-vehicle-icon__triangle"
-          d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-          transform="scale(0.625) rotate(180) translate(-24,-22)"
-        />
-      </g>
-    </g>
-  </g>
-  <g>
     <g
       className="m-ladder__vehicle "
       onClick={[Function]}
@@ -274,6 +232,48 @@ exports[`renders a ladder 1`] = `
           y={-17}
         >
           notimepoint
+        </text>
+        <path
+          className="m-vehicle-icon__triangle"
+          d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+          transform="scale(0.625) rotate(180) translate(-24,-22)"
+        />
+      </g>
+    </g>
+  </g>
+  <g>
+    <line
+      className="m-ladder__scheduled-line"
+      x1={-63}
+      x2={-40}
+      y1={262.5}
+      y2={262.5}
+    />
+    <g
+      className="m-ladder__vehicle "
+      onClick={[Function]}
+      transform="translate(-63,262.5)"
+    >
+      <g
+        className="m-vehicle-icon m-vehicle-icon--medium"
+      >
+        <rect
+          className="m-vehicle-icon__label-background"
+          height={11}
+          rx={5.5}
+          ry={5.5}
+          width={26}
+          x={-13}
+          y={-22.5}
+        />
+        <text
+          className="m-vehicle-icon__label"
+          dominantBaseline="central"
+          textAnchor="middle"
+          x="0"
+          y={-17}
+        >
+          downward
         </text>
         <path
           className="m-vehicle-icon__triangle"
@@ -367,8 +367,8 @@ exports[`renders a ladder with no timepoints 1`] = `
 <svg
   className="m-ladder"
   height={500}
-  viewBox="-90 -40 180 500"
-  width={180}
+  viewBox="-93.6 -40 187.2 500"
+  width={187.2}
 >
   <g>
     <g

@@ -1,12 +1,12 @@
 import React, { useContext } from "react"
 import DispatchContext from "../contexts/dispatchContext"
-import { Vehicle, VehicleId } from "../skate"
-import { selectVehicle } from "../state"
 import {
-  LadderDirection,
   VehicleDirection,
   vehicleDirectionOnLadder,
-} from "./ladder"
+} from "../models/ladderVehiclePosition"
+import { Vehicle, VehicleId } from "../skate"
+import { selectVehicle } from "../state"
+import { LadderDirection } from "./ladder"
 import VehicleIcon, { Orientation, Size } from "./vehicleIcon"
 
 const IncomingBoxVehicle = ({

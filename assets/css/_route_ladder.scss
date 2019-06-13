@@ -1,6 +1,7 @@
 .m-route-ladder {
+  display: flex;
+  flex-direction: column;
   margin: 0 0.5rem;
-  width: 12em;
 }
 
 .m-route-ladder__header {
@@ -17,6 +18,10 @@
     right: 0.5rem;
     top: 0.5rem;
   }
+}
+
+.m-route-ladder__controls {
+  display: flex;
 }
 
 .m-route-ladder__reverse {
