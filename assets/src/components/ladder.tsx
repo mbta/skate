@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import {
-  ladderVehiclePositionsFromVehicles,
+  ladderVehiclesFromVehicles,
   VehicleDirection,
 } from "../models/ladderVehicle"
 import { Timepoint, Vehicle, VehicleId, VehicleTimepointStatus } from "../skate"
@@ -55,7 +55,7 @@ const Ladder = ({
     timepoints,
     timepointSpacingY
   )
-  const { ladderVehicles, widthOfLanes } = ladderVehiclePositionsFromVehicles(
+  const { ladderVehicles, widthOfLanes } = ladderVehiclesFromVehicles(
     vehicles,
     ladderDirection,
     timepointStatusY

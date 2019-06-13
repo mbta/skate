@@ -40,7 +40,7 @@ type YFunc = (
   direction: VehicleDirection
 ) => number | null
 
-export const ladderVehiclePositionsFromVehicles = (
+export const ladderVehiclesFromVehicles = (
   vehicles: Vehicle[],
   ladderDirection: LadderDirection,
   yFunc: YFunc
