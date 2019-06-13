@@ -95,6 +95,7 @@ const vehicleOnLadder = (
   const y = yFunc(vehicle.timepointStatus, vehicleDirection) || -10
 
   return {
+    // tslint:disable-next-line:object-literal-sort-keys
     vehicle,
     vehicleDirection,
     y,
@@ -124,6 +125,7 @@ export const putIntoLanes = (
         return [
           {
             ...ladderVehicle,
+            // tslint:disable-next-line:object-literal-sort-keys
             lane,
           },
           ...previousLadderVehiclePositions,
