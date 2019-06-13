@@ -46,8 +46,7 @@ export const ladderVehiclePositionsFromVehicles = (
   yFunc: YFunc
 ): {
   ladderVehiclePositions: LadderVehiclePosition[]
-  maxOccupiedLane: number
-  ladderVehicleHorizontalOffset: number
+  widthOfLanes: number
 } => {
   const vehiclesOnLadder: VehicleOnLadder[] = vehicles.map(vehicle =>
     vehicleOnLadder(vehicle, ladderDirection, yFunc)
@@ -67,8 +66,7 @@ export const ladderVehiclePositionsFromVehicles = (
 
   return {
     ladderVehiclePositions,
-    maxOccupiedLane,
-    ladderVehicleHorizontalOffset,
+    widthOfLanes: maxOccupiedLane * ladderVehicleHorizontalOffset,
   }
 }
 

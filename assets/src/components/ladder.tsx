@@ -57,15 +57,14 @@ const Ladder = ({
   )
   const {
     ladderVehiclePositions,
-    maxOccupiedLane,
-    ladderVehicleHorizontalOffset,
+    widthOfLanes,
   } = ladderVehiclePositionsFromVehicles(
     vehicles,
     ladderDirection,
     timepointStatusY
   )
 
-  const width = 120 + 2 * maxOccupiedLane * ladderVehicleHorizontalOffset * 1.2
+  const width = 120 + 2 * widthOfLanes * 1.2
   // (0, 0) is in the center of the first timepoint
   const viewBox = [-width / 2, -MARGIN_TOP_BOTTOM, width, HEIGHT].join(" ")
 
