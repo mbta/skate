@@ -3,11 +3,11 @@ import {
   areOverlapping,
   byDirectionAndY,
   firstOpenLane,
-  LadderVehiclePosition,
+  LadderVehicle,
   putIntoLanes,
   VehicleDirection,
   vehicleDirectionOnLadder,
-} from "../../src/models/ladderVehiclePosition"
+} from "../../src/models/ladderVehicle"
 import { Vehicle } from "../../src/skate"
 
 describe("vehicleDirectionOnLadder", () => {
@@ -145,10 +145,10 @@ describe("areOverlapping", () => {
   test("returns false if the vehicles are traveling in different directions", () => {
     const a = {
       vehicleDirection: VehicleDirection.Down,
-    } as LadderVehiclePosition
+    } as LadderVehicle
     const b = {
       vehicleDirection: VehicleDirection.Up,
-    } as LadderVehiclePosition
+    } as LadderVehicle
 
     expect(areOverlapping(a, b)).toBeFalsy()
   })
@@ -157,15 +157,15 @@ describe("areOverlapping", () => {
     const a = {
       y: 10,
       vehicleDirection: VehicleDirection.Down,
-    } as LadderVehiclePosition
+    } as LadderVehicle
     const b = {
       y: 20,
       vehicleDirection: VehicleDirection.Down,
-    } as LadderVehiclePosition
+    } as LadderVehicle
     const c = {
       y: 100,
       vehicleDirection: VehicleDirection.Down,
-    } as LadderVehiclePosition
+    } as LadderVehicle
 
     expect(areOverlapping(a, b)).toBeTruthy()
     expect(areOverlapping(a, c)).toBeFalsy()
@@ -175,11 +175,11 @@ describe("areOverlapping", () => {
     const a = {
       y: 10,
       vehicleDirection: VehicleDirection.Down,
-    } as LadderVehiclePosition
+    } as LadderVehicle
     const b = {
       y: 20,
       vehicleDirection: VehicleDirection.Down,
-    } as LadderVehiclePosition
+    } as LadderVehicle
 
     expect(areOverlapping(a, b)).toBeTruthy()
     expect(areOverlapping(b, a)).toBeTruthy()

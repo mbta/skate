@@ -3,7 +3,7 @@ import DispatchContext from "../contexts/dispatchContext"
 import {
   ladderVehiclePositionsFromVehicles,
   VehicleDirection,
-} from "../models/ladderVehiclePosition"
+} from "../models/ladderVehicle"
 import { Timepoint, Vehicle, VehicleId, VehicleTimepointStatus } from "../skate"
 import { selectVehicle } from "../state"
 import { Orientation, Size, VehicleIconSvgNode } from "./vehicleIcon"
@@ -55,10 +55,7 @@ const Ladder = ({
     timepoints,
     timepointSpacingY
   )
-  const {
-    ladderVehiclePositions,
-    widthOfLanes,
-  } = ladderVehiclePositionsFromVehicles(
+  const { ladderVehicles, widthOfLanes } = ladderVehiclePositionsFromVehicles(
     vehicles,
     ladderDirection,
     timepointStatusY
@@ -70,13 +67,13 @@ const Ladder = ({
 
   return (
     <svg className="m-ladder" height={HEIGHT} width={width} viewBox={viewBox}>
-      {ladderVehiclePositions.map(ladderVehiclePosition => {
+      {ladderVehicles.map(ladderVehicle => {
         const {
           vehicle,
           x: vehicleX,
           y: vehicleY,
           vehicleDirection,
-        } = ladderVehiclePosition
+        } = ladderVehicle
         const scheduledY = timepointStatusY(
           vehicle.scheduledTimepointStatus,
           vehicleDirection

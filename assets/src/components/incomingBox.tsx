@@ -3,7 +3,7 @@ import DispatchContext from "../contexts/dispatchContext"
 import {
   VehicleDirection,
   vehicleDirectionOnLadder,
-} from "../models/ladderVehiclePosition"
+} from "../models/ladderVehicle"
 import { Vehicle, VehicleId } from "../skate"
 import { selectVehicle } from "../state"
 import { LadderDirection } from "./ladder"

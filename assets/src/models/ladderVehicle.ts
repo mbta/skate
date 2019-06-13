@@ -5,7 +5,7 @@ import {
 } from "../components/ladder"
 import { Vehicle, VehicleTimepointStatus } from "../skate"
 
-export interface LadderVehiclePosition {
+export interface LadderVehicle {
   vehicle: Vehicle
   x: number
   y: number
@@ -45,7 +45,7 @@ export const ladderVehiclePositionsFromVehicles = (
   ladderDirection: LadderDirection,
   yFunc: YFunc
 ): {
-  ladderVehiclePositions: LadderVehiclePosition[]
+  ladderVehicles: LadderVehicle[]
   widthOfLanes: number
 } => {
   const vehiclesOnLadder: VehicleOnLadder[] = vehicles.map(vehicle =>
@@ -59,14 +59,17 @@ export const ladderVehiclePositionsFromVehicles = (
     maxOccupiedLane
   )
   const xInLane = xInLaneWithOffset(ladderVehicleHorizontalOffset)
+  // const widthOfLanes = maxOccupiedLane * ladderVehicleHorizontalOffset
+  const widthOfLanes =
+    widthOfVehicleGroup + (maxOccupiedLane - 1) * ladderVehicleHorizontalOffset
 
-  const ladderVehiclePositions: LadderVehiclePosition[] = vehiclesInLane.map(
-    vehicleInLane => addX(vehicleInLane, xInLane)
+  const ladderVehicles: LadderVehicle[] = vehiclesInLane.map(vehicleInLane =>
+    addX(vehicleInLane, xInLane)
   )
 
   return {
-    ladderVehiclePositions,
-    widthOfLanes: maxOccupiedLane * ladderVehicleHorizontalOffset,
+    ladderVehicles,
+    widthOfLanes,
   }
 }
 
@@ -107,11 +110,11 @@ export const putIntoLanes = (
     .reduce(
       (
         previousLadderVehiclePositions: VehicleInLane[],
-        ladderVehiclePosition: VehicleOnLadder
+        ladderVehicle: VehicleOnLadder
       ): VehicleInLane[] => {
         const overlappers: InLane[] = overlappingPreviousVehicles(
           previousLadderVehiclePositions,
-          ladderVehiclePosition
+          ladderVehicle
         )
         const occupiedLanes: number[] = overlappers.map(
           overlapper => overlapper.lane
@@ -120,7 +123,7 @@ export const putIntoLanes = (
 
         return [
           {
-            ...ladderVehiclePosition,
+            ...ladderVehicle,
             lane,
           },
           ...previousLadderVehiclePositions,
@@ -153,7 +156,7 @@ const xInLaneWithOffset = (ladderVehicleHorizontalOffset: number) => (
 const addX = (
   vehicleInLane: VehicleInLane,
   xInLane: (vehicle: InLane, baseX: number) => number
-): LadderVehiclePosition => {
+): LadderVehicle => {
   const baseX =
     vehicleInLane.vehicleDirection === VehicleDirection.Up ? 63 : -63
 
