@@ -234,7 +234,7 @@ exports[`renders a route ladder with vehicles 1`] = `
   >
     <g>
       <g
-        className="m-ladder__vehicle "
+        className="m-ladder__vehicle on-time "
         onClick={[Function]}
         transform="translate(63,105)"
       >
@@ -278,14 +278,14 @@ exports[`renders a route ladder with vehicles 1`] = `
     </g>
     <g>
       <line
-        className="m-ladder__scheduled-line"
+        className="m-ladder__scheduled-line on-time"
         x1={-63}
         x2={-40}
         y1={420}
         y2={420}
       />
       <g
-        className="m-ladder__vehicle "
+        className="m-ladder__vehicle on-time "
         onClick={[Function]}
         transform="translate(-63,420)"
       >
@@ -454,7 +454,7 @@ exports[`renders a route ladder with vehicles in the incoming box 1`] = `
   >
     <g>
       <g
-        className="m-ladder__vehicle "
+        className="m-ladder__vehicle on-time "
         onClick={[Function]}
         transform="translate(63,105)"
       >
@@ -498,14 +498,14 @@ exports[`renders a route ladder with vehicles in the incoming box 1`] = `
     </g>
     <g>
       <line
-        className="m-ladder__scheduled-line"
+        className="m-ladder__scheduled-line on-time"
         x1={-63}
         x2={-40}
         y1={420}
         y2={420}
       />
       <g
-        className="m-ladder__vehicle "
+        className="m-ladder__vehicle on-time "
         onClick={[Function]}
         transform="translate(-63,420)"
       >

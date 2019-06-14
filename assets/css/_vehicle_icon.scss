@@ -1,4 +1,5 @@
 .m-vehicle-icon__triangle {
+  @include svg-status-colors;
   fill: $color-vehicle-normal;
   stroke: $color-bg-base;
   stroke-width: 2;

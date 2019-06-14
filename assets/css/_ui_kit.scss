@@ -200,3 +200,16 @@ input {
 // modals
 $modal-overlay-color: transparentize($color-component-dark, 0.8);
 $modal-box-shadow: 0 0 2rem 0 transparentize($black, 0.5);
+
+// Status colors
+@mixin svg-status-colors {
+  .on-time & {
+    fill: $color-vehicle-ontime;
+  }
+  .early & {
+    fill: $color-vehicle-early;
+  }
+  .late & {
+    fill: $color-vehicle-late;
+  }
+}

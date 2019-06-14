@@ -1,6 +1,7 @@
 import React, { useContext } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import {
+  LadderVehicle,
   ladderVehiclesFromVehicles,
   VehicleDirection,
 } from "../models/ladderVehicle"
@@ -89,15 +90,16 @@ const Ladder = ({
           <g key={vehicle.id}>
             {scheduledY && (
               <ScheduledLine
-                vehicleX={vehicleX}
-                vehicleY={vehicleY}
+                ladderVehicle={ladderVehicle}
                 roadLineX={roadLineX}
                 scheduledY={scheduledY}
               />
             )}
 
             <g
-              className={`m-ladder__vehicle ${selectedClass}`}
+              className={`m-ladder__vehicle ${
+                vehicle.scheduleAdherenceStatus
+              } ${selectedClass}`}
               transform={`translate(${vehicleX},${vehicleY})`}
               onClick={() => dispatch(selectVehicle(vehicle.id))}
             >
@@ -198,20 +200,20 @@ const timepointStatusYFromTimepoints = (
 }
 
 const ScheduledLine = ({
-  vehicleX,
-  vehicleY,
+  ladderVehicle,
   roadLineX,
   scheduledY,
 }: {
-  vehicleX: number
-  vehicleY: number
+  ladderVehicle: LadderVehicle
   roadLineX: number
   scheduledY: number
 }) => (
   <line
-    className="m-ladder__scheduled-line"
-    x1={vehicleX}
-    y1={vehicleY}
+    className={`m-ladder__scheduled-line ${
+      ladderVehicle.vehicle.scheduleAdherenceStatus
+    }`}
+    x1={ladderVehicle.x}
+    y1={ladderVehicle.y}
     x2={roadLineX}
     y2={scheduledY}
   />

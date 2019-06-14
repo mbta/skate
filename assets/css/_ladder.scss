@@ -54,4 +54,13 @@
 .m-ladder__scheduled-line {
   stroke: $color-vehicle-normal-line;
   stroke-width: 2;
+
+  &.early {
+    stroke: $color-vehicle-early;
+    stroke-width: 2;
+  }
+  &.late {
+    stroke: $color-vehicle-late;
+    stroke-width: 2;
+  }
 }
