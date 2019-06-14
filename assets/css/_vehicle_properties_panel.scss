@@ -43,8 +43,17 @@
 }
 
 .m-vehicle-properties-panel__schedule-adherence-status-icon {
-  @include svg-status-colors;
   margin-right: 0.4rem;
+
+  .on-time & {
+    fill: $color-vehicle-ontime;
+  }
+  .early & {
+    fill: $color-vehicle-early;
+  }
+  .late & {
+    fill: $color-vehicle-late;
+  }
 }
 
 .m-vehicle-properties-panel__schedule-adherence-status-string {
