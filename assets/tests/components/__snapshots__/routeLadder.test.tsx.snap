@@ -233,6 +233,15 @@ exports[`renders a route ladder with vehicles 1`] = `
     width={184}
   >
     <g>
+      <line
+        className="m-ladder__scheduled-line on-time"
+        x1={-63}
+        x2={-40}
+        y1={420}
+        y2={420}
+      />
+    </g>
+    <g>
       <g
         className="m-ladder__vehicle on-time "
         onClick={[Function]}
@@ -277,13 +286,6 @@ exports[`renders a route ladder with vehicles 1`] = `
       </g>
     </g>
     <g>
-      <line
-        className="m-ladder__scheduled-line on-time"
-        x1={-63}
-        x2={-40}
-        y1={420}
-        y2={420}
-      />
       <g
         className="m-ladder__vehicle on-time "
         onClick={[Function]}
@@ -453,6 +455,15 @@ exports[`renders a route ladder with vehicles in the incoming box 1`] = `
     width={184}
   >
     <g>
+      <line
+        className="m-ladder__scheduled-line on-time"
+        x1={-63}
+        x2={-40}
+        y1={420}
+        y2={420}
+      />
+    </g>
+    <g>
       <g
         className="m-ladder__vehicle on-time "
         onClick={[Function]}
@@ -497,13 +508,6 @@ exports[`renders a route ladder with vehicles in the incoming box 1`] = `
       </g>
     </g>
     <g>
-      <line
-        className="m-ladder__scheduled-line on-time"
-        x1={-63}
-        x2={-40}
-        y1={420}
-        y2={420}
-      />
       <g
         className="m-ladder__vehicle on-time "
         onClick={[Function]}

@@ -66,12 +66,7 @@ const Ladder = ({
   return (
     <svg className="m-ladder" height={HEIGHT} width={width} viewBox={viewBox}>
       {ladderVehicles.map(ladderVehicle => {
-        const {
-          vehicle,
-          x: vehicleX,
-          y: vehicleY,
-          vehicleDirection,
-        } = ladderVehicle
+        const { vehicle, vehicleDirection } = ladderVehicle
         const scheduledY = timepointStatusY(
           vehicle.scheduledTimepointStatus,
           vehicleDirection
@@ -80,6 +75,26 @@ const Ladder = ({
           vehicleDirection === VehicleDirection.Up
             ? CENTER_TO_LINE
             : -CENTER_TO_LINE
+
+        return (
+          scheduledY && (
+            <g key={`line-${vehicle.id}`}>
+              <ScheduledLine
+                ladderVehicle={ladderVehicle}
+                roadLineX={roadLineX}
+                scheduledY={scheduledY}
+              />
+            </g>
+          )
+        )
+      })}
+      {ladderVehicles.map(ladderVehicle => {
+        const {
+          vehicle,
+          x: vehicleX,
+          y: vehicleY,
+          vehicleDirection,
+        } = ladderVehicle
         const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
         const orientation =
           vehicleDirection === VehicleDirection.Down
@@ -87,15 +102,7 @@ const Ladder = ({
             : Orientation.Up
 
         return (
-          <g key={vehicle.id}>
-            {scheduledY && (
-              <ScheduledLine
-                ladderVehicle={ladderVehicle}
-                roadLineX={roadLineX}
-                scheduledY={scheduledY}
-              />
-            )}
-
+          <g key={`vehicle-${vehicle.id}`}>
             <g
               className={`m-ladder__vehicle ${
                 vehicle.scheduleAdherenceStatus

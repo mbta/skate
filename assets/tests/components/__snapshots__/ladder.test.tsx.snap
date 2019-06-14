@@ -8,6 +8,15 @@ exports[`highlights a selected vehicle 1`] = `
   width={184}
 >
   <g>
+    <line
+      className="m-ladder__scheduled-line on-time"
+      x1={-63}
+      x2={-40}
+      y1={262.5}
+      y2={262.5}
+    />
+  </g>
+  <g>
     <g
       className="m-ladder__vehicle on-time selected"
       onClick={[Function]}
@@ -43,13 +52,6 @@ exports[`highlights a selected vehicle 1`] = `
     </g>
   </g>
   <g>
-    <line
-      className="m-ladder__scheduled-line on-time"
-      x1={-63}
-      x2={-40}
-      y1={262.5}
-      y2={262.5}
-    />
     <g
       className="m-ladder__vehicle on-time "
       onClick={[Function]}
@@ -172,6 +174,15 @@ exports[`renders a ladder 1`] = `
   width={184}
 >
   <g>
+    <line
+      className="m-ladder__scheduled-line on-time"
+      x1={-63}
+      x2={-40}
+      y1={262.5}
+      y2={262.5}
+    />
+  </g>
+  <g>
     <g
       className="m-ladder__vehicle on-time "
       onClick={[Function]}
@@ -242,13 +253,6 @@ exports[`renders a ladder 1`] = `
     </g>
   </g>
   <g>
-    <line
-      className="m-ladder__scheduled-line on-time"
-      x1={-63}
-      x2={-40}
-      y1={262.5}
-      y2={262.5}
-    />
     <g
       className="m-ladder__vehicle on-time "
       onClick={[Function]}
