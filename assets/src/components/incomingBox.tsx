@@ -27,7 +27,9 @@ const IncomingBoxVehicle = ({
 
   return (
     <button
-      className={"m-incoming-box__vehicle " + selectedClass}
+      className={`m-incoming-box__vehicle ${
+        vehicle.scheduleAdherenceStatus
+      } ${selectedClass}`}
       onClick={() => dispatch(selectVehicle(vehicle.id))}
     >
       <VehicleIcon
