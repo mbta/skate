@@ -1,8 +1,4 @@
-import {
-  heightOfVehicleGroup,
-  LadderDirection,
-  widthOfVehicleGroup,
-} from "../components/ladder"
+import { LadderDirection } from "../components/ladder"
 import { Vehicle, VehicleTimepointStatus } from "../skate"
 
 export interface LadderVehicle {
@@ -40,6 +36,9 @@ type YFunc = (
   direction: VehicleDirection
 ) => number | null
 
+const widthOfVehicleGroup = 32
+const heightOfVehicleGroup = 34
+
 /**
  * The LadderVehicle data has some order dependency in how the properties are calculated.
  * E.g. In order to calculate x we need to know what lane the vehicle is in.
@@ -68,7 +67,6 @@ export const ladderVehiclesFromVehicles = (
     maxOccupiedLane
   )
   const xInLane = xInLaneWithOffset(ladderVehicleHorizontalOffset)
-  // const widthOfLanes = maxOccupiedLane * ladderVehicleHorizontalOffset
   const widthOfLanes =
     widthOfVehicleGroup + (maxOccupiedLane - 1) * ladderVehicleHorizontalOffset
 

@@ -98,7 +98,7 @@ describe("putIntoLanes", () => {
 })
 
 describe("byDirectionAndY", () => {
-  test("sorts the arry by direction, and then by y value", () => {
+  test("sorts the array by direction, and then by y value", () => {
     const array = [
       {
         y: 1,

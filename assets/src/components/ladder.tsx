@@ -21,9 +21,6 @@ export enum LadderDirection {
   OneToZero,
 }
 
-export const widthOfVehicleGroup = 32
-export const heightOfVehicleGroup = 34
-
 export const flipLadderDirection = (
   ladderDirection: LadderDirection
 ): LadderDirection =>
@@ -61,7 +58,7 @@ const Ladder = ({
     timepointStatusY
   )
 
-  const width = 120 + 2 * widthOfLanes * 1.2
+  const width = 120 + 2 * widthOfLanes
   // (0, 0) is in the center of the first timepoint
   const viewBox = [-width / 2, -MARGIN_TOP_BOTTOM, width, HEIGHT].join(" ")
 

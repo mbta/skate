@@ -50,8 +50,8 @@ exports[`renders a route ladder 1`] = `
     <svg
       className="m-ladder"
       height={500}
-      viewBox="-98.4 -40 196.8 500"
-      width={196.8}
+      viewBox="-92 -40 184 500"
+      width={184}
     >
       <line
         className="m-ladder__line"
@@ -181,8 +181,8 @@ exports[`renders a route ladder 1`] = `
     <svg
       className="m-ladder"
       height={500}
-      viewBox="-98.4 -40 196.8 500"
-      width={196.8}
+      viewBox="-92 -40 184 500"
+      width={184}
     >
       <line
         className="m-ladder__line"
