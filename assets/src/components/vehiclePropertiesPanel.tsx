@@ -69,7 +69,11 @@ const Header = ({
   hideMe: () => void
 }) => (
   <div className="m-vehicle-properties-panel__header">
-    <div className="m-vehicle-properties-panel__label">
+    <div
+      className={`m-vehicle-properties-panel__label ${
+        vehicle.scheduleAdherenceStatus
+      }`}
+    >
       <VehicleIcon
         size={Size.Large}
         orientation={Orientation.Up}

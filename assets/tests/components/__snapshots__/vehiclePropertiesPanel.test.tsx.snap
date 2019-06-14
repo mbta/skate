@@ -10,7 +10,7 @@ Array [
       className="m-vehicle-properties-panel__header"
     >
       <div
-        className="m-vehicle-properties-panel__label"
+        className="m-vehicle-properties-panel__label on-time"
       >
         <svg
           style={
@@ -203,7 +203,7 @@ Array [
       className="m-vehicle-properties-panel__header"
     >
       <div
-        className="m-vehicle-properties-panel__label"
+        className="m-vehicle-properties-panel__label late"
       >
         <svg
           style={
@@ -396,7 +396,7 @@ Array [
       className="m-vehicle-properties-panel__header"
     >
       <div
-        className="m-vehicle-properties-panel__label"
+        className="m-vehicle-properties-panel__label early"
       >
         <svg
           style={
