@@ -1,28 +1,25 @@
 import React, { useContext } from "react"
 import DispatchContext from "../contexts/dispatchContext"
+import {
+  ladderVehiclesFromVehicles,
+  VehicleDirection,
+} from "../models/ladderVehicle"
 import { Timepoint, Vehicle, VehicleId, VehicleTimepointStatus } from "../skate"
 import { selectVehicle } from "../state"
 import { Orientation, Size, VehicleIconSvgNode } from "./vehicleIcon"
+
+export interface Props {
+  timepoints: Timepoint[]
+  vehicles: Vehicle[]
+  ladderDirection: LadderDirection
+  selectedVehicleId: VehicleId | undefined
+}
 
 // Timepoints come from the API in the ZeroToOne direction
 export enum LadderDirection {
   ZeroToOne,
   OneToZero,
 }
-
-export enum VehicleDirection {
-  Up,
-  Down,
-}
-
-export const vehicleDirectionOnLadder = (
-  vehicle: Vehicle,
-  ladderDirection: LadderDirection
-): VehicleDirection =>
-  (vehicle.directionId === 1) ===
-  (ladderDirection === LadderDirection.ZeroToOne)
-    ? VehicleDirection.Down
-    : VehicleDirection.Up
 
 export const flipLadderDirection = (
   ladderDirection: LadderDirection
@@ -32,16 +29,8 @@ export const flipLadderDirection = (
     : LadderDirection.ZeroToOne
 
 const HEIGHT = 500
-const WIDTH = 180
 const CENTER_TO_LINE = 40 // x-distance between the center of the ladder and the center of the line
 const MARGIN_TOP_BOTTOM = 40 // space between the top of the route and the top of the viewbox
-
-export interface Props {
-  timepoints: Timepoint[]
-  vehicles: Vehicle[]
-  ladderDirection: LadderDirection
-  selectedVehicleId: VehicleId | undefined
-}
 
 const Ladder = ({
   timepoints,
@@ -49,8 +38,7 @@ const Ladder = ({
   ladderDirection,
   selectedVehicleId,
 }: Props) => {
-  // (0, 0) is in the center of the first timepoint
-  const viewBox = [-WIDTH / 2, -MARGIN_TOP_BOTTOM, WIDTH, HEIGHT].join(" ")
+  const dispatch = useContext(DispatchContext)
   const timepointSpacingY =
     (HEIGHT - MARGIN_TOP_BOTTOM * 2) / (timepoints.length - 1)
 
@@ -60,18 +48,69 @@ const Ladder = ({
       ? timepoints.slice().reverse()
       : timepoints
 
+  const timepointStatusY = timepointStatusYFromTimepoints(
+    timepoints,
+    timepointSpacingY
+  )
+  const { ladderVehicles, widthOfLanes } = ladderVehiclesFromVehicles(
+    vehicles,
+    ladderDirection,
+    timepointStatusY
+  )
+
+  const width = 120 + 2 * widthOfLanes
+  // (0, 0) is in the center of the first timepoint
+  const viewBox = [-width / 2, -MARGIN_TOP_BOTTOM, width, HEIGHT].join(" ")
+
   return (
-    <svg className="m-ladder" height={HEIGHT} width={WIDTH} viewBox={viewBox}>
-      {vehicles.map((vehicle: Vehicle) => (
-        <LadderVehicle
-          key={vehicle.id}
-          vehicle={vehicle}
-          timepoints={orderedTimepoints}
-          timepointSpacingY={timepointSpacingY}
-          ladderDirection={ladderDirection}
-          selectedVehicleId={selectedVehicleId}
-        />
-      ))}
+    <svg className="m-ladder" height={HEIGHT} width={width} viewBox={viewBox}>
+      {ladderVehicles.map(ladderVehicle => {
+        const {
+          vehicle,
+          x: vehicleX,
+          y: vehicleY,
+          vehicleDirection,
+        } = ladderVehicle
+        const scheduledY = timepointStatusY(
+          vehicle.scheduledTimepointStatus,
+          vehicleDirection
+        )
+        const roadLineX =
+          vehicleDirection === VehicleDirection.Up
+            ? CENTER_TO_LINE
+            : -CENTER_TO_LINE
+        const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
+        const orientation =
+          vehicleDirection === VehicleDirection.Down
+            ? Orientation.Down
+            : Orientation.Up
+
+        return (
+          <g key={vehicle.id}>
+            {scheduledY && (
+              <ScheduledLine
+                vehicleX={vehicleX}
+                vehicleY={vehicleY}
+                roadLineX={roadLineX}
+                scheduledY={scheduledY}
+              />
+            )}
+
+            <g
+              className={`m-ladder__vehicle ${selectedClass}`}
+              transform={`translate(${vehicleX},${vehicleY})`}
+              onClick={() => dispatch(selectVehicle(vehicle.id))}
+            >
+              <VehicleIconSvgNode
+                size={Size.Medium}
+                orientation={orientation}
+                label={vehicle.label}
+                variant={vehicle.viaVariant}
+              />
+            </g>
+          </g>
+        )
+      })}
       <RoadLines />
       {orderedTimepoints.map((timepoint: Timepoint, index: number) => {
         const y = timepointSpacingY * index
@@ -135,77 +174,11 @@ const LadderTimepoint = ({
   </>
 )
 
-const LadderVehicle = ({
-  vehicle,
-  timepoints,
-  timepointSpacingY,
-  ladderDirection,
-  selectedVehicleId,
-}: {
-  vehicle: Vehicle
-  timepoints: Timepoint[]
-  timepointSpacingY: number
-  ladderDirection: LadderDirection
-  selectedVehicleId: VehicleId | undefined
-}) => {
-  const dispatch = useContext(DispatchContext)
-  const vehicleDirection: VehicleDirection = vehicleDirectionOnLadder(
-    vehicle,
-    ladderDirection
-  )
-  const x = vehicleDirection === VehicleDirection.Up ? 63 : -63
-  const vehicleY =
-    timepointStatusY(
-      vehicle.timepointStatus,
-      timepoints,
-      timepointSpacingY,
-      vehicleDirection
-    ) || -10
-  const roadLineX =
-    vehicleDirection === VehicleDirection.Up ? CENTER_TO_LINE : -CENTER_TO_LINE
-  const scheduledY = timepointStatusY(
-    vehicle.scheduledTimepointStatus,
-    timepoints,
-    timepointSpacingY,
-    vehicleDirection
-  )
-  const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
-
-  const orientation =
-    vehicleDirection === VehicleDirection.Down
-      ? Orientation.Down
-      : Orientation.Up
-
-  return (
-    <g>
-      {scheduledY && (
-        <ScheduledLine
-          vehicleX={x}
-          vehicleY={vehicleY}
-          roadLineX={roadLineX}
-          scheduledY={scheduledY}
-        />
-      )}
-      <g
-        className={`m-ladder__vehicle ${selectedClass}`}
-        transform={`translate(${x},${vehicleY})`}
-        onClick={() => dispatch(selectVehicle(vehicle.id))}
-      >
-        <VehicleIconSvgNode
-          size={Size.Medium}
-          orientation={orientation}
-          label={vehicle.label}
-          variant={vehicle.viaVariant}
-        />
-      </g>
-    </g>
-  )
-}
-
-const timepointStatusY = (
-  timepointStatus: VehicleTimepointStatus | null,
+const timepointStatusYFromTimepoints = (
   timepoints: Timepoint[],
-  timepointSpacingY: number,
+  timepointSpacingY: number
+) => (
+  timepointStatus: VehicleTimepointStatus | null,
   direction: VehicleDirection
 ): number | null => {
   if (timepointStatus) {

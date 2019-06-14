@@ -26,20 +26,24 @@ exports[`displays loading if we are fetching the timepoints 1`] = `
       28
     </div>
   </div>
-  <button
-    className="m-route-ladder__reverse"
-    onClick={[Function]}
+  <div
+    className="m-route-ladder__controls"
   >
-    <span
-      className="m-route-ladder__reverse-icon"
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "SVG",
+    <button
+      className="m-route-ladder__reverse"
+      onClick={[Function]}
+    >
+      <span
+        className="m-route-ladder__reverse-icon"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
         }
-      }
-    />
-    Reverse
-  </button>
+      />
+      Reverse
+    </button>
+  </div>
   loading...
 </div>
 `;
@@ -70,25 +74,29 @@ exports[`renders a route ladder 1`] = `
       28
     </div>
   </div>
-  <button
-    className="m-route-ladder__reverse"
-    onClick={[Function]}
+  <div
+    className="m-route-ladder__controls"
   >
-    <span
-      className="m-route-ladder__reverse-icon"
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "SVG",
+    <button
+      className="m-route-ladder__reverse"
+      onClick={[Function]}
+    >
+      <span
+        className="m-route-ladder__reverse-icon"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
         }
-      }
-    />
-    Reverse
-  </button>
+      />
+      Reverse
+    </button>
+  </div>
   <svg
     className="m-ladder"
     height={500}
-    viewBox="-90 -40 180 500"
-    width={180}
+    viewBox="-92 -40 184 500"
+    width={184}
   >
     <line
       className="m-ladder__line"
@@ -200,25 +208,29 @@ exports[`renders a route ladder with vehicles 1`] = `
       28
     </div>
   </div>
-  <button
-    className="m-route-ladder__reverse"
-    onClick={[Function]}
+  <div
+    className="m-route-ladder__controls"
   >
-    <span
-      className="m-route-ladder__reverse-icon"
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "SVG",
+    <button
+      className="m-route-ladder__reverse"
+      onClick={[Function]}
+    >
+      <span
+        className="m-route-ladder__reverse-icon"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
         }
-      }
-    />
-    Reverse
-  </button>
+      />
+      Reverse
+    </button>
+  </div>
   <svg
     className="m-ladder"
     height={500}
-    viewBox="-90 -40 180 500"
-    width={180}
+    viewBox="-92 -40 184 500"
+    width={184}
   >
     <g>
       <g
@@ -416,25 +428,29 @@ exports[`renders a route ladder with vehicles in the incoming box 1`] = `
       28
     </div>
   </div>
-  <button
-    className="m-route-ladder__reverse"
-    onClick={[Function]}
+  <div
+    className="m-route-ladder__controls"
   >
-    <span
-      className="m-route-ladder__reverse-icon"
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "SVG",
+    <button
+      className="m-route-ladder__reverse"
+      onClick={[Function]}
+    >
+      <span
+        className="m-route-ladder__reverse-icon"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
         }
-      }
-    />
-    Reverse
-  </button>
+      />
+      Reverse
+    </button>
+  </div>
   <svg
     className="m-ladder"
     height={500}
-    viewBox="-90 -40 180 500"
-    width={180}
+    viewBox="-92 -40 184 500"
+    width={184}
   >
     <g>
       <g

@@ -64,15 +64,17 @@ const RouteLadder = ({
     <div className="m-route-ladder">
       <Header route={route} />
 
-      <button
-        className="m-route-ladder__reverse"
-        onClick={() => setLadderDirection(flipLadderDirection)}
-      >
-        {ladderDirection === LadderDirection.OneToZero
-          ? reverseIcon("m-route-ladder__reverse-icon")
-          : reverseIconReversed("m-route-ladder__reverse-icon")}
-        Reverse
-      </button>
+      <div className="m-route-ladder__controls">
+        <button
+          className="m-route-ladder__reverse"
+          onClick={() => setLadderDirection(flipLadderDirection)}
+        >
+          {ladderDirection === LadderDirection.OneToZero
+            ? reverseIcon("m-route-ladder__reverse-icon")
+            : reverseIconReversed("m-route-ladder__reverse-icon")}
+          Reverse
+        </button>
+      </div>
 
       {timepoints ? (
         <>

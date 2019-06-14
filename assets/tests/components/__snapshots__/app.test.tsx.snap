@@ -291,20 +291,24 @@ exports[`App renders with routes 1`] = `
           1
         </div>
       </div>
-      <button
-        className="m-route-ladder__reverse"
-        onClick={[Function]}
+      <div
+        className="m-route-ladder__controls"
       >
-        <span
-          className="m-route-ladder__reverse-icon"
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
+        <button
+          className="m-route-ladder__reverse"
+          onClick={[Function]}
+        >
+          <span
+            className="m-route-ladder__reverse-icon"
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "SVG",
+              }
             }
-          }
-        />
-        Reverse
-      </button>
+          />
+          Reverse
+        </button>
+      </div>
       loading...
     </div>
   </div>
@@ -443,20 +447,24 @@ exports[`App renders with selectedRoutes in different order than routes data 1`]
           28
         </div>
       </div>
-      <button
-        className="m-route-ladder__reverse"
-        onClick={[Function]}
+      <div
+        className="m-route-ladder__controls"
       >
-        <span
-          className="m-route-ladder__reverse-icon"
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
+        <button
+          className="m-route-ladder__reverse"
+          onClick={[Function]}
+        >
+          <span
+            className="m-route-ladder__reverse-icon"
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "SVG",
+              }
             }
-          }
-        />
-        Reverse
-      </button>
+          />
+          Reverse
+        </button>
+      </div>
       loading...
     </div>
     <div
@@ -484,20 +492,24 @@ exports[`App renders with selectedRoutes in different order than routes data 1`]
           1
         </div>
       </div>
-      <button
-        className="m-route-ladder__reverse"
-        onClick={[Function]}
+      <div
+        className="m-route-ladder__controls"
       >
-        <span
-          className="m-route-ladder__reverse-icon"
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
+        <button
+          className="m-route-ladder__reverse"
+          onClick={[Function]}
+        >
+          <span
+            className="m-route-ladder__reverse-icon"
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "SVG",
+              }
             }
-          }
-        />
-        Reverse
-      </button>
+          />
+          Reverse
+        </button>
+      </div>
       loading...
     </div>
   </div>
