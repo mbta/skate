@@ -33,6 +33,8 @@ export type TimepointsByRouteId = ByRouteId<LoadableTimepoints>
 
 export type TripId = string
 
+export type UserToken = string
+
 export interface Vehicle {
   id: VehicleId
   label: string

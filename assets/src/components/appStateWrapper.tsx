@@ -4,19 +4,31 @@ import useSocket from "../hooks/useSocket"
 import useTimepoints from "../hooks/useTimepoints"
 import useVehicles from "../hooks/useVehicles"
 import DispatchProvider from "../providers/dispatchProvider"
-import { Route, TimepointsByRouteId } from "../skate"
+import { Route, TimepointsByRouteId, UserToken } from "../skate"
 import { initialState, reducer } from "../state"
 import App from "./app"
+
+const readUserToken = (): UserToken | undefined => {
+  const dataEl = document.getElementById("app-user-token")
+  if (!dataEl) {
+    return undefined
+  }
+
+  const token = dataEl.innerHTML as UserToken
+  return token
+}
+const userToken: UserToken | undefined = readUserToken()
 
 const AppStateWrapper = (): JSX.Element => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const { selectedRouteIds, selectedVehicleId } = state
 
-  const routes: Route[] | null = useRoutes()
+  const routes: Route[] | null = useRoutes(userToken)
   const timepointsByRouteId: TimepointsByRouteId = useTimepoints(
-    selectedRouteIds
+    selectedRouteIds,
+    userToken
   )
-  const socket = useSocket()
+  const socket = useSocket(userToken)
   const vehiclesByRouteId = useVehicles(socket, selectedRouteIds)
 
   return (

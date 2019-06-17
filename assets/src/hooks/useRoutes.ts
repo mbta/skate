@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
 import { fetchRoutes } from "../api"
-import { Route } from "../skate"
+import { Route, UserToken } from "../skate"
 
-const useRoutes = (): Route[] | null => {
+const useRoutes = (userToken?: UserToken): Route[] | null => {
   const [routes, setRoutes] = useState<Route[] | null>(null)
   useEffect(() => {
-    fetchRoutes().then((newRoutes: Route[]) => setRoutes(newRoutes))
+    fetchRoutes(userToken).then((newRoutes: Route[]) => setRoutes(newRoutes))
   }, [])
   return routes
 }

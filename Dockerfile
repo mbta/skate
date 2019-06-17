@@ -2,9 +2,12 @@ FROM elixir:1.8-alpine as builder
 
 # elixir expects utf8.
 ENV ELIXIR_VERSION="v1.8.1" \
-	LANG=C.UTF-8
+  LANG=C.UTF-8
 
 WORKDIR /root
+
+# Install git so we can install dependencies from GitHub
+RUN apk add --no-cache --update git
 
 # Install Hex+Rebar
 RUN mix local.hex --force && \

@@ -25,6 +25,10 @@ config :skate, SkateWeb.Endpoint,
   render_errors: [view: SkateWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Skate.PubSub, adapter: Phoenix.PubSub.PG2]
 
+config :skate, SkateWeb.AuthManager,
+  issuer: "skate",
+  secret_key: "test key"
+
 config :skate, record_fullstory: false
 
 # Configures Elixir's Logger
@@ -34,6 +38,12 @@ config :logger, :console,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+# Fake Cognito authentication
+config :ueberauth, Ueberauth,
+  providers: [
+    cognito: {Skate.Ueberauth.Strategy.Fake, []}
+  ]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
