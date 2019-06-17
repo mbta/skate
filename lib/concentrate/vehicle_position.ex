@@ -146,10 +146,14 @@ defmodule Concentrate.VehiclePosition do
       do: first_value(first_value, second_value)
 
     defp merge_sources(first, second) do
-      [first.source, second.source]
+      [first, second]
+      |> Enum.flat_map(&sources/1)
+      |> Enum.uniq()
       |> Enum.sort()
       |> Enum.join("|")
     end
+
+    defp sources(vp), do: String.split(vp.source, "|")
 
     defp discrepancies(first, second) do
       attributes = [
