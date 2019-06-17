@@ -162,30 +162,29 @@ defmodule Concentrate.VehiclePosition do
         {:headsign, &VehiclePosition.headsign/1}
       ]
 
-      for {key, accessor_fn} <- attributes,
-          {first_val, second_val} <- do_discrepancies(accessor_fn, first, second) do
-        %DataDiscrepancy{
-          attribute: key,
-          sources: [
-            %{
-              id: first.source,
-              value: first_val
-            },
-            %{
-              id: second.source,
-              value: second_val
-            }
-          ]
-        }
-      end
+      Enum.flat_map(attributes, &discrepancy(&1, first, second))
     end
 
-    defp do_discrepancies(accessor_fn, first, second) do
+    defp discrepancy({key, accessor_fn}, first, second) do
       first_val = accessor_fn.(first)
       second_val = accessor_fn.(second)
 
       if first_val != second_val do
-        [{first_val, second_val}]
+        [
+          %DataDiscrepancy{
+            attribute: key,
+            sources: [
+              %{
+                id: first.source,
+                value: first_val
+              },
+              %{
+                id: second.source,
+                value: second_val
+              }
+            ]
+          }
+        ]
       else
         []
       end
