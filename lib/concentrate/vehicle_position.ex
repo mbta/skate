@@ -74,9 +74,9 @@ defmodule Concentrate.VehiclePosition do
         second
         | trip_id:
             swiftly_priority(
-              VehiclePosition.source(second),
+              second.source,
               second.trip_id,
-              VehiclePosition.source(first),
+              first.source,
               first.trip_id
             ),
           stop_id: first_value(second.stop_id, first.stop_id),
@@ -97,9 +97,9 @@ defmodule Concentrate.VehiclePosition do
           direction_id: first_value(second.direction_id, first.direction_id),
           headsign:
             swiftly_priority(
-              VehiclePosition.source(second),
+              second.source,
               second.headsign,
-              VehiclePosition.source(first),
+              first.source,
               first.headsign
             ),
           headway_secs: first_value(second.headway_secs, first.headway_secs),
@@ -116,9 +116,9 @@ defmodule Concentrate.VehiclePosition do
             ),
           route_id:
             swiftly_priority(
-              VehiclePosition.source(second),
+              second.source,
               second.route_id,
-              VehiclePosition.source(first),
+              first.source,
               first.route_id
             ),
           schedule_adherence_secs:
@@ -146,7 +146,7 @@ defmodule Concentrate.VehiclePosition do
       do: first_value(first_value, second_value)
 
     defp merge_sources(first, second) do
-      [VehiclePosition.source(first), VehiclePosition.source(second)]
+      [first.source, second.source]
       |> Enum.sort()
       |> Enum.join("|")
     end
@@ -164,11 +164,11 @@ defmodule Concentrate.VehiclePosition do
           attribute: key,
           sources: [
             %{
-              id: VehiclePosition.source(first),
+              id: first.source,
               value: first_val
             },
             %{
-              id: VehiclePosition.source(second),
+              id: second.source,
               value: second_val
             }
           ]
