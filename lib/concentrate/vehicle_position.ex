@@ -142,26 +142,23 @@ defmodule Concentrate.VehiclePosition do
     defp first_value(value, _) when not is_nil(value), do: value
     defp first_value(_, value), do: value
 
+    defp swiftly_priority(source1, value1, source2, value2)
+
+    defp swiftly_priority(_source1, value1, _source2, nil), do: value1
+
+    defp swiftly_priority(_source1, nil, _source2, value2), do: value2
+
     defp swiftly_priority(source1, value1, source2, value2) do
       cond do
         VehiclePosition.comes_from_swiftly(%{source: source1}) ->
-          cond do
-            value1 == nil ->
-              value2
-
-            VehiclePosition.comes_from_swiftly(%{source: source2}) ->
-              first_value(value1, value2)
-
-            true ->
-              value1
+          if VehiclePosition.comes_from_swiftly(%{source: source2}) do
+            first_value(value1, value2)
+          else
+            value1
           end
 
         VehiclePosition.comes_from_swiftly(%{source: source2}) ->
-          if value2 == nil do
-            value1
-          else
-            value2
-          end
+          value2
 
         true ->
           first_value(value1, value2)
