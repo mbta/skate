@@ -80,6 +80,16 @@ defmodule Concentrate.VehiclePositionTest do
           source: "busloc"
         )
 
+      swiftly_later =
+        new(
+          last_updated: 3,
+          latitude: 3,
+          longitude: 3,
+          trip_id: "swiftly_trip",
+          route_id: "swiftly_route",
+          source: "swiftly"
+        )
+
       expected =
         new(
           last_updated: 2,
@@ -106,8 +116,36 @@ defmodule Concentrate.VehiclePositionTest do
           ]
         )
 
+      expected_later =
+        new(
+          last_updated: 3,
+          latitude: 3,
+          longitude: 3,
+          trip_id: "swiftly_trip",
+          route_id: "swiftly_route",
+          source: "busloc|swiftly",
+          data_discrepancies: [
+            %DataDiscrepancy{
+              attribute: :trip_id,
+              sources: [
+                %{id: "busloc", value: "busloc_trip"},
+                %{id: "swiftly", value: "swiftly_trip"}
+              ]
+            },
+            %DataDiscrepancy{
+              attribute: :route_id,
+              sources: [
+                %{id: "busloc", value: "busloc_route"},
+                %{id: "swiftly", value: "swiftly_route"}
+              ]
+            }
+          ]
+        )
+
       assert Mergeable.merge(swiftly, non_swiftly) == expected
       assert Mergeable.merge(non_swiftly, swiftly) == expected
+      assert Mergeable.merge(swiftly_later, non_swiftly) == expected_later
+      assert Mergeable.merge(non_swiftly, swiftly_later) == expected_later
     end
 
     test "merge/2 takes the other trip and route values if the swiftly values are nil" do
@@ -161,6 +199,57 @@ defmodule Concentrate.VehiclePositionTest do
       assert Mergeable.merge(non_swiftly, swiftly) == expected
     end
 
+    test "merge/2 defaults to the latest value if both come from swiftly" do
+      swiftly =
+        new(
+          last_updated: 1,
+          latitude: 1,
+          longitude: 1,
+          trip_id: "swiftly_trip",
+          route_id: "swiftly_route",
+          source: "swiftly"
+        )
+
+      swiftly_merged =
+        new(
+          last_updated: 2,
+          latitude: 2,
+          longitude: 2,
+          trip_id: "swiftly_merged_trip",
+          route_id: "swiftly_merged_route",
+          source: "busloc|swiftly"
+        )
+
+      expected =
+        new(
+          last_updated: 2,
+          latitude: 2,
+          longitude: 2,
+          trip_id: "swiftly_merged_trip",
+          route_id: "swiftly_merged_route",
+          source: "busloc|swiftly",
+          data_discrepancies: [
+            %DataDiscrepancy{
+              attribute: :trip_id,
+              sources: [
+                %{id: "swiftly", value: "swiftly_trip"},
+                %{id: "busloc|swiftly", value: "swiftly_merged_trip"}
+              ]
+            },
+            %DataDiscrepancy{
+              attribute: :route_id,
+              sources: [
+                %{id: "swiftly", value: "swiftly_route"},
+                %{id: "busloc|swiftly", value: "swiftly_merged_route"}
+              ]
+            }
+          ]
+        )
+
+      assert Mergeable.merge(swiftly_merged, swiftly) == expected
+      assert Mergeable.merge(swiftly, swiftly_merged) == expected
+    end
+
     test "merge/2 doesn't include any data discrepancies if they values are the same" do
       first =
         new(
@@ -194,6 +283,82 @@ defmodule Concentrate.VehiclePositionTest do
         )
 
       assert Mergeable.merge(first, second) == expected
+    end
+  end
+
+  describe "sources/1" do
+    test "returns a single source in a list" do
+      vp =
+        new(
+          last_updated: 1,
+          latitude: 1,
+          longitude: 1,
+          source: "swiftly"
+        )
+
+      assert sources(vp) == ["swiftly"]
+    end
+
+    test "returns merged sources separated out" do
+      vp =
+        new(
+          last_updated: 1,
+          latitude: 1,
+          longitude: 1,
+          source: "busloc|swiftly"
+        )
+
+      assert sources(vp) == ["busloc", "swiftly"]
+    end
+
+    test "returns an empty array for a nil source" do
+      vp =
+        new(
+          last_updated: 1,
+          latitude: 1,
+          longitude: 1,
+          source: nil
+        )
+
+      assert sources(vp) == []
+    end
+  end
+
+  describe "comes_from_swiftly/1" do
+    test "true if the source string is swiftly" do
+      vp =
+        new(
+          last_updated: 1,
+          latitude: 1,
+          longitude: 1,
+          source: "swiftly"
+        )
+
+      assert comes_from_swiftly(vp)
+    end
+
+    test "true if source string is a merged value that includes swiftly" do
+      vp =
+        new(
+          last_updated: 1,
+          latitude: 1,
+          longitude: 1,
+          source: "busloc|swiftly"
+        )
+
+      assert comes_from_swiftly(vp)
+    end
+
+    test "false if source string doesn't include swiftly" do
+      vp =
+        new(
+          last_updated: 1,
+          latitude: 1,
+          longitude: 1,
+          source: "busloc"
+        )
+
+      refute comes_from_swiftly(vp)
     end
   end
 end

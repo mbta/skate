@@ -4,7 +4,7 @@ defmodule Concentrate.VehiclePosition do
   """
   import Concentrate.StructHelpers
 
-  alias Concentrate.{DataDiscrepancy, VehiclePosition}
+  alias Concentrate.DataDiscrepancy
 
   defstruct_accessors([
     :id,
@@ -47,7 +47,14 @@ defmodule Concentrate.VehiclePosition do
     super(opts)
   end
 
+  def sources(%{source: nil}), do: []
+  def sources(%{source: source}), do: String.split(source, "|")
+
+  def comes_from_swiftly(vp), do: vp |> sources() |> Enum.member?("swiftly")
+
   defimpl Concentrate.Mergeable do
+    alias Concentrate.VehiclePosition
+
     def key(%{id: id}, _opts \\ []), do: id
 
     @doc """
@@ -135,25 +142,39 @@ defmodule Concentrate.VehiclePosition do
     defp first_value(value, _) when not is_nil(value), do: value
     defp first_value(_, value), do: value
 
-    defp swiftly_priority("swiftly", nil, _, value), do: value
+    defp swiftly_priority(source1, value1, source2, value2) do
+      cond do
+        VehiclePosition.comes_from_swiftly(%{source: source1}) ->
+          cond do
+            value1 == nil ->
+              value2
 
-    defp swiftly_priority("swiftly", value, _, _), do: value
+            VehiclePosition.comes_from_swiftly(%{source: source2}) ->
+              first_value(value1, value2)
 
-    defp swiftly_priority(other_source, other_value, "swiftly", value),
-      do: swiftly_priority("swiftly", value, other_source, other_value)
+            true ->
+              value1
+          end
 
-    defp swiftly_priority(_, first_value, _, second_value),
-      do: first_value(first_value, second_value)
+        VehiclePosition.comes_from_swiftly(%{source: source2}) ->
+          if value2 == nil do
+            value1
+          else
+            value2
+          end
+
+        true ->
+          first_value(value1, value2)
+      end
+    end
 
     defp merge_sources(first, second) do
       [first, second]
-      |> Enum.flat_map(&sources/1)
+      |> Enum.flat_map(&VehiclePosition.sources/1)
       |> Enum.uniq()
       |> Enum.sort()
       |> Enum.join("|")
     end
-
-    defp sources(vp), do: String.split(vp.source, "|")
 
     defp discrepancies(first, second) do
       attributes = [
