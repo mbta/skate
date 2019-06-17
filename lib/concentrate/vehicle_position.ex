@@ -35,7 +35,7 @@ defmodule Concentrate.VehiclePosition do
     :schedule_adherence_secs,
     :schedule_adherence_string,
     :scheduled_headway_secs,
-    :source,
+    :sources,
     :data_discrepancies,
     status: :IN_TRANSIT_TO
   ])
@@ -47,10 +47,8 @@ defmodule Concentrate.VehiclePosition do
     super(opts)
   end
 
-  def sources(%{source: nil}), do: []
-  def sources(%{source: source}), do: String.split(source, "|")
-
-  def comes_from_swiftly(vp), do: vp |> sources() |> Enum.member?("swiftly")
+  def comes_from_swiftly(%{sources: %MapSet{} = sources}), do: Enum.member?(sources, "swiftly")
+  def comes_from_swiftly(_), do: false
 
   defimpl Concentrate.Mergeable do
     alias Concentrate.VehiclePosition
@@ -81,9 +79,9 @@ defmodule Concentrate.VehiclePosition do
         second
         | trip_id:
             swiftly_priority(
-              second.source,
+              second.sources,
               second.trip_id,
-              first.source,
+              first.sources,
               first.trip_id
             ),
           stop_id: first_value(second.stop_id, first.stop_id),
@@ -104,9 +102,9 @@ defmodule Concentrate.VehiclePosition do
           direction_id: first_value(second.direction_id, first.direction_id),
           headsign:
             swiftly_priority(
-              second.source,
+              second.sources,
               second.headsign,
-              first.source,
+              first.sources,
               first.headsign
             ),
           headway_secs: first_value(second.headway_secs, first.headway_secs),
@@ -123,9 +121,9 @@ defmodule Concentrate.VehiclePosition do
             ),
           route_id:
             swiftly_priority(
-              second.source,
+              second.sources,
               second.route_id,
-              first.source,
+              first.sources,
               first.route_id
             ),
           schedule_adherence_secs:
@@ -134,7 +132,7 @@ defmodule Concentrate.VehiclePosition do
             first_value(second.schedule_adherence_string, first.schedule_adherence_string),
           scheduled_headway_secs:
             first_value(second.scheduled_headway_secs, first.scheduled_headway_secs),
-          source: merge_sources(first, second),
+          sources: merge_sources(first, second),
           data_discrepancies: discrepancies(first, second)
       }
     end
@@ -142,22 +140,22 @@ defmodule Concentrate.VehiclePosition do
     defp first_value(value, _) when not is_nil(value), do: value
     defp first_value(_, value), do: value
 
-    defp swiftly_priority(source1, value1, source2, value2)
+    defp swiftly_priority(sources1, value1, sources2, value2)
 
-    defp swiftly_priority(_source1, value1, _source2, nil), do: value1
+    defp swiftly_priority(_sources1, value1, _sources2, nil), do: value1
 
-    defp swiftly_priority(_source1, nil, _source2, value2), do: value2
+    defp swiftly_priority(_sources1, nil, _sources2, value2), do: value2
 
-    defp swiftly_priority(source1, value1, source2, value2) do
+    defp swiftly_priority(sources1, value1, sources2, value2) do
       cond do
-        VehiclePosition.comes_from_swiftly(%{source: source1}) ->
-          if VehiclePosition.comes_from_swiftly(%{source: source2}) do
+        VehiclePosition.comes_from_swiftly(%{sources: sources1}) ->
+          if VehiclePosition.comes_from_swiftly(%{sources: sources2}) do
             first_value(value1, value2)
           else
             value1
           end
 
-        VehiclePosition.comes_from_swiftly(%{source: source2}) ->
+        VehiclePosition.comes_from_swiftly(%{sources: sources2}) ->
           value2
 
         true ->
@@ -167,10 +165,8 @@ defmodule Concentrate.VehiclePosition do
 
     defp merge_sources(first, second) do
       [first, second]
-      |> Enum.flat_map(&VehiclePosition.sources/1)
-      |> Enum.uniq()
-      |> Enum.sort()
-      |> Enum.join("|")
+      |> Enum.flat_map(&(VehiclePosition.sources(&1) || MapSet.new()))
+      |> MapSet.new()
     end
 
     defp discrepancies(first, second) do
@@ -193,11 +189,11 @@ defmodule Concentrate.VehiclePosition do
             attribute: key,
             sources: [
               %{
-                id: first.source,
+                id: source_id(first.sources),
                 value: first_val
               },
               %{
-                id: second.source,
+                id: source_id(second.sources),
                 value: second_val
               }
             ]
@@ -207,5 +203,8 @@ defmodule Concentrate.VehiclePosition do
         []
       end
     end
+
+    @spec source_id(MapSet.t()) :: String.t()
+    defp source_id(sources), do: Enum.join(sources, "|")
   end
 end

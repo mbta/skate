@@ -129,7 +129,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
                  run_id: "128-1007",
                  status: :STOPPED_AT,
                  last_updated: 1_534_340_406,
-                 source: "busloc",
+                 sources: MapSet.new(["busloc"]),
                  data_discrepancies: nil
                )
     end

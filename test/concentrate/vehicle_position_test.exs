@@ -12,10 +12,10 @@ defmodule Concentrate.VehiclePositionTest do
           longitude: 1,
           trip_id: "trip",
           route_id: "route",
-          source: "first"
+          sources: MapSet.new(["first"])
         )
 
-      second = new(last_updated: 2, latitude: 2, longitude: 2, source: "second")
+      second = new(last_updated: 2, latitude: 2, longitude: 2, sources: MapSet.new(["second"]))
 
       expected =
         new(
@@ -24,7 +24,7 @@ defmodule Concentrate.VehiclePositionTest do
           longitude: 2,
           trip_id: "trip",
           route_id: "route",
-          source: "first|second",
+          sources: MapSet.new(["first", "second"]),
           data_discrepancies: [
             %DataDiscrepancy{
               attribute: :trip_id,
@@ -67,7 +67,7 @@ defmodule Concentrate.VehiclePositionTest do
           longitude: 1,
           trip_id: "swiftly_trip",
           route_id: "swiftly_route",
-          source: "swiftly"
+          sources: MapSet.new(["swiftly"])
         )
 
       non_swiftly =
@@ -77,7 +77,7 @@ defmodule Concentrate.VehiclePositionTest do
           longitude: 2,
           trip_id: "busloc_trip",
           route_id: "busloc_route",
-          source: "busloc"
+          sources: MapSet.new(["busloc"])
         )
 
       swiftly_later =
@@ -87,7 +87,7 @@ defmodule Concentrate.VehiclePositionTest do
           longitude: 3,
           trip_id: "swiftly_trip",
           route_id: "swiftly_route",
-          source: "swiftly"
+          sources: MapSet.new(["swiftly"])
         )
 
       expected =
@@ -97,7 +97,7 @@ defmodule Concentrate.VehiclePositionTest do
           longitude: 2,
           trip_id: "swiftly_trip",
           route_id: "swiftly_route",
-          source: "busloc|swiftly",
+          sources: MapSet.new(["busloc", "swiftly"]),
           data_discrepancies: [
             %DataDiscrepancy{
               attribute: :trip_id,
@@ -123,7 +123,7 @@ defmodule Concentrate.VehiclePositionTest do
           longitude: 3,
           trip_id: "swiftly_trip",
           route_id: "swiftly_route",
-          source: "busloc|swiftly",
+          sources: MapSet.new(["busloc", "swiftly"]),
           data_discrepancies: [
             %DataDiscrepancy{
               attribute: :trip_id,
@@ -156,7 +156,7 @@ defmodule Concentrate.VehiclePositionTest do
           longitude: 1,
           trip_id: nil,
           route_id: nil,
-          source: "swiftly"
+          sources: MapSet.new(["swiftly"])
         )
 
       non_swiftly =
@@ -166,7 +166,7 @@ defmodule Concentrate.VehiclePositionTest do
           longitude: 2,
           trip_id: "busloc_trip",
           route_id: "busloc_route",
-          source: "busloc"
+          sources: MapSet.new(["busloc"])
         )
 
       expected =
@@ -176,7 +176,7 @@ defmodule Concentrate.VehiclePositionTest do
           longitude: 2,
           trip_id: "busloc_trip",
           route_id: "busloc_route",
-          source: "busloc|swiftly",
+          sources: MapSet.new(["busloc", "swiftly"]),
           data_discrepancies: [
             %DataDiscrepancy{
               attribute: :trip_id,
@@ -207,7 +207,7 @@ defmodule Concentrate.VehiclePositionTest do
           longitude: 1,
           trip_id: "swiftly_trip",
           route_id: "swiftly_route",
-          source: "swiftly"
+          sources: MapSet.new(["swiftly"])
         )
 
       swiftly_merged =
@@ -217,7 +217,7 @@ defmodule Concentrate.VehiclePositionTest do
           longitude: 2,
           trip_id: "swiftly_merged_trip",
           route_id: "swiftly_merged_route",
-          source: "busloc|swiftly"
+          sources: MapSet.new(["busloc", "swiftly"])
         )
 
       expected =
@@ -227,7 +227,7 @@ defmodule Concentrate.VehiclePositionTest do
           longitude: 2,
           trip_id: "swiftly_merged_trip",
           route_id: "swiftly_merged_route",
-          source: "busloc|swiftly",
+          sources: MapSet.new(["busloc", "swiftly"]),
           data_discrepancies: [
             %DataDiscrepancy{
               attribute: :trip_id,
@@ -258,7 +258,7 @@ defmodule Concentrate.VehiclePositionTest do
           longitude: 1,
           trip_id: "trip",
           route_id: "route",
-          source: "first"
+          sources: MapSet.new(["first"])
         )
 
       second =
@@ -268,7 +268,7 @@ defmodule Concentrate.VehiclePositionTest do
           longitude: 2,
           trip_id: "trip",
           route_id: "route",
-          source: "second"
+          sources: MapSet.new(["second"])
         )
 
       expected =
@@ -278,7 +278,7 @@ defmodule Concentrate.VehiclePositionTest do
           longitude: 2,
           trip_id: "trip",
           route_id: "route",
-          source: "first|second",
+          sources: MapSet.new(["first", "second"]),
           data_discrepancies: []
         )
 
@@ -286,76 +286,37 @@ defmodule Concentrate.VehiclePositionTest do
     end
   end
 
-  describe "sources/1" do
-    test "returns a single source in a list" do
-      vp =
-        new(
-          last_updated: 1,
-          latitude: 1,
-          longitude: 1,
-          source: "swiftly"
-        )
-
-      assert sources(vp) == ["swiftly"]
-    end
-
-    test "returns merged sources separated out" do
-      vp =
-        new(
-          last_updated: 1,
-          latitude: 1,
-          longitude: 1,
-          source: "busloc|swiftly"
-        )
-
-      assert sources(vp) == ["busloc", "swiftly"]
-    end
-
-    test "returns an empty array for a nil source" do
-      vp =
-        new(
-          last_updated: 1,
-          latitude: 1,
-          longitude: 1,
-          source: nil
-        )
-
-      assert sources(vp) == []
-    end
-  end
-
   describe "comes_from_swiftly/1" do
-    test "true if the source string is swiftly" do
+    test "true if sources include swiftly" do
       vp =
         new(
           last_updated: 1,
           latitude: 1,
           longitude: 1,
-          source: "swiftly"
+          sources: MapSet.new(["busloc", "swiftly"])
         )
 
       assert comes_from_swiftly(vp)
     end
 
-    test "true if source string is a merged value that includes swiftly" do
+    test "false if sources don't include swiftly" do
       vp =
         new(
           last_updated: 1,
           latitude: 1,
           longitude: 1,
-          source: "busloc|swiftly"
+          sources: MapSet.new(["busloc"])
         )
 
-      assert comes_from_swiftly(vp)
+      refute comes_from_swiftly(vp)
     end
 
-    test "false if source string doesn't include swiftly" do
+    test "false if there are no sources" do
       vp =
         new(
           last_updated: 1,
           latitude: 1,
-          longitude: 1,
-          source: "busloc"
+          longitude: 1
         )
 
       refute comes_from_swiftly(vp)
