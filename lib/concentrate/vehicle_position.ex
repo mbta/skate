@@ -95,7 +95,13 @@ defmodule Concentrate.VehiclePosition do
           stop_name: first_value(second.stop_name, first.stop_name),
           operator: first_value(second.operator, first.operator),
           direction_id: first_value(second.direction_id, first.direction_id),
-          headsign: first_value(second.headsign, first.headsign),
+          headsign:
+            swiftly_priority(
+              VehiclePosition.source(second),
+              second.headsign,
+              VehiclePosition.source(first),
+              first.headsign
+            ),
           headway_secs: first_value(second.headway_secs, first.headway_secs),
           previous_vehicle_id: first_value(second.previous_vehicle_id, first.previous_vehicle_id),
           previous_vehicle_schedule_adherence_secs:
@@ -148,7 +154,8 @@ defmodule Concentrate.VehiclePosition do
     defp discrepancies(first, second) do
       attributes = [
         {:trip_id, &VehiclePosition.trip_id/1},
-        {:route_id, &VehiclePosition.route_id/1}
+        {:route_id, &VehiclePosition.route_id/1},
+        {:headsign, &VehiclePosition.headsign/1}
       ]
 
       for {key, accessor_fn} <- attributes,
