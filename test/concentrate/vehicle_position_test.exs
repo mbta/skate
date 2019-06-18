@@ -235,7 +235,7 @@ defmodule Concentrate.VehiclePositionTest do
     end
   end
 
-  describe "comes_from_swiftly/1" do
+  describe "comes_from_swiftly?/1" do
     test "true if sources include swiftly" do
       vp =
         new(
@@ -245,7 +245,7 @@ defmodule Concentrate.VehiclePositionTest do
           sources: MapSet.new(["busloc", "swiftly"])
         )
 
-      assert comes_from_swiftly(vp)
+      assert comes_from_swiftly?(vp)
     end
 
     test "false if sources don't include swiftly" do
@@ -257,7 +257,7 @@ defmodule Concentrate.VehiclePositionTest do
           sources: MapSet.new(["busloc"])
         )
 
-      refute comes_from_swiftly(vp)
+      refute comes_from_swiftly?(vp)
     end
 
     test "false if there are no sources" do
@@ -268,7 +268,7 @@ defmodule Concentrate.VehiclePositionTest do
           longitude: 1
         )
 
-      refute comes_from_swiftly(vp)
+      refute comes_from_swiftly?(vp)
     end
   end
 end

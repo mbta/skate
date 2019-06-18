@@ -47,8 +47,8 @@ defmodule Concentrate.VehiclePosition do
     super(opts)
   end
 
-  def comes_from_swiftly(%{sources: %MapSet{} = sources}), do: Enum.member?(sources, "swiftly")
-  def comes_from_swiftly(_), do: false
+  def comes_from_swiftly?(%{sources: %MapSet{} = sources}), do: Enum.member?(sources, "swiftly")
+  def comes_from_swiftly?(_), do: false
 
   defimpl Concentrate.Mergeable do
     alias Concentrate.VehiclePosition
@@ -148,14 +148,14 @@ defmodule Concentrate.VehiclePosition do
 
     defp swiftly_priority(sources1, value1, sources2, value2) do
       cond do
-        VehiclePosition.comes_from_swiftly(%{sources: sources1}) ->
-          if VehiclePosition.comes_from_swiftly(%{sources: sources2}) do
+        VehiclePosition.comes_from_swiftly?(%{sources: sources1}) ->
+          if VehiclePosition.comes_from_swiftly?(%{sources: sources2}) do
             first_value(value1, value2)
           else
             value1
           end
 
-        VehiclePosition.comes_from_swiftly(%{sources: sources2}) ->
+        VehiclePosition.comes_from_swiftly?(%{sources: sources2}) ->
           value2
 
         true ->
