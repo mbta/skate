@@ -128,7 +128,9 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
                  operator_name: "EVANS",
                  run_id: "128-1007",
                  status: :STOPPED_AT,
-                 last_updated: 1_534_340_406
+                 last_updated: 1_534_340_406,
+                 sources: MapSet.new(["busloc"]),
+                 data_discrepancies: nil
                )
     end
   end

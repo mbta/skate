@@ -83,7 +83,9 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehiclesTest do
           route_id: "39",
           schedule_adherence_secs: 0,
           schedule_adherence_string: "0.0 sec (ontime)",
-          scheduled_headway_secs: 120
+          scheduled_headway_secs: 120,
+          sources: MapSet.new(["swiftly"]),
+          data_discrepancies: nil
         )
 
       assert SwiftlyRealtimeVehicles.decode_vehicle(input) == expected
