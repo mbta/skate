@@ -199,57 +199,6 @@ defmodule Concentrate.VehiclePositionTest do
       assert Mergeable.merge(non_swiftly, swiftly) == expected
     end
 
-    test "merge/2 defaults to the latest value if both come from swiftly" do
-      swiftly =
-        new(
-          last_updated: 1,
-          latitude: 1,
-          longitude: 1,
-          trip_id: "swiftly_trip",
-          route_id: "swiftly_route",
-          sources: MapSet.new(["swiftly"])
-        )
-
-      swiftly_merged =
-        new(
-          last_updated: 2,
-          latitude: 2,
-          longitude: 2,
-          trip_id: "swiftly_merged_trip",
-          route_id: "swiftly_merged_route",
-          sources: MapSet.new(["busloc", "swiftly"])
-        )
-
-      expected =
-        new(
-          last_updated: 2,
-          latitude: 2,
-          longitude: 2,
-          trip_id: "swiftly_merged_trip",
-          route_id: "swiftly_merged_route",
-          sources: MapSet.new(["busloc", "swiftly"]),
-          data_discrepancies: [
-            %DataDiscrepancy{
-              attribute: :trip_id,
-              sources: [
-                %{id: "swiftly", value: "swiftly_trip"},
-                %{id: "busloc|swiftly", value: "swiftly_merged_trip"}
-              ]
-            },
-            %DataDiscrepancy{
-              attribute: :route_id,
-              sources: [
-                %{id: "swiftly", value: "swiftly_route"},
-                %{id: "busloc|swiftly", value: "swiftly_merged_route"}
-              ]
-            }
-          ]
-        )
-
-      assert Mergeable.merge(swiftly_merged, swiftly) == expected
-      assert Mergeable.merge(swiftly, swiftly_merged) == expected
-    end
-
     test "merge/2 doesn't include any data discrepancies if they values are the same" do
       first =
         new(
