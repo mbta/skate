@@ -9,12 +9,12 @@ import { initialState, reducer } from "../state"
 import App from "./app"
 
 const readUserToken = (): UserToken | undefined => {
-  const dataEl = document.getElementById("app-user-token")
+  const dataEl = document.getElementById("app")
   if (!dataEl) {
     return undefined
   }
 
-  const token = dataEl.innerHTML as UserToken
+  const token = dataEl.dataset.userToken as UserToken
   return token
 }
 const userToken: UserToken | undefined = readUserToken()
