@@ -59,7 +59,7 @@ defmodule SkateWeb.Router do
     assign(conn, :user_token, token)
   end
 
-  defp api_auth(conn, _) do
+  def api_auth(conn, _) do
     with [token] <- get_req_header(conn, "token"),
          {:ok, _claims} <- AuthManager.decode_and_verify(token) do
       conn
