@@ -4,7 +4,8 @@ defmodule SkateWeb.PageControllerTest do
   describe "GET /" do
     test "when logged out, redirects you to cognito auth", %{conn: conn} do
       conn = get(conn, "/")
-      assert html_response(conn, 302) =~ "/auth/cognito"
+
+      assert redirected_to(conn) == "/auth/cognito"
     end
 
     test "when logged in, shows you the app", %{conn: conn} do
