@@ -267,7 +267,7 @@ exports[`App renders with routes 1`] = `
     className="m-route-ladders"
   >
     <div
-      className="m-route-ladder"
+      className="m-route-ladder__header-and-controls"
     >
       <div
         className="m-route-ladder__header"
@@ -309,8 +309,8 @@ exports[`App renders with routes 1`] = `
           Reverse
         </button>
       </div>
-      loading...
     </div>
+    loading...
   </div>
 </div>
 `;
@@ -423,7 +423,7 @@ exports[`App renders with selectedRoutes in different order than routes data 1`]
     className="m-route-ladders"
   >
     <div
-      className="m-route-ladder"
+      className="m-route-ladder__header-and-controls"
     >
       <div
         className="m-route-ladder__header"
@@ -465,10 +465,10 @@ exports[`App renders with selectedRoutes in different order than routes data 1`]
           Reverse
         </button>
       </div>
-      loading...
     </div>
+    loading...
     <div
-      className="m-route-ladder"
+      className="m-route-ladder__header-and-controls"
     >
       <div
         className="m-route-ladder__header"
@@ -510,8 +510,8 @@ exports[`App renders with selectedRoutes in different order than routes data 1`]
           Reverse
         </button>
       </div>
-      loading...
     </div>
+    loading...
   </div>
 </div>
 `;

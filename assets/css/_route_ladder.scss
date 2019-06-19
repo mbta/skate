@@ -1,6 +1,6 @@
-.m-route-ladder {
-  display: flex;
-  flex-direction: column;
+.m-route-ladder__header-and-controls {
+  grid-column: span 1;
+  grid-row: 1 / 2;
   margin: 0 0.5rem;
 }
 
