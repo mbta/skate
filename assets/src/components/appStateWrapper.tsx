@@ -8,7 +8,7 @@ import { Route, TimepointsByRouteId, UserToken } from "../skate"
 import { initialState, reducer } from "../state"
 import App from "./app"
 
-const readUserToken = (): UserToken | undefined => {
+export const readUserToken = (): UserToken | undefined => {
   const dataEl = document.getElementById("app")
   if (!dataEl) {
     return undefined
