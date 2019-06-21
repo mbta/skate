@@ -235,7 +235,14 @@ const subscribe = (
 
   const topic = `vehicles:${routeId}`
   const channel = socket.channel(topic)
+
   channel.on("vehicles", handleVehicles)
+
+  // Reload our session if the auth has expired
+  channel.on("auth_expired", () => {
+    window.location.reload(true)
+  })
+
   channel
     .join()
     .receive("ok", handleVehicles)
