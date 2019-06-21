@@ -1,6 +1,8 @@
 defmodule SkateWeb.PageControllerTest do
   use SkateWeb.ConnCase
 
+  alias SkateWeb.AuthManager
+
   describe "GET /" do
     test "when logged out, redirects you to cognito auth", %{conn: conn} do
       conn = get(conn, "/")
@@ -9,7 +11,7 @@ defmodule SkateWeb.PageControllerTest do
     end
 
     test "when logged in, shows you the app", %{conn: conn} do
-      {:ok, token, _} = SkateWeb.AuthManager.encode_and_sign(%{})
+      {:ok, token, _} = AuthManager.encode_and_sign(%{})
 
       conn =
         conn
