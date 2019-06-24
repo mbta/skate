@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { Dispatch, SetStateAction, useContext, useState } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import { reverseIcon, reverseIconReversed } from "../helpers/icon"
 import { LoadableTimepoints, Route, Vehicle, VehicleId } from "../skate"
@@ -45,6 +45,44 @@ const Header = ({ route }: { route: Route }) => {
   )
 }
 
+const Controls = ({
+  ladderDirection,
+  setLadderDirection,
+}: {
+  ladderDirection: LadderDirection
+  setLadderDirection: Dispatch<SetStateAction<LadderDirection>>
+}) => (
+  <div className="m-route-ladder__controls">
+    <button
+      className="m-route-ladder__reverse"
+      onClick={() => setLadderDirection(flipLadderDirection)}
+    >
+      {ladderDirection === LadderDirection.OneToZero
+        ? reverseIcon("m-route-ladder__reverse-icon")
+        : reverseIconReversed("m-route-ladder__reverse-icon")}
+      Reverse
+    </button>
+  </div>
+)
+
+const HeaderAndControls = ({
+  route,
+  ladderDirection,
+  setLadderDirection,
+}: {
+  route: Route
+  ladderDirection: LadderDirection
+  setLadderDirection: Dispatch<SetStateAction<LadderDirection>>
+}) => (
+  <>
+    <Header route={route} />
+    <Controls
+      ladderDirection={ladderDirection}
+      setLadderDirection={setLadderDirection}
+    />
+  </>
+)
+
 const RouteLadder = ({
   route,
   timepoints,
@@ -61,20 +99,12 @@ const RouteLadder = ({
   )
 
   return (
-    <div className="m-route-ladder">
-      <Header route={route} />
-
-      <div className="m-route-ladder__controls">
-        <button
-          className="m-route-ladder__reverse"
-          onClick={() => setLadderDirection(flipLadderDirection)}
-        >
-          {ladderDirection === LadderDirection.OneToZero
-            ? reverseIcon("m-route-ladder__reverse-icon")
-            : reverseIconReversed("m-route-ladder__reverse-icon")}
-          Reverse
-        </button>
-      </div>
+    <>
+      <HeaderAndControls
+        route={route}
+        ladderDirection={ladderDirection}
+        setLadderDirection={setLadderDirection}
+      />
 
       {timepoints ? (
         <>
@@ -93,7 +123,7 @@ const RouteLadder = ({
       ) : (
         <Loading />
       )}
-    </div>
+    </>
   )
 }
 

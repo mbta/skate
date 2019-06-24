@@ -1,9 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`displays loading if we are fetching the timepoints 1`] = `
-<div
-  className="m-route-ladder"
->
+Array [
   <div
     className="m-route-ladder__header"
   >
@@ -25,7 +23,7 @@ exports[`displays loading if we are fetching the timepoints 1`] = `
     >
       28
     </div>
-  </div>
+  </div>,
   <div
     className="m-route-ladder__controls"
   >
@@ -43,15 +41,13 @@ exports[`displays loading if we are fetching the timepoints 1`] = `
       />
       Reverse
     </button>
-  </div>
-  loading...
-</div>
+  </div>,
+  "loading...",
+]
 `;
 
 exports[`renders a route ladder 1`] = `
-<div
-  className="m-route-ladder"
->
+Array [
   <div
     className="m-route-ladder__header"
   >
@@ -73,7 +69,7 @@ exports[`renders a route ladder 1`] = `
     >
       28
     </div>
-  </div>
+  </div>,
   <div
     className="m-route-ladder__controls"
   >
@@ -91,7 +87,7 @@ exports[`renders a route ladder 1`] = `
       />
       Reverse
     </button>
-  </div>
+  </div>,
   <svg
     className="m-ladder"
     height={500}
@@ -175,17 +171,15 @@ exports[`renders a route ladder 1`] = `
     >
       MORTN
     </text>
-  </svg>
+  </svg>,
   <div
     className="m-incoming-box"
-  />
-</div>
+  />,
+]
 `;
 
 exports[`renders a route ladder with vehicles 1`] = `
-<div
-  className="m-route-ladder"
->
+Array [
   <div
     className="m-route-ladder__header"
   >
@@ -207,7 +201,7 @@ exports[`renders a route ladder with vehicles 1`] = `
     >
       28
     </div>
-  </div>
+  </div>,
   <div
     className="m-route-ladder__controls"
   >
@@ -225,7 +219,7 @@ exports[`renders a route ladder with vehicles 1`] = `
       />
       Reverse
     </button>
-  </div>
+  </div>,
   <svg
     className="m-ladder"
     height={500}
@@ -397,17 +391,15 @@ exports[`renders a route ladder with vehicles 1`] = `
     >
       MORTN
     </text>
-  </svg>
+  </svg>,
   <div
     className="m-incoming-box"
-  />
-</div>
+  />,
+]
 `;
 
 exports[`renders a route ladder with vehicles in the incoming box 1`] = `
-<div
-  className="m-route-ladder"
->
+Array [
   <div
     className="m-route-ladder__header"
   >
@@ -429,7 +421,7 @@ exports[`renders a route ladder with vehicles in the incoming box 1`] = `
     >
       28
     </div>
-  </div>
+  </div>,
   <div
     className="m-route-ladder__controls"
   >
@@ -447,7 +439,7 @@ exports[`renders a route ladder with vehicles in the incoming box 1`] = `
       />
       Reverse
     </button>
-  </div>
+  </div>,
   <svg
     className="m-ladder"
     height={500}
@@ -619,9 +611,9 @@ exports[`renders a route ladder with vehicles in the incoming box 1`] = `
     >
       MORTN
     </text>
-  </svg>
+  </svg>,
   <div
     className="m-incoming-box"
-  />
-</div>
+  />,
+]
 `;
