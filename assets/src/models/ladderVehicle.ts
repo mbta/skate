@@ -1,10 +1,10 @@
-import { LadderDirection } from "../components/ladder"
-import { Vehicle, VehicleTimepointStatus } from "../skate"
+import { LadderDirection, TimepointStatusYFunc } from "../components/ladder"
+import { Vehicle } from "../skate"
 
 export interface LadderVehicle {
   vehicle: Vehicle
   x: number
-  y: number
+  y: YFromHeightFunc
   vehicleDirection: VehicleDirection
   lane: number
 }
@@ -19,7 +19,7 @@ interface WithVehicle {
 }
 
 interface OnLadder {
-  y: number
+  y: YFromHeightFunc
   vehicleDirection: VehicleDirection
 }
 
@@ -31,10 +31,7 @@ interface InLane extends OnLadder {
 
 interface VehicleInLane extends WithVehicle, InLane {}
 
-type YFunc = (
-  timepointStatus: VehicleTimepointStatus | null,
-  direction: VehicleDirection
-) => number | null
+export type YFromHeightFunc = (height: number) => number
 
 const widthOfVehicleGroup = 32
 const heightOfVehicleGroup = 34
@@ -51,13 +48,13 @@ const heightOfVehicleGroup = 34
 export const ladderVehiclesFromVehicles = (
   vehicles: Vehicle[],
   ladderDirection: LadderDirection,
-  yFunc: YFunc
+  timepointStatusYFunc: TimepointStatusYFunc
 ): {
   ladderVehicles: LadderVehicle[]
   widthOfLanes: number
 } => {
   const vehiclesOnLadder: VehicleOnLadder[] = vehicles.map(vehicle =>
-    vehicleOnLadder(vehicle, ladderDirection, yFunc)
+    vehicleOnLadder(vehicle, ladderDirection, timepointStatusYFunc)
   )
 
   const vehiclesInLane: VehicleInLane[] = putIntoLanes(vehiclesOnLadder)
@@ -92,14 +89,15 @@ export const vehicleDirectionOnLadder = (
 const vehicleOnLadder = (
   vehicle: Vehicle,
   ladderDirection: LadderDirection,
-  yFunc: YFunc
+  timepointStatusYFunc: TimepointStatusYFunc
 ): VehicleOnLadder => {
   const vehicleDirection: VehicleDirection = vehicleDirectionOnLadder(
     vehicle,
     ladderDirection
   )
 
-  const y = yFunc(vehicle.timepointStatus, vehicleDirection) || -10
+  const y =
+    timepointStatusYFunc(vehicle.timepointStatus, vehicleDirection) || -10
 
   return {
     // tslint:disable-next-line:object-literal-sort-keys
@@ -220,9 +218,13 @@ const overlappingPreviousVehicles = (
     areOverlapping(previousVehicle, vehicle)
   )
 
+// We need to determine overlapping vehicles before knowing the height of the
+// ladder, so we make a reasonable guess.
+// In practice this won't matter except for extreme edge cases.
+export const ESTIMATED_HEIGHT = 500
 export const areOverlapping = (a: OnLadder, b: OnLadder): boolean =>
   a.vehicleDirection === b.vehicleDirection &&
-  Math.abs(a.y - b.y) < heightOfVehicleGroup
+  Math.abs(a.y(ESTIMATED_HEIGHT) - b.y(ESTIMATED_HEIGHT)) < heightOfVehicleGroup
 
 export const firstOpenLane = (occupiedLanes: number[]): number => {
   const sortedOccupiedLanes = occupiedLanes.slice().sort()
