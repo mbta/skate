@@ -2,7 +2,10 @@
   box-sizing: border-box;
   display: grid;
   grid-template-columns: auto;
-  grid-template-rows: minmax(auto, max-content) auto minmax(auto, max-content);
+  grid-template-rows: minmax(auto, max-content) minmax(auto, max-content) auto minmax(
+      auto,
+      max-content
+    );
   height: 100vh;
   padding: 1rem 1rem 1rem 3rem;
   transition: padding-left 0.2s ease-in-out;

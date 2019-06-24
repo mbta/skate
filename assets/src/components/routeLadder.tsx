@@ -74,13 +74,13 @@ const HeaderAndControls = ({
   ladderDirection: LadderDirection
   setLadderDirection: Dispatch<SetStateAction<LadderDirection>>
 }) => (
-  <div className="m-route-ladder__header-and-controls">
+  <>
     <Header route={route} />
     <Controls
       ladderDirection={ladderDirection}
       setLadderDirection={setLadderDirection}
     />
-  </div>
+  </>
 )
 
 const RouteLadder = ({
