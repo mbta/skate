@@ -8,7 +8,7 @@
   background-color: $color-primary;
   border-radius: 4px;
   color: $color-font-light;
-  grid-row: 1 / 2;
+  grid-row-start: m-route-ladder__header;
   padding: 0.4rem 0;
   position: relative;
   text-align: center;
@@ -22,7 +22,7 @@
 
 .m-route-ladder__controls {
   display: flex;
-  grid-row: 2 / 3;
+  grid-row-start: m-route-ladder__controls;
 }
 
 .m-route-ladder__reverse {
