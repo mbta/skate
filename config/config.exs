@@ -25,6 +25,8 @@ config :skate, SkateWeb.Endpoint,
   render_errors: [view: SkateWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Skate.PubSub, adapter: Phoenix.PubSub.PG2]
 
+config :skate, record_fullstory: false
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

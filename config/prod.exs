@@ -25,6 +25,8 @@ config :logger, level: :info
 
 config :skate, :redirect_http?, true
 
+config :skate, record_fullstory: true
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key
