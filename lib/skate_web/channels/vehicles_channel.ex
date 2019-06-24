@@ -28,11 +28,7 @@ defmodule SkateWeb.VehiclesChannel do
   defp socket_authenticated?(socket) do
     token = Guardian.Phoenix.Socket.current_token(socket)
 
-    with {:ok, _claims} <- AuthManager.decode_and_verify(token) do
-      true
-    else
-      _ -> false
-    end
+    Kernel.match?({:ok, _claims}, AuthManager.decode_and_verify(token))
   end
 
   @spec send_auth_expired_message(Phoenix.Socket.t()) :: Phoenix.Socket.t()
