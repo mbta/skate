@@ -27,7 +27,7 @@ config :skate, SkateWeb.Endpoint,
 
 config :skate, SkateWeb.AuthManager,
   issuer: "skate",
-  secret_key: "test key"
+  secret_key: nil
 
 config :skate, record_fullstory: false
 
@@ -42,7 +42,7 @@ config :phoenix, :json_library, Jason
 # Fake Cognito authentication
 config :ueberauth, Ueberauth,
   providers: [
-    cognito: {Skate.Ueberauth.Strategy.Fake, []}
+    cognito: nil
   ]
 
 # Import environment specific config. This must remain at the bottom
