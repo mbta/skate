@@ -3,48 +3,44 @@
 exports[`displays loading if we are fetching the timepoints 1`] = `
 Array [
   <div
-    className="m-route-ladder__header-and-controls"
+    className="m-route-ladder__header"
   >
-    <div
-      className="m-route-ladder__header"
+    <button
+      className="m-close-button"
+      onClick={[Function]}
     >
-      <button
-        className="m-close-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
+      <span
+        className=""
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
           }
-        />
-      </button>
-      <div
-        className="m-route-ladder__route-name"
-      >
-        28
-      </div>
-    </div>
+        }
+      />
+    </button>
     <div
-      className="m-route-ladder__controls"
+      className="m-route-ladder__route-name"
     >
-      <button
-        className="m-route-ladder__reverse"
-        onClick={[Function]}
-      >
-        <span
-          className="m-route-ladder__reverse-icon"
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-        Reverse
-      </button>
+      28
     </div>
+  </div>,
+  <div
+    className="m-route-ladder__controls"
+  >
+    <button
+      className="m-route-ladder__reverse"
+      onClick={[Function]}
+    >
+      <span
+        className="m-route-ladder__reverse-icon"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
+        }
+      />
+      Reverse
+    </button>
   </div>,
   "loading...",
 ]
@@ -53,48 +49,44 @@ Array [
 exports[`renders a route ladder 1`] = `
 Array [
   <div
-    className="m-route-ladder__header-and-controls"
+    className="m-route-ladder__header"
   >
-    <div
-      className="m-route-ladder__header"
+    <button
+      className="m-close-button"
+      onClick={[Function]}
     >
-      <button
-        className="m-close-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
+      <span
+        className=""
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
           }
-        />
-      </button>
-      <div
-        className="m-route-ladder__route-name"
-      >
-        28
-      </div>
-    </div>
+        }
+      />
+    </button>
     <div
-      className="m-route-ladder__controls"
+      className="m-route-ladder__route-name"
     >
-      <button
-        className="m-route-ladder__reverse"
-        onClick={[Function]}
-      >
-        <span
-          className="m-route-ladder__reverse-icon"
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-        Reverse
-      </button>
+      28
     </div>
+  </div>,
+  <div
+    className="m-route-ladder__controls"
+  >
+    <button
+      className="m-route-ladder__reverse"
+      onClick={[Function]}
+    >
+      <span
+        className="m-route-ladder__reverse-icon"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
+        }
+      />
+      Reverse
+    </button>
   </div>,
   <svg
     className="m-ladder"
@@ -189,48 +181,44 @@ Array [
 exports[`renders a route ladder with vehicles 1`] = `
 Array [
   <div
-    className="m-route-ladder__header-and-controls"
+    className="m-route-ladder__header"
   >
-    <div
-      className="m-route-ladder__header"
+    <button
+      className="m-close-button"
+      onClick={[Function]}
     >
-      <button
-        className="m-close-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
+      <span
+        className=""
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
           }
-        />
-      </button>
-      <div
-        className="m-route-ladder__route-name"
-      >
-        28
-      </div>
-    </div>
+        }
+      />
+    </button>
     <div
-      className="m-route-ladder__controls"
+      className="m-route-ladder__route-name"
     >
-      <button
-        className="m-route-ladder__reverse"
-        onClick={[Function]}
-      >
-        <span
-          className="m-route-ladder__reverse-icon"
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-        Reverse
-      </button>
+      28
     </div>
+  </div>,
+  <div
+    className="m-route-ladder__controls"
+  >
+    <button
+      className="m-route-ladder__reverse"
+      onClick={[Function]}
+    >
+      <span
+        className="m-route-ladder__reverse-icon"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
+        }
+      />
+      Reverse
+    </button>
   </div>,
   <svg
     className="m-ladder"
@@ -413,48 +401,44 @@ Array [
 exports[`renders a route ladder with vehicles in the incoming box 1`] = `
 Array [
   <div
-    className="m-route-ladder__header-and-controls"
+    className="m-route-ladder__header"
   >
-    <div
-      className="m-route-ladder__header"
+    <button
+      className="m-close-button"
+      onClick={[Function]}
     >
-      <button
-        className="m-close-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
+      <span
+        className=""
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
           }
-        />
-      </button>
-      <div
-        className="m-route-ladder__route-name"
-      >
-        28
-      </div>
-    </div>
+        }
+      />
+    </button>
     <div
-      className="m-route-ladder__controls"
+      className="m-route-ladder__route-name"
     >
-      <button
-        className="m-route-ladder__reverse"
-        onClick={[Function]}
-      >
-        <span
-          className="m-route-ladder__reverse-icon"
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-        Reverse
-      </button>
+      28
     </div>
+  </div>,
+  <div
+    className="m-route-ladder__controls"
+  >
+    <button
+      className="m-route-ladder__reverse"
+      onClick={[Function]}
+    >
+      <span
+        className="m-route-ladder__reverse-icon"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
+        }
+      />
+      Reverse
+    </button>
   </div>,
   <svg
     className="m-ladder"
