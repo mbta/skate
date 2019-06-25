@@ -113,10 +113,6 @@ defmodule Realtime.Vehicle do
     nil
   end
 
-  def from_vehicle_position_and_trip_update(_vehicle_position, nil) do
-    nil
-  end
-
   def from_vehicle_position_and_trip_update(vehicle_position, trip_update) do
     trip_fn = Application.get_env(:realtime, :trip_fn, &Gtfs.trip/1)
 
@@ -141,8 +137,11 @@ defmodule Realtime.Vehicle do
       latitude: VehiclePosition.latitude(vehicle_position),
       longitude: VehiclePosition.longitude(vehicle_position),
       direction_id:
-        VehiclePosition.direction_id(vehicle_position) || TripUpdate.direction_id(trip_update),
-      route_id: VehiclePosition.route_id(vehicle_position) || TripUpdate.route_id(trip_update),
+        VehiclePosition.direction_id(vehicle_position) ||
+          (trip_update && TripUpdate.direction_id(trip_update)),
+      route_id:
+        VehiclePosition.route_id(vehicle_position) ||
+          (trip_update && TripUpdate.route_id(trip_update)),
       trip_id: trip_id,
       headsign: headsign,
       via_variant: via_variant,
