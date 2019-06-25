@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react"
 import { fetchTimepointsForRoute } from "../api"
-import { RouteId, Timepoint, TimepointsByRouteId, UserToken } from "../skate"
+import { RouteId, Timepoint, TimepointsByRouteId } from "../skate"
 
-const useTimepoints = (
-  selectedRouteIds: RouteId[],
-  userToken?: UserToken
-): TimepointsByRouteId => {
+const useTimepoints = (selectedRouteIds: RouteId[]): TimepointsByRouteId => {
   const [timepointsByRouteId, setTimepointsByRouteId] = useState<
     TimepointsByRouteId
   >({})
@@ -32,9 +29,8 @@ const useTimepoints = (
       if (!(routeId in timepointsByRouteId)) {
         setLoadingTimepointsForRoute(routeId)
 
-        fetchTimepointsForRoute(routeId, userToken).then(
-          (newTimepoints: Timepoint[]) =>
-            setTimepointsForRoute(routeId, newTimepoints)
+        fetchTimepointsForRoute(routeId).then((newTimepoints: Timepoint[]) =>
+          setTimepointsForRoute(routeId, newTimepoints)
         )
       }
     })

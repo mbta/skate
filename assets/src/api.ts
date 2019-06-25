@@ -4,7 +4,6 @@ import {
   RouteId,
   Timepoint,
   TimepointId,
-  UserToken,
 } from "./skate.d"
 
 interface RoutesResponse {
@@ -21,11 +20,6 @@ interface RouteData {
 
 interface TimepointsForRouteResponse {
   data: TimepointId[]
-}
-
-const request = (url: string, userToken?: UserToken) => {
-  const options = userToken ? { headers: { token: userToken } } : {}
-  return fetch(url, options)
 }
 
 const checkResponseStatus = (response: Response) => {
@@ -45,8 +39,8 @@ const parseRouteData = ({ id, direction_names }: RouteData): Route => ({
 const parseRoutesData = (routesData: RouteData[]): Route[] =>
   routesData.map(parseRouteData)
 
-export const fetchRoutes = (userToken?: UserToken): Promise<Route[]> =>
-  request("/api/routes", userToken)
+export const fetchRoutes = (): Promise<Route[]> =>
+  fetch("/api/routes")
     .then(checkResponseStatus)
     .then(parseJson)
     .then(({ data: routes }: RoutesResponse) => parseRoutesData(routes))
@@ -57,10 +51,9 @@ export const fetchRoutes = (userToken?: UserToken): Promise<Route[]> =>
     })
 
 export const fetchTimepointsForRoute = (
-  routeId: RouteId,
-  userToken?: UserToken
+  routeId: RouteId
 ): Promise<Timepoint[]> =>
-  request(`/api/routes/${routeId}`, userToken)
+  fetch(`/api/routes/${routeId}`)
     .then(checkResponseStatus)
     .then(parseJson)
     .then(({ data: timepointIds }: TimepointsForRouteResponse) =>

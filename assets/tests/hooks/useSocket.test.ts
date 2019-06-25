@@ -1,5 +1,5 @@
 import { renderHook } from "react-hooks-testing-library"
-import useSocket from "../../src/hooks/useSocket"
+import useSocket, { readUserToken } from "../../src/hooks/useSocket"
 
 // tslint:disable: react-hooks-nesting
 
@@ -19,4 +19,16 @@ describe("useVehicles", () => {
     expect(mockSocket.connect).toHaveBeenCalled()
     expect(result.current).toBe(mockSocket)
   })
+})
+
+test("reads the user token from the page", () => {
+  const mockElement = {
+    dataset: {
+      userToken: "mock-token",
+    },
+  }
+  // @ts-ignore
+  document.getElementById = () => mockElement
+
+  expect(readUserToken()).toEqual("mock-token")
 })

@@ -16,11 +16,11 @@ describe("useTimepoints", () => {
     const mockFetchTimepoints: jest.Mock = Api.fetchTimepointsForRoute as jest.Mock
 
     const { result } = renderHook(() => {
-      return useTimepoints(["1"], "token-123")
+      return useTimepoints(["1"])
     })
 
     expect(mockFetchTimepoints).toHaveBeenCalledTimes(1)
-    expect(mockFetchTimepoints).toHaveBeenCalledWith("1", "token-123")
+    expect(mockFetchTimepoints).toHaveBeenCalledWith("1")
     expect(result.current).toEqual({ "1": null })
   })
 
