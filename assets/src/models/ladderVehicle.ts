@@ -4,7 +4,7 @@ import { Vehicle } from "../skate"
 export interface LadderVehicle {
   vehicle: Vehicle
   x: number
-  y: YFromHeightFunc
+  y: number
   vehicleDirection: VehicleDirection
   lane: number
 }
@@ -19,7 +19,7 @@ interface WithVehicle {
 }
 
 interface OnLadder {
-  y: YFromHeightFunc
+  y: number
   vehicleDirection: VehicleDirection
 }
 
@@ -30,8 +30,6 @@ interface InLane extends OnLadder {
 }
 
 interface VehicleInLane extends WithVehicle, InLane {}
-
-export type YFromHeightFunc = (height: number) => number
 
 const widthOfVehicleGroup = 32
 const heightOfVehicleGroup = 34
@@ -221,10 +219,9 @@ const overlappingPreviousVehicles = (
 // We need to determine overlapping vehicles before knowing the height of the
 // ladder, so we make a reasonable guess.
 // In practice this won't matter except for extreme edge cases.
-export const ESTIMATED_HEIGHT = 500
 export const areOverlapping = (a: OnLadder, b: OnLadder): boolean =>
   a.vehicleDirection === b.vehicleDirection &&
-  Math.abs(a.y(ESTIMATED_HEIGHT) - b.y(ESTIMATED_HEIGHT)) < heightOfVehicleGroup
+  Math.abs(a.y - b.y) < heightOfVehicleGroup
 
 export const firstOpenLane = (occupiedLanes: number[]): number => {
   const sortedOccupiedLanes = occupiedLanes.slice().sort()

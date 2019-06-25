@@ -221,7 +221,7 @@ exports[`ladder renders a ladder 1`] = `
       <g
         className="m-ladder__vehicle on-time "
         onClick={[Function]}
-        transform="translate(-63,0)"
+        transform="translate(-63,-10)"
       >
         <g
           className="m-vehicle-icon m-vehicle-icon--medium"
@@ -378,7 +378,7 @@ exports[`ladder renders a ladder with no timepoints 1`] = `
       <g
         className="m-ladder__vehicle on-time "
         onClick={[Function]}
-        transform="translate(63,0)"
+        transform="translate(63,-10)"
       >
         <g
           className="m-vehicle-icon m-vehicle-icon--medium"
