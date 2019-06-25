@@ -2,6 +2,7 @@ defmodule SkateWeb.VehiclesChannel do
   use SkateWeb, :channel
 
   alias Realtime.Server
+  alias SkateWeb.AuthManager
 
   @impl Phoenix.Channel
   def join("vehicles:" <> route_id, _message, socket) do
@@ -15,7 +16,24 @@ defmodule SkateWeb.VehiclesChannel do
 
   @impl Phoenix.Channel
   def handle_info({:new_realtime_data, vehicles}, socket) do
-    push(socket, "vehicles", %{vehicles: vehicles})
-    {:noreply, socket}
+    if socket_authenticated?(socket) do
+      push(socket, "vehicles", %{vehicles: vehicles})
+      {:noreply, socket}
+    else
+      {:stop, :normal, send_auth_expired_message(socket)}
+    end
+  end
+
+  @spec socket_authenticated?(Phoenix.Socket.t()) :: boolean()
+  defp socket_authenticated?(socket) do
+    token = Guardian.Phoenix.Socket.current_token(socket)
+
+    Kernel.match?({:ok, _claims}, AuthManager.decode_and_verify(token))
+  end
+
+  @spec send_auth_expired_message(Phoenix.Socket.t()) :: Phoenix.Socket.t()
+  defp send_auth_expired_message(socket) do
+    :ok = push(socket, "auth_expired", %{})
+    socket
   end
 end

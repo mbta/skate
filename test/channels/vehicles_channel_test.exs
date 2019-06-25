@@ -3,7 +3,7 @@ defmodule SkateWeb.VehiclesChannelTest do
 
   alias Phoenix.Socket
   alias Realtime.Vehicle
-  alias SkateWeb.{UserSocket, VehiclesChannel}
+  alias SkateWeb.{AuthManager, UserSocket, VehiclesChannel}
 
   describe "join/3" do
     setup do
@@ -54,7 +54,7 @@ defmodule SkateWeb.VehiclesChannelTest do
       {:ok, socket: socket}
     end
 
-    test "pushes new vehicle data onto the socket", %{socket: socket} do
+    test "pushes new vehicle data onto the socket when socket is authenticated", %{socket: socket} do
       new_vehicles = [
         %Vehicle{
           id: "y0507",
@@ -85,10 +85,30 @@ defmodule SkateWeb.VehiclesChannelTest do
         }
       ]
 
+      {:ok, token, claims} =
+        AuthManager.encode_and_sign("example@mbta.com", %{
+          "exp" => System.system_time(:second) + 500
+        })
+
+      socket = Guardian.Phoenix.Socket.assign_rtc(socket, "example@mbta.com", token, claims)
+
       assert {:noreply, socket} =
                VehiclesChannel.handle_info({:new_realtime_data, new_vehicles}, socket)
 
       assert_push("vehicles", new_vehicles)
+    end
+
+    test "rejects sending vehicle data when socket is not authenticated", %{socket: socket} do
+      {:ok, token, claims} =
+        AuthManager.encode_and_sign("example@mbta.com", %{
+          "exp" => System.system_time(:second) - 100
+        })
+
+      socket = Guardian.Phoenix.Socket.assign_rtc(socket, "example@mbta.com", token, claims)
+
+      {:stop, :normal, _socket} = VehiclesChannel.handle_info({:new_realtime_data, []}, socket)
+
+      assert_push("auth_expired", %{})
     end
   end
 end

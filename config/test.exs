@@ -8,4 +8,11 @@ config :skate, SkateWeb.Endpoint,
   http: [port: 4002],
   server: false
 
+config :skate, SkateWeb.AuthManager, secret_key: "dev key"
+
+config :ueberauth, Ueberauth,
+  providers: [
+    cognito: {Skate.Ueberauth.Strategy.Fake, []}
+  ]
+
 config :logger, level: :warn

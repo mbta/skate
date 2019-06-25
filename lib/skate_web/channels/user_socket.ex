@@ -15,8 +15,11 @@ defmodule SkateWeb.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
-  def connect(_params, socket, _connect_info) do
-    {:ok, socket}
+  def connect(%{"token" => token}, socket, _connect_info) do
+    case Guardian.Phoenix.Socket.authenticate(socket, SkateWeb.AuthManager, token) do
+      {:ok, authed_socket} -> {:ok, authed_socket}
+      {:error, _reason} -> :error
+    end
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:

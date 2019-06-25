@@ -23,6 +23,13 @@ config :skate, SkateWeb.Endpoint,
     ]
   ]
 
+config :skate, SkateWeb.AuthManager, secret_key: "dev key"
+
+config :ueberauth, Ueberauth,
+  providers: [
+    cognito: {Skate.Ueberauth.Strategy.Fake, []}
+  ]
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed

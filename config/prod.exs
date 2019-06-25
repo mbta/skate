@@ -25,6 +25,21 @@ config :logger, level: :info
 
 config :skate, :redirect_http?, true
 
+# Configure Ueberauth to use Cognito
+config :ueberauth, Ueberauth,
+  providers: [
+    cognito: {Ueberauth.Strategy.Cognito, []}
+  ]
+
+config :ueberauth, Ueberauth.Strategy.Cognito,
+  auth_domain: {System, :get_env, ["COGNITO_DOMAIN"]},
+  client_id: {System, :get_env, ["COGNITO_CLIENT_ID"]},
+  client_secret: {System, :get_env, ["COGNITO_CLIENT_SECRET"]},
+  user_pool_id: {System, :get_env, ["COGNITO_USER_POOL_ID"]},
+  aws_region: {System, :get_env, ["COGNITO_AWS_REGION"]}
+
+config :skate, SkateWeb.AuthManager, secret_key: {System, :get_env, ["GUARDIAN_SECRET_KEY"]}
+
 config :skate, record_fullstory: true
 
 # ## SSL Support

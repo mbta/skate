@@ -1,1 +1,1 @@
-<div id="app"></div>
+<div id="app" data-user-token="<%= assigns[:user_token] %>"></div>

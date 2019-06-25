@@ -7,16 +7,34 @@ defmodule SkateWeb.Router do
     end
   end
 
-  pipeline :browser do
+  pipeline :auth do
+    plug(SkateWeb.AuthManager.Pipeline)
+  end
+
+  pipeline :ensure_auth do
+    plug(Guardian.Plug.EnsureAuthenticated)
+  end
+
+  pipeline :accepts_html do
     plug :accepts, ["html"]
+  end
+
+  pipeline :accepts_json do
+    plug :accepts, ["json"]
+  end
+
+  pipeline :browser do
     plug :fetch_session
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
+  scope "/auth", SkateWeb do
+    pipe_through([:redirect_prod_http, :accepts_html, :browser])
+
+    get("/:provider", AuthController, :request)
+    get("/:provider/callback", AuthController, :callback)
   end
 
   scope "/", SkateWeb do
@@ -24,15 +42,27 @@ defmodule SkateWeb.Router do
   end
 
   scope "/", SkateWeb do
-    pipe_through [:redirect_prod_http, :browser]
+    pipe_through [
+      :redirect_prod_http,
+      :accepts_html,
+      :browser,
+      :auth,
+      :ensure_auth,
+      :put_user_token
+    ]
 
     get "/", PageController, :index
   end
 
   scope "/api", SkateWeb do
-    pipe_through :api
+    pipe_through [:accepts_json, :browser, :auth, :ensure_auth]
 
     get "/routes", RouteController, :index
     get "/routes/:route_id", RouteController, :show
+  end
+
+  defp put_user_token(conn, _) do
+    token = Guardian.Plug.current_token(conn)
+    assign(conn, :user_token, token)
   end
 end
