@@ -9,7 +9,7 @@ defmodule Skate.Ueberauth.Strategy.FakeTest do
              token: "fake_access_token",
              refresh_token: "fake_refresh_token",
              expires: true,
-             expires_at: System.system_time(:second) + 60 * 60
+             expires_at: System.system_time(:second) + 9 * 60 * 60
            }
   end
 

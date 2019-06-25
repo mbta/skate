@@ -20,8 +20,8 @@ defmodule Skate.Ueberauth.Strategy.Fake do
 
   @impl Ueberauth.Strategy
   def credentials(_conn) do
-    one_hour_in_seconds = 60 * 60
-    expiration_time = System.system_time(:second) + one_hour_in_seconds
+    nine_hours_in_seconds = 9 * 60 * 60
+    expiration_time = System.system_time(:second) + nine_hours_in_seconds
 
     %Ueberauth.Auth.Credentials{
       token: "fake_access_token",
