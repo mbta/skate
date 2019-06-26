@@ -75,6 +75,7 @@ const Ladder = ({
   )
 
   const width = 120 + 2 * widthOfLanes
+  // (0, 0) is in the center of the first timepoint
   const viewBox = [-width / 2, -MARGIN_TOP_BOTTOM, width, height].join(" ")
 
   return (
