@@ -1,6 +1,5 @@
-import React, { createRef, useContext, useState } from "react"
+import React, { useContext, useLayoutEffect, useRef, useState } from "react"
 import DispatchContext from "../contexts/dispatchContext"
-import useLadderSvgHeight from "../hooks/useLadderSvgHeight"
 import {
   LadderVehicle,
   ladderVehiclesFromVehicles,
@@ -46,6 +45,15 @@ const Ladder = ({
 }: Props) => {
   const dispatch = useContext(DispatchContext)
   const [height, setHeight] = useState(500)
+  const wrapperDivRef = useRef<HTMLDivElement>(null)
+  useLayoutEffect(() => {
+    if (wrapperDivRef.current !== null) {
+      const newHeight = wrapperDivRef.current.offsetHeight
+      if (newHeight !== height) {
+        setHeight(newHeight)
+      }
+    }
+  }, [wrapperDivRef.current, height])
 
   const orderedTimepoints: Timepoint[] =
     // Use slice to make a copy of the array before destructively reversing
@@ -67,13 +75,16 @@ const Ladder = ({
   )
 
   const width = 120 + 2 * widthOfLanes
-
-  const ref = createRef<SVGSVGElement>()
-  useLadderSvgHeight(ref, -width / 2, 0, width, height, setHeight)
+  const viewBox = [-width / 2, -MARGIN_TOP_BOTTOM, width, height].join(" ")
 
   return (
-    <div className="m-ladder">
-      <svg ref={ref}>
+    <div className="m-ladder" ref={wrapperDivRef}>
+      <svg
+        className="m-ladder__svg"
+        viewBox={viewBox}
+        width={width}
+        height={height}
+      >
         {ladderVehicles.map(ladderVehicle => {
           const { vehicle, vehicleDirection } = ladderVehicle
           const scheduledY = timepointStatusY(

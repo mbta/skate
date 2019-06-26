@@ -3,6 +3,10 @@
   margin: 0 auto;
 }
 
+.m-ladder__svg {
+  display: block;
+}
+
 .m-ladder__line {
   fill: none;
   stroke: $color-line-normal;
