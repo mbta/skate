@@ -91,7 +91,12 @@ Array [
   <div
     className="m-ladder"
   >
-    <svg>
+    <svg
+      className="m-ladder__svg"
+      height={500}
+      viewBox="-92 -40 184 500"
+      width={184}
+    >
       <line
         className="m-ladder__line"
         x1={-40}
@@ -222,7 +227,12 @@ Array [
   <div
     className="m-ladder"
   >
-    <svg>
+    <svg
+      className="m-ladder__svg"
+      height={500}
+      viewBox="-92 -40 184 500"
+      width={184}
+    >
       0
       <g>
         <line
@@ -442,7 +452,12 @@ Array [
   <div
     className="m-ladder"
   >
-    <svg>
+    <svg
+      className="m-ladder__svg"
+      height={500}
+      viewBox="-92 -40 184 500"
+      width={184}
+    >
       0
       <g>
         <line

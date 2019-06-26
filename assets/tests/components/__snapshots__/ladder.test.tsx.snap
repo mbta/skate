@@ -4,7 +4,12 @@ exports[`ladder highlights a selected vehicle 1`] = `
 <div
   className="m-ladder"
 >
-  <svg>
+  <svg
+    className="m-ladder__svg"
+    height={500}
+    viewBox="-92 -40 184 500"
+    width={184}
+  >
     0
     <g>
       <line
@@ -170,7 +175,12 @@ exports[`ladder renders a ladder 1`] = `
 <div
   className="m-ladder"
 >
-  <svg>
+  <svg
+    className="m-ladder__svg"
+    height={500}
+    viewBox="-92 -40 184 500"
+    width={184}
+  >
     0
     0
     <g>
@@ -372,7 +382,12 @@ exports[`ladder renders a ladder with no timepoints 1`] = `
 <div
   className="m-ladder"
 >
-  <svg>
+  <svg
+    className="m-ladder__svg"
+    height={500}
+    viewBox="-92 -40 184 500"
+    width={184}
+  >
     0
     <g>
       <g
