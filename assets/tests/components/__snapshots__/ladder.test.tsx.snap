@@ -90,6 +90,41 @@ exports[`ladder highlights a selected vehicle 1`] = `
         </g>
       </g>
     </g>
+    <g>
+      <g
+        className="m-ladder__vehicle on-time selected"
+        onClick={[Function]}
+        transform="translate(63,315)"
+      >
+        <g
+          className="m-vehicle-icon m-vehicle-icon--medium"
+        >
+          <rect
+            className="m-vehicle-icon__label-background"
+            height={11}
+            rx={5.5}
+            ry={5.5}
+            width={26}
+            x={-13}
+            y={11.5}
+          />
+          <text
+            className="m-vehicle-icon__label"
+            dominantBaseline="central"
+            textAnchor="middle"
+            x="0"
+            y={17}
+          >
+            upward
+          </text>
+          <path
+            className="m-vehicle-icon__triangle"
+            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            transform="scale(0.625) rotate(0) translate(-24,-22)"
+          />
+        </g>
+      </g>
+    </g>
     <line
       className="m-ladder__line"
       x1={-40}
