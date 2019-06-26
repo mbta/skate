@@ -216,9 +216,6 @@ const overlappingPreviousVehicles = (
     areOverlapping(previousVehicle, vehicle)
   )
 
-// We need to determine overlapping vehicles before knowing the height of the
-// ladder, so we make a reasonable guess.
-// In practice this won't matter except for extreme edge cases.
 export const areOverlapping = (a: OnLadder, b: OnLadder): boolean =>
   a.vehicleDirection === b.vehicleDirection &&
   Math.abs(a.y - b.y) < heightOfVehicleGroup
