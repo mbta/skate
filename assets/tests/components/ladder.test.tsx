@@ -7,28 +7,6 @@ import { Timepoint, Vehicle } from "../../src/skate"
 import { selectVehicle } from "../../src/state"
 
 describe("ladder", () => {
-  const originalGetBBox = SVGSVGElement.prototype.getBBox
-  const originalGetElementsByClassName = document.getElementsByClassName
-
-  beforeEach(() => {
-    SVGSVGElement.prototype.getBBox = () => {
-      return {
-        width: 50,
-        height: 100,
-      } as DOMRect
-    }
-    const mockElement = {
-      offsetHeight: 120,
-    }
-    // @ts-ignore
-    document.getElementsByClassName = () => [mockElement]
-  })
-
-  afterEach(() => {
-    SVGSVGElement.prototype.getBBox = originalGetBBox
-    document.getElementsByClassName = originalGetElementsByClassName
-  })
-
   test("renders a ladder", () => {
     const timepoints = [{ id: "t0" }, { id: "t1" }, { id: "t2" }]
     const vehicles: Vehicle[] = [
