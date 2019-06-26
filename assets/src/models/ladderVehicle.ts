@@ -94,8 +94,7 @@ const vehicleOnLadder = (
     ladderDirection
   )
 
-  const y =
-    timepointStatusYFunc(vehicle.timepointStatus, vehicleDirection) || -10
+  const y = timepointStatusYFunc(vehicle.timepointStatus, vehicleDirection)
 
   return {
     // tslint:disable-next-line:object-literal-sort-keys
