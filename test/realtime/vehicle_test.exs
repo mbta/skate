@@ -50,6 +50,70 @@ defmodule Realtime.VehicleTest do
         status: :IN_TRANSIT_TO,
         stop_id: "392",
         stop_sequence: 25,
+        trip_id: "39984755",
+        direction_id: 1,
+        route_id: "28"
+      }
+
+      trip_update = %TripUpdate{
+        direction_id: 1,
+        route_id: "28",
+        schedule_relationship: :SCHEDULED,
+        start_date: {2019, 5, 20},
+        start_time: nil,
+        trip_id: "39984755"
+      }
+
+      expected_result = %Vehicle{
+        id: "y1261",
+        label: "1261",
+        timestamp: 1_558_364_020,
+        latitude: 42.31777347,
+        longitude: -71.08206019,
+        direction_id: 1,
+        route_id: "28",
+        trip_id: "39984755",
+        headsign: "headsign",
+        via_variant: "_",
+        bearing: 0,
+        speed: 0.0,
+        stop_sequence: 25,
+        block_id: "S28-2",
+        operator_id: "72032",
+        operator_name: "MAUPIN",
+        run_id: "138-1038",
+        stop_status: %{
+          status: :in_transit_to,
+          stop_id: "392",
+          stop_name: "392"
+        },
+        timepoint_status: nil,
+        route_status: :on_route
+      }
+
+      result = Vehicle.from_vehicle_position_and_trip_update(vehicle_position, trip_update)
+
+      assert result == expected_result
+    end
+
+    test "takes direction_id and route_id values from TripUpdate if they aren't present on VehiclePosition" do
+      vehicle_position = %VehiclePosition{
+        bearing: 0,
+        block_id: "S28-2",
+        id: "y1261",
+        label: "1261",
+        last_updated: 1_558_364_020,
+        latitude: 42.31777347,
+        license_plate: nil,
+        longitude: -71.08206019,
+        odometer: nil,
+        operator_id: "72032",
+        operator_name: "MAUPIN",
+        run_id: "138-1038",
+        speed: 0.0,
+        status: :IN_TRANSIT_TO,
+        stop_id: "392",
+        stop_sequence: 25,
         trip_id: "39984755"
       }
 
@@ -111,7 +175,7 @@ defmodule Realtime.VehicleTest do
       assert result == nil
     end
 
-    test "returns nil if not given a TripUpdate" do
+    test "returns a Vehicle struct even if not given a TripUpdate" do
       vehicle_position = %VehiclePosition{
         bearing: 0,
         block_id: "S28-2",
@@ -136,7 +200,7 @@ defmodule Realtime.VehicleTest do
 
       result = Vehicle.from_vehicle_position_and_trip_update(vehicle_position, trip_update)
 
-      assert result == nil
+      assert %Vehicle{} = result
     end
   end
 
