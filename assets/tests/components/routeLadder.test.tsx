@@ -6,342 +6,366 @@ import DispatchProvider from "../../src/providers/dispatchProvider"
 import { Route, Vehicle } from "../../src/skate"
 import { deselectRoute, selectVehicle } from "../../src/state"
 
-test("renders a route ladder", () => {
-  const route: Route = {
-    id: "28",
-    directionNames: { 0: "Outbound", 1: "Inbound" },
-  }
-  const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
+describe("routeLadder", () => {
+  const originalGetBBox = SVGSVGElement.prototype.getBBox
+  const originalGetElementsByClassName = document.getElementsByClassName
 
-  const tree = renderer
-    .create(
-      <RouteLadder
-        route={route}
-        timepoints={timepoints}
-        vehicles={[]}
-        selectedVehicleId={undefined}
-      />
-    )
-    .toJSON()
-
-  expect(tree).toMatchSnapshot()
-})
-
-test("renders a route ladder with vehicles", () => {
-  const route: Route = {
-    id: "28",
-    directionNames: { 0: "Outbound", 1: "Inbound" },
-  }
-  const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
-  const vehicles: Vehicle[] = [
-    {
-      id: "y1818",
-      label: "1818",
-      runId: "run-1",
-      timestamp: 1557160307,
-      latitude: 0,
-      longitude: 0,
-      directionId: 0,
-      routeId: "1",
-      tripId: "39914237",
-      headsign: "h0",
-      viaVariant: "4",
-      operatorId: "op1",
-      operatorName: "SMITH",
-      speed: 50.0,
-      bearing: 33,
-      blockId: "block-1",
-      headwaySecs: 859.1,
-      previousVehicleId: "v2",
-      scheduleAdherenceSecs: 0,
-      scheduleAdherenceString: "0.0 sec (ontime)",
-      scheduleAdherenceStatus: "on-time",
-      scheduledHeadwaySecs: 120,
-      stopStatus: {
-        status: "in_transit_to",
-        stopId: "57",
-        stopName: "57",
-      },
-      timepointStatus: {
-        timepointId: "MATPN",
-        fractionUntilTimepoint: 0.5,
-      },
-      scheduledTimepointStatus: null,
-      routeStatus: "on_route",
-    },
-    {
-      id: "y0479",
-      label: "0479",
-      runId: "run-2",
-      timestamp: 1557160347,
-      latitude: 0,
-      longitude: 0,
-      directionId: 1,
-      routeId: "1",
-      tripId: "39914128",
-      headsign: null,
-      viaVariant: null,
-      operatorId: "op2",
-      operatorName: "JONES",
-      speed: 50.0,
-      bearing: 33,
-      blockId: "block-1",
-      headwaySecs: 859.1,
-      previousVehicleId: "v2",
-      scheduleAdherenceSecs: 0,
-      scheduleAdherenceString: "0.0 sec (ontime)",
-      scheduleAdherenceStatus: "on-time",
-      scheduledHeadwaySecs: 120,
-      stopStatus: {
-        status: "in_transit_to",
-        stopId: "59",
-        stopName: "59",
-      },
-      timepointStatus: {
-        timepointId: "MORTN",
-        fractionUntilTimepoint: 0.0,
-      },
-      scheduledTimepointStatus: {
-        timepointId: "MORTN",
-        fractionUntilTimepoint: 0.0,
-      },
-      routeStatus: "on_route",
-    },
-  ]
-
-  const tree = renderer
-    .create(
-      <RouteLadder
-        route={route}
-        timepoints={timepoints}
-        vehicles={vehicles}
-        selectedVehicleId={undefined}
-      />
-    )
-    .toJSON()
-
-  expect(tree).toMatchSnapshot()
-})
-
-test("renders a route ladder with vehicles in the incoming box", () => {
-  const route: Route = {
-    id: "28",
-    directionNames: { 0: "Outbound", 1: "Inbound" },
-  }
-  const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
-  const vehicles: Vehicle[] = [
-    {
-      id: "y1818",
-      label: "1818",
-      runId: "run-1",
-      timestamp: 1557160307,
-      latitude: 0,
-      longitude: 0,
-      directionId: 0,
-      routeId: "1",
-      tripId: "39914237",
-      headsign: "h0",
-      viaVariant: "4",
-      operatorId: "op1",
-      operatorName: "SMITH",
-      speed: 50.0,
-      bearing: 33,
-      blockId: "block-1",
-      headwaySecs: 859.1,
-      previousVehicleId: "v2",
-      scheduleAdherenceSecs: 0,
-      scheduleAdherenceString: "0.0 sec (ontime)",
-      scheduleAdherenceStatus: "on-time",
-      scheduledHeadwaySecs: 120,
-      stopStatus: {
-        status: "in_transit_to",
-        stopId: "57",
-        stopName: "57",
-      },
-      timepointStatus: {
-        timepointId: "MATPN",
-        fractionUntilTimepoint: 0.5,
-      },
-      scheduledTimepointStatus: null,
-      routeStatus: "on_route",
-    },
-    {
-      id: "y0479",
-      label: "0479",
-      runId: "run-2",
-      timestamp: 1557160347,
-      latitude: 0,
-      longitude: 0,
-      directionId: 1,
-      routeId: "1",
-      tripId: "39914128",
-      headsign: null,
-      viaVariant: null,
-      operatorId: "op2",
-      operatorName: "JONES",
-      speed: 50.0,
-      bearing: 33,
-      blockId: "block-1",
-      headwaySecs: 859.1,
-      previousVehicleId: "v2",
-      scheduleAdherenceSecs: 0,
-      scheduleAdherenceString: "0.0 sec (ontime)",
-      scheduleAdherenceStatus: "on-time",
-      scheduledHeadwaySecs: 120,
-      stopStatus: {
-        status: "in_transit_to",
-        stopId: "59",
-        stopName: "59",
-      },
-      timepointStatus: {
-        timepointId: "MORTN",
-        fractionUntilTimepoint: 0.0,
-      },
-      scheduledTimepointStatus: {
-        timepointId: "MORTN",
-        fractionUntilTimepoint: 0.0,
-      },
-      routeStatus: "on_route",
-    },
-  ]
-
-  const tree = renderer
-    .create(
-      <RouteLadder
-        route={route}
-        timepoints={timepoints}
-        vehicles={vehicles}
-        selectedVehicleId={undefined}
-      />
-    )
-    .toJSON()
-
-  expect(tree).toMatchSnapshot()
-})
-
-test("displays loading if we are fetching the timepoints", () => {
-  const route: Route = {
-    id: "28",
-    directionNames: { 0: "Outbound", 1: "Inbound" },
-  }
-  const timepoints = null
-
-  const tree = renderer
-    .create(
-      <RouteLadder
-        route={route}
-        timepoints={timepoints}
-        vehicles={[]}
-        selectedVehicleId={undefined}
-      />
-    )
-    .toJSON()
-
-  expect(tree).toMatchSnapshot()
-})
-
-test("clicking the close button deselects that route", () => {
-  const mockDispatch = jest.fn()
-  const route: Route = {
-    id: "28",
-    directionNames: { 0: "Outbound", 1: "Inbound" },
-  }
-  const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
-
-  const wrapper = mount(
-    <DispatchProvider dispatch={mockDispatch}>
-      <RouteLadder
-        route={route}
-        timepoints={timepoints}
-        vehicles={[]}
-        selectedVehicleId={undefined}
-      />
-    </DispatchProvider>
-  )
-  wrapper.find(".m-route-ladder__header .m-close-button").simulate("click")
-
-  expect(mockDispatch).toHaveBeenCalledWith(deselectRoute("28"))
-})
-
-test("clicking the reverse button reverses the order of the timepoints", () => {
-  const route: Route = {
-    id: "28",
-    directionNames: { 0: "Outbound", 1: "Inbound" },
-  }
-  const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
-
-  const wrapper = mount(
-    <RouteLadder
-      route={route}
-      timepoints={timepoints}
-      vehicles={[]}
-      selectedVehicleId={undefined}
-    />
-  )
-  act(() => {
-    wrapper.find(".m-route-ladder__reverse").simulate("click")
+  beforeEach(() => {
+    SVGSVGElement.prototype.getBBox = () => {
+      return {
+        width: 50,
+        height: 100,
+      } as DOMRect
+    }
+    const mockElement = {
+      offsetHeight: 120,
+    }
+    // @ts-ignore
+    document.getElementsByClassName = () => [mockElement]
   })
 
-  expect(
-    wrapper.find(".m-ladder__timepoint-name").map(node => node.text())
-  ).toEqual(["MORTN", "WELLH", "MATPN"])
-})
+  afterEach(() => {
+    SVGSVGElement.prototype.getBBox = originalGetBBox
+    document.getElementsByClassName = originalGetElementsByClassName
+  })
 
-test("clicking an incoming vehicle selects that vehicle", () => {
-  const mockDispatch = jest.fn()
+  test("renders a route ladder", () => {
+    const route: Route = {
+      id: "28",
+      directionNames: { 0: "Outbound", 1: "Inbound" },
+    }
+    const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
 
-  const route: Route = {
-    id: "28",
-    directionNames: { 0: "Outbound", 1: "Inbound" },
-  }
-  const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
-  const vehicle: Vehicle = {
-    id: "v1",
-    label: "v1",
-    runId: "run1",
-    timestamp: 0,
-    latitude: 0,
-    longitude: 0,
-    directionId: 1,
-    routeId: "28",
-    tripId: "trip",
-    headsign: null,
-    viaVariant: null,
-    operatorId: "op1",
-    operatorName: "SMITH",
-    speed: 50.0,
-    bearing: 33,
-    blockId: "block-1",
-    headwaySecs: 859.1,
-    previousVehicleId: "v2",
-    scheduleAdherenceSecs: 0,
-    scheduleAdherenceString: "0.0 sec (ontime)",
-    scheduleAdherenceStatus: "on-time",
-    scheduledHeadwaySecs: 120,
-    stopStatus: {
-      status: "in_transit_to",
-      stopId: "stop",
-      stopName: "stop",
-    },
-    timepointStatus: {
-      timepointId: "MATPN",
-      fractionUntilTimepoint: 0.5,
-    },
-    scheduledTimepointStatus: null,
-    routeStatus: "incoming",
-  }
+    const tree = renderer
+      .create(
+        <RouteLadder
+          route={route}
+          timepoints={timepoints}
+          vehicles={[]}
+          selectedVehicleId={undefined}
+        />
+      )
+      .toJSON()
 
-  const wrapper = mount(
-    <DispatchProvider dispatch={mockDispatch}>
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders a route ladder with vehicles", () => {
+    const route: Route = {
+      id: "28",
+      directionNames: { 0: "Outbound", 1: "Inbound" },
+    }
+    const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
+    const vehicles: Vehicle[] = [
+      {
+        id: "y1818",
+        label: "1818",
+        runId: "run-1",
+        timestamp: 1557160307,
+        latitude: 0,
+        longitude: 0,
+        directionId: 0,
+        routeId: "1",
+        tripId: "39914237",
+        headsign: "h0",
+        viaVariant: "4",
+        operatorId: "op1",
+        operatorName: "SMITH",
+        speed: 50.0,
+        bearing: 33,
+        blockId: "block-1",
+        headwaySecs: 859.1,
+        previousVehicleId: "v2",
+        scheduleAdherenceSecs: 0,
+        scheduleAdherenceString: "0.0 sec (ontime)",
+        scheduleAdherenceStatus: "on-time",
+        scheduledHeadwaySecs: 120,
+        stopStatus: {
+          status: "in_transit_to",
+          stopId: "57",
+          stopName: "57",
+        },
+        timepointStatus: {
+          timepointId: "MATPN",
+          fractionUntilTimepoint: 0.5,
+        },
+        scheduledTimepointStatus: null,
+        routeStatus: "on_route",
+      },
+      {
+        id: "y0479",
+        label: "0479",
+        runId: "run-2",
+        timestamp: 1557160347,
+        latitude: 0,
+        longitude: 0,
+        directionId: 1,
+        routeId: "1",
+        tripId: "39914128",
+        headsign: null,
+        viaVariant: null,
+        operatorId: "op2",
+        operatorName: "JONES",
+        speed: 50.0,
+        bearing: 33,
+        blockId: "block-1",
+        headwaySecs: 859.1,
+        previousVehicleId: "v2",
+        scheduleAdherenceSecs: 0,
+        scheduleAdherenceString: "0.0 sec (ontime)",
+        scheduleAdherenceStatus: "on-time",
+        scheduledHeadwaySecs: 120,
+        stopStatus: {
+          status: "in_transit_to",
+          stopId: "59",
+          stopName: "59",
+        },
+        timepointStatus: {
+          timepointId: "MORTN",
+          fractionUntilTimepoint: 0.0,
+        },
+        scheduledTimepointStatus: {
+          timepointId: "MORTN",
+          fractionUntilTimepoint: 0.0,
+        },
+        routeStatus: "on_route",
+      },
+    ]
+
+    const tree = renderer
+      .create(
+        <RouteLadder
+          route={route}
+          timepoints={timepoints}
+          vehicles={vehicles}
+          selectedVehicleId={undefined}
+        />
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders a route ladder with vehicles in the incoming box", () => {
+    const route: Route = {
+      id: "28",
+      directionNames: { 0: "Outbound", 1: "Inbound" },
+    }
+    const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
+    const vehicles: Vehicle[] = [
+      {
+        id: "y1818",
+        label: "1818",
+        runId: "run-1",
+        timestamp: 1557160307,
+        latitude: 0,
+        longitude: 0,
+        directionId: 0,
+        routeId: "1",
+        tripId: "39914237",
+        headsign: "h0",
+        viaVariant: "4",
+        operatorId: "op1",
+        operatorName: "SMITH",
+        speed: 50.0,
+        bearing: 33,
+        blockId: "block-1",
+        headwaySecs: 859.1,
+        previousVehicleId: "v2",
+        scheduleAdherenceSecs: 0,
+        scheduleAdherenceString: "0.0 sec (ontime)",
+        scheduleAdherenceStatus: "on-time",
+        scheduledHeadwaySecs: 120,
+        stopStatus: {
+          status: "in_transit_to",
+          stopId: "57",
+          stopName: "57",
+        },
+        timepointStatus: {
+          timepointId: "MATPN",
+          fractionUntilTimepoint: 0.5,
+        },
+        scheduledTimepointStatus: null,
+        routeStatus: "on_route",
+      },
+      {
+        id: "y0479",
+        label: "0479",
+        runId: "run-2",
+        timestamp: 1557160347,
+        latitude: 0,
+        longitude: 0,
+        directionId: 1,
+        routeId: "1",
+        tripId: "39914128",
+        headsign: null,
+        viaVariant: null,
+        operatorId: "op2",
+        operatorName: "JONES",
+        speed: 50.0,
+        bearing: 33,
+        blockId: "block-1",
+        headwaySecs: 859.1,
+        previousVehicleId: "v2",
+        scheduleAdherenceSecs: 0,
+        scheduleAdherenceString: "0.0 sec (ontime)",
+        scheduleAdherenceStatus: "on-time",
+        scheduledHeadwaySecs: 120,
+        stopStatus: {
+          status: "in_transit_to",
+          stopId: "59",
+          stopName: "59",
+        },
+        timepointStatus: {
+          timepointId: "MORTN",
+          fractionUntilTimepoint: 0.0,
+        },
+        scheduledTimepointStatus: {
+          timepointId: "MORTN",
+          fractionUntilTimepoint: 0.0,
+        },
+        routeStatus: "on_route",
+      },
+    ]
+
+    const tree = renderer
+      .create(
+        <RouteLadder
+          route={route}
+          timepoints={timepoints}
+          vehicles={vehicles}
+          selectedVehicleId={undefined}
+        />
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("displays loading if we are fetching the timepoints", () => {
+    const route: Route = {
+      id: "28",
+      directionNames: { 0: "Outbound", 1: "Inbound" },
+    }
+    const timepoints = null
+
+    const tree = renderer
+      .create(
+        <RouteLadder
+          route={route}
+          timepoints={timepoints}
+          vehicles={[]}
+          selectedVehicleId={undefined}
+        />
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("clicking the close button deselects that route", () => {
+    const mockDispatch = jest.fn()
+    const route: Route = {
+      id: "28",
+      directionNames: { 0: "Outbound", 1: "Inbound" },
+    }
+    const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
+
+    const wrapper = mount(
+      <DispatchProvider dispatch={mockDispatch}>
+        <RouteLadder
+          route={route}
+          timepoints={timepoints}
+          vehicles={[]}
+          selectedVehicleId={undefined}
+        />
+      </DispatchProvider>
+    )
+    wrapper.find(".m-route-ladder__header .m-close-button").simulate("click")
+
+    expect(mockDispatch).toHaveBeenCalledWith(deselectRoute("28"))
+  })
+
+  test("clicking the reverse button reverses the order of the timepoints", () => {
+    const route: Route = {
+      id: "28",
+      directionNames: { 0: "Outbound", 1: "Inbound" },
+    }
+    const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
+
+    const wrapper = mount(
       <RouteLadder
         route={route}
         timepoints={timepoints}
-        vehicles={[vehicle]}
+        vehicles={[]}
         selectedVehicleId={undefined}
       />
-    </DispatchProvider>
-  )
-  wrapper.find(".m-incoming-box__vehicle").simulate("click")
+    )
+    act(() => {
+      wrapper.find(".m-route-ladder__reverse").simulate("click")
+    })
 
-  expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle.id))
+    expect(
+      wrapper.find(".m-ladder__timepoint-name").map(node => node.text())
+    ).toEqual(["MORTN", "WELLH", "MATPN"])
+  })
+
+  test("clicking an incoming vehicle selects that vehicle", () => {
+    const mockDispatch = jest.fn()
+
+    const route: Route = {
+      id: "28",
+      directionNames: { 0: "Outbound", 1: "Inbound" },
+    }
+    const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
+    const vehicle: Vehicle = {
+      id: "v1",
+      label: "v1",
+      runId: "run1",
+      timestamp: 0,
+      latitude: 0,
+      longitude: 0,
+      directionId: 1,
+      routeId: "28",
+      tripId: "trip",
+      headsign: null,
+      viaVariant: null,
+      operatorId: "op1",
+      operatorName: "SMITH",
+      speed: 50.0,
+      bearing: 33,
+      blockId: "block-1",
+      headwaySecs: 859.1,
+      previousVehicleId: "v2",
+      scheduleAdherenceSecs: 0,
+      scheduleAdherenceString: "0.0 sec (ontime)",
+      scheduleAdherenceStatus: "on-time",
+      scheduledHeadwaySecs: 120,
+      stopStatus: {
+        status: "in_transit_to",
+        stopId: "stop",
+        stopName: "stop",
+      },
+      timepointStatus: {
+        timepointId: "MATPN",
+        fractionUntilTimepoint: 0.5,
+      },
+      scheduledTimepointStatus: null,
+      routeStatus: "incoming",
+    }
+
+    const wrapper = mount(
+      <DispatchProvider dispatch={mockDispatch}>
+        <RouteLadder
+          route={route}
+          timepoints={timepoints}
+          vehicles={[vehicle]}
+          selectedVehicleId={undefined}
+        />
+      </DispatchProvider>
+    )
+    wrapper.find(".m-incoming-box__vehicle").simulate("click")
+
+    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle.id))
+  })
 })

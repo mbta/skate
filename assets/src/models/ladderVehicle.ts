@@ -1,5 +1,5 @@
-import { LadderDirection } from "../components/ladder"
-import { Vehicle, VehicleTimepointStatus } from "../skate"
+import { LadderDirection, TimepointStatusYFunc } from "../components/ladder"
+import { Vehicle } from "../skate"
 
 export interface LadderVehicle {
   vehicle: Vehicle
@@ -31,11 +31,6 @@ interface InLane extends OnLadder {
 
 interface VehicleInLane extends WithVehicle, InLane {}
 
-type YFunc = (
-  timepointStatus: VehicleTimepointStatus | null,
-  direction: VehicleDirection
-) => number | null
-
 const widthOfVehicleGroup = 32
 const heightOfVehicleGroup = 34
 
@@ -51,13 +46,13 @@ const heightOfVehicleGroup = 34
 export const ladderVehiclesFromVehicles = (
   vehicles: Vehicle[],
   ladderDirection: LadderDirection,
-  yFunc: YFunc
+  timepointStatusYFunc: TimepointStatusYFunc
 ): {
   ladderVehicles: LadderVehicle[]
   widthOfLanes: number
 } => {
   const vehiclesOnLadder: VehicleOnLadder[] = vehicles.map(vehicle =>
-    vehicleOnLadder(vehicle, ladderDirection, yFunc)
+    vehicleOnLadder(vehicle, ladderDirection, timepointStatusYFunc)
   )
 
   const vehiclesInLane: VehicleInLane[] = putIntoLanes(vehiclesOnLadder)
@@ -92,14 +87,14 @@ export const vehicleDirectionOnLadder = (
 const vehicleOnLadder = (
   vehicle: Vehicle,
   ladderDirection: LadderDirection,
-  yFunc: YFunc
+  timepointStatusYFunc: TimepointStatusYFunc
 ): VehicleOnLadder => {
   const vehicleDirection: VehicleDirection = vehicleDirectionOnLadder(
     vehicle,
     ladderDirection
   )
 
-  const y = yFunc(vehicle.timepointStatus, vehicleDirection) || -10
+  const y = timepointStatusYFunc(vehicle.timepointStatus, vehicleDirection)
 
   return {
     // tslint:disable-next-line:object-literal-sort-keys
