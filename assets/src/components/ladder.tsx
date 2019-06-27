@@ -72,6 +72,10 @@ const Ladder = ({
     ladderDirection,
     timepointStatusY
   )
+  const [selectedLadderVehicles, unselectedLadderVehicles] = partition(
+    ladderVehicles,
+    ladderVehicle => ladderVehicle.vehicle.id === selectedVehicleId
+  )
 
   const width = 120 + 2 * widthOfLanes
   // (0, 0) is in the center of the first timepoint
@@ -108,7 +112,7 @@ const Ladder = ({
             )
           )
         })}
-        {ladderVehicles.map(ladderVehicle => (
+        {unselectedLadderVehicles.map(ladderVehicle => (
           <VehicleSvg
             ladderVehicle={ladderVehicle}
             selectedVehicleId={selectedVehicleId}
@@ -116,10 +120,13 @@ const Ladder = ({
           />
         ))}
         {/* Display the selected vehicle on top of all others if there is one */}
-        <SelectedVehicleSvg
-          ladderVehicles={ladderVehicles}
-          selectedVehicleId={selectedVehicleId}
-        />
+        {selectedLadderVehicles.map(ladderVehicle => (
+          <VehicleSvg
+            ladderVehicle={ladderVehicle}
+            selectedVehicleId={selectedVehicleId}
+            key={`vehicle-${ladderVehicle.vehicle.id}`}
+          />
+        ))}
         <RoadLines height={height} />
         {orderedTimepoints.map((timepoint: Timepoint, index: number) => {
           const y = timepointSpacingY * index
@@ -162,29 +169,6 @@ const VehicleSvg = ({
         />
       </g>
     </g>
-  )
-}
-
-const SelectedVehicleSvg = ({
-  ladderVehicles,
-  selectedVehicleId,
-}: {
-  ladderVehicles: LadderVehicle[]
-  selectedVehicleId: VehicleId | undefined
-}) => {
-  const selectedVehicle: LadderVehicle | undefined = findSelectedVehicle(
-    ladderVehicles,
-    selectedVehicleId
-  )
-  if (!selectedVehicle) {
-    return null
-  }
-
-  return (
-    <VehicleSvg
-      ladderVehicle={selectedVehicle}
-      selectedVehicleId={selectedVehicleId}
-    />
   )
 }
 
@@ -268,14 +252,6 @@ const orientationMatchingVehicle = (
 ): Orientation =>
   vehicleDirection === VehicleDirection.Down ? Orientation.Down : Orientation.Up
 
-const findSelectedVehicle = (
-  ladderVehicles: LadderVehicle[],
-  selectedVehicleId: VehicleId | undefined
-): LadderVehicle | undefined =>
-  ladderVehicles.find(
-    ladderVehicle => ladderVehicle.vehicle.id === selectedVehicleId
-  )
-
 const ScheduledLine = ({
   ladderVehicle,
   roadLineX,
@@ -295,5 +271,14 @@ const ScheduledLine = ({
     y2={scheduledY}
   />
 )
+
+function partition<T>(items: T[], testFn: (value: T) => boolean): T[][] {
+  return items.reduce(
+    ([pass, fail], item) => {
+      return testFn(item) ? [[...pass, item], fail] : [pass, [...fail, item]]
+    },
+    [[] as T[], [] as T[]]
+  )
+}
 
 export default Ladder
