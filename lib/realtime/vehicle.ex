@@ -1,5 +1,5 @@
 defmodule Realtime.Vehicle do
-  alias Concentrate.{TripUpdate, VehiclePosition}
+  alias Concentrate.{DataDiscrepancy, TripUpdate, VehiclePosition}
   alias Gtfs.{Direction, Route, RoutePattern, Stop, StopTime, Trip}
 
   @type current_status :: :in_transit_to | :stopped_at
@@ -47,6 +47,8 @@ defmodule Realtime.Vehicle do
           schedule_adherence_secs: float() | nil,
           schedule_adherence_string: String.t() | nil,
           scheduled_headway_secs: float() | nil,
+          sources: MapSet.t(String.t()),
+          data_discrepancies: [DataDiscrepancy.t()],
           stop_status: stop_status(),
           timepoint_status: timepoint_status() | nil,
           scheduled_timepoint_status: timepoint_status() | nil,
@@ -69,6 +71,8 @@ defmodule Realtime.Vehicle do
     :operator_id,
     :operator_name,
     :run_id,
+    :sources,
+    :data_discrepancies,
     :stop_status,
     :route_status
   ]
@@ -102,6 +106,8 @@ defmodule Realtime.Vehicle do
     :schedule_adherence_secs,
     :schedule_adherence_string,
     :scheduled_headway_secs,
+    :sources,
+    :data_discrepancies,
     :stop_status,
     :timepoint_status,
     :scheduled_timepoint_status,
@@ -161,6 +167,8 @@ defmodule Realtime.Vehicle do
       schedule_adherence_secs: VehiclePosition.schedule_adherence_secs(vehicle_position),
       schedule_adherence_string: VehiclePosition.schedule_adherence_string(vehicle_position),
       scheduled_headway_secs: VehiclePosition.scheduled_headway_secs(vehicle_position),
+      sources: VehiclePosition.sources(vehicle_position),
+      data_discrepancies: VehiclePosition.data_discrepancies(vehicle_position),
       stop_status: %{
         status: current_stop_status,
         stop_id: stop_id,
@@ -266,5 +274,11 @@ defmodule Realtime.Vehicle do
     else
       :on_route
     end
+  end
+end
+
+defimpl Jason.Encoder, for: MapSet do
+  def encode(struct, opts) do
+    Jason.Encode.list(Enum.to_list(struct), opts)
   end
 end

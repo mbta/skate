@@ -21,6 +21,8 @@ defmodule Realtime.ServerTest do
         operator_id: "71041",
         operator_name: "FRANK",
         run_id: "123-9048",
+        sources: MapSet.new(["swiftly"]),
+        data_discrepancies: [],
         stop_status: %{
           status: :in_transit_to,
           stop_id: "s1"
@@ -49,6 +51,8 @@ defmodule Realtime.ServerTest do
         operator_id: "70112",
         operator_name: "PANIAGUA",
         run_id: "126-1430",
+        sources: MapSet.new(["swiftly"]),
+        data_discrepancies: [],
         stop_status: %{
           status: :in_transit_to,
           stop_id: "s2"

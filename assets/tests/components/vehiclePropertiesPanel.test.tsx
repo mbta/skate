@@ -31,6 +31,22 @@ const vehicle: Vehicle = {
   scheduleAdherenceString: "0.0 sec (ontime)",
   scheduleAdherenceStatus: "on-time",
   scheduledHeadwaySecs: 120,
+  sources: ["swiftly"],
+  dataDiscrepancies: [
+    {
+      attribute: "trip_id",
+      sources: [
+        {
+          id: "swiftly",
+          value: "swiftly-trip-id",
+        },
+        {
+          id: "busloc",
+          value: "busloc-trip-id",
+        },
+      ],
+    },
+  ],
   stopStatus: {
     status: "in_transit_to",
     stopId: "s1",
@@ -77,6 +93,28 @@ describe("VehiclePropertiesPanel", () => {
       .toJSON()
 
     expect(tree).toMatchSnapshot()
+  })
+
+  test("renders data discrepancies when in debug mode", () => {
+    jest.spyOn(URLSearchParams.prototype, "get").mockImplementation(_key => "1")
+
+    const wrapper = mount(<VehiclePropertiesPanel selectedVehicle={vehicle} />)
+
+    expect(
+      wrapper.find(".m-vehicle-properties-panel__data-discrepancies").length
+    ).toBeGreaterThan(0)
+  })
+
+  test("does not render data discrepancies when not in debug mode", () => {
+    jest
+      .spyOn(URLSearchParams.prototype, "get")
+      .mockImplementation(_key => null)
+
+    const wrapper = mount(<VehiclePropertiesPanel selectedVehicle={vehicle} />)
+
+    expect(
+      wrapper.find(".m-vehicle-properties-panel__data-discrepancies").length
+    ).toBe(0)
   })
 
   test("clicking the X close button deselects the vehicle", () => {

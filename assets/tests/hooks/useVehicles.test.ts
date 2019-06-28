@@ -45,6 +45,22 @@ describe("useVehicles", () => {
       schedule_adherence_secs: 0,
       schedule_adherence_string: "0.0 sec (ontime)",
       scheduled_headway_secs: 120,
+      sources: ["swiftly", "busloc"],
+      data_discrepancies: [
+        {
+          attribute: "trip_id",
+          sources: [
+            {
+              id: "swiftly",
+              value: "swiftly-trip-id",
+            },
+            {
+              id: "busloc",
+              value: "busloc-trip-id",
+            },
+          ],
+        },
+      ],
       stop_status: {
         status: "in_transit_to",
         stop_id: "s1",
@@ -82,6 +98,22 @@ describe("useVehicles", () => {
       scheduleAdherenceString: "0.0 sec (ontime)",
       scheduleAdherenceStatus: "on-time",
       scheduledHeadwaySecs: 120,
+      sources: ["swiftly", "busloc"],
+      dataDiscrepancies: [
+        {
+          attribute: "trip_id",
+          sources: [
+            {
+              id: "swiftly",
+              value: "swiftly-trip-id",
+            },
+            {
+              id: "busloc",
+              value: "busloc-trip-id",
+            },
+          ],
+        },
+      ],
       stopStatus: {
         status: "in_transit_to",
         stopId: "s1",
@@ -193,6 +225,8 @@ describe("useVehicles", () => {
         schedule_adherence_secs: 0,
         schedule_adherence_string: "0.0 sec (ontime)",
         scheduled_headway_secs: 120,
+        sources: ["swiftly"],
+        data_discrepancies: [],
         stop_status: {
           status: "in_transit_to",
           stop_id: "s1",
@@ -228,6 +262,8 @@ describe("useVehicles", () => {
         schedule_adherence_secs: -61,
         schedule_adherence_string: "0.0 sec (ontime)",
         scheduled_headway_secs: 120,
+        sources: ["swiftly"],
+        data_discrepancies: [],
         stop_status: {
           status: "in_transit_to",
           stop_id: "s1",
@@ -263,6 +299,8 @@ describe("useVehicles", () => {
         schedule_adherence_secs: 361,
         schedule_adherence_string: "0.0 sec (ontime)",
         scheduled_headway_secs: 120,
+        sources: ["swiftly"],
+        data_discrepancies: [],
         stop_status: {
           status: "in_transit_to",
           stop_id: "s1",
@@ -300,6 +338,8 @@ describe("useVehicles", () => {
         scheduleAdherenceString: "0.0 sec (ontime)",
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
+        sources: ["swiftly"],
+        dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
           stopId: "s1",
@@ -335,6 +375,8 @@ describe("useVehicles", () => {
         scheduleAdherenceString: "0.0 sec (ontime)",
         scheduleAdherenceStatus: "early",
         scheduledHeadwaySecs: 120,
+        sources: ["swiftly"],
+        dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
           stopId: "s1",
@@ -370,6 +412,8 @@ describe("useVehicles", () => {
         scheduleAdherenceString: "0.0 sec (ontime)",
         scheduleAdherenceStatus: "late",
         scheduledHeadwaySecs: 120,
+        sources: ["swiftly"],
+        dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
           stopId: "s1",

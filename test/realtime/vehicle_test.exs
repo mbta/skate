@@ -1,7 +1,7 @@
 defmodule Realtime.VehicleTest do
   use ExUnit.Case, async: true
 
-  alias Concentrate.{TripUpdate, VehiclePosition}
+  alias Concentrate.{DataDiscrepancy, TripUpdate, VehiclePosition}
   alias Gtfs.{StopTime, Trip}
   alias Realtime.Vehicle
 
@@ -52,7 +52,24 @@ defmodule Realtime.VehicleTest do
         stop_sequence: 25,
         trip_id: "39984755",
         direction_id: 1,
-        route_id: "28"
+        route_id: "28",
+        sources: MapSet.new(["swiftly", "busloc"]),
+        data_discrepancies: [
+          %DataDiscrepancy{
+            attribute: :trip_id,
+            sources: [
+              %{id: "swiftly", value: "swiftly-trip-id"},
+              %{id: "busloc", value: "busloc-trip-id"}
+            ]
+          },
+          %DataDiscrepancy{
+            attribute: :route_id,
+            sources: [
+              %{id: "swiftly", value: "swiftly-route-id"},
+              %{id: "busloc", value: "busloc-route-id"}
+            ]
+          }
+        ]
       }
 
       trip_update = %TripUpdate{
@@ -82,6 +99,23 @@ defmodule Realtime.VehicleTest do
         operator_id: "72032",
         operator_name: "MAUPIN",
         run_id: "138-1038",
+        sources: MapSet.new(["swiftly", "busloc"]),
+        data_discrepancies: [
+          %DataDiscrepancy{
+            attribute: :trip_id,
+            sources: [
+              %{id: "swiftly", value: "swiftly-trip-id"},
+              %{id: "busloc", value: "busloc-trip-id"}
+            ]
+          },
+          %DataDiscrepancy{
+            attribute: :route_id,
+            sources: [
+              %{id: "swiftly", value: "swiftly-route-id"},
+              %{id: "busloc", value: "busloc-route-id"}
+            ]
+          }
+        ],
         stop_status: %{
           status: :in_transit_to,
           stop_id: "392",
@@ -114,7 +148,9 @@ defmodule Realtime.VehicleTest do
         status: :IN_TRANSIT_TO,
         stop_id: "392",
         stop_sequence: 25,
-        trip_id: "39984755"
+        trip_id: "39984755",
+        sources: MapSet.new(["swiftly"]),
+        data_discrepancies: []
       }
 
       trip_update = %TripUpdate{
@@ -144,6 +180,8 @@ defmodule Realtime.VehicleTest do
         operator_id: "72032",
         operator_name: "MAUPIN",
         run_id: "138-1038",
+        sources: MapSet.new(["swiftly"]),
+        data_discrepancies: [],
         stop_status: %{
           status: :in_transit_to,
           stop_id: "392",
