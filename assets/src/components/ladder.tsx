@@ -43,7 +43,6 @@ const Ladder = ({
   ladderDirection,
   selectedVehicleId,
 }: Props) => {
-  const dispatch = useContext(DispatchContext)
   const [height, setHeight] = useState(500)
   const wrapperDivRef = useRef<HTMLDivElement>(null)
   useLayoutEffect(() => {
@@ -72,6 +71,10 @@ const Ladder = ({
     vehicles,
     ladderDirection,
     timepointStatusY
+  )
+  const [selectedLadderVehicles, unselectedLadderVehicles] = partition(
+    ladderVehicles,
+    ladderVehicle => ladderVehicle.vehicle.id === selectedVehicleId
   )
 
   const width = 120 + 2 * widthOfLanes
@@ -109,39 +112,21 @@ const Ladder = ({
             )
           )
         })}
-        {ladderVehicles.map(ladderVehicle => {
-          const {
-            vehicle,
-            x: vehicleX,
-            y: vehicleY,
-            vehicleDirection,
-          } = ladderVehicle
-          const selectedClass =
-            vehicle.id === selectedVehicleId ? "selected" : ""
-          const orientation =
-            vehicleDirection === VehicleDirection.Down
-              ? Orientation.Down
-              : Orientation.Up
-
-          return (
-            <g key={`vehicle-${vehicle.id}`}>
-              <g
-                className={`m-ladder__vehicle ${
-                  vehicle.scheduleAdherenceStatus
-                } ${selectedClass}`}
-                transform={`translate(${vehicleX},${vehicleY})`}
-                onClick={() => dispatch(selectVehicle(vehicle.id))}
-              >
-                <VehicleIconSvgNode
-                  size={Size.Medium}
-                  orientation={orientation}
-                  label={vehicle.label}
-                  variant={vehicle.viaVariant}
-                />
-              </g>
-            </g>
-          )
-        })}
+        {unselectedLadderVehicles.map(ladderVehicle => (
+          <VehicleSvg
+            ladderVehicle={ladderVehicle}
+            selectedVehicleId={selectedVehicleId}
+            key={`vehicle-${ladderVehicle.vehicle.id}`}
+          />
+        ))}
+        {/* Display the selected vehicle on top of all others if there is one */}
+        {selectedLadderVehicles.map(ladderVehicle => (
+          <VehicleSvg
+            ladderVehicle={ladderVehicle}
+            selectedVehicleId={selectedVehicleId}
+            key={`vehicle-${ladderVehicle.vehicle.id}`}
+          />
+        ))}
         <RoadLines height={height} />
         {orderedTimepoints.map((timepoint: Timepoint, index: number) => {
           const y = timepointSpacingY * index
@@ -151,6 +136,39 @@ const Ladder = ({
         })}
       </svg>
     </div>
+  )
+}
+
+const VehicleSvg = ({
+  ladderVehicle,
+  selectedVehicleId,
+}: {
+  ladderVehicle: LadderVehicle
+  selectedVehicleId: VehicleId | undefined
+}) => {
+  const dispatch = useContext(DispatchContext)
+  const selectedClass =
+    ladderVehicle.vehicle.id === selectedVehicleId ? "selected" : ""
+
+  return (
+    <g>
+      <g
+        className={`m-ladder__vehicle ${
+          ladderVehicle.vehicle.scheduleAdherenceStatus
+        } ${selectedClass}`}
+        transform={`translate(${ladderVehicle.x},${ladderVehicle.y})`}
+        onClick={() => dispatch(selectVehicle(ladderVehicle.vehicle.id))}
+      >
+        <VehicleIconSvgNode
+          size={Size.Medium}
+          orientation={orientationMatchingVehicle(
+            ladderVehicle.vehicleDirection
+          )}
+          label={ladderVehicle.vehicle.label}
+          variant={ladderVehicle.vehicle.viaVariant}
+        />
+      </g>
+    </g>
   )
 }
 
@@ -229,6 +247,11 @@ const timepointStatusYFromTimepoints = (
   return 0
 }
 
+const orientationMatchingVehicle = (
+  vehicleDirection: VehicleDirection
+): Orientation =>
+  vehicleDirection === VehicleDirection.Down ? Orientation.Down : Orientation.Up
+
 const ScheduledLine = ({
   ladderVehicle,
   roadLineX,
@@ -248,5 +271,14 @@ const ScheduledLine = ({
     y2={scheduledY}
   />
 )
+
+function partition<T>(items: T[], testFn: (value: T) => boolean): T[][] {
+  return items.reduce(
+    ([pass, fail], item) => {
+      return testFn(item) ? [[...pass, item], fail] : [pass, [...fail, item]]
+    },
+    [[] as T[], [] as T[]]
+  )
+}
 
 export default Ladder
