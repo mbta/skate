@@ -1,5 +1,5 @@
 defmodule Realtime.VehicleTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case
 
   alias Concentrate.{DataDiscrepancy, TripUpdate, VehiclePosition}
   alias Gtfs.{StopTime, Trip}
@@ -18,7 +18,10 @@ defmodule Realtime.VehicleTest do
           %Trip{
             id: "39984755",
             route_id: "505",
+            service_id: "service",
             headsign: "headsign",
+            direction_id: 1,
+            block_id: "S28-2",
             route_pattern_id: "505-_-0",
             stop_times: [
               %StopTime{stop_id: "6553", time: 0, timepoint_id: "tp1"},
@@ -453,7 +456,10 @@ defmodule Realtime.VehicleTest do
       trip = %Trip{
         id: "t1",
         route_id: "r1",
+        service_id: "service",
         headsign: "Trip 1",
+        direction_id: 1,
+        block_id: "b",
         stop_times: [
           %StopTime{
             stop_id: "s1",

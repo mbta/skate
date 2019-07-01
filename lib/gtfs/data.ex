@@ -4,13 +4,14 @@ defmodule Gtfs.Data do
   """
   require Logger
 
-  alias Gtfs.{Csv, Direction, Helpers, Route, RoutePattern, Stop, StopTime, Trip}
+  alias Gtfs.{Block, Csv, Direction, Helpers, Route, RoutePattern, Service, Stop, StopTime, Trip}
 
   @type t :: %__MODULE__{
           routes: [Route.t()],
           route_patterns: [RoutePattern.t()],
           stops: stops_by_id(),
-          trips: %{Trip.id() => Trip.t()}
+          trips: %{Trip.id() => Trip.t()},
+          blocks: Block.by_id()
         }
 
   @type stops_by_id :: %{Stop.id() => Stop.t()}
@@ -21,14 +22,16 @@ defmodule Gtfs.Data do
     :routes,
     :route_patterns,
     :stops,
-    :trips
+    :trips,
+    :blocks
   ]
 
   defstruct [
     :routes,
     :route_patterns,
     :stops,
-    :trips
+    :trips,
+    :blocks
   ]
 
   @type files :: %{optional(String.t()) => binary()}
@@ -60,6 +63,11 @@ defmodule Gtfs.Data do
   @spec trip(t(), Trip.id()) :: Trip.t() | nil
   def trip(%__MODULE__{trips: trips}, trip_id), do: trips[trip_id]
 
+  @spec block(t(), Block.id(), Service.id()) :: Block.t() | nil
+  def block(%__MODULE__{blocks: blocks}, block_id, service_id) do
+    Block.get(blocks, block_id, service_id)
+  end
+
   @spec parse_files(files()) :: t()
   def parse_files(files) do
     directions_by_route_id = directions_by_route_id(files["directions.txt"])
@@ -72,12 +80,14 @@ defmodule Gtfs.Data do
       )
 
     bus_route_ids = MapSet.new(bus_routes, & &1.id)
+    bus_trips = bus_trips(files["trips.txt"], files["stop_times.txt"], bus_route_ids)
 
     %__MODULE__{
       routes: bus_routes,
       route_patterns: bus_route_patterns(files["route_patterns.txt"], bus_route_ids),
       stops: all_stops_by_id(files["stops.txt"]),
-      trips: bus_trips(files["trips.txt"], files["stop_times.txt"], bus_route_ids)
+      trips: Map.new(bus_trips, fn trip -> {trip.id, trip} end),
+      blocks: Block.group_trips_by_block(bus_trips)
     }
   end
 
@@ -134,7 +144,7 @@ defmodule Gtfs.Data do
     |> Map.new(fn stop -> {stop.id, stop} end)
   end
 
-  @spec bus_trips(binary(), binary(), MapSet.t(Route.id())) :: %{Trip.id() => Trip.t()}
+  @spec bus_trips(binary(), binary(), MapSet.t(Route.id())) :: [Trip.t()]
   defp bus_trips(trips_data, stop_times_data, bus_route_ids) do
     bus_trips =
       Csv.parse(
@@ -150,9 +160,8 @@ defmodule Gtfs.Data do
       |> Csv.parse(&StopTime.row_in_trip_id_set?(&1, bus_trip_ids))
       |> StopTime.trip_stop_times_from_csv()
 
-    Map.new(
-      bus_trips,
-      fn trip -> {trip.id, %{trip | stop_times: Map.get(bus_trip_stop_times, trip.id, [])}} end
-    )
+    Enum.map(bus_trips, fn trip ->
+      %{trip | stop_times: Map.fetch!(bus_trip_stop_times, trip.id)}
+    end)
   end
 end

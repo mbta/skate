@@ -1,7 +1,10 @@
 defmodule Gtfs.Trip do
+  alias Gtfs.Block
   alias Gtfs.Csv
+  alias Gtfs.Direction
   alias Gtfs.Route
   alias Gtfs.RoutePattern
+  alias Gtfs.Service
   alias Gtfs.StopTime
 
   @type id :: String.t()
@@ -9,7 +12,10 @@ defmodule Gtfs.Trip do
   @type t :: %__MODULE__{
           id: id(),
           route_id: Route.id(),
+          service_id: Service.id(),
           headsign: String.t(),
+          direction_id: Direction.id(),
+          block_id: Block.id(),
           # Shuttles do not have route_pattern_ids
           route_pattern_id: RoutePattern.id() | nil,
           stop_times: [StopTime.t()]
@@ -18,7 +24,10 @@ defmodule Gtfs.Trip do
   @enforce_keys [
     :id,
     :route_id,
-    :headsign
+    :service_id,
+    :headsign,
+    :direction_id,
+    :block_id
   ]
 
   @derive Jason.Encoder
@@ -26,7 +35,10 @@ defmodule Gtfs.Trip do
   defstruct [
     :id,
     :route_id,
+    :service_id,
     :headsign,
+    :direction_id,
+    :block_id,
     :route_pattern_id,
     stop_times: []
   ]
@@ -42,7 +54,10 @@ defmodule Gtfs.Trip do
     %__MODULE__{
       id: row["trip_id"],
       route_id: row["route_id"],
+      service_id: row["service_id"],
       headsign: row["trip_headsign"],
+      direction_id: Direction.id_from_string(row["direction_id"]),
+      block_id: row["block_id"],
       route_pattern_id: route_pattern_id
     }
   end

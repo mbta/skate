@@ -1,7 +1,7 @@
 defmodule Gtfs.DataTest do
   use ExUnit.Case, async: true
 
-  alias Gtfs.{Data, Route, RoutePattern, Stop, StopTime, Trip}
+  alias Gtfs.{Block, Data, Route, RoutePattern, Stop, StopTime, Trip}
 
   test "all_routes/1 returns all the routes" do
     routes = [
@@ -25,7 +25,8 @@ defmodule Gtfs.DataTest do
       routes: routes,
       route_patterns: [],
       stops: %{},
-      trips: %{}
+      trips: %{},
+      blocks: %{}
     }
 
     assert Data.all_routes(data) == routes
@@ -60,7 +61,10 @@ defmodule Gtfs.DataTest do
           "t1" => %Trip{
             id: "t1",
             route_id: "r1",
+            service_id: "service",
             headsign: "h1",
+            direction_id: 0,
+            block_id: "b1",
             route_pattern_id: "rp1",
             stop_times: [
               %StopTime{stop_id: "s1", time: 1, timepoint_id: "tp1"},
@@ -70,7 +74,10 @@ defmodule Gtfs.DataTest do
           "t2" => %Trip{
             id: "t2",
             route_id: "r2",
+            service_id: "service",
             headsign: "h2",
+            direction_id: 0,
+            block_id: "b2",
             route_pattern_id: "rp2",
             stop_times: [
               %StopTime{stop_id: "s2", time: 1, timepoint_id: "tp2"},
@@ -80,14 +87,18 @@ defmodule Gtfs.DataTest do
           "t3" => %Trip{
             id: "t3",
             route_id: "r1",
+            service_id: "service",
             headsign: "h3",
+            direction_id: 1,
+            block_id: "b3",
             route_pattern_id: "rp3",
             stop_times: [
               %StopTime{stop_id: "s4", time: 1, timepoint_id: "tp4"},
               %StopTime{stop_id: "s5", time: 2, timepoint_id: "tp1"}
             ]
           }
-        }
+        },
+        blocks: %{}
       }
 
       assert Data.timepoint_ids_on_route(data, "r1") == ["tp4", "tp1"]
@@ -115,7 +126,10 @@ defmodule Gtfs.DataTest do
           "t1" => %Trip{
             id: "t1",
             route_id: "r1",
+            service_id: "service",
             headsign: "h1",
+            direction_id: 1,
+            block_id: "b1",
             route_pattern_id: "rp1",
             stop_times: [
               %StopTime{stop_id: "s1", time: 1, timepoint_id: "t1"},
@@ -125,7 +139,10 @@ defmodule Gtfs.DataTest do
           "t2" => %Trip{
             id: "t2",
             route_id: "r1",
+            service_id: "service",
             headsign: "h2",
+            direction_id: 1,
+            block_id: "b2",
             route_pattern_id: "rp2",
             stop_times: [
               %StopTime{stop_id: "s1", time: 1, timepoint_id: "t1"},
@@ -134,7 +151,8 @@ defmodule Gtfs.DataTest do
               %StopTime{stop_id: "s4", time: 4, timepoint_id: "t4"}
             ]
           }
-        }
+        },
+        blocks: %{}
       }
 
       assert Data.timepoint_ids_on_route(data, "r1") == ["t1", "t2", "t3", "t4"]
@@ -158,7 +176,8 @@ defmodule Gtfs.DataTest do
             parent_station_id: "3"
           }
         },
-        trips: []
+        trips: %{},
+        blocks: %{}
       }
 
       assert Data.stop(data, "2") == %Stop{
@@ -184,7 +203,8 @@ defmodule Gtfs.DataTest do
             parent_station_id: "3"
           }
         },
-        trips: []
+        trips: %{},
+        blocks: %{}
       }
 
       assert Data.stop(data, "4") == nil
@@ -201,13 +221,17 @@ defmodule Gtfs.DataTest do
           "t1" => %Trip{
             id: "t1",
             route_id: "r1",
+            service_id: "service",
             headsign: "h",
+            direction_id: 1,
+            block_id: "b",
             route_pattern_id: "r1-_-0",
             stop_times: [
               %StopTime{stop_id: "s1", time: 1, timepoint_id: nil}
             ]
           }
-        }
+        },
+        blocks: %{}
       }
 
       assert %Trip{id: "t1"} = Data.trip(data, "t1")
@@ -218,10 +242,75 @@ defmodule Gtfs.DataTest do
         routes: [],
         route_patterns: [],
         stops: %{},
-        trips: %{}
+        trips: %{},
+        blocks: %{}
       }
 
       assert Data.trip(data, "t1") == nil
+    end
+  end
+
+  describe "block" do
+    test "block returns the trips on the block" do
+      trip = %Trip{
+        id: "t1",
+        route_id: "r1",
+        service_id: "service",
+        headsign: "h",
+        direction_id: 1,
+        block_id: "b",
+        route_pattern_id: "r1-_-0",
+        stop_times: [
+          %StopTime{stop_id: "s1", time: 1, timepoint_id: nil}
+        ]
+      }
+
+      data = %Data{
+        routes: [],
+        route_patterns: [],
+        stops: %{},
+        trips: %{},
+        blocks: Block.group_trips_by_block([trip])
+      }
+
+      assert [%Trip{id: "t1"}] = Data.block(data, "b", "service")
+    end
+
+    test "block doesn't return trips on the same block but a different date" do
+      trip = %Trip{
+        id: "t1",
+        route_id: "r1",
+        service_id: "service",
+        headsign: "h",
+        direction_id: 1,
+        block_id: "b",
+        route_pattern_id: "r1-_-0",
+        stop_times: [
+          %StopTime{stop_id: "s1", time: 1, timepoint_id: nil}
+        ]
+      }
+
+      data = %Data{
+        routes: [],
+        route_patterns: [],
+        stops: %{},
+        trips: %{},
+        blocks: Block.group_trips_by_block([trip])
+      }
+
+      assert Data.block(data, "b", "other_service") == nil
+    end
+
+    test "block returns nil if the block doesn't exist" do
+      data = %Data{
+        routes: [],
+        route_patterns: [],
+        stops: %{},
+        trips: %{},
+        blocks: %{}
+      }
+
+      assert Data.trip(data, "block") == nil
     end
   end
 end
