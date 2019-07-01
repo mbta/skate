@@ -171,9 +171,7 @@ defmodule Concentrate.VehiclePosition do
 
     defp discrepancies(first, second) do
       attributes = [
-        {:trip_id, &VehiclePosition.trip_id/1},
-        {:route_id, &VehiclePosition.route_id/1},
-        {:headsign, &VehiclePosition.headsign/1}
+        {:trip_id, &VehiclePosition.trip_id/1}
       ]
 
       Enum.flat_map(attributes, &discrepancy(&1, first, second))

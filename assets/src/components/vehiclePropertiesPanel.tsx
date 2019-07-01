@@ -259,8 +259,8 @@ const directionsUrl = (
 &destination=${latitude.toString()},${longitude.toString()}\
 &travelmode=driving`
 
-const shouldShowDataDiscrepancies = ({ dataDiscrepancies }: Vehicle) =>
-  inDebugMode() && dataDiscrepancies.length
+const shouldShowDataDiscrepancies = ({ dataDiscrepancies }: Vehicle): boolean =>
+  inDebugMode() && dataDiscrepancies.length > 0
 
 const inDebugMode = (): boolean =>
   !!new URL(document.location.href).searchParams.get("debug")
