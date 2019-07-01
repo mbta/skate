@@ -32,13 +32,6 @@ defmodule Concentrate.VehiclePositionTest do
                 %{id: "first", value: "trip"},
                 %{id: "second", value: nil}
               ]
-            },
-            %DataDiscrepancy{
-              attribute: :route_id,
-              sources: [
-                %{id: "first", value: "route"},
-                %{id: "second", value: nil}
-              ]
             }
           ]
         )
@@ -105,13 +98,6 @@ defmodule Concentrate.VehiclePositionTest do
                 %{id: "swiftly", value: "swiftly_trip"},
                 %{id: "busloc", value: "busloc_trip"}
               ]
-            },
-            %DataDiscrepancy{
-              attribute: :route_id,
-              sources: [
-                %{id: "swiftly", value: "swiftly_route"},
-                %{id: "busloc", value: "busloc_route"}
-              ]
             }
           ]
         )
@@ -130,13 +116,6 @@ defmodule Concentrate.VehiclePositionTest do
               sources: [
                 %{id: "busloc", value: "busloc_trip"},
                 %{id: "swiftly", value: "swiftly_trip"}
-              ]
-            },
-            %DataDiscrepancy{
-              attribute: :route_id,
-              sources: [
-                %{id: "busloc", value: "busloc_route"},
-                %{id: "swiftly", value: "swiftly_route"}
               ]
             }
           ]
@@ -183,13 +162,6 @@ defmodule Concentrate.VehiclePositionTest do
               sources: [
                 %{id: "swiftly", value: nil},
                 %{id: "busloc", value: "busloc_trip"}
-              ]
-            },
-            %DataDiscrepancy{
-              attribute: :route_id,
-              sources: [
-                %{id: "swiftly", value: nil},
-                %{id: "busloc", value: "busloc_route"}
               ]
             }
           ]

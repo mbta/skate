@@ -260,7 +260,7 @@ const directionsUrl = (
 &travelmode=driving`
 
 const shouldShowDataDiscrepancies = ({ dataDiscrepancies }: Vehicle) =>
-  inDebugMode() && dataDiscrepancies.length
+  inDebugMode() && dataDiscrepancies.length > 0
 
 const inDebugMode = (): boolean =>
   !!new URL(document.location.href).searchParams.get("debug")
