@@ -259,7 +259,7 @@ const directionsUrl = (
 &destination=${latitude.toString()},${longitude.toString()}\
 &travelmode=driving`
 
-const shouldShowDataDiscrepancies = ({ dataDiscrepancies }: Vehicle) =>
+const shouldShowDataDiscrepancies = ({ dataDiscrepancies }: Vehicle): boolean =>
   inDebugMode() && dataDiscrepancies.length > 0
 
 const inDebugMode = (): boolean =>
