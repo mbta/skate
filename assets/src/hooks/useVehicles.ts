@@ -227,7 +227,6 @@ const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
     vehicleData.schedule_adherence_secs
   ),
   scheduledHeadwaySecs: vehicleData.scheduled_headway_secs,
-  sources: vehicleData.sources,
   dataDiscrepancies: dataDiscrepanciesFromData(vehicleData.data_discrepancies),
   stopStatus: vehicleStopStatusFromData(vehicleData.stop_status),
   timepointStatus: vehicleTimepointStatusFromData(vehicleData.timepoint_status),

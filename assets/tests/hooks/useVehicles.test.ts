@@ -98,7 +98,6 @@ describe("useVehicles", () => {
       scheduleAdherenceString: "0.0 sec (ontime)",
       scheduleAdherenceStatus: "on-time",
       scheduledHeadwaySecs: 120,
-      sources: ["swiftly", "busloc"],
       dataDiscrepancies: [
         {
           attribute: "trip_id",
@@ -338,7 +337,6 @@ describe("useVehicles", () => {
         scheduleAdherenceString: "0.0 sec (ontime)",
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
-        sources: ["swiftly"],
         dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
@@ -375,7 +373,6 @@ describe("useVehicles", () => {
         scheduleAdherenceString: "0.0 sec (ontime)",
         scheduleAdherenceStatus: "early",
         scheduledHeadwaySecs: 120,
-        sources: ["swiftly"],
         dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
@@ -412,7 +409,6 @@ describe("useVehicles", () => {
         scheduleAdherenceString: "0.0 sec (ontime)",
         scheduleAdherenceStatus: "late",
         scheduledHeadwaySecs: 120,
-        sources: ["swiftly"],
         dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
