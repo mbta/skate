@@ -2,31 +2,28 @@ import { LadderDirection } from "../../src/components/ladder"
 import {
   areOverlapping,
   byDirectionAndY,
+  directionOnLadder,
   firstOpenLane,
   LadderVehicle,
   putIntoLanes,
   VehicleDirection,
-  vehicleDirectionOnLadder,
 } from "../../src/models/ladderVehicle"
 import { Vehicle } from "../../src/skate"
 
-describe("vehicleDirectionOnLadder", () => {
+describe("directionOnLadder", () => {
   test("determines the vehicle direction relative the ladder direction", () => {
-    const vehicle0 = { directionId: 0 } as Vehicle
-    const vehicle1 = { directionId: 1 } as Vehicle
-
-    expect(
-      vehicleDirectionOnLadder(vehicle0, LadderDirection.ZeroToOne)
-    ).toEqual(VehicleDirection.Up)
-    expect(
-      vehicleDirectionOnLadder(vehicle0, LadderDirection.OneToZero)
-    ).toEqual(VehicleDirection.Down)
-    expect(
-      vehicleDirectionOnLadder(vehicle1, LadderDirection.ZeroToOne)
-    ).toEqual(VehicleDirection.Down)
-    expect(
-      vehicleDirectionOnLadder(vehicle1, LadderDirection.OneToZero)
-    ).toEqual(VehicleDirection.Up)
+    expect(directionOnLadder(0, LadderDirection.ZeroToOne)).toEqual(
+      VehicleDirection.Up
+    )
+    expect(directionOnLadder(0, LadderDirection.OneToZero)).toEqual(
+      VehicleDirection.Down
+    )
+    expect(directionOnLadder(1, LadderDirection.ZeroToOne)).toEqual(
+      VehicleDirection.Down
+    )
+    expect(directionOnLadder(1, LadderDirection.OneToZero)).toEqual(
+      VehicleDirection.Up
+    )
   })
 })
 

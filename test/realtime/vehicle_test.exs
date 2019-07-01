@@ -8,30 +8,49 @@ defmodule Realtime.VehicleTest do
   describe "from_vehicle_position_and_trip_update/2" do
     setup do
       real_trip_fn = Application.get_env(:realtime, :trip_fn)
+      real_block_fn = Application.get_env(:realtime, :block_fn)
+      real_now_fn = Application.get_env(:realtime, :now_fn)
 
       on_exit(fn ->
         Application.put_env(:realtime, :trip_fn, real_trip_fn)
+        Application.put_env(:realtime, :block_fn, real_block_fn)
+        Application.put_env(:realtime, :now_fn, real_now_fn)
       end)
 
+      trip = %Trip{
+        id: "39984755",
+        route_id: "505",
+        service_id: "service",
+        headsign: "headsign",
+        direction_id: 1,
+        block_id: "S28-2",
+        route_pattern_id: "505-_-0",
+        stop_times: [
+          %StopTime{stop_id: "6553", time: 0, timepoint_id: "tp1"},
+          %StopTime{stop_id: "6554", time: 1, timepoint_id: nil},
+          %StopTime{stop_id: "6555", time: 2, timepoint_id: "tp2"}
+        ]
+      }
+
       Application.put_env(:realtime, :trip_fn, fn trip_id ->
-        if trip_id == "39984755" do
-          %Trip{
-            id: "39984755",
-            route_id: "505",
-            service_id: "service",
-            headsign: "headsign",
-            direction_id: 1,
-            block_id: "S28-2",
-            route_pattern_id: "505-_-0",
-            stop_times: [
-              %StopTime{stop_id: "6553", time: 0, timepoint_id: "tp1"},
-              %StopTime{stop_id: "6554", time: 0, timepoint_id: nil},
-              %StopTime{stop_id: "6555", time: 0, timepoint_id: "tp2"}
-            ]
-          }
+        if trip_id == trip.id do
+          trip
         else
           nil
         end
+      end)
+
+      Application.put_env(:realtime, :block_fn, fn block_id, service_id ->
+        if block_id == trip.block_id and service_id == trip.service_id do
+          [trip]
+        else
+          nil
+        end
+      end)
+
+      Application.put_env(:realtime, :now_fn, fn ->
+        # 2019-01-01 00:00:00 EST
+        1_546_318_800
       end)
     end
 
@@ -125,6 +144,13 @@ defmodule Realtime.VehicleTest do
           stop_name: "392"
         },
         timepoint_status: nil,
+        scheduled_location: %{
+          direction_id: 1,
+          timepoint_status: %{
+            timepoint_id: "tp1",
+            fraction_until_timepoint: 0.0
+          }
+        },
         route_status: :on_route
       }
 
@@ -191,6 +217,13 @@ defmodule Realtime.VehicleTest do
           stop_name: "392"
         },
         timepoint_status: nil,
+        scheduled_location: %{
+          direction_id: 1,
+          timepoint_status: %{
+            timepoint_id: "tp1",
+            fraction_until_timepoint: 0.0
+          }
+        },
         route_status: :on_route
       }
 
@@ -377,77 +410,168 @@ defmodule Realtime.VehicleTest do
     end
   end
 
-  describe "scheduled_timepoint_status/2" do
-    test "returns the next timepoint it's scheduled to be at" do
-      stop_times = [
-        %StopTime{
-          stop_id: "1",
-          time: Util.Time.parse_hhmmss("12:05:00"),
-          timepoint_id: "1"
-        },
-        %StopTime{
-          stop_id: "2",
-          time: Util.Time.parse_hhmmss("12:10:00"),
-          timepoint_id: "2"
-        },
-        %StopTime{
-          stop_id: "3",
-          time: Util.Time.parse_hhmmss("12:20:00"),
-          timepoint_id: "3"
+  describe "scheduled_location/2" do
+    test "returns the first stop if the block hasn't started yet" do
+      block = [
+        %Trip{
+          id: "1",
+          route_id: "505",
+          service_id: "service",
+          headsign: "headsign",
+          direction_id: 1,
+          block_id: "S28-2",
+          route_pattern_id: "505-_-1",
+          stop_times: [
+            %StopTime{
+              stop_id: "6553",
+              time: Util.Time.parse_hhmmss("12:01:00"),
+              timepoint_id: "tp1"
+            },
+            %StopTime{
+              stop_id: "6555",
+              time: Util.Time.parse_hhmmss("12:02:00"),
+              timepoint_id: "tp2"
+            }
+          ]
         }
       ]
 
-      # 2019-01-01 12:17:30 EST
-      now = 1_546_363_050
+      # 2019-01-01 12:00:00 EST
+      now = 1_546_362_000
 
-      assert Vehicle.scheduled_timepoint_status(stop_times, now) == %{
-               timepoint_id: "3",
-               fraction_until_timepoint: 0.25
+      assert Vehicle.scheduled_location(block, now) == %{
+               direction_id: 1,
+               timepoint_status: %{
+                 timepoint_id: "tp1",
+                 fraction_until_timepoint: 0.0
+               }
              }
     end
 
-    test "returns nil if the trip is in the future" do
-      stop_times = [
-        %StopTime{
-          stop_id: "1",
-          time: Util.Time.parse_hhmmss("13:05:00"),
-          timepoint_id: "1"
+    test "returns the last stop if the block is finished" do
+      block = [
+        %Trip{
+          id: "1",
+          route_id: "505",
+          service_id: "service",
+          headsign: "headsign",
+          direction_id: 1,
+          block_id: "S28-2",
+          route_pattern_id: "505-_-1",
+          stop_times: [
+            %StopTime{
+              stop_id: "6553",
+              time: Util.Time.parse_hhmmss("11:01:00"),
+              timepoint_id: "tp1"
+            },
+            %StopTime{
+              stop_id: "6555",
+              time: Util.Time.parse_hhmmss("11:02:00"),
+              timepoint_id: "tp2"
+            }
+          ]
+        }
+      ]
+
+      # 2019-01-01 12:00:00 EST
+      now = 1_546_362_000
+
+      assert Vehicle.scheduled_location(block, now) == %{
+               direction_id: 1,
+               timepoint_status: %{
+                 timepoint_id: "tp2",
+                 fraction_until_timepoint: 0.0
+               }
+             }
+    end
+
+    test "returns the last stop of the previous trip if it's in a layover" do
+      block = [
+        %Trip{
+          id: "0",
+          route_id: "505",
+          service_id: "service",
+          headsign: "headsign",
+          direction_id: 0,
+          block_id: "S28-2",
+          route_pattern_id: "505-_-0",
+          stop_times: [
+            %StopTime{
+              stop_id: "6553",
+              time: Util.Time.parse_hhmmss("11:01:00"),
+              timepoint_id: "tp1"
+            },
+            %StopTime{
+              stop_id: "6555",
+              time: Util.Time.parse_hhmmss("11:02:00"),
+              timepoint_id: "tp2"
+            }
+          ]
         },
-        %StopTime{
-          stop_id: "2",
-          time: Util.Time.parse_hhmmss("13:10:00"),
-          timepoint_id: "2"
+        %Trip{
+          id: "1",
+          route_id: "505",
+          service_id: "service",
+          headsign: "headsign",
+          direction_id: 1,
+          block_id: "S28-2",
+          route_pattern_id: "505-_-1",
+          stop_times: [
+            %StopTime{
+              stop_id: "6553",
+              time: Util.Time.parse_hhmmss("12:03:00"),
+              timepoint_id: "tp3"
+            }
+          ]
+        }
+      ]
+
+      # 2019-01-01 12:00:00 EST
+      now = 1_546_362_000
+
+      assert Vehicle.scheduled_location(block, now) == %{
+               direction_id: 0,
+               timepoint_status: %{
+                 timepoint_id: "tp2",
+                 fraction_until_timepoint: 0.0
+               }
+             }
+    end
+
+    test "returns the next timepoint it's scheduled to be at if in the middle of a trip" do
+      block = [
+        %Trip{
+          id: "1",
+          route_id: "505",
+          service_id: "service",
+          headsign: "headsign",
+          direction_id: 1,
+          block_id: "S28-2",
+          route_pattern_id: "505-_-1",
+          stop_times: [
+            %StopTime{stop_id: "1", time: Util.Time.parse_hhmmss("12:05:00"), timepoint_id: "1"},
+            %StopTime{stop_id: "2", time: Util.Time.parse_hhmmss("12:10:00"), timepoint_id: "2"},
+            %StopTime{stop_id: "3", time: Util.Time.parse_hhmmss("12:20:00"), timepoint_id: "3"}
+          ]
         }
       ]
 
       # 2019-01-01 12:17:30 EST
       now = 1_546_363_050
-      assert Vehicle.scheduled_timepoint_status(stop_times, now) == nil
+
+      assert Vehicle.scheduled_location(block, now) == %{
+               direction_id: 1,
+               timepoint_status: %{
+                 timepoint_id: "3",
+                 fraction_until_timepoint: 0.25
+               }
+             }
     end
 
-    test "returns nil if the trip is in the past" do
-      stop_times = [
-        %StopTime{
-          stop_id: "1",
-          time: Util.Time.parse_hhmmss("11:05:00"),
-          timepoint_id: "1"
-        },
-        %StopTime{
-          stop_id: "2",
-          time: Util.Time.parse_hhmmss("11:10:00"),
-          timepoint_id: "2"
-        }
-      ]
-
-      # 2019-01-01 12:17:30 EST
-      now = 1_546_363_050
-      assert Vehicle.scheduled_timepoint_status(stop_times, now) == nil
-    end
-
-    test "returns nil if we can't find the trip's stop_times" do
-      # 2019-01-01 12:17:30 EST
-      now = 1_546_363_050
-      assert Vehicle.scheduled_timepoint_status([], now) == nil
+    test "returns nil if we can't find the block" do
+      # 2019-01-01 12:00:00 EST
+      now = 1_546_362_000
+      assert Vehicle.scheduled_location(nil, now) == nil
     end
   end
 
@@ -541,7 +665,7 @@ defmodule Realtime.VehicleTest do
       }
 
       expected_json =
-        "{\"bearing\":0,\"block_id\":\"S28-2\",\"data_discrepancies\":[{\"attribute\":\"trip_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":\"swiftly-trip-id\"},{\"id\":\"busloc\",\"value\":\"busloc-trip-id\"}]},{\"attribute\":\"route_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":\"swiftly-route-id\"},{\"id\":\"busloc\",\"value\":\"busloc-route-id\"}]}],\"direction_id\":1,\"headsign\":\"headsign\",\"headway_secs\":null,\"id\":\"y1261\",\"label\":\"1261\",\"latitude\":42.31777347,\"longitude\":-71.08206019,\"operator_id\":\"72032\",\"operator_name\":\"MAUPIN\",\"previous_vehicle_id\":null,\"previous_vehicle_schedule_adherence_secs\":null,\"previous_vehicle_schedule_adherence_string\":null,\"route_id\":\"28\",\"route_status\":\"on_route\",\"run_id\":\"138-1038\",\"schedule_adherence_secs\":null,\"schedule_adherence_string\":null,\"scheduled_headway_secs\":null,\"scheduled_timepoint_status\":null,\"sources\":[\"busloc\",\"swiftly\"],\"speed\":0.0,\"stop_sequence\":25,\"stop_status\":{\"status\":\"in_transit_to\",\"stop_id\":\"392\",\"stop_name\":\"392\"},\"timepoint_status\":null,\"timestamp\":1558364020,\"trip_id\":\"39984755\",\"via_variant\":\"_\"}"
+        "{\"bearing\":0,\"block_id\":\"S28-2\",\"data_discrepancies\":[{\"attribute\":\"trip_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":\"swiftly-trip-id\"},{\"id\":\"busloc\",\"value\":\"busloc-trip-id\"}]},{\"attribute\":\"route_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":\"swiftly-route-id\"},{\"id\":\"busloc\",\"value\":\"busloc-route-id\"}]}],\"direction_id\":1,\"headsign\":\"headsign\",\"headway_secs\":null,\"id\":\"y1261\",\"label\":\"1261\",\"latitude\":42.31777347,\"longitude\":-71.08206019,\"operator_id\":\"72032\",\"operator_name\":\"MAUPIN\",\"previous_vehicle_id\":null,\"previous_vehicle_schedule_adherence_secs\":null,\"previous_vehicle_schedule_adherence_string\":null,\"route_id\":\"28\",\"route_status\":\"on_route\",\"run_id\":\"138-1038\",\"schedule_adherence_secs\":null,\"schedule_adherence_string\":null,\"scheduled_headway_secs\":null,\"scheduled_location\":null,\"sources\":[\"busloc\",\"swiftly\"],\"speed\":0.0,\"stop_sequence\":25,\"stop_status\":{\"status\":\"in_transit_to\",\"stop_id\":\"392\",\"stop_name\":\"392\"},\"timepoint_status\":null,\"timestamp\":1558364020,\"trip_id\":\"39984755\",\"via_variant\":\"_\"}"
 
       assert Jason.encode!(vehicle) == expected_json
     end

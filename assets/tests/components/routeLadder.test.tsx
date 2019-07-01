@@ -90,7 +90,7 @@ describe("routeLadder", () => {
           timepointId: "MATPN",
           fractionUntilTimepoint: 0.5,
         },
-        scheduledTimepointStatus: null,
+        scheduledLocation: null,
         routeStatus: "on_route",
       },
       {
@@ -126,9 +126,12 @@ describe("routeLadder", () => {
           timepointId: "MORTN",
           fractionUntilTimepoint: 0.0,
         },
-        scheduledTimepointStatus: {
-          timepointId: "MORTN",
-          fractionUntilTimepoint: 0.0,
+        scheduledLocation: {
+          directionId: 1,
+          timepointStatus: {
+            timepointId: "MORTN",
+            fractionUntilTimepoint: 0.0,
+          },
         },
         routeStatus: "on_route",
       },
@@ -188,7 +191,7 @@ describe("routeLadder", () => {
           timepointId: "MATPN",
           fractionUntilTimepoint: 0.5,
         },
-        scheduledTimepointStatus: null,
+        scheduledLocation: null,
         routeStatus: "on_route",
       },
       {
@@ -224,9 +227,12 @@ describe("routeLadder", () => {
           timepointId: "MORTN",
           fractionUntilTimepoint: 0.0,
         },
-        scheduledTimepointStatus: {
-          timepointId: "MORTN",
-          fractionUntilTimepoint: 0.0,
+        scheduledLocation: {
+          directionId: 1,
+          timepointStatus: {
+            timepointId: "MORTN",
+            fractionUntilTimepoint: 0.0,
+          },
         },
         routeStatus: "on_route",
       },
@@ -355,7 +361,7 @@ describe("routeLadder", () => {
         timepointId: "MATPN",
         fractionUntilTimepoint: 0.5,
       },
-      scheduledTimepointStatus: null,
+      scheduledLocation: null,
       routeStatus: "incoming",
     }
 

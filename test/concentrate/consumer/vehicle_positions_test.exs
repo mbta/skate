@@ -7,12 +7,15 @@ defmodule Concentrate.Supervisor.VehiclePositionsTest do
   describe "handle_events/3" do
     setup do
       real_trip_fn = Application.get_env(:realtime, :trip_fn)
+      real_block_fn = Application.get_env(:realtime, :block_fn)
 
       on_exit(fn ->
         Application.put_env(:realtime, :trip_fn, real_trip_fn)
+        Application.put_env(:realtime, :block_fn, real_block_fn)
       end)
 
       Application.put_env(:realtime, :trip_fn, fn _trip_id -> nil end)
+      Application.put_env(:realtime, :block_fn, fn _block_id, _service_id -> nil end)
 
       events = [
         [

@@ -233,16 +233,13 @@ Array [
       viewBox="-92 -40 184 500"
       width={184}
     >
-      0
-      <g>
-        <line
-          className="m-ladder__scheduled-line on-time"
-          x1={-63}
-          x2={-40}
-          y1={420}
-          y2={420}
-        />
-      </g>
+      <line
+        className="m-ladder__scheduled-line on-time"
+        x1={-63}
+        x2={-40}
+        y1={420}
+        y2={420}
+      />
       <g>
         <g
           className="m-ladder__vehicle on-time "
@@ -458,16 +455,13 @@ Array [
       viewBox="-92 -40 184 500"
       width={184}
     >
-      0
-      <g>
-        <line
-          className="m-ladder__scheduled-line on-time"
-          x1={-63}
-          x2={-40}
-          y1={420}
-          y2={420}
-        />
-      </g>
+      <line
+        className="m-ladder__scheduled-line on-time"
+        x1={-63}
+        x2={-40}
+        y1={420}
+        y2={420}
+      />
       <g>
         <g
           className="m-ladder__vehicle on-time "

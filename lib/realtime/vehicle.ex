@@ -1,6 +1,6 @@
 defmodule Realtime.Vehicle do
   alias Concentrate.{DataDiscrepancy, TripUpdate, VehiclePosition}
-  alias Gtfs.{Direction, Route, RoutePattern, Stop, StopTime, Trip}
+  alias Gtfs.{Block, Direction, Route, RoutePattern, Stop, StopTime, Trip}
 
   @type current_status :: :in_transit_to | :stopped_at
   @type stop_status :: %{
@@ -17,6 +17,11 @@ defmodule Realtime.Vehicle do
           %{
             timepoint_id: StopTime.timepoint_id(),
             fraction_until_timepoint: float()
+          }
+  @type scheduled_location ::
+          %{
+            direction_id: Direction.id(),
+            timepoint_status: timepoint_status()
           }
   @type route_status :: :incoming | :on_route
 
@@ -49,7 +54,7 @@ defmodule Realtime.Vehicle do
           data_discrepancies: [DataDiscrepancy.t()],
           stop_status: stop_status(),
           timepoint_status: timepoint_status() | nil,
-          scheduled_timepoint_status: timepoint_status() | nil,
+          scheduled_location: scheduled_location() | nil,
           route_status: route_status()
         }
 
@@ -104,7 +109,7 @@ defmodule Realtime.Vehicle do
     :sources,
     :stop_status,
     :timepoint_status,
-    :scheduled_timepoint_status,
+    :scheduled_location,
     :route_status,
     data_discrepancies: []
   ]
@@ -116,9 +121,13 @@ defmodule Realtime.Vehicle do
 
   def from_vehicle_position_and_trip_update(vehicle_position, trip_update) do
     trip_fn = Application.get_env(:realtime, :trip_fn, &Gtfs.trip/1)
+    block_fn = Application.get_env(:realtime, :block_fn, &Gtfs.block/2)
+    now_fn = Application.get_env(:realtime, :now_fn, &Util.Time.now/0)
 
     trip_id = VehiclePosition.trip_id(vehicle_position)
+    block_id = VehiclePosition.block_id(vehicle_position)
     trip = trip_fn.(trip_id)
+    block = trip && block_fn.(block_id, trip.service_id)
     headsign = trip && trip.headsign
     via_variant = trip && trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id)
     stop_times_on_trip = (trip && trip.stop_times) || []
@@ -149,7 +158,7 @@ defmodule Realtime.Vehicle do
       bearing: VehiclePosition.bearing(vehicle_position),
       speed: VehiclePosition.speed(vehicle_position),
       stop_sequence: VehiclePosition.stop_sequence(vehicle_position),
-      block_id: VehiclePosition.block_id(vehicle_position),
+      block_id: block_id,
       operator_id: VehiclePosition.operator_id(vehicle_position),
       operator_name: VehiclePosition.operator_name(vehicle_position),
       run_id: VehiclePosition.run_id(vehicle_position),
@@ -170,11 +179,7 @@ defmodule Realtime.Vehicle do
         stop_name: stop_name
       },
       timepoint_status: timepoint_status,
-      scheduled_timepoint_status:
-        scheduled_timepoint_status(
-          stop_times_on_trip,
-          Util.Time.now()
-        ),
+      scheduled_location: scheduled_location(block, now_fn.()),
       route_status: route_status(current_stop_status, stop_id, trip)
     }
   end
@@ -199,28 +204,89 @@ defmodule Realtime.Vehicle do
     end
   end
 
-  @spec scheduled_timepoint_status([StopTime.t()], Util.Time.timestamp()) ::
-          timepoint_status() | nil
-  def scheduled_timepoint_status([], _now) do
+  @doc """
+  If a block isn't scheduled to have started yet:
+    the start of the first trip
+  If a block is scheduled to have finished:
+    the end of the last trip
+  If now is in the middle of a layover:
+    the end of the previous trip
+  If now is in the middle of a trip:
+    the next timpeoint in that trip
+  """
+  @spec scheduled_location(Block.t(), Util.Time.timestamp()) :: scheduled_location() | nil
+  def scheduled_location(nil, _now) do
     nil
   end
 
-  def scheduled_timepoint_status(stop_times_on_trip, now) do
-    trip_start = List.first(stop_times_on_trip).time
-    now_time_of_day = Util.Time.nearest_time_of_day_for_timestamp(now, trip_start)
-    timepoints = Enum.filter(stop_times_on_trip, &is_a_timepoint?/1)
+  def scheduled_location([], _now) do
+    nil
+  end
 
-    case Realtime.Helpers.find_and_previous(timepoints, fn timepoint ->
-           timepoint.time >= now_time_of_day
-         end) do
-      nil ->
-        nil
+  def scheduled_location(block, now) do
+    block_start = List.first(List.first(block).stop_times).time
+    now_time_of_day = Util.Time.nearest_time_of_day_for_timestamp(now, block_start)
+    trip = current_trip_on_block(block, now_time_of_day)
+    timepoints = Enum.filter(trip.stop_times, &is_a_timepoint?/1)
+    timepoint_status = current_timepoint_status(timepoints, now_time_of_day)
+    %{
+      direction_id: trip.direction_id,
+      timepoint_status: timepoint_status
+    }
+  end
 
-      {previous_timepoint, next_timepoint} ->
+  @spec current_trip_on_block(Block.t(), Util.Time.time_of_day()) :: Trip.t()
+  defp current_trip_on_block(block, now) do
+    block_start = List.first(List.first(block).stop_times).time
+    block_end = List.last(List.last(block).stop_times).time
+
+    cond do
+      now <= block_start ->
+        # Block isn't scheduled to have started yet
+        List.first(block)
+
+      now >= block_end ->
+        # Block is scheduled to have finished
+        List.last(block)
+
+      true ->
+        # Either the current trip or the trip that just ended (the last trip to have started)
+        block
+        |> Enum.take_while(fn trip ->
+          List.first(trip.stop_times).time <= now
+        end)
+        |> List.last()
+    end
+  end
+
+  @spec current_timepoint_status([StopTime.t()], Util.Time.time_of_day()) :: timepoint_status
+  defp current_timepoint_status(timepoints, now) do
+    cond do
+      now <= List.first(timepoints).time ->
+        # Trip isn't scheduled to have started yet
+        %{
+          timepoint_id: List.first(timepoints).timepoint_id,
+          fraction_until_timepoint: 0
+        }
+
+      now >= List.last(timepoints).time ->
+        # Trip is scheduled to have finished
+        %{
+          timepoint_id: List.last(timepoints).timepoint_id,
+          fraction_until_timepoint: 0
+        }
+
+      true ->
+        # Trip is scheduled to be between two timepoints
+        {previous_timepoint, next_timepoint} =
+          Realtime.Helpers.find_and_previous(timepoints, fn timepoint ->
+            timepoint.time > now
+          end)
+
         %{
           timepoint_id: next_timepoint.timepoint_id,
           fraction_until_timepoint:
-            (next_timepoint.time - now_time_of_day) /
+            (next_timepoint.time - now) /
               (next_timepoint.time - previous_timepoint.time)
         }
     end

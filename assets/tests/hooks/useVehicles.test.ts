@@ -70,7 +70,13 @@ describe("useVehicles", () => {
         timepoint_id: "tp1",
         fraction_until_timepoint: 0.5,
       },
-      scheduled_timepoint_status: null,
+      scheduled_location: {
+        direction_id: 0,
+        timepoint_status: {
+          timepoint_id: "tp1",
+          fraction_until_timepoint: 0.5,
+        },
+      },
       route_status: "on_route",
     },
   ]
@@ -122,7 +128,13 @@ describe("useVehicles", () => {
         timepointId: "tp1",
         fractionUntilTimepoint: 0.5,
       },
-      scheduledTimepointStatus: null,
+      scheduledLocation: {
+        directionId: 0,
+        timepointStatus: {
+          timepointId: "tp1",
+          fractionUntilTimepoint: 0.5,
+        },
+      },
       routeStatus: "on_route",
     },
   ]
@@ -235,7 +247,7 @@ describe("useVehicles", () => {
           timepoint_id: "tp1",
           fraction_until_timepoint: 0.5,
         },
-        scheduled_timepoint_status: null,
+        scheduled_location: null,
         route_status: "on_route",
       },
       {
@@ -272,7 +284,7 @@ describe("useVehicles", () => {
           timepoint_id: "tp1",
           fraction_until_timepoint: 0.5,
         },
-        scheduled_timepoint_status: null,
+        scheduled_location: null,
         route_status: "on_route",
       },
       {
@@ -309,7 +321,7 @@ describe("useVehicles", () => {
           timepoint_id: "tp1",
           fraction_until_timepoint: 0.5,
         },
-        scheduled_timepoint_status: null,
+        scheduled_location: null,
         route_status: "on_route",
       },
     ]
@@ -347,7 +359,7 @@ describe("useVehicles", () => {
           timepointId: "tp1",
           fractionUntilTimepoint: 0.5,
         },
-        scheduledTimepointStatus: null,
+        scheduledLocation: null,
         routeStatus: "on_route",
       },
       {
@@ -383,7 +395,7 @@ describe("useVehicles", () => {
           timepointId: "tp1",
           fractionUntilTimepoint: 0.5,
         },
-        scheduledTimepointStatus: null,
+        scheduledLocation: null,
         routeStatus: "on_route",
       },
       {
@@ -419,7 +431,7 @@ describe("useVehicles", () => {
           timepointId: "tp1",
           fractionUntilTimepoint: 0.5,
         },
-        scheduledTimepointStatus: null,
+        scheduledLocation: null,
         routeStatus: "on_route",
       },
     ]

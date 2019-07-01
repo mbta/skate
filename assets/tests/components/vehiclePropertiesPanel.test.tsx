@@ -55,7 +55,7 @@ const vehicle: Vehicle = {
     timepointId: "tp1",
     fractionUntilTimepoint: 0.5,
   },
-  scheduledTimepointStatus: null,
+  scheduledLocation: null,
   routeStatus: "on_route",
 }
 

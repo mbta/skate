@@ -73,7 +73,7 @@ export interface Vehicle {
   dataDiscrepancies: DataDiscrepancy[]
   stopStatus: VehicleStopStatus
   timepointStatus: VehicleTimepointStatus | null
-  scheduledTimepointStatus: VehicleTimepointStatus | null
+  scheduledLocation: VehicleScheduledLocation | null
   routeStatus: VehicleRouteStatus
 }
 
@@ -83,6 +83,11 @@ export interface VehicleStopStatus {
   status: VehicleStatus
   stopId: StopId
   stopName: string
+}
+
+export interface VehicleScheduledLocation {
+  directionId: DirectionId
+  timepointStatus: VehicleTimepointStatus
 }
 
 export interface VehicleTimepointStatus {

@@ -1,6 +1,7 @@
 import React, { useContext, useLayoutEffect, useRef, useState } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import {
+  directionOnLadder,
   LadderVehicle,
   ladderVehiclesFromVehicles,
   VehicleDirection,
@@ -89,29 +90,14 @@ const Ladder = ({
         width={width}
         height={height}
       >
-        {ladderVehicles.map(ladderVehicle => {
-          const { vehicle, vehicleDirection } = ladderVehicle
-          const scheduledY = timepointStatusY(
-            vehicle.scheduledTimepointStatus,
-            vehicleDirection
-          )
-          const roadLineX =
-            vehicleDirection === VehicleDirection.Up
-              ? CENTER_TO_LINE
-              : -CENTER_TO_LINE
-
-          return (
-            scheduledY && (
-              <g key={`line-${vehicle.id}`}>
-                <ScheduledLine
-                  ladderVehicle={ladderVehicle}
-                  roadLineX={roadLineX}
-                  scheduledY={scheduledY}
-                />
-              </g>
-            )
-          )
-        })}
+        {ladderVehicles.map(ladderVehicle => (
+          <ScheduledLine
+            key={`line-${ladderVehicle.vehicle.id}`}
+            ladderDirection={ladderDirection}
+            ladderVehicle={ladderVehicle}
+            timepointStatusY={timepointStatusY}
+          />
+        ))}
         {unselectedLadderVehicles.map(ladderVehicle => (
           <VehicleSvg
             ladderVehicle={ladderVehicle}
@@ -254,24 +240,42 @@ const orientationMatchingVehicle = (
   vehicleDirection === VehicleDirection.Down ? Orientation.Down : Orientation.Up
 
 const ScheduledLine = ({
+  ladderDirection,
   ladderVehicle,
-  roadLineX,
-  scheduledY,
+  timepointStatusY,
 }: {
+  ladderDirection: LadderDirection
   ladderVehicle: LadderVehicle
-  roadLineX: number
-  scheduledY: number
-}) => (
-  <line
-    className={`m-ladder__scheduled-line ${
-      ladderVehicle.vehicle.scheduleAdherenceStatus
-    }`}
-    x1={ladderVehicle.x}
-    y1={ladderVehicle.y}
-    x2={roadLineX}
-    y2={scheduledY}
-  />
-)
+  timepointStatusY: TimepointStatusYFunc
+}) => {
+  const { vehicle } = ladderVehicle
+  const { scheduleAdherenceStatus, scheduledLocation } = vehicle
+  if (scheduledLocation !== null) {
+    const scheduledVehicleDirection: VehicleDirection = directionOnLadder(
+      scheduledLocation.directionId,
+      ladderDirection
+    )
+    const scheduledY = timepointStatusY(
+      scheduledLocation.timepointStatus,
+      scheduledVehicleDirection
+    )
+    const roadLineX =
+      scheduledVehicleDirection === VehicleDirection.Up
+        ? CENTER_TO_LINE
+        : -CENTER_TO_LINE
+    return (
+      <line
+        className={`m-ladder__scheduled-line ${scheduleAdherenceStatus}`}
+        x1={ladderVehicle.x}
+        y1={ladderVehicle.y}
+        x2={roadLineX}
+        y2={scheduledY}
+      />
+    )
+  } else {
+    return null
+  }
+}
 
 function partition<T>(items: T[], testFn: (value: T) => boolean): T[][] {
   return items.reduce(
