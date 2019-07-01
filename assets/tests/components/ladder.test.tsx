@@ -17,7 +17,7 @@ describe("ladder", () => {
         timestamp: 0,
         latitude: 0,
         longitude: 0,
-        directionId: 1,
+        directionId: 0,
         routeId: "route",
         tripId: "trip",
         headsign: null,
@@ -53,7 +53,7 @@ describe("ladder", () => {
         timestamp: 0,
         latitude: 0,
         longitude: 0,
-        directionId: 0,
+        directionId: 1,
         routeId: "route",
         tripId: "trip",
         headsign: null,
@@ -92,7 +92,7 @@ describe("ladder", () => {
         timestamp: 0,
         latitude: 0,
         longitude: 0,
-        directionId: 0,
+        directionId: 1,
         routeId: "route",
         tripId: "trip",
         headsign: null,
@@ -119,7 +119,7 @@ describe("ladder", () => {
         routeStatus: "on_route",
       },
     ]
-    const ladderDirection = LadderDirection.OneToZero
+    const ladderDirection = LadderDirection.ZeroToOne
 
     const tree = renderer
       .create(
@@ -145,7 +145,7 @@ describe("ladder", () => {
         timestamp: 0,
         latitude: 0,
         longitude: 0,
-        directionId: 1,
+        directionId: 0,
         routeId: "route",
         tripId: "trip",
         headsign: null,
@@ -181,7 +181,7 @@ describe("ladder", () => {
         timestamp: 0,
         latitude: 0,
         longitude: 0,
-        directionId: 0,
+        directionId: 1,
         routeId: "route",
         tripId: "trip",
         headsign: null,
@@ -214,7 +214,7 @@ describe("ladder", () => {
         routeStatus: "on_route",
       },
     ]
-    const ladderDirection = LadderDirection.OneToZero
+    const ladderDirection = LadderDirection.ZeroToOne
 
     const tree = renderer
       .create(
@@ -241,7 +241,7 @@ describe("ladder", () => {
       timestamp: 0,
       latitude: 0,
       longitude: 0,
-      directionId: 1,
+      directionId: 0,
       routeId: "route",
       tripId: "trip",
       headsign: null,
@@ -271,7 +271,7 @@ describe("ladder", () => {
       routeStatus: "on_route",
     }
 
-    const ladderDirection = LadderDirection.OneToZero
+    const ladderDirection = LadderDirection.ZeroToOne
 
     const wrapper = mount(
       <DispatchProvider dispatch={mockDispatch}>
@@ -290,6 +290,62 @@ describe("ladder", () => {
 
   test("renders a ladder with no timepoints", () => {
     const timepoints: Timepoint[] = []
+    const vehicles: Vehicle[] = [
+      {
+        id: "upward",
+        label: "upward",
+        runId: "run-1",
+        timestamp: 0,
+        latitude: 0,
+        longitude: 0,
+        directionId: 0,
+        routeId: "route",
+        tripId: "trip",
+        headsign: null,
+        viaVariant: null,
+        operatorId: "op1",
+        operatorName: "SMITH",
+        speed: 50.0,
+        bearing: 33,
+        blockId: "block-1",
+        headwaySecs: 859.1,
+        previousVehicleId: "v2",
+        scheduleAdherenceSecs: 0,
+        scheduleAdherenceString: "0.0 sec (ontime)",
+        scheduleAdherenceStatus: "on-time",
+        scheduledHeadwaySecs: 120,
+        dataDiscrepancies: [],
+        stopStatus: {
+          status: "in_transit_to",
+          stopId: "stop",
+          stopName: "stop",
+        },
+        timepointStatus: {
+          timepointId: "t1",
+          fractionUntilTimepoint: 0.5,
+        },
+        scheduledTimepointStatus: null,
+        routeStatus: "on_route",
+      },
+    ]
+    const ladderDirection = LadderDirection.ZeroToOne
+
+    const tree = renderer
+      .create(
+        <Ladder
+          timepoints={timepoints}
+          vehicles={vehicles}
+          ladderDirection={ladderDirection}
+          selectedVehicleId={undefined}
+        />
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders a reversed ladder", () => {
+    const timepoints = [{ id: "t0" }, { id: "t1" }, { id: "t2" }]
     const vehicles: Vehicle[] = [
       {
         id: "upward",
@@ -324,7 +380,10 @@ describe("ladder", () => {
           timepointId: "t1",
           fractionUntilTimepoint: 0.5,
         },
-        scheduledTimepointStatus: null,
+        scheduledTimepointStatus: {
+          timepointId: "t1",
+          fractionUntilTimepoint: 0.4,
+        },
         routeStatus: "on_route",
       },
     ]

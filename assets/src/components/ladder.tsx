@@ -63,7 +63,7 @@ const Ladder = ({
   const timepointSpacingY: number =
     (height - MARGIN_TOP_BOTTOM * 2) / (timepoints.length - 1)
   const timepointStatusY = timepointStatusYFromTimepoints(
-    timepoints,
+    orderedTimepoints,
     timepointSpacingY
   )
 
@@ -224,6 +224,7 @@ const LadderTimepoint = ({
   </>
 )
 
+/** timepoints should be ordered top to bottom */
 const timepointStatusYFromTimepoints = (
   timepoints: Timepoint[],
   timepointSpacingY: number
