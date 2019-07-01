@@ -72,7 +72,6 @@ defmodule Realtime.Vehicle do
     :operator_name,
     :run_id,
     :sources,
-    :data_discrepancies,
     :stop_status,
     :route_status
   ]
@@ -107,11 +106,11 @@ defmodule Realtime.Vehicle do
     :schedule_adherence_string,
     :scheduled_headway_secs,
     :sources,
-    :data_discrepancies,
     :stop_status,
     :timepoint_status,
     :scheduled_timepoint_status,
-    :route_status
+    :route_status,
+    data_discrepancies: []
   ]
 
   @spec from_vehicle_position_and_trip_update(map() | nil, map() | nil) :: t()
