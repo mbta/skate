@@ -13,6 +13,16 @@ import {
   VehicleTimepointStatus,
 } from "../skate.d"
 
+interface DataDiscrepancyData {
+  attribute: string
+  sources: DataDiscrepancySourceData[]
+}
+
+interface DataDiscrepancySourceData {
+  id: string
+  value: string
+}
+
 export interface VehicleStopStatusData {
   status: VehicleStatus
   stop_id: string
@@ -46,6 +56,8 @@ interface VehicleData {
   schedule_adherence_secs: number
   schedule_adherence_string: string
   scheduled_headway_secs: number
+  sources: string[]
+  data_discrepancies: DataDiscrepancyData[]
   stop_status: VehicleStopStatusData
   timepoint_status: VehicleTimepointStatusData | null
   scheduled_timepoint_status: VehicleTimepointStatusData | null
@@ -162,6 +174,12 @@ const scheduleAdherenceStatus = (
   }
 }
 
+const dataDiscrepanciesFromData = (dataDiscrepancies: DataDiscrepancyData[]) =>
+  dataDiscrepancies.map(dataDiscrepancy => ({
+    attribute: dataDiscrepancy.attribute,
+    sources: dataDiscrepancy.sources,
+  }))
+
 const vehicleStopStatusFromData = (
   vehicleStopStatusData: VehicleStopStatusData
 ): VehicleStopStatus => ({
@@ -209,6 +227,7 @@ const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
     vehicleData.schedule_adherence_secs
   ),
   scheduledHeadwaySecs: vehicleData.scheduled_headway_secs,
+  dataDiscrepancies: dataDiscrepanciesFromData(vehicleData.data_discrepancies),
   stopStatus: vehicleStopStatusFromData(vehicleData.stop_status),
   timepointStatus: vehicleTimepointStatusFromData(vehicleData.timepoint_status),
   scheduledTimepointStatus: vehicleTimepointStatusFromData(

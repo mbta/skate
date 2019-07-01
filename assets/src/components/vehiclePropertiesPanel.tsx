@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
-import { Route, Vehicle } from "../skate.d"
+import { DataDiscrepancy, Route, Vehicle } from "../skate.d"
 import { deselectVehicle } from "../state"
 import CloseButton from "./closeButton"
 import VehicleIcon, { Orientation, Size } from "./vehicleIcon"
@@ -150,6 +150,44 @@ const Location = ({
   </div>
 )
 
+const Discrepancy = ({
+  dataDiscrepancy: { attribute, sources },
+}: {
+  dataDiscrepancy: DataDiscrepancy
+}) => (
+  <dl className="m-vehicle-properties-panel__data-discrepancy">
+    <dt>{attribute}</dt>
+    <dd>
+      <ul>
+        {sources.map(({ id, value }) => (
+          <li key={`${attribute}-${id}`}>
+            <span className="m-vehicle-properties-panel__data-discrepancy-source-id">
+              {id}
+            </span>
+            <span className="m-vehicle-properties-panel__data-discrepancy-source-value">
+              {value}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </dd>
+  </dl>
+)
+
+const DataDiscrepancies = ({
+  vehicle: { dataDiscrepancies },
+}: {
+  vehicle: Vehicle
+}) => (
+  <ul className="m-vehicle-properties-panel__data-discrepancies">
+    {dataDiscrepancies.map(dataDiscrepancy => (
+      <li key={dataDiscrepancy.attribute}>
+        <Discrepancy dataDiscrepancy={dataDiscrepancy} />
+      </li>
+    ))}
+  </ul>
+)
+
 const VehiclePropertiesPanel = ({
   selectedVehicle,
   selectedVehicleRoute,
@@ -184,6 +222,10 @@ const VehiclePropertiesPanel = ({
 
         <Location vehicle={selectedVehicle} />
 
+        {shouldShowDataDiscrepancies(selectedVehicle) && (
+          <DataDiscrepancies vehicle={selectedVehicle} />
+        )}
+
         <button className="m-vehicle-properties-panel__close" onClick={hideMe}>
           Close
         </button>
@@ -216,5 +258,11 @@ const directionsUrl = (
 ) => `https://www.google.com/maps/dir/?api=1\
 &destination=${latitude.toString()},${longitude.toString()}\
 &travelmode=driving`
+
+const shouldShowDataDiscrepancies = ({ dataDiscrepancies }: Vehicle) =>
+  inDebugMode() && dataDiscrepancies.length
+
+const inDebugMode = (): boolean =>
+  !!new URL(document.location.href).searchParams.get("debug")
 
 export default VehiclePropertiesPanel

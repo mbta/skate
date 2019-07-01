@@ -2,6 +2,16 @@ export interface ByRouteId<T> {
   [routeId: string]: T
 }
 
+export interface DataDiscrepancy {
+  attribute: string
+  sources: DataDiscrepancySource[]
+}
+
+interface DataDiscrepancySource {
+  id: SourceId
+  value: string
+}
+
 export type DirectionId = 0 | 1
 export type DirectionName = string
 
@@ -26,6 +36,8 @@ export interface Timepoint {
 // An undefined value indicates that the timepoints need to be loaded
 // A null value indicates that we are currently loading the timepoints
 export type LoadableTimepoints = Timepoint[] | null | undefined
+
+export type SourceId = string
 
 export type TimepointId = string
 
@@ -58,6 +70,7 @@ export interface Vehicle {
   scheduleAdherenceString: string
   scheduleAdherenceStatus: ScheduleAdherenceStatus
   scheduledHeadwaySecs: number
+  dataDiscrepancies: DataDiscrepancy[]
   stopStatus: VehicleStopStatus
   timepointStatus: VehicleTimepointStatus | null
   scheduledTimepointStatus: VehicleTimepointStatus | null

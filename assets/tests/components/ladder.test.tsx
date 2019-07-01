@@ -33,6 +33,7 @@ describe("ladder", () => {
         scheduleAdherenceString: "0.0 sec (ontime)",
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
+        dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
           stopId: "stop",
@@ -68,6 +69,7 @@ describe("ladder", () => {
         scheduleAdherenceString: "0.0 sec (ontime)",
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
+        dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
           stopId: "stop",
@@ -106,6 +108,7 @@ describe("ladder", () => {
         scheduleAdherenceString: "0.0 sec (ontime)",
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
+        dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
           stopId: "stop",
@@ -158,6 +161,7 @@ describe("ladder", () => {
         scheduleAdherenceString: "0.0 sec (ontime)",
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
+        dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
           stopId: "stop",
@@ -193,6 +197,7 @@ describe("ladder", () => {
         scheduleAdherenceString: "0.0 sec (ontime)",
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
+        dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
           stopId: "stop",
@@ -252,6 +257,7 @@ describe("ladder", () => {
       scheduleAdherenceString: "0.0 sec (ontime)",
       scheduleAdherenceStatus: "on-time",
       scheduledHeadwaySecs: 120,
+      dataDiscrepancies: [],
       stopStatus: {
         status: "in_transit_to",
         stopId: "stop",
@@ -308,6 +314,7 @@ describe("ladder", () => {
         scheduleAdherenceString: "0.0 sec (ontime)",
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
+        dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
           stopId: "stop",

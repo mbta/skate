@@ -1,7 +1,7 @@
 defmodule Realtime.VehicleTest do
   use ExUnit.Case, async: true
 
-  alias Concentrate.{TripUpdate, VehiclePosition}
+  alias Concentrate.{DataDiscrepancy, TripUpdate, VehiclePosition}
   alias Gtfs.{StopTime, Trip}
   alias Realtime.Vehicle
 
@@ -52,7 +52,24 @@ defmodule Realtime.VehicleTest do
         stop_sequence: 25,
         trip_id: "39984755",
         direction_id: 1,
-        route_id: "28"
+        route_id: "28",
+        sources: MapSet.new(["swiftly", "busloc"]),
+        data_discrepancies: [
+          %DataDiscrepancy{
+            attribute: :trip_id,
+            sources: [
+              %{id: "swiftly", value: "swiftly-trip-id"},
+              %{id: "busloc", value: "busloc-trip-id"}
+            ]
+          },
+          %DataDiscrepancy{
+            attribute: :route_id,
+            sources: [
+              %{id: "swiftly", value: "swiftly-route-id"},
+              %{id: "busloc", value: "busloc-route-id"}
+            ]
+          }
+        ]
       }
 
       trip_update = %TripUpdate{
@@ -82,6 +99,23 @@ defmodule Realtime.VehicleTest do
         operator_id: "72032",
         operator_name: "MAUPIN",
         run_id: "138-1038",
+        sources: MapSet.new(["swiftly", "busloc"]),
+        data_discrepancies: [
+          %DataDiscrepancy{
+            attribute: :trip_id,
+            sources: [
+              %{id: "swiftly", value: "swiftly-trip-id"},
+              %{id: "busloc", value: "busloc-trip-id"}
+            ]
+          },
+          %DataDiscrepancy{
+            attribute: :route_id,
+            sources: [
+              %{id: "swiftly", value: "swiftly-route-id"},
+              %{id: "busloc", value: "busloc-route-id"}
+            ]
+          }
+        ],
         stop_status: %{
           status: :in_transit_to,
           stop_id: "392",
@@ -114,7 +148,9 @@ defmodule Realtime.VehicleTest do
         status: :IN_TRANSIT_TO,
         stop_id: "392",
         stop_sequence: 25,
-        trip_id: "39984755"
+        trip_id: "39984755",
+        sources: MapSet.new(["swiftly"]),
+        data_discrepancies: []
       }
 
       trip_update = %TripUpdate{
@@ -144,6 +180,8 @@ defmodule Realtime.VehicleTest do
         operator_id: "72032",
         operator_name: "MAUPIN",
         run_id: "138-1038",
+        sources: MapSet.new(["swiftly"]),
+        data_discrepancies: [],
         stop_status: %{
           status: :in_transit_to,
           stop_id: "392",
@@ -447,6 +485,59 @@ defmodule Realtime.VehicleTest do
 
     test "returns :on_route if :in_transit_to any other stop", %{trip: trip} do
       assert Vehicle.route_status(:in_transit_to, "s2", trip) == :on_route
+    end
+  end
+
+  describe "JSON encoding" do
+    test "is encodable as JSON" do
+      vehicle = %Vehicle{
+        id: "y1261",
+        label: "1261",
+        timestamp: 1_558_364_020,
+        latitude: 42.31777347,
+        longitude: -71.08206019,
+        direction_id: 1,
+        route_id: "28",
+        trip_id: "39984755",
+        headsign: "headsign",
+        via_variant: "_",
+        bearing: 0,
+        speed: 0.0,
+        stop_sequence: 25,
+        block_id: "S28-2",
+        operator_id: "72032",
+        operator_name: "MAUPIN",
+        run_id: "138-1038",
+        sources: MapSet.new(["swiftly", "busloc"]),
+        data_discrepancies: [
+          %DataDiscrepancy{
+            attribute: :trip_id,
+            sources: [
+              %{id: "swiftly", value: "swiftly-trip-id"},
+              %{id: "busloc", value: "busloc-trip-id"}
+            ]
+          },
+          %DataDiscrepancy{
+            attribute: :route_id,
+            sources: [
+              %{id: "swiftly", value: "swiftly-route-id"},
+              %{id: "busloc", value: "busloc-route-id"}
+            ]
+          }
+        ],
+        stop_status: %{
+          status: :in_transit_to,
+          stop_id: "392",
+          stop_name: "392"
+        },
+        timepoint_status: nil,
+        route_status: :on_route
+      }
+
+      expected_json =
+        "{\"bearing\":0,\"block_id\":\"S28-2\",\"data_discrepancies\":[{\"attribute\":\"trip_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":\"swiftly-trip-id\"},{\"id\":\"busloc\",\"value\":\"busloc-trip-id\"}]},{\"attribute\":\"route_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":\"swiftly-route-id\"},{\"id\":\"busloc\",\"value\":\"busloc-route-id\"}]}],\"direction_id\":1,\"headsign\":\"headsign\",\"headway_secs\":null,\"id\":\"y1261\",\"label\":\"1261\",\"latitude\":42.31777347,\"longitude\":-71.08206019,\"operator_id\":\"72032\",\"operator_name\":\"MAUPIN\",\"previous_vehicle_id\":null,\"previous_vehicle_schedule_adherence_secs\":null,\"previous_vehicle_schedule_adherence_string\":null,\"route_id\":\"28\",\"route_status\":\"on_route\",\"run_id\":\"138-1038\",\"schedule_adherence_secs\":null,\"schedule_adherence_string\":null,\"scheduled_headway_secs\":null,\"scheduled_timepoint_status\":null,\"sources\":[\"busloc\",\"swiftly\"],\"speed\":0.0,\"stop_sequence\":25,\"stop_status\":{\"status\":\"in_transit_to\",\"stop_id\":\"392\",\"stop_name\":\"392\"},\"timepoint_status\":null,\"timestamp\":1558364020,\"trip_id\":\"39984755\",\"via_variant\":\"_\"}"
+
+      assert Jason.encode!(vehicle) == expected_json
     end
   end
 end

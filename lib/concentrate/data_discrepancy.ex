@@ -11,6 +11,8 @@ defmodule Concentrate.DataDiscrepancy do
           value: String.t()
         }
 
+  @derive Jason.Encoder
+
   defstruct [
     :attribute,
     sources: []
