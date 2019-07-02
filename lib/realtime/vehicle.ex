@@ -20,6 +20,7 @@ defmodule Realtime.Vehicle do
           }
   @type scheduled_location ::
           %{
+            route_id: Route.id(),
             direction_id: Direction.id(),
             timepoint_status: timepoint_status()
           }
@@ -124,21 +125,30 @@ defmodule Realtime.Vehicle do
     block_fn = Application.get_env(:realtime, :block_fn, &Gtfs.block/2)
     now_fn = Application.get_env(:realtime, :now_fn, &Util.Time.now/0)
 
+    route_id =
+      VehiclePosition.route_id(vehicle_position) ||
+        (trip_update && TripUpdate.route_id(trip_update))
+
     trip_id = VehiclePosition.trip_id(vehicle_position)
     block_id = VehiclePosition.block_id(vehicle_position)
+    stop_id = VehiclePosition.stop_id(vehicle_position)
+    current_stop_status = decode_current_status(VehiclePosition.status(vehicle_position))
+
     trip = trip_fn.(trip_id)
     block = trip && block_fn.(block_id, trip.service_id)
     headsign = trip && trip.headsign
     via_variant = trip && trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id)
     stop_times_on_trip = (trip && trip.stop_times) || []
-
-    current_stop_status = decode_current_status(VehiclePosition.status(vehicle_position))
-
-    stop_id = VehiclePosition.stop_id(vehicle_position)
-
     stop_name = stop_name(vehicle_position, stop_id)
-
     timepoint_status = timepoint_status(stop_times_on_trip, stop_id)
+    scheduled_location = scheduled_location(block, now_fn.())
+
+    scheduled_location =
+      if scheduled_location && scheduled_location.route_id == route_id do
+        scheduled_location
+      else
+        nil
+      end
 
     %__MODULE__{
       id: VehiclePosition.id(vehicle_position),
@@ -149,9 +159,7 @@ defmodule Realtime.Vehicle do
       direction_id:
         VehiclePosition.direction_id(vehicle_position) ||
           (trip_update && TripUpdate.direction_id(trip_update)),
-      route_id:
-        VehiclePosition.route_id(vehicle_position) ||
-          (trip_update && TripUpdate.route_id(trip_update)),
+      route_id: route_id,
       trip_id: trip_id,
       headsign: headsign,
       via_variant: via_variant,
@@ -179,7 +187,7 @@ defmodule Realtime.Vehicle do
         stop_name: stop_name
       },
       timepoint_status: timepoint_status,
-      scheduled_location: scheduled_location(block, now_fn.()),
+      scheduled_location: scheduled_location,
       route_status: route_status(current_stop_status, stop_id, trip)
     }
   end
@@ -229,7 +237,9 @@ defmodule Realtime.Vehicle do
     trip = current_trip_on_block(block, now_time_of_day)
     timepoints = Enum.filter(trip.stop_times, &is_a_timepoint?/1)
     timepoint_status = current_timepoint_status(timepoints, now_time_of_day)
+
     %{
+      route_id: trip.route_id,
       direction_id: trip.direction_id,
       timepoint_status: timepoint_status
     }

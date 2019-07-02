@@ -19,12 +19,12 @@ defmodule Realtime.VehicleTest do
 
       trip = %Trip{
         id: "39984755",
-        route_id: "505",
+        route_id: "28",
         service_id: "service",
         headsign: "headsign",
         direction_id: 1,
         block_id: "S28-2",
-        route_pattern_id: "505-_-0",
+        route_pattern_id: "28-_-0",
         stop_times: [
           %StopTime{stop_id: "6553", time: 0, timepoint_id: "tp1"},
           %StopTime{stop_id: "6554", time: 1, timepoint_id: nil},
@@ -145,6 +145,7 @@ defmodule Realtime.VehicleTest do
         },
         timepoint_status: nil,
         scheduled_location: %{
+          route_id: "28",
           direction_id: 1,
           timepoint_status: %{
             timepoint_id: "tp1",
@@ -218,6 +219,7 @@ defmodule Realtime.VehicleTest do
         },
         timepoint_status: nil,
         scheduled_location: %{
+          route_id: "28",
           direction_id: 1,
           timepoint_status: %{
             timepoint_id: "tp1",
@@ -415,12 +417,12 @@ defmodule Realtime.VehicleTest do
       block = [
         %Trip{
           id: "1",
-          route_id: "505",
+          route_id: "28",
           service_id: "service",
           headsign: "headsign",
           direction_id: 1,
           block_id: "S28-2",
-          route_pattern_id: "505-_-1",
+          route_pattern_id: "28-_-1",
           stop_times: [
             %StopTime{
               stop_id: "6553",
@@ -440,6 +442,7 @@ defmodule Realtime.VehicleTest do
       now = 1_546_362_000
 
       assert Vehicle.scheduled_location(block, now) == %{
+               route_id: "28",
                direction_id: 1,
                timepoint_status: %{
                  timepoint_id: "tp1",
@@ -452,12 +455,12 @@ defmodule Realtime.VehicleTest do
       block = [
         %Trip{
           id: "1",
-          route_id: "505",
+          route_id: "28",
           service_id: "service",
           headsign: "headsign",
           direction_id: 1,
           block_id: "S28-2",
-          route_pattern_id: "505-_-1",
+          route_pattern_id: "28-_-1",
           stop_times: [
             %StopTime{
               stop_id: "6553",
@@ -477,6 +480,7 @@ defmodule Realtime.VehicleTest do
       now = 1_546_362_000
 
       assert Vehicle.scheduled_location(block, now) == %{
+               route_id: "28",
                direction_id: 1,
                timepoint_status: %{
                  timepoint_id: "tp2",
@@ -489,12 +493,12 @@ defmodule Realtime.VehicleTest do
       block = [
         %Trip{
           id: "0",
-          route_id: "505",
+          route_id: "28",
           service_id: "service",
           headsign: "headsign",
           direction_id: 0,
           block_id: "S28-2",
-          route_pattern_id: "505-_-0",
+          route_pattern_id: "28-_-0",
           stop_times: [
             %StopTime{
               stop_id: "6553",
@@ -510,12 +514,12 @@ defmodule Realtime.VehicleTest do
         },
         %Trip{
           id: "1",
-          route_id: "505",
+          route_id: "28",
           service_id: "service",
           headsign: "headsign",
           direction_id: 1,
           block_id: "S28-2",
-          route_pattern_id: "505-_-1",
+          route_pattern_id: "28-_-1",
           stop_times: [
             %StopTime{
               stop_id: "6553",
@@ -530,6 +534,7 @@ defmodule Realtime.VehicleTest do
       now = 1_546_362_000
 
       assert Vehicle.scheduled_location(block, now) == %{
+               route_id: "28",
                direction_id: 0,
                timepoint_status: %{
                  timepoint_id: "tp2",
@@ -542,12 +547,12 @@ defmodule Realtime.VehicleTest do
       block = [
         %Trip{
           id: "1",
-          route_id: "505",
+          route_id: "28",
           service_id: "service",
           headsign: "headsign",
           direction_id: 1,
           block_id: "S28-2",
-          route_pattern_id: "505-_-1",
+          route_pattern_id: "28-_-1",
           stop_times: [
             %StopTime{stop_id: "1", time: Util.Time.parse_hhmmss("12:05:00"), timepoint_id: "1"},
             %StopTime{stop_id: "2", time: Util.Time.parse_hhmmss("12:10:00"), timepoint_id: "2"},
@@ -560,6 +565,7 @@ defmodule Realtime.VehicleTest do
       now = 1_546_363_050
 
       assert Vehicle.scheduled_location(block, now) == %{
+               route_id: "28",
                direction_id: 1,
                timepoint_status: %{
                  timepoint_id: "3",
@@ -661,6 +667,7 @@ defmodule Realtime.VehicleTest do
           stop_name: "392"
         },
         timepoint_status: nil,
+        scheduled_location: nil,
         route_status: :on_route
       }
 
