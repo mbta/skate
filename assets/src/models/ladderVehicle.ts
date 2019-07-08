@@ -1,5 +1,5 @@
 import { LadderDirection, TimepointStatusYFunc } from "../components/ladder"
-import { Vehicle } from "../skate"
+import { DirectionId, Vehicle } from "../skate"
 
 export interface LadderVehicle {
   vehicle: Vehicle
@@ -75,12 +75,11 @@ export const ladderVehiclesFromVehicles = (
   }
 }
 
-export const vehicleDirectionOnLadder = (
-  vehicle: Vehicle,
+export const directionOnLadder = (
+  directionId: DirectionId,
   ladderDirection: LadderDirection
 ): VehicleDirection =>
-  (vehicle.directionId === 1) ===
-  (ladderDirection === LadderDirection.ZeroToOne)
+  (directionId === 1) === (ladderDirection === LadderDirection.ZeroToOne)
     ? VehicleDirection.Down
     : VehicleDirection.Up
 
@@ -89,8 +88,8 @@ const vehicleOnLadder = (
   ladderDirection: LadderDirection,
   timepointStatusYFunc: TimepointStatusYFunc
 ): VehicleOnLadder => {
-  const vehicleDirection: VehicleDirection = vehicleDirectionOnLadder(
-    vehicle,
+  const vehicleDirection: VehicleDirection = directionOnLadder(
+    vehicle.directionId,
     ladderDirection
   )
 

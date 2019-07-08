@@ -5,21 +5,24 @@ defmodule SkateWeb.VehiclesChannelTest do
   alias Realtime.Vehicle
   alias SkateWeb.{AuthManager, UserSocket, VehiclesChannel}
 
+  setup do
+    real_trip_fn = Application.get_env(:realtime, :trip_fn)
+    real_block_fn = Application.get_env(:realtime, :block_fn)
+
+    on_exit(fn ->
+      Application.put_env(:realtime, :trip_fn, real_trip_fn)
+      Application.put_env(:realtime, :block_fn, real_block_fn)
+    end)
+
+    Application.put_env(:realtime, :trip_fn, fn _trip_id -> nil end)
+    Application.put_env(:realtime, :block_fn, fn _block_id, _service_id -> nil end)
+
+    socket = socket(UserSocket, "", %{})
+
+    {:ok, socket: socket}
+  end
+
   describe "join/3" do
-    setup do
-      real_trip_fn = Application.get_env(:realtime, :trip_fn)
-
-      on_exit(fn ->
-        Application.put_env(:realtime, :trip_fn, real_trip_fn)
-      end)
-
-      Application.put_env(:realtime, :trip_fn, fn _trip_id -> nil end)
-
-      socket = socket(UserSocket, "", %{})
-
-      {:ok, socket: socket}
-    end
-
     test "subscribes to vehicles for a route ID and returns the current list of vehicles", %{
       socket: socket
     } do
@@ -37,23 +40,6 @@ defmodule SkateWeb.VehiclesChannelTest do
   end
 
   describe "handle_info/2" do
-    setup do
-      real_trip_fn = Application.get_env(:realtime, :trip_fn)
-
-      on_exit(fn ->
-        Application.put_env(:realtime, :trip_fn, real_trip_fn)
-      end)
-
-      Application.put_env(:realtime, :trip_fn, fn _trip_id -> nil end)
-
-      {:ok, _, socket} =
-        UserSocket
-        |> socket("", %{})
-        |> subscribe_and_join(VehiclesChannel, "vehicles:1")
-
-      {:ok, socket: socket}
-    end
-
     test "pushes new vehicle data onto the socket when socket is authenticated", %{socket: socket} do
       new_vehicles = [
         %Vehicle{
@@ -92,6 +78,7 @@ defmodule SkateWeb.VehiclesChannelTest do
           "exp" => System.system_time(:second) + 500
         })
 
+      {:ok, _, socket} = subscribe_and_join(socket, VehiclesChannel, "vehicles:1")
       socket = Guardian.Phoenix.Socket.assign_rtc(socket, "example@mbta.com", token, claims)
 
       assert {:noreply, socket} =
@@ -106,6 +93,7 @@ defmodule SkateWeb.VehiclesChannelTest do
           "exp" => System.system_time(:second) - 100
         })
 
+      {:ok, _, socket} = subscribe_and_join(socket, VehiclesChannel, "vehicles:1")
       socket = Guardian.Phoenix.Socket.assign_rtc(socket, "example@mbta.com", token, claims)
 
       {:stop, :normal, _socket} = VehiclesChannel.handle_info({:new_realtime_data, []}, socket)

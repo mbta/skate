@@ -1,9 +1,6 @@
 import React, { useContext } from "react"
 import DispatchContext from "../contexts/dispatchContext"
-import {
-  VehicleDirection,
-  vehicleDirectionOnLadder,
-} from "../models/ladderVehicle"
+import { directionOnLadder, VehicleDirection } from "../models/ladderVehicle"
 import { Vehicle, VehicleId } from "../skate"
 import { selectVehicle } from "../state"
 import { LadderDirection } from "./ladder"
@@ -21,7 +18,8 @@ const IncomingBoxVehicle = ({
   const dispatch = useContext(DispatchContext)
   const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
   const orientation =
-    vehicleDirectionOnLadder(vehicle, ladderDirection) === VehicleDirection.Down
+    directionOnLadder(vehicle.directionId, ladderDirection) ===
+    VehicleDirection.Down
       ? Orientation.Down
       : Orientation.Up
 

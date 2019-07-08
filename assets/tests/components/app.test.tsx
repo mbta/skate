@@ -155,9 +155,12 @@ const vehicle: Vehicle = {
     timepointId: "WELLH",
     fractionUntilTimepoint: 0.5,
   },
-  scheduledTimepointStatus: {
-    timepointId: "MORTN",
-    fractionUntilTimepoint: 0.8,
+  scheduledLocation: {
+    directionId: 1,
+    timepointStatus: {
+      timepointId: "MORTN",
+      fractionUntilTimepoint: 0.8,
+    },
   },
   routeStatus: "incoming",
 }

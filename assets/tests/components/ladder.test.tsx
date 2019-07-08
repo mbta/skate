@@ -43,7 +43,7 @@ describe("ladder", () => {
           timepointId: "t1",
           fractionUntilTimepoint: 0.5,
         },
-        scheduledTimepointStatus: null,
+        scheduledLocation: null,
         routeStatus: "on_route",
       },
       {
@@ -79,9 +79,12 @@ describe("ladder", () => {
           timepointId: "t2",
           fractionUntilTimepoint: 0.75,
         },
-        scheduledTimepointStatus: {
-          timepointId: "t2",
-          fractionUntilTimepoint: 0.75,
+        scheduledLocation: {
+          directionId: 0,
+          timepointStatus: {
+            timepointId: "t2",
+            fractionUntilTimepoint: 0.75,
+          },
         },
         routeStatus: "on_route",
       },
@@ -115,12 +118,73 @@ describe("ladder", () => {
           stopName: "stop",
         },
         timepointStatus: null,
-        scheduledTimepointStatus: null,
+        scheduledLocation: null,
         routeStatus: "on_route",
       },
     ]
     const ladderDirection = LadderDirection.ZeroToOne
 
+    const tree = renderer
+      .create(
+        <Ladder
+          timepoints={timepoints}
+          vehicles={vehicles}
+          ladderDirection={ladderDirection}
+          selectedVehicleId={undefined}
+        />
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("shows schedule line in the other direction", () => {
+    const timepoints = [{ id: "t0" }, { id: "t1" }, { id: "t2" }]
+    const vehicles: Vehicle[] = [
+      {
+        id: "downward",
+        label: "downward",
+        runId: "run-2",
+        timestamp: 0,
+        latitude: 0,
+        longitude: 0,
+        directionId: 0,
+        routeId: "route",
+        tripId: "trip",
+        headsign: null,
+        viaVariant: null,
+        operatorId: "op2",
+        operatorName: "JONES",
+        speed: 50.0,
+        bearing: 33,
+        blockId: "block-1",
+        headwaySecs: 859.1,
+        previousVehicleId: "v2",
+        scheduleAdherenceSecs: 0,
+        scheduleAdherenceString: "0.0 sec (ontime)",
+        scheduleAdherenceStatus: "on-time",
+        scheduledHeadwaySecs: 120,
+        dataDiscrepancies: [],
+        stopStatus: {
+          status: "in_transit_to",
+          stopId: "stop",
+          stopName: "stop",
+        },
+        timepointStatus: {
+          timepointId: "t2",
+          fractionUntilTimepoint: 0.75,
+        },
+        scheduledLocation: {
+          directionId: 1,
+          timepointStatus: {
+            timepointId: "t2",
+            fractionUntilTimepoint: 0.75,
+          },
+        },
+        routeStatus: "on_route",
+      },
+    ]
+    const ladderDirection = LadderDirection.OneToZero
     const tree = renderer
       .create(
         <Ladder
@@ -171,7 +235,7 @@ describe("ladder", () => {
           timepointId: "t1",
           fractionUntilTimepoint: 0.5,
         },
-        scheduledTimepointStatus: null,
+        scheduledLocation: null,
         routeStatus: "on_route",
       },
       {
@@ -207,9 +271,12 @@ describe("ladder", () => {
           timepointId: "t2",
           fractionUntilTimepoint: 0.75,
         },
-        scheduledTimepointStatus: {
-          timepointId: "t2",
-          fractionUntilTimepoint: 0.75,
+        scheduledLocation: {
+          directionId: 0,
+          timepointStatus: {
+            timepointId: "t2",
+            fractionUntilTimepoint: 0.75,
+          },
         },
         routeStatus: "on_route",
       },
@@ -267,7 +334,7 @@ describe("ladder", () => {
         timepointId: "t1",
         fractionUntilTimepoint: 0.5,
       },
-      scheduledTimepointStatus: null,
+      scheduledLocation: null,
       routeStatus: "on_route",
     }
 
@@ -324,7 +391,7 @@ describe("ladder", () => {
           timepointId: "t1",
           fractionUntilTimepoint: 0.5,
         },
-        scheduledTimepointStatus: null,
+        scheduledLocation: null,
         routeStatus: "on_route",
       },
     ]
@@ -380,9 +447,12 @@ describe("ladder", () => {
           timepointId: "t1",
           fractionUntilTimepoint: 0.5,
         },
-        scheduledTimepointStatus: {
-          timepointId: "t1",
-          fractionUntilTimepoint: 0.4,
+        scheduledLocation: {
+          directionId: 1,
+          timepointStatus: {
+            timepointId: "t1",
+            fractionUntilTimepoint: 0.4,
+          },
         },
         routeStatus: "on_route",
       },

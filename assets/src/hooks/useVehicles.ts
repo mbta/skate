@@ -8,6 +8,7 @@ import {
   Vehicle,
   VehicleRouteStatus,
   VehiclesByRouteId,
+  VehicleScheduledLocation,
   VehicleStatus,
   VehicleStopStatus,
   VehicleTimepointStatus,
@@ -23,13 +24,18 @@ interface DataDiscrepancySourceData {
   value: string
 }
 
-export interface VehicleStopStatusData {
+interface VehicleScheduledLocationData {
+  direction_id: DirectionId
+  timepoint_status: VehicleTimepointStatusData
+}
+
+interface VehicleStopStatusData {
   status: VehicleStatus
   stop_id: string
   stop_name: string
 }
 
-export interface VehicleTimepointStatusData {
+interface VehicleTimepointStatusData {
   timepoint_id: string
   fraction_until_timepoint: number
 }
@@ -60,7 +66,7 @@ interface VehicleData {
   data_discrepancies: DataDiscrepancyData[]
   stop_status: VehicleStopStatusData
   timepoint_status: VehicleTimepointStatusData | null
-  scheduled_timepoint_status: VehicleTimepointStatusData | null
+  scheduled_location: VehicleScheduledLocationData | null
   route_status: VehicleRouteStatus
 }
 
@@ -180,6 +186,15 @@ const dataDiscrepanciesFromData = (dataDiscrepancies: DataDiscrepancyData[]) =>
     sources: dataDiscrepancy.sources,
   }))
 
+const vehicleScheduledLocationFromData = (
+  vehicleScheduledLocationData: VehicleScheduledLocationData
+): VehicleScheduledLocation => ({
+  directionId: vehicleScheduledLocationData.direction_id,
+  timepointStatus: vehicleTimepointStatusFromData(
+    vehicleScheduledLocationData.timepoint_status
+  ),
+})
+
 const vehicleStopStatusFromData = (
   vehicleStopStatusData: VehicleStopStatusData
 ): VehicleStopStatus => ({
@@ -189,18 +204,11 @@ const vehicleStopStatusFromData = (
 })
 
 const vehicleTimepointStatusFromData = (
-  vehicleTimepointStatusData: VehicleTimepointStatusData | null
-): VehicleTimepointStatus | null => {
-  if (vehicleTimepointStatusData) {
-    return {
-      fractionUntilTimepoint:
-        vehicleTimepointStatusData.fraction_until_timepoint,
-      timepointId: vehicleTimepointStatusData.timepoint_id,
-    }
-  } else {
-    return null
-  }
-}
+  vehicleTimepointStatusData: VehicleTimepointStatusData
+): VehicleTimepointStatus => ({
+  timepointId: vehicleTimepointStatusData.timepoint_id,
+  fractionUntilTimepoint: vehicleTimepointStatusData.fraction_until_timepoint,
+})
 
 const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
   id: vehicleData.id,
@@ -229,10 +237,12 @@ const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
   scheduledHeadwaySecs: vehicleData.scheduled_headway_secs,
   dataDiscrepancies: dataDiscrepanciesFromData(vehicleData.data_discrepancies),
   stopStatus: vehicleStopStatusFromData(vehicleData.stop_status),
-  timepointStatus: vehicleTimepointStatusFromData(vehicleData.timepoint_status),
-  scheduledTimepointStatus: vehicleTimepointStatusFromData(
-    vehicleData.scheduled_timepoint_status
-  ),
+  timepointStatus:
+    vehicleData.timepoint_status &&
+    vehicleTimepointStatusFromData(vehicleData.timepoint_status),
+  scheduledLocation:
+    vehicleData.scheduled_location &&
+    vehicleScheduledLocationFromData(vehicleData.scheduled_location),
   routeStatus: vehicleData.route_status,
 })
 
