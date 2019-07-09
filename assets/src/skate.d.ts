@@ -9,7 +9,7 @@ export interface DataDiscrepancy {
 
 interface DataDiscrepancySource {
   id: SourceId
-  value: string
+  value: string | null
 }
 
 export type DirectionId = 0 | 1

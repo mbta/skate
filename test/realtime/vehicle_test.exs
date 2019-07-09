@@ -656,7 +656,7 @@ defmodule Realtime.VehicleTest do
           %DataDiscrepancy{
             attribute: :route_id,
             sources: [
-              %{id: "swiftly", value: "swiftly-route-id"},
+              %{id: "swiftly", value: nil},
               %{id: "busloc", value: "busloc-route-id"}
             ]
           }
@@ -672,7 +672,7 @@ defmodule Realtime.VehicleTest do
       }
 
       expected_json =
-        "{\"bearing\":0,\"block_id\":\"S28-2\",\"data_discrepancies\":[{\"attribute\":\"trip_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":\"swiftly-trip-id\"},{\"id\":\"busloc\",\"value\":\"busloc-trip-id\"}]},{\"attribute\":\"route_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":\"swiftly-route-id\"},{\"id\":\"busloc\",\"value\":\"busloc-route-id\"}]}],\"direction_id\":1,\"headsign\":\"headsign\",\"headway_secs\":null,\"id\":\"y1261\",\"label\":\"1261\",\"latitude\":42.31777347,\"longitude\":-71.08206019,\"operator_id\":\"72032\",\"operator_name\":\"MAUPIN\",\"previous_vehicle_id\":null,\"previous_vehicle_schedule_adherence_secs\":null,\"previous_vehicle_schedule_adherence_string\":null,\"route_id\":\"28\",\"route_status\":\"on_route\",\"run_id\":\"138-1038\",\"schedule_adherence_secs\":null,\"schedule_adherence_string\":null,\"scheduled_headway_secs\":null,\"scheduled_location\":null,\"sources\":[\"busloc\",\"swiftly\"],\"speed\":0.0,\"stop_sequence\":25,\"stop_status\":{\"status\":\"in_transit_to\",\"stop_id\":\"392\",\"stop_name\":\"392\"},\"timepoint_status\":null,\"timestamp\":1558364020,\"trip_id\":\"39984755\",\"via_variant\":\"_\"}"
+        "{\"bearing\":0,\"block_id\":\"S28-2\",\"data_discrepancies\":[{\"attribute\":\"trip_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":\"swiftly-trip-id\"},{\"id\":\"busloc\",\"value\":\"busloc-trip-id\"}]},{\"attribute\":\"route_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":null},{\"id\":\"busloc\",\"value\":\"busloc-route-id\"}]}],\"direction_id\":1,\"headsign\":\"headsign\",\"headway_secs\":null,\"id\":\"y1261\",\"label\":\"1261\",\"latitude\":42.31777347,\"longitude\":-71.08206019,\"operator_id\":\"72032\",\"operator_name\":\"MAUPIN\",\"previous_vehicle_id\":null,\"previous_vehicle_schedule_adherence_secs\":null,\"previous_vehicle_schedule_adherence_string\":null,\"route_id\":\"28\",\"route_status\":\"on_route\",\"run_id\":\"138-1038\",\"schedule_adherence_secs\":null,\"schedule_adherence_string\":null,\"scheduled_headway_secs\":null,\"scheduled_location\":null,\"sources\":[\"busloc\",\"swiftly\"],\"speed\":0.0,\"stop_sequence\":25,\"stop_status\":{\"status\":\"in_transit_to\",\"stop_id\":\"392\",\"stop_name\":\"392\"},\"timepoint_status\":null,\"timestamp\":1558364020,\"trip_id\":\"39984755\",\"via_variant\":\"_\"}"
 
       assert Jason.encode!(vehicle) == expected_json
     end
