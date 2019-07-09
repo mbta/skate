@@ -60,6 +60,19 @@ describe("useVehicles", () => {
             },
           ],
         },
+        {
+          attribute: "route_id",
+          sources: [
+            {
+              id: "swiftly",
+              value: null,
+            },
+            {
+              id: "busloc",
+              value: "busloc-route-id",
+            },
+          ],
+        },
       ],
       stop_status: {
         status: "in_transit_to",
@@ -115,6 +128,19 @@ describe("useVehicles", () => {
             {
               id: "busloc",
               value: "busloc-trip-id",
+            },
+          ],
+        },
+        {
+          attribute: "route_id",
+          sources: [
+            {
+              id: "swiftly",
+              value: null,
+            },
+            {
+              id: "busloc",
+              value: "busloc-route-id",
             },
           ],
         },
