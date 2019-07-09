@@ -7,11 +7,11 @@ $font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-family: "Inter UI";
   font-style: normal;
   font-weight: 400;
-  src: url("https://mbta.com/fonts/Inter-UI-Regular.woff2") format("woff2"),
+  src: url("https://cdn.mbta.com/fonts/Inter-UI-Regular.woff2") format("woff2"),
     // Modern Browsers
-      url("https://mbta.com/fonts/Inter-UI-Regular.woff") format("woff"),
+      url("https://cdn.mbta.com/fonts/Inter-UI-Regular.woff") format("woff"),
     // Modern Browsers
-      url("https://mbta.com/fonts/Inter-UI-Regular.ttf") format("truetype");
+      url("https://cdn.mbta.com/fonts/Inter-UI-Regular.ttf") format("truetype");
   text-rendering: optimizeLegibility;
 }
 
@@ -20,9 +20,9 @@ $font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-family: "Inter UI";
   font-style: italic;
   font-weight: 400;
-  src: url("https://mbta.com/fonts/Inter-UI-Italic.woff2") format("woff2"),
-    url("https://mbta.com/fonts/Inter-UI-Italic.woff") format("woff"),
-    url("https://mbta.com/fonts/Inter-UI-Italic.ttf") format("truetype");
+  src: url("https://cdn.mbta.com/fonts/Inter-UI-Italic.woff2") format("woff2"),
+    url("https://cdn.mbta.com/fonts/Inter-UI-Italic.woff") format("woff"),
+    url("https://cdn.mbta.com/fonts/Inter-UI-Italic.ttf") format("truetype");
   text-rendering: optimizeLegibility;
 }
 
@@ -33,9 +33,9 @@ $font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-family: "Inter UI";
   font-style: normal;
   font-weight: 500;
-  src: url("https://mbta.com/fonts/Inter-UI-Medium.woff2") format("woff2"),
-    url("https://mbta.com/fonts/Inter-UI-Medium.woff") format("woff"),
-    url("https://mbta.com/fonts/Inter-UI-Medium.ttf") format("truetype");
+  src: url("https://cdn.mbta.com/fonts/Inter-UI-Medium.woff2") format("woff2"),
+    url("https://cdn.mbta.com/fonts/Inter-UI-Medium.woff") format("woff"),
+    url("https://cdn.mbta.com/fonts/Inter-UI-Medium.ttf") format("truetype");
   text-rendering: optimizeLegibility;
 }
 
@@ -46,8 +46,8 @@ $font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-family: "Inter UI";
   font-style: normal;
   font-weight: 700;
-  src: url("https://mbta.com/fonts/Inter-UI-Bold.woff2") format("woff2"),
-    url("https://mbta.com/fonts/Inter-UI-Bold.woff") format("woff"),
-    url("https://mbta.com/fonts/Inter-UI-Bold.ttf") format("truetype");
+  src: url("https://cdn.mbta.com/fonts/Inter-UI-Bold.woff2") format("woff2"),
+    url("https://cdn.mbta.com/fonts/Inter-UI-Bold.woff") format("woff"),
+    url("https://cdn.mbta.com/fonts/Inter-UI-Bold.ttf") format("truetype");
   text-rendering: optimizeLegibility;
 }
