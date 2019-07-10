@@ -4,6 +4,7 @@ import {
   directionOnLadder,
   LadderVehicle,
   ladderVehiclesFromVehicles,
+  status,
   VehicleDirection,
 } from "../models/ladderVehicle"
 import { Timepoint, Vehicle, VehicleId, VehicleTimepointStatus } from "../skate"
@@ -139,9 +140,9 @@ const VehicleSvg = ({
   return (
     <g>
       <g
-        className={`m-ladder__vehicle ${
-          ladderVehicle.vehicle.scheduleAdherenceStatus
-        } ${selectedClass}`}
+        className={`m-ladder__vehicle ${status(
+          ladderVehicle
+        )} ${selectedClass}`}
         transform={`translate(${ladderVehicle.x},${ladderVehicle.y})`}
         onClick={() => dispatch(selectVehicle(ladderVehicle.vehicle.id))}
       >
@@ -249,7 +250,7 @@ const ScheduledLine = ({
   timepointStatusY: TimepointStatusYFunc
 }) => {
   const { vehicle } = ladderVehicle
-  const { scheduleAdherenceStatus, scheduledLocation } = vehicle
+  const { scheduledLocation } = vehicle
   if (scheduledLocation !== null) {
     const scheduledVehicleDirection: VehicleDirection = directionOnLadder(
       scheduledLocation.directionId,
@@ -265,7 +266,7 @@ const ScheduledLine = ({
         : -CENTER_TO_LINE
     return (
       <line
-        className={`m-ladder__scheduled-line ${scheduleAdherenceStatus}`}
+        className={`m-ladder__scheduled-line ${status(ladderVehicle)}`}
         x1={ladderVehicle.x}
         y1={ladderVehicle.y}
         x2={roadLineX}

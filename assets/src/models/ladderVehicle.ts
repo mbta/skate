@@ -75,34 +75,6 @@ export const ladderVehiclesFromVehicles = (
   }
 }
 
-export const directionOnLadder = (
-  directionId: DirectionId,
-  ladderDirection: LadderDirection
-): VehicleDirection =>
-  (directionId === 1) === (ladderDirection === LadderDirection.ZeroToOne)
-    ? VehicleDirection.Down
-    : VehicleDirection.Up
-
-const vehicleOnLadder = (
-  vehicle: Vehicle,
-  ladderDirection: LadderDirection,
-  timepointStatusYFunc: TimepointStatusYFunc
-): VehicleOnLadder => {
-  const vehicleDirection: VehicleDirection = directionOnLadder(
-    vehicle.directionId,
-    ladderDirection
-  )
-
-  const y = timepointStatusYFunc(vehicle.timepointStatus, vehicleDirection)
-
-  return {
-    // tslint:disable-next-line:object-literal-sort-keys
-    vehicle,
-    vehicleDirection,
-    y,
-  }
-}
-
 export const putIntoLanes = (
   vehiclesOnLadder: VehicleOnLadder[]
 ): VehicleInLane[] =>
@@ -134,6 +106,59 @@ export const putIntoLanes = (
       },
       []
     )
+
+export const status = (ladderVehicle: LadderVehicle): string =>
+  isUnassignedBySwiftly(ladderVehicle)
+    ? "off-course"
+    : ladderVehicle.vehicle.scheduleAdherenceStatus
+
+export const isUnassignedBySwiftly = ({
+  vehicle: { dataDiscrepancies },
+}: LadderVehicle): boolean => {
+  const tripIdDiscrepancy = dataDiscrepancies.find(
+    ({ attribute }) => attribute === "trip_id"
+  )
+  if (!tripIdDiscrepancy) {
+    return false
+  }
+
+  const swiftlySource = tripIdDiscrepancy.sources.find(
+    ({ id }) => id === "swiftly"
+  )
+  if (!swiftlySource) {
+    return false
+  }
+
+  return swiftlySource.value === null
+}
+
+export const directionOnLadder = (
+  directionId: DirectionId,
+  ladderDirection: LadderDirection
+): VehicleDirection =>
+  (directionId === 1) === (ladderDirection === LadderDirection.ZeroToOne)
+    ? VehicleDirection.Down
+    : VehicleDirection.Up
+
+const vehicleOnLadder = (
+  vehicle: Vehicle,
+  ladderDirection: LadderDirection,
+  timepointStatusYFunc: TimepointStatusYFunc
+): VehicleOnLadder => {
+  const vehicleDirection: VehicleDirection = directionOnLadder(
+    vehicle.directionId,
+    ladderDirection
+  )
+
+  const y = timepointStatusYFunc(vehicle.timepointStatus, vehicleDirection)
+
+  return {
+    // tslint:disable-next-line:object-literal-sort-keys
+    vehicle,
+    vehicleDirection,
+    y,
+  }
+}
 
 const numOccupiedLanes = (vehicles: InLane[]): number => {
   const allLanes: number[] = vehicles.map(({ lane }) => lane || 0)
