@@ -2,6 +2,7 @@ import React, { useContext, useLayoutEffect, useRef, useState } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import {
   directionOnLadder,
+  isUnassignedBySwiftly,
   LadderVehicle,
   ladderVehiclesFromVehicles,
   status,
@@ -103,6 +104,7 @@ const Ladder = ({
           <VehicleSvg
             ladderVehicle={ladderVehicle}
             selectedVehicleId={selectedVehicleId}
+            timepointStatusY={timepointStatusY}
             key={`vehicle-${ladderVehicle.vehicle.id}`}
           />
         ))}
@@ -111,6 +113,7 @@ const Ladder = ({
           <VehicleSvg
             ladderVehicle={ladderVehicle}
             selectedVehicleId={selectedVehicleId}
+            timepointStatusY={timepointStatusY}
             key={`vehicle-${ladderVehicle.vehicle.id}`}
           />
         ))}
@@ -129,13 +132,27 @@ const Ladder = ({
 const VehicleSvg = ({
   ladderVehicle,
   selectedVehicleId,
+  timepointStatusY,
 }: {
   ladderVehicle: LadderVehicle
   selectedVehicleId: VehicleId | undefined
+  timepointStatusY: (
+    timepointStatus: VehicleTimepointStatus | null,
+    direction: VehicleDirection
+  ) => number
 }) => {
   const dispatch = useContext(DispatchContext)
   const selectedClass =
     ladderVehicle.vehicle.id === selectedVehicleId ? "selected" : ""
+
+  const y =
+    isUnassignedBySwiftly(ladderVehicle) &&
+    ladderVehicle.vehicle.scheduledLocation
+      ? timepointStatusY(
+          ladderVehicle.vehicle.scheduledLocation.timepointStatus,
+          ladderVehicle.vehicleDirection
+        )
+      : ladderVehicle.y
 
   return (
     <g>
@@ -143,7 +160,7 @@ const VehicleSvg = ({
         className={`m-ladder__vehicle ${status(
           ladderVehicle
         )} ${selectedClass}`}
-        transform={`translate(${ladderVehicle.x},${ladderVehicle.y})`}
+        transform={`translate(${ladderVehicle.x},${y})`}
         onClick={() => dispatch(selectVehicle(ladderVehicle.vehicle.id))}
       >
         <VehicleIconSvgNode
@@ -256,15 +273,17 @@ const ScheduledLine = ({
       scheduledLocation.directionId,
       ladderDirection
     )
-    const scheduledY = timepointStatusY(
-      scheduledLocation.timepointStatus,
-      scheduledVehicleDirection
-    )
+    const scheduledY =
+      !isUnassignedBySwiftly(ladderVehicle) &&
+      timepointStatusY(
+        scheduledLocation.timepointStatus,
+        scheduledVehicleDirection
+      )
     const roadLineX =
       scheduledVehicleDirection === VehicleDirection.Up
         ? CENTER_TO_LINE
         : -CENTER_TO_LINE
-    return (
+    return scheduledY ? (
       <line
         className={`m-ladder__scheduled-line ${status(ladderVehicle)}`}
         x1={ladderVehicle.x}
@@ -272,7 +291,7 @@ const ScheduledLine = ({
         x2={roadLineX}
         y2={scheduledY}
       />
-    )
+    ) : null
   } else {
     return null
   }
