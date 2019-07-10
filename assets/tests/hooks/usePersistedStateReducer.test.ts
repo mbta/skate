@@ -10,14 +10,23 @@ const mockLocalStorage = {
   getItem: jest.fn(),
   setItem: jest.fn(),
 }
-Object.defineProperty(window, "localStorage", {
-  value: mockLocalStorage,
-})
-jest
-  .spyOn(window.localStorage, "getItem")
-  .mockImplementation((_stateKey: string) => null)
 
 describe("usePersistedStateReducer", () => {
+  const originalLocalStorage = window.localStorage
+
+  beforeAll(() => {
+    Object.defineProperty(window, "localStorage", {
+      value: mockLocalStorage,
+    })
+    jest
+      .spyOn(window.localStorage, "getItem")
+      .mockImplementation((_stateKey: string) => null)
+  })
+
+  afterAll(() => {
+    Object.defineProperty(window, "localStorage", originalLocalStorage)
+  })
+
   test("initializes the state with the given initial value", () => {
     const initialState: State = {
       selectedRouteIds: ["1", "2"],

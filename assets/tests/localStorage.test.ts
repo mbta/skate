@@ -6,11 +6,20 @@ const mockLocalStorage = {
   getItem: jest.fn(),
   setItem: jest.fn(),
 }
-Object.defineProperty(window, "localStorage", {
-  value: mockLocalStorage,
-})
 
 describe("saveState", () => {
+  const originalLocalStorage = window.localStorage
+
+  beforeAll(() => {
+    Object.defineProperty(window, "localStorage", {
+      value: mockLocalStorage,
+    })
+  })
+
+  afterAll(() => {
+    Object.defineProperty(window, "localStorage", originalLocalStorage)
+  })
+
   test("saves stringified state to local storage", () => {
     const state = { selectedRouteIds: ["28", "39"] }
     saveState(state)
@@ -36,6 +45,18 @@ describe("saveState", () => {
 })
 
 describe("loadState", () => {
+  const originalLocalStorage = window.localStorage
+
+  beforeAll(() => {
+    Object.defineProperty(window, "localStorage", {
+      value: mockLocalStorage,
+    })
+  })
+
+  afterAll(() => {
+    Object.defineProperty(window, "localStorage", originalLocalStorage)
+  })
+
   test("returns saved state from local storage", () => {
     jest
       .spyOn(window.localStorage, "getItem")
@@ -58,6 +79,18 @@ describe("loadState", () => {
 })
 
 describe("filter", () => {
+  const originalLocalStorage = window.localStorage
+
+  beforeAll(() => {
+    Object.defineProperty(window, "localStorage", {
+      value: mockLocalStorage,
+    })
+  })
+
+  afterAll(() => {
+    Object.defineProperty(window, "localStorage", originalLocalStorage)
+  })
+
   test("filters an object by allowed keys", () => {
     const originalObject = {
       one: 1,
