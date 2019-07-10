@@ -1,6 +1,8 @@
 import { filter, loadState, saveState } from "../src/localStorage"
 
-const APP_STATE_KEY = "mbta-skate-state"
+const APP_STATE_KEY = "test-mbta-skate-state"
+
+const PERSISTED_KEYS = ["selectedRouteIds"]
 
 const mockLocalStorage = {
   getItem: jest.fn(),
@@ -22,7 +24,7 @@ describe("saveState", () => {
 
   test("saves stringified state to local storage", () => {
     const state = { selectedRouteIds: ["28", "39"] }
-    saveState(state)
+    saveState(APP_STATE_KEY, state, PERSISTED_KEYS)
 
     expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
       APP_STATE_KEY,
@@ -35,7 +37,7 @@ describe("saveState", () => {
       foo: "bar",
       selectedRouteIds: ["28", "39"],
     }
-    saveState(state)
+    saveState(APP_STATE_KEY, state, PERSISTED_KEYS)
 
     expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
       APP_STATE_KEY,
@@ -66,7 +68,7 @@ describe("loadState", () => {
 
     const expectedState = { selectedRouteIds: ["28", "39"] }
 
-    expect(loadState()).toEqual(expectedState)
+    expect(loadState(APP_STATE_KEY)).toEqual(expectedState)
   })
 
   test("returns undefined if there is no saved state in local storage", () => {
@@ -74,7 +76,7 @@ describe("loadState", () => {
       .spyOn(window.localStorage, "getItem")
       .mockImplementation((_stateKey: string) => null)
 
-    expect(loadState()).toBeUndefined()
+    expect(loadState(APP_STATE_KEY)).toBeUndefined()
   })
 })
 

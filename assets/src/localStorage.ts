@@ -1,21 +1,15 @@
-import { RouteId } from "./skate"
-
-const APP_STATE_KEY = "mbta-skate-state"
-
-const SAVED_KEYS = ["selectedRouteIds"]
-
-interface PersistedState {
-  selectedRouteIds: RouteId[]
-}
-
-export const saveState = (state: PersistedState) => {
-  const perstableState = filter(state, SAVED_KEYS)
+export const saveState = (
+  stateKey: string,
+  state: object,
+  persistedKeys: string[]
+) => {
+  const perstableState = filter(state, persistedKeys)
   const serializedState = JSON.stringify(perstableState)
-  localStorage.setItem(APP_STATE_KEY, serializedState)
+  localStorage.setItem(stateKey, serializedState)
 }
 
-export const loadState = (): PersistedState | undefined => {
-  const serializedState = localStorage.getItem(APP_STATE_KEY)
+export const loadState = (stateKey: string): object | undefined => {
+  const serializedState = localStorage.getItem(stateKey)
 
   if (serializedState === null) {
     return undefined
