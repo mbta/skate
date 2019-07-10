@@ -1,0 +1,123 @@
+[
+  {
+    "time_period_id": "time_period_01",
+    "day_type_id": "day_type_01",
+    "time_period_sequence": 1,
+    "time_period_type": "OFF_PEAK",
+    "time_period_name": "VERY_EARLY_MORNING",
+    "time_period_start_time": "03:00:00",
+    "time_period_end_time": "06:00:00",
+    "time_period_start_time_sec": 10800,
+    "time_period_end_time_sec": 21600
+  },
+  {
+    "time_period_id": "time_period_02",
+    "day_type_id": "day_type_01",
+    "time_period_sequence": 2,
+    "time_period_type": "OFF_PEAK",
+    "time_period_name": "EARLY_AM",
+    "time_period_start_time": "06:00:00",
+    "time_period_end_time": "07:00:00",
+    "time_period_start_time_sec": 21600,
+    "time_period_end_time_sec": 25200
+  },
+  {
+    "time_period_id": "time_period_03",
+    "day_type_id": "day_type_01",
+    "time_period_sequence": 3,
+    "time_period_type": "PEAK",
+    "time_period_name": "AM_PEAK",
+    "time_period_start_time": "07:00:00",
+    "time_period_end_time": "09:00:00",
+    "time_period_start_time_sec": 25200,
+    "time_period_end_time_sec": 32400
+  },
+  {
+    "time_period_id": "time_period_04",
+    "day_type_id": "day_type_01",
+    "time_period_sequence": 4,
+    "time_period_type": "OFF_PEAK",
+    "time_period_name": "MIDDAY_BASE",
+    "time_period_start_time": "09:00:00",
+    "time_period_end_time": "13:30:00",
+    "time_period_start_time_sec": 32400,
+    "time_period_end_time_sec": 48600
+  },
+  {
+    "time_period_id": "time_period_05",
+    "day_type_id": "day_type_01",
+    "time_period_sequence": 5,
+    "time_period_type": "OFF_PEAK",
+    "time_period_name": "MIDDAY_SCHOOL",
+    "time_period_start_time": "13:30:00",
+    "time_period_end_time": "16:00:00",
+    "time_period_start_time_sec": 48600,
+    "time_period_end_time_sec": 57600
+  },
+  {
+    "time_period_id": "time_period_06",
+    "day_type_id": "day_type_01",
+    "time_period_sequence": 6,
+    "time_period_type": "PEAK",
+    "time_period_name": "PM_PEAK",
+    "time_period_start_time": "16:00:00",
+    "time_period_end_time": "18:30:00",
+    "time_period_start_time_sec": 57600,
+    "time_period_end_time_sec": 66600
+  },
+  {
+    "time_period_id": "time_period_07",
+    "day_type_id": "day_type_01",
+    "time_period_sequence": 7,
+    "time_period_type": "OFF_PEAK",
+    "time_period_name": "EVENING",
+    "time_period_start_time": "18:30:00",
+    "time_period_end_time": "22:00:00",
+    "time_period_start_time_sec": 66600,
+    "time_period_end_time_sec": 79200
+  },
+  {
+    "time_period_id": "time_period_08",
+    "day_type_id": "day_type_01",
+    "time_period_sequence": 8,
+    "time_period_type": "OFF_PEAK",
+    "time_period_name": "LATE_EVENING",
+    "time_period_start_time": "22:00:00",
+    "time_period_end_time": "00:00:00",
+    "time_period_start_time_sec": 79200,
+    "time_period_end_time_sec": 86400
+  },
+  {
+    "time_period_id": "time_period_09",
+    "day_type_id": "day_type_01",
+    "time_period_sequence": 9,
+    "time_period_type": "OFF_PEAK",
+    "time_period_name": "NIGHT",
+    "time_period_start_time": "00:00:00",
+    "time_period_end_time": "03:00:00",
+    "time_period_start_time_sec": 86400,
+    "time_period_end_time_sec": 97200
+  },
+  {
+    "time_period_id": "time_period_10",
+    "day_type_id": "day_type_02",
+    "time_period_sequence": 1,
+    "time_period_type": "OFF_PEAK",
+    "time_period_name": "SATURDAY",
+    "time_period_start_time": "03:00:00",
+    "time_period_end_time": "03:00:00",
+    "time_period_start_time_sec": 10800,
+    "time_period_end_time_sec": 97200
+  },
+  {
+    "time_period_id": "time_period_11",
+    "day_type_id": "day_type_03",
+    "time_period_sequence": 1,
+    "time_period_type": "OFF_PEAK",
+    "time_period_name": "SUNDAY",
+    "time_period_start_time": "03:00:00",
+    "time_period_end_time": "03:00:00",
+    "time_period_start_time_sec": 10800,
+    "time_period_end_time_sec": 97200
+  }
+]
