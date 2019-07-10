@@ -1,5 +1,7 @@
 import { renderHook } from "react-hooks-testing-library"
-import usePersistedStateReducer from "../../src/hooks/usePersistedStateReducer"
+import usePersistedStateReducer, {
+  filter,
+} from "../../src/hooks/usePersistedStateReducer"
 import { Reducer, State } from "../../src/state"
 
 // tslint:disable: react-hooks-nesting
@@ -64,5 +66,22 @@ describe("usePersistedStateReducer", () => {
     const [state] = result.current
 
     expect(state).toEqual(expectedState)
+  })
+})
+
+describe("filter", () => {
+  test("filters an object by allowed keys", () => {
+    const originalObject = {
+      one: 1,
+      two: 2,
+      three: 3,
+    }
+    const allowedKeys = ["one", "three"]
+    const expected = {
+      one: 1,
+      three: 3,
+    }
+
+    expect(filter(originalObject, allowedKeys)).toEqual(expected)
   })
 })
