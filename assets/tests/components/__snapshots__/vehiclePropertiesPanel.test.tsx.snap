@@ -178,6 +178,10 @@ Array [
       >
         Directions
       </a>
+      <div
+        className="m-vehicle-properties-panel__map"
+        id="map"
+      />
     </div>
     <button
       className="m-vehicle-properties-panel__close"
@@ -371,6 +375,10 @@ Array [
       >
         Directions
       </a>
+      <div
+        className="m-vehicle-properties-panel__map"
+        id="map"
+      />
     </div>
     <button
       className="m-vehicle-properties-panel__close"
@@ -564,6 +572,10 @@ Array [
       >
         Directions
       </a>
+      <div
+        className="m-vehicle-properties-panel__map"
+        id="map"
+      />
     </div>
     <button
       className="m-vehicle-properties-panel__close"

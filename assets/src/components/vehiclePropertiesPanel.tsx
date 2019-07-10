@@ -5,6 +5,7 @@ import { isOffCourse, status } from "../models/vehicleStatus"
 import { DataDiscrepancy, Route, Vehicle } from "../skate.d"
 import { deselectVehicle } from "../state"
 import CloseButton from "./closeButton"
+import Map from "./map"
 import VehicleIcon, { Orientation, Size } from "./vehicleIcon"
 
 interface Props {
@@ -129,7 +130,15 @@ const NotAvailable = () => (
 )
 
 const Location = ({ vehicle }: { vehicle: Vehicle }) => {
-  const { latitude, longitude, stopStatus } = vehicle
+  const {
+    bearing,
+    label,
+    latitude,
+    longitude,
+    scheduleAdherenceStatus,
+    stopStatus,
+    viaVariant,
+  } = vehicle
 
   return (
     <div className="m-vehicle-properties-panel__location">
@@ -145,6 +154,14 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
       >
         Directions
       </a>
+      <Map
+        bearing={bearing}
+        label={label}
+        latitude={latitude}
+        longitude={longitude}
+        scheduleAdherenceStatus={scheduleAdherenceStatus}
+        viaVariant={viaVariant}
+      />
     </div>
   )
 }

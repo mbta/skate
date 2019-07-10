@@ -3,6 +3,7 @@
   box-shadow: $modal-box-shadow;
   height: 100%;
   max-width: 100%;
+  overflow: scroll;
   position: fixed;
   right: 0;
   top: inherit;
@@ -134,4 +135,9 @@
   top: inherit;
   width: 100%;
   z-index: 1000;
+}
+
+.m-vehicle-properties-panel__map {
+  height: 500px;
+  margin-top: 1rem;
 }
