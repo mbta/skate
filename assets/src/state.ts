@@ -63,6 +63,8 @@ type Action =
 
 export type Dispatch = ReactDispatch<Action>
 
+export type Reducer = (state: State, action: Action) => State
+
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "SELECT_ROUTE":

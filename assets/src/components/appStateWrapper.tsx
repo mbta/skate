@@ -1,4 +1,5 @@
-import React, { useReducer } from "react"
+import React from "react"
+import usePersistedStateReducer from "../hooks/usePersistedStateReducer"
 import useRoutes from "../hooks/useRoutes"
 import useSocket from "../hooks/useSocket"
 import useTimepoints from "../hooks/useTimepoints"
@@ -9,7 +10,7 @@ import { initialState, reducer } from "../state"
 import App from "./app"
 
 const AppStateWrapper = (): JSX.Element => {
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [state, dispatch] = usePersistedStateReducer(reducer, initialState)
   const { selectedRouteIds, selectedVehicleId } = state
 
   const routes: Route[] | null = useRoutes()
