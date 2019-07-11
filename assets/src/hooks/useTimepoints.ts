@@ -8,20 +8,20 @@ const useTimepoints = (selectedRouteIds: RouteId[]): TimepointsByRouteId => {
   >({})
 
   const setLoadingTimepointsForRoute = (routeId: RouteId): void => {
-    setTimepointsByRouteId({
-      ...timepointsByRouteId,
+    setTimepointsByRouteId(previousTimepointsByRouteId => ({
+      ...previousTimepointsByRouteId,
       [routeId]: null,
-    })
+    }))
   }
 
   const setTimepointsForRoute = (
     routeId: RouteId,
     timepoints: Timepoint[]
   ): void => {
-    setTimepointsByRouteId({
-      ...timepointsByRouteId,
+    setTimepointsByRouteId(previousTimepointsByRouteId => ({
+      ...previousTimepointsByRouteId,
       [routeId]: timepoints,
-    })
+    }))
   }
 
   useEffect(() => {
