@@ -97,19 +97,17 @@ const Ladder = ({
         ))}
         {unselectedLadderVehicles.map(ladderVehicle => (
           <VehicleSvg
+            key={`vehicle-${ladderVehicle.vehicleId}`}
             ladderVehicle={ladderVehicle}
             selectedVehicleId={selectedVehicleId}
-            timepointStatusY={timepointStatusY}
-            key={`vehicle-${ladderVehicle.vehicleId}`}
           />
         ))}
         {/* Display the selected vehicle on top of all others if there is one */}
         {selectedLadderVehicles.map(ladderVehicle => (
           <VehicleSvg
+            key={`vehicle-${ladderVehicle.vehicleId}`}
             ladderVehicle={ladderVehicle}
             selectedVehicleId={selectedVehicleId}
-            timepointStatusY={timepointStatusY}
-            key={`vehicle-${ladderVehicle.vehicleId}`}
           />
         ))}
         <RoadLines height={height} />
@@ -125,44 +123,35 @@ const Ladder = ({
 }
 
 const VehicleSvg = ({
-  ladderVehicle,
+  ladderVehicle: {
+    vehicleId,
+    label,
+    viaVariant,
+    status,
+    x,
+    y,
+    vehicleDirection,
+  },
   selectedVehicleId,
-  timepointStatusY,
 }: {
   ladderVehicle: LadderVehicle
   selectedVehicleId: VehicleId | undefined
-  timepointStatusY: (
-    timepointStatus: VehicleTimepointStatus | null,
-    direction: VehicleDirection
-  ) => number
 }) => {
   const dispatch = useContext(DispatchContext)
-  const selectedClass =
-    ladderVehicle.vehicleId === selectedVehicleId ? "selected" : ""
-
-  const y =
-    ladderVehicle.isUnassignedBySwiftly &&
-    ladderVehicle.vehicle.scheduledLocation
-      ? timepointStatusY(
-          ladderVehicle.vehicle.scheduledLocation.timepointStatus,
-          ladderVehicle.vehicleDirection
-        )
-      : ladderVehicle.y
+  const selectedClass = vehicleId === selectedVehicleId ? "selected" : ""
 
   return (
     <g>
       <g
-        className={`m-ladder__vehicle ${ladderVehicle.status} ${selectedClass}`}
-        transform={`translate(${ladderVehicle.x},${y})`}
-        onClick={() => dispatch(selectVehicle(ladderVehicle.vehicleId))}
+        className={`m-ladder__vehicle ${status} ${selectedClass}`}
+        transform={`translate(${x},${y})`}
+        onClick={() => dispatch(selectVehicle(vehicleId))}
       >
         <VehicleIconSvgNode
           size={Size.Medium}
-          orientation={orientationMatchingVehicle(
-            ladderVehicle.vehicleDirection
-          )}
-          label={ladderVehicle.label}
-          variant={ladderVehicle.viaVariant}
+          orientation={orientationMatchingVehicle(vehicleDirection)}
+          label={label}
+          variant={viaVariant}
         />
       </g>
     </g>
