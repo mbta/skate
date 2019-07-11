@@ -32,24 +32,28 @@ describe("putIntoLanes", () => {
     const vehicle = {} as Vehicle
     const original = [
       {
+        vehicleId: "v1",
         vehicle,
         vehicleDirection: VehicleDirection.Up,
         x: 0,
         y: 10,
       },
       {
+        vehicleId: "v1",
         vehicle,
         vehicleDirection: VehicleDirection.Up,
         x: 0,
         y: 20,
       },
       {
+        vehicleId: "v1",
         vehicle,
         vehicleDirection: VehicleDirection.Down,
         x: 0,
         y: 20,
       },
       {
+        vehicleId: "v1",
         vehicle,
         vehicleDirection: VehicleDirection.Down,
         x: 0,

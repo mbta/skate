@@ -79,6 +79,8 @@ export interface Vehicle {
 
 export type VehicleId = string
 
+export type VehicleAdherenceStatus = ScheduleAdherenceStatus | "off-course"
+
 export interface VehicleStopStatus {
   status: VehicleStatus
   stopId: StopId

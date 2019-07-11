@@ -6,7 +6,7 @@ import {
   ladderVehiclesFromVehicles,
   VehicleDirection,
 } from "../models/ladderVehicle"
-import { isUnassignedBySwiftly, status } from "../models/vehicleStatus"
+import { isUnassignedBySwiftly } from "../models/vehicleStatus"
 import { Timepoint, Vehicle, VehicleId, VehicleTimepointStatus } from "../skate"
 import { selectVehicle } from "../state"
 import { Orientation, Size, VehicleIconSvgNode } from "./vehicleIcon"
@@ -76,7 +76,7 @@ const Ladder = ({
   )
   const [selectedLadderVehicles, unselectedLadderVehicles] = partition(
     ladderVehicles,
-    ladderVehicle => ladderVehicle.vehicle.id === selectedVehicleId
+    ladderVehicle => ladderVehicle.vehicleId === selectedVehicleId
   )
 
   const width = 120 + 2 * widthOfLanes
@@ -93,7 +93,7 @@ const Ladder = ({
       >
         {ladderVehicles.map(ladderVehicle => (
           <ScheduledLine
-            key={`line-${ladderVehicle.vehicle.id}`}
+            key={`line-${ladderVehicle.vehicleId}`}
             ladderDirection={ladderDirection}
             ladderVehicle={ladderVehicle}
             timepointStatusY={timepointStatusY}
@@ -104,7 +104,7 @@ const Ladder = ({
             ladderVehicle={ladderVehicle}
             selectedVehicleId={selectedVehicleId}
             timepointStatusY={timepointStatusY}
-            key={`vehicle-${ladderVehicle.vehicle.id}`}
+            key={`vehicle-${ladderVehicle.vehicleId}`}
           />
         ))}
         {/* Display the selected vehicle on top of all others if there is one */}
@@ -113,7 +113,7 @@ const Ladder = ({
             ladderVehicle={ladderVehicle}
             selectedVehicleId={selectedVehicleId}
             timepointStatusY={timepointStatusY}
-            key={`vehicle-${ladderVehicle.vehicle.id}`}
+            key={`vehicle-${ladderVehicle.vehicleId}`}
           />
         ))}
         <RoadLines height={height} />
@@ -142,7 +142,7 @@ const VehicleSvg = ({
 }) => {
   const dispatch = useContext(DispatchContext)
   const selectedClass =
-    ladderVehicle.vehicle.id === selectedVehicleId ? "selected" : ""
+    ladderVehicle.vehicleId === selectedVehicleId ? "selected" : ""
 
   const y =
     isUnassignedBySwiftly(ladderVehicle.vehicle) &&
@@ -156,19 +156,17 @@ const VehicleSvg = ({
   return (
     <g>
       <g
-        className={`m-ladder__vehicle ${status(
-          ladderVehicle.vehicle
-        )} ${selectedClass}`}
+        className={`m-ladder__vehicle ${ladderVehicle.status} ${selectedClass}`}
         transform={`translate(${ladderVehicle.x},${y})`}
-        onClick={() => dispatch(selectVehicle(ladderVehicle.vehicle.id))}
+        onClick={() => dispatch(selectVehicle(ladderVehicle.vehicleId))}
       >
         <VehicleIconSvgNode
           size={Size.Medium}
           orientation={orientationMatchingVehicle(
             ladderVehicle.vehicleDirection
           )}
-          label={ladderVehicle.vehicle.label}
-          variant={ladderVehicle.vehicle.viaVariant}
+          label={ladderVehicle.label}
+          variant={ladderVehicle.viaVariant}
         />
       </g>
     </g>
@@ -265,8 +263,7 @@ const ScheduledLine = ({
   ladderVehicle: LadderVehicle
   timepointStatusY: TimepointStatusYFunc
 }) => {
-  const { vehicle } = ladderVehicle
-  const { scheduledLocation } = vehicle
+  const { scheduledLocation } = ladderVehicle.vehicle
   if (scheduledLocation !== null) {
     const scheduledVehicleDirection: VehicleDirection = directionOnLadder(
       scheduledLocation.directionId,
@@ -284,7 +281,7 @@ const ScheduledLine = ({
         : -CENTER_TO_LINE
     return scheduledY ? (
       <line
-        className={`m-ladder__scheduled-line ${status(ladderVehicle.vehicle)}`}
+        className={`m-ladder__scheduled-line ${ladderVehicle.status}`}
         x1={ladderVehicle.x}
         y1={ladderVehicle.y}
         x2={roadLineX}
