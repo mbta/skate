@@ -16,10 +16,10 @@ const usePersistedStateReducer = (
     (initial: State) => ({ ...initial, ...loadState(APP_STATE_KEY) })
   )
 
+  const persistableState = filter(state, PERSISTED_KEYS)
   useEffect(() => {
-    const perstableState = filter(state, PERSISTED_KEYS)
-    saveState(APP_STATE_KEY, perstableState)
-  }, [state])
+    saveState(APP_STATE_KEY, persistableState)
+  }, [persistableState])
 
   return [state, dispatch]
 }
