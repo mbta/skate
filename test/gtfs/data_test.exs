@@ -26,7 +26,8 @@ defmodule Gtfs.DataTest do
       route_patterns: [],
       stops: %{},
       trips: %{},
-      blocks: %{}
+      blocks: %{},
+      calendar: %{}
     }
 
     assert Data.all_routes(data) == routes
@@ -98,7 +99,8 @@ defmodule Gtfs.DataTest do
             ]
           }
         },
-        blocks: %{}
+        blocks: %{},
+        calendar: %{}
       }
 
       assert Data.timepoint_ids_on_route(data, "r1") == ["tp4", "tp1"]
@@ -152,7 +154,8 @@ defmodule Gtfs.DataTest do
             ]
           }
         },
-        blocks: %{}
+        blocks: %{},
+        calendar: %{}
       }
 
       assert Data.timepoint_ids_on_route(data, "r1") == ["t1", "t2", "t3", "t4"]
@@ -177,7 +180,8 @@ defmodule Gtfs.DataTest do
           }
         },
         trips: %{},
-        blocks: %{}
+        blocks: %{},
+        calendar: %{}
       }
 
       assert Data.stop(data, "2") == %Stop{
@@ -204,7 +208,8 @@ defmodule Gtfs.DataTest do
           }
         },
         trips: %{},
-        blocks: %{}
+        blocks: %{},
+        calendar: %{}
       }
 
       assert Data.stop(data, "4") == nil
@@ -231,7 +236,8 @@ defmodule Gtfs.DataTest do
             ]
           }
         },
-        blocks: %{}
+        blocks: %{},
+        calendar: %{}
       }
 
       assert %Trip{id: "t1"} = Data.trip(data, "t1")
@@ -243,7 +249,8 @@ defmodule Gtfs.DataTest do
         route_patterns: [],
         stops: %{},
         trips: %{},
-        blocks: %{}
+        blocks: %{},
+        calendar: %{}
       }
 
       assert Data.trip(data, "t1") == nil
@@ -270,7 +277,8 @@ defmodule Gtfs.DataTest do
         route_patterns: [],
         stops: %{},
         trips: %{},
-        blocks: Block.group_trips_by_block([trip])
+        blocks: Block.group_trips_by_block([trip]),
+        calendar: %{}
       }
 
       assert [%Trip{id: "t1"}] = Data.block(data, "b", "service")
@@ -295,7 +303,8 @@ defmodule Gtfs.DataTest do
         route_patterns: [],
         stops: %{},
         trips: %{},
-        blocks: Block.group_trips_by_block([trip])
+        blocks: Block.group_trips_by_block([trip]),
+        calendar: %{}
       }
 
       assert Data.block(data, "b", "other_service") == nil
@@ -307,7 +316,8 @@ defmodule Gtfs.DataTest do
         route_patterns: [],
         stops: %{},
         trips: %{},
-        blocks: %{}
+        blocks: %{},
+        calendar: %{}
       }
 
       assert Data.trip(data, "block") == nil

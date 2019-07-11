@@ -4,14 +4,27 @@ defmodule Gtfs.Data do
   """
   require Logger
 
-  alias Gtfs.{Block, Csv, Direction, Helpers, Route, RoutePattern, Service, Stop, StopTime, Trip}
+  alias Gtfs.{
+    Block,
+    Calendar,
+    Csv,
+    Direction,
+    Helpers,
+    Route,
+    RoutePattern,
+    Service,
+    Stop,
+    StopTime,
+    Trip
+  }
 
   @type t :: %__MODULE__{
           routes: [Route.t()],
           route_patterns: [RoutePattern.t()],
           stops: stops_by_id(),
           trips: %{Trip.id() => Trip.t()},
-          blocks: Block.by_id()
+          blocks: Block.by_id(),
+          calendar: Calendar.t()
         }
 
   @type stops_by_id :: %{Stop.id() => Stop.t()}
@@ -23,7 +36,8 @@ defmodule Gtfs.Data do
     :route_patterns,
     :stops,
     :trips,
-    :blocks
+    :blocks,
+    :calendar
   ]
 
   defstruct [
@@ -31,7 +45,8 @@ defmodule Gtfs.Data do
     :route_patterns,
     :stops,
     :trips,
-    :blocks
+    :blocks,
+    :calendar
   ]
 
   @type files :: %{optional(String.t()) => binary()}
@@ -87,7 +102,8 @@ defmodule Gtfs.Data do
       route_patterns: bus_route_patterns(files["route_patterns.txt"], bus_route_ids),
       stops: all_stops_by_id(files["stops.txt"]),
       trips: Map.new(bus_trips, fn trip -> {trip.id, trip} end),
-      blocks: Block.group_trips_by_block(bus_trips)
+      blocks: Block.group_trips_by_block(bus_trips),
+      calendar: Calendar.from_files(files["calendar.txt"], files["calendar_dates.txt"])
     }
   end
 
