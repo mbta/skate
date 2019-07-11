@@ -107,31 +107,6 @@ export const putIntoLanes = (
       []
     )
 
-export const status = (ladderVehicle: LadderVehicle): string =>
-  isUnassignedBySwiftly(ladderVehicle)
-    ? "off-course"
-    : ladderVehicle.vehicle.scheduleAdherenceStatus
-
-export const isUnassignedBySwiftly = ({
-  vehicle: { dataDiscrepancies },
-}: LadderVehicle): boolean => {
-  const tripIdDiscrepancy = dataDiscrepancies.find(
-    ({ attribute }) => attribute === "trip_id"
-  )
-  if (!tripIdDiscrepancy) {
-    return false
-  }
-
-  const swiftlySource = tripIdDiscrepancy.sources.find(
-    ({ id }) => id === "swiftly"
-  )
-  if (!swiftlySource) {
-    return false
-  }
-
-  return swiftlySource.value === null
-}
-
 export const directionOnLadder = (
   directionId: DirectionId,
   ladderDirection: LadderDirection

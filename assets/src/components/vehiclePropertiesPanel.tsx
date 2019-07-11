@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
-import { LadderVehicle, status } from "../models/ladderVehicle"
+import { status } from "../models/vehicleStatus"
 import { DataDiscrepancy, Route, Vehicle } from "../skate.d"
 import { deselectVehicle } from "../state"
 import CloseButton from "./closeButton"
@@ -50,9 +50,9 @@ const ScheduleAdherenceLabel = ({ vehicle }: { vehicle: Vehicle }) => (
 
 const ScheduleAdherence = ({ vehicle }: { vehicle: Vehicle }) => (
   <div
-    className={`m-vehicle-properties-panel__schedule-adherence ${status({
-      vehicle,
-    } as LadderVehicle)}`}
+    className={`m-vehicle-properties-panel__schedule-adherence ${status(
+      vehicle
+    )}`}
   >
     <ScheduleAdherenceStatusIcon />
     <ScheduleAdherenceStatusString vehicle={vehicle} />
@@ -70,11 +70,7 @@ const Header = ({
   hideMe: () => void
 }) => (
   <div className="m-vehicle-properties-panel__header">
-    <div
-      className={`m-vehicle-properties-panel__label ${status({
-        vehicle,
-      } as LadderVehicle)}`}
-    >
+    <div className={`m-vehicle-properties-panel__label ${status(vehicle)}`}>
       <VehicleIcon
         size={Size.Large}
         orientation={Orientation.Up}
