@@ -1,12 +1,10 @@
 import React, { useContext, useLayoutEffect, useRef, useState } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import {
-  directionOnLadder,
   LadderVehicle,
   ladderVehiclesFromVehicles,
   VehicleDirection,
 } from "../models/ladderVehicle"
-import { isUnassignedBySwiftly } from "../models/vehicleStatus"
 import { Timepoint, Vehicle, VehicleId, VehicleTimepointStatus } from "../skate"
 import { selectVehicle } from "../state"
 import { Orientation, Size, VehicleIconSvgNode } from "./vehicleIcon"
@@ -94,9 +92,7 @@ const Ladder = ({
         {ladderVehicles.map(ladderVehicle => (
           <ScheduledLine
             key={`line-${ladderVehicle.vehicleId}`}
-            ladderDirection={ladderDirection}
             ladderVehicle={ladderVehicle}
-            timepointStatusY={timepointStatusY}
           />
         ))}
         {unselectedLadderVehicles.map(ladderVehicle => (
@@ -145,7 +141,7 @@ const VehicleSvg = ({
     ladderVehicle.vehicleId === selectedVehicleId ? "selected" : ""
 
   const y =
-    isUnassignedBySwiftly(ladderVehicle.vehicle) &&
+    ladderVehicle.isUnassignedBySwiftly &&
     ladderVehicle.vehicle.scheduledLocation
       ? timepointStatusY(
           ladderVehicle.vehicle.scheduledLocation.timepointStatus,
@@ -255,42 +251,35 @@ const orientationMatchingVehicle = (
   vehicleDirection === VehicleDirection.Down ? Orientation.Down : Orientation.Up
 
 const ScheduledLine = ({
-  ladderDirection,
-  ladderVehicle,
-  timepointStatusY,
+  ladderVehicle: {
+    status,
+    isUnassignedBySwiftly,
+    x,
+    y,
+    scheduledY,
+    scheduledVehicleDirection,
+  },
 }: {
-  ladderDirection: LadderDirection
   ladderVehicle: LadderVehicle
-  timepointStatusY: TimepointStatusYFunc
 }) => {
-  const { scheduledLocation } = ladderVehicle.vehicle
-  if (scheduledLocation !== null) {
-    const scheduledVehicleDirection: VehicleDirection = directionOnLadder(
-      scheduledLocation.directionId,
-      ladderDirection
-    )
-    const scheduledY =
-      !isUnassignedBySwiftly(ladderVehicle.vehicle) &&
-      timepointStatusY(
-        scheduledLocation.timepointStatus,
-        scheduledVehicleDirection
-      )
-    const roadLineX =
-      scheduledVehicleDirection === VehicleDirection.Up
-        ? CENTER_TO_LINE
-        : -CENTER_TO_LINE
-    return scheduledY ? (
-      <line
-        className={`m-ladder__scheduled-line ${ladderVehicle.status}`}
-        x1={ladderVehicle.x}
-        y1={ladderVehicle.y}
-        x2={roadLineX}
-        y2={scheduledY}
-      />
-    ) : null
-  } else {
+  if (!scheduledY || isUnassignedBySwiftly) {
     return null
   }
+
+  const roadLineX =
+    scheduledVehicleDirection === VehicleDirection.Up
+      ? CENTER_TO_LINE
+      : -CENTER_TO_LINE
+
+  return (
+    <line
+      className={`m-ladder__scheduled-line ${status}`}
+      x1={x}
+      y1={y}
+      x2={roadLineX}
+      y2={scheduledY}
+    />
+  )
 }
 
 function partition<T>(items: T[], testFn: (value: T) => boolean): T[][] {

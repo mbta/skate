@@ -6,17 +6,20 @@ import {
   VehicleId,
   ViaVariant,
 } from "../skate"
-import { status } from "./vehicleStatus"
+import { isUnassignedBySwiftly, status } from "./vehicleStatus"
 
 export interface LadderVehicle {
   vehicleId: VehicleId
   label: string
   viaVariant: ViaVariant | null
   status: VehicleAdherenceStatus
+  isUnassignedBySwiftly: boolean
   vehicle: Vehicle
   x: number
   y: number
   vehicleDirection: VehicleDirection
+  scheduledY?: number
+  scheduledVehicleDirection?: VehicleDirection
   lane: number
 }
 
@@ -30,12 +33,15 @@ interface WithVehicle {
   label: string
   viaVariant: ViaVariant | null
   status: VehicleAdherenceStatus
+  isUnassignedBySwiftly: boolean
   vehicle: Vehicle
 }
 
 interface OnLadder {
   y: number
   vehicleDirection: VehicleDirection
+  scheduledY?: number
+  scheduledVehicleDirection?: VehicleDirection
 }
 
 interface VehicleOnLadder extends WithVehicle, OnLadder {}
@@ -144,16 +150,57 @@ const vehicleOnLadder = (
 
   const y = timepointStatusYFunc(vehicle.timepointStatus, vehicleDirection)
 
+  const { scheduledY, scheduledVehicleDirection } = scheduledToBe(
+    vehicle,
+    ladderDirection,
+    timepointStatusYFunc
+  )
+
   return {
     // tslint:disable-next-line:object-literal-sort-keys
     vehicleId,
     label,
     viaVariant,
     status: status(vehicle),
+    isUnassignedBySwiftly: isUnassignedBySwiftly(vehicle),
     vehicle,
     vehicleDirection,
     y,
+    scheduledY,
+    scheduledVehicleDirection,
   }
+}
+
+interface ScheduledToBe {
+  scheduledY: number | undefined
+  scheduledVehicleDirection: VehicleDirection | undefined
+}
+
+const scheduledToBe = (
+  vehicle: Vehicle,
+  ladderDirection: LadderDirection,
+  timepointStatusY: TimepointStatusYFunc
+): ScheduledToBe => {
+  const { scheduledLocation } = vehicle
+
+  if (scheduledLocation === null) {
+    return {
+      scheduledY: undefined,
+      scheduledVehicleDirection: undefined,
+    }
+  }
+
+  const scheduledVehicleDirection: VehicleDirection = directionOnLadder(
+    scheduledLocation.directionId,
+    ladderDirection
+  )
+
+  const scheduledY = timepointStatusY(
+    scheduledLocation.timepointStatus,
+    scheduledVehicleDirection
+  )
+
+  return { scheduledY, scheduledVehicleDirection }
 }
 
 const numOccupiedLanes = (vehicles: InLane[]): number => {
