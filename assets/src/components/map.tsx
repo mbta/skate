@@ -64,7 +64,6 @@ const Map = ({
 
       if (!vehicleMarkerRef.current) {
         vehicleMarkerRef.current = Leaflet.marker([latitude, longitude], {
-          // @ts-ignore
           rotationOrigin: `${iconAnchor[0]}px ${iconAnchor[1]}px`,
         }).addTo(mapRef.current)
       }
@@ -82,9 +81,6 @@ const Map = ({
       vehicleMarkerRef.current!.setIcon(icon)
       vehicleLabelRef.current!.setIcon(label)
 
-      // rotationAngle property comes from leaflet-rotatedmarker
-      // and is not part of the leaflet typespec
-      // @ts-ignore
       vehicleMarkerRef.current.setRotationAngle(bearing)
     }
   })
