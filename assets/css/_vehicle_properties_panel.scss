@@ -69,6 +69,10 @@
   .on-time & {
     color: $color-component-medium;
   }
+
+  .off-course & {
+    color: $color-vehicle-early;
+  }
 }
 
 .m-vehicle-properties-panel__header > button {
@@ -101,6 +105,10 @@
 
 .m-vehicle-properties-panel__link {
   @include font-link;
+}
+
+.m-vehicle-properties-panel__not-available {
+  color: $color-vehicle-early;
 }
 
 .m-vehicle-properties-panel__data-discrepancies {

@@ -94,6 +94,33 @@ describe("VehiclePropertiesPanel", () => {
     expect(tree).toMatchSnapshot()
   })
 
+  test("renders for an off-course vehicle", () => {
+    const offCourseVehicle: Vehicle = {
+      ...vehicle,
+      dataDiscrepancies: [
+        {
+          attribute: "trip_id",
+          sources: [
+            {
+              id: "busloc",
+              value: "40725309",
+            },
+            {
+              id: "swiftly",
+              value: null,
+            },
+          ],
+        },
+      ],
+    }
+
+    const tree = renderer
+      .create(<VehiclePropertiesPanel selectedVehicle={offCourseVehicle} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
   test("renders data discrepancies when in debug mode", () => {
     jest.spyOn(URLSearchParams.prototype, "get").mockImplementation(_key => "1")
 
