@@ -141,3 +141,18 @@
   height: 500px;
   margin-top: 1rem;
 }
+
+.m-vehicle-properties-panel__map-label {
+  @include font-small;
+  font-weight: bold;
+
+  svg {
+    overflow: visible;
+  }
+}
+
+.m-vehicle-properties-panel__map-icon {
+  path {
+    fill: $color-primary;
+  }
+}
