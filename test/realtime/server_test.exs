@@ -21,6 +21,8 @@ defmodule Realtime.ServerTest do
         operator_id: "71041",
         operator_name: "FRANK",
         run_id: "123-9048",
+        headway_secs: 600,
+        headway_spacing: :ok,
         sources: MapSet.new(["swiftly"]),
         data_discrepancies: [],
         stop_status: %{
@@ -51,6 +53,8 @@ defmodule Realtime.ServerTest do
         operator_id: "70112",
         operator_name: "PANIAGUA",
         run_id: "126-1430",
+        headway_secs: 600,
+        headway_spacing: :ok,
         sources: MapSet.new(["swiftly"]),
         data_discrepancies: [],
         stop_status: %{

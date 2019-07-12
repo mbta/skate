@@ -10,11 +10,13 @@ defmodule Realtime.VehicleTest do
       real_trip_fn = Application.get_env(:realtime, :trip_fn)
       real_block_fn = Application.get_env(:realtime, :block_fn)
       real_now_fn = Application.get_env(:realtime, :now_fn)
+      real_date_time_now_fn = Application.get_env(:realtime, :date_time_now_fn)
 
       on_exit(fn ->
         Application.put_env(:realtime, :trip_fn, real_trip_fn)
         Application.put_env(:realtime, :block_fn, real_block_fn)
         Application.put_env(:realtime, :now_fn, real_now_fn)
+        Application.get_env(:realtime, :date_time_now_fn, real_date_time_now_fn)
       end)
 
       trip = %Trip{
@@ -26,9 +28,9 @@ defmodule Realtime.VehicleTest do
         block_id: "S28-2",
         route_pattern_id: "28-_-0",
         stop_times: [
-          %StopTime{stop_id: "6553", time: 0, timepoint_id: "tp1"},
-          %StopTime{stop_id: "6554", time: 1, timepoint_id: nil},
-          %StopTime{stop_id: "6555", time: 2, timepoint_id: "tp2"}
+          %StopTime{stop_id: "18511", time: 0, timepoint_id: "tp1"},
+          %StopTime{stop_id: "18512", time: 1, timepoint_id: nil},
+          %StopTime{stop_id: "18513", time: 2, timepoint_id: "tp2"}
         ]
       }
 
@@ -52,6 +54,11 @@ defmodule Realtime.VehicleTest do
         # 2019-01-01 00:00:00 EST
         1_546_318_800
       end)
+
+      Application.put_env(:realtime, :date_time_now_fn, fn ->
+        # Monday at noon
+        Timex.to_datetime({{2019, 7, 8}, {12, 00, 00}}, :local)
+      end)
     end
 
     test "translates Concentrate VehiclePosition and TripUpdate data into a Vehicle struct" do
@@ -68,6 +75,7 @@ defmodule Realtime.VehicleTest do
         operator_id: "72032",
         operator_name: "MAUPIN",
         run_id: "138-1038",
+        headway_secs: 900,
         speed: 0.0,
         status: :IN_TRANSIT_TO,
         stop_id: "392",
@@ -121,6 +129,8 @@ defmodule Realtime.VehicleTest do
         operator_id: "72032",
         operator_name: "MAUPIN",
         run_id: "138-1038",
+        headway_secs: 900,
+        headway_spacing: :ok,
         sources: MapSet.new(["swiftly", "busloc"]),
         data_discrepancies: [
           %DataDiscrepancy{
@@ -175,6 +185,8 @@ defmodule Realtime.VehicleTest do
         operator_name: "MAUPIN",
         run_id: "138-1038",
         speed: 0.0,
+        # Expected headway is 628
+        headway_secs: 600,
         status: :IN_TRANSIT_TO,
         stop_id: "392",
         stop_sequence: 25,
@@ -210,6 +222,8 @@ defmodule Realtime.VehicleTest do
         operator_id: "72032",
         operator_name: "MAUPIN",
         run_id: "138-1038",
+        headway_secs: 600,
+        headway_spacing: :ok,
         sources: MapSet.new(["swiftly"]),
         data_discrepancies: [],
         stop_status: %{
@@ -264,6 +278,8 @@ defmodule Realtime.VehicleTest do
         odometer: nil,
         operator_id: "72032",
         operator_name: "MAUPIN",
+        route_id: "28",
+        direction_id: 1,
         run_id: "138-1038",
         speed: 0.0,
         status: :IN_TRANSIT_TO,
@@ -644,6 +660,8 @@ defmodule Realtime.VehicleTest do
         operator_id: "72032",
         operator_name: "MAUPIN",
         run_id: "138-1038",
+        headway_secs: 600,
+        headway_spacing: :ok,
         sources: MapSet.new(["swiftly", "busloc"]),
         data_discrepancies: [
           %DataDiscrepancy{
@@ -672,7 +690,7 @@ defmodule Realtime.VehicleTest do
       }
 
       expected_json =
-        "{\"bearing\":0,\"block_id\":\"S28-2\",\"data_discrepancies\":[{\"attribute\":\"trip_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":\"swiftly-trip-id\"},{\"id\":\"busloc\",\"value\":\"busloc-trip-id\"}]},{\"attribute\":\"route_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":null},{\"id\":\"busloc\",\"value\":\"busloc-route-id\"}]}],\"direction_id\":1,\"headsign\":\"headsign\",\"headway_secs\":null,\"id\":\"y1261\",\"label\":\"1261\",\"latitude\":42.31777347,\"longitude\":-71.08206019,\"operator_id\":\"72032\",\"operator_name\":\"MAUPIN\",\"previous_vehicle_id\":null,\"previous_vehicle_schedule_adherence_secs\":null,\"previous_vehicle_schedule_adherence_string\":null,\"route_id\":\"28\",\"route_status\":\"on_route\",\"run_id\":\"138-1038\",\"schedule_adherence_secs\":null,\"schedule_adherence_string\":null,\"scheduled_headway_secs\":null,\"scheduled_location\":null,\"sources\":[\"busloc\",\"swiftly\"],\"speed\":0.0,\"stop_sequence\":25,\"stop_status\":{\"status\":\"in_transit_to\",\"stop_id\":\"392\",\"stop_name\":\"392\"},\"timepoint_status\":null,\"timestamp\":1558364020,\"trip_id\":\"39984755\",\"via_variant\":\"_\"}"
+        "{\"bearing\":0,\"block_id\":\"S28-2\",\"data_discrepancies\":[{\"attribute\":\"trip_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":\"swiftly-trip-id\"},{\"id\":\"busloc\",\"value\":\"busloc-trip-id\"}]},{\"attribute\":\"route_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":null},{\"id\":\"busloc\",\"value\":\"busloc-route-id\"}]}],\"direction_id\":1,\"headsign\":\"headsign\",\"headway_secs\":600,\"headway_spacing\":\"ok\",\"id\":\"y1261\",\"label\":\"1261\",\"latitude\":42.31777347,\"longitude\":-71.08206019,\"operator_id\":\"72032\",\"operator_name\":\"MAUPIN\",\"previous_vehicle_id\":null,\"previous_vehicle_schedule_adherence_secs\":null,\"previous_vehicle_schedule_adherence_string\":null,\"route_id\":\"28\",\"route_status\":\"on_route\",\"run_id\":\"138-1038\",\"schedule_adherence_secs\":null,\"schedule_adherence_string\":null,\"scheduled_headway_secs\":null,\"scheduled_location\":null,\"sources\":[\"busloc\",\"swiftly\"],\"speed\":0.0,\"stop_sequence\":25,\"stop_status\":{\"status\":\"in_transit_to\",\"stop_id\":\"392\",\"stop_name\":\"392\"},\"timepoint_status\":null,\"timestamp\":1558364020,\"trip_id\":\"39984755\",\"via_variant\":\"_\"}"
 
       assert Jason.encode!(vehicle) == expected_json
     end

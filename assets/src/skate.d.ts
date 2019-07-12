@@ -15,6 +15,13 @@ interface DataDiscrepancySource {
 export type DirectionId = 0 | 1
 export type DirectionName = string
 
+export type HeadwaySpacing =
+  | "very_bunched"
+  | "bunched"
+  | "ok"
+  | "gapped"
+  | "very_gapped"
+
 export interface Route {
   id: RouteId
   directionNames: {
@@ -64,7 +71,8 @@ export interface Vehicle {
   bearing: number
   speed: number
   blockId: string
-  headwaySecs: number
+  headwaySecs: number | null
+  headwaySpacing: HeadwaySpacing | null
   previousVehicleId: string
   scheduleAdherenceSecs: number
   scheduleAdherenceString: string

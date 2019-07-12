@@ -1,6 +1,7 @@
 defmodule Realtime.Vehicle do
   alias Concentrate.{DataDiscrepancy, TripUpdate, VehiclePosition}
   alias Gtfs.{Block, Direction, Route, RoutePattern, Stop, StopTime, Trip}
+  alias Realtime.Headway
 
   @type current_status :: :in_transit_to | :stopped_at
   @type stop_status :: %{
@@ -44,7 +45,8 @@ defmodule Realtime.Vehicle do
           operator_id: String.t() | nil,
           operator_name: String.t() | nil,
           run_id: String.t() | nil,
-          headway_secs: float() | nil,
+          headway_secs: non_neg_integer() | nil,
+          headway_spacing: Headway.headway_spacing() | nil,
           previous_vehicle_id: String.t() | nil,
           previous_vehicle_schedule_adherence_secs: float() | nil,
           previous_vehicle_schedule_adherence_string: String.t() | nil,
@@ -75,6 +77,7 @@ defmodule Realtime.Vehicle do
     :operator_id,
     :operator_name,
     :run_id,
+    :headway_spacing,
     :sources,
     :stop_status,
     :route_status
@@ -101,6 +104,7 @@ defmodule Realtime.Vehicle do
     :operator_name,
     :run_id,
     :headway_secs,
+    :headway_spacing,
     :previous_vehicle_id,
     :previous_vehicle_schedule_adherence_secs,
     :previous_vehicle_schedule_adherence_string,
@@ -151,15 +155,32 @@ defmodule Realtime.Vehicle do
         nil
       end
 
+    direction_id =
+      VehiclePosition.direction_id(vehicle_position) ||
+        (trip_update && TripUpdate.direction_id(trip_update))
+
+    headway_secs = VehiclePosition.headway_secs(vehicle_position)
+    origin_stop_id = List.first(stop_times_on_trip) && List.first(stop_times_on_trip).stop_id
+
+    date_time_now_fn = Application.get_env(:realtime, :date_time_now_fn, &Timex.now/0)
+
+    expected_headway_seconds =
+      Headway.current_expected_headway_seconds(
+        route_id,
+        direction_id,
+        origin_stop_id,
+        date_time_now_fn.()
+      )
+
+    headway_spacing = Headway.current_headway_spacing(headway_secs, expected_headway_seconds)
+
     %__MODULE__{
       id: VehiclePosition.id(vehicle_position),
       label: VehiclePosition.label(vehicle_position),
       timestamp: VehiclePosition.last_updated(vehicle_position),
       latitude: VehiclePosition.latitude(vehicle_position),
       longitude: VehiclePosition.longitude(vehicle_position),
-      direction_id:
-        VehiclePosition.direction_id(vehicle_position) ||
-          (trip_update && TripUpdate.direction_id(trip_update)),
+      direction_id: direction_id,
       route_id: route_id,
       trip_id: trip_id,
       headsign: headsign,
@@ -171,7 +192,8 @@ defmodule Realtime.Vehicle do
       operator_id: VehiclePosition.operator_id(vehicle_position),
       operator_name: VehiclePosition.operator_name(vehicle_position),
       run_id: VehiclePosition.run_id(vehicle_position),
-      headway_secs: VehiclePosition.headway_secs(vehicle_position),
+      headway_secs: headway_secs,
+      headway_spacing: headway_spacing,
       previous_vehicle_id: VehiclePosition.previous_vehicle_id(vehicle_position),
       previous_vehicle_schedule_adherence_secs:
         VehiclePosition.previous_vehicle_schedule_adherence_secs(vehicle_position),
