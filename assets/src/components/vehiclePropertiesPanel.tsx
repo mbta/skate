@@ -43,7 +43,7 @@ const scheduleAdherenceLabelString = ({
 const ScheduleAdherenceLabel = ({ vehicle }: { vehicle: Vehicle }) => (
   <div className="m-vehicle-properties-panel__schedule-adherence-label">
     {isUnassignedBySwiftly(vehicle)
-      ? "(Off-Course)"
+      ? ""
       : scheduleAdherenceLabelString(vehicle)}
   </div>
 )
