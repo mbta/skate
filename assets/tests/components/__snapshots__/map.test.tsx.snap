@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`map renders 1`] = `
+<div
+  className="m-vehicle-properties-panel__map"
+  id="map"
+/>
+`;

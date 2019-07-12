@@ -1,8 +1,8 @@
 import Leaflet, { Map as LeafletMap, Marker } from "leaflet"
 import "leaflet-rotatedmarker"
-import { Label, Orientation, Size } from "./vehicleIcon"
 import React, { MutableRefObject, ReactElement, useEffect, useRef } from "react"
 import { renderToStaticMarkup } from "react-dom/server"
+import { Label, Orientation, Size } from "./vehicleIcon"
 
 interface Props {
   bearing: number
