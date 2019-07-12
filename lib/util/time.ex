@@ -46,46 +46,42 @@ defmodule Util.Time do
   Since time_of_day is not restricted to a 24 hour range,
   it may be ambiguous which time_of_day is best.
   Do you want 03:00 or 27:00?
-  Takes a "target" time_of_day and returns a time_of_day closest to it,
-  so the result time_of_day is the correct one in context.
+  Takes a "day_start" time_of_day.
+  Returns the next time_of_day after that which matches the timestamp.
+  It's guaranteed that the result will be >= day_start
 
-    # When the target is slightly earlier than the timestamp
-    iex> Util.Time.nearest_time_of_day_for_timestamp(
+    # When the day_start is slightly earlier than the timestamp, the result is close to it
+    iex> Util.Time.next_time_of_day_for_timestamp_after(
     ...>   1546362000, # 2019-01-01 12:00:00 EST
     ...>   Util.Time.parse_hhmmss("11:00:00")
     ...> )
     43200 # 12:00:00
 
-    # When the target is slightly later than the timestamp
-    iex> Util.Time.nearest_time_of_day_for_timestamp(
+    # When the day_start is slightly after than the timestamp,
+    # the previous day will be used as a reference and the result will be large
+    iex> Util.Time.next_time_of_day_for_timestamp_after(
     ...>   1546362000, # 2019-01-01 12:00:00 EST
     ...>   Util.Time.parse_hhmmss("13:00:00")
     ...> )
-    43200 # 12:00:00
+    129600 # 36:00
 
-    # When the closest target is on the previous date.
-    iex> Util.Time.nearest_time_of_day_for_timestamp(
+    # When the day_start belongs to the previous date.
+    iex> Util.Time.next_time_of_day_for_timestamp_after(
     ...>   1546408800, # 2019-01-02 01:00:00 EST
     ...>   Util.Time.parse_hhmmss("18:00:00")
     ...> )
     90000 # 25:00:00
 
-    # When the closest target is on the next date.
-    iex> Util.Time.nearest_time_of_day_for_timestamp(
-    ...>   1546383600, # 2019-01-01 18:00:00 EST
-    ...>   Util.Time.parse_hhmmss("01:00:00")
-    ...> )
-    -21600 # -06:00:00 (6 hours before the date starts)
-
-    # When the closest target is on the next date but same date of service.
-    iex> Util.Time.nearest_time_of_day_for_timestamp(
-    ...>   1546383600, # 2019-01-01 18:00:00 EST
+    # The day_start can be on the next date but same day of service
+    iex> Util.Time.next_time_of_day_for_timestamp_after(
+    ...>   1546412400, # 2019-01-02 02:00:00 EST
     ...>   Util.Time.parse_hhmmss("25:00:00")
     ...> )
-    64800 # 18:00:00
+    93600 # 26:00:00
+
   """
-  @spec nearest_time_of_day_for_timestamp(timestamp(), time_of_day()) :: time_of_day()
-  def nearest_time_of_day_for_timestamp(timestamp, target) do
+  @spec next_time_of_day_for_timestamp_after(timestamp(), time_of_day()) :: time_of_day()
+  def next_time_of_day_for_timestamp_after(timestamp, day_start) do
     date_of_timestamp =
       timestamp
       |> DateTime.from_unix!(:second)
@@ -93,7 +89,12 @@ defmodule Util.Time do
       |> DateTime.to_date()
 
     on_same_date = time_of_day_for_timestamp(timestamp, date_of_timestamp)
-    days_to_move_forward = round((on_same_date - target) / (24 * 60 * 60))
+
+    # if the day_start is after the naively calculated time_of_day for our timestamp,
+    # then calculate relative to an earlier date so the resulting time_of_day is larger.
+    # typically, this value will be 0 or -1
+    days_to_move_forward = Integer.floor_div(on_same_date - day_start, 24 * 60 * 60)
+
     date_to_use = Timex.shift(date_of_timestamp, days: days_to_move_forward)
 
     time_of_day_for_timestamp(timestamp, date_to_use)
@@ -127,5 +128,23 @@ defmodule Util.Time do
     |> Timex.to_datetime("America/New_York")
     |> Timex.shift(hours: -12)
     |> Timex.to_unix()
+  end
+
+  @doc """
+    iex> Util.Time.time_of_day_add_minutes(
+    ...>   36000, # 10:00:00
+    ...>   30
+    ...> )
+    37800 # 10:30:00
+
+    iex> Util.Time.time_of_day_add_minutes(
+    ...>   36000, # 10:00:00
+    ...>   -30
+    ...> )
+    34200 # 09:30:00
+  """
+  @spec time_of_day_add_minutes(time_of_day(), integer()) :: time_of_day()
+  def time_of_day_add_minutes(time_of_day, minutes) do
+    time_of_day + 60 * minutes
   end
 end
