@@ -26,13 +26,13 @@ defmodule SkateWeb.AuthControllerTest do
       assert redirected_to(conn) == "/"
     end
 
-    test "sends unauthenticated for an ueberauth failure", %{conn: conn} do
+    test "redirects home for an ueberauth failure", %{conn: conn} do
       conn =
         conn
         |> assign(:ueberauth_failure, "failed")
         |> get("/auth/cognito/callback")
 
-      assert response(conn, 403) == "unauthenticated"
+      assert redirected_to(conn) == "/"
     end
   end
 end
