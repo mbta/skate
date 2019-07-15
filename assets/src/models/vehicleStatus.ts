@@ -1,4 +1,6 @@
-import { Vehicle, VehicleAdherenceStatus } from "../skate"
+import { ScheduleAdherenceStatus, Vehicle } from "../skate"
+
+export type VehicleAdherenceStatus = ScheduleAdherenceStatus | "off-course"
 
 export const status = (vehicle: Vehicle): VehicleAdherenceStatus =>
   isUnassignedBySwiftly(vehicle)

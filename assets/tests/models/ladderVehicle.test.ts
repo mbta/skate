@@ -8,7 +8,7 @@ import {
   putIntoLanes,
   VehicleDirection,
 } from "../../src/models/ladderVehicle"
-import { VehicleAdherenceStatus } from "../../src/skate"
+import { VehicleAdherenceStatus } from "../../src/models/vehicleStatus"
 
 describe("directionOnLadder", () => {
   test("determines the vehicle direction relative the ladder direction", () => {

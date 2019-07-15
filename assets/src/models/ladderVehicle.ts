@@ -1,14 +1,9 @@
 import { LadderDirection, TimepointStatusYFunc } from "../components/ladder"
-import {
-  DirectionId,
-  Vehicle,
-  VehicleAdherenceStatus,
-  VehicleId,
-  ViaVariant,
-} from "../skate"
+import { DirectionId, Vehicle, VehicleId, ViaVariant } from "../skate"
 import {
   isUnassignedBySwiftly as vehicleIsUnassignedBySwiftly,
   status,
+  VehicleAdherenceStatus,
 } from "./vehicleStatus"
 
 export interface LadderVehicle {
