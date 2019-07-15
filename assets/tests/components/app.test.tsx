@@ -98,8 +98,8 @@ describe("App", () => {
 describe("findRouteById", () => {
   test("finds a route in a list by its id", () => {
     expect(findRouteById(routes, "28")).toEqual({
-      id: "28",
       directionNames: { 0: "Outbound", 1: "Inbound" },
+      id: "28",
     })
   })
 
@@ -136,8 +136,8 @@ const vehicle: Vehicle = {
   viaVariant: null,
   operatorId: "op1",
   operatorName: "SMITH",
-  speed: 50.0,
   bearing: 33,
+  speed: 50.0,
   blockId: "block-1",
   headwaySecs: 859.1,
   previousVehicleId: "v2",
@@ -152,8 +152,8 @@ const vehicle: Vehicle = {
     stopName: "stop",
   },
   timepointStatus: {
-    timepointId: "WELLH",
     fractionUntilTimepoint: 0.5,
+    timepointId: "WELLH",
   },
   scheduledLocation: {
     directionId: 1,

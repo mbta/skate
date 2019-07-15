@@ -13,8 +13,8 @@ describe("routeLadder", () => {
   beforeEach(() => {
     SVGSVGElement.prototype.getBBox = () => {
       return {
-        width: 50,
         height: 100,
+        width: 50,
       } as DOMRect
     }
     const mockElement = {
@@ -71,8 +71,8 @@ describe("routeLadder", () => {
         viaVariant: "4",
         operatorId: "op1",
         operatorName: "SMITH",
-        speed: 50.0,
         bearing: 33,
+        speed: 50.0,
         blockId: "block-1",
         headwaySecs: 859.1,
         previousVehicleId: "v2",
@@ -87,8 +87,8 @@ describe("routeLadder", () => {
           stopName: "57",
         },
         timepointStatus: {
-          timepointId: "MATPN",
           fractionUntilTimepoint: 0.5,
+          timepointId: "MATPN",
         },
         scheduledLocation: null,
         routeStatus: "on_route",
@@ -107,8 +107,8 @@ describe("routeLadder", () => {
         viaVariant: null,
         operatorId: "op2",
         operatorName: "JONES",
-        speed: 50.0,
         bearing: 33,
+        speed: 50.0,
         blockId: "block-1",
         headwaySecs: 859.1,
         previousVehicleId: "v2",
@@ -123,8 +123,8 @@ describe("routeLadder", () => {
           stopName: "59",
         },
         timepointStatus: {
-          timepointId: "MORTN",
           fractionUntilTimepoint: 0.0,
+          timepointId: "MORTN",
         },
         scheduledLocation: {
           directionId: 1,
@@ -172,8 +172,8 @@ describe("routeLadder", () => {
         viaVariant: "4",
         operatorId: "op1",
         operatorName: "SMITH",
-        speed: 50.0,
         bearing: 33,
+        speed: 50.0,
         blockId: "block-1",
         headwaySecs: 859.1,
         previousVehicleId: "v2",
@@ -188,8 +188,8 @@ describe("routeLadder", () => {
           stopName: "57",
         },
         timepointStatus: {
-          timepointId: "MATPN",
           fractionUntilTimepoint: 0.5,
+          timepointId: "MATPN",
         },
         scheduledLocation: null,
         routeStatus: "on_route",
@@ -208,8 +208,8 @@ describe("routeLadder", () => {
         viaVariant: null,
         operatorId: "op2",
         operatorName: "JONES",
-        speed: 50.0,
         bearing: 33,
+        speed: 50.0,
         blockId: "block-1",
         headwaySecs: 859.1,
         previousVehicleId: "v2",
@@ -224,8 +224,8 @@ describe("routeLadder", () => {
           stopName: "59",
         },
         timepointStatus: {
-          timepointId: "MORTN",
           fractionUntilTimepoint: 0.0,
+          timepointId: "MORTN",
         },
         scheduledLocation: {
           directionId: 1,
@@ -342,8 +342,8 @@ describe("routeLadder", () => {
       viaVariant: null,
       operatorId: "op1",
       operatorName: "SMITH",
-      speed: 50.0,
       bearing: 33,
+      speed: 50.0,
       blockId: "block-1",
       headwaySecs: 859.1,
       previousVehicleId: "v2",
@@ -358,8 +358,8 @@ describe("routeLadder", () => {
         stopName: "stop",
       },
       timepointStatus: {
-        timepointId: "MATPN",
         fractionUntilTimepoint: 0.5,
+        timepointId: "MATPN",
       },
       scheduledLocation: null,
       routeStatus: "incoming",
