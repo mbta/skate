@@ -16,25 +16,25 @@ describe("fetchRoutes", () => {
         json: () => ({
           data: [
             {
+              direction_names: {
+                0: "Outbound",
+                1: "Inbound",
+              },
               id: "28",
+            },
+            {
               direction_names: {
                 0: "Outbound",
                 1: "Inbound",
               },
-            },
-            {
               id: "39",
-              direction_names: {
-                0: "Outbound",
-                1: "Inbound",
-              },
             },
             {
-              id: "71",
               direction_names: {
                 0: "Outbound",
                 1: "Inbound",
               },
+              id: "71",
             },
           ],
         }),
@@ -45,25 +45,25 @@ describe("fetchRoutes", () => {
     fetchRoutes().then(routes => {
       expect(routes).toEqual([
         {
+          directionNames: {
+            "0": "Outbound",
+            "1": "Inbound",
+          },
           id: "28",
+        },
+        {
           directionNames: {
             "0": "Outbound",
             "1": "Inbound",
           },
-        },
-        {
           id: "39",
-          directionNames: {
-            "0": "Outbound",
-            "1": "Inbound",
-          },
         },
         {
-          id: "71",
           directionNames: {
             "0": "Outbound",
             "1": "Inbound",
           },
+          id: "71",
         },
       ])
       done()

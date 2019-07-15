@@ -33,27 +33,27 @@ describe("putIntoLanes", () => {
     const original = [
       {
         vehicle,
+        vehicleDirection: VehicleDirection.Up,
         x: 0,
         y: 10,
-        vehicleDirection: VehicleDirection.Up,
       },
       {
         vehicle,
+        vehicleDirection: VehicleDirection.Up,
         x: 0,
         y: 20,
-        vehicleDirection: VehicleDirection.Up,
       },
       {
         vehicle,
-        x: 0,
-        y: 20,
         vehicleDirection: VehicleDirection.Down,
+        x: 0,
+        y: 20,
       },
       {
         vehicle,
+        vehicleDirection: VehicleDirection.Down,
         x: 0,
         y: 10,
-        vehicleDirection: VehicleDirection.Down,
       },
     ]
 
@@ -73,20 +73,20 @@ describe("byDirectionAndY", () => {
   test("sorts the array by direction, and then by y value", () => {
     const array = [
       {
-        y: 1,
         vehicleDirection: VehicleDirection.Up,
-      },
-      {
-        y: 2,
-        vehicleDirection: VehicleDirection.Up,
-      },
-      {
-        y: 2,
-        vehicleDirection: VehicleDirection.Down,
-      },
-      {
         y: 1,
+      },
+      {
+        vehicleDirection: VehicleDirection.Up,
+        y: 2,
+      },
+      {
         vehicleDirection: VehicleDirection.Down,
+        y: 2,
+      },
+      {
+        vehicleDirection: VehicleDirection.Down,
+        y: 1,
       },
     ]
 
@@ -100,12 +100,12 @@ describe("byDirectionAndY", () => {
 
   test("sorts all vehicles traveling down ahead of all those traveling up", () => {
     const down = {
-      y: 1,
       vehicleDirection: VehicleDirection.Down,
+      y: 1,
     }
     const up = {
-      y: 1,
       vehicleDirection: VehicleDirection.Up,
+      y: 1,
     }
 
     expect(byDirectionAndY(down, up)).toEqual(-1)
@@ -114,12 +114,12 @@ describe("byDirectionAndY", () => {
 
   test("while traveling down, vehicles with a higher y are in front", () => {
     const front = {
-      y: 2,
       vehicleDirection: VehicleDirection.Down,
+      y: 2,
     }
     const back = {
-      y: 1,
       vehicleDirection: VehicleDirection.Down,
+      y: 1,
     }
 
     expect(byDirectionAndY(front, back)).toEqual(-1)
@@ -128,12 +128,12 @@ describe("byDirectionAndY", () => {
 
   test("while traveling up, vehicles with a lower y are in front", () => {
     const front = {
-      y: 1,
       vehicleDirection: VehicleDirection.Up,
+      y: 1,
     }
     const back = {
-      y: 2,
       vehicleDirection: VehicleDirection.Up,
+      y: 2,
     }
 
     expect(byDirectionAndY(front, back)).toEqual(-1)
@@ -155,16 +155,16 @@ describe("areOverlapping", () => {
 
   test("returns true if the vehicles overlap in the y-dimension", () => {
     const a = ({
-      y: 10,
       vehicleDirection: VehicleDirection.Down,
+      y: 10,
     } as unknown) as LadderVehicle
     const b = ({
-      y: 20,
       vehicleDirection: VehicleDirection.Down,
+      y: 20,
     } as unknown) as LadderVehicle
     const c = ({
-      y: 100,
       vehicleDirection: VehicleDirection.Down,
+      y: 100,
     } as unknown) as LadderVehicle
 
     expect(areOverlapping(a, b)).toBeTruthy()
@@ -173,12 +173,12 @@ describe("areOverlapping", () => {
 
   test("it doesn't matter what order the vehicles are passed in", () => {
     const a = ({
-      y: 10,
       vehicleDirection: VehicleDirection.Down,
+      y: 10,
     } as unknown) as LadderVehicle
     const b = ({
-      y: 20,
       vehicleDirection: VehicleDirection.Down,
+      y: 20,
     } as unknown) as LadderVehicle
 
     expect(areOverlapping(a, b)).toBeTruthy()

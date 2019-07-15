@@ -73,8 +73,8 @@ describe("filter", () => {
   test("filters an object by allowed keys", () => {
     const originalObject = {
       one: 1,
-      two: 2,
       three: 3,
+      two: 2,
     }
     const allowedKeys = ["one", "three"]
     const expected = {
