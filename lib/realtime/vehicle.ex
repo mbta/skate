@@ -143,6 +143,7 @@ defmodule Realtime.Vehicle do
     timepoint_status = timepoint_status(stop_times_on_trip, stop_id)
     scheduled_location = scheduled_location(block, now_fn.())
 
+    # If a vehicle is scheduled to be on another line, don't draw any line.
     scheduled_location =
       if scheduled_location && scheduled_location.route_id == route_id do
         scheduled_location
@@ -233,7 +234,14 @@ defmodule Realtime.Vehicle do
 
   def scheduled_location(block, now) do
     block_start = List.first(List.first(block).stop_times).time
-    now_time_of_day = Util.Time.nearest_time_of_day_for_timestamp(now, block_start)
+
+    now_time_of_day =
+      Util.Time.next_time_of_day_for_timestamp_after(
+        now,
+        # Allow a little wiggle room in case a bus appears just before its block starts
+        Util.Time.time_of_day_add_minutes(block_start, -60)
+      )
+
     trip = current_trip_on_block(block, now_time_of_day)
     timepoints = Enum.filter(trip.stop_times, &is_a_timepoint?/1)
     timepoint_status = current_timepoint_status(timepoints, now_time_of_day)
