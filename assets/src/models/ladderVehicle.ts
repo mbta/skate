@@ -1,7 +1,7 @@
 import { LadderDirection, TimepointStatusYFunc } from "../components/ladder"
 import { DirectionId, Vehicle, VehicleId, ViaVariant } from "../skate"
 import {
-  isUnassignedBySwiftly as vehicleIsUnassignedBySwiftly,
+  isOffCourse as vehicleIsOffCourse,
   status,
   VehicleAdherenceStatus,
 } from "./vehicleStatus"
@@ -11,7 +11,7 @@ export interface LadderVehicle {
   label: string
   viaVariant: ViaVariant | null
   status: VehicleAdherenceStatus
-  isUnassignedBySwiftly: boolean
+  isOffCourse: boolean
   x: number
   y: number
   vehicleDirection: VehicleDirection
@@ -30,7 +30,7 @@ interface WithVehicle {
   label: string
   viaVariant: ViaVariant | null
   status: VehicleAdherenceStatus
-  isUnassignedBySwiftly: boolean
+  isOffCourse: boolean
 }
 
 interface OnLadder {
@@ -139,7 +139,7 @@ const vehicleOnLadder = (
 ): VehicleOnLadder => {
   const { id: vehicleId, label, viaVariant } = vehicle
 
-  const isUnassignedBySwiftly = vehicleIsUnassignedBySwiftly(vehicle)
+  const isOffCourse = vehicleIsOffCourse(vehicle)
 
   const { scheduledY, scheduledVehicleDirection } = scheduledToBe(
     vehicle,
@@ -148,12 +148,12 @@ const vehicleOnLadder = (
   )
 
   const vehicleDirection: VehicleDirection =
-    isUnassignedBySwiftly && scheduledVehicleDirection
+    isOffCourse && scheduledVehicleDirection
       ? scheduledVehicleDirection
       : directionOnLadder(vehicle.directionId, ladderDirection)
 
   const y =
-    isUnassignedBySwiftly && scheduledY
+    isOffCourse && scheduledY
       ? scheduledY
       : timepointStatusYFunc(vehicle.timepointStatus, vehicleDirection)
 
@@ -163,7 +163,7 @@ const vehicleOnLadder = (
     label,
     viaVariant,
     status: status(vehicle),
-    isUnassignedBySwiftly,
+    isOffCourse,
     vehicleDirection,
     y,
     scheduledY,

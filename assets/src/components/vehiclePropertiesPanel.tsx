@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
-import { isUnassignedBySwiftly, status } from "../models/vehicleStatus"
+import { isOffCourse, status } from "../models/vehicleStatus"
 import { DataDiscrepancy, Route, Vehicle } from "../skate.d"
 import { deselectVehicle } from "../state"
 import CloseButton from "./closeButton"
@@ -22,9 +22,7 @@ const ScheduleAdherenceStatusIcon = () => (
 
 const ScheduleAdherenceStatusString = ({ vehicle }: { vehicle: Vehicle }) => (
   <div className="m-vehicle-properties-panel__schedule-adherence-status-string">
-    {isUnassignedBySwiftly(vehicle)
-      ? "Invalid"
-      : vehicle.scheduleAdherenceStatus}
+    {isOffCourse(vehicle) ? "Invalid" : vehicle.scheduleAdherenceStatus}
   </div>
 )
 
@@ -42,9 +40,7 @@ const scheduleAdherenceLabelString = ({
 
 const ScheduleAdherenceLabel = ({ vehicle }: { vehicle: Vehicle }) => (
   <div className="m-vehicle-properties-panel__schedule-adherence-label">
-    {isUnassignedBySwiftly(vehicle)
-      ? ""
-      : scheduleAdherenceLabelString(vehicle)}
+    {isOffCourse(vehicle) ? "" : scheduleAdherenceLabelString(vehicle)}
   </div>
 )
 
@@ -141,11 +137,7 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
         Next Stop
       </div>
       <div className="m-vehicle-properties-panel__vehicle-property-value">
-        {isUnassignedBySwiftly(vehicle) ? (
-          <NotAvailable />
-        ) : (
-          <>{stopStatus.stopName}</>
-        )}
+        {isOffCourse(vehicle) ? <NotAvailable /> : <>{stopStatus.stopName}</>}
       </div>
       <a
         className="m-vehicle-properties-panel__link"

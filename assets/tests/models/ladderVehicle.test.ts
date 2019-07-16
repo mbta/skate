@@ -32,7 +32,7 @@ describe("putIntoLanes", () => {
     const status: VehicleAdherenceStatus = "on-time"
     const original = [
       {
-        isUnassignedBySwiftly: false,
+        isOffCourse: false,
         label: "v1-label",
         status,
         vehicleDirection: VehicleDirection.Up,
@@ -42,7 +42,7 @@ describe("putIntoLanes", () => {
         y: 10,
       },
       {
-        isUnassignedBySwiftly: false,
+        isOffCourse: false,
         label: "v2-label",
         status,
         vehicleDirection: VehicleDirection.Up,
@@ -52,7 +52,7 @@ describe("putIntoLanes", () => {
         y: 20,
       },
       {
-        isUnassignedBySwiftly: false,
+        isOffCourse: false,
         label: "v3-label",
         status,
         vehicleDirection: VehicleDirection.Down,
@@ -62,7 +62,7 @@ describe("putIntoLanes", () => {
         y: 20,
       },
       {
-        isUnassignedBySwiftly: false,
+        isOffCourse: false,
         label: "v4-label",
         status,
         vehicleDirection: VehicleDirection.Down,

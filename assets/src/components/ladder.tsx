@@ -242,7 +242,7 @@ const orientationMatchingVehicle = (
 const ScheduledLine = ({
   ladderVehicle: {
     status,
-    isUnassignedBySwiftly,
+    isOffCourse,
     x,
     y,
     scheduledY,
@@ -251,7 +251,7 @@ const ScheduledLine = ({
 }: {
   ladderVehicle: LadderVehicle
 }) => {
-  if (!scheduledY || isUnassignedBySwiftly) {
+  if (!scheduledY || isOffCourse) {
     return null
   }
 

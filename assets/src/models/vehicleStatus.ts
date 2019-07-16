@@ -3,13 +3,9 @@ import { ScheduleAdherenceStatus, Vehicle } from "../skate"
 export type VehicleAdherenceStatus = ScheduleAdherenceStatus | "off-course"
 
 export const status = (vehicle: Vehicle): VehicleAdherenceStatus =>
-  isUnassignedBySwiftly(vehicle)
-    ? "off-course"
-    : vehicle.scheduleAdherenceStatus
+  isOffCourse(vehicle) ? "off-course" : vehicle.scheduleAdherenceStatus
 
-export const isUnassignedBySwiftly = ({
-  dataDiscrepancies,
-}: Vehicle): boolean => {
+export const isOffCourse = ({ dataDiscrepancies }: Vehicle): boolean => {
   const tripIdDiscrepancy = dataDiscrepancies.find(
     ({ attribute }) => attribute === "trip_id"
   )

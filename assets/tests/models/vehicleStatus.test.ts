@@ -1,8 +1,8 @@
-import { isUnassignedBySwiftly, status } from "../../src/models/vehicleStatus"
+import { isOffCourse, status } from "../../src/models/vehicleStatus"
 import { DataDiscrepancy, Vehicle } from "../../src/skate"
 
 describe("status", () => {
-  test("returns 'off-course' if isUnassignedBySwiftly", () => {
+  test("returns 'off-course' if isOffCourse", () => {
     const vehicle: Vehicle = {
       dataDiscrepancies: [
         {
@@ -35,7 +35,7 @@ describe("status", () => {
   })
 })
 
-describe("isUnassignedBySwiftly", () => {
+describe("isOffCourse", () => {
   test("returns true if there is a trip_id data discrepancy where swiftly is null and busloc has a value", () => {
     const vehicle: Vehicle = {
       dataDiscrepancies: [
@@ -55,7 +55,7 @@ describe("isUnassignedBySwiftly", () => {
       ],
     } as Vehicle
 
-    expect(isUnassignedBySwiftly(vehicle)).toBeTruthy()
+    expect(isOffCourse(vehicle)).toBeTruthy()
   })
 
   test("returns false if the swiftly defined a value", () => {
@@ -77,7 +77,7 @@ describe("isUnassignedBySwiftly", () => {
       ],
     } as Vehicle
 
-    expect(isUnassignedBySwiftly(vehicle)).toBeFalsy()
+    expect(isOffCourse(vehicle)).toBeFalsy()
   })
 
   test("returns false if there isn't a trip_id data discrepancy", () => {
@@ -99,6 +99,6 @@ describe("isUnassignedBySwiftly", () => {
       ],
     } as Vehicle
 
-    expect(isUnassignedBySwiftly(vehicle)).toBeFalsy()
+    expect(isOffCourse(vehicle)).toBeFalsy()
   })
 })
