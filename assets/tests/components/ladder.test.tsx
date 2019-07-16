@@ -475,8 +475,28 @@ describe("ladder", () => {
 
   test("renders an off-course vehicle", () => {
     const vehicle: Vehicle = {
+      id: "y1439",
+      label: "1439",
+      runId: "run-1",
+      timestamp: 1562777122,
+      latitude: 42.38954,
+      longitude: -71.07405,
+      directionId: 0,
+      routeId: "71",
+      tripId: "40725309",
+      headsign: "Harvard",
+      viaVariant: "D",
+      operatorId: "op1",
+      operatorName: "SMITH",
       bearing: 0,
+      speed: 0,
       blockId: "T71-17",
+      headwaySecs: 859.1,
+      previousVehicleId: "v2",
+      scheduleAdherenceSecs: 0,
+      scheduleAdherenceString: "0.0 sec (ontime)",
+      scheduleAdherenceStatus: "on-time",
+      scheduledHeadwaySecs: 120,
       dataDiscrepancies: [
         {
           attribute: "trip_id",
@@ -492,40 +512,20 @@ describe("ladder", () => {
           ],
         },
       ],
-      directionId: 0,
-      headsign: "Harvard",
-      headwaySecs: 859.1,
-      id: "y1439",
-      label: "1439",
-      latitude: 42.38954,
-      longitude: -71.07405,
-      operatorId: "op1",
-      operatorName: "SMITH",
-      previousVehicleId: "v2",
-      routeId: "71",
-      routeStatus: "on_route",
-      runId: "run-1",
-      scheduleAdherenceSecs: 0,
-      scheduleAdherenceStatus: "on-time",
-      scheduleAdherenceString: "0.0 sec (ontime)",
-      scheduledHeadwaySecs: 120,
-      scheduledLocation: {
-        directionId: 0,
-        timepointStatus: {
-          fractionUntilTimepoint: 0,
-          timepointId: "mtsty",
-        },
-      },
-      speed: 0,
       stopStatus: {
         status: "in_transit_to",
         stopId: "stop",
         stopName: "stop",
       },
       timepointStatus: null,
-      timestamp: 1562777122,
-      tripId: "40725309",
-      viaVariant: "D",
+      scheduledLocation: {
+        directionId: 0,
+        timepointStatus: {
+          timepointId: "mtsty",
+          fractionUntilTimepoint: 0,
+        },
+      },
+      routeStatus: "on_route",
     }
 
     const timepoints = [{ id: "t0" }, { id: "t1" }, { id: "t2" }]
