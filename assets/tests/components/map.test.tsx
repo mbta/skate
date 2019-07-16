@@ -7,7 +7,13 @@ describe("map", () => {
   test("renders", () => {
     const tree = renderer
       .create(
-        <Map bearing={33} latitude={42.0} longitude={-71.0} label={"1818"} />
+        <Map
+          bearing={33}
+          latitude={42.0}
+          longitude={-71.0}
+          label={"1818"}
+          scheduleAdherenceStatus={"early"}
+        />
       )
       .toJSON()
 
@@ -24,6 +30,7 @@ describe("updateMap", () => {
         label: "1818",
         latitude: 42.0,
         longitude: -71.0,
+        scheduleAdherenceStatus: "on-time",
       },
       null,
       null,
