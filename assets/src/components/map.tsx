@@ -11,7 +11,7 @@ interface Props {
   longitude: number
 }
 
-const iconAnchor: [number, number] = [9, 3]
+const iconAnchor: [number, number] = [12, 12]
 
 export const updateMap = (
   { bearing, label: labelText, latitude, longitude }: Props,
@@ -61,7 +61,8 @@ export const updateMap = (
 
   const icon = Leaflet.divIcon({
     className: `m-vehicle-properties-panel__map-icon`,
-    html: `<svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="m14.0299939 2.61332371 6.6733353 18.14273779c.4766383 1.2958323-.1874496 2.7327035-1.4832819 3.2093418-.6765323.2488448-1.4275513.1935573-2.0603495-.1516762l-5.2486566-2.8634909-5.2330516 2.9015312c-1.20751921.6695242-2.72916353.233393-3.39868771-.9741262-.34268573-.     6180502-.40778353-1.3522644-.17918546-2.0209665l6.21797321-18.18900678c.44662479-1.30648061 1.86779756-2.00353147 3.17427816-1.55690667.7127229.24364673 1.2776061.79564851 1.5376261 1.50256246z" fill-rule="evenodd" transform="matrix(-1 0 0 1 24 0)"/></svg>`,
+    html:
+      '<svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg"><path d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"/></svg>',
     iconAnchor,
   })
 
