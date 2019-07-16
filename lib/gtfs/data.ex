@@ -83,6 +83,55 @@ defmodule Gtfs.Data do
     Block.get(blocks, block_id, service_id)
   end
 
+  @spec active_blocks(t(), Util.Time.timestamp(), Util.Time.timestamp()) :: %{
+          Route.id() => [Block.id()]
+        }
+  def active_blocks(%__MODULE__{trips: trips, calendar: calendar}, start_time, end_time) do
+    # We might cover multiple service dates
+    # If we start before 6am, check trips on the previous day
+    # It's okay if this date range is a little too broad, since we check trips by time on those dates later
+    first_possible_service_date =
+      start_time
+      |> (fn time -> time - 6 * 60 * 60 end).()
+      |> Util.Time.date_of_timestamp()
+
+    last_possible_service_date =
+      end_time
+      |> Util.Time.date_of_timestamp()
+
+    date_range = Date.range(first_possible_service_date, last_possible_service_date)
+    dates = Enum.to_list(date_range)
+    active_services = Map.take(calendar, dates)
+    trips = Map.values(trips)
+
+    active_trips =
+      Enum.flat_map(active_services, fn {date, service_ids} ->
+        start_time_of_day = Util.Time.time_of_day_for_timestamp(start_time, date)
+        end_time_of_day = Util.Time.time_of_day_for_timestamp(end_time, date)
+
+        Enum.filter(trips, fn trip ->
+          # The trip is happening today and
+          # The trip has started and
+          # The trip hasn't ended
+          trip.service_id in service_ids and
+            end_time_of_day > Trip.start_time(trip) and
+            start_time_of_day < Trip.end_time(trip)
+        end)
+      end)
+
+    active_blocks_per_route =
+      active_trips
+      |> Enum.group_by(
+        fn trip -> trip.route_id end,
+        fn trip -> trip.block_id end
+      )
+      |> Helpers.map_values(&Enum.uniq/1)
+
+    active_blocks_per_route
+  end
+
+  # Initialization
+
   @spec parse_files(files()) :: t()
   def parse_files(files) do
     directions_by_route_id = directions_by_route_id(files["directions.txt"])

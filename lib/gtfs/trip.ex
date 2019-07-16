@@ -64,4 +64,14 @@ defmodule Gtfs.Trip do
 
   @spec row_in_route_id_set?(Csv.row(), MapSet.t(Route.id())) :: boolean
   def row_in_route_id_set?(row, route_id_set), do: MapSet.member?(route_id_set, row["route_id"])
+
+  @spec start_time(t()) :: Util.Time.time_of_day()
+  def start_time(trip) do
+    List.first(trip.stop_times).time
+  end
+
+  @spec end_time(t()) :: Util.Time.time_of_day()
+  def end_time(trip) do
+    List.last(trip.stop_times).time
+  end
 end

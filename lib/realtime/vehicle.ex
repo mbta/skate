@@ -341,7 +341,7 @@ defmodule Realtime.Vehicle do
         # Either the current trip or the trip that just ended (the last trip to have started)
         block
         |> Enum.take_while(fn trip ->
-          List.first(trip.stop_times).time <= now
+          Trip.start_time(trip) <= now
         end)
         |> List.last()
     end

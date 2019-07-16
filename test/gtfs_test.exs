@@ -314,6 +314,39 @@ defmodule GtfsTest do
     end
   end
 
+  describe "active_blocks" do
+    test "returns only blocks that are active" do
+      pid =
+        Gtfs.start_mocked(%{
+          "calendar.txt" => [
+            "service_id,monday,tuesday,wednesday,thursday,friday,saturday,sunday,start_date,end_date",
+            "today,1,1,1,1,1,1,1,20190101,20190101",
+            "tomorrow,1,1,1,1,1,1,1,20190102,20190102"
+          ],
+          "routes.txt" => [
+            "route_id,route_type",
+            "route,3"
+          ],
+          "trips.txt" => [
+            "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id",
+            "route,today,now,headsign,0,now,",
+            "route,today,later,headsign,0,later,",
+            "route,tomorrow,tomorrow,headsign,0,tomorrow,"
+          ],
+          "stop_times.txt" => [
+            "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
+            "now,,00:00:02,stop,1,",
+            "later,,00:00:04,stop,1,",
+            "tomorrow,,00:00:02,stop,1,"
+          ]
+        })
+
+      # 2019-01-01 00:00:00 EST
+      time0 = 1_546_318_800
+      assert Gtfs.active_blocks(time0 + 1, time0 + 3, pid) == %{"route" => ["now"]}
+    end
+  end
+
   test "fetch_url/1 requests data from the given URL" do
     bypass = Bypass.open()
     url = "http://localhost:#{bypass.port}/MBTA_GTFS.zip"
