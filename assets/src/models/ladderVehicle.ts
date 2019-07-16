@@ -17,7 +17,6 @@ export interface LadderVehicle {
   viaVariant: ViaVariant | null
   status: VehicleAdherenceStatus
   isUnassignedBySwiftly: boolean
-  vehicle: Vehicle
   x: number
   y: number
   vehicleDirection: VehicleDirection
@@ -37,7 +36,6 @@ interface WithVehicle {
   viaVariant: ViaVariant | null
   status: VehicleAdherenceStatus
   isUnassignedBySwiftly: boolean
-  vehicle: Vehicle
 }
 
 interface OnLadder {
@@ -171,7 +169,6 @@ const vehicleOnLadder = (
     viaVariant,
     status: status(vehicle),
     isUnassignedBySwiftly,
-    vehicle,
     vehicleDirection,
     y,
     scheduledY,

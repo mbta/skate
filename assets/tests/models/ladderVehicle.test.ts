@@ -8,7 +8,7 @@ import {
   putIntoLanes,
   VehicleDirection,
 } from "../../src/models/ladderVehicle"
-import { Vehicle, VehicleAdherenceStatus } from "../../src/skate"
+import { VehicleAdherenceStatus } from "../../src/skate"
 
 describe("directionOnLadder", () => {
   test("determines the vehicle direction relative the ladder direction", () => {
@@ -29,50 +29,45 @@ describe("directionOnLadder", () => {
 
 describe("putIntoLanes", () => {
   test("adds lane properties", () => {
-    const vehicle = {} as Vehicle
     const status: VehicleAdherenceStatus = "on-time"
     const original = [
       {
-        vehicleId: "v1",
-        label: "v1-label",
-        viaVariant: "2",
-        status,
         isUnassignedBySwiftly: false,
-        vehicle,
+        label: "v1-label",
+        status,
         vehicleDirection: VehicleDirection.Up,
+        vehicleId: "v1",
+        viaVariant: "2",
         x: 0,
         y: 10,
       },
       {
-        vehicleId: "v2",
+        isUnassignedBySwiftly: false,
         label: "v2-label",
-        viaVariant: "2",
         status,
-        isUnassignedBySwiftly: false,
-        vehicle,
         vehicleDirection: VehicleDirection.Up,
+        vehicleId: "v2",
+        viaVariant: "2",
         x: 0,
         y: 20,
       },
       {
-        vehicleId: "v3",
+        isUnassignedBySwiftly: false,
         label: "v3-label",
-        viaVariant: "2",
         status,
-        isUnassignedBySwiftly: false,
-        vehicle,
         vehicleDirection: VehicleDirection.Down,
+        vehicleId: "v3",
+        viaVariant: "2",
         x: 0,
         y: 20,
       },
       {
-        vehicleId: "v4",
-        label: "v4-label",
-        viaVariant: "2",
-        status,
         isUnassignedBySwiftly: false,
-        vehicle,
+        label: "v4-label",
+        status,
         vehicleDirection: VehicleDirection.Down,
+        vehicleId: "v4",
+        viaVariant: "2",
         x: 0,
         y: 10,
       },
