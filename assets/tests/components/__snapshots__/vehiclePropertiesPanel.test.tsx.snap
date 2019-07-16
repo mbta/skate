@@ -578,3 +578,200 @@ Array [
   />,
 ]
 `;
+
+exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
+Array [
+  <div
+    className="m-vehicle-properties-panel"
+    id="m-vehicle-properties-panel"
+  >
+    <div
+      className="m-vehicle-properties-panel__header"
+    >
+      <div
+        className="m-vehicle-properties-panel__label off-course"
+      >
+        <svg
+          style={
+            Object {
+              "height": 60,
+              "width": 64,
+            }
+          }
+          viewBox="-32 -16 64 60"
+        >
+          <g
+            className="m-vehicle-icon m-vehicle-icon--large"
+          >
+            <rect
+              className="m-vehicle-icon__label-background"
+              height={24}
+              rx={12}
+              ry={12}
+              width={64}
+              x={-32}
+              y={19}
+            />
+            <text
+              className="m-vehicle-icon__label"
+              dominantBaseline="central"
+              textAnchor="middle"
+              x="0"
+              y={31}
+            >
+              v1-label
+            </text>
+            <path
+              className="m-vehicle-icon__triangle"
+              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              transform="scale(1) rotate(0) translate(-24,-22)"
+            />
+            <text
+              className="m-vehicle-icon__variant"
+              dominantBaseline="alphabetic"
+              textAnchor="middle"
+              x={0}
+              y={14}
+            >
+              X
+            </text>
+          </g>
+        </svg>
+      </div>
+      <div
+        className="m-vehicle-properties-panel__variant"
+      >
+        <div
+          className="m-vehicle-properties-panel__inbound-outbound"
+        >
+          
+        </div>
+        <div
+          className="m-vehicle-properties-panel__variant-name"
+        >
+          39_X Forest Hills
+        </div>
+        <div
+          className="m-vehicle-properties-panel__schedule-adherence off-course"
+        >
+          <div
+            className="m-vehicle-properties-panel__schedule-adherence-status-icon"
+          >
+            <svg
+              height="10"
+              width="10"
+            >
+              <circle
+                cx="5"
+                cy="5"
+                r="5"
+              />
+            </svg>
+          </div>
+          <div
+            className="m-vehicle-properties-panel__schedule-adherence-status-string"
+          >
+            Invalid
+          </div>
+          <div
+            className="m-vehicle-properties-panel__schedule-adherence-label"
+          >
+            
+          </div>
+        </div>
+      </div>
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <table
+      className="m-vehicle-properties-panel__vehicle-properties"
+    >
+      <tbody>
+        <tr>
+          <th
+            className="m-vehicle-properties-panel__vehicle-property-label"
+          >
+            Run
+          </th>
+          <td
+            className="m-vehicle-properties-panel__vehicle-property-value"
+          >
+            run-1
+          </td>
+        </tr>
+        <tr>
+          <th
+            className="m-vehicle-properties-panel__vehicle-property-label"
+          >
+            Vehicle
+          </th>
+          <td
+            className="m-vehicle-properties-panel__vehicle-property-value"
+          >
+            v1-label
+          </td>
+        </tr>
+        <tr>
+          <th
+            className="m-vehicle-properties-panel__vehicle-property-label"
+          >
+            Operator
+          </th>
+          <td
+            className="m-vehicle-properties-panel__vehicle-property-value"
+          >
+            SMITH
+             #
+            op1
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div
+      className="m-vehicle-properties-panel__location"
+    >
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-label"
+      >
+        Next Stop
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-value"
+      >
+        <span
+          className="m-vehicle-properties-panel__not-available"
+        >
+          Not available
+        </span>
+      </div>
+      <a
+        className="m-vehicle-properties-panel__link"
+        href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+      >
+        Directions
+      </a>
+    </div>
+    <button
+      className="m-vehicle-properties-panel__close"
+      onClick={[Function]}
+    >
+      Close
+    </button>
+  </div>,
+  <div
+    className="m-vehicle-properties-panel__modal-overlay"
+    onClick={[Function]}
+  />,
+]
+`;

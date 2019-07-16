@@ -472,4 +472,76 @@ describe("ladder", () => {
 
     expect(tree).toMatchSnapshot()
   })
+
+  test("renders an off-course vehicle", () => {
+    const vehicle: Vehicle = {
+      id: "y1439",
+      label: "1439",
+      runId: "run-1",
+      timestamp: 1562777122,
+      latitude: 42.38954,
+      longitude: -71.07405,
+      directionId: 0,
+      routeId: "71",
+      tripId: "40725309",
+      headsign: "Harvard",
+      viaVariant: "D",
+      operatorId: "op1",
+      operatorName: "SMITH",
+      bearing: 0,
+      speed: 0,
+      blockId: "T71-17",
+      headwaySecs: 859.1,
+      previousVehicleId: "v2",
+      scheduleAdherenceSecs: 0,
+      scheduleAdherenceString: "0.0 sec (ontime)",
+      scheduleAdherenceStatus: "on-time",
+      scheduledHeadwaySecs: 120,
+      dataDiscrepancies: [
+        {
+          attribute: "trip_id",
+          sources: [
+            {
+              id: "busloc",
+              value: "40725309",
+            },
+            {
+              id: "swiftly",
+              value: null,
+            },
+          ],
+        },
+      ],
+      stopStatus: {
+        status: "in_transit_to",
+        stopId: "stop",
+        stopName: "stop",
+      },
+      timepointStatus: null,
+      scheduledLocation: {
+        directionId: 0,
+        timepointStatus: {
+          timepointId: "mtsty",
+          fractionUntilTimepoint: 0,
+        },
+      },
+      routeStatus: "on_route",
+    }
+
+    const timepoints = [{ id: "t0" }, { id: "t1" }, { id: "t2" }]
+    const ladderDirection = LadderDirection.ZeroToOne
+
+    const tree = renderer
+      .create(
+        <Ladder
+          timepoints={timepoints}
+          vehicles={[vehicle]}
+          ladderDirection={ladderDirection}
+          selectedVehicleId={undefined}
+        />
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
 })

@@ -1,6 +1,7 @@
 import React, { useContext } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import { directionOnLadder, VehicleDirection } from "../models/ladderVehicle"
+import { status } from "../models/vehicleStatus"
 import { Vehicle, VehicleId } from "../skate"
 import { selectVehicle } from "../state"
 import { LadderDirection } from "./ladder"
@@ -25,9 +26,7 @@ const IncomingBoxVehicle = ({
 
   return (
     <button
-      className={`m-incoming-box__vehicle ${
-        vehicle.scheduleAdherenceStatus
-      } ${selectedClass}`}
+      className={`m-incoming-box__vehicle ${status(vehicle)} ${selectedClass}`}
       onClick={() => dispatch(selectVehicle(vehicle.id))}
     >
       <VehicleIcon

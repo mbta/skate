@@ -1,7 +1,6 @@
 import React, { useContext, useLayoutEffect, useRef, useState } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import {
-  directionOnLadder,
   LadderVehicle,
   ladderVehiclesFromVehicles,
   VehicleDirection,
@@ -75,7 +74,7 @@ const Ladder = ({
   )
   const [selectedLadderVehicles, unselectedLadderVehicles] = partition(
     ladderVehicles,
-    ladderVehicle => ladderVehicle.vehicle.id === selectedVehicleId
+    ladderVehicle => ladderVehicle.vehicleId === selectedVehicleId
   )
 
   const width = 120 + 2 * widthOfLanes
@@ -92,25 +91,23 @@ const Ladder = ({
       >
         {ladderVehicles.map(ladderVehicle => (
           <ScheduledLine
-            key={`line-${ladderVehicle.vehicle.id}`}
-            ladderDirection={ladderDirection}
+            key={`line-${ladderVehicle.vehicleId}`}
             ladderVehicle={ladderVehicle}
-            timepointStatusY={timepointStatusY}
           />
         ))}
         {unselectedLadderVehicles.map(ladderVehicle => (
           <VehicleSvg
+            key={`vehicle-${ladderVehicle.vehicleId}`}
             ladderVehicle={ladderVehicle}
             selectedVehicleId={selectedVehicleId}
-            key={`vehicle-${ladderVehicle.vehicle.id}`}
           />
         ))}
         {/* Display the selected vehicle on top of all others if there is one */}
         {selectedLadderVehicles.map(ladderVehicle => (
           <VehicleSvg
+            key={`vehicle-${ladderVehicle.vehicleId}`}
             ladderVehicle={ladderVehicle}
             selectedVehicleId={selectedVehicleId}
-            key={`vehicle-${ladderVehicle.vehicle.id}`}
           />
         ))}
         <RoadLines height={height} />
@@ -126,32 +123,35 @@ const Ladder = ({
 }
 
 const VehicleSvg = ({
-  ladderVehicle,
+  ladderVehicle: {
+    vehicleId,
+    label,
+    viaVariant,
+    status,
+    x,
+    y,
+    vehicleDirection,
+  },
   selectedVehicleId,
 }: {
   ladderVehicle: LadderVehicle
   selectedVehicleId: VehicleId | undefined
 }) => {
   const dispatch = useContext(DispatchContext)
-  const selectedClass =
-    ladderVehicle.vehicle.id === selectedVehicleId ? "selected" : ""
+  const selectedClass = vehicleId === selectedVehicleId ? "selected" : ""
 
   return (
     <g>
       <g
-        className={`m-ladder__vehicle ${
-          ladderVehicle.vehicle.scheduleAdherenceStatus
-        } ${selectedClass}`}
-        transform={`translate(${ladderVehicle.x},${ladderVehicle.y})`}
-        onClick={() => dispatch(selectVehicle(ladderVehicle.vehicle.id))}
+        className={`m-ladder__vehicle ${status} ${selectedClass}`}
+        transform={`translate(${x},${y})`}
+        onClick={() => dispatch(selectVehicle(vehicleId))}
       >
         <VehicleIconSvgNode
           size={Size.Medium}
-          orientation={orientationMatchingVehicle(
-            ladderVehicle.vehicleDirection
-          )}
-          label={ladderVehicle.vehicle.label}
-          variant={ladderVehicle.vehicle.viaVariant}
+          orientation={orientationMatchingVehicle(vehicleDirection)}
+          label={label}
+          variant={viaVariant}
         />
       </g>
     </g>
@@ -240,41 +240,35 @@ const orientationMatchingVehicle = (
   vehicleDirection === VehicleDirection.Down ? Orientation.Down : Orientation.Up
 
 const ScheduledLine = ({
-  ladderDirection,
-  ladderVehicle,
-  timepointStatusY,
+  ladderVehicle: {
+    status,
+    isOffCourse,
+    x,
+    y,
+    scheduledY,
+    scheduledVehicleDirection,
+  },
 }: {
-  ladderDirection: LadderDirection
   ladderVehicle: LadderVehicle
-  timepointStatusY: TimepointStatusYFunc
 }) => {
-  const { vehicle } = ladderVehicle
-  const { scheduleAdherenceStatus, scheduledLocation } = vehicle
-  if (scheduledLocation !== null) {
-    const scheduledVehicleDirection: VehicleDirection = directionOnLadder(
-      scheduledLocation.directionId,
-      ladderDirection
-    )
-    const scheduledY = timepointStatusY(
-      scheduledLocation.timepointStatus,
-      scheduledVehicleDirection
-    )
-    const roadLineX =
-      scheduledVehicleDirection === VehicleDirection.Up
-        ? CENTER_TO_LINE
-        : -CENTER_TO_LINE
-    return (
-      <line
-        className={`m-ladder__scheduled-line ${scheduleAdherenceStatus}`}
-        x1={ladderVehicle.x}
-        y1={ladderVehicle.y}
-        x2={roadLineX}
-        y2={scheduledY}
-      />
-    )
-  } else {
+  if (!scheduledY || isOffCourse) {
     return null
   }
+
+  const roadLineX =
+    scheduledVehicleDirection === VehicleDirection.Up
+      ? CENTER_TO_LINE
+      : -CENTER_TO_LINE
+
+  return (
+    <line
+      className={`m-ladder__scheduled-line ${status}`}
+      x1={x}
+      y1={y}
+      x2={roadLineX}
+      y2={scheduledY}
+    />
+  )
 }
 
 function partition<T>(items: T[], testFn: (value: T) => boolean): T[][] {

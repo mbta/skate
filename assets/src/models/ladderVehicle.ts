@@ -1,11 +1,22 @@
 import { LadderDirection, TimepointStatusYFunc } from "../components/ladder"
-import { DirectionId, Vehicle } from "../skate"
+import { DirectionId, Vehicle, VehicleId, ViaVariant } from "../skate"
+import {
+  isOffCourse as vehicleIsOffCourse,
+  status,
+  VehicleAdherenceStatus,
+} from "./vehicleStatus"
 
 export interface LadderVehicle {
-  vehicle: Vehicle
+  vehicleId: VehicleId
+  label: string
+  viaVariant: ViaVariant | null
+  status: VehicleAdherenceStatus
+  isOffCourse: boolean
   x: number
   y: number
   vehicleDirection: VehicleDirection
+  scheduledY?: number
+  scheduledVehicleDirection?: VehicleDirection
   lane: number
 }
 
@@ -15,12 +26,18 @@ export enum VehicleDirection {
 }
 
 interface WithVehicle {
-  vehicle: Vehicle
+  vehicleId: VehicleId
+  label: string
+  viaVariant: ViaVariant | null
+  status: VehicleAdherenceStatus
+  isOffCourse: boolean
 }
 
 interface OnLadder {
   y: number
   vehicleDirection: VehicleDirection
+  scheduledY?: number
+  scheduledVehicleDirection?: VehicleDirection
 }
 
 interface VehicleOnLadder extends WithVehicle, OnLadder {}
@@ -75,34 +92,6 @@ export const ladderVehiclesFromVehicles = (
   }
 }
 
-export const directionOnLadder = (
-  directionId: DirectionId,
-  ladderDirection: LadderDirection
-): VehicleDirection =>
-  (directionId === 1) === (ladderDirection === LadderDirection.ZeroToOne)
-    ? VehicleDirection.Down
-    : VehicleDirection.Up
-
-const vehicleOnLadder = (
-  vehicle: Vehicle,
-  ladderDirection: LadderDirection,
-  timepointStatusYFunc: TimepointStatusYFunc
-): VehicleOnLadder => {
-  const vehicleDirection: VehicleDirection = directionOnLadder(
-    vehicle.directionId,
-    ladderDirection
-  )
-
-  const y = timepointStatusYFunc(vehicle.timepointStatus, vehicleDirection)
-
-  return {
-    // tslint:disable-next-line:object-literal-sort-keys
-    vehicle,
-    vehicleDirection,
-    y,
-  }
-}
-
 export const putIntoLanes = (
   vehiclesOnLadder: VehicleOnLadder[]
 ): VehicleInLane[] =>
@@ -134,6 +123,85 @@ export const putIntoLanes = (
       },
       []
     )
+
+export const directionOnLadder = (
+  directionId: DirectionId,
+  ladderDirection: LadderDirection
+): VehicleDirection =>
+  (directionId === 1) === (ladderDirection === LadderDirection.ZeroToOne)
+    ? VehicleDirection.Down
+    : VehicleDirection.Up
+
+const vehicleOnLadder = (
+  vehicle: Vehicle,
+  ladderDirection: LadderDirection,
+  timepointStatusYFunc: TimepointStatusYFunc
+): VehicleOnLadder => {
+  const { id: vehicleId, label, viaVariant } = vehicle
+
+  const isOffCourse = vehicleIsOffCourse(vehicle)
+
+  const { scheduledY, scheduledVehicleDirection } = scheduledToBe(
+    vehicle,
+    ladderDirection,
+    timepointStatusYFunc
+  )
+
+  const vehicleDirection: VehicleDirection =
+    isOffCourse && scheduledVehicleDirection
+      ? scheduledVehicleDirection
+      : directionOnLadder(vehicle.directionId, ladderDirection)
+
+  const y =
+    isOffCourse && scheduledY
+      ? scheduledY
+      : timepointStatusYFunc(vehicle.timepointStatus, vehicleDirection)
+
+  return {
+    // tslint:disable-next-line:object-literal-sort-keys
+    vehicleId,
+    label,
+    viaVariant,
+    status: status(vehicle),
+    isOffCourse,
+    vehicleDirection,
+    y,
+    scheduledY,
+    scheduledVehicleDirection,
+  }
+}
+
+interface ScheduledToBe {
+  scheduledY: number | undefined
+  scheduledVehicleDirection: VehicleDirection | undefined
+}
+
+const scheduledToBe = (
+  vehicle: Vehicle,
+  ladderDirection: LadderDirection,
+  timepointStatusY: TimepointStatusYFunc
+): ScheduledToBe => {
+  const { scheduledLocation } = vehicle
+
+  if (scheduledLocation === null) {
+    return {
+      scheduledY: undefined,
+      scheduledVehicleDirection: undefined,
+    }
+  }
+
+  const scheduledVehicleDirection: VehicleDirection = directionOnLadder(
+    scheduledLocation.directionId,
+    ladderDirection
+  )
+
+  const scheduledY = timepointStatusY(
+    scheduledLocation.timepointStatus,
+    scheduledVehicleDirection
+  )
+
+  return { scheduledY, scheduledVehicleDirection }
+}
 
 const numOccupiedLanes = (vehicles: InLane[]): number => {
   const allLanes: number[] = vehicles.map(({ lane }) => lane || 0)

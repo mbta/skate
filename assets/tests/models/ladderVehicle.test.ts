@@ -8,7 +8,7 @@ import {
   putIntoLanes,
   VehicleDirection,
 } from "../../src/models/ladderVehicle"
-import { Vehicle } from "../../src/skate"
+import { VehicleAdherenceStatus } from "../../src/models/vehicleStatus"
 
 describe("directionOnLadder", () => {
   test("determines the vehicle direction relative the ladder direction", () => {
@@ -29,29 +29,45 @@ describe("directionOnLadder", () => {
 
 describe("putIntoLanes", () => {
   test("adds lane properties", () => {
-    const vehicle = {} as Vehicle
+    const status: VehicleAdherenceStatus = "on-time"
     const original = [
       {
-        vehicle,
+        isOffCourse: false,
+        label: "v1-label",
+        status,
         vehicleDirection: VehicleDirection.Up,
+        vehicleId: "v1",
+        viaVariant: "2",
         x: 0,
         y: 10,
       },
       {
-        vehicle,
+        isOffCourse: false,
+        label: "v2-label",
+        status,
         vehicleDirection: VehicleDirection.Up,
+        vehicleId: "v2",
+        viaVariant: "2",
         x: 0,
         y: 20,
       },
       {
-        vehicle,
+        isOffCourse: false,
+        label: "v3-label",
+        status,
         vehicleDirection: VehicleDirection.Down,
+        vehicleId: "v3",
+        viaVariant: "2",
         x: 0,
         y: 20,
       },
       {
-        vehicle,
+        isOffCourse: false,
+        label: "v4-label",
+        status,
         vehicleDirection: VehicleDirection.Down,
+        vehicleId: "v4",
+        viaVariant: "2",
         x: 0,
         y: 10,
       },

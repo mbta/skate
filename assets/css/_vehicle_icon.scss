@@ -12,6 +12,9 @@
   .late & {
     fill: $color-vehicle-late;
   }
+  .off-course & {
+    fill: $color-vehicle-off-course;
+  }
 }
 
 .m-vehicle-icon__label-background {

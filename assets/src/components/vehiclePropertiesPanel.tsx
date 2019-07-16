@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
+import { isOffCourse, status } from "../models/vehicleStatus"
 import { DataDiscrepancy, Route, Vehicle } from "../skate.d"
 import { deselectVehicle } from "../state"
 import CloseButton from "./closeButton"
@@ -19,13 +20,9 @@ const ScheduleAdherenceStatusIcon = () => (
   </div>
 )
 
-const ScheduleAdherenceStatusString = ({
-  vehicle: { scheduleAdherenceStatus },
-}: {
-  vehicle: Vehicle
-}) => (
+const ScheduleAdherenceStatusString = ({ vehicle }: { vehicle: Vehicle }) => (
   <div className="m-vehicle-properties-panel__schedule-adherence-status-string">
-    {scheduleAdherenceStatus}
+    {isOffCourse(vehicle) ? "Invalid" : vehicle.scheduleAdherenceStatus}
   </div>
 )
 
@@ -43,15 +40,15 @@ const scheduleAdherenceLabelString = ({
 
 const ScheduleAdherenceLabel = ({ vehicle }: { vehicle: Vehicle }) => (
   <div className="m-vehicle-properties-panel__schedule-adherence-label">
-    {scheduleAdherenceLabelString(vehicle)}
+    {isOffCourse(vehicle) ? "" : scheduleAdherenceLabelString(vehicle)}
   </div>
 )
 
 const ScheduleAdherence = ({ vehicle }: { vehicle: Vehicle }) => (
   <div
-    className={`m-vehicle-properties-panel__schedule-adherence ${
-      vehicle.scheduleAdherenceStatus
-    }`}
+    className={`m-vehicle-properties-panel__schedule-adherence ${status(
+      vehicle
+    )}`}
   >
     <ScheduleAdherenceStatusIcon />
     <ScheduleAdherenceStatusString vehicle={vehicle} />
@@ -69,11 +66,7 @@ const Header = ({
   hideMe: () => void
 }) => (
   <div className="m-vehicle-properties-panel__header">
-    <div
-      className={`m-vehicle-properties-panel__label ${
-        vehicle.scheduleAdherenceStatus
-      }`}
-    >
+    <div className={`m-vehicle-properties-panel__label ${status(vehicle)}`}>
       <VehicleIcon
         size={Size.Large}
         orientation={Orientation.Up}
@@ -129,26 +122,32 @@ const Properties = ({
   </table>
 )
 
-const Location = ({
-  vehicle: { latitude, longitude, stopStatus },
-}: {
-  vehicle: Vehicle
-}) => (
-  <div className="m-vehicle-properties-panel__location">
-    <div className="m-vehicle-properties-panel__vehicle-property-label">
-      Next Stop
-    </div>
-    <div className="m-vehicle-properties-panel__vehicle-property-value">
-      {stopStatus.stopName}
-    </div>
-    <a
-      className="m-vehicle-properties-panel__link"
-      href={directionsUrl(latitude, longitude)}
-    >
-      Directions
-    </a>
-  </div>
+const NotAvailable = () => (
+  <span className="m-vehicle-properties-panel__not-available">
+    Not available
+  </span>
 )
+
+const Location = ({ vehicle }: { vehicle: Vehicle }) => {
+  const { latitude, longitude, stopStatus } = vehicle
+
+  return (
+    <div className="m-vehicle-properties-panel__location">
+      <div className="m-vehicle-properties-panel__vehicle-property-label">
+        Next Stop
+      </div>
+      <div className="m-vehicle-properties-panel__vehicle-property-value">
+        {isOffCourse(vehicle) ? <NotAvailable /> : <>{stopStatus.stopName}</>}
+      </div>
+      <a
+        className="m-vehicle-properties-panel__link"
+        href={directionsUrl(latitude, longitude)}
+      >
+        Directions
+      </a>
+    </div>
+  )
+}
 
 const Discrepancy = ({
   dataDiscrepancy: { attribute, sources },

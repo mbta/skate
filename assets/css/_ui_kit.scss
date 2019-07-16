@@ -10,6 +10,7 @@ $color-bg-medium: #d5d8e0;
 $color-component-light: $color-bg-medium;
 $color-component-medium: #8b8d91;
 $color-component-dark: #1c1e23;
+$color-component-red: #e45d32;
 
 $color-primary: #586f7c;
 $color-secondary-dark: #4db6ac;
@@ -20,6 +21,7 @@ $color-font-dark: $color-component-dark;
 $color-font-grey: $color-component-medium;
 $color-font-link: $color-secondary-dark;
 $color-font-light: $white;
+$color-font-warning: $color-component-red;
 
 $color-rule: $color-component-light;
 
@@ -27,12 +29,11 @@ $color-vehicle-normal: $color-component-medium;
 $color-vehicle-normal-line: $color-component-light;
 $color-vehicle-ontime: #8bcf00;
 $color-vehicle-late: #46a5e7;
-$color-vehicle-early: #e45d32;
+$color-vehicle-early: $color-component-red;
 $color-vehicle-ghost: $color-bg-base;
 $color-vehicle-ghost-border: $color-component-dark;
 $color-vehicle-nonrevenue: #8f7ed6;
-$color-vehicle-invalid: $color-component-dark;
-$color-vehicle-selected-border: $color-component-dark;
+$color-vehicle-off-course: $color-component-dark;
 
 $color-line-normal: $color-component-light;
 $color-line-bunched: #ff66bc;

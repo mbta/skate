@@ -54,6 +54,9 @@
   .late & {
     fill: $color-vehicle-late;
   }
+  .off-course & {
+    fill: $color-vehicle-off-course;
+  }
 }
 
 .m-vehicle-properties-panel__schedule-adherence-status-string {
@@ -98,6 +101,10 @@
 
 .m-vehicle-properties-panel__link {
   @include font-link;
+}
+
+.m-vehicle-properties-panel__not-available {
+  color: $color-font-warning;
 }
 
 .m-vehicle-properties-panel__data-discrepancies {
