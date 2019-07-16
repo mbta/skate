@@ -179,7 +179,7 @@ Array [
         Directions
       </a>
       <div
-        className="m-vehicle-properties-panel__map"
+        className="m-vehicle-properties-panel__map on-time"
         id="map"
       />
     </div>
@@ -376,7 +376,7 @@ Array [
         Directions
       </a>
       <div
-        className="m-vehicle-properties-panel__map"
+        className="m-vehicle-properties-panel__map late"
         id="map"
       />
     </div>
@@ -573,7 +573,7 @@ Array [
         Directions
       </a>
       <div
-        className="m-vehicle-properties-panel__map"
+        className="m-vehicle-properties-panel__map early"
         id="map"
       />
     </div>
@@ -774,7 +774,7 @@ Array [
         Directions
       </a>
       <div
-        className="m-vehicle-properties-panel__map"
+        className="m-vehicle-properties-panel__map on-time"
         id="map"
       />
     </div>

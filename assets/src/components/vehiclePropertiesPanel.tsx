@@ -130,7 +130,14 @@ const NotAvailable = () => (
 )
 
 const Location = ({ vehicle }: { vehicle: Vehicle }) => {
-  const { bearing, label, latitude, longitude, stopStatus } = vehicle
+  const {
+    scheduleAdherenceStatus,
+    bearing,
+    label,
+    latitude,
+    longitude,
+    stopStatus,
+  } = vehicle
 
   return (
     <div className="m-vehicle-properties-panel__location">
@@ -151,6 +158,7 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
         label={label}
         latitude={latitude}
         longitude={longitude}
+        scheduleAdherenceStatus={scheduleAdherenceStatus}
       />
     </div>
   )

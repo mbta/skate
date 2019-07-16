@@ -3,18 +3,26 @@ import "leaflet-rotatedmarker"
 import React, { MutableRefObject, ReactElement, useEffect, useRef } from "react"
 import { renderToStaticMarkup } from "react-dom/server"
 import { Label, Orientation, Size } from "./vehicleIcon"
+import { ScheduleAdherenceStatus } from "../skate"
 
 interface Props {
   bearing: number
   label: string
   latitude: number
   longitude: number
+  scheduleAdherenceStatus: ScheduleAdherenceStatus
 }
 
 const iconAnchor: [number, number] = [12, 12]
 
 export const updateMap = (
-  { bearing, label: labelText, latitude, longitude }: Props,
+  {
+    bearing,
+    label: labelText,
+    latitude,
+    longitude,
+    scheduleAdherenceStatus,
+  }: Props,
   existingMap: LeafletMap | null,
   existingVehicleMarker: Marker | null,
   existingVehicleLabel: Marker | null
@@ -60,9 +68,9 @@ export const updateMap = (
   map.setView([latitude, longitude], zoom)
 
   const icon = Leaflet.divIcon({
-    className: `m-vehicle-properties-panel__map-icon`,
+    className: `m-vehicle-properties-panel__map-icon ${scheduleAdherenceStatus}`,
     html:
-      '<svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg"><path d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"/></svg>',
+      '<svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg"><path class="m-vehicle-properties-panel__schedule-adherence-status-icon" d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"/></svg>',
     iconAnchor,
   })
 
@@ -106,7 +114,14 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
     vehicleLabelRef.current = vehicleLabel
   })
 
-  return <div id="map" className="m-vehicle-properties-panel__map" />
+  return (
+    <div
+      id="map"
+      className={`m-vehicle-properties-panel__map ${
+        props.scheduleAdherenceStatus
+      }`}
+    />
+  )
 }
 
 export default Map

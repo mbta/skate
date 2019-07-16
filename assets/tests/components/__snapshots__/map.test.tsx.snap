@@ -2,7 +2,7 @@
 
 exports[`map renders 1`] = `
 <div
-  className="m-vehicle-properties-panel__map"
+  className="m-vehicle-properties-panel__map undefined"
   id="map"
 />
 `;
