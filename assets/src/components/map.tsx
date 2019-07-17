@@ -123,9 +123,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
   return (
     <div
       ref={container => (containerRef.current = container)}
-      className={`m-vehicle-properties-panel__map ${
-        props.scheduleAdherenceStatus
-      }`}
+      className="m-vehicle-properties-panel__map"
     />
   )
 }
