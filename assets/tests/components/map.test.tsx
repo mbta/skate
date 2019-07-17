@@ -1,7 +1,7 @@
-import { Map as LeafletMap, Marker } from "leaflet"
+import Leaflet from "leaflet"
 import React from "react"
 import renderer from "react-test-renderer"
-import Map, { updateMap } from "../../src/components/map"
+import Map, { mapOptions, updateMap } from "../../src/components/map"
 
 describe("map", () => {
   test("renders", () => {
@@ -22,22 +22,23 @@ describe("map", () => {
 })
 
 describe("updateMap", () => {
-  test("adds a map if it doesn't exist", () => {
+  test("updates lat/lng values for map & markers", () => {
     document.body.innerHTML = "<div id='map'></div>"
-    const { map, vehicleMarker, vehicleLabel } = updateMap(
+    const map = Leaflet.map("map", mapOptions)
+    const vehicleIcon = Leaflet.marker([43, -72]).addTo(map)
+    const vehicleLabel = Leaflet.marker([43, -72])
+    updateMap(
       {
         bearing: 33,
         label: "1818",
-        latitude: 42.0,
-        longitude: -71.0,
+        latitude: 42,
+        longitude: -71,
         scheduleAdherenceStatus: "on-time",
       },
-      null,
-      null,
-      null
+      { map, vehicleIcon, vehicleLabel }
     )
-    expect(map).toBeInstanceOf(LeafletMap)
-    expect(vehicleMarker).toBeInstanceOf(Marker)
-    expect(vehicleLabel).toBeInstanceOf(Marker)
+    expect(map.getCenter()).toEqual({ lat: 42, lng: -71 })
+    expect(vehicleIcon.getLatLng()).toEqual({ lat: 42, lng: -71 })
+    expect(vehicleLabel.getLatLng()).toEqual({ lat: 42, lng: -71 })
   })
 })

@@ -180,7 +180,6 @@ Array [
       </a>
       <div
         className="m-vehicle-properties-panel__map on-time"
-        id="map"
       />
     </div>
     <button
@@ -377,7 +376,6 @@ Array [
       </a>
       <div
         className="m-vehicle-properties-panel__map late"
-        id="map"
       />
     </div>
     <button
@@ -574,7 +572,6 @@ Array [
       </a>
       <div
         className="m-vehicle-properties-panel__map early"
-        id="map"
       />
     </div>
     <button
@@ -775,7 +772,6 @@ Array [
       </a>
       <div
         className="m-vehicle-properties-panel__map on-time"
-        id="map"
       />
     </div>
     <button

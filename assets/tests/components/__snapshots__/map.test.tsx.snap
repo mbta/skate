@@ -3,6 +3,5 @@
 exports[`map renders 1`] = `
 <div
   className="m-vehicle-properties-panel__map early"
-  id="map"
 />
 `;
