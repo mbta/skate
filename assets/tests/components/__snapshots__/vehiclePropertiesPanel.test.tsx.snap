@@ -179,7 +179,7 @@ Array [
         Directions
       </a>
       <div
-        className="m-vehicle-properties-panel__map on-time"
+        className="m-vehicle-map"
       />
     </div>
     <button
@@ -375,7 +375,7 @@ Array [
         Directions
       </a>
       <div
-        className="m-vehicle-properties-panel__map late"
+        className="m-vehicle-map"
       />
     </div>
     <button
@@ -571,7 +571,7 @@ Array [
         Directions
       </a>
       <div
-        className="m-vehicle-properties-panel__map early"
+        className="m-vehicle-map"
       />
     </div>
     <button
@@ -771,7 +771,7 @@ Array [
         Directions
       </a>
       <div
-        className="m-vehicle-properties-panel__map on-time"
+        className="m-vehicle-map"
       />
     </div>
     <button
