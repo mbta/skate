@@ -1,10 +1,10 @@
 import Leaflet, { Map as LeafletMap, Marker } from "leaflet"
 import React, {
+  MutableRefObject,
   ReactElement,
   useEffect,
   useRef,
   useState,
-  MutableRefObject,
 } from "react"
 import { ScheduleAdherenceStatus } from "../skate"
 
@@ -93,7 +93,9 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
   })
 
   useEffect(() => {
-    if (!containerRef.current) return
+    if (!containerRef.current) {
+      return
+    }
 
     const map = state.map || Leaflet.map(containerRef.current, mapOptions)
 
