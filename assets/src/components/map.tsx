@@ -43,7 +43,7 @@ export const updateMap = (
   const zoom = map.getZoom()
 
   const icon = Leaflet.divIcon({
-    className: `m-vehicle-properties-panel__map-icon ${scheduleAdherenceStatus}`,
+    className: `m-vehicle-map__icon ${scheduleAdherenceStatus}`,
     html: `<svg
         height="24"
         viewBox="0 0 24 24"
@@ -107,7 +107,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
       state.vehicleLabel ||
       Leaflet.marker([props.latitude, props.longitude], {
         icon: Leaflet.divIcon({
-          className: "m-vehicle-properties-panel__map-label",
+          className: "m-vehicle-map__label",
           html: `<svg>
             <text class="m-vehicle-icon__label">${props.label}</text>
           </svg>`,
@@ -123,7 +123,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
   return (
     <div
       ref={container => (containerRef.current = container)}
-      className="m-vehicle-properties-panel__map"
+      className="m-vehicle-map"
     />
   )
 }

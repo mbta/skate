@@ -136,26 +136,3 @@
   width: 100%;
   z-index: 1000;
 }
-
-.m-vehicle-properties-panel__map {
-  height: 30rem;
-  margin-top: 1rem;
-}
-
-.m-vehicle-properties-panel__map-label {
-  @include font-emph;
-
-  svg {
-    overflow: visible;
-  }
-}
-
-.m-vehicle-properties-panel__map-icon {
-  path {
-    fill: $color-primary;
-  }
-
-  svg {
-    overflow: visible;
-  }
-}
