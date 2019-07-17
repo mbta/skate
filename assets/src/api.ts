@@ -1,3 +1,4 @@
+import "whatwg-fetch"
 import {
   DirectionName,
   Route,
