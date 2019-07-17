@@ -1,5 +1,4 @@
 defmodule Gtfs.Block do
-  alias Gtfs.Helpers
   alias Gtfs.Service
   alias Gtfs.Trip
 

@@ -7,7 +7,6 @@ defmodule Gtfs.StopTime do
   @derive Jason.Encoder
 
   alias Gtfs.Csv
-  alias Gtfs.Helpers
   alias Gtfs.Stop
   alias Gtfs.Trip
 

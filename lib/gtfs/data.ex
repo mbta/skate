@@ -9,7 +9,6 @@ defmodule Gtfs.Data do
     Calendar,
     Csv,
     Direction,
-    Helpers,
     Route,
     RoutePattern,
     Service,
@@ -66,7 +65,7 @@ defmodule Gtfs.Data do
         timepoint_ids_for_route_patterns(route_patterns, data)
       end)
 
-    Helpers.merge_lists([
+    Gtfs.Helpers.merge_lists([
       timepoint_ids_by_direction |> Map.get(0, []) |> Enum.reverse(),
       Map.get(timepoint_ids_by_direction, 1, [])
     ])
@@ -177,7 +176,7 @@ defmodule Gtfs.Data do
       |> Enum.map(fn stop_time -> stop_time.timepoint_id end)
       |> Enum.filter(& &1)
     end)
-    |> Helpers.merge_lists()
+    |> Gtfs.Helpers.merge_lists()
   end
 
   @spec directions_by_route_id(binary()) :: directions_by_route_and_id()
