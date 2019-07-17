@@ -124,7 +124,7 @@ const Triangle = ({
   )
 }
 
-export const Label = ({
+const Label = ({
   size,
   orientation,
   label,
