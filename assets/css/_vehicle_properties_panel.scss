@@ -3,6 +3,7 @@
   box-shadow: $modal-box-shadow;
   height: 100%;
   max-width: 100%;
+  overflow-y: scroll;
   position: fixed;
   right: 0;
   top: inherit;
