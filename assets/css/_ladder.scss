@@ -13,6 +13,24 @@
   stroke-width: 7;
 }
 
+.m-ladder__headway-line {
+  &--bunched {
+    stroke: $color-line-bunched-light;
+  }
+
+  &--very-bunched {
+    stroke: $color-line-bunched;
+  }
+
+  &--gapped {
+    stroke: $color-line-gapped-light;
+  }
+
+  &--very-gapped {
+    stroke: $color-line-gapped;
+  }
+}
+
 .m-ladder__stop-circle {
   fill: $white;
   stroke: $color-line-normal;

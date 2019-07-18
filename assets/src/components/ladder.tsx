@@ -7,6 +7,7 @@ import {
 } from "../models/ladderVehicle"
 import { Timepoint, Vehicle, VehicleId, VehicleTimepointStatus } from "../skate"
 import { selectVehicle } from "../state"
+import HeadwayLines from "./headwayLines"
 import { Orientation, Size, VehicleIconSvgNode } from "./vehicleIcon"
 
 export interface Props {
@@ -34,7 +35,7 @@ export const flipLadderDirection = (
     ? LadderDirection.OneToZero
     : LadderDirection.ZeroToOne
 
-const CENTER_TO_LINE = 40 // x-distance between the center of the ladder and the center of the line
+export const CENTER_TO_LINE = 40 // x-distance between the center of the ladder and the center of the line
 const MARGIN_TOP_BOTTOM = 40 // space between the top of the route and the top of the viewbox
 
 const Ladder = ({
@@ -111,6 +112,7 @@ const Ladder = ({
           />
         ))}
         <RoadLines height={height} />
+        <HeadwayLines ladderVehicles={ladderVehicles} />
         {orderedTimepoints.map((timepoint: Timepoint, index: number) => {
           const y = timepointSpacingY * index
           return (

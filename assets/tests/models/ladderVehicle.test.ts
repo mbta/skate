@@ -9,6 +9,7 @@ import {
   VehicleDirection,
 } from "../../src/models/ladderVehicle"
 import { VehicleAdherenceStatus } from "../../src/models/vehicleStatus"
+import { HeadwaySpacing } from "../../src/skate"
 
 describe("directionOnLadder", () => {
   test("determines the vehicle direction relative the ladder direction", () => {
@@ -30,8 +31,10 @@ describe("directionOnLadder", () => {
 describe("putIntoLanes", () => {
   test("adds lane properties", () => {
     const status: VehicleAdherenceStatus = "on-time"
+    const headwaySpacing: HeadwaySpacing = "ok"
     const original = [
       {
+        headwaySpacing,
         isOffCourse: false,
         label: "v1-label",
         status,
@@ -42,6 +45,7 @@ describe("putIntoLanes", () => {
         y: 10,
       },
       {
+        headwaySpacing,
         isOffCourse: false,
         label: "v2-label",
         status,
@@ -52,6 +56,7 @@ describe("putIntoLanes", () => {
         y: 20,
       },
       {
+        headwaySpacing,
         isOffCourse: false,
         label: "v3-label",
         status,
@@ -62,6 +67,7 @@ describe("putIntoLanes", () => {
         y: 20,
       },
       {
+        headwaySpacing,
         isOffCourse: false,
         label: "v4-label",
         status,
