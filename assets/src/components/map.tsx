@@ -25,7 +25,7 @@ interface State {
 const iconAnchor: [number, number] = [12, 12]
 
 export const updateMap = (
-  { bearing, latitude, longitude, scheduleAdherenceStatus }: Props,
+  { bearing, label: text, latitude, longitude, scheduleAdherenceStatus }: Props,
   {
     map,
     vehicleIcon,
@@ -35,11 +35,7 @@ export const updateMap = (
     vehicleIcon: Marker
     vehicleLabel: Marker
   }
-): {
-  map: LeafletMap
-  vehicleIcon: Marker
-  vehicleLabel: Marker
-} => {
+): void => {
   const zoom = map.getZoom()
 
   const icon = Leaflet.divIcon({
@@ -60,14 +56,21 @@ export const updateMap = (
     iconAnchor,
   })
 
+  const label = Leaflet.divIcon({
+    className: "m-vehicle-map__label",
+    html: `<svg>
+            <text class="m-vehicle-icon__label">${text}</text>
+          </svg>`,
+    iconAnchor: [12, -24],
+  })
+
   map.setView([latitude, longitude], zoom)
 
   vehicleIcon.setLatLng([latitude, longitude])
   vehicleLabel.setLatLng([latitude, longitude])
 
   vehicleIcon.setIcon(icon)
-
-  return { map, vehicleIcon, vehicleLabel }
+  vehicleLabel.setIcon(label)
 }
 
 // exported for tests only.
@@ -105,20 +108,12 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
 
     const vehicleLabel =
       state.vehicleLabel ||
-      Leaflet.marker([props.latitude, props.longitude], {
-        icon: Leaflet.divIcon({
-          className: "m-vehicle-map__label",
-          html: `<svg>
-            <text class="m-vehicle-icon__label">${props.label}</text>
-          </svg>`,
-          iconAnchor: [0, -20],
-        }),
-      }).addTo(map)
+      Leaflet.marker([props.latitude, props.longitude]).addTo(map)
 
-    const updated = updateMap(props, { map, vehicleIcon, vehicleLabel })
+    updateMap(props, { map, vehicleIcon, vehicleLabel })
 
-    updateState(updated)
-  }, [props])
+    updateState({ map, vehicleIcon, vehicleLabel })
+  }, [props, containerRef])
 
   return (
     <div
