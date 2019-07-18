@@ -62,7 +62,7 @@ defmodule Realtime.TimePeriod do
   @spec seconds_since_midnight() :: seconds()
   @spec seconds_since_midnight(DateTime.t()) :: seconds()
   def seconds_since_midnight(date_time \\ Timex.now()) do
-    Timex.diff(date_time, Timex.beginning_of_day(date_time), :seconds)
+    DateTime.diff(date_time, Timex.beginning_of_day(date_time), :second)
   end
 
   @spec data() :: [t()]
