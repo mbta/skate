@@ -1,7 +1,7 @@
 import { Socket } from "phoenix"
 import { renderHook } from "react-hooks-testing-library"
 import useVehicles from "../../src/hooks/useVehicles"
-import { RouteId, Vehicle } from "../../src/skate"
+import { RouteId, Vehicle, VehicleTimepointStatus } from "../../src/skate"
 
 // tslint:disable: react-hooks-nesting
 
@@ -57,6 +57,7 @@ describe("useVehicles", () => {
       direction_id: 0,
       headsign: "Forest Hills",
       headway_secs: 859.1,
+      headway_spacing: "ok",
       id: "v1",
       label: "v1-label",
       latitude: 0,
@@ -112,6 +113,7 @@ describe("useVehicles", () => {
       speed: 50.0,
       blockId: "block-1",
       headwaySecs: 859.1,
+      headwaySpacing: "ok",
       previousVehicleId: "v2",
       scheduleAdherenceSecs: 0,
       scheduleAdherenceString: "0.0 sec (ontime)",
@@ -151,9 +153,9 @@ describe("useVehicles", () => {
         stopName: "Stop Name",
       },
       timepointStatus: {
-        fractionUntilTimepoint: 0.5,
         timepointId: "tp1",
-      },
+        fractionUntilTimepoint: 0.5,
+      } as VehicleTimepointStatus,
       scheduledLocation: {
         directionId: 0,
         timepointStatus: {
@@ -246,6 +248,7 @@ describe("useVehicles", () => {
         direction_id: 0,
         headsign: "Forest Hills",
         headway_secs: 859.1,
+        headway_spacing: "ok",
         id: "v1",
         label: "v1-label",
         latitude: 0,
@@ -283,6 +286,7 @@ describe("useVehicles", () => {
         direction_id: 0,
         headsign: "Forest Hills",
         headway_secs: 859.1,
+        headway_spacing: "ok",
         id: "v1",
         label: "v1-label",
         latitude: 0,
@@ -320,6 +324,7 @@ describe("useVehicles", () => {
         direction_id: 0,
         headsign: "Forest Hills",
         headway_secs: 859.1,
+        headway_spacing: "ok",
         id: "v1",
         label: "v1-label",
         latitude: 0,
@@ -370,6 +375,7 @@ describe("useVehicles", () => {
         speed: 50.0,
         blockId: "block-1",
         headwaySecs: 859.1,
+        headwaySpacing: "ok",
         previousVehicleId: "v2",
         scheduleAdherenceSecs: 0,
         scheduleAdherenceString: "0.0 sec (ontime)",
@@ -382,9 +388,9 @@ describe("useVehicles", () => {
           stopName: "Stop Name",
         },
         timepointStatus: {
-          fractionUntilTimepoint: 0.5,
           timepointId: "tp1",
-        },
+          fractionUntilTimepoint: 0.5,
+        } as VehicleTimepointStatus,
         scheduledLocation: null,
         routeStatus: "on_route",
       },
@@ -406,6 +412,7 @@ describe("useVehicles", () => {
         speed: 50.0,
         blockId: "block-1",
         headwaySecs: 859.1,
+        headwaySpacing: "ok",
         previousVehicleId: "v2",
         scheduleAdherenceSecs: -61,
         scheduleAdherenceString: "0.0 sec (ontime)",
@@ -418,9 +425,9 @@ describe("useVehicles", () => {
           stopName: "Stop Name",
         },
         timepointStatus: {
-          fractionUntilTimepoint: 0.5,
           timepointId: "tp1",
-        },
+          fractionUntilTimepoint: 0.5,
+        } as VehicleTimepointStatus,
         scheduledLocation: null,
         routeStatus: "on_route",
       },
@@ -442,6 +449,7 @@ describe("useVehicles", () => {
         speed: 50.0,
         blockId: "block-1",
         headwaySecs: 859.1,
+        headwaySpacing: "ok",
         previousVehicleId: "v2",
         scheduleAdherenceSecs: 361,
         scheduleAdherenceString: "0.0 sec (ontime)",
@@ -454,9 +462,9 @@ describe("useVehicles", () => {
           stopName: "Stop Name",
         },
         timepointStatus: {
-          fractionUntilTimepoint: 0.5,
           timepointId: "tp1",
-        },
+          fractionUntilTimepoint: 0.5,
+        } as VehicleTimepointStatus,
         scheduledLocation: null,
         routeStatus: "on_route",
       },

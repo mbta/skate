@@ -58,6 +58,8 @@ defmodule SkateWeb.VehiclesChannelTest do
           operator_id: nil,
           operator_name: nil,
           run_id: nil,
+          headway_secs: 600,
+          headway_spacing: :ok,
           sources: MapSet.new(["swiftly"]),
           data_discrepancies: [],
           stop_status: %{

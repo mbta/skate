@@ -3,6 +3,7 @@ import { Dispatch as ReactDispatch, useEffect, useReducer } from "react"
 import {
   ByRouteId,
   DirectionId,
+  HeadwaySpacing,
   RouteId,
   ScheduleAdherenceStatus,
   Vehicle,
@@ -58,6 +59,7 @@ interface VehicleData {
   speed: number
   block_id: string
   headway_secs: number
+  headway_spacing: HeadwaySpacing
   previous_vehicle_id: string
   schedule_adherence_secs: number
   schedule_adherence_string: string
@@ -228,6 +230,7 @@ const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
   speed: vehicleData.speed,
   blockId: vehicleData.block_id,
   headwaySecs: vehicleData.headway_secs,
+  headwaySpacing: vehicleData.headway_spacing,
   previousVehicleId: vehicleData.previous_vehicle_id,
   scheduleAdherenceSecs: vehicleData.schedule_adherence_secs,
   scheduleAdherenceString: vehicleData.schedule_adherence_string,
