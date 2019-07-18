@@ -254,13 +254,11 @@ defmodule Realtime.Vehicle do
   end
 
   def scheduled_location(block, now) do
-    block_start = List.first(List.first(block).stop_times).time
-
     now_time_of_day =
       Util.Time.next_time_of_day_for_timestamp_after(
         now,
         # Allow a little wiggle room in case a bus appears just before its block starts
-        Util.Time.time_of_day_add_minutes(block_start, -60)
+        Util.Time.time_of_day_add_minutes(Block.start_time(block), -60)
       )
 
     trip = current_trip_on_block(block, now_time_of_day)
@@ -276,15 +274,12 @@ defmodule Realtime.Vehicle do
 
   @spec current_trip_on_block(Block.t(), Util.Time.time_of_day()) :: Trip.t()
   defp current_trip_on_block(block, now) do
-    block_start = List.first(List.first(block).stop_times).time
-    block_end = List.last(List.last(block).stop_times).time
-
     cond do
-      now <= block_start ->
+      now <= Block.start_time(block) ->
         # Block isn't scheduled to have started yet
         List.first(block)
 
-      now >= block_end ->
+      now >= Block.end_time(block) ->
         # Block is scheduled to have finished
         List.last(block)
 

@@ -25,6 +25,30 @@ defmodule Gtfs.Block do
     by_id[{block_id, service_id}]
   end
 
+  @doc """
+  Get the time of the first stop of the first trip for this block
+  """
+  @spec start_time(t()) :: Util.Time.time_of_day()
+  def start_time(block) do
+    block
+    |> List.first()
+    |> Map.get(:stop_times)
+    |> List.first()
+    |> Map.get(:time)
+  end
+
+  @doc """
+  Get the time of the last stop of the last trip for this block
+  """
+  @spec end_time(t()) :: Util.Time.time_of_day()
+  def end_time(block) do
+    block
+    |> List.last()
+    |> Map.get(:stop_times)
+    |> List.last()
+    |> Map.get(:time)
+  end
+
   @spec sort_trips_by_time([Trip.t()]) :: [Trip.t()]
   defp sort_trips_by_time(trips) do
     Enum.sort_by(

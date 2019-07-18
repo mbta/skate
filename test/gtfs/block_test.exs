@@ -19,42 +19,62 @@ defmodule Gtfs.BlockTest do
     ]
   }
 
-  test "can group trips and then get them" do
-    assert [@trip] ==
-             [@trip]
-             |> Block.group_trips_by_block()
-             |> Block.get(@trip.block_id, @trip.service_id)
+  describe "group_trips_by_block/ and get/3 " do
+    test "can group trips and then get them" do
+      assert [@trip] ==
+               [@trip]
+               |> Block.group_trips_by_block()
+               |> Block.get(@trip.block_id, @trip.service_id)
+    end
+
+    test "sorts trips by time" do
+      trips = [
+        %{
+          @trip
+          | id: "t2",
+            stop_times: [
+              %StopTime{stop_id: "s", time: 2}
+            ]
+        },
+        %{
+          @trip
+          | id: "t1",
+            stop_times: [
+              %StopTime{stop_id: "s", time: 1}
+            ]
+        }
+      ]
+
+      assert [%Trip{id: "t1"}, %Trip{id: "t2"}] =
+               trips
+               |> Block.group_trips_by_block()
+               |> Block.get("b", "service")
+    end
+
+    test "ignores trips without stop times" do
+      trips = [
+        %{@trip | stop_times: []}
+      ]
+
+      assert Block.group_trips_by_block(trips) == %{}
+    end
   end
 
-  test "sorts trips by time" do
-    trips = [
-      %{
-        @trip
-        | id: "t2",
-          stop_times: [
-            %StopTime{stop_id: "s", time: 2}
-          ]
-      },
-      %{
-        @trip
-        | id: "t1",
-          stop_times: [
-            %StopTime{stop_id: "s", time: 1}
-          ]
-      }
-    ]
-
-    assert [%Trip{id: "t1"}, %Trip{id: "t2"}] =
-             trips
-             |> Block.group_trips_by_block()
-             |> Block.get("b", "service")
+  describe "start_time/1" do
+    test "returns the time of the first stop of the first trip for this block" do
+      assert Block.start_time(block()) == 1
+    end
   end
 
-  test "ignores trips without stop times" do
-    trips = [
-      %{@trip | stop_times: []}
-    ]
+  describe "end_time/1" do
+    test "returns the time of the last stop of the last trip for this block" do
+      assert Block.end_time(block()) == 2
+    end
+  end
 
-    assert Block.group_trips_by_block(trips) == %{}
+  defp block() do
+    [@trip]
+    |> Block.group_trips_by_block()
+    |> Block.get(@trip.block_id, @trip.service_id)
   end
 end
