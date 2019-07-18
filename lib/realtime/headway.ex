@@ -87,29 +87,23 @@ defmodule Realtime.Headway do
 
   @spec parse_json_data(map()) :: key_route_headways()
   defp parse_json_data(json_data) do
-    json_data
-    |> Enum.map(fn {route_id, direction_origin_headways} ->
+    Map.new(json_data, fn {route_id, direction_origin_headways} ->
       {route_id, parse_direction_origin_headways(direction_origin_headways)}
     end)
-    |> Enum.into(%{})
   end
 
   @spec parse_direction_origin_headways(map()) :: direction_origin_headways()
   defp parse_direction_origin_headways(direction_origin_headways) do
-    direction_origin_headways
-    |> Enum.map(fn {direction_id, origin_headways} ->
+    Map.new(direction_origin_headways, fn {direction_id, origin_headways} ->
       {String.to_integer(direction_id), parse_origin_headways(origin_headways)}
     end)
-    |> Enum.into(%{})
   end
 
   @spec parse_origin_headways(map()) :: origin_headways()
   defp parse_origin_headways(origin_headways) do
-    origin_headways
-    |> Enum.map(fn {stop_id, time_period_headways} ->
+    Map.new(origin_headways, fn {stop_id, time_period_headways} ->
       {stop_id, parse_time_period_headways(time_period_headways)}
     end)
-    |> Enum.into(%{})
   end
 
   @spec parse_time_period_headways([map()]) :: [time_period_headway()]
