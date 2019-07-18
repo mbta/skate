@@ -45,10 +45,9 @@ defmodule Realtime.Headway do
           seconds() | nil
   def current_expected_headway_seconds(route_id, direction_id, origin_stop_id, date_time) do
     with {:ok, key_route_headways} <- data(),
-         {:ok, direction_origin_headways} <-
-           direction_origin_headways(key_route_headways, route_id),
-         {:ok, origin_headways} <- origin_headways(direction_origin_headways, direction_id),
-         {:ok, headways} <- headways(origin_headways, origin_stop_id),
+         {:ok, direction_origin_headways} <- Map.fetch(key_route_headways, route_id),
+         {:ok, origin_headways} <- Map.fetch(direction_origin_headways, direction_id),
+         {:ok, headways} <- Map.fetch(origin_headways, origin_stop_id),
          time_period <- TimePeriod.current(date_time),
          time_period_headway <- Enum.find(headways, &by_name(&1, time_period)) do
       if time_period_headway, do: time_in_seconds(time_period_headway.average_headway), else: nil
@@ -83,41 +82,6 @@ defmodule Realtime.Headway do
       key_route_headways = parse_json_data(json_data)
 
       {:ok, key_route_headways}
-    end
-  end
-
-  @spec direction_origin_headways(key_route_headways(), Route.id()) ::
-          {:ok, direction_origin_headways()} | {:error}
-  defp direction_origin_headways(key_route_headways, route_id) do
-    direction_origin_headways = Map.get(key_route_headways, route_id)
-
-    if direction_origin_headways != nil do
-      {:ok, direction_origin_headways}
-    else
-      {:error}
-    end
-  end
-
-  @spec origin_headways(direction_origin_headways(), Direction.id()) ::
-          {:ok, origin_headways()} | {:error}
-  defp origin_headways(direction_origin_headways, direction_id) do
-    origin_headways = Map.get(direction_origin_headways, direction_id)
-
-    if origin_headways != nil do
-      {:ok, origin_headways}
-    else
-      {:error}
-    end
-  end
-
-  @spec headways(origin_headways(), Stop.id()) :: {:ok, [time_period_headway()]} | {:error}
-  defp headways(origin_headways, origin_stop_id) do
-    headways = Map.get(origin_headways, origin_stop_id)
-
-    if headways != nil do
-      {:ok, headways}
-    else
-      {:error}
     end
   end
 

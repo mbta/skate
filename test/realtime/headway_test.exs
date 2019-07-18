@@ -70,7 +70,7 @@ defmodule Realtime.HeadwayTest do
                direction_id,
                origin_stop_id,
                monday_evening
-             ) == {:error}
+             ) == :error
     end
 
     test "returns error if the direction_id isn't found" do
@@ -84,7 +84,7 @@ defmodule Realtime.HeadwayTest do
                direction_id,
                origin_stop_id,
                monday_evening
-             ) == {:error}
+             ) == :error
     end
 
     test "returns error if the origin_stop_id isn't found" do
@@ -98,7 +98,7 @@ defmodule Realtime.HeadwayTest do
                direction_id,
                origin_stop_id,
                monday_evening
-             ) == {:error}
+             ) == :error
     end
   end
 
