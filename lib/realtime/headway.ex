@@ -77,7 +77,7 @@ defmodule Realtime.Headway do
 
   @spec data() :: {:ok, key_route_headways()}
   def data() do
-    filename = Path.join([File.cwd!(), "data", "key_route_headways.json"])
+    filename = Application.app_dir(:skate, "priv/data/key_route_headways.json")
 
     with {:ok, body} <- File.read(filename), {:ok, json_data} <- Jason.decode(body) do
       key_route_headways = parse_json_data(json_data)

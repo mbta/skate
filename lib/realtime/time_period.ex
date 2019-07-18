@@ -67,7 +67,7 @@ defmodule Realtime.TimePeriod do
 
   @spec data() :: [t()]
   def data() do
-    filename = Path.join([File.cwd!(), "data", "time_periods.json"])
+    filename = Application.app_dir(:skate, "priv/data/time_periods.json")
 
     with {:ok, body} <- File.read(filename),
          {:ok, json_data} <- Jason.decode(body) do
