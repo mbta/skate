@@ -23,23 +23,23 @@ defmodule Realtime.Headway do
   @type seconds :: non_neg_integer()
 
   @spec current_headway_spacing(seconds(), seconds()) :: headway_spacing()
-  def current_headway_spacing(headway_seconds, expected_headway_seconds)
+  def current_headway_spacing(expected_headway_seconds, headway_seconds)
       when headway_seconds / expected_headway_seconds >= 2,
       do: :very_gapped
 
-  def current_headway_spacing(headway_seconds, expected_headway_seconds)
+  def current_headway_spacing(expected_headway_seconds, headway_seconds)
       when headway_seconds / expected_headway_seconds >= 1.5,
       do: :gapped
 
-  def current_headway_spacing(headway_seconds, expected_headway_seconds)
+  def current_headway_spacing(expected_headway_seconds, headway_seconds)
       when headway_seconds / expected_headway_seconds <= 0.33,
       do: :very_bunched
 
-  def current_headway_spacing(headway_seconds, expected_headway_seconds)
+  def current_headway_spacing(expected_headway_seconds, headway_seconds)
       when headway_seconds / expected_headway_seconds <= 0.5,
       do: :bunched
 
-  def current_headway_spacing(_headway_seconds, _expected_headway_seconds), do: :ok
+  def current_headway_spacing(_expected_headway_seconds, _headway_seconds), do: :ok
 
   @spec current_expected_headway_seconds(Route.id(), Direction.id(), Stop.id(), DateTime.t()) ::
           seconds() | nil

@@ -7,7 +7,7 @@ defmodule Realtime.HeadwayTest do
       headway_seconds = 20
       expected_headway_seconds = 10
 
-      assert Headway.current_headway_spacing(headway_seconds, expected_headway_seconds) ==
+      assert Headway.current_headway_spacing(expected_headway_seconds, headway_seconds) ==
                :very_gapped
     end
 
@@ -15,7 +15,7 @@ defmodule Realtime.HeadwayTest do
       headway_seconds = 15
       expected_headway_seconds = 10
 
-      assert Headway.current_headway_spacing(headway_seconds, expected_headway_seconds) ==
+      assert Headway.current_headway_spacing(expected_headway_seconds, headway_seconds) ==
                :gapped
     end
 
@@ -23,7 +23,7 @@ defmodule Realtime.HeadwayTest do
       headway_seconds = 3.3
       expected_headway_seconds = 10
 
-      assert Headway.current_headway_spacing(headway_seconds, expected_headway_seconds) ==
+      assert Headway.current_headway_spacing(expected_headway_seconds, headway_seconds) ==
                :very_bunched
     end
 
@@ -31,7 +31,7 @@ defmodule Realtime.HeadwayTest do
       headway_seconds = 5
       expected_headway_seconds = 10
 
-      assert Headway.current_headway_spacing(headway_seconds, expected_headway_seconds) ==
+      assert Headway.current_headway_spacing(expected_headway_seconds, headway_seconds) ==
                :bunched
     end
 
@@ -39,7 +39,7 @@ defmodule Realtime.HeadwayTest do
       headway_seconds = 11
       expected_headway_seconds = 10
 
-      assert Headway.current_headway_spacing(headway_seconds, expected_headway_seconds) ==
+      assert Headway.current_headway_spacing(expected_headway_seconds, headway_seconds) ==
                :ok
     end
   end

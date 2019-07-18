@@ -164,15 +164,14 @@ defmodule Realtime.Vehicle do
 
     date_time_now_fn = Application.get_env(:realtime, :date_time_now_fn, &Timex.now/0)
 
-    expected_headway_seconds =
-      Headway.current_expected_headway_seconds(
-        route_id,
+    headway_spacing =
+      route_id
+      |> Headway.current_expected_headway_seconds(
         direction_id,
         origin_stop_id,
         date_time_now_fn.()
       )
-
-    headway_spacing = Headway.current_headway_spacing(headway_secs, expected_headway_seconds)
+      |> Headway.current_headway_spacing(headway_secs)
 
     %__MODULE__{
       id: VehiclePosition.id(vehicle_position),
