@@ -1,4 +1,6 @@
 defmodule Realtime.TimePeriod do
+  require Logger
+
   @type t :: %__MODULE__{
           time_period_id: String.t(),
           day_type_id: day_type(),
@@ -14,6 +16,34 @@ defmodule Realtime.TimePeriod do
   @type day_type :: :day_type_01 | :day_type_02 | :day_type_03
 
   @type seconds :: non_neg_integer()
+
+  @data [File.cwd!(), "data", "time_periods.json"]
+        |> Path.join()
+        |> File.read!()
+        |> Jason.decode!()
+        |> Enum.map(fn %{
+                         "time_period_id" => time_period_id,
+                         "day_type_id" => day_type_id,
+                         "time_period_sequence" => time_period_sequence,
+                         "time_period_type" => time_period_type,
+                         "time_period_name" => time_period_name,
+                         "time_period_start_time" => time_period_start_time,
+                         "time_period_end_time" => time_period_end_time,
+                         "time_period_start_time_sec" => time_period_start_time_sec,
+                         "time_period_end_time_sec" => time_period_end_time_sec
+                       } ->
+          [
+            time_period_id: time_period_id,
+            day_type_id: String.to_atom(day_type_id),
+            time_period_sequence: time_period_sequence,
+            time_period_type: time_period_type,
+            time_period_name: time_period_name,
+            time_period_start_time: time_period_start_time,
+            time_period_end_time: time_period_end_time,
+            time_period_start_time_sec: time_period_start_time_sec,
+            time_period_end_time_sec: time_period_end_time_sec
+          ]
+        end)
 
   defstruct [
     :time_period_id,
@@ -67,34 +97,7 @@ defmodule Realtime.TimePeriod do
 
   @spec data() :: [t()]
   def data() do
-    filename = Application.app_dir(:skate, "priv/data/time_periods.json")
-
-    with {:ok, body} <- File.read(filename),
-         {:ok, json_data} <- Jason.decode(body) do
-      Enum.map(json_data, fn %{
-                               "time_period_id" => time_period_id,
-                               "day_type_id" => day_type_id,
-                               "time_period_sequence" => time_period_sequence,
-                               "time_period_type" => time_period_type,
-                               "time_period_name" => time_period_name,
-                               "time_period_start_time" => time_period_start_time,
-                               "time_period_end_time" => time_period_end_time,
-                               "time_period_start_time_sec" => time_period_start_time_sec,
-                               "time_period_end_time_sec" => time_period_end_time_sec
-                             } ->
-        %__MODULE__{
-          time_period_id: time_period_id,
-          day_type_id: String.to_atom(day_type_id),
-          time_period_sequence: time_period_sequence,
-          time_period_type: time_period_type,
-          time_period_name: time_period_name,
-          time_period_start_time: time_period_start_time,
-          time_period_end_time: time_period_end_time,
-          time_period_start_time_sec: time_period_start_time_sec,
-          time_period_end_time_sec: time_period_end_time_sec
-        }
-      end)
-    end
+    Enum.map(@data, &struct(__MODULE__, &1))
   end
 
   @spec by_extended_day_time(t(), DateTime.t()) :: boolean
