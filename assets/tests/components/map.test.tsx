@@ -1,7 +1,7 @@
 import Leaflet from "leaflet"
 import React from "react"
 import renderer from "react-test-renderer"
-import Map, { mapOptions, updateMap } from "../../src/components/map"
+import Map, { updateMap } from "../../src/components/map"
 
 describe("map", () => {
   test("renders", () => {
@@ -24,7 +24,7 @@ describe("map", () => {
 describe("updateMap", () => {
   test("updates lat/lng values for map & markers", () => {
     document.body.innerHTML = "<div id='map'></div>"
-    const map = Leaflet.map("map", mapOptions)
+    const map = Leaflet.map("map", {})
     const vehicleIcon = Leaflet.marker([43, -72]).addTo(map)
     const vehicleLabel = Leaflet.marker([43, -72])
     updateMap(
