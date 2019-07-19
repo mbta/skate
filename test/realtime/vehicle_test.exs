@@ -132,6 +132,7 @@ defmodule Realtime.VehicleTest do
         headway_secs: 900,
         headway_spacing: :ok,
         is_off_course: false,
+        block_is_active: true,
         sources: MapSet.new(["swiftly", "busloc"]),
         data_discrepancies: [
           %DataDiscrepancy{
@@ -226,6 +227,7 @@ defmodule Realtime.VehicleTest do
         headway_secs: 600,
         headway_spacing: :ok,
         is_off_course: false,
+        block_is_active: true,
         sources: MapSet.new(["swiftly"]),
         data_discrepancies: [],
         stop_status: %{
@@ -351,6 +353,68 @@ defmodule Realtime.VehicleTest do
       ]
 
       refute Vehicle.off_course?(data_discrepancies)
+    end
+  end
+
+  describe "active_block?" do
+    setup do
+      block = [
+        %Trip{
+          id: "1",
+          route_id: "28",
+          service_id: "service",
+          headsign: "headsign",
+          direction_id: 1,
+          block_id: "S28-2",
+          route_pattern_id: "28-_-1",
+          stop_times: [
+            %StopTime{
+              stop_id: "6553",
+              time: Util.Time.parse_hhmmss("11:01:00"),
+              timepoint_id: "tp1"
+            },
+            %StopTime{
+              stop_id: "6555",
+              time: Util.Time.parse_hhmmss("11:59:00"),
+              timepoint_id: "tp2"
+            }
+          ]
+        }
+      ]
+
+      {:ok, block: block}
+    end
+
+    test "returns true if the vehicle is not off course", %{block: block} do
+      is_off_course = false
+      # 2019-01-01 12:00:00 EST
+      now = 1_546_362_000
+
+      assert Vehicle.active_block?(is_off_course, block, now)
+    end
+
+    test "returtns false if the block ended more than an hour ago", %{block: block} do
+      is_off_course = true
+      # 2019-01-01 13:00:00 EST
+      now = 1_546_365_600
+
+      refute Vehicle.active_block?(is_off_course, block, now)
+    end
+
+    test "returtns true if the block ended less than an hour ago", %{block: block} do
+      is_off_course = true
+      # 2019-01-01 12:30:00 EST
+      now = 1_546_363_800
+
+      assert Vehicle.active_block?(is_off_course, block, now)
+    end
+
+    test "returtns true if the block ends in the future", %{block: block} do
+      is_off_course = true
+      # 2019-01-01 11:30:00 EST
+      now = 1_546_358_400
+
+      assert Vehicle.active_block?(is_off_course, block, now)
     end
   end
 
@@ -721,6 +785,7 @@ defmodule Realtime.VehicleTest do
         headway_secs: 600,
         headway_spacing: :ok,
         is_off_course: false,
+        block_is_active: true,
         sources: MapSet.new(["swiftly", "busloc"]),
         data_discrepancies: [
           %DataDiscrepancy{
@@ -748,10 +813,14 @@ defmodule Realtime.VehicleTest do
         route_status: :on_route
       }
 
-      expected_json =
-        "{\"run_id\":\"138-1038\",\"data_discrepancies\":[{\"attribute\":\"trip_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":\"swiftly-trip-id\"},{\"id\":\"busloc\",\"value\":\"busloc-trip-id\"}]},{\"attribute\":\"route_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":null},{\"id\":\"busloc\",\"value\":\"busloc-route-id\"}]}],\"label\":\"1261\",\"latitude\":42.31777347,\"is_off_course\":false,\"bearing\":0,\"scheduled_location\":null,\"operator_id\":\"72032\",\"via_variant\":\"_\",\"schedule_adherence_string\":null,\"direction_id\":1,\"block_id\":\"S28-2\",\"trip_id\":\"39984755\",\"sources\":[\"busloc\",\"swiftly\"],\"operator_name\":\"MAUPIN\",\"stop_sequence\":25,\"previous_vehicle_schedule_adherence_secs\":null,\"headway_spacing\":\"ok\",\"route_status\":\"on_route\",\"timepoint_status\":null,\"headway_secs\":600,\"longitude\":-71.08206019,\"headsign\":\"headsign\",\"previous_vehicle_schedule_adherence_string\":null,\"route_id\":\"28\",\"schedule_adherence_secs\":null,\"timestamp\":1558364020,\"scheduled_headway_secs\":null,\"stop_status\":{\"status\":\"in_transit_to\",\"stop_id\":\"392\",\"stop_name\":\"392\"},\"id\":\"y1261\",\"previous_vehicle_id\":null,\"speed\":0.0}"
+      encoded_string = Jason.encode!(vehicle)
 
-      assert Jason.encode!(vehicle) == expected_json
+      assert encoded_string =~ "\"id\":\"y1261\""
+
+      assert encoded_string =~ "\"route_id\":\"28\""
+
+      assert encoded_string =~
+               "\"data_discrepancies\":[{\"attribute\":\"trip_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":\"swiftly-trip-id\"},{\"id\":\"busloc\",\"value\":\"busloc-trip-id\"}]},{\"attribute\":\"route_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":null},{\"id\":\"busloc\",\"value\":\"busloc-route-id\"}]}]"
     end
   end
 end

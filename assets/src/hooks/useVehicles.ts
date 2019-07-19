@@ -65,6 +65,7 @@ interface VehicleData {
   schedule_adherence_string: string
   scheduled_headway_secs: number
   is_off_course: boolean
+  block_is_active: boolean
   sources: string[]
   data_discrepancies: DataDiscrepancyData[]
   stop_status: VehicleStopStatusData
@@ -240,6 +241,7 @@ const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
   ),
   scheduledHeadwaySecs: vehicleData.scheduled_headway_secs,
   isOffCourse: vehicleData.is_off_course,
+  blockIsActive: vehicleData.block_is_active,
   dataDiscrepancies: dataDiscrepanciesFromData(vehicleData.data_discrepancies),
   stopStatus: vehicleStopStatusFromData(vehicleData.stop_status),
   timepointStatus:

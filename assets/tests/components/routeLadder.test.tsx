@@ -87,6 +87,7 @@ describe("routeLadder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
@@ -125,6 +126,7 @@ describe("routeLadder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
@@ -192,6 +194,7 @@ describe("routeLadder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
@@ -230,6 +233,7 @@ describe("routeLadder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
@@ -366,6 +370,7 @@ describe("routeLadder", () => {
       scheduleAdherenceStatus: "on-time",
       scheduledHeadwaySecs: 120,
       isOffCourse: false,
+      blockIsActive: true,
       dataDiscrepancies: [],
       stopStatus: {
         status: "in_transit_to",

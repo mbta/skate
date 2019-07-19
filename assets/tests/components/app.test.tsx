@@ -147,6 +147,7 @@ const vehicle: Vehicle = {
   scheduleAdherenceStatus: "on-time",
   scheduledHeadwaySecs: 120,
   isOffCourse: false,
+  blockIsActive: false,
   dataDiscrepancies: [],
   stopStatus: {
     status: "in_transit_to",

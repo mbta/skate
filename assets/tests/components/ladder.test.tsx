@@ -40,6 +40,7 @@ describe("ladder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
@@ -78,6 +79,7 @@ describe("ladder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
@@ -122,6 +124,7 @@ describe("ladder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
@@ -130,6 +133,110 @@ describe("ladder", () => {
         },
         timepointStatus: null,
         scheduledLocation: null,
+        routeStatus: "on_route",
+      },
+    ]
+    const ladderDirection = LadderDirection.ZeroToOne
+
+    const tree = renderer
+      .create(
+        <Ladder
+          timepoints={timepoints}
+          vehicles={vehicles}
+          ladderDirection={ladderDirection}
+          selectedVehicleId={undefined}
+        />
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("filters out vehicles whose block is not active", () => {
+    const timepoints = [{ id: "t0" }, { id: "t1" }, { id: "t2" }]
+    const vehicles: Vehicle[] = [
+      {
+        id: "upward",
+        label: "upward",
+        runId: "run-1",
+        timestamp: 0,
+        latitude: 0,
+        longitude: 0,
+        directionId: 0,
+        routeId: "route",
+        tripId: "trip",
+        headsign: null,
+        viaVariant: null,
+        operatorId: "op1",
+        operatorName: "SMITH",
+        bearing: 33,
+        speed: 50.0,
+        blockId: "block-1",
+        headwaySecs: 859.1,
+        headwaySpacing: "ok",
+        previousVehicleId: "v2",
+        scheduleAdherenceSecs: 0,
+        scheduleAdherenceString: "0.0 sec (ontime)",
+        scheduleAdherenceStatus: "on-time",
+        scheduledHeadwaySecs: 120,
+        isOffCourse: false,
+        blockIsActive: false,
+        dataDiscrepancies: [],
+        stopStatus: {
+          status: "in_transit_to",
+          stopId: "stop",
+          stopName: "stop",
+        },
+        timepointStatus: {
+          fractionUntilTimepoint: 0.5,
+          timepointId: "t1",
+        },
+        scheduledLocation: null,
+        routeStatus: "on_route",
+      },
+      {
+        id: "downward",
+        label: "downward",
+        runId: "run-2",
+        timestamp: 0,
+        latitude: 0,
+        longitude: 0,
+        directionId: 1,
+        routeId: "route",
+        tripId: "trip",
+        headsign: null,
+        viaVariant: null,
+        operatorId: "op2",
+        operatorName: "JONES",
+        bearing: 33,
+        speed: 50.0,
+        blockId: "block-1",
+        headwaySecs: 859.1,
+        headwaySpacing: "ok",
+        previousVehicleId: "v2",
+        scheduleAdherenceSecs: 0,
+        scheduleAdherenceString: "0.0 sec (ontime)",
+        scheduleAdherenceStatus: "on-time",
+        scheduledHeadwaySecs: 120,
+        isOffCourse: false,
+        blockIsActive: true,
+        dataDiscrepancies: [],
+        stopStatus: {
+          status: "in_transit_to",
+          stopId: "stop",
+          stopName: "stop",
+        },
+        timepointStatus: {
+          fractionUntilTimepoint: 0.75,
+          timepointId: "t2",
+        },
+        scheduledLocation: {
+          directionId: 0,
+          timepointStatus: {
+            timepointId: "t2",
+            fractionUntilTimepoint: 0.75,
+          },
+        },
         routeStatus: "on_route",
       },
     ]
@@ -177,6 +284,7 @@ describe("ladder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
@@ -240,6 +348,7 @@ describe("ladder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
@@ -278,6 +387,7 @@ describe("ladder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
@@ -343,6 +453,7 @@ describe("ladder", () => {
       scheduleAdherenceStatus: "on-time",
       scheduledHeadwaySecs: 120,
       isOffCourse: false,
+      blockIsActive: true,
       dataDiscrepancies: [],
       stopStatus: {
         status: "in_transit_to",
@@ -402,6 +513,7 @@ describe("ladder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
@@ -460,6 +572,7 @@ describe("ladder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
@@ -522,6 +635,7 @@ describe("ladder", () => {
       scheduleAdherenceStatus: "on-time",
       scheduledHeadwaySecs: 120,
       isOffCourse: true,
+      blockIsActive: true,
       dataDiscrepancies: [
         {
           attribute: "trip_id",

@@ -33,6 +33,7 @@ const vehicle: Vehicle = {
   scheduleAdherenceStatus: "on-time",
   scheduledHeadwaySecs: 120,
   isOffCourse: false,
+  blockIsActive: false,
   dataDiscrepancies: [
     {
       attribute: "trip_id",

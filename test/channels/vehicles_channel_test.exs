@@ -61,6 +61,7 @@ defmodule SkateWeb.VehiclesChannelTest do
           headway_secs: 600,
           headway_spacing: :ok,
           is_off_course: false,
+          block_is_active: true,
           sources: MapSet.new(["swiftly"]),
           data_discrepancies: [],
           stop_status: %{

@@ -26,6 +26,7 @@ describe("useVehicles", () => {
     {
       bearing: 33,
       block_id: "block-1",
+      block_is_active: true,
       data_discrepancies: [
         {
           attribute: "trip_id",
@@ -121,6 +122,7 @@ describe("useVehicles", () => {
       scheduleAdherenceStatus: "on-time",
       scheduledHeadwaySecs: 120,
       isOffCourse: false,
+      blockIsActive: true,
       dataDiscrepancies: [
         {
           attribute: "trip_id",
@@ -246,6 +248,7 @@ describe("useVehicles", () => {
       {
         bearing: 33,
         block_id: "block-1",
+        block_is_active: true,
         data_discrepancies: [],
         direction_id: 0,
         headsign: "Forest Hills",
@@ -285,6 +288,7 @@ describe("useVehicles", () => {
       {
         bearing: 33,
         block_id: "block-1",
+        block_is_active: false,
         data_discrepancies: [],
         direction_id: 0,
         headsign: "Forest Hills",
@@ -324,6 +328,7 @@ describe("useVehicles", () => {
       {
         bearing: 33,
         block_id: "block-1",
+        block_is_active: true,
         data_discrepancies: [],
         direction_id: 0,
         headsign: "Forest Hills",
@@ -387,6 +392,7 @@ describe("useVehicles", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
@@ -425,6 +431,7 @@ describe("useVehicles", () => {
         scheduleAdherenceStatus: "early",
         scheduledHeadwaySecs: 120,
         isOffCourse: true,
+        blockIsActive: false,
         dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
@@ -463,6 +470,7 @@ describe("useVehicles", () => {
         scheduleAdherenceStatus: "late",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",

@@ -54,6 +54,7 @@ defmodule Realtime.Vehicle do
           schedule_adherence_string: String.t() | nil,
           scheduled_headway_secs: float() | nil,
           is_off_course: boolean(),
+          block_is_active: boolean(),
           sources: MapSet.t(String.t()),
           data_discrepancies: [DataDiscrepancy.t()],
           stop_status: stop_status(),
@@ -80,6 +81,7 @@ defmodule Realtime.Vehicle do
     :run_id,
     :headway_spacing,
     :is_off_course,
+    :block_is_active,
     :sources,
     :stop_status,
     :route_status
@@ -114,6 +116,7 @@ defmodule Realtime.Vehicle do
     :schedule_adherence_string,
     :scheduled_headway_secs,
     :is_off_course,
+    :block_is_active,
     :sources,
     :stop_status,
     :timepoint_status,
@@ -177,6 +180,7 @@ defmodule Realtime.Vehicle do
       |> Headway.current_headway_spacing(headway_secs)
 
     data_discrepancies = VehiclePosition.data_discrepancies(vehicle_position)
+    is_off_course = off_course?(data_discrepancies)
 
     %__MODULE__{
       id: VehiclePosition.id(vehicle_position),
@@ -206,7 +210,8 @@ defmodule Realtime.Vehicle do
       schedule_adherence_secs: VehiclePosition.schedule_adherence_secs(vehicle_position),
       schedule_adherence_string: VehiclePosition.schedule_adherence_string(vehicle_position),
       scheduled_headway_secs: VehiclePosition.scheduled_headway_secs(vehicle_position),
-      is_off_course: off_course?(data_discrepancies),
+      is_off_course: is_off_course,
+      block_is_active: active_block?(is_off_course, block, now_fn.()),
       sources: VehiclePosition.sources(vehicle_position),
       data_discrepancies: data_discrepancies,
       stop_status: %{
@@ -220,6 +225,11 @@ defmodule Realtime.Vehicle do
     }
   end
 
+  @doc """
+  Does this vehicle have a trip assignment from Busloc, but not from Swiftly?
+  That is a sign that Swiftly thinks the vehicle is off course, or not on any
+  trip for some other reason.
+  """
   @spec off_course?([DataDiscrepancy.t()] | DataDiscrepancy.t()) :: boolean
   def off_course?(data_discrepancies) when is_list(data_discrepancies) do
     trip_id_discrepency =
@@ -240,6 +250,22 @@ defmodule Realtime.Vehicle do
       _ ->
         false
     end
+  end
+
+  @doc """
+  Check whether the vehicle is off course. If so, check if the assigned block
+  was scheduled to end over an hour ago. We give the buffer so that we don't
+  tag a bus that is on a detour and late, and should thus still be shown on the
+  route ladder.
+  """
+  @spec active_block?(boolean(), Block.t(), Util.Time.timestamp()) :: boolean()
+  def active_block?(false, _block, _now), do: true
+
+  def active_block?(true, block, now) do
+    one_hour_in_seconds = 1 * 60 * 60
+    now_time_of_day = Util.Time.time_of_day_for_timestamp(now, Util.Time.date_of_timestamp(now))
+
+    now_time_of_day - Block.end_time(block) <= one_hour_in_seconds
   end
 
   @spec timepoint_status([StopTime.t()], Stop.id()) :: timepoint_status() | nil
