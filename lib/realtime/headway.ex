@@ -1,5 +1,4 @@
 defmodule Realtime.Headway do
-  require Logger
   alias Gtfs.{Direction, Route, Stop}
   alias Realtime.TimePeriod
 
