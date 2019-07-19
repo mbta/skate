@@ -73,20 +73,6 @@ export const updateMap = (
   vehicleLabel.setIcon(label)
 }
 
-// exported for tests only.
-export const mapOptions = {
-  layers: [
-    Leaflet.tileLayer(
-      `https://mbta-map-tiles-dev.s3.amazonaws.com/osm_tiles/{z}/{x}/{y}.png`,
-      {
-        attribution:
-          '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      }
-    ),
-  ],
-  zoom: 16,
-}
-
 const Map = (props: Props): ReactElement<HTMLDivElement> => {
   const containerRef: MutableRefObject<HTMLDivElement | null> = useRef(null)
   const [state, updateState] = useState<State>({
@@ -100,7 +86,20 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
       return
     }
 
-    const map = state.map || Leaflet.map(containerRef.current, mapOptions)
+    const map =
+      state.map ||
+      Leaflet.map(containerRef.current, {
+        layers: [
+          Leaflet.tileLayer(
+            `https://mbta-map-tiles-dev.s3.amazonaws.com/osm_tiles/{z}/{x}/{y}.png`,
+            {
+              attribution:
+                '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+            }
+          ),
+        ],
+        zoom: 16,
+      })
 
     const vehicleIcon =
       state.vehicleIcon ||
