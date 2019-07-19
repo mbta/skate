@@ -237,7 +237,7 @@ Array [
       width={184}
     >
       <line
-        className="m-ladder__scheduled-line on-time"
+        className="m-ladder__scheduled-line "
         x1={-63}
         x2={-40}
         y1={420}
@@ -481,7 +481,7 @@ Array [
       width={184}
     >
       <line
-        className="m-ladder__scheduled-line on-time"
+        className="m-ladder__scheduled-line "
         x1={-63}
         x2={-40}
         y1={420}

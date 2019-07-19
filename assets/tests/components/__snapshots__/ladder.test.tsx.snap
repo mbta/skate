@@ -11,7 +11,7 @@ exports[`ladder highlights a selected vehicle 1`] = `
     width={184}
   >
     <line
-      className="m-ladder__scheduled-line on-time"
+      className="m-ladder__scheduled-line "
       x1={-63}
       x2={40}
       y1={262.5}
@@ -201,7 +201,7 @@ exports[`ladder renders a ladder 1`] = `
     width={184}
   >
     <line
-      className="m-ladder__scheduled-line on-time"
+      className="m-ladder__scheduled-line "
       x1={-63}
       x2={40}
       y1={262.5}
@@ -511,7 +511,7 @@ exports[`ladder renders a reversed ladder 1`] = `
     width={184}
   >
     <line
-      className="m-ladder__scheduled-line on-time"
+      className="m-ladder__scheduled-line "
       x1={63}
       x2={40}
       y1={315}
@@ -805,7 +805,7 @@ exports[`ladder shows schedule line in the other direction 1`] = `
     width={184}
   >
     <line
-      className="m-ladder__scheduled-line on-time"
+      className="m-ladder__scheduled-line "
       x1={-63}
       x2={40}
       y1={-157.5}
