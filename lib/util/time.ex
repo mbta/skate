@@ -82,11 +82,7 @@ defmodule Util.Time do
   """
   @spec next_time_of_day_for_timestamp_after(timestamp(), time_of_day()) :: time_of_day()
   def next_time_of_day_for_timestamp_after(timestamp, day_start) do
-    date_of_timestamp =
-      timestamp
-      |> DateTime.from_unix!(:second)
-      |> Timex.Timezone.convert("America/New_York")
-      |> DateTime.to_date()
+    date_of_timestamp = date_of_timestamp(timestamp)
 
     on_same_date = time_of_day_for_timestamp(timestamp, date_of_timestamp)
 
@@ -120,16 +116,6 @@ defmodule Util.Time do
     seconds_after_noon + 12 * 60 * 60
   end
 
-  @spec noon_on_date(Date.t()) :: timestamp()
-  defp noon_on_date(date) do
-    # Convert to datetime on the next date and shift back to ignore daylight saving time jumps.
-    date
-    |> Timex.shift(days: 1)
-    |> Timex.to_datetime("America/New_York")
-    |> Timex.shift(hours: -12)
-    |> Timex.to_unix()
-  end
-
   @doc """
     iex> Util.Time.time_of_day_add_minutes(
     ...>   36000, # 10:00:00
@@ -146,5 +132,29 @@ defmodule Util.Time do
   @spec time_of_day_add_minutes(time_of_day(), integer()) :: time_of_day()
   def time_of_day_add_minutes(time_of_day, minutes) do
     time_of_day + 60 * minutes
+  end
+
+  @doc """
+  Converts a timestamp into a Date.
+
+  iex> Util.Time.date_of_timestamp(1546362000)
+  ~D[2019-01-01]
+  """
+  @spec date_of_timestamp(timestamp()) :: Date.t()
+  def date_of_timestamp(timestamp) do
+    timestamp
+    |> DateTime.from_unix!(:second)
+    |> Timex.Timezone.convert("America/New_York")
+    |> DateTime.to_date()
+  end
+
+  @spec noon_on_date(Date.t()) :: timestamp()
+  defp noon_on_date(date) do
+    # Convert to datetime on the next date and shift back to ignore daylight saving time jumps.
+    date
+    |> Timex.shift(days: 1)
+    |> Timex.to_datetime("America/New_York")
+    |> Timex.shift(hours: -12)
+    |> Timex.to_unix()
   end
 end
