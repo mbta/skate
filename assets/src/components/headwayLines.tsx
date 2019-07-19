@@ -7,7 +7,7 @@ interface Props {
   ladderVehicles: LadderVehicle[]
 }
 
-const headwayClass = (spacing: HeadwaySpacing | null): string =>
+const headwayClass = (spacing: HeadwaySpacing): string =>
   spacing ? `m-ladder__headway-line--${spacing.replace("_", "-")}` : ""
 
 const drawHeadwayLine = (
