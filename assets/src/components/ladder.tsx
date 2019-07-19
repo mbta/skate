@@ -128,6 +128,7 @@ const VehicleSvg = ({
   ladderVehicle: {
     vehicleId,
     label,
+    headwaySpacing,
     viaVariant,
     status,
     x,
@@ -141,11 +142,13 @@ const VehicleSvg = ({
 }) => {
   const dispatch = useContext(DispatchContext)
   const selectedClass = vehicleId === selectedVehicleId ? "selected" : ""
+  const statusClass =
+    headwaySpacing === null || status === "off-course" ? status : ""
 
   return (
     <g>
       <g
-        className={`m-ladder__vehicle ${status} ${selectedClass}`}
+        className={`m-ladder__vehicle ${statusClass} ${selectedClass}`}
         transform={`translate(${x},${y})`}
         onClick={() => dispatch(selectVehicle(vehicleId))}
       >
