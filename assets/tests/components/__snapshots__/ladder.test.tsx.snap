@@ -119,7 +119,7 @@ exports[`ladder highlights a selected vehicle 1`] = `
                   m-ladder__headway-line--ok"
         x1={40}
         x2={40}
-        y1={262.5}
+        y1={0}
         y2={315}
       />
     </g>

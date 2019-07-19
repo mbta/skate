@@ -354,7 +354,7 @@ Array [
                   m-ladder__headway-line--ok"
           x1={40}
           x2={40}
-          y1={420}
+          y1={0}
           y2={105}
         />
       </g>
@@ -598,7 +598,7 @@ Array [
                   m-ladder__headway-line--ok"
           x1={40}
           x2={40}
-          y1={420}
+          y1={0}
           y2={105}
         />
       </g>

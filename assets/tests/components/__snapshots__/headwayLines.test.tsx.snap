@@ -19,7 +19,7 @@ exports[`HeadwayLines renders 1`] = `
                   m-ladder__headway-line--bunched"
     x1={40}
     x2={40}
-    y1={300}
+    y1={0}
     y2={100}
   />
   <line
