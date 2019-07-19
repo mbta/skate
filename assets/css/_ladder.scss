@@ -10,6 +10,7 @@
 .m-ladder__line {
   fill: none;
   stroke: $color-line-normal;
+  stroke-linecap: round;
   stroke-width: 7;
 }
 
@@ -33,8 +34,6 @@
 
 .m-ladder__stop-circle {
   fill: $white;
-  stroke: $color-line-normal;
-  stroke-width: 1;
 }
 
 .m-ladder__timepoint-name {
