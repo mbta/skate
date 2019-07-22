@@ -23,7 +23,7 @@ const drawHeadwayLine = (
   const [currentVehicle, ...rest] = ladderVehicles
 
   if (currentVehicle.status === "off-course") {
-    return acc
+    return drawHeadwayLine(rest, yStart, acc)
   }
 
   const centerToLine =
