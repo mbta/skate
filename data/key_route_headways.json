@@ -64,7 +64,7 @@
         { "time_period_name": "SATURDAY", "average_headway": "00:18:20" },
         { "time_period_name": "SUNDAY", "average_headway": "00:20:30" }
       ],
-      "64000": [
+      "64": [
         { "time_period_name": "MIDDAY_SCHOOL", "average_headway": "00:08:00" }
       ]
     },
@@ -205,9 +205,7 @@
       "390": [
         { "time_period_name": "MIDDAY_SCHOOL", "average_headway": "00:06:00" }
       ],
-      "64000": [
-        { "time_period_name": "EARLY_AM", "average_headway": "00:03:00" }
-      ]
+      "64": [{ "time_period_name": "EARLY_AM", "average_headway": "00:03:00" }]
     }
   },
   "28": {
@@ -419,7 +417,7 @@
   },
   "66": {
     "0": {
-      "64000": [
+      "64": [
         { "time_period_name": "AM_PEAK", "average_headway": "00:08:17" },
         { "time_period_name": "EARLY_AM", "average_headway": "00:03:32" },
         { "time_period_name": "EVENING", "average_headway": "00:15:09" },
@@ -924,7 +922,7 @@
       ]
     },
     "1": {
-      "64000": [
+      "64": [
         { "time_period_name": "AM_PEAK", "average_headway": "00:08:00" },
         { "time_period_name": "EARLY_AM", "average_headway": "00:08:00" },
         { "time_period_name": "EVENING", "average_headway": "00:08:30" },
@@ -962,7 +960,7 @@
       ]
     },
     "1": {
-      "64000": [
+      "64": [
         { "time_period_name": "AM_PEAK", "average_headway": "00:12:00" },
         { "time_period_name": "EARLY_AM", "average_headway": "00:12:00" },
         { "time_period_name": "EVENING", "average_headway": "00:12:04" },
