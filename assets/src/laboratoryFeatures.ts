@@ -8,6 +8,10 @@ const featureIsEnabled = (key: string): boolean => {
   }
 
   const features = JSON.parse(data.laboratoryFeatures)
+  if (features[key] === undefined) {
+    return false
+  }
+
   return features[key]
 }
 
