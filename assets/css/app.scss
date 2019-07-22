@@ -1,14 +1,19 @@
+$tab-bar-width: 3rem;
+
 @import "base";
 @import "inter_ui";
 @import "ui_kit";
 
 @import "close_button";
+@import "faq";
 @import "incoming_box";
 @import "ladder";
+@import "page";
 @import "route_ladder";
 @import "route_ladders";
 @import "route_picker";
 @import "route_filter";
+@import "tab_bar";
 @import "vehicle_icon";
 @import "vehicle_properties_panel";
 @import "vehicle_map";

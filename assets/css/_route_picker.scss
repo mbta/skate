@@ -4,7 +4,7 @@
   flex-direction: column;
   height: 100%;
   // Required for pinning to the left side of the screen on the tablets
-  left: inherit;
+  left: $tab-bar-width;
   padding: 1rem;
   position: fixed;
   top: inherit;
@@ -13,11 +13,11 @@
   z-index: 1;
 
   &.visible {
-    left: 0;
+    left: $tab-bar-width;
   }
 
   &.hidden {
-    left: -9.5rem;
+    left: $tab-bar-width - 9.5rem;
   }
 }
 
