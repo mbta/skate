@@ -31,6 +31,17 @@ config :skate, SkateWeb.AuthManager,
 
 config :skate, record_fullstory: false
 
+config :laboratory,
+  features: [
+    {:headway_ladder_colors, "Headway Route Ladder Colors",
+     "Turns on colored headway spacing lines on key route route ladders showing when service is bunched or gapped."}
+  ],
+  cookie: [
+    # one month,
+    max_age: 3600 * 24 * 30,
+    http_only: true
+  ]
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
