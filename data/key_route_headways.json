@@ -417,7 +417,7 @@
   },
   "66": {
     "0": {
-      "64": [
+      "64000": [
         { "time_period_name": "AM_PEAK", "average_headway": "00:08:17" },
         { "time_period_name": "EARLY_AM", "average_headway": "00:03:32" },
         { "time_period_name": "EVENING", "average_headway": "00:15:09" },
