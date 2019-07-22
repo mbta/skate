@@ -131,6 +131,7 @@ defmodule Realtime.VehicleTest do
         run_id: "138-1038",
         headway_secs: 900,
         headway_spacing: :ok,
+        is_off_course: false,
         sources: MapSet.new(["swiftly", "busloc"]),
         data_discrepancies: [
           %DataDiscrepancy{
@@ -224,6 +225,7 @@ defmodule Realtime.VehicleTest do
         run_id: "138-1038",
         headway_secs: 600,
         headway_spacing: :ok,
+        is_off_course: false,
         sources: MapSet.new(["swiftly"]),
         data_discrepancies: [],
         stop_status: %{
@@ -293,6 +295,62 @@ defmodule Realtime.VehicleTest do
       result = Vehicle.from_vehicle_position_and_trip_update(vehicle_position, trip_update)
 
       assert %Vehicle{} = result
+    end
+  end
+
+  describe "off_course?/2" do
+    test "returns true if there is a trip_id data discrepancy where swiftly is null and busloc has a value" do
+      data_discrepancies = [
+        %DataDiscrepancy{
+          attribute: :trip_id,
+          sources: [
+            %{id: "swiftly", value: nil},
+            %{id: "busloc", value: "busloc-trip-id"}
+          ]
+        }
+      ]
+
+      assert Vehicle.off_course?(data_discrepancies)
+    end
+
+    test "returns false if the swiftly defined a value" do
+      data_discrepancies = [
+        %DataDiscrepancy{
+          attribute: "trip_id",
+          sources: [
+            %{
+              id: "swiftly",
+              value: "swiftly-trip-id"
+            },
+            %{
+              id: "busloc",
+              value: "busloc-trip-id"
+            }
+          ]
+        }
+      ]
+
+      refute Vehicle.off_course?(data_discrepancies)
+    end
+
+    test "returns false if there isn't a trip_id data discrepancy" do
+      data_discrepancies = [
+        %DataDiscrepancy{
+          attribute: "route_id",
+          sources: [
+            %{
+              id: "swiftly",
+              value: "swiftly-route-id"
+            },
+            %{
+              id: "busloc",
+              value: "busloc-route-id"
+            }
+          ]
+        }
+      ]
+
+      refute Vehicle.off_course?(data_discrepancies)
     end
   end
 
@@ -662,6 +720,7 @@ defmodule Realtime.VehicleTest do
         run_id: "138-1038",
         headway_secs: 600,
         headway_spacing: :ok,
+        is_off_course: false,
         sources: MapSet.new(["swiftly", "busloc"]),
         data_discrepancies: [
           %DataDiscrepancy{
@@ -690,7 +749,7 @@ defmodule Realtime.VehicleTest do
       }
 
       expected_json =
-        "{\"bearing\":0,\"block_id\":\"S28-2\",\"data_discrepancies\":[{\"attribute\":\"trip_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":\"swiftly-trip-id\"},{\"id\":\"busloc\",\"value\":\"busloc-trip-id\"}]},{\"attribute\":\"route_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":null},{\"id\":\"busloc\",\"value\":\"busloc-route-id\"}]}],\"direction_id\":1,\"headsign\":\"headsign\",\"headway_secs\":600,\"headway_spacing\":\"ok\",\"id\":\"y1261\",\"label\":\"1261\",\"latitude\":42.31777347,\"longitude\":-71.08206019,\"operator_id\":\"72032\",\"operator_name\":\"MAUPIN\",\"previous_vehicle_id\":null,\"previous_vehicle_schedule_adherence_secs\":null,\"previous_vehicle_schedule_adherence_string\":null,\"route_id\":\"28\",\"route_status\":\"on_route\",\"run_id\":\"138-1038\",\"schedule_adherence_secs\":null,\"schedule_adherence_string\":null,\"scheduled_headway_secs\":null,\"scheduled_location\":null,\"sources\":[\"busloc\",\"swiftly\"],\"speed\":0.0,\"stop_sequence\":25,\"stop_status\":{\"status\":\"in_transit_to\",\"stop_id\":\"392\",\"stop_name\":\"392\"},\"timepoint_status\":null,\"timestamp\":1558364020,\"trip_id\":\"39984755\",\"via_variant\":\"_\"}"
+        "{\"run_id\":\"138-1038\",\"data_discrepancies\":[{\"attribute\":\"trip_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":\"swiftly-trip-id\"},{\"id\":\"busloc\",\"value\":\"busloc-trip-id\"}]},{\"attribute\":\"route_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":null},{\"id\":\"busloc\",\"value\":\"busloc-route-id\"}]}],\"label\":\"1261\",\"latitude\":42.31777347,\"is_off_course\":false,\"bearing\":0,\"scheduled_location\":null,\"operator_id\":\"72032\",\"via_variant\":\"_\",\"schedule_adherence_string\":null,\"direction_id\":1,\"block_id\":\"S28-2\",\"trip_id\":\"39984755\",\"sources\":[\"busloc\",\"swiftly\"],\"operator_name\":\"MAUPIN\",\"stop_sequence\":25,\"previous_vehicle_schedule_adherence_secs\":null,\"headway_spacing\":\"ok\",\"route_status\":\"on_route\",\"timepoint_status\":null,\"headway_secs\":600,\"longitude\":-71.08206019,\"headsign\":\"headsign\",\"previous_vehicle_schedule_adherence_string\":null,\"route_id\":\"28\",\"schedule_adherence_secs\":null,\"timestamp\":1558364020,\"scheduled_headway_secs\":null,\"stop_status\":{\"status\":\"in_transit_to\",\"stop_id\":\"392\",\"stop_name\":\"392\"},\"id\":\"y1261\",\"previous_vehicle_id\":null,\"speed\":0.0}"
 
       assert Jason.encode!(vehicle) == expected_json
     end

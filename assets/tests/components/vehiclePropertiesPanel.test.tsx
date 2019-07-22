@@ -32,6 +32,7 @@ const vehicle: Vehicle = {
   scheduleAdherenceString: "0.0 sec (ontime)",
   scheduleAdherenceStatus: "on-time",
   scheduledHeadwaySecs: 120,
+  isOffCourse: false,
   dataDiscrepancies: [
     {
       attribute: "trip_id",
@@ -98,21 +99,7 @@ describe("VehiclePropertiesPanel", () => {
   test("renders for an off-course vehicle", () => {
     const offCourseVehicle: Vehicle = {
       ...vehicle,
-      dataDiscrepancies: [
-        {
-          attribute: "trip_id",
-          sources: [
-            {
-              id: "busloc",
-              value: "40725309",
-            },
-            {
-              id: "swiftly",
-              value: null,
-            },
-          ],
-        },
-      ],
+      isOffCourse: true,
     }
 
     const tree = renderer

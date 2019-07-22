@@ -59,6 +59,7 @@ describe("useVehicles", () => {
       headway_secs: 859.1,
       headway_spacing: "ok",
       id: "v1",
+      is_off_course: false,
       label: "v1-label",
       latitude: 0,
       longitude: 0,
@@ -119,6 +120,7 @@ describe("useVehicles", () => {
       scheduleAdherenceString: "0.0 sec (ontime)",
       scheduleAdherenceStatus: "on-time",
       scheduledHeadwaySecs: 120,
+      isOffCourse: false,
       dataDiscrepancies: [
         {
           attribute: "trip_id",
@@ -250,6 +252,7 @@ describe("useVehicles", () => {
         headway_secs: 859.1,
         headway_spacing: "ok",
         id: "v1",
+        is_off_course: false,
         label: "v1-label",
         latitude: 0,
         longitude: 0,
@@ -288,6 +291,7 @@ describe("useVehicles", () => {
         headway_secs: 859.1,
         headway_spacing: "ok",
         id: "v1",
+        is_off_course: true,
         label: "v1-label",
         latitude: 0,
         longitude: 0,
@@ -326,6 +330,7 @@ describe("useVehicles", () => {
         headway_secs: 859.1,
         headway_spacing: "ok",
         id: "v1",
+        is_off_course: false,
         label: "v1-label",
         latitude: 0,
         longitude: 0,
@@ -381,6 +386,7 @@ describe("useVehicles", () => {
         scheduleAdherenceString: "0.0 sec (ontime)",
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
+        isOffCourse: false,
         dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
@@ -418,6 +424,7 @@ describe("useVehicles", () => {
         scheduleAdherenceString: "0.0 sec (ontime)",
         scheduleAdherenceStatus: "early",
         scheduledHeadwaySecs: 120,
+        isOffCourse: true,
         dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",
@@ -455,6 +462,7 @@ describe("useVehicles", () => {
         scheduleAdherenceString: "0.0 sec (ontime)",
         scheduleAdherenceStatus: "late",
         scheduledHeadwaySecs: 120,
+        isOffCourse: false,
         dataDiscrepancies: [],
         stopStatus: {
           status: "in_transit_to",

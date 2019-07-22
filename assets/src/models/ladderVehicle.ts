@@ -6,11 +6,7 @@ import {
   VehicleId,
   ViaVariant,
 } from "../skate"
-import {
-  isOffCourse as vehicleIsOffCourse,
-  status,
-  VehicleAdherenceStatus,
-} from "./vehicleStatus"
+import { status, VehicleAdherenceStatus } from "./vehicleStatus"
 
 export interface LadderVehicle {
   vehicleId: VehicleId
@@ -145,9 +141,13 @@ const vehicleOnLadder = (
   ladderDirection: LadderDirection,
   timepointStatusYFunc: TimepointStatusYFunc
 ): VehicleOnLadder => {
-  const { id: vehicleId, headwaySpacing, label, viaVariant } = vehicle
-
-  const isOffCourse = vehicleIsOffCourse(vehicle)
+  const {
+    id: vehicleId,
+    headwaySpacing,
+    isOffCourse,
+    label,
+    viaVariant,
+  } = vehicle
 
   const { scheduledY, scheduledVehicleDirection } = scheduledToBe(
     vehicle,

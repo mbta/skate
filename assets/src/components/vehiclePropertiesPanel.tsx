@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
-import { isOffCourse, status } from "../models/vehicleStatus"
+import { status } from "../models/vehicleStatus"
 import { DataDiscrepancy, Route, Vehicle } from "../skate.d"
 import { deselectVehicle } from "../state"
 import CloseButton from "./closeButton"
@@ -21,9 +21,13 @@ const ScheduleAdherenceStatusIcon = () => (
   </div>
 )
 
-const ScheduleAdherenceStatusString = ({ vehicle }: { vehicle: Vehicle }) => (
+const ScheduleAdherenceStatusString = ({
+  vehicle: { isOffCourse, scheduleAdherenceStatus },
+}: {
+  vehicle: Vehicle
+}) => (
   <div className="m-vehicle-properties-panel__schedule-adherence-status-string">
-    {isOffCourse(vehicle) ? "Invalid" : vehicle.scheduleAdherenceStatus}
+    {isOffCourse ? "Invalid" : scheduleAdherenceStatus}
   </div>
 )
 
@@ -41,7 +45,7 @@ const scheduleAdherenceLabelString = ({
 
 const ScheduleAdherenceLabel = ({ vehicle }: { vehicle: Vehicle }) => (
   <div className="m-vehicle-properties-panel__schedule-adherence-label">
-    {isOffCourse(vehicle) ? "" : scheduleAdherenceLabelString(vehicle)}
+    {vehicle.isOffCourse ? "" : scheduleAdherenceLabelString(vehicle)}
   </div>
 )
 
@@ -129,23 +133,26 @@ const NotAvailable = () => (
   </span>
 )
 
-const Location = ({ vehicle }: { vehicle: Vehicle }) => {
-  const {
+const Location = ({
+  vehicle: {
     scheduleAdherenceStatus,
     bearing,
+    isOffCourse,
     label,
     latitude,
     longitude,
     stopStatus,
-  } = vehicle
-
+  },
+}: {
+  vehicle: Vehicle
+}) => {
   return (
     <div className="m-vehicle-properties-panel__location">
       <div className="m-vehicle-properties-panel__vehicle-property-label">
         Next Stop
       </div>
       <div className="m-vehicle-properties-panel__vehicle-property-value">
-        {isOffCourse(vehicle) ? <NotAvailable /> : <>{stopStatus.stopName}</>}
+        {isOffCourse ? <NotAvailable /> : <>{stopStatus.stopName}</>}
       </div>
       <a
         className="m-vehicle-properties-panel__link"

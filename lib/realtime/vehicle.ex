@@ -53,6 +53,7 @@ defmodule Realtime.Vehicle do
           schedule_adherence_secs: float() | nil,
           schedule_adherence_string: String.t() | nil,
           scheduled_headway_secs: float() | nil,
+          is_off_course: boolean(),
           sources: MapSet.t(String.t()),
           data_discrepancies: [DataDiscrepancy.t()],
           stop_status: stop_status(),
@@ -78,6 +79,7 @@ defmodule Realtime.Vehicle do
     :operator_name,
     :run_id,
     :headway_spacing,
+    :is_off_course,
     :sources,
     :stop_status,
     :route_status
@@ -111,6 +113,7 @@ defmodule Realtime.Vehicle do
     :schedule_adherence_secs,
     :schedule_adherence_string,
     :scheduled_headway_secs,
+    :is_off_course,
     :sources,
     :stop_status,
     :timepoint_status,
@@ -173,6 +176,8 @@ defmodule Realtime.Vehicle do
       )
       |> Headway.current_headway_spacing(headway_secs)
 
+    data_discrepancies = VehiclePosition.data_discrepancies(vehicle_position)
+
     %__MODULE__{
       id: VehiclePosition.id(vehicle_position),
       label: VehiclePosition.label(vehicle_position),
@@ -201,8 +206,9 @@ defmodule Realtime.Vehicle do
       schedule_adherence_secs: VehiclePosition.schedule_adherence_secs(vehicle_position),
       schedule_adherence_string: VehiclePosition.schedule_adherence_string(vehicle_position),
       scheduled_headway_secs: VehiclePosition.scheduled_headway_secs(vehicle_position),
+      is_off_course: off_course?(data_discrepancies),
       sources: VehiclePosition.sources(vehicle_position),
-      data_discrepancies: VehiclePosition.data_discrepancies(vehicle_position),
+      data_discrepancies: data_discrepancies,
       stop_status: %{
         status: current_stop_status,
         stop_id: stop_id,
@@ -212,6 +218,28 @@ defmodule Realtime.Vehicle do
       scheduled_location: scheduled_location,
       route_status: route_status(current_stop_status, stop_id, trip)
     }
+  end
+
+  @spec off_course?([DataDiscrepancy.t()] | DataDiscrepancy.t()) :: boolean
+  def off_course?(data_discrepancies) when is_list(data_discrepancies) do
+    trip_id_discrepency =
+      Enum.find(data_discrepancies, fn data_discrepancy ->
+        data_discrepancy.attribute == :trip_id
+      end)
+
+    off_course?(trip_id_discrepency)
+  end
+
+  def off_course?(nil), do: false
+
+  def off_course?(%{sources: sources}) do
+    case Enum.find(sources, fn source -> source.id == "swiftly" end) do
+      %{value: nil} ->
+        true
+
+      _ ->
+        false
+    end
   end
 
   @spec timepoint_status([StopTime.t()], Stop.id()) :: timepoint_status() | nil
