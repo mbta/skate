@@ -22,6 +22,10 @@ const drawHeadwayLine = (
 
   const [currentVehicle, ...rest] = ladderVehicles
 
+  if (currentVehicle.status === "off-course") {
+    return acc
+  }
+
   const centerToLine =
     currentVehicle.vehicleDirection === VehicleDirection.Down
       ? -CENTER_TO_LINE

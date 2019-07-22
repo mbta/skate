@@ -723,18 +723,7 @@ exports[`ladder renders an off-course vehicle 1`] = `
     />
     <g
       className="m-ladder__headway-lines"
-    >
-      <line
-        className="m-ladder__line
-                  m-ladder__headway-line
-                  m-ladder__headway-line--ok"
-        id="y1439"
-        x1={40}
-        x2={40}
-        y1={0}
-        y2={0}
-      />
-    </g>
+    />
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
