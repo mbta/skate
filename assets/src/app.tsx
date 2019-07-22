@@ -17,6 +17,12 @@ import * as React from "react"
 import ReactDOM from "react-dom"
 import AppStateWrapper from "./components/appStateWrapper"
 
+if (window.FS && window.userInfo) {
+  window.FS.identify(window.userInfo.id, {
+    displayName: window.userInfo.username,
+  })
+}
+
 // Import local files
 //
 // Local files can be imported directly using relative paths, for example:
