@@ -119,7 +119,10 @@ const Ladder = ({
           />
         ))}
         <RoadLines height={height} />
-        <HeadwayLines ladderVehicles={ladderVehicles} />
+        <HeadwayLines
+          height={height - MARGIN_TOP_BOTTOM * 2}
+          ladderVehicles={ladderVehicles}
+        />
         {orderedTimepoints.map((timepoint: Timepoint, index: number) => {
           const y = timepointSpacingY * index
           return (

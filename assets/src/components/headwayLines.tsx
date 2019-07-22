@@ -4,6 +4,7 @@ import { HeadwaySpacing } from "../skate"
 import { CENTER_TO_LINE } from "./ladder"
 
 interface Props {
+  height: number
   ladderVehicles: LadderVehicle[]
 }
 
@@ -29,6 +30,7 @@ const drawHeadwayLine = (
   const newAcc = acc.concat([
     <line
       key={`${currentVehicle.vehicleId}-headway-line`}
+      id={currentVehicle.vehicleId}
       className={`m-ladder__line
                   m-ladder__headway-line
                   ${headwayClass(currentVehicle.headwaySpacing)}`}
@@ -68,13 +70,14 @@ const separateVehiclesByDirection = (
 }
 
 const HeadwayLines = ({
+  height,
   ladderVehicles,
 }: Props): ReactElement<HTMLDivElement> => {
   const { down, up } = separateVehiclesByDirection(ladderVehicles)
 
   return (
     <g className="m-ladder__headway-lines">
-      {drawHeadwayLine(down.reverse(), 0, [])}
+      {drawHeadwayLine(down.reverse(), height, [])}
       {drawHeadwayLine(up.reverse(), 0, [])}
     </g>
   )

@@ -108,15 +108,17 @@ exports[`ladder highlights a selected vehicle 1`] = `
         className="m-ladder__line
                   m-ladder__headway-line
                   m-ladder__headway-line--ok"
+        id="downward"
         x1={-40}
         x2={-40}
-        y1={0}
+        y1={420}
         y2={262.5}
       />
       <line
         className="m-ladder__line
                   m-ladder__headway-line
                   m-ladder__headway-line--ok"
+        id="upward"
         x1={40}
         x2={40}
         y1={0}
@@ -333,15 +335,17 @@ exports[`ladder renders a ladder 1`] = `
         className="m-ladder__line
                   m-ladder__headway-line
                   m-ladder__headway-line--ok"
+        id="downward"
         x1={-40}
         x2={-40}
-        y1={0}
+        y1={420}
         y2={262.5}
       />
       <line
         className="m-ladder__line
                   m-ladder__headway-line
                   m-ladder__headway-line--ok"
+        id="notimepoint"
         x1={-40}
         x2={-40}
         y1={262.5}
@@ -351,6 +355,7 @@ exports[`ladder renders a ladder 1`] = `
         className="m-ladder__line
                   m-ladder__headway-line
                   m-ladder__headway-line--ok"
+        id="upward"
         x1={40}
         x2={40}
         y1={0}
@@ -490,6 +495,7 @@ exports[`ladder renders a ladder with no timepoints 1`] = `
         className="m-ladder__line
                   m-ladder__headway-line
                   m-ladder__headway-line--ok"
+        id="upward"
         x1={40}
         x2={40}
         y1={0}
@@ -573,6 +579,7 @@ exports[`ladder renders a reversed ladder 1`] = `
         className="m-ladder__line
                   m-ladder__headway-line
                   m-ladder__headway-line--ok"
+        id="upward"
         x1={40}
         x2={40}
         y1={0}
@@ -721,6 +728,7 @@ exports[`ladder renders an off-course vehicle 1`] = `
         className="m-ladder__line
                   m-ladder__headway-line
                   m-ladder__headway-line--ok"
+        id="y1439"
         x1={40}
         x2={40}
         y1={0}
@@ -867,9 +875,10 @@ exports[`ladder shows schedule line in the other direction 1`] = `
         className="m-ladder__line
                   m-ladder__headway-line
                   m-ladder__headway-line--ok"
+        id="downward"
         x1={-40}
         x2={-40}
-        y1={0}
+        y1={420}
         y2={-157.5}
       />
     </g>
