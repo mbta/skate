@@ -306,6 +306,11 @@ function partition<T>(items: T[], testFn: (value: T) => boolean): T[][] {
 const statusClass = (
   headwaySpacing: HeadwaySpacing,
   status: VehicleAdherenceStatus
-): string => (headwaySpacing === null || status === "off-course" ? status : "")
+): string =>
+  !featureIsEnabled("headway_ladder_colors") ||
+  headwaySpacing === null ||
+  status === "off-course"
+    ? status
+    : ""
 
 export default Ladder
