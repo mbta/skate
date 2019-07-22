@@ -44,7 +44,7 @@ describe("HeadwayLines", () => {
       },
     ]
     const tree = renderer
-      .create(<HeadwayLines ladderVehicles={vehicles} />)
+      .create(<HeadwayLines height={800} ladderVehicles={vehicles} />)
       .toJSON()
     expect(tree).toMatchSnapshot()
   })

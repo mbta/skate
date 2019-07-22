@@ -11,6 +11,7 @@ exports[`HeadwayLines renders 1`] = `
     id="3"
     x1={-40}
     x2={-40}
+    y1={800}
     y2={300}
   />
   <line
