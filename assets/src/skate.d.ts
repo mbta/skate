@@ -21,6 +21,7 @@ export type HeadwaySpacing =
   | "ok"
   | "gapped"
   | "very_gapped"
+  | null
 
 export interface Route {
   id: RouteId
@@ -72,7 +73,7 @@ export interface Vehicle {
   speed: number
   blockId: string
   headwaySecs: number | null
-  headwaySpacing: HeadwaySpacing | null
+  headwaySpacing: HeadwaySpacing
   previousVehicleId: string
   scheduleAdherenceSecs: number
   scheduleAdherenceString: string

@@ -67,6 +67,10 @@ defmodule Realtime.Headway do
                       |> Parser.parse_json_data()
 
   @spec current_headway_spacing(seconds(), seconds()) :: headway_spacing()
+  def current_headway_spacing(:error, _headway_seconds) do
+    nil
+  end
+
   def current_headway_spacing(expected_headway_seconds, headway_seconds)
       when headway_seconds / expected_headway_seconds >= 2,
       do: :very_gapped

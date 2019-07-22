@@ -111,6 +111,9 @@ Array [
         y1="0"
         y2={420}
       />
+      <g
+        className="m-ladder__headway-lines"
+      />
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
@@ -234,7 +237,7 @@ Array [
       width={184}
     >
       <line
-        className="m-ladder__scheduled-line on-time"
+        className="m-ladder__scheduled-line "
         x1={-63}
         x2={-40}
         y1={420}
@@ -242,7 +245,7 @@ Array [
       />
       <g>
         <g
-          className="m-ladder__vehicle on-time "
+          className="m-ladder__vehicle  "
           onClick={[Function]}
           transform="translate(63,105)"
         >
@@ -286,7 +289,7 @@ Array [
       </g>
       <g>
         <g
-          className="m-ladder__vehicle on-time "
+          className="m-ladder__vehicle  "
           onClick={[Function]}
           transform="translate(-63,420)"
         >
@@ -333,6 +336,30 @@ Array [
         y1="0"
         y2={420}
       />
+      <g
+        className="m-ladder__headway-lines"
+      >
+        <line
+          className="m-ladder__line
+                  m-ladder__headway-line
+                  m-ladder__headway-line--ok"
+          id="y0479"
+          x1={-40}
+          x2={-40}
+          y1={420}
+          y2={420}
+        />
+        <line
+          className="m-ladder__line
+                  m-ladder__headway-line
+                  m-ladder__headway-line--ok"
+          id="y1818"
+          x1={40}
+          x2={40}
+          y1={0}
+          y2={105}
+        />
+      </g>
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
@@ -456,7 +483,7 @@ Array [
       width={184}
     >
       <line
-        className="m-ladder__scheduled-line on-time"
+        className="m-ladder__scheduled-line "
         x1={-63}
         x2={-40}
         y1={420}
@@ -464,7 +491,7 @@ Array [
       />
       <g>
         <g
-          className="m-ladder__vehicle on-time "
+          className="m-ladder__vehicle  "
           onClick={[Function]}
           transform="translate(63,105)"
         >
@@ -508,7 +535,7 @@ Array [
       </g>
       <g>
         <g
-          className="m-ladder__vehicle on-time "
+          className="m-ladder__vehicle  "
           onClick={[Function]}
           transform="translate(-63,420)"
         >
@@ -555,6 +582,30 @@ Array [
         y1="0"
         y2={420}
       />
+      <g
+        className="m-ladder__headway-lines"
+      >
+        <line
+          className="m-ladder__line
+                  m-ladder__headway-line
+                  m-ladder__headway-line--ok"
+          id="y0479"
+          x1={-40}
+          x2={-40}
+          y1={420}
+          y2={420}
+        />
+        <line
+          className="m-ladder__line
+                  m-ladder__headway-line
+                  m-ladder__headway-line--ok"
+          id="y1818"
+          x1={40}
+          x2={40}
+          y1={0}
+          y2={105}
+        />
+      </g>
       <circle
         className="m-ladder__stop-circle"
         cx={-40}

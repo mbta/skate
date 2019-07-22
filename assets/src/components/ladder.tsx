@@ -5,8 +5,16 @@ import {
   ladderVehiclesFromVehicles,
   VehicleDirection,
 } from "../models/ladderVehicle"
-import { Timepoint, Vehicle, VehicleId, VehicleTimepointStatus } from "../skate"
+import { VehicleAdherenceStatus } from "../models/vehicleStatus"
+import {
+  HeadwaySpacing,
+  Timepoint,
+  Vehicle,
+  VehicleId,
+  VehicleTimepointStatus,
+} from "../skate"
 import { selectVehicle } from "../state"
+import HeadwayLines from "./headwayLines"
 import { Orientation, Size, VehicleIconSvgNode } from "./vehicleIcon"
 
 export interface Props {
@@ -34,7 +42,7 @@ export const flipLadderDirection = (
     ? LadderDirection.OneToZero
     : LadderDirection.ZeroToOne
 
-const CENTER_TO_LINE = 40 // x-distance between the center of the ladder and the center of the line
+export const CENTER_TO_LINE = 40 // x-distance between the center of the ladder and the center of the line
 const MARGIN_TOP_BOTTOM = 40 // space between the top of the route and the top of the viewbox
 
 const Ladder = ({
@@ -111,6 +119,10 @@ const Ladder = ({
           />
         ))}
         <RoadLines height={height} />
+        <HeadwayLines
+          height={height - MARGIN_TOP_BOTTOM * 2}
+          ladderVehicles={ladderVehicles}
+        />
         {orderedTimepoints.map((timepoint: Timepoint, index: number) => {
           const y = timepointSpacingY * index
           return (
@@ -126,6 +138,7 @@ const VehicleSvg = ({
   ladderVehicle: {
     vehicleId,
     label,
+    headwaySpacing,
     viaVariant,
     status,
     x,
@@ -143,7 +156,10 @@ const VehicleSvg = ({
   return (
     <g>
       <g
-        className={`m-ladder__vehicle ${status} ${selectedClass}`}
+        className={`m-ladder__vehicle ${statusClass(
+          headwaySpacing,
+          status
+        )} ${selectedClass}`}
         transform={`translate(${x},${y})`}
         onClick={() => dispatch(selectVehicle(vehicleId))}
       >
@@ -242,6 +258,7 @@ const orientationMatchingVehicle = (
 const ScheduledLine = ({
   ladderVehicle: {
     status,
+    headwaySpacing,
     isOffCourse,
     x,
     y,
@@ -262,7 +279,10 @@ const ScheduledLine = ({
 
   return (
     <line
-      className={`m-ladder__scheduled-line ${status}`}
+      className={`m-ladder__scheduled-line ${statusClass(
+        headwaySpacing,
+        status
+      )}`}
       x1={x}
       y1={y}
       x2={roadLineX}
@@ -279,5 +299,10 @@ function partition<T>(items: T[], testFn: (value: T) => boolean): T[][] {
     [[] as T[], [] as T[]]
   )
 }
+
+const statusClass = (
+  headwaySpacing: HeadwaySpacing,
+  status: VehicleAdherenceStatus
+): string => (headwaySpacing === null || status === "off-course" ? status : "")
 
 export default Ladder

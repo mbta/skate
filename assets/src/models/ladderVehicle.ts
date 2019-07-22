@@ -1,5 +1,11 @@
 import { LadderDirection, TimepointStatusYFunc } from "../components/ladder"
-import { DirectionId, Vehicle, VehicleId, ViaVariant } from "../skate"
+import {
+  DirectionId,
+  HeadwaySpacing,
+  Vehicle,
+  VehicleId,
+  ViaVariant,
+} from "../skate"
 import {
   isOffCourse as vehicleIsOffCourse,
   status,
@@ -11,6 +17,7 @@ export interface LadderVehicle {
   label: string
   viaVariant: ViaVariant | null
   status: VehicleAdherenceStatus
+  headwaySpacing: HeadwaySpacing
   isOffCourse: boolean
   x: number
   y: number
@@ -27,6 +34,7 @@ export enum VehicleDirection {
 
 interface WithVehicle {
   vehicleId: VehicleId
+  headwaySpacing: HeadwaySpacing
   label: string
   viaVariant: ViaVariant | null
   status: VehicleAdherenceStatus
@@ -137,7 +145,7 @@ const vehicleOnLadder = (
   ladderDirection: LadderDirection,
   timepointStatusYFunc: TimepointStatusYFunc
 ): VehicleOnLadder => {
-  const { id: vehicleId, label, viaVariant } = vehicle
+  const { id: vehicleId, headwaySpacing, label, viaVariant } = vehicle
 
   const isOffCourse = vehicleIsOffCourse(vehicle)
 
@@ -160,6 +168,7 @@ const vehicleOnLadder = (
   return {
     // tslint:disable-next-line:object-literal-sort-keys
     vehicleId,
+    headwaySpacing,
     label,
     viaVariant,
     status: status(vehicle),
