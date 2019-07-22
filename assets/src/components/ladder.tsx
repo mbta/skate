@@ -1,5 +1,6 @@
 import React, { useContext, useLayoutEffect, useRef, useState } from "react"
 import DispatchContext from "../contexts/dispatchContext"
+import featureIsEnabled from "../laboratoryFeatures"
 import {
   LadderVehicle,
   ladderVehiclesFromVehicles,
@@ -119,10 +120,12 @@ const Ladder = ({
           />
         ))}
         <RoadLines height={height} />
-        <HeadwayLines
-          height={height - MARGIN_TOP_BOTTOM * 2}
-          ladderVehicles={ladderVehicles}
-        />
+        {featureIsEnabled("headway_ladder_colors") && (
+          <HeadwayLines
+            height={height - MARGIN_TOP_BOTTOM * 2}
+            ladderVehicles={ladderVehicles}
+          />
+        )}
         {orderedTimepoints.map((timepoint: Timepoint, index: number) => {
           const y = timepointSpacingY * index
           return (

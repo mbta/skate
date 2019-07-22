@@ -6,6 +6,11 @@ import DispatchProvider from "../../src/providers/dispatchProvider"
 import { Timepoint, Vehicle } from "../../src/skate"
 import { selectVehicle } from "../../src/state"
 
+jest.mock("../../src/laboratoryFeatures", () => ({
+  __esModule: true,
+  default: () => true,
+}))
+
 describe("ladder", () => {
   test("renders a ladder", () => {
     const timepoints = [{ id: "t0" }, { id: "t1" }, { id: "t2" }]
