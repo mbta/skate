@@ -11,7 +11,7 @@ import App from "./app"
 
 const AppStateWrapper = (): JSX.Element => {
   const [state, dispatch] = usePersistedStateReducer(reducer, initialState)
-  const { selectedRouteIds, selectedVehicleId } = state
+  const { routePickerIsVisible, selectedRouteIds, selectedVehicleId } = state
 
   const routes: Route[] | null = useRoutes()
   const timepointsByRouteId: TimepointsByRouteId = useTimepoints(
@@ -23,6 +23,7 @@ const AppStateWrapper = (): JSX.Element => {
   return (
     <DispatchProvider dispatch={dispatch}>
       <App
+        routePickerIsVisible={routePickerIsVisible}
         routes={routes}
         timepointsByRouteId={timepointsByRouteId}
         selectedRouteIds={selectedRouteIds}

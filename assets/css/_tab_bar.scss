@@ -10,6 +10,14 @@
   transition: left 0.2s ease-in-out;
   width: $tab-bar-width;
   z-index: 2;
+
+  &.visible {
+    left: 0;
+  }
+
+  &.hidden {
+    left: -$tab-bar-width;
+  }
 }
 
 .m-tab-bar__logo,

@@ -12,6 +12,7 @@ import RoutePicker from "./routePicker"
 import VehiclePropertiesPanel from "./vehiclePropertiesPanel"
 
 interface Props {
+  routePickerIsVisible: boolean
   routes: Route[] | null
   timepointsByRouteId: TimepointsByRouteId
   selectedRouteIds: RouteId[]
@@ -39,6 +40,7 @@ const vehicleRoute = (
   (allRoutes || []).find(route => route.id === (vehicle && vehicle.routeId))
 
 const RoutePage = ({
+  routePickerIsVisible,
   routes,
   selectedRouteIds,
   selectedVehicleId,
@@ -56,7 +58,11 @@ const RoutePage = ({
 
   return (
     <div className="c-page">
-      <RoutePicker routes={routes} selectedRouteIds={selectedRouteIds} />
+      <RoutePicker
+        isVisible={routePickerIsVisible}
+        routes={routes}
+        selectedRouteIds={selectedRouteIds}
+      />
 
       <RouteLadders
         routes={selectedRoutes}

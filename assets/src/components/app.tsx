@@ -11,6 +11,7 @@ import FAQPage from "./faqPage"
 import RoutePage from "./routePage"
 
 interface Props {
+  routePickerIsVisible: boolean
   routes: Route[] | null
   timepointsByRouteId: TimepointsByRouteId
   selectedRouteIds: RouteId[]
@@ -21,15 +22,17 @@ interface Props {
 const App = (props: Props): ReactElement<HTMLDivElement> => (
   <BrowserRouter>
     <div className="m-app">
-      <TabBar />
+      <TabBar {...props} />
       <BrowserRoute exact={true} path="/" render={() => RoutePage(props)} />
       <BrowserRoute path="/faq" component={FAQPage} />
     </div>
   </BrowserRouter>
 )
 
-const TabBar = (): ReactElement<HTMLDivElement> => (
-  <div className="m-tab-bar">
+const TabBar = ({
+  routePickerIsVisible,
+}: Props): ReactElement<HTMLDivElement> => (
+  <div className={`m-tab-bar ${routePickerIsVisible ? "visible" : "hidden"}`}>
     <div className="m-tab-bar__logo">
       <svg
         width="24"

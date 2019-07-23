@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import { collapseIcon, expandIcon } from "../helpers/icon"
 import {
@@ -8,21 +8,23 @@ import {
   useRouteFilter,
 } from "../hooks/useRouteFilter"
 import { Route, RouteId } from "../skate.d"
-import { deselectRoute, selectRoute } from "../state"
+import { deselectRoute, selectRoute, toggleRoutePicker } from "../state"
 import Loading from "./loading"
 
 interface Props {
+  isVisible: boolean
   routes: null | Route[]
   selectedRouteIds: RouteId[]
 }
 
-const RoutePicker = ({ routes, selectedRouteIds }: Props) => {
+const RoutePicker = ({ isVisible, routes, selectedRouteIds }: Props) => {
   const routeFilterData: RouteFilterData = useRouteFilter()
-  const [isVisible, setIsVisible] = useState(true)
+  const dispatch = useContext(DispatchContext)
+  // const [isVisible, setIsVisible] = useState(true)
 
   const filteredRoutes = filterRoutes(routes || [], routeFilterData)
 
-  const toggleVisibility = () => setIsVisible(!isVisible)
+  const toggleVisibility = () => dispatch(toggleRoutePicker())
 
   return (
     <div className={`m-route-picker ${isVisible ? "visible" : "hidden"}`}>
