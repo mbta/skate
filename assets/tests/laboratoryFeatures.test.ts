@@ -6,7 +6,21 @@ const testFeatures = {
 }
 jest.mock("../src/appData", () => ({
   __esModule: true,
-  default: () => ({ laboratoryFeatures: JSON.stringify(testFeatures) }),
+  default: jest
+    .fn()
+    // Ipmlementation sequence matches
+    .mockImplementationOnce(() => ({
+      laboratoryFeatures: JSON.stringify(testFeatures),
+    }))
+    .mockImplementationOnce(() => ({
+      laboratoryFeatures: JSON.stringify(testFeatures),
+    }))
+    .mockImplementationOnce(() => ({
+      laboratoryFeatures: JSON.stringify(testFeatures),
+    }))
+    .mockImplementation(() => ({
+      laboratoryFeatures: undefined,
+    })),
 }))
 
 describe("featureIsEnabled", () => {
@@ -17,5 +31,9 @@ describe("featureIsEnabled", () => {
 
   test("returns false if the key isn't found", () => {
     expect(featureIsEnabled("undefinedKey")).toEqual(false)
+  })
+
+  test("returns false if the laboratory features data isn't found", () => {
+    expect(featureIsEnabled("trueKey")).toEqual(false)
   })
 })
