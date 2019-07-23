@@ -62,19 +62,13 @@ defmodule Gtfs.BlockTest do
 
   describe "start_time/1" do
     test "returns the time of the first stop of the first trip for this block" do
-      assert Block.start_time(block()) == 1
+      assert Block.start_time([@trip]) == 1
     end
   end
 
   describe "end_time/1" do
     test "returns the time of the last stop of the last trip for this block" do
-      assert Block.end_time(block()) == 2
+      assert Block.end_time([@trip]) == 2
     end
-  end
-
-  defp block() do
-    [@trip]
-    |> Block.group_trips_by_block()
-    |> Block.get(@trip.block_id, @trip.service_id)
   end
 end
