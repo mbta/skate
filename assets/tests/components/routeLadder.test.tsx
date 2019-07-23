@@ -6,6 +6,11 @@ import DispatchProvider from "../../src/providers/dispatchProvider"
 import { Route, Vehicle } from "../../src/skate"
 import { deselectRoute, selectVehicle } from "../../src/state"
 
+jest.mock("../../src/laboratoryFeatures", () => ({
+  __esModule: true,
+  default: () => true,
+}))
+
 describe("routeLadder", () => {
   const originalGetBBox = SVGSVGElement.prototype.getBBox
   const originalGetElementsByClassName = document.getElementsByClassName

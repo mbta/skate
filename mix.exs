@@ -18,7 +18,7 @@ defmodule Skate.MixProject do
         "coveralls.html": :test
       ],
       elixirc_options: [warnings_as_errors: true],
-      dialyzer: [plt_add_apps: [:mix], ignore_warnings: ".dialyzer.ignore-warnings"]
+      dialyzer: [plt_add_apps: [:mix, :laboratory], ignore_warnings: ".dialyzer.ignore-warnings"]
     ]
   end
 
@@ -28,6 +28,7 @@ defmodule Skate.MixProject do
   def application do
     [
       mod: {Skate.Application, []},
+      included_applications: [:laboratory],
       extra_applications: [:logger, :runtime_tools]
     ]
   end
@@ -59,7 +60,8 @@ defmodule Skate.MixProject do
       {:bypass, "~> 1.0.0", only: :test},
       {:csv, "~> 2.3.0"},
       {:timex, "~> 3.5.0"},
-      {:stream_data, "~> 0.4.3", only: :test}
+      {:stream_data, "~> 0.4.3", only: :test},
+      {:laboratory, github: "paulswartz/laboratory", ref: "cookie_opts"}
     ]
   end
 end
