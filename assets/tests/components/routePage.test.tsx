@@ -87,7 +87,7 @@ describe("RoutePage", () => {
           timepointsByRouteId={timepointsByRouteId}
           selectedRouteIds={[]}
           vehiclesByRouteId={{ "28": [vehicle] }}
-          selectedVehicleId="28"
+          selectedVehicleId={vehicle.id}
         />
       )
       .toJSON()

@@ -31,6 +31,7 @@ describe("usePersistedStateReducer", () => {
 
   test("initializes the state with the given initial value", () => {
     const initialState: State = {
+      routePickerIsVisible: true,
       selectedRouteIds: ["1", "2"],
       selectedVehicleId: "2",
     }
@@ -52,10 +53,12 @@ describe("usePersistedStateReducer", () => {
       )
 
     const initialState: State = {
+      routePickerIsVisible: true,
       selectedRouteIds: ["1", "2"],
       selectedVehicleId: "2",
     }
     const expectedState: State = {
+      routePickerIsVisible: true,
       selectedRouteIds: ["28", "39"],
       selectedVehicleId: "2",
     }
