@@ -10,12 +10,12 @@ jest.mock("../src/appData", () => ({
 }))
 
 describe("featureIsEnabled", () => {
-  test("returns the value of the requested keey", () => {
+  test("returns the value of the requested key", () => {
     expect(featureIsEnabled("falseKey")).toEqual(false)
     expect(featureIsEnabled("trueKey")).toEqual(true)
   })
 
-  test("returns undefined if the key isn't found", () => {
+  test("returns false if the key isn't found", () => {
     expect(featureIsEnabled("undefinedKey")).toEqual(false)
   })
 })
