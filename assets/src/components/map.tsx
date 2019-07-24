@@ -1,4 +1,5 @@
 import Leaflet, { Map as LeafletMap, Marker } from "leaflet"
+import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
 import React, {
   MutableRefObject,
   ReactElement,

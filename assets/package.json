@@ -17,6 +17,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
     "leaflet": "^1.5.1",
+    "leaflet-defaulticon-compatibility": "^0.1.1",
     "phoenix": "file:../deps/phoenix",
     "phoenix_html": "file:../deps/phoenix_html",
     "react": "^16.8.4",
@@ -40,6 +41,7 @@
     "css-loader": "^1.0.1",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.12.1",
+    "file-loader": "^4.1.0",
     "jest": "^24.5.0",
     "mini-css-extract-plugin": "^0.4.0",
     "node-sass": "^4.11.0",
