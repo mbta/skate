@@ -1,6 +1,6 @@
 import React from "react"
 import renderer from "react-test-renderer"
-import RoutePage, { findRouteById } from "../../src/components/routePage"
+import RoutePage, { findRouteById } from "../../src/components/ladderPage"
 import { Route, TimepointsByRouteId, Vehicle } from "../../src/skate"
 
 describe("RoutePage", () => {

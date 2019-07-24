@@ -39,7 +39,7 @@ const vehicleRoute = (
 ): Route | undefined =>
   (allRoutes || []).find(route => route.id === (vehicle && vehicle.routeId))
 
-const RoutePage = ({
+const LadderPage = ({
   routePickerIsVisible,
   routes,
   selectedRouteIds,
@@ -81,4 +81,4 @@ const RoutePage = ({
   )
 }
 
-export default RoutePage
+export default LadderPage

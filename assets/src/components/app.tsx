@@ -8,7 +8,7 @@ import {
   VehiclesByRouteId,
 } from "../skate"
 import FAQPage from "./faqPage"
-import RoutePage from "./routePage"
+import RoutePage from "./ladderPage"
 
 interface Props {
   routePickerIsVisible: boolean
