@@ -38,3 +38,10 @@
     fill: $color-primary;
   }
 }
+
+.m-tab-bar__t-logo {
+  bottom: 0;
+  padding: 0.5rem;
+  position: fixed;
+  width: $tab-bar-width - 1rem;
+}
