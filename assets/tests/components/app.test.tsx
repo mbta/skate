@@ -8,6 +8,7 @@ describe("App", () => {
     const tree = renderer
       .create(
         <App
+          routePickerIsVisible={true}
           routes={null}
           timepointsByRouteId={{}}
           selectedRouteIds={[]}
@@ -23,6 +24,7 @@ describe("App", () => {
     const tree = renderer
       .create(
         <App
+          routePickerIsVisible={true}
           routes={routes}
           timepointsByRouteId={{}}
           selectedRouteIds={["1"]}

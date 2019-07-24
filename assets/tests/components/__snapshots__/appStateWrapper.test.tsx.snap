@@ -5,7 +5,7 @@ exports[`renders 1`] = `
   className="m-app"
 >
   <div
-    className="m-tab-bar"
+    className="m-tab-bar visible"
   >
     <div
       className="m-tab-bar__logo"

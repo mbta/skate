@@ -20,7 +20,6 @@ interface Props {
 const RoutePicker = ({ isVisible, routes, selectedRouteIds }: Props) => {
   const routeFilterData: RouteFilterData = useRouteFilter()
   const dispatch = useContext(DispatchContext)
-  // const [isVisible, setIsVisible] = useState(true)
 
   const filteredRoutes = filterRoutes(routes || [], routeFilterData)
 

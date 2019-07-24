@@ -5,7 +5,7 @@ exports[`App renders the empty state 1`] = `
   className="m-app"
 >
   <div
-    className="m-tab-bar"
+    className="m-tab-bar visible"
   >
     <div
       className="m-tab-bar__logo"
@@ -147,7 +147,7 @@ exports[`App renders with routes 1`] = `
   className="m-app"
 >
   <div
-    className="m-tab-bar"
+    className="m-tab-bar visible"
   >
     <div
       className="m-tab-bar__logo"

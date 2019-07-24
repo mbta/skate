@@ -8,6 +8,7 @@ describe("RoutePage", () => {
     const tree = renderer
       .create(
         <RoutePage
+          routePickerIsVisible={true}
           routes={null}
           timepointsByRouteId={{}}
           selectedRouteIds={[]}
@@ -23,6 +24,7 @@ describe("RoutePage", () => {
     const tree = renderer
       .create(
         <RoutePage
+          routePickerIsVisible={true}
           routes={routes}
           timepointsByRouteId={{}}
           selectedRouteIds={["1"]}
@@ -38,6 +40,7 @@ describe("RoutePage", () => {
     const tree = renderer
       .create(
         <RoutePage
+          routePickerIsVisible={true}
           routes={routes}
           timepointsByRouteId={{}}
           selectedRouteIds={["28", "1"]}
@@ -53,6 +56,7 @@ describe("RoutePage", () => {
     const tree = renderer
       .create(
         <RoutePage
+          routePickerIsVisible={true}
           routes={routes}
           timepointsByRouteId={timepointsByRouteId}
           selectedRouteIds={[]}
@@ -68,6 +72,7 @@ describe("RoutePage", () => {
     const tree = renderer
       .create(
         <RoutePage
+          routePickerIsVisible={true}
           routes={routes}
           timepointsByRouteId={timepointsByRouteId}
           selectedRouteIds={[]}
@@ -83,6 +88,7 @@ describe("RoutePage", () => {
     const tree = renderer
       .create(
         <RoutePage
+          routePickerIsVisible={true}
           routes={routes}
           timepointsByRouteId={timepointsByRouteId}
           selectedRouteIds={[]}
