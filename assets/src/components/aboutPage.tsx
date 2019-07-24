@@ -16,9 +16,8 @@ const FAQ = (): ReactElement<HTMLDivElement> => (
       <div className="m-faq__section">
         <h2 className="m-faq__header">Frequently Asked Questions</h2>
         <p>
-          Have questions about using Skate? We’re making updates available all
-          the time. Read the latest news and refresh your training by visiting
-          our FAQ.
+          Have questions about using Skate? We’re making updates all the time.
+          Read the latest news and refresh your training by visiting our FAQ.
         </p>
         <p>
           <a
