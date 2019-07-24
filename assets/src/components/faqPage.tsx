@@ -38,7 +38,11 @@ const FAQ = (): ReactElement<HTMLDivElement> => (
           you.
         </p>
         <p>
-          <a className="m-faq__link" href="" target="_blank">
+          <a
+            className="m-faq__link"
+            href="https://form.asana.com?hash=1a2a65ebbc7a183eb3298889a2cc9ccaf1e95cfa7a6f9ca8f226dfdb8dbb4ab0&id=1129738905260896"
+            target="_blank"
+          >
             Give Feedback
           </a>
         </p>
