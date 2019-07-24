@@ -1,26 +1,11 @@
 .m-about-page {
   background: $color-bg-medium;
-
-  @media (min-width: 720px) {
-    height: 100%;
-    position: fixed;
-    width: 100%;
-  }
 }
 
 .m-about-page__container {
   background: $color-bg-light;
   padding: 2rem;
-
-  @media (min-width: 720px) {
-    width: 50%;
-    height: 100%;
-    position: fixed;
-  }
-
-  @media (min-width: 1200px) {
-    width: 33%;
-  }
+  max-width: 30rem;
 }
 
 .m-about-page__title {
