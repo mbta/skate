@@ -8,13 +8,6 @@ defmodule SkateWeb.PageController do
             |> Application.get_env(SkateWeb.Endpoint)
             |> Keyword.fetch!(:secret_key_base)
 
-  @salts :skate
-         |> Application.get_env(SkateWeb.Endpoint)
-         |> Keyword.fetch!(:signing_salts)
-
-  @secret KeyGenerator.generate(@key_base, @salts.secret)
-  @signed_secret KeyGenerator.generate(@key_base, @salts.signed_secret)
-
   plug(:laboratory_features)
 
   def index(conn, _params) do
@@ -28,8 +21,13 @@ defmodule SkateWeb.PageController do
   end
 
   defp user_info(id) when is_binary(id) do
+    secret = KeyGenerator.generate(@key_base, Application.fetch_env!(:skate, :secret))
+
+    signed_secret =
+      KeyGenerator.generate(@key_base, Application.fetch_env!(:skate, :signed_secret))
+
     %{
-      id: MessageEncryptor.encrypt(id, @secret, @signed_secret),
+      id: MessageEncryptor.encrypt(id, secret, signed_secret),
       username: id
     }
   end

@@ -12,7 +12,9 @@ config :skate,
   gtfs_url: "https://cdn.mbta.com/MBTA_GTFS.zip",
   busloc_url: {:system, "BUSLOC_URL"},
   swiftly_authorization_key: {:system, "SWIFTLY_AUTHORIZATION_KEY"},
-  swiftly_realtime_vehicles_url: {:system, "SWIFTLY_REALTIME_VEHICLES_URL"}
+  swiftly_realtime_vehicles_url: {:system, "SWIFTLY_REALTIME_VEHICLES_URL"},
+  secret: {:system, "SKATE_SECRET"},
+  signed_secret: {:system, "SKATE_SIGNED_SECRET"}
 
 config :skate, Gtfs.CacheFile, cache_filename: nil
 
@@ -22,10 +24,6 @@ config :skate, :redirect_http?, false
 config :skate, SkateWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "HjFPO4gzlDmAuvgXBMSd4MIFGLhvKHYfXpNkIoXRM5LMGxQhjYW0NQVdP2QFgZND",
-  signing_salts: %{
-    secret: System.get_env("SKATE_SECRET"),
-    signed_secret: System.get_env("SKATE_SIGNED_SECRET")
-  },
   render_errors: [view: SkateWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Skate.PubSub, adapter: Phoenix.PubSub.PG2]
 
