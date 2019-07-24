@@ -1,4 +1,4 @@
-.m-faq {
+.m-about-page {
   background: $color-bg-medium;
 
   @media (min-width: 720px) {
@@ -8,7 +8,7 @@
   }
 }
 
-.m-faq__container {
+.m-about-page__container {
   background: $color-bg-light;
   padding: 2rem;
 
@@ -23,12 +23,12 @@
   }
 }
 
-.m-faq__title {
+.m-about-page__title {
   @include font-header;
   text-align: center;
 }
 
-.m-faq__section {
+.m-about-page__section {
   background-color: $white;
   border-radius: 8px;
   box-shadow: $subtle-box-shadow;
@@ -36,12 +36,12 @@
   padding: 0.5rem 1rem;
 }
 
-.m-faq__header {
+.m-about-page__header {
   @include font-emph;
   font-weight: bold;
 }
 
-.m-faq__link {
+.m-about-page__link {
   @include button-primary;
   display: block;
   text-align: center;

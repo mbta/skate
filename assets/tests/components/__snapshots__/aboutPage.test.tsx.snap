@@ -2,13 +2,13 @@
 
 exports[`About page renders 1`] = `
 <div
-  className="c-page m-faq"
+  className="c-page m-about-page"
 >
   <div
-    className="m-faq__container"
+    className="m-about-page__container"
   >
     <h1
-      className="m-faq__title"
+      className="m-about-page__title"
     >
       About Skate
     </h1>
@@ -16,10 +16,10 @@ exports[`About page renders 1`] = `
       Skate is an active work-in-progress. In the coming months, you’ll notice new tools like shuttle tracking. You can also expect changes and refinements to the route ladders as we continue building.
     </p>
     <div
-      className="m-faq__section"
+      className="m-about-page__section"
     >
       <h2
-        className="m-faq__header"
+        className="m-about-page__header"
       >
         Device Support
       </h2>
@@ -28,10 +28,10 @@ exports[`About page renders 1`] = `
       </p>
     </div>
     <div
-      className="m-faq__section"
+      className="m-about-page__section"
     >
       <h2
-        className="m-faq__header"
+        className="m-about-page__header"
       >
         Frequently Asked Questions
       </h2>
@@ -40,7 +40,7 @@ exports[`About page renders 1`] = `
       </p>
       <p>
         <a
-          className="m-faq__link"
+          className="m-about-page__link"
           href="https://docs.google.com/document/d/e/2PACX-1vQVzXUcQWg-nKCkb8CyModNUCXDHHRxgqPdtlkm1GQOK9aCrGMSJAoC2J8JuuGFPGnPkcetrZEk6ERH/pub"
           target="_blank"
         >
@@ -49,10 +49,10 @@ exports[`About page renders 1`] = `
       </p>
     </div>
     <div
-      className="m-faq__section"
+      className="m-about-page__section"
     >
       <h2
-        className="m-faq__header"
+        className="m-about-page__header"
       >
         Feedback
       </h2>
@@ -61,7 +61,7 @@ exports[`About page renders 1`] = `
       </p>
       <p>
         <a
-          className="m-faq__link"
+          className="m-about-page__link"
           href="https://form.asana.com?hash=1a2a65ebbc7a183eb3298889a2cc9ccaf1e95cfa7a6f9ca8f226dfdb8dbb4ab0&id=1129738905260896"
           target="_blank"
         >
