@@ -59,4 +59,15 @@ describe("reducer", () => {
 
     expect(newState).toEqual(expectedState)
   })
+
+  test("toggleRoutePicker", () => {
+    const expectedState: State.State = {
+      ...initialState,
+      routePickerIsVisible: false,
+    }
+
+    const newState = reducer(initialState, State.toggleRoutePicker())
+
+    expect(newState).toEqual(expectedState)
+  })
 })
