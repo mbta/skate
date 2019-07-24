@@ -22,6 +22,10 @@ config :skate, :redirect_http?, false
 config :skate, SkateWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "HjFPO4gzlDmAuvgXBMSd4MIFGLhvKHYfXpNkIoXRM5LMGxQhjYW0NQVdP2QFgZND",
+  signing_salts: %{
+    secret: System.get_env("SKATE_SECRET"),
+    signed_secret: System.get_env("SKATE_SIGNED_SECRET")
+  },
   render_errors: [view: SkateWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Skate.PubSub, adapter: Phoenix.PubSub.PG2]
 

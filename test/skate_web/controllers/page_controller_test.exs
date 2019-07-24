@@ -11,7 +11,7 @@ defmodule SkateWeb.PageControllerTest do
     end
 
     test "when logged in, shows you the app", %{conn: conn} do
-      {:ok, token, _} = AuthManager.encode_and_sign(%{})
+      {:ok, token, _} = AuthManager.encode_and_sign("FAKE_UID")
 
       conn =
         conn

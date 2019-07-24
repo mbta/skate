@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
 
     <%= if record_fullstory?() do %>
-      <%= render "_fullstory.html" %>
+      <%= render "_fullstory.html", assigns %>
     <% end %>
   </head>
 
