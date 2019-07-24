@@ -49,9 +49,9 @@ exports[`renders 1`] = `
         <a
           aria-current={null}
           className="m-tab-bar__link"
-          href="/faq"
+          href="/about"
           onClick={[Function]}
-          title="FAQ"
+          title="About Skate"
         >
           <svg
             height="24"

@@ -24,7 +24,7 @@ const App = (props: Props): ReactElement<HTMLDivElement> => (
     <div className="m-app">
       <TabBar {...props} />
       <BrowserRoute exact={true} path="/" render={() => RoutePage(props)} />
-      <BrowserRoute path="/faq" component={FAQPage} />
+      <BrowserRoute path="/about" component={FAQPage} />
     </div>
   </BrowserRouter>
 )
@@ -72,8 +72,8 @@ const TabBar = ({
         <NavLink
           activeClassName="m-tab-bar__link--active"
           className="m-tab-bar__link"
-          title="FAQ"
-          to="/faq"
+          title="About Skate"
+          to="/about"
         >
           <svg
             viewBox="0 0 48 48"

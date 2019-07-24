@@ -49,9 +49,9 @@ exports[`App renders the empty state 1`] = `
         <a
           aria-current={null}
           className="m-tab-bar__link"
-          href="/faq"
+          href="/about"
           onClick={[Function]}
-          title="FAQ"
+          title="About Skate"
         >
           <svg
             height="24"
@@ -191,9 +191,9 @@ exports[`App renders with routes 1`] = `
         <a
           aria-current={null}
           className="m-tab-bar__link"
-          href="/faq"
+          href="/about"
           onClick={[Function]}
-          title="FAQ"
+          title="About Skate"
         >
           <svg
             height="24"
