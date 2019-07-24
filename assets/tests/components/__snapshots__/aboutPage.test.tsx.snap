@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`FAQ page renders 1`] = `
+exports[`About page renders 1`] = `
 <div
   className="c-page m-faq"
 >
