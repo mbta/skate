@@ -119,4 +119,25 @@ describe("detectSwipe", () => {
 
     expect(detectSwipeCallback).not.toHaveBeenCalled()
   })
+
+  test("handles if touch events get called out of order", () => {
+    const mockAddEventListener = jest
+      .fn()
+      .mockImplementation((eventName, touchEndCallback) => {
+        if (eventName === "touchend") {
+          return touchEndCallback(touchEvent({ x: 50, y: 0 }))
+        }
+      })
+    const mockElement = {
+      addEventListener: mockAddEventListener,
+      removeEventListener: jest.fn(),
+    }
+    // @ts-ignore
+    document.getElementById = () => mockElement
+    const detectSwipeCallback = jest.fn()
+
+    detectSwipe("test-id", detectSwipeCallback)
+
+    expect(detectSwipeCallback).not.toHaveBeenCalled()
+  })
 })
