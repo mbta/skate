@@ -1,4 +1,4 @@
-import { VehicleId } from "../src/skate"
+import { VehicleId } from "../src/realtime.d"
 import * as State from "../src/state"
 
 const initialState = State.initialState

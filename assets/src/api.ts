@@ -1,5 +1,5 @@
 import "whatwg-fetch"
-import { DirectionName, Route, RouteId, TimepointId } from "./skate.d"
+import { DirectionName, Route, RouteId, TimepointId } from "./schedule.d"
 
 interface RoutesResponse {
   data: RouteData[]

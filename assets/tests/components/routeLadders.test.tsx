@@ -1,7 +1,7 @@
 import React from "react"
 import renderer from "react-test-renderer"
 import RouteLadders from "../../src/components/routeLadders"
-import { Route, TimepointsByRouteId } from "../../src/skate"
+import { Route, TimepointsByRouteId } from "../../src/schedule.d"
 
 jest.mock("../../src/laboratoryFeatures", () => ({
   __esModule: true,

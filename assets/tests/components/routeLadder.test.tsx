@@ -3,7 +3,8 @@ import React from "react"
 import renderer, { act } from "react-test-renderer"
 import RouteLadder from "../../src/components/routeLadder"
 import DispatchProvider from "../../src/providers/dispatchProvider"
-import { Route, Vehicle } from "../../src/skate"
+import { Vehicle } from "../../src/realtime.d"
+import { Route } from "../../src/schedule.d"
 import { deselectRoute, selectVehicle } from "../../src/state"
 
 // tslint:disable: object-literal-sort-keys

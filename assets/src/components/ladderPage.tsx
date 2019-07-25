@@ -1,13 +1,6 @@
 import React, { ReactElement } from "react"
-import {
-  ByRouteId,
-  Route,
-  RouteId,
-  TimepointsByRouteId,
-  Vehicle,
-  VehicleId,
-  VehiclesForRoute,
-} from "../skate"
+import { Vehicle, VehicleId, VehiclesForRoute } from "../realtime.d"
+import { ByRouteId, Route, RouteId, TimepointsByRouteId } from "../schedule.d"
 import RouteLadders from "./routeLadders"
 import RoutePicker from "./routePicker"
 import VehiclePropertiesPanel from "./vehiclePropertiesPanel"

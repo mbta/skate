@@ -5,7 +5,7 @@ import useSocket from "../hooks/useSocket"
 import useTimepoints from "../hooks/useTimepoints"
 import useVehicles from "../hooks/useVehicles"
 import DispatchProvider from "../providers/dispatchProvider"
-import { Route, TimepointsByRouteId } from "../skate"
+import { Route, TimepointsByRouteId } from "../schedule.d"
 import { initialState, reducer } from "../state"
 import App from "./app"
 

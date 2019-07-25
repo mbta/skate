@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { fetchTimepointsForRoute } from "../api"
-import { RouteId, TimepointId, TimepointsByRouteId } from "../skate"
+import { RouteId, TimepointId, TimepointsByRouteId } from "../schedule.d"
 
 const useTimepoints = (selectedRouteIds: RouteId[]): TimepointsByRouteId => {
   const [timepointsByRouteId, setTimepointsByRouteId] = useState<

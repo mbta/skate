@@ -1,7 +1,8 @@
 import React from "react"
 import renderer from "react-test-renderer"
 import LadderPage, { findRouteById } from "../../src/components/ladderPage"
-import { Route, TimepointsByRouteId, Vehicle } from "../../src/skate"
+import { Vehicle } from "../../src/realtime.d"
+import { Route, TimepointsByRouteId } from "../../src/schedule.d"
 
 describe("LadderPage", () => {
   test("renders the empty state", () => {

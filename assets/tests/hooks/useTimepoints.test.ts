@@ -1,7 +1,7 @@
 import { renderHook } from "react-hooks-testing-library"
 import * as Api from "../../src/api"
 import useTimepoints from "../../src/hooks/useTimepoints"
-import { TimepointId, TimepointsByRouteId } from "../../src/skate"
+import { TimepointId, TimepointsByRouteId } from "../../src/schedule.d"
 import { instantPromise, mockUseStateOnce } from "../testHelpers/mockHelpers"
 
 // tslint:disable: react-hooks-nesting no-empty

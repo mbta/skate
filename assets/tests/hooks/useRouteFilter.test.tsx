@@ -7,7 +7,7 @@ import {
   RouteFilterData,
   useRouteFilter,
 } from "../../src/hooks/useRouteFilter"
-import { Route } from "../../src/skate"
+import { Route } from "../../src/schedule.d"
 
 // tslint:disable: react-hooks-nesting no-empty
 

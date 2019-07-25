@@ -1,5 +1,5 @@
 import { status } from "../../src/models/vehicleStatus"
-import { DataDiscrepancy, Vehicle } from "../../src/skate"
+import { DataDiscrepancy, Vehicle } from "../../src/realtime.d"
 
 describe("status", () => {
   test("returns 'off-course' if isOffCourse", () => {

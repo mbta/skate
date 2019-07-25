@@ -7,7 +7,7 @@ import {
   RouteFilterData,
   useRouteFilter,
 } from "../hooks/useRouteFilter"
-import { Route, RouteId } from "../skate.d"
+import { Route, RouteId } from "../schedule.d"
 import { deselectRoute, selectRoute, toggleRoutePicker } from "../state"
 import Loading from "./loading"
 

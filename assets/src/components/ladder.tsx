@@ -9,11 +9,11 @@ import {
 import { VehicleAdherenceStatus } from "../models/vehicleStatus"
 import {
   HeadwaySpacing,
-  TimepointId,
   Vehicle,
   VehicleId,
   VehicleTimepointStatus,
-} from "../skate"
+} from "../realtime.d"
+import { TimepointId } from "../schedule.d"
 import { selectVehicle } from "../state"
 import HeadwayLines from "./headwayLines"
 import { Orientation, Size, VehicleIconSvgNode } from "./vehicleIcon"

@@ -1,7 +1,8 @@
 import { Socket } from "phoenix"
 import { renderHook } from "react-hooks-testing-library"
 import useVehicles from "../../src/hooks/useVehicles"
-import { RouteId, Vehicle, VehicleTimepointStatus } from "../../src/skate"
+import { Vehicle, VehicleTimepointStatus } from "../../src/realtime.d"
+import { RouteId } from "../../src/schedule.d"
 
 // tslint:disable: react-hooks-nesting
 // tslint:disable: object-literal-sort-keys

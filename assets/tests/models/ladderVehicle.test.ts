@@ -9,7 +9,7 @@ import {
   VehicleDirection,
 } from "../../src/models/ladderVehicle"
 import { VehicleAdherenceStatus } from "../../src/models/vehicleStatus"
-import { HeadwaySpacing } from "../../src/skate"
+import { HeadwaySpacing } from "../../src/realtime.d"
 
 describe("directionOnLadder", () => {
   test("determines the vehicle direction relative the ladder direction", () => {

@@ -3,7 +3,7 @@ import React from "react"
 import renderer from "react-test-renderer"
 import RoutePicker from "../../src/components/routePicker"
 import DispatchProvider from "../../src/providers/dispatchProvider"
-import { Route, RouteId } from "../../src/skate"
+import { Route, RouteId } from "../../src/schedule.d"
 import { deselectRoute, selectRoute, toggleRoutePicker } from "../../src/state"
 
 describe("RoutePicker", () => {

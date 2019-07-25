@@ -3,7 +3,8 @@ import React from "react"
 import renderer from "react-test-renderer"
 import Ladder, { LadderDirection } from "../../src/components/ladder"
 import DispatchProvider from "../../src/providers/dispatchProvider"
-import { TimepointId, Vehicle } from "../../src/skate"
+import { Vehicle } from "../../src/realtime.d"
+import { TimepointId } from "../../src/schedule.d"
 import { selectVehicle } from "../../src/state"
 
 jest.mock("../../src/laboratoryFeatures", () => ({
