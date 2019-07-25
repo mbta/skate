@@ -21,8 +21,8 @@ const detectSwipe = (
   elementId: string,
   callback: Callback
 ): CleanupFunction => {
-  let startingPosition: Position
-  let endingPosition: Position
+  let startingPosition: Position | undefined
+  let endingPosition: Position | undefined
 
   const handleTouchStart = (event: TouchEvent) => {
     const position = firstTouchPosition(event)
@@ -64,10 +64,16 @@ const firstTouchPosition = (event: TouchEvent): Position => {
   return { x: screenX, y: screenY }
 }
 
-const diff = (end: Position, start: Position): Position => ({
-  x: end.x - start.x,
-  y: end.y - start.y,
-})
+const diff = (end?: Position, start?: Position): Position => {
+  if (!start || !end) {
+    return { x: 0, y: 0 }
+  }
+
+  return {
+    x: end.x - start.x,
+    y: end.y - start.y,
+  }
+}
 
 const directionOfMovement = (
   movement: Position
