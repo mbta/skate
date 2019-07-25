@@ -180,7 +180,7 @@ Array [
       </a>
       <div
         className="m-vehicle-map"
-        id="vehicle-map"
+        id="id-vehicle-map"
       />
     </div>
     <button
@@ -377,7 +377,7 @@ Array [
       </a>
       <div
         className="m-vehicle-map"
-        id="vehicle-map"
+        id="id-vehicle-map"
       />
     </div>
     <button
@@ -574,7 +574,7 @@ Array [
       </a>
       <div
         className="m-vehicle-map"
-        id="vehicle-map"
+        id="id-vehicle-map"
       />
     </div>
     <button
@@ -775,7 +775,7 @@ Array [
       </a>
       <div
         className="m-vehicle-map"
-        id="vehicle-map"
+        id="id-vehicle-map"
       />
     </div>
     <button

@@ -117,7 +117,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
 
   return (
     <div
-      id="vehicle-map"
+      id="id-vehicle-map"
       ref={container => (containerRef.current = container)}
       className="m-vehicle-map"
     />

@@ -222,7 +222,7 @@ const VehiclePropertiesPanel = ({
       swipeDirection: SwipeDirection,
       target: HTMLElement | null
     ) => {
-      if (target && target.id === "vehicle-map") {
+      if (target && target.id === "id-vehicle-map") {
         return
       }
 
