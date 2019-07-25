@@ -92,7 +92,7 @@ describe("detectSwipe", () => {
 
     detectSwipe("test-id", detectSwipeCallback)
 
-    expect(detectSwipeCallback).toHaveBeenCalledWith("Right")
+    expect(detectSwipeCallback).toHaveBeenCalledWith("Right", undefined)
   })
 
   test("does not call the callback if the swipe is not big enough", () => {

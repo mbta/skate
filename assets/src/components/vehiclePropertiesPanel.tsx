@@ -218,7 +218,14 @@ const VehiclePropertiesPanel = ({
   const hideMe = () => dispatch(deselectVehicle())
 
   useEffect(() => {
-    const handleSwipe = (swipeDirection: SwipeDirection) => {
+    const handleSwipe = (
+      swipeDirection: SwipeDirection,
+      target: HTMLElement | null
+    ) => {
+      if (target && target.id === "vehicle-map") {
+        return
+      }
+
       if (swipeDirection === "Right") {
         hideMe()
       }
