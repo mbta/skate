@@ -57,13 +57,9 @@ export type ScheduleAdherenceStatus = "on-time" | "early" | "late"
 
 export type StopId = string
 
-export interface Timepoint {
-  id: TimepointId
-}
-
 // An undefined value indicates that the timepoints need to be loaded
 // A null value indicates that we are currently loading the timepoints
-export type LoadableTimepoints = Timepoint[] | null | undefined
+export type LoadableTimepoints = TimepointId[] | null | undefined
 
 export type SourceId = string
 

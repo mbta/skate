@@ -41,7 +41,7 @@ describe("routeLadder", () => {
       id: "28",
       directionNames: { 0: "Outbound", 1: "Inbound" },
     }
-    const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
+    const timepoints = ["MATPN", "WELLH", "MORTN"]
 
     const tree = renderer
       .create(
@@ -62,7 +62,7 @@ describe("routeLadder", () => {
       id: "28",
       directionNames: { 0: "Outbound", 1: "Inbound" },
     }
-    const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
+    const timepoints = ["MATPN", "WELLH", "MORTN"]
     const vehicles: Vehicle[] = [
       {
         id: "y1818",
@@ -170,7 +170,7 @@ describe("routeLadder", () => {
       id: "28",
       directionNames: { 0: "Outbound", 1: "Inbound" },
     }
-    const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
+    const timepoints = ["MATPN", "WELLH", "MORTN"]
     const vehicles: Vehicle[] = [
       {
         id: "y1818",
@@ -300,7 +300,7 @@ describe("routeLadder", () => {
       id: "28",
       directionNames: { 0: "Outbound", 1: "Inbound" },
     }
-    const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
+    const timepoints = ["MATPN", "WELLH", "MORTN"]
 
     const wrapper = mount(
       <DispatchProvider dispatch={mockDispatch}>
@@ -322,7 +322,7 @@ describe("routeLadder", () => {
       id: "28",
       directionNames: { 0: "Outbound", 1: "Inbound" },
     }
-    const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
+    const timepoints = ["MATPN", "WELLH", "MORTN"]
 
     const wrapper = mount(
       <RouteLadder
@@ -348,7 +348,7 @@ describe("routeLadder", () => {
       id: "28",
       directionNames: { 0: "Outbound", 1: "Inbound" },
     }
-    const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
+    const timepoints = ["MATPN", "WELLH", "MORTN"]
     const vehicle: Vehicle = {
       id: "v1",
       label: "v1",

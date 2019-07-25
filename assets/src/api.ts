@@ -1,11 +1,5 @@
 import "whatwg-fetch"
-import {
-  DirectionName,
-  Route,
-  RouteId,
-  Timepoint,
-  TimepointId,
-} from "./skate.d"
+import { DirectionName, Route, RouteId, TimepointId } from "./skate.d"
 
 interface RoutesResponse {
   data: RouteData[]
@@ -53,13 +47,11 @@ export const fetchRoutes = (): Promise<Route[]> =>
 
 export const fetchTimepointsForRoute = (
   routeId: RouteId
-): Promise<Timepoint[]> =>
+): Promise<TimepointId[]> =>
   fetch(`/api/routes/${routeId}`)
     .then(checkResponseStatus)
     .then(parseJson)
-    .then(({ data: timepointIds }: TimepointsForRouteResponse) =>
-      timepointIds.map(timepointId => ({ id: timepointId }))
-    )
+    .then(({ data: timepointIds }: TimepointsForRouteResponse) => timepointIds)
     .catch(error => {
       // tslint:disable-next-line: no-console
       console.error(error)

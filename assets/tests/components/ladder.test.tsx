@@ -3,7 +3,7 @@ import React from "react"
 import renderer from "react-test-renderer"
 import Ladder, { LadderDirection } from "../../src/components/ladder"
 import DispatchProvider from "../../src/providers/dispatchProvider"
-import { Timepoint, Vehicle } from "../../src/skate"
+import { TimepointId, Vehicle } from "../../src/skate"
 import { selectVehicle } from "../../src/state"
 
 jest.mock("../../src/laboratoryFeatures", () => ({
@@ -13,7 +13,7 @@ jest.mock("../../src/laboratoryFeatures", () => ({
 
 describe("ladder", () => {
   test("renders a ladder", () => {
-    const timepoints = [{ id: "t0" }, { id: "t1" }, { id: "t2" }]
+    const timepoints = ["t0", "t1", "t2"]
     const vehicles: Vehicle[] = [
       {
         id: "upward",
@@ -150,7 +150,7 @@ describe("ladder", () => {
   })
 
   test("filters out vehicles whose block is not active", () => {
-    const timepoints = [{ id: "t0" }, { id: "t1" }, { id: "t2" }]
+    const timepoints = ["t0", "t1", "t2"]
     const vehicles: Vehicle[] = [
       {
         id: "upward",
@@ -252,7 +252,7 @@ describe("ladder", () => {
   })
 
   test("shows schedule line in the other direction", () => {
-    const timepoints = [{ id: "t0" }, { id: "t1" }, { id: "t2" }]
+    const timepoints = ["t0", "t1", "t2"]
     const vehicles: Vehicle[] = [
       {
         id: "downward",
@@ -315,7 +315,7 @@ describe("ladder", () => {
   })
 
   test("highlights a selected vehicle", () => {
-    const timepoints = [{ id: "t0" }, { id: "t1" }, { id: "t2" }]
+    const timepoints = ["t0", "t1", "t2"]
     const vehicles: Vehicle[] = [
       {
         id: "upward",
@@ -419,7 +419,7 @@ describe("ladder", () => {
   test("clicking a vehicle selects that vehicle", () => {
     const mockDispatch = jest.fn()
 
-    const timepoints = [{ id: "t0" }, { id: "t1" }, { id: "t2" }]
+    const timepoints = ["t0", "t1", "t2"]
     const vehicle: Vehicle = {
       id: "upward",
       label: "upward",
@@ -477,7 +477,7 @@ describe("ladder", () => {
   })
 
   test("renders a ladder with no timepoints", () => {
-    const timepoints: Timepoint[] = []
+    const timepoints: TimepointId[] = []
     const vehicles: Vehicle[] = [
       {
         id: "upward",
@@ -535,7 +535,7 @@ describe("ladder", () => {
   })
 
   test("renders a reversed ladder", () => {
-    const timepoints = [{ id: "t0" }, { id: "t1" }, { id: "t2" }]
+    const timepoints = ["t0", "t1", "t2"]
     const vehicles: Vehicle[] = [
       {
         id: "upward",
@@ -655,7 +655,7 @@ describe("ladder", () => {
       },
     }
 
-    const timepoints = [{ id: "t0" }, { id: "t1" }, { id: "t2" }]
+    const timepoints = ["t0", "t1", "t2"]
     const ladderDirection = LadderDirection.ZeroToOne
 
     const tree = renderer
