@@ -209,6 +209,19 @@ const DataDiscrepancies = ({
   </ul>
 )
 
+export const handleSwipe = (hideMe: () => void) => (
+  swipeDirection: SwipeDirection,
+  target: HTMLElement | null
+) => {
+  if (target && target.id === "id-vehicle-map") {
+    return
+  }
+
+  if (swipeDirection === "Right") {
+    hideMe()
+  }
+}
+
 const VehiclePropertiesPanel = ({
   selectedVehicle,
   selectedVehicleRoute,
@@ -218,20 +231,7 @@ const VehiclePropertiesPanel = ({
   const hideMe = () => dispatch(deselectVehicle())
 
   useEffect(() => {
-    const handleSwipe = (
-      swipeDirection: SwipeDirection,
-      target: HTMLElement | null
-    ) => {
-      if (target && target.id === "id-vehicle-map") {
-        return
-      }
-
-      if (swipeDirection === "Right") {
-        hideMe()
-      }
-    }
-
-    return detectSwipe("m-vehicle-properties-panel", handleSwipe)
+    return detectSwipe("m-vehicle-properties-panel", handleSwipe(hideMe))
   })
 
   return (
