@@ -26,11 +26,11 @@ defmodule SkateWeb.VehiclesChannelTest do
     test "subscribes to vehicles for a route ID and returns the current list of vehicles", %{
       socket: socket
     } do
-      assert {:ok, %{vehicles: vehicles}, %Socket{} = socket} =
+      assert {:ok, %{on_route_vehicles: on_route_vehicles}, %Socket{} = socket} =
                subscribe_and_join(socket, VehiclesChannel, "vehicles:1")
 
-      assert is_list(vehicles)
-      assert Enum.all?(vehicles, &(%Vehicle{} = &1))
+      assert is_list(on_route_vehicles)
+      assert Enum.all?(on_route_vehicles, &(%Vehicle{} = &1))
     end
 
     test "returns an error when joining a non-existant topic", %{socket: socket} do
@@ -77,6 +77,11 @@ defmodule SkateWeb.VehiclesChannelTest do
         }
       ]
 
+      vehicles_for_route = %{
+        on_route_vehicles: new_vehicles,
+        incoming_vehicles: []
+      }
+
       {:ok, token, claims} =
         AuthManager.encode_and_sign("example@mbta.com", %{
           "exp" => System.system_time(:second) + 500
@@ -86,9 +91,9 @@ defmodule SkateWeb.VehiclesChannelTest do
       socket = Guardian.Phoenix.Socket.assign_rtc(socket, "example@mbta.com", token, claims)
 
       assert {:noreply, socket} =
-               VehiclesChannel.handle_info({:new_realtime_data, new_vehicles}, socket)
+               VehiclesChannel.handle_info({:new_realtime_data, vehicles_for_route}, socket)
 
-      assert_push("vehicles", new_vehicles)
+      assert_push("vehicles", _)
     end
 
     test "rejects sending vehicle data when socket is not authenticated", %{socket: socket} do
@@ -100,9 +105,9 @@ defmodule SkateWeb.VehiclesChannelTest do
       {:ok, _, socket} = subscribe_and_join(socket, VehiclesChannel, "vehicles:1")
       socket = Guardian.Phoenix.Socket.assign_rtc(socket, "example@mbta.com", token, claims)
 
-      {:stop, :normal, _socket} = VehiclesChannel.handle_info({:new_realtime_data, []}, socket)
+      {:stop, :normal, _socket} = VehiclesChannel.handle_info({:new_realtime_data, %{}}, socket)
 
-      assert_push("auth_expired", %{})
+      assert_push("auth_expired", _)
     end
   end
 end

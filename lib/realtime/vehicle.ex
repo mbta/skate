@@ -34,8 +34,8 @@ defmodule Realtime.Vehicle do
           latitude: float(),
           longitude: float(),
           direction_id: Direction.id(),
-          route_id: Route.id(),
-          trip_id: Trip.id(),
+          route_id: Route.id() | nil,
+          trip_id: Trip.id() | nil,
           headsign: String.t() | nil,
           via_variant: RoutePattern.via_variant() | nil,
           bearing: integer() | nil,
@@ -70,8 +70,6 @@ defmodule Realtime.Vehicle do
     :latitude,
     :longitude,
     :direction_id,
-    :route_id,
-    :trip_id,
     :bearing,
     :speed,
     :stop_sequence,
@@ -341,7 +339,7 @@ defmodule Realtime.Vehicle do
         # Either the current trip or the trip that just ended (the last trip to have started)
         block
         |> Enum.take_while(fn trip ->
-          List.first(trip.stop_times).time <= now
+          Trip.start_time(trip) <= now
         end)
         |> List.last()
     end

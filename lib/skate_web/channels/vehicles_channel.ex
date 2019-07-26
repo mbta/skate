@@ -6,8 +6,8 @@ defmodule SkateWeb.VehiclesChannel do
 
   @impl Phoenix.Channel
   def join("vehicles:" <> route_id, _message, socket) do
-    vehicles = Server.subscribe(route_id)
-    {:ok, %{vehicles: vehicles}, socket}
+    vehicles_for_route = Server.subscribe(route_id)
+    {:ok, vehicles_for_route, socket}
   end
 
   def join(topic, _message, _socket) do
@@ -15,9 +15,9 @@ defmodule SkateWeb.VehiclesChannel do
   end
 
   @impl Phoenix.Channel
-  def handle_info({:new_realtime_data, vehicles}, socket) do
+  def handle_info({:new_realtime_data, vehicles_for_route}, socket) do
     if socket_authenticated?(socket) do
-      push(socket, "vehicles", %{vehicles: vehicles})
+      push(socket, "vehicles", vehicles_for_route)
       {:noreply, socket}
     else
       {:stop, :normal, send_auth_expired_message(socket)}

@@ -4,14 +4,26 @@ defmodule Gtfs.Data do
   """
   require Logger
 
-  alias Gtfs.{Block, Csv, Direction, Helpers, Route, RoutePattern, Service, Stop, StopTime, Trip}
+  alias Gtfs.{
+    Block,
+    Calendar,
+    Csv,
+    Direction,
+    Route,
+    RoutePattern,
+    Service,
+    Stop,
+    StopTime,
+    Trip
+  }
 
   @type t :: %__MODULE__{
           routes: [Route.t()],
           route_patterns: [RoutePattern.t()],
           stops: stops_by_id(),
           trips: %{Trip.id() => Trip.t()},
-          blocks: Block.by_id()
+          blocks: Block.by_id(),
+          calendar: Calendar.t()
         }
 
   @type stops_by_id :: %{Stop.id() => Stop.t()}
@@ -23,7 +35,8 @@ defmodule Gtfs.Data do
     :route_patterns,
     :stops,
     :trips,
-    :blocks
+    :blocks,
+    :calendar
   ]
 
   defstruct [
@@ -31,7 +44,8 @@ defmodule Gtfs.Data do
     :route_patterns,
     :stops,
     :trips,
-    :blocks
+    :blocks,
+    :calendar
   ]
 
   @type files :: %{optional(String.t()) => binary()}
@@ -51,7 +65,7 @@ defmodule Gtfs.Data do
         timepoint_ids_for_route_patterns(route_patterns, data)
       end)
 
-    Helpers.merge_lists([
+    Gtfs.Helpers.merge_lists([
       timepoint_ids_by_direction |> Map.get(0, []) |> Enum.reverse(),
       Map.get(timepoint_ids_by_direction, 1, [])
     ])
@@ -67,6 +81,55 @@ defmodule Gtfs.Data do
   def block(%__MODULE__{blocks: blocks}, block_id, service_id) do
     Block.get(blocks, block_id, service_id)
   end
+
+  @spec active_blocks(t(), Util.Time.timestamp(), Util.Time.timestamp()) :: %{
+          Route.id() => [Block.id()]
+        }
+  def active_blocks(%__MODULE__{trips: trips, calendar: calendar}, start_time, end_time) do
+    # We might cover multiple service dates
+    # If we start before 6am, check trips on the previous day
+    # It's okay if this date range is a little too broad, since we check trips by time on those dates later
+    first_possible_service_date =
+      start_time
+      |> (fn time -> time - 6 * 60 * 60 end).()
+      |> Util.Time.date_of_timestamp()
+
+    last_possible_service_date =
+      end_time
+      |> Util.Time.date_of_timestamp()
+
+    date_range = Date.range(first_possible_service_date, last_possible_service_date)
+    dates = Enum.to_list(date_range)
+    active_services = Map.take(calendar, dates)
+    trips = Map.values(trips)
+
+    active_trips =
+      Enum.flat_map(active_services, fn {date, service_ids} ->
+        start_time_of_day = Util.Time.time_of_day_for_timestamp(start_time, date)
+        end_time_of_day = Util.Time.time_of_day_for_timestamp(end_time, date)
+
+        Enum.filter(trips, fn trip ->
+          # The trip is happening today and
+          # The trip has started and
+          # The trip hasn't ended
+          trip.service_id in service_ids and
+            end_time_of_day > Trip.start_time(trip) and
+            start_time_of_day < Trip.end_time(trip)
+        end)
+      end)
+
+    active_blocks_per_route =
+      active_trips
+      |> Enum.group_by(
+        fn trip -> trip.route_id end,
+        fn trip -> trip.block_id end
+      )
+      |> Helpers.map_values(&Enum.uniq/1)
+
+    active_blocks_per_route
+  end
+
+  # Initialization
 
   @spec parse_files(files()) :: t()
   def parse_files(files) do
@@ -87,7 +150,8 @@ defmodule Gtfs.Data do
       route_patterns: bus_route_patterns(files["route_patterns.txt"], bus_route_ids),
       stops: all_stops_by_id(files["stops.txt"]),
       trips: Map.new(bus_trips, fn trip -> {trip.id, trip} end),
-      blocks: Block.group_trips_by_block(bus_trips)
+      blocks: Block.group_trips_by_block(bus_trips),
+      calendar: Calendar.from_files(files["calendar.txt"], files["calendar_dates.txt"])
     }
   end
 
@@ -112,7 +176,7 @@ defmodule Gtfs.Data do
       |> Enum.map(fn stop_time -> stop_time.timepoint_id end)
       |> Enum.filter(& &1)
     end)
-    |> Helpers.merge_lists()
+    |> Gtfs.Helpers.merge_lists()
   end
 
   @spec directions_by_route_id(binary()) :: directions_by_route_and_id()

@@ -1,11 +1,12 @@
 import React, { ReactElement } from "react"
 import {
+  ByRouteId,
   Route,
   RouteId,
   TimepointsByRouteId,
   Vehicle,
   VehicleId,
-  VehiclesByRouteId,
+  VehiclesForRoute,
 } from "../skate"
 import RouteLadders from "./routeLadders"
 import RoutePicker from "./routePicker"
@@ -16,7 +17,7 @@ interface Props {
   routes: Route[] | null
   timepointsByRouteId: TimepointsByRouteId
   selectedRouteIds: RouteId[]
-  vehiclesByRouteId: VehiclesByRouteId
+  vehiclesByRouteId: ByRouteId<VehiclesForRoute>
   selectedVehicleId: VehicleId | undefined
 }
 
@@ -26,12 +27,19 @@ export const findRouteById = (
 ): Route | undefined => (routes || []).find(route => route.id === routeId)
 
 const findSelectedVehicle = (
-  vehiclesByRouteId: VehiclesByRouteId,
+  vehiclesByRouteId: ByRouteId<VehiclesForRoute>,
   selectedVehicleId: VehicleId | undefined
-): Vehicle | undefined =>
-  Object.values(vehiclesByRouteId)
-    .reduce((acc, vehicles) => acc.concat(vehicles), [])
-    .find(vehicle => vehicle.id === selectedVehicleId)
+): Vehicle | undefined => {
+  const allVehicles: Vehicle[] = Object.values(vehiclesByRouteId).reduce(
+    (acc, vehiclesForRoute) =>
+      acc.concat(
+        vehiclesForRoute.onRouteVehicles,
+        vehiclesForRoute.incomingVehicles
+      ),
+    [] as Vehicle[]
+  )
+  return allVehicles.find(vehicle => vehicle.id === selectedVehicleId)
+}
 
 const vehicleRoute = (
   allRoutes: Route[] | null,

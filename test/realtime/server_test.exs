@@ -3,8 +3,8 @@ defmodule Realtime.ServerTest do
 
   alias Realtime.{Server, Vehicle}
 
-  @vehicles_by_route_id %{
-    "1" => [
+  @vehicles_for_route %{
+    on_route_vehicles: [
       %Vehicle{
         id: "v1",
         label: "v1-label",
@@ -38,40 +38,11 @@ defmodule Realtime.ServerTest do
         route_status: :on_route
       }
     ],
-    "66" => [
-      %Vehicle{
-        id: "v2",
-        label: "v2-label",
-        timestamp: 1_558_121_738,
-        latitude: 42.362946519,
-        longitude: -71.0579357,
-        direction_id: 1,
-        route_id: "66",
-        trip_id: "t2",
-        bearing: 90,
-        speed: 1.0,
-        stop_sequence: 5,
-        block_id: "G111-155",
-        operator_id: "70112",
-        operator_name: "PANIAGUA",
-        run_id: "126-1430",
-        headway_secs: 600,
-        headway_spacing: :ok,
-        is_off_course: false,
-        block_is_active: true,
-        sources: MapSet.new(["swiftly"]),
-        data_discrepancies: [],
-        stop_status: %{
-          status: :in_transit_to,
-          stop_id: "s2"
-        },
-        timepoint_status: %{
-          timepoint_id: "tp2",
-          fraction_until_timepoint: 0.9
-        },
-        route_status: :on_route
-      }
-    ]
+    incoming_vehicles: []
+  }
+
+  @vehicles_by_route_id %{
+    "1" => @vehicles_for_route
   }
 
   describe "public interface" do
@@ -95,10 +66,8 @@ defmodule Realtime.ServerTest do
     end
 
     test "clients get vehicles when subscribing", %{server_pid: server_pid} do
-      data = Server.subscribe("1", server_pid)
-
-      assert [at_least_one_vehicle | _rest] = data
-      assert at_least_one_vehicle.route_id == "1"
+      vehicles_for_route = Server.subscribe("1", server_pid)
+      assert vehicles_for_route == @vehicles_for_route
     end
 
     test "subscribed clients get data pushed to them", %{server_pid: server_pid} do
@@ -107,12 +76,12 @@ defmodule Realtime.ServerTest do
       Server.update_vehicles(@vehicles_by_route_id, server_pid)
 
       assert_receive(
-        {:new_realtime_data, data},
+        {:new_realtime_data, vehicles_for_route},
         200,
         "Client didn't receive vehicle positions"
       )
 
-      assert [_at_least_one_vehicle | _rest] = data
+      assert vehicles_for_route == @vehicles_for_route
     end
 
     test "subscribed clients get repeated messages", %{server_pid: server_pid} do
@@ -121,7 +90,7 @@ defmodule Realtime.ServerTest do
       Server.update_vehicles(@vehicles_by_route_id, server_pid)
 
       assert_receive(
-        {:new_realtime_data, _new_data},
+        {:new_realtime_data, _new_vehicles_for_route},
         200,
         "Client didn't receive vehicle positions the first time"
       )
@@ -129,7 +98,7 @@ defmodule Realtime.ServerTest do
       Server.update_vehicles(@vehicles_by_route_id, server_pid)
 
       assert_receive(
-        {:new_realtime_data, _new_data},
+        {:new_realtime_data, _new_vehicles_for_route},
         200,
         "Client didn't receive vehicle positions the second time"
       )

@@ -1,5 +1,4 @@
 defmodule Gtfs.Block do
-  alias Gtfs.Helpers
   alias Gtfs.Service
   alias Gtfs.Trip
 
@@ -32,9 +31,7 @@ defmodule Gtfs.Block do
   def start_time(block) do
     block
     |> List.first()
-    |> Map.get(:stop_times)
-    |> List.first()
-    |> Map.get(:time)
+    |> Trip.start_time()
   end
 
   @doc """
@@ -44,16 +41,11 @@ defmodule Gtfs.Block do
   def end_time(block) do
     block
     |> List.last()
-    |> Map.get(:stop_times)
-    |> List.last()
-    |> Map.get(:time)
+    |> Trip.end_time()
   end
 
   @spec sort_trips_by_time([Trip.t()]) :: [Trip.t()]
   defp sort_trips_by_time(trips) do
-    Enum.sort_by(
-      trips,
-      fn trip -> List.first(trip.stop_times).time end
-    )
+    Enum.sort_by(trips, &Trip.start_time/1)
   end
 end

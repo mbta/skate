@@ -71,6 +71,28 @@ defmodule Gtfs do
     end
   end
 
+  @doc """
+  All of the blocks that are scheduled to be active any time between the start_time and end_time.
+
+  The result is grouped by route.
+  If a block is scheduled to be active on two routes during that time, it wil be in both routes' lists.
+  """
+  @spec active_blocks(Util.Time.timestamp(), Util.Time.timestamp()) :: %{
+          Route.id() => [Block.id()]
+        }
+  @spec active_blocks(Util.Time.timestamp(), Util.Time.timestamp(), GenServer.server()) :: %{
+          Route.id() => [Block.id()]
+        }
+  def active_blocks(start_time, end_time, server \\ __MODULE__) do
+    try do
+      GenServer.call(server, {:active_blocks, start_time, end_time})
+    catch
+      # Handle Gtfs server timeouts gracefully
+      :exit, _ ->
+        []
+    end
+  end
+
   # Queries (Server)
 
   @impl true
@@ -92,6 +114,10 @@ defmodule Gtfs do
 
   def handle_call({:block, block_id, service_id}, _from, {:loaded, gtfs_data} = state) do
     {:reply, Data.block(gtfs_data, block_id, service_id), state}
+  end
+
+  def handle_call({:active_blocks, start_time, end_time}, _from, {:loaded, gtfs_data} = state) do
+    {:reply, Data.active_blocks(gtfs_data, start_time, end_time), state}
   end
 
   # Initialization (Client)
@@ -197,6 +223,8 @@ defmodule Gtfs do
     case fetch_url(url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: zip_binary}} ->
         file_list = [
+          "calendar.txt",
+          "calendar_dates.txt",
           "directions.txt",
           "routes.txt",
           "route_patterns.txt",

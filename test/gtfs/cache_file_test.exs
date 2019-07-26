@@ -18,7 +18,8 @@ defmodule Gtfs.CacheFileTest do
         route_patterns: [],
         stops: %{},
         trips: %{},
-        blocks: %{}
+        blocks: %{},
+        calendar: %{}
       }
 
       filepath = CacheFile.cache_filename() |> CacheFile.generate_filepath()
@@ -36,7 +37,8 @@ defmodule Gtfs.CacheFileTest do
         route_patterns: [],
         stops: %{},
         trips: %{},
-        blocks: %{}
+        blocks: %{},
+        calendar: %{}
       }
 
       filepath = CacheFile.generate_filepath("load_gtfs_1_test_map.terms")

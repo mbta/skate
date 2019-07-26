@@ -76,7 +76,12 @@ describe("LadderPage", () => {
           routes={routes}
           timepointsByRouteId={timepointsByRouteId}
           selectedRouteIds={[]}
-          vehiclesByRouteId={{ "28": [vehicle] }}
+          vehiclesByRouteId={{
+            "28": {
+              onRouteVehicles: [vehicle],
+              incomingVehicles: [],
+            },
+          }}
           selectedVehicleId={undefined}
         />
       )
@@ -92,7 +97,12 @@ describe("LadderPage", () => {
           routes={routes}
           timepointsByRouteId={timepointsByRouteId}
           selectedRouteIds={[]}
-          vehiclesByRouteId={{ "28": [vehicle] }}
+          vehiclesByRouteId={{
+            "28": {
+              onRouteVehicles: [vehicle],
+              incomingVehicles: [],
+            },
+          }}
           selectedVehicleId={vehicle.id}
         />
       )
@@ -171,5 +181,4 @@ const vehicle: Vehicle = {
       fractionUntilTimepoint: 0.8,
     },
   },
-  routeStatus: "incoming",
 }

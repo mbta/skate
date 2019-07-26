@@ -139,6 +139,9 @@ defmodule Util.Time do
 
   iex> Util.Time.date_of_timestamp(1546362000)
   ~D[2019-01-01]
+
+  The date conversion is done in Eastern Time.
+  This is the date that roles over at midnight, not the service date.
   """
   @spec date_of_timestamp(timestamp()) :: Date.t()
   def date_of_timestamp(timestamp) do

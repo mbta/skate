@@ -2,6 +2,7 @@ defmodule Gtfs.Route do
   alias Gtfs.{Csv, Data}
 
   @type id :: String.t()
+  @type by_id(value) :: %{id() => value}
 
   @type t :: %__MODULE__{
           id: id(),

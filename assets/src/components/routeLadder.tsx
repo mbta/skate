@@ -1,7 +1,12 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import { reverseIcon, reverseIconReversed } from "../helpers/icon"
-import { LoadableTimepoints, Route, Vehicle, VehicleId } from "../skate"
+import {
+  LoadableTimepoints,
+  Route,
+  VehicleId,
+  VehiclesForRoute,
+} from "../skate"
 import { deselectRoute } from "../state"
 import CloseButton from "./closeButton"
 import IncomingBox from "./incomingBox"
@@ -11,27 +16,9 @@ import Loading from "./loading"
 interface Props {
   route: Route
   timepoints: LoadableTimepoints
-  vehicles: Vehicle[]
+  vehiclesForRoute: VehiclesForRoute | null
   selectedVehicleId: VehicleId | undefined
 }
-
-interface PartitionedVehicles {
-  onRouteVehicles: Vehicle[]
-  incomingVehicles: Vehicle[]
-}
-const partitionVehiclesByRouteStatus = (
-  vehicles: Vehicle[]
-): PartitionedVehicles =>
-  vehicles.reduce(
-    (
-      { onRouteVehicles, incomingVehicles }: PartitionedVehicles,
-      vehicle: Vehicle
-    ) =>
-      vehicle.routeStatus === "on_route"
-        ? { onRouteVehicles: [...onRouteVehicles, vehicle], incomingVehicles }
-        : { onRouteVehicles, incomingVehicles: [...incomingVehicles, vehicle] },
-    { onRouteVehicles: [], incomingVehicles: [] }
-  )
 
 const Header = ({ route }: { route: Route }) => {
   const dispatch = useContext(DispatchContext)
@@ -86,16 +73,12 @@ const HeaderAndControls = ({
 const RouteLadder = ({
   route,
   timepoints,
-  vehicles,
+  vehiclesForRoute,
   selectedVehicleId,
 }: Props) => {
   const initialDirection: LadderDirection = LadderDirection.ZeroToOne
   const [ladderDirection, setLadderDirection] = useState<LadderDirection>(
     initialDirection
-  )
-
-  const { onRouteVehicles, incomingVehicles } = partitionVehiclesByRouteStatus(
-    vehicles
   )
 
   return (
@@ -110,12 +93,12 @@ const RouteLadder = ({
         <>
           <Ladder
             timepoints={timepoints}
-            vehicles={onRouteVehicles}
+            vehicles={vehiclesForRoute ? vehiclesForRoute.onRouteVehicles : []}
             ladderDirection={ladderDirection}
             selectedVehicleId={selectedVehicleId}
           />
           <IncomingBox
-            vehicles={incomingVehicles}
+            vehicles={vehiclesForRoute ? vehiclesForRoute.incomingVehicles : []}
             ladderDirection={ladderDirection}
             selectedVehicleId={selectedVehicleId}
           />
