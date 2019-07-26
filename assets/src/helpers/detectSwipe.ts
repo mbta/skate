@@ -3,7 +3,10 @@ const MAX_X = 30 // Max x difference for vertical swipe
 const MIN_Y = 50 // Min y swipe for vertical swipe
 const MAX_Y = 60 // Max y difference for horizontal swipe
 
-type Callback = (swipeDirection: SwipeDirection) => void
+type Callback = (
+  swipeDirection: SwipeDirection,
+  srcElement: HTMLElement | null
+) => void
 
 type CleanupFunction = () => void
 
@@ -18,8 +21,8 @@ const detectSwipe = (
   elementId: string,
   callback: Callback
 ): CleanupFunction => {
-  let startingPosition: Position
-  let endingPosition: Position
+  let startingPosition: Position | undefined
+  let endingPosition: Position | undefined
 
   const handleTouchStart = (event: TouchEvent) => {
     const position = firstTouchPosition(event)
@@ -31,11 +34,11 @@ const detectSwipe = (
     endingPosition = firstTouchPosition(event)
   }
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = (event: TouchEvent) => {
     const movement = diff(endingPosition, startingPosition)
     const swipeDirection = directionOfMovement(movement)
     if (swipeDirection) {
-      callback(swipeDirection)
+      callback(swipeDirection, event.srcElement as HTMLElement)
     }
   }
 
@@ -61,10 +64,16 @@ const firstTouchPosition = (event: TouchEvent): Position => {
   return { x: screenX, y: screenY }
 }
 
-const diff = (end: Position, start: Position): Position => ({
-  x: end.x - start.x,
-  y: end.y - start.y,
-})
+const diff = (end?: Position, start?: Position): Position => {
+  if (!start || !end) {
+    return { x: 0, y: 0 }
+  }
+
+  return {
+    x: end.x - start.x,
+    y: end.y - start.y,
+  }
+}
 
 const directionOfMovement = (
   movement: Position
