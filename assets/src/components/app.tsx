@@ -8,7 +8,7 @@ import {
   VehiclesByRouteId,
 } from "../skate"
 import AboutPage from "./aboutPage"
-import RoutePage from "./ladderPage"
+import LadderPage from "./ladderPage"
 import TabBar from "./tabBar"
 
 interface Props {
@@ -24,7 +24,7 @@ const App = (props: Props): ReactElement<HTMLDivElement> => (
   <BrowserRouter>
     <div className="m-app">
       <TabBar routePickerIsVisible={props.routePickerIsVisible} />
-      <BrowserRoute exact={true} path="/" render={() => RoutePage(props)} />
+      <BrowserRoute exact={true} path="/" render={() => LadderPage(props)} />
       <BrowserRoute path="/about" component={AboutPage} />
     </div>
   </BrowserRouter>
