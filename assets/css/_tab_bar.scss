@@ -1,0 +1,47 @@
+.m-tab-bar {
+  background-color: $color-primary;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  // Required for pinning to the left side of the screen on the tablets
+  left: 0;
+  position: fixed;
+  top: inherit;
+  transition: left 0.2s ease-in-out;
+  width: $tab-bar-width;
+  z-index: 2;
+
+  &.visible {
+    left: 0;
+  }
+
+  &.hidden {
+    left: -$tab-bar-width;
+  }
+}
+
+.m-tab-bar__logo,
+.m-tab-bar__link {
+  display: block;
+  padding: 0.5rem 0.5rem 0.25rem 0.5rem;
+  text-align: center;
+
+  &--active {
+    background: $color-secondary-light;
+  }
+}
+
+.m-tab-bar__icon {
+  fill: $color-secondary-light;
+
+  .m-tab-bar__link--active & {
+    fill: $color-primary;
+  }
+}
+
+.m-tab-bar__t-logo {
+  bottom: 0;
+  padding: 0.5rem;
+  position: fixed;
+  width: $tab-bar-width - 1rem;
+}

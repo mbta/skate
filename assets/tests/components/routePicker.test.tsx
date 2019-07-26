@@ -1,10 +1,10 @@
 import { mount } from "enzyme"
 import React from "react"
-import renderer, { act } from "react-test-renderer"
+import renderer from "react-test-renderer"
 import RoutePicker from "../../src/components/routePicker"
 import DispatchProvider from "../../src/providers/dispatchProvider"
 import { Route, RouteId } from "../../src/skate"
-import { deselectRoute, selectRoute } from "../../src/state"
+import { deselectRoute, selectRoute, toggleRoutePicker } from "../../src/state"
 
 describe("RoutePicker", () => {
   test("renders a list of routes", () => {
@@ -19,7 +19,11 @@ describe("RoutePicker", () => {
 
     const tree = renderer
       .create(
-        <RoutePicker routes={routes} selectedRouteIds={selectedRouteIds} />
+        <RoutePicker
+          isVisible={true}
+          routes={routes}
+          selectedRouteIds={selectedRouteIds}
+        />
       )
       .toJSON()
 
@@ -28,23 +32,30 @@ describe("RoutePicker", () => {
 
   test("renders a loading/empty state", () => {
     const tree = renderer
-      .create(<RoutePicker routes={null} selectedRouteIds={[]} />)
+      .create(
+        <RoutePicker isVisible={true} routes={null} selectedRouteIds={[]} />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
   })
 
   test("clicking the collapse button hides the route picker", () => {
-    const wrapper = mount(<RoutePicker routes={null} selectedRouteIds={[]} />)
+    const mockDispatch = jest.fn()
+    const wrapper = mount(
+      <DispatchProvider dispatch={mockDispatch}>
+        <RoutePicker isVisible={true} routes={null} selectedRouteIds={[]} />
+      </DispatchProvider>
+    )
     expect(wrapper.find(".m-route-picker").hasClass("visible")).toBeTruthy()
     expect(wrapper.find(".m-route-picker").hasClass("hiddden")).toBeFalsy()
 
-    act(() => {
-      wrapper.find(".m-route-picker__tab-button").simulate("click")
-    })
+    wrapper
+      .find(".m-route-picker__tab-button")
+      .first()
+      .simulate("click")
 
-    expect(wrapper.find(".m-route-picker").hasClass("visible")).toBeFalsy()
-    expect(wrapper.find(".m-route-picker").hasClass("hidden")).toBeTruthy()
+    expect(mockDispatch).toHaveBeenCalledWith(toggleRoutePicker())
   })
 
   test("clicking a route selects it", () => {
@@ -55,7 +66,7 @@ describe("RoutePicker", () => {
 
     const routePicker = mount(
       <DispatchProvider dispatch={mockDispatch}>
-        <RoutePicker routes={routes} selectedRouteIds={[]} />
+        <RoutePicker isVisible={true} routes={routes} selectedRouteIds={[]} />
       </DispatchProvider>
     )
 
@@ -75,7 +86,11 @@ describe("RoutePicker", () => {
 
     const routePicker = mount(
       <DispatchProvider dispatch={mockDispatch}>
-        <RoutePicker routes={routes} selectedRouteIds={["id"]} />
+        <RoutePicker
+          isVisible={true}
+          routes={routes}
+          selectedRouteIds={["id"]}
+        />
       </DispatchProvider>
     )
 
@@ -95,7 +110,11 @@ describe("RoutePicker", () => {
 
     const routePicker = mount(
       <DispatchProvider dispatch={mockDispatch}>
-        <RoutePicker routes={routes} selectedRouteIds={["id"]} />
+        <RoutePicker
+          isVisible={true}
+          routes={routes}
+          selectedRouteIds={["id"]}
+        />
       </DispatchProvider>
     )
 

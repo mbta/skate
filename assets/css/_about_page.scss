@@ -1,0 +1,34 @@
+.m-about-page {
+  @include page;
+  background: $color-bg-medium;
+}
+
+.m-about-page__container {
+  background: $color-bg-light;
+  padding: 2rem;
+  max-width: 30rem;
+}
+
+.m-about-page__title {
+  @include font-header;
+  text-align: center;
+}
+
+.m-about-page__section {
+  background-color: $white;
+  border-radius: 8px;
+  box-shadow: $subtle-box-shadow;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+.m-about-page__header {
+  @include font-emph;
+  font-weight: bold;
+}
+
+.m-about-page__link {
+  @include button-primary;
+  display: block;
+  text-align: center;
+}

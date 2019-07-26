@@ -1,17 +1,18 @@
-import React from "react"
+import React, { ReactElement } from "react"
+import { BrowserRouter, Route as BrowserRoute } from "react-router-dom"
 import {
   Route,
   RouteId,
   TimepointsByRouteId,
-  Vehicle,
   VehicleId,
   VehiclesByRouteId,
 } from "../skate"
-import RouteLadders from "./routeLadders"
-import RoutePicker from "./routePicker"
-import VehiclePropertiesPanel from "./vehiclePropertiesPanel"
+import AboutPage from "./aboutPage"
+import RoutePage from "./ladderPage"
+import TabBar from "./tabBar"
 
 interface Props {
+  routePickerIsVisible: boolean
   routes: Route[] | null
   timepointsByRouteId: TimepointsByRouteId
   selectedRouteIds: RouteId[]
@@ -19,60 +20,14 @@ interface Props {
   selectedVehicleId: VehicleId | undefined
 }
 
-export const findRouteById = (
-  routes: Route[] | null,
-  routeId: RouteId
-): Route | undefined => (routes || []).find(route => route.id === routeId)
-
-const findSelectedVehicle = (
-  vehiclesByRouteId: VehiclesByRouteId,
-  selectedVehicleId: VehicleId | undefined
-): Vehicle | undefined =>
-  Object.values(vehiclesByRouteId)
-    .reduce((acc, vehicles) => acc.concat(vehicles), [])
-    .find(vehicle => vehicle.id === selectedVehicleId)
-
-const vehicleRoute = (
-  allRoutes: Route[] | null,
-  vehicle: Vehicle | undefined
-): Route | undefined =>
-  (allRoutes || []).find(route => route.id === (vehicle && vehicle.routeId))
-
-const App = ({
-  routes,
-  timepointsByRouteId,
-  selectedRouteIds,
-  vehiclesByRouteId,
-  selectedVehicleId,
-}: Props) => {
-  const selectedRoutes: Route[] = selectedRouteIds
-    .map(routeId => findRouteById(routes, routeId))
-    .filter(route => route) as Route[]
-
-  const selectedVehicle = findSelectedVehicle(
-    vehiclesByRouteId,
-    selectedVehicleId
-  )
-
-  return (
+const App = (props: Props): ReactElement<HTMLDivElement> => (
+  <BrowserRouter>
     <div className="m-app">
-      <RoutePicker routes={routes} selectedRouteIds={selectedRouteIds} />
-
-      <RouteLadders
-        routes={selectedRoutes}
-        timepointsByRouteId={timepointsByRouteId}
-        vehiclesByRouteId={vehiclesByRouteId}
-        selectedVehicleId={selectedVehicleId}
-      />
-
-      {selectedVehicle && (
-        <VehiclePropertiesPanel
-          selectedVehicle={selectedVehicle}
-          selectedVehicleRoute={vehicleRoute(routes, selectedVehicle)}
-        />
-      )}
+      <TabBar routePickerIsVisible={props.routePickerIsVisible} />
+      <BrowserRoute exact={true} path="/" render={() => RoutePage(props)} />
+      <BrowserRoute path="/about" component={AboutPage} />
     </div>
-  )
-}
+  </BrowserRouter>
+)
 
 export default App

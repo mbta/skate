@@ -109,6 +109,7 @@ $color-line-gapped-light: #75e8ff;
   font-size: 0.8125rem;
   font-weight: 700;
   padding: 0.3125rem;
+  text-decoration: none;
 
   &:focus,
   &:hover {
@@ -167,6 +168,10 @@ $color-line-gapped-light: #75e8ff;
   }
 }
 
+@mixin page {
+  margin-left: $tab-bar-width;
+}
+
 // input styles
 
 select {
@@ -201,3 +206,5 @@ input {
 // modals
 $modal-overlay-color: transparentize($color-component-dark, 0.8);
 $modal-box-shadow: 0 0 2rem 0 transparentize($black, 0.5);
+
+$subtle-box-shadow: 0 2px 4px 0 rgba(176, 181, 192, 0.5);

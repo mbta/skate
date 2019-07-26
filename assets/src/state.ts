@@ -2,11 +2,13 @@ import { Dispatch as ReactDispatch } from "react"
 import { RouteId, VehicleId } from "./skate.d"
 
 export interface State {
+  routePickerIsVisible: boolean
   selectedRouteIds: RouteId[]
   selectedVehicleId?: VehicleId
 }
 
 export const initialState: State = {
+  routePickerIsVisible: true,
   selectedRouteIds: [],
   selectedVehicleId: undefined,
 }
@@ -55,11 +57,20 @@ export const deselectVehicle = (): DeselectVehicleAction => ({
   type: "DESELECT_VEHICLE",
 })
 
+interface ToggleRoutePickerAction {
+  type: "TOGGLE_ROUTE_PICKER"
+}
+
+export const toggleRoutePicker = (): ToggleRoutePickerAction => ({
+  type: "TOGGLE_ROUTE_PICKER",
+})
+
 type Action =
   | SelectRouteAction
   | DeselectRouteAction
   | SelectVehicleAction
   | DeselectVehicleAction
+  | ToggleRoutePickerAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -88,6 +99,11 @@ export const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         selectedVehicleId: undefined,
+      }
+    case "TOGGLE_ROUTE_PICKER":
+      return {
+        ...state,
+        routePickerIsVisible: !state.routePickerIsVisible,
       }
     default:
       return state
