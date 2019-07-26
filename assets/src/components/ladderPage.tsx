@@ -57,7 +57,7 @@ const LadderPage = ({
   )
 
   return (
-    <div className="c-page">
+    <div className="m-ladder-page">
       <RoutePicker
         isVisible={routePickerIsVisible}
         routes={routes}

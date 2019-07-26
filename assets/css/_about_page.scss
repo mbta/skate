@@ -1,4 +1,5 @@
 .m-about-page {
+  @include page;
   background: $color-bg-medium;
 }
 

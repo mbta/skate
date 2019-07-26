@@ -168,6 +168,10 @@ $color-line-gapped-light: #75e8ff;
   }
 }
 
+@mixin page {
+  margin-left: $tab-bar-width;
+}
+
 // input styles
 
 select {
