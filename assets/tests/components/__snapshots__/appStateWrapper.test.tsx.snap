@@ -88,7 +88,7 @@ exports[`renders 1`] = `
     </div>
   </div>
   <div
-    className="c-page"
+    className="m-ladder-page"
   >
     <div
       className="m-route-picker visible"

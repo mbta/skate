@@ -2,7 +2,7 @@
 
 exports[`RoutePage renders the empty state 1`] = `
 <div
-  className="c-page"
+  className="m-ladder-page"
 >
   <div
     className="m-route-picker visible"
@@ -76,7 +76,7 @@ exports[`RoutePage renders the empty state 1`] = `
 
 exports[`RoutePage renders with a selected vehicle 1`] = `
 <div
-  className="c-page"
+  className="m-ladder-page"
 >
   <div
     className="m-route-picker visible"
@@ -333,6 +333,7 @@ exports[`RoutePage renders with a selected vehicle 1`] = `
       </a>
       <div
         className="m-vehicle-map"
+        id="id-vehicle-map"
       />
     </div>
     <button
@@ -351,7 +352,7 @@ exports[`RoutePage renders with a selected vehicle 1`] = `
 
 exports[`RoutePage renders with routes 1`] = `
 <div
-  className="c-page"
+  className="m-ladder-page"
 >
   <div
     className="m-route-picker visible"
@@ -495,7 +496,7 @@ exports[`RoutePage renders with routes 1`] = `
 
 exports[`RoutePage renders with selectedRoutes in different order than routes data 1`] = `
 <div
-  className="c-page"
+  className="m-ladder-page"
 >
   <div
     className="m-route-picker visible"
@@ -688,7 +689,7 @@ exports[`RoutePage renders with selectedRoutes in different order than routes da
 
 exports[`RoutePage renders with timepoints 1`] = `
 <div
-  className="c-page"
+  className="m-ladder-page"
 >
   <div
     className="m-route-picker visible"
@@ -781,7 +782,7 @@ exports[`RoutePage renders with timepoints 1`] = `
 
 exports[`RoutePage renders with vehicles 1`] = `
 <div
-  className="c-page"
+  className="m-ladder-page"
 >
   <div
     className="m-route-picker visible"

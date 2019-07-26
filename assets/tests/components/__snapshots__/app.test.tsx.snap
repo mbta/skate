@@ -88,7 +88,7 @@ exports[`App renders the empty state 1`] = `
     </div>
   </div>
   <div
-    className="c-page"
+    className="m-ladder-page"
   >
     <div
       className="m-route-picker visible"
@@ -249,7 +249,7 @@ exports[`App renders with routes 1`] = `
     </div>
   </div>
   <div
-    className="c-page"
+    className="m-ladder-page"
   >
     <div
       className="m-route-picker visible"
