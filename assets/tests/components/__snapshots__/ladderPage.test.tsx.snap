@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`RoutePage renders the empty state 1`] = `
+exports[`LadderPage renders the empty state 1`] = `
 <div
   className="m-ladder-page"
 >
@@ -74,7 +74,7 @@ exports[`RoutePage renders the empty state 1`] = `
 </div>
 `;
 
-exports[`RoutePage renders with a selected vehicle 1`] = `
+exports[`LadderPage renders with a selected vehicle 1`] = `
 <div
   className="m-ladder-page"
 >
@@ -350,7 +350,7 @@ exports[`RoutePage renders with a selected vehicle 1`] = `
 </div>
 `;
 
-exports[`RoutePage renders with routes 1`] = `
+exports[`LadderPage renders with routes 1`] = `
 <div
   className="m-ladder-page"
 >
@@ -494,7 +494,7 @@ exports[`RoutePage renders with routes 1`] = `
 </div>
 `;
 
-exports[`RoutePage renders with selectedRoutes in different order than routes data 1`] = `
+exports[`LadderPage renders with selectedRoutes in different order than routes data 1`] = `
 <div
   className="m-ladder-page"
 >
@@ -687,7 +687,7 @@ exports[`RoutePage renders with selectedRoutes in different order than routes da
 </div>
 `;
 
-exports[`RoutePage renders with timepoints 1`] = `
+exports[`LadderPage renders with timepoints 1`] = `
 <div
   className="m-ladder-page"
 >
@@ -780,7 +780,7 @@ exports[`RoutePage renders with timepoints 1`] = `
 </div>
 `;
 
-exports[`RoutePage renders with vehicles 1`] = `
+exports[`LadderPage renders with vehicles 1`] = `
 <div
   className="m-ladder-page"
 >

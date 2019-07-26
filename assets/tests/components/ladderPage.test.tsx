@@ -1,13 +1,13 @@
 import React from "react"
 import renderer from "react-test-renderer"
-import RoutePage, { findRouteById } from "../../src/components/ladderPage"
+import LadderPage, { findRouteById } from "../../src/components/ladderPage"
 import { Route, TimepointsByRouteId, Vehicle } from "../../src/skate"
 
-describe("RoutePage", () => {
+describe("LadderPage", () => {
   test("renders the empty state", () => {
     const tree = renderer
       .create(
-        <RoutePage
+        <LadderPage
           routePickerIsVisible={true}
           routes={null}
           timepointsByRouteId={{}}
@@ -23,7 +23,7 @@ describe("RoutePage", () => {
   test("renders with routes", () => {
     const tree = renderer
       .create(
-        <RoutePage
+        <LadderPage
           routePickerIsVisible={true}
           routes={routes}
           timepointsByRouteId={{}}
@@ -39,7 +39,7 @@ describe("RoutePage", () => {
   test("renders with selectedRoutes in different order than routes data", () => {
     const tree = renderer
       .create(
-        <RoutePage
+        <LadderPage
           routePickerIsVisible={true}
           routes={routes}
           timepointsByRouteId={{}}
@@ -55,7 +55,7 @@ describe("RoutePage", () => {
   test("renders with timepoints", () => {
     const tree = renderer
       .create(
-        <RoutePage
+        <LadderPage
           routePickerIsVisible={true}
           routes={routes}
           timepointsByRouteId={timepointsByRouteId}
@@ -71,7 +71,7 @@ describe("RoutePage", () => {
   test("renders with vehicles", () => {
     const tree = renderer
       .create(
-        <RoutePage
+        <LadderPage
           routePickerIsVisible={true}
           routes={routes}
           timepointsByRouteId={timepointsByRouteId}
@@ -87,7 +87,7 @@ describe("RoutePage", () => {
   test("renders with a selected vehicle", () => {
     const tree = renderer
       .create(
-        <RoutePage
+        <LadderPage
           routePickerIsVisible={true}
           routes={routes}
           timepointsByRouteId={timepointsByRouteId}
