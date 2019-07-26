@@ -4,6 +4,7 @@ import useVehicles from "../../src/hooks/useVehicles"
 import { RouteId, Vehicle, VehicleTimepointStatus } from "../../src/skate"
 
 // tslint:disable: react-hooks-nesting
+// tslint:disable: object-literal-sort-keys
 
 const makeMockSocket = () => ({
   channel: jest.fn(),
@@ -68,7 +69,6 @@ describe("useVehicles", () => {
       operator_name: "SMITH",
       previous_vehicle_id: "v2",
       route_id: "39",
-      route_status: "on_route",
       run_id: "run-1",
       schedule_adherence_secs: 0,
       schedule_adherence_string: "0.0 sec (ontime)",
@@ -167,7 +167,6 @@ describe("useVehicles", () => {
           fractionUntilTimepoint: 0.5,
         },
       },
-      routeStatus: "on_route",
     },
   ]
 
@@ -214,7 +213,10 @@ describe("useVehicles", () => {
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
     mockChannel.receive.mockImplementation((event, handler) => {
       if (event === "ok") {
-        handler({ vehicles: vehiclesData })
+        handler({
+          on_route_vehicles: vehiclesData,
+          incoming_vehicles: [],
+        })
       }
       return mockChannel
     })
@@ -223,7 +225,38 @@ describe("useVehicles", () => {
       useVehicles((mockSocket as any) as Socket, ["1"])
     )
 
-    expect(result.current).toEqual({ "1": vehicles })
+    expect(result.current).toEqual({
+      "1": {
+        onRouteVehicles: vehicles,
+        incomingVehicles: [],
+      },
+    })
+  })
+
+  test("returns incoming vehicles", async () => {
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel()
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+    mockChannel.receive.mockImplementation((event, handler) => {
+      if (event === "ok") {
+        handler({
+          on_route_vehicles: [],
+          incoming_vehicles: vehiclesData,
+        })
+      }
+      return mockChannel
+    })
+
+    const { result } = renderHook(() =>
+      useVehicles((mockSocket as any) as Socket, ["1"])
+    )
+
+    expect(result.current).toEqual({
+      "1": {
+        onRouteVehicles: [],
+        incomingVehicles: vehicles,
+      },
+    })
   })
 
   test("returns results pushed to the channel", async () => {
@@ -232,7 +265,10 @@ describe("useVehicles", () => {
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
     mockChannel.on.mockImplementation((event, handler) => {
       if (event === "vehicles") {
-        handler({ vehicles: vehiclesData })
+        handler({
+          on_route_vehicles: vehiclesData,
+          incoming_vehicles: [],
+        })
       }
     })
 
@@ -240,7 +276,12 @@ describe("useVehicles", () => {
       useVehicles((mockSocket as any) as Socket, ["1"])
     )
 
-    expect(result.current).toEqual({ "1": vehicles })
+    expect(result.current).toEqual({
+      "1": {
+        onRouteVehicles: vehicles,
+        incomingVehicles: [],
+      },
+    })
   })
 
   test("generates a schedule adherence status", async () => {
@@ -263,7 +304,6 @@ describe("useVehicles", () => {
         operator_name: "SMITH",
         previous_vehicle_id: "v2",
         route_id: "39",
-        route_status: "on_route",
         run_id: "run-1",
         // On-time
         schedule_adherence_secs: 0,
@@ -303,7 +343,6 @@ describe("useVehicles", () => {
         operator_name: "SMITH",
         previous_vehicle_id: "v2",
         route_id: "39",
-        route_status: "on_route",
         run_id: "run-1",
         // Early
         schedule_adherence_secs: -61,
@@ -343,7 +382,6 @@ describe("useVehicles", () => {
         operator_name: "SMITH",
         previous_vehicle_id: "v2",
         route_id: "39",
-        route_status: "on_route",
         run_id: "run-1",
         // Late
         schedule_adherence_secs: 361,
@@ -404,7 +442,6 @@ describe("useVehicles", () => {
           fractionUntilTimepoint: 0.5,
         } as VehicleTimepointStatus,
         scheduledLocation: null,
-        routeStatus: "on_route",
       },
       {
         id: "v1",
@@ -443,7 +480,6 @@ describe("useVehicles", () => {
           fractionUntilTimepoint: 0.5,
         } as VehicleTimepointStatus,
         scheduledLocation: null,
-        routeStatus: "on_route",
       },
       {
         id: "v1",
@@ -482,7 +518,6 @@ describe("useVehicles", () => {
           fractionUntilTimepoint: 0.5,
         } as VehicleTimepointStatus,
         scheduledLocation: null,
-        routeStatus: "on_route",
       },
     ]
 
@@ -491,7 +526,10 @@ describe("useVehicles", () => {
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
     mockChannel.receive.mockImplementation((event, handler) => {
       if (event === "ok") {
-        handler({ vehicles: vehiclesDataVaryingStatus })
+        handler({
+          on_route_vehicles: vehiclesDataVaryingStatus,
+          incoming_vehicles: [],
+        })
       }
       return mockChannel
     })
@@ -500,6 +538,11 @@ describe("useVehicles", () => {
       useVehicles((mockSocket as any) as Socket, ["1"])
     )
 
-    expect(result.current).toEqual({ "1": vehiclesVaryingStatus })
+    expect(result.current).toEqual({
+      "1": {
+        onRouteVehicles: vehiclesVaryingStatus,
+        incomingVehicles: [],
+      },
+    })
   })
 })

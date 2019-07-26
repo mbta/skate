@@ -2,14 +2,14 @@ import { Channel, Socket } from "phoenix"
 import { Dispatch as ReactDispatch, useEffect, useReducer } from "react"
 import {
   ByRouteId,
+  DataDiscrepancy,
   DirectionId,
   HeadwaySpacing,
   RouteId,
   ScheduleAdherenceStatus,
   Vehicle,
-  VehicleRouteStatus,
-  VehiclesByRouteId,
   VehicleScheduledLocation,
+  VehiclesForRoute,
   VehicleStatus,
   VehicleStopStatus,
   VehicleTimepointStatus,
@@ -71,12 +71,16 @@ interface VehicleData {
   stop_status: VehicleStopStatusData
   timepoint_status: VehicleTimepointStatusData | null
   scheduled_location: VehicleScheduledLocationData | null
-  route_status: VehicleRouteStatus
+}
+
+interface VehiclesForRouteData {
+  on_route_vehicles: VehicleData[]
+  incoming_vehicles: VehicleData[]
 }
 
 interface State {
   channelsByRouteId: ByRouteId<Channel>
-  vehiclesByRouteId: VehiclesByRouteId
+  vehiclesByRouteId: ByRouteId<VehiclesForRoute>
 }
 
 const initialState: State = {
@@ -102,15 +106,21 @@ const setChannelForRoute = (
 
 interface SetVehiclesForRouteAction {
   type: "SET_VEHICLES_FOR_ROUTE"
-  payload: { routeId: RouteId; vehicles: Vehicle[] }
+  payload: {
+    routeId: RouteId
+    vehiclesForRoute: VehiclesForRoute
+  }
 }
 
 const setVehiclesForRoute = (
   routeId: RouteId,
-  vehicles: Vehicle[]
+  vehiclesForRoute: VehiclesForRoute
 ): SetVehiclesForRouteAction => ({
   type: "SET_VEHICLES_FOR_ROUTE",
-  payload: { routeId, vehicles },
+  payload: {
+    routeId,
+    vehiclesForRoute,
+  },
 })
 
 interface RemoveRouteAction {
@@ -147,7 +157,7 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         vehiclesByRouteId: {
           ...state.vehiclesByRouteId,
-          [action.payload.routeId]: action.payload.vehicles,
+          [action.payload.routeId]: action.payload.vehiclesForRoute,
         },
       }
     case "REMOVE_ROUTE":
@@ -156,13 +166,13 @@ const reducer = (state: State, action: Action): State => {
         ...channelsWithoutRouteId
       } = state.channelsByRouteId
       const {
-        [action.payload.routeId]: _vehicles,
-        ...vehiclesWithoutRouteId
+        [action.payload.routeId]: _vehiclesForRoute,
+        ...vehiclesByRouteIdWithoutRouteId
       } = state.vehiclesByRouteId
       return {
         ...state,
         channelsByRouteId: channelsWithoutRouteId,
-        vehiclesByRouteId: vehiclesWithoutRouteId,
+        vehiclesByRouteId: vehiclesByRouteIdWithoutRouteId,
       }
     default:
       return state
@@ -184,7 +194,9 @@ const scheduleAdherenceStatus = (
   }
 }
 
-const dataDiscrepanciesFromData = (dataDiscrepancies: DataDiscrepancyData[]) =>
+const dataDiscrepanciesFromData = (
+  dataDiscrepancies: DataDiscrepancyData[]
+): DataDiscrepancy[] =>
   dataDiscrepancies.map(dataDiscrepancy => ({
     attribute: dataDiscrepancy.attribute,
     sources: dataDiscrepancy.sources,
@@ -250,7 +262,13 @@ const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
   scheduledLocation:
     vehicleData.scheduled_location &&
     vehicleScheduledLocationFromData(vehicleData.scheduled_location),
-  routeStatus: vehicleData.route_status,
+})
+
+const vehiclesForRouteFromData = (
+  vehiclesForRouteData: VehiclesForRouteData
+): VehiclesForRoute => ({
+  onRouteVehicles: vehiclesForRouteData.on_route_vehicles.map(vehicleFromData),
+  incomingVehicles: vehiclesForRouteData.incoming_vehicles.map(vehicleFromData),
 })
 
 const subscribe = (
@@ -258,15 +276,9 @@ const subscribe = (
   routeId: RouteId,
   dispatch: Dispatch
 ): Channel => {
-  const handleVehicles = ({
-    vehicles: vehiclesData,
-  }: {
-    vehicles: VehicleData[]
-  }) => {
-    const vehicles = vehiclesData.map(vehicleData =>
-      vehicleFromData(vehicleData)
-    )
-    dispatch(setVehiclesForRoute(routeId, vehicles))
+  const handleVehicles = (vehiclesForRouteData: VehiclesForRouteData) => {
+    const vehiclesForRoute = vehiclesForRouteFromData(vehiclesForRouteData)
+    dispatch(setVehiclesForRoute(routeId, vehiclesForRoute))
   }
 
   const topic = `vehicles:${routeId}`
@@ -292,7 +304,7 @@ const subscribe = (
 const useVehicles = (
   socket: Socket | undefined,
   selectedRouteIds: RouteId[]
-): VehiclesByRouteId => {
+): ByRouteId<VehiclesForRoute> => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const { channelsByRouteId, vehiclesByRouteId } = state
 

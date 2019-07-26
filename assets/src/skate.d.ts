@@ -105,7 +105,6 @@ export interface Vehicle {
   stopStatus: VehicleStopStatus
   timepointStatus: VehicleTimepointStatus | null
   scheduledLocation: VehicleScheduledLocation | null
-  routeStatus: VehicleRouteStatus
 }
 
 export type VehicleId = string
@@ -126,10 +125,11 @@ export interface VehicleTimepointStatus {
   fractionUntilTimepoint: number
 }
 
-export type VehiclesByRouteId = ByRouteId<Vehicle[]>
-
-export type VehicleRouteStatus = "incoming" | "on_route"
-
 export type VehicleStatus = "in_transit_to" | "stopped_at"
+
+export interface VehiclesForRoute {
+  onRouteVehicles: Vehicle[]
+  incomingVehicles: Vehicle[]
+}
 
 export type ViaVariant = string

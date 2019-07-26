@@ -9,13 +9,10 @@ defmodule Realtime.Server do
   use GenServer
 
   alias Gtfs.Route
+  alias Realtime.Vehicles
   require Logger
 
-  @type vehicles_by_route_id :: %{optional(Route.id()) => [Realtime.Vehicle.t()]}
-
-  @type state :: %{
-          vehicles: vehicles_by_route_id()
-        }
+  @typep state :: Route.by_id(Vehicles.for_route())
 
   # Client functions
 
@@ -32,30 +29,26 @@ defmodule Realtime.Server do
 
   @doc """
   The subscribing process will get a message when there's new data, with the form
-  {:new_realtime_data, vehicles_by_route_id()}
+  {:new_realtime_data, vehicles_on_route()}
   """
-  @spec subscribe(Route.id(), GenServer.server()) :: vehicles_by_route_id()
+  @spec subscribe(Route.id(), GenServer.server()) :: Vehicles.for_route()
   def subscribe(route_id, server \\ nil) do
     server = server || default_name()
-    {registry_key, vehicles} = GenServer.call(server, {:subscribe, route_id})
+    {registry_key, vehicles_for_route} = GenServer.call(server, {:subscribe, route_id})
     Registry.register(Realtime.Registry, registry_key, route_id)
-    vehicles
+    vehicles_for_route
   end
 
-  @spec update_vehicles(vehicles_by_route_id()) :: term()
-  def update_vehicles(vehicles, server \\ __MODULE__) do
-    GenServer.cast(server, {:update_vehicles, vehicles})
+  @spec update_vehicles(Route.by_id(Vehicles.for_route())) :: term()
+  def update_vehicles(vehicles_by_route_id, server \\ __MODULE__) do
+    GenServer.cast(server, {:update_vehicles, vehicles_by_route_id})
   end
 
   # GenServer callbacks
 
   @impl true
   def init(_opts) do
-    initial_state = %{
-      vehicles: Map.new()
-    }
-
-    {:ok, initial_state}
+    {:ok, %{}}
   end
 
   # If we get a reply after we've already timed out, ignore it
@@ -65,24 +58,31 @@ defmodule Realtime.Server do
   @impl true
   def handle_call({:subscribe, route_id}, _from, state) do
     registry_key = self()
-    vehicles = Map.get(state.vehicles, route_id, [])
-    {:reply, {registry_key, vehicles}, state}
+    vehicles_for_route = Map.get(state, route_id, Vehicles.empty_vehicles_for_route())
+    {:reply, {registry_key, vehicles_for_route}, state}
   end
 
   @impl true
-  def handle_cast({:update_vehicles, vehicles}, state) do
-    broadcast(vehicles)
-    new_state = %{state | vehicles: vehicles}
+  def handle_cast({:update_vehicles, vehicles_by_route_id}, _state) do
+    broadcast(vehicles_by_route_id)
+    new_state = vehicles_by_route_id
     {:noreply, new_state}
   end
 
-  @spec broadcast(vehicles_by_route_id()) :: :ok
-  defp broadcast(vehicles) do
+  @spec broadcast(state()) :: :ok
+  defp broadcast(vehicles_by_route_id) do
     registry_key = self()
 
     Registry.dispatch(registry_name(), registry_key, fn entries ->
       for {pid, route_id} <- entries do
-        send(pid, {:new_realtime_data, Map.get(vehicles, route_id, [])})
+        vehicles_for_route =
+          Map.get(
+            vehicles_by_route_id,
+            route_id,
+            Vehicles.empty_vehicles_for_route()
+          )
+
+        send(pid, {:new_realtime_data, vehicles_for_route})
       end
     end)
   end

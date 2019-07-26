@@ -1,11 +1,12 @@
 import React, { ReactElement } from "react"
 import { BrowserRouter, Route as BrowserRoute } from "react-router-dom"
 import {
+  ByRouteId,
   Route,
   RouteId,
   TimepointsByRouteId,
   VehicleId,
-  VehiclesByRouteId,
+  VehiclesForRoute,
 } from "../skate"
 import AboutPage from "./aboutPage"
 import LadderPage from "./ladderPage"
@@ -16,7 +17,7 @@ interface Props {
   routes: Route[] | null
   timepointsByRouteId: TimepointsByRouteId
   selectedRouteIds: RouteId[]
-  vehiclesByRouteId: VehiclesByRouteId
+  vehiclesByRouteId: ByRouteId<VehiclesForRoute>
   selectedVehicleId: VehicleId | undefined
 }
 
