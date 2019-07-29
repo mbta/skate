@@ -70,8 +70,8 @@ defmodule Realtime.VehiclesTest do
 
     test "includes vehicles incoming onto a new route in their new route" do
       vehicle = %Vehicle{
-        id: "on_route",
-        label: "on_route",
+        id: "on_route_1",
+        label: "on_route_1",
         timestamp: 0,
         latitude: 0,
         longitude: 0,
@@ -93,7 +93,31 @@ defmodule Realtime.VehiclesTest do
         route_status: :on_route
       }
 
-      ungrouped_vehicles = [vehicle]
+      vehicle_2 = %Vehicle{
+        id: "on_route_2",
+        label: "on_route_2",
+        timestamp: 0,
+        latitude: 0,
+        longitude: 0,
+        direction_id: 1,
+        route_id: "route2",
+        trip_id: "trip",
+        bearing: 0,
+        speed: 0,
+        stop_sequence: 0,
+        block_id: "block",
+        operator_id: "",
+        operator_name: "",
+        run_id: "",
+        headway_spacing: :ok,
+        is_off_course: false,
+        block_is_active: true,
+        sources: "",
+        stop_status: "",
+        route_status: :on_route
+      }
+
+      ungrouped_vehicles = [vehicle, vehicle_2]
       incoming_blocks_by_route = %{"route2" => ["block"]}
 
       assert Vehicles.group_by_route_with_blocks(
@@ -105,7 +129,7 @@ defmodule Realtime.VehiclesTest do
                  incoming_vehicles: []
                },
                "route2" => %{
-                 on_route_vehicles: [],
+                 on_route_vehicles: [vehicle_2],
                  incoming_vehicles: [vehicle]
                }
              }
