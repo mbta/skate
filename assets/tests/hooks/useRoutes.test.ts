@@ -1,4 +1,4 @@
-import { renderHook } from "react-hooks-testing-library"
+import { renderHook } from "@testing-library/react-hooks"
 import * as Api from "../../src/api"
 import useRoutes from "../../src/hooks/useRoutes"
 import { instantPromise } from "../testHelpers/mockHelpers"

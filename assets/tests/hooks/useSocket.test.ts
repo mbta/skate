@@ -1,4 +1,4 @@
-import { renderHook } from "react-hooks-testing-library"
+import { renderHook } from "@testing-library/react-hooks"
 import useSocket, { readUserToken } from "../../src/hooks/useSocket"
 
 // tslint:disable: react-hooks-nesting
