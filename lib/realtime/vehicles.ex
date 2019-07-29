@@ -96,8 +96,8 @@ defmodule Realtime.Vehicles do
       vehicles_by_route_id_2,
       fn _route_id, vehicles_1, vehicles_2 ->
         %{
-          on_route_vehicles: vehicles_2.vehicles ++ vehicles_1.vehicles,
-          incoming_vehicles: vehicles_2.incoming ++ vehicles_1.incoming
+          on_route_vehicles: vehicles_2.on_route_vehicles ++ vehicles_1.on_route_vehicles,
+          incoming_vehicles: vehicles_2.incoming_vehicles ++ vehicles_1.incoming_vehicles
         }
       end
     )
