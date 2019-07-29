@@ -1,18 +1,13 @@
 import React, { useContext, useLayoutEffect, useRef, useState } from "react"
 import DispatchContext from "../contexts/dispatchContext"
+import statusClass from "../helpers/statusClass"
 import featureIsEnabled from "../laboratoryFeatures"
 import {
   LadderVehicle,
   ladderVehiclesFromVehicles,
   VehicleDirection,
 } from "../models/ladderVehicle"
-import { VehicleAdherenceStatus } from "../models/vehicleStatus"
-import {
-  HeadwaySpacing,
-  Vehicle,
-  VehicleId,
-  VehicleTimepointStatus,
-} from "../realtime.d"
+import { Vehicle, VehicleId, VehicleTimepointStatus } from "../realtime.d"
 import { TimepointId } from "../schedule.d"
 import { selectVehicle } from "../state"
 import HeadwayLines from "./headwayLines"
@@ -310,15 +305,5 @@ function partition<T>(items: T[], testFn: (value: T) => boolean): T[][] {
     [[] as T[], [] as T[]]
   )
 }
-
-const statusClass = (
-  headwaySpacing: HeadwaySpacing,
-  status: VehicleAdherenceStatus
-): string =>
-  !featureIsEnabled("headway_ladder_colors") ||
-  headwaySpacing === null ||
-  status === "off-course"
-    ? status
-    : ""
 
 export default Ladder
