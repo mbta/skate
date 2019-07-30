@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
-import statusClass from "../helpers/statusClass"
+import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
 import { status } from "../models/vehicleStatus"
 import { DataDiscrepancy, Vehicle } from "../realtime.d"
 import { Route } from "../schedule.d"
@@ -53,7 +53,7 @@ const ScheduleAdherenceLabel = ({ vehicle }: { vehicle: Vehicle }) => (
 
 const ScheduleAdherence = ({ vehicle }: { vehicle: Vehicle }) => (
   <div
-    className={`m-vehicle-properties-panel__schedule-adherence ${statusClass(
+    className={`m-vehicle-properties-panel__schedule-adherence ${vehicleAdherenceDisplayClass(
       vehicle.headwaySpacing,
       status(vehicle)
     )}`}
@@ -75,7 +75,7 @@ const Header = ({
 }) => (
   <div className="m-vehicle-properties-panel__header">
     <div
-      className={`m-vehicle-properties-panel__label ${statusClass(
+      className={`m-vehicle-properties-panel__label ${vehicleAdherenceDisplayClass(
         vehicle.headwaySpacing,
         status(vehicle)
       )}`}

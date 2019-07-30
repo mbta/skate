@@ -7,7 +7,7 @@ import React, {
   useRef,
   useState,
 } from "react"
-import statusClass from "../helpers/statusClass"
+import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
 import { status } from "../models/vehicleStatus"
 import { Vehicle } from "../realtime.d"
 
@@ -39,7 +39,7 @@ export const updateMap = (
   const zoom = map.getZoom()
 
   const icon = Leaflet.divIcon({
-    className: `m-vehicle-map__icon ${statusClass(
+    className: `m-vehicle-map__icon ${vehicleAdherenceDisplayClass(
       headwaySpacing,
       status(vehicle)
     )}`,

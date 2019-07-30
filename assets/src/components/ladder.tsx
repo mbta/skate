@@ -1,6 +1,6 @@
 import React, { useContext, useLayoutEffect, useRef, useState } from "react"
 import DispatchContext from "../contexts/dispatchContext"
-import statusClass from "../helpers/statusClass"
+import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
 import featureIsEnabled from "../laboratoryFeatures"
 import {
   LadderVehicle,
@@ -160,7 +160,7 @@ const VehicleSvg = ({
   return (
     <g>
       <g
-        className={`m-ladder__vehicle ${statusClass(
+        className={`m-ladder__vehicle ${vehicleAdherenceDisplayClass(
           headwaySpacing,
           status
         )} ${selectedClass}`}
@@ -285,7 +285,7 @@ const ScheduledLine = ({
 
   return (
     <line
-      className={`m-ladder__scheduled-line ${statusClass(
+      className={`m-ladder__scheduled-line ${vehicleAdherenceDisplayClass(
         headwaySpacing,
         status
       )}`}

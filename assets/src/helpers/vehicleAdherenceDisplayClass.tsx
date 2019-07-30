@@ -2,7 +2,7 @@ import featureIsEnabled from "../laboratoryFeatures"
 import { VehicleAdherenceStatus } from "../models/vehicleStatus"
 import { HeadwaySpacing } from "../realtime"
 
-const statusClass = (
+const vehicleAdherenceDisplayClass = (
   headwaySpacing: HeadwaySpacing,
   status: VehicleAdherenceStatus
 ): string =>
@@ -12,4 +12,4 @@ const statusClass = (
     ? status
     : ""
 
-export default statusClass
+export default vehicleAdherenceDisplayClass
