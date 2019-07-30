@@ -288,238 +288,25 @@ describe("useVehicles", () => {
 
   test("generates a schedule adherence status", async () => {
     const vehiclesDataVaryingStatus = [
-      {
-        bearing: 33,
-        block_id: "block-1",
-        block_is_active: true,
-        data_discrepancies: [],
-        direction_id: 0,
-        headsign: "Forest Hills",
-        headway_secs: 859.1,
-        headway_spacing: "ok",
-        id: "v1",
-        is_off_course: false,
-        label: "v1-label",
-        latitude: 0,
-        longitude: 0,
-        operator_id: "op1",
-        operator_name: "SMITH",
-        previous_vehicle_id: "v2",
-        route_id: "39",
-        run_id: "run-1",
-        // On-time
-        schedule_adherence_secs: 0,
-        schedule_adherence_string: "0.0 sec (ontime)",
-        scheduled_headway_secs: 120,
-        scheduled_location: null,
-        sources: ["swiftly"],
-        speed: 50.0,
-        stop_status: {
-          status: "in_transit_to",
-          stop_id: "s1",
-          stop_name: "Stop Name",
-        },
-        timepoint_status: {
-          fraction_until_timepoint: 0.5,
-          timepoint_id: "tp1",
-        },
-        timestamp: 123,
-        trip_id: "t1",
-        via_variant: "X",
-      },
-      {
-        bearing: 33,
-        block_id: "block-1",
-        block_is_active: false,
-        data_discrepancies: [],
-        direction_id: 0,
-        headsign: "Forest Hills",
-        headway_secs: 859.1,
-        headway_spacing: "bunched",
-        id: "v1",
-        is_off_course: true,
-        label: "v1-label",
-        latitude: 0,
-        longitude: 0,
-        operator_id: "op1",
-        operator_name: "SMITH",
-        previous_vehicle_id: "v2",
-        route_id: "39",
-        run_id: "run-1",
-        // Early
-        schedule_adherence_secs: -61,
-        schedule_adherence_string: "0.0 sec (ontime)",
-        scheduled_headway_secs: 120,
-        scheduled_location: null,
-        sources: ["swiftly"],
-        speed: 50.0,
-        stop_status: {
-          status: "in_transit_to",
-          stop_id: "s1",
-          stop_name: "Stop Name",
-        },
-        timepoint_status: {
-          fraction_until_timepoint: 0.5,
-          timepoint_id: "tp1",
-        },
-        timestamp: 123,
-        trip_id: "t1",
-        via_variant: "X",
-      },
-      {
-        bearing: 33,
-        block_id: "block-1",
-        block_is_active: true,
-        data_discrepancies: [],
-        direction_id: 0,
-        headsign: "Forest Hills",
-        headway_secs: 859.1,
-        headway_spacing: "gapped",
-        id: "v1",
-        is_off_course: false,
-        label: "v1-label",
-        latitude: 0,
-        longitude: 0,
-        operator_id: "op1",
-        operator_name: "SMITH",
-        previous_vehicle_id: "v2",
-        route_id: "39",
-        run_id: "run-1",
-        // Late
-        schedule_adherence_secs: 361,
-        schedule_adherence_string: "0.0 sec (ontime)",
-        scheduled_headway_secs: 120,
-        scheduled_location: null,
-        sources: ["swiftly"],
-        speed: 50.0,
-        stop_status: {
-          status: "in_transit_to",
-          stop_id: "s1",
-          stop_name: "Stop Name",
-        },
-        timepoint_status: {
-          fraction_until_timepoint: 0.5,
-          timepoint_id: "tp1",
-        },
-        timestamp: 123,
-        trip_id: "t1",
-        via_variant: "X",
-      },
+      // On-time
+      vehiclesData[0],
+      // Early
+      { ...vehiclesData[0], schedule_adherence_secs: -61 },
+      // Late
+      { ...vehiclesData[0], schedule_adherence_secs: 361 },
     ]
+
     const vehiclesVaryingStatus: Vehicle[] = [
+      vehicles[0],
       {
-        id: "v1",
-        label: "v1-label",
-        runId: "run-1",
-        timestamp: 123,
-        latitude: 0,
-        longitude: 0,
-        directionId: 0,
-        routeId: "39",
-        tripId: "t1",
-        headsign: "Forest Hills",
-        viaVariant: "X",
-        operatorId: "op1",
-        operatorName: "SMITH",
-        bearing: 33,
-        speed: 50.0,
-        blockId: "block-1",
-        headwaySecs: 859.1,
-        headwaySpacing: HeadwaySpacing.Ok,
-        previousVehicleId: "v2",
-        scheduleAdherenceSecs: 0,
-        scheduleAdherenceString: "0.0 sec (ontime)",
-        scheduleAdherenceStatus: "on-time",
-        scheduledHeadwaySecs: 120,
-        isOffCourse: false,
-        blockIsActive: true,
-        dataDiscrepancies: [],
-        stopStatus: {
-          status: "in_transit_to",
-          stopId: "s1",
-          stopName: "Stop Name",
-        },
-        timepointStatus: {
-          timepointId: "tp1",
-          fractionUntilTimepoint: 0.5,
-        } as VehicleTimepointStatus,
-        scheduledLocation: null,
-      },
-      {
-        id: "v1",
-        label: "v1-label",
-        runId: "run-1",
-        timestamp: 123,
-        latitude: 0,
-        longitude: 0,
-        directionId: 0,
-        routeId: "39",
-        tripId: "t1",
-        headsign: "Forest Hills",
-        viaVariant: "X",
-        operatorId: "op1",
-        operatorName: "SMITH",
-        bearing: 33,
-        speed: 50.0,
-        blockId: "block-1",
-        headwaySecs: 859.1,
-        headwaySpacing: HeadwaySpacing.Bunched,
-        previousVehicleId: "v2",
+        ...vehicles[0],
         scheduleAdherenceSecs: -61,
-        scheduleAdherenceString: "0.0 sec (ontime)",
         scheduleAdherenceStatus: "early",
-        scheduledHeadwaySecs: 120,
-        isOffCourse: true,
-        blockIsActive: false,
-        dataDiscrepancies: [],
-        stopStatus: {
-          status: "in_transit_to",
-          stopId: "s1",
-          stopName: "Stop Name",
-        },
-        timepointStatus: {
-          timepointId: "tp1",
-          fractionUntilTimepoint: 0.5,
-        } as VehicleTimepointStatus,
-        scheduledLocation: null,
       },
       {
-        id: "v1",
-        label: "v1-label",
-        runId: "run-1",
-        timestamp: 123,
-        latitude: 0,
-        longitude: 0,
-        directionId: 0,
-        routeId: "39",
-        tripId: "t1",
-        headsign: "Forest Hills",
-        viaVariant: "X",
-        operatorId: "op1",
-        operatorName: "SMITH",
-        bearing: 33,
-        speed: 50.0,
-        blockId: "block-1",
-        headwaySecs: 859.1,
-        headwaySpacing: HeadwaySpacing.Gapped,
-        previousVehicleId: "v2",
+        ...vehicles[0],
         scheduleAdherenceSecs: 361,
-        scheduleAdherenceString: "0.0 sec (ontime)",
         scheduleAdherenceStatus: "late",
-        scheduledHeadwaySecs: 120,
-        isOffCourse: false,
-        blockIsActive: true,
-        dataDiscrepancies: [],
-        stopStatus: {
-          status: "in_transit_to",
-          stopId: "s1",
-          stopName: "Stop Name",
-        },
-        timepointStatus: {
-          timepointId: "tp1",
-          fractionUntilTimepoint: 0.5,
-        } as VehicleTimepointStatus,
-        scheduledLocation: null,
       },
     ]
 
@@ -543,6 +330,49 @@ describe("useVehicles", () => {
     expect(result.current).toEqual({
       "1": {
         onRouteVehicles: vehiclesVaryingStatus,
+        incomingVehicles: [],
+      },
+    })
+  })
+
+  test("parses headwaySpacing", async () => {
+    const vehiclesDataVaryingHeadway = [
+      vehiclesData[0],
+      { ...vehiclesData[0], headway_spacing: "very_gapped" },
+      { ...vehiclesData[0], headway_spacing: "gapped" },
+      { ...vehiclesData[0], headway_spacing: "bunched" },
+      { ...vehiclesData[0], headway_spacing: "very_bunched" },
+      { ...vehiclesData[0], headway_spacing: null },
+    ]
+
+    const expectedVehicles: Vehicle[] = [
+      vehicles[0],
+      { ...vehicles[0], headwaySpacing: HeadwaySpacing.VeryGapped },
+      { ...vehicles[0], headwaySpacing: HeadwaySpacing.Gapped },
+      { ...vehicles[0], headwaySpacing: HeadwaySpacing.Bunched },
+      { ...vehicles[0], headwaySpacing: HeadwaySpacing.VeryBunched },
+      { ...vehicles[0], headwaySpacing: null },
+    ]
+
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel()
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+    mockChannel.on.mockImplementation((event, handler) => {
+      if (event === "vehicles") {
+        handler({
+          on_route_vehicles: vehiclesDataVaryingHeadway,
+          incoming_vehicles: [],
+        })
+      }
+    })
+
+    const { result } = renderHook(() =>
+      useVehicles((mockSocket as any) as Socket, ["1"])
+    )
+
+    expect(result.current).toEqual({
+      "1": {
+        onRouteVehicles: expectedVehicles,
         incomingVehicles: [],
       },
     })
