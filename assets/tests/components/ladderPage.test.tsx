@@ -1,64 +1,61 @@
 import React from "react"
 import renderer from "react-test-renderer"
 import LadderPage, { findRouteById } from "../../src/components/ladderPage"
+import StateDispatchProvider from "../../src/providers/stateDispatchProvider"
 import { Route, TimepointsByRouteId } from "../../src/schedule.d"
+import { initialState } from "../../src/state"
+
+jest.mock("../../src/hooks/useRoutes", () => ({
+  __esModule: true,
+  default: jest
+    .fn()
+    // Ipmlementation sequence matches tests
+    .mockImplementationOnce(() => null)
+    .mockImplementation(() => routes),
+}))
+
+const mockDispatch = jest.fn()
 
 describe("LadderPage", () => {
   test("renders the empty state", () => {
-    const tree = renderer
-      .create(
-        <LadderPage
-          routePickerIsVisible={true}
-          routes={null}
-          timepointsByRouteId={{}}
-          selectedRouteIds={[]}
-          selectedVehicleId={undefined}
-        />
-      )
-      .toJSON()
+    const tree = renderer.create(<LadderPage />).toJSON()
     expect(tree).toMatchSnapshot()
   })
 
   test("renders with routes", () => {
+    const mockState = { ...initialState, selectedRouteIds: ["1"] }
     const tree = renderer
       .create(
-        <LadderPage
-          routePickerIsVisible={true}
-          routes={routes}
-          timepointsByRouteId={{}}
-          selectedRouteIds={["1"]}
-          selectedVehicleId={undefined}
-        />
+        <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+          <LadderPage />
+        </StateDispatchProvider>
       )
       .toJSON()
     expect(tree).toMatchSnapshot()
   })
 
   test("renders with selectedRoutes in different order than routes data", () => {
+    const mockState = { ...initialState, selectedRouteIds: ["28", "1"] }
     const tree = renderer
       .create(
-        <LadderPage
-          routePickerIsVisible={true}
-          routes={routes}
-          timepointsByRouteId={{}}
-          selectedRouteIds={["28", "1"]}
-          selectedVehicleId={undefined}
-        />
+        <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+          <LadderPage />
+        </StateDispatchProvider>
       )
       .toJSON()
     expect(tree).toMatchSnapshot()
   })
 
   test("renders with timepoints", () => {
+    const mockState = {
+      ...initialState,
+      timepointsByRouteId,
+    }
     const tree = renderer
       .create(
-        <LadderPage
-          routePickerIsVisible={true}
-          routes={routes}
-          timepointsByRouteId={timepointsByRouteId}
-          selectedRouteIds={[]}
-          selectedVehicleId={undefined}
-        />
+        <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+          <LadderPage />
+        </StateDispatchProvider>
       )
       .toJSON()
     expect(tree).toMatchSnapshot()

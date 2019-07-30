@@ -1,19 +1,14 @@
 import React, { ReactElement, useContext } from "react"
+import StateDispatchContext from "../contexts/stateDispatchContext"
 import VehiclesByRouteIdContext from "../contexts/vehiclesByRouteIdContext"
+import useRoutes from "../hooks/useRoutes"
+import useTimepoints from "../hooks/useTimepoints"
 import { allVehicles } from "../models/vehiclesByRouteId"
 import { Vehicle, VehicleId, VehiclesForRoute } from "../realtime.d"
 import { ByRouteId, Route, RouteId, TimepointsByRouteId } from "../schedule.d"
 import RouteLadders from "./routeLadders"
 import RoutePicker from "./routePicker"
 import VehiclePropertiesPanel from "./vehiclePropertiesPanel"
-
-interface Props {
-  routePickerIsVisible: boolean
-  routes: Route[] | null
-  timepointsByRouteId: TimepointsByRouteId
-  selectedRouteIds: RouteId[]
-  selectedVehicleId: VehicleId | undefined
-}
 
 export const findRouteById = (
   routes: Route[] | null,
@@ -37,13 +32,15 @@ const vehicleRoute = (
 ): Route | undefined =>
   (allRoutes || []).find(route => route.id === (vehicle && vehicle.routeId))
 
-const LadderPage = ({
-  routePickerIsVisible,
-  routes,
-  selectedRouteIds,
-  selectedVehicleId,
-  timepointsByRouteId,
-}: Props): ReactElement<HTMLDivElement> => {
+const LadderPage = (): ReactElement<HTMLDivElement> => {
+  const [state] = useContext(StateDispatchContext)
+  const { routePickerIsVisible, selectedRouteIds, selectedVehicleId } = state
+
+  const routes: Route[] | null = useRoutes()
+  const timepointsByRouteId: TimepointsByRouteId = useTimepoints(
+    selectedRouteIds
+  )
+
   const vehiclesByRouteId: ByRouteId<VehiclesForRoute> = useContext(
     VehiclesByRouteIdContext
   )
