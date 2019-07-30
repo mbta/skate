@@ -184,7 +184,7 @@ describe("HeadwayDiagram", () => {
       </StateDispatchProvider>
     )
     wrapper
-      .find(".m-headawy-diagram__other-vehicle")
+      .find(".m-headway-diagram__other-vehicle")
       .first()
       .simulate("click")
 

@@ -42,7 +42,7 @@ const OtherVehicle = ({ vehicle }: { vehicle: Vehicle }) => {
 
   return (
     <div
-      className="m-headawy-diagram__other-vehicle"
+      className="m-headway-diagram__other-vehicle"
       onClick={() => dispatch(selectVehicle(id))}
     >
       <VehicleIcon
@@ -57,7 +57,7 @@ const OtherVehicle = ({ vehicle }: { vehicle: Vehicle }) => {
 
 const NoVehicleIcon = ({ spacingClass }: { spacingClass: string }) => (
   <div
-    className={`m-headawy-diagram__no-vehicle-icon m-headawy-diagram__no-vehicle-icon--${spacingClass}`}
+    className={`m-headway-diagram__no-vehicle-icon m-headway-diagram__no-vehicle-icon--${spacingClass}`}
   >
     <svg width="6" height="6">
       <circle cx="3" cy="3" r="3" />
@@ -98,27 +98,27 @@ const HeadwayDiagram = ({ vehicle }: { vehicle: Vehicle }) => {
       : null
 
   return (
-    <div className="m-headawy-diagram">
-      <div className="m-headawy-diagram__route-line-background" />
+    <div className="m-headway-diagram">
+      <div className="m-headway-diagram__route-line-background" />
 
-      <div className="m-headawy-diagram__vehicles">
+      <div className="m-headway-diagram__vehicles">
         {nextVehicle ? (
           <OtherVehicle vehicle={nextVehicle} />
         ) : (
           <NoVehicleIcon spacingClass={tailwaySpacingClass} />
         )}
 
-        <div className={`m-headawy-diagram__headway ${tailwaySpacingClass}`}>
-          <div className="m-headawy-diagram__headway-amount">
+        <div className={`m-headway-diagram__headway ${tailwaySpacingClass}`}>
+          <div className="m-headway-diagram__headway-amount">
             {headwayAmount(tailwaySecs, scheduledHeadwaySecs)}
           </div>
-          <div className="m-headawy-diagram__headway-line" />
-          <div className="m-headawy-diagram__headway-status">
+          <div className="m-headway-diagram__headway-line" />
+          <div className="m-headway-diagram__headway-status">
             {humanSpacing(tailwaySpacing)}
           </div>
         </div>
 
-        <div className="m-headawy-diagram__selected-vehicle">
+        <div className="m-headway-diagram__selected-vehicle">
           <VehicleIcon
             size={Size.Medium}
             orientation={Orientation.Right}
@@ -127,12 +127,12 @@ const HeadwayDiagram = ({ vehicle }: { vehicle: Vehicle }) => {
           />
         </div>
 
-        <div className={`m-headawy-diagram__headway ${headwaySpacingClass}`}>
-          <div className="m-headawy-diagram__headway-amount">
+        <div className={`m-headway-diagram__headway ${headwaySpacingClass}`}>
+          <div className="m-headway-diagram__headway-amount">
             {headwayAmount(headwaySecs, scheduledHeadwaySecs)}
           </div>
-          <div className="m-headawy-diagram__headway-line" />
-          <div className="m-headawy-diagram__headway-status">
+          <div className="m-headway-diagram__headway-line" />
+          <div className="m-headway-diagram__headway-status">
             {humanSpacing(headwaySpacing)}
           </div>
         </div>
