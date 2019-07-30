@@ -56,16 +56,6 @@ const OtherVehicle = ({ vehicle }: { vehicle: Vehicle }) => {
   )
 }
 
-const NoVehicleIcon = ({ spacingClass }: { spacingClass: string }) => (
-  <div
-    className={`m-headway-diagram__no-vehicle-icon m-headway-diagram__no-vehicle-icon--${spacingClass}`}
-  >
-    <svg width="6" height="6">
-      <circle cx="3" cy="3" r="3" />
-    </svg>
-  </div>
-)
-
 const HeadwayDiagram = ({ vehicle }: { vehicle: Vehicle }) => {
   const vehiclesByRouteId: ByRouteId<VehiclesForRoute> = useContext(
     VehiclesByRouteIdContext
@@ -104,11 +94,7 @@ const HeadwayDiagram = ({ vehicle }: { vehicle: Vehicle }) => {
       <div className="m-headway-diagram__route-line-background" />
 
       <div className="m-headway-diagram__vehicles">
-        {nextVehicle ? (
-          <OtherVehicle vehicle={nextVehicle} />
-        ) : (
-          <NoVehicleIcon spacingClass={tailwaySpacingClass} />
-        )}
+        {nextVehicle && <OtherVehicle vehicle={nextVehicle} />}
 
         <div className={`m-headway-diagram__headway ${tailwaySpacingClass}`}>
           <div className="m-headway-diagram__headway-amount">
@@ -139,11 +125,7 @@ const HeadwayDiagram = ({ vehicle }: { vehicle: Vehicle }) => {
           </div>
         </div>
 
-        {previousVehicle ? (
-          <OtherVehicle vehicle={previousVehicle} />
-        ) : (
-          <NoVehicleIcon spacingClass={headwaySpacingClass} />
-        )}
+        {previousVehicle && <OtherVehicle vehicle={previousVehicle} />}
       </div>
     </div>
   )

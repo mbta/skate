@@ -25,29 +25,8 @@
 
 .m-headway-diagram__other-vehicle {
   cursor: pointer;
-  margin: 6px -0.6rem 0 -0.4rem;
+  margin: 6px -0.8rem 0 -0.5rem;
   z-index: 2;
-}
-
-.m-headway-diagram__no-vehicle-icon {
-  fill: $color-line-normal;
-  margin: 2px -2px 0 -2px;
-
-  &--bunched {
-    fill: $color-line-bunched-light;
-  }
-
-  &--very-bunched {
-    fill: $color-line-bunched;
-  }
-
-  &--gapped {
-    fill: $color-line-gapped-light;
-  }
-
-  &--very-gapped {
-    fill: $color-line-gapped;
-  }
 }
 
 .m-headway-diagram__headway {
@@ -91,6 +70,7 @@
 
 .m-headway-diagram__headway-line {
   background-color: $color-line-normal;
+  border-radius: 6px;
   height: 6px;
   width: 9rem;
 

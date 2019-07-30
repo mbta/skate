@@ -309,20 +309,6 @@ Array [
         className="m-headway-diagram__vehicles"
       >
         <div
-          className="m-headway-diagram__no-vehicle-icon m-headway-diagram__no-vehicle-icon--ok"
-        >
-          <svg
-            height="6"
-            width="6"
-          >
-            <circle
-              cx="3"
-              cy="3"
-              r="3"
-            />
-          </svg>
-        </div>
-        <div
           className="m-headway-diagram__headway ok"
         >
           <div
@@ -405,20 +391,6 @@ Array [
           >
             good
           </div>
-        </div>
-        <div
-          className="m-headway-diagram__no-vehicle-icon m-headway-diagram__no-vehicle-icon--ok"
-        >
-          <svg
-            height="6"
-            width="6"
-          >
-            <circle
-              cx="3"
-              cy="3"
-              r="3"
-            />
-          </svg>
         </div>
       </div>
     </div>
