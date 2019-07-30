@@ -1,6 +1,6 @@
+import { act, renderHook } from "@testing-library/react-hooks"
 import { mount } from "enzyme"
 import React from "react"
-import { act, renderHook } from "react-hooks-testing-library"
 import {
   filterRoutes,
   RouteFilter,

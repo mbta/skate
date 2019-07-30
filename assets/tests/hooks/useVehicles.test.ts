@@ -1,5 +1,5 @@
+import { renderHook } from "@testing-library/react-hooks"
 import { Socket } from "phoenix"
-import { renderHook } from "react-hooks-testing-library"
 import useVehicles from "../../src/hooks/useVehicles"
 import { RouteId, Vehicle, VehicleTimepointStatus } from "../../src/skate"
 
