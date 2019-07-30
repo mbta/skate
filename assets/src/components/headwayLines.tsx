@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react"
 import { LadderVehicle, VehicleDirection } from "../models/ladderVehicle"
-import { HeadwaySpacing } from "../realtime.d"
+import { HeadwaySpacing, headwaySpacingToString } from "../models/vehicleStatus"
 import { CENTER_TO_LINE } from "./ladder"
 
 interface Props {
@@ -8,8 +8,8 @@ interface Props {
   ladderVehicles: LadderVehicle[]
 }
 
-const headwayClass = (spacing: HeadwaySpacing): string =>
-  spacing ? `m-ladder__headway-line--${spacing.replace("_", "-")}` : ""
+const headwayClass = (spacing: HeadwaySpacing | null): string =>
+  spacing ? `m-ladder__headway-line--${headwaySpacingToString(spacing)}` : ""
 
 const drawHeadwayLine = (
   ladderVehicles: LadderVehicle[],

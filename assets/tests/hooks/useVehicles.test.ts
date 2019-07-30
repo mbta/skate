@@ -1,6 +1,7 @@
 import { renderHook } from "@testing-library/react-hooks"
 import { Socket } from "phoenix"
 import useVehicles from "../../src/hooks/useVehicles"
+import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Vehicle, VehicleTimepointStatus } from "../../src/realtime.d"
 import { RouteId } from "../../src/schedule.d"
 
@@ -116,7 +117,7 @@ describe("useVehicles", () => {
       speed: 50.0,
       blockId: "block-1",
       headwaySecs: 859.1,
-      headwaySpacing: "ok",
+      headwaySpacing: HeadwaySpacing.Ok,
       previousVehicleId: "v2",
       scheduleAdherenceSecs: 0,
       scheduleAdherenceString: "0.0 sec (ontime)",
@@ -424,7 +425,7 @@ describe("useVehicles", () => {
         speed: 50.0,
         blockId: "block-1",
         headwaySecs: 859.1,
-        headwaySpacing: "ok",
+        headwaySpacing: HeadwaySpacing.Ok,
         previousVehicleId: "v2",
         scheduleAdherenceSecs: 0,
         scheduleAdherenceString: "0.0 sec (ontime)",
@@ -462,7 +463,7 @@ describe("useVehicles", () => {
         speed: 50.0,
         blockId: "block-1",
         headwaySecs: 859.1,
-        headwaySpacing: "ok",
+        headwaySpacing: HeadwaySpacing.Ok,
         previousVehicleId: "v2",
         scheduleAdherenceSecs: -61,
         scheduleAdherenceString: "0.0 sec (ontime)",
@@ -500,7 +501,7 @@ describe("useVehicles", () => {
         speed: 50.0,
         blockId: "block-1",
         headwaySecs: 859.1,
-        headwaySpacing: "ok",
+        headwaySpacing: HeadwaySpacing.Ok,
         previousVehicleId: "v2",
         scheduleAdherenceSecs: 361,
         scheduleAdherenceString: "0.0 sec (ontime)",

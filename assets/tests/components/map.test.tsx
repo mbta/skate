@@ -2,6 +2,7 @@ import Leaflet from "leaflet"
 import React from "react"
 import renderer from "react-test-renderer"
 import Map, { updateMap } from "../../src/components/map"
+import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Vehicle } from "../../src/realtime"
 
 const vehicle: Vehicle = {
@@ -22,7 +23,7 @@ const vehicle: Vehicle = {
   speed: 50.0,
   blockId: "block-1",
   headwaySecs: 859.1,
-  headwaySpacing: "ok",
+  headwaySpacing: HeadwaySpacing.Ok,
   previousVehicleId: "v2",
   scheduleAdherenceSecs: 0,
   scheduleAdherenceString: "0.0 sec (ontime)",

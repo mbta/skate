@@ -1,8 +1,8 @@
 import { Channel, Socket } from "phoenix"
 import { Dispatch as ReactDispatch, useEffect, useReducer } from "react"
+import { HeadwaySpacing } from "../models/vehicleStatus"
 import {
   DataDiscrepancy,
-  HeadwaySpacing,
   ScheduleAdherenceStatus,
   Vehicle,
   VehicleScheduledLocation,
@@ -22,6 +22,14 @@ interface DataDiscrepancySourceData {
   id: string
   value: string
 }
+
+type RawHeadwaySpacing =
+  | "very_bunched"
+  | "bunched"
+  | "ok"
+  | "gapped"
+  | "very_gapped"
+  | null
 
 interface VehicleScheduledLocationData {
   direction_id: DirectionId
@@ -57,7 +65,7 @@ interface VehicleData {
   speed: number
   block_id: string
   headway_secs: number
-  headway_spacing: HeadwaySpacing
+  headway_spacing: RawHeadwaySpacing
   previous_vehicle_id: string
   schedule_adherence_secs: number
   schedule_adherence_string: string
@@ -91,6 +99,28 @@ interface SetChannelForRouteAction {
   payload: {
     routeId: RouteId
     channel: Channel
+  }
+}
+
+const headwaySpacing = (raw: RawHeadwaySpacing): HeadwaySpacing | null => {
+  switch (raw) {
+    case null:
+      return null
+
+    case "very_bunched":
+      return HeadwaySpacing.VeryBunched
+
+    case "bunched":
+      return HeadwaySpacing.Bunched
+
+    case "ok":
+      return HeadwaySpacing.Ok
+
+    case "gapped":
+      return HeadwaySpacing.Gapped
+
+    case "very_gapped":
+      return HeadwaySpacing.VeryGapped
   }
 }
 
@@ -242,7 +272,7 @@ const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
   speed: vehicleData.speed,
   blockId: vehicleData.block_id,
   headwaySecs: vehicleData.headway_secs,
-  headwaySpacing: vehicleData.headway_spacing,
+  headwaySpacing: headwaySpacing(vehicleData.headway_spacing),
   previousVehicleId: vehicleData.previous_vehicle_id,
   scheduleAdherenceSecs: vehicleData.schedule_adherence_secs,
   scheduleAdherenceString: vehicleData.schedule_adherence_string,

@@ -1,5 +1,6 @@
 import { LadderDirection, TimepointStatusYFunc } from "../components/ladder"
-import { HeadwaySpacing, Vehicle, VehicleId } from "../realtime.d"
+import { HeadwaySpacing } from "../models/vehicleStatus"
+import { Vehicle, VehicleId } from "../realtime.d"
 import { DirectionId, ViaVariant } from "../schedule.d"
 import { status, VehicleAdherenceStatus } from "./vehicleStatus"
 
@@ -8,7 +9,7 @@ export interface LadderVehicle {
   label: string
   viaVariant: ViaVariant | null
   status: VehicleAdherenceStatus
-  headwaySpacing: HeadwaySpacing
+  headwaySpacing: HeadwaySpacing | null
   isOffCourse: boolean
   x: number
   y: number
@@ -25,7 +26,7 @@ export enum VehicleDirection {
 
 interface WithVehicle {
   vehicleId: VehicleId
-  headwaySpacing: HeadwaySpacing
+  headwaySpacing: HeadwaySpacing | null
   label: string
   viaVariant: ViaVariant | null
   status: VehicleAdherenceStatus

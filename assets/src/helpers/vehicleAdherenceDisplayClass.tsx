@@ -1,9 +1,8 @@
 import featureIsEnabled from "../laboratoryFeatures"
-import { VehicleAdherenceStatus } from "../models/vehicleStatus"
-import { HeadwaySpacing } from "../realtime"
+import { HeadwaySpacing, VehicleAdherenceStatus } from "../models/vehicleStatus"
 
 const vehicleAdherenceDisplayClass = (
-  headwaySpacing: HeadwaySpacing,
+  headwaySpacing: HeadwaySpacing | null,
   status: VehicleAdherenceStatus
 ): string =>
   !featureIsEnabled("headway_ladder_colors") ||
