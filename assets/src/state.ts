@@ -1,5 +1,6 @@
 import { Dispatch as ReactDispatch } from "react"
-import { RouteId, VehicleId } from "./skate.d"
+import { VehicleId } from "./realtime.d"
+import { RouteId } from "./schedule.d"
 
 export interface State {
   routePickerIsVisible: boolean

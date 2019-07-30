@@ -1,11 +1,6 @@
 import { LadderDirection, TimepointStatusYFunc } from "../components/ladder"
-import {
-  DirectionId,
-  HeadwaySpacing,
-  Vehicle,
-  VehicleId,
-  ViaVariant,
-} from "../skate"
+import { HeadwaySpacing, Vehicle, VehicleId } from "../realtime.d"
+import { DirectionId, ViaVariant } from "../schedule.d"
 import { status, VehicleAdherenceStatus } from "./vehicleStatus"
 
 export interface LadderVehicle {

@@ -6,7 +6,7 @@ import VehiclePropertiesPanel, {
   handleSwipe,
 } from "../../src/components/vehiclePropertiesPanel"
 import DispatchProvider from "../../src/providers/dispatchProvider"
-import { Vehicle } from "../../src/skate"
+import { Vehicle } from "../../src/realtime.d"
 import { deselectVehicle } from "../../src/state"
 
 const vehicle: Vehicle = {

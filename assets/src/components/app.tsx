@@ -1,13 +1,7 @@
 import React, { ReactElement } from "react"
 import { BrowserRouter, Route as BrowserRoute } from "react-router-dom"
-import {
-  ByRouteId,
-  Route,
-  RouteId,
-  TimepointsByRouteId,
-  VehicleId,
-  VehiclesForRoute,
-} from "../skate"
+import { VehicleId, VehiclesForRoute } from "../realtime.d"
+import { ByRouteId, Route, RouteId, TimepointsByRouteId } from "../schedule.d"
 import AboutPage from "./aboutPage"
 import LadderPage from "./ladderPage"
 import TabBar from "./tabBar"

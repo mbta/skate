@@ -1,4 +1,4 @@
-import { ScheduleAdherenceStatus, Vehicle } from "../skate"
+import { ScheduleAdherenceStatus, Vehicle } from "../realtime.d"
 
 export type VehicleAdherenceStatus = ScheduleAdherenceStatus | "off-course"
 

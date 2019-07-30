@@ -1,7 +1,7 @@
 import React from "react"
 import renderer from "react-test-renderer"
 import RouteLadders from "../../src/components/routeLadders"
-import { Route, TimepointsByRouteId } from "../../src/skate"
+import { Route, TimepointsByRouteId } from "../../src/schedule.d"
 
 jest.mock("../../src/laboratoryFeatures", () => ({
   __esModule: true,
@@ -14,8 +14,8 @@ test("renders a route ladder", () => {
     { id: "28", directionNames: { 0: "Outbound", 1: "Inbound" } },
   ]
   const timepointsByRouteId: TimepointsByRouteId = {
-    "1": [{ id: "WASMA" }, { id: "MELWA" }, { id: "HHGAT" }],
-    "28": [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }],
+    "1": ["WASMA", "MELWA", "HHGAT"],
+    "28": ["MATPN", "WELLH", "MORTN"],
     "71": undefined,
     "73": null,
   }

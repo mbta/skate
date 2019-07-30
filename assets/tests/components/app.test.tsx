@@ -1,7 +1,7 @@
 import React from "react"
 import renderer from "react-test-renderer"
 import App from "../../src/components/app"
-import { Route } from "../../src/skate"
+import { Route } from "../../src/schedule.d"
 
 describe("App", () => {
   test("renders the empty state", () => {

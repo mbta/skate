@@ -3,7 +3,8 @@ import React from "react"
 import renderer, { act } from "react-test-renderer"
 import RouteLadder from "../../src/components/routeLadder"
 import DispatchProvider from "../../src/providers/dispatchProvider"
-import { Route, Vehicle } from "../../src/skate"
+import { Vehicle } from "../../src/realtime.d"
+import { Route } from "../../src/schedule.d"
 import { deselectRoute, selectVehicle } from "../../src/state"
 
 // tslint:disable: object-literal-sort-keys
@@ -41,7 +42,7 @@ describe("routeLadder", () => {
       id: "28",
       directionNames: { 0: "Outbound", 1: "Inbound" },
     }
-    const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
+    const timepoints = ["MATPN", "WELLH", "MORTN"]
 
     const tree = renderer
       .create(
@@ -62,7 +63,7 @@ describe("routeLadder", () => {
       id: "28",
       directionNames: { 0: "Outbound", 1: "Inbound" },
     }
-    const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
+    const timepoints = ["MATPN", "WELLH", "MORTN"]
     const vehicles: Vehicle[] = [
       {
         id: "y1818",
@@ -170,7 +171,7 @@ describe("routeLadder", () => {
       id: "28",
       directionNames: { 0: "Outbound", 1: "Inbound" },
     }
-    const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
+    const timepoints = ["MATPN", "WELLH", "MORTN"]
     const vehicles: Vehicle[] = [
       {
         id: "y1818",
@@ -300,7 +301,7 @@ describe("routeLadder", () => {
       id: "28",
       directionNames: { 0: "Outbound", 1: "Inbound" },
     }
-    const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
+    const timepoints = ["MATPN", "WELLH", "MORTN"]
 
     const wrapper = mount(
       <DispatchProvider dispatch={mockDispatch}>
@@ -322,7 +323,7 @@ describe("routeLadder", () => {
       id: "28",
       directionNames: { 0: "Outbound", 1: "Inbound" },
     }
-    const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
+    const timepoints = ["MATPN", "WELLH", "MORTN"]
 
     const wrapper = mount(
       <RouteLadder
@@ -348,7 +349,7 @@ describe("routeLadder", () => {
       id: "28",
       directionNames: { 0: "Outbound", 1: "Inbound" },
     }
-    const timepoints = [{ id: "MATPN" }, { id: "WELLH" }, { id: "MORTN" }]
+    const timepoints = ["MATPN", "WELLH", "MORTN"]
     const vehicle: Vehicle = {
       id: "v1",
       label: "v1",

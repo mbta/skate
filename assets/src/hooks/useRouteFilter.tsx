@@ -1,7 +1,7 @@
 import React from "react"
 import { useState } from "react"
 import { circleXIcon } from "../helpers/icon"
-import { Route } from "../skate"
+import { Route } from "../schedule.d"
 
 type FilterType = "id"
 

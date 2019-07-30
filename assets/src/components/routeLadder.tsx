@@ -1,12 +1,8 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import { reverseIcon, reverseIconReversed } from "../helpers/icon"
-import {
-  LoadableTimepoints,
-  Route,
-  VehicleId,
-  VehiclesForRoute,
-} from "../skate"
+import { VehicleId, VehiclesForRoute } from "../realtime.d"
+import { LoadableTimepoints, Route } from "../schedule.d"
 import { deselectRoute } from "../state"
 import CloseButton from "./closeButton"
 import IncomingBox from "./incomingBox"

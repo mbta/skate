@@ -107,11 +107,7 @@ describe("fetchTimepointsForRoute", () => {
       })
 
     fetchTimepointsForRoute("28").then(timepoints => {
-      expect(timepoints).toEqual([
-        { id: "MATPN" },
-        { id: "WELLH" },
-        { id: "MORTN" },
-      ])
+      expect(timepoints).toEqual(["MATPN", "WELLH", "MORTN"])
       done()
     })
   })

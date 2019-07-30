@@ -1,11 +1,6 @@
 import React from "react"
-import {
-  ByRouteId,
-  Route,
-  TimepointsByRouteId,
-  VehicleId,
-  VehiclesForRoute,
-} from "../skate"
+import { VehicleId, VehiclesForRoute } from "../realtime.d"
+import { ByRouteId, Route, TimepointsByRouteId } from "../schedule.d"
 import RouteLadder from "./routeLadder"
 
 interface Props {

@@ -1,11 +1,8 @@
 import { Channel, Socket } from "phoenix"
 import { Dispatch as ReactDispatch, useEffect, useReducer } from "react"
 import {
-  ByRouteId,
   DataDiscrepancy,
-  DirectionId,
   HeadwaySpacing,
-  RouteId,
   ScheduleAdherenceStatus,
   Vehicle,
   VehicleScheduledLocation,
@@ -13,7 +10,8 @@ import {
   VehicleStatus,
   VehicleStopStatus,
   VehicleTimepointStatus,
-} from "../skate.d"
+} from "../realtime.d"
+import { ByRouteId, DirectionId, RouteId } from "../schedule.d"
 
 interface DataDiscrepancyData {
   attribute: string

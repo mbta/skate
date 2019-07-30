@@ -1,7 +1,7 @@
 import { Socket } from "phoenix"
 import { useEffect, useState } from "react"
 import appData from "../appData"
-import { UserToken } from "../skate"
+import { UserToken } from "../skate.d"
 
 export const readUserToken = (): UserToken | undefined => {
   const data = appData()

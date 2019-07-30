@@ -9,17 +9,17 @@ import {
 import { VehicleAdherenceStatus } from "../models/vehicleStatus"
 import {
   HeadwaySpacing,
-  Timepoint,
   Vehicle,
   VehicleId,
   VehicleTimepointStatus,
-} from "../skate"
+} from "../realtime.d"
+import { TimepointId } from "../schedule.d"
 import { selectVehicle } from "../state"
 import HeadwayLines from "./headwayLines"
 import { Orientation, Size, VehicleIconSvgNode } from "./vehicleIcon"
 
 export interface Props {
-  timepoints: Timepoint[]
+  timepoints: TimepointId[]
   vehicles: Vehicle[]
   ladderDirection: LadderDirection
   selectedVehicleId?: VehicleId
@@ -63,7 +63,7 @@ const Ladder = ({
     }
   }, [wrapperDivRef.current, height])
 
-  const orderedTimepoints: Timepoint[] =
+  const orderedTimepoints: TimepointId[] =
     // Use slice to make a copy of the array before destructively reversing
     ladderDirection === LadderDirection.OneToZero
       ? timepoints.slice().reverse()
@@ -128,10 +128,14 @@ const Ladder = ({
             ladderVehicles={ladderVehicles}
           />
         )}
-        {orderedTimepoints.map((timepoint: Timepoint, index: number) => {
+        {orderedTimepoints.map((timepointId: TimepointId, index: number) => {
           const y = timepointSpacingY * index
           return (
-            <LadderTimepoint key={timepoint.id} timepoint={timepoint} y={y} />
+            <LadderTimepoint
+              key={timepointId}
+              timepointId={timepointId}
+              y={y}
+            />
           )
         })}
       </svg>
@@ -200,10 +204,10 @@ const RoadLines = ({ height }: { height: number }) => (
 )
 
 const LadderTimepoint = ({
-  timepoint,
+  timepointId,
   y,
 }: {
-  timepoint: Timepoint
+  timepointId: TimepointId
   y: number
 }) => (
   <>
@@ -226,14 +230,14 @@ const LadderTimepoint = ({
       textAnchor="middle"
       dominantBaseline="middle"
     >
-      {timepoint.id}
+      {timepointId}
     </text>
   </>
 )
 
 /** timepoints should be ordered top to bottom */
 const timepointStatusYFromTimepoints = (
-  timepoints: Timepoint[],
+  timepoints: TimepointId[],
   timepointSpacingY: number
 ) => (
   timepointStatus: VehicleTimepointStatus | null,
@@ -241,7 +245,7 @@ const timepointStatusYFromTimepoints = (
 ): number => {
   if (timepointStatus) {
     const timepointIndex = timepoints.findIndex(
-      timepoint => timepoint.id === timepointStatus.timepointId
+      timepointId => timepointId === timepointStatus.timepointId
     )
     if (timepointIndex !== -1) {
       const fractionDirection = direction === VehicleDirection.Up ? +1 : -1

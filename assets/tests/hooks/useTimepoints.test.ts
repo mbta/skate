@@ -1,14 +1,14 @@
 import { renderHook } from "@testing-library/react-hooks"
 import * as Api from "../../src/api"
 import useTimepoints from "../../src/hooks/useTimepoints"
-import { Timepoint, TimepointsByRouteId } from "../../src/skate"
+import { TimepointId, TimepointsByRouteId } from "../../src/schedule.d"
 import { instantPromise, mockUseStateOnce } from "../testHelpers/mockHelpers"
 
 // tslint:disable: react-hooks-nesting no-empty
 
 jest.mock("../../src/api", () => ({
   __esModule: true,
-  fetchTimepointsForRoute: jest.fn(() => new Promise<Timepoint[]>(() => {})),
+  fetchTimepointsForRoute: jest.fn(() => new Promise<TimepointId[]>(() => {})),
 }))
 
 describe("useTimepoints", () => {
@@ -40,7 +40,7 @@ describe("useTimepoints", () => {
     const selectedRouteIds = ["2", "3"]
     const timepointsByRouteId: TimepointsByRouteId = {
       2: null,
-      3: [{ id: "t3" }],
+      3: ["t3"],
     }
 
     const mockFetchTimepoints: jest.Mock = Api.fetchTimepointsForRoute as jest.Mock

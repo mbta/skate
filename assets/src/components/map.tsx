@@ -7,7 +7,7 @@ import React, {
   useRef,
   useState,
 } from "react"
-import { ScheduleAdherenceStatus } from "../skate"
+import { ScheduleAdherenceStatus } from "../realtime.d"
 
 interface Props {
   bearing: number

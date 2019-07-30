@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react"
 import { LadderVehicle, VehicleDirection } from "../models/ladderVehicle"
-import { HeadwaySpacing } from "../skate"
+import { HeadwaySpacing } from "../realtime.d"
 import { CENTER_TO_LINE } from "./ladder"
 
 interface Props {
