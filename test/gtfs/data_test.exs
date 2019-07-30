@@ -7,6 +7,7 @@ defmodule Gtfs.DataTest do
     routes = [
       %Route{
         id: "39",
+        description: "Key Bus",
         direction_names: %{
           0 => "Outbound",
           1 => "Inbound"
@@ -14,6 +15,7 @@ defmodule Gtfs.DataTest do
       },
       %Route{
         id: "66",
+        description: "Key Bus",
         direction_names: %{
           0 => "Outbound",
           1 => "Inbound"
@@ -36,7 +38,10 @@ defmodule Gtfs.DataTest do
   describe "timepoint_ids_on_route/2" do
     test "returns all timepoint IDs for this route (either direction), sorted" do
       data = %Data{
-        routes: [%Route{id: "r1", direction_names: %{}}, %Route{id: "r2", direction_names: %{}}],
+        routes: [
+          %Route{id: "r1", description: "Key Bus", direction_names: %{}},
+          %Route{id: "r2", description: "Key Bus", direction_names: %{}}
+        ],
         route_patterns: [
           %RoutePattern{
             id: "rp1",
@@ -108,7 +113,7 @@ defmodule Gtfs.DataTest do
 
     test "groups timepoints together even when they're on different stops" do
       data = %Data{
-        routes: [%Route{id: "r1", direction_names: %{}}],
+        routes: [%Route{id: "r1", description: "Key Bus", direction_names: %{}}],
         route_patterns: [
           %RoutePattern{
             id: "rp1",

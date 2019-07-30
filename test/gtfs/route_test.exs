@@ -38,6 +38,7 @@ defmodule Gtfs.RouteTest do
 
       expected = %Route{
         id: "39",
+        description: "Key Bus",
         direction_names: %{
           0 => "Outbound",
           1 => "Inbound"

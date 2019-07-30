@@ -13,14 +13,15 @@ defmodule GtfsTest do
             "39,1,Inbound,Back Bay Station"
           ],
           "routes.txt" => [
-            "route_id,route_long_name,route_type",
-            "39,Forest Hills - Back Bay Station,3"
+            "route_id,route_long_name,route_type,route_desc",
+            "39,Forest Hills - Back Bay Station,3,Key Bus"
           ]
         })
 
       assert Gtfs.all_routes(pid) == [
                %Route{
                  id: "39",
+                 description: "Key Bus",
                  direction_names: %{
                    0 => "Outbound",
                    1 => "Inbound"
