@@ -568,7 +568,7 @@ Array [
     className="m-incoming-box"
   >
     <button
-      className="m-incoming-box__vehicle on-time "
+      className="m-incoming-box__vehicle  "
       onClick={[Function]}
     >
       <svg
@@ -606,7 +606,7 @@ Array [
       </div>
     </button>
     <button
-      className="m-incoming-box__vehicle on-time "
+      className="m-incoming-box__vehicle  "
       onClick={[Function]}
     >
       <svg
