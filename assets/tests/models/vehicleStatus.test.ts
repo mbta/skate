@@ -1,7 +1,7 @@
 import {
-  status,
   HeadwaySpacing,
   headwaySpacingToString,
+  status,
 } from "../../src/models/vehicleStatus"
 import { DataDiscrepancy, Vehicle } from "../../src/realtime.d"
 
