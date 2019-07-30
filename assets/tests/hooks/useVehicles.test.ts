@@ -340,18 +340,18 @@ describe("useVehicles", () => {
       vehiclesData[0],
       { ...vehiclesData[0], headway_spacing: "very_gapped" },
       { ...vehiclesData[0], headway_spacing: "gapped" },
+      { ...vehiclesData[0], headway_spacing: "ok" },
       { ...vehiclesData[0], headway_spacing: "bunched" },
       { ...vehiclesData[0], headway_spacing: "very_bunched" },
-      { ...vehiclesData[0], headway_spacing: null },
     ]
 
     const expectedVehicles: Vehicle[] = [
       vehicles[0],
       { ...vehicles[0], headwaySpacing: HeadwaySpacing.VeryGapped },
       { ...vehicles[0], headwaySpacing: HeadwaySpacing.Gapped },
+      { ...vehicles[0], headwaySpacing: HeadwaySpacing.Ok },
       { ...vehicles[0], headwaySpacing: HeadwaySpacing.Bunched },
       { ...vehicles[0], headwaySpacing: HeadwaySpacing.VeryBunched },
-      { ...vehicles[0], headwaySpacing: null },
     ]
 
     const mockSocket = makeMockSocket()
