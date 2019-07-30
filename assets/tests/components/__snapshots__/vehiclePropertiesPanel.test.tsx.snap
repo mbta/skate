@@ -207,7 +207,7 @@ Array [
       className="m-vehicle-properties-panel__header"
     >
       <div
-        className="m-vehicle-properties-panel__label on-time"
+        className="m-vehicle-properties-panel__label "
       >
         <svg
           style={
