@@ -83,18 +83,16 @@ const HeadwayDiagram = ({ vehicle }: { vehicle: Vehicle }) => {
 
   const headwaySpacingClass = classNamify(headwaySpacing || "ok")
   const tailwaySpacingClass = classNamify(
-    previousVehicle && previousVehicle.headwaySpacing
-      ? previousVehicle.headwaySpacing
+    nextVehicle && nextVehicle.headwaySpacing
+      ? nextVehicle.headwaySpacing
       : "ok"
   )
 
   const tailwaySecs =
-    previousVehicle && previousVehicle.headwaySecs
-      ? previousVehicle.headwaySecs
-      : 0
+    nextVehicle && nextVehicle.headwaySecs ? nextVehicle.headwaySecs : 0
   const tailwaySpacing =
-    previousVehicle && previousVehicle.headwaySpacing
-      ? previousVehicle.headwaySpacing
+    nextVehicle && nextVehicle.headwaySpacing
+      ? nextVehicle.headwaySpacing
       : null
 
   return (
