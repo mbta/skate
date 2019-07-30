@@ -90,6 +90,9 @@ const HeadwayDiagram = ({ vehicle }: { vehicle: Vehicle }) => {
 
   const tailwaySecs =
     nextVehicle && nextVehicle.headwaySecs ? nextVehicle.headwaySecs : 0
+  const tailwayScheduledHeadwaySecs = nextVehicle
+    ? nextVehicle.scheduledHeadwaySecs
+    : 0
   const tailwaySpacing =
     nextVehicle && nextVehicle.headwaySpacing
       ? nextVehicle.headwaySpacing
@@ -108,7 +111,7 @@ const HeadwayDiagram = ({ vehicle }: { vehicle: Vehicle }) => {
 
         <div className={`m-headway-diagram__headway ${tailwaySpacingClass}`}>
           <div className="m-headway-diagram__headway-amount">
-            {headwayAmount(tailwaySecs, scheduledHeadwaySecs)}
+            {headwayAmount(tailwaySecs, tailwayScheduledHeadwaySecs)}
           </div>
           <div className="m-headway-diagram__headway-line" />
           <div className="m-headway-diagram__headway-status">

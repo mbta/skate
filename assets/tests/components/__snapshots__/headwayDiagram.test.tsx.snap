@@ -58,7 +58,7 @@ exports[`HeadwayDiagram renders a gapped vehicle 1`] = `
       <div
         className="m-headway-diagram__headway-amount"
       >
-        -5.4 min
+        -4.4 min
       </div>
       <div
         className="m-headway-diagram__headway-line"
@@ -231,7 +231,7 @@ exports[`HeadwayDiagram renders an ok headway vehicle 1`] = `
       <div
         className="m-headway-diagram__headway-amount"
       >
-        -6.4 min
+        -4.4 min
       </div>
       <div
         className="m-headway-diagram__headway-line"
@@ -549,7 +549,7 @@ exports[`HeadwayDiagram renders with no next or previous vehicles 1`] = `
       <div
         className="m-headway-diagram__headway-amount"
       >
-        -8.0 min
+        +0.0 min
       </div>
       <div
         className="m-headway-diagram__headway-line"

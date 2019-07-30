@@ -328,7 +328,7 @@ Array [
           <div
             className="m-headway-diagram__headway-amount"
           >
-            -2.0 min
+            +0.0 min
           </div>
           <div
             className="m-headway-diagram__headway-line"
