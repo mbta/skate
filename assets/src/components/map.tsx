@@ -7,14 +7,12 @@ import React, {
   useRef,
   useState,
 } from "react"
-import { ScheduleAdherenceStatus } from "../realtime.d"
+import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
+import { status } from "../models/vehicleStatus"
+import { Vehicle } from "../realtime.d"
 
 interface Props {
-  bearing: number
-  label: string
-  latitude: number
-  longitude: number
-  scheduleAdherenceStatus: ScheduleAdherenceStatus
+  vehicle: Vehicle
 }
 
 interface State {
@@ -26,7 +24,7 @@ interface State {
 const iconAnchor: [number, number] = [12, 12]
 
 export const updateMap = (
-  { bearing, label: text, latitude, longitude, scheduleAdherenceStatus }: Props,
+  { vehicle }: Props,
   {
     map,
     vehicleIcon,
@@ -37,10 +35,14 @@ export const updateMap = (
     vehicleLabel: Marker
   }
 ): void => {
+  const { bearing, headwaySpacing, label: text, latitude, longitude } = vehicle
   const zoom = map.getZoom()
 
   const icon = Leaflet.divIcon({
-    className: `m-vehicle-map__icon ${scheduleAdherenceStatus}`,
+    className: `m-vehicle-map__icon ${vehicleAdherenceDisplayClass(
+      headwaySpacing,
+      status(vehicle)
+    )}`,
     html: `<svg
         height="24"
         viewBox="0 0 24 24"
@@ -104,11 +106,15 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
 
     const vehicleIcon =
       state.vehicleIcon ||
-      Leaflet.marker([props.latitude, props.longitude]).addTo(map)
+      Leaflet.marker([props.vehicle.latitude, props.vehicle.longitude]).addTo(
+        map
+      )
 
     const vehicleLabel =
       state.vehicleLabel ||
-      Leaflet.marker([props.latitude, props.longitude]).addTo(map)
+      Leaflet.marker([props.vehicle.latitude, props.vehicle.longitude]).addTo(
+        map
+      )
 
     updateMap(props, { map, vehicleIcon, vehicleLabel })
 

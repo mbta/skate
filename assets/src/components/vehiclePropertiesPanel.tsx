@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
+import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
 import { status } from "../models/vehicleStatus"
 import { DataDiscrepancy, Vehicle } from "../realtime.d"
 import { Route } from "../schedule.d"
@@ -52,8 +53,9 @@ const ScheduleAdherenceLabel = ({ vehicle }: { vehicle: Vehicle }) => (
 
 const ScheduleAdherence = ({ vehicle }: { vehicle: Vehicle }) => (
   <div
-    className={`m-vehicle-properties-panel__schedule-adherence ${status(
-      vehicle
+    className={`m-vehicle-properties-panel__schedule-adherence ${vehicleAdherenceDisplayClass(
+      vehicle.headwaySpacing,
+      status(vehicle)
     )}`}
   >
     <ScheduleAdherenceStatusIcon />
@@ -72,7 +74,12 @@ const Header = ({
   hideMe: () => void
 }) => (
   <div className="m-vehicle-properties-panel__header">
-    <div className={`m-vehicle-properties-panel__label ${status(vehicle)}`}>
+    <div
+      className={`m-vehicle-properties-panel__label ${vehicleAdherenceDisplayClass(
+        vehicle.headwaySpacing,
+        status(vehicle)
+      )}`}
+    >
       <VehicleIcon
         size={Size.Large}
         orientation={Orientation.Up}
@@ -134,19 +141,8 @@ const NotAvailable = () => (
   </span>
 )
 
-const Location = ({
-  vehicle: {
-    scheduleAdherenceStatus,
-    bearing,
-    isOffCourse,
-    label,
-    latitude,
-    longitude,
-    stopStatus,
-  },
-}: {
-  vehicle: Vehicle
-}) => {
+const Location = ({ vehicle }: { vehicle: Vehicle }) => {
+  const { isOffCourse, latitude, longitude, stopStatus } = vehicle
   return (
     <div className="m-vehicle-properties-panel__location">
       <div className="m-vehicle-properties-panel__vehicle-property-label">
@@ -161,13 +157,7 @@ const Location = ({
       >
         Directions
       </a>
-      <Map
-        bearing={bearing}
-        label={label}
-        latitude={latitude}
-        longitude={longitude}
-        scheduleAdherenceStatus={scheduleAdherenceStatus}
-      />
+      <Map vehicle={vehicle} />
     </div>
   )
 }
