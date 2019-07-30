@@ -5,7 +5,8 @@ import {
   allVehiclesForRoute,
   nextAndPreviousVehicle,
 } from "../models/vehiclesByRouteId"
-import { ByRouteId, HeadwaySpacing, Vehicle, VehiclesForRoute } from "../skate"
+import { HeadwaySpacing, Vehicle, VehiclesForRoute } from "../realtime"
+import { ByRouteId } from "../schedule"
 import { selectVehicle } from "../state"
 import VehicleIcon, { Orientation, Size } from "./vehicleIcon"
 

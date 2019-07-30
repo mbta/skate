@@ -1,5 +1,6 @@
 import { createContext } from "react"
-import { ByRouteId, VehiclesForRoute } from "../skate"
+import { VehiclesForRoute } from "../realtime"
+import { ByRouteId } from "../schedule"
 
 const VehiclesByRouteIdContext = createContext({} as ByRouteId<
   VehiclesForRoute

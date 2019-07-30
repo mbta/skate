@@ -4,7 +4,8 @@ import {
   byDirection,
   nextAndPreviousVehicle,
 } from "../../src/models/vehiclesByRouteId"
-import { ByRouteId, Vehicle, VehiclesForRoute } from "../../src/skate.d"
+import { Vehicle, VehiclesForRoute } from "../../src/realtime"
+import { ByRouteId } from "../../src/schedule"
 
 const vehiclesByRouteId: ByRouteId<VehiclesForRoute> = {
   "1": {

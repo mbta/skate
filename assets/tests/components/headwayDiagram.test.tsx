@@ -3,7 +3,7 @@ import React from "react"
 import renderer from "react-test-renderer"
 import HeadwayDiagram from "../../src/components/headwayDiagram"
 import StateDispatchProvider from "../../src/providers/stateDispatchProvider"
-import { Vehicle } from "../../src/skate"
+import { Vehicle } from "../../src/realtime"
 import { initialState, selectVehicle } from "../../src/state"
 
 const vehicle: Vehicle = {

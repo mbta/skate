@@ -1,6 +1,7 @@
 import React, { ReactElement } from "react"
 import VehiclesByRouteIdContext from "../contexts/vehiclesByRouteIdContext"
-import { ByRouteId, VehiclesForRoute } from "../skate"
+import { VehiclesForRoute } from "../realtime"
+import { ByRouteId } from "../schedule"
 
 const VehiclesByRouteIdProvider = ({
   vehiclesByRouteId,

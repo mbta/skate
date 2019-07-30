@@ -1,5 +1,6 @@
 import { partition } from "../helpers/array"
-import { ByRouteId, RouteId, Vehicle, VehiclesForRoute } from "../skate"
+import { Vehicle, VehiclesForRoute } from "../realtime"
+import { ByRouteId, RouteId } from "../schedule"
 
 interface NextAndPreviousVehicle {
   nextVehicle?: Vehicle
