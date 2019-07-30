@@ -10,6 +10,15 @@ import StateDispatchProvider from "../../src/providers/stateDispatchProvider"
 import { Vehicle } from "../../src/realtime.d"
 import { deselectVehicle, initialState } from "../../src/state"
 
+// Enable feature flags for "renders for a headway-based vehicle" test
+jest.mock("../../src/laboratoryFeatures", () => ({
+  __esModule: true,
+  default: jest
+    .fn()
+    // Ipmlementation sequence matches tests
+    .mockImplementation(() => true),
+}))
+
 const vehicle: Vehicle = {
   id: "v1",
   label: "v1-label",

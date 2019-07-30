@@ -299,6 +299,129 @@ Array [
         />
       </button>
     </div>
+    <div
+      className="m-headway-diagram"
+    >
+      <div
+        className="m-headway-diagram__route-line-background"
+      />
+      <div
+        className="m-headway-diagram__vehicles"
+      >
+        <div
+          className="m-headway-diagram__no-vehicle-icon m-headway-diagram__no-vehicle-icon--ok"
+        >
+          <svg
+            height="6"
+            width="6"
+          >
+            <circle
+              cx="3"
+              cy="3"
+              r="3"
+            />
+          </svg>
+        </div>
+        <div
+          className="m-headway-diagram__headway ok"
+        >
+          <div
+            className="m-headway-diagram__headway-amount"
+          >
+            -2.0 min
+          </div>
+          <div
+            className="m-headway-diagram__headway-line"
+          />
+          <div
+            className="m-headway-diagram__headway-status"
+          >
+            good
+          </div>
+        </div>
+        <div
+          className="m-headway-diagram__selected-vehicle"
+        >
+          <svg
+            style={
+              Object {
+                "height": 38.5,
+                "width": 26,
+              }
+            }
+            viewBox="-13 -13.75 26 38.5"
+          >
+            <g
+              className="m-vehicle-icon m-vehicle-icon--medium"
+            >
+              <rect
+                className="m-vehicle-icon__label-background"
+                height={11}
+                rx={5.5}
+                ry={5.5}
+                width={26}
+                x={-13}
+                y={12.75}
+              />
+              <text
+                className="m-vehicle-icon__label"
+                dominantBaseline="central"
+                textAnchor="middle"
+                x="0"
+                y={18.25}
+              >
+                v1-label
+              </text>
+              <path
+                className="m-vehicle-icon__triangle"
+                d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+                transform="scale(0.625) rotate(90) translate(-24,-22)"
+              />
+              <text
+                className="m-vehicle-icon__variant"
+                dominantBaseline="central"
+                textAnchor="start"
+                x={-8.5}
+                y={0}
+              >
+                X
+              </text>
+            </g>
+          </svg>
+        </div>
+        <div
+          className="m-headway-diagram__headway ok"
+        >
+          <div
+            className="m-headway-diagram__headway-amount"
+          >
+            +12.3 min
+          </div>
+          <div
+            className="m-headway-diagram__headway-line"
+          />
+          <div
+            className="m-headway-diagram__headway-status"
+          >
+            good
+          </div>
+        </div>
+        <div
+          className="m-headway-diagram__no-vehicle-icon m-headway-diagram__no-vehicle-icon--ok"
+        >
+          <svg
+            height="6"
+            width="6"
+          >
+            <circle
+              cx="3"
+              cy="3"
+              r="3"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
     <table
       className="m-vehicle-properties-panel__vehicle-properties"
     >

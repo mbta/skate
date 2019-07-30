@@ -111,7 +111,7 @@ const Header = ({
       <div className="m-vehicle-properties-panel__variant-name">
         {formatRouteVariant(vehicle)}
       </div>
-      {vehicle.headwaySpacing ? (
+      {featureIsEnabled("headway_ladder_colors") && vehicle.headwaySpacing ? (
         <HeadwayTarget vehicle={vehicle} />
       ) : (
         <ScheduleAdherence vehicle={vehicle} />
