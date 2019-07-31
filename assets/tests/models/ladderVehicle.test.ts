@@ -8,8 +8,10 @@ import {
   putIntoLanes,
   VehicleDirection,
 } from "../../src/models/ladderVehicle"
-import { VehicleAdherenceStatus } from "../../src/models/vehicleStatus"
-import { HeadwaySpacing } from "../../src/realtime.d"
+import {
+  HeadwaySpacing,
+  VehicleAdherenceStatus,
+} from "../../src/models/vehicleStatus"
 
 describe("directionOnLadder", () => {
   test("determines the vehicle direction relative the ladder direction", () => {
@@ -31,7 +33,7 @@ describe("directionOnLadder", () => {
 describe("putIntoLanes", () => {
   test("adds lane properties", () => {
     const status: VehicleAdherenceStatus = "on-time"
-    const headwaySpacing: HeadwaySpacing = "ok"
+    const headwaySpacing: HeadwaySpacing = HeadwaySpacing.Ok
     const original = [
       {
         headwaySpacing,

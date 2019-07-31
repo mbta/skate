@@ -1,4 +1,8 @@
-import { status } from "../../src/models/vehicleStatus"
+import {
+  HeadwaySpacing,
+  headwaySpacingToString,
+  status,
+} from "../../src/models/vehicleStatus"
 import { DataDiscrepancy, Vehicle } from "../../src/realtime.d"
 
 describe("status", () => {
@@ -18,5 +22,19 @@ describe("status", () => {
     } as Vehicle
 
     expect(status(vehicle)).toEqual("on-time")
+  })
+})
+
+describe("headwaySpacingToString", () => {
+  test("converts enum to string", () => {
+    expect(headwaySpacingToString(HeadwaySpacing.VeryBunched)).toEqual(
+      "very-bunched"
+    )
+    expect(headwaySpacingToString(HeadwaySpacing.Bunched)).toEqual("bunched")
+    expect(headwaySpacingToString(HeadwaySpacing.Ok)).toEqual("ok")
+    expect(headwaySpacingToString(HeadwaySpacing.Gapped)).toEqual("gapped")
+    expect(headwaySpacingToString(HeadwaySpacing.VeryGapped)).toEqual(
+      "very-gapped"
+    )
   })
 })

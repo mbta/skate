@@ -2,6 +2,7 @@ import React from "react"
 import renderer from "react-test-renderer"
 import HeadwayLines from "../../src/components/headwayLines"
 import { LadderVehicle, VehicleDirection } from "../../src/models/ladderVehicle"
+import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 
 describe("HeadwayLines", () => {
   test("renders", () => {
@@ -11,7 +12,7 @@ describe("HeadwayLines", () => {
         label: "1",
         viaVariant: null,
         status: "on-time",
-        headwaySpacing: "ok",
+        headwaySpacing: HeadwaySpacing.Ok,
         isOffCourse: false,
         x: 1,
         y: 1,
@@ -23,7 +24,7 @@ describe("HeadwayLines", () => {
         label: "2",
         viaVariant: null,
         status: "on-time",
-        headwaySpacing: "bunched",
+        headwaySpacing: HeadwaySpacing.Bunched,
         isOffCourse: false,
         x: 1,
         y: 100,
@@ -35,7 +36,7 @@ describe("HeadwayLines", () => {
         label: "3",
         viaVariant: null,
         status: "on-time",
-        headwaySpacing: "gapped",
+        headwaySpacing: HeadwaySpacing.Gapped,
         isOffCourse: false,
         x: 1,
         y: 300,

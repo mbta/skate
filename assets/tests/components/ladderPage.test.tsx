@@ -1,6 +1,7 @@
 import React from "react"
 import renderer from "react-test-renderer"
 import LadderPage, { findRouteById } from "../../src/components/ladderPage"
+import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Vehicle } from "../../src/realtime.d"
 import { Route, TimepointsByRouteId } from "../../src/schedule.d"
 
@@ -157,7 +158,7 @@ const vehicle: Vehicle = {
   speed: 50.0,
   blockId: "block-1",
   headwaySecs: 859.1,
-  headwaySpacing: "ok",
+  headwaySpacing: HeadwaySpacing.Ok,
   previousVehicleId: "v2",
   scheduleAdherenceSecs: 0,
   scheduleAdherenceString: "0.0 sec (ontime)",

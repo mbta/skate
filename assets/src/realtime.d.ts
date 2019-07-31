@@ -7,6 +7,8 @@ import {
   ViaVariant,
 } from "./schedule.d"
 
+import { HeadwaySpacing } from "./models/vehicleStatus"
+
 export interface DataDiscrepancy {
   attribute: string
   sources: DataDiscrepancySource[]
@@ -16,14 +18,6 @@ interface DataDiscrepancySource {
   id: SourceId
   value: string | null
 }
-
-export type HeadwaySpacing =
-  | "very_bunched"
-  | "bunched"
-  | "ok"
-  | "gapped"
-  | "very_gapped"
-  | null
 
 export type ScheduleAdherenceStatus = "on-time" | "early" | "late"
 
@@ -47,7 +41,7 @@ export interface Vehicle {
   speed: number
   blockId: string
   headwaySecs: number | null
-  headwaySpacing: HeadwaySpacing
+  headwaySpacing: HeadwaySpacing | null
   previousVehicleId: string
   scheduleAdherenceSecs: number
   scheduleAdherenceString: string
