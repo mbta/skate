@@ -256,7 +256,9 @@ defmodule Realtime.Vehicle do
   tag a bus that is on a detour and late, and should thus still be shown on the
   route ladder.
   """
-  @spec active_block?(boolean(), Block.t(), Util.Time.timestamp()) :: boolean()
+  @spec active_block?(boolean(), Block.t() | nil, Util.Time.timestamp()) :: boolean()
+  def active_block?(_is_off_course, nil, _now), do: false
+
   def active_block?(_is_off_course = false, _block, _now), do: true
 
   def active_block?(_is_off_course = true, block, now) do

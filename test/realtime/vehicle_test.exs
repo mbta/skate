@@ -393,7 +393,7 @@ defmodule Realtime.VehicleTest do
       assert Vehicle.active_block?(is_off_course, block, now)
     end
 
-    test "returtns false if the block ended more than an hour ago", %{block: block} do
+    test "returns false if the block ended more than an hour ago", %{block: block} do
       is_off_course = true
       # 2019-01-01 13:00:00 EST
       now = 1_546_365_600
@@ -401,7 +401,7 @@ defmodule Realtime.VehicleTest do
       refute Vehicle.active_block?(is_off_course, block, now)
     end
 
-    test "returtns true if the block ended less than an hour ago", %{block: block} do
+    test "returns true if the block ended less than an hour ago", %{block: block} do
       is_off_course = true
       # 2019-01-01 12:30:00 EST
       now = 1_546_363_800
@@ -409,12 +409,20 @@ defmodule Realtime.VehicleTest do
       assert Vehicle.active_block?(is_off_course, block, now)
     end
 
-    test "returtns true if the block ends in the future", %{block: block} do
+    test "returns true if the block ends in the future", %{block: block} do
       is_off_course = true
       # 2019-01-01 11:30:00 EST
       now = 1_546_358_400
 
       assert Vehicle.active_block?(is_off_course, block, now)
+    end
+
+    test "returns false if the block is nil" do
+      is_off_course = true
+      # 2019-01-01 12:30:00 EST
+      now = 1_546_363_800
+
+      refute Vehicle.active_block?(is_off_course, nil, now)
     end
   end
 
