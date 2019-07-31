@@ -68,8 +68,7 @@ defmodule SkateWeb.Router do
       :accepts_html,
       :browser,
       :auth,
-      :ensure_auth,
-      :put_user_token
+      :ensure_auth
     ]
 
     forward("/", Laboratory.Router)
