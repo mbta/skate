@@ -6,9 +6,9 @@ import VehiclePropertiesPanel, {
   handleSwipe,
 } from "../../src/components/vehiclePropertiesPanel"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import DispatchProvider from "../../src/providers/dispatchProvider"
+import StateDispatchProvider from "../../src/providers/stateDispatchProvider"
 import { Vehicle } from "../../src/realtime.d"
-import { deselectVehicle } from "../../src/state"
+import { deselectVehicle, initialState } from "../../src/state"
 
 const vehicle: Vehicle = {
   id: "v1",
@@ -151,9 +151,9 @@ describe("VehiclePropertiesPanel", () => {
     const mockDispatch = jest.fn()
 
     const wrapper = mount(
-      <DispatchProvider dispatch={mockDispatch}>
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <VehiclePropertiesPanel selectedVehicle={vehicle} />
-      </DispatchProvider>
+      </StateDispatchProvider>
     )
     wrapper
       .find(".m-vehicle-properties-panel__header .m-close-button")
@@ -166,9 +166,9 @@ describe("VehiclePropertiesPanel", () => {
     const mockDispatch = jest.fn()
 
     const wrapper = mount(
-      <DispatchProvider dispatch={mockDispatch}>
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <VehiclePropertiesPanel selectedVehicle={vehicle} />
-      </DispatchProvider>
+      </StateDispatchProvider>
     )
     wrapper.find(".m-vehicle-properties-panel__close").simulate("click")
 

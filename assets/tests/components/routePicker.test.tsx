@@ -2,9 +2,14 @@ import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import RoutePicker from "../../src/components/routePicker"
-import DispatchProvider from "../../src/providers/dispatchProvider"
+import StateDispatchProvider from "../../src/providers/stateDispatchProvider"
 import { Route, RouteId } from "../../src/schedule.d"
-import { deselectRoute, selectRoute, toggleRoutePicker } from "../../src/state"
+import {
+  deselectRoute,
+  initialState,
+  selectRoute,
+  toggleRoutePicker,
+} from "../../src/state"
 
 describe("RoutePicker", () => {
   test("renders a list of routes", () => {
@@ -43,9 +48,9 @@ describe("RoutePicker", () => {
   test("clicking the collapse button hides the route picker", () => {
     const mockDispatch = jest.fn()
     const wrapper = mount(
-      <DispatchProvider dispatch={mockDispatch}>
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <RoutePicker isVisible={true} routes={null} selectedRouteIds={[]} />
-      </DispatchProvider>
+      </StateDispatchProvider>
     )
     expect(wrapper.find(".m-route-picker").hasClass("visible")).toBeTruthy()
     expect(wrapper.find(".m-route-picker").hasClass("hiddden")).toBeFalsy()
@@ -65,9 +70,9 @@ describe("RoutePicker", () => {
     ]
 
     const routePicker = mount(
-      <DispatchProvider dispatch={mockDispatch}>
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <RoutePicker isVisible={true} routes={routes} selectedRouteIds={[]} />
-      </DispatchProvider>
+      </StateDispatchProvider>
     )
 
     routePicker
@@ -85,13 +90,13 @@ describe("RoutePicker", () => {
     ]
 
     const routePicker = mount(
-      <DispatchProvider dispatch={mockDispatch}>
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <RoutePicker
           isVisible={true}
           routes={routes}
           selectedRouteIds={["id"]}
         />
-      </DispatchProvider>
+      </StateDispatchProvider>
     )
 
     routePicker
@@ -109,13 +114,13 @@ describe("RoutePicker", () => {
     ]
 
     const routePicker = mount(
-      <DispatchProvider dispatch={mockDispatch}>
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <RoutePicker
           isVisible={true}
           routes={routes}
           selectedRouteIds={["id"]}
         />
-      </DispatchProvider>
+      </StateDispatchProvider>
     )
 
     routePicker

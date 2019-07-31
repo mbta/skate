@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react"
-import DispatchContext from "../contexts/dispatchContext"
+import StateDispatchContext from "../contexts/stateDispatchContext"
 import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
 import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
 import featureIsEnabled from "../laboratoryFeatures"
@@ -238,7 +238,7 @@ const VehiclePropertiesPanel = ({
   selectedVehicle,
   selectedVehicleRoute,
 }: Props) => {
-  const dispatch = useContext(DispatchContext)
+  const [, dispatch] = useContext(StateDispatchContext)
 
   const hideMe = () => dispatch(deselectVehicle())
 

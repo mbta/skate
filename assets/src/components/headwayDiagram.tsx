@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import DispatchContext from "../contexts/dispatchContext"
+import StateDispatchContext from "../contexts/stateDispatchContext"
 import VehiclesByRouteIdContext from "../contexts/vehiclesByRouteIdContext"
 import {
   allVehiclesForRoute,
@@ -37,7 +37,7 @@ const humanSpacing = (spacing: HeadwaySpacing): string => {
 }
 
 const OtherVehicle = ({ vehicle }: { vehicle: Vehicle }) => {
-  const dispatch = useContext(DispatchContext)
+  const [, dispatch] = useContext(StateDispatchContext)
   const { id, label, viaVariant } = vehicle
 
   return (

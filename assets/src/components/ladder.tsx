@@ -1,5 +1,5 @@
 import React, { useContext, useLayoutEffect, useRef, useState } from "react"
-import DispatchContext from "../contexts/dispatchContext"
+import StateDispatchContext from "../contexts/stateDispatchContext"
 import { partition } from "../helpers/array"
 import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
 import featureIsEnabled from "../laboratoryFeatures"
@@ -155,7 +155,7 @@ const VehicleSvg = ({
   ladderVehicle: LadderVehicle
   selectedVehicleId: VehicleId | undefined
 }) => {
-  const dispatch = useContext(DispatchContext)
+  const [, dispatch] = useContext(StateDispatchContext)
   const selectedClass = vehicleId === selectedVehicleId ? "selected" : ""
 
   return (

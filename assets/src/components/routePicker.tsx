@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import DispatchContext from "../contexts/dispatchContext"
+import StateDispatchContext from "../contexts/stateDispatchContext"
 import { collapseIcon, expandIcon } from "../helpers/icon"
 import {
   filterRoutes,
@@ -19,7 +19,7 @@ interface Props {
 
 const RoutePicker = ({ isVisible, routes, selectedRouteIds }: Props) => {
   const routeFilterData: RouteFilterData = useRouteFilter()
-  const dispatch = useContext(DispatchContext)
+  const [, dispatch] = useContext(StateDispatchContext)
 
   const filteredRoutes = filterRoutes(routes || [], routeFilterData)
 
@@ -64,7 +64,7 @@ const SelectedRoutesList = ({
 }: {
   selectedRouteIds: RouteId[]
 }) => {
-  const dispatch = useContext(DispatchContext)
+  const [, dispatch] = useContext(StateDispatchContext)
 
   return (
     <ul className="m-route-picker__selected-routes">
@@ -108,7 +108,7 @@ const RouteListButton = ({
   route: Route
   isSelected: boolean
 }) => {
-  const dispatch = useContext(DispatchContext)
+  const [, dispatch] = useContext(StateDispatchContext)
   const selectedClass = isSelected
     ? "m-route-picker__route-list-button--selected"
     : ""

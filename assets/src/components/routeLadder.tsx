@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from "react"
-import DispatchContext from "../contexts/dispatchContext"
+import StateDispatchContext from "../contexts/stateDispatchContext"
 import { reverseIcon, reverseIconReversed } from "../helpers/icon"
 import { VehicleId, VehiclesForRoute } from "../realtime.d"
 import { LoadableTimepoints, Route } from "../schedule.d"
@@ -17,7 +17,7 @@ interface Props {
 }
 
 const Header = ({ route }: { route: Route }) => {
-  const dispatch = useContext(DispatchContext)
+  const [, dispatch] = useContext(StateDispatchContext)
 
   return (
     <div className="m-route-ladder__header">
