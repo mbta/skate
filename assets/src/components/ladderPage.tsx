@@ -1,4 +1,5 @@
-import React, { ReactElement } from "react"
+import React, { ReactElement, useContext } from "react"
+import VehiclesByRouteIdContext from "../contexts/vehiclesByRouteIdContext"
 import { Vehicle, VehicleId, VehiclesForRoute } from "../realtime.d"
 import { ByRouteId, Route, RouteId, TimepointsByRouteId } from "../schedule.d"
 import RouteLadders from "./routeLadders"
@@ -10,7 +11,6 @@ interface Props {
   routes: Route[] | null
   timepointsByRouteId: TimepointsByRouteId
   selectedRouteIds: RouteId[]
-  vehiclesByRouteId: ByRouteId<VehiclesForRoute>
   selectedVehicleId: VehicleId | undefined
 }
 
@@ -46,8 +46,10 @@ const LadderPage = ({
   selectedRouteIds,
   selectedVehicleId,
   timepointsByRouteId,
-  vehiclesByRouteId,
 }: Props): ReactElement<HTMLDivElement> => {
+  const vehiclesByRouteId: ByRouteId<VehiclesForRoute> = useContext(
+    VehiclesByRouteIdContext
+  )
   const selectedRoutes: Route[] = selectedRouteIds
     .map(routeId => findRouteById(routes, routeId))
     .filter(route => route) as Route[]
@@ -68,7 +70,6 @@ const LadderPage = ({
       <RouteLadders
         routes={selectedRoutes}
         timepointsByRouteId={timepointsByRouteId}
-        vehiclesByRouteId={vehiclesByRouteId}
         selectedVehicleId={selectedVehicleId}
       />
 

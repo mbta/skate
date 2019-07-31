@@ -12,7 +12,6 @@ describe("App", () => {
           routes={null}
           timepointsByRouteId={{}}
           selectedRouteIds={[]}
-          vehiclesByRouteId={{}}
           selectedVehicleId={undefined}
         />
       )
@@ -28,7 +27,6 @@ describe("App", () => {
           routes={routes}
           timepointsByRouteId={{}}
           selectedRouteIds={["1"]}
-          vehiclesByRouteId={{}}
           selectedVehicleId={undefined}
         />
       )

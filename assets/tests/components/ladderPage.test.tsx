@@ -1,8 +1,6 @@
 import React from "react"
 import renderer from "react-test-renderer"
 import LadderPage, { findRouteById } from "../../src/components/ladderPage"
-import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { Vehicle } from "../../src/realtime.d"
 import { Route, TimepointsByRouteId } from "../../src/schedule.d"
 
 describe("LadderPage", () => {
@@ -14,7 +12,6 @@ describe("LadderPage", () => {
           routes={null}
           timepointsByRouteId={{}}
           selectedRouteIds={[]}
-          vehiclesByRouteId={{}}
           selectedVehicleId={undefined}
         />
       )
@@ -30,7 +27,6 @@ describe("LadderPage", () => {
           routes={routes}
           timepointsByRouteId={{}}
           selectedRouteIds={["1"]}
-          vehiclesByRouteId={{}}
           selectedVehicleId={undefined}
         />
       )
@@ -46,7 +42,6 @@ describe("LadderPage", () => {
           routes={routes}
           timepointsByRouteId={{}}
           selectedRouteIds={["28", "1"]}
-          vehiclesByRouteId={{}}
           selectedVehicleId={undefined}
         />
       )
@@ -62,50 +57,7 @@ describe("LadderPage", () => {
           routes={routes}
           timepointsByRouteId={timepointsByRouteId}
           selectedRouteIds={[]}
-          vehiclesByRouteId={{}}
           selectedVehicleId={undefined}
-        />
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
-  })
-
-  test("renders with vehicles", () => {
-    const tree = renderer
-      .create(
-        <LadderPage
-          routePickerIsVisible={true}
-          routes={routes}
-          timepointsByRouteId={timepointsByRouteId}
-          selectedRouteIds={[]}
-          vehiclesByRouteId={{
-            "28": {
-              onRouteVehicles: [vehicle],
-              incomingVehicles: [],
-            },
-          }}
-          selectedVehicleId={undefined}
-        />
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
-  })
-
-  test("renders with a selected vehicle", () => {
-    const tree = renderer
-      .create(
-        <LadderPage
-          routePickerIsVisible={true}
-          routes={routes}
-          timepointsByRouteId={timepointsByRouteId}
-          selectedRouteIds={[]}
-          vehiclesByRouteId={{
-            "28": {
-              onRouteVehicles: [vehicle],
-              incomingVehicles: [],
-            },
-          }}
-          selectedVehicleId={vehicle.id}
         />
       )
       .toJSON()
@@ -139,48 +91,4 @@ const timepointsByRouteId: TimepointsByRouteId = {
   "28": ["MATPN", "WELLH", "MORTN"],
   "71": undefined,
   "73": null,
-}
-const vehicle: Vehicle = {
-  id: "v1",
-  label: "v1",
-  runId: "run1",
-  timestamp: 0,
-  latitude: 0,
-  longitude: 0,
-  directionId: 1,
-  routeId: "28",
-  tripId: "trip",
-  headsign: null,
-  viaVariant: null,
-  operatorId: "op1",
-  operatorName: "SMITH",
-  bearing: 33,
-  speed: 50.0,
-  blockId: "block-1",
-  headwaySecs: 859.1,
-  headwaySpacing: HeadwaySpacing.Ok,
-  previousVehicleId: "v2",
-  scheduleAdherenceSecs: 0,
-  scheduleAdherenceString: "0.0 sec (ontime)",
-  scheduleAdherenceStatus: "on-time",
-  scheduledHeadwaySecs: 120,
-  isOffCourse: false,
-  blockIsActive: false,
-  dataDiscrepancies: [],
-  stopStatus: {
-    status: "in_transit_to",
-    stopId: "stop",
-    stopName: "stop",
-  },
-  timepointStatus: {
-    fractionUntilTimepoint: 0.5,
-    timepointId: "WELLH",
-  },
-  scheduledLocation: {
-    directionId: 1,
-    timepointStatus: {
-      timepointId: "MORTN",
-      fractionUntilTimepoint: 0.8,
-    },
-  },
 }

@@ -5,6 +5,7 @@ import useSocket from "../hooks/useSocket"
 import useTimepoints from "../hooks/useTimepoints"
 import useVehicles from "../hooks/useVehicles"
 import DispatchProvider from "../providers/dispatchProvider"
+import VehiclesByRouteIdProvider from "../providers/vehiclesByRouteIdProvider"
 import { Route, TimepointsByRouteId } from "../schedule.d"
 import { initialState, reducer } from "../state"
 import App from "./app"
@@ -22,14 +23,15 @@ const AppStateWrapper = (): JSX.Element => {
 
   return (
     <DispatchProvider dispatch={dispatch}>
-      <App
-        routePickerIsVisible={routePickerIsVisible}
-        routes={routes}
-        timepointsByRouteId={timepointsByRouteId}
-        selectedRouteIds={selectedRouteIds}
-        vehiclesByRouteId={vehiclesByRouteId}
-        selectedVehicleId={selectedVehicleId}
-      />
+      <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
+        <App
+          routePickerIsVisible={routePickerIsVisible}
+          routes={routes}
+          timepointsByRouteId={timepointsByRouteId}
+          selectedRouteIds={selectedRouteIds}
+          selectedVehicleId={selectedVehicleId}
+        />
+      </VehiclesByRouteIdProvider>
     </DispatchProvider>
   )
 }

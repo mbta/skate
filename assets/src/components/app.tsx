@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react"
 import { BrowserRouter, Route as BrowserRoute } from "react-router-dom"
-import { VehicleId, VehiclesForRoute } from "../realtime.d"
-import { ByRouteId, Route, RouteId, TimepointsByRouteId } from "../schedule.d"
+import { VehicleId } from "../realtime.d"
+import { Route, RouteId, TimepointsByRouteId } from "../schedule.d"
 import AboutPage from "./aboutPage"
 import LadderPage from "./ladderPage"
 import TabBar from "./tabBar"
@@ -11,7 +11,6 @@ interface Props {
   routes: Route[] | null
   timepointsByRouteId: TimepointsByRouteId
   selectedRouteIds: RouteId[]
-  vehiclesByRouteId: ByRouteId<VehiclesForRoute>
   selectedVehicleId: VehicleId | undefined
 }
 
