@@ -2,11 +2,13 @@ import React, { useContext, useEffect } from "react"
 import DispatchContext from "../contexts/dispatchContext"
 import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
 import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
+import featureIsEnabled from "../laboratoryFeatures"
 import { status } from "../models/vehicleStatus"
 import { DataDiscrepancy, Vehicle } from "../realtime.d"
 import { Route } from "../schedule.d"
 import { deselectVehicle } from "../state"
 import CloseButton from "./closeButton"
+import HeadwayDiagram from "./headwayDiagram"
 import Map from "./map"
 import VehicleIcon, { Orientation, Size } from "./vehicleIcon"
 
@@ -64,6 +66,21 @@ const ScheduleAdherence = ({ vehicle }: { vehicle: Vehicle }) => (
   </div>
 )
 
+const HeadwayTarget = ({
+  vehicle: { scheduledHeadwaySecs },
+}: {
+  vehicle: Vehicle
+}) => (
+  <div className="m-vehicle-properties-panel__headway-target">
+    <span className="m-vehicle-properties-panel__headway-target-label">
+      HEADWAY TARGET
+    </span>
+    <span className="m-vehicle-properties-panel__headway-target-value">
+      {minutes(scheduledHeadwaySecs)} min
+    </span>
+  </div>
+)
+
 const Header = ({
   vehicle,
   selectedVehicleRoute,
@@ -94,7 +111,11 @@ const Header = ({
       <div className="m-vehicle-properties-panel__variant-name">
         {formatRouteVariant(vehicle)}
       </div>
-      <ScheduleAdherence vehicle={vehicle} />
+      {vehicle.headwaySpacing ? (
+        <HeadwayTarget vehicle={vehicle} />
+      ) : (
+        <ScheduleAdherence vehicle={vehicle} />
+      )}
     </div>
     <CloseButton onClick={hideMe} />
   </div>
@@ -237,6 +258,10 @@ const VehiclePropertiesPanel = ({
           hideMe={hideMe}
         />
 
+        {shouldShowHeadwayDiagram(selectedVehicle) && (
+          <HeadwayDiagram vehicle={selectedVehicle} />
+        )}
+
         <Properties vehicle={selectedVehicle} />
 
         <Location vehicle={selectedVehicle} />
@@ -277,6 +302,14 @@ const directionsUrl = (
 ) => `https://www.google.com/maps/dir/?api=1\
 &destination=${latitude.toString()},${longitude.toString()}\
 &travelmode=driving`
+
+const shouldShowHeadwayDiagram = ({
+  headwaySpacing,
+  isOnRoute,
+}: Vehicle): boolean =>
+  featureIsEnabled("headway_ladder_colors") &&
+  headwaySpacing !== null &&
+  isOnRoute
 
 const shouldShowDataDiscrepancies = ({ dataDiscrepancies }: Vehicle): boolean =>
   inDebugMode() && dataDiscrepancies.length > 0

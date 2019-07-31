@@ -1,0 +1,112 @@
+.m-headawy-diagram {
+  padding: 0.6875rem 0 0.45rem;
+  position: relative;
+}
+
+.m-headawy-diagram__route-line-background {
+  background-color: $color-line-normal;
+  height: 4px;
+  position: absolute;
+  top: 23px;
+  width: 100%;
+  z-index: -1;
+}
+
+.m-headawy-diagram__vehicles {
+  display: flex;
+  justify-content: center;
+  margin: 0 2.1875rem;
+}
+
+.m-headawy-diagram__selected-vehicle {
+  margin: 0 -0.4rem 0 -0.2rem;
+  z-index: 2;
+}
+
+.m-headawy-diagram__other-vehicle {
+  cursor: pointer;
+  margin: 6px -0.6rem 0 -0.4rem;
+  z-index: 2;
+}
+
+.m-headawy-diagram__no-vehicle-icon {
+  fill: $color-line-normal;
+  margin: 2px -2px 0 -2px;
+
+  &--bunched {
+    fill: $color-line-bunched-light;
+  }
+
+  &--very-bunched {
+    fill: $color-line-bunched;
+  }
+
+  &--gapped {
+    fill: $color-line-gapped-light;
+  }
+
+  &--very-gapped {
+    fill: $color-line-gapped;
+  }
+}
+
+.m-headawy-diagram__headway {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-top: -6px;
+}
+
+.m-headawy-diagram__headway-amount,
+.m-headawy-diagram__headway-status {
+  color: $color-font-grey;
+
+  .bunched & {
+    color: $color-line-bunched-light;
+  }
+
+  .very-bunched & {
+    color: $color-line-bunched;
+  }
+
+  .gapped & {
+    color: $color-line-gapped-light;
+  }
+
+  .very-gapped & {
+    color: $color-line-gapped;
+  }
+}
+
+.m-headawy-diagram__headway-amount {
+  @include font-small;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.m-headawy-diagram__headway-status {
+  font-size: 0.625rem;
+  margin-top: 5px;
+}
+
+.m-headawy-diagram__headway-line {
+  background-color: $color-line-normal;
+  height: 6px;
+  width: 9rem;
+
+  .bunched & {
+    background-color: $color-line-bunched-light;
+  }
+
+  .very-bunched & {
+    background-color: $color-line-bunched;
+  }
+
+  .gapped & {
+    background-color: $color-line-gapped-light;
+  }
+
+  .very-gapped & {
+    background-color: $color-line-gapped;
+  }
+}

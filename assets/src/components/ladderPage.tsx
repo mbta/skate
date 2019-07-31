@@ -1,5 +1,6 @@
 import React, { ReactElement, useContext } from "react"
 import VehiclesByRouteIdContext from "../contexts/vehiclesByRouteIdContext"
+import { allVehicles } from "../models/vehiclesByRouteId"
 import { Vehicle, VehicleId, VehiclesForRoute } from "../realtime.d"
 import { ByRouteId, Route, RouteId, TimepointsByRouteId } from "../schedule.d"
 import RouteLadders from "./routeLadders"
@@ -23,15 +24,11 @@ const findSelectedVehicle = (
   vehiclesByRouteId: ByRouteId<VehiclesForRoute>,
   selectedVehicleId: VehicleId | undefined
 ): Vehicle | undefined => {
-  const allVehicles: Vehicle[] = Object.values(vehiclesByRouteId).reduce(
-    (acc, vehiclesForRoute) =>
-      acc.concat(
-        vehiclesForRoute.onRouteVehicles,
-        vehiclesForRoute.incomingVehicles
-      ),
+  const vehicles: Vehicle[] = Object.values(vehiclesByRouteId).reduce(
+    (acc, vehiclesForRoute) => acc.concat(allVehicles(vehiclesForRoute)),
     [] as Vehicle[]
   )
-  return allVehicles.find(vehicle => vehicle.id === selectedVehicleId)
+  return vehicles.find(vehicle => vehicle.id === selectedVehicleId)
 }
 
 const vehicleRoute = (

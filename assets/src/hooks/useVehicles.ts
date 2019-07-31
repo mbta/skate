@@ -254,7 +254,9 @@ const vehicleTimepointStatusFromData = (
   fractionUntilTimepoint: vehicleTimepointStatusData.fraction_until_timepoint,
 })
 
-const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
+const vehicleFromData = ({ isOnRoute }: { isOnRoute: boolean }) => (
+  vehicleData: VehicleData
+): Vehicle => ({
   id: vehicleData.id,
   label: vehicleData.label,
   runId: vehicleData.run_id,
@@ -290,13 +292,18 @@ const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
   scheduledLocation:
     vehicleData.scheduled_location &&
     vehicleScheduledLocationFromData(vehicleData.scheduled_location),
+  isOnRoute,
 })
 
 const vehiclesForRouteFromData = (
   vehiclesForRouteData: VehiclesForRouteData
 ): VehiclesForRoute => ({
-  onRouteVehicles: vehiclesForRouteData.on_route_vehicles.map(vehicleFromData),
-  incomingVehicles: vehiclesForRouteData.incoming_vehicles.map(vehicleFromData),
+  onRouteVehicles: vehiclesForRouteData.on_route_vehicles.map(
+    vehicleFromData({ isOnRoute: true })
+  ),
+  incomingVehicles: vehiclesForRouteData.incoming_vehicles.map(
+    vehicleFromData({ isOnRoute: false })
+  ),
 })
 
 const subscribe = (

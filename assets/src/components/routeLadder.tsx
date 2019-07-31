@@ -12,7 +12,7 @@ import Loading from "./loading"
 interface Props {
   route: Route
   timepoints: LoadableTimepoints
-  vehiclesForRoute: VehiclesForRoute | null
+  vehiclesForRoute?: VehiclesForRoute
   selectedVehicleId: VehicleId | undefined
 }
 

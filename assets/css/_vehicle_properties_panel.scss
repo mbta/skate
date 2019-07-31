@@ -37,10 +37,23 @@
   @include font-header;
 }
 
+.m-vehicle-properties-panel__headway-target,
 .m-vehicle-properties-panel__schedule-adherence {
   @include font-small;
-  display: flex;
   margin-top: 0.7rem;
+}
+
+.m-vehicle-properties-panel__headway-target-label {
+  font-weight: bold;
+  margin-right: 0.3rem;
+}
+
+.m-vehicle-properties-panel__headway-target-value {
+  @include font-body;
+}
+
+.m-vehicle-properties-panel__schedule-adherence {
+  display: flex;
 }
 
 .m-vehicle-properties-panel__schedule-adherence-status-icon {
@@ -77,8 +90,12 @@
   padding: 1rem;
 }
 
+.m-vehicle-properties-panel .m-headawy-diagram,
 .m-vehicle-properties-panel__vehicle-properties {
   border-top: 1px solid $color-rule;
+}
+
+.m-vehicle-properties-panel__vehicle-properties {
   padding: 1rem;
   width: 100%;
 }

@@ -26,7 +26,7 @@ const RouteLadders = ({
           key={route.id}
           route={route}
           timepoints={timepointsByRouteId[route.id]}
-          vehiclesForRoute={vehiclesByRouteId[route.id] || null}
+          vehiclesForRoute={vehiclesByRouteId[route.id]}
           selectedVehicleId={selectedVehicleId}
         />
       ))}

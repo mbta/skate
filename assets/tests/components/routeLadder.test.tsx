@@ -50,7 +50,7 @@ describe("routeLadder", () => {
         <RouteLadder
           route={route}
           timepoints={timepoints}
-          vehiclesForRoute={null}
+          vehiclesForRoute={undefined}
           selectedVehicleId={undefined}
         />
       )
@@ -103,6 +103,7 @@ describe("routeLadder", () => {
           timepointId: "MATPN",
         },
         scheduledLocation: null,
+        isOnRoute: true,
       },
       {
         id: "y0479",
@@ -147,6 +148,7 @@ describe("routeLadder", () => {
             fractionUntilTimepoint: 0.0,
           },
         },
+        isOnRoute: true,
       },
     ]
 
@@ -211,6 +213,7 @@ describe("routeLadder", () => {
           timepointId: "MATPN",
         },
         scheduledLocation: null,
+        isOnRoute: true,
       },
       {
         id: "y0479",
@@ -255,6 +258,7 @@ describe("routeLadder", () => {
             fractionUntilTimepoint: 0.0,
           },
         },
+        isOnRoute: true,
       },
     ]
 
@@ -287,7 +291,7 @@ describe("routeLadder", () => {
         <RouteLadder
           route={route}
           timepoints={timepoints}
-          vehiclesForRoute={null}
+          vehiclesForRoute={undefined}
           selectedVehicleId={undefined}
         />
       )
@@ -309,7 +313,7 @@ describe("routeLadder", () => {
         <RouteLadder
           route={route}
           timepoints={timepoints}
-          vehiclesForRoute={null}
+          vehiclesForRoute={undefined}
           selectedVehicleId={undefined}
         />
       </DispatchProvider>
@@ -330,7 +334,7 @@ describe("routeLadder", () => {
       <RouteLadder
         route={route}
         timepoints={timepoints}
-        vehiclesForRoute={null}
+        vehiclesForRoute={undefined}
         selectedVehicleId={undefined}
       />
     )
@@ -388,6 +392,7 @@ describe("routeLadder", () => {
         timepointId: "MATPN",
       },
       scheduledLocation: null,
+      isOnRoute: true,
     }
 
     const wrapper = mount(

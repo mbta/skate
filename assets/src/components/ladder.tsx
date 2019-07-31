@@ -1,5 +1,6 @@
 import React, { useContext, useLayoutEffect, useRef, useState } from "react"
 import DispatchContext from "../contexts/dispatchContext"
+import { partition } from "../helpers/array"
 import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
 import featureIsEnabled from "../laboratoryFeatures"
 import {
@@ -294,15 +295,6 @@ const ScheduledLine = ({
       x2={roadLineX}
       y2={scheduledY}
     />
-  )
-}
-
-function partition<T>(items: T[], testFn: (value: T) => boolean): T[][] {
-  return items.reduce(
-    ([pass, fail], item) => {
-      return testFn(item) ? [[...pass, item], fail] : [pass, [...fail, item]]
-    },
-    [[] as T[], [] as T[]]
   )
 }
 

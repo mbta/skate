@@ -61,6 +61,7 @@ const vehicle: Vehicle = {
     timepointId: "tp1",
   },
   scheduledLocation: null,
+  isOnRoute: true,
 }
 
 describe("VehiclePropertiesPanel", () => {
@@ -102,6 +103,19 @@ describe("VehiclePropertiesPanel", () => {
     const offCourseVehicle: Vehicle = {
       ...vehicle,
       isOffCourse: true,
+    }
+
+    const tree = renderer
+      .create(<VehiclePropertiesPanel selectedVehicle={offCourseVehicle} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders for a headway-based vehicle", () => {
+    const offCourseVehicle: Vehicle = {
+      ...vehicle,
+      headwaySpacing: HeadwaySpacing.Ok,
     }
 
     const tree = renderer
