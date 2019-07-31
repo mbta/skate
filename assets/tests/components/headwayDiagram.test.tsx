@@ -2,6 +2,7 @@ import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import HeadwayDiagram from "../../src/components/headwayDiagram"
+import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import StateDispatchProvider from "../../src/providers/stateDispatchProvider"
 import { Vehicle } from "../../src/realtime"
 import { initialState, selectVehicle } from "../../src/state"
@@ -24,7 +25,7 @@ const vehicle: Vehicle = {
   speed: 2.7,
   blockId: "C01-10",
   headwaySecs: 218.8,
-  headwaySpacing: "bunched",
+  headwaySpacing: HeadwaySpacing.Bunched,
   previousVehicleId: "y1750",
   scheduleAdherenceSecs: -305,
   scheduleAdherenceString: "-5.1 minutes (early)",
@@ -93,7 +94,7 @@ describe("HeadwayDiagram", () => {
       speed: 0.4,
       blockId: "C01-21",
       headwaySecs: 1071.4,
-      headwaySpacing: "gapped",
+      headwaySpacing: HeadwaySpacing.Gapped,
       previousVehicleId: "y1798",
       scheduleAdherenceSecs: 408,
       scheduleAdherenceString: "6.8 minutes (late)",
@@ -144,7 +145,7 @@ describe("HeadwayDiagram", () => {
       speed: 0,
       blockId: "C22-196",
       headwaySecs: 1033.7,
-      headwaySpacing: "ok",
+      headwaySpacing: HeadwaySpacing.Ok,
       previousVehicleId: "y1894",
       scheduleAdherenceSecs: 313,
       scheduleAdherenceString: "5.2 minutes (late)",

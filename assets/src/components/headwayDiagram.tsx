@@ -5,12 +5,11 @@ import {
   allVehiclesForRoute,
   nextAndPreviousVehicle,
 } from "../models/vehiclesByRouteId"
-import { HeadwaySpacing, Vehicle, VehiclesForRoute } from "../realtime"
+import { HeadwaySpacing, headwaySpacingToString } from "../models/vehicleStatus"
+import { Vehicle, VehiclesForRoute } from "../realtime"
 import { ByRouteId } from "../schedule"
 import { selectVehicle } from "../state"
 import VehicleIcon, { Orientation, Size } from "./vehicleIcon"
-
-const classNamify = (str: string): string => str.replace("_", "-")
 
 const headwayAmount = (
   headwaySecs: number | null,
@@ -29,12 +28,12 @@ const minutes = (seconds: number): string => {
   return Math.abs(rounded).toFixed(1)
 }
 
-const humanSpacing = (spacing: HeadwaySpacing): string => {
-  if (spacing === "ok" || spacing === null) {
+const humanSpacing = (spacing: HeadwaySpacing | null): string => {
+  if (spacing === null || spacing === HeadwaySpacing.Ok) {
     return "good"
   }
 
-  return spacing.replace("_", " ")
+  return headwaySpacingToString(spacing || HeadwaySpacing.Ok).replace("-", " ")
 }
 
 const OtherVehicle = ({ vehicle }: { vehicle: Vehicle }) => {
@@ -72,11 +71,13 @@ const HeadwayDiagram = ({ vehicle }: { vehicle: Vehicle }) => {
     viaVariant,
   } = vehicle
 
-  const headwaySpacingClass = classNamify(headwaySpacing || "ok")
-  const tailwaySpacingClass = classNamify(
+  const headwaySpacingClass = headwaySpacingToString(
+    headwaySpacing || HeadwaySpacing.Ok
+  )
+  const tailwaySpacingClass = headwaySpacingToString(
     nextVehicle && nextVehicle.headwaySpacing
       ? nextVehicle.headwaySpacing
-      : "ok"
+      : HeadwaySpacing.Ok
   )
 
   const tailwaySecs =
