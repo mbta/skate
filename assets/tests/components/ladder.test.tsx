@@ -3,10 +3,10 @@ import React from "react"
 import renderer from "react-test-renderer"
 import Ladder, { LadderDirection } from "../../src/components/ladder"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import DispatchProvider from "../../src/providers/dispatchProvider"
+import StateDispatchProvider from "../../src/providers/stateDispatchProvider"
 import { Vehicle } from "../../src/realtime.d"
 import { TimepointId } from "../../src/schedule.d"
-import { selectVehicle } from "../../src/state"
+import { initialState, selectVehicle } from "../../src/state"
 
 jest.mock("../../src/laboratoryFeatures", () => ({
   __esModule: true,
@@ -54,6 +54,7 @@ describe("ladder", () => {
           timepointId: "t1",
         },
         scheduledLocation: null,
+        isOnRoute: true,
       },
       {
         id: "downward",
@@ -98,6 +99,7 @@ describe("ladder", () => {
             fractionUntilTimepoint: 0.75,
           },
         },
+        isOnRoute: true,
       },
       {
         id: "notimepoint",
@@ -133,6 +135,7 @@ describe("ladder", () => {
         },
         timepointStatus: null,
         scheduledLocation: null,
+        isOnRoute: true,
       },
     ]
     const ladderDirection = LadderDirection.ZeroToOne
@@ -191,6 +194,7 @@ describe("ladder", () => {
           timepointId: "t1",
         },
         scheduledLocation: null,
+        isOnRoute: true,
       },
       {
         id: "downward",
@@ -235,6 +239,7 @@ describe("ladder", () => {
             fractionUntilTimepoint: 0.75,
           },
         },
+        isOnRoute: true,
       },
     ]
     const ladderDirection = LadderDirection.ZeroToOne
@@ -299,6 +304,7 @@ describe("ladder", () => {
             fractionUntilTimepoint: 0.75,
           },
         },
+        isOnRoute: true,
       },
     ]
     const ladderDirection = LadderDirection.OneToZero
@@ -356,6 +362,7 @@ describe("ladder", () => {
           timepointId: "t1",
         },
         scheduledLocation: null,
+        isOnRoute: true,
       },
       {
         id: "downward",
@@ -400,6 +407,7 @@ describe("ladder", () => {
             fractionUntilTimepoint: 0.75,
           },
         },
+        isOnRoute: true,
       },
     ]
     const ladderDirection = LadderDirection.ZeroToOne
@@ -459,19 +467,20 @@ describe("ladder", () => {
         timepointId: "t1",
       },
       scheduledLocation: null,
+      isOnRoute: true,
     }
 
     const ladderDirection = LadderDirection.ZeroToOne
 
     const wrapper = mount(
-      <DispatchProvider dispatch={mockDispatch}>
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <Ladder
           timepoints={timepoints}
           vehicles={[vehicle]}
           ladderDirection={ladderDirection}
           selectedVehicleId={undefined}
         />
-      </DispatchProvider>
+      </StateDispatchProvider>
     )
     wrapper.find(".m-ladder__vehicle").simulate("click")
 
@@ -518,6 +527,7 @@ describe("ladder", () => {
           timepointId: "t1",
         },
         scheduledLocation: null,
+        isOnRoute: true,
       },
     ]
     const ladderDirection = LadderDirection.ZeroToOne
@@ -582,6 +592,7 @@ describe("ladder", () => {
             fractionUntilTimepoint: 0.4,
           },
         },
+        isOnRoute: true,
       },
     ]
     const ladderDirection = LadderDirection.OneToZero
@@ -655,6 +666,7 @@ describe("ladder", () => {
           fractionUntilTimepoint: 0,
         },
       },
+      isOnRoute: true,
     }
 
     const timepoints = ["t0", "t1", "t2"]

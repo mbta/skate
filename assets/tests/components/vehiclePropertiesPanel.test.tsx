@@ -6,9 +6,18 @@ import VehiclePropertiesPanel, {
   handleSwipe,
 } from "../../src/components/vehiclePropertiesPanel"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import DispatchProvider from "../../src/providers/dispatchProvider"
+import StateDispatchProvider from "../../src/providers/stateDispatchProvider"
 import { Vehicle } from "../../src/realtime.d"
-import { deselectVehicle } from "../../src/state"
+import { deselectVehicle, initialState } from "../../src/state"
+
+// Enable feature flags for "renders for a headway-based vehicle" test
+jest.mock("../../src/laboratoryFeatures", () => ({
+  __esModule: true,
+  default: jest
+    .fn()
+    // Ipmlementation sequence matches tests
+    .mockImplementation(() => true),
+}))
 
 const vehicle: Vehicle = {
   id: "v1",
@@ -61,6 +70,7 @@ const vehicle: Vehicle = {
     timepointId: "tp1",
   },
   scheduledLocation: null,
+  isOnRoute: true,
 }
 
 describe("VehiclePropertiesPanel", () => {
@@ -111,6 +121,19 @@ describe("VehiclePropertiesPanel", () => {
     expect(tree).toMatchSnapshot()
   })
 
+  test("renders for a headway-based vehicle", () => {
+    const offCourseVehicle: Vehicle = {
+      ...vehicle,
+      headwaySpacing: HeadwaySpacing.Ok,
+    }
+
+    const tree = renderer
+      .create(<VehiclePropertiesPanel selectedVehicle={offCourseVehicle} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
   test("renders data discrepancies when in debug mode", () => {
     jest.spyOn(URLSearchParams.prototype, "get").mockImplementation(_key => "1")
 
@@ -137,9 +160,9 @@ describe("VehiclePropertiesPanel", () => {
     const mockDispatch = jest.fn()
 
     const wrapper = mount(
-      <DispatchProvider dispatch={mockDispatch}>
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <VehiclePropertiesPanel selectedVehicle={vehicle} />
-      </DispatchProvider>
+      </StateDispatchProvider>
     )
     wrapper
       .find(".m-vehicle-properties-panel__header .m-close-button")
@@ -152,9 +175,9 @@ describe("VehiclePropertiesPanel", () => {
     const mockDispatch = jest.fn()
 
     const wrapper = mount(
-      <DispatchProvider dispatch={mockDispatch}>
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <VehiclePropertiesPanel selectedVehicle={vehicle} />
-      </DispatchProvider>
+      </StateDispatchProvider>
     )
     wrapper.find(".m-vehicle-properties-panel__close").simulate("click")
 

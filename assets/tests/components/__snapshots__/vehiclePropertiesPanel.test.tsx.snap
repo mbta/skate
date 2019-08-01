@@ -10,7 +10,7 @@ Array [
       className="m-vehicle-properties-panel__header"
     >
       <div
-        className="m-vehicle-properties-panel__label on-time"
+        className="m-vehicle-properties-panel__label "
       >
         <svg
           style={
@@ -73,32 +73,19 @@ Array [
           39_X Forest Hills
         </div>
         <div
-          className="m-vehicle-properties-panel__schedule-adherence on-time"
+          className="m-vehicle-properties-panel__headway-target"
         >
-          <div
-            className="m-vehicle-properties-panel__schedule-adherence-status-icon"
+          <span
+            className="m-vehicle-properties-panel__headway-target-label"
           >
-            <svg
-              height="10"
-              width="10"
-            >
-              <circle
-                cx="5"
-                cy="5"
-                r="5"
-              />
-            </svg>
-          </div>
-          <div
-            className="m-vehicle-properties-panel__schedule-adherence-status-string"
+            HEADWAY TARGET
+          </span>
+          <span
+            className="m-vehicle-properties-panel__headway-target-value"
           >
-            on-time
-          </div>
-          <div
-            className="m-vehicle-properties-panel__schedule-adherence-label"
-          >
-            (0 min early)
-          </div>
+            2
+             min
+          </span>
         </div>
       </div>
       <button
@@ -114,6 +101,380 @@ Array [
           }
         />
       </button>
+    </div>
+    <div
+      className="m-headway-diagram"
+    >
+      <div
+        className="m-headway-diagram__route-line-background"
+      />
+      <div
+        className="m-headway-diagram__vehicles"
+      >
+        <div
+          className="m-headway-diagram__headway ok"
+        >
+          <div
+            className="m-headway-diagram__headway-amount"
+          >
+            +0.0 min
+          </div>
+          <div
+            className="m-headway-diagram__headway-line"
+          />
+          <div
+            className="m-headway-diagram__headway-status"
+          >
+            good
+          </div>
+        </div>
+        <div
+          className="m-headway-diagram__selected-vehicle"
+        >
+          <svg
+            style={
+              Object {
+                "height": 38.5,
+                "width": 26,
+              }
+            }
+            viewBox="-13 -13.75 26 38.5"
+          >
+            <g
+              className="m-vehicle-icon m-vehicle-icon--medium"
+            >
+              <rect
+                className="m-vehicle-icon__label-background"
+                height={11}
+                rx={5.5}
+                ry={5.5}
+                width={26}
+                x={-13}
+                y={12.75}
+              />
+              <text
+                className="m-vehicle-icon__label"
+                dominantBaseline="central"
+                textAnchor="middle"
+                x="0"
+                y={18.25}
+              >
+                v1-label
+              </text>
+              <path
+                className="m-vehicle-icon__triangle"
+                d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+                transform="scale(0.625) rotate(90) translate(-24,-22)"
+              />
+              <text
+                className="m-vehicle-icon__variant"
+                dominantBaseline="central"
+                textAnchor="start"
+                x={-8.5}
+                y={0}
+              >
+                X
+              </text>
+            </g>
+          </svg>
+        </div>
+        <div
+          className="m-headway-diagram__headway ok"
+        >
+          <div
+            className="m-headway-diagram__headway-amount"
+          >
+            +12.3 min
+          </div>
+          <div
+            className="m-headway-diagram__headway-line"
+          />
+          <div
+            className="m-headway-diagram__headway-status"
+          >
+            good
+          </div>
+        </div>
+      </div>
+    </div>
+    <table
+      className="m-vehicle-properties-panel__vehicle-properties"
+    >
+      <tbody>
+        <tr>
+          <th
+            className="m-vehicle-properties-panel__vehicle-property-label"
+          >
+            Run
+          </th>
+          <td
+            className="m-vehicle-properties-panel__vehicle-property-value"
+          >
+            run-1
+          </td>
+        </tr>
+        <tr>
+          <th
+            className="m-vehicle-properties-panel__vehicle-property-label"
+          >
+            Vehicle
+          </th>
+          <td
+            className="m-vehicle-properties-panel__vehicle-property-value"
+          >
+            v1-label
+          </td>
+        </tr>
+        <tr>
+          <th
+            className="m-vehicle-properties-panel__vehicle-property-label"
+          >
+            Operator
+          </th>
+          <td
+            className="m-vehicle-properties-panel__vehicle-property-value"
+          >
+            SMITH
+             #
+            op1
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div
+      className="m-vehicle-properties-panel__location"
+    >
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-label"
+      >
+        Next Stop
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-value"
+      >
+        Stop Name
+      </div>
+      <a
+        className="m-vehicle-properties-panel__link"
+        href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+      >
+        Directions
+      </a>
+      <div
+        className="m-vehicle-map"
+        id="id-vehicle-map"
+      />
+    </div>
+    <button
+      className="m-vehicle-properties-panel__close"
+      onClick={[Function]}
+    >
+      Close
+    </button>
+  </div>,
+  <div
+    className="m-vehicle-properties-panel__modal-overlay"
+    onClick={[Function]}
+  />,
+]
+`;
+
+exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
+Array [
+  <div
+    className="m-vehicle-properties-panel"
+    id="m-vehicle-properties-panel"
+  >
+    <div
+      className="m-vehicle-properties-panel__header"
+    >
+      <div
+        className="m-vehicle-properties-panel__label "
+      >
+        <svg
+          style={
+            Object {
+              "height": 60,
+              "width": 64,
+            }
+          }
+          viewBox="-32 -16 64 60"
+        >
+          <g
+            className="m-vehicle-icon m-vehicle-icon--large"
+          >
+            <rect
+              className="m-vehicle-icon__label-background"
+              height={24}
+              rx={12}
+              ry={12}
+              width={64}
+              x={-32}
+              y={19}
+            />
+            <text
+              className="m-vehicle-icon__label"
+              dominantBaseline="central"
+              textAnchor="middle"
+              x="0"
+              y={31}
+            >
+              v1-label
+            </text>
+            <path
+              className="m-vehicle-icon__triangle"
+              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              transform="scale(1) rotate(0) translate(-24,-22)"
+            />
+            <text
+              className="m-vehicle-icon__variant"
+              dominantBaseline="alphabetic"
+              textAnchor="middle"
+              x={0}
+              y={14}
+            >
+              X
+            </text>
+          </g>
+        </svg>
+      </div>
+      <div
+        className="m-vehicle-properties-panel__variant"
+      >
+        <div
+          className="m-vehicle-properties-panel__inbound-outbound"
+        >
+          
+        </div>
+        <div
+          className="m-vehicle-properties-panel__variant-name"
+        >
+          39_X Forest Hills
+        </div>
+        <div
+          className="m-vehicle-properties-panel__headway-target"
+        >
+          <span
+            className="m-vehicle-properties-panel__headway-target-label"
+          >
+            HEADWAY TARGET
+          </span>
+          <span
+            className="m-vehicle-properties-panel__headway-target-value"
+          >
+            2
+             min
+          </span>
+        </div>
+      </div>
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <div
+      className="m-headway-diagram"
+    >
+      <div
+        className="m-headway-diagram__route-line-background"
+      />
+      <div
+        className="m-headway-diagram__vehicles"
+      >
+        <div
+          className="m-headway-diagram__headway ok"
+        >
+          <div
+            className="m-headway-diagram__headway-amount"
+          >
+            +0.0 min
+          </div>
+          <div
+            className="m-headway-diagram__headway-line"
+          />
+          <div
+            className="m-headway-diagram__headway-status"
+          >
+            good
+          </div>
+        </div>
+        <div
+          className="m-headway-diagram__selected-vehicle"
+        >
+          <svg
+            style={
+              Object {
+                "height": 38.5,
+                "width": 26,
+              }
+            }
+            viewBox="-13 -13.75 26 38.5"
+          >
+            <g
+              className="m-vehicle-icon m-vehicle-icon--medium"
+            >
+              <rect
+                className="m-vehicle-icon__label-background"
+                height={11}
+                rx={5.5}
+                ry={5.5}
+                width={26}
+                x={-13}
+                y={12.75}
+              />
+              <text
+                className="m-vehicle-icon__label"
+                dominantBaseline="central"
+                textAnchor="middle"
+                x="0"
+                y={18.25}
+              >
+                v1-label
+              </text>
+              <path
+                className="m-vehicle-icon__triangle"
+                d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+                transform="scale(0.625) rotate(90) translate(-24,-22)"
+              />
+              <text
+                className="m-vehicle-icon__variant"
+                dominantBaseline="central"
+                textAnchor="start"
+                x={-8.5}
+                y={0}
+              >
+                X
+              </text>
+            </g>
+          </svg>
+        </div>
+        <div
+          className="m-headway-diagram__headway ok"
+        >
+          <div
+            className="m-headway-diagram__headway-amount"
+          >
+            +12.3 min
+          </div>
+          <div
+            className="m-headway-diagram__headway-line"
+          />
+          <div
+            className="m-headway-diagram__headway-status"
+          >
+            good
+          </div>
+        </div>
+      </div>
     </div>
     <table
       className="m-vehicle-properties-panel__vehicle-properties"
@@ -207,7 +568,7 @@ Array [
       className="m-vehicle-properties-panel__header"
     >
       <div
-        className="m-vehicle-properties-panel__label late"
+        className="m-vehicle-properties-panel__label "
       >
         <svg
           style={
@@ -270,32 +631,19 @@ Array [
           39_X Forest Hills
         </div>
         <div
-          className="m-vehicle-properties-panel__schedule-adherence late"
+          className="m-vehicle-properties-panel__headway-target"
         >
-          <div
-            className="m-vehicle-properties-panel__schedule-adherence-status-icon"
+          <span
+            className="m-vehicle-properties-panel__headway-target-label"
           >
-            <svg
-              height="10"
-              width="10"
-            >
-              <circle
-                cx="5"
-                cy="5"
-                r="5"
-              />
-            </svg>
-          </div>
-          <div
-            className="m-vehicle-properties-panel__schedule-adherence-status-string"
+            HEADWAY TARGET
+          </span>
+          <span
+            className="m-vehicle-properties-panel__headway-target-value"
           >
-            late
-          </div>
-          <div
-            className="m-vehicle-properties-panel__schedule-adherence-label"
-          >
-            (6 min late)
-          </div>
+            2
+             min
+          </span>
         </div>
       </div>
       <button
@@ -311,6 +659,101 @@ Array [
           }
         />
       </button>
+    </div>
+    <div
+      className="m-headway-diagram"
+    >
+      <div
+        className="m-headway-diagram__route-line-background"
+      />
+      <div
+        className="m-headway-diagram__vehicles"
+      >
+        <div
+          className="m-headway-diagram__headway ok"
+        >
+          <div
+            className="m-headway-diagram__headway-amount"
+          >
+            +0.0 min
+          </div>
+          <div
+            className="m-headway-diagram__headway-line"
+          />
+          <div
+            className="m-headway-diagram__headway-status"
+          >
+            good
+          </div>
+        </div>
+        <div
+          className="m-headway-diagram__selected-vehicle"
+        >
+          <svg
+            style={
+              Object {
+                "height": 38.5,
+                "width": 26,
+              }
+            }
+            viewBox="-13 -13.75 26 38.5"
+          >
+            <g
+              className="m-vehicle-icon m-vehicle-icon--medium"
+            >
+              <rect
+                className="m-vehicle-icon__label-background"
+                height={11}
+                rx={5.5}
+                ry={5.5}
+                width={26}
+                x={-13}
+                y={12.75}
+              />
+              <text
+                className="m-vehicle-icon__label"
+                dominantBaseline="central"
+                textAnchor="middle"
+                x="0"
+                y={18.25}
+              >
+                v1-label
+              </text>
+              <path
+                className="m-vehicle-icon__triangle"
+                d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+                transform="scale(0.625) rotate(90) translate(-24,-22)"
+              />
+              <text
+                className="m-vehicle-icon__variant"
+                dominantBaseline="central"
+                textAnchor="start"
+                x={-8.5}
+                y={0}
+              >
+                X
+              </text>
+            </g>
+          </svg>
+        </div>
+        <div
+          className="m-headway-diagram__headway ok"
+        >
+          <div
+            className="m-headway-diagram__headway-amount"
+          >
+            +12.3 min
+          </div>
+          <div
+            className="m-headway-diagram__headway-line"
+          />
+          <div
+            className="m-headway-diagram__headway-status"
+          >
+            good
+          </div>
+        </div>
+      </div>
     </div>
     <table
       className="m-vehicle-properties-panel__vehicle-properties"
@@ -404,7 +847,7 @@ Array [
       className="m-vehicle-properties-panel__header"
     >
       <div
-        className="m-vehicle-properties-panel__label early"
+        className="m-vehicle-properties-panel__label "
       >
         <svg
           style={
@@ -467,32 +910,19 @@ Array [
           39_X Forest Hills
         </div>
         <div
-          className="m-vehicle-properties-panel__schedule-adherence early"
+          className="m-vehicle-properties-panel__headway-target"
         >
-          <div
-            className="m-vehicle-properties-panel__schedule-adherence-status-icon"
+          <span
+            className="m-vehicle-properties-panel__headway-target-label"
           >
-            <svg
-              height="10"
-              width="10"
-            >
-              <circle
-                cx="5"
-                cy="5"
-                r="5"
-              />
-            </svg>
-          </div>
-          <div
-            className="m-vehicle-properties-panel__schedule-adherence-status-string"
+            HEADWAY TARGET
+          </span>
+          <span
+            className="m-vehicle-properties-panel__headway-target-value"
           >
-            early
-          </div>
-          <div
-            className="m-vehicle-properties-panel__schedule-adherence-label"
-          >
-            (2 min early)
-          </div>
+            2
+             min
+          </span>
         </div>
       </div>
       <button
@@ -508,6 +938,101 @@ Array [
           }
         />
       </button>
+    </div>
+    <div
+      className="m-headway-diagram"
+    >
+      <div
+        className="m-headway-diagram__route-line-background"
+      />
+      <div
+        className="m-headway-diagram__vehicles"
+      >
+        <div
+          className="m-headway-diagram__headway ok"
+        >
+          <div
+            className="m-headway-diagram__headway-amount"
+          >
+            +0.0 min
+          </div>
+          <div
+            className="m-headway-diagram__headway-line"
+          />
+          <div
+            className="m-headway-diagram__headway-status"
+          >
+            good
+          </div>
+        </div>
+        <div
+          className="m-headway-diagram__selected-vehicle"
+        >
+          <svg
+            style={
+              Object {
+                "height": 38.5,
+                "width": 26,
+              }
+            }
+            viewBox="-13 -13.75 26 38.5"
+          >
+            <g
+              className="m-vehicle-icon m-vehicle-icon--medium"
+            >
+              <rect
+                className="m-vehicle-icon__label-background"
+                height={11}
+                rx={5.5}
+                ry={5.5}
+                width={26}
+                x={-13}
+                y={12.75}
+              />
+              <text
+                className="m-vehicle-icon__label"
+                dominantBaseline="central"
+                textAnchor="middle"
+                x="0"
+                y={18.25}
+              >
+                v1-label
+              </text>
+              <path
+                className="m-vehicle-icon__triangle"
+                d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+                transform="scale(0.625) rotate(90) translate(-24,-22)"
+              />
+              <text
+                className="m-vehicle-icon__variant"
+                dominantBaseline="central"
+                textAnchor="start"
+                x={-8.5}
+                y={0}
+              >
+                X
+              </text>
+            </g>
+          </svg>
+        </div>
+        <div
+          className="m-headway-diagram__headway ok"
+        >
+          <div
+            className="m-headway-diagram__headway-amount"
+          >
+            +12.3 min
+          </div>
+          <div
+            className="m-headway-diagram__headway-line"
+          />
+          <div
+            className="m-headway-diagram__headway-status"
+          >
+            good
+          </div>
+        </div>
+      </div>
     </div>
     <table
       className="m-vehicle-properties-panel__vehicle-properties"
@@ -664,32 +1189,19 @@ Array [
           39_X Forest Hills
         </div>
         <div
-          className="m-vehicle-properties-panel__schedule-adherence off-course"
+          className="m-vehicle-properties-panel__headway-target"
         >
-          <div
-            className="m-vehicle-properties-panel__schedule-adherence-status-icon"
+          <span
+            className="m-vehicle-properties-panel__headway-target-label"
           >
-            <svg
-              height="10"
-              width="10"
-            >
-              <circle
-                cx="5"
-                cy="5"
-                r="5"
-              />
-            </svg>
-          </div>
-          <div
-            className="m-vehicle-properties-panel__schedule-adherence-status-string"
+            HEADWAY TARGET
+          </span>
+          <span
+            className="m-vehicle-properties-panel__headway-target-value"
           >
-            Invalid
-          </div>
-          <div
-            className="m-vehicle-properties-panel__schedule-adherence-label"
-          >
-            
-          </div>
+            2
+             min
+          </span>
         </div>
       </div>
       <button
@@ -705,6 +1217,101 @@ Array [
           }
         />
       </button>
+    </div>
+    <div
+      className="m-headway-diagram"
+    >
+      <div
+        className="m-headway-diagram__route-line-background"
+      />
+      <div
+        className="m-headway-diagram__vehicles"
+      >
+        <div
+          className="m-headway-diagram__headway ok"
+        >
+          <div
+            className="m-headway-diagram__headway-amount"
+          >
+            +0.0 min
+          </div>
+          <div
+            className="m-headway-diagram__headway-line"
+          />
+          <div
+            className="m-headway-diagram__headway-status"
+          >
+            good
+          </div>
+        </div>
+        <div
+          className="m-headway-diagram__selected-vehicle"
+        >
+          <svg
+            style={
+              Object {
+                "height": 38.5,
+                "width": 26,
+              }
+            }
+            viewBox="-13 -13.75 26 38.5"
+          >
+            <g
+              className="m-vehicle-icon m-vehicle-icon--medium"
+            >
+              <rect
+                className="m-vehicle-icon__label-background"
+                height={11}
+                rx={5.5}
+                ry={5.5}
+                width={26}
+                x={-13}
+                y={12.75}
+              />
+              <text
+                className="m-vehicle-icon__label"
+                dominantBaseline="central"
+                textAnchor="middle"
+                x="0"
+                y={18.25}
+              >
+                v1-label
+              </text>
+              <path
+                className="m-vehicle-icon__triangle"
+                d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+                transform="scale(0.625) rotate(90) translate(-24,-22)"
+              />
+              <text
+                className="m-vehicle-icon__variant"
+                dominantBaseline="central"
+                textAnchor="start"
+                x={-8.5}
+                y={0}
+              >
+                X
+              </text>
+            </g>
+          </svg>
+        </div>
+        <div
+          className="m-headway-diagram__headway ok"
+        >
+          <div
+            className="m-headway-diagram__headway-amount"
+          >
+            +12.3 min
+          </div>
+          <div
+            className="m-headway-diagram__headway-line"
+          />
+          <div
+            className="m-headway-diagram__headway-status"
+          >
+            good
+          </div>
+        </div>
+      </div>
     </div>
     <table
       className="m-vehicle-properties-panel__vehicle-properties"

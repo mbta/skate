@@ -38,7 +38,7 @@ export interface Vehicle {
   operatorId: string
   operatorName: string
   bearing: number
-  speed: number
+  speed: number | null
   blockId: string
   headwaySecs: number | null
   headwaySpacing: HeadwaySpacing | null
@@ -53,6 +53,7 @@ export interface Vehicle {
   stopStatus: VehicleStopStatus
   timepointStatus: VehicleTimepointStatus | null
   scheduledLocation: VehicleScheduledLocation | null
+  isOnRoute: boolean
 }
 
 export type VehicleId = string

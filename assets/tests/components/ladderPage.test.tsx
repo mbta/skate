@@ -1,112 +1,61 @@
 import React from "react"
 import renderer from "react-test-renderer"
 import LadderPage, { findRouteById } from "../../src/components/ladderPage"
-import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { Vehicle } from "../../src/realtime.d"
+import StateDispatchProvider from "../../src/providers/stateDispatchProvider"
 import { Route, TimepointsByRouteId } from "../../src/schedule.d"
+import { initialState } from "../../src/state"
+
+jest.mock("../../src/hooks/useRoutes", () => ({
+  __esModule: true,
+  default: jest
+    .fn()
+    // Ipmlementation sequence matches tests
+    .mockImplementationOnce(() => null)
+    .mockImplementation(() => routes),
+}))
+
+const mockDispatch = jest.fn()
 
 describe("LadderPage", () => {
   test("renders the empty state", () => {
-    const tree = renderer
-      .create(
-        <LadderPage
-          routePickerIsVisible={true}
-          routes={null}
-          timepointsByRouteId={{}}
-          selectedRouteIds={[]}
-          vehiclesByRouteId={{}}
-          selectedVehicleId={undefined}
-        />
-      )
-      .toJSON()
+    const tree = renderer.create(<LadderPage />).toJSON()
     expect(tree).toMatchSnapshot()
   })
 
   test("renders with routes", () => {
+    const mockState = { ...initialState, selectedRouteIds: ["1"] }
     const tree = renderer
       .create(
-        <LadderPage
-          routePickerIsVisible={true}
-          routes={routes}
-          timepointsByRouteId={{}}
-          selectedRouteIds={["1"]}
-          vehiclesByRouteId={{}}
-          selectedVehicleId={undefined}
-        />
+        <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+          <LadderPage />
+        </StateDispatchProvider>
       )
       .toJSON()
     expect(tree).toMatchSnapshot()
   })
 
   test("renders with selectedRoutes in different order than routes data", () => {
+    const mockState = { ...initialState, selectedRouteIds: ["28", "1"] }
     const tree = renderer
       .create(
-        <LadderPage
-          routePickerIsVisible={true}
-          routes={routes}
-          timepointsByRouteId={{}}
-          selectedRouteIds={["28", "1"]}
-          vehiclesByRouteId={{}}
-          selectedVehicleId={undefined}
-        />
+        <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+          <LadderPage />
+        </StateDispatchProvider>
       )
       .toJSON()
     expect(tree).toMatchSnapshot()
   })
 
   test("renders with timepoints", () => {
+    const mockState = {
+      ...initialState,
+      timepointsByRouteId,
+    }
     const tree = renderer
       .create(
-        <LadderPage
-          routePickerIsVisible={true}
-          routes={routes}
-          timepointsByRouteId={timepointsByRouteId}
-          selectedRouteIds={[]}
-          vehiclesByRouteId={{}}
-          selectedVehicleId={undefined}
-        />
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
-  })
-
-  test("renders with vehicles", () => {
-    const tree = renderer
-      .create(
-        <LadderPage
-          routePickerIsVisible={true}
-          routes={routes}
-          timepointsByRouteId={timepointsByRouteId}
-          selectedRouteIds={[]}
-          vehiclesByRouteId={{
-            "28": {
-              onRouteVehicles: [vehicle],
-              incomingVehicles: [],
-            },
-          }}
-          selectedVehicleId={undefined}
-        />
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
-  })
-
-  test("renders with a selected vehicle", () => {
-    const tree = renderer
-      .create(
-        <LadderPage
-          routePickerIsVisible={true}
-          routes={routes}
-          timepointsByRouteId={timepointsByRouteId}
-          selectedRouteIds={[]}
-          vehiclesByRouteId={{
-            "28": {
-              onRouteVehicles: [vehicle],
-              incomingVehicles: [],
-            },
-          }}
-          selectedVehicleId={vehicle.id}
-        />
+        <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+          <LadderPage />
+        </StateDispatchProvider>
       )
       .toJSON()
     expect(tree).toMatchSnapshot()
@@ -139,48 +88,4 @@ const timepointsByRouteId: TimepointsByRouteId = {
   "28": ["MATPN", "WELLH", "MORTN"],
   "71": undefined,
   "73": null,
-}
-const vehicle: Vehicle = {
-  id: "v1",
-  label: "v1",
-  runId: "run1",
-  timestamp: 0,
-  latitude: 0,
-  longitude: 0,
-  directionId: 1,
-  routeId: "28",
-  tripId: "trip",
-  headsign: null,
-  viaVariant: null,
-  operatorId: "op1",
-  operatorName: "SMITH",
-  bearing: 33,
-  speed: 50.0,
-  blockId: "block-1",
-  headwaySecs: 859.1,
-  headwaySpacing: HeadwaySpacing.Ok,
-  previousVehicleId: "v2",
-  scheduleAdherenceSecs: 0,
-  scheduleAdherenceString: "0.0 sec (ontime)",
-  scheduleAdherenceStatus: "on-time",
-  scheduledHeadwaySecs: 120,
-  isOffCourse: false,
-  blockIsActive: false,
-  dataDiscrepancies: [],
-  stopStatus: {
-    status: "in_transit_to",
-    stopId: "stop",
-    stopName: "stop",
-  },
-  timepointStatus: {
-    fractionUntilTimepoint: 0.5,
-    timepointId: "WELLH",
-  },
-  scheduledLocation: {
-    directionId: 1,
-    timepointStatus: {
-      timepointId: "MORTN",
-      fractionUntilTimepoint: 0.8,
-    },
-  },
 }

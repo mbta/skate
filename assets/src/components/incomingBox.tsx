@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import DispatchContext from "../contexts/dispatchContext"
+import StateDispatchContext from "../contexts/stateDispatchContext"
 import { directionOnLadder, VehicleDirection } from "../models/ladderVehicle"
 import { status } from "../models/vehicleStatus"
 import { Vehicle, VehicleId } from "../realtime.d"
@@ -16,7 +16,7 @@ const IncomingBoxVehicle = ({
   ladderDirection: LadderDirection
   selectedVehicleId: VehicleId | undefined
 }) => {
-  const dispatch = useContext(DispatchContext)
+  const [, dispatch] = useContext(StateDispatchContext)
   const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
   const orientation =
     directionOnLadder(vehicle.directionId, ladderDirection) ===

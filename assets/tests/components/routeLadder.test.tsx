@@ -3,10 +3,10 @@ import React from "react"
 import renderer, { act } from "react-test-renderer"
 import RouteLadder from "../../src/components/routeLadder"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import DispatchProvider from "../../src/providers/dispatchProvider"
+import StateDispatchProvider from "../../src/providers/stateDispatchProvider"
 import { Vehicle } from "../../src/realtime.d"
 import { Route } from "../../src/schedule.d"
-import { deselectRoute, selectVehicle } from "../../src/state"
+import { deselectRoute, initialState, selectVehicle } from "../../src/state"
 
 // tslint:disable: object-literal-sort-keys
 
@@ -50,7 +50,7 @@ describe("routeLadder", () => {
         <RouteLadder
           route={route}
           timepoints={timepoints}
-          vehiclesForRoute={null}
+          vehiclesForRoute={undefined}
           selectedVehicleId={undefined}
         />
       )
@@ -103,6 +103,7 @@ describe("routeLadder", () => {
           timepointId: "MATPN",
         },
         scheduledLocation: null,
+        isOnRoute: true,
       },
       {
         id: "y0479",
@@ -147,6 +148,7 @@ describe("routeLadder", () => {
             fractionUntilTimepoint: 0.0,
           },
         },
+        isOnRoute: true,
       },
     ]
 
@@ -211,6 +213,7 @@ describe("routeLadder", () => {
           timepointId: "MATPN",
         },
         scheduledLocation: null,
+        isOnRoute: true,
       },
       {
         id: "y0479",
@@ -255,6 +258,7 @@ describe("routeLadder", () => {
             fractionUntilTimepoint: 0.0,
           },
         },
+        isOnRoute: true,
       },
     ]
 
@@ -287,7 +291,7 @@ describe("routeLadder", () => {
         <RouteLadder
           route={route}
           timepoints={timepoints}
-          vehiclesForRoute={null}
+          vehiclesForRoute={undefined}
           selectedVehicleId={undefined}
         />
       )
@@ -305,14 +309,14 @@ describe("routeLadder", () => {
     const timepoints = ["MATPN", "WELLH", "MORTN"]
 
     const wrapper = mount(
-      <DispatchProvider dispatch={mockDispatch}>
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <RouteLadder
           route={route}
           timepoints={timepoints}
-          vehiclesForRoute={null}
+          vehiclesForRoute={undefined}
           selectedVehicleId={undefined}
         />
-      </DispatchProvider>
+      </StateDispatchProvider>
     )
     wrapper.find(".m-route-ladder__header .m-close-button").simulate("click")
 
@@ -330,7 +334,7 @@ describe("routeLadder", () => {
       <RouteLadder
         route={route}
         timepoints={timepoints}
-        vehiclesForRoute={null}
+        vehiclesForRoute={undefined}
         selectedVehicleId={undefined}
       />
     )
@@ -388,10 +392,11 @@ describe("routeLadder", () => {
         timepointId: "MATPN",
       },
       scheduledLocation: null,
+      isOnRoute: true,
     }
 
     const wrapper = mount(
-      <DispatchProvider dispatch={mockDispatch}>
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <RouteLadder
           route={route}
           timepoints={timepoints}
@@ -401,7 +406,7 @@ describe("routeLadder", () => {
           }}
           selectedVehicleId={undefined}
         />
-      </DispatchProvider>
+      </StateDispatchProvider>
     )
     wrapper.find(".m-incoming-box__vehicle").simulate("click")
 

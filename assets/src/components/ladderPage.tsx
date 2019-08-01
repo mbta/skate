@@ -1,18 +1,14 @@
-import React, { ReactElement } from "react"
+import React, { ReactElement, useContext } from "react"
+import StateDispatchContext from "../contexts/stateDispatchContext"
+import VehiclesByRouteIdContext from "../contexts/vehiclesByRouteIdContext"
+import useRoutes from "../hooks/useRoutes"
+import useTimepoints from "../hooks/useTimepoints"
+import { allVehicles } from "../models/vehiclesByRouteId"
 import { Vehicle, VehicleId, VehiclesForRoute } from "../realtime.d"
 import { ByRouteId, Route, RouteId, TimepointsByRouteId } from "../schedule.d"
 import RouteLadders from "./routeLadders"
 import RoutePicker from "./routePicker"
 import VehiclePropertiesPanel from "./vehiclePropertiesPanel"
-
-interface Props {
-  routePickerIsVisible: boolean
-  routes: Route[] | null
-  timepointsByRouteId: TimepointsByRouteId
-  selectedRouteIds: RouteId[]
-  vehiclesByRouteId: ByRouteId<VehiclesForRoute>
-  selectedVehicleId: VehicleId | undefined
-}
 
 export const findRouteById = (
   routes: Route[] | null,
@@ -23,15 +19,11 @@ const findSelectedVehicle = (
   vehiclesByRouteId: ByRouteId<VehiclesForRoute>,
   selectedVehicleId: VehicleId | undefined
 ): Vehicle | undefined => {
-  const allVehicles: Vehicle[] = Object.values(vehiclesByRouteId).reduce(
-    (acc, vehiclesForRoute) =>
-      acc.concat(
-        vehiclesForRoute.onRouteVehicles,
-        vehiclesForRoute.incomingVehicles
-      ),
+  const vehicles: Vehicle[] = Object.values(vehiclesByRouteId).reduce(
+    (acc, vehiclesForRoute) => acc.concat(allVehicles(vehiclesForRoute)),
     [] as Vehicle[]
   )
-  return allVehicles.find(vehicle => vehicle.id === selectedVehicleId)
+  return vehicles.find(vehicle => vehicle.id === selectedVehicleId)
 }
 
 const vehicleRoute = (
@@ -40,14 +32,18 @@ const vehicleRoute = (
 ): Route | undefined =>
   (allRoutes || []).find(route => route.id === (vehicle && vehicle.routeId))
 
-const LadderPage = ({
-  routePickerIsVisible,
-  routes,
-  selectedRouteIds,
-  selectedVehicleId,
-  timepointsByRouteId,
-  vehiclesByRouteId,
-}: Props): ReactElement<HTMLDivElement> => {
+const LadderPage = (): ReactElement<HTMLDivElement> => {
+  const [state] = useContext(StateDispatchContext)
+  const { routePickerIsVisible, selectedRouteIds, selectedVehicleId } = state
+
+  const routes: Route[] | null = useRoutes()
+  const timepointsByRouteId: TimepointsByRouteId = useTimepoints(
+    selectedRouteIds
+  )
+
+  const vehiclesByRouteId: ByRouteId<VehiclesForRoute> = useContext(
+    VehiclesByRouteIdContext
+  )
   const selectedRoutes: Route[] = selectedRouteIds
     .map(routeId => findRouteById(routes, routeId))
     .filter(route => route) as Route[]
@@ -68,7 +64,6 @@ const LadderPage = ({
       <RouteLadders
         routes={selectedRoutes}
         timepointsByRouteId={timepointsByRouteId}
-        vehiclesByRouteId={vehiclesByRouteId}
         selectedVehicleId={selectedVehicleId}
       />
 

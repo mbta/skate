@@ -1,5 +1,6 @@
 import React, { useContext, useLayoutEffect, useRef, useState } from "react"
-import DispatchContext from "../contexts/dispatchContext"
+import StateDispatchContext from "../contexts/stateDispatchContext"
+import { partition } from "../helpers/array"
 import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
 import featureIsEnabled from "../laboratoryFeatures"
 import {
@@ -154,7 +155,7 @@ const VehicleSvg = ({
   ladderVehicle: LadderVehicle
   selectedVehicleId: VehicleId | undefined
 }) => {
-  const dispatch = useContext(DispatchContext)
+  const [, dispatch] = useContext(StateDispatchContext)
   const selectedClass = vehicleId === selectedVehicleId ? "selected" : ""
 
   return (
@@ -294,15 +295,6 @@ const ScheduledLine = ({
       x2={roadLineX}
       y2={scheduledY}
     />
-  )
-}
-
-function partition<T>(items: T[], testFn: (value: T) => boolean): T[][] {
-  return items.reduce(
-    ([pass, fail], item) => {
-      return testFn(item) ? [[...pass, item], fail] : [pass, [...fail, item]]
-    },
-    [[] as T[], [] as T[]]
   )
 }
 

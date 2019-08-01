@@ -169,6 +169,7 @@ describe("useVehicles", () => {
           fractionUntilTimepoint: 0.5,
         },
       },
+      isOnRoute: true,
     },
   ]
 
@@ -253,10 +254,15 @@ describe("useVehicles", () => {
       useVehicles((mockSocket as any) as Socket, ["1"])
     )
 
+    const incomingVehicles = vehicles.map(vehicle => ({
+      ...vehicle,
+      isOnRoute: false,
+    }))
+
     expect(result.current).toEqual({
       "1": {
         onRouteVehicles: [],
-        incomingVehicles: vehicles,
+        incomingVehicles,
       },
     })
   })
