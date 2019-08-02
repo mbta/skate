@@ -1,10 +1,10 @@
 import { renderHook } from "@testing-library/react-hooks"
 import * as Api from "../../src/api"
-import useSchedules, {
+import useTrips, {
   SECONDS_AHEAD_TO_FETCH,
   SECONDS_AHEAD_TO_REFETCH,
   SECONDS_BEHIND_TO_FETCH,
-} from "../../src/hooks/useSchedules"
+} from "../../src/hooks/useTrips"
 import { instantPromise, mockUseReducerOnce } from "../testHelpers/mockHelpers"
 
 // tslint:disable: react-hooks-nesting no-empty
@@ -14,14 +14,14 @@ jest.mock("../../src/api", () => ({
   fetchTrips: jest.fn(() => new Promise(() => {})),
 }))
 
-describe("useSchedules", () => {
+describe("useTrips", () => {
   test("fetches schedules for selected route", () => {
     const now = 1000000
     jest.spyOn(global.Date, "now").mockImplementation(() => now * 1000)
     const mockFetchTrips: jest.Mock = Api.fetchTrips as jest.Mock
 
     renderHook(() => {
-      useSchedules(["1"])
+      useTrips(["1"])
     })
 
     expect(mockFetchTrips).toHaveBeenCalledWith(
@@ -42,7 +42,7 @@ describe("useSchedules", () => {
     })
 
     renderHook(() => {
-      useSchedules(["1"])
+      useTrips(["1"])
     })
 
     expect(mockFetchTrips).not.toHaveBeenCalled()
@@ -59,7 +59,7 @@ describe("useSchedules", () => {
     })
 
     renderHook(() => {
-      useSchedules(["1"])
+      useTrips(["1"])
     })
 
     expect(mockFetchTrips).not.toHaveBeenCalled()
@@ -76,7 +76,7 @@ describe("useSchedules", () => {
     })
 
     renderHook(() => {
-      useSchedules(["1"])
+      useTrips(["1"])
     })
 
     expect(mockFetchTrips).toHaveBeenCalledTimes(1)
@@ -98,7 +98,7 @@ describe("useSchedules", () => {
     })
 
     renderHook(() => {
-      useSchedules(["1", "2"])
+      useTrips(["1", "2"])
     })
 
     expect(mockFetchTrips).toHaveBeenCalledTimes(1)
@@ -111,7 +111,7 @@ describe("useSchedules", () => {
 
   test("returns empty data while loading", () => {
     const { result } = renderHook(() => {
-      return useSchedules(["1"])
+      return useTrips(["1"])
     })
 
     expect(result.current).toEqual({})
@@ -131,7 +131,7 @@ describe("useSchedules", () => {
     mockFetchTrips.mockImplementationOnce(() => instantPromise([trip]))
 
     const { result } = renderHook(() => {
-      return useSchedules(["1"])
+      return useTrips(["1"])
     })
 
     expect(mockFetchTrips).toHaveBeenCalledTimes(1)

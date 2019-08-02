@@ -1,5 +1,6 @@
 import React, { useContext, useLayoutEffect, useRef, useState } from "react"
 import StateDispatchContext from "../contexts/stateDispatchContext"
+import TripsByIdContext from "../contexts/tripsByIdContext"
 import { partition } from "../helpers/array"
 import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
 import featureIsEnabled from "../laboratoryFeatures"
@@ -9,7 +10,7 @@ import {
   VehicleDirection,
 } from "../models/ladderVehicle"
 import { Vehicle, VehicleId, VehicleTimepointStatus } from "../realtime.d"
-import { TimepointId } from "../schedule.d"
+import { TimepointId, TripsById } from "../schedule.d"
 import { selectVehicle } from "../state"
 import HeadwayLines from "./headwayLines"
 import { Orientation, Size, VehicleIconSvgNode } from "./vehicleIcon"
@@ -58,6 +59,7 @@ const Ladder = ({
       }
     }
   }, [wrapperDivRef.current, height])
+  const tripsById: TripsById = useContext(TripsByIdContext)
 
   const orderedTimepoints: TimepointId[] =
     // Use slice to make a copy of the array before destructively reversing
@@ -76,6 +78,7 @@ const Ladder = ({
 
   const { ladderVehicles, widthOfLanes } = ladderVehiclesFromVehicles(
     vehiclesWithAnActiveBlock,
+    tripsById,
     ladderDirection,
     timepointStatusY
   )

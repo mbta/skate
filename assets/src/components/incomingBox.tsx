@@ -1,10 +1,13 @@
 import React, { useContext } from "react"
 import StateDispatchContext from "../contexts/stateDispatchContext"
+import TripsByIdContext from "../contexts/tripsByIdContext"
 import runIdToLabel from "../helpers/runIdToLabel"
 import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
+import { getViaVariant } from "../helpers/viaVariant"
 import { directionOnLadder, VehicleDirection } from "../models/ladderVehicle"
 import { status } from "../models/vehicleStatus"
 import { Vehicle, VehicleId } from "../realtime.d"
+import { Trip, TripsById } from "../schedule"
 import { selectVehicle } from "../state"
 import { LadderDirection } from "./ladder"
 import VehicleIcon, { Orientation, Size } from "./vehicleIcon"
@@ -19,6 +22,8 @@ const IncomingBoxVehicle = ({
   selectedVehicleId: VehicleId | undefined
 }) => {
   const [, dispatch] = useContext(StateDispatchContext)
+  const tripsById: TripsById = useContext(TripsByIdContext)
+  const trip: Trip | undefined = tripsById[vehicle.tripId]
   const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
   const orientation =
     directionOnLadder(vehicle.directionId, ladderDirection) ===
@@ -38,7 +43,7 @@ const IncomingBoxVehicle = ({
         label=""
         size={Size.Small}
         orientation={orientation}
-        variant={vehicle.viaVariant}
+        variant={trip && getViaVariant(trip.routePatternId)}
       />
       <div className="m-incoming-box__vehicle-label">
         {runIdToLabel(vehicle)}
