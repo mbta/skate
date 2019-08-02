@@ -3,7 +3,7 @@ import { ScheduleAdherenceStatus, Vehicle } from "../realtime.d"
 export type VehicleAdherenceStatus = ScheduleAdherenceStatus | "off-course"
 
 export enum HeadwaySpacing {
-  VeryBunched,
+  VeryBunched = 1,
   Bunched,
   Ok,
   Gapped,
