@@ -1,4 +1,4 @@
-import { fetchRoutes, fetchTimepointsForRoute } from "../src/api"
+import { fetchRoutes, fetchTimepointsForRoute, fetchTrips } from "../src/api"
 
 // tslint:disable no-empty
 
@@ -127,6 +127,75 @@ describe("fetchTimepointsForRoute", () => {
       .then(() => {
         spyConsoleError.mockRestore()
         done("fetchTimepointsForRoute did not throw an error")
+      })
+      .catch(error => {
+        expect(error).not.toBeUndefined()
+        expect(spyConsoleError).toHaveBeenCalled()
+        spyConsoleError.mockRestore()
+        done()
+      })
+  })
+})
+
+describe("fetchTrips", () => {
+  test("fetches trips", done => {
+    window.fetch = () =>
+      Promise.resolve({
+        json: () => ({
+          data: [
+            {
+              block_id: "B34-126",
+              direction_id: 1,
+              headsign: "Dudley",
+              id: "40728552",
+              route_id: "42",
+              route_pattern_id: "42-1-1",
+              stop_times: [
+                { stop_id: "s1", timepoint_id: "fhill", timestamp: 2 },
+                { stop_id: "s2", timepoint_id: null, timestamp: 3 },
+              ],
+            },
+          ],
+        }),
+
+        ok: true,
+        status: 200,
+      })
+
+    fetchTrips("42", 1, 4).then(trips => {
+      expect(trips).toEqual([
+        {
+          blockId: "B34-126",
+          directionId: 1,
+          headsign: "Dudley",
+          id: "40728552",
+          routeId: "42",
+          routePatternId: "42-1-1",
+          stopTimes: [
+            { stopId: "s1", timepointId: "fhill", timestamp: 2 },
+            { stopId: "s2", timepointId: null, timestamp: 3 },
+          ],
+        },
+      ])
+      done()
+    })
+  })
+
+  test("throws an error if the response status is not 200", done => {
+    window.fetch = () =>
+      Promise.resolve({
+        json: () => ({ data: null }),
+        ok: false,
+        status: 500,
+      })
+
+    const spyConsoleError = jest.spyOn(console, "error")
+    spyConsoleError.mockImplementationOnce(() => {})
+
+    fetchTrips("28", 1, 4)
+      .then(() => {
+        spyConsoleError.mockRestore()
+        done("fetchTrips did not throw an error")
       })
       .catch(error => {
         expect(error).not.toBeUndefined()

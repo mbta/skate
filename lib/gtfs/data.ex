@@ -82,10 +82,10 @@ defmodule Gtfs.Data do
     Block.get(blocks, block_id, service_id)
   end
 
-  @spec active_blocks(t(), Util.Time.timestamp(), Util.Time.timestamp()) :: %{
-          Route.id() => [Block.id()]
+  @spec active_trips_by_date(t(), Util.Time.timestamp(), Util.Time.timestamp()) :: %{
+          Date.t() => [Trip.t()]
         }
-  def active_blocks(%__MODULE__{trips: trips, calendar: calendar}, start_time, end_time) do
+  def active_trips_by_date(%__MODULE__{trips: trips, calendar: calendar}, start_time, end_time) do
     # We might cover multiple service dates
     # If we start before 6am, check trips on the previous day
     # It's okay if this date range is a little too broad, since we check trips by time on those dates later
@@ -101,25 +101,63 @@ defmodule Gtfs.Data do
     date_range = Date.range(first_possible_service_date, last_possible_service_date)
     dates = Enum.to_list(date_range)
     active_services = Map.take(calendar, dates)
-    trips = Map.values(trips)
 
-    active_trips =
-      Enum.flat_map(active_services, fn {date, service_ids} ->
+    trips_by_service =
+      trips
+      |> Map.values()
+      |> Enum.group_by(fn trip -> trip.service_id end)
+
+    trips_by_date =
+      Map.new(active_services, fn {date, service_ids} ->
         start_time_of_day = Util.Time.time_of_day_for_timestamp(start_time, date)
         end_time_of_day = Util.Time.time_of_day_for_timestamp(end_time, date)
 
-        Enum.filter(trips, fn trip ->
-          # The trip is happening today and
-          # The trip has started and
-          # The trip hasn't ended
-          trip.service_id in service_ids and
+        trips_on_date =
+          Enum.flat_map(service_ids, fn service_id ->
+            Map.get(trips_by_service, service_id, [])
+          end)
+
+        active_trips =
+          Enum.filter(trips_on_date, fn trip ->
             end_time_of_day > Trip.start_time(trip) and
-            start_time_of_day < Trip.end_time(trip)
-        end)
+              start_time_of_day < Trip.end_time(trip)
+          end)
+
+        {date, active_trips}
       end)
 
+    trips_by_date
+    |> Enum.filter(fn {_date, trips} -> trips != [] end)
+    |> Map.new()
+  end
+
+  @spec active_trips_on_route(t(), Route.id(), Util.Time.timestamp(), Util.Time.timestamp()) :: [
+          Trip.OnDate.t()
+        ]
+  def active_trips_on_route(data, route_id, start_time, end_time) do
+    active_trips_by_date =
+      active_trips_by_date(
+        data,
+        start_time,
+        end_time
+      )
+
+    Enum.flat_map(active_trips_by_date, fn {date, trips} ->
+      trips
+      |> Enum.filter(fn trip -> trip.route_id == route_id end)
+      |> Enum.map(fn trip -> Trip.on_date(trip, date) end)
+    end)
+  end
+
+  @spec active_blocks(t(), Util.Time.timestamp(), Util.Time.timestamp()) :: %{
+          Route.id() => [Block.id()]
+        }
+  def active_blocks(data, start_time, end_time) do
+    active_trips_by_date = active_trips_by_date(data, start_time, end_time)
+
     active_blocks_per_route =
-      active_trips
+      active_trips_by_date
+      |> Enum.flat_map(fn {_date, trips} -> trips end)
       |> Enum.group_by(
         fn trip -> trip.route_id end,
         fn trip -> trip.block_id end

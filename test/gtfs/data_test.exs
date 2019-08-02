@@ -329,6 +329,331 @@ defmodule Gtfs.DataTest do
     end
   end
 
+  describe "active_trips_by_date" do
+    test "returns active trips" do
+      trips = [
+        # A trip that's totally inside the time range
+        %Trip{
+          id: "inside",
+          route_id: "route",
+          service_id: "today",
+          headsign: "headsign",
+          direction_id: 0,
+          block_id: "inside",
+          stop_times: [
+            %StopTime{
+              stop_id: "stop",
+              time: 3
+            },
+            %StopTime{
+              stop_id: "stop",
+              time: 4
+            }
+          ]
+        },
+        # A trip that start's before and ends after the timerange
+        %Trip{
+          id: "outside",
+          route_id: "route",
+          service_id: "today",
+          headsign: "headsign",
+          direction_id: 0,
+          block_id: "outside",
+          stop_times: [
+            %StopTime{
+              stop_id: "stop",
+              time: 1
+            },
+            %StopTime{
+              stop_id: "stop",
+              time: 6
+            }
+          ]
+        },
+        # A trip that starts before the time range and ends during the time range
+        %Trip{
+          id: "start",
+          route_id: "route",
+          service_id: "today",
+          headsign: "headsign",
+          direction_id: 0,
+          block_id: "start",
+          stop_times: [
+            %StopTime{
+              stop_id: "stop",
+              time: 1
+            },
+            %StopTime{
+              stop_id: "stop",
+              time: 3
+            }
+          ]
+        },
+        # A trip that starts during the time range and ends after
+        %Trip{
+          id: "end",
+          route_id: "route",
+          service_id: "today",
+          headsign: "headsign",
+          direction_id: 0,
+          block_id: "end",
+          stop_times: [
+            %StopTime{
+              stop_id: "stop",
+              time: 4
+            },
+            %StopTime{
+              stop_id: "stop",
+              time: 6
+            }
+          ]
+        }
+      ]
+
+      data = %Data{
+        routes: [],
+        route_patterns: [],
+        stops: [],
+        trips: Map.new(trips, fn trip -> {trip.id, trip} end),
+        blocks: %{},
+        calendar: %{
+          ~D[2019-01-01] => ["today"]
+        }
+      }
+
+      # 2019-01-01 00:00:00 EST
+      time0 = 1_546_318_800
+
+      actual_trips_by_date = Data.active_trips_by_date(data, time0 + 2, time0 + 5)
+      # sort the trips before comparing so order doesn't matter
+      actual_trips_by_date =
+        Helpers.map_values(
+          actual_trips_by_date,
+          fn trips_on_date -> Enum.sort_by(trips_on_date, fn trip -> trip.id end) end
+        )
+
+      expected_trips_by_date = %{~D[2019-01-01] => Enum.sort_by(trips, fn trip -> trip.id end)}
+      assert(actual_trips_by_date == expected_trips_by_date)
+    end
+
+    test "doesn't return a trip active at a different time today" do
+      trip = %Trip{
+        id: "trip",
+        route_id: "route",
+        service_id: "today",
+        headsign: "headsign",
+        direction_id: 0,
+        block_id: "block",
+        stop_times: [
+          %StopTime{
+            stop_id: "stop",
+            time: 3
+          }
+        ]
+      }
+
+      data = %Data{
+        routes: [],
+        route_patterns: [],
+        stops: [],
+        trips: %{
+          "trip" => trip
+        },
+        blocks: %{},
+        calendar: %{
+          ~D[2019-01-01] => ["today"]
+        }
+      }
+
+      # 2019-01-01 00:00:00 EST
+      time0 = 1_546_318_800
+      assert Data.active_trips_by_date(data, time0 + 1, time0 + 2) == %{}
+    end
+
+    test "doesn't return a trip active at this time on a different day" do
+      trip = %Trip{
+        id: "trip",
+        route_id: "route",
+        service_id: "tomorrow",
+        headsign: "headsign",
+        direction_id: 0,
+        block_id: "block",
+        stop_times: [
+          %StopTime{
+            stop_id: "stop",
+            time: 2
+          }
+        ]
+      }
+
+      data = %Data{
+        routes: [],
+        route_patterns: [],
+        stops: [],
+        trips: %{
+          "trip" => trip
+        },
+        blocks: %{},
+        calendar: %{
+          ~D[2019-01-02] => ["tomorrow"]
+        }
+      }
+
+      # 2019-01-01 00:00:00 EST
+      time0 = 1_546_318_800
+      assert Data.active_trips_by_date(data, time0 + 1, time0 + 3) == %{}
+    end
+
+    test "returns late-night trips that are still active from yesterday" do
+      trip = %Trip{
+        id: "trip",
+        route_id: "route",
+        service_id: "yesterday",
+        headsign: "headsign",
+        direction_id: 0,
+        block_id: "block",
+        stop_times: [
+          %StopTime{
+            stop_id: "stop",
+            # 24:00:02
+            time: 86402
+          }
+        ]
+      }
+
+      data = %Data{
+        routes: [],
+        route_patterns: [],
+        stops: [],
+        trips: %{
+          "trip" => trip
+        },
+        blocks: %{},
+        calendar: %{
+          ~D[2018-12-31] => ["yesterday"]
+        }
+      }
+
+      # 2019-01-01 00:00:00 EST
+      time0 = 1_546_318_800
+      assert Data.active_trips_by_date(data, time0 + 1, time0 + 3) == %{~D[2018-12-31] => [trip]}
+    end
+  end
+
+  describe "active_trips_on_route" do
+    test "returns an active trip from this route" do
+      trip = %Trip{
+        id: "trip",
+        route_id: "route",
+        service_id: "today",
+        headsign: "headsign",
+        direction_id: 0,
+        block_id: "block",
+        stop_times: [
+          %StopTime{
+            stop_id: "stop",
+            time: 2
+          }
+        ]
+      }
+
+      data = %Data{
+        routes: [],
+        route_patterns: [],
+        stops: [],
+        trips: %{
+          "trip" => trip
+        },
+        blocks: %{},
+        calendar: %{
+          ~D[2019-01-01] => ["today"]
+        }
+      }
+
+      # 2019-01-01 00:00:00 EST
+      time0 = 1_546_318_800
+
+      assert [%Trip.OnDate{id: "trip"}] =
+               Data.active_trips_on_route(data, "route", time0 + 1, time0 + 3)
+    end
+
+    test "filters out trips from other routes" do
+      trip = %Trip{
+        id: "trip",
+        route_id: "other route",
+        service_id: "today",
+        headsign: "headsign",
+        direction_id: 0,
+        block_id: "block",
+        stop_times: [
+          %StopTime{
+            stop_id: "stop",
+            # 24:00:02
+            time: 86402
+          }
+        ]
+      }
+
+      data = %Data{
+        routes: [],
+        route_patterns: [],
+        stops: [],
+        trips: %{
+          "trip" => trip
+        },
+        blocks: %{},
+        calendar: %{
+          ~D[2019-01-01] => ["today"]
+        }
+      }
+
+      # 2019-01-01 00:00:00 EST
+      time0 = 1_546_318_800
+      assert [] = Data.active_trips_on_route(data, "route", time0 + 1, time0 + 3)
+    end
+
+    test "changes the trip to timestamps on their date" do
+      trip = %Trip{
+        id: "trip",
+        route_id: "route",
+        service_id: "today",
+        headsign: "headsign",
+        direction_id: 0,
+        block_id: "block",
+        stop_times: [
+          %StopTime{
+            stop_id: "stop",
+            time: 2
+          }
+        ]
+      }
+
+      data = %Data{
+        routes: [],
+        route_patterns: [],
+        stops: [],
+        trips: %{
+          "trip" => trip
+        },
+        blocks: %{},
+        calendar: %{
+          ~D[2019-01-01] => ["today"]
+        }
+      }
+
+      # 2019-01-01 00:00:00 EST
+      time0 = 1_546_318_800
+      expected_timestamp = time0 + 2
+
+      assert [
+               %Trip.OnDate{
+                 id: "trip",
+                 stop_times: [%StopTime.OnDate{timestamp: ^expected_timestamp}]
+               }
+             ] = Data.active_trips_on_route(data, "route", time0 + 1, time0 + 3)
+    end
+  end
+
   describe "active_blocks" do
     test "returns active blocks" do
       data = %Data{
@@ -336,14 +661,13 @@ defmodule Gtfs.DataTest do
         route_patterns: [],
         stops: [],
         trips: %{
-          # A trip that's totally inside the time range
-          "inside" => %Trip{
-            id: "inside",
+          "trip" => %Trip{
+            id: "trip",
             route_id: "route",
             service_id: "today",
             headsign: "headsign",
             direction_id: 0,
-            block_id: "inside",
+            block_id: "block",
             stop_times: [
               %StopTime{
                 stop_id: "stop",
@@ -352,63 +676,6 @@ defmodule Gtfs.DataTest do
               %StopTime{
                 stop_id: "stop",
                 time: 4
-              }
-            ]
-          },
-          # A trip that start's before and ends after the timerange
-          "outside" => %Trip{
-            id: "outside",
-            route_id: "route",
-            service_id: "today",
-            headsign: "headsign",
-            direction_id: 0,
-            block_id: "outside",
-            stop_times: [
-              %StopTime{
-                stop_id: "stop",
-                time: 1
-              },
-              %StopTime{
-                stop_id: "stop",
-                time: 6
-              }
-            ]
-          },
-          # A trip that starts before the time range and ends during the time range
-          "start" => %Trip{
-            id: "start",
-            route_id: "route",
-            service_id: "today",
-            headsign: "headsign",
-            direction_id: 0,
-            block_id: "start",
-            stop_times: [
-              %StopTime{
-                stop_id: "stop",
-                time: 1
-              },
-              %StopTime{
-                stop_id: "stop",
-                time: 3
-              }
-            ]
-          },
-          # A trip that starts during the time range and ends after
-          "end" => %Trip{
-            id: "end",
-            route_id: "route",
-            service_id: "today",
-            headsign: "headsign",
-            direction_id: 0,
-            block_id: "end",
-            stop_times: [
-              %StopTime{
-                stop_id: "stop",
-                time: 4
-              },
-              %StopTime{
-                stop_id: "stop",
-                time: 6
               }
             ]
           }
@@ -422,8 +689,7 @@ defmodule Gtfs.DataTest do
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
 
-      assert %{"route" => blocks} = Data.active_blocks(data, time0 + 2, time0 + 5)
-      assert Enum.sort(blocks) == ["end", "inside", "outside", "start"]
+      assert Data.active_blocks(data, time0 + 2, time0 + 5) == %{"route" => ["block"]}
     end
 
     test "doesn't include blocks that are between trips" do
@@ -470,103 +736,6 @@ defmodule Gtfs.DataTest do
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
       assert Data.active_blocks(data, time0 + 2, time0 + 3) == %{}
-    end
-
-    test "doesn't return a block active at a different time today" do
-      data = %Data{
-        routes: [],
-        route_patterns: [],
-        stops: [],
-        trips: %{
-          "trip" => %Trip{
-            id: "trip",
-            route_id: "route",
-            service_id: "today",
-            headsign: "headsign",
-            direction_id: 0,
-            block_id: "block",
-            stop_times: [
-              %StopTime{
-                stop_id: "stop",
-                time: 3
-              }
-            ]
-          }
-        },
-        blocks: %{},
-        calendar: %{
-          ~D[2019-01-01] => ["today"]
-        }
-      }
-
-      # 2019-01-01 00:00:00 EST
-      time0 = 1_546_318_800
-      assert Data.active_blocks(data, time0 + 1, time0 + 2) == %{}
-    end
-
-    test "doesn't return a block active at this time on a different day" do
-      data = %Data{
-        routes: [],
-        route_patterns: [],
-        stops: [],
-        trips: %{
-          "trip" => %Trip{
-            id: "trip",
-            route_id: "route",
-            service_id: "tomorrow",
-            headsign: "headsign",
-            direction_id: 0,
-            block_id: "block",
-            stop_times: [
-              %StopTime{
-                stop_id: "stop",
-                time: 2
-              }
-            ]
-          }
-        },
-        blocks: %{},
-        calendar: %{
-          ~D[2019-01-02] => ["tomorrow"]
-        }
-      }
-
-      # 2019-01-01 00:00:00 EST
-      time0 = 1_546_318_800
-      assert Data.active_blocks(data, time0 + 1, time0 + 3) == %{}
-    end
-
-    test "returns late-night blocks that are still active from yesterday" do
-      data = %Data{
-        routes: [],
-        route_patterns: [],
-        stops: [],
-        trips: %{
-          "trip" => %Trip{
-            id: "trip",
-            route_id: "route",
-            service_id: "yesterday",
-            headsign: "headsign",
-            direction_id: 0,
-            block_id: "block",
-            stop_times: [
-              %StopTime{
-                stop_id: "stop",
-                # 24:00:02
-                time: 86402
-              }
-            ]
-          }
-        },
-        blocks: %{},
-        calendar: %{
-          ~D[2018-12-31] => ["yesterday"]
-        }
-      }
-
-      # 2019-01-01 00:00:00 EST
-      time0 = 1_546_318_800
-      assert Data.active_blocks(data, time0 + 1, time0 + 3) == %{"route" => ["block"]}
     end
 
     test "returns a block in multiple routes if it's active in both" do

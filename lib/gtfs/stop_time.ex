@@ -4,8 +4,6 @@ defmodule Gtfs.StopTime do
 
   A timepoint is a key stop along a route. In GTFS, timepoints are known as "checkpoints".
   """
-  @derive Jason.Encoder
-
   alias Gtfs.Csv
   alias Gtfs.Stop
   alias Gtfs.Trip
@@ -21,6 +19,8 @@ defmodule Gtfs.StopTime do
     :time
   ]
 
+  @derive Jason.Encoder
+
   defstruct [
     :stop_id,
     :time,
@@ -28,6 +28,38 @@ defmodule Gtfs.StopTime do
   ]
 
   @type timepoint_id :: String.t()
+
+  defmodule OnDate do
+    alias Gtfs.StopTime
+
+    @type t :: %__MODULE__{
+            stop_id: Stop.id(),
+            timestamp: Util.Time.timestamp(),
+            timepoint_id: StopTime.timepoint_id() | nil
+          }
+
+    @enforce_keys [
+      :stop_id,
+      :timestamp
+    ]
+
+    @derive Jason.Encoder
+
+    defstruct [
+      :stop_id,
+      :timestamp,
+      :timepoint_id
+    ]
+  end
+
+  @spec on_date(t(), Date.t()) :: OnDate.t()
+  def on_date(stop_time, date) do
+    %OnDate{
+      stop_id: stop_time.stop_id,
+      timestamp: Util.Time.timestamp_for_time_of_day(stop_time.time, date),
+      timepoint_id: stop_time.timepoint_id
+    }
+  end
 
   @spec trip_stop_times_from_csv([Csv.row()]) :: %{Trip.id() => [t()]}
   def trip_stop_times_from_csv(stop_times_csv) do
