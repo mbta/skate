@@ -9,7 +9,9 @@ interface Props {
 }
 
 const headwayClass = (spacing: HeadwaySpacing | null): string =>
-  spacing ? `m-ladder__headway-line--${headwaySpacingToString(spacing)}` : ""
+  spacing === null
+    ? ""
+    : `m-ladder__headway-line--${headwaySpacingToString(spacing)}`
 
 const drawHeadwayLine = (
   ladderVehicles: LadderVehicle[],
