@@ -1,6 +1,6 @@
 defmodule Realtime.Vehicle do
   alias Concentrate.{DataDiscrepancy, TripUpdate, VehiclePosition}
-  alias Gtfs.{Block, Direction, Route, RoutePattern, Stop, StopTime, Trip}
+  alias Gtfs.{Block, Direction, Route, Stop, StopTime, Trip}
   alias Realtime.Headway
 
   @type current_status :: :in_transit_to | :stopped_at
@@ -36,8 +36,6 @@ defmodule Realtime.Vehicle do
           direction_id: Direction.id(),
           route_id: Route.id() | nil,
           trip_id: Trip.id() | nil,
-          headsign: String.t() | nil,
-          via_variant: RoutePattern.via_variant() | nil,
           bearing: integer() | nil,
           speed: integer() | nil,
           stop_sequence: integer() | nil,
@@ -96,8 +94,6 @@ defmodule Realtime.Vehicle do
     :direction_id,
     :route_id,
     :trip_id,
-    :headsign,
-    :via_variant,
     :bearing,
     :speed,
     :stop_sequence,
@@ -144,8 +140,6 @@ defmodule Realtime.Vehicle do
 
     trip = trip_fn.(trip_id)
     block = trip && block_fn.(block_id, trip.service_id)
-    headsign = trip && trip.headsign
-    via_variant = trip && trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id)
     stop_times_on_trip = (trip && trip.stop_times) || []
     stop_name = stop_name(vehicle_position, stop_id)
     timepoint_status = timepoint_status(stop_times_on_trip, stop_id)
@@ -189,8 +183,6 @@ defmodule Realtime.Vehicle do
       direction_id: direction_id,
       route_id: route_id,
       trip_id: trip_id,
-      headsign: headsign,
-      via_variant: via_variant,
       bearing: VehiclePosition.bearing(vehicle_position),
       speed: VehiclePosition.speed(vehicle_position),
       stop_sequence: VehiclePosition.stop_sequence(vehicle_position),

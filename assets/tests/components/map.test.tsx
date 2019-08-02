@@ -15,8 +15,6 @@ const vehicle: Vehicle = {
   directionId: 0,
   routeId: "39",
   tripId: "t1",
-  headsign: "Forest Hills",
-  viaVariant: "X",
   operatorId: "op1",
   operatorName: "SMITH",
   bearing: 33,

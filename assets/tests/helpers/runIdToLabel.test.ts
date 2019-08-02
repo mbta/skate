@@ -12,8 +12,6 @@ const vehicle: Vehicle = {
   directionId: 1,
   routeId: "1",
   tripId: "39914128",
-  headsign: null,
-  viaVariant: null,
   operatorId: "op2",
   operatorName: "JONES",
   bearing: 33,
