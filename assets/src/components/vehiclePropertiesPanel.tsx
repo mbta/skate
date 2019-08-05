@@ -122,7 +122,7 @@ const Header = ({
 )
 
 const Properties = ({
-  vehicle: { runId, label, operatorId, operatorName },
+  vehicle: { runId, id, operatorId, operatorName },
 }: {
   vehicle: Vehicle
 }) => (
@@ -141,7 +141,7 @@ const Properties = ({
           Vehicle
         </th>
         <td className="m-vehicle-properties-panel__vehicle-property-value">
-          {label}
+          {id}
         </td>
       </tr>
       <tr>

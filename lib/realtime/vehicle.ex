@@ -182,7 +182,7 @@ defmodule Realtime.Vehicle do
 
     %__MODULE__{
       id: VehiclePosition.id(vehicle_position),
-      label: VehiclePosition.label(vehicle_position),
+      label: vehicle_position |> VehiclePosition.run_id() |> label(),
       timestamp: VehiclePosition.last_updated(vehicle_position),
       latitude: VehiclePosition.latitude(vehicle_position),
       longitude: VehiclePosition.longitude(vehicle_position),
@@ -395,6 +395,14 @@ defmodule Realtime.Vehicle do
   defp stop_name_from_stop(stop_id) do
     stop = Gtfs.stop(stop_id)
     if stop, do: stop.name, else: stop_id
+  end
+
+  defp label(nil), do: nil
+
+  defp label(run_id) do
+    run_id
+    |> String.split("-")
+    |> Enum.at(1)
   end
 
   @spec count_to_timepoint([StopTime.t()]) :: non_neg_integer()

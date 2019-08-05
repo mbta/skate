@@ -222,7 +222,7 @@ Array [
           <td
             className="m-vehicle-properties-panel__vehicle-property-value"
           >
-            v1-label
+            v1
           </td>
         </tr>
         <tr>
@@ -501,7 +501,7 @@ Array [
           <td
             className="m-vehicle-properties-panel__vehicle-property-value"
           >
-            v1-label
+            v1
           </td>
         </tr>
         <tr>
@@ -780,7 +780,7 @@ Array [
           <td
             className="m-vehicle-properties-panel__vehicle-property-value"
           >
-            v1-label
+            v1
           </td>
         </tr>
         <tr>
@@ -1059,7 +1059,7 @@ Array [
           <td
             className="m-vehicle-properties-panel__vehicle-property-value"
           >
-            v1-label
+            v1
           </td>
         </tr>
         <tr>
@@ -1338,7 +1338,7 @@ Array [
           <td
             className="m-vehicle-properties-panel__vehicle-property-value"
           >
-            v1-label
+            v1
           </td>
         </tr>
         <tr>
