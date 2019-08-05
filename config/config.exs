@@ -14,7 +14,9 @@ config :skate,
   swiftly_authorization_key: {:system, "SWIFTLY_AUTHORIZATION_KEY"},
   swiftly_realtime_vehicles_url: {:system, "SWIFTLY_REALTIME_VEHICLES_URL"},
   secret: {:system, "SKATE_SECRET"},
-  signed_secret: {:system, "SKATE_SIGNED_SECRET"}
+  signed_secret: {:system, "SKATE_SIGNED_SECRET"},
+  record_fullstory: false,
+  refresh_token_store: RefreshTokenStore
 
 config :skate, Gtfs.CacheFile, cache_filename: nil
 
@@ -30,8 +32,6 @@ config :skate, SkateWeb.Endpoint,
 config :skate, SkateWeb.AuthManager,
   issuer: "skate",
   secret_key: nil
-
-config :skate, record_fullstory: false
 
 config :laboratory,
   features: [
