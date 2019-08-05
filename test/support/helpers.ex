@@ -1,16 +1,6 @@
 defmodule Test.Support.Helpers do
   @moduledoc "Test helpers"
 
-  defmacro reassign_env(app, var) do
-    quote do
-      old_value = Application.get_env(unquote(app), unquote(var))
-
-      on_exit(fn ->
-        Application.put_env(unquote(app), unquote(var), old_value)
-      end)
-    end
-  end
-
   defmacro reassign_env(app, var, value) do
     quote do
       old_value = Application.get_env(unquote(app), unquote(var))
