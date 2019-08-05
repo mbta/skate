@@ -1,5 +1,6 @@
 defmodule Realtime.VehicleTest do
   use ExUnit.Case
+  import Test.Support.Helpers
 
   alias Concentrate.{DataDiscrepancy, TripUpdate, VehiclePosition}
   alias Gtfs.{StopTime, Trip}
@@ -7,18 +8,6 @@ defmodule Realtime.VehicleTest do
 
   describe "from_vehicle_position_and_trip_update/2" do
     setup do
-      real_trip_fn = Application.get_env(:realtime, :trip_fn)
-      real_block_fn = Application.get_env(:realtime, :block_fn)
-      real_now_fn = Application.get_env(:realtime, :now_fn)
-      real_date_time_now_fn = Application.get_env(:realtime, :date_time_now_fn)
-
-      on_exit(fn ->
-        Application.put_env(:realtime, :trip_fn, real_trip_fn)
-        Application.put_env(:realtime, :block_fn, real_block_fn)
-        Application.put_env(:realtime, :now_fn, real_now_fn)
-        Application.get_env(:realtime, :date_time_now_fn, real_date_time_now_fn)
-      end)
-
       trip = %Trip{
         id: "39984755",
         route_id: "28",
@@ -34,7 +23,7 @@ defmodule Realtime.VehicleTest do
         ]
       }
 
-      Application.put_env(:realtime, :trip_fn, fn trip_id ->
+      reassign_env(:realtime, :trip_fn, fn trip_id ->
         if trip_id == trip.id do
           trip
         else
@@ -42,7 +31,7 @@ defmodule Realtime.VehicleTest do
         end
       end)
 
-      Application.put_env(:realtime, :block_fn, fn block_id, service_id ->
+      reassign_env(:realtime, :block_fn, fn block_id, service_id ->
         if block_id == trip.block_id and service_id == trip.service_id do
           [trip]
         else
@@ -50,12 +39,12 @@ defmodule Realtime.VehicleTest do
         end
       end)
 
-      Application.put_env(:realtime, :now_fn, fn ->
+      reassign_env(:realtime, :now_fn, fn ->
         # 2019-01-01 00:00:00 EST
         1_546_318_800
       end)
 
-      Application.put_env(:realtime, :date_time_now_fn, fn ->
+      reassign_env(:realtime, :date_time_now_fn, fn ->
         # Monday at noon
         Timex.to_datetime({{2019, 7, 8}, {12, 00, 00}}, :local)
       end)

@@ -1,17 +1,12 @@
 defmodule SkateWeb.RouteControllerTest do
   use SkateWeb.ConnCase
+  import Test.Support.Helpers
 
   alias SkateWeb.AuthManager
 
   describe "GET /api/routes" do
     setup do
-      real_routes_fn = Application.get_env(:skate_web, :routes_fn)
-
-      on_exit(fn ->
-        Application.put_env(:skate_web, :routes_fn, real_routes_fn)
-      end)
-
-      Application.put_env(:skate_web, :routes_fn, fn -> [] end)
+      reassign_env(:skate_web, :routes_fn, fn -> [] end)
     end
 
     test "when logged out, redirects you to cognito auth", %{conn: conn} do
@@ -36,17 +31,7 @@ defmodule SkateWeb.RouteControllerTest do
 
   describe "GET /api/routes/:route_id" do
     setup do
-      real_timepoint_ids_on_route_fn = Application.get_env(:skate_web, :timepoint_ids_on_route_fn)
-
-      on_exit(fn ->
-        Application.put_env(
-          :skate_web,
-          :timepoint_ids_on_route_fn,
-          real_timepoint_ids_on_route_fn
-        )
-      end)
-
-      Application.put_env(:skate_web, :timepoint_ids_on_route_fn, fn _route_id -> [] end)
+      reassign_env(:skate_web, :timepoint_ids_on_route_fn, fn _route_id -> [] end)
     end
 
     test "when logged out, redirects you to cognito auth", %{conn: conn} do
