@@ -1,9 +1,9 @@
 import { LadderDirection, TimepointStatusYFunc } from "../components/ladder"
+import runIdToLabel from "../helpers/runIdToLabel"
 import { HeadwaySpacing } from "../models/vehicleStatus"
 import { Vehicle, VehicleId } from "../realtime.d"
 import { DirectionId, ViaVariant } from "../schedule.d"
 import { status, VehicleAdherenceStatus } from "./vehicleStatus"
-import runIdToLabel from "../helpers/runIdToLabel"
 
 export interface LadderVehicle {
   vehicleId: VehicleId
