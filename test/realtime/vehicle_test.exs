@@ -102,7 +102,7 @@ defmodule Realtime.VehicleTest do
 
       expected_result = %Vehicle{
         id: "y1261",
-        label: "1038",
+        label: "1261",
         timestamp: 1_558_364_020,
         latitude: 42.31777347,
         longitude: -71.08206019,
@@ -197,7 +197,7 @@ defmodule Realtime.VehicleTest do
 
       expected_result = %Vehicle{
         id: "y1261",
-        label: "1038",
+        label: "1261",
         timestamp: 1_558_364_020,
         latitude: 42.31777347,
         longitude: -71.08206019,
