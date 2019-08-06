@@ -150,7 +150,7 @@ Array [
                 x="0"
                 y={18.25}
               >
-                v1-label
+                1
               </text>
               <path
                 className="m-vehicle-icon__triangle"
@@ -411,7 +411,7 @@ Array [
                 x="0"
                 y={18.25}
               >
-                v1-label
+                1
               </text>
               <path
                 className="m-vehicle-icon__triangle"
@@ -672,7 +672,7 @@ Array [
                 x="0"
                 y={18.25}
               >
-                v1-label
+                1
               </text>
               <path
                 className="m-vehicle-icon__triangle"
@@ -933,7 +933,7 @@ Array [
                 x="0"
                 y={18.25}
               >
-                v1-label
+                1
               </text>
               <path
                 className="m-vehicle-icon__triangle"
@@ -1194,7 +1194,7 @@ Array [
                 x="0"
                 y={18.25}
               >
-                v1-label
+                1
               </text>
               <path
                 className="m-vehicle-icon__triangle"
@@ -1468,7 +1468,7 @@ Array [
                 x="0"
                 y={18.25}
               >
-                v1-label
+                1
               </text>
               <path
                 className="m-vehicle-icon__triangle"
@@ -1738,7 +1738,7 @@ Array [
                 x="0"
                 y={18.25}
               >
-                v1-label
+                1
               </text>
               <path
                 className="m-vehicle-icon__triangle"
