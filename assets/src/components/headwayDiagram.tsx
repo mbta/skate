@@ -1,8 +1,8 @@
 import React, { useContext } from "react"
 import StateDispatchContext from "../contexts/stateDispatchContext"
+import { useTripContext } from "../contexts/tripsByIdContext"
 import VehiclesByRouteIdContext from "../contexts/vehiclesByRouteIdContext"
 import { getViaVariant } from "../helpers/viaVariant"
-import useTripContext from "../hooks/useTripContext"
 import {
   allVehiclesForRoute,
   nextAndPreviousVehicle,

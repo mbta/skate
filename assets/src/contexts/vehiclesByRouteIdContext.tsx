@@ -1,9 +1,12 @@
-import React, { ReactElement } from "react"
-import VehiclesByRouteIdContext from "../contexts/vehiclesByRouteIdContext"
+import React, { createContext, ReactElement } from "react"
 import { VehiclesForRoute } from "../realtime"
 import { ByRouteId } from "../schedule"
 
-const VehiclesByRouteIdProvider = ({
+export const VehiclesByRouteIdContext = createContext({} as ByRouteId<
+  VehiclesForRoute
+>)
+
+export const VehiclesByRouteIdProvider = ({
   vehiclesByRouteId,
   children,
 }: {
@@ -17,4 +20,4 @@ const VehiclesByRouteIdProvider = ({
   )
 }
 
-export default VehiclesByRouteIdProvider
+export default VehiclesByRouteIdContext

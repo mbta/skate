@@ -5,9 +5,9 @@ import VehiclePropertiesPanel, {
   formatRouteVariant,
   handleSwipe,
 } from "../../src/components/vehiclePropertiesPanel"
+import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
+import { TripsByIdProvider } from "../../src/contexts/tripsByIdContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import StateDispatchProvider from "../../src/providers/stateDispatchProvider"
-import TripsByIdProvider from "../../src/providers/tripsByIdProvider"
 import { Vehicle } from "../../src/realtime.d"
 import { Route, Trip } from "../../src/schedule"
 import { deselectVehicle, initialState } from "../../src/state"
