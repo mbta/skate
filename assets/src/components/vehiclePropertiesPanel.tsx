@@ -3,10 +3,12 @@ import StateDispatchContext from "../contexts/stateDispatchContext"
 import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
 import runIdToLabel from "../helpers/runIdToLabel"
 import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
+import { getViaVariant } from "../helpers/viaVariant"
+import useTripContext from "../hooks/useTripContext"
 import featureIsEnabled from "../laboratoryFeatures"
 import { status } from "../models/vehicleStatus"
 import { DataDiscrepancy, Vehicle } from "../realtime.d"
-import { Route } from "../schedule.d"
+import { Route, Trip } from "../schedule.d"
 import { deselectVehicle } from "../state"
 import CloseButton from "./closeButton"
 import HeadwayDiagram from "./headwayDiagram"
@@ -85,9 +87,11 @@ const HeadwayTarget = ({
 const Header = ({
   vehicle,
   selectedVehicleRoute,
+  trip,
   hideMe,
 }: {
   vehicle: Vehicle
+  trip?: Trip
   selectedVehicleRoute?: Route
   hideMe: () => void
 }) => (
@@ -102,7 +106,7 @@ const Header = ({
         size={Size.Large}
         orientation={Orientation.Up}
         label={runIdToLabel(vehicle)}
-        variant={vehicle.viaVariant}
+        variant={trip && getViaVariant(trip.routePatternId)}
       />
     </div>
     <div className="m-vehicle-properties-panel__variant">
@@ -110,7 +114,7 @@ const Header = ({
         {directionName(vehicle, selectedVehicleRoute)}
       </div>
       <div className="m-vehicle-properties-panel__variant-name">
-        {formatRouteVariant(vehicle)}
+        {trip ? formatRouteVariant(trip) : vehicle.routeId + "_"}
       </div>
       {shouldShowHeadwayDiagram(vehicle) ? (
         <HeadwayTarget vehicle={vehicle} />
@@ -240,6 +244,7 @@ const VehiclePropertiesPanel = ({
   selectedVehicleRoute,
 }: Props) => {
   const [, dispatch] = useContext(StateDispatchContext)
+  const trip: Trip | undefined = useTripContext(selectedVehicle.tripId)
 
   const hideMe = () => dispatch(deselectVehicle())
 
@@ -256,6 +261,7 @@ const VehiclePropertiesPanel = ({
         <Header
           vehicle={selectedVehicle}
           selectedVehicleRoute={selectedVehicleRoute}
+          trip={trip}
           hideMe={hideMe}
         />
 
@@ -284,11 +290,11 @@ const VehiclePropertiesPanel = ({
   )
 }
 
-export const formatRouteVariant = (vehicle: Vehicle): string => {
-  const { routeId, viaVariant, headsign } = vehicle
+export const formatRouteVariant = (trip: Trip): string => {
+  const { routeId, routePatternId, headsign } = trip
+  const viaVariant: string | null = getViaVariant(routePatternId)
   const viaVariantFormatted = viaVariant && viaVariant !== "_" ? viaVariant : ""
-  const headsignFormatted = headsign ? ` ${headsign}` : ""
-  return `${routeId}_${viaVariantFormatted}${headsignFormatted}`
+  return `${routeId}_${viaVariantFormatted} ${headsign}`
 }
 
 const directionName = (

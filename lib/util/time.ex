@@ -41,6 +41,28 @@ defmodule Util.Time do
   end
 
   @doc """
+  Gets a timestamp by taking the time_of_day on the given date.
+
+    iex> Util.Time.timestamp_for_time_of_day(
+    ...>   3600, # 01:00:00
+    ...>   ~D[2019-01-02]
+    ...> )
+    1546408800 # 2019-01-02 01:00:00 EST
+
+    iex> Util.Time.timestamp_for_time_of_day(
+    ...>   90000, # 25:00:00
+    ...>   ~D[2019-01-01]
+    ...> )
+    1546408800 # 2019-01-02 01:00:00 EST
+  """
+  @spec timestamp_for_time_of_day(time_of_day(), Date.t()) :: timestamp()
+  def timestamp_for_time_of_day(time_of_day, date) do
+    noon = noon_on_date(date)
+    twelve_hours_before_noon = noon - 12 * 60 * 60
+    twelve_hours_before_noon + time_of_day
+  end
+
+  @doc """
   Converts a timestamp to a time_of_day in Eastern Time
 
   Since time_of_day is not restricted to a 24 hour range,

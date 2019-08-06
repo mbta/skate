@@ -4,8 +4,9 @@ import renderer from "react-test-renderer"
 import Ladder, { LadderDirection } from "../../src/components/ladder"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import StateDispatchProvider from "../../src/providers/stateDispatchProvider"
+import TripsByIdProvider from "../../src/providers/tripsByIdProvider"
 import { Vehicle } from "../../src/realtime.d"
-import { TimepointId } from "../../src/schedule.d"
+import { TimepointId, Trip, TripId } from "../../src/schedule.d"
 import { initialState, selectVehicle } from "../../src/state"
 
 jest.mock("../../src/laboratoryFeatures", () => ({
@@ -27,8 +28,6 @@ describe("ladder", () => {
         directionId: 0,
         routeId: "route",
         tripId: "trip",
-        headsign: null,
-        viaVariant: null,
         operatorId: "op1",
         operatorName: "SMITH",
         bearing: 33,
@@ -66,8 +65,6 @@ describe("ladder", () => {
         directionId: 1,
         routeId: "route",
         tripId: "trip",
-        headsign: null,
-        viaVariant: null,
         operatorId: "op2",
         operatorName: "JONES",
         bearing: 33,
@@ -111,8 +108,6 @@ describe("ladder", () => {
         directionId: 1,
         routeId: "route",
         tripId: "trip",
-        headsign: null,
-        viaVariant: null,
         operatorId: "op3",
         operatorName: "XI",
         bearing: 33,
@@ -167,8 +162,6 @@ describe("ladder", () => {
         directionId: 0,
         routeId: "route",
         tripId: "trip",
-        headsign: null,
-        viaVariant: null,
         operatorId: "op1",
         operatorName: "SMITH",
         bearing: 33,
@@ -206,8 +199,6 @@ describe("ladder", () => {
         directionId: 1,
         routeId: "route",
         tripId: "trip",
-        headsign: null,
-        viaVariant: null,
         operatorId: "op2",
         operatorName: "JONES",
         bearing: 33,
@@ -271,8 +262,6 @@ describe("ladder", () => {
         directionId: 0,
         routeId: "route",
         tripId: "trip",
-        headsign: null,
-        viaVariant: null,
         operatorId: "op2",
         operatorName: "JONES",
         bearing: 33,
@@ -335,8 +324,6 @@ describe("ladder", () => {
         directionId: 0,
         routeId: "route",
         tripId: "trip",
-        headsign: null,
-        viaVariant: null,
         operatorId: "op1",
         operatorName: "SMITH",
         bearing: 33,
@@ -374,8 +361,6 @@ describe("ladder", () => {
         directionId: 1,
         routeId: "route",
         tripId: "trip",
-        headsign: null,
-        viaVariant: null,
         operatorId: "op2",
         operatorName: "JONES",
         bearing: 33,
@@ -440,8 +425,6 @@ describe("ladder", () => {
       directionId: 0,
       routeId: "route",
       tripId: "trip",
-      headsign: null,
-      viaVariant: null,
       operatorId: "op1",
       operatorName: "SMITH",
       bearing: 33,
@@ -500,8 +483,6 @@ describe("ladder", () => {
         directionId: 0,
         routeId: "route",
         tripId: "trip",
-        headsign: null,
-        viaVariant: null,
         operatorId: "op1",
         operatorName: "SMITH",
         bearing: 33,
@@ -559,8 +540,6 @@ describe("ladder", () => {
         directionId: 1,
         routeId: "route",
         tripId: "trip",
-        headsign: null,
-        viaVariant: null,
         operatorId: "op1",
         operatorName: "SMITH",
         bearing: 33,
@@ -622,8 +601,6 @@ describe("ladder", () => {
       directionId: 0,
       routeId: "71",
       tripId: "40725309",
-      headsign: "Harvard",
-      viaVariant: "D",
       operatorId: "op1",
       operatorName: "SMITH",
       bearing: 0,
@@ -680,6 +657,74 @@ describe("ladder", () => {
           ladderDirection={ladderDirection}
           selectedVehicleId={undefined}
         />
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("includes scheduled trip data in vehicle", () => {
+    const vehicle: Vehicle = {
+      id: "y1439",
+      label: "1439",
+      runId: "run-1",
+      timestamp: 1562777122,
+      latitude: 42.38954,
+      longitude: -71.07405,
+      directionId: 0,
+      routeId: "71",
+      tripId: "40725309",
+      operatorId: "op1",
+      operatorName: "SMITH",
+      bearing: 0,
+      speed: 0,
+      blockId: "T71-17",
+      headwaySecs: 859.1,
+      headwaySpacing: HeadwaySpacing.Ok,
+      previousVehicleId: "v2",
+      scheduleAdherenceSecs: 0,
+      scheduleAdherenceString: "0.0 sec (ontime)",
+      scheduleAdherenceStatus: "on-time",
+      scheduledHeadwaySecs: 120,
+      isOffCourse: false,
+      blockIsActive: true,
+      dataDiscrepancies: [],
+      stopStatus: {
+        status: "in_transit_to",
+        stopId: "stop",
+        stopName: "stop",
+      },
+      timepointStatus: {
+        fractionUntilTimepoint: 0.5,
+        timepointId: "t1",
+      },
+      scheduledLocation: null,
+      isOnRoute: true,
+    }
+
+    const timepoints = ["t0", "t1", "t2"]
+    const ladderDirection = LadderDirection.ZeroToOne
+    const tripId: TripId = "40725309"
+    const trip: Trip = {
+      id: tripId,
+      routeId: "71",
+      headsign: "headsign",
+      directionId: 0,
+      blockId: "T71-17",
+      routePatternId: "71-D-1",
+      stopTimes: [],
+    }
+
+    const tree = renderer
+      .create(
+        <TripsByIdProvider tripsById={{ [tripId]: trip }}>
+          <Ladder
+            timepoints={timepoints}
+            vehicles={[vehicle]}
+            ladderDirection={ladderDirection}
+            selectedVehicleId={undefined}
+          />
+        </TripsByIdProvider>
       )
       .toJSON()
 
