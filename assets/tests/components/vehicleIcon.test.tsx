@@ -10,18 +10,66 @@ test("renders in all directions and sizes", () => {
   const tree = renderer
     .create(
       <>
-        <VehicleIcon size={Size.Small} orientation={Orientation.Up} />
-        <VehicleIcon size={Size.Small} orientation={Orientation.Right} />
-        <VehicleIcon size={Size.Small} orientation={Orientation.Down} />
-        <VehicleIcon size={Size.Small} orientation={Orientation.Left} />
-        <VehicleIcon size={Size.Medium} orientation={Orientation.Up} />
-        <VehicleIcon size={Size.Medium} orientation={Orientation.Right} />
-        <VehicleIcon size={Size.Medium} orientation={Orientation.Down} />
-        <VehicleIcon size={Size.Medium} orientation={Orientation.Left} />
-        <VehicleIcon size={Size.Large} orientation={Orientation.Up} />
-        <VehicleIcon size={Size.Large} orientation={Orientation.Right} />
-        <VehicleIcon size={Size.Large} orientation={Orientation.Down} />
-        <VehicleIcon size={Size.Large} orientation={Orientation.Left} />
+        <VehicleIcon
+          label="label"
+          size={Size.Small}
+          orientation={Orientation.Up}
+        />
+        <VehicleIcon
+          label="label"
+          size={Size.Small}
+          orientation={Orientation.Right}
+        />
+        <VehicleIcon
+          label="label"
+          size={Size.Small}
+          orientation={Orientation.Down}
+        />
+        <VehicleIcon
+          label="label"
+          size={Size.Small}
+          orientation={Orientation.Left}
+        />
+        <VehicleIcon
+          label="label"
+          size={Size.Medium}
+          orientation={Orientation.Up}
+        />
+        <VehicleIcon
+          label="label"
+          size={Size.Medium}
+          orientation={Orientation.Right}
+        />
+        <VehicleIcon
+          label="label"
+          size={Size.Medium}
+          orientation={Orientation.Down}
+        />
+        <VehicleIcon
+          label="label"
+          size={Size.Medium}
+          orientation={Orientation.Left}
+        />
+        <VehicleIcon
+          label="label"
+          size={Size.Large}
+          orientation={Orientation.Up}
+        />
+        <VehicleIcon
+          label="label"
+          size={Size.Large}
+          orientation={Orientation.Right}
+        />
+        <VehicleIcon
+          label="label"
+          size={Size.Large}
+          orientation={Orientation.Down}
+        />
+        <VehicleIcon
+          label="label"
+          size={Size.Large}
+          orientation={Orientation.Left}
+        />
       </>
     )
     .toJSON()

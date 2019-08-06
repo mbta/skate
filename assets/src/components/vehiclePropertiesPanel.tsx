@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react"
 import StateDispatchContext from "../contexts/stateDispatchContext"
 import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
+import runIdToLabel from "../helpers/runIdToLabel"
 import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
 import featureIsEnabled from "../laboratoryFeatures"
 import { status } from "../models/vehicleStatus"
@@ -100,7 +101,7 @@ const Header = ({
       <VehicleIcon
         size={Size.Large}
         orientation={Orientation.Up}
-        label={vehicle.label}
+        label={runIdToLabel(vehicle)}
         variant={vehicle.viaVariant}
       />
     </div>
@@ -133,7 +134,7 @@ const Properties = ({
           Run
         </th>
         <td className="m-vehicle-properties-panel__vehicle-property-value">
-          {runId}
+          {runId || "N/A"}
         </td>
       </tr>
       <tr>

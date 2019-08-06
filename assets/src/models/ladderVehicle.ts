@@ -1,4 +1,5 @@
 import { LadderDirection, TimepointStatusYFunc } from "../components/ladder"
+import runIdToLabel from "../helpers/runIdToLabel"
 import { HeadwaySpacing } from "../models/vehicleStatus"
 import { Vehicle, VehicleId } from "../realtime.d"
 import { DirectionId, ViaVariant } from "../schedule.d"
@@ -137,13 +138,7 @@ const vehicleOnLadder = (
   ladderDirection: LadderDirection,
   timepointStatusYFunc: TimepointStatusYFunc
 ): VehicleOnLadder => {
-  const {
-    id: vehicleId,
-    headwaySpacing,
-    isOffCourse,
-    label,
-    viaVariant,
-  } = vehicle
+  const { id: vehicleId, headwaySpacing, isOffCourse, viaVariant } = vehicle
 
   const { scheduledY, scheduledVehicleDirection } = scheduledToBe(
     vehicle,
@@ -165,7 +160,7 @@ const vehicleOnLadder = (
     // tslint:disable-next-line:object-literal-sort-keys
     vehicleId,
     headwaySpacing,
-    label,
+    label: runIdToLabel(vehicle),
     viaVariant,
     status: status(vehicle),
     isOffCourse,
