@@ -7,6 +7,7 @@ import React, {
   useRef,
   useState,
 } from "react"
+import runIdToLabel from "../helpers/runIdToLabel"
 import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
 import { status } from "../models/vehicleStatus"
 import { Vehicle } from "../realtime.d"
@@ -35,7 +36,7 @@ export const updateMap = (
     vehicleLabel: Marker
   }
 ): void => {
-  const { bearing, headwaySpacing, label: text, latitude, longitude } = vehicle
+  const { bearing, headwaySpacing, latitude, longitude } = vehicle
   const zoom = map.getZoom()
 
   const icon = Leaflet.divIcon({
@@ -62,7 +63,7 @@ export const updateMap = (
   const label = Leaflet.divIcon({
     className: "m-vehicle-map__label",
     html: `<svg>
-            <text class="m-vehicle-icon__label">${text}</text>
+            <text class="m-vehicle-icon__label">${runIdToLabel(vehicle)}</text>
           </svg>`,
     iconAnchor: [12, -24],
   })

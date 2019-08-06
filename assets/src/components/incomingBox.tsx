@@ -1,5 +1,6 @@
 import React, { useContext } from "react"
 import StateDispatchContext from "../contexts/stateDispatchContext"
+import runIdToLabel from "../helpers/runIdToLabel"
 import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
 import { directionOnLadder, VehicleDirection } from "../models/ladderVehicle"
 import { status } from "../models/vehicleStatus"
@@ -34,11 +35,14 @@ const IncomingBoxVehicle = ({
       onClick={() => dispatch(selectVehicle(vehicle.id))}
     >
       <VehicleIcon
+        label=""
         size={Size.Small}
         orientation={orientation}
         variant={vehicle.viaVariant}
       />
-      <div className="m-incoming-box__vehicle-label">{vehicle.label}</div>
+      <div className="m-incoming-box__vehicle-label">
+        {runIdToLabel(vehicle)}
+      </div>
     </button>
   )
 }

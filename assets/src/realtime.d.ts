@@ -26,7 +26,7 @@ export type SourceId = string
 export interface Vehicle {
   id: VehicleId
   label: string
-  runId: string
+  runId: string | null
   timestamp: number
   latitude: number
   longitude: number
