@@ -25,6 +25,23 @@ defmodule SkateWeb.VehiclesChannel do
 
         push_vehicles(socket, vehicles_for_route)
 
+      {:error, :token_expired} ->
+        refresh_token_store = Application.get_env(:skate, :refresh_token_store)
+
+        refresh_token =
+          socket
+          |> Guardian.Phoenix.Socket.current_resource()
+          |> refresh_token_store.get_refresh_token()
+
+        # Exchange a token of type "refresh" for a new token of type "access"
+        case AuthManager.exchange(refresh_token, "refresh", "access") do
+          {:ok, _old_stuff, {_new_token, _new_claims}} ->
+            push_vehicles(socket, vehicles_for_route)
+
+          _ ->
+            {:stop, :normal, send_auth_expired_message(socket)}
+        end
+
       _ ->
         {:stop, :normal, send_auth_expired_message(socket)}
     end
