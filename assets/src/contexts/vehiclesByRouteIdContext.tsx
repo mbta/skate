@@ -19,5 +19,3 @@ export const VehiclesByRouteIdProvider = ({
     </VehiclesByRouteIdContext.Provider>
   )
 }
-
-export default VehiclesByRouteIdContext

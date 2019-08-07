@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react"
-import StateDispatchContext from "../contexts/stateDispatchContext"
+import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { useTripContext } from "../contexts/tripsByIdContext"
 import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
 import runIdToLabel from "../helpers/runIdToLabel"

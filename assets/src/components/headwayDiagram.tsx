@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
-import StateDispatchContext from "../contexts/stateDispatchContext"
+import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { useTripContext } from "../contexts/tripsByIdContext"
-import VehiclesByRouteIdContext from "../contexts/vehiclesByRouteIdContext"
+import { VehiclesByRouteIdContext } from "../contexts/vehiclesByRouteIdContext"
 import { getViaVariant } from "../helpers/viaVariant"
 import {
   allVehiclesForRoute,

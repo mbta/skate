@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import StateDispatchContext from "../contexts/stateDispatchContext"
+import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { collapseIcon, expandIcon } from "../helpers/icon"
 import {
   filterRoutes,

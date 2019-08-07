@@ -1,6 +1,6 @@
 import React, { ReactElement, useContext } from "react"
-import StateDispatchContext from "../contexts/stateDispatchContext"
-import VehiclesByRouteIdContext from "../contexts/vehiclesByRouteIdContext"
+import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import { VehiclesByRouteIdContext } from "../contexts/vehiclesByRouteIdContext"
 import useRoutes from "../hooks/useRoutes"
 import useTimepoints from "../hooks/useTimepoints"
 import { allVehicles } from "../models/vehiclesByRouteId"

@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import StateDispatchContext from "../contexts/stateDispatchContext"
+import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { useTripContext } from "../contexts/tripsByIdContext"
 import runIdToLabel from "../helpers/runIdToLabel"
 import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"

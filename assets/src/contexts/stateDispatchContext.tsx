@@ -25,5 +25,3 @@ export const StateDispatchProvider = ({
     </StateDispatchContext.Provider>
   )
 }
-
-export default StateDispatchContext

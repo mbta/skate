@@ -27,5 +27,3 @@ export const useTripContext = (
     return undefined
   }
 }
-
-export default TripsByIdContext
