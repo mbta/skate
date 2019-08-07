@@ -1,5 +1,5 @@
-import React, { createContext, ReactElement, useContext } from "react"
-import { Trip, TripId, TripsById } from "../schedule"
+import React, { createContext, ReactElement } from "react"
+import { TripsById } from "../schedule"
 
 export const TripsByIdContext = createContext({} as TripsById)
 
@@ -15,15 +15,4 @@ export const TripsByIdProvider = ({
       {children}
     </TripsByIdContext.Provider>
   )
-}
-
-export const useTripContext = (
-  tripId: TripId | null | undefined
-): Trip | undefined => {
-  const tripsById = useContext(TripsByIdContext)
-  if (tripId) {
-    return tripsById[tripId]
-  } else {
-    return undefined
-  }
 }

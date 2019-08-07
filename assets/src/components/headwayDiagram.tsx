@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { useTripContext } from "../contexts/tripsByIdContext"
+import { TripsByIdContext } from "../contexts/tripsByIdContext"
 import { VehiclesByRouteIdContext } from "../contexts/vehiclesByRouteIdContext"
 import { getViaVariant } from "../helpers/viaVariant"
 import {
@@ -9,7 +9,7 @@ import {
 } from "../models/vehiclesByRouteId"
 import { HeadwaySpacing, headwaySpacingToString } from "../models/vehicleStatus"
 import { Vehicle, VehiclesForRoute } from "../realtime"
-import { ByRouteId, Trip } from "../schedule"
+import { ByRouteId, Trip, TripsById } from "../schedule"
 import { selectVehicle } from "../state"
 import VehicleIcon, { Orientation, Size } from "./vehicleIcon"
 
@@ -41,7 +41,8 @@ const humanSpacing = (spacing: HeadwaySpacing | null): string => {
 const OtherVehicle = ({ vehicle }: { vehicle: Vehicle }) => {
   const [, dispatch] = useContext(StateDispatchContext)
   const { id, label, tripId } = vehicle
-  const trip: Trip | undefined = useTripContext(tripId)
+  const tripsById: TripsById = useContext(TripsByIdContext)
+  const trip: Trip | undefined = tripsById[tripId]
 
   return (
     <div
@@ -62,7 +63,8 @@ const HeadwayDiagram = ({ vehicle }: { vehicle: Vehicle }) => {
   const vehiclesByRouteId: ByRouteId<VehiclesForRoute> = useContext(
     VehiclesByRouteIdContext
   )
-  const trip: Trip | undefined = useTripContext(vehicle.tripId)
+  const tripsById: TripsById = useContext(TripsByIdContext)
+  const trip: Trip | undefined = tripsById[vehicle.tripId]
   const { nextVehicle, previousVehicle } = nextAndPreviousVehicle(
     allVehiclesForRoute(vehiclesByRouteId, vehicle.routeId),
     vehicle
