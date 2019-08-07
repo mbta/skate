@@ -12,11 +12,9 @@ S3_DIR=s3://mbta-dotcom/$APP
 unzip $BUILD_ARTIFACT "lib/$APP-$VERSION/priv/static/*" -d $TEMP_DIR
 
 # sync the digested files with a cache control header
-aws s3 sync $STATIC_DIR/css $S3_DIR/css --size-only --exclude "*" --include "*-*" --cache-control=$CACHE_CONTROL
-aws s3 sync $STATIC_DIR/js $S3_DIR/js --size-only --exclude "*" --include "*-*" --cache-control=$CACHE_CONTROL
+aws s3 sync $STATIC_DIR $S3_DIR --size-only --exclude "*" --include "*-*" --cache-control=$CACHE_CONTROL
 
 # sync everything else normally
-aws s3 sync $STATIC_DIR/css $S3_DIR/css --size-only
-aws s3 sync $STATIC_DIR/js $S3_DIR/js --size-only
+aws s3 sync $STATIC_DIR $S3_DIR --size-only
 
 rm -rf $TEMP_DIR
