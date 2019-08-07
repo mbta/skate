@@ -32,6 +32,8 @@ const vehicle: Vehicle = {
   scheduleAdherenceStatus: "early",
   scheduledHeadwaySecs: 480,
   isOffCourse: false,
+  isLayingOver: false,
+  layoverDepartureTime: null,
   blockIsActive: true,
   dataDiscrepancies: [],
   stopStatus: {
@@ -101,6 +103,8 @@ describe("HeadwayDiagram", () => {
       scheduleAdherenceStatus: "late",
       scheduledHeadwaySecs: 540,
       isOffCourse: false,
+      isLayingOver: false,
+      layoverDepartureTime: null,
       blockIsActive: true,
       dataDiscrepancies: [],
       stopStatus: {
@@ -152,6 +156,8 @@ describe("HeadwayDiagram", () => {
       scheduleAdherenceStatus: "on-time",
       scheduledHeadwaySecs: 600,
       isOffCourse: false,
+      isLayingOver: false,
+      layoverDepartureTime: null,
       blockIsActive: true,
       dataDiscrepancies: [],
       stopStatus: {

@@ -93,6 +93,8 @@ describe("routeLadder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        isLayingOver: false,
+        layoverDepartureTime: null,
         blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
@@ -132,6 +134,8 @@ describe("routeLadder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        isLayingOver: false,
+        layoverDepartureTime: null,
         blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
@@ -204,6 +208,8 @@ describe("routeLadder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        isLayingOver: false,
+        layoverDepartureTime: null,
         blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
@@ -243,6 +249,8 @@ describe("routeLadder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        isLayingOver: false,
+        layoverDepartureTime: null,
         blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
@@ -387,6 +395,8 @@ describe("routeLadder", () => {
       scheduleAdherenceStatus: "on-time",
       scheduledHeadwaySecs: 120,
       isOffCourse: false,
+      isLayingOver: false,
+      layoverDepartureTime: null,
       blockIsActive: true,
       dataDiscrepancies: [],
       stopStatus: {

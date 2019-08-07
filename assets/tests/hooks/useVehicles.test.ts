@@ -64,6 +64,8 @@ describe("useVehicles", () => {
       headway_spacing: null,
       id: "v1",
       is_off_course: false,
+      is_laying_over: false,
+      layover_departure_time: null,
       label: "v1-label",
       latitude: 0,
       longitude: 0,
@@ -124,6 +126,8 @@ describe("useVehicles", () => {
       scheduleAdherenceStatus: "on-time",
       scheduledHeadwaySecs: 120,
       isOffCourse: false,
+      isLayingOver: false,
+      layoverDepartureTime: null,
       blockIsActive: true,
       dataDiscrepancies: [
         {
