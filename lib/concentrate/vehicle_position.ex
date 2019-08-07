@@ -28,6 +28,8 @@ defmodule Concentrate.VehiclePosition do
     :direction_id,
     :headsign,
     :headway_secs,
+    :is_laying_over,
+    :layover_departure_time,
     :previous_vehicle_id,
     :previous_vehicle_schedule_adherence_secs,
     :previous_vehicle_schedule_adherence_string,
