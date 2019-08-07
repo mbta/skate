@@ -42,7 +42,7 @@ exports[`HeadwayDiagram renders a gapped vehicle 1`] = `
             x="0"
             y={12.86}
           >
-            1804
+            1097
           </text>
           <path
             className="m-vehicle-icon__triangle"
@@ -100,7 +100,7 @@ exports[`HeadwayDiagram renders a gapped vehicle 1`] = `
             x="0"
             y={18.25}
           >
-            1889
+            1166
           </text>
           <path
             className="m-vehicle-icon__triangle"
@@ -159,7 +159,7 @@ exports[`HeadwayDiagram renders a gapped vehicle 1`] = `
             x="0"
             y={12.86}
           >
-            1804
+            1097
           </text>
           <path
             className="m-vehicle-icon__triangle"
@@ -215,7 +215,7 @@ exports[`HeadwayDiagram renders an ok headway vehicle 1`] = `
             x="0"
             y={12.86}
           >
-            1804
+            1097
           </text>
           <path
             className="m-vehicle-icon__triangle"
@@ -273,7 +273,7 @@ exports[`HeadwayDiagram renders an ok headway vehicle 1`] = `
             x="0"
             y={18.25}
           >
-            1780
+            1164
           </text>
           <path
             className="m-vehicle-icon__triangle"
@@ -332,7 +332,7 @@ exports[`HeadwayDiagram renders an ok headway vehicle 1`] = `
             x="0"
             y={12.86}
           >
-            1804
+            1097
           </text>
           <path
             className="m-vehicle-icon__triangle"
@@ -388,7 +388,7 @@ exports[`HeadwayDiagram renders with next and previous vehicles 1`] = `
             x="0"
             y={12.86}
           >
-            1804
+            1097
           </text>
           <path
             className="m-vehicle-icon__triangle"
@@ -446,7 +446,7 @@ exports[`HeadwayDiagram renders with next and previous vehicles 1`] = `
             x="0"
             y={18.25}
           >
-            1804
+            1097
           </text>
           <path
             className="m-vehicle-icon__triangle"
@@ -505,7 +505,7 @@ exports[`HeadwayDiagram renders with next and previous vehicles 1`] = `
             x="0"
             y={12.86}
           >
-            1804
+            1097
           </text>
           <path
             className="m-vehicle-icon__triangle"
@@ -577,7 +577,7 @@ exports[`HeadwayDiagram renders with no next or previous vehicles 1`] = `
             x="0"
             y={18.25}
           >
-            1804
+            1097
           </text>
           <path
             className="m-vehicle-icon__triangle"
