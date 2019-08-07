@@ -1,6 +1,6 @@
 import React, { useContext, useLayoutEffect, useRef, useState } from "react"
-import StateDispatchContext from "../contexts/stateDispatchContext"
-import TripsByIdContext from "../contexts/tripsByIdContext"
+import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import { TripsByIdContext } from "../contexts/tripsByIdContext"
 import { partition } from "../helpers/array"
 import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
 import featureIsEnabled from "../laboratoryFeatures"

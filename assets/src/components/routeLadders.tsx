@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import VehiclesByRouteIdContext from "../contexts/vehiclesByRouteIdContext"
+import { VehiclesByRouteIdContext } from "../contexts/vehiclesByRouteIdContext"
 import { VehicleId, VehiclesForRoute } from "../realtime.d"
 import { ByRouteId, Route, TimepointsByRouteId } from "../schedule.d"
 import RouteLadder from "./routeLadder"

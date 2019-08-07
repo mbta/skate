@@ -1,8 +1,9 @@
-import React, { ReactElement } from "react"
-import TripsByIdContext from "../contexts/tripsByIdContext"
+import React, { createContext, ReactElement } from "react"
 import { TripsById } from "../schedule"
 
-const TripsByIdProvider = ({
+export const TripsByIdContext = createContext({} as TripsById)
+
+export const TripsByIdProvider = ({
   tripsById,
   children,
 }: {
@@ -15,5 +16,3 @@ const TripsByIdProvider = ({
     </TripsByIdContext.Provider>
   )
 }
-
-export default TripsByIdProvider

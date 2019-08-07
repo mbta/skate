@@ -1,6 +1,6 @@
 import React, { ReactElement, useContext } from "react"
 import { BrowserRouter, Route as BrowserRoute } from "react-router-dom"
-import StateDispatchContext from "../contexts/stateDispatchContext"
+import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import AboutPage from "./aboutPage"
 import LadderPage from "./ladderPage"
 import TabBar from "./tabBar"

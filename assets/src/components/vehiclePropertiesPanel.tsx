@@ -1,14 +1,14 @@
 import React, { useContext, useEffect } from "react"
-import StateDispatchContext from "../contexts/stateDispatchContext"
+import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import { TripsByIdContext } from "../contexts/tripsByIdContext"
 import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
 import runIdToLabel from "../helpers/runIdToLabel"
 import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
 import { getViaVariant } from "../helpers/viaVariant"
-import useTripContext from "../hooks/useTripContext"
 import featureIsEnabled from "../laboratoryFeatures"
 import { status } from "../models/vehicleStatus"
 import { DataDiscrepancy, Vehicle } from "../realtime.d"
-import { Route, Trip } from "../schedule.d"
+import { Route, Trip, TripsById } from "../schedule.d"
 import { deselectVehicle } from "../state"
 import CloseButton from "./closeButton"
 import HeadwayDiagram from "./headwayDiagram"
@@ -244,7 +244,8 @@ const VehiclePropertiesPanel = ({
   selectedVehicleRoute,
 }: Props) => {
   const [, dispatch] = useContext(StateDispatchContext)
-  const trip: Trip | undefined = useTripContext(selectedVehicle.tripId)
+  const tripsById: TripsById = useContext(TripsByIdContext)
+  const trip: Trip | undefined = tripsById[selectedVehicle.tripId]
 
   const hideMe = () => dispatch(deselectVehicle())
 

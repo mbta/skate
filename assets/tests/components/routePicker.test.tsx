@@ -2,7 +2,7 @@ import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import RoutePicker from "../../src/components/routePicker"
-import StateDispatchProvider from "../../src/providers/stateDispatchProvider"
+import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { Route, RouteId } from "../../src/schedule.d"
 import {
   deselectRoute,

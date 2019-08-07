@@ -1,7 +1,7 @@
 import React from "react"
 import renderer from "react-test-renderer"
 import LadderPage, { findRouteById } from "../../src/components/ladderPage"
-import StateDispatchProvider from "../../src/providers/stateDispatchProvider"
+import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { Route, TimepointsByRouteId } from "../../src/schedule.d"
 import { initialState } from "../../src/state"
 
