@@ -45,6 +45,9 @@ exports[`renders a route ladder 1`] = `
     </button>
   </div>
   <div
+    className="m-layover-box m-layover-box--top"
+  />
+  <div
     className="m-ladder"
     style={
       Object {
@@ -141,6 +144,9 @@ exports[`renders a route ladder 1`] = `
     </svg>
   </div>
   <div
+    className="m-layover-box m-layover-box--bottom"
+  />
+  <div
     className="m-incoming-box"
   />
   <div
@@ -183,6 +189,9 @@ exports[`renders a route ladder 1`] = `
       Reverse
     </button>
   </div>
+  <div
+    className="m-layover-box m-layover-box--top"
+  />
   <div
     className="m-ladder"
     style={
@@ -279,6 +288,9 @@ exports[`renders a route ladder 1`] = `
       </text>
     </svg>
   </div>
+  <div
+    className="m-layover-box m-layover-box--bottom"
+  />
   <div
     className="m-incoming-box"
   />
