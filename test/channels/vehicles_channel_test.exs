@@ -33,7 +33,13 @@ defmodule SkateWeb.VehiclesChannelTest do
   end
 
   describe "handle_info/2" do
-    test "pushes new vehicle data onto the socket when socket is authenticated", %{socket: socket} do
+    setup do
+      reassign_env(
+        :skate,
+        :refresh_token_store,
+        SkateWeb.VehiclesChannelTest.FakeRefreshTokenStore
+      )
+
       new_vehicles = [
         %Vehicle{
           id: "y0507",
@@ -75,13 +81,39 @@ defmodule SkateWeb.VehiclesChannelTest do
         incoming_vehicles: []
       }
 
+      {:ok, vehicles_for_route: vehicles_for_route}
+    end
+
+    test "pushes new vehicle data onto the socket when socket is authenticated", %{
+      socket: socket,
+      vehicles_for_route: vehicles_for_route
+    } do
       {:ok, token, claims} =
-        AuthManager.encode_and_sign("example@mbta.com", %{
+        AuthManager.encode_and_sign("test-authed@mbta.com", %{
           "exp" => System.system_time(:second) + 500
         })
 
       {:ok, _, socket} = subscribe_and_join(socket, VehiclesChannel, "vehicles:1")
-      socket = Guardian.Phoenix.Socket.assign_rtc(socket, "example@mbta.com", token, claims)
+      socket = Guardian.Phoenix.Socket.assign_rtc(socket, "test-authed@mbta.com", token, claims)
+
+      assert {:noreply, socket} =
+               VehiclesChannel.handle_info({:new_realtime_data, vehicles_for_route}, socket)
+
+      assert_push("vehicles", _)
+    end
+
+    test "refresh the authentication using the refresh token if we have one", %{
+      socket: socket,
+      vehicles_for_route: vehicles_for_route
+    } do
+      {:ok, token, claims} =
+        AuthManager.encode_and_sign("test-expired@mbta.com", %{
+          "exp" => System.system_time(:second) - 100
+        })
+
+      {:ok, _, socket} = subscribe_and_join(socket, VehiclesChannel, "vehicles:1")
+
+      socket = Guardian.Phoenix.Socket.assign_rtc(socket, "test-expired@mbta.com", token, claims)
 
       assert {:noreply, socket} =
                VehiclesChannel.handle_info({:new_realtime_data, vehicles_for_route}, socket)
@@ -91,16 +123,35 @@ defmodule SkateWeb.VehiclesChannelTest do
 
     test "rejects sending vehicle data when socket is not authenticated", %{socket: socket} do
       {:ok, token, claims} =
-        AuthManager.encode_and_sign("example@mbta.com", %{
+        AuthManager.encode_and_sign("test-not-authed@mbta.com", %{
           "exp" => System.system_time(:second) - 100
         })
 
       {:ok, _, socket} = subscribe_and_join(socket, VehiclesChannel, "vehicles:1")
-      socket = Guardian.Phoenix.Socket.assign_rtc(socket, "example@mbta.com", token, claims)
+
+      socket =
+        Guardian.Phoenix.Socket.assign_rtc(socket, "test-not-authed@mbta.com", token, claims)
 
       {:stop, :normal, _socket} = VehiclesChannel.handle_info({:new_realtime_data, %{}}, socket)
 
       assert_push("auth_expired", _)
     end
+  end
+
+  defmodule FakeRefreshTokenStore do
+    def get_refresh_token("test-expired@mbta.com") do
+      {:ok, token, _claims} =
+        AuthManager.encode_and_sign(
+          "test-expired@mbta.com",
+          %{
+            "exp" => System.system_time(:second) + 500
+          },
+          token_type: "refresh"
+        )
+
+      token
+    end
+
+    def get_refresh_token(_), do: nil
   end
 end

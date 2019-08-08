@@ -24,6 +24,7 @@ defmodule Skate.Application do
       # Starts a worker by calling: Skate.Worker.start_link(arg)
       # {Skate.Worker, arg},
       worker(Gtfs.HealthServer, []),
+      worker(RefreshTokenStore, []),
       worker(Gtfs, [Application.get_env(:skate, :gtfs_url)]),
       worker(
         Concentrate.Supervisor,

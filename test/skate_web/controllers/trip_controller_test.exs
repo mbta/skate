@@ -1,21 +1,12 @@
 defmodule SkateWeb.TripControllerTest do
   use SkateWeb.ConnCase
+  import Test.Support.Helpers
 
   alias SkateWeb.AuthManager
 
   describe "GET /api/trips/:route_id" do
     setup do
-      real_trips_fn = Application.get_env(:skate_web, :active_trips_on_route_fn)
-
-      on_exit(fn ->
-        Application.put_env(
-          :skate_web,
-          :active_trips_on_route_fn,
-          real_trips_fn
-        )
-      end)
-
-      Application.put_env(
+      reassign_env(
         :skate_web,
         :active_trips_on_route_fn,
         fn _route_id, _start_time, _end_time -> [] end
