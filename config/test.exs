@@ -15,4 +15,4 @@ config :ueberauth, Ueberauth,
     cognito: {Skate.Ueberauth.Strategy.Fake, []}
   ]
 
-config :logger, level: :warn
+config :logger, level: :info
