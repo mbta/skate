@@ -16,6 +16,7 @@ defmodule Gtfs.CacheFileTest do
       data = %Data{
         routes: [%Route{id: "1", direction_names: %{}, description: "Key Bus"}],
         route_patterns: [],
+        timepoint_ids_by_route: %{},
         stops: %{},
         trips: %{},
         blocks: %{},
@@ -35,6 +36,7 @@ defmodule Gtfs.CacheFileTest do
       data = %Data{
         routes: [%Route{id: "2", direction_names: %{}, description: "Key Bus"}],
         route_patterns: [],
+        timepoint_ids_by_route: %{},
         stops: %{},
         trips: %{},
         blocks: %{},

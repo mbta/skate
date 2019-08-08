@@ -26,6 +26,7 @@ defmodule Gtfs.DataTest do
     data = %Data{
       routes: routes,
       route_patterns: [],
+      timepoint_ids_by_route: %{},
       stops: %{},
       trips: %{},
       blocks: %{},
@@ -36,134 +37,36 @@ defmodule Gtfs.DataTest do
   end
 
   describe "timepoint_ids_on_route/2" do
-    test "returns all timepoint IDs for this route (either direction), sorted" do
+    test "returns the timepoints for the given route ID" do
       data = %Data{
-        routes: [
-          %Route{id: "r1", description: "Key Bus", direction_names: %{}},
-          %Route{id: "r2", description: "Key Bus", direction_names: %{}}
-        ],
-        route_patterns: [
-          %RoutePattern{
-            id: "rp1",
-            route_id: "r1",
-            direction_id: 0,
-            representative_trip_id: "t1"
-          },
-          %RoutePattern{
-            id: "rp2",
-            route_id: "r2",
-            direction_id: 0,
-            representative_trip_id: "t2"
-          },
-          %RoutePattern{
-            id: "rp3",
-            route_id: "r1",
-            direction_id: 1,
-            representative_trip_id: "t3"
-          }
-        ],
-        stops: [],
-        trips: %{
-          "t1" => %Trip{
-            id: "t1",
-            route_id: "r1",
-            service_id: "service",
-            headsign: "h1",
-            direction_id: 0,
-            block_id: "b1",
-            route_pattern_id: "rp1",
-            stop_times: [
-              %StopTime{stop_id: "s1", time: 1, timepoint_id: "tp1"},
-              %StopTime{stop_id: "s7", time: 2, timepoint_id: nil}
-            ]
-          },
-          "t2" => %Trip{
-            id: "t2",
-            route_id: "r2",
-            service_id: "service",
-            headsign: "h2",
-            direction_id: 0,
-            block_id: "b2",
-            route_pattern_id: "rp2",
-            stop_times: [
-              %StopTime{stop_id: "s2", time: 1, timepoint_id: "tp2"},
-              %StopTime{stop_id: "s3", time: 2, timepoint_id: "tp3"}
-            ]
-          },
-          "t3" => %Trip{
-            id: "t3",
-            route_id: "r1",
-            service_id: "service",
-            headsign: "h3",
-            direction_id: 1,
-            block_id: "b3",
-            route_pattern_id: "rp3",
-            stop_times: [
-              %StopTime{stop_id: "s4", time: 1, timepoint_id: "tp4"},
-              %StopTime{stop_id: "s5", time: 2, timepoint_id: "tp1"}
-            ]
-          }
+        routes: [],
+        route_patterns: [],
+        timepoint_ids_by_route: %{
+          "1" => ["t1", "t2", "t3", "t4"]
         },
+        stops: %{},
+        trips: %{},
         blocks: %{},
         calendar: %{}
       }
 
-      assert Data.timepoint_ids_on_route(data, "r1") == ["tp4", "tp1"]
+      assert Data.timepoint_ids_on_route(data, "1") == ["t1", "t2", "t3", "t4"]
     end
 
-    test "groups timepoints together even when they're on different stops" do
+    test "returns an empty list if the route ID isn't found" do
       data = %Data{
-        routes: [%Route{id: "r1", description: "Key Bus", direction_names: %{}}],
-        route_patterns: [
-          %RoutePattern{
-            id: "rp1",
-            route_id: "r1",
-            direction_id: 1,
-            representative_trip_id: "t1"
-          },
-          %RoutePattern{
-            id: "rp2",
-            route_id: "r1",
-            direction_id: 1,
-            representative_trip_id: "t2"
-          }
-        ],
-        stops: [],
-        trips: %{
-          "t1" => %Trip{
-            id: "t1",
-            route_id: "r1",
-            service_id: "service",
-            headsign: "h1",
-            direction_id: 1,
-            block_id: "b1",
-            route_pattern_id: "rp1",
-            stop_times: [
-              %StopTime{stop_id: "s1", time: 1, timepoint_id: "t1"},
-              %StopTime{stop_id: "s3b", time: 2, timepoint_id: "t3"}
-            ]
-          },
-          "t2" => %Trip{
-            id: "t2",
-            route_id: "r1",
-            service_id: "service",
-            headsign: "h2",
-            direction_id: 1,
-            block_id: "b2",
-            route_pattern_id: "rp2",
-            stop_times: [
-              %StopTime{stop_id: "s1", time: 1, timepoint_id: "t1"},
-              %StopTime{stop_id: "s2", time: 2, timepoint_id: "t2"},
-              %StopTime{stop_id: "s3a", time: 3, timepoint_id: "t3"},
-              %StopTime{stop_id: "s4", time: 4, timepoint_id: "t4"}
-            ]
-          }
+        routes: [],
+        route_patterns: [],
+        timepoint_ids_by_route: %{
+          "1" => ["t1", "t2", "t3", "t4"]
         },
+        stops: %{},
+        trips: %{},
         blocks: %{},
         calendar: %{}
       }
 
-      assert Data.timepoint_ids_on_route(data, "r1") == ["t1", "t2", "t3", "t4"]
+      assert Data.timepoint_ids_on_route(data, "2") == []
     end
   end
 
@@ -172,6 +75,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
+        timepoint_ids_by_route: %{},
         stops: %{
           "1" => %Stop{
             id: "1",
@@ -200,6 +104,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
+        timepoint_ids_by_route: %{},
         stops: %{
           "1" => %Stop{
             id: "1",
@@ -226,6 +131,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
+        timepoint_ids_by_route: %{},
         stops: %{},
         trips: %{
           "t1" => %Trip{
@@ -252,6 +158,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
+        timepoint_ids_by_route: %{},
         stops: %{},
         trips: %{},
         blocks: %{},
@@ -280,6 +187,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
+        timepoint_ids_by_route: %{},
         stops: %{},
         trips: %{},
         blocks: Block.group_trips_by_block([trip]),
@@ -306,6 +214,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
+        timepoint_ids_by_route: %{},
         stops: %{},
         trips: %{},
         blocks: Block.group_trips_by_block([trip]),
@@ -319,6 +228,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
+        timepoint_ids_by_route: %{},
         stops: %{},
         trips: %{},
         blocks: %{},
@@ -413,6 +323,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
+        timepoint_ids_by_route: %{},
         stops: [],
         trips: Map.new(trips, fn trip -> {trip.id, trip} end),
         blocks: %{},
@@ -455,6 +366,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
+        timepoint_ids_by_route: %{},
         stops: [],
         trips: %{
           "trip" => trip
@@ -489,6 +401,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
+        timepoint_ids_by_route: %{},
         stops: [],
         trips: %{
           "trip" => trip
@@ -524,6 +437,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
+        timepoint_ids_by_route: %{},
         stops: [],
         trips: %{
           "trip" => trip
@@ -560,6 +474,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
+        timepoint_ids_by_route: %{},
         stops: [],
         trips: %{
           "trip" => trip
@@ -596,6 +511,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
+        timepoint_ids_by_route: %{},
         stops: [],
         trips: %{
           "trip" => trip
@@ -630,6 +546,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
+        timepoint_ids_by_route: %{},
         stops: [],
         trips: %{
           "trip" => trip
@@ -656,6 +573,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
+        timepoint_ids_by_route: %{},
         stops: [],
         trips: %{
           "trip" => %Trip{
@@ -693,6 +611,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
+        timepoint_ids_by_route: %{},
         stops: [],
         trips: %{
           "before" => %Trip{
@@ -739,6 +658,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
+        timepoint_ids_by_route: %{},
         stops: [],
         trips: %{
           "first" => %Trip{
@@ -789,6 +709,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
+        timepoint_ids_by_route: %{},
         stops: [],
         trips: %{
           "first" => %Trip{
@@ -829,6 +750,125 @@ defmodule Gtfs.DataTest do
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
       assert Data.active_blocks(data, time0 + 1, time0 + 4) == %{"route" => ["block"]}
+    end
+  end
+
+  describe "timepoint_ids_for_route/3" do
+    test "returns all timepoint IDs for this route (either direction), sorted" do
+      route_patterns = [
+        %RoutePattern{
+          id: "rp1",
+          route_id: "r1",
+          direction_id: 0,
+          representative_trip_id: "t1"
+        },
+        %RoutePattern{
+          id: "rp2",
+          route_id: "r2",
+          direction_id: 0,
+          representative_trip_id: "t2"
+        },
+        %RoutePattern{
+          id: "rp3",
+          route_id: "r1",
+          direction_id: 1,
+          representative_trip_id: "t3"
+        }
+      ]
+
+      trips = %{
+        "t1" => %Trip{
+          id: "t1",
+          route_id: "r1",
+          service_id: "service",
+          headsign: "h1",
+          direction_id: 0,
+          block_id: "b1",
+          route_pattern_id: "rp1",
+          stop_times: [
+            %StopTime{stop_id: "s1", time: 1, timepoint_id: "tp1"},
+            %StopTime{stop_id: "s7", time: 2, timepoint_id: nil}
+          ]
+        },
+        "t2" => %Trip{
+          id: "t2",
+          route_id: "r2",
+          service_id: "service",
+          headsign: "h2",
+          direction_id: 0,
+          block_id: "b2",
+          route_pattern_id: "rp2",
+          stop_times: [
+            %StopTime{stop_id: "s2", time: 1, timepoint_id: "tp2"},
+            %StopTime{stop_id: "s3", time: 2, timepoint_id: "tp3"}
+          ]
+        },
+        "t3" => %Trip{
+          id: "t3",
+          route_id: "r1",
+          service_id: "service",
+          headsign: "h3",
+          direction_id: 1,
+          block_id: "b3",
+          route_pattern_id: "rp3",
+          stop_times: [
+            %StopTime{stop_id: "s4", time: 1, timepoint_id: "tp4"},
+            %StopTime{stop_id: "s5", time: 2, timepoint_id: "tp1"}
+          ]
+        }
+      }
+
+      assert Data.timepoint_ids_for_route(route_patterns, "r1", trips) == ["tp4", "tp1"]
+    end
+
+    test "groups timepoints together even when they're on different stops" do
+      route_patterns = [
+        %RoutePattern{
+          id: "rp1",
+          route_id: "r1",
+          direction_id: 1,
+          representative_trip_id: "t1"
+        },
+        %RoutePattern{
+          id: "rp2",
+          route_id: "r1",
+          direction_id: 1,
+          representative_trip_id: "t2"
+        }
+      ]
+
+      trips = %{
+        "t1" => %Trip{
+          id: "t1",
+          route_id: "r1",
+          service_id: "service",
+          headsign: "h1",
+          direction_id: 1,
+          block_id: "b1",
+          route_pattern_id: "rp1",
+          stop_times: [
+            %StopTime{stop_id: "s1", time: 1, timepoint_id: "t1"},
+            %StopTime{stop_id: "s3b", time: 2, timepoint_id: "t3"}
+          ]
+        },
+        "t2" => %Trip{
+          id: "t2",
+          route_id: "r1",
+          service_id: "service",
+          headsign: "h2",
+          direction_id: 1,
+          block_id: "b2",
+          route_pattern_id: "rp2",
+          stop_times: [
+            %StopTime{stop_id: "s1", time: 1, timepoint_id: "t1"},
+            %StopTime{stop_id: "s2", time: 2, timepoint_id: "t2"},
+            %StopTime{stop_id: "s3a", time: 3, timepoint_id: "t3"},
+            %StopTime{stop_id: "s4", time: 4, timepoint_id: "t4"}
+          ]
+        }
+      }
+
+      assert Data.timepoint_ids_for_route(route_patterns, "r1", trips) == ["t1", "t2", "t3", "t4"]
     end
   end
 end
