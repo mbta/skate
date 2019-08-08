@@ -4,14 +4,6 @@ defmodule SkateWeb.RouteControllerTest do
 
   alias SkateWeb.AuthManager
 
-  setup do
-    reassign_env(
-      :skate,
-      :refresh_token_store,
-      SkateWeb.RouteControllerTest.FakeRefreshTokenStore
-    )
-  end
-
   describe "GET /api/routes" do
     setup do
       reassign_env(:skate_web, :routes_fn, fn -> [] end)
@@ -72,9 +64,5 @@ defmodule SkateWeb.RouteControllerTest do
     {:ok, token, _} = AuthManager.encode_and_sign(%{})
 
     put_req_header(conn, "authorization", "bearer: " <> token)
-  end
-
-  defmodule FakeRefreshTokenStore do
-    def get_refresh_token(_), do: nil
   end
 end

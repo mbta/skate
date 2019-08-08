@@ -1,18 +1,9 @@
 defmodule SkateWeb.RouterTest do
   use SkateWeb.ConnCase
-  import Test.Support.Helpers
 
   alias SkateWeb.AuthManager
 
   describe "GET /_flags" do
-    setup do
-      reassign_env(
-        :skate,
-        :refresh_token_store,
-        SkateWeb.RouterTest.FakeRefreshTokenStore
-      )
-    end
-
     test "when logged out, redirects you to cognito auth", %{conn: conn} do
       conn = get(conn, "/_flags")
 
@@ -29,9 +20,5 @@ defmodule SkateWeb.RouterTest do
 
       assert html_response(conn, 200) =~ "<div class=\"window-title\">Features</div>"
     end
-  end
-
-  defmodule FakeRefreshTokenStore do
-    def get_refresh_token(_), do: nil
   end
 end

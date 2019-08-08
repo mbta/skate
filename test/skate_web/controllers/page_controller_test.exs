@@ -1,18 +1,9 @@
 defmodule SkateWeb.PageControllerTest do
   use SkateWeb.ConnCase
-  import Test.Support.Helpers
 
   alias SkateWeb.AuthManager
 
   describe "GET /" do
-    setup do
-      reassign_env(
-        :skate,
-        :refresh_token_store,
-        SkateWeb.PageControllerTest.FakeRefreshTokenStore
-      )
-    end
-
     test "when logged out, redirects you to cognito auth", %{conn: conn} do
       conn = get(conn, "/")
 
@@ -40,9 +31,5 @@ defmodule SkateWeb.PageControllerTest do
 
       assert html_response(conn, 200) =~ "div id=\"app\""
     end
-  end
-
-  defmodule FakeRefreshTokenStore do
-    def get_refresh_token(_), do: nil
   end
 end

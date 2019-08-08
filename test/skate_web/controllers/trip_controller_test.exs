@@ -11,12 +11,6 @@ defmodule SkateWeb.TripControllerTest do
         :active_trips_on_route_fn,
         fn _route_id, _start_time, _end_time -> [] end
       )
-
-      reassign_env(
-        :skate,
-        :refresh_token_store,
-        SkateWeb.TripControllerTest.FakeRefreshTokenStore
-      )
     end
 
     test "when logged out, redirects you to cognito auth", %{conn: conn} do
@@ -49,9 +43,5 @@ defmodule SkateWeb.TripControllerTest do
     {:ok, token, _} = AuthManager.encode_and_sign(%{})
 
     put_req_header(conn, "authorization", "bearer: " <> token)
-  end
-
-  defmodule FakeRefreshTokenStore do
-    def get_refresh_token(_), do: nil
   end
 end
