@@ -23,7 +23,11 @@ const layoverVehicle = (
 ): ReactElement<HTMLDivElement> => {
   const trip: Trip | undefined = tripsById[vehicle.tripId]
   return (
-    <div key={vehicle.id} onClick={() => dispatch(selectVehicle(vehicle.id))}>
+    <div
+      key={vehicle.id}
+      onClick={() => dispatch(selectVehicle(vehicle.id))}
+      className="m-layover-box__vehicle"
+    >
       <VehicleIcon
         label={runIdToLabel(vehicle)}
         orientation={
