@@ -3,6 +3,7 @@ defmodule Gtfs do
   require Logger
 
   alias Gtfs.{Block, CacheFile, Data, HealthServer, Route, Service, Stop, StopTime, Trip}
+  alias Util.Duration
 
   @type state :: :not_loaded | {:loaded, Data.t()}
 
@@ -25,52 +26,29 @@ defmodule Gtfs do
   @spec all_routes() :: [Route.t()]
   @spec all_routes(GenServer.server()) :: [Route.t()]
   def all_routes(server \\ __MODULE__) do
-    start_time = Time.utc_now()
-
-    result = GenServer.call(server, :all_routes)
-
-    Logger.info(fn ->
-      "Gtfs.all_routes, time=#{Time.diff(Time.utc_now(), start_time, :millisecond)}"
-    end)
-
-    result
+    Duration.log_duration(GenServer, :call, [server, :all_routes])
   end
 
   # Timepoint IDs on a route, sorted in order of stop sequence
   @spec timepoint_ids_on_route(Route.id()) :: [StopTime.timepoint_id()]
   @spec timepoint_ids_on_route(Route.id(), GenServer.server()) :: [StopTime.timepoint_id()]
   def timepoint_ids_on_route(route_id, server \\ __MODULE__) do
-    start_time = Time.utc_now()
-
-    result = GenServer.call(server, {:timepoint_ids_on_route, route_id})
-
-    Logger.info(fn ->
-      "Gtfs.timepoint_ids_on_route, time=#{Time.diff(Time.utc_now(), start_time, :millisecond)}"
-    end)
-
-    result
+    Duration.log_duration(GenServer, :call, [server, {:timepoint_ids_on_route, route_id}])
   end
 
   @spec stop(Stop.id()) :: Stop.t() | nil
   @spec stop(Stop.id(), GenServer.server()) :: Stop.t() | nil
   def stop(stop_id, server \\ __MODULE__) do
-    start_time = Time.utc_now()
+    Duration.log_duration(__MODULE__, :do_stop, [stop_id, server])
+  end
 
+  @spec do_stop(Stop.id(), GenServer.server()) :: Stop.t() | nil
+  def do_stop(stop_id, server) do
     try do
-      result = GenServer.call(server, {:stop, stop_id})
-
-      Logger.info(fn ->
-        "Gtfs.stop, time=#{Time.diff(Time.utc_now(), start_time, :millisecond)}"
-      end)
-
-      result
+      GenServer.call(server, {:stop, stop_id})
     catch
       # Handle Gtfs server timeouts gracefully
       :exit, _ ->
-        Logger.info(fn ->
-          "Gtfs.stop, time=#{Time.diff(Time.utc_now(), start_time, :millisecond)}"
-        end)
-
         nil
     end
   end
@@ -78,23 +56,16 @@ defmodule Gtfs do
   @spec trip(Trip.id()) :: Trip.t() | nil
   @spec trip(Trip.id(), GenServer.server()) :: Trip.t() | nil
   def trip(trip_id, server \\ __MODULE__) do
-    start_time = Time.utc_now()
+    Duration.log_duration(__MODULE__, :do_trip, [trip_id, server])
+  end
 
+  @spec do_trip(Trip.id(), GenServer.server()) :: Trip.t() | nil
+  def do_trip(trip_id, server) do
     try do
-      result = GenServer.call(server, {:trip, trip_id})
-
-      Logger.info(fn ->
-        "Gtfs.trip, time=#{Time.diff(Time.utc_now(), start_time, :millisecond)}"
-      end)
-
-      result
+      GenServer.call(server, {:trip, trip_id})
     catch
       # Handle Gtfs server timeouts gracefully
       :exit, _ ->
-        Logger.info(fn ->
-          "Gtfs.trip, time=#{Time.diff(Time.utc_now(), start_time, :millisecond)}"
-        end)
-
         nil
     end
   end
@@ -102,23 +73,16 @@ defmodule Gtfs do
   @spec block(Block.id(), Service.id()) :: Block.t() | nil
   @spec block(Block.id(), Service.id(), GenServer.server()) :: Block.t() | nil
   def block(block_id, service_id, server \\ __MODULE__) do
-    start_time = Time.utc_now()
+    Duration.log_duration(__MODULE__, :do_block, [block_id, service_id, server])
+  end
 
+  @spec do_block(Block.id(), Service.id(), GenServer.server()) :: Block.t() | nil
+  def do_block(block_id, service_id, server) do
     try do
-      result = GenServer.call(server, {:block, block_id, service_id})
-
-      Logger.info(fn ->
-        "Gtfs.block, time=#{Time.diff(Time.utc_now(), start_time, :millisecond)}"
-      end)
-
-      result
+      GenServer.call(server, {:block, block_id, service_id})
     catch
       # Handle Gtfs server timeouts gracefully
       :exit, _ ->
-        Logger.info(fn ->
-          "Gtfs.block, time=#{Time.diff(Time.utc_now(), start_time, :millisecond)}"
-        end)
-
         nil
     end
   end
@@ -138,27 +102,28 @@ defmodule Gtfs do
           Date.t() => [Trip.OnDate.t()]
         }
   def active_trips_on_route(route_id, start_time, end_time, server \\ __MODULE__) do
-    fn_start_time = Time.utc_now()
+    Duration.log_duration(__MODULE__, :do_active_trips_on_route, [
+      route_id,
+      start_time,
+      end_time,
+      server
+    ])
+  end
 
+  @spec do_active_trips_on_route(
+          Route.id(),
+          Util.Time.timestamp(),
+          Util.Time.timestamp(),
+          GenServer.server()
+        ) :: %{
+          Date.t() => [Trip.OnDate.t()]
+        }
+  def do_active_trips_on_route(route_id, start_time, end_time, server) do
     try do
-      result = GenServer.call(server, {:active_trips_on_route, route_id, start_time, end_time})
-
-      Logger.info(fn ->
-        "Gtfs.active_trips_on_route, time=#{
-          Time.diff(Time.utc_now(), fn_start_time, :millisecond)
-        }"
-      end)
-
-      result
+      GenServer.call(server, {:active_trips_on_route, route_id, start_time, end_time})
     catch
       # Handle Gtfs server timeouts gracefully
       :exit, _ ->
-        Logger.info(fn ->
-          "Gtfs.active_trips_on_route, time=#{
-            Time.diff(Time.utc_now(), fn_start_time, :millisecond)
-          }"
-        end)
-
         []
     end
   end
@@ -176,23 +141,18 @@ defmodule Gtfs do
           Route.id() => [Block.id()]
         }
   def active_blocks(start_time, end_time, server \\ __MODULE__) do
-    fn_start_time = Time.utc_now()
+    Duration.log_duration(__MODULE__, :do_active_blocks, [start_time, end_time, server])
+  end
 
+  @spec do_active_blocks(Util.Time.timestamp(), Util.Time.timestamp(), GenServer.server()) :: %{
+          Route.id() => [Block.id()]
+        }
+  def do_active_blocks(start_time, end_time, server) do
     try do
-      result = GenServer.call(server, {:active_blocks, start_time, end_time})
-
-      Logger.info(fn ->
-        "Gtfs.active_blocks, time=#{Time.diff(Time.utc_now(), fn_start_time, :millisecond)}"
-      end)
-
-      result
+      GenServer.call(server, {:active_blocks, start_time, end_time})
     catch
       # Handle Gtfs server timeouts gracefully
       :exit, _ ->
-        Logger.info(fn ->
-          "Gtfs.active_blocks, time=#{Time.diff(Time.utc_now(), fn_start_time, :millisecond)}"
-        end)
-
         []
     end
   end
