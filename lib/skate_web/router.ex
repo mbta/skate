@@ -53,6 +53,7 @@ defmodule SkateWeb.Router do
 
     get "/", PageController, :index
     get "/about", PageController, :index
+    get "/settings", PageController, :index
   end
 
   scope "/api", SkateWeb do

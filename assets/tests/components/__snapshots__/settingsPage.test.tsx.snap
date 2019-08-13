@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SettingsPage renders 1`] = `
+<div
+  className="m-page m-page--settings"
+>
+  <div
+    className="m-page__container"
+  >
+    <h1
+      className="m-page__title"
+    >
+      Settings
+    </h1>
+    <div
+      className="m-page__section"
+    >
+      <h2
+        className="m-page__header"
+      >
+        Vehicle Label
+      </h2>
+      <select
+        className="m-page__select"
+        id="vehicle-label-setting"
+        onChange={[Function]}
+        value={1}
+      >
+        <option
+          value={1}
+        >
+          Run #
+        </option>
+        <option
+          value={2}
+        >
+          Vehicle #
+        </option>
+      </select>
+    </div>
+  </div>
+</div>
+`;

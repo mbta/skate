@@ -1,6 +1,10 @@
-import runIdToLabel from "../../src/helpers/runIdToLabel"
+import vehicleLabel, {
+  labelToLabel,
+  runIdToLabel,
+} from "../../src/helpers/vehicleLabel"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Vehicle } from "../../src/realtime"
+import { VehicleLabelSetting } from "../../src/settings"
 
 const vehicle: Vehicle = {
   id: "y0479",
@@ -46,6 +50,18 @@ const vehicle: Vehicle = {
   isOnRoute: true,
 }
 
+describe("vehicleLabel", () => {
+  test("uses the run ID for the label given the run number setting", () => {
+    expect(vehicleLabel(vehicle, VehicleLabelSetting.RunNumber)).toEqual("2000")
+  })
+
+  test("uses the vehicle label for the label given the vehicle number setting", () => {
+    expect(vehicleLabel(vehicle, VehicleLabelSetting.VehicleNumber)).toEqual(
+      "0479"
+    )
+  })
+})
+
 describe("runIdToLabel", () => {
   test("converts runId to readable label", () => {
     expect(runIdToLabel(vehicle)).toEqual("2000")
@@ -53,5 +69,11 @@ describe("runIdToLabel", () => {
 
   test("returns N/A if vehicle has no runId", () => {
     expect(runIdToLabel({ ...vehicle, runId: null })).toEqual("N/A")
+  })
+})
+
+describe("labelToLabel", () => {
+  test("returns the vehicle's label", () => {
+    expect(labelToLabel(vehicle)).toEqual("0479")
   })
 })

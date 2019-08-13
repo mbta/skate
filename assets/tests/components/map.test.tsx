@@ -71,7 +71,7 @@ describe("updateMap", () => {
     const map = Leaflet.map("map", {})
     const vehicleIcon = Leaflet.marker([43, -72]).addTo(map)
     const vehicleLabel = Leaflet.marker([43, -72])
-    updateMap({ vehicle }, { map, vehicleIcon, vehicleLabel })
+    updateMap({ vehicle }, { map, vehicleIcon, vehicleLabel }, "run-1")
     expect(map.getCenter()).toEqual({ lat: 42, lng: -71 })
     expect(vehicleIcon.getLatLng()).toEqual({ lat: 42, lng: -71 })
     expect(vehicleLabel.getLatLng()).toEqual({ lat: 42, lng: -71 })

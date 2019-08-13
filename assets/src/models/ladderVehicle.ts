@@ -1,5 +1,4 @@
 import { LadderDirection, TimepointStatusYFunc } from "../components/ladder"
-import runIdToLabel from "../helpers/runIdToLabel"
 import { getViaVariant } from "../helpers/viaVariant"
 import { Vehicle, VehicleId } from "../realtime"
 import { DirectionId, Trip, TripsById, ViaVariant } from "../schedule"
@@ -8,6 +7,7 @@ import { HeadwaySpacing, status, VehicleAdherenceStatus } from "./vehicleStatus"
 export interface LadderVehicle {
   vehicleId: VehicleId
   label: string
+  runId: string | null
   viaVariant: ViaVariant | null
   status: VehicleAdherenceStatus
   headwaySpacing: HeadwaySpacing | null
@@ -29,6 +29,7 @@ interface WithVehicle {
   vehicleId: VehicleId
   headwaySpacing: HeadwaySpacing | null
   label: string
+  runId: string | null
   viaVariant: ViaVariant | null
   status: VehicleAdherenceStatus
   isOffCourse: boolean
@@ -141,7 +142,7 @@ const vehicleOnLadder = (
   ladderDirection: LadderDirection,
   timepointStatusYFunc: TimepointStatusYFunc
 ): VehicleOnLadder => {
-  const { id: vehicleId, headwaySpacing, isOffCourse } = vehicle
+  const { id: vehicleId, headwaySpacing, label, runId, isOffCourse } = vehicle
 
   const viaVariant: ViaVariant | null = getViaVariant(
     trip && trip.routePatternId
@@ -167,7 +168,8 @@ const vehicleOnLadder = (
     // tslint:disable-next-line:object-literal-sort-keys
     vehicleId,
     headwaySpacing,
-    label: runIdToLabel(vehicle),
+    label,
+    runId,
     viaVariant,
     status: status(vehicle),
     isOffCourse,

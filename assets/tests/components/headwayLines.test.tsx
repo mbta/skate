@@ -10,6 +10,7 @@ describe("HeadwayLines", () => {
       {
         vehicleId: "1",
         label: "1",
+        runId: "1",
         viaVariant: null,
         status: "on-time",
         headwaySpacing: HeadwaySpacing.Ok,
@@ -22,6 +23,7 @@ describe("HeadwayLines", () => {
       {
         vehicleId: "2",
         label: "2",
+        runId: ",",
         viaVariant: null,
         status: "on-time",
         headwaySpacing: HeadwaySpacing.Bunched,
@@ -34,6 +36,7 @@ describe("HeadwayLines", () => {
       {
         vehicleId: "3",
         label: "3",
+        runId: "3",
         viaVariant: null,
         status: "on-time",
         headwaySpacing: HeadwaySpacing.Gapped,
