@@ -64,11 +64,11 @@ defmodule SkateWeb.AuthControllerTest do
     require Logger
 
     def put_refresh_token(username, refresh_token) do
-      Logger.info("stored_refresh_token username=#{username} refresh_token=#{refresh_token}")
+      Logger.warn("stored_refresh_token username=#{username} refresh_token=#{refresh_token}")
     end
 
     def clear_refresh_token(username) do
-      Logger.info("cleared_refresh_token username=#{username}")
+      Logger.warn("cleared_refresh_token username=#{username}")
     end
   end
 end
