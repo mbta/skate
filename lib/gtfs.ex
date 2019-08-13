@@ -26,14 +26,24 @@ defmodule Gtfs do
   @spec all_routes() :: [Route.t()]
   @spec all_routes(GenServer.server()) :: [Route.t()]
   def all_routes(server \\ __MODULE__) do
-    Duration.log_duration(GenServer, :call, [server, :all_routes])
+    Duration.log_duration(__MODULE__, :do_all_routes, [server])
+  end
+
+  @spec do_all_routes(GenServer.server()) :: [Route.t()]
+  def do_all_routes(server) do
+    GenServer.call(server, :all_routes)
   end
 
   # Timepoint IDs on a route, sorted in order of stop sequence
   @spec timepoint_ids_on_route(Route.id()) :: [StopTime.timepoint_id()]
   @spec timepoint_ids_on_route(Route.id(), GenServer.server()) :: [StopTime.timepoint_id()]
   def timepoint_ids_on_route(route_id, server \\ __MODULE__) do
-    Duration.log_duration(GenServer, :call, [server, {:timepoint_ids_on_route, route_id}])
+    Duration.log_duration(__MODULE__, :do_timepoint_ids_on_route, [route_id, server])
+  end
+
+  @spec do_timepoint_ids_on_route(Route.id(), GenServer.server()) :: [StopTime.timepoint_id()]
+  def do_timepoint_ids_on_route(route_id, server) do
+    GenServer.call(server, {:timepoint_ids_on_route, route_id})
   end
 
   @spec stop(Stop.id()) :: Stop.t() | nil
