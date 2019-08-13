@@ -573,8 +573,7 @@ defmodule Gtfs.DataTest do
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
 
-      assert [%Trip.OnDate{id: "trip"}] =
-               Data.active_trips_on_route(data, "route", time0 + 1, time0 + 3)
+      assert [%Trip{id: "trip"}] = Data.active_trips_on_route(data, "route", time0 + 1, time0 + 3)
     end
 
     test "filters out trips from other routes" do
@@ -641,14 +640,12 @@ defmodule Gtfs.DataTest do
         }
       }
 
-      # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-      expected_timestamp = time0 + 2
 
       assert [
-               %Trip.OnDate{
+               %Trip{
                  id: "trip",
-                 stop_times: [%StopTime.OnDate{timestamp: ^expected_timestamp}]
+                 stop_times: [%StopTime{time: 2}]
                }
              ] = Data.active_trips_on_route(data, "route", time0 + 1, time0 + 3)
     end

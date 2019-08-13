@@ -145,24 +145,6 @@ defmodule Gtfs.StopTimeTest do
     end
   end
 
-  describe "on_date/2" do
-    test "converts the time to a timestamp" do
-      stop_time = %StopTime{
-        stop_id: "stop_id",
-        # 01:00:00
-        time: 3600
-      }
-
-      stop_time_on_date = %StopTime.OnDate{
-        stop_id: "stop_id",
-        # 2019-01-02 01:00:00 EST
-        timestamp: 1_546_408_800
-      }
-
-      assert StopTime.on_date(stop_time, ~D[2019-01-02]) == stop_time_on_date
-    end
-  end
-
   describe "row_in_trip_id_set?/2" do
     test "returns whether the row's trip id is in the given set" do
       assert StopTime.row_in_trip_id_set?(

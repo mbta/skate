@@ -348,8 +348,7 @@ defmodule GtfsTest do
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
 
-      assert [%Trip.OnDate{id: "now"}] =
-               Gtfs.active_trips_on_route("route", time0 + 1, time0 + 3, pid)
+      assert [%Trip{id: "now"}] = Gtfs.active_trips_on_route("route", time0 + 1, time0 + 3, pid)
     end
   end
 
