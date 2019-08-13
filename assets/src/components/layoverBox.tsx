@@ -33,7 +33,7 @@ const layoverVehicle = (
         orientation={
           classModifier === "bottom" ? Orientation.Right : Orientation.Left
         }
-        size={Size.Medium}
+        size={Size.Small}
         variant={getViaVariant(trip && trip.routePatternId)}
       />
     </div>

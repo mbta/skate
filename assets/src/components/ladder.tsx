@@ -42,7 +42,7 @@ export const flipLadderDirection = (
     : LadderDirection.ZeroToOne
 
 export const CENTER_TO_LINE = 40 // x-distance between the center of the ladder and the center of the line
-const MARGIN_TOP_BOTTOM = 40 // space between the top of the route and the top of the viewbox
+const MARGIN_TOP_BOTTOM = 20 // space between the top of the route and the top of the viewbox
 
 const Ladder = ({
   timepoints,

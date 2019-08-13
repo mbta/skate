@@ -12,7 +12,7 @@ exports[`ladder filters out vehicles whose block is not active 1`] = `
   <svg
     className="m-ladder__svg"
     height={0}
-    viewBox="-92 -40 184 0"
+    viewBox="-92 -20 184 500"
     width={184}
   >
     <line

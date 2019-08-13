@@ -248,14 +248,14 @@ Array [
       <svg
         style={
           Object {
-            "height": 38.5,
+            "height": 27.72,
             "width": 26,
           }
         }
-        viewBox="-13 -13.75 26 38.5"
+        viewBox="-13 -8.36 26 27.72"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium"
+          className="m-vehicle-icon m-vehicle-icon--small"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -264,21 +264,21 @@ Array [
             ry={5.5}
             width={26}
             x={-13}
-            y={12.75}
+            y={7.359999999999999}
           />
           <text
             className="m-vehicle-icon__label"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
-            y={18.25}
+            y={12.86}
           >
             2
           </text>
           <path
             className="m-vehicle-icon__triangle"
             d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-            transform="scale(0.625) rotate(270) translate(-24,-22)"
+            transform="scale(0.38) rotate(270) translate(-24,-22)"
           />
         </g>
       </svg>
@@ -290,7 +290,7 @@ Array [
     <svg
       className="m-ladder__svg"
       height={500}
-      viewBox="-92 -40 184 500"
+      viewBox="-92 -20 184 500"
       width={184}
     >
       <line
@@ -298,14 +298,14 @@ Array [
         x1={-40}
         x2={-40}
         y1="0"
-        y2={420}
+        y2={460}
       />
       <line
         className="m-ladder__line"
         x1={40}
         x2={40}
         y1="0"
-        y2={420}
+        y2={460}
       />
       <g
         className="m-ladder__headway-lines"
@@ -334,13 +334,13 @@ Array [
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
-        cy={210}
+        cy={230}
         r="3"
       />
       <circle
         className="m-ladder__stop-circle"
         cx={40}
-        cy={210}
+        cy={230}
         r="3"
       />
       <text
@@ -348,20 +348,20 @@ Array [
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
-        y={210}
+        y={230}
       >
         WELLH
       </text>
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
-        cy={420}
+        cy={460}
         r="3"
       />
       <circle
         className="m-ladder__stop-circle"
         cx={40}
-        cy={420}
+        cy={460}
         r="3"
       />
       <text
@@ -369,7 +369,7 @@ Array [
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
-        y={420}
+        y={460}
       >
         MORTN
       </text>
@@ -385,14 +385,14 @@ Array [
       <svg
         style={
           Object {
-            "height": 38.5,
+            "height": 27.72,
             "width": 26,
           }
         }
-        viewBox="-13 -13.75 26 38.5"
+        viewBox="-13 -8.36 26 27.72"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium"
+          className="m-vehicle-icon m-vehicle-icon--small"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -401,21 +401,21 @@ Array [
             ry={5.5}
             width={26}
             x={-13}
-            y={12.75}
+            y={7.359999999999999}
           />
           <text
             className="m-vehicle-icon__label"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
-            y={18.25}
+            y={12.86}
           >
             1
           </text>
           <path
             className="m-vehicle-icon__triangle"
             d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-            transform="scale(0.625) rotate(90) translate(-24,-22)"
+            transform="scale(0.38) rotate(90) translate(-24,-22)"
           />
         </g>
       </svg>
