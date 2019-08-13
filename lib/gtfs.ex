@@ -101,7 +101,7 @@ defmodule Gtfs do
   All of the trips that are scheduled to be active any time between the start_time and end_time.
   """
   @spec active_trips_on_route(Route.id(), Util.Time.timestamp(), Util.Time.timestamp()) :: %{
-          Date.t() => [Trip.OnDate.t()]
+          Date.t() => [Trip.t()]
         }
   @spec active_trips_on_route(
           Route.id(),
@@ -109,7 +109,7 @@ defmodule Gtfs do
           Util.Time.timestamp(),
           GenServer.server()
         ) :: %{
-          Date.t() => [Trip.OnDate.t()]
+          Date.t() => [Trip.t()]
         }
   def active_trips_on_route(route_id, start_time, end_time, server \\ __MODULE__) do
     Duration.log_duration(__MODULE__, :do_active_trips_on_route, [
@@ -126,7 +126,7 @@ defmodule Gtfs do
           Util.Time.timestamp(),
           GenServer.server()
         ) :: %{
-          Date.t() => [Trip.OnDate.t()]
+          Date.t() => [Trip.t()]
         }
   def do_active_trips_on_route(route_id, start_time, end_time, server) do
     try do

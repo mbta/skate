@@ -132,7 +132,7 @@ defmodule Gtfs.Data do
   end
 
   @spec active_trips_on_route(t(), Route.id(), Util.Time.timestamp(), Util.Time.timestamp()) :: [
-          Trip.OnDate.t()
+          Trip.t()
         ]
   def active_trips_on_route(data, route_id, start_time, end_time) do
     active_trips_by_date =
@@ -142,10 +142,8 @@ defmodule Gtfs.Data do
         end_time
       )
 
-    Enum.flat_map(active_trips_by_date, fn {date, trips} ->
-      trips
-      |> Enum.filter(fn trip -> trip.route_id == route_id end)
-      |> Enum.map(fn trip -> Trip.on_date(trip, date) end)
+    Enum.flat_map(active_trips_by_date, fn {_date, trips} ->
+      Enum.filter(trips, fn trip -> trip.route_id == route_id end)
     end)
   end
 

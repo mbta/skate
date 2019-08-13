@@ -43,58 +43,6 @@ defmodule Gtfs.Trip do
     stop_times: []
   ]
 
-  defmodule OnDate do
-    alias Gtfs.Trip
-
-    @type t :: %__MODULE__{
-            id: Trip.id(),
-            route_id: Route.id(),
-            headsign: String.t(),
-            direction_id: Direction.id(),
-            block_id: Block.id(),
-            # Shuttles do not have route_pattern_ids
-            route_pattern_id: RoutePattern.id() | nil,
-            stop_times: [StopTime.OnDate.t()]
-          }
-
-    @enforce_keys [
-      :id,
-      :route_id,
-      :headsign,
-      :direction_id,
-      :block_id
-    ]
-
-    @derive Jason.Encoder
-
-    defstruct [
-      :id,
-      :route_id,
-      :headsign,
-      :direction_id,
-      :block_id,
-      :route_pattern_id,
-      stop_times: []
-    ]
-  end
-
-  @spec on_date(t(), Date.t()) :: OnDate.t()
-  def on_date(trip, date) do
-    %OnDate{
-      id: trip.id,
-      route_id: trip.route_id,
-      headsign: trip.headsign,
-      direction_id: trip.direction_id,
-      block_id: trip.block_id,
-      route_pattern_id: trip.route_pattern_id,
-      stop_times:
-        Enum.map(
-          trip.stop_times,
-          fn stop_time -> StopTime.on_date(stop_time, date) end
-        )
-    }
-  end
-
   @spec from_csv_row(Csv.row()) :: t()
   def from_csv_row(row) do
     route_pattern_id =
