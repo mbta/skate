@@ -40,10 +40,9 @@ const layoverVehicle = (
   )
 }
 
-const sortByLayoverDeparture = (
+const byLayoverDeparture = (classModifier: ClassModifier) => (
   a: Vehicle,
-  b: Vehicle,
-  classModifier: ClassModifier
+  b: Vehicle
 ): number => {
   const [gt, lt] = classModifier === "bottom" ? [1, -1] : [-1, 1]
   if (
@@ -54,11 +53,7 @@ const sortByLayoverDeparture = (
     return 0
   }
 
-  if (a.layoverDepartureTime > b.layoverDepartureTime) {
-    return gt
-  }
-
-  return lt
+  return a.layoverDepartureTime > b.layoverDepartureTime ? gt : lt
 }
 
 const LayoverBox = ({
@@ -70,7 +65,7 @@ const LayoverBox = ({
   return (
     <div className={`m-layover-box m-layover-box--${classModifier}`}>
       {vehicles
-        .sort((a, b) => sortByLayoverDeparture(a, b, classModifier))
+        .sort(byLayoverDeparture(classModifier))
         .map(v => layoverVehicle(v, classModifier, tripsById, dispatch))}
     </div>
   )

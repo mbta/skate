@@ -142,6 +142,13 @@ defmodule Concentrate.VehiclePosition do
               second.is_laying_over,
               first.sources,
               first.is_laying_over
+            ),
+          layover_departure_time:
+            swiftly_priority(
+              second.sources,
+              second.layover_departure_time,
+              first.sources,
+              first.layover_departure_time
             )
       }
     end
