@@ -16,6 +16,7 @@ config :skate,
   secret: {:system, "SKATE_SECRET"},
   signed_secret: {:system, "SKATE_SIGNED_SECRET"},
   record_fullstory: false,
+  log_duration_timing: true,
   refresh_token_store: RefreshTokenStore
 
 config :skate, Gtfs.CacheFile, cache_filename: nil
