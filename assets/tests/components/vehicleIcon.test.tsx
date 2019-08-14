@@ -139,6 +139,11 @@ test("renders with all statuses", () => {
         <VehicleIcon
           size={Size.Medium}
           orientation={Orientation.Up}
+          status={"ghost"}
+        />
+        <VehicleIcon
+          size={Size.Medium}
+          orientation={Orientation.Up}
           status={"plain"}
         />
         <VehicleIcon size={Size.Medium} orientation={Orientation.Up} />
@@ -147,6 +152,98 @@ test("renders with all statuses", () => {
     .toJSON()
 
   expect(tree).toMatchSnapshot()
+})
+
+test("ghost with variant doesn't have eyes", () => {
+  const tree = renderer
+    .create(
+      <VehicleIcon
+        size={Size.Medium}
+        orientation={Orientation.Up}
+        status={"ghost"}
+        variant={"X"}
+      />
+    )
+    .toJSON()
+
+  expect(tree).toMatchSnapshot()
+})
+
+test("ghost doesn't flip on its side", () => {
+  const up = renderer
+    .create(
+      <VehicleIcon
+        size={Size.Medium}
+        orientation={Orientation.Up}
+        status={"ghost"}
+        label={"ghost"}
+      />
+    )
+    .toJSON()
+
+  const left = renderer
+    .create(
+      <VehicleIcon
+        size={Size.Medium}
+        orientation={Orientation.Left}
+        status={"ghost"}
+        label={"ghost"}
+      />
+    )
+    .toJSON()
+
+  const right = renderer
+    .create(
+      <VehicleIcon
+        size={Size.Medium}
+        orientation={Orientation.Right}
+        status={"ghost"}
+        label={"ghost"}
+      />
+    )
+    .toJSON()
+
+  expect(up).toEqual(left)
+  expect(up).toEqual(right)
+})
+
+test("ghost doesn't flip upside down", () => {
+  const upNoLabel = renderer
+    .create(
+      <VehicleIcon
+        size={Size.Medium}
+        orientation={Orientation.Up}
+        status={"ghost"}
+      />
+    )
+    .toJSON()
+
+  const downNoLabel = renderer
+    .create(
+      <VehicleIcon
+        size={Size.Medium}
+        orientation={Orientation.Down}
+        status={"ghost"}
+      />
+    )
+    .toJSON()
+
+  expect(upNoLabel).toEqual(downNoLabel)
+})
+
+test("ghost going down puts label above it", () => {
+  const ghostDownWithlabel = renderer
+    .create(
+      <VehicleIcon
+        size={Size.Medium}
+        orientation={Orientation.Down}
+        status={"ghost"}
+        label={"ghost"}
+      />
+    )
+    .toJSON()
+
+  expect(ghostDownWithlabel).toMatchSnapshot()
 })
 
 test("renders an unwrapped svg node", () => {

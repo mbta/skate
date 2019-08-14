@@ -44,6 +44,7 @@ const vehiclesByRouteId: ByRouteId<VehiclesForRoute> = {
         isOnRoute: false,
       } as Vehicle,
     ],
+    ghosts: [],
   },
   "39": {
     onRouteVehicles: [
@@ -55,6 +56,7 @@ const vehiclesByRouteId: ByRouteId<VehiclesForRoute> = {
       } as Vehicle,
     ],
     incomingVehicles: [],
+    ghosts: [],
   },
 }
 

@@ -1,6 +1,6 @@
 import { LadderDirection, TimepointStatusYFunc } from "../components/ladder"
 import featureIsEnabled from "../laboratoryFeatures"
-import { Vehicle, VehicleId } from "../realtime"
+import { Ghost, Vehicle, VehicleId } from "../realtime"
 import { DirectionId, ViaVariant } from "../schedule"
 import { DrawnStatus, drawnStatus, HeadwaySpacing } from "./vehicleStatus"
 
@@ -62,6 +62,7 @@ const heightOfVehicleGroup = 34
  */
 export const ladderVehiclesFromVehicles = (
   vehicles: Vehicle[],
+  ghosts: Ghost[],
   ladderDirection: LadderDirection,
   timepointStatusYFunc: TimepointStatusYFunc
 ): {
@@ -72,7 +73,13 @@ export const ladderVehiclesFromVehicles = (
     vehicleOnLadder(vehicle, ladderDirection, timepointStatusYFunc)
   )
 
-  const vehiclesInLane: VehicleInLane[] = putIntoLanes(vehiclesOnLadder)
+  const ghostsOnLadder: VehicleOnLadder[] = ghosts.map(ghost =>
+    ghostOnLadder(ghost, ladderDirection, timepointStatusYFunc)
+  )
+
+  const vehiclesInLane: VehicleInLane[] = putIntoLanes(
+    vehiclesOnLadder.concat(ghostsOnLadder)
+  )
 
   const maxOccupiedLane: number = numOccupiedLanes(vehiclesInLane)
   const ladderVehicleHorizontalOffset: number = horizontalOffsetForLanes(
@@ -210,6 +217,34 @@ const scheduledToBe = (
   )
 
   return { scheduledY, scheduledVehicleDirection }
+}
+
+const ghostOnLadder = (
+  ghost: Ghost,
+  ladderDirection: LadderDirection,
+  timepointStatusYFunc: TimepointStatusYFunc
+): VehicleOnLadder => {
+  const vehicleDirection: VehicleDirection = directionOnLadder(
+    ghost.directionId,
+    ladderDirection
+  )
+  const y = timepointStatusYFunc(
+    ghost.scheduledTimepointStatus,
+    vehicleDirection
+  )
+  return {
+    // tslint:disable-next-line:object-literal-sort-keys
+    vehicleId: ghost.id,
+    headwaySpacing: null,
+    label: "N/A",
+    runId: null,
+    viaVariant: ghost.viaVariant,
+    status: "ghost",
+    vehicleDirection,
+    y,
+    scheduledY: y,
+    scheduledVehicleDirection: vehicleDirection,
+  }
 }
 
 const numOccupiedLanes = (vehicles: InLane[]): number => {

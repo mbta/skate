@@ -105,6 +105,7 @@ const RouteLadder = ({
           <Ladder
             timepoints={timepoints}
             vehicles={vehiclesForRoute ? vehiclesForRoute.onRouteVehicles : []}
+            ghosts={vehiclesForRoute ? vehiclesForRoute.ghosts : []}
             ladderDirection={ladderDirection}
             selectedVehicleId={selectedVehicleId}
           />

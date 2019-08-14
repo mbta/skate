@@ -27,10 +27,23 @@ Size of the triangle for calculation of the viewbox and positioning the label
 Sizes are before scaling, relative to the center of the triangle
 */
 const X_CENTER_TO_SIDE = 22
-const Y_CENTER_TO_POINT = 16
+const Y_CENTER_TO_POINT = 20
 const Y_CENTER_TO_BASE = 20
 
 export const VehicleIcon = (props: Props) => {
+  if (
+    props.status === "ghost" &&
+    (props.orientation === Orientation.Left ||
+      props.orientation === Orientation.Right)
+  ) {
+    props = {
+      ...props,
+      // ghosts can't be drawn sideways
+      orientation:
+        props.status === "ghost" ? Orientation.Up : props.orientation,
+    }
+  }
+
   const { left, top, width, height } = viewBox(props)
   return (
     <svg
@@ -96,6 +109,14 @@ export const VehicleIconSvgNode = ({
   status,
 }: Props) => {
   status = status || "plain"
+  variant = variant && variant !== "_" ? variant : undefined
+  // ghosts can't be drawn sideways
+  if (
+    status === "ghost" &&
+    (orientation === Orientation.Left || orientation === Orientation.Right)
+  ) {
+    orientation = Orientation.Up
+  }
   return (
     <g
       className={`m-vehicle-icon m-vehicle-icon${sizeClassSuffix(
@@ -105,9 +126,18 @@ export const VehicleIconSvgNode = ({
       {label ? (
         <Label size={size} orientation={orientation} label={label} />
       ) : null}
-      <Triangle size={size} orientation={orientation} />
-      {variant && variant !== "_" ? (
-        <Variant size={size} orientation={orientation} variant={variant} />
+      {status === "ghost" ? (
+        <Ghost size={size} variant={variant} />
+      ) : (
+        <Triangle size={size} orientation={orientation} />
+      )}
+      {variant ? (
+        <Variant
+          size={size}
+          orientation={orientation}
+          variant={variant}
+          status={status}
+        />
       ) : null}
     </g>
   )
@@ -129,6 +159,48 @@ const Triangle = ({
       // Move the center to 0,0
       transform={`scale(${scale}) rotate(${rotation}) translate(-24,-22)`}
     />
+  )
+}
+
+const Ghost = ({ size, variant }: { size: Size; variant?: string }) => {
+  // No orientation argument, because the ghost icon is always right side up.
+  const scale = scaleForSize(size)
+  return (
+    <g
+      // Move the center to 0,0
+      // The raw ghost icon is a little bigger than the raw triangle, so scale by an extra .7
+      transform={`scale(${0.7 * scale}) translate(-24,-23)`}
+    >
+      <path
+        // The outline that gets highlighted when it's selected
+        className="m-vehicle-icon__ghost-highlight"
+        d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
+        stroke-join="round"
+      />
+      <path
+        className="m-vehicle-icon__ghost-body"
+        d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
+        stroke-join="round"
+      />
+      {variant === undefined ? (
+        <>
+          <ellipse
+            className="m-vehicle-icon__ghost-eye"
+            cx="19.73"
+            cy="22.8"
+            rx="3.11"
+            ry="3.03"
+          />
+          <ellipse
+            className="m-vehicle-icon__ghost-eye"
+            cx="35.29"
+            cy="22.8"
+            rx="3.11"
+            ry="3.03"
+          />
+        </>
+      ) : null}
+    </g>
   )
 }
 
@@ -188,10 +260,12 @@ const Variant = ({
   size,
   orientation,
   variant,
+  status,
 }: {
   size: Size
   orientation: Orientation
   variant: string
+  status: DrawnStatus
 }) => {
   const scale = scaleForSize(size)
 
@@ -199,13 +273,13 @@ const Variant = ({
   let margin = 0
   switch (size) {
     case Size.Small:
-      margin = 2
+      margin = status === "ghost" ? 4 : 2
       break
     case Size.Medium:
-      margin = 4
+      margin = status === "ghost" ? 8 : 4
       break
     case Size.Large:
-      margin = 6
+      margin = status === "ghost" ? 12 : 6
       break
   }
 

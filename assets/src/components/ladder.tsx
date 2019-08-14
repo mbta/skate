@@ -10,7 +10,12 @@ import {
   VehicleDirection,
 } from "../models/ladderVehicle"
 import { statusClass } from "../models/vehicleStatus"
-import { Vehicle, VehicleId, VehicleTimepointStatus } from "../realtime.d"
+import {
+  Ghost,
+  Vehicle,
+  VehicleId,
+  VehicleTimepointStatus,
+} from "../realtime.d"
 import { TimepointId } from "../schedule.d"
 import { selectVehicle } from "../state"
 import HeadwayLines from "./headwayLines"
@@ -19,6 +24,7 @@ import { Orientation, Size, VehicleIconSvgNode } from "./vehicleIcon"
 export interface Props {
   timepoints: TimepointId[]
   vehicles: Vehicle[]
+  ghosts: Ghost[]
   ladderDirection: LadderDirection
   selectedVehicleId?: VehicleId
 }
@@ -47,6 +53,7 @@ const MARGIN_TOP_BOTTOM = 20 // space between the top of the route and the top o
 const Ladder = ({
   timepoints,
   vehicles,
+  ghosts,
   ladderDirection,
   selectedVehicleId,
 }: Props) => {
@@ -69,6 +76,7 @@ const Ladder = ({
 
   const { ladderVehicles, widthOfLanes } = ladderVehiclesFromVehicles(
     vehiclesWithAnActiveBlock,
+    ghosts,
     ladderDirection,
     timepointStatusY
   )
@@ -260,7 +268,7 @@ const ScheduledLine = ({
 }: {
   ladderVehicle: LadderVehicle
 }) => {
-  if (!scheduledY || status === "off-course") {
+  if (!scheduledY || status === "off-course" || status === "ghost") {
     return null
   }
 

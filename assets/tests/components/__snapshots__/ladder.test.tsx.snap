@@ -349,6 +349,158 @@ exports[`ladder highlights a selected vehicle 1`] = `
 </div>
 `;
 
+exports[`ladder renders a ghost bus 1`] = `
+<div
+  className="m-ladder"
+  style={
+    Object {
+      "width": 184,
+    }
+  }
+>
+  <svg
+    className="m-ladder__svg"
+    height={0}
+    viewBox="-92 -20 184 0"
+    width={184}
+  >
+    <g>
+      <g
+        className="m-ladder__vehicle "
+        onClick={[Function]}
+        transform="translate(63,0)"
+      >
+        <g
+          className="m-vehicle-icon m-vehicle-icon--medium ghost"
+        >
+          <rect
+            className="m-vehicle-icon__label-background"
+            height={11}
+            rx={5.5}
+            ry={5.5}
+            width={26}
+            x={-13}
+            y={11.5}
+          />
+          <text
+            className="m-vehicle-icon__label"
+            dominantBaseline="central"
+            textAnchor="middle"
+            x="0"
+            y={17}
+          >
+            N/A
+          </text>
+          <g
+            transform="scale(0.4375) translate(-24,-23)"
+          >
+            <path
+              className="m-vehicle-icon__ghost-highlight"
+              d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
+              stroke-join="round"
+            />
+            <path
+              className="m-vehicle-icon__ghost-body"
+              d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
+              stroke-join="round"
+            />
+          </g>
+          <text
+            className="m-vehicle-icon__variant"
+            dominantBaseline="alphabetic"
+            textAnchor="middle"
+            x={0}
+            y={4.5}
+          >
+            X
+          </text>
+        </g>
+      </g>
+    </g>
+    <line
+      className="m-ladder__line"
+      x1={-40}
+      x2={-40}
+      y1="0"
+      y2={-40}
+    />
+    <line
+      className="m-ladder__line"
+      x1={40}
+      x2={40}
+      y1="0"
+      y2={-40}
+    />
+    <g
+      className="m-ladder__headway-lines"
+    />
+    <circle
+      className="m-ladder__stop-circle"
+      cx={-40}
+      cy={-0}
+      r="3"
+    />
+    <circle
+      className="m-ladder__stop-circle"
+      cx={40}
+      cy={-0}
+      r="3"
+    />
+    <text
+      className="m-ladder__timepoint-name"
+      dominantBaseline="middle"
+      textAnchor="middle"
+      x="0"
+      y={-0}
+    >
+      t0
+    </text>
+    <circle
+      className="m-ladder__stop-circle"
+      cx={-40}
+      cy={-20}
+      r="3"
+    />
+    <circle
+      className="m-ladder__stop-circle"
+      cx={40}
+      cy={-20}
+      r="3"
+    />
+    <text
+      className="m-ladder__timepoint-name"
+      dominantBaseline="middle"
+      textAnchor="middle"
+      x="0"
+      y={-20}
+    >
+      t1
+    </text>
+    <circle
+      className="m-ladder__stop-circle"
+      cx={-40}
+      cy={-40}
+      r="3"
+    />
+    <circle
+      className="m-ladder__stop-circle"
+      cx={40}
+      cy={-40}
+      r="3"
+    />
+    <text
+      className="m-ladder__timepoint-name"
+      dominantBaseline="middle"
+      textAnchor="middle"
+      x="0"
+      y={-40}
+    >
+      t2
+    </text>
+  </svg>
+</div>
+`;
+
 exports[`ladder renders a ladder 1`] = `
 <div
   className="m-ladder"

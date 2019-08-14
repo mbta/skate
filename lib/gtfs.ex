@@ -98,6 +98,26 @@ defmodule Gtfs do
   end
 
   @doc """
+  All trips that are scheduled to be active at the given time, on all routes.
+  """
+  @spec active_trips(Util.Time.timestamp()) :: [Trip.t()]
+  @spec active_trips(Util.Time.timestamp(), GenServer.server()) :: [Trip.t()]
+  def active_trips(now, server \\ __MODULE__) do
+    Duration.log_duration(__MODULE__, :do_active_trips, [now, server])
+  end
+
+  @spec do_active_trips(Util.Time.timestamp(), GenServer.server()) :: [Trip.t()]
+  def do_active_trips(now, server) do
+    try do
+      GenServer.call(server, {:active_trips, now})
+    catch
+      # Handle Gtfs server timeouts gracefully
+      :exit, _ ->
+        []
+    end
+  end
+
+  @doc """
   All of the blocks that are scheduled to be active any time between the start_time and end_time.
 
   The result is grouped by route.
@@ -147,6 +167,10 @@ defmodule Gtfs do
 
   def handle_call({:block, block_id, service_id}, _from, {:loaded, gtfs_data} = state) do
     {:reply, Data.block(gtfs_data, block_id, service_id), state}
+  end
+
+  def handle_call({:active_trips, now}, _from, {:loaded, gtfs_data} = state) do
+    {:reply, Data.active_trips(gtfs_data, now), state}
   end
 
   def handle_call({:active_blocks, start_time, end_time}, _from, {:loaded, gtfs_data} = state) do
