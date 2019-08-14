@@ -316,6 +316,40 @@ defmodule GtfsTest do
     end
   end
 
+  describe "active_trips" do
+    test "returns trips that are active right now" do
+      pid =
+        Gtfs.start_mocked(%{
+          "calendar.txt" => [
+            "service_id,monday,tuesday,wednesday,thursday,friday,saturday,sunday,start_date,end_date",
+            "today,1,1,1,1,1,1,1,20190101,20190101",
+            "tomorrow,1,1,1,1,1,1,1,20190102,20190102"
+          ],
+          "routes.txt" => [
+            "route_id,route_type,route_short_name",
+            "route,3,route",
+            "other_route,3,other_route"
+          ],
+          "trips.txt" => [
+            "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id",
+            "route,today,now,headsign,0,now,",
+            "route,today,later,headsign,0,later,",
+          ],
+          "stop_times.txt" => [
+            "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
+            "now,,00:00:01,stop1,1,",
+            "now,,00:00:03,stop2,2,",
+            "later,,00:00:04,stop1,1,"
+          ]
+        })
+
+      # 2019-01-01 00:00:00 EST
+      time0 = 1_546_318_800
+
+      assert [%Trip{id: "now"}] = Gtfs.active_trips(time0 + 2, pid)
+    end
+  end
+
   describe "active_blocks" do
     test "returns only blocks that are active" do
       pid =

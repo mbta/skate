@@ -456,6 +456,48 @@ defmodule Gtfs.DataTest do
     end
   end
 
+  describe "active_trips" do
+    test "returns active trips" do
+      trip = %Trip{
+        id: "trip",
+        route_id: "route",
+        service_id: "today",
+        headsign: "headsign",
+        direction_id: 0,
+        block_id: "block",
+        stop_times: [
+          %StopTime{
+            stop_id: "stop",
+            time: 2
+          },
+          %StopTime{
+            stop_id: "stop",
+            time: 4
+          }
+        ]
+      }
+
+      data = %Data{
+        routes: [],
+        route_patterns: [],
+        timepoint_ids_by_route: %{},
+        stops: [],
+        trips: %{
+          "trip" => trip
+        },
+        blocks: %{},
+        calendar: %{
+          ~D[2019-01-01] => ["today"]
+        }
+      }
+
+      # 2019-01-01 00:00:00 EST
+      time0 = 1_546_318_800
+
+      assert [%Trip{id: "trip"}] = Data.active_trips(data, time0 + 3)
+    end
+  end
+
   describe "active_blocks" do
     test "returns active blocks" do
       data = %Data{
