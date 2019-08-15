@@ -42,7 +42,8 @@ defmodule Gtfs.RouteTest do
         direction_names: %{
           0 => "Outbound",
           1 => "Inbound"
-        }
+        },
+        name: "39"
       }
 
       assert Route.from_csv_row(csv_row, directions_by_route_id) == expected

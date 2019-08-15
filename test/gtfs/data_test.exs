@@ -11,7 +11,8 @@ defmodule Gtfs.DataTest do
         direction_names: %{
           0 => "Outbound",
           1 => "Inbound"
-        }
+        },
+        name: "39"
       },
       %Route{
         id: "66",
@@ -19,7 +20,8 @@ defmodule Gtfs.DataTest do
         direction_names: %{
           0 => "Outbound",
           1 => "Inbound"
-        }
+        },
+        name: "66"
       }
     ]
 

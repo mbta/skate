@@ -67,6 +67,7 @@ describe("findRouteById", () => {
     expect(findRouteById(routes, "28")).toEqual({
       directionNames: { 0: "Outbound", 1: "Inbound" },
       id: "28",
+      name: "28",
     })
   })
 
@@ -80,8 +81,8 @@ describe("findRouteById", () => {
 })
 
 const routes: Route[] = [
-  { id: "1", directionNames: { 0: "Outbound", 1: "Inbound" } },
-  { id: "28", directionNames: { 0: "Outbound", 1: "Inbound" } },
+  { id: "1", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "1" },
+  { id: "28", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "28" },
 ]
 const timepointsByRouteId: TimepointsByRouteId = {
   "1": ["WASMA", "MELWA", "HHGAT"],

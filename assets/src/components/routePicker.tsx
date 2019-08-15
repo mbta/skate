@@ -121,7 +121,7 @@ const RouteListButton = ({
       className={`m-route-picker__route-list-button ${selectedClass}`}
       onClick={clickHandler}
     >
-      {route.id}
+      {route.name}
     </button>
   )
 }

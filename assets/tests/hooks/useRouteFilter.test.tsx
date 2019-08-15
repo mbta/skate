@@ -58,9 +58,9 @@ describe("useRouteFilter", () => {
 describe("filterRoutes", () => {
   test("when filter type is id, filters by route IDs", () => {
     const initialRoutes: Route[] = [
-      { id: "3", directionNames: { 0: "Outbound", 1: "Inbound" } },
-      { id: "12", directionNames: { 0: "Outbound", 1: "Inbound" } },
-      { id: "13", directionNames: { 0: "Outbound", 1: "Inbound" } },
+      { id: "3", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "3" },
+      { id: "12", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "12" },
+      { id: "13", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "13" },
     ]
 
     const filteredRoutes = filterRoutes(initialRoutes, {
@@ -69,8 +69,8 @@ describe("filterRoutes", () => {
     })
 
     expect(filteredRoutes).toEqual([
-      { id: "3", directionNames: { 0: "Outbound", 1: "Inbound" } },
-      { id: "13", directionNames: { 0: "Outbound", 1: "Inbound" } },
+      { id: "3", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "3" },
+      { id: "13", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "13" },
     ])
   })
 })

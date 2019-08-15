@@ -24,6 +24,7 @@ interface RouteData {
     "0": DirectionName
     "1": DirectionName
   }
+  name: string
 }
 
 interface TimepointsForRouteResponse {
@@ -39,9 +40,10 @@ const checkResponseStatus = (response: Response) => {
 
 const parseJson = (response: Response) => response.json()
 
-const parseRouteData = ({ id, direction_names }: RouteData): Route => ({
+const parseRouteData = ({ id, direction_names, name }: RouteData): Route => ({
   id,
   directionNames: direction_names,
+  name,
 })
 
 const parseRoutesData = (routesData: RouteData[]): Route[] =>

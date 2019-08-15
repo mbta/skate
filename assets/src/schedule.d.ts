@@ -18,6 +18,7 @@ export interface Route {
     0: DirectionName
     1: DirectionName
   }
+  name: string
 }
 
 export type RoutePatternId = string
