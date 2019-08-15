@@ -12,10 +12,12 @@ defmodule Util.Duration do
     {time, result} = :timer.tc(module, function, args)
     time = time / :timer.seconds(1)
 
-    _ =
-      Logger.info(fn ->
-        "Function duration, module=#{module} function=#{function} duration=#{time}"
-      end)
+    if Application.get_env(:skate, :log_duration_timing, true) do
+      _ =
+        Logger.info(fn ->
+          "Function duration, module=#{module} function=#{function} duration=#{time}"
+        end)
+    end
 
     result
   end
