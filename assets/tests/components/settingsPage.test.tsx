@@ -10,8 +10,6 @@ const mockDispatch = jest.fn()
 
 describe("SettingsPage", () => {
   test("renders", () => {
-    // const mockState = { ...initialState, settings: { ...defaultSettings } }
-
     const tree = renderer
       .create(
         <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
