@@ -26,7 +26,7 @@ defmodule Realtime.Vehicle do
           bearing: integer() | nil,
           speed: integer() | nil,
           stop_sequence: integer() | nil,
-          block_id: String.t() | nil,
+          block_id: Block.id() | nil,
           operator_id: String.t() | nil,
           operator_name: String.t() | nil,
           run_id: String.t() | nil,

@@ -51,9 +51,9 @@ defmodule Realtime.TimepointStatus do
   If now is in the middle of a layover:
     the end of the previous trip
   If now is in the middle of a trip:
-    the next timpeoint in that trip
+    the next timepoint in that trip
   """
-  @spec scheduled_location(Block.t(), Util.Time.timestamp()) :: scheduled_location() | nil
+  @spec scheduled_location(Block.t() | nil, Util.Time.timestamp()) :: scheduled_location() | nil
   def scheduled_location(nil, _now) do
     nil
   end
@@ -70,9 +70,9 @@ defmodule Realtime.TimepointStatus do
         Util.Time.time_of_day_add_minutes(Block.start_time(block), -60)
       )
 
-    trip = current_trip_on_block(block, now_time_of_day)
+    trip = scheduled_trip_on_block(block, now_time_of_day)
     timepoints = Enum.filter(trip.stop_times, &StopTime.is_timepoint?/1)
-    timepoint_status = current_timepoint_status(timepoints, now_time_of_day)
+    timepoint_status = scheduled_timepoint_status(timepoints, now_time_of_day)
 
     %{
       route_id: trip.route_id,
@@ -81,8 +81,8 @@ defmodule Realtime.TimepointStatus do
     }
   end
 
-  @spec current_trip_on_block(Block.t(), Util.Time.time_of_day()) :: Trip.t()
-  defp current_trip_on_block(block, now) do
+  @spec scheduled_trip_on_block(Block.t(), Util.Time.time_of_day()) :: Trip.t()
+  defp scheduled_trip_on_block(block, now) do
     cond do
       now <= Block.start_time(block) ->
         # Block isn't scheduled to have started yet
@@ -102,8 +102,8 @@ defmodule Realtime.TimepointStatus do
     end
   end
 
-  @spec current_timepoint_status([StopTime.t()], Util.Time.time_of_day()) :: timepoint_status
-  defp current_timepoint_status(timepoints, now) do
+  @spec scheduled_timepoint_status([StopTime.t()], Util.Time.time_of_day()) :: timepoint_status()
+  defp scheduled_timepoint_status(timepoints, now) do
     cond do
       now <= List.first(timepoints).time ->
         # Trip isn't scheduled to have started yet
