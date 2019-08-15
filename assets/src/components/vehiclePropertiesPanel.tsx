@@ -1,10 +1,11 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { TripsByIdContext } from "../contexts/tripsByIdContext"
 import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
 import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
 import vehicleLabel from "../helpers/vehicleLabel"
 import { getViaVariant } from "../helpers/viaVariant"
+import useInterval from "../hooks/useInterval"
 import featureIsEnabled from "../laboratoryFeatures"
 import { status } from "../models/vehicleStatus"
 import { DataDiscrepancy, Vehicle } from "../realtime.d"
@@ -171,10 +172,21 @@ const NotAvailable = () => (
   </span>
 )
 
+const nowInSeconds = (): number => Math.floor(Date.now() / 1000)
+
 const Location = ({ vehicle }: { vehicle: Vehicle }) => {
-  const { isOffCourse, latitude, longitude, stopStatus } = vehicle
+  const [epocNowInSeconds, setEpocNowInSeconds] = useState(nowInSeconds())
+  useInterval(() => setEpocNowInSeconds(nowInSeconds()), 1000)
+  const secondsAgo = (epocTime: number): string =>
+    `${epocNowInSeconds - epocTime}s ago`
+
+  const { isOffCourse, latitude, longitude, stopStatus, timestamp } = vehicle
+
   return (
     <div className="m-vehicle-properties-panel__location">
+      <div className="m-vehicle-properties-panel__timestamp">
+        {secondsAgo(timestamp)}
+      </div>
       <div className="m-vehicle-properties-panel__vehicle-property-label">
         Next Stop
       </div>

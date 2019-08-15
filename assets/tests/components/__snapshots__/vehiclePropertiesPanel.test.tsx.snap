@@ -227,6 +227,11 @@ Array [
       className="m-vehicle-properties-panel__location"
     >
       <div
+        className="m-vehicle-properties-panel__timestamp"
+      >
+        111s ago
+      </div>
+      <div
         className="m-vehicle-properties-panel__vehicle-property-label"
       >
         Next Stop
@@ -487,6 +492,11 @@ Array [
     <div
       className="m-vehicle-properties-panel__location"
     >
+      <div
+        className="m-vehicle-properties-panel__timestamp"
+      >
+        111s ago
+      </div>
       <div
         className="m-vehicle-properties-panel__vehicle-property-label"
       >
@@ -749,6 +759,11 @@ Array [
       className="m-vehicle-properties-panel__location"
     >
       <div
+        className="m-vehicle-properties-panel__timestamp"
+      >
+        111s ago
+      </div>
+      <div
         className="m-vehicle-properties-panel__vehicle-property-label"
       >
         Next Stop
@@ -1010,6 +1025,11 @@ Array [
       className="m-vehicle-properties-panel__location"
     >
       <div
+        className="m-vehicle-properties-panel__timestamp"
+      >
+        111s ago
+      </div>
+      <div
         className="m-vehicle-properties-panel__vehicle-property-label"
       >
         Next Stop
@@ -1270,6 +1290,11 @@ Array [
     <div
       className="m-vehicle-properties-panel__location"
     >
+      <div
+        className="m-vehicle-properties-panel__timestamp"
+      >
+        111s ago
+      </div>
       <div
         className="m-vehicle-properties-panel__vehicle-property-label"
       >
@@ -1554,6 +1579,11 @@ Array [
       className="m-vehicle-properties-panel__location"
     >
       <div
+        className="m-vehicle-properties-panel__timestamp"
+      >
+        111s ago
+      </div>
+      <div
         className="m-vehicle-properties-panel__vehicle-property-label"
       >
         Next Stop
@@ -1814,6 +1844,11 @@ Array [
     <div
       className="m-vehicle-properties-panel__location"
     >
+      <div
+        className="m-vehicle-properties-panel__timestamp"
+      >
+        111s ago
+      </div>
       <div
         className="m-vehicle-properties-panel__vehicle-property-label"
       >

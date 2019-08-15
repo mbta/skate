@@ -12,6 +12,8 @@ import { Vehicle } from "../../src/realtime.d"
 import { Route, Trip } from "../../src/schedule"
 import { deselectVehicle, initialState } from "../../src/state"
 
+jest.spyOn(Date, "now").mockImplementation(() => 234000)
+
 // Enable feature flags for "renders for a headway-based vehicle" test
 jest.mock("../../src/laboratoryFeatures", () => ({
   __esModule: true,
