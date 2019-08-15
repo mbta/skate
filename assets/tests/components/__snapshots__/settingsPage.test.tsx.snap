@@ -2,26 +2,26 @@
 
 exports[`SettingsPage renders 1`] = `
 <div
-  className="m-page m-page--settings"
+  className="c-page c-page--settings"
 >
   <div
-    className="m-page__container"
+    className="c-page__container"
   >
     <h1
-      className="m-page__title"
+      className="c-page__title"
     >
       Settings
     </h1>
     <div
-      className="m-page__section"
+      className="c-page__section"
     >
       <h2
-        className="m-page__header"
+        className="c-page__header"
       >
         Vehicle Label
       </h2>
       <select
-        className="m-page__select"
+        className="c-page__select"
         id="vehicle-label-setting"
         onChange={[Function]}
         value={1}

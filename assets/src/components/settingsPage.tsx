@@ -11,16 +11,16 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
   const [{ settings }, dispatch] = useContext(StateDispatchContext)
 
   return (
-    <div className="m-page m-page--settings">
-      <div className="m-page__container">
-        <h1 className="m-page__title">Settings</h1>
+    <div className="c-page c-page--settings">
+      <div className="c-page__container">
+        <h1 className="c-page__title">Settings</h1>
 
-        <div className="m-page__section">
-          <h2 className="m-page__header">Vehicle Label</h2>
+        <div className="c-page__section">
+          <h2 className="c-page__header">Vehicle Label</h2>
 
           <select
             id="vehicle-label-setting"
-            className="m-page__select"
+            className="c-page__select"
             value={settings.vehicleLabel}
             onChange={setVehicleLabel(dispatch)}
           >

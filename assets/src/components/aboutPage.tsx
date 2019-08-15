@@ -1,27 +1,27 @@
 import React, { ReactElement } from "react"
 
 const AboutPage = (): ReactElement<HTMLDivElement> => (
-  <div className="c-page m-page m-page--about">
-    <div className="m-page__container">
-      <h1 className="m-page__title">About Skate</h1>
+  <div className="c-page c-page--about">
+    <div className="c-page__container">
+      <h1 className="c-page__title">About Skate</h1>
       <p>
         Skate is an active work-in-progress. In the coming months, you’ll notice
         new tools like shuttle tracking. You can also expect changes and
         refinements to the route ladders as we continue building.
       </p>
-      <div className="m-page__section">
-        <h2 className="m-page__header">Device Support</h2>
+      <div className="c-page__section">
+        <h2 className="c-page__header">Device Support</h2>
         <p>Need tablet support? Call the MBTA Help Desk at x5761.</p>
       </div>
-      <div className="m-page__section">
-        <h2 className="m-page__header">Frequently Asked Questions</h2>
+      <div className="c-page__section">
+        <h2 className="c-page__header">Frequently Asked Questions</h2>
         <p>
           Have questions about using Skate? We’re making updates all the time.
           Read the latest news and refresh your training by visiting our FAQ.
         </p>
         <p>
           <a
-            className="m-page__link"
+            className="c-page__link"
             href="https://docs.google.com/document/d/e/2PACX-1vQVzXUcQWg-nKCkb8CyModNUCXDHHRxgqPdtlkm1GQOK9aCrGMSJAoC2J8JuuGFPGnPkcetrZEk6ERH/pub"
             target="_blank"
           >
@@ -29,8 +29,8 @@ const AboutPage = (): ReactElement<HTMLDivElement> => (
           </a>
         </p>
       </div>
-      <div className="m-page__section">
-        <h2 className="m-page__header">Feedback</h2>
+      <div className="c-page__section">
+        <h2 className="c-page__header">Feedback</h2>
         <p>
           Have feedback, a suggestion, or need other support related to Skate?
           Use our feedback form and someone on our team will be in touch with
@@ -38,7 +38,7 @@ const AboutPage = (): ReactElement<HTMLDivElement> => (
         </p>
         <p>
           <a
-            className="m-page__link"
+            className="c-page__link"
             href="https://form.asana.com?hash=1a2a65ebbc7a183eb3298889a2cc9ccaf1e95cfa7a6f9ca8f226dfdb8dbb4ab0&id=1129738905260896"
             target="_blank"
           >
