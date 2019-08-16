@@ -248,7 +248,7 @@ defmodule Gtfs do
       {:noreply, state}
     else
       {:error, error} ->
-        Logger.info(fn ->
+        Logger.error(fn ->
           "Error loading gtfs, time_in_ms=#{Time.diff(Time.utc_now(), start_time, :millisecond)}"
         end)
 
