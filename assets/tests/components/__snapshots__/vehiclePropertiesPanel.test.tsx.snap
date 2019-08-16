@@ -227,11 +227,6 @@ Array [
       className="m-vehicle-properties-panel__location"
     >
       <div
-        className="m-vehicle-properties-panel__timestamp"
-      >
-        111s ago
-      </div>
-      <div
         className="m-vehicle-properties-panel__vehicle-property-label"
       >
         Next Stop
@@ -240,6 +235,16 @@ Array [
         className="m-vehicle-properties-panel__vehicle-property-value"
       >
         Stop Name
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-label"
+      >
+        Last GPS Ping
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-value"
+      >
+        111s ago
       </div>
       <a
         className="m-vehicle-properties-panel__link"
@@ -493,11 +498,6 @@ Array [
       className="m-vehicle-properties-panel__location"
     >
       <div
-        className="m-vehicle-properties-panel__timestamp"
-      >
-        111s ago
-      </div>
-      <div
         className="m-vehicle-properties-panel__vehicle-property-label"
       >
         Next Stop
@@ -506,6 +506,16 @@ Array [
         className="m-vehicle-properties-panel__vehicle-property-value"
       >
         Stop Name
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-label"
+      >
+        Last GPS Ping
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-value"
+      >
+        111s ago
       </div>
       <a
         className="m-vehicle-properties-panel__link"
@@ -759,11 +769,6 @@ Array [
       className="m-vehicle-properties-panel__location"
     >
       <div
-        className="m-vehicle-properties-panel__timestamp"
-      >
-        111s ago
-      </div>
-      <div
         className="m-vehicle-properties-panel__vehicle-property-label"
       >
         Next Stop
@@ -772,6 +777,16 @@ Array [
         className="m-vehicle-properties-panel__vehicle-property-value"
       >
         Stop Name
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-label"
+      >
+        Last GPS Ping
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-value"
+      >
+        111s ago
       </div>
       <a
         className="m-vehicle-properties-panel__link"
@@ -1025,11 +1040,6 @@ Array [
       className="m-vehicle-properties-panel__location"
     >
       <div
-        className="m-vehicle-properties-panel__timestamp"
-      >
-        111s ago
-      </div>
-      <div
         className="m-vehicle-properties-panel__vehicle-property-label"
       >
         Next Stop
@@ -1038,6 +1048,16 @@ Array [
         className="m-vehicle-properties-panel__vehicle-property-value"
       >
         Stop Name
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-label"
+      >
+        Last GPS Ping
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-value"
+      >
+        111s ago
       </div>
       <a
         className="m-vehicle-properties-panel__link"
@@ -1291,11 +1311,6 @@ Array [
       className="m-vehicle-properties-panel__location"
     >
       <div
-        className="m-vehicle-properties-panel__timestamp"
-      >
-        111s ago
-      </div>
-      <div
         className="m-vehicle-properties-panel__vehicle-property-label"
       >
         Next Stop
@@ -1308,6 +1323,16 @@ Array [
         >
           Not available
         </span>
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-label"
+      >
+        Last GPS Ping
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-value"
+      >
+        111s ago
       </div>
       <a
         className="m-vehicle-properties-panel__link"
@@ -1579,11 +1604,6 @@ Array [
       className="m-vehicle-properties-panel__location"
     >
       <div
-        className="m-vehicle-properties-panel__timestamp"
-      >
-        111s ago
-      </div>
-      <div
         className="m-vehicle-properties-panel__vehicle-property-label"
       >
         Next Stop
@@ -1592,6 +1612,16 @@ Array [
         className="m-vehicle-properties-panel__vehicle-property-value"
       >
         Stop Name
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-label"
+      >
+        Last GPS Ping
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-value"
+      >
+        111s ago
       </div>
       <a
         className="m-vehicle-properties-panel__link"
@@ -1845,11 +1875,6 @@ Array [
       className="m-vehicle-properties-panel__location"
     >
       <div
-        className="m-vehicle-properties-panel__timestamp"
-      >
-        111s ago
-      </div>
-      <div
         className="m-vehicle-properties-panel__vehicle-property-label"
       >
         Next Stop
@@ -1858,6 +1883,16 @@ Array [
         className="m-vehicle-properties-panel__vehicle-property-value"
       >
         Stop Name
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-label"
+      >
+        Last GPS Ping
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-value"
+      >
+        111s ago
       </div>
       <a
         className="m-vehicle-properties-panel__link"

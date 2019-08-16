@@ -184,14 +184,17 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
 
   return (
     <div className="m-vehicle-properties-panel__location">
-      <div className="m-vehicle-properties-panel__timestamp">
-        {secondsAgo(timestamp)}
-      </div>
       <div className="m-vehicle-properties-panel__vehicle-property-label">
         Next Stop
       </div>
       <div className="m-vehicle-properties-panel__vehicle-property-value">
         {isOffCourse ? <NotAvailable /> : <>{stopStatus.stopName}</>}
+      </div>
+      <div className="m-vehicle-properties-panel__vehicle-property-label">
+        Last GPS Ping
+      </div>
+      <div className="m-vehicle-properties-panel__vehicle-property-value">
+        {secondsAgo(timestamp)}
       </div>
       <a
         className="m-vehicle-properties-panel__link"
