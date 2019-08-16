@@ -10,7 +10,7 @@ jest.mock("../../src/laboratoryFeatures", () => ({
 
 test("renders a route ladder", () => {
   const routes: Route[] = [
-    { id: "1", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "28" },
+    { id: "1", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "1" },
     { id: "28", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "28" },
   ]
   const timepointsByRouteId: TimepointsByRouteId = {
