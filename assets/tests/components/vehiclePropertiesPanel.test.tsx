@@ -112,6 +112,7 @@ describe("VehiclePropertiesPanel", () => {
         0: "Outbound",
         1: "Inbound",
       },
+      name: "39",
     }
     const tree = renderer
       .create(

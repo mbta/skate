@@ -23,7 +23,7 @@ const Header = ({ route }: { route: Route }) => {
     <div className="m-route-ladder__header">
       <CloseButton onClick={() => dispatch(deselectRoute(route.id))} />
 
-      <div className="m-route-ladder__route-name">{route.id}</div>
+      <div className="m-route-ladder__route-name">{route.name}</div>
     </div>
   )
 }

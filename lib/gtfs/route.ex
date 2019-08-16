@@ -7,7 +7,8 @@ defmodule Gtfs.Route do
   @type t :: %__MODULE__{
           id: id(),
           description: String.t(),
-          direction_names: direction_names()
+          direction_names: direction_names(),
+          name: String.t()
         }
 
   @type direction_names :: %{
@@ -18,7 +19,8 @@ defmodule Gtfs.Route do
   @enforce_keys [
     :id,
     :description,
-    :direction_names
+    :direction_names,
+    :name
   ]
 
   @derive Jason.Encoder
@@ -26,7 +28,8 @@ defmodule Gtfs.Route do
   defstruct [
     :id,
     :description,
-    :direction_names
+    :direction_names,
+    :name
   ]
 
   @spec from_csv_row(Csv.row(), Data.directions_by_route_and_id()) :: t()
@@ -35,14 +38,26 @@ defmodule Gtfs.Route do
     description = row["route_desc"]
     route_directions = Map.get(directions_by_route_id, id)
 
+    name = name(row)
+
     %__MODULE__{
       id: id,
       description: description,
       direction_names: %{
         0 => route_directions[0] && route_directions[0].direction_name,
         1 => route_directions[1] && route_directions[1].direction_name
-      }
+      },
+      name: name
     }
+  end
+
+  @spec name(Csv.row()) :: String.t()
+  defp name(%{"route_short_name" => "", "route_long_name" => long_name}) do
+    long_name
+  end
+
+  defp name(%{"route_short_name" => short_name}) do
+    short_name
   end
 
   @spec bus_route_row?(Csv.row()) :: boolean

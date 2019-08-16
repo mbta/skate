@@ -42,6 +42,7 @@ describe("routeLadder", () => {
     const route: Route = {
       id: "28",
       directionNames: { 0: "Outbound", 1: "Inbound" },
+      name: "28",
     }
     const timepoints = ["MATPN", "WELLH", "MORTN"]
 
@@ -63,6 +64,7 @@ describe("routeLadder", () => {
     const route: Route = {
       id: "28",
       directionNames: { 0: "Outbound", 1: "Inbound" },
+      name: "28",
     }
     const timepoints = ["MATPN", "WELLH", "MORTN"]
     const vehicles: Vehicle[] = [
@@ -169,6 +171,7 @@ describe("routeLadder", () => {
     const route: Route = {
       id: "28",
       directionNames: { 0: "Outbound", 1: "Inbound" },
+      name: "28",
     }
     const timepoints = ["MATPN", "WELLH", "MORTN"]
     const vehicles: Vehicle[] = [
@@ -275,6 +278,7 @@ describe("routeLadder", () => {
     const route: Route = {
       id: "28",
       directionNames: { 0: "Outbound", 1: "Inbound" },
+      name: "28",
     }
     const timepoints = null
 
@@ -297,6 +301,7 @@ describe("routeLadder", () => {
     const route: Route = {
       id: "28",
       directionNames: { 0: "Outbound", 1: "Inbound" },
+      name: "28",
     }
     const timepoints = ["MATPN", "WELLH", "MORTN"]
 
@@ -319,6 +324,7 @@ describe("routeLadder", () => {
     const route: Route = {
       id: "28",
       directionNames: { 0: "Outbound", 1: "Inbound" },
+      name: "28",
     }
     const timepoints = ["MATPN", "WELLH", "MORTN"]
 
@@ -345,6 +351,7 @@ describe("routeLadder", () => {
     const route: Route = {
       id: "28",
       directionNames: { 0: "Outbound", 1: "Inbound" },
+      name: "28",
     }
     const timepoints = ["MATPN", "WELLH", "MORTN"]
     const vehicle: Vehicle = {

@@ -13,8 +13,8 @@ defmodule GtfsTest do
             "39,1,Inbound,Back Bay Station"
           ],
           "routes.txt" => [
-            "route_id,route_long_name,route_type,route_desc",
-            "39,Forest Hills - Back Bay Station,3,Key Bus"
+            "route_id,route_long_name,route_type,route_desc,route_short_name",
+            "39,Forest Hills - Back Bay Station,3,Key Bus,39"
           ]
         })
 
@@ -25,7 +25,8 @@ defmodule GtfsTest do
                  direction_names: %{
                    0 => "Outbound",
                    1 => "Inbound"
-                 }
+                 },
+                 name: "39"
                }
              ]
     end
@@ -34,9 +35,9 @@ defmodule GtfsTest do
       pid =
         Gtfs.start_mocked(%{
           "routes.txt" => [
-            "route_id,route_long_name,route_type",
-            "Red,Red Line,1",
-            "39,Forest Hills - Back Bay Station,3"
+            "route_id,route_long_name,route_type,route_short_name",
+            "Red,Red Line,1,",
+            "39,Forest Hills - Back Bay Station,3,39"
           ]
         })
 
@@ -68,8 +69,8 @@ defmodule GtfsTest do
       pid =
         Gtfs.start_mocked(%{
           "routes.txt" => [
-            "route_id,route_type",
-            "39,3"
+            "route_id,route_type,route_short_name",
+            "39,3,39"
           ],
           "route_patterns.txt" => [
             "route_pattern_id,route_id,direction_id,representative_trip_id",
@@ -95,9 +96,9 @@ defmodule GtfsTest do
       pid =
         Gtfs.start_mocked(%{
           "routes.txt" => [
-            "route_id,route_type",
-            "39,3",
-            "Blue,1"
+            "route_id,route_type,route_short_name",
+            "39,3,39",
+            "Blue,1,Blue"
           ],
           "route_patterns.txt" => [
             "route_pattern_id,route_id,direction_id,representative_trip_id",
@@ -124,8 +125,8 @@ defmodule GtfsTest do
       pid =
         Gtfs.start_mocked(%{
           "routes.txt" => [
-            "route_id,route_type",
-            "route,3"
+            "route_id,route_type,route_short_name",
+            "route,3,39"
           ],
           "route_patterns.txt" => [
             "route_pattern_id,route_id,direction_id,representative_trip_id",
@@ -158,8 +159,8 @@ defmodule GtfsTest do
       pid =
         Gtfs.start_mocked(%{
           "routes.txt" => [
-            "route_id,route_type",
-            "route,3"
+            "route_id,route_type,route_short_name",
+            "route,3,route"
           ],
           "route_patterns.txt" => [
             "route_pattern_id,route_id,direction_id,representative_trip_id",
@@ -224,8 +225,8 @@ defmodule GtfsTest do
       pid =
         Gtfs.start_mocked(%{
           "routes.txt" => [
-            "route_id,route_type",
-            "route,3"
+            "route_id,route_type,route_short_name",
+            "route,3,route"
           ],
           "route_patterns.txt" => [
             "route_pattern_id,route_id,direction_id,representative_trip_id",
@@ -271,8 +272,8 @@ defmodule GtfsTest do
       pid =
         Gtfs.start_mocked(%{
           "routes.txt" => [
-            "route_id,route_type",
-            "route,3"
+            "route_id,route_type,route_short_name",
+            "route,3,route"
           ],
           "route_patterns.txt" => [
             "route_pattern_id,route_id,direction_id,representative_trip_id",
@@ -325,9 +326,9 @@ defmodule GtfsTest do
             "tomorrow,1,1,1,1,1,1,1,20190102,20190102"
           ],
           "routes.txt" => [
-            "route_id,route_type",
-            "route,3",
-            "other_route,3"
+            "route_id,route_type,route_short_name",
+            "route,3,route",
+            "other_route,3,other_route"
           ],
           "trips.txt" => [
             "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id",
@@ -362,8 +363,8 @@ defmodule GtfsTest do
             "tomorrow,1,1,1,1,1,1,1,20190102,20190102"
           ],
           "routes.txt" => [
-            "route_id,route_type",
-            "route,3"
+            "route_id,route_type,route_short_name",
+            "route,3,route"
           ],
           "trips.txt" => [
             "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id",
