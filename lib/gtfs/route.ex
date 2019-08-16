@@ -51,6 +51,7 @@ defmodule Gtfs.Route do
     }
   end
 
+  @spec name(Csv.row()) :: String.t()
   defp name(%{"route_short_name" => "", "route_long_name" => long_name}) do
     long_name
   end
