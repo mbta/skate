@@ -3,12 +3,14 @@ import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Lea
 import React, {
   MutableRefObject,
   ReactElement,
+  useContext,
   useEffect,
   useRef,
   useState,
 } from "react"
-import runIdToLabel from "../helpers/runIdToLabel"
+import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
+import vehicleLabelString from "../helpers/vehicleLabel"
 import { status } from "../models/vehicleStatus"
 import { Vehicle } from "../realtime.d"
 
@@ -34,7 +36,8 @@ export const updateMap = (
     map: LeafletMap
     vehicleIcon: Marker
     vehicleLabel: Marker
-  }
+  },
+  labelString: string
 ): void => {
   const { bearing, headwaySpacing, latitude, longitude } = vehicle
   const zoom = map.getZoom()
@@ -63,7 +66,7 @@ export const updateMap = (
   const label = Leaflet.divIcon({
     className: "m-vehicle-map__label",
     html: `<svg>
-            <text class="m-vehicle-icon__label">${runIdToLabel(vehicle)}</text>
+            <text class="m-vehicle-icon__label">${labelString}</text>
           </svg>`,
     iconAnchor: [12, -24],
   })
@@ -78,6 +81,7 @@ export const updateMap = (
 }
 
 const Map = (props: Props): ReactElement<HTMLDivElement> => {
+  const [{ settings }] = useContext(StateDispatchContext)
   const containerRef: MutableRefObject<HTMLDivElement | null> = useRef(null)
   const [state, updateState] = useState<State>({
     map: null,
@@ -117,7 +121,11 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         map
       )
 
-    updateMap(props, { map, vehicleIcon, vehicleLabel })
+    updateMap(
+      props,
+      { map, vehicleIcon, vehicleLabel },
+      vehicleLabelString(props.vehicle, settings.vehicleLabel)
+    )
 
     updateState({ map, vehicleIcon, vehicleLabel })
   }, [props, containerRef])

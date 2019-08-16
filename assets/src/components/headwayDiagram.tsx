@@ -2,7 +2,7 @@ import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { TripsByIdContext } from "../contexts/tripsByIdContext"
 import { VehiclesByRouteIdContext } from "../contexts/vehiclesByRouteIdContext"
-import runIdToLabel from "../helpers/runIdToLabel"
+import vehicleLabel from "../helpers/vehicleLabel"
 import { getViaVariant } from "../helpers/viaVariant"
 import {
   allVehiclesForRoute,
@@ -40,7 +40,7 @@ const humanSpacing = (spacing: HeadwaySpacing | null): string => {
 }
 
 const OtherVehicle = ({ vehicle }: { vehicle: Vehicle }) => {
-  const [, dispatch] = useContext(StateDispatchContext)
+  const [{ settings }, dispatch] = useContext(StateDispatchContext)
   const { id, tripId } = vehicle
   const tripsById: TripsById = useContext(TripsByIdContext)
   const trip: Trip | undefined = tripsById[tripId]
@@ -53,7 +53,7 @@ const OtherVehicle = ({ vehicle }: { vehicle: Vehicle }) => {
       <VehicleIcon
         size={Size.Small}
         orientation={Orientation.Right}
-        label={runIdToLabel(vehicle)}
+        label={vehicleLabel(vehicle, settings.vehicleLabel)}
         variant={trip && getViaVariant(trip.routePatternId)}
       />
     </div>
@@ -61,6 +61,7 @@ const OtherVehicle = ({ vehicle }: { vehicle: Vehicle }) => {
 }
 
 const HeadwayDiagram = ({ vehicle }: { vehicle: Vehicle }) => {
+  const [{ settings }] = useContext(StateDispatchContext)
   const vehiclesByRouteId: ByRouteId<VehiclesForRoute> = useContext(
     VehiclesByRouteIdContext
   )
@@ -112,7 +113,7 @@ const HeadwayDiagram = ({ vehicle }: { vehicle: Vehicle }) => {
           <VehicleIcon
             size={Size.Medium}
             orientation={Orientation.Right}
-            label={runIdToLabel(vehicle)}
+            label={vehicleLabel(vehicle, settings.vehicleLabel)}
             variant={trip && getViaVariant(trip.routePatternId)}
           />
         </div>

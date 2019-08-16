@@ -1,20 +1,21 @@
-.m-about-page {
+.c-page {
   @include page;
   background: $color-bg-medium;
 }
 
-.m-about-page__container {
+.c-page__container {
   background: $color-bg-light;
   padding: 2rem;
   max-width: 30rem;
+  min-height: 100vh;
 }
 
-.m-about-page__title {
+.c-page__title {
   @include font-header;
   text-align: center;
 }
 
-.m-about-page__section {
+.c-page__section {
   background-color: $white;
   border-radius: 8px;
   box-shadow: $subtle-box-shadow;
@@ -22,13 +23,21 @@
   padding: 0.5rem 1rem;
 }
 
-.m-about-page__header {
+.c-page__header {
   @include font-emph;
   font-weight: bold;
 }
 
-.m-about-page__link {
+.c-page__link {
   @include button-primary;
   display: block;
   text-align: center;
+}
+
+.c-page__select {
+  background-color: $color-bg-base;
+  height: 2rem;
+  margin-bottom: 0.7rem;
+  padding-left: 0.4rem;
+  width: 28rem;
 }

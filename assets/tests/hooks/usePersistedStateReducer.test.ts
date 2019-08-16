@@ -2,6 +2,7 @@ import { renderHook } from "@testing-library/react-hooks"
 import usePersistedStateReducer, {
   filter,
 } from "../../src/hooks/usePersistedStateReducer"
+import { VehicleLabelSetting } from "../../src/settings"
 import { Reducer, State } from "../../src/state"
 
 // tslint:disable: react-hooks-nesting
@@ -34,6 +35,7 @@ describe("usePersistedStateReducer", () => {
       routePickerIsVisible: true,
       selectedRouteIds: ["1", "2"],
       selectedVehicleId: "2",
+      settings: { vehicleLabel: VehicleLabelSetting.RunNumber },
     }
 
     const { result } = renderHook(() =>
@@ -56,11 +58,13 @@ describe("usePersistedStateReducer", () => {
       routePickerIsVisible: true,
       selectedRouteIds: ["1", "2"],
       selectedVehicleId: "2",
+      settings: { vehicleLabel: VehicleLabelSetting.RunNumber },
     }
     const expectedState: State = {
       routePickerIsVisible: true,
       selectedRouteIds: ["28", "39"],
       selectedVehicleId: "2",
+      settings: { vehicleLabel: VehicleLabelSetting.RunNumber },
     }
 
     const { result } = renderHook(() =>

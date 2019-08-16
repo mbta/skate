@@ -1,4 +1,5 @@
 import { VehicleId } from "../src/realtime.d"
+import { VehicleLabelSetting } from "../src/settings"
 import * as State from "../src/state"
 
 const initialState = State.initialState
@@ -67,6 +68,22 @@ describe("reducer", () => {
     }
 
     const newState = reducer(initialState, State.toggleRoutePicker())
+
+    expect(newState).toEqual(expectedState)
+  })
+
+  test("setVehicleLabelSetting", () => {
+    const vehicleLabel: VehicleLabelSetting = VehicleLabelSetting.VehicleNumber
+    const state = initialState
+    const expectedState = {
+      ...state,
+      settings: {
+        ...state.settings,
+        vehicleLabel,
+      },
+    }
+
+    const newState = reducer(state, State.setVehicleLabelSetting(vehicleLabel))
 
     expect(newState).toEqual(expectedState)
   })

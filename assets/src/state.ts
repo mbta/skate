@@ -1,17 +1,20 @@
 import { Dispatch as ReactDispatch } from "react"
 import { VehicleId } from "./realtime.d"
 import { RouteId } from "./schedule.d"
+import { defaultSettings, Settings, VehicleLabelSetting } from "./settings"
 
 export interface State {
   routePickerIsVisible: boolean
   selectedRouteIds: RouteId[]
   selectedVehicleId?: VehicleId
+  settings: Settings
 }
 
 export const initialState: State = {
   routePickerIsVisible: true,
   selectedRouteIds: [],
   selectedVehicleId: undefined,
+  settings: defaultSettings,
 }
 
 interface SelectRouteAction {
@@ -66,12 +69,29 @@ export const toggleRoutePicker = (): ToggleRoutePickerAction => ({
   type: "TOGGLE_ROUTE_PICKER",
 })
 
+interface SetVehicleLabelSettingAction {
+  type: "SET_VEHICLE_LABEL_SETTING"
+  payload: {
+    vehicleLabel: VehicleLabelSetting
+  }
+}
+
+export const setVehicleLabelSetting = (
+  vehicleLabel: VehicleLabelSetting
+): SetVehicleLabelSettingAction => ({
+  type: "SET_VEHICLE_LABEL_SETTING",
+  payload: {
+    vehicleLabel,
+  },
+})
+
 type Action =
   | SelectRouteAction
   | DeselectRouteAction
   | SelectVehicleAction
   | DeselectVehicleAction
   | ToggleRoutePickerAction
+  | SetVehicleLabelSettingAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -105,6 +125,14 @@ export const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         routePickerIsVisible: !state.routePickerIsVisible,
+      }
+    case "SET_VEHICLE_LABEL_SETTING":
+      return {
+        ...state,
+        settings: {
+          ...state.settings,
+          vehicleLabel: action.payload.vehicleLabel,
+        },
       }
     default:
       return state

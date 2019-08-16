@@ -3,6 +3,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { TripsByIdContext } from "../contexts/tripsByIdContext"
 import { partition } from "../helpers/array"
 import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
+import vehicleLabel from "../helpers/vehicleLabel"
 import featureIsEnabled from "../laboratoryFeatures"
 import {
   LadderVehicle,
@@ -143,22 +144,22 @@ const Ladder = ({
 }
 
 const VehicleSvg = ({
-  ladderVehicle: {
+  ladderVehicle,
+  selectedVehicleId,
+}: {
+  ladderVehicle: LadderVehicle
+  selectedVehicleId: VehicleId | undefined
+}) => {
+  const {
     vehicleId,
-    label,
     headwaySpacing,
     viaVariant,
     status,
     x,
     y,
     vehicleDirection,
-  },
-  selectedVehicleId,
-}: {
-  ladderVehicle: LadderVehicle
-  selectedVehicleId: VehicleId | undefined
-}) => {
-  const [, dispatch] = useContext(StateDispatchContext)
+  } = ladderVehicle
+  const [{ settings }, dispatch] = useContext(StateDispatchContext)
   const selectedClass = vehicleId === selectedVehicleId ? "selected" : ""
 
   return (
@@ -174,7 +175,10 @@ const VehicleSvg = ({
         <VehicleIconSvgNode
           size={Size.Medium}
           orientation={orientationMatchingVehicle(vehicleDirection)}
-          label={label}
+          label={vehicleLabel(
+            (ladderVehicle as unknown) as Vehicle,
+            settings.vehicleLabel
+          )}
           variant={viaVariant}
         />
       </g>

@@ -2,8 +2,8 @@ import React, { useContext, useEffect } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { TripsByIdContext } from "../contexts/tripsByIdContext"
 import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
-import runIdToLabel from "../helpers/runIdToLabel"
 import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
+import vehicleLabel from "../helpers/vehicleLabel"
 import { getViaVariant } from "../helpers/viaVariant"
 import featureIsEnabled from "../laboratoryFeatures"
 import { status } from "../models/vehicleStatus"
@@ -94,37 +94,41 @@ const Header = ({
   trip?: Trip
   selectedVehicleRoute?: Route
   hideMe: () => void
-}) => (
-  <div className="m-vehicle-properties-panel__header">
-    <div
-      className={`m-vehicle-properties-panel__label ${vehicleAdherenceDisplayClass(
-        vehicle.headwaySpacing,
-        status(vehicle)
-      )}`}
-    >
-      <VehicleIcon
-        size={Size.Large}
-        orientation={Orientation.Up}
-        label={runIdToLabel(vehicle)}
-        variant={trip && getViaVariant(trip.routePatternId)}
-      />
-    </div>
-    <div className="m-vehicle-properties-panel__variant">
-      <div className="m-vehicle-properties-panel__inbound-outbound">
-        {directionName(vehicle, selectedVehicleRoute)}
+}) => {
+  const [{ settings }] = useContext(StateDispatchContext)
+
+  return (
+    <div className="m-vehicle-properties-panel__header">
+      <div
+        className={`m-vehicle-properties-panel__label ${vehicleAdherenceDisplayClass(
+          vehicle.headwaySpacing,
+          status(vehicle)
+        )}`}
+      >
+        <VehicleIcon
+          size={Size.Large}
+          orientation={Orientation.Up}
+          label={vehicleLabel(vehicle, settings.vehicleLabel)}
+          variant={trip && getViaVariant(trip.routePatternId)}
+        />
       </div>
-      <div className="m-vehicle-properties-panel__variant-name">
-        {trip ? formatRouteVariant(trip) : vehicle.routeId + "_"}
+      <div className="m-vehicle-properties-panel__variant">
+        <div className="m-vehicle-properties-panel__inbound-outbound">
+          {directionName(vehicle, selectedVehicleRoute)}
+        </div>
+        <div className="m-vehicle-properties-panel__variant-name">
+          {trip ? formatRouteVariant(trip) : vehicle.routeId + "_"}
+        </div>
+        {shouldShowHeadwayDiagram(vehicle) ? (
+          <HeadwayTarget vehicle={vehicle} />
+        ) : (
+          <ScheduleAdherence vehicle={vehicle} />
+        )}
       </div>
-      {shouldShowHeadwayDiagram(vehicle) ? (
-        <HeadwayTarget vehicle={vehicle} />
-      ) : (
-        <ScheduleAdherence vehicle={vehicle} />
-      )}
+      <CloseButton onClick={hideMe} />
     </div>
-    <CloseButton onClick={hideMe} />
-  </div>
-)
+  )
+}
 
 const Properties = ({
   vehicle: { runId, label, operatorId, operatorName },
