@@ -20,11 +20,22 @@
   }
 }
 
+.m-tab-bar__links {
+  margin-block-start: 0;
+}
+
 .m-tab-bar__logo,
 .m-tab-bar__link {
   display: block;
-  padding: 0.5rem 0.5rem 0.25rem 0.5rem;
   text-align: center;
+}
+
+.m-tab-bar__logo {
+  padding: 0.5rem 0.1rem 0;
+}
+
+.m-tab-bar__link {
+  padding: 0.5rem 0.5rem 0.25rem 0.5rem;
 
   &--active {
     background: $color-secondary-light;
@@ -36,6 +47,11 @@
 
   .m-tab-bar__link--active & {
     fill: $color-primary;
+  }
+
+  .m-tab-bar__logo &,
+  .m-tab-bar__t-logo & {
+    fill: $color-vehicle-ghost;
   }
 }
 

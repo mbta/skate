@@ -10,7 +10,7 @@ const TabBar = ({
 }: Props): ReactElement<HTMLDivElement> => (
   <div className={`m-tab-bar ${routePickerIsVisible ? "visible" : "hidden"}`}>
     <div className="m-tab-bar__logo">{skateLogo}</div>
-    <ul>
+    <ul className="m-tab-bar__links">
       <li>
         <NavLink
           activeClassName="m-tab-bar__link--active"
@@ -94,8 +94,8 @@ const settingsIcon = (
 
 const skateLogo = (
   <svg
-    width="24"
-    height="24"
+    width="32"
+    height="32"
     viewBox="0 0 55.49 30.12"
     xmlns="http://www.w3.org/2000/svg"
   >
