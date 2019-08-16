@@ -1,15 +1,13 @@
 import React, { useContext, useEffect, useState } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { TripsByIdContext } from "../contexts/tripsByIdContext"
 import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
 import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
 import vehicleLabel from "../helpers/vehicleLabel"
-import { getViaVariant } from "../helpers/viaVariant"
 import useInterval from "../hooks/useInterval"
 import featureIsEnabled from "../laboratoryFeatures"
 import { status } from "../models/vehicleStatus"
 import { DataDiscrepancy, Vehicle } from "../realtime.d"
-import { Route, Trip, TripsById } from "../schedule.d"
+import { Route } from "../schedule.d"
 import { deselectVehicle } from "../state"
 import CloseButton from "./closeButton"
 import HeadwayDiagram from "./headwayDiagram"
@@ -88,11 +86,9 @@ const HeadwayTarget = ({
 const Header = ({
   vehicle,
   selectedVehicleRoute,
-  trip,
   hideMe,
 }: {
   vehicle: Vehicle
-  trip?: Trip
   selectedVehicleRoute?: Route
   hideMe: () => void
 }) => {
@@ -110,7 +106,7 @@ const Header = ({
           size={Size.Large}
           orientation={Orientation.Up}
           label={vehicleLabel(vehicle, settings.vehicleLabel)}
-          variant={trip && getViaVariant(trip.routePatternId)}
+          variant={vehicle.viaVariant}
         />
       </div>
       <div className="m-vehicle-properties-panel__variant">
@@ -118,7 +114,7 @@ const Header = ({
           {directionName(vehicle, selectedVehicleRoute)}
         </div>
         <div className="m-vehicle-properties-panel__variant-name">
-          {trip ? formatRouteVariant(trip) : vehicle.routeId + "_"}
+          {formatRouteVariant(vehicle)}
         </div>
         {shouldShowHeadwayDiagram(vehicle) ? (
           <HeadwayTarget vehicle={vehicle} />
@@ -263,8 +259,6 @@ const VehiclePropertiesPanel = ({
   selectedVehicleRoute,
 }: Props) => {
   const [, dispatch] = useContext(StateDispatchContext)
-  const tripsById: TripsById = useContext(TripsByIdContext)
-  const trip: Trip | undefined = tripsById[selectedVehicle.tripId]
 
   const hideMe = () => dispatch(deselectVehicle())
 
@@ -281,7 +275,6 @@ const VehiclePropertiesPanel = ({
         <Header
           vehicle={selectedVehicle}
           selectedVehicleRoute={selectedVehicleRoute}
-          trip={trip}
           hideMe={hideMe}
         />
 
@@ -310,11 +303,11 @@ const VehiclePropertiesPanel = ({
   )
 }
 
-export const formatRouteVariant = (trip: Trip): string => {
-  const { routeId, routePatternId, headsign } = trip
-  const viaVariant: string | null = getViaVariant(routePatternId)
+export const formatRouteVariant = (vehicle: Vehicle): string => {
+  const { routeId, viaVariant, headsign } = vehicle
   const viaVariantFormatted = viaVariant && viaVariant !== "_" ? viaVariant : ""
-  return `${routeId}_${viaVariantFormatted} ${headsign}`
+  const headsignFormatted = headsign ? ` ${headsign}` : ""
+  return `${routeId}_${viaVariantFormatted}${headsignFormatted}`
 }
 
 const directionName = (

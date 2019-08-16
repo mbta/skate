@@ -1,6 +1,3 @@
-/**
- * Fetches all scheduled trips for the selected routes, and keeps them up to date.
- */
 import { useEffect, useReducer } from "react"
 import { fetchTrips } from "../api"
 import { ByRouteId, RouteId, Timestamp, Trip, TripsById } from "../schedule.d"
@@ -85,8 +82,13 @@ const reducer = (state: State, action: Action): State => {
   }
 }
 
-const addTrips = (tripsById: TripsById, trips: Trip[]): TripsById =>
-  trips.reduce((acc, trip) => ({ ...acc, [trip.id]: trip }), tripsById)
+const addTrips = (tripsById: TripsById, trips: Trip[]): TripsById => {
+  const tripsByIdCopy = Object.assign({}, tripsById)
+  trips.forEach((trip: Trip) => {
+    tripsByIdCopy[trip.id] = trip
+  })
+  return tripsByIdCopy
+}
 
 interface FetchRange {
   start: Timestamp
@@ -127,24 +129,22 @@ const allFetchesToDo = (
   lastLoadedTime: ByRouteId<Timestamp>,
   selectedRouteIds: RouteId[],
   now: Timestamp
-): ByRouteId<FetchRange> =>
-  selectedRouteIds.reduce(
-    (allFetches: ByRouteId<FetchRange>, routeId: RouteId) => {
-      const fetchRange: FetchRange | null = fetchRangeForRoute(
-        lastLoadedTime[routeId],
-        lastRequestedTime[routeId],
-        now
-      )
-      if (fetchRange) {
-        return { ...allFetches, [routeId]: fetchRange }
-      } else {
-        return allFetches
-      }
-    },
-    {} as ByRouteId<FetchRange>
-  )
+): ByRouteId<FetchRange> => {
+  const result: ByRouteId<FetchRange> = {}
+  selectedRouteIds.forEach((routeId: RouteId) => {
+    const fetchRange: FetchRange | null = fetchRangeForRoute(
+      lastLoadedTime[routeId],
+      lastRequestedTime[routeId],
+      now
+    )
+    if (fetchRange) {
+      result[routeId] = fetchRange
+    }
+  })
+  return result
+}
 
-const useTrips = (selectedRouteIds: RouteId[]): TripsById => {
+const useSchedules = (selectedRouteIds: RouteId[]): TripsById => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   useEffect(() => {
@@ -168,4 +168,4 @@ const useTrips = (selectedRouteIds: RouteId[]): TripsById => {
   return state.tripsById
 }
 
-export default useTrips
+export default useSchedules

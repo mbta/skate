@@ -1,7 +1,6 @@
 import { LadderDirection, TimepointStatusYFunc } from "../components/ladder"
-import { getViaVariant } from "../helpers/viaVariant"
 import { Vehicle, VehicleId } from "../realtime"
-import { DirectionId, Trip, TripsById, ViaVariant } from "../schedule"
+import { DirectionId, ViaVariant } from "../schedule"
 import { HeadwaySpacing, status, VehicleAdherenceStatus } from "./vehicleStatus"
 
 export interface LadderVehicle {
@@ -64,17 +63,15 @@ const heightOfVehicleGroup = 34
  */
 export const ladderVehiclesFromVehicles = (
   vehicles: Vehicle[],
-  tripsById: TripsById,
   ladderDirection: LadderDirection,
   timepointStatusYFunc: TimepointStatusYFunc
 ): {
   ladderVehicles: LadderVehicle[]
   widthOfLanes: number
 } => {
-  const vehiclesOnLadder: VehicleOnLadder[] = vehicles.map(vehicle => {
-    const trip: Trip | undefined = tripsById[vehicle.tripId]
-    return vehicleOnLadder(vehicle, trip, ladderDirection, timepointStatusYFunc)
-  })
+  const vehiclesOnLadder: VehicleOnLadder[] = vehicles.map(vehicle =>
+    vehicleOnLadder(vehicle, ladderDirection, timepointStatusYFunc)
+  )
 
   const vehiclesInLane: VehicleInLane[] = putIntoLanes(vehiclesOnLadder)
 
@@ -138,15 +135,17 @@ export const directionOnLadder = (
 
 const vehicleOnLadder = (
   vehicle: Vehicle,
-  trip: Trip | undefined,
   ladderDirection: LadderDirection,
   timepointStatusYFunc: TimepointStatusYFunc
 ): VehicleOnLadder => {
-  const { id: vehicleId, headwaySpacing, label, runId, isOffCourse } = vehicle
-
-  const viaVariant: ViaVariant | null = getViaVariant(
-    trip && trip.routePatternId
-  )
+  const {
+    id: vehicleId,
+    headwaySpacing,
+    label,
+    runId,
+    isOffCourse,
+    viaVariant,
+  } = vehicle
 
   const { scheduledY, scheduledVehicleDirection } = scheduledToBe(
     vehicle,
