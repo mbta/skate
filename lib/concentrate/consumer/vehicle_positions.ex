@@ -5,7 +5,7 @@ defmodule Concentrate.Consumer.VehiclePositions do
 
   use GenStage
 
-  alias Concentrate.{Merge, TripUpdate, VehiclePosition}
+  alias Concentrate.{Merge, VehiclePosition}
   alias Realtime.{Vehicles, Server, Vehicle}
 
   def start_link(opts) do
@@ -20,7 +20,11 @@ defmodule Concentrate.Consumer.VehiclePositions do
   @impl GenStage
   def handle_events(events, _from, state) do
     groups = List.last(events)
-    all_vehicles = vehicles(groups)
+
+    all_vehicles =
+      groups
+      |> vehicle_positions_from_groups()
+      |> Enum.map(&Vehicle.from_vehicle_position/1)
 
     by_route = Vehicles.group_by_route(all_vehicles)
     shuttles = Enum.filter(all_vehicles, &Vehicle.shuttle?/1)
@@ -30,20 +34,10 @@ defmodule Concentrate.Consumer.VehiclePositions do
     {:noreply, [], state}
   end
 
-  @spec vehicles([Merge.trip_group()]) :: [Vehicle.t()]
-  defp vehicles(groups) do
-    groups
-    |> Enum.flat_map(&vehicle_positions_with_trip_update/1)
-    |> Enum.map(fn {vehicle_position, trip_update} ->
-      Vehicle.from_vehicle_position_and_trip_update(vehicle_position, trip_update)
+  @spec vehicle_positions_from_groups([Merge.trip_group()]) :: [VehiclePosition.t()]
+  defp vehicle_positions_from_groups(groups) do
+    Enum.flat_map(groups, fn {_trip_update, vehicle_positions, _stop_time_updates} ->
+      vehicle_positions
     end)
-    |> Enum.reject(&is_nil(&1))
-  end
-
-  @type vehile_position_trip_update_pair :: {VehiclePosition.t(), TripUpdate.t()}
-  @spec vehicle_positions_with_trip_update(Merge.trip_group()) ::
-          [vehile_position_trip_update_pair()]
-  defp vehicle_positions_with_trip_update({trip_update, vehicle_positions, _stop_time_updates}) do
-    Enum.map(vehicle_positions, &{&1, trip_update})
   end
 end
