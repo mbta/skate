@@ -59,6 +59,7 @@ describe("useVehicles", () => {
         },
       ],
       direction_id: 0,
+      headsign: "Forest Hills",
       headway_secs: 859.1,
       headway_spacing: null,
       id: "v1",
@@ -94,6 +95,7 @@ describe("useVehicles", () => {
       },
       timestamp: 123,
       trip_id: "t1",
+      via_variant: "X",
     },
   ]
   const vehicles: Vehicle[] = [
@@ -107,6 +109,8 @@ describe("useVehicles", () => {
       directionId: 0,
       routeId: "39",
       tripId: "t1",
+      headsign: "Forest Hills",
+      viaVariant: "X",
       operatorId: "op1",
       operatorName: "SMITH",
       bearing: 33,

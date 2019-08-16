@@ -57,6 +57,8 @@ interface VehicleData {
   direction_id: DirectionId
   route_id: RouteId
   trip_id: string
+  headsign: string | null
+  via_variant: string | null
   operator_id: string
   operator_name: string
   bearing: number
@@ -264,6 +266,8 @@ const vehicleFromData = ({ isOnRoute }: { isOnRoute: boolean }) => (
   directionId: vehicleData.direction_id,
   routeId: vehicleData.route_id,
   tripId: vehicleData.trip_id,
+  headsign: vehicleData.headsign,
+  viaVariant: vehicleData.via_variant,
   operatorId: vehicleData.operator_id,
   operatorName: vehicleData.operator_name,
   bearing: vehicleData.bearing,
