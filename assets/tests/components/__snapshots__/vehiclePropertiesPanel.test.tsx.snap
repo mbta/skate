@@ -236,6 +236,16 @@ Array [
       >
         Stop Name
       </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-label"
+      >
+        Last GPS Ping
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-value"
+      >
+        111s ago
+      </div>
       <a
         className="m-vehicle-properties-panel__link"
         href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
@@ -496,6 +506,16 @@ Array [
         className="m-vehicle-properties-panel__vehicle-property-value"
       >
         Stop Name
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-label"
+      >
+        Last GPS Ping
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-value"
+      >
+        111s ago
       </div>
       <a
         className="m-vehicle-properties-panel__link"
@@ -758,6 +778,16 @@ Array [
       >
         Stop Name
       </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-label"
+      >
+        Last GPS Ping
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-value"
+      >
+        111s ago
+      </div>
       <a
         className="m-vehicle-properties-panel__link"
         href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
@@ -1018,6 +1048,16 @@ Array [
         className="m-vehicle-properties-panel__vehicle-property-value"
       >
         Stop Name
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-label"
+      >
+        Last GPS Ping
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-value"
+      >
+        111s ago
       </div>
       <a
         className="m-vehicle-properties-panel__link"
@@ -1283,6 +1323,16 @@ Array [
         >
           Not available
         </span>
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-label"
+      >
+        Last GPS Ping
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-value"
+      >
+        111s ago
       </div>
       <a
         className="m-vehicle-properties-panel__link"
@@ -1563,6 +1613,16 @@ Array [
       >
         Stop Name
       </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-label"
+      >
+        Last GPS Ping
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-value"
+      >
+        111s ago
+      </div>
       <a
         className="m-vehicle-properties-panel__link"
         href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
@@ -1823,6 +1883,16 @@ Array [
         className="m-vehicle-properties-panel__vehicle-property-value"
       >
         Stop Name
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-label"
+      >
+        Last GPS Ping
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-value"
+      >
+        111s ago
       </div>
       <a
         className="m-vehicle-properties-panel__link"
