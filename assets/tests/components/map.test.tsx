@@ -4,6 +4,7 @@ import renderer from "react-test-renderer"
 import Map, { updateMap } from "../../src/components/map"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Vehicle } from "../../src/realtime"
+import { VehicleLabelSetting } from "../../src/settings"
 
 const vehicle: Vehicle = {
   id: "y1818",
@@ -59,7 +60,9 @@ const vehicle: Vehicle = {
 
 describe("map", () => {
   test("renders", () => {
-    const tree = renderer.create(<Map vehicle={vehicle} />).toJSON()
+    const tree = renderer
+      .create(<Map vehicles={[vehicle]} centerOnVehicle={vehicle.id} />)
+      .toJSON()
 
     expect(tree).toMatchSnapshot()
   })
@@ -69,11 +72,19 @@ describe("updateMap", () => {
   test("updates lat/lng values for map & markers", () => {
     document.body.innerHTML = "<div id='map'></div>"
     const map = Leaflet.map("map", {})
-    const vehicleIcon = Leaflet.marker([43, -72]).addTo(map)
-    const vehicleLabel = Leaflet.marker([43, -72])
-    updateMap({ vehicle }, { map, vehicleIcon, vehicleLabel }, "run-1")
+    const icons = {
+      [vehicle.id]: Leaflet.marker([43, -72]).addTo(map),
+    }
+    const labels = {
+      [vehicle.id]: Leaflet.marker([43, -72]).addTo(map),
+    }
+    updateMap(
+      { vehicles: [vehicle], centerOnVehicle: vehicle.id },
+      { map, icons, labels },
+      VehicleLabelSetting.RunNumber
+    )
     expect(map.getCenter()).toEqual({ lat: 42, lng: -71 })
-    expect(vehicleIcon.getLatLng()).toEqual({ lat: 42, lng: -71 })
-    expect(vehicleLabel.getLatLng()).toEqual({ lat: 42, lng: -71 })
+    expect(icons[vehicle.id].getLatLng()).toEqual({ lat: 42, lng: -71 })
+    expect(icons[vehicle.id].getLatLng()).toEqual({ lat: 42, lng: -71 })
   })
 })
