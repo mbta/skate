@@ -38,22 +38,11 @@ const updateVehicle = (
   labelSetting: VehicleLabelSetting,
   centerOnVehicle: string | null
 ): void => {
-  if (!map) {
-    throw new Error("map is not initialized!")
-  }
-
   const vehicleIcon = icons[vehicle.id]
-  if (!vehicleIcon) {
-    throw new Error(`cannot find icon for ${vehicle.id}`)
-  }
-
   const vehicleLabel = labels[vehicle.id]
-  if (!vehicleLabel) {
-    throw new Error(`cannot find label for ${vehicle.id}`)
-  }
 
   const { bearing, headwaySpacing, latitude, longitude } = vehicle
-  const zoom = map.getZoom()
+  const zoom = map!.getZoom()
 
   const labelString = vehicleLabelString(vehicle, labelSetting)
 
@@ -87,14 +76,14 @@ const updateVehicle = (
   })
 
   if (centerOnVehicle === vehicle.id) {
-    map.setView([latitude, longitude], zoom)
+    map!.setView([latitude, longitude], zoom)
   }
 
-  vehicleIcon.setLatLng([latitude, longitude])
-  vehicleLabel.setLatLng([latitude, longitude])
+  vehicleIcon!.setLatLng([latitude, longitude])
+  vehicleLabel!.setLatLng([latitude, longitude])
 
-  vehicleIcon.setIcon(icon)
-  vehicleLabel.setIcon(label)
+  vehicleIcon!.setIcon(icon)
+  vehicleLabel!.setIcon(label)
 }
 
 export const updateMap = (
