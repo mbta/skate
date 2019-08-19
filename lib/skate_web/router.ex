@@ -61,6 +61,7 @@ defmodule SkateWeb.Router do
 
     get "/routes", RouteController, :index
     get "/routes/:route_id", RouteController, :show
+    get "/shuttles", ShuttleController, :index
   end
 
   scope "/_flags" do
