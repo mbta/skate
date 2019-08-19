@@ -8,6 +8,7 @@ import { Trip, TripsById } from "../schedule"
 import { Settings } from "../settings"
 import { selectVehicle, SelectVehicleAction } from "../state"
 import VehicleIcon, { Orientation, Size } from "./vehicleIcon"
+import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
 
 type ClassModifier = "top" | "bottom"
 
@@ -28,7 +29,10 @@ const layoverVehicle = (
     <div
       key={vehicle.id}
       onClick={() => dispatch(selectVehicle(vehicle.id))}
-      className="m-layover-box__vehicle"
+      className={`m-layover-box__vehicle ${vehicleAdherenceDisplayClass(
+        vehicle.headwaySpacing,
+        vehicle.scheduleAdherenceStatus
+      )}`}
     >
       <VehicleIcon
         label={vehicleLabel(vehicle, settings.vehicleLabel)}

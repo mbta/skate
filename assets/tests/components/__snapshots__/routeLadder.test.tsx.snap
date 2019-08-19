@@ -242,7 +242,7 @@ Array [
     className="m-layover-box m-layover-box--top"
   >
     <div
-      className="m-layover-box__vehicle"
+      className="m-layover-box__vehicle "
       onClick={[Function]}
     >
       <svg
@@ -379,7 +379,7 @@ Array [
     className="m-layover-box m-layover-box--bottom"
   >
     <div
-      className="m-layover-box__vehicle"
+      className="m-layover-box__vehicle "
       onClick={[Function]}
     >
       <svg

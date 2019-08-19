@@ -5,7 +5,7 @@ exports[`LayoverBox renders 1`] = `
   className="m-layover-box m-layover-box--top"
 >
   <div
-    className="m-layover-box__vehicle"
+    className="m-layover-box__vehicle on-time"
     onClick={[Function]}
   >
     <svg
@@ -47,7 +47,7 @@ exports[`LayoverBox renders 1`] = `
     </svg>
   </div>
   <div
-    className="m-layover-box__vehicle"
+    className="m-layover-box__vehicle on-time"
     onClick={[Function]}
   >
     <svg
