@@ -13,34 +13,41 @@ import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClas
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { status } from "../models/vehicleStatus"
 import { Vehicle } from "../realtime.d"
+import { VehicleLabelSetting } from "../settings"
 
 interface Props {
-  vehicle: Vehicle
+  vehicles: Vehicle[]
+  centerOnVehicle: string | null
+}
+
+interface VehicleMarkers {
+  icon: Marker
+  label: Marker
+}
+
+interface MarkerDict {
+  [id: string]: VehicleMarkers | null
 }
 
 interface State {
   map: LeafletMap | null
-  vehicleIcon: Marker | null
-  vehicleLabel: Marker | null
+  markers: MarkerDict
 }
 
 const iconAnchor: [number, number] = [12, 12]
 
-export const updateMap = (
-  { vehicle }: Props,
-  {
-    map,
-    vehicleIcon,
-    vehicleLabel,
-  }: {
-    map: LeafletMap
-    vehicleIcon: Marker
-    vehicleLabel: Marker
-  },
-  labelString: string
+const updateVehicle = (
+  vehicle: Vehicle,
+  { map, markers }: State,
+  labelSetting: VehicleLabelSetting,
+  centerOnVehicle: string | null
 ): void => {
+  const { icon: vehicleIcon, label: vehicleLabel } = markers[vehicle.id]!
+
   const { bearing, headwaySpacing, latitude, longitude } = vehicle
-  const zoom = map.getZoom()
+  const zoom = map!.getZoom()
+
+  const labelString = vehicleLabelString(vehicle, labelSetting)
 
   const icon = Leaflet.divIcon({
     className: `m-vehicle-map__icon ${vehicleAdherenceDisplayClass(
@@ -71,7 +78,9 @@ export const updateMap = (
     iconAnchor: [12, -24],
   })
 
-  map.setView([latitude, longitude], zoom)
+  if (centerOnVehicle === vehicle.id) {
+    map!.setView([latitude, longitude], zoom)
+  }
 
   vehicleIcon.setLatLng([latitude, longitude])
   vehicleLabel.setLatLng([latitude, longitude])
@@ -80,13 +89,45 @@ export const updateMap = (
   vehicleLabel.setIcon(label)
 }
 
+export const updateMap = (
+  { vehicles, centerOnVehicle }: Props,
+  state: State,
+  labelSetting: VehicleLabelSetting
+): void => {
+  vehicles.forEach(v => updateVehicle(v, state, labelSetting, centerOnVehicle))
+}
+
+export const updateMarkers = (
+  newVehicles: { [id: string]: Vehicle },
+  oldDict: MarkerDict,
+  map: LeafletMap
+): MarkerDict => {
+  const newDict = Object.entries(oldDict).reduce(
+    (acc, [vehicleId, existingMarkers]) => {
+      const newValue = newVehicles[vehicleId] ? existingMarkers : null
+      acc[vehicleId] = newValue
+      return acc
+    },
+    {} as MarkerDict
+  )
+
+  return Object.entries(newVehicles).reduce((acc, [id, vehicle]) => {
+    if (acc[id] === undefined) {
+      acc[id] = {
+        icon: Leaflet.marker([vehicle.latitude, vehicle.longitude]).addTo(map),
+        label: Leaflet.marker([vehicle.latitude, vehicle.longitude]).addTo(map),
+      }
+    }
+    return acc
+  }, newDict)
+}
+
 const Map = (props: Props): ReactElement<HTMLDivElement> => {
   const [{ settings }] = useContext(StateDispatchContext)
   const containerRef: MutableRefObject<HTMLDivElement | null> = useRef(null)
   const [state, updateState] = useState<State>({
     map: null,
-    vehicleIcon: null,
-    vehicleLabel: null,
+    markers: {},
   })
 
   useEffect(() => {
@@ -109,25 +150,19 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         zoom: 16,
       })
 
-    const vehicleIcon =
-      state.vehicleIcon ||
-      Leaflet.marker([props.vehicle.latitude, props.vehicle.longitude]).addTo(
-        map
-      )
-
-    const vehicleLabel =
-      state.vehicleLabel ||
-      Leaflet.marker([props.vehicle.latitude, props.vehicle.longitude]).addTo(
-        map
-      )
-
-    updateMap(
-      props,
-      { map, vehicleIcon, vehicleLabel },
-      vehicleLabelString(props.vehicle, settings.vehicleLabel)
+    const newVehicles = props.vehicles.reduce(
+      (acc, vehicle) => {
+        acc[vehicle.id] = vehicle
+        return acc
+      },
+      {} as { [id: string]: Vehicle }
     )
 
-    updateState({ map, vehicleIcon, vehicleLabel })
+    const markers = updateMarkers(newVehicles, state.markers, map)
+
+    updateMap(props, { map, markers }, settings.vehicleLabel)
+
+    updateState({ map, markers })
   }, [props, containerRef])
 
   return (
