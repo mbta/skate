@@ -1,16 +1,14 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { TripsByIdContext } from "../contexts/tripsByIdContext"
 import { VehiclesByRouteIdContext } from "../contexts/vehiclesByRouteIdContext"
 import vehicleLabel from "../helpers/vehicleLabel"
-import { getViaVariant } from "../helpers/viaVariant"
 import {
   allVehiclesForRoute,
   nextAndPreviousVehicle,
 } from "../models/vehiclesByRouteId"
 import { HeadwaySpacing, headwaySpacingToString } from "../models/vehicleStatus"
 import { Vehicle, VehiclesForRoute } from "../realtime"
-import { ByRouteId, Trip, TripsById } from "../schedule"
+import { ByRouteId } from "../schedule"
 import { selectVehicle } from "../state"
 import VehicleIcon, { Orientation, Size } from "./vehicleIcon"
 
@@ -41,9 +39,7 @@ const humanSpacing = (spacing: HeadwaySpacing | null): string => {
 
 const OtherVehicle = ({ vehicle }: { vehicle: Vehicle }) => {
   const [{ settings }, dispatch] = useContext(StateDispatchContext)
-  const { id, tripId } = vehicle
-  const tripsById: TripsById = useContext(TripsByIdContext)
-  const trip: Trip | undefined = tripsById[tripId]
+  const { id, viaVariant } = vehicle
 
   return (
     <div
@@ -54,7 +50,7 @@ const OtherVehicle = ({ vehicle }: { vehicle: Vehicle }) => {
         size={Size.Small}
         orientation={Orientation.Right}
         label={vehicleLabel(vehicle, settings.vehicleLabel)}
-        variant={trip && getViaVariant(trip.routePatternId)}
+        variant={viaVariant}
       />
     </div>
   )
@@ -65,13 +61,16 @@ const HeadwayDiagram = ({ vehicle }: { vehicle: Vehicle }) => {
   const vehiclesByRouteId: ByRouteId<VehiclesForRoute> = useContext(
     VehiclesByRouteIdContext
   )
-  const tripsById: TripsById = useContext(TripsByIdContext)
-  const trip: Trip | undefined = tripsById[vehicle.tripId]
   const { nextVehicle, previousVehicle } = nextAndPreviousVehicle(
     allVehiclesForRoute(vehiclesByRouteId, vehicle.routeId),
     vehicle
   )
-  const { headwaySecs, headwaySpacing, scheduledHeadwaySecs } = vehicle
+  const {
+    headwaySecs,
+    headwaySpacing,
+    scheduledHeadwaySecs,
+    viaVariant,
+  } = vehicle
 
   const headwaySpacingClass = headwaySpacingToString(
     headwaySpacing || HeadwaySpacing.Ok
@@ -114,7 +113,7 @@ const HeadwayDiagram = ({ vehicle }: { vehicle: Vehicle }) => {
             size={Size.Medium}
             orientation={Orientation.Right}
             label={vehicleLabel(vehicle, settings.vehicleLabel)}
-            variant={trip && getViaVariant(trip.routePatternId)}
+            variant={viaVariant}
           />
         </div>
 

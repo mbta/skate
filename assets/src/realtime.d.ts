@@ -33,6 +33,8 @@ export interface Vehicle {
   directionId: DirectionId
   routeId: RouteId
   tripId: TripId
+  headsign: string | null
+  viaVariant: ViaVariant | null
   operatorId: string
   operatorName: string
   bearing: number

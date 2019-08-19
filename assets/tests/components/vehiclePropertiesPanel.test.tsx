@@ -6,10 +6,9 @@ import VehiclePropertiesPanel, {
   handleSwipe,
 } from "../../src/components/vehiclePropertiesPanel"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import { TripsByIdProvider } from "../../src/contexts/tripsByIdContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Vehicle } from "../../src/realtime.d"
-import { Route, Trip } from "../../src/schedule"
+import { Route } from "../../src/schedule"
 import { deselectVehicle, initialState } from "../../src/state"
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
@@ -33,6 +32,8 @@ const vehicle: Vehicle = {
   directionId: 0,
   routeId: "39",
   tripId: "t1",
+  headsign: "Forest Hills",
+  viaVariant: "X",
   operatorId: "op1",
   operatorName: "SMITH",
   bearing: 33,
@@ -79,27 +80,6 @@ describe("VehiclePropertiesPanel", () => {
   test("renders a vehicle properties panel", () => {
     const tree = renderer
       .create(<VehiclePropertiesPanel selectedVehicle={vehicle} />)
-      .toJSON()
-
-    expect(tree).toMatchSnapshot()
-  })
-
-  test("renders vehicle with properties from its trip", () => {
-    const trip: Trip = {
-      id: "t1",
-      routeId: "39",
-      headsign: "Forest Hills",
-      directionId: 0,
-      blockId: "block-1",
-      routePatternId: "39-X-1",
-      stopTimes: [],
-    }
-    const tree = renderer
-      .create(
-        <TripsByIdProvider tripsById={{ ["t1"]: trip }}>
-          <VehiclePropertiesPanel selectedVehicle={vehicle} />
-        </TripsByIdProvider>
-      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -231,42 +211,25 @@ describe("VehiclePropertiesPanel", () => {
 
 describe("formatRouteVariant", () => {
   test("has variant and headsign", () => {
-    const trip: Trip = {
-      id: "t1",
-      routeId: "39",
-      headsign: "Forest Hills",
-      directionId: 0,
-      blockId: "block-1",
-      routePatternId: "39-X-1",
-      stopTimes: [],
-    }
-    expect(formatRouteVariant(trip)).toEqual("39_X Forest Hills")
+    expect(formatRouteVariant(vehicle)).toEqual("39_X Forest Hills")
   })
 
-  test("missing variant", () => {
-    const trip: Trip = {
-      id: "t1",
-      routeId: "39",
-      headsign: "Forest Hills",
-      directionId: 0,
-      blockId: "block-1",
-      routePatternId: null,
-      stopTimes: [],
+  test("missing variant and headsign", () => {
+    const testVehicle: Vehicle = {
+      ...vehicle,
+      headsign: null,
+      viaVariant: null,
     }
-    expect(formatRouteVariant(trip)).toEqual("39_ Forest Hills")
+    expect(formatRouteVariant(testVehicle)).toEqual("39_")
   })
 
   test("doesn't show underscore variant character", () => {
-    const trip: Trip = {
-      id: "t1",
-      routeId: "39",
-      headsign: "Forest Hills",
-      directionId: 0,
-      blockId: "block-1",
-      routePatternId: "39-_-1",
-      stopTimes: [],
+    const testVehicle: Vehicle = {
+      ...vehicle,
+      headsign: null,
+      viaVariant: "_",
     }
-    expect(formatRouteVariant(trip)).toEqual("39_ Forest Hills")
+    expect(formatRouteVariant(testVehicle)).toEqual("39_")
   })
 })
 

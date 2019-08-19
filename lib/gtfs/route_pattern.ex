@@ -6,6 +6,12 @@ defmodule Gtfs.RoutePattern do
 
   @type id :: String.t()
 
+  @doc """
+  A one-character id for disambiguating variants within a given route_id and direction_id
+  a member of [0-9A-Z_]
+  """
+  @type via_variant :: String.t()
+
   @type t :: %__MODULE__{
           id: id(),
           route_id: Route.id(),
@@ -50,4 +56,20 @@ defmodule Gtfs.RoutePattern do
   @spec by_direction([t()]) :: %{Direction.id() => [t()]}
   def by_direction(route_patterns),
     do: Enum.group_by(route_patterns, fn route_pattern -> route_pattern.direction_id end)
+
+  @doc """
+  via_variants are given by hastus, but not propogated through GTFS.
+  But we can reconstruct them from the route_pattern_id
+  in the route_pattern_id "116-4-1"
+  "116" is the route_id,
+  "4" is the via_variant,
+  and "1" is the direction_id
+  """
+  @spec via_variant(id()) :: via_variant()
+  def via_variant(route_pattern_id) do
+    "-" <> <<via_variant::bytes-size(1)>> <> "-" <> <<_direction_id::bytes-size(1)>> =
+      String.slice(route_pattern_id, -4..-1)
+
+    via_variant
+  end
 end
