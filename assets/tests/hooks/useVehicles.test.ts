@@ -123,7 +123,6 @@ describe("useVehicles", () => {
       previousVehicleId: "v2",
       scheduleAdherenceSecs: 0,
       scheduleAdherenceString: "0.0 sec (ontime)",
-      scheduleAdherenceStatus: "on-time",
       scheduledHeadwaySecs: 120,
       isOffCourse: false,
       isLayingOver: false,
@@ -291,55 +290,6 @@ describe("useVehicles", () => {
     expect(result.current).toEqual({
       "1": {
         onRouteVehicles: vehicles,
-        incomingVehicles: [],
-      },
-    })
-  })
-
-  test("generates a schedule adherence status", async () => {
-    const vehiclesDataVaryingStatus = [
-      // On-time
-      vehiclesData[0],
-      // Early
-      { ...vehiclesData[0], schedule_adherence_secs: -61 },
-      // Late
-      { ...vehiclesData[0], schedule_adherence_secs: 361 },
-    ]
-
-    const vehiclesVaryingStatus: Vehicle[] = [
-      vehicles[0],
-      {
-        ...vehicles[0],
-        scheduleAdherenceSecs: -61,
-        scheduleAdherenceStatus: "early",
-      },
-      {
-        ...vehicles[0],
-        scheduleAdherenceSecs: 361,
-        scheduleAdherenceStatus: "late",
-      },
-    ]
-
-    const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel()
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
-    mockChannel.receive.mockImplementation((event, handler) => {
-      if (event === "ok") {
-        handler({
-          on_route_vehicles: vehiclesDataVaryingStatus,
-          incoming_vehicles: [],
-        })
-      }
-      return mockChannel
-    })
-
-    const { result } = renderHook(() =>
-      useVehicles((mockSocket as any) as Socket, ["1"])
-    )
-
-    expect(result.current).toEqual({
-      "1": {
-        onRouteVehicles: vehiclesVaryingStatus,
         incomingVehicles: [],
       },
     })

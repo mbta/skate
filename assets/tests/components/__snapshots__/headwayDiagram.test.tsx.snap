@@ -24,7 +24,7 @@ exports[`HeadwayDiagram renders a gapped vehicle 1`] = `
         viewBox="-13 -8.36 26 27.72"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--small"
+          className="m-vehicle-icon m-vehicle-icon--small "
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -82,7 +82,7 @@ exports[`HeadwayDiagram renders a gapped vehicle 1`] = `
         viewBox="-13 -13.75 26 38.5"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium"
+          className="m-vehicle-icon m-vehicle-icon--medium "
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -141,7 +141,7 @@ exports[`HeadwayDiagram renders a gapped vehicle 1`] = `
         viewBox="-13 -8.36 26 27.72"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--small"
+          className="m-vehicle-icon m-vehicle-icon--small "
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -197,7 +197,7 @@ exports[`HeadwayDiagram renders an ok headway vehicle 1`] = `
         viewBox="-13 -8.36 26 27.72"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--small"
+          className="m-vehicle-icon m-vehicle-icon--small "
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -255,7 +255,7 @@ exports[`HeadwayDiagram renders an ok headway vehicle 1`] = `
         viewBox="-13 -13.75 26 38.5"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium"
+          className="m-vehicle-icon m-vehicle-icon--medium "
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -314,7 +314,7 @@ exports[`HeadwayDiagram renders an ok headway vehicle 1`] = `
         viewBox="-13 -8.36 26 27.72"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--small"
+          className="m-vehicle-icon m-vehicle-icon--small "
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -370,7 +370,7 @@ exports[`HeadwayDiagram renders with next and previous vehicles 1`] = `
         viewBox="-13 -8.36 26 27.72"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--small"
+          className="m-vehicle-icon m-vehicle-icon--small "
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -428,7 +428,7 @@ exports[`HeadwayDiagram renders with next and previous vehicles 1`] = `
         viewBox="-13 -13.75 26 38.5"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium"
+          className="m-vehicle-icon m-vehicle-icon--medium "
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -487,7 +487,7 @@ exports[`HeadwayDiagram renders with next and previous vehicles 1`] = `
         viewBox="-13 -8.36 26 27.72"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--small"
+          className="m-vehicle-icon m-vehicle-icon--small "
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -559,7 +559,7 @@ exports[`HeadwayDiagram renders with no next or previous vehicles 1`] = `
         viewBox="-13 -13.75 26 38.5"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium"
+          className="m-vehicle-icon m-vehicle-icon--medium "
         >
           <rect
             className="m-vehicle-icon__label-background"

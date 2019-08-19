@@ -242,7 +242,7 @@ Array [
     className="m-layover-box m-layover-box--top"
   >
     <div
-      className="m-layover-box__vehicle "
+      className="m-layover-box__vehicle"
       onClick={[Function]}
     >
       <svg
@@ -255,7 +255,7 @@ Array [
         viewBox="-13 -8.36 26 27.72"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--small"
+          className="m-vehicle-icon m-vehicle-icon--small "
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -384,7 +384,7 @@ Array [
     className="m-layover-box m-layover-box--bottom"
   >
     <div
-      className="m-layover-box__vehicle "
+      className="m-layover-box__vehicle"
       onClick={[Function]}
     >
       <svg
@@ -397,7 +397,7 @@ Array [
         viewBox="-13 -8.36 26 27.72"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--small"
+          className="m-vehicle-icon m-vehicle-icon--small "
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -509,12 +509,12 @@ Array [
       />
       <g>
         <g
-          className="m-ladder__vehicle  "
+          className="m-ladder__vehicle "
           onClick={[Function]}
           transform="translate(63,-10)"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--medium"
+            className="m-vehicle-icon m-vehicle-icon--medium "
           >
             <rect
               className="m-vehicle-icon__label-background"
@@ -553,12 +553,12 @@ Array [
       </g>
       <g>
         <g
-          className="m-ladder__vehicle  "
+          className="m-ladder__vehicle "
           onClick={[Function]}
           transform="translate(-63,-40)"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--medium"
+            className="m-vehicle-icon m-vehicle-icon--medium "
           >
             <rect
               className="m-vehicle-icon__label-background"
@@ -846,7 +846,7 @@ Array [
     className="m-incoming-box"
   >
     <button
-      className="m-incoming-box__vehicle  "
+      className="m-incoming-box__vehicle "
       onClick={[Function]}
     >
       <svg
@@ -859,7 +859,7 @@ Array [
         viewBox="-8.36 -6.08 16.72 13.68"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--small"
+          className="m-vehicle-icon m-vehicle-icon--small "
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -902,7 +902,7 @@ Array [
       </div>
     </button>
     <button
-      className="m-incoming-box__vehicle  "
+      className="m-incoming-box__vehicle "
       onClick={[Function]}
     >
       <svg
@@ -915,7 +915,7 @@ Array [
         viewBox="-8.36 -7.6 16.72 13.68"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--small"
+          className="m-vehicle-icon m-vehicle-icon--small "
         >
           <rect
             className="m-vehicle-icon__label-background"

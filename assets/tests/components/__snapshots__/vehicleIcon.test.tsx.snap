@@ -3,7 +3,7 @@
 exports[`renders an unwrapped svg node 1`] = `
 <svg>
   <g
-    className="m-vehicle-icon m-vehicle-icon--medium"
+    className="m-vehicle-icon m-vehicle-icon--medium "
   >
     <rect
       className="m-vehicle-icon__label-background"
@@ -44,7 +44,7 @@ Array [
     viewBox="-13 -6.08 26 24.68"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--small"
+      className="m-vehicle-icon m-vehicle-icon--small "
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -81,7 +81,7 @@ Array [
     viewBox="-13 -8.36 26 27.72"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--small"
+      className="m-vehicle-icon m-vehicle-icon--small "
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -118,7 +118,7 @@ Array [
     viewBox="-13 -18.6 26 24.68"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--small"
+      className="m-vehicle-icon m-vehicle-icon--small "
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -155,7 +155,7 @@ Array [
     viewBox="-13 -8.36 26 27.72"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--small"
+      className="m-vehicle-icon m-vehicle-icon--small "
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -192,7 +192,7 @@ Array [
     viewBox="-13.75 -10 27.5 33.5"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium"
+      className="m-vehicle-icon m-vehicle-icon--medium "
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -229,7 +229,7 @@ Array [
     viewBox="-13 -13.75 26 38.5"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium"
+      className="m-vehicle-icon m-vehicle-icon--medium "
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -266,7 +266,7 @@ Array [
     viewBox="-13.75 -23.5 27.5 33.5"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium"
+      className="m-vehicle-icon m-vehicle-icon--medium "
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -303,7 +303,7 @@ Array [
     viewBox="-13 -13.75 26 38.5"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium"
+      className="m-vehicle-icon m-vehicle-icon--medium "
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -340,7 +340,7 @@ Array [
     viewBox="-32 -16 64 60"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--large"
+      className="m-vehicle-icon m-vehicle-icon--large "
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -377,7 +377,7 @@ Array [
     viewBox="-32 -22 64 68"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--large"
+      className="m-vehicle-icon m-vehicle-icon--large "
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -414,7 +414,7 @@ Array [
     viewBox="-32 -44 64 60"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--large"
+      className="m-vehicle-icon m-vehicle-icon--large "
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -451,7 +451,7 @@ Array [
     viewBox="-32 -22 64 68"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--large"
+      className="m-vehicle-icon m-vehicle-icon--large "
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -481,6 +481,233 @@ Array [
 ]
 `;
 
+exports[`renders with all statuses 1`] = `
+Array [
+  <svg
+    style={
+      Object {
+        "height": 33.5,
+        "width": 27.5,
+      }
+    }
+    viewBox="-13.75 -10 27.5 33.5"
+  >
+    <g
+      className="m-vehicle-icon m-vehicle-icon--medium on-time"
+    >
+      <rect
+        className="m-vehicle-icon__label-background"
+        height={11}
+        rx={5.5}
+        ry={5.5}
+        width={26}
+        x={-13}
+        y={11.5}
+      />
+      <text
+        className="m-vehicle-icon__label"
+        dominantBaseline="central"
+        textAnchor="middle"
+        x="0"
+        y={17}
+      >
+        0617
+      </text>
+      <path
+        className="m-vehicle-icon__triangle"
+        d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+        transform="scale(0.625) rotate(0) translate(-24,-22)"
+      />
+    </g>
+  </svg>,
+  <svg
+    style={
+      Object {
+        "height": 33.5,
+        "width": 27.5,
+      }
+    }
+    viewBox="-13.75 -10 27.5 33.5"
+  >
+    <g
+      className="m-vehicle-icon m-vehicle-icon--medium early"
+    >
+      <rect
+        className="m-vehicle-icon__label-background"
+        height={11}
+        rx={5.5}
+        ry={5.5}
+        width={26}
+        x={-13}
+        y={11.5}
+      />
+      <text
+        className="m-vehicle-icon__label"
+        dominantBaseline="central"
+        textAnchor="middle"
+        x="0"
+        y={17}
+      >
+        0617
+      </text>
+      <path
+        className="m-vehicle-icon__triangle"
+        d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+        transform="scale(0.625) rotate(0) translate(-24,-22)"
+      />
+    </g>
+  </svg>,
+  <svg
+    style={
+      Object {
+        "height": 33.5,
+        "width": 27.5,
+      }
+    }
+    viewBox="-13.75 -10 27.5 33.5"
+  >
+    <g
+      className="m-vehicle-icon m-vehicle-icon--medium late"
+    >
+      <rect
+        className="m-vehicle-icon__label-background"
+        height={11}
+        rx={5.5}
+        ry={5.5}
+        width={26}
+        x={-13}
+        y={11.5}
+      />
+      <text
+        className="m-vehicle-icon__label"
+        dominantBaseline="central"
+        textAnchor="middle"
+        x="0"
+        y={17}
+      >
+        0617
+      </text>
+      <path
+        className="m-vehicle-icon__triangle"
+        d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+        transform="scale(0.625) rotate(0) translate(-24,-22)"
+      />
+    </g>
+  </svg>,
+  <svg
+    style={
+      Object {
+        "height": 33.5,
+        "width": 27.5,
+      }
+    }
+    viewBox="-13.75 -10 27.5 33.5"
+  >
+    <g
+      className="m-vehicle-icon m-vehicle-icon--medium off-course"
+    >
+      <rect
+        className="m-vehicle-icon__label-background"
+        height={11}
+        rx={5.5}
+        ry={5.5}
+        width={26}
+        x={-13}
+        y={11.5}
+      />
+      <text
+        className="m-vehicle-icon__label"
+        dominantBaseline="central"
+        textAnchor="middle"
+        x="0"
+        y={17}
+      >
+        0617
+      </text>
+      <path
+        className="m-vehicle-icon__triangle"
+        d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+        transform="scale(0.625) rotate(0) translate(-24,-22)"
+      />
+    </g>
+  </svg>,
+  <svg
+    style={
+      Object {
+        "height": 33.5,
+        "width": 27.5,
+      }
+    }
+    viewBox="-13.75 -10 27.5 33.5"
+  >
+    <g
+      className="m-vehicle-icon m-vehicle-icon--medium "
+    >
+      <rect
+        className="m-vehicle-icon__label-background"
+        height={11}
+        rx={5.5}
+        ry={5.5}
+        width={26}
+        x={-13}
+        y={11.5}
+      />
+      <text
+        className="m-vehicle-icon__label"
+        dominantBaseline="central"
+        textAnchor="middle"
+        x="0"
+        y={17}
+      >
+        0617
+      </text>
+      <path
+        className="m-vehicle-icon__triangle"
+        d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+        transform="scale(0.625) rotate(0) translate(-24,-22)"
+      />
+    </g>
+  </svg>,
+  <svg
+    style={
+      Object {
+        "height": 33.5,
+        "width": 27.5,
+      }
+    }
+    viewBox="-13.75 -10 27.5 33.5"
+  >
+    <g
+      className="m-vehicle-icon m-vehicle-icon--medium "
+    >
+      <rect
+        className="m-vehicle-icon__label-background"
+        height={11}
+        rx={5.5}
+        ry={5.5}
+        width={26}
+        x={-13}
+        y={11.5}
+      />
+      <text
+        className="m-vehicle-icon__label"
+        dominantBaseline="central"
+        textAnchor="middle"
+        x="0"
+        y={17}
+      >
+        0617
+      </text>
+      <path
+        className="m-vehicle-icon__triangle"
+        d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+        transform="scale(0.625) rotate(0) translate(-24,-22)"
+      />
+    </g>
+  </svg>,
+]
+`;
+
 exports[`renders with variants and labels 1`] = `
 Array [
   <svg
@@ -493,7 +720,7 @@ Array [
     viewBox="-13 -6.08 26 24.68"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--small"
+      className="m-vehicle-icon m-vehicle-icon--small "
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -539,7 +766,7 @@ Array [
     viewBox="-13 -8.36 26 27.72"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--small"
+      className="m-vehicle-icon m-vehicle-icon--small "
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -585,7 +812,7 @@ Array [
     viewBox="-13 -18.6 26 24.68"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--small"
+      className="m-vehicle-icon m-vehicle-icon--small "
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -631,7 +858,7 @@ Array [
     viewBox="-13 -8.36 26 27.72"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--small"
+      className="m-vehicle-icon m-vehicle-icon--small "
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -677,7 +904,7 @@ Array [
     viewBox="-13.75 -10 27.5 33.5"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium"
+      className="m-vehicle-icon m-vehicle-icon--medium "
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -723,7 +950,7 @@ Array [
     viewBox="-13 -13.75 26 38.5"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium"
+      className="m-vehicle-icon m-vehicle-icon--medium "
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -769,7 +996,7 @@ Array [
     viewBox="-13.75 -23.5 27.5 33.5"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium"
+      className="m-vehicle-icon m-vehicle-icon--medium "
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -815,7 +1042,7 @@ Array [
     viewBox="-13 -13.75 26 38.5"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium"
+      className="m-vehicle-icon m-vehicle-icon--medium "
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -861,7 +1088,7 @@ Array [
     viewBox="-32 -16 64 60"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--large"
+      className="m-vehicle-icon m-vehicle-icon--large "
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -907,7 +1134,7 @@ Array [
     viewBox="-32 -22 64 68"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--large"
+      className="m-vehicle-icon m-vehicle-icon--large "
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -953,7 +1180,7 @@ Array [
     viewBox="-32 -44 64 60"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--large"
+      className="m-vehicle-icon m-vehicle-icon--large "
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -999,7 +1226,7 @@ Array [
     viewBox="-32 -22 64 68"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--large"
+      className="m-vehicle-icon m-vehicle-icon--large "
     >
       <rect
         className="m-vehicle-icon__label-background"

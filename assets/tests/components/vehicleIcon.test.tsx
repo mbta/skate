@@ -160,6 +160,52 @@ test("renders with variants and labels", () => {
   expect(tree).toMatchSnapshot()
 })
 
+test("renders with all statuses", () => {
+  const tree = renderer
+    .create(
+      <>
+        <VehicleIcon
+          size={Size.Medium}
+          orientation={Orientation.Up}
+          label="0617"
+          status={"on-time"}
+        />
+        <VehicleIcon
+          size={Size.Medium}
+          orientation={Orientation.Up}
+          label="0617"
+          status={"early"}
+        />
+        <VehicleIcon
+          size={Size.Medium}
+          orientation={Orientation.Up}
+          label="0617"
+          status={"late"}
+        />
+        <VehicleIcon
+          size={Size.Medium}
+          orientation={Orientation.Up}
+          label="0617"
+          status={"off-course"}
+        />
+        <VehicleIcon
+          size={Size.Medium}
+          orientation={Orientation.Up}
+          label="0617"
+          status={"plain"}
+        />
+        <VehicleIcon
+          size={Size.Medium}
+          orientation={Orientation.Up}
+          label="0617"
+        />
+      </>
+    )
+    .toJSON()
+
+  expect(tree).toMatchSnapshot()
+})
+
 test("renders an unwrapped svg node", () => {
   const tree = renderer
     .create(

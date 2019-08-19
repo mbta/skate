@@ -1,9 +1,8 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
 import vehicleLabel from "../helpers/vehicleLabel"
 import { directionOnLadder, VehicleDirection } from "../models/ladderVehicle"
-import { status } from "../models/vehicleStatus"
+import { drawnStatus } from "../models/vehicleStatus"
 import { Vehicle, VehicleId } from "../realtime.d"
 import { selectVehicle } from "../state"
 import { LadderDirection } from "./ladder"
@@ -28,10 +27,7 @@ const IncomingBoxVehicle = ({
 
   return (
     <button
-      className={`m-incoming-box__vehicle ${vehicleAdherenceDisplayClass(
-        vehicle.headwaySpacing,
-        status(vehicle)
-      )} ${selectedClass}`}
+      className={`m-incoming-box__vehicle ${selectedClass}`}
       onClick={() => dispatch(selectVehicle(vehicle.id))}
     >
       <VehicleIcon
@@ -39,6 +35,7 @@ const IncomingBoxVehicle = ({
         size={Size.Small}
         orientation={orientation}
         variant={vehicle.viaVariant}
+        status={drawnStatus(vehicle)}
       />
       <div className="m-incoming-box__vehicle-label">
         {vehicleLabel(vehicle, settings.vehicleLabel)}

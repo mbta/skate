@@ -5,7 +5,7 @@ exports[`LayoverBox renders 1`] = `
   className="m-layover-box m-layover-box--top"
 >
   <div
-    className="m-layover-box__vehicle on-time"
+    className="m-layover-box__vehicle"
     onClick={[Function]}
   >
     <svg
@@ -18,7 +18,7 @@ exports[`LayoverBox renders 1`] = `
       viewBox="-13 -8.36 26 27.72"
     >
       <g
-        className="m-vehicle-icon m-vehicle-icon--small"
+        className="m-vehicle-icon m-vehicle-icon--small on-time"
       >
         <rect
           className="m-vehicle-icon__label-background"
@@ -47,7 +47,7 @@ exports[`LayoverBox renders 1`] = `
     </svg>
   </div>
   <div
-    className="m-layover-box__vehicle on-time"
+    className="m-layover-box__vehicle"
     onClick={[Function]}
   >
     <svg
@@ -60,7 +60,7 @@ exports[`LayoverBox renders 1`] = `
       viewBox="-13 -8.36 26 27.72"
     >
       <g
-        className="m-vehicle-icon m-vehicle-icon--small"
+        className="m-vehicle-icon m-vehicle-icon--small on-time"
       >
         <rect
           className="m-vehicle-icon__label-background"

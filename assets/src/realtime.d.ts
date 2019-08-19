@@ -19,8 +19,6 @@ interface DataDiscrepancySource {
   value: string | null
 }
 
-export type ScheduleAdherenceStatus = "on-time" | "early" | "late"
-
 export type SourceId = string
 
 export interface Vehicle {
@@ -45,7 +43,6 @@ export interface Vehicle {
   previousVehicleId: string
   scheduleAdherenceSecs: number
   scheduleAdherenceString: string
-  scheduleAdherenceStatus: ScheduleAdherenceStatus
   scheduledHeadwaySecs: number
   isOffCourse: boolean
   isLayingOver: boolean
