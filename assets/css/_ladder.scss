@@ -1,10 +1,12 @@
 .m-ladder {
   grid-row-start: m-ladder;
   margin: 0 auto;
+  position: relative;
 }
 
 .m-ladder__svg {
   display: block;
+  position: absolute;
 }
 
 .m-ladder__line {

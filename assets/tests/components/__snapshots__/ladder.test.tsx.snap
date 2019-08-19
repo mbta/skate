@@ -3,25 +3,30 @@
 exports[`ladder filters out vehicles whose block is not active 1`] = `
 <div
   className="m-ladder"
+  style={
+    Object {
+      "width": 184,
+    }
+  }
 >
   <svg
     className="m-ladder__svg"
-    height={500}
-    viewBox="-92 -40 184 500"
+    height={0}
+    viewBox="-92 -40 184 0"
     width={184}
   >
     <line
       className="m-ladder__scheduled-line "
       x1={-63}
       x2={40}
-      y1={262.5}
-      y2={577.5}
+      y1={-50}
+      y2={-110}
     />
     <g>
       <g
         className="m-ladder__vehicle  "
         onClick={[Function]}
-        transform="translate(-63,262.5)"
+        transform="translate(-63,-50)"
       >
         <g
           className="m-vehicle-icon m-vehicle-icon--medium"
@@ -57,14 +62,14 @@ exports[`ladder filters out vehicles whose block is not active 1`] = `
       x1={-40}
       x2={-40}
       y1="0"
-      y2={420}
+      y2={-80}
     />
     <line
       className="m-ladder__line"
       x1={40}
       x2={40}
       y1="0"
-      y2={420}
+      y2={-80}
     />
     <g
       className="m-ladder__headway-lines"
@@ -76,20 +81,20 @@ exports[`ladder filters out vehicles whose block is not active 1`] = `
         id="downward"
         x1={-40}
         x2={-40}
-        y1={420}
-        y2={262.5}
+        y1={-80}
+        y2={-50}
       />
     </g>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
-      cy={0}
+      cy={-0}
       r="3"
     />
     <circle
       className="m-ladder__stop-circle"
       cx={40}
-      cy={0}
+      cy={-0}
       r="3"
     />
     <text
@@ -97,20 +102,20 @@ exports[`ladder filters out vehicles whose block is not active 1`] = `
       dominantBaseline="middle"
       textAnchor="middle"
       x="0"
-      y={0}
+      y={-0}
     >
       t0
     </text>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
-      cy={210}
+      cy={-40}
       r="3"
     />
     <circle
       className="m-ladder__stop-circle"
       cx={40}
-      cy={210}
+      cy={-40}
       r="3"
     />
     <text
@@ -118,20 +123,20 @@ exports[`ladder filters out vehicles whose block is not active 1`] = `
       dominantBaseline="middle"
       textAnchor="middle"
       x="0"
-      y={210}
+      y={-40}
     >
       t1
     </text>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
-      cy={420}
+      cy={-80}
       r="3"
     />
     <circle
       className="m-ladder__stop-circle"
       cx={40}
-      cy={420}
+      cy={-80}
       r="3"
     />
     <text
@@ -139,7 +144,7 @@ exports[`ladder filters out vehicles whose block is not active 1`] = `
       dominantBaseline="middle"
       textAnchor="middle"
       x="0"
-      y={420}
+      y={-80}
     >
       t2
     </text>
@@ -150,25 +155,30 @@ exports[`ladder filters out vehicles whose block is not active 1`] = `
 exports[`ladder highlights a selected vehicle 1`] = `
 <div
   className="m-ladder"
+  style={
+    Object {
+      "width": 184,
+    }
+  }
 >
   <svg
     className="m-ladder__svg"
-    height={500}
-    viewBox="-92 -40 184 500"
+    height={0}
+    viewBox="-92 -40 184 0"
     width={184}
   >
     <line
       className="m-ladder__scheduled-line "
       x1={-63}
       x2={40}
-      y1={262.5}
-      y2={577.5}
+      y1={-50}
+      y2={-110}
     />
     <g>
       <g
         className="m-ladder__vehicle  "
         onClick={[Function]}
-        transform="translate(-63,262.5)"
+        transform="translate(-63,-50)"
       >
         <g
           className="m-vehicle-icon m-vehicle-icon--medium"
@@ -203,7 +213,7 @@ exports[`ladder highlights a selected vehicle 1`] = `
       <g
         className="m-ladder__vehicle  selected"
         onClick={[Function]}
-        transform="translate(63,315)"
+        transform="translate(63,-60)"
       >
         <g
           className="m-vehicle-icon m-vehicle-icon--medium"
@@ -239,14 +249,14 @@ exports[`ladder highlights a selected vehicle 1`] = `
       x1={-40}
       x2={-40}
       y1="0"
-      y2={420}
+      y2={-80}
     />
     <line
       className="m-ladder__line"
       x1={40}
       x2={40}
       y1="0"
-      y2={420}
+      y2={-80}
     />
     <g
       className="m-ladder__headway-lines"
@@ -258,8 +268,8 @@ exports[`ladder highlights a selected vehicle 1`] = `
         id="downward"
         x1={-40}
         x2={-40}
-        y1={420}
-        y2={262.5}
+        y1={-80}
+        y2={-50}
       />
       <line
         className="m-ladder__line
@@ -269,19 +279,19 @@ exports[`ladder highlights a selected vehicle 1`] = `
         x1={40}
         x2={40}
         y1={0}
-        y2={315}
+        y2={-60}
       />
     </g>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
-      cy={0}
+      cy={-0}
       r="3"
     />
     <circle
       className="m-ladder__stop-circle"
       cx={40}
-      cy={0}
+      cy={-0}
       r="3"
     />
     <text
@@ -289,20 +299,20 @@ exports[`ladder highlights a selected vehicle 1`] = `
       dominantBaseline="middle"
       textAnchor="middle"
       x="0"
-      y={0}
+      y={-0}
     >
       t0
     </text>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
-      cy={210}
+      cy={-40}
       r="3"
     />
     <circle
       className="m-ladder__stop-circle"
       cx={40}
-      cy={210}
+      cy={-40}
       r="3"
     />
     <text
@@ -310,20 +320,20 @@ exports[`ladder highlights a selected vehicle 1`] = `
       dominantBaseline="middle"
       textAnchor="middle"
       x="0"
-      y={210}
+      y={-40}
     >
       t1
     </text>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
-      cy={420}
+      cy={-80}
       r="3"
     />
     <circle
       className="m-ladder__stop-circle"
       cx={40}
-      cy={420}
+      cy={-80}
       r="3"
     />
     <text
@@ -331,7 +341,7 @@ exports[`ladder highlights a selected vehicle 1`] = `
       dominantBaseline="middle"
       textAnchor="middle"
       x="0"
-      y={420}
+      y={-80}
     >
       t2
     </text>
@@ -342,25 +352,30 @@ exports[`ladder highlights a selected vehicle 1`] = `
 exports[`ladder renders a ladder 1`] = `
 <div
   className="m-ladder"
+  style={
+    Object {
+      "width": 184,
+    }
+  }
 >
   <svg
     className="m-ladder__svg"
-    height={500}
-    viewBox="-92 -40 184 500"
+    height={0}
+    viewBox="-92 -40 184 0"
     width={184}
   >
     <line
       className="m-ladder__scheduled-line "
       x1={-63}
       x2={40}
-      y1={262.5}
-      y2={577.5}
+      y1={-50}
+      y2={-110}
     />
     <g>
       <g
         className="m-ladder__vehicle  "
         onClick={[Function]}
-        transform="translate(63,315)"
+        transform="translate(63,-60)"
       >
         <g
           className="m-vehicle-icon m-vehicle-icon--medium"
@@ -387,6 +402,41 @@ exports[`ladder renders a ladder 1`] = `
             className="m-vehicle-icon__triangle"
             d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
             transform="scale(0.625) rotate(0) translate(-24,-22)"
+          />
+        </g>
+      </g>
+    </g>
+    <g>
+      <g
+        className="m-ladder__vehicle  "
+        onClick={[Function]}
+        transform="translate(-63,-50)"
+      >
+        <g
+          className="m-vehicle-icon m-vehicle-icon--medium"
+        >
+          <rect
+            className="m-vehicle-icon__label-background"
+            height={11}
+            rx={5.5}
+            ry={5.5}
+            width={26}
+            x={-13}
+            y={-22.5}
+          />
+          <text
+            className="m-vehicle-icon__label"
+            dominantBaseline="central"
+            textAnchor="middle"
+            x="0"
+            y={-17}
+          >
+            2
+          </text>
+          <path
+            className="m-vehicle-icon__triangle"
+            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            transform="scale(0.625) rotate(180) translate(-24,-22)"
           />
         </g>
       </g>
@@ -426,54 +476,19 @@ exports[`ladder renders a ladder 1`] = `
         </g>
       </g>
     </g>
-    <g>
-      <g
-        className="m-ladder__vehicle  "
-        onClick={[Function]}
-        transform="translate(-63,262.5)"
-      >
-        <g
-          className="m-vehicle-icon m-vehicle-icon--medium"
-        >
-          <rect
-            className="m-vehicle-icon__label-background"
-            height={11}
-            rx={5.5}
-            ry={5.5}
-            width={26}
-            x={-13}
-            y={-22.5}
-          />
-          <text
-            className="m-vehicle-icon__label"
-            dominantBaseline="central"
-            textAnchor="middle"
-            x="0"
-            y={-17}
-          >
-            2
-          </text>
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-            transform="scale(0.625) rotate(180) translate(-24,-22)"
-          />
-        </g>
-      </g>
-    </g>
     <line
       className="m-ladder__line"
       x1={-40}
       x2={-40}
       y1="0"
-      y2={420}
+      y2={-80}
     />
     <line
       className="m-ladder__line"
       x1={40}
       x2={40}
       y1="0"
-      y2={420}
+      y2={-80}
     />
     <g
       className="m-ladder__headway-lines"
@@ -482,21 +497,21 @@ exports[`ladder renders a ladder 1`] = `
         className="m-ladder__line
                   m-ladder__headway-line
                   m-ladder__headway-line--ok"
-        id="downward"
+        id="notimepoint"
         x1={-40}
         x2={-40}
-        y1={420}
-        y2={262.5}
+        y1={-80}
+        y2={0}
       />
       <line
         className="m-ladder__line
                   m-ladder__headway-line
                   m-ladder__headway-line--ok"
-        id="notimepoint"
+        id="downward"
         x1={-40}
         x2={-40}
-        y1={262.5}
-        y2={0}
+        y1={0}
+        y2={-50}
       />
       <line
         className="m-ladder__line
@@ -506,19 +521,19 @@ exports[`ladder renders a ladder 1`] = `
         x1={40}
         x2={40}
         y1={0}
-        y2={315}
+        y2={-60}
       />
     </g>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
-      cy={0}
+      cy={-0}
       r="3"
     />
     <circle
       className="m-ladder__stop-circle"
       cx={40}
-      cy={0}
+      cy={-0}
       r="3"
     />
     <text
@@ -526,20 +541,20 @@ exports[`ladder renders a ladder 1`] = `
       dominantBaseline="middle"
       textAnchor="middle"
       x="0"
-      y={0}
+      y={-0}
     >
       t0
     </text>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
-      cy={210}
+      cy={-40}
       r="3"
     />
     <circle
       className="m-ladder__stop-circle"
       cx={40}
-      cy={210}
+      cy={-40}
       r="3"
     />
     <text
@@ -547,20 +562,20 @@ exports[`ladder renders a ladder 1`] = `
       dominantBaseline="middle"
       textAnchor="middle"
       x="0"
-      y={210}
+      y={-40}
     >
       t1
     </text>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
-      cy={420}
+      cy={-80}
       r="3"
     />
     <circle
       className="m-ladder__stop-circle"
       cx={40}
-      cy={420}
+      cy={-80}
       r="3"
     />
     <text
@@ -568,7 +583,7 @@ exports[`ladder renders a ladder 1`] = `
       dominantBaseline="middle"
       textAnchor="middle"
       x="0"
-      y={420}
+      y={-80}
     >
       t2
     </text>
@@ -579,11 +594,16 @@ exports[`ladder renders a ladder 1`] = `
 exports[`ladder renders a ladder with no timepoints 1`] = `
 <div
   className="m-ladder"
+  style={
+    Object {
+      "width": 184,
+    }
+  }
 >
   <svg
     className="m-ladder__svg"
-    height={500}
-    viewBox="-92 -40 184 500"
+    height={0}
+    viewBox="-92 -40 184 0"
     width={184}
   >
     <g>
@@ -626,14 +646,14 @@ exports[`ladder renders a ladder with no timepoints 1`] = `
       x1={-40}
       x2={-40}
       y1="0"
-      y2={420}
+      y2={-80}
     />
     <line
       className="m-ladder__line"
       x1={40}
       x2={40}
       y1="0"
-      y2={420}
+      y2={-80}
     />
     <g
       className="m-ladder__headway-lines"
@@ -656,25 +676,30 @@ exports[`ladder renders a ladder with no timepoints 1`] = `
 exports[`ladder renders a reversed ladder 1`] = `
 <div
   className="m-ladder"
+  style={
+    Object {
+      "width": 184,
+    }
+  }
 >
   <svg
     className="m-ladder__svg"
-    height={500}
-    viewBox="-92 -40 184 500"
+    height={0}
+    viewBox="-92 -40 184 0"
     width={184}
   >
     <line
       className="m-ladder__scheduled-line "
       x1={63}
       x2={40}
-      y1={315}
-      y2={294}
+      y1={-60}
+      y2={-56}
     />
     <g>
       <g
         className="m-ladder__vehicle  "
         onClick={[Function]}
-        transform="translate(63,315)"
+        transform="translate(63,-60)"
       >
         <g
           className="m-vehicle-icon m-vehicle-icon--medium"
@@ -710,14 +735,14 @@ exports[`ladder renders a reversed ladder 1`] = `
       x1={-40}
       x2={-40}
       y1="0"
-      y2={420}
+      y2={-80}
     />
     <line
       className="m-ladder__line"
       x1={40}
       x2={40}
       y1="0"
-      y2={420}
+      y2={-80}
     />
     <g
       className="m-ladder__headway-lines"
@@ -730,19 +755,19 @@ exports[`ladder renders a reversed ladder 1`] = `
         x1={40}
         x2={40}
         y1={0}
-        y2={315}
+        y2={-60}
       />
     </g>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
-      cy={0}
+      cy={-0}
       r="3"
     />
     <circle
       className="m-ladder__stop-circle"
       cx={40}
-      cy={0}
+      cy={-0}
       r="3"
     />
     <text
@@ -750,20 +775,20 @@ exports[`ladder renders a reversed ladder 1`] = `
       dominantBaseline="middle"
       textAnchor="middle"
       x="0"
-      y={0}
+      y={-0}
     >
       t2
     </text>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
-      cy={210}
+      cy={-40}
       r="3"
     />
     <circle
       className="m-ladder__stop-circle"
       cx={40}
-      cy={210}
+      cy={-40}
       r="3"
     />
     <text
@@ -771,20 +796,20 @@ exports[`ladder renders a reversed ladder 1`] = `
       dominantBaseline="middle"
       textAnchor="middle"
       x="0"
-      y={210}
+      y={-40}
     >
       t1
     </text>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
-      cy={420}
+      cy={-80}
       r="3"
     />
     <circle
       className="m-ladder__stop-circle"
       cx={40}
-      cy={420}
+      cy={-80}
       r="3"
     />
     <text
@@ -792,7 +817,7 @@ exports[`ladder renders a reversed ladder 1`] = `
       dominantBaseline="middle"
       textAnchor="middle"
       x="0"
-      y={420}
+      y={-80}
     >
       t0
     </text>
@@ -803,11 +828,16 @@ exports[`ladder renders a reversed ladder 1`] = `
 exports[`ladder renders an off-course vehicle 1`] = `
 <div
   className="m-ladder"
+  style={
+    Object {
+      "width": 184,
+    }
+  }
 >
   <svg
     className="m-ladder__svg"
-    height={500}
-    viewBox="-92 -40 184 500"
+    height={0}
+    viewBox="-92 -40 184 0"
     width={184}
   >
     <g>
@@ -859,14 +889,14 @@ exports[`ladder renders an off-course vehicle 1`] = `
       x1={-40}
       x2={-40}
       y1="0"
-      y2={420}
+      y2={-80}
     />
     <line
       className="m-ladder__line"
       x1={40}
       x2={40}
       y1="0"
-      y2={420}
+      y2={-80}
     />
     <g
       className="m-ladder__headway-lines"
@@ -874,13 +904,13 @@ exports[`ladder renders an off-course vehicle 1`] = `
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
-      cy={0}
+      cy={-0}
       r="3"
     />
     <circle
       className="m-ladder__stop-circle"
       cx={40}
-      cy={0}
+      cy={-0}
       r="3"
     />
     <text
@@ -888,20 +918,20 @@ exports[`ladder renders an off-course vehicle 1`] = `
       dominantBaseline="middle"
       textAnchor="middle"
       x="0"
-      y={0}
+      y={-0}
     >
       t0
     </text>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
-      cy={210}
+      cy={-40}
       r="3"
     />
     <circle
       className="m-ladder__stop-circle"
       cx={40}
-      cy={210}
+      cy={-40}
       r="3"
     />
     <text
@@ -909,20 +939,20 @@ exports[`ladder renders an off-course vehicle 1`] = `
       dominantBaseline="middle"
       textAnchor="middle"
       x="0"
-      y={210}
+      y={-40}
     >
       t1
     </text>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
-      cy={420}
+      cy={-80}
       r="3"
     />
     <circle
       className="m-ladder__stop-circle"
       cx={40}
-      cy={420}
+      cy={-80}
       r="3"
     />
     <text
@@ -930,7 +960,7 @@ exports[`ladder renders an off-course vehicle 1`] = `
       dominantBaseline="middle"
       textAnchor="middle"
       x="0"
-      y={420}
+      y={-80}
     >
       t2
     </text>
@@ -941,25 +971,30 @@ exports[`ladder renders an off-course vehicle 1`] = `
 exports[`ladder shows schedule line in the other direction 1`] = `
 <div
   className="m-ladder"
+  style={
+    Object {
+      "width": 184,
+    }
+  }
 >
   <svg
     className="m-ladder__svg"
-    height={500}
-    viewBox="-92 -40 184 500"
+    height={0}
+    viewBox="-92 -40 184 0"
     width={184}
   >
     <line
       className="m-ladder__scheduled-line "
       x1={-63}
       x2={40}
-      y1={-157.5}
-      y2={157.5}
+      y1={30}
+      y2={-30}
     />
     <g>
       <g
         className="m-ladder__vehicle  "
         onClick={[Function]}
-        transform="translate(-63,-157.5)"
+        transform="translate(-63,30)"
       >
         <g
           className="m-vehicle-icon m-vehicle-icon--medium"
@@ -995,14 +1030,14 @@ exports[`ladder shows schedule line in the other direction 1`] = `
       x1={-40}
       x2={-40}
       y1="0"
-      y2={420}
+      y2={-80}
     />
     <line
       className="m-ladder__line"
       x1={40}
       x2={40}
       y1="0"
-      y2={420}
+      y2={-80}
     />
     <g
       className="m-ladder__headway-lines"
@@ -1014,20 +1049,20 @@ exports[`ladder shows schedule line in the other direction 1`] = `
         id="downward"
         x1={-40}
         x2={-40}
-        y1={420}
-        y2={-157.5}
+        y1={-80}
+        y2={30}
       />
     </g>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
-      cy={0}
+      cy={-0}
       r="3"
     />
     <circle
       className="m-ladder__stop-circle"
       cx={40}
-      cy={0}
+      cy={-0}
       r="3"
     />
     <text
@@ -1035,20 +1070,20 @@ exports[`ladder shows schedule line in the other direction 1`] = `
       dominantBaseline="middle"
       textAnchor="middle"
       x="0"
-      y={0}
+      y={-0}
     >
       t2
     </text>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
-      cy={210}
+      cy={-40}
       r="3"
     />
     <circle
       className="m-ladder__stop-circle"
       cx={40}
-      cy={210}
+      cy={-40}
       r="3"
     />
     <text
@@ -1056,20 +1091,20 @@ exports[`ladder shows schedule line in the other direction 1`] = `
       dominantBaseline="middle"
       textAnchor="middle"
       x="0"
-      y={210}
+      y={-40}
     >
       t1
     </text>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
-      cy={420}
+      cy={-80}
       r="3"
     />
     <circle
       className="m-ladder__stop-circle"
       cx={40}
-      cy={420}
+      cy={-80}
       r="3"
     />
     <text
@@ -1077,7 +1112,7 @@ exports[`ladder shows schedule line in the other direction 1`] = `
       dominantBaseline="middle"
       textAnchor="middle"
       x="0"
-      y={420}
+      y={-80}
     >
       t0
     </text>

@@ -1,8 +1,9 @@
-import React, { useContext, useLayoutEffect, useRef, useState } from "react"
+import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { partition } from "../helpers/array"
 import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
 import vehicleLabel from "../helpers/vehicleLabel"
+import useReferencedElementHeight from "../hooks/useReferencedElementHeight"
 import featureIsEnabled from "../laboratoryFeatures"
 import {
   LadderVehicle,
@@ -49,16 +50,7 @@ const Ladder = ({
   ladderDirection,
   selectedVehicleId,
 }: Props) => {
-  const [height, setHeight] = useState(500)
-  const wrapperDivRef = useRef<HTMLDivElement>(null)
-  useLayoutEffect(() => {
-    if (wrapperDivRef.current !== null) {
-      const newHeight = wrapperDivRef.current.offsetHeight
-      if (newHeight !== height) {
-        setHeight(newHeight)
-      }
-    }
-  }, [wrapperDivRef.current, height])
+  const { height, elementRef } = useReferencedElementHeight()
 
   const orderedTimepoints: TimepointId[] =
     // Use slice to make a copy of the array before destructively reversing
@@ -90,7 +82,7 @@ const Ladder = ({
   const viewBox = [-width / 2, -MARGIN_TOP_BOTTOM, width, height].join(" ")
 
   return (
-    <div className="m-ladder" ref={wrapperDivRef}>
+    <div className="m-ladder" style={{ width }} ref={elementRef}>
       <svg
         className="m-ladder__svg"
         viewBox={viewBox}
