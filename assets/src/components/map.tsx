@@ -105,7 +105,7 @@ export const updateMap = (
   vehicles.forEach(v => updateVehicle(v, state, labelSetting, centerOnVehicle))
 }
 
-const updateIcons = (
+export const updateIcons = (
   newVehicles: { [id: string]: Vehicle },
   oldDict: MarkerDict,
   map: LeafletMap

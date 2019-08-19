@@ -1,7 +1,7 @@
 import Leaflet from "leaflet"
 import React from "react"
 import renderer from "react-test-renderer"
-import Map, { updateMap } from "../../src/components/map"
+import Map, { updateIcons, updateMap } from "../../src/components/map"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Vehicle } from "../../src/realtime"
 import { VehicleLabelSetting } from "../../src/settings"
@@ -86,5 +86,52 @@ describe("updateMap", () => {
     expect(map.getCenter()).toEqual({ lat: 42, lng: -71 })
     expect(icons[vehicle.id].getLatLng()).toEqual({ lat: 42, lng: -71 })
     expect(icons[vehicle.id].getLatLng()).toEqual({ lat: 42, lng: -71 })
+  })
+})
+
+describe("updateIcons", () => {
+  test("adds a new icon for a vehicle if it doesn't exist", () => {
+    document.body.innerHTML = "<div id='map'></div>"
+    const map = Leaflet.map("map", {})
+    const vehicles = {
+      [vehicle.id]: vehicle,
+    }
+
+    const icons = updateIcons(vehicles, {}, map)
+
+    expect(Object.keys(icons)).toEqual([vehicle.id])
+    expect(icons[vehicle.id]!.getLatLng()).toEqual({
+      lat: vehicle.latitude,
+      lng: vehicle.longitude,
+    })
+  })
+
+  test("removes icon if it is not in the list of current vehicles", () => {
+    document.body.innerHTML = "<div id='map'></div>"
+    const map = Leaflet.map("map", {})
+    const existingVehicles = {
+      [vehicle.id]: Leaflet.marker([vehicle.latitude, vehicle.longitude]).addTo(
+        map
+      ),
+    }
+
+    const icons = updateIcons({}, existingVehicles, map)
+    expect(icons[vehicle.id]).toBe(null)
+  })
+
+  test("keeps existing icons", () => {
+    document.body.innerHTML = "<div id='map'></div>"
+    const map = Leaflet.map("map", {})
+    const marker = Leaflet.marker([vehicle.latitude, vehicle.longitude]).addTo(
+      map
+    )
+
+    const icons = updateIcons(
+      { [vehicle.id]: vehicle },
+      { [vehicle.id]: marker },
+      map
+    )
+
+    expect(icons[vehicle.id]).toEqual(marker)
   })
 })
