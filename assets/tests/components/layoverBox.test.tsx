@@ -3,10 +3,8 @@ import React from "react"
 import renderer from "react-test-renderer"
 import LayoverBox from "../../src/components/layoverBox"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import { TripsByIdProvider } from "../../src/contexts/tripsByIdContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Vehicle } from "../../src/realtime.d"
-import { TripsById } from "../../src/schedule"
 import { initialState, selectVehicle } from "../../src/state"
 
 const vehicles: Vehicle[] = [
@@ -20,6 +18,8 @@ const vehicles: Vehicle[] = [
     directionId: 0,
     routeId: "1",
     tripId: "39914237",
+    headsign: "headsign",
+    viaVariant: null,
     operatorId: "op1",
     operatorName: "SMITH",
     bearing: 33,
@@ -59,6 +59,8 @@ const vehicles: Vehicle[] = [
     directionId: 1,
     routeId: "1",
     tripId: "39914128",
+    headsign: "headsign",
+    viaVariant: null,
     operatorId: "op2",
     operatorName: "JONES",
     bearing: 33,
@@ -96,26 +98,10 @@ const vehicles: Vehicle[] = [
   },
 ]
 
-const tripsById: TripsById = {
-  "39914128": {
-    id: "39914128",
-    routeId: "1",
-    headsign: "headsign",
-    directionId: 1,
-    blockId: "block-1",
-    routePatternId: "route-pattern-id",
-    stopTimes: [],
-  },
-}
-
 describe("LayoverBox", () => {
   test("renders", () => {
     const tree = renderer
-      .create(
-        <TripsByIdProvider tripsById={tripsById}>
-          <LayoverBox classModifier="top" vehicles={vehicles} />
-        </TripsByIdProvider>
-      )
+      .create(<LayoverBox classModifier="top" vehicles={vehicles} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -125,9 +111,7 @@ describe("LayoverBox", () => {
     const dispatch = jest.fn()
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
-        <TripsByIdProvider tripsById={tripsById}>
-          <LayoverBox classModifier="bottom" vehicles={vehicles} />
-        </TripsByIdProvider>
+        <LayoverBox classModifier="bottom" vehicles={vehicles} />
       </StateDispatchProvider>
     )
 
@@ -141,15 +125,11 @@ describe("LayoverBox", () => {
 
   test("vehicles are sorted", () => {
     const topWrapper = mount(
-      <TripsByIdProvider tripsById={tripsById}>
-        <LayoverBox classModifier="top" vehicles={vehicles} />
-      </TripsByIdProvider>
+      <LayoverBox classModifier="top" vehicles={vehicles} />
     )
 
     const bottomWrapper = mount(
-      <TripsByIdProvider tripsById={tripsById}>
-        <LayoverBox classModifier="bottom" vehicles={vehicles} />
-      </TripsByIdProvider>
+      <LayoverBox classModifier="bottom" vehicles={vehicles} />
     )
 
     expect(
