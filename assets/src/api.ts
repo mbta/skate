@@ -47,6 +47,15 @@ export const fetchRoutes = (): Promise<Route[]> =>
       throw error
     })
 
+export const fetchShuttles = (): Promise<Route[]> =>
+  fetch("/api/shuttles")
+    .then(checkResponseStatus)
+    .then(parseJson)
+    .then(({ data: shuttles }: RoutesResponse) => parseRoutesData(shuttles))
+    .catch(error => {
+      throw error
+    })
+
 export const fetchTimepointsForRoute = (
   routeId: RouteId
 ): Promise<TimepointId[]> =>
