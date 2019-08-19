@@ -20,26 +20,29 @@ interface Props {
   centerOnVehicle: string | null
 }
 
+interface VehicleMarkers {
+  icon: Marker
+  label: Marker
+}
+
 interface MarkerDict {
-  [id: string]: Marker | null
+  [id: string]: VehicleMarkers | null
 }
 
 interface State {
   map: LeafletMap | null
-  icons: MarkerDict
-  labels: MarkerDict
+  markers: MarkerDict
 }
 
 const iconAnchor: [number, number] = [12, 12]
 
 const updateVehicle = (
   vehicle: Vehicle,
-  { map, icons, labels }: State,
+  { map, markers }: State,
   labelSetting: VehicleLabelSetting,
   centerOnVehicle: string | null
 ): void => {
-  const vehicleIcon = icons[vehicle.id]
-  const vehicleLabel = labels[vehicle.id]
+  const { icon: vehicleIcon, label: vehicleLabel } = markers[vehicle.id]!
 
   const { bearing, headwaySpacing, latitude, longitude } = vehicle
   const zoom = map!.getZoom()
@@ -79,11 +82,11 @@ const updateVehicle = (
     map!.setView([latitude, longitude], zoom)
   }
 
-  vehicleIcon!.setLatLng([latitude, longitude])
-  vehicleLabel!.setLatLng([latitude, longitude])
+  vehicleIcon.setLatLng([latitude, longitude])
+  vehicleLabel.setLatLng([latitude, longitude])
 
-  vehicleIcon!.setIcon(icon)
-  vehicleLabel!.setIcon(label)
+  vehicleIcon.setIcon(icon)
+  vehicleLabel.setIcon(label)
 }
 
 export const updateMap = (
@@ -94,14 +97,14 @@ export const updateMap = (
   vehicles.forEach(v => updateVehicle(v, state, labelSetting, centerOnVehicle))
 }
 
-export const updateIcons = (
+export const updateMarkers = (
   newVehicles: { [id: string]: Vehicle },
   oldDict: MarkerDict,
   map: LeafletMap
 ): MarkerDict => {
   const newDict = Object.entries(oldDict).reduce(
-    (acc, [vehicleId, existingMarker]) => {
-      const newValue = newVehicles[vehicleId] ? existingMarker : null
+    (acc, [vehicleId, existingMarkers]) => {
+      const newValue = newVehicles[vehicleId] ? existingMarkers : null
       acc[vehicleId] = newValue
       return acc
     },
@@ -110,7 +113,10 @@ export const updateIcons = (
 
   return Object.entries(newVehicles).reduce((acc, [id, vehicle]) => {
     if (acc[id] === undefined) {
-      acc[id] = Leaflet.marker([vehicle.latitude, vehicle.longitude]).addTo(map)
+      acc[id] = {
+        icon: Leaflet.marker([vehicle.latitude, vehicle.longitude]).addTo(map),
+        label: Leaflet.marker([vehicle.latitude, vehicle.longitude]).addTo(map),
+      }
     }
     return acc
   }, newDict)
@@ -121,8 +127,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
   const containerRef: MutableRefObject<HTMLDivElement | null> = useRef(null)
   const [state, updateState] = useState<State>({
     map: null,
-    icons: {},
-    labels: {},
+    markers: {},
   })
 
   useEffect(() => {
@@ -153,13 +158,11 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
       {} as { [id: string]: Vehicle }
     )
 
-    const icons = updateIcons(newVehicles, state.icons, map)
+    const markers = updateMarkers(newVehicles, state.markers, map)
 
-    const labels = updateIcons(newVehicles, state.labels, map)
+    updateMap(props, { map, markers }, settings.vehicleLabel)
 
-    updateMap(props, { map, icons, labels }, settings.vehicleLabel)
-
-    updateState({ map, icons, labels })
+    updateState({ map, markers })
   }, [props, containerRef])
 
   return (
