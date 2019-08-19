@@ -203,6 +203,7 @@ describe("routeLadder", () => {
     const route: Route = {
       id: "1",
       directionNames: { 0: "Outbound", 1: "Inbound" },
+      name: "1",
     }
 
     const timepoints = ["MATPN", "WELLH", "MORTN"]

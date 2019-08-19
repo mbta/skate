@@ -1,10 +1,11 @@
 import React, { Dispatch, ReactElement, useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { TripsByIdContext } from "../contexts/tripsByIdContext"
-import runIdToLabel from "../helpers/runIdToLabel"
+import vehicleLabel from "../helpers/vehicleLabel"
 import { getViaVariant } from "../helpers/viaVariant"
 import { Vehicle } from "../realtime"
 import { Trip, TripsById } from "../schedule"
+import { Settings } from "../settings"
 import { selectVehicle, SelectVehicleAction } from "../state"
 import VehicleIcon, { Orientation, Size } from "./vehicleIcon"
 
@@ -19,7 +20,8 @@ const layoverVehicle = (
   vehicle: Vehicle,
   classModifier: ClassModifier,
   tripsById: TripsById,
-  dispatch: Dispatch<SelectVehicleAction>
+  dispatch: Dispatch<SelectVehicleAction>,
+  settings: Settings
 ): ReactElement<HTMLDivElement> => {
   const trip: Trip | undefined = tripsById[vehicle.tripId]
   return (
@@ -29,7 +31,7 @@ const layoverVehicle = (
       className="m-layover-box__vehicle"
     >
       <VehicleIcon
-        label={runIdToLabel(vehicle)}
+        label={vehicleLabel(vehicle, settings.vehicleLabel)}
         orientation={
           classModifier === "bottom" ? Orientation.Right : Orientation.Left
         }
@@ -60,13 +62,15 @@ const LayoverBox = ({
   classModifier,
   vehicles,
 }: Props): ReactElement<HTMLDivElement> => {
-  const [, dispatch] = useContext(StateDispatchContext)
+  const [{ settings }, dispatch] = useContext(StateDispatchContext)
   const tripsById = useContext(TripsByIdContext)
   return (
     <div className={`m-layover-box m-layover-box--${classModifier}`}>
       {vehicles
         .sort(byLayoverDeparture(classModifier))
-        .map(v => layoverVehicle(v, classModifier, tripsById, dispatch))}
+        .map(v =>
+          layoverVehicle(v, classModifier, tripsById, dispatch, settings)
+        )}
     </div>
   )
 }
