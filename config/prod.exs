@@ -29,6 +29,10 @@ config :skate, :websocket_check_origin, [
 # Do not print debug messages in production
 config :logger, level: :info
 
+config :logger, :console,
+  format: "$time $metadata[$level] node=$node $message\n",
+  metadata: [:request_id]
+
 config :skate, :redirect_http?, true
 
 # Configure Ueberauth to use Cognito
