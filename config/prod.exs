@@ -48,6 +48,8 @@ config :skate, SkateWeb.AuthManager, secret_key: {System, :get_env, ["GUARDIAN_S
 
 config :skate, record_fullstory: true
 
+config :ehmon, :report_mf, {:ehmon, :info_report}
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key
