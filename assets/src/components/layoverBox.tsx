@@ -1,6 +1,7 @@
 import React, { Dispatch, ReactElement, useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { TripsByIdContext } from "../contexts/tripsByIdContext"
+import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
 import vehicleLabel from "../helpers/vehicleLabel"
 import { getViaVariant } from "../helpers/viaVariant"
 import { Vehicle } from "../realtime"
@@ -8,7 +9,6 @@ import { Trip, TripsById } from "../schedule"
 import { Settings } from "../settings"
 import { selectVehicle, SelectVehicleAction } from "../state"
 import VehicleIcon, { Orientation, Size } from "./vehicleIcon"
-import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
 
 type ClassModifier = "top" | "bottom"
 
