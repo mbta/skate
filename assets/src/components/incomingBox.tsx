@@ -31,7 +31,6 @@ const IncomingBoxVehicle = ({
       onClick={() => dispatch(selectVehicle(vehicle.id))}
     >
       <VehicleIcon
-        label=""
         size={Size.Small}
         orientation={orientation}
         variant={vehicle.viaVariant}

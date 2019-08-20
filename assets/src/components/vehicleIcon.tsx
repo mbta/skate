@@ -17,7 +17,7 @@ export enum Size {
 export interface Props {
   size: Size
   orientation: Orientation
-  label: string
+  label?: string
   variant?: string | null
   status?: DrawnStatus
 }
@@ -102,7 +102,9 @@ export const VehicleIconSvgNode = ({
         size
       )} ${statusClass(status)}`}
     >
-      {<Label size={size} orientation={orientation} label={label} />}
+      {label ? (
+        <Label size={size} orientation={orientation} label={label} />
+      ) : null}
       <Triangle size={size} orientation={orientation} />
       {variant && variant !== "_" ? (
         <Variant size={size} orientation={orientation} variant={variant} />
