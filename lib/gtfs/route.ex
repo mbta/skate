@@ -69,4 +69,8 @@ defmodule Gtfs.Route do
 
     row["route_type"] == "3"
   end
+
+  @spec shuttle_route?(t) :: boolean
+  def shuttle_route?(%__MODULE__{description: "Rail Replacement Bus"}), do: true
+  def shuttle_route?(%__MODULE__{}), do: false
 end

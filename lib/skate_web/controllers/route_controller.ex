@@ -9,7 +9,7 @@ defmodule SkateWeb.RouteController do
 
     routes =
       routes_fn.()
-      |> Enum.reject(&shuttle_route?/1)
+      |> Enum.reject(&Route.shuttle_route?/1)
 
     json(conn, %{data: routes})
   end
@@ -22,7 +22,4 @@ defmodule SkateWeb.RouteController do
     timepoint_ids = timepoint_ids_on_route_fn.(route_id)
     json(conn, %{data: timepoint_ids})
   end
-
-  defp shuttle_route?(%Route{description: "Rail Replacement Bus"}), do: true
-  defp shuttle_route?(%Route{}), do: false
 end
