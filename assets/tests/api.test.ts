@@ -1,4 +1,4 @@
-import { fetchRoutes, fetchTimepointsForRoute } from "../src/api"
+import { fetchRoutes, fetchShuttles, fetchTimepointsForRoute } from "../src/api"
 
 // tslint:disable no-empty
 
@@ -90,6 +90,86 @@ describe("fetchRoutes", () => {
         expect(error).not.toBeUndefined()
         expect(spyConsoleError).toHaveBeenCalled()
         spyConsoleError.mockRestore()
+        done()
+      })
+  })
+})
+
+describe("fetchShuttles", () => {
+  test("fetches a list of shuttles", done => {
+    window.fetch = () =>
+      Promise.resolve({
+        json: () => ({
+          data: [
+            {
+              direction_names: {
+                0: "Outbound",
+                1: "Inbound",
+              },
+              id: "28",
+            },
+            {
+              direction_names: {
+                0: "Outbound",
+                1: "Inbound",
+              },
+              id: "39",
+            },
+            {
+              direction_names: {
+                0: "Outbound",
+                1: "Inbound",
+              },
+              id: "71",
+            },
+          ],
+        }),
+        ok: true,
+        status: 200,
+      })
+
+    fetchShuttles().then(routes => {
+      expect(routes).toEqual([
+        {
+          directionNames: {
+            "0": "Outbound",
+            "1": "Inbound",
+          },
+          id: "28",
+        },
+        {
+          directionNames: {
+            "0": "Outbound",
+            "1": "Inbound",
+          },
+          id: "39",
+        },
+        {
+          directionNames: {
+            "0": "Outbound",
+            "1": "Inbound",
+          },
+          id: "71",
+        },
+      ])
+      done()
+    })
+  })
+
+  test("throws an error if the response status is not 200", done => {
+    window.fetch = () =>
+      Promise.resolve({
+        json: () => ({ data: null }),
+        ok: false,
+        status: 500,
+      })
+
+    fetchShuttles()
+      .then(() => {
+        done("fetchRoutes did not throw an error")
+      })
+      .catch(error => {
+        expect(error).not.toBeUndefined()
         done()
       })
   })
