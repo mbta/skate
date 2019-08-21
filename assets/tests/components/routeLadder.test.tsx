@@ -15,6 +15,97 @@ jest.mock("../../src/laboratoryFeatures", () => ({
   default: () => true,
 }))
 
+const vehicles: Vehicle[] = [
+  {
+    id: "y1818",
+    label: "1818",
+    runId: "run-1",
+    timestamp: 1557160307,
+    latitude: 0,
+    longitude: 0,
+    directionId: 0,
+    routeId: "1",
+    tripId: "39914237",
+    operatorId: "op1",
+    operatorName: "SMITH",
+    bearing: 33,
+    speed: 50.0,
+    blockId: "block-1",
+    headsign: "h1",
+    viaVariant: "4",
+    headwaySecs: 859.1,
+    headwaySpacing: HeadwaySpacing.Ok,
+    previousVehicleId: "v2",
+    scheduleAdherenceSecs: 0,
+    scheduleAdherenceString: "0.0 sec (ontime)",
+    scheduleAdherenceStatus: "on-time",
+    scheduledHeadwaySecs: 120,
+    isOffCourse: false,
+    isLayingOver: false,
+    layoverDepartureTime: null,
+    blockIsActive: true,
+    dataDiscrepancies: [],
+    stopStatus: {
+      status: "in_transit_to",
+      stopId: "57",
+      stopName: "57",
+    },
+    timepointStatus: {
+      fractionUntilTimepoint: 0.5,
+      timepointId: "MATPN",
+    },
+    scheduledLocation: null,
+    isOnRoute: true,
+  },
+  {
+    id: "y0479",
+    label: "0479",
+    runId: "run-2",
+    timestamp: 1557160347,
+    latitude: 0,
+    longitude: 0,
+    directionId: 1,
+    routeId: "1",
+    tripId: "39914128",
+    operatorId: "op2",
+    operatorName: "JONES",
+    bearing: 33,
+    speed: 50.0,
+    blockId: "block-1",
+    headsign: null,
+    viaVariant: null,
+    headwaySecs: 859.1,
+    headwaySpacing: HeadwaySpacing.Ok,
+    previousVehicleId: "v2",
+    scheduleAdherenceSecs: 0,
+    scheduleAdherenceString: "0.0 sec (ontime)",
+    scheduleAdherenceStatus: "on-time",
+    scheduledHeadwaySecs: 120,
+    isOffCourse: false,
+    isLayingOver: false,
+    layoverDepartureTime: null,
+    blockIsActive: true,
+    dataDiscrepancies: [],
+    stopStatus: {
+      status: "in_transit_to",
+      stopId: "59",
+      stopName: "59",
+    },
+    timepointStatus: {
+      fractionUntilTimepoint: 0.0,
+      timepointId: "MORTN",
+    },
+    scheduledLocation: {
+      directionId: 1,
+      timepointStatus: {
+        timepointId: "MORTN",
+        fractionUntilTimepoint: 0.0,
+      },
+    },
+    isOnRoute: true,
+  },
+]
+
 describe("routeLadder", () => {
   const originalGetBBox = SVGSVGElement.prototype.getBBox
   const originalGetElementsByClassName = document.getElementsByClassName
@@ -67,93 +158,6 @@ describe("routeLadder", () => {
       name: "28",
     }
     const timepoints = ["MATPN", "WELLH", "MORTN"]
-    const vehicles: Vehicle[] = [
-      {
-        id: "y1818",
-        label: "1818",
-        runId: "run-1",
-        timestamp: 1557160307,
-        latitude: 0,
-        longitude: 0,
-        directionId: 0,
-        routeId: "1",
-        tripId: "39914237",
-        headsign: "h0",
-        viaVariant: "4",
-        operatorId: "op1",
-        operatorName: "SMITH",
-        bearing: 33,
-        speed: 50.0,
-        blockId: "block-1",
-        headwaySecs: 859.1,
-        headwaySpacing: HeadwaySpacing.Ok,
-        previousVehicleId: "v2",
-        scheduleAdherenceSecs: 0,
-        scheduleAdherenceString: "0.0 sec (ontime)",
-        scheduleAdherenceStatus: "on-time",
-        scheduledHeadwaySecs: 120,
-        isOffCourse: false,
-        blockIsActive: true,
-        dataDiscrepancies: [],
-        stopStatus: {
-          status: "in_transit_to",
-          stopId: "57",
-          stopName: "57",
-        },
-        timepointStatus: {
-          fractionUntilTimepoint: 0.5,
-          timepointId: "MATPN",
-        },
-        scheduledLocation: null,
-        isOnRoute: true,
-      },
-      {
-        id: "y0479",
-        label: "0479",
-        runId: "run-2",
-        timestamp: 1557160347,
-        latitude: 0,
-        longitude: 0,
-        directionId: 1,
-        routeId: "1",
-        tripId: "39914128",
-        headsign: null,
-        viaVariant: null,
-        operatorId: "op2",
-        operatorName: "JONES",
-        bearing: 33,
-        speed: 50.0,
-        blockId: "block-1",
-        headwaySecs: 859.1,
-        headwaySpacing: HeadwaySpacing.Ok,
-        previousVehicleId: "v2",
-        scheduleAdherenceSecs: 0,
-        scheduleAdherenceString: "0.0 sec (ontime)",
-        scheduleAdherenceStatus: "on-time",
-        scheduledHeadwaySecs: 120,
-        isOffCourse: false,
-        blockIsActive: true,
-        dataDiscrepancies: [],
-        stopStatus: {
-          status: "in_transit_to",
-          stopId: "59",
-          stopName: "59",
-        },
-        timepointStatus: {
-          fractionUntilTimepoint: 0.0,
-          timepointId: "MORTN",
-        },
-        scheduledLocation: {
-          directionId: 1,
-          timepointStatus: {
-            timepointId: "MORTN",
-            fractionUntilTimepoint: 0.0,
-          },
-        },
-        isOnRoute: true,
-      },
-    ]
-
     const tree = renderer
       .create(
         <RouteLadder
@@ -178,93 +182,6 @@ describe("routeLadder", () => {
       name: "28",
     }
     const timepoints = ["MATPN", "WELLH", "MORTN"]
-    const vehicles: Vehicle[] = [
-      {
-        id: "y1818",
-        label: "1818",
-        runId: "run-1",
-        timestamp: 1557160307,
-        latitude: 0,
-        longitude: 0,
-        directionId: 0,
-        routeId: "1",
-        tripId: "39914237",
-        headsign: "h0",
-        viaVariant: "4",
-        operatorId: "op1",
-        operatorName: "SMITH",
-        bearing: 33,
-        speed: 50.0,
-        blockId: "block-1",
-        headwaySecs: 859.1,
-        headwaySpacing: HeadwaySpacing.Ok,
-        previousVehicleId: "v2",
-        scheduleAdherenceSecs: 0,
-        scheduleAdherenceString: "0.0 sec (ontime)",
-        scheduleAdherenceStatus: "on-time",
-        scheduledHeadwaySecs: 120,
-        isOffCourse: false,
-        blockIsActive: true,
-        dataDiscrepancies: [],
-        stopStatus: {
-          status: "in_transit_to",
-          stopId: "57",
-          stopName: "57",
-        },
-        timepointStatus: {
-          fractionUntilTimepoint: 0.5,
-          timepointId: "MATPN",
-        },
-        scheduledLocation: null,
-        isOnRoute: true,
-      },
-      {
-        id: "y0479",
-        label: "0479",
-        runId: "run-2",
-        timestamp: 1557160347,
-        latitude: 0,
-        longitude: 0,
-        directionId: 1,
-        routeId: "1",
-        tripId: "39914128",
-        headsign: null,
-        viaVariant: null,
-        operatorId: "op2",
-        operatorName: "JONES",
-        bearing: 33,
-        speed: 50.0,
-        blockId: "block-1",
-        headwaySecs: 859.1,
-        headwaySpacing: HeadwaySpacing.Ok,
-        previousVehicleId: "v2",
-        scheduleAdherenceSecs: 0,
-        scheduleAdherenceString: "0.0 sec (ontime)",
-        scheduleAdherenceStatus: "on-time",
-        scheduledHeadwaySecs: 120,
-        isOffCourse: false,
-        blockIsActive: true,
-        dataDiscrepancies: [],
-        stopStatus: {
-          status: "in_transit_to",
-          stopId: "59",
-          stopName: "59",
-        },
-        timepointStatus: {
-          fractionUntilTimepoint: 0.0,
-          timepointId: "MORTN",
-        },
-        scheduledLocation: {
-          directionId: 1,
-          timepointStatus: {
-            timepointId: "MORTN",
-            fractionUntilTimepoint: 0.0,
-          },
-        },
-        isOnRoute: true,
-      },
-    ]
-
     const tree = renderer
       .create(
         <RouteLadder
@@ -275,6 +192,36 @@ describe("routeLadder", () => {
             incomingVehicles: vehicles,
           }}
           selectedVehicleId={undefined}
+        />
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders a route ladder with laying over vehicles", () => {
+    const route: Route = {
+      id: "1",
+      directionNames: { 0: "Outbound", 1: "Inbound" },
+      name: "1",
+    }
+
+    const timepoints = ["MATPN", "WELLH", "MORTN"]
+
+    const [v1, v2] = vehicles
+    const tree = renderer
+      .create(
+        <RouteLadder
+          route={route}
+          selectedVehicleId={undefined}
+          timepoints={timepoints}
+          vehiclesForRoute={{
+            onRouteVehicles: [],
+            incomingVehicles: [
+              { ...v1, isLayingOver: true },
+              { ...v2, isLayingOver: true },
+            ],
+          }}
         />
       )
       .toJSON()
@@ -387,6 +334,8 @@ describe("routeLadder", () => {
       scheduleAdherenceStatus: "on-time",
       scheduledHeadwaySecs: 120,
       isOffCourse: false,
+      isLayingOver: false,
+      layoverDepartureTime: null,
       blockIsActive: true,
       dataDiscrepancies: [],
       stopStatus: {

@@ -41,7 +41,7 @@ export const deselectRoute = (routeId: RouteId): DeselectRouteAction => ({
   payload: { routeId },
 })
 
-interface SelectVehicleAction {
+export interface SelectVehicleAction {
   type: "SELECT_VEHICLE"
   payload: {
     vehicleId: VehicleId
@@ -53,7 +53,7 @@ export const selectVehicle = (vehicleId: VehicleId): SelectVehicleAction => ({
   payload: { vehicleId },
 })
 
-interface DeselectVehicleAction {
+export interface DeselectVehicleAction {
   type: "DESELECT_VEHICLE"
 }
 

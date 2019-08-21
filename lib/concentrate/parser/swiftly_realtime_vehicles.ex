@@ -45,6 +45,8 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehicles do
       direction_id: vehicle_data |> Map.get("directionId") |> direction_id_from_string(),
       headsign: Map.get(vehicle_data, "headsign"),
       headway_secs: Map.get(vehicle_data, "headwaySecs"),
+      is_laying_over: Map.get(vehicle_data, "layover", false),
+      layover_departure_time: Map.get(vehicle_data, "layoverDepTime"),
       previous_vehicle_id: Map.get(vehicle_data, "previousVehicleId"),
       previous_vehicle_schedule_adherence_secs:
         Map.get(vehicle_data, "previousVehicleSchAdhSecs"),

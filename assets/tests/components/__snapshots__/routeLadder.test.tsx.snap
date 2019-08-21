@@ -89,6 +89,9 @@ Array [
     </button>
   </div>,
   <div
+    className="m-layover-box m-layover-box--top"
+  />,
+  <div
     className="m-ladder"
     style={
       Object {
@@ -99,7 +102,7 @@ Array [
     <svg
       className="m-ladder__svg"
       height={0}
-      viewBox="-92 -40 184 0"
+      viewBox="-92 -20 184 0"
       width={184}
     >
       <line
@@ -107,14 +110,14 @@ Array [
         x1={-40}
         x2={-40}
         y1="0"
-        y2={-80}
+        y2={-40}
       />
       <line
         className="m-ladder__line"
         x1={40}
         x2={40}
         y1="0"
-        y2={-80}
+        y2={-40}
       />
       <g
         className="m-ladder__headway-lines"
@@ -143,6 +146,27 @@ Array [
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
+        cy={-20}
+        r="3"
+      />
+      <circle
+        className="m-ladder__stop-circle"
+        cx={40}
+        cy={-20}
+        r="3"
+      />
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-20}
+      >
+        WELLH
+      </text>
+      <circle
+        className="m-ladder__stop-circle"
+        cx={-40}
         cy={-40}
         r="3"
       />
@@ -159,18 +183,148 @@ Array [
         x="0"
         y={-40}
       >
-        WELLH
+        MORTN
       </text>
+    </svg>
+  </div>,
+  <div
+    className="m-layover-box m-layover-box--bottom"
+  />,
+  <div
+    className="m-incoming-box"
+  />,
+]
+`;
+
+exports[`routeLadder renders a route ladder with laying over vehicles 1`] = `
+Array [
+  <div
+    className="m-route-ladder__header"
+  >
+    <button
+      className="m-close-button"
+      onClick={[Function]}
+    >
+      <span
+        className=""
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
+        }
+      />
+    </button>
+    <div
+      className="m-route-ladder__route-name"
+    >
+      1
+    </div>
+  </div>,
+  <div
+    className="m-route-ladder__controls"
+  >
+    <button
+      className="m-route-ladder__reverse"
+      onClick={[Function]}
+    >
+      <span
+        className="m-route-ladder__reverse-icon"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
+        }
+      />
+      Reverse
+    </button>
+  </div>,
+  <div
+    className="m-layover-box m-layover-box--top"
+  >
+    <div
+      className="m-layover-box__vehicle "
+      onClick={[Function]}
+    >
+      <svg
+        style={
+          Object {
+            "height": 27.72,
+            "width": 26,
+          }
+        }
+        viewBox="-13 -8.36 26 27.72"
+      >
+        <g
+          className="m-vehicle-icon m-vehicle-icon--small"
+        >
+          <rect
+            className="m-vehicle-icon__label-background"
+            height={11}
+            rx={5.5}
+            ry={5.5}
+            width={26}
+            x={-13}
+            y={7.359999999999999}
+          />
+          <text
+            className="m-vehicle-icon__label"
+            dominantBaseline="central"
+            textAnchor="middle"
+            x="0"
+            y={12.86}
+          >
+            2
+          </text>
+          <path
+            className="m-vehicle-icon__triangle"
+            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            transform="scale(0.38) rotate(270) translate(-24,-22)"
+          />
+        </g>
+      </svg>
+    </div>
+  </div>,
+  <div
+    className="m-ladder"
+    style={
+      Object {
+        "width": 184,
+      }
+    }
+  >
+    <svg
+      className="m-ladder__svg"
+      height={0}
+      viewBox="-92 -20 184 0"
+      width={184}
+    >
+      <line
+        className="m-ladder__line"
+        x1={-40}
+        x2={-40}
+        y1="0"
+        y2={-40}
+      />
+      <line
+        className="m-ladder__line"
+        x1={40}
+        x2={40}
+        y1="0"
+        y2={-40}
+      />
+      <g
+        className="m-ladder__headway-lines"
+      />
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
-        cy={-80}
+        cy={-0}
         r="3"
       />
       <circle
         className="m-ladder__stop-circle"
         cx={40}
-        cy={-80}
+        cy={-0}
         r="3"
       />
       <text
@@ -178,11 +332,108 @@ Array [
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
-        y={-80}
+        y={-0}
+      >
+        MATPN
+      </text>
+      <circle
+        className="m-ladder__stop-circle"
+        cx={-40}
+        cy={-20}
+        r="3"
+      />
+      <circle
+        className="m-ladder__stop-circle"
+        cx={40}
+        cy={-20}
+        r="3"
+      />
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-20}
+      >
+        WELLH
+      </text>
+      <circle
+        className="m-ladder__stop-circle"
+        cx={-40}
+        cy={-40}
+        r="3"
+      />
+      <circle
+        className="m-ladder__stop-circle"
+        cx={40}
+        cy={-40}
+        r="3"
+      />
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-40}
       >
         MORTN
       </text>
     </svg>
+  </div>,
+  <div
+    className="m-layover-box m-layover-box--bottom"
+  >
+    <div
+      className="m-layover-box__vehicle "
+      onClick={[Function]}
+    >
+      <svg
+        style={
+          Object {
+            "height": 27.72,
+            "width": 26,
+          }
+        }
+        viewBox="-13 -8.36 26 27.72"
+      >
+        <g
+          className="m-vehicle-icon m-vehicle-icon--small"
+        >
+          <rect
+            className="m-vehicle-icon__label-background"
+            height={11}
+            rx={5.5}
+            ry={5.5}
+            width={26}
+            x={-13}
+            y={7.359999999999999}
+          />
+          <text
+            className="m-vehicle-icon__label"
+            dominantBaseline="central"
+            textAnchor="middle"
+            x="0"
+            y={12.86}
+          >
+            1
+          </text>
+          <path
+            className="m-vehicle-icon__triangle"
+            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            transform="scale(0.38) rotate(90) translate(-24,-22)"
+          />
+          <text
+            className="m-vehicle-icon__variant"
+            dominantBaseline="central"
+            textAnchor="start"
+            x={-5.6}
+            y={0}
+          >
+            4
+          </text>
+        </g>
+      </svg>
+    </div>
   </div>,
   <div
     className="m-incoming-box"
@@ -233,6 +484,9 @@ Array [
     </button>
   </div>,
   <div
+    className="m-layover-box m-layover-box--top"
+  />,
+  <div
     className="m-ladder"
     style={
       Object {
@@ -243,21 +497,21 @@ Array [
     <svg
       className="m-ladder__svg"
       height={0}
-      viewBox="-92 -40 184 0"
+      viewBox="-92 -20 184 0"
       width={184}
     >
       <line
         className="m-ladder__scheduled-line "
         x1={-63}
         x2={-40}
-        y1={-80}
-        y2={-80}
+        y1={-40}
+        y2={-40}
       />
       <g>
         <g
           className="m-ladder__vehicle  "
           onClick={[Function]}
-          transform="translate(63,-20)"
+          transform="translate(63,-10)"
         >
           <g
             className="m-vehicle-icon m-vehicle-icon--medium"
@@ -301,7 +555,7 @@ Array [
         <g
           className="m-ladder__vehicle  "
           onClick={[Function]}
-          transform="translate(-63,-80)"
+          transform="translate(-63,-40)"
         >
           <g
             className="m-vehicle-icon m-vehicle-icon--medium"
@@ -337,14 +591,14 @@ Array [
         x1={-40}
         x2={-40}
         y1="0"
-        y2={-80}
+        y2={-40}
       />
       <line
         className="m-ladder__line"
         x1={40}
         x2={40}
         y1="0"
-        y2={-80}
+        y2={-40}
       />
       <g
         className="m-ladder__headway-lines"
@@ -356,8 +610,8 @@ Array [
           id="y0479"
           x1={-40}
           x2={-40}
-          y1={-80}
-          y2={-80}
+          y1={-40}
+          y2={-40}
         />
         <line
           className="m-ladder__line
@@ -367,7 +621,7 @@ Array [
           x1={40}
           x2={40}
           y1={0}
-          y2={-20}
+          y2={-10}
         />
       </g>
       <circle
@@ -394,6 +648,27 @@ Array [
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
+        cy={-20}
+        r="3"
+      />
+      <circle
+        className="m-ladder__stop-circle"
+        cx={40}
+        cy={-20}
+        r="3"
+      />
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-20}
+      >
+        WELLH
+      </text>
+      <circle
+        className="m-ladder__stop-circle"
+        cx={-40}
         cy={-40}
         r="3"
       />
@@ -410,31 +685,13 @@ Array [
         x="0"
         y={-40}
       >
-        WELLH
-      </text>
-      <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-80}
-        r="3"
-      />
-      <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-80}
-        r="3"
-      />
-      <text
-        className="m-ladder__timepoint-name"
-        dominantBaseline="middle"
-        textAnchor="middle"
-        x="0"
-        y={-80}
-      >
         MORTN
       </text>
     </svg>
   </div>,
+  <div
+    className="m-layover-box m-layover-box--bottom"
+  />,
   <div
     className="m-incoming-box"
   />,
@@ -484,6 +741,9 @@ Array [
     </button>
   </div>,
   <div
+    className="m-layover-box m-layover-box--top"
+  />,
+  <div
     className="m-ladder"
     style={
       Object {
@@ -494,7 +754,7 @@ Array [
     <svg
       className="m-ladder__svg"
       height={0}
-      viewBox="-92 -40 184 0"
+      viewBox="-92 -20 184 0"
       width={184}
     >
       <line
@@ -502,14 +762,14 @@ Array [
         x1={-40}
         x2={-40}
         y1="0"
-        y2={-80}
+        y2={-40}
       />
       <line
         className="m-ladder__line"
         x1={40}
         x2={40}
         y1="0"
-        y2={-80}
+        y2={-40}
       />
       <g
         className="m-ladder__headway-lines"
@@ -538,6 +798,27 @@ Array [
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
+        cy={-20}
+        r="3"
+      />
+      <circle
+        className="m-ladder__stop-circle"
+        cx={40}
+        cy={-20}
+        r="3"
+      />
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-20}
+      >
+        WELLH
+      </text>
+      <circle
+        className="m-ladder__stop-circle"
+        cx={-40}
         cy={-40}
         r="3"
       />
@@ -554,31 +835,13 @@ Array [
         x="0"
         y={-40}
       >
-        WELLH
-      </text>
-      <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-80}
-        r="3"
-      />
-      <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-80}
-        r="3"
-      />
-      <text
-        className="m-ladder__timepoint-name"
-        dominantBaseline="middle"
-        textAnchor="middle"
-        x="0"
-        y={-80}
-      >
         MORTN
       </text>
     </svg>
   </div>,
+  <div
+    className="m-layover-box m-layover-box--bottom"
+  />,
   <div
     className="m-incoming-box"
   >

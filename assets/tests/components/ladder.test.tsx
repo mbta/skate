@@ -42,6 +42,8 @@ describe("ladder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        isLayingOver: false,
+        layoverDepartureTime: null,
         blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
@@ -81,6 +83,8 @@ describe("ladder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        isLayingOver: false,
+        layoverDepartureTime: null,
         blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
@@ -126,6 +130,8 @@ describe("ladder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        isLayingOver: false,
+        layoverDepartureTime: null,
         blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
@@ -182,6 +188,8 @@ describe("ladder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        isLayingOver: false,
+        layoverDepartureTime: null,
         blockIsActive: false,
         dataDiscrepancies: [],
         stopStatus: {
@@ -221,6 +229,8 @@ describe("ladder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        isLayingOver: false,
+        layoverDepartureTime: null,
         blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
@@ -286,6 +296,8 @@ describe("ladder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        isLayingOver: false,
+        layoverDepartureTime: null,
         blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
@@ -350,6 +362,8 @@ describe("ladder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        isLayingOver: false,
+        layoverDepartureTime: null,
         blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
@@ -389,6 +403,8 @@ describe("ladder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        isLayingOver: false,
+        layoverDepartureTime: null,
         blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
@@ -455,6 +471,8 @@ describe("ladder", () => {
       scheduleAdherenceStatus: "on-time",
       scheduledHeadwaySecs: 120,
       isOffCourse: false,
+      isLayingOver: false,
+      layoverDepartureTime: null,
       blockIsActive: true,
       dataDiscrepancies: [],
       stopStatus: {
@@ -515,6 +533,8 @@ describe("ladder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        isLayingOver: false,
+        layoverDepartureTime: null,
         blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
@@ -574,6 +594,8 @@ describe("ladder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        isLayingOver: false,
+        layoverDepartureTime: null,
         blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
@@ -637,6 +659,8 @@ describe("ladder", () => {
       scheduleAdherenceStatus: "on-time",
       scheduledHeadwaySecs: 120,
       isOffCourse: true,
+      isLayingOver: false,
+      layoverDepartureTime: null,
       blockIsActive: true,
       dataDiscrepancies: [
         {
@@ -714,6 +738,8 @@ describe("ladder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        isLayingOver: false,
+        layoverDepartureTime: null,
         blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
@@ -753,6 +779,8 @@ describe("ladder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        isLayingOver: false,
+        layoverDepartureTime: null,
         blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
@@ -798,6 +826,8 @@ describe("ladder", () => {
         scheduleAdherenceStatus: "on-time",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
+        isLayingOver: false,
+        layoverDepartureTime: null,
         blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {

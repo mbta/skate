@@ -77,6 +77,8 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehiclesTest do
           direction_id: 0,
           headsign: "Forest Hills",
           headway_secs: 859.1,
+          is_laying_over: true,
+          layover_departure_time: 1_559_673_780,
           previous_vehicle_id: "y1272",
           previous_vehicle_schedule_adherence_secs: 59,
           previous_vehicle_schedule_adherence_string: "59.0 sec (late)",

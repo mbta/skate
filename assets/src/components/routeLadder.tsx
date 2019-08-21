@@ -1,12 +1,14 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import * as Array from "../helpers/array"
 import { reverseIcon, reverseIconReversed } from "../helpers/icon"
-import { VehicleId, VehiclesForRoute } from "../realtime.d"
+import { Vehicle, VehicleId, VehiclesForRoute } from "../realtime.d"
 import { LoadableTimepoints, Route } from "../schedule.d"
 import { deselectRoute } from "../state"
 import CloseButton from "./closeButton"
 import IncomingBox from "./incomingBox"
 import Ladder, { flipLadderDirection, LadderDirection } from "./ladder"
+import LayoverBox from "./layoverBox"
 import Loading from "./loading"
 
 interface Props {
@@ -77,6 +79,18 @@ const RouteLadder = ({
     initialDirection
   )
 
+  const bottomDirection = ladderDirection === LadderDirection.OneToZero ? 1 : 0
+
+  const [layingOver, incoming] = Array.partition(
+    vehiclesForRoute ? vehiclesForRoute.incomingVehicles : [],
+    (vehicle: Vehicle): boolean => vehicle.isLayingOver
+  )
+
+  const [layingOverBottom, layingOverTop] = Array.partition(
+    layingOver,
+    (vehicle: Vehicle): boolean => vehicle.directionId === bottomDirection
+  )
+
   return (
     <>
       <HeaderAndControls
@@ -87,14 +101,16 @@ const RouteLadder = ({
 
       {timepoints ? (
         <>
+          <LayoverBox vehicles={layingOverTop} classModifier="top" />
           <Ladder
             timepoints={timepoints}
             vehicles={vehiclesForRoute ? vehiclesForRoute.onRouteVehicles : []}
             ladderDirection={ladderDirection}
             selectedVehicleId={selectedVehicleId}
           />
+          <LayoverBox vehicles={layingOverBottom} classModifier="bottom" />
           <IncomingBox
-            vehicles={vehiclesForRoute ? vehiclesForRoute.incomingVehicles : []}
+            vehicles={incoming}
             ladderDirection={ladderDirection}
             selectedVehicleId={selectedVehicleId}
           />
