@@ -256,18 +256,11 @@ const orientationMatchingVehicle = (
   vehicleDirection === VehicleDirection.Down ? Orientation.Down : Orientation.Up
 
 const ScheduledLine = ({
-  ladderVehicle: {
-    status,
-    isOffCourse,
-    x,
-    y,
-    scheduledY,
-    scheduledVehicleDirection,
-  },
+  ladderVehicle: { status, x, y, scheduledY, scheduledVehicleDirection },
 }: {
   ladderVehicle: LadderVehicle
 }) => {
-  if (!scheduledY || isOffCourse) {
+  if (!scheduledY || status === "off-course") {
     return null
   }
 

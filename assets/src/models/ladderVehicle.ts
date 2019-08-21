@@ -11,7 +11,6 @@ export interface LadderVehicle {
   viaVariant: ViaVariant | null
   status: DrawnStatus
   headwaySpacing: HeadwaySpacing | null
-  isOffCourse: boolean
   x: number
   y: number
   vehicleDirection: VehicleDirection
@@ -32,7 +31,6 @@ interface WithVehicle {
   runId: string | null
   viaVariant: ViaVariant | null
   status: DrawnStatus
-  isOffCourse: boolean
 }
 
 interface OnLadder {
@@ -174,7 +172,6 @@ const vehicleOnLadder = (
     runId,
     viaVariant,
     status: drawnStatus(vehicle),
-    isOffCourse,
     vehicleDirection,
     y,
     scheduledY,
