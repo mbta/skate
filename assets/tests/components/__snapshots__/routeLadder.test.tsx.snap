@@ -102,7 +102,7 @@ Array [
     <svg
       className="m-ladder__svg"
       height={0}
-      viewBox="-92 -40 184 0"
+      viewBox="-92 -20 184 0"
       width={184}
     >
       <line
@@ -110,14 +110,14 @@ Array [
         x1={-40}
         x2={-40}
         y1="0"
-        y2={-80}
+        y2={-40}
       />
       <line
         className="m-ladder__line"
         x1={40}
         x2={40}
         y1="0"
-        y2={-80}
+        y2={-40}
       />
       <g
         className="m-ladder__headway-lines"
@@ -146,6 +146,27 @@ Array [
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
+        cy={-20}
+        r="3"
+      />
+      <circle
+        className="m-ladder__stop-circle"
+        cx={40}
+        cy={-20}
+        r="3"
+      />
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-20}
+      >
+        WELLH
+      </text>
+      <circle
+        className="m-ladder__stop-circle"
+        cx={-40}
         cy={-40}
         r="3"
       />
@@ -161,27 +182,6 @@ Array [
         textAnchor="middle"
         x="0"
         y={-40}
-      >
-        WELLH
-      </text>
-      <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-80}
-        r="3"
-      />
-      <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-80}
-        r="3"
-      />
-      <text
-        className="m-ladder__timepoint-name"
-        dominantBaseline="middle"
-        textAnchor="middle"
-        x="0"
-        y={-80}
       >
         MORTN
       </text>
@@ -286,11 +286,16 @@ Array [
   </div>,
   <div
     className="m-ladder"
+    style={
+      Object {
+        "width": 184,
+      }
+    }
   >
     <svg
       className="m-ladder__svg"
-      height={500}
-      viewBox="-92 -20 184 500"
+      height={0}
+      viewBox="-92 -20 184 0"
       width={184}
     >
       <line
@@ -298,14 +303,14 @@ Array [
         x1={-40}
         x2={-40}
         y1="0"
-        y2={460}
+        y2={-40}
       />
       <line
         className="m-ladder__line"
         x1={40}
         x2={40}
         y1="0"
-        y2={460}
+        y2={-40}
       />
       <g
         className="m-ladder__headway-lines"
@@ -313,13 +318,13 @@ Array [
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
-        cy={0}
+        cy={-0}
         r="3"
       />
       <circle
         className="m-ladder__stop-circle"
         cx={40}
-        cy={0}
+        cy={-0}
         r="3"
       />
       <text
@@ -327,20 +332,20 @@ Array [
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
-        y={0}
+        y={-0}
       >
         MATPN
       </text>
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
-        cy={230}
+        cy={-20}
         r="3"
       />
       <circle
         className="m-ladder__stop-circle"
         cx={40}
-        cy={230}
+        cy={-20}
         r="3"
       />
       <text
@@ -348,20 +353,20 @@ Array [
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
-        y={230}
+        y={-20}
       >
         WELLH
       </text>
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
-        cy={460}
+        cy={-40}
         r="3"
       />
       <circle
         className="m-ladder__stop-circle"
         cx={40}
-        cy={460}
+        cy={-40}
         r="3"
       />
       <text
@@ -369,7 +374,7 @@ Array [
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
-        y={460}
+        y={-40}
       >
         MORTN
       </text>
@@ -492,21 +497,21 @@ Array [
     <svg
       className="m-ladder__svg"
       height={0}
-      viewBox="-92 -40 184 0"
+      viewBox="-92 -20 184 0"
       width={184}
     >
       <line
         className="m-ladder__scheduled-line "
         x1={-63}
         x2={-40}
-        y1={-80}
-        y2={-80}
+        y1={-40}
+        y2={-40}
       />
       <g>
         <g
           className="m-ladder__vehicle  "
           onClick={[Function]}
-          transform="translate(63,-20)"
+          transform="translate(63,-10)"
         >
           <g
             className="m-vehicle-icon m-vehicle-icon--medium"
@@ -550,7 +555,7 @@ Array [
         <g
           className="m-ladder__vehicle  "
           onClick={[Function]}
-          transform="translate(-63,-80)"
+          transform="translate(-63,-40)"
         >
           <g
             className="m-vehicle-icon m-vehicle-icon--medium"
@@ -586,14 +591,14 @@ Array [
         x1={-40}
         x2={-40}
         y1="0"
-        y2={-80}
+        y2={-40}
       />
       <line
         className="m-ladder__line"
         x1={40}
         x2={40}
         y1="0"
-        y2={-80}
+        y2={-40}
       />
       <g
         className="m-ladder__headway-lines"
@@ -605,8 +610,8 @@ Array [
           id="y0479"
           x1={-40}
           x2={-40}
-          y1={-80}
-          y2={-80}
+          y1={-40}
+          y2={-40}
         />
         <line
           className="m-ladder__line
@@ -616,7 +621,7 @@ Array [
           x1={40}
           x2={40}
           y1={0}
-          y2={-20}
+          y2={-10}
         />
       </g>
       <circle
@@ -643,6 +648,27 @@ Array [
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
+        cy={-20}
+        r="3"
+      />
+      <circle
+        className="m-ladder__stop-circle"
+        cx={40}
+        cy={-20}
+        r="3"
+      />
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-20}
+      >
+        WELLH
+      </text>
+      <circle
+        className="m-ladder__stop-circle"
+        cx={-40}
         cy={-40}
         r="3"
       />
@@ -658,27 +684,6 @@ Array [
         textAnchor="middle"
         x="0"
         y={-40}
-      >
-        WELLH
-      </text>
-      <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-80}
-        r="3"
-      />
-      <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-80}
-        r="3"
-      />
-      <text
-        className="m-ladder__timepoint-name"
-        dominantBaseline="middle"
-        textAnchor="middle"
-        x="0"
-        y={-80}
       >
         MORTN
       </text>
@@ -749,7 +754,7 @@ Array [
     <svg
       className="m-ladder__svg"
       height={0}
-      viewBox="-92 -40 184 0"
+      viewBox="-92 -20 184 0"
       width={184}
     >
       <line
@@ -757,14 +762,14 @@ Array [
         x1={-40}
         x2={-40}
         y1="0"
-        y2={-80}
+        y2={-40}
       />
       <line
         className="m-ladder__line"
         x1={40}
         x2={40}
         y1="0"
-        y2={-80}
+        y2={-40}
       />
       <g
         className="m-ladder__headway-lines"
@@ -793,6 +798,27 @@ Array [
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
+        cy={-20}
+        r="3"
+      />
+      <circle
+        className="m-ladder__stop-circle"
+        cx={40}
+        cy={-20}
+        r="3"
+      />
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-20}
+      >
+        WELLH
+      </text>
+      <circle
+        className="m-ladder__stop-circle"
+        cx={-40}
         cy={-40}
         r="3"
       />
@@ -808,27 +834,6 @@ Array [
         textAnchor="middle"
         x="0"
         y={-40}
-      >
-        WELLH
-      </text>
-      <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-80}
-        r="3"
-      />
-      <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-80}
-        r="3"
-      />
-      <text
-        className="m-ladder__timepoint-name"
-        dominantBaseline="middle"
-        textAnchor="middle"
-        x="0"
-        y={-80}
       >
         MORTN
       </text>

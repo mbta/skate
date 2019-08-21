@@ -58,7 +58,7 @@ exports[`renders a route ladder 1`] = `
     <svg
       className="m-ladder__svg"
       height={0}
-      viewBox="-92 -40 184 0"
+      viewBox="-92 -20 184 0"
       width={184}
     >
       <line
@@ -66,14 +66,14 @@ exports[`renders a route ladder 1`] = `
         x1={-40}
         x2={-40}
         y1="0"
-        y2={-80}
+        y2={-40}
       />
       <line
         className="m-ladder__line"
         x1={40}
         x2={40}
         y1="0"
-        y2={-80}
+        y2={-40}
       />
       <g
         className="m-ladder__headway-lines"
@@ -102,6 +102,27 @@ exports[`renders a route ladder 1`] = `
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
+        cy={-20}
+        r="3"
+      />
+      <circle
+        className="m-ladder__stop-circle"
+        cx={40}
+        cy={-20}
+        r="3"
+      />
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-20}
+      >
+        MELWA
+      </text>
+      <circle
+        className="m-ladder__stop-circle"
+        cx={-40}
         cy={-40}
         r="3"
       />
@@ -117,27 +138,6 @@ exports[`renders a route ladder 1`] = `
         textAnchor="middle"
         x="0"
         y={-40}
-      >
-        MELWA
-      </text>
-      <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-80}
-        r="3"
-      />
-      <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-80}
-        r="3"
-      />
-      <text
-        className="m-ladder__timepoint-name"
-        dominantBaseline="middle"
-        textAnchor="middle"
-        x="0"
-        y={-80}
       >
         HHGAT
       </text>
@@ -203,7 +203,7 @@ exports[`renders a route ladder 1`] = `
     <svg
       className="m-ladder__svg"
       height={0}
-      viewBox="-92 -40 184 0"
+      viewBox="-92 -20 184 0"
       width={184}
     >
       <line
@@ -211,14 +211,14 @@ exports[`renders a route ladder 1`] = `
         x1={-40}
         x2={-40}
         y1="0"
-        y2={-80}
+        y2={-40}
       />
       <line
         className="m-ladder__line"
         x1={40}
         x2={40}
         y1="0"
-        y2={-80}
+        y2={-40}
       />
       <g
         className="m-ladder__headway-lines"
@@ -247,6 +247,27 @@ exports[`renders a route ladder 1`] = `
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
+        cy={-20}
+        r="3"
+      />
+      <circle
+        className="m-ladder__stop-circle"
+        cx={40}
+        cy={-20}
+        r="3"
+      />
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-20}
+      >
+        WELLH
+      </text>
+      <circle
+        className="m-ladder__stop-circle"
+        cx={-40}
         cy={-40}
         r="3"
       />
@@ -262,27 +283,6 @@ exports[`renders a route ladder 1`] = `
         textAnchor="middle"
         x="0"
         y={-40}
-      >
-        WELLH
-      </text>
-      <circle
-        className="m-ladder__stop-circle"
-        cx={-40}
-        cy={-80}
-        r="3"
-      />
-      <circle
-        className="m-ladder__stop-circle"
-        cx={40}
-        cy={-80}
-        r="3"
-      />
-      <text
-        className="m-ladder__timepoint-name"
-        dominantBaseline="middle"
-        textAnchor="middle"
-        x="0"
-        y={-80}
       >
         MORTN
       </text>
