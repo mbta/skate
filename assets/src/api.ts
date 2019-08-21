@@ -47,7 +47,7 @@ export const fetchRoutes = (): Promise<Route[]> =>
       throw error
     })
 
-export const fetchShuttles = (): Promise<Route[]> =>
+export const fetchShuttleRoutes = (): Promise<Route[]> =>
   fetch("/api/shuttles")
     .then(checkResponseStatus)
     .then(parseJson)

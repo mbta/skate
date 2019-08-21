@@ -1,4 +1,8 @@
-import { fetchRoutes, fetchShuttles, fetchTimepointsForRoute } from "../src/api"
+import {
+  fetchRoutes,
+  fetchShuttleRoutes,
+  fetchTimepointsForRoute,
+} from "../src/api"
 
 // tslint:disable no-empty
 
@@ -95,8 +99,8 @@ describe("fetchRoutes", () => {
   })
 })
 
-describe("fetchShuttles", () => {
-  test("fetches a list of shuttles", done => {
+describe("fetchShuttleRoutes", () => {
+  test("fetches a list of shuttle routes", done => {
     window.fetch = () =>
       Promise.resolve({
         json: () => ({
@@ -128,7 +132,7 @@ describe("fetchShuttles", () => {
         status: 200,
       })
 
-    fetchShuttles().then(routes => {
+    fetchShuttleRoutes().then(routes => {
       expect(routes).toEqual([
         {
           directionNames: {
@@ -164,7 +168,7 @@ describe("fetchShuttles", () => {
         status: 500,
       })
 
-    fetchShuttles()
+    fetchShuttleRoutes()
       .then(() => {
         done("fetchRoutes did not throw an error")
       })
