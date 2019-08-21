@@ -165,9 +165,10 @@ const vehicleOnLadder = (
   return {
     // tslint:disable-next-line:object-literal-sort-keys
     vehicleId,
-    headwaySpacing: featureIsEnabled("headway_ladder_colors")
-      ? headwaySpacing
-      : null,
+    headwaySpacing:
+      featureIsEnabled("headway_ladder_colors") && !isOffCourse
+        ? headwaySpacing
+        : null,
     label,
     runId,
     viaVariant,

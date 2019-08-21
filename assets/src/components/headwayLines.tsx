@@ -22,7 +22,7 @@ const drawHeadwayLine = (
 
   const [currentVehicle, ...rest] = ladderVehicles
 
-  if (currentVehicle.status === "off-course") {
+  if (currentVehicle.headwaySpacing === null) {
     return drawHeadwayLine(rest, yStart, acc)
   }
 
