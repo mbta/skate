@@ -90,11 +90,16 @@ Array [
   </div>,
   <div
     className="m-ladder"
+    style={
+      Object {
+        "width": 184,
+      }
+    }
   >
     <svg
       className="m-ladder__svg"
-      height={500}
-      viewBox="-92 -40 184 500"
+      height={0}
+      viewBox="-92 -40 184 0"
       width={184}
     >
       <line
@@ -102,14 +107,14 @@ Array [
         x1={-40}
         x2={-40}
         y1="0"
-        y2={420}
+        y2={-80}
       />
       <line
         className="m-ladder__line"
         x1={40}
         x2={40}
         y1="0"
-        y2={420}
+        y2={-80}
       />
       <g
         className="m-ladder__headway-lines"
@@ -117,13 +122,13 @@ Array [
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
-        cy={0}
+        cy={-0}
         r="3"
       />
       <circle
         className="m-ladder__stop-circle"
         cx={40}
-        cy={0}
+        cy={-0}
         r="3"
       />
       <text
@@ -131,20 +136,20 @@ Array [
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
-        y={0}
+        y={-0}
       >
         MATPN
       </text>
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
-        cy={210}
+        cy={-40}
         r="3"
       />
       <circle
         className="m-ladder__stop-circle"
         cx={40}
-        cy={210}
+        cy={-40}
         r="3"
       />
       <text
@@ -152,20 +157,20 @@ Array [
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
-        y={210}
+        y={-40}
       >
         WELLH
       </text>
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
-        cy={420}
+        cy={-80}
         r="3"
       />
       <circle
         className="m-ladder__stop-circle"
         cx={40}
-        cy={420}
+        cy={-80}
         r="3"
       />
       <text
@@ -173,7 +178,7 @@ Array [
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
-        y={420}
+        y={-80}
       >
         MORTN
       </text>
@@ -229,25 +234,30 @@ Array [
   </div>,
   <div
     className="m-ladder"
+    style={
+      Object {
+        "width": 184,
+      }
+    }
   >
     <svg
       className="m-ladder__svg"
-      height={500}
-      viewBox="-92 -40 184 500"
+      height={0}
+      viewBox="-92 -40 184 0"
       width={184}
     >
       <line
         className="m-ladder__scheduled-line "
         x1={-63}
         x2={-40}
-        y1={420}
-        y2={420}
+        y1={-80}
+        y2={-80}
       />
       <g>
         <g
           className="m-ladder__vehicle  "
           onClick={[Function]}
-          transform="translate(63,105)"
+          transform="translate(63,-20)"
         >
           <g
             className="m-vehicle-icon m-vehicle-icon--medium"
@@ -291,7 +301,7 @@ Array [
         <g
           className="m-ladder__vehicle  "
           onClick={[Function]}
-          transform="translate(-63,420)"
+          transform="translate(-63,-80)"
         >
           <g
             className="m-vehicle-icon m-vehicle-icon--medium"
@@ -327,14 +337,14 @@ Array [
         x1={-40}
         x2={-40}
         y1="0"
-        y2={420}
+        y2={-80}
       />
       <line
         className="m-ladder__line"
         x1={40}
         x2={40}
         y1="0"
-        y2={420}
+        y2={-80}
       />
       <g
         className="m-ladder__headway-lines"
@@ -346,8 +356,8 @@ Array [
           id="y0479"
           x1={-40}
           x2={-40}
-          y1={420}
-          y2={420}
+          y1={-80}
+          y2={-80}
         />
         <line
           className="m-ladder__line
@@ -357,19 +367,19 @@ Array [
           x1={40}
           x2={40}
           y1={0}
-          y2={105}
+          y2={-20}
         />
       </g>
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
-        cy={0}
+        cy={-0}
         r="3"
       />
       <circle
         className="m-ladder__stop-circle"
         cx={40}
-        cy={0}
+        cy={-0}
         r="3"
       />
       <text
@@ -377,20 +387,20 @@ Array [
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
-        y={0}
+        y={-0}
       >
         MATPN
       </text>
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
-        cy={210}
+        cy={-40}
         r="3"
       />
       <circle
         className="m-ladder__stop-circle"
         cx={40}
-        cy={210}
+        cy={-40}
         r="3"
       />
       <text
@@ -398,20 +408,20 @@ Array [
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
-        y={210}
+        y={-40}
       >
         WELLH
       </text>
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
-        cy={420}
+        cy={-80}
         r="3"
       />
       <circle
         className="m-ladder__stop-circle"
         cx={40}
-        cy={420}
+        cy={-80}
         r="3"
       />
       <text
@@ -419,7 +429,7 @@ Array [
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
-        y={420}
+        y={-80}
       >
         MORTN
       </text>
@@ -475,11 +485,16 @@ Array [
   </div>,
   <div
     className="m-ladder"
+    style={
+      Object {
+        "width": 184,
+      }
+    }
   >
     <svg
       className="m-ladder__svg"
-      height={500}
-      viewBox="-92 -40 184 500"
+      height={0}
+      viewBox="-92 -40 184 0"
       width={184}
     >
       <line
@@ -487,14 +502,14 @@ Array [
         x1={-40}
         x2={-40}
         y1="0"
-        y2={420}
+        y2={-80}
       />
       <line
         className="m-ladder__line"
         x1={40}
         x2={40}
         y1="0"
-        y2={420}
+        y2={-80}
       />
       <g
         className="m-ladder__headway-lines"
@@ -502,13 +517,13 @@ Array [
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
-        cy={0}
+        cy={-0}
         r="3"
       />
       <circle
         className="m-ladder__stop-circle"
         cx={40}
-        cy={0}
+        cy={-0}
         r="3"
       />
       <text
@@ -516,20 +531,20 @@ Array [
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
-        y={0}
+        y={-0}
       >
         MATPN
       </text>
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
-        cy={210}
+        cy={-40}
         r="3"
       />
       <circle
         className="m-ladder__stop-circle"
         cx={40}
-        cy={210}
+        cy={-40}
         r="3"
       />
       <text
@@ -537,20 +552,20 @@ Array [
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
-        y={210}
+        y={-40}
       >
         WELLH
       </text>
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
-        cy={420}
+        cy={-80}
         r="3"
       />
       <circle
         className="m-ladder__stop-circle"
         cx={40}
-        cy={420}
+        cy={-80}
         r="3"
       />
       <text
@@ -558,7 +573,7 @@ Array [
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
-        y={420}
+        y={-80}
       >
         MORTN
       </text>
