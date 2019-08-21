@@ -685,4 +685,150 @@ describe("ladder", () => {
 
     expect(tree).toMatchSnapshot()
   })
+
+  test("bases the height of the ladder svg on the wrapper div to make it dynamic", () => {
+    const timepoints = ["t0", "t1", "t2"]
+    const vehicles: Vehicle[] = [
+      {
+        id: "upward",
+        label: "upward",
+        runId: "run-1",
+        timestamp: 0,
+        latitude: 0,
+        longitude: 0,
+        directionId: 0,
+        routeId: "route",
+        tripId: "trip",
+        headsign: null,
+        viaVariant: null,
+        operatorId: "op1",
+        operatorName: "SMITH",
+        bearing: 33,
+        speed: 50.0,
+        blockId: "block-1",
+        headwaySecs: 859.1,
+        headwaySpacing: HeadwaySpacing.Ok,
+        previousVehicleId: "v2",
+        scheduleAdherenceSecs: 0,
+        scheduleAdherenceString: "0.0 sec (ontime)",
+        scheduleAdherenceStatus: "on-time",
+        scheduledHeadwaySecs: 120,
+        isOffCourse: false,
+        blockIsActive: true,
+        dataDiscrepancies: [],
+        stopStatus: {
+          status: "in_transit_to",
+          stopId: "stop",
+          stopName: "stop",
+        },
+        timepointStatus: {
+          fractionUntilTimepoint: 0.5,
+          timepointId: "t1",
+        },
+        scheduledLocation: null,
+        isOnRoute: true,
+      },
+      {
+        id: "downward",
+        label: "downward",
+        runId: "run-2",
+        timestamp: 0,
+        latitude: 0,
+        longitude: 0,
+        directionId: 1,
+        routeId: "route",
+        tripId: "trip",
+        headsign: null,
+        viaVariant: null,
+        operatorId: "op2",
+        operatorName: "JONES",
+        bearing: 33,
+        speed: 50.0,
+        blockId: "block-1",
+        headwaySecs: 859.1,
+        headwaySpacing: HeadwaySpacing.Ok,
+        previousVehicleId: "v2",
+        scheduleAdherenceSecs: 0,
+        scheduleAdherenceString: "0.0 sec (ontime)",
+        scheduleAdherenceStatus: "on-time",
+        scheduledHeadwaySecs: 120,
+        isOffCourse: false,
+        blockIsActive: true,
+        dataDiscrepancies: [],
+        stopStatus: {
+          status: "in_transit_to",
+          stopId: "stop",
+          stopName: "stop",
+        },
+        timepointStatus: {
+          fractionUntilTimepoint: 0.75,
+          timepointId: "t2",
+        },
+        scheduledLocation: {
+          directionId: 0,
+          timepointStatus: {
+            timepointId: "t2",
+            fractionUntilTimepoint: 0.75,
+          },
+        },
+        isOnRoute: true,
+      },
+      {
+        id: "notimepoint",
+        label: "notimepoint",
+        runId: "run-3",
+        timestamp: 0,
+        latitude: 0,
+        longitude: 0,
+        directionId: 1,
+        routeId: "route",
+        tripId: "trip",
+        headsign: null,
+        viaVariant: null,
+        operatorId: "op3",
+        operatorName: "XI",
+        bearing: 33,
+        speed: 50.0,
+        blockId: "block-1",
+        headwaySecs: 859.1,
+        headwaySpacing: HeadwaySpacing.Ok,
+        previousVehicleId: "v2",
+        scheduleAdherenceSecs: 0,
+        scheduleAdherenceString: "0.0 sec (ontime)",
+        scheduleAdherenceStatus: "on-time",
+        scheduledHeadwaySecs: 120,
+        isOffCourse: false,
+        blockIsActive: true,
+        dataDiscrepancies: [],
+        stopStatus: {
+          status: "in_transit_to",
+          stopId: "stop",
+          stopName: "stop",
+        },
+        timepointStatus: null,
+        scheduledLocation: null,
+        isOnRoute: true,
+      },
+    ]
+    const ladderDirection = LadderDirection.ZeroToOne
+
+    const mockUseRef = jest.spyOn(React, "useRef")
+    mockUseRef.mockImplementation(() => ({
+      current: {
+        offsetHeight: 700,
+      },
+    }))
+
+    const wrapper = mount(
+      <Ladder
+        timepoints={timepoints}
+        vehicles={vehicles}
+        ladderDirection={ladderDirection}
+        selectedVehicleId={undefined}
+      />
+    )
+    const svg = wrapper.find(".m-ladder__svg")
+
+    expect(svg.prop("height")).toEqual(700)
+  })
 })
