@@ -26,10 +26,19 @@ defmodule Skate.MixProject do
   #
   # Type `mix help compile.app` for more information.
   def application do
+    apps = [:logger, :runtime_tools]
+
+    apps =
+      if Mix.env() == :prod do
+        [:ehmon | apps]
+      else
+        apps
+      end
+
     [
       mod: {Skate.Application, []},
       included_applications: [:laboratory],
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: apps
     ]
   end
 
@@ -56,6 +65,7 @@ defmodule Skate.MixProject do
       {:excoveralls, "~> 0.10", only: :test},
       {:dialyxir, "~> 0.5", only: [:dev, :test], runtime: false},
       {:distillery, "~> 2.0", runtime: false},
+      {:ehmon, github: "mbta/ehmon", only: :prod},
       {:httpoison, "~> 1.5.0"},
       {:bypass, "~> 1.0.0", only: :test},
       {:csv, "~> 2.3.0"},

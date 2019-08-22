@@ -29,6 +29,10 @@ config :skate, :websocket_check_origin, [
 # Do not print debug messages in production
 config :logger, level: :info
 
+config :logger, :console,
+  format: "$time $metadata[$level] node=$node $message\n",
+  metadata: [:request_id]
+
 config :skate, :redirect_http?, true
 
 # Configure Ueberauth to use Cognito
@@ -47,6 +51,8 @@ config :ueberauth, Ueberauth.Strategy.Cognito,
 config :skate, SkateWeb.AuthManager, secret_key: {System, :get_env, ["GUARDIAN_SECRET_KEY"]}
 
 config :skate, record_fullstory: true
+
+config :ehmon, :report_mf, {:ehmon, :info_report}
 
 # ## SSL Support
 #
