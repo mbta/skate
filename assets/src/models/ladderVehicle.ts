@@ -233,7 +233,7 @@ const ghostOnLadder = (
     vehicleDirection
   )
   return {
-    vehicleId: "ghost-" + ghost.tripId,
+    vehicleId: ghost.id,
     headwaySpacing: null,
     label: "N/A",
     runId: null,

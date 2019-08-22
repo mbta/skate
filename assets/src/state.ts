@@ -112,7 +112,7 @@ export const reducer = (state: State, action: Action): State => {
         ),
       }
     case "SELECT_VEHICLE":
-      return action.payload.vehicleId.startsWith("ghost")
+      return action.payload.vehicleId.startsWith("ghost-")
         ? state
         : {
             ...state,

@@ -21,6 +21,7 @@ interface DataDiscrepancySource {
 }
 
 export interface Ghost {
+  id: string
   directionId: DirectionId
   routeId: RouteId
   tripId: TripId

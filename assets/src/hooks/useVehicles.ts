@@ -24,6 +24,7 @@ interface DataDiscrepancySourceData {
 }
 
 interface GhostData {
+  id: string
   direction_id: DirectionId
   route_id: string
   trip_id: string
@@ -228,6 +229,7 @@ const dataDiscrepanciesFromData = (
   }))
 
 const ghostFromData = (ghostData: GhostData): Ghost => ({
+  id: ghostData.id,
   directionId: ghostData.direction_id,
   routeId: ghostData.route_id,
   tripId: ghostData.trip_id,

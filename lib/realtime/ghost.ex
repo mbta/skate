@@ -4,6 +4,7 @@ defmodule Realtime.Ghost do
   alias Realtime.Vehicle
 
   @type t :: %__MODULE__{
+          id: String.t(),
           direction_id: Direction.id(),
           route_id: Route.id(),
           trip_id: Trip.id(),
@@ -13,6 +14,7 @@ defmodule Realtime.Ghost do
         }
 
   @enforce_keys [
+    :id,
     :direction_id,
     :route_id,
     :trip_id,
@@ -23,6 +25,7 @@ defmodule Realtime.Ghost do
   @derive Jason.Encoder
 
   defstruct [
+    :id,
     :direction_id,
     :route_id,
     :trip_id,
@@ -45,6 +48,7 @@ defmodule Realtime.Ghost do
           now_time_of_day = Util.Time.next_time_of_day_for_timestamp_after(now, Trip.start_time(trip))
           timepoint_status = TimepointStatus.scheduled_timepoint_status(timepoints, now_time_of_day)
           %__MODULE__{
+            id: "ghost-#{trip.id}",
             direction_id: trip.direction_id,
             route_id: trip.route_id,
             trip_id: trip.id,

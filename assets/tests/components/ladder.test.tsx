@@ -162,6 +162,7 @@ describe("ladder", () => {
     const timepoints = ["t0", "t1", "t2"]
 
     const ghost: Ghost = {
+      id: "ghost-trip",
       directionId: 0,
       routeId: "route",
       tripId: "trip",

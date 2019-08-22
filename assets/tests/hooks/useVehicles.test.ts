@@ -276,6 +276,7 @@ describe("useVehicles", () => {
 
   test("returns ghost vehicles", async () => {
     const ghost: Ghost = {
+      id: "ghost-trip",
       directionId: 0,
       routeId: "1",
       tripId: "trip",
@@ -288,6 +289,7 @@ describe("useVehicles", () => {
     }
 
     const ghostData = {
+      id: "ghost-trip",
       direction_id: 0,
       route_id: "1",
       trip_id: "trip",

@@ -224,6 +224,7 @@ defmodule Realtime.VehiclesTest do
                  incoming_vehicles: [],
                  ghosts: [
                    %Ghost{
+                      id: "ghost-trip",
                       direction_id: 0,
                       route_id: "route",
                       trip_id: "trip",

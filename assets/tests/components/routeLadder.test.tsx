@@ -158,6 +158,7 @@ describe("routeLadder", () => {
     const timepoints = ["MATPN", "WELLH", "MORTN"]
 
     const ghost: Ghost = {
+      id: "ghost-trip",
       directionId: 0,
       routeId: route.id,
       tripId: "ghost trip",
