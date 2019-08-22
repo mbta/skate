@@ -16,7 +16,7 @@ export interface RouteFilterData {
 const isFilterType = (str: string): str is FilterType => str === "id"
 
 const byRouteIdOrName = (filterText: string) => (route: Route) =>
-  route.id.includes(filterText) ||
+  route.id.toLowerCase().includes(filterText.toLowerCase()) ||
   route.name.toLowerCase().includes(filterText.toLowerCase())
 
 export const filterRoutes = (
