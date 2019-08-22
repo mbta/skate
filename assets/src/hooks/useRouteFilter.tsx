@@ -15,13 +15,17 @@ export interface RouteFilterData {
 
 const isFilterType = (str: string): str is FilterType => str === "id"
 
+const byRouteIdOrName = (filterText: string) => (route: Route) =>
+  route.id.includes(filterText) ||
+  route.name.toLowerCase().includes(filterText.toLowerCase())
+
 export const filterRoutes = (
   allRoutes: Route[],
   { filterType, filterText }: { filterType: FilterType; filterText: string }
 ): Route[] => {
   switch (filterType) {
     case "id":
-      return allRoutes.filter((route: Route) => route.id.includes(filterText))
+      return allRoutes.filter(byRouteIdOrName(filterText))
   }
 }
 
