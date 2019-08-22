@@ -3,15 +3,41 @@
 exports[`Shuttle Map Page renders 1`] = `
 <div
   className="m-shuttle-map"
-  style={
-    Object {
-      "height": 768,
-      "width": 1024,
-    }
-  }
 >
   <div
-    id="id-vehicle-map"
-  />
+    className="m-picker-container visible"
+  >
+    <div
+      className="m-picker-container__tab"
+    >
+      <button
+        className="m-picker-container__tab-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <div />
+  </div>
+  <div
+    className="m-shuttle-map__map"
+    style={
+      Object {
+        "height": 768,
+        "width": 1024,
+      }
+    }
+  >
+    <div
+      id="id-vehicle-map"
+    />
+  </div>
 </div>
 `;
