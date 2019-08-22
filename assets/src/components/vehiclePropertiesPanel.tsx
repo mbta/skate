@@ -198,7 +198,9 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
       >
         Directions
       </a>
-      <Map vehicles={[vehicle]} centerOnVehicle={vehicle.id} />
+      <div className="m-vehicle-map">
+        <Map vehicles={[vehicle]} centerOnVehicle={vehicle.id} />
+      </div>
     </div>
   )
 }

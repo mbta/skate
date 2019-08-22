@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Shuttle Map Page renders 1`] = `
+<div
+  className="m-shuttle-map"
+  style={
+    Object {
+      "height": 768,
+      "width": 1024,
+    }
+  }
+>
+  <div
+    id="id-vehicle-map"
+  />
+</div>
+`;

@@ -26,12 +26,13 @@ interface VehicleMarkers {
 }
 
 interface MarkerDict {
-  [id: string]: VehicleMarkers | null
+  [id: string]: VehicleMarkers | undefined
 }
 
 interface State {
   map: LeafletMap | null
   markers: MarkerDict
+  zoom: Leaflet.Control | null
 }
 
 const iconAnchor: [number, number] = [12, 12]
@@ -42,7 +43,12 @@ const updateVehicle = (
   labelSetting: VehicleLabelSetting,
   centerOnVehicle: string | null
 ): void => {
-  const { icon: vehicleIcon, label: vehicleLabel } = markers[vehicle.id]!
+  const markersForVehicle = markers[vehicle.id]
+  if (!markersForVehicle) {
+    return
+  }
+
+  const { icon: vehicleIcon, label: vehicleLabel } = markersForVehicle
 
   const { bearing, headwaySpacing, latitude, longitude } = vehicle
   const zoom = map!.getZoom()
@@ -103,10 +109,14 @@ export const updateMarkers = (
   map: LeafletMap
 ): MarkerDict => {
   const newDict = Object.entries(oldDict).reduce(
-    (acc, [vehicleId, existingMarkers]) => {
-      const newValue = newVehicles[vehicleId] ? existingMarkers : null
-      acc[vehicleId] = newValue
-      return acc
+    (acc: MarkerDict, [vehicleId, existingMarkers]) => {
+      // remove stale markers from the map
+      const newValue = newVehicles[vehicleId] ? existingMarkers : undefined
+      if (!newValue && existingMarkers) {
+        existingMarkers.icon.remove()
+        existingMarkers.label.remove()
+      }
+      return { ...acc, [vehicleId]: newValue }
     },
     {} as MarkerDict
   )
@@ -122,12 +132,18 @@ export const updateMarkers = (
   }, newDict)
 }
 
+export const defaultCenter = ({
+  centerOnVehicle,
+}: Props): [number, number] | undefined =>
+  centerOnVehicle ? undefined : [42.360718, -71.05891]
+
 const Map = (props: Props): ReactElement<HTMLDivElement> => {
   const [{ settings }] = useContext(StateDispatchContext)
   const containerRef: MutableRefObject<HTMLDivElement | null> = useRef(null)
   const [state, updateState] = useState<State>({
     map: null,
     markers: {},
+    zoom: null,
   })
 
   useEffect(() => {
@@ -138,6 +154,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
     const map =
       state.map ||
       Leaflet.map(containerRef.current, {
+        center: defaultCenter(props),
         layers: [
           Leaflet.tileLayer(
             `https://mbta-map-tiles-dev.s3.amazonaws.com/osm_tiles/{z}/{x}/{y}.png`,
@@ -148,28 +165,28 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
           ),
         ],
         zoom: 16,
+        zoomControl: false,
       })
 
+    const zoom =
+      state.zoom || Leaflet.control.zoom({ position: "topright" }).addTo(map)
+
     const newVehicles = props.vehicles.reduce(
-      (acc, vehicle) => {
-        acc[vehicle.id] = vehicle
-        return acc
-      },
+      (acc, vehicle) => ({ ...acc, [vehicle.id]: vehicle }),
       {} as { [id: string]: Vehicle }
     )
 
     const markers = updateMarkers(newVehicles, state.markers, map)
 
-    updateMap(props, { map, markers }, settings.vehicleLabel)
+    updateMap(props, { map, markers, zoom }, settings.vehicleLabel)
 
-    updateState({ map, markers })
+    updateState({ map, markers, zoom })
   }, [props, containerRef])
 
   return (
     <div
       id="id-vehicle-map"
       ref={container => (containerRef.current = container)}
-      className="m-vehicle-map"
     />
   )
 }

@@ -3,6 +3,7 @@ $tab-bar-width: 3rem;
 @import "base";
 @import "inter_ui";
 @import "ui_kit";
+@import "leaflet";
 
 @import "close_button";
 @import "headway_diagram";
@@ -15,6 +16,7 @@ $tab-bar-width: 3rem;
 @import "route_ladders";
 @import "route_picker";
 @import "route_filter";
+@import "shuttle_map";
 @import "tab_bar";
 @import "vehicle_icon";
 @import "vehicle_properties_panel";
