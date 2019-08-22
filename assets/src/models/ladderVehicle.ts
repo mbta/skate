@@ -154,7 +154,7 @@ const vehicleOnLadder = (
   )
 
   const vehicleDirection: VehicleDirection =
-    isOffCourse && scheduledVehicleDirection
+    isOffCourse && scheduledVehicleDirection !== undefined
       ? scheduledVehicleDirection
       : directionOnLadder(vehicle.directionId, ladderDirection)
 
