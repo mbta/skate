@@ -4,6 +4,9 @@ FROM alpine:3.9
 RUN apk add --update bash \
 	&& rm -rf /var/cache/apk
 
+# Install curl so we can query for our instance ID
+RUN apk add --no-cache --update curl
+
 WORKDIR /root
 
 # Set exposed ports
