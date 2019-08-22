@@ -1,7 +1,11 @@
 import Leaflet from "leaflet"
 import React from "react"
 import renderer from "react-test-renderer"
-import Map, { updateMap, updateMarkers } from "../../src/components/map"
+import Map, {
+  defaultCenter,
+  updateMap,
+  updateMarkers,
+} from "../../src/components/map"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Vehicle } from "../../src/realtime"
 import { VehicleLabelSetting } from "../../src/settings"
@@ -84,12 +88,25 @@ describe("updateMap", () => {
     }
     updateMap(
       { vehicles: [vehicle], centerOnVehicle: vehicle.id },
-      { map, markers },
+      { map, markers, zoom: null },
       VehicleLabelSetting.RunNumber
     )
     expect(map.getCenter()).toEqual({ lat: 42, lng: -71 })
     expect(markers[vehicle.id].icon.getLatLng()).toEqual({ lat: 42, lng: -71 })
     expect(markers[vehicle.id].label.getLatLng()).toEqual({ lat: 42, lng: -71 })
+  })
+
+  test("exits gracefully if vehicle marker isn't in state", () => {
+    document.body.innerHTML = "<div id='map'></div>"
+    const map = Leaflet.map("map", {})
+    const markers = {}
+    expect(() => {
+      updateMap(
+        { vehicles: [vehicle], centerOnVehicle: vehicle.id },
+        { map, markers, zoom: null },
+        VehicleLabelSetting.RunNumber
+      )
+    }).not.toThrowError()
   })
 })
 
@@ -125,7 +142,7 @@ describe("updateMarkers", () => {
     }
 
     const icons = updateMarkers({}, existingVehicles, map)
-    expect(icons[vehicle.id]).toBe(null)
+    expect(icons[vehicle.id]).toBeUndefined()
   })
 
   test("keeps existing icons", () => {
@@ -146,5 +163,14 @@ describe("updateMarkers", () => {
     )
 
     expect(icons[vehicle.id]).toEqual({ label, icon })
+  })
+})
+
+describe("defaultCenter", () => {
+  test("has a value if centerOnVehicle is null", () => {
+    expect(defaultCenter({ vehicles: [], centerOnVehicle: null })).toEqual([
+      42.360718,
+      -71.05891,
+    ])
   })
 })
