@@ -61,13 +61,13 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
-  test("toggleRoutePicker", () => {
+  test("togglePickerContainer", () => {
     const expectedState: State.State = {
       ...initialState,
-      routePickerIsVisible: false,
+      pickerContainerIsVisible: false,
     }
 
-    const newState = reducer(initialState, State.toggleRoutePicker())
+    const newState = reducer(initialState, State.togglePickerContainer())
 
     expect(newState).toEqual(expectedState)
   })

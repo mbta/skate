@@ -9,12 +9,12 @@ import ShuttleMapPage from "./shuttleMapPage"
 import TabBar from "./tabBar"
 
 const App = (): ReactElement<HTMLDivElement> => {
-  const [{ routePickerIsVisible }] = useContext(StateDispatchContext)
+  const [{ pickerContainerIsVisible }] = useContext(StateDispatchContext)
 
   return (
     <BrowserRouter>
       <div className="m-app">
-        <TabBar routePickerIsVisible={routePickerIsVisible} />
+        <TabBar pickerContainerIsVisible={pickerContainerIsVisible} />
         <BrowserRoute exact={true} path="/" component={LadderPage} />
         {featureIsEnabled("shuttle_map") && (
           <BrowserRoute

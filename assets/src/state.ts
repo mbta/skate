@@ -4,14 +4,14 @@ import { RouteId } from "./schedule.d"
 import { defaultSettings, Settings, VehicleLabelSetting } from "./settings"
 
 export interface State {
-  routePickerIsVisible: boolean
+  pickerContainerIsVisible: boolean
   selectedRouteIds: RouteId[]
   selectedVehicleId?: VehicleId
   settings: Settings
 }
 
 export const initialState: State = {
-  routePickerIsVisible: true,
+  pickerContainerIsVisible: true,
   selectedRouteIds: [],
   selectedVehicleId: undefined,
   settings: defaultSettings,
@@ -61,12 +61,12 @@ export const deselectVehicle = (): DeselectVehicleAction => ({
   type: "DESELECT_VEHICLE",
 })
 
-interface ToggleRoutePickerAction {
-  type: "TOGGLE_ROUTE_PICKER"
+interface TogglePickerContainerAction {
+  type: "TOGGLE_PICKER_CONTAINER"
 }
 
-export const toggleRoutePicker = (): ToggleRoutePickerAction => ({
-  type: "TOGGLE_ROUTE_PICKER",
+export const togglePickerContainer = (): TogglePickerContainerAction => ({
+  type: "TOGGLE_PICKER_CONTAINER",
 })
 
 interface SetVehicleLabelSettingAction {
@@ -90,7 +90,7 @@ type Action =
   | DeselectRouteAction
   | SelectVehicleAction
   | DeselectVehicleAction
-  | ToggleRoutePickerAction
+  | TogglePickerContainerAction
   | SetVehicleLabelSettingAction
 
 export type Dispatch = ReactDispatch<Action>
@@ -121,10 +121,10 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         selectedVehicleId: undefined,
       }
-    case "TOGGLE_ROUTE_PICKER":
+    case "TOGGLE_PICKER_CONTAINER":
       return {
         ...state,
-        routePickerIsVisible: !state.routePickerIsVisible,
+        pickerContainerIsVisible: !state.pickerContainerIsVisible,
       }
     case "SET_VEHICLE_LABEL_SETTING":
       return {

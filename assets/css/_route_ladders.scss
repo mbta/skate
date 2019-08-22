@@ -13,7 +13,7 @@
   padding: 1rem 1rem 1rem 3rem;
   transition: padding-left 0.2s ease-in-out;
 
-  .m-route-picker.visible + & {
+  .m-picker-container.visible + & {
     padding-left: 12.5rem;
   }
 }
