@@ -1,5 +1,45 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ghost with variant doesn't have eyes 1`] = `
+<svg
+  style={
+    Object {
+      "height": 24.375,
+      "width": 27.5,
+    }
+  }
+  viewBox="-13.75 -11.875 27.5 24.375"
+>
+  <g
+    className="m-vehicle-icon m-vehicle-icon--medium ghost"
+  >
+    <g
+      transform="scale(0.4375) translate(-24,-23)"
+    >
+      <path
+        className="m-vehicle-icon__ghost-highlight"
+        d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
+        stroke-join="round"
+      />
+      <path
+        className="m-vehicle-icon__ghost-body"
+        d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
+        stroke-join="round"
+      />
+    </g>
+    <text
+      className="m-vehicle-icon__variant"
+      dominantBaseline="alphabetic"
+      textAnchor="middle"
+      x={0}
+      y={4.5}
+    >
+      X
+    </text>
+  </g>
+</svg>
+`;
+
 exports[`renders an unwrapped svg node 1`] = `
 <svg>
   <g
@@ -37,11 +77,11 @@ Array [
   <svg
     style={
       Object {
-        "height": 13.68,
+        "height": 14.82,
         "width": 16.72,
       }
     }
-    viewBox="-8.36 -6.08 16.72 13.68"
+    viewBox="-8.36 -7.22 16.72 14.82"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--small "
@@ -57,10 +97,10 @@ Array [
     style={
       Object {
         "height": 16.72,
-        "width": 13.68,
+        "width": 14.82,
       }
     }
-    viewBox="-7.6 -8.36 13.68 16.72"
+    viewBox="-7.6 -8.36 14.82 16.72"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--small "
@@ -75,11 +115,11 @@ Array [
   <svg
     style={
       Object {
-        "height": 13.68,
+        "height": 14.82,
         "width": 16.72,
       }
     }
-    viewBox="-8.36 -7.6 16.72 13.68"
+    viewBox="-8.36 -7.6 16.72 14.82"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--small "
@@ -95,10 +135,10 @@ Array [
     style={
       Object {
         "height": 16.72,
-        "width": 13.68,
+        "width": 14.82,
       }
     }
-    viewBox="-6.08 -8.36 13.68 16.72"
+    viewBox="-7.22 -8.36 14.82 16.72"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--small "
@@ -113,11 +153,11 @@ Array [
   <svg
     style={
       Object {
-        "height": 22.5,
+        "height": 24.375,
         "width": 27.5,
       }
     }
-    viewBox="-13.75 -10 27.5 22.5"
+    viewBox="-13.75 -11.875 27.5 24.375"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--medium "
@@ -133,10 +173,10 @@ Array [
     style={
       Object {
         "height": 27.5,
-        "width": 22.5,
+        "width": 24.375,
       }
     }
-    viewBox="-12.5 -13.75 22.5 27.5"
+    viewBox="-12.5 -13.75 24.375 27.5"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--medium "
@@ -151,11 +191,11 @@ Array [
   <svg
     style={
       Object {
-        "height": 22.5,
+        "height": 24.375,
         "width": 27.5,
       }
     }
-    viewBox="-13.75 -12.5 27.5 22.5"
+    viewBox="-13.75 -12.5 27.5 24.375"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--medium "
@@ -171,10 +211,10 @@ Array [
     style={
       Object {
         "height": 27.5,
-        "width": 22.5,
+        "width": 24.375,
       }
     }
-    viewBox="-10 -13.75 22.5 27.5"
+    viewBox="-11.875 -13.75 24.375 27.5"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--medium "
@@ -189,11 +229,11 @@ Array [
   <svg
     style={
       Object {
-        "height": 36,
+        "height": 39,
         "width": 44,
       }
     }
-    viewBox="-22 -16 44 36"
+    viewBox="-22 -19 44 39"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--large "
@@ -209,10 +249,10 @@ Array [
     style={
       Object {
         "height": 44,
-        "width": 36,
+        "width": 39,
       }
     }
-    viewBox="-20 -22 36 44"
+    viewBox="-20 -22 39 44"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--large "
@@ -227,11 +267,11 @@ Array [
   <svg
     style={
       Object {
-        "height": 36,
+        "height": 39,
         "width": 44,
       }
     }
-    viewBox="-22 -20 44 36"
+    viewBox="-22 -20 44 39"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--large "
@@ -247,10 +287,10 @@ Array [
     style={
       Object {
         "height": 44,
-        "width": 36,
+        "width": 39,
       }
     }
-    viewBox="-16 -22 36 44"
+    viewBox="-19 -22 39 44"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--large "
@@ -270,11 +310,11 @@ Array [
   <svg
     style={
       Object {
-        "height": 22.5,
+        "height": 24.375,
         "width": 27.5,
       }
     }
-    viewBox="-13.75 -10 27.5 22.5"
+    viewBox="-13.75 -11.875 27.5 24.375"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--medium on-time"
@@ -289,11 +329,11 @@ Array [
   <svg
     style={
       Object {
-        "height": 22.5,
+        "height": 24.375,
         "width": 27.5,
       }
     }
-    viewBox="-13.75 -10 27.5 22.5"
+    viewBox="-13.75 -11.875 27.5 24.375"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--medium early"
@@ -308,11 +348,11 @@ Array [
   <svg
     style={
       Object {
-        "height": 22.5,
+        "height": 24.375,
         "width": 27.5,
       }
     }
-    viewBox="-13.75 -10 27.5 22.5"
+    viewBox="-13.75 -11.875 27.5 24.375"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--medium late"
@@ -327,11 +367,11 @@ Array [
   <svg
     style={
       Object {
-        "height": 22.5,
+        "height": 24.375,
         "width": 27.5,
       }
     }
-    viewBox="-13.75 -10 27.5 22.5"
+    viewBox="-13.75 -11.875 27.5 24.375"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--medium off-course"
@@ -346,11 +386,53 @@ Array [
   <svg
     style={
       Object {
-        "height": 22.5,
+        "height": 24.375,
         "width": 27.5,
       }
     }
-    viewBox="-13.75 -10 27.5 22.5"
+    viewBox="-13.75 -11.875 27.5 24.375"
+  >
+    <g
+      className="m-vehicle-icon m-vehicle-icon--medium ghost"
+    >
+      <g
+        transform="scale(0.4375) translate(-24,-23)"
+      >
+        <path
+          className="m-vehicle-icon__ghost-highlight"
+          d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
+          stroke-join="round"
+        />
+        <path
+          className="m-vehicle-icon__ghost-body"
+          d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
+          stroke-join="round"
+        />
+        <ellipse
+          className="m-vehicle-icon__ghost-eye"
+          cx="19.73"
+          cy="22.8"
+          rx="3.11"
+          ry="3.03"
+        />
+        <ellipse
+          className="m-vehicle-icon__ghost-eye"
+          cx="35.29"
+          cy="22.8"
+          rx="3.11"
+          ry="3.03"
+        />
+      </g>
+    </g>
+  </svg>,
+  <svg
+    style={
+      Object {
+        "height": 24.375,
+        "width": 27.5,
+      }
+    }
+    viewBox="-13.75 -11.875 27.5 24.375"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--medium "
@@ -365,11 +447,11 @@ Array [
   <svg
     style={
       Object {
-        "height": 22.5,
+        "height": 24.375,
         "width": 27.5,
       }
     }
-    viewBox="-13.75 -10 27.5 22.5"
+    viewBox="-13.75 -11.875 27.5 24.375"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--medium "
@@ -389,11 +471,11 @@ Array [
   <svg
     style={
       Object {
-        "height": 24.68,
+        "height": 25.82,
         "width": 26,
       }
     }
-    viewBox="-13 -6.08 26 24.68"
+    viewBox="-13 -7.22 26 25.82"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--small "
@@ -481,11 +563,11 @@ Array [
   <svg
     style={
       Object {
-        "height": 24.68,
+        "height": 25.82,
         "width": 26,
       }
     }
-    viewBox="-13 -18.6 26 24.68"
+    viewBox="-13 -18.6 26 25.82"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--small "
@@ -573,11 +655,11 @@ Array [
   <svg
     style={
       Object {
-        "height": 33.5,
+        "height": 35.375,
         "width": 27.5,
       }
     }
-    viewBox="-13.75 -10 27.5 33.5"
+    viewBox="-13.75 -11.875 27.5 35.375"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--medium "
@@ -665,11 +747,11 @@ Array [
   <svg
     style={
       Object {
-        "height": 33.5,
+        "height": 35.375,
         "width": 27.5,
       }
     }
-    viewBox="-13.75 -23.5 27.5 33.5"
+    viewBox="-13.75 -23.5 27.5 35.375"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--medium "
@@ -757,11 +839,11 @@ Array [
   <svg
     style={
       Object {
-        "height": 60,
+        "height": 63,
         "width": 64,
       }
     }
-    viewBox="-32 -16 64 60"
+    viewBox="-32 -19 64 63"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--large "
@@ -849,11 +931,11 @@ Array [
   <svg
     style={
       Object {
-        "height": 60,
+        "height": 63,
         "width": 64,
       }
     }
-    viewBox="-32 -44 64 60"
+    viewBox="-32 -44 64 63"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--large "

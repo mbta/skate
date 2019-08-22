@@ -3,6 +3,7 @@ import { Dispatch as ReactDispatch, useEffect, useReducer } from "react"
 import { HeadwaySpacing } from "../models/vehicleStatus"
 import {
   DataDiscrepancy,
+  Ghost,
   Vehicle,
   VehicleScheduledLocation,
   VehiclesForRoute,
@@ -20,6 +21,15 @@ interface DataDiscrepancyData {
 interface DataDiscrepancySourceData {
   id: string
   value: string
+}
+
+interface GhostData {
+  direction_id: DirectionId
+  route_id: string
+  trip_id: string
+  block_id: string
+  via_variant: string | null
+  scheduled_timepoint_status: VehicleTimepointStatusData
 }
 
 type RawHeadwaySpacing =
@@ -83,6 +93,7 @@ interface VehicleData {
 interface VehiclesForRouteData {
   on_route_vehicles: VehicleData[]
   incoming_vehicles: VehicleData[]
+  ghosts: GhostData[]
 }
 
 interface State {
@@ -216,6 +227,17 @@ const dataDiscrepanciesFromData = (
     sources: dataDiscrepancy.sources,
   }))
 
+const ghostFromData = (ghostData: GhostData): Ghost => ({
+  directionId: ghostData.direction_id,
+  routeId: ghostData.route_id,
+  tripId: ghostData.trip_id,
+  blockId: ghostData.block_id,
+  viaVariant: ghostData.via_variant,
+  scheduledTimepointStatus: vehicleTimepointStatusFromData(
+    ghostData.scheduled_timepoint_status
+  ),
+})
+
 const vehicleScheduledLocationFromData = (
   vehicleScheduledLocationData: VehicleScheduledLocationData
 ): VehicleScheduledLocation => ({
@@ -289,6 +311,7 @@ const vehiclesForRouteFromData = (
   incomingVehicles: vehiclesForRouteData.incoming_vehicles.map(
     vehicleFromData({ isOnRoute: false })
   ),
+  ghosts: vehiclesForRouteData.ghosts.map(ghostFromData),
 })
 
 const subscribe = (

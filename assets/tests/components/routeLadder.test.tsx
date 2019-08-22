@@ -4,7 +4,7 @@ import renderer, { act } from "react-test-renderer"
 import RouteLadder from "../../src/components/routeLadder"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { Vehicle } from "../../src/realtime.d"
+import { Ghost, Vehicle } from "../../src/realtime.d"
 import { Route } from "../../src/schedule.d"
 import { deselectRoute, initialState, selectVehicle } from "../../src/state"
 
@@ -156,6 +156,19 @@ describe("routeLadder", () => {
       name: "28",
     }
     const timepoints = ["MATPN", "WELLH", "MORTN"]
+
+    const ghost: Ghost = {
+      directionId: 0,
+      routeId: route.id,
+      tripId: "ghost trip",
+      blockId: "ghost block",
+      viaVariant: null,
+      scheduledTimepointStatus: {
+        timepointId: "MORTN",
+        fractionUntilTimepoint: 0.0,
+      },
+    }
+
     const tree = renderer
       .create(
         <RouteLadder
@@ -164,6 +177,7 @@ describe("routeLadder", () => {
           vehiclesForRoute={{
             onRouteVehicles: vehicles,
             incomingVehicles: [],
+            ghosts: [ghost],
           }}
           selectedVehicleId={undefined}
         />
@@ -188,6 +202,7 @@ describe("routeLadder", () => {
           vehiclesForRoute={{
             onRouteVehicles: [],
             incomingVehicles: vehicles,
+            ghosts: [],
           }}
           selectedVehicleId={undefined}
         />
@@ -219,6 +234,7 @@ describe("routeLadder", () => {
               { ...v1, isLayingOver: true },
               { ...v2, isLayingOver: true },
             ],
+            ghosts: [],
           }}
         />
       )
@@ -341,8 +357,8 @@ describe("routeLadder", () => {
         stopName: "stop",
       },
       timepointStatus: {
-        fractionUntilTimepoint: 0.5,
         timepointId: "MATPN",
+        fractionUntilTimepoint: 0.5,
       },
       scheduledLocation: null,
       isOnRoute: true,
@@ -356,6 +372,7 @@ describe("routeLadder", () => {
           vehiclesForRoute={{
             onRouteVehicles: [],
             incomingVehicles: [vehicle],
+            ghosts: [],
           }}
           selectedVehicleId={undefined}
         />

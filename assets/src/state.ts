@@ -112,10 +112,12 @@ export const reducer = (state: State, action: Action): State => {
         ),
       }
     case "SELECT_VEHICLE":
-      return {
-        ...state,
-        selectedVehicleId: action.payload.vehicleId,
-      }
+      return action.payload.vehicleId.startsWith("ghost")
+        ? state
+        : {
+            ...state,
+            selectedVehicleId: action.payload.vehicleId,
+          }
     case "DESELECT_VEHICLE":
       return {
         ...state,

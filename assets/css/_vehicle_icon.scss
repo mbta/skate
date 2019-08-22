@@ -17,6 +17,22 @@
   }
 }
 
+.m-vehicle-icon__ghost-highlight {
+  fill: none;
+  stroke: none;
+  stroke-width: 9;
+}
+
+.m-vehicle-icon__ghost-body {
+  fill: $color-vehicle-ghost;
+  stroke: $color-vehicle-ghost-border;
+  stroke-width: 3;
+}
+
+.m-vehicle-icon__ghost-eye {
+  fill: $color-vehicle-ghost-border;
+}
+
 .m-vehicle-icon__label-background {
   fill: $color-bg-base;
 }
@@ -27,6 +43,10 @@
 
 .m-vehicle-icon__variant {
   fill: $color-font-light;
+
+  .ghost & {
+    fill: $color-vehicle-ghost-border;
+  }
 }
 
 .m-vehicle-icon--small {

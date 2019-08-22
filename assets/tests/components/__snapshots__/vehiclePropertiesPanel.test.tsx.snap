@@ -15,11 +15,11 @@ Array [
         <svg
           style={
             Object {
-              "height": 60,
+              "height": 63,
               "width": 64,
             }
           }
-          viewBox="-32 -16 64 60"
+          viewBox="-32 -19 64 63"
         >
           <g
             className="m-vehicle-icon m-vehicle-icon--large "
@@ -307,11 +307,11 @@ Array [
         <svg
           style={
             Object {
-              "height": 60,
+              "height": 63,
               "width": 64,
             }
           }
-          viewBox="-32 -16 64 60"
+          viewBox="-32 -19 64 63"
         >
           <g
             className="m-vehicle-icon m-vehicle-icon--large "
@@ -599,11 +599,11 @@ Array [
         <svg
           style={
             Object {
-              "height": 60,
+              "height": 63,
               "width": 64,
             }
           }
-          viewBox="-32 -16 64 60"
+          viewBox="-32 -19 64 63"
         >
           <g
             className="m-vehicle-icon m-vehicle-icon--large "
@@ -891,11 +891,11 @@ Array [
         <svg
           style={
             Object {
-              "height": 60,
+              "height": 63,
               "width": 64,
             }
           }
-          viewBox="-32 -16 64 60"
+          viewBox="-32 -19 64 63"
         >
           <g
             className="m-vehicle-icon m-vehicle-icon--large "
@@ -1183,11 +1183,11 @@ Array [
         <svg
           style={
             Object {
-              "height": 60,
+              "height": 63,
               "width": 64,
             }
           }
-          viewBox="-32 -16 64 60"
+          viewBox="-32 -19 64 63"
         >
           <g
             className="m-vehicle-icon m-vehicle-icon--large off-course"
@@ -1479,11 +1479,11 @@ Array [
         <svg
           style={
             Object {
-              "height": 60,
+              "height": 63,
               "width": 64,
             }
           }
-          viewBox="-32 -16 64 60"
+          viewBox="-32 -19 64 63"
         >
           <g
             className="m-vehicle-icon m-vehicle-icon--large "

@@ -1,4 +1,5 @@
 import {
+  BlockId,
   DirectionId,
   RouteId,
   StopId,
@@ -19,6 +20,15 @@ interface DataDiscrepancySource {
   value: string | null
 }
 
+export interface Ghost {
+  directionId: DirectionId
+  routeId: RouteId
+  tripId: TripId
+  blockId: BlockId
+  viaVariant: ViaVariant | null
+  scheduledTimepointStatus: VehicleTimepointStatus
+}
+
 export type SourceId = string
 
 export interface Vehicle {
@@ -37,7 +47,7 @@ export interface Vehicle {
   operatorName: string
   bearing: number
   speed: number | null
-  blockId: string
+  blockId: BlockId
   headwaySecs: number | null
   headwaySpacing: HeadwaySpacing | null
   previousVehicleId: string
@@ -78,4 +88,5 @@ export type VehicleStatus = "in_transit_to" | "stopped_at"
 export interface VehiclesForRoute {
   onRouteVehicles: Vehicle[]
   incomingVehicles: Vehicle[]
+  ghosts: Ghost[]
 }

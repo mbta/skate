@@ -139,6 +139,11 @@ test("renders with all statuses", () => {
         <VehicleIcon
           size={Size.Medium}
           orientation={Orientation.Up}
+          status={"ghost"}
+        />
+        <VehicleIcon
+          size={Size.Medium}
+          orientation={Orientation.Up}
           status={"plain"}
         />
         <VehicleIcon size={Size.Medium} orientation={Orientation.Up} />
@@ -147,6 +152,71 @@ test("renders with all statuses", () => {
     .toJSON()
 
   expect(tree).toMatchSnapshot()
+})
+
+test("ghost with variant doesn't have eyes", () => {
+  const tree = renderer
+    .create(
+      <VehicleIcon
+        size={Size.Medium}
+        orientation={Orientation.Up}
+        status={"ghost"}
+        variant={"X"}
+      />
+    )
+    .toJSON()
+
+  expect(tree).toMatchSnapshot()
+})
+
+test("ghost is same in every direction", () => {
+  const up = renderer
+    .create(
+      <VehicleIcon
+        size={Size.Medium}
+        orientation={Orientation.Up}
+        status={"ghost"}
+        label={"ghost"}
+      />
+    )
+    .toJSON()
+
+  const down = renderer
+    .create(
+      <VehicleIcon
+        size={Size.Medium}
+        orientation={Orientation.Down}
+        status={"ghost"}
+        label={"ghost"}
+      />
+    )
+    .toJSON()
+
+  const left = renderer
+    .create(
+      <VehicleIcon
+        size={Size.Medium}
+        orientation={Orientation.Left}
+        status={"ghost"}
+        label={"ghost"}
+      />
+    )
+    .toJSON()
+
+  const right = renderer
+    .create(
+      <VehicleIcon
+        size={Size.Medium}
+        orientation={Orientation.Right}
+        status={"ghost"}
+        label={"ghost"}
+      />
+    )
+    .toJSON()
+
+  expect(up).toEqual(down)
+  expect(up).toEqual(left)
+  expect(up).toEqual(right)
 })
 
 test("renders an unwrapped svg node", () => {
