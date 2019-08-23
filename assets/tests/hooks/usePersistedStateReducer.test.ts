@@ -32,7 +32,7 @@ describe("usePersistedStateReducer", () => {
 
   test("initializes the state with the given initial value", () => {
     const initialState: State = {
-      routePickerIsVisible: true,
+      pickerContainerIsVisible: true,
       selectedRouteIds: ["1", "2"],
       selectedVehicleId: "2",
       settings: { vehicleLabel: VehicleLabelSetting.RunNumber },
@@ -55,13 +55,13 @@ describe("usePersistedStateReducer", () => {
       )
 
     const initialState: State = {
-      routePickerIsVisible: true,
+      pickerContainerIsVisible: true,
       selectedRouteIds: ["1", "2"],
       selectedVehicleId: "2",
       settings: { vehicleLabel: VehicleLabelSetting.RunNumber },
     }
     const expectedState: State = {
-      routePickerIsVisible: true,
+      pickerContainerIsVisible: true,
       selectedRouteIds: ["28", "39"],
       selectedVehicleId: "2",
       settings: { vehicleLabel: VehicleLabelSetting.RunNumber },

@@ -3,13 +3,15 @@ import { NavLink } from "react-router-dom"
 import featureIsEnabled from "../laboratoryFeatures"
 
 interface Props {
-  routePickerIsVisible: boolean
+  pickerContainerIsVisible: boolean
 }
 
 const TabBar = ({
-  routePickerIsVisible,
+  pickerContainerIsVisible,
 }: Props): ReactElement<HTMLDivElement> => (
-  <div className={`m-tab-bar ${routePickerIsVisible ? "visible" : "hidden"}`}>
+  <div
+    className={`m-tab-bar ${pickerContainerIsVisible ? "visible" : "hidden"}`}
+  >
     <div className="m-tab-bar__logo">{skateLogo}</div>
     <ul className="m-tab-bar__links">
       <li>

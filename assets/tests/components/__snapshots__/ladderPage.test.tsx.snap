@@ -5,13 +5,13 @@ exports[`LadderPage renders the empty state 1`] = `
   className="m-ladder-page"
 >
   <div
-    className="m-route-picker visible"
+    className="m-picker-container visible"
   >
     <div
-      className="m-route-picker__tab"
+      className="m-picker-container__tab"
     >
       <button
-        className="m-route-picker__tab-button"
+        className="m-picker-container__tab-button"
         onClick={[Function]}
       >
         <span
@@ -24,49 +24,53 @@ exports[`LadderPage renders the empty state 1`] = `
         />
       </button>
     </div>
-    <ul
-      className="m-route-picker__selected-routes"
-    />
     <div
-      className="m-route-filter"
+      className="m-route-picker"
     >
-      <select
-        className="m-route-filter__type"
-        onChange={[Function]}
-        value="id"
+      <ul
+        className="m-route-picker__selected-routes"
+      />
+      <div
+        className="m-route-filter"
       >
-        <option
+        <select
+          className="m-route-filter__type"
+          onChange={[Function]}
           value="id"
         >
-          Route ID
-        </option>
-      </select>
-      <div
-        className="m-route-filter__text"
-      >
-        <input
-          className="m-route-filter__input"
-          onChange={[Function]}
-          onKeyDown={[Function]}
-          type="text"
-          value=""
-        />
-        <button
-          className="m-route-filter__clear"
-          onClick={[Function]}
+          <option
+            value="id"
+          >
+            Route ID
+          </option>
+        </select>
+        <div
+          className="m-route-filter__text"
         >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
+          <input
+            className="m-route-filter__input"
+            onChange={[Function]}
+            onKeyDown={[Function]}
+            type="text"
+            value=""
           />
-        </button>
+          <button
+            className="m-route-filter__clear"
+            onClick={[Function]}
+          >
+            <span
+              className=""
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
+              }
+            />
+          </button>
+        </div>
       </div>
+      loading...
     </div>
-    loading...
   </div>
   <div
     className="m-route-ladders"
@@ -79,13 +83,13 @@ exports[`LadderPage renders with routes 1`] = `
   className="m-ladder-page"
 >
   <div
-    className="m-route-picker visible"
+    className="m-picker-container visible"
   >
     <div
-      className="m-route-picker__tab"
+      className="m-picker-container__tab"
     >
       <button
-        className="m-route-picker__tab-button"
+        className="m-picker-container__tab-button"
         onClick={[Function]}
       >
         <span
@@ -98,77 +102,81 @@ exports[`LadderPage renders with routes 1`] = `
         />
       </button>
     </div>
-    <ul
-      className="m-route-picker__selected-routes"
-    >
-      <li>
-        <button
-          className="m-route-picker__selected-routes-button"
-          onClick={[Function]}
-        >
-          1
-        </button>
-      </li>
-    </ul>
     <div
-      className="m-route-filter"
+      className="m-route-picker"
     >
-      <select
-        className="m-route-filter__type"
-        onChange={[Function]}
-        value="id"
+      <ul
+        className="m-route-picker__selected-routes"
       >
-        <option
+        <li>
+          <button
+            className="m-route-picker__selected-routes-button"
+            onClick={[Function]}
+          >
+            1
+          </button>
+        </li>
+      </ul>
+      <div
+        className="m-route-filter"
+      >
+        <select
+          className="m-route-filter__type"
+          onChange={[Function]}
           value="id"
         >
-          Route ID
-        </option>
-      </select>
-      <div
-        className="m-route-filter__text"
-      >
-        <input
-          className="m-route-filter__input"
-          onChange={[Function]}
-          onKeyDown={[Function]}
-          type="text"
-          value=""
-        />
-        <button
-          className="m-route-filter__clear"
-          onClick={[Function]}
+          <option
+            value="id"
+          >
+            Route ID
+          </option>
+        </select>
+        <div
+          className="m-route-filter__text"
         >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
+          <input
+            className="m-route-filter__input"
+            onChange={[Function]}
+            onKeyDown={[Function]}
+            type="text"
+            value=""
           />
-        </button>
+          <button
+            className="m-route-filter__clear"
+            onClick={[Function]}
+          >
+            <span
+              className=""
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
+              }
+            />
+          </button>
+        </div>
       </div>
+      <ul
+        className="m-route-picker__route-list"
+      >
+        <li>
+          <button
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
+            onClick={[Function]}
+          >
+            1
+          </button>
+        </li>
+        <li>
+          <button
+            className="m-route-picker__route-list-button "
+            onClick={[Function]}
+          >
+            28
+          </button>
+        </li>
+      </ul>
     </div>
-    <ul
-      className="m-route-picker__route-list"
-    >
-      <li>
-        <button
-          className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
-          onClick={[Function]}
-        >
-          1
-        </button>
-      </li>
-      <li>
-        <button
-          className="m-route-picker__route-list-button "
-          onClick={[Function]}
-        >
-          28
-        </button>
-      </li>
-    </ul>
   </div>
   <div
     className="m-route-ladders"
@@ -223,13 +231,13 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
   className="m-ladder-page"
 >
   <div
-    className="m-route-picker visible"
+    className="m-picker-container visible"
   >
     <div
-      className="m-route-picker__tab"
+      className="m-picker-container__tab"
     >
       <button
-        className="m-route-picker__tab-button"
+        className="m-picker-container__tab-button"
         onClick={[Function]}
       >
         <span
@@ -242,85 +250,89 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
         />
       </button>
     </div>
-    <ul
-      className="m-route-picker__selected-routes"
-    >
-      <li>
-        <button
-          className="m-route-picker__selected-routes-button"
-          onClick={[Function]}
-        >
-          28
-        </button>
-      </li>
-      <li>
-        <button
-          className="m-route-picker__selected-routes-button"
-          onClick={[Function]}
-        >
-          1
-        </button>
-      </li>
-    </ul>
     <div
-      className="m-route-filter"
+      className="m-route-picker"
     >
-      <select
-        className="m-route-filter__type"
-        onChange={[Function]}
-        value="id"
+      <ul
+        className="m-route-picker__selected-routes"
       >
-        <option
+        <li>
+          <button
+            className="m-route-picker__selected-routes-button"
+            onClick={[Function]}
+          >
+            28
+          </button>
+        </li>
+        <li>
+          <button
+            className="m-route-picker__selected-routes-button"
+            onClick={[Function]}
+          >
+            1
+          </button>
+        </li>
+      </ul>
+      <div
+        className="m-route-filter"
+      >
+        <select
+          className="m-route-filter__type"
+          onChange={[Function]}
           value="id"
         >
-          Route ID
-        </option>
-      </select>
-      <div
-        className="m-route-filter__text"
-      >
-        <input
-          className="m-route-filter__input"
-          onChange={[Function]}
-          onKeyDown={[Function]}
-          type="text"
-          value=""
-        />
-        <button
-          className="m-route-filter__clear"
-          onClick={[Function]}
+          <option
+            value="id"
+          >
+            Route ID
+          </option>
+        </select>
+        <div
+          className="m-route-filter__text"
         >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
+          <input
+            className="m-route-filter__input"
+            onChange={[Function]}
+            onKeyDown={[Function]}
+            type="text"
+            value=""
           />
-        </button>
+          <button
+            className="m-route-filter__clear"
+            onClick={[Function]}
+          >
+            <span
+              className=""
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
+              }
+            />
+          </button>
+        </div>
       </div>
+      <ul
+        className="m-route-picker__route-list"
+      >
+        <li>
+          <button
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
+            onClick={[Function]}
+          >
+            1
+          </button>
+        </li>
+        <li>
+          <button
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
+            onClick={[Function]}
+          >
+            28
+          </button>
+        </li>
+      </ul>
     </div>
-    <ul
-      className="m-route-picker__route-list"
-    >
-      <li>
-        <button
-          className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
-          onClick={[Function]}
-        >
-          1
-        </button>
-      </li>
-      <li>
-        <button
-          className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
-          onClick={[Function]}
-        >
-          28
-        </button>
-      </li>
-    </ul>
   </div>
   <div
     className="m-route-ladders"
@@ -416,13 +428,13 @@ exports[`LadderPage renders with timepoints 1`] = `
   className="m-ladder-page"
 >
   <div
-    className="m-route-picker visible"
+    className="m-picker-container visible"
   >
     <div
-      className="m-route-picker__tab"
+      className="m-picker-container__tab"
     >
       <button
-        className="m-route-picker__tab-button"
+        className="m-picker-container__tab-button"
         onClick={[Function]}
       >
         <span
@@ -435,68 +447,72 @@ exports[`LadderPage renders with timepoints 1`] = `
         />
       </button>
     </div>
-    <ul
-      className="m-route-picker__selected-routes"
-    />
     <div
-      className="m-route-filter"
+      className="m-route-picker"
     >
-      <select
-        className="m-route-filter__type"
-        onChange={[Function]}
-        value="id"
+      <ul
+        className="m-route-picker__selected-routes"
+      />
+      <div
+        className="m-route-filter"
       >
-        <option
+        <select
+          className="m-route-filter__type"
+          onChange={[Function]}
           value="id"
         >
-          Route ID
-        </option>
-      </select>
-      <div
-        className="m-route-filter__text"
-      >
-        <input
-          className="m-route-filter__input"
-          onChange={[Function]}
-          onKeyDown={[Function]}
-          type="text"
-          value=""
-        />
-        <button
-          className="m-route-filter__clear"
-          onClick={[Function]}
+          <option
+            value="id"
+          >
+            Route ID
+          </option>
+        </select>
+        <div
+          className="m-route-filter__text"
         >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
+          <input
+            className="m-route-filter__input"
+            onChange={[Function]}
+            onKeyDown={[Function]}
+            type="text"
+            value=""
           />
-        </button>
+          <button
+            className="m-route-filter__clear"
+            onClick={[Function]}
+          >
+            <span
+              className=""
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
+              }
+            />
+          </button>
+        </div>
       </div>
+      <ul
+        className="m-route-picker__route-list"
+      >
+        <li>
+          <button
+            className="m-route-picker__route-list-button "
+            onClick={[Function]}
+          >
+            1
+          </button>
+        </li>
+        <li>
+          <button
+            className="m-route-picker__route-list-button "
+            onClick={[Function]}
+          >
+            28
+          </button>
+        </li>
+      </ul>
     </div>
-    <ul
-      className="m-route-picker__route-list"
-    >
-      <li>
-        <button
-          className="m-route-picker__route-list-button "
-          onClick={[Function]}
-        >
-          1
-        </button>
-      </li>
-      <li>
-        <button
-          className="m-route-picker__route-list-button "
-          onClick={[Function]}
-        >
-          28
-        </button>
-      </li>
-    </ul>
   </div>
   <div
     className="m-route-ladders"

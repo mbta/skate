@@ -1,6 +1,5 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { collapseIcon, expandIcon } from "../helpers/icon"
 import {
   filterRoutes,
   RouteFilter,
@@ -8,56 +7,39 @@ import {
   useRouteFilter,
 } from "../hooks/useRouteFilter"
 import { Route, RouteId } from "../schedule.d"
-import { deselectRoute, selectRoute, toggleRoutePicker } from "../state"
+import { deselectRoute, selectRoute } from "../state"
 import Loading from "./loading"
+import PickerContainer from "./pickerContainer"
 
 interface Props {
-  isVisible: boolean
   routes: null | Route[]
   selectedRouteIds: RouteId[]
 }
 
-const RoutePicker = ({ isVisible, routes, selectedRouteIds }: Props) => {
+const RoutePicker = ({ routes, selectedRouteIds }: Props) => {
   const routeFilterData: RouteFilterData = useRouteFilter()
-  const [, dispatch] = useContext(StateDispatchContext)
 
   const filteredRoutes = filterRoutes(routes || [], routeFilterData)
 
-  const toggleVisibility = () => dispatch(toggleRoutePicker())
-
   return (
-    <div className={`m-route-picker ${isVisible ? "visible" : "hidden"}`}>
-      <Tab isVisible={isVisible} toggleVisibility={toggleVisibility} />
+    <PickerContainer>
+      <div className="m-route-picker">
+        <SelectedRoutesList selectedRouteIds={selectedRouteIds} />
 
-      <SelectedRoutesList selectedRouteIds={selectedRouteIds} />
+        <RouteFilter {...routeFilterData} />
 
-      <RouteFilter {...routeFilterData} />
-
-      {routes === null ? (
-        <Loading />
-      ) : (
-        <RoutesList
-          routes={filteredRoutes}
-          selectedRouteIds={selectedRouteIds}
-        />
-      )}
-    </div>
+        {routes === null ? (
+          <Loading />
+        ) : (
+          <RoutesList
+            routes={filteredRoutes}
+            selectedRouteIds={selectedRouteIds}
+          />
+        )}
+      </div>
+    </PickerContainer>
   )
 }
-
-const Tab = ({
-  isVisible,
-  toggleVisibility,
-}: {
-  isVisible: boolean
-  toggleVisibility: () => void
-}) => (
-  <div className="m-route-picker__tab">
-    <button className="m-route-picker__tab-button" onClick={toggleVisibility}>
-      {isVisible ? collapseIcon() : expandIcon()}
-    </button>
-  </div>
-)
 
 const SelectedRoutesList = ({
   selectedRouteIds,

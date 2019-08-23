@@ -34,7 +34,7 @@ const vehicleRoute = (
 
 const LadderPage = (): ReactElement<HTMLDivElement> => {
   const [state] = useContext(StateDispatchContext)
-  const { routePickerIsVisible, selectedRouteIds, selectedVehicleId } = state
+  const { selectedRouteIds, selectedVehicleId } = state
 
   const routes: Route[] | null = useRoutes()
   const timepointsByRouteId: TimepointsByRouteId = useTimepoints(
@@ -55,11 +55,7 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
 
   return (
     <div className="m-ladder-page">
-      <RoutePicker
-        isVisible={routePickerIsVisible}
-        routes={routes}
-        selectedRouteIds={selectedRouteIds}
-      />
+      <RoutePicker routes={routes} selectedRouteIds={selectedRouteIds} />
 
       <RouteLadders
         routes={selectedRoutes}
