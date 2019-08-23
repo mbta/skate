@@ -74,7 +74,26 @@ describe("fetchRoutes", () => {
     })
   })
 
-  test("throws an error if the response status is not 200", done => {
+  test("reloads the page if the response status is a redirect (3xx)", () => {
+    window.fetch = () =>
+      Promise.resolve({
+        json: () => ({ data: null }),
+        ok: false,
+        status: 302,
+      })
+
+    window.location.reload = jest.fn()
+    const spyConsoleError = jest.spyOn(console, "error")
+    spyConsoleError.mockImplementationOnce(() => {})
+
+    fetchRoutes()
+      .then(() => {
+        expect(window.location.reload).toHaveBeenCalled()
+      })
+      .catch(() => ({}))
+  })
+
+  test("throws an error if the response status is not 200 or 3xx", done => {
     window.fetch = () =>
       Promise.resolve({
         json: () => ({ data: null }),
@@ -160,7 +179,26 @@ describe("fetchShuttleRoutes", () => {
     })
   })
 
-  test("throws an error if the response status is not 200", done => {
+  test("reloads the page if the response status is a redirect (3xx)", () => {
+    window.fetch = () =>
+      Promise.resolve({
+        json: () => ({ data: null }),
+        ok: false,
+        status: 302,
+      })
+
+    window.location.reload = jest.fn()
+    const spyConsoleError = jest.spyOn(console, "error")
+    spyConsoleError.mockImplementationOnce(() => {})
+
+    fetchShuttleRoutes()
+      .then(() => {
+        expect(window.location.reload).toHaveBeenCalled()
+      })
+      .catch(() => ({}))
+  })
+
+  test("throws an error if the response status is not 200 or 3xx", done => {
     window.fetch = () =>
       Promise.resolve({
         json: () => ({ data: null }),
@@ -196,7 +234,26 @@ describe("fetchTimepointsForRoute", () => {
     })
   })
 
-  test("throws an error if the response status is not 200", done => {
+  test("reloads the page if the response status is a redirect (3xx)", () => {
+    window.fetch = () =>
+      Promise.resolve({
+        json: () => ({ data: null }),
+        ok: false,
+        status: 302,
+      })
+
+    window.location.reload = jest.fn()
+    const spyConsoleError = jest.spyOn(console, "error")
+    spyConsoleError.mockImplementationOnce(() => {})
+
+    fetchTimepointsForRoute("28")
+      .then(() => {
+        expect(window.location.reload).toHaveBeenCalled()
+      })
+      .catch(() => ({}))
+  })
+
+  test("throws an error if the response status is not 200 or 3xx", done => {
     window.fetch = () =>
       Promise.resolve({
         json: () => ({ data: null }),

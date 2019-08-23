@@ -19,10 +19,17 @@ interface TimepointsForRouteResponse {
 }
 
 const checkResponseStatus = (response: Response) => {
-  if (response.status !== 200) {
-    throw new Error(`Response error: ${response.status}`)
+  if (response.status === 200) {
+    return response
   }
-  return response
+
+  if (Math.floor(response.status / 100) === 3) {
+    // If the API sends us a redirect, the user needs to re-authenticate.
+    // Reload to go through the auth flow again.
+    window.location.reload(true)
+  }
+
+  throw new Error(`Response error: ${response.status}`)
 }
 
 const parseJson = (response: Response) => response.json()
