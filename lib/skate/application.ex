@@ -36,8 +36,13 @@ defmodule Skate.Application do
           ]
         ]
       ),
-      {Registry, keys: :duplicate, name: Realtime.Server.registry_name()},
-      worker(Realtime.Server, [[name: Realtime.Server.default_name()]])
+      {Registry, keys: :duplicate, name: Realtime.Registry},
+      worker(Realtime.Servers.RouteVehicles, [
+        [name: Realtime.Servers.RouteVehicles.default_name()]
+      ]),
+      worker(Realtime.Servers.ShuttleVehicles, [
+        [name: Realtime.Servers.ShuttleVehicles.default_name()]
+      ])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

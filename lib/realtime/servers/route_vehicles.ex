@@ -1,4 +1,4 @@
-defmodule Realtime.Server do
+defmodule Realtime.Servers.RouteVehicles do
   @moduledoc """
   Fetches live data from RTR, and forwards it to connected clients.
 
@@ -9,7 +9,9 @@ defmodule Realtime.Server do
   use GenServer
 
   alias Gtfs.Route
+
   alias Realtime.Vehicles
+
   require Logger
 
   @typep state :: Route.by_id(Vehicles.for_route())
@@ -20,7 +22,7 @@ defmodule Realtime.Server do
   def registry_name(), do: Realtime.Registry
 
   @spec default_name() :: GenServer.name()
-  def default_name(), do: Realtime.Server
+  def default_name(), do: __MODULE__
 
   @spec start_link(Keyword.t()) :: GenServer.on_start()
   def start_link(start_link_opts) do

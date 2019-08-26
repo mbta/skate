@@ -1,10 +1,10 @@
-defmodule SkateWeb.VehiclesChannelTest do
+defmodule SkateWeb.RouteVehiclesChannelTest do
   use SkateWeb.ChannelCase
   import Test.Support.Helpers
 
   alias Phoenix.Socket
   alias Realtime.Vehicle
-  alias SkateWeb.{AuthManager, UserSocket, VehiclesChannel}
+  alias SkateWeb.{AuthManager, UserSocket, RouteVehiclesChannel}
 
   setup do
     reassign_env(:realtime, :trip_fn, fn _trip_id -> nil end)
@@ -20,7 +20,7 @@ defmodule SkateWeb.VehiclesChannelTest do
       socket: socket
     } do
       assert {:ok, %{on_route_vehicles: on_route_vehicles}, %Socket{} = socket} =
-               subscribe_and_join(socket, VehiclesChannel, "vehicles:1")
+               subscribe_and_join(socket, RouteVehiclesChannel, "vehicles:1")
 
       assert is_list(on_route_vehicles)
       assert Enum.all?(on_route_vehicles, &(%Vehicle{} = &1))
@@ -28,7 +28,7 @@ defmodule SkateWeb.VehiclesChannelTest do
 
     test "returns an error when joining a non-existant topic", %{socket: socket} do
       assert {:error, %{message: "no such topic \"rooms:1\""}} =
-               subscribe_and_join(socket, VehiclesChannel, "rooms:1")
+               subscribe_and_join(socket, RouteVehiclesChannel, "rooms:1")
     end
   end
 
@@ -37,7 +37,7 @@ defmodule SkateWeb.VehiclesChannelTest do
       reassign_env(
         :skate,
         :refresh_token_store,
-        SkateWeb.VehiclesChannelTest.FakeRefreshTokenStore
+        SkateWeb.RouteVehiclesChannelTest.FakeRefreshTokenStore
       )
 
       new_vehicles = [
@@ -95,11 +95,11 @@ defmodule SkateWeb.VehiclesChannelTest do
           "exp" => System.system_time(:second) + 500
         })
 
-      {:ok, _, socket} = subscribe_and_join(socket, VehiclesChannel, "vehicles:1")
+      {:ok, _, socket} = subscribe_and_join(socket, RouteVehiclesChannel, "vehicles:1")
       socket = Guardian.Phoenix.Socket.assign_rtc(socket, "test-authed@mbta.com", token, claims)
 
       assert {:noreply, socket} =
-               VehiclesChannel.handle_info({:new_realtime_data, vehicles_for_route}, socket)
+               RouteVehiclesChannel.handle_info({:new_realtime_data, vehicles_for_route}, socket)
 
       assert_push("vehicles", _)
     end
@@ -113,12 +113,12 @@ defmodule SkateWeb.VehiclesChannelTest do
           "exp" => System.system_time(:second) - 100
         })
 
-      {:ok, _, socket} = subscribe_and_join(socket, VehiclesChannel, "vehicles:1")
+      {:ok, _, socket} = subscribe_and_join(socket, RouteVehiclesChannel, "vehicles:1")
 
       socket = Guardian.Phoenix.Socket.assign_rtc(socket, "test-expired@mbta.com", token, claims)
 
       assert {:noreply, socket} =
-               VehiclesChannel.handle_info({:new_realtime_data, vehicles_for_route}, socket)
+               RouteVehiclesChannel.handle_info({:new_realtime_data, vehicles_for_route}, socket)
 
       assert_push("vehicles", _)
     end
@@ -129,12 +129,13 @@ defmodule SkateWeb.VehiclesChannelTest do
           "exp" => System.system_time(:second) - 100
         })
 
-      {:ok, _, socket} = subscribe_and_join(socket, VehiclesChannel, "vehicles:1")
+      {:ok, _, socket} = subscribe_and_join(socket, RouteVehiclesChannel, "vehicles:1")
 
       socket =
         Guardian.Phoenix.Socket.assign_rtc(socket, "test-not-authed@mbta.com", token, claims)
 
-      {:stop, :normal, _socket} = VehiclesChannel.handle_info({:new_realtime_data, %{}}, socket)
+      {:stop, :normal, _socket} =
+        RouteVehiclesChannel.handle_info({:new_realtime_data, %{}}, socket)
 
       assert_push("auth_expired", _)
     end

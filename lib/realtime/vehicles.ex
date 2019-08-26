@@ -34,6 +34,11 @@ defmodule Realtime.Vehicles do
     group_by_route_with_blocks(ungrouped_vehicles, incoming_blocks_by_route)
   end
 
+  @spec group_by_run([Vehicle.t()]) :: %{Vehicle.run_id() => [Vehicle.t()]}
+  def group_by_run(ungrouped_vehicles) do
+    Enum.group_by(ungrouped_vehicles, & &1.run_id)
+  end
+
   @doc """
   Exposed for testing
   """

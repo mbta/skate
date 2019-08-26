@@ -6,7 +6,13 @@ defmodule Concentrate.Consumer.VehiclePositions do
   use GenStage
 
   alias Concentrate.{Merge, TripUpdate, VehiclePosition}
-  alias Realtime.{Vehicles, Server, Vehicle}
+
+  alias Realtime.{
+    Servers.RouteVehicles,
+    Servers.ShuttleVehicles,
+    Vehicle,
+    Vehicles
+  }
 
   def start_link(opts) do
     GenStage.start_link(__MODULE__, opts)
@@ -21,9 +27,17 @@ defmodule Concentrate.Consumer.VehiclePositions do
   def handle_events(events, _from, state) do
     groups = List.last(events)
     all_vehicles = vehicles(groups)
-    vehicles_by_route_id = Vehicles.group_by_route(all_vehicles)
 
-    Server.update_vehicles(vehicles_by_route_id)
+    _ =
+      all_vehicles
+      |> Vehicles.group_by_route()
+      |> RouteVehicles.update_vehicles()
+
+    _ =
+      all_vehicles
+      |> Enum.filter(&Vehicle.shuttle?/1)
+      |> Vehicles.group_by_run()
+      |> ShuttleVehicles.update()
 
     {:noreply, [], state}
   end

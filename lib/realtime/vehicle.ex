@@ -12,6 +12,8 @@ defmodule Realtime.Vehicle do
         }
   @type route_status :: :incoming | :on_route
 
+  @type run_id :: String.t() | nil
+
   @type t :: %__MODULE__{
           id: String.t(),
           label: String.t(),
@@ -29,7 +31,7 @@ defmodule Realtime.Vehicle do
           block_id: Block.id() | nil,
           operator_id: String.t() | nil,
           operator_name: String.t() | nil,
-          run_id: String.t() | nil,
+          run_id: run_id,
           headway_secs: non_neg_integer() | nil,
           headway_spacing: Headway.headway_spacing() | nil,
           previous_vehicle_id: String.t() | nil,
@@ -241,6 +243,10 @@ defmodule Realtime.Vehicle do
         false
     end
   end
+
+  def shuttle?(%__MODULE__{run_id: "999" <> _}), do: true
+  def shuttle?(%__MODULE__{run_id: "555" <> _}), do: true
+  def shuttle?(%__MODULE__{}), do: false
 
   @doc """
   Check whether the vehicle is off course. If so, check if the assigned block

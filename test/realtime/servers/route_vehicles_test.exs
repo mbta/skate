@@ -1,8 +1,9 @@
-defmodule Realtime.ServerTest do
+defmodule Realtime.Servers.RouteVehiclesTest do
   use ExUnit.Case, async: true
   import Test.Support.Helpers
 
-  alias Realtime.{Server, Vehicle}
+  alias Realtime.Servers.RouteVehicles, as: Server
+  alias Realtime.Vehicle
 
   @vehicles_for_route %{
     on_route_vehicles: [
