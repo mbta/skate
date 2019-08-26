@@ -301,7 +301,7 @@ const subscribe = (
     dispatch(setVehiclesForRoute(routeId, vehiclesForRoute))
   }
 
-  const topic = `vehicles:${routeId}`
+  const topic = `vehicles:route:${routeId}`
   const channel = socket.channel(topic)
 
   channel.on("vehicles", handleVehicles)
