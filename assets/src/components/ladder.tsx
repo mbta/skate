@@ -1,7 +1,6 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { partition } from "../helpers/array"
-import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
 import vehicleLabel from "../helpers/vehicleLabel"
 import useReferencedElementHeight from "../hooks/useReferencedElementHeight"
 import featureIsEnabled from "../laboratoryFeatures"
@@ -10,6 +9,7 @@ import {
   ladderVehiclesFromVehicles,
   VehicleDirection,
 } from "../models/ladderVehicle"
+import { statusClass } from "../models/vehicleStatus"
 import { Vehicle, VehicleId, VehicleTimepointStatus } from "../realtime.d"
 import { TimepointId } from "../schedule.d"
 import { selectVehicle } from "../state"
@@ -141,7 +141,6 @@ const VehicleSvg = ({
 }) => {
   const {
     vehicleId,
-    headwaySpacing,
     viaVariant,
     status,
     x,
@@ -154,10 +153,7 @@ const VehicleSvg = ({
   return (
     <g>
       <g
-        className={`m-ladder__vehicle ${vehicleAdherenceDisplayClass(
-          headwaySpacing,
-          status
-        )} ${selectedClass}`}
+        className={`m-ladder__vehicle ${selectedClass}`}
         transform={`translate(${x},${y})`}
         onClick={() => dispatch(selectVehicle(vehicleId))}
       >
@@ -169,6 +165,7 @@ const VehicleSvg = ({
             settings.vehicleLabel
           )}
           variant={viaVariant}
+          status={status}
         />
       </g>
     </g>
@@ -259,19 +256,11 @@ const orientationMatchingVehicle = (
   vehicleDirection === VehicleDirection.Down ? Orientation.Down : Orientation.Up
 
 const ScheduledLine = ({
-  ladderVehicle: {
-    status,
-    headwaySpacing,
-    isOffCourse,
-    x,
-    y,
-    scheduledY,
-    scheduledVehicleDirection,
-  },
+  ladderVehicle: { status, x, y, scheduledY, scheduledVehicleDirection },
 }: {
   ladderVehicle: LadderVehicle
 }) => {
-  if (!scheduledY || isOffCourse) {
+  if (!scheduledY || status === "off-course") {
     return null
   }
 
@@ -282,10 +271,7 @@ const ScheduledLine = ({
 
   return (
     <line
-      className={`m-ladder__scheduled-line ${vehicleAdherenceDisplayClass(
-        headwaySpacing,
-        status
-      )}`}
+      className={`m-ladder__scheduled-line ${statusClass(status)}`}
       x1={x}
       y1={y}
       x2={roadLineX}

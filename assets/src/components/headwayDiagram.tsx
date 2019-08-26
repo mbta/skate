@@ -6,7 +6,11 @@ import {
   allVehiclesForRoute,
   nextAndPreviousVehicle,
 } from "../models/vehiclesByRouteId"
-import { HeadwaySpacing, headwaySpacingToString } from "../models/vehicleStatus"
+import {
+  HeadwaySpacing,
+  headwaySpacingToString,
+  humanReadableHeadwaySpacing,
+} from "../models/vehicleStatus"
 import { Vehicle, VehiclesForRoute } from "../realtime"
 import { ByRouteId } from "../schedule"
 import { selectVehicle } from "../state"
@@ -27,14 +31,6 @@ const minutes = (seconds: number): string => {
   const minutesUnrounded = seconds / 60
   const rounded = Math.round(minutesUnrounded * 10) / 10
   return Math.abs(rounded).toFixed(1)
-}
-
-const humanSpacing = (spacing: HeadwaySpacing | null): string => {
-  if (spacing === null || spacing === HeadwaySpacing.Ok) {
-    return "good"
-  }
-
-  return headwaySpacingToString(spacing || HeadwaySpacing.Ok).replace("-", " ")
 }
 
 const OtherVehicle = ({ vehicle }: { vehicle: Vehicle }) => {
@@ -104,7 +100,7 @@ const HeadwayDiagram = ({ vehicle }: { vehicle: Vehicle }) => {
           </div>
           <div className="m-headway-diagram__headway-line" />
           <div className="m-headway-diagram__headway-status">
-            {humanSpacing(tailwaySpacing)}
+            {humanReadableHeadwaySpacing(tailwaySpacing)}
           </div>
         </div>
 
@@ -123,7 +119,7 @@ const HeadwayDiagram = ({ vehicle }: { vehicle: Vehicle }) => {
           </div>
           <div className="m-headway-diagram__headway-line" />
           <div className="m-headway-diagram__headway-status">
-            {humanSpacing(headwaySpacing)}
+            {humanReadableHeadwaySpacing(headwaySpacing)}
           </div>
         </div>
 

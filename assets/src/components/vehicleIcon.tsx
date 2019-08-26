@@ -1,4 +1,5 @@
 import React from "react"
+import { DrawnStatus, statusClass } from "../models/vehicleStatus"
 
 export enum Orientation {
   Up,
@@ -18,6 +19,7 @@ export interface Props {
   orientation: Orientation
   label: string
   variant?: string | null
+  status?: DrawnStatus
 }
 
 /*
@@ -91,9 +93,15 @@ export const VehicleIconSvgNode = ({
   orientation,
   label,
   variant,
+  status,
 }: Props) => {
+  status = status || "plain"
   return (
-    <g className={`m-vehicle-icon m-vehicle-icon${sizeClassSuffix(size)}`}>
+    <g
+      className={`m-vehicle-icon m-vehicle-icon${sizeClassSuffix(
+        size
+      )} ${statusClass(status)}`}
+    >
       {<Label size={size} orientation={orientation} label={label} />}
       <Triangle size={size} orientation={orientation} />
       {variant && variant !== "_" ? (

@@ -9,9 +9,8 @@ import React, {
   useState,
 } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
 import vehicleLabelString from "../helpers/vehicleLabel"
-import { status } from "../models/vehicleStatus"
+import { drawnStatus, statusClass } from "../models/vehicleStatus"
 import { Vehicle } from "../realtime.d"
 import { VehicleLabelSetting } from "../settings"
 
@@ -50,16 +49,13 @@ const updateVehicle = (
 
   const { icon: vehicleIcon, label: vehicleLabel } = markersForVehicle
 
-  const { bearing, headwaySpacing, latitude, longitude } = vehicle
+  const { bearing, latitude, longitude } = vehicle
   const zoom = map!.getZoom()
 
   const labelString = vehicleLabelString(vehicle, labelSetting)
 
   const icon = Leaflet.divIcon({
-    className: `m-vehicle-map__icon ${vehicleAdherenceDisplayClass(
-      headwaySpacing,
-      status(vehicle)
-    )}`,
+    className: "m-vehicle-map__icon",
     html: `<svg
         height="24"
         viewBox="0 0 24 24"
@@ -67,7 +63,7 @@ const updateVehicle = (
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          class="m-vehicle-properties-panel__schedule-adherence-status-icon"
+          class="${statusClass(drawnStatus(vehicle))}"
           d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
           transform-origin="${iconAnchor[0]}px ${iconAnchor[1]}px"
           transform="rotate(${bearing})"

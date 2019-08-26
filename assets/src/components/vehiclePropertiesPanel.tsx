@@ -1,11 +1,14 @@
 import React, { useContext, useEffect, useState } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
-import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
 import vehicleLabel from "../helpers/vehicleLabel"
 import useInterval from "../hooks/useInterval"
 import featureIsEnabled from "../laboratoryFeatures"
-import { status } from "../models/vehicleStatus"
+import {
+  drawnStatus,
+  humanReadableScheduleAdherence,
+  statusClass,
+} from "../models/vehicleStatus"
 import { DataDiscrepancy, Vehicle } from "../realtime.d"
 import { Route } from "../schedule.d"
 import { deselectVehicle } from "../state"
@@ -27,13 +30,9 @@ const ScheduleAdherenceStatusIcon = () => (
   </div>
 )
 
-const ScheduleAdherenceStatusString = ({
-  vehicle: { isOffCourse, scheduleAdherenceStatus },
-}: {
-  vehicle: Vehicle
-}) => (
+const ScheduleAdherenceStatusString = ({ vehicle }: { vehicle: Vehicle }) => (
   <div className="m-vehicle-properties-panel__schedule-adherence-status-string">
-    {isOffCourse ? "Invalid" : scheduleAdherenceStatus}
+    {humanReadableScheduleAdherence(vehicle)}
   </div>
 )
 
@@ -57,9 +56,8 @@ const ScheduleAdherenceLabel = ({ vehicle }: { vehicle: Vehicle }) => (
 
 const ScheduleAdherence = ({ vehicle }: { vehicle: Vehicle }) => (
   <div
-    className={`m-vehicle-properties-panel__schedule-adherence ${vehicleAdherenceDisplayClass(
-      vehicle.headwaySpacing,
-      status(vehicle)
+    className={`m-vehicle-properties-panel__schedule-adherence ${statusClass(
+      drawnStatus(vehicle)
     )}`}
   >
     <ScheduleAdherenceStatusIcon />
@@ -96,17 +94,13 @@ const Header = ({
 
   return (
     <div className="m-vehicle-properties-panel__header">
-      <div
-        className={`m-vehicle-properties-panel__label ${vehicleAdherenceDisplayClass(
-          vehicle.headwaySpacing,
-          status(vehicle)
-        )}`}
-      >
+      <div className="m-vehicle-properties-panel__label">
         <VehicleIcon
           size={Size.Large}
           orientation={Orientation.Up}
           label={vehicleLabel(vehicle, settings.vehicleLabel)}
           variant={vehicle.viaVariant}
+          status={drawnStatus(vehicle)}
         />
       </div>
       <div className="m-vehicle-properties-panel__variant">

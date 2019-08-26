@@ -28,7 +28,6 @@ const vehicle: Vehicle = {
   previousVehicleId: "v2",
   scheduleAdherenceSecs: 0,
   scheduleAdherenceString: "0.0 sec (ontime)",
-  scheduleAdherenceStatus: "on-time",
   scheduledHeadwaySecs: 120,
   isOffCourse: false,
   isLayingOver: false,

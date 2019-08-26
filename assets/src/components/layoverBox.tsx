@@ -1,7 +1,7 @@
 import React, { Dispatch, ReactElement, useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import vehicleAdherenceDisplayClass from "../helpers/vehicleAdherenceDisplayClass"
 import vehicleLabel from "../helpers/vehicleLabel"
+import { drawnStatus } from "../models/vehicleStatus"
 import { Vehicle } from "../realtime"
 import { Settings } from "../settings"
 import { selectVehicle, SelectVehicleAction } from "../state"
@@ -24,10 +24,7 @@ const layoverVehicle = (
     <div
       key={vehicle.id}
       onClick={() => dispatch(selectVehicle(vehicle.id))}
-      className={`m-layover-box__vehicle ${vehicleAdherenceDisplayClass(
-        vehicle.headwaySpacing,
-        vehicle.scheduleAdherenceStatus
-      )}`}
+      className="m-layover-box__vehicle"
     >
       <VehicleIcon
         label={vehicleLabel(vehicle, settings.vehicleLabel)}
@@ -35,6 +32,7 @@ const layoverVehicle = (
           classModifier === "bottom" ? Orientation.Right : Orientation.Left
         }
         size={Size.Small}
+        status={drawnStatus(vehicle)}
         variant={vehicle.viaVariant}
       />
     </div>

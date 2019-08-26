@@ -24,12 +24,12 @@ exports[`ladder filters out vehicles whose block is not active 1`] = `
     />
     <g>
       <g
-        className="m-ladder__vehicle  "
+        className="m-ladder__vehicle "
         onClick={[Function]}
         transform="translate(-63,-25)"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium"
+          className="m-vehicle-icon m-vehicle-icon--medium "
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -176,12 +176,12 @@ exports[`ladder highlights a selected vehicle 1`] = `
     />
     <g>
       <g
-        className="m-ladder__vehicle  "
+        className="m-ladder__vehicle "
         onClick={[Function]}
         transform="translate(-63,-25)"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium"
+          className="m-vehicle-icon m-vehicle-icon--medium "
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -211,12 +211,12 @@ exports[`ladder highlights a selected vehicle 1`] = `
     </g>
     <g>
       <g
-        className="m-ladder__vehicle  selected"
+        className="m-ladder__vehicle selected"
         onClick={[Function]}
         transform="translate(63,-30)"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium"
+          className="m-vehicle-icon m-vehicle-icon--medium "
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -373,12 +373,12 @@ exports[`ladder renders a ladder 1`] = `
     />
     <g>
       <g
-        className="m-ladder__vehicle  "
+        className="m-ladder__vehicle "
         onClick={[Function]}
         transform="translate(63,-30)"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium"
+          className="m-vehicle-icon m-vehicle-icon--medium "
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -408,12 +408,12 @@ exports[`ladder renders a ladder 1`] = `
     </g>
     <g>
       <g
-        className="m-ladder__vehicle  "
+        className="m-ladder__vehicle "
         onClick={[Function]}
         transform="translate(-87,-25)"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium"
+          className="m-vehicle-icon m-vehicle-icon--medium "
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -443,12 +443,12 @@ exports[`ladder renders a ladder 1`] = `
     </g>
     <g>
       <g
-        className="m-ladder__vehicle  "
+        className="m-ladder__vehicle "
         onClick={[Function]}
         transform="translate(-63,0)"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium"
+          className="m-vehicle-icon m-vehicle-icon--medium "
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -608,12 +608,12 @@ exports[`ladder renders a ladder with no timepoints 1`] = `
   >
     <g>
       <g
-        className="m-ladder__vehicle  "
+        className="m-ladder__vehicle "
         onClick={[Function]}
         transform="translate(63,0)"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium"
+          className="m-vehicle-icon m-vehicle-icon--medium "
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -697,12 +697,12 @@ exports[`ladder renders a reversed ladder 1`] = `
     />
     <g>
       <g
-        className="m-ladder__vehicle  "
+        className="m-ladder__vehicle "
         onClick={[Function]}
         transform="translate(63,-30)"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium"
+          className="m-vehicle-icon m-vehicle-icon--medium "
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -842,12 +842,12 @@ exports[`ladder renders an off-course vehicle 1`] = `
   >
     <g>
       <g
-        className="m-ladder__vehicle off-course "
+        className="m-ladder__vehicle "
         onClick={[Function]}
         transform="translate(63,0)"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium"
+          className="m-vehicle-icon m-vehicle-icon--medium off-course"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -992,12 +992,12 @@ exports[`ladder shows schedule line in the other direction 1`] = `
     />
     <g>
       <g
-        className="m-ladder__vehicle  "
+        className="m-ladder__vehicle "
         onClick={[Function]}
         transform="translate(-63,15)"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium"
+          className="m-vehicle-icon m-vehicle-icon--medium "
         >
           <rect
             className="m-vehicle-icon__label-background"

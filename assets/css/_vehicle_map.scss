@@ -14,6 +14,19 @@
 .m-vehicle-map__icon {
   path {
     fill: $color-primary;
+
+    &.on-time {
+      fill: $color-vehicle-ontime;
+    }
+    &.early {
+      fill: $color-vehicle-early;
+    }
+    &.late {
+      fill: $color-vehicle-late;
+    }
+    &.off-course {
+      fill: $color-vehicle-off-course;
+    }
   }
 
   svg {

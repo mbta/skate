@@ -3,7 +3,6 @@ import { Dispatch as ReactDispatch, useEffect, useReducer } from "react"
 import { HeadwaySpacing } from "../models/vehicleStatus"
 import {
   DataDiscrepancy,
-  ScheduleAdherenceStatus,
   Vehicle,
   VehicleScheduledLocation,
   VehiclesForRoute,
@@ -209,21 +208,6 @@ const reducer = (state: State, action: Action): State => {
   }
 }
 
-const scheduleAdherenceStatus = (
-  scheduleAdherenceSecs: number
-): ScheduleAdherenceStatus => {
-  const oneMinuteInSeconds = 60
-  const sixMinutesInSeconds = 360
-
-  if (scheduleAdherenceSecs < -oneMinuteInSeconds) {
-    return "early"
-  } else if (scheduleAdherenceSecs > sixMinutesInSeconds) {
-    return "late"
-  } else {
-    return "on-time"
-  }
-}
-
 const dataDiscrepanciesFromData = (
   dataDiscrepancies: DataDiscrepancyData[]
 ): DataDiscrepancy[] =>
@@ -280,9 +264,6 @@ const vehicleFromData = ({ isOnRoute }: { isOnRoute: boolean }) => (
   previousVehicleId: vehicleData.previous_vehicle_id,
   scheduleAdherenceSecs: vehicleData.schedule_adherence_secs,
   scheduleAdherenceString: vehicleData.schedule_adherence_string,
-  scheduleAdherenceStatus: scheduleAdherenceStatus(
-    vehicleData.schedule_adherence_secs
-  ),
   scheduledHeadwaySecs: vehicleData.scheduled_headway_secs,
   isOffCourse: vehicleData.is_off_course,
   isLayingOver: vehicleData.is_laying_over,

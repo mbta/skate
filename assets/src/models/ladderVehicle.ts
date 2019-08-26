@@ -1,16 +1,16 @@
 import { LadderDirection, TimepointStatusYFunc } from "../components/ladder"
+import featureIsEnabled from "../laboratoryFeatures"
 import { Vehicle, VehicleId } from "../realtime"
 import { DirectionId, ViaVariant } from "../schedule"
-import { HeadwaySpacing, status, VehicleAdherenceStatus } from "./vehicleStatus"
+import { DrawnStatus, drawnStatus, HeadwaySpacing } from "./vehicleStatus"
 
 export interface LadderVehicle {
   vehicleId: VehicleId
   label: string
   runId: string | null
   viaVariant: ViaVariant | null
-  status: VehicleAdherenceStatus
+  status: DrawnStatus
   headwaySpacing: HeadwaySpacing | null
-  isOffCourse: boolean
   x: number
   y: number
   vehicleDirection: VehicleDirection
@@ -30,8 +30,7 @@ interface WithVehicle {
   label: string
   runId: string | null
   viaVariant: ViaVariant | null
-  status: VehicleAdherenceStatus
-  isOffCourse: boolean
+  status: DrawnStatus
 }
 
 interface OnLadder {
@@ -166,12 +165,14 @@ const vehicleOnLadder = (
   return {
     // tslint:disable-next-line:object-literal-sort-keys
     vehicleId,
-    headwaySpacing,
+    headwaySpacing:
+      featureIsEnabled("headway_ladder_colors") && !isOffCourse
+        ? headwaySpacing
+        : null,
     label,
     runId,
     viaVariant,
-    status: status(vehicle),
-    isOffCourse,
+    status: drawnStatus(vehicle),
     vehicleDirection,
     y,
     scheduledY,

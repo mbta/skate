@@ -10,7 +10,7 @@ Array [
       className="m-vehicle-properties-panel__header"
     >
       <div
-        className="m-vehicle-properties-panel__label "
+        className="m-vehicle-properties-panel__label"
       >
         <svg
           style={
@@ -22,7 +22,7 @@ Array [
           viewBox="-32 -16 64 60"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--large"
+            className="m-vehicle-icon m-vehicle-icon--large "
           >
             <rect
               className="m-vehicle-icon__label-background"
@@ -141,7 +141,7 @@ Array [
             viewBox="-13 -13.75 26 38.5"
           >
             <g
-              className="m-vehicle-icon m-vehicle-icon--medium"
+              className="m-vehicle-icon m-vehicle-icon--medium "
             >
               <rect
                 className="m-vehicle-icon__label-background"
@@ -302,7 +302,7 @@ Array [
       className="m-vehicle-properties-panel__header"
     >
       <div
-        className="m-vehicle-properties-panel__label "
+        className="m-vehicle-properties-panel__label"
       >
         <svg
           style={
@@ -314,7 +314,7 @@ Array [
           viewBox="-32 -16 64 60"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--large"
+            className="m-vehicle-icon m-vehicle-icon--large "
           >
             <rect
               className="m-vehicle-icon__label-background"
@@ -433,7 +433,7 @@ Array [
             viewBox="-13 -13.75 26 38.5"
           >
             <g
-              className="m-vehicle-icon m-vehicle-icon--medium"
+              className="m-vehicle-icon m-vehicle-icon--medium "
             >
               <rect
                 className="m-vehicle-icon__label-background"
@@ -594,7 +594,7 @@ Array [
       className="m-vehicle-properties-panel__header"
     >
       <div
-        className="m-vehicle-properties-panel__label "
+        className="m-vehicle-properties-panel__label"
       >
         <svg
           style={
@@ -606,7 +606,7 @@ Array [
           viewBox="-32 -16 64 60"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--large"
+            className="m-vehicle-icon m-vehicle-icon--large "
           >
             <rect
               className="m-vehicle-icon__label-background"
@@ -725,7 +725,7 @@ Array [
             viewBox="-13 -13.75 26 38.5"
           >
             <g
-              className="m-vehicle-icon m-vehicle-icon--medium"
+              className="m-vehicle-icon m-vehicle-icon--medium "
             >
               <rect
                 className="m-vehicle-icon__label-background"
@@ -886,7 +886,7 @@ Array [
       className="m-vehicle-properties-panel__header"
     >
       <div
-        className="m-vehicle-properties-panel__label "
+        className="m-vehicle-properties-panel__label"
       >
         <svg
           style={
@@ -898,7 +898,7 @@ Array [
           viewBox="-32 -16 64 60"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--large"
+            className="m-vehicle-icon m-vehicle-icon--large "
           >
             <rect
               className="m-vehicle-icon__label-background"
@@ -1017,7 +1017,7 @@ Array [
             viewBox="-13 -13.75 26 38.5"
           >
             <g
-              className="m-vehicle-icon m-vehicle-icon--medium"
+              className="m-vehicle-icon m-vehicle-icon--medium "
             >
               <rect
                 className="m-vehicle-icon__label-background"
@@ -1178,7 +1178,7 @@ Array [
       className="m-vehicle-properties-panel__header"
     >
       <div
-        className="m-vehicle-properties-panel__label off-course"
+        className="m-vehicle-properties-panel__label"
       >
         <svg
           style={
@@ -1190,7 +1190,7 @@ Array [
           viewBox="-32 -16 64 60"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--large"
+            className="m-vehicle-icon m-vehicle-icon--large off-course"
           >
             <rect
               className="m-vehicle-icon__label-background"
@@ -1309,7 +1309,7 @@ Array [
             viewBox="-13 -13.75 26 38.5"
           >
             <g
-              className="m-vehicle-icon m-vehicle-icon--medium"
+              className="m-vehicle-icon m-vehicle-icon--medium "
             >
               <rect
                 className="m-vehicle-icon__label-background"
@@ -1474,7 +1474,7 @@ Array [
       className="m-vehicle-properties-panel__header"
     >
       <div
-        className="m-vehicle-properties-panel__label "
+        className="m-vehicle-properties-panel__label"
       >
         <svg
           style={
@@ -1486,7 +1486,7 @@ Array [
           viewBox="-32 -16 64 60"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--large"
+            className="m-vehicle-icon m-vehicle-icon--large "
           >
             <rect
               className="m-vehicle-icon__label-background"
@@ -1605,7 +1605,7 @@ Array [
             viewBox="-13 -13.75 26 38.5"
           >
             <g
-              className="m-vehicle-icon m-vehicle-icon--medium"
+              className="m-vehicle-icon m-vehicle-icon--medium "
             >
               <rect
                 className="m-vehicle-icon__label-background"
