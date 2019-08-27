@@ -243,7 +243,6 @@ defmodule Realtime.Vehicle do
   end
 
   def shuttle?(%__MODULE__{run_id: "999" <> _}), do: true
-  def shuttle?(%__MODULE__{run_id: "555" <> _}), do: true
   def shuttle?(%__MODULE__{}), do: false
 
   @doc """
