@@ -57,7 +57,7 @@ defmodule Realtime.ServerTest do
 
       {:ok, server_pid} = Server.start_link([])
 
-      Server.update_vehicles_by_route_id(@vehicles_by_route_id, server_pid)
+      Server.update({@vehicles_by_route_id, []}, server_pid)
 
       %{server_pid: server_pid}
     end
@@ -70,7 +70,7 @@ defmodule Realtime.ServerTest do
     test "clients subscribed to a route get data pushed to them", %{server_pid: server_pid} do
       Server.subscribe_to_route("1", server_pid)
 
-      Server.update_vehicles_by_route_id(@vehicles_by_route_id, server_pid)
+      Server.update({@vehicles_by_route_id, []}, server_pid)
 
       assert_receive(
         {:new_realtime_data, {:vehicles_for_route, vehicles_for_route}},
@@ -84,7 +84,7 @@ defmodule Realtime.ServerTest do
     test "clients subscribed to a route get repeated messages", %{server_pid: server_pid} do
       Server.subscribe_to_route("1", server_pid)
 
-      Server.update_vehicles_by_route_id(@vehicles_by_route_id, server_pid)
+      Server.update({@vehicles_by_route_id, []}, server_pid)
 
       assert_receive(
         {:new_realtime_data, _new_vehicles_for_route},
@@ -92,7 +92,7 @@ defmodule Realtime.ServerTest do
         "Client didn't receive vehicle positions the first time"
       )
 
-      Server.update_vehicles_by_route_id(@vehicles_by_route_id, server_pid)
+      Server.update({@vehicles_by_route_id, []}, server_pid)
 
       assert_receive(
         {:new_realtime_data, _new_vehicles_for_route},
@@ -109,7 +109,7 @@ defmodule Realtime.ServerTest do
 
       {:ok, server_pid} = Server.start_link([])
 
-      :ok = Server.update_shuttles([@shuttle], server_pid)
+      :ok = Server.update({[], [@shuttle]}, server_pid)
 
       %{server_pid: server_pid}
     end
@@ -121,7 +121,7 @@ defmodule Realtime.ServerTest do
     test "clients get updated data pushed to them", %{server_pid: pid} do
       Server.subscribe_to_all_shuttles(pid)
 
-      Server.update_shuttles([@shuttle, @shuttle], pid)
+      Server.update({[], [@shuttle, @shuttle]}, pid)
 
       assert_receive {:new_realtime_data, {:shuttles, shuttles}}
       assert shuttles == [@shuttle, @shuttle]

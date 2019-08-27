@@ -64,6 +64,10 @@ defmodule Realtime.Server do
   end
 
   @spec update_vehicles_by_route_id(Route.by_id(Vehicles.for_route())) :: term()
+  def update({vehicles_by_route_id, shuttles}, server \\ __MODULE__) do
+    GenServer.cast(server, {:update, vehicles_by_route_id, shuttles})
+  end
+
   def update_vehicles_by_route_id(vehicles_by_route_id, server \\ __MODULE__) do
     GenServer.cast(server, {:update_vehicles_by_route_id, vehicles_by_route_id})
   end
@@ -97,32 +101,20 @@ defmodule Realtime.Server do
   end
 
   @impl true
-  def handle_cast({:update_vehicles_by_route_id, vehicles_by_route_id}, %__MODULE__{} = state) do
-    state = %{state | by_route_id: vehicles_by_route_id}
-    broadcast(state, :route_id)
+  def handle_cast({:update, by_route_id, shuttles}, %__MODULE__{} = state) do
+    state = %{state | by_route_id: by_route_id, shuttles: shuttles}
+    broadcast(state)
     {:noreply, state}
   end
 
-  def handle_cast({:update_shuttles, shuttles}, %__MODULE__{} = state) do
-    state = %{state | shuttles: shuttles}
-    broadcast(state, :all_shuttles)
-    {:noreply, state}
-  end
-
-  @spec broadcast(t(), :all_shuttles | :route_id) :: :ok
-  defp broadcast(state, key_atom) do
+  @spec broadcast(t()) :: :ok
+  defp broadcast(state) do
     registry_key = self()
 
     Registry.dispatch(registry_name(), registry_key, fn entries ->
-      entries
-      |> Enum.filter(&should_send_data?(&1, key_atom))
-      |> Enum.each(&send_data(&1, state))
+      Enum.each(entries, &send_data(&1, state))
     end)
   end
-
-  defp should_send_data?({_pid, key_atom}, key_atom), do: true
-  defp should_send_data?({_pid, {key_atom, _}}, key_atom), do: true
-  defp should_send_data?({_, _}, _), do: false
 
   @spec send_data({pid, subscription_key}, t) :: {:new_realtime_data, broadcast_data}
   defp send_data({pid, subscription_key}, state) do
