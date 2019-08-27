@@ -63,17 +63,9 @@ defmodule Realtime.Server do
     data
   end
 
-  @spec update_vehicles_by_route_id(Route.by_id(Vehicles.for_route())) :: term()
+  @spec update({Route.by_id(Vehicles.for_route()), [Vehicle.t()]}, GenServer.server()) :: term()
   def update({vehicles_by_route_id, shuttles}, server \\ __MODULE__) do
     GenServer.cast(server, {:update, vehicles_by_route_id, shuttles})
-  end
-
-  def update_vehicles_by_route_id(vehicles_by_route_id, server \\ __MODULE__) do
-    GenServer.cast(server, {:update_vehicles_by_route_id, vehicles_by_route_id})
-  end
-
-  def update_shuttles(shuttles, server \\ __MODULE__) do
-    GenServer.cast(server, {:update_shuttles, shuttles})
   end
 
   # GenServer callbacks
