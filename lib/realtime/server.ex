@@ -99,25 +99,34 @@ defmodule Realtime.Server do
   @impl true
   def handle_cast({:update_vehicles_by_route_id, vehicles_by_route_id}, %__MODULE__{} = state) do
     state = %{state | by_route_id: vehicles_by_route_id}
-    broadcast(state)
+    broadcast(state, :route_id)
     {:noreply, state}
   end
 
   def handle_cast({:update_shuttles, shuttles}, %__MODULE__{} = state) do
     state = %{state | shuttles: shuttles}
-    broadcast(state)
+    broadcast(state, :all_shuttles)
     {:noreply, state}
   end
 
-  @spec broadcast(t()) :: :ok
-  defp broadcast(state) do
+  @spec broadcast(t(), :all_shuttles | :route_id) :: :ok
+  defp broadcast(state, key_atom) do
     registry_key = self()
 
     Registry.dispatch(registry_name(), registry_key, fn entries ->
-      for {pid, subscription_key} <- entries do
-        send(pid, {:new_realtime_data, data_to_send(state, subscription_key)})
-      end
+      entries
+      |> Enum.filter(&should_send_data?(&1, key_atom))
+      |> Enum.each(&send_data(&1, state))
     end)
+  end
+
+  defp should_send_data?({_pid, key_atom}, key_atom), do: true
+  defp should_send_data?({_pid, {key_atom, _}}, key_atom), do: true
+  defp should_send_data?({_, _}, _), do: false
+
+  @spec send_data({pid, subscription_key}, t) :: {:new_realtime_data, broadcast_data}
+  defp send_data({pid, subscription_key}, state) do
+    send(pid, {:new_realtime_data, data_to_send(state, subscription_key)})
   end
 
   @spec data_to_send(t, subscription_key) :: broadcast_data
