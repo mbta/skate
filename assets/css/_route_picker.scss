@@ -1,5 +1,12 @@
+.m-route-picker {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .m-route-picker__selected-routes {
   display: flex;
+  flex: 0 0 auto;
   flex-shrink: 0;
   flex-wrap: wrap;
   margin-bottom: 1rem;
@@ -7,15 +14,16 @@
   min-height: 2rem;
 }
 
-.m-route-picker__route-list {
-  overflow-y: scroll;
-}
-
 .m-route-picker__selected-routes-button {
   @include button-primary;
   margin-bottom: 0.25rem;
   margin-right: 0.25rem;
   min-width: 2rem;
+}
+
+.m-route-picker__route-list {
+  flex: 1 1 auto;
+  overflow-y: scroll;
 }
 
 .m-route-picker__route-list-button {
