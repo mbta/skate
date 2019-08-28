@@ -242,6 +242,9 @@ defmodule Realtime.Vehicle do
     end
   end
 
+  def shuttle?(%__MODULE__{run_id: "999" <> _}), do: true
+  def shuttle?(%__MODULE__{}), do: false
+
   @doc """
   Check whether the vehicle is off course. If so, check if the assigned block
   was scheduled to end over an hour ago. We give the buffer so that we don't

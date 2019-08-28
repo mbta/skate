@@ -194,7 +194,7 @@ describe("useVehicles", () => {
     rerender()
 
     expect(mockSocket.channel).toHaveBeenCalledTimes(1)
-    expect(mockSocket.channel).toHaveBeenCalledWith("vehicles:1")
+    expect(mockSocket.channel).toHaveBeenCalledWith("vehicles:route:1")
     expect(mockChannel.join).toHaveBeenCalledTimes(1)
   })
 

@@ -21,9 +21,11 @@ defmodule Concentrate.Consumer.VehiclePositions do
   def handle_events(events, _from, state) do
     groups = List.last(events)
     all_vehicles = vehicles(groups)
-    vehicles_by_route_id = Vehicles.group_by_route(all_vehicles)
 
-    Server.update_vehicles(vehicles_by_route_id)
+    by_route = Vehicles.group_by_route(all_vehicles)
+    shuttles = Enum.filter(all_vehicles, &Vehicle.shuttle?/1)
+
+    _ = Server.update({by_route, shuttles})
 
     {:noreply, [], state}
   end

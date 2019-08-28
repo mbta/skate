@@ -1,12 +1,17 @@
 defmodule SkateWeb.VehiclesChannel do
   use SkateWeb, :channel
 
-  alias Realtime.{Server, Vehicles}
+  alias Realtime.Server
   alias SkateWeb.AuthManager
 
   @impl Phoenix.Channel
-  def join("vehicles:" <> route_id, _message, socket) do
-    vehicles_for_route = Server.subscribe(route_id)
+  def join("vehicles:shuttle:all", _message, socket) do
+    shuttles = Server.subscribe_to_all_shuttles()
+    {:ok, shuttles, socket}
+  end
+
+  def join("vehicles:route:" <> route_id, _message, socket) do
+    vehicles_for_route = Server.subscribe_to_route(route_id)
     {:ok, vehicles_for_route, socket}
   end
 
@@ -15,7 +20,7 @@ defmodule SkateWeb.VehiclesChannel do
   end
 
   @impl Phoenix.Channel
-  def handle_info({:new_realtime_data, vehicles_for_route}, socket) do
+  def handle_info({:new_realtime_data, data}, socket) do
     token = Guardian.Phoenix.Socket.current_token(socket)
 
     case AuthManager.decode_and_verify(token) do
@@ -23,7 +28,7 @@ defmodule SkateWeb.VehiclesChannel do
         # Refresh a token before it expires
         {:ok, _old_claims, {_new_token, _new_claims}} = AuthManager.refresh(token)
 
-        push_vehicles(socket, vehicles_for_route)
+        push_vehicles(socket, data)
 
       {:error, :token_expired} ->
         refresh_token_store = Application.get_env(:skate, :refresh_token_store)
@@ -36,7 +41,7 @@ defmodule SkateWeb.VehiclesChannel do
         # Exchange a token of type "refresh" for a new token of type "access"
         case AuthManager.exchange(refresh_token, "refresh", "access") do
           {:ok, _old_stuff, {_new_token, _new_claims}} ->
-            push_vehicles(socket, vehicles_for_route)
+            push_vehicles(socket, data)
 
           _ ->
             {:stop, :normal, send_auth_expired_message(socket)}
@@ -47,10 +52,15 @@ defmodule SkateWeb.VehiclesChannel do
     end
   end
 
-  @spec push_vehicles(Phoenix.Socket.t(), Vehicles.for_route()) ::
+  @spec push_vehicles(Phoenix.Socket.t(), Server.broadcast_data()) ::
           {:noreply, Phoenix.Socket.t()}
-  defp push_vehicles(socket, vehicles) do
+  defp push_vehicles(socket, {:vehicles_for_route, vehicles}) do
     push(socket, "vehicles", vehicles)
+    {:noreply, socket}
+  end
+
+  defp push_vehicles(socket, {:shuttles, shuttles}) do
+    push(socket, "shuttles", %{data: shuttles})
     {:noreply, socket}
   end
 
