@@ -162,6 +162,7 @@ describe("routeLadder", () => {
       directionId: 0,
       routeId: route.id,
       tripId: "ghost trip",
+      headsign: "headsign",
       blockId: "ghost block",
       viaVariant: null,
       scheduledTimepointStatus: {

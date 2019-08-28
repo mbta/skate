@@ -42,6 +42,7 @@ defmodule Realtime.GhostTest do
                  direction_id: 0,
                  route_id: "route",
                  trip_id: "trip",
+                 headsign: "headsign",
                  block_id: "block",
                  via_variant: "X",
                  scheduled_timepoint_status: %{

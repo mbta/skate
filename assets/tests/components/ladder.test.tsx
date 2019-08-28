@@ -166,6 +166,7 @@ describe("ladder", () => {
       directionId: 0,
       routeId: "route",
       tripId: "trip",
+      headsign: "headsign",
       blockId: "block",
       viaVariant: "X",
       scheduledTimepointStatus: {

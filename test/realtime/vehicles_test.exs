@@ -229,6 +229,7 @@ defmodule Realtime.VehiclesTest do
                      direction_id: 0,
                      route_id: "route",
                      trip_id: "trip",
+                     headsign: "headsign",
                      block_id: "block",
                      scheduled_timepoint_status: %{
                        timepoint_id: "timepoint",
