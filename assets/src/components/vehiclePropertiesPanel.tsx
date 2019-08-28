@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { ReactElement, useContext, useEffect, useState } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
 import vehicleLabel from "../helpers/vehicleLabel"
@@ -84,13 +84,13 @@ const HeadwayTarget = ({
 const Header = ({
   vehicle,
   selectedVehicleRoute,
-  hideMe,
 }: {
   vehicle: Vehicle
   selectedVehicleRoute?: Route
-  hideMe: () => void
 }) => {
   const [{ settings }] = useContext(StateDispatchContext)
+  const [, dispatch] = useContext(StateDispatchContext)
+  const hideMe = () => dispatch(deselectVehicle())
 
   return (
     <div className="m-vehicle-properties-panel__header">
@@ -250,10 +250,7 @@ export const handleSwipe = (hideMe: () => void) => (
   }
 }
 
-const VehiclePropertiesPanel = ({
-  selectedVehicle,
-  selectedVehicleRoute,
-}: Props) => {
+const Panel = ({ children }: { children: ReactElement<HTMLElement> }) => {
   const [, dispatch] = useContext(StateDispatchContext)
 
   const hideMe = () => dispatch(deselectVehicle())
@@ -268,24 +265,7 @@ const VehiclePropertiesPanel = ({
         id="m-vehicle-properties-panel"
         className="m-vehicle-properties-panel"
       >
-        <Header
-          vehicle={selectedVehicle}
-          selectedVehicleRoute={selectedVehicleRoute}
-          hideMe={hideMe}
-        />
-
-        {shouldShowHeadwayDiagram(selectedVehicle) && (
-          <HeadwayDiagram vehicle={selectedVehicle} />
-        )}
-
-        <Properties vehicle={selectedVehicle} />
-
-        <Location vehicle={selectedVehicle} />
-
-        {shouldShowDataDiscrepancies(selectedVehicle) && (
-          <DataDiscrepancies vehicle={selectedVehicle} />
-        )}
-
+        {children}
         <button className="m-vehicle-properties-panel__close" onClick={hideMe}>
           Close
         </button>
@@ -298,6 +278,32 @@ const VehiclePropertiesPanel = ({
     </>
   )
 }
+
+const VehiclePropertiesPanel = ({
+  selectedVehicle,
+  selectedVehicleRoute,
+}: Props) => (
+  <Panel>
+    <>
+      <Header
+        vehicle={selectedVehicle}
+        selectedVehicleRoute={selectedVehicleRoute}
+      />
+
+      {shouldShowHeadwayDiagram(selectedVehicle) ? (
+        <HeadwayDiagram vehicle={selectedVehicle} />
+      ) : null}
+
+      <Properties vehicle={selectedVehicle} />
+
+      <Location vehicle={selectedVehicle} />
+
+      {shouldShowDataDiscrepancies(selectedVehicle) ? (
+        <DataDiscrepancies vehicle={selectedVehicle} />
+      ) : null}
+    </>
+  </Panel>
+)
 
 export const formatRouteVariant = (vehicle: Vehicle): string => {
   const { routeId, viaVariant, headsign } = vehicle
