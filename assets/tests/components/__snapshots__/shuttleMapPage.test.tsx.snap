@@ -61,3 +61,65 @@ exports[`Shuttle Map Page renders 1`] = `
   </div>
 </div>
 `;
+
+exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
+<div
+  className="m-shuttle-map"
+>
+  <div
+    className="m-picker-container visible"
+  >
+    <div
+      className="m-picker-container__tab"
+    >
+      <button
+        className="m-picker-container__tab-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <div
+      className="m-route-picker"
+    >
+      <div
+        className="m-route-picker__label"
+      >
+        Run #
+      </div>
+      <ul
+        className="m-route-picker__route-list"
+      >
+        <li>
+          <button
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
+            onClick={[Function]}
+          >
+            run-1
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div
+    className="m-shuttle-map__map"
+    style={
+      Object {
+        "height": 768,
+        "width": 1024,
+      }
+    }
+  >
+    <div
+      id="id-vehicle-map"
+    />
+  </div>
+</div>
+`;
