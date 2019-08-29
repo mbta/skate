@@ -9,8 +9,8 @@ import {
   humanReadableScheduleAdherence,
   statusClass,
 } from "../models/vehicleStatus"
-import { DataDiscrepancy, Vehicle } from "../realtime.d"
-import { Route } from "../schedule.d"
+import { DataDiscrepancy, Ghost, Vehicle } from "../realtime.d"
+import { Route, RouteId, ViaVariant } from "../schedule.d"
 import { deselectVehicle } from "../state"
 import CloseButton from "./closeButton"
 import HeadwayDiagram from "./headwayDiagram"
@@ -81,13 +81,7 @@ const HeadwayTarget = ({
   </div>
 )
 
-const Header = ({
-  vehicle,
-  selectedVehicleRoute,
-}: {
-  vehicle: Vehicle
-  selectedVehicleRoute?: Route
-}) => {
+const Header = ({ vehicle, route }: { vehicle: Vehicle; route?: Route }) => {
   const [{ settings }] = useContext(StateDispatchContext)
   const [, dispatch] = useContext(StateDispatchContext)
   const hideMe = () => dispatch(deselectVehicle())
@@ -105,16 +99,54 @@ const Header = ({
       </div>
       <div className="m-vehicle-properties-panel__variant">
         <div className="m-vehicle-properties-panel__inbound-outbound">
-          {directionName(vehicle, selectedVehicleRoute)}
+          {route ? route.directionNames[vehicle.directionId] : ""}
         </div>
         <div className="m-vehicle-properties-panel__variant-name">
-          {formatRouteVariant(vehicle)}
+          {formatRouteVariant(
+            vehicle.routeId,
+            vehicle.viaVariant,
+            vehicle.headsign
+          )}
         </div>
         {shouldShowHeadwayDiagram(vehicle) ? (
           <HeadwayTarget vehicle={vehicle} />
         ) : (
           <ScheduleAdherence vehicle={vehicle} />
         )}
+      </div>
+      <CloseButton onClick={hideMe} />
+    </div>
+  )
+}
+
+const GhostHeader = ({ ghost, route }: { ghost: Ghost; route?: Route }) => {
+  const [, dispatch] = useContext(StateDispatchContext)
+  const hideMe = () => dispatch(deselectVehicle())
+
+  return (
+    <div className="m-vehicle-properties-panel__header">
+      <div className="m-vehicle-properties-panel__label">
+        <VehicleIcon
+          size={Size.Large}
+          orientation={Orientation.Up}
+          label={"N/A"}
+          variant={ghost.viaVariant}
+          status={"ghost"}
+        />
+      </div>
+      <div className="m-vehicle-properties-panel__variant">
+        <div className="m-vehicle-properties-panel__inbound-outbound">
+          {route ? route.directionNames[ghost.directionId] : ""}
+        </div>
+        <div className="m-vehicle-properties-panel__variant-name">
+          {formatRouteVariant(ghost.routeId, ghost.viaVariant, ghost.headsign)}
+        </div>
+        <div className="m-vehicle-properties-panel__schedule-adherence ghost">
+          <ScheduleAdherenceStatusIcon />
+          <div className="m-vehicle-properties-panel__schedule-adherence-status-string">
+            GHOST
+          </div>
+        </div>
       </div>
       <CloseButton onClick={hideMe} />
     </div>
@@ -285,10 +317,7 @@ const VehiclePropertiesPanel = ({
 }: Props) => (
   <Panel>
     <>
-      <Header
-        vehicle={selectedVehicle}
-        selectedVehicleRoute={selectedVehicleRoute}
-      />
+      <Header vehicle={selectedVehicle} route={selectedVehicleRoute} />
 
       {shouldShowHeadwayDiagram(selectedVehicle) ? (
         <HeadwayDiagram vehicle={selectedVehicle} />
@@ -305,18 +334,27 @@ const VehiclePropertiesPanel = ({
   </Panel>
 )
 
-export const formatRouteVariant = (vehicle: Vehicle): string => {
-  const { routeId, viaVariant, headsign } = vehicle
+export const GhostPropertiesPanel = ({
+  ghost,
+  route,
+}: {
+  ghost: Ghost
+  route?: Route
+}) => (
+  <Panel>
+    <GhostHeader ghost={ghost} route={route} />
+  </Panel>
+)
+
+export const formatRouteVariant = (
+  routeId: RouteId,
+  viaVariant: ViaVariant | null,
+  headsign: string | null
+): string => {
   const viaVariantFormatted = viaVariant && viaVariant !== "_" ? viaVariant : ""
   const headsignFormatted = headsign ? ` ${headsign}` : ""
   return `${routeId}_${viaVariantFormatted}${headsignFormatted}`
 }
-
-const directionName = (
-  { directionId }: Vehicle,
-  selectedVehicleRoute?: Route
-): string =>
-  selectedVehicleRoute ? selectedVehicleRoute.directionNames[directionId] : ""
 
 const directionsUrl = (
   latitude: number,

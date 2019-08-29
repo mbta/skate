@@ -12,6 +12,7 @@
 }
 
 .m-vehicle-properties-panel__header {
+  border-bottom: 1px solid $color-rule;
   display: flex;
 }
 
@@ -92,7 +93,7 @@
 
 .m-vehicle-properties-panel .m-headway-diagram,
 .m-vehicle-properties-panel__vehicle-properties {
-  border-top: 1px solid $color-rule;
+  border-bottom: 1px solid $color-rule;
 }
 
 .m-vehicle-properties-panel__vehicle-properties {
@@ -113,7 +114,6 @@
 }
 
 .m-vehicle-properties-panel__location {
-  border-top: 1px solid $color-rule;
   padding: 1rem;
 }
 

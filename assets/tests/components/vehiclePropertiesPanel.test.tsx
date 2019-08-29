@@ -3,11 +3,12 @@ import React from "react"
 import renderer from "react-test-renderer"
 import VehiclePropertiesPanel, {
   formatRouteVariant,
+  GhostPropertiesPanel,
   handleSwipe,
 } from "../../src/components/vehiclePropertiesPanel"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { Vehicle } from "../../src/realtime.d"
+import { Vehicle, Ghost } from "../../src/realtime.d"
 import { Route } from "../../src/schedule"
 import { deselectVehicle, initialState } from "../../src/state"
 
@@ -208,27 +209,51 @@ describe("VehiclePropertiesPanel", () => {
   })
 })
 
+describe("GhostPropertiesPanel", () => {
+  test("renders for a ghost", () => {
+    const ghost: Ghost = {
+      id: "ghost-x",
+      directionId: 0,
+      routeId: "route",
+      tripId: "trip",
+      headsign: "headsign",
+      blockId: "block",
+      viaVariant: "X",
+      scheduledTimepointStatus: {
+        timepointId: "timepoint",
+        fractionUntilTimepoint: 0.0,
+      }
+    }
+    const route: Route = {
+      id: "route",
+      directionNames: {
+        0: "Outbound",
+        1: "Inbound",
+      },
+      name: "Route",
+    }
+
+    const tree = renderer
+      .create(<GhostPropertiesPanel ghost={ghost} route={route} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+})
+
 describe("formatRouteVariant", () => {
   test("has variant and headsign", () => {
-    expect(formatRouteVariant(vehicle)).toEqual("39_X Forest Hills")
+    expect(formatRouteVariant("39", "X", "Forest Hills")).toEqual(
+      "39_X Forest Hills"
+    )
   })
 
   test("missing variant and headsign", () => {
-    const testVehicle: Vehicle = {
-      ...vehicle,
-      headsign: null,
-      viaVariant: null,
-    }
-    expect(formatRouteVariant(testVehicle)).toEqual("39_")
+    expect(formatRouteVariant("39", null, null)).toEqual("39_")
   })
 
   test("doesn't show underscore variant character", () => {
-    const testVehicle: Vehicle = {
-      ...vehicle,
-      headsign: null,
-      viaVariant: "_",
-    }
-    expect(formatRouteVariant(testVehicle)).toEqual("39_")
+    expect(formatRouteVariant("39", "_", null)).toEqual("39_")
   })
 })
 

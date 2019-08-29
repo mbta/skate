@@ -2,9 +2,11 @@ import {
   allVehicles,
   allVehiclesForRoute,
   byDirection,
+  findGhostById,
+  findVehicleById,
   nextAndPreviousVehicle,
 } from "../../src/models/vehiclesByRouteId"
-import { Vehicle, VehiclesForRoute } from "../../src/realtime"
+import { Ghost, Vehicle, VehiclesForRoute } from "../../src/realtime"
 import { ByRouteId } from "../../src/schedule"
 
 const vehiclesByRouteId: ByRouteId<VehiclesForRoute> = {
@@ -44,7 +46,11 @@ const vehiclesByRouteId: ByRouteId<VehiclesForRoute> = {
         isOnRoute: false,
       } as Vehicle,
     ],
-    ghosts: [],
+    ghosts: [
+      {
+        id: "ghost-x",
+      } as Ghost,
+    ],
   },
   "39": {
     onRouteVehicles: [
@@ -143,6 +149,30 @@ describe("vehiclesForRoute", () => {
 
   test("returns an empty list if there are no vehicles on this route", () => {
     expect(allVehiclesForRoute(vehiclesByRouteId, "missing")).toEqual([])
+  })
+})
+
+describe("findVehicleById", () => {
+  test("finds on route vehicle", () => {
+    expect(findVehicleById(vehiclesByRouteId, "y101")).not.toBeUndefined()
+  })
+
+  test("finds incoming vehicle", () => {
+    expect(findVehicleById(vehiclesByRouteId, "y104")).not.toBeUndefined()
+  })
+
+  test("returns undefined for nonexistent vehicles", () => {
+    expect(findVehicleById(vehiclesByRouteId, "missing")).toBeUndefined()
+  })
+
+  test("does not return ghosts", () => {
+    expect(findVehicleById(vehiclesByRouteId, "ghost-x")).toBeUndefined()
+  })
+})
+
+describe("findGhostById", () => {
+  test("finds ghost", () => {
+    expect(findGhostById(vehiclesByRouteId, "ghost-x")).not.toBeUndefined()
   })
 })
 
