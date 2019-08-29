@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ShuttlePicker renders a list of runs 1`] = `
+<div
+  className="m-route-picker"
+>
+  <div
+    className="m-route-picker__label"
+  >
+    Run #
+  </div>
+  <ul
+    className="m-route-picker__route-list"
+  >
+    <li>
+      <button
+        className="m-route-picker__route-list-button "
+        onClick={[Function]}
+      >
+        run-1
+      </button>
+    </li>
+  </ul>
+</div>
+`;

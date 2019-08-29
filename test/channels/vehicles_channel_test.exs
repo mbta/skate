@@ -30,7 +30,7 @@ defmodule SkateWeb.VehiclesChannelTest do
     end
 
     test "subscribes to all shuttles", %{socket: socket} do
-      assert {:ok, [], %Socket{}} =
+      assert {:ok, %{data: []}, %Socket{}} =
                subscribe_and_join(socket, VehiclesChannel, "vehicles:shuttle:all")
     end
 

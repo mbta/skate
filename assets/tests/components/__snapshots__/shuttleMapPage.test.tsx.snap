@@ -24,7 +24,27 @@ exports[`Shuttle Map Page renders 1`] = `
         />
       </button>
     </div>
-    <div />
+    <div
+      className="m-route-picker"
+    >
+      <div
+        className="m-route-picker__label"
+      >
+        Run #
+      </div>
+      <ul
+        className="m-route-picker__route-list"
+      >
+        <li>
+          <button
+            className="m-route-picker__route-list-button "
+            onClick={[Function]}
+          >
+            run-1
+          </button>
+        </li>
+      </ul>
+    </div>
   </div>
   <div
     className="m-shuttle-map__map"

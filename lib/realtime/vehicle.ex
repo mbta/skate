@@ -187,7 +187,7 @@ defmodule Realtime.Vehicle do
       block_id: block_id,
       operator_id: VehiclePosition.operator_id(vehicle_position),
       operator_name: VehiclePosition.operator_name(vehicle_position),
-      run_id: VehiclePosition.run_id(vehicle_position),
+      run_id: vehicle_position |> VehiclePosition.run_id() |> ensure_run_id_hyphen(),
       headway_secs: headway_secs,
       headway_spacing: headway_spacing,
       previous_vehicle_id: VehiclePosition.previous_vehicle_id(vehicle_position),
@@ -295,6 +295,21 @@ defmodule Realtime.Vehicle do
       :incoming
     else
       :on_route
+    end
+  end
+
+  defp ensure_run_id_hyphen(nil) do
+    nil
+  end
+
+  defp ensure_run_id_hyphen(run_id) do
+    case String.at(run_id, 3) do
+      "-" ->
+        run_id
+
+      _ ->
+        {prefix, suffix} = String.split_at(run_id, 3)
+        prefix <> "-" <> suffix
     end
   end
 end

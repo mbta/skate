@@ -36,8 +36,9 @@ export const drawnStatus = (vehicle: Vehicle): DrawnStatus => {
   if (vehicle.isOffCourse) {
     return "off-course"
   } else if (
-    featureIsEnabled("headway_ladder_colors") &&
-    vehicle.headwaySpacing !== null
+    vehicle.isShuttle ||
+    (featureIsEnabled("headway_ladder_colors") &&
+      vehicle.headwaySpacing !== null)
   ) {
     // Headway lines give the status instead of the vehicles
     return "plain"

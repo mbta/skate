@@ -32,10 +32,12 @@ export interface Ghost {
 
 export type SourceId = string
 
+export type RunId = string
+
 export interface Vehicle {
   id: VehicleId
   label: string
-  runId: string | null
+  runId: RunId | null
   timestamp: number
   latitude: number
   longitude: number
@@ -57,6 +59,7 @@ export interface Vehicle {
   scheduledHeadwaySecs: number
   isOffCourse: boolean
   isLayingOver: boolean
+  isShuttle?: boolean
   layoverDepartureTime: number | null
   blockIsActive: boolean
   dataDiscrepancies: DataDiscrepancy[]
