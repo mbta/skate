@@ -2,9 +2,9 @@ import React from "react"
 import renderer from "react-test-renderer"
 import ShuttleMapPage from "../../src/components/shuttleMapPage"
 import { ShuttleVehiclesProvider } from "../../src/contexts/shuttleVehiclesContext"
+import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Vehicle } from "../../src/realtime"
-import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { initialState } from "../../src/state"
 
 const shuttle: Vehicle = {
