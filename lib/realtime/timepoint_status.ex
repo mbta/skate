@@ -72,13 +72,20 @@ defmodule Realtime.TimepointStatus do
 
     trip = scheduled_trip_on_block(block, now_time_of_day)
     timepoints = Enum.filter(trip.stop_times, &StopTime.is_timepoint?/1)
-    timepoint_status = scheduled_timepoint_status(timepoints, now_time_of_day)
 
-    %{
-      route_id: trip.route_id,
-      direction_id: trip.direction_id,
-      timepoint_status: timepoint_status
-    }
+    case timepoints do
+      [] ->
+        nil
+
+      _ ->
+        timepoint_status = scheduled_timepoint_status(timepoints, now_time_of_day)
+
+        %{
+          route_id: trip.route_id,
+          direction_id: trip.direction_id,
+          timepoint_status: timepoint_status
+        }
+    end
   end
 
   @spec scheduled_trip_on_block(Block.t(), Util.Time.time_of_day()) :: Trip.t()
@@ -103,7 +110,7 @@ defmodule Realtime.TimepointStatus do
   end
 
   @spec scheduled_timepoint_status([StopTime.t()], Util.Time.time_of_day()) :: timepoint_status()
-  defp scheduled_timepoint_status(timepoints, now) do
+  def scheduled_timepoint_status(timepoints, now) do
     cond do
       now <= List.first(timepoints).time ->
         # Trip isn't scheduled to have started yet

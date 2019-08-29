@@ -2,7 +2,7 @@ import { renderHook } from "@testing-library/react-hooks"
 import { Socket } from "phoenix"
 import useVehicles from "../../src/hooks/useVehicles"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { Vehicle, VehicleTimepointStatus } from "../../src/realtime.d"
+import { Ghost, Vehicle, VehicleTimepointStatus } from "../../src/realtime.d"
 import { RouteId } from "../../src/schedule.d"
 
 // tslint:disable: react-hooks-nesting
@@ -222,6 +222,7 @@ describe("useVehicles", () => {
         handler({
           on_route_vehicles: vehiclesData,
           incoming_vehicles: [],
+          ghosts: [],
         })
       }
       return mockChannel
@@ -235,6 +236,7 @@ describe("useVehicles", () => {
       "1": {
         onRouteVehicles: vehicles,
         incomingVehicles: [],
+        ghosts: [],
       },
     })
   })
@@ -248,6 +250,7 @@ describe("useVehicles", () => {
         handler({
           on_route_vehicles: [],
           incoming_vehicles: vehiclesData,
+          ghosts: [],
         })
       }
       return mockChannel
@@ -266,6 +269,61 @@ describe("useVehicles", () => {
       "1": {
         onRouteVehicles: [],
         incomingVehicles,
+        ghosts: [],
+      },
+    })
+  })
+
+  test("returns ghost vehicles", async () => {
+    const ghost: Ghost = {
+      id: "ghost-trip",
+      directionId: 0,
+      routeId: "1",
+      tripId: "trip",
+      blockId: "block",
+      viaVariant: null,
+      scheduledTimepointStatus: {
+        timepointId: "t0",
+        fractionUntilTimepoint: 0.0,
+      },
+    }
+
+    const ghostData = {
+      id: "ghost-trip",
+      direction_id: 0,
+      route_id: "1",
+      trip_id: "trip",
+      block_id: "block",
+      via_variant: null,
+      scheduled_timepoint_status: {
+        timepoint_id: "t0",
+        fraction_until_timepoint: 0.0,
+      },
+    }
+
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel()
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+    mockChannel.receive.mockImplementation((event, handler) => {
+      if (event === "ok") {
+        handler({
+          on_route_vehicles: [],
+          incoming_vehicles: [],
+          ghosts: [ghostData],
+        })
+      }
+      return mockChannel
+    })
+
+    const { result } = renderHook(() =>
+      useVehicles((mockSocket as any) as Socket, ["1"])
+    )
+
+    expect(result.current).toEqual({
+      "1": {
+        onRouteVehicles: [],
+        incomingVehicles: [],
+        ghosts: [ghost],
       },
     })
   })
@@ -279,6 +337,7 @@ describe("useVehicles", () => {
         handler({
           on_route_vehicles: vehiclesData,
           incoming_vehicles: [],
+          ghosts: [],
         })
       }
     })
@@ -291,6 +350,7 @@ describe("useVehicles", () => {
       "1": {
         onRouteVehicles: vehicles,
         incomingVehicles: [],
+        ghosts: [],
       },
     })
   })
@@ -322,6 +382,7 @@ describe("useVehicles", () => {
         handler({
           on_route_vehicles: vehiclesDataVaryingHeadway,
           incoming_vehicles: [],
+          ghosts: [],
         })
       }
     })
@@ -334,6 +395,7 @@ describe("useVehicles", () => {
       "1": {
         onRouteVehicles: expectedVehicles,
         incomingVehicles: [],
+        ghosts: [],
       },
     })
   })
