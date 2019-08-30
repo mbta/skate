@@ -6,8 +6,6 @@ defmodule Skate.Application do
   use Application
 
   def start(_type, _args) do
-    import Supervisor.Spec
-
     runtime_config()
 
     # Pull the STATIC_SCHEME variable out of the environment
@@ -19,31 +17,13 @@ defmodule Skate.Application do
 
     # List all child processes to be supervised
     children = [
-      # Start the endpoint when the application starts
       SkateWeb.Endpoint,
-      # Starts a worker by calling: Skate.Worker.start_link(arg)
-      # {Skate.Worker, arg},
-      worker(Gtfs.HealthServer, []),
-      worker(RefreshTokenStore, []),
-      worker(Gtfs, [Application.get_env(:skate, :gtfs_url)]),
-      worker(
-        Concentrate.Supervisor,
-        [
-          [
-            busloc_url: get_config_string(:busloc_url),
-            swiftly_authorization_key: get_config_string(:swiftly_authorization_key),
-            swiftly_realtime_vehicles_url: get_config_string(:swiftly_realtime_vehicles_url)
-          ]
-        ]
-      ),
-      {Registry, keys: :duplicate, name: Realtime.Server.registry_name()},
-      worker(Realtime.Server, [[name: Realtime.Server.default_name()]])
+      Gtfs.Supervisor,
+      Realtime.Supervisor,
+      RefreshTokenStore
     ]
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
-    opts = [strategy: :one_for_all, name: Skate.Supervisor]
-    Supervisor.start_link(children, opts)
+    Supervisor.start_link(children, strategy: :one_for_all, name: Skate.Supervisor)
   end
 
   def runtime_config() do

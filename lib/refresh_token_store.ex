@@ -5,7 +5,7 @@ defmodule RefreshTokenStore do
 
   # Client
 
-  @spec start_link() :: GenServer.on_start()
+  @spec start_link(Keyword.t()) :: GenServer.on_start()
   def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, nil, name: Keyword.get(opts, :name, __MODULE__))
   end

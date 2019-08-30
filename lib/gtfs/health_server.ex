@@ -12,8 +12,8 @@ defmodule Gtfs.HealthServer do
   @spec default_server() :: GenServer.server()
   def default_server(), do: __MODULE__
 
-  @spec start_link() :: GenServer.on_start()
-  def start_link() do
+  @spec start_link([]) :: GenServer.on_start()
+  def start_link([]) do
     GenServer.start_link(__MODULE__, nil, name: default_server())
   end
 
