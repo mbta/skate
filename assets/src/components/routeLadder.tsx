@@ -2,6 +2,7 @@ import React, { Dispatch, SetStateAction, useContext, useState } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import * as Array from "../helpers/array"
 import { reverseIcon, reverseIconReversed } from "../helpers/icon"
+import featureIsEnabled from "../laboratoryFeatures"
 import { Vehicle, VehicleId, VehiclesForRoute } from "../realtime.d"
 import { LoadableTimepoints, Route } from "../schedule.d"
 import { deselectRoute } from "../state"
@@ -10,7 +11,6 @@ import IncomingBox from "./incomingBox"
 import Ladder, { flipLadderDirection, LadderDirection } from "./ladder"
 import LayoverBox from "./layoverBox"
 import Loading from "./loading"
-import featureIsEnabled from "../laboratoryFeatures"
 
 interface Props {
   route: Route
