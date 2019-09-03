@@ -40,7 +40,7 @@ exports[`Shuttle Map Page renders 1`] = `
             className="m-route-picker__route-list-button "
             onClick={[Function]}
           >
-            run-1
+            999-0555
           </button>
         </li>
       </ul>
@@ -102,7 +102,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
             className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
             onClick={[Function]}
           >
-            run-1
+            999-0555
           </button>
         </li>
       </ul>

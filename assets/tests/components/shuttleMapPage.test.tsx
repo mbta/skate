@@ -10,7 +10,7 @@ import { initialState } from "../../src/state"
 const shuttle: Vehicle = {
   id: "y1818",
   label: "1818",
-  runId: "run-1",
+  runId: "999-0555",
   timestamp: 1557160307,
   latitude: 0,
   longitude: 0,
@@ -32,7 +32,6 @@ const shuttle: Vehicle = {
   scheduledHeadwaySecs: 120,
   isOffCourse: false,
   isLayingOver: false,
-  isShuttle: true,
   layoverDepartureTime: null,
   blockIsActive: true,
   dataDiscrepancies: [],

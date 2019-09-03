@@ -122,7 +122,6 @@ const shuttles: Vehicle[] = [
     scheduledHeadwaySecs: 120,
     isOffCourse: false,
     isLayingOver: false,
-    isShuttle: true,
     layoverDepartureTime: null,
     blockIsActive: true,
     dataDiscrepancies: [

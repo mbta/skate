@@ -59,7 +59,6 @@ export interface Vehicle {
   scheduledHeadwaySecs: number
   isOffCourse: boolean
   isLayingOver: boolean
-  isShuttle?: boolean
   layoverDepartureTime: number | null
   blockIsActive: boolean
   dataDiscrepancies: DataDiscrepancy[]

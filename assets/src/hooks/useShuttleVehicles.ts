@@ -56,9 +56,7 @@ const subscribe = (socket: Socket, dispatch: Dispatch<Action>): Channel => {
   const handleShuttles = (payload: ChannelPayload): void => {
     dispatch(
       setShuttles(
-        payload.data
-          .map(data => vehicleFromData({ isOnRoute: true })(data))
-          .map(v => ({ ...v, isShuttle: true }))
+        payload.data.map(data => vehicleFromData({ isOnRoute: true })(data))
       )
     )
   }
