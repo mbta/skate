@@ -18,9 +18,9 @@ defmodule SkateWeb.HealthControllerTest do
     end
 
     test "uses the default health server", %{conn: conn} do
-      # The real gtfs data takes longer to load than the tests take to run.
-      # So it won't be ready
+      start_supervised({Gtfs.HealthServer, []})
       response = get(conn, Routes.health_path(conn, :index))
+      # No Gtfs server points to this health server, so it won't be ready
       assert response.status == 503
     end
   end

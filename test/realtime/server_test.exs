@@ -50,6 +50,11 @@ defmodule Realtime.ServerTest do
     "1" => @vehicles_for_route
   }
 
+  setup do
+    start_supervised({Registry, keys: :duplicate, name: Realtime.Server.registry_name()})
+    :ok
+  end
+
   describe "subscribe_to_route" do
     setup do
       reassign_env(:realtime, :trip_fn, fn _trip_id -> nil end)
