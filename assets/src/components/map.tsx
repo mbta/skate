@@ -34,7 +34,25 @@ interface State {
   zoom: Leaflet.Control | null
 }
 
-const iconAnchor: [number, number] = [12, 12]
+const ICON_ANCHOR: [number, number] = [12, 12]
+
+const vehicleIconProps = (vehicle: Vehicle): Leaflet.DivIconOptions => ({
+  html: `<svg
+        height="24"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          class="${statusClass(drawnStatus(vehicle))}"
+          d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+          transform-origin="${ICON_ANCHOR[0]}px ${ICON_ANCHOR[1]}px"
+          transform="rotate(${vehicle.bearing})"
+        />
+      </svg>`,
+  iconAnchor: ICON_ANCHOR,
+  className: "m-vehicle-map__icon",
+})
 
 const updateVehicle = (
   vehicle: Vehicle,
@@ -49,28 +67,12 @@ const updateVehicle = (
 
   const { icon: vehicleIcon, label: vehicleLabel } = markersForVehicle
 
-  const { bearing, latitude, longitude } = vehicle
+  const { latitude, longitude } = vehicle
   const zoom = map!.getZoom()
 
   const labelString = vehicleLabelString(vehicle, labelSetting)
 
-  const icon = Leaflet.divIcon({
-    className: "m-vehicle-map__icon",
-    html: `<svg
-        height="24"
-        viewBox="0 0 24 24"
-        width="24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          class="${statusClass(drawnStatus(vehicle))}"
-          d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
-          transform-origin="${iconAnchor[0]}px ${iconAnchor[1]}px"
-          transform="rotate(${bearing})"
-        />
-      </svg>`,
-    iconAnchor,
-  })
+  const icon = Leaflet.divIcon(vehicleIconProps(vehicle))
 
   const label = Leaflet.divIcon({
     className: "m-vehicle-map__label",
@@ -120,8 +122,12 @@ export const updateMarkers = (
   return Object.entries(newVehicles).reduce((acc, [id, vehicle]) => {
     if (acc[id] === undefined) {
       acc[id] = {
-        icon: Leaflet.marker([vehicle.latitude, vehicle.longitude]).addTo(map),
-        label: Leaflet.marker([vehicle.latitude, vehicle.longitude]).addTo(map),
+        icon: Leaflet.marker([vehicle.latitude, vehicle.longitude], {
+          icon: Leaflet.divIcon(vehicleIconProps(vehicle)),
+        }).addTo(map),
+        label: Leaflet.marker([vehicle.latitude, vehicle.longitude], {
+          icon: Leaflet.divIcon(vehicleIconProps(vehicle)),
+        }).addTo(map),
       }
     }
     return acc
