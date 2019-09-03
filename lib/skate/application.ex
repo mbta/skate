@@ -16,12 +16,20 @@ defmodule Skate.Application do
     )
 
     # List all child processes to be supervised
-    children = [
-      SkateWeb.Endpoint,
-      Gtfs.Supervisor,
-      Realtime.Supervisor,
-      RefreshTokenStore
-    ]
+    children =
+      if Mix.env() == :test do
+        [
+          SkateWeb.Endpoint,
+          RefreshTokenStore
+        ]
+      else
+        [
+          SkateWeb.Endpoint,
+          Gtfs.Supervisor,
+          Realtime.Supervisor,
+          RefreshTokenStore
+        ]
+      end
 
     Supervisor.start_link(children, strategy: :one_for_all, name: Skate.Supervisor)
   end

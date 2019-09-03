@@ -19,8 +19,9 @@ defmodule Gtfs.HealthServerTest do
     assert HealthServer.ready?(health_server_pid)
   end
 
-  test "real gtfs server uses the default health server" do
-    # The real data takes longer to load than the tests take to run
+  test "can start in supervision tree with default name" do
+    start_supervised({Gtfs.HealthServer, []})
+    # No Gtfs server points to this health server, so it won't be ready
     refute HealthServer.ready?(HealthServer.default_server())
   end
 end
