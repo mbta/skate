@@ -10,6 +10,7 @@ import IncomingBox from "./incomingBox"
 import Ladder, { flipLadderDirection, LadderDirection } from "./ladder"
 import LayoverBox from "./layoverBox"
 import Loading from "./loading"
+import featureIsEnabled from "../laboratoryFeatures"
 
 interface Props {
   route: Route
@@ -105,7 +106,11 @@ const RouteLadder = ({
           <Ladder
             timepoints={timepoints}
             vehicles={vehiclesForRoute ? vehiclesForRoute.onRouteVehicles : []}
-            ghosts={vehiclesForRoute ? vehiclesForRoute.ghosts : []}
+            ghosts={
+              vehiclesForRoute && featureIsEnabled("ghost_buses")
+                ? vehiclesForRoute.ghosts
+                : []
+            }
             ladderDirection={ladderDirection}
             selectedVehicleId={selectedVehicleId}
           />

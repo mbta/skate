@@ -38,7 +38,8 @@ config :laboratory,
   features: [
     {:headway_ladder_colors, "Headway Route Ladder Colors",
      "Turns on colored headway spacing lines on key route route ladders showing when service is bunched or gapped."},
-    {:shuttle_map, "Shuttle Map", ""}
+    {:shuttle_map, "Shuttle Map", ""},
+    {:ghost_buses, "Ghost Buses", "Displays ghost buses on route ladders"}
   ],
   cookie: [
     # one month,
