@@ -64,16 +64,6 @@ describe("ShuttlePicker", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("shows Loading... when runs are not initialized", () => {
-    const tree = renderer.create(
-      <ShuttleVehiclesProvider shuttles={[]}>
-        <ShuttlePicker />
-      </ShuttleVehiclesProvider>
-    )
-
-    expect(tree).toMatchSnapshot()
-  })
-
   test("clicking an unselected run id adds it to selected run ids", () => {
     const dispatch = jest.fn()
     const wrapper = mount(

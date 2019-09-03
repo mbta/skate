@@ -23,22 +23,3 @@ exports[`ShuttlePicker renders a list of runs 1`] = `
   </ul>
 </div>
 `;
-
-exports[`ShuttlePicker shows Loading... when runs are not initialized 1`] = `
-<div
-  className="m-route-picker"
->
-  <div
-    className="m-route-picker__label"
-  >
-    Run #
-  </div>
-  <ul
-    className="m-route-picker__route-list"
-  >
-    <li>
-      Loading...
-    </li>
-  </ul>
-</div>
-`;

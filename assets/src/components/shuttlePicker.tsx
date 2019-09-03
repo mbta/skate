@@ -10,7 +10,7 @@ const ShuttlePicker = ({}): ReactElement<HTMLDivElement> => {
     <div className="m-route-picker">
       <div className="m-route-picker__label">Run #</div>
       <ul className="m-route-picker__route-list">
-        {shuttles.length ? renderRunIdButtons(shuttles) : <li>Loading...</li>}
+        {renderRunIdButtons(shuttles)}
       </ul>
     </div>
   )
