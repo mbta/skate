@@ -2,6 +2,7 @@ import React, { Dispatch, SetStateAction, useContext, useState } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import * as Array from "../helpers/array"
 import { reverseIcon, reverseIconReversed } from "../helpers/icon"
+import featureIsEnabled from "../laboratoryFeatures"
 import { Vehicle, VehicleId, VehiclesForRoute } from "../realtime.d"
 import { LoadableTimepoints, Route } from "../schedule.d"
 import { deselectRoute } from "../state"
@@ -105,7 +106,11 @@ const RouteLadder = ({
           <Ladder
             timepoints={timepoints}
             vehicles={vehiclesForRoute ? vehiclesForRoute.onRouteVehicles : []}
-            ghosts={vehiclesForRoute ? vehiclesForRoute.ghosts : []}
+            ghosts={
+              vehiclesForRoute && featureIsEnabled("ghost_buses")
+                ? vehiclesForRoute.ghosts
+                : []
+            }
             ladderDirection={ladderDirection}
             selectedVehicleId={selectedVehicleId}
           />
