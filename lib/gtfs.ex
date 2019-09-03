@@ -3,7 +3,6 @@ defmodule Gtfs do
   require Logger
 
   alias Gtfs.{Block, CacheFile, Data, HealthServer, Route, Service, Stop, StopTime, Trip}
-  alias Util.Duration
 
   @type state :: :not_loaded | {:loaded, Data.t()}
 
@@ -26,11 +25,6 @@ defmodule Gtfs do
   @spec all_routes() :: [Route.t()]
   @spec all_routes(GenServer.server()) :: [Route.t()]
   def all_routes(server \\ __MODULE__) do
-    Duration.log_duration(__MODULE__, :do_all_routes, [server])
-  end
-
-  @spec do_all_routes(GenServer.server()) :: [Route.t()]
-  def do_all_routes(server) do
     GenServer.call(server, :all_routes)
   end
 
@@ -38,22 +32,12 @@ defmodule Gtfs do
   @spec timepoint_ids_on_route(Route.id()) :: [StopTime.timepoint_id()]
   @spec timepoint_ids_on_route(Route.id(), GenServer.server()) :: [StopTime.timepoint_id()]
   def timepoint_ids_on_route(route_id, server \\ __MODULE__) do
-    Duration.log_duration(__MODULE__, :do_timepoint_ids_on_route, [route_id, server])
-  end
-
-  @spec do_timepoint_ids_on_route(Route.id(), GenServer.server()) :: [StopTime.timepoint_id()]
-  def do_timepoint_ids_on_route(route_id, server) do
     GenServer.call(server, {:timepoint_ids_on_route, route_id})
   end
 
   @spec stop(Stop.id()) :: Stop.t() | nil
   @spec stop(Stop.id(), GenServer.server()) :: Stop.t() | nil
   def stop(stop_id, server \\ __MODULE__) do
-    Duration.log_duration(__MODULE__, :do_stop, [stop_id, server])
-  end
-
-  @spec do_stop(Stop.id(), GenServer.server()) :: Stop.t() | nil
-  def do_stop(stop_id, server) do
     try do
       GenServer.call(server, {:stop, stop_id})
     catch
@@ -66,11 +50,6 @@ defmodule Gtfs do
   @spec trip(Trip.id()) :: Trip.t() | nil
   @spec trip(Trip.id(), GenServer.server()) :: Trip.t() | nil
   def trip(trip_id, server \\ __MODULE__) do
-    Duration.log_duration(__MODULE__, :do_trip, [trip_id, server])
-  end
-
-  @spec do_trip(Trip.id(), GenServer.server()) :: Trip.t() | nil
-  def do_trip(trip_id, server) do
     try do
       GenServer.call(server, {:trip, trip_id})
     catch
@@ -83,11 +62,6 @@ defmodule Gtfs do
   @spec block(Block.id(), Service.id()) :: Block.t() | nil
   @spec block(Block.id(), Service.id(), GenServer.server()) :: Block.t() | nil
   def block(block_id, service_id, server \\ __MODULE__) do
-    Duration.log_duration(__MODULE__, :do_block, [block_id, service_id, server])
-  end
-
-  @spec do_block(Block.id(), Service.id(), GenServer.server()) :: Block.t() | nil
-  def do_block(block_id, service_id, server) do
     try do
       GenServer.call(server, {:block, block_id, service_id})
     catch
@@ -103,11 +77,6 @@ defmodule Gtfs do
   @spec active_trips(Util.Time.timestamp()) :: [Trip.t()]
   @spec active_trips(Util.Time.timestamp(), GenServer.server()) :: [Trip.t()]
   def active_trips(now, server \\ __MODULE__) do
-    Duration.log_duration(__MODULE__, :do_active_trips, [now, server])
-  end
-
-  @spec do_active_trips(Util.Time.timestamp(), GenServer.server()) :: [Trip.t()]
-  def do_active_trips(now, server) do
     try do
       GenServer.call(server, {:active_trips, now})
     catch
@@ -130,13 +99,6 @@ defmodule Gtfs do
           Route.id() => [Block.id()]
         }
   def active_blocks(start_time, end_time, server \\ __MODULE__) do
-    Duration.log_duration(__MODULE__, :do_active_blocks, [start_time, end_time, server])
-  end
-
-  @spec do_active_blocks(Util.Time.timestamp(), Util.Time.timestamp(), GenServer.server()) :: %{
-          Route.id() => [Block.id()]
-        }
-  def do_active_blocks(start_time, end_time, server) do
     try do
       GenServer.call(server, {:active_blocks, start_time, end_time})
     catch
