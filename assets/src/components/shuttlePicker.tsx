@@ -6,20 +6,25 @@ import { deselectShuttleRun, selectShuttleRun } from "../state"
 
 const ShuttlePicker = ({}): ReactElement<HTMLDivElement> => {
   const shuttles = useContext(ShuttleVehiclesContext)
-  const shuttlesByRunId = shuttles.reduce(groupByRunId, {})
-  const runIds = Object.keys(shuttlesByRunId)
   return (
     <div className="m-route-picker">
       <div className="m-route-picker__label">Run #</div>
       <ul className="m-route-picker__route-list">
-        {shuttles.length ? (
-          runIds.map(id => <RunIdButton key={id} runId={id} />)
-        ) : (
-          <li>Loading...</li>
-        )}
+        {shuttles.length ? renderRunIdButtons(shuttles) : <li>Loading...</li>}
       </ul>
     </div>
   )
+}
+
+const renderRunIdButtons = (
+  shuttles: Vehicle[]
+): Array<ReactElement<HTMLLIElement>> => {
+  const runIds = new Set(shuttles.map(v => v.runId).sort())
+  const acc: Array<ReactElement<HTMLLIElement>> = []
+
+  runIds.forEach(runId => acc.push(<RunIdButton key={runId!} runId={runId!} />))
+
+  return acc
 }
 
 const RunIdButton = ({
@@ -47,14 +52,5 @@ const RunIdButton = ({
     </li>
   )
 }
-
-interface ShuttlesByRunId {
-  [runId: string]: Vehicle[]
-}
-
-const groupByRunId = (acc: ShuttlesByRunId, shuttle: Vehicle) => ({
-  ...acc,
-  [shuttle.runId!]: (acc[shuttle.runId!] || []).concat(shuttle),
-})
 
 export default ShuttlePicker
