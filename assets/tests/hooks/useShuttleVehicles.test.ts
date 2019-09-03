@@ -9,7 +9,7 @@ const makeMockSocket = () => ({
   channel: jest.fn(),
 })
 
-const makeMockChannel = () => {
+const makeMockChannel = (expectedJoinMessage: "ok" | "error" | "timeout") => {
   const result = {
     join: jest.fn(),
     leave: jest.fn(),
@@ -17,7 +17,23 @@ const makeMockChannel = () => {
     receive: jest.fn(),
   }
   result.join.mockImplementation(() => result)
-  result.receive.mockImplementation(() => result)
+  result.receive.mockImplementation((message, handler) => {
+    if (message === expectedJoinMessage) {
+      switch (message) {
+        case "ok":
+          return result
+
+        case "error":
+          handler({ reason: "ERROR_REASON" })
+          break
+
+        case "timeout":
+          handler()
+      }
+    }
+
+    return result
+  })
   return result
 }
 
@@ -180,7 +196,7 @@ describe("useShuttleVehicles", () => {
 
   test("initializing the hook subscribes to the shuttles channel", () => {
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel()
+    const mockChannel = makeMockChannel("ok")
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     const { rerender } = renderHook(() =>
@@ -197,7 +213,7 @@ describe("useShuttleVehicles", () => {
 
   test("returns results pushed to the channel", async () => {
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel()
+    const mockChannel = makeMockChannel("ok")
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
     mockChannel.on.mockImplementation((event, handler) => {
       if (event === "shuttles") {
@@ -212,5 +228,31 @@ describe("useShuttleVehicles", () => {
     )
 
     expect(result.current).toEqual(shuttles)
+  })
+
+  test("console.error on join error", async () => {
+    const spyConsoleError = jest.spyOn(console, "error")
+    spyConsoleError.mockImplementationOnce(msg => msg)
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("error")
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+
+    renderHook(() => useShuttleVehicles((mockSocket as any) as Socket))
+
+    expect(spyConsoleError).toHaveBeenCalledWith("join failed", "ERROR_REASON")
+    spyConsoleError.mockRestore()
+  })
+
+  test("console.error on timeout", async () => {
+    const spyConsoleError = jest.spyOn(console, "error")
+    spyConsoleError.mockImplementationOnce(msg => msg)
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("timeout")
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+
+    renderHook(() => useShuttleVehicles((mockSocket as any) as Socket))
+
+    expect(spyConsoleError).toHaveBeenCalledWith("join timeout")
+    spyConsoleError.mockRestore()
   })
 })
