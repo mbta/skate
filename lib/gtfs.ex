@@ -104,48 +104,16 @@ defmodule Gtfs do
     {:reply, {:error, :not_loaded}, state}
   end
 
-  def handle_call(:all_routes, _from, %__MODULE__{loaded?: true, data: gtfs_data} = state) do
-    {:reply, Data.all_routes(gtfs_data), state}
+  def handle_call(atom, from, %__MODULE__{loaded?: true} = state) when is_atom(atom) do
+    handle_call({atom}, from, state)
   end
 
-  def handle_call(
-        {:timepoint_ids_on_route, route_id},
-        _from,
-        %__MODULE__{loaded?: true, data: gtfs_data} = state
-      ) do
-    {:reply, Data.timepoint_ids_on_route(gtfs_data, route_id), state}
-  end
+  def handle_call(tuple, _from, %__MODULE__{loaded?: true, data: gtfs_data} = state) do
+    [function | args] = Tuple.to_list(tuple)
 
-  def handle_call({:stop, stop_id}, _from, %__MODULE__{loaded?: true, data: gtfs_data} = state) do
-    {:reply, Data.stop(gtfs_data, stop_id), state}
-  end
+    data = apply(Data, function, [gtfs_data | args])
 
-  def handle_call({:trip, trip_id}, _from, %__MODULE__{loaded?: true, data: gtfs_data} = state) do
-    {:reply, Data.trip(gtfs_data, trip_id), state}
-  end
-
-  def handle_call(
-        {:block, block_id, service_id},
-        _from,
-        %__MODULE__{loaded?: true, data: gtfs_data} = state
-      ) do
-    {:reply, Data.block(gtfs_data, block_id, service_id), state}
-  end
-
-  def handle_call(
-        {:active_trips, now},
-        _from,
-        %__MODULE__{loaded?: true, data: gtfs_data} = state
-      ) do
-    {:reply, Data.active_trips(gtfs_data, now), state}
-  end
-
-  def handle_call(
-        {:active_blocks, start_time, end_time},
-        _from,
-        %__MODULE__{loaded?: true, data: gtfs_data} = state
-      ) do
-    {:reply, Data.active_blocks(gtfs_data, start_time, end_time), state}
+    {:reply, data, state}
   end
 
   @impl GenServer
