@@ -17,15 +17,16 @@ defmodule Realtime.Server do
 
   require Logger
 
-  defstruct by_route_id: %{}, shuttles: []
+  @enforce_keys [:ets]
+
+  defstruct by_route_id: %{}, shuttles: [], ets: nil
 
   @type broadcast_data :: {:vehicles_for_route, Vehicles.for_route()} | {:shuttles, [Vehicle.t()]}
 
   @typep subscription_key :: {:route_id, Route.id()} | :all_shuttles
 
   @typep t :: %__MODULE__{
-           by_route_id: Route.by_id(Vehicles.for_route()),
-           shuttles: [Vehicle.t()]
+           ets: :ets.tid()
          }
 
   # Client functions
@@ -72,11 +73,9 @@ defmodule Realtime.Server do
 
   @impl true
   def init(_opts) do
-    {:ok,
-     %__MODULE__{
-       by_route_id: %{},
-       shuttles: []
-     }}
+    ets = :ets.new(__MODULE__, [])
+
+    {:ok, %__MODULE__{ets: ets}}
   end
 
   # If we get a reply after we've already timed out, ignore it
@@ -94,9 +93,30 @@ defmodule Realtime.Server do
 
   @impl true
   def handle_cast({:update, by_route_id, shuttles}, %__MODULE__{} = state) do
-    state = %{state | by_route_id: by_route_id, shuttles: shuttles}
-    broadcast(state)
+    _ = update_ets(state, by_route_id, shuttles)
+    _ = broadcast(state)
     {:noreply, state}
+  end
+
+  defp update_ets(%__MODULE__{ets: ets}, by_route_id, shuttles) do
+    _ = :ets.delete_all_objects(ets)
+
+    records =
+      []
+      |> by_route_id_to_records(by_route_id)
+      |> shuttles_to_records(shuttles)
+
+    :ets.insert(ets, records)
+  end
+
+  defp by_route_id_to_records(records, by_route_id) do
+    Enum.reduce(by_route_id, records, fn {route_id, vehicles}, acc ->
+      [{route_id, false, vehicles} | acc]
+    end)
+  end
+
+  defp shuttles_to_records(records, shuttles) do
+    [{nil, true, shuttles} | records]
   end
 
   @spec broadcast(t()) :: :ok
@@ -114,12 +134,38 @@ defmodule Realtime.Server do
   end
 
   @spec data_to_send(t, subscription_key) :: broadcast_data
-  defp data_to_send(%__MODULE__{by_route_id: by_route_id}, {:route_id, route_id}) do
-    data = Map.get(by_route_id, route_id, Vehicles.empty_vehicles_for_route())
+  defp data_to_send(%__MODULE__{ets: ets}, {:route_id, route_id}) do
+    data = fetch_data_from_ets(ets, {:route_id, route_id})
     {:vehicles_for_route, data}
   end
 
-  defp data_to_send(%__MODULE__{shuttles: shuttles}, :all_shuttles) do
-    {:shuttles, shuttles}
+  defp data_to_send(%__MODULE__{ets: ets}, :all_shuttles) do
+    data = fetch_data_from_ets(ets, :all_shuttles)
+    {:shuttles, data}
+  end
+
+  defp fetch_data_from_ets(ets, subscription_key) do
+    ets
+    |> :ets.select([{ets_match_pattern(subscription_key), [], [:"$1"]}])
+    |> case do
+      [match] -> match
+      [] -> default_data(subscription_key)
+    end
+  end
+
+  defp ets_match_pattern({:route_id, route_id}) do
+    {route_id, :_, :"$1"}
+  end
+
+  defp ets_match_pattern(:all_shuttles) do
+    {:_, true, :"$1"}
+  end
+
+  defp default_data({:route_id, _}) do
+    Vehicles.empty_vehicles_for_route()
+  end
+
+  defp default_data(:all_shuttles) do
+    []
   end
 end

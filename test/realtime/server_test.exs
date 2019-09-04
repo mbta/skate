@@ -135,7 +135,7 @@ defmodule Realtime.ServerTest do
 
   describe "backend implementation" do
     test "handles reference info calls that come in after a timeout" do
-      state = %Server{}
+      state = %Server{ets: make_ref()}
 
       response = Server.handle_info({make_ref(), []}, state)
 
