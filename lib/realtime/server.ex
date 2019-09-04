@@ -21,9 +21,7 @@ defmodule Realtime.Server do
 
   defstruct ets: nil
 
-  @type broadcast_data :: {:vehicles_for_route, Vehicles.for_route()} | {:shuttles, [Vehicle.t()]}
-
-  @typep subscription_key :: {:route_id, Route.id()} | :all_shuttles
+  @type subscription_key :: {:route_id, Route.id()} | :all_shuttles
 
   @typep t :: %__MODULE__{
            ets: :ets.tid()
@@ -69,6 +67,8 @@ defmodule Realtime.Server do
     GenServer.cast(server, {:update, vehicles_by_route_id, shuttles})
   end
 
+  @spec lookup({:ets.tid(), {:route_id, Route.id()}}) :: Vehicles.for_route()
+  @spec lookup({:ets.tid(), :all_shuttles}) :: [Vehicle.t()]
   def lookup({table, key}) do
     :ets.lookup_element(table, key, 2)
   rescue
@@ -130,7 +130,8 @@ defmodule Realtime.Server do
     end)
   end
 
-  @spec send_data({pid, subscription_key}, t) :: {:new_realtime_data, broadcast_data}
+  @spec send_data({pid, subscription_key}, t) ::
+          {:new_realtime_data, {:ets.tid(), subscription_key}}
   defp send_data({pid, subscription_key}, state) do
     send(pid, {:new_realtime_data, {state.ets, subscription_key}})
   end

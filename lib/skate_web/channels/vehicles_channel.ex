@@ -52,7 +52,7 @@ defmodule SkateWeb.VehiclesChannel do
     end
   end
 
-  @spec push_vehicles(Phoenix.Socket.t(), Server.broadcast_data()) ::
+  @spec push_vehicles(Phoenix.Socket.t(), {:ets.tid(), Server.subscription_key()}) ::
           {:noreply, Phoenix.Socket.t()}
   defp push_vehicles(socket, {_table, {:route_id, _}} = lookup) do
     push(socket, "vehicles", Server.lookup(lookup))
