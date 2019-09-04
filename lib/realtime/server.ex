@@ -19,7 +19,7 @@ defmodule Realtime.Server do
 
   @enforce_keys [:ets]
 
-  defstruct by_route_id: %{}, shuttles: [], ets: nil
+  defstruct ets: nil
 
   @type broadcast_data :: {:vehicles_for_route, Vehicles.for_route()} | {:shuttles, [Vehicle.t()]}
 
