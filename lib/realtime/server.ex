@@ -69,11 +69,19 @@ defmodule Realtime.Server do
     GenServer.cast(server, {:update, vehicles_by_route_id, shuttles})
   end
 
+  def lookup({table, key}) do
+    :ets.lookup_element(table, key, 2)
+  rescue
+    # :ets.lookup_element/3 exits with :badarg when key is not found
+    ArgumentError ->
+      default_data(key)
+  end
+
   # GenServer callbacks
 
   @impl true
   def init(_opts) do
-    ets = :ets.new(__MODULE__, [])
+    ets = :ets.new(__MODULE__, [:set, :protected, {:read_concurrency, true}])
 
     {:ok, %__MODULE__{ets: ets}}
   end
@@ -87,8 +95,13 @@ defmodule Realtime.Server do
   def handle_call({:subscribe, subscription_key}, _from, %__MODULE__{} = state) do
     registry_key = self()
 
-    {_, data} = data_to_send(state, subscription_key)
+    data = lookup({state.ets, subscription_key})
     {:reply, {registry_key, data}, state}
+  end
+
+  def handle_call(:ets, _from, %__MODULE__{ets: ets} = state) do
+    # used only by tests
+    {:reply, ets, state}
   end
 
   @impl true
@@ -101,22 +114,11 @@ defmodule Realtime.Server do
   defp update_ets(%__MODULE__{ets: ets}, by_route_id, shuttles) do
     _ = :ets.delete_all_objects(ets)
 
-    records =
-      []
-      |> by_route_id_to_records(by_route_id)
-      |> shuttles_to_records(shuttles)
+    for {route_id, vehicles} <- by_route_id do
+      _ = :ets.insert(ets, {{:route_id, route_id}, vehicles})
+    end
 
-    :ets.insert(ets, records)
-  end
-
-  defp by_route_id_to_records(records, by_route_id) do
-    Enum.reduce(by_route_id, records, fn {route_id, vehicles}, acc ->
-      [{route_id, false, vehicles} | acc]
-    end)
-  end
-
-  defp shuttles_to_records(records, shuttles) do
-    [{nil, true, shuttles} | records]
+    :ets.insert(ets, {:all_shuttles, shuttles})
   end
 
   @spec broadcast(t()) :: :ok
@@ -130,35 +132,7 @@ defmodule Realtime.Server do
 
   @spec send_data({pid, subscription_key}, t) :: {:new_realtime_data, broadcast_data}
   defp send_data({pid, subscription_key}, state) do
-    send(pid, {:new_realtime_data, data_to_send(state, subscription_key)})
-  end
-
-  @spec data_to_send(t, subscription_key) :: broadcast_data
-  defp data_to_send(%__MODULE__{ets: ets}, {:route_id, route_id}) do
-    data = fetch_data_from_ets(ets, {:route_id, route_id})
-    {:vehicles_for_route, data}
-  end
-
-  defp data_to_send(%__MODULE__{ets: ets}, :all_shuttles) do
-    data = fetch_data_from_ets(ets, :all_shuttles)
-    {:shuttles, data}
-  end
-
-  defp fetch_data_from_ets(ets, subscription_key) do
-    ets
-    |> :ets.select([{ets_match_pattern(subscription_key), [], [:"$1"]}])
-    |> case do
-      [match] -> match
-      [] -> default_data(subscription_key)
-    end
-  end
-
-  defp ets_match_pattern({:route_id, route_id}) do
-    {route_id, :_, :"$1"}
-  end
-
-  defp ets_match_pattern(:all_shuttles) do
-    {:_, true, :"$1"}
+    send(pid, {:new_realtime_data, {state.ets, subscription_key}})
   end
 
   defp default_data({:route_id, _}) do

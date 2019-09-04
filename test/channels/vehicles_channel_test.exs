@@ -91,13 +91,18 @@ defmodule SkateWeb.VehiclesChannelTest do
         incoming_vehicles: []
       }
 
-      {:ok, vehicles_for_route: vehicles_for_route}
+      ets = GenServer.call(Realtime.Server.default_name(), :ets)
+
+      {:ok, vehicles_for_route: vehicles_for_route, ets: ets}
     end
 
     test "pushes new vehicle data onto the socket when socket is authenticated", %{
       socket: socket,
-      vehicles_for_route: vehicles_for_route
+      vehicles_for_route: vehicles_for_route,
+      ets: ets
     } do
+      assert Realtime.Server.update({%{"1" => vehicles_for_route}, []}) == :ok
+
       {:ok, token, claims} =
         AuthManager.encode_and_sign("test-authed@mbta.com", %{
           "exp" => System.system_time(:second) + 500
@@ -108,17 +113,20 @@ defmodule SkateWeb.VehiclesChannelTest do
 
       assert {:noreply, socket} =
                VehiclesChannel.handle_info(
-                 {:new_realtime_data, {:vehicles_for_route, vehicles_for_route}},
+                 {:new_realtime_data, {ets, {:route_id, "1"}}},
                  socket
                )
 
-      assert_push("vehicles", _)
+      assert_push("vehicles", ^vehicles_for_route)
     end
 
     test "pushes new shuttle data onto the socket when socket is authenticated", %{
       socket: socket,
-      vehicles_for_route: %{on_route_vehicles: [vehicle]}
+      vehicles_for_route: %{on_route_vehicles: [vehicle]},
+      ets: ets
     } do
+      assert Realtime.Server.update({%{}, [vehicle]}) == :ok
+
       {:ok, token, claims} =
         AuthManager.encode_and_sign("test-authed@mbta.com", %{
           "exp" => System.system_time(:second) + 500
@@ -129,7 +137,7 @@ defmodule SkateWeb.VehiclesChannelTest do
 
       assert {:noreply, socket} =
                VehiclesChannel.handle_info(
-                 {:new_realtime_data, {:shuttles, [vehicle]}},
+                 {:new_realtime_data, {ets, :all_shuttles}},
                  socket
                )
 
@@ -138,8 +146,11 @@ defmodule SkateWeb.VehiclesChannelTest do
 
     test "refresh the authentication using the refresh token if we have one", %{
       socket: socket,
-      vehicles_for_route: vehicles_for_route
+      vehicles_for_route: vehicles_for_route,
+      ets: ets
     } do
+      assert Realtime.Server.update({%{"1" => vehicles_for_route}, []})
+
       {:ok, token, claims} =
         AuthManager.encode_and_sign("test-expired@mbta.com", %{
           "exp" => System.system_time(:second) - 100
@@ -151,14 +162,17 @@ defmodule SkateWeb.VehiclesChannelTest do
 
       assert {:noreply, socket} =
                VehiclesChannel.handle_info(
-                 {:new_realtime_data, {:vehicles_for_route, vehicles_for_route}},
+                 {:new_realtime_data, {ets, {:route_id, "1"}}},
                  socket
                )
 
-      assert_push("vehicles", _)
+      assert_push("vehicles", ^vehicles_for_route)
     end
 
-    test "rejects sending vehicle data when socket is not authenticated", %{socket: socket} do
+    test "rejects sending vehicle data when socket is not authenticated", %{
+      socket: socket,
+      ets: ets
+    } do
       {:ok, token, claims} =
         AuthManager.encode_and_sign("test-not-authed@mbta.com", %{
           "exp" => System.system_time(:second) - 100
@@ -170,7 +184,7 @@ defmodule SkateWeb.VehiclesChannelTest do
         Guardian.Phoenix.Socket.assign_rtc(socket, "test-not-authed@mbta.com", token, claims)
 
       {:stop, :normal, _socket} =
-        VehiclesChannel.handle_info({:new_realtime_data, {:vehicles_for_route, %{}}}, socket)
+        VehiclesChannel.handle_info({:new_realtime_data, {ets, {:route_id, "1"}}}, socket)
 
       assert_push("auth_expired", _)
     end
