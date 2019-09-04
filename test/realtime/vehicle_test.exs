@@ -50,6 +50,8 @@ defmodule Realtime.VehicleTest do
 
   describe "from_vehicle_position" do
     setup do
+      start_supervised({Gtfs, [Application.get_env(:skate, :gtfs_url)]})
+
       trip = %Trip{
         id: "39984755",
         route_id: "28",

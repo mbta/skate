@@ -3,6 +3,14 @@ defmodule GtfsTest do
 
   alias Gtfs.{Route, Stop, StopTime, Trip}
 
+  def await_server_load(pid) do
+    if GenServer.call(pid, :loaded?) do
+      :ok
+    else
+      await_server_load(pid)
+    end
+  end
+
   describe "all_routes" do
     test "maps each row to a Route" do
       pid =
@@ -17,6 +25,8 @@ defmodule GtfsTest do
             "39,Forest Hills - Back Bay Station,3,Key Bus,39"
           ]
         })
+
+      await_server_load(pid)
 
       assert Gtfs.all_routes(pid) == [
                %Route{
@@ -41,6 +51,8 @@ defmodule GtfsTest do
           ]
         })
 
+      await_server_load(pid)
+
       refute Enum.any?(Gtfs.all_routes(pid), &(&1.id == "Red"))
     end
   end
@@ -54,6 +66,8 @@ defmodule GtfsTest do
             "id,name,parent"
           ]
         })
+
+      await_server_load(pid)
 
       assert Gtfs.stop("id", pid) == %Stop{id: "id", name: "name", parent_station_id: "parent"}
     end
@@ -89,6 +103,8 @@ defmodule GtfsTest do
           ]
         })
 
+      await_server_load(pid)
+
       assert Gtfs.timepoint_ids_on_route("39", pid) == ["check"]
     end
 
@@ -116,6 +132,8 @@ defmodule GtfsTest do
             "blue-trip,,00:00:00,1,check"
           ]
         })
+
+      await_server_load(pid)
 
       assert Gtfs.timepoint_ids_on_route("39", pid) == ["check"]
       assert Gtfs.timepoint_ids_on_route("Blue", pid) == []
@@ -152,6 +170,8 @@ defmodule GtfsTest do
           ]
         })
 
+      await_server_load(pid)
+
       assert Gtfs.timepoint_ids_on_route("route", pid) == ["c1", "c2", "c3", "c4", "c5"]
     end
 
@@ -181,6 +201,8 @@ defmodule GtfsTest do
           ]
         })
 
+      await_server_load(pid)
+
       assert Gtfs.timepoint_ids_on_route("route", pid) == ["exurb", "suburb", "downtown"]
     end
 
@@ -197,6 +219,8 @@ defmodule GtfsTest do
           ]
         })
 
+      await_server_load(pid)
+
       assert Gtfs.timepoint_ids_on_route("route", pid) == []
     end
   end
@@ -211,6 +235,8 @@ defmodule GtfsTest do
             "2,Two,3"
           ]
         })
+
+      await_server_load(pid)
 
       assert Gtfs.stop("2", pid) == %Stop{
                id: "2",
@@ -244,6 +270,8 @@ defmodule GtfsTest do
           ]
         })
 
+      await_server_load(pid)
+
       assert Gtfs.trip("t1", pid) ==
                %Trip{
                  id: "t1",
@@ -263,6 +291,7 @@ defmodule GtfsTest do
 
     test "returns nil if the trip doesn't exist" do
       pid = Gtfs.start_mocked(%{})
+      await_server_load(pid)
       assert Gtfs.trip("t1", pid) == nil
     end
   end
@@ -291,6 +320,8 @@ defmodule GtfsTest do
           ]
         })
 
+      await_server_load(pid)
+
       assert Gtfs.block("b", "service", pid) == [
                %Trip{
                  id: "t1",
@@ -312,6 +343,7 @@ defmodule GtfsTest do
 
     test "returns nil if the block doesn't exist" do
       pid = Gtfs.start_mocked(%{})
+      await_server_load(pid)
       assert Gtfs.block("b", "service", pid) == nil
     end
   end
@@ -346,6 +378,8 @@ defmodule GtfsTest do
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
 
+      await_server_load(pid)
+
       assert [%Trip{id: "now"}] = Gtfs.active_trips(time0 + 2, pid)
     end
   end
@@ -379,6 +413,9 @@ defmodule GtfsTest do
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
+
+      await_server_load(pid)
+
       assert Gtfs.active_blocks(time0 + 1, time0 + 3, pid) == %{"route" => ["now"]}
     end
   end

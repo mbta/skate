@@ -7,6 +7,8 @@ defmodule Concentrate.Supervisor.VehiclePositionsTest do
 
   describe "handle_events/3" do
     setup do
+      start_supervised({Gtfs, [Application.get_env(:skate, :gtfs_url)]})
+
       reassign_env(:realtime, :trip_fn, fn _trip_id -> nil end)
       reassign_env(:realtime, :block_fn, fn _block_id, _service_id -> nil end)
 
