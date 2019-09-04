@@ -4,8 +4,6 @@ defmodule Gtfs do
 
   alias Gtfs.{Block, CacheFile, Data, HealthServer, Route, Service, Stop, StopTime, Trip}
 
-  @type state :: :not_loaded | {:loaded, Data.t()}
-
   @type files_source :: {:url, String.t()} | {:mocked_files, mocked_files()}
 
   defstruct data: nil,
