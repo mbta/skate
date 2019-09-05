@@ -112,7 +112,8 @@ defmodule Realtime.TimePeriod do
        ) do
     seconds = extended_day_seconds(date_time)
 
-    day_type(date_time) == day_type_id && seconds > time_period_start_time_sec &&
+    day_type(date_time) == day_type_id &&
+      seconds >= time_period_start_time_sec &&
       seconds < time_period_end_time_sec
   end
 
