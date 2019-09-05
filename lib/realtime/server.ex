@@ -23,6 +23,12 @@ defmodule Realtime.Server do
 
   @type subscription_key :: {:route_id, Route.id()} | :all_shuttles
 
+  @type data_category :: :vehicles | :shuttles
+
+  @type lookup_key :: {:ets.tid(), subscription_key}
+
+  @type broadcast_message :: {:new_realtime_data, data_category, lookup_key}
+
   @typep t :: %__MODULE__{
            ets: :ets.tid()
          }
@@ -130,10 +136,15 @@ defmodule Realtime.Server do
     end)
   end
 
-  @spec send_data({pid, subscription_key}, t) ::
-          {:new_realtime_data, {:ets.tid(), subscription_key}}
+  @spec send_data({pid, subscription_key}, t) :: broadcast_message
   defp send_data({pid, subscription_key}, state) do
-    send(pid, {:new_realtime_data, {state.ets, subscription_key}})
+    category =
+      case subscription_key do
+        {:route_id, _} -> :vehicles
+        :all_shuttles -> :shuttles
+      end
+
+    send(pid, {:new_realtime_data, category, {state.ets, subscription_key}})
   end
 
   defp default_data({:route_id, _}) do

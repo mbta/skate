@@ -113,7 +113,7 @@ defmodule SkateWeb.VehiclesChannelTest do
 
       assert {:noreply, socket} =
                VehiclesChannel.handle_info(
-                 {:new_realtime_data, {ets, {:route_id, "1"}}},
+                 {:new_realtime_data, :vehicles, {ets, {:route_id, "1"}}},
                  socket
                )
 
@@ -137,7 +137,7 @@ defmodule SkateWeb.VehiclesChannelTest do
 
       assert {:noreply, socket} =
                VehiclesChannel.handle_info(
-                 {:new_realtime_data, {ets, :all_shuttles}},
+                 {:new_realtime_data, :shuttles, {ets, :all_shuttles}},
                  socket
                )
 
@@ -162,7 +162,7 @@ defmodule SkateWeb.VehiclesChannelTest do
 
       assert {:noreply, socket} =
                VehiclesChannel.handle_info(
-                 {:new_realtime_data, {ets, {:route_id, "1"}}},
+                 {:new_realtime_data, :vehicles, {ets, {:route_id, "1"}}},
                  socket
                )
 
@@ -184,7 +184,10 @@ defmodule SkateWeb.VehiclesChannelTest do
         Guardian.Phoenix.Socket.assign_rtc(socket, "test-not-authed@mbta.com", token, claims)
 
       {:stop, :normal, _socket} =
-        VehiclesChannel.handle_info({:new_realtime_data, {ets, {:route_id, "1"}}}, socket)
+        VehiclesChannel.handle_info(
+          {:new_realtime_data, :vehicles, {ets, {:route_id, "1"}}},
+          socket
+        )
 
       assert_push("auth_expired", _)
     end
