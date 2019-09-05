@@ -18,14 +18,10 @@ const ShuttlePicker = ({}): ReactElement<HTMLDivElement> => {
 
 const renderRunIdButtons = (
   shuttles: Vehicle[]
-): Array<ReactElement<HTMLLIElement>> => {
-  const runIds = new Set(shuttles.map(v => v.runId).sort())
-  const acc: Array<ReactElement<HTMLLIElement>> = []
-
-  runIds.forEach(runId => acc.push(<RunIdButton key={runId!} runId={runId!} />))
-
-  return acc
-}
+): Array<ReactElement<HTMLLIElement>> =>
+  Array.from(new Set(shuttles.map(v => v.runId).sort())).map(runId => (
+    <RunIdButton key={runId!} runId={runId!} />
+  ))
 
 const RunIdButton = ({
   runId,
