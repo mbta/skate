@@ -1,5 +1,5 @@
 defmodule Realtime.Vehicle do
-  alias Concentrate.{DataDiscrepancy, TripUpdate, VehiclePosition}
+  alias Concentrate.{DataDiscrepancy, VehiclePosition}
   alias Gtfs.{Block, Direction, Route, RoutePattern, Stop, Trip}
   alias Realtime.Headway
   alias Realtime.TimepointStatus
@@ -113,19 +113,11 @@ defmodule Realtime.Vehicle do
     data_discrepancies: []
   ]
 
-  @spec from_vehicle_position_and_trip_update(map() | nil, map() | nil) :: t()
-  def from_vehicle_position_and_trip_update(nil, _trip_update) do
-    nil
-  end
-
-  def from_vehicle_position_and_trip_update(vehicle_position, trip_update) do
+  @spec from_vehicle_position(map()) :: t()
+  def from_vehicle_position(vehicle_position) do
     trip_fn = Application.get_env(:realtime, :trip_fn, &Gtfs.trip/1)
     block_fn = Application.get_env(:realtime, :block_fn, &Gtfs.block/2)
     now_fn = Application.get_env(:realtime, :now_fn, &Util.Time.now/0)
-
-    route_id =
-      VehiclePosition.route_id(vehicle_position) ||
-        (trip_update && TripUpdate.route_id(trip_update))
 
     trip_id = VehiclePosition.trip_id(vehicle_position)
     block_id = VehiclePosition.block_id(vehicle_position)
@@ -133,6 +125,8 @@ defmodule Realtime.Vehicle do
     current_stop_status = decode_current_status(VehiclePosition.status(vehicle_position))
 
     trip = trip_fn.(trip_id)
+    route_id = VehiclePosition.route_id(vehicle_position) || (trip && trip.route_id)
+    direction_id = VehiclePosition.direction_id(vehicle_position) || (trip && trip.direction_id)
     block = trip && block_fn.(block_id, trip.service_id)
     headsign = trip && trip.headsign
     via_variant = trip && trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id)
@@ -148,10 +142,6 @@ defmodule Realtime.Vehicle do
       else
         nil
       end
-
-    direction_id =
-      VehiclePosition.direction_id(vehicle_position) ||
-        (trip_update && TripUpdate.direction_id(trip_update))
 
     headway_secs = VehiclePosition.headway_secs(vehicle_position)
     origin_stop_id = List.first(stop_times_on_trip) && List.first(stop_times_on_trip).stop_id
