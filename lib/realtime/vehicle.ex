@@ -149,13 +149,15 @@ defmodule Realtime.Vehicle do
     date_time_now_fn = Application.get_env(:realtime, :date_time_now_fn, &Timex.now/0)
 
     headway_spacing =
-      route_id
-      |> Headway.current_expected_headway_seconds(
-        direction_id,
-        origin_stop_id,
-        date_time_now_fn.()
-      )
-      |> Headway.current_headway_spacing(headway_secs)
+      case Headway.current_expected_headway_seconds(
+             route_id,
+             direction_id,
+             origin_stop_id,
+             date_time_now_fn.()
+           ) do
+        nil -> nil
+        expected_seconds -> Headway.current_headway_spacing(expected_seconds, headway_secs)
+      end
 
     data_discrepancies = VehiclePosition.data_discrepancies(vehicle_position)
     is_off_course = off_course?(data_discrepancies)

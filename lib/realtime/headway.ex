@@ -66,28 +66,16 @@ defmodule Realtime.Headway do
                       |> Jason.decode!()
                       |> Parser.parse_json_data()
 
-  @spec current_headway_spacing(seconds() | nil, seconds()) :: headway_spacing() | nil
-  def current_headway_spacing(nil, _headway_seconds) do
-    nil
+  @spec current_headway_spacing(seconds(), seconds()) :: headway_spacing()
+  def current_headway_spacing(expected_headway_seconds, headway_seconds) do
+    cond do
+      headway_seconds / expected_headway_seconds >= 2 -> :very_gapped
+      headway_seconds / expected_headway_seconds >= 1.5 -> :gapped
+      headway_seconds / expected_headway_seconds <= 0.33 -> :very_bunched
+      headway_seconds / expected_headway_seconds <= 0.5 -> :bunched
+      true -> :ok
+    end
   end
-
-  def current_headway_spacing(expected_headway_seconds, headway_seconds)
-      when headway_seconds / expected_headway_seconds >= 2,
-      do: :very_gapped
-
-  def current_headway_spacing(expected_headway_seconds, headway_seconds)
-      when headway_seconds / expected_headway_seconds >= 1.5,
-      do: :gapped
-
-  def current_headway_spacing(expected_headway_seconds, headway_seconds)
-      when headway_seconds / expected_headway_seconds <= 0.33,
-      do: :very_bunched
-
-  def current_headway_spacing(expected_headway_seconds, headway_seconds)
-      when headway_seconds / expected_headway_seconds <= 0.5,
-      do: :bunched
-
-  def current_headway_spacing(_expected_headway_seconds, _headway_seconds), do: :ok
 
   @spec current_expected_headway_seconds(Route.id(), Direction.id(), Stop.id(), DateTime.t()) ::
           seconds() | nil
