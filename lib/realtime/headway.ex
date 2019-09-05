@@ -88,8 +88,7 @@ defmodule Realtime.Headway do
            Enum.find(headways, &by_name(&1, time_period)) do
       time_in_seconds(time_period_headway.average_headway)
     else
-      :error -> nil
-      nil -> nil
+      _ -> nil
     end
   end
 
