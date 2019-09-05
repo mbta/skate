@@ -59,7 +59,7 @@ defmodule Realtime.HeadwayTest do
              ) == 1_155
     end
 
-    test "returns error if the route isn't found" do
+    test "returns nil if the route isn't found" do
       route_id = "bad route"
       direction_id = 1
       origin_stop_id = "323"
@@ -70,10 +70,10 @@ defmodule Realtime.HeadwayTest do
                direction_id,
                origin_stop_id,
                monday_evening
-             ) == :error
+             ) == nil
     end
 
-    test "returns error if the direction_id isn't found" do
+    test "returns nil if the direction_id isn't found" do
       route_id = "15"
       direction_id = 2
       origin_stop_id = "323"
@@ -84,10 +84,10 @@ defmodule Realtime.HeadwayTest do
                direction_id,
                origin_stop_id,
                monday_evening
-             ) == :error
+             ) == nil
     end
 
-    test "returns error if the origin_stop_id isn't found" do
+    test "returns nil if the origin_stop_id isn't found" do
       route_id = "15"
       direction_id = 1
       origin_stop_id = "bad stop id"
@@ -98,7 +98,7 @@ defmodule Realtime.HeadwayTest do
                direction_id,
                origin_stop_id,
                monday_evening
-             ) == :error
+             ) == nil
     end
   end
 

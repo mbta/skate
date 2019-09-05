@@ -66,8 +66,8 @@ defmodule Realtime.Headway do
                       |> Jason.decode!()
                       |> Parser.parse_json_data()
 
-  @spec current_headway_spacing(seconds(), seconds()) :: headway_spacing()
-  def current_headway_spacing(:error, _headway_seconds) do
+  @spec current_headway_spacing(seconds() | nil, seconds()) :: headway_spacing() | nil
+  def current_headway_spacing(nil, _headway_seconds) do
     nil
   end
 
@@ -95,9 +95,13 @@ defmodule Realtime.Headway do
     with {:ok, direction_origin_headways} <- Map.fetch(@key_route_headways, route_id),
          {:ok, origin_headways} <- Map.fetch(direction_origin_headways, direction_id),
          {:ok, headways} <- Map.fetch(origin_headways, origin_stop_id),
-         time_period <- TimePeriod.current(date_time),
-         time_period_headway <- Enum.find(headways, &by_name(&1, time_period)) do
-      if time_period_headway, do: time_in_seconds(time_period_headway.average_headway), else: nil
+         time_period when not is_nil(time_period) <- TimePeriod.current(date_time),
+         time_period_headway when not is_nil(time_period_headway) <-
+           Enum.find(headways, &by_name(&1, time_period)) do
+      time_in_seconds(time_period_headway.average_headway)
+    else
+      :error -> nil
+      nil -> nil
     end
   end
 
