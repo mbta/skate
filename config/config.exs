@@ -15,6 +15,7 @@ config :skate,
   swiftly_realtime_vehicles_url: {:system, "SWIFTLY_REALTIME_VEHICLES_URL"},
   secret: {:system, "SKATE_SECRET"},
   signed_secret: {:system, "SKATE_SIGNED_SECRET"},
+  start_data_processes: true,
   record_fullstory: false,
   log_duration_timing: true,
   refresh_token_store: RefreshTokenStore

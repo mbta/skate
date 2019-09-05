@@ -1,5 +1,8 @@
 use Mix.Config
 
+config :skate,
+  start_data_processes: false
+
 config :skate, Gtfs.CacheFile, cache_filename: "test_cache.terms"
 
 # We don't run a server during test. If one is required,
