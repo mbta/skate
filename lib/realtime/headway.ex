@@ -83,12 +83,11 @@ defmodule Realtime.Headway do
     with {:ok, direction_origin_headways} <- Map.fetch(@key_route_headways, route_id),
          {:ok, origin_headways} <- Map.fetch(direction_origin_headways, direction_id),
          {:ok, headways} <- Map.fetch(origin_headways, origin_stop_id),
-         time_period when not is_nil(time_period) <- TimePeriod.current(date_time),
-         time_period_headway when not is_nil(time_period_headway) <-
-           Enum.find(headways, &by_name(&1, time_period)) do
+         {:ok, time_period} <- TimePeriod.current(date_time),
+         {:ok, time_period_headway} <- headway_for_time_period(headways, time_period) do
       time_in_seconds(time_period_headway.average_headway)
     else
-      _ -> nil
+      :error -> nil
     end
   end
 
@@ -112,7 +111,14 @@ defmodule Realtime.Headway do
     hours * 60 * 60 + minutes * 60 + seconds
   end
 
-  @spec by_name(time_period_headway(), TimePeriod.t()) :: boolean
-  defp by_name(%{time_period_name: time_period_name}, time_period),
-    do: time_period_name == time_period.time_period_name
+  @spec headway_for_time_period([time_period_headway()], TimePeriod.t()) ::
+          {:ok, time_period_headway} | :error
+  def headway_for_time_period(headways, time_period) do
+    case Enum.find(headways, fn time_period_headway ->
+           time_period_headway.time_period_name == time_period.time_period_name
+         end) do
+      nil -> :error
+      time_period_headway -> {:ok, time_period_headway}
+    end
+  end
 end

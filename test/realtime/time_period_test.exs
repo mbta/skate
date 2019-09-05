@@ -12,17 +12,17 @@ defmodule Realtime.TimePeriodTest do
       saturday_at_noon = Timex.to_datetime({{2019, 7, 6}, {12, 00, 00}}, :local)
       sunday_at_noon = Timex.to_datetime({{2019, 7, 7}, {12, 00, 00}}, :local)
 
-      assert TimePeriod.current(monday_at_5_am) == List.first(@time_periods)
-      assert TimePeriod.current(tuesday_at_11_pm) == Enum.at(@time_periods, 7)
-      assert TimePeriod.current(wednesday_at_1_am) == Enum.at(@time_periods, 8)
-      assert TimePeriod.current(saturday_at_noon) == Enum.at(@time_periods, 9)
-      assert TimePeriod.current(sunday_at_noon) == Enum.at(@time_periods, 10)
+      assert TimePeriod.current(monday_at_5_am) == {:ok, List.first(@time_periods)}
+      assert TimePeriod.current(tuesday_at_11_pm) == {:ok, Enum.at(@time_periods, 7)}
+      assert TimePeriod.current(wednesday_at_1_am) == {:ok, Enum.at(@time_periods, 8)}
+      assert TimePeriod.current(saturday_at_noon) == {:ok, Enum.at(@time_periods, 9)}
+      assert TimePeriod.current(sunday_at_noon) == {:ok, Enum.at(@time_periods, 10)}
     end
   end
 
   describe "current/0" do
     test "uses now" do
-      refute TimePeriod.current() == nil
+      refute TimePeriod.current() == :error
     end
   end
 
