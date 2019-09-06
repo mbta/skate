@@ -133,7 +133,7 @@ const Properties = ({
           Run
         </th>
         <td className="m-vehicle-properties-panel__vehicle-property-value">
-          {runId || "N/A"}
+          {runId || "Not Available"}
         </td>
       </tr>
       <tr>
