@@ -67,27 +67,15 @@ defmodule Realtime.Headway do
                       |> Parser.parse_json_data()
 
   @spec current_headway_spacing(seconds(), seconds()) :: headway_spacing()
-  def current_headway_spacing(:error, _headway_seconds) do
-    nil
+  def current_headway_spacing(expected_headway_seconds, headway_seconds) do
+    cond do
+      headway_seconds / expected_headway_seconds >= 2 -> :very_gapped
+      headway_seconds / expected_headway_seconds >= 1.5 -> :gapped
+      headway_seconds / expected_headway_seconds <= 0.33 -> :very_bunched
+      headway_seconds / expected_headway_seconds <= 0.5 -> :bunched
+      true -> :ok
+    end
   end
-
-  def current_headway_spacing(expected_headway_seconds, headway_seconds)
-      when headway_seconds / expected_headway_seconds >= 2,
-      do: :very_gapped
-
-  def current_headway_spacing(expected_headway_seconds, headway_seconds)
-      when headway_seconds / expected_headway_seconds >= 1.5,
-      do: :gapped
-
-  def current_headway_spacing(expected_headway_seconds, headway_seconds)
-      when headway_seconds / expected_headway_seconds <= 0.33,
-      do: :very_bunched
-
-  def current_headway_spacing(expected_headway_seconds, headway_seconds)
-      when headway_seconds / expected_headway_seconds <= 0.5,
-      do: :bunched
-
-  def current_headway_spacing(_expected_headway_seconds, _headway_seconds), do: :ok
 
   @spec current_expected_headway_seconds(Route.id(), Direction.id(), Stop.id(), DateTime.t()) ::
           seconds() | nil
@@ -95,9 +83,11 @@ defmodule Realtime.Headway do
     with {:ok, direction_origin_headways} <- Map.fetch(@key_route_headways, route_id),
          {:ok, origin_headways} <- Map.fetch(direction_origin_headways, direction_id),
          {:ok, headways} <- Map.fetch(origin_headways, origin_stop_id),
-         time_period <- TimePeriod.current(date_time),
-         time_period_headway <- Enum.find(headways, &by_name(&1, time_period)) do
-      if time_period_headway, do: time_in_seconds(time_period_headway.average_headway), else: nil
+         {:ok, time_period} <- TimePeriod.current(date_time),
+         {:ok, time_period_headway} <- headway_for_time_period(headways, time_period) do
+      time_in_seconds(time_period_headway.average_headway)
+    else
+      :error -> nil
     end
   end
 
@@ -121,7 +111,14 @@ defmodule Realtime.Headway do
     hours * 60 * 60 + minutes * 60 + seconds
   end
 
-  @spec by_name(time_period_headway(), TimePeriod.t()) :: boolean
-  defp by_name(%{time_period_name: time_period_name}, time_period),
-    do: time_period_name == time_period.time_period_name
+  @spec headway_for_time_period([time_period_headway()], TimePeriod.t()) ::
+          {:ok, time_period_headway} | :error
+  def headway_for_time_period(headways, time_period) do
+    case Enum.find(headways, fn time_period_headway ->
+           time_period_headway.time_period_name == time_period.time_period_name
+         end) do
+      nil -> :error
+      time_period_headway -> {:ok, time_period_headway}
+    end
+  end
 end

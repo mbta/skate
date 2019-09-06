@@ -55,10 +55,13 @@ defmodule Realtime.TimePeriod do
     :time_period_end_time_sec
   ]
 
-  @spec current() :: t() | nil
-  @spec current(DateTime.t()) :: t() | nil
+  @spec current() :: {:ok, t()} | :error
+  @spec current(DateTime.t()) :: {:ok, t()} | :error
   def current(date_time \\ Timex.now()) do
-    Enum.find(data(), &by_extended_day_time(&1, date_time))
+    case Enum.find(data(), &by_extended_day_time(&1, date_time)) do
+      nil -> :error
+      %__MODULE__{} = time_period -> {:ok, time_period}
+    end
   end
 
   @spec day_type(DateTime.t()) :: day_type()
@@ -109,7 +112,8 @@ defmodule Realtime.TimePeriod do
        ) do
     seconds = extended_day_seconds(date_time)
 
-    day_type(date_time) == day_type_id && seconds > time_period_start_time_sec &&
+    day_type(date_time) == day_type_id &&
+      seconds >= time_period_start_time_sec &&
       seconds < time_period_end_time_sec
   end
 
