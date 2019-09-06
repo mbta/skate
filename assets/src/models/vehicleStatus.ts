@@ -47,10 +47,17 @@ export const drawnStatus = (vehicle: Vehicle): DrawnStatus => {
   }
 }
 
-export const humanReadableScheduleAdherence = (vehicle: Vehicle): string =>
-  vehicle.isOffCourse
-    ? "Invalid"
-    : humanReadableOnTimeStatus(onTimeStatus(vehicle.scheduleAdherenceSecs))
+export const humanReadableScheduleAdherence = (vehicle: Vehicle): string => {
+  if (vehicle.isOffCourse) {
+    return "Invalid"
+  } else if (vehicle.isAShuttle) {
+    return "Active"
+  } else {
+    return humanReadableOnTimeStatus(
+      onTimeStatus(vehicle.scheduleAdherenceSecs)
+    )
+  }
+}
 
 const humanReadableOnTimeStatus = (status: OnTimeStatus): string => {
   switch (status) {

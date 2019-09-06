@@ -50,7 +50,9 @@ const scheduleAdherenceLabelString = ({
 
 const ScheduleAdherenceLabel = ({ vehicle }: { vehicle: Vehicle }) => (
   <div className="m-vehicle-properties-panel__schedule-adherence-label">
-    {vehicle.isOffCourse ? "" : scheduleAdherenceLabelString(vehicle)}
+    {vehicle.isOffCourse || vehicle.isAShuttle
+      ? ""
+      : scheduleAdherenceLabelString(vehicle)}
   </div>
 )
 
@@ -170,7 +172,14 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
   const secondsAgo = (epocTime: number): string =>
     `${epocNowInSeconds - epocTime}s ago`
 
-  const { isOffCourse, latitude, longitude, stopStatus, timestamp } = vehicle
+  const {
+    isAShuttle,
+    isOffCourse,
+    latitude,
+    longitude,
+    stopStatus,
+    timestamp,
+  } = vehicle
 
   return (
     <div className="m-vehicle-properties-panel__location">
@@ -192,9 +201,11 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
       >
         Directions
       </a>
-      <div className="m-vehicle-map">
-        <Map vehicles={[vehicle]} centerOnVehicle={vehicle.id} />
-      </div>
+      {!isAShuttle && (
+        <div className="m-vehicle-map">
+          <Map vehicles={[vehicle]} centerOnVehicle={vehicle.id} />
+        </div>
+      )}
     </div>
   )
 }
@@ -300,6 +311,10 @@ const VehiclePropertiesPanel = ({
 }
 
 export const formatRouteVariant = (vehicle: Vehicle): string => {
+  if (vehicle.isAShuttle) {
+    return "Shuttle"
+  }
+
   const { routeId, viaVariant, headsign } = vehicle
   const viaVariantFormatted = viaVariant && viaVariant !== "_" ? viaVariant : ""
   const headsignFormatted = headsign ? ` ${headsign}` : ""

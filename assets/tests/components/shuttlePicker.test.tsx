@@ -51,6 +51,7 @@ const vehicle: Vehicle = {
   },
   scheduledLocation: null,
   isOnRoute: true,
+  isAShuttle: false,
 }
 
 describe("ShuttlePicker", () => {

@@ -75,6 +75,7 @@ const vehicle: Vehicle = {
   },
   scheduledLocation: null,
   isOnRoute: true,
+  isAShuttle: false,
 }
 
 describe("VehiclePropertiesPanel", () => {
@@ -152,6 +153,19 @@ describe("VehiclePropertiesPanel", () => {
 
     const tree = renderer
       .create(<VehiclePropertiesPanel selectedVehicle={offCourseVehicle} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders for a shuttle", () => {
+    const shuttleVehicle: Vehicle = {
+      ...vehicle,
+      isAShuttle: true,
+    }
+
+    const tree = renderer
+      .create(<VehiclePropertiesPanel selectedVehicle={shuttleVehicle} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()

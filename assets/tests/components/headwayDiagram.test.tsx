@@ -49,6 +49,7 @@ const vehicle: Vehicle = {
     },
   },
   isOnRoute: true,
+  isAShuttle: false,
 }
 
 jest.mock("../../src/models/vehiclesByRouteId", () => ({
@@ -119,6 +120,7 @@ describe("HeadwayDiagram", () => {
         },
       },
       isOnRoute: true,
+      isAShuttle: false,
     }
 
     const tree = renderer
@@ -171,6 +173,7 @@ describe("HeadwayDiagram", () => {
         },
       },
       isOnRoute: true,
+      isAShuttle: false,
     }
 
     const tree = renderer

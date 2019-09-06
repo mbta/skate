@@ -21,7 +21,7 @@ type RawHeadwaySpacing =
 export interface VehicleData {
   id: string
   label: string
-  run_id: string
+  run_id: string | null
   timestamp: number
   latitude: number
   longitude: number
@@ -127,6 +127,8 @@ export const vehicleFromData = ({ isOnRoute }: { isOnRoute: boolean }) => (
     vehicleData.scheduled_location &&
     vehicleScheduledLocationFromData(vehicleData.scheduled_location),
   isOnRoute,
+  isAShuttle:
+    vehicleData.run_id !== null && vehicleData.run_id.startsWith("999"),
 })
 
 export const ghostFromData = (ghostData: GhostData): Ghost => ({

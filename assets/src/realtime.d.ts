@@ -67,6 +67,7 @@ export interface Vehicle {
   timepointStatus: VehicleTimepointStatus | null
   scheduledLocation: VehicleScheduledLocation | null
   isOnRoute: boolean
+  isAShuttle: boolean
 }
 
 export type VehicleId = string

@@ -51,6 +51,7 @@ const vehicle: Vehicle = {
     },
   },
   isOnRoute: true,
+  isAShuttle: false,
 }
 
 describe("vehicleLabel", () => {
