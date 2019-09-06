@@ -17,6 +17,7 @@ import { VehicleLabelSetting } from "../settings"
 interface Props {
   vehicles: Vehicle[]
   centerOnVehicle: string | null
+  initialZoom?: number
 }
 
 interface VehicleMarkers {
@@ -166,7 +167,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
             }
           ),
         ],
-        zoom: 16,
+        zoom: props.initialZoom || 16,
         zoomControl: false,
       })
 

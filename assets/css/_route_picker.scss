@@ -4,6 +4,10 @@
   height: 100%;
 }
 
+.m-route-picker__label {
+  @include font-label();
+}
+
 .m-route-picker__selected-routes {
   display: flex;
   flex: 0 0 auto;

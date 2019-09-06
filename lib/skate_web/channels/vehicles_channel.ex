@@ -7,7 +7,7 @@ defmodule SkateWeb.VehiclesChannel do
   @impl Phoenix.Channel
   def join("vehicles:shuttle:all", _message, socket) do
     shuttles = Server.subscribe_to_all_shuttles()
-    {:ok, shuttles, socket}
+    {:ok, %{data: shuttles}, socket}
   end
 
   def join("vehicles:route:" <> route_id, _message, socket) do
