@@ -6,7 +6,7 @@ defmodule Gtfs do
 
   @type files_source :: {:url, String.t()} | {:mocked_files, mocked_files()}
 
-  defstruct data: nil,
+  defstruct ets: nil,
             health_server_pid: nil,
             load_task: nil,
             loaded?: false
@@ -102,21 +102,37 @@ defmodule Gtfs do
     {:reply, {:error, :not_loaded}, state}
   end
 
-  def handle_call(atom, from, %__MODULE__{loaded?: true} = state) when is_atom(atom) do
-    handle_call({atom}, from, state)
-  end
+  def handle_call(call, _from, %__MODULE__{loaded?: true, ets: ets} = state) do
+    reply =
+      case call do
+        :all_routes ->
+          Data.all_routes(ets)
 
-  def handle_call(tuple, _from, %__MODULE__{loaded?: true, data: gtfs_data} = state) do
-    [function | args] = Tuple.to_list(tuple)
+        {:timepoint_ids_on_route, route_id} ->
+          Data.timepoint_ids_on_route(ets, route_id)
 
-    data = apply(Data, function, [gtfs_data | args])
+        {:stop, stop_id} ->
+          Data.stop(ets, stop_id)
 
-    {:reply, data, state}
+        {:trip, trip_id} ->
+          Data.trip(ets, trip_id)
+
+        {:block, block_id, service_id} ->
+          Data.block(ets, block_id, service_id)
+
+        {:active_trips, now} ->
+          Data.active_trips(ets, now)
+
+        {:active_blocks, start_time, end_time} ->
+          Data.active_blocks(ets, start_time, end_time)
+      end
+
+    {:reply, reply, state}
   end
 
   @impl GenServer
-  def handle_info({ref, {time, {:ok, data}}}, %__MODULE__{load_task: %Task{ref: ref}} = state) do
-    state = %{state | loaded?: true, data: data}
+  def handle_info({ref, {time, :ok}}, %__MODULE__{load_task: %Task{ref: ref}} = state) do
+    state = %{state | loaded?: true}
 
     Logger.warn(fn ->
       "Successfully loaded gtfs, time_in_ms=#{time / 1000}"
@@ -167,22 +183,28 @@ defmodule Gtfs do
 
   @impl true
   def init({files_source, health_server_pid}) do
-    {:ok,
-     %__MODULE__{
-       loaded?: false,
-       load_task: nil,
-       health_server_pid: health_server_pid
-     }, {:continue, {:load_gtfs, files_source}}}
-  end
+    ets = Data.start_ets()
 
-  @impl true
-  def handle_continue({:load_gtfs, files_source}, %__MODULE__{loaded?: false} = state) do
     load_task =
       Task.async(fn ->
-        :timer.tc(__MODULE__, :fetch_gtfs, [files_source])
+        :timer.tc(__MODULE__, :fetch_and_load_gtfs, [files_source, ets])
       end)
 
-    {:noreply, %{state | load_task: load_task}}
+    {:ok,
+     %__MODULE__{
+       ets: ets,
+       loaded?: false,
+       load_task: load_task,
+       health_server_pid: health_server_pid
+     }}
+  end
+
+  @spec fetch_and_load_gtfs(files_source(), :ets.tid()) :: :ok | {:error, any}
+  def fetch_and_load_gtfs(files_source, ets) do
+    case fetch_gtfs(files_source) do
+      {:ok, data} -> load_ets(ets, data)
+      {:error, error} -> {:error, error}
+    end
   end
 
   @spec fetch_gtfs(files_source()) :: {:ok, Data.t()} | {:error, any()}
@@ -275,5 +297,17 @@ defmodule Gtfs do
     # Convert filenames back from charlists to strings
     |> Enum.map(fn {file_name, data} -> {to_string(file_name), data} end)
     |> Map.new()
+  end
+
+  @spec load_ets(:ets.tab(), Data.t()) :: :ok
+  defp load_ets(ets, data) do
+    records =
+      data
+      |> Map.from_struct()
+      |> Map.to_list()
+
+    _ = :ets.insert(ets, records)
+
+    :ok
   end
 end

@@ -3,7 +3,12 @@ defmodule Gtfs.DataTest do
 
   alias Gtfs.{Block, Data, Route, RoutePattern, Stop, StopTime, Trip}
 
-  test "all_routes/1 returns all the routes" do
+  setup do
+    ets = Data.start_ets()
+    {:ok, ets: ets}
+  end
+
+  test "all_routes/1 returns all the routes", %{ets: ets} do
     routes = [
       %Route{
         id: "39",
@@ -25,89 +30,60 @@ defmodule Gtfs.DataTest do
       }
     ]
 
-    data = %Data{
-      routes: routes,
-      route_patterns: [],
-      timepoint_ids_by_route: %{},
-      stops: %{},
-      trips: %{},
-      blocks: %{},
-      calendar: %{}
-    }
+    :ets.insert(ets, {:routes, routes})
 
-    assert Data.all_routes(data) == routes
+    assert Data.all_routes(ets) == routes
   end
 
   describe "timepoint_ids_on_route/2" do
     test "returns the timepoints for the given route ID" do
-      data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoint_ids_by_route: %{
-          "1" => ["t1", "t2", "t3", "t4"]
-        },
-        stops: %{},
-        trips: %{},
-        blocks: %{},
-        calendar: %{}
-      }
+      ets = :ets.new(__MODULE__, [:set, :public, {:read_concurrency, true}])
 
-      assert Data.timepoint_ids_on_route(data, "1") == ["t1", "t2", "t3", "t4"]
+      ids = %{"1" => ["t1", "t2", "t3", "t4"]}
+      :ets.insert(ets, {:timepoint_ids_by_route, ids})
+
+      assert :ets.lookup_element(ets, :timepoint_ids_by_route, 2) == ids
+
+      assert Data.timepoint_ids_on_route(ets, "1") == ["t1", "t2", "t3", "t4"]
     end
 
-    test "returns an empty list if the route ID isn't found" do
-      data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoint_ids_by_route: %{
-          "1" => ["t1", "t2", "t3", "t4"]
-        },
-        stops: %{},
-        trips: %{},
-        blocks: %{},
-        calendar: %{}
-      }
+    test "returns an empty list if the route ID isn't found", %{ets: ets} do
+      :ets.insert(ets, {:timepoint_ids_by_route, %{"1" => ["t1", "t2", "t3", "t4"]}})
 
-      assert Data.timepoint_ids_on_route(data, "2") == []
+      assert Data.timepoint_ids_on_route(ets, "2") == []
     end
   end
 
   describe "stop/2" do
-    test "returns the stop for the given stop ID" do
-      data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoint_ids_by_route: %{},
-        stops: %{
-          "1" => %Stop{
-            id: "1",
-            name: "One",
-            parent_station_id: nil
-          },
-          "2" => %Stop{
-            id: "2",
-            name: "Two",
-            parent_station_id: "3"
-          }
-        },
-        trips: %{},
-        blocks: %{},
-        calendar: %{}
-      }
+    test "returns the stop for the given stop ID", %{ets: ets} do
+      :ets.insert(
+        ets,
+        {:stops,
+         %{
+           "1" => %Stop{
+             id: "1",
+             name: "One",
+             parent_station_id: nil
+           },
+           "2" => %Stop{
+             id: "2",
+             name: "Two",
+             parent_station_id: "3"
+           }
+         }}
+      )
 
-      assert Data.stop(data, "2") == %Stop{
+      assert Data.stop(ets, "2") == %Stop{
                id: "2",
                name: "Two",
                parent_station_id: "3"
              }
     end
 
-    test "returns nil if the given stop ID is not found" do
-      data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoint_ids_by_route: %{},
-        stops: %{
+    test "returns nil if the given stop ID is not found", %{ets: ets} do
+      :ets.insert(ets, {
+        :stops,
+        %{
           "1" => %Stop{
             id: "1",
             name: "One",
@@ -118,24 +94,18 @@ defmodule Gtfs.DataTest do
             name: "Two",
             parent_station_id: "3"
           }
-        },
-        trips: %{},
-        blocks: %{},
-        calendar: %{}
-      }
+        }
+      })
 
-      assert Data.stop(data, "4") == nil
+      assert Data.stop(ets, "4") == nil
     end
   end
 
   describe "trip" do
-    test "trip/1 returns the trip" do
-      data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoint_ids_by_route: %{},
-        stops: %{},
-        trips: %{
+    test "trip/1 returns the trip", %{ets: ets} do
+      :ets.insert(ets, {
+        :trips,
+        %{
           "t1" => %Trip{
             id: "t1",
             route_id: "r1",
@@ -148,31 +118,21 @@ defmodule Gtfs.DataTest do
               %StopTime{stop_id: "s1", time: 1, timepoint_id: nil}
             ]
           }
-        },
-        blocks: %{},
-        calendar: %{}
-      }
+        }
+      })
 
-      assert %Trip{id: "t1"} = Data.trip(data, "t1")
+      assert %Trip{id: "t1"} = Data.trip(ets, "t1")
     end
 
-    test "trip/1 returns nil if the trip doesn't exist" do
-      data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoint_ids_by_route: %{},
-        stops: %{},
-        trips: %{},
-        blocks: %{},
-        calendar: %{}
-      }
+    test "trip/1 returns nil if the trip doesn't exist", %{ets: ets} do
+      :ets.insert(ets, {:trips, %{}})
 
-      assert Data.trip(data, "t1") == nil
+      assert Data.trip(ets, "t1") == nil
     end
   end
 
   describe "block" do
-    test "block returns the trips on the block" do
+    test "block returns the trips on the block", %{ets: ets} do
       trip = %Trip{
         id: "t1",
         route_id: "r1",
@@ -186,20 +146,12 @@ defmodule Gtfs.DataTest do
         ]
       }
 
-      data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoint_ids_by_route: %{},
-        stops: %{},
-        trips: %{},
-        blocks: Block.group_trips_by_block([trip]),
-        calendar: %{}
-      }
+      :ets.insert(ets, {:blocks, Block.group_trips_by_block([trip])})
 
-      assert [%Trip{id: "t1"}] = Data.block(data, "b", "service")
+      assert [%Trip{id: "t1"}] = Data.block(ets, "b", "service")
     end
 
-    test "block doesn't return trips on the same block but a different date" do
+    test "block doesn't return trips on the same block but a different date", %{ets: ets} do
       trip = %Trip{
         id: "t1",
         route_id: "r1",
@@ -213,36 +165,19 @@ defmodule Gtfs.DataTest do
         ]
       }
 
-      data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoint_ids_by_route: %{},
-        stops: %{},
-        trips: %{},
-        blocks: Block.group_trips_by_block([trip]),
-        calendar: %{}
-      }
+      :ets.insert(ets, {:blocks, Block.group_trips_by_block([trip])})
 
-      assert Data.block(data, "b", "other_service") == nil
+      assert Data.block(ets, "b", "other_service") == nil
     end
 
-    test "block returns nil if the block doesn't exist" do
-      data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoint_ids_by_route: %{},
-        stops: %{},
-        trips: %{},
-        blocks: %{},
-        calendar: %{}
-      }
-
-      assert Data.trip(data, "block") == nil
+    test "block returns nil if the block doesn't exist", %{ets: ets} do
+      :ets.insert(ets, {:blocks, %{}})
+      assert Data.block(ets, "block", "service") == nil
     end
   end
 
   describe "active_trips_by_date" do
-    test "returns active trips" do
+    test "returns active trips", %{ets: ets} do
       trips = [
         # A trip that's totally inside the time range
         %Trip{
@@ -322,22 +257,14 @@ defmodule Gtfs.DataTest do
         }
       ]
 
-      data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoint_ids_by_route: %{},
-        stops: [],
-        trips: Map.new(trips, fn trip -> {trip.id, trip} end),
-        blocks: %{},
-        calendar: %{
-          ~D[2019-01-01] => ["today"]
-        }
-      }
+      :ets.insert(ets, {:trips, Map.new(trips, fn trip -> {trip.id, trip} end)})
+
+      :ets.insert(ets, {:calendar, %{~D[2019-01-01] => ["today"]}})
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
 
-      actual_trips_by_date = Data.active_trips_by_date(data, time0 + 2, time0 + 5)
+      actual_trips_by_date = Data.active_trips_by_date(ets, time0 + 2, time0 + 5)
       # sort the trips before comparing so order doesn't matter
       actual_trips_by_date =
         Helpers.map_values(
@@ -349,7 +276,7 @@ defmodule Gtfs.DataTest do
       assert(actual_trips_by_date == expected_trips_by_date)
     end
 
-    test "doesn't return a trip active at a different time today" do
+    test "doesn't return a trip active at a different time today", %{ets: ets} do
       trip = %Trip{
         id: "trip",
         route_id: "route",
@@ -365,26 +292,16 @@ defmodule Gtfs.DataTest do
         ]
       }
 
-      data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoint_ids_by_route: %{},
-        stops: [],
-        trips: %{
-          "trip" => trip
-        },
-        blocks: %{},
-        calendar: %{
-          ~D[2019-01-01] => ["today"]
-        }
-      }
+      :ets.insert(ets, {:trips, %{"trip" => trip}})
+
+      :ets.insert(ets, {:calendar, %{~D[2019-01-01] => ["today"]}})
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-      assert Data.active_trips_by_date(data, time0 + 1, time0 + 2) == %{}
+      assert Data.active_trips_by_date(ets, time0 + 1, time0 + 2) == %{}
     end
 
-    test "doesn't return a trip active at this time on a different day" do
+    test "doesn't return a trip active at this time on a different day", %{ets: ets} do
       trip = %Trip{
         id: "trip",
         route_id: "route",
@@ -400,26 +317,15 @@ defmodule Gtfs.DataTest do
         ]
       }
 
-      data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoint_ids_by_route: %{},
-        stops: [],
-        trips: %{
-          "trip" => trip
-        },
-        blocks: %{},
-        calendar: %{
-          ~D[2019-01-02] => ["tomorrow"]
-        }
-      }
+      :ets.insert(ets, {:trips, %{"trip" => trip}})
+      :ets.insert(ets, {:calendar, %{~D[2019-01-02] => ["tomorrow"]}})
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-      assert Data.active_trips_by_date(data, time0 + 1, time0 + 3) == %{}
+      assert Data.active_trips_by_date(ets, time0 + 1, time0 + 3) == %{}
     end
 
-    test "returns late-night trips that are still active from yesterday" do
+    test "returns late-night trips that are still active from yesterday", %{ets: ets} do
       trip = %Trip{
         id: "trip",
         route_id: "route",
@@ -436,28 +342,17 @@ defmodule Gtfs.DataTest do
         ]
       }
 
-      data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoint_ids_by_route: %{},
-        stops: [],
-        trips: %{
-          "trip" => trip
-        },
-        blocks: %{},
-        calendar: %{
-          ~D[2018-12-31] => ["yesterday"]
-        }
-      }
+      :ets.insert(ets, {:trips, %{"trip" => trip}})
+      :ets.insert(ets, {:calendar, %{~D[2018-12-31] => ["yesterday"]}})
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-      assert Data.active_trips_by_date(data, time0 + 1, time0 + 3) == %{~D[2018-12-31] => [trip]}
+      assert Data.active_trips_by_date(ets, time0 + 1, time0 + 3) == %{~D[2018-12-31] => [trip]}
     end
   end
 
   describe "active_trips" do
-    test "returns active trips" do
+    test "returns active trips", %{ets: ets} do
       trip = %Trip{
         id: "trip",
         route_id: "route",
@@ -477,209 +372,182 @@ defmodule Gtfs.DataTest do
         ]
       }
 
-      data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoint_ids_by_route: %{},
-        stops: [],
-        trips: %{
-          "trip" => trip
-        },
-        blocks: %{},
-        calendar: %{
-          ~D[2019-01-01] => ["today"]
-        }
-      }
+      :ets.insert(ets, {:trips, %{"trip" => trip}})
+      :ets.insert(ets, {:calendar, %{~D[2019-01-01] => ["today"]}})
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
 
-      assert [%Trip{id: "trip"}] = Data.active_trips(data, time0 + 3)
+      assert [%Trip{id: "trip"}] = Data.active_trips(ets, time0 + 3)
     end
   end
 
   describe "active_blocks" do
-    test "returns active blocks" do
-      data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoint_ids_by_route: %{},
-        stops: [],
-        trips: %{
-          "trip" => %Trip{
-            id: "trip",
-            route_id: "route",
-            service_id: "today",
-            headsign: "headsign",
-            direction_id: 0,
-            block_id: "block",
-            stop_times: [
-              %StopTime{
-                stop_id: "stop",
-                time: 3
-              },
-              %StopTime{
-                stop_id: "stop",
-                time: 4
-              }
-            ]
-          }
-        },
-        blocks: %{},
-        calendar: %{
-          ~D[2019-01-01] => ["today"]
-        }
-      }
+    test "returns active blocks", %{ets: ets} do
+      :ets.insert(
+        ets,
+        {:trips,
+         %{
+           "trip" => %Trip{
+             id: "trip",
+             route_id: "route",
+             service_id: "today",
+             headsign: "headsign",
+             direction_id: 0,
+             block_id: "block",
+             stop_times: [
+               %StopTime{
+                 stop_id: "stop",
+                 time: 3
+               },
+               %StopTime{
+                 stop_id: "stop",
+                 time: 4
+               }
+             ]
+           }
+         }}
+      )
+
+      :ets.insert(ets, {:calendar, %{~D[2019-01-01] => ["today"]}})
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
 
-      assert Data.active_blocks(data, time0 + 2, time0 + 5) == %{"route" => ["block"]}
+      assert Data.active_blocks(ets, time0 + 2, time0 + 5) == %{"route" => ["block"]}
     end
 
-    test "doesn't include blocks that are between trips" do
-      data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoint_ids_by_route: %{},
-        stops: [],
-        trips: %{
-          "before" => %Trip{
-            id: "before",
-            route_id: "route",
-            service_id: "today",
-            headsign: "headsign",
-            direction_id: 0,
-            block_id: "block",
-            stop_times: [
-              %StopTime{
-                stop_id: "stop",
-                time: 1
-              }
-            ]
-          },
-          "after" => %Trip{
-            id: "before",
-            route_id: "route",
-            service_id: "today",
-            headsign: "headsign",
-            direction_id: 0,
-            block_id: "block",
-            stop_times: [
-              %StopTime{
-                stop_id: "stop",
-                time: 4
-              }
-            ]
-          }
-        },
-        blocks: %{},
-        calendar: %{
-          ~D[2019-01-01] => ["today"]
-        }
-      }
+    test "doesn't include blocks that are between trips", %{ets: ets} do
+      :ets.insert(
+        ets,
+        {:trips,
+         %{
+           "before" => %Trip{
+             id: "before",
+             route_id: "route",
+             service_id: "today",
+             headsign: "headsign",
+             direction_id: 0,
+             block_id: "block",
+             stop_times: [
+               %StopTime{
+                 stop_id: "stop",
+                 time: 1
+               }
+             ]
+           },
+           "after" => %Trip{
+             id: "before",
+             route_id: "route",
+             service_id: "today",
+             headsign: "headsign",
+             direction_id: 0,
+             block_id: "block",
+             stop_times: [
+               %StopTime{
+                 stop_id: "stop",
+                 time: 4
+               }
+             ]
+           }
+         }}
+      )
+
+      :ets.insert(ets, {:calendar, %{~D[2019-01-01] => ["today"]}})
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-      assert Data.active_blocks(data, time0 + 2, time0 + 3) == %{}
+      assert Data.active_blocks(ets, time0 + 2, time0 + 3) == %{}
     end
 
-    test "returns a block in multiple routes if it's active in both" do
-      data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoint_ids_by_route: %{},
-        stops: [],
-        trips: %{
-          "first" => %Trip{
-            id: "first",
-            route_id: "first",
-            service_id: "today",
-            headsign: "headsign",
-            direction_id: 0,
-            block_id: "block",
-            stop_times: [
-              %StopTime{
-                stop_id: "stop",
-                time: 2
-              }
-            ]
-          },
-          "second" => %Trip{
-            id: "second",
-            route_id: "second",
-            service_id: "today",
-            headsign: "headsign",
-            direction_id: 0,
-            block_id: "block",
-            stop_times: [
-              %StopTime{
-                stop_id: "stop",
-                time: 3
-              }
-            ]
-          }
-        },
-        blocks: %{},
-        calendar: %{
-          ~D[2019-01-01] => ["today"]
-        }
-      }
+    test "returns a block in multiple routes if it's active in both", %{ets: ets} do
+      :ets.insert(
+        ets,
+        {:trips,
+         %{
+           "first" => %Trip{
+             id: "first",
+             route_id: "first",
+             service_id: "today",
+             headsign: "headsign",
+             direction_id: 0,
+             block_id: "block",
+             stop_times: [
+               %StopTime{
+                 stop_id: "stop",
+                 time: 2
+               }
+             ]
+           },
+           "second" => %Trip{
+             id: "second",
+             route_id: "second",
+             service_id: "today",
+             headsign: "headsign",
+             direction_id: 0,
+             block_id: "block",
+             stop_times: [
+               %StopTime{
+                 stop_id: "stop",
+                 time: 3
+               }
+             ]
+           }
+         }}
+      )
+
+      :ets.insert(ets, {:calendar, %{~D[2019-01-01] => ["today"]}})
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
 
-      assert Data.active_blocks(data, time0 + 1, time0 + 4) == %{
+      assert Data.active_blocks(ets, time0 + 1, time0 + 4) == %{
                "first" => ["block"],
                "second" => ["block"]
              }
     end
 
-    test "returns a block only once per route if it has multiple active trips" do
-      data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoint_ids_by_route: %{},
-        stops: [],
-        trips: %{
-          "first" => %Trip{
-            id: "first",
-            route_id: "route",
-            service_id: "today",
-            headsign: "headsign",
-            direction_id: 0,
-            block_id: "block",
-            stop_times: [
-              %StopTime{
-                stop_id: "stop",
-                time: 2
-              }
-            ]
-          },
-          "second" => %Trip{
-            id: "second",
-            route_id: "route",
-            service_id: "today",
-            headsign: "headsign",
-            direction_id: 0,
-            block_id: "block",
-            stop_times: [
-              %StopTime{
-                stop_id: "stop",
-                time: 3
-              }
-            ]
-          }
-        },
-        blocks: %{},
-        calendar: %{
-          ~D[2019-01-01] => ["today"]
-        }
-      }
+    test "returns a block only once per route if it has multiple active trips", %{ets: ets} do
+      :ets.insert(
+        ets,
+        {:trips,
+         %{
+           "first" => %Trip{
+             id: "first",
+             route_id: "route",
+             service_id: "today",
+             headsign: "headsign",
+             direction_id: 0,
+             block_id: "block",
+             stop_times: [
+               %StopTime{
+                 stop_id: "stop",
+                 time: 2
+               }
+             ]
+           },
+           "second" => %Trip{
+             id: "second",
+             route_id: "route",
+             service_id: "today",
+             headsign: "headsign",
+             direction_id: 0,
+             block_id: "block",
+             stop_times: [
+               %StopTime{
+                 stop_id: "stop",
+                 time: 3
+               }
+             ]
+           }
+         }}
+      )
+
+      :ets.insert(ets, {:calendar, %{~D[2019-01-01] => ["today"]}})
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-      assert Data.active_blocks(data, time0 + 1, time0 + 4) == %{"route" => ["block"]}
+      assert Data.active_blocks(ets, time0 + 1, time0 + 4) == %{"route" => ["block"]}
     end
   end
 

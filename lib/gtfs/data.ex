@@ -57,31 +57,51 @@ defmodule Gtfs.Data do
 
   @type files :: %{optional(String.t()) => binary()}
 
-  @spec all_routes(t()) :: [Route.t()]
-  def all_routes(%__MODULE__{routes: routes}), do: routes
-
-  @spec timepoint_ids_on_route(t(), Route.id()) :: [StopTime.timepoint_id()]
-  def timepoint_ids_on_route(
-        %__MODULE__{timepoint_ids_by_route: timepoint_ids_by_route},
-        route_id
-      ),
-      do: Map.get(timepoint_ids_by_route, route_id, [])
-
-  @spec stop(t(), Stop.id()) :: Stop.t() | nil
-  def stop(%__MODULE__{stops: stops}, stop_id), do: stops[stop_id]
-
-  @spec trip(t(), Trip.id()) :: Trip.t() | nil
-  def trip(%__MODULE__{trips: trips}, trip_id), do: trips[trip_id]
-
-  @spec block(t(), Block.id(), Service.id()) :: Block.t() | nil
-  def block(%__MODULE__{blocks: blocks}, block_id, service_id) do
-    Block.get(blocks, block_id, service_id)
+  @spec start_ets :: :ets.tid()
+  def start_ets do
+    :ets.new(__MODULE__, [:set, :public, {:read_concurrency, true}])
   end
 
-  @spec active_trips_by_date(t(), Util.Time.timestamp(), Util.Time.timestamp()) :: %{
+  @spec all_routes(:ets.tid()) :: [Route.t()]
+  def all_routes(ets) do
+    :ets.lookup_element(ets, :routes, 2)
+  end
+
+  @spec timepoint_ids_on_route(:ets.tab(), Route.id()) :: [StopTime.timepoint_id()]
+  def timepoint_ids_on_route(ets, route_id) do
+    ets
+    |> :ets.lookup_element(:timepoint_ids_by_route, 2)
+    |> Map.get(route_id, [])
+  end
+
+  @spec stop(:ets.tid(), Stop.id()) :: Stop.t() | nil
+  def stop(ets, stop_id) do
+    ets
+    |> :ets.lookup_element(:stops, 2)
+    |> Map.get(stop_id)
+  end
+
+  @spec trip(:ets.tid(), Trip.id()) :: Trip.t() | nil
+  def trip(ets, trip_id) do
+    ets
+    |> :ets.lookup_element(:trips, 2)
+    |> Map.get(trip_id)
+  end
+
+  @spec block(:ets.tid(), Block.id(), Service.id()) :: Block.t() | nil
+  def block(ets, block_id, service_id) do
+    ets
+    |> :ets.lookup_element(:blocks, 2)
+    |> Block.get(block_id, service_id)
+  end
+
+  @spec active_trips_by_date(:ets.tid(), Util.Time.timestamp(), Util.Time.timestamp()) :: %{
           Date.t() => [Trip.t()]
         }
-  def active_trips_by_date(%__MODULE__{trips: trips, calendar: calendar}, start_time, end_time) do
+  def active_trips_by_date(ets, start_time, end_time) do
+    trips = :ets.lookup_element(ets, :trips, 2)
+    calendar = :ets.lookup_element(ets, :calendar, 2)
+
     # We might cover multiple service dates
     # If we start before 6am, check trips on the previous day
     # It's okay if this date range is a little too broad, since we check trips by time on those dates later
@@ -127,18 +147,18 @@ defmodule Gtfs.Data do
     |> Map.new()
   end
 
-  @spec active_trips(t(), Util.Time.timestamp()) :: [Trip.t()]
-  def active_trips(data, now) do
-    data
+  @spec active_trips(:ets.tid(), Util.Time.timestamp()) :: [Trip.t()]
+  def active_trips(ets, now) do
+    ets
     |> active_trips_by_date(now, now)
     |> Enum.flat_map(fn {_date, trips} -> trips end)
   end
 
-  @spec active_blocks(t(), Util.Time.timestamp(), Util.Time.timestamp()) :: %{
+  @spec active_blocks(:ets.tid(), Util.Time.timestamp(), Util.Time.timestamp()) :: %{
           Route.id() => [Block.id()]
         }
-  def active_blocks(data, start_time, end_time) do
-    active_trips_by_date = active_trips_by_date(data, start_time, end_time)
+  def active_blocks(ets, start_time, end_time) do
+    active_trips_by_date = active_trips_by_date(ets, start_time, end_time)
 
     active_blocks_per_route =
       active_trips_by_date
