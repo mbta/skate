@@ -37,9 +37,7 @@ defmodule Skate.Application do
     environment_variables = [
       gtfs_url: "SKATE_GTFS_URL",
       swiftly_authorization_key: "SWIFTLY_AUTHORIZATION_KEY",
-      swiftly_realtime_vehicles_url: "SWIFTLY_REALTIME_VEHICLES_URL",
-      secret: "SKATE_SECRET",
-      signed_secret: "SKATE_SIGNED_SECRET"
+      swiftly_realtime_vehicles_url: "SWIFTLY_REALTIME_VEHICLES_URL"
     ]
 
     for {application_key, environment_key} <- environment_variables do

@@ -16,7 +16,7 @@ window['_fs_namespace'] = 'FS';
     g.clearUserCookie=function(){};
 })(window,document,window['_fs_namespace'],'script','user');
 
-<%= if @user_info do %>
-  window.userInfo = <%= @user_info |> Jason.encode!() |> Phoenix.HTML.raw() %>
+<%= if @username do %>
+  window.username = <%= @username %>
 <% end %>
 </script>
