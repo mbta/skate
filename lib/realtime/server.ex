@@ -17,15 +17,20 @@ defmodule Realtime.Server do
 
   require Logger
 
-  defstruct by_route_id: %{}, shuttles: []
+  @enforce_keys [:ets]
 
-  @type broadcast_data :: {:vehicles_for_route, Vehicles.for_route()} | {:shuttles, [Vehicle.t()]}
+  defstruct ets: nil
 
-  @typep subscription_key :: {:route_id, Route.id()} | :all_shuttles
+  @type subscription_key :: {:route_id, Route.id()} | :all_shuttles
+
+  @type data_category :: :vehicles | :shuttles
+
+  @type lookup_key :: {:ets.tid(), subscription_key}
+
+  @type broadcast_message :: {:new_realtime_data, data_category, lookup_key}
 
   @typep t :: %__MODULE__{
-           by_route_id: Route.by_id(Vehicles.for_route()),
-           shuttles: [Vehicle.t()]
+           ets: :ets.tid()
          }
 
   # Client functions
@@ -68,15 +73,23 @@ defmodule Realtime.Server do
     GenServer.cast(server, {:update, vehicles_by_route_id, shuttles})
   end
 
+  @spec lookup({:ets.tid(), {:route_id, Route.id()}}) :: Vehicles.for_route()
+  @spec lookup({:ets.tid(), :all_shuttles}) :: [Vehicle.t()]
+  def lookup({table, key}) do
+    :ets.lookup_element(table, key, 2)
+  rescue
+    # :ets.lookup_element/3 exits with :badarg when key is not found
+    ArgumentError ->
+      default_data(key)
+  end
+
   # GenServer callbacks
 
   @impl true
   def init(_opts) do
-    {:ok,
-     %__MODULE__{
-       by_route_id: %{},
-       shuttles: []
-     }}
+    ets = :ets.new(__MODULE__, [:set, :protected, {:read_concurrency, true}])
+
+    {:ok, %__MODULE__{ets: ets}}
   end
 
   # If we get a reply after we've already timed out, ignore it
@@ -88,15 +101,30 @@ defmodule Realtime.Server do
   def handle_call({:subscribe, subscription_key}, _from, %__MODULE__{} = state) do
     registry_key = self()
 
-    {_, data} = data_to_send(state, subscription_key)
+    data = lookup({state.ets, subscription_key})
     {:reply, {registry_key, data}, state}
+  end
+
+  def handle_call(:ets, _from, %__MODULE__{ets: ets} = state) do
+    # used only by tests
+    {:reply, ets, state}
   end
 
   @impl true
   def handle_cast({:update, by_route_id, shuttles}, %__MODULE__{} = state) do
-    state = %{state | by_route_id: by_route_id, shuttles: shuttles}
-    broadcast(state)
+    _ = update_ets(state, by_route_id, shuttles)
+    _ = broadcast(state)
     {:noreply, state}
+  end
+
+  defp update_ets(%__MODULE__{ets: ets}, by_route_id, shuttles) do
+    _ = :ets.delete_all_objects(ets)
+
+    for {route_id, vehicles} <- by_route_id do
+      _ = :ets.insert(ets, {{:route_id, route_id}, vehicles})
+    end
+
+    :ets.insert(ets, {:all_shuttles, shuttles})
   end
 
   @spec broadcast(t()) :: :ok
@@ -108,18 +136,22 @@ defmodule Realtime.Server do
     end)
   end
 
-  @spec send_data({pid, subscription_key}, t) :: {:new_realtime_data, broadcast_data}
+  @spec send_data({pid, subscription_key}, t) :: broadcast_message
   defp send_data({pid, subscription_key}, state) do
-    send(pid, {:new_realtime_data, data_to_send(state, subscription_key)})
+    category =
+      case subscription_key do
+        {:route_id, _} -> :vehicles
+        :all_shuttles -> :shuttles
+      end
+
+    send(pid, {:new_realtime_data, category, {state.ets, subscription_key}})
   end
 
-  @spec data_to_send(t, subscription_key) :: broadcast_data
-  defp data_to_send(%__MODULE__{by_route_id: by_route_id}, {:route_id, route_id}) do
-    data = Map.get(by_route_id, route_id, Vehicles.empty_vehicles_for_route())
-    {:vehicles_for_route, data}
+  defp default_data({:route_id, _}) do
+    Vehicles.empty_vehicles_for_route()
   end
 
-  defp data_to_send(%__MODULE__{shuttles: shuttles}, :all_shuttles) do
-    {:shuttles, shuttles}
+  defp default_data(:all_shuttles) do
+    []
   end
 end
