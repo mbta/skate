@@ -50,7 +50,7 @@ export const drawnStatus = (vehicle: Vehicle): DrawnStatus => {
 export const humanReadableScheduleAdherence = (vehicle: Vehicle): string => {
   if (vehicle.isOffCourse) {
     return "Invalid"
-  } else if (vehicle.isAShuttle) {
+  } else if (isShuttle(vehicle)) {
     return "Active"
   } else {
     return humanReadableOnTimeStatus(
@@ -125,5 +125,5 @@ export const statusClass = (status: DrawnStatus): string => {
   }
 }
 
-const isShuttle = (vehicle: Vehicle): boolean =>
+export const isShuttle = (vehicle: Vehicle): boolean =>
   (vehicle.runId || "").startsWith("999")

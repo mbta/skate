@@ -916,7 +916,7 @@ Array [
               x="0"
               y={31}
             >
-              1
+              0555
             </text>
             <path
               className="m-vehicle-icon__triangle"
@@ -1035,7 +1035,7 @@ Array [
                 x="0"
                 y={18.25}
               >
-                1
+                0555
               </text>
               <path
                 className="m-vehicle-icon__triangle"
@@ -1086,7 +1086,7 @@ Array [
           <td
             className="m-vehicle-properties-panel__vehicle-property-value"
           >
-            run-1
+            999-0555
           </td>
         </tr>
         <tr>

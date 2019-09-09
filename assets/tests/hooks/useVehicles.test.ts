@@ -173,7 +173,6 @@ describe("useVehicles", () => {
         },
       },
       isOnRoute: true,
-      isAShuttle: false,
     },
   ]
 

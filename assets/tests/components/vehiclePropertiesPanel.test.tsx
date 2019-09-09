@@ -75,7 +75,6 @@ const vehicle: Vehicle = {
   },
   scheduledLocation: null,
   isOnRoute: true,
-  isAShuttle: false,
 }
 
 describe("VehiclePropertiesPanel", () => {
@@ -161,7 +160,7 @@ describe("VehiclePropertiesPanel", () => {
   test("renders for a shuttle", () => {
     const shuttleVehicle: Vehicle = {
       ...vehicle,
-      isAShuttle: true,
+      runId: "999-0555",
     }
 
     const tree = renderer

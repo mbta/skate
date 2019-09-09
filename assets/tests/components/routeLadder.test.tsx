@@ -55,7 +55,6 @@ const vehicles: Vehicle[] = [
     },
     scheduledLocation: null,
     isOnRoute: true,
-    isAShuttle: false,
   },
   {
     id: "y0479",
@@ -102,7 +101,6 @@ const vehicles: Vehicle[] = [
       },
     },
     isOnRoute: true,
-    isAShuttle: false,
   },
 ]
 
@@ -366,7 +364,6 @@ describe("routeLadder", () => {
       },
       scheduledLocation: null,
       isOnRoute: true,
-      isAShuttle: false,
     }
 
     const wrapper = mount(

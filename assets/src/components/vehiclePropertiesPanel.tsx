@@ -7,6 +7,7 @@ import featureIsEnabled from "../laboratoryFeatures"
 import {
   drawnStatus,
   humanReadableScheduleAdherence,
+  isShuttle,
   statusClass,
 } from "../models/vehicleStatus"
 import { DataDiscrepancy, Vehicle } from "../realtime.d"
@@ -50,7 +51,7 @@ const scheduleAdherenceLabelString = ({
 
 const ScheduleAdherenceLabel = ({ vehicle }: { vehicle: Vehicle }) => (
   <div className="m-vehicle-properties-panel__schedule-adherence-label">
-    {vehicle.isOffCourse || vehicle.isAShuttle
+    {vehicle.isOffCourse || isShuttle(vehicle)
       ? ""
       : scheduleAdherenceLabelString(vehicle)}
   </div>
@@ -172,14 +173,7 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
   const secondsAgo = (epocTime: number): string =>
     `${epocNowInSeconds - epocTime}s ago`
 
-  const {
-    isAShuttle,
-    isOffCourse,
-    latitude,
-    longitude,
-    stopStatus,
-    timestamp,
-  } = vehicle
+  const { isOffCourse, latitude, longitude, stopStatus, timestamp } = vehicle
 
   return (
     <div className="m-vehicle-properties-panel__location">
@@ -201,7 +195,7 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
       >
         Directions
       </a>
-      {!isAShuttle && (
+      {!isShuttle(vehicle) && (
         <div className="m-vehicle-map">
           <Map vehicles={[vehicle]} centerOnVehicle={vehicle.id} />
         </div>
@@ -311,7 +305,7 @@ const VehiclePropertiesPanel = ({
 }
 
 export const formatRouteVariant = (vehicle: Vehicle): string => {
-  if (vehicle.isAShuttle) {
+  if (isShuttle(vehicle)) {
     return "Shuttle"
   }
 

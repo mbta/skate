@@ -185,7 +185,6 @@ const shuttles: Vehicle[] = [
       },
     },
     isOnRoute: true,
-    isAShuttle: false,
   },
 ]
 

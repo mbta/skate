@@ -46,7 +46,6 @@ const shuttle: Vehicle = {
   },
   scheduledLocation: null,
   isOnRoute: true,
-  isAShuttle: false,
 }
 
 describe("Shuttle Map Page", () => {

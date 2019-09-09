@@ -56,7 +56,6 @@ describe("ladder", () => {
         },
         scheduledLocation: null,
         isOnRoute: true,
-        isAShuttle: false,
       },
       {
         id: "downward",
@@ -103,7 +102,6 @@ describe("ladder", () => {
           },
         },
         isOnRoute: true,
-        isAShuttle: false,
       },
       {
         id: "notimepoint",
@@ -141,7 +139,6 @@ describe("ladder", () => {
         timepointStatus: null,
         scheduledLocation: null,
         isOnRoute: true,
-        isAShuttle: false,
       },
     ]
     const ladderDirection = LadderDirection.ZeroToOne
@@ -237,7 +234,6 @@ describe("ladder", () => {
         },
         scheduledLocation: null,
         isOnRoute: true,
-        isAShuttle: false,
       },
       {
         id: "downward",
@@ -284,7 +280,6 @@ describe("ladder", () => {
           },
         },
         isOnRoute: true,
-        isAShuttle: false,
       },
     ]
     const ladderDirection = LadderDirection.ZeroToOne
@@ -352,7 +347,6 @@ describe("ladder", () => {
           },
         },
         isOnRoute: true,
-        isAShuttle: false,
       },
     ]
     const ladderDirection = LadderDirection.OneToZero
@@ -413,7 +407,6 @@ describe("ladder", () => {
         },
         scheduledLocation: null,
         isOnRoute: true,
-        isAShuttle: false,
       },
       {
         id: "downward",
@@ -460,7 +453,6 @@ describe("ladder", () => {
           },
         },
         isOnRoute: true,
-        isAShuttle: false,
       },
     ]
     const ladderDirection = LadderDirection.ZeroToOne
@@ -523,7 +515,6 @@ describe("ladder", () => {
       },
       scheduledLocation: null,
       isOnRoute: true,
-      isAShuttle: false,
     }
 
     const ladderDirection = LadderDirection.ZeroToOne
@@ -586,7 +577,6 @@ describe("ladder", () => {
         },
         scheduledLocation: null,
         isOnRoute: true,
-        isAShuttle: false,
       },
     ]
     const ladderDirection = LadderDirection.ZeroToOne
@@ -654,7 +644,6 @@ describe("ladder", () => {
           },
         },
         isOnRoute: true,
-        isAShuttle: false,
       },
     ]
     const ladderDirection = LadderDirection.OneToZero
@@ -731,7 +720,6 @@ describe("ladder", () => {
         },
       },
       isOnRoute: true,
-      isAShuttle: false,
     }
 
     const timepoints = ["t0", "t1", "t2"]
@@ -794,7 +782,6 @@ describe("ladder", () => {
         },
         scheduledLocation: null,
         isOnRoute: true,
-        isAShuttle: false,
       },
       {
         id: "downward",
@@ -841,7 +828,6 @@ describe("ladder", () => {
           },
         },
         isOnRoute: true,
-        isAShuttle: false,
       },
       {
         id: "notimepoint",
@@ -879,7 +865,6 @@ describe("ladder", () => {
         timepointStatus: null,
         scheduledLocation: null,
         isOnRoute: true,
-        isAShuttle: false,
       },
     ]
     const ladderDirection = LadderDirection.ZeroToOne
