@@ -54,12 +54,12 @@ defmodule SkateWeb.VehiclesChannel do
 
   @spec push_vehicles(Phoenix.Socket.t(), Server.data_category(), Server.lookup_key()) ::
           {:noreply, Phoenix.Socket.t()}
-  defp push_vehicles(socket, :vehicles, {_table, {:route_id, _}} = lookup) do
+  defp push_vehicles(socket, :vehicles, lookup) do
     push(socket, "vehicles", Server.lookup(lookup))
     {:noreply, socket}
   end
 
-  defp push_vehicles(socket, :shuttles, {_table, :all_shuttles} = lookup) do
+  defp push_vehicles(socket, :shuttles, lookup) do
     push(socket, "shuttles", %{data: Server.lookup(lookup)})
     {:noreply, socket}
   end
