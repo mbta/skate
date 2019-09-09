@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
+    "@rehooks/component-size": "^1.0.3",
     "leaflet": "^1.5.1",
     "leaflet-defaulticon-compatibility": "^0.1.1",
     "phoenix": "file:../deps/phoenix",
