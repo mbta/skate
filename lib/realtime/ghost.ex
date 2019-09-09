@@ -8,6 +8,7 @@ defmodule Realtime.Ghost do
           direction_id: Direction.id(),
           route_id: Route.id(),
           trip_id: Trip.id(),
+          headsign: String.t(),
           block_id: Block.id(),
           via_variant: RoutePattern.via_variant() | nil,
           scheduled_timepoint_status: TimepointStatus.timepoint_status()
@@ -18,6 +19,7 @@ defmodule Realtime.Ghost do
     :direction_id,
     :route_id,
     :trip_id,
+    :headsign,
     :block_id,
     :scheduled_timepoint_status
   ]
@@ -29,6 +31,7 @@ defmodule Realtime.Ghost do
     :direction_id,
     :route_id,
     :trip_id,
+    :headsign,
     :block_id,
     :via_variant,
     :scheduled_timepoint_status
@@ -59,6 +62,7 @@ defmodule Realtime.Ghost do
             direction_id: trip.direction_id,
             route_id: trip.route_id,
             trip_id: trip.id,
+            headsign: trip.headsign,
             block_id: trip.block_id,
             via_variant: trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id),
             scheduled_timepoint_status: timepoint_status
