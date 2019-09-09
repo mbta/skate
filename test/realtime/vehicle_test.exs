@@ -6,6 +6,48 @@ defmodule Realtime.VehicleTest do
   alias Gtfs.{StopTime, Trip}
   alias Realtime.Vehicle
 
+  @vehicle_position %VehiclePosition{
+    bearing: 0,
+    block_id: "S28-2",
+    id: "y1261",
+    label: "1261",
+    last_updated: 1_558_364_020,
+    latitude: 42.31777347,
+    license_plate: nil,
+    longitude: -71.08206019,
+    odometer: nil,
+    operator_id: "72032",
+    operator_name: "MAUPIN",
+    run_id: "138-1038",
+    headway_secs: 900,
+    is_laying_over: false,
+    layover_departure_time: nil,
+    speed: 0.0,
+    status: :IN_TRANSIT_TO,
+    stop_id: "392",
+    stop_sequence: 25,
+    trip_id: "39984755",
+    direction_id: 1,
+    route_id: "28",
+    sources: MapSet.new(["swiftly", "busloc"]),
+    data_discrepancies: [
+      %DataDiscrepancy{
+        attribute: :trip_id,
+        sources: [
+          %{id: "swiftly", value: "swiftly-trip-id"},
+          %{id: "busloc", value: "busloc-trip-id"}
+        ]
+      },
+      %DataDiscrepancy{
+        attribute: :route_id,
+        sources: [
+          %{id: "swiftly", value: "swiftly-route-id"},
+          %{id: "busloc", value: "busloc-route-id"}
+        ]
+      }
+    ]
+  }
+
   describe "from_vehicle_position" do
     setup do
       trip = %Trip{
@@ -51,48 +93,6 @@ defmodule Realtime.VehicleTest do
     end
 
     test "translates Concentrate VehiclePosition into a Vehicle struct" do
-      vehicle_position = %VehiclePosition{
-        bearing: 0,
-        block_id: "S28-2",
-        id: "y1261",
-        label: "1261",
-        last_updated: 1_558_364_020,
-        latitude: 42.31777347,
-        license_plate: nil,
-        longitude: -71.08206019,
-        odometer: nil,
-        operator_id: "72032",
-        operator_name: "MAUPIN",
-        run_id: "138-1038",
-        headway_secs: 900,
-        is_laying_over: false,
-        layover_departure_time: nil,
-        speed: 0.0,
-        status: :IN_TRANSIT_TO,
-        stop_id: "392",
-        stop_sequence: 25,
-        trip_id: "39984755",
-        direction_id: 1,
-        route_id: "28",
-        sources: MapSet.new(["swiftly", "busloc"]),
-        data_discrepancies: [
-          %DataDiscrepancy{
-            attribute: :trip_id,
-            sources: [
-              %{id: "swiftly", value: "swiftly-trip-id"},
-              %{id: "busloc", value: "busloc-trip-id"}
-            ]
-          },
-          %DataDiscrepancy{
-            attribute: :route_id,
-            sources: [
-              %{id: "swiftly", value: "swiftly-route-id"},
-              %{id: "busloc", value: "busloc-route-id"}
-            ]
-          }
-        ]
-      }
-
       expected_result = %Vehicle{
         id: "y1261",
         label: "1261",
@@ -151,9 +151,16 @@ defmodule Realtime.VehicleTest do
         route_status: :on_route
       }
 
-      result = Vehicle.from_vehicle_position(vehicle_position)
+      result = Vehicle.from_vehicle_position(@vehicle_position)
 
       assert result == expected_result
+    end
+
+    test "missing headway_secs results in missing headway_spacing" do
+      vehicle_position = %{@vehicle_position | headway_secs: nil}
+      result = Vehicle.from_vehicle_position(vehicle_position)
+      assert result.headway_secs == nil
+      assert result.headway_spacing == nil
     end
   end
 
