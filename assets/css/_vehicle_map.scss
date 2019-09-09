@@ -1,6 +1,7 @@
 .m-vehicle-map {
-  height: 30rem;
+  flex: 1 1 auto;
   margin-top: 1rem;
+  min-height: 5rem;
 }
 
 .m-vehicle-map__label {
