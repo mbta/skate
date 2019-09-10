@@ -157,6 +157,19 @@ describe("VehiclePropertiesPanel", () => {
     expect(tree).toMatchSnapshot()
   })
 
+  test("renders for a shuttle", () => {
+    const shuttleVehicle: Vehicle = {
+      ...vehicle,
+      runId: "999-0555",
+    }
+
+    const tree = renderer
+      .create(<VehiclePropertiesPanel selectedVehicle={shuttleVehicle} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
   test("renders data discrepancies when in debug mode", () => {
     jest.spyOn(URLSearchParams.prototype, "get").mockImplementation(_key => "1")
 

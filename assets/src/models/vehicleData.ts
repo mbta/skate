@@ -21,7 +21,7 @@ type RawHeadwaySpacing =
 export interface VehicleData {
   id: string
   label: string
-  run_id: string
+  run_id: string | null
   timestamp: number
   latitude: number
   longitude: number

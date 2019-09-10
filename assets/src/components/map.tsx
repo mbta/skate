@@ -11,8 +11,9 @@ import React, {
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClass } from "../models/vehicleStatus"
-import { Vehicle } from "../realtime.d"
+import { Vehicle, VehicleId } from "../realtime.d"
 import { VehicleLabelSetting } from "../settings"
+import { Dispatch, selectVehicle as selectVehicleAction } from "../state"
 
 interface Props {
   vehicles: Vehicle[]
@@ -55,11 +56,15 @@ const vehicleIconProps = (vehicle: Vehicle): Leaflet.DivIconOptions => ({
   className: "m-vehicle-map__icon",
 })
 
+const selectVehicle = ({ id }: Vehicle, dispatch: Dispatch) => () =>
+  dispatch(selectVehicleAction(id))
+
 const updateVehicle = (
   vehicle: Vehicle,
   { map, markers }: State,
   labelSetting: VehicleLabelSetting,
-  centerOnVehicle: string | null
+  centerOnVehicle: string | null,
+  selectedVehicleId?: VehicleId
 ): void => {
   const markersForVehicle = markers[vehicle.id]
   if (!markersForVehicle) {
@@ -68,17 +73,26 @@ const updateVehicle = (
 
   const { icon: vehicleIcon, label: vehicleLabel } = markersForVehicle
 
-  const { latitude, longitude } = vehicle
+  const { id: vehicleId, latitude, longitude } = vehicle
   const zoom = map!.getZoom()
 
   const labelString = vehicleLabelString(vehicle, labelSetting)
 
   const icon = Leaflet.divIcon(vehicleIconProps(vehicle))
 
+  const selectedClass = vehicleId === selectedVehicleId ? "selected" : ""
   const label = Leaflet.divIcon({
-    className: "m-vehicle-map__label",
+    className: `m-vehicle-map__label ${selectedClass}`,
     html: `<svg>
-            <text class="m-vehicle-icon__label">${labelString}</text>
+            <rect
+                class="m-vehicle-icon__label-background"
+                width="42" height="16"
+                x="-8" y="-10"
+                rx="5.5px" ry="5.5px"
+              />
+            <text class="m-vehicle-icon__label" x="-3" y="3">
+              ${labelString}
+            </text>
           </svg>`,
     iconAnchor: [12, -24],
   })
@@ -97,15 +111,19 @@ const updateVehicle = (
 export const updateMap = (
   { vehicles, centerOnVehicle }: Props,
   state: State,
-  labelSetting: VehicleLabelSetting
+  labelSetting: VehicleLabelSetting,
+  selectedVehicleId?: VehicleId
 ): void => {
-  vehicles.forEach(v => updateVehicle(v, state, labelSetting, centerOnVehicle))
+  vehicles.forEach(v =>
+    updateVehicle(v, state, labelSetting, centerOnVehicle, selectedVehicleId)
+  )
 }
 
 export const updateMarkers = (
   newVehicles: { [id: string]: Vehicle },
   oldDict: MarkerDict,
-  map: LeafletMap
+  map: LeafletMap,
+  dispatch: Dispatch
 ): MarkerDict => {
   const newDict = Object.entries(oldDict).reduce(
     (acc: MarkerDict, [vehicleId, existingMarkers]) => {
@@ -125,10 +143,14 @@ export const updateMarkers = (
       acc[id] = {
         icon: Leaflet.marker([vehicle.latitude, vehicle.longitude], {
           icon: Leaflet.divIcon(vehicleIconProps(vehicle)),
-        }).addTo(map),
+        })
+          .on("click", selectVehicle(vehicle, dispatch))
+          .addTo(map),
         label: Leaflet.marker([vehicle.latitude, vehicle.longitude], {
           icon: Leaflet.divIcon(vehicleIconProps(vehicle)),
-        }).addTo(map),
+        })
+          .on("click", selectVehicle(vehicle, dispatch))
+          .addTo(map),
       }
     }
     return acc
@@ -141,7 +163,9 @@ export const defaultCenter = ({
   centerOnVehicle ? undefined : [42.360718, -71.05891]
 
 const Map = (props: Props): ReactElement<HTMLDivElement> => {
-  const [{ settings }] = useContext(StateDispatchContext)
+  const [{ selectedVehicleId, settings }, dispatch] = useContext(
+    StateDispatchContext
+  )
   const containerRef: MutableRefObject<HTMLDivElement | null> = useRef(null)
   const [state, updateState] = useState<State>({
     map: null,
@@ -179,9 +203,14 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
       {} as { [id: string]: Vehicle }
     )
 
-    const markers = updateMarkers(newVehicles, state.markers, map)
+    const markers = updateMarkers(newVehicles, state.markers, map, dispatch)
 
-    updateMap(props, { map, markers, zoom }, settings.vehicleLabel)
+    updateMap(
+      props,
+      { map, markers, zoom },
+      settings.vehicleLabel,
+      selectedVehicleId
+    )
 
     updateState({ map, markers, zoom })
   }, [props, containerRef])

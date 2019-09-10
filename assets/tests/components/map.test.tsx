@@ -65,6 +65,8 @@ const vehicle: Vehicle = {
   isOnRoute: true,
 }
 
+const mockDispatch = () => ({})
+
 describe("map", () => {
   test("renders", () => {
     const tree = renderer
@@ -117,7 +119,7 @@ describe("updateMarkers", () => {
       [vehicle.id]: vehicle,
     }
 
-    const icons = updateMarkers(vehicles, {}, map)
+    const icons = updateMarkers(vehicles, {}, map, mockDispatch)
 
     expect(Object.keys(icons)).toEqual([vehicle.id])
     expect(icons[vehicle.id]!.icon.getLatLng()).toEqual({
@@ -140,7 +142,7 @@ describe("updateMarkers", () => {
       },
     }
 
-    const icons = updateMarkers({}, existingVehicles, map)
+    const icons = updateMarkers({}, existingVehicles, map, mockDispatch)
     expect(icons[vehicle.id]).toBeUndefined()
   })
 
@@ -158,7 +160,8 @@ describe("updateMarkers", () => {
     const icons = updateMarkers(
       { [vehicle.id]: vehicle },
       { [vehicle.id]: { label, icon } },
-      map
+      map,
+      mockDispatch
     )
 
     expect(icons[vehicle.id]).toEqual({ label, icon })

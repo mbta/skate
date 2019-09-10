@@ -113,17 +113,14 @@ describe("humanReadableScheduleAdherence", () => {
   test("returns on time status for an on course vehicle", () => {
     const onTime: Vehicle = {
       scheduleAdherenceSecs: 5,
-      isOffCourse: false,
     } as Vehicle
     expect(humanReadableScheduleAdherence(onTime)).toEqual("on time")
     const early: Vehicle = {
       scheduleAdherenceSecs: -500,
-      isOffCourse: false,
     } as Vehicle
     expect(humanReadableScheduleAdherence(early)).toEqual("early")
     const late: Vehicle = {
       scheduleAdherenceSecs: 500,
-      isOffCourse: false,
     } as Vehicle
     expect(humanReadableScheduleAdherence(late)).toEqual("late")
   })

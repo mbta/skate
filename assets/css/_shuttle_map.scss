@@ -1,4 +1,8 @@
 .m-shuttle-map__map {
   position: fixed;
   right: 0;
+
+  .m-vehicle-map__label.selected .m-vehicle-icon__label-background {
+    fill: $color-secondary-medium;
+  }
 }

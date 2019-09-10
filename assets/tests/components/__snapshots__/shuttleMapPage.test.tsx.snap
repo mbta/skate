@@ -62,6 +62,242 @@ exports[`Shuttle Map Page renders 1`] = `
 </div>
 `;
 
+exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
+<div
+  className="m-shuttle-map"
+>
+  <div
+    className="m-picker-container visible"
+  >
+    <div
+      className="m-picker-container__tab"
+    >
+      <button
+        className="m-picker-container__tab-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <div
+      className="m-route-picker"
+    >
+      <div
+        className="m-route-picker__label"
+      >
+        Run #
+      </div>
+      <ul
+        className="m-route-picker__route-list"
+      >
+        <li>
+          <button
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
+            onClick={[Function]}
+          >
+            999-0555
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div
+    className="m-shuttle-map__map"
+    style={
+      Object {
+        "height": 768,
+        "width": 1024,
+      }
+    }
+  >
+    <div
+      id="id-vehicle-map"
+    />
+  </div>
+  <div
+    className="m-vehicle-properties-panel"
+    id="m-vehicle-properties-panel"
+  >
+    <div
+      className="m-vehicle-properties-panel__header"
+    >
+      <div
+        className="m-vehicle-properties-panel__label"
+      >
+        <svg
+          style={
+            Object {
+              "height": 64,
+              "width": 64,
+            }
+          }
+          viewBox="-32 -20 64 64"
+        >
+          <g
+            className="m-vehicle-icon m-vehicle-icon--large "
+          >
+            <rect
+              className="m-vehicle-icon__label-background"
+              height={24}
+              rx={12}
+              ry={12}
+              width={64}
+              x={-32}
+              y={19}
+            />
+            <text
+              className="m-vehicle-icon__label"
+              dominantBaseline="central"
+              textAnchor="middle"
+              x="0"
+              y={31}
+            >
+              0555
+            </text>
+            <path
+              className="m-vehicle-icon__triangle"
+              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              transform="scale(1) rotate(0) translate(-24,-22)"
+            />
+            <text
+              className="m-vehicle-icon__variant"
+              dominantBaseline="alphabetic"
+              textAnchor="middle"
+              x={0}
+              y={14}
+            >
+              4
+            </text>
+          </g>
+        </svg>
+      </div>
+      <div
+        className="m-vehicle-properties-panel__variant"
+      >
+        <div
+          className="m-vehicle-properties-panel__inbound-outbound"
+        >
+          
+        </div>
+        <div
+          className="m-vehicle-properties-panel__variant-name"
+        >
+          Shuttle
+        </div>
+      </div>
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <table
+      className="m-vehicle-properties-panel__vehicle-properties"
+    >
+      <tbody>
+        <tr>
+          <th
+            className="m-vehicle-properties-panel__vehicle-property-label"
+          >
+            Run
+          </th>
+          <td
+            className="m-vehicle-properties-panel__vehicle-property-value"
+          >
+            Special 999 555
+          </td>
+        </tr>
+        <tr>
+          <th
+            className="m-vehicle-properties-panel__vehicle-property-label"
+          >
+            Vehicle
+          </th>
+          <td
+            className="m-vehicle-properties-panel__vehicle-property-value"
+          >
+            1818
+          </td>
+        </tr>
+        <tr>
+          <th
+            className="m-vehicle-properties-panel__vehicle-property-label"
+          >
+            Operator
+          </th>
+          <td
+            className="m-vehicle-properties-panel__vehicle-property-value"
+          >
+            SMITH
+             #
+            op1
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div
+      className="m-vehicle-properties-panel__location"
+    >
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-label"
+      >
+        Next Stop
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-value"
+      >
+        <span
+          className="m-vehicle-properties-panel__not-available"
+        >
+          Not available
+        </span>
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-label"
+      >
+        Last GPS Ping
+      </div>
+      <div
+        className="m-vehicle-properties-panel__vehicle-property-value"
+      >
+        -1557160073s ago
+      </div>
+      <a
+        className="m-vehicle-properties-panel__link"
+        href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+      >
+        Directions
+      </a>
+    </div>
+    <button
+      className="m-vehicle-properties-panel__close"
+      onClick={[Function]}
+    >
+      Close
+    </button>
+  </div>
+  <div
+    className="m-vehicle-properties-panel__modal-overlay"
+    onClick={[Function]}
+  />
+</div>
+`;
+
 exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
 <div
   className="m-shuttle-map"

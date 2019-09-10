@@ -4,6 +4,8 @@ import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
 import vehicleLabel from "../helpers/vehicleLabel"
 import useInterval from "../hooks/useInterval"
 import featureIsEnabled from "../laboratoryFeatures"
+import { formattedRunNumber } from "../models/shuttle"
+import { isShuttle } from "../models/vehicle"
 import {
   drawnStatus,
   humanReadableScheduleAdherence,
@@ -113,7 +115,7 @@ const Header = ({
         {shouldShowHeadwayDiagram(vehicle) ? (
           <HeadwayTarget vehicle={vehicle} />
         ) : (
-          <ScheduleAdherence vehicle={vehicle} />
+          !isShuttle(vehicle) && <ScheduleAdherence vehicle={vehicle} />
         )}
       </div>
       <CloseButton onClick={hideMe} />
@@ -121,40 +123,42 @@ const Header = ({
   )
 }
 
-const Properties = ({
-  vehicle: { runId, label, operatorId, operatorName },
-}: {
-  vehicle: Vehicle
-}) => (
-  <table className="m-vehicle-properties-panel__vehicle-properties">
-    <tbody>
-      <tr>
-        <th className="m-vehicle-properties-panel__vehicle-property-label">
-          Run
-        </th>
-        <td className="m-vehicle-properties-panel__vehicle-property-value">
-          {runId || "Not Available"}
-        </td>
-      </tr>
-      <tr>
-        <th className="m-vehicle-properties-panel__vehicle-property-label">
-          Vehicle
-        </th>
-        <td className="m-vehicle-properties-panel__vehicle-property-value">
-          {label}
-        </td>
-      </tr>
-      <tr>
-        <th className="m-vehicle-properties-panel__vehicle-property-label">
-          Operator
-        </th>
-        <td className="m-vehicle-properties-panel__vehicle-property-value">
-          {operatorName} #{operatorId}
-        </td>
-      </tr>
-    </tbody>
-  </table>
-)
+const Properties = ({ vehicle }: { vehicle: Vehicle }) => {
+  const { runId, label, operatorId, operatorName } = vehicle
+
+  return (
+    <table className="m-vehicle-properties-panel__vehicle-properties">
+      <tbody>
+        <tr>
+          <th className="m-vehicle-properties-panel__vehicle-property-label">
+            Run
+          </th>
+          <td className="m-vehicle-properties-panel__vehicle-property-value">
+            {isShuttle(vehicle)
+              ? formattedRunNumber(vehicle)
+              : runId || "Not Available"}
+          </td>
+        </tr>
+        <tr>
+          <th className="m-vehicle-properties-panel__vehicle-property-label">
+            Vehicle
+          </th>
+          <td className="m-vehicle-properties-panel__vehicle-property-value">
+            {label}
+          </td>
+        </tr>
+        <tr>
+          <th className="m-vehicle-properties-panel__vehicle-property-label">
+            Operator
+          </th>
+          <td className="m-vehicle-properties-panel__vehicle-property-value">
+            {operatorName} #{operatorId}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  )
+}
 
 const NotAvailable = () => (
   <span className="m-vehicle-properties-panel__not-available">
@@ -178,7 +182,11 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
         Next Stop
       </div>
       <div className="m-vehicle-properties-panel__vehicle-property-value">
-        {isOffCourse ? <NotAvailable /> : <>{stopStatus.stopName}</>}
+        {isOffCourse || isShuttle(vehicle) ? (
+          <NotAvailable />
+        ) : (
+          <>{stopStatus.stopName}</>
+        )}
       </div>
       <div className="m-vehicle-properties-panel__vehicle-property-label">
         Last GPS Ping
@@ -192,9 +200,11 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
       >
         Directions
       </a>
-      <div className="m-vehicle-map">
-        <Map vehicles={[vehicle]} centerOnVehicle={vehicle.id} />
-      </div>
+      {!isShuttle(vehicle) && (
+        <div className="m-vehicle-map">
+          <Map vehicles={[vehicle]} centerOnVehicle={vehicle.id} />
+        </div>
+      )}
     </div>
   )
 }
@@ -300,6 +310,10 @@ const VehiclePropertiesPanel = ({
 }
 
 export const formatRouteVariant = (vehicle: Vehicle): string => {
+  if (isShuttle(vehicle)) {
+    return "Shuttle"
+  }
+
   const { routeId, viaVariant, headsign } = vehicle
   const viaVariantFormatted = viaVariant && viaVariant !== "_" ? viaVariant : ""
   const headsignFormatted = headsign ? ` ${headsign}` : ""
