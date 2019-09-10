@@ -289,7 +289,11 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
       <div
         className="m-vehicle-properties-panel__vehicle-property-value"
       >
-        57
+        <span
+          className="m-vehicle-properties-panel__not-available"
+        >
+          Not available
+        </span>
       </div>
       <div
         className="m-vehicle-properties-panel__vehicle-property-label"

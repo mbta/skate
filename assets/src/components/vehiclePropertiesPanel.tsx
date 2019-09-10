@@ -181,7 +181,11 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
         Next Stop
       </div>
       <div className="m-vehicle-properties-panel__vehicle-property-value">
-        {isOffCourse ? <NotAvailable /> : <>{stopStatus.stopName}</>}
+        {isOffCourse || isShuttle(vehicle) ? (
+          <NotAvailable />
+        ) : (
+          <>{stopStatus.stopName}</>
+        )}
       </div>
       <div className="m-vehicle-properties-panel__vehicle-property-label">
         Last GPS Ping

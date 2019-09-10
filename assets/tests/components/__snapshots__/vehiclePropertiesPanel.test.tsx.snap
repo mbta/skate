@@ -1128,7 +1128,11 @@ Array [
       <div
         className="m-vehicle-properties-panel__vehicle-property-value"
       >
-        Stop Name
+        <span
+          className="m-vehicle-properties-panel__not-available"
+        >
+          Not available
+        </span>
       </div>
       <div
         className="m-vehicle-properties-panel__vehicle-property-label"
