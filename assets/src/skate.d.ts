@@ -11,10 +11,7 @@ declare global {
         }
       ): void
     }
-    userInfo?: {
-      id: string
-      username: string
-    }
+    username: string
   }
 }
 
