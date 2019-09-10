@@ -21,6 +21,10 @@ const prefix = (run: string): string => {
       return "Orange "
     case "0504":
       return "Red "
+    case "0505":
+      return "Commuter Rail "
+    case "0555":
+      return "Special "
     default:
       return ""
   }

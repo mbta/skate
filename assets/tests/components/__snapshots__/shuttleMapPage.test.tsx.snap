@@ -219,7 +219,7 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
           <td
             className="m-vehicle-properties-panel__vehicle-property-value"
           >
-            999 555
+            Special 999 555
           </td>
         </tr>
         <tr>
