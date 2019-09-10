@@ -7,6 +7,8 @@ import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Vehicle } from "../../src/realtime"
 import { initialState } from "../../src/state"
 
+jest.spyOn(Date, "now").mockImplementation(() => 234000)
+
 const shuttle: Vehicle = {
   id: "y1818",
   label: "1818",
@@ -68,6 +70,25 @@ describe("Shuttle Map Page", () => {
           state={{ ...initialState, selectedShuttleRunIds: [shuttle.runId!] }}
           dispatch={dispatch}
         >
+          <ShuttleVehiclesProvider shuttles={[shuttle]}>
+            <ShuttleMapPage />
+          </ShuttleVehiclesProvider>
+        </StateDispatchProvider>
+      )
+      .toJSON()
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders a selected shuttle vehicle", () => {
+    const dispatch = jest.fn()
+    const state = {
+      ...initialState,
+      selectedShuttleRunIds: [shuttle.runId!],
+      selectedVehicleId: shuttle.id,
+    }
+    const tree = renderer
+      .create(
+        <StateDispatchProvider state={state} dispatch={dispatch}>
           <ShuttleVehiclesProvider shuttles={[shuttle]}>
             <ShuttleMapPage />
           </ShuttleVehiclesProvider>
