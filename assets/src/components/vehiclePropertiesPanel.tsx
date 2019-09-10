@@ -51,9 +51,7 @@ const scheduleAdherenceLabelString = ({
 
 const ScheduleAdherenceLabel = ({ vehicle }: { vehicle: Vehicle }) => (
   <div className="m-vehicle-properties-panel__schedule-adherence-label">
-    {vehicle.isOffCourse || isShuttle(vehicle)
-      ? ""
-      : scheduleAdherenceLabelString(vehicle)}
+    {vehicle.isOffCourse ? "" : scheduleAdherenceLabelString(vehicle)}
   </div>
 )
 
@@ -116,7 +114,7 @@ const Header = ({
         {shouldShowHeadwayDiagram(vehicle) ? (
           <HeadwayTarget vehicle={vehicle} />
         ) : (
-          <ScheduleAdherence vehicle={vehicle} />
+          !isShuttle(vehicle) && <ScheduleAdherence vehicle={vehicle} />
         )}
       </div>
       <CloseButton onClick={hideMe} />

@@ -191,34 +191,6 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
         >
           Shuttle
         </div>
-        <div
-          className="m-vehicle-properties-panel__schedule-adherence "
-        >
-          <div
-            className="m-vehicle-properties-panel__schedule-adherence-status-icon"
-          >
-            <svg
-              height="10"
-              width="10"
-            >
-              <circle
-                cx="5"
-                cy="5"
-                r="5"
-              />
-            </svg>
-          </div>
-          <div
-            className="m-vehicle-properties-panel__schedule-adherence-status-string"
-          >
-            Active
-          </div>
-          <div
-            className="m-vehicle-properties-panel__schedule-adherence-label"
-          >
-            
-          </div>
-        </div>
       </div>
       <button
         className="m-close-button"

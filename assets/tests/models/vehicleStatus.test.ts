@@ -111,14 +111,6 @@ describe("humanReadableScheduleAdherence", () => {
     expect(humanReadableScheduleAdherence(vehicle)).toEqual("Invalid")
   })
 
-  test("returns active for a shuttle vehicle", () => {
-    const vehicle: Vehicle = {
-      runId: "999-0555",
-      scheduleAdherenceSecs: 0,
-    } as Vehicle
-    expect(humanReadableScheduleAdherence(vehicle)).toEqual("Active")
-  })
-
   test("returns on time status for an on course vehicle", () => {
     const onTime: Vehicle = {
       scheduleAdherenceSecs: 5,
