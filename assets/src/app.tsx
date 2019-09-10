@@ -17,10 +17,16 @@ import "leaflet/dist/leaflet.css"
 import "phoenix_html"
 import * as React from "react"
 import ReactDOM from "react-dom"
+import ResizeObserver from "resize-observer-polyfill"
 import AppStateWrapper from "./components/appStateWrapper"
 
 if (window.FS && window.username) {
   window.FS.identify(window.username, { displayName: window.username })
+}
+
+if (!("ResizeObserver" in global)) {
+  // Load polyfill for https://github.com/rehooks/component-size
+  window.ResizeObserver = ResizeObserver
 }
 
 // Import local files
