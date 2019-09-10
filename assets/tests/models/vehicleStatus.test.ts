@@ -5,7 +5,6 @@ import {
   headwaySpacingToString,
   humanReadableHeadwaySpacing,
   humanReadableScheduleAdherence,
-  isShuttle,
   onTimeStatus,
   statusClass,
 } from "../../src/models/vehicleStatus"
@@ -168,15 +167,5 @@ describe("status class", () => {
 
   test("other statuses have a class", () => {
     expect(statusClass("off-course")).toEqual("off-course")
-  })
-})
-
-describe("isShuttle", () => {
-  test("true if the vehicle's runId starts with 999", () => {
-    const shuttle = { runId: "999-0555" } as Vehicle
-    const notShuttle = { runId: "998-0555" } as Vehicle
-
-    expect(isShuttle(shuttle)).toBeTruthy()
-    expect(isShuttle(notShuttle)).toBeFalsy()
   })
 })

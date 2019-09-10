@@ -4,10 +4,10 @@ import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
 import vehicleLabel from "../helpers/vehicleLabel"
 import useInterval from "../hooks/useInterval"
 import featureIsEnabled from "../laboratoryFeatures"
+import { isShuttle } from "../models/vehicle"
 import {
   drawnStatus,
   humanReadableScheduleAdherence,
-  isShuttle,
   statusClass,
 } from "../models/vehicleStatus"
 import { DataDiscrepancy, Vehicle } from "../realtime.d"

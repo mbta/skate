@@ -1,5 +1,6 @@
 import featureIsEnabled from "../laboratoryFeatures"
 import { Vehicle } from "../realtime.d"
+import { isShuttle } from "./vehicle"
 
 /** Where a vehicle is relative to its schedule.
  * Swiftly assigns this to all vehicles.
@@ -117,6 +118,3 @@ export const statusClass = (status: DrawnStatus): string => {
       return status
   }
 }
-
-export const isShuttle = (vehicle: Vehicle): boolean =>
-  (vehicle.runId || "").startsWith("999")
