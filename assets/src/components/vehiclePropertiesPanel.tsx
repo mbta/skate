@@ -4,6 +4,7 @@ import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
 import vehicleLabel from "../helpers/vehicleLabel"
 import useInterval from "../hooks/useInterval"
 import featureIsEnabled from "../laboratoryFeatures"
+import { formattedRunNumber } from "../models/shuttle"
 import { isShuttle } from "../models/vehicle"
 import {
   drawnStatus,
@@ -122,40 +123,42 @@ const Header = ({
   )
 }
 
-const Properties = ({
-  vehicle: { runId, label, operatorId, operatorName },
-}: {
-  vehicle: Vehicle
-}) => (
-  <table className="m-vehicle-properties-panel__vehicle-properties">
-    <tbody>
-      <tr>
-        <th className="m-vehicle-properties-panel__vehicle-property-label">
-          Run
-        </th>
-        <td className="m-vehicle-properties-panel__vehicle-property-value">
-          {runId || "Not Available"}
-        </td>
-      </tr>
-      <tr>
-        <th className="m-vehicle-properties-panel__vehicle-property-label">
-          Vehicle
-        </th>
-        <td className="m-vehicle-properties-panel__vehicle-property-value">
-          {label}
-        </td>
-      </tr>
-      <tr>
-        <th className="m-vehicle-properties-panel__vehicle-property-label">
-          Operator
-        </th>
-        <td className="m-vehicle-properties-panel__vehicle-property-value">
-          {operatorName} #{operatorId}
-        </td>
-      </tr>
-    </tbody>
-  </table>
-)
+const Properties = ({ vehicle }: { vehicle: Vehicle }) => {
+  const { runId, label, operatorId, operatorName } = vehicle
+
+  return (
+    <table className="m-vehicle-properties-panel__vehicle-properties">
+      <tbody>
+        <tr>
+          <th className="m-vehicle-properties-panel__vehicle-property-label">
+            Run
+          </th>
+          <td className="m-vehicle-properties-panel__vehicle-property-value">
+            {isShuttle(vehicle)
+              ? formattedRunNumber(vehicle)
+              : runId || "Not Available"}
+          </td>
+        </tr>
+        <tr>
+          <th className="m-vehicle-properties-panel__vehicle-property-label">
+            Vehicle
+          </th>
+          <td className="m-vehicle-properties-panel__vehicle-property-value">
+            {label}
+          </td>
+        </tr>
+        <tr>
+          <th className="m-vehicle-properties-panel__vehicle-property-label">
+            Operator
+          </th>
+          <td className="m-vehicle-properties-panel__vehicle-property-value">
+            {operatorName} #{operatorId}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  )
+}
 
 const NotAvailable = () => (
   <span className="m-vehicle-properties-panel__not-available">
