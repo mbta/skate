@@ -36,7 +36,11 @@ describe("usePersistedStateReducer", () => {
       selectedRouteIds: ["1", "2"],
       selectedShuttleRunIds: [],
       selectedVehicleId: "2",
-      settings: { vehicleLabel: VehicleLabelSetting.RunNumber },
+      settings: {
+        vehicleLabel: undefined,
+        ladderVehicleLabel: VehicleLabelSetting.RunNumber,
+        mapVehicleLabel: VehicleLabelSetting.VehicleNumber,
+      },
     }
 
     const { result } = renderHook(() =>
@@ -52,7 +56,8 @@ describe("usePersistedStateReducer", () => {
     jest
       .spyOn(window.localStorage, "getItem")
       .mockImplementation(
-        (_stateKey: string) => '{"selectedRouteIds":["28","39"]}'
+        (_stateKey: string) =>
+          '{"selectedRouteIds":["28","39"],"settings":{"ladderVehicleLabel":1,"mapVehicleLabel":1}}'
       )
 
     const initialState: State = {
@@ -60,14 +65,61 @@ describe("usePersistedStateReducer", () => {
       selectedRouteIds: ["1", "2"],
       selectedShuttleRunIds: [],
       selectedVehicleId: "2",
-      settings: { vehicleLabel: VehicleLabelSetting.RunNumber },
+      settings: {
+        vehicleLabel: undefined,
+        ladderVehicleLabel: VehicleLabelSetting.RunNumber,
+        mapVehicleLabel: VehicleLabelSetting.VehicleNumber,
+      },
     }
     const expectedState: State = {
       pickerContainerIsVisible: true,
       selectedRouteIds: ["28", "39"],
       selectedShuttleRunIds: [],
       selectedVehicleId: "2",
-      settings: { vehicleLabel: VehicleLabelSetting.RunNumber },
+      settings: {
+        vehicleLabel: undefined,
+        ladderVehicleLabel: VehicleLabelSetting.RunNumber,
+        mapVehicleLabel: VehicleLabelSetting.RunNumber,
+      },
+    }
+
+    const { result } = renderHook(() =>
+      usePersistedStateReducer(reducer, initialState)
+    )
+    const [state] = result.current
+
+    expect(state).toEqual(expectedState)
+  })
+
+  test("fixes deprecated vehicleLabel settings property", () => {
+    jest
+      .spyOn(window.localStorage, "getItem")
+      .mockImplementation(
+        (_stateKey: string) =>
+          '{"selectedRouteIds":["28","39"],"settings":{"vehicleLabel":2}}'
+      )
+
+    const initialState: State = {
+      pickerContainerIsVisible: true,
+      selectedRouteIds: ["1", "2"],
+      selectedShuttleRunIds: [],
+      selectedVehicleId: "2",
+      settings: {
+        vehicleLabel: undefined,
+        ladderVehicleLabel: VehicleLabelSetting.RunNumber,
+        mapVehicleLabel: VehicleLabelSetting.VehicleNumber,
+      },
+    }
+    const expectedState: State = {
+      pickerContainerIsVisible: true,
+      selectedRouteIds: ["28", "39"],
+      selectedShuttleRunIds: [],
+      selectedVehicleId: "2",
+      settings: {
+        vehicleLabel: undefined,
+        ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
+        mapVehicleLabel: VehicleLabelSetting.VehicleNumber,
+      },
     }
 
     const { result } = renderHook(() =>

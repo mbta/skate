@@ -37,7 +37,7 @@ const IncomingBoxVehicle = ({
         status={drawnStatus(vehicle)}
       />
       <div className="m-incoming-box__vehicle-label">
-        {vehicleLabel(vehicle, settings.vehicleLabel)}
+        {vehicleLabel(vehicle, settings.ladderVehicleLabel)}
       </div>
     </button>
   )

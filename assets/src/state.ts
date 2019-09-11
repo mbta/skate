@@ -99,19 +99,35 @@ export const togglePickerContainer = (): TogglePickerContainerAction => ({
   type: "TOGGLE_PICKER_CONTAINER",
 })
 
-interface SetVehicleLabelSettingAction {
-  type: "SET_VEHICLE_LABEL_SETTING"
+interface SetLadderVehicleLabelSettingAction {
+  type: "SET_LADDER_VEHICLE_LABEL_SETTING"
   payload: {
-    vehicleLabel: VehicleLabelSetting
+    ladderVehicleLabel: VehicleLabelSetting
   }
 }
 
-export const setVehicleLabelSetting = (
-  vehicleLabel: VehicleLabelSetting
-): SetVehicleLabelSettingAction => ({
-  type: "SET_VEHICLE_LABEL_SETTING",
+export const setLadderVehicleLabelSetting = (
+  ladderVehicleLabel: VehicleLabelSetting
+): SetLadderVehicleLabelSettingAction => ({
+  type: "SET_LADDER_VEHICLE_LABEL_SETTING",
   payload: {
-    vehicleLabel,
+    ladderVehicleLabel,
+  },
+})
+
+interface SetMapVehicleLabelSettingAction {
+  type: "SET_MAP_VEHICLE_LABEL_SETTING"
+  payload: {
+    mapVehicleLabel: VehicleLabelSetting
+  }
+}
+
+export const setMapVehicleLabelSetting = (
+  mapVehicleLabel: VehicleLabelSetting
+): SetMapVehicleLabelSettingAction => ({
+  type: "SET_MAP_VEHICLE_LABEL_SETTING",
+  payload: {
+    mapVehicleLabel,
   },
 })
 
@@ -123,7 +139,8 @@ type Action =
   | SelectVehicleAction
   | DeselectVehicleAction
   | TogglePickerContainerAction
-  | SetVehicleLabelSettingAction
+  | SetLadderVehicleLabelSettingAction
+  | SetMapVehicleLabelSettingAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -175,12 +192,20 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         pickerContainerIsVisible: !state.pickerContainerIsVisible,
       }
-    case "SET_VEHICLE_LABEL_SETTING":
+    case "SET_LADDER_VEHICLE_LABEL_SETTING":
       return {
         ...state,
         settings: {
           ...state.settings,
-          vehicleLabel: action.payload.vehicleLabel,
+          ladderVehicleLabel: action.payload.ladderVehicleLabel,
+        },
+      }
+    case "SET_MAP_VEHICLE_LABEL_SETTING":
+      return {
+        ...state,
+        settings: {
+          ...state.settings,
+          mapVehicleLabel: action.payload.mapVehicleLabel,
         },
       }
     default:

@@ -170,7 +170,7 @@ const VehicleSvg = ({
           orientation={orientationMatchingVehicle(vehicleDirection)}
           label={vehicleLabel(
             (ladderVehicle as unknown) as Vehicle,
-            settings.vehicleLabel
+            settings.ladderVehicleLabel
           )}
           variant={viaVariant}
           status={status}
