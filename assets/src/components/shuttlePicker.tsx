@@ -1,6 +1,7 @@
 import React, { ReactElement, useContext } from "react"
 import { ShuttleVehiclesContext } from "../contexts/shuttleVehiclesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import { uniq } from "../helpers/array"
 import { Vehicle } from "../realtime"
 import { deselectShuttleRun, selectShuttleRun } from "../state"
 
@@ -19,7 +20,7 @@ const ShuttlePicker = ({}): ReactElement<HTMLDivElement> => {
 const renderRunIdButtons = (
   shuttles: Vehicle[]
 ): Array<ReactElement<HTMLLIElement>> =>
-  Array.from(new Set(shuttles.map(v => v.runId).sort())).map(runId => (
+  uniq(shuttles.map(v => v.runId)).map(runId => (
     <RunIdButton key={runId!} runId={runId!} />
   ))
 
