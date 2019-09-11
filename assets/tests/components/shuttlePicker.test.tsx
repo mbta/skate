@@ -5,7 +5,7 @@ import ShuttlePicker from "../../src/components/shuttlePicker"
 import { ShuttleVehiclesProvider } from "../../src/contexts/shuttleVehiclesContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { Vehicle } from "../../src/realtime"
+import { RunId, Vehicle } from "../../src/realtime"
 import {
   deselectShuttleRun,
   initialState,
@@ -54,11 +54,34 @@ const vehicle: Vehicle = {
 }
 
 describe("ShuttlePicker", () => {
-  test("renders a list of runs", () => {
+  test("renders", () => {
+    /*
+    999-0501: known, no active shuttles, unselected
+    999-0502: known, no active shuttles, selected
+    999-0503: known, active shuttles, unselected
+    999-0504: known, active shuttles, selected
+    999-0511: unknown, unselected
+    999-0512: unknown, selected
+    */
+    const selectedShuttleRunIds: RunId[] = ["999-0502", "999-0504", "999-0512"]
+    const shuttles: Vehicle[] = [
+      { ...vehicle, runId: "999-0503" },
+      { ...vehicle, runId: "999-0504" },
+      { ...vehicle, runId: "999-0511" },
+      { ...vehicle, runId: "999-0512" },
+    ]
     const tree = renderer.create(
-      <ShuttleVehiclesProvider shuttles={[vehicle]}>
-        <ShuttlePicker />
-      </ShuttleVehiclesProvider>
+      <StateDispatchProvider
+        state={{
+          ...initialState,
+          selectedShuttleRunIds,
+        }}
+        dispatch={jest.fn()}
+      >
+        <ShuttleVehiclesProvider shuttles={shuttles}>
+          <ShuttlePicker />
+        </ShuttleVehiclesProvider>
+      </StateDispatchProvider>
     )
 
     expect(tree).toMatchSnapshot()
@@ -74,7 +97,7 @@ describe("ShuttlePicker", () => {
       </StateDispatchProvider>
     )
     wrapper
-      .find(".m-route-picker__route-list-button")
+      .find(".m-route-picker__route-list-button--unselected")
       .first()
       .simulate("click")
 
@@ -94,7 +117,7 @@ describe("ShuttlePicker", () => {
       </StateDispatchProvider>
     )
     wrapper
-      .find(".m-route-picker__route-list-button")
+      .find(".m-route-picker__route-list-button--selected")
       .first()
       .simulate("click")
 

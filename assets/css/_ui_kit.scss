@@ -17,6 +17,13 @@ $color-secondary-dark: #4db6ac;
 $color-secondary-medium: #b8dbd9;
 $color-secondary-light: #d4e7e7;
 
+$color-button-simple: $color-component-light;
+$color-button-primary: $color-primary;
+$color-button-secondary: $color-secondary-dark;
+$color-button-light: $color-bg-base;
+$color-button-disabled: #e6e8ec;
+$color-button-focus: $color-secondary-medium;
+
 $color-font-dark: $color-component-dark;
 $color-font-grey: $color-component-medium;
 $color-font-link: $color-secondary-dark;
@@ -113,23 +120,23 @@ $color-line-gapped-light: #75e8ff;
 
   &:focus,
   &:hover {
-    background-color: $color-secondary-medium;
+    background-color: $color-button-focus;
   }
 }
 
 @mixin button-simple {
   @include button-base;
-  background-color: $color-component-light;
+  background-color: $color-button-simple;
 }
 
 @mixin button-light {
   @include button-base;
-  background-color: $color-bg-base;
+  background-color: $color-button-light;
 }
 
 @mixin button-primary {
   @include button-base;
-  background-color: $color-primary;
+  background-color: $color-button-primary;
   color: $color-font-light;
 
   &:focus,
@@ -140,7 +147,19 @@ $color-line-gapped-light: #75e8ff;
 
 @mixin button-secondary {
   @include button-base;
-  background-color: $color-secondary-dark;
+  background-color: $color-button-secondary;
+}
+
+@mixin button-disabled {
+  @include button-base;
+  background-color: $color-button-disabled;
+  color: $color-font-grey;
+  cursor: default;
+
+  &:focus,
+  &:hover {
+    background-color: $color-button-disabled;
+  }
 }
 
 @mixin button-icon($size) {

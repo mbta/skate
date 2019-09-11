@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ShuttlePicker renders a list of runs 1`] = `
+exports[`ShuttlePicker renders 1`] = `
 <div
   className="m-route-picker"
 >
@@ -14,10 +14,74 @@ exports[`ShuttlePicker renders a list of runs 1`] = `
   >
     <li>
       <button
-        className="m-route-picker__route-list-button "
+        className="m-route-picker__route-list-button m-route-picker__route-list-button--disabled"
+        disabled={true}
         onClick={[Function]}
       >
-        999-0555
+        Special 999-0555
+      </button>
+    </li>
+    <li>
+      <button
+        className="m-route-picker__route-list-button m-route-picker__route-list-button--disabled"
+        disabled={true}
+        onClick={[Function]}
+      >
+        Blue 999-0501
+      </button>
+    </li>
+    <li>
+      <button
+        className="m-route-picker__route-list-button m-route-picker__route-list-button--disabled"
+        disabled={true}
+        onClick={[Function]}
+      >
+        Green 999-0502
+      </button>
+    </li>
+    <li>
+      <button
+        className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+        disabled={false}
+        onClick={[Function]}
+      >
+        Orange 999-0503
+      </button>
+    </li>
+    <li>
+      <button
+        className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
+        disabled={false}
+        onClick={[Function]}
+      >
+        Red 999-0504
+      </button>
+    </li>
+    <li>
+      <button
+        className="m-route-picker__route-list-button m-route-picker__route-list-button--disabled"
+        disabled={true}
+        onClick={[Function]}
+      >
+        Commuter Rail 999-0505
+      </button>
+    </li>
+    <li>
+      <button
+        className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+        disabled={false}
+        onClick={[Function]}
+      >
+        999-0511
+      </button>
+    </li>
+    <li>
+      <button
+        className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
+        disabled={false}
+        onClick={[Function]}
+      >
+        999-0512
       </button>
     </li>
   </ul>

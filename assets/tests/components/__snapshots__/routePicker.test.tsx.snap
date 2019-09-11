@@ -104,7 +104,7 @@ exports[`RoutePicker renders a list of routes 1`] = `
       </li>
       <li>
         <button
-          className="m-route-picker__route-list-button "
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
           onClick={[Function]}
         >
           71
@@ -112,7 +112,7 @@ exports[`RoutePicker renders a list of routes 1`] = `
       </li>
       <li>
         <button
-          className="m-route-picker__route-list-button "
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
           onClick={[Function]}
         >
           73
@@ -120,7 +120,7 @@ exports[`RoutePicker renders a list of routes 1`] = `
       </li>
       <li>
         <button
-          className="m-route-picker__route-list-button "
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
           onClick={[Function]}
         >
           111

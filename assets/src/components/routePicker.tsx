@@ -93,7 +93,7 @@ const RouteListButton = ({
   const [, dispatch] = useContext(StateDispatchContext)
   const selectedClass = isSelected
     ? "m-route-picker__route-list-button--selected"
-    : ""
+    : "m-route-picker__route-list-button--unselected"
   const clickHandler = isSelected
     ? () => dispatch(deselectRoute(route.id))
     : () => dispatch(selectRoute(route.id))

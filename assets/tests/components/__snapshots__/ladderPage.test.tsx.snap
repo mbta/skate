@@ -169,7 +169,7 @@ exports[`LadderPage renders with routes 1`] = `
         </li>
         <li>
           <button
-            className="m-route-picker__route-list-button "
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
             onClick={[Function]}
           >
             28
@@ -497,7 +497,7 @@ exports[`LadderPage renders with timepoints 1`] = `
       >
         <li>
           <button
-            className="m-route-picker__route-list-button "
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
             onClick={[Function]}
           >
             1
@@ -505,7 +505,7 @@ exports[`LadderPage renders with timepoints 1`] = `
         </li>
         <li>
           <button
-            className="m-route-picker__route-list-button "
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
             onClick={[Function]}
           >
             28
