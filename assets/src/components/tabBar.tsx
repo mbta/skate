@@ -1,6 +1,5 @@
 import React, { ReactElement } from "react"
 import { NavLink } from "react-router-dom"
-import featureIsEnabled from "../laboratoryFeatures"
 
 interface Props {
   pickerContainerIsVisible: boolean
@@ -25,19 +24,17 @@ const TabBar = ({
           {ladderIcon}
         </NavLink>
       </li>
-      {featureIsEnabled("shuttle_map") && (
-        <li>
-          <NavLink
-            activeClassName="m-tab-bar__link--active"
-            className="m-tab-bar__link"
-            exact={true}
-            title="Shuttle Map"
-            to="/shuttle-map"
-          >
-            {mapIcon}
-          </NavLink>
-        </li>
-      )}
+      <li>
+        <NavLink
+          activeClassName="m-tab-bar__link--active"
+          className="m-tab-bar__link"
+          exact={true}
+          title="Shuttle Map"
+          to="/shuttle-map"
+        >
+          {mapIcon}
+        </NavLink>
+      </li>
 
       <li>
         <NavLink
