@@ -1,5 +1,6 @@
 import React, { ReactElement, useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import { ladderIcon } from "../helpers/icon"
 import { VehicleLabelSetting } from "../settings"
 import { Dispatch, setVehicleLabelSetting } from "../state"
 
@@ -18,15 +19,23 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
         <div className="c-page__section">
           <h2 className="c-page__header">Vehicle Label</h2>
 
-          <select
-            id="vehicle-label-setting"
-            className="c-page__select"
-            value={settings.vehicleLabel}
-            onChange={setVehicleLabel(dispatch)}
-          >
-            <option value={VehicleLabelSetting.RunNumber}>Run #</option>
-            <option value={VehicleLabelSetting.VehicleNumber}>Vehicle #</option>
-          </select>
+          <div className="c-page__section-row">
+            <div className="c-page__section-row-icon">
+              {ladderIcon("c-page__section-row-icon-path")}
+            </div>
+            <div className="c-page__section-row-label">Route Ladders</div>
+            <select
+              id="ladder-vehicle-label-setting"
+              className="c-page__select"
+              value={settings.vehicleLabel}
+              onChange={setVehicleLabel(dispatch)}
+            >
+              <option value={VehicleLabelSetting.RunNumber}>Run #</option>
+              <option value={VehicleLabelSetting.VehicleNumber}>
+                Vehicle #
+              </option>
+            </select>
+          </div>
         </div>
       </div>
     </div>

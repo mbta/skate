@@ -36,7 +36,7 @@ describe("SettingsPage", () => {
       </StateDispatchProvider>
     )
     const vehicleLabelSelectValue = wrapper
-      .find("#vehicle-label-setting")
+      .find("#ladder-vehicle-label-setting")
       .prop("value")
 
     expect(vehicleLabelSelectValue).toEqual(VehicleLabelSetting.VehicleNumber)
@@ -55,7 +55,7 @@ describe("SettingsPage", () => {
         value: `${VehicleLabelSetting.RunNumber}`,
       },
     } as React.FormEvent<HTMLSelectElement>
-    wrapper.find("#vehicle-label-setting").simulate("change", testEvent)
+    wrapper.find("#ladder-vehicle-label-setting").simulate("change", testEvent)
 
     expect(testDispatch).toHaveBeenCalledWith(
       setVehicleLabelSetting(VehicleLabelSetting.RunNumber)

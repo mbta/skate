@@ -20,23 +20,47 @@ exports[`SettingsPage renders 1`] = `
       >
         Vehicle Label
       </h2>
-      <select
-        className="c-page__select"
-        id="vehicle-label-setting"
-        onChange={[Function]}
-        value={1}
+      <div
+        className="c-page__section-row"
       >
-        <option
+        <div
+          className="c-page__section-row-icon"
+        >
+          <svg
+            height="24"
+            viewBox="0 0 48 48"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              className="c-page__section-row-icon-path"
+              d="m32.73 39.86v-12.08a4.37 4.37 0 0 1 0-7.56v-12.08a4.36 4.36 0 1 1 4.36 0v12.08a4.37 4.37 0 0 1 0 7.56v12.08a4.36 4.36 0 1 1 -4.36 0zm-17.46 0a4.36 4.36 0 1 1 -4.36 0v-12.08a4.37 4.37 0 0 1 0-7.56v-12.08a4.36 4.36 0 1 1 4.36 0v12.08a4.37 4.37 0 0 1 0 7.56z"
+            />
+          </svg>
+        </div>
+        <div
+          className="c-page__section-row-label"
+        >
+          Route Ladders
+        </div>
+        <select
+          className="c-page__select"
+          id="ladder-vehicle-label-setting"
+          onChange={[Function]}
           value={1}
         >
-          Run #
-        </option>
-        <option
-          value={2}
-        >
-          Vehicle #
-        </option>
-      </select>
+          <option
+            value={1}
+          >
+            Run #
+          </option>
+          <option
+            value={2}
+          >
+            Vehicle #
+          </option>
+        </select>
+      </div>
     </div>
   </div>
 </div>

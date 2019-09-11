@@ -1,7 +1,45 @@
 import React from "react"
-import { closeIcon, reverseIcon } from "../../src/helpers/icon"
+import {
+  closeIcon,
+  ladderIcon,
+  mapIcon,
+  reverseIcon,
+} from "../../src/helpers/icon"
 
 describe("closeIcon", () => {
+  it("renders", () => {
+    const expected = (
+      <span
+        className=""
+        dangerouslySetInnerHTML={{
+          __html: "SVG",
+        }}
+      />
+    )
+
+    const result = closeIcon()
+
+    expect(result).toEqual(expected)
+  })
+})
+
+describe("ladderIcon", () => {
+  it("returns an svg", () => {
+    const icon = ladderIcon()
+
+    expect(icon.type).toBe("svg")
+  })
+})
+
+describe("mapIcon", () => {
+  it("is defined as an svg", () => {
+    const icon = mapIcon()
+
+    expect(icon.type).toBe("svg")
+  })
+})
+
+describe("reverseIcon", () => {
   it("renders an accessibility icon with a class name", () => {
     const className = "test-class-name"
 
@@ -29,7 +67,7 @@ describe("closeIcon", () => {
       />
     )
 
-    const result = closeIcon()
+    const result = reverseIcon()
 
     expect(result).toEqual(expected)
   })
