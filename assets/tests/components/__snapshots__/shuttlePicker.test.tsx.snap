@@ -87,3 +87,11 @@ exports[`ShuttlePicker renders 1`] = `
   </ul>
 </div>
 `;
+
+exports[`ShuttlePicker renders loading state 1`] = `
+<div
+  className="m-route-picker"
+>
+  loading...
+</div>
+`;

@@ -4,6 +4,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { uniq } from "../helpers/array"
 import { RunId, Vehicle } from "../realtime"
 import { deselectShuttleRun, selectShuttleRun } from "../state"
+import Loading from "./loading"
 
 interface KnownShuttle {
   name: string
@@ -42,35 +43,50 @@ const KNOWN_RUN_IDS: RunId[] = KNOWN_SHUTTLES.map(
 )
 
 const ShuttlePicker = ({}): ReactElement<HTMLDivElement> => {
-  const shuttles: Vehicle[] = useContext(ShuttleVehiclesContext)
+  const shuttles: Vehicle[] | null = useContext(ShuttleVehiclesContext)
+
+  return (
+    <div className="m-route-picker">
+      {shuttles === null ? (
+        <Loading />
+      ) : (
+        <>
+          <div className="m-route-picker__label">Run #</div>
+          <ul className="m-route-picker__route-list">
+            <RunIdButtons shuttles={shuttles} />
+          </ul>
+        </>
+      )}
+    </div>
+  )
+}
+
+const RunIdButtons = ({ shuttles }: { shuttles: Vehicle[] }) => {
   const activeRunIds: RunId[] = uniq(shuttles
     .map(v => v.runId)
     .filter(runId => runId !== null) as RunId[])
 
   return (
-    <div className="m-route-picker">
-      <div className="m-route-picker__label">Run #</div>
-      <ul className="m-route-picker__route-list">
-        {KNOWN_SHUTTLES.map(knownShuttle => (
+    <>
+      {KNOWN_SHUTTLES.map(knownShuttle => (
+        <RunIdButton
+          key={knownShuttle.runId}
+          name={`${knownShuttle.name} ${formatRunId(knownShuttle.runId)}`}
+          runId={knownShuttle.runId}
+          isActive={activeRunIds.includes(knownShuttle.runId)}
+        />
+      ))}
+      {activeRunIds.map(runId =>
+        KNOWN_RUN_IDS.includes(runId) ? null : (
           <RunIdButton
-            key={knownShuttle.runId}
-            name={`${knownShuttle.name} ${formatRunId(knownShuttle.runId)}`}
-            runId={knownShuttle.runId}
-            isActive={activeRunIds.includes(knownShuttle.runId)}
+            key={runId}
+            name={formatRunId(runId)}
+            runId={runId}
+            isActive={true}
           />
-        ))}
-        {activeRunIds.map(runId =>
-          KNOWN_RUN_IDS.includes(runId) ? null : (
-            <RunIdButton
-              key={runId}
-              name={formatRunId(runId)}
-              runId={runId}
-              isActive={true}
-            />
-          )
-        )}
-      </ul>
-    </div>
+        )
+      )}
+    </>
   )
 }
 

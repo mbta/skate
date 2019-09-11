@@ -4,7 +4,7 @@ import { VehicleData, vehicleFromData } from "../models/vehicleData"
 import { Vehicle } from "../realtime"
 
 interface State {
-  shuttles: Vehicle[]
+  shuttles: Vehicle[] | null
   channel?: Channel
 }
 
@@ -19,7 +19,7 @@ const reducer = (state: State, action: Action): State => {
 }
 
 const initialState: State = {
-  shuttles: [],
+  shuttles: null,
 }
 
 interface SetShuttlesAction {
@@ -76,7 +76,7 @@ const subscribe = (socket: Socket, dispatch: Dispatch<Action>): Channel => {
   return channel
 }
 
-const useShuttleVehicles = (socket: Socket | undefined): Vehicle[] => {
+const useShuttleVehicles = (socket: Socket | undefined): Vehicle[] | null => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const { channel, shuttles } = state
   useEffect(() => {
