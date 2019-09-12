@@ -13,7 +13,6 @@ import {
 } from "../models/vehicleStatus"
 import { DataDiscrepancy, Vehicle } from "../realtime.d"
 import { Route } from "../schedule.d"
-import { vehicleLabelSetting } from "../settings"
 import { deselectVehicle } from "../state"
 import CloseButton from "./closeButton"
 import HeadwayDiagram from "./headwayDiagram"

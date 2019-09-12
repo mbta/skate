@@ -39,7 +39,9 @@
 }
 
 .c-page__section-row-icon-path {
+  display: block;
   fill: $color-primary;
+  width: 24px;
 }
 
 .c-page__section-row-label {

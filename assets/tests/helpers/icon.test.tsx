@@ -24,18 +24,70 @@ describe("closeIcon", () => {
 })
 
 describe("ladderIcon", () => {
-  it("returns an svg", () => {
-    const icon = ladderIcon()
+  it("renders an accessibility icon with a class name", () => {
+    const className = "test-class-name"
 
-    expect(icon.type).toBe("svg")
+    const expected = (
+      <span
+        className={className}
+        dangerouslySetInnerHTML={{
+          __html: "SVG",
+        }}
+      />
+    )
+
+    const result = ladderIcon(className)
+
+    expect(result).toEqual(expected)
+  })
+
+  it("renders without a class name", () => {
+    const expected = (
+      <span
+        className=""
+        dangerouslySetInnerHTML={{
+          __html: "SVG",
+        }}
+      />
+    )
+
+    const result = ladderIcon()
+
+    expect(result).toEqual(expected)
   })
 })
 
 describe("mapIcon", () => {
-  it("is defined as an svg", () => {
-    const icon = mapIcon()
+  it("renders an accessibility icon with a class name", () => {
+    const className = "test-class-name"
 
-    expect(icon.type).toBe("svg")
+    const expected = (
+      <span
+        className={className}
+        dangerouslySetInnerHTML={{
+          __html: "SVG",
+        }}
+      />
+    )
+
+    const result = mapIcon(className)
+
+    expect(result).toEqual(expected)
+  })
+
+  it("renders without a class name", () => {
+    const expected = (
+      <span
+        className=""
+        dangerouslySetInnerHTML={{
+          __html: "SVG",
+        }}
+      />
+    )
+
+    const result = mapIcon()
+
+    expect(result).toEqual(expected)
   })
 })
 
