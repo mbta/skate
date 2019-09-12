@@ -280,6 +280,7 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
       <a
         className="m-vehicle-properties-panel__link"
         href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+        target="_blank"
       >
         Directions
       </a>
