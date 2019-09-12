@@ -169,10 +169,7 @@ const VehicleSvg = ({
         <VehicleIconSvgNode
           size={Size.Medium}
           orientation={orientationMatchingVehicle(vehicleDirection)}
-          label={vehicleLabel(
-            (ladderVehicle as unknown) as Vehicle,
-            settings.vehicleLabel
-          )}
+          label={vehicleLabel((ladderVehicle as unknown) as Vehicle, settings)}
           variant={viaVariant}
           status={status}
         />

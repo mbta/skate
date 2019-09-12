@@ -98,18 +98,42 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
-  test("setVehicleLabelSetting", () => {
-    const vehicleLabel: VehicleLabelSetting = VehicleLabelSetting.VehicleNumber
+  test("setLadderVehicleLabelSetting", () => {
+    const ladderVehicleLabel: VehicleLabelSetting =
+      VehicleLabelSetting.VehicleNumber
     const state = initialState
     const expectedState = {
       ...state,
       settings: {
         ...state.settings,
-        vehicleLabel,
+        ladderVehicleLabel,
       },
     }
 
-    const newState = reducer(state, State.setVehicleLabelSetting(vehicleLabel))
+    const newState = reducer(
+      state,
+      State.setLadderVehicleLabelSetting(ladderVehicleLabel)
+    )
+
+    expect(newState).toEqual(expectedState)
+  })
+
+  test("setShuttleVehicleLabelSetting", () => {
+    const shuttleVehicleLabel: VehicleLabelSetting =
+      VehicleLabelSetting.VehicleNumber
+    const state = initialState
+    const expectedState = {
+      ...state,
+      settings: {
+        ...state.settings,
+        shuttleVehicleLabel,
+      },
+    }
+
+    const newState = reducer(
+      state,
+      State.setShuttleVehicleLabelSetting(shuttleVehicleLabel)
+    )
 
     expect(newState).toEqual(expectedState)
   })

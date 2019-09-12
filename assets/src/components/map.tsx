@@ -12,7 +12,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClass } from "../models/vehicleStatus"
 import { Vehicle, VehicleId } from "../realtime.d"
-import { VehicleLabelSetting } from "../settings"
+import { Settings } from "../settings"
 import { Dispatch, selectVehicle as selectVehicleAction } from "../state"
 
 interface Props {
@@ -62,7 +62,7 @@ const selectVehicle = ({ id }: Vehicle, dispatch: Dispatch) => () =>
 const updateVehicle = (
   vehicle: Vehicle,
   { map, markers }: State,
-  labelSetting: VehicleLabelSetting,
+  settings: Settings,
   centerOnVehicle: string | null,
   selectedVehicleId?: VehicleId
 ): void => {
@@ -76,7 +76,7 @@ const updateVehicle = (
   const { id: vehicleId, latitude, longitude } = vehicle
   const zoom = map!.getZoom()
 
-  const labelString = vehicleLabelString(vehicle, labelSetting)
+  const labelString = vehicleLabelString(vehicle, settings)
 
   const icon = Leaflet.divIcon(vehicleIconProps(vehicle))
 
@@ -111,11 +111,11 @@ const updateVehicle = (
 export const updateMap = (
   { vehicles, centerOnVehicle }: Props,
   state: State,
-  labelSetting: VehicleLabelSetting,
+  settings: Settings,
   selectedVehicleId?: VehicleId
 ): void => {
   vehicles.forEach(v =>
-    updateVehicle(v, state, labelSetting, centerOnVehicle, selectedVehicleId)
+    updateVehicle(v, state, settings, centerOnVehicle, selectedVehicleId)
   )
 }
 
@@ -205,12 +205,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
 
     const markers = updateMarkers(newVehicles, state.markers, map, dispatch)
 
-    updateMap(
-      props,
-      { map, markers, zoom },
-      settings.vehicleLabel,
-      selectedVehicleId
-    )
+    updateMap(props, { map, markers, zoom }, settings, selectedVehicleId)
 
     updateState({ map, markers, zoom })
   }, [props, containerRef])

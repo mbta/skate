@@ -45,7 +45,7 @@ const OtherVehicle = ({ vehicle }: { vehicle: Vehicle }) => {
       <VehicleIcon
         size={Size.Small}
         orientation={Orientation.Right}
-        label={vehicleLabel(vehicle, settings.vehicleLabel)}
+        label={vehicleLabel(vehicle, settings)}
         variant={viaVariant}
       />
     </div>
@@ -108,7 +108,7 @@ const HeadwayDiagram = ({ vehicle }: { vehicle: Vehicle }) => {
           <VehicleIcon
             size={Size.Medium}
             orientation={Orientation.Right}
-            label={vehicleLabel(vehicle, settings.vehicleLabel)}
+            label={vehicleLabel(vehicle, settings)}
             variant={viaVariant}
           />
         </div>

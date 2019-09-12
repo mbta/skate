@@ -20,23 +20,82 @@ exports[`SettingsPage renders 1`] = `
       >
         Vehicle Label
       </h2>
-      <select
-        className="c-page__select"
-        id="vehicle-label-setting"
-        onChange={[Function]}
-        value={1}
+      <div
+        className="c-page__section-row"
       >
-        <option
+        <div
+          className="c-page__section-row-icon"
+        >
+          <span
+            className="c-page__section-row-icon-path"
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "SVG",
+              }
+            }
+          />
+        </div>
+        <div
+          className="c-page__section-row-label"
+        >
+          Route Ladders
+        </div>
+        <select
+          className="c-page__select"
+          id="ladder-vehicle-label-setting"
+          onChange={[Function]}
           value={1}
         >
-          Run #
-        </option>
-        <option
+          <option
+            value={1}
+          >
+            Run #
+          </option>
+          <option
+            value={2}
+          >
+            Vehicle #
+          </option>
+        </select>
+      </div>
+      <div
+        className="c-page__section-row"
+      >
+        <div
+          className="c-page__section-row-icon"
+        >
+          <span
+            className="c-page__section-row-icon-path"
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "SVG",
+              }
+            }
+          />
+        </div>
+        <div
+          className="c-page__section-row-label"
+        >
+          Map
+        </div>
+        <select
+          className="c-page__select"
+          id="map-vehicle-label-setting"
+          onChange={[Function]}
           value={2}
         >
-          Vehicle #
-        </option>
-      </select>
+          <option
+            value={1}
+          >
+            Run #
+          </option>
+          <option
+            value={2}
+          >
+            Vehicle #
+          </option>
+        </select>
+      </div>
     </div>
   </div>
 </div>

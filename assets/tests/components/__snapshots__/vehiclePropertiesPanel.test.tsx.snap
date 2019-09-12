@@ -919,7 +919,7 @@ Array [
               x="0"
               y={31}
             >
-              0555
+              v1-label
             </text>
             <path
               className="m-vehicle-icon__triangle"
@@ -1038,7 +1038,7 @@ Array [
                 x="0"
                 y={18.25}
               >
-                0555
+                v1-label
               </text>
               <path
                 className="m-vehicle-icon__triangle"

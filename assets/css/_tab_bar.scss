@@ -43,7 +43,10 @@
 }
 
 .m-tab-bar__icon {
+  display: block;
   fill: $color-secondary-light;
+  margin: 0 auto;
+  width: 24px;
 
   .m-tab-bar__link--active & {
     fill: $color-primary;

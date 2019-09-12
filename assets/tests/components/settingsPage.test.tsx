@@ -4,7 +4,11 @@ import renderer from "react-test-renderer"
 import SettingsPage from "../../src/components/settingsPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { defaultSettings, VehicleLabelSetting } from "../../src/settings"
-import { initialState, setVehicleLabelSetting } from "../../src/state"
+import {
+  initialState,
+  setLadderVehicleLabelSetting,
+  setShuttleVehicleLabelSetting,
+} from "../../src/state"
 
 const mockDispatch = jest.fn()
 
@@ -21,12 +25,12 @@ describe("SettingsPage", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("displays the current vehicle label setting", () => {
+  test("displays the current ladder vehicle label setting", () => {
     const mockState = {
       ...initialState,
       settings: {
         ...defaultSettings,
-        vehicleLabel: VehicleLabelSetting.VehicleNumber,
+        ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
       },
     }
 
@@ -35,14 +39,16 @@ describe("SettingsPage", () => {
         <SettingsPage />
       </StateDispatchProvider>
     )
-    const vehicleLabelSelectValue = wrapper
-      .find("#vehicle-label-setting")
+    const ladderVehicleLabelSelectValue = wrapper
+      .find("#ladder-vehicle-label-setting")
       .prop("value")
 
-    expect(vehicleLabelSelectValue).toEqual(VehicleLabelSetting.VehicleNumber)
+    expect(ladderVehicleLabelSelectValue).toEqual(
+      VehicleLabelSetting.VehicleNumber
+    )
   })
 
-  test("selecting a vehicle label setting sets that value", () => {
+  test("selecting a ladder vehicle label setting sets that value", () => {
     const testDispatch = jest.fn()
 
     const wrapper = mount(
@@ -55,10 +61,53 @@ describe("SettingsPage", () => {
         value: `${VehicleLabelSetting.RunNumber}`,
       },
     } as React.FormEvent<HTMLSelectElement>
-    wrapper.find("#vehicle-label-setting").simulate("change", testEvent)
+    wrapper.find("#ladder-vehicle-label-setting").simulate("change", testEvent)
 
     expect(testDispatch).toHaveBeenCalledWith(
-      setVehicleLabelSetting(VehicleLabelSetting.RunNumber)
+      setLadderVehicleLabelSetting(VehicleLabelSetting.RunNumber)
+    )
+  })
+
+  test("displays the current map vehicle label setting", () => {
+    const mockState = {
+      ...initialState,
+      settings: {
+        ...defaultSettings,
+        shuttleVehicleLabel: VehicleLabelSetting.RunNumber,
+      },
+    }
+
+    const wrapper = mount(
+      <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+        <SettingsPage />
+      </StateDispatchProvider>
+    )
+    const shuttleVehicleLabelSelectValue = wrapper
+      .find("#map-vehicle-label-setting")
+      .prop("value")
+
+    expect(shuttleVehicleLabelSelectValue).toEqual(
+      VehicleLabelSetting.RunNumber
+    )
+  })
+
+  test("selecting a map vehicle label setting sets that value", () => {
+    const testDispatch = jest.fn()
+
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={testDispatch}>
+        <SettingsPage />
+      </StateDispatchProvider>
+    )
+    const testEvent = {
+      currentTarget: {
+        value: `${VehicleLabelSetting.VehicleNumber}`,
+      },
+    } as React.FormEvent<HTMLSelectElement>
+    wrapper.find("#map-vehicle-label-setting").simulate("change", testEvent)
+
+    expect(testDispatch).toHaveBeenCalledWith(
+      setShuttleVehicleLabelSetting(VehicleLabelSetting.VehicleNumber)
     )
   })
 })

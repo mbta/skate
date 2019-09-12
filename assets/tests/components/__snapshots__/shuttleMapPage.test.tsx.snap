@@ -159,7 +159,7 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
               x="0"
               y={31}
             >
-              0555
+              1818
             </text>
             <path
               className="m-vehicle-icon__triangle"

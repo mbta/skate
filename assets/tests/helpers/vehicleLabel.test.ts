@@ -4,7 +4,7 @@ import vehicleLabel, {
 } from "../../src/helpers/vehicleLabel"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Vehicle } from "../../src/realtime"
-import { VehicleLabelSetting } from "../../src/settings"
+import { Settings, VehicleLabelSetting } from "../../src/settings"
 
 const vehicle: Vehicle = {
   id: "y0479",
@@ -55,13 +55,19 @@ const vehicle: Vehicle = {
 
 describe("vehicleLabel", () => {
   test("uses the run ID for the label given the run number setting", () => {
-    expect(vehicleLabel(vehicle, VehicleLabelSetting.RunNumber)).toEqual("2000")
+    expect(
+      vehicleLabel(vehicle, {
+        ladderVehicleLabel: VehicleLabelSetting.RunNumber,
+      } as Settings)
+    ).toEqual("2000")
   })
 
   test("uses the vehicle label for the label given the vehicle number setting", () => {
-    expect(vehicleLabel(vehicle, VehicleLabelSetting.VehicleNumber)).toEqual(
-      "0479"
-    )
+    expect(
+      vehicleLabel(vehicle, {
+        ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
+      } as Settings)
+    ).toEqual("0479")
   })
 })
 

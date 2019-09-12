@@ -1,11 +1,8 @@
 import { Vehicle } from "../realtime"
-import { VehicleLabelSetting } from "../settings"
+import { Settings, vehicleLabelSetting, VehicleLabelSetting } from "../settings"
 
-const vehicleLabel = (
-  vehicle: Vehicle,
-  vehicleLabelSetting: VehicleLabelSetting
-): string => {
-  switch (vehicleLabelSetting) {
+const vehicleLabel = (vehicle: Vehicle, settings: Settings): string => {
+  switch (vehicleLabelSetting(settings, vehicle)) {
     case VehicleLabelSetting.RunNumber:
       return runIdToLabel(vehicle)
     case VehicleLabelSetting.VehicleNumber:

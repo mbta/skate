@@ -27,7 +27,7 @@ const layoverVehicle = (
       className="m-layover-box__vehicle"
     >
       <VehicleIcon
-        label={vehicleLabel(vehicle, settings.vehicleLabel)}
+        label={vehicleLabel(vehicle, settings)}
         orientation={
           classModifier === "bottom" ? Orientation.Right : Orientation.Left
         }

@@ -90,7 +90,11 @@ describe("updateMap", () => {
     updateMap(
       { vehicles: [vehicle], centerOnVehicle: vehicle.id },
       { map, markers, zoom: null },
-      VehicleLabelSetting.RunNumber
+      {
+        vehicleLabel: undefined,
+        ladderVehicleLabel: VehicleLabelSetting.RunNumber,
+        shuttleVehicleLabel: VehicleLabelSetting.RunNumber,
+      }
     )
     expect(map.getCenter()).toEqual({ lat: 42, lng: -71 })
     expect(markers[vehicle.id].icon.getLatLng()).toEqual({ lat: 42, lng: -71 })
@@ -105,7 +109,11 @@ describe("updateMap", () => {
       updateMap(
         { vehicles: [vehicle], centerOnVehicle: vehicle.id },
         { map, markers, zoom: null },
-        VehicleLabelSetting.RunNumber
+        {
+          vehicleLabel: undefined,
+          ladderVehicleLabel: VehicleLabelSetting.RunNumber,
+          shuttleVehicleLabel: VehicleLabelSetting.RunNumber,
+        }
       )
     }).not.toThrowError()
   })

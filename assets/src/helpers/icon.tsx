@@ -7,6 +7,10 @@ import circleXIconSvg from "../../static/images/icon-circle-x.svg"
 // @ts-ignore
 import closeIconSvg from "../../static/images/icon-close-x.svg"
 // @ts-ignore
+import ladderIconSvg from "../../static/images/icon-ladder.svg"
+// @ts-ignore
+import mapIconSvg from "../../static/images/icon-map.svg"
+// @ts-ignore
 import reverseIconSvg from "../../static/images/icon-reverse-normal.svg"
 // @ts-ignore
 import reverseIconReversedSvg from "../../static/images/icon-reverse-reversed.svg"
@@ -19,6 +23,12 @@ export const closeIcon = (): JSX.Element => renderSvg("", closeIconSvg)
 export const collapseIcon = (): JSX.Element => renderSvg("", collapseIconSvg)
 
 export const expandIcon = (): JSX.Element => renderSvg("", expandIconSvg)
+
+export const ladderIcon = (className: string = ""): JSX.Element =>
+  renderSvg(className, ladderIconSvg)
+
+export const mapIcon = (className: string = ""): JSX.Element =>
+  renderSvg(className, mapIconSvg)
 
 export const reverseIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, reverseIconSvg)
