@@ -1,7 +1,7 @@
 import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
-import ShuttlePicker from "../../src/components/shuttlePicker"
+import ShuttlePicker, { formatRunId } from "../../src/components/shuttlePicker"
 import { ShuttleVehiclesProvider } from "../../src/contexts/shuttleVehiclesContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
@@ -122,5 +122,15 @@ describe("ShuttlePicker", () => {
       .simulate("click")
 
     expect(dispatch).toHaveBeenCalledWith(deselectShuttleRun(vehicle.runId!))
+  })
+})
+
+describe("formatRunId", () => {
+  test("removes -", () => {
+    expect(formatRunId("999-1234")).toEqual("999 1234")
+  })
+
+  test("removes leading 0s", () => {
+    expect(formatRunId("999-0550")).toEqual("999 550")
   })
 })

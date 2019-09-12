@@ -54,7 +54,7 @@ const ShuttlePicker = ({}): ReactElement<HTMLDivElement> => {
         {KNOWN_SHUTTLES.map(knownShuttle => (
           <RunIdButton
             key={knownShuttle.runId}
-            name={`${knownShuttle.name} ${knownShuttle.runId}`}
+            name={`${knownShuttle.name} ${formatRunId(knownShuttle.runId)}`}
             runId={knownShuttle.runId}
             isActive={activeRunIds.includes(knownShuttle.runId)}
           />
@@ -63,7 +63,7 @@ const ShuttlePicker = ({}): ReactElement<HTMLDivElement> => {
           KNOWN_RUN_IDS.includes(runId) ? null : (
             <RunIdButton
               key={runId}
-              name={runId}
+              name={formatRunId(runId)}
               runId={runId}
               isActive={true}
             />
@@ -109,5 +109,7 @@ const RunIdButton = ({
     </li>
   )
 }
+
+export const formatRunId = (runId: RunId): string => runId.replace(/-0*/, " ")
 
 export default ShuttlePicker

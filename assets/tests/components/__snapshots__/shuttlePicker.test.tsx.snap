@@ -18,7 +18,7 @@ exports[`ShuttlePicker renders 1`] = `
         disabled={true}
         onClick={[Function]}
       >
-        Special 999-0555
+        Special 999 555
       </button>
     </li>
     <li>
@@ -27,7 +27,7 @@ exports[`ShuttlePicker renders 1`] = `
         disabled={true}
         onClick={[Function]}
       >
-        Blue 999-0501
+        Blue 999 501
       </button>
     </li>
     <li>
@@ -36,7 +36,7 @@ exports[`ShuttlePicker renders 1`] = `
         disabled={true}
         onClick={[Function]}
       >
-        Green 999-0502
+        Green 999 502
       </button>
     </li>
     <li>
@@ -45,7 +45,7 @@ exports[`ShuttlePicker renders 1`] = `
         disabled={false}
         onClick={[Function]}
       >
-        Orange 999-0503
+        Orange 999 503
       </button>
     </li>
     <li>
@@ -54,7 +54,7 @@ exports[`ShuttlePicker renders 1`] = `
         disabled={false}
         onClick={[Function]}
       >
-        Red 999-0504
+        Red 999 504
       </button>
     </li>
     <li>
@@ -63,7 +63,7 @@ exports[`ShuttlePicker renders 1`] = `
         disabled={true}
         onClick={[Function]}
       >
-        Commuter Rail 999-0505
+        Commuter Rail 999 505
       </button>
     </li>
     <li>
@@ -72,7 +72,7 @@ exports[`ShuttlePicker renders 1`] = `
         disabled={false}
         onClick={[Function]}
       >
-        999-0511
+        999 511
       </button>
     </li>
     <li>
@@ -81,7 +81,7 @@ exports[`ShuttlePicker renders 1`] = `
         disabled={false}
         onClick={[Function]}
       >
-        999-0512
+        999 512
       </button>
     </li>
   </ul>
