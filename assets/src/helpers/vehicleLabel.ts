@@ -20,9 +20,12 @@ export const runIdToLabel = (vehicle: Vehicle): string => {
 
   const runSecondHalf = runId.split("-")[1]
 
-  return isShuttle(vehicle) ? runSecondHalf.slice(1) : runSecondHalf
+  return isShuttle(vehicle) ? stripLeadingZero(runSecondHalf) : runSecondHalf
 }
 
 export const labelToLabel = ({ label }: Vehicle): string => label
+
+const stripLeadingZero = (num: string): string =>
+  num.startsWith("0") ? num.slice(1) : num
 
 export default vehicleLabel

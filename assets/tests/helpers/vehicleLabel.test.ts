@@ -99,6 +99,15 @@ describe("runIdToLabel", () => {
     expect(runIdToLabel(shuttle)).toEqual("555")
   })
 
+  test("does not strip a non-zero leading number if the vehicle is a shuttle", () => {
+    const shuttle = {
+      ...vehicle,
+      runId: "999-1555",
+    }
+
+    expect(runIdToLabel(shuttle)).toEqual("1555")
+  })
+
   test("returns N/A if vehicle has no runId", () => {
     expect(runIdToLabel({ ...vehicle, runId: null })).toEqual("N/A")
   })
