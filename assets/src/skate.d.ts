@@ -1,3 +1,5 @@
+import ResizeObserver from "resize-observer-polyfill"
+
 declare global {
   interface Window {
     FS?: {
@@ -11,6 +13,7 @@ declare global {
         }
       ): void
     }
+    ResizeObserver: typeof ResizeObserver
     username: string
   }
 }

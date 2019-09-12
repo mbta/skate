@@ -1,8 +1,8 @@
-import React, { useContext } from "react"
+import useComponentSize from "@rehooks/component-size"
+import React, { useContext, useRef } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { partition } from "../helpers/array"
 import vehicleLabel from "../helpers/vehicleLabel"
-import useReferencedElementHeight from "../hooks/useReferencedElementHeight"
 import featureIsEnabled from "../laboratoryFeatures"
 import {
   LadderVehicle,
@@ -57,7 +57,8 @@ const Ladder = ({
   ladderDirection,
   selectedVehicleId,
 }: Props) => {
-  const { height, elementRef } = useReferencedElementHeight()
+  const elementRef = useRef(null)
+  const { height } = useComponentSize(elementRef)
 
   const orderedTimepoints: TimepointId[] =
     // Use slice to make a copy of the array before destructively reversing
