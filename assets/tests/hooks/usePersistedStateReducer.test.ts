@@ -39,7 +39,7 @@ describe("usePersistedStateReducer", () => {
       settings: {
         vehicleLabel: undefined,
         ladderVehicleLabel: VehicleLabelSetting.RunNumber,
-        mapVehicleLabel: VehicleLabelSetting.VehicleNumber,
+        shuttleVehicleLabel: VehicleLabelSetting.VehicleNumber,
       },
     }
 
@@ -57,7 +57,7 @@ describe("usePersistedStateReducer", () => {
       .spyOn(window.localStorage, "getItem")
       .mockImplementation(
         (_stateKey: string) =>
-          '{"selectedRouteIds":["28","39"],"settings":{"ladderVehicleLabel":1,"mapVehicleLabel":1}}'
+          '{"selectedRouteIds":["28","39"],"settings":{"ladderVehicleLabel":1,"shuttleVehicleLabel":1}}'
       )
 
     const initialState: State = {
@@ -68,7 +68,7 @@ describe("usePersistedStateReducer", () => {
       settings: {
         vehicleLabel: undefined,
         ladderVehicleLabel: VehicleLabelSetting.RunNumber,
-        mapVehicleLabel: VehicleLabelSetting.VehicleNumber,
+        shuttleVehicleLabel: VehicleLabelSetting.VehicleNumber,
       },
     }
     const expectedState: State = {
@@ -79,7 +79,7 @@ describe("usePersistedStateReducer", () => {
       settings: {
         vehicleLabel: undefined,
         ladderVehicleLabel: VehicleLabelSetting.RunNumber,
-        mapVehicleLabel: VehicleLabelSetting.RunNumber,
+        shuttleVehicleLabel: VehicleLabelSetting.RunNumber,
       },
     }
 
@@ -107,7 +107,7 @@ describe("usePersistedStateReducer", () => {
       settings: {
         vehicleLabel: undefined,
         ladderVehicleLabel: VehicleLabelSetting.RunNumber,
-        mapVehicleLabel: VehicleLabelSetting.VehicleNumber,
+        shuttleVehicleLabel: VehicleLabelSetting.VehicleNumber,
       },
     }
     const expectedState: State = {
@@ -118,7 +118,7 @@ describe("usePersistedStateReducer", () => {
       settings: {
         vehicleLabel: undefined,
         ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
-        mapVehicleLabel: VehicleLabelSetting.VehicleNumber,
+        shuttleVehicleLabel: VehicleLabelSetting.VehicleNumber,
       },
     }
 

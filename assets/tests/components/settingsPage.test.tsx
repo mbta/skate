@@ -7,7 +7,7 @@ import { defaultSettings, VehicleLabelSetting } from "../../src/settings"
 import {
   initialState,
   setLadderVehicleLabelSetting,
-  setMapVehicleLabelSetting,
+  setShuttleVehicleLabelSetting,
 } from "../../src/state"
 
 const mockDispatch = jest.fn()
@@ -73,7 +73,7 @@ describe("SettingsPage", () => {
       ...initialState,
       settings: {
         ...defaultSettings,
-        mapVehicleLabel: VehicleLabelSetting.RunNumber,
+        shuttleVehicleLabel: VehicleLabelSetting.RunNumber,
       },
     }
 
@@ -82,11 +82,13 @@ describe("SettingsPage", () => {
         <SettingsPage />
       </StateDispatchProvider>
     )
-    const mapVehicleLabelSelectValue = wrapper
+    const shuttleVehicleLabelSelectValue = wrapper
       .find("#map-vehicle-label-setting")
       .prop("value")
 
-    expect(mapVehicleLabelSelectValue).toEqual(VehicleLabelSetting.RunNumber)
+    expect(shuttleVehicleLabelSelectValue).toEqual(
+      VehicleLabelSetting.RunNumber
+    )
   })
 
   test("selecting a map vehicle label setting sets that value", () => {
@@ -105,7 +107,7 @@ describe("SettingsPage", () => {
     wrapper.find("#map-vehicle-label-setting").simulate("change", testEvent)
 
     expect(testDispatch).toHaveBeenCalledWith(
-      setMapVehicleLabelSetting(VehicleLabelSetting.VehicleNumber)
+      setShuttleVehicleLabelSetting(VehicleLabelSetting.VehicleNumber)
     )
   })
 })

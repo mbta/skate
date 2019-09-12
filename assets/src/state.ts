@@ -115,19 +115,19 @@ export const setLadderVehicleLabelSetting = (
   },
 })
 
-interface SetMapVehicleLabelSettingAction {
+interface SetShuttleVehicleLabelSettingAction {
   type: "SET_MAP_VEHICLE_LABEL_SETTING"
   payload: {
-    mapVehicleLabel: VehicleLabelSetting
+    shuttleVehicleLabel: VehicleLabelSetting
   }
 }
 
-export const setMapVehicleLabelSetting = (
-  mapVehicleLabel: VehicleLabelSetting
-): SetMapVehicleLabelSettingAction => ({
+export const setShuttleVehicleLabelSetting = (
+  shuttleVehicleLabel: VehicleLabelSetting
+): SetShuttleVehicleLabelSettingAction => ({
   type: "SET_MAP_VEHICLE_LABEL_SETTING",
   payload: {
-    mapVehicleLabel,
+    shuttleVehicleLabel,
   },
 })
 
@@ -140,7 +140,7 @@ type Action =
   | DeselectVehicleAction
   | TogglePickerContainerAction
   | SetLadderVehicleLabelSettingAction
-  | SetMapVehicleLabelSettingAction
+  | SetShuttleVehicleLabelSettingAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -205,7 +205,7 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         settings: {
           ...state.settings,
-          mapVehicleLabel: action.payload.mapVehicleLabel,
+          shuttleVehicleLabel: action.payload.shuttleVehicleLabel,
         },
       }
     default:

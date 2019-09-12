@@ -29,7 +29,7 @@ const usePersistedStateReducer = (
         ladderVehicleLabel:
           loadedState.settings.vehicleLabel ||
           defaultSettings.ladderVehicleLabel,
-        mapVehicleLabel: defaultSettings.mapVehicleLabel,
+        shuttleVehicleLabel: defaultSettings.shuttleVehicleLabel,
       },
     }
 

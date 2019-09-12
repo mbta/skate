@@ -5,7 +5,7 @@ import { VehicleLabelSetting } from "../settings"
 import {
   Dispatch,
   setLadderVehicleLabelSetting,
-  setMapVehicleLabelSetting,
+  setShuttleVehicleLabelSetting,
 } from "../state"
 
 const setLadderVehicleLabel = (dispatch: Dispatch) => (
@@ -15,10 +15,12 @@ const setLadderVehicleLabel = (dispatch: Dispatch) => (
     setLadderVehicleLabelSetting(parseInt(event.currentTarget.value, 10))
   )
 
-const setMapVehicleLabel = (dispatch: Dispatch) => (
+const setShuttleVehicleLabel = (dispatch: Dispatch) => (
   event: React.FormEvent<HTMLSelectElement>
 ) =>
-  dispatch(setMapVehicleLabelSetting(parseInt(event.currentTarget.value, 10)))
+  dispatch(
+    setShuttleVehicleLabelSetting(parseInt(event.currentTarget.value, 10))
+  )
 
 const SettingsPage = (): ReactElement<HTMLDivElement> => {
   const [{ settings }, dispatch] = useContext(StateDispatchContext)
@@ -57,8 +59,8 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
             <select
               id="map-vehicle-label-setting"
               className="c-page__select"
-              value={settings.mapVehicleLabel}
-              onChange={setMapVehicleLabel(dispatch)}
+              value={settings.shuttleVehicleLabel}
+              onChange={setShuttleVehicleLabel(dispatch)}
             >
               <option value={VehicleLabelSetting.RunNumber}>Run #</option>
               <option value={VehicleLabelSetting.VehicleNumber}>

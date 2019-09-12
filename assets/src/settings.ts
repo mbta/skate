@@ -12,17 +12,19 @@ export interface Settings {
   // special handling code in usePersistedStateReducer. -- MSS 2019-09-11
   vehicleLabel: VehicleLabelSetting | undefined
   ladderVehicleLabel: VehicleLabelSetting
-  mapVehicleLabel: VehicleLabelSetting
+  shuttleVehicleLabel: VehicleLabelSetting
 }
 
 export const defaultSettings: Settings = {
   vehicleLabel: undefined,
   ladderVehicleLabel: VehicleLabelSetting.RunNumber,
-  mapVehicleLabel: VehicleLabelSetting.VehicleNumber,
+  shuttleVehicleLabel: VehicleLabelSetting.VehicleNumber,
 }
 
 export const vehicleLabelSetting = (
   settings: Settings,
   vehicle: Vehicle
 ): VehicleLabelSetting =>
-  isShuttle(vehicle) ? settings.mapVehicleLabel : settings.ladderVehicleLabel
+  isShuttle(vehicle)
+    ? settings.shuttleVehicleLabel
+    : settings.ladderVehicleLabel

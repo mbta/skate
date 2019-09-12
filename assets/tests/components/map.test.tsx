@@ -93,7 +93,7 @@ describe("updateMap", () => {
       {
         vehicleLabel: undefined,
         ladderVehicleLabel: VehicleLabelSetting.RunNumber,
-        mapVehicleLabel: VehicleLabelSetting.RunNumber,
+        shuttleVehicleLabel: VehicleLabelSetting.RunNumber,
       }
     )
     expect(map.getCenter()).toEqual({ lat: 42, lng: -71 })
@@ -112,7 +112,7 @@ describe("updateMap", () => {
         {
           vehicleLabel: undefined,
           ladderVehicleLabel: VehicleLabelSetting.RunNumber,
-          mapVehicleLabel: VehicleLabelSetting.RunNumber,
+          shuttleVehicleLabel: VehicleLabelSetting.RunNumber,
         }
       )
     }).not.toThrowError()

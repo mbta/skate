@@ -118,21 +118,21 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
-  test("setMapVehicleLabelSetting", () => {
-    const mapVehicleLabel: VehicleLabelSetting =
+  test("setShuttleVehicleLabelSetting", () => {
+    const shuttleVehicleLabel: VehicleLabelSetting =
       VehicleLabelSetting.VehicleNumber
     const state = initialState
     const expectedState = {
       ...state,
       settings: {
         ...state.settings,
-        mapVehicleLabel,
+        shuttleVehicleLabel,
       },
     }
 
     const newState = reducer(
       state,
-      State.setMapVehicleLabelSetting(mapVehicleLabel)
+      State.setShuttleVehicleLabelSetting(shuttleVehicleLabel)
     )
 
     expect(newState).toEqual(expectedState)
