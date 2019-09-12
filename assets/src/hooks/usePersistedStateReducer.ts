@@ -6,7 +6,7 @@ import { Dispatch, Reducer, State } from "../state"
 const APP_STATE_KEY = "mbta-skate-state"
 
 // NB: Be sure to include thes in the useEffect dependencies below as well
-const PERSISTED_KEYS = ["selectedRouteIds", "settings"]
+const PERSISTED_KEYS = ["selectedRouteIds", "selectedShuttleRunIds", "settings"]
 
 const usePersistedStateReducer = (
   reducer: Reducer,
@@ -46,7 +46,7 @@ const usePersistedStateReducer = (
   useEffect(() => {
     const persistableState = filter(state, PERSISTED_KEYS)
     saveState(APP_STATE_KEY, persistableState)
-  }, [state.selectedRouteIds, state.settings])
+  }, [state.selectedRouteIds, state.selectedShuttleRunIds, state.settings])
 
   return [state, dispatch]
 }
