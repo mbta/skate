@@ -43,6 +43,7 @@ defmodule Gtfs do
     catch
       # Handle Gtfs server timeouts gracefully
       :exit, _ ->
+        _ = log_timeout(:stop)
         nil
     end
   end
@@ -55,6 +56,7 @@ defmodule Gtfs do
     catch
       # Handle Gtfs server timeouts gracefully
       :exit, _ ->
+        _ = log_timeout(:trip)
         nil
     end
   end
@@ -67,6 +69,7 @@ defmodule Gtfs do
     catch
       # Handle Gtfs server timeouts gracefully
       :exit, _ ->
+        _ = log_timeout(:block)
         nil
     end
   end
@@ -82,6 +85,7 @@ defmodule Gtfs do
     catch
       # Handle Gtfs server timeouts gracefully
       :exit, _ ->
+        _ = log_timeout(:active_trips)
         []
     end
   end
@@ -104,8 +108,13 @@ defmodule Gtfs do
     catch
       # Handle Gtfs server timeouts gracefully
       :exit, _ ->
+        _ = log_timeout(:active_blocks)
         []
     end
+  end
+
+  defp log_timeout(function) do
+    Logger.warn("module=#{__MODULE__} function=#{function} error=timeout")
   end
 
   # Queries (Server)
