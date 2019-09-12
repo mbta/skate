@@ -12,7 +12,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClass } from "../models/vehicleStatus"
 import { Vehicle, VehicleId } from "../realtime.d"
-import { Settings, vehicleLabelSetting } from "../settings"
+import { Settings } from "../settings"
 import { Dispatch, selectVehicle as selectVehicleAction } from "../state"
 
 interface Props {
@@ -76,10 +76,7 @@ const updateVehicle = (
   const { id: vehicleId, latitude, longitude } = vehicle
   const zoom = map!.getZoom()
 
-  const labelString = vehicleLabelString(
-    vehicle,
-    vehicleLabelSetting(settings, vehicle)
-  )
+  const labelString = vehicleLabelString(vehicle, settings)
 
   const icon = Leaflet.divIcon(vehicleIconProps(vehicle))
 

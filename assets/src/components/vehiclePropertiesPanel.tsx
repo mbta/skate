@@ -101,7 +101,7 @@ const Header = ({
         <VehicleIcon
           size={Size.Large}
           orientation={Orientation.Up}
-          label={vehicleLabel(vehicle, vehicleLabelSetting(settings, vehicle))}
+          label={vehicleLabel(vehicle, settings)}
           variant={vehicle.viaVariant}
           status={drawnStatus(vehicle)}
         />
