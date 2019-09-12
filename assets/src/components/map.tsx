@@ -83,14 +83,13 @@ const updateVehicle = (
   const selectedClass = vehicleId === selectedVehicleId ? "selected" : ""
   const label = Leaflet.divIcon({
     className: `m-vehicle-map__label ${selectedClass}`,
-    html: `<svg>
+    html: `<svg viewBox="0 0 42 16" width="42" height="16">
             <rect
                 class="m-vehicle-icon__label-background"
-                width="42" height="16"
-                x="-8" y="-10"
+                width="100%" height="100%"
                 rx="5.5px" ry="5.5px"
               />
-            <text class="m-vehicle-icon__label" x="-3" y="3">
+            <text class="m-vehicle-icon__label" x="50%" y="50%" text-anchor="middle" dominant-baseline="central">
               ${labelString}
             </text>
           </svg>`,
