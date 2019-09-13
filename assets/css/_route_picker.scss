@@ -31,12 +31,19 @@
 }
 
 .m-route-picker__route-list-button {
-  @include button-light;
   margin-bottom: 0.25rem;
   width: 100%;
   word-break: break-word;
 
   &--selected {
     @include button-primary;
+  }
+
+  &--unselected {
+    @include button-light;
+  }
+
+  &--disabled {
+    @include button-disabled;
   }
 }
