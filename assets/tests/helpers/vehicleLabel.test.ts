@@ -69,11 +69,43 @@ describe("vehicleLabel", () => {
       } as Settings)
     ).toEqual("0479")
   })
+
+  test("uses the shuttle vehicle label setting if the vehicle is a shuttle", () => {
+    const shuttle = {
+      ...vehicle,
+      runId: "999-2000",
+    }
+
+    expect(
+      vehicleLabel(shuttle, {
+        ladderVehicleLabel: VehicleLabelSetting.RunNumber,
+        shuttleVehicleLabel: VehicleLabelSetting.VehicleNumber,
+      } as Settings)
+    ).toEqual("0479")
+  })
 })
 
 describe("runIdToLabel", () => {
   test("converts runId to readable label", () => {
     expect(runIdToLabel(vehicle)).toEqual("2000")
+  })
+
+  test("strips the leading zero if the vehicle is a shuttle", () => {
+    const shuttle = {
+      ...vehicle,
+      runId: "999-0555",
+    }
+
+    expect(runIdToLabel(shuttle)).toEqual("555")
+  })
+
+  test("does not strip a non-zero leading number if the vehicle is a shuttle", () => {
+    const shuttle = {
+      ...vehicle,
+      runId: "999-1555",
+    }
+
+    expect(runIdToLabel(shuttle)).toEqual("1555")
   })
 
   test("returns N/A if vehicle has no runId", () => {
