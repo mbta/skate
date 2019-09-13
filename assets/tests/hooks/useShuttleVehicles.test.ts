@@ -21,7 +21,8 @@ const makeMockChannel = (expectedJoinMessage: "ok" | "error" | "timeout") => {
     if (message === expectedJoinMessage) {
       switch (message) {
         case "ok":
-          return result
+          handler("ok")
+          break
 
         case "error":
           handler({ reason: "ERROR_REASON" })
@@ -195,6 +196,8 @@ describe("useShuttleVehicles", () => {
   })
 
   test("initializing the hook subscribes to the shuttles channel", () => {
+    const spyConsoleLog = jest.spyOn(console, "log")
+    spyConsoleLog.mockImplementationOnce(msg => msg)
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok")
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
@@ -209,9 +212,14 @@ describe("useShuttleVehicles", () => {
     expect(mockSocket.channel).toHaveBeenCalledTimes(1)
     expect(mockSocket.channel).toHaveBeenCalledWith("vehicles:shuttle:all")
     expect(mockChannel.join).toHaveBeenCalledTimes(1)
+    expect(spyConsoleLog).toHaveBeenCalledWith(
+      "successfully joined shuttle channel"
+    )
   })
 
   test("returns results pushed to the channel", async () => {
+    const spyConsoleLog = jest.spyOn(console, "log")
+    spyConsoleLog.mockImplementationOnce(msg => msg)
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok")
     mockSocket.channel.mockImplementationOnce(() => mockChannel)

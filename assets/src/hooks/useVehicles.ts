@@ -150,7 +150,10 @@ const subscribe = (
 
   channel
     .join()
-    .receive("ok", handleVehicles)
+    .receive("ok", () => {
+      // tslint:disable-next-line: no-console
+      console.log(`successfully joined vehicle channel for route ${routeId}`)
+    })
     // tslint:disable-next-line: no-console
     .receive("error", ({ reason }) => console.error("join failed", reason))
     .receive("timeout", () => {

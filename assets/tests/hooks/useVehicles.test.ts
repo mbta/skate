@@ -2,7 +2,7 @@ import { renderHook } from "@testing-library/react-hooks"
 import { Socket } from "phoenix"
 import useVehicles from "../../src/hooks/useVehicles"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { Ghost, Vehicle, VehicleTimepointStatus } from "../../src/realtime.d"
+import { Vehicle, VehicleTimepointStatus } from "../../src/realtime.d"
 import { RouteId } from "../../src/schedule.d"
 
 // tslint:disable: react-hooks-nesting
@@ -229,17 +229,15 @@ describe("useVehicles", () => {
     expect(mockChannel.leave).toHaveBeenCalledTimes(1)
   })
 
-  test("returns results from joining a channel", async () => {
+  test("returns nothing when joining a channel", async () => {
+    const spyConsoleLog = jest.spyOn(console, "log")
+    spyConsoleLog.mockImplementationOnce(msg => msg)
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel()
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
     mockChannel.receive.mockImplementation((event, handler) => {
       if (event === "ok") {
-        handler({
-          on_route_vehicles: vehiclesData,
-          incoming_vehicles: [],
-          ghosts: [],
-        })
+        handler("ok")
       }
       return mockChannel
     })
@@ -248,102 +246,10 @@ describe("useVehicles", () => {
       useVehicles((mockSocket as any) as Socket, ["1"])
     )
 
-    expect(result.current).toEqual({
-      "1": {
-        onRouteVehicles: vehicles,
-        incomingVehicles: [],
-        ghosts: [],
-      },
-    })
-  })
-
-  test("returns incoming vehicles", async () => {
-    const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel()
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
-    mockChannel.receive.mockImplementation((event, handler) => {
-      if (event === "ok") {
-        handler({
-          on_route_vehicles: [],
-          incoming_vehicles: vehiclesData,
-          ghosts: [],
-        })
-      }
-      return mockChannel
-    })
-
-    const { result } = renderHook(() =>
-      useVehicles((mockSocket as any) as Socket, ["1"])
+    expect(result.current).toEqual({})
+    expect(spyConsoleLog).toHaveBeenCalledWith(
+      "successfully joined vehicle channel for route 1"
     )
-
-    const incomingVehicles = vehicles.map(vehicle => ({
-      ...vehicle,
-      isOnRoute: false,
-    }))
-
-    expect(result.current).toEqual({
-      "1": {
-        onRouteVehicles: [],
-        incomingVehicles,
-        ghosts: [],
-      },
-    })
-  })
-
-  test("returns ghost vehicles", async () => {
-    const ghost: Ghost = {
-      id: "ghost-trip",
-      directionId: 0,
-      routeId: "1",
-      tripId: "trip",
-      headsign: "headsign",
-      blockId: "block",
-      viaVariant: null,
-      scheduledTimepointStatus: {
-        timepointId: "t0",
-        fractionUntilTimepoint: 0.0,
-      },
-    }
-
-    const ghostData = {
-      id: "ghost-trip",
-      direction_id: 0,
-      route_id: "1",
-      trip_id: "trip",
-      headsign: "headsign",
-      block_id: "block",
-      via_variant: null,
-      scheduled_timepoint_status: {
-        timepoint_id: "t0",
-        fraction_until_timepoint: 0.0,
-      },
-    }
-
-    const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel()
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
-    mockChannel.receive.mockImplementation((event, handler) => {
-      if (event === "ok") {
-        handler({
-          on_route_vehicles: [],
-          incoming_vehicles: [],
-          ghosts: [ghostData],
-        })
-      }
-      return mockChannel
-    })
-
-    const { result } = renderHook(() =>
-      useVehicles((mockSocket as any) as Socket, ["1"])
-    )
-
-    expect(result.current).toEqual({
-      "1": {
-        onRouteVehicles: [],
-        incomingVehicles: [],
-        ghosts: [ghost],
-      },
-    })
   })
 
   test("returns results pushed to the channel", async () => {

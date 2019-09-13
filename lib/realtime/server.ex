@@ -50,22 +50,21 @@ defmodule Realtime.Server do
   The subscribing process will get a message when there's new data, with the form
   {:new_realtime_data, vehicles_on_route()}
   """
-  @spec subscribe_to_route(Route.id(), GenServer.server()) :: Vehicles.for_route()
+  @spec subscribe_to_route(Route.id(), GenServer.server()) :: :ok
   def subscribe_to_route(route_id, server \\ default_name()) do
     subscribe(server, {:route_id, route_id})
   end
 
-  @spec subscribe_to_all_shuttles(GenServer.server()) :: [Vehicle.t()]
+  @spec subscribe_to_all_shuttles(GenServer.server()) :: :ok
   def subscribe_to_all_shuttles(server \\ default_name()) do
     subscribe(server, :all_shuttles)
   end
 
-  @spec subscribe(GenServer.server(), {:route_id, Route.id()}) :: Vehicles.for_route()
-  @spec subscribe(GenServer.server(), :all_shuttles) :: [Vehicle.t()]
+  @spec subscribe(GenServer.server(), subscription_key) :: :ok
   defp subscribe(server, subscription_key) do
-    {registry_key, data} = GenServer.call(server, {:subscribe, subscription_key})
+    registry_key = GenServer.call(server, :subscribe)
     Registry.register(Realtime.Registry, registry_key, subscription_key)
-    data
+    :ok
   end
 
   @spec update({Route.by_id(Vehicles.for_route()), [Vehicle.t()]}, GenServer.server()) :: term()
@@ -98,11 +97,8 @@ defmodule Realtime.Server do
     do: {:noreply, state}
 
   @impl true
-  def handle_call({:subscribe, subscription_key}, _from, %__MODULE__{} = state) do
-    registry_key = self()
-
-    data = lookup({state.ets, subscription_key})
-    {:reply, {registry_key, data}, state}
+  def handle_call(:subscribe, _from, %__MODULE__{} = state) do
+    {:reply, self(), state}
   end
 
   def handle_call(:ets, _from, %__MODULE__{ets: ets} = state) do

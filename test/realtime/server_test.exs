@@ -67,9 +67,8 @@ defmodule Realtime.ServerTest do
       %{server_pid: server_pid}
     end
 
-    test "clients get vehicles when subscribing", %{server_pid: server_pid} do
-      vehicles_for_route = Server.subscribe_to_route("1", server_pid)
-      assert vehicles_for_route == @vehicles_for_route
+    test "clients get :ok when subscribing", %{server_pid: server_pid} do
+      assert Server.subscribe_to_route("1", server_pid) == :ok
     end
 
     test "clients subscribed to a route get data pushed to them", %{server_pid: server_pid} do
@@ -121,8 +120,8 @@ defmodule Realtime.ServerTest do
       %{server_pid: server_pid}
     end
 
-    test "clients get all shuttles upon subscribing", %{server_pid: pid} do
-      assert Server.subscribe_to_all_shuttles(pid) == [@shuttle]
+    test "clients get :ok upon subscribing", %{server_pid: pid} do
+      assert Server.subscribe_to_all_shuttles(pid) == :ok
     end
 
     test "clients get updated data pushed to them", %{server_pid: pid} do

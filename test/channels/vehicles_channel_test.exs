@@ -19,22 +19,19 @@ defmodule SkateWeb.VehiclesChannelTest do
   end
 
   describe "join/3" do
-    test "subscribes to vehicles for a route ID and returns the current list of vehicles", %{
+    test "subscribes to vehicles for a route ID and returns :ok", %{
       socket: socket
     } do
-      assert {:ok, %{on_route_vehicles: on_route_vehicles}, %Socket{} = socket} =
+      assert {:ok, :ok, %Socket{} = socket} =
                subscribe_and_join(socket, VehiclesChannel, "vehicles:route:1")
-
-      assert is_list(on_route_vehicles)
-      assert Enum.all?(on_route_vehicles, &(%Vehicle{} = &1))
     end
 
-    test "subscribes to all shuttles", %{socket: socket} do
-      assert {:ok, %{data: []}, %Socket{}} =
+    test "subscribes to all shuttles and returns :ok", %{socket: socket} do
+      assert {:ok, :ok, %Socket{}} =
                subscribe_and_join(socket, VehiclesChannel, "vehicles:shuttle:all")
     end
 
-    test "returns an error when joining a non-existant topic", %{socket: socket} do
+    test "returns an error when joining a non-existent topic", %{socket: socket} do
       assert {:error, %{message: "no such topic \"rooms:1\""}} =
                subscribe_and_join(socket, VehiclesChannel, "rooms:1")
     end
