@@ -202,7 +202,7 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
         Directions
       </a>
       {!isShuttle(vehicle) && (
-        <div className="m-vehicle-map">
+        <div className="m-vehicle-properties-panel__map">
           <Map vehicles={[vehicle]} centerOnVehicle={vehicle.id} />
         </div>
       )}

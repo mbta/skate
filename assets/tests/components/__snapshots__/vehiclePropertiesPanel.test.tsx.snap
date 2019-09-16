@@ -272,9 +272,10 @@ Array [
         Directions
       </a>
       <div
-        className="m-vehicle-map"
+        className="m-vehicle-properties-panel__map"
       >
         <div
+          className="m-vehicle-map"
           id="id-vehicle-map"
         />
       </div>
@@ -565,9 +566,10 @@ Array [
         Directions
       </a>
       <div
-        className="m-vehicle-map"
+        className="m-vehicle-properties-panel__map"
       >
         <div
+          className="m-vehicle-map"
           id="id-vehicle-map"
         />
       </div>
@@ -858,9 +860,10 @@ Array [
         Directions
       </a>
       <div
-        className="m-vehicle-map"
+        className="m-vehicle-properties-panel__map"
       >
         <div
+          className="m-vehicle-map"
           id="id-vehicle-map"
         />
       </div>
@@ -1441,9 +1444,10 @@ Array [
         Directions
       </a>
       <div
-        className="m-vehicle-map"
+        className="m-vehicle-properties-panel__map"
       >
         <div
+          className="m-vehicle-map"
           id="id-vehicle-map"
         />
       </div>
@@ -1738,9 +1742,10 @@ Array [
         Directions
       </a>
       <div
-        className="m-vehicle-map"
+        className="m-vehicle-properties-panel__map"
       >
         <div
+          className="m-vehicle-map"
           id="id-vehicle-map"
         />
       </div>
@@ -2031,9 +2036,10 @@ Array [
         Directions
       </a>
       <div
-        className="m-vehicle-map"
+        className="m-vehicle-properties-panel__map"
       >
         <div
+          className="m-vehicle-map"
           id="id-vehicle-map"
         />
       </div>
