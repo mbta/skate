@@ -139,6 +139,18 @@
   color: $color-font-warning;
 }
 
+.m-vehicle-properties-panel__map {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  margin-top: 1rem;
+  min-height: 5rem;
+
+  .m-vehicle-map {
+    flex: 1 0 auto;
+  }
+}
+
 .m-vehicle-properties-panel__data-discrepancies {
   padding: 1rem;
 }
