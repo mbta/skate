@@ -205,6 +205,7 @@ defmodule Realtime.VehiclesTest do
         headsign: "headsign",
         direction_id: 0,
         block_id: "block",
+        shape_id: "shape1",
         stop_times: [
           %StopTime{
             stop_id: "stop",
@@ -275,6 +276,7 @@ defmodule Realtime.VehiclesTest do
         headsign: "headsign",
         direction_id: 0,
         block_id: "block",
+        shape_id: "shape1",
         stop_times: [
           %StopTime{
             stop_id: "stop",

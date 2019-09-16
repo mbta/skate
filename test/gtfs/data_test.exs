@@ -1,7 +1,7 @@
 defmodule Gtfs.DataTest do
   use ExUnit.Case, async: true
 
-  alias Gtfs.{Block, Data, Route, RoutePattern, Stop, StopTime, Trip}
+  alias Gtfs.{Block, Data, Route, RoutePattern, Shape, ShapePoint, Stop, StopTime, Trip}
 
   test "all_routes/1 returns all the routes" do
     routes = [
@@ -29,6 +29,7 @@ defmodule Gtfs.DataTest do
       routes: routes,
       route_patterns: [],
       timepoint_ids_by_route: %{},
+      shapes: %{},
       stops: %{},
       trips: %{},
       blocks: %{},
@@ -46,6 +47,7 @@ defmodule Gtfs.DataTest do
         timepoint_ids_by_route: %{
           "1" => ["t1", "t2", "t3", "t4"]
         },
+        shapes: %{},
         stops: %{},
         trips: %{},
         blocks: %{},
@@ -62,6 +64,7 @@ defmodule Gtfs.DataTest do
         timepoint_ids_by_route: %{
           "1" => ["t1", "t2", "t3", "t4"]
         },
+        shapes: %{},
         stops: %{},
         trips: %{},
         blocks: %{},
@@ -78,6 +81,7 @@ defmodule Gtfs.DataTest do
         routes: [],
         route_patterns: [],
         timepoint_ids_by_route: %{},
+        shapes: %{},
         stops: %{
           "1" => %Stop{
             id: "1",
@@ -107,6 +111,7 @@ defmodule Gtfs.DataTest do
         routes: [],
         route_patterns: [],
         timepoint_ids_by_route: %{},
+        shapes: %{},
         stops: %{
           "1" => %Stop{
             id: "1",
@@ -134,6 +139,7 @@ defmodule Gtfs.DataTest do
         routes: [],
         route_patterns: [],
         timepoint_ids_by_route: %{},
+        shapes: %{},
         stops: %{},
         trips: %{
           "t1" => %Trip{
@@ -144,6 +150,7 @@ defmodule Gtfs.DataTest do
             direction_id: 1,
             block_id: "b",
             route_pattern_id: "r1-_-0",
+            shape_id: "shape1",
             stop_times: [
               %StopTime{stop_id: "s1", time: 1, timepoint_id: nil}
             ]
@@ -161,6 +168,7 @@ defmodule Gtfs.DataTest do
         routes: [],
         route_patterns: [],
         timepoint_ids_by_route: %{},
+        shapes: %{},
         stops: %{},
         trips: %{},
         blocks: %{},
@@ -181,6 +189,7 @@ defmodule Gtfs.DataTest do
         direction_id: 1,
         block_id: "b",
         route_pattern_id: "r1-_-0",
+        shape_id: "shape1",
         stop_times: [
           %StopTime{stop_id: "s1", time: 1, timepoint_id: nil}
         ]
@@ -190,6 +199,7 @@ defmodule Gtfs.DataTest do
         routes: [],
         route_patterns: [],
         timepoint_ids_by_route: %{},
+        shapes: %{},
         stops: %{},
         trips: %{},
         blocks: Block.group_trips_by_block([trip]),
@@ -208,6 +218,7 @@ defmodule Gtfs.DataTest do
         direction_id: 1,
         block_id: "b",
         route_pattern_id: "r1-_-0",
+        shape_id: "shape1",
         stop_times: [
           %StopTime{stop_id: "s1", time: 1, timepoint_id: nil}
         ]
@@ -217,6 +228,7 @@ defmodule Gtfs.DataTest do
         routes: [],
         route_patterns: [],
         timepoint_ids_by_route: %{},
+        shapes: %{},
         stops: %{},
         trips: %{},
         blocks: Block.group_trips_by_block([trip]),
@@ -231,6 +243,7 @@ defmodule Gtfs.DataTest do
         routes: [],
         route_patterns: [],
         timepoint_ids_by_route: %{},
+        shapes: %{},
         stops: %{},
         trips: %{},
         blocks: %{},
@@ -252,6 +265,7 @@ defmodule Gtfs.DataTest do
           headsign: "headsign",
           direction_id: 0,
           block_id: "inside",
+          shape_id: "shape1",
           stop_times: [
             %StopTime{
               stop_id: "stop",
@@ -271,6 +285,7 @@ defmodule Gtfs.DataTest do
           headsign: "headsign",
           direction_id: 0,
           block_id: "outside",
+          shape_id: "shape1",
           stop_times: [
             %StopTime{
               stop_id: "stop",
@@ -290,6 +305,7 @@ defmodule Gtfs.DataTest do
           headsign: "headsign",
           direction_id: 0,
           block_id: "start",
+          shape_id: "shape1",
           stop_times: [
             %StopTime{
               stop_id: "stop",
@@ -309,6 +325,7 @@ defmodule Gtfs.DataTest do
           headsign: "headsign",
           direction_id: 0,
           block_id: "end",
+          shape_id: "shape1",
           stop_times: [
             %StopTime{
               stop_id: "stop",
@@ -326,6 +343,7 @@ defmodule Gtfs.DataTest do
         routes: [],
         route_patterns: [],
         timepoint_ids_by_route: %{},
+        shapes: %{},
         stops: [],
         trips: Map.new(trips, fn trip -> {trip.id, trip} end),
         blocks: %{},
@@ -357,6 +375,7 @@ defmodule Gtfs.DataTest do
         headsign: "headsign",
         direction_id: 0,
         block_id: "block",
+        shape_id: "shape1",
         stop_times: [
           %StopTime{
             stop_id: "stop",
@@ -369,6 +388,7 @@ defmodule Gtfs.DataTest do
         routes: [],
         route_patterns: [],
         timepoint_ids_by_route: %{},
+        shapes: %{},
         stops: [],
         trips: %{
           "trip" => trip
@@ -392,6 +412,7 @@ defmodule Gtfs.DataTest do
         headsign: "headsign",
         direction_id: 0,
         block_id: "block",
+        shape_id: "shape1",
         stop_times: [
           %StopTime{
             stop_id: "stop",
@@ -404,6 +425,7 @@ defmodule Gtfs.DataTest do
         routes: [],
         route_patterns: [],
         timepoint_ids_by_route: %{},
+        shapes: %{},
         stops: [],
         trips: %{
           "trip" => trip
@@ -427,6 +449,7 @@ defmodule Gtfs.DataTest do
         headsign: "headsign",
         direction_id: 0,
         block_id: "block",
+        shape_id: "shape1",
         stop_times: [
           %StopTime{
             stop_id: "stop",
@@ -440,6 +463,7 @@ defmodule Gtfs.DataTest do
         routes: [],
         route_patterns: [],
         timepoint_ids_by_route: %{},
+        shapes: %{},
         stops: [],
         trips: %{
           "trip" => trip
@@ -465,6 +489,7 @@ defmodule Gtfs.DataTest do
         headsign: "headsign",
         direction_id: 0,
         block_id: "block",
+        shape_id: "shape1",
         stop_times: [
           %StopTime{
             stop_id: "stop",
@@ -481,6 +506,7 @@ defmodule Gtfs.DataTest do
         routes: [],
         route_patterns: [],
         timepoint_ids_by_route: %{},
+        shapes: %{},
         stops: [],
         trips: %{
           "trip" => trip
@@ -504,6 +530,7 @@ defmodule Gtfs.DataTest do
         routes: [],
         route_patterns: [],
         timepoint_ids_by_route: %{},
+        shapes: %{},
         stops: [],
         trips: %{
           "trip" => %Trip{
@@ -513,6 +540,7 @@ defmodule Gtfs.DataTest do
             headsign: "headsign",
             direction_id: 0,
             block_id: "block",
+            shape_id: "shape1",
             stop_times: [
               %StopTime{
                 stop_id: "stop",
@@ -542,6 +570,7 @@ defmodule Gtfs.DataTest do
         routes: [],
         route_patterns: [],
         timepoint_ids_by_route: %{},
+        shapes: %{},
         stops: [],
         trips: %{
           "before" => %Trip{
@@ -551,6 +580,7 @@ defmodule Gtfs.DataTest do
             headsign: "headsign",
             direction_id: 0,
             block_id: "block",
+            shape_id: "shape1",
             stop_times: [
               %StopTime{
                 stop_id: "stop",
@@ -565,6 +595,7 @@ defmodule Gtfs.DataTest do
             headsign: "headsign",
             direction_id: 0,
             block_id: "block",
+            shape_id: "shape1",
             stop_times: [
               %StopTime{
                 stop_id: "stop",
@@ -589,6 +620,7 @@ defmodule Gtfs.DataTest do
         routes: [],
         route_patterns: [],
         timepoint_ids_by_route: %{},
+        shapes: %{},
         stops: [],
         trips: %{
           "first" => %Trip{
@@ -598,6 +630,7 @@ defmodule Gtfs.DataTest do
             headsign: "headsign",
             direction_id: 0,
             block_id: "block",
+            shape_id: "shape1",
             stop_times: [
               %StopTime{
                 stop_id: "stop",
@@ -612,6 +645,7 @@ defmodule Gtfs.DataTest do
             headsign: "headsign",
             direction_id: 0,
             block_id: "block",
+            shape_id: "shape1",
             stop_times: [
               %StopTime{
                 stop_id: "stop",
@@ -640,6 +674,7 @@ defmodule Gtfs.DataTest do
         routes: [],
         route_patterns: [],
         timepoint_ids_by_route: %{},
+        shapes: %{},
         stops: [],
         trips: %{
           "first" => %Trip{
@@ -649,6 +684,7 @@ defmodule Gtfs.DataTest do
             headsign: "headsign",
             direction_id: 0,
             block_id: "block",
+            shape_id: "shape1",
             stop_times: [
               %StopTime{
                 stop_id: "stop",
@@ -663,6 +699,7 @@ defmodule Gtfs.DataTest do
             headsign: "headsign",
             direction_id: 0,
             block_id: "block",
+            shape_id: "shape1",
             stop_times: [
               %StopTime{
                 stop_id: "stop",
@@ -680,6 +717,64 @@ defmodule Gtfs.DataTest do
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
       assert Data.active_blocks(data, time0 + 1, time0 + 4) == %{"route" => ["block"]}
+    end
+  end
+
+  describe "shape" do
+    test "returns the shape for the given route" do
+      shape = %Shape{
+        id: "shape1",
+        points: [
+          %ShapePoint{
+            shape_id: "shape1",
+            lat: 42.413560,
+            lon: -70.992110,
+            sequence: 0
+          }
+        ]
+      }
+
+      data = %Data{
+        routes: [],
+        route_patterns: [],
+        timepoint_ids_by_route: %{},
+        shapes: %{
+          "route1" => shape
+        },
+        stops: [],
+        trips: %{},
+        blocks: %{},
+        calendar: %{}
+      }
+
+      assert Data.shape(data, "route1") == shape
+    end
+
+    test "returns nil if there is no shape for the given route" do
+      data = %Data{
+        routes: [],
+        route_patterns: [],
+        timepoint_ids_by_route: %{},
+        shapes: %{
+          "route1" => %Shape{
+            id: "shape1",
+            points: [
+              %ShapePoint{
+                shape_id: "shape1",
+                lat: 42.413560,
+                lon: -70.992110,
+                sequence: 0
+              }
+            ]
+          }
+        },
+        stops: [],
+        trips: %{},
+        blocks: %{},
+        calendar: %{}
+      }
+
+      assert Data.shape(data, "shapelessRoute") == nil
     end
   end
 
@@ -715,6 +810,7 @@ defmodule Gtfs.DataTest do
           direction_id: 0,
           block_id: "b1",
           route_pattern_id: "rp1",
+          shape_id: "shape1",
           stop_times: [
             %StopTime{stop_id: "s1", time: 1, timepoint_id: "tp1"},
             %StopTime{stop_id: "s7", time: 2, timepoint_id: nil}
@@ -728,6 +824,7 @@ defmodule Gtfs.DataTest do
           direction_id: 0,
           block_id: "b2",
           route_pattern_id: "rp2",
+          shape_id: "shape2",
           stop_times: [
             %StopTime{stop_id: "s2", time: 1, timepoint_id: "tp2"},
             %StopTime{stop_id: "s3", time: 2, timepoint_id: "tp3"}
@@ -741,6 +838,7 @@ defmodule Gtfs.DataTest do
           direction_id: 1,
           block_id: "b3",
           route_pattern_id: "rp3",
+          shape_id: "shape3",
           stop_times: [
             %StopTime{stop_id: "s4", time: 1, timepoint_id: "tp4"},
             %StopTime{stop_id: "s5", time: 2, timepoint_id: "tp1"}
@@ -776,6 +874,7 @@ defmodule Gtfs.DataTest do
           direction_id: 1,
           block_id: "b1",
           route_pattern_id: "rp1",
+          shape_id: "shape1",
           stop_times: [
             %StopTime{stop_id: "s1", time: 1, timepoint_id: "t1"},
             %StopTime{stop_id: "s3b", time: 2, timepoint_id: "t3"}
@@ -789,6 +888,7 @@ defmodule Gtfs.DataTest do
           direction_id: 1,
           block_id: "b2",
           route_pattern_id: "rp2",
+          shape_id: "shape2",
           stop_times: [
             %StopTime{stop_id: "s1", time: 1, timepoint_id: "t1"},
             %StopTime{stop_id: "s2", time: 2, timepoint_id: "t2"},

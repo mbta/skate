@@ -12,6 +12,8 @@ defmodule Gtfs.Data do
     Route,
     RoutePattern,
     Service,
+    Shape,
+    ShapePoint,
     Stop,
     StopTime,
     Trip
@@ -21,6 +23,7 @@ defmodule Gtfs.Data do
           routes: [Route.t()],
           route_patterns: [RoutePattern.t()],
           timepoint_ids_by_route: timepoint_ids_by_route(),
+          shapes: shapes_by_route_id(),
           stops: stops_by_id(),
           trips: trips_by_id(),
           blocks: Block.by_id(),
@@ -28,6 +31,9 @@ defmodule Gtfs.Data do
         }
 
   @type timepoint_ids_by_route :: %{Route.id() => [StopTime.timepoint_id()]}
+
+  @type shapes_by_route_id :: %{Route.id() => Shape.t()}
+  @type shapes_by_id :: %{Shape.id() => Shape.t()}
 
   @type stops_by_id :: %{Stop.id() => Stop.t()}
 
@@ -39,6 +45,7 @@ defmodule Gtfs.Data do
     :routes,
     :route_patterns,
     :timepoint_ids_by_route,
+    :shapes,
     :stops,
     :trips,
     :blocks,
@@ -49,6 +56,7 @@ defmodule Gtfs.Data do
     :routes,
     :route_patterns,
     :timepoint_ids_by_route,
+    :shapes,
     :stops,
     :trips,
     :blocks,
@@ -152,6 +160,9 @@ defmodule Gtfs.Data do
     active_blocks_per_route
   end
 
+  @spec shape(t(), Route.id()) :: Shape.t() | nil
+  def shape(%__MODULE__{shapes: shapes}, route_id), do: Map.get(shapes, route_id)
+
   # Initialization
 
   @spec parse_files(files()) :: t()
@@ -176,6 +187,7 @@ defmodule Gtfs.Data do
       routes: bus_routes,
       route_patterns: route_patterns,
       timepoint_ids_by_route: timepoint_ids_for_routes(route_patterns, bus_route_ids, trips),
+      shapes: shapes_by_route_id(files["shapes.txt"], bus_route_ids, bus_trips),
       stops: all_stops_by_id(files["stops.txt"]),
       trips: trips,
       blocks: Block.group_trips_by_block(bus_trips),
@@ -258,6 +270,39 @@ defmodule Gtfs.Data do
     end)
     |> Gtfs.Helpers.merge_lists()
   end
+
+  @spec shapes_by_route_id(binary(), MapSet.t(Route.id()), [Trip.t()]) :: shapes_by_route_id()
+  defp shapes_by_route_id(shapes_data, route_ids, trips) do
+    shapes_by_id = all_shapes_by_id(shapes_data)
+
+    Map.new(route_ids, fn route_id ->
+      shape =
+        trips
+        |> first_trip_for_route(route_id)
+        |> shape_for_trip(shapes_by_id)
+
+      {route_id, shape}
+    end)
+  end
+
+  @spec all_shapes_by_id(binary()) :: shapes_by_id()
+  defp all_shapes_by_id(shapes_data) do
+    shapes_data
+    |> Csv.parse(fn _row -> true end, &ShapePoint.from_csv_row/1)
+    |> Enum.group_by(& &1.shape_id)
+    |> Map.new(fn {shape_id, points} ->
+      {shape_id, %Shape{id: shape_id, points: Enum.sort(points)}}
+    end)
+  end
+
+  @spec first_trip_for_route([Trip.t()], Route.id()) :: Trip.t() | nil
+  defp first_trip_for_route(trips, route_id),
+    do: Enum.find(trips, fn trip -> trip.route_id == route_id end)
+
+  @spec shape_for_trip(nil, shapes_by_id()) :: nil
+  @spec shape_for_trip(Trip.t(), shapes_by_id()) :: Shape.t()
+  defp shape_for_trip(nil, _shapes_by_id), do: nil
+  defp shape_for_trip(trip, shapes_by_id), do: shapes_by_id[trip.shape_id]
 
   @spec all_stops_by_id(binary()) :: stops_by_id()
   defp all_stops_by_id(stops_data) do
