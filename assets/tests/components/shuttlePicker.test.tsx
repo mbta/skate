@@ -54,6 +54,15 @@ const vehicle: Vehicle = {
 }
 
 describe("ShuttlePicker", () => {
+  test("renders loading state", () => {
+    const tree = renderer.create(
+      <ShuttleVehiclesProvider shuttles={null}>
+        <ShuttlePicker />
+      </ShuttleVehiclesProvider>
+    )
+    expect(tree).toMatchSnapshot()
+  })
+
   test("renders", () => {
     /*
     999-0501: known, no active shuttles, unselected

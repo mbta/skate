@@ -189,9 +189,9 @@ const shuttles: Vehicle[] = [
 ]
 
 describe("useShuttleVehicles", () => {
-  test("shuttle list is empty to start with", () => {
+  test("returns null while loading", () => {
     const { result } = renderHook(() => useShuttleVehicles(undefined))
-    expect(result.current).toEqual([])
+    expect(result.current).toEqual(null)
   })
 
   test("initializing the hook subscribes to the shuttles channel", () => {

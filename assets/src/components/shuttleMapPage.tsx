@@ -15,8 +15,8 @@ const findSelectedVehicle = (
 
 const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
   const [state] = useContext(StateDispatchContext)
-  const shuttles = useContext(ShuttleVehiclesContext)
-  const selectedShuttles = shuttles.filter(shuttle =>
+  const shuttles: Vehicle[] | null = useContext(ShuttleVehiclesContext)
+  const selectedShuttles: Vehicle[] = (shuttles || []).filter(shuttle =>
     state.selectedShuttleRunIds.includes(shuttle.runId!)
   )
   const selectedVehicle = findSelectedVehicle(
