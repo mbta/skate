@@ -1,5 +1,5 @@
 import "whatwg-fetch"
-import { DirectionName, Route, RouteId, TimepointId } from "./schedule.d"
+import { DirectionName, Route, RouteId, Shape, TimepointId } from "./schedule.d"
 
 interface RoutesResponse {
   data: RouteData[]
@@ -12,6 +12,10 @@ interface RouteData {
     "1": DirectionName
   }
   name: string
+}
+
+interface ShapesFroRouteResponse {
+  data: Shape[]
 }
 
 interface TimepointsForRouteResponse {
@@ -48,6 +52,17 @@ export const fetchRoutes = (): Promise<Route[]> =>
     .then(checkResponseStatus)
     .then(parseJson)
     .then(({ data: routes }: RoutesResponse) => parseRoutesData(routes))
+    .catch(error => {
+      // tslint:disable-next-line: no-console
+      console.error(error)
+      throw error
+    })
+
+export const fetchShapeForRoute = (routeId: RouteId): Promise<Shape[]> =>
+  fetch(`/api/shapes/${routeId}`)
+    .then(checkResponseStatus)
+    .then(parseJson)
+    .then(({ data: shapes }: ShapesFroRouteResponse) => shapes)
     .catch(error => {
       // tslint:disable-next-line: no-console
       console.error(error)

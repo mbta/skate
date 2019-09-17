@@ -34,6 +34,7 @@ describe("usePersistedStateReducer", () => {
     const initialState: State = {
       pickerContainerIsVisible: true,
       selectedRouteIds: ["1", "2"],
+      selectedShuttleRouteIds: [],
       selectedShuttleRunIds: [],
       selectedVehicleId: "2",
       settings: {
@@ -63,6 +64,7 @@ describe("usePersistedStateReducer", () => {
     const initialState: State = {
       pickerContainerIsVisible: true,
       selectedRouteIds: ["1", "2"],
+      selectedShuttleRouteIds: [],
       selectedShuttleRunIds: [],
       selectedVehicleId: "2",
       settings: {
@@ -74,6 +76,7 @@ describe("usePersistedStateReducer", () => {
     const expectedState: State = {
       pickerContainerIsVisible: true,
       selectedRouteIds: ["28", "39"],
+      selectedShuttleRouteIds: [],
       selectedShuttleRunIds: [],
       selectedVehicleId: "2",
       settings: {
@@ -102,6 +105,7 @@ describe("usePersistedStateReducer", () => {
     const initialState: State = {
       pickerContainerIsVisible: true,
       selectedRouteIds: ["1", "2"],
+      selectedShuttleRouteIds: [],
       selectedShuttleRunIds: [],
       selectedVehicleId: "2",
       settings: {
@@ -113,6 +117,7 @@ describe("usePersistedStateReducer", () => {
     const expectedState: State = {
       pickerContainerIsVisible: true,
       selectedRouteIds: ["28", "39"],
+      selectedShuttleRouteIds: [],
       selectedShuttleRunIds: [],
       selectedVehicleId: "2",
       settings: {

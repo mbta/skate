@@ -1,6 +1,7 @@
 import { renderHook } from "@testing-library/react-hooks"
 import * as Api from "../../src/api"
-import useShuttleRoutes from "../../src/hooks/useShuttleRoutes"
+import useShuttleRoutes, { sortByName } from "../../src/hooks/useShuttleRoutes"
+import { Route } from "../../src/schedule"
 import { instantPromise } from "../testHelpers/mockHelpers"
 
 // tslint:disable: react-hooks-nesting no-empty
@@ -21,9 +22,12 @@ describe("useShuttleRoutes", () => {
   })
 
   test("returns result when loaded", () => {
-    const shuttles = [{ id: "shuttle" }]
+    const shuttles = [{ id: "shuttle", name: "shuttle" }]
     const mockFetchShuttles: jest.Mock = Api.fetchShuttleRoutes as jest.Mock
-    mockFetchShuttles.mockImplementationOnce(() => instantPromise(shuttles))
+    mockFetchShuttles.mockImplementationOnce(() =>
+      instantPromise({ sort: () => instantPromise(shuttles) })
+    )
+
     const { result } = renderHook(() => {
       return useShuttleRoutes()
     })
@@ -38,5 +42,23 @@ describe("useShuttleRoutes", () => {
     })
     rerender()
     expect(mockFetchShuttles).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe("sortByName", () => {
+  test("sorts routes alphabetically by name", () => {
+    const shuttleA: Route = { id: "2", name: "a" } as Route
+    const shuttleB: Route = { id: "1", name: "b" } as Route
+    const shuttleC: Route = { id: "3", name: "c" } as Route
+    const shuttleBCaps: Route = { id: "4", name: "B" } as Route
+    const unsortedShuttles: Route[] = [
+      shuttleB,
+      shuttleA,
+      shuttleC,
+      shuttleBCaps,
+    ]
+    const sortedShuttles: Route[] = [shuttleA, shuttleB, shuttleBCaps, shuttleC]
+
+    expect(sortByName(unsortedShuttles)).toEqual(sortedShuttles)
   })
 })

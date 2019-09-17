@@ -1,4 +1,4 @@
-import Leaflet, { Map as LeafletMap, Marker } from "leaflet"
+import Leaflet, { LeafletEvent, Map as LeafletMap, Marker } from "leaflet"
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
 import React, {
   MutableRefObject,
@@ -12,6 +12,13 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClass } from "../models/vehicleStatus"
 import { Vehicle, VehicleId } from "../realtime.d"
+import {
+  ByRouteId,
+  LoadableShapes,
+  RouteId,
+  Shape,
+  ShapesByRouteId,
+} from "../schedule"
 import { Settings } from "../settings"
 import { Dispatch, selectVehicle as selectVehicleAction } from "../state"
 
@@ -19,6 +26,7 @@ interface Props {
   vehicles: Vehicle[]
   centerOnVehicle: string | null
   initialZoom?: number
+  shapesByRouteId?: ShapesByRouteId
 }
 
 interface VehicleMarkers {
@@ -30,9 +38,12 @@ interface MarkerDict {
   [id: string]: VehicleMarkers | undefined
 }
 
+type PolylinesByRouteId = ByRouteId<Leaflet.Polyline[]>
+
 interface State {
   map: LeafletMap | null
   markers: MarkerDict
+  shapes: PolylinesByRouteId
   zoom: Leaflet.Control | null
 }
 
@@ -107,7 +118,7 @@ const updateVehicle = (
   vehicleLabel.setIcon(label)
 }
 
-export const updateMap = (
+export const updateVehicles = (
   { vehicles, centerOnVehicle }: Props,
   state: State,
   settings: Settings,
@@ -156,19 +167,88 @@ export const updateMarkers = (
   }, newDict)
 }
 
+const removeDeselectedRouteShapes = (
+  previousShapes: PolylinesByRouteId,
+  selectedShuttleRouteIds: RouteId[]
+) => {
+  Object.entries(previousShapes).forEach(([routeId, polylines]) => {
+    if (!selectedShuttleRouteIds.includes(routeId)) {
+      polylines.forEach(polyline => polyline.remove())
+    }
+  })
+}
+
+type LoadedShapesByRouteId = ByRouteId<Shape[]>
+
+const loadedShapes = (
+  shapesByRouteId: ShapesByRouteId,
+  routeIds: RouteId[]
+): LoadedShapesByRouteId =>
+  routeIds.reduce(
+    (acc: LoadedShapesByRouteId, routeId: RouteId) => {
+      const loadableShapes: LoadableShapes = shapesByRouteId[routeId]
+      if (loadableShapes === undefined || loadableShapes === null) {
+        return acc
+      }
+      return { ...acc, [routeId]: loadableShapes }
+    },
+    {} as LoadedShapesByRouteId
+  )
+
+type LatLon = [number, number]
+export const latLons = ({ points }: Shape): LatLon[] =>
+  points.map(point => [point.lat, point.lon] as LatLon)
+
+const toggleSelected = (e: LeafletEvent): void => {
+  e.target.getElement().classList.toggle("selected")
+}
+
+const toPolyline = (shape: Shape): Leaflet.Polyline =>
+  Leaflet.polyline(latLons(shape), {
+    className: "m-vehicle-map__route-shape",
+  }).on("click", toggleSelected)
+
+export const updateShapes = (
+  shapesByRouteId: ShapesByRouteId,
+  previousShapes: PolylinesByRouteId,
+  selectedShuttleRouteIds: RouteId[],
+  map: LeafletMap
+): PolylinesByRouteId => {
+  removeDeselectedRouteShapes(previousShapes, selectedShuttleRouteIds)
+
+  const selectedShapesByRoute: LoadedShapesByRouteId = loadedShapes(
+    shapesByRouteId,
+    selectedShuttleRouteIds
+  )
+
+  return Object.keys(selectedShapesByRoute).reduce(
+    (acc: PolylinesByRouteId, routeId: RouteId) => ({
+      ...acc,
+      [routeId]:
+        previousShapes[routeId] ||
+        selectedShapesByRoute[routeId].map(shape =>
+          toPolyline(shape).addTo(map)
+        ),
+    }),
+    {} as PolylinesByRouteId
+  )
+}
+
 export const defaultCenter = ({
   centerOnVehicle,
 }: Props): [number, number] | undefined =>
   centerOnVehicle ? undefined : [42.360718, -71.05891]
 
 const Map = (props: Props): ReactElement<HTMLDivElement> => {
-  const [{ selectedVehicleId, settings }, dispatch] = useContext(
-    StateDispatchContext
-  )
+  const [
+    { selectedShuttleRouteIds, selectedVehicleId, settings },
+    dispatch,
+  ] = useContext(StateDispatchContext)
   const containerRef: MutableRefObject<HTMLDivElement | null> = useRef(null)
   const [state, updateState] = useState<State>({
     map: null,
     markers: {},
+    shapes: {},
     zoom: null,
   })
 
@@ -204,9 +284,24 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
 
     const markers = updateMarkers(newVehicles, state.markers, map, dispatch)
 
-    updateMap(props, { map, markers, zoom }, settings, selectedVehicleId)
+    updateVehicles(
+      props,
+      { map, markers, shapes: {}, zoom },
+      settings,
+      selectedVehicleId
+    )
 
-    updateState({ map, markers, zoom })
+    const shapes =
+      props.shapesByRouteId !== undefined
+        ? updateShapes(
+            props.shapesByRouteId,
+            state.shapes,
+            selectedShuttleRouteIds,
+            map
+          )
+        : {}
+
+    updateState({ map, markers, shapes, zoom })
   }, [props, containerRef])
 
   return (

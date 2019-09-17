@@ -13,12 +13,15 @@
     &.on-time {
       fill: $color-vehicle-ontime;
     }
+
     &.early {
       fill: $color-vehicle-early;
     }
+
     &.late {
       fill: $color-vehicle-late;
     }
+
     &.off-course {
       fill: $color-vehicle-off-course;
     }
@@ -26,5 +29,14 @@
 
   svg {
     overflow: visible;
+  }
+}
+
+.m-vehicle-map__route-shape {
+  stroke: $color-map-route-shape;
+  stroke-width: 6px;
+
+  &.selected {
+    stroke: $color-map-route-shape-selected;
   }
 }

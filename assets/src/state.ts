@@ -6,6 +6,7 @@ import { defaultSettings, Settings, VehicleLabelSetting } from "./settings"
 export interface State {
   pickerContainerIsVisible: boolean
   selectedRouteIds: RouteId[]
+  selectedShuttleRouteIds: RouteId[]
   selectedShuttleRunIds: RunId[]
   selectedVehicleId?: VehicleId
   settings: Settings
@@ -14,6 +15,7 @@ export interface State {
 export const initialState: State = {
   pickerContainerIsVisible: true,
   selectedRouteIds: [],
+  selectedShuttleRouteIds: [],
   selectedShuttleRunIds: [],
   selectedVehicleId: undefined,
   settings: defaultSettings,
@@ -68,6 +70,38 @@ export const deselectShuttleRun = (runId: RunId): DeselectShuttleRunAction => ({
   type: "DESELECT_SHUTTLE_RUN",
   payload: {
     runId,
+  },
+})
+
+interface SelectShuttleRouteAction {
+  type: "SELECT_SHUTTLE_ROUTE"
+  payload: {
+    routeId: RouteId
+  }
+}
+
+export const selectShuttleRoute = (
+  routeId: RouteId
+): SelectShuttleRouteAction => ({
+  type: "SELECT_SHUTTLE_ROUTE",
+  payload: {
+    routeId,
+  },
+})
+
+interface DeselectShuttleRouteAction {
+  type: "DESELECT_SHUTTLE_ROUTE"
+  payload: {
+    routeId: RouteId
+  }
+}
+
+export const deselectShuttleRoute = (
+  routeId: RouteId
+): DeselectShuttleRouteAction => ({
+  type: "DESELECT_SHUTTLE_ROUTE",
+  payload: {
+    routeId,
   },
 })
 
@@ -136,6 +170,8 @@ type Action =
   | DeselectRouteAction
   | SelectShuttleRunAction
   | DeselectShuttleRunAction
+  | SelectShuttleRouteAction
+  | DeselectShuttleRouteAction
   | SelectVehicleAction
   | DeselectVehicleAction
   | TogglePickerContainerAction
@@ -175,6 +211,23 @@ export const reducer = (state: State, action: Action): State => {
           id => id !== action.payload.runId
         ),
       }
+
+    case "SELECT_SHUTTLE_ROUTE":
+      return {
+        ...state,
+        selectedShuttleRouteIds: [
+          ...state.selectedShuttleRouteIds,
+          action.payload.routeId,
+        ],
+      }
+    case "DESELECT_SHUTTLE_ROUTE":
+      return {
+        ...state,
+        selectedShuttleRouteIds: state.selectedShuttleRouteIds.filter(
+          id => id !== action.payload.routeId
+        ),
+      }
+
     case "SELECT_VEHICLE":
       return action.payload.vehicleId.startsWith("ghost-")
         ? state

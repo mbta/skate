@@ -5,7 +5,7 @@ exports[`LadderPage renders the empty state 1`] = `
   className="m-ladder-page"
 >
   <div
-    className="m-picker-container visible"
+    className="m-picker-container  visible"
   >
     <div
       className="m-picker-container__tab"
@@ -83,7 +83,7 @@ exports[`LadderPage renders with routes 1`] = `
   className="m-ladder-page"
 >
   <div
-    className="m-picker-container visible"
+    className="m-picker-container  visible"
   >
     <div
       className="m-picker-container__tab"
@@ -231,7 +231,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
   className="m-ladder-page"
 >
   <div
-    className="m-picker-container visible"
+    className="m-picker-container  visible"
   >
     <div
       className="m-picker-container__tab"
@@ -428,7 +428,7 @@ exports[`LadderPage renders with timepoints 1`] = `
   className="m-ladder-page"
 >
   <div
-    className="m-picker-container visible"
+    className="m-picker-container  visible"
   >
     <div
       className="m-picker-container__tab"

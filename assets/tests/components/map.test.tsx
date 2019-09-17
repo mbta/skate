@@ -3,11 +3,14 @@ import React from "react"
 import renderer from "react-test-renderer"
 import Map, {
   defaultCenter,
-  updateMap,
+  latLons,
   updateMarkers,
+  updateShapes,
+  updateVehicles,
 } from "../../src/components/map"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Vehicle } from "../../src/realtime"
+import { ByRouteId, RouteId, Shape, ShapesByRouteId } from "../../src/schedule"
 import { VehicleLabelSetting } from "../../src/settings"
 
 const vehicle: Vehicle = {
@@ -77,7 +80,7 @@ describe("map", () => {
   })
 })
 
-describe("updateMap", () => {
+describe("updateVehicles", () => {
   test("updates lat/lng values for map & markers", () => {
     document.body.innerHTML = "<div id='map'></div>"
     const map = Leaflet.map("map", {})
@@ -87,9 +90,9 @@ describe("updateMap", () => {
         label: Leaflet.marker([43, -72]).addTo(map),
       },
     }
-    updateMap(
+    updateVehicles(
       { vehicles: [vehicle], centerOnVehicle: vehicle.id },
-      { map, markers, zoom: null },
+      { map, markers, shapes: {}, zoom: null },
       {
         vehicleLabel: undefined,
         ladderVehicleLabel: VehicleLabelSetting.RunNumber,
@@ -106,9 +109,9 @@ describe("updateMap", () => {
     const map = Leaflet.map("map", {})
     const markers = {}
     expect(() => {
-      updateMap(
+      updateVehicles(
         { vehicles: [vehicle], centerOnVehicle: vehicle.id },
-        { map, markers, zoom: null },
+        { map, markers, shapes: {}, zoom: null },
         {
           vehicleLabel: undefined,
           ladderVehicleLabel: VehicleLabelSetting.RunNumber,
@@ -176,11 +179,121 @@ describe("updateMarkers", () => {
   })
 })
 
+describe("updateShapes", () => {
+  test("adds a new list of shapes for a route if it doesn't exist", () => {
+    document.body.innerHTML = "<div id='map'></div>"
+    const map = Leaflet.map("map", { preferCanvas: true })
+    const shape: Shape = {
+      id: "shape1",
+      points: [
+        {
+          lat: 10.0,
+          lon: 20.0,
+        },
+      ],
+    }
+    const shapesByRouteId: ShapesByRouteId = {
+      "1": [shape],
+    }
+    const selectedShuttleRouteIds: RouteId[] = ["1"]
+    const shapes = updateShapes(
+      shapesByRouteId,
+      {},
+      selectedShuttleRouteIds,
+      map
+    )
+    expect(Object.keys(shapes)).toEqual(["1"])
+  })
+
+  test("removes icon if it is not in the list of current vehicles", () => {
+    document.body.innerHTML = "<div id='map'></div>"
+    const map = Leaflet.map("map", { preferCanvas: true })
+
+    const shape: Shape = {
+      id: "shape1",
+      points: [
+        {
+          lat: 10.0,
+          lon: 20.0,
+        },
+      ],
+    }
+    const existingShapes: ByRouteId<Leaflet.Polyline[]> = {
+      "1": [Leaflet.polyline(latLons(shape), {}).addTo(map)],
+    }
+
+    const shapesByRouteId: ShapesByRouteId = {}
+    const selectedShuttleRouteIds: RouteId[] = []
+
+    const shapes = updateShapes(
+      shapesByRouteId,
+      existingShapes,
+      selectedShuttleRouteIds,
+      map
+    )
+
+    expect(shapes["1"]).toBeUndefined()
+  })
+
+  test("keeps existing shapes", () => {
+    document.body.innerHTML = "<div id='map'></div>"
+    const map = Leaflet.map("map", { preferCanvas: true })
+
+    const shape: Shape = {
+      id: "shape1",
+      points: [
+        {
+          lat: 10.0,
+          lon: 20.0,
+        },
+      ],
+    }
+    const shapesByRouteId: ShapesByRouteId = {
+      "1": [shape],
+    }
+    const selectedShuttleRouteIds: RouteId[] = ["1"]
+
+    const polyline = Leaflet.polyline(latLons(shape), {}).addTo(map)
+
+    const shapes = updateShapes(
+      shapesByRouteId,
+      { "1": [polyline] },
+      selectedShuttleRouteIds,
+      map
+    )
+
+    expect(Object.keys(shapes).includes("1")).toBeTruthy()
+    expect(shapes["1"].length).toEqual(1)
+    expect(shapes["1"][0].getLatLngs()).toEqual([{ lat: 10, lng: 20 }])
+  })
+})
+
 describe("defaultCenter", () => {
   test("has a value if centerOnVehicle is null", () => {
     expect(defaultCenter({ vehicles: [], centerOnVehicle: null })).toEqual([
       42.360718,
       -71.05891,
     ])
+  })
+})
+
+describe("latLons", () => {
+  test("retuns lat-lon pairs in arrays from the points of a Shape", () => {
+    const shape: Shape = {
+      id: "shape1",
+      points: [
+        { lat: 42.41356, lon: -70.99211 },
+        { lat: 43.41356, lon: -71.99211 },
+        { lat: 44.41356, lon: -72.99211 },
+      ],
+    }
+
+    const expectedResult = [
+      [42.41356, -70.99211],
+      [43.41356, -71.99211],
+      [44.41356, -72.99211],
+    ]
+
+    expect(latLons(shape)).toEqual(expectedResult)
   })
 })
