@@ -407,7 +407,7 @@ defmodule GtfsTest do
           ],
           "shapes.txt" => [
             "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled",
-            "shape,42.373178,-71.118170,10001,"
+            "shape,42.373178,-71.118170,0,"
           ]
         })
 
@@ -418,7 +418,59 @@ defmodule GtfsTest do
                    shape_id: "shape",
                    lat: 42.373178,
                    lon: -71.118170,
-                   sequence: 10001
+                   sequence: 0
+                 }
+               ]
+             }
+    end
+
+    test "sorts the shape points" do
+      pid =
+        Gtfs.start_mocked(%{
+          "routes.txt" => [
+            "route_id,route_type,route_short_name",
+            "route,3,route"
+          ],
+          "route_patterns.txt" => [
+            "route_pattern_id,route_id,direction_id,representative_trip_id",
+            "p1,route,1,t1"
+          ],
+          "trips.txt" => [
+            "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
+            "route,service,t1,h1,1,b,route-_-0,shape"
+          ],
+          "stop_times.txt" => [
+            "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
+            "t1,,00:00:01,s4,1,exurb"
+          ],
+          "shapes.txt" => [
+            "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled",
+            "shape,43.373178,-73.118170,2,",
+            "shape,42.373178,-72.118170,1,",
+            "shape,41.373178,-71.118170,0,"
+          ]
+        })
+
+      assert Gtfs.shape("route", pid) == %Shape{
+               id: "shape",
+               points: [
+                 %ShapePoint{
+                   shape_id: "shape",
+                   lat: 41.373178,
+                   lon: -71.118170,
+                   sequence: 0
+                 },
+                 %ShapePoint{
+                   shape_id: "shape",
+                   lat: 42.373178,
+                   lon: -72.118170,
+                   sequence: 1
+                 },
+                 %ShapePoint{
+                   shape_id: "shape",
+                   lat: 43.373178,
+                   lon: -73.118170,
+                   sequence: 2
                  }
                ]
              }

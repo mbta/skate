@@ -291,7 +291,7 @@ defmodule Gtfs.Data do
     |> Csv.parse(fn _row -> true end, &ShapePoint.from_csv_row/1)
     |> Enum.group_by(& &1.shape_id)
     |> Map.new(fn {shape_id, points} ->
-      {shape_id, %Shape{id: shape_id, points: Enum.sort(points)}}
+      {shape_id, %Shape{id: shape_id, points: Enum.sort_by(points, &Map.fetch(&1, :sequence))}}
     end)
   end
 
