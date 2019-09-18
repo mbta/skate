@@ -162,7 +162,7 @@ defmodule Gtfs do
   end
 
   def handle_call({:shape, route_id}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.shape(gtfs_data, route_id), state}
+    {:reply, Data.shapes(gtfs_data, route_id), state}
   end
 
   # Initialization (Client)

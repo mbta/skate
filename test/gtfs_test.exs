@@ -386,7 +386,7 @@ defmodule GtfsTest do
   end
 
   describe "shape" do
-    test "returns the shape for the requested shuttle route" do
+    test "returns the shapes for all trips corresponding to the requested shuttle route" do
       pid =
         Gtfs.start_mocked(%{
           "routes.txt" => [
@@ -399,29 +399,87 @@ defmodule GtfsTest do
           ],
           "trips.txt" => [
             "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
-            "route,service,t1,h1,1,b,route-_-0,shape"
+            "route,service,t1,h1,1,b,route-_-0,shape1",
+            "route,service,t2,h2,1,b,route-_-0,shape2"
           ],
           "stop_times.txt" => [
             "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
-            "t1,,00:00:01,s4,1,exurb"
+            "t1,,00:00:01,s4,1,exurb",
+            "t2,,00:00:01,s4,1,exurb"
           ],
           "shapes.txt" => [
             "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled",
-            "shape,42.373178,-71.118170,0,"
+            "shape1,42.373178,-71.118170,0,",
+            "shape2,43.373178,-72.118170,0,"
           ]
         })
 
-      assert Gtfs.shape("route", pid) == %Shape{
-               id: "shape",
-               points: [
-                 %ShapePoint{
-                   shape_id: "shape",
-                   lat: 42.373178,
-                   lon: -71.118170,
-                   sequence: 0
-                 }
-               ]
-             }
+      assert Gtfs.shape("route", pid) == [
+               %Shape{
+                 id: "shape1",
+                 points: [
+                   %ShapePoint{
+                     shape_id: "shape1",
+                     lat: 42.373178,
+                     lon: -71.118170,
+                     sequence: 0
+                   }
+                 ]
+               },
+               %Shape{
+                 id: "shape2",
+                 points: [
+                   %ShapePoint{
+                     shape_id: "shape2",
+                     lat: 43.373178,
+                     lon: -72.118170,
+                     sequence: 0
+                   }
+                 ]
+               }
+             ]
+    end
+
+    test "dedupes shapes that are reused between trips" do
+      pid =
+        Gtfs.start_mocked(%{
+          "routes.txt" => [
+            "route_id,route_type,route_short_name,route_desc",
+            "route,3,route,\"Rail Replacement Bus\""
+          ],
+          "route_patterns.txt" => [
+            "route_pattern_id,route_id,direction_id,representative_trip_id",
+            "p1,route,1,t1"
+          ],
+          "trips.txt" => [
+            "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
+            "route,service,t1,h1,1,b,route-_-0,shape1",
+            "route,service,t2,h2,1,b,route-_-0,shape1"
+          ],
+          "stop_times.txt" => [
+            "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
+            "t1,,00:00:01,s4,1,exurb",
+            "t2,,00:00:01,s4,1,exurb"
+          ],
+          "shapes.txt" => [
+            "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled",
+            "shape1,42.373178,-71.118170,0,"
+          ]
+        })
+
+      assert Gtfs.shape("route", pid) == [
+               %Shape{
+                 id: "shape1",
+                 points: [
+                   %ShapePoint{
+                     shape_id: "shape1",
+                     lat: 42.373178,
+                     lon: -71.118170,
+                     sequence: 0
+                   }
+                 ]
+               }
+             ]
     end
 
     test "sorts the shape points" do
@@ -451,29 +509,31 @@ defmodule GtfsTest do
           ]
         })
 
-      assert Gtfs.shape("route", pid) == %Shape{
-               id: "shape",
-               points: [
-                 %ShapePoint{
-                   shape_id: "shape",
-                   lat: 41.373178,
-                   lon: -71.118170,
-                   sequence: 0
-                 },
-                 %ShapePoint{
-                   shape_id: "shape",
-                   lat: 42.373178,
-                   lon: -72.118170,
-                   sequence: 1
-                 },
-                 %ShapePoint{
-                   shape_id: "shape",
-                   lat: 43.373178,
-                   lon: -73.118170,
-                   sequence: 2
-                 }
-               ]
-             }
+      assert Gtfs.shape("route", pid) == [
+               %Shape{
+                 id: "shape",
+                 points: [
+                   %ShapePoint{
+                     shape_id: "shape",
+                     lat: 41.373178,
+                     lon: -71.118170,
+                     sequence: 0
+                   },
+                   %ShapePoint{
+                     shape_id: "shape",
+                     lat: 42.373178,
+                     lon: -72.118170,
+                     sequence: 1
+                   },
+                   %ShapePoint{
+                     shape_id: "shape",
+                     lat: 43.373178,
+                     lon: -73.118170,
+                     sequence: 2
+                   }
+                 ]
+               }
+             ]
     end
 
     test "does not save shapes for non-shuttle routes" do

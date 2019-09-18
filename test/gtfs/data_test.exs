@@ -720,26 +720,39 @@ defmodule Gtfs.DataTest do
     end
   end
 
-  describe "shape" do
-    test "returns the shape for the given shuttle route" do
-      shape = %Shape{
-        id: "shape1",
-        points: [
-          %ShapePoint{
-            shape_id: "shape1",
-            lat: 42.413560,
-            lon: -70.992110,
-            sequence: 0
-          }
-        ]
-      }
+  describe "shapes" do
+    test "returns the shapes for the given shuttle route" do
+      shapes = [
+        %Shape{
+          id: "shape1",
+          points: [
+            %ShapePoint{
+              shape_id: "shape1",
+              lat: 42.413560,
+              lon: -70.992110,
+              sequence: 0
+            }
+          ]
+        },
+        %Shape{
+          id: "shape2",
+          points: [
+            %ShapePoint{
+              shape_id: "shape2",
+              lat: 43.413560,
+              lon: -71.992110,
+              sequence: 0
+            }
+          ]
+        }
+      ]
 
       data = %Data{
         routes: [],
         route_patterns: [],
         timepoint_ids_by_route: %{},
         shapes: %{
-          "route1" => shape
+          "route1" => shapes
         },
         stops: [],
         trips: %{},
@@ -747,26 +760,28 @@ defmodule Gtfs.DataTest do
         calendar: %{}
       }
 
-      assert Data.shape(data, "route1") == shape
+      assert Data.shapes(data, "route1") == shapes
     end
 
-    test "returns nil if there is no shape for the given route" do
+    test "returns nil if there are no shapes for the given route" do
       data = %Data{
         routes: [],
         route_patterns: [],
         timepoint_ids_by_route: %{},
         shapes: %{
-          "route1" => %Shape{
-            id: "shape1",
-            points: [
-              %ShapePoint{
-                shape_id: "shape1",
-                lat: 42.413560,
-                lon: -70.992110,
-                sequence: 0
-              }
-            ]
-          }
+          "route1" => [
+            %Shape{
+              id: "shape1",
+              points: [
+                %ShapePoint{
+                  shape_id: "shape1",
+                  lat: 42.413560,
+                  lon: -70.992110,
+                  sequence: 0
+                }
+              ]
+            }
+          ]
         },
         stops: [],
         trips: %{},
@@ -774,7 +789,7 @@ defmodule Gtfs.DataTest do
         calendar: %{}
       }
 
-      assert Data.shape(data, "shapelessRoute") == nil
+      assert Data.shapes(data, "shapelessRoute") == nil
     end
   end
 
