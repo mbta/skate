@@ -26,26 +26,16 @@ defmodule SkateWeb.VehiclesChannel do
     case AuthManager.decode_and_verify(token) do
       {:ok, _claims} ->
         # Refresh a token before it expires
-        {:ok, _old_claims, {_new_token, _new_claims}} = AuthManager.refresh(token)
-
-        push_vehicles(socket, data_category, lookup_args)
-
-      {:error, :token_expired} ->
-        refresh_token_store = Application.get_env(:skate, :refresh_token_store)
-
-        refresh_token =
-          socket
-          |> Guardian.Phoenix.Socket.current_resource()
-          |> refresh_token_store.get_refresh_token()
-
-        # Exchange a token of type "refresh" for a new token of type "access"
-        case AuthManager.exchange(refresh_token, "refresh", "access") do
-          {:ok, _old_stuff, {_new_token, _new_claims}} ->
+        case AuthManager.refresh(token) do
+          {:ok, _old_claims, {_new_token, _new_claims}} ->
             push_vehicles(socket, data_category, lookup_args)
 
-          _ ->
-            {:stop, :normal, send_auth_expired_message(socket)}
+          {:error, :token_expired} ->
+            handle_expired_token(socket, data_category, lookup_args)
         end
+
+      {:error, :token_expired} ->
+        handle_expired_token(socket, data_category, lookup_args)
 
       _ ->
         {:stop, :normal, send_auth_expired_message(socket)}
@@ -62,6 +52,26 @@ defmodule SkateWeb.VehiclesChannel do
   defp push_vehicles(socket, :shuttles, lookup) do
     push(socket, "shuttles", %{data: Server.lookup(lookup)})
     {:noreply, socket}
+  end
+
+  @spec handle_expired_token(Phoenix.Socket.t(), Server.data_category(), Server.lookup_key()) ::
+          {:noreply, Phoenix.Socket.t()} | {:stop, :normal, Phoenix.Socket.t()}
+  defp handle_expired_token(socket, data_category, lookup_args) do
+    refresh_token_store = Application.get_env(:skate, :refresh_token_store)
+
+    refresh_token =
+      socket
+      |> Guardian.Phoenix.Socket.current_resource()
+      |> refresh_token_store.get_refresh_token()
+
+    # Exchange a token of type "refresh" for a new token of type "access"
+    case AuthManager.exchange(refresh_token, "refresh", "access") do
+      {:ok, _old_stuff, {_new_token, _new_claims}} ->
+        push_vehicles(socket, data_category, lookup_args)
+
+      _ ->
+        {:stop, :normal, send_auth_expired_message(socket)}
+    end
   end
 
   @spec send_auth_expired_message(Phoenix.Socket.t()) :: Phoenix.Socket.t()
