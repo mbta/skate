@@ -299,8 +299,7 @@ defmodule Gtfs.Data do
   defp first_trip_for_route(trips, route_id),
     do: Enum.find(trips, fn trip -> trip.route_id == route_id end)
 
-  @spec shape_for_trip(nil, shapes_by_id()) :: nil
-  @spec shape_for_trip(Trip.t(), shapes_by_id()) :: Shape.t()
+  @spec shape_for_trip(Trip.t() | nil, shapes_by_id()) :: Shape.t() | nil
   defp shape_for_trip(nil, _shapes_by_id), do: nil
   defp shape_for_trip(trip, shapes_by_id), do: shapes_by_id[trip.shape_id]
 
