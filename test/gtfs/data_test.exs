@@ -721,7 +721,7 @@ defmodule Gtfs.DataTest do
   end
 
   describe "shape" do
-    test "returns the shape for the given route" do
+    test "returns the shape for the given shuttle route" do
       shape = %Shape{
         id: "shape1",
         points: [

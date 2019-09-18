@@ -187,7 +187,7 @@ defmodule Gtfs.Data do
       routes: bus_routes,
       route_patterns: route_patterns,
       timepoint_ids_by_route: timepoint_ids_for_routes(route_patterns, bus_route_ids, trips),
-      shapes: shapes_by_route_id(files["shapes.txt"], bus_route_ids, bus_trips),
+      shapes: shapes_by_route_id(files["shapes.txt"], bus_routes, bus_trips),
       stops: all_stops_by_id(files["stops.txt"]),
       trips: trips,
       blocks: Block.group_trips_by_block(bus_trips),
@@ -271,11 +271,14 @@ defmodule Gtfs.Data do
     |> Gtfs.Helpers.merge_lists()
   end
 
-  @spec shapes_by_route_id(binary(), MapSet.t(Route.id()), [Trip.t()]) :: shapes_by_route_id()
-  defp shapes_by_route_id(shapes_data, route_ids, trips) do
+  @spec shapes_by_route_id(binary(), [Route.t()], [Trip.t()]) :: shapes_by_route_id()
+  defp shapes_by_route_id(shapes_data, routes, trips) do
     shapes_by_id = all_shapes_by_id(shapes_data)
 
-    Map.new(route_ids, fn route_id ->
+    routes
+    # Only save routes for shuttle routes
+    |> Enum.filter(&(Route.shuttle_route?(&1)))
+    |> Map.new(fn %Route{id: route_id} ->
       shape =
         trips
         |> first_trip_for_route(route_id)

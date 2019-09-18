@@ -386,12 +386,12 @@ defmodule GtfsTest do
   end
 
   describe "shape" do
-    test "returns the shape for the requested route" do
+    test "returns the shape for the requested shuttle route" do
       pid =
         Gtfs.start_mocked(%{
           "routes.txt" => [
-            "route_id,route_type,route_short_name",
-            "route,3,route"
+            "route_id,route_type,route_short_name,route_desc",
+            "route,3,route,\"Rail Replacement Bus\""
           ],
           "route_patterns.txt" => [
             "route_pattern_id,route_id,direction_id,representative_trip_id",
@@ -428,8 +428,8 @@ defmodule GtfsTest do
       pid =
         Gtfs.start_mocked(%{
           "routes.txt" => [
-            "route_id,route_type,route_short_name",
-            "route,3,route"
+            "route_id,route_type,route_short_name,route_desc",
+            "route,3,route,\"Rail Replacement Bus\""
           ],
           "route_patterns.txt" => [
             "route_pattern_id,route_id,direction_id,representative_trip_id",
@@ -474,6 +474,34 @@ defmodule GtfsTest do
                  }
                ]
              }
+    end
+
+    test "does not save shapes for non-shuttle routes" do
+      pid =
+        Gtfs.start_mocked(%{
+          "routes.txt" => [
+            "route_id,route_type,route_short_name,route_desc",
+            "route,3,route,\"Key Bus\""
+          ],
+          "route_patterns.txt" => [
+            "route_pattern_id,route_id,direction_id,representative_trip_id",
+            "p1,route,1,t1"
+          ],
+          "trips.txt" => [
+            "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
+            "route,service,t1,h1,1,b,route-_-0,shape"
+          ],
+          "stop_times.txt" => [
+            "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
+            "t1,,00:00:01,s4,1,exurb"
+          ],
+          "shapes.txt" => [
+            "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled",
+            "shape,42.373178,-71.118170,0,"
+          ]
+        })
+
+      assert Gtfs.shape("route", pid) == nil
     end
   end
 
