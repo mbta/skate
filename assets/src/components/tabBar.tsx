@@ -12,7 +12,12 @@ const TabBar = ({
   <div
     className={`m-tab-bar ${pickerContainerIsVisible ? "visible" : "hidden"}`}
   >
-    <div className="m-tab-bar__logo">{skateLogo}</div>
+    <button
+      className="m-tab-bar__logo"
+      onClick={() => window.location.reload()}
+    >
+      {skateLogo}
+    </button>
     <ul className="m-tab-bar__links">
       <li>
         <NavLink
