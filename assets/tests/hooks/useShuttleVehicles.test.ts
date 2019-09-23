@@ -243,16 +243,16 @@ describe("useShuttleVehicles", () => {
     spyConsoleError.mockRestore()
   })
 
-  test("console.error on timeout", async () => {
-    const spyConsoleError = jest.spyOn(console, "error")
-    spyConsoleError.mockImplementationOnce(msg => msg)
+  test("reloads the window on channel timeout", async () => {
+    const reloadSpy = jest.spyOn(window.location, "reload")
+    reloadSpy.mockImplementationOnce(() => ({}))
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("timeout")
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     renderHook(() => useShuttleVehicles((mockSocket as any) as Socket))
 
-    expect(spyConsoleError).toHaveBeenCalledWith("join timeout")
-    spyConsoleError.mockRestore()
+    expect(reloadSpy).toHaveBeenCalled()
+    reloadSpy.mockRestore()
   })
 })
