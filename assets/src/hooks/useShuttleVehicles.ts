@@ -70,8 +70,9 @@ const subscribe = (socket: Socket, dispatch: Dispatch<Action>): Channel => {
     .receive("ok", handleShuttles)
     // tslint:disable-next-line: no-console
     .receive("error", ({ reason }) => console.error("join failed", reason))
-    // tslint:disable-next-line: no-console
-    .receive("timeout", () => console.error("join timeout"))
+    .receive("timeout", () => {
+      window.location.reload(true)
+    })
 
   return channel
 }

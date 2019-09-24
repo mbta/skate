@@ -12,7 +12,7 @@ const makeMockSocket = () => ({
   channel: jest.fn(),
 })
 
-const makeMockChannel = () => {
+const makeMockChannel = (expectedJoinMessage?: "ok" | "error" | "timeout") => {
   const result = {
     join: jest.fn(),
     leave: jest.fn(),
@@ -20,7 +20,23 @@ const makeMockChannel = () => {
     receive: jest.fn(),
   }
   result.join.mockImplementation(() => result)
-  result.receive.mockImplementation(() => result)
+  result.receive.mockImplementation((message, handler) => {
+    if (message === expectedJoinMessage) {
+      switch (message) {
+        case "ok":
+          return result
+
+        case "error":
+          handler({ reason: "ERROR_REASON" })
+          break
+
+        case "timeout":
+          handler()
+      }
+    }
+
+    return result
+  })
   return result
 }
 
@@ -400,5 +416,18 @@ describe("useVehicles", () => {
         ghosts: [],
       },
     })
+  })
+
+  test("reloads the window on channel timeout", async () => {
+    const reloadSpy = jest.spyOn(window.location, "reload")
+    reloadSpy.mockImplementationOnce(() => ({}))
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("timeout")
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+
+    renderHook(() => useVehicles((mockSocket as any) as Socket, ["1"]))
+
+    expect(reloadSpy).toHaveBeenCalled()
+    reloadSpy.mockRestore()
   })
 })
