@@ -40,7 +40,7 @@ describe("tabBar", () => {
   it("reloads the page when you click on the logo", () => {
     const reloadSpy = jest
       .spyOn(window.location, "reload")
-      .mockImplementation(() => ({}))
+      .mockImplementationOnce(() => ({}))
 
     const wrapper = mount(
       <BrowserRouter>
