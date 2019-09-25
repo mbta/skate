@@ -12,7 +12,7 @@ jest.mock("../../src/api", () => ({
 }))
 
 describe("useRouteShapes", () => {
-  test("fetches a shape for a route if we don't yet it them", () => {
+  test("fetches a shape for a route if we don't have it yet", () => {
     const mockFetchShape: jest.Mock = Api.fetchShapeForRoute as jest.Mock
 
     const { result } = renderHook(() => {
@@ -22,6 +22,17 @@ describe("useRouteShapes", () => {
     expect(mockFetchShape).toHaveBeenCalledTimes(1)
     expect(mockFetchShape).toHaveBeenCalledWith("1")
     expect(result.current).toEqual({ "1": null })
+  })
+
+  test("does not fetches a subway route shape we don't have yet", () => {
+    const mockFetchShape: jest.Mock = Api.fetchShapeForRoute as jest.Mock
+
+    const { result } = renderHook(() => {
+      return useRouteShapes(["Red"])
+    })
+
+    expect(mockFetchShape).toHaveBeenCalledTimes(0)
+    expect(result.current).toEqual({})
   })
 
   test("returns the shape when the api call returns", () => {

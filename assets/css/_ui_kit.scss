@@ -48,9 +48,6 @@ $color-line-bunched-light: #ffcce9;
 $color-line-gapped: #00c6ed;
 $color-line-gapped-light: #75e8ff;
 
-$color-map-route-shape: transparentize($color-secondary-dark, 0.4);
-$color-map-route-shape-selected: $color-secondary-dark;
-
 // type styles
 
 @mixin font-header-big {

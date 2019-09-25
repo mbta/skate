@@ -25,6 +25,7 @@ export type RoutePatternId = string
 
 export interface Shape {
   id: ShapeId
+  color?: string
   points: ShapePoint[]
 }
 

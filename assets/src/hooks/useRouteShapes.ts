@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { fetchShapeForRoute } from "../api"
+import { subwayRouteIds } from "../models/subwayRoute"
 import { RouteId, Shape, ShapesByRouteId } from "../schedule"
 
 const useRouteShapes = (selectedRouteIds: RouteId[]): ShapesByRouteId => {
@@ -21,7 +22,10 @@ const useRouteShapes = (selectedRouteIds: RouteId[]): ShapesByRouteId => {
 
   useEffect(() => {
     selectedRouteIds.forEach((routeId: RouteId) => {
-      if (!(routeId in shapesByRouteId)) {
+      if (
+        !(routeId in shapesByRouteId) &&
+        !subwayRouteIds().includes(routeId)
+      ) {
         setLoadingShapesForRoute(routeId)
 
         fetchShapeForRoute(routeId).then((shapes: Shape[]) =>

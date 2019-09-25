@@ -183,6 +183,7 @@ export const latLons = ({ points }: Shape): LatLon[] =>
 const toPolyline = (shape: Shape): Leaflet.Polyline =>
   Leaflet.polyline(latLons(shape), {
     className: "m-vehicle-map__route-shape",
+    color: shape.color ? shape.color : "#4db6ac",
   })
 
 export const updateShapes = (

@@ -33,10 +33,10 @@
 }
 
 .m-vehicle-map__route-shape {
-  stroke: $color-map-route-shape;
+  opacity: 0.6;
   stroke-width: 6px;
 
   &:hover {
-    stroke: $color-map-route-shape-selected;
+    opacity: 1;
   }
 }

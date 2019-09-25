@@ -243,9 +243,7 @@ describe("ShuttlePicker", () => {
       .first()
       .simulate("click")
 
-    expect(dispatch).toHaveBeenCalledWith(
-      selectShuttleRoute(shuttleRoutes[0].id)
-    )
+    expect(dispatch).toHaveBeenCalledWith(selectShuttleRoute("Blue"))
   })
 
   test("clicking a selected route button removes the route from the selected route IDs", () => {
