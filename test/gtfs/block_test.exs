@@ -13,6 +13,7 @@ defmodule Gtfs.BlockTest do
     direction_id: 0,
     block_id: "b",
     route_pattern_id: "rp",
+    shape_id: "shape1",
     stop_times: [
       %StopTime{stop_id: "s1", time: 1, timepoint_id: "tp1"},
       %StopTime{stop_id: "s7", time: 2, timepoint_id: nil}

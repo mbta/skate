@@ -147,6 +147,7 @@ defmodule Realtime.TimepointStatusTest do
           direction_id: 1,
           block_id: "S28-2",
           route_pattern_id: "28-_-1",
+          shape_id: "shape1",
           stop_times: [
             %StopTime{
               stop_id: "6553",
@@ -185,6 +186,7 @@ defmodule Realtime.TimepointStatusTest do
           direction_id: 1,
           block_id: "S28-2",
           route_pattern_id: "28-_-1",
+          shape_id: "shape1",
           stop_times: [
             %StopTime{
               stop_id: "6553",
@@ -223,6 +225,7 @@ defmodule Realtime.TimepointStatusTest do
           direction_id: 0,
           block_id: "S28-2",
           route_pattern_id: "28-_-0",
+          shape_id: "shape1",
           stop_times: [
             %StopTime{
               stop_id: "6553",
@@ -244,6 +247,7 @@ defmodule Realtime.TimepointStatusTest do
           direction_id: 1,
           block_id: "S28-2",
           route_pattern_id: "28-_-1",
+          shape_id: "shape1",
           stop_times: [
             %StopTime{
               stop_id: "6553",
@@ -277,6 +281,7 @@ defmodule Realtime.TimepointStatusTest do
           direction_id: 1,
           block_id: "S28-2",
           route_pattern_id: "28-_-1",
+          shape_id: "shape1",
           stop_times: [
             %StopTime{stop_id: "1", time: Util.Time.parse_hhmmss("12:05:00"), timepoint_id: "1"},
             %StopTime{stop_id: "2", time: Util.Time.parse_hhmmss("12:10:00"), timepoint_id: "2"},

@@ -58,6 +58,7 @@ defmodule Realtime.VehicleTest do
         direction_id: 1,
         block_id: "S28-2",
         route_pattern_id: "28-_-0",
+        shape_id: "shape1",
         stop_times: [
           %StopTime{stop_id: "18511", time: 0, timepoint_id: "tp1"},
           %StopTime{stop_id: "18512", time: 1, timepoint_id: nil},
@@ -231,6 +232,7 @@ defmodule Realtime.VehicleTest do
           direction_id: 1,
           block_id: "S28-2",
           route_pattern_id: "28-_-1",
+          shape_id: "shape1",
           stop_times: [
             %StopTime{
               stop_id: "6553",
@@ -299,6 +301,7 @@ defmodule Realtime.VehicleTest do
         headsign: "Trip 1",
         direction_id: 1,
         block_id: "b",
+        shape_id: "shape1",
         stop_times: [
           %StopTime{
             stop_id: "s1",
