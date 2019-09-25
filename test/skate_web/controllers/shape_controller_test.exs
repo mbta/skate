@@ -2,7 +2,8 @@ defmodule SkateWeb.ShapeControllerTest do
   use SkateWeb.ConnCase
   import Test.Support.Helpers
 
-  alias Gtfs.{Shape, ShapePoint}
+  alias Gtfs.Shape
+  alias Gtfs.Shape.Point
   alias SkateWeb.AuthManager
 
   describe "GET /api/shapes/:route_id" do
@@ -10,7 +11,7 @@ defmodule SkateWeb.ShapeControllerTest do
       shape = %Shape{
         id: "shape1",
         points: [
-          %ShapePoint{
+          %Point{
             shape_id: "shape1",
             lat: "42.413560",
             lon: "-70.992110",

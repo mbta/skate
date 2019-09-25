@@ -13,7 +13,6 @@ defmodule Gtfs.Data do
     RoutePattern,
     Service,
     Shape,
-    ShapePoint,
     Stop,
     StopTime,
     Trip
@@ -291,7 +290,7 @@ defmodule Gtfs.Data do
   @spec all_shapes_by_id(binary()) :: shapes_by_id()
   defp all_shapes_by_id(shapes_data) do
     shapes_data
-    |> Csv.parse(fn _row -> true end, &ShapePoint.from_csv_row/1)
+    |> Csv.parse(fn _row -> true end, &Shape.Point.from_csv_row/1)
     |> Enum.group_by(& &1.shape_id)
     |> Map.new(fn {shape_id, points} ->
       {shape_id, %Shape{id: shape_id, points: Enum.sort_by(points, &Map.fetch(&1, :sequence))}}

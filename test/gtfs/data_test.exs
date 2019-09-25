@@ -1,7 +1,8 @@
 defmodule Gtfs.DataTest do
   use ExUnit.Case, async: true
 
-  alias Gtfs.{Block, Data, Route, RoutePattern, Shape, ShapePoint, Stop, StopTime, Trip}
+  alias Gtfs.{Block, Data, Route, RoutePattern, Shape, Stop, StopTime, Trip}
+  alias Gtfs.Shape.Point
 
   test "all_routes/1 returns all the routes" do
     routes = [
@@ -726,7 +727,7 @@ defmodule Gtfs.DataTest do
         %Shape{
           id: "shape1",
           points: [
-            %ShapePoint{
+            %Point{
               shape_id: "shape1",
               lat: 42.413560,
               lon: -70.992110,
@@ -737,7 +738,7 @@ defmodule Gtfs.DataTest do
         %Shape{
           id: "shape2",
           points: [
-            %ShapePoint{
+            %Point{
               shape_id: "shape2",
               lat: 43.413560,
               lon: -71.992110,
@@ -773,7 +774,7 @@ defmodule Gtfs.DataTest do
             %Shape{
               id: "shape1",
               points: [
-                %ShapePoint{
+                %Point{
                   shape_id: "shape1",
                   lat: 42.413560,
                   lon: -70.992110,

@@ -1,9 +1,9 @@
-defmodule Gtfs.ShapePointTest do
+defmodule Gtfs.ShapeTest do
   use ExUnit.Case, async: true
 
-  alias Gtfs.ShapePoint
+  alias Gtfs.Shape.Point
 
-  describe "from_csv_row" do
+  describe "Gtfs.Shape.Point.from_csv_row/1" do
     test "builds a Shape struct from a csv row" do
       csv_row = %{
         "shape_id" => "WonderlandToOrientHeights-S",
@@ -13,7 +13,7 @@ defmodule Gtfs.ShapePointTest do
         "shape_dist_traveled" => "42"
       }
 
-      assert ShapePoint.from_csv_row(csv_row) == %ShapePoint{
+      assert Point.from_csv_row(csv_row) == %Point{
                shape_id: "WonderlandToOrientHeights-S",
                lat: 42.413560,
                lon: -70.992110,
