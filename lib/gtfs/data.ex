@@ -32,7 +32,6 @@ defmodule Gtfs.Data do
   @type timepoint_ids_by_route :: %{Route.id() => [StopTime.timepoint_id()]}
 
   @type shapes_by_route_id :: %{Route.id() => [Shape.t()]}
-  @type shapes_by_id :: %{Shape.id() => Shape.t()}
 
   @type stops_by_id :: %{Stop.id() => Stop.t()}
 
@@ -272,7 +271,7 @@ defmodule Gtfs.Data do
 
   @spec shapes_by_route_id(binary(), [Route.t()], [Trip.t()]) :: shapes_by_route_id()
   defp shapes_by_route_id(shapes_data, routes, trips) do
-    shapes_by_id = all_shapes_by_id(shapes_data)
+    shapes_by_id = Shape.from_file(shapes_data)
 
     routes
     # Only save routes for shuttle routes
@@ -287,21 +286,11 @@ defmodule Gtfs.Data do
     end)
   end
 
-  @spec all_shapes_by_id(binary()) :: shapes_by_id()
-  defp all_shapes_by_id(shapes_data) do
-    shapes_data
-    |> Csv.parse(fn _row -> true end, &Shape.Point.from_csv_row/1)
-    |> Enum.group_by(& &1.shape_id)
-    |> Map.new(fn {shape_id, points} ->
-      {shape_id, %Shape{id: shape_id, points: Enum.sort_by(points, &Map.fetch(&1, :sequence))}}
-    end)
-  end
-
   @spec trips_for_route([Trip.t()], Route.id()) :: [Trip.t()]
   defp trips_for_route(trips, route_id),
     do: Enum.filter(trips, fn trip -> trip.route_id == route_id end)
 
-  @spec shapes_for_trips([Trip.t()], shapes_by_id) :: [Shape.t()]
+  @spec shapes_for_trips([Trip.t()], Shape.shapes_by_id()) :: [Shape.t()]
   defp shapes_for_trips(trips, shapes_by_id) do
     trips
     |> Enum.reduce(
@@ -314,8 +303,8 @@ defmodule Gtfs.Data do
     |> Enum.dedup()
   end
 
-  @spec shape_for_trip(Trip.t(), shapes_by_id()) :: Shape.t() | nil
-  defp shape_for_trip(trip, shapes_by_id), do: Map.get(shapes_by_id, trip.shape_id)
+  @spec shape_for_trip(Trip.t(), Shape.shapes_by_id()) :: Shape.t() | nil
+  defp shape_for_trip(trip, shapes_by_id), do: Shape.by_id(shapes_by_id, trip.shape_id)
 
   @spec all_stops_by_id(binary()) :: stops_by_id()
   defp all_stops_by_id(stops_data) do
