@@ -8,9 +8,10 @@ import Map, {
   updateShapes,
   updateVehicles,
 } from "../../src/components/map"
+import { LoadedShapesByRouteId } from "../../src/models/shape"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Vehicle } from "../../src/realtime"
-import { ByRouteId, RouteId, Shape, ShapesByRouteId } from "../../src/schedule"
+import { ByRouteId, RouteId, Shape } from "../../src/schedule"
 import { VehicleLabelSetting } from "../../src/settings"
 
 const vehicle: Vehicle = {
@@ -192,7 +193,7 @@ describe("updateShapes", () => {
         },
       ],
     }
-    const shapesByRouteId: ShapesByRouteId = {
+    const shapesByRouteId: LoadedShapesByRouteId = {
       "1": [shape],
     }
     const selectedShuttleRouteIds: RouteId[] = ["1"]
@@ -222,7 +223,7 @@ describe("updateShapes", () => {
       "1": [Leaflet.polyline(latLons(shape), {}).addTo(map)],
     }
 
-    const shapesByRouteId: ShapesByRouteId = {}
+    const shapesByRouteId: LoadedShapesByRouteId = {}
     const selectedShuttleRouteIds: RouteId[] = []
 
     const shapes = updateShapes(
@@ -248,7 +249,7 @@ describe("updateShapes", () => {
         },
       ],
     }
-    const shapesByRouteId: ShapesByRouteId = {
+    const shapesByRouteId: LoadedShapesByRouteId = {
       "1": [shape],
     }
     const selectedShuttleRouteIds: RouteId[] = ["1"]

@@ -10,15 +10,10 @@ import React, {
 } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import vehicleLabelString from "../helpers/vehicleLabel"
+import { LoadedShapesByRouteId } from "../models/shape"
 import { drawnStatus, statusClass } from "../models/vehicleStatus"
 import { Vehicle, VehicleId } from "../realtime.d"
-import {
-  ByRouteId,
-  LoadableShapes,
-  RouteId,
-  Shape,
-  ShapesByRouteId,
-} from "../schedule"
+import { ByRouteId, RouteId, Shape } from "../schedule"
 import { Settings } from "../settings"
 import { Dispatch, selectVehicle as selectVehicleAction } from "../state"
 
@@ -26,7 +21,7 @@ interface Props {
   vehicles: Vehicle[]
   centerOnVehicle: string | null
   initialZoom?: number
-  shapesByRouteId?: ShapesByRouteId
+  loadedShapesByRouteId?: LoadedShapesByRouteId
 }
 
 interface VehicleMarkers {
@@ -178,23 +173,6 @@ const removeDeselectedRouteShapes = (
   })
 }
 
-type LoadedShapesByRouteId = ByRouteId<Shape[]>
-
-const loadedShapes = (
-  shapesByRouteId: ShapesByRouteId,
-  routeIds: RouteId[]
-): LoadedShapesByRouteId =>
-  routeIds.reduce(
-    (acc: LoadedShapesByRouteId, routeId: RouteId) => {
-      const loadableShapes: LoadableShapes = shapesByRouteId[routeId]
-      if (loadableShapes === undefined || loadableShapes === null) {
-        return acc
-      }
-      return { ...acc, [routeId]: loadableShapes }
-    },
-    {} as LoadedShapesByRouteId
-  )
-
 type LatLon = [number, number]
 export const latLons = ({ points }: Shape): LatLon[] =>
   points.map(point => [point.lat, point.lon] as LatLon)
@@ -211,24 +189,19 @@ const toPolyline = (shape: Shape): Leaflet.Polyline =>
     .on("mouseout", toggleSelected)
 
 export const updateShapes = (
-  shapesByRouteId: ShapesByRouteId,
+  loadedShapesByRouteId: LoadedShapesByRouteId,
   previousShapes: PolylinesByRouteId,
   selectedShuttleRouteIds: RouteId[],
   map: LeafletMap
 ): PolylinesByRouteId => {
   removeDeselectedRouteShapes(previousShapes, selectedShuttleRouteIds)
 
-  const selectedShapesByRoute: LoadedShapesByRouteId = loadedShapes(
-    shapesByRouteId,
-    selectedShuttleRouteIds
-  )
-
-  return Object.keys(selectedShapesByRoute).reduce(
+  return Object.keys(loadedShapesByRouteId).reduce(
     (acc: PolylinesByRouteId, routeId: RouteId) => ({
       ...acc,
       [routeId]:
         previousShapes[routeId] ||
-        selectedShapesByRoute[routeId].map(shape =>
+        loadedShapesByRouteId[routeId].map(shape =>
           toPolyline(shape).addTo(map)
         ),
     }),
@@ -294,9 +267,9 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
     )
 
     const shapes =
-      props.shapesByRouteId !== undefined
+      props.loadedShapesByRouteId !== undefined
         ? updateShapes(
-            props.shapesByRouteId,
+            props.loadedShapesByRouteId,
             state.shapes,
             selectedShuttleRouteIds,
             map
