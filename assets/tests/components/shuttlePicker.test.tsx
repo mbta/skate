@@ -229,7 +229,7 @@ describe("ShuttlePicker", () => {
     )
   })
 
-  test("clicking a selected route button removesthe route from the selected route IDs", () => {
+  test("clicking a selected route button removes the route from the selected route IDs", () => {
     const selectedRouteId = shuttleRoutes[1].id
     const dispatch = jest.fn()
     const wrapper = mount(
