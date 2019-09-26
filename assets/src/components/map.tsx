@@ -206,7 +206,9 @@ const toggleSelected = (e: LeafletEvent): void => {
 const toPolyline = (shape: Shape): Leaflet.Polyline =>
   Leaflet.polyline(latLons(shape), {
     className: "m-vehicle-map__route-shape",
-  }).on("click", toggleSelected)
+  })
+    .on("mouseover", toggleSelected)
+    .on("mouseout", toggleSelected)
 
 export const updateShapes = (
   shapesByRouteId: ShapesByRouteId,
