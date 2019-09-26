@@ -15,7 +15,7 @@
   width: $default-width;
   z-index: 1;
 
-  &--shuttle {
+  &--wide {
     width: $shuttle-width;
   }
 
@@ -27,7 +27,7 @@
     left: -($default-width + 2);
   }
 
-  &--shuttle.hidden {
+  &--wide.hidden {
     left: -($shuttle-width + 2);
   }
 }
@@ -42,7 +42,7 @@
   top: 1.625rem;
   width: fit-content;
 
-  .m-picker-container--shuttle & {
+  .m-picker-container--wide & {
     left: 11.5rem;
   }
 }

@@ -2,7 +2,7 @@
 
 exports[`ShuttlePicker renders 1`] = `
 <div
-  className="m-picker-container m-picker-container--shuttle visible"
+  className="m-picker-container m-picker-container--wide visible"
 >
   <div
     className="m-picker-container__tab"
@@ -216,7 +216,7 @@ exports[`ShuttlePicker renders 1`] = `
 
 exports[`ShuttlePicker renders loading state 1`] = `
 <div
-  className="m-picker-container m-picker-container--shuttle visible"
+  className="m-picker-container m-picker-container--wide visible"
 >
   <div
     className="m-picker-container__tab"

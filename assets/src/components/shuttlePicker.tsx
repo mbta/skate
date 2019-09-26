@@ -12,7 +12,7 @@ import {
   selectShuttleRun,
 } from "../state"
 import Loading from "./loading"
-import PickerContainer from "./pickerContainer"
+import PickerContainer, { Width } from "./pickerContainer"
 
 interface KnownShuttle {
   name: string
@@ -55,7 +55,7 @@ const ShuttlePicker = ({}): ReactElement<HTMLDivElement> => {
   const shuttleRoutes: Route[] | null = useShuttleRoutes()
 
   return (
-    <PickerContainer classNameModifier={"shuttle"}>
+    <PickerContainer width={Width.Wide}>
       <div className="m-route-picker">
         {shuttles === null ? (
           <Loading />
