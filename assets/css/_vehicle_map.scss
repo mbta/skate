@@ -36,7 +36,7 @@
   stroke: $color-map-route-shape;
   stroke-width: 6px;
 
-  &.selected {
+  &:hover {
     stroke: $color-map-route-shape-selected;
   }
 }

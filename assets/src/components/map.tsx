@@ -1,4 +1,4 @@
-import Leaflet, { LeafletEvent, Map as LeafletMap, Marker } from "leaflet"
+import Leaflet, { Map as LeafletMap, Marker } from "leaflet"
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
 import React, {
   MutableRefObject,
@@ -177,16 +177,10 @@ type LatLon = [number, number]
 export const latLons = ({ points }: Shape): LatLon[] =>
   points.map(point => [point.lat, point.lon] as LatLon)
 
-const toggleSelected = (e: LeafletEvent): void => {
-  e.target.getElement().classList.toggle("selected")
-}
-
 const toPolyline = (shape: Shape): Leaflet.Polyline =>
   Leaflet.polyline(latLons(shape), {
     className: "m-vehicle-map__route-shape",
   })
-    .on("mouseover", toggleSelected)
-    .on("mouseout", toggleSelected)
 
 export const updateShapes = (
   loadedShapesByRouteId: LoadedShapesByRouteId,
