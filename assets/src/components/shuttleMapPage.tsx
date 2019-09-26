@@ -2,8 +2,9 @@ import React, { ReactElement, useContext } from "react"
 import { ShuttleVehiclesContext } from "../contexts/shuttleVehiclesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useRouteShapes from "../hooks/useRouteShapes"
-import { loadedShapes, LoadedShapesByRouteId } from "../models/shape"
+import { loadedShapes } from "../models/shape"
 import { Vehicle, VehicleId } from "../realtime"
+import { Shape } from "../schedule"
 import Map from "./map"
 import ShuttlePicker from "./shuttlePicker"
 import VehiclePropertiesPanel from "./vehiclePropertiesPanel"
@@ -23,10 +24,7 @@ const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
   } = state
   const shuttles: Vehicle[] | null = useContext(ShuttleVehiclesContext)
   const shapesByRouteId = useRouteShapes(selectedShuttleRouteIds)
-  const loadedShapesByRouteId: LoadedShapesByRouteId = loadedShapes(
-    shapesByRouteId,
-    selectedShuttleRouteIds
-  )
+  const shapes: Shape[] = loadedShapes(shapesByRouteId, selectedShuttleRouteIds)
   const selectedShuttles: Vehicle[] = (shuttles || []).filter(shuttle =>
     selectedShuttleRunIds.includes(shuttle.runId!)
   )
@@ -50,7 +48,7 @@ const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
           vehicles={selectedShuttles}
           centerOnVehicle={null}
           initialZoom={13}
-          loadedShapesByRouteId={loadedShapesByRouteId}
+          shapes={shapes}
         />
       </div>
 

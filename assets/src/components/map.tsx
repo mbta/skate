@@ -10,10 +10,9 @@ import React, {
 } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import vehicleLabelString from "../helpers/vehicleLabel"
-import { LoadedShapesByRouteId } from "../models/shape"
 import { drawnStatus, statusClass } from "../models/vehicleStatus"
 import { Vehicle, VehicleId } from "../realtime.d"
-import { ByRouteId, RouteId, Shape } from "../schedule"
+import { Shape } from "../schedule"
 import { Settings } from "../settings"
 import { Dispatch, selectVehicle as selectVehicleAction } from "../state"
 
@@ -21,7 +20,7 @@ interface Props {
   vehicles: Vehicle[]
   centerOnVehicle: string | null
   initialZoom?: number
-  loadedShapesByRouteId?: LoadedShapesByRouteId
+  shapes?: Shape[]
 }
 
 interface VehicleMarkers {
@@ -33,12 +32,14 @@ interface MarkerDict {
   [id: string]: VehicleMarkers | undefined
 }
 
-type PolylinesByRouteId = ByRouteId<Leaflet.Polyline[]>
+export interface PolylinesByShapeId {
+  [shapeId: string]: Leaflet.Polyline
+}
 
 interface State {
   map: LeafletMap | null
   markers: MarkerDict
-  shapes: PolylinesByRouteId
+  shapes: PolylinesByShapeId
   zoom: Leaflet.Control | null
 }
 
@@ -163,12 +164,14 @@ export const updateMarkers = (
 }
 
 const removeDeselectedRouteShapes = (
-  previousShapes: PolylinesByRouteId,
-  selectedShuttleRouteIds: RouteId[]
+  previousShapes: PolylinesByShapeId,
+  shapes: Shape[]
 ) => {
-  Object.entries(previousShapes).forEach(([routeId, polylines]) => {
-    if (!selectedShuttleRouteIds.includes(routeId)) {
-      polylines.forEach(polyline => polyline.remove())
+  const shapeIds = shapes.map(shape => shape.id)
+
+  Object.entries(previousShapes).forEach(([shapeId, polyline]) => {
+    if (!shapeIds.includes(shapeId)) {
+      polyline.remove()
     }
   })
 }
@@ -183,23 +186,18 @@ const toPolyline = (shape: Shape): Leaflet.Polyline =>
   })
 
 export const updateShapes = (
-  loadedShapesByRouteId: LoadedShapesByRouteId,
-  previousShapes: PolylinesByRouteId,
-  selectedShuttleRouteIds: RouteId[],
+  shapes: Shape[],
+  previousShapes: PolylinesByShapeId,
   map: LeafletMap
-): PolylinesByRouteId => {
-  removeDeselectedRouteShapes(previousShapes, selectedShuttleRouteIds)
+): PolylinesByShapeId => {
+  removeDeselectedRouteShapes(previousShapes, shapes)
 
-  return Object.keys(loadedShapesByRouteId).reduce(
-    (acc: PolylinesByRouteId, routeId: RouteId) => ({
+  return shapes.reduce(
+    (acc, shape) => ({
       ...acc,
-      [routeId]:
-        previousShapes[routeId] ||
-        loadedShapesByRouteId[routeId].map(shape =>
-          toPolyline(shape).addTo(map)
-        ),
+      [shape.id]: previousShapes[shape.id] || toPolyline(shape).addTo(map),
     }),
-    {} as PolylinesByRouteId
+    {} as PolylinesByShapeId
   )
 }
 
@@ -209,10 +207,9 @@ export const defaultCenter = ({
   centerOnVehicle ? undefined : [42.360718, -71.05891]
 
 const Map = (props: Props): ReactElement<HTMLDivElement> => {
-  const [
-    { selectedShuttleRouteIds, selectedVehicleId, settings },
-    dispatch,
-  ] = useContext(StateDispatchContext)
+  const [{ selectedVehicleId, settings }, dispatch] = useContext(
+    StateDispatchContext
+  )
   const containerRef: MutableRefObject<HTMLDivElement | null> = useRef(null)
   const [state, updateState] = useState<State>({
     map: null,
@@ -261,13 +258,8 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
     )
 
     const shapes =
-      props.loadedShapesByRouteId !== undefined
-        ? updateShapes(
-            props.loadedShapesByRouteId,
-            state.shapes,
-            selectedShuttleRouteIds,
-            map
-          )
+      props.shapes !== undefined
+        ? updateShapes(props.shapes, state.shapes, map)
         : {}
 
     updateState({ map, markers, shapes, zoom })

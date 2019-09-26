@@ -4,14 +4,14 @@ import renderer from "react-test-renderer"
 import Map, {
   defaultCenter,
   latLons,
+  PolylinesByShapeId,
   updateMarkers,
   updateShapes,
   updateVehicles,
 } from "../../src/components/map"
-import { LoadedShapesByRouteId } from "../../src/models/shape"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Vehicle } from "../../src/realtime"
-import { ByRouteId, RouteId, Shape } from "../../src/schedule"
+import { Shape } from "../../src/schedule"
 import { VehicleLabelSetting } from "../../src/settings"
 
 const vehicle: Vehicle = {
@@ -193,17 +193,8 @@ describe("updateShapes", () => {
         },
       ],
     }
-    const shapesByRouteId: LoadedShapesByRouteId = {
-      "1": [shape],
-    }
-    const selectedShuttleRouteIds: RouteId[] = ["1"]
-    const shapes = updateShapes(
-      shapesByRouteId,
-      {},
-      selectedShuttleRouteIds,
-      map
-    )
-    expect(Object.keys(shapes)).toEqual(["1"])
+    const shapes = updateShapes([shape], {}, map)
+    expect(Object.keys(shapes)).toEqual(["shape1"])
   })
 
   test("removes icon if it is not in the list of current vehicles", () => {
@@ -219,19 +210,11 @@ describe("updateShapes", () => {
         },
       ],
     }
-    const existingShapes: ByRouteId<Leaflet.Polyline[]> = {
-      "1": [Leaflet.polyline(latLons(shape), {}).addTo(map)],
+    const existingShapes: PolylinesByShapeId = {
+      shape1: Leaflet.polyline(latLons(shape), {}).addTo(map),
     }
 
-    const shapesByRouteId: LoadedShapesByRouteId = {}
-    const selectedShuttleRouteIds: RouteId[] = []
-
-    const shapes = updateShapes(
-      shapesByRouteId,
-      existingShapes,
-      selectedShuttleRouteIds,
-      map
-    )
+    const shapes = updateShapes([], existingShapes, map)
 
     expect(shapes["1"]).toBeUndefined()
   })
@@ -249,23 +232,12 @@ describe("updateShapes", () => {
         },
       ],
     }
-    const shapesByRouteId: LoadedShapesByRouteId = {
-      "1": [shape],
-    }
-    const selectedShuttleRouteIds: RouteId[] = ["1"]
-
     const polyline = Leaflet.polyline(latLons(shape), {}).addTo(map)
 
-    const shapes = updateShapes(
-      shapesByRouteId,
-      { "1": [polyline] },
-      selectedShuttleRouteIds,
-      map
-    )
+    const shapes = updateShapes([shape], { shape1: polyline }, map)
 
-    expect(Object.keys(shapes).includes("1")).toBeTruthy()
-    expect(shapes["1"].length).toEqual(1)
-    expect(shapes["1"][0].getLatLngs()).toEqual([{ lat: 10, lng: 20 }])
+    expect(Object.keys(shapes).includes("shape1")).toBeTruthy()
+    expect(shapes.shape1.getLatLngs()).toEqual([{ lat: 10, lng: 20 }])
   })
 })
 

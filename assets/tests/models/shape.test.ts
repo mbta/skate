@@ -1,4 +1,4 @@
-import { loadedShapes, LoadedShapesByRouteId } from "../../src/models/shape"
+import { loadedShapes } from "../../src/models/shape"
 import { RouteId, Shape, ShapesByRouteId } from "../../src/schedule"
 
 describe("loadedShapes", () => {
@@ -19,10 +19,7 @@ describe("loadedShapes", () => {
     }
     const routeIds: RouteId[] = ["1", "2", "3", "4"]
 
-    const expected: LoadedShapesByRouteId = {
-      "1": [shape1],
-      "4": [shape2],
-    }
+    const expected: Shape[] = [shape1, shape2]
 
     expect(loadedShapes(loadableShapes, routeIds)).toEqual(expected)
   })
@@ -44,9 +41,7 @@ describe("loadedShapes", () => {
     }
     const routeIds: RouteId[] = ["1", "2", "3"]
 
-    const expected: LoadedShapesByRouteId = {
-      "1": [shape1],
-    }
+    const expected: Shape[] = [shape1]
 
     expect(loadedShapes(loadableShapes, routeIds)).toEqual(expected)
   })
