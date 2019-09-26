@@ -72,51 +72,6 @@ const shuttleRoutes: Route[] = [
     directionNames: { "0": "Outbound", "1": "Inbound" },
     name: "Haverhill Line Shuttle",
   },
-  {
-    id: "Shuttle-CapenCentral",
-    directionNames: { "0": "Outbound", "1": "Inbound" },
-    name: "Mattapan Line Van Shuttle",
-  },
-  {
-    id: "Shuttle-ClevelandCircleKenmore",
-    directionNames: { "0": "West", "1": "East" },
-    name: "Green Line C Shuttle",
-  },
-  {
-    id: "Shuttle-ForestHillsRuggles",
-    directionNames: { "0": "South", "1": "North" },
-    name: "Orange Line Shuttle",
-  },
-  {
-    id: "Shuttle-ForgeParkReadville",
-    directionNames: { "0": "Outbound", "1": "Inbound" },
-    name: "Franklin Line Shuttle",
-  },
-  {
-    id: "Shuttle-ForgeParkSouthStation",
-    directionNames: { "0": "Outbound", "1": "Inbound" },
-    name: "Franklin Line Shuttle",
-  },
-  {
-    id: "Shuttle-NewtonHighlandsKenmore",
-    directionNames: { "0": "West", "1": "East" },
-    name: "Green Line D Shuttle",
-  },
-  {
-    id: "Shuttle-OakGroveSullivan",
-    directionNames: { "0": "South", "1": "North" },
-    name: "Orange Line Shuttle",
-  },
-  {
-    id: "Shuttle-OakGroveWellington",
-    directionNames: { "0": "South", "1": "North" },
-    name: "Orange Line Shuttle",
-  },
-  {
-    id: "Shuttle-OrientHeightsWonderland",
-    directionNames: { "0": "South", "1": "North" },
-    name: "Blue Line Shuttle",
-  },
 ]
 
 jest.mock("../../src/hooks/useShuttleRoutes", () => ({
