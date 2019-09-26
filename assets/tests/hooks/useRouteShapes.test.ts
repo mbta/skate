@@ -56,7 +56,7 @@ describe("useRouteShapes", () => {
         points: [{ lat: 43.41356, lon: -71.99211 }],
       },
     ]
-    const selectedShuttleRouteIds = ["2", "3"]
+    const selectedRouteIds = ["2", "3"]
     const shapesByRouteId: ShapesByRouteId = {
       2: null,
       3: shapes,
@@ -66,7 +66,7 @@ describe("useRouteShapes", () => {
     mockUseStateOnce<ShapesByRouteId>(shapesByRouteId)
 
     const { result } = renderHook(() => {
-      return useRouteShapes(selectedShuttleRouteIds)
+      return useRouteShapes(selectedRouteIds)
     })
 
     expect(mockFetchShape).not.toHaveBeenCalled()

@@ -2,9 +2,7 @@ import { useEffect, useState } from "react"
 import { fetchShapeForRoute } from "../api"
 import { RouteId, Shape, ShapesByRouteId } from "../schedule"
 
-const useRouteShapes = (
-  selectedShuttleRouteIds: RouteId[]
-): ShapesByRouteId => {
+const useRouteShapes = (selectedRouteIds: RouteId[]): ShapesByRouteId => {
   const [shapesByRouteId, setShapesByRouteId] = useState<ShapesByRouteId>({})
 
   const setLoadingShapesForRoute = (routeId: RouteId) => {
@@ -22,7 +20,7 @@ const useRouteShapes = (
   }
 
   useEffect(() => {
-    selectedShuttleRouteIds.forEach((routeId: RouteId) => {
+    selectedRouteIds.forEach((routeId: RouteId) => {
       if (!(routeId in shapesByRouteId)) {
         setLoadingShapesForRoute(routeId)
 
@@ -31,7 +29,7 @@ const useRouteShapes = (
         )
       }
     })
-  }, [selectedShuttleRouteIds, shapesByRouteId])
+  }, [selectedRouteIds, shapesByRouteId])
 
   return shapesByRouteId
 }
