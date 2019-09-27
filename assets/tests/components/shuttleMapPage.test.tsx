@@ -79,6 +79,23 @@ describe("Shuttle Map Page", () => {
     expect(tree).toMatchSnapshot()
   })
 
+  test("renders with all shuttles selected", () => {
+    const dispatch = jest.fn()
+    const tree = renderer
+      .create(
+        <StateDispatchProvider
+          state={{ ...initialState, selectedShuttleRunIds: "all" }}
+          dispatch={dispatch}
+        >
+          <ShuttleVehiclesProvider shuttles={[shuttle]}>
+            <ShuttleMapPage />
+          </ShuttleVehiclesProvider>
+        </StateDispatchProvider>
+      )
+      .toJSON()
+    expect(tree).toMatchSnapshot()
+  })
+
   test("renders a selected shuttle vehicle", () => {
     const dispatch = jest.fn()
     const state = {

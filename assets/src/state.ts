@@ -7,7 +7,7 @@ export interface State {
   pickerContainerIsVisible: boolean
   selectedRouteIds: RouteId[]
   selectedShuttleRouteIds: RouteId[]
-  selectedShuttleRunIds: RunId[]
+  selectedShuttleRunIds: RunId[] | "all"
   selectedVehicleId?: VehicleId
   settings: Settings
 }
@@ -16,7 +16,7 @@ export const initialState: State = {
   pickerContainerIsVisible: true,
   selectedRouteIds: [],
   selectedShuttleRouteIds: [],
-  selectedShuttleRunIds: [],
+  selectedShuttleRunIds: "all",
   selectedVehicleId: undefined,
   settings: defaultSettings,
 }
@@ -71,6 +71,22 @@ export const deselectShuttleRun = (runId: RunId): DeselectShuttleRunAction => ({
   payload: {
     runId,
   },
+})
+
+interface SelectAllShuttleRunsAction {
+  type: "SELECT_ALL_SHUTTLE_RUNS"
+}
+
+export const selectAllShuttleRuns = (): SelectAllShuttleRunsAction => ({
+  type: "SELECT_ALL_SHUTTLE_RUNS",
+})
+
+interface DeselectAllShuttleRunsAction {
+  type: "DESELECT_ALL_SHUTTLE_RUNS"
+}
+
+export const deselectAllShuttleRuns = (): DeselectAllShuttleRunsAction => ({
+  type: "DESELECT_ALL_SHUTTLE_RUNS",
 })
 
 interface SelectShuttleRouteAction {
@@ -170,6 +186,8 @@ type Action =
   | DeselectRouteAction
   | SelectShuttleRunAction
   | DeselectShuttleRunAction
+  | SelectAllShuttleRunsAction
+  | DeselectAllShuttleRunsAction
   | SelectShuttleRouteAction
   | DeselectShuttleRouteAction
   | SelectVehicleAction
@@ -181,6 +199,9 @@ type Action =
 export type Dispatch = ReactDispatch<Action>
 
 export type Reducer = (state: State, action: Action) => State
+
+const shuttleRunIdsList = (selectedShuttleRunIds: RunId[] | "all"): RunId[] =>
+  selectedShuttleRunIds === "all" ? [] : selectedShuttleRunIds
 
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -200,18 +221,27 @@ export const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         selectedShuttleRunIds: [
-          ...state.selectedShuttleRunIds,
+          ...shuttleRunIdsList(state.selectedShuttleRunIds),
           action.payload.runId,
         ],
       }
     case "DESELECT_SHUTTLE_RUN":
       return {
         ...state,
-        selectedShuttleRunIds: state.selectedShuttleRunIds.filter(
-          id => id !== action.payload.runId
-        ),
+        selectedShuttleRunIds: shuttleRunIdsList(
+          state.selectedShuttleRunIds
+        ).filter(id => id !== action.payload.runId),
       }
-
+    case "SELECT_ALL_SHUTTLE_RUNS":
+      return {
+        ...state,
+        selectedShuttleRunIds: "all",
+      }
+    case "DESELECT_ALL_SHUTTLE_RUNS":
+      return {
+        ...state,
+        selectedShuttleRunIds: [],
+      }
     case "SELECT_SHUTTLE_ROUTE":
       return {
         ...state,
@@ -227,7 +257,6 @@ export const reducer = (state: State, action: Action): State => {
           id => id !== action.payload.routeId
         ),
       }
-
     case "SELECT_VEHICLE":
       return action.payload.vehicleId.startsWith("ghost-")
         ? state
