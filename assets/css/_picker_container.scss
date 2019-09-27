@@ -1,6 +1,6 @@
 .m-picker-container {
   $default-width: 7.5rem;
-  $shuttle-width: $default-width + 2;
+  $shuttle-width: $default-width + 2.5;
 
   background-color: $color-bg-medium;
   display: flex;
@@ -43,7 +43,7 @@
   width: fit-content;
 
   .m-picker-container--wide & {
-    left: 11.5rem;
+    left: 12rem;
   }
 }
 

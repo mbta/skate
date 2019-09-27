@@ -38,7 +38,16 @@ exports[`ShuttlePicker renders 1`] = `
           disabled={false}
           onClick={[Function]}
         >
-          All Specials (999*)
+          <span
+            className="m-route-picker__route-list-button-name"
+          >
+            All Specials (999*)
+          </span>
+          <span
+            className="m-route-picker__route-list-button-count"
+          >
+            4
+          </span>
         </button>
       </li>
       <li>
@@ -47,7 +56,11 @@ exports[`ShuttlePicker renders 1`] = `
           disabled={true}
           onClick={[Function]}
         >
-          Special 999 555
+          <span
+            className="m-route-picker__route-list-button-name"
+          >
+            Special 999 555
+          </span>
         </button>
       </li>
       <li>
@@ -56,7 +69,11 @@ exports[`ShuttlePicker renders 1`] = `
           disabled={true}
           onClick={[Function]}
         >
-          Blue 999 501
+          <span
+            className="m-route-picker__route-list-button-name"
+          >
+            Blue 999 501
+          </span>
         </button>
       </li>
       <li>
@@ -65,7 +82,11 @@ exports[`ShuttlePicker renders 1`] = `
           disabled={true}
           onClick={[Function]}
         >
-          Green 999 502
+          <span
+            className="m-route-picker__route-list-button-name"
+          >
+            Green 999 502
+          </span>
         </button>
       </li>
       <li>
@@ -74,7 +95,16 @@ exports[`ShuttlePicker renders 1`] = `
           disabled={false}
           onClick={[Function]}
         >
-          Orange 999 503
+          <span
+            className="m-route-picker__route-list-button-name"
+          >
+            Orange 999 503
+          </span>
+          <span
+            className="m-route-picker__route-list-button-count"
+          >
+            1
+          </span>
         </button>
       </li>
       <li>
@@ -83,7 +113,16 @@ exports[`ShuttlePicker renders 1`] = `
           disabled={false}
           onClick={[Function]}
         >
-          Red 999 504
+          <span
+            className="m-route-picker__route-list-button-name"
+          >
+            Red 999 504
+          </span>
+          <span
+            className="m-route-picker__route-list-button-count"
+          >
+            1
+          </span>
         </button>
       </li>
       <li>
@@ -92,7 +131,11 @@ exports[`ShuttlePicker renders 1`] = `
           disabled={true}
           onClick={[Function]}
         >
-          Commuter Rail 999 505
+          <span
+            className="m-route-picker__route-list-button-name"
+          >
+            Commuter Rail 999 505
+          </span>
         </button>
       </li>
       <li>
@@ -101,7 +144,16 @@ exports[`ShuttlePicker renders 1`] = `
           disabled={false}
           onClick={[Function]}
         >
-          999 511
+          <span
+            className="m-route-picker__route-list-button-name"
+          >
+            999 511
+          </span>
+          <span
+            className="m-route-picker__route-list-button-count"
+          >
+            1
+          </span>
         </button>
       </li>
       <li>
@@ -110,7 +162,16 @@ exports[`ShuttlePicker renders 1`] = `
           disabled={false}
           onClick={[Function]}
         >
-          999 512
+          <span
+            className="m-route-picker__route-list-button-name"
+          >
+            999 512
+          </span>
+          <span
+            className="m-route-picker__route-list-button-count"
+          >
+            1
+          </span>
         </button>
       </li>
     </ul>

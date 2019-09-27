@@ -1,7 +1,6 @@
 import React, { ReactElement, useContext } from "react"
 import { ShuttleVehiclesContext } from "../contexts/shuttleVehiclesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { uniq } from "../helpers/array"
 import useShuttleRoutes from "../hooks/useShuttleRoutes"
 import { RunId, Vehicle } from "../realtime"
 import { Route } from "../schedule"
@@ -82,17 +81,17 @@ const RunIds = ({ shuttles }: { shuttles: Vehicle[] }) => (
 )
 
 const RunIdButtons = ({ shuttles }: { shuttles: Vehicle[] }) => {
-  const activeRunIds: RunId[] = uniq(shuttles
-    .map(v => v.runId)
-    .filter(runId => runId !== null) as RunId[])
+  const runCounts = activeRunCounts(shuttles)
+  const activeRunIds = Object.keys(runCounts).filter(runId => runId !== "all")
 
   return (
     <>
-      <AllSpecialsButton />
+      <AllSpecialsButton count={runCounts.all} />
       {KNOWN_SHUTTLES.map(knownShuttle => (
         <RunIdButton
           key={knownShuttle.runId}
           name={`${knownShuttle.name} ${formatRunId(knownShuttle.runId)}`}
+          count={runCounts[knownShuttle.runId]}
           runId={knownShuttle.runId}
           isActive={activeRunIds.includes(knownShuttle.runId)}
         />
@@ -102,6 +101,7 @@ const RunIdButtons = ({ shuttles }: { shuttles: Vehicle[] }) => {
           <RunIdButton
             key={runId}
             name={formatRunId(runId)}
+            count={runCounts[runId]}
             runId={runId}
             isActive={true}
           />
@@ -111,7 +111,30 @@ const RunIdButtons = ({ shuttles }: { shuttles: Vehicle[] }) => {
   )
 }
 
-const AllSpecialsButton = (): ReactElement<HTMLElement> => {
+interface ActiveRunCounts {
+  [runId: string]: number
+}
+const activeRunCounts = (shuttles: Vehicle[]): ActiveRunCounts =>
+  shuttles.reduce(
+    (acc, { runId }) => {
+      if (runId === null) {
+        return acc
+      }
+
+      return {
+        ...acc,
+        [runId]: acc[runId] !== undefined ? acc[runId] + 1 : 1,
+        all: acc.all !== undefined ? acc.all + 1 : 1,
+      }
+    },
+    {} as ActiveRunCounts
+  )
+
+const AllSpecialsButton = ({
+  count,
+}: {
+  count: number
+}): ReactElement<HTMLElement> => {
   const [state, dispatch] = useContext(StateDispatchContext)
   const isSelected = state.selectedShuttleRunIds === "all"
 
@@ -123,6 +146,7 @@ const AllSpecialsButton = (): ReactElement<HTMLElement> => {
   return (
     <Button
       name="All Specials (999*)"
+      count={count}
       isActive={true}
       isSelected={isSelected}
       onClick={toggleAllShuttleRuns}
@@ -132,10 +156,12 @@ const AllSpecialsButton = (): ReactElement<HTMLElement> => {
 
 const RunIdButton = ({
   name,
+  count,
   runId,
   isActive,
 }: {
   name: string
+  count?: number
   runId: RunId
   isActive: boolean
 }): ReactElement<HTMLLIElement> => {
@@ -154,6 +180,7 @@ const RunIdButton = ({
   return (
     <Button
       name={name}
+      count={count}
       isActive={isActive}
       isSelected={isSelected}
       onClick={onClick}
@@ -163,11 +190,13 @@ const RunIdButton = ({
 
 const Button = ({
   name,
+  count,
   isActive,
   isSelected,
   onClick,
 }: {
   name: string
+  count?: number
   isActive: boolean
   isSelected: boolean
   onClick: () => void
@@ -184,7 +213,12 @@ const Button = ({
         onClick={onClick}
         disabled={!isActive}
       >
-        {name}
+        <span className="m-route-picker__route-list-button-name">{name}</span>
+        {count !== undefined && (
+          <span className="m-route-picker__route-list-button-count">
+            {count}
+          </span>
+        )}
       </button>
     </li>
   )

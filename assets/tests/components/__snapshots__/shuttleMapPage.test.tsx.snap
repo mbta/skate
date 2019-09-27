@@ -41,7 +41,16 @@ exports[`Shuttle Map Page renders 1`] = `
             disabled={false}
             onClick={[Function]}
           >
-            All Specials (999*)
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              All Specials (999*)
+            </span>
+            <span
+              className="m-route-picker__route-list-button-count"
+            >
+              1
+            </span>
           </button>
         </li>
         <li>
@@ -50,7 +59,16 @@ exports[`Shuttle Map Page renders 1`] = `
             disabled={false}
             onClick={[Function]}
           >
-            Special 999 555
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              Special 999 555
+            </span>
+            <span
+              className="m-route-picker__route-list-button-count"
+            >
+              1
+            </span>
           </button>
         </li>
         <li>
@@ -59,7 +77,11 @@ exports[`Shuttle Map Page renders 1`] = `
             disabled={true}
             onClick={[Function]}
           >
-            Blue 999 501
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              Blue 999 501
+            </span>
           </button>
         </li>
         <li>
@@ -68,7 +90,11 @@ exports[`Shuttle Map Page renders 1`] = `
             disabled={true}
             onClick={[Function]}
           >
-            Green 999 502
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              Green 999 502
+            </span>
           </button>
         </li>
         <li>
@@ -77,7 +103,11 @@ exports[`Shuttle Map Page renders 1`] = `
             disabled={true}
             onClick={[Function]}
           >
-            Orange 999 503
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              Orange 999 503
+            </span>
           </button>
         </li>
         <li>
@@ -86,7 +116,11 @@ exports[`Shuttle Map Page renders 1`] = `
             disabled={true}
             onClick={[Function]}
           >
-            Red 999 504
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              Red 999 504
+            </span>
           </button>
         </li>
         <li>
@@ -95,7 +129,11 @@ exports[`Shuttle Map Page renders 1`] = `
             disabled={true}
             onClick={[Function]}
           >
-            Commuter Rail 999 505
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              Commuter Rail 999 505
+            </span>
           </button>
         </li>
       </ul>
@@ -164,7 +202,16 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
             disabled={false}
             onClick={[Function]}
           >
-            All Specials (999*)
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              All Specials (999*)
+            </span>
+            <span
+              className="m-route-picker__route-list-button-count"
+            >
+              1
+            </span>
           </button>
         </li>
         <li>
@@ -173,7 +220,16 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
             disabled={false}
             onClick={[Function]}
           >
-            Special 999 555
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              Special 999 555
+            </span>
+            <span
+              className="m-route-picker__route-list-button-count"
+            >
+              1
+            </span>
           </button>
         </li>
         <li>
@@ -182,7 +238,11 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
             disabled={true}
             onClick={[Function]}
           >
-            Blue 999 501
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              Blue 999 501
+            </span>
           </button>
         </li>
         <li>
@@ -191,7 +251,11 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
             disabled={true}
             onClick={[Function]}
           >
-            Green 999 502
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              Green 999 502
+            </span>
           </button>
         </li>
         <li>
@@ -200,7 +264,11 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
             disabled={true}
             onClick={[Function]}
           >
-            Orange 999 503
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              Orange 999 503
+            </span>
           </button>
         </li>
         <li>
@@ -209,7 +277,11 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
             disabled={true}
             onClick={[Function]}
           >
-            Red 999 504
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              Red 999 504
+            </span>
           </button>
         </li>
         <li>
@@ -218,7 +290,11 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
             disabled={true}
             onClick={[Function]}
           >
-            Commuter Rail 999 505
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              Commuter Rail 999 505
+            </span>
           </button>
         </li>
       </ul>
@@ -462,7 +538,16 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
             disabled={false}
             onClick={[Function]}
           >
-            All Specials (999*)
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              All Specials (999*)
+            </span>
+            <span
+              className="m-route-picker__route-list-button-count"
+            >
+              1
+            </span>
           </button>
         </li>
         <li>
@@ -471,7 +556,16 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
             disabled={false}
             onClick={[Function]}
           >
-            Special 999 555
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              Special 999 555
+            </span>
+            <span
+              className="m-route-picker__route-list-button-count"
+            >
+              1
+            </span>
           </button>
         </li>
         <li>
@@ -480,7 +574,11 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
             disabled={true}
             onClick={[Function]}
           >
-            Blue 999 501
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              Blue 999 501
+            </span>
           </button>
         </li>
         <li>
@@ -489,7 +587,11 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
             disabled={true}
             onClick={[Function]}
           >
-            Green 999 502
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              Green 999 502
+            </span>
           </button>
         </li>
         <li>
@@ -498,7 +600,11 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
             disabled={true}
             onClick={[Function]}
           >
-            Orange 999 503
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              Orange 999 503
+            </span>
           </button>
         </li>
         <li>
@@ -507,7 +613,11 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
             disabled={true}
             onClick={[Function]}
           >
-            Red 999 504
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              Red 999 504
+            </span>
           </button>
         </li>
         <li>
@@ -516,7 +626,11 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
             disabled={true}
             onClick={[Function]}
           >
-            Commuter Rail 999 505
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              Commuter Rail 999 505
+            </span>
           </button>
         </li>
       </ul>
@@ -585,7 +699,16 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
             disabled={false}
             onClick={[Function]}
           >
-            All Specials (999*)
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              All Specials (999*)
+            </span>
+            <span
+              className="m-route-picker__route-list-button-count"
+            >
+              1
+            </span>
           </button>
         </li>
         <li>
@@ -594,7 +717,16 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
             disabled={false}
             onClick={[Function]}
           >
-            Special 999 555
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              Special 999 555
+            </span>
+            <span
+              className="m-route-picker__route-list-button-count"
+            >
+              1
+            </span>
           </button>
         </li>
         <li>
@@ -603,7 +735,11 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
             disabled={true}
             onClick={[Function]}
           >
-            Blue 999 501
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              Blue 999 501
+            </span>
           </button>
         </li>
         <li>
@@ -612,7 +748,11 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
             disabled={true}
             onClick={[Function]}
           >
-            Green 999 502
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              Green 999 502
+            </span>
           </button>
         </li>
         <li>
@@ -621,7 +761,11 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
             disabled={true}
             onClick={[Function]}
           >
-            Orange 999 503
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              Orange 999 503
+            </span>
           </button>
         </li>
         <li>
@@ -630,7 +774,11 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
             disabled={true}
             onClick={[Function]}
           >
-            Red 999 504
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              Red 999 504
+            </span>
           </button>
         </li>
         <li>
@@ -639,7 +787,11 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
             disabled={true}
             onClick={[Function]}
           >
-            Commuter Rail 999 505
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              Commuter Rail 999 505
+            </span>
           </button>
         </li>
       </ul>
