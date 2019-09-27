@@ -5,7 +5,7 @@ exports[`Shuttle Map Page renders 1`] = `
   className="m-shuttle-map"
 >
   <div
-    className="m-picker-container visible"
+    className="m-picker-container m-picker-container--wide visible"
   >
     <div
       className="m-picker-container__tab"
@@ -33,7 +33,7 @@ exports[`Shuttle Map Page renders 1`] = `
         Run #
       </div>
       <ul
-        className="m-route-picker__route-list"
+        className="m-route-picker__route-list m-route-picker__shuttle-run-list"
       >
         <li>
           <button
@@ -90,6 +90,11 @@ exports[`Shuttle Map Page renders 1`] = `
           </button>
         </li>
       </ul>
+      <div
+        className="m-route-picker__label"
+      >
+        Routes
+      </div>
     </div>
   </div>
   <div
@@ -114,7 +119,7 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
   className="m-shuttle-map"
 >
   <div
-    className="m-picker-container visible"
+    className="m-picker-container m-picker-container--wide visible"
   >
     <div
       className="m-picker-container__tab"
@@ -142,7 +147,7 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
         Run #
       </div>
       <ul
-        className="m-route-picker__route-list"
+        className="m-route-picker__route-list m-route-picker__shuttle-run-list"
       >
         <li>
           <button
@@ -199,6 +204,11 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
           </button>
         </li>
       </ul>
+      <div
+        className="m-route-picker__label"
+      >
+        Routes
+      </div>
     </div>
   </div>
   <div
@@ -398,7 +408,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
   className="m-shuttle-map"
 >
   <div
-    className="m-picker-container visible"
+    className="m-picker-container m-picker-container--wide visible"
   >
     <div
       className="m-picker-container__tab"
@@ -426,7 +436,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
         Run #
       </div>
       <ul
-        className="m-route-picker__route-list"
+        className="m-route-picker__route-list m-route-picker__shuttle-run-list"
       >
         <li>
           <button
@@ -483,6 +493,11 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
           </button>
         </li>
       </ul>
+      <div
+        className="m-route-picker__label"
+      >
+        Routes
+      </div>
     </div>
   </div>
   <div

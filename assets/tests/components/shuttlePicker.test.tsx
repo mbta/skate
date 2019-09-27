@@ -6,9 +6,12 @@ import { ShuttleVehiclesProvider } from "../../src/contexts/shuttleVehiclesConte
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { RunId, Vehicle } from "../../src/realtime"
+import { Route } from "../../src/schedule"
 import {
+  deselectShuttleRoute,
   deselectShuttleRun,
   initialState,
+  selectShuttleRoute,
   selectShuttleRun,
 } from "../../src/state"
 
@@ -52,6 +55,29 @@ const vehicle: Vehicle = {
   scheduledLocation: null,
   isOnRoute: true,
 }
+
+const shuttleRoutes: Route[] = [
+  {
+    id: "Shuttle-AshmontMattapan",
+    directionNames: { "0": "Outbound", "1": "Inbound" },
+    name: "Mattapan Line Shuttle",
+  },
+  {
+    id: "Shuttle-BabcockBostonCollege",
+    directionNames: { "0": "West", "1": "East" },
+    name: "Green Line B Shuttle",
+  },
+  {
+    id: "Shuttle-BallardvaleMaldenCenter",
+    directionNames: { "0": "Outbound", "1": "Inbound" },
+    name: "Haverhill Line Shuttle",
+  },
+]
+
+jest.mock("../../src/hooks/useShuttleRoutes", () => ({
+  __esModule: true,
+  default: jest.fn().mockImplementation(() => shuttleRoutes),
+}))
 
 describe("ShuttlePicker", () => {
   test("renders loading state", () => {
@@ -106,7 +132,9 @@ describe("ShuttlePicker", () => {
       </StateDispatchProvider>
     )
     wrapper
-      .find(".m-route-picker__route-list-button--unselected")
+      .find(
+        ".m-route-picker__shuttle-run-list .m-route-picker__route-list-button--unselected"
+      )
       .first()
       .simulate("click")
 
@@ -126,11 +154,57 @@ describe("ShuttlePicker", () => {
       </StateDispatchProvider>
     )
     wrapper
-      .find(".m-route-picker__route-list-button--selected")
+      .find(
+        ".m-route-picker__shuttle-run-list .m-route-picker__route-list-button--selected"
+      )
       .first()
       .simulate("click")
 
     expect(dispatch).toHaveBeenCalledWith(deselectShuttleRun(vehicle.runId!))
+  })
+
+  test("clicking an unselected route button adds the route to the selected route IDs", () => {
+    const dispatch = jest.fn()
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+        <ShuttleVehiclesProvider shuttles={[]}>
+          <ShuttlePicker />
+        </ShuttleVehiclesProvider>
+      </StateDispatchProvider>
+    )
+    wrapper
+      .find(
+        ".m-route-picker__shuttle-route-list .m-route-picker__route-list-button--unselected"
+      )
+      .first()
+      .simulate("click")
+
+    expect(dispatch).toHaveBeenCalledWith(
+      selectShuttleRoute(shuttleRoutes[0].id)
+    )
+  })
+
+  test("clicking a selected route button removes the route from the selected route IDs", () => {
+    const selectedRouteId = shuttleRoutes[1].id
+    const dispatch = jest.fn()
+    const wrapper = mount(
+      <StateDispatchProvider
+        state={{ ...initialState, selectedShuttleRouteIds: [selectedRouteId] }}
+        dispatch={dispatch}
+      >
+        <ShuttleVehiclesProvider shuttles={[]}>
+          <ShuttlePicker />
+        </ShuttleVehiclesProvider>
+      </StateDispatchProvider>
+    )
+    wrapper
+      .find(
+        ".m-route-picker__shuttle-route-list .m-route-picker__route-list-button--selected"
+      )
+      .first()
+      .simulate("click")
+
+    expect(dispatch).toHaveBeenCalledWith(deselectShuttleRoute(selectedRouteId))
   })
 })
 

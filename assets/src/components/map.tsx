@@ -12,6 +12,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClass } from "../models/vehicleStatus"
 import { Vehicle, VehicleId } from "../realtime.d"
+import { Shape } from "../schedule"
 import { Settings } from "../settings"
 import { Dispatch, selectVehicle as selectVehicleAction } from "../state"
 
@@ -19,6 +20,7 @@ interface Props {
   vehicles: Vehicle[]
   centerOnVehicle: string | null
   initialZoom?: number
+  shapes?: Shape[]
 }
 
 interface VehicleMarkers {
@@ -30,9 +32,14 @@ interface MarkerDict {
   [id: string]: VehicleMarkers | undefined
 }
 
+export interface PolylinesByShapeId {
+  [shapeId: string]: Leaflet.Polyline
+}
+
 interface State {
   map: LeafletMap | null
   markers: MarkerDict
+  shapes: PolylinesByShapeId
   zoom: Leaflet.Control | null
 }
 
@@ -107,7 +114,7 @@ const updateVehicle = (
   vehicleLabel.setIcon(label)
 }
 
-export const updateMap = (
+export const updateVehicles = (
   { vehicles, centerOnVehicle }: Props,
   state: State,
   settings: Settings,
@@ -156,6 +163,44 @@ export const updateMarkers = (
   }, newDict)
 }
 
+const removeDeselectedRouteShapes = (
+  previousShapes: PolylinesByShapeId,
+  shapes: Shape[]
+) => {
+  const shapeIds = shapes.map(shape => shape.id)
+
+  Object.entries(previousShapes).forEach(([shapeId, polyline]) => {
+    if (!shapeIds.includes(shapeId)) {
+      polyline.remove()
+    }
+  })
+}
+
+type LatLon = [number, number]
+export const latLons = ({ points }: Shape): LatLon[] =>
+  points.map(point => [point.lat, point.lon] as LatLon)
+
+const toPolyline = (shape: Shape): Leaflet.Polyline =>
+  Leaflet.polyline(latLons(shape), {
+    className: "m-vehicle-map__route-shape",
+  })
+
+export const updateShapes = (
+  shapes: Shape[],
+  previousShapes: PolylinesByShapeId,
+  map: LeafletMap
+): PolylinesByShapeId => {
+  removeDeselectedRouteShapes(previousShapes, shapes)
+
+  return shapes.reduce(
+    (acc, shape) => ({
+      ...acc,
+      [shape.id]: previousShapes[shape.id] || toPolyline(shape).addTo(map),
+    }),
+    {} as PolylinesByShapeId
+  )
+}
+
 export const defaultCenter = ({
   centerOnVehicle,
 }: Props): [number, number] | undefined =>
@@ -169,6 +214,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
   const [state, updateState] = useState<State>({
     map: null,
     markers: {},
+    shapes: {},
     zoom: null,
   })
 
@@ -204,9 +250,19 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
 
     const markers = updateMarkers(newVehicles, state.markers, map, dispatch)
 
-    updateMap(props, { map, markers, zoom }, settings, selectedVehicleId)
+    updateVehicles(
+      props,
+      { map, markers, shapes: {}, zoom },
+      settings,
+      selectedVehicleId
+    )
 
-    updateState({ map, markers, zoom })
+    const shapes =
+      props.shapes !== undefined
+        ? updateShapes(props.shapes, state.shapes, map)
+        : {}
+
+    updateState({ map, markers, shapes, zoom })
   }, [props, containerRef])
 
   return (

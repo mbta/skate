@@ -58,6 +58,32 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
+  test("selectShuttleRoute", () => {
+    const state: State.State = {
+      ...initialState,
+      selectedShuttleRouteIds: ["shuttle1"],
+    }
+    const expectedState: State.State = {
+      ...state,
+      selectedShuttleRouteIds: ["shuttle1", "shuttle2"],
+    }
+    const newState = reducer(state, State.selectShuttleRoute("shuttle2"))
+    expect(newState).toEqual(expectedState)
+  })
+
+  test("deselectShuttleRoute", () => {
+    const state: State.State = {
+      ...initialState,
+      selectedShuttleRouteIds: ["shuttle1", "shuttle2"],
+    }
+    const expectedState: State.State = {
+      ...state,
+      selectedShuttleRouteIds: ["shuttle1"],
+    }
+    const newState = reducer(state, State.deselectShuttleRoute("shuttle2"))
+    expect(newState).toEqual(expectedState)
+  })
+
   test("selectVehicle", () => {
     const vehicleId: VehicleId = "v1"
     const state = initialState

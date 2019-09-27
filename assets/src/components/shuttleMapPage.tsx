@@ -1,9 +1,11 @@
 import React, { ReactElement, useContext } from "react"
 import { ShuttleVehiclesContext } from "../contexts/shuttleVehiclesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import useRouteShapes from "../hooks/useRouteShapes"
+import { loadedShapes } from "../models/shape"
 import { Vehicle, VehicleId } from "../realtime"
+import { Shape } from "../schedule"
 import Map from "./map"
-import PickerContainer from "./pickerContainer"
 import ShuttlePicker from "./shuttlePicker"
 import VehiclePropertiesPanel from "./vehiclePropertiesPanel"
 
@@ -15,20 +17,25 @@ const findSelectedVehicle = (
 
 const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
   const [state] = useContext(StateDispatchContext)
+  const {
+    selectedShuttleRouteIds,
+    selectedShuttleRunIds,
+    selectedVehicleId,
+  } = state
   const shuttles: Vehicle[] | null = useContext(ShuttleVehiclesContext)
+  const shapesByRouteId = useRouteShapes(selectedShuttleRouteIds)
+  const shapes: Shape[] = loadedShapes(shapesByRouteId, selectedShuttleRouteIds)
   const selectedShuttles: Vehicle[] = (shuttles || []).filter(shuttle =>
-    state.selectedShuttleRunIds.includes(shuttle.runId!)
+    selectedShuttleRunIds.includes(shuttle.runId!)
   )
   const selectedVehicle = findSelectedVehicle(
     selectedShuttles,
-    state.selectedVehicleId
+    selectedVehicleId
   )
 
   return (
     <div className="m-shuttle-map">
-      <PickerContainer>
-        <ShuttlePicker />
-      </PickerContainer>
+      <ShuttlePicker />
 
       <div
         className="m-shuttle-map__map"
@@ -41,6 +48,7 @@ const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
           vehicles={selectedShuttles}
           centerOnVehicle={null}
           initialZoom={13}
+          shapes={shapes}
         />
       </div>
 

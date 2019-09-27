@@ -1,4 +1,7 @@
 .m-picker-container {
+  $default-width: 7.5rem;
+  $shuttle-width: $default-width + 2;
+
   background-color: $color-bg-medium;
   display: flex;
   flex-direction: column;
@@ -9,15 +12,23 @@
   position: fixed;
   top: inherit;
   transition: left 0.2s ease-in-out;
-  width: 7.5rem;
+  width: $default-width;
   z-index: 1;
+
+  &--wide {
+    width: $shuttle-width;
+  }
 
   &.visible {
     left: $tab-bar-width;
   }
 
   &.hidden {
-    left: -9.5rem;
+    left: -($default-width + 2);
+  }
+
+  &--wide.hidden {
+    left: -($shuttle-width + 2);
   }
 }
 
@@ -30,6 +41,10 @@
   position: absolute;
   top: 1.625rem;
   width: fit-content;
+
+  .m-picker-container--wide & {
+    left: 11.5rem;
+  }
 }
 
 .m-picker-container__tab-button {

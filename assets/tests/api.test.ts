@@ -1,5 +1,6 @@
 import {
   fetchRoutes,
+  fetchShapeForRoute,
   fetchShuttleRoutes,
   fetchTimepointsForRoute,
 } from "../src/api"
@@ -108,6 +109,92 @@ describe("fetchRoutes", () => {
       .then(() => {
         spyConsoleError.mockRestore()
         done("fetchRoutes did not throw an error")
+      })
+      .catch(error => {
+        expect(error).not.toBeUndefined()
+        expect(spyConsoleError).toHaveBeenCalled()
+        spyConsoleError.mockRestore()
+        done()
+      })
+  })
+})
+
+describe("fetchShapeForRoute", () => {
+  test("fetches a shape for the route", done => {
+    const shapes = [
+      {
+        id: "shape1",
+        points: [
+          {
+            shape_id: "shape1",
+            lat: 42.41356,
+            lon: -70.99211,
+            sequence: 0,
+          },
+        ],
+      },
+      {
+        id: "shape2",
+        points: [
+          {
+            shape_id: "shape2",
+            lat: 43.41356,
+            lon: -71.99211,
+            sequence: 0,
+          },
+        ],
+      },
+    ]
+
+    window.fetch = () =>
+      Promise.resolve({
+        json: () => ({
+          data: shapes,
+        }),
+        ok: true,
+        status: 200,
+      })
+
+    fetchShapeForRoute("28").then(response => {
+      expect(response).toEqual(shapes)
+      done()
+    })
+  })
+
+  test("reloads the page if the response status is a redirect (3xx)", () => {
+    window.fetch = () =>
+      Promise.resolve({
+        json: () => ({ data: null }),
+        ok: false,
+        status: 302,
+      })
+
+    window.location.reload = jest.fn()
+    const spyConsoleError = jest.spyOn(console, "error")
+    spyConsoleError.mockImplementationOnce(() => {})
+
+    fetchShapeForRoute("28")
+      .then(() => {
+        expect(window.location.reload).toHaveBeenCalled()
+      })
+      .catch(() => ({}))
+  })
+
+  test("throws an error if the response status is not 200 or 3xx", done => {
+    window.fetch = () =>
+      Promise.resolve({
+        json: () => ({ data: null }),
+        ok: false,
+        status: 500,
+      })
+
+    const spyConsoleError = jest.spyOn(console, "error")
+    spyConsoleError.mockImplementationOnce(() => {})
+
+    fetchShapeForRoute("28")
+      .then(() => {
+        spyConsoleError.mockRestore()
+        done("fetchShapeForRoute did not throw an error")
       })
       .catch(error => {
         expect(error).not.toBeUndefined()
