@@ -31,8 +31,6 @@
 }
 
 .m-route-picker__route-list-button {
-  display: flex;
-  justify-content: start;
   margin-bottom: 0.25rem;
   width: 100%;
   word-break: break-word;
@@ -49,12 +47,17 @@
     @include button-disabled;
   }
 
-  &--selected,
-  &--unselected,
-  &--disabled {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+  &--with-count {
+    align-items: stretch;
+    display: flex;
+    justify-content: start;
+    padding: 0;
   }
+}
+
+.m-route-picker__route-list-button-name,
+.m-route-picker__route-list-button-count {
+  padding: 0.3125rem 0.5rem;
 }
 
 .m-route-picker__route-list-button-name {
@@ -69,6 +72,7 @@
   flex: 0 0 auto;
   font-weight: normal;
   margin-left: 0.5rem;
+  min-width: 0.5rem;
   padding-left: 0.3125rem;
 
   .m-route-picker__route-list-button--selected & {

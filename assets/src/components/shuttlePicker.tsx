@@ -42,7 +42,7 @@ const KNOWN_SHUTTLES: KnownShuttle[] = [
     runId: "999-0504",
   },
   {
-    name: "Commuter Rail",
+    name: "CR",
     runId: "999-0505",
   },
 ]
@@ -144,7 +144,7 @@ const AllSpecialsButton = ({
       : dispatch(selectAllShuttleRuns())
 
   return (
-    <Button
+    <RunButton
       name="All Specials (999*)"
       count={count}
       isActive={true}
@@ -178,7 +178,7 @@ const RunIdButton = ({
       () => {}
 
   return (
-    <Button
+    <RunButton
       name={name}
       count={count}
       isActive={isActive}
@@ -188,7 +188,7 @@ const RunIdButton = ({
   )
 }
 
-const Button = ({
+const RunButton = ({
   name,
   count,
   isActive,
@@ -209,16 +209,14 @@ const Button = ({
   return (
     <li>
       <button
-        className={`m-route-picker__route-list-button ${selectedClass}`}
+        className={`m-route-picker__route-list-button m-route-picker__route-list-button--with-count ${selectedClass}`}
         onClick={onClick}
         disabled={!isActive}
       >
         <span className="m-route-picker__route-list-button-name">{name}</span>
-        {count !== undefined && (
-          <span className="m-route-picker__route-list-button-count">
-            {count}
-          </span>
-        )}
+        <span className="m-route-picker__route-list-button-count">
+          {count !== undefined && count}
+        </span>
       </button>
     </li>
   )

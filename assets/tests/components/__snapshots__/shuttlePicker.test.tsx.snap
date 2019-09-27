@@ -34,7 +34,7 @@ exports[`ShuttlePicker renders 1`] = `
     >
       <li>
         <button
-          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--unselected"
           disabled={false}
           onClick={[Function]}
         >
@@ -52,7 +52,7 @@ exports[`ShuttlePicker renders 1`] = `
       </li>
       <li>
         <button
-          className="m-route-picker__route-list-button m-route-picker__route-list-button--disabled"
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
           disabled={true}
           onClick={[Function]}
         >
@@ -61,11 +61,14 @@ exports[`ShuttlePicker renders 1`] = `
           >
             Special 999 555
           </span>
+          <span
+            className="m-route-picker__route-list-button-count"
+          />
         </button>
       </li>
       <li>
         <button
-          className="m-route-picker__route-list-button m-route-picker__route-list-button--disabled"
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
           disabled={true}
           onClick={[Function]}
         >
@@ -74,11 +77,14 @@ exports[`ShuttlePicker renders 1`] = `
           >
             Blue 999 501
           </span>
+          <span
+            className="m-route-picker__route-list-button-count"
+          />
         </button>
       </li>
       <li>
         <button
-          className="m-route-picker__route-list-button m-route-picker__route-list-button--disabled"
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
           disabled={true}
           onClick={[Function]}
         >
@@ -87,11 +93,14 @@ exports[`ShuttlePicker renders 1`] = `
           >
             Green 999 502
           </span>
+          <span
+            className="m-route-picker__route-list-button-count"
+          />
         </button>
       </li>
       <li>
         <button
-          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--unselected"
           disabled={false}
           onClick={[Function]}
         >
@@ -109,7 +118,7 @@ exports[`ShuttlePicker renders 1`] = `
       </li>
       <li>
         <button
-          className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--selected"
           disabled={false}
           onClick={[Function]}
         >
@@ -127,20 +136,23 @@ exports[`ShuttlePicker renders 1`] = `
       </li>
       <li>
         <button
-          className="m-route-picker__route-list-button m-route-picker__route-list-button--disabled"
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
           disabled={true}
           onClick={[Function]}
         >
           <span
             className="m-route-picker__route-list-button-name"
           >
-            Commuter Rail 999 505
+            CR 999 505
           </span>
+          <span
+            className="m-route-picker__route-list-button-count"
+          />
         </button>
       </li>
       <li>
         <button
-          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--unselected"
           disabled={false}
           onClick={[Function]}
         >
@@ -158,7 +170,7 @@ exports[`ShuttlePicker renders 1`] = `
       </li>
       <li>
         <button
-          className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--selected"
           disabled={false}
           onClick={[Function]}
         >
