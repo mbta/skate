@@ -81,6 +81,14 @@ export const selectAllShuttleRuns = (): SelectAllShuttleRunsAction => ({
   type: "SELECT_ALL_SHUTTLE_RUNS",
 })
 
+interface DeselectAllShuttleRunsAction {
+  type: "DESELECT_ALL_SHUTTLE_RUNS"
+}
+
+export const deselectAllShuttleRuns = (): DeselectAllShuttleRunsAction => ({
+  type: "DESELECT_ALL_SHUTTLE_RUNS",
+})
+
 interface SelectShuttleRouteAction {
   type: "SELECT_SHUTTLE_ROUTE"
   payload: {
@@ -179,6 +187,7 @@ type Action =
   | SelectShuttleRunAction
   | DeselectShuttleRunAction
   | SelectAllShuttleRunsAction
+  | DeselectAllShuttleRunsAction
   | SelectShuttleRouteAction
   | DeselectShuttleRouteAction
   | SelectVehicleAction
@@ -227,6 +236,11 @@ export const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         selectedShuttleRunIds: "all",
+      }
+    case "DESELECT_ALL_SHUTTLE_RUNS":
+      return {
+        ...state,
+        selectedShuttleRunIds: [],
       }
     case "SELECT_SHUTTLE_ROUTE":
       return {

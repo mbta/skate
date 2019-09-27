@@ -6,6 +6,7 @@ import useShuttleRoutes from "../hooks/useShuttleRoutes"
 import { RunId, Vehicle } from "../realtime"
 import { Route } from "../schedule"
 import {
+  deselectAllShuttleRuns,
   deselectShuttleRoute,
   deselectShuttleRun,
   selectAllShuttleRuns,
@@ -114,12 +115,17 @@ const AllSpecialsButton = (): ReactElement<HTMLElement> => {
   const [state, dispatch] = useContext(StateDispatchContext)
   const isSelected = state.selectedShuttleRunIds === "all"
 
+  const toggleAllShuttleRuns = () =>
+    isSelected
+      ? dispatch(deselectAllShuttleRuns())
+      : dispatch(selectAllShuttleRuns())
+
   return (
     <Button
       name="All Specials (999*)"
       isActive={true}
       isSelected={isSelected}
-      onClick={() => dispatch(selectAllShuttleRuns())}
+      onClick={toggleAllShuttleRuns}
     />
   )
 }

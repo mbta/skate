@@ -8,9 +8,11 @@ import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { RunId, Vehicle } from "../../src/realtime"
 import { Route } from "../../src/schedule"
 import {
+  deselectAllShuttleRuns,
   deselectShuttleRoute,
   deselectShuttleRun,
   initialState,
+  selectAllShuttleRuns,
   selectShuttleRoute,
   selectShuttleRun,
 } from "../../src/state"
@@ -161,6 +163,56 @@ describe("ShuttlePicker", () => {
       .simulate("click")
 
     expect(dispatch).toHaveBeenCalledWith(deselectShuttleRun(vehicle.runId!))
+  })
+
+  test("clicking the unselected All Specials button selects all runs", () => {
+    const dispatch = jest.fn()
+    const wrapper = mount(
+      <StateDispatchProvider
+        state={{ ...initialState, selectedShuttleRunIds: [] }}
+        dispatch={dispatch}
+      >
+        <ShuttleVehiclesProvider shuttles={[vehicle]}>
+          <ShuttlePicker />
+        </ShuttleVehiclesProvider>
+      </StateDispatchProvider>
+    )
+    const allSpecialsButton = wrapper
+      .find(
+        ".m-route-picker__shuttle-run-list .m-route-picker__route-list-button"
+      )
+      .first()
+
+    expect(allSpecialsButton.text().includes("All Specials")).toBeTruthy()
+
+    allSpecialsButton.simulate("click")
+
+    expect(dispatch).toHaveBeenCalledWith(selectAllShuttleRuns())
+  })
+
+  test("clicking the selected All Specials button deselects all runs", () => {
+    const dispatch = jest.fn()
+    const wrapper = mount(
+      <StateDispatchProvider
+        state={{ ...initialState, selectedShuttleRunIds: "all" }}
+        dispatch={dispatch}
+      >
+        <ShuttleVehiclesProvider shuttles={[vehicle]}>
+          <ShuttlePicker />
+        </ShuttleVehiclesProvider>
+      </StateDispatchProvider>
+    )
+    const allSpecialsButton = wrapper
+      .find(
+        ".m-route-picker__shuttle-run-list .m-route-picker__route-list-button"
+      )
+      .first()
+
+    expect(allSpecialsButton.text().includes("All Specials")).toBeTruthy()
+
+    allSpecialsButton.simulate("click")
+
+    expect(dispatch).toHaveBeenCalledWith(deselectAllShuttleRuns())
   })
 
   test("clicking an unselected route button adds the route to the selected route IDs", () => {

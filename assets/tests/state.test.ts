@@ -84,6 +84,19 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
+  test("deselectAllShuttleRuns", () => {
+    const state: State.State = {
+      ...initialState,
+      selectedShuttleRunIds: "all",
+    }
+    const expectedState: State.State = {
+      ...state,
+      selectedShuttleRunIds: [],
+    }
+    const newState = reducer(state, State.deselectAllShuttleRuns())
+    expect(newState).toEqual(expectedState)
+  })
+
   test("deselectShuttleRun results in an empty list if you deselect the only selected run", () => {
     const state: State.State = {
       ...initialState,
