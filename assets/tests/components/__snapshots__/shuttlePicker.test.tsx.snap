@@ -34,6 +34,15 @@ exports[`ShuttlePicker renders 1`] = `
     >
       <li>
         <button
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+          disabled={false}
+          onClick={[Function]}
+        >
+          All Specials (999*)
+        </button>
+      </li>
+      <li>
+        <button
           className="m-route-picker__route-list-button m-route-picker__route-list-button--disabled"
           disabled={true}
           onClick={[Function]}

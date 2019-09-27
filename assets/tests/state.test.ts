@@ -45,6 +45,19 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
+  test("selectShuttleRun sets a single run if the previous value was 'all'", () => {
+    const state: State.State = {
+      ...initialState,
+      selectedShuttleRunIds: "all",
+    }
+    const expectedState: State.State = {
+      ...state,
+      selectedShuttleRunIds: ["39"],
+    }
+    const newState = reducer(state, State.selectShuttleRun("39"))
+    expect(newState).toEqual(expectedState)
+  })
+
   test("deselectShuttleRun", () => {
     const state: State.State = {
       ...initialState,
@@ -53,6 +66,32 @@ describe("reducer", () => {
     const expectedState: State.State = {
       ...state,
       selectedShuttleRunIds: ["28"],
+    }
+    const newState = reducer(state, State.deselectShuttleRun("39"))
+    expect(newState).toEqual(expectedState)
+  })
+
+  test("selectAllShuttleRuns", () => {
+    const state: State.State = {
+      ...initialState,
+      selectedShuttleRunIds: ["28", "39"],
+    }
+    const expectedState: State.State = {
+      ...state,
+      selectedShuttleRunIds: "all",
+    }
+    const newState = reducer(state, State.selectAllShuttleRuns())
+    expect(newState).toEqual(expectedState)
+  })
+
+  test("deselectShuttleRun results in an empty list if you deselect the only selected run", () => {
+    const state: State.State = {
+      ...initialState,
+      selectedShuttleRunIds: ["39"],
+    }
+    const expectedState: State.State = {
+      ...state,
+      selectedShuttleRunIds: [],
     }
     const newState = reducer(state, State.deselectShuttleRun("39"))
     expect(newState).toEqual(expectedState)

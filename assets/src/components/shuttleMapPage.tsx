@@ -3,11 +3,24 @@ import { ShuttleVehiclesContext } from "../contexts/shuttleVehiclesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useRouteShapes from "../hooks/useRouteShapes"
 import { loadedShapes } from "../models/shape"
-import { Vehicle, VehicleId } from "../realtime"
+import { RunId, Vehicle, VehicleId } from "../realtime"
 import { Shape } from "../schedule"
 import Map from "./map"
 import ShuttlePicker from "./shuttlePicker"
 import VehiclePropertiesPanel from "./vehiclePropertiesPanel"
+
+const filterShuttles = (
+  shuttles: Vehicle[],
+  selectedShuttleRunIds: RunId[] | "all"
+): Vehicle[] => {
+  if (selectedShuttleRunIds === "all") {
+    return shuttles
+  }
+
+  return shuttles.filter(shuttle =>
+    selectedShuttleRunIds.includes(shuttle.runId!)
+  )
+}
 
 const findSelectedVehicle = (
   vehicles: Vehicle[],
@@ -25,9 +38,11 @@ const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
   const shuttles: Vehicle[] | null = useContext(ShuttleVehiclesContext)
   const shapesByRouteId = useRouteShapes(selectedShuttleRouteIds)
   const shapes: Shape[] = loadedShapes(shapesByRouteId, selectedShuttleRouteIds)
-  const selectedShuttles: Vehicle[] = (shuttles || []).filter(shuttle =>
-    selectedShuttleRunIds.includes(shuttle.runId!)
+  const selectedShuttles: Vehicle[] = filterShuttles(
+    shuttles || [],
+    selectedShuttleRunIds
   )
+
   const selectedVehicle = findSelectedVehicle(
     selectedShuttles,
     selectedVehicleId

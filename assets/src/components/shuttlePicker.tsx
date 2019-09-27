@@ -8,6 +8,7 @@ import { Route } from "../schedule"
 import {
   deselectShuttleRoute,
   deselectShuttleRun,
+  selectAllShuttleRuns,
   selectShuttleRoute,
   selectShuttleRun,
 } from "../state"
@@ -86,6 +87,7 @@ const RunIdButtons = ({ shuttles }: { shuttles: Vehicle[] }) => {
 
   return (
     <>
+      <AllSpecialsButton />
       {KNOWN_SHUTTLES.map(knownShuttle => (
         <RunIdButton
           key={knownShuttle.runId}
@@ -108,6 +110,20 @@ const RunIdButtons = ({ shuttles }: { shuttles: Vehicle[] }) => {
   )
 }
 
+const AllSpecialsButton = (): ReactElement<HTMLElement> => {
+  const [state, dispatch] = useContext(StateDispatchContext)
+  const isSelected = state.selectedShuttleRunIds === "all"
+
+  return (
+    <Button
+      name="All Specials (999*)"
+      isActive={true}
+      isSelected={isSelected}
+      onClick={() => dispatch(selectAllShuttleRuns())}
+    />
+  )
+}
+
 const RunIdButton = ({
   name,
   runId,
@@ -118,12 +134,9 @@ const RunIdButton = ({
   isActive: boolean
 }): ReactElement<HTMLLIElement> => {
   const [state, dispatch] = useContext(StateDispatchContext)
-  const isSelected = state.selectedShuttleRunIds.includes(runId)
-  const selectedClass = isActive
-    ? isSelected
-      ? "m-route-picker__route-list-button--selected"
-      : "m-route-picker__route-list-button--unselected"
-    : "m-route-picker__route-list-button--disabled"
+  const isSelected =
+    state.selectedShuttleRunIds !== "all" &&
+    state.selectedShuttleRunIds.includes(runId)
 
   const onClick = isActive
     ? isSelected
@@ -131,6 +144,33 @@ const RunIdButton = ({
       : () => dispatch(selectShuttleRun(runId))
     : // tslint:disable-next-line: no-empty
       () => {}
+
+  return (
+    <Button
+      name={name}
+      isActive={isActive}
+      isSelected={isSelected}
+      onClick={onClick}
+    />
+  )
+}
+
+const Button = ({
+  name,
+  isActive,
+  isSelected,
+  onClick,
+}: {
+  name: string
+  isActive: boolean
+  isSelected: boolean
+  onClick: () => void
+}): ReactElement<HTMLElement> => {
+  const selectedClass = isActive
+    ? isSelected
+      ? "m-route-picker__route-list-button--selected"
+      : "m-route-picker__route-list-button--unselected"
+    : "m-route-picker__route-list-button--disabled"
   return (
     <li>
       <button

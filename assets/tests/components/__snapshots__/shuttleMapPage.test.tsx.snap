@@ -37,6 +37,15 @@ exports[`Shuttle Map Page renders 1`] = `
       >
         <li>
           <button
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
+            disabled={false}
+            onClick={[Function]}
+          >
+            All Specials (999*)
+          </button>
+        </li>
+        <li>
+          <button
             className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
             disabled={false}
             onClick={[Function]}
@@ -149,6 +158,15 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
       <ul
         className="m-route-picker__route-list m-route-picker__shuttle-run-list"
       >
+        <li>
+          <button
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+            disabled={false}
+            onClick={[Function]}
+          >
+            All Specials (999*)
+          </button>
+        </li>
         <li>
           <button
             className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
@@ -440,7 +458,139 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
       >
         <li>
           <button
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+            disabled={false}
+            onClick={[Function]}
+          >
+            All Specials (999*)
+          </button>
+        </li>
+        <li>
+          <button
             className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
+            disabled={false}
+            onClick={[Function]}
+          >
+            Special 999 555
+          </button>
+        </li>
+        <li>
+          <button
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--disabled"
+            disabled={true}
+            onClick={[Function]}
+          >
+            Blue 999 501
+          </button>
+        </li>
+        <li>
+          <button
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--disabled"
+            disabled={true}
+            onClick={[Function]}
+          >
+            Green 999 502
+          </button>
+        </li>
+        <li>
+          <button
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--disabled"
+            disabled={true}
+            onClick={[Function]}
+          >
+            Orange 999 503
+          </button>
+        </li>
+        <li>
+          <button
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--disabled"
+            disabled={true}
+            onClick={[Function]}
+          >
+            Red 999 504
+          </button>
+        </li>
+        <li>
+          <button
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--disabled"
+            disabled={true}
+            onClick={[Function]}
+          >
+            Commuter Rail 999 505
+          </button>
+        </li>
+      </ul>
+      <div
+        className="m-route-picker__label"
+      >
+        Routes
+      </div>
+    </div>
+  </div>
+  <div
+    className="m-shuttle-map__map"
+    style={
+      Object {
+        "height": 768,
+        "width": 1024,
+      }
+    }
+  >
+    <div
+      className="m-vehicle-map"
+      id="id-vehicle-map"
+    />
+  </div>
+</div>
+`;
+
+exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
+<div
+  className="m-shuttle-map"
+>
+  <div
+    className="m-picker-container m-picker-container--wide visible"
+  >
+    <div
+      className="m-picker-container__tab"
+    >
+      <button
+        className="m-picker-container__tab-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <div
+      className="m-route-picker"
+    >
+      <div
+        className="m-route-picker__label"
+      >
+        Run #
+      </div>
+      <ul
+        className="m-route-picker__route-list m-route-picker__shuttle-run-list"
+      >
+        <li>
+          <button
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
+            disabled={false}
+            onClick={[Function]}
+          >
+            All Specials (999*)
+          </button>
+        </li>
+        <li>
+          <button
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
             disabled={false}
             onClick={[Function]}
           >
