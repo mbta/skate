@@ -114,7 +114,7 @@ const RunIdButtons = ({ shuttles }: { shuttles: Vehicle[] }) => {
 interface ActiveRunCounts {
   [runId: string]: number
 }
-const activeRunCounts = (shuttles: Vehicle[]): ActiveRunCounts =>
+export const activeRunCounts = (shuttles: Vehicle[]): ActiveRunCounts =>
   shuttles.reduce(
     (acc, { runId }) => {
       if (runId === null) {
