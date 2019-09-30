@@ -224,6 +224,188 @@ exports[`ShuttlePicker renders 1`] = `
 </div>
 `;
 
+exports[`ShuttlePicker renders loaded state with no shuttles 1`] = `
+<div
+  className="m-picker-container m-picker-container--wide visible"
+>
+  <div
+    className="m-picker-container__tab"
+  >
+    <button
+      className="m-picker-container__tab-button"
+      onClick={[Function]}
+    >
+      <span
+        className=""
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
+        }
+      />
+    </button>
+  </div>
+  <div
+    className="m-route-picker"
+  >
+    <div
+      className="m-route-picker__label"
+    >
+      Run #
+    </div>
+    <ul
+      className="m-route-picker__route-list m-route-picker__shuttle-run-list"
+    >
+      <li>
+        <button
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--selected"
+          disabled={false}
+          onClick={[Function]}
+        >
+          <span
+            className="m-route-picker__route-list-button-name"
+          >
+            All Specials (999*)
+          </span>
+          <span
+            className="m-route-picker__route-list-button-count"
+          />
+        </button>
+      </li>
+      <li>
+        <button
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
+          disabled={true}
+          onClick={[Function]}
+        >
+          <span
+            className="m-route-picker__route-list-button-name"
+          >
+            Special 999 555
+          </span>
+          <span
+            className="m-route-picker__route-list-button-count"
+          />
+        </button>
+      </li>
+      <li>
+        <button
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
+          disabled={true}
+          onClick={[Function]}
+        >
+          <span
+            className="m-route-picker__route-list-button-name"
+          >
+            Blue 999 501
+          </span>
+          <span
+            className="m-route-picker__route-list-button-count"
+          />
+        </button>
+      </li>
+      <li>
+        <button
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
+          disabled={true}
+          onClick={[Function]}
+        >
+          <span
+            className="m-route-picker__route-list-button-name"
+          >
+            Green 999 502
+          </span>
+          <span
+            className="m-route-picker__route-list-button-count"
+          />
+        </button>
+      </li>
+      <li>
+        <button
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
+          disabled={true}
+          onClick={[Function]}
+        >
+          <span
+            className="m-route-picker__route-list-button-name"
+          >
+            Orange 999 503
+          </span>
+          <span
+            className="m-route-picker__route-list-button-count"
+          />
+        </button>
+      </li>
+      <li>
+        <button
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
+          disabled={true}
+          onClick={[Function]}
+        >
+          <span
+            className="m-route-picker__route-list-button-name"
+          >
+            Red 999 504
+          </span>
+          <span
+            className="m-route-picker__route-list-button-count"
+          />
+        </button>
+      </li>
+      <li>
+        <button
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
+          disabled={true}
+          onClick={[Function]}
+        >
+          <span
+            className="m-route-picker__route-list-button-name"
+          >
+            CR 999 505
+          </span>
+          <span
+            className="m-route-picker__route-list-button-count"
+          />
+        </button>
+      </li>
+    </ul>
+    <div
+      className="m-route-picker__label"
+    >
+      Routes
+    </div>
+    <ul
+      className="m-route-picker__route-list m-route-picker__shuttle-route-list"
+    >
+      <li>
+        <button
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+          onClick={[Function]}
+        >
+          Mattapan Line Shuttle
+        </button>
+      </li>
+      <li>
+        <button
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+          onClick={[Function]}
+        >
+          Green Line B Shuttle
+        </button>
+      </li>
+      <li>
+        <button
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+          onClick={[Function]}
+        >
+          Haverhill Line Shuttle
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
 exports[`ShuttlePicker renders loading state 1`] = `
 <div
   className="m-picker-container m-picker-container--wide visible"

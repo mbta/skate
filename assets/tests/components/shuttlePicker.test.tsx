@@ -91,6 +91,15 @@ describe("ShuttlePicker", () => {
     expect(tree).toMatchSnapshot()
   })
 
+  test("renders loaded state with no shuttles", () => {
+    const tree = renderer.create(
+      <ShuttleVehiclesProvider shuttles={[]}>
+        <ShuttlePicker />
+      </ShuttleVehiclesProvider>
+    )
+    expect(tree).toMatchSnapshot()
+  })
+
   test("renders", () => {
     /*
     999-0501: known, no active shuttles, unselected
