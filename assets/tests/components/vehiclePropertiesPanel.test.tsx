@@ -96,10 +96,7 @@ describe("VehiclePropertiesPanel", () => {
     }
     const tree = renderer
       .create(
-        <VehiclePropertiesPanel
-          selectedVehicle={vehicle}
-          selectedVehicleRoute={route}
-        />
+        <VehiclePropertiesPanel selectedVehicle={vehicle} route={route} />
       )
       .toJSON()
 

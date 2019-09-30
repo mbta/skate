@@ -14,7 +14,7 @@ import Header from "./propertiesPanel/header"
 
 interface Props {
   selectedVehicle: Vehicle
-  selectedVehicleRoute?: Route
+  route?: Route
 }
 
 const Properties = ({ vehicle }: { vehicle: Vehicle }) => {
@@ -143,10 +143,7 @@ export const handleSwipe = (hideMe: () => void) => (
   }
 }
 
-const VehiclePropertiesPanel = ({
-  selectedVehicle,
-  selectedVehicleRoute,
-}: Props) => {
+const VehiclePropertiesPanel = ({ selectedVehicle, route }: Props) => {
   const [, dispatch] = useContext(StateDispatchContext)
 
   const hideMe = () => dispatch(deselectVehicle())
@@ -159,7 +156,7 @@ const VehiclePropertiesPanel = ({
     <div className="m-vehicle-properties-panel">
       <Header
         vehicle={selectedVehicle}
-        selectedVehicleRoute={selectedVehicleRoute}
+        route={route}
         shouldShowHeadwayDiagram={shouldShowHeadwayDiagram(selectedVehicle)}
       />
 

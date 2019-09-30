@@ -71,7 +71,7 @@ describe("Header", () => {
       .create(
         <Header
           vehicle={vehicle}
-          selectedVehicleRoute={undefined}
+          route={undefined}
           shouldShowHeadwayDiagram={true}
         />
       )
@@ -93,7 +93,7 @@ describe("Header", () => {
       .create(
         <Header
           vehicle={vehicle}
-          selectedVehicleRoute={route}
+          route={route}
           shouldShowHeadwayDiagram={true}
         />
       )
@@ -111,7 +111,7 @@ describe("Header", () => {
       .create(
         <Header
           vehicle={earlyVehicle}
-          selectedVehicleRoute={undefined}
+          route={undefined}
           shouldShowHeadwayDiagram={true}
         />
       )
@@ -129,7 +129,7 @@ describe("Header", () => {
       .create(
         <Header
           vehicle={earlyVehicle}
-          selectedVehicleRoute={undefined}
+          route={undefined}
           shouldShowHeadwayDiagram={true}
         />
       )
@@ -148,7 +148,7 @@ describe("Header", () => {
       .create(
         <Header
           vehicle={offCourseVehicle}
-          selectedVehicleRoute={undefined}
+          route={undefined}
           shouldShowHeadwayDiagram={true}
         />
       )
@@ -167,7 +167,7 @@ describe("Header", () => {
       .create(
         <Header
           vehicle={offCourseVehicle}
-          selectedVehicleRoute={undefined}
+          route={undefined}
           shouldShowHeadwayDiagram={true}
         />
       )
@@ -186,7 +186,7 @@ describe("Header", () => {
       .create(
         <Header
           vehicle={shuttleVehicle}
-          selectedVehicleRoute={undefined}
+          route={undefined}
           shouldShowHeadwayDiagram={true}
         />
       )
@@ -214,7 +214,7 @@ describe("Header", () => {
       .create(
         <Header
           vehicle={ghost}
-          selectedVehicleRoute={undefined}
+          route={undefined}
           shouldShowHeadwayDiagram={true}
         />
       )
@@ -230,7 +230,7 @@ describe("Header", () => {
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <Header
           vehicle={vehicle}
-          selectedVehicleRoute={undefined}
+          route={undefined}
           shouldShowHeadwayDiagram={false}
         />
       </StateDispatchProvider>

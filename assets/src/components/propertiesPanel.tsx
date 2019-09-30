@@ -9,13 +9,10 @@ import VehiclePropertiesPanel from "./vehiclePropertiesPanel"
 
 interface Props {
   selectedVehicleOrGhost: VehicleOrGhost
-  selectedVehicleRoute?: Route
+  route?: Route
 }
 
-const PropertiesPanel = ({
-  selectedVehicleOrGhost,
-  selectedVehicleRoute,
-}: Props) => {
+const PropertiesPanel = ({ selectedVehicleOrGhost, route }: Props) => {
   const [, dispatch] = useContext(StateDispatchContext)
 
   const hideMe = () => dispatch(deselectVehicle())
@@ -26,12 +23,12 @@ const PropertiesPanel = ({
         {isAVehicle(selectedVehicleOrGhost) ? (
           <VehiclePropertiesPanel
             selectedVehicle={selectedVehicleOrGhost}
-            selectedVehicleRoute={selectedVehicleRoute}
+            route={route}
           />
         ) : (
           <GhostPropertiesPanel
             selectedGhost={selectedVehicleOrGhost}
-            selectedGhostRoute={selectedVehicleRoute}
+            route={route}
           />
         )}
       </div>

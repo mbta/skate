@@ -75,10 +75,7 @@ describe("PropertiesPanel", () => {
 
     const tree = renderer
       .create(
-        <PropertiesPanel
-          selectedVehicleOrGhost={vehicle}
-          selectedVehicleRoute={route}
-        />
+        <PropertiesPanel selectedVehicleOrGhost={vehicle} route={route} />
       )
       .toJSON()
 
@@ -101,12 +98,7 @@ describe("PropertiesPanel", () => {
     }
 
     const tree = renderer
-      .create(
-        <PropertiesPanel
-          selectedVehicleOrGhost={ghost}
-          selectedVehicleRoute={route}
-        />
-      )
+      .create(<PropertiesPanel selectedVehicleOrGhost={ghost} route={route} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()

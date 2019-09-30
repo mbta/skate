@@ -7,7 +7,7 @@ import Header from "./propertiesPanel/header"
 
 interface Props {
   selectedGhost: Ghost
-  selectedGhostRoute?: Route
+  route?: Route
 }
 
 const Properties = () => {
@@ -27,7 +27,7 @@ const Properties = () => {
   )
 }
 
-const GhostPropertiesPanel = ({ selectedGhost, selectedGhostRoute }: Props) => {
+const GhostPropertiesPanel = ({ selectedGhost, route }: Props) => {
   const [, dispatch] = useContext(StateDispatchContext)
 
   const hideMe = () => dispatch(deselectVehicle())
@@ -36,7 +36,7 @@ const GhostPropertiesPanel = ({ selectedGhost, selectedGhostRoute }: Props) => {
     <div className="m-ghost-properties-panel">
       <Header
         vehicle={selectedGhost}
-        selectedVehicleRoute={selectedGhostRoute}
+        route={route}
         shouldShowHeadwayDiagram={false}
       />
 

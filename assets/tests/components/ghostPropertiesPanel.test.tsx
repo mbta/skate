@@ -33,12 +33,7 @@ const route: Route = {
 describe("GhostPropertiesPanel", () => {
   test("renders", () => {
     const tree = renderer
-      .create(
-        <GhostPropertiesPanel
-          selectedGhost={ghost}
-          selectedGhostRoute={route}
-        />
-      )
+      .create(<GhostPropertiesPanel selectedGhost={ghost} route={route} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -49,10 +44,7 @@ describe("GhostPropertiesPanel", () => {
 
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <GhostPropertiesPanel
-          selectedGhost={ghost}
-          selectedGhostRoute={route}
-        />
+        <GhostPropertiesPanel selectedGhost={ghost} route={route} />
       </StateDispatchProvider>
     )
     wrapper.find(".m-properties-panel__close").simulate("click")

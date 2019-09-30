@@ -15,7 +15,7 @@ import VehicleIcon, { Orientation, Size } from "../vehicleIcon"
 
 interface Props {
   vehicle: VehicleOrGhost
-  selectedVehicleRoute?: Route
+  route?: Route
   shouldShowHeadwayDiagram: boolean
 }
 
@@ -80,9 +80,8 @@ const HeadwayTarget = ({
 
 const directionName = (
   { directionId }: VehicleOrGhost,
-  selectedVehicleRoute?: Route
-): string =>
-  selectedVehicleRoute ? selectedVehicleRoute.directionNames[directionId] : ""
+  route?: Route
+): string => (route ? route.directionNames[directionId] : "")
 
 export const formatRouteVariant = (vehicle: VehicleOrGhost): string => {
   if (isAVehicle(vehicle) && isShuttle(vehicle)) {
@@ -95,11 +94,7 @@ export const formatRouteVariant = (vehicle: VehicleOrGhost): string => {
   return `${routeId}_${viaVariantFormatted}${headsignFormatted}`
 }
 
-const Header = ({
-  vehicle,
-  selectedVehicleRoute,
-  shouldShowHeadwayDiagram,
-}: Props) => {
+const Header = ({ vehicle, route, shouldShowHeadwayDiagram }: Props) => {
   const [{ settings }, dispatch] = useContext(StateDispatchContext)
 
   const hideMe = () => dispatch(deselectVehicle())
@@ -127,7 +122,7 @@ const Header = ({
       </div>
       <div className="m-properties-panel__variant">
         <div className="m-properties-panel__inbound-outbound">
-          {directionName(vehicle, selectedVehicleRoute)}
+          {directionName(vehicle, route)}
         </div>
         <div className="m-properties-panel__variant-name">
           {formatRouteVariant(vehicle)}
