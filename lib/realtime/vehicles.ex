@@ -1,9 +1,6 @@
 defmodule Realtime.Vehicles do
-  alias Realtime.Ghost
-  alias Realtime.Vehicle
-  alias Gtfs.Block
-  alias Gtfs.Route
-  alias Gtfs.Trip
+  alias Realtime.{Ghost, Vehicle}
+  alias Gtfs.{Block, Route, Trip}
 
   @typedoc """
   The vehicles on one route,
@@ -65,7 +62,7 @@ defmodule Realtime.Vehicles do
 
     ghosts =
       active_trips
-      |> Realtime.Ghost.ghosts(vehicles_by_block, now)
+      |> Ghost.ghosts(vehicles_by_block, now)
       |> Enum.group_by(fn ghost -> ghost.route_id end)
       |> Helpers.map_values(fn ghosts ->
         %{

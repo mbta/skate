@@ -3,34 +3,39 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { VehiclesByRouteIdContext } from "../contexts/vehiclesByRouteIdContext"
 import useRoutes from "../hooks/useRoutes"
 import useTimepoints from "../hooks/useTimepoints"
-import { allVehicles } from "../models/vehiclesByRouteId"
-import { Vehicle, VehicleId, VehiclesForRoute } from "../realtime.d"
+import { allVehiclesAndGhosts } from "../models/vehiclesByRouteId"
+import { VehicleId, VehicleOrGhost, VehiclesForRoute } from "../realtime.d"
 import { ByRouteId, Route, RouteId, TimepointsByRouteId } from "../schedule.d"
+import PropertiesPanel from "./propertiesPanel"
 import RouteLadders from "./routeLadders"
 import RoutePicker from "./routePicker"
-import VehiclePropertiesPanel from "./vehiclePropertiesPanel"
 
 export const findRouteById = (
   routes: Route[] | null,
   routeId: RouteId
 ): Route | undefined => (routes || []).find(route => route.id === routeId)
 
-const findSelectedVehicle = (
+export const findSelectedVehicleOrGhost = (
   vehiclesByRouteId: ByRouteId<VehiclesForRoute>,
   selectedVehicleId: VehicleId | undefined
-): Vehicle | undefined => {
-  const vehicles: Vehicle[] = Object.values(vehiclesByRouteId).reduce(
-    (acc, vehiclesForRoute) => acc.concat(allVehicles(vehiclesForRoute)),
-    [] as Vehicle[]
+): VehicleOrGhost | undefined => {
+  const vehiclesAndGhosts: VehicleOrGhost[] = Object.values(
+    vehiclesByRouteId
+  ).reduce(
+    (acc, vehiclesForRoute) =>
+      acc.concat(allVehiclesAndGhosts(vehiclesForRoute)),
+    [] as VehicleOrGhost[]
   )
-  return vehicles.find(vehicle => vehicle.id === selectedVehicleId)
+  return vehiclesAndGhosts.find(bus => bus.id === selectedVehicleId)
 }
 
 const vehicleRoute = (
   allRoutes: Route[] | null,
-  vehicle: Vehicle | undefined
+  vehicleOrGhost: VehicleOrGhost | undefined
 ): Route | undefined =>
-  (allRoutes || []).find(route => route.id === (vehicle && vehicle.routeId))
+  (allRoutes || []).find(
+    route => route.id === (vehicleOrGhost && vehicleOrGhost.routeId)
+  )
 
 const LadderPage = (): ReactElement<HTMLDivElement> => {
   const [state] = useContext(StateDispatchContext)
@@ -48,7 +53,7 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
     .map(routeId => findRouteById(routes, routeId))
     .filter(route => route) as Route[]
 
-  const selectedVehicle = findSelectedVehicle(
+  const selectedVehicleOrGhost = findSelectedVehicleOrGhost(
     vehiclesByRouteId,
     selectedVehicleId
   )
@@ -63,10 +68,10 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
         selectedVehicleId={selectedVehicleId}
       />
 
-      {selectedVehicle && (
-        <VehiclePropertiesPanel
-          selectedVehicle={selectedVehicle}
-          selectedVehicleRoute={vehicleRoute(routes, selectedVehicle)}
+      {selectedVehicleOrGhost && (
+        <PropertiesPanel
+          selectedVehicleOrGhost={selectedVehicleOrGhost}
+          selectedVehicleRoute={vehicleRoute(routes, selectedVehicleOrGhost)}
         />
       )}
     </div>

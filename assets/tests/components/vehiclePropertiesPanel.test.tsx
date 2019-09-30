@@ -2,7 +2,6 @@ import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import VehiclePropertiesPanel, {
-  formatRouteVariant,
   handleSwipe,
 } from "../../src/components/vehiclePropertiesPanel"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
@@ -192,21 +191,6 @@ describe("VehiclePropertiesPanel", () => {
     ).toBe(0)
   })
 
-  test("clicking the X close button deselects the vehicle", () => {
-    const mockDispatch = jest.fn()
-
-    const wrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <VehiclePropertiesPanel selectedVehicle={vehicle} />
-      </StateDispatchProvider>
-    )
-    wrapper
-      .find(".m-vehicle-properties-panel__header .m-close-button")
-      .simulate("click")
-
-    expect(mockDispatch).toHaveBeenCalledWith(deselectVehicle())
-  })
-
   test("clicking the 'Close vehicle properties' button deselects the vehicle", () => {
     const mockDispatch = jest.fn()
 
@@ -215,33 +199,9 @@ describe("VehiclePropertiesPanel", () => {
         <VehiclePropertiesPanel selectedVehicle={vehicle} />
       </StateDispatchProvider>
     )
-    wrapper.find(".m-vehicle-properties-panel__close").simulate("click")
+    wrapper.find(".m-properties-panel__close").simulate("click")
 
     expect(mockDispatch).toHaveBeenCalledWith(deselectVehicle())
-  })
-})
-
-describe("formatRouteVariant", () => {
-  test("has variant and headsign", () => {
-    expect(formatRouteVariant(vehicle)).toEqual("39_X Forest Hills")
-  })
-
-  test("missing variant and headsign", () => {
-    const testVehicle: Vehicle = {
-      ...vehicle,
-      headsign: null,
-      viaVariant: null,
-    }
-    expect(formatRouteVariant(testVehicle)).toEqual("39_")
-  })
-
-  test("doesn't show underscore variant character", () => {
-    const testVehicle: Vehicle = {
-      ...vehicle,
-      headsign: null,
-      viaVariant: "_",
-    }
-    expect(formatRouteVariant(testVehicle)).toEqual("39_")
   })
 })
 

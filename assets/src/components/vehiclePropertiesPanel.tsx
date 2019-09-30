@@ -1,157 +1,43 @@
 import React, { useContext, useEffect, useState } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
-import vehicleLabel from "../helpers/vehicleLabel"
 import useInterval from "../hooks/useInterval"
 import featureIsEnabled from "../laboratoryFeatures"
 import { formattedRunNumber } from "../models/shuttle"
 import { isShuttle } from "../models/vehicle"
-import {
-  drawnStatus,
-  humanReadableScheduleAdherence,
-  statusClass,
-} from "../models/vehicleStatus"
 import { DataDiscrepancy, Vehicle } from "../realtime.d"
 import { Route } from "../schedule.d"
 import { deselectVehicle } from "../state"
-import CloseButton from "./closeButton"
 import HeadwayDiagram from "./headwayDiagram"
 import Map from "./map"
-import VehicleIcon, { Orientation, Size } from "./vehicleIcon"
+import Header from "./propertiesPanel/header"
 
 interface Props {
   selectedVehicle: Vehicle
   selectedVehicleRoute?: Route
 }
 
-const ScheduleAdherenceStatusIcon = () => (
-  <div className="m-vehicle-properties-panel__schedule-adherence-status-icon">
-    <svg width="10" height="10">
-      <circle cx="5" cy="5" r="5" />
-    </svg>
-  </div>
-)
-
-const ScheduleAdherenceStatusString = ({ vehicle }: { vehicle: Vehicle }) => (
-  <div className="m-vehicle-properties-panel__schedule-adherence-status-string">
-    {humanReadableScheduleAdherence(vehicle)}
-  </div>
-)
-
-const minutes = (seconds: number): number => Math.abs(Math.floor(seconds / 60))
-
-const earlyOrLate = (scheduleAdherenceSecs: number): string =>
-  scheduleAdherenceSecs <= 0 ? "early" : "late"
-
-const scheduleAdherenceLabelString = ({
-  scheduleAdherenceSecs,
-}: Vehicle): string =>
-  `(${minutes(scheduleAdherenceSecs)} min ${earlyOrLate(
-    scheduleAdherenceSecs
-  )})`
-
-const ScheduleAdherenceLabel = ({ vehicle }: { vehicle: Vehicle }) => (
-  <div className="m-vehicle-properties-panel__schedule-adherence-label">
-    {vehicle.isOffCourse ? "" : scheduleAdherenceLabelString(vehicle)}
-  </div>
-)
-
-const ScheduleAdherence = ({ vehicle }: { vehicle: Vehicle }) => (
-  <div
-    className={`m-vehicle-properties-panel__schedule-adherence ${statusClass(
-      drawnStatus(vehicle)
-    )}`}
-  >
-    <ScheduleAdherenceStatusIcon />
-    <ScheduleAdherenceStatusString vehicle={vehicle} />
-    <ScheduleAdherenceLabel vehicle={vehicle} />
-  </div>
-)
-
-const HeadwayTarget = ({
-  vehicle: { scheduledHeadwaySecs },
-}: {
-  vehicle: Vehicle
-}) => (
-  <div className="m-vehicle-properties-panel__headway-target">
-    <span className="m-vehicle-properties-panel__headway-target-label">
-      HEADWAY TARGET
-    </span>
-    <span className="m-vehicle-properties-panel__headway-target-value">
-      {minutes(scheduledHeadwaySecs)} min
-    </span>
-  </div>
-)
-
-const Header = ({
-  vehicle,
-  selectedVehicleRoute,
-  hideMe,
-}: {
-  vehicle: Vehicle
-  selectedVehicleRoute?: Route
-  hideMe: () => void
-}) => {
-  const [{ settings }] = useContext(StateDispatchContext)
-
-  return (
-    <div className="m-vehicle-properties-panel__header">
-      <div className="m-vehicle-properties-panel__label">
-        <VehicleIcon
-          size={Size.Large}
-          orientation={Orientation.Up}
-          label={vehicleLabel(vehicle, settings)}
-          variant={vehicle.viaVariant}
-          status={drawnStatus(vehicle)}
-        />
-      </div>
-      <div className="m-vehicle-properties-panel__variant">
-        <div className="m-vehicle-properties-panel__inbound-outbound">
-          {directionName(vehicle, selectedVehicleRoute)}
-        </div>
-        <div className="m-vehicle-properties-panel__variant-name">
-          {formatRouteVariant(vehicle)}
-        </div>
-        {shouldShowHeadwayDiagram(vehicle) ? (
-          <HeadwayTarget vehicle={vehicle} />
-        ) : (
-          !isShuttle(vehicle) && <ScheduleAdherence vehicle={vehicle} />
-        )}
-      </div>
-      <CloseButton onClick={hideMe} />
-    </div>
-  )
-}
-
 const Properties = ({ vehicle }: { vehicle: Vehicle }) => {
   const { runId, label, operatorId, operatorName } = vehicle
 
   return (
-    <table className="m-vehicle-properties-panel__vehicle-properties">
+    <table className="m-properties-panel__properties">
       <tbody>
         <tr>
-          <th className="m-vehicle-properties-panel__vehicle-property-label">
-            Run
-          </th>
-          <td className="m-vehicle-properties-panel__vehicle-property-value">
+          <th className="m-properties-panel__property-label">Run</th>
+          <td className="m-properties-panel__property-value">
             {isShuttle(vehicle)
               ? formattedRunNumber(vehicle)
               : runId || "Not Available"}
           </td>
         </tr>
         <tr>
-          <th className="m-vehicle-properties-panel__vehicle-property-label">
-            Vehicle
-          </th>
-          <td className="m-vehicle-properties-panel__vehicle-property-value">
-            {label}
-          </td>
+          <th className="m-properties-panel__property-label">Vehicle</th>
+          <td className="m-properties-panel__property-value">{label}</td>
         </tr>
         <tr>
-          <th className="m-vehicle-properties-panel__vehicle-property-label">
-            Operator
-          </th>
-          <td className="m-vehicle-properties-panel__vehicle-property-value">
+          <th className="m-properties-panel__property-label">Operator</th>
+          <td className="m-properties-panel__property-value">
             {operatorName} #{operatorId}
           </td>
         </tr>
@@ -178,20 +64,16 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
 
   return (
     <div className="m-vehicle-properties-panel__location">
-      <div className="m-vehicle-properties-panel__vehicle-property-label">
-        Next Stop
-      </div>
-      <div className="m-vehicle-properties-panel__vehicle-property-value">
+      <div className="m-properties-panel__property-label">Next Stop</div>
+      <div className="m-properties-panel__property-value">
         {isOffCourse || isShuttle(vehicle) ? (
           <NotAvailable />
         ) : (
           <>{stopStatus.stopName}</>
         )}
       </div>
-      <div className="m-vehicle-properties-panel__vehicle-property-label">
-        Last GPS Ping
-      </div>
-      <div className="m-vehicle-properties-panel__vehicle-property-value">
+      <div className="m-properties-panel__property-label">Last GPS Ping</div>
+      <div className="m-properties-panel__property-value">
         {secondsAgo(timestamp)}
       </div>
       <a
@@ -274,58 +156,31 @@ const VehiclePropertiesPanel = ({
   })
 
   return (
-    <>
-      <div
-        id="m-vehicle-properties-panel"
-        className="m-vehicle-properties-panel"
-      >
-        <Header
-          vehicle={selectedVehicle}
-          selectedVehicleRoute={selectedVehicleRoute}
-          hideMe={hideMe}
-        />
-
-        {shouldShowHeadwayDiagram(selectedVehicle) && (
-          <HeadwayDiagram vehicle={selectedVehicle} />
-        )}
-
-        <Properties vehicle={selectedVehicle} />
-
-        <Location vehicle={selectedVehicle} />
-
-        {shouldShowDataDiscrepancies(selectedVehicle) && (
-          <DataDiscrepancies vehicle={selectedVehicle} />
-        )}
-
-        <button className="m-vehicle-properties-panel__close" onClick={hideMe}>
-          Close
-        </button>
-      </div>
-
-      <div
-        className="m-vehicle-properties-panel__modal-overlay"
-        onClick={hideMe}
+    <div className="m-vehicle-properties-panel">
+      <Header
+        vehicle={selectedVehicle}
+        selectedVehicleRoute={selectedVehicleRoute}
+        shouldShowHeadwayDiagram={shouldShowHeadwayDiagram(selectedVehicle)}
       />
-    </>
+
+      {shouldShowHeadwayDiagram(selectedVehicle) && (
+        <HeadwayDiagram vehicle={selectedVehicle} />
+      )}
+
+      <Properties vehicle={selectedVehicle} />
+
+      <Location vehicle={selectedVehicle} />
+
+      {shouldShowDataDiscrepancies(selectedVehicle) && (
+        <DataDiscrepancies vehicle={selectedVehicle} />
+      )}
+
+      <button className="m-properties-panel__close" onClick={hideMe}>
+        Close
+      </button>
+    </div>
   )
 }
-
-export const formatRouteVariant = (vehicle: Vehicle): string => {
-  if (isShuttle(vehicle)) {
-    return "Shuttle"
-  }
-
-  const { routeId, viaVariant, headsign } = vehicle
-  const viaVariantFormatted = viaVariant && viaVariant !== "_" ? viaVariant : ""
-  const headsignFormatted = headsign ? ` ${headsign}` : ""
-  return `${routeId}_${viaVariantFormatted}${headsignFormatted}`
-}
-
-const directionName = (
-  { directionId }: Vehicle,
-  selectedVehicleRoute?: Route
-): string =>
-  selectedVehicleRoute ? selectedVehicleRoute.directionNames[directionId] : ""
 
 const directionsUrl = (
   latitude: number,

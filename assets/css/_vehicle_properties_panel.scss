@@ -1,118 +1,11 @@
 .m-vehicle-properties-panel {
-  background-color: $color-bg-base;
-  box-shadow: $modal-box-shadow;
   display: flex;
   flex-direction: column;
   height: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  position: fixed;
-  right: 0;
-  top: 0;
-  width: 23.5rem;
-  z-index: 1001;
 }
 
-.m-vehicle-properties-panel__header {
-  display: flex;
-}
-
-.m-vehicle-properties-panel__label {
-  flex: 0 0 auto;
-  padding: 1rem;
-  text-align: center;
-  width: 4rem;
-}
-
-.m-vehicle-properties-panel__variant {
-  border-left: 1px solid $color-rule;
-  flex: 1 1 auto;
-  padding: 1rem;
-}
-
-.m-vehicle-properties-panel__inbound-outbound {
-  @include font-emph;
-  margin-bottom: 0.4rem;
-}
-
-.m-vehicle-properties-panel__variant-name {
-  @include font-header;
-}
-
-.m-vehicle-properties-panel__headway-target,
-.m-vehicle-properties-panel__schedule-adherence {
-  @include font-small;
-  margin-top: 0.7rem;
-}
-
-.m-vehicle-properties-panel__headway-target-label {
-  font-weight: bold;
-  margin-right: 0.3rem;
-}
-
-.m-vehicle-properties-panel__headway-target-value {
-  @include font-body;
-}
-
-.m-vehicle-properties-panel__schedule-adherence {
-  display: flex;
-}
-
-.m-vehicle-properties-panel__schedule-adherence-status-icon {
-  margin-right: 0.4rem;
-
-  .on-time & {
-    fill: $color-vehicle-ontime;
-  }
-  .early & {
-    fill: $color-vehicle-early;
-  }
-  .late & {
-    fill: $color-vehicle-late;
-  }
-  .off-course & {
-    fill: $color-vehicle-off-course;
-  }
-}
-
-.m-vehicle-properties-panel__schedule-adherence-status-string {
-  font-weight: bold;
-  margin-right: 0.3rem;
-  text-transform: uppercase;
-}
-
-.m-vehicle-properties-panel__schedule-adherence-label {
-  .on-time & {
-    color: $color-component-medium;
-  }
-}
-
-.m-vehicle-properties-panel__header > button {
-  flex: 0 0 auto;
-  padding: 1rem;
-}
-
-.m-vehicle-properties-panel .m-headway-diagram,
-.m-vehicle-properties-panel__vehicle-properties {
+.m-vehicle-properties-panel .m-headway-diagram {
   border-top: 1px solid $color-rule;
-}
-
-.m-vehicle-properties-panel__vehicle-properties {
-  padding: 1rem;
-  width: 100%;
-}
-
-.m-vehicle-properties-panel__vehicle-property-label {
-  @include font-label;
-  margin-bottom: 0.5rem;
-  text-align: left;
-  width: 6rem;
-}
-
-.m-vehicle-properties-panel__vehicle-property-value {
-  @include font-body;
-  margin-bottom: 1rem;
 }
 
 .m-vehicle-properties-panel__location {
@@ -161,21 +54,4 @@
   &::after {
     content: ": ";
   }
-}
-
-.m-vehicle-properties-panel__close {
-  @include button-simple;
-  display: block;
-  margin: 1rem;
-  width: calc(100% - 2rem);
-}
-
-.m-vehicle-properties-panel__modal-overlay {
-  background-color: $modal-overlay-color;
-  height: 100%;
-  left: inherit;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 1000;
 }

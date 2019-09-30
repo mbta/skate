@@ -1,0 +1,49 @@
+.m-properties-panel {
+  background-color: $color-bg-base;
+  box-shadow: $modal-box-shadow;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 23.5rem;
+  z-index: 1001;
+}
+
+.m-properties-panel__properties {
+  border-top: 1px solid $color-rule;
+  padding: 1rem;
+}
+
+.m-properties-panel__property-label {
+  @include font-label;
+  margin-bottom: 0.5rem;
+  text-align: left;
+  width: 6rem;
+}
+
+.m-properties-panel__property-value {
+  @include font-body;
+  margin-bottom: 1rem;
+}
+
+.m-properties-panel__close {
+  @include button-simple;
+  display: block;
+  margin: 1rem;
+  width: calc(100% - 2rem);
+}
+
+.m-properties-panel__modal-overlay {
+  background-color: $modal-overlay-color;
+  height: 100%;
+  left: inherit;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}

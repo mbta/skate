@@ -6,6 +6,7 @@ $tab-bar-width: 3rem;
 @import "leaflet";
 
 @import "close_button";
+@import "ghost_properties_panel";
 @import "headway_diagram";
 @import "incoming_box";
 @import "ladder";
@@ -13,6 +14,8 @@ $tab-bar-width: 3rem;
 @import "layover_box";
 @import "page";
 @import "picker_container";
+@import "properties_panel";
+@import "properties_panel_header";
 @import "route_ladder";
 @import "route_ladders";
 @import "route_picker";

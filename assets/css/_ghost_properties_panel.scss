@@ -1,0 +1,9 @@
+.m-ghost-properties-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .m-properties-panel__properties {
+    flex: 1 0 auto;
+  }
+}

@@ -1,5 +1,5 @@
 import { partition } from "../helpers/array"
-import { Vehicle, VehiclesForRoute } from "../realtime"
+import { Vehicle, VehicleOrGhost, VehiclesForRoute } from "../realtime"
 import { ByRouteId, RouteId } from "../schedule"
 
 interface NextAndPreviousVehicle {
@@ -18,6 +18,16 @@ export const allVehicles = (
     ...vehiclesForRoute.onRouteVehicles,
     ...vehiclesForRoute.incomingVehicles,
   ]
+}
+
+export const allVehiclesAndGhosts = (
+  vehiclesForRoute: VehiclesForRoute | undefined
+): VehicleOrGhost[] => {
+  if (vehiclesForRoute === undefined) {
+    return []
+  }
+
+  return [...allVehicles(vehiclesForRoute), ...vehiclesForRoute.ghosts]
 }
 
 export const allVehiclesForRoute = (
