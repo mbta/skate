@@ -1,9 +1,9 @@
 import React, { useContext } from "react"
-import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { Ghost } from "../realtime"
-import { Route } from "../schedule"
-import { deselectVehicle } from "../state"
-import Header from "./propertiesPanel/header"
+import { StateDispatchContext } from "../../contexts/stateDispatchContext"
+import { Ghost } from "../../realtime"
+import { Route } from "../../schedule"
+import { deselectVehicle } from "../../state"
+import Header from "./header"
 
 interface Props {
   selectedGhost: Ghost

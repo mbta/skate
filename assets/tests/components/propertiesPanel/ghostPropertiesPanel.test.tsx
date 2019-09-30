@@ -1,11 +1,11 @@
 import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
-import GhostPropertiesPanel from "../../src/components/ghostPropertiesPanel"
-import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import { Ghost } from "../../src/realtime"
-import { Route } from "../../src/schedule"
-import { deselectVehicle, initialState } from "../../src/state"
+import GhostPropertiesPanel from "../../../src/components/propertiesPanel/ghostPropertiesPanel"
+import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
+import { Ghost } from "../../../src/realtime"
+import { Route } from "../../../src/schedule"
+import { deselectVehicle, initialState } from "../../../src/state"
 
 const ghost: Ghost = {
   id: "ghost-trip",

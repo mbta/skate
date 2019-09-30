@@ -3,17 +3,17 @@ import React from "react"
 import renderer from "react-test-renderer"
 import VehiclePropertiesPanel, {
   handleSwipe,
-} from "../../src/components/vehiclePropertiesPanel"
-import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { Vehicle } from "../../src/realtime.d"
-import { Route } from "../../src/schedule"
-import { deselectVehicle, initialState } from "../../src/state"
+} from "../../../src/components/propertiesPanel/vehiclePropertiesPanel"
+import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
+import { HeadwaySpacing } from "../../../src/models/vehicleStatus"
+import { Vehicle } from "../../../src/realtime"
+import { Route } from "../../../src/schedule"
+import { deselectVehicle, initialState } from "../../../src/state"
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
 // Enable feature flags for "renders for a headway-based vehicle" test
-jest.mock("../../src/laboratoryFeatures", () => ({
+jest.mock("../../../src/laboratoryFeatures", () => ({
   __esModule: true,
   default: jest
     .fn()

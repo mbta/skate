@@ -4,8 +4,8 @@ import { isAVehicle } from "../models/vehicle"
 import { VehicleOrGhost } from "../realtime.d"
 import { Route } from "../schedule"
 import { deselectVehicle } from "../state"
-import GhostPropertiesPanel from "./ghostPropertiesPanel"
-import VehiclePropertiesPanel from "./vehiclePropertiesPanel"
+import GhostPropertiesPanel from "./propertiesPanel/ghostPropertiesPanel"
+import VehiclePropertiesPanel from "./propertiesPanel/vehiclePropertiesPanel"
 
 interface Props {
   selectedVehicleOrGhost: VehicleOrGhost
