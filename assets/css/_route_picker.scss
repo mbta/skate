@@ -67,7 +67,6 @@
 
 .m-route-picker__route-list-button-count {
   border-left: 1px solid $color-bg-medium;
-  color: $color-font-grey;
   display: inline-block;
   flex: 0 0 auto;
   font-weight: normal;
@@ -75,7 +74,7 @@
   min-width: 0.5rem;
   padding-left: 0.3125rem;
 
-  .m-route-picker__route-list-button--selected & {
-    color: $color-font-light;
+  .m-route-picker__route-list-button--unselected & {
+    color: $color-font-grey;
   }
 }
