@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useState } from "react"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
-import detectSwipe, { SwipeDirection } from "../../helpers/detectSwipe"
+import { SwipeDirection } from "../../helpers/detectSwipe"
 import useInterval from "../../hooks/useInterval"
 import { formattedRunNumber } from "../../models/shuttle"
 import { isShuttle, shouldShowHeadwayDiagram } from "../../models/vehicle"
@@ -160,10 +160,6 @@ const VehiclePropertiesPanel = ({ selectedVehicle, route }: Props) => {
   const [, dispatch] = useContext(StateDispatchContext)
 
   const hideMe = () => dispatch(deselectVehicle())
-
-  useEffect(() => {
-    return detectSwipe("m-vehicle-properties-panel", handleSwipe(hideMe))
-  })
 
   return (
     <div className="m-vehicle-properties-panel">

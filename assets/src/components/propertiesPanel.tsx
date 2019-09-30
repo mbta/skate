@@ -1,11 +1,14 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import detectSwipe from "../helpers/detectSwipe"
 import { isAVehicle } from "../models/vehicle"
 import { VehicleOrGhost } from "../realtime.d"
 import { Route } from "../schedule"
 import { deselectVehicle } from "../state"
 import GhostPropertiesPanel from "./propertiesPanel/ghostPropertiesPanel"
-import VehiclePropertiesPanel from "./propertiesPanel/vehiclePropertiesPanel"
+import VehiclePropertiesPanel, {
+  handleSwipe,
+} from "./propertiesPanel/vehiclePropertiesPanel"
 
 interface Props {
   selectedVehicleOrGhost: VehicleOrGhost
@@ -17,9 +20,13 @@ const PropertiesPanel = ({ selectedVehicleOrGhost, route }: Props) => {
 
   const hideMe = () => dispatch(deselectVehicle())
 
+  useEffect(() => {
+    return detectSwipe("m-vehicle-properties-panel", handleSwipe(hideMe))
+  })
+
   return (
     <>
-      <div className="m-properties-panel">
+      <div id="m-properties-panel" className="m-properties-panel">
         {isAVehicle(selectedVehicleOrGhost) ? (
           <VehiclePropertiesPanel
             selectedVehicle={selectedVehicleOrGhost}

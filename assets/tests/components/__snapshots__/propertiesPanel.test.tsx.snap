@@ -4,6 +4,7 @@ exports[`PropertiesPanel renders a ghost 1`] = `
 Array [
   <div
     className="m-properties-panel"
+    id="m-properties-panel"
   >
     <div
       className="m-ghost-properties-panel"
@@ -137,6 +138,7 @@ exports[`PropertiesPanel renders a vehicle 1`] = `
 Array [
   <div
     className="m-properties-panel"
+    id="m-properties-panel"
   >
     <div
       className="m-vehicle-properties-panel"
