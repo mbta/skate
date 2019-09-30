@@ -34,11 +34,7 @@ const GhostPropertiesPanel = ({ selectedGhost, route }: Props) => {
 
   return (
     <div className="m-ghost-properties-panel">
-      <Header
-        vehicle={selectedGhost}
-        route={route}
-        shouldShowHeadwayDiagram={false}
-      />
+      <Header vehicle={selectedGhost} route={route} />
 
       <Properties />
 

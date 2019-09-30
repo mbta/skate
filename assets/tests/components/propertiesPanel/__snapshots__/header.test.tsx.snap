@@ -68,19 +68,32 @@ exports[`Header renders a header 1`] = `
       39_X Forest Hills
     </div>
     <div
-      className="m-properties-panel__headway-target"
+      className="m-properties-panel__schedule-adherence on-time"
     >
-      <span
-        className="m-properties-panel__headway-target-label"
+      <div
+        className="m-properties-panel__schedule-adherence-status-icon"
       >
-        HEADWAY TARGET
-      </span>
-      <span
-        className="m-properties-panel__headway-target-value"
+        <svg
+          height="10"
+          width="10"
+        >
+          <circle
+            cx="5"
+            cy="5"
+            r="5"
+          />
+        </svg>
+      </div>
+      <div
+        className="m-properties-panel__schedule-adherence-status-string"
       >
-        2
-         min
-      </span>
+        on time
+      </div>
+      <div
+        className="m-properties-panel__schedule-adherence-label"
+      >
+        (0 min early)
+      </div>
     </div>
   </div>
   <button
@@ -260,19 +273,32 @@ exports[`Header renders for a headway-based vehicle 1`] = `
       39_X Forest Hills
     </div>
     <div
-      className="m-properties-panel__headway-target"
+      className="m-properties-panel__schedule-adherence on-time"
     >
-      <span
-        className="m-properties-panel__headway-target-label"
+      <div
+        className="m-properties-panel__schedule-adherence-status-icon"
       >
-        HEADWAY TARGET
-      </span>
-      <span
-        className="m-properties-panel__headway-target-value"
+        <svg
+          height="10"
+          width="10"
+        >
+          <circle
+            cx="5"
+            cy="5"
+            r="5"
+          />
+        </svg>
+      </div>
+      <div
+        className="m-properties-panel__schedule-adherence-status-string"
       >
-        2
-         min
-      </span>
+        on time
+      </div>
+      <div
+        className="m-properties-panel__schedule-adherence-label"
+      >
+        (0 min early)
+      </div>
     </div>
   </div>
   <button
@@ -359,19 +385,32 @@ exports[`Header renders for a late vehicle 1`] = `
       39_X Forest Hills
     </div>
     <div
-      className="m-properties-panel__headway-target"
+      className="m-properties-panel__schedule-adherence late"
     >
-      <span
-        className="m-properties-panel__headway-target-label"
+      <div
+        className="m-properties-panel__schedule-adherence-status-icon"
       >
-        HEADWAY TARGET
-      </span>
-      <span
-        className="m-properties-panel__headway-target-value"
+        <svg
+          height="10"
+          width="10"
+        >
+          <circle
+            cx="5"
+            cy="5"
+            r="5"
+          />
+        </svg>
+      </div>
+      <div
+        className="m-properties-panel__schedule-adherence-status-string"
       >
-        2
-         min
-      </span>
+        late
+      </div>
+      <div
+        className="m-properties-panel__schedule-adherence-label"
+      >
+        (6 min late)
+      </div>
     </div>
   </div>
   <button
@@ -456,21 +495,6 @@ exports[`Header renders for a shuttle 1`] = `
       className="m-properties-panel__variant-name"
     >
       Shuttle
-    </div>
-    <div
-      className="m-properties-panel__headway-target"
-    >
-      <span
-        className="m-properties-panel__headway-target-label"
-      >
-        HEADWAY TARGET
-      </span>
-      <span
-        className="m-properties-panel__headway-target-value"
-      >
-        2
-         min
-      </span>
     </div>
   </div>
   <button
@@ -557,19 +581,32 @@ exports[`Header renders for an early vehicle 1`] = `
       39_X Forest Hills
     </div>
     <div
-      className="m-properties-panel__headway-target"
+      className="m-properties-panel__schedule-adherence early"
     >
-      <span
-        className="m-properties-panel__headway-target-label"
+      <div
+        className="m-properties-panel__schedule-adherence-status-icon"
       >
-        HEADWAY TARGET
-      </span>
-      <span
-        className="m-properties-panel__headway-target-value"
+        <svg
+          height="10"
+          width="10"
+        >
+          <circle
+            cx="5"
+            cy="5"
+            r="5"
+          />
+        </svg>
+      </div>
+      <div
+        className="m-properties-panel__schedule-adherence-status-string"
       >
-        2
-         min
-      </span>
+        early
+      </div>
+      <div
+        className="m-properties-panel__schedule-adherence-label"
+      >
+        (2 min early)
+      </div>
     </div>
   </div>
   <button
@@ -656,19 +693,32 @@ exports[`Header renders for an off-course vehicle 1`] = `
       39_X Forest Hills
     </div>
     <div
-      className="m-properties-panel__headway-target"
+      className="m-properties-panel__schedule-adherence off-course"
     >
-      <span
-        className="m-properties-panel__headway-target-label"
+      <div
+        className="m-properties-panel__schedule-adherence-status-icon"
       >
-        HEADWAY TARGET
-      </span>
-      <span
-        className="m-properties-panel__headway-target-value"
+        <svg
+          height="10"
+          width="10"
+        >
+          <circle
+            cx="5"
+            cy="5"
+            r="5"
+          />
+        </svg>
+      </div>
+      <div
+        className="m-properties-panel__schedule-adherence-status-string"
       >
-        2
-         min
-      </span>
+        Invalid
+      </div>
+      <div
+        className="m-properties-panel__schedule-adherence-label"
+      >
+        
+      </div>
     </div>
   </div>
   <button
@@ -755,19 +805,32 @@ exports[`Header renders with route data 1`] = `
       39_X Forest Hills
     </div>
     <div
-      className="m-properties-panel__headway-target"
+      className="m-properties-panel__schedule-adherence on-time"
     >
-      <span
-        className="m-properties-panel__headway-target-label"
+      <div
+        className="m-properties-panel__schedule-adherence-status-icon"
       >
-        HEADWAY TARGET
-      </span>
-      <span
-        className="m-properties-panel__headway-target-value"
+        <svg
+          height="10"
+          width="10"
+        >
+          <circle
+            cx="5"
+            cy="5"
+            r="5"
+          />
+        </svg>
+      </div>
+      <div
+        className="m-properties-panel__schedule-adherence-status-string"
       >
-        2
-         min
-      </span>
+        on time
+      </div>
+      <div
+        className="m-properties-panel__schedule-adherence-label"
+      >
+        (0 min early)
+      </div>
     </div>
   </div>
   <button

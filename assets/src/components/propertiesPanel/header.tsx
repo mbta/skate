@@ -1,7 +1,11 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import vehicleLabel from "../../helpers/vehicleLabel"
-import { isAVehicle, isShuttle } from "../../models/vehicle"
+import {
+  isAVehicle,
+  isShuttle,
+  shouldShowHeadwayDiagram,
+} from "../../models/vehicle"
 import {
   drawnStatus,
   humanReadableScheduleAdherence,
@@ -16,7 +20,6 @@ import VehicleIcon, { Orientation, Size } from "../vehicleIcon"
 interface Props {
   vehicle: VehicleOrGhost
   route?: Route
-  shouldShowHeadwayDiagram: boolean
 }
 
 const ScheduleAdherenceStatusIcon = () => (
@@ -94,7 +97,7 @@ export const formatRouteVariant = (vehicle: VehicleOrGhost): string => {
   return `${routeId}_${viaVariantFormatted}${headsignFormatted}`
 }
 
-const Header = ({ vehicle, route, shouldShowHeadwayDiagram }: Props) => {
+const Header = ({ vehicle, route }: Props) => {
   const [{ settings }, dispatch] = useContext(StateDispatchContext)
 
   const hideMe = () => dispatch(deselectVehicle())
@@ -127,7 +130,7 @@ const Header = ({ vehicle, route, shouldShowHeadwayDiagram }: Props) => {
         <div className="m-properties-panel__variant-name">
           {formatRouteVariant(vehicle)}
         </div>
-        {shouldShowHeadwayDiagram && isAVehicle(vehicle) ? (
+        {isAVehicle(vehicle) && shouldShowHeadwayDiagram(vehicle) ? (
           <HeadwayTarget vehicle={vehicle} />
         ) : (
           isAVehicle(vehicle) &&

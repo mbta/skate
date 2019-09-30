@@ -28,7 +28,7 @@ const vehicle: Vehicle = {
   speed: 50.0,
   blockId: "block-1",
   headwaySecs: 859.1,
-  headwaySpacing: HeadwaySpacing.Ok,
+  headwaySpacing: null,
   previousVehicleId: "v2",
   scheduleAdherenceSecs: 0,
   scheduleAdherenceString: "0.0 sec (ontime)",
@@ -68,13 +68,7 @@ const vehicle: Vehicle = {
 describe("Header", () => {
   test("renders a header", () => {
     const tree = renderer
-      .create(
-        <Header
-          vehicle={vehicle}
-          route={undefined}
-          shouldShowHeadwayDiagram={true}
-        />
-      )
+      .create(<Header vehicle={vehicle} route={undefined} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -90,13 +84,7 @@ describe("Header", () => {
       name: "39",
     }
     const tree = renderer
-      .create(
-        <Header
-          vehicle={vehicle}
-          route={route}
-          shouldShowHeadwayDiagram={true}
-        />
-      )
+      .create(<Header vehicle={vehicle} route={route} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -108,13 +96,7 @@ describe("Header", () => {
       scheduleAdherenceSecs: -61,
     }
     const tree = renderer
-      .create(
-        <Header
-          vehicle={earlyVehicle}
-          route={undefined}
-          shouldShowHeadwayDiagram={true}
-        />
-      )
+      .create(<Header vehicle={earlyVehicle} route={undefined} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -126,13 +108,7 @@ describe("Header", () => {
       scheduleAdherenceSecs: 361,
     }
     const tree = renderer
-      .create(
-        <Header
-          vehicle={earlyVehicle}
-          route={undefined}
-          shouldShowHeadwayDiagram={true}
-        />
-      )
+      .create(<Header vehicle={earlyVehicle} route={undefined} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -145,32 +121,20 @@ describe("Header", () => {
     }
 
     const tree = renderer
-      .create(
-        <Header
-          vehicle={offCourseVehicle}
-          route={undefined}
-          shouldShowHeadwayDiagram={true}
-        />
-      )
+      .create(<Header vehicle={offCourseVehicle} route={undefined} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()
   })
 
   test("renders for a headway-based vehicle", () => {
-    const offCourseVehicle: Vehicle = {
+    const headwayVehicle: Vehicle = {
       ...vehicle,
       headwaySpacing: HeadwaySpacing.Ok,
     }
 
     const tree = renderer
-      .create(
-        <Header
-          vehicle={offCourseVehicle}
-          route={undefined}
-          shouldShowHeadwayDiagram={true}
-        />
-      )
+      .create(<Header vehicle={headwayVehicle} route={undefined} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -183,13 +147,7 @@ describe("Header", () => {
     }
 
     const tree = renderer
-      .create(
-        <Header
-          vehicle={shuttleVehicle}
-          route={undefined}
-          shouldShowHeadwayDiagram={true}
-        />
-      )
+      .create(<Header vehicle={shuttleVehicle} route={undefined} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -211,13 +169,7 @@ describe("Header", () => {
     }
 
     const tree = renderer
-      .create(
-        <Header
-          vehicle={ghost}
-          route={undefined}
-          shouldShowHeadwayDiagram={true}
-        />
-      )
+      .create(<Header vehicle={ghost} route={undefined} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -228,11 +180,7 @@ describe("Header", () => {
 
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <Header
-          vehicle={vehicle}
-          route={undefined}
-          shouldShowHeadwayDiagram={false}
-        />
+        <Header vehicle={vehicle} route={undefined} />
       </StateDispatchProvider>
     )
     wrapper

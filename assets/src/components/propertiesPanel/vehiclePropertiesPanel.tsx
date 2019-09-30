@@ -2,9 +2,8 @@ import React, { useContext, useEffect, useState } from "react"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import detectSwipe, { SwipeDirection } from "../../helpers/detectSwipe"
 import useInterval from "../../hooks/useInterval"
-import featureIsEnabled from "../../laboratoryFeatures"
 import { formattedRunNumber } from "../../models/shuttle"
-import { isShuttle } from "../../models/vehicle"
+import { isShuttle, shouldShowHeadwayDiagram } from "../../models/vehicle"
 import { DataDiscrepancy, Vehicle } from "../../realtime"
 import { Route } from "../../schedule"
 import { deselectVehicle } from "../../state"
@@ -154,11 +153,7 @@ const VehiclePropertiesPanel = ({ selectedVehicle, route }: Props) => {
 
   return (
     <div className="m-vehicle-properties-panel">
-      <Header
-        vehicle={selectedVehicle}
-        route={route}
-        shouldShowHeadwayDiagram={shouldShowHeadwayDiagram(selectedVehicle)}
-      />
+      <Header vehicle={selectedVehicle} route={route} />
 
       {shouldShowHeadwayDiagram(selectedVehicle) && (
         <HeadwayDiagram vehicle={selectedVehicle} />
@@ -185,14 +180,6 @@ const directionsUrl = (
 ) => `https://www.google.com/maps/dir/?api=1\
 &destination=${latitude.toString()},${longitude.toString()}\
 &travelmode=driving`
-
-const shouldShowHeadwayDiagram = ({
-  headwaySpacing,
-  isOnRoute,
-}: Vehicle): boolean =>
-  featureIsEnabled("headway_ladder_colors") &&
-  headwaySpacing !== null &&
-  isOnRoute
 
 const shouldShowDataDiscrepancies = ({ dataDiscrepancies }: Vehicle): boolean =>
   inDebugMode() && dataDiscrepancies.length > 0

@@ -1,3 +1,4 @@
+import featureIsEnabled from "../laboratoryFeatures"
 import { Vehicle, VehicleOrGhost } from "../realtime"
 
 export const isAVehicle = (
@@ -7,3 +8,11 @@ export const isAVehicle = (
 
 export const isShuttle = (vehicle: Vehicle): boolean =>
   (vehicle.runId || "").startsWith("999")
+
+export const shouldShowHeadwayDiagram = ({
+  headwaySpacing,
+  isOnRoute,
+}: Vehicle): boolean =>
+  featureIsEnabled("headway_ladder_colors") &&
+  headwaySpacing !== null &&
+  isOnRoute

@@ -1,5 +1,15 @@
-import { isAVehicle, isShuttle } from "../../src/models/vehicle"
+import {
+  isAVehicle,
+  isShuttle,
+  shouldShowHeadwayDiagram,
+} from "../../src/models/vehicle"
+import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle, VehicleTimepointStatus } from "../../src/realtime"
+
+jest.mock("../../src/laboratoryFeatures", () => ({
+  __esModule: true,
+  default: jest.fn().mockImplementation(() => true),
+}))
 
 describe("isAVehicle", () => {
   test("returns true for a Vehicle", () => {
@@ -106,5 +116,33 @@ describe("isShuttle", () => {
 
     expect(isShuttle(shuttle)).toBeTruthy()
     expect(isShuttle(notShuttle)).toBeFalsy()
+  })
+})
+
+describe("shouldShowHeadwayDiagram", () => {
+  test("returns false if vehicle headwaySpacing is null", () => {
+    const nullHeadwaySpacingVehicle = {
+      headwaySpacing: null,
+    } as Vehicle
+
+    expect(shouldShowHeadwayDiagram(nullHeadwaySpacingVehicle)).toBeFalsy()
+  })
+
+  test("returns false if not on route", () => {
+    const notOnRouteVehicle = {
+      headwaySpacing: HeadwaySpacing.Ok,
+      isOnRoute: false,
+    } as Vehicle
+
+    expect(shouldShowHeadwayDiagram(notOnRouteVehicle)).toBeFalsy()
+  })
+
+  test("returns true if measuring headway spacing and is on route", () => {
+    const onRouteHeadwaySpacingVehicle = {
+      headwaySpacing: HeadwaySpacing.Ok,
+      isOnRoute: true,
+    } as Vehicle
+
+    expect(shouldShowHeadwayDiagram(onRouteHeadwaySpacingVehicle)).toBeTruthy()
   })
 })
