@@ -46,4 +46,35 @@
   &--disabled {
     @include button-disabled;
   }
+
+  &--with-count {
+    align-items: stretch;
+    display: flex;
+    justify-content: start;
+    padding: 0;
+  }
+}
+
+.m-route-picker__route-list-button-name,
+.m-route-picker__route-list-button-count {
+  padding: 0.3125rem 0.5rem;
+}
+
+.m-route-picker__route-list-button-name {
+  flex: 1 1 auto;
+  text-align: left;
+}
+
+.m-route-picker__route-list-button-count {
+  border-left: 1px solid $color-bg-medium;
+  display: inline-block;
+  flex: 0 0 auto;
+  font-weight: normal;
+  margin-left: 0.5rem;
+  min-width: 0.5rem;
+  padding-left: 0.3125rem;
+
+  .m-route-picker__route-list-button--unselected & {
+    color: $color-font-grey;
+  }
 }

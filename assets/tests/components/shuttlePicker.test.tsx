@@ -1,7 +1,10 @@
 import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
-import ShuttlePicker, { formatRunId } from "../../src/components/shuttlePicker"
+import ShuttlePicker, {
+  activeRunCounts,
+  formatRunId,
+} from "../../src/components/shuttlePicker"
 import { ShuttleVehiclesProvider } from "../../src/contexts/shuttleVehiclesContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
@@ -85,6 +88,15 @@ describe("ShuttlePicker", () => {
   test("renders loading state", () => {
     const tree = renderer.create(
       <ShuttleVehiclesProvider shuttles={null}>
+        <ShuttlePicker />
+      </ShuttleVehiclesProvider>
+    )
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders loaded state with no shuttles", () => {
+    const tree = renderer.create(
+      <ShuttleVehiclesProvider shuttles={[]}>
         <ShuttlePicker />
       </ShuttleVehiclesProvider>
     )
@@ -257,6 +269,53 @@ describe("ShuttlePicker", () => {
       .simulate("click")
 
     expect(dispatch).toHaveBeenCalledWith(deselectShuttleRoute(selectedRouteId))
+  })
+})
+
+describe("activeRunCounts", () => {
+  test("returns vehicle per shuttle run, plus 'all'", () => {
+    const shuttles = [
+      {
+        id: "1",
+        runId: "1",
+      },
+      {
+        id: "2",
+        runId: "2",
+      },
+      {
+        id: "3",
+        runId: "1",
+      },
+    ] as Vehicle[]
+
+    const expected = {
+      "1": 2,
+      "2": 1,
+      all: 3,
+    }
+
+    expect(activeRunCounts(shuttles)).toEqual(expected)
+  })
+
+  test("ignores vehicles with no runId", () => {
+    const shuttles = [
+      {
+        id: "1",
+        runId: "1",
+      },
+      {
+        id: "2",
+        runId: null,
+      },
+    ] as Vehicle[]
+
+    const expected = {
+      "1": 1,
+      all: 1,
+    }
+
+    expect(activeRunCounts(shuttles)).toEqual(expected)
   })
 })
 

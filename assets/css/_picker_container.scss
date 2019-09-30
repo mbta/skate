@@ -1,7 +1,7 @@
-.m-picker-container {
-  $default-width: 7.5rem;
-  $shuttle-width: $default-width + 2;
+$narrow-width: 7.5rem;
+$wide-width: $narrow-width + 2.6;
 
+.m-picker-container {
   background-color: $color-bg-medium;
   display: flex;
   flex-direction: column;
@@ -12,11 +12,11 @@
   position: fixed;
   top: inherit;
   transition: left 0.2s ease-in-out;
-  width: $default-width;
+  width: $narrow-width;
   z-index: 1;
 
   &--wide {
-    width: $shuttle-width;
+    width: $wide-width;
   }
 
   &.visible {
@@ -24,11 +24,11 @@
   }
 
   &.hidden {
-    left: -($default-width + 2);
+    left: -($narrow-width + 2);
   }
 
   &--wide.hidden {
-    left: -($shuttle-width + 2);
+    left: -($wide-width + 2);
   }
 }
 
@@ -36,14 +36,14 @@
   background-color: $color-bg-medium;
   border-top-right-radius: 1rem;
   border-bottom-right-radius: 1rem;
-  left: 9.5rem;
+  left: $narrow-width + 2;
   padding: 1.5rem 0.3rem;
   position: absolute;
   top: 1.625rem;
   width: fit-content;
 
   .m-picker-container--wide & {
-    left: 11.5rem;
+    left: $wide-width + 2;
   }
 }
 
