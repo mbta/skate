@@ -95,16 +95,16 @@ exports[`GhostPropertiesPanel renders 1`] = `
     </button>
   </div>
   <div
-    className="m-properties-panel__properties"
+    className="m-properties-panel__properties-list"
   >
     <table>
       <tbody>
         <tr>
-          <th
+          <td
             className="m-properties-panel__property-label"
           >
             Run
-          </th>
+          </td>
           <td
             className="m-properties-panel__property-value"
           >

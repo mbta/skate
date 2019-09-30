@@ -100,16 +100,16 @@ Array [
         </button>
       </div>
       <div
-        className="m-properties-panel__properties"
+        className="m-properties-panel__properties-list"
       >
         <table>
           <tbody>
             <tr>
-              <th
+              <td
                 className="m-properties-panel__property-label"
               >
                 Run
-              </th>
+              </td>
               <td
                 className="m-properties-panel__property-value"
               >
@@ -252,50 +252,50 @@ Array [
           />
         </button>
       </div>
-      <table
-        className="m-properties-panel__properties"
+      <div
+        className="m-properties-panel__properties-list"
       >
-        <tbody>
-          <tr>
-            <th
-              className="m-properties-panel__property-label"
-            >
-              Run
-            </th>
-            <td
-              className="m-properties-panel__property-value"
-            >
-              run-1
-            </td>
-          </tr>
-          <tr>
-            <th
-              className="m-properties-panel__property-label"
-            >
-              Vehicle
-            </th>
-            <td
-              className="m-properties-panel__property-value"
-            >
-              v1-label
-            </td>
-          </tr>
-          <tr>
-            <th
-              className="m-properties-panel__property-label"
-            >
-              Operator
-            </th>
-            <td
-              className="m-properties-panel__property-value"
-            >
-              SMITH
-               #
-              op1
-            </td>
-          </tr>
-        </tbody>
-      </table>
+        <table>
+          <tbody>
+            <tr>
+              <td
+                className="m-properties-panel__property-label"
+              >
+                Run
+              </td>
+              <td
+                className="m-properties-panel__property-value"
+              >
+                run-1
+              </td>
+            </tr>
+            <tr>
+              <td
+                className="m-properties-panel__property-label"
+              >
+                Vehicle
+              </td>
+              <td
+                className="m-properties-panel__property-value"
+              >
+                v1-label
+              </td>
+            </tr>
+            <tr>
+              <td
+                className="m-properties-panel__property-label"
+              >
+                Operator
+              </td>
+              <td
+                className="m-properties-panel__property-value"
+              >
+                SMITH #op1
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <div
         className="m-vehicle-properties-panel__location"
       >

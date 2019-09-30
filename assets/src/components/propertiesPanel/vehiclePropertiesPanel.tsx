@@ -11,39 +11,32 @@ import HeadwayDiagram from "../headwayDiagram"
 import Map from "../map"
 import CloseButton from "./closeButton"
 import Header from "./header"
+import PropertiesList from "./propertiesList"
 
 interface Props {
   selectedVehicle: Vehicle
   route?: Route
 }
 
-const Properties = ({ vehicle }: { vehicle: Vehicle }) => {
+const properties = (vehicle: Vehicle) => {
   const { runId, label, operatorId, operatorName } = vehicle
 
-  return (
-    <table className="m-properties-panel__properties">
-      <tbody>
-        <tr>
-          <th className="m-properties-panel__property-label">Run</th>
-          <td className="m-properties-panel__property-value">
-            {isShuttle(vehicle)
-              ? formattedRunNumber(vehicle)
-              : runId || "Not Available"}
-          </td>
-        </tr>
-        <tr>
-          <th className="m-properties-panel__property-label">Vehicle</th>
-          <td className="m-properties-panel__property-value">{label}</td>
-        </tr>
-        <tr>
-          <th className="m-properties-panel__property-label">Operator</th>
-          <td className="m-properties-panel__property-value">
-            {operatorName} #{operatorId}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  )
+  return [
+    {
+      label: "Run",
+      value: isShuttle(vehicle)
+        ? formattedRunNumber(vehicle)
+        : runId || "Not Available",
+    },
+    {
+      label: "Vehicle",
+      value: label,
+    },
+    {
+      label: "Operator",
+      value: `${operatorName} #${operatorId}`,
+    },
+  ]
 }
 
 const NotAvailable = () => (
@@ -169,7 +162,7 @@ const VehiclePropertiesPanel = ({ selectedVehicle, route }: Props) => {
         <HeadwayDiagram vehicle={selectedVehicle} />
       )}
 
-      <Properties vehicle={selectedVehicle} />
+      <PropertiesList properties={properties(selectedVehicle)} />
 
       <Location vehicle={selectedVehicle} />
 

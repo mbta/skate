@@ -5,28 +5,19 @@ import { Route } from "../../schedule"
 import { deselectVehicle } from "../../state"
 import CloseButton from "./closeButton"
 import Header from "./header"
+import PropertiesList from "./propertiesList"
 
 interface Props {
   selectedGhost: Ghost
   route?: Route
 }
 
-const Properties = () => {
-  return (
-    <div className="m-properties-panel__properties">
-      <table>
-        <tbody>
-          <tr>
-            <th className="m-properties-panel__property-label">Run</th>
-            <td className="m-properties-panel__property-value">
-              Not Available
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  )
-}
+const properties = () => [
+  {
+    label: "Run",
+    value: "Not Available",
+  },
+]
 
 const GhostPropertiesPanel = ({ selectedGhost, route }: Props) => {
   const [, dispatch] = useContext(StateDispatchContext)
@@ -37,7 +28,7 @@ const GhostPropertiesPanel = ({ selectedGhost, route }: Props) => {
     <div className="m-ghost-properties-panel">
       <Header vehicle={selectedGhost} route={route} />
 
-      <Properties />
+      <PropertiesList properties={properties()} />
 
       <CloseButton onClick={hideMe} />
     </div>

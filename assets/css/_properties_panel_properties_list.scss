@@ -1,0 +1,16 @@
+.m-properties-panel__properties-list {
+  border-top: 1px solid $color-rule;
+  padding: 1rem;
+}
+
+.m-properties-panel__property-label {
+  @include font-label;
+  margin-bottom: 0.5rem;
+  text-align: left;
+  width: 6rem;
+}
+
+.m-properties-panel__property-value {
+  @include font-body;
+  margin-bottom: 1rem;
+}
