@@ -31,13 +31,6 @@
   margin-bottom: 1rem;
 }
 
-.m-properties-panel__close {
-  @include button-simple;
-  display: block;
-  margin: 1rem;
-  width: calc(100% - 2rem);
-}
-
 .m-properties-panel__modal-overlay {
   background-color: $modal-overlay-color;
   height: 100%;

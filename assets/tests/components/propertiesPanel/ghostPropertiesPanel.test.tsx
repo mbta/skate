@@ -47,7 +47,7 @@ describe("GhostPropertiesPanel", () => {
         <GhostPropertiesPanel selectedGhost={ghost} route={route} />
       </StateDispatchProvider>
     )
-    wrapper.find(".m-properties-panel__close").simulate("click")
+    wrapper.find(".m-properties-panel__close-button").simulate("click")
 
     expect(mockDispatch).toHaveBeenCalledWith(deselectVehicle())
   })

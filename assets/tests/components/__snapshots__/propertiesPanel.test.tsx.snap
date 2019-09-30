@@ -119,7 +119,7 @@ Array [
         </table>
       </div>
       <button
-        className="m-properties-panel__close"
+        className="m-properties-panel__close-button"
         onClick={[Function]}
       >
         Close
@@ -334,7 +334,7 @@ Array [
         </div>
       </div>
       <button
-        className="m-properties-panel__close"
+        className="m-properties-panel__close-button"
         onClick={[Function]}
       >
         Close

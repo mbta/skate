@@ -196,7 +196,7 @@ describe("VehiclePropertiesPanel", () => {
         <VehiclePropertiesPanel selectedVehicle={vehicle} />
       </StateDispatchProvider>
     )
-    wrapper.find(".m-properties-panel__close").simulate("click")
+    wrapper.find(".m-properties-panel__close-button").simulate("click")
 
     expect(mockDispatch).toHaveBeenCalledWith(deselectVehicle())
   })

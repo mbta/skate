@@ -115,7 +115,7 @@ exports[`GhostPropertiesPanel renders 1`] = `
     </table>
   </div>
   <button
-    className="m-properties-panel__close"
+    className="m-properties-panel__close-button"
     onClick={[Function]}
   >
     Close

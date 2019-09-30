@@ -9,6 +9,7 @@ import { Route } from "../../schedule"
 import { deselectVehicle } from "../../state"
 import HeadwayDiagram from "../headwayDiagram"
 import Map from "../map"
+import CloseButton from "./closeButton"
 import Header from "./header"
 
 interface Props {
@@ -52,6 +53,13 @@ const NotAvailable = () => (
 )
 
 const nowInSeconds = (): number => Math.floor(Date.now() / 1000)
+
+const directionsUrl = (
+  latitude: number,
+  longitude: number
+) => `https://www.google.com/maps/dir/?api=1\
+&destination=${latitude.toString()},${longitude.toString()}\
+&travelmode=driving`
 
 const Location = ({ vehicle }: { vehicle: Vehicle }) => {
   const [epocNowInSeconds, setEpocNowInSeconds] = useState(nowInSeconds())
@@ -142,6 +150,12 @@ export const handleSwipe = (hideMe: () => void) => (
   }
 }
 
+const inDebugMode = (): boolean =>
+  !!new URL(document.location.href).searchParams.get("debug")
+
+const shouldShowDataDiscrepancies = ({ dataDiscrepancies }: Vehicle): boolean =>
+  inDebugMode() && dataDiscrepancies.length > 0
+
 const VehiclePropertiesPanel = ({ selectedVehicle, route }: Props) => {
   const [, dispatch] = useContext(StateDispatchContext)
 
@@ -167,24 +181,9 @@ const VehiclePropertiesPanel = ({ selectedVehicle, route }: Props) => {
         <DataDiscrepancies vehicle={selectedVehicle} />
       )}
 
-      <button className="m-properties-panel__close" onClick={hideMe}>
-        Close
-      </button>
+      <CloseButton onClick={hideMe} />
     </div>
   )
 }
-
-const directionsUrl = (
-  latitude: number,
-  longitude: number
-) => `https://www.google.com/maps/dir/?api=1\
-&destination=${latitude.toString()},${longitude.toString()}\
-&travelmode=driving`
-
-const shouldShowDataDiscrepancies = ({ dataDiscrepancies }: Vehicle): boolean =>
-  inDebugMode() && dataDiscrepancies.length > 0
-
-const inDebugMode = (): boolean =>
-  !!new URL(document.location.href).searchParams.get("debug")
 
 export default VehiclePropertiesPanel

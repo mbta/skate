@@ -279,7 +279,7 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
     </div>
   </div>
   <button
-    className="m-properties-panel__close"
+    className="m-properties-panel__close-button"
     onClick={[Function]}
   >
     Close
@@ -566,7 +566,7 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
     </div>
   </div>
   <button
-    className="m-properties-panel__close"
+    className="m-properties-panel__close-button"
     onClick={[Function]}
   >
     Close
@@ -853,7 +853,7 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
     </div>
   </div>
   <button
-    className="m-properties-panel__close"
+    className="m-properties-panel__close-button"
     onClick={[Function]}
   >
     Close
@@ -1136,7 +1136,7 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
     </a>
   </div>
   <button
-    className="m-properties-panel__close"
+    className="m-properties-panel__close-button"
     onClick={[Function]}
   >
     Close
@@ -1423,7 +1423,7 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
     </div>
   </div>
   <button
-    className="m-properties-panel__close"
+    className="m-properties-panel__close-button"
     onClick={[Function]}
   >
     Close
@@ -1714,7 +1714,7 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
     </div>
   </div>
   <button
-    className="m-properties-panel__close"
+    className="m-properties-panel__close-button"
     onClick={[Function]}
   >
     Close
@@ -2001,7 +2001,7 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
     </div>
   </div>
   <button
-    className="m-properties-panel__close"
+    className="m-properties-panel__close-button"
     onClick={[Function]}
   >
     Close

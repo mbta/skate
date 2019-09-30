@@ -3,6 +3,7 @@ import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { Ghost } from "../../realtime"
 import { Route } from "../../schedule"
 import { deselectVehicle } from "../../state"
+import CloseButton from "./closeButton"
 import Header from "./header"
 
 interface Props {
@@ -38,9 +39,7 @@ const GhostPropertiesPanel = ({ selectedGhost, route }: Props) => {
 
       <Properties />
 
-      <button className="m-properties-panel__close" onClick={hideMe}>
-        Close
-      </button>
+      <CloseButton onClick={hideMe} />
     </div>
   )
 }
