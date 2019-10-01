@@ -87,11 +87,6 @@ describe("findRouteById", () => {
 describe("findSelectedVehicleOrGhost", () => {
   test("returns the requested vehicle if it is on the route", () => {
     expect(
-      findSelectedVehicleOrGhost(vehiclesByRouteId, "on-route-23")
-    ).toEqual({
-      id: "on-route-23",
-    })
-    expect(
       findSelectedVehicleOrGhost(vehiclesByRouteId, "on-route-39")
     ).toEqual({
       id: "on-route-39",
@@ -100,11 +95,6 @@ describe("findSelectedVehicleOrGhost", () => {
 
   test("returns the requested vehicle if it is incoming", () => {
     expect(
-      findSelectedVehicleOrGhost(vehiclesByRouteId, "incoming-23")
-    ).toEqual({
-      id: "incoming-23",
-    })
-    expect(
       findSelectedVehicleOrGhost(vehiclesByRouteId, "incoming-39")
     ).toEqual({
       id: "incoming-39",
@@ -112,9 +102,6 @@ describe("findSelectedVehicleOrGhost", () => {
   })
 
   test("returns the requested vehicle if it is a ghost bus", () => {
-    expect(findSelectedVehicleOrGhost(vehiclesByRouteId, "ghost-23")).toEqual({
-      id: "ghost-23",
-    })
     expect(findSelectedVehicleOrGhost(vehiclesByRouteId, "ghost-39")).toEqual({
       id: "ghost-39",
     })
