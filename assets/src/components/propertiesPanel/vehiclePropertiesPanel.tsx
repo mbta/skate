@@ -7,10 +7,10 @@ import { isShuttle, shouldShowHeadwayDiagram } from "../../models/vehicle"
 import { DataDiscrepancy, Vehicle } from "../../realtime"
 import { Route } from "../../schedule"
 import { deselectVehicle } from "../../state"
-import HeadwayDiagram from "../headwayDiagram"
 import Map from "../map"
 import CloseButton from "./closeButton"
 import Header from "./header"
+import HeadwayDiagram from "./headwayDiagram"
 import PropertiesList from "./propertiesList"
 
 interface Props {

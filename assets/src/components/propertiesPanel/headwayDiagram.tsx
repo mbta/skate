@@ -1,20 +1,20 @@
 import React, { useContext } from "react"
-import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { VehiclesByRouteIdContext } from "../contexts/vehiclesByRouteIdContext"
-import vehicleLabel from "../helpers/vehicleLabel"
+import { StateDispatchContext } from "../../contexts/stateDispatchContext"
+import { VehiclesByRouteIdContext } from "../../contexts/vehiclesByRouteIdContext"
+import vehicleLabel from "../../helpers/vehicleLabel"
 import {
   allVehiclesForRoute,
   nextAndPreviousVehicle,
-} from "../models/vehiclesByRouteId"
+} from "../../models/vehiclesByRouteId"
 import {
   HeadwaySpacing,
   headwaySpacingToString,
   humanReadableHeadwaySpacing,
-} from "../models/vehicleStatus"
-import { Vehicle, VehiclesForRoute } from "../realtime"
-import { ByRouteId } from "../schedule"
-import { selectVehicle } from "../state"
-import VehicleIcon, { Orientation, Size } from "./vehicleIcon"
+} from "../../models/vehicleStatus"
+import { Vehicle, VehiclesForRoute } from "../../realtime"
+import { ByRouteId } from "../../schedule"
+import { selectVehicle } from "../../state"
+import VehicleIcon, { Orientation, Size } from "../vehicleIcon"
 
 const headwayAmount = (
   headwaySecs: number | null,
