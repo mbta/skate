@@ -11,14 +11,14 @@ import Map from "../map"
 import CloseButton from "./closeButton"
 import Header from "./header"
 import HeadwayDiagram from "./headwayDiagram"
-import PropertiesList from "./propertiesList"
+import PropertiesList, { Property } from "./propertiesList"
 
 interface Props {
   selectedVehicle: Vehicle
   route?: Route
 }
 
-const properties = (vehicle: Vehicle) => {
+const properties = (vehicle: Vehicle): Property[] => {
   const { runId, label, operatorId, operatorName } = vehicle
 
   return [

@@ -5,14 +5,14 @@ import { Route } from "../../schedule"
 import { deselectVehicle } from "../../state"
 import CloseButton from "./closeButton"
 import Header from "./header"
-import PropertiesList from "./propertiesList"
+import PropertiesList, { Property } from "./propertiesList"
 
 interface Props {
   selectedGhost: Ghost
   route?: Route
 }
 
-const properties = () => [
+const properties = (): Property[] => [
   {
     label: "Run",
     value: "Not Available",
