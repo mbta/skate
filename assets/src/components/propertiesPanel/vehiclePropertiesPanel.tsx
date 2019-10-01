@@ -1,12 +1,10 @@
-import React, { useContext, useState } from "react"
-import { StateDispatchContext } from "../../contexts/stateDispatchContext"
+import React, { useState } from "react"
 import { SwipeDirection } from "../../helpers/detectSwipe"
 import useInterval from "../../hooks/useInterval"
 import { formattedRunNumber } from "../../models/shuttle"
 import { isShuttle, shouldShowHeadwayDiagram } from "../../models/vehicle"
 import { DataDiscrepancy, Vehicle } from "../../realtime"
 import { Route } from "../../schedule"
-import { deselectVehicle } from "../../state"
 import Map from "../map"
 import CloseButton from "./closeButton"
 import Header from "./header"
@@ -149,30 +147,24 @@ const inDebugMode = (): boolean =>
 const shouldShowDataDiscrepancies = ({ dataDiscrepancies }: Vehicle): boolean =>
   inDebugMode() && dataDiscrepancies.length > 0
 
-const VehiclePropertiesPanel = ({ selectedVehicle, route }: Props) => {
-  const [, dispatch] = useContext(StateDispatchContext)
+const VehiclePropertiesPanel = ({ selectedVehicle, route }: Props) => (
+  <div className="m-vehicle-properties-panel">
+    <Header vehicle={selectedVehicle} route={route} />
 
-  const hideMe = () => dispatch(deselectVehicle())
+    {shouldShowHeadwayDiagram(selectedVehicle) && (
+      <HeadwayDiagram vehicle={selectedVehicle} />
+    )}
 
-  return (
-    <div className="m-vehicle-properties-panel">
-      <Header vehicle={selectedVehicle} route={route} />
+    <PropertiesList properties={properties(selectedVehicle)} />
 
-      {shouldShowHeadwayDiagram(selectedVehicle) && (
-        <HeadwayDiagram vehicle={selectedVehicle} />
-      )}
+    <Location vehicle={selectedVehicle} />
 
-      <PropertiesList properties={properties(selectedVehicle)} />
+    {shouldShowDataDiscrepancies(selectedVehicle) && (
+      <DataDiscrepancies vehicle={selectedVehicle} />
+    )}
 
-      <Location vehicle={selectedVehicle} />
-
-      {shouldShowDataDiscrepancies(selectedVehicle) && (
-        <DataDiscrepancies vehicle={selectedVehicle} />
-      )}
-
-      <CloseButton onClick={hideMe} />
-    </div>
-  )
-}
+    <CloseButton />
+  </div>
+)
 
 export default VehiclePropertiesPanel

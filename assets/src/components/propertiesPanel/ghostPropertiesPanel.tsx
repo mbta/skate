@@ -1,8 +1,6 @@
-import React, { useContext } from "react"
-import { StateDispatchContext } from "../../contexts/stateDispatchContext"
+import React from "react"
 import { Ghost } from "../../realtime"
 import { Route } from "../../schedule"
-import { deselectVehicle } from "../../state"
 import CloseButton from "./closeButton"
 import Header from "./header"
 import PropertiesList, { Property } from "./propertiesList"
@@ -19,20 +17,14 @@ const properties = (): Property[] => [
   },
 ]
 
-const GhostPropertiesPanel = ({ selectedGhost, route }: Props) => {
-  const [, dispatch] = useContext(StateDispatchContext)
+const GhostPropertiesPanel = ({ selectedGhost, route }: Props) => (
+  <div className="m-ghost-properties-panel">
+    <Header vehicle={selectedGhost} route={route} />
 
-  const hideMe = () => dispatch(deselectVehicle())
+    <PropertiesList properties={properties()} />
 
-  return (
-    <div className="m-ghost-properties-panel">
-      <Header vehicle={selectedGhost} route={route} />
-
-      <PropertiesList properties={properties()} />
-
-      <CloseButton onClick={hideMe} />
-    </div>
-  )
-}
+    <CloseButton />
+  </div>
+)
 
 export default GhostPropertiesPanel
