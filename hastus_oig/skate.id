@@ -1,0 +1,34 @@
+# Exports data needed for the Skate application
+# Maintained by the Customer Technology Department
+
+att hide_inaccessible_values
+
+file trip_runs
+   {
+   name ' "trips.csv" '
+   
+   line header_half
+    {item half_header
+       { value ' "schedule_id;area;run_id;route_id;trip_id;block_id" ' }
+    }
+   
+      foreach trip
+      {
+      sort_by tripSort
+         {
+         criteria csc_name { value 'Get(crew_schedule).csc_name' }
+         criteria dty_number { value 'Get(duty).dty_number' }
+         criteria trp_time_start { value 'trp_time_start' }
+         }
+
+      line trip
+         {
+         item csc_name { value 'Get(crew_schedule).csc_name' }
+         item csc_gar_rating_area { value 'Get(crew_schedule).csc_gar_rating_area' }
+         item dty_number { value 'Get(duty).dty_number' }
+         item trp_route { value 'trp_route' }
+         item trp_int_number { value 'trp_int_number' }
+         item trp_block { value 'trp_block' }
+         }
+      }
+    } #file trips.csv
