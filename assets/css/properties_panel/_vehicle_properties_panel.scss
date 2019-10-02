@@ -1,0 +1,53 @@
+.m-vehicle-properties-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.m-vehicle-properties-panel__location {
+  border-top: 1px solid $color-rule;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+// Not in use temporarily - will be used once we have a current location and
+// can move the "seconds ago" timestamp back up to the top-right. --MSS 2019-08-16
+.m-vehicle-properties-panel__timestamp {
+  @include font-small;
+  color: $color-font-grey;
+  float: right;
+}
+
+.m-vehicle-properties-panel__link {
+  @include font-link;
+}
+
+.m-vehicle-properties-panel__not-available {
+  color: $color-font-warning;
+}
+
+.m-vehicle-properties-panel__map {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  margin-top: 1rem;
+  min-height: 5rem;
+
+  .m-vehicle-map {
+    flex: 1 0 auto;
+  }
+}
+
+.m-vehicle-properties-panel__data-discrepancies {
+  padding: 1rem;
+}
+
+.m-vehicle-properties-panel__data-discrepancy-source-id {
+  font-style: italic;
+
+  &::after {
+    content: ": ";
+  }
+}

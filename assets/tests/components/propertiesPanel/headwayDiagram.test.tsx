@@ -1,11 +1,11 @@
 import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
-import HeadwayDiagram from "../../src/components/headwayDiagram"
-import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { Vehicle } from "../../src/realtime"
-import { initialState, selectVehicle } from "../../src/state"
+import HeadwayDiagram from "../../../src/components/propertiesPanel/headwayDiagram"
+import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
+import { HeadwaySpacing } from "../../../src/models/vehicleStatus"
+import { Vehicle } from "../../../src/realtime"
+import { initialState, selectVehicle } from "../../../src/state"
 
 const vehicle: Vehicle = {
   id: "y1804",
@@ -51,7 +51,7 @@ const vehicle: Vehicle = {
   isOnRoute: true,
 }
 
-jest.mock("../../src/models/vehiclesByRouteId", () => ({
+jest.mock("../../../src/models/vehiclesByRouteId", () => ({
   allVehiclesForRoute: jest.fn(() => []),
   nextAndPreviousVehicle: jest
     .fn()

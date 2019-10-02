@@ -350,178 +350,182 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
     />
   </div>
   <div
-    className="m-vehicle-properties-panel"
-    id="m-vehicle-properties-panel"
+    className="m-properties-panel"
+    id="m-properties-panel"
   >
     <div
-      className="m-vehicle-properties-panel__header"
+      className="m-vehicle-properties-panel"
     >
       <div
-        className="m-vehicle-properties-panel__label"
+        className="m-properties-panel__header"
       >
-        <svg
-          style={
-            Object {
-              "height": 64,
-              "width": 64,
-            }
-          }
-          viewBox="-32 -20 64 64"
+        <div
+          className="m-properties-panel__label"
         >
-          <g
-            className="m-vehicle-icon m-vehicle-icon--large "
+          <svg
+            style={
+              Object {
+                "height": 64,
+                "width": 64,
+              }
+            }
+            viewBox="-32 -20 64 64"
           >
-            <rect
-              className="m-vehicle-icon__label-background"
-              height={24}
-              rx={12}
-              ry={12}
-              width={64}
-              x={-32}
-              y={19}
-            />
-            <text
-              className="m-vehicle-icon__label"
-              dominantBaseline="central"
-              textAnchor="middle"
-              x="0"
-              y={31}
+            <g
+              className="m-vehicle-icon m-vehicle-icon--large "
             >
-              1818
-            </text>
-            <path
-              className="m-vehicle-icon__triangle"
-              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-              transform="scale(1) rotate(0) translate(-24,-22)"
-            />
-            <text
-              className="m-vehicle-icon__variant"
-              dominantBaseline="alphabetic"
-              textAnchor="middle"
-              x={0}
-              y={14}
-            >
-              4
-            </text>
-          </g>
-        </svg>
+              <rect
+                className="m-vehicle-icon__label-background"
+                height={24}
+                rx={12}
+                ry={12}
+                width={64}
+                x={-32}
+                y={19}
+              />
+              <text
+                className="m-vehicle-icon__label"
+                dominantBaseline="central"
+                textAnchor="middle"
+                x="0"
+                y={31}
+              >
+                1818
+              </text>
+              <path
+                className="m-vehicle-icon__triangle"
+                d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+                transform="scale(1) rotate(0) translate(-24,-22)"
+              />
+              <text
+                className="m-vehicle-icon__variant"
+                dominantBaseline="alphabetic"
+                textAnchor="middle"
+                x={0}
+                y={14}
+              >
+                4
+              </text>
+            </g>
+          </svg>
+        </div>
+        <div
+          className="m-properties-panel__variant"
+        >
+          <div
+            className="m-properties-panel__inbound-outbound"
+          >
+            
+          </div>
+          <div
+            className="m-properties-panel__variant-name"
+          >
+            Shuttle
+          </div>
+        </div>
+        <button
+          className="m-close-button"
+          onClick={[Function]}
+        >
+          <span
+            className=""
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "SVG",
+              }
+            }
+          />
+        </button>
       </div>
       <div
-        className="m-vehicle-properties-panel__variant"
+        className="m-properties-panel__properties-list"
+      >
+        <table>
+          <tbody>
+            <tr>
+              <td
+                className="m-properties-panel__property-label"
+              >
+                Run
+              </td>
+              <td
+                className="m-properties-panel__property-value"
+              >
+                Special 999 555
+              </td>
+            </tr>
+            <tr>
+              <td
+                className="m-properties-panel__property-label"
+              >
+                Vehicle
+              </td>
+              <td
+                className="m-properties-panel__property-value"
+              >
+                1818
+              </td>
+            </tr>
+            <tr>
+              <td
+                className="m-properties-panel__property-label"
+              >
+                Operator
+              </td>
+              <td
+                className="m-properties-panel__property-value"
+              >
+                SMITH #op1
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div
+        className="m-vehicle-properties-panel__location"
       >
         <div
-          className="m-vehicle-properties-panel__inbound-outbound"
+          className="m-properties-panel__property-label"
         >
-          
+          Next Stop
         </div>
         <div
-          className="m-vehicle-properties-panel__variant-name"
+          className="m-properties-panel__property-value"
         >
-          Shuttle
+          <span
+            className="m-vehicle-properties-panel__not-available"
+          >
+            Not available
+          </span>
         </div>
+        <div
+          className="m-properties-panel__property-label"
+        >
+          Last GPS Ping
+        </div>
+        <div
+          className="m-properties-panel__property-value"
+        >
+          -1557160073s ago
+        </div>
+        <a
+          className="m-vehicle-properties-panel__link"
+          href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+          target="_blank"
+        >
+          Directions
+        </a>
       </div>
       <button
-        className="m-close-button"
+        className="m-properties-panel__close-button"
         onClick={[Function]}
       >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
+        Close
       </button>
     </div>
-    <table
-      className="m-vehicle-properties-panel__vehicle-properties"
-    >
-      <tbody>
-        <tr>
-          <th
-            className="m-vehicle-properties-panel__vehicle-property-label"
-          >
-            Run
-          </th>
-          <td
-            className="m-vehicle-properties-panel__vehicle-property-value"
-          >
-            Special 999 555
-          </td>
-        </tr>
-        <tr>
-          <th
-            className="m-vehicle-properties-panel__vehicle-property-label"
-          >
-            Vehicle
-          </th>
-          <td
-            className="m-vehicle-properties-panel__vehicle-property-value"
-          >
-            1818
-          </td>
-        </tr>
-        <tr>
-          <th
-            className="m-vehicle-properties-panel__vehicle-property-label"
-          >
-            Operator
-          </th>
-          <td
-            className="m-vehicle-properties-panel__vehicle-property-value"
-          >
-            SMITH
-             #
-            op1
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div
-      className="m-vehicle-properties-panel__location"
-    >
-      <div
-        className="m-vehicle-properties-panel__vehicle-property-label"
-      >
-        Next Stop
-      </div>
-      <div
-        className="m-vehicle-properties-panel__vehicle-property-value"
-      >
-        <span
-          className="m-vehicle-properties-panel__not-available"
-        >
-          Not available
-        </span>
-      </div>
-      <div
-        className="m-vehicle-properties-panel__vehicle-property-label"
-      >
-        Last GPS Ping
-      </div>
-      <div
-        className="m-vehicle-properties-panel__vehicle-property-value"
-      >
-        -1557160073s ago
-      </div>
-      <a
-        className="m-vehicle-properties-panel__link"
-        href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
-        target="_blank"
-      >
-        Directions
-      </a>
-    </div>
-    <button
-      className="m-vehicle-properties-panel__close"
-      onClick={[Function]}
-    >
-      Close
-    </button>
   </div>
   <div
-    className="m-vehicle-properties-panel__modal-overlay"
+    className="m-properties-panel__modal-overlay"
     onClick={[Function]}
   />
 </div>

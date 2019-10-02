@@ -1,0 +1,78 @@
+.m-properties-panel__header {
+  display: flex;
+}
+
+.m-properties-panel__label {
+  flex: 0 0 auto;
+  padding: 1rem;
+  text-align: center;
+  width: 4rem;
+}
+
+.m-properties-panel__variant {
+  border-left: 1px solid $color-rule;
+  flex: 1 1 auto;
+  padding: 1rem;
+}
+
+.m-properties-panel__inbound-outbound {
+  @include font-emph;
+  margin-bottom: 0.4rem;
+}
+
+.m-properties-panel__variant-name {
+  @include font-header;
+}
+
+.m-properties-panel__headway-target,
+.m-properties-panel__schedule-adherence {
+  @include font-small;
+  margin-top: 0.7rem;
+}
+
+.m-properties-panel__headway-target-label {
+  font-weight: bold;
+  margin-right: 0.3rem;
+}
+
+.m-properties-panel__headway-target-value {
+  @include font-body;
+}
+
+.m-properties-panel__schedule-adherence {
+  display: flex;
+}
+
+.m-properties-panel__schedule-adherence-status-icon {
+  margin-right: 0.4rem;
+
+  .on-time & {
+    fill: $color-vehicle-ontime;
+  }
+  .early & {
+    fill: $color-vehicle-early;
+  }
+  .late & {
+    fill: $color-vehicle-late;
+  }
+  .off-course & {
+    fill: $color-vehicle-off-course;
+  }
+}
+
+.m-properties-panel__schedule-adherence-status-string {
+  font-weight: bold;
+  margin-right: 0.3rem;
+  text-transform: uppercase;
+}
+
+.m-properties-panel__schedule-adherence-label {
+  .on-time & {
+    color: $color-component-medium;
+  }
+}
+
+.m-properties-panel__header > button {
+  flex: 0 0 auto;
+  padding: 1rem;
+}

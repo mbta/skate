@@ -6,8 +6,8 @@ import { loadedShapes } from "../models/shape"
 import { RunId, Vehicle, VehicleId } from "../realtime"
 import { Shape } from "../schedule"
 import Map from "./map"
+import PropertiesPanel from "./propertiesPanel"
 import ShuttlePicker from "./shuttlePicker"
-import VehiclePropertiesPanel from "./vehiclePropertiesPanel"
 
 const filterShuttles = (
   shuttles: Vehicle[],
@@ -68,7 +68,7 @@ const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
       </div>
 
       {selectedVehicle && (
-        <VehiclePropertiesPanel selectedVehicle={selectedVehicle} />
+        <PropertiesPanel selectedVehicleOrGhost={selectedVehicle} />
       )}
     </div>
   )

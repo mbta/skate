@@ -1,0 +1,25 @@
+.m-properties-panel {
+  background-color: $color-bg-base;
+  box-shadow: $modal-box-shadow;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 23.5rem;
+  z-index: 1001;
+}
+
+.m-properties-panel__modal-overlay {
+  background-color: $modal-overlay-color;
+  height: 100%;
+  left: inherit;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}

@@ -6,13 +6,19 @@ $tab-bar-width: 3rem;
 @import "leaflet";
 
 @import "close_button";
-@import "headway_diagram";
 @import "incoming_box";
 @import "ladder";
 @import "ladder_page";
 @import "layover_box";
 @import "page";
 @import "picker_container";
+@import "properties_panel";
+@import "properties_panel/close_button";
+@import "properties_panel/ghost_properties_panel";
+@import "properties_panel/header";
+@import "properties_panel/headway_diagram";
+@import "properties_panel/properties_list";
+@import "properties_panel/vehicle_properties_panel";
 @import "route_ladder";
 @import "route_ladders";
 @import "route_picker";
@@ -20,7 +26,6 @@ $tab-bar-width: 3rem;
 @import "shuttle_map";
 @import "tab_bar";
 @import "vehicle_icon";
-@import "vehicle_properties_panel";
 @import "vehicle_map";
 
 body {

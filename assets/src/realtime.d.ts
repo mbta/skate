@@ -21,7 +21,7 @@ interface DataDiscrepancySource {
 }
 
 export interface Ghost {
-  id: string
+  id: VehicleId
   directionId: DirectionId
   routeId: RouteId
   tripId: TripId
@@ -68,6 +68,8 @@ export interface Vehicle {
   scheduledLocation: VehicleScheduledLocation | null
   isOnRoute: boolean
 }
+
+export type VehicleOrGhost = Vehicle | Ghost
 
 export type VehicleId = string
 

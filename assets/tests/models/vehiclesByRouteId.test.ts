@@ -1,10 +1,16 @@
 import {
   allVehicles,
+  allVehiclesAndGhosts,
   allVehiclesForRoute,
   byDirection,
   nextAndPreviousVehicle,
 } from "../../src/models/vehiclesByRouteId"
-import { Vehicle, VehiclesForRoute } from "../../src/realtime"
+import {
+  Ghost,
+  Vehicle,
+  VehicleOrGhost,
+  VehiclesForRoute,
+} from "../../src/realtime"
 import { ByRouteId } from "../../src/schedule"
 
 const vehiclesByRouteId: ByRouteId<VehiclesForRoute> = {
@@ -44,7 +50,12 @@ const vehiclesByRouteId: ByRouteId<VehiclesForRoute> = {
         isOnRoute: false,
       } as Vehicle,
     ],
-    ghosts: [],
+    ghosts: [
+      {
+        id: "ghost-1",
+        directionId: 0,
+      } as Ghost,
+    ],
   },
   "39": {
     onRouteVehicles: [
@@ -97,6 +108,58 @@ describe("allVehicles", () => {
     ]
 
     expect(allVehicles(vehiclesByRouteId["1"])).toEqual(expected)
+  })
+
+  test("returns an empty array if vehiclesForRoute is undefined", () => {
+    expect(allVehicles(undefined)).toEqual([])
+  })
+})
+
+describe("allVehiclesAndGhosts", () => {
+  test("returns all the vehicles and ghosts for this route", () => {
+    const expected: VehicleOrGhost[] = [
+      {
+        id: "y101",
+        directionId: 0,
+        previousVehicleId: "y102",
+        isOnRoute: true,
+      } as Vehicle,
+      {
+        id: "y102",
+        directionId: 0,
+        previousVehicleId: "y103",
+        isOnRoute: true,
+      } as Vehicle,
+      // Vehicle with direction 1 between vehicles with direction 0
+      {
+        id: "y111",
+        directionId: 1,
+        previousVehicleId: "y112",
+        isOnRoute: true,
+      } as Vehicle,
+      {
+        id: "y103",
+        directionId: 0,
+        previousVehicleId: "y104",
+        isOnRoute: true,
+      } as Vehicle,
+      {
+        id: "y104",
+        directionId: 0,
+        previousVehicleId: "y105",
+        isOnRoute: false,
+      } as Vehicle,
+      {
+        id: "ghost-1",
+        directionId: 0,
+      } as Ghost,
+    ]
+
+    expect(allVehiclesAndGhosts(vehiclesByRouteId["1"])).toEqual(expected)
+  })
+
+  test("returns an empty array if vehiclesForRoute is undefined", () => {
+    expect(allVehiclesAndGhosts(undefined)).toEqual([])
   })
 })
 

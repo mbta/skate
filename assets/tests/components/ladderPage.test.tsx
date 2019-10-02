@@ -1,8 +1,12 @@
 import React from "react"
 import renderer from "react-test-renderer"
-import LadderPage, { findRouteById } from "../../src/components/ladderPage"
+import LadderPage, {
+  findRouteById,
+  findSelectedVehicleOrGhost,
+} from "../../src/components/ladderPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import { Route, TimepointsByRouteId } from "../../src/schedule.d"
+import { Ghost, Vehicle, VehiclesForRoute } from "../../src/realtime"
+import { ByRouteId, Route, TimepointsByRouteId } from "../../src/schedule.d"
 import { initialState } from "../../src/state"
 
 jest.mock("../../src/hooks/useRoutes", () => ({
@@ -80,6 +84,42 @@ describe("findRouteById", () => {
   })
 })
 
+describe("findSelectedVehicleOrGhost", () => {
+  test("returns the requested vehicle if it is on the route", () => {
+    expect(
+      findSelectedVehicleOrGhost(vehiclesByRouteId, "on-route-39")
+    ).toEqual({
+      id: "on-route-39",
+    })
+  })
+
+  test("returns the requested vehicle if it is incoming", () => {
+    expect(
+      findSelectedVehicleOrGhost(vehiclesByRouteId, "incoming-39")
+    ).toEqual({
+      id: "incoming-39",
+    })
+  })
+
+  test("returns the requested vehicle if it is a ghost bus", () => {
+    expect(findSelectedVehicleOrGhost(vehiclesByRouteId, "ghost-39")).toEqual({
+      id: "ghost-39",
+    })
+  })
+
+  test("returns undefined if the vehicle is not found", () => {
+    expect(
+      findSelectedVehicleOrGhost(vehiclesByRouteId, "missing-23")
+    ).toBeUndefined()
+  })
+
+  test("returns undefined if selectedVehicleId is undefined", () => {
+    expect(
+      findSelectedVehicleOrGhost(vehiclesByRouteId, undefined)
+    ).toBeUndefined()
+  })
+})
+
 const routes: Route[] = [
   { id: "1", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "1" },
   { id: "28", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "28" },
@@ -89,4 +129,41 @@ const timepointsByRouteId: TimepointsByRouteId = {
   "28": ["MATPN", "WELLH", "MORTN"],
   "71": undefined,
   "73": null,
+}
+
+const vehiclesByRouteId: ByRouteId<VehiclesForRoute> = {
+  "23": {
+    onRouteVehicles: [
+      {
+        id: "on-route-23",
+      } as Vehicle,
+    ],
+    incomingVehicles: [
+      {
+        id: "incoming-23",
+      } as Vehicle,
+    ],
+    ghosts: [
+      {
+        id: "ghost-23",
+      } as Ghost,
+    ],
+  },
+  "39": {
+    onRouteVehicles: [
+      {
+        id: "on-route-39",
+      } as Vehicle,
+    ],
+    incomingVehicles: [
+      {
+        id: "incoming-39",
+      } as Vehicle,
+    ],
+    ghosts: [
+      {
+        id: "ghost-39",
+      } as Ghost,
+    ],
+  },
 }
