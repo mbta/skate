@@ -211,7 +211,9 @@ describe("updateShapes", () => {
       ],
     }
     const existingShapes: PolylinesByShapeId = {
-      shape1: Leaflet.polyline(latLons(shape), {}).addTo(map),
+      shape1: {
+        routeLine: Leaflet.polyline(latLons(shape), {}).addTo(map),
+      },
     }
 
     const shapes = updateShapes([], existingShapes, map)
@@ -234,10 +236,14 @@ describe("updateShapes", () => {
     }
     const polyline = Leaflet.polyline(latLons(shape), {}).addTo(map)
 
-    const shapes = updateShapes([shape], { shape1: polyline }, map)
+    const shapes = updateShapes(
+      [shape],
+      { shape1: { routeLine: polyline } },
+      map
+    )
 
     expect(Object.keys(shapes).includes("shape1")).toBeTruthy()
-    expect(shapes.shape1.getLatLngs()).toEqual([{ lat: 10, lng: 20 }])
+    expect(shapes.shape1.routeLine.getLatLngs()).toEqual([{ lat: 10, lng: 20 }])
   })
 })
 

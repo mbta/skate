@@ -1,4 +1,5 @@
 import { Shape } from "../schedule"
+import stopsOrange from "./stopsOrange"
 
 const orangeLine30Shape: Shape = {
   id: "903_0018",
@@ -307,6 +308,7 @@ const orangeLine30Shape: Shape = {
     { lat: 42.301103, lon: -71.113837 },
     { lat: 42.300731, lon: -71.114102 },
   ],
+  stops: stopsOrange,
 }
 
 export default orangeLine30Shape

@@ -12,7 +12,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClass } from "../models/vehicleStatus"
 import { Vehicle, VehicleId } from "../realtime.d"
-import { Shape } from "../schedule"
+import { Shape, Stop } from "../schedule"
 import { Settings } from "../settings"
 import { Dispatch, selectVehicle as selectVehicleAction } from "../state"
 
@@ -32,8 +32,13 @@ interface MarkerDict {
   [id: string]: VehicleMarkers | undefined
 }
 
+interface RouteShapeWithStops {
+  routeLine: Leaflet.Polyline
+  stopCicles?: Leaflet.Circle[]
+}
+
 export interface PolylinesByShapeId {
-  [shapeId: string]: Leaflet.Polyline
+  [shapeId: string]: RouteShapeWithStops
 }
 
 interface State {
@@ -169,9 +174,15 @@ const removeDeselectedRouteShapes = (
 ) => {
   const shapeIds = shapes.map(shape => shape.id)
 
-  Object.entries(previousShapes).forEach(([shapeId, polyline]) => {
+  Object.entries(previousShapes).forEach(([shapeId, routeShapeWithStops]) => {
     if (!shapeIds.includes(shapeId)) {
-      polyline.remove()
+      routeShapeWithStops.routeLine.remove()
+
+      if (routeShapeWithStops.stopCicles) {
+        routeShapeWithStops.stopCicles.forEach(stopCircle =>
+          stopCircle.remove()
+        )
+      }
     }
   })
 }
@@ -186,6 +197,26 @@ const toPolyline = (shape: Shape): Leaflet.Polyline =>
     color: shape.color ? shape.color : "#4db6ac",
   })
 
+const drawStop = ({ lat, lon }: Stop, map: LeafletMap): Leaflet.Circle =>
+  Leaflet.circle([lat, lon], {
+    radius: 6,
+    className: "m-vehicle-map__stop",
+  }).addTo(map)
+
+const drawShape = (shape: Shape, map: LeafletMap): RouteShapeWithStops => {
+  const routeLine = toPolyline(shape).addTo(map)
+  let stopCicles
+
+  if (shape.stops) {
+    stopCicles = shape.stops.map(stop => drawStop(stop, map))
+  }
+
+  return {
+    routeLine,
+    stopCicles,
+  }
+}
+
 export const updateShapes = (
   shapes: Shape[],
   previousShapes: PolylinesByShapeId,
@@ -196,7 +227,7 @@ export const updateShapes = (
   return shapes.reduce(
     (acc, shape) => ({
       ...acc,
-      [shape.id]: previousShapes[shape.id] || toPolyline(shape).addTo(map),
+      [shape.id]: previousShapes[shape.id] || drawShape(shape, map),
     }),
     {} as PolylinesByShapeId
   )

@@ -40,3 +40,10 @@
     opacity: 1;
   }
 }
+
+.m-vehicle-map__stop {
+  fill: $color-stop-fill;
+  fill-opacity: 1;
+  stroke: $color-stop-stroke;
+  stroke-width: 1;
+}

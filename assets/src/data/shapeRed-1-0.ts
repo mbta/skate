@@ -1,4 +1,5 @@
 import { Shape } from "../schedule"
+import stopsRed from "./stopsRed"
 
 const redLine10Shape: Shape = {
   id: "931_0009",
@@ -299,6 +300,7 @@ const redLine10Shape: Shape = {
     { lat: 42.284383, lon: -71.063627 },
     { lat: 42.284251, lon: -71.063557 },
   ],
+  stops: stopsRed,
 }
 
 export default redLine10Shape

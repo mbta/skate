@@ -1,4 +1,5 @@
 import { Shape } from "../schedule"
+import stopsGreen from "./stopsGreen"
 
 const greenLineD01Shape: Shape = {
   id: "850_0006",
@@ -501,6 +502,7 @@ const greenLineD01Shape: Shape = {
     { lat: 42.370905, lon: -71.076982 },
     { lat: 42.370931, lon: -71.077028 },
   ],
+  stops: stopsGreen,
 }
 
 export default greenLineD01Shape

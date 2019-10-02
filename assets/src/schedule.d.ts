@@ -6,6 +6,13 @@ export type DirectionName = string
 
 export type StopId = string
 
+export interface Stop {
+  id: StopId
+  name: string
+  lat: number
+  lon: number
+}
+
 export type RouteId = string
 
 export interface ByRouteId<T> {
@@ -27,6 +34,7 @@ export interface Shape {
   id: ShapeId
   color?: string
   points: ShapePoint[]
+  stops?: Stop[]
 }
 
 export type ShapeId = string
