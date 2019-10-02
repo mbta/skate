@@ -1,6 +1,9 @@
 # Exports data needed for the Skate application
 # Maintained by the Customer Technology Department
 
+# Instructions for using this:
+# https://github.com/mbta/wiki/blob/master/ra/Procedures/Skate/02_Hastus_Export.md
+
 att hide_inaccessible_values
 
 file trip_runs
