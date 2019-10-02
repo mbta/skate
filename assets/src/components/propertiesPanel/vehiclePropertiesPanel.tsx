@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import { SwipeDirection } from "../../helpers/detectSwipe"
 import useInterval from "../../hooks/useInterval"
 import { formattedRunNumber } from "../../models/shuttle"
 import { isShuttle, shouldShowHeadwayDiagram } from "../../models/vehicle"
@@ -127,19 +126,6 @@ const DataDiscrepancies = ({
     ))}
   </ul>
 )
-
-export const handleSwipe = (hideMe: () => void) => (
-  swipeDirection: SwipeDirection,
-  target: HTMLElement | null
-) => {
-  if (target && target.id === "id-vehicle-map") {
-    return
-  }
-
-  if (swipeDirection === "Right") {
-    hideMe()
-  }
-}
 
 const inDebugMode = (): boolean =>
   !!new URL(document.location.href).searchParams.get("debug")

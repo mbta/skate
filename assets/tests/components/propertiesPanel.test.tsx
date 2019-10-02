@@ -1,6 +1,8 @@
 import React from "react"
 import renderer from "react-test-renderer"
-import PropertiesPanel from "../../src/components/propertiesPanel"
+import PropertiesPanel, {
+  handleSwipe,
+} from "../../src/components/propertiesPanel"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../src/realtime"
 import { Route } from "../../src/schedule"
@@ -102,5 +104,31 @@ describe("PropertiesPanel", () => {
       .toJSON()
 
     expect(tree).toMatchSnapshot()
+  })
+})
+
+describe("handleSwipe", () => {
+  test("hides the panel on a right swipe", () => {
+    const hidePanelCB = jest.fn()
+
+    handleSwipe(hidePanelCB)("Right", null)
+    expect(hidePanelCB).toHaveBeenCalled()
+  })
+
+  test("does not hide panel on other swipes", () => {
+    const hidePanelCB = jest.fn()
+    const handler = handleSwipe(hidePanelCB)
+    handler("Left", null)
+    handler("Up", null)
+    handler("Down", null)
+
+    expect(hidePanelCB).not.toHaveBeenCalled()
+  })
+
+  test("does not hide panel when map is swiped right", () => {
+    const hidePanelCB = jest.fn()
+    const map = document.createElement("div")
+    map.id = "id-vehicle-map"
+    handleSwipe(hidePanelCB)("Right", map)
   })
 })
