@@ -1,8 +1,6 @@
 defmodule Realtime.Supervisor do
   use Supervisor
 
-  alias Skate.Application
-
   def start_link([]) do
     Supervisor.start_link(__MODULE__, :ok)
   end
@@ -14,10 +12,10 @@ defmodule Realtime.Supervisor do
       {Realtime.Server, name: Realtime.Server.default_name()},
       {Concentrate.Supervisor,
        [
-         busloc_url: Application.get_config_string(:busloc_url),
-         swiftly_authorization_key: Application.get_config_string(:swiftly_authorization_key),
+         busloc_url: Application.get_env(:skate, :busloc_url),
+         swiftly_authorization_key: Application.get_env(:skate, :swiftly_authorization_key),
          swiftly_realtime_vehicles_url:
-           Application.get_config_string(:swiftly_realtime_vehicles_url)
+           Application.get_env(:skate, :swiftly_realtime_vehicles_url)
        ]}
     ]
 

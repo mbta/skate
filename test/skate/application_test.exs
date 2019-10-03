@@ -1,24 +1,39 @@
 defmodule Skate.ApplicationTest do
   use ExUnit.Case, async: true
 
-  describe "get_config_string/1" do
-    setup do
-      Application.put_env(:skate, :test_string, "TEST VALUE")
+  describe "update_runtime_config" do
+    test "replaces {:system, \"VAR\"} with environment variable" do
+      Application.put_env(:skate, :gtfs_url, {:system, "TEST_VARIABLE"})
+      System.put_env("TEST_VARIABLE", "TEST VALUE")
+
+      Skate.Application.update_runtime_config()
+
+      assert Application.get_env(:skate, :gtfs_url) == "TEST VALUE"
     end
 
-    test "returns a string application configuration value" do
-      assert Skate.Application.get_config_string(:test_string) == "TEST VALUE"
-    end
-  end
+    test "leaves other values alone" do
+      Application.put_env(:skate, :gtfs_url, "TEST VALUE 1")
+      System.put_env("TEST_VARIABLE", "TEST VALUE 2")
 
-  describe "update_static_url/1" do
-    setup do
+      Skate.Application.update_runtime_config()
+
+      assert Application.get_env(:skate, :gtfs_url) == "TEST VALUE 1"
+    end
+
+    test "recurses" do
+      Application.put_env(:skate, :gtfs_url, sub_config: {:system, "TEST_VARIABLE"})
+      System.put_env("TEST_VARIABLE", "TEST VALUE")
+
+      Skate.Application.update_runtime_config()
+
+      assert Application.get_env(:skate, :gtfs_url) == [sub_config: "TEST VALUE"]
+    end
+
+    test "updates static url" do
       System.put_env("STATIC_SCHEME", "TEST_STATIC_SCHEME_VALUE")
       System.put_env("STATIC_HOST", "TEST_STATIC_HOST_VALUE")
       System.put_env("STATIC_PORT", "TEST_STATIC_PORT_VALUE")
-    end
 
-    test "parses static_url configuration from env variables" do
       initial_endpoint_config = [
         url: [host: "localhost"],
         http: [port: 4000],
@@ -30,6 +45,8 @@ defmodule Skate.ApplicationTest do
         ],
         debug_errors: true
       ]
+
+      Application.put_env(:skate, SkateWeb.Endpoint, initial_endpoint_config)
 
       expected_endpoint_config = [
         url: [host: "localhost"],
@@ -43,8 +60,9 @@ defmodule Skate.ApplicationTest do
         debug_errors: true
       ]
 
-      assert Skate.Application.update_static_url(initial_endpoint_config) ==
-               expected_endpoint_config
+      Skate.Application.update_runtime_config()
+
+      assert Application.get_env(:skate, SkateWeb.Endpoint) == expected_endpoint_config
     end
   end
 end
