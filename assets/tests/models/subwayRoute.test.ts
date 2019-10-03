@@ -1,12 +1,9 @@
-import redLine10Shape from "../../src/data/shapeRed-1-0"
-import redLine30Shape from "../../src/data/shapeRed-3-0"
-import redLine31Shape from "../../src/data/shapeRed-3-1"
+import shapesRed from "../../src/data/shapesRed"
 import {
   subwayRouteIds,
   subwayRoutes,
   subwayRouteShapes,
 } from "../../src/models/subwayRoute"
-import { Shape } from "../../src/schedule"
 
 const subwayLineIds = ["Blue", "Green", "Orange", "Red"]
 
@@ -24,9 +21,7 @@ describe("subwayRouteIds", () => {
 
 describe("subwayRouteShapes", () => {
   test("returns a shapes for the requested route IDs that are subway routes", () => {
-    const expected: Shape[] = [redLine10Shape, redLine30Shape, redLine31Shape]
-
-    expect(subwayRouteShapes(["1", "Red"])).toEqual(expected)
+    expect(subwayRouteShapes(["1", "Red"])).toEqual(shapesRed)
   })
 
   test("returns an empty array if no subway routes are requested", () => {
