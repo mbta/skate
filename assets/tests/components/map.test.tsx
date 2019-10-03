@@ -11,7 +11,7 @@ import Map, {
 } from "../../src/components/map"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Vehicle } from "../../src/realtime"
-import { Shape } from "../../src/schedule"
+import { Shape, Stop } from "../../src/schedule"
 import { VehicleLabelSetting } from "../../src/settings"
 
 const vehicle: Vehicle = {
@@ -193,8 +193,35 @@ describe("updateShapes", () => {
         },
       ],
     }
+
     const shapes = updateShapes([shape], {}, map)
+
     expect(Object.keys(shapes)).toEqual(["shape1"])
+  })
+
+  test("includes stops if they exist", () => {
+    document.body.innerHTML = "<div id='map'></div>"
+    const map = Leaflet.map("map", { preferCanvas: true })
+    const stop: Stop = {
+      id: "stop1",
+      name: "stop1",
+      lat: 30.0,
+      lon: 40.0,
+    }
+    const shape: Shape = {
+      id: "shape1",
+      points: [
+        {
+          lat: 10.0,
+          lon: 20.0,
+        },
+      ],
+      stops: [stop],
+    }
+
+    const shapes = updateShapes([shape], {}, map)
+
+    expect(shapes.shape1.stopCicles).toBeDefined()
   })
 
   test("removes icon if it is not in the list of current vehicles", () => {
