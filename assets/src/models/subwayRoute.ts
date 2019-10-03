@@ -31,7 +31,7 @@ export interface SubwayRoute {
   shapes: Shape[]
 }
 
-export const subwayRoutes = (): SubwayRoute[] => [
+export const subwayRoutes: SubwayRoute[] = [
   { id: "Blue", name: "Blue Line", shapes: [blueLine60Shape, blueLine61Shape] },
   {
     id: "Green",
@@ -69,10 +69,9 @@ export const subwayRoutes = (): SubwayRoute[] => [
   },
 ]
 
-export const subwayRouteIds = (): RouteId[] =>
-  subwayRoutes().map(route => route.id)
+export const subwayRouteIds: RouteId[] = subwayRoutes.map(route => route.id)
 
 export const subwayRouteShapes = (routeIds: RouteId[]): Shape[] =>
-  subwayRoutes()
+  subwayRoutes
     .filter(route => routeIds.includes(route.id))
     .reduce((acc: Shape[], route: SubwayRoute) => acc.concat(route.shapes), [])

@@ -12,13 +12,13 @@ const subwayLineIds = ["Blue", "Green", "Orange", "Red"]
 
 describe("subwayRoutes", () => {
   test("includes each of the subway lines", () => {
-    expect(subwayRoutes().map(route => route.id)).toEqual(subwayLineIds)
+    expect(subwayRoutes.map(route => route.id)).toEqual(subwayLineIds)
   })
 })
 
 describe("subwayRouteIds", () => {
   test("returns a list of IDs for each subway route", () => {
-    expect(subwayRouteIds()).toEqual(subwayLineIds)
+    expect(subwayRouteIds).toEqual(subwayLineIds)
   })
 })
 

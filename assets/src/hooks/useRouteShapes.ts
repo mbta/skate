@@ -22,10 +22,7 @@ const useRouteShapes = (selectedRouteIds: RouteId[]): ShapesByRouteId => {
 
   useEffect(() => {
     selectedRouteIds.forEach((routeId: RouteId) => {
-      if (
-        !(routeId in shapesByRouteId) &&
-        !subwayRouteIds().includes(routeId)
-      ) {
+      if (!(routeId in shapesByRouteId) && !subwayRouteIds.includes(routeId)) {
         setLoadingShapesForRoute(routeId)
 
         fetchShapeForRoute(routeId).then((shapes: Shape[]) =>
