@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react"
 import { fetchShapeForRoute } from "../api"
-import { subwayRouteIds } from "../models/subwayRoute"
-import { RouteId, Shape, ShapesByRouteId } from "../schedule"
+import { isASubwayRoute, subwayRouteShapes } from "../models/subwayRoute"
+import { LoadableShapesByRouteId, RouteId, Shape } from "../schedule"
 
-const useRouteShapes = (selectedRouteIds: RouteId[]): ShapesByRouteId => {
-  const [shapesByRouteId, setShapesByRouteId] = useState<ShapesByRouteId>({})
+const useRouteShapes = (
+  selectedRouteIds: RouteId[]
+): LoadableShapesByRouteId => {
+  const [shapesByRouteId, setShapesByRouteId] = useState<
+    LoadableShapesByRouteId
+  >({})
 
   const setLoadingShapesForRoute = (routeId: RouteId) => {
     setShapesByRouteId(previousShapesByRouteId => ({
@@ -22,12 +26,16 @@ const useRouteShapes = (selectedRouteIds: RouteId[]): ShapesByRouteId => {
 
   useEffect(() => {
     selectedRouteIds.forEach((routeId: RouteId) => {
-      if (!(routeId in shapesByRouteId) && !subwayRouteIds.includes(routeId)) {
+      if (!(routeId in shapesByRouteId)) {
         setLoadingShapesForRoute(routeId)
 
-        fetchShapeForRoute(routeId).then((shapes: Shape[]) =>
-          setShapesForRoute(routeId, shapes)
-        )
+        if (isASubwayRoute(routeId)) {
+          setShapesForRoute(routeId, subwayRouteShapes(routeId))
+        } else {
+          fetchShapeForRoute(routeId).then((shapes: Shape[]) =>
+            setShapesForRoute(routeId, shapes)
+          )
+        }
       }
     })
   }, [selectedRouteIds, shapesByRouteId])

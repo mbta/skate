@@ -3,7 +3,6 @@ import { ShuttleVehiclesContext } from "../contexts/shuttleVehiclesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useRouteShapes from "../hooks/useRouteShapes"
 import { loadedShapes } from "../models/shape"
-import { subwayRouteShapes } from "../models/subwayRoute"
 import { RunId, Vehicle, VehicleId } from "../realtime"
 import { Shape } from "../schedule"
 import Map from "./map"
@@ -41,7 +40,7 @@ const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
   const shapes: Shape[] = loadedShapes(
     shuttleRouteShapesByRouteId,
     selectedShuttleRouteIds
-  ).concat(subwayRouteShapes(selectedShuttleRouteIds))
+  )
   const selectedShuttles: Vehicle[] = filterShuttles(
     shuttles || [],
     selectedShuttleRunIds

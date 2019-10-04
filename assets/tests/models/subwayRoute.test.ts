@@ -1,6 +1,6 @@
 import shapesRed from "../../src/data/shapesRed"
 import {
-  subwayRouteIds,
+  isASubwayRoute,
   subwayRoutes,
   subwayRouteShapes,
 } from "../../src/models/subwayRoute"
@@ -13,18 +13,19 @@ describe("subwayRoutes", () => {
   })
 })
 
-describe("subwayRouteIds", () => {
-  test("returns a list of IDs for each subway route", () => {
-    expect(subwayRouteIds).toEqual(subwayLineIds)
+describe("isASubwayRoute", () => {
+  test("returns true if the route ID is a subway route, false otherwise", () => {
+    expect(isASubwayRoute("Red")).toBeTruthy()
+    expect(isASubwayRoute("Puce")).toBeFalsy()
   })
 })
 
 describe("subwayRouteShapes", () => {
-  test("returns a shapes for the requested route IDs that are subway routes", () => {
-    expect(subwayRouteShapes(["1", "Red"])).toEqual(shapesRed)
+  test("returns an array of shapes for the requested subway route ID", () => {
+    expect(subwayRouteShapes("Red")).toEqual(shapesRed)
   })
 
-  test("returns an empty array if no subway routes are requested", () => {
-    expect(subwayRouteShapes(["1"])).toEqual([])
+  test("returns an empty array if the route ID isn't found", () => {
+    expect(subwayRouteShapes("Puce")).toEqual([])
   })
 })

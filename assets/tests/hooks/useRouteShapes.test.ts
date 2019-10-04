@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react-hooks"
 import * as Api from "../../src/api"
 import useRouteShapes from "../../src/hooks/useRouteShapes"
-import { Shape, ShapesByRouteId } from "../../src/schedule.d"
+import { LoadableShapesByRouteId, Shape } from "../../src/schedule.d"
 import { instantPromise, mockUseStateOnce } from "../testHelpers/mockHelpers"
 
 // tslint:disable: react-hooks-nesting no-empty
@@ -24,15 +24,14 @@ describe("useRouteShapes", () => {
     expect(result.current).toEqual({ "1": null })
   })
 
-  test("does not fetches a subway route shape we don't have yet", () => {
+  test("loads a subway route shape from hardcoded data", () => {
     const mockFetchShape: jest.Mock = Api.fetchShapeForRoute as jest.Mock
 
-    const { result } = renderHook(() => {
+    renderHook(() => {
       return useRouteShapes(["Red"])
     })
 
     expect(mockFetchShape).toHaveBeenCalledTimes(0)
-    expect(result.current).toEqual({})
   })
 
   test("returns the shape when the api call returns", () => {
@@ -68,13 +67,13 @@ describe("useRouteShapes", () => {
       },
     ]
     const selectedRouteIds = ["2", "3"]
-    const shapesByRouteId: ShapesByRouteId = {
+    const shapesByRouteId: LoadableShapesByRouteId = {
       2: null,
       3: shapes,
     }
 
     const mockFetchShape: jest.Mock = Api.fetchShapeForRoute as jest.Mock
-    mockUseStateOnce<ShapesByRouteId>(shapesByRouteId)
+    mockUseStateOnce<LoadableShapesByRouteId>(shapesByRouteId)
 
     const { result } = renderHook(() => {
       return useRouteShapes(selectedRouteIds)

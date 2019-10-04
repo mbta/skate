@@ -1,5 +1,5 @@
 import { loadedShapes } from "../../src/models/shape"
-import { RouteId, Shape, ShapesByRouteId } from "../../src/schedule"
+import { LoadableShapesByRouteId, RouteId, Shape } from "../../src/schedule"
 
 describe("loadedShapes", () => {
   test("returns only those shapes that have been loaded", () => {
@@ -11,7 +11,7 @@ describe("loadedShapes", () => {
       id: "shape2",
       points: [{ lat: 43.41356, lon: -71.99211 }],
     }
-    const loadableShapes: ShapesByRouteId = {
+    const loadableShapes: LoadableShapesByRouteId = {
       "1": [shape1],
       "2": null,
       "3": undefined,
@@ -33,7 +33,7 @@ describe("loadedShapes", () => {
       id: "shape2",
       points: [{ lat: 43.41356, lon: -71.99211 }],
     }
-    const loadableShapes: ShapesByRouteId = {
+    const loadableShapes: LoadableShapesByRouteId = {
       "1": [shape1],
       "2": null,
       "3": undefined,

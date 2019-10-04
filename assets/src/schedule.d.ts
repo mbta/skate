@@ -48,7 +48,9 @@ export interface ShapePoint {
 // A null value indicates that we are currently loading the shapes
 export type LoadableShapes = Shape[] | null | undefined
 
-export type ShapesByRouteId = ByRouteId<LoadableShapes>
+export type LoadableShapesByRouteId = ByRouteId<LoadableShapes>
+
+export type ShapesByRouteId = ByRouteId<Shape[]>
 
 export type TimepointId = string
 
