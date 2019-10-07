@@ -33,8 +33,10 @@ export const subwayRoutes: SubwayRoute[] = [
   },
 ]
 
+const subwayRouteIds: RouteId[] = subwayRoutes.map(({ id }) => id)
+
 export const isASubwayRoute = (routeId: RouteId): boolean =>
-  subwayRoutes.findIndex(byId(routeId)) >= 0
+  subwayRouteIds.includes(routeId)
 
 export const subwayRouteShapes = (routeId: RouteId): Shape[] => {
   const route = subwayRoutes.find(byId(routeId))
