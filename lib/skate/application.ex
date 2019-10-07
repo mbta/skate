@@ -53,12 +53,11 @@ defmodule Skate.Application do
     ]
 
     for application_key <- application_keys do
-      buildtime_config = Application.get_env(:skate, application_key)
-      runtime_config = runtime_config(buildtime_config)
-
-      if runtime_config != buildtime_config do
-        Application.put_env(:skate, application_key, runtime_config)
-      end
+      Application.put_env(
+        :skate,
+        application_key,
+        runtime_config(Application.get_env(:skate, application_key))
+      )
     end
 
     :ok
