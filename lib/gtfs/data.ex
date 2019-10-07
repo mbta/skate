@@ -171,6 +171,7 @@ defmodule Gtfs.Data do
   @spec parse_files(all_files()) :: t()
   def parse_files(files) do
     directions_by_route_id = directions_by_route_id(files.gtfs["directions.txt"])
+    run_ids_by_trip_id = run_ids_by_trip_id(files.hastus["trips.csv"])
 
     bus_routes =
       Csv.parse(
@@ -183,7 +184,14 @@ defmodule Gtfs.Data do
 
     route_patterns = bus_route_patterns(files.gtfs["route_patterns.txt"], bus_route_ids)
 
-    bus_trips = bus_trips(files.gtfs["trips.txt"], files.gtfs["stop_times.txt"], bus_route_ids)
+    bus_trips =
+      bus_trips(
+        files.gtfs["trips.txt"],
+        files.gtfs["stop_times.txt"],
+        bus_route_ids,
+        run_ids_by_trip_id
+      )
+
     trips = Map.new(bus_trips, fn trip -> {trip.id, trip} end)
 
     %__MODULE__{
@@ -218,6 +226,17 @@ defmodule Gtfs.Data do
         direction
       )
     end)
+  end
+
+  @spec run_ids_by_trip_id(binary()) :: %{Trip.id() => Trip.run_id()}
+  defp run_ids_by_trip_id(hastus_trips_data) do
+    hastus_trips_data
+    |> Csv.parse(
+      format: :hastus,
+      filter: fn row -> row["area"] != "" end,
+      parse: fn row -> {row["trip_id"], "#{row["area"]}-#{row["run_id"]}"} end
+    )
+    |> Map.new()
   end
 
   @spec bus_route_ids([Route.t()]) :: MapSet.t(Route.id())
@@ -318,8 +337,9 @@ defmodule Gtfs.Data do
     |> Map.new(fn stop -> {stop.id, stop} end)
   end
 
-  @spec bus_trips(binary(), binary(), MapSet.t(Route.id())) :: [Trip.t()]
-  defp bus_trips(trips_data, stop_times_data, bus_route_ids) do
+  @spec bus_trips(binary(), binary(), MapSet.t(Route.id()), %{Trip.id() => Trip.run_id()}) ::
+          [Trip.t()]
+  defp bus_trips(trips_data, stop_times_data, bus_route_ids, run_ids) do
     bus_trips =
       Csv.parse(
         trips_data,
@@ -335,7 +355,7 @@ defmodule Gtfs.Data do
       |> StopTime.trip_stop_times_from_csv()
 
     Enum.map(bus_trips, fn trip ->
-      %{trip | stop_times: Map.fetch!(bus_trip_stop_times, trip.id)}
+      %{trip | stop_times: Map.fetch!(bus_trip_stop_times, trip.id), run_id: run_ids[trip.id]}
     end)
   end
 end

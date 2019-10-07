@@ -3,6 +3,8 @@ defmodule Gtfs.Trip do
 
   @type id :: String.t()
 
+  @type run_id :: String.t()
+
   @type t :: %__MODULE__{
           id: id(),
           route_id: Route.id(),
@@ -13,6 +15,7 @@ defmodule Gtfs.Trip do
           # Shuttles do not have route_pattern_ids
           route_pattern_id: RoutePattern.id() | nil,
           shape_id: Shape.id(),
+          run_id: run_id() | nil,
           stop_times: [StopTime.t()]
         }
 
@@ -37,6 +40,7 @@ defmodule Gtfs.Trip do
     :block_id,
     :route_pattern_id,
     :shape_id,
+    run_id: nil,
     stop_times: []
   ]
 

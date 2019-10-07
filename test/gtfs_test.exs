@@ -287,6 +287,38 @@ defmodule GtfsTest do
       pid = Gtfs.start_mocked(%{})
       assert Gtfs.trip("t1", pid) == nil
     end
+
+    test "includes run from hastus" do
+      pid =
+        Gtfs.start_mocked(%{
+          gtfs: %{
+            "routes.txt" => [
+              "route_id,route_type,route_short_name",
+              "route,3,route"
+            ],
+            "route_patterns.txt" => [
+              "route_pattern_id,route_id,direction_id,representative_trip_id",
+              "pattern,route,1,trip"
+            ],
+            "trips.txt" => [
+              "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
+              "route,service,trip,heasign,1,block,route-_-0,shape"
+            ],
+            "stop_times.txt" => [
+              "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
+              "trip,,00:00:02,stop,1,"
+            ]
+          },
+          hastus: %{
+            "trips.csv" => [
+              "schedule_id;area;run_id;route_id;trip_id;block_id",
+              "aba49011;123;    1501;route;       trip;553 -140"
+            ]
+          }
+        })
+
+      assert Gtfs.trip("trip", pid).run_id == "123-1501"
+    end
   end
 
   describe "block" do

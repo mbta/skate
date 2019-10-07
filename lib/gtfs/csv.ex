@@ -4,7 +4,11 @@ defmodule Gtfs.Csv do
   """
 
   @type row :: %{required(String.t()) => String.t()}
-  @type option(row_struct) :: {:filter, (row() -> boolean())} | {:parse, (row() -> row_struct)}
+  @type format :: :gtfs | :hastus
+  @type option(row_struct) ::
+          {:format, format()}
+          | {:filter, (row() -> boolean())}
+          | {:parse, (row() -> row_struct)}
   @type options(row_struct) :: [option(row_struct)]
 
   @doc """
@@ -36,13 +40,14 @@ defmodule Gtfs.Csv do
   end
 
   def parse(file_binary, options) do
+    format = Keyword.get(options, :format, :gtfs)
     filters = Keyword.get_values(options, :filter)
     parser = Keyword.get(options, :parse, & &1)
 
     file_binary
     |> String.split("\n")
     |> Enum.reject(&(&1 == ""))
-    |> CSV.decode!(headers: true)
+    |> CSV.decode!(format_opts(format))
     |> Stream.flat_map(fn csv_row ->
       if Enum.all?(filters, fn filter -> filter.(csv_row) end) do
         [parser.(csv_row)]
@@ -52,4 +57,8 @@ defmodule Gtfs.Csv do
     end)
     |> Enum.to_list()
   end
+
+  @spec format_opts(format()) :: Keyword.t()
+  defp format_opts(:gtfs), do: [headers: true]
+  defp format_opts(:hastus), do: [headers: true, separator: ?;, strip_fields: true]
 end
