@@ -4,39 +4,48 @@ defmodule Gtfs.Csv do
   """
 
   @type row :: %{required(String.t()) => String.t()}
+  @type option(row_struct) :: {:filter, (row() -> boolean())} | {:parse, (row() -> row_struct)}
+  @type options(row_struct) :: [option(row_struct)]
 
   @doc """
-  Takes binary csv data, a function to filter each row, and a function to parse each row, and returns the list of results.
+  Takes binary csv data
+  Optionally takes a function to filter which rows to include in the result.
+  Optionally takes a function to parse each row
+  Returns a list of results
+
+  More than one filter is allowed
+
   The rows will be passed to the parser as maps with string keys and values.
   e.g. %{"col1" => "1", "col2" => "x"}
 
-  iex> Gtfs.Csv.parse("col1,col2\\n1,x\\n2,y\\n3,z", fn row -> row["col2"] != "y" end, fn row -> String.to_integer(row["col1"]) end)
+  iex> Gtfs.Csv.parse("col1,col2\\n1,x\\n2,y")
+  [%{"col1" => "1", "col2" => "x"}, %{"col1" => "2", "col2" => "y"}]
+
+  iex> Gtfs.Csv.parse("col1,col2\\n1,x\\n2,y\\n3,z",
+  ...>   filter: fn row -> row["col2"] != "y" end,
+  ...>   parse: fn row -> String.to_integer(row["col1"]) end
+  ...> )
   [1, 3]
   """
-  @spec parse(
-          binary() | nil,
-          [(row -> boolean)] | (row -> boolean),
-          (row -> row_struct)
-        ) ::
-          [row_struct]
-        when row_struct: var
-  def parse(file_binary, row_filters, row_decoder \\ & &1)
+  @spec parse(binary() | nil) :: [row()]
+  @spec parse(binary() | nil, options(row_struct)) :: [row_struct] when row_struct: var
+  def parse(file_binary, options \\ [])
 
-  def parse(nil, _row_filters, _row_decoder) do
+  def parse(nil, _options) do
     []
   end
 
-  def parse(file_binary, row_filter, row_decoder) when not is_list(row_filter),
-    do: parse(file_binary, [row_filter], row_decoder)
+  def parse(file_binary, options) do
+    filters = Keyword.get_values(options, :filter)
+    parser = Keyword.get(options, :parse, & &1)
 
-  def parse(file_binary, row_filters, row_decoder) do
     file_binary
     |> String.split("\n")
     |> Enum.reject(&(&1 == ""))
     |> CSV.decode!(headers: true)
     |> Stream.flat_map(fn csv_row ->
-      if Enum.all?(row_filters, fn row_filter -> row_filter.(csv_row) end) do
-        [row_decoder.(csv_row)]
+      if Enum.all?(filters, fn filter -> filter.(csv_row) end) do
+        [parser.(csv_row)]
       else
         []
       end

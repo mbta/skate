@@ -26,7 +26,7 @@ defmodule Gtfs.Shape do
   @spec from_file(binary()) :: shapes_by_id()
   def from_file(file) do
     file
-    |> Csv.parse(fn _row -> true end, &Point.from_csv_row/1)
+    |> Csv.parse(parse: &Point.from_csv_row/1)
     |> Enum.group_by(& &1.shape_id)
     |> Map.new(fn {shape_id, points} ->
       {
