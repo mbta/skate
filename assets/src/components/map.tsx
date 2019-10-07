@@ -34,7 +34,7 @@ interface MarkerDict {
 
 interface RouteShapeWithStops {
   routeLine: Leaflet.Polyline
-  stopCicles?: Leaflet.Circle[]
+  stopCicles?: Leaflet.CircleMarker[]
 }
 
 export interface PolylinesByShapeId {
@@ -210,9 +210,9 @@ const toPolyline = (shape: Shape): Leaflet.Polyline =>
     ...strokeOptions(shape),
   })
 
-const drawStop = ({ lat, lon }: Stop, map: LeafletMap): Leaflet.Circle =>
-  Leaflet.circle([lat, lon], {
-    radius: 6,
+const drawStop = ({ lat, lon }: Stop, map: LeafletMap): Leaflet.CircleMarker =>
+  Leaflet.circleMarker([lat, lon], {
+    radius: 3,
     className: "m-vehicle-map__stop",
   }).addTo(map)
 
