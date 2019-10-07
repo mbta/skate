@@ -25,10 +25,9 @@ defmodule Gtfs.Calendar do
 
   @spec from_files(binary() | nil, binary() | nil) :: t()
   def from_files(calendar_file, calendar_dates_file) do
-    gtfs_calendar = Csv.parse(calendar_file, fn _row -> true end, &calendar_from_csv_row/1)
+    gtfs_calendar = Csv.parse(calendar_file, parse: &calendar_from_csv_row/1)
 
-    gtfs_calendar_dates =
-      Csv.parse(calendar_dates_file, fn _row -> true end, &calendar_date_from_csv_row/1)
+    gtfs_calendar_dates = Csv.parse(calendar_dates_file, parse: &calendar_date_from_csv_row/1)
 
     calendar_from_gtfs(gtfs_calendar, gtfs_calendar_dates)
   end

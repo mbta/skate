@@ -170,8 +170,8 @@ defmodule Gtfs.Data do
     bus_routes =
       Csv.parse(
         files["routes.txt"],
-        &Route.bus_route_row?/1,
-        &Route.from_csv_row(&1, directions_by_route_id)
+        filter: &Route.bus_route_row?/1,
+        parse: &Route.from_csv_row(&1, directions_by_route_id)
       )
 
     bus_route_ids = bus_route_ids(bus_routes)
@@ -205,7 +205,7 @@ defmodule Gtfs.Data do
   @spec directions_by_route_id(binary()) :: directions_by_route_and_id()
   defp directions_by_route_id(directions_data) do
     directions_data
-    |> Csv.parse(fn _row -> true end, &Direction.from_csv_row/1)
+    |> Csv.parse(parse: &Direction.from_csv_row/1)
     |> Enum.reduce(%{}, fn direction, acc ->
       put_in(
         acc,
@@ -222,8 +222,8 @@ defmodule Gtfs.Data do
   defp bus_route_patterns(route_patterns_data, bus_route_ids) do
     Csv.parse(
       route_patterns_data,
-      &RoutePattern.row_in_route_id_set?(&1, bus_route_ids),
-      &RoutePattern.from_csv_row/1
+      filter: &RoutePattern.row_in_route_id_set?(&1, bus_route_ids),
+      parse: &RoutePattern.from_csv_row/1
     )
   end
 
@@ -309,7 +309,7 @@ defmodule Gtfs.Data do
   @spec all_stops_by_id(binary()) :: stops_by_id()
   defp all_stops_by_id(stops_data) do
     stops_data
-    |> Csv.parse(fn _row -> true end, &Stop.from_csv_row/1)
+    |> Csv.parse(parse: &Stop.from_csv_row/1)
     |> Map.new(fn stop -> {stop.id, stop} end)
   end
 
@@ -318,15 +318,15 @@ defmodule Gtfs.Data do
     bus_trips =
       Csv.parse(
         trips_data,
-        &Trip.row_in_route_id_set?(&1, bus_route_ids),
-        &Trip.from_csv_row/1
+        filter: &Trip.row_in_route_id_set?(&1, bus_route_ids),
+        parse: &Trip.from_csv_row/1
       )
 
     bus_trip_ids = MapSet.new(bus_trips, & &1.id)
 
     bus_trip_stop_times =
       stop_times_data
-      |> Csv.parse(&StopTime.row_in_trip_id_set?(&1, bus_trip_ids))
+      |> Csv.parse(filter: &StopTime.row_in_trip_id_set?(&1, bus_trip_ids))
       |> StopTime.trip_stop_times_from_csv()
 
     Enum.map(bus_trips, fn trip ->
