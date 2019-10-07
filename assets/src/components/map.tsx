@@ -41,7 +41,7 @@ export interface PolylinesByShapeId {
   [shapeId: string]: RouteShapeWithStops
 }
 
-interface State {
+interface MapState {
   map: LeafletMap | null
   markers: MarkerDict
   shapes: PolylinesByShapeId
@@ -258,7 +258,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
     StateDispatchContext
   )
   const containerRef: MutableRefObject<HTMLDivElement | null> = useRef(null)
-  const [state, updateState] = useState<State>({
+  const [mapState, setMapState] = useState<MapState>({
     map: null,
     markers: {},
     shapes: {},
@@ -271,7 +271,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
     }
 
     const map =
-      state.map ||
+      mapState.map ||
       Leaflet.map(containerRef.current, {
         center: props.centerOnVehicle ? undefined : defaultCenter,
         layers: [
@@ -288,25 +288,25 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
       })
 
     const zoom =
-      state.zoom || Leaflet.control.zoom({ position: "topright" }).addTo(map)
+      mapState.zoom || Leaflet.control.zoom({ position: "topright" }).addTo(map)
 
     const newVehicles = props.vehicles.reduce(
       (acc, vehicle) => ({ ...acc, [vehicle.id]: vehicle }),
       {} as { [id: string]: Vehicle }
     )
 
-    const markers = updateMarkers(newVehicles, state.markers, map, dispatch)
+    const markers = updateMarkers(newVehicles, mapState.markers, map, dispatch)
 
     updateVehicles(props.vehicles, markers, settings, selectedVehicleId)
 
     const shapes =
       props.shapes !== undefined
-        ? updateShapes(props.shapes, state.shapes, map)
+        ? updateShapes(props.shapes, mapState.shapes, map)
         : {}
 
     recenterMap(map, props.centerOnVehicle, newVehicles)
 
-    updateState({ map, markers, shapes, zoom })
+    setMapState({ map, markers, shapes, zoom })
   }, [props, containerRef])
 
   return (
