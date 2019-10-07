@@ -61,7 +61,12 @@ defmodule Gtfs.Data do
     :calendar
   ]
 
-  @type files :: %{optional(String.t()) => binary()}
+  @type files :: %{String.t() => binary()}
+
+  @type all_files :: %{
+          gtfs: %{String.t() => binary()},
+          hastus: %{String.t() => binary()}
+        }
 
   @spec all_routes(t()) :: [Route.t()]
   def all_routes(%__MODULE__{routes: routes}), do: routes
@@ -163,33 +168,33 @@ defmodule Gtfs.Data do
 
   # Initialization
 
-  @spec parse_files(files()) :: t()
+  @spec parse_files(all_files()) :: t()
   def parse_files(files) do
-    directions_by_route_id = directions_by_route_id(files["directions.txt"])
+    directions_by_route_id = directions_by_route_id(files.gtfs["directions.txt"])
 
     bus_routes =
       Csv.parse(
-        files["routes.txt"],
+        files.gtfs["routes.txt"],
         filter: &Route.bus_route_row?/1,
         parse: &Route.from_csv_row(&1, directions_by_route_id)
       )
 
     bus_route_ids = bus_route_ids(bus_routes)
 
-    route_patterns = bus_route_patterns(files["route_patterns.txt"], bus_route_ids)
+    route_patterns = bus_route_patterns(files.gtfs["route_patterns.txt"], bus_route_ids)
 
-    bus_trips = bus_trips(files["trips.txt"], files["stop_times.txt"], bus_route_ids)
+    bus_trips = bus_trips(files.gtfs["trips.txt"], files.gtfs["stop_times.txt"], bus_route_ids)
     trips = Map.new(bus_trips, fn trip -> {trip.id, trip} end)
 
     %__MODULE__{
       routes: bus_routes,
       route_patterns: route_patterns,
       timepoint_ids_by_route: timepoint_ids_for_routes(route_patterns, bus_route_ids, trips),
-      shapes: shapes_by_route_id(files["shapes.txt"], bus_routes, bus_trips),
-      stops: all_stops_by_id(files["stops.txt"]),
+      shapes: shapes_by_route_id(files.gtfs["shapes.txt"], bus_routes, bus_trips),
+      stops: all_stops_by_id(files.gtfs["stops.txt"]),
       trips: trips,
       blocks: Block.group_trips_by_block(bus_trips),
-      calendar: Calendar.from_files(files["calendar.txt"], files["calendar_dates.txt"])
+      calendar: Calendar.from_files(files.gtfs["calendar.txt"], files.gtfs["calendar_dates.txt"])
     }
   end
 
