@@ -9,12 +9,12 @@ import Map, {
   strokeOptions,
   updateMarkers,
   updateShapes,
-  updateVehicles,
 } from "../../src/components/map"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Vehicle } from "../../src/realtime"
 import { Shape, Stop } from "../../src/schedule"
-import { VehicleLabelSetting } from "../../src/settings"
+import { defaultSettings } from "../../src/settings"
+import { State } from "../../src/state"
 
 const vehicle: Vehicle = {
   id: "y1818",
@@ -71,8 +71,6 @@ const vehicle: Vehicle = {
   isOnRoute: true,
 }
 
-const mockDispatch = () => ({})
-
 describe("map", () => {
   test("renders", () => {
     const tree = renderer
@@ -83,39 +81,13 @@ describe("map", () => {
   })
 })
 
-describe("updateVehicles", () => {
-  test("updates lat/lng values for markers", () => {
-    document.body.innerHTML = "<div id='map'></div>"
-    const map = Leaflet.map("map", {})
-    const markers = {
-      [vehicle.id]: {
-        icon: Leaflet.marker([43, -72]).addTo(map),
-        label: Leaflet.marker([43, -72]).addTo(map),
-      },
-    }
-    updateVehicles([vehicle], markers, {
-      vehicleLabel: undefined,
-      ladderVehicleLabel: VehicleLabelSetting.RunNumber,
-      shuttleVehicleLabel: VehicleLabelSetting.RunNumber,
-    })
-    expect(markers[vehicle.id].icon.getLatLng()).toEqual({ lat: 42, lng: -71 })
-    expect(markers[vehicle.id].label.getLatLng()).toEqual({ lat: 42, lng: -71 })
-  })
-
-  test("exits gracefully if vehicle marker isn't in state", () => {
-    document.body.innerHTML = "<div id='map'></div>"
-    const markers = {}
-    expect(() => {
-      updateVehicles([vehicle], markers, {
-        vehicleLabel: undefined,
-        ladderVehicleLabel: VehicleLabelSetting.RunNumber,
-        shuttleVehicleLabel: VehicleLabelSetting.RunNumber,
-      })
-    }).not.toThrowError()
-  })
-})
-
 describe("updateMarkers", () => {
+  const appState: State = {
+    settings: defaultSettings,
+    selectedVehicleId: undefined,
+  } as State
+  const mockDispatch = () => ({})
+
   test("adds a new marker set for a vehicle if it doesn't exist", () => {
     document.body.innerHTML = "<div id='map'></div>"
     const map = Leaflet.map("map", {})
@@ -123,7 +95,7 @@ describe("updateMarkers", () => {
       [vehicle.id]: vehicle,
     }
 
-    const icons = updateMarkers(vehicles, {}, map, mockDispatch)
+    const icons = updateMarkers(vehicles, {}, map, appState, mockDispatch)
 
     expect(Object.keys(icons)).toEqual([vehicle.id])
     expect(icons[vehicle.id]!.icon.getLatLng()).toEqual({
@@ -146,29 +118,38 @@ describe("updateMarkers", () => {
       },
     }
 
-    const icons = updateMarkers({}, existingVehicles, map, mockDispatch)
+    const icons = updateMarkers(
+      {},
+      existingVehicles,
+      map,
+      appState,
+      mockDispatch
+    )
     expect(icons[vehicle.id]).toBeUndefined()
   })
 
-  test("keeps existing icons", () => {
+  test("updates existing icons", () => {
     document.body.innerHTML = "<div id='map'></div>"
     const map = Leaflet.map("map", {})
-    const icon = Leaflet.marker([vehicle.latitude, vehicle.longitude]).addTo(
-      map
-    )
+    const previousLatLng: [number, number] = [0, 0]
+    const icon = Leaflet.marker(previousLatLng).addTo(map)
+    const label = Leaflet.marker(previousLatLng).addTo(map)
 
-    const label = Leaflet.marker([vehicle.latitude, vehicle.longitude]).addTo(
-      map
-    )
+    expect(icon.getLatLng()).toEqual({ lat: 0, lng: 0 })
 
     const icons = updateMarkers(
       { [vehicle.id]: vehicle },
       { [vehicle.id]: { label, icon } },
       map,
+      appState,
       mockDispatch
     )
 
     expect(icons[vehicle.id]).toEqual({ label, icon })
+    expect(icon.getLatLng()).toEqual({
+      lat: vehicle.latitude,
+      lng: vehicle.longitude,
+    })
   })
 })
 

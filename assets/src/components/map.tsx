@@ -14,7 +14,7 @@ import { drawnStatus, statusClass } from "../models/vehicleStatus"
 import { Vehicle, VehicleId } from "../realtime.d"
 import { Shape, Stop } from "../schedule"
 import { Settings } from "../settings"
-import { Dispatch, selectVehicle as selectVehicleAction } from "../state"
+import { Dispatch, selectVehicle as selectVehicleAction, State } from "../state"
 
 interface Props {
   vehicles: Vehicle[]
@@ -29,7 +29,7 @@ interface VehicleMarkers {
 }
 
 interface MarkerDict {
-  [id: string]: VehicleMarkers | undefined
+  [id: string]: VehicleMarkers
 }
 
 interface RouteShapeWithStops {
@@ -50,8 +50,12 @@ interface MapState {
 
 const ICON_ANCHOR: [number, number] = [12, 12]
 
-const vehicleIconProps = (vehicle: Vehicle): Leaflet.DivIconOptions => ({
-  html: `<svg
+const selectVehicle = ({ id }: Vehicle, dispatch: Dispatch) => () =>
+  dispatch(selectVehicleAction(id))
+
+const makeVehicleIcon = (vehicle: Vehicle): Leaflet.DivIcon =>
+  Leaflet.divIcon({
+    html: `<svg
         height="24"
         viewBox="0 0 24 24"
         width="24"
@@ -64,34 +68,18 @@ const vehicleIconProps = (vehicle: Vehicle): Leaflet.DivIconOptions => ({
           transform="rotate(${vehicle.bearing})"
         />
       </svg>`,
-  iconAnchor: ICON_ANCHOR,
-  className: "m-vehicle-map__icon",
-})
+    iconAnchor: ICON_ANCHOR,
+    className: "m-vehicle-map__icon",
+  })
 
-const selectVehicle = ({ id }: Vehicle, dispatch: Dispatch) => () =>
-  dispatch(selectVehicleAction(id))
-
-const updateVehicle = (
+const makeLabelIcon = (
   vehicle: Vehicle,
-  markers: MarkerDict,
   settings: Settings,
   selectedVehicleId?: VehicleId
-): void => {
-  const markersForVehicle = markers[vehicle.id]
-  if (!markersForVehicle) {
-    return
-  }
-
-  const { icon: vehicleIcon, label: vehicleLabel } = markersForVehicle
-
-  const { id: vehicleId, latitude, longitude } = vehicle
-
+): Leaflet.DivIcon => {
   const labelString = vehicleLabelString(vehicle, settings)
-
-  const icon = Leaflet.divIcon(vehicleIconProps(vehicle))
-
-  const selectedClass = vehicleId === selectedVehicleId ? "selected" : ""
-  const label = Leaflet.divIcon({
+  const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
+  return Leaflet.divIcon({
     className: `m-vehicle-map__label ${selectedClass}`,
     html: `<svg viewBox="0 0 42 16" width="42" height="16">
             <rect
@@ -105,59 +93,66 @@ const updateVehicle = (
           </svg>`,
     iconAnchor: [12, -24],
   })
-
-  vehicleIcon.setLatLng([latitude, longitude])
-  vehicleLabel.setLatLng([latitude, longitude])
-
-  vehicleIcon.setIcon(icon)
-  vehicleLabel.setIcon(label)
-}
-
-export const updateVehicles = (
-  vehicles: Vehicle[],
-  markers: MarkerDict,
-  settings: Settings,
-  selectedVehicleId?: VehicleId
-): void => {
-  vehicles.forEach(v => updateVehicle(v, markers, settings, selectedVehicleId))
 }
 
 export const updateMarkers = (
   newVehicles: { [id: string]: Vehicle },
-  oldDict: MarkerDict,
+  oldMarkerDict: MarkerDict,
   map: LeafletMap,
+  appState: State,
   dispatch: Dispatch
 ): MarkerDict => {
-  const newDict = Object.entries(oldDict).reduce(
-    (acc: MarkerDict, [vehicleId, existingMarkers]) => {
-      // remove stale markers from the map
-      const newValue = newVehicles[vehicleId] ? existingMarkers : undefined
-      if (!newValue && existingMarkers) {
-        existingMarkers.icon.remove()
-        existingMarkers.label.remove()
+  const markersToKeep: MarkerDict = Object.entries(oldMarkerDict).reduce(
+    (acc: MarkerDict, [vehicleId, oldMarkers]) => {
+      if (newVehicles[vehicleId] === undefined) {
+        // Vehicle doesn't exist. Remove stale markers from the map.
+        oldMarkers.icon.remove()
+        oldMarkers.label.remove()
+        return acc
+      } else {
+        // Keep the markers. We'll update them later.
+        return { ...acc, [vehicleId]: oldMarkers }
       }
-      return { ...acc, [vehicleId]: newValue }
     },
     {} as MarkerDict
   )
 
-  return Object.entries(newVehicles).reduce((acc, [id, vehicle]) => {
-    if (acc[id] === undefined) {
-      acc[id] = {
-        icon: Leaflet.marker([vehicle.latitude, vehicle.longitude], {
-          icon: Leaflet.divIcon(vehicleIconProps(vehicle)),
-        })
-          .on("click", selectVehicle(vehicle, dispatch))
-          .addTo(map),
-        label: Leaflet.marker([vehicle.latitude, vehicle.longitude], {
-          icon: Leaflet.divIcon(vehicleIconProps(vehicle)),
-        })
-          .on("click", selectVehicle(vehicle, dispatch))
-          .addTo(map),
+  return Object.entries(newVehicles).reduce(
+    (existingMarkers, [vehicleId, vehicle]) => {
+      const vehicleIcon: Leaflet.DivIcon = makeVehicleIcon(vehicle)
+      const labelIcon: Leaflet.DivIcon = makeLabelIcon(
+        vehicle,
+        appState.settings,
+        appState.selectedVehicleId
+      )
+      if (existingMarkers[vehicleId] === undefined) {
+        // A new vehicle. Make new markers for it.
+        const markers = {
+          icon: Leaflet.marker([vehicle.latitude, vehicle.longitude], {
+            icon: vehicleIcon,
+          })
+            .on("click", selectVehicle(vehicle, dispatch))
+            .addTo(map),
+          label: Leaflet.marker([vehicle.latitude, vehicle.longitude], {
+            icon: labelIcon,
+          })
+            .on("click", selectVehicle(vehicle, dispatch))
+            .addTo(map),
+        }
+        return { ...existingMarkers, [vehicleId]: markers }
+      } else {
+        // Markers already exist for this vehicle. Update them.
+        const markers = existingMarkers[vehicleId]
+        markers.icon.setLatLng([vehicle.latitude, vehicle.longitude])
+        markers.label.setLatLng([vehicle.latitude, vehicle.longitude])
+
+        markers.icon.setIcon(vehicleIcon)
+        markers.label.setIcon(labelIcon)
+        return existingMarkers
       }
-    }
-    return acc
-  }, newDict)
+    },
+    markersToKeep
+  )
 }
 
 const removeDeselectedRouteShapes = (
@@ -254,9 +249,7 @@ export const recenterMap = (
 }
 
 const Map = (props: Props): ReactElement<HTMLDivElement> => {
-  const [{ selectedVehicleId, settings }, dispatch] = useContext(
-    StateDispatchContext
-  )
+  const [appState, dispatch] = useContext(StateDispatchContext)
   const containerRef: MutableRefObject<HTMLDivElement | null> = useRef(null)
   const [mapState, setMapState] = useState<MapState>({
     map: null,
@@ -295,9 +288,13 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
       {} as { [id: string]: Vehicle }
     )
 
-    const markers = updateMarkers(newVehicles, mapState.markers, map, dispatch)
-
-    updateVehicles(props.vehicles, markers, settings, selectedVehicleId)
+    const markers = updateMarkers(
+      newVehicles,
+      mapState.markers,
+      map,
+      appState,
+      dispatch
+    )
 
     const shapes =
       props.shapes !== undefined
