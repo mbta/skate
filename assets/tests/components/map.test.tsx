@@ -5,6 +5,7 @@ import Map, {
   defaultCenter,
   latLons,
   PolylinesByShapeId,
+  recenterMap,
   strokeOptions,
   updateMarkers,
   updateShapes,
@@ -83,7 +84,7 @@ describe("map", () => {
 })
 
 describe("updateVehicles", () => {
-  test("updates lat/lng values for map & markers", () => {
+  test("updates lat/lng values for markers", () => {
     document.body.innerHTML = "<div id='map'></div>"
     const map = Leaflet.map("map", {})
     const markers = {
@@ -92,34 +93,24 @@ describe("updateVehicles", () => {
         label: Leaflet.marker([43, -72]).addTo(map),
       },
     }
-    updateVehicles(
-      { vehicles: [vehicle], centerOnVehicle: vehicle.id },
-      { map, markers, shapes: {}, zoom: null },
-      {
-        vehicleLabel: undefined,
-        ladderVehicleLabel: VehicleLabelSetting.RunNumber,
-        shuttleVehicleLabel: VehicleLabelSetting.RunNumber,
-      }
-    )
-    expect(map.getCenter()).toEqual({ lat: 42, lng: -71 })
+    updateVehicles([vehicle], markers, {
+      vehicleLabel: undefined,
+      ladderVehicleLabel: VehicleLabelSetting.RunNumber,
+      shuttleVehicleLabel: VehicleLabelSetting.RunNumber,
+    })
     expect(markers[vehicle.id].icon.getLatLng()).toEqual({ lat: 42, lng: -71 })
     expect(markers[vehicle.id].label.getLatLng()).toEqual({ lat: 42, lng: -71 })
   })
 
   test("exits gracefully if vehicle marker isn't in state", () => {
     document.body.innerHTML = "<div id='map'></div>"
-    const map = Leaflet.map("map", {})
     const markers = {}
     expect(() => {
-      updateVehicles(
-        { vehicles: [vehicle], centerOnVehicle: vehicle.id },
-        { map, markers, shapes: {}, zoom: null },
-        {
-          vehicleLabel: undefined,
-          ladderVehicleLabel: VehicleLabelSetting.RunNumber,
-          shuttleVehicleLabel: VehicleLabelSetting.RunNumber,
-        }
-      )
+      updateVehicles([vehicle], markers, {
+        vehicleLabel: undefined,
+        ladderVehicleLabel: VehicleLabelSetting.RunNumber,
+        shuttleVehicleLabel: VehicleLabelSetting.RunNumber,
+      })
     }).not.toThrowError()
   })
 })
@@ -275,12 +266,32 @@ describe("updateShapes", () => {
   })
 })
 
-describe("defaultCenter", () => {
-  test("has a value if centerOnVehicle is null", () => {
-    expect(defaultCenter({ vehicles: [], centerOnVehicle: null })).toEqual([
-      42.360718,
-      -71.05891,
-    ])
+describe("recenterMap", () => {
+  test("centers the map on centerOnVehicle", () => {
+    document.body.innerHTML = "<div id='map'></div>"
+    const map = Leaflet.map("map", { center: defaultCenter, zoom: 16 })
+    recenterMap(map, vehicle.id, { [vehicle.id]: vehicle })
+    expect(map.getCenter()).toEqual({ lat: 42, lng: -71 })
+  })
+
+  test("does not center the map if centerOnVehicle is null", () => {
+    document.body.innerHTML = "<div id='map'></div>"
+    const map = Leaflet.map("map", { center: defaultCenter, zoom: 16 })
+    recenterMap(map, null, { [vehicle.id]: vehicle })
+    expect(map.getCenter()).toEqual({
+      lat: defaultCenter[0],
+      lng: defaultCenter[1],
+    })
+  })
+
+  test("does not center the if centerOnVehicle is not found", () => {
+    document.body.innerHTML = "<div id='map'></div>"
+    const map = Leaflet.map("map", { center: defaultCenter, zoom: 16 })
+    recenterMap(map, vehicle.id, {})
+    expect(map.getCenter()).toEqual({
+      lat: defaultCenter[0],
+      lng: defaultCenter[1],
+    })
   })
 })
 

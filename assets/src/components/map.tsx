@@ -73,9 +73,8 @@ const selectVehicle = ({ id }: Vehicle, dispatch: Dispatch) => () =>
 
 const updateVehicle = (
   vehicle: Vehicle,
-  { map, markers }: State,
+  markers: MarkerDict,
   settings: Settings,
-  centerOnVehicle: string | null,
   selectedVehicleId?: VehicleId
 ): void => {
   const markersForVehicle = markers[vehicle.id]
@@ -86,7 +85,6 @@ const updateVehicle = (
   const { icon: vehicleIcon, label: vehicleLabel } = markersForVehicle
 
   const { id: vehicleId, latitude, longitude } = vehicle
-  const zoom = map!.getZoom()
 
   const labelString = vehicleLabelString(vehicle, settings)
 
@@ -108,10 +106,6 @@ const updateVehicle = (
     iconAnchor: [12, -24],
   })
 
-  if (centerOnVehicle === vehicle.id) {
-    map!.setView([latitude, longitude], zoom)
-  }
-
   vehicleIcon.setLatLng([latitude, longitude])
   vehicleLabel.setLatLng([latitude, longitude])
 
@@ -120,14 +114,12 @@ const updateVehicle = (
 }
 
 export const updateVehicles = (
-  { vehicles, centerOnVehicle }: Props,
-  state: State,
+  vehicles: Vehicle[],
+  markers: MarkerDict,
   settings: Settings,
   selectedVehicleId?: VehicleId
 ): void => {
-  vehicles.forEach(v =>
-    updateVehicle(v, state, settings, centerOnVehicle, selectedVehicleId)
-  )
+  vehicles.forEach(v => updateVehicle(v, markers, settings, selectedVehicleId))
 }
 
 export const updateMarkers = (
@@ -246,10 +238,20 @@ export const updateShapes = (
   )
 }
 
-export const defaultCenter = ({
-  centerOnVehicle,
-}: Props): [number, number] | undefined =>
-  centerOnVehicle ? undefined : [42.360718, -71.05891]
+export const defaultCenter: [number, number] = [42.360718, -71.05891]
+
+export const recenterMap = (
+  map: LeafletMap,
+  centerOnVehicle: VehicleId | null,
+  vehiclesById: { [id: string]: Vehicle }
+): void => {
+  if (centerOnVehicle !== null) {
+    const vehicle: Vehicle | undefined = vehiclesById[centerOnVehicle]
+    if (vehicle !== undefined) {
+      map.setView([vehicle.latitude, vehicle.longitude], map.getZoom())
+    }
+  }
+}
 
 const Map = (props: Props): ReactElement<HTMLDivElement> => {
   const [{ selectedVehicleId, settings }, dispatch] = useContext(
@@ -271,7 +273,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
     const map =
       state.map ||
       Leaflet.map(containerRef.current, {
-        center: defaultCenter(props),
+        center: props.centerOnVehicle ? undefined : defaultCenter,
         layers: [
           Leaflet.tileLayer(
             `https://mbta-map-tiles-dev.s3.amazonaws.com/osm_tiles/{z}/{x}/{y}.png`,
@@ -295,17 +297,14 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
 
     const markers = updateMarkers(newVehicles, state.markers, map, dispatch)
 
-    updateVehicles(
-      props,
-      { map, markers, shapes: {}, zoom },
-      settings,
-      selectedVehicleId
-    )
+    updateVehicles(props.vehicles, markers, settings, selectedVehicleId)
 
     const shapes =
       props.shapes !== undefined
         ? updateShapes(props.shapes, state.shapes, map)
         : {}
+
+    recenterMap(map, props.centerOnVehicle, newVehicles)
 
     updateState({ map, markers, shapes, zoom })
   }, [props, containerRef])
