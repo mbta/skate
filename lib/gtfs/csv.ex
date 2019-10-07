@@ -18,14 +18,18 @@ defmodule Gtfs.Csv do
   The rows will be passed to the parser as maps with string keys and values.
   e.g. %{"col1" => "1", "col2" => "x"}
 
+  iex> Gtfs.Csv.parse("col1,col2\\n1,x\\n2,y")
+  [%{"col1" => "1", "col2" => "x"}, %{"col1" => "2", "col2" => "y"}]
+
   iex> Gtfs.Csv.parse("col1,col2\\n1,x\\n2,y\\n3,z",
   ...>   filter: fn row -> row["col2"] != "y" end,
   ...>   parse: fn row -> String.to_integer(row["col1"]) end
   ...> )
   [1, 3]
   """
+  @spec parse(binary() | nil) :: [row()]
   @spec parse(binary() | nil, options(row_struct)) :: [row_struct] when row_struct: var
-  def parse(file_binary, options)
+  def parse(file_binary, options \\ [])
 
   def parse(nil, _options) do
     []
