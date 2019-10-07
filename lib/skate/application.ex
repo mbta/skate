@@ -7,7 +7,7 @@ defmodule Skate.Application do
 
   @impl true
   def start(_type, _args) do
-    update_runtime_config()
+    load_runtime_config()
 
     # List all child processes to be supervised
     children =
@@ -42,8 +42,8 @@ defmodule Skate.Application do
   Will recursively check the keys below in the application config for any {:system, "ENVIRONMENT_VARIABLE"},
   and replace them with the value in the given environment variable.
   """
-  @spec update_runtime_config() :: :ok
-  def update_runtime_config() do
+  @spec load_runtime_config() :: :ok
+  def load_runtime_config() do
     application_keys = [
       :gtfs_url,
       :busloc_url,

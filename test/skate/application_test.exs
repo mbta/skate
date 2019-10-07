@@ -1,12 +1,12 @@
 defmodule Skate.ApplicationTest do
   use ExUnit.Case, async: true
 
-  describe "update_runtime_config" do
+  describe "load_runtime_config" do
     test "replaces {:system, \"VAR\"} with environment variable" do
       Application.put_env(:skate, :gtfs_url, {:system, "TEST_VARIABLE"})
       System.put_env("TEST_VARIABLE", "TEST VALUE")
 
-      Skate.Application.update_runtime_config()
+      Skate.Application.load_runtime_config()
 
       assert Application.get_env(:skate, :gtfs_url) == "TEST VALUE"
     end
@@ -15,7 +15,7 @@ defmodule Skate.ApplicationTest do
       Application.put_env(:skate, :gtfs_url, "TEST VALUE 1")
       System.put_env("TEST_VARIABLE", "TEST VALUE 2")
 
-      Skate.Application.update_runtime_config()
+      Skate.Application.load_runtime_config()
 
       assert Application.get_env(:skate, :gtfs_url) == "TEST VALUE 1"
     end
@@ -24,7 +24,7 @@ defmodule Skate.ApplicationTest do
       Application.put_env(:skate, :gtfs_url, sub_config: {:system, "TEST_VARIABLE"})
       System.put_env("TEST_VARIABLE", "TEST VALUE")
 
-      Skate.Application.update_runtime_config()
+      Skate.Application.load_runtime_config()
 
       assert Application.get_env(:skate, :gtfs_url) == [sub_config: "TEST VALUE"]
     end
@@ -60,7 +60,7 @@ defmodule Skate.ApplicationTest do
         debug_errors: true
       ]
 
-      Skate.Application.update_runtime_config()
+      Skate.Application.load_runtime_config()
 
       assert Application.get_env(:skate, SkateWeb.Endpoint) == expected_endpoint_config
     end
