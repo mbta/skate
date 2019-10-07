@@ -1,5 +1,6 @@
 import { renderHook } from "@testing-library/react-hooks"
 import * as Api from "../../src/api"
+import shapesRed from "../../src/data/shapesRed"
 import useRouteShapes from "../../src/hooks/useRouteShapes"
 import { LoadableShapesByRouteId, Shape } from "../../src/schedule.d"
 import { instantPromise, mockUseStateOnce } from "../testHelpers/mockHelpers"
@@ -27,11 +28,12 @@ describe("useRouteShapes", () => {
   test("loads a subway route shape from hardcoded data", () => {
     const mockFetchShape: jest.Mock = Api.fetchShapeForRoute as jest.Mock
 
-    renderHook(() => {
+    const { result } = renderHook(() => {
       return useRouteShapes(["Red"])
     })
 
     expect(mockFetchShape).toHaveBeenCalledTimes(0)
+    expect(result.current).toEqual({ Red: shapesRed })
   })
 
   test("returns the shape when the api call returns", () => {
