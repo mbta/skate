@@ -92,6 +92,7 @@ describe("PropertiesPanel", () => {
       tripId: "trip",
       headsign: "headsign",
       blockId: "block",
+      runId: "123-0123",
       viaVariant: "X",
       scheduledTimepointStatus: {
         timepointId: "t0",

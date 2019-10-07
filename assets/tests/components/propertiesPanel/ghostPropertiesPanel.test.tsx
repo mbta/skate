@@ -14,6 +14,7 @@ const ghost: Ghost = {
   tripId: "trip",
   headsign: "headsign",
   blockId: "block",
+  runId: "123-0123",
   viaVariant: "X",
   scheduledTimepointStatus: {
     timepointId: "t0",
@@ -34,6 +35,17 @@ describe("GhostPropertiesPanel", () => {
   test("renders", () => {
     const tree = renderer
       .create(<GhostPropertiesPanel selectedGhost={ghost} route={route} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders ghost with missing run", () => {
+    const ghostWithoutRun: Ghost = { ...ghost, runId: null }
+    const tree = renderer
+      .create(
+        <GhostPropertiesPanel selectedGhost={ghostWithoutRun} route={route} />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()

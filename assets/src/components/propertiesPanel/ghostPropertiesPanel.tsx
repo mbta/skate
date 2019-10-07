@@ -10,10 +10,10 @@ interface Props {
   route?: Route
 }
 
-const properties = (): Property[] => [
+const properties = (ghost: Ghost): Property[] => [
   {
     label: "Run",
-    value: "Not Available",
+    value: ghost.runId || "Not Available",
   },
 ]
 
@@ -21,7 +21,7 @@ const GhostPropertiesPanel = ({ selectedGhost, route }: Props) => (
   <div className="m-ghost-properties-panel">
     <Header vehicle={selectedGhost} route={route} />
 
-    <PropertiesList properties={properties()} />
+    <PropertiesList properties={properties(selectedGhost)} />
 
     <CloseButton />
   </div>

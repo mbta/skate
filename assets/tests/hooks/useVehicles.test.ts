@@ -298,6 +298,7 @@ describe("useVehicles", () => {
       tripId: "trip",
       headsign: "headsign",
       blockId: "block",
+      runId: null,
       viaVariant: null,
       scheduledTimepointStatus: {
         timepointId: "t0",
@@ -312,6 +313,7 @@ describe("useVehicles", () => {
       trip_id: "trip",
       headsign: "headsign",
       block_id: "block",
+      run_id: null,
       via_variant: null,
       scheduled_timepoint_status: {
         timepoint_id: "t0",

@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
-import vehicleLabel from "../../helpers/vehicleLabel"
+import vehicleLabel, { ghostLabel } from "../../helpers/vehicleLabel"
 import {
   isAVehicle,
   isShuttle,
@@ -117,7 +117,7 @@ const Header = ({ vehicle, route }: Props) => {
           <VehicleIcon
             size={Size.Large}
             orientation={Orientation.Up}
-            label={"N/A"}
+            label={ghostLabel(vehicle, settings)}
             variant={vehicle.viaVariant}
             status={"ghost"}
           />

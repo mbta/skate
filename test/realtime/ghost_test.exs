@@ -16,6 +16,7 @@ defmodule Realtime.GhostTest do
         block_id: "block",
         route_pattern_id: "route-X-0",
         shape_id: "shape1",
+        run_id: "run",
         stop_times: [
           %StopTime{
             stop_id: "stop1",
@@ -45,6 +46,7 @@ defmodule Realtime.GhostTest do
                  trip_id: "trip",
                  headsign: "headsign",
                  block_id: "block",
+                 run_id: "run",
                  via_variant: "X",
                  scheduled_timepoint_status: %{
                    timepoint_id: "t2",
@@ -63,6 +65,7 @@ defmodule Realtime.GhostTest do
         direction_id: 0,
         block_id: "block",
         shape_id: "shape1",
+        run_id: "run",
         stop_times: [
           %StopTime{
             stop_id: "stop1",
@@ -98,6 +101,7 @@ defmodule Realtime.GhostTest do
         direction_id: 0,
         block_id: "block",
         shape_id: "shape1",
+        run_id: "run",
         stop_times: [
           %StopTime{
             stop_id: "stop1",

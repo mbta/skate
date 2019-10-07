@@ -59,6 +59,7 @@ export interface GhostData {
   trip_id: string
   headsign: string
   block_id: string
+  run_id: string | null
   via_variant: string | null
   scheduled_timepoint_status: VehicleTimepointStatusData
 }
@@ -136,6 +137,7 @@ export const ghostFromData = (ghostData: GhostData): Ghost => ({
   tripId: ghostData.trip_id,
   headsign: ghostData.headsign,
   blockId: ghostData.block_id,
+  runId: ghostData.run_id,
   viaVariant: ghostData.via_variant,
   scheduledTimepointStatus: vehicleTimepointStatusFromData(
     ghostData.scheduled_timepoint_status

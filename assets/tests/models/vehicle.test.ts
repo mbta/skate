@@ -98,6 +98,7 @@ describe("isAVehicle", () => {
       tripId: "trip",
       headsign: "headsign",
       blockId: "block",
+      runId: null,
       viaVariant: null,
       scheduledTimepointStatus: {
         timepointId: "t0",
