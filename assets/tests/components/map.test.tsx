@@ -5,6 +5,7 @@ import Map, {
   defaultCenter,
   latLons,
   PolylinesByShapeId,
+  strokeOptions,
   updateMarkers,
   updateShapes,
   updateVehicles,
@@ -301,5 +302,35 @@ describe("latLons", () => {
     ]
 
     expect(latLons(shape)).toEqual(expectedResult)
+  })
+})
+
+describe("strokeOptions", () => {
+  test("uses the color for a subway line, defaults to a thinner, opaque line", () => {
+    const subwayShape = {
+      color: "#DA291C",
+    } as Shape
+
+    const expected = {
+      color: "#DA291C",
+      opacity: 1.0,
+      weight: 3,
+    }
+
+    expect(strokeOptions(subwayShape)).toEqual(expected)
+  })
+
+  test("sets default color, width, and opacity settincgs for shuttle route lines", () => {
+    const shuttleShape = {
+      color: undefined,
+    } as Shape
+
+    const expected = {
+      color: "#4db6ac",
+      opacity: 0.6,
+      weight: 6,
+    }
+
+    expect(strokeOptions(shuttleShape)).toEqual(expected)
   })
 })

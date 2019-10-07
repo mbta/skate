@@ -191,10 +191,23 @@ type LatLon = [number, number]
 export const latLons = ({ points }: Shape): LatLon[] =>
   points.map(point => [point.lat, point.lon] as LatLon)
 
+export const strokeOptions = ({ color }: Shape): object =>
+  color
+    ? {
+        color,
+        opacity: 1.0,
+        weight: 3,
+      }
+    : {
+        color: "#4db6ac",
+        opacity: 0.6,
+        weight: 6,
+      }
+
 const toPolyline = (shape: Shape): Leaflet.Polyline =>
   Leaflet.polyline(latLons(shape), {
     className: "m-vehicle-map__route-shape",
-    color: shape.color ? shape.color : "#4db6ac",
+    ...strokeOptions(shape),
   })
 
 const drawStop = ({ lat, lon }: Stop, map: LeafletMap): Leaflet.Circle =>

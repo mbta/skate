@@ -32,13 +32,8 @@
   }
 }
 
-.m-vehicle-map__route-shape {
-  opacity: 0.6;
-  stroke-width: 6px;
-
-  &:hover {
-    opacity: 1;
-  }
+.m-vehicle-map__route-shape:hover {
+  stroke-opacity: 1;
 }
 
 .m-vehicle-map__stop {
