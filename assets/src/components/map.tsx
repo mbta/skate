@@ -12,7 +12,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClass } from "../models/vehicleStatus"
 import { Vehicle, VehicleId } from "../realtime.d"
-import { Shape } from "../schedule"
+import { Shape, Stop } from "../schedule"
 import { Settings } from "../settings"
 import { Dispatch, selectVehicle as selectVehicleAction } from "../state"
 
@@ -32,8 +32,13 @@ interface MarkerDict {
   [id: string]: VehicleMarkers | undefined
 }
 
+interface RouteShapeWithStops {
+  routeLine: Leaflet.Polyline
+  stopCicles?: Leaflet.CircleMarker[]
+}
+
 export interface PolylinesByShapeId {
-  [shapeId: string]: Leaflet.Polyline
+  [shapeId: string]: RouteShapeWithStops
 }
 
 interface State {
@@ -169,9 +174,15 @@ const removeDeselectedRouteShapes = (
 ) => {
   const shapeIds = shapes.map(shape => shape.id)
 
-  Object.entries(previousShapes).forEach(([shapeId, polyline]) => {
+  Object.entries(previousShapes).forEach(([shapeId, routeShapeWithStops]) => {
     if (!shapeIds.includes(shapeId)) {
-      polyline.remove()
+      routeShapeWithStops.routeLine.remove()
+
+      if (routeShapeWithStops.stopCicles) {
+        routeShapeWithStops.stopCicles.forEach(stopCircle =>
+          stopCircle.remove()
+        )
+      }
     }
   })
 }
@@ -180,10 +191,44 @@ type LatLon = [number, number]
 export const latLons = ({ points }: Shape): LatLon[] =>
   points.map(point => [point.lat, point.lon] as LatLon)
 
+export const strokeOptions = ({ color }: Shape): object =>
+  color
+    ? {
+        color,
+        opacity: 1.0,
+        weight: 3,
+      }
+    : {
+        color: "#4db6ac",
+        opacity: 0.6,
+        weight: 6,
+      }
+
 const toPolyline = (shape: Shape): Leaflet.Polyline =>
   Leaflet.polyline(latLons(shape), {
     className: "m-vehicle-map__route-shape",
+    ...strokeOptions(shape),
   })
+
+const drawStop = ({ lat, lon }: Stop, map: LeafletMap): Leaflet.CircleMarker =>
+  Leaflet.circleMarker([lat, lon], {
+    radius: 3,
+    className: "m-vehicle-map__stop",
+  }).addTo(map)
+
+const drawShape = (shape: Shape, map: LeafletMap): RouteShapeWithStops => {
+  const routeLine = toPolyline(shape).addTo(map)
+  let stopCicles
+
+  if (shape.stops) {
+    stopCicles = shape.stops.map(stop => drawStop(stop, map))
+  }
+
+  return {
+    routeLine,
+    stopCicles,
+  }
+}
 
 export const updateShapes = (
   shapes: Shape[],
@@ -195,7 +240,7 @@ export const updateShapes = (
   return shapes.reduce(
     (acc, shape) => ({
       ...acc,
-      [shape.id]: previousShapes[shape.id] || toPolyline(shape).addTo(map),
+      [shape.id]: previousShapes[shape.id] || drawShape(shape, map),
     }),
     {} as PolylinesByShapeId
   )

@@ -32,11 +32,13 @@
   }
 }
 
-.m-vehicle-map__route-shape {
-  stroke: $color-map-route-shape;
-  stroke-width: 6px;
+.m-vehicle-map__route-shape:hover {
+  stroke-opacity: 1;
+}
 
-  &:hover {
-    stroke: $color-map-route-shape-selected;
-  }
+.m-vehicle-map__stop {
+  fill: $color-stop-fill;
+  fill-opacity: 1;
+  stroke: $color-stop-stroke;
+  stroke-width: 1;
 }

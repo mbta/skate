@@ -5,13 +5,14 @@ import Map, {
   defaultCenter,
   latLons,
   PolylinesByShapeId,
+  strokeOptions,
   updateMarkers,
   updateShapes,
   updateVehicles,
 } from "../../src/components/map"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Vehicle } from "../../src/realtime"
-import { Shape } from "../../src/schedule"
+import { Shape, Stop } from "../../src/schedule"
 import { VehicleLabelSetting } from "../../src/settings"
 
 const vehicle: Vehicle = {
@@ -193,8 +194,35 @@ describe("updateShapes", () => {
         },
       ],
     }
+
     const shapes = updateShapes([shape], {}, map)
+
     expect(Object.keys(shapes)).toEqual(["shape1"])
+  })
+
+  test("includes stops if they exist", () => {
+    document.body.innerHTML = "<div id='map'></div>"
+    const map = Leaflet.map("map", { preferCanvas: true })
+    const stop: Stop = {
+      id: "stop1",
+      name: "stop1",
+      lat: 30.0,
+      lon: 40.0,
+    }
+    const shape: Shape = {
+      id: "shape1",
+      points: [
+        {
+          lat: 10.0,
+          lon: 20.0,
+        },
+      ],
+      stops: [stop],
+    }
+
+    const shapes = updateShapes([shape], {}, map)
+
+    expect(shapes.shape1.stopCicles).toBeDefined()
   })
 
   test("removes icon if it is not in the list of current vehicles", () => {
@@ -211,7 +239,9 @@ describe("updateShapes", () => {
       ],
     }
     const existingShapes: PolylinesByShapeId = {
-      shape1: Leaflet.polyline(latLons(shape), {}).addTo(map),
+      shape1: {
+        routeLine: Leaflet.polyline(latLons(shape), {}).addTo(map),
+      },
     }
 
     const shapes = updateShapes([], existingShapes, map)
@@ -234,10 +264,14 @@ describe("updateShapes", () => {
     }
     const polyline = Leaflet.polyline(latLons(shape), {}).addTo(map)
 
-    const shapes = updateShapes([shape], { shape1: polyline }, map)
+    const shapes = updateShapes(
+      [shape],
+      { shape1: { routeLine: polyline } },
+      map
+    )
 
     expect(Object.keys(shapes).includes("shape1")).toBeTruthy()
-    expect(shapes.shape1.getLatLngs()).toEqual([{ lat: 10, lng: 20 }])
+    expect(shapes.shape1.routeLine.getLatLngs()).toEqual([{ lat: 10, lng: 20 }])
   })
 })
 
@@ -268,5 +302,35 @@ describe("latLons", () => {
     ]
 
     expect(latLons(shape)).toEqual(expectedResult)
+  })
+})
+
+describe("strokeOptions", () => {
+  test("uses the color for a subway line, defaults to a thinner, opaque line", () => {
+    const subwayShape = {
+      color: "#DA291C",
+    } as Shape
+
+    const expected = {
+      color: "#DA291C",
+      opacity: 1.0,
+      weight: 3,
+    }
+
+    expect(strokeOptions(subwayShape)).toEqual(expected)
+  })
+
+  test("sets default color, width, and opacity settincgs for shuttle route lines", () => {
+    const shuttleShape = {
+      color: undefined,
+    } as Shape
+
+    const expected = {
+      color: "#4db6ac",
+      opacity: 0.6,
+      weight: 6,
+    }
+
+    expect(strokeOptions(shuttleShape)).toEqual(expected)
   })
 })

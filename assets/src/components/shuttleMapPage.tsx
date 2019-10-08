@@ -36,8 +36,11 @@ const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
     selectedVehicleId,
   } = state
   const shuttles: Vehicle[] | null = useContext(ShuttleVehiclesContext)
-  const shapesByRouteId = useRouteShapes(selectedShuttleRouteIds)
-  const shapes: Shape[] = loadedShapes(shapesByRouteId, selectedShuttleRouteIds)
+  const shuttleRouteShapesByRouteId = useRouteShapes(selectedShuttleRouteIds)
+  const shapes: Shape[] = loadedShapes(
+    shuttleRouteShapesByRouteId,
+    selectedShuttleRouteIds
+  )
   const selectedShuttles: Vehicle[] = filterShuttles(
     shuttles || [],
     selectedShuttleRunIds

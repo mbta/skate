@@ -6,6 +6,13 @@ export type DirectionName = string
 
 export type StopId = string
 
+export interface Stop {
+  id: StopId
+  name: string
+  lat: number
+  lon: number
+}
+
 export type RouteId = string
 
 export interface ByRouteId<T> {
@@ -25,7 +32,9 @@ export type RoutePatternId = string
 
 export interface Shape {
   id: ShapeId
+  color?: string
   points: ShapePoint[]
+  stops?: Stop[]
 }
 
 export type ShapeId = string
@@ -39,7 +48,9 @@ export interface ShapePoint {
 // A null value indicates that we are currently loading the shapes
 export type LoadableShapes = Shape[] | null | undefined
 
-export type ShapesByRouteId = ByRouteId<LoadableShapes>
+export type LoadableShapesByRouteId = ByRouteId<LoadableShapes>
+
+export type ShapesByRouteId = ByRouteId<Shape[]>
 
 export type TimepointId = string
 

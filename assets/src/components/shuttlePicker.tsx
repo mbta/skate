@@ -2,6 +2,7 @@ import React, { ReactElement, useContext } from "react"
 import { ShuttleVehiclesContext } from "../contexts/shuttleVehiclesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useShuttleRoutes from "../hooks/useShuttleRoutes"
+import { SubwayRoute, subwayRoutes } from "../models/subwayRoute"
 import { RunId, Vehicle } from "../realtime"
 import { Route } from "../schedule"
 import {
@@ -227,14 +228,17 @@ const Routes = ({ shuttleRoutes }: { shuttleRoutes: Route[] | null }) => (
     <div className="m-route-picker__label">Routes</div>
     {shuttleRoutes && (
       <ul className="m-route-picker__route-list m-route-picker__shuttle-route-list">
-        <ShuttleRouteButtons shuttleRoutes={shuttleRoutes} />
+        <RouteButtons shuttleRoutes={shuttleRoutes} />
       </ul>
     )}
   </>
 )
 
-const ShuttleRouteButtons = ({ shuttleRoutes }: { shuttleRoutes: Route[] }) => (
+const RouteButtons = ({ shuttleRoutes }: { shuttleRoutes: Route[] }) => (
   <>
+    {subwayRoutes.map(subwayRoute => (
+      <RouteButton route={subwayRoute} key={`route-button-${subwayRoute.id}`} />
+    ))}
     {shuttleRoutes.map(shuttleRoute => (
       <RouteButton
         route={shuttleRoute}
@@ -244,7 +248,11 @@ const ShuttleRouteButtons = ({ shuttleRoutes }: { shuttleRoutes: Route[] }) => (
   </>
 )
 
-const RouteButton = ({ route: { id, name } }: { route: Route }) => {
+const RouteButton = ({
+  route: { id, name },
+}: {
+  route: Route | SubwayRoute
+}) => {
   const [state, dispatch] = useContext(StateDispatchContext)
   const isSelected = state.selectedShuttleRouteIds.includes(id)
   const selectedClass = isSelected

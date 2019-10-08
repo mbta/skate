@@ -200,6 +200,38 @@ exports[`ShuttlePicker renders 1`] = `
           className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
           onClick={[Function]}
         >
+          Blue Line
+        </button>
+      </li>
+      <li>
+        <button
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+          onClick={[Function]}
+        >
+          Green Line
+        </button>
+      </li>
+      <li>
+        <button
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+          onClick={[Function]}
+        >
+          Orange Line
+        </button>
+      </li>
+      <li>
+        <button
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+          onClick={[Function]}
+        >
+          Red Line
+        </button>
+      </li>
+      <li>
+        <button
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+          onClick={[Function]}
+        >
           Mattapan Line Shuttle
         </button>
       </li>
@@ -377,6 +409,38 @@ exports[`ShuttlePicker renders loaded state with no shuttles 1`] = `
     <ul
       className="m-route-picker__route-list m-route-picker__shuttle-route-list"
     >
+      <li>
+        <button
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+          onClick={[Function]}
+        >
+          Blue Line
+        </button>
+      </li>
+      <li>
+        <button
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+          onClick={[Function]}
+        >
+          Green Line
+        </button>
+      </li>
+      <li>
+        <button
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+          onClick={[Function]}
+        >
+          Orange Line
+        </button>
+      </li>
+      <li>
+        <button
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+          onClick={[Function]}
+        >
+          Red Line
+        </button>
+      </li>
       <li>
         <button
           className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"

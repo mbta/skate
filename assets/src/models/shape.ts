@@ -1,7 +1,12 @@
-import { LoadableShapes, RouteId, Shape, ShapesByRouteId } from "../schedule"
+import {
+  LoadableShapes,
+  LoadableShapesByRouteId,
+  RouteId,
+  Shape,
+} from "../schedule"
 
 export const loadedShapes = (
-  shapesByRouteId: ShapesByRouteId,
+  shapesByRouteId: LoadableShapesByRouteId,
   routeIds: RouteId[]
 ): Shape[] =>
   routeIds.reduce((acc: Shape[], routeId: RouteId) => {
