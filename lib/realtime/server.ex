@@ -111,16 +111,16 @@ defmodule Realtime.Server do
   end
 
   @impl true
-  def handle_cast({:update, by_route_id, shuttles}, %__MODULE__{} = state) do
-    _ = update_ets(state, by_route_id, shuttles)
+  def handle_cast({:update, vehicles_by_route_id, shuttles}, %__MODULE__{} = state) do
+    _ = update_ets(state, vehicles_by_route_id, shuttles)
     _ = broadcast(state)
     {:noreply, state}
   end
 
-  defp update_ets(%__MODULE__{ets: ets}, by_route_id, shuttles) do
+  defp update_ets(%__MODULE__{ets: ets}, vehicles_by_route_id, shuttles) do
     _ = :ets.delete_all_objects(ets)
 
-    for {route_id, vehicles} <- by_route_id do
+    for {route_id, vehicles} <- vehicles_by_route_id do
       _ = :ets.insert(ets, {{:route_id, route_id}, vehicles})
     end
 
