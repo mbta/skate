@@ -18,7 +18,7 @@ import { Dispatch, selectVehicle as selectVehicleAction, State } from "../state"
 
 interface Props {
   vehicles: Vehicle[]
-  centerOnVehicle: string | null
+  centerOnVehicle?: string
   initialZoom?: number
   shapes?: Shape[]
 }
@@ -237,10 +237,10 @@ export const defaultCenter: [number, number] = [42.360718, -71.05891]
 
 export const recenterMap = (
   map: LeafletMap,
-  centerOnVehicle: VehicleId | null,
+  centerOnVehicle: VehicleId | undefined,
   vehiclesById: { [id: string]: Vehicle }
 ): void => {
-  if (centerOnVehicle !== null) {
+  if (centerOnVehicle !== undefined) {
     const vehicle: Vehicle | undefined = vehiclesById[centerOnVehicle]
     if (vehicle !== undefined) {
       map.setView([vehicle.latitude, vehicle.longitude], map.getZoom())
