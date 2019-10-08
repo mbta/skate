@@ -3,15 +3,16 @@ defmodule SkateWeb.VehiclesChannel do
 
   alias Realtime.Server
   alias SkateWeb.AuthManager
+  alias Util.Duration
 
   @impl Phoenix.Channel
   def join("vehicles:shuttle:all", _message, socket) do
-    shuttles = Server.subscribe_to_all_shuttles()
+    shuttles = Duration.log_duration(Server, :subscribe_to_all_shuttles, [])
     {:ok, %{data: shuttles}, socket}
   end
 
   def join("vehicles:route:" <> route_id, _message, socket) do
-    vehicles_for_route = Server.subscribe_to_route(route_id)
+    vehicles_for_route = Duration.log_duration(Server, :subscribe_to_route, [route_id])
     {:ok, vehicles_for_route, socket}
   end
 
