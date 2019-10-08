@@ -170,25 +170,25 @@ defmodule Gtfs.Data do
   # Initialization
 
   @spec parse_files(all_files()) :: t()
-  def parse_files(files) do
-    directions_by_route_id = directions_by_route_id(files.gtfs["directions.txt"])
-    run_ids_by_trip_id = Run.run_ids_by_trip_id(files.hastus["trips.csv"])
+  def parse_files(%{gtfs: gtfs_files, hastus: hastus_files}) do
+    directions_by_route_id = directions_by_route_id(gtfs_files["directions.txt"])
+    run_ids_by_trip_id = Run.run_ids_by_trip_id(hastus_files["trips.csv"])
 
     bus_routes =
       Csv.parse(
-        files.gtfs["routes.txt"],
+        gtfs_files["routes.txt"],
         filter: &Route.bus_route_row?/1,
         parse: &Route.from_csv_row(&1, directions_by_route_id)
       )
 
     bus_route_ids = bus_route_ids(bus_routes)
 
-    route_patterns = bus_route_patterns(files.gtfs["route_patterns.txt"], bus_route_ids)
+    route_patterns = bus_route_patterns(gtfs_files["route_patterns.txt"], bus_route_ids)
 
     bus_trips =
       bus_trips(
-        files.gtfs["trips.txt"],
-        files.gtfs["stop_times.txt"],
+        gtfs_files["trips.txt"],
+        gtfs_files["stop_times.txt"],
         bus_route_ids,
         run_ids_by_trip_id
       )
@@ -199,11 +199,11 @@ defmodule Gtfs.Data do
       routes: bus_routes,
       route_patterns: route_patterns,
       timepoint_ids_by_route: timepoint_ids_for_routes(route_patterns, bus_route_ids, trips),
-      shapes: shapes_by_route_id(files.gtfs["shapes.txt"], bus_routes, bus_trips),
-      stops: all_stops_by_id(files.gtfs["stops.txt"]),
+      shapes: shapes_by_route_id(gtfs_files["shapes.txt"], bus_routes, bus_trips),
+      stops: all_stops_by_id(gtfs_files["stops.txt"]),
       trips: trips,
       blocks: Block.group_trips_by_block(bus_trips),
-      calendar: Calendar.from_files(files.gtfs["calendar.txt"], files.gtfs["calendar_dates.txt"])
+      calendar: Calendar.from_files(gtfs_files["calendar.txt"], gtfs_files["calendar_dates.txt"])
     }
   end
 
