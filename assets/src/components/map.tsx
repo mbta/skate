@@ -48,13 +48,13 @@ interface MapState {
   zoom: Leaflet.Control | null
 }
 
-const ICON_ANCHOR: [number, number] = [12, 12]
-
 const selectVehicle = ({ id }: Vehicle, dispatch: Dispatch) => () =>
   dispatch(selectVehicleAction(id))
 
-const makeVehicleIcon = (vehicle: Vehicle): Leaflet.DivIcon =>
-  Leaflet.divIcon({
+const makeVehicleIcon = (vehicle: Vehicle): Leaflet.DivIcon => {
+  const centerX = 12
+  const centerY = 12
+  return Leaflet.divIcon({
     html: `<svg
         height="24"
         viewBox="0 0 24 24"
@@ -64,13 +64,13 @@ const makeVehicleIcon = (vehicle: Vehicle): Leaflet.DivIcon =>
         <path
           class="${statusClass(drawnStatus(vehicle))}"
           d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
-          transform-origin="${ICON_ANCHOR[0]}px ${ICON_ANCHOR[1]}px"
-          transform="rotate(${vehicle.bearing})"
+          transform="rotate(${vehicle.bearing}, ${centerX}, ${centerY})"
         />
       </svg>`,
-    iconAnchor: ICON_ANCHOR,
+    iconAnchor: [centerX, centerY],
     className: "m-vehicle-map__icon",
   })
+}
 
 const makeLabelIcon = (
   vehicle: Vehicle,
@@ -91,7 +91,7 @@ const makeLabelIcon = (
               ${labelString}
             </text>
           </svg>`,
-    iconAnchor: [12, -24],
+    iconAnchor: [21, -16],
   })
 }
 
