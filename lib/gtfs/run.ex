@@ -2,8 +2,9 @@ defmodule Gtfs.Run do
   @type id :: String.t()
 
   alias Gtfs.Csv
+  alias Gtfs.Trip
 
-  @spec run_ids_by_trip_id(binary()) :: %{Trip.id() => Run.id()}
+  @spec run_ids_by_trip_id(binary()) :: %{Trip.id() => id()}
   def run_ids_by_trip_id(hastus_trips_data) do
     hastus_trips_data
     |> Csv.parse(
