@@ -83,8 +83,8 @@ describe("map", () => {
 
 describe("updateMarkers", () => {
   const appState: State = {
-    settings: defaultSettings,
     selectedVehicleId: undefined,
+    settings: defaultSettings,
   } as State
   const mockDispatch = () => ({})
 
@@ -139,7 +139,7 @@ describe("updateMarkers", () => {
 
     const icons = updateMarkers(
       { [vehicle.id]: vehicle },
-      { [vehicle.id]: { label, icon } },
+      { [vehicle.id]: { icon, label } },
       map,
       appState,
       mockDispatch
