@@ -80,6 +80,10 @@ defmodule Realtime.Server do
   rescue
     # :ets.lookup_element/3 exits with :badarg when key is not found
     ArgumentError ->
+      Logger.info(fn ->
+        "ETS lookup failed for key=#{key}"
+      end)
+
       default_data(key)
   end
 
