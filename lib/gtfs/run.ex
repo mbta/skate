@@ -10,8 +10,13 @@ defmodule Gtfs.Run do
     |> Csv.parse(
       format: :hastus,
       filter: fn row -> row["area"] != "" end,
-      parse: fn row -> {row["trip_id"], "#{row["area"]}-#{row["run_id"]}"} end
+      parse: &run_id_for_trip_id_from_row/1
     )
     |> Map.new()
+  end
+
+  @spec run_id_for_trip_id_from_row(Csv.row()) :: {Trip.id(), id()}
+  def run_id_for_trip_id_from_row(row) do
+    {row["trip_id"], "#{row["area"]}-#{row["run_id"]}"}
   end
 end
