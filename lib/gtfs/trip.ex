@@ -1,9 +1,7 @@
 defmodule Gtfs.Trip do
-  alias Gtfs.{Block, Csv, Direction, Route, RoutePattern, Service, Shape, StopTime}
+  alias Gtfs.{Block, Csv, Direction, Route, RoutePattern, Run, Service, Shape, StopTime}
 
   @type id :: String.t()
-
-  @type run_id :: String.t()
 
   @type t :: %__MODULE__{
           id: id(),
@@ -15,7 +13,7 @@ defmodule Gtfs.Trip do
           # Shuttles do not have route_pattern_ids
           route_pattern_id: RoutePattern.id() | nil,
           shape_id: Shape.id(),
-          run_id: run_id() | nil,
+          run_id: Run.id() | nil,
           stop_times: [StopTime.t()]
         }
 
