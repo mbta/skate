@@ -289,20 +289,14 @@ defmodule Gtfs do
       "trips.csv"
     ]
 
-    case fetch_zip(hastus_url, hastus_file_names) do
-      {:ok, hastus_files} ->
-        case fetch_zip(gtfs_url, gtfs_file_names) do
-          {:ok, gtfs_files} ->
-            {:files,
-             %{
-               gtfs: gtfs_files,
-               hastus: hastus_files
-             }}
-
-          {:error, error} ->
-            {:error, error}
-        end
-
+    with {:ok, hastus_files} <- fetch_zip(hastus_url, hastus_file_names),
+         {:ok, gtfs_files} <- fetch_zip(gtfs_url, gtfs_file_names) do
+      {:files,
+       %{
+         gtfs: gtfs_files,
+         hastus: hastus_files
+       }}
+    else
       {:error, error} ->
         {:error, error}
     end
