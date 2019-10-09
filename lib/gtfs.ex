@@ -269,7 +269,7 @@ defmodule Gtfs do
   end
 
   @spec fetch_remote_files() :: {:files, Data.all_files()} | {:error, any()}
-  defp fetch_remote_files() do
+  def fetch_remote_files() do
     gtfs_url = Application.get_env(:skate, :gtfs_url)
     hastus_url = Application.get_env(:skate, :hastus_url)
 

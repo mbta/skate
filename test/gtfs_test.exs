@@ -1,6 +1,8 @@
 defmodule GtfsTest do
   use ExUnit.Case, async: true
 
+  import Test.Support.Helpers
+
   alias Gtfs.{Route, Shape, Stop, StopTime, Trip}
   alias Gtfs.Shape.Point
 
@@ -613,6 +615,27 @@ defmodule GtfsTest do
         })
 
       assert Gtfs.shape("route", pid) == nil
+    end
+  end
+
+  describe "fetch_remote_files" do
+    test "successfully loads empty data" do
+      bypass = Bypass.open()
+      gtfs_url = "http://localhost:#{bypass.port}/MBTA_GTFS.zip"
+      hastus_url = "http://localhost:#{bypass.port}/hastus_skate_dev.zip"
+      reassign_env(:skate, :gtfs_url, gtfs_url)
+      reassign_env(:skate, :hastus_url, hastus_url)
+
+      # empty zip file
+      zip_binary =
+        "UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA=="
+        |> Base.decode64!()
+
+      Bypass.expect(bypass, fn conn ->
+        Plug.Conn.resp(conn, 200, zip_binary)
+      end)
+
+      assert {:files, _all_files} = Gtfs.fetch_remote_files()
     end
   end
 
