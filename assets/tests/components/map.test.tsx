@@ -255,10 +255,10 @@ describe("recenterMap", () => {
     expect(map.getCenter()).toEqual({ lat: 42, lng: -71 })
   })
 
-  test("does not center the map if centerOnVehicle is null", () => {
+  test("does not center the map if centerOnVehicle is undefined", () => {
     document.body.innerHTML = "<div id='map'></div>"
     const map = Leaflet.map("map", { center: defaultCenter, zoom: 16 })
-    recenterMap(map, null, { [vehicle.id]: vehicle })
+    recenterMap(map, undefined, { [vehicle.id]: vehicle })
     expect(map.getCenter()).toEqual({
       lat: defaultCenter[0],
       lng: defaultCenter[1],

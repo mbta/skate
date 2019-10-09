@@ -62,12 +62,7 @@ const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
           width: window.innerWidth,
         }}
       >
-        <Map
-          vehicles={selectedShuttles}
-          centerOnVehicle={null}
-          initialZoom={13}
-          shapes={shapes}
-        />
+        <Map vehicles={selectedShuttles} initialZoom={13} shapes={shapes} />
       </div>
 
       {selectedVehicle && (
