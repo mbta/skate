@@ -46,6 +46,7 @@ defmodule Skate.Application do
   def load_runtime_config() do
     application_keys = [
       :gtfs_url,
+      :hastus_url,
       :busloc_url,
       :swiftly_authorization_key,
       :swiftly_realtime_vehicles_url,

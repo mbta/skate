@@ -1,6 +1,8 @@
 use Mix.Config
 
-config :skate, log_duration_timing: false
+config :skate,
+  hastus_url: "https://cdn.mbta.com/hastus_export/skate/hastus_skate_dev.zip",
+  log_duration_timing: false
 
 config :skate, Gtfs.CacheFile, cache_filename: "dev_cache.terms"
 

@@ -8,8 +8,8 @@ defmodule Gtfs.Supervisor do
   @impl true
   def init(:ok) do
     children = [
-      {Gtfs, [Application.get_env(:skate, :gtfs_url)]},
-      {Gtfs.HealthServer, []}
+      Gtfs,
+      Gtfs.HealthServer
     ]
 
     Supervisor.init(children, strategy: :one_for_all)

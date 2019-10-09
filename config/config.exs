@@ -10,6 +10,7 @@ use Mix.Config
 config :skate,
   # Default. Can be configured via environment variable, which is loaded in application.ex
   gtfs_url: "https://cdn.mbta.com/MBTA_GTFS.zip",
+  hastus_url: {:system, "SKATE_HASTUS_URL"},
   busloc_url: {:system, "BUSLOC_URL"},
   swiftly_authorization_key: {:system, "SWIFTLY_AUTHORIZATION_KEY"},
   swiftly_realtime_vehicles_url: {:system, "SWIFTLY_REALTIME_VEHICLES_URL"},
