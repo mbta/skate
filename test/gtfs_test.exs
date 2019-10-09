@@ -626,4 +626,21 @@ defmodule GtfsTest do
 
     assert {:ok, %HTTPoison.Response{body: "test-data", status_code: 200}} = Gtfs.fetch_url(url)
   end
+
+  describe "fetch_zip" do
+    test "fetches and unzips zip file" do
+      bypass = Bypass.open()
+      url = "http://localhost:#{bypass.port}/test.zip"
+
+      zip_binary =
+        "UEsDBAoAAAAAAHJrSU+DFtyMAQAAAAEAAAABABwAZlVUCQADhxieXasYnl11eAsAAQT1AQAABBQAAAB4UEsBAh4DCgAAAAAAcmtJT4MW3IwBAAAAAQAAAAEAGAAAAAAAAQAAAKSBAAAAAGZVVAUAA4cYnl11eAsAAQT1AQAABBQAAABQSwUGAAAAAAEAAQBHAAAAPAAAAAAA"
+        |> Base.decode64!()
+
+      Bypass.expect(bypass, fn conn ->
+        Plug.Conn.resp(conn, 200, zip_binary)
+      end)
+
+      assert Gtfs.fetch_zip(url, ["f"]) == {:ok, %{"f" => "x"}}
+    end
+  end
 end
