@@ -304,7 +304,7 @@ defmodule Gtfs do
 
   @spec fetch_zip(String.t(), [String.t()]) :: {:ok, Data.files()} | {:error, any()}
   def fetch_zip(url, file_names) do
-    case fetch_url(url) do
+    case HTTPoison.get(url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: zip_binary}} ->
         unzipped_files = unzip_files(zip_binary, file_names)
         {:ok, unzipped_files}
@@ -314,9 +314,6 @@ defmodule Gtfs do
         {:error, response}
     end
   end
-
-  @spec fetch_url(String.t()) :: {:ok, HTTPoison.Response.t()} | {:error, HTTPoison.Error.t()}
-  def fetch_url(url), do: HTTPoison.get(url)
 
   @spec files_from_mocked(mocked_files()) :: Data.all_files()
   defp files_from_mocked(mocked_files) do
