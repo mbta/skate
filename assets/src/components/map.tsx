@@ -14,7 +14,7 @@ import { drawnStatus, statusClass } from "../models/vehicleStatus"
 import { Vehicle, VehicleId } from "../realtime.d"
 import { Shape, Stop } from "../schedule"
 import { Settings } from "../settings"
-import { Dispatch, selectVehicle as selectVehicleAction } from "../state"
+import { Dispatch, selectVehicle as selectVehicleAction, State } from "../state"
 
 interface Props {
   vehicles: Vehicle[]
@@ -29,7 +29,7 @@ interface VehicleMarkers {
 }
 
 interface MarkerDict {
-  [id: string]: VehicleMarkers | undefined
+  [id: string]: VehicleMarkers
 }
 
 interface RouteShapeWithStops {
@@ -41,17 +41,21 @@ export interface PolylinesByShapeId {
   [shapeId: string]: RouteShapeWithStops
 }
 
-interface State {
+interface MapState {
   map: LeafletMap | null
   markers: MarkerDict
   shapes: PolylinesByShapeId
   zoom: Leaflet.Control | null
 }
 
-const ICON_ANCHOR: [number, number] = [12, 12]
+const selectVehicle = ({ id }: Vehicle, dispatch: Dispatch) => () =>
+  dispatch(selectVehicleAction(id))
 
-const vehicleIconProps = (vehicle: Vehicle): Leaflet.DivIconOptions => ({
-  html: `<svg
+const makeVehicleIcon = (vehicle: Vehicle): Leaflet.DivIcon => {
+  const centerX = 12
+  const centerY = 12
+  return Leaflet.divIcon({
+    html: `<svg
         height="24"
         viewBox="0 0 24 24"
         width="24"
@@ -60,40 +64,22 @@ const vehicleIconProps = (vehicle: Vehicle): Leaflet.DivIconOptions => ({
         <path
           class="${statusClass(drawnStatus(vehicle))}"
           d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
-          transform-origin="${ICON_ANCHOR[0]}px ${ICON_ANCHOR[1]}px"
-          transform="rotate(${vehicle.bearing})"
+          transform="rotate(${vehicle.bearing}, ${centerX}, ${centerY})"
         />
       </svg>`,
-  iconAnchor: ICON_ANCHOR,
-  className: "m-vehicle-map__icon",
-})
+    iconAnchor: [centerX, centerY],
+    className: "m-vehicle-map__icon",
+  })
+}
 
-const selectVehicle = ({ id }: Vehicle, dispatch: Dispatch) => () =>
-  dispatch(selectVehicleAction(id))
-
-const updateVehicle = (
+const makeLabelIcon = (
   vehicle: Vehicle,
-  { map, markers }: State,
   settings: Settings,
-  centerOnVehicle: string | null,
   selectedVehicleId?: VehicleId
-): void => {
-  const markersForVehicle = markers[vehicle.id]
-  if (!markersForVehicle) {
-    return
-  }
-
-  const { icon: vehicleIcon, label: vehicleLabel } = markersForVehicle
-
-  const { id: vehicleId, latitude, longitude } = vehicle
-  const zoom = map!.getZoom()
-
+): Leaflet.DivIcon => {
   const labelString = vehicleLabelString(vehicle, settings)
-
-  const icon = Leaflet.divIcon(vehicleIconProps(vehicle))
-
-  const selectedClass = vehicleId === selectedVehicleId ? "selected" : ""
-  const label = Leaflet.divIcon({
+  const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
+  return Leaflet.divIcon({
     className: `m-vehicle-map__label ${selectedClass}`,
     html: `<svg viewBox="0 0 42 16" width="42" height="16">
             <rect
@@ -105,67 +91,68 @@ const updateVehicle = (
               ${labelString}
             </text>
           </svg>`,
-    iconAnchor: [12, -24],
+    iconAnchor: [21, -16],
   })
-
-  if (centerOnVehicle === vehicle.id) {
-    map!.setView([latitude, longitude], zoom)
-  }
-
-  vehicleIcon.setLatLng([latitude, longitude])
-  vehicleLabel.setLatLng([latitude, longitude])
-
-  vehicleIcon.setIcon(icon)
-  vehicleLabel.setIcon(label)
-}
-
-export const updateVehicles = (
-  { vehicles, centerOnVehicle }: Props,
-  state: State,
-  settings: Settings,
-  selectedVehicleId?: VehicleId
-): void => {
-  vehicles.forEach(v =>
-    updateVehicle(v, state, settings, centerOnVehicle, selectedVehicleId)
-  )
 }
 
 export const updateMarkers = (
   newVehicles: { [id: string]: Vehicle },
-  oldDict: MarkerDict,
+  oldMarkerDict: MarkerDict,
   map: LeafletMap,
+  appState: State,
   dispatch: Dispatch
 ): MarkerDict => {
-  const newDict = Object.entries(oldDict).reduce(
-    (acc: MarkerDict, [vehicleId, existingMarkers]) => {
-      // remove stale markers from the map
-      const newValue = newVehicles[vehicleId] ? existingMarkers : undefined
-      if (!newValue && existingMarkers) {
-        existingMarkers.icon.remove()
-        existingMarkers.label.remove()
+  const markersToKeep: MarkerDict = Object.entries(oldMarkerDict).reduce(
+    (acc: MarkerDict, [vehicleId, oldMarkers]) => {
+      if (newVehicles[vehicleId] === undefined) {
+        // Vehicle doesn't exist. Remove stale markers from the map.
+        oldMarkers.icon.remove()
+        oldMarkers.label.remove()
+        return acc
+      } else {
+        // Keep the markers. We'll update them later.
+        return { ...acc, [vehicleId]: oldMarkers }
       }
-      return { ...acc, [vehicleId]: newValue }
     },
     {} as MarkerDict
   )
 
-  return Object.entries(newVehicles).reduce((acc, [id, vehicle]) => {
-    if (acc[id] === undefined) {
-      acc[id] = {
-        icon: Leaflet.marker([vehicle.latitude, vehicle.longitude], {
-          icon: Leaflet.divIcon(vehicleIconProps(vehicle)),
-        })
-          .on("click", selectVehicle(vehicle, dispatch))
-          .addTo(map),
-        label: Leaflet.marker([vehicle.latitude, vehicle.longitude], {
-          icon: Leaflet.divIcon(vehicleIconProps(vehicle)),
-        })
-          .on("click", selectVehicle(vehicle, dispatch))
-          .addTo(map),
+  return Object.entries(newVehicles).reduce(
+    (existingMarkers, [vehicleId, vehicle]) => {
+      const vehicleIcon: Leaflet.DivIcon = makeVehicleIcon(vehicle)
+      const labelIcon: Leaflet.DivIcon = makeLabelIcon(
+        vehicle,
+        appState.settings,
+        appState.selectedVehicleId
+      )
+      if (existingMarkers[vehicleId] === undefined) {
+        // A new vehicle. Make new markers for it.
+        const markers = {
+          icon: Leaflet.marker([vehicle.latitude, vehicle.longitude], {
+            icon: vehicleIcon,
+          })
+            .on("click", selectVehicle(vehicle, dispatch))
+            .addTo(map),
+          label: Leaflet.marker([vehicle.latitude, vehicle.longitude], {
+            icon: labelIcon,
+          })
+            .on("click", selectVehicle(vehicle, dispatch))
+            .addTo(map),
+        }
+        return { ...existingMarkers, [vehicleId]: markers }
+      } else {
+        // Markers already exist for this vehicle. Update them.
+        const markers = existingMarkers[vehicleId]
+        markers.icon.setLatLng([vehicle.latitude, vehicle.longitude])
+        markers.label.setLatLng([vehicle.latitude, vehicle.longitude])
+
+        markers.icon.setIcon(vehicleIcon)
+        markers.label.setIcon(labelIcon)
+        return existingMarkers
       }
-    }
-    return acc
-  }, newDict)
+    },
+    markersToKeep
+  )
 }
 
 const removeDeselectedRouteShapes = (
@@ -246,17 +233,25 @@ export const updateShapes = (
   )
 }
 
-export const defaultCenter = ({
-  centerOnVehicle,
-}: Props): [number, number] | undefined =>
-  centerOnVehicle ? undefined : [42.360718, -71.05891]
+export const defaultCenter: [number, number] = [42.360718, -71.05891]
+
+export const recenterMap = (
+  map: LeafletMap,
+  centerOnVehicle: VehicleId | null,
+  vehiclesById: { [id: string]: Vehicle }
+): void => {
+  if (centerOnVehicle !== null) {
+    const vehicle: Vehicle | undefined = vehiclesById[centerOnVehicle]
+    if (vehicle !== undefined) {
+      map.setView([vehicle.latitude, vehicle.longitude], map.getZoom())
+    }
+  }
+}
 
 const Map = (props: Props): ReactElement<HTMLDivElement> => {
-  const [{ selectedVehicleId, settings }, dispatch] = useContext(
-    StateDispatchContext
-  )
+  const [appState, dispatch] = useContext(StateDispatchContext)
   const containerRef: MutableRefObject<HTMLDivElement | null> = useRef(null)
-  const [state, updateState] = useState<State>({
+  const [mapState, setMapState] = useState<MapState>({
     map: null,
     markers: {},
     shapes: {},
@@ -269,9 +264,9 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
     }
 
     const map =
-      state.map ||
+      mapState.map ||
       Leaflet.map(containerRef.current, {
-        center: defaultCenter(props),
+        center: props.centerOnVehicle ? undefined : defaultCenter,
         layers: [
           Leaflet.tileLayer(
             `https://mbta-map-tiles-dev.s3.amazonaws.com/osm_tiles/{z}/{x}/{y}.png`,
@@ -286,28 +281,29 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
       })
 
     const zoom =
-      state.zoom || Leaflet.control.zoom({ position: "topright" }).addTo(map)
+      mapState.zoom || Leaflet.control.zoom({ position: "topright" }).addTo(map)
 
     const newVehicles = props.vehicles.reduce(
       (acc, vehicle) => ({ ...acc, [vehicle.id]: vehicle }),
       {} as { [id: string]: Vehicle }
     )
 
-    const markers = updateMarkers(newVehicles, state.markers, map, dispatch)
-
-    updateVehicles(
-      props,
-      { map, markers, shapes: {}, zoom },
-      settings,
-      selectedVehicleId
+    const markers = updateMarkers(
+      newVehicles,
+      mapState.markers,
+      map,
+      appState,
+      dispatch
     )
 
     const shapes =
       props.shapes !== undefined
-        ? updateShapes(props.shapes, state.shapes, map)
+        ? updateShapes(props.shapes, mapState.shapes, map)
         : {}
 
-    updateState({ map, markers, shapes, zoom })
+    recenterMap(map, props.centerOnVehicle, newVehicles)
+
+    setMapState({ map, markers, shapes, zoom })
   }, [props, containerRef])
 
   return (
