@@ -107,7 +107,7 @@ const RouteLadder = ({
             timepoints={timepoints}
             vehicles={vehiclesForRoute ? vehiclesForRoute.onRouteVehicles : []}
             ghosts={
-              vehiclesForRoute && featureIsEnabled("ghost_buses")
+              vehiclesForRoute
                 ? vehiclesForRoute.ghosts
                 : []
             }
