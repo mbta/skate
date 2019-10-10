@@ -1,5 +1,5 @@
 defmodule Realtime.Ghost do
-  alias Gtfs.{Block, Direction, Route, RoutePattern, StopTime, Trip}
+  alias Gtfs.{Block, Direction, Route, RoutePattern, Run, StopTime, Trip}
   alias Realtime.TimepointStatus
   alias Realtime.Vehicle
 
@@ -10,6 +10,7 @@ defmodule Realtime.Ghost do
           trip_id: Trip.id(),
           headsign: String.t(),
           block_id: Block.id(),
+          run_id: Run.id(),
           via_variant: RoutePattern.via_variant() | nil,
           scheduled_timepoint_status: TimepointStatus.timepoint_status()
         }
@@ -33,6 +34,7 @@ defmodule Realtime.Ghost do
     :trip_id,
     :headsign,
     :block_id,
+    :run_id,
     :via_variant,
     :scheduled_timepoint_status
   ]
@@ -64,6 +66,7 @@ defmodule Realtime.Ghost do
             trip_id: trip.id,
             headsign: trip.headsign,
             block_id: trip.block_id,
+            run_id: trip.run_id,
             via_variant: trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id),
             scheduled_timepoint_status: timepoint_status
           }

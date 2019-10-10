@@ -161,6 +161,7 @@ describe("Header", () => {
       tripId: "trip",
       headsign: "headsign",
       blockId: "block",
+      runId: null,
       viaVariant: "X",
       scheduledTimepointStatus: {
         timepointId: "t0",

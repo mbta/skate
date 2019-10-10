@@ -27,6 +27,7 @@ export interface Ghost {
   tripId: TripId
   headsign: string
   blockId: BlockId
+  runId: RunId | null
   viaVariant: ViaVariant | null
   scheduledTimepointStatus: VehicleTimepointStatus
 }

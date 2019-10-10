@@ -1,5 +1,5 @@
 import { isShuttle } from "../models/vehicle"
-import { Vehicle } from "../realtime"
+import { Ghost, Vehicle } from "../realtime"
 import { Settings, vehicleLabelSetting, VehicleLabelSetting } from "../settings"
 
 const vehicleLabel = (vehicle: Vehicle, settings: Settings): string => {
@@ -8,6 +8,16 @@ const vehicleLabel = (vehicle: Vehicle, settings: Settings): string => {
       return runIdToLabel(vehicle)
     case VehicleLabelSetting.VehicleNumber:
       return labelToLabel(vehicle)
+  }
+}
+
+export const ghostLabel = (ghost: Ghost, settings: Settings): string => {
+  // Ghosts only show up on the ladder
+  switch (settings.ladderVehicleLabel) {
+    case VehicleLabelSetting.RunNumber:
+      return ghost.runId == null ? "N/A" : ghost.runId.split("-")[1]
+    case VehicleLabelSetting.VehicleNumber:
+      return "N/A"
   }
 }
 

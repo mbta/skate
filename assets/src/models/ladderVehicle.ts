@@ -237,7 +237,7 @@ const ghostOnLadder = (
     vehicleId: ghost.id,
     headwaySpacing: null,
     label: "N/A",
-    runId: null,
+    runId: ghost.runId,
     viaVariant: ghost.viaVariant,
     status: "ghost",
     vehicleDirection,

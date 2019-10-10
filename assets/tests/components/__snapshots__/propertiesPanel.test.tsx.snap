@@ -43,7 +43,7 @@ Array [
                 x="0"
                 y={31}
               >
-                N/A
+                0123
               </text>
               <g
                 transform="scale(0.7) translate(-24,-23)"
@@ -113,7 +113,7 @@ Array [
               <td
                 className="m-properties-panel__property-value"
               >
-                Not Available
+                123-0123
               </td>
             </tr>
           </tbody>

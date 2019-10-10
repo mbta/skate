@@ -164,6 +164,7 @@ describe("routeLadder", () => {
       tripId: "ghost trip",
       headsign: "headsign",
       blockId: "ghost block",
+      runId: "123-0123",
       viaVariant: null,
       scheduledTimepointStatus: {
         timepointId: "MORTN",
