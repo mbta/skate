@@ -116,7 +116,7 @@ defmodule Realtime.ServerTest do
 
       {:ok, server_pid} = Server.start_link([])
 
-      :ok = Server.update({[], [@shuttle]}, server_pid)
+      :ok = Server.update({%{}, [@shuttle]}, server_pid)
 
       %{server_pid: server_pid}
     end
@@ -128,7 +128,7 @@ defmodule Realtime.ServerTest do
     test "clients get updated data pushed to them", %{server_pid: pid} do
       Server.subscribe_to_all_shuttles(pid)
 
-      Server.update({[], [@shuttle, @shuttle]}, pid)
+      Server.update({%{}, [@shuttle, @shuttle]}, pid)
 
       assert_receive {:new_realtime_data, :shuttles, lookup_args}
       assert Server.lookup(lookup_args) == [@shuttle, @shuttle]
