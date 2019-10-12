@@ -30,7 +30,7 @@ defmodule Skate.MixProject do
 
     apps =
       if Mix.env() == :prod do
-        [:ehmon | apps]
+        [:ehmon, :diskusage_logger | apps]
       else
         apps
       end
@@ -66,6 +66,7 @@ defmodule Skate.MixProject do
       {:dialyxir, "~> 0.5", only: [:dev, :test], runtime: false},
       {:distillery, "~> 2.0", runtime: false},
       {:ehmon, github: "mbta/ehmon", only: :prod},
+      {:diskusage_logger, "~> 0.2.0"},
       {:httpoison, "~> 1.5.0"},
       {:bypass, "~> 1.0.0", only: :test},
       {:csv, "~> 2.3.0"},

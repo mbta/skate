@@ -7,6 +7,9 @@ RUN apk add --update bash \
 # Install curl so we can query for our instance ID
 RUN apk add --no-cache --update curl
 
+# Install coreutils so we can call df to get disk space (through Erlang os_mon)
+RUN apk add --no-cache --update coreutils
+
 WORKDIR /root
 
 # Set exposed ports
