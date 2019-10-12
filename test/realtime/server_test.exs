@@ -107,6 +107,24 @@ defmodule Realtime.ServerTest do
 
       assert Server.lookup(lookup_args) == @vehicles_for_route
     end
+
+    test "inactive routes have all their vehicle data removed", %{server_pid: server_pid} do
+      Server.subscribe_to_route("1", server_pid)
+
+      Server.update({%{}, []}, server_pid)
+
+      assert_receive(
+        {:new_realtime_data, :vehicles, lookup_args},
+        200,
+        "Client received vehicle positions"
+      )
+
+      assert Server.lookup(lookup_args) == %{
+               ghosts: [],
+               incoming_vehicles: [],
+               on_route_vehicles: []
+             }
+    end
   end
 
   describe "subscribe_to_all_shuttles" do

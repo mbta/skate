@@ -136,7 +136,7 @@ defmodule Realtime.Server do
     removed_route_ids = active_route_ids -- new_active_route_ids
 
     for route_id <- removed_route_ids do
-      _ = :ets.delete_object(ets, {:route_id, route_id})
+      _ = :ets.delete(ets, {:route_id, route_id})
     end
 
     for {route_id, vehicles} <- vehicles_by_route_id do
