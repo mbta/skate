@@ -257,6 +257,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
     shapes: {},
     zoom: null,
   })
+  const [autoCenter, setAutoCenter] = useState<boolean>(true)
 
   useEffect(() => {
     if (!containerRef.current) {
@@ -278,6 +279,9 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         ],
         zoom: props.initialZoom || 16,
         zoomControl: false,
+      }).on("dragstart", () => {
+        // If the user drags, they want manual control of the map.
+        setAutoCenter(false)
       })
 
     const zoom =
@@ -301,7 +305,9 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         ? updateShapes(props.shapes, mapState.shapes, map)
         : {}
 
-    recenterMap(map, props.centerOnVehicle, newVehicles)
+    if (autoCenter) {
+      recenterMap(map, props.centerOnVehicle, newVehicles)
+    }
 
     setMapState({ map, markers, shapes, zoom })
   }, [props, containerRef])
