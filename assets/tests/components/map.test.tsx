@@ -73,9 +73,7 @@ const vehicle: Vehicle = {
 
 describe("map", () => {
   test("renders", () => {
-    const tree = renderer
-      .create(<Map vehicles={[vehicle]} centerOnVehicle={vehicle.id} />)
-      .toJSON()
+    const tree = renderer.create(<Map vehicles={[vehicle]} />).toJSON()
 
     expect(tree).toMatchSnapshot()
   })
@@ -248,27 +246,17 @@ describe("updateShapes", () => {
 })
 
 describe("recenterMap", () => {
-  test("centers the map on centerOnVehicle", () => {
+  test("centers the map on the vehicle", () => {
     document.body.innerHTML = "<div id='map'></div>"
     const map = Leaflet.map("map", { center: defaultCenter, zoom: 16 })
-    recenterMap(map, vehicle.id, { [vehicle.id]: vehicle })
+    recenterMap(map, [vehicle], { current: false })
     expect(map.getCenter()).toEqual({ lat: 42, lng: -71 })
   })
 
-  test("does not center the map if centerOnVehicle is undefined", () => {
+  test("does not center the map if there are no vehicles", () => {
     document.body.innerHTML = "<div id='map'></div>"
     const map = Leaflet.map("map", { center: defaultCenter, zoom: 16 })
-    recenterMap(map, undefined, { [vehicle.id]: vehicle })
-    expect(map.getCenter()).toEqual({
-      lat: defaultCenter[0],
-      lng: defaultCenter[1],
-    })
-  })
-
-  test("does not center the if centerOnVehicle is not found", () => {
-    document.body.innerHTML = "<div id='map'></div>"
-    const map = Leaflet.map("map", { center: defaultCenter, zoom: 16 })
-    recenterMap(map, vehicle.id, {})
+    recenterMap(map, [], { current: false })
     expect(map.getCenter()).toEqual({
       lat: defaultCenter[0],
       lng: defaultCenter[1],

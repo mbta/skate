@@ -1,4 +1,4 @@
-import Leaflet, { Map as LeafletMap, Marker } from "leaflet"
+import Leaflet, { LatLng, Map as LeafletMap, Marker } from "leaflet"
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
 import React, {
   MutableRefObject,
@@ -18,8 +18,6 @@ import { Dispatch, selectVehicle as selectVehicleAction, State } from "../state"
 
 interface Props {
   vehicles: Vehicle[]
-  centerOnVehicle?: string
-  initialZoom?: number
   shapes?: Shape[]
 }
 
@@ -237,15 +235,28 @@ export const defaultCenter: [number, number] = [42.360718, -71.05891]
 
 export const recenterMap = (
   map: LeafletMap,
-  centerOnVehicle: VehicleId | undefined,
-  vehiclesById: { [id: string]: Vehicle }
+  vehicles: Vehicle[],
+  isAutoMove: MutableRefObject<boolean>
 ): void => {
-  if (centerOnVehicle !== undefined) {
-    const vehicle: Vehicle | undefined = vehiclesById[centerOnVehicle]
-    if (vehicle !== undefined) {
-      map.setView([vehicle.latitude, vehicle.longitude], map.getZoom())
-    }
+  const latLngs: LatLng[] = vehicles.map(vehicle =>
+    Leaflet.latLng(vehicle.latitude, vehicle.longitude)
+  )
+  isAutoMove.current = true
+  if (latLngs.length === 0) {
+    map.setView(defaultCenter, 13)
+  } else if (latLngs.length === 1) {
+    map.setView(latLngs[0], 16)
+  } else if (latLngs.length > 1) {
+    map.fitBounds(Leaflet.latLngBounds(latLngs), {
+      paddingBottomRight: [100, 100],
+      paddingTopLeft: [250, 100],
+    })
   }
+  // The move starts asynchronously.
+  // Wait until it's really started to start listening for manual moves again.
+  window.requestAnimationFrame(() => {
+    isAutoMove.current = false
+  })
 }
 
 const Map = (props: Props): ReactElement<HTMLDivElement> => {
@@ -258,6 +269,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
     zoom: null,
   })
   const [autoCenter, setAutoCenter] = useState<boolean>(true)
+  const isAutoMove: MutableRefObject<boolean> = useRef(false)
 
   useEffect(() => {
     if (!containerRef.current) {
@@ -268,7 +280,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
       mapState.map ||
       Leaflet.map(containerRef.current, {
         maxBounds: [[41.2, -72], [43, -69.8]],
-        center: props.centerOnVehicle ? undefined : defaultCenter,
+        center: undefined,
         layers: [
           Leaflet.tileLayer(
             `https://mbta-map-tiles-dev.s3.amazonaws.com/osm_tiles/{z}/{x}/{y}.png`,
@@ -278,11 +290,13 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
             }
           ),
         ],
-        zoom: props.initialZoom || 16,
         zoomControl: false,
-      }).on("dragstart", () => {
-        // If the user drags, they want manual control of the map.
-        setAutoCenter(false)
+      }).on("movestart", () => {
+        // If the user drags or zooms, they want manual control of the map.
+        // But don't disable autoCenter if the move was triggered by an autoCenter.
+        if (!isAutoMove.current) {
+          setAutoCenter(false)
+        }
       })
 
     const zoom =
@@ -307,7 +321,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         : {}
 
     if (autoCenter) {
-      recenterMap(map, props.centerOnVehicle, newVehicles)
+      recenterMap(map, props.vehicles, isAutoMove)
     }
 
     setMapState({ map, markers, shapes, zoom })
