@@ -43,7 +43,6 @@ interface MapState {
   map: LeafletMap | null
   markers: MarkerDict
   shapes: PolylinesByShapeId
-  zoom: Leaflet.Control | null
 }
 
 const selectVehicle = ({ id }: Vehicle, dispatch: Dispatch) => () =>
@@ -259,6 +258,36 @@ export const recenterMap = (
   })
 }
 
+export const newLeafletMap = (
+  container: HTMLDivElement | string,
+  isAutoMove: MutableRefObject<boolean>,
+  disableAutoCenter: () => void
+): LeafletMap => {
+  const map: LeafletMap = Leaflet.map(container, {
+    maxBounds: [[41.2, -72], [43, -69.8]],
+    center: undefined,
+    layers: [
+      Leaflet.tileLayer(
+        `https://mbta-map-tiles-dev.s3.amazonaws.com/osm_tiles/{z}/{x}/{y}.png`,
+        {
+          attribution:
+            '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+        }
+      ),
+    ],
+    zoomControl: false,
+  })
+  map.on("movestart", () => {
+    // If the user drags or zooms, they want manual control of the map.
+    // But don't disable autoCenter if the move was triggered by an autoCenter.
+    if (!isAutoMove.current) {
+      disableAutoCenter()
+    }
+  })
+  Leaflet.control.zoom({ position: "topright" }).addTo(map)
+  return map
+}
+
 const Map = (props: Props): ReactElement<HTMLDivElement> => {
   const [appState, dispatch] = useContext(StateDispatchContext)
   const containerRef: MutableRefObject<HTMLDivElement | null> = useRef(null)
@@ -266,7 +295,6 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
     map: null,
     markers: {},
     shapes: {},
-    zoom: null,
   })
   const [autoCenter, setAutoCenter] = useState<boolean>(true)
   const isAutoMove: MutableRefObject<boolean> = useRef(false)
@@ -278,29 +306,9 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
 
     const map =
       mapState.map ||
-      Leaflet.map(containerRef.current, {
-        maxBounds: [[41.2, -72], [43, -69.8]],
-        center: undefined,
-        layers: [
-          Leaflet.tileLayer(
-            `https://mbta-map-tiles-dev.s3.amazonaws.com/osm_tiles/{z}/{x}/{y}.png`,
-            {
-              attribution:
-                '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-            }
-          ),
-        ],
-        zoomControl: false,
-      }).on("movestart", () => {
-        // If the user drags or zooms, they want manual control of the map.
-        // But don't disable autoCenter if the move was triggered by an autoCenter.
-        if (!isAutoMove.current) {
-          setAutoCenter(false)
-        }
-      })
-
-    const zoom =
-      mapState.zoom || Leaflet.control.zoom({ position: "topright" }).addTo(map)
+      newLeafletMap(containerRef.current, isAutoMove, () =>
+        setAutoCenter(false)
+      )
 
     const newVehicles = props.vehicles.reduce(
       (acc, vehicle) => ({ ...acc, [vehicle.id]: vehicle }),
@@ -324,7 +332,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
       recenterMap(map, props.vehicles, isAutoMove)
     }
 
-    setMapState({ map, markers, shapes, zoom })
+    setMapState({ map, markers, shapes })
   }, [props, containerRef])
 
   return (

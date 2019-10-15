@@ -4,6 +4,7 @@ import renderer from "react-test-renderer"
 import Map, {
   defaultCenter,
   latLons,
+  newLeafletMap,
   PolylinesByShapeId,
   recenterMap,
   strokeOptions,
@@ -246,17 +247,19 @@ describe("updateShapes", () => {
 })
 
 describe("recenterMap", () => {
-  test("centers the map on the vehicle", () => {
+  test("centers the map on a single vehicle", () => {
     document.body.innerHTML = "<div id='map'></div>"
-    const map = Leaflet.map("map", { center: defaultCenter, zoom: 16 })
-    recenterMap(map, [vehicle], { current: false })
+    const isAutoMove = { current: false }
+    const map = newLeafletMap("map", isAutoMove, () => {})
+    recenterMap(map, [vehicle], isAutoMove)
     expect(map.getCenter()).toEqual({ lat: 42, lng: -71 })
   })
 
   test("does not center the map if there are no vehicles", () => {
     document.body.innerHTML = "<div id='map'></div>"
-    const map = Leaflet.map("map", { center: defaultCenter, zoom: 16 })
-    recenterMap(map, [], { current: false })
+    const isAutoMove = { current: false }
+    const map = newLeafletMap("map", isAutoMove, () => {})
+    recenterMap(map, [], isAutoMove)
     expect(map.getCenter()).toEqual({
       lat: defaultCenter[0],
       lng: defaultCenter[1],
