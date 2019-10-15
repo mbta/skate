@@ -17,6 +17,9 @@ import { Shape, Stop } from "../../src/schedule"
 import { defaultSettings } from "../../src/settings"
 import { State } from "../../src/state"
 
+// tslint:disable-next-line: no-empty
+const noop = (): void => {}
+
 const vehicle: Vehicle = {
   id: "y1818",
   label: "1818",
@@ -250,15 +253,25 @@ describe("recenterMap", () => {
   test("centers the map on a single vehicle", () => {
     document.body.innerHTML = "<div id='map'></div>"
     const isAutoMove = { current: false }
-    const map = newLeafletMap("map", isAutoMove, () => {})
+    const map = newLeafletMap("map", isAutoMove, noop)
     recenterMap(map, [vehicle], isAutoMove)
     expect(map.getCenter()).toEqual({ lat: 42, lng: -71 })
+  })
+
+  test("fits around multiple vehicles", () => {
+    const vehicle1 = { ...vehicle, latitude: 42.0 }
+    const vehicle2 = { ...vehicle, latitude: 42.5 }
+    document.body.innerHTML = "<div id='map'></div>"
+    const isAutoMove = { current: false }
+    const map = newLeafletMap("map", isAutoMove, noop)
+    recenterMap(map, [vehicle1, vehicle2], isAutoMove)
+    expect(map.getCenter().lat).toBeCloseTo(42.25, 3)
   })
 
   test("does not center the map if there are no vehicles", () => {
     document.body.innerHTML = "<div id='map'></div>"
     const isAutoMove = { current: false }
-    const map = newLeafletMap("map", isAutoMove, () => {})
+    const map = newLeafletMap("map", isAutoMove, noop)
     recenterMap(map, [], isAutoMove)
     expect(map.getCenter()).toEqual({
       lat: defaultCenter[0],
