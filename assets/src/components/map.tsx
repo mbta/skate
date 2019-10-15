@@ -267,6 +267,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
     const map =
       mapState.map ||
       Leaflet.map(containerRef.current, {
+        maxBounds: [[41.2, -72], [43, -69.8]],
         center: props.centerOnVehicle ? undefined : defaultCenter,
         layers: [
           Leaflet.tileLayer(
