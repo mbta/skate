@@ -258,6 +258,33 @@ export const recenterMap = (
   })
 }
 
+const recenterControl = (
+  setAutoCenter: (autoCenter: boolean) => void,
+  controlOptions: Leaflet.ControlOptions
+): Leaflet.Control => {
+  const RecenterControl = Leaflet.Control.extend({
+    options: controlOptions,
+    onAdd: (map: LeafletMap) => {
+      const container: HTMLElement = Leaflet.DomUtil.create(
+        "div",
+        "leaflet-bar leaflet-control"
+      )
+      const link: HTMLElement = Leaflet.DomUtil.create("a", "", container)
+      link.innerHTML = "x"
+      ;(link as HTMLLinkElement).href = "#"
+      link.title = "Recenter map"
+      link.setAttribute("role", "button")
+      link.setAttribute("aria-label", "Recenter map")
+      Leaflet.DomEvent.disableClickPropagation(link)
+      link.onclick = () => {
+        setAutoCenter(true)
+      }
+      return container
+    },
+  })
+  return new RecenterControl()
+}
+
 export const newLeafletMap = (
   container: HTMLDivElement | string,
   isAutoMove: MutableRefObject<boolean>,
@@ -285,6 +312,7 @@ export const newLeafletMap = (
     }
   })
   Leaflet.control.zoom({ position: "topright" }).addTo(map)
+  recenterControl(setAutoCenter, { position: "topright" }).addTo(map)
   return map
 }
 
@@ -331,7 +359,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
     }
 
     setMapState({ map, markers, shapes })
-  }, [props, containerRef])
+  }, [autoCenter, props, containerRef, appState])
 
   return (
     <div
