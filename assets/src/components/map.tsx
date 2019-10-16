@@ -247,8 +247,8 @@ export const recenterMap = (
     map.setView(latLngs[0], 16)
   } else if (latLngs.length > 1) {
     map.fitBounds(Leaflet.latLngBounds(latLngs), {
-      paddingBottomRight: [100, 100],
-      paddingTopLeft: [250, 100],
+      paddingBottomRight: [40, 80],
+      paddingTopLeft: [220, 40],
     })
   }
   // The move starts asynchronously.
