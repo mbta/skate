@@ -261,7 +261,7 @@ export const recenterMap = (
 export const newLeafletMap = (
   container: HTMLDivElement | string,
   isAutoMove: MutableRefObject<boolean>,
-  disableAutoCenter: () => void
+  setAutoCenter: (autoCenter: boolean) => void
 ): LeafletMap => {
   const map: LeafletMap = Leaflet.map(container, {
     maxBounds: [[41.2, -72], [43, -69.8]],
@@ -281,7 +281,7 @@ export const newLeafletMap = (
     // If the user drags or zooms, they want manual control of the map.
     // But don't disable autoCenter if the move was triggered by an autoCenter.
     if (!isAutoMove.current) {
-      disableAutoCenter()
+      setAutoCenter(false)
     }
   })
   Leaflet.control.zoom({ position: "topright" }).addTo(map)
@@ -306,9 +306,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
 
     const map =
       mapState.map ||
-      newLeafletMap(containerRef.current, isAutoMove, () =>
-        setAutoCenter(false)
-      )
+      newLeafletMap(containerRef.current, isAutoMove, setAutoCenter)
 
     const newVehicles = props.vehicles.reduce(
       (acc, vehicle) => ({ ...acc, [vehicle.id]: vehicle }),
