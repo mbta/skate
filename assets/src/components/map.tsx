@@ -264,7 +264,7 @@ const recenterControl = (
 ): Leaflet.Control => {
   const RecenterControl = Leaflet.Control.extend({
     options: controlOptions,
-    onAdd: (map: LeafletMap) => {
+    onAdd: () => {
       const container: HTMLElement = Leaflet.DomUtil.create(
         "div",
         "leaflet-bar leaflet-control m-vehicle-map__recenter-button"
