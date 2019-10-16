@@ -267,10 +267,20 @@ const recenterControl = (
     onAdd: (map: LeafletMap) => {
       const container: HTMLElement = Leaflet.DomUtil.create(
         "div",
-        "leaflet-bar leaflet-control"
+        "leaflet-bar leaflet-control m-vehicle-map__recenter-button"
       )
       const link: HTMLElement = Leaflet.DomUtil.create("a", "", container)
-      link.innerHTML = "x"
+      link.innerHTML = `<svg
+        height="30"
+        viewBox="-7 -5 36 36"
+        width="30"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+          transform="rotate(60, 12, 12)"
+        />
+      </svg>`
       ;(link as HTMLLinkElement).href = "#"
       link.title = "Recenter map"
       link.setAttribute("role", "button")

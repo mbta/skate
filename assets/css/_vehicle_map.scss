@@ -42,3 +42,11 @@
   stroke: $color-stop-stroke;
   stroke-width: 1;
 }
+
+.m-vehicle-map__recenter-button {
+  path {
+    fill: none;
+    stroke: $black;
+    stroke-width: 1.8;
+  }
+}
