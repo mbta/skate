@@ -110,4 +110,34 @@ defmodule Gtfs.RouteTest do
       end
     end
   end
+
+  describe "shuttle_route?/1" do
+    test "returns true if this route is a 'Rail Replacement Bus'" do
+      shuttle_route = %Route{
+        id: "Shuttle-BabcockBostonCollege",
+        description: "Rail Replacement Bus",
+        direction_names: %{
+          0 => "Outbound",
+          1 => "Inbound"
+        },
+        name: "Green Line B Shuttle"
+      }
+
+      assert Route.shuttle_route?(shuttle_route)
+    end
+
+    test "returns false otherwise" do
+      non_shuttle_route = %Route{
+        id: "39",
+        description: "Key Bus",
+        direction_names: %{
+          0 => "Outbound",
+          1 => "Inbound"
+        },
+        name: "39"
+      }
+
+      refute Route.shuttle_route?(non_shuttle_route)
+    end
+  end
 end
