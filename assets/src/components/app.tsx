@@ -3,6 +3,7 @@ import { BrowserRouter, Route as BrowserRoute } from "react-router-dom"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import AboutPage from "./aboutPage"
 import LadderPage from "./ladderPage"
+import SearchPage from "./searchPage"
 import SettingsPage from "./settingsPage"
 import ShuttleMapPage from "./shuttleMapPage"
 import TabBar from "./tabBar"
@@ -22,6 +23,7 @@ const App = (): ReactElement<HTMLDivElement> => {
         />
         <BrowserRoute exact={true} path="/settings" component={SettingsPage} />
         <BrowserRoute path="/about" component={AboutPage} />
+        <BrowserRoute exact={true} path="/search" component={SearchPage} />
       </div>
     </BrowserRouter>
   )

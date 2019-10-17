@@ -1,6 +1,7 @@
 import React, { ReactElement } from "react"
 import { NavLink } from "react-router-dom"
 import { ladderIcon, mapIcon } from "../helpers/icon"
+import featureIsEnabled from "../laboratoryFeatures"
 
 interface Props {
   pickerContainerIsVisible: boolean
@@ -41,7 +42,6 @@ const TabBar = ({
           {mapIcon("m-tab-bar__icon")}
         </NavLink>
       </li>
-
       <li>
         <NavLink
           activeClassName="m-tab-bar__link--active"
@@ -52,7 +52,6 @@ const TabBar = ({
           {settingsIcon}
         </NavLink>
       </li>
-
       <li>
         <NavLink
           activeClassName="m-tab-bar__link--active"
@@ -63,6 +62,18 @@ const TabBar = ({
           {aboutIcon}
         </NavLink>
       </li>
+      {featureIsEnabled("search_page") ? (
+        <li>
+          <NavLink
+            activeClassName="m-tab-bar__link--active"
+            className="m-tab-bar__link"
+            title="Search"
+            to="/search"
+          >
+            {searchIcon}
+          </NavLink>
+        </li>
+      ) : null}
     </ul>
     <div className="m-tab-bar__t-logo">{tLogo}</div>
   </div>
@@ -107,6 +118,20 @@ const aboutIcon = (
     <path
       className="m-tab-bar__icon"
       d="m24 0a24 24 0 1 0 24 24 24 24 0 0 0 -24-24zm1.71 40.05a3.5 3.5 0 0 1 -4.82 0 3.15 3.15 0 0 1 -1-2.36 3.23 3.23 0 0 1 1-2.38 3.48 3.48 0 0 1 4.82 0 3.24 3.24 0 0 1 1 2.38 3.16 3.16 0 0 1 -1 2.36zm7-20.46a9.55 9.55 0 0 1 -2 2.59c-.79.73-1.57 1.47-2.36 2.22a10 10 0 0 0 -2 2.64 8.43 8.43 0 0 0 -.76 3.96h-4.59a14.32 14.32 0 0 1 .55-4.3 9.62 9.62 0 0 1 1.41-2.91 13.55 13.55 0 0 1 1.84-2c.66-.59 1.27-1.15 1.85-1.7a7.19 7.19 0 0 0 1.35-1.9 5 5 0 0 0 .55-2.45 4.58 4.58 0 0 0 -1.21-3.39 4.45 4.45 0 0 0 -3.27-1.2 4.91 4.91 0 0 0 -3.07 1.12 4.42 4.42 0 0 0 -1.46 3.73h-5.07a8.89 8.89 0 0 1 1.29-5 8.12 8.12 0 0 1 3.47-3 11.37 11.37 0 0 1 4.88-1 9.55 9.55 0 0 1 6.89 2.4 8.47 8.47 0 0 1 2.49 6.38 8 8 0 0 1 -.76 3.81z"
+    />
+  </svg>
+)
+
+const searchIcon = (
+  <svg
+    width="25px"
+    height="25px"
+    viewBox="0 0 48 48"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      className="m-tab-bar__icon"
+      d="m48.13 44.18-16.69-16.95a17.36 17.36 0 1 0 -3.82 3.88l16.63 16.89zm-45-26.93a14.25 14.25 0 1 1 14.25 14.25 14.27 14.27 0 0 1 -14.25-14.25z"
     />
   </svg>
 )
