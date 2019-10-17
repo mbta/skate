@@ -232,15 +232,15 @@ export const updateShapes = (
 
 export const defaultCenter: [number, number] = [42.360718, -71.05891]
 
-export const recenterMap = (
+export const autoCenter = (
   map: LeafletMap,
   vehicles: Vehicle[],
-  isAutoMove: MutableRefObject<boolean>
+  isAutoCentering: MutableRefObject<boolean>
 ): void => {
   const latLngs: LatLng[] = vehicles.map(vehicle =>
     Leaflet.latLng(vehicle.latitude, vehicle.longitude)
   )
-  isAutoMove.current = true
+  isAutoCentering.current = true
   if (latLngs.length === 0) {
     map.setView(defaultCenter, 13)
   } else if (latLngs.length === 1) {
@@ -254,12 +254,12 @@ export const recenterMap = (
   // The move starts asynchronously.
   // Wait until it's really started to start listening for manual moves again.
   window.requestAnimationFrame(() => {
-    isAutoMove.current = false
+    isAutoCentering.current = false
   })
 }
 
 const recenterControl = (
-  setAutoCenter: (autoCenter: boolean) => void,
+  setShouldAutoCenter: (shouldAutoCenter: boolean) => void,
   controlOptions: Leaflet.ControlOptions
 ): Leaflet.Control => {
   const RecenterControl = Leaflet.Control.extend({
@@ -287,7 +287,7 @@ const recenterControl = (
       link.setAttribute("aria-label", "Recenter map")
       Leaflet.DomEvent.disableClickPropagation(link)
       link.onclick = () => {
-        setAutoCenter(true)
+        setShouldAutoCenter(true)
       }
       return container
     },
@@ -297,8 +297,8 @@ const recenterControl = (
 
 export const newLeafletMap = (
   container: HTMLDivElement | string,
-  isAutoMove: MutableRefObject<boolean>,
-  setAutoCenter: (autoCenter: boolean) => void
+  isAutoCentering: MutableRefObject<boolean>,
+  setShouldAutoCenter: (shouldAutoCenter: boolean) => void
 ): LeafletMap => {
   const map: LeafletMap = Leaflet.map(container, {
     maxBounds: [[41.2, -72], [43, -69.8]],
@@ -316,13 +316,13 @@ export const newLeafletMap = (
   })
   map.on("movestart", () => {
     // If the user drags or zooms, they want manual control of the map.
-    // But don't disable autoCenter if the move was triggered by an autoCenter.
-    if (!isAutoMove.current) {
-      setAutoCenter(false)
+    // But don't disable shouldAutoCenter if the move was triggered by an auto center.
+    if (!isAutoCentering.current) {
+      setShouldAutoCenter(false)
     }
   })
   Leaflet.control.zoom({ position: "topright" }).addTo(map)
-  recenterControl(setAutoCenter, { position: "topright" }).addTo(map)
+  recenterControl(setShouldAutoCenter, { position: "topright" }).addTo(map)
   return map
 }
 
@@ -334,8 +334,8 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
     markers: {},
     shapes: {},
   })
-  const [autoCenter, setAutoCenter] = useState<boolean>(true)
-  const isAutoMove: MutableRefObject<boolean> = useRef(false)
+  const [shouldAutoCenter, setShouldAutoCenter] = useState<boolean>(true)
+  const isAutoCentering: MutableRefObject<boolean> = useRef(false)
 
   useEffect(() => {
     if (!containerRef.current) {
@@ -344,7 +344,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
 
     const map =
       mapState.map ||
-      newLeafletMap(containerRef.current, isAutoMove, setAutoCenter)
+      newLeafletMap(containerRef.current, isAutoCentering, setShouldAutoCenter)
 
     const newVehicles = props.vehicles.reduce(
       (acc, vehicle) => ({ ...acc, [vehicle.id]: vehicle }),
@@ -364,12 +364,12 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         ? updateShapes(props.shapes, mapState.shapes, map)
         : {}
 
-    if (autoCenter) {
-      recenterMap(map, props.vehicles, isAutoMove)
+    if (shouldAutoCenter) {
+      autoCenter(map, props.vehicles, isAutoCentering)
     }
 
     setMapState({ map, markers, shapes })
-  }, [autoCenter, props, containerRef, appState])
+  }, [shouldAutoCenter, props, containerRef, appState])
 
   return (
     <div

@@ -2,11 +2,11 @@ import Leaflet from "leaflet"
 import React from "react"
 import renderer from "react-test-renderer"
 import Map, {
+  autoCenter,
   defaultCenter,
   latLons,
   newLeafletMap,
   PolylinesByShapeId,
-  recenterMap,
   strokeOptions,
   updateMarkers,
   updateShapes,
@@ -249,12 +249,12 @@ describe("updateShapes", () => {
   })
 })
 
-describe("recenterMap", () => {
+describe("autoCenter", () => {
   test("centers the map on a single vehicle", () => {
     document.body.innerHTML = "<div id='map'></div>"
-    const isAutoMove = { current: false }
-    const map = newLeafletMap("map", isAutoMove, noop)
-    recenterMap(map, [vehicle], isAutoMove)
+    const isAutoCentering = { current: false }
+    const map = newLeafletMap("map", isAutoCentering, noop)
+    autoCenter(map, [vehicle], isAutoCentering)
     expect(map.getCenter()).toEqual({ lat: 42, lng: -71 })
   })
 
@@ -262,17 +262,17 @@ describe("recenterMap", () => {
     const vehicle1 = { ...vehicle, latitude: 42.0 }
     const vehicle2 = { ...vehicle, latitude: 42.5 }
     document.body.innerHTML = "<div id='map'></div>"
-    const isAutoMove = { current: false }
-    const map = newLeafletMap("map", isAutoMove, noop)
-    recenterMap(map, [vehicle1, vehicle2], isAutoMove)
+    const isAutoCentering = { current: false }
+    const map = newLeafletMap("map", isAutoCentering, noop)
+    autoCenter(map, [vehicle1, vehicle2], isAutoCentering)
     expect(map.getCenter().lat).toBeCloseTo(42.25, 3)
   })
 
   test("does not center the map if there are no vehicles", () => {
     document.body.innerHTML = "<div id='map'></div>"
-    const isAutoMove = { current: false }
-    const map = newLeafletMap("map", isAutoMove, noop)
-    recenterMap(map, [], isAutoMove)
+    const isAutoCentering = { current: false }
+    const map = newLeafletMap("map", isAutoCentering, noop)
+    autoCenter(map, [], isAutoCentering)
     expect(map.getCenter()).toEqual({
       lat: defaultCenter[0],
       lng: defaultCenter[1],
