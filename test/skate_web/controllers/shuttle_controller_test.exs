@@ -2,7 +2,7 @@ defmodule SkateWeb.ShuttleControllerTest do
   use SkateWeb.ConnCase
   import Test.Support.Helpers
 
-  alias Gtfs.Route
+  alias Gtfs.{Route, RoutePattern}
   alias SkateWeb.AuthManager
 
   describe "GET /api/shuttles" do
@@ -17,6 +17,16 @@ defmodule SkateWeb.ShuttleControllerTest do
             description: "Rail Replacement Bus"
           }
         ]
+      end)
+
+      reassign_env(:skate_web, :route_pattern_fn, fn _route_id, _direction_id ->
+        %RoutePattern{
+          id: "shuttle-pattern",
+          name: "Pattern Name",
+          route_id: "shuttle",
+          direction_id: 0,
+          representative_trip_id: ""
+        }
       end)
     end
 
@@ -37,6 +47,16 @@ defmodule SkateWeb.ShuttleControllerTest do
         |> get("/api/shuttles")
 
       assert %{"data" => [%{"id" => "shuttle"}]} = json_response(conn, 200)
+    end
+
+    test "replaces the name with the first 0-direction route pattern name", %{conn: conn} do
+      conn =
+        conn
+        |> api_headers()
+        |> logged_in()
+        |> get("/api/shuttles")
+
+      assert %{"data" => [%{"name" => "Pattern Name"}]} = json_response(conn, 200)
     end
   end
 

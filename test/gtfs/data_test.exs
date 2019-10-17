@@ -794,23 +794,88 @@ defmodule Gtfs.DataTest do
     end
   end
 
+  describe "first_route_pattern_for_route_and_direction/3" do
+    setup do
+      route_patterns = [
+        %RoutePattern{
+          id: "1",
+          name: "Route Pattern 1",
+          route_id: "r1",
+          direction_id: 0,
+          representative_trip_id: "t1"
+        },
+        %RoutePattern{
+          id: "2",
+          name: "Route Pattern 2",
+          route_id: "r1",
+          direction_id: 1,
+          representative_trip_id: "t2"
+        },
+        %RoutePattern{
+          id: "3",
+          name: "Route Pattern 3",
+          route_id: "r1",
+          direction_id: 0,
+          representative_trip_id: "t3"
+        },
+        %RoutePattern{
+          id: "4",
+          name: "Route Pattern 4",
+          route_id: "r2",
+          direction_id: 0,
+          representative_trip_id: "t4"
+        }
+      ]
+
+      data = %Data{
+        routes: [],
+        route_patterns: route_patterns,
+        timepoint_ids_by_route: %{},
+        shapes: %{},
+        stops: [],
+        trips: %{},
+        blocks: %{},
+        calendar: %{}
+      }
+
+      {:ok, data: data}
+    end
+
+    test "returns the first route pattern matching the route and direction", %{data: data} do
+      assert Data.first_route_pattern_for_route_and_direction(data, "r1", 0) == %RoutePattern{
+               id: "1",
+               name: "Route Pattern 1",
+               route_id: "r1",
+               direction_id: 0,
+               representative_trip_id: "t1"
+             }
+    end
+
+    test "returns nil if no route patterns match", %{data: data} do
+      assert Data.first_route_pattern_for_route_and_direction(data, "r2", 1) == nil
+    end
+  end
+
   describe "timepoint_ids_for_route/3" do
     test "returns all timepoint IDs for this route (either direction), sorted" do
       route_patterns = [
         %RoutePattern{
           id: "rp1",
+          name: "rp1",
           route_id: "r1",
           direction_id: 0,
           representative_trip_id: "t1"
         },
         %RoutePattern{
           id: "rp2",
+          name: "rp2",
           route_id: "r2",
           direction_id: 0,
           representative_trip_id: "t2"
         },
         %RoutePattern{
           id: "rp3",
+          name: "rp3",
           route_id: "r1",
           direction_id: 1,
           representative_trip_id: "t3"
@@ -869,12 +934,14 @@ defmodule Gtfs.DataTest do
       route_patterns = [
         %RoutePattern{
           id: "rp1",
+          name: "rp1",
           route_id: "r1",
           direction_id: 1,
           representative_trip_id: "t1"
         },
         %RoutePattern{
           id: "rp2",
+          name: "rp2",
           route_id: "r1",
           direction_id: 1,
           representative_trip_id: "t2"

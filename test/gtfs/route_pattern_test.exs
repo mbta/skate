@@ -18,6 +18,7 @@ defmodule Gtfs.RoutePatternTest do
     test "builds a RoutePattern struct from a csv row" do
       assert %RoutePattern{
                id: "39-3-0",
+               name: "Forest Hills Station via Huntington Avenue",
                route_id: "39",
                direction_id: 0,
                representative_trip_id: "40044234"
@@ -37,18 +38,21 @@ defmodule Gtfs.RoutePatternTest do
       route_patterns = [
         %RoutePattern{
           id: "1",
+          name: "Route Pattern 1",
           route_id: "10",
           direction_id: 0,
           representative_trip_id: "22"
         },
         %RoutePattern{
           id: "2",
+          name: "Route Pattern 2",
           route_id: "15",
           direction_id: 0,
           representative_trip_id: "21"
         },
         %RoutePattern{
           id: "3",
+          name: "Route Pattern 3",
           route_id: "10",
           direction_id: 1,
           representative_trip_id: "20"
@@ -58,12 +62,14 @@ defmodule Gtfs.RoutePatternTest do
       assert RoutePattern.for_route_id(route_patterns, "10") == [
                %RoutePattern{
                  id: "1",
+                 name: "Route Pattern 1",
                  route_id: "10",
                  direction_id: 0,
                  representative_trip_id: "22"
                },
                %RoutePattern{
                  id: "3",
+                 name: "Route Pattern 3",
                  route_id: "10",
                  direction_id: 1,
                  representative_trip_id: "20"
@@ -77,18 +83,21 @@ defmodule Gtfs.RoutePatternTest do
       route_patterns = [
         %RoutePattern{
           id: "1",
+          name: "Route Pattern 1",
           route_id: "10",
           direction_id: 0,
           representative_trip_id: "22"
         },
         %RoutePattern{
           id: "2",
+          name: "Route Pattern 2",
           route_id: "10",
           direction_id: 1,
           representative_trip_id: "21"
         },
         %RoutePattern{
           id: "3",
+          name: "Route Pattern 3",
           route_id: "10",
           direction_id: 1,
           representative_trip_id: "20"
@@ -99,6 +108,7 @@ defmodule Gtfs.RoutePatternTest do
                0 => [
                  %RoutePattern{
                    id: "1",
+                   name: "Route Pattern 1",
                    route_id: "10",
                    direction_id: 0,
                    representative_trip_id: "22"
@@ -107,12 +117,14 @@ defmodule Gtfs.RoutePatternTest do
                1 => [
                  %RoutePattern{
                    id: "2",
+                   name: "Route Pattern 2",
                    route_id: "10",
                    direction_id: 1,
                    representative_trip_id: "21"
                  },
                  %RoutePattern{
                    id: "3",
+                   name: "Route Pattern 3",
                    route_id: "10",
                    direction_id: 1,
                    representative_trip_id: "20"
