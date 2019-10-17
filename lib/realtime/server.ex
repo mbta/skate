@@ -19,7 +19,8 @@ defmodule Realtime.Server do
 
   @enforce_keys [:ets]
 
-  defstruct ets: nil
+  defstruct ets: nil,
+            active_route_ids: []
 
   @type subscription_key :: {:route_id, Route.id()} | :all_shuttles
 
@@ -30,7 +31,8 @@ defmodule Realtime.Server do
   @type broadcast_message :: {:new_realtime_data, data_category, lookup_key}
 
   @typep t :: %__MODULE__{
-           ets: :ets.tid()
+           ets: :ets.tid(),
+           active_route_ids: [Route.id()]
          }
 
   # Client functions
@@ -116,13 +118,26 @@ defmodule Realtime.Server do
 
   @impl true
   def handle_cast({:update, vehicles_by_route_id, shuttles}, %__MODULE__{} = state) do
-    _ = update_ets(state, vehicles_by_route_id, shuttles)
-    _ = broadcast(state)
-    {:noreply, state}
+    new_active_route_ids = Map.keys(vehicles_by_route_id)
+
+    _ = update_ets(state, vehicles_by_route_id, shuttles, new_active_route_ids)
+
+    new_state = Map.put(state, :active_route_ids, new_active_route_ids)
+    _ = broadcast(new_state)
+    {:noreply, new_state}
   end
 
-  defp update_ets(%__MODULE__{ets: ets}, vehicles_by_route_id, shuttles) do
-    _ = :ets.delete_all_objects(ets)
+  defp update_ets(
+         %__MODULE__{ets: ets, active_route_ids: active_route_ids},
+         vehicles_by_route_id,
+         shuttles,
+         new_active_route_ids
+       ) do
+    removed_route_ids = active_route_ids -- new_active_route_ids
+
+    for route_id <- removed_route_ids do
+      _ = :ets.delete(ets, {:route_id, route_id})
+    end
 
     for {route_id, vehicles} <- vehicles_by_route_id do
       _ = :ets.insert(ets, {{:route_id, route_id}, vehicles})
