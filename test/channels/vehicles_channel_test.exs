@@ -34,6 +34,11 @@ defmodule SkateWeb.VehiclesChannelTest do
                subscribe_and_join(socket, VehiclesChannel, "vehicles:shuttle:all")
     end
 
+    test "subscribes to a vehicle search", %{socket: socket} do
+      assert {:ok, %{data: []}, %Socket{}} =
+               subscribe_and_join(socket, VehiclesChannel, "vehicles:search:run:123")
+    end
+
     test "returns an error when joining a non-existant topic", %{socket: socket} do
       assert {:error, %{message: "no such topic \"rooms:1\""}} =
                subscribe_and_join(socket, VehiclesChannel, "rooms:1")

@@ -16,6 +16,27 @@ defmodule SkateWeb.VehiclesChannel do
     {:ok, vehicles_for_route, socket}
   end
 
+  def join("vehicles:search:" <> search_params, _message, socket) do
+    subscribe_args =
+      case search_params do
+        "all:" <> text ->
+          [text, :all]
+
+        "run:" <> text ->
+          [text, :run]
+
+        "vehicle:" <> text ->
+          [text, :vehicle]
+
+        "operator:" <> text ->
+          [text, :operator]
+      end
+
+    vehicles = Duration.log_duration(Server, :subscribe_to_search, subscribe_args)
+
+    {:ok, %{data: vehicles}, socket}
+  end
+
   def join(topic, _message, _socket) do
     {:error, %{message: "no such topic \"#{topic}\""}}
   end

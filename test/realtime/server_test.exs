@@ -153,12 +153,38 @@ defmodule Realtime.ServerTest do
     end
   end
 
+  describe "subscribe_to_search" do
+    setup do
+      reassign_env(:realtime, :trip_fn, fn _trip_id -> nil end)
+      reassign_env(:realtime, :block_fn, fn _block_id, _service_id -> nil end)
+
+      {:ok, server_pid} = Server.start_link([])
+
+      :ok = Server.update({@vehicles_by_route_id, [@shuttle]}, server_pid)
+
+      %{server_pid: server_pid}
+    end
+
+    test "clients get all shuttles upon subscribing", %{server_pid: pid} do
+      assert Server.subscribe_to_search("90", :all, pid) == [@vehicle, @shuttle]
+    end
+
+    test "clients get updated data pushed to them", %{server_pid: pid} do
+      Server.subscribe_to_search("90", :all, pid)
+
+      Server.update({%{}, [@shuttle, @shuttle]}, pid)
+
+      assert_receive {:new_realtime_data, :search, lookup_args}
+      assert Server.lookup(lookup_args) == [@shuttle, @shuttle]
+    end
+  end
+
   describe "lookup/2" do
     setup do
       ets = :ets.new(__MODULE__, [:set, :protected, {:read_concurrency, true}])
 
       :ets.insert(ets, {{:route_id, "1"}, @vehicles_for_route})
-
+      :ets.insert(ets, {:all_vehicles, [@vehicle, @shuttle]})
       :ets.insert(ets, {:all_shuttles, [@shuttle]})
 
       {:ok, %{ets: ets}}
@@ -176,8 +202,73 @@ defmodule Realtime.ServerTest do
              }
     end
 
+    test "fetches all vehicles, on routes and shuttles", %{ets: ets} do
+      assert Server.lookup({ets, :all_vehicles}) == [@vehicle, @shuttle]
+    end
+
     test "fetches all shuttles from the ets table", %{ets: ets} do
       assert Server.lookup({ets, :all_shuttles}) == [@shuttle]
+    end
+
+    test "searches all vehicles by any of run, vehicle, or operator", %{ets: ets} do
+      run_search_params = %{
+        text: "123",
+        property: :all
+      }
+
+      vehicle_search_params = %{
+        text: "123",
+        property: :run
+      }
+
+      operator_search_params = %{
+        text: "frank",
+        property: :operator
+      }
+
+      assert Server.lookup({ets, {:search, run_search_params}}) == [@vehicle]
+      assert Server.lookup({ets, {:search, vehicle_search_params}}) == [@vehicle]
+      assert Enum.member?(Server.lookup({ets, {:search, operator_search_params}}), @vehicle)
+    end
+
+    test "searches all vehicles by run ID", %{ets: ets} do
+      search_params = %{
+        text: "123",
+        property: :run
+      }
+
+      assert Server.lookup({ets, {:search, search_params}}) == [@vehicle]
+    end
+
+    test "searches all vehicles by vehicle ID", %{ets: ets} do
+      search_params = %{
+        text: "v1",
+        property: :vehicle
+      }
+
+      assert Server.lookup({ets, {:search, search_params}}) == [@vehicle]
+    end
+
+    test "searches all vehicles by operator name", %{ets: ets} do
+      search_params = %{
+        text: "frank",
+        property: :operator
+      }
+
+      results = Server.lookup({ets, {:search, search_params}})
+
+      assert Enum.member?(results, @vehicle)
+    end
+
+    test "searches all vehicles by operator ID", %{ets: ets} do
+      search_params = %{
+        text: "710",
+        property: :operator
+      }
+
+      results = Server.lookup({ets, {:search, search_params}})
+
+      assert Enum.member?(results, @vehicle)
     end
   end
 
