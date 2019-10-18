@@ -36,6 +36,7 @@ config :skate, SkateWeb.AuthManager,
 
 config :laboratory,
   features: [
+    {:search_page, "Search Page", "Turns on the tab for the global search page."},
     {:headway_ladder_colors, "Headway Route Ladder Colors",
      "Turns on colored headway spacing lines on key route route ladders showing when service is bunched or gapped."}
   ],
