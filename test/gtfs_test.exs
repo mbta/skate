@@ -3,7 +3,7 @@ defmodule GtfsTest do
 
   import Test.Support.Helpers
 
-  alias Gtfs.{Route, Shape, Stop, StopTime, Trip}
+  alias Gtfs.{Route, RoutePattern, Shape, Stop, StopTime, Trip}
   alias Gtfs.Shape.Point
 
   describe "all_routes" do
@@ -615,6 +615,53 @@ defmodule GtfsTest do
         })
 
       assert Gtfs.shape("route", pid) == nil
+    end
+  end
+
+  describe "first_route_pattern_for_route_and_direction" do
+    test "returns the first route pattern matching the route and direction" do
+      pid =
+        Gtfs.start_mocked(%{
+          gtfs: %{
+            "directions.txt" => [
+              "route_id,direction_id,direction,direction_destination",
+              "Shuttle-BabcockBostonCollege,0,West,Boston College",
+              "Shuttle-BabcockBostonCollege,1,East,Park Street"
+            ],
+            "routes.txt" => [
+              "route_id,route_long_name,route_type,route_desc,route_short_name",
+              "Shuttle-BabcockBostonCollege,Green Line B Shuttle,3,Rail Replacement Bus,"
+            ],
+            "route_patterns.txt" => [
+              "route_pattern_id,route_id,direction_id,route_pattern_name,representative_trip_id",
+              "Shuttle-BabcockBostonCollege-0-0,Shuttle-BabcockBostonCollege,0,Babcock Street - Boston College,41836966-20:45-BabcockBCNewtonHighlandsKenmore1",
+              "Shuttle-BabcockBostonCollege-0-1,Shuttle-BabcockBostonCollege,1,Boston College - Babcock Street,41836965-20:45-BabcockBCNewtonHighlandsKenmore1"
+            ],
+            "trips.txt" => [
+              "route_id,service_id,trip_id,trip_headsign,trip_short_name,direction_id,block_id,shape_id,wheelchair_accessible,trip_route_type,route_pattern_id,bikes_allowed",
+              "Shuttle-BabcockBostonCollege,LRV419-1-Wdy-01-BbkBCNwnHgsKnr,41836966-20:45-BabcockBCNewtonHighlandsKenmore1,Boston College (Shuttle),,0,B813_-5-0-BabcockBC1,BabcockStreetToBostonCollege-S,1,3,Shuttle-BabcockBostonCollege-0-0,0",
+              "Shuttle-BabcockBostonCollege,LRV419-1-Wdy-01-BbkBCNwnHgsKnr,41836965-20:45-BabcockBCNewtonHighlandsKenmore1,Babcock Street (Shuttle),,1,B813_-5-1-BabcockBC1,BostonCollegeToBabcockStreet-S,1,3,Shuttle-BabcockBostonCollege-0-1,0"
+            ],
+            "stop_times.txt" => [
+              "trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_type,timepoint,checkpoint_id",
+              "41836966-20:45-BabcockBCNewtonHighlandsKenmore1,25:16:00,25:16:00,958,0,,0,1,,",
+              "41836965-20:45-BabcockBCNewtonHighlandsKenmore1,24:11:00,24:11:00,9070107,0,,0,1,,"
+            ]
+          }
+        })
+
+      assert Gtfs.first_route_pattern_for_route_and_direction(
+               "Shuttle-BabcockBostonCollege",
+               0,
+               pid
+             ) ==
+               %RoutePattern{
+                 id: "Shuttle-BabcockBostonCollege-0-0",
+                 name: "Babcock Street - Boston College",
+                 route_id: "Shuttle-BabcockBostonCollege",
+                 direction_id: 0,
+                 representative_trip_id: "41836966-20:45-BabcockBCNewtonHighlandsKenmore1"
+               }
     end
   end
 

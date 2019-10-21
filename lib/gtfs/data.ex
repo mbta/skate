@@ -167,6 +167,18 @@ defmodule Gtfs.Data do
   @spec shapes(t(), Route.id()) :: [Shape.t()]
   def shapes(%__MODULE__{shapes: shapes}, route_id), do: Map.get(shapes, route_id)
 
+  @spec first_route_pattern_for_route_and_direction(t(), Route.id(), Direction.id()) ::
+          RoutePattern.t() | nil
+  def first_route_pattern_for_route_and_direction(
+        %__MODULE__{route_patterns: route_patterns},
+        route_id,
+        direction_id
+      ) do
+    Enum.find(route_patterns, fn route_pattern ->
+      route_pattern.route_id == route_id && route_pattern.direction_id == direction_id
+    end)
+  end
+
   # Initialization
 
   @spec parse_files(all_files()) :: t()

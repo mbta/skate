@@ -14,6 +14,7 @@ defmodule Gtfs.RoutePattern do
 
   @type t :: %__MODULE__{
           id: id(),
+          name: String.t(),
           route_id: Route.id(),
           direction_id: Direction.id(),
           representative_trip_id: Trip.id()
@@ -21,6 +22,7 @@ defmodule Gtfs.RoutePattern do
 
   @enforce_keys [
     :id,
+    :name,
     :route_id,
     :direction_id,
     :representative_trip_id
@@ -30,6 +32,7 @@ defmodule Gtfs.RoutePattern do
 
   defstruct [
     :id,
+    :name,
     :route_id,
     :direction_id,
     :representative_trip_id
@@ -39,6 +42,7 @@ defmodule Gtfs.RoutePattern do
   def from_csv_row(row) do
     %__MODULE__{
       id: row["route_pattern_id"],
+      name: row["route_pattern_name"],
       route_id: row["route_id"],
       direction_id: Direction.id_from_string(row["direction_id"]),
       representative_trip_id: row["representative_trip_id"]

@@ -2,7 +2,20 @@ defmodule Gtfs do
   use GenServer
   require Logger
 
-  alias Gtfs.{Block, CacheFile, Data, HealthServer, Route, Service, Shape, Stop, StopTime, Trip}
+  alias Gtfs.{
+    Block,
+    CacheFile,
+    Data,
+    Direction,
+    HealthServer,
+    Route,
+    RoutePattern,
+    Service,
+    Shape,
+    Stop,
+    StopTime,
+    Trip
+  }
 
   @type state :: :not_loaded | {:loaded, Data.t()}
 
@@ -131,6 +144,27 @@ defmodule Gtfs do
     end
   end
 
+  @spec first_route_pattern_for_route_and_direction(Route.id(), Direction.id()) ::
+          RoutePattern.t() | nil
+  @spec first_route_pattern_for_route_and_direction(
+          Route.id(),
+          Direction.id(),
+          GenServer.server()
+        ) :: RoutePattern.t() | nil
+  def first_route_pattern_for_route_and_direction(route_id, direction_id, server \\ __MODULE__) do
+    try do
+      GenServer.call(
+        server,
+        {:first_route_pattern_for_route_and_direction, route_id, direction_id}
+      )
+    catch
+      # Handle Gtfs server timeouts gracefully
+      :exit, _ ->
+        _ = log_timeout(:shape)
+        nil
+    end
+  end
+
   defp log_timeout(function) do
     Logger.warn("module=#{__MODULE__} function=#{function} error=timeout")
   end
@@ -168,6 +202,15 @@ defmodule Gtfs do
 
   def handle_call({:shape, route_id}, _from, {:loaded, gtfs_data} = state) do
     {:reply, Data.shapes(gtfs_data, route_id), state}
+  end
+
+  def handle_call(
+        {:first_route_pattern_for_route_and_direction, route_id, direction_id},
+        _from,
+        {:loaded, gtfs_data} = state
+      ) do
+    {:reply, Data.first_route_pattern_for_route_and_direction(gtfs_data, route_id, direction_id),
+     state}
   end
 
   # Initialization (Client)
