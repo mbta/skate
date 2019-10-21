@@ -67,7 +67,7 @@ defmodule Skate.MixProject do
       {:distillery, "~> 2.0", runtime: false},
       {:ehmon, github: "mbta/ehmon", only: :prod},
       {:diskusage_logger, "~> 0.2.0"},
-      {:httpoison, "~> 1.5.0"},
+      {:httpoison, "~> 1.6.1"},
       {:bypass, "~> 1.0.0", only: :test},
       {:csv, "~> 2.3.0"},
       {:timex, "~> 3.5.0"},
