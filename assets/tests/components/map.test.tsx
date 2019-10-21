@@ -1,5 +1,7 @@
-import Leaflet from "leaflet"
-import React from "react"
+import { mount } from "enzyme"
+import Leaflet, { Map as LeafletMap } from "leaflet"
+import React, { MutableRefObject } from "react"
+import { act } from "react-dom/test-utils"
 import renderer from "react-test-renderer"
 import Map, {
   autoCenter,
@@ -277,6 +279,104 @@ describe("autoCenter", () => {
       lat: defaultCenter[0],
       lng: defaultCenter[1],
     })
+  })
+})
+
+const spyMapResult = (): MutableRefObject<LeafletMap | null> => {
+  const result: MutableRefObject<LeafletMap | null> = { current: null }
+  const actualMap = Leaflet.map
+  const spyMap = jest.spyOn(Leaflet, "map") as jest.Mock
+
+  spyMap.mockImplementationOnce((container, options) => {
+    const map: LeafletMap = actualMap(container, options)
+    result.current = map
+    return map
+  })
+  return result
+}
+
+const animationFramePromise = (): Promise<null> => {
+  return new Promise(resolve => {
+    window.requestAnimationFrame(() => resolve(null))
+  })
+}
+
+describe("auto centering", () => {
+  test("auto centers on a vehicle", async () => {
+    const mapResult: MutableRefObject<LeafletMap | null> = spyMapResult()
+    mount(<Map vehicles={[vehicle]} />)
+    await animationFramePromise()
+    expect(mapResult.current!.getCenter()).toEqual({ lat: 42, lng: -71 })
+  })
+
+  test("tracks a vehicle when it moves", async () => {
+    const mapResult: MutableRefObject<LeafletMap | null> = spyMapResult()
+    const oldLatLng = { lat: 42, lng: -71 }
+    const oldVehicle = {
+      ...vehicle,
+      latitude: oldLatLng.lat,
+      longitude: oldLatLng.lng,
+    }
+    const wrapper = mount(<Map vehicles={[oldVehicle]} />)
+    await animationFramePromise()
+    const newLatLng = { lat: 42.1, lng: -71.1 }
+    const newVehicle = {
+      ...vehicle,
+      latitude: newLatLng.lat,
+      longitude: newLatLng.lng,
+    }
+    wrapper.setProps({ vehicles: [newVehicle] })
+    await animationFramePromise()
+    expect(mapResult.current!.getCenter()).toEqual(newLatLng)
+  })
+
+  test("manual moves disable auto centering", async () => {
+    const mapResult: MutableRefObject<LeafletMap | null> = spyMapResult()
+    const wrapper = mount(<Map vehicles={[vehicle]} />)
+    await animationFramePromise()
+    const manualLatLng = { lat: 41.9, lng: -70.9 }
+    act(() => {
+      mapResult.current!.panTo(manualLatLng)
+    })
+    await animationFramePromise()
+    const newLatLng = { lat: 42.1, lng: -71.1 }
+    const newVehicle = {
+      ...vehicle,
+      latitude: newLatLng.lat,
+      longitude: newLatLng.lng,
+    }
+    wrapper!.setProps({ vehicles: [newVehicle] })
+    await animationFramePromise()
+    expect(mapResult.current!.getCenter()).toEqual(manualLatLng)
+  })
+
+  test("auto recentering does not disable auto centering", async () => {
+    const mapResult: MutableRefObject<LeafletMap | null> = spyMapResult()
+    const latLng1 = { lat: 42, lng: -71 }
+    const latLng2 = { lat: 42.1, lng: -71.1 }
+    const latLng3 = { lat: 42.2, lng: -71.2 }
+    const vehicle1 = {
+      ...vehicle,
+      latitude: latLng1.lat,
+      longitude: latLng1.lng,
+    }
+    const vehicle2 = {
+      ...vehicle,
+      latitude: latLng2.lat,
+      longitude: latLng2.lng,
+    }
+    const vehicle3 = {
+      ...vehicle,
+      latitude: latLng3.lat,
+      longitude: latLng3.lng,
+    }
+    const wrapper = mount(<Map vehicles={[vehicle1]} />)
+    await animationFramePromise()
+    wrapper.setProps({ vehicles: [vehicle2] })
+    await animationFramePromise()
+    wrapper.setProps({ vehicles: [vehicle3] })
+    await animationFramePromise()
+    expect(mapResult.current!.getCenter()).toEqual(latLng3)
   })
 })
 
