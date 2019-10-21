@@ -153,6 +153,34 @@ defmodule Realtime.ServerTest do
     end
   end
 
+  describe "lookup/2" do
+    setup do
+      ets = :ets.new(__MODULE__, [:set, :protected, {:read_concurrency, true}])
+
+      :ets.insert(ets, {{:route_id, "1"}, @vehicles_for_route})
+
+      :ets.insert(ets, {:all_shuttles, [@shuttle]})
+
+      {:ok, %{ets: ets}}
+    end
+
+    test "fetches shuttles by route from the ets table", %{ets: ets} do
+      assert Server.lookup({ets, {:route_id, "1"}}) == @vehicles_for_route
+    end
+
+    test "returns empty data when the route is not found", %{ets: ets} do
+      assert Server.lookup({ets, {:route_id, "2"}}) == %{
+               on_route_vehicles: [],
+               incoming_vehicles: [],
+               ghosts: []
+             }
+    end
+
+    test "fetches all shuttles from the ets table", %{ets: ets} do
+      assert Server.lookup({ets, :all_shuttles}) == [@shuttle]
+    end
+  end
+
   describe "backend implementation" do
     test "handles reference info calls that come in after a timeout" do
       state = %Server{ets: make_ref()}
