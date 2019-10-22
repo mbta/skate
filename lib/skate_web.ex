@@ -22,7 +22,6 @@ defmodule SkateWeb do
       use Phoenix.Controller, namespace: SkateWeb
 
       import Plug.Conn
-      import SkateWeb.Gettext
       alias SkateWeb.Router.Helpers, as: Routes
     end
   end
@@ -40,7 +39,6 @@ defmodule SkateWeb do
       use Phoenix.HTML
 
       import SkateWeb.ErrorHelpers
-      import SkateWeb.Gettext
       alias SkateWeb.Router.Helpers, as: Routes
     end
   end
@@ -56,7 +54,6 @@ defmodule SkateWeb do
   def channel do
     quote do
       use Phoenix.Channel
-      import SkateWeb.Gettext
     end
   end
 
