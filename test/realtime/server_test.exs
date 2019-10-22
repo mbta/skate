@@ -2,7 +2,7 @@ defmodule Realtime.ServerTest do
   use ExUnit.Case, async: true
   import Test.Support.Helpers
 
-  alias Realtime.{Server, Vehicle}
+  alias Realtime.{Ghost, Server, Vehicle}
 
   @vehicle %Vehicle{
     id: "v1",
@@ -39,11 +39,27 @@ defmodule Realtime.ServerTest do
     route_status: :on_route
   }
 
+  @ghost %Ghost{
+    id: "ghost-trip",
+    direction_id: 0,
+    route_id: "route",
+    trip_id: "trip",
+    headsign: "headsign",
+    block_id: "block",
+    run_id: "123-9049",
+    via_variant: "X",
+    scheduled_timepoint_status: %{
+      timepoint_id: "t2",
+      fraction_until_timepoint: 0.5
+    }
+  }
+
   @shuttle %{@vehicle | id: "shuttle", run_id: "9990555", route_id: nil}
 
   @vehicles_for_route %{
     on_route_vehicles: [@vehicle],
-    incoming_vehicles: []
+    incoming_vehicles: [],
+    ghosts: [@ghost]
   }
 
   @vehicles_by_route_id %{
@@ -165,11 +181,15 @@ defmodule Realtime.ServerTest do
       %{server_pid: server_pid}
     end
 
-    test "clients get all shuttles upon subscribing", %{server_pid: pid} do
-      assert Server.subscribe_to_search("90", :all, pid) == [@vehicle, @shuttle]
+    test "clients get search results upon subscribing", %{server_pid: pid} do
+      results = Server.subscribe_to_search("90", :all, pid)
+
+      assert Enum.member?(results, @vehicle)
+      assert Enum.member?(results, @ghost)
+      assert Enum.member?(results, @shuttle)
     end
 
-    test "clients get updated data pushed to them", %{server_pid: pid} do
+    test "clients get updated search results pushed to them", %{server_pid: pid} do
       Server.subscribe_to_search("90", :all, pid)
 
       Server.update({%{}, [@shuttle, @shuttle]}, pid)
