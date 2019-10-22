@@ -14,6 +14,8 @@ import mapIconSvg from "../../static/images/icon-map.svg"
 import reverseIconSvg from "../../static/images/icon-reverse-normal.svg"
 // @ts-ignore
 import reverseIconReversedSvg from "../../static/images/icon-reverse-reversed.svg"
+// @ts-ignore
+import searchIconSvg from "../../static/images/icon-search.svg"
 import renderSvg from "./renderSvg"
 
 export const circleXIcon = (): JSX.Element => renderSvg("", circleXIconSvg)
@@ -35,3 +37,6 @@ export const reverseIcon = (className: string = ""): JSX.Element =>
 
 export const reverseIconReversed = (className: string = ""): JSX.Element =>
   renderSvg(className, reverseIconReversedSvg)
+
+export const searchIcon = (className: string = ""): JSX.Element =>
+  renderSvg(className, searchIconSvg)
