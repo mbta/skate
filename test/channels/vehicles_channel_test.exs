@@ -6,6 +6,42 @@ defmodule SkateWeb.VehiclesChannelTest do
   alias Realtime.Vehicle
   alias SkateWeb.{AuthManager, UserSocket, VehiclesChannel}
 
+  @vehicle %Vehicle{
+    id: "y0507",
+    label: "0507",
+    timestamp: 123,
+    latitude: 0.0,
+    longitude: 0.0,
+    direction_id: "234",
+    route_id: "345",
+    trip_id: "456",
+    bearing: nil,
+    speed: nil,
+    stop_sequence: nil,
+    block_id: nil,
+    operator_id: nil,
+    operator_name: nil,
+    run_id: "123-4567",
+    headway_secs: 600,
+    headway_spacing: :ok,
+    is_off_course: false,
+    is_laying_over: false,
+    layover_departure_time: nil,
+    block_is_active: true,
+    sources: MapSet.new(["swiftly"]),
+    data_discrepancies: [],
+    stop_status: %{
+      status: :in_transit_to,
+      stop_id: "567",
+      stop_name: "567"
+    },
+    timepoint_status: %{
+      timepoint_id: "tp2",
+      fraction_until_timepoint: 0.4
+    },
+    route_status: :on_route
+  }
+
   setup do
     reassign_env(:realtime, :trip_fn, fn _trip_id -> nil end)
     reassign_env(:realtime, :block_fn, fn _block_id, _service_id -> nil end)
@@ -53,46 +89,8 @@ defmodule SkateWeb.VehiclesChannelTest do
         SkateWeb.VehiclesChannelTest.FakeRefreshTokenStore
       )
 
-      new_vehicles = [
-        %Vehicle{
-          id: "y0507",
-          label: "0507",
-          timestamp: 123,
-          latitude: 0.0,
-          longitude: 0.0,
-          direction_id: "234",
-          route_id: "345",
-          trip_id: "456",
-          bearing: nil,
-          speed: nil,
-          stop_sequence: nil,
-          block_id: nil,
-          operator_id: nil,
-          operator_name: nil,
-          run_id: nil,
-          headway_secs: 600,
-          headway_spacing: :ok,
-          is_off_course: false,
-          is_laying_over: false,
-          layover_departure_time: nil,
-          block_is_active: true,
-          sources: MapSet.new(["swiftly"]),
-          data_discrepancies: [],
-          stop_status: %{
-            status: :in_transit_to,
-            stop_id: "567",
-            stop_name: "567"
-          },
-          timepoint_status: %{
-            timepoint_id: "tp2",
-            fraction_until_timepoint: 0.4
-          },
-          route_status: :on_route
-        }
-      ]
-
       vehicles_for_route = %{
-        on_route_vehicles: new_vehicles,
+        on_route_vehicles: [@vehicle],
         incoming_vehicles: []
       }
 
@@ -118,7 +116,7 @@ defmodule SkateWeb.VehiclesChannelTest do
 
       assert {:noreply, socket} =
                VehiclesChannel.handle_info(
-                 {:new_realtime_data, :vehicles, {ets, {:route_id, "1"}}},
+                 {:new_realtime_data, {ets, {:route_id, "1"}}},
                  socket
                )
 
@@ -142,11 +140,34 @@ defmodule SkateWeb.VehiclesChannelTest do
 
       assert {:noreply, socket} =
                VehiclesChannel.handle_info(
-                 {:new_realtime_data, :shuttles, {ets, :all_shuttles}},
+                 {:new_realtime_data, {ets, :all_shuttles}},
                  socket
                )
 
       assert_push("shuttles", %{data: [vehicle]})
+    end
+
+    test "pushes new search results data onto the socket when socket is authenticated", %{
+      socket: socket,
+      ets: ets
+    } do
+      assert Realtime.Server.update({%{}, [@vehicle]}) == :ok
+
+      {:ok, token, claims} =
+        AuthManager.encode_and_sign("test-authed@mbta.com", %{
+          "exp" => System.system_time(:second) + 500
+        })
+
+      {:ok, _, socket} = subscribe_and_join(socket, VehiclesChannel, "vehicles:search:all:1")
+      socket = Guardian.Phoenix.Socket.assign_rtc(socket, "test-authed@mbta.com", token, claims)
+
+      assert {:noreply, socket} =
+               VehiclesChannel.handle_info(
+                 {:new_realtime_data, {ets, {:search, %{text: "1", property: :all}}}},
+                 socket
+               )
+
+      assert_push("search", %{data: [vehicle]})
     end
 
     test "refresh the authentication using the refresh token if we have one", %{
@@ -167,7 +188,7 @@ defmodule SkateWeb.VehiclesChannelTest do
 
       assert {:noreply, socket} =
                VehiclesChannel.handle_info(
-                 {:new_realtime_data, :vehicles, {ets, {:route_id, "1"}}},
+                 {:new_realtime_data, {ets, {:route_id, "1"}}},
                  socket
                )
 
@@ -190,7 +211,7 @@ defmodule SkateWeb.VehiclesChannelTest do
 
       {:stop, :normal, _socket} =
         VehiclesChannel.handle_info(
-          {:new_realtime_data, :vehicles, {ets, {:route_id, "1"}}},
+          {:new_realtime_data, {ets, {:route_id, "1"}}},
           socket
         )
 

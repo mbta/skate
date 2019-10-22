@@ -94,7 +94,7 @@ defmodule Realtime.ServerTest do
       Server.update({@vehicles_by_route_id, []}, server_pid)
 
       assert_receive(
-        {:new_realtime_data, :vehicles, lookup_args},
+        {:new_realtime_data, lookup_args},
         200,
         "Client didn't receive vehicle positions"
       )
@@ -108,7 +108,7 @@ defmodule Realtime.ServerTest do
       Server.update({@vehicles_by_route_id, []}, server_pid)
 
       assert_receive(
-        {:new_realtime_data, :vehicles, _},
+        {:new_realtime_data, _},
         200,
         "Client didn't receive vehicle positions the first time"
       )
@@ -116,7 +116,7 @@ defmodule Realtime.ServerTest do
       Server.update({@vehicles_by_route_id, []}, server_pid)
 
       assert_receive(
-        {:new_realtime_data, :vehicles, lookup_args},
+        {:new_realtime_data, lookup_args},
         200,
         "Client didn't receive vehicle positions the second time"
       )
@@ -130,7 +130,7 @@ defmodule Realtime.ServerTest do
       Server.update({%{}, []}, server_pid)
 
       assert_receive(
-        {:new_realtime_data, :vehicles, lookup_args},
+        {:new_realtime_data, lookup_args},
         200,
         "Client received vehicle positions"
       )
@@ -164,7 +164,7 @@ defmodule Realtime.ServerTest do
 
       Server.update({%{}, [@shuttle, @shuttle]}, pid)
 
-      assert_receive {:new_realtime_data, :shuttles, lookup_args}
+      assert_receive {:new_realtime_data, lookup_args}
       assert Server.lookup(lookup_args) == [@shuttle, @shuttle]
     end
   end
@@ -194,7 +194,7 @@ defmodule Realtime.ServerTest do
 
       Server.update({%{}, [@shuttle, @shuttle]}, pid)
 
-      assert_receive {:new_realtime_data, :search, lookup_args}
+      assert_receive {:new_realtime_data, lookup_args}
       assert Server.lookup(lookup_args) == [@shuttle, @shuttle]
     end
   end

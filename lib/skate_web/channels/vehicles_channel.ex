@@ -42,7 +42,7 @@ defmodule SkateWeb.VehiclesChannel do
   end
 
   @impl Phoenix.Channel
-  def handle_info({:new_realtime_data, data_category, lookup_args}, socket) do
+  def handle_info({:new_realtime_data, lookup_args}, socket) do
     token = Guardian.Phoenix.Socket.current_token(socket)
 
     case AuthManager.decode_and_verify(token) do
@@ -50,35 +50,40 @@ defmodule SkateWeb.VehiclesChannel do
         # Refresh a token before it expires
         case AuthManager.refresh(token) do
           {:ok, _old_claims, {_new_token, _new_claims}} ->
-            push_vehicles(socket, data_category, lookup_args)
+            push_vehicles(socket, lookup_args)
 
           {:error, :token_expired} ->
-            handle_expired_token(socket, data_category, lookup_args)
+            handle_expired_token(socket, lookup_args)
         end
 
       {:error, :token_expired} ->
-        handle_expired_token(socket, data_category, lookup_args)
+        handle_expired_token(socket, lookup_args)
 
       _ ->
         {:stop, :normal, send_auth_expired_message(socket)}
     end
   end
 
-  @spec push_vehicles(Phoenix.Socket.t(), Server.data_category(), Server.lookup_key()) ::
+  @spec push_vehicles(Phoenix.Socket.t(), Server.lookup_key()) ::
           {:noreply, Phoenix.Socket.t()}
-  defp push_vehicles(socket, :vehicles, lookup) do
-    push(socket, "vehicles", Server.lookup(lookup))
-    {:noreply, socket}
-  end
-
-  defp push_vehicles(socket, :shuttles, lookup) do
+  defp push_vehicles(socket, {_ets, :all_shuttles} = lookup) do
     push(socket, "shuttles", %{data: Server.lookup(lookup)})
     {:noreply, socket}
   end
 
-  @spec handle_expired_token(Phoenix.Socket.t(), Server.data_category(), Server.lookup_key()) ::
+  defp push_vehicles(socket, {_ets, {:search, _}} = lookup) do
+    push(socket, "search", %{data: Server.lookup(lookup)})
+    {:noreply, socket}
+  end
+
+  defp push_vehicles(socket, lookup) do
+    push(socket, "vehicles", Server.lookup(lookup))
+    {:noreply, socket}
+  end
+
+  @spec handle_expired_token(Phoenix.Socket.t(), Server.lookup_key()) ::
           {:noreply, Phoenix.Socket.t()} | {:stop, :normal, Phoenix.Socket.t()}
-  defp handle_expired_token(socket, data_category, lookup_args) do
+  defp handle_expired_token(socket, lookup_args) do
     refresh_token_store = Application.get_env(:skate, :refresh_token_store)
 
     refresh_token =
@@ -89,7 +94,7 @@ defmodule SkateWeb.VehiclesChannel do
     # Exchange a token of type "refresh" for a new token of type "access"
     case AuthManager.exchange(refresh_token, "refresh", "access") do
       {:ok, _old_stuff, {_new_token, _new_claims}} ->
-        push_vehicles(socket, data_category, lookup_args)
+        push_vehicles(socket, lookup_args)
 
       _ ->
         {:stop, :normal, send_auth_expired_message(socket)}

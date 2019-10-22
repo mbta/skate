@@ -33,11 +33,9 @@ defmodule Realtime.Server do
 
   @type search_property :: :all | :run | :vehicle | :operator
 
-  @type data_category :: :vehicles | :shuttles | :search
-
   @type lookup_key :: {:ets.tid(), subscription_key}
 
-  @type broadcast_message :: {:new_realtime_data, data_category, lookup_key}
+  @type broadcast_message :: {:new_realtime_data, lookup_key}
 
   @typep t :: %__MODULE__{
            ets: :ets.tid(),
@@ -203,14 +201,7 @@ defmodule Realtime.Server do
 
   @spec send_data({pid, subscription_key}, t) :: broadcast_message
   defp send_data({pid, subscription_key}, state) do
-    category =
-      case subscription_key do
-        {:route_id, _} -> :vehicles
-        :all_shuttles -> :shuttles
-        {:search, _} -> :search
-      end
-
-    send(pid, {:new_realtime_data, category, {state.ets, subscription_key}})
+    send(pid, {:new_realtime_data, {state.ets, subscription_key}})
   end
 
   defp default_data({:route_id, _}) do
