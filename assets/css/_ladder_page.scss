@@ -1,3 +1,10 @@
 .m-ladder-page {
-  @include page;
+  // leave space for the picker container tab, which is always visible
+  padding-left: 2rem;
+
+  transition: margin-left 0.2s ease-in-out;
+
+  .m-tab-bar.visible + & {
+    margin-left: $tab-bar-width + $picker-width-narrow;
+  }
 }

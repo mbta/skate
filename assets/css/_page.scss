@@ -1,6 +1,6 @@
 .c-page {
-  @include page;
   background: $color-bg-medium;
+  margin-left: $tab-bar-width;
 }
 
 .c-page__container {
