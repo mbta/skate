@@ -23,9 +23,8 @@ defmodule Realtime.Server do
   defstruct ets: nil,
             active_route_ids: []
 
-  @type subscription_key :: {:route_id, Route.id()} | :all_shuttles
-
-  @type search_key :: {:search, search_params()}
+  @type subscription_key ::
+          {:route_id, Route.id()} | :all_shuttles | :all_vehicles | {:search, search_params()}
 
   @type search_params :: %{
           text: String.t(),
@@ -36,7 +35,7 @@ defmodule Realtime.Server do
 
   @type data_category :: :vehicles | :shuttles | :search
 
-  @type lookup_key :: {:ets.tid(), subscription_key | search_key}
+  @type lookup_key :: {:ets.tid(), subscription_key}
 
   @type broadcast_message :: {:new_realtime_data, data_category, lookup_key}
 
@@ -101,7 +100,7 @@ defmodule Realtime.Server do
   @spec lookup({:ets.tid(), {:route_id, Route.id()}}) :: Vehicles.for_route()
   @spec lookup({:ets.tid(), :all_vehicles}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), :all_shuttles}) :: [Vehicle.t()]
-  @spec lookup({:ets.tid(), search_key()}) :: [Vehicle.t()]
+  @spec lookup({:ets.tid(), {:search, search_params()}}) :: [VehicleOrGhost.t()]
   def lookup({table, {:search, search_params}}) do
     {table, :all_vehicles}
     |> lookup()
