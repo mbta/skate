@@ -93,9 +93,5 @@ defmodule Realtime.VehicleOrGhostTest do
       assert VehicleOrGhost.find_by(@vehicles, %{text: "710", property: :operator}) ==
                [@vehicle]
     end
-
-    test "ignores a search property it doesn't understand" do
-      assert VehicleOrGhost.find_by(@vehicles, %{text: "bad", property: :bad}) == @vehicles
-    end
   end
 end
