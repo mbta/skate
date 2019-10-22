@@ -182,9 +182,7 @@ defmodule Realtime.Server do
   defp all_vehicles(vehicles_by_route_id) do
     vehicles_by_route_id
     |> Map.values()
-    |> Enum.reduce([], fn vehicles_for_route, acc ->
-      acc ++ all_vehicles_for_route(vehicles_for_route)
-    end)
+    |> Enum.flat_map(&all_vehicles_for_route/1)
   end
 
   @spec all_vehicles_for_route(Vehicles.for_route()) :: [VehicleOrGhost.t()]
