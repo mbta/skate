@@ -14,7 +14,11 @@ import { drawnStatus, statusClass } from "../models/vehicleStatus"
 import { Vehicle, VehicleId } from "../realtime.d"
 import { Shape, Stop } from "../schedule"
 import { Settings } from "../settings"
-import { Dispatch, selectVehicle as selectVehicleAction, State } from "../state"
+import {
+  Dispatch,
+  selectVehicle as selectVehicleAction,
+  State as AppState,
+} from "../state"
 
 interface Props {
   vehicles: Vehicle[]
@@ -96,7 +100,7 @@ export const updateMarkers = (
   newVehicles: { [id: string]: Vehicle },
   oldMarkerDict: MarkerDict,
   map: LeafletMap,
-  appState: State,
+  appState: AppState,
   dispatch: Dispatch
 ): MarkerDict => {
   const markersToKeep: MarkerDict = Object.entries(oldMarkerDict).reduce(
@@ -235,7 +239,8 @@ export const defaultCenter: [number, number] = [42.360718, -71.05891]
 export const autoCenter = (
   map: LeafletMap,
   vehicles: Vehicle[],
-  isAutoCentering: MutableRefObject<boolean>
+  isAutoCentering: MutableRefObject<boolean>,
+  appState: AppState
 ): void => {
   const latLngs: LatLng[] = vehicles.map(vehicle =>
     Leaflet.latLng(vehicle.latitude, vehicle.longitude)
@@ -247,8 +252,8 @@ export const autoCenter = (
     map.setView(latLngs[0], 16)
   } else if (latLngs.length > 1) {
     map.fitBounds(Leaflet.latLngBounds(latLngs), {
-      paddingBottomRight: [40, 80],
-      paddingTopLeft: [220, 40],
+      paddingBottomRight: [20, 50],
+      paddingTopLeft: [appState.pickerContainerIsVisible ? 220 : 20, 20],
     })
   }
   // The move starts asynchronously.
@@ -369,7 +374,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         : {}
 
     if (shouldAutoCenter) {
-      autoCenter(map, props.vehicles, isAutoCentering)
+      autoCenter(map, props.vehicles, isAutoCentering, appState)
     }
 
     setMapState({ map, markers, shapes })

@@ -55,13 +55,7 @@ const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
     <div className="m-shuttle-map">
       <ShuttlePicker />
 
-      <div
-        className="m-shuttle-map__map"
-        style={{
-          height: window.innerHeight,
-          width: window.innerWidth,
-        }}
-      >
+      <div className="m-shuttle-map__map">
         <Map vehicles={selectedShuttles} shapes={shapes} />
       </div>
 

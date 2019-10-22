@@ -17,7 +17,7 @@ import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Vehicle } from "../../src/realtime"
 import { Shape, Stop } from "../../src/schedule"
 import { defaultSettings } from "../../src/settings"
-import { State } from "../../src/state"
+import { State as AppState } from "../../src/state"
 
 // tslint:disable-next-line: no-empty
 const noop = (): void => {}
@@ -86,10 +86,10 @@ describe("map", () => {
 })
 
 describe("updateMarkers", () => {
-  const appState: State = {
+  const appState: AppState = {
     selectedVehicleId: undefined,
     settings: defaultSettings,
-  } as State
+  } as AppState
   const mockDispatch = () => ({})
 
   test("adds a new marker set for a vehicle if it doesn't exist", () => {
@@ -252,11 +252,13 @@ describe("updateShapes", () => {
 })
 
 describe("autoCenter", () => {
+  const isAutoCentering = { current: false }
+  const appState: AppState = { pickerContainerIsVisible: false } as AppState
+
   test("centers the map on a single vehicle", () => {
     document.body.innerHTML = "<div id='map'></div>"
-    const isAutoCentering = { current: false }
     const map = newLeafletMap("map", isAutoCentering, noop)
-    autoCenter(map, [vehicle], isAutoCentering)
+    autoCenter(map, [vehicle], isAutoCentering, appState)
     expect(map.getCenter()).toEqual({ lat: 42, lng: -71 })
   })
 
@@ -264,17 +266,15 @@ describe("autoCenter", () => {
     const vehicle1 = { ...vehicle, latitude: 42.0 }
     const vehicle2 = { ...vehicle, latitude: 42.5 }
     document.body.innerHTML = "<div id='map'></div>"
-    const isAutoCentering = { current: false }
     const map = newLeafletMap("map", isAutoCentering, noop)
-    autoCenter(map, [vehicle1, vehicle2], isAutoCentering)
+    autoCenter(map, [vehicle1, vehicle2], isAutoCentering, appState)
     expect(map.getCenter().lat).toBeCloseTo(42.25, 3)
   })
 
   test("does not center the map if there are no vehicles", () => {
     document.body.innerHTML = "<div id='map'></div>"
-    const isAutoCentering = { current: false }
     const map = newLeafletMap("map", isAutoCentering, noop)
-    autoCenter(map, [], isAutoCentering)
+    autoCenter(map, [], isAutoCentering, appState)
     expect(map.getCenter()).toEqual({
       lat: defaultCenter[0],
       lng: defaultCenter[1],
