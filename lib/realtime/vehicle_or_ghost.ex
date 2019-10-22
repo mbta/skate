@@ -28,8 +28,6 @@ defmodule Realtime.VehicleOrGhost do
       }),
       do: filter_by_prop_matching(vehicles, [:operator_id, :operator_name], text)
 
-  def find_by(vehicles, _), do: vehicles
-
   @spec filter_by_prop_matching([t()], atom() | [atom()], String.t()) :: [t()]
   defp filter_by_prop_matching(vehicles, prop_names, text) when is_list(prop_names) do
     Enum.filter(vehicles, fn vehicle ->
