@@ -61,6 +61,7 @@ defmodule Skate.MixProject do
       {:ueberauth, "~> 0.6.1"},
       {:ueberauth_cognito, git: "https://github.com/mbta/ueberauth_cognito.git"},
       {:guardian, "~> 2.0"},
+      {:guardian_phoenix, "~> 2.0"},
       {:excoveralls, "~> 0.10", only: :test},
       {:dialyxir, "~> 0.5", only: [:dev, :test], runtime: false},
       {:distillery, "~> 2.0", runtime: false},
