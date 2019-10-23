@@ -12,6 +12,7 @@ defmodule Realtime.Server do
 
   alias Realtime.{
     Vehicle,
+    VehicleOrGhost,
     Vehicles
   }
 
@@ -22,13 +23,19 @@ defmodule Realtime.Server do
   defstruct ets: nil,
             active_route_ids: []
 
-  @type subscription_key :: {:route_id, Route.id()} | :all_shuttles
+  @type subscription_key ::
+          {:route_id, Route.id()} | :all_shuttles | :all_vehicles | {:search, search_params()}
 
-  @type data_category :: :vehicles | :shuttles
+  @type search_params :: %{
+          text: String.t(),
+          property: search_property()
+        }
+
+  @type search_property :: :all | :run | :vehicle | :operator
 
   @type lookup_key :: {:ets.tid(), subscription_key}
 
-  @type broadcast_message :: {:new_realtime_data, data_category, lookup_key}
+  @type broadcast_message :: {:new_realtime_data, lookup_key}
 
   @typep t :: %__MODULE__{
            ets: :ets.tid(),
@@ -62,8 +69,21 @@ defmodule Realtime.Server do
     subscribe(server, :all_shuttles)
   end
 
+  @spec subscribe_to_search(String.t(), atom(), GenServer.server()) :: [VehicleOrGhost.t()]
+  def subscribe_to_search(text, property, server \\ default_name()) do
+    subscribe(
+      server,
+      {:search,
+       %{
+         text: text,
+         property: property
+       }}
+    )
+  end
+
   @spec subscribe(GenServer.server(), {:route_id, Route.id()}) :: Vehicles.for_route()
   @spec subscribe(GenServer.server(), :all_shuttles) :: [Vehicle.t()]
+  @spec subscribe(GenServer.server(), {:search, search_params()}) :: [VehicleOrGhost.t()]
   defp subscribe(server, subscription_key) do
     {registry_key, data} = GenServer.call(server, {:subscribe, subscription_key})
     Registry.register(Realtime.Registry, registry_key, subscription_key)
@@ -76,7 +96,15 @@ defmodule Realtime.Server do
   end
 
   @spec lookup({:ets.tid(), {:route_id, Route.id()}}) :: Vehicles.for_route()
+  @spec lookup({:ets.tid(), :all_vehicles}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), :all_shuttles}) :: [Vehicle.t()]
+  @spec lookup({:ets.tid(), {:search, search_params()}}) :: [VehicleOrGhost.t()]
+  def lookup({table, {:search, search_params}}) do
+    {table, :all_vehicles}
+    |> lookup()
+    |> VehicleOrGhost.find_by(search_params)
+  end
+
   def lookup({table, key}) do
     :ets.lookup_element(table, key, 2)
   rescue
@@ -143,7 +171,23 @@ defmodule Realtime.Server do
       _ = :ets.insert(ets, {{:route_id, route_id}, vehicles})
     end
 
+    :ets.insert(ets, {:all_vehicles, all_vehicles(vehicles_by_route_id) ++ shuttles})
+
     :ets.insert(ets, {:all_shuttles, shuttles})
+  end
+
+  @spec all_vehicles(Route.by_id(Vehicles.for_route())) :: [VehicleOrGhost.t()]
+  defp all_vehicles(vehicles_by_route_id) do
+    vehicles_by_route_id
+    |> Map.values()
+    |> Enum.flat_map(&all_vehicles_for_route/1)
+  end
+
+  @spec all_vehicles_for_route(Vehicles.for_route()) :: [VehicleOrGhost.t()]
+  defp all_vehicles_for_route(vehicles_for_route) do
+    vehicles_for_route
+    |> Map.values()
+    |> List.flatten()
   end
 
   @spec broadcast(t()) :: :ok
@@ -157,13 +201,7 @@ defmodule Realtime.Server do
 
   @spec send_data({pid, subscription_key}, t) :: broadcast_message
   defp send_data({pid, subscription_key}, state) do
-    category =
-      case subscription_key do
-        {:route_id, _} -> :vehicles
-        :all_shuttles -> :shuttles
-      end
-
-    send(pid, {:new_realtime_data, category, {state.ets, subscription_key}})
+    send(pid, {:new_realtime_data, {state.ets, subscription_key}})
   end
 
   defp default_data({:route_id, _}) do
@@ -171,6 +209,10 @@ defmodule Realtime.Server do
   end
 
   defp default_data(:all_shuttles) do
+    []
+  end
+
+  defp default_data(:all_vehicles) do
     []
   end
 end
