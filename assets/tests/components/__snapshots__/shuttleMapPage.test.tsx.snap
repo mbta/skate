@@ -161,12 +161,6 @@ exports[`Shuttle Map Page renders 1`] = `
   </div>
   <div
     className="m-shuttle-map__map"
-    style={
-      Object {
-        "height": 768,
-        "width": 1024,
-      }
-    }
   >
     <div
       className="m-vehicle-map"
@@ -337,12 +331,6 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
   </div>
   <div
     className="m-shuttle-map__map"
-    style={
-      Object {
-        "height": 768,
-        "width": 1024,
-      }
-    }
   >
     <div
       className="m-vehicle-map"
@@ -692,12 +680,6 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
   </div>
   <div
     className="m-shuttle-map__map"
-    style={
-      Object {
-        "height": 768,
-        "width": 1024,
-      }
-    }
   >
     <div
       className="m-vehicle-map"
@@ -868,12 +850,6 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
   </div>
   <div
     className="m-shuttle-map__map"
-    style={
-      Object {
-        "height": 768,
-        "width": 1024,
-      }
-    }
   >
     <div
       className="m-vehicle-map"

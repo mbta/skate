@@ -1,11 +1,14 @@
-import Leaflet from "leaflet"
-import React from "react"
+import { mount } from "enzyme"
+import Leaflet, { Map as LeafletMap } from "leaflet"
+import React, { MutableRefObject } from "react"
+import { act } from "react-dom/test-utils"
 import renderer from "react-test-renderer"
 import Map, {
+  autoCenter,
   defaultCenter,
   latLons,
+  newLeafletMap,
   PolylinesByShapeId,
-  recenterMap,
   strokeOptions,
   updateMarkers,
   updateShapes,
@@ -14,7 +17,10 @@ import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Vehicle } from "../../src/realtime"
 import { Shape, Stop } from "../../src/schedule"
 import { defaultSettings } from "../../src/settings"
-import { State } from "../../src/state"
+import { State as AppState } from "../../src/state"
+
+// tslint:disable-next-line: no-empty
+const noop = (): void => {}
 
 const vehicle: Vehicle = {
   id: "y1818",
@@ -73,19 +79,17 @@ const vehicle: Vehicle = {
 
 describe("map", () => {
   test("renders", () => {
-    const tree = renderer
-      .create(<Map vehicles={[vehicle]} centerOnVehicle={vehicle.id} />)
-      .toJSON()
+    const tree = renderer.create(<Map vehicles={[vehicle]} />).toJSON()
 
     expect(tree).toMatchSnapshot()
   })
 })
 
 describe("updateMarkers", () => {
-  const appState: State = {
+  const appState: AppState = {
     selectedVehicleId: undefined,
     settings: defaultSettings,
-  } as State
+  } as AppState
   const mockDispatch = () => ({})
 
   test("adds a new marker set for a vehicle if it doesn't exist", () => {
@@ -247,32 +251,132 @@ describe("updateShapes", () => {
   })
 })
 
-describe("recenterMap", () => {
-  test("centers the map on centerOnVehicle", () => {
+describe("autoCenter", () => {
+  const isAutoCentering = { current: false }
+  const appState: AppState = { pickerContainerIsVisible: false } as AppState
+
+  test("centers the map on a single vehicle", () => {
     document.body.innerHTML = "<div id='map'></div>"
-    const map = Leaflet.map("map", { center: defaultCenter, zoom: 16 })
-    recenterMap(map, vehicle.id, { [vehicle.id]: vehicle })
+    const map = newLeafletMap("map", isAutoCentering, noop)
+    autoCenter(map, [vehicle], isAutoCentering, appState)
     expect(map.getCenter()).toEqual({ lat: 42, lng: -71 })
   })
 
-  test("does not center the map if centerOnVehicle is undefined", () => {
+  test("fits around multiple vehicles", () => {
+    const vehicle1 = { ...vehicle, latitude: 42.0 }
+    const vehicle2 = { ...vehicle, latitude: 42.5 }
     document.body.innerHTML = "<div id='map'></div>"
-    const map = Leaflet.map("map", { center: defaultCenter, zoom: 16 })
-    recenterMap(map, undefined, { [vehicle.id]: vehicle })
+    const map = newLeafletMap("map", isAutoCentering, noop)
+    autoCenter(map, [vehicle1, vehicle2], isAutoCentering, appState)
+    expect(map.getCenter().lat).toBeCloseTo(42.25, 3)
+  })
+
+  test("does not center the map if there are no vehicles", () => {
+    document.body.innerHTML = "<div id='map'></div>"
+    const map = newLeafletMap("map", isAutoCentering, noop)
+    autoCenter(map, [], isAutoCentering, appState)
     expect(map.getCenter()).toEqual({
       lat: defaultCenter[0],
       lng: defaultCenter[1],
     })
   })
+})
 
-  test("does not center the if centerOnVehicle is not found", () => {
-    document.body.innerHTML = "<div id='map'></div>"
-    const map = Leaflet.map("map", { center: defaultCenter, zoom: 16 })
-    recenterMap(map, vehicle.id, {})
-    expect(map.getCenter()).toEqual({
-      lat: defaultCenter[0],
-      lng: defaultCenter[1],
+const spyMapResult = (): MutableRefObject<LeafletMap | null> => {
+  const result: MutableRefObject<LeafletMap | null> = { current: null }
+  const actualMap = Leaflet.map
+  const spyMap = jest.spyOn(Leaflet, "map") as jest.Mock
+
+  spyMap.mockImplementationOnce((container, options) => {
+    const map: LeafletMap = actualMap(container, options)
+    result.current = map
+    return map
+  })
+  return result
+}
+
+const animationFramePromise = (): Promise<null> => {
+  return new Promise(resolve => {
+    window.requestAnimationFrame(() => resolve(null))
+  })
+}
+
+describe("auto centering", () => {
+  test("auto centers on a vehicle", async () => {
+    const mapResult: MutableRefObject<LeafletMap | null> = spyMapResult()
+    mount(<Map vehicles={[vehicle]} />)
+    await animationFramePromise()
+    expect(mapResult.current!.getCenter()).toEqual({ lat: 42, lng: -71 })
+  })
+
+  test("tracks a vehicle when it moves", async () => {
+    const mapResult: MutableRefObject<LeafletMap | null> = spyMapResult()
+    const oldLatLng = { lat: 42, lng: -71 }
+    const oldVehicle = {
+      ...vehicle,
+      latitude: oldLatLng.lat,
+      longitude: oldLatLng.lng,
+    }
+    const wrapper = mount(<Map vehicles={[oldVehicle]} />)
+    await animationFramePromise()
+    const newLatLng = { lat: 42.1, lng: -71.1 }
+    const newVehicle = {
+      ...vehicle,
+      latitude: newLatLng.lat,
+      longitude: newLatLng.lng,
+    }
+    wrapper.setProps({ vehicles: [newVehicle] })
+    await animationFramePromise()
+    expect(mapResult.current!.getCenter()).toEqual(newLatLng)
+  })
+
+  test("manual moves disable auto centering", async () => {
+    const mapResult: MutableRefObject<LeafletMap | null> = spyMapResult()
+    const wrapper = mount(<Map vehicles={[vehicle]} />)
+    await animationFramePromise()
+    const manualLatLng = { lat: 41.9, lng: -70.9 }
+    act(() => {
+      mapResult.current!.panTo(manualLatLng)
     })
+    await animationFramePromise()
+    const newLatLng = { lat: 42.1, lng: -71.1 }
+    const newVehicle = {
+      ...vehicle,
+      latitude: newLatLng.lat,
+      longitude: newLatLng.lng,
+    }
+    wrapper!.setProps({ vehicles: [newVehicle] })
+    await animationFramePromise()
+    expect(mapResult.current!.getCenter()).toEqual(manualLatLng)
+  })
+
+  test("auto recentering does not disable auto centering", async () => {
+    const mapResult: MutableRefObject<LeafletMap | null> = spyMapResult()
+    const latLng1 = { lat: 42, lng: -71 }
+    const latLng2 = { lat: 42.1, lng: -71.1 }
+    const latLng3 = { lat: 42.2, lng: -71.2 }
+    const vehicle1 = {
+      ...vehicle,
+      latitude: latLng1.lat,
+      longitude: latLng1.lng,
+    }
+    const vehicle2 = {
+      ...vehicle,
+      latitude: latLng2.lat,
+      longitude: latLng2.lng,
+    }
+    const vehicle3 = {
+      ...vehicle,
+      latitude: latLng3.lat,
+      longitude: latLng3.lng,
+    }
+    const wrapper = mount(<Map vehicles={[vehicle1]} />)
+    await animationFramePromise()
+    wrapper.setProps({ vehicles: [vehicle2] })
+    await animationFramePromise()
+    wrapper.setProps({ vehicles: [vehicle3] })
+    await animationFramePromise()
+    expect(mapResult.current!.getCenter()).toEqual(latLng3)
   })
 })
 
