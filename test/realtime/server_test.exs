@@ -14,7 +14,6 @@ defmodule Realtime.ServerTest do
     route_id: "1",
     trip_id: "t1",
     bearing: nil,
-    stop_sequence: 1,
     block_id: "A505-106",
     operator_id: "71041",
     operator_name: "FRANK",
