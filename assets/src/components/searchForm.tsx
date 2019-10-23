@@ -10,7 +10,7 @@ const SearchForm = () => {
   const handleTextInput = (event: React.FormEvent<HTMLInputElement>): void =>
     setSearchText(event.currentTarget.value)
 
-  const handlePropertyClick = (
+  const handlePropertyChange = (
     event: React.FormEvent<HTMLInputElement>
   ): void => setSearchProperty(event.currentTarget.value)
 
@@ -48,7 +48,7 @@ const SearchForm = () => {
               name="property"
               value={property}
               checked={searchProperty === property}
-              onClick={handlePropertyClick}
+              onChange={handlePropertyChange}
             />
             <label
               htmlFor={`property-${property}`}

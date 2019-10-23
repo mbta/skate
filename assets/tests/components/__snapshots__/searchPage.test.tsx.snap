@@ -38,7 +38,7 @@ exports[`SearchPage renders 1`] = `
           className="m-search-form__property-input"
           id="property-all"
           name="property"
-          onClick={[Function]}
+          onChange={[Function]}
           type="radio"
           value="all"
         />
@@ -55,7 +55,7 @@ exports[`SearchPage renders 1`] = `
           className="m-search-form__property-input"
           id="property-run"
           name="property"
-          onClick={[Function]}
+          onChange={[Function]}
           type="radio"
           value="run"
         />
@@ -72,7 +72,7 @@ exports[`SearchPage renders 1`] = `
           className="m-search-form__property-input"
           id="property-vehicle"
           name="property"
-          onClick={[Function]}
+          onChange={[Function]}
           type="radio"
           value="vehicle"
         />
@@ -89,7 +89,7 @@ exports[`SearchPage renders 1`] = `
           className="m-search-form__property-input"
           id="property-operator"
           name="property"
-          onClick={[Function]}
+          onChange={[Function]}
           type="radio"
           value="operator"
         />
