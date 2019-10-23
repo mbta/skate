@@ -16,7 +16,6 @@ defmodule SkateWeb.VehiclesChannelTest do
     route_id: "345",
     trip_id: "456",
     bearing: nil,
-    speed: nil,
     stop_sequence: nil,
     block_id: nil,
     operator_id: nil,

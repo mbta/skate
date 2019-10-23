@@ -33,7 +33,6 @@ export interface VehicleData {
   operator_id: string
   operator_name: string
   bearing: number
-  speed: number
   block_id: string
   headway_secs: number
   headway_spacing: RawHeadwaySpacing
@@ -107,7 +106,6 @@ export const vehicleFromData = ({ isOnRoute }: { isOnRoute: boolean }) => (
   operatorId: vehicleData.operator_id,
   operatorName: vehicleData.operator_name,
   bearing: vehicleData.bearing,
-  speed: vehicleData.speed,
   blockId: vehicleData.block_id,
   headwaySecs: vehicleData.headway_secs,
   headwaySpacing: headwaySpacing(vehicleData.headway_spacing),

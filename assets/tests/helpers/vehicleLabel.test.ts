@@ -22,7 +22,6 @@ const vehicle: Vehicle = {
   operatorId: "op2",
   operatorName: "JONES",
   bearing: 33,
-  speed: 50.0,
   blockId: "block-1",
   headwaySecs: 859.1,
   headwaySpacing: HeadwaySpacing.Ok,
