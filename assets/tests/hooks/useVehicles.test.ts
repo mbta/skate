@@ -101,7 +101,6 @@ describe("useVehicles", () => {
         },
       },
       sources: ["swiftly", "busloc"],
-      speed: 50.0,
       stop_status: {
         status: "in_transit_to",
         stop_id: "s1",
@@ -132,7 +131,6 @@ describe("useVehicles", () => {
       operatorId: "op1",
       operatorName: "SMITH",
       bearing: 33,
-      speed: 50.0,
       blockId: "block-1",
       headwaySecs: 859.1,
       headwaySpacing: null,

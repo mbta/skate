@@ -51,7 +51,6 @@ export interface Vehicle {
   operatorId: string
   operatorName: string
   bearing: number
-  speed: number | null
   blockId: BlockId
   headwaySecs: number | null
   headwaySpacing: HeadwaySpacing | null

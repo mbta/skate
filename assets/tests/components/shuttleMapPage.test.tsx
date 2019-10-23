@@ -24,7 +24,6 @@ const shuttle: Vehicle = {
   operatorId: "op1",
   operatorName: "SMITH",
   bearing: 33,
-  speed: 50.0,
   blockId: "block-1",
   headwaySecs: 859.1,
   headwaySpacing: HeadwaySpacing.Ok,

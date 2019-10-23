@@ -13,8 +13,6 @@ defmodule Realtime.VehicleOrGhostTest do
     route_id: "vehicle-route-1",
     trip_id: "vehicle-trip-1",
     bearing: nil,
-    speed: nil,
-    stop_sequence: 1,
     block_id: "A505-106",
     operator_id: "71041",
     operator_name: "FRANK",
