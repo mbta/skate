@@ -1,8 +1,6 @@
-$narrow-width: 7.5rem;
-$wide-width: $narrow-width + 2.6;
-
 .m-picker-container {
   background-color: $color-bg-medium;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -12,11 +10,11 @@ $wide-width: $narrow-width + 2.6;
   position: fixed;
   top: inherit;
   transition: left 0.2s ease-in-out;
-  width: $narrow-width;
+  width: $picker-width-narrow;
   z-index: 1;
 
   &--wide {
-    width: $wide-width;
+    width: $picker-width-wide;
   }
 
   &.visible {
@@ -24,11 +22,11 @@ $wide-width: $narrow-width + 2.6;
   }
 
   &.hidden {
-    left: -($narrow-width + 2);
+    left: -$picker-width-narrow;
   }
 
   &--wide.hidden {
-    left: -($wide-width + 2);
+    left: -$picker-width-wide;
   }
 }
 
@@ -36,14 +34,14 @@ $wide-width: $narrow-width + 2.6;
   background-color: $color-bg-medium;
   border-top-right-radius: 1rem;
   border-bottom-right-radius: 1rem;
-  left: $narrow-width + 2;
+  left: $picker-width-narrow;
   padding: 1.5rem 0.3rem;
   position: absolute;
   top: 1.625rem;
   width: fit-content;
 
   .m-picker-container--wide & {
-    left: $wide-width + 2;
+    left: $picker-width-wide;
   }
 }
 
