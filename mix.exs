@@ -70,7 +70,7 @@ defmodule Skate.MixProject do
       {:httpoison, "~> 1.6.1"},
       {:bypass, "~> 1.0.0", only: :test},
       {:csv, "~> 2.3.0"},
-      {:timex, "~> 3.5.0"},
+      {:timex, "~> 3.6.1"},
       {:stream_data, "~> 0.4.3", only: :test},
       {:laboratory, github: "paulswartz/laboratory", ref: "cookie_opts"}
     ]
