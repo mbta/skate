@@ -16,6 +16,11 @@ const SearchForm = () => {
 
   const subscribeToSearch = (event: React.FormEvent<EventTarget>) => {
     event.preventDefault()
+    if (!formIsSubmittable()) {
+      return
+    }
+
+    // TODO: Subscribe to search coming later
   }
 
   const formIsSubmittable = (): boolean => searchText.length >= 2
