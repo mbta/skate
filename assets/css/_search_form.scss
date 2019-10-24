@@ -40,7 +40,8 @@
   text-transform: uppercase;
 
   .m-search-form__property-input:checked + & {
-    background-color: $color-button-secondary;
-    color: $color-font-light;
+    @include button-secondary;
+    padding-left: 0.8125rem;
+    padding-right: 0.8125rem;
   }
 }
