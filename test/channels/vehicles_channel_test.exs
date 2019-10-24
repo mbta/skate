@@ -23,7 +23,7 @@ defmodule SkateWeb.VehiclesChannelTest do
     headway_secs: 600,
     headway_spacing: :ok,
     is_off_course: false,
-    is_laying_over: false,
+    is_nonrevenue: false,
     layover_departure_time: nil,
     block_is_active: true,
     sources: MapSet.new(["swiftly"]),

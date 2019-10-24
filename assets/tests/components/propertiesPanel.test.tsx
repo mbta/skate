@@ -43,7 +43,7 @@ describe("PropertiesPanel", () => {
       scheduleAdherenceString: "0.0 sec (ontime)",
       scheduledHeadwaySecs: 120,
       isOffCourse: false,
-      isLayingOver: false,
+      isNonrevenue: false,
       layoverDepartureTime: null,
       blockIsActive: false,
       dataDiscrepancies: [

@@ -39,7 +39,7 @@ const vehicles: Vehicle[] = [
     scheduleAdherenceString: "0.0 sec (ontime)",
     scheduledHeadwaySecs: 120,
     isOffCourse: false,
-    isLayingOver: false,
+    isNonrevenue: false,
     layoverDepartureTime: null,
     blockIsActive: true,
     dataDiscrepancies: [],
@@ -77,7 +77,7 @@ const vehicles: Vehicle[] = [
     scheduleAdherenceString: "0.0 sec (ontime)",
     scheduledHeadwaySecs: 120,
     isOffCourse: false,
-    isLayingOver: false,
+    isNonrevenue: false,
     layoverDepartureTime: null,
     blockIsActive: true,
     dataDiscrepancies: [],
@@ -230,8 +230,8 @@ describe("routeLadder", () => {
           vehiclesForRoute={{
             onRouteVehicles: [],
             incomingVehicles: [
-              { ...v1, isLayingOver: true },
-              { ...v2, isLayingOver: true },
+              { ...v1, isNonrevenue: true },
+              { ...v2, isNonrevenue: true },
             ],
             ghosts: [],
           }}
@@ -345,7 +345,7 @@ describe("routeLadder", () => {
       scheduleAdherenceString: "0.0 sec (ontime)",
       scheduledHeadwaySecs: 120,
       isOffCourse: false,
-      isLayingOver: false,
+      isNonrevenue: false,
       layoverDepartureTime: null,
       blockIsActive: true,
       dataDiscrepancies: [],

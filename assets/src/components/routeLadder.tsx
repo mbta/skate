@@ -83,7 +83,7 @@ const RouteLadder = ({
 
   const [layingOver, incoming] = Array.partition(
     vehiclesForRoute ? vehiclesForRoute.incomingVehicles : [],
-    (vehicle: Vehicle): boolean => vehicle.isLayingOver
+    (vehicle: Vehicle): boolean => vehicle.isNonrevenue
   )
 
   const [layingOverBottom, layingOverTop] = Array.partition(

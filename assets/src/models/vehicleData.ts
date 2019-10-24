@@ -41,7 +41,7 @@ export interface VehicleData {
   schedule_adherence_string: string
   scheduled_headway_secs: number
   is_off_course: boolean
-  is_laying_over: boolean
+  is_nonrevenue: boolean
   layover_departure_time: number | null
   block_is_active: boolean
   sources: string[]
@@ -115,7 +115,7 @@ export const vehicleFromData = ({ isOnRoute }: { isOnRoute: boolean }) => (
   scheduleAdherenceString: vehicleData.schedule_adherence_string,
   scheduledHeadwaySecs: vehicleData.scheduled_headway_secs,
   isOffCourse: vehicleData.is_off_course,
-  isLayingOver: vehicleData.is_laying_over,
+  isNonrevenue: vehicleData.is_nonrevenue,
   layoverDepartureTime: vehicleData.layover_departure_time,
   blockIsActive: vehicleData.block_is_active,
   dataDiscrepancies: dataDiscrepanciesFromData(vehicleData.data_discrepancies),
