@@ -1,11 +1,11 @@
 <svg
-    width="25px"
-    height="25px"
-    viewBox="0 0 48 48"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      className="m-tab-bar__icon"
-      d="m48.13 44.18-16.69-16.95a17.36 17.36 0 1 0 -3.82 3.88l16.63 16.89zm-45-26.93a14.25 14.25 0 1 1 14.25 14.25 14.27 14.27 0 0 1 -14.25-14.25z"
-    />
-  </svg>
+  width="25px"
+  height="25px"
+  viewBox="0 0 48 48"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    className="m-tab-bar__icon"
+    d="m48.13 44.18-16.69-16.95a17.36 17.36 0 1 0 -3.82 3.88l16.63 16.89zm-45-26.93a14.25 14.25 0 1 1 14.25 14.25 14.27 14.27 0 0 1 -14.25-14.25z"
+  />
+</svg>
