@@ -116,6 +116,7 @@ $color-stop-stroke: $black;
 @mixin button-base {
   background-color: $color-bg-base;
   border-radius: 4px;
+  cursor: pointer;
   font-size: 0.8125rem;
   font-weight: 700;
   padding: 0.3125rem;
