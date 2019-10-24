@@ -29,7 +29,6 @@ defmodule SkateWeb.VehiclesChannelTest do
     sources: MapSet.new(["swiftly"]),
     data_discrepancies: [],
     stop_status: %{
-      status: :in_transit_to,
       stop_id: "567",
       stop_name: "567"
     },

@@ -4,7 +4,6 @@ import {
   Ghost,
   Vehicle,
   VehicleScheduledLocation,
-  VehicleStatus,
   VehicleStopStatus,
   VehicleTimepointStatus,
 } from "../realtime.d"
@@ -79,7 +78,6 @@ interface VehicleScheduledLocationData {
 }
 
 interface VehicleStopStatusData {
-  status: VehicleStatus
   stop_id: string
   stop_name: string
 }
@@ -184,7 +182,6 @@ const vehicleScheduledLocationFromData = (
 const vehicleStopStatusFromData = (
   vehicleStopStatusData: VehicleStopStatusData
 ): VehicleStopStatus => ({
-  status: vehicleStopStatusData.status,
   stopId: vehicleStopStatusData.stop_id,
   stopName: vehicleStopStatusData.stop_name,
 })

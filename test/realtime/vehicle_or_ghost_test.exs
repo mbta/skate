@@ -26,7 +26,6 @@ defmodule Realtime.VehicleOrGhostTest do
     sources: MapSet.new(["swiftly"]),
     data_discrepancies: [],
     stop_status: %{
-      status: :in_transit_to,
       stop_id: "s1"
     },
     timepoint_status: %{

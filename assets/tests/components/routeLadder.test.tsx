@@ -44,7 +44,6 @@ const vehicles: Vehicle[] = [
     blockIsActive: true,
     dataDiscrepancies: [],
     stopStatus: {
-      status: "in_transit_to",
       stopId: "57",
       stopName: "57",
     },
@@ -83,7 +82,6 @@ const vehicles: Vehicle[] = [
     blockIsActive: true,
     dataDiscrepancies: [],
     stopStatus: {
-      status: "in_transit_to",
       stopId: "59",
       stopName: "59",
     },
@@ -352,7 +350,6 @@ describe("routeLadder", () => {
       blockIsActive: true,
       dataDiscrepancies: [],
       stopStatus: {
-        status: "in_transit_to",
         stopId: "stop",
         stopName: "stop",
       },

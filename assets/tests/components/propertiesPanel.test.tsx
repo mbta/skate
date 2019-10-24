@@ -62,7 +62,6 @@ describe("PropertiesPanel", () => {
         },
       ],
       stopStatus: {
-        status: "in_transit_to",
         stopId: "s1",
         stopName: "Stop Name",
       },

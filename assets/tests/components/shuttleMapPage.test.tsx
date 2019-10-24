@@ -37,7 +37,6 @@ const shuttle: Vehicle = {
   blockIsActive: true,
   dataDiscrepancies: [],
   stopStatus: {
-    status: "in_transit_to",
     stopId: "57",
     stopName: "57",
   },

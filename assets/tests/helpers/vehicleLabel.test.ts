@@ -35,7 +35,6 @@ const vehicle: Vehicle = {
   blockIsActive: true,
   dataDiscrepancies: [],
   stopStatus: {
-    status: "in_transit_to",
     stopId: "59",
     stopName: "59",
   },

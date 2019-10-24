@@ -35,7 +35,6 @@ const vehicle: Vehicle = {
   blockIsActive: true,
   dataDiscrepancies: [],
   stopStatus: {
-    status: "in_transit_to",
     stopId: "77",
     stopName: "Massachusetts Ave @ Marlborough St",
   },
@@ -104,7 +103,6 @@ describe("HeadwayDiagram", () => {
       blockIsActive: true,
       dataDiscrepancies: [],
       stopStatus: {
-        status: "in_transit_to",
         stopId: "72",
         stopName: "Massachusetts Ave @ Pearl St",
       },
@@ -155,7 +153,6 @@ describe("HeadwayDiagram", () => {
       blockIsActive: true,
       dataDiscrepancies: [],
       stopStatus: {
-        status: "in_transit_to",
         stopId: "11413",
         stopName: "Columbus Ave @ Walnut Ave",
       },

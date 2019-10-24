@@ -23,7 +23,7 @@ defmodule Realtime.VehicleTest do
     is_laying_over: false,
     layover_departure_time: nil,
     speed: 0.0,
-    status: :IN_TRANSIT_TO,
+    current_status: :IN_TRANSIT_TO,
     stop_id: "392",
     stop_sequence: 25,
     trip_id: "39984755",
@@ -134,7 +134,6 @@ defmodule Realtime.VehicleTest do
           }
         ],
         stop_status: %{
-          status: :in_transit_to,
           stop_id: "392",
           stop_name: "392"
         },
@@ -318,19 +317,15 @@ defmodule Realtime.VehicleTest do
     end
 
     test "returns :incoming if the trip is nil" do
-      assert Vehicle.route_status(:in_transit_to, "s1", nil) == :incoming
+      assert Vehicle.route_status("s1", nil) == :incoming
     end
 
-    test "returns :on_route if :stopped_at any stop", %{trip: trip} do
-      assert Vehicle.route_status(:stopped_at, "s1", trip) == :on_route
+    test "returns :incoming if the next stop is the first stop of the trip", %{trip: trip} do
+      assert Vehicle.route_status("s1", trip) == :incoming
     end
 
-    test "returns :incoming if :in_transit_to the first stop of the trip", %{trip: trip} do
-      assert Vehicle.route_status(:in_transit_to, "s1", trip) == :incoming
-    end
-
-    test "returns :on_route if :in_transit_to any other stop", %{trip: trip} do
-      assert Vehicle.route_status(:in_transit_to, "s2", trip) == :on_route
+    test "returns :on_route if the next stop is any other stop", %{trip: trip} do
+      assert Vehicle.route_status("s2", trip) == :on_route
     end
   end
 
@@ -376,7 +371,6 @@ defmodule Realtime.VehicleTest do
           }
         ],
         stop_status: %{
-          status: :in_transit_to,
           stop_id: "392",
           stop_name: "392"
         },
