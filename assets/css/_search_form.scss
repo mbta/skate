@@ -50,7 +50,7 @@
   text-transform: uppercase;
 
   .m-search-form__property-input:checked + & {
-    @include button-secondary;
+    @include button-primary;
     padding-left: 0.8125rem;
     padding-right: 0.8125rem;
   }
