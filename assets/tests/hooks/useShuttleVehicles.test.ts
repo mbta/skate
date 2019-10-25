@@ -2,40 +2,9 @@ import { renderHook } from "@testing-library/react-hooks"
 import { Socket } from "phoenix"
 import useShuttleVehicles from "../../src/hooks/useShuttleVehicles"
 import { Vehicle, VehicleTimepointStatus } from "../../src/realtime.d"
+import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 
 // tslint:disable: react-hooks-nesting
-
-const makeMockSocket = () => ({
-  channel: jest.fn(),
-})
-
-const makeMockChannel = (expectedJoinMessage: "ok" | "error" | "timeout") => {
-  const result = {
-    join: jest.fn(),
-    leave: jest.fn(),
-    on: jest.fn(),
-    receive: jest.fn(),
-  }
-  result.join.mockImplementation(() => result)
-  result.receive.mockImplementation((message, handler) => {
-    if (message === expectedJoinMessage) {
-      switch (message) {
-        case "ok":
-          return result
-
-        case "error":
-          handler({ reason: "ERROR_REASON" })
-          break
-
-        case "timeout":
-          handler()
-      }
-    }
-
-    return result
-  })
-  return result
-}
 
 const shuttlesData = [
   {
@@ -235,7 +204,10 @@ describe("useShuttleVehicles", () => {
 
     renderHook(() => useShuttleVehicles((mockSocket as any) as Socket))
 
-    expect(spyConsoleError).toHaveBeenCalledWith("join failed", "ERROR_REASON")
+    expect(spyConsoleError).toHaveBeenCalledWith(
+      "shuttle vehicles join failed",
+      "ERROR_REASON"
+    )
     spyConsoleError.mockRestore()
   })
 

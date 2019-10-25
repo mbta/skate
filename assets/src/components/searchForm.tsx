@@ -1,29 +1,35 @@
-import React, { useState } from "react"
+import React from "react"
 import { searchIcon } from "../helpers/icon"
+import {
+  Dispatch,
+  isValidSearch,
+  Search,
+  setSearchProperty,
+  setSearchText,
+} from "../models/search"
 
-const searchProperties = ["all", "run", "vehicle", "operator"]
+interface Props {
+  search: Search
+  dispatch: Dispatch
+}
 
-const SearchForm = () => {
-  const [searchText, setSearchText] = useState("")
-  const [searchProperty, setSearchProperty] = useState("all")
+const SEARCH_PROPERTIES = ["all", "run", "vehicle", "operator"]
 
+const SearchForm = ({ search, dispatch }: Props) => {
   const handleTextInput = (event: React.FormEvent<HTMLInputElement>): void =>
-    setSearchText(event.currentTarget.value)
+    dispatch(setSearchText(event.currentTarget.value))
 
   const handlePropertyChange = (
     event: React.FormEvent<HTMLInputElement>
-  ): void => setSearchProperty(event.currentTarget.value)
+  ): void => dispatch(setSearchProperty(event.currentTarget.value))
 
   const subscribeToSearch = (event: React.FormEvent<EventTarget>) => {
     event.preventDefault()
-    if (!formIsSubmittable()) {
-      return
-    }
 
-    // TODO: Subscribe to search coming later
+    // TODO: Save search results for "recent searches" list:
+    // https://app.asana.com/0/1112935048846093/1139512810293672
+    // saveSearchResults(searchResults)
   }
-
-  const formIsSubmittable = (): boolean => searchText.length >= 2
 
   return (
     <form onSubmit={subscribeToSearch} className="m-search-form">
@@ -31,20 +37,20 @@ const SearchForm = () => {
         type="text"
         className="m-search-form__text"
         placeholder="Search"
-        value={searchText}
+        value={search.text}
         onChange={handleTextInput}
       />
 
       <button
         className="m-search-form__submit"
         onClick={subscribeToSearch}
-        disabled={!formIsSubmittable()}
+        disabled={!isValidSearch(search)}
       >
         {searchIcon()}
       </button>
 
       <ul className="m-search-form__property-buttons">
-        {searchProperties.map(property => (
+        {SEARCH_PROPERTIES.map(property => (
           <li
             className="m-search-form__property-button"
             key={`search-property-${property}`}
@@ -55,7 +61,7 @@ const SearchForm = () => {
               type="radio"
               name="property"
               value={property}
-              checked={searchProperty === property}
+              checked={search.property === property}
               onChange={handlePropertyChange}
             />
             <label

@@ -3,6 +3,7 @@ import {
   DataDiscrepancy,
   Ghost,
   Vehicle,
+  VehicleOrGhost,
   VehicleScheduledLocation,
   VehicleStopStatus,
   VehicleTimepointStatus,
@@ -61,6 +62,8 @@ export interface GhostData {
   via_variant: string | null
   scheduled_timepoint_status: VehicleTimepointStatusData
 }
+
+export type VehicleOrGhostData = VehicleData | GhostData
 
 interface DataDiscrepancyData {
   attribute: string
@@ -135,10 +138,20 @@ export const ghostFromData = (ghostData: GhostData): Ghost => ({
   blockId: ghostData.block_id,
   runId: ghostData.run_id,
   viaVariant: ghostData.via_variant,
-  scheduledTimepointStatus: vehicleTimepointStatusFromData(
-    ghostData.scheduled_timepoint_status
-  ),
+  scheduledTimepointStatus:
+    ghostData.scheduled_timepoint_status &&
+    vehicleTimepointStatusFromData(ghostData.scheduled_timepoint_status),
 })
+
+const isAGhost = (vehicleOrGhostData: VehicleOrGhostData): boolean =>
+  !vehicleOrGhostData.hasOwnProperty("operator_id")
+
+export const vehicleOrGhostFromData = (
+  vehicleOrGhostData: VehicleOrGhostData
+): VehicleOrGhost =>
+  isAGhost(vehicleOrGhostData)
+    ? ghostFromData(vehicleOrGhostData as GhostData)
+    : vehicleFromData({ isOnRoute: true })(vehicleOrGhostData as VehicleData)
 
 const headwaySpacing = (raw: RawHeadwaySpacing): HeadwaySpacing | null => {
   switch (raw) {
