@@ -23,10 +23,18 @@
 
 .m-search-form__property-buttons {
   display: flex;
-  justify-content: space-between;
   list-style-type: none;
   margin-top: 0.75rem;
   width: 100%;
+}
+
+.m-search-form__property-button {
+  flex: 1 0 0;
+  margin-right: 0.3rem;
+
+  &:last-child {
+    margin-right: 0;
+  }
 }
 
 .m-search-form__property-input {
@@ -35,8 +43,10 @@
 
 .m-search-form__property-label {
   @include button-simple;
+  display: block;
   padding-left: 0.8125rem;
   padding-right: 0.8125rem;
+  text-align: center;
   text-transform: uppercase;
 
   .m-search-form__property-input:checked + & {

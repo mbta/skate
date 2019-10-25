@@ -32,7 +32,9 @@ exports[`SearchPage renders 1`] = `
     <ul
       className="m-search-form__property-buttons"
     >
-      <li>
+      <li
+        className="m-search-form__property-button"
+      >
         <input
           checked={true}
           className="m-search-form__property-input"
@@ -49,7 +51,9 @@ exports[`SearchPage renders 1`] = `
           all
         </label>
       </li>
-      <li>
+      <li
+        className="m-search-form__property-button"
+      >
         <input
           checked={false}
           className="m-search-form__property-input"
@@ -66,7 +70,9 @@ exports[`SearchPage renders 1`] = `
           run
         </label>
       </li>
-      <li>
+      <li
+        className="m-search-form__property-button"
+      >
         <input
           checked={false}
           className="m-search-form__property-input"
@@ -83,7 +89,9 @@ exports[`SearchPage renders 1`] = `
           vehicle
         </label>
       </li>
-      <li>
+      <li
+        className="m-search-form__property-button"
+      >
         <input
           checked={false}
           className="m-search-form__property-input"

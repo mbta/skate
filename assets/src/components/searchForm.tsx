@@ -45,7 +45,10 @@ const SearchForm = () => {
 
       <ul className="m-search-form__property-buttons">
         {searchProperties.map(property => (
-          <li key={`search-property-${property}`}>
+          <li
+            className="m-search-form__property-button"
+            key={`search-property-${property}`}
+          >
             <input
               id={`property-${property}`}
               className="m-search-form__property-input"
