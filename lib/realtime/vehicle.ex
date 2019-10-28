@@ -4,9 +4,7 @@ defmodule Realtime.Vehicle do
   alias Realtime.Headway
   alias Realtime.TimepointStatus
 
-  @type current_status :: :in_transit_to | :stopped_at
   @type stop_status :: %{
-          status: current_status(),
           stop_id: Stop.id(),
           stop_name: String.t()
         }
@@ -116,7 +114,6 @@ defmodule Realtime.Vehicle do
     trip_id = VehiclePosition.trip_id(vehicle_position)
     block_id = VehiclePosition.block_id(vehicle_position)
     stop_id = VehiclePosition.stop_id(vehicle_position)
-    current_stop_status = decode_current_status(VehiclePosition.status(vehicle_position))
 
     trip = trip_fn.(trip_id)
     route_id = VehiclePosition.route_id(vehicle_position) || (trip && trip.route_id)
@@ -193,13 +190,12 @@ defmodule Realtime.Vehicle do
       sources: VehiclePosition.sources(vehicle_position),
       data_discrepancies: data_discrepancies,
       stop_status: %{
-        status: current_stop_status,
         stop_id: stop_id,
         stop_name: stop_name
       },
       timepoint_status: timepoint_status,
       scheduled_location: scheduled_location,
-      route_status: route_status(current_stop_status, stop_id, trip)
+      route_status: route_status(stop_id, trip)
     }
   end
 
@@ -268,17 +264,10 @@ defmodule Realtime.Vehicle do
     if stop, do: stop.name, else: stop_id
   end
 
-  @spec decode_current_status(atom()) :: current_status()
-  defp decode_current_status(:IN_TRANSIT_TO), do: :in_transit_to
-  defp decode_current_status(:INCOMING_AT), do: :in_transit_to
-  defp decode_current_status(:STOPPED_AT), do: :stopped_at
+  @spec route_status(Stop.id(), Trip.t() | nil) :: route_status()
+  def route_status(_stop_id, nil), do: :incoming
 
-  @spec route_status(current_status(), Stop.id(), Trip.t() | nil) :: route_status()
-  def route_status(_status, _stop_id, nil), do: :incoming
-
-  def route_status(:stopped_at, _stop_id, _trip), do: :on_route
-
-  def route_status(:in_transit_to, stop_id, %Trip{stop_times: [first_stop_time | _rest]}) do
+  def route_status(stop_id, %Trip{stop_times: [first_stop_time | _rest]}) do
     if first_stop_time.stop_id == stop_id do
       :incoming
     else

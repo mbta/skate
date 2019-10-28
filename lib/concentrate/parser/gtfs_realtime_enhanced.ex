@@ -71,7 +71,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
             bearing: Map.get(position, "bearing"),
             speed: Map.get(position, "speed"),
             odometer: Map.get(position, "odometer"),
-            status: vehicle_status(Map.get(vp, "current_status")),
+            current_status: current_status(Map.get(vp, "current_status")),
             stop_sequence: Map.get(vp, "current_stop_sequence"),
             last_updated: Map.get(vp, "timestamp"),
             block_id: Map.get(vp, "block_id"),
@@ -134,11 +134,11 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
     defp schedule_relationship(unquote(Atom.to_string(relationship))), do: unquote(relationship)
   end
 
-  @spec vehicle_status(String.t() | nil) :: atom()
+  @spec current_status(String.t() | nil) :: atom()
   # default
-  defp vehicle_status(nil), do: :IN_TRANSIT_TO
+  defp current_status(nil), do: :IN_TRANSIT_TO
 
   for status <- ~w(INCOMING_AT STOPPED_AT IN_TRANSIT_TO)a do
-    defp vehicle_status(unquote(Atom.to_string(status))), do: unquote(status)
+    defp current_status(unquote(Atom.to_string(status))), do: unquote(status)
   end
 end

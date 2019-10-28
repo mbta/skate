@@ -45,7 +45,6 @@ describe("ladder", () => {
         blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
-          status: "in_transit_to",
           stopId: "stop",
           stopName: "stop",
         },
@@ -84,7 +83,6 @@ describe("ladder", () => {
         blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
-          status: "in_transit_to",
           stopId: "stop",
           stopName: "stop",
         },
@@ -129,7 +127,6 @@ describe("ladder", () => {
         blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
-          status: "in_transit_to",
           stopId: "stop",
           stopName: "stop",
         },
@@ -221,7 +218,6 @@ describe("ladder", () => {
         blockIsActive: false,
         dataDiscrepancies: [],
         stopStatus: {
-          status: "in_transit_to",
           stopId: "stop",
           stopName: "stop",
         },
@@ -260,7 +256,6 @@ describe("ladder", () => {
         blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
-          status: "in_transit_to",
           stopId: "stop",
           stopName: "stop",
         },
@@ -326,7 +321,6 @@ describe("ladder", () => {
         blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
-          status: "in_transit_to",
           stopId: "stop",
           stopName: "stop",
         },
@@ -391,7 +385,6 @@ describe("ladder", () => {
         blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
-          status: "in_transit_to",
           stopId: "stop",
           stopName: "stop",
         },
@@ -430,7 +423,6 @@ describe("ladder", () => {
         blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
-          status: "in_transit_to",
           stopId: "stop",
           stopName: "stop",
         },
@@ -497,7 +489,6 @@ describe("ladder", () => {
       blockIsActive: true,
       dataDiscrepancies: [],
       stopStatus: {
-        status: "in_transit_to",
         stopId: "stop",
         stopName: "stop",
       },
@@ -558,7 +549,6 @@ describe("ladder", () => {
         blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
-          status: "in_transit_to",
           stopId: "stop",
           stopName: "stop",
         },
@@ -618,7 +608,6 @@ describe("ladder", () => {
         blockIsActive: true,
         dataDiscrepancies: [],
         stopStatus: {
-          status: "in_transit_to",
           stopId: "stop",
           stopName: "stop",
         },
@@ -696,7 +685,6 @@ describe("ladder", () => {
         },
       ],
       stopStatus: {
-        status: "in_transit_to",
         stopId: "stop",
         stopName: "stop",
       },

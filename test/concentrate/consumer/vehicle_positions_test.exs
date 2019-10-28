@@ -36,7 +36,7 @@ defmodule Concentrate.Supervisor.VehiclePositionsTest do
                 operator_name: "FRANK",
                 run_id: "123-9048",
                 speed: nil,
-                status: :IN_TRANSIT_TO,
+                current_status: :IN_TRANSIT_TO,
                 stop_id: "6551",
                 stop_sequence: 1,
                 trip_id: "39984755"
@@ -68,7 +68,7 @@ defmodule Concentrate.Supervisor.VehiclePositionsTest do
                 operator_name: "PANIAGUA",
                 run_id: "126-1430",
                 speed: 0.0,
-                status: :IN_TRANSIT_TO,
+                current_status: :IN_TRANSIT_TO,
                 stop_id: "8310",
                 stop_sequence: 1,
                 trip_id: "40155689"

@@ -102,7 +102,6 @@ describe("useVehicles", () => {
       },
       sources: ["swiftly", "busloc"],
       stop_status: {
-        status: "in_transit_to",
         stop_id: "s1",
         stop_name: "Stop Name",
       },
@@ -171,7 +170,6 @@ describe("useVehicles", () => {
         },
       ],
       stopStatus: {
-        status: "in_transit_to",
         stopId: "s1",
         stopName: "Stop Name",
       },

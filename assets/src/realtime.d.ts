@@ -74,7 +74,6 @@ export type VehicleOrGhost = Vehicle | Ghost
 export type VehicleId = string
 
 export interface VehicleStopStatus {
-  status: VehicleStatus
   stopId: StopId
   stopName: string
 }
@@ -88,8 +87,6 @@ export interface VehicleTimepointStatus {
   timepointId: TimepointId
   fractionUntilTimepoint: number
 }
-
-export type VehicleStatus = "in_transit_to" | "stopped_at"
 
 export interface VehiclesForRoute {
   onRouteVehicles: Vehicle[]

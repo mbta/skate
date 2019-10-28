@@ -39,7 +39,7 @@ defmodule Concentrate.VehiclePosition do
     :scheduled_headway_secs,
     :sources,
     :data_discrepancies,
-    status: :IN_TRANSIT_TO
+    current_status: :IN_TRANSIT_TO
   ])
 
   def new(opts) do
