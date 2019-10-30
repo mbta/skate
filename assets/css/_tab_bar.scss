@@ -30,10 +30,6 @@
   text-align: center;
 }
 
-.m-tab-bar__logo {
-  padding: 0.5rem 0.1rem 0;
-}
-
 .m-tab-bar__link {
   padding: 0.5rem 0.5rem 0.25rem 0.5rem;
 
@@ -55,6 +51,17 @@
   .m-tab-bar__logo &,
   .m-tab-bar__t-logo & {
     fill: $white;
+    width: 32px;
+  }
+
+  .m-tab-bar__logo & {
+    padding: 1rem 0.1rem 0.4rem;
+  }
+
+  .m-tab-bar__logo &.halloween {
+    fill: $black;
+    background-color: $color-logo-halloween;
+    width: 45px;
   }
 }
 
