@@ -20,6 +20,7 @@ import searchIconSvg from "../../static/images/icon-search.svg"
 import skateLogoHalloweenIconSvg from "../../static/images/icon-skate-logo-halloween.svg"
 // @ts-ignore
 import skateLogoIconSvg from "../../static/images/icon-skate-logo.svg"
+import { todayIsHalloween } from "./date"
 import renderSvg from "./renderSvg"
 
 export const circleXIcon = (): JSX.Element => renderSvg("", circleXIconSvg)
@@ -49,8 +50,3 @@ export const skateLogoIcon = (className: string = ""): JSX.Element =>
   todayIsHalloween()
     ? renderSvg(`${className} halloween`, skateLogoHalloweenIconSvg)
     : renderSvg(className, skateLogoIconSvg)
-
-const todayIsHalloween = (): boolean => {
-  const today = new Date()
-  return today.getMonth() === 9 && today.getDate() === 31
-}
