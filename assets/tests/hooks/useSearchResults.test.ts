@@ -8,6 +8,7 @@ import {
   VehicleOrGhost,
   VehicleTimepointStatus,
 } from "../../src/realtime"
+import { mockUseReducerOnce } from "../testHelpers/mockHelpers"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 
 // tslint:disable: react-hooks-nesting
@@ -234,41 +235,29 @@ describe("useSearchResults", () => {
     expect(result.current).toEqual(vehicles)
   })
 
-  test("leaves the old channel before joining a new one", () => {
+  test("leaves the channel on unmount", () => {
     const mockSocket = makeMockSocket()
-    const mockFirstChannel = makeMockChannel("ok")
-    const mockSecondChannel = makeMockChannel("ok")
-    mockSocket.channel
-      .mockImplementationOnce(() => mockFirstChannel)
-      .mockImplementationOnce(() => mockSecondChannel)
+    const mockChannel = makeMockChannel("ok")
+    mockSocket.channel.mockImplementation(() => mockChannel)
 
-    const firstSearch: Search = {
+    const mockState = {
+      channel: mockChannel,
+      vehicles: [],
+    }
+    const mockDispatch = jest.fn()
+    mockUseReducerOnce([mockState, mockDispatch])
+
+    const search: Search = {
       text: "one",
       property: "run",
     }
-
-    const { rerender } = renderHook(
-      (search: Search) =>
-        useSearchResults((mockSocket as any) as Socket, search),
-      { initialProps: firstSearch }
+    const { unmount } = renderHook(() =>
+      useSearchResults((mockSocket as any) as Socket, search)
     )
 
-    // Needs to be kicked to do the effects again after the socket initializes
-    rerender()
+    unmount()
 
-    expect(mockSocket.channel).toHaveBeenCalledWith("vehicles:search:run:one")
-    expect(mockFirstChannel.join).toHaveBeenCalledTimes(1)
-
-    const secondSearch: Search = {
-      text: "two",
-      property: "run",
-    }
-
-    rerender(secondSearch)
-
-    expect(mockFirstChannel.leave).toHaveBeenCalledTimes(1)
-    expect(mockSocket.channel).toHaveBeenCalledWith("vehicles:search:run:two")
-    expect(mockSecondChannel.join).toHaveBeenCalledTimes(1)
+    expect(mockChannel.leave).toHaveBeenCalledTimes(1)
   })
 
   test("console.error on join error", async () => {

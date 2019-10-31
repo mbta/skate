@@ -90,17 +90,18 @@ const useSearchResults = (
   socket: Socket | undefined,
   search: Search
 ): VehicleOrGhost[] | null => {
-  const [state, dispatch] = useReducer(reducer, initialState)
-  const { channel, vehicles } = state
+  const [{ channel, vehicles }, dispatch] = useReducer(reducer, initialState)
 
   useEffect(() => {
     if (socket && isValidSearch(search)) {
+      const newChannel = subscribe(socket, search, dispatch)
+      dispatch(setChannel(newChannel))
+    }
+
+    return () => {
       if (channel !== undefined) {
         channel.leave()
       }
-
-      const newChannel = subscribe(socket, search, dispatch)
-      dispatch(setChannel(newChannel))
     }
   }, [socket, search])
 
