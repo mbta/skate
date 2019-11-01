@@ -24,7 +24,7 @@ describe("closeIcon", () => {
 })
 
 describe("ladderIcon", () => {
-  it("renders an icon with a class name", () => {
+  it("renders an accessibility icon with a class name", () => {
     const className = "test-class-name"
 
     const expected = (
@@ -58,7 +58,7 @@ describe("ladderIcon", () => {
 })
 
 describe("mapIcon", () => {
-  it("renders an icon with a class name", () => {
+  it("renders an accessibility icon with a class name", () => {
     const className = "test-class-name"
 
     const expected = (
@@ -92,7 +92,7 @@ describe("mapIcon", () => {
 })
 
 describe("reverseIcon", () => {
-  it("renders an icon with a class name", () => {
+  it("renders an accessibility icon with a class name", () => {
     const className = "test-class-name"
 
     const expected = (
