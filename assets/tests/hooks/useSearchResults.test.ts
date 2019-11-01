@@ -247,7 +247,7 @@ describe("useSearchResults", () => {
 
     unmount()
 
-    expect(mockChannel.leave).toHaveBeenCalledTimes(1)
+    expect(mockChannel.leave).toHaveBeenCalled()
   })
 
   test("console.error on join error", async () => {

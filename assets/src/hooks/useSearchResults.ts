@@ -86,6 +86,12 @@ const subscribe = (
   return channel
 }
 
+const leaveChannel = (channel: Channel | undefined) => {
+  if (channel !== undefined) {
+    channel.leave()
+  }
+}
+
 const useSearchResults = (
   socket: Socket | undefined,
   search: Search
@@ -94,15 +100,12 @@ const useSearchResults = (
 
   useEffect(() => {
     if (socket && isValidSearch(search)) {
+      leaveChannel(channel)
       const newChannel = subscribe(socket, search, dispatch)
       dispatch(setChannel(newChannel))
     }
 
-    return () => {
-      if (channel !== undefined) {
-        channel.leave()
-      }
-    }
+    return () => leaveChannel(channel)
   }, [socket, search])
 
   return vehicles
