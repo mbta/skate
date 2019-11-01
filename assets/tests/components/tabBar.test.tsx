@@ -4,30 +4,8 @@ import { BrowserRouter } from "react-router-dom"
 import renderer from "react-test-renderer"
 import TabBar from "../../src/components/tabBar"
 
-jest.mock("../../src/helpers/date", () => ({
-  __esModule: true,
-  todayIsHalloween: jest
-    .fn()
-    // Ipmlementation sequence matches
-    .mockImplementationOnce(() => false)
-    .mockImplementationOnce(() => true)
-    .mockImplementation(() => false),
-}))
-
 describe("tabBar", () => {
   it("renders", () => {
-    const tree = renderer
-      .create(
-        <BrowserRouter>
-          <TabBar pickerContainerIsVisible={true} />
-        </BrowserRouter>
-      )
-      .toJSON()
-
-    expect(tree).toMatchSnapshot()
-  })
-
-  it("renders special icons for Halloween", () => {
     const tree = renderer
       .create(
         <BrowserRouter>

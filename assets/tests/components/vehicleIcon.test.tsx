@@ -6,18 +6,6 @@ import VehicleIcon, {
   VehicleIconSvgNode,
 } from "../../src/components/vehicleIcon"
 
-jest.mock("../../src/helpers/date", () => ({
-  __esModule: true,
-  todayIsHalloween: jest
-    .fn()
-    // Ipmlementation sequence matches
-    .mockImplementationOnce(() => false)
-    .mockImplementationOnce(() => false)
-    .mockImplementationOnce(() => false)
-    .mockImplementationOnce(() => true)
-    .mockImplementation(() => false),
-}))
-
 test("renders in all directions and sizes", () => {
   const tree = renderer
     .create(
@@ -159,73 +147,6 @@ test("renders with all statuses", () => {
           status={"plain"}
         />
         <VehicleIcon size={Size.Medium} orientation={Orientation.Up} />
-      </>
-    )
-    .toJSON()
-
-  expect(tree).toMatchSnapshot()
-})
-
-test("renders a special off-course icon for Halloween", () => {
-  const tree = renderer
-    .create(
-      <>
-        VehicleIcon size={Size.Small} orientation={Orientation.Up} />
-        <VehicleIcon
-          size={Size.Small}
-          orientation={Orientation.Right}
-          status={"off-course"}
-        />
-        <VehicleIcon
-          size={Size.Small}
-          orientation={Orientation.Down}
-          status={"off-course"}
-        />
-        <VehicleIcon
-          size={Size.Small}
-          orientation={Orientation.Left}
-          status={"off-course"}
-        />
-        <VehicleIcon
-          size={Size.Medium}
-          orientation={Orientation.Up}
-          status={"off-course"}
-        />
-        <VehicleIcon
-          size={Size.Medium}
-          orientation={Orientation.Right}
-          status={"off-course"}
-        />
-        <VehicleIcon
-          size={Size.Medium}
-          orientation={Orientation.Down}
-          status={"off-course"}
-        />
-        <VehicleIcon
-          size={Size.Medium}
-          orientation={Orientation.Left}
-          status={"off-course"}
-        />
-        <VehicleIcon
-          size={Size.Large}
-          orientation={Orientation.Up}
-          status={"off-course"}
-        />
-        <VehicleIcon
-          size={Size.Large}
-          orientation={Orientation.Right}
-          status={"off-course"}
-        />
-        <VehicleIcon
-          size={Size.Large}
-          orientation={Orientation.Down}
-          status={"off-course"}
-        />
-        <VehicleIcon
-          size={Size.Large}
-          orientation={Orientation.Left}
-          status={"off-course"}
-        />
       </>
     )
     .toJSON()
