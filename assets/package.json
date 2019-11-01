@@ -23,7 +23,7 @@
     "phoenix_html": "file:../deps/phoenix_html",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
-    "react-router-dom": "^5.0.1",
+    "react-router-dom": "^5.1.2",
     "resize-observer-polyfill": "^1.5.1",
     "whatwg-fetch": "^3.0.0"
   },
