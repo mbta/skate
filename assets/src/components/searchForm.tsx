@@ -34,6 +34,7 @@ const SearchForm = () => {
         placeholder="Search"
         value={search.text}
         onChange={handleTextInput}
+        autoFocus={true}
       />
 
       <button
