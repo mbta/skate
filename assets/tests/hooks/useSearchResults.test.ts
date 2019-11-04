@@ -250,6 +250,27 @@ describe("useSearchResults", () => {
     expect(mockChannel.leave).toHaveBeenCalled()
   })
 
+  test("leaves the channel before joining a new one", () => {
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok")
+    mockSocket.channel.mockImplementation(() => mockChannel)
+
+    const mockState = {
+      channel: mockChannel,
+      vehicles: [],
+    }
+    const mockDispatch = jest.fn()
+    mockUseReducerOnce([mockState, mockDispatch])
+
+    const search: Search = {
+      text: "one",
+      property: "run",
+    }
+    renderHook(() => useSearchResults((mockSocket as any) as Socket, search))
+
+    expect(mockChannel.leave).toHaveBeenCalled()
+  })
+
   test("console.error on join error", async () => {
     const spyConsoleError = jest.spyOn(console, "error")
     spyConsoleError.mockImplementationOnce(msg => msg)
