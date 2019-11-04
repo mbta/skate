@@ -36,7 +36,7 @@ export const setSearchProperty = (
   payload: { property },
 })
 
-type Action = SetSearchTextAction | SetSearchPropertyAction
+export type Action = SetSearchTextAction | SetSearchPropertyAction
 
 export type Dispatch = ReactDispatch<Action>
 

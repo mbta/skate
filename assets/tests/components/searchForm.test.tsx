@@ -1,20 +1,25 @@
-import { shallow } from "enzyme"
+import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import SearchForm from "../../src/components/searchForm"
+import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import {
-  initialSearch,
   Search,
   setSearchProperty,
   setSearchText,
 } from "../../src/models/search"
+import { initialState } from "../../src/state"
 
 const mockDispatch = jest.fn()
 
 describe("SearchForm", () => {
   test("renders", () => {
     const tree = renderer
-      .create(<SearchForm search={initialSearch} dispatch={mockDispatch} />)
+      .create(
+        <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+          <SearchForm />
+        </StateDispatchProvider>
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -25,8 +30,14 @@ describe("SearchForm", () => {
       text: "1",
       property: "run",
     }
-    const wrapper = shallow(
-      <SearchForm search={invalidSearch} dispatch={mockDispatch} />
+    const invalidSearchState = {
+      ...initialState,
+      search: invalidSearch,
+    }
+    const wrapper = mount(
+      <StateDispatchProvider state={invalidSearchState} dispatch={mockDispatch}>
+        <SearchForm />
+      </StateDispatchProvider>
     )
 
     expect(wrapper.find(".m-search-form__text").prop("value")).toEqual("1")
@@ -38,8 +49,14 @@ describe("SearchForm", () => {
       text: "12",
       property: "run",
     }
-    const wrapper = shallow(
-      <SearchForm search={invalidSearch} dispatch={mockDispatch} />
+    const invalidSearchState = {
+      ...initialState,
+      search: invalidSearch,
+    }
+    const wrapper = mount(
+      <StateDispatchProvider state={invalidSearchState} dispatch={mockDispatch}>
+        <SearchForm />
+      </StateDispatchProvider>
     )
 
     expect(wrapper.find(".m-search-form__text").prop("value")).toEqual("12")
@@ -48,8 +65,10 @@ describe("SearchForm", () => {
 
   test("entering text sets it as the search text", () => {
     const testDispatch = jest.fn()
-    const wrapper = shallow(
-      <SearchForm search={initialSearch} dispatch={testDispatch} />
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={testDispatch}>
+        <SearchForm />
+      </StateDispatchProvider>
     )
 
     const testEvent = {
@@ -57,16 +76,17 @@ describe("SearchForm", () => {
         value: "test input",
       },
     } as React.ChangeEvent<HTMLInputElement>
-    wrapper.find(".m-search-form__text").simulate("change", testEvent)
+    wrapper.find(".m-search-form__text").prop("onChange")!(testEvent)
 
     expect(testDispatch).toHaveBeenCalledWith(setSearchText("test input"))
   })
 
   test("clicking a search property selects it", () => {
     const testDispatch = jest.fn()
-
-    const wrapper = shallow(
-      <SearchForm search={initialSearch} dispatch={testDispatch} />
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={testDispatch}>
+        <SearchForm />
+      </StateDispatchProvider>
     )
 
     const testEvent = {

@@ -33,6 +33,10 @@ describe("usePersistedStateReducer", () => {
   test("initializes the state with the given initial value", () => {
     const initialState: State = {
       pickerContainerIsVisible: true,
+      search: {
+        text: "search text",
+        property: "run",
+      },
       selectedRouteIds: ["1", "2"],
       selectedShuttleRouteIds: [],
       selectedShuttleRunIds: [],
@@ -63,6 +67,10 @@ describe("usePersistedStateReducer", () => {
 
     const initialState: State = {
       pickerContainerIsVisible: true,
+      search: {
+        text: "search text",
+        property: "run",
+      },
       selectedRouteIds: ["1", "2"],
       selectedShuttleRouteIds: [],
       selectedShuttleRunIds: [],
@@ -75,6 +83,10 @@ describe("usePersistedStateReducer", () => {
     }
     const expectedState: State = {
       pickerContainerIsVisible: true,
+      search: {
+        text: "search text",
+        property: "run",
+      },
       selectedRouteIds: ["28", "39"],
       selectedShuttleRouteIds: [],
       selectedShuttleRunIds: [],
@@ -104,6 +116,10 @@ describe("usePersistedStateReducer", () => {
 
     const initialState: State = {
       pickerContainerIsVisible: true,
+      search: {
+        text: "search text",
+        property: "run",
+      },
       selectedRouteIds: ["1", "2"],
       selectedShuttleRouteIds: [],
       selectedShuttleRunIds: [],
@@ -116,6 +132,10 @@ describe("usePersistedStateReducer", () => {
     }
     const expectedState: State = {
       pickerContainerIsVisible: true,
+      search: {
+        text: "search text",
+        property: "run",
+      },
       selectedRouteIds: ["28", "39"],
       selectedShuttleRouteIds: [],
       selectedShuttleRunIds: [],

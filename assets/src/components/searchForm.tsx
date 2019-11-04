@@ -1,21 +1,16 @@
-import React from "react"
+import React, { useContext } from "react"
+import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { searchIcon } from "../helpers/icon"
 import {
-  Dispatch,
   isValidSearch,
-  Search,
   setSearchProperty,
   setSearchText,
 } from "../models/search"
 
-interface Props {
-  search: Search
-  dispatch: Dispatch
-}
-
 const SEARCH_PROPERTIES = ["all", "run", "vehicle", "operator"]
 
-const SearchForm = ({ search, dispatch }: Props) => {
+const SearchForm = () => {
+  const [{ search }, dispatch] = useContext(StateDispatchContext)
   const handleTextInput = (event: React.FormEvent<HTMLInputElement>): void =>
     dispatch(setSearchText(event.currentTarget.value))
 

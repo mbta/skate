@@ -153,7 +153,7 @@ describe("reducer", () => {
     const initialVehicleId: VehicleId = "v1"
     const state = {
       ...initialState,
-      selectVehicle: initialVehicleId,
+      selectedVehicleId: initialVehicleId,
     }
     const expectedState = {
       ...state,

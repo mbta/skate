@@ -1,10 +1,17 @@
 import { Dispatch as ReactDispatch } from "react"
+import {
+  Action as SearchAction,
+  initialSearch as initialSearchState,
+  reducer as searchReducer,
+  Search,
+} from "./models/search"
 import { RunId, VehicleId } from "./realtime.d"
 import { RouteId } from "./schedule.d"
 import { defaultSettings, Settings, VehicleLabelSetting } from "./settings"
 
 export interface State {
   pickerContainerIsVisible: boolean
+  search: Search
   selectedRouteIds: RouteId[]
   selectedShuttleRouteIds: RouteId[]
   selectedShuttleRunIds: RunId[] | "all"
@@ -14,6 +21,7 @@ export interface State {
 
 export const initialState: State = {
   pickerContainerIsVisible: true,
+  search: initialSearchState,
   selectedRouteIds: [],
   selectedShuttleRouteIds: [],
   selectedShuttleRunIds: "all",
@@ -195,6 +203,7 @@ type Action =
   | TogglePickerContainerAction
   | SetLadderVehicleLabelSettingAction
   | SetShuttleVehicleLabelSettingAction
+  | SearchAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -203,92 +212,110 @@ export type Reducer = (state: State, action: Action) => State
 const shuttleRunIdsList = (selectedShuttleRunIds: RunId[] | "all"): RunId[] =>
   selectedShuttleRunIds === "all" ? [] : selectedShuttleRunIds
 
-export const reducer = (state: State, action: Action): State => {
+const pickerContainerIsVisibleReducer = (
+  state: boolean,
+  action: Action
+): boolean => {
+  switch (action.type) {
+    case "TOGGLE_PICKER_CONTAINER":
+      return !state
+    default:
+      return state
+  }
+}
+
+const selectedRouteIdsReducer = (
+  state: RouteId[],
+  action: Action
+): RouteId[] => {
   switch (action.type) {
     case "SELECT_ROUTE":
-      return {
-        ...state,
-        selectedRouteIds: [...state.selectedRouteIds, action.payload.routeId],
-      }
+      return [...state, action.payload.routeId]
     case "DESELECT_ROUTE":
-      return {
-        ...state,
-        selectedRouteIds: state.selectedRouteIds.filter(
-          id => id !== action.payload.routeId
-        ),
-      }
-    case "SELECT_SHUTTLE_RUN":
-      return {
-        ...state,
-        selectedShuttleRunIds: [
-          ...shuttleRunIdsList(state.selectedShuttleRunIds),
-          action.payload.runId,
-        ],
-      }
-    case "DESELECT_SHUTTLE_RUN":
-      return {
-        ...state,
-        selectedShuttleRunIds: shuttleRunIdsList(
-          state.selectedShuttleRunIds
-        ).filter(id => id !== action.payload.runId),
-      }
-    case "SELECT_ALL_SHUTTLE_RUNS":
-      return {
-        ...state,
-        selectedShuttleRunIds: "all",
-      }
-    case "DESELECT_ALL_SHUTTLE_RUNS":
-      return {
-        ...state,
-        selectedShuttleRunIds: [],
-      }
+      return state.filter(id => id !== action.payload.routeId)
+    default:
+      return state
+  }
+}
+
+const selectedShuttleRouteIdsReducer = (
+  state: RouteId[],
+  action: Action
+): RouteId[] => {
+  switch (action.type) {
     case "SELECT_SHUTTLE_ROUTE":
-      return {
-        ...state,
-        selectedShuttleRouteIds: [
-          ...state.selectedShuttleRouteIds,
-          action.payload.routeId,
-        ],
-      }
+      return [...state, action.payload.routeId]
     case "DESELECT_SHUTTLE_ROUTE":
-      return {
-        ...state,
-        selectedShuttleRouteIds: state.selectedShuttleRouteIds.filter(
-          id => id !== action.payload.routeId
-        ),
-      }
+      return state.filter(id => id !== action.payload.routeId)
+    default:
+      return state
+  }
+}
+
+const selectedShuttleRunIdsReducer = (
+  state: RunId[] | "all",
+  action: Action
+): RunId[] | "all" => {
+  switch (action.type) {
+    case "SELECT_SHUTTLE_RUN":
+      return [...shuttleRunIdsList(state), action.payload.runId]
+    case "DESELECT_SHUTTLE_RUN":
+      return shuttleRunIdsList(state).filter(id => id !== action.payload.runId)
+    case "SELECT_ALL_SHUTTLE_RUNS":
+      return "all"
+    case "DESELECT_ALL_SHUTTLE_RUNS":
+      return []
+    default:
+      return state
+  }
+}
+
+const selectedVehicleIdReducer = (
+  state: VehicleId | undefined,
+  action: Action
+): VehicleId | undefined => {
+  switch (action.type) {
     case "SELECT_VEHICLE":
-      return {
-        ...state,
-        selectedVehicleId: action.payload.vehicleId,
-      }
+      return action.payload.vehicleId
     case "DESELECT_VEHICLE":
-      return {
-        ...state,
-        selectedVehicleId: undefined,
-      }
-    case "TOGGLE_PICKER_CONTAINER":
-      return {
-        ...state,
-        pickerContainerIsVisible: !state.pickerContainerIsVisible,
-      }
+      return undefined
+    default:
+      return state
+  }
+}
+
+const settingsReducer = (state: Settings, action: Action): Settings => {
+  switch (action.type) {
     case "SET_LADDER_VEHICLE_LABEL_SETTING":
       return {
         ...state,
-        settings: {
-          ...state.settings,
-          ladderVehicleLabel: action.payload.ladderVehicleLabel,
-        },
+        ladderVehicleLabel: action.payload.ladderVehicleLabel,
       }
     case "SET_MAP_VEHICLE_LABEL_SETTING":
       return {
         ...state,
-        settings: {
-          ...state.settings,
-          shuttleVehicleLabel: action.payload.shuttleVehicleLabel,
-        },
+        shuttleVehicleLabel: action.payload.shuttleVehicleLabel,
       }
     default:
       return state
   }
 }
+
+export const reducer = (state: State, action: Action): State => ({
+  pickerContainerIsVisible: pickerContainerIsVisibleReducer(
+    state.pickerContainerIsVisible,
+    action
+  ),
+  search: searchReducer(state.search, action as SearchAction),
+  selectedRouteIds: selectedRouteIdsReducer(state.selectedRouteIds, action),
+  selectedShuttleRouteIds: selectedShuttleRouteIdsReducer(
+    state.selectedShuttleRouteIds,
+    action
+  ),
+  selectedShuttleRunIds: selectedShuttleRunIdsReducer(
+    state.selectedShuttleRunIds,
+    action
+  ),
+  selectedVehicleId: selectedVehicleIdReducer(state.selectedVehicleId, action),
+  settings: settingsReducer(state.settings, action),
+})
