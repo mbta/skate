@@ -32,12 +32,7 @@ describe("useSearchResults", () => {
       property: "run",
     }
 
-    const { rerender } = renderHook(() =>
-      useSearchResults((mockSocket as any) as Socket, search)
-    )
-
-    // Needs to be kicked to do the effects again after the socket initializes
-    rerender()
+    renderHook(() => useSearchResults((mockSocket as any) as Socket, search))
 
     expect(mockSocket.channel).toHaveBeenCalledTimes(1)
     expect(mockSocket.channel).toHaveBeenCalledWith("vehicles:search:run:test")
@@ -54,12 +49,7 @@ describe("useSearchResults", () => {
       property: "run",
     }
 
-    const { rerender } = renderHook(() =>
-      useSearchResults((mockSocket as any) as Socket, search)
-    )
-
-    // Needs to be kicked to do the effects again after the socket initializes
-    rerender()
+    renderHook(() => useSearchResults((mockSocket as any) as Socket, search))
 
     expect(mockSocket.channel).toHaveBeenCalledTimes(0)
     expect(mockChannel.join).toHaveBeenCalledTimes(0)
