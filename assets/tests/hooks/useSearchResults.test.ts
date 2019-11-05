@@ -8,7 +8,7 @@ import {
   VehicleOrGhost,
   VehicleTimepointStatus,
 } from "../../src/realtime"
-import { mockUseReducerOnce } from "../testHelpers/mockHelpers"
+import { mockUseStateOnce } from "../testHelpers/mockHelpers"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 
 // tslint:disable: react-hooks-nesting
@@ -230,12 +230,10 @@ describe("useSearchResults", () => {
     const mockChannel = makeMockChannel("ok")
     mockSocket.channel.mockImplementation(() => mockChannel)
 
-    const mockState = {
-      channel: mockChannel,
-      vehicles: [],
-    }
-    const mockDispatch = jest.fn()
-    mockUseReducerOnce([mockState, mockDispatch])
+    // Mock vehicles state
+    mockUseStateOnce([] as Vehicle[])
+    // Mock channel state
+    mockUseStateOnce(mockChannel)
 
     const search: Search = {
       text: "one",
@@ -255,12 +253,10 @@ describe("useSearchResults", () => {
     const mockChannel = makeMockChannel("ok")
     mockSocket.channel.mockImplementation(() => mockChannel)
 
-    const mockState = {
-      channel: mockChannel,
-      vehicles: [],
-    }
-    const mockDispatch = jest.fn()
-    mockUseReducerOnce([mockState, mockDispatch])
+    // Mock vehicles state
+    mockUseStateOnce([] as Vehicle[])
+    // Mock channel state
+    mockUseStateOnce(mockChannel)
 
     const search: Search = {
       text: "one",

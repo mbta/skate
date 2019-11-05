@@ -1,56 +1,11 @@
 import { Channel, Socket } from "phoenix"
-import { Dispatch, useEffect, useReducer } from "react"
+import { useEffect, useState } from "react"
 import { isValidSearch, Search } from "../models/search"
 import {
   VehicleOrGhostData,
   vehicleOrGhostFromData,
 } from "../models/vehicleData"
 import { VehicleOrGhost } from "../realtime"
-
-interface State {
-  vehicles: VehicleOrGhost[] | null
-  channel?: Channel
-}
-
-const initialState: State = {
-  vehicles: null,
-}
-
-interface SetVehiclesAction {
-  type: "SET_VEHICLES"
-  payload: {
-    vehicles: VehicleOrGhost[]
-  }
-}
-
-const setVehicles = (vehicles: VehicleOrGhost[]): SetVehiclesAction => ({
-  type: "SET_VEHICLES",
-  payload: { vehicles },
-})
-
-interface SetChannelAction {
-  type: "SET_CHANNEL"
-  payload: {
-    channel: Channel
-  }
-}
-
-const setChannel = (channel: Channel): SetChannelAction => ({
-  type: "SET_CHANNEL",
-  payload: { channel },
-})
-
-type Action = SetVehiclesAction | SetChannelAction
-
-const reducer = (state: State, action: Action): State => {
-  switch (action.type) {
-    case "SET_CHANNEL":
-      return { ...state, channel: action.payload.channel }
-
-    case "SET_VEHICLES":
-      return { ...state, vehicles: action.payload.vehicles }
-  }
-}
 
 interface SearchResultsPayload {
   data: VehicleOrGhostData[]
@@ -59,11 +14,13 @@ interface SearchResultsPayload {
 const subscribe = (
   socket: Socket,
   search: Search,
-  dispatch: Dispatch<Action>
+  setVehicles: (vehicles: VehicleOrGhost[]) => void
 ): Channel => {
   const handleSearchResults = (payload: SearchResultsPayload): void => {
-    dispatch(
-      setVehicles(payload.data.map(data => vehicleOrGhostFromData(data)))
+    setVehicles(
+      payload.data.map((data: VehicleOrGhostData) =>
+        vehicleOrGhostFromData(data)
+      )
     )
   }
 
@@ -96,13 +53,14 @@ const useSearchResults = (
   socket: Socket | undefined,
   search: Search
 ): VehicleOrGhost[] | null => {
-  const [{ channel, vehicles }, dispatch] = useReducer(reducer, initialState)
+  const [vehicles, setVehicles] = useState(null as VehicleOrGhost[] | null)
+  const [channel, setChannel] = useState(undefined as Channel | undefined)
 
   useEffect(() => {
     if (socket && isValidSearch(search)) {
       leaveChannel(channel)
-      const newChannel = subscribe(socket, search, dispatch)
-      dispatch(setChannel(newChannel))
+      const newChannel = subscribe(socket, search, setVehicles)
+      setChannel(newChannel)
     }
 
     return () => leaveChannel(channel)
