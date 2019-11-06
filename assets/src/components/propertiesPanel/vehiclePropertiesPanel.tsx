@@ -1,6 +1,5 @@
 import React, { useState } from "react"
 import useInterval from "../../hooks/useInterval"
-import { formattedRunNumber } from "../../models/shuttle"
 import { isShuttle, shouldShowHeadwayDiagram } from "../../models/vehicle"
 import { DataDiscrepancy, Vehicle } from "../../realtime"
 import { Route } from "../../schedule"
@@ -8,32 +7,11 @@ import Map from "../map"
 import CloseButton from "./closeButton"
 import Header from "./header"
 import HeadwayDiagram from "./headwayDiagram"
-import PropertiesList, { Property } from "./propertiesList"
+import PropertiesList from "./propertiesList"
 
 interface Props {
   selectedVehicle: Vehicle
   route?: Route
-}
-
-const properties = (vehicle: Vehicle): Property[] => {
-  const { runId, label, operatorId, operatorName } = vehicle
-
-  return [
-    {
-      label: "Run",
-      value: isShuttle(vehicle)
-        ? formattedRunNumber(vehicle)
-        : runId || "Not Available",
-    },
-    {
-      label: "Vehicle",
-      value: label,
-    },
-    {
-      label: "Operator",
-      value: `${operatorName} #${operatorId}`,
-    },
-  ]
 }
 
 const NotAvailable = () => (
@@ -139,7 +117,7 @@ const VehiclePropertiesPanel = ({ selectedVehicle, route }: Props) => (
       <HeadwayDiagram vehicle={selectedVehicle} />
     )}
 
-    <PropertiesList properties={properties(selectedVehicle)} />
+    <PropertiesList vehicleOrGhost={selectedVehicle} />
 
     <Location vehicle={selectedVehicle} />
 

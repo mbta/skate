@@ -1,0 +1,32 @@
+.m-search-results {
+  @include font-body;
+}
+
+.m-search-results--none {
+  p:first-child {
+    margin-top: 0;
+  }
+}
+
+.m-search-results__heading {
+  @include font-label;
+}
+
+.m-search-results__clear-search-button {
+  @include button-text;
+}
+
+.m-search-result-card {
+  background-color: $white;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px 0 rgba(176, 181, 192, 0.5);
+  margin-bottom: 1rem;
+
+  .highlighted {
+    background-color: $color-secondary-light;
+  }
+}
+
+.m-search-results__list .m-search-results__note {
+  @include font-note;
+}

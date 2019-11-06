@@ -189,10 +189,19 @@ defmodule Realtime.ServerTest do
     test "clients get updated search results pushed to them", %{server_pid: pid} do
       Server.subscribe_to_search("90", :all, pid)
 
+      Server.update({%{}, [@shuttle]}, pid)
+
+      assert_receive {:new_realtime_data, lookup_args}
+      assert Server.lookup(lookup_args) == [@shuttle]
+    end
+
+    test "does not receive duplicate vehicles", %{server_pid: pid} do
+      Server.subscribe_to_search("90", :all, pid)
+
       Server.update({%{}, [@shuttle, @shuttle]}, pid)
 
       assert_receive {:new_realtime_data, lookup_args}
-      assert Server.lookup(lookup_args) == [@shuttle, @shuttle]
+      assert Server.lookup(lookup_args) == [@shuttle]
     end
   end
 

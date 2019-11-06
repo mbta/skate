@@ -115,12 +115,16 @@ exports[`SearchPage renders 1`] = `
       </ul>
     </form>
     <div
-      className="m-recent-searches"
+      className="m-search-display"
     >
       <div
-        className="m-recent-searches__heading"
+        className="m-recent-searches"
       >
-        Recent Searches
+        <div
+          className="m-recent-searches__heading"
+        >
+          Recent Searches
+        </div>
       </div>
     </div>
   </div>

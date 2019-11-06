@@ -9,3 +9,11 @@
   height: 100vh;
   width: 22rem;
 }
+
+.m-search-display {
+  background-color: $color-bg-base;
+  flex: 1 1 auto;
+  overflow-y: scroll;
+  padding: 1.5rem 1.1875rem;
+  width: 22rem;
+}

@@ -171,7 +171,7 @@ defmodule Realtime.Server do
       _ = :ets.insert(ets, {{:route_id, route_id}, vehicles})
     end
 
-    :ets.insert(ets, {:all_vehicles, all_vehicles(vehicles_by_route_id) ++ shuttles})
+    :ets.insert(ets, {:all_vehicles, Enum.uniq(all_vehicles(vehicles_by_route_id) ++ shuttles)})
 
     :ets.insert(ets, {:all_shuttles, shuttles})
   end
