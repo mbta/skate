@@ -8,7 +8,6 @@ import {
   VehicleOrGhost,
   VehicleTimepointStatus,
 } from "../../src/realtime"
-import { mockUseStateOnce } from "../testHelpers/mockHelpers"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 
 // tslint:disable: react-hooks-nesting
@@ -228,12 +227,7 @@ describe("useSearchResults", () => {
   test("leaves the channel on unmount", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok")
-    mockSocket.channel.mockImplementation(() => mockChannel)
-
-    // Mock vehicles state
-    mockUseStateOnce([] as Vehicle[])
-    // Mock channel state
-    mockUseStateOnce(mockChannel)
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     const search: Search = {
       text: "one",
@@ -248,23 +242,53 @@ describe("useSearchResults", () => {
     expect(mockChannel.leave).toHaveBeenCalled()
   })
 
-  test("leaves the channel before joining a new one", () => {
+  test("leaves the channel and joins a new one when the search changes", () => {
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok")
-    mockSocket.channel.mockImplementation(() => mockChannel)
+    const channel1 = makeMockChannel("ok")
+    const channel2 = makeMockChannel("ok")
+    mockSocket.channel.mockImplementationOnce(() => channel1)
+    mockSocket.channel.mockImplementationOnce(() => channel2)
 
-    // Mock vehicles state
-    mockUseStateOnce([] as Vehicle[])
-    // Mock channel state
-    mockUseStateOnce(mockChannel)
-
-    const search: Search = {
+    const search1: Search = {
       text: "one",
       property: "run",
     }
-    renderHook(() => useSearchResults((mockSocket as any) as Socket, search))
+    const { rerender } = renderHook(
+      search => useSearchResults((mockSocket as any) as Socket, search),
+      { initialProps: search1 }
+    )
 
-    expect(mockChannel.leave).toHaveBeenCalled()
+    const search2: Search = {
+      text: "two",
+      property: "run",
+    }
+    rerender(search2)
+
+    expect(channel1.leave).toHaveBeenCalled()
+    expect(channel2.join).toHaveBeenCalled()
+  })
+
+  test("leaves the channel when typing even if there is no new channel", () => {
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok")
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+
+    const search1: Search = {
+      text: "validSearch",
+      property: "run",
+    }
+    const { rerender } = renderHook(
+      search => useSearchResults((mockSocket as any) as Socket, search),
+      { initialProps: search1 }
+    )
+
+    const search2: Search = {
+      text: "",
+      property: "run",
+    }
+    rerender(search2)
+
+    expect(mockChannel.leave).toHaveBeenCalledTimes(1)
   })
 
   test("console.error on join error", async () => {
