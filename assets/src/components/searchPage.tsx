@@ -14,7 +14,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
 
   return (
     <div className="c-page m-search-page">
-      <div className="m-search-controls">
+      <div className="m-search-page__controls">
         <SearchForm />
         {vehicles ? (
           <div className="m-search-results">
