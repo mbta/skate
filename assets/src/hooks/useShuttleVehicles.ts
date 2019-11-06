@@ -68,8 +68,10 @@ const subscribe = (socket: Socket, dispatch: Dispatch<Action>): Channel => {
   channel
     .join()
     .receive("ok", handleShuttles)
-    // tslint:disable-next-line: no-console
-    .receive("error", ({ reason }) => console.error("join failed", reason))
+    .receive("error", ({ reason }) =>
+      // tslint:disable-next-line: no-console
+      console.error("shuttle vehicles join failed", reason)
+    )
     .receive("timeout", () => {
       window.location.reload(true)
     })

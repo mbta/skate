@@ -1,5 +1,6 @@
 import React from "react"
 import { ShuttleVehiclesProvider } from "../contexts/shuttleVehiclesContext"
+import { SocketProvider } from "../contexts/socketContext"
 import { StateDispatchProvider } from "../contexts/stateDispatchContext"
 import { VehiclesByRouteIdProvider } from "../contexts/vehiclesByRouteIdContext"
 import usePersistedStateReducer from "../hooks/usePersistedStateReducer"
@@ -19,11 +20,13 @@ const AppStateWrapper = (): JSX.Element => {
 
   return (
     <StateDispatchProvider state={state} dispatch={dispatch}>
-      <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
-        <ShuttleVehiclesProvider shuttles={shuttles}>
-          <App />
-        </ShuttleVehiclesProvider>
-      </VehiclesByRouteIdProvider>
+      <SocketProvider socket={socket}>
+        <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
+          <ShuttleVehiclesProvider shuttles={shuttles}>
+            <App />
+          </ShuttleVehiclesProvider>
+        </VehiclesByRouteIdProvider>
+      </SocketProvider>
     </StateDispatchProvider>
   )
 }
