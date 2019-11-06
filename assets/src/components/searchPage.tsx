@@ -13,7 +13,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
   const vehicles: VehicleOrGhost[] | null = useSearchResults(socket, search)
 
   return (
-    <div className="c-page c-page--search">
+    <div className="c-page m-search-page">
       <div className="m-search-controls">
         <SearchForm />
         {vehicles ? (
