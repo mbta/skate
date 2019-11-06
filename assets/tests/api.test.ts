@@ -94,7 +94,26 @@ describe("fetchRoutes", () => {
       .catch(() => ({}))
   })
 
-  test("throws an error if the response status is not 200 or 3xx", done => {
+  test("reloads the page if the response status is forbidden (403)", () => {
+    window.fetch = () =>
+      Promise.resolve({
+        json: () => ({ data: null }),
+        ok: false,
+        status: 403,
+      })
+
+    window.location.reload = jest.fn()
+    const spyConsoleError = jest.spyOn(console, "error")
+    spyConsoleError.mockImplementationOnce(() => {})
+
+    fetchRoutes()
+      .then(() => {
+        expect(window.location.reload).toHaveBeenCalled()
+      })
+      .catch(() => ({}))
+  })
+
+  test("throws an error for any other response status", done => {
     window.fetch = () =>
       Promise.resolve({
         json: () => ({ data: null }),
@@ -180,7 +199,26 @@ describe("fetchShapeForRoute", () => {
       .catch(() => ({}))
   })
 
-  test("throws an error if the response status is not 200 or 3xx", done => {
+  test("reloads the page if the response status is forbidden (403)", () => {
+    window.fetch = () =>
+      Promise.resolve({
+        json: () => ({ data: null }),
+        ok: false,
+        status: 403,
+      })
+
+    window.location.reload = jest.fn()
+    const spyConsoleError = jest.spyOn(console, "error")
+    spyConsoleError.mockImplementationOnce(() => {})
+
+    fetchShapeForRoute("28")
+      .then(() => {
+        expect(window.location.reload).toHaveBeenCalled()
+      })
+      .catch(() => ({}))
+  })
+
+  test("throws an error for any other response status", done => {
     window.fetch = () =>
       Promise.resolve({
         json: () => ({ data: null }),
@@ -285,7 +323,26 @@ describe("fetchShuttleRoutes", () => {
       .catch(() => ({}))
   })
 
-  test("throws an error if the response status is not 200 or 3xx", done => {
+  test("reloads the page if the response status is forbidden (403)", () => {
+    window.fetch = () =>
+      Promise.resolve({
+        json: () => ({ data: null }),
+        ok: false,
+        status: 403,
+      })
+
+    window.location.reload = jest.fn()
+    const spyConsoleError = jest.spyOn(console, "error")
+    spyConsoleError.mockImplementationOnce(() => {})
+
+    fetchShuttleRoutes()
+      .then(() => {
+        expect(window.location.reload).toHaveBeenCalled()
+      })
+      .catch(() => ({}))
+  })
+
+  test("throws an error for any other response status", done => {
     window.fetch = () =>
       Promise.resolve({
         json: () => ({ data: null }),
@@ -340,7 +397,26 @@ describe("fetchTimepointsForRoute", () => {
       .catch(() => ({}))
   })
 
-  test("throws an error if the response status is not 200 or 3xx", done => {
+  test("reloads the page if the response status is forbidden (403)", () => {
+    window.fetch = () =>
+      Promise.resolve({
+        json: () => ({ data: null }),
+        ok: false,
+        status: 403,
+      })
+
+    window.location.reload = jest.fn()
+    const spyConsoleError = jest.spyOn(console, "error")
+    spyConsoleError.mockImplementationOnce(() => {})
+
+    fetchTimepointsForRoute("28")
+      .then(() => {
+        expect(window.location.reload).toHaveBeenCalled()
+      })
+      .catch(() => ({}))
+  })
+
+  test("throws an error for any other response status", done => {
     window.fetch = () =>
       Promise.resolve({
         json: () => ({ data: null }),
