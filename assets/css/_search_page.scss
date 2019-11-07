@@ -4,16 +4,16 @@
 }
 
 .m-search-page__controls {
+  background-color: $color-bg-base;
   display: flex;
   flex-direction: column;
   height: 100vh;
+  padding: 1.5rem 1.1875rem;
   width: 22rem;
 }
 
 .m-search-display {
-  background-color: $color-bg-base;
   flex: 1 1 auto;
   overflow-y: scroll;
-  padding: 1.5rem 1.1875rem;
-  width: 22rem;
+  width: 100%;
 }
