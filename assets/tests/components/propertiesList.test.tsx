@@ -3,9 +3,9 @@ import React from "react"
 import renderer from "react-test-renderer"
 import PropertiesList, {
   Highlighted,
-} from "../../../src/components/propertiesPanel/propertiesList"
-import { HeadwaySpacing } from "../../../src/models/vehicleStatus"
-import { Ghost, Vehicle } from "../../../src/realtime"
+} from "../../src/components/propertiesList"
+import { HeadwaySpacing } from "../../src/models/vehicleStatus"
+import { Ghost, Vehicle } from "../../src/realtime"
 
 const vehicle: Vehicle = {
   id: "v1",

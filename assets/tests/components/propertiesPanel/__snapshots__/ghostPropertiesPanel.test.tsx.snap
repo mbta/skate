@@ -100,18 +100,18 @@ exports[`GhostPropertiesPanel renders 1`] = `
     </button>
   </div>
   <div
-    className="m-properties-panel__properties-list"
+    className="m-properties-list"
   >
     <table>
       <tbody>
         <tr>
           <td
-            className="m-properties-panel__property-label"
+            className="m-properties-list__property-label"
           >
             Run
           </td>
           <td
-            className="m-properties-panel__property-value"
+            className="m-properties-list__property-value"
           >
             123-0123
           </td>
@@ -228,18 +228,18 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
     </button>
   </div>
   <div
-    className="m-properties-panel__properties-list"
+    className="m-properties-list"
   >
     <table>
       <tbody>
         <tr>
           <td
-            className="m-properties-panel__property-label"
+            className="m-properties-list__property-label"
           >
             Run
           </td>
           <td
-            className="m-properties-panel__property-value"
+            className="m-properties-list__property-value"
           >
             Not Available
           </td>

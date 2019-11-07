@@ -11,42 +11,42 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
       className="m-search-result-card"
     >
       <div
-        className="m-properties-panel__properties-list"
+        className="m-properties-list"
       >
         <table>
           <tbody>
             <tr>
               <td
-                className="m-properties-panel__property-label"
+                className="m-properties-list__property-label"
               >
                 Run
               </td>
               <td
-                className="m-properties-panel__property-value"
+                className="m-properties-list__property-value"
               >
                 run-1
               </td>
             </tr>
             <tr>
               <td
-                className="m-properties-panel__property-label"
+                className="m-properties-list__property-label"
               >
                 Vehicle
               </td>
               <td
-                className="m-properties-panel__property-value"
+                className="m-properties-list__property-value"
               >
                 v1-label
               </td>
             </tr>
             <tr>
               <td
-                className="m-properties-panel__property-label"
+                className="m-properties-list__property-label"
               >
                 Operator
               </td>
               <td
-                className="m-properties-panel__property-value"
+                className="m-properties-list__property-value"
               >
                 SMITH #op1
               </td>
@@ -73,18 +73,18 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
       className="m-search-result-card"
     >
       <div
-        className="m-properties-panel__properties-list"
+        className="m-properties-list"
       >
         <table>
           <tbody>
             <tr>
               <td
-                className="m-properties-panel__property-label"
+                className="m-properties-list__property-label"
               >
                 Run
               </td>
               <td
-                className="m-properties-panel__property-value"
+                className="m-properties-list__property-value"
               >
                 123-0123
               </td>

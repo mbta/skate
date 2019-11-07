@@ -2,18 +2,18 @@
 
 exports[`PropertiesList highlights requested text 1`] = `
 <div
-  className="m-properties-panel__properties-list"
+  className="m-properties-list"
 >
   <table>
     <tbody>
       <tr>
         <td
-          className="m-properties-panel__property-label"
+          className="m-properties-list__property-label"
         >
           Run
         </td>
         <td
-          className="m-properties-panel__property-value"
+          className="m-properties-list__property-value"
         >
           
           <span
@@ -26,24 +26,24 @@ exports[`PropertiesList highlights requested text 1`] = `
       </tr>
       <tr>
         <td
-          className="m-properties-panel__property-label"
+          className="m-properties-list__property-label"
         >
           Vehicle
         </td>
         <td
-          className="m-properties-panel__property-value"
+          className="m-properties-list__property-value"
         >
           v1-label
         </td>
       </tr>
       <tr>
         <td
-          className="m-properties-panel__property-label"
+          className="m-properties-list__property-label"
         >
           Operator
         </td>
         <td
-          className="m-properties-panel__property-value"
+          className="m-properties-list__property-value"
         >
           SMITH #op1
         </td>
@@ -55,18 +55,18 @@ exports[`PropertiesList highlights requested text 1`] = `
 
 exports[`PropertiesList renders a properties list for a ghost 1`] = `
 <div
-  className="m-properties-panel__properties-list"
+  className="m-properties-list"
 >
   <table>
     <tbody>
       <tr>
         <td
-          className="m-properties-panel__property-label"
+          className="m-properties-list__property-label"
         >
           Run
         </td>
         <td
-          className="m-properties-panel__property-value"
+          className="m-properties-list__property-value"
         >
           123-0123
         </td>
@@ -78,42 +78,42 @@ exports[`PropertiesList renders a properties list for a ghost 1`] = `
 
 exports[`PropertiesList renders a properties list for a vehicle 1`] = `
 <div
-  className="m-properties-panel__properties-list"
+  className="m-properties-list"
 >
   <table>
     <tbody>
       <tr>
         <td
-          className="m-properties-panel__property-label"
+          className="m-properties-list__property-label"
         >
           Run
         </td>
         <td
-          className="m-properties-panel__property-value"
+          className="m-properties-list__property-value"
         >
           run-1
         </td>
       </tr>
       <tr>
         <td
-          className="m-properties-panel__property-label"
+          className="m-properties-list__property-label"
         >
           Vehicle
         </td>
         <td
-          className="m-properties-panel__property-value"
+          className="m-properties-list__property-value"
         >
           v1-label
         </td>
       </tr>
       <tr>
         <td
-          className="m-properties-panel__property-label"
+          className="m-properties-list__property-label"
         >
           Operator
         </td>
         <td
-          className="m-properties-panel__property-value"
+          className="m-properties-list__property-value"
         >
           SMITH #op1
         </td>

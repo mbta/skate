@@ -1,7 +1,7 @@
 import React from "react"
-import { formattedRunNumber } from "../../models/shuttle"
-import { isAVehicle, isShuttle } from "../../models/vehicle"
-import { Ghost, Vehicle, VehicleOrGhost } from "../../realtime"
+import { formattedRunNumber } from "../models/shuttle"
+import { isAVehicle, isShuttle } from "../models/vehicle"
+import { Ghost, Vehicle, VehicleOrGhost } from "../realtime"
 
 interface Props {
   vehicleOrGhost: VehicleOrGhost
@@ -86,15 +86,15 @@ const PropertyRow = ({
   highlightText?: string
 }) => (
   <tr>
-    <td className="m-properties-panel__property-label">{label}</td>
-    <td className="m-properties-panel__property-value">
+    <td className="m-properties-list__property-label">{label}</td>
+    <td className="m-properties-list__property-value">
       <Highlighted content={value} highlightText={highlightText} />
     </td>
   </tr>
 )
 
 const PropertiesList = ({ vehicleOrGhost, highlightText }: Props) => (
-  <div className="m-properties-panel__properties-list">
+  <div className="m-properties-list">
     <table>
       <tbody>
         {properties(vehicleOrGhost).map(property => (

@@ -1,9 +1,9 @@
 import React from "react"
 import { Ghost } from "../../realtime"
 import { Route } from "../../schedule"
+import PropertiesList from "../propertiesList"
 import CloseButton from "./closeButton"
 import Header from "./header"
-import PropertiesList from "./propertiesList"
 
 interface Props {
   selectedGhost: Ghost

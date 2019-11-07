@@ -426,42 +426,42 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
         </button>
       </div>
       <div
-        className="m-properties-panel__properties-list"
+        className="m-properties-list"
       >
         <table>
           <tbody>
             <tr>
               <td
-                className="m-properties-panel__property-label"
+                className="m-properties-list__property-label"
               >
                 Run
               </td>
               <td
-                className="m-properties-panel__property-value"
+                className="m-properties-list__property-value"
               >
                 Special 999 555
               </td>
             </tr>
             <tr>
               <td
-                className="m-properties-panel__property-label"
+                className="m-properties-list__property-label"
               >
                 Vehicle
               </td>
               <td
-                className="m-properties-panel__property-value"
+                className="m-properties-list__property-value"
               >
                 1818
               </td>
             </tr>
             <tr>
               <td
-                className="m-properties-panel__property-label"
+                className="m-properties-list__property-label"
               >
                 Operator
               </td>
               <td
-                className="m-properties-panel__property-value"
+                className="m-properties-list__property-value"
               >
                 SMITH #op1
               </td>
@@ -473,12 +473,12 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
         className="m-vehicle-properties-panel__location"
       >
         <div
-          className="m-properties-panel__property-label"
+          className="m-properties-list__property-label"
         >
           Next Stop
         </div>
         <div
-          className="m-properties-panel__property-value"
+          className="m-properties-list__property-value"
         >
           <span
             className="m-vehicle-properties-panel__not-available"
@@ -487,12 +487,12 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
           </span>
         </div>
         <div
-          className="m-properties-panel__property-label"
+          className="m-properties-list__property-label"
         >
           Last GPS Ping
         </div>
         <div
-          className="m-properties-panel__property-value"
+          className="m-properties-list__property-value"
         >
           -1557160073s ago
         </div>

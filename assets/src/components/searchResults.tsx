@@ -3,7 +3,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { setSearchText } from "../models/search"
 import { isAVehicle } from "../models/vehicle"
 import { Vehicle, VehicleOrGhost } from "../realtime"
-import PropertiesList from "./propertiesPanel/propertiesList"
+import PropertiesList from "./propertiesList"
 import { RouteVariantName } from "./routeVariantName"
 
 interface Props {

@@ -105,18 +105,18 @@ Array [
         </button>
       </div>
       <div
-        className="m-properties-panel__properties-list"
+        className="m-properties-list"
       >
         <table>
           <tbody>
             <tr>
               <td
-                className="m-properties-panel__property-label"
+                className="m-properties-list__property-label"
               >
                 Run
               </td>
               <td
-                className="m-properties-panel__property-value"
+                className="m-properties-list__property-value"
               >
                 123-0123
               </td>
@@ -263,42 +263,42 @@ Array [
         </button>
       </div>
       <div
-        className="m-properties-panel__properties-list"
+        className="m-properties-list"
       >
         <table>
           <tbody>
             <tr>
               <td
-                className="m-properties-panel__property-label"
+                className="m-properties-list__property-label"
               >
                 Run
               </td>
               <td
-                className="m-properties-panel__property-value"
+                className="m-properties-list__property-value"
               >
                 run-1
               </td>
             </tr>
             <tr>
               <td
-                className="m-properties-panel__property-label"
+                className="m-properties-list__property-label"
               >
                 Vehicle
               </td>
               <td
-                className="m-properties-panel__property-value"
+                className="m-properties-list__property-value"
               >
                 v1-label
               </td>
             </tr>
             <tr>
               <td
-                className="m-properties-panel__property-label"
+                className="m-properties-list__property-label"
               >
                 Operator
               </td>
               <td
-                className="m-properties-panel__property-value"
+                className="m-properties-list__property-value"
               >
                 SMITH #op1
               </td>
@@ -310,22 +310,22 @@ Array [
         className="m-vehicle-properties-panel__location"
       >
         <div
-          className="m-properties-panel__property-label"
+          className="m-properties-list__property-label"
         >
           Next Stop
         </div>
         <div
-          className="m-properties-panel__property-value"
+          className="m-properties-list__property-value"
         >
           Stop Name
         </div>
         <div
-          className="m-properties-panel__property-label"
+          className="m-properties-list__property-label"
         >
           Last GPS Ping
         </div>
         <div
-          className="m-properties-panel__property-value"
+          className="m-properties-list__property-value"
         >
           111s ago
         </div>

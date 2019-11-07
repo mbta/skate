@@ -1,15 +1,15 @@
-.m-properties-panel__properties-list {
+.m-properties-list {
   padding: 1rem;
 }
 
-.m-properties-panel__property-label {
+.m-properties-list__property-label {
   @include font-label;
   margin-bottom: 0.5rem;
   text-align: left;
   width: 6rem;
 }
 
-.m-properties-panel__property-value {
+.m-properties-list__property-value {
   @include font-body;
   margin-bottom: 1rem;
 }

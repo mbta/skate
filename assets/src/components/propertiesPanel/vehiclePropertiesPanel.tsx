@@ -4,10 +4,10 @@ import { isShuttle, shouldShowHeadwayDiagram } from "../../models/vehicle"
 import { DataDiscrepancy, Vehicle } from "../../realtime"
 import { Route } from "../../schedule"
 import Map from "../map"
+import PropertiesList from "../propertiesList"
 import CloseButton from "./closeButton"
 import Header from "./header"
 import HeadwayDiagram from "./headwayDiagram"
-import PropertiesList from "./propertiesList"
 
 interface Props {
   selectedVehicle: Vehicle
@@ -39,16 +39,16 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
 
   return (
     <div className="m-vehicle-properties-panel__location">
-      <div className="m-properties-panel__property-label">Next Stop</div>
-      <div className="m-properties-panel__property-value">
+      <div className="m-properties-list__property-label">Next Stop</div>
+      <div className="m-properties-list__property-value">
         {isOffCourse || isShuttle(vehicle) ? (
           <NotAvailable />
         ) : (
           <>{stopStatus.stopName}</>
         )}
       </div>
-      <div className="m-properties-panel__property-label">Last GPS Ping</div>
-      <div className="m-properties-panel__property-value">
+      <div className="m-properties-list__property-label">Last GPS Ping</div>
+      <div className="m-properties-list__property-value">
         {secondsAgo(timestamp)}
       </div>
       <a
