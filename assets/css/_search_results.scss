@@ -2,12 +2,6 @@
   @include font-body;
 }
 
-.m-search-results--none {
-  p:first-child {
-    margin-top: 0;
-  }
-}
-
 .m-search-results__heading {
   @include font-label;
 }

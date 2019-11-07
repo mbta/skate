@@ -48,6 +48,7 @@ const NoResults = () => {
   return (
     <div className="m-search-results--none">
       <div className="m-search-results__heading">No Search Results</div>
+
       <p>
         There were no matching results found for “{search.text}”. Please try
         again using numbers or last names only.
