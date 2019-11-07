@@ -1,5 +1,9 @@
 .m-properties-panel__header {
   display: flex;
+
+  .m-route-variant-name {
+    @include font-header;
+  }
 }
 
 .m-properties-panel__label {
@@ -18,10 +22,6 @@
 .m-properties-panel__inbound-outbound {
   @include font-emph;
   margin-bottom: 0.4rem;
-}
-
-.m-properties-panel__variant-name {
-  @include font-header;
 }
 
 .m-properties-panel__headway-target,

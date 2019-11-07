@@ -63,9 +63,14 @@ exports[`Header renders a header 1`] = `
       
     </div>
     <div
-      className="m-properties-panel__variant-name"
+      className="m-route-variant-name"
     >
-      39_X Forest Hills
+      <span
+        className="m-route-variant-name__route-id"
+      >
+        39_X
+      </span>
+       Forest Hills
     </div>
     <div
       className="m-properties-panel__schedule-adherence on-time"
@@ -184,9 +189,14 @@ exports[`Header renders for a ghost 1`] = `
       
     </div>
     <div
-      className="m-properties-panel__variant-name"
+      className="m-route-variant-name"
     >
-      39_X headsign
+      <span
+        className="m-route-variant-name__route-id"
+      >
+        39_X
+      </span>
+       headsign
     </div>
   </div>
   <button
@@ -268,9 +278,14 @@ exports[`Header renders for a headway-based vehicle 1`] = `
       
     </div>
     <div
-      className="m-properties-panel__variant-name"
+      className="m-route-variant-name"
     >
-      39_X Forest Hills
+      <span
+        className="m-route-variant-name__route-id"
+      >
+        39_X
+      </span>
+       Forest Hills
     </div>
     <div
       className="m-properties-panel__schedule-adherence on-time"
@@ -380,9 +395,14 @@ exports[`Header renders for a late vehicle 1`] = `
       
     </div>
     <div
-      className="m-properties-panel__variant-name"
+      className="m-route-variant-name"
     >
-      39_X Forest Hills
+      <span
+        className="m-route-variant-name__route-id"
+      >
+        39_X
+      </span>
+       Forest Hills
     </div>
     <div
       className="m-properties-panel__schedule-adherence late"
@@ -492,7 +512,7 @@ exports[`Header renders for a shuttle 1`] = `
       
     </div>
     <div
-      className="m-properties-panel__variant-name"
+      className="m-route-variant-name"
     >
       Shuttle
     </div>
@@ -576,9 +596,14 @@ exports[`Header renders for an early vehicle 1`] = `
       
     </div>
     <div
-      className="m-properties-panel__variant-name"
+      className="m-route-variant-name"
     >
-      39_X Forest Hills
+      <span
+        className="m-route-variant-name__route-id"
+      >
+        39_X
+      </span>
+       Forest Hills
     </div>
     <div
       className="m-properties-panel__schedule-adherence early"
@@ -688,9 +713,14 @@ exports[`Header renders for an off-course vehicle 1`] = `
       
     </div>
     <div
-      className="m-properties-panel__variant-name"
+      className="m-route-variant-name"
     >
-      39_X Forest Hills
+      <span
+        className="m-route-variant-name__route-id"
+      >
+        39_X
+      </span>
+       Forest Hills
     </div>
     <div
       className="m-properties-panel__schedule-adherence off-course"
@@ -800,9 +830,14 @@ exports[`Header renders with route data 1`] = `
       Outbound
     </div>
     <div
-      className="m-properties-panel__variant-name"
+      className="m-route-variant-name"
     >
-      39_X Forest Hills
+      <span
+        className="m-route-variant-name__route-id"
+      >
+        39_X
+      </span>
+       Forest Hills
     </div>
     <div
       className="m-properties-panel__schedule-adherence on-time"

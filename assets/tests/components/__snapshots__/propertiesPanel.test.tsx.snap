@@ -80,9 +80,14 @@ Array [
             Outbound
           </div>
           <div
-            className="m-properties-panel__variant-name"
+            className="m-route-variant-name"
           >
-            39_X headsign
+            <span
+              className="m-route-variant-name__route-id"
+            >
+              39_X
+            </span>
+             headsign
           </div>
         </div>
         <button
@@ -205,9 +210,14 @@ Array [
             Outbound
           </div>
           <div
-            className="m-properties-panel__variant-name"
+            className="m-route-variant-name"
           >
-            39_X Forest Hills
+            <span
+              className="m-route-variant-name__route-id"
+            >
+              39_X
+            </span>
+             Forest Hills
           </div>
           <div
             className="m-properties-panel__schedule-adherence on-time"

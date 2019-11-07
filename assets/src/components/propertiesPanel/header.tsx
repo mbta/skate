@@ -15,6 +15,7 @@ import { Vehicle, VehicleOrGhost } from "../../realtime"
 import { Route } from "../../schedule"
 import { deselectVehicle } from "../../state"
 import CloseButton from "../closeButton"
+import { RouteVariantName } from "../routeVariantName"
 import VehicleIcon, { Orientation, Size } from "../vehicleIcon"
 
 interface Props {
@@ -86,17 +87,6 @@ const directionName = (
   route?: Route
 ): string => (route ? route.directionNames[directionId] : "")
 
-export const formatRouteVariant = (vehicle: VehicleOrGhost): string => {
-  if (isAVehicle(vehicle) && isShuttle(vehicle)) {
-    return "Shuttle"
-  }
-
-  const { routeId, viaVariant, headsign } = vehicle
-  const viaVariantFormatted = viaVariant && viaVariant !== "_" ? viaVariant : ""
-  const headsignFormatted = headsign ? ` ${headsign}` : ""
-  return `${routeId}_${viaVariantFormatted}${headsignFormatted}`
-}
-
 const Header = ({ vehicle, route }: Props) => {
   const [{ settings }, dispatch] = useContext(StateDispatchContext)
 
@@ -127,9 +117,9 @@ const Header = ({ vehicle, route }: Props) => {
         <div className="m-properties-panel__inbound-outbound">
           {directionName(vehicle, route)}
         </div>
-        <div className="m-properties-panel__variant-name">
-          {formatRouteVariant(vehicle)}
-        </div>
+
+        <RouteVariantName vehicle={vehicle} />
+
         {isAVehicle(vehicle) && shouldShowHeadwayDiagram(vehicle) ? (
           <HeadwayTarget vehicle={vehicle} />
         ) : (

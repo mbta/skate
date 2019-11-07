@@ -54,6 +54,20 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
           </tbody>
         </table>
       </div>
+      <div
+        className="m-search-result-card__route-label"
+      >
+        <div
+          className="m-route-variant-name"
+        >
+          <span
+            className="m-route-variant-name__route-id"
+          >
+            39_X
+          </span>
+           Forest Hills
+        </div>
+      </div>
     </div>
     <div
       className="m-search-result-card"

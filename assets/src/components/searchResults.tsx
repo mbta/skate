@@ -1,8 +1,10 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { setSearchText } from "../models/search"
-import { VehicleOrGhost } from "../realtime"
+import { isAVehicle } from "../models/vehicle"
+import { Vehicle, VehicleOrGhost } from "../realtime"
 import PropertiesList from "./propertiesPanel/propertiesList"
+import { RouteVariantName } from "./routeVariantName"
 
 interface Props {
   vehicles: VehicleOrGhost[]
@@ -13,6 +15,12 @@ const SearchResultsNote = () => (
     Please note that at this time search is limited to active vehicles and
     logged-in personnel.
   </p>
+)
+
+const RouteLabel = ({ vehicle }: { vehicle: Vehicle }) => (
+  <div className="m-search-result-card__route-label">
+    <RouteVariantName vehicle={vehicle} />
+  </div>
 )
 
 const SearchResultCard = ({
@@ -28,6 +36,8 @@ const SearchResultCard = ({
         vehicleOrGhost={vehicleOrGhost}
         highlightText={search.text}
       />
+
+      {isAVehicle(vehicleOrGhost) && <RouteLabel vehicle={vehicleOrGhost} />}
     </div>
   )
 }

@@ -75,9 +75,14 @@ exports[`GhostPropertiesPanel renders 1`] = `
         Outbound
       </div>
       <div
-        className="m-properties-panel__variant-name"
+        className="m-route-variant-name"
       >
-        39_X headsign
+        <span
+          className="m-route-variant-name__route-id"
+        >
+          39_X
+        </span>
+         headsign
       </div>
     </div>
     <button
@@ -198,9 +203,14 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
         Outbound
       </div>
       <div
-        className="m-properties-panel__variant-name"
+        className="m-route-variant-name"
       >
-        39_X headsign
+        <span
+          className="m-route-variant-name__route-id"
+        >
+          39_X
+        </span>
+         headsign
       </div>
     </div>
     <button
