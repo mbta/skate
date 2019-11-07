@@ -12,4 +12,8 @@
 .m-properties-list__property-value {
   @include font-body;
   margin-bottom: 1rem;
+
+  .highlighted {
+    background-color: $color-secondary-light;
+  }
 }
