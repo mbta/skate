@@ -3,8 +3,12 @@
   width: 100%;
 }
 
+.m-search-form__row {
+  display: flex;
+}
+
 .m-search-form__text {
-  width: 19rem;
+  flex: 1 0 auto;
 }
 
 .m-search-form__submit {
