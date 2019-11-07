@@ -95,7 +95,7 @@ const PropertyRow = ({
 
 const PropertiesList = ({ vehicleOrGhost, highlightText }: Props) => (
   <div className="m-properties-list">
-    <table>
+    <table className="m-properties-list__table">
       <tbody>
         {properties(vehicleOrGhost).map(property => (
           <PropertyRow

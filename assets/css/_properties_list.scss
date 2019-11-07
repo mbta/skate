@@ -2,6 +2,14 @@
   padding: 1rem;
 }
 
+.m-properties-list__table {
+  border-spacing: 0;
+
+  td {
+    padding-bottom: 0.3rem;
+  }
+}
+
 .m-properties-list__property-label {
   @include font-label;
   margin-bottom: 0.5rem;

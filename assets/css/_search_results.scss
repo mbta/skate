@@ -15,16 +15,17 @@
   border-radius: 4px;
   box-shadow: $subtle-box-shadow;
   margin-bottom: 1rem;
+  padding: 1rem 1rem 0.5rem;
 
   .m-properties-list {
-    padding: 1rem 1rem 0.5rem;
+    padding: 0;
   }
 }
 
 .m-search-result-card__route-label {
   color: $color-font-grey;
   font-size: 0.75rem;
-  padding: 0 1rem 1rem;
+  margin: 0.5rem 0;
 
   .m-route-variant-name__route-id {
     font-weight: bold;
