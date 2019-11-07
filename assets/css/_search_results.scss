@@ -19,7 +19,7 @@
 .m-search-result-card {
   background-color: $white;
   border-radius: 4px;
-  box-shadow: 0 2px 4px 0 rgba(176, 181, 192, 0.5);
+  box-shadow: $subtle-box-shadow;
   margin-bottom: 1rem;
 
   .highlighted {
