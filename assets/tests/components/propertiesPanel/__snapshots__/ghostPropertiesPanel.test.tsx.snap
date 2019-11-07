@@ -102,7 +102,9 @@ exports[`GhostPropertiesPanel renders 1`] = `
   <div
     className="m-properties-list"
   >
-    <table>
+    <table
+      className="m-properties-list__table"
+    >
       <tbody>
         <tr>
           <td
@@ -230,7 +232,9 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
   <div
     className="m-properties-list"
   >
-    <table>
+    <table
+      className="m-properties-list__table"
+    >
       <tbody>
         <tr>
           <td

@@ -10,7 +10,7 @@
   @include button-text;
 }
 
-.m-search-result-card {
+.m-search-results__card {
   background-color: $white;
   border-radius: 4px;
   box-shadow: $subtle-box-shadow;
@@ -22,7 +22,7 @@
   }
 }
 
-.m-search-result-card__route-label {
+.m-search-results__card-route-label {
   color: $color-font-grey;
   font-size: 0.75rem;
   margin: 0.5rem 0;

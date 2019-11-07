@@ -107,7 +107,9 @@ Array [
       <div
         className="m-properties-list"
       >
-        <table>
+        <table
+          className="m-properties-list__table"
+        >
           <tbody>
             <tr>
               <td
@@ -265,7 +267,9 @@ Array [
       <div
         className="m-properties-list"
       >
-        <table>
+        <table
+          className="m-properties-list__table"
+        >
           <tbody>
             <tr>
               <td

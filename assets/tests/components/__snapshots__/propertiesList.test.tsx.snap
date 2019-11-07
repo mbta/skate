@@ -4,7 +4,9 @@ exports[`PropertiesList highlights requested text 1`] = `
 <div
   className="m-properties-list"
 >
-  <table>
+  <table
+    className="m-properties-list__table"
+  >
     <tbody>
       <tr>
         <td
@@ -57,7 +59,9 @@ exports[`PropertiesList renders a properties list for a ghost 1`] = `
 <div
   className="m-properties-list"
 >
-  <table>
+  <table
+    className="m-properties-list__table"
+  >
     <tbody>
       <tr>
         <td
@@ -80,7 +84,9 @@ exports[`PropertiesList renders a properties list for a vehicle 1`] = `
 <div
   className="m-properties-list"
 >
-  <table>
+  <table
+    className="m-properties-list__table"
+  >
     <tbody>
       <tr>
         <td

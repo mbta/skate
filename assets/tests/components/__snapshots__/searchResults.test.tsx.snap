@@ -8,12 +8,14 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
     className="m-search-results__list"
   >
     <div
-      className="m-search-result-card"
+      className="m-search-results__card"
     >
       <div
         className="m-properties-list"
       >
-        <table>
+        <table
+          className="m-properties-list__table"
+        >
           <tbody>
             <tr>
               <td
@@ -55,7 +57,7 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
         </table>
       </div>
       <div
-        className="m-search-result-card__route-label"
+        className="m-search-results__card-route-label"
       >
         <div
           className="m-route-variant-name"
@@ -70,12 +72,14 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
       </div>
     </div>
     <div
-      className="m-search-result-card"
+      className="m-search-results__card"
     >
       <div
         className="m-properties-list"
       >
-        <table>
+        <table
+          className="m-properties-list__table"
+        >
           <tbody>
             <tr>
               <td

@@ -18,7 +18,7 @@ const SearchResultsNote = () => (
 )
 
 const RouteLabel = ({ vehicle }: { vehicle: Vehicle }) => (
-  <div className="m-search-result-card__route-label">
+  <div className="m-search-results__card-route-label">
     <RouteVariantName vehicle={vehicle} />
   </div>
 )
@@ -31,7 +31,7 @@ const SearchResultCard = ({
   const [{ search }] = useContext(StateDispatchContext)
 
   return (
-    <div className="m-search-result-card">
+    <div className="m-search-results__card">
       <PropertiesList
         vehicleOrGhost={vehicleOrGhost}
         highlightText={search.text}
