@@ -127,19 +127,9 @@ describe("shouldShowHeadwayDiagram", () => {
     expect(shouldShowHeadwayDiagram(nullHeadwaySpacingVehicle)).toBeFalsy()
   })
 
-  test("returns false if not on route", () => {
-    const notOnRouteVehicle = {
-      headwaySpacing: HeadwaySpacing.Ok,
-      isOnRoute: false,
-    } as Vehicle
-
-    expect(shouldShowHeadwayDiagram(notOnRouteVehicle)).toBeFalsy()
-  })
-
-  test("returns true if measuring headway spacing and is on route", () => {
+  test("returns true if measuring headway", () => {
     const onRouteHeadwaySpacingVehicle = {
       headwaySpacing: HeadwaySpacing.Ok,
-      isOnRoute: true,
     } as Vehicle
 
     expect(shouldShowHeadwayDiagram(onRouteHeadwaySpacingVehicle)).toBeTruthy()
