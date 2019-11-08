@@ -1134,6 +1134,14 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
     >
       Directions
     </a>
+    <div
+      className="m-vehicle-properties-panel__map"
+    >
+      <div
+        className="m-vehicle-map"
+        id="id-vehicle-map"
+      />
+    </div>
   </div>
   <button
     className="m-properties-panel__close-button"
