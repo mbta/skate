@@ -49,7 +49,6 @@ const vehicle: Vehicle = {
       fractionUntilTimepoint: 0.0,
     },
   },
-  isOnRoute: true,
 }
 
 describe("vehicleLabel", () => {

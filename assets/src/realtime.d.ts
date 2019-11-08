@@ -66,7 +66,6 @@ export interface Vehicle {
   stopStatus: VehicleStopStatus
   timepointStatus: VehicleTimepointStatus | null
   scheduledLocation: VehicleScheduledLocation | null
-  isOnRoute: boolean
 }
 
 export type VehicleOrGhost = Vehicle | Ghost

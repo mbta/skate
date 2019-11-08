@@ -82,12 +82,8 @@ interface VehiclesForRouteData {
 const vehiclesForRouteFromData = (
   vehiclesForRouteData: VehiclesForRouteData
 ): VehiclesForRoute => ({
-  onRouteVehicles: vehiclesForRouteData.on_route_vehicles.map(
-    vehicleFromData({ isOnRoute: true })
-  ),
-  incomingVehicles: vehiclesForRouteData.incoming_vehicles.map(
-    vehicleFromData({ isOnRoute: false })
-  ),
+  onRouteVehicles: vehiclesForRouteData.on_route_vehicles.map(vehicleFromData),
+  incomingVehicles: vehiclesForRouteData.incoming_vehicles.map(vehicleFromData),
   ghosts: vehiclesForRouteData.ghosts.map(ghostFromData),
 })
 

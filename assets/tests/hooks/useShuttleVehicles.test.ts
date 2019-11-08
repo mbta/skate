@@ -149,7 +149,6 @@ const shuttles: Vehicle[] = [
         fractionUntilTimepoint: 0.5,
       },
     },
-    isOnRoute: true,
   },
 ]
 

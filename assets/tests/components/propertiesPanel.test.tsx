@@ -70,7 +70,6 @@ describe("PropertiesPanel", () => {
         timepointId: "tp1",
       },
       scheduledLocation: null,
-      isOnRoute: true,
     }
 
     const tree = renderer

@@ -56,7 +56,6 @@ const vehicle: Vehicle = {
     timepointId: "MATPN",
   },
   scheduledLocation: null,
-  isOnRoute: true,
 }
 
 const shuttleRoutes: Route[] = [

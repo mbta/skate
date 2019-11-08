@@ -46,7 +46,6 @@ const vehicle: Vehicle = {
       fractionUntilTimepoint: 0.7574074074074074,
     },
   },
-  isOnRoute: true,
 }
 
 jest.mock("../../../src/models/vehiclesByRouteId", () => ({
@@ -113,7 +112,6 @@ describe("HeadwayDiagram", () => {
           fractionUntilTimepoint: 0.004761904761904762,
         },
       },
-      isOnRoute: true,
     }
 
     const tree = renderer
@@ -163,7 +161,6 @@ describe("HeadwayDiagram", () => {
           fractionUntilTimepoint: 0.10416666666666667,
         },
       },
-      isOnRoute: true,
     }
 
     const tree = renderer

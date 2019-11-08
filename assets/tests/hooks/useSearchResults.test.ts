@@ -198,7 +198,6 @@ describe("useSearchResults", () => {
             fractionUntilTimepoint: 0.5,
           },
         },
-        isOnRoute: true,
       } as Vehicle,
     ]
 

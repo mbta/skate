@@ -19,26 +19,22 @@ const vehiclesByRouteId: ByRouteId<VehiclesForRoute> = {
         id: "y101",
         directionId: 0,
         previousVehicleId: "y102",
-        isOnRoute: true,
       } as Vehicle,
       {
         id: "y102",
         directionId: 0,
         previousVehicleId: "y103",
-        isOnRoute: true,
       } as Vehicle,
       // Vehicle with direction 1 between vehicles with direction 0
       {
         id: "y111",
         directionId: 1,
         previousVehicleId: "y112",
-        isOnRoute: true,
       } as Vehicle,
       {
         id: "y103",
         directionId: 0,
         previousVehicleId: "y104",
-        isOnRoute: true,
       } as Vehicle,
     ],
     incomingVehicles: [
@@ -46,7 +42,6 @@ const vehiclesByRouteId: ByRouteId<VehiclesForRoute> = {
         id: "y104",
         directionId: 0,
         previousVehicleId: "y105",
-        isOnRoute: false,
       } as Vehicle,
     ],
     ghosts: [
@@ -62,7 +57,6 @@ const vehiclesByRouteId: ByRouteId<VehiclesForRoute> = {
         id: "y3901",
         directionId: 0,
         previousVehicleId: "y1250",
-        isOnRoute: true,
       } as Vehicle,
     ],
     incomingVehicles: [],
@@ -77,32 +71,27 @@ describe("allVehicles", () => {
         id: "y101",
         directionId: 0,
         previousVehicleId: "y102",
-        isOnRoute: true,
       } as Vehicle,
       {
         id: "y102",
         directionId: 0,
         previousVehicleId: "y103",
-        isOnRoute: true,
       } as Vehicle,
       // Vehicle with direction 1 between vehicles with direction 0
       {
         id: "y111",
         directionId: 1,
         previousVehicleId: "y112",
-        isOnRoute: true,
       } as Vehicle,
       {
         id: "y103",
         directionId: 0,
         previousVehicleId: "y104",
-        isOnRoute: true,
       } as Vehicle,
       {
         id: "y104",
         directionId: 0,
         previousVehicleId: "y105",
-        isOnRoute: false,
       } as Vehicle,
     ]
 
@@ -121,32 +110,27 @@ describe("allVehiclesAndGhosts", () => {
         id: "y101",
         directionId: 0,
         previousVehicleId: "y102",
-        isOnRoute: true,
       } as Vehicle,
       {
         id: "y102",
         directionId: 0,
         previousVehicleId: "y103",
-        isOnRoute: true,
       } as Vehicle,
       // Vehicle with direction 1 between vehicles with direction 0
       {
         id: "y111",
         directionId: 1,
         previousVehicleId: "y112",
-        isOnRoute: true,
       } as Vehicle,
       {
         id: "y103",
         directionId: 0,
         previousVehicleId: "y104",
-        isOnRoute: true,
       } as Vehicle,
       {
         id: "y104",
         directionId: 0,
         previousVehicleId: "y105",
-        isOnRoute: false,
       } as Vehicle,
       {
         id: "ghost-1",

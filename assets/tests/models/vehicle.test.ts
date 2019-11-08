@@ -82,7 +82,6 @@ describe("isAVehicle", () => {
           fractionUntilTimepoint: 0.5,
         },
       },
-      isOnRoute: true,
     }
 
     expect(isAVehicle(vehicle)).toBeTruthy()

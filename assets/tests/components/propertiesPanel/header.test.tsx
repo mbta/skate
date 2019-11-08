@@ -60,7 +60,6 @@ const vehicle: Vehicle = {
     timepointId: "tp1",
   },
   scheduledLocation: null,
-  isOnRoute: true,
 }
 
 describe("Header", () => {

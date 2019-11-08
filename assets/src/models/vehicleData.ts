@@ -90,9 +90,7 @@ interface VehicleTimepointStatusData {
   fraction_until_timepoint: number
 }
 
-export const vehicleFromData = ({ isOnRoute }: { isOnRoute: boolean }) => (
-  vehicleData: VehicleData
-): Vehicle => ({
+export const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
   id: vehicleData.id,
   label: vehicleData.label,
   runId: vehicleData.run_id,
@@ -126,7 +124,6 @@ export const vehicleFromData = ({ isOnRoute }: { isOnRoute: boolean }) => (
   scheduledLocation:
     vehicleData.scheduled_location &&
     vehicleScheduledLocationFromData(vehicleData.scheduled_location),
-  isOnRoute,
 })
 
 export const ghostFromData = (ghostData: GhostData): Ghost => ({
@@ -151,7 +148,7 @@ export const vehicleOrGhostFromData = (
 ): VehicleOrGhost =>
   isAGhost(vehicleOrGhostData)
     ? ghostFromData(vehicleOrGhostData as GhostData)
-    : vehicleFromData({ isOnRoute: true })(vehicleOrGhostData as VehicleData)
+    : vehicleFromData(vehicleOrGhostData as VehicleData)
 
 const headwaySpacing = (raw: RawHeadwaySpacing): HeadwaySpacing | null => {
   switch (raw) {

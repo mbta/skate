@@ -53,7 +53,6 @@ describe("ladder", () => {
           timepointId: "t1",
         },
         scheduledLocation: null,
-        isOnRoute: true,
       },
       {
         id: "downward",
@@ -97,7 +96,6 @@ describe("ladder", () => {
             fractionUntilTimepoint: 0.75,
           },
         },
-        isOnRoute: true,
       },
       {
         id: "notimepoint",
@@ -132,7 +130,6 @@ describe("ladder", () => {
         },
         timepointStatus: null,
         scheduledLocation: null,
-        isOnRoute: true,
       },
     ]
     const ladderDirection = LadderDirection.ZeroToOne
@@ -226,7 +223,6 @@ describe("ladder", () => {
           timepointId: "t1",
         },
         scheduledLocation: null,
-        isOnRoute: true,
       },
       {
         id: "downward",
@@ -270,7 +266,6 @@ describe("ladder", () => {
             fractionUntilTimepoint: 0.75,
           },
         },
-        isOnRoute: true,
       },
     ]
     const ladderDirection = LadderDirection.ZeroToOne
@@ -335,7 +330,6 @@ describe("ladder", () => {
             fractionUntilTimepoint: 0.75,
           },
         },
-        isOnRoute: true,
       },
     ]
     const ladderDirection = LadderDirection.OneToZero
@@ -393,7 +387,6 @@ describe("ladder", () => {
           timepointId: "t1",
         },
         scheduledLocation: null,
-        isOnRoute: true,
       },
       {
         id: "downward",
@@ -437,7 +430,6 @@ describe("ladder", () => {
             fractionUntilTimepoint: 0.75,
           },
         },
-        isOnRoute: true,
       },
     ]
     const ladderDirection = LadderDirection.ZeroToOne
@@ -497,7 +489,6 @@ describe("ladder", () => {
         timepointId: "t1",
       },
       scheduledLocation: null,
-      isOnRoute: true,
     }
 
     const ladderDirection = LadderDirection.ZeroToOne
@@ -557,7 +548,6 @@ describe("ladder", () => {
           timepointId: "t1",
         },
         scheduledLocation: null,
-        isOnRoute: true,
       },
     ]
     const ladderDirection = LadderDirection.ZeroToOne
@@ -622,7 +612,6 @@ describe("ladder", () => {
             fractionUntilTimepoint: 0.4,
           },
         },
-        isOnRoute: true,
       },
     ]
     const ladderDirection = LadderDirection.OneToZero
@@ -696,7 +685,6 @@ describe("ladder", () => {
           fractionUntilTimepoint: 0,
         },
       },
-      isOnRoute: true,
     }
 
     const timepoints = ["t0", "t1", "t2"]

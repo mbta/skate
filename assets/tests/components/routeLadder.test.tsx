@@ -52,7 +52,6 @@ const vehicles: Vehicle[] = [
       timepointId: "MATPN",
     },
     scheduledLocation: null,
-    isOnRoute: true,
   },
   {
     id: "y0479",
@@ -96,7 +95,6 @@ const vehicles: Vehicle[] = [
         fractionUntilTimepoint: 0.0,
       },
     },
-    isOnRoute: true,
   },
 ]
 
@@ -358,7 +356,6 @@ describe("routeLadder", () => {
         fractionUntilTimepoint: 0.5,
       },
       scheduledLocation: null,
-      isOnRoute: true,
     }
 
     const wrapper = mount(

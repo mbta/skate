@@ -44,7 +44,6 @@ const vehicles: Vehicle[] = [
       timepointId: "MATPN",
     },
     scheduledLocation: null,
-    isOnRoute: true,
   },
   {
     id: "y0479",
@@ -88,7 +87,6 @@ const vehicles: Vehicle[] = [
         fractionUntilTimepoint: 0.0,
       },
     },
-    isOnRoute: true,
   },
 ]
 

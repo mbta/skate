@@ -45,7 +45,6 @@ const shuttle: Vehicle = {
     timepointId: "MATPN",
   },
   scheduledLocation: null,
-  isOnRoute: true,
 }
 
 describe("Shuttle Map Page", () => {
