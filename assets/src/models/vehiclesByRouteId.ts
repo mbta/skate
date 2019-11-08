@@ -1,6 +1,5 @@
 import { partition } from "../helpers/array"
 import { Vehicle, VehicleOrGhost, VehiclesForRoute } from "../realtime"
-import { ByRouteId, RouteId } from "../schedule"
 
 interface NextAndPreviousVehicle {
   nextVehicle?: Vehicle
@@ -30,11 +29,6 @@ export const allVehiclesAndGhosts = (
   return [...allVehicles(vehiclesForRoute), ...vehiclesForRoute.ghosts]
 }
 
-export const allVehiclesForRoute = (
-  vehiclesByRouteId: ByRouteId<VehiclesForRoute>,
-  routeId: RouteId
-): Vehicle[] => allVehicles(vehiclesByRouteId[routeId])
-
 /**
  * Partition vehicles by direction
  */
@@ -50,12 +44,10 @@ export const nextAndPreviousVehicle = (
   ]
 
   const nextVehicle = vehiclesGoingTheSameDirection.find(
-    vehicle =>
-      vehicle.previousVehicleId === currentVehicle.id && vehicle.isOnRoute
+    vehicle => vehicle.previousVehicleId === currentVehicle.id
   )
   const previousVehicle = vehiclesGoingTheSameDirection.find(
-    vehicle =>
-      vehicle.id === currentVehicle.previousVehicleId && vehicle.isOnRoute
+    vehicle => vehicle.id === currentVehicle.previousVehicleId
   )
 
   return {
