@@ -52,28 +52,33 @@ export const Highlighted = ({
 }: {
   content: string
   highlightText?: string
-}) => {
+}): JSX.Element => {
   if (highlightText === undefined) {
     return <>{content}</>
   }
 
+  const regex = new RegExp(highlightText, "i")
+  const match = content.match(regex)
+
+  if (match === null || match.index === undefined) {
+    return <>{content}</>
+  }
+
+  const matchingString = match[0]
+
   return (
     <>
-      {content.split(highlightText).reduce(
-        (acc, str, i) => {
-          if (i === 0) {
-            return [<React.Fragment key={i}>{str}</React.Fragment>]
-          }
-
-          return acc.concat([
-            <span className="highlighted" key={`highlighted-${i}`}>
-              {highlightText}
-            </span>,
-            <React.Fragment key={i}>{str}</React.Fragment>,
-          ])
-        },
-        [] as JSX.Element[]
-      )}
+      {[
+        content.slice(0, match.index),
+        <span className="highlighted" key={`highlighted-${match.index}`}>
+          {matchingString}
+        </span>,
+        <Highlighted
+          content={content.slice(match.index + match[0].length)}
+          highlightText={highlightText}
+          key={`highlighted-extension-${match.index + match[0].length}`}
+        />,
+      ]}
     </>
   )
 }

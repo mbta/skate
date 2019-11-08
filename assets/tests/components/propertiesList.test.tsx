@@ -116,6 +116,20 @@ describe("Highlighted", () => {
     expect(wrapper.html()).toEqual(expected)
   })
 
+  test("is insensitive in its matching", () => {
+    const content: string = "SMITH #201387 tmits"
+    const highlightText: string = "mit"
+
+    const expected =
+      'S<span class="highlighted">MIT</span>H #201387 t<span class="highlighted">mit</span>s'
+
+    const wrapper = shallow(
+      <Highlighted content={content} highlightText={highlightText} />
+    )
+
+    expect(wrapper.html()).toEqual(expected)
+  })
+
   test("renders the original content if no highlight text is specified", () => {
     const content: string = "SMITH #201387"
 
