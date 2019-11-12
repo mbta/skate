@@ -15,7 +15,7 @@
     "format:check": "prettier --check \"{.,**}/*.{js,json,ts,tsx,css,scss}\""
   },
   "dependencies": {
-    "@babel/polyfill": "^7.4.4",
+    "@babel/polyfill": "^7.7.0",
     "@rehooks/component-size": "^1.0.3",
     "leaflet": "^1.5.1",
     "leaflet-defaulticon-compatibility": "^0.1.1",
