@@ -204,9 +204,7 @@ $color-stop-stroke: $black;
 }
 
 @mixin button-text {
-  background: transparent;
   color: $color-button-secondary;
-  cursor: pointer;
   font-size: 0.8125rem;
   font-weight: 500;
   padding: 0;
