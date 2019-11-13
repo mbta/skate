@@ -9,7 +9,7 @@ const APP_STATE_KEY = "mbta-skate-state"
 const PERSISTED_KEYS = [
   "selectedRouteIds",
   "selectedShuttleRouteIds",
-  "selectedShuttleRunIds",
+  "selectedShuttleRuns",
   "settings",
 ]
 
@@ -54,7 +54,7 @@ const usePersistedStateReducer = (
   }, [
     state.selectedRouteIds,
     state.selectedShuttleRouteIds,
-    state.selectedShuttleRunIds,
+    state.selectedShuttleRuns,
     state.settings,
   ])
 

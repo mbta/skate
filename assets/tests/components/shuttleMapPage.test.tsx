@@ -3,6 +3,7 @@ import renderer from "react-test-renderer"
 import ShuttleMapPage from "../../src/components/shuttleMapPage"
 import { ShuttleVehiclesProvider } from "../../src/contexts/shuttleVehiclesContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
+import { ShuttleRunSelectionType } from "../../src/models/shuttleRunSelection"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Vehicle } from "../../src/realtime"
 import { initialState } from "../../src/state"
@@ -65,7 +66,12 @@ describe("Shuttle Map Page", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider
-          state={{ ...initialState, selectedShuttleRunIds: [shuttle.runId!] }}
+          state={{
+            ...initialState,
+            selectedShuttleRuns: [
+              { type: ShuttleRunSelectionType.RunId, runId: shuttle.runId! },
+            ],
+          }}
           dispatch={dispatch}
         >
           <ShuttleVehiclesProvider shuttles={[shuttle]}>
@@ -82,7 +88,7 @@ describe("Shuttle Map Page", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider
-          state={{ ...initialState, selectedShuttleRunIds: "all" }}
+          state={{ ...initialState, selectedShuttleRuns: "all" }}
           dispatch={dispatch}
         >
           <ShuttleVehiclesProvider shuttles={[shuttle]}>
@@ -98,7 +104,9 @@ describe("Shuttle Map Page", () => {
     const dispatch = jest.fn()
     const state = {
       ...initialState,
-      selectedShuttleRunIds: [shuttle.runId!],
+      selectedShuttleRuns: [
+        { type: ShuttleRunSelectionType.RunId, runId: shuttle.runId! },
+      ],
       selectedVehicleId: shuttle.id,
     }
     const tree = renderer

@@ -7,16 +7,20 @@ import ShuttlePicker, {
 } from "../../src/components/shuttlePicker"
 import { ShuttleVehiclesProvider } from "../../src/contexts/shuttleVehiclesContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
+import {
+  ShuttleRunSelection,
+  ShuttleRunSelectionType,
+} from "../../src/models/shuttleRunSelection"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { RunId, Vehicle } from "../../src/realtime"
+import { Vehicle } from "../../src/realtime"
 import { Route } from "../../src/schedule"
 import {
   deselectAllShuttleRuns,
-  deselectShuttleRoute,
+  deselectShuttleRouteId,
   deselectShuttleRun,
   initialState,
   selectAllShuttleRuns,
-  selectShuttleRoute,
+  selectShuttleRouteId,
   selectShuttleRun,
 } from "../../src/state"
 
@@ -110,7 +114,11 @@ describe("ShuttlePicker", () => {
     999-0511: unknown, unselected
     999-0512: unknown, selected
     */
-    const selectedShuttleRunIds: RunId[] = ["999-0502", "999-0504", "999-0512"]
+    const selectedShuttleRuns: ShuttleRunSelection[] = [
+      { type: ShuttleRunSelectionType.RunId, runId: "999-0502" },
+      { type: ShuttleRunSelectionType.RunId, runId: "999-0504" },
+      { type: ShuttleRunSelectionType.RunId, runId: "999-0512" },
+    ]
     const shuttles: Vehicle[] = [
       { ...vehicle, runId: "999-0503" },
       { ...vehicle, runId: "999-0504" },
@@ -121,7 +129,7 @@ describe("ShuttlePicker", () => {
       <StateDispatchProvider
         state={{
           ...initialState,
-          selectedShuttleRunIds,
+          selectedShuttleRuns,
         }}
         dispatch={jest.fn()}
       >
@@ -150,14 +158,24 @@ describe("ShuttlePicker", () => {
       .first()
       .simulate("click")
 
-    expect(dispatch).toHaveBeenCalledWith(selectShuttleRun(vehicle.runId!))
+    expect(dispatch).toHaveBeenCalledWith(
+      selectShuttleRun({
+        type: ShuttleRunSelectionType.RunId,
+        runId: vehicle.runId!,
+      })
+    )
   })
 
   test("clicking a selected run id removes it from selected run ids", () => {
     const dispatch = jest.fn()
     const wrapper = mount(
       <StateDispatchProvider
-        state={{ ...initialState, selectedShuttleRunIds: [vehicle.runId!] }}
+        state={{
+          ...initialState,
+          selectedShuttleRuns: [
+            { type: ShuttleRunSelectionType.RunId, runId: vehicle.runId! },
+          ],
+        }}
         dispatch={dispatch}
       >
         <ShuttleVehiclesProvider shuttles={[vehicle]}>
@@ -172,14 +190,19 @@ describe("ShuttlePicker", () => {
       .first()
       .simulate("click")
 
-    expect(dispatch).toHaveBeenCalledWith(deselectShuttleRun(vehicle.runId!))
+    expect(dispatch).toHaveBeenCalledWith(
+      deselectShuttleRun({
+        type: ShuttleRunSelectionType.RunId,
+        runId: vehicle.runId!,
+      })
+    )
   })
 
   test("clicking the unselected All Specials button selects all runs", () => {
     const dispatch = jest.fn()
     const wrapper = mount(
       <StateDispatchProvider
-        state={{ ...initialState, selectedShuttleRunIds: [] }}
+        state={{ ...initialState, selectedShuttleRuns: [] }}
         dispatch={dispatch}
       >
         <ShuttleVehiclesProvider shuttles={[vehicle]}>
@@ -203,10 +226,7 @@ describe("ShuttlePicker", () => {
   test("clicking the selected All Specials button deselects all runs", () => {
     const dispatch = jest.fn()
     const wrapper = mount(
-      <StateDispatchProvider
-        state={{ ...initialState, selectedShuttleRunIds: "all" }}
-        dispatch={dispatch}
-      >
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
         <ShuttleVehiclesProvider shuttles={[vehicle]}>
           <ShuttlePicker />
         </ShuttleVehiclesProvider>
@@ -241,7 +261,7 @@ describe("ShuttlePicker", () => {
       .first()
       .simulate("click")
 
-    expect(dispatch).toHaveBeenCalledWith(selectShuttleRoute("Blue"))
+    expect(dispatch).toHaveBeenCalledWith(selectShuttleRouteId("Blue"))
   })
 
   test("clicking a selected route button removes the route from the selected route IDs", () => {
@@ -264,7 +284,9 @@ describe("ShuttlePicker", () => {
       .first()
       .simulate("click")
 
-    expect(dispatch).toHaveBeenCalledWith(deselectShuttleRoute(selectedRouteId))
+    expect(dispatch).toHaveBeenCalledWith(
+      deselectShuttleRouteId(selectedRouteId)
+    )
   })
 })
 

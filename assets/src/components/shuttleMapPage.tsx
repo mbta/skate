@@ -3,7 +3,11 @@ import { ShuttleVehiclesContext } from "../contexts/shuttleVehiclesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useRouteShapes from "../hooks/useRouteShapes"
 import { loadedShapes } from "../models/shape"
-import { RunId, Vehicle, VehicleId } from "../realtime"
+import {
+  matchesRunId,
+  ShuttleRunSelection,
+} from "../models/shuttleRunSelection"
+import { Vehicle, VehicleId } from "../realtime"
 import { Shape } from "../schedule"
 import Map from "./map"
 import PropertiesPanel from "./propertiesPanel"
@@ -11,14 +15,17 @@ import ShuttlePicker from "./shuttlePicker"
 
 const filterShuttles = (
   shuttles: Vehicle[],
-  selectedShuttleRunIds: RunId[] | "all"
+  selectedShuttleRuns: ShuttleRunSelection[] | "all"
 ): Vehicle[] => {
-  if (selectedShuttleRunIds === "all") {
+  if (selectedShuttleRuns === "all") {
     return shuttles
   }
 
   return shuttles.filter(shuttle =>
-    selectedShuttleRunIds.includes(shuttle.runId!)
+    selectedShuttleRuns.some(selectedShuttleRun => {
+      const result = matchesRunId(selectedShuttleRun, shuttle.runId!)
+      return result
+    })
   )
 }
 
@@ -32,7 +39,7 @@ const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
   const [state] = useContext(StateDispatchContext)
   const {
     selectedShuttleRouteIds,
-    selectedShuttleRunIds,
+    selectedShuttleRuns,
     selectedVehicleId,
   } = state
   const shuttles: Vehicle[] | null = useContext(ShuttleVehiclesContext)
@@ -43,7 +50,7 @@ const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
   )
   const selectedShuttles: Vehicle[] = filterShuttles(
     shuttles || [],
-    selectedShuttleRunIds
+    selectedShuttleRuns
   )
 
   const selectedVehicle = findSelectedVehicle(
