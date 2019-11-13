@@ -2,106 +2,194 @@ import React, { ReactElement, useContext } from "react"
 import { ShuttleVehiclesContext } from "../contexts/shuttleVehiclesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useShuttleRoutes from "../hooks/useShuttleRoutes"
+import {
+  isMatchingShuttleRunSelection,
+  isRunIdShuttleRunSelection,
+  matchesRunId,
+  ShuttleRunSelection,
+  ShuttleRunSelectionType,
+} from "../models/shuttleRunSelection"
 import { SubwayRoute, subwayRoutes } from "../models/subwayRoute"
 import { RunId, Vehicle } from "../realtime"
 import { Route } from "../schedule"
 import {
   deselectAllShuttleRuns,
-  deselectShuttleRoute,
+  deselectShuttleRouteId,
   deselectShuttleRun,
   selectAllShuttleRuns,
-  selectShuttleRoute,
+  selectShuttleRouteId,
   selectShuttleRun,
 } from "../state"
 import Loading from "./loading"
 import PickerContainer, { Width } from "./pickerContainer"
 
-interface KnownShuttle {
+interface PresetRunSelectionButton {
   name: string
-  runId: RunId
+  runSelection: ShuttleRunSelection
 }
 
-const KNOWN_SHUTTLES: KnownShuttle[] = [
-  { name: "Blue", runId: "999-0610" },
-  { name: "Blue", runId: "999-0611" },
-  { name: "Blue", runId: "999-0612" },
-  { name: "Blue", runId: "999-0613" },
-  { name: "Blue", runId: "999-0614" },
-  { name: "Blue", runId: "999-0615" },
-  { name: "Blue", runId: "999-0616" },
-  { name: "Blue", runId: "999-0617" },
-  { name: "Blue", runId: "999-0618" },
-  { name: "Blue", runId: "999-0619" },
-  { name: "GL Trunk", runId: "999-0620" },
-  { name: "B Branch", runId: "999-0621" },
-  { name: "C Branch", runId: "999-0622" },
-  { name: "D Branch", runId: "999-0623" },
-  { name: "E Branch", runId: "999-0624" },
-  { name: "Green", runId: "999-0625" },
-  { name: "Green", runId: "999-0626" },
-  { name: "Green", runId: "999-0627" },
-  { name: "Green", runId: "999-0628" },
-  { name: "Green", runId: "999-0629" },
-  { name: "Orange", runId: "999-0630" },
-  { name: "Orange", runId: "999-0631" },
-  { name: "Orange", runId: "999-0632" },
-  { name: "Orange", runId: "999-0633" },
-  { name: "Orange", runId: "999-0634" },
-  { name: "Orange", runId: "999-0635" },
-  { name: "Orange", runId: "999-0636" },
-  { name: "Orange", runId: "999-0637" },
-  { name: "Orange", runId: "999-0638" },
-  { name: "Orange", runId: "999-0639" },
-  { name: "RL Trunk", runId: "999-0640" },
-  { name: "Ashmont", runId: "999-0641" },
-  { name: "Braintree", runId: "999-0642" },
-  { name: "Red", runId: "999-0643" },
-  { name: "Red", runId: "999-0644" },
-  { name: "Red", runId: "999-0645" },
-  { name: "Red", runId: "999-0646" },
-  { name: "Red", runId: "999-0647" },
-  { name: "Red", runId: "999-0648" },
-  { name: "Red", runId: "999-0649" },
-  { name: "Mattapan", runId: "999-0650" },
-  { name: "Mattapan", runId: "999-0651" },
-  { name: "Mattapan", runId: "999-0652" },
-  { name: "Mattapan", runId: "999-0653" },
-  { name: "Mattapan", runId: "999-0654" },
-  { name: "Mattapan", runId: "999-0655" },
-  { name: "Mattapan", runId: "999-0656" },
-  { name: "Mattapan", runId: "999-0657" },
-  { name: "Mattapan", runId: "999-0658" },
-  { name: "Mattapan", runId: "999-0659" },
-  { name: "CR North", runId: "999-0660" },
-  { name: "Fitchburg", runId: "999-0661" },
-  { name: "Lowell", runId: "999-0662" },
-  { name: "Haverhill", runId: "999-0663" },
-  { name: "Newburyport / Rockport", runId: "999-0664" },
-  { name: "CR North", runId: "999-0665" },
-  { name: "CR North", runId: "999-0666" },
-  { name: "CR North", runId: "999-0667" },
-  { name: "CR North", runId: "999-0668" },
-  { name: "CR North", runId: "999-0669" },
-  { name: "CR South", runId: "999-0670" },
-  { name: "Worcester", runId: "999-0671" },
-  { name: "Needham", runId: "999-0672" },
-  { name: "Franklin", runId: "999-0673" },
-  { name: "Providence / Stoughton", runId: "999-0674" },
-  { name: "Fairmount", runId: "999-0675" },
-  { name: "Middleborough / Lakeville", runId: "999-0676" },
-  { name: "Kingston / Plymouth", runId: "999-0677" },
-  { name: "Greenbush", runId: "999-0678" },
-  { name: "CR South", runId: "999-0679" },
-  { name: "Special", runId: "999-0555" },
-  { name: "Blue", runId: "999-0501" },
-  { name: "Green", runId: "999-0502" },
-  { name: "Orange", runId: "999-0503" },
-  { name: "Red", runId: "999-0504" },
-  { name: "CR", runId: "999-0505" },
+const PRESET_RUN_SELECTION_BUTTONS: PresetRunSelectionButton[] = [
+  {
+    name: "Blue 999 61*",
+    runSelection: {
+      type: ShuttleRunSelectionType.Filter,
+      filter: /999-061.*/,
+    },
+  },
+  {
+    name: "Green 999 62*",
+    runSelection: {
+      type: ShuttleRunSelectionType.Filter,
+      filter: /999-062.*/,
+    },
+  },
+  {
+    name: "GL Trunk",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0620" },
+  },
+  {
+    name: "B Branch",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0621" },
+  },
+  {
+    name: "C Branch",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0622" },
+  },
+  {
+    name: "D Branch",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0623" },
+  },
+  {
+    name: "E Branch",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0624" },
+  },
+  {
+    name: "Orange 999 63*",
+    runSelection: {
+      type: ShuttleRunSelectionType.Filter,
+      filter: /999-063.*/,
+    },
+  },
+  {
+    name: "Red 999 64*",
+    runSelection: {
+      type: ShuttleRunSelectionType.Filter,
+      filter: /999-064.*/,
+    },
+  },
+  {
+    name: "RL Trunk",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0640" },
+  },
+  {
+    name: "Ashmont",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0641" },
+  },
+  {
+    name: "Braintree",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0642" },
+  },
+  {
+    name: "Mattapan 999 65*",
+    runSelection: {
+      type: ShuttleRunSelectionType.Filter,
+      filter: /999-065.*/,
+    },
+  },
+  {
+    name: "CR North 999 66*",
+    runSelection: {
+      type: ShuttleRunSelectionType.Filter,
+      filter: /999-066.*/,
+    },
+  },
+  {
+    name: "Fitchburg",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0661" },
+  },
+  {
+    name: "Lowell",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0662" },
+  },
+  {
+    name: "Haverhill",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0663" },
+  },
+  {
+    name: "Newburyport / Rockport",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0664" },
+  },
+  {
+    name: "CR South 999 67*",
+    runSelection: {
+      type: ShuttleRunSelectionType.Filter,
+      filter: /999-067.*/,
+    },
+  },
+  {
+    name: "Worcester",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0671" },
+  },
+  {
+    name: "Needham",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0672" },
+  },
+  {
+    name: "Franklin",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0673" },
+  },
+  {
+    name: "Providence / Stoughton",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0674" },
+  },
+  {
+    name: "Fairmount",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0675" },
+  },
+  {
+    name: "Middleborough / Lakeville",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0676" },
+  },
+  {
+    name: "Kingston / Plymouth",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0677" },
+  },
+  {
+    name: "Greenbush",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0678" },
+  },
+  {
+    name: "Special",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0555" },
+  },
+  {
+    name: "Blue",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0501" },
+  },
+  {
+    name: "Green",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0502" },
+  },
+  {
+    name: "Orange",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0503" },
+  },
+  {
+    name: "Red",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0504" },
+  },
+  {
+    name: "CR",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0505" },
+  },
 ]
 
-const KNOWN_RUN_IDS: RunId[] = KNOWN_SHUTTLES.map(
-  knownShuttle => knownShuttle.runId
+const PRESET_RUN_IDS: RunId[] = PRESET_RUN_SELECTION_BUTTONS.reduce(
+  (acc: RunId[], { runSelection }: PresetRunSelectionButton) =>
+    isRunIdShuttleRunSelection(runSelection)
+      ? [...acc, runSelection.runId]
+      : acc,
+  []
 )
 
 const ShuttlePicker = ({}): ReactElement<HTMLDivElement> => {
@@ -137,25 +225,62 @@ const RunIdButtons = ({ shuttles }: { shuttles: Vehicle[] }) => {
   const runCounts = activeRunCounts(shuttles)
   const activeRunIds = Object.keys(runCounts).filter(runId => runId !== "all")
 
+  const buttonKey = (
+    presetRunSelectionButton: PresetRunSelectionButton
+  ): string =>
+    isRunIdShuttleRunSelection(presetRunSelectionButton.runSelection)
+      ? presetRunSelectionButton.runSelection.runId
+      : presetRunSelectionButton.runSelection.filter.toString()
+
+  const presetRunSelectionButtonCount = ({
+    runSelection,
+  }: PresetRunSelectionButton): number | undefined => {
+    if (isRunIdShuttleRunSelection(runSelection)) {
+      return runCounts[runSelection.runId]
+    }
+
+    const filterCount = activeRunIds.reduce(
+      (count, activeRunId) =>
+        matchesRunId(runSelection, activeRunId)
+          ? count + runCounts[activeRunId]
+          : count,
+      0
+    )
+
+    if (filterCount === 0) {
+      return undefined
+    } else {
+      return filterCount
+    }
+  }
+
+  const isPresetRunSelectionButtonActive = ({
+    runSelection,
+  }: PresetRunSelectionButton): boolean =>
+    activeRunIds.some(activeRunId => matchesRunId(runSelection, activeRunId))
+
   return (
     <>
       <AllSpecialsButton count={runCounts.all} />
-      {KNOWN_SHUTTLES.map(knownShuttle => (
+      {PRESET_RUN_SELECTION_BUTTONS.map(presetRunSelectionButton => (
         <RunIdButton
-          key={knownShuttle.runId}
-          name={`${knownShuttle.name} ${formatRunId(knownShuttle.runId)}`}
-          count={runCounts[knownShuttle.runId]}
-          runId={knownShuttle.runId}
-          isActive={activeRunIds.includes(knownShuttle.runId)}
+          key={buttonKey(presetRunSelectionButton)}
+          name={buttonLabel(presetRunSelectionButton)}
+          count={presetRunSelectionButtonCount(presetRunSelectionButton)}
+          shuttleRunSelection={presetRunSelectionButton.runSelection}
+          isActive={isPresetRunSelectionButtonActive(presetRunSelectionButton)}
         />
       ))}
       {activeRunIds.map(runId =>
-        KNOWN_RUN_IDS.includes(runId) ? null : (
+        PRESET_RUN_IDS.includes(runId) ? null : (
           <RunIdButton
             key={runId}
             name={formatRunId(runId)}
             count={runCounts[runId]}
-            runId={runId}
+            shuttleRunSelection={{
+              type: ShuttleRunSelectionType.RunId,
+              runId,
+            }}
             isActive={true}
           />
         )
@@ -186,7 +311,7 @@ const AllSpecialsButton = ({
   count: number
 }): ReactElement<HTMLElement> => {
   const [state, dispatch] = useContext(StateDispatchContext)
-  const isSelected = state.selectedShuttleRunIds === "all"
+  const isSelected = state.selectedShuttleRuns === "all"
 
   const toggleAllShuttleRuns = () =>
     isSelected
@@ -207,23 +332,25 @@ const AllSpecialsButton = ({
 const RunIdButton = ({
   name,
   count,
-  runId,
+  shuttleRunSelection,
   isActive,
 }: {
   name: string
   count?: number
-  runId: RunId
+  shuttleRunSelection: ShuttleRunSelection
   isActive: boolean
 }): ReactElement<HTMLLIElement> => {
   const [state, dispatch] = useContext(StateDispatchContext)
   const isSelected =
-    state.selectedShuttleRunIds !== "all" &&
-    state.selectedShuttleRunIds.includes(runId)
+    state.selectedShuttleRuns !== "all" &&
+    state.selectedShuttleRuns.some(selectedShuttleRun =>
+      isMatchingShuttleRunSelection(selectedShuttleRun, shuttleRunSelection)
+    )
 
   const onClick = isActive
     ? isSelected
-      ? () => dispatch(deselectShuttleRun(runId))
-      : () => dispatch(selectShuttleRun(runId))
+      ? () => dispatch(deselectShuttleRun(shuttleRunSelection))
+      : () => dispatch(selectShuttleRun(shuttleRunSelection))
     : // tslint:disable-next-line: no-empty
       () => {}
 
@@ -309,8 +436,8 @@ const RouteButton = ({
     : "m-route-picker__route-list-button--unselected"
 
   const toggleRoute = isSelected
-    ? () => dispatch(deselectShuttleRoute(id))
-    : () => dispatch(selectShuttleRoute(id))
+    ? () => dispatch(deselectShuttleRouteId(id))
+    : () => dispatch(selectShuttleRouteId(id))
 
   return (
     <li>
@@ -323,6 +450,14 @@ const RouteButton = ({
     </li>
   )
 }
+
+const buttonLabel = ({
+  name,
+  runSelection,
+}: PresetRunSelectionButton): string =>
+  isRunIdShuttleRunSelection(runSelection)
+    ? `${name} ${formatRunId(runSelection.runId)}`
+    : name
 
 export const formatRunId = (runId: RunId): string => runId.replace(/-0*/, " ")
 
