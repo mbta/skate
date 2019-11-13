@@ -33,7 +33,6 @@ $color-font-grey: $color-component-medium;
 $color-font-link: $color-secondary-dark;
 $color-font-light: $white;
 $color-font-warning: $color-component-red;
-$color-font-note: #788093;
 
 $color-rule: $color-component-light;
 
@@ -117,7 +116,7 @@ $color-stop-stroke: $black;
 }
 
 @mixin font-note {
-  color: $color-font-note;
+  color: $color-font-grey;
 }
 
 // button styles
