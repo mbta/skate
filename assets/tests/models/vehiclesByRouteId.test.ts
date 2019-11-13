@@ -38,7 +38,7 @@ const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = {
       id: "y104",
       directionId: 0,
       previousVehicleId: "y105",
-      routeStatus: "incoming",
+      routeStatus: "pulling_out",
     } as Vehicle,
     {
       id: "ghost-1",

@@ -199,7 +199,7 @@ describe("routeLadder", () => {
           timepoints={timepoints}
           vehiclesAndGhosts={vehicles.map((vehicle: Vehicle) => ({
             ...vehicle,
-            routeStatus: "incoming" as RouteStatus,
+            routeStatus: "pulling_out" as RouteStatus,
           }))}
           selectedVehicleId={undefined}
         />
@@ -351,7 +351,7 @@ describe("routeLadder", () => {
         fractionUntilTimepoint: 0.5,
       },
       scheduledLocation: null,
-      routeStatus: "incoming",
+      routeStatus: "pulling_out",
     }
 
     const wrapper = mount(

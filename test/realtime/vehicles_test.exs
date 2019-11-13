@@ -8,7 +8,7 @@ defmodule Realtime.VehiclesTest do
   alias Realtime.Vehicles
 
   describe "group_by_route_with_blocks" do
-    test "groups on_route, laying_over, and incoming vehicles together by their route_id" do
+    test "groups on_route, laying_over, and pulling_out vehicles together by their route_id" do
       on_route_vehicle = %Vehicle{
         id: "on_route",
         label: "on_route",
@@ -32,11 +32,11 @@ defmodule Realtime.VehiclesTest do
         route_status: :on_route
       }
 
-      incoming_vehicle = %{
+      pulling_out_vehicle = %{
         on_route_vehicle
-        | id: "incoming",
-          label: "incoming",
-          route_status: :incoming
+        | id: "pulling_out",
+          label: "pulling_out",
+          route_status: :pulling_out
       }
 
       laying_over_vehicle = %{
@@ -46,16 +46,16 @@ defmodule Realtime.VehiclesTest do
           route_status: :laying_over
       }
 
-      ungrouped_vehicles = [on_route_vehicle, laying_over_vehicle, incoming_vehicle]
-      incoming_blocks_by_route = %{}
+      ungrouped_vehicles = [on_route_vehicle, laying_over_vehicle, pulling_out_vehicle]
+      pulling_out_blocks_by_route = %{}
 
       assert Vehicles.group_by_route_with_blocks(
                ungrouped_vehicles,
-               incoming_blocks_by_route,
+               pulling_out_blocks_by_route,
                [],
                0
              ) == %{
-               "route" => [on_route_vehicle, laying_over_vehicle, incoming_vehicle]
+               "route" => [on_route_vehicle, laying_over_vehicle, pulling_out_vehicle]
              }
     end
 

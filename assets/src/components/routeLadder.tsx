@@ -98,8 +98,8 @@ const RouteLadder = ({
   const layingOver: Vehicle[] = thisRoute.filter(
     vehicle => vehicle.routeStatus == "laying_over"
   )
-  const incomingThisRoute: Vehicle[] = thisRoute.filter(
-    vehicle => vehicle.routeStatus == "incoming"
+  const pullingOut: Vehicle[] = thisRoute.filter(
+    vehicle => vehicle.routeStatus == "pulling_out"
   )
   const [layingOverBottom, layingOverTop] = Array.partition(
     layingOver,
@@ -126,7 +126,7 @@ const RouteLadder = ({
           />
           <LayoverBox vehicles={layingOverBottom} classModifier="bottom" />
           <IncomingBox
-            vehicles={incomingFromOtherRoute.concat(incomingThisRoute)}
+            vehicles={incomingFromOtherRoute.concat(pullingOut)}
             ladderDirection={ladderDirection}
             selectedVehicleId={selectedVehicleId}
           />

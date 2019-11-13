@@ -339,11 +339,11 @@ defmodule Realtime.VehicleTest do
       {:ok, trip1: trip1, trip2: trip2, block: block}
     end
 
-    test "returns :incoming if approaching the first stop of the block", %{
+    test "returns :pulling_out if approaching the first stop of the block", %{
       trip1: trip1,
       block: block
     } do
-      assert Vehicle.route_status("s1", trip1, block) == :incoming
+      assert Vehicle.route_status("s1", trip1, block) == :pulling_out
     end
 
     test "returns :laying_over if starting a trip that's not the first of its block", %{
@@ -357,8 +357,8 @@ defmodule Realtime.VehicleTest do
       assert Vehicle.route_status("s2", trip1, block) == :on_route
     end
 
-    test "returns :incoming if we can't find the trip" do
-      assert Vehicle.route_status("s1", nil, nil) == :incoming
+    test "returns :pulling_out if we can't find the trip" do
+      assert Vehicle.route_status("s1", nil, nil) == :pulling_out
     end
 
     test "if we find the trip but not the block, assume the trip is not the first in the block",

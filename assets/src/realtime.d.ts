@@ -34,7 +34,7 @@ export interface Ghost {
 
 export type SourceId = string
 
-export type RouteStatus = "on_route" | "laying_over" | "incoming"
+export type RouteStatus = "on_route" | "laying_over" | "pulling_out"
 
 export type RunId = string
 

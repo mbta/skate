@@ -94,12 +94,12 @@ describe("findSelectedVehicleOrGhost", () => {
     })
   })
 
-  test("returns the requested vehicle if it is incoming", () => {
+  test("returns the requested vehicle if it is pulling out", () => {
     expect(
-      findSelectedVehicleOrGhost(vehiclesByRouteId, "incoming-39")
+      findSelectedVehicleOrGhost(vehiclesByRouteId, "pulling-out-39")
     ).toEqual({
-      id: "incoming-39",
-      routeStatus: "incoming",
+      id: "pulling-out-39",
+      routeStatus: "pulling_out",
     })
   })
 
@@ -140,8 +140,8 @@ const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = {
       routeStatus: "on_route",
     } as Vehicle,
     {
-      id: "incoming-23",
-      routeStatus: "incoming",
+      id: "pulling-out-23",
+      routeStatus: "pulling_out",
     } as Vehicle,
     {
       id: "ghost-23",
@@ -153,8 +153,8 @@ const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = {
       routeStatus: "on_route",
     } as Vehicle,
     {
-      id: "incoming-39",
-      routeStatus: "incoming",
+      id: "pulling-out-39",
+      routeStatus: "pulling_out",
     } as Vehicle,
     {
       id: "ghost-39",

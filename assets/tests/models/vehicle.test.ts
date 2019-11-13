@@ -139,7 +139,7 @@ describe("shouldShowHeadwayDiagram", () => {
   test("returns false if not on route", () => {
     const notOnRouteVehicle = {
       headwaySpacing: HeadwaySpacing.Ok,
-      routeStatus: "incoming",
+      routeStatus: "pulling_out",
     } as Vehicle
 
     expect(shouldShowHeadwayDiagram(notOnRouteVehicle)).toBeFalsy()
