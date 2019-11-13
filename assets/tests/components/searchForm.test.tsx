@@ -29,6 +29,7 @@ describe("SearchForm", () => {
     const invalidSearch: Search = {
       text: "1",
       property: "run",
+      isActive: false,
     }
     const invalidSearchState = {
       ...initialState,
@@ -45,16 +46,17 @@ describe("SearchForm", () => {
   })
 
   test("submit button is enable if there are at least 2 characters in the text field", () => {
-    const invalidSearch: Search = {
+    const validSearch: Search = {
       text: "12",
       property: "run",
+      isActive: false,
     }
-    const invalidSearchState = {
+    const validSearchState = {
       ...initialState,
-      search: invalidSearch,
+      search: validSearch,
     }
     const wrapper = mount(
-      <StateDispatchProvider state={invalidSearchState} dispatch={mockDispatch}>
+      <StateDispatchProvider state={validSearchState} dispatch={mockDispatch}>
         <SearchForm />
       </StateDispatchProvider>
     )

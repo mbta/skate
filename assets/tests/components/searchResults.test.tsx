@@ -11,6 +11,7 @@ const state: State = {
   search: {
     text: "test",
     property: "run",
+    isActive: true,
   },
 }
 

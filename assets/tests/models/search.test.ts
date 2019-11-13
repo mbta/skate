@@ -5,6 +5,7 @@ import {
   Search,
   setSearchProperty,
   setSearchText,
+  submitSearch,
 } from "../../src/models/search"
 
 describe("initialSearch", () => {
@@ -29,10 +30,52 @@ describe("reducer", () => {
     expect(newSearch.text).toEqual("new text")
   })
 
+  test("setSearchText sets isActive to false", () => {
+    const activeSearch = {
+      ...initialSearch,
+      isActive: true,
+    }
+    const newSearch = reducer(activeSearch, setSearchText("new text"))
+
+    expect(newSearch.isActive).toEqual(false)
+  })
+
   test("setSearchProperty allows you to set property", () => {
     const newSearch = reducer(initialSearch, setSearchProperty("run"))
 
     expect(newSearch.property).toEqual("run")
+  })
+
+  test("setSearchProperty sets isActive to false", () => {
+    const activeSearch = {
+      ...initialSearch,
+      isActive: true,
+    }
+    const newSearch = reducer(activeSearch, setSearchProperty("run"))
+
+    expect(newSearch.isActive).toEqual(false)
+  })
+
+  test("submitSearch sets isActive to true if the search is valid", () => {
+    const validSearch: Search = {
+      text: "12",
+      property: "run",
+      isActive: false,
+    }
+    const newSearch = reducer(validSearch, submitSearch())
+
+    expect(newSearch.isActive).toEqual(true)
+  })
+
+  test("submitSearch does not set isActive to true if the search is invalid", () => {
+    const invalidSearch: Search = {
+      text: "1",
+      property: "run",
+      isActive: false,
+    }
+    const newSearch = reducer(invalidSearch, submitSearch())
+
+    expect(newSearch.isActive).toEqual(false)
   })
 })
 
@@ -41,6 +84,7 @@ describe("isValidSearch", () => {
     const validSearch: Search = {
       text: "12",
       property: "run",
+      isActive: false,
     }
 
     expect(isValidSearch(validSearch)).toBeTruthy()
@@ -50,6 +94,7 @@ describe("isValidSearch", () => {
     const invalidSearch: Search = {
       text: "1",
       property: "run",
+      isActive: false,
     }
 
     expect(isValidSearch(invalidSearch)).toBeFalsy()

@@ -5,6 +5,7 @@ import {
   isValidSearch,
   setSearchProperty,
   setSearchText,
+  submitSearch,
 } from "../models/search"
 
 const SEARCH_PROPERTIES = ["all", "run", "vehicle", "operator"]
@@ -20,6 +21,8 @@ const SearchForm = () => {
 
   const subscribeToSearch = (event: React.FormEvent<EventTarget>) => {
     event.preventDefault()
+
+    dispatch(submitSearch())
 
     // TODO: Save search results for "recent searches" list:
     // https://app.asana.com/0/1112935048846093/1139512810293672

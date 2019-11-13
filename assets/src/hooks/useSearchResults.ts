@@ -1,6 +1,6 @@
 import { Channel, Socket } from "phoenix"
 import { useEffect, useState } from "react"
-import { isValidSearch, Search } from "../models/search"
+import { Search } from "../models/search"
 import {
   VehicleOrGhostData,
   vehicleOrGhostFromData,
@@ -51,7 +51,7 @@ const useSearchResults = (
 
   useEffect(() => {
     let channel: Channel | undefined
-    if (socket && isValidSearch(search)) {
+    if (socket && search.isActive) {
       channel = subscribe(socket, search, setVehicles)
     }
 
