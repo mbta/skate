@@ -312,6 +312,7 @@ defmodule Realtime.VehicleTest do
           }
         ]
       }
+
       trip2 = %Trip{
         id: "t2",
         route_id: "r1",
@@ -333,16 +334,23 @@ defmodule Realtime.VehicleTest do
           }
         ]
       }
+
       block = [trip1, trip2]
 
       {:ok, trip1: trip1, trip2: trip2, block: block}
     end
 
-    test "returns :incoming if approaching the first stop of the block", %{trip1: trip1, block: block} do
+    test "returns :incoming if approaching the first stop of the block", %{
+      trip1: trip1,
+      block: block
+    } do
       assert Vehicle.route_status("s1", trip1, block) == :incoming
     end
 
-    test "returns :laying_over if starting a trip that's not the first of its block", %{trip2: trip2, block: block} do
+    test "returns :laying_over if starting a trip that's not the first of its block", %{
+      trip2: trip2,
+      block: block
+    } do
       assert Vehicle.route_status("s2", trip2, block) == :laying_over
     end
 
@@ -354,7 +362,8 @@ defmodule Realtime.VehicleTest do
       assert Vehicle.route_status("s1", nil, nil) == :incoming
     end
 
-    test "if we find the trip but not the block, assume the trip is not the first in the block", %{trip1: trip1} do
+    test "if we find the trip but not the block, assume the trip is not the first in the block",
+         %{trip1: trip1} do
       assert Vehicle.route_status("s1", trip1, nil) == :laying_over
       assert Vehicle.route_status("s2", trip1, nil) == :on_route
     end

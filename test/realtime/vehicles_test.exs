@@ -40,10 +40,11 @@ defmodule Realtime.VehiclesTest do
           route_status: :incoming
       }
 
-      laying_over_vehicle = %{on_route_vehicle |
-        id: "laying_over",
-        label: "laying_over",
-        route_status: :laying_over
+      laying_over_vehicle = %{
+        on_route_vehicle
+        | id: "laying_over",
+          label: "laying_over",
+          route_status: :laying_over
       }
 
       ungrouped_vehicles = [on_route_vehicle, laying_over_vehicle, incoming_vehicle]
