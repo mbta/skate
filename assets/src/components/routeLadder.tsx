@@ -92,13 +92,14 @@ const RouteLadder = ({
     vehicles,
     (vehicle: Vehicle): boolean => vehicle.routeId == route.id
   )
-  const [onRoute, incoming] = Array.partition(
-    thisRoute,
-    (vehicle: Vehicle): boolean => vehicle.routeStatus == "on_route"
+  const onRoute: Vehicle[] = thisRoute.filter(
+    vehicle => vehicle.routeStatus == "on_route"
   )
-  const [layingOver, incomingNotLayingOver] = Array.partition(
-    incoming,
-    (vehicle: Vehicle): boolean => vehicle.isNonrevenue
+  const layingOver: Vehicle[] = thisRoute.filter(
+    vehicle => vehicle.routeStatus == "laying_over"
+  )
+  const incomingThisRoute: Vehicle[] = thisRoute.filter(
+    vehicle => vehicle.routeStatus == "incoming"
   )
   const [layingOverBottom, layingOverTop] = Array.partition(
     layingOver,
@@ -125,7 +126,7 @@ const RouteLadder = ({
           />
           <LayoverBox vehicles={layingOverBottom} classModifier="bottom" />
           <IncomingBox
-            vehicles={incomingFromOtherRoute.concat(incomingNotLayingOver)}
+            vehicles={incomingFromOtherRoute.concat(incomingThisRoute)}
             ladderDirection={ladderDirection}
             selectedVehicleId={selectedVehicleId}
           />

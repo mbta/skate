@@ -816,92 +816,6 @@ Array [
       width={184}
     >
       <line
-        className="m-ladder__scheduled-line "
-        x1={-63}
-        x2={-40}
-        y1={-40}
-        y2={-40}
-      />
-      <g>
-        <g
-          className="m-ladder__vehicle "
-          onClick={[Function]}
-          transform="translate(63,-10)"
-        >
-          <g
-            className="m-vehicle-icon m-vehicle-icon--medium "
-          >
-            <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={26}
-              x={-13}
-              y={11.5}
-            />
-            <text
-              className="m-vehicle-icon__label"
-              dominantBaseline="central"
-              textAnchor="middle"
-              x="0"
-              y={17}
-            >
-              1
-            </text>
-            <path
-              className="m-vehicle-icon__triangle"
-              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-              transform="scale(0.625) rotate(0) translate(-24,-22)"
-            />
-            <text
-              className="m-vehicle-icon__variant"
-              dominantBaseline="alphabetic"
-              textAnchor="middle"
-              x={0}
-              y={8.5}
-            >
-              4
-            </text>
-          </g>
-        </g>
-      </g>
-      <g>
-        <g
-          className="m-ladder__vehicle "
-          onClick={[Function]}
-          transform="translate(-63,-40)"
-        >
-          <g
-            className="m-vehicle-icon m-vehicle-icon--medium "
-          >
-            <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={26}
-              x={-13}
-              y={-22.5}
-            />
-            <text
-              className="m-vehicle-icon__label"
-              dominantBaseline="central"
-              textAnchor="middle"
-              x="0"
-              y={-17}
-            >
-              2
-            </text>
-            <path
-              className="m-vehicle-icon__triangle"
-              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-              transform="scale(0.625) rotate(180) translate(-24,-22)"
-            />
-          </g>
-        </g>
-      </g>
-      <line
         className="m-ladder__line"
         x1={-40}
         x2={-40}
@@ -917,28 +831,7 @@ Array [
       />
       <g
         className="m-ladder__headway-lines"
-      >
-        <line
-          className="m-ladder__line
-                  m-ladder__headway-line
-                  m-ladder__headway-line--ok"
-          id="y0479"
-          x1={-40}
-          x2={-40}
-          y1={-40}
-          y2={-40}
-        />
-        <line
-          className="m-ladder__line
-                  m-ladder__headway-line
-                  m-ladder__headway-line--ok"
-          id="y1818"
-          x1={40}
-          x2={40}
-          y1={0}
-          y2={-10}
-        />
-      </g>
+      />
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
@@ -1009,6 +902,74 @@ Array [
   />,
   <div
     className="m-incoming-box"
-  />,
+  >
+    <button
+      className="m-incoming-box__vehicle "
+      onClick={[Function]}
+    >
+      <svg
+        style={
+          Object {
+            "height": 15.2,
+            "width": 16.72,
+          }
+        }
+        viewBox="-8.36 -7.6 16.72 15.2"
+      >
+        <g
+          className="m-vehicle-icon m-vehicle-icon--small "
+        >
+          <path
+            className="m-vehicle-icon__triangle"
+            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            transform="scale(0.38) rotate(0) translate(-24,-22)"
+          />
+          <text
+            className="m-vehicle-icon__variant"
+            dominantBaseline="alphabetic"
+            textAnchor="middle"
+            x={0}
+            y={5.6}
+          >
+            4
+          </text>
+        </g>
+      </svg>
+      <div
+        className="m-incoming-box__vehicle-label"
+      >
+        1
+      </div>
+    </button>
+    <button
+      className="m-incoming-box__vehicle "
+      onClick={[Function]}
+    >
+      <svg
+        style={
+          Object {
+            "height": 15.2,
+            "width": 16.72,
+          }
+        }
+        viewBox="-8.36 -7.6 16.72 15.2"
+      >
+        <g
+          className="m-vehicle-icon m-vehicle-icon--small "
+        >
+          <path
+            className="m-vehicle-icon__triangle"
+            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            transform="scale(0.38) rotate(180) translate(-24,-22)"
+          />
+        </g>
+      </svg>
+      <div
+        className="m-incoming-box__vehicle-label"
+      >
+        2
+      </div>
+    </button>
+  </div>,
 ]
 `;

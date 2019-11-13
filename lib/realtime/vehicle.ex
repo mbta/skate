@@ -8,7 +8,7 @@ defmodule Realtime.Vehicle do
           stop_id: Stop.id(),
           stop_name: String.t()
         }
-  @type route_status :: :incoming | :on_route
+  @type route_status :: :on_route | :laying_over | :incoming
 
   @type t :: %__MODULE__{
           id: String.t(),
@@ -195,7 +195,7 @@ defmodule Realtime.Vehicle do
       },
       timepoint_status: timepoint_status,
       scheduled_location: scheduled_location,
-      route_status: route_status(stop_id, trip)
+      route_status: route_status(stop_id, trip, block)
     }
   end
 
@@ -264,12 +264,21 @@ defmodule Realtime.Vehicle do
     if stop, do: stop.name, else: stop_id
   end
 
-  @spec route_status(Stop.id(), Trip.t() | nil) :: route_status()
-  def route_status(_stop_id, nil), do: :incoming
+  @spec route_status(Stop.id(), Trip.t() | nil, Block.t() | nil) :: route_status()
+  def route_status(_stop_id, nil, _block) do
+    # can't find the trip, won't be able to show it on the ladder, show it incoming instead
+    :incoming
+  end
 
-  def route_status(stop_id, %Trip{stop_times: [first_stop_time | _rest]}) do
-    if first_stop_time.stop_id == stop_id do
-      :incoming
+  def route_status(stop_id, trip, block) do
+    if stop_id == List.first(trip.stop_times).stop_id do
+      # hasn't started trip yet
+      if block != nil && trip.id == List.first(block).id do
+        # starting the block, incoming from garage
+        :incoming
+      else
+        :laying_over
+      end
     else
       :on_route
     end

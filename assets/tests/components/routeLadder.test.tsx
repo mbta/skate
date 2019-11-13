@@ -4,7 +4,12 @@ import renderer, { act } from "react-test-renderer"
 import RouteLadder from "../../src/components/routeLadder"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { Ghost, Vehicle, VehicleOrGhost } from "../../src/realtime.d"
+import {
+  Ghost,
+  RouteStatus,
+  Vehicle,
+  VehicleOrGhost,
+} from "../../src/realtime.d"
 import { Route } from "../../src/schedule.d"
 import { deselectRoute, initialState, selectVehicle } from "../../src/state"
 
@@ -194,7 +199,10 @@ describe("routeLadder", () => {
         <RouteLadder
           route={route}
           timepoints={timepoints}
-          vehiclesAndGhosts={vehicles}
+          vehiclesAndGhosts={vehicles.map((vehicle: Vehicle) => ({
+            ...vehicle,
+            routeStatus: "incoming" as RouteStatus,
+          }))}
           selectedVehicleId={undefined}
         />
       )
@@ -220,8 +228,8 @@ describe("routeLadder", () => {
           selectedVehicleId={undefined}
           timepoints={timepoints}
           vehiclesAndGhosts={[
-            { ...v1, routeStatus: "incoming", isNonrevenue: true },
-            { ...v2, routeStatus: "incoming", isNonrevenue: true },
+            { ...v1, routeStatus: "laying_over", isNonrevenue: true },
+            { ...v2, routeStatus: "laying_over", isNonrevenue: true },
           ]}
         />
       )

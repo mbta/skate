@@ -291,7 +291,7 @@ defmodule Realtime.VehicleTest do
 
   describe "route_status/3" do
     setup do
-      trip = %Trip{
+      trip1 = %Trip{
         id: "t1",
         route_id: "r1",
         service_id: "service",
@@ -312,20 +312,51 @@ defmodule Realtime.VehicleTest do
           }
         ]
       }
+      trip2 = %Trip{
+        id: "t2",
+        route_id: "r1",
+        service_id: "service",
+        headsign: "Trip 2",
+        direction_id: 0,
+        block_id: "b",
+        shape_id: "shape2",
+        stop_times: [
+          %StopTime{
+            stop_id: "s2",
+            time: 0,
+            timepoint_id: "s2"
+          },
+          %StopTime{
+            stop_id: "s1",
+            time: 0,
+            timepoint_id: "s1"
+          }
+        ]
+      }
+      block = [trip1, trip2]
 
-      {:ok, trip: trip}
+      {:ok, trip1: trip1, trip2: trip2, block: block}
     end
 
-    test "returns :incoming if the trip is nil" do
-      assert Vehicle.route_status("s1", nil) == :incoming
+    test "returns :incoming if approaching the first stop of the block", %{trip1: trip1, block: block} do
+      assert Vehicle.route_status("s1", trip1, block) == :incoming
     end
 
-    test "returns :incoming if the next stop is the first stop of the trip", %{trip: trip} do
-      assert Vehicle.route_status("s1", trip) == :incoming
+    test "returns :laying_over if starting a trip that's not the first of its block", %{trip2: trip2, block: block} do
+      assert Vehicle.route_status("s2", trip2, block) == :laying_over
     end
 
-    test "returns :on_route if the next stop is any other stop", %{trip: trip} do
-      assert Vehicle.route_status("s2", trip) == :on_route
+    test "returns :on_route if in the middle of a trip", %{trip1: trip1, block: block} do
+      assert Vehicle.route_status("s2", trip1, block) == :on_route
+    end
+
+    test "returns :incoming if we can't find the trip" do
+      assert Vehicle.route_status("s1", nil, nil) == :incoming
+    end
+
+    test "if we find the trip but not the block, assume the trip is not the first in the block", %{trip1: trip1} do
+      assert Vehicle.route_status("s1", trip1, nil) == :laying_over
+      assert Vehicle.route_status("s2", trip1, nil) == :on_route
     end
   end
 
