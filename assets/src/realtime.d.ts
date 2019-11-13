@@ -61,7 +61,6 @@ export interface Vehicle {
   scheduleAdherenceString: string
   scheduledHeadwaySecs: number
   isOffCourse: boolean
-  isNonrevenue: boolean
   layoverDepartureTime: number | null
   blockIsActive: boolean
   dataDiscrepancies: DataDiscrepancy[]

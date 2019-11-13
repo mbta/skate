@@ -45,7 +45,6 @@ const vehicle: Vehicle = {
   scheduleAdherenceString: "0.0 sec (ontime)",
   scheduledHeadwaySecs: 120,
   isOffCourse: false,
-  isNonrevenue: false,
   layoverDepartureTime: null,
   blockIsActive: false,
   dataDiscrepancies: [

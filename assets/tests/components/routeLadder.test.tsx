@@ -44,7 +44,6 @@ const vehicles: Vehicle[] = [
     scheduleAdherenceString: "0.0 sec (ontime)",
     scheduledHeadwaySecs: 120,
     isOffCourse: false,
-    isNonrevenue: false,
     layoverDepartureTime: null,
     blockIsActive: true,
     dataDiscrepancies: [],
@@ -82,7 +81,6 @@ const vehicles: Vehicle[] = [
     scheduleAdherenceString: "0.0 sec (ontime)",
     scheduledHeadwaySecs: 120,
     isOffCourse: false,
-    isNonrevenue: false,
     layoverDepartureTime: null,
     blockIsActive: true,
     dataDiscrepancies: [],
@@ -228,8 +226,8 @@ describe("routeLadder", () => {
           selectedVehicleId={undefined}
           timepoints={timepoints}
           vehiclesAndGhosts={[
-            { ...v1, routeStatus: "laying_over", isNonrevenue: true },
-            { ...v2, routeStatus: "laying_over", isNonrevenue: true },
+            { ...v1, routeStatus: "laying_over" },
+            { ...v2, routeStatus: "laying_over" },
           ]}
         />
       )
@@ -341,7 +339,6 @@ describe("routeLadder", () => {
       scheduleAdherenceString: "0.0 sec (ontime)",
       scheduledHeadwaySecs: 120,
       isOffCourse: false,
-      isNonrevenue: false,
       layoverDepartureTime: null,
       blockIsActive: true,
       dataDiscrepancies: [],
