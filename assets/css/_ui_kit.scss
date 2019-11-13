@@ -115,10 +115,6 @@ $color-stop-stroke: $black;
   font-weight: 700;
 }
 
-@mixin font-note {
-  color: $color-font-grey;
-}
-
 // button styles
 
 @mixin button-base {

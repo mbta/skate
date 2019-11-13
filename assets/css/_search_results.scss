@@ -33,5 +33,5 @@
 }
 
 .m-search-results__list .m-search-results__note {
-  @include font-note;
+  color: $color-font-grey;
 }
