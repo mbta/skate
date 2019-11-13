@@ -1,7 +1,9 @@
+import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import SearchResults from "../../src/components/searchResults"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
+import { setSearchText } from "../../src/models/search"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../src/realtime"
 import { initialState, State } from "../../src/state"
@@ -105,5 +107,18 @@ describe("SearchResults", () => {
       .toJSON()
 
     expect(tree).toMatchSnapshot()
+  })
+
+  test("clicking the clear search button empties the search text", () => {
+    const testDispatch = jest.fn()
+    const wrapper = mount(
+      <StateDispatchProvider state={state} dispatch={testDispatch}>
+        <SearchResults vehicles={[]} />
+      </StateDispatchProvider>
+    )
+
+    wrapper.find(".m-search-results__clear-search-button").simulate("click")
+
+    expect(testDispatch).toHaveBeenCalledWith(setSearchText(""))
   })
 })

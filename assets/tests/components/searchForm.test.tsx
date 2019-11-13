@@ -7,6 +7,7 @@ import {
   Search,
   setSearchProperty,
   setSearchText,
+  submitSearch,
 } from "../../src/models/search"
 import { initialState } from "../../src/state"
 
@@ -63,6 +64,28 @@ describe("SearchForm", () => {
 
     expect(wrapper.find(".m-search-form__text").prop("value")).toEqual("12")
     expect(wrapper.find(".m-search-form__submit").prop("disabled")).toBeFalsy()
+  })
+
+  test("clicking the submit button submits the search", () => {
+    const testDispatch = jest.fn()
+    const validSearch: Search = {
+      text: "12",
+      property: "run",
+      isActive: false,
+    }
+    const validSearchState = {
+      ...initialState,
+      search: validSearch,
+    }
+    const wrapper = mount(
+      <StateDispatchProvider state={validSearchState} dispatch={testDispatch}>
+        <SearchForm />
+      </StateDispatchProvider>
+    )
+
+    wrapper.find(".m-search-form__submit").simulate("click")
+
+    expect(testDispatch).toHaveBeenCalledWith(submitSearch())
   })
 
   test("entering text sets it as the search text", () => {
