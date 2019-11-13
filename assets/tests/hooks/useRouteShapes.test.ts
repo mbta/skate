@@ -9,7 +9,9 @@ import { instantPromise, mockUseStateOnce } from "../testHelpers/mockHelpers"
 
 jest.mock("../../src/api", () => ({
   __esModule: true,
-  fetchShapeForRoute: jest.fn(() => new Promise<Shape[]>(() => {})),
+  fetchShapeForRoute: jest.fn(
+    () => new Promise<Shape[]>(() => {})
+  ),
 }))
 
 describe("useRouteShapes", () => {

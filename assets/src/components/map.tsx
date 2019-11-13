@@ -310,7 +310,10 @@ export const newLeafletMap = (
   setShouldAutoCenter: (shouldAutoCenter: boolean) => void
 ): LeafletMap => {
   const map: LeafletMap = Leaflet.map(container, {
-    maxBounds: [[41.2, -72], [43, -69.8]],
+    maxBounds: [
+      [41.2, -72],
+      [43, -69.8],
+    ],
     center: undefined,
     layers: [
       Leaflet.tileLayer(

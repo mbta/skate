@@ -116,20 +116,17 @@ interface ActiveRunCounts {
   [runId: string]: number
 }
 export const activeRunCounts = (shuttles: Vehicle[]): ActiveRunCounts =>
-  shuttles.reduce(
-    (acc, { runId }) => {
-      if (runId === null) {
-        return acc
-      }
+  shuttles.reduce((acc, { runId }) => {
+    if (runId === null) {
+      return acc
+    }
 
-      return {
-        ...acc,
-        [runId]: acc[runId] !== undefined ? acc[runId] + 1 : 1,
-        all: acc.all !== undefined ? acc.all + 1 : 1,
-      }
-    },
-    {} as ActiveRunCounts
-  )
+    return {
+      ...acc,
+      [runId]: acc[runId] !== undefined ? acc[runId] + 1 : 1,
+      all: acc.all !== undefined ? acc.all + 1 : 1,
+    }
+  }, {} as ActiveRunCounts)
 
 const AllSpecialsButton = ({
   count,

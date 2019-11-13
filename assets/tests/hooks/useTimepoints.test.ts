@@ -8,7 +8,9 @@ import { instantPromise, mockUseStateOnce } from "../testHelpers/mockHelpers"
 
 jest.mock("../../src/api", () => ({
   __esModule: true,
-  fetchTimepointsForRoute: jest.fn(() => new Promise<TimepointId[]>(() => {})),
+  fetchTimepointsForRoute: jest.fn(
+    () => new Promise<TimepointId[]>(() => {})
+  ),
 }))
 
 describe("useTimepoints", () => {
