@@ -1,6 +1,7 @@
 defmodule SkateWeb.VehiclesChannelTest do
   use SkateWeb.ChannelCase
   import Test.Support.Helpers
+  import ExUnit.CaptureLog, only: [capture_log: 1]
 
   alias Phoenix.Socket
   alias Realtime.Vehicle
@@ -43,7 +44,7 @@ defmodule SkateWeb.VehiclesChannelTest do
     reassign_env(:realtime, :trip_fn, fn _trip_id -> nil end)
     reassign_env(:realtime, :block_fn, fn _block_id, _service_id -> nil end)
 
-    socket = socket(UserSocket, "", %{})
+    socket = socket(UserSocket, "", %{guardian_default_resource: "test_uid"})
 
     start_supervised({Registry, keys: :duplicate, name: Realtime.Server.registry_name()})
     start_supervised({Realtime.Server, name: Realtime.Server.default_name()})
@@ -70,6 +71,23 @@ defmodule SkateWeb.VehiclesChannelTest do
     test "subscribes to a vehicle search", %{socket: socket} do
       assert {:ok, %{data: []}, %Socket{}} =
                subscribe_and_join(socket, VehiclesChannel, "vehicles:search:run:123")
+    end
+
+    test "logs that a user subscribed to a vehicle search", %{socket: socket} do
+      old_level = Logger.level()
+
+      on_exit(fn ->
+        Logger.configure(level: old_level)
+      end)
+
+      Logger.configure(level: :info)
+
+      log =
+        capture_log(fn ->
+          subscribe_and_join(socket, VehiclesChannel, "vehicles:search:run:123")
+        end)
+
+      assert log =~ "User=test_uid searched for property=run, text=123"
     end
 
     test "returns an error when joining a non-existant topic", %{socket: socket} do
