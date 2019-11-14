@@ -49,6 +49,7 @@ const vehicle: Vehicle = {
 }
 
 jest.mock("../../../src/models/vehiclesByRouteId", () => ({
+  allVehiclesForRoute: jest.fn(),
   nextAndPreviousVehicle: jest
     .fn()
     // Ipmlementation sequence matches

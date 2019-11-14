@@ -1,6 +1,7 @@
 import { flatten, partition } from "../helpers/array"
 import { Vehicle, VehicleOrGhost } from "../realtime"
-import { ByRouteId } from "../schedule"
+import { ByRouteId, RouteId } from "../schedule"
+import { isAVehicle } from "./vehicle"
 
 interface NextAndPreviousVehicle {
   nextVehicle?: Vehicle
@@ -10,6 +11,14 @@ interface NextAndPreviousVehicle {
 export const allVehiclesAndGhosts = (
   vehiclesByRouteId: ByRouteId<VehicleOrGhost[]>
 ): VehicleOrGhost[] => flatten(Object.values(vehiclesByRouteId))
+
+export const allVehiclesForRoute = (
+  vehiclesByRouteId: ByRouteId<VehicleOrGhost[]>,
+  routeId: RouteId
+): Vehicle[] =>
+  (vehiclesByRouteId[routeId] || [])
+    .filter(isAVehicle)
+    .filter(vehicle => vehicle.routeId === routeId)
 
 /**
  * Partition vehicles by direction

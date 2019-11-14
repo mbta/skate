@@ -2,8 +2,10 @@ import React, { useContext } from "react"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { VehiclesByRouteIdContext } from "../../contexts/vehiclesByRouteIdContext"
 import vehicleLabel from "../../helpers/vehicleLabel"
-import { isAVehicle } from "../../models/vehicle"
-import { nextAndPreviousVehicle } from "../../models/vehiclesByRouteId"
+import {
+  allVehiclesForRoute,
+  nextAndPreviousVehicle,
+} from "../../models/vehiclesByRouteId"
 import {
   HeadwaySpacing,
   headwaySpacingToString,
@@ -56,7 +58,7 @@ const HeadwayDiagram = ({ vehicle }: { vehicle: Vehicle }) => {
     VehiclesByRouteIdContext
   )
   const { nextVehicle, previousVehicle } = nextAndPreviousVehicle(
-    (vehiclesByRouteId[vehicle.routeId] || []).filter(isAVehicle),
+    allVehiclesForRoute(vehiclesByRouteId, vehicle.routeId),
     vehicle
   )
   const {
