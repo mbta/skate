@@ -1,6 +1,18 @@
 import React, { ReactElement, useContext } from "react"
 import { ShuttleVehiclesContext } from "../contexts/shuttleVehiclesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import {
+  blueLineIcon,
+  commuterRailIcon,
+  greenLineBIcon,
+  greenLineCIcon,
+  greenLineDIcon,
+  greenLineEIcon,
+  greenLineIcon,
+  mattapanLineIcon,
+  orangeLineIcon,
+  redLineIcon,
+} from "../helpers/icon"
 import useShuttleRoutes from "../hooks/useShuttleRoutes"
 import {
   isMatchingShuttleRunSelection,
@@ -26,6 +38,7 @@ import PickerContainer, { Width } from "./pickerContainer"
 interface PresetRunSelectionButton {
   name: string
   runSelection: ShuttleRunSelection
+  icon?: JSX.Element
 }
 
 const PRESET_RUN_SELECTION_BUTTONS: PresetRunSelectionButton[] = [
@@ -35,6 +48,12 @@ const PRESET_RUN_SELECTION_BUTTONS: PresetRunSelectionButton[] = [
       type: ShuttleRunSelectionType.Filter,
       filter: /999-061.*/,
     },
+    icon: blueLineIcon(),
+  },
+  {
+    name: "(OLD)",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0501" },
+    icon: blueLineIcon(),
   },
   {
     name: "Green 999 62*",
@@ -42,26 +61,37 @@ const PRESET_RUN_SELECTION_BUTTONS: PresetRunSelectionButton[] = [
       type: ShuttleRunSelectionType.Filter,
       filter: /999-062.*/,
     },
+    icon: greenLineIcon(),
   },
   {
-    name: "GL Trunk",
+    name: "Trunk",
     runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0620" },
+    icon: greenLineIcon(),
   },
   {
     name: "B Branch",
     runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0621" },
+    icon: greenLineBIcon(),
   },
   {
     name: "C Branch",
     runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0622" },
+    icon: greenLineCIcon(),
   },
   {
     name: "D Branch",
     runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0623" },
+    icon: greenLineDIcon(),
   },
   {
     name: "E Branch",
     runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0624" },
+    icon: greenLineEIcon(),
+  },
+  {
+    name: "(OLD)",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0502" },
+    icon: greenLineIcon(),
   },
   {
     name: "Orange 999 63*",
@@ -69,6 +99,12 @@ const PRESET_RUN_SELECTION_BUTTONS: PresetRunSelectionButton[] = [
       type: ShuttleRunSelectionType.Filter,
       filter: /999-063.*/,
     },
+    icon: orangeLineIcon(),
+  },
+  {
+    name: "(OLD)",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0503" },
+    icon: orangeLineIcon(),
   },
   {
     name: "Red 999 64*",
@@ -76,18 +112,27 @@ const PRESET_RUN_SELECTION_BUTTONS: PresetRunSelectionButton[] = [
       type: ShuttleRunSelectionType.Filter,
       filter: /999-064.*/,
     },
+    icon: redLineIcon(),
   },
   {
-    name: "RL Trunk",
+    name: "Trunk",
     runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0640" },
+    icon: redLineIcon(),
   },
   {
     name: "Ashmont",
     runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0641" },
+    icon: redLineIcon(),
   },
   {
     name: "Braintree",
     runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0642" },
+    icon: redLineIcon(),
+  },
+  {
+    name: "(OLD)",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0504" },
+    icon: redLineIcon(),
   },
   {
     name: "Mattapan 999 65*",
@@ -95,6 +140,7 @@ const PRESET_RUN_SELECTION_BUTTONS: PresetRunSelectionButton[] = [
       type: ShuttleRunSelectionType.Filter,
       filter: /999-065.*/,
     },
+    icon: mattapanLineIcon(),
   },
   {
     name: "CR North 999 66*",
@@ -102,22 +148,7 @@ const PRESET_RUN_SELECTION_BUTTONS: PresetRunSelectionButton[] = [
       type: ShuttleRunSelectionType.Filter,
       filter: /999-066.*/,
     },
-  },
-  {
-    name: "Fitchburg",
-    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0661" },
-  },
-  {
-    name: "Lowell",
-    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0662" },
-  },
-  {
-    name: "Haverhill",
-    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0663" },
-  },
-  {
-    name: "Newburyport / Rockport",
-    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0664" },
+    icon: commuterRailIcon(),
   },
   {
     name: "CR South 999 67*",
@@ -125,62 +156,16 @@ const PRESET_RUN_SELECTION_BUTTONS: PresetRunSelectionButton[] = [
       type: ShuttleRunSelectionType.Filter,
       filter: /999-067.*/,
     },
+    icon: commuterRailIcon(),
   },
   {
-    name: "Worcester",
-    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0671" },
-  },
-  {
-    name: "Needham",
-    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0672" },
-  },
-  {
-    name: "Franklin",
-    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0673" },
-  },
-  {
-    name: "Providence / Stoughton",
-    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0674" },
-  },
-  {
-    name: "Fairmount",
-    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0675" },
-  },
-  {
-    name: "Middleborough / Lakeville",
-    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0676" },
-  },
-  {
-    name: "Kingston / Plymouth",
-    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0677" },
-  },
-  {
-    name: "Greenbush",
-    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0678" },
+    name: "(OLD)",
+    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0505" },
+    icon: commuterRailIcon(),
   },
   {
     name: "Special",
     runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0555" },
-  },
-  {
-    name: "Blue",
-    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0501" },
-  },
-  {
-    name: "Green",
-    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0502" },
-  },
-  {
-    name: "Orange",
-    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0503" },
-  },
-  {
-    name: "Red",
-    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0504" },
-  },
-  {
-    name: "CR",
-    runSelection: { type: ShuttleRunSelectionType.RunId, runId: "999-0505" },
   },
 ]
 
@@ -266,6 +251,7 @@ const RunIdButtons = ({ shuttles }: { shuttles: Vehicle[] }) => {
         <RunIdButton
           key={buttonKey(presetRunSelectionButton)}
           name={buttonLabel(presetRunSelectionButton)}
+          icon={presetRunSelectionButton.icon}
           count={presetRunSelectionButtonCount(presetRunSelectionButton)}
           shuttleRunSelection={presetRunSelectionButton.runSelection}
           isActive={isPresetRunSelectionButtonActive(presetRunSelectionButton)}
@@ -331,11 +317,13 @@ const AllSpecialsButton = ({
 
 const RunIdButton = ({
   name,
+  icon,
   count,
   shuttleRunSelection,
   isActive,
 }: {
   name: string
+  icon?: JSX.Element
   count?: number
   shuttleRunSelection: ShuttleRunSelection
   isActive: boolean
@@ -357,6 +345,7 @@ const RunIdButton = ({
   return (
     <RunButton
       name={name}
+      icon={icon}
       count={count}
       isActive={isActive}
       isSelected={isSelected}
@@ -367,12 +356,14 @@ const RunIdButton = ({
 
 const RunButton = ({
   name,
+  icon,
   count,
   isActive,
   isSelected,
   onClick,
 }: {
   name: string
+  icon?: JSX.Element
   count?: number
   isActive: boolean
   isSelected: boolean
@@ -390,7 +381,10 @@ const RunButton = ({
         onClick={onClick}
         disabled={!isActive}
       >
-        <span className="m-route-picker__route-list-button-name">{name}</span>
+        <span className="m-route-picker__route-list-button-name">
+          {icon && icon}
+          {name}
+        </span>
         <span className="m-route-picker__route-list-button-count">
           {count !== undefined && count}
         </span>
