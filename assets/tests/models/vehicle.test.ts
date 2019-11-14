@@ -1,6 +1,5 @@
 import {
   isAVehicle,
-  isGhost,
   isShuttle,
   shouldShowHeadwayDiagram,
 } from "../../src/models/vehicle"
@@ -104,16 +103,6 @@ describe("isAVehicle", () => {
 
   test("returns false for a Ghost", () => {
     expect(isAVehicle(ghost)).toBeFalsy()
-  })
-})
-
-describe("isGhost", () => {
-  test("returns false for a Vehicle", () => {
-    expect(isGhost(vehicle)).toBeFalsy()
-  })
-
-  test("returns true for a Ghost", () => {
-    expect(isGhost(ghost)).toBeTruthy()
   })
 })
 
