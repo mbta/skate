@@ -90,16 +90,16 @@ const RouteLadder = ({
     : []
   const [thisRoute, incomingFromOtherRoute] = Array.partition(
     vehicles,
-    (vehicle: Vehicle): boolean => vehicle.routeId == route.id
+    (vehicle: Vehicle): boolean => vehicle.routeId === route.id
   )
   const onRoute: Vehicle[] = thisRoute.filter(
-    vehicle => vehicle.routeStatus == "on_route"
+    vehicle => vehicle.routeStatus === "on_route"
   )
   const layingOver: Vehicle[] = thisRoute.filter(
-    vehicle => vehicle.routeStatus == "laying_over"
+    vehicle => vehicle.routeStatus === "laying_over"
   )
   const pullingOut: Vehicle[] = thisRoute.filter(
-    vehicle => vehicle.routeStatus == "pulling_out"
+    vehicle => vehicle.routeStatus === "pulling_out"
   )
   const [layingOverBottom, layingOverTop] = Array.partition(
     layingOver,

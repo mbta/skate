@@ -20,4 +20,4 @@ export const shouldShowHeadwayDiagram = ({
 }: Vehicle): boolean =>
   featureIsEnabled("headway_ladder_colors") &&
   headwaySpacing !== null &&
-  routeStatus == "on_route"
+  routeStatus === "on_route"

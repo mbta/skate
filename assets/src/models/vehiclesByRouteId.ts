@@ -37,12 +37,12 @@ export const nextAndPreviousVehicle = (
   const nextVehicle = vehiclesGoingTheSameDirection.find(
     vehicle =>
       vehicle.previousVehicleId === currentVehicle.id &&
-      vehicle.routeStatus == "on_route"
+      vehicle.routeStatus === "on_route"
   )
   const previousVehicle = vehiclesGoingTheSameDirection.find(
     vehicle =>
       vehicle.id === currentVehicle.previousVehicleId &&
-      vehicle.routeStatus == "on_route"
+      vehicle.routeStatus === "on_route"
   )
 
   return {
