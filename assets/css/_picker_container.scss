@@ -46,6 +46,7 @@
 }
 
 .m-picker-container__tab-button {
+  @include button-transparent;
   @include button-icon(0.9rem);
   font-size: 2rem;
   line-height: 1.5rem;

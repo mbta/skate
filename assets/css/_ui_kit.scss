@@ -13,16 +13,20 @@ $color-component-dark: #1c1e23;
 $color-component-red: #e45d32;
 
 $color-primary: #586f7c;
+$color-primary-dark: #465863;
 $color-secondary-dark: #4db6ac;
 $color-secondary-medium: #b8dbd9;
 $color-secondary-light: #d4e7e7;
 
 $color-button-simple: $color-component-light;
+$color-button-simple-focus: $color-secondary-medium;
 $color-button-primary: $color-primary;
+$color-button-primary-focus: $color-primary-dark;
 $color-button-secondary: $color-secondary-dark;
+$color-button-secondary-focus: $color-secondary-medium;
 $color-button-light: $color-bg-base;
+$color-button-light-focus: $color-secondary-medium;
 $color-button-disabled: #e6e8ec;
-$color-button-focus: $color-secondary-medium;
 
 $color-font-dark: $color-component-dark;
 $color-font-grey: $color-component-medium;
@@ -114,28 +118,32 @@ $color-stop-stroke: $black;
 // button styles
 
 @mixin button-base {
-  background-color: $color-bg-base;
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.8125rem;
   font-weight: 700;
   padding: 0.3125rem;
   text-decoration: none;
-
-  &:focus,
-  &:hover {
-    background-color: $color-button-focus;
-  }
 }
 
 @mixin button-simple {
   @include button-base;
   background-color: $color-button-simple;
+
+  &:focus,
+  &:hover {
+    background-color: $color-button-simple-focus;
+  }
 }
 
 @mixin button-light {
   @include button-base;
   background-color: $color-button-light;
+
+  &:focus,
+  &:hover {
+    background-color: $color-button-light-focus;
+  }
 }
 
 @mixin button-primary {
@@ -145,14 +153,18 @@ $color-stop-stroke: $black;
 
   &:focus,
   &:hover {
-    color: $color-font-dark;
+    background-color: $color-button-primary-focus;
   }
 }
 
 @mixin button-secondary {
   @include button-base;
   background-color: $color-button-secondary;
-  color: $color-font-light;
+
+  &:focus,
+  &:hover {
+    background-color: $color-button-secondary-focus;
+  }
 }
 
 @mixin button-disabled {
@@ -160,16 +172,20 @@ $color-stop-stroke: $black;
   background-color: $color-button-disabled;
   color: $color-font-grey;
   cursor: default;
+}
+
+@mixin button-transparent {
+  color: currentColor;
 
   &:focus,
   &:hover {
-    background-color: $color-button-disabled;
+    color: $color-secondary-dark;
   }
 }
 
 @mixin button-icon($size) {
   // Typical HTML: <button><span><svg/></span>optional text</button>
-  // @include this in the button's styles
+  // @include alongside other button mixins styles
   span {
     display: inline-block;
     height: $size;
@@ -178,16 +194,6 @@ $color-stop-stroke: $black;
     svg {
       stroke: currentColor;
       fill: currentColor;
-    }
-  }
-
-  &:focus,
-  &:hover {
-    color: $color-secondary-dark;
-
-    svg {
-      stroke: $color-secondary-dark;
-      fill: $color-secondary-dark;
     }
   }
 }

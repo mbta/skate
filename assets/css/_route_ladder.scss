@@ -27,6 +27,7 @@
 
 .m-route-ladder__reverse {
   @include font-small;
+  @include button-transparent;
   @include button-icon(0.625rem);
   margin-top: 0.5rem;
 }
