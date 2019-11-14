@@ -113,7 +113,7 @@ defmodule Realtime.Server do
         "ETS lookup failed"
       end)
 
-      default_data(key)
+      []
   end
 
   # GenServer callbacks
@@ -199,17 +199,5 @@ defmodule Realtime.Server do
   @spec send_data({pid, subscription_key}, t) :: broadcast_message
   defp send_data({pid, subscription_key}, state) do
     send(pid, {:new_realtime_data, {state.ets, subscription_key}})
-  end
-
-  defp default_data({:route_id, _}) do
-    []
-  end
-
-  defp default_data(:all_shuttles) do
-    []
-  end
-
-  defp default_data(:all_vehicles) do
-    []
   end
 end
