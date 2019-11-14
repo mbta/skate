@@ -46,11 +46,10 @@ const vehicle: Vehicle = {
       fractionUntilTimepoint: 0.7574074074074074,
     },
   },
-  isOnRoute: true,
+  routeStatus: "on_route",
 }
 
 jest.mock("../../../src/models/vehiclesByRouteId", () => ({
-  allVehiclesForRoute: jest.fn(() => []),
   nextAndPreviousVehicle: jest
     .fn()
     // Ipmlementation sequence matches
@@ -114,7 +113,7 @@ describe("HeadwayDiagram", () => {
           fractionUntilTimepoint: 0.004761904761904762,
         },
       },
-      isOnRoute: true,
+      routeStatus: "on_route",
     }
 
     const tree = renderer
@@ -164,7 +163,7 @@ describe("HeadwayDiagram", () => {
           fractionUntilTimepoint: 0.10416666666666667,
         },
       },
-      isOnRoute: true,
+      routeStatus: "on_route",
     }
 
     const tree = renderer

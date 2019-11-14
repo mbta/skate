@@ -1,5 +1,6 @@
 import {
   isAVehicle,
+  isGhost,
   isShuttle,
   shouldShowHeadwayDiagram,
 } from "../../src/models/vehicle"
@@ -11,100 +12,109 @@ jest.mock("../../src/laboratoryFeatures", () => ({
   default: jest.fn().mockImplementation(() => true),
 }))
 
-describe("isAVehicle", () => {
-  test("returns true for a Vehicle", () => {
-    const vehicle: Vehicle = {
-      id: "v1",
-      label: "v1-label",
-      runId: "run-1",
-      timestamp: 123,
-      latitude: 0,
-      longitude: 0,
-      directionId: 0,
-      routeId: "39",
-      tripId: "t1",
-      headsign: "Forest Hills",
-      viaVariant: "X",
-      operatorId: "op1",
-      operatorName: "SMITH",
-      bearing: 33,
-      blockId: "block-1",
-      headwaySecs: 859.1,
-      headwaySpacing: null,
-      previousVehicleId: "v2",
-      scheduleAdherenceSecs: 0,
-      scheduleAdherenceString: "0.0 sec (ontime)",
-      scheduledHeadwaySecs: 120,
-      isOffCourse: false,
-      isNonrevenue: false,
-      layoverDepartureTime: null,
-      blockIsActive: true,
-      dataDiscrepancies: [
+const vehicle: Vehicle = {
+  id: "v1",
+  label: "v1-label",
+  runId: "run-1",
+  timestamp: 123,
+  latitude: 0,
+  longitude: 0,
+  directionId: 0,
+  routeId: "39",
+  tripId: "t1",
+  headsign: "Forest Hills",
+  viaVariant: "X",
+  operatorId: "op1",
+  operatorName: "SMITH",
+  bearing: 33,
+  blockId: "block-1",
+  headwaySecs: 859.1,
+  headwaySpacing: null,
+  previousVehicleId: "v2",
+  scheduleAdherenceSecs: 0,
+  scheduleAdherenceString: "0.0 sec (ontime)",
+  scheduledHeadwaySecs: 120,
+  isOffCourse: false,
+  isNonrevenue: false,
+  layoverDepartureTime: null,
+  blockIsActive: true,
+  dataDiscrepancies: [
+    {
+      attribute: "trip_id",
+      sources: [
         {
-          attribute: "trip_id",
-          sources: [
-            {
-              id: "swiftly",
-              value: "swiftly-trip-id",
-            },
-            {
-              id: "busloc",
-              value: "busloc-trip-id",
-            },
-          ],
+          id: "swiftly",
+          value: "swiftly-trip-id",
         },
         {
-          attribute: "route_id",
-          sources: [
-            {
-              id: "swiftly",
-              value: null,
-            },
-            {
-              id: "busloc",
-              value: "busloc-route-id",
-            },
-          ],
+          id: "busloc",
+          value: "busloc-trip-id",
         },
       ],
-      stopStatus: {
-        stopId: "s1",
-        stopName: "Stop Name",
-      },
-      timepointStatus: {
-        timepointId: "tp1",
-        fractionUntilTimepoint: 0.5,
-      } as VehicleTimepointStatus,
-      scheduledLocation: {
-        directionId: 0,
-        timepointStatus: {
-          timepointId: "tp1",
-          fractionUntilTimepoint: 0.5,
+    },
+    {
+      attribute: "route_id",
+      sources: [
+        {
+          id: "swiftly",
+          value: null,
         },
-      },
-      isOnRoute: true,
-    }
+        {
+          id: "busloc",
+          value: "busloc-route-id",
+        },
+      ],
+    },
+  ],
+  stopStatus: {
+    stopId: "s1",
+    stopName: "Stop Name",
+  },
+  timepointStatus: {
+    timepointId: "tp1",
+    fractionUntilTimepoint: 0.5,
+  } as VehicleTimepointStatus,
+  scheduledLocation: {
+    directionId: 0,
+    timepointStatus: {
+      timepointId: "tp1",
+      fractionUntilTimepoint: 0.5,
+    },
+  },
+  routeStatus: "on_route",
+}
+const ghost: Ghost = {
+  id: "ghost-trip",
+  directionId: 0,
+  routeId: "1",
+  tripId: "trip",
+  headsign: "headsign",
+  blockId: "block",
+  runId: null,
+  viaVariant: null,
+  scheduledTimepointStatus: {
+    timepointId: "t0",
+    fractionUntilTimepoint: 0.0,
+  },
+}
 
+describe("isAVehicle", () => {
+  test("returns true for a Vehicle", () => {
     expect(isAVehicle(vehicle)).toBeTruthy()
   })
 
   test("returns false for a Ghost", () => {
-    const ghost: Ghost = {
-      id: "ghost-trip",
-      directionId: 0,
-      routeId: "1",
-      tripId: "trip",
-      headsign: "headsign",
-      blockId: "block",
-      runId: null,
-      viaVariant: null,
-      scheduledTimepointStatus: {
-        timepointId: "t0",
-        fractionUntilTimepoint: 0.0,
-      },
-    }
-
     expect(isAVehicle(ghost)).toBeFalsy()
+  })
+})
+
+describe("isGhost", () => {
+  test("returns false for a Vehicle", () => {
+    expect(isGhost(vehicle)).toBeFalsy()
+  })
+
+  test("returns true for a Ghost", () => {
+    expect(isGhost(ghost)).toBeTruthy()
   })
 })
 
@@ -130,7 +140,7 @@ describe("shouldShowHeadwayDiagram", () => {
   test("returns false if not on route", () => {
     const notOnRouteVehicle = {
       headwaySpacing: HeadwaySpacing.Ok,
-      isOnRoute: false,
+      routeStatus: "incoming",
     } as Vehicle
 
     expect(shouldShowHeadwayDiagram(notOnRouteVehicle)).toBeFalsy()
@@ -139,7 +149,7 @@ describe("shouldShowHeadwayDiagram", () => {
   test("returns true if measuring headway spacing and is on route", () => {
     const onRouteHeadwaySpacingVehicle = {
       headwaySpacing: HeadwaySpacing.Ok,
-      isOnRoute: true,
+      routeStatus: "on_route",
     } as Vehicle
 
     expect(shouldShowHeadwayDiagram(onRouteHeadwaySpacingVehicle)).toBeTruthy()

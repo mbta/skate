@@ -126,6 +126,7 @@ describe("useSearchResults", () => {
         timestamp: 123,
         trip_id: "t1",
         via_variant: "X",
+        route_status: "on_route",
       } as VehicleData,
     ]
     const vehicles: VehicleOrGhost[] = [
@@ -198,7 +199,7 @@ describe("useSearchResults", () => {
             fractionUntilTimepoint: 0.5,
           },
         },
-        isOnRoute: true,
+        routeStatus: "on_route",
       } as Vehicle,
     ]
 

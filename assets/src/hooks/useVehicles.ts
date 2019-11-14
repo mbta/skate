@@ -1,17 +1,15 @@
 import { Channel, Socket } from "phoenix"
 import { Dispatch as ReactDispatch, useEffect, useReducer } from "react"
 import {
-  GhostData,
-  ghostFromData,
-  VehicleData,
-  vehicleFromData,
+  VehicleOrGhostData,
+  vehicleOrGhostFromData,
 } from "../models/vehicleData"
-import { VehiclesForRoute } from "../realtime.d"
+import { VehicleOrGhost } from "../realtime.d"
 import { ByRouteId, RouteId } from "../schedule.d"
 
 interface State {
   channelsByRouteId: ByRouteId<Channel>
-  vehiclesByRouteId: ByRouteId<VehiclesForRoute>
+  vehiclesByRouteId: ByRouteId<VehicleOrGhost[]>
 }
 
 const initialState: State = {
@@ -39,13 +37,13 @@ interface SetVehiclesForRouteAction {
   type: "SET_VEHICLES_FOR_ROUTE"
   payload: {
     routeId: RouteId
-    vehiclesForRoute: VehiclesForRoute
+    vehiclesForRoute: VehicleOrGhost[]
   }
 }
 
 const setVehiclesForRoute = (
   routeId: RouteId,
-  vehiclesForRoute: VehiclesForRoute
+  vehiclesForRoute: VehicleOrGhost[]
 ): SetVehiclesForRouteAction => ({
   type: "SET_VEHICLES_FOR_ROUTE",
   payload: {
@@ -72,24 +70,6 @@ type Action =
   | RemoveRouteAction
 
 type Dispatch = ReactDispatch<Action>
-
-interface VehiclesForRouteData {
-  on_route_vehicles: VehicleData[]
-  incoming_vehicles: VehicleData[]
-  ghosts: GhostData[]
-}
-
-const vehiclesForRouteFromData = (
-  vehiclesForRouteData: VehiclesForRouteData
-): VehiclesForRoute => ({
-  onRouteVehicles: vehiclesForRouteData.on_route_vehicles.map(
-    vehicleFromData({ isOnRoute: true })
-  ),
-  incomingVehicles: vehiclesForRouteData.incoming_vehicles.map(
-    vehicleFromData({ isOnRoute: false })
-  ),
-  ghosts: vehiclesForRouteData.ghosts.map(ghostFromData),
-})
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -133,9 +113,13 @@ const subscribe = (
   routeId: RouteId,
   dispatch: Dispatch
 ): Channel => {
-  const handleVehicles = (vehiclesForRouteData: VehiclesForRouteData) => {
-    const vehiclesForRoute = vehiclesForRouteFromData(vehiclesForRouteData)
-    dispatch(setVehiclesForRoute(routeId, vehiclesForRoute))
+  const handleVehicles = ({
+    data: vehiclesAndGhostsData,
+  }: {
+    data: VehicleOrGhostData[]
+  }) => {
+    const vehiclesAndGhosts = vehiclesAndGhostsData.map(vehicleOrGhostFromData)
+    dispatch(setVehiclesForRoute(routeId, vehiclesAndGhosts))
   }
 
   const topic = `vehicles:route:${routeId}`
@@ -162,7 +146,7 @@ const subscribe = (
 const useVehicles = (
   socket: Socket | undefined,
   selectedRouteIds: RouteId[]
-): ByRouteId<VehiclesForRoute> => {
+): ByRouteId<VehicleOrGhost[]> => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const { channelsByRouteId, vehiclesByRouteId } = state
 

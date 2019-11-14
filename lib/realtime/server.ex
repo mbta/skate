@@ -12,8 +12,7 @@ defmodule Realtime.Server do
 
   alias Realtime.{
     Vehicle,
-    VehicleOrGhost,
-    Vehicles
+    VehicleOrGhost
   }
 
   require Logger
@@ -59,7 +58,7 @@ defmodule Realtime.Server do
   The subscribing process will get a message when there's new data, with the form
   {:new_realtime_data, vehicles_on_route()}
   """
-  @spec subscribe_to_route(Route.id(), GenServer.server()) :: Vehicles.for_route()
+  @spec subscribe_to_route(Route.id(), GenServer.server()) :: [VehicleOrGhost.t()]
   def subscribe_to_route(route_id, server \\ default_name()) do
     subscribe(server, {:route_id, route_id})
   end
@@ -81,7 +80,7 @@ defmodule Realtime.Server do
     )
   end
 
-  @spec subscribe(GenServer.server(), {:route_id, Route.id()}) :: Vehicles.for_route()
+  @spec subscribe(GenServer.server(), {:route_id, Route.id()}) :: [VehicleOrGhost.t()]
   @spec subscribe(GenServer.server(), :all_shuttles) :: [Vehicle.t()]
   @spec subscribe(GenServer.server(), {:search, search_params()}) :: [VehicleOrGhost.t()]
   defp subscribe(server, subscription_key) do
@@ -90,12 +89,12 @@ defmodule Realtime.Server do
     data
   end
 
-  @spec update({Route.by_id(Vehicles.for_route()), [Vehicle.t()]}, GenServer.server()) :: term()
+  @spec update({Route.by_id([VehicleOrGhost.t()]), [Vehicle.t()]}, GenServer.server()) :: term()
   def update({vehicles_by_route_id, shuttles}, server \\ __MODULE__) do
     GenServer.cast(server, {:update, vehicles_by_route_id, shuttles})
   end
 
-  @spec lookup({:ets.tid(), {:route_id, Route.id()}}) :: Vehicles.for_route()
+  @spec lookup({:ets.tid(), {:route_id, Route.id()}}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), :all_vehicles}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), :all_shuttles}) :: [Vehicle.t()]
   @spec lookup({:ets.tid(), {:search, search_params()}}) :: [VehicleOrGhost.t()]
@@ -167,8 +166,8 @@ defmodule Realtime.Server do
       _ = :ets.delete(ets, {:route_id, route_id})
     end
 
-    for {route_id, vehicles} <- vehicles_by_route_id do
-      _ = :ets.insert(ets, {{:route_id, route_id}, vehicles})
+    for {route_id, vehicles_and_ghosts} <- vehicles_by_route_id do
+      _ = :ets.insert(ets, {{:route_id, route_id}, vehicles_and_ghosts})
     end
 
     :ets.insert(ets, {:all_vehicles, all_vehicles(vehicles_by_route_id) ++ shuttles})
@@ -176,18 +175,16 @@ defmodule Realtime.Server do
     :ets.insert(ets, {:all_shuttles, shuttles})
   end
 
-  @spec all_vehicles(Route.by_id(Vehicles.for_route())) :: [VehicleOrGhost.t()]
+  @spec all_vehicles(Route.by_id([VehicleOrGhost.t()])) :: [VehicleOrGhost.t()]
   defp all_vehicles(vehicles_by_route_id) do
-    vehicles_by_route_id
-    |> Map.values()
-    |> Enum.flat_map(&all_vehicles_for_route/1)
-  end
-
-  @spec all_vehicles_for_route(Vehicles.for_route()) :: [VehicleOrGhost.t()]
-  defp all_vehicles_for_route(vehicles_for_route) do
-    vehicles_for_route
-    |> Map.values()
-    |> List.flatten()
+    Enum.flat_map(
+      vehicles_by_route_id,
+      fn {route_id, vehicles_and_ghosts} ->
+        Enum.filter(vehicles_and_ghosts, fn vehicle_or_ghost ->
+          vehicle_or_ghost.route_id == route_id
+        end)
+      end
+    )
   end
 
   @spec broadcast(t()) :: :ok
@@ -205,7 +202,7 @@ defmodule Realtime.Server do
   end
 
   defp default_data({:route_id, _}) do
-    Vehicles.empty_vehicles_for_route()
+    []
   end
 
   defp default_data(:all_shuttles) do

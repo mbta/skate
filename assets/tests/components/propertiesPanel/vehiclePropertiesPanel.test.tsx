@@ -69,7 +69,7 @@ const vehicle: Vehicle = {
     timepointId: "tp1",
   },
   scheduledLocation: null,
-  isOnRoute: true,
+  routeStatus: "on_route",
 }
 
 describe("VehiclePropertiesPanel", () => {

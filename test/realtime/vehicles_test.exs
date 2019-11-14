@@ -8,7 +8,7 @@ defmodule Realtime.VehiclesTest do
   alias Realtime.Vehicles
 
   describe "group_by_route_with_blocks" do
-    test "separates incoming vehicles out of the realtime feed" do
+    test "groups on_route and incoming vehicles together by their route_id" do
       on_route_vehicle = %Vehicle{
         id: "on_route",
         label: "on_route",
@@ -33,28 +33,11 @@ defmodule Realtime.VehiclesTest do
         route_status: :on_route
       }
 
-      incoming_vehicle = %Vehicle{
-        id: "incoming",
-        label: "incoming",
-        timestamp: 0,
-        latitude: 0,
-        longitude: 0,
-        direction_id: 1,
-        route_id: "route",
-        trip_id: "trip",
-        bearing: 0,
-        block_id: "block",
-        operator_id: "",
-        operator_name: "",
-        run_id: "",
-        headway_spacing: :ok,
-        is_off_course: false,
-        is_nonrevenue: false,
-        layover_departure_time: nil,
-        block_is_active: true,
-        sources: "",
-        stop_status: "",
-        route_status: :incoming
+      incoming_vehicle = %{
+        on_route_vehicle
+        | id: "incoming",
+          label: "incoming",
+          route_status: :incoming
       }
 
       ungrouped_vehicles = [on_route_vehicle, incoming_vehicle]
@@ -66,11 +49,7 @@ defmodule Realtime.VehiclesTest do
                [],
                0
              ) == %{
-               "route" => %{
-                 on_route_vehicles: [on_route_vehicle],
-                 incoming_vehicles: [incoming_vehicle],
-                 ghosts: []
-               }
+               "route" => [on_route_vehicle, incoming_vehicle]
              }
     end
 
@@ -132,16 +111,8 @@ defmodule Realtime.VehiclesTest do
                [],
                0
              ) == %{
-               "route1" => %{
-                 on_route_vehicles: [vehicle],
-                 incoming_vehicles: [],
-                 ghosts: []
-               },
-               "route2" => %{
-                 on_route_vehicles: [vehicle_2],
-                 incoming_vehicles: [vehicle],
-                 ghosts: []
-               }
+               "route1" => [vehicle],
+               "route2" => [vehicle_2, vehicle]
              }
     end
 
@@ -179,11 +150,7 @@ defmodule Realtime.VehiclesTest do
                [],
                0
              ) == %{
-               "route2" => %{
-                 on_route_vehicles: [],
-                 incoming_vehicles: [vehicle],
-                 ghosts: []
-               }
+               "route2" => [vehicle]
              }
     end
 
@@ -211,24 +178,20 @@ defmodule Realtime.VehiclesTest do
                [trip],
                0
              ) == %{
-               "route" => %{
-                 on_route_vehicles: [],
-                 incoming_vehicles: [],
-                 ghosts: [
-                   %Ghost{
-                     id: "ghost-trip",
-                     direction_id: 0,
-                     route_id: "route",
-                     trip_id: "trip",
-                     headsign: "headsign",
-                     block_id: "block",
-                     scheduled_timepoint_status: %{
-                       timepoint_id: "timepoint",
-                       fraction_until_timepoint: 0.0
-                     }
+               "route" => [
+                 %Ghost{
+                   id: "ghost-trip",
+                   direction_id: 0,
+                   route_id: "route",
+                   trip_id: "trip",
+                   headsign: "headsign",
+                   block_id: "block",
+                   scheduled_timepoint_status: %{
+                     timepoint_id: "timepoint",
+                     fraction_until_timepoint: 0.0
                    }
-                 ]
-               }
+                 }
+               ]
              }
     end
 
@@ -280,11 +243,7 @@ defmodule Realtime.VehiclesTest do
                [trip],
                0
              ) == %{
-               "route" => %{
-                 on_route_vehicles: [vehicle],
-                 incoming_vehicles: [],
-                 ghosts: []
-               }
+               "route" => [vehicle]
              }
     end
   end

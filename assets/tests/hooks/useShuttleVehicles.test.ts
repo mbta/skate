@@ -77,6 +77,7 @@ const shuttlesData = [
     timestamp: 123,
     trip_id: "t1",
     via_variant: "X",
+    route_status: "incoming",
   },
 ]
 const shuttles: Vehicle[] = [
@@ -149,7 +150,7 @@ const shuttles: Vehicle[] = [
         fractionUntilTimepoint: 0.5,
       },
     },
-    isOnRoute: true,
+    routeStatus: "incoming",
   },
 ]
 

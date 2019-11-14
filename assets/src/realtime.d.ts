@@ -34,6 +34,8 @@ export interface Ghost {
 
 export type SourceId = string
 
+export type RouteStatus = "incoming" | "on_route"
+
 export type RunId = string
 
 export interface Vehicle {
@@ -66,7 +68,7 @@ export interface Vehicle {
   stopStatus: VehicleStopStatus
   timepointStatus: VehicleTimepointStatus | null
   scheduledLocation: VehicleScheduledLocation | null
-  isOnRoute: boolean
+  routeStatus: RouteStatus
 }
 
 export type VehicleOrGhost = Vehicle | Ghost
@@ -86,10 +88,4 @@ export interface VehicleScheduledLocation {
 export interface VehicleTimepointStatus {
   timepointId: TimepointId
   fractionUntilTimepoint: number
-}
-
-export interface VehiclesForRoute {
-  onRouteVehicles: Vehicle[]
-  incomingVehicles: Vehicle[]
-  ghosts: Ghost[]
 }

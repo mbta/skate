@@ -2,6 +2,7 @@ import { HeadwaySpacing } from "../models/vehicleStatus"
 import {
   DataDiscrepancy,
   Ghost,
+  RouteStatus,
   Vehicle,
   VehicleOrGhost,
   VehicleScheduledLocation,
@@ -49,6 +50,7 @@ export interface VehicleData {
   stop_status: VehicleStopStatusData
   timepoint_status: VehicleTimepointStatusData | null
   scheduled_location: VehicleScheduledLocationData | null
+  route_status: RouteStatus
 }
 
 export interface GhostData {
@@ -72,7 +74,7 @@ interface DataDiscrepancyData {
 
 interface DataDiscrepancySourceData {
   id: string
-  value: string
+  value: string | null
 }
 
 interface VehicleScheduledLocationData {
@@ -90,9 +92,7 @@ interface VehicleTimepointStatusData {
   fraction_until_timepoint: number
 }
 
-export const vehicleFromData = ({ isOnRoute }: { isOnRoute: boolean }) => (
-  vehicleData: VehicleData
-): Vehicle => ({
+export const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
   id: vehicleData.id,
   label: vehicleData.label,
   runId: vehicleData.run_id,
@@ -126,7 +126,7 @@ export const vehicleFromData = ({ isOnRoute }: { isOnRoute: boolean }) => (
   scheduledLocation:
     vehicleData.scheduled_location &&
     vehicleScheduledLocationFromData(vehicleData.scheduled_location),
-  isOnRoute,
+  routeStatus: vehicleData.route_status,
 })
 
 export const ghostFromData = (ghostData: GhostData): Ghost => ({
@@ -151,7 +151,7 @@ export const vehicleOrGhostFromData = (
 ): VehicleOrGhost =>
   isAGhost(vehicleOrGhostData)
     ? ghostFromData(vehicleOrGhostData as GhostData)
-    : vehicleFromData({ isOnRoute: true })(vehicleOrGhostData as VehicleData)
+    : vehicleFromData(vehicleOrGhostData as VehicleData)
 
 const headwaySpacing = (raw: RawHeadwaySpacing): HeadwaySpacing | null => {
   switch (raw) {

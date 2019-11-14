@@ -39,7 +39,7 @@ defmodule Realtime.ServerTest do
   @ghost %Ghost{
     id: "ghost-trip",
     direction_id: 0,
-    route_id: "route",
+    route_id: "1",
     trip_id: "trip",
     headsign: "headsign",
     block_id: "block",
@@ -53,14 +53,8 @@ defmodule Realtime.ServerTest do
 
   @shuttle %{@vehicle | id: "shuttle", run_id: "9990555", route_id: nil}
 
-  @vehicles_for_route %{
-    on_route_vehicles: [@vehicle],
-    incoming_vehicles: [],
-    ghosts: [@ghost]
-  }
-
   @vehicles_by_route_id %{
-    "1" => @vehicles_for_route
+    "1" => [@vehicle, @ghost]
   }
 
   setup do
@@ -81,8 +75,8 @@ defmodule Realtime.ServerTest do
     end
 
     test "clients get vehicles when subscribing", %{server_pid: server_pid} do
-      vehicles_for_route = Server.subscribe_to_route("1", server_pid)
-      assert vehicles_for_route == @vehicles_for_route
+      vehicles_and_ghosts = Server.subscribe_to_route("1", server_pid)
+      assert vehicles_and_ghosts == [@vehicle, @ghost]
     end
 
     test "clients subscribed to a route get data pushed to them", %{server_pid: server_pid} do
@@ -96,7 +90,7 @@ defmodule Realtime.ServerTest do
         "Client didn't receive vehicle positions"
       )
 
-      assert Server.lookup(lookup_args) == @vehicles_for_route
+      assert Server.lookup(lookup_args) == [@vehicle, @ghost]
     end
 
     test "clients subscribed to a route get repeated messages", %{server_pid: server_pid} do
@@ -118,7 +112,7 @@ defmodule Realtime.ServerTest do
         "Client didn't receive vehicle positions the second time"
       )
 
-      assert Server.lookup(lookup_args) == @vehicles_for_route
+      assert Server.lookup(lookup_args) == [@vehicle, @ghost]
     end
 
     test "inactive routes have all their vehicle data removed", %{server_pid: server_pid} do
@@ -132,11 +126,7 @@ defmodule Realtime.ServerTest do
         "Client received vehicle positions"
       )
 
-      assert Server.lookup(lookup_args) == %{
-               ghosts: [],
-               incoming_vehicles: [],
-               on_route_vehicles: []
-             }
+      assert Server.lookup(lookup_args) == []
     end
   end
 
@@ -200,7 +190,7 @@ defmodule Realtime.ServerTest do
     setup do
       ets = :ets.new(__MODULE__, [:set, :protected, {:read_concurrency, true}])
 
-      :ets.insert(ets, {{:route_id, "1"}, @vehicles_for_route})
+      :ets.insert(ets, {{:route_id, "1"}, [@vehicle, @ghost]})
       :ets.insert(ets, {:all_vehicles, [@vehicle, @shuttle]})
       :ets.insert(ets, {:all_shuttles, [@shuttle]})
 
@@ -208,15 +198,11 @@ defmodule Realtime.ServerTest do
     end
 
     test "fetches shuttles by route from the ets table", %{ets: ets} do
-      assert Server.lookup({ets, {:route_id, "1"}}) == @vehicles_for_route
+      assert Server.lookup({ets, {:route_id, "1"}}) == [@vehicle, @ghost]
     end
 
     test "returns empty data when the route is not found", %{ets: ets} do
-      assert Server.lookup({ets, {:route_id, "2"}}) == %{
-               on_route_vehicles: [],
-               incoming_vehicles: [],
-               ghosts: []
-             }
+      assert Server.lookup({ets, {:route_id, "2"}}) == []
     end
 
     test "fetches all vehicles, on routes and shuttles", %{ets: ets} do

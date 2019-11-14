@@ -4,7 +4,7 @@ import renderer, { act } from "react-test-renderer"
 import RouteLadder from "../../src/components/routeLadder"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { Ghost, Vehicle } from "../../src/realtime.d"
+import { Ghost, Vehicle, VehicleOrGhost } from "../../src/realtime.d"
 import { Route } from "../../src/schedule.d"
 import { deselectRoute, initialState, selectVehicle } from "../../src/state"
 
@@ -24,7 +24,7 @@ const vehicles: Vehicle[] = [
     latitude: 0,
     longitude: 0,
     directionId: 0,
-    routeId: "1",
+    routeId: "28",
     tripId: "39914237",
     operatorId: "op1",
     operatorName: "SMITH",
@@ -52,7 +52,7 @@ const vehicles: Vehicle[] = [
       timepointId: "MATPN",
     },
     scheduledLocation: null,
-    isOnRoute: true,
+    routeStatus: "on_route",
   },
   {
     id: "y0479",
@@ -62,7 +62,7 @@ const vehicles: Vehicle[] = [
     latitude: 0,
     longitude: 0,
     directionId: 1,
-    routeId: "1",
+    routeId: "28",
     tripId: "39914128",
     operatorId: "op2",
     operatorName: "JONES",
@@ -96,7 +96,7 @@ const vehicles: Vehicle[] = [
         fractionUntilTimepoint: 0.0,
       },
     },
-    isOnRoute: true,
+    routeStatus: "on_route",
   },
 ]
 
@@ -136,7 +136,7 @@ describe("routeLadder", () => {
         <RouteLadder
           route={route}
           timepoints={timepoints}
-          vehiclesForRoute={undefined}
+          vehiclesAndGhosts={undefined}
           selectedVehicleId={undefined}
         />
       )
@@ -173,11 +173,7 @@ describe("routeLadder", () => {
         <RouteLadder
           route={route}
           timepoints={timepoints}
-          vehiclesForRoute={{
-            onRouteVehicles: vehicles,
-            incomingVehicles: [],
-            ghosts: [ghost],
-          }}
+          vehiclesAndGhosts={(vehicles as VehicleOrGhost[]).concat([ghost])}
           selectedVehicleId={undefined}
         />
       )
@@ -198,11 +194,7 @@ describe("routeLadder", () => {
         <RouteLadder
           route={route}
           timepoints={timepoints}
-          vehiclesForRoute={{
-            onRouteVehicles: [],
-            incomingVehicles: vehicles,
-            ghosts: [],
-          }}
+          vehiclesAndGhosts={vehicles}
           selectedVehicleId={undefined}
         />
       )
@@ -213,9 +205,9 @@ describe("routeLadder", () => {
 
   test("renders a route ladder with laying over vehicles", () => {
     const route: Route = {
-      id: "1",
+      id: "28",
       directionNames: { 0: "Outbound", 1: "Inbound" },
-      name: "1",
+      name: "28",
     }
 
     const timepoints = ["MATPN", "WELLH", "MORTN"]
@@ -227,14 +219,10 @@ describe("routeLadder", () => {
           route={route}
           selectedVehicleId={undefined}
           timepoints={timepoints}
-          vehiclesForRoute={{
-            onRouteVehicles: [],
-            incomingVehicles: [
-              { ...v1, isNonrevenue: true },
-              { ...v2, isNonrevenue: true },
-            ],
-            ghosts: [],
-          }}
+          vehiclesAndGhosts={[
+            { ...v1, routeStatus: "incoming", isNonrevenue: true },
+            { ...v2, routeStatus: "incoming", isNonrevenue: true },
+          ]}
         />
       )
       .toJSON()
@@ -255,7 +243,7 @@ describe("routeLadder", () => {
         <RouteLadder
           route={route}
           timepoints={timepoints}
-          vehiclesForRoute={undefined}
+          vehiclesAndGhosts={undefined}
           selectedVehicleId={undefined}
         />
       )
@@ -278,7 +266,7 @@ describe("routeLadder", () => {
         <RouteLadder
           route={route}
           timepoints={timepoints}
-          vehiclesForRoute={undefined}
+          vehiclesAndGhosts={undefined}
           selectedVehicleId={undefined}
         />
       </StateDispatchProvider>
@@ -300,7 +288,7 @@ describe("routeLadder", () => {
       <RouteLadder
         route={route}
         timepoints={timepoints}
-        vehiclesForRoute={undefined}
+        vehiclesAndGhosts={undefined}
         selectedVehicleId={undefined}
       />
     )
@@ -358,7 +346,7 @@ describe("routeLadder", () => {
         fractionUntilTimepoint: 0.5,
       },
       scheduledLocation: null,
-      isOnRoute: true,
+      routeStatus: "incoming",
     }
 
     const wrapper = mount(
@@ -366,11 +354,7 @@ describe("routeLadder", () => {
         <RouteLadder
           route={route}
           timepoints={timepoints}
-          vehiclesForRoute={{
-            onRouteVehicles: [],
-            incomingVehicles: [vehicle],
-            ghosts: [],
-          }}
+          vehiclesAndGhosts={[vehicle]}
           selectedVehicleId={undefined}
         />
       </StateDispatchProvider>

@@ -2,7 +2,8 @@ import React, { Dispatch, SetStateAction, useContext, useState } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import * as Array from "../helpers/array"
 import { reverseIcon, reverseIconReversed } from "../helpers/icon"
-import { Vehicle, VehicleId, VehiclesForRoute } from "../realtime.d"
+import { isAVehicle, isGhost } from "../models/vehicle"
+import { Ghost, Vehicle, VehicleId, VehicleOrGhost } from "../realtime.d"
 import { LoadableTimepoints, Route } from "../schedule.d"
 import { deselectRoute } from "../state"
 import CloseButton from "./closeButton"
@@ -14,7 +15,7 @@ import Loading from "./loading"
 interface Props {
   route: Route
   timepoints: LoadableTimepoints
-  vehiclesForRoute?: VehiclesForRoute
+  vehiclesAndGhosts?: VehicleOrGhost[]
   selectedVehicleId: VehicleId | undefined
 }
 
@@ -71,7 +72,7 @@ const HeaderAndControls = ({
 const RouteLadder = ({
   route,
   timepoints,
-  vehiclesForRoute,
+  vehiclesAndGhosts,
   selectedVehicleId,
 }: Props) => {
   const initialDirection: LadderDirection = LadderDirection.ZeroToOne
@@ -81,11 +82,24 @@ const RouteLadder = ({
 
   const bottomDirection = ladderDirection === LadderDirection.OneToZero ? 1 : 0
 
-  const [layingOver, incoming] = Array.partition(
-    vehiclesForRoute ? vehiclesForRoute.incomingVehicles : [],
+  const vehicles: Vehicle[] = vehiclesAndGhosts
+    ? vehiclesAndGhosts.filter(isAVehicle)
+    : []
+  const ghosts: Ghost[] = vehiclesAndGhosts
+    ? vehiclesAndGhosts.filter(isGhost)
+    : []
+  const [thisRoute, incomingFromOtherRoute] = Array.partition(
+    vehicles,
+    (vehicle: Vehicle): boolean => vehicle.routeId == route.id
+  )
+  const [onRoute, incoming] = Array.partition(
+    thisRoute,
+    (vehicle: Vehicle): boolean => vehicle.routeStatus == "on_route"
+  )
+  const [layingOver, incomingNotLayingOver] = Array.partition(
+    incoming,
     (vehicle: Vehicle): boolean => vehicle.isNonrevenue
   )
-
   const [layingOverBottom, layingOverTop] = Array.partition(
     layingOver,
     (vehicle: Vehicle): boolean => vehicle.directionId === bottomDirection
@@ -104,14 +118,14 @@ const RouteLadder = ({
           <LayoverBox vehicles={layingOverTop} classModifier="top" />
           <Ladder
             timepoints={timepoints}
-            vehicles={vehiclesForRoute ? vehiclesForRoute.onRouteVehicles : []}
-            ghosts={vehiclesForRoute ? vehiclesForRoute.ghosts : []}
+            vehicles={onRoute}
+            ghosts={ghosts}
             ladderDirection={ladderDirection}
             selectedVehicleId={selectedVehicleId}
           />
           <LayoverBox vehicles={layingOverBottom} classModifier="bottom" />
           <IncomingBox
-            vehicles={incoming}
+            vehicles={incomingFromOtherRoute.concat(incomingNotLayingOver)}
             ladderDirection={ladderDirection}
             selectedVehicleId={selectedVehicleId}
           />

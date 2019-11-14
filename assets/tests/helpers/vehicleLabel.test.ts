@@ -49,7 +49,7 @@ const vehicle: Vehicle = {
       fractionUntilTimepoint: 0.0,
     },
   },
-  isOnRoute: true,
+  routeStatus: "on_route",
 }
 
 describe("vehicleLabel", () => {
