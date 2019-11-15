@@ -47,10 +47,10 @@ const useSearchResults = (
   socket: Socket | undefined,
   search: Search
 ): VehicleOrGhost[] | null | undefined => {
-  const [vehicles, setVehicles] = useState(
-    null as VehicleOrGhost[] | null | undefined
+  const [vehicles, setVehicles] = useState<VehicleOrGhost[] | null | undefined>(
+    null
   )
-  const [channel, setChannel] = useState(undefined as Channel | undefined)
+  const [channel, setChannel] = useState<Channel | undefined>(undefined)
 
   const leaveChannel = () => {
     if (channel !== undefined) {
