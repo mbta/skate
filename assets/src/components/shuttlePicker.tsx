@@ -231,7 +231,7 @@ const RunButton = ({
         disabled={!isActive}
       >
         <span className="m-route-picker__route-list-button-name">
-          {icon && icon}
+          {icon}
           {name}
         </span>
         <span className="m-route-picker__route-list-button-count">
