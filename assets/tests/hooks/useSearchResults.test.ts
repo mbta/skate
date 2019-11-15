@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react-hooks"
 import { Socket } from "phoenix"
 import useSearchResults from "../../src/hooks/useSearchResults"
-import { Search } from "../../src/models/search"
+import { initialSearch, Search } from "../../src/models/search"
 import { VehicleData, VehicleOrGhostData } from "../../src/models/vehicleData"
 import {
   Vehicle,
@@ -15,14 +15,11 @@ import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 // tslint:disable: object-literal-sort-keys
 
 describe("useSearchResults", () => {
-  test("returns null while loading", () => {
-    const search: Search = {
-      text: "test",
-      property: "run",
-      isActive: true,
-    }
-    const { result } = renderHook(() => useSearchResults(undefined, search))
-    expect(result.current).toEqual(null)
+  test("returns undefined initially", () => {
+    const { result } = renderHook(() =>
+      useSearchResults(undefined, initialSearch)
+    )
+    expect(result.current).toEqual(undefined)
   })
 
   test("initializing the hook subscribes to the search results", () => {

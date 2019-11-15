@@ -48,7 +48,7 @@ const useSearchResults = (
   search: Search
 ): VehicleOrGhost[] | null | undefined => {
   const [vehicles, setVehicles] = useState<VehicleOrGhost[] | null | undefined>(
-    null
+    undefined
   )
   const [channel, setChannel] = useState<Channel | undefined>(undefined)
 
@@ -66,6 +66,7 @@ const useSearchResults = (
     }
 
     if (socket && search.isActive) {
+      setVehicles(null)
       setChannel(subscribe(socket, search, setVehicles))
     }
 
