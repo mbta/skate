@@ -10,7 +10,7 @@
 }
 
 .m-search-form__submit {
-  @include button-secondary;
+  @include button-primary;
   @include button-icon(1.3125rem);
   margin-left: 0.5rem;
   padding: 0.375rem 0.5625rem;
