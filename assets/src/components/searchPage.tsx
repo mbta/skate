@@ -10,14 +10,18 @@ import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
 
 const thereIsAnActiveSearch = (
-  vehicles: VehicleOrGhost[] | null,
+  vehicles: VehicleOrGhost[] | null | undefined,
   search: Search
-): boolean => vehicles !== null && isValidSearch(search)
+): boolean =>
+  vehicles !== null && vehicles !== undefined && isValidSearch(search)
 
 const SearchPage = (): ReactElement<HTMLDivElement> => {
   const [{ search }] = useContext(StateDispatchContext)
   const socket: Socket | undefined = useContext(SocketContext)
-  const vehicles: VehicleOrGhost[] | null = useSearchResults(socket, search)
+  const vehicles: VehicleOrGhost[] | null | undefined = useSearchResults(
+    socket,
+    search
+  )
 
   return (
     <div className="c-page m-search-page">

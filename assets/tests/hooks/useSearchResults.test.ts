@@ -1,13 +1,14 @@
 import { renderHook } from "@testing-library/react-hooks"
 import { Socket } from "phoenix"
 import useSearchResults from "../../src/hooks/useSearchResults"
-import { initialSearch, Search } from "../../src/models/search"
+import { Search } from "../../src/models/search"
 import { VehicleData, VehicleOrGhostData } from "../../src/models/vehicleData"
 import {
   Vehicle,
   VehicleOrGhost,
   VehicleTimepointStatus,
 } from "../../src/realtime"
+import { mockUseStateOnce } from "../testHelpers/mockHelpers"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 
 // tslint:disable: react-hooks-nesting
@@ -15,9 +16,12 @@ import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 
 describe("useSearchResults", () => {
   test("returns null while loading", () => {
-    const { result } = renderHook(() =>
-      useSearchResults(undefined, initialSearch)
-    )
+    const search: Search = {
+      text: "test",
+      property: "run",
+      isActive: true,
+    }
+    const { result } = renderHook(() => useSearchResults(undefined, search))
     expect(result.current).toEqual(null)
   })
 
@@ -249,7 +253,10 @@ describe("useSearchResults", () => {
   test("leaves the channel on unmount", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok")
+    const vehicles: Vehicle[] = []
+    mockUseStateOnce(vehicles)
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
+    mockUseStateOnce(mockChannel)
 
     const search: Search = {
       text: "one",
@@ -267,10 +274,15 @@ describe("useSearchResults", () => {
 
   test("leaves the channel and joins a new one when the search changes", () => {
     const mockSocket = makeMockSocket()
+    const vehicles: Vehicle[] = []
     const channel1 = makeMockChannel("ok")
     const channel2 = makeMockChannel("ok")
     mockSocket.channel.mockImplementationOnce(() => channel1)
     mockSocket.channel.mockImplementationOnce(() => channel2)
+    mockUseStateOnce(vehicles)
+    mockUseStateOnce(channel1)
+    mockUseStateOnce(vehicles)
+    mockUseStateOnce(channel2)
 
     const search1: Search = {
       text: "one",

@@ -46,20 +46,30 @@ const subscribe = (
 const useSearchResults = (
   socket: Socket | undefined,
   search: Search
-): VehicleOrGhost[] | null => {
-  const [vehicles, setVehicles] = useState(null as VehicleOrGhost[] | null)
+): VehicleOrGhost[] | null | undefined => {
+  const [vehicles, setVehicles] = useState(
+    null as VehicleOrGhost[] | null | undefined
+  )
+  const [channel, setChannel] = useState(undefined as Channel | undefined)
+
+  const leaveChannel = () => {
+    if (channel !== undefined) {
+      channel.leave()
+      setChannel(undefined)
+    }
+  }
 
   useEffect(() => {
-    let channel: Channel | undefined
-    if (socket && search.isActive) {
-      channel = subscribe(socket, search, setVehicles)
+    if (!search.isActive) {
+      leaveChannel()
+      setVehicles(undefined)
     }
 
-    return () => {
-      if (channel !== undefined) {
-        channel.leave()
-      }
+    if (socket && search.isActive) {
+      setChannel(subscribe(socket, search, setVehicles))
     }
+
+    return leaveChannel
   }, [socket, search])
 
   return vehicles
