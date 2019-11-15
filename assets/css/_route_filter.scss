@@ -15,6 +15,7 @@
 }
 
 .m-route-filter__clear {
+  @include button-transparent;
   @include button-icon(0.75rem);
   right: 0;
   padding: 0 0.375rem;

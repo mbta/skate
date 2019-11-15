@@ -14,9 +14,11 @@
   text-align: center;
 
   .m-close-button {
+    height: 100%;
+    padding: 0.625rem;
     position: absolute;
-    right: 0.5rem;
-    top: 0.5rem;
+    right: 0rem;
+    top: 0;
   }
 }
 
@@ -27,6 +29,7 @@
 
 .m-route-ladder__reverse {
   @include font-small;
+  @include button-transparent;
   @include button-icon(0.625rem);
   margin-top: 0.5rem;
 }
