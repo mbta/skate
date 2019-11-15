@@ -46,12 +46,6 @@ module.exports = (env, options) => ({
           MiniCssExtractPlugin.loader,
           {
             loader: "css-loader",
-            options: {
-              autoprefixer: {
-                browsers: ["last 2 versions"],
-              },
-              plugins: () => [autoprefixer],
-            },
           },
           {
             loader: "sass-loader",
