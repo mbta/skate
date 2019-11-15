@@ -1,5 +1,6 @@
 defmodule SkateWeb.VehiclesChannel do
   use SkateWeb, :channel
+  require Logger
 
   alias Realtime.Server
   alias SkateWeb.AuthManager
@@ -16,7 +17,11 @@ defmodule SkateWeb.VehiclesChannel do
     {:ok, vehicles_for_route, socket}
   end
 
-  def join("vehicles:search:" <> search_params, _message, socket) do
+  def join(
+        "vehicles:search:" <> search_params,
+        _message,
+        %{assigns: %{guardian_default_resource: username}} = socket
+      ) do
     subscribe_args =
       case search_params do
         "all:" <> text ->
@@ -31,6 +36,12 @@ defmodule SkateWeb.VehiclesChannel do
         "operator:" <> text ->
           [text, :operator]
       end
+
+    Logger.info(fn ->
+      "User=#{username} searched for property=#{Enum.at(subscribe_args, 1)}, text=#{
+        Enum.at(subscribe_args, 0)
+      }"
+    end)
 
     vehicles = Duration.log_duration(Server, :subscribe_to_search, subscribe_args)
 
