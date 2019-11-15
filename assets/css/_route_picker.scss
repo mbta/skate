@@ -63,6 +63,14 @@
 .m-route-picker__route-list-button-name {
   flex: 1 1 auto;
   text-align: left;
+
+  span {
+    display: inline-block;
+    height: 1rem;
+    margin-right: 0.5rem;
+    vertical-align: top;
+    width: 1rem;
+  }
 }
 
 .m-route-picker__route-list-button-count {

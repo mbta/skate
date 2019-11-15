@@ -1,6 +1,13 @@
 import React, { ReactElement, useContext } from "react"
 import { ShuttleVehiclesContext } from "../contexts/shuttleVehiclesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import {
+  blueLineIcon,
+  commuterRailIcon,
+  greenLineIcon,
+  orangeLineIcon,
+  redLineIcon,
+} from "../helpers/icon"
 import useShuttleRoutes from "../hooks/useShuttleRoutes"
 import { SubwayRoute, subwayRoutes } from "../models/subwayRoute"
 import { RunId, Vehicle } from "../realtime"
@@ -19,6 +26,7 @@ import PickerContainer, { Width } from "./pickerContainer"
 interface KnownShuttle {
   name: string
   runId: RunId
+  icon?: JSX.Element
 }
 
 const KNOWN_SHUTTLES: KnownShuttle[] = [
@@ -29,22 +37,27 @@ const KNOWN_SHUTTLES: KnownShuttle[] = [
   {
     name: "Blue",
     runId: "999-0501",
+    icon: blueLineIcon(),
   },
   {
     name: "Green",
     runId: "999-0502",
+    icon: greenLineIcon(),
   },
   {
     name: "Orange",
     runId: "999-0503",
+    icon: orangeLineIcon(),
   },
   {
     name: "Red",
     runId: "999-0504",
+    icon: redLineIcon(),
   },
   {
     name: "CR",
     runId: "999-0505",
+    icon: commuterRailIcon(),
   },
 ]
 
@@ -92,6 +105,7 @@ const RunIdButtons = ({ shuttles }: { shuttles: Vehicle[] }) => {
         <RunIdButton
           key={knownShuttle.runId}
           name={`${knownShuttle.name} ${formatRunId(knownShuttle.runId)}`}
+          icon={knownShuttle.icon}
           count={runCounts[knownShuttle.runId]}
           runId={knownShuttle.runId}
           isActive={activeRunIds.includes(knownShuttle.runId)}
@@ -154,11 +168,13 @@ const AllSpecialsButton = ({
 
 const RunIdButton = ({
   name,
+  icon,
   count,
   runId,
   isActive,
 }: {
   name: string
+  icon?: JSX.Element
   count?: number
   runId: RunId
   isActive: boolean
@@ -178,6 +194,7 @@ const RunIdButton = ({
   return (
     <RunButton
       name={name}
+      icon={icon}
       count={count}
       isActive={isActive}
       isSelected={isSelected}
@@ -188,12 +205,14 @@ const RunIdButton = ({
 
 const RunButton = ({
   name,
+  icon,
   count,
   isActive,
   isSelected,
   onClick,
 }: {
   name: string
+  icon?: JSX.Element
   count?: number
   isActive: boolean
   isSelected: boolean
@@ -211,7 +230,10 @@ const RunButton = ({
         onClick={onClick}
         disabled={!isActive}
       >
-        <span className="m-route-picker__route-list-button-name">{name}</span>
+        <span className="m-route-picker__route-list-button-name">
+          {icon && icon}
+          {name}
+        </span>
         <span className="m-route-picker__route-list-button-count">
           {count !== undefined && count}
         </span>
