@@ -88,4 +88,14 @@ defmodule Concentrate.Supervisor.VehiclePositionsTest do
       assert response == {:noreply, [], %{}}
     end
   end
+
+  describe "backend implementation" do
+    test "handles reference info calls that come in after a timeout" do
+      state = %{}
+
+      response = VehiclePositions.handle_info({make_ref(), %{}}, state)
+
+      assert response == {:noreply, [], state}
+    end
+  end
 end

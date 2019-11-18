@@ -17,6 +17,11 @@ defmodule Concentrate.Consumer.VehiclePositions do
     {:consumer, :the_state_does_not_matter, opts}
   end
 
+  # If we get a reply after we've already timed out, ignore it
+  @impl GenStage
+  def handle_info({reference, _}, state) when is_reference(reference),
+    do: {:noreply, [], state}
+
   @impl GenStage
   def handle_events(events, _from, state) do
     groups = List.last(events)
