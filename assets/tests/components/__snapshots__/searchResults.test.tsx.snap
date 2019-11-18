@@ -1,0 +1,139 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SearchResults renders a list of results including vehicles and ghosts 1`] = `
+<div
+  className="m-search-results"
+>
+  <div
+    className="m-search-results__list"
+  >
+    <div
+      className="m-search-results__card"
+    >
+      <div
+        className="m-properties-list"
+      >
+        <table
+          className="m-properties-list__table"
+        >
+          <tbody>
+            <tr>
+              <td
+                className="m-properties-list__property-label"
+              >
+                Run
+              </td>
+              <td
+                className="m-properties-list__property-value"
+              >
+                run-1
+              </td>
+            </tr>
+            <tr>
+              <td
+                className="m-properties-list__property-label"
+              >
+                Vehicle
+              </td>
+              <td
+                className="m-properties-list__property-value"
+              >
+                v1-label
+              </td>
+            </tr>
+            <tr>
+              <td
+                className="m-properties-list__property-label"
+              >
+                Operator
+              </td>
+              <td
+                className="m-properties-list__property-value"
+              >
+                SMITH #op1
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div
+        className="m-search-results__card-route-label"
+      >
+        <div
+          className="m-route-variant-name"
+        >
+          <span
+            className="m-route-variant-name__route-id"
+          >
+            39_X
+          </span>
+           Forest Hills
+        </div>
+      </div>
+    </div>
+    <div
+      className="m-search-results__card"
+    >
+      <div
+        className="m-properties-list"
+      >
+        <table
+          className="m-properties-list__table"
+        >
+          <tbody>
+            <tr>
+              <td
+                className="m-properties-list__property-label"
+              >
+                Run
+              </td>
+              <td
+                className="m-properties-list__property-value"
+              >
+                123-0123
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p
+      className="m-search-results__note"
+    >
+      Please note that at this time search is limited to active vehicles and logged-in personnel.
+    </p>
+  </div>
+</div>
+`;
+
+exports[`SearchResults renders no results 1`] = `
+<div
+  className="m-search-results"
+>
+  <div
+    className="m-search-results--none"
+  >
+    <div
+      className="m-search-results__heading"
+    >
+      No Search Results
+    </div>
+    <p>
+      There were no matching results found for “
+      test
+      ”. Please try again using numbers or last names only.
+    </p>
+    <p
+      className="m-search-results__note"
+    >
+      Please note that at this time search is limited to active vehicles and logged-in personnel.
+    </p>
+    <button
+      className="m-search-results__clear-search-button"
+      onClick={[Function]}
+    >
+      Clear search
+    </button>
+  </div>
+</div>
+`;

@@ -1,39 +1,17 @@
 import React, { useState } from "react"
 import useInterval from "../../hooks/useInterval"
-import { formattedRunNumber } from "../../models/shuttle"
 import { isShuttle, shouldShowHeadwayDiagram } from "../../models/vehicle"
 import { DataDiscrepancy, Vehicle } from "../../realtime"
 import { Route } from "../../schedule"
 import Map from "../map"
+import PropertiesList from "../propertiesList"
 import CloseButton from "./closeButton"
 import Header from "./header"
 import HeadwayDiagram from "./headwayDiagram"
-import PropertiesList, { Property } from "./propertiesList"
 
 interface Props {
   selectedVehicle: Vehicle
   route?: Route
-}
-
-const properties = (vehicle: Vehicle): Property[] => {
-  const { runId, label, operatorId, operatorName } = vehicle
-
-  return [
-    {
-      label: "Run",
-      value: isShuttle(vehicle)
-        ? formattedRunNumber(vehicle)
-        : runId || "Not Available",
-    },
-    {
-      label: "Vehicle",
-      value: label,
-    },
-    {
-      label: "Operator",
-      value: `${operatorName} #${operatorId}`,
-    },
-  ]
 }
 
 const NotAvailable = () => (
@@ -61,16 +39,16 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
 
   return (
     <div className="m-vehicle-properties-panel__location">
-      <div className="m-properties-panel__property-label">Next Stop</div>
-      <div className="m-properties-panel__property-value">
+      <div className="m-properties-list__property-label">Next Stop</div>
+      <div className="m-properties-list__property-value">
         {isOffCourse || isShuttle(vehicle) ? (
           <NotAvailable />
         ) : (
           <>{stopStatus.stopName}</>
         )}
       </div>
-      <div className="m-properties-panel__property-label">Last GPS Ping</div>
-      <div className="m-properties-panel__property-value">
+      <div className="m-properties-list__property-label">Last GPS Ping</div>
+      <div className="m-properties-list__property-value">
         {secondsAgo(timestamp)}
       </div>
       <a
@@ -139,7 +117,7 @@ const VehiclePropertiesPanel = ({ selectedVehicle, route }: Props) => (
       <HeadwayDiagram vehicle={selectedVehicle} />
     )}
 
-    <PropertiesList properties={properties(selectedVehicle)} />
+    <PropertiesList vehicleOrGhost={selectedVehicle} />
 
     <Location vehicle={selectedVehicle} />
 

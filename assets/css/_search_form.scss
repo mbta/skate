@@ -1,12 +1,14 @@
 .m-search-form {
-  background-color: $color-bg-base;
   border-bottom: 1px solid $white;
-  padding: 1rem 1.1875rem 0;
   width: 100%;
 }
 
+.m-search-form__row {
+  display: flex;
+}
+
 .m-search-form__text {
-  width: 19rem;
+  flex: 1 0 auto;
 }
 
 .m-search-form__submit {

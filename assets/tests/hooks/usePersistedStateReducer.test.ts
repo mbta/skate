@@ -36,6 +36,7 @@ describe("usePersistedStateReducer", () => {
       search: {
         text: "search text",
         property: "run",
+        isActive: true,
       },
       selectedRouteIds: ["1", "2"],
       selectedShuttleRouteIds: [],
@@ -70,6 +71,7 @@ describe("usePersistedStateReducer", () => {
       search: {
         text: "search text",
         property: "run",
+        isActive: true,
       },
       selectedRouteIds: ["1", "2"],
       selectedShuttleRouteIds: [],
@@ -86,6 +88,7 @@ describe("usePersistedStateReducer", () => {
       search: {
         text: "search text",
         property: "run",
+        isActive: true,
       },
       selectedRouteIds: ["28", "39"],
       selectedShuttleRouteIds: [],
@@ -119,6 +122,7 @@ describe("usePersistedStateReducer", () => {
       search: {
         text: "search text",
         property: "run",
+        isActive: true,
       },
       selectedRouteIds: ["1", "2"],
       selectedShuttleRouteIds: [],
@@ -135,6 +139,7 @@ describe("usePersistedStateReducer", () => {
       search: {
         text: "search text",
         property: "run",
+        isActive: true,
       },
       selectedRouteIds: ["28", "39"],
       selectedShuttleRouteIds: [],

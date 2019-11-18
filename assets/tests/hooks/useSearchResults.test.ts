@@ -8,17 +8,18 @@ import {
   VehicleOrGhost,
   VehicleTimepointStatus,
 } from "../../src/realtime"
+import { mockUseStateOnce } from "../testHelpers/mockHelpers"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 
 // tslint:disable: react-hooks-nesting
 // tslint:disable: object-literal-sort-keys
 
 describe("useSearchResults", () => {
-  test("returns null while loading", () => {
+  test("returns undefined initially", () => {
     const { result } = renderHook(() =>
       useSearchResults(undefined, initialSearch)
     )
-    expect(result.current).toEqual(null)
+    expect(result.current).toEqual(undefined)
   })
 
   test("initializing the hook subscribes to the search results", () => {
@@ -29,6 +30,7 @@ describe("useSearchResults", () => {
     const search: Search = {
       text: "test",
       property: "run",
+      isActive: true,
     }
 
     renderHook(() => useSearchResults((mockSocket as any) as Socket, search))
@@ -43,9 +45,29 @@ describe("useSearchResults", () => {
     const mockChannel = makeMockChannel("ok")
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    const search: Search = {
+    const invalidSearch: Search = {
       text: "",
       property: "run",
+      isActive: false,
+    }
+
+    renderHook(() =>
+      useSearchResults((mockSocket as any) as Socket, invalidSearch)
+    )
+
+    expect(mockSocket.channel).toHaveBeenCalledTimes(0)
+    expect(mockChannel.join).toHaveBeenCalledTimes(0)
+  })
+
+  test("initializing the hook with an inactive search does not subscribe to the search results", () => {
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok")
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+
+    const search: Search = {
+      text: "test",
+      property: "run",
+      isActive: false,
     }
 
     renderHook(() => useSearchResults((mockSocket as any) as Socket, search))
@@ -216,6 +238,7 @@ describe("useSearchResults", () => {
     const search: Search = {
       text: "test",
       property: "run",
+      isActive: true,
     }
     const { result } = renderHook(() =>
       useSearchResults((mockSocket as any) as Socket, search)
@@ -227,11 +250,15 @@ describe("useSearchResults", () => {
   test("leaves the channel on unmount", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok")
+    const vehicles: Vehicle[] = []
+    mockUseStateOnce(vehicles)
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
+    mockUseStateOnce(mockChannel)
 
     const search: Search = {
       text: "one",
       property: "run",
+      isActive: true,
     }
     const { unmount } = renderHook(() =>
       useSearchResults((mockSocket as any) as Socket, search)
@@ -244,14 +271,20 @@ describe("useSearchResults", () => {
 
   test("leaves the channel and joins a new one when the search changes", () => {
     const mockSocket = makeMockSocket()
+    const vehicles: Vehicle[] = []
     const channel1 = makeMockChannel("ok")
     const channel2 = makeMockChannel("ok")
     mockSocket.channel.mockImplementationOnce(() => channel1)
     mockSocket.channel.mockImplementationOnce(() => channel2)
+    mockUseStateOnce(vehicles)
+    mockUseStateOnce(channel1)
+    mockUseStateOnce(vehicles)
+    mockUseStateOnce(channel2)
 
     const search1: Search = {
       text: "one",
       property: "run",
+      isActive: true,
     }
     const { rerender } = renderHook(
       search => useSearchResults((mockSocket as any) as Socket, search),
@@ -261,6 +294,7 @@ describe("useSearchResults", () => {
     const search2: Search = {
       text: "two",
       property: "run",
+      isActive: true,
     }
     rerender(search2)
 
@@ -276,6 +310,7 @@ describe("useSearchResults", () => {
     const search1: Search = {
       text: "validSearch",
       property: "run",
+      isActive: true,
     }
     const { rerender } = renderHook(
       search => useSearchResults((mockSocket as any) as Socket, search),
@@ -285,6 +320,7 @@ describe("useSearchResults", () => {
     const search2: Search = {
       text: "",
       property: "run",
+      isActive: false,
     }
     rerender(search2)
 
@@ -298,7 +334,7 @@ describe("useSearchResults", () => {
     const mockChannel = makeMockChannel("error")
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    const search: Search = { text: "test", property: "run" }
+    const search: Search = { text: "test", property: "run", isActive: true }
 
     renderHook(() => useSearchResults((mockSocket as any) as Socket, search))
 
@@ -316,7 +352,7 @@ describe("useSearchResults", () => {
     const mockChannel = makeMockChannel("timeout")
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    const search: Search = { text: "test", property: "run" }
+    const search: Search = { text: "test", property: "run", isActive: true }
 
     renderHook(() => useSearchResults((mockSocket as any) as Socket, search))
 

@@ -1,9 +1,7 @@
 import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
-import Header, {
-  formatRouteVariant,
-} from "../../../src/components/propertiesPanel/header"
+import Header from "../../../src/components/propertiesPanel/header"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import { HeadwaySpacing } from "../../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../../src/realtime"
@@ -187,29 +185,5 @@ describe("Header", () => {
       .simulate("click")
 
     expect(mockDispatch).toHaveBeenCalledWith(deselectVehicle())
-  })
-})
-
-describe("formatRouteVariant", () => {
-  test("has variant and headsign", () => {
-    expect(formatRouteVariant(vehicle)).toEqual("39_X Forest Hills")
-  })
-
-  test("missing variant and headsign", () => {
-    const testVehicle: Vehicle = {
-      ...vehicle,
-      headsign: null,
-      viaVariant: null,
-    }
-    expect(formatRouteVariant(testVehicle)).toEqual("39_")
-  })
-
-  test("doesn't show underscore variant character", () => {
-    const testVehicle: Vehicle = {
-      ...vehicle,
-      headsign: null,
-      viaVariant: "_",
-    }
-    expect(formatRouteVariant(testVehicle)).toEqual("39_")
   })
 })

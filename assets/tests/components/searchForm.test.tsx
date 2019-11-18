@@ -7,6 +7,7 @@ import {
   Search,
   setSearchProperty,
   setSearchText,
+  submitSearch,
 } from "../../src/models/search"
 import { initialState } from "../../src/state"
 
@@ -29,6 +30,7 @@ describe("SearchForm", () => {
     const invalidSearch: Search = {
       text: "1",
       property: "run",
+      isActive: false,
     }
     const invalidSearchState = {
       ...initialState,
@@ -45,22 +47,45 @@ describe("SearchForm", () => {
   })
 
   test("submit button is enable if there are at least 2 characters in the text field", () => {
-    const invalidSearch: Search = {
+    const validSearch: Search = {
       text: "12",
       property: "run",
+      isActive: false,
     }
-    const invalidSearchState = {
+    const validSearchState = {
       ...initialState,
-      search: invalidSearch,
+      search: validSearch,
     }
     const wrapper = mount(
-      <StateDispatchProvider state={invalidSearchState} dispatch={mockDispatch}>
+      <StateDispatchProvider state={validSearchState} dispatch={mockDispatch}>
         <SearchForm />
       </StateDispatchProvider>
     )
 
     expect(wrapper.find(".m-search-form__text").prop("value")).toEqual("12")
     expect(wrapper.find(".m-search-form__submit").prop("disabled")).toBeFalsy()
+  })
+
+  test("clicking the submit button submits the search", () => {
+    const testDispatch = jest.fn()
+    const validSearch: Search = {
+      text: "12",
+      property: "run",
+      isActive: false,
+    }
+    const validSearchState = {
+      ...initialState,
+      search: validSearch,
+    }
+    const wrapper = mount(
+      <StateDispatchProvider state={validSearchState} dispatch={testDispatch}>
+        <SearchForm />
+      </StateDispatchProvider>
+    )
+
+    wrapper.find(".m-search-form__submit").simulate("click")
+
+    expect(testDispatch).toHaveBeenCalledWith(submitSearch())
   })
 
   test("entering text sets it as the search text", () => {

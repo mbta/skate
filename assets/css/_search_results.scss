@@ -1,0 +1,37 @@
+.m-search-results {
+  @include font-body;
+}
+
+.m-search-results__heading {
+  @include font-label;
+}
+
+.m-search-results__clear-search-button {
+  @include button-text;
+}
+
+.m-search-results__card {
+  background-color: $white;
+  border-radius: 4px;
+  box-shadow: $subtle-box-shadow;
+  margin-bottom: 1rem;
+  padding: 1rem 1rem 0.5rem;
+
+  .m-properties-list {
+    padding: 0;
+  }
+}
+
+.m-search-results__card-route-label {
+  color: $color-font-grey;
+  font-size: 0.75rem;
+  margin: 0.5rem 0;
+
+  .m-route-variant-name__route-id {
+    font-weight: bold;
+  }
+}
+
+.m-search-results__list .m-search-results__note {
+  color: $color-font-grey;
+}

@@ -5,6 +5,7 @@ import {
   isValidSearch,
   setSearchProperty,
   setSearchText,
+  submitSearch,
 } from "../models/search"
 
 const SEARCH_PROPERTIES = ["all", "run", "vehicle", "operator"]
@@ -21,6 +22,8 @@ const SearchForm = () => {
   const subscribeToSearch = (event: React.FormEvent<EventTarget>) => {
     event.preventDefault()
 
+    dispatch(submitSearch())
+
     // TODO: Save search results for "recent searches" list:
     // https://app.asana.com/0/1112935048846093/1139512810293672
     // saveSearchResults(searchResults)
@@ -28,46 +31,51 @@ const SearchForm = () => {
 
   return (
     <form onSubmit={subscribeToSearch} className="m-search-form">
-      <input
-        type="text"
-        className="m-search-form__text"
-        placeholder="Search"
-        value={search.text}
-        onChange={handleTextInput}
-      />
+      <div className="m-search-form__row">
+        <input
+          type="text"
+          className="m-search-form__text"
+          placeholder="Search"
+          value={search.text}
+          onChange={handleTextInput}
+          autoFocus={true}
+        />
 
-      <button
-        className="m-search-form__submit"
-        onClick={subscribeToSearch}
-        disabled={!isValidSearch(search)}
-      >
-        {searchIcon()}
-      </button>
+        <button
+          className="m-search-form__submit"
+          onClick={subscribeToSearch}
+          disabled={!isValidSearch(search)}
+        >
+          {searchIcon()}
+        </button>
+      </div>
 
-      <ul className="m-search-form__property-buttons">
-        {SEARCH_PROPERTIES.map(property => (
-          <li
-            className="m-search-form__property-button"
-            key={`search-property-${property}`}
-          >
-            <input
-              id={`property-${property}`}
-              className="m-search-form__property-input"
-              type="radio"
-              name="property"
-              value={property}
-              checked={search.property === property}
-              onChange={handlePropertyChange}
-            />
-            <label
-              htmlFor={`property-${property}`}
-              className="m-search-form__property-label"
+      <div className="m-search-form__row">
+        <ul className="m-search-form__property-buttons">
+          {SEARCH_PROPERTIES.map(property => (
+            <li
+              className="m-search-form__property-button"
+              key={`search-property-${property}`}
             >
-              {property}
-            </label>
-          </li>
-        ))}
-      </ul>
+              <input
+                id={`property-${property}`}
+                className="m-search-form__property-input"
+                type="radio"
+                name="property"
+                value={property}
+                checked={search.property === property}
+                onChange={handlePropertyChange}
+              />
+              <label
+                htmlFor={`property-${property}`}
+                className="m-search-form__property-label"
+              >
+                {property}
+              </label>
+            </li>
+          ))}
+        </ul>
+      </div>
     </form>
   )
 }
