@@ -34,18 +34,23 @@ export const onTimeStatus = (scheduleAdherenceSecs: number): OnTimeStatus => {
 }
 
 export const drawnStatus = (vehicle: Vehicle): DrawnStatus => {
+  if (isShuttle(vehicle)) {
+    return "plain"
+  }
+
   if (vehicle.isOffCourse) {
     return "off-course"
-  } else if (
-    isShuttle(vehicle) ||
-    (featureIsEnabled("headway_ladder_colors") &&
-      vehicle.headwaySpacing !== null)
+  }
+
+  if (
+    featureIsEnabled("headway_ladder_colors") &&
+    vehicle.headwaySpacing !== null
   ) {
     // Headway lines give the status instead of the vehicles
     return "plain"
-  } else {
-    return onTimeStatus(vehicle.scheduleAdherenceSecs)
   }
+
+  return onTimeStatus(vehicle.scheduleAdherenceSecs)
 }
 
 export const humanReadableScheduleAdherence = (vehicle: Vehicle): string =>

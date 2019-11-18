@@ -60,6 +60,17 @@ describe("drawnStatus", () => {
     expect(drawnStatus(vehicle)).toEqual("off-course")
   })
 
+  test("returns 'plain' for a shuttle, even if off-course", () => {
+    mockHeadwaysOff()
+    const shuttle: Vehicle = {
+      runId: "999-0555",
+      headwaySpacing: null,
+      scheduleAdherenceSecs: 0,
+      isOffCourse: true,
+    } as Vehicle
+    expect(drawnStatus(shuttle)).toEqual("plain")
+  })
+
   test("return scheduled status", () => {
     mockHeadwaysOff()
     const vehicle: Vehicle = {
