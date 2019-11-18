@@ -5,7 +5,9 @@ import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useSearchResults from "../../src/hooks/useSearchResults"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle, VehicleOrGhost } from "../../src/realtime"
-import { initialState } from "../../src/state"
+import { initialState, State } from "../../src/state"
+
+jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
 const vehicle: Vehicle = {
   id: "v1",
@@ -97,6 +99,26 @@ describe("SearchPage", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+          <SearchPage />
+        </StateDispatchProvider>
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders a selected vehicle", () => {
+    const selectedVehicleState: State = {
+      ...initialState,
+      selectedVehicleId: "v1",
+    }
+
+    const tree = renderer
+      .create(
+        <StateDispatchProvider
+          state={selectedVehicleState}
+          dispatch={jest.fn()}
+        >
           <SearchPage />
         </StateDispatchProvider>
       )

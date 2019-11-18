@@ -3,6 +3,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { setSearchText } from "../models/search"
 import { isAVehicle } from "../models/vehicle"
 import { Vehicle, VehicleOrGhost } from "../realtime"
+import { selectVehicle } from "../state"
 import PropertiesList from "./propertiesList"
 import { RouteVariantName } from "./routeVariantName"
 
@@ -28,10 +29,12 @@ const SearchResultCard = ({
 }: {
   vehicleOrGhost: VehicleOrGhost
 }) => {
-  const [{ search }] = useContext(StateDispatchContext)
+  const [{ search }, dispatch] = useContext(StateDispatchContext)
+
+  const selectVehicleOrGhost = () => dispatch(selectVehicle(vehicleOrGhost.id))
 
   return (
-    <div className="m-search-results__card">
+    <div className="m-search-results__card" onClick={selectVehicleOrGhost}>
       <PropertiesList
         vehicleOrGhost={vehicleOrGhost}
         highlightText={search.text}

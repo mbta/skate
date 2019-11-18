@@ -9,6 +9,7 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
   >
     <div
       className="m-search-results__card"
+      onClick={[Function]}
     >
       <div
         className="m-properties-list"
@@ -73,6 +74,7 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
     </div>
     <div
       className="m-search-results__card"
+      onClick={[Function]}
     >
       <div
         className="m-properties-list"
