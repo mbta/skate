@@ -4,7 +4,9 @@ import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSearchResults from "../hooks/useSearchResults"
 import { isValidSearch, Search } from "../models/search"
-import { VehicleOrGhost } from "../realtime"
+import { isAVehicle } from "../models/vehicle"
+import { Vehicle, VehicleOrGhost } from "../realtime"
+import Map from "./map"
 import RecentSearches from "./recentSearches"
 import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
@@ -14,6 +16,16 @@ const thereIsAnActiveSearch = (
   search: Search
 ): boolean =>
   vehicles !== null && vehicles !== undefined && isValidSearch(search)
+
+const onlyVehicles = (
+  vehiclesOrGhosts: VehicleOrGhost[] | null | undefined
+): Vehicle[] => {
+  if (vehiclesOrGhosts === null || vehiclesOrGhosts === undefined) {
+    return []
+  }
+
+  return vehiclesOrGhosts.filter(vog => isAVehicle(vog)) as Vehicle[]
+}
 
 const SearchPage = (): ReactElement<HTMLDivElement> => {
   const [{ search }] = useContext(StateDispatchContext)
@@ -34,6 +46,10 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
             <RecentSearches />
           )}
         </div>
+      </div>
+
+      <div className="m-search-page__map">
+        <Map vehicles={onlyVehicles(vehicles)} />
       </div>
     </div>
   )
