@@ -2,6 +2,7 @@ import React from "react"
 import renderer from "react-test-renderer"
 import SearchPage from "../../src/components/searchPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
+import useSearchResults from "../../src/hooks/useSearchResults"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle, VehicleOrGhost } from "../../src/realtime"
 import { initialState } from "../../src/state"
@@ -74,15 +75,12 @@ const ghost: Ghost = {
 }
 jest.mock("../../src/hooks/useSearchResults", () => ({
   __esModule: true,
-  default: jest
-    .fn()
-    // Ipmlementation sequence matches tests
-    .mockImplementationOnce(() => null)
-    .mockImplementation(() => [vehicle, ghost] as VehicleOrGhost[]),
+  default: jest.fn(),
 }))
 
 describe("SearchPage", () => {
   test("renders the empty state", () => {
+    ;(useSearchResults as jest.Mock).mockImplementationOnce(() => undefined)
     const tree = renderer
       .create(
         <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
@@ -95,6 +93,8 @@ describe("SearchPage", () => {
   })
 
   test("renders vehicle data", () => {
+    const searchResults: VehicleOrGhost[] = [vehicle, ghost]
+    ;(useSearchResults as jest.Mock).mockImplementation(() => searchResults)
     const tree = renderer
       .create(
         <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
