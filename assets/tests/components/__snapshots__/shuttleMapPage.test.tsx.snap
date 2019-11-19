@@ -80,6 +80,14 @@ exports[`Shuttle Map Page renders 1`] = `
             <span
               className="m-route-picker__route-list-button-name"
             >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
               Blue 999 501
             </span>
             <span
@@ -96,6 +104,14 @@ exports[`Shuttle Map Page renders 1`] = `
             <span
               className="m-route-picker__route-list-button-name"
             >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
               Green 999 502
             </span>
             <span
@@ -112,6 +128,14 @@ exports[`Shuttle Map Page renders 1`] = `
             <span
               className="m-route-picker__route-list-button-name"
             >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
               Orange 999 503
             </span>
             <span
@@ -128,6 +152,14 @@ exports[`Shuttle Map Page renders 1`] = `
             <span
               className="m-route-picker__route-list-button-name"
             >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
               Red 999 504
             </span>
             <span
@@ -144,6 +176,14 @@ exports[`Shuttle Map Page renders 1`] = `
             <span
               className="m-route-picker__route-list-button-name"
             >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
               CR 999 505
             </span>
             <span
@@ -250,6 +290,14 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
             <span
               className="m-route-picker__route-list-button-name"
             >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
               Blue 999 501
             </span>
             <span
@@ -266,6 +314,14 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
             <span
               className="m-route-picker__route-list-button-name"
             >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
               Green 999 502
             </span>
             <span
@@ -282,6 +338,14 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
             <span
               className="m-route-picker__route-list-button-name"
             >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
               Orange 999 503
             </span>
             <span
@@ -298,6 +362,14 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
             <span
               className="m-route-picker__route-list-button-name"
             >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
               Red 999 504
             </span>
             <span
@@ -314,6 +386,14 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
             <span
               className="m-route-picker__route-list-button-name"
             >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
               CR 999 505
             </span>
             <span
@@ -609,6 +689,14 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
             <span
               className="m-route-picker__route-list-button-name"
             >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
               Blue 999 501
             </span>
             <span
@@ -625,6 +713,14 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
             <span
               className="m-route-picker__route-list-button-name"
             >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
               Green 999 502
             </span>
             <span
@@ -641,6 +737,14 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
             <span
               className="m-route-picker__route-list-button-name"
             >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
               Orange 999 503
             </span>
             <span
@@ -657,6 +761,14 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
             <span
               className="m-route-picker__route-list-button-name"
             >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
               Red 999 504
             </span>
             <span
@@ -673,6 +785,14 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
             <span
               className="m-route-picker__route-list-button-name"
             >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
               CR 999 505
             </span>
             <span
@@ -779,6 +899,14 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
             <span
               className="m-route-picker__route-list-button-name"
             >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
               Blue 999 501
             </span>
             <span
@@ -795,6 +923,14 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
             <span
               className="m-route-picker__route-list-button-name"
             >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
               Green 999 502
             </span>
             <span
@@ -811,6 +947,14 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
             <span
               className="m-route-picker__route-list-button-name"
             >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
               Orange 999 503
             </span>
             <span
@@ -827,6 +971,14 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
             <span
               className="m-route-picker__route-list-button-name"
             >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
               Red 999 504
             </span>
             <span
@@ -843,6 +995,14 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
             <span
               className="m-route-picker__route-list-button-name"
             >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
               CR 999 505
             </span>
             <span
