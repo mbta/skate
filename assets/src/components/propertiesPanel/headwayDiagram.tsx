@@ -11,7 +11,7 @@ import {
   headwaySpacingToString,
   humanReadableHeadwaySpacing,
 } from "../../models/vehicleStatus"
-import { Vehicle, VehiclesForRoute } from "../../realtime"
+import { Vehicle, VehicleOrGhost } from "../../realtime"
 import { ByRouteId } from "../../schedule"
 import { selectVehicle } from "../../state"
 import VehicleIcon, { Orientation, Size } from "../vehicleIcon"
@@ -54,7 +54,7 @@ const OtherVehicle = ({ vehicle }: { vehicle: Vehicle }) => {
 
 const HeadwayDiagram = ({ vehicle }: { vehicle: Vehicle }) => {
   const [{ settings }] = useContext(StateDispatchContext)
-  const vehiclesByRouteId: ByRouteId<VehiclesForRoute> = useContext(
+  const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = useContext(
     VehiclesByRouteIdContext
   )
   const { nextVehicle, previousVehicle } = nextAndPreviousVehicle(

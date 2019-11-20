@@ -43,7 +43,6 @@ describe("PropertiesPanel", () => {
       scheduleAdherenceString: "0.0 sec (ontime)",
       scheduledHeadwaySecs: 120,
       isOffCourse: false,
-      isLayingOver: false,
       layoverDepartureTime: null,
       blockIsActive: false,
       dataDiscrepancies: [
@@ -70,7 +69,7 @@ describe("PropertiesPanel", () => {
         timepointId: "tp1",
       },
       scheduledLocation: null,
-      isOnRoute: true,
+      routeStatus: "on_route",
     }
 
     const tree = renderer

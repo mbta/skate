@@ -30,7 +30,6 @@ const vehicle: Vehicle = {
   scheduleAdherenceString: "-5.1 minutes (early)",
   scheduledHeadwaySecs: 480,
   isOffCourse: false,
-  isLayingOver: false,
   layoverDepartureTime: null,
   blockIsActive: true,
   dataDiscrepancies: [],
@@ -46,11 +45,11 @@ const vehicle: Vehicle = {
       fractionUntilTimepoint: 0.7574074074074074,
     },
   },
-  isOnRoute: true,
+  routeStatus: "on_route",
 }
 
 jest.mock("../../../src/models/vehiclesByRouteId", () => ({
-  allVehiclesForRoute: jest.fn(() => []),
+  allVehiclesForRoute: jest.fn(),
   nextAndPreviousVehicle: jest
     .fn()
     // Ipmlementation sequence matches
@@ -98,7 +97,6 @@ describe("HeadwayDiagram", () => {
       scheduleAdherenceString: "6.8 minutes (late)",
       scheduledHeadwaySecs: 540,
       isOffCourse: false,
-      isLayingOver: false,
       layoverDepartureTime: null,
       blockIsActive: true,
       dataDiscrepancies: [],
@@ -114,7 +112,7 @@ describe("HeadwayDiagram", () => {
           fractionUntilTimepoint: 0.004761904761904762,
         },
       },
-      isOnRoute: true,
+      routeStatus: "on_route",
     }
 
     const tree = renderer
@@ -148,7 +146,6 @@ describe("HeadwayDiagram", () => {
       scheduleAdherenceString: "5.2 minutes (late)",
       scheduledHeadwaySecs: 600,
       isOffCourse: false,
-      isLayingOver: false,
       layoverDepartureTime: null,
       blockIsActive: true,
       dataDiscrepancies: [],
@@ -164,7 +161,7 @@ describe("HeadwayDiagram", () => {
           fractionUntilTimepoint: 0.10416666666666667,
         },
       },
-      isOnRoute: true,
+      routeStatus: "on_route",
     }
 
     const tree = renderer

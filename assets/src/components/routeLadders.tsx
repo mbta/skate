@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { VehiclesByRouteIdContext } from "../contexts/vehiclesByRouteIdContext"
-import { VehicleId, VehiclesForRoute } from "../realtime.d"
+import { VehicleId, VehicleOrGhost } from "../realtime.d"
 import { ByRouteId, Route, TimepointsByRouteId } from "../schedule.d"
 import RouteLadder from "./routeLadder"
 
@@ -15,7 +15,7 @@ const RouteLadders = ({
   timepointsByRouteId,
   selectedVehicleId,
 }: Props) => {
-  const vehiclesByRouteId: ByRouteId<VehiclesForRoute> = useContext(
+  const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = useContext(
     VehiclesByRouteIdContext
   )
 
@@ -26,7 +26,7 @@ const RouteLadders = ({
           key={route.id}
           route={route}
           timepoints={timepointsByRouteId[route.id]}
-          vehiclesForRoute={vehiclesByRouteId[route.id]}
+          vehiclesAndGhosts={vehiclesByRouteId[route.id]}
           selectedVehicleId={selectedVehicleId}
         />
       ))}

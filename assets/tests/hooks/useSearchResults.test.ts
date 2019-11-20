@@ -116,7 +116,6 @@ describe("useSearchResults", () => {
         headway_spacing: null,
         id: "v1",
         is_off_course: false,
-        is_laying_over: false,
         layover_departure_time: null,
         label: "v1-label",
         latitude: 0,
@@ -148,6 +147,7 @@ describe("useSearchResults", () => {
         timestamp: 123,
         trip_id: "t1",
         via_variant: "X",
+        route_status: "on_route",
       } as VehicleData,
     ]
     const vehicles: VehicleOrGhost[] = [
@@ -174,7 +174,6 @@ describe("useSearchResults", () => {
         scheduleAdherenceString: "0.0 sec (ontime)",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
-        isLayingOver: false,
         layoverDepartureTime: null,
         blockIsActive: true,
         dataDiscrepancies: [
@@ -220,7 +219,7 @@ describe("useSearchResults", () => {
             fractionUntilTimepoint: 0.5,
           },
         },
-        isOnRoute: true,
+        routeStatus: "on_route",
       } as Vehicle,
     ]
 

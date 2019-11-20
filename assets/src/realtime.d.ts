@@ -34,6 +34,8 @@ export interface Ghost {
 
 export type SourceId = string
 
+export type RouteStatus = "on_route" | "laying_over" | "pulling_out"
+
 export type RunId = string
 
 export interface Vehicle {
@@ -59,14 +61,13 @@ export interface Vehicle {
   scheduleAdherenceString: string
   scheduledHeadwaySecs: number
   isOffCourse: boolean
-  isLayingOver: boolean
   layoverDepartureTime: number | null
   blockIsActive: boolean
   dataDiscrepancies: DataDiscrepancy[]
   stopStatus: VehicleStopStatus
   timepointStatus: VehicleTimepointStatus | null
   scheduledLocation: VehicleScheduledLocation | null
-  isOnRoute: boolean
+  routeStatus: RouteStatus
 }
 
 export type VehicleOrGhost = Vehicle | Ghost
@@ -86,10 +87,4 @@ export interface VehicleScheduledLocation {
 export interface VehicleTimepointStatus {
   timepointId: TimepointId
   fractionUntilTimepoint: number
-}
-
-export interface VehiclesForRoute {
-  onRouteVehicles: Vehicle[]
-  incomingVehicles: Vehicle[]
-  ghosts: Ghost[]
 }

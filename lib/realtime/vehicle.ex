@@ -8,7 +8,7 @@ defmodule Realtime.Vehicle do
           stop_id: Stop.id(),
           stop_name: String.t()
         }
-  @type route_status :: :incoming | :on_route
+  @type route_status :: :on_route | :laying_over | :pulling_out
 
   @type t :: %__MODULE__{
           id: String.t(),
@@ -35,7 +35,6 @@ defmodule Realtime.Vehicle do
           schedule_adherence_string: String.t() | nil,
           scheduled_headway_secs: float() | nil,
           is_off_course: boolean(),
-          is_laying_over: boolean(),
           layover_departure_time: integer() | nil,
           block_is_active: boolean(),
           sources: MapSet.t(String.t()),
@@ -60,7 +59,6 @@ defmodule Realtime.Vehicle do
     :run_id,
     :headway_spacing,
     :is_off_course,
-    :is_laying_over,
     :block_is_active,
     :sources,
     :stop_status,
@@ -94,7 +92,6 @@ defmodule Realtime.Vehicle do
     :schedule_adherence_string,
     :scheduled_headway_secs,
     :is_off_course,
-    :is_laying_over,
     :layover_departure_time,
     :block_is_active,
     :sources,
@@ -184,7 +181,6 @@ defmodule Realtime.Vehicle do
       schedule_adherence_string: VehiclePosition.schedule_adherence_string(vehicle_position),
       scheduled_headway_secs: VehiclePosition.scheduled_headway_secs(vehicle_position),
       is_off_course: is_off_course,
-      is_laying_over: VehiclePosition.is_laying_over(vehicle_position),
       layover_departure_time: VehiclePosition.layover_departure_time(vehicle_position),
       block_is_active: active_block?(is_off_course, block, now_fn.()),
       sources: VehiclePosition.sources(vehicle_position),
@@ -195,7 +191,7 @@ defmodule Realtime.Vehicle do
       },
       timepoint_status: timepoint_status,
       scheduled_location: scheduled_location,
-      route_status: route_status(stop_id, trip)
+      route_status: route_status(stop_id, trip, block)
     }
   end
 
@@ -264,12 +260,21 @@ defmodule Realtime.Vehicle do
     if stop, do: stop.name, else: stop_id
   end
 
-  @spec route_status(Stop.id(), Trip.t() | nil) :: route_status()
-  def route_status(_stop_id, nil), do: :incoming
+  @spec route_status(Stop.id(), Trip.t() | nil, Block.t() | nil) :: route_status()
+  def route_status(_stop_id, nil, _block) do
+    # can't find the trip, won't be able to show it on the ladder, show it incoming instead
+    :pulling_out
+  end
 
-  def route_status(stop_id, %Trip{stop_times: [first_stop_time | _rest]}) do
-    if first_stop_time.stop_id == stop_id do
-      :incoming
+  def route_status(stop_id, trip, block) do
+    if stop_id == List.first(trip.stop_times).stop_id do
+      # hasn't started trip yet
+      if block != nil && trip.id == List.first(block).id do
+        # starting the block, pulling out from garage
+        :pulling_out
+      else
+        :laying_over
+      end
     else
       :on_route
     end

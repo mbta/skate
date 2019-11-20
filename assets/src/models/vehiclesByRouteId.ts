@@ -1,39 +1,24 @@
-import { partition } from "../helpers/array"
-import { Vehicle, VehicleOrGhost, VehiclesForRoute } from "../realtime"
+import { flatten, partition } from "../helpers/array"
+import { Vehicle, VehicleOrGhost } from "../realtime"
 import { ByRouteId, RouteId } from "../schedule"
+import { isAVehicle } from "./vehicle"
 
 interface NextAndPreviousVehicle {
   nextVehicle?: Vehicle
   previousVehicle?: Vehicle
 }
 
-export const allVehicles = (
-  vehiclesForRoute: VehiclesForRoute | undefined
-): Vehicle[] => {
-  if (vehiclesForRoute === undefined) {
-    return []
-  }
-
-  return [
-    ...vehiclesForRoute.onRouteVehicles,
-    ...vehiclesForRoute.incomingVehicles,
-  ]
-}
-
 export const allVehiclesAndGhosts = (
-  vehiclesForRoute: VehiclesForRoute | undefined
-): VehicleOrGhost[] => {
-  if (vehiclesForRoute === undefined) {
-    return []
-  }
-
-  return [...allVehicles(vehiclesForRoute), ...vehiclesForRoute.ghosts]
-}
+  vehiclesByRouteId: ByRouteId<VehicleOrGhost[]>
+): VehicleOrGhost[] => flatten(Object.values(vehiclesByRouteId))
 
 export const allVehiclesForRoute = (
-  vehiclesByRouteId: ByRouteId<VehiclesForRoute>,
+  vehiclesByRouteId: ByRouteId<VehicleOrGhost[]>,
   routeId: RouteId
-): Vehicle[] => allVehicles(vehiclesByRouteId[routeId])
+): Vehicle[] =>
+  (vehiclesByRouteId[routeId] || [])
+    .filter(isAVehicle)
+    .filter(vehicle => vehicle.routeId === routeId)
 
 /**
  * Partition vehicles by direction
@@ -51,11 +36,13 @@ export const nextAndPreviousVehicle = (
 
   const nextVehicle = vehiclesGoingTheSameDirection.find(
     vehicle =>
-      vehicle.previousVehicleId === currentVehicle.id && vehicle.isOnRoute
+      vehicle.previousVehicleId === currentVehicle.id &&
+      vehicle.routeStatus === "on_route"
   )
   const previousVehicle = vehiclesGoingTheSameDirection.find(
     vehicle =>
-      vehicle.id === currentVehicle.previousVehicleId && vehicle.isOnRoute
+      vehicle.id === currentVehicle.previousVehicleId &&
+      vehicle.routeStatus === "on_route"
   )
 
   return {

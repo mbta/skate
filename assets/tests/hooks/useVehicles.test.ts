@@ -1,6 +1,7 @@
 import { renderHook } from "@testing-library/react-hooks"
 import { Socket } from "phoenix"
 import useVehicles from "../../src/hooks/useVehicles"
+import { VehicleData } from "../../src/models/vehicleData"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle, VehicleTimepointStatus } from "../../src/realtime.d"
 import { RouteId } from "../../src/schedule.d"
@@ -41,7 +42,7 @@ const makeMockChannel = (expectedJoinMessage?: "ok" | "error" | "timeout") => {
 }
 
 describe("useVehicles", () => {
-  const vehiclesData = [
+  const vehiclesData: VehicleData[] = [
     {
       bearing: 33,
       block_id: "block-1",
@@ -80,7 +81,6 @@ describe("useVehicles", () => {
       headway_spacing: null,
       id: "v1",
       is_off_course: false,
-      is_laying_over: false,
       layover_departure_time: null,
       label: "v1-label",
       latitude: 0,
@@ -112,6 +112,7 @@ describe("useVehicles", () => {
       timestamp: 123,
       trip_id: "t1",
       via_variant: "X",
+      route_status: "on_route",
     },
   ]
   const vehicles: Vehicle[] = [
@@ -138,7 +139,6 @@ describe("useVehicles", () => {
       scheduleAdherenceString: "0.0 sec (ontime)",
       scheduledHeadwaySecs: 120,
       isOffCourse: false,
-      isLayingOver: false,
       layoverDepartureTime: null,
       blockIsActive: true,
       dataDiscrepancies: [
@@ -184,7 +184,7 @@ describe("useVehicles", () => {
           fractionUntilTimepoint: 0.5,
         },
       },
-      isOnRoute: true,
+      routeStatus: "on_route",
     },
   ]
 
@@ -231,11 +231,7 @@ describe("useVehicles", () => {
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
     mockChannel.receive.mockImplementation((event, handler) => {
       if (event === "ok") {
-        handler({
-          on_route_vehicles: vehiclesData,
-          incoming_vehicles: [],
-          ghosts: [],
-        })
+        handler({ data: vehiclesData })
       }
       return mockChannel
     })
@@ -245,44 +241,7 @@ describe("useVehicles", () => {
     )
 
     expect(result.current).toEqual({
-      "1": {
-        onRouteVehicles: vehicles,
-        incomingVehicles: [],
-        ghosts: [],
-      },
-    })
-  })
-
-  test("returns incoming vehicles", async () => {
-    const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel()
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
-    mockChannel.receive.mockImplementation((event, handler) => {
-      if (event === "ok") {
-        handler({
-          on_route_vehicles: [],
-          incoming_vehicles: vehiclesData,
-          ghosts: [],
-        })
-      }
-      return mockChannel
-    })
-
-    const { result } = renderHook(() =>
-      useVehicles((mockSocket as any) as Socket, ["1"])
-    )
-
-    const incomingVehicles = vehicles.map(vehicle => ({
-      ...vehicle,
-      isOnRoute: false,
-    }))
-
-    expect(result.current).toEqual({
-      "1": {
-        onRouteVehicles: [],
-        incomingVehicles,
-        ghosts: [],
-      },
+      "1": vehicles,
     })
   })
 
@@ -322,11 +281,7 @@ describe("useVehicles", () => {
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
     mockChannel.receive.mockImplementation((event, handler) => {
       if (event === "ok") {
-        handler({
-          on_route_vehicles: [],
-          incoming_vehicles: [],
-          ghosts: [ghostData],
-        })
+        handler({ data: [ghostData] })
       }
       return mockChannel
     })
@@ -336,11 +291,7 @@ describe("useVehicles", () => {
     )
 
     expect(result.current).toEqual({
-      "1": {
-        onRouteVehicles: [],
-        incomingVehicles: [],
-        ghosts: [ghost],
-      },
+      "1": [ghost],
     })
   })
 
@@ -350,11 +301,7 @@ describe("useVehicles", () => {
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
     mockChannel.on.mockImplementation((event, handler) => {
       if (event === "vehicles") {
-        handler({
-          on_route_vehicles: vehiclesData,
-          incoming_vehicles: [],
-          ghosts: [],
-        })
+        handler({ data: vehiclesData })
       }
     })
 
@@ -363,11 +310,7 @@ describe("useVehicles", () => {
     )
 
     expect(result.current).toEqual({
-      "1": {
-        onRouteVehicles: vehicles,
-        incomingVehicles: [],
-        ghosts: [],
-      },
+      "1": vehicles,
     })
   })
 
@@ -396,9 +339,7 @@ describe("useVehicles", () => {
     mockChannel.on.mockImplementation((event, handler) => {
       if (event === "vehicles") {
         handler({
-          on_route_vehicles: vehiclesDataVaryingHeadway,
-          incoming_vehicles: [],
-          ghosts: [],
+          data: vehiclesDataVaryingHeadway,
         })
       }
     })
@@ -408,11 +349,7 @@ describe("useVehicles", () => {
     )
 
     expect(result.current).toEqual({
-      "1": {
-        onRouteVehicles: expectedVehicles,
-        incomingVehicles: [],
-        ghosts: [],
-      },
+      "1": expectedVehicles,
     })
   })
 

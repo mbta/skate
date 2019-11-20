@@ -5,7 +5,7 @@ import LadderPage, {
   findSelectedVehicleOrGhost,
 } from "../../src/components/ladderPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import { Ghost, Vehicle, VehiclesForRoute } from "../../src/realtime"
+import { Ghost, Vehicle, VehicleOrGhost } from "../../src/realtime"
 import { ByRouteId, Route, TimepointsByRouteId } from "../../src/schedule.d"
 import { initialState } from "../../src/state"
 
@@ -90,14 +90,16 @@ describe("findSelectedVehicleOrGhost", () => {
       findSelectedVehicleOrGhost(vehiclesByRouteId, "on-route-39")
     ).toEqual({
       id: "on-route-39",
+      routeStatus: "on_route",
     })
   })
 
-  test("returns the requested vehicle if it is incoming", () => {
+  test("returns the requested vehicle if it is pulling out", () => {
     expect(
-      findSelectedVehicleOrGhost(vehiclesByRouteId, "incoming-39")
+      findSelectedVehicleOrGhost(vehiclesByRouteId, "pulling-out-39")
     ).toEqual({
-      id: "incoming-39",
+      id: "pulling-out-39",
+      routeStatus: "pulling_out",
     })
   })
 
@@ -131,39 +133,31 @@ const timepointsByRouteId: TimepointsByRouteId = {
   "73": null,
 }
 
-const vehiclesByRouteId: ByRouteId<VehiclesForRoute> = {
-  "23": {
-    onRouteVehicles: [
-      {
-        id: "on-route-23",
-      } as Vehicle,
-    ],
-    incomingVehicles: [
-      {
-        id: "incoming-23",
-      } as Vehicle,
-    ],
-    ghosts: [
-      {
-        id: "ghost-23",
-      } as Ghost,
-    ],
-  },
-  "39": {
-    onRouteVehicles: [
-      {
-        id: "on-route-39",
-      } as Vehicle,
-    ],
-    incomingVehicles: [
-      {
-        id: "incoming-39",
-      } as Vehicle,
-    ],
-    ghosts: [
-      {
-        id: "ghost-39",
-      } as Ghost,
-    ],
-  },
+const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = {
+  "23": [
+    {
+      id: "on-route-23",
+      routeStatus: "on_route",
+    } as Vehicle,
+    {
+      id: "pulling-out-23",
+      routeStatus: "pulling_out",
+    } as Vehicle,
+    {
+      id: "ghost-23",
+    } as Ghost,
+  ],
+  "39": [
+    {
+      id: "on-route-39",
+      routeStatus: "on_route",
+    } as Vehicle,
+    {
+      id: "pulling-out-39",
+      routeStatus: "pulling_out",
+    } as Vehicle,
+    {
+      id: "ghost-39",
+    } as Ghost,
+  ],
 }

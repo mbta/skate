@@ -1,4 +1,4 @@
-import { partition, uniq } from "../../src/helpers/array"
+import { flatten, partition, uniq } from "../../src/helpers/array"
 
 describe("partition", () => {
   test("partitions elements that the test function evaluates to true into the first bucket, else to the second bucket", () => {
@@ -31,5 +31,19 @@ describe("uniq", () => {
 
   test("removes duplicate values even if they're not next to each other", () => {
     expect(uniq(["1", "3", "2", "3", "1", "1"])).toEqual(["1", "2", "3"])
+  })
+})
+
+describe("flatten", () => {
+  test("empty case", () => {
+    expect(flatten([])).toEqual([])
+  })
+
+  test("children are empty", () => {
+    expect(flatten([[], []])).toEqual([])
+  })
+
+  test("flattens children", () => {
+    expect(flatten([[1, 2], [], [3, 4, 5], [6]])).toEqual([1, 2, 3, 4, 5, 6])
   })
 })

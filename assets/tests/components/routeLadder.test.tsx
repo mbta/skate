@@ -1,10 +1,16 @@
 import { mount } from "enzyme"
 import React from "react"
 import renderer, { act } from "react-test-renderer"
-import RouteLadder from "../../src/components/routeLadder"
+import { LadderDirection } from "../../src/components/ladder"
+import RouteLadder, { groupByPosition } from "../../src/components/routeLadder"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { Ghost, Vehicle } from "../../src/realtime.d"
+import {
+  Ghost,
+  RouteStatus,
+  Vehicle,
+  VehicleOrGhost,
+} from "../../src/realtime.d"
 import { Route } from "../../src/schedule.d"
 import { deselectRoute, initialState, selectVehicle } from "../../src/state"
 
@@ -24,7 +30,7 @@ const vehicles: Vehicle[] = [
     latitude: 0,
     longitude: 0,
     directionId: 0,
-    routeId: "1",
+    routeId: "28",
     tripId: "39914237",
     operatorId: "op1",
     operatorName: "SMITH",
@@ -39,7 +45,6 @@ const vehicles: Vehicle[] = [
     scheduleAdherenceString: "0.0 sec (ontime)",
     scheduledHeadwaySecs: 120,
     isOffCourse: false,
-    isLayingOver: false,
     layoverDepartureTime: null,
     blockIsActive: true,
     dataDiscrepancies: [],
@@ -52,7 +57,7 @@ const vehicles: Vehicle[] = [
       timepointId: "MATPN",
     },
     scheduledLocation: null,
-    isOnRoute: true,
+    routeStatus: "on_route",
   },
   {
     id: "y0479",
@@ -62,7 +67,7 @@ const vehicles: Vehicle[] = [
     latitude: 0,
     longitude: 0,
     directionId: 1,
-    routeId: "1",
+    routeId: "28",
     tripId: "39914128",
     operatorId: "op2",
     operatorName: "JONES",
@@ -77,7 +82,6 @@ const vehicles: Vehicle[] = [
     scheduleAdherenceString: "0.0 sec (ontime)",
     scheduledHeadwaySecs: 120,
     isOffCourse: false,
-    isLayingOver: false,
     layoverDepartureTime: null,
     blockIsActive: true,
     dataDiscrepancies: [],
@@ -96,7 +100,7 @@ const vehicles: Vehicle[] = [
         fractionUntilTimepoint: 0.0,
       },
     },
-    isOnRoute: true,
+    routeStatus: "on_route",
   },
 ]
 
@@ -136,7 +140,7 @@ describe("routeLadder", () => {
         <RouteLadder
           route={route}
           timepoints={timepoints}
-          vehiclesForRoute={undefined}
+          vehiclesAndGhosts={undefined}
           selectedVehicleId={undefined}
         />
       )
@@ -173,11 +177,7 @@ describe("routeLadder", () => {
         <RouteLadder
           route={route}
           timepoints={timepoints}
-          vehiclesForRoute={{
-            onRouteVehicles: vehicles,
-            incomingVehicles: [],
-            ghosts: [ghost],
-          }}
+          vehiclesAndGhosts={(vehicles as VehicleOrGhost[]).concat([ghost])}
           selectedVehicleId={undefined}
         />
       )
@@ -198,11 +198,10 @@ describe("routeLadder", () => {
         <RouteLadder
           route={route}
           timepoints={timepoints}
-          vehiclesForRoute={{
-            onRouteVehicles: [],
-            incomingVehicles: vehicles,
-            ghosts: [],
-          }}
+          vehiclesAndGhosts={vehicles.map((vehicle: Vehicle) => ({
+            ...vehicle,
+            routeStatus: "pulling_out" as RouteStatus,
+          }))}
           selectedVehicleId={undefined}
         />
       )
@@ -213,9 +212,9 @@ describe("routeLadder", () => {
 
   test("renders a route ladder with laying over vehicles", () => {
     const route: Route = {
-      id: "1",
+      id: "28",
       directionNames: { 0: "Outbound", 1: "Inbound" },
-      name: "1",
+      name: "28",
     }
 
     const timepoints = ["MATPN", "WELLH", "MORTN"]
@@ -227,14 +226,10 @@ describe("routeLadder", () => {
           route={route}
           selectedVehicleId={undefined}
           timepoints={timepoints}
-          vehiclesForRoute={{
-            onRouteVehicles: [],
-            incomingVehicles: [
-              { ...v1, isLayingOver: true },
-              { ...v2, isLayingOver: true },
-            ],
-            ghosts: [],
-          }}
+          vehiclesAndGhosts={[
+            { ...v1, routeStatus: "laying_over" },
+            { ...v2, routeStatus: "laying_over" },
+          ]}
         />
       )
       .toJSON()
@@ -255,7 +250,7 @@ describe("routeLadder", () => {
         <RouteLadder
           route={route}
           timepoints={timepoints}
-          vehiclesForRoute={undefined}
+          vehiclesAndGhosts={undefined}
           selectedVehicleId={undefined}
         />
       )
@@ -278,7 +273,7 @@ describe("routeLadder", () => {
         <RouteLadder
           route={route}
           timepoints={timepoints}
-          vehiclesForRoute={undefined}
+          vehiclesAndGhosts={undefined}
           selectedVehicleId={undefined}
         />
       </StateDispatchProvider>
@@ -300,7 +295,7 @@ describe("routeLadder", () => {
       <RouteLadder
         route={route}
         timepoints={timepoints}
-        vehiclesForRoute={undefined}
+        vehiclesAndGhosts={undefined}
         selectedVehicleId={undefined}
       />
     )
@@ -345,7 +340,6 @@ describe("routeLadder", () => {
       scheduleAdherenceString: "0.0 sec (ontime)",
       scheduledHeadwaySecs: 120,
       isOffCourse: false,
-      isLayingOver: false,
       layoverDepartureTime: null,
       blockIsActive: true,
       dataDiscrepancies: [],
@@ -358,7 +352,7 @@ describe("routeLadder", () => {
         fractionUntilTimepoint: 0.5,
       },
       scheduledLocation: null,
-      isOnRoute: true,
+      routeStatus: "pulling_out",
     }
 
     const wrapper = mount(
@@ -366,11 +360,7 @@ describe("routeLadder", () => {
         <RouteLadder
           route={route}
           timepoints={timepoints}
-          vehiclesForRoute={{
-            onRouteVehicles: [],
-            incomingVehicles: [vehicle],
-            ghosts: [],
-          }}
+          vehiclesAndGhosts={[vehicle]}
           selectedVehicleId={undefined}
         />
       </StateDispatchProvider>
@@ -378,5 +368,86 @@ describe("routeLadder", () => {
     wrapper.find(".m-incoming-box__vehicle").simulate("click")
 
     expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle.id))
+  })
+})
+
+describe("groupByPosition", () => {
+  const emptyByPosition = {
+    ghosts: [],
+    onRoute: [],
+    layingOverTop: [],
+    layingOverBottom: [],
+    incoming: [],
+  }
+  test("loading", () => {
+    expect(groupByPosition(undefined, "1", LadderDirection.ZeroToOne)).toEqual(
+      emptyByPosition
+    )
+  })
+
+  test("on route", () => {
+    const vehicle: Vehicle = {
+      routeId: "1",
+      directionId: 0,
+      routeStatus: "on_route",
+    } as Vehicle
+    expect(groupByPosition([vehicle], "1", LadderDirection.ZeroToOne)).toEqual({
+      ...emptyByPosition,
+      onRoute: [vehicle],
+    })
+  })
+
+  test("laying over", () => {
+    const ladderDirection: LadderDirection = LadderDirection.ZeroToOne
+    const top: Vehicle = {
+      routeId: "1",
+      directionId: 1,
+      routeStatus: "laying_over",
+    } as Vehicle
+    const bottom: Vehicle = {
+      routeId: "1",
+      directionId: 0,
+      routeStatus: "laying_over",
+    } as Vehicle
+    expect(groupByPosition([top, bottom], "1", ladderDirection)).toEqual({
+      ...emptyByPosition,
+      layingOverTop: [top],
+      layingOverBottom: [bottom],
+    })
+  })
+
+  test("pulling out", () => {
+    const vehicle: Vehicle = {
+      routeId: "1",
+      directionId: 0,
+      routeStatus: "pulling_out",
+    } as Vehicle
+    expect(groupByPosition([vehicle], "1", LadderDirection.ZeroToOne)).toEqual({
+      ...emptyByPosition,
+      incoming: [vehicle],
+    })
+  })
+
+  test("incoming from another route", () => {
+    const vehicle: Vehicle = {
+      routeId: "2",
+      directionId: 0,
+      routeStatus: "on_route",
+    } as Vehicle
+    expect(groupByPosition([vehicle], "1", LadderDirection.ZeroToOne)).toEqual({
+      ...emptyByPosition,
+      incoming: [vehicle],
+    })
+  })
+
+  test("ghost", () => {
+    const ghost: Ghost = {
+      routeId: "1",
+      directionId: 0,
+    } as Ghost
+    expect(groupByPosition([ghost], "1", LadderDirection.ZeroToOne)).toEqual({
+      ...emptyByPosition,
+      ghosts: [ghost],
+    })
   })
 })

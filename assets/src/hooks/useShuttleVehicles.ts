@@ -54,11 +54,7 @@ interface ChannelPayload {
 
 const subscribe = (socket: Socket, dispatch: Dispatch<Action>): Channel => {
   const handleShuttles = (payload: ChannelPayload): void => {
-    dispatch(
-      setShuttles(
-        payload.data.map(data => vehicleFromData({ isOnRoute: true })(data))
-      )
-    )
+    dispatch(setShuttles(payload.data.map(data => vehicleFromData(data))))
   }
 
   const channel = socket.channel("vehicles:shuttle:all")

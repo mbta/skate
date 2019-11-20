@@ -45,7 +45,6 @@ const shuttlesData = [
     headway_spacing: null,
     id: "v1",
     is_off_course: false,
-    is_laying_over: false,
     layover_departure_time: null,
     label: "v1-label",
     latitude: 0,
@@ -77,6 +76,7 @@ const shuttlesData = [
     timestamp: 123,
     trip_id: "t1",
     via_variant: "X",
+    route_status: "pulling_out",
   },
 ]
 const shuttles: Vehicle[] = [
@@ -103,7 +103,6 @@ const shuttles: Vehicle[] = [
     scheduleAdherenceString: "0.0 sec (ontime)",
     scheduledHeadwaySecs: 120,
     isOffCourse: false,
-    isLayingOver: false,
     layoverDepartureTime: null,
     blockIsActive: true,
     dataDiscrepancies: [
@@ -149,7 +148,7 @@ const shuttles: Vehicle[] = [
         fractionUntilTimepoint: 0.5,
       },
     },
-    isOnRoute: true,
+    routeStatus: "pulling_out",
   },
 ]
 

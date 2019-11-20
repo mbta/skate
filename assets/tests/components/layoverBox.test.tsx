@@ -31,7 +31,6 @@ const vehicles: Vehicle[] = [
     scheduleAdherenceString: "0.0 sec (ontime)",
     scheduledHeadwaySecs: 120,
     isOffCourse: false,
-    isLayingOver: true,
     layoverDepartureTime: 1000002,
     blockIsActive: true,
     dataDiscrepancies: [],
@@ -44,7 +43,7 @@ const vehicles: Vehicle[] = [
       timepointId: "MATPN",
     },
     scheduledLocation: null,
-    isOnRoute: true,
+    routeStatus: "on_route",
   },
   {
     id: "y0479",
@@ -69,7 +68,6 @@ const vehicles: Vehicle[] = [
     scheduleAdherenceString: "0.0 sec (ontime)",
     scheduledHeadwaySecs: 120,
     isOffCourse: false,
-    isLayingOver: true,
     layoverDepartureTime: 1000001,
     blockIsActive: true,
     dataDiscrepancies: [],
@@ -88,7 +86,7 @@ const vehicles: Vehicle[] = [
         fractionUntilTimepoint: 0.0,
       },
     },
-    isOnRoute: true,
+    routeStatus: "on_route",
   },
 ]
 

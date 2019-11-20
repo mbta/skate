@@ -4,7 +4,7 @@ import { VehiclesByRouteIdContext } from "../contexts/vehiclesByRouteIdContext"
 import useRoutes from "../hooks/useRoutes"
 import useTimepoints from "../hooks/useTimepoints"
 import { allVehiclesAndGhosts } from "../models/vehiclesByRouteId"
-import { VehicleId, VehicleOrGhost, VehiclesForRoute } from "../realtime.d"
+import { VehicleId, VehicleOrGhost } from "../realtime.d"
 import { ByRouteId, Route, RouteId, TimepointsByRouteId } from "../schedule.d"
 import PropertiesPanel from "./propertiesPanel"
 import RouteLadders from "./routeLadders"
@@ -16,17 +16,12 @@ export const findRouteById = (
 ): Route | undefined => (routes || []).find(route => route.id === routeId)
 
 export const findSelectedVehicleOrGhost = (
-  vehiclesByRouteId: ByRouteId<VehiclesForRoute>,
+  vehiclesByRouteId: ByRouteId<VehicleOrGhost[]>,
   selectedVehicleId: VehicleId | undefined
 ): VehicleOrGhost | undefined => {
-  const vehiclesAndGhosts: VehicleOrGhost[] = Object.values(
-    vehiclesByRouteId
-  ).reduce(
-    (acc, vehiclesForRoute) =>
-      acc.concat(allVehiclesAndGhosts(vehiclesForRoute)),
-    [] as VehicleOrGhost[]
+  return allVehiclesAndGhosts(vehiclesByRouteId).find(
+    bus => bus.id === selectedVehicleId
   )
-  return vehiclesAndGhosts.find(bus => bus.id === selectedVehicleId)
 }
 
 const vehicleRoute = (
@@ -46,7 +41,7 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
     selectedRouteIds
   )
 
-  const vehiclesByRouteId: ByRouteId<VehiclesForRoute> = useContext(
+  const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = useContext(
     VehiclesByRouteIdContext
   )
   const selectedRoutes: Route[] = selectedRouteIds

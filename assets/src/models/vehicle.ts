@@ -4,15 +4,15 @@ import { Vehicle, VehicleOrGhost } from "../realtime"
 export const isAVehicle = (
   vehicleOrGhost: VehicleOrGhost
 ): vehicleOrGhost is Vehicle =>
-  (vehicleOrGhost as Vehicle).isOnRoute !== undefined
+  (vehicleOrGhost as Vehicle).routeStatus !== undefined
 
 export const isShuttle = (vehicle: Vehicle): boolean =>
   (vehicle.runId || "").startsWith("999")
 
 export const shouldShowHeadwayDiagram = ({
   headwaySpacing,
-  isOnRoute,
+  routeStatus,
 }: Vehicle): boolean =>
   featureIsEnabled("headway_ladder_colors") &&
   headwaySpacing !== null &&
-  isOnRoute
+  routeStatus === "on_route"

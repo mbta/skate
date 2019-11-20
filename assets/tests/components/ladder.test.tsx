@@ -40,7 +40,6 @@ describe("ladder", () => {
         scheduleAdherenceString: "0.0 sec (ontime)",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
-        isLayingOver: false,
         layoverDepartureTime: null,
         blockIsActive: true,
         dataDiscrepancies: [],
@@ -53,7 +52,7 @@ describe("ladder", () => {
           timepointId: "t1",
         },
         scheduledLocation: null,
-        isOnRoute: true,
+        routeStatus: "on_route",
       },
       {
         id: "downward",
@@ -78,7 +77,6 @@ describe("ladder", () => {
         scheduleAdherenceString: "0.0 sec (ontime)",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
-        isLayingOver: false,
         layoverDepartureTime: null,
         blockIsActive: true,
         dataDiscrepancies: [],
@@ -97,7 +95,7 @@ describe("ladder", () => {
             fractionUntilTimepoint: 0.75,
           },
         },
-        isOnRoute: true,
+        routeStatus: "on_route",
       },
       {
         id: "notimepoint",
@@ -122,7 +120,6 @@ describe("ladder", () => {
         scheduleAdherenceString: "0.0 sec (ontime)",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
-        isLayingOver: false,
         layoverDepartureTime: null,
         blockIsActive: true,
         dataDiscrepancies: [],
@@ -132,7 +129,7 @@ describe("ladder", () => {
         },
         timepointStatus: null,
         scheduledLocation: null,
-        isOnRoute: true,
+        routeStatus: "on_route",
       },
     ]
     const ladderDirection = LadderDirection.ZeroToOne
@@ -213,7 +210,6 @@ describe("ladder", () => {
         scheduleAdherenceString: "0.0 sec (ontime)",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
-        isLayingOver: false,
         layoverDepartureTime: null,
         blockIsActive: false,
         dataDiscrepancies: [],
@@ -226,7 +222,7 @@ describe("ladder", () => {
           timepointId: "t1",
         },
         scheduledLocation: null,
-        isOnRoute: true,
+        routeStatus: "on_route",
       },
       {
         id: "downward",
@@ -251,7 +247,6 @@ describe("ladder", () => {
         scheduleAdherenceString: "0.0 sec (ontime)",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
-        isLayingOver: false,
         layoverDepartureTime: null,
         blockIsActive: true,
         dataDiscrepancies: [],
@@ -270,7 +265,7 @@ describe("ladder", () => {
             fractionUntilTimepoint: 0.75,
           },
         },
-        isOnRoute: true,
+        routeStatus: "on_route",
       },
     ]
     const ladderDirection = LadderDirection.ZeroToOne
@@ -316,7 +311,6 @@ describe("ladder", () => {
         scheduleAdherenceString: "0.0 sec (ontime)",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
-        isLayingOver: false,
         layoverDepartureTime: null,
         blockIsActive: true,
         dataDiscrepancies: [],
@@ -335,7 +329,7 @@ describe("ladder", () => {
             fractionUntilTimepoint: 0.75,
           },
         },
-        isOnRoute: true,
+        routeStatus: "on_route",
       },
     ]
     const ladderDirection = LadderDirection.OneToZero
@@ -380,7 +374,6 @@ describe("ladder", () => {
         scheduleAdherenceString: "0.0 sec (ontime)",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
-        isLayingOver: false,
         layoverDepartureTime: null,
         blockIsActive: true,
         dataDiscrepancies: [],
@@ -393,7 +386,7 @@ describe("ladder", () => {
           timepointId: "t1",
         },
         scheduledLocation: null,
-        isOnRoute: true,
+        routeStatus: "on_route",
       },
       {
         id: "downward",
@@ -418,7 +411,6 @@ describe("ladder", () => {
         scheduleAdherenceString: "0.0 sec (ontime)",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
-        isLayingOver: false,
         layoverDepartureTime: null,
         blockIsActive: true,
         dataDiscrepancies: [],
@@ -437,7 +429,7 @@ describe("ladder", () => {
             fractionUntilTimepoint: 0.75,
           },
         },
-        isOnRoute: true,
+        routeStatus: "on_route",
       },
     ]
     const ladderDirection = LadderDirection.ZeroToOne
@@ -484,7 +476,6 @@ describe("ladder", () => {
       scheduleAdherenceString: "0.0 sec (ontime)",
       scheduledHeadwaySecs: 120,
       isOffCourse: false,
-      isLayingOver: false,
       layoverDepartureTime: null,
       blockIsActive: true,
       dataDiscrepancies: [],
@@ -497,7 +488,7 @@ describe("ladder", () => {
         timepointId: "t1",
       },
       scheduledLocation: null,
-      isOnRoute: true,
+      routeStatus: "on_route",
     }
 
     const ladderDirection = LadderDirection.ZeroToOne
@@ -544,7 +535,6 @@ describe("ladder", () => {
         scheduleAdherenceString: "0.0 sec (ontime)",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
-        isLayingOver: false,
         layoverDepartureTime: null,
         blockIsActive: true,
         dataDiscrepancies: [],
@@ -557,7 +547,7 @@ describe("ladder", () => {
           timepointId: "t1",
         },
         scheduledLocation: null,
-        isOnRoute: true,
+        routeStatus: "on_route",
       },
     ]
     const ladderDirection = LadderDirection.ZeroToOne
@@ -603,7 +593,6 @@ describe("ladder", () => {
         scheduleAdherenceString: "0.0 sec (ontime)",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
-        isLayingOver: false,
         layoverDepartureTime: null,
         blockIsActive: true,
         dataDiscrepancies: [],
@@ -622,7 +611,7 @@ describe("ladder", () => {
             fractionUntilTimepoint: 0.4,
           },
         },
-        isOnRoute: true,
+        routeStatus: "on_route",
       },
     ]
     const ladderDirection = LadderDirection.OneToZero
@@ -666,7 +655,6 @@ describe("ladder", () => {
       scheduleAdherenceString: "0.0 sec (ontime)",
       scheduledHeadwaySecs: 120,
       isOffCourse: true,
-      isLayingOver: false,
       layoverDepartureTime: null,
       blockIsActive: true,
       dataDiscrepancies: [
@@ -696,7 +684,7 @@ describe("ladder", () => {
           fractionUntilTimepoint: 0,
         },
       },
-      isOnRoute: true,
+      routeStatus: "on_route",
     }
 
     const timepoints = ["t0", "t1", "t2"]

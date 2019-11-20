@@ -20,7 +20,7 @@ defmodule Realtime.VehicleTest do
     operator_name: "MAUPIN",
     run_id: "138-1038",
     headway_secs: 900,
-    is_laying_over: false,
+    is_nonrevenue: false,
     layover_departure_time: nil,
     speed: 0.0,
     current_status: :IN_TRANSIT_TO,
@@ -113,7 +113,6 @@ defmodule Realtime.VehicleTest do
         headway_secs: 900,
         headway_spacing: :ok,
         is_off_course: false,
-        is_laying_over: false,
         layover_departure_time: nil,
         block_is_active: true,
         sources: MapSet.new(["swiftly", "busloc"]),
@@ -291,7 +290,7 @@ defmodule Realtime.VehicleTest do
 
   describe "route_status/3" do
     setup do
-      trip = %Trip{
+      trip1 = %Trip{
         id: "t1",
         route_id: "r1",
         service_id: "service",
@@ -313,19 +312,59 @@ defmodule Realtime.VehicleTest do
         ]
       }
 
-      {:ok, trip: trip}
+      trip2 = %Trip{
+        id: "t2",
+        route_id: "r1",
+        service_id: "service",
+        headsign: "Trip 2",
+        direction_id: 0,
+        block_id: "b",
+        shape_id: "shape2",
+        stop_times: [
+          %StopTime{
+            stop_id: "s2",
+            time: 0,
+            timepoint_id: "s2"
+          },
+          %StopTime{
+            stop_id: "s1",
+            time: 0,
+            timepoint_id: "s1"
+          }
+        ]
+      }
+
+      block = [trip1, trip2]
+
+      {:ok, trip1: trip1, trip2: trip2, block: block}
     end
 
-    test "returns :incoming if the trip is nil" do
-      assert Vehicle.route_status("s1", nil) == :incoming
+    test "returns :pulling_out if approaching the first stop of the block", %{
+      trip1: trip1,
+      block: block
+    } do
+      assert Vehicle.route_status("s1", trip1, block) == :pulling_out
     end
 
-    test "returns :incoming if the next stop is the first stop of the trip", %{trip: trip} do
-      assert Vehicle.route_status("s1", trip) == :incoming
+    test "returns :laying_over if starting a trip that's not the first of its block", %{
+      trip2: trip2,
+      block: block
+    } do
+      assert Vehicle.route_status("s2", trip2, block) == :laying_over
     end
 
-    test "returns :on_route if the next stop is any other stop", %{trip: trip} do
-      assert Vehicle.route_status("s2", trip) == :on_route
+    test "returns :on_route if in the middle of a trip", %{trip1: trip1, block: block} do
+      assert Vehicle.route_status("s2", trip1, block) == :on_route
+    end
+
+    test "returns :pulling_out if we can't find the trip" do
+      assert Vehicle.route_status("s1", nil, nil) == :pulling_out
+    end
+
+    test "if we find the trip but not the block, assume the trip is not the first in the block",
+         %{trip1: trip1} do
+      assert Vehicle.route_status("s1", trip1, nil) == :laying_over
+      assert Vehicle.route_status("s2", trip1, nil) == :on_route
     end
   end
 
@@ -350,7 +389,6 @@ defmodule Realtime.VehicleTest do
         headway_secs: 600,
         headway_spacing: :ok,
         is_off_course: false,
-        is_laying_over: false,
         layover_departure_time: nil,
         block_is_active: true,
         sources: MapSet.new(["swiftly", "busloc"]),

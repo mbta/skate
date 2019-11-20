@@ -32,7 +32,6 @@ const shuttle: Vehicle = {
   scheduleAdherenceString: "0.0 sec (ontime)",
   scheduledHeadwaySecs: 120,
   isOffCourse: false,
-  isLayingOver: false,
   layoverDepartureTime: null,
   blockIsActive: true,
   dataDiscrepancies: [],
@@ -45,7 +44,7 @@ const shuttle: Vehicle = {
     timepointId: "MATPN",
   },
   scheduledLocation: null,
-  isOnRoute: true,
+  routeStatus: "on_route",
 }
 
 describe("Shuttle Map Page", () => {

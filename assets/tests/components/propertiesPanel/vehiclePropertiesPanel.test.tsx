@@ -42,7 +42,6 @@ const vehicle: Vehicle = {
   scheduleAdherenceString: "0.0 sec (ontime)",
   scheduledHeadwaySecs: 120,
   isOffCourse: false,
-  isLayingOver: false,
   layoverDepartureTime: null,
   blockIsActive: false,
   dataDiscrepancies: [
@@ -69,7 +68,7 @@ const vehicle: Vehicle = {
     timepointId: "tp1",
   },
   scheduledLocation: null,
-  isOnRoute: true,
+  routeStatus: "on_route",
 }
 
 describe("VehiclePropertiesPanel", () => {

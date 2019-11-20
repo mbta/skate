@@ -13,8 +13,8 @@ defmodule SkateWeb.VehiclesChannel do
   end
 
   def join("vehicles:route:" <> route_id, _message, socket) do
-    vehicles_for_route = Duration.log_duration(Server, :subscribe_to_route, [route_id])
-    {:ok, vehicles_for_route, socket}
+    vehicles_and_ghosts = Duration.log_duration(Server, :subscribe_to_route, [route_id])
+    {:ok, %{data: vehicles_and_ghosts}, socket}
   end
 
   def join(
@@ -88,7 +88,7 @@ defmodule SkateWeb.VehiclesChannel do
   end
 
   defp push_vehicles(socket, lookup) do
-    push(socket, "vehicles", Server.lookup(lookup))
+    push(socket, "vehicles", %{data: Server.lookup(lookup)})
     {:noreply, socket}
   end
 

@@ -1,9 +1,9 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import * as Array from "../helpers/array"
 import { reverseIcon, reverseIconReversed } from "../helpers/icon"
-import { Vehicle, VehicleId, VehiclesForRoute } from "../realtime.d"
-import { LoadableTimepoints, Route } from "../schedule.d"
+import { isAVehicle } from "../models/vehicle"
+import { Ghost, Vehicle, VehicleId, VehicleOrGhost } from "../realtime.d"
+import { DirectionId, LoadableTimepoints, Route, RouteId } from "../schedule.d"
 import { deselectRoute } from "../state"
 import CloseButton from "./closeButton"
 import IncomingBox from "./incomingBox"
@@ -14,7 +14,7 @@ import Loading from "./loading"
 interface Props {
   route: Route
   timepoints: LoadableTimepoints
-  vehiclesForRoute?: VehiclesForRoute
+  vehiclesAndGhosts?: VehicleOrGhost[]
   selectedVehicleId: VehicleId | undefined
 }
 
@@ -71,7 +71,7 @@ const HeaderAndControls = ({
 const RouteLadder = ({
   route,
   timepoints,
-  vehiclesForRoute,
+  vehiclesAndGhosts,
   selectedVehicleId,
 }: Props) => {
   const initialDirection: LadderDirection = LadderDirection.ZeroToOne
@@ -79,16 +79,10 @@ const RouteLadder = ({
     initialDirection
   )
 
-  const bottomDirection = ladderDirection === LadderDirection.OneToZero ? 1 : 0
-
-  const [layingOver, incoming] = Array.partition(
-    vehiclesForRoute ? vehiclesForRoute.incomingVehicles : [],
-    (vehicle: Vehicle): boolean => vehicle.isLayingOver
-  )
-
-  const [layingOverBottom, layingOverTop] = Array.partition(
-    layingOver,
-    (vehicle: Vehicle): boolean => vehicle.directionId === bottomDirection
+  const byPosition: ByPosition = groupByPosition(
+    vehiclesAndGhosts,
+    route.id,
+    ladderDirection
   )
 
   return (
@@ -101,17 +95,20 @@ const RouteLadder = ({
 
       {timepoints ? (
         <>
-          <LayoverBox vehicles={layingOverTop} classModifier="top" />
+          <LayoverBox vehicles={byPosition.layingOverTop} classModifier="top" />
           <Ladder
             timepoints={timepoints}
-            vehicles={vehiclesForRoute ? vehiclesForRoute.onRouteVehicles : []}
-            ghosts={vehiclesForRoute ? vehiclesForRoute.ghosts : []}
+            vehicles={byPosition.onRoute}
+            ghosts={byPosition.ghosts}
             ladderDirection={ladderDirection}
             selectedVehicleId={selectedVehicleId}
           />
-          <LayoverBox vehicles={layingOverBottom} classModifier="bottom" />
+          <LayoverBox
+            vehicles={byPosition.layingOverBottom}
+            classModifier="bottom"
+          />
           <IncomingBox
-            vehicles={incoming}
+            vehicles={byPosition.incoming}
             ladderDirection={ladderDirection}
             selectedVehicleId={selectedVehicleId}
           />
@@ -120,6 +117,64 @@ const RouteLadder = ({
         <Loading />
       )}
     </>
+  )
+}
+
+interface ByPosition {
+  ghosts: Ghost[]
+  onRoute: Vehicle[]
+  layingOverTop: Vehicle[]
+  layingOverBottom: Vehicle[]
+  incoming: Vehicle[]
+}
+
+export const groupByPosition = (
+  vehiclesAndGhosts: VehicleOrGhost[] | undefined,
+  routeId: RouteId,
+  ladderDirection: LadderDirection
+): ByPosition => {
+  const upwardDirection: DirectionId =
+    ladderDirection === LadderDirection.OneToZero ? 1 : 0
+
+  return (vehiclesAndGhosts || []).reduce(
+    (acc: ByPosition, current: VehicleOrGhost) => {
+      if (isAVehicle(current)) {
+        if (current.routeId === routeId) {
+          switch (current.routeStatus) {
+            case "on_route":
+              return { ...acc, onRoute: [...acc.onRoute, current] }
+            case "laying_over":
+              if (current.directionId === upwardDirection) {
+                return {
+                  ...acc,
+                  layingOverBottom: [...acc.layingOverBottom, current],
+                }
+              } else {
+                return {
+                  ...acc,
+                  layingOverTop: [...acc.layingOverTop, current],
+                }
+              }
+            case "pulling_out":
+              return { ...acc, incoming: [...acc.incoming, current] }
+            default:
+              return acc
+          }
+        } else {
+          // incoming from another route
+          return { ...acc, incoming: [...acc.incoming, current] }
+        }
+      } else {
+        return { ...acc, ghosts: [...acc.ghosts, current] }
+      }
+    },
+    {
+      ghosts: [],
+      onRoute: [],
+      layingOverTop: [],
+      layingOverBottom: [],
+      incoming: [],
+    } as ByPosition
   )
 }
 
