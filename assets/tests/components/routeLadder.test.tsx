@@ -1,7 +1,8 @@
 import { mount } from "enzyme"
 import React from "react"
 import renderer, { act } from "react-test-renderer"
-import RouteLadder from "../../src/components/routeLadder"
+import { LadderDirection } from "../../src/components/ladder"
+import RouteLadder, { groupByPosition } from "../../src/components/routeLadder"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import {
@@ -367,5 +368,86 @@ describe("routeLadder", () => {
     wrapper.find(".m-incoming-box__vehicle").simulate("click")
 
     expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle.id))
+  })
+})
+
+describe("groupByPosition", () => {
+  const emptyByPosition = {
+    ghosts: [],
+    onRoute: [],
+    layingOverTop: [],
+    layingOverBottom: [],
+    incoming: [],
+  }
+  test("loading", () => {
+    expect(groupByPosition(undefined, "1", LadderDirection.ZeroToOne)).toEqual(
+      emptyByPosition
+    )
+  })
+
+  test("on route", () => {
+    const vehicle: Vehicle = {
+      routeId: "1",
+      directionId: 0,
+      routeStatus: "on_route",
+    } as Vehicle
+    expect(groupByPosition([vehicle], "1", LadderDirection.ZeroToOne)).toEqual({
+      ...emptyByPosition,
+      onRoute: [vehicle],
+    })
+  })
+
+  test("laying over", () => {
+    const ladderDirection: LadderDirection = LadderDirection.ZeroToOne
+    const top: Vehicle = {
+      routeId: "1",
+      directionId: 1,
+      routeStatus: "laying_over",
+    } as Vehicle
+    const bottom: Vehicle = {
+      routeId: "1",
+      directionId: 0,
+      routeStatus: "laying_over",
+    } as Vehicle
+    expect(groupByPosition([top, bottom], "1", ladderDirection)).toEqual({
+      ...emptyByPosition,
+      layingOverTop: [top],
+      layingOverBottom: [bottom],
+    })
+  })
+
+  test("pulling out", () => {
+    const vehicle: Vehicle = {
+      routeId: "1",
+      directionId: 0,
+      routeStatus: "pulling_out",
+    } as Vehicle
+    expect(groupByPosition([vehicle], "1", LadderDirection.ZeroToOne)).toEqual({
+      ...emptyByPosition,
+      incoming: [vehicle],
+    })
+  })
+
+  test("incoming from another route", () => {
+    const vehicle: Vehicle = {
+      routeId: "2",
+      directionId: 0,
+      routeStatus: "on_route",
+    } as Vehicle
+    expect(groupByPosition([vehicle], "1", LadderDirection.ZeroToOne)).toEqual({
+      ...emptyByPosition,
+      incoming: [vehicle],
+    })
+  })
+
+  test("ghost", () => {
+    const ghost: Ghost = {
+      routeId: "1",
+      directionId: 0,
+    } as Ghost
+    expect(groupByPosition([ghost], "1", LadderDirection.ZeroToOne)).toEqual({
+      ...emptyByPosition,
+      ghosts: [ghost],
+    })
   })
 })

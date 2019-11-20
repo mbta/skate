@@ -3,7 +3,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { reverseIcon, reverseIconReversed } from "../helpers/icon"
 import { isAVehicle } from "../models/vehicle"
 import { Ghost, Vehicle, VehicleId, VehicleOrGhost } from "../realtime.d"
-import { LoadableTimepoints, Route, RouteId } from "../schedule.d"
+import { DirectionId, LoadableTimepoints, Route, RouteId } from "../schedule.d"
 import { deselectRoute } from "../state"
 import CloseButton from "./closeButton"
 import IncomingBox from "./incomingBox"
@@ -128,12 +128,13 @@ interface ByPosition {
   incoming: Vehicle[]
 }
 
-const groupByPosition = (
+export const groupByPosition = (
   vehiclesAndGhosts: VehicleOrGhost[] | undefined,
   routeId: RouteId,
   ladderDirection: LadderDirection
 ): ByPosition => {
-  const bottomDirection = ladderDirection === LadderDirection.OneToZero ? 1 : 0
+  const upwardDirection: DirectionId =
+    ladderDirection === LadderDirection.OneToZero ? 1 : 0
 
   return (vehiclesAndGhosts || []).reduce(
     (acc: ByPosition, current: VehicleOrGhost) => {
@@ -143,7 +144,7 @@ const groupByPosition = (
             case "on_route":
               return { ...acc, onRoute: [...acc.onRoute, current] }
             case "laying_over":
-              if (current.directionId === bottomDirection) {
+              if (current.directionId === upwardDirection) {
                 return {
                   ...acc,
                   layingOverBottom: [...acc.layingOverBottom, current],
