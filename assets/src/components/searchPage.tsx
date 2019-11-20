@@ -42,7 +42,10 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
     search
   )
 
-  const selectedVehicle = findSelectedVehicle(vehicles || [], selectedVehicleId)
+  const selectedVehicle: VehicleOrGhost | undefined = findSelectedVehicle(
+    vehicles || [],
+    selectedVehicleId
+  )
 
   return (
     <div className="c-page m-search-page">
