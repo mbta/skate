@@ -29,12 +29,22 @@ const SearchResultCard = ({
 }: {
   vehicleOrGhost: VehicleOrGhost
 }) => {
-  const [{ search }, dispatch] = useContext(StateDispatchContext)
+  const [{ search, selectedVehicleId }, dispatch] = useContext(
+    StateDispatchContext
+  )
+
+  const selectedClass =
+    vehicleOrGhost.id === selectedVehicleId
+      ? "m-search-results__card--selected"
+      : ""
 
   const selectVehicleOrGhost = () => dispatch(selectVehicle(vehicleOrGhost.id))
 
   return (
-    <div className="m-search-results__card" onClick={selectVehicleOrGhost}>
+    <div
+      className={`m-search-results__card ${selectedClass}`}
+      onClick={selectVehicleOrGhost}
+    >
       <PropertiesList
         vehicleOrGhost={vehicleOrGhost}
         highlightText={search.text}
