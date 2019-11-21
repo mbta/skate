@@ -8,7 +8,8 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
     className="m-search-results__list"
   >
     <div
-      className="m-search-results__card"
+      className="m-search-results__card "
+      onClick={[Function]}
     >
       <div
         className="m-properties-list"
@@ -72,7 +73,116 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
       </div>
     </div>
     <div
-      className="m-search-results__card"
+      className="m-search-results__card "
+      onClick={[Function]}
+    >
+      <div
+        className="m-properties-list"
+      >
+        <table
+          className="m-properties-list__table"
+        >
+          <tbody>
+            <tr>
+              <td
+                className="m-properties-list__property-label"
+              >
+                Run
+              </td>
+              <td
+                className="m-properties-list__property-value"
+              >
+                123-0123
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p
+      className="m-search-results__note"
+    >
+      Please note that at this time search is limited to active vehicles and logged-in personnel.
+    </p>
+  </div>
+</div>
+`;
+
+exports[`SearchResults renders a selected result card 1`] = `
+<div
+  className="m-search-results"
+>
+  <div
+    className="m-search-results__list"
+  >
+    <div
+      className="m-search-results__card m-search-results__card--selected"
+      onClick={[Function]}
+    >
+      <div
+        className="m-properties-list"
+      >
+        <table
+          className="m-properties-list__table"
+        >
+          <tbody>
+            <tr>
+              <td
+                className="m-properties-list__property-label"
+              >
+                Run
+              </td>
+              <td
+                className="m-properties-list__property-value"
+              >
+                run-1
+              </td>
+            </tr>
+            <tr>
+              <td
+                className="m-properties-list__property-label"
+              >
+                Vehicle
+              </td>
+              <td
+                className="m-properties-list__property-value"
+              >
+                v1-label
+              </td>
+            </tr>
+            <tr>
+              <td
+                className="m-properties-list__property-label"
+              >
+                Operator
+              </td>
+              <td
+                className="m-properties-list__property-value"
+              >
+                SMITH #op1
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div
+        className="m-search-results__card-route-label"
+      >
+        <div
+          className="m-route-variant-name"
+        >
+          <span
+            className="m-route-variant-name__route-id"
+          >
+            39_X
+          </span>
+           Forest Hills
+        </div>
+      </div>
+    </div>
+    <div
+      className="m-search-results__card "
+      onClick={[Function]}
     >
       <div
         className="m-properties-list"

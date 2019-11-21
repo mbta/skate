@@ -14,8 +14,18 @@
   background-color: $white;
   border-radius: 4px;
   box-shadow: $subtle-box-shadow;
+  cursor: pointer;
   margin-bottom: 1rem;
   padding: 1rem 1rem 0.5rem;
+
+  &--selected,
+  &:hover {
+    background-color: $color-secondary-light;
+
+    .highlighted {
+      background-color: $color-secondary-medium;
+    }
+  }
 
   .m-properties-list {
     padding: 0;
