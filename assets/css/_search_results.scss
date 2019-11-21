@@ -18,6 +18,14 @@
   margin-bottom: 1rem;
   padding: 1rem 1rem 0.5rem;
 
+  &:hover {
+    background-color: $color-secondary-light;
+
+    .highlighted {
+      background-color: $color-secondary-medium;
+    }
+  }
+
   .m-properties-list {
     padding: 0;
   }
