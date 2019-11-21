@@ -221,7 +221,7 @@ exports[`SearchResults renders no results 1`] = `
   className="m-search-results"
 >
   <div
-    className="m-search-results--none"
+    className="m-search-results__none"
   >
     <div
       className="m-search-results__heading"
