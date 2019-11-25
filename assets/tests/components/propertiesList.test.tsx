@@ -142,7 +142,7 @@ describe("Highlighted", () => {
   test("can highlight the whole string", () => {
     const content: string = "abc"
     const highlightText: string = "abc"
-    const expected = '<span class="highlighted">bc</span>'
+    const expected = '<span class="highlighted">abc</span>'
     const wrapper = shallow(
       <Highlighted content={content} highlightText={highlightText} />
     )
