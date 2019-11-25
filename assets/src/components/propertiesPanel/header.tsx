@@ -2,8 +2,8 @@ import React, { useContext } from "react"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import vehicleLabel, { ghostLabel } from "../../helpers/vehicleLabel"
 import {
-  isAVehicle,
   isShuttle,
+  isVehicle,
   shouldShowHeadwayDiagram,
 } from "../../models/vehicle"
 import {
@@ -95,7 +95,7 @@ const Header = ({ vehicle, route }: Props) => {
   return (
     <div className="m-properties-panel__header">
       <div className="m-properties-panel__label">
-        {isAVehicle(vehicle) ? (
+        {isVehicle(vehicle) ? (
           <VehicleIcon
             size={Size.Large}
             orientation={Orientation.Up}
@@ -120,10 +120,10 @@ const Header = ({ vehicle, route }: Props) => {
 
         <RouteVariantName vehicle={vehicle} />
 
-        {isAVehicle(vehicle) && shouldShowHeadwayDiagram(vehicle) ? (
+        {isVehicle(vehicle) && shouldShowHeadwayDiagram(vehicle) ? (
           <HeadwayTarget vehicle={vehicle} />
         ) : (
-          isAVehicle(vehicle) &&
+          isVehicle(vehicle) &&
           !isShuttle(vehicle) && <ScheduleAdherence vehicle={vehicle} />
         )}
       </div>

@@ -4,7 +4,7 @@ import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSearchResults from "../hooks/useSearchResults"
 import { isValidSearch, Search } from "../models/search"
-import { isAVehicle } from "../models/vehicle"
+import { isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
 import Map from "./map"
 import PropertiesPanel from "./propertiesPanel"
@@ -25,7 +25,7 @@ const onlyVehicles = (
     return []
   }
 
-  return vehiclesOrGhosts.filter(vog => isAVehicle(vog)) as Vehicle[]
+  return vehiclesOrGhosts.filter(vog => isVehicle(vog)) as Vehicle[]
 }
 
 const findSelectedVehicle = (

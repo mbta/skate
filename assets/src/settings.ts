@@ -1,4 +1,4 @@
-import { isAVehicle, isShuttle } from "./models/vehicle"
+import { isShuttle, isVehicle } from "./models/vehicle"
 import { VehicleOrGhost } from "./realtime"
 
 export enum VehicleLabelSetting {
@@ -20,6 +20,6 @@ export const vehicleLabelSetting = (
   settings: Settings,
   vehicle: VehicleOrGhost
 ): VehicleLabelSetting =>
-  isAVehicle(vehicle) && isShuttle(vehicle)
+  isVehicle(vehicle) && isShuttle(vehicle)
     ? settings.shuttleVehicleLabel
     : settings.ladderVehicleLabel

@@ -139,13 +139,13 @@ export const ghostFromData = (ghostData: GhostData): Ghost => ({
     vehicleTimepointStatusFromData(ghostData.scheduled_timepoint_status),
 })
 
-const isAGhost = (vehicleOrGhostData: VehicleOrGhostData): boolean =>
+const isGhost = (vehicleOrGhostData: VehicleOrGhostData): boolean =>
   !vehicleOrGhostData.hasOwnProperty("operator_id")
 
 export const vehicleOrGhostFromData = (
   vehicleOrGhostData: VehicleOrGhostData
 ): VehicleOrGhost =>
-  isAGhost(vehicleOrGhostData)
+  isGhost(vehicleOrGhostData)
     ? ghostFromData(vehicleOrGhostData as GhostData)
     : vehicleFromData(vehicleOrGhostData as VehicleData)
 

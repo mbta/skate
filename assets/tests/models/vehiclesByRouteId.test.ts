@@ -1,4 +1,4 @@
-import { isAVehicle } from "../../src/models/vehicle"
+import { isVehicle } from "../../src/models/vehicle"
 import {
   allVehiclesAndGhosts,
   allVehiclesForRoute,
@@ -140,7 +140,7 @@ describe("allVehiclesForRoute", () => {
 
 describe("byDirection", () => {
   test("partitions vehicles into direction 0 and direction 1", () => {
-    const vehicles: Vehicle[] = vehiclesByRouteId["1"].filter(isAVehicle)
+    const vehicles: Vehicle[] = vehiclesByRouteId["1"].filter(isVehicle)
 
     const [direction0Vehicles, direction1Vehicles] = byDirection(vehicles)
 
@@ -154,7 +154,7 @@ describe("byDirection", () => {
 
 describe("nextAndPreviousVehicle", () => {
   test("returns the next and previous vehicles as described by the previousVehicleId property", () => {
-    const vehicles: Vehicle[] = vehiclesByRouteId["1"].filter(isAVehicle)
+    const vehicles: Vehicle[] = vehiclesByRouteId["1"].filter(isVehicle)
     // y102
     const currentVehicle = vehicles[1]
 
@@ -170,7 +170,7 @@ describe("nextAndPreviousVehicle", () => {
   })
 
   test("returns undefined if no next and/or previous vehicle", () => {
-    const vehicles: Vehicle[] = vehiclesByRouteId["39"].filter(isAVehicle)
+    const vehicles: Vehicle[] = vehiclesByRouteId["39"].filter(isVehicle)
     const currentVehicle = vehicles[0]
 
     expect(nextAndPreviousVehicle(vehicles, currentVehicle)).toEqual({
