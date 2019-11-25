@@ -126,7 +126,6 @@ describe("useSearchResults", () => {
         route_id: "39",
         run_id: "run-1",
         schedule_adherence_secs: 0,
-        schedule_adherence_string: "0.0 sec (ontime)",
         scheduled_headway_secs: 120,
         scheduled_location: {
           direction_id: 0,
@@ -171,7 +170,6 @@ describe("useSearchResults", () => {
         headwaySpacing: null,
         previousVehicleId: "v2",
         scheduleAdherenceSecs: 0,
-        scheduleAdherenceString: "0.0 sec (ontime)",
         scheduledHeadwaySecs: 120,
         isOffCourse: false,
         layoverDepartureTime: null,

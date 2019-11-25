@@ -42,7 +42,6 @@ const vehicle: Vehicle = {
   headwaySpacing: HeadwaySpacing.Ok,
   previousVehicleId: "v2",
   scheduleAdherenceSecs: 0,
-  scheduleAdherenceString: "0.0 sec (ontime)",
   scheduledHeadwaySecs: 120,
   isOffCourse: false,
   layoverDepartureTime: null,
