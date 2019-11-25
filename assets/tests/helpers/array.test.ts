@@ -1,8 +1,8 @@
 import {
   flatten,
+  intersperseString,
   partition,
   uniq,
-  intersperseString,
 } from "../../src/helpers/array"
 
 describe("partition", () => {

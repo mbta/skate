@@ -14,7 +14,7 @@ export const flatten = <T>(array: T[][]): T[] =>
 
 export const intersperseString = (s: string, delimiter: string): string => {
   let result = ""
-  for (let char of s) {
+  for (const char of s) {
     if (result !== "") {
       result += delimiter
     }

@@ -1,8 +1,8 @@
 import React from "react"
+import { intersperseString } from "../helpers/array"
 import { formattedRunNumber } from "../models/shuttle"
 import { isAVehicle, isShuttle } from "../models/vehicle"
 import { Ghost, Vehicle, VehicleOrGhost } from "../realtime"
-import { intersperseString } from "../helpers/array"
 
 interface Props {
   vehicleOrGhost: VehicleOrGhost
