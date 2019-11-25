@@ -129,6 +129,26 @@ describe("Highlighted", () => {
     expect(wrapper.html()).toEqual(expected)
   })
 
+  test("ignores spaces and hyphens", () => {
+    const content: string = "abcde-f gh"
+    const highlightText: string = "b c-defg"
+    const expected = 'a<span class="highlighted">bcde-f g</span>h'
+    const wrapper = shallow(
+      <Highlighted content={content} highlightText={highlightText} />
+    )
+    expect(wrapper.html()).toEqual(expected)
+  })
+
+  test("can highlight the whole string", () => {
+    const content: string = "abc"
+    const highlightText: string = "abc"
+    const expected = '<span class="highlighted">bc</span>'
+    const wrapper = shallow(
+      <Highlighted content={content} highlightText={highlightText} />
+    )
+    expect(wrapper.html()).toEqual(expected)
+  })
+
   test("renders the original content if no highlight text is specified", () => {
     const content: string = "SMITH #201387"
 

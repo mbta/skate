@@ -73,6 +73,17 @@ defmodule Realtime.VehicleOrGhostTest do
                [@vehicle]
     end
 
+    test "matches run id with or without spaces and hyphens" do
+      assert VehicleOrGhost.find_by([@vehicle], %{text: "vehiclerun", property: :run}) ==
+               [@vehicle]
+
+      assert VehicleOrGhost.find_by([@vehicle], %{text: "vehicle-run", property: :run}) ==
+               [@vehicle]
+
+      assert VehicleOrGhost.find_by([@vehicle], %{text: "vehicle run", property: :run}) ==
+               [@vehicle]
+    end
+
     test "matches on vehicle ID" do
       assert VehicleOrGhost.find_by(@vehicles, %{text: "1", property: :vehicle}) == @vehicles
 

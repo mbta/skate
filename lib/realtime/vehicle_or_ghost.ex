@@ -56,6 +56,7 @@ defmodule Realtime.VehicleOrGhost do
   defp clean_for_matching(str) do
     str
     |> String.downcase()
+    |> String.replace(" ", "")
     |> String.replace("-", "")
   end
 end
