@@ -121,12 +121,6 @@ exports[`GhostPropertiesPanel renders 1`] = `
       </tbody>
     </table>
   </div>
-  <button
-    className="m-properties-panel__close-button"
-    onClick={[Function]}
-  >
-    Close
-  </button>
 </div>
 `;
 
@@ -251,11 +245,5 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
       </tbody>
     </table>
   </div>
-  <button
-    className="m-properties-panel__close-button"
-    onClick={[Function]}
-  >
-    Close
-  </button>
 </div>
 `;

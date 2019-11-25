@@ -1,7 +1,7 @@
 .m-vehicle-properties-panel {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
-  height: 100%;
 }
 
 .m-vehicle-properties-panel__location {

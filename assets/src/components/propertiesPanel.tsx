@@ -5,6 +5,7 @@ import { isAVehicle } from "../models/vehicle"
 import { VehicleOrGhost } from "../realtime.d"
 import { Route } from "../schedule"
 import { deselectVehicle } from "../state"
+import CloseButton from "./propertiesPanel/closeButton"
 import GhostPropertiesPanel from "./propertiesPanel/ghostPropertiesPanel"
 import VehiclePropertiesPanel from "./propertiesPanel/vehiclePropertiesPanel"
 
@@ -49,6 +50,8 @@ const PropertiesPanel = ({ selectedVehicleOrGhost, route }: Props) => {
             route={route}
           />
         )}
+
+        <CloseButton />
       </div>
       <div className="m-properties-panel__modal-overlay" onClick={hideMe} />
     </>

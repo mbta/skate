@@ -126,13 +126,13 @@ Array [
           </tbody>
         </table>
       </div>
-      <button
-        className="m-properties-panel__close-button"
-        onClick={[Function]}
-      >
-        Close
-      </button>
     </div>
+    <button
+      className="m-properties-panel__close-button"
+      onClick={[Function]}
+    >
+      Close
+    </button>
   </div>,
   <div
     className="m-properties-panel__modal-overlay"
@@ -349,13 +349,13 @@ Array [
           />
         </div>
       </div>
-      <button
-        className="m-properties-panel__close-button"
-        onClick={[Function]}
-      >
-        Close
-      </button>
     </div>
+    <button
+      className="m-properties-panel__close-button"
+      onClick={[Function]}
+    >
+      Close
+    </button>
   </div>,
   <div
     className="m-properties-panel__modal-overlay"

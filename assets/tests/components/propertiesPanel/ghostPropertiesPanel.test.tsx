@@ -1,11 +1,8 @@
-import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import GhostPropertiesPanel from "../../../src/components/propertiesPanel/ghostPropertiesPanel"
-import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import { Ghost } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
-import { deselectVehicle, initialState } from "../../../src/state"
 
 const ghost: Ghost = {
   id: "ghost-trip",
@@ -49,18 +46,5 @@ describe("GhostPropertiesPanel", () => {
       .toJSON()
 
     expect(tree).toMatchSnapshot()
-  })
-
-  test("clicking the Close button deselects the vehicle", () => {
-    const mockDispatch = jest.fn()
-
-    const wrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <GhostPropertiesPanel selectedGhost={ghost} route={route} />
-      </StateDispatchProvider>
-    )
-    wrapper.find(".m-properties-panel__close-button").simulate("click")
-
-    expect(mockDispatch).toHaveBeenCalledWith(deselectVehicle())
   })
 })

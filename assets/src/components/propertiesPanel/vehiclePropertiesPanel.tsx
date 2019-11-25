@@ -5,7 +5,6 @@ import { DataDiscrepancy, Vehicle } from "../../realtime"
 import { Route } from "../../schedule"
 import Map from "../map"
 import PropertiesList from "../propertiesList"
-import CloseButton from "./closeButton"
 import Header from "./header"
 import HeadwayDiagram from "./headwayDiagram"
 
@@ -124,8 +123,6 @@ const VehiclePropertiesPanel = ({ selectedVehicle, route }: Props) => (
     {shouldShowDataDiscrepancies(selectedVehicle) && (
       <DataDiscrepancies vehicle={selectedVehicle} />
     )}
-
-    <CloseButton />
   </div>
 )
 
