@@ -58,7 +58,6 @@ export interface Vehicle {
   headwaySpacing: HeadwaySpacing | null
   previousVehicleId: string
   scheduleAdherenceSecs: number
-  scheduleAdherenceString: string
   scheduledHeadwaySecs: number
   isOffCourse: boolean
   layoverDepartureTime: number | null

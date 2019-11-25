@@ -39,7 +39,6 @@ export interface VehicleData {
   headway_spacing: RawHeadwaySpacing
   previous_vehicle_id: string
   schedule_adherence_secs: number
-  schedule_adherence_string: string
   scheduled_headway_secs: number
   is_off_course: boolean
   layover_departure_time: number | null
@@ -111,7 +110,6 @@ export const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
   headwaySpacing: headwaySpacing(vehicleData.headway_spacing),
   previousVehicleId: vehicleData.previous_vehicle_id,
   scheduleAdherenceSecs: vehicleData.schedule_adherence_secs,
-  scheduleAdherenceString: vehicleData.schedule_adherence_string,
   scheduledHeadwaySecs: vehicleData.scheduled_headway_secs,
   isOffCourse: vehicleData.is_off_course,
   layoverDepartureTime: vehicleData.layover_departure_time,
