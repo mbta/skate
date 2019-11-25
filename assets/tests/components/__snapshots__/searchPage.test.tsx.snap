@@ -5,7 +5,7 @@ exports[`SearchPage renders a selected vehicle 1`] = `
   className="c-page m-search-page m-search-page--show-list"
 >
   <div
-    className="m-search-page__controls"
+    className="m-search-page__input-and-results"
   >
     <div
       className="m-search-page__input"
@@ -382,7 +382,7 @@ exports[`SearchPage renders the empty state 1`] = `
   className="c-page m-search-page m-search-page--show-list"
 >
   <div
-    className="m-search-page__controls"
+    className="m-search-page__input-and-results"
   >
     <div
       className="m-search-page__input"
@@ -541,7 +541,7 @@ exports[`SearchPage renders vehicle data 1`] = `
   className="c-page m-search-page m-search-page--show-list"
 >
   <div
-    className="m-search-page__controls"
+    className="m-search-page__input-and-results"
   >
     <div
       className="m-search-page__input"

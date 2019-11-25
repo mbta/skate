@@ -88,7 +88,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
 
   return (
     <div className={`c-page m-search-page ${mobileDisplayClass}`}>
-      <div className="m-search-page__controls">
+      <div className="m-search-page__input-and-results">
         <div className="m-search-page__input">
           <SearchForm />
 
