@@ -92,6 +92,9 @@ defmodule Realtime.VehicleOrGhostTest do
 
       assert VehicleOrGhost.find_by([shuttle], %{text: "999504", property: :run}) ==
                [shuttle]
+
+      assert VehicleOrGhost.find_by([shuttle], %{text: "999-0504", property: :run}) ==
+               [shuttle]
     end
 
     test "matches on vehicle ID" do
