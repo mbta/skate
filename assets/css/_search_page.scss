@@ -57,7 +57,7 @@
     }
 
     .m-search-page__input-and-results {
-      flex: 0 1 auto;
+      flex: 0 0 auto;
     }
   }
 
@@ -74,7 +74,7 @@
 
   .m-search-page__map {
     box-sizing: border-box;
-    height: 50%;
+    height: 75%;
     width: calc(100vw - #{$tab-bar-width});
   }
 }
