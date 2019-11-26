@@ -1,6 +1,5 @@
 import { useEffect, useReducer } from "react"
 import { loadState, saveState } from "../localStorage"
-import { defaultSettings } from "../settings"
 import { Dispatch, Reducer, State } from "../state"
 
 const APP_STATE_KEY = "mbta-skate-state"
@@ -18,30 +17,6 @@ const usePersistedStateReducer = (
   defaultValue: State
 ): [State, Dispatch] => {
   let loadedState = loadState(APP_STATE_KEY) as State | undefined
-
-  // Update to new settings properties from saved values in local storage.
-  // This can be removed after it's live for awhile, along with property in Settings -- MSS 2019-09-11
-  if (
-    loadedState &&
-    Object.keys(loadedState).includes("settings") &&
-    Object.keys(loadedState.settings).length === 1 &&
-    Object.keys(loadedState.settings)[0] === "vehicleLabel"
-  ) {
-    loadedState = {
-      ...loadedState,
-      settings: {
-        vehicleLabel: undefined,
-        ladderVehicleLabel:
-          loadedState.settings.vehicleLabel ||
-          defaultSettings.ladderVehicleLabel,
-        shuttleVehicleLabel: defaultSettings.shuttleVehicleLabel,
-      },
-    }
-
-    // Save these changes right away
-    saveState(APP_STATE_KEY, filter(loadedState, PERSISTED_KEYS))
-  }
-
   const [state, dispatch] = useReducer(
     reducer,
     defaultValue,

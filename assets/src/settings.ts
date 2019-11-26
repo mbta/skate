@@ -7,16 +7,11 @@ export enum VehicleLabelSetting {
 }
 
 export interface Settings {
-  // DEPRECATED property
-  // Can be removed after a little while along with
-  // special handling code in usePersistedStateReducer. -- MSS 2019-09-11
-  vehicleLabel: VehicleLabelSetting | undefined
   ladderVehicleLabel: VehicleLabelSetting
   shuttleVehicleLabel: VehicleLabelSetting
 }
 
 export const defaultSettings: Settings = {
-  vehicleLabel: undefined,
   ladderVehicleLabel: VehicleLabelSetting.RunNumber,
   shuttleVehicleLabel: VehicleLabelSetting.VehicleNumber,
 }
