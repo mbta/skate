@@ -84,6 +84,16 @@ defmodule Realtime.VehicleOrGhostTest do
                [@vehicle]
     end
 
+    test "matches shuttle run even without the leading 0" do
+      shuttle = %{@vehicle | run_id: "999-0504"}
+
+      assert VehicleOrGhost.find_by([shuttle], %{text: "504", property: :run}) ==
+               [shuttle]
+
+      assert VehicleOrGhost.find_by([shuttle], %{text: "999504", property: :run}) ==
+               [shuttle]
+    end
+
     test "matches on vehicle ID" do
       assert VehicleOrGhost.find_by(@vehicles, %{text: "1", property: :vehicle}) == @vehicles
 

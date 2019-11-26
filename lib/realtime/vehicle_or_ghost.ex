@@ -49,8 +49,14 @@ defmodule Realtime.VehicleOrGhost do
   end
 
   @spec matches?(String.t(), String.t()) :: boolean()
-  defp matches?(prop, text),
-    do: String.contains?(clean_for_matching(prop), clean_for_matching(text))
+  defp matches?("999-0" <> shuttle_run, text) do
+    # special case to match shuttle runs even without the leading 0
+    matches?("999" <> shuttle_run, text) || matches?("9990" <> shuttle_run, text)
+  end
+
+  defp matches?(prop, text) do
+    String.contains?(clean_for_matching(prop), clean_for_matching(text))
+  end
 
   @spec clean_for_matching(String.t()) :: String.t()
   defp clean_for_matching(str) do
