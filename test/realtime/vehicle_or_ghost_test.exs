@@ -73,6 +73,30 @@ defmodule Realtime.VehicleOrGhostTest do
                [@vehicle]
     end
 
+    test "matches run id with or without spaces and hyphens" do
+      assert VehicleOrGhost.find_by([@vehicle], %{text: "vehiclerun", property: :run}) ==
+               [@vehicle]
+
+      assert VehicleOrGhost.find_by([@vehicle], %{text: "vehicle-run", property: :run}) ==
+               [@vehicle]
+
+      assert VehicleOrGhost.find_by([@vehicle], %{text: "vehicle run", property: :run}) ==
+               [@vehicle]
+    end
+
+    test "matches shuttle run even without the leading 0" do
+      shuttle = %{@vehicle | run_id: "999-0504"}
+
+      assert VehicleOrGhost.find_by([shuttle], %{text: "504", property: :run}) ==
+               [shuttle]
+
+      assert VehicleOrGhost.find_by([shuttle], %{text: "999504", property: :run}) ==
+               [shuttle]
+
+      assert VehicleOrGhost.find_by([shuttle], %{text: "999-0504", property: :run}) ==
+               [shuttle]
+    end
+
     test "matches on vehicle ID" do
       assert VehicleOrGhost.find_by(@vehicles, %{text: "1", property: :vehicle}) == @vehicles
 

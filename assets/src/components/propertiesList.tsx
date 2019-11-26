@@ -1,4 +1,5 @@
 import React from "react"
+import { intersperseString } from "../helpers/array"
 import { formattedRunNumber } from "../models/shuttle"
 import { isAVehicle, isShuttle } from "../models/vehicle"
 import { Ghost, Vehicle, VehicleOrGhost } from "../realtime"
@@ -57,8 +58,7 @@ export const Highlighted = ({
     return <>{content}</>
   }
 
-  const regex = new RegExp(highlightText, "i")
-  const match = content.match(regex)
+  const match = content.match(highlightRegex(highlightText))
 
   if (match === null || match.index === undefined) {
     return <>{content}</>
@@ -81,6 +81,12 @@ export const Highlighted = ({
       ]}
     </>
   )
+}
+
+const highlightRegex = (highlightText: string): RegExp => {
+  const stripped = highlightText.replace(/[^0-9a-zA-Z]/g, "")
+  const allowNonAlphanumeric = intersperseString(stripped, "[^0-9a-zA-Z]*")
+  return new RegExp(allowNonAlphanumeric, "i")
 }
 
 const PropertyRow = ({

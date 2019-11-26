@@ -11,3 +11,14 @@ export const uniq = <T>(array: T[]): T[] => Array.from(new Set(array)).sort()
 
 export const flatten = <T>(array: T[][]): T[] =>
   array.reduce((previous, current) => previous.concat(current), [])
+
+export const intersperseString = (s: string, delimiter: string): string => {
+  let result = ""
+  for (const char of s) {
+    if (result !== "") {
+      result += delimiter
+    }
+    result += char
+  }
+  return result
+}

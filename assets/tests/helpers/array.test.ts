@@ -1,4 +1,9 @@
-import { flatten, partition, uniq } from "../../src/helpers/array"
+import {
+  flatten,
+  intersperseString,
+  partition,
+  uniq,
+} from "../../src/helpers/array"
 
 describe("partition", () => {
   test("partitions elements that the test function evaluates to true into the first bucket, else to the second bucket", () => {
@@ -45,5 +50,17 @@ describe("flatten", () => {
 
   test("flattens children", () => {
     expect(flatten([[1, 2], [], [3, 4, 5], [6]])).toEqual([1, 2, 3, 4, 5, 6])
+  })
+})
+
+describe("intersperseString", () => {
+  test("empty", () => {
+    expect(intersperseString("", "")).toEqual("")
+    expect(intersperseString("abc", "")).toEqual("abc")
+    expect(intersperseString("", "--")).toEqual("")
+  })
+
+  test("intersperses the delimiter", () => {
+    expect(intersperseString("abc", "--")).toEqual("a--b--c")
   })
 })
