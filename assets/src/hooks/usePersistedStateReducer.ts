@@ -16,7 +16,7 @@ const usePersistedStateReducer = (
   reducer: Reducer,
   defaultValue: State
 ): [State, Dispatch] => {
-  let loadedState = loadState(APP_STATE_KEY) as State | undefined
+  const loadedState = loadState(APP_STATE_KEY) as State | undefined
   const [state, dispatch] = useReducer(
     reducer,
     defaultValue,
