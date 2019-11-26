@@ -76,6 +76,6 @@
   .m-search-page__map {
     box-sizing: border-box;
     height: 50%;
-    width: calc(100vw - 3rem);
+    width: calc(100vw - #{$tab-bar-width});
   }
 }
