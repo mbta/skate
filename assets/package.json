@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@rehooks/component-size": "^1.0.3",
-    "core-js": "^3.4.2",
+    "core-js": "^3.4.5",
     "leaflet": "^1.6.0",
     "leaflet-defaulticon-compatibility": "^0.1.1",
     "phoenix": "file:../deps/phoenix",
