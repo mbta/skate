@@ -1,8 +1,10 @@
 import { mount } from "enzyme"
 import React from "react"
 import NavigateButton from "../../../src/components/propertiesPanel/navigateButton"
+import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import { HeadwaySpacing } from "../../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../../src/realtime"
+import { deselectVehicle, initialState, selectRoute } from "../../../src/state"
 
 const mockHistoryPush = jest.fn()
 jest.mock("react-router-dom", () => ({
@@ -102,6 +104,34 @@ describe("NavigateButton", () => {
     expect(button.text()).toMatch(/View on Shuttle Map/)
   })
 
+  test("clicking View on Route Ladder selects the vehicle's route", () => {
+    const testDispatch = jest.fn()
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={testDispatch}>
+        <NavigateButton selectedVehicleOrGhost={ghost} />
+      </StateDispatchProvider>
+    )
+    const button = wrapper.find(".m-properties-panel__navigate-button")
+
+    button.simulate("click")
+
+    expect(testDispatch).toHaveBeenCalledWith(selectRoute(ghost.routeId))
+  })
+
+  test("clicking View on Route Ladder deselects the vehicle", () => {
+    const testDispatch = jest.fn()
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={testDispatch}>
+        <NavigateButton selectedVehicleOrGhost={ghost} />
+      </StateDispatchProvider>
+    )
+    const button = wrapper.find(".m-properties-panel__navigate-button")
+
+    button.simulate("click")
+
+    expect(testDispatch).toHaveBeenCalledWith(deselectVehicle())
+  })
+
   test("clicking View on Route Ladder takes you to the route ladder", () => {
     const wrapper = mount(<NavigateButton selectedVehicleOrGhost={ghost} />)
     const button = wrapper.find(".m-properties-panel__navigate-button")
@@ -109,6 +139,20 @@ describe("NavigateButton", () => {
     button.simulate("click")
 
     expect(mockHistoryPush).toHaveBeenCalledWith("/")
+  })
+
+  test("clicking View on Shuttle Map deselects the vehicle", () => {
+    const testDispatch = jest.fn()
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={testDispatch}>
+        <NavigateButton selectedVehicleOrGhost={shuttle} />
+      </StateDispatchProvider>
+    )
+    const button = wrapper.find(".m-properties-panel__navigate-button")
+
+    button.simulate("click")
+
+    expect(testDispatch).toHaveBeenCalledWith(deselectVehicle())
   })
 
   test("clicking View on Shuttle Map takes you to the route ladder", () => {

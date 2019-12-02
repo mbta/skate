@@ -4,7 +4,7 @@ import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { ladderIcon, mapIcon } from "../../helpers/icon"
 import { isGhost, isShuttle } from "../../models/vehicle"
 import { VehicleOrGhost } from "../../realtime"
-import { selectRoute } from "../../state"
+import { deselectVehicle, selectRoute } from "../../state"
 
 interface Props {
   selectedVehicleOrGhost: VehicleOrGhost
@@ -20,6 +20,7 @@ const ViewOnRouteLadderButton = ({
 
   const viewOnRouteLadder = () => {
     dispatch(selectRoute(selectedVehicleOrGhost.routeId))
+    dispatch(deselectVehicle())
     history.push("/")
   }
 
@@ -36,8 +37,10 @@ const ViewOnRouteLadderButton = ({
 
 const ViewOnShuttleMapButton = () => {
   const history = useHistory()
+  const [, dispatch] = useContext(StateDispatchContext)
 
   const viewOnShuttleMap = () => {
+    dispatch(deselectVehicle())
     history.push("/shuttle-map")
   }
 
