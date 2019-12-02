@@ -295,7 +295,8 @@ const recenterControl = (
       link.setAttribute("role", "button")
       link.setAttribute("aria-label", "Recenter map")
       Leaflet.DomEvent.disableClickPropagation(link)
-      link.onclick = () => {
+      link.onclick = e => {
+        e.preventDefault()
         setShouldAutoCenter(true)
       }
       return container
