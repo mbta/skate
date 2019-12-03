@@ -33,23 +33,25 @@ const PropertiesPanel = ({ selectedVehicleOrGhost, route }: Props) => {
   const hideMe = () => dispatch(deselectVehicle())
 
   useEffect(() => {
-    return detectSwipe("m-vehicle-properties-panel", handleSwipe(hideMe))
+    return detectSwipe("m-properties-panel", handleSwipe(hideMe))
   })
 
   return (
     <>
       <div id="m-properties-panel" className="m-properties-panel">
-        {isAVehicle(selectedVehicleOrGhost) ? (
-          <VehiclePropertiesPanel
-            selectedVehicle={selectedVehicleOrGhost}
-            route={route}
-          />
-        ) : (
-          <GhostPropertiesPanel
-            selectedGhost={selectedVehicleOrGhost}
-            route={route}
-          />
-        )}
+        <div className="m-properties-panel__vehicle-or-ghost-panel">
+          {isAVehicle(selectedVehicleOrGhost) ? (
+            <VehiclePropertiesPanel
+              selectedVehicle={selectedVehicleOrGhost}
+              route={route}
+            />
+          ) : (
+            <GhostPropertiesPanel
+              selectedGhost={selectedVehicleOrGhost}
+              route={route}
+            />
+          )}
+        </div>
 
         <CloseButton />
       </div>

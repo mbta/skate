@@ -7,124 +7,128 @@ Array [
     id="m-properties-panel"
   >
     <div
-      className="m-ghost-properties-panel"
+      className="m-properties-panel__vehicle-or-ghost-panel"
     >
       <div
-        className="m-properties-panel__header"
+        className="m-ghost-properties-panel"
       >
         <div
-          className="m-properties-panel__label"
-        >
-          <svg
-            style={
-              Object {
-                "height": 64,
-                "width": 64,
-              }
-            }
-            viewBox="-32 -20 64 64"
-          >
-            <g
-              className="m-vehicle-icon m-vehicle-icon--large ghost"
-            >
-              <rect
-                className="m-vehicle-icon__label-background"
-                height={24}
-                rx={12}
-                ry={12}
-                width={64}
-                x={-32}
-                y={19}
-              />
-              <text
-                className="m-vehicle-icon__label"
-                dominantBaseline="central"
-                textAnchor="middle"
-                x="0"
-                y={31}
-              >
-                0123
-              </text>
-              <g
-                transform="scale(0.7) translate(-24,-23)"
-              >
-                <path
-                  className="m-vehicle-icon__ghost-highlight"
-                  d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-                  stroke-join="round"
-                />
-                <path
-                  className="m-vehicle-icon__ghost-body"
-                  d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-                  stroke-join="round"
-                />
-              </g>
-              <text
-                className="m-vehicle-icon__variant"
-                dominantBaseline="alphabetic"
-                textAnchor="middle"
-                x={0}
-                y={8}
-              >
-                X
-              </text>
-            </g>
-          </svg>
-        </div>
-        <div
-          className="m-properties-panel__variant"
+          className="m-properties-panel__header"
         >
           <div
-            className="m-properties-panel__inbound-outbound"
+            className="m-properties-panel__label"
           >
-            Outbound
+            <svg
+              style={
+                Object {
+                  "height": 64,
+                  "width": 64,
+                }
+              }
+              viewBox="-32 -20 64 64"
+            >
+              <g
+                className="m-vehicle-icon m-vehicle-icon--large ghost"
+              >
+                <rect
+                  className="m-vehicle-icon__label-background"
+                  height={24}
+                  rx={12}
+                  ry={12}
+                  width={64}
+                  x={-32}
+                  y={19}
+                />
+                <text
+                  className="m-vehicle-icon__label"
+                  dominantBaseline="central"
+                  textAnchor="middle"
+                  x="0"
+                  y={31}
+                >
+                  0123
+                </text>
+                <g
+                  transform="scale(0.7) translate(-24,-23)"
+                >
+                  <path
+                    className="m-vehicle-icon__ghost-highlight"
+                    d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
+                    stroke-join="round"
+                  />
+                  <path
+                    className="m-vehicle-icon__ghost-body"
+                    d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
+                    stroke-join="round"
+                  />
+                </g>
+                <text
+                  className="m-vehicle-icon__variant"
+                  dominantBaseline="alphabetic"
+                  textAnchor="middle"
+                  x={0}
+                  y={8}
+                >
+                  X
+                </text>
+              </g>
+            </svg>
           </div>
           <div
-            className="m-route-variant-name"
+            className="m-properties-panel__variant"
+          >
+            <div
+              className="m-properties-panel__inbound-outbound"
+            >
+              Outbound
+            </div>
+            <div
+              className="m-route-variant-name"
+            >
+              <span
+                className="m-route-variant-name__route-id"
+              >
+                39_X
+              </span>
+               headsign
+            </div>
+          </div>
+          <button
+            className="m-close-button"
+            onClick={[Function]}
           >
             <span
-              className="m-route-variant-name__route-id"
-            >
-              39_X
-            </span>
-             headsign
-          </div>
-        </div>
-        <button
-          className="m-close-button"
-          onClick={[Function]}
-        >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
+              className=""
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
               }
-            }
-          />
-        </button>
-      </div>
-      <div
-        className="m-properties-list"
-      >
-        <table
-          className="m-properties-list__table"
+            />
+          </button>
+        </div>
+        <div
+          className="m-properties-list"
         >
-          <tbody>
-            <tr>
-              <td
-                className="m-properties-list__property-label"
-              >
-                Run
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                123-0123
-              </td>
-            </tr>
-          </tbody>
-        </table>
+          <table
+            className="m-properties-list__table"
+          >
+            <tbody>
+              <tr>
+                <td
+                  className="m-properties-list__property-label"
+                >
+                  Run
+                </td>
+                <td
+                  className="m-properties-list__property-value"
+                >
+                  123-0123
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
     <button
@@ -148,205 +152,209 @@ Array [
     id="m-properties-panel"
   >
     <div
-      className="m-vehicle-properties-panel"
+      className="m-properties-panel__vehicle-or-ghost-panel"
     >
       <div
-        className="m-properties-panel__header"
+        className="m-vehicle-properties-panel"
       >
         <div
-          className="m-properties-panel__label"
-        >
-          <svg
-            style={
-              Object {
-                "height": 64,
-                "width": 64,
-              }
-            }
-            viewBox="-32 -20 64 64"
-          >
-            <g
-              className="m-vehicle-icon m-vehicle-icon--large on-time"
-            >
-              <rect
-                className="m-vehicle-icon__label-background"
-                height={24}
-                rx={12}
-                ry={12}
-                width={64}
-                x={-32}
-                y={19}
-              />
-              <text
-                className="m-vehicle-icon__label"
-                dominantBaseline="central"
-                textAnchor="middle"
-                x="0"
-                y={31}
-              >
-                1
-              </text>
-              <path
-                className="m-vehicle-icon__triangle"
-                d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-                transform="scale(1) rotate(0) translate(-24,-22)"
-              />
-              <text
-                className="m-vehicle-icon__variant"
-                dominantBaseline="alphabetic"
-                textAnchor="middle"
-                x={0}
-                y={14}
-              >
-                X
-              </text>
-            </g>
-          </svg>
-        </div>
-        <div
-          className="m-properties-panel__variant"
+          className="m-properties-panel__header"
         >
           <div
-            className="m-properties-panel__inbound-outbound"
+            className="m-properties-panel__label"
           >
-            Outbound
+            <svg
+              style={
+                Object {
+                  "height": 64,
+                  "width": 64,
+                }
+              }
+              viewBox="-32 -20 64 64"
+            >
+              <g
+                className="m-vehicle-icon m-vehicle-icon--large on-time"
+              >
+                <rect
+                  className="m-vehicle-icon__label-background"
+                  height={24}
+                  rx={12}
+                  ry={12}
+                  width={64}
+                  x={-32}
+                  y={19}
+                />
+                <text
+                  className="m-vehicle-icon__label"
+                  dominantBaseline="central"
+                  textAnchor="middle"
+                  x="0"
+                  y={31}
+                >
+                  1
+                </text>
+                <path
+                  className="m-vehicle-icon__triangle"
+                  d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+                  transform="scale(1) rotate(0) translate(-24,-22)"
+                />
+                <text
+                  className="m-vehicle-icon__variant"
+                  dominantBaseline="alphabetic"
+                  textAnchor="middle"
+                  x={0}
+                  y={14}
+                >
+                  X
+                </text>
+              </g>
+            </svg>
           </div>
           <div
-            className="m-route-variant-name"
+            className="m-properties-panel__variant"
+          >
+            <div
+              className="m-properties-panel__inbound-outbound"
+            >
+              Outbound
+            </div>
+            <div
+              className="m-route-variant-name"
+            >
+              <span
+                className="m-route-variant-name__route-id"
+              >
+                39_X
+              </span>
+               Forest Hills
+            </div>
+            <div
+              className="m-properties-panel__schedule-adherence on-time"
+            >
+              <div
+                className="m-properties-panel__schedule-adherence-status-icon"
+              >
+                <svg
+                  height="10"
+                  width="10"
+                >
+                  <circle
+                    cx="5"
+                    cy="5"
+                    r="5"
+                  />
+                </svg>
+              </div>
+              <div
+                className="m-properties-panel__schedule-adherence-status-string"
+              >
+                on time
+              </div>
+              <div
+                className="m-properties-panel__schedule-adherence-label"
+              >
+                (0 min early)
+              </div>
+            </div>
+          </div>
+          <button
+            className="m-close-button"
+            onClick={[Function]}
           >
             <span
-              className="m-route-variant-name__route-id"
-            >
-              39_X
-            </span>
-             Forest Hills
+              className=""
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
+              }
+            />
+          </button>
+        </div>
+        <div
+          className="m-properties-list"
+        >
+          <table
+            className="m-properties-list__table"
+          >
+            <tbody>
+              <tr>
+                <td
+                  className="m-properties-list__property-label"
+                >
+                  Run
+                </td>
+                <td
+                  className="m-properties-list__property-value"
+                >
+                  run-1
+                </td>
+              </tr>
+              <tr>
+                <td
+                  className="m-properties-list__property-label"
+                >
+                  Vehicle
+                </td>
+                <td
+                  className="m-properties-list__property-value"
+                >
+                  v1-label
+                </td>
+              </tr>
+              <tr>
+                <td
+                  className="m-properties-list__property-label"
+                >
+                  Operator
+                </td>
+                <td
+                  className="m-properties-list__property-value"
+                >
+                  SMITH #op1
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div
+          className="m-vehicle-properties-panel__location"
+        >
+          <div
+            className="m-properties-list__property-label"
+          >
+            Next Stop
           </div>
           <div
-            className="m-properties-panel__schedule-adherence on-time"
+            className="m-properties-list__property-value"
+          >
+            Stop Name
+          </div>
+          <div
+            className="m-properties-list__property-label"
+          >
+            Last GPS Ping
+          </div>
+          <div
+            className="m-properties-list__property-value"
+          >
+            111s ago
+          </div>
+          <a
+            className="m-vehicle-properties-panel__link"
+            href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+            target="_blank"
+          >
+            Directions
+          </a>
+          <div
+            className="m-vehicle-properties-panel__map"
           >
             <div
-              className="m-properties-panel__schedule-adherence-status-icon"
-            >
-              <svg
-                height="10"
-                width="10"
-              >
-                <circle
-                  cx="5"
-                  cy="5"
-                  r="5"
-                />
-              </svg>
-            </div>
-            <div
-              className="m-properties-panel__schedule-adherence-status-string"
-            >
-              on time
-            </div>
-            <div
-              className="m-properties-panel__schedule-adherence-label"
-            >
-              (0 min early)
-            </div>
+              className="m-vehicle-map"
+              id="id-vehicle-map"
+            />
           </div>
-        </div>
-        <button
-          className="m-close-button"
-          onClick={[Function]}
-        >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
-        </button>
-      </div>
-      <div
-        className="m-properties-list"
-      >
-        <table
-          className="m-properties-list__table"
-        >
-          <tbody>
-            <tr>
-              <td
-                className="m-properties-list__property-label"
-              >
-                Run
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                run-1
-              </td>
-            </tr>
-            <tr>
-              <td
-                className="m-properties-list__property-label"
-              >
-                Vehicle
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                v1-label
-              </td>
-            </tr>
-            <tr>
-              <td
-                className="m-properties-list__property-label"
-              >
-                Operator
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                SMITH #op1
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div
-        className="m-vehicle-properties-panel__location"
-      >
-        <div
-          className="m-properties-list__property-label"
-        >
-          Next Stop
-        </div>
-        <div
-          className="m-properties-list__property-value"
-        >
-          Stop Name
-        </div>
-        <div
-          className="m-properties-list__property-label"
-        >
-          Last GPS Ping
-        </div>
-        <div
-          className="m-properties-list__property-value"
-        >
-          111s ago
-        </div>
-        <a
-          className="m-vehicle-properties-panel__link"
-          href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
-          target="_blank"
-        >
-          Directions
-        </a>
-        <div
-          className="m-vehicle-properties-panel__map"
-        >
-          <div
-            className="m-vehicle-map"
-            id="id-vehicle-map"
-          />
         </div>
       </div>
     </div>
