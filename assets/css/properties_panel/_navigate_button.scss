@@ -1,0 +1,14 @@
+.m-properties-panel__navigate-button {
+  @include button-primary;
+  border-radius: 0;
+  color: $color-secondary-light;
+  padding: 1.3rem 0;
+}
+
+.m-properties-panel__navigate-button-icon {
+  display: inline-block;
+  fill: $color-secondary-light;
+  margin-right: 1.2rem;
+  vertical-align: middle;
+  width: 1.375rem;
+}

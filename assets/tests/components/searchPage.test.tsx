@@ -10,6 +10,17 @@ import { initialState, State } from "../../src/state"
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
+jest.mock("react-router-dom", () => ({
+  useHistory: () => ({
+    push: jest.fn(),
+  }),
+}))
+
+jest.mock("../../src/hooks/useSearchResults", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}))
+
 const vehicle: Vehicle = {
   id: "v1",
   label: "v1-label",
@@ -74,10 +85,6 @@ const ghost: Ghost = {
     fractionUntilTimepoint: 0.0,
   },
 }
-jest.mock("../../src/hooks/useSearchResults", () => ({
-  __esModule: true,
-  default: jest.fn(),
-}))
 
 describe("SearchPage", () => {
   test("renders the empty state", () => {

@@ -112,7 +112,10 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
       </div>
 
       {selectedVehicle && (
-        <PropertiesPanel selectedVehicleOrGhost={selectedVehicle} />
+        <PropertiesPanel
+          selectedVehicleOrGhost={selectedVehicle}
+          enableNavigation={true}
+        />
       )}
     </div>
   )

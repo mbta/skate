@@ -30,12 +30,12 @@ describe("uniq", () => {
     expect(uniq(["1", "2"])).toEqual(["1", "2"])
   })
 
-  test("sorts output", () => {
-    expect(uniq(["2", "1"])).toEqual(["1", "2"])
+  test("does not sort output", () => {
+    expect(uniq(["2", "1"])).toEqual(["2", "1"])
   })
 
   test("removes duplicate values even if they're not next to each other", () => {
-    expect(uniq(["1", "3", "2", "3", "1", "1"])).toEqual(["1", "2", "3"])
+    expect(uniq(["1", "3", "2", "3", "1", "1"])).toEqual(["1", "3", "2"])
   })
 })
 

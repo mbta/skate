@@ -12,6 +12,12 @@ import { deselectVehicle, initialState } from "../../src/state"
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
+jest.mock("react-router-dom", () => ({
+  useHistory: () => ({
+    push: jest.fn(),
+  }),
+}))
+
 const route: Route = {
   id: "39",
   directionNames: {
@@ -115,6 +121,18 @@ describe("PropertiesPanel", () => {
     wrapper.find(".m-properties-panel__close-button").simulate("click")
 
     expect(mockDispatch).toHaveBeenCalledWith(deselectVehicle())
+  })
+
+  test("renders a navigate button instead of a close button if enableNavigation is turned on", () => {
+    const wrapper = mount(
+      <PropertiesPanel
+        selectedVehicleOrGhost={ghost}
+        route={route}
+        enableNavigation={true}
+      />
+    )
+
+    expect(wrapper.find(".m-properties-panel__navigate-button")).toBeTruthy()
   })
 })
 

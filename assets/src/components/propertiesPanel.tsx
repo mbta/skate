@@ -7,11 +7,13 @@ import { Route } from "../schedule"
 import { deselectVehicle } from "../state"
 import CloseButton from "./propertiesPanel/closeButton"
 import GhostPropertiesPanel from "./propertiesPanel/ghostPropertiesPanel"
+import NavigateButton from "./propertiesPanel/navigateButton"
 import VehiclePropertiesPanel from "./propertiesPanel/vehiclePropertiesPanel"
 
 interface Props {
   selectedVehicleOrGhost: VehicleOrGhost
   route?: Route
+  enableNavigation?: boolean
 }
 
 export const handleSwipe = (hideMe: () => void) => (
@@ -27,7 +29,11 @@ export const handleSwipe = (hideMe: () => void) => (
   }
 }
 
-const PropertiesPanel = ({ selectedVehicleOrGhost, route }: Props) => {
+const PropertiesPanel = ({
+  selectedVehicleOrGhost,
+  route,
+  enableNavigation,
+}: Props) => {
   const [, dispatch] = useContext(StateDispatchContext)
 
   const hideMe = () => dispatch(deselectVehicle())
@@ -51,7 +57,11 @@ const PropertiesPanel = ({ selectedVehicleOrGhost, route }: Props) => {
           />
         )}
 
-        <CloseButton />
+        {enableNavigation ? (
+          <NavigateButton selectedVehicleOrGhost={selectedVehicleOrGhost} />
+        ) : (
+          <CloseButton />
+        )}
       </div>
       <div className="m-properties-panel__modal-overlay" onClick={hideMe} />
     </>

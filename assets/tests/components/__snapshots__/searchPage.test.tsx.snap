@@ -364,10 +364,18 @@ exports[`SearchPage renders a selected vehicle 1`] = `
       </div>
     </div>
     <button
-      className="m-properties-panel__close-button"
+      className="m-properties-panel__navigate-button"
       onClick={[Function]}
     >
-      Close
+      <span
+        className="m-properties-panel__navigate-button-icon"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
+        }
+      />
+      View on Route Ladder
     </button>
   </div>
   <div
