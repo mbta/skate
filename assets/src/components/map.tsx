@@ -256,11 +256,6 @@ export const autoCenter = (
       paddingTopLeft: [appState.pickerContainerIsVisible ? 220 : 20, 20],
     })
   }
-  // The move starts asynchronously.
-  // Wait until it's really started to start listening for manual moves again.
-  window.requestAnimationFrame(() => {
-    isAutoCentering.current = false
-  })
 }
 
 const recenterControl = (
@@ -295,7 +290,8 @@ const recenterControl = (
       link.setAttribute("role", "button")
       link.setAttribute("aria-label", "Recenter map")
       Leaflet.DomEvent.disableClickPropagation(link)
-      link.onclick = () => {
+      link.onclick = e => {
+        e.preventDefault()
         setShouldAutoCenter(true)
       }
       return container
@@ -331,6 +327,12 @@ export const newLeafletMap = (
     // But don't disable shouldAutoCenter if the move was triggered by an auto center.
     if (!isAutoCentering.current) {
       setShouldAutoCenter(false)
+    }
+  })
+  map.on("moveend", () => {
+    // Wait until the auto centering is finished to start listening for manual moves again.
+    if (isAutoCentering.current) {
+      isAutoCentering.current = false
     }
   })
   Leaflet.control.zoom({ position: "topright" }).addTo(map)
