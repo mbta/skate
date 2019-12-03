@@ -25,11 +25,8 @@ const ViewOnRouteLadderButton = ({
   }
 
   return (
-    <button
-      className="m-properties-panel__navigate-button"
-      onClick={viewOnRouteLadder}
-    >
-      {ladderIcon("m-properties-panel__navigate-button-icon")}
+    <button className="m-view-search-result-button" onClick={viewOnRouteLadder}>
+      {ladderIcon("m-view-search-result-button__icon")}
       View on Route Ladder
     </button>
   )
@@ -45,21 +42,18 @@ const ViewOnShuttleMapButton = () => {
   }
 
   return (
-    <button
-      className="m-properties-panel__navigate-button"
-      onClick={viewOnShuttleMap}
-    >
-      {mapIcon("m-properties-panel__navigate-button-icon")}
+    <button className="m-view-search-result-button" onClick={viewOnShuttleMap}>
+      {mapIcon("m-view-search-result-button__icon")}
       View on Shuttle Map
     </button>
   )
 }
 
-const NavigateButton = ({ selectedVehicleOrGhost }: Props) =>
+const ViewSearchResultButton = ({ selectedVehicleOrGhost }: Props) =>
   isGhost(selectedVehicleOrGhost) || !isShuttle(selectedVehicleOrGhost) ? (
     <ViewOnRouteLadderButton selectedVehicleOrGhost={selectedVehicleOrGhost} />
   ) : (
     <ViewOnShuttleMapButton />
   )
 
-export default NavigateButton
+export default ViewSearchResultButton

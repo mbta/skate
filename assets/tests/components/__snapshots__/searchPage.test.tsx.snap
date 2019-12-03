@@ -364,11 +364,11 @@ exports[`SearchPage renders a selected vehicle 1`] = `
       </div>
     </div>
     <button
-      className="m-properties-panel__navigate-button"
+      className="m-view-search-result-button"
       onClick={[Function]}
     >
       <span
-        className="m-properties-panel__navigate-button-icon"
+        className="m-view-search-result-button__icon"
         dangerouslySetInnerHTML={
           Object {
             "__html": "SVG",

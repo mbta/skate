@@ -1,6 +1,6 @@
 import { mount } from "enzyme"
 import React from "react"
-import NavigateButton from "../../../src/components/propertiesPanel/navigateButton"
+import ViewSearchResultButton from "../../../src/components/propertiesPanel/viewSearchResultButton"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import { HeadwaySpacing } from "../../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../../src/realtime"
@@ -82,24 +82,30 @@ const ghost: Ghost = {
   },
 }
 
-describe("NavigateButton", () => {
+describe("ViewSearchResultButton", () => {
   test("renders a View on Route Ladder button for a ghost", () => {
-    const wrapper = mount(<NavigateButton selectedVehicleOrGhost={ghost} />)
-    const button = wrapper.find(".m-properties-panel__navigate-button")
+    const wrapper = mount(
+      <ViewSearchResultButton selectedVehicleOrGhost={ghost} />
+    )
+    const button = wrapper.find(".m-view-search-result-button")
 
     expect(button.text()).toMatch(/View on Route Ladder/)
   })
 
   test("renders a View on Route Ladder button for a non-shuttle vehicle", () => {
-    const wrapper = mount(<NavigateButton selectedVehicleOrGhost={vehicle} />)
-    const button = wrapper.find(".m-properties-panel__navigate-button")
+    const wrapper = mount(
+      <ViewSearchResultButton selectedVehicleOrGhost={vehicle} />
+    )
+    const button = wrapper.find(".m-view-search-result-button")
 
     expect(button.text()).toMatch(/View on Route Ladder/)
   })
 
   test("renders a View on Shuttle Map button for a shuttle", () => {
-    const wrapper = mount(<NavigateButton selectedVehicleOrGhost={shuttle} />)
-    const button = wrapper.find(".m-properties-panel__navigate-button")
+    const wrapper = mount(
+      <ViewSearchResultButton selectedVehicleOrGhost={shuttle} />
+    )
+    const button = wrapper.find(".m-view-search-result-button")
 
     expect(button.text()).toMatch(/View on Shuttle Map/)
   })
@@ -108,10 +114,10 @@ describe("NavigateButton", () => {
     const testDispatch = jest.fn()
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={testDispatch}>
-        <NavigateButton selectedVehicleOrGhost={ghost} />
+        <ViewSearchResultButton selectedVehicleOrGhost={ghost} />
       </StateDispatchProvider>
     )
-    const button = wrapper.find(".m-properties-panel__navigate-button")
+    const button = wrapper.find(".m-view-search-result-button")
 
     button.simulate("click")
 
@@ -122,10 +128,10 @@ describe("NavigateButton", () => {
     const testDispatch = jest.fn()
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={testDispatch}>
-        <NavigateButton selectedVehicleOrGhost={ghost} />
+        <ViewSearchResultButton selectedVehicleOrGhost={ghost} />
       </StateDispatchProvider>
     )
-    const button = wrapper.find(".m-properties-panel__navigate-button")
+    const button = wrapper.find(".m-view-search-result-button")
 
     button.simulate("click")
 
@@ -133,8 +139,10 @@ describe("NavigateButton", () => {
   })
 
   test("clicking View on Route Ladder takes you to the route ladder", () => {
-    const wrapper = mount(<NavigateButton selectedVehicleOrGhost={ghost} />)
-    const button = wrapper.find(".m-properties-panel__navigate-button")
+    const wrapper = mount(
+      <ViewSearchResultButton selectedVehicleOrGhost={ghost} />
+    )
+    const button = wrapper.find(".m-view-search-result-button")
 
     button.simulate("click")
 
@@ -145,10 +153,10 @@ describe("NavigateButton", () => {
     const testDispatch = jest.fn()
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={testDispatch}>
-        <NavigateButton selectedVehicleOrGhost={shuttle} />
+        <ViewSearchResultButton selectedVehicleOrGhost={shuttle} />
       </StateDispatchProvider>
     )
-    const button = wrapper.find(".m-properties-panel__navigate-button")
+    const button = wrapper.find(".m-view-search-result-button")
 
     button.simulate("click")
 
@@ -156,8 +164,10 @@ describe("NavigateButton", () => {
   })
 
   test("clicking View on Shuttle Map takes you to the route ladder", () => {
-    const wrapper = mount(<NavigateButton selectedVehicleOrGhost={shuttle} />)
-    const button = wrapper.find(".m-properties-panel__navigate-button")
+    const wrapper = mount(
+      <ViewSearchResultButton selectedVehicleOrGhost={shuttle} />
+    )
+    const button = wrapper.find(".m-view-search-result-button")
 
     button.simulate("click")
 

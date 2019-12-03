@@ -1,11 +1,11 @@
-.m-properties-panel__navigate-button {
+.m-view-search-result-button {
   @include button-primary;
   border-radius: 0;
   color: $color-secondary-light;
   padding: 1.3rem 0;
 }
 
-.m-properties-panel__navigate-button-icon {
+.m-view-search-result-button__icon {
   display: inline-block;
   fill: $color-secondary-light;
   margin-right: 1.2rem;

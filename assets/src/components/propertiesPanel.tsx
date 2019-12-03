@@ -7,8 +7,8 @@ import { Route } from "../schedule"
 import { deselectVehicle } from "../state"
 import CloseButton from "./propertiesPanel/closeButton"
 import GhostPropertiesPanel from "./propertiesPanel/ghostPropertiesPanel"
-import NavigateButton from "./propertiesPanel/navigateButton"
 import VehiclePropertiesPanel from "./propertiesPanel/vehiclePropertiesPanel"
+import ViewSearchResultButton from "./propertiesPanel/viewSearchResultButton"
 
 interface Props {
   selectedVehicleOrGhost: VehicleOrGhost
@@ -58,7 +58,9 @@ const PropertiesPanel = ({
         )}
 
         {enableNavigation ? (
-          <NavigateButton selectedVehicleOrGhost={selectedVehicleOrGhost} />
+          <ViewSearchResultButton
+            selectedVehicleOrGhost={selectedVehicleOrGhost}
+          />
         ) : (
           <CloseButton />
         )}

@@ -132,7 +132,7 @@ describe("PropertiesPanel", () => {
       />
     )
 
-    expect(wrapper.find(".m-properties-panel__navigate-button")).toBeTruthy()
+    expect(wrapper.find(".m-view-search-result-button")).toBeTruthy()
   })
 })
 
