@@ -43,7 +43,6 @@ describe("usePersistedStateReducer", () => {
       selectedShuttleRunIds: [],
       selectedVehicleId: "2",
       settings: {
-        vehicleLabel: undefined,
         ladderVehicleLabel: VehicleLabelSetting.RunNumber,
         shuttleVehicleLabel: VehicleLabelSetting.VehicleNumber,
       },
@@ -78,7 +77,6 @@ describe("usePersistedStateReducer", () => {
       selectedShuttleRunIds: [],
       selectedVehicleId: "2",
       settings: {
-        vehicleLabel: undefined,
         ladderVehicleLabel: VehicleLabelSetting.RunNumber,
         shuttleVehicleLabel: VehicleLabelSetting.VehicleNumber,
       },
@@ -95,60 +93,8 @@ describe("usePersistedStateReducer", () => {
       selectedShuttleRunIds: [],
       selectedVehicleId: "2",
       settings: {
-        vehicleLabel: undefined,
         ladderVehicleLabel: VehicleLabelSetting.RunNumber,
         shuttleVehicleLabel: VehicleLabelSetting.RunNumber,
-      },
-    }
-
-    const { result } = renderHook(() =>
-      usePersistedStateReducer(reducer, initialState)
-    )
-    const [state] = result.current
-
-    expect(state).toEqual(expectedState)
-  })
-
-  test("fixes deprecated vehicleLabel settings property", () => {
-    jest
-      .spyOn(window.localStorage, "getItem")
-      .mockImplementation(
-        (_stateKey: string) =>
-          '{"selectedRouteIds":["28","39"],"settings":{"vehicleLabel":2}}'
-      )
-
-    const initialState: State = {
-      pickerContainerIsVisible: true,
-      search: {
-        text: "search text",
-        property: "run",
-        isActive: true,
-      },
-      selectedRouteIds: ["1", "2"],
-      selectedShuttleRouteIds: [],
-      selectedShuttleRunIds: [],
-      selectedVehicleId: "2",
-      settings: {
-        vehicleLabel: undefined,
-        ladderVehicleLabel: VehicleLabelSetting.RunNumber,
-        shuttleVehicleLabel: VehicleLabelSetting.VehicleNumber,
-      },
-    }
-    const expectedState: State = {
-      pickerContainerIsVisible: true,
-      search: {
-        text: "search text",
-        property: "run",
-        isActive: true,
-      },
-      selectedRouteIds: ["28", "39"],
-      selectedShuttleRouteIds: [],
-      selectedShuttleRunIds: [],
-      selectedVehicleId: "2",
-      settings: {
-        vehicleLabel: undefined,
-        ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
-        shuttleVehicleLabel: VehicleLabelSetting.VehicleNumber,
       },
     }
 
