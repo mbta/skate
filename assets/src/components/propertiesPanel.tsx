@@ -5,6 +5,7 @@ import { isAVehicle } from "../models/vehicle"
 import { VehicleOrGhost } from "../realtime.d"
 import { Route } from "../schedule"
 import { deselectVehicle } from "../state"
+import CloseButton from "./propertiesPanel/closeButton"
 import GhostPropertiesPanel from "./propertiesPanel/ghostPropertiesPanel"
 import VehiclePropertiesPanel from "./propertiesPanel/vehiclePropertiesPanel"
 
@@ -32,23 +33,27 @@ const PropertiesPanel = ({ selectedVehicleOrGhost, route }: Props) => {
   const hideMe = () => dispatch(deselectVehicle())
 
   useEffect(() => {
-    return detectSwipe("m-vehicle-properties-panel", handleSwipe(hideMe))
+    return detectSwipe("m-properties-panel", handleSwipe(hideMe))
   })
 
   return (
     <>
       <div id="m-properties-panel" className="m-properties-panel">
-        {isAVehicle(selectedVehicleOrGhost) ? (
-          <VehiclePropertiesPanel
-            selectedVehicle={selectedVehicleOrGhost}
-            route={route}
-          />
-        ) : (
-          <GhostPropertiesPanel
-            selectedGhost={selectedVehicleOrGhost}
-            route={route}
-          />
-        )}
+        <div className="m-properties-panel__vehicle-or-ghost-panel">
+          {isAVehicle(selectedVehicleOrGhost) ? (
+            <VehiclePropertiesPanel
+              selectedVehicle={selectedVehicleOrGhost}
+              route={route}
+            />
+          ) : (
+            <GhostPropertiesPanel
+              selectedGhost={selectedVehicleOrGhost}
+              route={route}
+            />
+          )}
+        </div>
+
+        <CloseButton />
       </div>
       <div className="m-properties-panel__modal-overlay" onClick={hideMe} />
     </>

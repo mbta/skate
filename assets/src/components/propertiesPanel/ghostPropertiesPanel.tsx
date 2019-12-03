@@ -2,7 +2,6 @@ import React from "react"
 import { Ghost } from "../../realtime"
 import { Route } from "../../schedule"
 import PropertiesList from "../propertiesList"
-import CloseButton from "./closeButton"
 import Header from "./header"
 
 interface Props {
@@ -15,8 +14,6 @@ const GhostPropertiesPanel = ({ selectedGhost, route }: Props) => (
     <Header vehicle={selectedGhost} route={route} />
 
     <PropertiesList vehicleOrGhost={selectedGhost} />
-
-    <CloseButton />
   </div>
 )
 

@@ -2,11 +2,9 @@ import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import VehiclePropertiesPanel from "../../../src/components/propertiesPanel/vehiclePropertiesPanel"
-import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import { HeadwaySpacing } from "../../../src/models/vehicleStatus"
 import { Vehicle } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
-import { deselectVehicle, initialState } from "../../../src/state"
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
@@ -180,18 +178,5 @@ describe("VehiclePropertiesPanel", () => {
     expect(
       wrapper.find(".m-vehicle-properties-panel__data-discrepancies").length
     ).toBe(0)
-  })
-
-  test("clicking the 'Close vehicle properties' button deselects the vehicle", () => {
-    const mockDispatch = jest.fn()
-
-    const wrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <VehiclePropertiesPanel selectedVehicle={vehicle} />
-      </StateDispatchProvider>
-    )
-    wrapper.find(".m-properties-panel__close-button").simulate("click")
-
-    expect(mockDispatch).toHaveBeenCalledWith(deselectVehicle())
   })
 })

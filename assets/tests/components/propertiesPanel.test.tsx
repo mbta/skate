@@ -1,11 +1,14 @@
+import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import PropertiesPanel, {
   handleSwipe,
 } from "../../src/components/propertiesPanel"
+import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../src/realtime"
 import { Route } from "../../src/schedule"
+import { deselectVehicle, initialState } from "../../src/state"
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
@@ -17,60 +20,73 @@ const route: Route = {
   },
   name: "39",
 }
+const vehicle: Vehicle = {
+  id: "v1",
+  label: "v1-label",
+  runId: "run-1",
+  timestamp: 123,
+  latitude: 0,
+  longitude: 0,
+  directionId: 0,
+  routeId: "39",
+  tripId: "t1",
+  headsign: "Forest Hills",
+  viaVariant: "X",
+  operatorId: "op1",
+  operatorName: "SMITH",
+  bearing: 33,
+  blockId: "block-1",
+  headwaySecs: 859.1,
+  headwaySpacing: HeadwaySpacing.Ok,
+  previousVehicleId: "v2",
+  scheduleAdherenceSecs: 0,
+  scheduledHeadwaySecs: 120,
+  isOffCourse: false,
+  layoverDepartureTime: null,
+  blockIsActive: false,
+  dataDiscrepancies: [
+    {
+      attribute: "trip_id",
+      sources: [
+        {
+          id: "swiftly",
+          value: "swiftly-trip-id",
+        },
+        {
+          id: "busloc",
+          value: "busloc-trip-id",
+        },
+      ],
+    },
+  ],
+  stopStatus: {
+    stopId: "s1",
+    stopName: "Stop Name",
+  },
+  timepointStatus: {
+    fractionUntilTimepoint: 0.5,
+    timepointId: "tp1",
+  },
+  scheduledLocation: null,
+  routeStatus: "on_route",
+}
+const ghost: Ghost = {
+  id: "ghost-trip",
+  directionId: 0,
+  routeId: "39",
+  tripId: "trip",
+  headsign: "headsign",
+  blockId: "block",
+  runId: "123-0123",
+  viaVariant: "X",
+  scheduledTimepointStatus: {
+    timepointId: "t0",
+    fractionUntilTimepoint: 0.0,
+  },
+}
 
 describe("PropertiesPanel", () => {
   test("renders a vehicle", () => {
-    const vehicle: Vehicle = {
-      id: "v1",
-      label: "v1-label",
-      runId: "run-1",
-      timestamp: 123,
-      latitude: 0,
-      longitude: 0,
-      directionId: 0,
-      routeId: "39",
-      tripId: "t1",
-      headsign: "Forest Hills",
-      viaVariant: "X",
-      operatorId: "op1",
-      operatorName: "SMITH",
-      bearing: 33,
-      blockId: "block-1",
-      headwaySecs: 859.1,
-      headwaySpacing: HeadwaySpacing.Ok,
-      previousVehicleId: "v2",
-      scheduleAdherenceSecs: 0,
-      scheduledHeadwaySecs: 120,
-      isOffCourse: false,
-      layoverDepartureTime: null,
-      blockIsActive: false,
-      dataDiscrepancies: [
-        {
-          attribute: "trip_id",
-          sources: [
-            {
-              id: "swiftly",
-              value: "swiftly-trip-id",
-            },
-            {
-              id: "busloc",
-              value: "busloc-trip-id",
-            },
-          ],
-        },
-      ],
-      stopStatus: {
-        stopId: "s1",
-        stopName: "Stop Name",
-      },
-      timepointStatus: {
-        fractionUntilTimepoint: 0.5,
-        timepointId: "tp1",
-      },
-      scheduledLocation: null,
-      routeStatus: "on_route",
-    }
-
     const tree = renderer
       .create(
         <PropertiesPanel selectedVehicleOrGhost={vehicle} route={route} />
@@ -81,26 +97,24 @@ describe("PropertiesPanel", () => {
   })
 
   test("renders a ghost", () => {
-    const ghost: Ghost = {
-      id: "ghost-trip",
-      directionId: 0,
-      routeId: "39",
-      tripId: "trip",
-      headsign: "headsign",
-      blockId: "block",
-      runId: "123-0123",
-      viaVariant: "X",
-      scheduledTimepointStatus: {
-        timepointId: "t0",
-        fractionUntilTimepoint: 0.0,
-      },
-    }
-
     const tree = renderer
       .create(<PropertiesPanel selectedVehicleOrGhost={ghost} route={route} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()
+  })
+
+  test("clicking the Close button deselects the vehicle", () => {
+    const mockDispatch = jest.fn()
+
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+        <PropertiesPanel selectedVehicleOrGhost={ghost} route={route} />
+      </StateDispatchProvider>
+    )
+    wrapper.find(".m-properties-panel__close-button").simulate("click")
+
+    expect(mockDispatch).toHaveBeenCalledWith(deselectVehicle())
   })
 })
 
