@@ -1,6 +1,7 @@
 import {
-  isAVehicle,
+  isGhost,
   isShuttle,
+  isVehicle,
   shouldShowHeadwayDiagram,
 } from "../../src/models/vehicle"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
@@ -95,13 +96,23 @@ const ghost: Ghost = {
   },
 }
 
-describe("isAVehicle", () => {
+describe("isVehicle", () => {
   test("returns true for a Vehicle", () => {
-    expect(isAVehicle(vehicle)).toBeTruthy()
+    expect(isVehicle(vehicle)).toBeTruthy()
   })
 
   test("returns false for a Ghost", () => {
-    expect(isAVehicle(ghost)).toBeFalsy()
+    expect(isVehicle(ghost)).toBeFalsy()
+  })
+})
+
+describe("isGhost", () => {
+  test("returns true for a Ghost", () => {
+    expect(isGhost(ghost)).toBeTruthy()
+  })
+
+  test("returns false for a Vehicle", () => {
+    expect(isGhost(vehicle)).toBeFalsy()
   })
 })
 

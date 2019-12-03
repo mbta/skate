@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
-import { isAVehicle } from "../models/vehicle"
+import { isVehicle } from "../models/vehicle"
 import { VehicleOrGhost } from "../realtime.d"
 import { Route } from "../schedule"
 import { deselectVehicle } from "../state"
@@ -40,7 +40,7 @@ const PropertiesPanel = ({ selectedVehicleOrGhost, route }: Props) => {
     <>
       <div id="m-properties-panel" className="m-properties-panel">
         <div className="m-properties-panel__vehicle-or-ghost-panel">
-          {isAVehicle(selectedVehicleOrGhost) ? (
+          {isVehicle(selectedVehicleOrGhost) ? (
             <VehiclePropertiesPanel
               selectedVehicle={selectedVehicleOrGhost}
               route={route}

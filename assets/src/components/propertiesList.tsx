@@ -1,7 +1,7 @@
 import React from "react"
 import { intersperseString } from "../helpers/array"
 import { formattedRunNumber } from "../models/shuttle"
-import { isAVehicle, isShuttle } from "../models/vehicle"
+import { isShuttle, isVehicle } from "../models/vehicle"
 import { Ghost, Vehicle, VehicleOrGhost } from "../realtime"
 
 interface Props {
@@ -43,7 +43,7 @@ const ghostProperties = (ghost: Ghost): Property[] => [
 ]
 
 const properties = (vehicleOrGhost: VehicleOrGhost): Property[] =>
-  isAVehicle(vehicleOrGhost)
+  isVehicle(vehicleOrGhost)
     ? vehicleProperties(vehicleOrGhost)
     : ghostProperties(vehicleOrGhost)
 

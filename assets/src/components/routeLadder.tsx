@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { reverseIcon, reverseIconReversed } from "../helpers/icon"
-import { isAVehicle } from "../models/vehicle"
+import { isVehicle } from "../models/vehicle"
 import { Ghost, Vehicle, VehicleId, VehicleOrGhost } from "../realtime.d"
 import { DirectionId, LoadableTimepoints, Route, RouteId } from "../schedule.d"
 import { deselectRoute } from "../state"
@@ -138,7 +138,7 @@ export const groupByPosition = (
 
   return (vehiclesAndGhosts || []).reduce(
     (acc: ByPosition, current: VehicleOrGhost) => {
-      if (isAVehicle(current)) {
+      if (isVehicle(current)) {
         if (current.routeId === routeId) {
           switch (current.routeStatus) {
             case "on_route":

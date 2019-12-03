@@ -1,9 +1,9 @@
 import React from "react"
-import { isAVehicle, isShuttle } from "../models/vehicle"
+import { isShuttle, isVehicle } from "../models/vehicle"
 import { VehicleOrGhost } from "../realtime"
 
 export const RouteVariantName = ({ vehicle }: { vehicle: VehicleOrGhost }) => {
-  if (isAVehicle(vehicle) && isShuttle(vehicle)) {
+  if (isVehicle(vehicle) && isShuttle(vehicle)) {
     return <div className="m-route-variant-name">Shuttle</div>
   }
 

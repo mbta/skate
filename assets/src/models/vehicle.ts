@@ -1,10 +1,14 @@
 import featureIsEnabled from "../laboratoryFeatures"
-import { Vehicle, VehicleOrGhost } from "../realtime"
+import { Ghost, Vehicle, VehicleOrGhost } from "../realtime"
 
-export const isAVehicle = (
+export const isVehicle = (
   vehicleOrGhost: VehicleOrGhost
 ): vehicleOrGhost is Vehicle =>
   (vehicleOrGhost as Vehicle).routeStatus !== undefined
+
+export const isGhost = (
+  vehicleOrGhost: VehicleOrGhost
+): vehicleOrGhost is Ghost => !isVehicle(vehicleOrGhost)
 
 export const isShuttle = (vehicle: Vehicle): boolean =>
   (vehicle.runId || "").startsWith("999")

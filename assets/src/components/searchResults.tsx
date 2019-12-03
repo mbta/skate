@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { setSearchText } from "../models/search"
-import { isAVehicle } from "../models/vehicle"
+import { isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleOrGhost } from "../realtime"
 import { selectVehicle } from "../state"
 import PropertiesList from "./propertiesList"
@@ -50,7 +50,7 @@ const SearchResultCard = ({
         highlightText={search.text}
       />
 
-      {isAVehicle(vehicleOrGhost) && <RouteLabel vehicle={vehicleOrGhost} />}
+      {isVehicle(vehicleOrGhost) && <RouteLabel vehicle={vehicleOrGhost} />}
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import { flatten, partition } from "../helpers/array"
 import { Vehicle, VehicleOrGhost } from "../realtime"
 import { ByRouteId, RouteId } from "../schedule"
-import { isAVehicle } from "./vehicle"
+import { isVehicle } from "./vehicle"
 
 interface NextAndPreviousVehicle {
   nextVehicle?: Vehicle
@@ -17,7 +17,7 @@ export const allVehiclesForRoute = (
   routeId: RouteId
 ): Vehicle[] =>
   (vehiclesByRouteId[routeId] || [])
-    .filter(isAVehicle)
+    .filter(isVehicle)
     .filter(vehicle => vehicle.routeId === routeId)
 
 /**
