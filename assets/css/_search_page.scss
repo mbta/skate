@@ -3,6 +3,7 @@
   flex: 1 1 auto;
   flex-direction: row;
   height: 100vh;
+  position: relative;
   overflow-y: hidden;
 }
 
@@ -11,7 +12,6 @@
   display: flex;
   flex: 0 0 auto;
   flex-direction: column;
-  height: 100vh;
   width: 22rem;
 }
 
@@ -38,6 +38,7 @@
 
 .m-search-page__map {
   flex: 1 1 auto;
+  position: relative;
 }
 
 @media screen and (max-width: $mobile-max-width) {
@@ -45,26 +46,33 @@
     flex-direction: column;
   }
 
-  .m-search-page--show-list .m-search-page__map {
-    // Needs to be hidden instead of not displayed so the map still gets drawn properly
-    position: absolute;
-    top: 100vh;
+  .m-search-page--show-list {
+    .m-search-page__input-and-results {
+      flex: 1 1 auto;
+      height: 100vh;
+      overflow: scroll;
+    }
+
+    .m-search-page__map {
+      // Needs to be hidden instead of not displayed so the map still gets drawn properly
+      position: absolute;
+      top: 100vh;
+    }
   }
 
   .m-search-page--show-map {
-    .m-search-display {
-      display: none;
-    }
-
     .m-search-page__input-and-results {
       flex: 0 0 auto;
+      height: auto;
+    }
+
+    .m-search-display {
+      display: none;
     }
   }
 
   .m-search-page__input-and-results {
     box-sizing: border-box;
-    flex: 1 1 auto;
-    height: auto;
     width: auto;
   }
 
