@@ -45,7 +45,7 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
-  test("selectShuttleRun", () => {
+  test("selectShuttleRun selects the run if the previous value was not 'all'", () => {
     const state: State.State = {
       ...initialState,
       selectedShuttleRunIds: ["28"],
@@ -55,6 +55,19 @@ describe("reducer", () => {
       selectedShuttleRunIds: ["28", "39"],
     }
     const newState = reducer(state, State.selectShuttleRun("39"))
+    expect(newState).toEqual(expectedState)
+  })
+
+  test("selectShuttleRun doesn't select the run twice", () => {
+    const state: State.State = {
+      ...initialState,
+      selectedShuttleRunIds: ["28", "39"],
+    }
+    const expectedState: State.State = {
+      ...state,
+      selectedShuttleRunIds: ["28", "39"],
+    }
+    const newState = reducer(state, State.selectShuttleRun("28"))
     expect(newState).toEqual(expectedState)
   })
 
@@ -110,6 +123,45 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
+  test("ensureShuttleRunSelected selects the run if the previous value was not 'all'", () => {
+    const state: State.State = {
+      ...initialState,
+      selectedShuttleRunIds: ["28"],
+    }
+    const expectedState: State.State = {
+      ...state,
+      selectedShuttleRunIds: ["28", "39"],
+    }
+    const newState = reducer(state, State.ensureShuttleRunSelected("39"))
+    expect(newState).toEqual(expectedState)
+  })
+
+  test("ensureShuttleRunSelected does not select the run twice", () => {
+    const state: State.State = {
+      ...initialState,
+      selectedShuttleRunIds: ["28", "39"],
+    }
+    const expectedState: State.State = {
+      ...state,
+      selectedShuttleRunIds: ["28", "39"],
+    }
+    const newState = reducer(state, State.ensureShuttleRunSelected("28"))
+    expect(newState).toEqual(expectedState)
+  })
+
+  test("ensureShuttleRunSelected does nothing if the previous value was 'all'", () => {
+    const state: State.State = {
+      ...initialState,
+      selectedShuttleRunIds: "all",
+    }
+    const expectedState: State.State = {
+      ...state,
+      selectedShuttleRunIds: "all",
+    }
+    const newState = reducer(state, State.ensureShuttleRunSelected("39"))
+    expect(newState).toEqual(expectedState)
+  })
+
   test("deselectShuttleRun results in an empty list if you deselect the only selected run", () => {
     const state: State.State = {
       ...initialState,
@@ -123,7 +175,7 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
-  test("selectShuttleRoute", () => {
+  test("selectShuttleRoute selects the route", () => {
     const state: State.State = {
       ...initialState,
       selectedShuttleRouteIds: ["shuttle1"],
@@ -133,6 +185,19 @@ describe("reducer", () => {
       selectedShuttleRouteIds: ["shuttle1", "shuttle2"],
     }
     const newState = reducer(state, State.selectShuttleRoute("shuttle2"))
+    expect(newState).toEqual(expectedState)
+  })
+
+  test("selectShuttleRoute doesn't select the route twice", () => {
+    const state: State.State = {
+      ...initialState,
+      selectedShuttleRouteIds: ["shuttle1", "shuttle2"],
+    }
+    const expectedState: State.State = {
+      ...state,
+      selectedShuttleRouteIds: ["shuttle1", "shuttle2"],
+    }
+    const newState = reducer(state, State.selectShuttleRoute("shuttle1"))
     expect(newState).toEqual(expectedState)
   })
 

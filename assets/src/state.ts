@@ -97,6 +97,22 @@ export const deselectAllShuttleRuns = (): DeselectAllShuttleRunsAction => ({
   type: "DESELECT_ALL_SHUTTLE_RUNS",
 })
 
+interface EnsureShuttleRunSelectedAction {
+  type: "ENSURE_SHUTTLE_RUN_SELECTED"
+  payload: {
+    runId: RunId
+  }
+}
+
+export const ensureShuttleRunSelected = (
+  runId: RunId
+): EnsureShuttleRunSelectedAction => ({
+  type: "ENSURE_SHUTTLE_RUN_SELECTED",
+  payload: {
+    runId,
+  },
+})
+
 interface SelectShuttleRouteAction {
   type: "SELECT_SHUTTLE_ROUTE"
   payload: {
@@ -196,6 +212,7 @@ type Action =
   | DeselectShuttleRunAction
   | SelectAllShuttleRunsAction
   | DeselectAllShuttleRunsAction
+  | EnsureShuttleRunSelectedAction
   | SelectShuttleRouteAction
   | DeselectShuttleRouteAction
   | SelectVehicleAction
@@ -246,7 +263,9 @@ const selectedShuttleRouteIdsReducer = (
 ): RouteId[] => {
   switch (action.type) {
     case "SELECT_SHUTTLE_ROUTE":
-      return [...state, action.payload.routeId]
+      return state.includes(action.payload.routeId)
+        ? state
+        : [...state, action.payload.routeId]
     case "DESELECT_SHUTTLE_ROUTE":
       return state.filter(id => id !== action.payload.routeId)
     default:
@@ -260,13 +279,20 @@ const selectedShuttleRunIdsReducer = (
 ): RunId[] | "all" => {
   switch (action.type) {
     case "SELECT_SHUTTLE_RUN":
-      return [...shuttleRunIdsList(state), action.payload.runId]
+      return state.includes(action.payload.runId)
+        ? state
+        : [...shuttleRunIdsList(state), action.payload.runId]
     case "DESELECT_SHUTTLE_RUN":
       return shuttleRunIdsList(state).filter(id => id !== action.payload.runId)
     case "SELECT_ALL_SHUTTLE_RUNS":
       return "all"
     case "DESELECT_ALL_SHUTTLE_RUNS":
       return []
+    case "ENSURE_SHUTTLE_RUN_SELECTED":
+      if (state === "all" || state.includes(action.payload.runId)) {
+        return state
+      }
+      return [...state, action.payload.runId]
     default:
       return state
   }

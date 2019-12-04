@@ -4,7 +4,12 @@ import ViewSearchResultButton from "../../../src/components/propertiesPanel/view
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import { HeadwaySpacing } from "../../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../../src/realtime"
-import { deselectVehicle, initialState, selectRoute } from "../../../src/state"
+import {
+  deselectVehicle,
+  ensureShuttleRunSelected,
+  initialState,
+  selectRoute,
+} from "../../../src/state"
 
 const mockHistoryPush = jest.fn()
 jest.mock("react-router-dom", () => ({
@@ -147,6 +152,22 @@ describe("ViewSearchResultButton", () => {
     button.simulate("click")
 
     expect(mockHistoryPush).toHaveBeenCalledWith("/")
+  })
+
+  test("clicking View on Shuttle Map selects the vehicle's shuttle run", () => {
+    const testDispatch = jest.fn()
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={testDispatch}>
+        <ViewSearchResultButton selectedVehicleOrGhost={shuttle} />
+      </StateDispatchProvider>
+    )
+    const button = wrapper.find(".m-view-search-result-button")
+
+    button.simulate("click")
+
+    expect(testDispatch).toHaveBeenCalledWith(
+      ensureShuttleRunSelected("999-0555")
+    )
   })
 
   test("clicking View on Shuttle Map deselects the vehicle", () => {

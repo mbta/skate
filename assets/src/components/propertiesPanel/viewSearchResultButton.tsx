@@ -3,8 +3,12 @@ import { useHistory } from "react-router-dom"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { ladderIcon, mapIcon } from "../../helpers/icon"
 import { isGhost, isShuttle } from "../../models/vehicle"
-import { VehicleOrGhost } from "../../realtime"
-import { deselectVehicle, selectRoute } from "../../state"
+import { Vehicle, VehicleOrGhost } from "../../realtime"
+import {
+  deselectVehicle,
+  ensureShuttleRunSelected,
+  selectRoute,
+} from "../../state"
 
 interface Props {
   selectedVehicleOrGhost: VehicleOrGhost
@@ -32,11 +36,18 @@ const ViewOnRouteLadderButton = ({
   )
 }
 
-const ViewOnShuttleMapButton = () => {
+const ViewOnShuttleMapButton = ({
+  selectedVehicle,
+}: {
+  selectedVehicle: Vehicle
+}) => {
   const history = useHistory()
   const [, dispatch] = useContext(StateDispatchContext)
 
   const viewOnShuttleMap = () => {
+    if (selectedVehicle.runId !== null) {
+      dispatch(ensureShuttleRunSelected(selectedVehicle.runId))
+    }
     dispatch(deselectVehicle())
     history.push("/shuttle-map")
   }
@@ -53,7 +64,7 @@ const ViewSearchResultButton = ({ selectedVehicleOrGhost }: Props) =>
   isGhost(selectedVehicleOrGhost) || !isShuttle(selectedVehicleOrGhost) ? (
     <ViewOnRouteLadderButton selectedVehicleOrGhost={selectedVehicleOrGhost} />
   ) : (
-    <ViewOnShuttleMapButton />
+    <ViewOnShuttleMapButton selectedVehicle={selectedVehicleOrGhost} />
   )
 
 export default ViewSearchResultButton
