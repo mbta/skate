@@ -39,19 +39,17 @@ const PropertiesPanel = ({ selectedVehicleOrGhost, route }: Props) => {
   return (
     <>
       <div id="m-properties-panel" className="m-properties-panel">
-        <div className="m-properties-panel__vehicle-or-ghost-panel">
-          {isVehicle(selectedVehicleOrGhost) ? (
-            <VehiclePropertiesPanel
-              selectedVehicle={selectedVehicleOrGhost}
-              route={route}
-            />
-          ) : (
-            <GhostPropertiesPanel
-              selectedGhost={selectedVehicleOrGhost}
-              route={route}
-            />
-          )}
-        </div>
+        {isVehicle(selectedVehicleOrGhost) ? (
+          <VehiclePropertiesPanel
+            selectedVehicle={selectedVehicleOrGhost}
+            route={route}
+          />
+        ) : (
+          <GhostPropertiesPanel
+            selectedGhost={selectedVehicleOrGhost}
+            route={route}
+          />
+        )}
 
         <CloseButton />
       </div>
