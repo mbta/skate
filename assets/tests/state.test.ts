@@ -6,7 +6,7 @@ const initialState = State.initialState
 const reducer = State.reducer
 
 describe("reducer", () => {
-  test("selectRoute", () => {
+  test("selectRoute adds the route to the selected routes list", () => {
     const state = {
       ...initialState,
       selectedRouteIds: ["28"],
@@ -16,6 +16,19 @@ describe("reducer", () => {
       selectedRouteIds: ["28", "39"],
     }
     const newState = reducer(state, State.selectRoute("39"))
+    expect(newState).toEqual(expectedState)
+  })
+
+  test("selectRoute doesn't add the route twice", () => {
+    const state = {
+      ...initialState,
+      selectedRouteIds: ["28", "39"],
+    }
+    const expectedState = {
+      ...state,
+      selectedRouteIds: ["28", "39"],
+    }
+    const newState = reducer(state, State.selectRoute("28"))
     expect(newState).toEqual(expectedState)
   })
 

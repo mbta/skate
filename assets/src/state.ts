@@ -1,5 +1,4 @@
 import { Dispatch as ReactDispatch } from "react"
-import { uniq } from "./helpers/array"
 import {
   Action as SearchAction,
   initialSearch as initialSearchState,
@@ -231,7 +230,9 @@ const selectedRouteIdsReducer = (
 ): RouteId[] => {
   switch (action.type) {
     case "SELECT_ROUTE":
-      return uniq([...state, action.payload.routeId])
+      return state.includes(action.payload.routeId)
+        ? state
+        : [...state, action.payload.routeId]
     case "DESELECT_ROUTE":
       return state.filter(id => id !== action.payload.routeId)
     default:
