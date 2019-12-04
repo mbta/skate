@@ -1,6 +1,9 @@
 import { renderHook } from "@testing-library/react-hooks"
 import usePersistedStateReducer, {
   filter,
+  get,
+  insert,
+  merge,
 } from "../../src/hooks/usePersistedStateReducer"
 import { VehicleLabelSetting } from "../../src/settings"
 import { Reducer, State } from "../../src/state"
@@ -110,19 +113,54 @@ describe("usePersistedStateReducer", () => {
   })
 })
 
+describe("get", () => {
+  test("gets a nested key", () => {
+    expect(get({ a: { b: { c: "d" }, b2: "b2" } }, ["a", "b"])).toEqual({
+      c: "d",
+    })
+  })
+})
+
+describe("insert", () => {
+  test("overwrites an existing value", () => {
+    expect(
+      insert({ a: { b: "c", b2: "b2" }, a2: "a2" }, ["a", "b"], "d")
+    ).toEqual({ a: { b: "d", b2: "b2" }, a2: "a2" })
+  })
+
+  test("creates keys as needed", () => {
+    expect(insert({}, ["a", "b"], "c")).toEqual({ a: { b: "c" } })
+  })
+})
+
 describe("filter", () => {
   test("filters an object by allowed keys", () => {
-    const originalObject = {
-      one: 1,
-      three: 3,
-      two: 2,
-    }
-    const allowedKeys = ["one", "three"]
-    const expected = {
-      one: 1,
-      three: 3,
-    }
+    expect(
+      filter({ a1: "a1", a2: "a2", a3: { b1: "b1", b2: "b2" } }, [
+        ["a1"],
+        ["a3", "b1"],
+      ])
+    ).toEqual({ a1: "a1", a3: { b1: "b1" } })
+  })
+})
 
-    expect(filter(originalObject, allowedKeys)).toEqual(expected)
+describe("merge", () => {
+  test("overwrites values in the base with values from the top", () => {
+    const base = { a: "a" }
+    const top = { a: "b" }
+    const keys = [["a"]]
+    expect(merge(base, top, keys)).toEqual(top)
+  })
+  test("ignores unspecified values in the top", () => {
+    const base = { a: "a" }
+    const top = { a: "b" }
+    const keys: string[][] = []
+    expect(merge(base, top, keys)).toEqual(base)
+  })
+  test("ignores missing values in the top", () => {
+    const base = { a: "a" }
+    const top = {}
+    const keys = [["a"]]
+    expect(merge(base, top, keys)).toEqual(base)
   })
 })
