@@ -127,4 +127,26 @@ describe("SearchForm", () => {
 
     expect(testDispatch).toHaveBeenCalledWith(setSearchProperty("run"))
   })
+
+  test("clicking a search property submits the search", () => {
+    const testDispatch = jest.fn()
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={testDispatch}>
+        <SearchForm />
+      </StateDispatchProvider>
+    )
+
+    const testEvent = {
+      currentTarget: {
+        name: "property",
+        value: "run",
+      },
+    } as React.FormEvent<HTMLInputElement>
+    wrapper
+      .find(".m-search-form__property-input")
+      .at(1)
+      .simulate("change", testEvent)
+
+    expect(testDispatch).toHaveBeenCalledWith(submitSearch())
+  })
 })

@@ -17,7 +17,10 @@ const SearchForm = () => {
 
   const handlePropertyChange = (
     event: React.FormEvent<HTMLInputElement>
-  ): void => dispatch(setSearchProperty(event.currentTarget.value))
+  ): void => {
+    dispatch(setSearchProperty(event.currentTarget.value))
+    dispatch(submitSearch())
+  }
 
   const subscribeToSearch = (event: React.FormEvent<EventTarget>) => {
     event.preventDefault()
