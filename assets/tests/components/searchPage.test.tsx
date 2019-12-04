@@ -1,3 +1,4 @@
+import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import SearchPage from "../../src/components/searchPage"
@@ -124,5 +125,27 @@ describe("SearchPage", () => {
       .toJSON()
 
     expect(tree).toMatchSnapshot()
+  })
+
+  test("on mobile, shows the results list initially", () => {
+    const wrapper = mount(<SearchPage />)
+
+    expect(wrapper.exists(".m-search-page--show-list")).toBeTruthy()
+  })
+
+  test("on mobile, allows you to toggle to the map view and back again", () => {
+    const wrapper = mount(<SearchPage />)
+
+    wrapper
+      .find(".m-search-page__toggle-mobile-display-button")
+      .simulate("click")
+
+    expect(wrapper.exists(".m-search-page--show-map")).toBeTruthy()
+
+    wrapper
+      .find(".m-search-page__toggle-mobile-display-button")
+      .simulate("click")
+
+    expect(wrapper.exists(".m-search-page--show-list")).toBeTruthy()
   })
 })

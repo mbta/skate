@@ -55,11 +55,23 @@ const SearchResultCard = ({
   )
 }
 
+const ResultsList = ({ vehicles }: { vehicles: VehicleOrGhost[] }) => (
+  <div className="m-search-results__list">
+    {vehicles.map(vehicleOrGhost => (
+      <SearchResultCard
+        vehicleOrGhost={vehicleOrGhost}
+        key={`search-result-card-${vehicleOrGhost.id}`}
+      />
+    ))}
+    <SearchResultsNote />
+  </div>
+)
+
 const NoResults = () => {
   const [{ search }, dispatch] = useContext(StateDispatchContext)
 
   return (
-    <div className="m-search-results--none">
+    <div className="m-search-results__none">
       <div className="m-search-results__heading">No Search Results</div>
 
       <p>
@@ -81,19 +93,7 @@ const NoResults = () => {
 
 const SearchResults = ({ vehicles }: Props) => (
   <div className="m-search-results">
-    {vehicles.length ? (
-      <div className="m-search-results__list">
-        {vehicles.map(vehicleOrGhost => (
-          <SearchResultCard
-            vehicleOrGhost={vehicleOrGhost}
-            key={`search-result-card-${vehicleOrGhost.id}`}
-          />
-        ))}
-        <SearchResultsNote />
-      </div>
-    ) : (
-      <NoResults />
-    )}
+    {vehicles.length ? <ResultsList vehicles={vehicles} /> : <NoResults />}
   </div>
 )
 
