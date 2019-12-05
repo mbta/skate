@@ -164,12 +164,12 @@ defmodule SkateWeb.VehiclesChannelTest do
           "exp" => System.system_time(:second) + 500
         })
 
-      {:ok, _, socket} = subscribe_and_join(socket, VehiclesChannel, "vehicles:search:all:1")
+      {:ok, _, socket} = subscribe_and_join(socket, VehiclesChannel, "vehicles:search:all:507")
       socket = Guardian.Phoenix.Socket.assign_rtc(socket, "test-authed@mbta.com", token, claims)
 
       assert {:noreply, socket} =
                VehiclesChannel.handle_info(
-                 {:new_realtime_data, {ets, {:search, %{text: "1", property: :all}}}},
+                 {:new_realtime_data, {ets, {:search, %{text: "507", property: :all}}}},
                  socket
                )
 
