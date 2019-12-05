@@ -30,11 +30,15 @@ defmodule Realtime.VehicleOrGhost do
 
   @spec filter_by_prop_matching([t()], atom() | [atom()], String.t()) :: [t()]
   defp filter_by_prop_matching(vehicles, prop_names, text) when is_list(prop_names) do
-    Enum.filter(vehicles, fn vehicle ->
-      Enum.any?(prop_names, fn prop_name ->
-        vehicle_matches?(vehicle, prop_name, text)
+    if String.length(clean_for_matching(text)) < 2 do
+      []
+    else
+      Enum.filter(vehicles, fn vehicle ->
+        Enum.any?(prop_names, fn prop_name ->
+          vehicle_matches?(vehicle, prop_name, text)
+        end)
       end)
-    end)
+    end
   end
 
   defp filter_by_prop_matching(vehicles, prop_name, text) do

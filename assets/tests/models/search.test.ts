@@ -99,4 +99,14 @@ describe("isValidSearch", () => {
 
     expect(isValidSearch(invalidSearch)).toBeFalsy()
   })
+
+  test("returns false if the search contains more than 2 characters but they're not alphanumeric", () => {
+    const invalidSearch: Search = {
+      text: " -1 -",
+      property: "run",
+      isActive: false,
+    }
+
+    expect(isValidSearch(invalidSearch)).toBeFalsy()
+  })
 })
