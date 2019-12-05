@@ -1,7 +1,6 @@
 import React, { ReactElement } from "react"
 import { NavLink } from "react-router-dom"
 import { ladderIcon, mapIcon, searchIcon } from "../helpers/icon"
-import featureIsEnabled from "../laboratoryFeatures"
 
 interface Props {
   pickerContainerIsVisible: boolean
@@ -62,18 +61,16 @@ const TabBar = ({
           {aboutIcon}
         </NavLink>
       </li>
-      {featureIsEnabled("search_page") ? (
-        <li>
-          <NavLink
-            activeClassName="m-tab-bar__link--active"
-            className="m-tab-bar__link"
-            title="Search"
-            to="/search"
-          >
-            {searchIcon("m-tab-bar__icon")}
-          </NavLink>
-        </li>
-      ) : null}
+      <li>
+        <NavLink
+          activeClassName="m-tab-bar__link--active"
+          className="m-tab-bar__link"
+          title="Search"
+          to="/search"
+        >
+          {searchIcon("m-tab-bar__icon")}
+        </NavLink>
+      </li>
     </ul>
     <div className="m-tab-bar__t-logo">{tLogo}</div>
   </div>

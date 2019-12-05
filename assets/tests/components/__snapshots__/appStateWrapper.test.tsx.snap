@@ -106,6 +106,24 @@ exports[`renders 1`] = `
           </svg>
         </a>
       </li>
+      <li>
+        <a
+          aria-current={null}
+          className="m-tab-bar__link"
+          href="/search"
+          onClick={[Function]}
+          title="Search"
+        >
+          <span
+            className="m-tab-bar__icon"
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "SVG",
+              }
+            }
+          />
+        </a>
+      </li>
     </ul>
     <div
       className="m-tab-bar__t-logo"
