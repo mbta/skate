@@ -11,6 +11,7 @@ const PERSISTED_KEYS: Key[] = [
   ["selectedShuttleRouteIds"],
   ["selectedShuttleRunIds"],
   ["settings"],
+  ["search", "savedSearches"],
 ]
 
 const usePersistedStateReducer = (
