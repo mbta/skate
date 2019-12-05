@@ -8,7 +8,7 @@ defmodule Realtime.VehicleOrGhost do
         text: text,
         property: :all
       }),
-      do: filter_by_prop_matching(vehicles, [:run_id, :id, :operator_id, :operator_name], text)
+      do: filter_by_prop_matching(vehicles, [:run_id, :label, :operator_id, :operator_name], text)
 
   def find_by(vehicles, %{
         text: text,
@@ -20,7 +20,7 @@ defmodule Realtime.VehicleOrGhost do
         text: text,
         property: :vehicle
       }),
-      do: filter_by_prop_matching(vehicles, :id, text)
+      do: filter_by_prop_matching(vehicles, :label, text)
 
   def find_by(vehicles, %{
         text: text,
