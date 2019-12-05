@@ -42,7 +42,7 @@ defmodule Realtime.VehicleOrGhost do
   end
 
   defp filter_by_prop_matching(vehicles, prop_name, text) do
-    Enum.filter(vehicles, &vehicle_matches?(&1, prop_name, text))
+    filter_by_prop_matching(vehicles, [prop_name], text)
   end
 
   @spec vehicle_matches?(t(), atom(), String.t()) :: boolean()

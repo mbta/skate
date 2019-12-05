@@ -98,7 +98,7 @@ defmodule Realtime.VehicleOrGhostTest do
     end
 
     test "matches on vehicle ID" do
-      assert VehicleOrGhost.find_by([@vehicle], %{text: "1", property: :vehicle}) == [@vehicle]
+      assert VehicleOrGhost.find_by([@vehicle], %{text: "v1", property: :vehicle}) == [@vehicle]
     end
 
     test "doesn't match on ghost ID" do
