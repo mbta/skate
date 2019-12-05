@@ -76,4 +76,8 @@ export const reducer = (search: Search, action: Action): Search => {
   return search
 }
 
-export const isValidSearch = ({ text }: Search): boolean => text.length >= 2
+const filterToAlphanumeric = (text: string): string =>
+  text.replace(/[^0-9a-zA-Z]/g, "")
+
+export const isValidSearch = ({ text }: Search): boolean =>
+  filterToAlphanumeric(text).length >= 2

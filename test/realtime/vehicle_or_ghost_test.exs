@@ -113,5 +113,9 @@ defmodule Realtime.VehicleOrGhostTest do
       assert VehicleOrGhost.find_by(@vehicles, %{text: "710", property: :operator}) ==
                [@vehicle]
     end
+
+    test "short circuits to an empty result if trying to match on the empty string" do
+      assert VehicleOrGhost.find_by(@vehicles, %{text: "", property: :all}) == []
+    end
   end
 end
