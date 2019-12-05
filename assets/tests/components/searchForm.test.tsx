@@ -31,6 +31,7 @@ describe("SearchForm", () => {
       text: "1",
       property: "run",
       isActive: false,
+      savedSearches: [],
     }
     const invalidSearchState = {
       ...initialState,
@@ -51,6 +52,7 @@ describe("SearchForm", () => {
       text: "12",
       property: "run",
       isActive: false,
+      savedSearches: [],
     }
     const validSearchState = {
       ...initialState,
@@ -72,6 +74,7 @@ describe("SearchForm", () => {
       text: "12",
       property: "run",
       isActive: false,
+      savedSearches: [],
     }
     const validSearchState = {
       ...initialState,

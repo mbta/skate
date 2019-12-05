@@ -4,12 +4,18 @@ export interface Search {
   text: string
   property: string
   isActive: boolean
+  savedSearches: SavedSearch[]
+}
+
+export interface SavedSearch {
+  text: string
 }
 
 export const initialSearch = {
   text: "",
   property: "all",
   isActive: false,
+  savedSearches: [],
 }
 
 interface SetSearchTextAction {
@@ -68,13 +74,33 @@ export const reducer = (search: Search, action: Action): Search => {
         isActive: false,
       }
     case "SUBMIT_SEARCH":
-      return {
-        ...search,
-        isActive: isValidSearch(search),
+      if (isValidSearch(search)) {
+        return {
+          ...search,
+          isActive: true,
+          savedSearches: addSavedSearch(search.savedSearches, {
+            text: search.text,
+          }),
+        }
+      } else {
+        return {
+          ...search,
+          isActive: false,
+        }
       }
   }
   return search
 }
+
+export const addSavedSearch = (
+  previouslySaved: SavedSearch[],
+  newSearch: SavedSearch
+): SavedSearch[] =>
+  [newSearch]
+    .concat(
+      previouslySaved.filter(savedSearch => savedSearch.text !== newSearch.text)
+    )
+    .slice(0, 5)
 
 const filterToAlphanumeric = (text: string): string =>
   text.replace(/[^0-9a-zA-Z]/g, "")

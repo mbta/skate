@@ -31,6 +31,7 @@ describe("useSearchResults", () => {
       text: "test",
       property: "run",
       isActive: true,
+      savedSearches: [],
     }
 
     renderHook(() => useSearchResults((mockSocket as any) as Socket, search))
@@ -49,6 +50,7 @@ describe("useSearchResults", () => {
       text: "",
       property: "run",
       isActive: false,
+      savedSearches: [],
     }
 
     renderHook(() =>
@@ -68,6 +70,7 @@ describe("useSearchResults", () => {
       text: "test",
       property: "run",
       isActive: false,
+      savedSearches: [],
     }
 
     renderHook(() => useSearchResults((mockSocket as any) as Socket, search))
@@ -236,6 +239,7 @@ describe("useSearchResults", () => {
       text: "test",
       property: "run",
       isActive: true,
+      savedSearches: [],
     }
     const { result } = renderHook(() =>
       useSearchResults((mockSocket as any) as Socket, search)
@@ -256,6 +260,7 @@ describe("useSearchResults", () => {
       text: "one",
       property: "run",
       isActive: true,
+      savedSearches: [],
     }
     const { unmount } = renderHook(() =>
       useSearchResults((mockSocket as any) as Socket, search)
@@ -282,6 +287,7 @@ describe("useSearchResults", () => {
       text: "one",
       property: "run",
       isActive: true,
+      savedSearches: [],
     }
     const { rerender } = renderHook(
       search => useSearchResults((mockSocket as any) as Socket, search),
@@ -292,6 +298,7 @@ describe("useSearchResults", () => {
       text: "two",
       property: "run",
       isActive: true,
+      savedSearches: [],
     }
     rerender(search2)
 
@@ -308,6 +315,7 @@ describe("useSearchResults", () => {
       text: "validSearch",
       property: "run",
       isActive: true,
+      savedSearches: [],
     }
     const { rerender } = renderHook(
       search => useSearchResults((mockSocket as any) as Socket, search),
@@ -318,6 +326,7 @@ describe("useSearchResults", () => {
       text: "",
       property: "run",
       isActive: false,
+      savedSearches: [],
     }
     rerender(search2)
 
@@ -331,7 +340,12 @@ describe("useSearchResults", () => {
     const mockChannel = makeMockChannel("error")
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    const search: Search = { text: "test", property: "run", isActive: true }
+    const search: Search = {
+      text: "test",
+      property: "run",
+      isActive: true,
+      savedSearches: [],
+    }
 
     renderHook(() => useSearchResults((mockSocket as any) as Socket, search))
 
@@ -349,7 +363,12 @@ describe("useSearchResults", () => {
     const mockChannel = makeMockChannel("timeout")
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    const search: Search = { text: "test", property: "run", isActive: true }
+    const search: Search = {
+      text: "test",
+      property: "run",
+      isActive: true,
+      savedSearches: [],
+    }
 
     renderHook(() => useSearchResults((mockSocket as any) as Socket, search))
 

@@ -14,6 +14,7 @@ const state: State = {
     text: "test",
     property: "run",
     isActive: true,
+    savedSearches: [],
   },
 }
 

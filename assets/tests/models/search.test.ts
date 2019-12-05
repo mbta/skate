@@ -6,6 +6,7 @@ import {
   setSearchProperty,
   setSearchText,
   submitSearch,
+  addSavedSearch,
 } from "../../src/models/search"
 
 describe("initialSearch", () => {
@@ -61,6 +62,7 @@ describe("reducer", () => {
       text: "12",
       property: "run",
       isActive: false,
+      savedSearches: [],
     }
     const newSearch = reducer(validSearch, submitSearch())
 
@@ -72,10 +74,35 @@ describe("reducer", () => {
       text: "1",
       property: "run",
       isActive: false,
+      savedSearches: [],
     }
     const newSearch = reducer(invalidSearch, submitSearch())
 
     expect(newSearch.isActive).toEqual(false)
+  })
+
+  test("submitSearch saves the search if it's valid", () => {
+    const validSearch: Search = {
+      text: "12",
+      property: "run",
+      isActive: false,
+      savedSearches: [],
+    }
+    const newSearch = reducer(validSearch, submitSearch())
+
+    expect(newSearch.savedSearches).toEqual([{ text: "12" }])
+  })
+
+  test("submitSearch does not save the search if it's not valid", () => {
+    const invalidSearch: Search = {
+      text: "1",
+      property: "run",
+      isActive: false,
+      savedSearches: [],
+    }
+    const newSearch = reducer(invalidSearch, submitSearch())
+
+    expect(newSearch.savedSearches).toEqual([])
   })
 })
 
@@ -85,6 +112,7 @@ describe("isValidSearch", () => {
       text: "12",
       property: "run",
       isActive: false,
+      savedSearches: [],
     }
 
     expect(isValidSearch(validSearch)).toBeTruthy()
@@ -95,6 +123,7 @@ describe("isValidSearch", () => {
       text: "1",
       property: "run",
       isActive: false,
+      savedSearches: [],
     }
 
     expect(isValidSearch(invalidSearch)).toBeFalsy()
@@ -108,5 +137,45 @@ describe("isValidSearch", () => {
     }
 
     expect(isValidSearch(invalidSearch)).toBeFalsy()
+  })
+})
+
+describe("addSavedSearch", () => {
+  test("can save a first search", () => {
+    expect(addSavedSearch([], { text: "a" })).toEqual([{ text: "a" }])
+  })
+
+  test("can save subsequent searches", () => {
+    expect(addSavedSearch([{ text: "a" }], { text: "b" })).toEqual([
+      { text: "b" },
+      { text: "a" },
+    ])
+  })
+
+  test("if there are duplicates, drops the old search", () => {
+    expect(
+      addSavedSearch([{ text: "b" }, { text: "a" }], { text: "a" })
+    ).toEqual([{ text: "a" }, { text: "b" }])
+  })
+
+  test("caps at 5 saved searches", () => {
+    expect(
+      addSavedSearch(
+        [
+          { text: "e" },
+          { text: "d" },
+          { text: "c" },
+          { text: "b" },
+          { text: "a" },
+        ],
+        { text: "f" }
+      )
+    ).toEqual([
+      { text: "f" },
+      { text: "e" },
+      { text: "d" },
+      { text: "c" },
+      { text: "b" },
+    ])
   })
 })
