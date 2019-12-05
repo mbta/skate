@@ -1,4 +1,5 @@
 import {
+  addSavedSearch,
   initialSearch,
   isValidSearch,
   reducer,
@@ -6,7 +7,6 @@ import {
   setSearchProperty,
   setSearchText,
   submitSearch,
-  addSavedSearch,
 } from "../../src/models/search"
 
 describe("initialSearch", () => {
