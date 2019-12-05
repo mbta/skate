@@ -134,6 +134,7 @@ describe("isValidSearch", () => {
       text: " -1 -",
       property: "run",
       isActive: false,
+      savedSearches: [],
     }
 
     expect(isValidSearch(invalidSearch)).toBeFalsy()
