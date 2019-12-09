@@ -17,6 +17,7 @@ config :skate, SkateWeb.Endpoint,
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
+  secret_key_base: "HjFPO4gzlDmAuvgXBMSd4MIFGLhvKHYfXpNkIoXRM5LMGxQhjYW0NQVdP2QFgZND",
   watchers: [
     node: [
       "node_modules/webpack/bin/webpack.js",
