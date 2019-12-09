@@ -5,20 +5,20 @@ import { SavedSearchQuery } from "../models/searchQuery"
 
 const RecentSearches = () => {
   const [{ search }, dispatch] = useContext(StateDispatchContext)
-  const savedSearches: SavedSearchQuery[] = search.savedSearches
+  const savedQueries: SavedSearchQuery[] = search.savedQueries
   return (
     <div className="m-recent-searches">
       <div className="m-recent-searches__heading">Recent Searches</div>
-      {savedSearches.map((savedSearch, i) => (
+      {savedQueries.map((savedQuery, i) => (
         <button
           key={i}
           className="m-recent-searches__button"
           onClick={() => {
-            dispatch(setSearchText(savedSearch.text))
+            dispatch(setSearchText(savedQuery.text))
             dispatch(submitSearch())
           }}
         >
-          {savedSearch.text}
+          {savedQuery.text}
         </button>
       ))}
     </div>

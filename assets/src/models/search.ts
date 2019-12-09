@@ -9,13 +9,13 @@ import {
 export interface Search {
   query: SearchQuery
   isActive: boolean
-  savedSearches: SavedSearchQuery[]
+  savedQueries: SavedSearchQuery[]
 }
 
 export const initialSearch = {
   query: emptySearchQuery,
   isActive: false,
-  savedSearches: [],
+  savedQueries: [],
 }
 
 interface SetSearchTextAction {
@@ -78,7 +78,7 @@ export const reducer = (search: Search, action: Action): Search => {
         return {
           ...search,
           isActive: true,
-          savedSearches: addSavedSearch(search.savedSearches, {
+          savedQueries: addSavedQuery(search.savedQueries, {
             text: search.query.text,
           }),
         }
@@ -92,12 +92,12 @@ export const reducer = (search: Search, action: Action): Search => {
   return search
 }
 
-export const addSavedSearch = (
+export const addSavedQuery = (
   previouslySaved: SavedSearchQuery[],
   newSearch: SavedSearchQuery
 ): SavedSearchQuery[] =>
   [newSearch]
     .concat(
-      previouslySaved.filter(savedSearch => savedSearch.text !== newSearch.text)
+      previouslySaved.filter(savedQuery => savedQuery.text !== newSearch.text)
     )
     .slice(0, 5)

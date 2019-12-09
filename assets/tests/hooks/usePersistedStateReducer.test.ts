@@ -39,7 +39,7 @@ describe("usePersistedStateReducer", () => {
       search: {
         query: { text: "search text", property: "run" },
         isActive: true,
-        savedSearches: [],
+        savedQueries: [],
       },
       selectedRouteIds: ["1", "2"],
       selectedShuttleRouteIds: [],
@@ -73,7 +73,7 @@ describe("usePersistedStateReducer", () => {
       search: {
         query: { text: "search text", property: "run" },
         isActive: true,
-        savedSearches: [],
+        savedQueries: [],
       },
       selectedRouteIds: ["1", "2"],
       selectedShuttleRouteIds: [],
@@ -89,7 +89,7 @@ describe("usePersistedStateReducer", () => {
       search: {
         query: { text: "search text", property: "run" },
         isActive: true,
-        savedSearches: [],
+        savedQueries: [],
       },
       selectedRouteIds: ["28", "39"],
       selectedShuttleRouteIds: [],

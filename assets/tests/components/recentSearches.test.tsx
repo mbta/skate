@@ -17,7 +17,7 @@ describe("RecentSearches", () => {
     const searchWithData = {
       query: { text: "999-555", property: "run" },
       isActive: false,
-      savedSearches: [
+      savedQueries: [
         { text: "poodle" },
         { text: "999-502" },
         { text: "999-501" },
@@ -42,7 +42,7 @@ describe("RecentSearches", () => {
     const searchWithData = {
       query: { text: "999-555", property: "run" },
       isActive: false,
-      savedSearches: [{ text: "poodle" }],
+      savedQueries: [{ text: "poodle" }],
     }
     const mockDispatch = jest.fn()
     const wrapper = mount(

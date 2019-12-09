@@ -1,5 +1,5 @@
 import {
-  addSavedSearch,
+  addSavedQuery,
   initialSearch,
   reducer,
   Search,
@@ -51,72 +51,72 @@ describe("reducer", () => {
     expect(newSearch.isActive).toEqual(false)
   })
 
-  test("submitSearch sets isActive to true if the search is valid", () => {
+  test("submitSearch sets isActive to true if the query is valid", () => {
     const validSearch: Search = {
       query: { text: "12", property: "run" },
       isActive: false,
-      savedSearches: [],
+      savedQueries: [],
     }
     const newSearch = reducer(validSearch, submitSearch())
 
     expect(newSearch.isActive).toEqual(true)
   })
 
-  test("submitSearch does not set isActive to true if the search is invalid", () => {
+  test("submitSearch does not set isActive to true if the query is invalid", () => {
     const invalidSearch: Search = {
       query: { text: "1", property: "run" },
       isActive: false,
-      savedSearches: [],
+      savedQueries: [],
     }
     const newSearch = reducer(invalidSearch, submitSearch())
 
     expect(newSearch.isActive).toEqual(false)
   })
 
-  test("submitSearch saves the search if it's valid", () => {
+  test("submitSearch saves the query if it's valid", () => {
     const validSearch: Search = {
       query: { text: "12", property: "run" },
       isActive: false,
-      savedSearches: [],
+      savedQueries: [],
     }
     const newSearch = reducer(validSearch, submitSearch())
 
-    expect(newSearch.savedSearches).toEqual([{ text: "12" }])
+    expect(newSearch.savedQueries).toEqual([{ text: "12" }])
   })
 
-  test("submitSearch does not save the search if it's not valid", () => {
+  test("submitSearch does not save the query if it's not valid", () => {
     const invalidSearch: Search = {
       query: { text: "1", property: "run" },
       isActive: false,
-      savedSearches: [],
+      savedQueries: [],
     }
     const newSearch = reducer(invalidSearch, submitSearch())
 
-    expect(newSearch.savedSearches).toEqual([])
+    expect(newSearch.savedQueries).toEqual([])
   })
 })
 
-describe("addSavedSearch", () => {
-  test("can save a first search", () => {
-    expect(addSavedSearch([], { text: "a" })).toEqual([{ text: "a" }])
+describe("addSavedQuery", () => {
+  test("can save a first query", () => {
+    expect(addSavedQuery([], { text: "a" })).toEqual([{ text: "a" }])
   })
 
-  test("can save subsequent searches", () => {
-    expect(addSavedSearch([{ text: "a" }], { text: "b" })).toEqual([
+  test("can save subsequent queries", () => {
+    expect(addSavedQuery([{ text: "a" }], { text: "b" })).toEqual([
       { text: "b" },
       { text: "a" },
     ])
   })
 
-  test("if there are duplicates, drops the old search", () => {
+  test("if there are duplicates, drops the old query", () => {
     expect(
-      addSavedSearch([{ text: "b" }, { text: "a" }], { text: "a" })
+      addSavedQuery([{ text: "b" }, { text: "a" }], { text: "a" })
     ).toEqual([{ text: "a" }, { text: "b" }])
   })
 
-  test("caps at 5 saved searches", () => {
+  test("caps at 5 saved queries", () => {
     expect(
-      addSavedSearch(
+      addSavedQuery(
         [
           { text: "e" },
           { text: "d" },

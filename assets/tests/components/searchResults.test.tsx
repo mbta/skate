@@ -13,7 +13,7 @@ const state: State = {
   search: {
     query: { text: "test", property: "run" },
     isActive: true,
-    savedSearches: [],
+    savedQueries: [],
   },
 }
 
