@@ -62,7 +62,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
   const socket: Socket | undefined = useContext(SocketContext)
   const vehicles: VehicleOrGhost[] | null | undefined = useSearchResults(
     socket,
-    search
+    search.isActive ? search.query : null
   )
   const onlyVehicles: Vehicle[] = filterVehicles(vehicles)
   const [mobileDisplay, setMobileDisplay] = useState(MobileDisplay.List)
