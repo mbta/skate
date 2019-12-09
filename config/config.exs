@@ -26,7 +26,7 @@ config :skate, :redirect_http?, false
 # Configures the endpoint
 config :skate, SkateWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "HjFPO4gzlDmAuvgXBMSd4MIFGLhvKHYfXpNkIoXRM5LMGxQhjYW0NQVdP2QFgZND",
+  secret_key_base: {:system, "SECRET_KEY_BASE"},
   render_errors: [view: SkateWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Skate.PubSub, adapter: Phoenix.PubSub.PG2]
 

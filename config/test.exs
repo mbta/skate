@@ -9,7 +9,8 @@ config :skate, Gtfs.CacheFile, cache_filename: "test_cache.terms"
 # you can enable the server option below.
 config :skate, SkateWeb.Endpoint,
   http: [port: 4002],
-  server: false
+  server: false,
+  secret_key_base: "HjFPO4gzlDmAuvgXBMSd4MIFGLhvKHYfXpNkIoXRM5LMGxQhjYW0NQVdP2QFgZND"
 
 config :skate, SkateWeb.AuthManager, secret_key: "dev key"
 
