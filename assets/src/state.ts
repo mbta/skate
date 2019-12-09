@@ -1,7 +1,7 @@
 import { Dispatch as ReactDispatch } from "react"
 import {
   Action as SearchAction,
-  initialSearch as initialSearchState,
+  initialSearchPageState,
   reducer as searchReducer,
   SearchPageState,
 } from "./models/searchPageState"
@@ -21,7 +21,7 @@ export interface State {
 
 export const initialState: State = {
   pickerContainerIsVisible: true,
-  searchPageState: initialSearchState,
+  searchPageState: initialSearchPageState,
   selectedRouteIds: [],
   selectedShuttleRouteIds: [],
   selectedShuttleRunIds: "all",

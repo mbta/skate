@@ -1,6 +1,6 @@
 import {
   addSavedQuery,
-  initialSearch,
+  initialSearchPageState,
   reducer,
   SearchPageState,
   setSearchProperty,
@@ -8,26 +8,26 @@ import {
   submitSearch,
 } from "../../src/models/searchPageState"
 
-describe("initialSearch", () => {
+describe("initialSearchPageState", () => {
   test("sets text to empty string", () => {
-    expect(initialSearch.query.text).toEqual("")
+    expect(initialSearchPageState.query.text).toEqual("")
   })
 
   test("sets property to 'all'", () => {
-    expect(initialSearch.query.property).toEqual("all")
+    expect(initialSearchPageState.query.property).toEqual("all")
   })
 })
 
 describe("reducer", () => {
   test("setSearchText allows you to set text", () => {
-    const newSearch = reducer(initialSearch, setSearchText("new text"))
+    const newSearch = reducer(initialSearchPageState, setSearchText("new text"))
 
     expect(newSearch.query.text).toEqual("new text")
   })
 
   test("setSearchText sets isActive to false", () => {
     const activeSearch = {
-      ...initialSearch,
+      ...initialSearchPageState,
       isActive: true,
     }
     const newSearch = reducer(activeSearch, setSearchText("new text"))
@@ -36,14 +36,14 @@ describe("reducer", () => {
   })
 
   test("setSearchProperty allows you to set property", () => {
-    const newSearch = reducer(initialSearch, setSearchProperty("run"))
+    const newSearch = reducer(initialSearchPageState, setSearchProperty("run"))
 
     expect(newSearch.query.property).toEqual("run")
   })
 
   test("setSearchProperty sets isActive to false", () => {
     const activeSearch = {
-      ...initialSearch,
+      ...initialSearchPageState,
       isActive: true,
     }
     const newSearch = reducer(activeSearch, setSearchProperty("run"))

@@ -12,7 +12,7 @@ export interface SearchPageState {
   savedQueries: SavedSearchQuery[]
 }
 
-export const initialSearch = {
+export const initialSearchPageState = {
   query: emptySearchQuery,
   isActive: false,
   savedQueries: [],
