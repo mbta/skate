@@ -3,7 +3,7 @@ import React from "react"
 import renderer from "react-test-renderer"
 import RecentSearches from "../../src/components/recentSearches"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import { setSearchText } from "../../src/models/search"
+import { setSearchText } from "../../src/models/searchPageState"
 import { initialState } from "../../src/state"
 
 describe("RecentSearches", () => {
@@ -27,7 +27,7 @@ describe("RecentSearches", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider
-          state={{ ...initialState, search: searchWithData }}
+          state={{ ...initialState, searchPageState: searchWithData }}
           dispatch={mockDispatch}
         >
           <RecentSearches />
@@ -38,7 +38,7 @@ describe("RecentSearches", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("clicking a recent search sets the search text", () => {
+  test("clicking a recent searchPageState sets the searchPageState text", () => {
     const searchWithData = {
       query: { text: "999-555", property: "run" },
       isActive: false,
@@ -47,7 +47,7 @@ describe("RecentSearches", () => {
     const mockDispatch = jest.fn()
     const wrapper = mount(
       <StateDispatchProvider
-        state={{ ...initialState, search: searchWithData }}
+        state={{ ...initialState, searchPageState: searchWithData }}
         dispatch={mockDispatch}
       >
         <RecentSearches />

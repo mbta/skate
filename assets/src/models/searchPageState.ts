@@ -6,7 +6,7 @@ import {
   isValidSearchQuery,
 } from "./searchQuery"
 
-export interface Search {
+export interface SearchPageState {
   query: SearchQuery
   isActive: boolean
   savedQueries: SavedSearchQuery[]
@@ -59,37 +59,40 @@ export type Action =
 
 export type Dispatch = ReactDispatch<Action>
 
-export const reducer = (search: Search, action: Action): Search => {
+export const reducer = (
+  state: SearchPageState,
+  action: Action
+): SearchPageState => {
   switch (action.type) {
     case "SET_SEARCH_TEXT":
       return {
-        ...search,
-        query: { ...search.query, text: action.payload.text },
+        ...state,
+        query: { ...state.query, text: action.payload.text },
         isActive: false,
       }
     case "SET_SEARCH_PROPERTY":
       return {
-        ...search,
-        query: { ...search.query, property: action.payload.property },
+        ...state,
+        query: { ...state.query, property: action.payload.property },
         isActive: false,
       }
     case "SUBMIT_SEARCH":
-      if (isValidSearchQuery(search.query)) {
+      if (isValidSearchQuery(state.query)) {
         return {
-          ...search,
+          ...state,
           isActive: true,
-          savedQueries: addSavedQuery(search.savedQueries, {
-            text: search.query.text,
+          savedQueries: addSavedQuery(state.savedQueries, {
+            text: state.query.text,
           }),
         }
       } else {
         return {
-          ...search,
+          ...state,
           isActive: false,
         }
       }
   }
-  return search
+  return state
 }
 
 export const addSavedQuery = (

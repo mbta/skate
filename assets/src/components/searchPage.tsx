@@ -3,7 +3,7 @@ import React, { ReactElement, useContext, useState } from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSearchResults from "../hooks/useSearchResults"
-import { Search } from "../models/search"
+import { SearchPageState } from "../models/searchPageState"
 import { isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
 import Map from "./map"
@@ -19,8 +19,8 @@ enum MobileDisplay {
 
 const thereIsAnActiveSearch = (
   vehicles: VehicleOrGhost[] | null | undefined,
-  search: Search
-): boolean => vehicles !== null && vehicles !== undefined && search.isActive
+  searchPageState: SearchPageState
+): boolean => vehicles !== null && vehicles !== undefined && searchPageState.isActive
 
 const filterVehicles = (
   vehiclesOrGhosts: VehicleOrGhost[] | null | undefined
@@ -58,11 +58,11 @@ const ToggleMobileDisplayButton = ({
 }
 
 const SearchPage = (): ReactElement<HTMLDivElement> => {
-  const [{ search, selectedVehicleId }] = useContext(StateDispatchContext)
+  const [{ searchPageState, selectedVehicleId }] = useContext(StateDispatchContext)
   const socket: Socket | undefined = useContext(SocketContext)
   const vehicles: VehicleOrGhost[] | null | undefined = useSearchResults(
     socket,
-    search.isActive ? search.query : null
+    searchPageState.isActive ? searchPageState.query : null
   )
   const onlyVehicles: Vehicle[] = filterVehicles(vehicles)
   const [mobileDisplay, setMobileDisplay] = useState(MobileDisplay.List)
@@ -98,7 +98,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
         </div>
 
         <div className="m-search-display">
-          {thereIsAnActiveSearch(vehicles, search) ? (
+          {thereIsAnActiveSearch(vehicles, searchPageState) ? (
             <SearchResults vehicles={vehicles as VehicleOrGhost[]} />
           ) : (
             <RecentSearches />

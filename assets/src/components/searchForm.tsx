@@ -5,13 +5,13 @@ import {
   setSearchProperty,
   setSearchText,
   submitSearch,
-} from "../models/search"
+} from "../models/searchPageState"
 import { isValidSearchQuery } from "../models/searchQuery"
 
 const SEARCH_PROPERTIES = ["all", "run", "vehicle", "operator"]
 
 const SearchForm = () => {
-  const [{ search }, dispatch] = useContext(StateDispatchContext)
+  const [{ searchPageState }, dispatch] = useContext(StateDispatchContext)
   const handleTextInput = (event: React.FormEvent<HTMLInputElement>): void =>
     dispatch(setSearchText(event.currentTarget.value))
 
@@ -35,7 +35,7 @@ const SearchForm = () => {
           type="text"
           className="m-search-form__text"
           placeholder="Search"
-          value={search.query.text}
+          value={searchPageState.query.text}
           onChange={handleTextInput}
           autoFocus={true}
         />
@@ -43,7 +43,7 @@ const SearchForm = () => {
         <button
           className="m-search-form__submit"
           onClick={subscribeToSearch}
-          disabled={!isValidSearchQuery(search.query)}
+          disabled={!isValidSearchQuery(searchPageState.query)}
         >
           {searchIcon()}
         </button>
@@ -62,7 +62,7 @@ const SearchForm = () => {
                 type="radio"
                 name="property"
                 value={property}
-                checked={search.query.property === property}
+                checked={searchPageState.query.property === property}
                 onChange={handlePropertyChange}
               />
               <label

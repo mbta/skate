@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { setSearchText } from "../models/search"
+import { setSearchText } from "../models/searchPageState"
 import { isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleOrGhost } from "../realtime"
 import { selectVehicle } from "../state"
@@ -31,7 +31,7 @@ const SearchResultCard = ({
 }) => {
   const [
     {
-      search: { query },
+      searchPageState: { query },
       selectedVehicleId,
     },
     dispatch,
@@ -74,7 +74,7 @@ const ResultsList = ({ vehicles }: { vehicles: VehicleOrGhost[] }) => (
 const NoResults = () => {
   const [
     {
-      search: { query },
+      searchPageState: { query },
     },
     dispatch,
   ] = useContext(StateDispatchContext)

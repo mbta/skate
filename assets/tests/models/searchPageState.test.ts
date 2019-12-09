@@ -2,11 +2,11 @@ import {
   addSavedQuery,
   initialSearch,
   reducer,
-  Search,
+  SearchPageState,
   setSearchProperty,
   setSearchText,
   submitSearch,
-} from "../../src/models/search"
+} from "../../src/models/searchPageState"
 
 describe("initialSearch", () => {
   test("sets text to empty string", () => {
@@ -52,45 +52,45 @@ describe("reducer", () => {
   })
 
   test("submitSearch sets isActive to true if the query is valid", () => {
-    const validSearch: Search = {
+    const validQuery: SearchPageState = {
       query: { text: "12", property: "run" },
       isActive: false,
       savedQueries: [],
     }
-    const newSearch = reducer(validSearch, submitSearch())
+    const newSearch = reducer(validQuery, submitSearch())
 
     expect(newSearch.isActive).toEqual(true)
   })
 
   test("submitSearch does not set isActive to true if the query is invalid", () => {
-    const invalidSearch: Search = {
+    const invalidQuery: SearchPageState = {
       query: { text: "1", property: "run" },
       isActive: false,
       savedQueries: [],
     }
-    const newSearch = reducer(invalidSearch, submitSearch())
+    const newSearch = reducer(invalidQuery, submitSearch())
 
     expect(newSearch.isActive).toEqual(false)
   })
 
   test("submitSearch saves the query if it's valid", () => {
-    const validSearch: Search = {
+    const validQuery: SearchPageState = {
       query: { text: "12", property: "run" },
       isActive: false,
       savedQueries: [],
     }
-    const newSearch = reducer(validSearch, submitSearch())
+    const newSearch = reducer(validQuery, submitSearch())
 
     expect(newSearch.savedQueries).toEqual([{ text: "12" }])
   })
 
   test("submitSearch does not save the query if it's not valid", () => {
-    const invalidSearch: Search = {
+    const invalidQuery: SearchPageState = {
       query: { text: "1", property: "run" },
       isActive: false,
       savedQueries: [],
     }
-    const newSearch = reducer(invalidSearch, submitSearch())
+    const newSearch = reducer(invalidQuery, submitSearch())
 
     expect(newSearch.savedQueries).toEqual([])
   })
