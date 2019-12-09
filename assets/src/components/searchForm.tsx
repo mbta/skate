@@ -26,10 +26,6 @@ const SearchForm = () => {
     event.preventDefault()
 
     dispatch(submitSearch())
-
-    // TODO: Save search results for "recent searches" list:
-    // https://app.asana.com/0/1112935048846093/1139512810293672
-    // saveSearchResults(searchResults)
   }
 
   return (
