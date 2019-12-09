@@ -3,6 +3,7 @@ import { intersperseString } from "../helpers/array"
 import { formattedRunNumber } from "../models/shuttle"
 import { isShuttle, isVehicle } from "../models/vehicle"
 import { Ghost, Vehicle, VehicleOrGhost } from "../realtime"
+import { filterToAlphanumeric } from "../models/searchQuery"
 
 interface Props {
   vehicleOrGhost: VehicleOrGhost
@@ -84,7 +85,7 @@ export const Highlighted = ({
 }
 
 const highlightRegex = (highlightText: string): RegExp => {
-  const stripped = highlightText.replace(/[^0-9a-zA-Z]/g, "")
+  const stripped = filterToAlphanumeric(highlightText)
   const allowNonAlphanumeric = intersperseString(stripped, "[^0-9a-zA-Z]*")
   return new RegExp(allowNonAlphanumeric, "i")
 }
