@@ -1,9 +1,9 @@
 import { Dispatch as ReactDispatch } from "react"
 import {
-  SearchQuery,
-  SavedSearchQuery,
   emptySearchQuery,
   isValidSearchQuery,
+  SavedSearchQuery,
+  SearchQuery,
 } from "./searchQuery"
 
 export interface SearchPageState {

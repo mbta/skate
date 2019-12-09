@@ -1,6 +1,7 @@
 import { renderHook } from "@testing-library/react-hooks"
 import { Socket } from "phoenix"
 import useSearchResults from "../../src/hooks/useSearchResults"
+import { emptySearchQuery, SearchQuery } from "../../src/models/searchQuery"
 import { VehicleData, VehicleOrGhostData } from "../../src/models/vehicleData"
 import {
   Vehicle,
@@ -9,7 +10,6 @@ import {
 } from "../../src/realtime"
 import { mockUseStateOnce } from "../testHelpers/mockHelpers"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
-import { emptySearchQuery, SearchQuery } from "../../src/models/searchQuery"
 
 // tslint:disable: react-hooks-nesting
 // tslint:disable: object-literal-sort-keys

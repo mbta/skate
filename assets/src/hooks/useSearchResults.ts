@@ -1,11 +1,11 @@
 import { Channel, Socket } from "phoenix"
 import { useEffect, useState } from "react"
+import { SearchQuery } from "../models/searchQuery"
 import {
   VehicleOrGhostData,
   vehicleOrGhostFromData,
 } from "../models/vehicleData"
 import { VehicleOrGhost } from "../realtime"
-import { SearchQuery } from "../models/searchQuery"
 
 interface SearchResultsPayload {
   data: VehicleOrGhostData[]

@@ -1,9 +1,9 @@
 import React from "react"
 import { intersperseString } from "../helpers/array"
+import { filterToAlphanumeric } from "../models/searchQuery"
 import { formattedRunNumber } from "../models/shuttle"
 import { isShuttle, isVehicle } from "../models/vehicle"
 import { Ghost, Vehicle, VehicleOrGhost } from "../realtime"
-import { filterToAlphanumeric } from "../models/searchQuery"
 
 interface Props {
   vehicleOrGhost: VehicleOrGhost

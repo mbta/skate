@@ -1,4 +1,4 @@
-import { SearchQuery, isValidSearchQuery } from "../../src/models/searchQuery"
+import { isValidSearchQuery, SearchQuery } from "../../src/models/searchQuery"
 
 describe("isValidSearchQuery", () => {
   test("returns true if the query text contains at least 2 characters", () => {
