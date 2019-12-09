@@ -1,25 +1,30 @@
-import React, { Dispatch, ReactElement, useContext } from "react"
+import React, { ReactElement, useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import vehicleLabel from "../helpers/vehicleLabel"
 import { drawnStatus } from "../models/vehicleStatus"
 import { Vehicle } from "../realtime"
-import { Settings } from "../settings"
-import { selectVehicle, SelectVehicleAction } from "../state"
+import { selectVehicle } from "../state"
 import VehicleIcon, { Orientation, Size } from "./vehicleIcon"
 
-type ClassModifier = "top" | "bottom"
-
-interface Props {
-  classModifier: ClassModifier
-  vehicles: Vehicle[]
+export enum LayoverBoxPosition {
+  Top = 1,
+  Bottom,
 }
 
-const layoverVehicle = (
-  vehicle: Vehicle,
-  classModifier: ClassModifier,
-  dispatch: Dispatch<SelectVehicleAction>,
-  settings: Settings
-): ReactElement<HTMLDivElement> => {
+interface Props {
+  vehicles: Vehicle[]
+  position: LayoverBoxPosition
+}
+
+const LayoverVehicle = ({
+  vehicle,
+  isBottomLayoverBox,
+}: {
+  vehicle: Vehicle
+  isBottomLayoverBox: boolean
+}): ReactElement<HTMLDivElement> => {
+  const [{ settings }, dispatch] = useContext(StateDispatchContext)
+
   return (
     <div
       key={vehicle.id}
@@ -28,9 +33,7 @@ const layoverVehicle = (
     >
       <VehicleIcon
         label={vehicleLabel(vehicle, settings)}
-        orientation={
-          classModifier === "bottom" ? Orientation.Right : Orientation.Left
-        }
+        orientation={isBottomLayoverBox ? Orientation.Right : Orientation.Left}
         size={Size.Small}
         status={drawnStatus(vehicle)}
         variant={vehicle.viaVariant}
@@ -56,17 +59,21 @@ export const byLayoverDeparture = (isBottomLayoverBox: boolean) => (
 }
 
 const LayoverBox = ({
-  classModifier,
   vehicles,
+  position,
 }: Props): ReactElement<HTMLDivElement> => {
-  const [{ settings }, dispatch] = useContext(StateDispatchContext)
-  const isBottomLayoverBox = classModifier === "bottom"
+  const isBottomLayoverBox = position === LayoverBoxPosition.Bottom
+  const classModifier = isBottomLayoverBox ? "bottom" : "top"
 
   return (
     <div className={`m-layover-box m-layover-box--${classModifier}`}>
-      {vehicles
-        .sort(byLayoverDeparture(isBottomLayoverBox))
-        .map(v => layoverVehicle(v, classModifier, dispatch, settings))}
+      {vehicles.sort(byLayoverDeparture(isBottomLayoverBox)).map(vehicle => (
+        <LayoverVehicle
+          vehicle={vehicle}
+          isBottomLayoverBox={isBottomLayoverBox}
+          key={vehicle.id}
+        />
+      ))}
     </div>
   )
 }

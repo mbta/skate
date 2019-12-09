@@ -1,7 +1,10 @@
 import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
-import LayoverBox, { byLayoverDeparture } from "../../src/components/layoverBox"
+import LayoverBox, {
+  byLayoverDeparture,
+  LayoverBoxPosition,
+} from "../../src/components/layoverBox"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Vehicle } from "../../src/realtime.d"
@@ -91,7 +94,9 @@ const vehicles: Vehicle[] = [
 describe("LayoverBox", () => {
   test("renders", () => {
     const tree = renderer
-      .create(<LayoverBox classModifier="top" vehicles={vehicles} />)
+      .create(
+        <LayoverBox vehicles={vehicles} position={LayoverBoxPosition.Top} />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -101,7 +106,7 @@ describe("LayoverBox", () => {
     const dispatch = jest.fn()
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
-        <LayoverBox classModifier="bottom" vehicles={vehicles} />
+        <LayoverBox vehicles={vehicles} position={LayoverBoxPosition.Bottom} />
       </StateDispatchProvider>
     )
 
@@ -115,11 +120,11 @@ describe("LayoverBox", () => {
 
   test("vehicles are sorted", () => {
     const topWrapper = mount(
-      <LayoverBox classModifier="top" vehicles={vehicles} />
+      <LayoverBox vehicles={vehicles} position={LayoverBoxPosition.Top} />
     )
 
     const bottomWrapper = mount(
-      <LayoverBox classModifier="bottom" vehicles={vehicles} />
+      <LayoverBox vehicles={vehicles} position={LayoverBoxPosition.Bottom} />
     )
 
     expect(
