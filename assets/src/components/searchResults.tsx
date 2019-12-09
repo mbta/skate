@@ -29,9 +29,13 @@ const SearchResultCard = ({
 }: {
   vehicleOrGhost: VehicleOrGhost
 }) => {
-  const [{ search, selectedVehicleId }, dispatch] = useContext(
-    StateDispatchContext
-  )
+  const [
+    {
+      search: { query },
+      selectedVehicleId,
+    },
+    dispatch,
+  ] = useContext(StateDispatchContext)
 
   const selectedClass =
     vehicleOrGhost.id === selectedVehicleId
@@ -47,7 +51,7 @@ const SearchResultCard = ({
     >
       <PropertiesList
         vehicleOrGhost={vehicleOrGhost}
-        highlightText={search.text}
+        highlightText={query.text}
       />
 
       {isVehicle(vehicleOrGhost) && <RouteLabel vehicle={vehicleOrGhost} />}
@@ -68,14 +72,19 @@ const ResultsList = ({ vehicles }: { vehicles: VehicleOrGhost[] }) => (
 )
 
 const NoResults = () => {
-  const [{ search }, dispatch] = useContext(StateDispatchContext)
+  const [
+    {
+      search: { query },
+    },
+    dispatch,
+  ] = useContext(StateDispatchContext)
 
   return (
     <div className="m-search-results__none">
       <div className="m-search-results__heading">No Search Results</div>
 
       <p>
-        There were no matching results found for “{search.text}”. Please try
+        There were no matching results found for “{query.text}”. Please try
         again using numbers or last names only.
       </p>
 

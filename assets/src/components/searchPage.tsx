@@ -3,7 +3,7 @@ import React, { ReactElement, useContext, useState } from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSearchResults from "../hooks/useSearchResults"
-import { isValidSearch, Search } from "../models/search"
+import { Search } from "../models/search"
 import { isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
 import Map from "./map"
@@ -11,6 +11,7 @@ import PropertiesPanel from "./propertiesPanel"
 import RecentSearches from "./recentSearches"
 import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
+import { isValidSearchQuery } from "../models/searchQuery"
 
 enum MobileDisplay {
   List = 1,
@@ -21,7 +22,9 @@ const thereIsAnActiveSearch = (
   vehicles: VehicleOrGhost[] | null | undefined,
   search: Search
 ): boolean =>
-  vehicles !== null && vehicles !== undefined && isValidSearch(search)
+  vehicles !== null &&
+  vehicles !== undefined &&
+  isValidSearchQuery(search.query)
 
 const filterVehicles = (
   vehiclesOrGhosts: VehicleOrGhost[] | null | undefined

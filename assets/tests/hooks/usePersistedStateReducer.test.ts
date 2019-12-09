@@ -37,8 +37,7 @@ describe("usePersistedStateReducer", () => {
     const initialState: State = {
       pickerContainerIsVisible: true,
       search: {
-        text: "search text",
-        property: "run",
+        query: { text: "search text", property: "run" },
         isActive: true,
         savedSearches: [],
       },
@@ -72,8 +71,7 @@ describe("usePersistedStateReducer", () => {
     const initialState: State = {
       pickerContainerIsVisible: true,
       search: {
-        text: "search text",
-        property: "run",
+        query: { text: "search text", property: "run" },
         isActive: true,
         savedSearches: [],
       },
@@ -89,8 +87,7 @@ describe("usePersistedStateReducer", () => {
     const expectedState: State = {
       pickerContainerIsVisible: true,
       search: {
-        text: "search text",
-        property: "run",
+        query: { text: "search text", property: "run" },
         isActive: true,
         savedSearches: [],
       },

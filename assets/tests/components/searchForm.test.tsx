@@ -28,8 +28,7 @@ describe("SearchForm", () => {
 
   test("submit button is disabled if there are fewer than 2 characters in the text field", () => {
     const invalidSearch: Search = {
-      text: "1",
-      property: "run",
+      query: { text: "1", property: "run" },
       isActive: false,
       savedSearches: [],
     }
@@ -49,8 +48,7 @@ describe("SearchForm", () => {
 
   test("submit button is enable if there are at least 2 characters in the text field", () => {
     const validSearch: Search = {
-      text: "12",
-      property: "run",
+      query: { text: "12", property: "run" },
       isActive: false,
       savedSearches: [],
     }
@@ -71,8 +69,7 @@ describe("SearchForm", () => {
   test("clicking the submit button submits the search", () => {
     const testDispatch = jest.fn()
     const validSearch: Search = {
-      text: "12",
-      property: "run",
+      query: { text: "12", property: "run" },
       isActive: false,
       savedSearches: [],
     }

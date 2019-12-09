@@ -15,8 +15,7 @@ describe("RecentSearches", () => {
 
   test("renders with data", () => {
     const searchWithData = {
-      text: "999-555",
-      property: "run",
+      query: { text: "999-555", property: "run" },
       isActive: false,
       savedSearches: [
         { text: "poodle" },
@@ -41,8 +40,7 @@ describe("RecentSearches", () => {
 
   test("clicking a recent search sets the search text", () => {
     const searchWithData = {
-      text: "999-555",
-      property: "run",
+      query: { text: "999-555", property: "run" },
       isActive: false,
       savedSearches: [{ text: "poodle" }],
     }

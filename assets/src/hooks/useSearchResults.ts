@@ -25,7 +25,7 @@ const subscribe = (
   }
 
   const channel = socket.channel(
-    `vehicles:search:${search.property}:${search.text}`
+    `vehicles:search:${search.query.property}:${search.query.text}`
   )
   channel.on("search", handleSearchResults)
 

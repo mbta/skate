@@ -28,8 +28,7 @@ describe("useSearchResults", () => {
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     const search: Search = {
-      text: "test",
-      property: "run",
+      query: { text: "test", property: "run" },
       isActive: true,
       savedSearches: [],
     }
@@ -47,8 +46,7 @@ describe("useSearchResults", () => {
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     const invalidSearch: Search = {
-      text: "",
-      property: "run",
+      query: { text: "", property: "run" },
       isActive: false,
       savedSearches: [],
     }
@@ -67,8 +65,7 @@ describe("useSearchResults", () => {
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     const search: Search = {
-      text: "test",
-      property: "run",
+      query: { text: "test", property: "run" },
       isActive: false,
       savedSearches: [],
     }
@@ -236,8 +233,7 @@ describe("useSearchResults", () => {
     })
 
     const search: Search = {
-      text: "test",
-      property: "run",
+      query: { text: "test", property: "run" },
       isActive: true,
       savedSearches: [],
     }
@@ -257,8 +253,7 @@ describe("useSearchResults", () => {
     mockUseStateOnce(mockChannel)
 
     const search: Search = {
-      text: "one",
-      property: "run",
+      query: { text: "one", property: "run" },
       isActive: true,
       savedSearches: [],
     }
@@ -284,8 +279,7 @@ describe("useSearchResults", () => {
     mockUseStateOnce(channel2)
 
     const search1: Search = {
-      text: "one",
-      property: "run",
+      query: { text: "one", property: "run" },
       isActive: true,
       savedSearches: [],
     }
@@ -295,8 +289,7 @@ describe("useSearchResults", () => {
     )
 
     const search2: Search = {
-      text: "two",
-      property: "run",
+      query: { text: "two", property: "run" },
       isActive: true,
       savedSearches: [],
     }
@@ -312,8 +305,7 @@ describe("useSearchResults", () => {
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     const search1: Search = {
-      text: "validSearch",
-      property: "run",
+      query: { text: "validSearch", property: "run" },
       isActive: true,
       savedSearches: [],
     }
@@ -323,8 +315,7 @@ describe("useSearchResults", () => {
     )
 
     const search2: Search = {
-      text: "",
-      property: "run",
+      query: { text: "", property: "run" },
       isActive: false,
       savedSearches: [],
     }
@@ -341,8 +332,7 @@ describe("useSearchResults", () => {
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     const search: Search = {
-      text: "test",
-      property: "run",
+      query: { text: "test", property: "run" },
       isActive: true,
       savedSearches: [],
     }
@@ -364,8 +354,7 @@ describe("useSearchResults", () => {
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     const search: Search = {
-      text: "test",
-      property: "run",
+      query: { text: "test", property: "run" },
       isActive: true,
       savedSearches: [],
     }

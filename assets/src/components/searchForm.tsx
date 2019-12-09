@@ -2,11 +2,11 @@ import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { searchIcon } from "../helpers/icon"
 import {
-  isValidSearch,
   setSearchProperty,
   setSearchText,
   submitSearch,
 } from "../models/search"
+import { isValidSearchQuery } from "../models/searchQuery"
 
 const SEARCH_PROPERTIES = ["all", "run", "vehicle", "operator"]
 
@@ -39,7 +39,7 @@ const SearchForm = () => {
           type="text"
           className="m-search-form__text"
           placeholder="Search"
-          value={search.text}
+          value={search.query.text}
           onChange={handleTextInput}
           autoFocus={true}
         />
@@ -47,7 +47,7 @@ const SearchForm = () => {
         <button
           className="m-search-form__submit"
           onClick={subscribeToSearch}
-          disabled={!isValidSearch(search)}
+          disabled={!isValidSearchQuery(search.query)}
         >
           {searchIcon()}
         </button>
@@ -66,7 +66,7 @@ const SearchForm = () => {
                 type="radio"
                 name="property"
                 value={property}
-                checked={search.property === property}
+                checked={search.query.property === property}
                 onChange={handlePropertyChange}
               />
               <label

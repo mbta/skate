@@ -1,10 +1,11 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { SavedSearch, setSearchText, submitSearch } from "../models/search"
+import { setSearchText, submitSearch } from "../models/search"
+import { SavedSearchQuery } from "../models/searchQuery"
 
 const RecentSearches = () => {
   const [{ search }, dispatch] = useContext(StateDispatchContext)
-  const savedSearches: SavedSearch[] = search.savedSearches
+  const savedSearches: SavedSearchQuery[] = search.savedSearches
   return (
     <div className="m-recent-searches">
       <div className="m-recent-searches__heading">Recent Searches</div>

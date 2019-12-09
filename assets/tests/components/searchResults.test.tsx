@@ -11,8 +11,7 @@ import { initialState, selectVehicle, State } from "../../src/state"
 const state: State = {
   ...initialState,
   search: {
-    text: "test",
-    property: "run",
+    query: { text: "test", property: "run" },
     isActive: true,
     savedSearches: [],
   },

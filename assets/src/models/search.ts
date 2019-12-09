@@ -1,19 +1,19 @@
 import { Dispatch as ReactDispatch } from "react"
+import {
+  SearchQuery,
+  SavedSearchQuery,
+  emptySearchQuery,
+  isValidSearchQuery,
+} from "./searchQuery"
 
 export interface Search {
-  text: string
-  property: string
+  query: SearchQuery
   isActive: boolean
-  savedSearches: SavedSearch[]
-}
-
-export interface SavedSearch {
-  text: string
+  savedSearches: SavedSearchQuery[]
 }
 
 export const initialSearch = {
-  text: "",
-  property: "all",
+  query: emptySearchQuery,
   isActive: false,
   savedSearches: [],
 }
@@ -64,22 +64,22 @@ export const reducer = (search: Search, action: Action): Search => {
     case "SET_SEARCH_TEXT":
       return {
         ...search,
-        text: action.payload.text,
+        query: { ...search.query, text: action.payload.text },
         isActive: false,
       }
     case "SET_SEARCH_PROPERTY":
       return {
         ...search,
-        property: action.payload.property,
+        query: { ...search.query, property: action.payload.property },
         isActive: false,
       }
     case "SUBMIT_SEARCH":
-      if (isValidSearch(search)) {
+      if (isValidSearchQuery(search.query)) {
         return {
           ...search,
           isActive: true,
           savedSearches: addSavedSearch(search.savedSearches, {
-            text: search.text,
+            text: search.query.text,
           }),
         }
       } else {
@@ -93,17 +93,11 @@ export const reducer = (search: Search, action: Action): Search => {
 }
 
 export const addSavedSearch = (
-  previouslySaved: SavedSearch[],
-  newSearch: SavedSearch
-): SavedSearch[] =>
+  previouslySaved: SavedSearchQuery[],
+  newSearch: SavedSearchQuery
+): SavedSearchQuery[] =>
   [newSearch]
     .concat(
       previouslySaved.filter(savedSearch => savedSearch.text !== newSearch.text)
     )
     .slice(0, 5)
-
-const filterToAlphanumeric = (text: string): string =>
-  text.replace(/[^0-9a-zA-Z]/g, "")
-
-export const isValidSearch = ({ text }: Search): boolean =>
-  filterToAlphanumeric(text).length >= 2
