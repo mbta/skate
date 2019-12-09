@@ -11,7 +11,6 @@ import PropertiesPanel from "./propertiesPanel"
 import RecentSearches from "./recentSearches"
 import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
-import { isValidSearchQuery } from "../models/searchQuery"
 
 enum MobileDisplay {
   List = 1,
@@ -21,10 +20,7 @@ enum MobileDisplay {
 const thereIsAnActiveSearch = (
   vehicles: VehicleOrGhost[] | null | undefined,
   search: Search
-): boolean =>
-  vehicles !== null &&
-  vehicles !== undefined &&
-  isValidSearchQuery(search.query)
+): boolean => vehicles !== null && vehicles !== undefined && search.isActive
 
 const filterVehicles = (
   vehiclesOrGhosts: VehicleOrGhost[] | null | undefined
