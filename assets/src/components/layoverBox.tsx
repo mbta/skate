@@ -39,11 +39,11 @@ const layoverVehicle = (
   )
 }
 
-const byLayoverDeparture = (classModifier: ClassModifier) => (
+export const byLayoverDeparture = (isBottomLayoverBox: boolean) => (
   a: Vehicle,
   b: Vehicle
 ): number => {
-  const [gt, lt] = classModifier === "bottom" ? [1, -1] : [-1, 1]
+  const [lt, gt] = isBottomLayoverBox ? [1, -1] : [-1, 1]
   if (
     !a.layoverDepartureTime ||
     !b.layoverDepartureTime ||
@@ -60,10 +60,12 @@ const LayoverBox = ({
   vehicles,
 }: Props): ReactElement<HTMLDivElement> => {
   const [{ settings }, dispatch] = useContext(StateDispatchContext)
+  const isBottomLayoverBox = classModifier === "bottom"
+
   return (
     <div className={`m-layover-box m-layover-box--${classModifier}`}>
       {vehicles
-        .sort(byLayoverDeparture(classModifier))
+        .sort(byLayoverDeparture(isBottomLayoverBox))
         .map(v => layoverVehicle(v, classModifier, dispatch, settings))}
     </div>
   )

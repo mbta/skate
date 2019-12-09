@@ -1,7 +1,7 @@
 import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
-import LayoverBox from "../../src/components/layoverBox"
+import LayoverBox, { byLayoverDeparture } from "../../src/components/layoverBox"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Vehicle } from "../../src/realtime.d"
@@ -124,10 +124,73 @@ describe("LayoverBox", () => {
 
     expect(
       topWrapper.find(".m-layover-box__vehicle").map(icon => icon.text())
-    ).toEqual(["1", "2"])
+    ).toEqual(["2", "1"])
 
     expect(
       bottomWrapper.find(".m-layover-box__vehicle").map(icon => icon.text())
-    ).toEqual(["2", "1"])
+    ).toEqual(["1", "2"])
+  })
+})
+
+describe("byLayoverDeparture", () => {
+  const vehicleDepartingSooner: Vehicle = {
+    layoverDepartureTime: 1,
+  } as Vehicle
+  const vehicleDepartingLater: Vehicle = {
+    layoverDepartureTime: 2,
+  } as Vehicle
+
+  test("orders in descending order for the bottom layover box", () => {
+    const isBottomLayoverBox: boolean = true
+
+    expect(
+      byLayoverDeparture(isBottomLayoverBox)(
+        vehicleDepartingSooner,
+        vehicleDepartingLater
+      )
+    ).toEqual(1)
+    expect(
+      byLayoverDeparture(isBottomLayoverBox)(
+        vehicleDepartingLater,
+        vehicleDepartingSooner
+      )
+    ).toEqual(-1)
+  })
+
+  test("orders in ascending order for the bottom layover box", () => {
+    const isBottomLayoverBox: boolean = false
+
+    expect(
+      byLayoverDeparture(isBottomLayoverBox)(
+        vehicleDepartingSooner,
+        vehicleDepartingLater
+      )
+    ).toEqual(-1)
+    expect(
+      byLayoverDeparture(isBottomLayoverBox)(
+        vehicleDepartingLater,
+        vehicleDepartingSooner
+      )
+    ).toEqual(1)
+  })
+
+  test("returns 0 if either vehicle is missing the layoverDepartureTime", () => {
+    const isBottomLayoverBox: boolean = true
+    const vehicleMissingLayoverDepartureTime: Vehicle = {
+      layoverDepartureTime: null,
+    } as Vehicle
+
+    expect(
+      byLayoverDeparture(isBottomLayoverBox)(
+        vehicleDepartingSooner,
+        vehicleMissingLayoverDepartureTime
+      )
+    ).toEqual(0)
+    expect(
+      byLayoverDeparture(isBottomLayoverBox)(
+        vehicleMissingLayoverDepartureTime,
+        vehicleDepartingSooner
+      )
+    ).toEqual(0)
   })
 })
