@@ -50,7 +50,7 @@ defmodule Realtime.ServerTest do
     }
   }
 
-  @shuttle %{@vehicle | id: "shuttle", run_id: "9990555", route_id: nil}
+  @shuttle %{@vehicle | id: "shuttle", label: "shuttle", run_id: "9990555", route_id: nil}
 
   @vehicles_by_route_id %{
     "1" => [@vehicle, @ghost]
