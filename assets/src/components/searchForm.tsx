@@ -1,12 +1,12 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { searchIcon } from "../helpers/icon"
+import { isValidSearchQuery } from "../models/searchQuery"
 import {
   setSearchProperty,
   setSearchText,
   submitSearch,
-} from "../models/searchPageState"
-import { isValidSearchQuery } from "../models/searchQuery"
+} from "../state/searchPageState"
 
 const SEARCH_PROPERTIES = ["all", "run", "vehicle", "operator"]
 

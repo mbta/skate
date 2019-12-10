@@ -3,13 +3,13 @@ import React from "react"
 import renderer from "react-test-renderer"
 import SearchForm from "../../src/components/searchForm"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
+import { initialState } from "../../src/state"
 import {
   SearchPageState,
   setSearchProperty,
   setSearchText,
   submitSearch,
-} from "../../src/models/searchPageState"
-import { initialState } from "../../src/state"
+} from "../../src/state/searchPageState"
 
 const mockDispatch = jest.fn()
 

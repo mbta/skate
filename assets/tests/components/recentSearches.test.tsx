@@ -3,8 +3,8 @@ import React from "react"
 import renderer from "react-test-renderer"
 import RecentSearches from "../../src/components/recentSearches"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import { setSearchText } from "../../src/models/searchPageState"
 import { initialState } from "../../src/state"
+import { setSearchText } from "../../src/state/searchPageState"
 
 describe("RecentSearches", () => {
   test("renders empty state", () => {

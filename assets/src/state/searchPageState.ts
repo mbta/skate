@@ -4,7 +4,7 @@ import {
   isValidSearchQuery,
   SavedSearchQuery,
   SearchQuery,
-} from "./searchQuery"
+} from "../models/searchQuery"
 
 export interface SearchPageState {
   query: SearchQuery

@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { setSearchText, submitSearch } from "../models/searchPageState"
+import { setSearchText, submitSearch } from "../state/searchPageState"
 
 const RecentSearches = () => {
   const [

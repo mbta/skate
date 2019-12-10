@@ -6,7 +6,7 @@ import {
   setSearchProperty,
   setSearchText,
   submitSearch,
-} from "../../src/models/searchPageState"
+} from "../../src/state/searchPageState"
 
 describe("initialSearchPageState", () => {
   test("sets text to empty string", () => {

@@ -3,10 +3,10 @@ import React from "react"
 import renderer from "react-test-renderer"
 import SearchResults from "../../src/components/searchResults"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import { setSearchText } from "../../src/models/searchPageState"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../src/realtime"
 import { initialState, selectVehicle, State } from "../../src/state"
+import { setSearchText } from "../../src/state/searchPageState"
 
 const state: State = {
   ...initialState,

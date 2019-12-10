@@ -1,13 +1,13 @@
 import { Dispatch as ReactDispatch } from "react"
+import { RunId, VehicleId } from "./realtime.d"
+import { RouteId } from "./schedule.d"
+import { defaultSettings, Settings, VehicleLabelSetting } from "./settings"
 import {
   Action as SearchAction,
   initialSearchPageState,
   reducer as searchReducer,
   SearchPageState,
-} from "./models/searchPageState"
-import { RunId, VehicleId } from "./realtime.d"
-import { RouteId } from "./schedule.d"
-import { defaultSettings, Settings, VehicleLabelSetting } from "./settings"
+} from "./state/searchPageState"
 
 export interface State {
   pickerContainerIsVisible: boolean
