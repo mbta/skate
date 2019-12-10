@@ -27,5 +27,6 @@
     </main>
     <script type="text/javascript" src="<%= Routes.static_url(@conn, "/js/app.js") %>"></script>
     <%= render "_drift.html" %>
+    <%= render "_informizely.html" %>
   </body>
 </html>

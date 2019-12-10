@@ -36,7 +36,7 @@ exports[`LayoverBox renders 1`] = `
           x="0"
           y={12.86}
         >
-          1
+          2
         </text>
         <path
           className="m-vehicle-icon__triangle"
@@ -78,7 +78,7 @@ exports[`LayoverBox renders 1`] = `
           x="0"
           y={12.86}
         >
-          2
+          1
         </text>
         <path
           className="m-vehicle-icon__triangle"
