@@ -20,7 +20,8 @@ enum MobileDisplay {
 const thereIsAnActiveSearch = (
   vehicles: VehicleOrGhost[] | null | undefined,
   searchPageState: SearchPageState
-): boolean => vehicles !== null && vehicles !== undefined && searchPageState.isActive
+): boolean =>
+  vehicles !== null && vehicles !== undefined && searchPageState.isActive
 
 const filterVehicles = (
   vehiclesOrGhosts: VehicleOrGhost[] | null | undefined
@@ -58,7 +59,9 @@ const ToggleMobileDisplayButton = ({
 }
 
 const SearchPage = (): ReactElement<HTMLDivElement> => {
-  const [{ searchPageState, selectedVehicleId }] = useContext(StateDispatchContext)
+  const [{ searchPageState, selectedVehicleId }] = useContext(
+    StateDispatchContext
+  )
   const socket: Socket | undefined = useContext(SocketContext)
   const vehicles: VehicleOrGhost[] | null | undefined = useSearchResults(
     socket,
