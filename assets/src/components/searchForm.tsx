@@ -11,7 +11,12 @@ import { isValidSearchQuery } from "../models/searchQuery"
 const SEARCH_PROPERTIES = ["all", "run", "vehicle", "operator"]
 
 const SearchForm = () => {
-  const [{ searchPageState }, dispatch] = useContext(StateDispatchContext)
+  const [
+    {
+      searchPageState: { query },
+    },
+    dispatch,
+  ] = useContext(StateDispatchContext)
   const handleTextInput = (event: React.FormEvent<HTMLInputElement>): void =>
     dispatch(setSearchText(event.currentTarget.value))
 
@@ -35,7 +40,7 @@ const SearchForm = () => {
           type="text"
           className="m-search-form__text"
           placeholder="Search"
-          value={searchPageState.query.text}
+          value={query.text}
           onChange={handleTextInput}
           autoFocus={true}
         />
@@ -43,7 +48,7 @@ const SearchForm = () => {
         <button
           className="m-search-form__submit"
           onClick={subscribeToSearch}
-          disabled={!isValidSearchQuery(searchPageState.query)}
+          disabled={!isValidSearchQuery(query)}
         >
           {searchIcon()}
         </button>
@@ -62,7 +67,7 @@ const SearchForm = () => {
                 type="radio"
                 name="property"
                 value={property}
-                checked={searchPageState.query.property === property}
+                checked={query.property === property}
                 onChange={handlePropertyChange}
               />
               <label

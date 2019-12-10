@@ -1,11 +1,14 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { setSearchText, submitSearch } from "../models/searchPageState"
-import { SavedSearchQuery } from "../models/searchQuery"
 
 const RecentSearches = () => {
-  const [{ searchPageState }, dispatch] = useContext(StateDispatchContext)
-  const savedQueries: SavedSearchQuery[] = searchPageState.savedQueries
+  const [
+    {
+      searchPageState: { savedQueries },
+    },
+    dispatch,
+  ] = useContext(StateDispatchContext)
   return (
     <div className="m-recent-searches">
       <div className="m-recent-searches__heading">Recent Searches</div>
