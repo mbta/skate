@@ -8,7 +8,7 @@ import { deselectRoute } from "../state"
 import CloseButton from "./closeButton"
 import IncomingBox from "./incomingBox"
 import Ladder, { flipLadderDirection, LadderDirection } from "./ladder"
-import LayoverBox from "./layoverBox"
+import LayoverBox, { LayoverBoxPosition } from "./layoverBox"
 import Loading from "./loading"
 
 interface Props {
@@ -95,7 +95,10 @@ const RouteLadder = ({
 
       {timepoints ? (
         <>
-          <LayoverBox vehicles={byPosition.layingOverTop} classModifier="top" />
+          <LayoverBox
+            vehicles={byPosition.layingOverTop}
+            position={LayoverBoxPosition.Top}
+          />
           <Ladder
             timepoints={timepoints}
             vehicles={byPosition.onRoute}
@@ -105,7 +108,7 @@ const RouteLadder = ({
           />
           <LayoverBox
             vehicles={byPosition.layingOverBottom}
-            classModifier="bottom"
+            position={LayoverBoxPosition.Bottom}
           />
           <IncomingBox
             vehicles={byPosition.incoming}

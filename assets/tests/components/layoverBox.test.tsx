@@ -1,7 +1,10 @@
 import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
-import LayoverBox from "../../src/components/layoverBox"
+import LayoverBox, {
+  byLayoverDeparture,
+  LayoverBoxPosition,
+} from "../../src/components/layoverBox"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Vehicle } from "../../src/realtime.d"
@@ -91,7 +94,9 @@ const vehicles: Vehicle[] = [
 describe("LayoverBox", () => {
   test("renders", () => {
     const tree = renderer
-      .create(<LayoverBox classModifier="top" vehicles={vehicles} />)
+      .create(
+        <LayoverBox vehicles={vehicles} position={LayoverBoxPosition.Top} />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -101,7 +106,7 @@ describe("LayoverBox", () => {
     const dispatch = jest.fn()
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
-        <LayoverBox classModifier="bottom" vehicles={vehicles} />
+        <LayoverBox vehicles={vehicles} position={LayoverBoxPosition.Bottom} />
       </StateDispatchProvider>
     )
 
@@ -115,19 +120,82 @@ describe("LayoverBox", () => {
 
   test("vehicles are sorted", () => {
     const topWrapper = mount(
-      <LayoverBox classModifier="top" vehicles={vehicles} />
+      <LayoverBox vehicles={vehicles} position={LayoverBoxPosition.Top} />
     )
 
     const bottomWrapper = mount(
-      <LayoverBox classModifier="bottom" vehicles={vehicles} />
+      <LayoverBox vehicles={vehicles} position={LayoverBoxPosition.Bottom} />
     )
 
     expect(
       topWrapper.find(".m-layover-box__vehicle").map(icon => icon.text())
-    ).toEqual(["1", "2"])
+    ).toEqual(["2", "1"])
 
     expect(
       bottomWrapper.find(".m-layover-box__vehicle").map(icon => icon.text())
-    ).toEqual(["2", "1"])
+    ).toEqual(["1", "2"])
+  })
+})
+
+describe("byLayoverDeparture", () => {
+  const vehicleDepartingSooner: Vehicle = {
+    layoverDepartureTime: 1,
+  } as Vehicle
+  const vehicleDepartingLater: Vehicle = {
+    layoverDepartureTime: 2,
+  } as Vehicle
+
+  test("orders in descending order for the bottom layover box, so that vehicles leaving sooner are to the right", () => {
+    const isBottomLayoverBox: boolean = true
+
+    expect(
+      byLayoverDeparture(isBottomLayoverBox)(
+        vehicleDepartingSooner,
+        vehicleDepartingLater
+      )
+    ).toEqual(1)
+    expect(
+      byLayoverDeparture(isBottomLayoverBox)(
+        vehicleDepartingLater,
+        vehicleDepartingSooner
+      )
+    ).toEqual(-1)
+  })
+
+  test("orders in ascending order for the bottom layover box, so that vehicles leaving sooner are to the left", () => {
+    const isBottomLayoverBox: boolean = false
+
+    expect(
+      byLayoverDeparture(isBottomLayoverBox)(
+        vehicleDepartingSooner,
+        vehicleDepartingLater
+      )
+    ).toEqual(-1)
+    expect(
+      byLayoverDeparture(isBottomLayoverBox)(
+        vehicleDepartingLater,
+        vehicleDepartingSooner
+      )
+    ).toEqual(1)
+  })
+
+  test("returns 0 if either vehicle is missing the layoverDepartureTime", () => {
+    const isBottomLayoverBox: boolean = true
+    const vehicleMissingLayoverDepartureTime: Vehicle = {
+      layoverDepartureTime: null,
+    } as Vehicle
+
+    expect(
+      byLayoverDeparture(isBottomLayoverBox)(
+        vehicleDepartingSooner,
+        vehicleMissingLayoverDepartureTime
+      )
+    ).toEqual(0)
+    expect(
+      byLayoverDeparture(isBottomLayoverBox)(
+        vehicleMissingLayoverDepartureTime,
+        vehicleDepartingSooner
+      )
+    ).toEqual(0)
   })
 })
