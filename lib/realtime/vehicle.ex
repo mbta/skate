@@ -2,13 +2,13 @@ defmodule Realtime.Vehicle do
   alias Concentrate.{DataDiscrepancy, VehiclePosition}
   alias Gtfs.{Block, Direction, Route, RoutePattern, Stop, Trip}
   alias Realtime.Headway
+  alias Realtime.RouteStatus
   alias Realtime.TimepointStatus
 
   @type stop_status :: %{
           stop_id: Stop.id(),
           stop_name: String.t()
         }
-  @type route_status :: :on_route | :laying_over | :pulling_out
 
   @type t :: %__MODULE__{
           id: String.t(),
@@ -39,7 +39,7 @@ defmodule Realtime.Vehicle do
           stop_status: stop_status(),
           timepoint_status: TimepointStatus.timepoint_status() | nil,
           scheduled_location: TimepointStatus.scheduled_location() | nil,
-          route_status: route_status()
+          route_status: RouteStatus.route_status()
         }
 
   @enforce_keys [
@@ -249,7 +249,7 @@ defmodule Realtime.Vehicle do
     if stop, do: stop.name, else: stop_id
   end
 
-  @spec route_status(Stop.id(), Trip.t() | nil, Block.t() | nil) :: route_status()
+  @spec route_status(Stop.id(), Trip.t() | nil, Block.t() | nil) :: RouteStatus.route_status()
   def route_status(_stop_id, nil, _block) do
     # can't find the trip, won't be able to show it on the ladder, show it incoming instead
     :pulling_out
