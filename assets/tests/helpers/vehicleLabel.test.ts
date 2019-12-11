@@ -92,6 +92,7 @@ describe("ghostLabel", () => {
     blockId: "block",
     runId: null,
     viaVariant: null,
+    layoverDepartureTime: null,
     scheduledTimepointStatus: {
       timepointId: "timepoint",
       fractionUntilTimepoint: 0.0,

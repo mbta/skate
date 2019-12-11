@@ -157,6 +157,7 @@ describe("Header", () => {
       blockId: "block",
       runId: null,
       viaVariant: "X",
+      layoverDepartureTime: null,
       scheduledTimepointStatus: {
         timepointId: "t0",
         fractionUntilTimepoint: 0.0,

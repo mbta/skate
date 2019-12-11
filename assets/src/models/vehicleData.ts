@@ -134,6 +134,7 @@ export const ghostFromData = (ghostData: GhostData): Ghost => ({
   blockId: ghostData.block_id,
   runId: ghostData.run_id,
   viaVariant: ghostData.via_variant,
+  layoverDepartureTime: null,
   scheduledTimepointStatus:
     ghostData.scheduled_timepoint_status &&
     vehicleTimepointStatusFromData(ghostData.scheduled_timepoint_status),

@@ -164,6 +164,7 @@ describe("routeLadder", () => {
       blockId: "ghost block",
       runId: "123-0123",
       viaVariant: null,
+      layoverDepartureTime: null,
       scheduledTimepointStatus: {
         timepointId: "MORTN",
         fractionUntilTimepoint: 0.0,
