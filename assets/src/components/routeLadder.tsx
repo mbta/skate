@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { reverseIcon, reverseIconReversed } from "../helpers/icon"
-import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime.d"
+import { VehicleId, VehicleOrGhost } from "../realtime.d"
 import { DirectionId, LoadableTimepoints, Route, RouteId } from "../schedule.d"
 import { deselectRoute } from "../state"
 import CloseButton from "./closeButton"
@@ -95,7 +95,7 @@ const RouteLadder = ({
       {timepoints ? (
         <>
           <LayoverBox
-            vehicles={byPosition.layingOverTop}
+            vehiclesAndGhosts={byPosition.layingOverTop}
             position={LayoverBoxPosition.Top}
           />
           <Ladder
@@ -105,11 +105,11 @@ const RouteLadder = ({
             selectedVehicleId={selectedVehicleId}
           />
           <LayoverBox
-            vehicles={byPosition.layingOverBottom}
+            vehiclesAndGhosts={byPosition.layingOverBottom}
             position={LayoverBoxPosition.Bottom}
           />
           <IncomingBox
-            vehicles={byPosition.incoming}
+            vehiclesAndGhosts={byPosition.incoming}
             ladderDirection={ladderDirection}
             selectedVehicleId={selectedVehicleId}
           />
@@ -123,9 +123,9 @@ const RouteLadder = ({
 
 interface ByPosition {
   onRoute: VehicleOrGhost[]
-  layingOverTop: Vehicle[]
-  layingOverBottom: Vehicle[]
-  incoming: Vehicle[]
+  layingOverTop: VehicleOrGhost[]
+  layingOverBottom: VehicleOrGhost[]
+  incoming: VehicleOrGhost[]
 }
 
 export const groupByPosition = (
@@ -146,22 +146,22 @@ export const groupByPosition = (
             if (current.directionId === upwardDirection) {
               return {
                 ...acc,
-                layingOverBottom: [...acc.layingOverBottom, current as Vehicle],
+                layingOverBottom: [...acc.layingOverBottom, current],
               }
             } else {
               return {
                 ...acc,
-                layingOverTop: [...acc.layingOverTop, current as Vehicle],
+                layingOverTop: [...acc.layingOverTop, current],
               }
             }
           case "pulling_out":
-            return { ...acc, incoming: [...acc.incoming, current as Vehicle] }
+            return { ...acc, incoming: [...acc.incoming, current] }
           default:
             return acc
         }
       } else {
         // incoming from another route
-        return { ...acc, incoming: [...acc.incoming, current as Vehicle] }
+        return { ...acc, incoming: [...acc.incoming, current] }
       }
     },
     {

@@ -7,14 +7,14 @@ import LayoverBox, {
 } from "../../src/components/layoverBox"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { Vehicle } from "../../src/realtime.d"
+import { Ghost, Vehicle, VehicleOrGhost } from "../../src/realtime.d"
 import { initialState, selectVehicle } from "../../src/state"
 
 const vehicles: Vehicle[] = [
   {
     id: "y1818",
     label: "1818",
-    runId: "run-1",
+    runId: "run-later",
     timestamp: 1557160307,
     latitude: 0,
     longitude: 0,
@@ -50,7 +50,7 @@ const vehicles: Vehicle[] = [
   {
     id: "y0479",
     label: "0479",
-    runId: "run-2",
+    runId: "run-sooner",
     timestamp: 1557160347,
     latitude: 0,
     longitude: 0,
@@ -91,11 +91,44 @@ const vehicles: Vehicle[] = [
   },
 ]
 
+const ghost: Ghost = {
+  id: "ghost",
+  directionId: 0,
+  routeId: "1",
+  tripId: "trip-ghost",
+  headsign: "headsign-ghost",
+  blockId: "block-ghost",
+  runId: "run-ghost_soonest",
+  viaVariant: null,
+  layoverDepartureTime: 1000000,
+  scheduledTimepointStatus: {
+    timepointId: "MORTN",
+    fractionUntilTimepoint: 0.0,
+  },
+  routeStatus: "laying_over",
+}
+
 describe("LayoverBox", () => {
   test("renders", () => {
     const tree = renderer
       .create(
-        <LayoverBox vehicles={vehicles} position={LayoverBoxPosition.Top} />
+        <LayoverBox
+          vehiclesAndGhosts={vehicles}
+          position={LayoverBoxPosition.Top}
+        />
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders ghost", () => {
+    const tree = renderer
+      .create(
+        <LayoverBox
+          vehiclesAndGhosts={[ghost]}
+          position={LayoverBoxPosition.Top}
+        />
       )
       .toJSON()
 
@@ -106,7 +139,10 @@ describe("LayoverBox", () => {
     const dispatch = jest.fn()
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
-        <LayoverBox vehicles={vehicles} position={LayoverBoxPosition.Bottom} />
+        <LayoverBox
+          vehiclesAndGhosts={vehicles}
+          position={LayoverBoxPosition.Bottom}
+        />
       </StateDispatchProvider>
     )
 
@@ -119,21 +155,31 @@ describe("LayoverBox", () => {
   })
 
   test("vehicles are sorted", () => {
+    const vehiclesAndGhosts: VehicleOrGhost[] = ([] as VehicleOrGhost[]).concat(
+      vehicles,
+      ghost
+    )
     const topWrapper = mount(
-      <LayoverBox vehicles={vehicles} position={LayoverBoxPosition.Top} />
+      <LayoverBox
+        vehiclesAndGhosts={vehiclesAndGhosts}
+        position={LayoverBoxPosition.Top}
+      />
     )
 
     const bottomWrapper = mount(
-      <LayoverBox vehicles={vehicles} position={LayoverBoxPosition.Bottom} />
+      <LayoverBox
+        vehiclesAndGhosts={vehiclesAndGhosts}
+        position={LayoverBoxPosition.Bottom}
+      />
     )
 
     expect(
       topWrapper.find(".m-layover-box__vehicle").map(icon => icon.text())
-    ).toEqual(["2", "1"])
+    ).toEqual(["ghost_soonest", "sooner", "later"])
 
     expect(
       bottomWrapper.find(".m-layover-box__vehicle").map(icon => icon.text())
-    ).toEqual(["1", "2"])
+    ).toEqual(["later", "sooner", "ghost_soonest"])
   })
 })
 

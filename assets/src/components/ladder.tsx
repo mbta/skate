@@ -9,19 +9,19 @@ import {
   ladderVehiclesFromVehicles,
   VehicleDirection,
 } from "../models/ladderVehicle"
+import { isVehicle } from "../models/vehicle"
 import { statusClass } from "../models/vehicleStatus"
 import {
+  Ghost,
   Vehicle,
   VehicleId,
-  VehicleTimepointStatus,
   VehicleOrGhost,
-  Ghost,
+  VehicleTimepointStatus,
 } from "../realtime.d"
 import { TimepointId } from "../schedule.d"
 import { selectVehicle } from "../state"
 import HeadwayLines from "./headwayLines"
 import { Orientation, Size, VehicleIconSvgNode } from "./vehicleIcon"
-import { isVehicle } from "../models/vehicle"
 
 export interface Props {
   timepoints: TimepointId[]
