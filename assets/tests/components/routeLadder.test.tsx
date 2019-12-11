@@ -371,7 +371,6 @@ describe("routeLadder", () => {
 
 describe("groupByPosition", () => {
   const emptyByPosition = {
-    ghosts: [],
     onRoute: [],
     layingOverTop: [],
     layingOverBottom: [],
@@ -438,7 +437,7 @@ describe("groupByPosition", () => {
     })
   })
 
-  test("ghost", () => {
+  test("on route ghost", () => {
     const ghost: Ghost = {
       routeId: "1",
       directionId: 0,
@@ -446,7 +445,7 @@ describe("groupByPosition", () => {
     } as Ghost
     expect(groupByPosition([ghost], "1", LadderDirection.ZeroToOne)).toEqual({
       ...emptyByPosition,
-      ghosts: [ghost],
+      onRoute: [ghost],
     })
   })
 })

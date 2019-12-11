@@ -11,20 +11,21 @@ import {
 } from "../models/ladderVehicle"
 import { statusClass } from "../models/vehicleStatus"
 import {
-  Ghost,
   Vehicle,
   VehicleId,
   VehicleTimepointStatus,
+  VehicleOrGhost,
+  Ghost,
 } from "../realtime.d"
 import { TimepointId } from "../schedule.d"
 import { selectVehicle } from "../state"
 import HeadwayLines from "./headwayLines"
 import { Orientation, Size, VehicleIconSvgNode } from "./vehicleIcon"
+import { isVehicle } from "../models/vehicle"
 
 export interface Props {
   timepoints: TimepointId[]
-  vehicles: Vehicle[]
-  ghosts: Ghost[]
+  vehiclesAndGhosts: VehicleOrGhost[]
   ladderDirection: LadderDirection
   selectedVehicleId?: VehicleId
 }
@@ -52,11 +53,14 @@ const MARGIN_TOP_BOTTOM = 20 // space between the top of the route and the top o
 
 const Ladder = ({
   timepoints,
-  vehicles,
-  ghosts,
+  vehiclesAndGhosts,
   ladderDirection,
   selectedVehicleId,
 }: Props) => {
+  const [vehicles, ghosts]: [Vehicle[], Ghost[]] = partition(
+    vehiclesAndGhosts,
+    isVehicle
+  )
   const elementRef = useRef(null)
   const { height } = useComponentSize(elementRef)
 
