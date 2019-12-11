@@ -73,6 +73,7 @@ const ghost: Ghost = {
     timepointId: "t0",
     fractionUntilTimepoint: 0.0,
   },
+  routeStatus: "on_route",
 }
 jest.mock("../../src/hooks/useSearchResults", () => ({
   __esModule: true,

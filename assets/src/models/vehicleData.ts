@@ -137,6 +137,7 @@ export const ghostFromData = (ghostData: GhostData): Ghost => ({
   scheduledTimepointStatus:
     ghostData.scheduled_timepoint_status &&
     vehicleTimepointStatusFromData(ghostData.scheduled_timepoint_status),
+  routeStatus: "on_route",
 })
 
 const isGhost = (vehicleOrGhostData: VehicleOrGhostData): boolean =>

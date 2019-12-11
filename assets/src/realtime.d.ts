@@ -30,6 +30,7 @@ export interface Ghost {
   runId: RunId | null
   viaVariant: ViaVariant | null
   scheduledTimepointStatus: VehicleTimepointStatus
+  routeStatus: RouteStatus
 }
 
 export type SourceId = string

@@ -96,6 +96,7 @@ describe("ghostLabel", () => {
       timepointId: "timepoint",
       fractionUntilTimepoint: 0.0,
     },
+    routeStatus: "on_route",
   }
 
   test("shows run id without area", () => {

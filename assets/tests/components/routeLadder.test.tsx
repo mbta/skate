@@ -168,6 +168,7 @@ describe("routeLadder", () => {
         timepointId: "MORTN",
         fractionUntilTimepoint: 0.0,
       },
+      routeStatus: "on_route",
     }
 
     const tree = renderer
@@ -441,6 +442,7 @@ describe("groupByPosition", () => {
     const ghost: Ghost = {
       routeId: "1",
       directionId: 0,
+      routeStatus: "on_route",
     } as Ghost
     expect(groupByPosition([ghost], "1", LadderDirection.ZeroToOne)).toEqual({
       ...emptyByPosition,

@@ -94,6 +94,7 @@ const ghost: Ghost = {
     timepointId: "t0",
     fractionUntilTimepoint: 0.0,
   },
+  routeStatus: "on_route",
 }
 
 describe("isVehicle", () => {

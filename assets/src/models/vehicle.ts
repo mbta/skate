@@ -3,12 +3,11 @@ import { Ghost, Vehicle, VehicleOrGhost } from "../realtime"
 
 export const isVehicle = (
   vehicleOrGhost: VehicleOrGhost
-): vehicleOrGhost is Vehicle =>
-  (vehicleOrGhost as Vehicle).routeStatus !== undefined
+): vehicleOrGhost is Vehicle => !isGhost(vehicleOrGhost)
 
 export const isGhost = (
   vehicleOrGhost: VehicleOrGhost
-): vehicleOrGhost is Ghost => !isVehicle(vehicleOrGhost)
+): vehicleOrGhost is Ghost => vehicleOrGhost.id.startsWith("ghost")
 
 export const isShuttle = (vehicle: Vehicle): boolean =>
   (vehicle.runId || "").startsWith("999")
