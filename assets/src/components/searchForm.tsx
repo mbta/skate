@@ -1,17 +1,22 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { searchIcon } from "../helpers/icon"
+import { isValidSearchQuery } from "../models/searchQuery"
 import {
-  isValidSearch,
   setSearchProperty,
   setSearchText,
   submitSearch,
-} from "../models/search"
+} from "../state/searchPageState"
 
 const SEARCH_PROPERTIES = ["all", "run", "vehicle", "operator"]
 
 const SearchForm = () => {
-  const [{ search }, dispatch] = useContext(StateDispatchContext)
+  const [
+    {
+      searchPageState: { query },
+    },
+    dispatch,
+  ] = useContext(StateDispatchContext)
   const handleTextInput = (event: React.FormEvent<HTMLInputElement>): void =>
     dispatch(setSearchText(event.currentTarget.value))
 
@@ -26,10 +31,6 @@ const SearchForm = () => {
     event.preventDefault()
 
     dispatch(submitSearch())
-
-    // TODO: Save search results for "recent searches" list:
-    // https://app.asana.com/0/1112935048846093/1139512810293672
-    // saveSearchResults(searchResults)
   }
 
   return (
@@ -39,7 +40,7 @@ const SearchForm = () => {
           type="text"
           className="m-search-form__text"
           placeholder="Search"
-          value={search.text}
+          value={query.text}
           onChange={handleTextInput}
           autoFocus={true}
         />
@@ -47,7 +48,7 @@ const SearchForm = () => {
         <button
           className="m-search-form__submit"
           onClick={subscribeToSearch}
-          disabled={!isValidSearch(search)}
+          disabled={!isValidSearchQuery(query)}
         >
           {searchIcon()}
         </button>
@@ -66,7 +67,7 @@ const SearchForm = () => {
                 type="radio"
                 name="property"
                 value={property}
-                checked={search.property === property}
+                checked={query.property === property}
                 onChange={handlePropertyChange}
               />
               <label

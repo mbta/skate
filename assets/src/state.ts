@@ -1,17 +1,17 @@
 import { Dispatch as ReactDispatch } from "react"
-import {
-  Action as SearchAction,
-  initialSearch as initialSearchState,
-  reducer as searchReducer,
-  Search,
-} from "./models/search"
 import { RunId, VehicleId } from "./realtime.d"
 import { RouteId } from "./schedule.d"
 import { defaultSettings, Settings, VehicleLabelSetting } from "./settings"
+import {
+  Action as SearchAction,
+  initialSearchPageState,
+  reducer as searchReducer,
+  SearchPageState,
+} from "./state/searchPageState"
 
 export interface State {
   pickerContainerIsVisible: boolean
-  search: Search
+  searchPageState: SearchPageState
   selectedRouteIds: RouteId[]
   selectedShuttleRouteIds: RouteId[]
   selectedShuttleRunIds: RunId[] | "all"
@@ -21,7 +21,7 @@ export interface State {
 
 export const initialState: State = {
   pickerContainerIsVisible: true,
-  search: initialSearchState,
+  searchPageState: initialSearchPageState,
   selectedRouteIds: [],
   selectedShuttleRouteIds: [],
   selectedShuttleRunIds: "all",
@@ -306,7 +306,7 @@ export const reducer = (state: State, action: Action): State => ({
     state.pickerContainerIsVisible,
     action
   ),
-  search: searchReducer(state.search, action as SearchAction),
+  searchPageState: searchReducer(state.searchPageState, action as SearchAction),
   selectedRouteIds: selectedRouteIdsReducer(state.selectedRouteIds, action),
   selectedShuttleRouteIds: selectedShuttleRouteIdsReducer(
     state.selectedShuttleRouteIds,

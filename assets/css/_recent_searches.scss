@@ -7,3 +7,9 @@
 .m-recent-searches__heading {
   @include font-label;
 }
+
+.m-recent-searches__button {
+  @include button-text;
+  display: block;
+  margin-top: 1rem;
+}

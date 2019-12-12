@@ -1,6 +1,6 @@
 import { Channel, Socket } from "phoenix"
 import { useEffect, useState } from "react"
-import { Search } from "../models/search"
+import { SearchQuery } from "../models/searchQuery"
 import {
   VehicleOrGhostData,
   vehicleOrGhostFromData,
@@ -13,7 +13,7 @@ interface SearchResultsPayload {
 
 const subscribe = (
   socket: Socket,
-  search: Search,
+  searchQuery: SearchQuery,
   setVehicles: (vehicles: VehicleOrGhost[]) => void
 ): Channel => {
   const handleSearchResults = (payload: SearchResultsPayload): void => {
@@ -25,7 +25,7 @@ const subscribe = (
   }
 
   const channel = socket.channel(
-    `vehicles:search:${search.property}:${search.text}`
+    `vehicles:search:${searchQuery.property}:${searchQuery.text}`
   )
   channel.on("search", handleSearchResults)
 
@@ -45,7 +45,7 @@ const subscribe = (
 
 const useSearchResults = (
   socket: Socket | undefined,
-  search: Search
+  searchQuery: SearchQuery | null
 ): VehicleOrGhost[] | null | undefined => {
   const [vehicles, setVehicles] = useState<VehicleOrGhost[] | null | undefined>(
     undefined
@@ -61,18 +61,18 @@ const useSearchResults = (
       }
     }
 
-    if (!search.isActive) {
+    if (searchQuery === null) {
       leaveChannel()
       setVehicles(undefined)
     }
 
-    if (socket && search.isActive) {
+    if (socket && searchQuery !== null) {
       setVehicles(null)
-      channel = subscribe(socket, search, setVehicles)
+      channel = subscribe(socket, searchQuery, setVehicles)
     }
 
     return leaveChannel
-  }, [socket, search])
+  }, [socket, searchQuery])
 
   return vehicles
 }

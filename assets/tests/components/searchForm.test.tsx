@@ -3,13 +3,13 @@ import React from "react"
 import renderer from "react-test-renderer"
 import SearchForm from "../../src/components/searchForm"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
+import { initialState } from "../../src/state"
 import {
-  Search,
+  SearchPageState,
   setSearchProperty,
   setSearchText,
   submitSearch,
-} from "../../src/models/search"
-import { initialState } from "../../src/state"
+} from "../../src/state/searchPageState"
 
 const mockDispatch = jest.fn()
 
@@ -27,14 +27,14 @@ describe("SearchForm", () => {
   })
 
   test("submit button is disabled if there are fewer than 2 characters in the text field", () => {
-    const invalidSearch: Search = {
-      text: "1",
-      property: "run",
+    const invalidSearch: SearchPageState = {
+      query: { text: "1", property: "run" },
       isActive: false,
+      savedQueries: [],
     }
     const invalidSearchState = {
       ...initialState,
-      search: invalidSearch,
+      searchPageState: invalidSearch,
     }
     const wrapper = mount(
       <StateDispatchProvider state={invalidSearchState} dispatch={mockDispatch}>
@@ -47,14 +47,14 @@ describe("SearchForm", () => {
   })
 
   test("submit button is enable if there are at least 2 characters in the text field", () => {
-    const validSearch: Search = {
-      text: "12",
-      property: "run",
+    const validSearch: SearchPageState = {
+      query: { text: "12", property: "run" },
       isActive: false,
+      savedQueries: [],
     }
     const validSearchState = {
       ...initialState,
-      search: validSearch,
+      searchPageState: validSearch,
     }
     const wrapper = mount(
       <StateDispatchProvider state={validSearchState} dispatch={mockDispatch}>
@@ -66,16 +66,16 @@ describe("SearchForm", () => {
     expect(wrapper.find(".m-search-form__submit").prop("disabled")).toBeFalsy()
   })
 
-  test("clicking the submit button submits the search", () => {
+  test("clicking the submit button submits the query", () => {
     const testDispatch = jest.fn()
-    const validSearch: Search = {
-      text: "12",
-      property: "run",
+    const validSearch: SearchPageState = {
+      query: { text: "12", property: "run" },
       isActive: false,
+      savedQueries: [],
     }
     const validSearchState = {
       ...initialState,
-      search: validSearch,
+      searchPageState: validSearch,
     }
     const wrapper = mount(
       <StateDispatchProvider state={validSearchState} dispatch={testDispatch}>
