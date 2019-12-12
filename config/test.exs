@@ -10,7 +10,7 @@ config :skate, Gtfs.CacheFile, cache_filename: "test_cache.terms"
 config :skate, SkateWeb.Endpoint,
   http: [port: 4002],
   server: false,
-  secret_key_base: "HjFPO4gzlDmAuvgXBMSd4MIFGLhvKHYfXpNkIoXRM5LMGxQhjYW0NQVdP2QFgZND"
+  secret_key_base: "local_secret_key_base_at_least_64_bytes_________________________________"
 
 config :skate, SkateWeb.AuthManager, secret_key: "dev key"
 
