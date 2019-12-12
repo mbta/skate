@@ -42,7 +42,7 @@ describe("SearchForm", () => {
       </StateDispatchProvider>
     )
 
-    expect(wrapper.find(".m-search-form__text").prop("value")).toEqual("1")
+    expect(wrapper.find(".m-search-form__input").prop("value")).toEqual("1")
     expect(wrapper.find(".m-search-form__submit").prop("disabled")).toBeTruthy()
   })
 
@@ -62,7 +62,7 @@ describe("SearchForm", () => {
       </StateDispatchProvider>
     )
 
-    expect(wrapper.find(".m-search-form__text").prop("value")).toEqual("12")
+    expect(wrapper.find(".m-search-form__input").prop("value")).toEqual("12")
     expect(wrapper.find(".m-search-form__submit").prop("disabled")).toBeFalsy()
   })
 
@@ -101,9 +101,31 @@ describe("SearchForm", () => {
         value: "test input",
       },
     } as React.ChangeEvent<HTMLInputElement>
-    wrapper.find(".m-search-form__text").prop("onChange")!(testEvent)
+    wrapper.find(".m-search-form__input").prop("onChange")!(testEvent)
 
     expect(testDispatch).toHaveBeenCalledWith(setSearchText("test input"))
+  })
+
+  test("clicking the clear button empties the search text", () => {
+    const testDispatch = jest.fn()
+    const validSearch: SearchPageState = {
+      query: { text: "12", property: "run" },
+      isActive: false,
+      savedQueries: [],
+    }
+    const validSearchState = {
+      ...initialState,
+      searchPageState: validSearch,
+    }
+    const wrapper = mount(
+      <StateDispatchProvider state={validSearchState} dispatch={testDispatch}>
+        <SearchForm />
+      </StateDispatchProvider>
+    )
+
+    wrapper.find(".m-search-form__clear").simulate("click")
+
+    expect(testDispatch).toHaveBeenCalledWith(setSearchText(""))
   })
 
   test("clicking a search property selects it", () => {

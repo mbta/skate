@@ -3,7 +3,21 @@
 }
 
 .m-search-form__text {
+  position: relative;
   flex: 1 0 auto;
+}
+
+.m-search-form__input {
+  width: 100%;
+}
+
+.m-search-form__clear {
+  @include button-transparent;
+  @include button-icon(0.75rem);
+  right: 0;
+  padding: 0 0.375rem;
+  position: absolute;
+  top: 0.6rem;
 }
 
 .m-search-form__submit {
