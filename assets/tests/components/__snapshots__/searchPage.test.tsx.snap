@@ -17,18 +17,37 @@ exports[`SearchPage renders a selected vehicle 1`] = `
         <div
           className="m-search-form__row"
         >
-          <input
-            autoFocus={true}
+          <div
             className="m-search-form__text"
-            onChange={[Function]}
-            placeholder="Search"
-            type="text"
-            value=""
-          />
+          >
+            <input
+              autoFocus={true}
+              className="m-search-form__input"
+              onChange={[Function]}
+              placeholder="Search"
+              type="text"
+              value=""
+            />
+            <button
+              className="m-search-form__clear"
+              onClick={[Function]}
+              type="reset"
+            >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
+            </button>
+          </div>
           <button
             className="m-search-form__submit"
             disabled={true}
             onClick={[Function]}
+            type="submit"
           >
             <span
               className=""
@@ -394,18 +413,37 @@ exports[`SearchPage renders the empty state 1`] = `
         <div
           className="m-search-form__row"
         >
-          <input
-            autoFocus={true}
+          <div
             className="m-search-form__text"
-            onChange={[Function]}
-            placeholder="Search"
-            type="text"
-            value=""
-          />
+          >
+            <input
+              autoFocus={true}
+              className="m-search-form__input"
+              onChange={[Function]}
+              placeholder="Search"
+              type="text"
+              value=""
+            />
+            <button
+              className="m-search-form__clear"
+              onClick={[Function]}
+              type="reset"
+            >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
+            </button>
+          </div>
           <button
             className="m-search-form__submit"
             disabled={true}
             onClick={[Function]}
+            type="submit"
           >
             <span
               className=""
@@ -553,18 +591,37 @@ exports[`SearchPage renders vehicle data 1`] = `
         <div
           className="m-search-form__row"
         >
-          <input
-            autoFocus={true}
+          <div
             className="m-search-form__text"
-            onChange={[Function]}
-            placeholder="Search"
-            type="text"
-            value=""
-          />
+          >
+            <input
+              autoFocus={true}
+              className="m-search-form__input"
+              onChange={[Function]}
+              placeholder="Search"
+              type="text"
+              value=""
+            />
+            <button
+              className="m-search-form__clear"
+              onClick={[Function]}
+              type="reset"
+            >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
+            </button>
+          </div>
           <button
             className="m-search-form__submit"
             disabled={true}
             onClick={[Function]}
+            type="submit"
           >
             <span
               className=""
