@@ -1,5 +1,6 @@
 import shapesBlue from "../data/shapesBlue"
 import shapesGreen from "../data/shapesGreen"
+import shapesMattapan from "../data/shapesMattapan"
 import shapesOrange from "../data/shapesOrange"
 import shapesRed from "../data/shapesRed"
 import { RouteId, Shape } from "../schedule"
@@ -30,6 +31,11 @@ export const subwayRoutes: SubwayRoute[] = [
     id: "Red",
     name: "Red Line",
     shapes: shapesRed,
+  },
+  {
+    id: "Mattapan",
+    name: "Mattapan Line",
+    shapes: shapesMattapan,
   },
 ]
 
