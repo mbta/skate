@@ -189,10 +189,12 @@ defmodule Realtime.VehiclesTest do
                    trip_id: "trip",
                    headsign: "headsign",
                    block_id: "block",
+                   layover_departure_time: nil,
                    scheduled_timepoint_status: %{
                      timepoint_id: "timepoint",
                      fraction_until_timepoint: 0.0
-                   }
+                   },
+                   route_status: :on_route,
                  }
                ]
              }

@@ -270,10 +270,12 @@ describe("useVehicles", () => {
       block_id: "block",
       run_id: null,
       via_variant: null,
+      layover_departure_time: null,
       scheduled_timepoint_status: {
         timepoint_id: "t0",
         fraction_until_timepoint: 0.0,
       },
+      route_status: "on_route",
     }
 
     const mockSocket = makeMockSocket()

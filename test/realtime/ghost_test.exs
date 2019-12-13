@@ -48,10 +48,12 @@ defmodule Realtime.GhostTest do
                  block_id: "block",
                  run_id: "run",
                  via_variant: "X",
+                 layover_departure_time: nil,
                  scheduled_timepoint_status: %{
                    timepoint_id: "t2",
                    fraction_until_timepoint: 0.5
-                 }
+                 },
+                 route_status: :on_route
                }
              ]
     end

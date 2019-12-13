@@ -1,5 +1,6 @@
 defmodule Realtime.Ghost do
   alias Gtfs.{Block, Direction, Route, RoutePattern, Run, StopTime, Trip}
+  alias Realtime.RouteStatus
   alias Realtime.TimepointStatus
   alias Realtime.Vehicle
 
@@ -12,7 +13,9 @@ defmodule Realtime.Ghost do
           block_id: Block.id(),
           run_id: Run.id(),
           via_variant: RoutePattern.via_variant() | nil,
-          scheduled_timepoint_status: TimepointStatus.timepoint_status()
+          layover_departure_time: Util.Time.timestamp() | nil,
+          scheduled_timepoint_status: TimepointStatus.timepoint_status(),
+          route_status: RouteStatus.route_status()
         }
 
   @enforce_keys [
@@ -22,7 +25,8 @@ defmodule Realtime.Ghost do
     :trip_id,
     :headsign,
     :block_id,
-    :scheduled_timepoint_status
+    :scheduled_timepoint_status,
+    :route_status
   ]
 
   @derive Jason.Encoder
@@ -36,7 +40,9 @@ defmodule Realtime.Ghost do
     :block_id,
     :run_id,
     :via_variant,
-    :scheduled_timepoint_status
+    :layover_departure_time,
+    :scheduled_timepoint_status,
+    :route_status
   ]
 
   @spec ghosts([Trip.t()], %{Block.id() => [Vehicle.t()]}, Util.Time.timestamp()) :: [t()]
@@ -68,7 +74,9 @@ defmodule Realtime.Ghost do
             block_id: trip.block_id,
             run_id: trip.run_id,
             via_variant: trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id),
-            scheduled_timepoint_status: timepoint_status
+            layover_departure_time: nil,
+            scheduled_timepoint_status: timepoint_status,
+            route_status: :on_route
           }
       end
     end)

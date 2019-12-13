@@ -13,7 +13,7 @@ defmodule Realtime.Vehicle do
   @type t :: %__MODULE__{
           id: String.t(),
           label: String.t(),
-          timestamp: integer(),
+          timestamp: Util.Time.timestamp(),
           latitude: float(),
           longitude: float(),
           direction_id: Direction.id(),
@@ -32,7 +32,7 @@ defmodule Realtime.Vehicle do
           schedule_adherence_secs: float() | nil,
           scheduled_headway_secs: float() | nil,
           is_off_course: boolean(),
-          layover_departure_time: integer() | nil,
+          layover_departure_time: Util.Time.timestamp() | nil,
           block_is_active: boolean(),
           sources: MapSet.t(String.t()),
           data_discrepancies: [DataDiscrepancy.t()],
