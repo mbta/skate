@@ -5,7 +5,7 @@ import {
   subwayRouteShapes,
 } from "../../src/models/subwayRoute"
 
-const subwayLineIds = ["Blue", "Green", "Orange", "Red"]
+const subwayLineIds = ["Blue", "Green", "Orange", "Red", "Mattapan"]
 
 describe("subwayRoutes", () => {
   test("includes each of the subway lines", () => {
