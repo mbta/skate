@@ -6,9 +6,13 @@ Skate is a web-based dispatch tool for bus inspectors, built by the MBTA. Imagin
 
 ## Setup
 
-- `asdf install`
-- Install dependencies with `mix deps.get`
-- Install Node.js dependencies with `cd assets && npm install`
+Doing development on Skate requires Elixir, Erlang, and node, as dsecribed in [.tool-versions](https://github.com/mbta/skate/blob/master/.tool-versions). Most developers use [asdf](https://asdf-vm.com/) to help manage the required versions, but that isn't required.
+
+Quick setup:
+
+1. Install languange dependencies with `asdf install`
+1. Install Elixir dependencies with `mix deps.get`
+1. Install Node.js dependencies with `cd assets && npm install`
 
 ## Running the application
 
@@ -26,6 +30,8 @@ There are a number of configuration details defined in environment variables. Th
 
 - **BUSLOC_URL**: Source of GTFS-realtime enhanced data file
 - **SWIFTLY_REALTIME_VEHICLES_URL** and **SWIFTLY_AUTHORIZATION_KEY**: Source of Swiftly vehicle data
+- **SKATE_HASTUS_URL**: Source of extended schedule data
 - **SECRET_KEY_BASE** Used for writing encrypted cookies. Generate a value using `mix phx.gen.secret` (only required in production)
+- **ERLANG_COOKIE** Used by Erlang (only required in production)
 - **COGNITO_DOMAIN**, **COGNITO_CLIENT_ID**, **COGNITO_CLIENT_SECRET**, **COGNITO_USER_POOL_ID**, **COGNITO_AWS_REGION**, and **GUARDIAN_SECRET_KEY**: Authentication/authorization details (only required in production)
 - **STATIC_SCHEME**, **STATIC_HOST**, **STATIC_PATH**, and **STATIC_PORT**: CDN details (only required in production)
