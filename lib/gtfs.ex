@@ -95,11 +95,12 @@ defmodule Gtfs do
   @doc """
   All trips that are scheduled to be active at the given time, on all routes.
   """
-  @spec active_trips(Util.Time.timestamp()) :: [Trip.t()]
-  @spec active_trips(Util.Time.timestamp(), GenServer.server()) :: [Trip.t()]
-  def active_trips(now, server \\ __MODULE__) do
+  @spec active_trips(Util.Time.timestamp(), Util.Time.timestamp()) :: [Trip.t()]
+  @spec active_trips(Util.Time.timestamp(), Util.Time.timestamp(), GenServer.server()) ::
+          [Trip.t()]
+  def active_trips(start_time, end_time, server \\ __MODULE__) do
     try do
-      GenServer.call(server, {:active_trips, now})
+      GenServer.call(server, {:active_trips, start_time, end_time})
     catch
       # Handle Gtfs server timeouts gracefully
       :exit, _ ->
@@ -114,12 +115,9 @@ defmodule Gtfs do
   The result is grouped by route.
   If a block is scheduled to be active on two routes during that time, it wil be in both routes' lists.
   """
-  @spec active_blocks(Util.Time.timestamp(), Util.Time.timestamp()) :: %{
-          Route.id() => [Block.id()]
-        }
-  @spec active_blocks(Util.Time.timestamp(), Util.Time.timestamp(), GenServer.server()) :: %{
-          Route.id() => [Block.id()]
-        }
+  @spec active_blocks(Util.Time.timestamp(), Util.Time.timestamp()) :: [Block.t()]
+  @spec active_blocks(Util.Time.timestamp(), Util.Time.timestamp(), GenServer.server()) ::
+          [Block.t()]
   def active_blocks(start_time, end_time, server \\ __MODULE__) do
     try do
       GenServer.call(server, {:active_blocks, start_time, end_time})
@@ -192,8 +190,8 @@ defmodule Gtfs do
     {:reply, Data.block(gtfs_data, block_id, service_id), state}
   end
 
-  def handle_call({:active_trips, now}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.active_trips(gtfs_data, now), state}
+  def handle_call({:active_trips, start_time, end_time}, _from, {:loaded, gtfs_data} = state) do
+    {:reply, Data.active_trips(gtfs_data, start_time, end_time), state}
   end
 
   def handle_call({:active_blocks, start_time, end_time}, _from, {:loaded, gtfs_data} = state) do

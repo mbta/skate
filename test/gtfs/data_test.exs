@@ -255,7 +255,35 @@ defmodule Gtfs.DataTest do
     end
   end
 
-  describe "active_trips_by_date" do
+  describe "potentially_active_service_dates" do
+    test "returns a day" do
+      # 2019-12-17 12:00:00 EST
+      time = 1_576_598_400
+      assert Data.potentially_active_service_dates(time, time) == [~D[2019-12-17]]
+    end
+
+    test "returns yesterday and today for early morning times" do
+      # 2019-12-17 01:00:00 EST
+      time = 1_576_558_800
+      assert Data.potentially_active_service_dates(time, time) == [~D[2019-12-16], ~D[2019-12-17]]
+    end
+
+    test "returns multiple dates for a time range" do
+      # 2019-12-17 01:00:00 EST
+      start_time = 1_576_558_800
+      # 2019-12-19 22:00:00 EST
+      end_time = 1_576_807_200
+
+      assert Data.potentially_active_service_dates(start_time, end_time) == [
+               ~D[2019-12-16],
+               ~D[2019-12-17],
+               ~D[2019-12-18],
+               ~D[2019-12-19]
+             ]
+    end
+  end
+
+  describe "active_trips" do
     test "returns active trips" do
       trips = [
         # A trip that's totally inside the time range
@@ -356,16 +384,11 @@ defmodule Gtfs.DataTest do
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
 
-      actual_trips_by_date = Data.active_trips_by_date(data, time0 + 2, time0 + 5)
-      # sort the trips before comparing so order doesn't matter
-      actual_trips_by_date =
-        Helpers.map_values(
-          actual_trips_by_date,
-          fn trips_on_date -> Enum.sort_by(trips_on_date, fn trip -> trip.id end) end
-        )
+      actual = Data.active_trips(data, time0 + 2, time0 + 5)
+      expected = trips
 
-      expected_trips_by_date = %{~D[2019-01-01] => Enum.sort_by(trips, fn trip -> trip.id end)}
-      assert(actual_trips_by_date == expected_trips_by_date)
+      # sort the trips before comparing so order doesn't matter
+      assert Enum.sort_by(actual, & &1.id) == Enum.sort_by(expected, & &1.id)
     end
 
     test "doesn't return a trip active at a different time today" do
@@ -402,7 +425,7 @@ defmodule Gtfs.DataTest do
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-      assert Data.active_trips_by_date(data, time0 + 1, time0 + 2) == %{}
+      assert Data.active_trips(data, time0 + 1, time0 + 2) == []
     end
 
     test "doesn't return a trip active at this time on a different day" do
@@ -439,7 +462,7 @@ defmodule Gtfs.DataTest do
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-      assert Data.active_trips_by_date(data, time0 + 1, time0 + 3) == %{}
+      assert Data.active_trips(data, time0 + 1, time0 + 3) == []
     end
 
     test "returns late-night trips that are still active from yesterday" do
@@ -477,84 +500,44 @@ defmodule Gtfs.DataTest do
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-      assert Data.active_trips_by_date(data, time0 + 1, time0 + 3) == %{~D[2018-12-31] => [trip]}
-    end
-  end
-
-  describe "active_trips" do
-    test "returns active trips" do
-      trip = %Trip{
-        id: "trip",
-        route_id: "route",
-        service_id: "today",
-        headsign: "headsign",
-        direction_id: 0,
-        block_id: "block",
-        shape_id: "shape1",
-        stop_times: [
-          %StopTime{
-            stop_id: "stop",
-            time: 2
-          },
-          %StopTime{
-            stop_id: "stop",
-            time: 4
-          }
-        ]
-      }
-
-      data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoint_ids_by_route: %{},
-        shapes: %{},
-        stops: [],
-        trips: %{
-          "trip" => trip
-        },
-        blocks: %{},
-        calendar: %{
-          ~D[2019-01-01] => ["today"]
-        }
-      }
-
-      # 2019-01-01 00:00:00 EST
-      time0 = 1_546_318_800
-
-      assert [%Trip{id: "trip"}] = Data.active_trips(data, time0 + 3)
+      assert Data.active_trips(data, time0 + 1, time0 + 3) == [trip]
     end
   end
 
   describe "active_blocks" do
     test "returns active blocks" do
+      block = [
+        %Trip{
+          id: "trip",
+          route_id: "route",
+          service_id: "today",
+          headsign: "headsign",
+          direction_id: 0,
+          block_id: "block",
+          shape_id: "shape1",
+          stop_times: [
+            %StopTime{
+              stop_id: "stop",
+              time: 3
+            },
+            %StopTime{
+              stop_id: "stop",
+              time: 4
+            }
+          ]
+        }
+      ]
+
       data = %Data{
         routes: [],
         route_patterns: [],
         timepoint_ids_by_route: %{},
         shapes: %{},
         stops: [],
-        trips: %{
-          "trip" => %Trip{
-            id: "trip",
-            route_id: "route",
-            service_id: "today",
-            headsign: "headsign",
-            direction_id: 0,
-            block_id: "block",
-            shape_id: "shape1",
-            stop_times: [
-              %StopTime{
-                stop_id: "stop",
-                time: 3
-              },
-              %StopTime{
-                stop_id: "stop",
-                time: 4
-              }
-            ]
-          }
+        trips: %{},
+        blocks: %{
+          "block" => block
         },
-        blocks: %{},
         calendar: %{
           ~D[2019-01-01] => ["today"]
         }
@@ -563,49 +546,40 @@ defmodule Gtfs.DataTest do
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
 
-      assert Data.active_blocks(data, time0 + 2, time0 + 5) == %{"route" => ["block"]}
+      assert Data.active_blocks(data, time0 + 2, time0 + 5) == [block]
     end
 
-    test "doesn't include blocks that are between trips" do
+    test "doesn't return inactive blocks" do
       data = %Data{
         routes: [],
         route_patterns: [],
         timepoint_ids_by_route: %{},
         shapes: %{},
         stops: [],
-        trips: %{
-          "before" => %Trip{
-            id: "before",
-            route_id: "route",
-            service_id: "today",
-            headsign: "headsign",
-            direction_id: 0,
-            block_id: "block",
-            shape_id: "shape1",
-            stop_times: [
-              %StopTime{
-                stop_id: "stop",
-                time: 1
-              }
-            ]
-          },
-          "after" => %Trip{
-            id: "before",
-            route_id: "route",
-            service_id: "today",
-            headsign: "headsign",
-            direction_id: 0,
-            block_id: "block",
-            shape_id: "shape1",
-            stop_times: [
-              %StopTime{
-                stop_id: "stop",
-                time: 4
-              }
-            ]
-          }
+        trips: %{},
+        blocks: %{
+          "block" => [
+            %Trip{
+              id: "trip",
+              route_id: "route",
+              service_id: "today",
+              headsign: "headsign",
+              direction_id: 0,
+              block_id: "block",
+              shape_id: "shape1",
+              stop_times: [
+                %StopTime{
+                  stop_id: "stop",
+                  time: 3
+                },
+                %StopTime{
+                  stop_id: "stop",
+                  time: 4
+                }
+              ]
+            }
+          ]
         },
-        blocks: %{},
         calendar: %{
           ~D[2019-01-01] => ["today"]
         }
@@ -613,49 +587,54 @@ defmodule Gtfs.DataTest do
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-      assert Data.active_blocks(data, time0 + 2, time0 + 3) == %{}
+
+      assert Data.active_blocks(data, time0 + 5, time0 + 5) == []
     end
 
-    test "returns a block in multiple routes if it's active in both" do
+    test "includes blocks that are between trips" do
+      block = [
+        %Trip{
+          id: "before",
+          route_id: "route",
+          service_id: "today",
+          headsign: "headsign",
+          direction_id: 0,
+          block_id: "block",
+          shape_id: "shape1",
+          stop_times: [
+            %StopTime{
+              stop_id: "stop",
+              time: 1
+            }
+          ]
+        },
+        %Trip{
+          id: "before",
+          route_id: "route",
+          service_id: "today",
+          headsign: "headsign",
+          direction_id: 0,
+          block_id: "block",
+          shape_id: "shape1",
+          stop_times: [
+            %StopTime{
+              stop_id: "stop",
+              time: 4
+            }
+          ]
+        }
+      ]
+
       data = %Data{
         routes: [],
         route_patterns: [],
         timepoint_ids_by_route: %{},
         shapes: %{},
         stops: [],
-        trips: %{
-          "first" => %Trip{
-            id: "first",
-            route_id: "first",
-            service_id: "today",
-            headsign: "headsign",
-            direction_id: 0,
-            block_id: "block",
-            shape_id: "shape1",
-            stop_times: [
-              %StopTime{
-                stop_id: "stop",
-                time: 2
-              }
-            ]
-          },
-          "second" => %Trip{
-            id: "second",
-            route_id: "second",
-            service_id: "today",
-            headsign: "headsign",
-            direction_id: 0,
-            block_id: "block",
-            shape_id: "shape1",
-            stop_times: [
-              %StopTime{
-                stop_id: "stop",
-                time: 3
-              }
-            ]
-          }
+        trips: %{},
+        blocks: %{
+          "block" => block
         },
-        blocks: %{},
         calendar: %{
           ~D[2019-01-01] => ["today"]
         }
@@ -663,53 +642,53 @@ defmodule Gtfs.DataTest do
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-
-      assert Data.active_blocks(data, time0 + 1, time0 + 4) == %{
-               "first" => ["block"],
-               "second" => ["block"]
-             }
+      assert Data.active_blocks(data, time0 + 2, time0 + 3) == [block]
     end
 
     test "returns a block only once per route if it has multiple active trips" do
+      block = [
+        %Trip{
+          id: "first",
+          route_id: "route",
+          service_id: "today",
+          headsign: "headsign",
+          direction_id: 0,
+          block_id: "block",
+          shape_id: "shape1",
+          stop_times: [
+            %StopTime{
+              stop_id: "stop",
+              time: 2
+            }
+          ]
+        },
+        %Trip{
+          id: "second",
+          route_id: "route",
+          service_id: "today",
+          headsign: "headsign",
+          direction_id: 0,
+          block_id: "block",
+          shape_id: "shape1",
+          stop_times: [
+            %StopTime{
+              stop_id: "stop",
+              time: 3
+            }
+          ]
+        }
+      ]
+
       data = %Data{
         routes: [],
         route_patterns: [],
         timepoint_ids_by_route: %{},
         shapes: %{},
         stops: [],
-        trips: %{
-          "first" => %Trip{
-            id: "first",
-            route_id: "route",
-            service_id: "today",
-            headsign: "headsign",
-            direction_id: 0,
-            block_id: "block",
-            shape_id: "shape1",
-            stop_times: [
-              %StopTime{
-                stop_id: "stop",
-                time: 2
-              }
-            ]
-          },
-          "second" => %Trip{
-            id: "second",
-            route_id: "route",
-            service_id: "today",
-            headsign: "headsign",
-            direction_id: 0,
-            block_id: "block",
-            shape_id: "shape1",
-            stop_times: [
-              %StopTime{
-                stop_id: "stop",
-                time: 3
-              }
-            ]
-          }
+        trips: %{},
+        blocks: %{
+          "block" => block
         },
-        blocks: %{},
         calendar: %{
           ~D[2019-01-01] => ["today"]
         }
@@ -717,7 +696,7 @@ defmodule Gtfs.DataTest do
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-      assert Data.active_blocks(data, time0 + 1, time0 + 4) == %{"route" => ["block"]}
+      assert Data.active_blocks(data, time0 + 1, time0 + 4) == [block]
     end
   end
 

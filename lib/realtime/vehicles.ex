@@ -11,9 +11,16 @@ defmodule Realtime.Vehicles do
   def group_by_route(ungrouped_vehicles) do
     now = Util.Time.now()
     in_fifteen_minutes = now + 15 * 60
-    incoming_blocks_by_route = Gtfs.active_blocks(now, in_fifteen_minutes)
-    active_trips = Gtfs.active_trips(now)
-    group_by_route_with_blocks(ungrouped_vehicles, incoming_blocks_by_route, active_trips, now)
+    incoming_trips = Gtfs.active_trips(now, in_fifteen_minutes)
+    incoming_blocks_by_route = incoming_blocks_by_route(incoming_trips)
+    active_and_incoming_blocks = Gtfs.active_blocks(now, in_fifteen_minutes)
+
+    group_by_route_with_blocks(
+      ungrouped_vehicles,
+      incoming_blocks_by_route,
+      active_and_incoming_blocks,
+      now
+    )
   end
 
   @doc """
@@ -22,11 +29,16 @@ defmodule Realtime.Vehicles do
   @spec group_by_route_with_blocks(
           [Vehicle.t()],
           Route.by_id([Block.id()]),
-          [Trip.t()],
+          [Block.t()],
           Util.Time.timestamp()
         ) ::
           Route.by_id([VehicleOrGhost.t()])
-  def group_by_route_with_blocks(ungrouped_vehicles, incoming_blocks_by_route, active_trips, now) do
+  def group_by_route_with_blocks(
+        ungrouped_vehicles,
+        incoming_blocks_by_route,
+        active_and_incoming_blocks,
+        now
+      ) do
     vehicles_by_block = Enum.group_by(ungrouped_vehicles, fn vehicle -> vehicle.block_id end)
 
     vehicles_by_route_id =
@@ -38,7 +50,7 @@ defmodule Realtime.Vehicles do
       incoming_from_another_route(incoming_blocks_by_route, vehicles_by_block)
 
     ghosts =
-      active_trips
+      active_and_incoming_blocks
       |> Ghost.ghosts(vehicles_by_block, now)
       |> Enum.group_by(fn ghost -> ghost.route_id end)
 
@@ -47,6 +59,17 @@ defmodule Realtime.Vehicles do
       vehicles ++ incoming
     end)
     |> Map.merge(ghosts, fn _k, vehicles, ghosts -> vehicles ++ ghosts end)
+  end
+
+  @spec incoming_blocks_by_route([Trip.t()]) :: Route.by_id(Block.id())
+  def incoming_blocks_by_route(incoming_trips) do
+    incoming_trips
+    |> Enum.group_by(fn trip -> trip.route_id end)
+    |> Helpers.map_values(fn trips ->
+      trips
+      |> Enum.map(fn trip -> trip.block_id end)
+      |> Enum.uniq()
+    end)
   end
 
   @spec incoming_from_another_route(Route.by_id([Block.id()]), Route.by_id([Vehicle.t()])) ::

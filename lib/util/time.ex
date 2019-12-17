@@ -117,6 +117,71 @@ defmodule Util.Time do
   end
 
   @doc """
+  Converts a time_of_day to a timestamp in Eastern Time
+
+  time_of_day does not include which day it's on.
+  This function chooses the earliest date
+  so that the resulting timestamp is after the reference earliest_timestamp.
+
+    # When the earliest_timestamp is slightly earlier than the time_of_day,
+    # the result will be close to it
+    iex> Util.Time.next_timestamp_for_time_of_day_after(
+    ...>   Util.Time.parse_hhmmss("13:00:00"),
+    ...>   1546362000 # 2019-01-01 12:00:00 EST
+    ...> )
+    1546365600 # 2019-01-01 13:00:00 EST
+
+    # When the earliest_timestamp is slightly after than the time_of_day,
+    # the next date will be used as a reference
+    iex> Util.Time.next_timestamp_for_time_of_day_after(
+    ...>   Util.Time.parse_hhmmss("11:00:00"),
+    ...>   1546362000  # 2019-01-01 12:00:00 EST
+    ...> )
+    1546444800 # 2019-01-02 11:00:00 EST
+
+    # The input time_of_day can be after midnight
+    iex> Util.Time.next_timestamp_for_time_of_day_after(
+    ...>   Util.Time.parse_hhmmss("26:00:00"),
+    ...>   1546322400 # 2019-01-01 01:00:00 EST
+    ...> )
+    1546326000 # 2019-01-01 02:00:00 EST
+  """
+  @spec next_timestamp_for_time_of_day_after(time_of_day(), timestamp()) :: timestamp()
+  def next_timestamp_for_time_of_day_after(time_of_day, earliest_timestamp) do
+    date_of_timestamp = date_of_timestamp(earliest_timestamp)
+    on_same_date = timestamp_for_time_of_day(time_of_day, date_of_timestamp)
+
+    # if the naively calculated timestamp is before the earliest_timestamp,
+    # this is how many days to shift by so that it's now after the timestamp
+    # typically, this value will be 0 or -1
+    days_to_move_backward = Integer.floor_div(on_same_date - earliest_timestamp, 24 * 60 * 60)
+
+    date_to_use = Timex.shift(date_of_timestamp, days: -days_to_move_backward)
+
+    timestamp_for_time_of_day(time_of_day, date_to_use)
+  end
+
+  @doc """
+    iex> Util.Time.timestamp_for_time_of_day(
+    ...>   3600, # 01:00:00
+    ...>   ~D[2019-01-02]
+    ...> )
+    1546408800 # 2019-01-02 01:00:00 EST
+
+    iex> Util.Time.timestamp_for_time_of_day(
+    ...>   90000, # 25:00:00
+    ...>   ~D[2019-01-01]
+    ...> )
+    1546408800 # 2019-01-02 01:00:00 EST
+  """
+  @spec timestamp_for_time_of_day(time_of_day(), Date.t()) :: timestamp()
+  def timestamp_for_time_of_day(time_of_day, date) do
+    noon = noon_on_date(date)
+    twelve_hours_before_noon = noon - 12 * 60 * 60
+    twelve_hours_before_noon + time_of_day
+  end
+
+  @doc """
     iex> Util.Time.time_of_day_add_minutes(
     ...>   36000, # 10:00:00
     ...>   30
