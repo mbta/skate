@@ -116,14 +116,14 @@ defmodule Realtime.TimepointStatus do
         # Trip isn't scheduled to have started yet
         %{
           timepoint_id: List.first(timepoints).timepoint_id,
-          fraction_until_timepoint: 0
+          fraction_until_timepoint: 0.0
         }
 
       now >= List.last(timepoints).time ->
         # Trip is scheduled to have finished
         %{
           timepoint_id: List.last(timepoints).timepoint_id,
-          fraction_until_timepoint: 0
+          fraction_until_timepoint: 0.0
         }
 
       true ->
