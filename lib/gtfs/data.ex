@@ -143,7 +143,8 @@ defmodule Gtfs.Data do
     end)
   end
 
-  @spec active_blocks(t(), Util.Time.timestamp(), Util.Time.timestamp()) :: [Block.t()]
+  @spec active_blocks(t(), Util.Time.timestamp(), Util.Time.timestamp()) ::
+          %{Date.t() => [Block.t()]}
   def active_blocks(%__MODULE__{blocks: blocks, calendar: calendar}, start_time, end_time) do
     dates = potentially_active_service_dates(start_time, end_time)
     active_services = Map.take(calendar, dates)
@@ -153,7 +154,8 @@ defmodule Gtfs.Data do
       |> Map.values()
       |> Enum.group_by(fn block -> List.first(block).service_id end)
 
-    Enum.flat_map(active_services, fn {date, service_ids} ->
+    active_services
+    |> Map.new(fn {date, service_ids} ->
       start_time_of_day = Util.Time.time_of_day_for_timestamp(start_time, date)
       end_time_of_day = Util.Time.time_of_day_for_timestamp(end_time, date)
 
@@ -168,8 +170,9 @@ defmodule Gtfs.Data do
             start_time_of_day < Block.end_time(block)
         end)
 
-      active_blocks_on_date
+      {date, active_blocks_on_date}
     end)
+    |> Helpers.filter_values(fn blocks -> blocks != [] end)
   end
 
   @spec shapes(t(), Route.id()) :: [Shape.t()]

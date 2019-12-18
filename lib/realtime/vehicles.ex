@@ -13,12 +13,12 @@ defmodule Realtime.Vehicles do
     in_fifteen_minutes = now + 15 * 60
     incoming_trips = Gtfs.active_trips(now, in_fifteen_minutes)
     incoming_blocks_by_route = incoming_blocks_by_route(incoming_trips)
-    active_and_incoming_blocks = Gtfs.active_blocks(now, in_fifteen_minutes)
+    active_and_incoming_blocks_by_date = Gtfs.active_blocks(now, in_fifteen_minutes)
 
     group_by_route_with_blocks(
       ungrouped_vehicles,
       incoming_blocks_by_route,
-      active_and_incoming_blocks,
+      active_and_incoming_blocks_by_date,
       now
     )
   end
@@ -29,14 +29,14 @@ defmodule Realtime.Vehicles do
   @spec group_by_route_with_blocks(
           [Vehicle.t()],
           Route.by_id([Block.id()]),
-          [Block.t()],
+          %{Date.t() => [Block.t()]},
           Util.Time.timestamp()
         ) ::
           Route.by_id([VehicleOrGhost.t()])
   def group_by_route_with_blocks(
         ungrouped_vehicles,
         incoming_blocks_by_route,
-        active_and_incoming_blocks,
+        active_and_incoming_blocks_by_date,
         now
       ) do
     vehicles_by_block = Enum.group_by(ungrouped_vehicles, fn vehicle -> vehicle.block_id end)
@@ -50,7 +50,7 @@ defmodule Realtime.Vehicles do
       incoming_from_another_route(incoming_blocks_by_route, vehicles_by_block)
 
     ghosts =
-      active_and_incoming_blocks
+      active_and_incoming_blocks_by_date
       |> Ghost.ghosts(vehicles_by_block, now)
       |> Enum.group_by(fn ghost -> ghost.route_id end)
 

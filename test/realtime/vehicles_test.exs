@@ -183,7 +183,7 @@ defmodule Realtime.VehiclesTest do
       assert Vehicles.group_by_route_with_blocks(
                [],
                %{},
-               [block],
+               %{~D[2019-12-20] => [block]},
                time0
              ) == %{
                "route" => [
@@ -254,7 +254,7 @@ defmodule Realtime.VehiclesTest do
       assert Vehicles.group_by_route_with_blocks(
                [vehicle],
                %{},
-               [block],
+               %{~D[2019-12-20] => [block]},
                time0
              ) == %{
                "route" => [vehicle]

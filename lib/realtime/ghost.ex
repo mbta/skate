@@ -45,25 +45,27 @@ defmodule Realtime.Ghost do
     :route_status
   ]
 
-  @spec ghosts([Block.t()], %{Block.id() => [Vehicle.t()]}, Util.Time.timestamp()) :: [t()]
-  def ghosts(blocks, vehicles_by_block_id, now) do
-    blocks
-    |> Enum.reject(fn block ->
-      Map.has_key?(vehicles_by_block_id, List.first(block).block_id)
+  @spec ghosts(%{Date.t() => [Block.t()]}, %{Block.id() => [Vehicle.t()]}, Util.Time.timestamp()) ::
+          [t()]
+  def ghosts(blocks_by_date, vehicles_by_block_id, now) do
+    blocks_by_date
+    |> Helpers.map_values(fn blocks ->
+      Enum.reject(blocks, fn block ->
+        Map.has_key?(vehicles_by_block_id, List.first(block).block_id)
+      end)
     end)
-    |> Enum.map(fn block ->
-      ghost_for_block(block, now)
+    |> Enum.flat_map(fn {date, blocks} ->
+      blocks
+      |> Enum.map(fn block ->
+        ghost_for_block(block, date, now)
+      end)
+      |> Enum.filter(& &1)
     end)
-    |> Enum.filter(& &1)
   end
 
-  @spec ghost_for_block(Block.t(), Util.Time.timestamp()) :: t() | nil
-  def ghost_for_block(block, now) do
-    now_time_of_day =
-      Util.Time.next_time_of_day_for_timestamp_after(
-        now,
-        Util.Time.time_of_day_add_minutes(Block.start_time(block), -60)
-      )
+  @spec ghost_for_block(Block.t(), Date.t(), Util.Time.timestamp()) :: t() | nil
+  def ghost_for_block(block, date, now) do
+    now_time_of_day = Util.Time.time_of_day_for_timestamp(now, date)
 
     case current_trip(block, now_time_of_day) do
       nil ->
@@ -92,9 +94,9 @@ defmodule Realtime.Ghost do
                 trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id),
               layover_departure_time:
                 if route_status == :laying_over || route_status == :pulling_out do
-                  Util.Time.next_timestamp_for_time_of_day_after(
+                  Util.Time.timestamp_for_time_of_day(
                     Trip.start_time(trip),
-                    now
+                    date
                   )
                 else
                   nil

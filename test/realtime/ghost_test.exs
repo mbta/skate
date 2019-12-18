@@ -37,7 +37,7 @@ defmodule Realtime.GhostTest do
       time0 = 1_546_318_800
 
       assert Ghost.ghosts(
-               [block],
+               %{~D[2019-01-01] => [block]},
                %{},
                time0 + 2
              ) == [
@@ -92,7 +92,7 @@ defmodule Realtime.GhostTest do
       time0 = 1_546_318_800
 
       assert Ghost.ghosts(
-               [block],
+               %{~D[2019-01-01] => [block]},
                vehicles_by_block,
                time0 + 2
              ) == []
@@ -125,6 +125,7 @@ defmodule Realtime.GhostTest do
 
       assert Ghost.ghost_for_block(
                block,
+               ~D[2019-01-01],
                time0 + 1
              ) == %Ghost{
                id: "ghost-trip",
@@ -187,6 +188,7 @@ defmodule Realtime.GhostTest do
 
       assert Ghost.ghost_for_block(
                block,
+               ~D[2019-01-01],
                time0 + 15
              ) == %Ghost{
                id: "ghost-trip2",
@@ -237,6 +239,7 @@ defmodule Realtime.GhostTest do
 
       assert Ghost.ghost_for_block(
                block,
+               ~D[2019-01-01],
                time0 + 2
              ) == nil
     end

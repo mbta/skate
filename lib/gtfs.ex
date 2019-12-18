@@ -115,9 +115,9 @@ defmodule Gtfs do
   The result is grouped by route.
   If a block is scheduled to be active on two routes during that time, it wil be in both routes' lists.
   """
-  @spec active_blocks(Util.Time.timestamp(), Util.Time.timestamp()) :: [Block.t()]
+  @spec active_blocks(Util.Time.timestamp(), Util.Time.timestamp()) :: %{Date.t() => [Block.t()]}
   @spec active_blocks(Util.Time.timestamp(), Util.Time.timestamp(), GenServer.server()) ::
-          [Block.t()]
+          %{Date.t() => [Block.t()]}
   def active_blocks(start_time, end_time, server \\ __MODULE__) do
     try do
       GenServer.call(server, {:active_blocks, start_time, end_time})

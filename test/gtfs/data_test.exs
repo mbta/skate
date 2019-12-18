@@ -546,7 +546,7 @@ defmodule Gtfs.DataTest do
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
 
-      assert Data.active_blocks(data, time0 + 2, time0 + 5) == [block]
+      assert Data.active_blocks(data, time0 + 2, time0 + 5) == %{~D[2019-01-01] => [block]}
     end
 
     test "doesn't return inactive blocks" do
@@ -588,7 +588,7 @@ defmodule Gtfs.DataTest do
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
 
-      assert Data.active_blocks(data, time0 + 5, time0 + 5) == []
+      assert Data.active_blocks(data, time0 + 5, time0 + 5) == %{}
     end
 
     test "includes blocks that are between trips" do
@@ -642,7 +642,7 @@ defmodule Gtfs.DataTest do
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-      assert Data.active_blocks(data, time0 + 2, time0 + 3) == [block]
+      assert Data.active_blocks(data, time0 + 2, time0 + 3) == %{~D[2019-01-01] => [block]}
     end
 
     test "returns a block only once per route if it has multiple active trips" do
@@ -696,7 +696,70 @@ defmodule Gtfs.DataTest do
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-      assert Data.active_blocks(data, time0 + 1, time0 + 4) == [block]
+      assert Data.active_blocks(data, time0 + 1, time0 + 4) == %{~D[2019-01-01] => [block]}
+    end
+
+    test "blocks can be active on two different dates" do
+      block1 = [
+        %Trip{
+          id: "first",
+          route_id: "route",
+          service_id: "today",
+          headsign: "headsign1",
+          direction_id: 0,
+          block_id: "block",
+          shape_id: "shape1",
+          stop_times: [
+            %StopTime{
+              stop_id: "stop",
+              time: 24 * 60 * 60 - 1
+            }
+          ]
+        }
+      ]
+
+      block2 = [
+        %Trip{
+          id: "second",
+          route_id: "route",
+          service_id: "tomorrow",
+          headsign: "headsign2",
+          direction_id: 0,
+          block_id: "block",
+          shape_id: "shape1",
+          stop_times: [
+            %StopTime{
+              stop_id: "stop",
+              time: 1
+            }
+          ]
+        }
+      ]
+
+      data = %Data{
+        routes: [],
+        route_patterns: [],
+        timepoint_ids_by_route: %{},
+        shapes: %{},
+        stops: [],
+        trips: %{},
+        blocks: %{
+          "block1" => block1,
+          "block2" => block2
+        },
+        calendar: %{
+          ~D[2019-01-01] => ["today"],
+          ~D[2019-01-02] => ["tomorrow"]
+        }
+      }
+
+      # 2019-01-02 00:00:00 EST
+      time0 = 1_546_405_200
+
+      assert Data.active_blocks(data, time0 - 2, time0 + 2) == %{
+               ~D[2019-01-01] => [block1],
+               ~D[2019-01-02] => [block2]
+             }
     end
   end
 
