@@ -9,10 +9,9 @@ import {
   ladderVehiclesFromVehicles,
   VehicleDirection,
 } from "../models/ladderVehicle"
-import { isVehicle } from "../models/vehicle"
+import { isGhost } from "../models/vehicle"
 import { statusClass } from "../models/vehicleStatus"
 import {
-  Ghost,
   Vehicle,
   VehicleId,
   VehicleOrGhost,
@@ -57,10 +56,6 @@ const Ladder = ({
   ladderDirection,
   selectedVehicleId,
 }: Props) => {
-  const [vehicles, ghosts]: [Vehicle[], Ghost[]] = partition(
-    vehiclesAndGhosts,
-    isVehicle
-  )
   const elementRef = useRef(null)
   const { height } = useComponentSize(elementRef)
 
@@ -77,11 +72,10 @@ const Ladder = ({
     timepointSpacingY
   )
 
-  const vehiclesWithAnActiveBlock = vehicles.filter(withAnActiveBlock)
+  const vehiclesWithAnActiveBlock = vehiclesAndGhosts.filter(withAnActiveBlock)
 
   const { ladderVehicles, widthOfLanes } = ladderVehiclesFromVehicles(
     vehiclesWithAnActiveBlock,
-    ghosts,
     ladderDirection,
     timepointStatusY
   )
@@ -265,7 +259,8 @@ const timepointStatusYFromTimepoints = (
   return 0
 }
 
-const withAnActiveBlock = (vehicle: Vehicle): boolean => vehicle.blockIsActive
+const withAnActiveBlock = (vehicleOrGhost: VehicleOrGhost): boolean =>
+  isGhost(vehicleOrGhost) || vehicleOrGhost.blockIsActive
 
 const orientationMatchingVehicle = (
   vehicleDirection: VehicleDirection
