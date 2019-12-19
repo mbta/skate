@@ -1,7 +1,6 @@
 import React, { ReactElement, useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import vehicleLabel, { ghostLabel } from "../helpers/vehicleLabel"
-import { isVehicle } from "../models/vehicle"
+import vehicleLabel from "../helpers/vehicleLabel"
 import { drawnStatus } from "../models/vehicleStatus"
 import { VehicleOrGhost } from "../realtime"
 import { selectVehicle } from "../state"
@@ -32,27 +31,13 @@ const LayoverVehicle = ({
       onClick={() => dispatch(selectVehicle(vehicleOrGhost.id))}
       className="m-layover-box__vehicle"
     >
-      {isVehicle(vehicleOrGhost) ? (
-        <VehicleIcon
-          label={vehicleLabel(vehicleOrGhost, settings)}
-          orientation={
-            isBottomLayoverBox ? Orientation.Right : Orientation.Left
-          }
-          size={Size.Small}
-          status={drawnStatus(vehicleOrGhost)}
-          variant={vehicleOrGhost.viaVariant}
-        />
-      ) : (
-        <VehicleIcon
-          label={ghostLabel(vehicleOrGhost, settings)}
-          orientation={
-            isBottomLayoverBox ? Orientation.Right : Orientation.Left
-          }
-          size={Size.Small}
-          status={"ghost"}
-          variant={vehicleOrGhost.viaVariant}
-        />
-      )}
+      <VehicleIcon
+        label={vehicleLabel(vehicleOrGhost, settings)}
+        orientation={isBottomLayoverBox ? Orientation.Right : Orientation.Left}
+        size={Size.Small}
+        status={drawnStatus(vehicleOrGhost)}
+        variant={vehicleOrGhost.viaVariant}
+      />
     </div>
   )
 }

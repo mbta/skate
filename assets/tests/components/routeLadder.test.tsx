@@ -385,6 +385,7 @@ describe("groupByPosition", () => {
 
   test("on route", () => {
     const vehicle: Vehicle = {
+      id: "y0001",
       routeId: "1",
       directionId: 0,
       routeStatus: "on_route",
@@ -398,11 +399,13 @@ describe("groupByPosition", () => {
   test("laying over", () => {
     const ladderDirection: LadderDirection = LadderDirection.ZeroToOne
     const top: Vehicle = {
+      id: "y0001",
       routeId: "1",
       directionId: 1,
       routeStatus: "laying_over",
     } as Vehicle
     const bottom: Vehicle = {
+      id: "y0002",
       routeId: "1",
       directionId: 0,
       routeStatus: "laying_over",
@@ -416,6 +419,7 @@ describe("groupByPosition", () => {
 
   test("pulling out", () => {
     const vehicle: Vehicle = {
+      id: "y0001",
       routeId: "1",
       directionId: 0,
       routeStatus: "pulling_out",
@@ -428,6 +432,7 @@ describe("groupByPosition", () => {
 
   test("incoming from another route", () => {
     const vehicle: Vehicle = {
+      id: "y0001",
       routeId: "2",
       directionId: 0,
       routeStatus: "on_route",
@@ -440,6 +445,7 @@ describe("groupByPosition", () => {
 
   test("on route ghost", () => {
     const ghost: Ghost = {
+      id: "ghost",
       routeId: "1",
       directionId: 0,
       routeStatus: "on_route",

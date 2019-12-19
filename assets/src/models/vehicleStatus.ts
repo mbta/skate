@@ -1,6 +1,6 @@
 import featureIsEnabled from "../laboratoryFeatures"
-import { Vehicle } from "../realtime.d"
-import { isShuttle } from "./vehicle"
+import { Vehicle, VehicleOrGhost } from "../realtime.d"
+import { isGhost, isShuttle } from "./vehicle"
 
 /** Where a vehicle is relative to its schedule.
  * Swiftly assigns this to all vehicles.
@@ -33,7 +33,12 @@ export const onTimeStatus = (scheduleAdherenceSecs: number): OnTimeStatus => {
   }
 }
 
-export const drawnStatus = (vehicle: Vehicle): DrawnStatus => {
+export const drawnStatus = (vehicleOrGhost: VehicleOrGhost): DrawnStatus => {
+  if (isGhost(vehicleOrGhost)) {
+    return "ghost"
+  }
+  const vehicle = vehicleOrGhost
+
   if (isShuttle(vehicle)) {
     return "plain"
   }

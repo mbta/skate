@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
-import vehicleLabel, { ghostLabel } from "../../helpers/vehicleLabel"
+import vehicleLabel from "../../helpers/vehicleLabel"
 import {
   isShuttle,
   isVehicle,
@@ -95,23 +95,13 @@ const Header = ({ vehicle, route }: Props) => {
   return (
     <div className="m-properties-panel__header">
       <div className="m-properties-panel__label">
-        {isVehicle(vehicle) ? (
-          <VehicleIcon
-            size={Size.Large}
-            orientation={Orientation.Up}
-            label={vehicleLabel(vehicle, settings)}
-            variant={vehicle.viaVariant}
-            status={drawnStatus(vehicle)}
-          />
-        ) : (
-          <VehicleIcon
-            size={Size.Large}
-            orientation={Orientation.Up}
-            label={ghostLabel(vehicle, settings)}
-            variant={vehicle.viaVariant}
-            status={"ghost"}
-          />
-        )}
+        <VehicleIcon
+          size={Size.Large}
+          orientation={Orientation.Up}
+          label={vehicleLabel(vehicle, settings)}
+          variant={vehicle.viaVariant}
+          status={drawnStatus(vehicle)}
+        />
       </div>
       <div className="m-properties-panel__variant">
         <div className="m-properties-panel__inbound-outbound">
