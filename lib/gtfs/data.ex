@@ -135,8 +135,7 @@ defmodule Gtfs.Data do
 
       active_trips_on_date =
         Enum.filter(trips_on_date, fn trip ->
-          end_time_of_day > Trip.start_time(trip) and
-            start_time_of_day < Trip.end_time(trip)
+          Trip.is_active(trip, start_time_of_day, end_time_of_day)
         end)
 
       active_trips_on_date
@@ -166,8 +165,7 @@ defmodule Gtfs.Data do
 
       active_blocks_on_date =
         Enum.filter(blocks_on_date, fn block ->
-          end_time_of_day > Block.start_time(block) and
-            start_time_of_day < Block.end_time(block)
+          Block.is_active(block, start_time_of_day, end_time_of_day)
         end)
 
       {date, active_blocks_on_date}

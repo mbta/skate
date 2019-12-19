@@ -74,4 +74,13 @@ defmodule Gtfs.Trip do
   def end_time(trip) do
     List.last(trip.stop_times).time
   end
+
+  @doc """
+  Whether the trip is active at any time during the time_of_day range.
+  """
+  @spec is_active(t(), Util.Time.time_of_day(), Util.Time.time_of_day()) :: bool
+  def is_active(trip, start_time_of_day, end_time_of_day) do
+    end_time_of_day > start_time(trip) and
+      start_time_of_day < end_time(trip)
+  end
 end
