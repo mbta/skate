@@ -244,4 +244,86 @@ defmodule Realtime.GhostTest do
              ) == nil
     end
   end
+
+  describe "current_trip" do
+    setup do
+      trip1 = %Trip{
+        id: "1",
+        route_id: "route",
+        service_id: "service",
+        headsign: "headsign1",
+        direction_id: 0,
+        block_id: "block",
+        route_pattern_id: nil,
+        shape_id: "shape",
+        run_id: "run",
+        stop_times: [
+          %StopTime{
+            stop_id: "stop1",
+            time: 2,
+            timepoint_id: "stop1"
+          },
+          %StopTime{
+            stop_id: "stop2",
+            time: 4,
+            timepoint_id: "stop2"
+          }
+        ]
+      }
+
+      trip2 = %Trip{
+        id: "2",
+        route_id: "route",
+        service_id: "service",
+        headsign: "headsign2",
+        direction_id: 1,
+        block_id: "block",
+        route_pattern_id: nil,
+        shape_id: "shape",
+        run_id: "run",
+        stop_times: [
+          %StopTime{
+            stop_id: "stop2",
+            time: 6,
+            timepoint_id: "stop2"
+          },
+          %StopTime{
+            stop_id: "stop1",
+            time: 8,
+            timepoint_id: "stop1"
+          }
+        ]
+      }
+
+      %{
+        trip1: trip1,
+        trip2: trip2,
+        block: [trip1, trip2]
+      }
+    end
+
+    test "returns pulling out for a block that hasn't started yet", %{block: block, trip1: trip1} do
+      assert Ghost.current_trip(block, 1) == {:pulling_out, trip1}
+    end
+
+    test "returns on_route if a trip is scheduled to be in progress", %{
+      block: block,
+      trip1: trip1,
+      trip2: trip2
+    } do
+      assert Ghost.current_trip(block, 3) == {:on_route, trip1}
+      assert Ghost.current_trip(block, 7) == {:on_route, trip2}
+    end
+
+    test "returns laying_over if the block is scheduled to be between trips", %{
+      block: block,
+      trip2: trip2
+    } do
+      assert Ghost.current_trip(block, 5) == {:laying_over, trip2}
+    end
+
+    test "returns nil if the block is scheduled to have finished", %{block: block} do
+      assert Ghost.current_trip(block, 9) == nil
+    end
+  end
 end
