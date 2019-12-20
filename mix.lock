@@ -42,6 +42,6 @@
   "timex": {:hex, :timex, "3.6.1", "efdf56d0e67a6b956cc57774353b0329c8ab7726766a11547e529357ffdc1d56", [:mix], [{:combine, "~> 0.10", [hex: :combine, repo: "hexpm", optional: false]}, {:gettext, "~> 0.10", [hex: :gettext, repo: "hexpm", optional: false]}, {:tzdata, "~> 0.1.8 or ~> 0.5 or ~> 1.0.0", [hex: :tzdata, repo: "hexpm", optional: false]}], "hexpm"},
   "tzdata": {:hex, :tzdata, "1.0.2", "6c4242c93332b8590a7979eaf5e11e77d971e579805c44931207e32aa6ad3db1", [:mix], [{:hackney, "~> 1.0", [hex: :hackney, repo: "hexpm", optional: false]}], "hexpm"},
   "ueberauth": {:hex, :ueberauth, "0.6.2", "25a31111249d60bad8b65438b2306a4dc91f3208faa62f5a8c33e8713989b2e8", [:mix], [{:plug, "~> 1.5", [hex: :plug, repo: "hexpm", optional: false]}], "hexpm"},
-  "ueberauth_cognito": {:git, "https://github.com/mbta/ueberauth_cognito.git", "c97f77c5ec3e6ee3a7c7a1cf309fc3c9bc8d200e", []},
+  "ueberauth_cognito": {:hex, :ueberauth_cognito, "0.1.0", "36fac39cb3e4f31fb8c82352542b7d3ac7e349cf370591244c5f4b384a632450", [:mix], [{:hackney, "~> 1.0", [hex: :hackney, repo: "hexpm", optional: false]}, {:jason, "~> 1.0", [hex: :jason, repo: "hexpm", optional: false]}, {:jose, "~> 1.0", [hex: :jose, repo: "hexpm", optional: false]}, {:ueberauth, "~> 0.6", [hex: :ueberauth, repo: "hexpm", optional: false]}], "hexpm"},
   "unicode_util_compat": {:hex, :unicode_util_compat, "0.4.1", "d869e4c68901dd9531385bb0c8c40444ebf624e60b6962d95952775cac5e90cd", [:rebar3], [], "hexpm"},
 }
