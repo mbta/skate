@@ -78,14 +78,12 @@ describe("allVehiclesForRoute", () => {
             {
               id: "1",
               routeId: "1",
-              routeStatus: "on_route",
             } as Vehicle,
           ],
           "2": [
             {
               id: "2",
               routeId: "2",
-              routeStatus: "on_route",
             } as Vehicle,
           ],
         },
@@ -102,10 +100,9 @@ describe("allVehiclesForRoute", () => {
             {
               id: "1",
               routeId: "1",
-              routeStatus: "on_route",
             } as Vehicle,
             {
-              id: "2",
+              id: "ghost",
               routeId: "1",
             } as Ghost,
           ],
@@ -123,12 +120,10 @@ describe("allVehiclesForRoute", () => {
             {
               id: "1",
               routeId: "1",
-              routeStatus: "on_route",
             } as Vehicle,
             {
               id: "2",
               routeId: "2",
-              routeStatus: "on_route",
             } as Vehicle,
           ],
         },

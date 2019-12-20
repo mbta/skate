@@ -43,10 +43,12 @@ defmodule Realtime.VehicleOrGhostTest do
     block_id: "block",
     run_id: "ghost-run-1",
     via_variant: "X",
+    layover_departure_time: nil,
     scheduled_timepoint_status: %{
       timepoint_id: "t2",
       fraction_until_timepoint: 0.5
-    }
+    },
+    route_status: :on_route
   }
 
   @vehicles [@vehicle, @ghost]

@@ -44,10 +44,12 @@ defmodule Realtime.ServerTest do
     block_id: "block",
     run_id: "123-9049",
     via_variant: "X",
+    layover_departure_time: nil,
     scheduled_timepoint_status: %{
       timepoint_id: "t2",
       fraction_until_timepoint: 0.5
-    }
+    },
+    route_status: :on_route
   }
 
   @shuttle %{@vehicle | id: "shuttle", label: "shuttle", run_id: "9990555", route_id: nil}

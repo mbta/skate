@@ -1,8 +1,7 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { reverseIcon, reverseIconReversed } from "../helpers/icon"
-import { isVehicle } from "../models/vehicle"
-import { Ghost, Vehicle, VehicleId, VehicleOrGhost } from "../realtime.d"
+import { VehicleId, VehicleOrGhost } from "../realtime.d"
 import { DirectionId, LoadableTimepoints, Route, RouteId } from "../schedule.d"
 import { deselectRoute } from "../state"
 import CloseButton from "./closeButton"
@@ -96,22 +95,21 @@ const RouteLadder = ({
       {timepoints ? (
         <>
           <LayoverBox
-            vehicles={byPosition.layingOverTop}
+            vehiclesAndGhosts={byPosition.layingOverTop}
             position={LayoverBoxPosition.Top}
           />
           <Ladder
             timepoints={timepoints}
-            vehicles={byPosition.onRoute}
-            ghosts={byPosition.ghosts}
+            vehiclesAndGhosts={byPosition.onRoute}
             ladderDirection={ladderDirection}
             selectedVehicleId={selectedVehicleId}
           />
           <LayoverBox
-            vehicles={byPosition.layingOverBottom}
+            vehiclesAndGhosts={byPosition.layingOverBottom}
             position={LayoverBoxPosition.Bottom}
           />
           <IncomingBox
-            vehicles={byPosition.incoming}
+            vehiclesAndGhosts={byPosition.incoming}
             ladderDirection={ladderDirection}
             selectedVehicleId={selectedVehicleId}
           />
@@ -124,11 +122,10 @@ const RouteLadder = ({
 }
 
 interface ByPosition {
-  ghosts: Ghost[]
-  onRoute: Vehicle[]
-  layingOverTop: Vehicle[]
-  layingOverBottom: Vehicle[]
-  incoming: Vehicle[]
+  onRoute: VehicleOrGhost[]
+  layingOverTop: VehicleOrGhost[]
+  layingOverBottom: VehicleOrGhost[]
+  incoming: VehicleOrGhost[]
 }
 
 export const groupByPosition = (
@@ -141,38 +138,33 @@ export const groupByPosition = (
 
   return (vehiclesAndGhosts || []).reduce(
     (acc: ByPosition, current: VehicleOrGhost) => {
-      if (isVehicle(current)) {
-        if (current.routeId === routeId) {
-          switch (current.routeStatus) {
-            case "on_route":
-              return { ...acc, onRoute: [...acc.onRoute, current] }
-            case "laying_over":
-              if (current.directionId === upwardDirection) {
-                return {
-                  ...acc,
-                  layingOverBottom: [...acc.layingOverBottom, current],
-                }
-              } else {
-                return {
-                  ...acc,
-                  layingOverTop: [...acc.layingOverTop, current],
-                }
+      if (current.routeId === routeId) {
+        switch (current.routeStatus) {
+          case "on_route":
+            return { ...acc, onRoute: [...acc.onRoute, current] }
+          case "laying_over":
+            if (current.directionId === upwardDirection) {
+              return {
+                ...acc,
+                layingOverBottom: [...acc.layingOverBottom, current],
               }
-            case "pulling_out":
-              return { ...acc, incoming: [...acc.incoming, current] }
-            default:
-              return acc
-          }
-        } else {
-          // incoming from another route
-          return { ...acc, incoming: [...acc.incoming, current] }
+            } else {
+              return {
+                ...acc,
+                layingOverTop: [...acc.layingOverTop, current],
+              }
+            }
+          case "pulling_out":
+            return { ...acc, incoming: [...acc.incoming, current] }
+          default:
+            return acc
         }
       } else {
-        return { ...acc, ghosts: [...acc.ghosts, current] }
+        // incoming from another route
+        return { ...acc, incoming: [...acc.incoming, current] }
       }
     },
     {
-      ghosts: [],
       onRoute: [],
       layingOverTop: [],
       layingOverBottom: [],

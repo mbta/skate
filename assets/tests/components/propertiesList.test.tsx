@@ -77,10 +77,12 @@ describe("PropertiesList", () => {
       blockId: "block",
       runId: "123-0123",
       viaVariant: "X",
+      layoverDepartureTime: null,
       scheduledTimepointStatus: {
         timepointId: "t0",
         fractionUntilTimepoint: 0.0,
       },
+      routeStatus: "on_route",
     }
 
     const tree = renderer

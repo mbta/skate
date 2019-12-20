@@ -44,6 +44,15 @@ defmodule Gtfs.Block do
     |> Trip.end_time()
   end
 
+  @doc """
+  Whether the block is active at any time during the time_of_day range.
+  """
+  @spec is_active(t(), Util.Time.time_of_day(), Util.Time.time_of_day()) :: bool
+  def is_active(block, start_time_of_day, end_time_of_day) do
+    end_time_of_day > start_time(block) and
+      start_time_of_day < end_time(block)
+  end
+
   @spec sort_trips_by_time([Trip.t()]) :: [Trip.t()]
   defp sort_trips_by_time(trips) do
     Enum.sort_by(trips, &Trip.start_time/1)

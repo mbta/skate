@@ -1,7 +1,18 @@
-export function partition<T>(items: T[], testFn: (value: T) => boolean): T[][] {
+export function partition<T, U extends T>(
+  items: T[],
+  predicate: (value: T) => value is U
+): [U[], Array<Exclude<T, U>>]
+export function partition<T>(
+  items: T[],
+  predicate: (value: T) => boolean
+): [T[], T[]]
+export function partition<T>(
+  items: T[],
+  predicate: (value: T) => boolean
+): [T[], T[]] {
   return items.reduce(
     ([pass, fail], item) => {
-      return testFn(item) ? [[...pass, item], fail] : [pass, [...fail, item]]
+      return predicate(item) ? [[...pass, item], fail] : [pass, [...fail, item]]
     },
     [[] as T[], [] as T[]]
   )

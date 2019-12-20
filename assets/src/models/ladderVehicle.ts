@@ -1,7 +1,9 @@
 import { LadderDirection, TimepointStatusYFunc } from "../components/ladder"
+import { partition } from "../helpers/array"
 import featureIsEnabled from "../laboratoryFeatures"
-import { Ghost, Vehicle, VehicleId } from "../realtime"
+import { Ghost, Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
 import { DirectionId, ViaVariant } from "../schedule"
+import { isVehicle } from "./vehicle"
 import { DrawnStatus, drawnStatus, HeadwaySpacing } from "./vehicleStatus"
 
 export interface LadderVehicle {
@@ -61,14 +63,18 @@ const heightOfVehicleGroup = 34
  *  3) Calculate the x property
  */
 export const ladderVehiclesFromVehicles = (
-  vehicles: Vehicle[],
-  ghosts: Ghost[],
+  vehiclesAndGhosts: VehicleOrGhost[],
   ladderDirection: LadderDirection,
   timepointStatusYFunc: TimepointStatusYFunc
 ): {
   ladderVehicles: LadderVehicle[]
   widthOfLanes: number
 } => {
+  const [vehicles, ghosts]: [Vehicle[], Ghost[]] = partition(
+    vehiclesAndGhosts,
+    isVehicle
+  )
+
   const vehiclesOnLadder: VehicleOnLadder[] = vehicles.map(vehicle =>
     vehicleOnLadder(vehicle, ladderDirection, timepointStatusYFunc)
   )

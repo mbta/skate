@@ -135,8 +135,7 @@ describe("ladder", () => {
       .create(
         <Ladder
           timepoints={timepoints}
-          vehicles={vehicles}
-          ghosts={[]}
+          vehiclesAndGhosts={vehicles}
           ladderDirection={ladderDirection}
           selectedVehicleId={undefined}
         />
@@ -158,10 +157,12 @@ describe("ladder", () => {
       blockId: "block",
       runId: "123-0123",
       viaVariant: "X",
+      layoverDepartureTime: null,
       scheduledTimepointStatus: {
         timepointId: "t0",
         fractionUntilTimepoint: 0.0,
       },
+      routeStatus: "on_route",
     }
 
     const ladderDirection = LadderDirection.ZeroToOne
@@ -170,8 +171,7 @@ describe("ladder", () => {
       .create(
         <Ladder
           timepoints={timepoints}
-          vehicles={[]}
-          ghosts={[ghost]}
+          vehiclesAndGhosts={[ghost]}
           ladderDirection={ladderDirection}
           selectedVehicleId={undefined}
         />
@@ -269,8 +269,7 @@ describe("ladder", () => {
       .create(
         <Ladder
           timepoints={timepoints}
-          vehicles={vehicles}
-          ghosts={[]}
+          vehiclesAndGhosts={vehicles}
           ladderDirection={ladderDirection}
           selectedVehicleId={undefined}
         />
@@ -331,8 +330,7 @@ describe("ladder", () => {
       .create(
         <Ladder
           timepoints={timepoints}
-          vehicles={vehicles}
-          ghosts={[]}
+          vehiclesAndGhosts={vehicles}
           ladderDirection={ladderDirection}
           selectedVehicleId={undefined}
         />
@@ -430,8 +428,7 @@ describe("ladder", () => {
       .create(
         <Ladder
           timepoints={timepoints}
-          vehicles={vehicles}
-          ghosts={[]}
+          vehiclesAndGhosts={vehicles}
           ladderDirection={ladderDirection}
           selectedVehicleId={"upward"}
         />
@@ -488,8 +485,7 @@ describe("ladder", () => {
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <Ladder
           timepoints={timepoints}
-          vehicles={[vehicle]}
-          ghosts={[]}
+          vehiclesAndGhosts={[vehicle]}
           ladderDirection={ladderDirection}
           selectedVehicleId={undefined}
         />
@@ -546,8 +542,7 @@ describe("ladder", () => {
       .create(
         <Ladder
           timepoints={timepoints}
-          vehicles={vehicles}
-          ghosts={[]}
+          vehiclesAndGhosts={vehicles}
           ladderDirection={ladderDirection}
           selectedVehicleId={undefined}
         />
@@ -609,8 +604,7 @@ describe("ladder", () => {
       .create(
         <Ladder
           timepoints={timepoints}
-          vehicles={vehicles}
-          ghosts={[]}
+          vehiclesAndGhosts={vehicles}
           ladderDirection={ladderDirection}
           selectedVehicleId={undefined}
         />
@@ -682,8 +676,7 @@ describe("ladder", () => {
       .create(
         <Ladder
           timepoints={timepoints}
-          vehicles={[vehicle]}
-          ghosts={[]}
+          vehiclesAndGhosts={[vehicle]}
           ladderDirection={ladderDirection}
           selectedVehicleId={undefined}
         />

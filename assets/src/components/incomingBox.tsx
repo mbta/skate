@@ -3,24 +3,25 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import vehicleLabel from "../helpers/vehicleLabel"
 import { directionOnLadder, VehicleDirection } from "../models/ladderVehicle"
 import { drawnStatus } from "../models/vehicleStatus"
-import { Vehicle, VehicleId } from "../realtime.d"
+import { VehicleId, VehicleOrGhost } from "../realtime.d"
 import { selectVehicle } from "../state"
 import { LadderDirection } from "./ladder"
 import VehicleIcon, { Orientation, Size } from "./vehicleIcon"
 
 const IncomingBoxVehicle = ({
-  vehicle,
+  vehicleOrGhost,
   ladderDirection,
   selectedVehicleId,
 }: {
-  vehicle: Vehicle
+  vehicleOrGhost: VehicleOrGhost
   ladderDirection: LadderDirection
   selectedVehicleId: VehicleId | undefined
 }) => {
   const [{ settings }, dispatch] = useContext(StateDispatchContext)
-  const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
+  const selectedClass =
+    vehicleOrGhost.id === selectedVehicleId ? "selected" : ""
   const orientation =
-    directionOnLadder(vehicle.directionId, ladderDirection) ===
+    directionOnLadder(vehicleOrGhost.directionId, ladderDirection) ===
     VehicleDirection.Down
       ? Orientation.Down
       : Orientation.Up
@@ -28,37 +29,37 @@ const IncomingBoxVehicle = ({
   return (
     <button
       className={`m-incoming-box__vehicle ${selectedClass}`}
-      onClick={() => dispatch(selectVehicle(vehicle.id))}
+      onClick={() => dispatch(selectVehicle(vehicleOrGhost.id))}
     >
       <VehicleIcon
         size={Size.Small}
         orientation={orientation}
-        variant={vehicle.viaVariant}
-        status={drawnStatus(vehicle)}
+        variant={vehicleOrGhost.viaVariant}
+        status={drawnStatus(vehicleOrGhost)}
       />
       <div className="m-incoming-box__vehicle-label">
-        {vehicleLabel(vehicle, settings)}
+        {vehicleLabel(vehicleOrGhost, settings)}
       </div>
     </button>
   )
 }
 
 const IncomingBox = ({
-  vehicles,
+  vehiclesAndGhosts,
   ladderDirection,
   selectedVehicleId,
 }: {
-  vehicles: Vehicle[]
+  vehiclesAndGhosts: VehicleOrGhost[]
   ladderDirection: LadderDirection
   selectedVehicleId: VehicleId | undefined
 }) => (
   <div className="m-incoming-box">
-    {vehicles.map(vehicle => (
+    {vehiclesAndGhosts.map(vehicleOrGhost => (
       <IncomingBoxVehicle
-        vehicle={vehicle}
+        vehicleOrGhost={vehicleOrGhost}
         ladderDirection={ladderDirection}
         selectedVehicleId={selectedVehicleId}
-        key={vehicle.id}
+        key={vehicleOrGhost.id}
       />
     ))}
   </div>

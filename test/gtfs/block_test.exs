@@ -72,4 +72,67 @@ defmodule Gtfs.BlockTest do
       assert Block.end_time([@trip]) == 2
     end
   end
+
+  @block [
+    %Trip{
+      id: "trip1",
+      route_id: "route",
+      service_id: "today",
+      headsign: "headsign1",
+      direction_id: 0,
+      block_id: "block",
+      shape_id: "shape1",
+      stop_times: [
+        %StopTime{
+          stop_id: "stop",
+          time: 3
+        }
+      ]
+    },
+    %Trip{
+      id: "trip2",
+      route_id: "route",
+      service_id: "today",
+      headsign: "headsign2",
+      direction_id: 1,
+      block_id: "block",
+      shape_id: "shape2",
+      stop_times: [
+        %StopTime{
+          stop_id: "stop",
+          time: 6
+        }
+      ]
+    }
+  ]
+
+  describe "is_active" do
+    test "a block that starts before the range and ends after is active" do
+      assert Block.is_active(@block, 4, 5)
+    end
+
+    test "a block that starts before the range and ends during is active" do
+      assert Block.is_active(@block, 5, 7)
+    end
+
+    test "a block that starts during the range and ends after is active" do
+      assert Block.is_active(@block, 2, 4)
+    end
+
+    test "a block that's laying over is active" do
+      assert Block.is_active(@block, 2, 7)
+    end
+
+    test "a block is active if the start and end times are the same" do
+      assert Block.is_active(@block, 4, 4)
+    end
+
+    test "a block totally before the range is inactive" do
+      refute Block.is_active(@block, 7, 8)
+    end
+
+    test "a block totally after the range is inactive" do
+      refute Block.is_active(@block, 1, 2)
+    end
+  end
 end

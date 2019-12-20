@@ -43,6 +43,7 @@ describe("drawnStatus", () => {
   test("returns 'off-course' if isOffCourse", () => {
     mockHeadwaysOff()
     const vehicle: Vehicle = {
+      id: "y0001",
       headwaySpacing: null,
       scheduleAdherenceSecs: 0,
       isOffCourse: true,
@@ -53,6 +54,7 @@ describe("drawnStatus", () => {
   test("returns 'off-course' in headways mode", () => {
     mockHeadwaysOn()
     const vehicle: Vehicle = {
+      id: "y0001",
       headwaySpacing: HeadwaySpacing.Bunched,
       scheduleAdherenceSecs: 0,
       isOffCourse: true,
@@ -63,6 +65,7 @@ describe("drawnStatus", () => {
   test("returns 'plain' for a shuttle, even if off-course", () => {
     mockHeadwaysOff()
     const shuttle: Vehicle = {
+      id: "y0001",
       runId: "999-0555",
       headwaySpacing: null,
       scheduleAdherenceSecs: 0,
@@ -74,6 +77,7 @@ describe("drawnStatus", () => {
   test("return scheduled status", () => {
     mockHeadwaysOff()
     const vehicle: Vehicle = {
+      id: "y0001",
       headwaySpacing: null,
       scheduleAdherenceSecs: 500,
       isOffCourse: false,
@@ -84,6 +88,7 @@ describe("drawnStatus", () => {
   test("prefers scheduled status to headway status if headway mode is off", () => {
     mockHeadwaysOff()
     const vehicle: Vehicle = {
+      id: "y0001",
       headwaySpacing: HeadwaySpacing.Bunched,
       scheduleAdherenceSecs: 500,
       isOffCourse: false,
@@ -94,6 +99,7 @@ describe("drawnStatus", () => {
   test("in headway mode, returns plain", () => {
     mockHeadwaysOn()
     const vehicle: Vehicle = {
+      id: "y0001",
       headwaySpacing: HeadwaySpacing.Bunched,
       scheduleAdherenceSecs: 500,
       isOffCourse: false,
@@ -104,6 +110,7 @@ describe("drawnStatus", () => {
   test("in headway mode, returns schedule time if there is no headway", () => {
     mockHeadwaysOn()
     const vehicle: Vehicle = {
+      id: "y0001",
       headwaySpacing: null,
       scheduleAdherenceSecs: 500,
       isOffCourse: false,

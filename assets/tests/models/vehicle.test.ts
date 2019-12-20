@@ -90,10 +90,12 @@ const ghost: Ghost = {
   blockId: "block",
   runId: null,
   viaVariant: null,
+  layoverDepartureTime: null,
   scheduledTimepointStatus: {
     timepointId: "t0",
     fractionUntilTimepoint: 0.0,
   },
+  routeStatus: "on_route",
 }
 
 describe("isVehicle", () => {

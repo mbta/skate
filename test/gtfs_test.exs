@@ -391,7 +391,7 @@ defmodule GtfsTest do
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
 
-      assert [%Trip{id: "now"}] = Gtfs.active_trips(time0 + 2, pid)
+      assert [%Trip{id: "now"}] = Gtfs.active_trips(time0 + 2, time0 + 2, pid)
     end
   end
 
@@ -426,7 +426,9 @@ defmodule GtfsTest do
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-      assert Gtfs.active_blocks(time0 + 1, time0 + 3, pid) == %{"route" => ["now"]}
+
+      assert %{~D[2019-01-01] => [[%Trip{id: "now", block_id: "now"}]]} =
+               Gtfs.active_blocks(time0 + 1, time0 + 3, pid)
     end
   end
 

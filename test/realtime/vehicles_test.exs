@@ -175,11 +175,16 @@ defmodule Realtime.VehiclesTest do
         ]
       }
 
+      block = [trip]
+
+      # 2019-12-20 00:00:00
+      time0 = 1_576_818_000
+
       assert Vehicles.group_by_route_with_blocks(
                [],
                %{},
-               [trip],
-               0
+               %{~D[2019-12-20] => [block]},
+               time0
              ) == %{
                "route" => [
                  %Ghost{
@@ -189,16 +194,18 @@ defmodule Realtime.VehiclesTest do
                    trip_id: "trip",
                    headsign: "headsign",
                    block_id: "block",
+                   layover_departure_time: nil,
                    scheduled_timepoint_status: %{
                      timepoint_id: "timepoint",
                      fraction_until_timepoint: 0.0
-                   }
+                   },
+                   route_status: :on_route
                  }
                ]
              }
     end
 
-    test "doesn't include trip as ghost if it has a vehicle on that block" do
+    test "doesn't include block as ghost if it has a vehicle on that block" do
       vehicle = %Vehicle{
         id: "on_route",
         label: "on_route",
@@ -239,14 +246,98 @@ defmodule Realtime.VehiclesTest do
         ]
       }
 
+      block = [trip]
+
+      # 2019-12-20 00:00:00
+      time0 = 1_576_818_000
+
       assert Vehicles.group_by_route_with_blocks(
                [vehicle],
                %{},
-               [trip],
-               0
+               %{~D[2019-12-20] => [block]},
+               time0
              ) == %{
                "route" => [vehicle]
              }
+    end
+  end
+
+  describe "incoming_blocks_by_route" do
+    test "returns a block in multiple routes if it's active in both" do
+      incoming_trips = [
+        %Trip{
+          id: "first",
+          route_id: "first",
+          service_id: "today",
+          headsign: "headsign",
+          direction_id: 0,
+          block_id: "block",
+          shape_id: "shape1",
+          stop_times: [
+            %StopTime{
+              stop_id: "stop",
+              time: 2
+            }
+          ]
+        },
+        %Trip{
+          id: "second",
+          route_id: "second",
+          service_id: "today",
+          headsign: "headsign",
+          direction_id: 0,
+          block_id: "block",
+          shape_id: "shape1",
+          stop_times: [
+            %StopTime{
+              stop_id: "stop",
+              time: 3
+            }
+          ]
+        }
+      ]
+
+      assert Vehicles.incoming_blocks_by_route(incoming_trips) == %{
+               "first" => ["block"],
+               "second" => ["block"]
+             }
+    end
+
+    test "returns a block only once per route if it has multiple active trips" do
+      incoming_trips = [
+        %Trip{
+          id: "first",
+          route_id: "route",
+          service_id: "today",
+          headsign: "headsign",
+          direction_id: 0,
+          block_id: "block",
+          shape_id: "shape1",
+          stop_times: [
+            %StopTime{
+              stop_id: "stop",
+              time: 2
+            }
+          ]
+        },
+        %Trip{
+          id: "second",
+          route_id: "route",
+          service_id: "today",
+          headsign: "headsign",
+          direction_id: 0,
+          block_id: "block",
+          shape_id: "shape1",
+          stop_times: [
+            %StopTime{
+              stop_id: "stop",
+              time: 3
+            }
+          ]
+        }
+      ]
+
+      assert Vehicles.incoming_blocks_by_route(incoming_trips) == %{"route" => ["block"]}
     end
   end
 end

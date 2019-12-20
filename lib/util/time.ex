@@ -117,6 +117,26 @@ defmodule Util.Time do
   end
 
   @doc """
+    iex> Util.Time.timestamp_for_time_of_day(
+    ...>   3600, # 01:00:00
+    ...>   ~D[2019-01-02]
+    ...> )
+    1546408800 # 2019-01-02 01:00:00 EST
+
+    iex> Util.Time.timestamp_for_time_of_day(
+    ...>   90000, # 25:00:00
+    ...>   ~D[2019-01-01]
+    ...> )
+    1546408800 # 2019-01-02 01:00:00 EST
+  """
+  @spec timestamp_for_time_of_day(time_of_day(), Date.t()) :: timestamp()
+  def timestamp_for_time_of_day(time_of_day, date) do
+    noon = noon_on_date(date)
+    twelve_hours_before_noon = noon - 12 * 60 * 60
+    twelve_hours_before_noon + time_of_day
+  end
+
+  @doc """
     iex> Util.Time.time_of_day_add_minutes(
     ...>   36000, # 10:00:00
     ...>   30

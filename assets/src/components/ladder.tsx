@@ -9,11 +9,12 @@ import {
   ladderVehiclesFromVehicles,
   VehicleDirection,
 } from "../models/ladderVehicle"
+import { isGhost } from "../models/vehicle"
 import { statusClass } from "../models/vehicleStatus"
 import {
-  Ghost,
   Vehicle,
   VehicleId,
+  VehicleOrGhost,
   VehicleTimepointStatus,
 } from "../realtime.d"
 import { TimepointId } from "../schedule.d"
@@ -23,8 +24,7 @@ import { Orientation, Size, VehicleIconSvgNode } from "./vehicleIcon"
 
 export interface Props {
   timepoints: TimepointId[]
-  vehicles: Vehicle[]
-  ghosts: Ghost[]
+  vehiclesAndGhosts: VehicleOrGhost[]
   ladderDirection: LadderDirection
   selectedVehicleId?: VehicleId
 }
@@ -52,8 +52,7 @@ const MARGIN_TOP_BOTTOM = 20 // space between the top of the route and the top o
 
 const Ladder = ({
   timepoints,
-  vehicles,
-  ghosts,
+  vehiclesAndGhosts,
   ladderDirection,
   selectedVehicleId,
 }: Props) => {
@@ -73,11 +72,10 @@ const Ladder = ({
     timepointSpacingY
   )
 
-  const vehiclesWithAnActiveBlock = vehicles.filter(withAnActiveBlock)
+  const vehiclesWithAnActiveBlock = vehiclesAndGhosts.filter(withAnActiveBlock)
 
   const { ladderVehicles, widthOfLanes } = ladderVehiclesFromVehicles(
     vehiclesWithAnActiveBlock,
-    ghosts,
     ladderDirection,
     timepointStatusY
   )
@@ -169,7 +167,14 @@ const VehicleSvg = ({
         <VehicleIconSvgNode
           size={Size.Medium}
           orientation={orientationMatchingVehicle(vehicleDirection)}
-          label={vehicleLabel((ladderVehicle as unknown) as Vehicle, settings)}
+          label={vehicleLabel(
+            {
+              id: ladderVehicle.vehicleId,
+              label: ladderVehicle.label,
+              runId: ladderVehicle.runId,
+            } as Vehicle,
+            settings
+          )}
           variant={viaVariant}
           status={status}
         />
@@ -254,7 +259,8 @@ const timepointStatusYFromTimepoints = (
   return 0
 }
 
-const withAnActiveBlock = (vehicle: Vehicle): boolean => vehicle.blockIsActive
+const withAnActiveBlock = (vehicleOrGhost: VehicleOrGhost): boolean =>
+  isGhost(vehicleOrGhost) || vehicleOrGhost.blockIsActive
 
 const orientationMatchingVehicle = (
   vehicleDirection: VehicleDirection

@@ -253,10 +253,12 @@ describe("useVehicles", () => {
       blockId: "block",
       runId: null,
       viaVariant: null,
+      layoverDepartureTime: null,
       scheduledTimepointStatus: {
         timepointId: "t0",
         fractionUntilTimepoint: 0.0,
       },
+      routeStatus: "on_route",
     }
 
     const ghostData = {
@@ -268,10 +270,12 @@ describe("useVehicles", () => {
       block_id: "block",
       run_id: null,
       via_variant: null,
+      layover_departure_time: null,
       scheduled_timepoint_status: {
         timepoint_id: "t0",
         fraction_until_timepoint: 0.0,
       },
+      route_status: "on_route",
     }
 
     const mockSocket = makeMockSocket()
