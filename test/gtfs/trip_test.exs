@@ -1,6 +1,7 @@
 defmodule Gtfs.TripTest do
   use ExUnit.Case, async: true
 
+  alias Gtfs.StopTime
   alias Gtfs.Trip
 
   describe "from_csv_row" do
@@ -49,6 +50,56 @@ defmodule Gtfs.TripTest do
       }
 
       assert %Trip{route_pattern_id: nil} = Trip.from_csv_row(csv_row)
+    end
+  end
+
+  @trip %Trip{
+    id: "trip",
+    route_id: "route",
+    service_id: "service",
+    headsign: "headsign",
+    direction_id: 0,
+    block_id: "block",
+    shape_id: "shape",
+    stop_times: [
+      %StopTime{
+        stop_id: "stop",
+        time: 3
+      },
+      %StopTime{
+        stop_id: "stop",
+        time: 6
+      }
+    ]
+  }
+
+  describe "is_active" do
+    test "a trip that starts before the range and ends after is active" do
+      assert Trip.is_active(@trip, 4, 5)
+    end
+
+    test "a trip that starts before the range and ends during is active" do
+      assert Trip.is_active(@trip, 5, 7)
+    end
+
+    test "a trip that starts during the range and ends after is active" do
+      assert Trip.is_active(@trip, 2, 4)
+    end
+
+    test "a trip that's totally inside the time range is active" do
+      assert Trip.is_active(@trip, 2, 7)
+    end
+
+    test "a trip is active if the start and end times are the same" do
+      assert Trip.is_active(@trip, 4, 4)
+    end
+
+    test "a trip totally before the range is inactive" do
+      refute Trip.is_active(@trip, 7, 8)
+    end
+
+    test "a trip totally after the range is inactive" do
+      refute Trip.is_active(@trip, 1, 2)
     end
   end
 end
