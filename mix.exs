@@ -59,7 +59,7 @@ defmodule Skate.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:gen_stage, "~> 0.14.1"},
       {:ueberauth, "~> 0.6.1"},
-      {:ueberauth_cognito, git: "https://github.com/mbta/ueberauth_cognito.git"},
+      {:ueberauth_cognito, "~> 0.1.0"},
       {:guardian, "~> 2.0"},
       {:guardian_phoenix, "~> 2.0"},
       {:excoveralls, "~> 0.10", only: :test},
