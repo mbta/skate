@@ -8,7 +8,7 @@ import {
   VehicleDirection,
 } from "../models/ladderDirection"
 import { isVehicle } from "../models/vehicle"
-import { drawnStatus } from "../models/vehicleStatus"
+import { onTimeStatus } from "../models/vehicleStatus"
 import { Ghost, Vehicle, VehicleId, VehicleOrGhost } from "../realtime.d"
 import { LoadableTimepoints, Route, RouteId } from "../schedule.d"
 import { deselectRoute, flipLadder } from "../state"
@@ -186,7 +186,7 @@ const hasAScheduleLocation = (vehicle: Vehicle): boolean =>
   vehicle.scheduledLocation != null
 
 const isLateForScheduledTrip = (vehicle: Vehicle): boolean =>
-  drawnStatus(scheduledVehicle(vehicle)) === "late"
+  onTimeStatus(scheduledVehicle(vehicle).scheduleAdherenceSecs) === "late"
 
 const scheduledVehicle = (vehicle: Vehicle): Vehicle => ({
   ...vehicle,
