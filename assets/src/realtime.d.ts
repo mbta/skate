@@ -71,7 +71,7 @@ export interface Vehicle {
   timepointStatus: VehicleTimepointStatus | null
   scheduledLocation: VehicleScheduledLocation | null
   routeStatus: RouteStatus
-  endOfTripType?: EndOfTripType
+  endOfTripType: EndOfTripType
 }
 
 export type VehicleOrGhost = Vehicle | Ghost

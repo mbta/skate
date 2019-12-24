@@ -50,7 +50,7 @@ export interface VehicleData {
   timepoint_status: VehicleTimepointStatusData | null
   scheduled_location: VehicleScheduledLocationData | null
   route_status: RouteStatus
-  end_of_trip_type?: EndOfTripType
+  end_of_trip_type: EndOfTripType
 }
 
 export interface GhostData {
