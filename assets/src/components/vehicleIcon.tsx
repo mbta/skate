@@ -232,6 +232,12 @@ const Label = ({
   }
   const labelY = labelBgTop + labelBgHeight / 2
 
+  const labelClassWithModifier =
+    label === "SW-OFF" || label === "PULL-B"
+      ? "m-vehicle-icon__label--extended"
+      : "m-vehicle-icon__label--normal"
+  const labelClass = `m-vehicle-icon__label ${labelClassWithModifier}`
+
   return (
     <>
       <rect
@@ -244,7 +250,7 @@ const Label = ({
         ry={labelBgHeight / 2}
       />
       <text
-        className="m-vehicle-icon__label"
+        className={labelClass}
         x="0"
         y={labelY}
         textAnchor="middle"
@@ -365,9 +371,9 @@ const labelBackgroundWidth = (size: Size): number => {
   switch (size) {
     case Size.Small:
     case Size.Medium:
-      return 26
+      return 40
     case Size.Large:
-      return 64
+      return 72
   }
 }
 

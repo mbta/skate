@@ -44,9 +44,46 @@ const vehicle: Vehicle = {
     },
   },
   routeStatus: "on_route",
+  endOfTripType: "another_trip",
 }
 
 describe("vehicleLabel", () => {
+  test("displays 'SW-OFF' for a swinging off vehicle, regardless of settings", () => {
+    const swingingOffVehicle: Vehicle = {
+      ...vehicle,
+      endOfTripType: "swing_off",
+    }
+
+    expect(
+      vehicleLabel(swingingOffVehicle, {
+        ladderVehicleLabel: VehicleLabelSetting.RunNumber,
+      } as Settings)
+    ).toEqual("SW-OFF")
+    expect(
+      vehicleLabel(swingingOffVehicle, {
+        ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
+      } as Settings)
+    ).toEqual("SW-OFF")
+  })
+
+  test("displays 'PULL-B' for a pulling back vehicle, regardless of settings", () => {
+    const pullingBackVehicle: Vehicle = {
+      ...vehicle,
+      endOfTripType: "pull_back",
+    }
+
+    expect(
+      vehicleLabel(pullingBackVehicle, {
+        ladderVehicleLabel: VehicleLabelSetting.RunNumber,
+      } as Settings)
+    ).toEqual("PULL-B")
+    expect(
+      vehicleLabel(pullingBackVehicle, {
+        ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
+      } as Settings)
+    ).toEqual("PULL-B")
+  })
+
   test("uses the vehicle run ID for the label given the run number setting", () => {
     expect(
       vehicleLabel(vehicle, {

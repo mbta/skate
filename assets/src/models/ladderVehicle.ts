@@ -1,7 +1,13 @@
 import { LadderDirection, TimepointStatusYFunc } from "../components/ladder"
 import { partition } from "../helpers/array"
 import featureIsEnabled from "../laboratoryFeatures"
-import { Ghost, Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
+import {
+  EndOfTripType,
+  Ghost,
+  Vehicle,
+  VehicleId,
+  VehicleOrGhost,
+} from "../realtime"
 import { DirectionId, ViaVariant } from "../schedule"
 import { isVehicle } from "./vehicle"
 import { DrawnStatus, drawnStatus, HeadwaySpacing } from "./vehicleStatus"
@@ -19,6 +25,7 @@ export interface LadderVehicle {
   scheduledY?: number
   scheduledVehicleDirection?: VehicleDirection
   lane: number
+  endOfTripType?: EndOfTripType
 }
 
 export enum VehicleDirection {
@@ -33,6 +40,7 @@ interface WithVehicle {
   runId: string | null
   viaVariant: ViaVariant | null
   status: DrawnStatus
+  endOfTripType?: EndOfTripType
 }
 
 interface OnLadder {
@@ -157,6 +165,7 @@ const vehicleOnLadder = (
     runId,
     isOffCourse,
     viaVariant,
+    endOfTripType,
   } = vehicle
 
   const { scheduledY, scheduledVehicleDirection } = scheduledToBe(
@@ -190,6 +199,7 @@ const vehicleOnLadder = (
     y,
     scheduledY,
     scheduledVehicleDirection,
+    endOfTripType,
   }
 }
 

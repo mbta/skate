@@ -36,7 +36,8 @@ defmodule SkateWeb.VehiclesChannelTest do
       timepoint_id: "tp2",
       fraction_until_timepoint: 0.4
     },
-    route_status: :on_route
+    route_status: :on_route,
+    end_of_trip_type: :another_trip
   }
 
   setup do

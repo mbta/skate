@@ -112,6 +112,27 @@ test("renders with variants and labels", () => {
   expect(tree).toMatchSnapshot()
 })
 
+test("renders extended labels", () => {
+  const tree = renderer
+    .create(
+      <>
+        <VehicleIcon
+          size={Size.Large}
+          orientation={Orientation.Up}
+          label="SW-OFF"
+        />
+        <VehicleIcon
+          size={Size.Large}
+          orientation={Orientation.Up}
+          label="PULL-B"
+        />
+      </>
+    )
+    .toJSON()
+
+  expect(tree).toMatchSnapshot()
+})
+
 test("renders with all statuses", () => {
   const tree = renderer
     .create(

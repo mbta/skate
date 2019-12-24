@@ -6,6 +6,19 @@ const vehicleLabel = (
   vehicleOrGhost: VehicleOrGhost,
   settings: Settings
 ): string => {
+  if (
+    isVehicle(vehicleOrGhost) &&
+    vehicleOrGhost.endOfTripType === "swing_off"
+  ) {
+    return "SW-OFF"
+  }
+  if (
+    isVehicle(vehicleOrGhost) &&
+    vehicleOrGhost.endOfTripType === "pull_back"
+  ) {
+    return "PULL-B"
+  }
+
   switch (vehicleLabelSetting(settings, vehicleOrGhost)) {
     case VehicleLabelSetting.RunNumber:
       return runIdToLabel(vehicleOrGhost.runId)

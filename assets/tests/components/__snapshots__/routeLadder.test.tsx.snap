@@ -249,10 +249,10 @@ Array [
         style={
           Object {
             "height": 27.72,
-            "width": 26,
+            "width": 40,
           }
         }
-        viewBox="-13 -8.36 26 27.72"
+        viewBox="-20 -8.36 40 27.72"
       >
         <g
           className="m-vehicle-icon m-vehicle-icon--small "
@@ -262,12 +262,12 @@ Array [
             height={11}
             rx={5.5}
             ry={5.5}
-            width={26}
-            x={-13}
+            width={40}
+            x={-20}
             y={7.359999999999999}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
@@ -391,10 +391,10 @@ Array [
         style={
           Object {
             "height": 27.72,
-            "width": 26,
+            "width": 40,
           }
         }
-        viewBox="-13 -8.36 26 27.72"
+        viewBox="-20 -8.36 40 27.72"
       >
         <g
           className="m-vehicle-icon m-vehicle-icon--small "
@@ -404,12 +404,12 @@ Array [
             height={11}
             rx={5.5}
             ry={5.5}
-            width={26}
-            x={-13}
+            width={40}
+            x={-20}
             y={7.359999999999999}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
@@ -521,12 +521,12 @@ Array [
               height={11}
               rx={5.5}
               ry={5.5}
-              width={26}
-              x={-13}
+              width={40}
+              x={-20}
               y={11.5}
             />
             <text
-              className="m-vehicle-icon__label"
+              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -565,12 +565,12 @@ Array [
               height={11}
               rx={5.5}
               ry={5.5}
-              width={26}
-              x={-13}
+              width={40}
+              x={-20}
               y={11.5}
             />
             <text
-              className="m-vehicle-icon__label"
+              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -623,12 +623,12 @@ Array [
               height={11}
               rx={5.5}
               ry={5.5}
-              width={26}
-              x={-13}
+              width={40}
+              x={-20}
               y={-22.5}
             />
             <text
-              className="m-vehicle-icon__label"
+              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"

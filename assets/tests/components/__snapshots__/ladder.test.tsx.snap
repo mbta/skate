@@ -36,12 +36,12 @@ exports[`ladder filters out vehicles whose block is not active 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={26}
-            x={-13}
+            width={40}
+            x={-20}
             y={-22.5}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
@@ -188,12 +188,12 @@ exports[`ladder highlights a selected vehicle 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={26}
-            x={-13}
+            width={40}
+            x={-20}
             y={-22.5}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
@@ -223,12 +223,12 @@ exports[`ladder highlights a selected vehicle 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={26}
-            x={-13}
+            width={40}
+            x={-20}
             y={11.5}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
@@ -378,12 +378,12 @@ exports[`ladder renders a ghost bus 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={26}
-            x={-13}
+            width={40}
+            x={-20}
             y={11.5}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
@@ -537,12 +537,12 @@ exports[`ladder renders a ladder 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={26}
-            x={-13}
+            width={40}
+            x={-20}
             y={11.5}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
@@ -572,12 +572,12 @@ exports[`ladder renders a ladder 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={26}
-            x={-13}
+            width={40}
+            x={-20}
             y={-22.5}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
@@ -607,12 +607,12 @@ exports[`ladder renders a ladder 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={26}
-            x={-13}
+            width={40}
+            x={-20}
             y={-22.5}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
@@ -772,12 +772,12 @@ exports[`ladder renders a ladder with no timepoints 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={26}
-            x={-13}
+            width={40}
+            x={-20}
             y={11.5}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
@@ -861,12 +861,12 @@ exports[`ladder renders a reversed ladder 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={26}
-            x={-13}
+            width={40}
+            x={-20}
             y={11.5}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
@@ -1006,12 +1006,12 @@ exports[`ladder renders an off-course vehicle 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={26}
-            x={-13}
+            width={40}
+            x={-20}
             y={11.5}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
@@ -1156,12 +1156,12 @@ exports[`ladder shows schedule line in the other direction 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={26}
-            x={-13}
+            width={40}
+            x={-20}
             y={-22.5}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"

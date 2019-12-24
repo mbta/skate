@@ -1,6 +1,7 @@
 import { HeadwaySpacing } from "../models/vehicleStatus"
 import {
   DataDiscrepancy,
+  EndOfTripType,
   Ghost,
   RouteStatus,
   Vehicle,
@@ -49,6 +50,7 @@ export interface VehicleData {
   timepoint_status: VehicleTimepointStatusData | null
   scheduled_location: VehicleScheduledLocationData | null
   route_status: RouteStatus
+  end_of_trip_type?: EndOfTripType
 }
 
 export interface GhostData {
@@ -125,6 +127,7 @@ export const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
     vehicleData.scheduled_location &&
     vehicleScheduledLocationFromData(vehicleData.scheduled_location),
   routeStatus: vehicleData.route_status,
+  endOfTripType: vehicleData.end_of_trip_type,
 })
 
 export const ghostFromData = (ghostData: GhostData): Ghost => ({

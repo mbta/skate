@@ -20,6 +20,8 @@ interface DataDiscrepancySource {
   value: string | null
 }
 
+export type EndOfTripType = "another_trip" | "swing_off" | "pull_back"
+
 export interface Ghost {
   id: VehicleId
   directionId: DirectionId
@@ -69,6 +71,7 @@ export interface Vehicle {
   timepointStatus: VehicleTimepointStatus | null
   scheduledLocation: VehicleScheduledLocation | null
   routeStatus: RouteStatus
+  endOfTripType?: EndOfTripType
 }
 
 export type VehicleOrGhost = Vehicle | Ghost

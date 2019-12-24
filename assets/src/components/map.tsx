@@ -82,7 +82,7 @@ const makeLabelIcon = (
   const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
   return Leaflet.divIcon({
     className: `m-vehicle-map__label ${selectedClass}`,
-    html: `<svg viewBox="0 0 42 16" width="42" height="16">
+    html: `<svg viewBox="0 0 62 16" width="62" height="16">
             <rect
                 class="m-vehicle-icon__label-background"
                 width="100%" height="100%"
@@ -92,7 +92,7 @@ const makeLabelIcon = (
               ${labelString}
             </text>
           </svg>`,
-    iconAnchor: [21, -16],
+    iconAnchor: [31, -16],
   })
 }
 
