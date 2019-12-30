@@ -5,9 +5,13 @@ import { partition } from "../helpers/array"
 import vehicleLabel from "../helpers/vehicleLabel"
 import featureIsEnabled from "../laboratoryFeatures"
 import {
+  LadderDirection,
+  orderTimepoints,
+  VehicleDirection,
+} from "../models/ladderDirection"
+import {
   LadderVehicle,
   ladderVehiclesFromVehicles,
-  VehicleDirection,
 } from "../models/ladderVehicle"
 import { isGhost } from "../models/vehicle"
 import { statusClass } from "../models/vehicleStatus"
@@ -21,7 +25,6 @@ import { TimepointId } from "../schedule.d"
 import { selectVehicle } from "../state"
 import HeadwayLines from "./headwayLines"
 import { Orientation, Size, VehicleIconSvgNode } from "./vehicleIcon"
-import { LadderDirection, orderTimepoints } from "../models/ladderDirection"
 
 export interface Props {
   timepoints: TimepointId[]

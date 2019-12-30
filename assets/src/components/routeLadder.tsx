@@ -2,13 +2,14 @@ import React, { Dispatch, SetStateAction, useContext, useState } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { reverseIcon, reverseIconReversed } from "../helpers/icon"
 import {
+  defaultLadderDirection,
+  directionOnLadder,
   flipLadderDirection,
   LadderDirection,
-  defaultLadderDirection,
-  upwardDirectionId,
+  VehicleDirection,
 } from "../models/ladderDirection"
 import { VehicleId, VehicleOrGhost } from "../realtime.d"
-import { DirectionId, LoadableTimepoints, Route, RouteId } from "../schedule.d"
+import { LoadableTimepoints, Route, RouteId } from "../schedule.d"
 import { deselectRoute } from "../state"
 import CloseButton from "./closeButton"
 import IncomingBox from "./incomingBox"
@@ -138,8 +139,6 @@ export const groupByPosition = (
   routeId: RouteId,
   ladderDirection: LadderDirection
 ): ByPosition => {
-  const upwardDirection: DirectionId = upwardDirectionId(ladderDirection)
-
   return (vehiclesAndGhosts || []).reduce(
     (acc: ByPosition, current: VehicleOrGhost) => {
       if (current.routeId === routeId) {
@@ -147,7 +146,10 @@ export const groupByPosition = (
           case "on_route":
             return { ...acc, onRoute: [...acc.onRoute, current] }
           case "laying_over":
-            if (current.directionId === upwardDirection) {
+            if (
+              directionOnLadder(current.directionId, ladderDirection) ===
+              VehicleDirection.Up
+            ) {
               return {
                 ...acc,
                 layingOverBottom: [...acc.layingOverBottom, current],

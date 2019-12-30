@@ -3,11 +3,11 @@ import React from "react"
 import renderer from "react-test-renderer"
 import Ladder from "../../src/components/ladder"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
+import { LadderDirection } from "../../src/models/ladderDirection"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../src/realtime.d"
 import { TimepointId } from "../../src/schedule.d"
 import { initialState, selectVehicle } from "../../src/state"
-import { LadderDirection } from "../../src/models/ladderDirection"
 
 jest.mock("../../src/laboratoryFeatures", () => ({
   __esModule: true,

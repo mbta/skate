@@ -1,7 +1,8 @@
 import React from "react"
 import renderer from "react-test-renderer"
 import HeadwayLines from "../../src/components/headwayLines"
-import { LadderVehicle, VehicleDirection } from "../../src/models/ladderVehicle"
+import { VehicleDirection } from "../../src/models/ladderDirection"
+import { LadderVehicle } from "../../src/models/ladderVehicle"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 
 describe("HeadwayLines", () => {

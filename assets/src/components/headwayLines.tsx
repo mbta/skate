@@ -1,5 +1,6 @@
 import React, { ReactElement } from "react"
-import { LadderVehicle, VehicleDirection } from "../models/ladderVehicle"
+import { VehicleDirection } from "../models/ladderDirection"
+import { LadderVehicle } from "../models/ladderVehicle"
 import { HeadwaySpacing, headwaySpacingToString } from "../models/vehicleStatus"
 import { CENTER_TO_LINE } from "./ladder"
 

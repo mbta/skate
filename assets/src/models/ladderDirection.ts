@@ -1,4 +1,4 @@
-import { TimepointId, DirectionId } from "../schedule"
+import { DirectionId, TimepointId } from "../schedule"
 
 export enum LadderDirection {
   ZeroToOne,
@@ -24,6 +24,15 @@ export const orderTimepoints = (
     ? timepointsFromApi.slice().reverse()
     : timepointsFromApi
 
-export const upwardDirectionId = (
+export enum VehicleDirection {
+  Down,
+  Up,
+}
+
+export const directionOnLadder = (
+  directionId: DirectionId,
   ladderDirection: LadderDirection
-): DirectionId => (ladderDirection === LadderDirection.OneToZero ? 1 : 0)
+): VehicleDirection =>
+  (directionId === 1) === (ladderDirection === LadderDirection.ZeroToOne)
+    ? VehicleDirection.Down
+    : VehicleDirection.Up
