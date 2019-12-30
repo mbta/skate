@@ -1,16 +1,15 @@
-import React, { Dispatch, SetStateAction, useContext, useState } from "react"
+import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { reverseIcon, reverseIconReversed } from "../helpers/icon"
 import {
   defaultLadderDirection,
   directionOnLadder,
-  flipLadderDirection,
   LadderDirection,
   VehicleDirection,
 } from "../models/ladderDirection"
 import { VehicleId, VehicleOrGhost } from "../realtime.d"
 import { LoadableTimepoints, Route, RouteId } from "../schedule.d"
-import { deselectRoute } from "../state"
+import { deselectRoute, flipLadder } from "../state"
 import CloseButton from "./closeButton"
 import IncomingBox from "./incomingBox"
 import Ladder from "./ladder"
@@ -38,16 +37,13 @@ const Header = ({ route }: { route: Route }) => {
 
 const Controls = ({
   ladderDirection,
-  setLadderDirection,
+  reverseLadder,
 }: {
   ladderDirection: LadderDirection
-  setLadderDirection: Dispatch<SetStateAction<LadderDirection>>
+  reverseLadder: () => void
 }) => (
   <div className="m-route-ladder__controls">
-    <button
-      className="m-route-ladder__reverse"
-      onClick={() => setLadderDirection(flipLadderDirection)}
-    >
+    <button className="m-route-ladder__reverse" onClick={reverseLadder}>
       {ladderDirection === LadderDirection.OneToZero
         ? reverseIcon("m-route-ladder__reverse-icon")
         : reverseIconReversed("m-route-ladder__reverse-icon")}
@@ -59,18 +55,15 @@ const Controls = ({
 const HeaderAndControls = ({
   route,
   ladderDirection,
-  setLadderDirection,
+  reverseLadder,
 }: {
   route: Route
   ladderDirection: LadderDirection
-  setLadderDirection: Dispatch<SetStateAction<LadderDirection>>
+  reverseLadder: () => void
 }) => (
   <>
     <Header route={route} />
-    <Controls
-      ladderDirection={ladderDirection}
-      setLadderDirection={setLadderDirection}
-    />
+    <Controls ladderDirection={ladderDirection} reverseLadder={reverseLadder} />
   </>
 )
 
@@ -80,9 +73,11 @@ const RouteLadder = ({
   vehiclesAndGhosts,
   selectedVehicleId,
 }: Props) => {
-  const [ladderDirection, setLadderDirection] = useState<LadderDirection>(
-    defaultLadderDirection
-  )
+  const [{ ladderDirections }, dispatch] = useContext(StateDispatchContext)
+  const ladderDirection = ladderDirections[route.id] || defaultLadderDirection
+  const reverseLadder = () => {
+    dispatch(flipLadder(route.id))
+  }
 
   const byPosition: ByPosition = groupByPosition(
     vehiclesAndGhosts,
@@ -95,7 +90,7 @@ const RouteLadder = ({
       <HeaderAndControls
         route={route}
         ladderDirection={ladderDirection}
-        setLadderDirection={setLadderDirection}
+        reverseLadder={reverseLadder}
       />
 
       {timepoints ? (
