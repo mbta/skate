@@ -52,21 +52,6 @@ const Controls = ({
   </div>
 )
 
-const HeaderAndControls = ({
-  route,
-  ladderDirection,
-  reverseLadder,
-}: {
-  route: Route
-  ladderDirection: LadderDirection
-  reverseLadder: () => void
-}) => (
-  <>
-    <Header route={route} />
-    <Controls ladderDirection={ladderDirection} reverseLadder={reverseLadder} />
-  </>
-)
-
 const RouteLadder = ({
   route,
   timepoints,
@@ -87,8 +72,8 @@ const RouteLadder = ({
 
   return (
     <>
-      <HeaderAndControls
-        route={route}
+      <Header route={route} />
+      <Controls
         ladderDirection={ladderDirection}
         reverseLadder={reverseLadder}
       />
