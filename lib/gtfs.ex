@@ -158,7 +158,7 @@ defmodule Gtfs do
     catch
       # Handle Gtfs server timeouts gracefully
       :exit, _ ->
-        _ = log_timeout(:shape)
+        _ = log_timeout(:first_route_pattern_for_route_and_direction)
         nil
     end
   end
