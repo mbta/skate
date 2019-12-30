@@ -139,6 +139,10 @@ describe("filter", () => {
       ])
     ).toEqual({ a1: "a1", a3: { b1: "b1" } })
   })
+
+  test("keys that don't exist don't show up in the result", () => {
+    expect(filter({}, [["key"]])).toEqual({})
+  })
 })
 
 describe("merge", () => {
