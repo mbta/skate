@@ -10,6 +10,7 @@ defmodule SkateWeb.ShuttleController do
     routes =
       routes_fn.()
       |> Enum.filter(&Route.shuttle_route?/1)
+      |> Enum.filter(&has_shape?/1)
       |> Enum.map(&use_route_pattern_name/1)
 
     json(conn, %{data: routes})
@@ -29,5 +30,11 @@ defmodule SkateWeb.ShuttleController do
     name = if route_pattern, do: route_pattern.name, else: route.name
 
     Map.put(route, :name, name)
+  end
+
+  @spec has_shape?(Route.t()) :: bool()
+  defp has_shape?(route) do
+    shape_fn = Application.get_env(:skate_web, :shape_fn, &Gtfs.shape/1)
+    length(shape_fn.(route.id)) > 0
   end
 end
