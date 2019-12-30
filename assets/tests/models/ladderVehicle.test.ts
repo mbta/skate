@@ -1,4 +1,4 @@
-import { LadderDirection } from "../../src/components/ladder"
+import { LadderDirection } from "../../src/models/ladderDirection"
 import {
   areOverlapping,
   byDirectionAndY,

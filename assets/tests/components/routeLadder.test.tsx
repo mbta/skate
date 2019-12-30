@@ -1,9 +1,9 @@
 import { mount } from "enzyme"
 import React from "react"
 import renderer, { act } from "react-test-renderer"
-import { LadderDirection } from "../../src/components/ladder"
 import RouteLadder, { groupByPosition } from "../../src/components/routeLadder"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
+import { LadderDirection } from "../../src/models/ladderDirection"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import {
   Ghost,

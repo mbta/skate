@@ -1,8 +1,9 @@
-import { LadderDirection, TimepointStatusYFunc } from "../components/ladder"
+import { TimepointStatusYFunc } from "../components/ladder"
 import { partition } from "../helpers/array"
 import featureIsEnabled from "../laboratoryFeatures"
 import { Ghost, Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
 import { DirectionId, ViaVariant } from "../schedule"
+import { LadderDirection } from "./ladderDirection"
 import { isVehicle } from "./vehicle"
 import { DrawnStatus, drawnStatus, HeadwaySpacing } from "./vehicleStatus"
 

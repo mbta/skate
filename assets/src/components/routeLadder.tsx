@@ -1,12 +1,18 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { reverseIcon, reverseIconReversed } from "../helpers/icon"
+import {
+  flipLadderDirection,
+  LadderDirection,
+  defaultLadderDirection,
+  upwardDirectionId,
+} from "../models/ladderDirection"
 import { VehicleId, VehicleOrGhost } from "../realtime.d"
 import { DirectionId, LoadableTimepoints, Route, RouteId } from "../schedule.d"
 import { deselectRoute } from "../state"
 import CloseButton from "./closeButton"
 import IncomingBox from "./incomingBox"
-import Ladder, { flipLadderDirection, LadderDirection } from "./ladder"
+import Ladder from "./ladder"
 import LayoverBox, { LayoverBoxPosition } from "./layoverBox"
 import Loading from "./loading"
 
@@ -73,9 +79,8 @@ const RouteLadder = ({
   vehiclesAndGhosts,
   selectedVehicleId,
 }: Props) => {
-  const initialDirection: LadderDirection = LadderDirection.ZeroToOne
   const [ladderDirection, setLadderDirection] = useState<LadderDirection>(
-    initialDirection
+    defaultLadderDirection
   )
 
   const byPosition: ByPosition = groupByPosition(
@@ -133,8 +138,7 @@ export const groupByPosition = (
   routeId: RouteId,
   ladderDirection: LadderDirection
 ): ByPosition => {
-  const upwardDirection: DirectionId =
-    ladderDirection === LadderDirection.OneToZero ? 1 : 0
+  const upwardDirection: DirectionId = upwardDirectionId(ladderDirection)
 
   return (vehiclesAndGhosts || []).reduce(
     (acc: ByPosition, current: VehicleOrGhost) => {
