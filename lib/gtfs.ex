@@ -129,15 +129,15 @@ defmodule Gtfs do
     end
   end
 
-  @spec shape(Route.id()) :: Shape.t() | nil
-  @spec shape(Route.id(), GenServer.server()) :: Shape.t() | nil
-  def shape(route_id, server \\ __MODULE__) do
+  @spec shapes(Route.id()) :: [Shape.t()]
+  @spec shapes(Route.id(), GenServer.server()) :: [Shape.t()]
+  def shapes(route_id, server \\ __MODULE__) do
     try do
-      GenServer.call(server, {:shape, route_id})
+      GenServer.call(server, {:shapes, route_id})
     catch
       # Handle Gtfs server timeouts gracefully
       :exit, _ ->
-        _ = log_timeout(:shape)
+        _ = log_timeout(:shapes)
         nil
     end
   end
@@ -198,7 +198,7 @@ defmodule Gtfs do
     {:reply, Data.active_blocks(gtfs_data, start_time, end_time), state}
   end
 
-  def handle_call({:shape, route_id}, _from, {:loaded, gtfs_data} = state) do
+  def handle_call({:shapes, route_id}, _from, {:loaded, gtfs_data} = state) do
     {:reply, Data.shapes(gtfs_data, route_id), state}
   end
 
