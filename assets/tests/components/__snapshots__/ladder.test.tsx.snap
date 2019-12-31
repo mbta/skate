@@ -36,8 +36,8 @@ exports[`ladder filters out vehicles whose block is not active 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={40}
-            x={-20}
+            width={26}
+            x={-13}
             y={-22.5}
           />
           <text
@@ -188,8 +188,8 @@ exports[`ladder highlights a selected vehicle 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={40}
-            x={-20}
+            width={26}
+            x={-13}
             y={-22.5}
           />
           <text
@@ -223,8 +223,8 @@ exports[`ladder highlights a selected vehicle 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={40}
-            x={-20}
+            width={26}
+            x={-13}
             y={11.5}
           />
           <text
@@ -378,8 +378,8 @@ exports[`ladder renders a ghost bus 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={40}
-            x={-20}
+            width={26}
+            x={-13}
             y={11.5}
           />
           <text
@@ -537,8 +537,8 @@ exports[`ladder renders a ladder 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={40}
-            x={-20}
+            width={26}
+            x={-13}
             y={11.5}
           />
           <text
@@ -572,8 +572,8 @@ exports[`ladder renders a ladder 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={40}
-            x={-20}
+            width={26}
+            x={-13}
             y={-22.5}
           />
           <text
@@ -607,8 +607,8 @@ exports[`ladder renders a ladder 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={40}
-            x={-20}
+            width={26}
+            x={-13}
             y={-22.5}
           />
           <text
@@ -772,8 +772,8 @@ exports[`ladder renders a ladder with no timepoints 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={40}
-            x={-20}
+            width={26}
+            x={-13}
             y={11.5}
           />
           <text
@@ -861,8 +861,8 @@ exports[`ladder renders a reversed ladder 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={40}
-            x={-20}
+            width={26}
+            x={-13}
             y={11.5}
           />
           <text
@@ -1006,8 +1006,8 @@ exports[`ladder renders an off-course vehicle 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={40}
-            x={-20}
+            width={26}
+            x={-13}
             y={11.5}
           />
           <text
@@ -1156,8 +1156,8 @@ exports[`ladder shows schedule line in the other direction 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={40}
-            x={-20}
+            width={26}
+            x={-13}
             y={-22.5}
           />
           <text

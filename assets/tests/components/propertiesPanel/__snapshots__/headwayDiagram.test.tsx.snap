@@ -18,10 +18,10 @@ exports[`HeadwayDiagram renders a gapped vehicle 1`] = `
         style={
           Object {
             "height": 27.72,
-            "width": 40,
+            "width": 26,
           }
         }
-        viewBox="-20 -8.36 40 27.72"
+        viewBox="-13 -8.36 26 27.72"
       >
         <g
           className="m-vehicle-icon m-vehicle-icon--small "
@@ -31,8 +31,8 @@ exports[`HeadwayDiagram renders a gapped vehicle 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={40}
-            x={-20}
+            width={26}
+            x={-13}
             y={7.359999999999999}
           />
           <text
@@ -76,10 +76,10 @@ exports[`HeadwayDiagram renders a gapped vehicle 1`] = `
         style={
           Object {
             "height": 38.5,
-            "width": 40,
+            "width": 26,
           }
         }
-        viewBox="-20 -13.75 40 38.5"
+        viewBox="-13 -13.75 26 38.5"
       >
         <g
           className="m-vehicle-icon m-vehicle-icon--medium "
@@ -89,8 +89,8 @@ exports[`HeadwayDiagram renders a gapped vehicle 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={40}
-            x={-20}
+            width={26}
+            x={-13}
             y={12.75}
           />
           <text
@@ -135,10 +135,10 @@ exports[`HeadwayDiagram renders a gapped vehicle 1`] = `
         style={
           Object {
             "height": 27.72,
-            "width": 40,
+            "width": 26,
           }
         }
-        viewBox="-20 -8.36 40 27.72"
+        viewBox="-13 -8.36 26 27.72"
       >
         <g
           className="m-vehicle-icon m-vehicle-icon--small "
@@ -148,8 +148,8 @@ exports[`HeadwayDiagram renders a gapped vehicle 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={40}
-            x={-20}
+            width={26}
+            x={-13}
             y={7.359999999999999}
           />
           <text
@@ -191,10 +191,10 @@ exports[`HeadwayDiagram renders an ok headway vehicle 1`] = `
         style={
           Object {
             "height": 27.72,
-            "width": 40,
+            "width": 26,
           }
         }
-        viewBox="-20 -8.36 40 27.72"
+        viewBox="-13 -8.36 26 27.72"
       >
         <g
           className="m-vehicle-icon m-vehicle-icon--small "
@@ -204,8 +204,8 @@ exports[`HeadwayDiagram renders an ok headway vehicle 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={40}
-            x={-20}
+            width={26}
+            x={-13}
             y={7.359999999999999}
           />
           <text
@@ -249,10 +249,10 @@ exports[`HeadwayDiagram renders an ok headway vehicle 1`] = `
         style={
           Object {
             "height": 38.5,
-            "width": 40,
+            "width": 26,
           }
         }
-        viewBox="-20 -13.75 40 38.5"
+        viewBox="-13 -13.75 26 38.5"
       >
         <g
           className="m-vehicle-icon m-vehicle-icon--medium "
@@ -262,8 +262,8 @@ exports[`HeadwayDiagram renders an ok headway vehicle 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={40}
-            x={-20}
+            width={26}
+            x={-13}
             y={12.75}
           />
           <text
@@ -308,10 +308,10 @@ exports[`HeadwayDiagram renders an ok headway vehicle 1`] = `
         style={
           Object {
             "height": 27.72,
-            "width": 40,
+            "width": 26,
           }
         }
-        viewBox="-20 -8.36 40 27.72"
+        viewBox="-13 -8.36 26 27.72"
       >
         <g
           className="m-vehicle-icon m-vehicle-icon--small "
@@ -321,8 +321,8 @@ exports[`HeadwayDiagram renders an ok headway vehicle 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={40}
-            x={-20}
+            width={26}
+            x={-13}
             y={7.359999999999999}
           />
           <text
@@ -364,10 +364,10 @@ exports[`HeadwayDiagram renders with next and previous vehicles 1`] = `
         style={
           Object {
             "height": 27.72,
-            "width": 40,
+            "width": 26,
           }
         }
-        viewBox="-20 -8.36 40 27.72"
+        viewBox="-13 -8.36 26 27.72"
       >
         <g
           className="m-vehicle-icon m-vehicle-icon--small "
@@ -377,8 +377,8 @@ exports[`HeadwayDiagram renders with next and previous vehicles 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={40}
-            x={-20}
+            width={26}
+            x={-13}
             y={7.359999999999999}
           />
           <text
@@ -422,10 +422,10 @@ exports[`HeadwayDiagram renders with next and previous vehicles 1`] = `
         style={
           Object {
             "height": 38.5,
-            "width": 40,
+            "width": 26,
           }
         }
-        viewBox="-20 -13.75 40 38.5"
+        viewBox="-13 -13.75 26 38.5"
       >
         <g
           className="m-vehicle-icon m-vehicle-icon--medium "
@@ -435,8 +435,8 @@ exports[`HeadwayDiagram renders with next and previous vehicles 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={40}
-            x={-20}
+            width={26}
+            x={-13}
             y={12.75}
           />
           <text
@@ -481,10 +481,10 @@ exports[`HeadwayDiagram renders with next and previous vehicles 1`] = `
         style={
           Object {
             "height": 27.72,
-            "width": 40,
+            "width": 26,
           }
         }
-        viewBox="-20 -8.36 40 27.72"
+        viewBox="-13 -8.36 26 27.72"
       >
         <g
           className="m-vehicle-icon m-vehicle-icon--small "
@@ -494,8 +494,8 @@ exports[`HeadwayDiagram renders with next and previous vehicles 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={40}
-            x={-20}
+            width={26}
+            x={-13}
             y={7.359999999999999}
           />
           <text
@@ -553,10 +553,10 @@ exports[`HeadwayDiagram renders with no next or previous vehicles 1`] = `
         style={
           Object {
             "height": 38.5,
-            "width": 40,
+            "width": 26,
           }
         }
-        viewBox="-20 -13.75 40 38.5"
+        viewBox="-13 -13.75 26 38.5"
       >
         <g
           className="m-vehicle-icon m-vehicle-icon--medium "
@@ -566,8 +566,8 @@ exports[`HeadwayDiagram renders with no next or previous vehicles 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={40}
-            x={-20}
+            width={26}
+            x={-13}
             y={12.75}
           />
           <text

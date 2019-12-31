@@ -614,10 +614,10 @@ Array [
     style={
       Object {
         "height": 26.200000000000003,
-        "width": 40,
+        "width": 26,
       }
     }
-    viewBox="-20 -7.6 40 26.200000000000003"
+    viewBox="-13 -7.6 26 26.200000000000003"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--small "
@@ -627,8 +627,8 @@ Array [
         height={11}
         rx={5.5}
         ry={5.5}
-        width={40}
-        x={-20}
+        width={26}
+        x={-13}
         y={6.6}
       />
       <text
@@ -660,10 +660,10 @@ Array [
     style={
       Object {
         "height": 27.72,
-        "width": 40,
+        "width": 26,
       }
     }
-    viewBox="-20 -8.36 40 27.72"
+    viewBox="-13 -8.36 26 27.72"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--small "
@@ -673,8 +673,8 @@ Array [
         height={11}
         rx={5.5}
         ry={5.5}
-        width={40}
-        x={-20}
+        width={26}
+        x={-13}
         y={7.359999999999999}
       />
       <text
@@ -706,10 +706,10 @@ Array [
     style={
       Object {
         "height": 26.200000000000003,
-        "width": 40,
+        "width": 26,
       }
     }
-    viewBox="-20 -18.6 40 26.200000000000003"
+    viewBox="-13 -18.6 26 26.200000000000003"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--small "
@@ -719,8 +719,8 @@ Array [
         height={11}
         rx={5.5}
         ry={5.5}
-        width={40}
-        x={-20}
+        width={26}
+        x={-13}
         y={-17.6}
       />
       <text
@@ -752,10 +752,10 @@ Array [
     style={
       Object {
         "height": 27.72,
-        "width": 40,
+        "width": 26,
       }
     }
-    viewBox="-20 -8.36 40 27.72"
+    viewBox="-13 -8.36 26 27.72"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--small "
@@ -765,8 +765,8 @@ Array [
         height={11}
         rx={5.5}
         ry={5.5}
-        width={40}
-        x={-20}
+        width={26}
+        x={-13}
         y={7.359999999999999}
       />
       <text
@@ -798,10 +798,10 @@ Array [
     style={
       Object {
         "height": 36,
-        "width": 40,
+        "width": 27.5,
       }
     }
-    viewBox="-20 -12.5 40 36"
+    viewBox="-13.75 -12.5 27.5 36"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--medium "
@@ -811,8 +811,8 @@ Array [
         height={11}
         rx={5.5}
         ry={5.5}
-        width={40}
-        x={-20}
+        width={26}
+        x={-13}
         y={11.5}
       />
       <text
@@ -844,10 +844,10 @@ Array [
     style={
       Object {
         "height": 38.5,
-        "width": 40,
+        "width": 26,
       }
     }
-    viewBox="-20 -13.75 40 38.5"
+    viewBox="-13 -13.75 26 38.5"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--medium "
@@ -857,8 +857,8 @@ Array [
         height={11}
         rx={5.5}
         ry={5.5}
-        width={40}
-        x={-20}
+        width={26}
+        x={-13}
         y={12.75}
       />
       <text
@@ -890,10 +890,10 @@ Array [
     style={
       Object {
         "height": 36,
-        "width": 40,
+        "width": 27.5,
       }
     }
-    viewBox="-20 -23.5 40 36"
+    viewBox="-13.75 -23.5 27.5 36"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--medium "
@@ -903,8 +903,8 @@ Array [
         height={11}
         rx={5.5}
         ry={5.5}
-        width={40}
-        x={-20}
+        width={26}
+        x={-13}
         y={-22.5}
       />
       <text
@@ -936,10 +936,10 @@ Array [
     style={
       Object {
         "height": 38.5,
-        "width": 40,
+        "width": 26,
       }
     }
-    viewBox="-20 -13.75 40 38.5"
+    viewBox="-13 -13.75 26 38.5"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--medium "
@@ -949,8 +949,8 @@ Array [
         height={11}
         rx={5.5}
         ry={5.5}
-        width={40}
-        x={-20}
+        width={26}
+        x={-13}
         y={12.75}
       />
       <text
@@ -982,10 +982,10 @@ Array [
     style={
       Object {
         "height": 64,
-        "width": 72,
+        "width": 64,
       }
     }
-    viewBox="-36 -20 72 64"
+    viewBox="-32 -20 64 64"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--large "
@@ -995,8 +995,8 @@ Array [
         height={24}
         rx={12}
         ry={12}
-        width={72}
-        x={-36}
+        width={64}
+        x={-32}
         y={19}
       />
       <text
@@ -1028,10 +1028,10 @@ Array [
     style={
       Object {
         "height": 68,
-        "width": 72,
+        "width": 64,
       }
     }
-    viewBox="-36 -22 72 68"
+    viewBox="-32 -22 64 68"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--large "
@@ -1041,8 +1041,8 @@ Array [
         height={24}
         rx={12}
         ry={12}
-        width={72}
-        x={-36}
+        width={64}
+        x={-32}
         y={21}
       />
       <text
@@ -1074,10 +1074,10 @@ Array [
     style={
       Object {
         "height": 64,
-        "width": 72,
+        "width": 64,
       }
     }
-    viewBox="-36 -44 72 64"
+    viewBox="-32 -44 64 64"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--large "
@@ -1087,8 +1087,8 @@ Array [
         height={24}
         rx={12}
         ry={12}
-        width={72}
-        x={-36}
+        width={64}
+        x={-32}
         y={-43}
       />
       <text
@@ -1120,10 +1120,10 @@ Array [
     style={
       Object {
         "height": 68,
-        "width": 72,
+        "width": 64,
       }
     }
-    viewBox="-36 -22 72 68"
+    viewBox="-32 -22 64 68"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--large "
@@ -1133,8 +1133,8 @@ Array [
         height={24}
         rx={12}
         ry={12}
-        width={72}
-        x={-36}
+        width={64}
+        x={-32}
         y={21}
       />
       <text

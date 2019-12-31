@@ -14,10 +14,10 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
         style={
           Object {
             "height": 64,
-            "width": 72,
+            "width": 64,
           }
         }
-        viewBox="-36 -20 72 64"
+        viewBox="-32 -20 64 64"
       >
         <g
           className="m-vehicle-icon m-vehicle-icon--large "
@@ -27,8 +27,8 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
             height={24}
             rx={12}
             ry={12}
-            width={72}
-            x={-36}
+            width={64}
+            x={-32}
             y={19}
           />
           <text
@@ -138,10 +138,10 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
           style={
             Object {
               "height": 38.5,
-              "width": 40,
+              "width": 26,
             }
           }
-          viewBox="-20 -13.75 40 38.5"
+          viewBox="-13 -13.75 26 38.5"
         >
           <g
             className="m-vehicle-icon m-vehicle-icon--medium "
@@ -151,8 +151,8 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
               height={11}
               rx={5.5}
               ry={5.5}
-              width={40}
-              x={-20}
+              width={26}
+              x={-13}
               y={12.75}
             />
             <text
@@ -302,10 +302,10 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
         style={
           Object {
             "height": 64,
-            "width": 72,
+            "width": 64,
           }
         }
-        viewBox="-36 -20 72 64"
+        viewBox="-32 -20 64 64"
       >
         <g
           className="m-vehicle-icon m-vehicle-icon--large "
@@ -315,8 +315,8 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
             height={24}
             rx={12}
             ry={12}
-            width={72}
-            x={-36}
+            width={64}
+            x={-32}
             y={19}
           />
           <text
@@ -426,10 +426,10 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
           style={
             Object {
               "height": 38.5,
-              "width": 40,
+              "width": 26,
             }
           }
-          viewBox="-20 -13.75 40 38.5"
+          viewBox="-13 -13.75 26 38.5"
         >
           <g
             className="m-vehicle-icon m-vehicle-icon--medium "
@@ -439,8 +439,8 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
               height={11}
               rx={5.5}
               ry={5.5}
-              width={40}
-              x={-20}
+              width={26}
+              x={-13}
               y={12.75}
             />
             <text
@@ -590,10 +590,10 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
         style={
           Object {
             "height": 64,
-            "width": 72,
+            "width": 64,
           }
         }
-        viewBox="-36 -20 72 64"
+        viewBox="-32 -20 64 64"
       >
         <g
           className="m-vehicle-icon m-vehicle-icon--large "
@@ -603,8 +603,8 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
             height={24}
             rx={12}
             ry={12}
-            width={72}
-            x={-36}
+            width={64}
+            x={-32}
             y={19}
           />
           <text
@@ -714,10 +714,10 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
           style={
             Object {
               "height": 38.5,
-              "width": 40,
+              "width": 26,
             }
           }
-          viewBox="-20 -13.75 40 38.5"
+          viewBox="-13 -13.75 26 38.5"
         >
           <g
             className="m-vehicle-icon m-vehicle-icon--medium "
@@ -727,8 +727,8 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
               height={11}
               rx={5.5}
               ry={5.5}
-              width={40}
-              x={-20}
+              width={26}
+              x={-13}
               y={12.75}
             />
             <text
@@ -1165,10 +1165,10 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
         style={
           Object {
             "height": 64,
-            "width": 72,
+            "width": 64,
           }
         }
-        viewBox="-36 -20 72 64"
+        viewBox="-32 -20 64 64"
       >
         <g
           className="m-vehicle-icon m-vehicle-icon--large "
@@ -1178,8 +1178,8 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
             height={24}
             rx={12}
             ry={12}
-            width={72}
-            x={-36}
+            width={64}
+            x={-32}
             y={19}
           />
           <text
@@ -1289,10 +1289,10 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
           style={
             Object {
               "height": 38.5,
-              "width": 40,
+              "width": 26,
             }
           }
-          viewBox="-20 -13.75 40 38.5"
+          viewBox="-13 -13.75 26 38.5"
         >
           <g
             className="m-vehicle-icon m-vehicle-icon--medium "
@@ -1302,8 +1302,8 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
               height={11}
               rx={5.5}
               ry={5.5}
-              width={40}
-              x={-20}
+              width={26}
+              x={-13}
               y={12.75}
             />
             <text
@@ -1453,10 +1453,10 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
         style={
           Object {
             "height": 64,
-            "width": 72,
+            "width": 64,
           }
         }
-        viewBox="-36 -20 72 64"
+        viewBox="-32 -20 64 64"
       >
         <g
           className="m-vehicle-icon m-vehicle-icon--large off-course"
@@ -1466,8 +1466,8 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
             height={24}
             rx={12}
             ry={12}
-            width={72}
-            x={-36}
+            width={64}
+            x={-32}
             y={19}
           />
           <text
@@ -1577,10 +1577,10 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
           style={
             Object {
               "height": 38.5,
-              "width": 40,
+              "width": 26,
             }
           }
-          viewBox="-20 -13.75 40 38.5"
+          viewBox="-13 -13.75 26 38.5"
         >
           <g
             className="m-vehicle-icon m-vehicle-icon--medium "
@@ -1590,8 +1590,8 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
               height={11}
               rx={5.5}
               ry={5.5}
-              width={40}
-              x={-20}
+              width={26}
+              x={-13}
               y={12.75}
             />
             <text
@@ -1745,10 +1745,10 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
         style={
           Object {
             "height": 64,
-            "width": 72,
+            "width": 64,
           }
         }
-        viewBox="-36 -20 72 64"
+        viewBox="-32 -20 64 64"
       >
         <g
           className="m-vehicle-icon m-vehicle-icon--large "
@@ -1758,8 +1758,8 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
             height={24}
             rx={12}
             ry={12}
-            width={72}
-            x={-36}
+            width={64}
+            x={-32}
             y={19}
           />
           <text
@@ -1869,10 +1869,10 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
           style={
             Object {
               "height": 38.5,
-              "width": 40,
+              "width": 26,
             }
           }
-          viewBox="-20 -13.75 40 38.5"
+          viewBox="-13 -13.75 26 38.5"
         >
           <g
             className="m-vehicle-icon m-vehicle-icon--medium "
@@ -1882,8 +1882,8 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
               height={11}
               rx={5.5}
               ry={5.5}
-              width={40}
-              x={-20}
+              width={26}
+              x={-13}
               y={12.75}
             />
             <text
