@@ -33,61 +33,17 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
-  describe("flipLadder", () => {
-    test("flips ZeroToOne to OneToZero", () => {
-      const state = {
-        ...initialState,
-        ladderDirections: { route: LadderDirection.ZeroToOne },
-      }
-      const expectedState = {
-        ...initialState,
-        ladderDirections: { route: LadderDirection.OneToZero },
-      }
-      const newState = reducer(state, State.flipLadder("route"))
-      expect(newState).toEqual(expectedState)
-    })
-
-    test("flips OneToZero to ZeroToOne", () => {
-      const state = {
-        ...initialState,
-        ladderDirections: { route: LadderDirection.OneToZero },
-      }
-      const expectedState = {
-        ...initialState,
-        ladderDirections: { route: LadderDirection.ZeroToOne },
-      }
-      const newState = reducer(state, State.flipLadder("route"))
-      expect(newState).toEqual(expectedState)
-    })
-
-    test("can flip a route that's still using the default", () => {
-      const expectedState = {
-        ...initialState,
-        ladderDirections: { route: LadderDirection.OneToZero },
-      }
-      const newState = reducer(initialState, State.flipLadder("route"))
-      expect(newState).toEqual(expectedState)
-    })
-
-    test("leaves other routes unchanged", () => {
-      const state = {
-        ...initialState,
-        ladderDirections: {
-          oneToZero: LadderDirection.OneToZero,
-          zeroToOne: LadderDirection.ZeroToOne,
-        },
-      }
-      const expectedState = {
-        ...initialState,
-        ladderDirections: {
-          oneToZero: LadderDirection.OneToZero,
-          zeroToOne: LadderDirection.ZeroToOne,
-          route: LadderDirection.OneToZero,
-        },
-      }
-      const newState = reducer(state, State.flipLadder("route"))
-      expect(newState).toEqual(expectedState)
-    })
+  test("flipLadder", () => {
+    const state = {
+      ...initialState,
+      ladderDirections: { route: LadderDirection.ZeroToOne },
+    }
+    const expectedState = {
+      ...initialState,
+      ladderDirections: { route: LadderDirection.OneToZero },
+    }
+    const newState = reducer(state, State.flipLadder("route"))
+    expect(newState).toEqual(expectedState)
   })
 
   test("selectShuttleRun", () => {

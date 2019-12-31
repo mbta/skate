@@ -1,11 +1,11 @@
 import { Dispatch as ReactDispatch } from "react"
 import {
-  defaultLadderDirection,
-  flipLadderDirection,
-  LadderDirection,
+  emptyLadderDirectionsByRouteId,
+  flipLadderDirectionForRoute,
+  LadderDirections,
 } from "./models/ladderDirection"
 import { RunId, VehicleId } from "./realtime.d"
-import { ByRouteId, RouteId } from "./schedule.d"
+import { RouteId } from "./schedule.d"
 import { defaultSettings, Settings, VehicleLabelSetting } from "./settings"
 import {
   Action as SearchAction,
@@ -18,7 +18,7 @@ export interface State {
   pickerContainerIsVisible: boolean
   searchPageState: SearchPageState
   selectedRouteIds: RouteId[]
-  ladderDirections: ByRouteId<LadderDirection>
+  ladderDirections: LadderDirections
   selectedShuttleRouteIds: RouteId[]
   selectedShuttleRunIds: RunId[] | "all"
   selectedVehicleId?: VehicleId
@@ -29,7 +29,7 @@ export const initialState: State = {
   pickerContainerIsVisible: true,
   searchPageState: initialSearchPageState,
   selectedRouteIds: [],
-  ladderDirections: {},
+  ladderDirections: emptyLadderDirectionsByRouteId,
   selectedShuttleRouteIds: [],
   selectedShuttleRunIds: "all",
   selectedVehicleId: undefined,
@@ -259,17 +259,13 @@ const selectedRouteIdsReducer = (
 }
 
 const ladderDirectionsReducer = (
-  state: ByRouteId<LadderDirection>,
+  state: LadderDirections,
   action: Action
-): ByRouteId<LadderDirection> => {
+): LadderDirections => {
   switch (action.type) {
     case "FLIP_LADDER":
       const routeId = action.payload.routeId
-      const currentLadderDirection = state[routeId] || defaultLadderDirection
-      return {
-        ...state,
-        [routeId]: flipLadderDirection(currentLadderDirection),
-      }
+      return flipLadderDirectionForRoute(state, routeId)
     default:
       return state
   }

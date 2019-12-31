@@ -2,8 +2,8 @@ import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { reverseIcon, reverseIconReversed } from "../helpers/icon"
 import {
-  defaultLadderDirection,
   directionOnLadder,
+  getLadderDirectionForRoute,
   LadderDirection,
   VehicleDirection,
 } from "../models/ladderDirection"
@@ -59,7 +59,7 @@ const RouteLadder = ({
   selectedVehicleId,
 }: Props) => {
   const [{ ladderDirections }, dispatch] = useContext(StateDispatchContext)
-  const ladderDirection = ladderDirections[route.id] || defaultLadderDirection
+  const ladderDirection = getLadderDirectionForRoute(ladderDirections, route.id)
   const reverseLadder = () => {
     dispatch(flipLadder(route.id))
   }

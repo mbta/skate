@@ -1,18 +1,41 @@
-import { DirectionId, TimepointId } from "../schedule"
+import { ByRouteId, DirectionId, RouteId, TimepointId } from "../schedule"
 
 export enum LadderDirection {
   ZeroToOne,
   OneToZero,
 }
 
-export const defaultLadderDirection: LadderDirection = LadderDirection.ZeroToOne
+const defaultLadderDirection: LadderDirection = LadderDirection.ZeroToOne
 
-export const flipLadderDirection = (
+export type LadderDirections = ByRouteId<LadderDirection>
+
+export const emptyLadderDirectionsByRouteId: LadderDirections = {}
+
+export const getLadderDirectionForRoute = (
+  ladderDirections: LadderDirections,
+  routeId: RouteId
+): LadderDirection => ladderDirections[routeId] || defaultLadderDirection
+
+const flipLadderDirection = (
   ladderDirection: LadderDirection
 ): LadderDirection =>
   ladderDirection === LadderDirection.ZeroToOne
     ? LadderDirection.OneToZero
     : LadderDirection.ZeroToOne
+
+export const flipLadderDirectionForRoute = (
+  ladderDirections: LadderDirections,
+  routeId: RouteId
+): LadderDirections => {
+  const currentLadderDirection = getLadderDirectionForRoute(
+    ladderDirections,
+    routeId
+  )
+  return {
+    ...ladderDirections,
+    [routeId]: flipLadderDirection(currentLadderDirection),
+  }
+}
 
 export const orderTimepoints = (
   timepointsFromApi: TimepointId[],
