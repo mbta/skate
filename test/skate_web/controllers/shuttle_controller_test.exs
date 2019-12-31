@@ -29,7 +29,7 @@ defmodule SkateWeb.ShuttleControllerTest do
       end)
 
       reassign_env(:skate_web, :route_pattern_fn, fn _route_id, _direction_id -> nil end)
-      reassign_env(:skate_web, :shape_fn, fn _route_id -> [%Shape{id: "id", points: []}] end)
+      reassign_env(:skate_web, :shapes_fn, fn _route_id -> [%Shape{id: "id", points: []}] end)
 
       conn =
         conn
@@ -60,7 +60,7 @@ defmodule SkateWeb.ShuttleControllerTest do
 
       reassign_env(:skate_web, :route_pattern_fn, fn _route_id, _direction_id -> nil end)
 
-      reassign_env(:skate_web, :shape_fn, fn route_id ->
+      reassign_env(:skate_web, :shapes_fn, fn route_id ->
         case route_id do
           "has_shape" -> [%Shape{id: "id", points: []}]
           "no_shape" -> []
@@ -98,7 +98,7 @@ defmodule SkateWeb.ShuttleControllerTest do
         }
       end)
 
-      reassign_env(:skate_web, :shape_fn, fn _route_id -> [%Shape{id: "id", points: []}] end)
+      reassign_env(:skate_web, :shapes_fn, fn _route_id -> [%Shape{id: "id", points: []}] end)
 
       conn =
         conn

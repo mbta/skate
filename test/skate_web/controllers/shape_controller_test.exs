@@ -20,7 +20,7 @@ defmodule SkateWeb.ShapeControllerTest do
         ]
       }
 
-      reassign_env(:skate_web, :shape_fn, fn _route_id -> shape end)
+      reassign_env(:skate_web, :shapes_fn, fn _route_id -> shape end)
     end
 
     test "when logged out, redirects you to cognito auth", %{conn: conn} do
