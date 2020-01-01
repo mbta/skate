@@ -684,7 +684,7 @@ defmodule Gtfs.DataTest do
       assert Data.shapes(data, "route1") == shapes
     end
 
-    test "returns nil if there are no shapes for the given route" do
+    test "returns [] if there are no shapes for the given route" do
       data = %Data{
         routes: [],
         route_patterns: [],
@@ -710,7 +710,7 @@ defmodule Gtfs.DataTest do
         calendar: %{}
       }
 
-      assert Data.shapes(data, "shapelessRoute") == nil
+      assert Data.shapes(data, "shapelessRoute") == []
     end
   end
 
