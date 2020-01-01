@@ -36,7 +36,7 @@ exports[`HeadwayDiagram renders a gapped vehicle 1`] = `
             y={7.359999999999999}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
@@ -94,7 +94,7 @@ exports[`HeadwayDiagram renders a gapped vehicle 1`] = `
             y={12.75}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
@@ -153,7 +153,7 @@ exports[`HeadwayDiagram renders a gapped vehicle 1`] = `
             y={7.359999999999999}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
@@ -209,7 +209,7 @@ exports[`HeadwayDiagram renders an ok headway vehicle 1`] = `
             y={7.359999999999999}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
@@ -267,7 +267,7 @@ exports[`HeadwayDiagram renders an ok headway vehicle 1`] = `
             y={12.75}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
@@ -326,7 +326,7 @@ exports[`HeadwayDiagram renders an ok headway vehicle 1`] = `
             y={7.359999999999999}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
@@ -382,7 +382,7 @@ exports[`HeadwayDiagram renders with next and previous vehicles 1`] = `
             y={7.359999999999999}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
@@ -440,7 +440,7 @@ exports[`HeadwayDiagram renders with next and previous vehicles 1`] = `
             y={12.75}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
@@ -499,7 +499,7 @@ exports[`HeadwayDiagram renders with next and previous vehicles 1`] = `
             y={7.359999999999999}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
@@ -571,7 +571,7 @@ exports[`HeadwayDiagram renders with no next or previous vehicles 1`] = `
             y={12.75}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"

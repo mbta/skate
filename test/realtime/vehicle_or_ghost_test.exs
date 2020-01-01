@@ -31,7 +31,8 @@ defmodule Realtime.VehicleOrGhostTest do
       timepoint_id: "tp1",
       fraction_until_timepoint: 0.2
     },
-    route_status: :on_route
+    route_status: :on_route,
+    end_of_trip_type: :another_trip
   }
 
   @ghost %Ghost{

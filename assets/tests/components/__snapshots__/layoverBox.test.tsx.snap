@@ -12,10 +12,10 @@ exports[`LayoverBox renders 1`] = `
       style={
         Object {
           "height": 27.72,
-          "width": 26,
+          "width": 40,
         }
       }
-      viewBox="-13 -8.36 26 27.72"
+      viewBox="-20 -8.36 40 27.72"
     >
       <g
         className="m-vehicle-icon m-vehicle-icon--small on-time"
@@ -25,12 +25,12 @@ exports[`LayoverBox renders 1`] = `
           height={11}
           rx={5.5}
           ry={5.5}
-          width={26}
-          x={-13}
+          width={40}
+          x={-20}
           y={7.359999999999999}
         />
         <text
-          className="m-vehicle-icon__label"
+          className="m-vehicle-icon__label m-vehicle-icon__label--extended"
           dominantBaseline="central"
           textAnchor="middle"
           x="0"
@@ -54,10 +54,10 @@ exports[`LayoverBox renders 1`] = `
       style={
         Object {
           "height": 27.72,
-          "width": 26,
+          "width": 40,
         }
       }
-      viewBox="-13 -8.36 26 27.72"
+      viewBox="-20 -8.36 40 27.72"
     >
       <g
         className="m-vehicle-icon m-vehicle-icon--small on-time"
@@ -67,12 +67,12 @@ exports[`LayoverBox renders 1`] = `
           height={11}
           rx={5.5}
           ry={5.5}
-          width={26}
-          x={-13}
+          width={40}
+          x={-20}
           y={7.359999999999999}
         />
         <text
-          className="m-vehicle-icon__label"
+          className="m-vehicle-icon__label m-vehicle-icon__label--extended"
           dominantBaseline="central"
           textAnchor="middle"
           x="0"
@@ -103,10 +103,10 @@ exports[`LayoverBox renders ghost 1`] = `
       style={
         Object {
           "height": 26.200000000000003,
-          "width": 26,
+          "width": 40,
         }
       }
-      viewBox="-13 -7.6 26 26.200000000000003"
+      viewBox="-20 -7.6 40 26.200000000000003"
     >
       <g
         className="m-vehicle-icon m-vehicle-icon--small ghost"
@@ -116,12 +116,12 @@ exports[`LayoverBox renders ghost 1`] = `
           height={11}
           rx={5.5}
           ry={5.5}
-          width={26}
-          x={-13}
+          width={40}
+          x={-20}
           y={6.6}
         />
         <text
-          className="m-vehicle-icon__label"
+          className="m-vehicle-icon__label m-vehicle-icon__label--extended"
           dominantBaseline="central"
           textAnchor="middle"
           x="0"

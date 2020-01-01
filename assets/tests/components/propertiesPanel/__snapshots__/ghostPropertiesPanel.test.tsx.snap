@@ -32,7 +32,7 @@ exports[`GhostPropertiesPanel renders 1`] = `
             y={19}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
@@ -156,7 +156,7 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
             y={19}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"

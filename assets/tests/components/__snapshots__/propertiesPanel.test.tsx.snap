@@ -37,7 +37,7 @@ Array [
                 y={19}
               />
               <text
-                className="m-vehicle-icon__label"
+                className="m-vehicle-icon__label m-vehicle-icon__label--normal"
                 dominantBaseline="central"
                 textAnchor="middle"
                 x="0"
@@ -178,7 +178,7 @@ Array [
                 y={19}
               />
               <text
-                className="m-vehicle-icon__label"
+                className="m-vehicle-icon__label m-vehicle-icon__label--normal"
                 dominantBaseline="central"
                 textAnchor="middle"
                 x="0"

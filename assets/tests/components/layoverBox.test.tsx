@@ -46,6 +46,7 @@ const vehicles: Vehicle[] = [
     },
     scheduledLocation: null,
     routeStatus: "on_route",
+    endOfTripType: "another_trip",
   },
   {
     id: "y0479",
@@ -88,6 +89,7 @@ const vehicles: Vehicle[] = [
       },
     },
     routeStatus: "on_route",
+    endOfTripType: "another_trip",
   },
 ]
 

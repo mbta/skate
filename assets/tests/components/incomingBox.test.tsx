@@ -62,6 +62,7 @@ describe("IncomingBox", () => {
         },
       },
       routeStatus: "pulling_out",
+      endOfTripType: "another_trip",
     }
 
     const tree = renderer

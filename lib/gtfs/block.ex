@@ -59,6 +59,17 @@ defmodule Gtfs.Block do
   @spec last_trip(t()) :: Trip.t()
   def last_trip(block), do: List.last(block)
 
+  @spec next_trip(t(), Trip.id()) :: Trip.t() | nil
+  def next_trip(block, trip_id) do
+    case Enum.find_index(block, &(&1.id == trip_id)) do
+      nil ->
+        nil
+
+      index ->
+        Enum.at(block, index + 1)
+    end
+  end
+
   @spec sort_trips_by_time([Trip.t()]) :: [Trip.t()]
   defp sort_trips_by_time(trips) do
     Enum.sort_by(trips, &Trip.start_time/1)

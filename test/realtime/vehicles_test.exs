@@ -29,7 +29,8 @@ defmodule Realtime.VehiclesTest do
         block_is_active: true,
         sources: "",
         stop_status: "",
-        route_status: :on_route
+        route_status: :on_route,
+        end_of_trip_type: :another_trip
       }
 
       pulling_out_vehicle = %{
@@ -80,7 +81,8 @@ defmodule Realtime.VehiclesTest do
         block_is_active: true,
         sources: "",
         stop_status: "",
-        route_status: :on_route
+        route_status: :on_route,
+        end_of_trip_type: :another_trip
       }
 
       vehicle_2 = %Vehicle{
@@ -103,7 +105,8 @@ defmodule Realtime.VehiclesTest do
         block_is_active: true,
         sources: "",
         stop_status: "",
-        route_status: :on_route
+        route_status: :on_route,
+        end_of_trip_type: :another_trip
       }
 
       ungrouped_vehicles = [vehicle, vehicle_2]
@@ -141,7 +144,8 @@ defmodule Realtime.VehiclesTest do
         block_is_active: true,
         sources: "",
         stop_status: "",
-        route_status: :on_route
+        route_status: :on_route,
+        end_of_trip_type: :another_trip
       }
 
       ungrouped_vehicles = [vehicle]
@@ -226,7 +230,8 @@ defmodule Realtime.VehiclesTest do
         block_is_active: true,
         sources: "",
         stop_status: "",
-        route_status: :on_route
+        route_status: :on_route,
+        end_of_trip_type: :another_trip
       }
 
       trip = %Trip{

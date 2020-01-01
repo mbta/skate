@@ -452,7 +452,7 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
                 y={19}
               />
               <text
-                className="m-vehicle-icon__label"
+                className="m-vehicle-icon__label m-vehicle-icon__label--normal"
                 dominantBaseline="central"
                 textAnchor="middle"
                 x="0"

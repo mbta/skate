@@ -62,7 +62,7 @@ const viewBox = ({
 }: Props): { left: number; top: number; width: number; height: number } => {
   // shrink the viewbox to fit around the triangle and label
   const scale = scaleForSize(size)
-  const labelBgWidth = label ? labelBackgroundWidth(size) : 0
+  const labelBgWidth = label ? labelBackgroundWidth(size, label) : 0
   const labelBgHeight = label ? labelBackgroundHeight(size) : 0
   let left = 0
   let right = 0
@@ -214,7 +214,7 @@ const Label = ({
   label: string
 }) => {
   const scale = scaleForSize(size)
-  const labelBgWidth = labelBackgroundWidth(size)
+  const labelBgWidth = labelBackgroundWidth(size, label)
   const labelBgHeight = labelBackgroundHeight(size)
   let labelBgTop = 0
   switch (orientation) {
@@ -232,6 +232,12 @@ const Label = ({
   }
   const labelY = labelBgTop + labelBgHeight / 2
 
+  const labelClassWithModifier =
+    label.length > 4
+      ? "m-vehicle-icon__label--extended"
+      : "m-vehicle-icon__label--normal"
+  const labelClass = `m-vehicle-icon__label ${labelClassWithModifier}`
+
   return (
     <>
       <rect
@@ -244,7 +250,7 @@ const Label = ({
         ry={labelBgHeight / 2}
       />
       <text
-        className="m-vehicle-icon__label"
+        className={labelClass}
         x="0"
         y={labelY}
         textAnchor="middle"
@@ -361,13 +367,13 @@ const rotationForOrientation = (orientation: Orientation): number => {
   }
 }
 
-const labelBackgroundWidth = (size: Size): number => {
+const labelBackgroundWidth = (size: Size, label: string): number => {
   switch (size) {
     case Size.Small:
     case Size.Medium:
-      return 26
+      return label.length <= 4 ? 26 : 40
     case Size.Large:
-      return 64
+      return label.length <= 4 ? 64 : 72
   }
 }
 
