@@ -30,7 +30,7 @@ defmodule Gtfs.Block do
   @spec start_time(t()) :: Util.Time.time_of_day()
   def start_time(block) do
     block
-    |> List.first()
+    |> first_trip()
     |> Trip.start_time()
   end
 
@@ -40,7 +40,7 @@ defmodule Gtfs.Block do
   @spec end_time(t()) :: Util.Time.time_of_day()
   def end_time(block) do
     block
-    |> List.last()
+    |> last_trip()
     |> Trip.end_time()
   end
 
@@ -52,6 +52,12 @@ defmodule Gtfs.Block do
     end_time_of_day > start_time(block) and
       start_time_of_day < end_time(block)
   end
+
+  @spec first_trip(t()) :: Trip.t()
+  def first_trip(block), do: List.first(block)
+
+  @spec last_trip(t()) :: Trip.t()
+  def last_trip(block), do: List.last(block)
 
   @spec sort_trips_by_time([Trip.t()]) :: [Trip.t()]
   defp sort_trips_by_time(trips) do
