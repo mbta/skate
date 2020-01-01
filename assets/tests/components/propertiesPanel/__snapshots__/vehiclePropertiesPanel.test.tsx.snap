@@ -896,7 +896,7 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
             y={19}
           />
           <text
-            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            className="m-vehicle-icon__label m-vehicle-icon__label--extended"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
@@ -1015,7 +1015,7 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
               y={12.75}
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              className="m-vehicle-icon__label m-vehicle-icon__label--extended"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"

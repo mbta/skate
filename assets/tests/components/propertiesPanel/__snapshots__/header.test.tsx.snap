@@ -478,7 +478,7 @@ exports[`Header renders for a shuttle 1`] = `
           y={19}
         />
         <text
-          className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+          className="m-vehicle-icon__label m-vehicle-icon__label--extended"
           dominantBaseline="central"
           textAnchor="middle"
           x="0"

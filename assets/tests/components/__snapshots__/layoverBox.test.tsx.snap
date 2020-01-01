@@ -30,7 +30,7 @@ exports[`LayoverBox renders 1`] = `
           y={7.359999999999999}
         />
         <text
-          className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+          className="m-vehicle-icon__label m-vehicle-icon__label--extended"
           dominantBaseline="central"
           textAnchor="middle"
           x="0"
@@ -72,7 +72,7 @@ exports[`LayoverBox renders 1`] = `
           y={7.359999999999999}
         />
         <text
-          className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+          className="m-vehicle-icon__label m-vehicle-icon__label--extended"
           dominantBaseline="central"
           textAnchor="middle"
           x="0"
@@ -121,7 +121,7 @@ exports[`LayoverBox renders ghost 1`] = `
           y={6.6}
         />
         <text
-          className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+          className="m-vehicle-icon__label m-vehicle-icon__label--extended"
           dominantBaseline="central"
           textAnchor="middle"
           x="0"

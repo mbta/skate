@@ -233,7 +233,7 @@ const Label = ({
   const labelY = labelBgTop + labelBgHeight / 2
 
   const labelClassWithModifier =
-    label === "SW-OFF" || label === "PULL-B"
+    label.length > 4
       ? "m-vehicle-icon__label--extended"
       : "m-vehicle-icon__label--normal"
   const labelClass = `m-vehicle-icon__label ${labelClassWithModifier}`
