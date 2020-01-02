@@ -145,7 +145,8 @@ defmodule Realtime.VehicleTest do
             fraction_until_timepoint: 0.0
           }
         },
-        route_status: :on_route
+        route_status: :on_route,
+        end_of_trip_type: :pull_back
       }
 
       result = Vehicle.from_vehicle_position(@vehicle_position)
@@ -368,6 +369,116 @@ defmodule Realtime.VehicleTest do
     end
   end
 
+  describe "end_of_trip_type/2" do
+    setup do
+      first_trip = %Trip{
+        id: "t1",
+        route_id: "r1",
+        service_id: "service",
+        headsign: "Trip 1",
+        direction_id: 1,
+        block_id: "b",
+        shape_id: "shape1",
+        run_id: "run1",
+        stop_times: [
+          %StopTime{
+            stop_id: "s1",
+            time: 0,
+            timepoint_id: "s1"
+          },
+          %StopTime{
+            stop_id: "s2",
+            time: 0,
+            timepoint_id: nil
+          }
+        ]
+      }
+
+      last_trip_of_run = %Trip{
+        id: "t2",
+        route_id: "r1",
+        service_id: "service",
+        headsign: "Trip 2",
+        direction_id: 0,
+        block_id: "b",
+        shape_id: "shape2",
+        run_id: "run1",
+        stop_times: [
+          %StopTime{
+            stop_id: "s2",
+            time: 0,
+            timepoint_id: "s2"
+          },
+          %StopTime{
+            stop_id: "s1",
+            time: 0,
+            timepoint_id: "s1"
+          }
+        ]
+      }
+
+      last_trip_of_block = %Trip{
+        id: "t3",
+        route_id: "r1",
+        service_id: "service",
+        headsign: "Trip 33",
+        direction_id: 0,
+        block_id: "b",
+        shape_id: "shape3",
+        run_id: "run2",
+        stop_times: [
+          %StopTime{
+            stop_id: "s1",
+            time: 0,
+            timepoint_id: "s1"
+          },
+          %StopTime{
+            stop_id: "s2",
+            time: 0,
+            timepoint_id: "s2"
+          }
+        ]
+      }
+
+      block = [first_trip, last_trip_of_run, last_trip_of_block]
+
+      {:ok,
+       first_trip: first_trip,
+       last_trip_of_run: last_trip_of_run,
+       last_trip_of_block: last_trip_of_block,
+       block: block}
+    end
+
+    test "returns :another_trip if there are subsequent trips on this run and block", %{
+      first_trip: first_trip,
+      block: block
+    } do
+      assert Vehicle.end_of_trip_type(first_trip, block) == :another_trip
+    end
+
+    test "returns :pull_back if this is the last trip on the block", %{
+      last_trip_of_block: last_trip_of_block,
+      block: block
+    } do
+      assert Vehicle.end_of_trip_type(last_trip_of_block, block) == :pull_back
+    end
+
+    test "returns :swing_off if this is the last trip on the run, but not the block", %{
+      last_trip_of_run: last_trip_of_run,
+      block: block
+    } do
+      assert Vehicle.end_of_trip_type(last_trip_of_run, block) == :swing_off
+    end
+
+    test "defaults to :another_trip if we can't find the trip or block", %{
+      last_trip_of_block: last_trip_of_block,
+      block: block
+    } do
+      assert Vehicle.end_of_trip_type(nil, block) == :another_trip
+      assert Vehicle.end_of_trip_type(last_trip_of_block, nil) == :another_trip
+    end
+  end
+
   describe "JSON encoding" do
     test "is encodable as JSON" do
       vehicle = %Vehicle{
@@ -414,7 +525,8 @@ defmodule Realtime.VehicleTest do
         },
         timepoint_status: nil,
         scheduled_location: nil,
-        route_status: :on_route
+        route_status: :on_route,
+        end_of_trip_type: :another_trip
       }
 
       encoded_string = Jason.encode!(vehicle)

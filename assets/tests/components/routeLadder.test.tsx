@@ -62,6 +62,7 @@ const vehicles: Vehicle[] = [
     },
     scheduledLocation: null,
     routeStatus: "on_route",
+    endOfTripType: "another_trip",
   },
   {
     id: "y0479",
@@ -104,6 +105,7 @@ const vehicles: Vehicle[] = [
       },
     },
     routeStatus: "on_route",
+    endOfTripType: "another_trip",
   },
 ]
 
@@ -358,6 +360,7 @@ describe("routeLadder", () => {
       },
       scheduledLocation: null,
       routeStatus: "pulling_out",
+      endOfTripType: "another_trip",
     }
 
     const wrapper = mount(

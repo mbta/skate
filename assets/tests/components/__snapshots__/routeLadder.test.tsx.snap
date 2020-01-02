@@ -267,7 +267,7 @@ Array [
             y={7.359999999999999}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
@@ -409,7 +409,7 @@ Array [
             y={7.359999999999999}
           />
           <text
-            className="m-vehicle-icon__label"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
@@ -526,7 +526,7 @@ Array [
               y={11.5}
             />
             <text
-              className="m-vehicle-icon__label"
+              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -570,7 +570,7 @@ Array [
               y={11.5}
             />
             <text
-              className="m-vehicle-icon__label"
+              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -628,7 +628,7 @@ Array [
               y={-22.5}
             />
             <text
-              className="m-vehicle-icon__label"
+              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"

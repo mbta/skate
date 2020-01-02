@@ -112,6 +112,7 @@ describe("useVehicles", () => {
       trip_id: "t1",
       via_variant: "X",
       route_status: "on_route",
+      end_of_trip_type: "another_trip",
     },
   ]
   const vehicles: Vehicle[] = [
@@ -183,6 +184,7 @@ describe("useVehicles", () => {
         },
       },
       routeStatus: "on_route",
+      endOfTripType: "another_trip",
     },
   ]
 

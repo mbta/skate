@@ -10,6 +10,8 @@ defmodule Realtime.Vehicle do
           stop_name: String.t()
         }
 
+  @type end_of_trip_type :: :another_trip | :swing_off | :pull_back
+
   @type t :: %__MODULE__{
           id: String.t(),
           label: String.t(),
@@ -39,7 +41,8 @@ defmodule Realtime.Vehicle do
           stop_status: stop_status(),
           timepoint_status: TimepointStatus.timepoint_status() | nil,
           scheduled_location: TimepointStatus.scheduled_location() | nil,
-          route_status: RouteStatus.route_status()
+          route_status: RouteStatus.route_status(),
+          end_of_trip_type: end_of_trip_type()
         }
 
   @enforce_keys [
@@ -59,7 +62,8 @@ defmodule Realtime.Vehicle do
     :block_is_active,
     :sources,
     :stop_status,
-    :route_status
+    :route_status,
+    :end_of_trip_type
   ]
 
   @derive Jason.Encoder
@@ -93,6 +97,7 @@ defmodule Realtime.Vehicle do
     :timepoint_status,
     :scheduled_location,
     :route_status,
+    :end_of_trip_type,
     data_discrepancies: []
   ]
 
@@ -180,7 +185,8 @@ defmodule Realtime.Vehicle do
       },
       timepoint_status: timepoint_status,
       scheduled_location: scheduled_location,
-      route_status: route_status(stop_id, trip, block)
+      route_status: route_status(stop_id, trip, block),
+      end_of_trip_type: end_of_trip_type(trip, block)
     }
   end
 
@@ -266,6 +272,24 @@ defmodule Realtime.Vehicle do
       end
     else
       :on_route
+    end
+  end
+
+  @spec end_of_trip_type(Trip.t() | nil, Block.t() | nil) :: end_of_trip_type()
+  def end_of_trip_type(nil, _block), do: :another_trip
+
+  def end_of_trip_type(_trip, nil), do: :another_trip
+
+  def end_of_trip_type(trip, block) do
+    cond do
+      Block.last_trip(block) == trip ->
+        :pull_back
+
+      Block.next_trip(block, trip.id).run_id != trip.run_id ->
+        :swing_off
+
+      true ->
+        :another_trip
     end
   end
 

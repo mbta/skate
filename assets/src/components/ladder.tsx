@@ -162,6 +162,7 @@ const VehicleSvg = ({
               id: ladderVehicle.vehicleId,
               label: ladderVehicle.label,
               runId: ladderVehicle.runId,
+              endOfTripType: ladderVehicle.endOfTripType || "another_trip",
             } as Vehicle,
             settings
           )}

@@ -72,6 +72,10 @@
 .m-vehicle-icon--large {
   .m-vehicle-icon__label {
     @include font-header-big;
+
+    &--extended {
+      @include font-header-small;
+    }
   }
 
   .m-vehicle-icon__variant {

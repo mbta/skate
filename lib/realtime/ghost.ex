@@ -51,7 +51,7 @@ defmodule Realtime.Ghost do
     blocks_by_date
     |> Helpers.map_values(fn blocks ->
       Enum.reject(blocks, fn block ->
-        Map.has_key?(vehicles_by_block_id, List.first(block).block_id)
+        Map.has_key?(vehicles_by_block_id, Block.first_trip(block).block_id)
       end)
     end)
     |> Enum.flat_map(fn {date, blocks} ->
@@ -88,7 +88,7 @@ defmodule Realtime.Ghost do
               route_id: trip.route_id,
               trip_id: trip.id,
               headsign: trip.headsign,
-              block_id: List.first(block).block_id,
+              block_id: Block.first_trip(block).block_id,
               run_id: trip.run_id,
               via_variant:
                 trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id),

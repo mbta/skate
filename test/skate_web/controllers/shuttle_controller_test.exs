@@ -2,14 +2,83 @@ defmodule SkateWeb.ShuttleControllerTest do
   use SkateWeb.ConnCase
   import Test.Support.Helpers
 
-  alias Gtfs.{Route, RoutePattern}
+  alias Gtfs.{Route, RoutePattern, Shape}
   alias SkateWeb.AuthManager
 
   describe "GET /api/shuttles" do
-    setup do
+    test "when logged out, redirects you to cognito auth", %{conn: conn} do
+      conn =
+        conn
+        |> api_headers()
+        |> get("/api/shuttles")
+
+      assert redirected_to(conn) == "/auth/cognito"
+    end
+
+    test "when logged in, returns only shuttle routes", %{conn: conn} do
       reassign_env(:skate_web, :routes_fn, fn ->
         [
           %Route{id: "non-shuttle", name: "Non Shuttle", direction_names: %{}, description: ""},
+          %Route{
+            id: "shuttle",
+            name: "Shuttle",
+            direction_names: %{},
+            description: "Rail Replacement Bus"
+          }
+        ]
+      end)
+
+      reassign_env(:skate_web, :route_pattern_fn, fn _route_id, _direction_id -> nil end)
+      reassign_env(:skate_web, :shapes_fn, fn _route_id -> [%Shape{id: "id", points: []}] end)
+
+      conn =
+        conn
+        |> api_headers()
+        |> logged_in()
+        |> get("/api/shuttles")
+
+      assert %{"data" => [%{"id" => "shuttle"}]} = json_response(conn, 200)
+    end
+
+    test "only allows shuttle routes that have shapes", %{conn: conn} do
+      reassign_env(:skate_web, :routes_fn, fn ->
+        [
+          %Route{
+            id: "has_shape",
+            name: "has_shape",
+            direction_names: %{},
+            description: "Rail Replacement Bus"
+          },
+          %Route{
+            id: "no_shape",
+            name: "no_shape",
+            direction_names: %{},
+            description: "Rail Replacement Bus"
+          }
+        ]
+      end)
+
+      reassign_env(:skate_web, :route_pattern_fn, fn _route_id, _direction_id -> nil end)
+
+      reassign_env(:skate_web, :shapes_fn, fn route_id ->
+        case route_id do
+          "has_shape" -> [%Shape{id: "id", points: []}]
+          "no_shape" -> []
+        end
+      end)
+
+      conn =
+        conn
+        |> api_headers()
+        |> logged_in()
+        |> get("/api/shuttles")
+
+      assert %{"data" => [%{"id" => "has_shape"}]} = json_response(conn, 200)
+    end
+
+    test "replaces the name with the first 0-direction route pattern name", %{conn: conn} do
+      reassign_env(:skate_web, :routes_fn, fn ->
+        [
           %Route{
             id: "shuttle",
             name: "Shuttle",
@@ -28,28 +97,9 @@ defmodule SkateWeb.ShuttleControllerTest do
           representative_trip_id: ""
         }
       end)
-    end
 
-    test "when logged out, redirects you to cognito auth", %{conn: conn} do
-      conn =
-        conn
-        |> api_headers()
-        |> get("/api/shuttles")
+      reassign_env(:skate_web, :shapes_fn, fn _route_id -> [%Shape{id: "id", points: []}] end)
 
-      assert redirected_to(conn) == "/auth/cognito"
-    end
-
-    test "when logged in, returns only shuttle routes", %{conn: conn} do
-      conn =
-        conn
-        |> api_headers()
-        |> logged_in()
-        |> get("/api/shuttles")
-
-      assert %{"data" => [%{"id" => "shuttle"}]} = json_response(conn, 200)
-    end
-
-    test "replaces the name with the first 0-direction route pattern name", %{conn: conn} do
       conn =
         conn
         |> api_headers()

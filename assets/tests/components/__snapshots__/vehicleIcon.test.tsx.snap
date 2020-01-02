@@ -5,10 +5,10 @@ exports[`ghost going down puts label above it 1`] = `
   style={
     Object {
       "height": 36,
-      "width": 27.5,
+      "width": 40,
     }
   }
-  viewBox="-13.75 -23.5 27.5 36"
+  viewBox="-20 -23.5 40 36"
 >
   <g
     className="m-vehicle-icon m-vehicle-icon--medium ghost"
@@ -18,12 +18,12 @@ exports[`ghost going down puts label above it 1`] = `
       height={11}
       rx={5.5}
       ry={5.5}
-      width={26}
-      x={-13}
+      width={40}
+      x={-20}
       y={-22.5}
     />
     <text
-      className="m-vehicle-icon__label"
+      className="m-vehicle-icon__label m-vehicle-icon__label--extended"
       dominantBaseline="central"
       textAnchor="middle"
       x="0"
@@ -113,12 +113,12 @@ exports[`renders an unwrapped svg node 1`] = `
       height={11}
       rx={5.5}
       ry={5.5}
-      width={26}
-      x={-13}
+      width={40}
+      x={-20}
       y={-22.5}
     />
     <text
-      className="m-vehicle-icon__label"
+      className="m-vehicle-icon__label m-vehicle-icon__label--extended"
       dominantBaseline="central"
       textAnchor="middle"
       x="0"
@@ -133,6 +133,85 @@ exports[`renders an unwrapped svg node 1`] = `
     />
   </g>
 </svg>
+`;
+
+exports[`renders extended labels 1`] = `
+Array [
+  <svg
+    style={
+      Object {
+        "height": 64,
+        "width": 72,
+      }
+    }
+    viewBox="-36 -20 72 64"
+  >
+    <g
+      className="m-vehicle-icon m-vehicle-icon--large "
+    >
+      <rect
+        className="m-vehicle-icon__label-background"
+        height={24}
+        rx={12}
+        ry={12}
+        width={72}
+        x={-36}
+        y={19}
+      />
+      <text
+        className="m-vehicle-icon__label m-vehicle-icon__label--extended"
+        dominantBaseline="central"
+        textAnchor="middle"
+        x="0"
+        y={31}
+      >
+        SW-OFF
+      </text>
+      <path
+        className="m-vehicle-icon__triangle"
+        d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+        transform="scale(1) rotate(0) translate(-24,-22)"
+      />
+    </g>
+  </svg>,
+  <svg
+    style={
+      Object {
+        "height": 64,
+        "width": 72,
+      }
+    }
+    viewBox="-36 -20 72 64"
+  >
+    <g
+      className="m-vehicle-icon m-vehicle-icon--large "
+    >
+      <rect
+        className="m-vehicle-icon__label-background"
+        height={24}
+        rx={12}
+        ry={12}
+        width={72}
+        x={-36}
+        y={19}
+      />
+      <text
+        className="m-vehicle-icon__label m-vehicle-icon__label--extended"
+        dominantBaseline="central"
+        textAnchor="middle"
+        x="0"
+        y={31}
+      >
+        PULL-B
+      </text>
+      <path
+        className="m-vehicle-icon__triangle"
+        d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+        transform="scale(1) rotate(0) translate(-24,-22)"
+      />
+    </g>
+  </svg>,
+]
 `;
 
 exports[`renders in all directions and sizes 1`] = `
@@ -553,7 +632,7 @@ Array [
         y={6.6}
       />
       <text
-        className="m-vehicle-icon__label"
+        className="m-vehicle-icon__label m-vehicle-icon__label--normal"
         dominantBaseline="central"
         textAnchor="middle"
         x="0"
@@ -599,7 +678,7 @@ Array [
         y={7.359999999999999}
       />
       <text
-        className="m-vehicle-icon__label"
+        className="m-vehicle-icon__label m-vehicle-icon__label--normal"
         dominantBaseline="central"
         textAnchor="middle"
         x="0"
@@ -645,7 +724,7 @@ Array [
         y={-17.6}
       />
       <text
-        className="m-vehicle-icon__label"
+        className="m-vehicle-icon__label m-vehicle-icon__label--normal"
         dominantBaseline="central"
         textAnchor="middle"
         x="0"
@@ -691,7 +770,7 @@ Array [
         y={7.359999999999999}
       />
       <text
-        className="m-vehicle-icon__label"
+        className="m-vehicle-icon__label m-vehicle-icon__label--normal"
         dominantBaseline="central"
         textAnchor="middle"
         x="0"
@@ -737,7 +816,7 @@ Array [
         y={11.5}
       />
       <text
-        className="m-vehicle-icon__label"
+        className="m-vehicle-icon__label m-vehicle-icon__label--normal"
         dominantBaseline="central"
         textAnchor="middle"
         x="0"
@@ -783,7 +862,7 @@ Array [
         y={12.75}
       />
       <text
-        className="m-vehicle-icon__label"
+        className="m-vehicle-icon__label m-vehicle-icon__label--normal"
         dominantBaseline="central"
         textAnchor="middle"
         x="0"
@@ -829,7 +908,7 @@ Array [
         y={-22.5}
       />
       <text
-        className="m-vehicle-icon__label"
+        className="m-vehicle-icon__label m-vehicle-icon__label--normal"
         dominantBaseline="central"
         textAnchor="middle"
         x="0"
@@ -875,7 +954,7 @@ Array [
         y={12.75}
       />
       <text
-        className="m-vehicle-icon__label"
+        className="m-vehicle-icon__label m-vehicle-icon__label--normal"
         dominantBaseline="central"
         textAnchor="middle"
         x="0"
@@ -921,7 +1000,7 @@ Array [
         y={19}
       />
       <text
-        className="m-vehicle-icon__label"
+        className="m-vehicle-icon__label m-vehicle-icon__label--normal"
         dominantBaseline="central"
         textAnchor="middle"
         x="0"
@@ -967,7 +1046,7 @@ Array [
         y={21}
       />
       <text
-        className="m-vehicle-icon__label"
+        className="m-vehicle-icon__label m-vehicle-icon__label--normal"
         dominantBaseline="central"
         textAnchor="middle"
         x="0"
@@ -1013,7 +1092,7 @@ Array [
         y={-43}
       />
       <text
-        className="m-vehicle-icon__label"
+        className="m-vehicle-icon__label m-vehicle-icon__label--normal"
         dominantBaseline="central"
         textAnchor="middle"
         x="0"
@@ -1059,7 +1138,7 @@ Array [
         y={21}
       />
       <text
-        className="m-vehicle-icon__label"
+        className="m-vehicle-icon__label m-vehicle-icon__label--normal"
         dominantBaseline="central"
         textAnchor="middle"
         x="0"

@@ -432,7 +432,7 @@ defmodule GtfsTest do
     end
   end
 
-  describe "shape" do
+  describe "shapes" do
     test "returns the shapes for all trips corresponding to the requested shuttle route" do
       pid =
         Gtfs.start_mocked(%{
@@ -463,18 +463,7 @@ defmodule GtfsTest do
           }
         })
 
-      assert Gtfs.shape("route", pid) == [
-               %Shape{
-                 id: "shape1",
-                 points: [
-                   %Point{
-                     shape_id: "shape1",
-                     lat: 42.373178,
-                     lon: -71.118170,
-                     sequence: 0
-                   }
-                 ]
-               },
+      assert Gtfs.shapes("route", pid) == [
                %Shape{
                  id: "shape2",
                  points: [
@@ -482,6 +471,17 @@ defmodule GtfsTest do
                      shape_id: "shape2",
                      lat: 43.373178,
                      lon: -72.118170,
+                     sequence: 0
+                   }
+                 ]
+               },
+               %Shape{
+                 id: "shape1",
+                 points: [
+                   %Point{
+                     shape_id: "shape1",
+                     lat: 42.373178,
+                     lon: -71.118170,
                      sequence: 0
                    }
                  ]
@@ -518,7 +518,7 @@ defmodule GtfsTest do
           }
         })
 
-      assert Gtfs.shape("route", pid) == [
+      assert Gtfs.shapes("route", pid) == [
                %Shape{
                  id: "shape1",
                  points: [
@@ -562,7 +562,7 @@ defmodule GtfsTest do
           }
         })
 
-      assert Gtfs.shape("route", pid) == [
+      assert Gtfs.shapes("route", pid) == [
                %Shape{
                  id: "shape",
                  points: [
@@ -616,7 +616,7 @@ defmodule GtfsTest do
           }
         })
 
-      assert Gtfs.shape("route", pid) == nil
+      assert Gtfs.shapes("route", pid) == []
     end
   end
 
