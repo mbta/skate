@@ -32,7 +32,7 @@ defmodule Concentrate.Supervisor do
 
     consumers = consumers()
 
-    Enum.concat([source_children, merge, consumers])
+    Enum.concat([source_children, [merge], consumers])
   end
 
   def sources(opts) do
@@ -83,14 +83,13 @@ defmodule Concentrate.Supervisor do
   end
 
   def merge(source_names) do
-    sources = outputs_with_options(source_names, max_demand: 1)
-
-    [
+    Supervisor.child_spec(
       {
         Concentrate.Merge,
-        name: :merge, subscribe_to: sources, buffer_size: 1
-      }
-    ]
+        [name: :merge, sources: source_names]
+      },
+      id: :merge
+    )
   end
 
   def consumers do
@@ -109,11 +108,5 @@ defmodule Concentrate.Supervisor do
 
   defp child_ids(children) do
     for child <- children, do: child.id
-  end
-
-  def outputs_with_options(outputs, options) do
-    for name <- outputs do
-      {name, options}
-    end
   end
 end
