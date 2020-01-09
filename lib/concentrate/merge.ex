@@ -14,21 +14,18 @@ defmodule Concentrate.Merge do
 
   @type source_tag :: atom()
   @type state :: %__MODULE__{
-    tags: %{GenStage.from() => source_tag()},
-    latest_data: %{source_tag() => [VehiclePosition.t()] | nil}
-  }
+          tags: %{GenStage.from() => source_tag()},
+          latest_data: %{source_tag() => [VehiclePosition.t()] | nil}
+        }
 
-  defstruct [
-    tags: %{},
-    latest_data: %{}
-  ]
+  defstruct tags: %{},
+            latest_data: %{}
 
   @type opts :: %{
-    name: atom(),
-    sources: [source_tag()]
-  }
+          name: atom(),
+          sources: [source_tag()]
+        }
   @start_link_opts [:name]
-
 
   def start_link(opts \\ []) do
     start_link_opts = Keyword.take(opts, @start_link_opts)
@@ -39,6 +36,7 @@ defmodule Concentrate.Merge do
   @impl GenStage
   def init(opts) do
     source_tags = Keyword.get(opts, :sources, [])
+
     state = %__MODULE__{
       tags: %{},
       latest_data:
@@ -47,7 +45,10 @@ defmodule Concentrate.Merge do
         |> Map.new()
     }
 
-    opts = [ subscribe_to: Enum.map( source_tags, fn source_tag -> {source_tag, [ max_demand: 1, tag: source_tag ]} end) ]
+    opts = [
+      subscribe_to:
+        Enum.map(source_tags, fn source_tag -> {source_tag, [max_demand: 1, tag: source_tag]} end)
+    ]
 
     {:producer_consumer, state, opts}
   end
@@ -69,7 +70,7 @@ defmodule Concentrate.Merge do
     new_data = List.last(events)
 
     latest_data = Map.put(state.latest_data, source_tag, new_data)
-    state = %{ state | latest_data: latest_data }
+    state = %{state | latest_data: latest_data}
 
     merge = &Mergeable.impl_for!(%VehiclePosition{}).merge/2
 
