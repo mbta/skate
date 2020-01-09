@@ -42,6 +42,7 @@ describe("usePersistedStateReducer", () => {
         savedQueries: [],
       },
       selectedRouteIds: ["1", "2"],
+      ladderDirections: {},
       selectedShuttleRouteIds: [],
       selectedShuttleRunIds: [],
       selectedVehicleId: "2",
@@ -76,6 +77,7 @@ describe("usePersistedStateReducer", () => {
         savedQueries: [],
       },
       selectedRouteIds: ["1", "2"],
+      ladderDirections: {},
       selectedShuttleRouteIds: [],
       selectedShuttleRunIds: [],
       selectedVehicleId: "2",
@@ -92,6 +94,7 @@ describe("usePersistedStateReducer", () => {
         savedQueries: [],
       },
       selectedRouteIds: ["28", "39"],
+      ladderDirections: {},
       selectedShuttleRouteIds: [],
       selectedShuttleRunIds: [],
       selectedVehicleId: "2",
@@ -138,6 +141,10 @@ describe("filter", () => {
         ["a3", "b1"],
       ])
     ).toEqual({ a1: "a1", a3: { b1: "b1" } })
+  })
+
+  test("keys that don't exist don't show up in the result", () => {
+    expect(filter({}, [["key"]])).toEqual({})
   })
 })
 

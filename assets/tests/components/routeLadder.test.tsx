@@ -1,9 +1,9 @@
 import { mount } from "enzyme"
 import React from "react"
 import renderer, { act } from "react-test-renderer"
-import { LadderDirection } from "../../src/components/ladder"
 import RouteLadder, { groupByPosition } from "../../src/components/routeLadder"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
+import { LadderDirection } from "../../src/models/ladderDirection"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import {
   Ghost,
@@ -12,7 +12,12 @@ import {
   VehicleOrGhost,
 } from "../../src/realtime.d"
 import { Route } from "../../src/schedule.d"
-import { deselectRoute, initialState, selectVehicle } from "../../src/state"
+import {
+  deselectRoute,
+  flipLadder,
+  initialState,
+  selectVehicle,
+} from "../../src/state"
 
 // tslint:disable: object-literal-sort-keys
 
@@ -286,6 +291,7 @@ describe("routeLadder", () => {
   })
 
   test("clicking the reverse button reverses the order of the timepoints", () => {
+    const mockDispatch = jest.fn()
     const route: Route = {
       id: "28",
       directionNames: { 0: "Outbound", 1: "Inbound" },
@@ -294,20 +300,20 @@ describe("routeLadder", () => {
     const timepoints = ["MATPN", "WELLH", "MORTN"]
 
     const wrapper = mount(
-      <RouteLadder
-        route={route}
-        timepoints={timepoints}
-        vehiclesAndGhosts={undefined}
-        selectedVehicleId={undefined}
-      />
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+        <RouteLadder
+          route={route}
+          timepoints={timepoints}
+          vehiclesAndGhosts={undefined}
+          selectedVehicleId={undefined}
+        />
+      </StateDispatchProvider>
     )
     act(() => {
       wrapper.find(".m-route-ladder__reverse").simulate("click")
     })
 
-    expect(
-      wrapper.find(".m-ladder__timepoint-name").map(node => node.text())
-    ).toEqual(["MORTN", "WELLH", "MATPN"])
+    expect(mockDispatch).toHaveBeenCalledWith(flipLadder("28"))
   })
 
   test("clicking an incoming vehicle selects that vehicle", () => {

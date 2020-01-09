@@ -1,3 +1,4 @@
+import { LadderDirection } from "../src/models/ladderDirection"
 import { VehicleId } from "../src/realtime.d"
 import { VehicleLabelSetting } from "../src/settings"
 import * as State from "../src/state"
@@ -29,6 +30,19 @@ describe("reducer", () => {
       selectedRouteIds: ["28"],
     }
     const newState = reducer(state, State.deselectRoute("39"))
+    expect(newState).toEqual(expectedState)
+  })
+
+  test("flipLadder", () => {
+    const state = {
+      ...initialState,
+      ladderDirections: { route: LadderDirection.ZeroToOne },
+    }
+    const expectedState = {
+      ...initialState,
+      ladderDirections: { route: LadderDirection.OneToZero },
+    }
+    const newState = reducer(state, State.flipLadder("route"))
     expect(newState).toEqual(expectedState)
   })
 

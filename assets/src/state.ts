@@ -1,4 +1,9 @@
 import { Dispatch as ReactDispatch } from "react"
+import {
+  emptyLadderDirectionsByRouteId,
+  flipLadderDirectionForRoute,
+  LadderDirections,
+} from "./models/ladderDirection"
 import { RunId, VehicleId } from "./realtime.d"
 import { RouteId } from "./schedule.d"
 import { defaultSettings, Settings, VehicleLabelSetting } from "./settings"
@@ -13,6 +18,7 @@ export interface State {
   pickerContainerIsVisible: boolean
   searchPageState: SearchPageState
   selectedRouteIds: RouteId[]
+  ladderDirections: LadderDirections
   selectedShuttleRouteIds: RouteId[]
   selectedShuttleRunIds: RunId[] | "all"
   selectedVehicleId?: VehicleId
@@ -23,6 +29,7 @@ export const initialState: State = {
   pickerContainerIsVisible: true,
   searchPageState: initialSearchPageState,
   selectedRouteIds: [],
+  ladderDirections: emptyLadderDirectionsByRouteId,
   selectedShuttleRouteIds: [],
   selectedShuttleRunIds: "all",
   selectedVehicleId: undefined,
@@ -50,6 +57,18 @@ interface DeselectRouteAction {
 
 export const deselectRoute = (routeId: RouteId): DeselectRouteAction => ({
   type: "DESELECT_ROUTE",
+  payload: { routeId },
+})
+
+interface FlipLadderAction {
+  type: "FLIP_LADDER"
+  payload: {
+    routeId: RouteId
+  }
+}
+
+export const flipLadder = (routeId: RouteId): FlipLadderAction => ({
+  type: "FLIP_LADDER",
   payload: { routeId },
 })
 
@@ -192,6 +211,7 @@ export const setShuttleVehicleLabelSetting = (
 type Action =
   | SelectRouteAction
   | DeselectRouteAction
+  | FlipLadderAction
   | SelectShuttleRunAction
   | DeselectShuttleRunAction
   | SelectAllShuttleRunsAction
@@ -233,6 +253,19 @@ const selectedRouteIdsReducer = (
       return [...state, action.payload.routeId]
     case "DESELECT_ROUTE":
       return state.filter(id => id !== action.payload.routeId)
+    default:
+      return state
+  }
+}
+
+const ladderDirectionsReducer = (
+  state: LadderDirections,
+  action: Action
+): LadderDirections => {
+  switch (action.type) {
+    case "FLIP_LADDER":
+      const routeId = action.payload.routeId
+      return flipLadderDirectionForRoute(state, routeId)
     default:
       return state
   }
@@ -308,6 +341,7 @@ export const reducer = (state: State, action: Action): State => ({
   ),
   searchPageState: searchReducer(state.searchPageState, action as SearchAction),
   selectedRouteIds: selectedRouteIdsReducer(state.selectedRouteIds, action),
+  ladderDirections: ladderDirectionsReducer(state.ladderDirections, action),
   selectedShuttleRouteIds: selectedShuttleRouteIdsReducer(
     state.selectedShuttleRouteIds,
     action

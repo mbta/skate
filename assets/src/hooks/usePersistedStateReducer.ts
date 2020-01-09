@@ -8,6 +8,7 @@ type Key = string[]
 
 const PERSISTED_KEYS: Key[] = [
   ["selectedRouteIds"],
+  ["ladderDirections"],
   ["selectedShuttleRouteIds"],
   ["selectedShuttleRunIds"],
   ["settings"],

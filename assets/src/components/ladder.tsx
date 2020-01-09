@@ -5,9 +5,13 @@ import { partition } from "../helpers/array"
 import vehicleLabel from "../helpers/vehicleLabel"
 import featureIsEnabled from "../laboratoryFeatures"
 import {
+  LadderDirection,
+  orderTimepoints,
+  VehicleDirection,
+} from "../models/ladderDirection"
+import {
   LadderVehicle,
   ladderVehiclesFromVehicles,
-  VehicleDirection,
 } from "../models/ladderVehicle"
 import { isGhost } from "../models/vehicle"
 import { statusClass } from "../models/vehicleStatus"
@@ -29,23 +33,10 @@ export interface Props {
   selectedVehicleId?: VehicleId
 }
 
-// Timepoints come from the API in the ZeroToOne direction
-export enum LadderDirection {
-  ZeroToOne,
-  OneToZero,
-}
-
 export type TimepointStatusYFunc = (
   timepointStatus: VehicleTimepointStatus | null,
   direction: VehicleDirection
 ) => number
-
-export const flipLadderDirection = (
-  ladderDirection: LadderDirection
-): LadderDirection =>
-  ladderDirection === LadderDirection.ZeroToOne
-    ? LadderDirection.OneToZero
-    : LadderDirection.ZeroToOne
 
 export const CENTER_TO_LINE = 40 // x-distance between the center of the ladder and the center of the line
 const MARGIN_TOP_BOTTOM = 20 // space between the top of the route and the top of the viewbox
@@ -59,11 +50,10 @@ const Ladder = ({
   const elementRef = useRef(null)
   const { height } = useComponentSize(elementRef)
 
-  const orderedTimepoints: TimepointId[] =
-    // Use slice to make a copy of the array before destructively reversing
-    ladderDirection === LadderDirection.OneToZero
-      ? timepoints.slice().reverse()
-      : timepoints
+  const orderedTimepoints: TimepointId[] = orderTimepoints(
+    timepoints,
+    ladderDirection
+  )
 
   const timepointSpacingY: number =
     (height - MARGIN_TOP_BOTTOM * 2) / (timepoints.length - 1)

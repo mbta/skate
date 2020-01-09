@@ -1,31 +1,12 @@
-import { LadderDirection } from "../../src/components/ladder"
+import { VehicleDirection } from "../../src/models/ladderDirection"
 import {
   areOverlapping,
   byDirectionAndY,
-  directionOnLadder,
   firstOpenLane,
   LadderVehicle,
   putIntoLanes,
-  VehicleDirection,
 } from "../../src/models/ladderVehicle"
 import { DrawnStatus, HeadwaySpacing } from "../../src/models/vehicleStatus"
-
-describe("directionOnLadder", () => {
-  test("determines the vehicle direction relative the ladder direction", () => {
-    expect(directionOnLadder(0, LadderDirection.ZeroToOne)).toEqual(
-      VehicleDirection.Up
-    )
-    expect(directionOnLadder(0, LadderDirection.OneToZero)).toEqual(
-      VehicleDirection.Down
-    )
-    expect(directionOnLadder(1, LadderDirection.ZeroToOne)).toEqual(
-      VehicleDirection.Down
-    )
-    expect(directionOnLadder(1, LadderDirection.OneToZero)).toEqual(
-      VehicleDirection.Up
-    )
-  })
-})
 
 describe("putIntoLanes", () => {
   test("adds lane properties", () => {

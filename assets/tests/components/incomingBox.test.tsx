@@ -1,7 +1,7 @@
 import React from "react"
 import renderer from "react-test-renderer"
 import IncomingBox from "../../src/components/incomingBox"
-import { LadderDirection } from "../../src/components/ladder"
+import { LadderDirection } from "../../src/models/ladderDirection"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../src/realtime"
 
