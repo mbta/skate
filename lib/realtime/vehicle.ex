@@ -1,6 +1,6 @@
 defmodule Realtime.Vehicle do
   alias Concentrate.{DataDiscrepancy, VehiclePosition}
-  alias Gtfs.{Block, Direction, Route, RoutePattern, Stop, Trip}
+  alias Gtfs.{Block, Direction, Route, RoutePattern, Run, Stop, Trip}
   alias Realtime.Headway
   alias Realtime.RouteStatus
   alias Realtime.TimepointStatus
@@ -110,6 +110,7 @@ defmodule Realtime.Vehicle do
     trip_id = VehiclePosition.trip_id(vehicle_position)
     block_id = VehiclePosition.block_id(vehicle_position)
     stop_id = VehiclePosition.stop_id(vehicle_position)
+    run_id = ensure_run_id_hyphen(VehiclePosition.run_id(vehicle_position))
 
     trip = trip_fn.(trip_id)
     route_id = VehiclePosition.route_id(vehicle_position) || (trip && trip.route_id)
@@ -168,7 +169,7 @@ defmodule Realtime.Vehicle do
       block_id: block_id,
       operator_id: VehiclePosition.operator_id(vehicle_position),
       operator_name: VehiclePosition.operator_name(vehicle_position),
-      run_id: vehicle_position |> VehiclePosition.run_id() |> ensure_run_id_hyphen(),
+      run_id: run_id,
       headway_secs: headway_secs,
       headway_spacing: headway_spacing,
       previous_vehicle_id: VehiclePosition.previous_vehicle_id(vehicle_position),
@@ -186,7 +187,7 @@ defmodule Realtime.Vehicle do
       timepoint_status: timepoint_status,
       scheduled_location: scheduled_location,
       route_status: route_status(stop_id, trip, block),
-      end_of_trip_type: end_of_trip_type(trip, block)
+      end_of_trip_type: end_of_trip_type(block, trip, run_id, stop_id)
     }
   end
 
@@ -275,21 +276,47 @@ defmodule Realtime.Vehicle do
     end
   end
 
-  @spec end_of_trip_type(Trip.t() | nil, Block.t() | nil) :: end_of_trip_type()
-  def end_of_trip_type(nil, _block), do: :another_trip
+  @spec end_of_trip_type(
+          Block.t() | nil,
+          Trip.t() | nil,
+          Run.id() | nil,
+          Stop.id() | nil
+        ) :: end_of_trip_type()
+  def end_of_trip_type(
+        block,
+        trip,
+        run_id,
+        stop_id
+      ) do
+    if block == nil || trip == nil || stop_id == nil || run_id == nil do
+      :another_trip
+    else
+      # next trip from an operations perspective, not a data perspective
+      # if it's waiting to start the next trip, then next_trip is that trip
+      # if it's in the middle of a trip, then next_trip is the trip after this one
+      # if it's the last trip of the block, then next_trip is :last
+      # if something goes wrong and we can't find a next_trip, then :err
+      next_trip =
+        if stop_id == List.first(trip.stop_times).stop_id do
+          trip
+        else
+          Block.next_trip(block, trip.id)
+        end
 
-  def end_of_trip_type(_trip, nil), do: :another_trip
+      case next_trip do
+        :err ->
+          :another_trip
 
-  def end_of_trip_type(trip, block) do
-    cond do
-      Block.last_trip(block) == trip ->
-        :pull_back
+        :last ->
+          :pull_back
 
-      Block.next_trip(block, trip.id).run_id != trip.run_id ->
-        :swing_off
-
-      true ->
-        :another_trip
+        _ ->
+          if next_trip.run_id != run_id do
+            :swing_off
+          else
+            :another_trip
+          end
+      end
     end
   end
 

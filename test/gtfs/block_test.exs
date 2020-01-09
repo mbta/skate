@@ -107,12 +107,12 @@ defmodule Gtfs.BlockTest do
       assert Block.next_trip(@block, @trip1.id) == @trip2
     end
 
-    test "returns nil if given the last trip in the block" do
-      assert Block.next_trip(@block, @trip2.id) == nil
+    test "returns :last if given the last trip in the block" do
+      assert Block.next_trip(@block, @trip2.id) == :last
     end
 
-    test "returns nil if the given trip isn't found" do
-      assert Block.next_trip(@block, "t3") == nil
+    test "returns :err if the given trip isn't found" do
+      assert Block.next_trip(@block, "t3") == :err
     end
   end
 
