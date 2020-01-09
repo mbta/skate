@@ -169,6 +169,9 @@ defmodule Realtime.TimepointStatusTest do
       assert TimepointStatus.scheduled_location(block, now) == %{
                route_id: "28",
                direction_id: 1,
+               trip_id: "1",
+               headsign: "headsign",
+               via_variant: "_",
                timepoint_status: %{
                  timepoint_id: "tp1",
                  fraction_until_timepoint: 0.0
@@ -208,6 +211,9 @@ defmodule Realtime.TimepointStatusTest do
       assert TimepointStatus.scheduled_location(block, now) == %{
                route_id: "28",
                direction_id: 1,
+               trip_id: "1",
+               headsign: "headsign",
+               via_variant: "_",
                timepoint_status: %{
                  timepoint_id: "tp2",
                  fraction_until_timepoint: 0.0
@@ -264,6 +270,9 @@ defmodule Realtime.TimepointStatusTest do
       assert TimepointStatus.scheduled_location(block, now) == %{
                route_id: "28",
                direction_id: 0,
+               trip_id: "0",
+               headsign: "headsign",
+               via_variant: "_",
                timepoint_status: %{
                  timepoint_id: "tp2",
                  fraction_until_timepoint: 0.0
@@ -296,6 +305,9 @@ defmodule Realtime.TimepointStatusTest do
       assert TimepointStatus.scheduled_location(block, now) == %{
                route_id: "28",
                direction_id: 1,
+               trip_id: "1",
+               headsign: "headsign",
+               via_variant: "_",
                timepoint_status: %{
                  timepoint_id: "3",
                  fraction_until_timepoint: 0.25

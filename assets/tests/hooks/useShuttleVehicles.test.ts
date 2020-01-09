@@ -57,7 +57,11 @@ const shuttlesData = [
     schedule_adherence_secs: 0,
     scheduled_headway_secs: 120,
     scheduled_location: {
+      route_id: "39",
       direction_id: 0,
+      trip_id: "scheduled trip",
+      headsign: "scheduled headsign",
+      via_variant: "scheduled via variant",
       timepoint_status: {
         fraction_until_timepoint: 0.5,
         timepoint_id: "tp1",
@@ -141,7 +145,11 @@ const shuttles: Vehicle[] = [
       fractionUntilTimepoint: 0.5,
     } as VehicleTimepointStatus,
     scheduledLocation: {
+      routeId: "39",
       directionId: 0,
+      tripId: "scheduled trip",
+      headsign: "scheduled headsign",
+      viaVariant: "scheduled via variant",
       timepointStatus: {
         timepointId: "tp1",
         fractionUntilTimepoint: 0.5,

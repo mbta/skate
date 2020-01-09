@@ -93,7 +93,11 @@ describe("ladder", () => {
           timepointId: "t2",
         },
         scheduledLocation: {
+          routeId: "route",
           directionId: 0,
+          tripId: "scheduled trip",
+          headsign: "scheduled headsign",
+          viaVariant: "scheduled via variant",
           timepointStatus: {
             timepointId: "t2",
             fractionUntilTimepoint: 0.75,
@@ -263,7 +267,11 @@ describe("ladder", () => {
           timepointId: "t2",
         },
         scheduledLocation: {
+          routeId: "route",
           directionId: 0,
+          tripId: "scheduled trip",
+          headsign: "scheduled headsign",
+          viaVariant: "scheduled via variant",
           timepointStatus: {
             timepointId: "t2",
             fractionUntilTimepoint: 0.75,
@@ -326,7 +334,11 @@ describe("ladder", () => {
           timepointId: "t2",
         },
         scheduledLocation: {
+          routeId: "route",
           directionId: 1,
+          tripId: "scheduled trip",
+          headsign: "scheduled headsign",
+          viaVariant: "scheduled via variant",
           timepointStatus: {
             timepointId: "t2",
             fractionUntilTimepoint: 0.75,
@@ -425,7 +437,11 @@ describe("ladder", () => {
           timepointId: "t2",
         },
         scheduledLocation: {
+          routeId: "route",
           directionId: 0,
+          tripId: "scheduled trip",
+          headsign: "scheduled headsign",
+          viaVariant: "scheduled via variant",
           timepointStatus: {
             timepointId: "t2",
             fractionUntilTimepoint: 0.75,
@@ -604,7 +620,11 @@ describe("ladder", () => {
           timepointId: "t1",
         },
         scheduledLocation: {
+          routeId: "route",
           directionId: 1,
+          tripId: "scheduled trip",
+          headsign: "scheduled headsign",
+          viaVariant: "scheduled via variant",
           timepointStatus: {
             timepointId: "t1",
             fractionUntilTimepoint: 0.4,
@@ -676,7 +696,11 @@ describe("ladder", () => {
       },
       timepointStatus: null,
       scheduledLocation: {
+        routeId: "71",
         directionId: 0,
+        tripId: "scheduled trip",
+        headsign: "scheduled headsign",
+        viaVariant: "scheduled via variant",
         timepointStatus: {
           timepointId: "mtsty",
           fractionUntilTimepoint: 0,

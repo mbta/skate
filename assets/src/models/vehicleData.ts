@@ -80,7 +80,11 @@ interface DataDiscrepancySourceData {
 }
 
 interface VehicleScheduledLocationData {
+  route_id: RouteId
   direction_id: DirectionId
+  trip_id: string
+  headsign: string
+  via_variant: string | null
   timepoint_status: VehicleTimepointStatusData
 }
 
@@ -189,7 +193,11 @@ const dataDiscrepanciesFromData = (
 const vehicleScheduledLocationFromData = (
   vehicleScheduledLocationData: VehicleScheduledLocationData
 ): VehicleScheduledLocation => ({
+  routeId: vehicleScheduledLocationData.route_id,
   directionId: vehicleScheduledLocationData.direction_id,
+  tripId: vehicleScheduledLocationData.trip_id,
+  headsign: vehicleScheduledLocationData.headsign,
+  viaVariant: vehicleScheduledLocationData.via_variant,
   timepointStatus: vehicleTimepointStatusFromData(
     vehicleScheduledLocationData.timepoint_status
   ),

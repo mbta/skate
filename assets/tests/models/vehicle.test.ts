@@ -73,7 +73,11 @@ const vehicle: Vehicle = {
     fractionUntilTimepoint: 0.5,
   } as VehicleTimepointStatus,
   scheduledLocation: {
+    routeId: "39",
     directionId: 0,
+    tripId: "scheduled trip",
+    headsign: "scheduled headsign",
+    viaVariant: "scheduled via variant",
     timepointStatus: {
       timepointId: "tp1",
       fractionUntilTimepoint: 0.5,

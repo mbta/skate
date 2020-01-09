@@ -7,7 +7,9 @@ import {
   LadderDirection,
   VehicleDirection,
 } from "../models/ladderDirection"
-import { VehicleId, VehicleOrGhost } from "../realtime.d"
+import { isVehicle } from "../models/vehicle"
+import { drawnStatus } from "../models/vehicleStatus"
+import { Ghost, Vehicle, VehicleId, VehicleOrGhost } from "../realtime.d"
 import { LoadableTimepoints, Route, RouteId } from "../schedule.d"
 import { deselectRoute, flipLadder } from "../state"
 import CloseButton from "./closeButton"
@@ -119,7 +121,7 @@ export const groupByPosition = (
   routeId: RouteId,
   ladderDirection: LadderDirection
 ): ByPosition => {
-  return (vehiclesAndGhosts || []).reduce(
+  const realVehicles = (vehiclesAndGhosts || []).reduce(
     (acc: ByPosition, current: VehicleOrGhost) => {
       if (current.routeId === routeId) {
         switch (current.routeStatus) {
@@ -157,6 +159,56 @@ export const groupByPosition = (
       incoming: [],
     } as ByPosition
   )
+
+  const incomingGhosts: Ghost[] = generateVirtualGhostsForLateIncomingVehicles(
+    realVehicles.incoming
+  )
+
+  return {
+    ...realVehicles,
+    onRoute: [...realVehicles.onRoute, ...incomingGhosts],
+  }
 }
+
+export const generateVirtualGhostsForLateIncomingVehicles = (
+  incomingVehiclesOrGhosts: VehicleOrGhost[]
+): Ghost[] =>
+  incomingVehiclesOrGhosts
+    .filter(
+      vehicleOrGhost =>
+        isVehicle(vehicleOrGhost) &&
+        hasAScheduleLocation(vehicleOrGhost) &&
+        isLateForScheduledTrip(vehicleOrGhost)
+    )
+    .map(vehicle => ghostFromVehicle(vehicle as Vehicle))
+
+const hasAScheduleLocation = (vehicle: Vehicle): boolean =>
+  vehicle.scheduledLocation != null
+
+const isLateForScheduledTrip = (vehicle: Vehicle): boolean =>
+  drawnStatus(scheduledVehicle(vehicle)) === "late"
+
+const scheduledVehicle = (vehicle: Vehicle): Vehicle => ({
+  ...vehicle,
+  directionId: vehicle.scheduledLocation!.directionId,
+  routeId: vehicle.scheduledLocation!.routeId,
+  tripId: vehicle.scheduledLocation!.tripId,
+  headsign: vehicle.scheduledLocation!.headsign,
+  viaVariant: vehicle.scheduledLocation!.viaVariant,
+})
+
+const ghostFromVehicle = (vehicle: Vehicle): Ghost => ({
+  id: `ghost-incoming-${vehicle.id}`,
+  directionId: vehicle.scheduledLocation!.directionId,
+  routeId: vehicle.scheduledLocation!.routeId,
+  tripId: vehicle.scheduledLocation!.tripId,
+  headsign: vehicle.scheduledLocation!.headsign || "",
+  blockId: vehicle.blockId,
+  runId: vehicle.runId,
+  viaVariant: vehicle.scheduledLocation!.viaVariant,
+  layoverDepartureTime: null,
+  scheduledTimepointStatus: vehicle.scheduledLocation!.timepointStatus,
+  routeStatus: "on_route",
+})
 
 export default RouteLadder

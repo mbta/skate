@@ -84,7 +84,11 @@ export interface VehicleStopStatus {
 }
 
 export interface VehicleScheduledLocation {
+  routeId: RouteId
   directionId: DirectionId
+  tripId: TripId
+  headsign: string | null
+  viaVariant: ViaVariant | null
   timepointStatus: VehicleTimepointStatus
 }
 

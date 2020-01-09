@@ -38,7 +38,11 @@ const vehicle: Vehicle = {
   },
   timepointStatus: { timepointId: "hynes", fractionUntilTimepoint: 0.5 },
   scheduledLocation: {
+    routeId: "1",
     directionId: 1,
+    tripId: "scheduled trip",
+    headsign: "scheduled headsign",
+    viaVariant: "scheduled via variant",
     timepointStatus: {
       timepointId: "hynes",
       fractionUntilTimepoint: 0.7574074074074074,
@@ -105,7 +109,11 @@ describe("HeadwayDiagram", () => {
       },
       timepointStatus: { timepointId: "cntsq", fractionUntilTimepoint: 0 },
       scheduledLocation: {
+        routeId: "1",
         directionId: 1,
+        tripId: "scheduled trip",
+        headsign: "scheduled headsign",
+        viaVariant: "scheduled via variant",
         timepointStatus: {
           timepointId: "mit",
           fractionUntilTimepoint: 0.004761904761904762,
@@ -154,7 +162,11 @@ describe("HeadwayDiagram", () => {
       },
       timepointStatus: { timepointId: "svrhm", fractionUntilTimepoint: 0.5 },
       scheduledLocation: {
+        routeId: "22",
         directionId: 0,
+        tripId: "scheduled trip",
+        headsign: "scheduled headsign",
+        viaVariant: "scheduled via variant",
         timepointStatus: {
           timepointId: "frnpk",
           fractionUntilTimepoint: 0.10416666666666667,

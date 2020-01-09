@@ -37,7 +37,11 @@ const vehicle: Vehicle = {
     timepointId: "MORTN",
   },
   scheduledLocation: {
+    routeId: "1",
     directionId: 1,
+    tripId: "scheduled trip",
+    headsign: "scheduled headsign",
+    viaVariant: "scheduled via variant",
     timepointStatus: {
       timepointId: "MORTN",
       fractionUntilTimepoint: 0.0,
