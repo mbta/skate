@@ -16,6 +16,7 @@ defmodule Realtime.TimepointStatus do
             route_id: Route.id(),
             direction_id: Direction.id(),
             trip_id: Trip.id() | nil,
+            time_since_trip_start_time: integer(),
             headsign: String.t() | nil,
             via_variant: RoutePattern.via_variant() | nil,
             timepoint_status: timepoint_status()
@@ -68,45 +69,32 @@ defmodule Realtime.TimepointStatus do
         Util.Time.time_of_day_add_minutes(Block.start_time(block), -60)
       )
 
-    trip = scheduled_trip_on_block(block, now_time_of_day)
-    timepoints = Enum.filter(trip.stop_times, &StopTime.is_timepoint?/1)
+    trip = Block.trip_at_time(block, now_time_of_day)
 
-    case timepoints do
-      [] ->
+    case trip do
+      nil ->
         nil
 
       _ ->
-        timepoint_status = scheduled_timepoint_status(timepoints, now_time_of_day)
+        timepoints = Enum.filter(trip.stop_times, &StopTime.is_timepoint?/1)
 
-        %{
-          route_id: trip.route_id,
-          direction_id: trip.direction_id,
-          trip_id: trip.id,
-          headsign: trip.headsign,
-          via_variant: RoutePattern.via_variant(trip.route_pattern_id),
-          timepoint_status: timepoint_status
-        }
-    end
-  end
+        case timepoints do
+          [] ->
+            nil
 
-  @spec scheduled_trip_on_block(Block.t(), Util.Time.time_of_day()) :: Trip.t()
-  defp scheduled_trip_on_block(block, now) do
-    cond do
-      now <= Block.start_time(block) ->
-        # Block isn't scheduled to have started yet
-        List.first(block)
+          _ ->
+            timepoint_status = scheduled_timepoint_status(timepoints, now_time_of_day)
 
-      now >= Block.end_time(block) ->
-        # Block is scheduled to have finished
-        List.last(block)
-
-      true ->
-        # Either the current trip or the trip that just ended (the last trip to have started)
-        block
-        |> Enum.take_while(fn trip ->
-          Trip.start_time(trip) <= now
-        end)
-        |> List.last()
+            %{
+              route_id: trip.route_id,
+              direction_id: trip.direction_id,
+              trip_id: trip.id,
+              time_since_trip_start_time: now_time_of_day - Trip.start_time(trip),
+              headsign: trip.headsign,
+              via_variant: RoutePattern.via_variant(trip.route_pattern_id),
+              timepoint_status: timepoint_status
+            }
+        end
     end
   end
 

@@ -141,6 +141,7 @@ defmodule Realtime.VehicleTest do
           route_id: "28",
           direction_id: 1,
           trip_id: "39984755",
+          time_since_trip_start_time: 0,
           headsign: "headsign",
           via_variant: "_",
           timepoint_status: %{

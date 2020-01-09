@@ -15,8 +15,8 @@ defmodule Gtfs.BlockTest do
     route_pattern_id: "rp",
     shape_id: "shape1",
     stop_times: [
-      %StopTime{stop_id: "s1", time: 1, timepoint_id: "tp1"},
-      %StopTime{stop_id: "s7", time: 2, timepoint_id: nil}
+      %StopTime{stop_id: "s1", time: 3, timepoint_id: "tp1"},
+      %StopTime{stop_id: "s7", time: 4, timepoint_id: nil}
     ]
   }
 
@@ -30,8 +30,8 @@ defmodule Gtfs.BlockTest do
     route_pattern_id: "rp",
     shape_id: "shape1",
     stop_times: [
-      %StopTime{stop_id: "s7", time: 3, timepoint_id: nil},
-      %StopTime{stop_id: "s1", time: 4, timepoint_id: "tp1"}
+      %StopTime{stop_id: "s7", time: 6, timepoint_id: nil},
+      %StopTime{stop_id: "s1", time: 7, timepoint_id: "tp1"}
     ]
   }
 
@@ -80,13 +80,13 @@ defmodule Gtfs.BlockTest do
 
   describe "start_time/1" do
     test "returns the time of the first stop of the first trip for this block" do
-      assert Block.start_time(@block) == 1
+      assert Block.start_time(@block) == 3
     end
   end
 
   describe "end_time/1" do
     test "returns the time of the last stop of the last trip for this block" do
-      assert Block.end_time(@block) == 4
+      assert Block.end_time(@block) == 7
     end
   end
 
@@ -116,39 +116,6 @@ defmodule Gtfs.BlockTest do
     end
   end
 
-  @block [
-    %Trip{
-      id: "trip1",
-      route_id: "route",
-      service_id: "today",
-      headsign: "headsign1",
-      direction_id: 0,
-      block_id: "block",
-      shape_id: "shape1",
-      stop_times: [
-        %StopTime{
-          stop_id: "stop",
-          time: 3
-        }
-      ]
-    },
-    %Trip{
-      id: "trip2",
-      route_id: "route",
-      service_id: "today",
-      headsign: "headsign2",
-      direction_id: 1,
-      block_id: "block",
-      shape_id: "shape2",
-      stop_times: [
-        %StopTime{
-          stop_id: "stop",
-          time: 6
-        }
-      ]
-    }
-  ]
-
   describe "is_active" do
     test "a block that starts before the range and ends after is active" do
       assert Block.is_active(@block, 4, 5)
@@ -176,6 +143,25 @@ defmodule Gtfs.BlockTest do
 
     test "a block totally after the range is inactive" do
       refute Block.is_active(@block, 1, 2)
+    end
+  end
+
+  describe "trip_at_time/2" do
+    test "returns the last trip to have started if the block is active" do
+      assert %Trip{id: "t1"} = Block.trip_at_time(@block, 3)
+      assert %Trip{id: "t2"} = Block.trip_at_time(@block, 6)
+    end
+
+    test "returns the next trip if the previous one has ended" do
+      assert %Trip{id: "t2"} = Block.trip_at_time(@block, 5)
+    end
+
+    test "returns the first trip if the block hasn't started yet" do
+      assert %Trip{id: "t1"} = Block.trip_at_time(@block, 2)
+    end
+
+    test "returns nil if the block has finished" do
+      assert Block.trip_at_time(@block, 8) == nil
     end
   end
 end

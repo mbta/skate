@@ -85,6 +85,7 @@ const vehicles: Vehicle[] = [
       routeId: "1",
       directionId: 1,
       tripId: "scheduled trip",
+      timeSinceTripStartTime: 0,
       headsign: "scheduled headsign",
       viaVariant: "scheduled via variant",
       timepointStatus: {

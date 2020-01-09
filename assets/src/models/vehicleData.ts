@@ -83,6 +83,7 @@ interface VehicleScheduledLocationData {
   route_id: RouteId
   direction_id: DirectionId
   trip_id: string
+  time_since_trip_start_time: number
   headsign: string
   via_variant: string | null
   timepoint_status: VehicleTimepointStatusData
@@ -196,6 +197,8 @@ const vehicleScheduledLocationFromData = (
   routeId: vehicleScheduledLocationData.route_id,
   directionId: vehicleScheduledLocationData.direction_id,
   tripId: vehicleScheduledLocationData.trip_id,
+  timeSinceTripStartTime:
+    vehicleScheduledLocationData.time_since_trip_start_time,
   headsign: vehicleScheduledLocationData.headsign,
   viaVariant: vehicleScheduledLocationData.via_variant,
   timepointStatus: vehicleTimepointStatusFromData(

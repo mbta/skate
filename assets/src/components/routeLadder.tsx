@@ -160,9 +160,13 @@ export const groupByPosition = (
     } as ByPosition
   )
 
-  const incomingGhosts: Ghost[] = generateVirtualGhostsForLateIncomingVehicles(
-    realVehicles.incoming
-  )
+  const incomingGhosts: Ghost[] = [
+    ...generateVirtualGhostsForLateIncomingVehicles(realVehicles.incoming),
+    ...generateVirtualGhostsForLateLayingOverVehicles([
+      ...realVehicles.layingOverTop,
+      ...realVehicles.layingOverBottom,
+    ]),
+  ]
 
   return {
     ...realVehicles,
@@ -170,34 +174,36 @@ export const groupByPosition = (
   }
 }
 
-export const generateVirtualGhostsForLateIncomingVehicles = (
+const generateVirtualGhostsForLateIncomingVehicles = (
   incomingVehiclesOrGhosts: VehicleOrGhost[]
 ): Ghost[] =>
-  incomingVehiclesOrGhosts
-    .filter(
-      vehicleOrGhost =>
-        isVehicle(vehicleOrGhost) &&
-        hasAScheduleLocation(vehicleOrGhost) &&
-        isLateForScheduledTrip(vehicleOrGhost)
-    )
-    .map(vehicle => ghostFromVehicle(vehicle as Vehicle))
+  lateStartingVehicles(incomingVehiclesOrGhosts).map(vehicle =>
+    ghostFromVehicleScheduledLocation(vehicle as Vehicle)
+  )
+const generateVirtualGhostsForLateLayingOverVehicles = (
+  incomingVehiclesOrGhosts: VehicleOrGhost[]
+): Ghost[] =>
+  lateStartingVehicles(incomingVehiclesOrGhosts).map(vehicle =>
+    ghostFromVehicle(vehicle as Vehicle)
+  )
+
+const lateStartingVehicles = (
+  incomingVehiclesOrGhosts: VehicleOrGhost[]
+): Vehicle[] =>
+  incomingVehiclesOrGhosts.filter(
+    vehicleOrGhost =>
+      isVehicle(vehicleOrGhost) &&
+      hasAScheduleLocation(vehicleOrGhost) &&
+      isLateStartingScheduledTrip(vehicleOrGhost)
+  ) as Vehicle[]
 
 const hasAScheduleLocation = (vehicle: Vehicle): boolean =>
   vehicle.scheduledLocation != null
 
-const isLateForScheduledTrip = (vehicle: Vehicle): boolean =>
-  onTimeStatus(scheduledVehicle(vehicle).scheduleAdherenceSecs) === "late"
+const isLateStartingScheduledTrip = (vehicle: Vehicle): boolean =>
+  onTimeStatus(vehicle.scheduledLocation!.timeSinceTripStartTime) === "late"
 
-const scheduledVehicle = (vehicle: Vehicle): Vehicle => ({
-  ...vehicle,
-  directionId: vehicle.scheduledLocation!.directionId,
-  routeId: vehicle.scheduledLocation!.routeId,
-  tripId: vehicle.scheduledLocation!.tripId,
-  headsign: vehicle.scheduledLocation!.headsign,
-  viaVariant: vehicle.scheduledLocation!.viaVariant,
-})
-
-const ghostFromVehicle = (vehicle: Vehicle): Ghost => ({
+const ghostFromVehicleScheduledLocation = (vehicle: Vehicle): Ghost => ({
   id: `ghost-incoming-${vehicle.id}`,
   directionId: vehicle.scheduledLocation!.directionId,
   routeId: vehicle.scheduledLocation!.routeId,
@@ -208,6 +214,20 @@ const ghostFromVehicle = (vehicle: Vehicle): Ghost => ({
   viaVariant: vehicle.scheduledLocation!.viaVariant,
   layoverDepartureTime: null,
   scheduledTimepointStatus: vehicle.scheduledLocation!.timepointStatus,
+  routeStatus: "on_route",
+})
+
+const ghostFromVehicle = (vehicle: Vehicle): Ghost => ({
+  id: `ghost-incoming-${vehicle.id}`,
+  directionId: vehicle.directionId,
+  routeId: vehicle.routeId,
+  tripId: vehicle.tripId,
+  headsign: vehicle.headsign || "",
+  blockId: vehicle.blockId,
+  runId: vehicle.runId,
+  viaVariant: vehicle.viaVariant,
+  layoverDepartureTime: null,
+  scheduledTimepointStatus: vehicle.timepointStatus || null,
   routeStatus: "on_route",
 })
 

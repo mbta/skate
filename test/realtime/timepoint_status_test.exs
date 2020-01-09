@@ -170,6 +170,7 @@ defmodule Realtime.TimepointStatusTest do
                route_id: "28",
                direction_id: 1,
                trip_id: "1",
+               time_since_trip_start_time: -60,
                headsign: "headsign",
                via_variant: "_",
                timepoint_status: %{
@@ -179,7 +180,7 @@ defmodule Realtime.TimepointStatusTest do
              }
     end
 
-    test "returns the last stop if the block is finished" do
+    test "returns nil if the block is finished" do
       block = [
         %Trip{
           id: "1",
@@ -208,20 +209,10 @@ defmodule Realtime.TimepointStatusTest do
       # 2019-01-01 12:00:00 EST
       now = 1_546_362_000
 
-      assert TimepointStatus.scheduled_location(block, now) == %{
-               route_id: "28",
-               direction_id: 1,
-               trip_id: "1",
-               headsign: "headsign",
-               via_variant: "_",
-               timepoint_status: %{
-                 timepoint_id: "tp2",
-                 fraction_until_timepoint: 0.0
-               }
-             }
+      assert TimepointStatus.scheduled_location(block, now) == nil
     end
 
-    test "returns the last stop of the previous trip if it's in a layover" do
+    test "returns the first stop of the next trip if it's in a layover" do
       block = [
         %Trip{
           id: "0",
@@ -269,12 +260,13 @@ defmodule Realtime.TimepointStatusTest do
 
       assert TimepointStatus.scheduled_location(block, now) == %{
                route_id: "28",
-               direction_id: 0,
-               trip_id: "0",
+               direction_id: 1,
+               trip_id: "1",
+               time_since_trip_start_time: -180,
                headsign: "headsign",
                via_variant: "_",
                timepoint_status: %{
-                 timepoint_id: "tp2",
+                 timepoint_id: "tp3",
                  fraction_until_timepoint: 0.0
                }
              }
@@ -306,6 +298,7 @@ defmodule Realtime.TimepointStatusTest do
                route_id: "28",
                direction_id: 1,
                trip_id: "1",
+               time_since_trip_start_time: 750,
                headsign: "headsign",
                via_variant: "_",
                timepoint_status: %{

@@ -58,6 +58,7 @@ describe("IncomingBox", () => {
         routeId: "111",
         directionId: 1,
         tripId: "42199996",
+        timeSinceTripStartTime: 0,
         headsign: "scheduled headsign",
         viaVariant: "5",
         timepointStatus: {

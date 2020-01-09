@@ -96,6 +96,7 @@ describe("useVehicles", () => {
         route_id: "39",
         direction_id: 0,
         trip_id: "scheduled trip",
+        time_since_trip_start_time: 0,
         headsign: "scheduled headsign",
         via_variant: "scheduled via variant",
         timepoint_status: {
@@ -184,6 +185,7 @@ describe("useVehicles", () => {
         routeId: "39",
         directionId: 0,
         tripId: "scheduled trip",
+        timeSinceTripStartTime: 0,
         headsign: "scheduled headsign",
         viaVariant: "scheduled via variant",
         timepointStatus: {
