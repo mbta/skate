@@ -62,7 +62,7 @@ defmodule Gtfs.Block do
   @doc """
   The trip that happens after the given trip_id in the given block.
   If the trip_id is not in the block, then :err
-  IF the trip_id belongs to the last trip in the block, then :last
+  If the trip_id belongs to the last trip in the block, then :last
   """
   @spec next_trip(t(), Trip.id()) :: Trip.t() | :last | :err
   def next_trip(block, trip_id) do
