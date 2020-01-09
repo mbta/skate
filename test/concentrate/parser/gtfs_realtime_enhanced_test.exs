@@ -3,61 +3,18 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
 
   import Concentrate.TestHelpers
 
-  alias Concentrate.{TripUpdate, StopTimeUpdate, VehiclePosition}
+  alias Concentrate.VehiclePosition
   alias Concentrate.Parser.GTFSRealtimeEnhanced
 
   describe "parse/1" do
-    test "parsing an enhanced VehiclePositions JSON file returns only VehiclePosition or TripUpdate structs" do
+    test "parsing an enhanced VehiclePositions JSON file returns only VehiclePosition structs" do
       binary = File.read!(fixture_path("VehiclePositions_enhanced.json"))
       parsed = GTFSRealtimeEnhanced.parse(binary)
       assert is_list(parsed)
 
       for update <- parsed do
-        assert update.__struct__ in [StopTimeUpdate, TripUpdate, VehiclePosition]
+        assert update.__struct__ in [VehiclePosition]
       end
-    end
-  end
-
-  describe "decode_trip_update/1" do
-    test "can handle boarding status information" do
-      update = %{
-        "trip" => %{},
-        "stop_time_update" => [
-          %{
-            "boarding_status" => "ALL_ABOARD"
-          }
-        ]
-      }
-
-      [_tu, stop_update] = GTFSRealtimeEnhanced.decode_trip_update(update)
-      assert StopTimeUpdate.status(stop_update) == "ALL_ABOARD"
-    end
-
-    test "can handle platform id information" do
-      update = %{
-        "trip" => %{},
-        "stop_time_update" => [
-          %{
-            "platform_id" => "platform"
-          }
-        ]
-      }
-
-      [_tu, stop_update] = GTFSRealtimeEnhanced.decode_trip_update(update)
-      assert StopTimeUpdate.platform_id(stop_update) == "platform"
-    end
-
-    test "treats a missing schedule relationship as SCHEDULED" do
-      update = %{
-        "trip" => %{},
-        "stop_time_update" => [
-          %{}
-        ]
-      }
-
-      [tu, stu] = GTFSRealtimeEnhanced.decode_trip_update(update)
-      assert TripUpdate.schedule_relationship(tu) == :SCHEDULED
-      assert StopTimeUpdate.schedule_relationship(stu) == :SCHEDULED
     end
   end
 
@@ -100,16 +57,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
         }
       }
 
-      assert [tu, vp] = GTFSRealtimeEnhanced.decode_vehicle(input)
-
-      assert tu ==
-               TripUpdate.new(
-                 trip_id: "37165437-X",
-                 route_id: "Green-E",
-                 direction_id: 0,
-                 start_date: {2018, 8, 15},
-                 schedule_relationship: :SCHEDULED
-               )
+      assert [vp] = GTFSRealtimeEnhanced.decode_vehicle(input)
 
       assert vp ==
                VehiclePosition.new(

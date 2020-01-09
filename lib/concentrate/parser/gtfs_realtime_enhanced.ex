@@ -4,7 +4,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
   """
   @behaviour Concentrate.Parser
   require Logger
-  alias Concentrate.{StopTimeUpdate, TripUpdate, VehiclePosition}
+  alias Concentrate.{TripUpdate, VehiclePosition}
 
   @impl Concentrate.Parser
   def parse(binary) when is_binary(binary) do
@@ -13,44 +13,18 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
     |> decode_entities()
   end
 
-  @spec decode_entities(map()) :: [TripUpdate.t() | StopTimeUpdate.t() | VehiclePosition.t()]
-  defp decode_entities(%{"entity" => entities}),
-    do: Enum.flat_map(entities, &decode_feed_entity(&1))
+  @spec decode_entities(map()) :: [VehiclePosition.t()]
+  defp decode_entities(%{"entity" => entities}) do
+    Enum.flat_map(entities, &decode_feed_entity(&1))
+  end
 
-  defp decode_feed_entity(%{"trip_update" => %{} = trip_update}),
-    do: decode_trip_update(trip_update)
+  defp decode_feed_entity(%{"trip_update" => %{}}), do: []
 
   defp decode_feed_entity(%{"vehicle" => %{} = vehicle}), do: decode_vehicle(vehicle)
 
   defp decode_feed_entity(_), do: []
 
-  @spec decode_trip_update(map()) :: [TripUpdate.t() | StopTimeUpdate.t()]
-  def decode_trip_update(trip_update) do
-    tu = decode_trip_descriptor(Map.get(trip_update, "trip"))
-
-    stop_updates =
-      for stu <- Map.get(trip_update, "stop_time_update") do
-        {arrival_time, arrival_uncertainty} = time_from_event(Map.get(stu, "arrival"))
-        {departure_time, departure_uncertainty} = time_from_event(Map.get(stu, "departure"))
-
-        StopTimeUpdate.new(
-          trip_id:
-            if(descriptor = Map.get(trip_update, "trip"), do: Map.get(descriptor, "trip_id")),
-          stop_id: Map.get(stu, "stop_id"),
-          stop_sequence: Map.get(stu, "stop_sequence"),
-          schedule_relationship: schedule_relationship(Map.get(stu, "schedule_relationship")),
-          arrival_time: arrival_time,
-          departure_time: departure_time,
-          uncertainty: arrival_uncertainty || departure_uncertainty,
-          status: Map.get(stu, "boarding_status"),
-          platform_id: Map.get(stu, "platform_id")
-        )
-      end
-
-    tu ++ stop_updates
-  end
-
-  @spec decode_vehicle(map()) :: [TripUpdate.t() | VehiclePosition.t()] | []
+  @spec decode_vehicle(map()) :: [VehiclePosition.t()]
   def decode_vehicle(vp) do
     operator = Map.get(vp, "operator", %{})
     position = Map.get(vp, "position", %{})
@@ -59,7 +33,6 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
     case decode_trip_descriptor(Map.get(vp, "trip")) do
       [trip] ->
         [
-          trip,
           VehiclePosition.new(
             id: Map.get(vehicle, "id"),
             trip_id: TripUpdate.trip_id(trip),
@@ -123,9 +96,6 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
     {:ok, date} = Date.from_iso8601(date)
     Date.to_erl(date)
   end
-
-  defp time_from_event(nil), do: {nil, nil}
-  defp time_from_event(%{"time" => time} = map), do: {time, Map.get(map, "uncertainty", nil)}
 
   @spec schedule_relationship(String.t() | nil) :: atom()
   defp schedule_relationship(nil), do: :SCHEDULED

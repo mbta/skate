@@ -4,7 +4,7 @@ defmodule Concentrate.MergeTest do
   use ExUnitProperties
   import ExUnit.CaptureLog, only: [capture_log: 1]
   import Concentrate.Merge
-  alias Concentrate.{MockMerge, TripUpdate, VehiclePosition}
+  alias Concentrate.{MockMerge, VehiclePosition}
 
   describe "handle_subscribe/4" do
     test "asks the producer for demand" do
@@ -74,7 +74,6 @@ defmodule Concentrate.MergeTest do
           multi_source_mergeables
           |> List.flatten()
           |> MockMerge.merge()
-          |> group()
 
         acc = {:noreply, [], state}
 
@@ -109,63 +108,6 @@ defmodule Concentrate.MergeTest do
     @tag :capture_log
     test "ignores unknown messages" do
       assert handle_info(:unknown, :state) == {:noreply, [], :state}
-    end
-  end
-
-  describe "group/1" do
-    test "groups trip updates" do
-      parsed = [
-        %TripUpdate{
-          trip_id: "1",
-          schedule_relationship: :CANCELED
-        },
-        %TripUpdate{
-          trip_id: "2",
-          schedule_relationship: :SCHEDULED
-        },
-        %Concentrate.VehiclePosition{
-          id: "EM",
-          trip_id: "1"
-        },
-        %Concentrate.VehiclePosition{
-          id: "FN",
-          trip_id: "2"
-        }
-      ]
-
-      expected = [
-        {%Concentrate.TripUpdate{
-           direction_id: nil,
-           route_id: nil,
-           schedule_relationship: :CANCELED,
-           start_date: nil,
-           start_time: nil,
-           trip_id: "1"
-         },
-         [
-           %Concentrate.VehiclePosition{
-             block_id: nil,
-             id: "EM",
-             trip_id: "1"
-           }
-         ], []},
-        {%Concentrate.TripUpdate{
-           direction_id: nil,
-           route_id: nil,
-           schedule_relationship: :SCHEDULED,
-           start_date: nil,
-           start_time: nil,
-           trip_id: "2"
-         },
-         [
-           %Concentrate.VehiclePosition{
-             id: "FN",
-             trip_id: "2"
-           }
-         ], []}
-      ]
-
-      assert group(parsed) == expected
     end
   end
 
