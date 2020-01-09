@@ -11,6 +11,9 @@ defmodule Concentrate.Merge do
   require Logger
   alias Concentrate.Mergeable
   alias Concentrate.VehiclePosition
+  alias Realtime.Server
+  alias Realtime.Vehicle
+  alias Realtime.Vehicles
 
   @type source_tag :: atom()
   @type state :: %__MODULE__{
@@ -50,7 +53,7 @@ defmodule Concentrate.Merge do
         Enum.map(source_tags, fn source_tag -> {source_tag, [max_demand: 1, tag: source_tag]} end)
     ]
 
-    {:producer_consumer, state, opts}
+    {:consumer, state, opts}
   end
 
   @impl GenStage
@@ -74,7 +77,7 @@ defmodule Concentrate.Merge do
 
     merge = &Mergeable.impl_for!(%VehiclePosition{}).merge/2
 
-    merged_vehicle_positions =
+    vehicle_positions =
       latest_data
       |> Map.values()
       |> Enum.filter(fn vps -> vps != nil end)
@@ -82,6 +85,12 @@ defmodule Concentrate.Merge do
       |> Enum.group_by(fn vp -> vp.id end)
       |> Enum.map(fn {_id, vps} -> Enum.reduce(vps, merge) end)
 
-    {:noreply, [merged_vehicle_positions], state}
+    all_vehicles = Enum.map(vehicle_positions, &Vehicle.from_vehicle_position/1)
+    by_route = Vehicles.group_by_route(all_vehicles)
+    shuttles = Enum.filter(all_vehicles, &Vehicle.shuttle?/1)
+
+    _ = Server.update({by_route, shuttles})
+
+    {:noreply, [], state}
   end
 end

@@ -1,7 +1,6 @@
 defmodule Concentrate.SupervisorTest do
   @moduledoc false
   use ExUnit.Case, async: true
-  import Test.Support.Helpers
 
   describe "start_link/0" do
     test "can start the application" do
@@ -10,26 +9,6 @@ defmodule Concentrate.SupervisorTest do
       on_exit(fn ->
         Application.stop(:concentrate)
       end)
-    end
-  end
-
-  describe "children/1" do
-    setup do
-      reassign_env(:realtime, :trip_fn, fn _trip_id -> nil end)
-      reassign_env(:realtime, :block_fn, fn _block_id, _service_id -> nil end)
-    end
-
-    test "builds the right number of children" do
-      opts = [
-        busloc_url: "http://example.com/busloc.json",
-        swiftly_authorization_key: "12345",
-        swiftly_realtime_vehicles_url: "http://example.com/swiftly_realtime_vehicles.json"
-      ]
-
-      actual = Concentrate.Supervisor.children(opts)
-
-      # 2 sources + merge + 1 consumer
-      assert length(actual) == 4
     end
   end
 end

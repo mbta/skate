@@ -22,24 +22,18 @@ defmodule Concentrate.Supervisor do
 
   @impl true
   def init(opts) do
-    Supervisor.init(children(opts), strategy: :rest_for_one)
-  end
-
-  def children(opts) do
-    {source_names, source_children} = sources(opts)
-
-    merge = merge(source_names)
-
-    consumers = consumers()
-
-    Enum.concat([source_children, [merge], consumers])
+    sources = sources(opts)
+    source_tags = Enum.map(sources, fn source -> source.id end)
+    merge = merge(source_tags)
+    children = sources ++ [merge]
+    Supervisor.init(children, strategy: :rest_for_one)
   end
 
   def sources(opts) do
-    realtime_enhanced_child =
+    busloc =
       if opts[:busloc_url] do
         source_child(
-          :gtfs_realtime_enhanced,
+          :busloc,
           opts[:busloc_url],
           Concentrate.Parser.GTFSRealtimeEnhanced
         )
@@ -47,10 +41,10 @@ defmodule Concentrate.Supervisor do
         nil
       end
 
-    swiftly_child =
+    swiftly =
       if opts[:swiftly_realtime_vehicles_url] && opts[:swiftly_authorization_key] do
         source_child(
-          :swiftly_realtime_vehicles,
+          :swiftly,
           opts[:swiftly_realtime_vehicles_url],
           Concentrate.Parser.SwiftlyRealtimeVehicles,
           headers: %{
@@ -65,11 +59,8 @@ defmodule Concentrate.Supervisor do
         nil
       end
 
-    children =
-      [realtime_enhanced_child, swiftly_child]
-      |> Enum.reject(&is_nil/1)
-
-    {child_ids(children), children}
+    [busloc, swiftly]
+    |> Enum.reject(&is_nil/1)
   end
 
   defp source_child(source, url, parser, opts \\ []) do
@@ -82,31 +73,13 @@ defmodule Concentrate.Supervisor do
     )
   end
 
-  def merge(source_names) do
+  defp merge(source_tags) do
     Supervisor.child_spec(
       {
         Concentrate.Merge,
-        [name: :merge, sources: source_names]
+        [name: :merge, sources: source_tags]
       },
       id: :merge
     )
-  end
-
-  def consumers do
-    vehicle_positions_consumer =
-      consumer(Concentrate.Consumer.VehiclePositions, :vehicle_positions)
-
-    [vehicle_positions_consumer]
-  end
-
-  def consumer(module, id) do
-    Supervisor.child_spec(
-      {module, subscribe_to: [merge: [max_demand: 1]]},
-      id: id
-    )
-  end
-
-  defp child_ids(children) do
-    for child <- children, do: child.id
   end
 end
