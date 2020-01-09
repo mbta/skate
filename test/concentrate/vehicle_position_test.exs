@@ -1,12 +1,12 @@
 defmodule Concentrate.VehiclePositionTest do
   use ExUnit.Case, async: true
-  import Concentrate.VehiclePosition
-  alias Concentrate.{DataDiscrepancy, Mergeable}
+  alias Concentrate.VehiclePosition
+  alias Concentrate.{DataDiscrepancy}
 
-  describe "Concentrate.Mergeable" do
+  describe "merge/2" do
     test "merge/2 takes the latest of the two positions and notes discrepancies" do
       first =
-        new(
+        VehiclePosition.new(
           last_updated: 1,
           latitude: 1,
           longitude: 1,
@@ -15,10 +15,16 @@ defmodule Concentrate.VehiclePositionTest do
           sources: MapSet.new(["first"])
         )
 
-      second = new(last_updated: 2, latitude: 2, longitude: 2, sources: MapSet.new(["second"]))
+      second =
+        VehiclePosition.new(
+          last_updated: 2,
+          latitude: 2,
+          longitude: 2,
+          sources: MapSet.new(["second"])
+        )
 
       expected =
-        new(
+        VehiclePosition.new(
           last_updated: 2,
           latitude: 2,
           longitude: 2,
@@ -36,25 +42,25 @@ defmodule Concentrate.VehiclePositionTest do
           ]
         )
 
-      assert Mergeable.merge(first, second) == expected
-      assert Mergeable.merge(second, first) == expected
+      assert VehiclePosition.merge(first, second) == expected
+      assert VehiclePosition.merge(second, first) == expected
     end
 
     test "merge/2 ignores the second if last_updated is nil" do
-      first = new(last_updated: 1, latitude: 1, longitude: 1, trip_id: "trip")
-      second = new(last_updated: nil, latitude: 2, longitude: 2)
-      assert Mergeable.merge(first, second) == first
+      first = VehiclePosition.new(last_updated: 1, latitude: 1, longitude: 1, trip_id: "trip")
+      second = VehiclePosition.new(last_updated: nil, latitude: 2, longitude: 2)
+      assert VehiclePosition.merge(first, second) == first
     end
 
     test "merge/2 ignores the first if last_updated is nil" do
-      first = new(last_updated: nil, latitude: 1, longitude: 1, trip_id: "trip")
-      second = new(last_updated: 2, latitude: 2, longitude: 2)
-      assert Mergeable.merge(first, second) == second
+      first = VehiclePosition.new(last_updated: nil, latitude: 1, longitude: 1, trip_id: "trip")
+      second = VehiclePosition.new(last_updated: 2, latitude: 2, longitude: 2)
+      assert VehiclePosition.merge(first, second) == second
     end
 
     test "merge/2 prioritizes the swiftly trip and route values if there is one" do
       swiftly =
-        new(
+        VehiclePosition.new(
           last_updated: 1,
           latitude: 1,
           longitude: 1,
@@ -64,7 +70,7 @@ defmodule Concentrate.VehiclePositionTest do
         )
 
       non_swiftly =
-        new(
+        VehiclePosition.new(
           last_updated: 2,
           latitude: 2,
           longitude: 2,
@@ -74,7 +80,7 @@ defmodule Concentrate.VehiclePositionTest do
         )
 
       swiftly_later =
-        new(
+        VehiclePosition.new(
           last_updated: 3,
           latitude: 3,
           longitude: 3,
@@ -84,7 +90,7 @@ defmodule Concentrate.VehiclePositionTest do
         )
 
       expected =
-        new(
+        VehiclePosition.new(
           last_updated: 2,
           latitude: 2,
           longitude: 2,
@@ -103,7 +109,7 @@ defmodule Concentrate.VehiclePositionTest do
         )
 
       expected_later =
-        new(
+        VehiclePosition.new(
           last_updated: 3,
           latitude: 3,
           longitude: 3,
@@ -121,15 +127,15 @@ defmodule Concentrate.VehiclePositionTest do
           ]
         )
 
-      assert Mergeable.merge(swiftly, non_swiftly) == expected
-      assert Mergeable.merge(non_swiftly, swiftly) == expected
-      assert Mergeable.merge(swiftly_later, non_swiftly) == expected_later
-      assert Mergeable.merge(non_swiftly, swiftly_later) == expected_later
+      assert VehiclePosition.merge(swiftly, non_swiftly) == expected
+      assert VehiclePosition.merge(non_swiftly, swiftly) == expected
+      assert VehiclePosition.merge(swiftly_later, non_swiftly) == expected_later
+      assert VehiclePosition.merge(non_swiftly, swiftly_later) == expected_later
     end
 
     test "merge/2 takes the other trip and route values if the swiftly values are nil" do
       swiftly =
-        new(
+        VehiclePosition.new(
           last_updated: 1,
           latitude: 1,
           longitude: 1,
@@ -139,7 +145,7 @@ defmodule Concentrate.VehiclePositionTest do
         )
 
       non_swiftly =
-        new(
+        VehiclePosition.new(
           last_updated: 2,
           latitude: 2,
           longitude: 2,
@@ -149,7 +155,7 @@ defmodule Concentrate.VehiclePositionTest do
         )
 
       expected =
-        new(
+        VehiclePosition.new(
           last_updated: 2,
           latitude: 2,
           longitude: 2,
@@ -167,13 +173,13 @@ defmodule Concentrate.VehiclePositionTest do
           ]
         )
 
-      assert Mergeable.merge(swiftly, non_swiftly) == expected
-      assert Mergeable.merge(non_swiftly, swiftly) == expected
+      assert VehiclePosition.merge(swiftly, non_swiftly) == expected
+      assert VehiclePosition.merge(non_swiftly, swiftly) == expected
     end
 
     test "merge/2 doesn't include any data discrepancies if they values are the same" do
       first =
-        new(
+        VehiclePosition.new(
           last_updated: 1,
           latitude: 1,
           longitude: 1,
@@ -183,7 +189,7 @@ defmodule Concentrate.VehiclePositionTest do
         )
 
       second =
-        new(
+        VehiclePosition.new(
           last_updated: 2,
           latitude: 2,
           longitude: 2,
@@ -193,7 +199,7 @@ defmodule Concentrate.VehiclePositionTest do
         )
 
       expected =
-        new(
+        VehiclePosition.new(
           last_updated: 2,
           latitude: 2,
           longitude: 2,
@@ -203,44 +209,44 @@ defmodule Concentrate.VehiclePositionTest do
           data_discrepancies: []
         )
 
-      assert Mergeable.merge(first, second) == expected
+      assert VehiclePosition.merge(first, second) == expected
     end
   end
 
   describe "comes_from_swiftly?/1" do
     test "true if sources include swiftly" do
       vp =
-        new(
+        VehiclePosition.new(
           last_updated: 1,
           latitude: 1,
           longitude: 1,
           sources: MapSet.new(["busloc", "swiftly"])
         )
 
-      assert comes_from_swiftly?(vp)
+      assert VehiclePosition.comes_from_swiftly?(vp)
     end
 
     test "false if sources don't include swiftly" do
       vp =
-        new(
+        VehiclePosition.new(
           last_updated: 1,
           latitude: 1,
           longitude: 1,
           sources: MapSet.new(["busloc"])
         )
 
-      refute comes_from_swiftly?(vp)
+      refute VehiclePosition.comes_from_swiftly?(vp)
     end
 
     test "false if there are no sources" do
       vp =
-        new(
+        VehiclePosition.new(
           last_updated: 1,
           latitude: 1,
           longitude: 1
         )
 
-      refute comes_from_swiftly?(vp)
+      refute VehiclePosition.comes_from_swiftly?(vp)
     end
   end
 end

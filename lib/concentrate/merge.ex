@@ -9,7 +9,6 @@ defmodule Concentrate.Merge do
   """
   use GenStage
   require Logger
-  alias Concentrate.Mergeable
   alias Concentrate.VehiclePosition
   alias Realtime.Server
   alias Realtime.Vehicle
@@ -75,15 +74,13 @@ defmodule Concentrate.Merge do
     latest_data = Map.put(state.latest_data, source_tag, new_data)
     state = %{state | latest_data: latest_data}
 
-    merge = &Mergeable.impl_for!(%VehiclePosition{}).merge/2
-
     vehicle_positions =
       latest_data
       |> Map.values()
       |> Enum.filter(fn vps -> vps != nil end)
       |> Enum.concat()
       |> Enum.group_by(fn vp -> vp.id end)
-      |> Enum.map(fn {_id, vps} -> Enum.reduce(vps, merge) end)
+      |> Enum.map(fn {_id, vps} -> Enum.reduce(vps, &VehiclePosition.merge/2) end)
 
     all_vehicles = Enum.map(vehicle_positions, &Vehicle.from_vehicle_position/1)
     by_route = Vehicles.group_by_route(all_vehicles)
