@@ -35,7 +35,7 @@ defmodule Concentrate.Supervisor do
         source_child(
           :busloc,
           opts[:busloc_url],
-          Concentrate.Parser.GTFSRealtimeEnhanced
+          Concentrate.Busloc
         )
       else
         nil
@@ -46,7 +46,7 @@ defmodule Concentrate.Supervisor do
         source_child(
           :swiftly,
           opts[:swiftly_realtime_vehicles_url],
-          Concentrate.Parser.SwiftlyRealtimeVehicles,
+          Concentrate.Swiftly,
           headers: %{
             "Authorization" => opts[:swiftly_authorization_key]
           },

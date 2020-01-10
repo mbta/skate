@@ -1,10 +1,79 @@
-defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
+defmodule Concentrate.Busloc do
   @moduledoc """
-  Parser for GTFS-RT enhanced JSON files.
+  Parser for GTFS-RT enhanced JSON files from Busloc.
   """
   @behaviour Concentrate.Parser
   require Logger
-  alias Concentrate.{TripUpdate, VehiclePosition}
+
+  defmodule TripDescriptor do
+    alias Gtfs.Direction
+    alias Gtfs.Route
+    alias Gtfs.Trip
+
+    @type t :: %__MODULE__{
+      trip_id: Trip.id(),
+      route_id: Route.id(),
+      direction_id: Direction.id(),
+      start_date: :calendar.date(),
+      start_time: :calendar.date(),
+      schedule_relationship: atom()
+    }
+
+    defstruct [
+      :trip_id,
+      :route_id,
+      :direction_id,
+      :start_date,
+      :start_time,
+      schedule_relationship: :SCHEDULED
+    ]
+  end
+
+  alias __MODULE__.TripDescriptor
+  alias Gtfs.Block
+  alias Gtfs.Run
+  alias Gtfs.Stop
+  alias Gtfs.Trip
+
+  @type t :: %__MODULE__{
+    id: String.t(),
+    trip_id: Trip.id(),
+    stop_id: Stop.id(),
+    label: String.t(),
+    license_plate: String.t() | nil,
+    latitude: float(),
+    longitude: float(),
+    bearing: integer(),
+    speed: float(),
+    odometer: integer() | nil,
+    current_status: atom(),
+    stop_sequence: integer(),
+    last_updated: Util.Time.timestamp(),
+    block_id: Block.id() | nil,
+    run_id: Run.id() | nil,
+    operator_id: String.t(),
+    operator_name: String.t(),
+  }
+
+  defstruct [
+    :id,
+    :trip_id,
+    :stop_id,
+    :label,
+    :license_plate,
+    :latitude,
+    :longitude,
+    :bearing,
+    :speed,
+    :odometer,
+    :current_status,
+    :stop_sequence,
+    :last_updated,
+    :block_id,
+    :run_id,
+    :operator_id,
+    :operator_name
+  ]
 
   @impl Concentrate.Parser
   def parse(binary) when is_binary(binary) do
@@ -13,7 +82,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
     |> decode_entities()
   end
 
-  @spec decode_entities(map()) :: [VehiclePosition.t()]
+  @spec decode_entities(map()) :: [t()]
   defp decode_entities(%{"entity" => entities}) do
     Enum.flat_map(entities, &decode_feed_entity(&1))
   end
@@ -24,7 +93,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
 
   defp decode_feed_entity(_), do: []
 
-  @spec decode_vehicle(map()) :: [VehiclePosition.t()]
+  @spec decode_vehicle(map()) :: [t()]
   def decode_vehicle(vp) do
     operator = Map.get(vp, "operator", %{})
     position = Map.get(vp, "position", %{})
@@ -33,9 +102,9 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
     case decode_trip_descriptor(Map.get(vp, "trip")) do
       [trip] ->
         [
-          VehiclePosition.new(
+          %__MODULE__{
             id: Map.get(vehicle, "id"),
-            trip_id: TripUpdate.trip_id(trip),
+            trip_id: trip.trip_id,
             stop_id: Map.get(vp, "stop_id"),
             label: Map.get(vehicle, "label"),
             license_plate: Map.get(vehicle, "license_plate"),
@@ -51,7 +120,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
             run_id: Map.get(vp, "run_id"),
             operator_id: Map.get(operator, "id"),
             operator_name: Map.get(operator, "name")
-          )
+          }
         ]
 
       [] ->
@@ -59,21 +128,21 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
     end
   end
 
-  @spec decode_trip_descriptor(map() | nil) :: [TripUpdate.t()] | []
+  @spec decode_trip_descriptor(map() | nil) :: [TripDescriptor.t()] | []
   defp decode_trip_descriptor(nil) do
     []
   end
 
   defp decode_trip_descriptor(trip) do
     [
-      TripUpdate.new(
+      %TripDescriptor{
         trip_id: Map.get(trip, "trip_id"),
         route_id: Map.get(trip, "route_id"),
         direction_id: Map.get(trip, "direction_id"),
         start_date: date(Map.get(trip, "start_date")),
         start_time: Map.get(trip, "start_time"),
         schedule_relationship: schedule_relationship(Map.get(trip, "schedule_relationship"))
-      )
+      }
     ]
   end
 

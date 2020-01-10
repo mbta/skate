@@ -3,17 +3,16 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehiclesTest do
 
   import Concentrate.TestHelpers
 
-  alias Concentrate.VehiclePosition
-  alias Concentrate.Parser.SwiftlyRealtimeVehicles
+  alias Concentrate.Swiftly
 
   describe "parse/1" do
-    test "parsing an enhanced VehiclePositions JSON file returns only VehiclePosition structs" do
+    test "parsing the Swiftly API JSON file returns only Swiftly structs" do
       binary = File.read!(fixture_path("swiftly_realtime_vehicles.json"))
-      parsed = SwiftlyRealtimeVehicles.parse(binary)
+      parsed = Swiftly.parse(binary)
       assert is_list(parsed)
 
       for update <- parsed do
-        assert update.__struct__ == VehiclePosition
+        assert update.__struct__ == Swiftly
       end
     end
   end
@@ -60,7 +59,7 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehiclesTest do
       }
 
       expected =
-        VehiclePosition.new(
+        %Swiftly{
           id: "y1714",
           latitude: 42.31914,
           longitude: -71.10337,
@@ -86,9 +85,9 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehiclesTest do
           schedule_adherence_secs: 0,
           schedule_adherence_string: "0.0 sec (ontime)",
           scheduled_headway_secs: 120
-        )
+        }
 
-      assert SwiftlyRealtimeVehicles.decode_vehicle(input) == expected
+      assert Swiftly.decode_vehicle(input) == expected
     end
   end
 end

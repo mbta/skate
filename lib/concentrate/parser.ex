@@ -6,6 +6,5 @@ defmodule Concentrate.Parser do
   StopTimeUpdate data, but other data can be returned as well.
 
   """
-  alias Concentrate.VehiclePosition
-  @callback parse(binary) :: [VehiclePosition.t()]
+  @callback parse(binary) :: [term()]
 end

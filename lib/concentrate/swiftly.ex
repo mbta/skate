@@ -1,4 +1,4 @@
-defmodule Concentrate.Parser.SwiftlyRealtimeVehicles do
+defmodule Concentrate.Swiftly do
   @moduledoc """
   Parser for Swiftly Real-time Vehicles API response.
 
@@ -7,8 +7,68 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehicles do
   """
   @behaviour Concentrate.Parser
 
-  alias Concentrate.VehiclePosition
+  alias Gtfs.Block
   alias Gtfs.Direction
+  alias Gtfs.Route
+  alias Gtfs.Run
+  alias Gtfs.Stop
+  alias Gtfs.Trip
+
+  @type t :: %__MODULE__{
+    id: String.t(),
+    trip_id: Trip.id() | nil,
+    stop_id: Stop.id() | nil,
+    latitude: float(),
+    longitude: float(),
+    last_updated: Util.Time.timestamp(),
+    speed: float(),
+    bearing: integer(),
+    block_id: Block.id() | nil,
+    run_id: Run.id() | nil,
+    operator_id: String.t(),
+    operator_name: String.t(),
+    stop_name: String.t() | nil,
+    direction_id: Direction.id() | nil,
+    headsign: String.t() | nil,
+    headway_secs: integer() | nil,
+    is_nonrevenue: boolean(),
+    layover_departure_time: Util.Time.timestamp() | nil,
+    previous_vehicle_id: String.t() | nil,
+    previous_vehicle_schedule_adherence_secs: integer() | nil,
+    previous_vehicle_schedule_adherence_string: String.t() | nil,
+    route_id: Route.id() | nil,
+    schedule_adherence_secs: integer() | nil,
+    schedule_adherence_string: String.t() | nil,
+    scheduled_headway_secs: integer() | nil,
+  }
+
+  defstruct [
+    :id,
+    :trip_id,
+    :stop_id,
+    :latitude,
+    :longitude,
+    :last_updated,
+    :speed,
+    :bearing,
+    :block_id,
+    :run_id,
+    :operator_id,
+    :operator_name,
+    :stop_name,
+    :direction_id,
+    :headsign,
+    :headway_secs,
+    :is_nonrevenue,
+    :layover_departure_time,
+    :previous_vehicle_id,
+    :previous_vehicle_schedule_adherence_secs,
+    :previous_vehicle_schedule_adherence_string,
+    :route_id,
+    :schedule_adherence_secs,
+    :schedule_adherence_string,
+    :scheduled_headway_secs
+  ]
 
   @impl Concentrate.Parser
   def parse(binary) when is_binary(binary) do
@@ -17,18 +77,18 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehicles do
     |> decode_response()
   end
 
-  @spec decode_response(map()) :: [VehiclePosition.t()]
+  @spec decode_response(map()) :: [t()]
   defp decode_response(%{"data" => %{"vehicles" => vehicles}}), do: decode_vehicles(vehicles)
 
-  @spec decode_vehicles([map()]) :: [VehiclePosition.t()]
+  @spec decode_vehicles([map()]) :: [t()]
   defp decode_vehicles(vehicles), do: Enum.map(vehicles, &decode_vehicle/1)
 
-  @spec decode_vehicle(map()) :: VehiclePosition.t()
+  @spec decode_vehicle(map()) :: t()
   def decode_vehicle(vehicle_data) do
     loc = Map.get(vehicle_data, "loc", %{})
     {operator_name, operator_id} = vehicle_data |> Map.get("driver") |> operator_details()
 
-    VehiclePosition.new(
+    %__MODULE__{
       id: Map.get(vehicle_data, "id"),
       trip_id: Map.get(vehicle_data, "tripId"),
       stop_id: Map.get(vehicle_data, "nextStopId"),
@@ -56,7 +116,7 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehicles do
       schedule_adherence_secs: Map.get(vehicle_data, "schAdhSecs"),
       schedule_adherence_string: Map.get(vehicle_data, "schAdhStr"),
       scheduled_headway_secs: Map.get(vehicle_data, "scheduledHeadwaySecs")
-    )
+    }
   end
 
   @spec operator_details(String.t() | nil) :: {String.t() | nil, String.t() | nil}

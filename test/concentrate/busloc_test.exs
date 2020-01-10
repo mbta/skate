@@ -3,24 +3,23 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
 
   import Concentrate.TestHelpers
 
-  alias Concentrate.VehiclePosition
-  alias Concentrate.Parser.GTFSRealtimeEnhanced
+  alias Concentrate.Busloc
 
   describe "parse/1" do
-    test "parsing an enhanced VehiclePositions JSON file returns only VehiclePosition structs" do
+    test "parsing a Busloc enhanced VehiclePositions JSON file returns only Busloc structs" do
       binary = File.read!(fixture_path("VehiclePositions_enhanced.json"))
-      parsed = GTFSRealtimeEnhanced.parse(binary)
+      parsed = Busloc.parse(binary)
       assert is_list(parsed)
 
       for update <- parsed do
-        assert update.__struct__ in [VehiclePosition]
+        assert update.__struct__ in [Busloc]
       end
     end
   end
 
   describe "decode_vehicle/1" do
     test "returns nothing if there's an empty map" do
-      assert GTFSRealtimeEnhanced.decode_vehicle(%{}) == []
+      assert Busloc.decode_vehicle(%{}) == []
     end
 
     test "decodes a VehiclePosition JSON map" do
@@ -57,10 +56,10 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
         }
       }
 
-      assert [vp] = GTFSRealtimeEnhanced.decode_vehicle(input)
+      assert [vp] = Busloc.decode_vehicle(input)
 
       assert vp ==
-               VehiclePosition.new(
+               %Busloc{
                  id: "G-10098",
                  label: "3823-3605",
                  latitude: 42.32951,
@@ -77,21 +76,21 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
                  run_id: "128-1007",
                  current_status: :STOPPED_AT,
                  last_updated: 1_534_340_406
-               )
+               }
     end
   end
 
   describe "date/1" do
     test "parses an epoch string" do
-      assert GTFSRealtimeEnhanced.date("20190517") == {2019, 5, 17}
+      assert Busloc.date("20190517") == {2019, 5, 17}
     end
 
     test "parses an ISO 8601:2004 string" do
-      assert GTFSRealtimeEnhanced.date("2015-01-23") == {2015, 1, 23}
+      assert Busloc.date("2015-01-23") == {2015, 1, 23}
     end
 
     test "returns nil when passed nil" do
-      assert GTFSRealtimeEnhanced.date(nil) == nil
+      assert Busloc.date(nil) == nil
     end
   end
 end

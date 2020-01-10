@@ -1,5 +1,5 @@
 defmodule Realtime.Vehicle do
-  alias Concentrate.{DataDiscrepancy, VehiclePosition}
+  alias Concentrate.{DataDiscrepancy}
   alias Gtfs.{Block, Direction, Route, RoutePattern, Run, Stop, Trip}
   alias Realtime.Headway
   alias Realtime.RouteStatus
@@ -101,7 +101,7 @@ defmodule Realtime.Vehicle do
     data_discrepancies: []
   ]
 
-  @spec from_sources(%{atom() => VehiclePosition.t() | nil}) :: t()
+  @spec from_sources(%{atom() => term() | nil}) :: t()
   def from_sources(%{busloc: busloc, swiftly: swiftly} = sources) do
     trip_fn = Application.get_env(:realtime, :trip_fn, &Gtfs.trip/1)
     block_fn = Application.get_env(:realtime, :block_fn, &Gtfs.block/2)
@@ -195,7 +195,7 @@ defmodule Realtime.Vehicle do
     }
   end
 
-  @spec any([VehiclePosition.t() | nil], atom()) :: term() | nil
+  @spec any([term() | nil], atom()) :: term() | nil
   def any([], _field), do: nil
   def any([nil | rest], field), do: any(rest, field)
 
@@ -206,7 +206,7 @@ defmodule Realtime.Vehicle do
     end
   end
 
-  @spec most_recent([VehiclePosition.t() | nil], atom()) :: term() | nil
+  @spec most_recent([term() | nil], atom()) :: term() | nil
   def most_recent(structs, field) do
     case Enum.filter(structs, fn struct -> struct != nil end) do
       [] ->

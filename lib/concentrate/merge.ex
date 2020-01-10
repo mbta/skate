@@ -9,7 +9,6 @@ defmodule Concentrate.Merge do
   """
   use GenStage
   require Logger
-  alias Concentrate.VehiclePosition
   alias Realtime.Server
   alias Realtime.Vehicle
   alias Realtime.Vehicles
@@ -17,7 +16,7 @@ defmodule Concentrate.Merge do
   @type source_tag :: atom()
   @type state :: %__MODULE__{
           tags: %{GenStage.from() => source_tag()},
-          latest_data: %{source_tag() => %{String.t() => VehiclePosition.t()} | nil}
+          latest_data: %{source_tag() => %{String.t() => term()} | nil}
         }
 
   defstruct tags: %{},
@@ -88,8 +87,8 @@ defmodule Concentrate.Merge do
   Goes from each source having its vehicles,
   To each vehicle id having its sources.
   """
-  @spec group_by_id(%{source_tag() => %{String.t() => VehiclePosition.t()} | nil}) ::
-          %{String.t() => %{source_tag() => VehiclePosition.t() | nil}}
+  @spec group_by_id(%{source_tag() => %{String.t() => term()} | nil}) ::
+          %{String.t() => %{source_tag() => term() | nil}}
   def group_by_id(vehicles_by_source) do
     source_tags = Map.keys(vehicles_by_source)
 
@@ -113,7 +112,7 @@ defmodule Concentrate.Merge do
     end)
   end
 
-  @spec vehicles_from_data(%{source_tag() => %{String.t() => VehiclePosition.t()} | nil}) :: [
+  @spec vehicles_from_data(%{source_tag() => %{String.t() => term()} | nil}) :: [
           Vehicle.t()
         ]
   def vehicles_from_data(vehicles_by_source) do
