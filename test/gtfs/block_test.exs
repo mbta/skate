@@ -104,7 +104,7 @@ defmodule Gtfs.BlockTest do
 
   describe "next_trip/2" do
     test "finds the trip in the block after the given trip" do
-      assert Block.next_trip(@block, @trip1.id) == @trip2
+      assert Block.next_trip(@block, @trip1.id) == {:trip, @trip2}
     end
 
     test "returns :last if given the last trip in the block" do

@@ -298,7 +298,7 @@ defmodule Realtime.Vehicle do
       # if something goes wrong and we can't find a next_trip, then :err
       next_trip =
         if first_stop_on_trip?(stop_id, trip) do
-          trip
+          {:trip, trip}
         else
           Block.next_trip(block, trip.id)
         end
@@ -310,7 +310,7 @@ defmodule Realtime.Vehicle do
         :last ->
           :pull_back
 
-        _ ->
+        {:trip, next_trip} ->
           if next_trip.run_id != run_id do
             :swing_off
           else
