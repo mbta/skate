@@ -297,7 +297,7 @@ defmodule Realtime.Vehicle do
       # if it's the last trip of the block, then next_trip is :last
       # if something goes wrong and we can't find a next_trip, then :err
       next_trip =
-        if stop_id == List.first(trip.stop_times).stop_id do
+        if first_stop_on_trip?(stop_id, trip) do
           trip
         else
           Block.next_trip(block, trip.id)
@@ -318,6 +318,11 @@ defmodule Realtime.Vehicle do
           end
       end
     end
+  end
+
+  @spec first_stop_on_trip?(Stop.id(), Trip.t()) :: bool()
+  defp first_stop_on_trip?(stop_id, trip) do
+    stop_id == List.first(trip.stop_times).stop_id
   end
 
   defp ensure_run_id_hyphen(nil) do
