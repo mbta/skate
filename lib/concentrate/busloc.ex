@@ -32,22 +32,16 @@ defmodule Concentrate.Busloc do
   alias __MODULE__.TripDescriptor
   alias Gtfs.Block
   alias Gtfs.Run
-  alias Gtfs.Stop
   alias Gtfs.Trip
 
   @type t :: %__MODULE__{
     id: String.t(),
     trip_id: Trip.id(),
-    stop_id: Stop.id(),
     label: String.t(),
-    license_plate: String.t() | nil,
     latitude: float(),
     longitude: float(),
     bearing: integer(),
     speed: float(),
-    odometer: integer() | nil,
-    current_status: atom(),
-    stop_sequence: integer(),
     last_updated: Util.Time.timestamp(),
     block_id: Block.id() | nil,
     run_id: Run.id() | nil,
@@ -58,16 +52,11 @@ defmodule Concentrate.Busloc do
   defstruct [
     :id,
     :trip_id,
-    :stop_id,
     :label,
-    :license_plate,
     :latitude,
     :longitude,
     :bearing,
     :speed,
-    :odometer,
-    :current_status,
-    :stop_sequence,
     :last_updated,
     :block_id,
     :run_id,
@@ -105,16 +94,11 @@ defmodule Concentrate.Busloc do
           %__MODULE__{
             id: Map.get(vehicle, "id"),
             trip_id: trip.trip_id,
-            stop_id: Map.get(vp, "stop_id"),
             label: Map.get(vehicle, "label"),
-            license_plate: Map.get(vehicle, "license_plate"),
             latitude: Map.get(position, "latitude"),
             longitude: Map.get(position, "longitude"),
             bearing: Map.get(position, "bearing"),
             speed: Map.get(position, "speed"),
-            odometer: Map.get(position, "odometer"),
-            current_status: current_status(Map.get(vp, "current_status")),
-            stop_sequence: Map.get(vp, "current_stop_sequence"),
             last_updated: Map.get(vp, "timestamp"),
             block_id: Map.get(vp, "block_id"),
             run_id: Map.get(vp, "run_id"),

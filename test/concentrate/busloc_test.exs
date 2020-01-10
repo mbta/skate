@@ -66,15 +66,11 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
                  longitude: -71.11109,
                  bearing: 135,
                  speed: 2.9796,
-                 odometer: 5.1,
-                 stop_id: "70257",
                  trip_id: "37165437-X",
-                 stop_sequence: 670,
                  block_id: "Q238-135",
                  operator_id: "2841",
                  operator_name: "EVANS",
                  run_id: "128-1007",
-                 current_status: :STOPPED_AT,
                  last_updated: 1_534_340_406
                }
     end
