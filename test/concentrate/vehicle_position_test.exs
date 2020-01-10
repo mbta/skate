@@ -212,41 +212,4 @@ defmodule Concentrate.VehiclePositionTest do
       assert VehiclePosition.merge(first, second) == expected
     end
   end
-
-  describe "comes_from_swiftly?/1" do
-    test "true if sources include swiftly" do
-      vp =
-        VehiclePosition.new(
-          last_updated: 1,
-          latitude: 1,
-          longitude: 1,
-          sources: MapSet.new(["busloc", "swiftly"])
-        )
-
-      assert VehiclePosition.comes_from_swiftly?(vp)
-    end
-
-    test "false if sources don't include swiftly" do
-      vp =
-        VehiclePosition.new(
-          last_updated: 1,
-          latitude: 1,
-          longitude: 1,
-          sources: MapSet.new(["busloc"])
-        )
-
-      refute VehiclePosition.comes_from_swiftly?(vp)
-    end
-
-    test "false if there are no sources" do
-      vp =
-        VehiclePosition.new(
-          last_updated: 1,
-          latitude: 1,
-          longitude: 1
-        )
-
-      refute VehiclePosition.comes_from_swiftly?(vp)
-    end
-  end
 end

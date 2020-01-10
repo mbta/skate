@@ -101,25 +101,24 @@ defmodule Realtime.Vehicle do
     data_discrepancies: []
   ]
 
-  @spec from_vehicle_position(map()) :: t()
-  def from_vehicle_position(vehicle_position) do
+  @spec from_sources(%{atom() => VehiclePosition.t() | nil}) :: t()
+  def from_sources(%{busloc: busloc, swiftly: swiftly} = sources) do
     trip_fn = Application.get_env(:realtime, :trip_fn, &Gtfs.trip/1)
     block_fn = Application.get_env(:realtime, :block_fn, &Gtfs.block/2)
     now_fn = Application.get_env(:realtime, :now_fn, &Util.Time.now/0)
 
-    trip_id = VehiclePosition.trip_id(vehicle_position)
-    block_id = VehiclePosition.block_id(vehicle_position)
-    stop_id = VehiclePosition.stop_id(vehicle_position)
-    run_id = ensure_run_id_hyphen(VehiclePosition.run_id(vehicle_position))
+    trip_id = swiftly && swiftly.trip_id
+    block_id = most_recent([busloc, swiftly], :block_id)
+    stop_id = swiftly && swiftly.stop_id
+    run_id = ensure_run_id_hyphen(most_recent([busloc, swiftly], :run_id))
 
     trip = trip_fn.(trip_id)
-    route_id = VehiclePosition.route_id(vehicle_position) || (trip && trip.route_id)
-    direction_id = VehiclePosition.direction_id(vehicle_position) || (trip && trip.direction_id)
+    route_id = (swiftly && swiftly.route_id) || (trip && trip.route_id)
+    direction_id = (swiftly && swiftly.direction_id) || (trip && trip.direction_id)
     block = trip && block_fn.(block_id, trip.service_id)
     headsign = trip && trip.headsign
     via_variant = trip && trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id)
     stop_times_on_trip = (trip && trip.stop_times) || []
-    stop_name = stop_name(vehicle_position, stop_id)
     timepoint_status = TimepointStatus.timepoint_status(stop_times_on_trip, stop_id)
     scheduled_location = TimepointStatus.scheduled_location(block, now_fn.())
 
@@ -131,7 +130,7 @@ defmodule Realtime.Vehicle do
         nil
       end
 
-    headway_secs = VehiclePosition.headway_secs(vehicle_position)
+    headway_secs = swiftly && swiftly.headway_secs
     origin_stop_id = List.first(stop_times_on_trip) && List.first(stop_times_on_trip).stop_id
 
     date_time_now_fn = Application.get_env(:realtime, :date_time_now_fn, &Timex.now/0)
@@ -151,38 +150,43 @@ defmodule Realtime.Vehicle do
         end
       end
 
-    data_discrepancies = VehiclePosition.data_discrepancies(vehicle_position)
-    is_off_course = off_course?(data_discrepancies)
+    source_tags =
+      sources
+      |> Enum.filter(fn {_tag, value} -> value != nil end)
+      |> Enum.map(fn {tag, _value} -> tag end)
+
+    data_discrepancies = data_discrepancies(sources)
+    is_off_course = off_course?(sources)
 
     %__MODULE__{
-      id: VehiclePosition.id(vehicle_position),
-      label: VehiclePosition.label(vehicle_position),
-      timestamp: VehiclePosition.last_updated(vehicle_position),
-      latitude: VehiclePosition.latitude(vehicle_position),
-      longitude: VehiclePosition.longitude(vehicle_position),
+      id: any([busloc, swiftly], :id),
+      label: any([busloc, swiftly], :label),
+      timestamp: most_recent([busloc, swiftly], :last_updated),
+      latitude: most_recent([busloc, swiftly], :latitude),
+      longitude: most_recent([busloc, swiftly], :longitude),
       direction_id: direction_id,
       route_id: route_id,
       trip_id: trip_id,
       headsign: headsign,
       via_variant: via_variant,
-      bearing: VehiclePosition.bearing(vehicle_position),
+      bearing: most_recent([busloc, swiftly], :last_updated),
       block_id: block_id,
-      operator_id: VehiclePosition.operator_id(vehicle_position),
-      operator_name: VehiclePosition.operator_name(vehicle_position),
+      operator_id: any([busloc, swiftly], :operator_id),
+      operator_name: any([busloc, swiftly], :operator_name),
       run_id: run_id,
       headway_secs: headway_secs,
       headway_spacing: headway_spacing,
-      previous_vehicle_id: VehiclePosition.previous_vehicle_id(vehicle_position),
-      schedule_adherence_secs: VehiclePosition.schedule_adherence_secs(vehicle_position),
-      scheduled_headway_secs: VehiclePosition.scheduled_headway_secs(vehicle_position),
+      previous_vehicle_id: swiftly && swiftly.previous_vehicle_id,
+      schedule_adherence_secs: swiftly && swiftly.schedule_adherence_secs,
+      scheduled_headway_secs: swiftly && swiftly.scheduled_headway_secs,
       is_off_course: is_off_course,
-      layover_departure_time: VehiclePosition.layover_departure_time(vehicle_position),
+      layover_departure_time: swiftly && swiftly.layover_departure_time,
       block_is_active: active_block?(is_off_course, block, now_fn.()),
-      sources: VehiclePosition.sources(vehicle_position),
+      sources: MapSet.new(source_tags),
       data_discrepancies: data_discrepancies,
       stop_status: %{
         stop_id: stop_id,
-        stop_name: stop_name
+        stop_name: (swiftly && swiftly.stop_name) || stop_name_from_stop(stop_id)
       },
       timepoint_status: timepoint_status,
       scheduled_location: scheduled_location,
@@ -191,31 +195,38 @@ defmodule Realtime.Vehicle do
     }
   end
 
+  @spec any([VehiclePosition.t() | nil], atom()) :: term() | nil
+  def any([], _field), do: nil
+  def any([nil | rest], field), do: any(rest, field)
+
+  def any([struct | rest], field) do
+    case Map.get(struct, field) do
+      nil -> any(rest, field)
+      value -> value
+    end
+  end
+
+  @spec most_recent([VehiclePosition.t() | nil], atom()) :: term() | nil
+  def most_recent(structs, field) do
+    case Enum.filter(structs, fn struct -> struct != nil end) do
+      [] ->
+        nil
+
+      structs ->
+        structs
+        |> Enum.min_by(& &1.last_updated)
+        |> Map.get(field)
+    end
+  end
+
   @doc """
   Does this vehicle have a trip assignment from Busloc, but not from Swiftly?
   That is a sign that Swiftly thinks the vehicle is off course, or not on any
   trip for some other reason.
   """
-  @spec off_course?([DataDiscrepancy.t()] | DataDiscrepancy.t()) :: boolean
-  def off_course?(data_discrepancies) when is_list(data_discrepancies) do
-    trip_id_discrepency =
-      Enum.find(data_discrepancies, fn data_discrepancy ->
-        data_discrepancy.attribute == :trip_id
-      end)
-
-    off_course?(trip_id_discrepency)
-  end
-
-  def off_course?(nil), do: false
-
-  def off_course?(%{sources: sources}) do
-    case Enum.find(sources, fn source -> source.id == "swiftly" end) do
-      %{value: nil} ->
-        true
-
-      _ ->
-        false
-    end
+  @spec off_course?(%{atom() => term() | nil}) :: boolean()
+  def off_course?(%{busloc: busloc, swiftly: swiftly}) do
+    busloc != nil and swiftly != nil and busloc.trip_id != nil and swiftly.trip_id == nil
   end
 
   def shuttle?(%__MODULE__{run_id: "999" <> _}), do: true
@@ -237,17 +248,6 @@ defmodule Realtime.Vehicle do
     now_time_of_day = Util.Time.time_of_day_for_timestamp(now, Util.Time.date_of_timestamp(now))
 
     now_time_of_day - Block.end_time(block) <= one_hour_in_seconds
-  end
-
-  @spec stop_name(map() | nil, String.t() | nil) :: String.t() | nil
-  defp stop_name(vehicle_position, stop_id) do
-    vp_stop_name = VehiclePosition.stop_name(vehicle_position)
-
-    if vp_stop_name != nil do
-      vp_stop_name
-    else
-      stop_name_from_stop(stop_id)
-    end
   end
 
   @spec stop_name_from_stop(String.t() | nil) :: String.t() | nil
@@ -321,6 +321,7 @@ defmodule Realtime.Vehicle do
     stop_id == List.first(trip.stop_times).stop_id
   end
 
+  @spec ensure_run_id_hyphen(Run.id() | nil) :: Run.id() | nil
   defp ensure_run_id_hyphen(nil) do
     nil
   end
@@ -333,6 +334,29 @@ defmodule Realtime.Vehicle do
       _ ->
         {prefix, suffix} = String.split_at(run_id, 3)
         prefix <> "-" <> suffix
+    end
+  end
+
+  @spec data_discrepancies(%{atom() => term() | nil}) :: [DataDiscrepancy.t()]
+  defp data_discrepancies(%{busloc: busloc, swiftly: swiftly}) do
+    if busloc != nil and swiftly != nil and busloc.trip_id != swiftly.trip_id do
+      [
+        %DataDiscrepancy{
+          attribute: "trip_id",
+          sources: [
+            %{
+              id: :busloc,
+              value: busloc.trip_id
+            },
+            %{
+              id: :swiftly,
+              value: swiftly.trip_id
+            }
+          ]
+        }
+      ]
+    else
+      []
     end
   end
 end
