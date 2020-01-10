@@ -282,41 +282,37 @@ defmodule Realtime.Vehicle do
           Run.id() | nil,
           Stop.id() | nil
         ) :: end_of_trip_type()
-  def end_of_trip_type(
-        block,
-        trip,
-        run_id,
-        stop_id
-      ) do
-    if block == nil || trip == nil || stop_id == nil || run_id == nil do
-      :another_trip
-    else
-      # next trip from an operations perspective, not a data perspective
-      # if it's waiting to start the next trip, then next_trip is that trip
-      # if it's in the middle of a trip, then next_trip is the trip after this one
-      # if it's the last trip of the block, then next_trip is :last
-      # if something goes wrong and we can't find a next_trip, then :err
-      next_trip =
-        if first_stop_on_trip?(stop_id, trip) do
-          {:trip, trip}
-        else
-          Block.next_trip(block, trip.id)
-        end
+  def end_of_trip_type(block, trip, run_id, stop_id)
+      when block == nil or trip == nil or stop_id == nil or run_id == nil do
+    :another_trip
+  end
 
-      case next_trip do
-        :err ->
-          :another_trip
-
-        :last ->
-          :pull_back
-
-        {:trip, next_trip} ->
-          if next_trip.run_id != run_id do
-            :swing_off
-          else
-            :another_trip
-          end
+  def end_of_trip_type(block, trip, run_id, stop_id) do
+    # next trip from an operations perspective, not a data perspective
+    # if it's waiting to start the next trip, then next_trip is that trip
+    # if it's in the middle of a trip, then next_trip is the trip after this one
+    # if it's the last trip of the block, then next_trip is :last
+    # if something goes wrong and we can't find a next_trip, then :err
+    next_trip =
+      if first_stop_on_trip?(stop_id, trip) do
+        {:trip, trip}
+      else
+        Block.next_trip(block, trip.id)
       end
+
+    case next_trip do
+      :err ->
+        :another_trip
+
+      :last ->
+        :pull_back
+
+      {:trip, next_trip} ->
+        if next_trip.run_id != run_id do
+          :swing_off
+        else
+          :another_trip
+        end
     end
   end
 
