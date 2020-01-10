@@ -50,9 +50,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
             block_id: Map.get(vp, "block_id"),
             run_id: Map.get(vp, "run_id"),
             operator_id: Map.get(operator, "id"),
-            operator_name: Map.get(operator, "name"),
-            sources: MapSet.new(["busloc"]),
-            data_discrepancies: []
+            operator_name: Map.get(operator, "name")
           )
         ]
 

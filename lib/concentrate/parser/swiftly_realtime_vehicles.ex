@@ -55,9 +55,7 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehicles do
       route_id: Map.get(vehicle_data, "routeId"),
       schedule_adherence_secs: Map.get(vehicle_data, "schAdhSecs"),
       schedule_adherence_string: Map.get(vehicle_data, "schAdhStr"),
-      scheduled_headway_secs: Map.get(vehicle_data, "scheduledHeadwaySecs"),
-      sources: MapSet.new(["swiftly"]),
-      data_discrepancies: []
+      scheduled_headway_secs: Map.get(vehicle_data, "scheduledHeadwaySecs")
     )
   end
 

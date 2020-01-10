@@ -35,8 +35,6 @@ defmodule Concentrate.VehiclePosition do
     :schedule_adherence_secs,
     :schedule_adherence_string,
     :scheduled_headway_secs,
-    :sources,
-    :data_discrepancies,
     current_status: :IN_TRANSIT_TO
   ])
 
