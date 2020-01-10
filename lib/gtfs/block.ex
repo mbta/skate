@@ -59,14 +59,22 @@ defmodule Gtfs.Block do
   @spec last_trip(t()) :: Trip.t()
   def last_trip(block), do: List.last(block)
 
-  @spec next_trip(t(), Trip.id()) :: Trip.t() | nil
+  @doc """
+  The trip that happens after the given trip_id in the given block.
+  If the trip_id is not in the block, then :err
+  If the trip_id belongs to the last trip in the block, then :last
+  """
+  @spec next_trip(t(), Trip.id()) :: {:trip, Trip.t()} | :last | :err
   def next_trip(block, trip_id) do
     case Enum.find_index(block, &(&1.id == trip_id)) do
       nil ->
-        nil
+        :err
 
       index ->
-        Enum.at(block, index + 1)
+        case Enum.at(block, index + 1) do
+          nil -> :last
+          next_trip -> {:trip, next_trip}
+        end
     end
   end
 

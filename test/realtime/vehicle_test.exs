@@ -382,14 +382,16 @@ defmodule Realtime.VehicleTest do
         run_id: "run1",
         stop_times: [
           %StopTime{
-            stop_id: "s1",
-            time: 0,
-            timepoint_id: "s1"
+            stop_id: "start",
+            time: 0
           },
           %StopTime{
-            stop_id: "s2",
-            time: 0,
-            timepoint_id: nil
+            stop_id: "middle",
+            time: 0
+          },
+          %StopTime{
+            stop_id: "end",
+            time: 0
           }
         ]
       }
@@ -405,14 +407,16 @@ defmodule Realtime.VehicleTest do
         run_id: "run1",
         stop_times: [
           %StopTime{
-            stop_id: "s2",
-            time: 0,
-            timepoint_id: "s2"
+            stop_id: "start",
+            time: 0
           },
           %StopTime{
-            stop_id: "s1",
-            time: 0,
-            timepoint_id: "s1"
+            stop_id: "middle",
+            time: 0
+          },
+          %StopTime{
+            stop_id: "end",
+            time: 0
           }
         ]
       }
@@ -428,14 +432,16 @@ defmodule Realtime.VehicleTest do
         run_id: "run2",
         stop_times: [
           %StopTime{
-            stop_id: "s1",
-            time: 0,
-            timepoint_id: "s1"
+            stop_id: "start",
+            time: 0
           },
           %StopTime{
-            stop_id: "s2",
-            time: 0,
-            timepoint_id: "s2"
+            stop_id: "middle",
+            time: 0
+          },
+          %StopTime{
+            stop_id: "end",
+            time: 0
           }
         ]
       }
@@ -449,33 +455,69 @@ defmodule Realtime.VehicleTest do
        block: block}
     end
 
-    test "returns :another_trip if there are subsequent trips on this run and block", %{
+    test "when pulling out, returns :another_trip", %{
       first_trip: first_trip,
       block: block
     } do
-      assert Vehicle.end_of_trip_type(first_trip, block) == :another_trip
+      assert Vehicle.end_of_trip_type(block, first_trip, "run1", "start") == :another_trip
     end
 
-    test "returns :pull_back if this is the last trip on the block", %{
-      last_trip_of_block: last_trip_of_block,
+    test "when in the middle of a trip in the middle of a run, returns :another_trip", %{
+      first_trip: first_trip,
       block: block
     } do
-      assert Vehicle.end_of_trip_type(last_trip_of_block, block) == :pull_back
+      assert Vehicle.end_of_trip_type(block, first_trip, "run1", "middle") == :another_trip
     end
 
-    test "returns :swing_off if this is the last trip on the run, but not the block", %{
+    test "when laying over before the last trip of a run, returns :another_trip", %{
       last_trip_of_run: last_trip_of_run,
       block: block
     } do
-      assert Vehicle.end_of_trip_type(last_trip_of_run, block) == :swing_off
+      assert Vehicle.end_of_trip_type(block, last_trip_of_run, "run1", "start") == :another_trip
     end
 
-    test "defaults to :another_trip if we can't find the trip or block", %{
+    test "when in the middle of the last trip of a run, returns :swing_off", %{
+      last_trip_of_run: last_trip_of_run,
+      block: block
+    } do
+      assert Vehicle.end_of_trip_type(block, last_trip_of_run, "run1", "middle") == :swing_off
+    end
+
+    test "when laying over and swinging off, before logging off, returns :swing_off", %{
       last_trip_of_block: last_trip_of_block,
       block: block
     } do
-      assert Vehicle.end_of_trip_type(nil, block) == :another_trip
-      assert Vehicle.end_of_trip_type(last_trip_of_block, nil) == :another_trip
+      assert Vehicle.end_of_trip_type(block, last_trip_of_block, "run1", "start") == :swing_off
+    end
+
+    test "when laying over and swinging off, after logging in, returns :another_trip", %{
+      last_trip_of_block: last_trip_of_block,
+      block: block
+    } do
+      assert Vehicle.end_of_trip_type(block, last_trip_of_block, "run2", "start") == :another_trip
+    end
+
+    test "when in the middle of the last trip of the block, returns :pull_back", %{
+      last_trip_of_block: last_trip_of_block,
+      block: block
+    } do
+      assert Vehicle.end_of_trip_type(block, last_trip_of_block, "run2", "middle") == :pull_back
+    end
+
+    test "defaults to :another_trip if we're missing data", %{
+      last_trip_of_block: last_trip_of_block,
+      block: block
+    } do
+      assert Vehicle.end_of_trip_type(nil, last_trip_of_block, "run2", "middle") == :another_trip
+      assert Vehicle.end_of_trip_type(block, nil, "run2", "middle") == :another_trip
+      assert Vehicle.end_of_trip_type(block, last_trip_of_block, nil, "middle") == :another_trip
+      assert Vehicle.end_of_trip_type(block, last_trip_of_block, "run2", nil) == :another_trip
+    end
+
+    test "defaults to :another_trip if the trip isn't in the block", %{
+      last_trip_of_block: last_trip_of_block
+    } do
+      assert Vehicle.end_of_trip_type([], last_trip_of_block, "run2", "middle") == :another_trip
     end
   end
 
