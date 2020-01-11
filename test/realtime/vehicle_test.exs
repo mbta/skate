@@ -169,6 +169,39 @@ defmodule Realtime.VehicleTest do
       assert result.headway_secs == nil
       assert result.headway_spacing == nil
     end
+
+    test "takes the more recent latlng" do
+      sources = %{
+        busloc: %{@busloc |
+          last_updated: 101,
+          latitude: 10.1,
+          longitude: 11.1
+        },
+        swiftly: %{@swiftly |
+          last_updated: 100,
+          latitude: 10.0,
+          longitude: 11.0
+        }
+      }
+      result = Vehicle.from_sources(sources)
+      assert result.latitude == 10.1
+      assert result.longitude == 11.1
+    end
+
+    test "prioritizes the swiftly trip_id" do
+      sources = %{
+        busloc: %{@busloc |
+          last_updated: 101,
+          trip_id: "busloc-trip",
+        },
+        swiftly: %{@swiftly |
+          last_updated: 100,
+          trip_id: "swiftly-trip",
+        }
+      }
+      result = Vehicle.from_sources(sources)
+      assert result.trip_id == "swiftly-trip"
+    end
   end
 
   describe "off_course?/2" do
@@ -501,6 +534,34 @@ defmodule Realtime.VehicleTest do
       last_trip_of_block: last_trip_of_block
     } do
       assert Vehicle.end_of_trip_type([], last_trip_of_block, "run2", "middle") == :another_trip
+    end
+  end
+
+  describe "data_discrepancies" do
+    test "makes a data discrepancy if the trip_ids are different" do
+      assert Vehicle.data_discrepancies(%{
+        busloc: %{@busloc | trip_id: "busloc-trip"},
+        swiftly: %{@swiftly | trip_id: "swiftly-trip"}
+      }) == [%DataDiscrepancy{
+        attribute: "trip_id",
+        sources: [
+          %{
+            id: :busloc,
+            value: "busloc-trip"
+          },
+          %{
+            id: :swiftly,
+            value: "swiftly-trip"
+          }
+        ]
+      }]
+    end
+
+    test "doesn't make a data discrepancy if the trip_ids are the same" do
+      assert Vehicle.data_discrepancies(%{
+        busloc: %{@busloc | trip_id: "trip"},
+        swiftly: %{@swiftly | trip_id: "trip"}
+      }) == []
     end
   end
 

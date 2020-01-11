@@ -338,7 +338,7 @@ defmodule Realtime.Vehicle do
   end
 
   @spec data_discrepancies(%{atom() => term() | nil}) :: [DataDiscrepancy.t()]
-  defp data_discrepancies(%{busloc: busloc, swiftly: swiftly}) do
+  def data_discrepancies(%{busloc: busloc, swiftly: swiftly}) do
     if busloc != nil and swiftly != nil and busloc.trip_id != swiftly.trip_id do
       [
         %DataDiscrepancy{
