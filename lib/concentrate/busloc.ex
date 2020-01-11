@@ -11,13 +11,13 @@ defmodule Concentrate.Busloc do
     alias Gtfs.Trip
 
     @type t :: %__MODULE__{
-      trip_id: Trip.id(),
-      route_id: Route.id(),
-      direction_id: Direction.id(),
-      start_date: :calendar.date(),
-      start_time: :calendar.date(),
-      schedule_relationship: atom()
-    }
+            trip_id: Trip.id(),
+            route_id: Route.id(),
+            direction_id: Direction.id(),
+            start_date: :calendar.date(),
+            start_time: :calendar.date(),
+            schedule_relationship: atom()
+          }
 
     defstruct [
       :trip_id,
@@ -35,19 +35,19 @@ defmodule Concentrate.Busloc do
   alias Gtfs.Trip
 
   @type t :: %__MODULE__{
-    id: String.t(),
-    trip_id: Trip.id(),
-    label: String.t(),
-    latitude: float(),
-    longitude: float(),
-    bearing: integer(),
-    speed: float(),
-    last_updated: Util.Time.timestamp(),
-    block_id: Block.id() | nil,
-    run_id: Run.id() | nil,
-    operator_id: String.t(),
-    operator_name: String.t(),
-  }
+          id: String.t(),
+          trip_id: Trip.id(),
+          label: String.t(),
+          latitude: float(),
+          longitude: float(),
+          bearing: integer(),
+          speed: float(),
+          last_updated: Util.Time.timestamp(),
+          block_id: Block.id() | nil,
+          run_id: Run.id() | nil,
+          operator_id: String.t(),
+          operator_name: String.t()
+        }
 
   defstruct [
     :id,
