@@ -160,7 +160,7 @@ defmodule Realtime.Vehicle do
 
     %__MODULE__{
       id: any([busloc, swiftly], :id),
-      label: any([busloc, swiftly], :label),
+      label: busloc && busloc.label,
       timestamp: most_recent([busloc, swiftly], :last_updated),
       latitude: most_recent([busloc, swiftly], :latitude),
       longitude: most_recent([busloc, swiftly], :longitude),
