@@ -48,7 +48,7 @@ defmodule Realtime.VehicleTest do
     route_id: "28",
     schedule_adherence_secs: 500,
     schedule_adherence_string: "late",
-    scheduled_headway_secs: 900,
+    scheduled_headway_secs: 900
   }
 
   @vehicle %Vehicle{
@@ -165,6 +165,7 @@ defmodule Realtime.VehicleTest do
         busloc: @busloc,
         swiftly: %{@swiftly | headway_secs: nil}
       }
+
       result = Vehicle.from_sources(sources)
       assert result.headway_secs == nil
       assert result.headway_spacing == nil
@@ -172,17 +173,10 @@ defmodule Realtime.VehicleTest do
 
     test "takes the more recent latlng" do
       sources = %{
-        busloc: %{@busloc |
-          last_updated: 101,
-          latitude: 10.1,
-          longitude: 11.1
-        },
-        swiftly: %{@swiftly |
-          last_updated: 100,
-          latitude: 10.0,
-          longitude: 11.0
-        }
+        busloc: %{@busloc | last_updated: 101, latitude: 10.1, longitude: 11.1},
+        swiftly: %{@swiftly | last_updated: 100, latitude: 10.0, longitude: 11.0}
       }
+
       result = Vehicle.from_sources(sources)
       assert result.latitude == 10.1
       assert result.longitude == 11.1
@@ -190,15 +184,10 @@ defmodule Realtime.VehicleTest do
 
     test "prioritizes the swiftly trip_id" do
       sources = %{
-        busloc: %{@busloc |
-          last_updated: 101,
-          trip_id: "busloc-trip",
-        },
-        swiftly: %{@swiftly |
-          last_updated: 100,
-          trip_id: "swiftly-trip",
-        }
+        busloc: %{@busloc | last_updated: 101, trip_id: "busloc-trip"},
+        swiftly: %{@swiftly | last_updated: 100, trip_id: "swiftly-trip"}
       }
+
       result = Vehicle.from_sources(sources)
       assert result.trip_id == "swiftly-trip"
     end
@@ -207,30 +196,30 @@ defmodule Realtime.VehicleTest do
   describe "off_course?/2" do
     test "returns true if busloc has a trip_id and swiftly doesn't" do
       assert Vehicle.off_course?(%{
-        busloc: %{@busloc | trip_id: "busloc-trip"},
-        swiftly: %{@swiftly | trip_id: nil}
-      })
+               busloc: %{@busloc | trip_id: "busloc-trip"},
+               swiftly: %{@swiftly | trip_id: nil}
+             })
     end
 
     test "returns false if busloc and swiftly both give trip_ids" do
       refute Vehicle.off_course?(%{
-        busloc: %{@busloc | trip_id: "busloc-trip"},
-        swiftly: %{@swiftly | trip_id: "swiftly-trip"}
-      })
+               busloc: %{@busloc | trip_id: "busloc-trip"},
+               swiftly: %{@swiftly | trip_id: "swiftly-trip"}
+             })
     end
 
     test "returns false if busloc and swiftly have the same trip_id" do
       refute Vehicle.off_course?(%{
-        busloc: %{@busloc | trip_id: "same-trip"},
-        swiftly: %{@swiftly | trip_id: "same-trip"}
-      })
+               busloc: %{@busloc | trip_id: "same-trip"},
+               swiftly: %{@swiftly | trip_id: "same-trip"}
+             })
     end
 
     test "returns false if swiftly has no data" do
       refute Vehicle.off_course?(%{
-        busloc: %{@busloc | trip_id: "busloc-trip"},
-        swiftly: nil
-      })
+               busloc: %{@busloc | trip_id: "busloc-trip"},
+               swiftly: nil
+             })
     end
   end
 
@@ -540,28 +529,30 @@ defmodule Realtime.VehicleTest do
   describe "data_discrepancies" do
     test "makes a data discrepancy if the trip_ids are different" do
       assert Vehicle.data_discrepancies(%{
-        busloc: %{@busloc | trip_id: "busloc-trip"},
-        swiftly: %{@swiftly | trip_id: "swiftly-trip"}
-      }) == [%DataDiscrepancy{
-        attribute: "trip_id",
-        sources: [
-          %{
-            id: :busloc,
-            value: "busloc-trip"
-          },
-          %{
-            id: :swiftly,
-            value: "swiftly-trip"
-          }
-        ]
-      }]
+               busloc: %{@busloc | trip_id: "busloc-trip"},
+               swiftly: %{@swiftly | trip_id: "swiftly-trip"}
+             }) == [
+               %DataDiscrepancy{
+                 attribute: "trip_id",
+                 sources: [
+                   %{
+                     id: :busloc,
+                     value: "busloc-trip"
+                   },
+                   %{
+                     id: :swiftly,
+                     value: "swiftly-trip"
+                   }
+                 ]
+               }
+             ]
     end
 
     test "doesn't make a data discrepancy if the trip_ids are the same" do
       assert Vehicle.data_discrepancies(%{
-        busloc: %{@busloc | trip_id: "trip"},
-        swiftly: %{@swiftly | trip_id: "trip"}
-      }) == []
+               busloc: %{@busloc | trip_id: "trip"},
+               swiftly: %{@swiftly | trip_id: "trip"}
+             }) == []
     end
   end
 
