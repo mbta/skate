@@ -36,7 +36,7 @@ defmodule Realtime.Vehicle do
           is_off_course: boolean(),
           layover_departure_time: Util.Time.timestamp() | nil,
           block_is_active: boolean(),
-          sources: MapSet.t(String.t()),
+          sources: [atom()],
           data_discrepancies: [DataDiscrepancy.t()],
           stop_status: stop_status(),
           timepoint_status: TimepointStatus.timepoint_status() | nil,
@@ -169,7 +169,7 @@ defmodule Realtime.Vehicle do
       trip_id: trip_id,
       headsign: headsign,
       via_variant: via_variant,
-      bearing: most_recent([busloc, swiftly], :last_updated),
+      bearing: most_recent([busloc, swiftly], :bearing),
       block_id: block_id,
       operator_id: any([busloc, swiftly], :operator_id),
       operator_name: any([busloc, swiftly], :operator_name),
@@ -182,7 +182,7 @@ defmodule Realtime.Vehicle do
       is_off_course: is_off_course,
       layover_departure_time: swiftly && swiftly.layover_departure_time,
       block_is_active: active_block?(is_off_course, block, now_fn.()),
-      sources: MapSet.new(source_tags),
+      sources: source_tags,
       data_discrepancies: data_discrepancies,
       stop_status: %{
         stop_id: stop_id,
@@ -214,7 +214,7 @@ defmodule Realtime.Vehicle do
 
       structs ->
         structs
-        |> Enum.min_by(& &1.last_updated)
+        |> Enum.max_by(& &1.last_updated)
         |> Map.get(field)
     end
   end
