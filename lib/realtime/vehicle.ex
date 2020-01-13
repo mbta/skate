@@ -193,7 +193,6 @@ defmodule Realtime.Vehicle do
       route_status: route_status(stop_id, trip, block),
       end_of_trip_type: end_of_trip_type(block, trip, run_id, stop_id)
     }
-
   end
 
   @spec most_recent([term() | nil], atom()) :: term() | nil
