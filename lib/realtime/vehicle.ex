@@ -159,7 +159,7 @@ defmodule Realtime.Vehicle do
     is_off_course = off_course?(sources)
 
     %__MODULE__{
-      id: any([busloc, swiftly], :id),
+      id: most_recent([busloc, swiftly], :id),
       label: busloc && busloc.label,
       timestamp: most_recent([busloc, swiftly], :last_updated),
       latitude: most_recent([busloc, swiftly], :latitude),
@@ -171,8 +171,8 @@ defmodule Realtime.Vehicle do
       via_variant: via_variant,
       bearing: most_recent([busloc, swiftly], :bearing),
       block_id: block_id,
-      operator_id: any([busloc, swiftly], :operator_id),
-      operator_name: any([busloc, swiftly], :operator_name),
+      operator_id: most_recent([busloc, swiftly], :operator_id),
+      operator_name: most_recent([busloc, swiftly], :operator_name),
       run_id: run_id,
       headway_secs: headway_secs,
       headway_spacing: headway_spacing,
@@ -193,17 +193,7 @@ defmodule Realtime.Vehicle do
       route_status: route_status(stop_id, trip, block),
       end_of_trip_type: end_of_trip_type(block, trip, run_id, stop_id)
     }
-  end
 
-  @spec any([term() | nil], atom()) :: term() | nil
-  def any([], _field), do: nil
-  def any([nil | rest], field), do: any(rest, field)
-
-  def any([struct | rest], field) do
-    case Map.get(struct, field) do
-      nil -> any(rest, field)
-      value -> value
-    end
   end
 
   @spec most_recent([term() | nil], atom()) :: term() | nil
