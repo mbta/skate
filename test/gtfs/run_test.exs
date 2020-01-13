@@ -41,5 +41,13 @@ defmodule Gtfs.RunTest do
                "trip_id" => "41819716"
              }) == {"41819716", "123-1501"}
     end
+
+    test "pads 3 digit runs into 4 digit" do
+      assert Run.run_id_for_trip_id_from_row(%{
+               "area" => "123",
+               "run_id" => "456",
+               "trip_id" => "41819716"
+             }) == {"41819716", "123-0456"}
+    end
   end
 end

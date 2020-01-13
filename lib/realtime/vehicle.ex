@@ -308,7 +308,7 @@ defmodule Realtime.Vehicle do
         :pull_back
 
       {:trip, next_trip} ->
-        if next_trip.run_id != run_id do
+        if next_trip.run_id != nil and next_trip.run_id != run_id do
           :swing_off
         else
           :another_trip
