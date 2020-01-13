@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react"
 import { NavLink } from "react-router-dom"
-import { ladderIcon, mapIcon, searchIcon, refreshIcon } from "../helpers/icon"
+import { ladderIcon, mapIcon, refreshIcon, searchIcon } from "../helpers/icon"
 
 interface Props {
   pickerContainerIsVisible: boolean
