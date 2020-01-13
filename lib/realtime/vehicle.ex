@@ -107,7 +107,7 @@ defmodule Realtime.Vehicle do
     block_fn = Application.get_env(:realtime, :block_fn, &Gtfs.block/2)
     now_fn = Application.get_env(:realtime, :now_fn, &Util.Time.now/0)
 
-    trip_id = swiftly && swiftly.trip_id
+    trip_id = (swiftly && swiftly.trip_id) || (busloc && busloc.trip_id)
     block_id = most_recent([busloc, swiftly], :block_id)
     stop_id = swiftly && swiftly.stop_id
     run_id = ensure_run_id_hyphen(most_recent([busloc, swiftly], :run_id))
