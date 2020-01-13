@@ -23,8 +23,8 @@ defmodule Concentrate.Supervisor do
   @impl true
   def init(opts) do
     sources = sources(opts)
-    source_tags = Enum.map(sources, fn source -> source.id end)
-    merge = merge(source_tags)
+    source_ids = Enum.map(sources, fn source -> source.id end)
+    merge = merge(source_ids)
     children = sources ++ [merge]
     Supervisor.init(children, strategy: :rest_for_one)
   end
@@ -63,21 +63,21 @@ defmodule Concentrate.Supervisor do
     |> Enum.reject(&is_nil/1)
   end
 
-  defp source_child(source, url, parser, opts \\ []) do
+  defp source_child(source_id, url, parser, opts \\ []) do
     Supervisor.child_spec(
       {
         Concentrate.Producer.HTTP,
-        {url, [name: source, parser: parser] ++ opts}
+        {url, [name: source_id, parser: parser] ++ opts}
       },
-      id: source
+      id: source_id
     )
   end
 
-  defp merge(source_tags) do
+  defp merge(source_ids) do
     Supervisor.child_spec(
       {
         Concentrate.Merge,
-        [name: :merge, sources: source_tags]
+        [name: :merge, sources: source_ids]
       },
       id: :merge
     )

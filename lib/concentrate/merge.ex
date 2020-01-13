@@ -13,10 +13,10 @@ defmodule Concentrate.Merge do
   alias Realtime.Vehicle
   alias Realtime.Vehicles
 
-  @type source_tag :: atom()
+  @type source_id :: atom()
   @type state :: %__MODULE__{
-          tags: %{GenStage.from() => source_tag()},
-          latest_data: %{source_tag() => %{String.t() => term()} | nil}
+          tags: %{GenStage.from() => source_id()},
+          latest_data: %{source_id() => %{String.t() => term()} | nil}
         }
 
   defstruct tags: %{},
@@ -24,7 +24,7 @@ defmodule Concentrate.Merge do
 
   @type opts :: %{
           name: atom(),
-          sources: [source_tag()]
+          sources: [source_id()]
         }
   @start_link_opts [:name]
 
@@ -36,19 +36,19 @@ defmodule Concentrate.Merge do
 
   @impl GenStage
   def init(opts) do
-    source_tags = Keyword.get(opts, :sources, [])
+    source_ids = Keyword.get(opts, :sources, [])
 
     state = %__MODULE__{
       tags: %{},
       latest_data:
-        source_tags
-        |> Enum.map(fn source_tag -> {source_tag, nil} end)
+        source_ids
+        |> Enum.map(fn source_id -> {source_id, nil} end)
         |> Map.new()
     }
 
     opts = [
       subscribe_to:
-        Enum.map(source_tags, fn source_tag -> {source_tag, [max_demand: 1, tag: source_tag]} end)
+        Enum.map(source_ids, fn source_id -> {source_id, [max_demand: 1, tag: source_id]} end)
     ]
 
     {:consumer, state, opts}
@@ -56,8 +56,8 @@ defmodule Concentrate.Merge do
 
   @impl GenStage
   def handle_subscribe(:producer, options, from, state) do
-    source_tag = Keyword.get(options, :tag)
-    state = %{state | tags: Map.put(state.tags, from, source_tag)}
+    source_id = Keyword.get(options, :tag)
+    state = %{state | tags: Map.put(state.tags, from, source_id)}
     {:automatic, state}
   end
 
@@ -67,11 +67,11 @@ defmodule Concentrate.Merge do
 
   @impl GenStage
   def handle_events(events, from, state) do
-    source_tag = Map.get(state.tags, from)
+    source_id = Map.get(state.tags, from)
     new_data = List.last(events)
     by_id = Map.new(new_data, fn vehicle -> {vehicle.id, vehicle} end)
 
-    latest_data = Map.put(state.latest_data, source_tag, by_id)
+    latest_data = Map.put(state.latest_data, source_id, by_id)
     state = %{state | latest_data: latest_data}
 
     _ =
@@ -87,10 +87,10 @@ defmodule Concentrate.Merge do
   Goes from each source having its vehicles,
   To each vehicle id having its sources.
   """
-  @spec group_by_id(%{source_tag() => %{String.t() => term()} | nil}) ::
-          %{String.t() => %{source_tag() => term() | nil}}
+  @spec group_by_id(%{source_id() => %{String.t() => term()} | nil}) ::
+          %{String.t() => %{source_id() => term() | nil}}
   def group_by_id(vehicles_by_source) do
-    source_tags = Map.keys(vehicles_by_source)
+    source_ids = Map.keys(vehicles_by_source)
 
     vehicle_ids =
       vehicles_by_source
@@ -102,9 +102,9 @@ defmodule Concentrate.Merge do
 
     Map.new(vehicle_ids, fn vehicle_id ->
       {vehicle_id,
-       Map.new(source_tags, fn source_tag ->
-         {source_tag,
-          case Map.get(vehicles_by_source, source_tag) do
+       Map.new(source_ids, fn source_id ->
+         {source_id,
+          case Map.get(vehicles_by_source, source_id) do
             nil -> nil
             vps -> Map.get(vps, vehicle_id)
           end}
@@ -112,7 +112,7 @@ defmodule Concentrate.Merge do
     end)
   end
 
-  @spec vehicles_from_data(%{source_tag() => %{String.t() => term()} | nil}) :: [
+  @spec vehicles_from_data(%{source_id() => %{String.t() => term()} | nil}) :: [
           Vehicle.t()
         ]
   def vehicles_from_data(vehicles_by_source) do

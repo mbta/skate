@@ -150,7 +150,7 @@ defmodule Realtime.Vehicle do
         end
       end
 
-    source_tags =
+    source_ids =
       sources
       |> Enum.filter(fn {_tag, value} -> value != nil end)
       |> Enum.map(fn {tag, _value} -> tag end)
@@ -182,7 +182,7 @@ defmodule Realtime.Vehicle do
       is_off_course: is_off_course,
       layover_departure_time: swiftly && swiftly.layover_departure_time,
       block_is_active: active_block?(is_off_course, block, now_fn.()),
-      sources: source_tags,
+      sources: source_ids,
       data_discrepancies: data_discrepancies,
       stop_status: %{
         stop_id: stop_id,
