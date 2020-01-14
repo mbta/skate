@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react"
 import { NavLink } from "react-router-dom"
-import { ladderIcon, mapIcon, searchIcon } from "../helpers/icon"
+import { ladderIcon, mapIcon, refreshIcon, searchIcon } from "../helpers/icon"
 
 interface Props {
   pickerContainerIsVisible: boolean
@@ -72,7 +72,12 @@ const TabBar = ({
         </NavLink>
       </li>
     </ul>
-    <div className="m-tab-bar__t-logo">{tLogo}</div>
+    <button
+      className="m-tab-bar__refresh"
+      onClick={() => window.location.reload()}
+    >
+      {refreshIcon("m-tab-bar__icon")}
+    </button>
   </div>
 )
 
@@ -116,21 +121,6 @@ const aboutIcon = (
       className="m-tab-bar__icon"
       d="m24 0a24 24 0 1 0 24 24 24 24 0 0 0 -24-24zm1.71 40.05a3.5 3.5 0 0 1 -4.82 0 3.15 3.15 0 0 1 -1-2.36 3.23 3.23 0 0 1 1-2.38 3.48 3.48 0 0 1 4.82 0 3.24 3.24 0 0 1 1 2.38 3.16 3.16 0 0 1 -1 2.36zm7-20.46a9.55 9.55 0 0 1 -2 2.59c-.79.73-1.57 1.47-2.36 2.22a10 10 0 0 0 -2 2.64 8.43 8.43 0 0 0 -.76 3.96h-4.59a14.32 14.32 0 0 1 .55-4.3 9.62 9.62 0 0 1 1.41-2.91 13.55 13.55 0 0 1 1.84-2c.66-.59 1.27-1.15 1.85-1.7a7.19 7.19 0 0 0 1.35-1.9 5 5 0 0 0 .55-2.45 4.58 4.58 0 0 0 -1.21-3.39 4.45 4.45 0 0 0 -3.27-1.2 4.91 4.91 0 0 0 -3.07 1.12 4.42 4.42 0 0 0 -1.46 3.73h-5.07a8.89 8.89 0 0 1 1.29-5 8.12 8.12 0 0 1 3.47-3 11.37 11.37 0 0 1 4.88-1 9.55 9.55 0 0 1 6.89 2.4 8.47 8.47 0 0 1 2.49 6.38 8 8 0 0 1 -.76 3.81z"
     />
-  </svg>
-)
-
-const tLogo = (
-  <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-    <g>
-      <path
-        className="m-tab-bar__icon"
-        d="m24-.0009a24 24 0 1 0 24 24 24 24 0 0 0 -24-24m0 45.8736a21.8736 21.8736 0 1 1 21.8736-21.8736 21.8733 21.8733 0 0 1 -21.8736 21.8736"
-      />
-      <path
-        className="m-tab-bar__icon"
-        d="m20.2027 39.5685h7.595v-18.6832h11.3541v-7.5953h-30.3036v7.595h11.3545z"
-      />
-    </g>
   </svg>
 )
 
