@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import useInterval from "../../hooks/useInterval"
+import useRouteShapes from "../../hooks/useRouteShapes"
 import { isShuttle, shouldShowHeadwayDiagram } from "../../models/vehicle"
 import { DataDiscrepancy, Vehicle } from "../../realtime"
 import { Route } from "../../schedule"
@@ -30,6 +31,12 @@ const directionsUrl = (
 
 const Location = ({ vehicle }: { vehicle: Vehicle }) => {
   const [epocNowInSeconds, setEpocNowInSeconds] = useState(nowInSeconds())
+
+  const loadableShapes = useRouteShapes(
+    vehicle.routeId ? [vehicle.routeId] : []
+  )
+  const shapes = (loadableShapes[vehicle.routeId] || []).filter(shape => shape)
+
   useInterval(() => setEpocNowInSeconds(nowInSeconds()), 1000)
   const secondsAgo = (epocTime: number): string =>
     `${epocNowInSeconds - epocTime}s ago`
@@ -58,7 +65,7 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
         Directions
       </a>
       <div className="m-vehicle-properties-panel__map">
-        <Map vehicles={[vehicle]} />
+        <Map vehicles={[vehicle]} shapes={shapes} />
       </div>
     </div>
   )

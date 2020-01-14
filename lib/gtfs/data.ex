@@ -308,10 +308,7 @@ defmodule Gtfs.Data do
   defp shapes_by_route_id(shapes_data, routes, trips) do
     shapes_by_id = Shape.from_file(shapes_data)
 
-    routes
-    # Only save routes for shuttle routes
-    |> Enum.filter(&Route.shuttle_route?(&1))
-    |> Map.new(fn %Route{id: route_id} ->
+    Map.new(routes, fn %Route{id: route_id} ->
       shapes =
         trips
         |> trips_for_route(route_id)
