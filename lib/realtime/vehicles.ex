@@ -43,6 +43,9 @@ defmodule Realtime.Vehicles do
         active_and_incoming_blocks_by_date,
         now
       ) do
+    ghosts = Ghost.ghosts(active_and_incoming_blocks_by_date, ungrouped_vehicles, now)
+    ghosts_by_route_id = Enum.group_by(ghosts, fn ghost -> ghost.route_id end)
+
     vehicles_by_block = Enum.group_by(ungrouped_vehicles, fn vehicle -> vehicle.block_id end)
 
     vehicles_by_route_id =
@@ -53,16 +56,11 @@ defmodule Realtime.Vehicles do
     incoming_from_another_route =
       incoming_from_another_route(incoming_blocks_by_route, vehicles_by_block)
 
-    ghosts =
-      active_and_incoming_blocks_by_date
-      |> Ghost.ghosts(vehicles_by_block, now)
-      |> Enum.group_by(fn ghost -> ghost.route_id end)
-
     vehicles_by_route_id
     |> Map.merge(incoming_from_another_route, fn _k, vehicles, incoming ->
       vehicles ++ incoming
     end)
-    |> Map.merge(ghosts, fn _k, vehicles, ghosts -> vehicles ++ ghosts end)
+    |> Map.merge(ghosts_by_route_id, fn _k, vehicles, ghosts -> vehicles ++ ghosts end)
   end
 
   @spec incoming_blocks_by_route([Trip.t()]) :: Route.by_id(Block.id())
