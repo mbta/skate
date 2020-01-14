@@ -76,7 +76,7 @@ defmodule Realtime.Vehicles do
     end)
   end
 
-  @spec incoming_from_another_route(Route.by_id([Block.id()]), Route.by_id([Vehicle.t()])) ::
+  @spec incoming_from_another_route(Route.by_id([Block.id()]), %{Block.id() => [Vehicle.t()]}) ::
           Route.by_id([Vehicle.t()])
   defp incoming_from_another_route(incoming_blocks_by_route, vehicles_by_block) do
     Map.new(incoming_blocks_by_route, fn {route_id, block_ids} ->
