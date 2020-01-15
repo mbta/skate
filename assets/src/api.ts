@@ -14,7 +14,7 @@ interface RouteData {
   name: string
 }
 
-interface ShapesFroRouteResponse {
+interface ShapesForRouteResponse {
   data: Shape[]
 }
 
@@ -62,7 +62,7 @@ export const fetchShapeForRoute = (routeId: RouteId): Promise<Shape[]> =>
   fetch(`/api/shapes/${routeId}`)
     .then(checkResponseStatus)
     .then(parseJson)
-    .then(({ data: shapes }: ShapesFroRouteResponse) => shapes)
+    .then(({ data: shapes }: ShapesForRouteResponse) => shapes)
     .catch(error => {
       // tslint:disable-next-line: no-console
       console.error(error)
