@@ -265,6 +265,142 @@ defmodule Realtime.VehiclesTest do
                "route" => [vehicle]
              }
     end
+
+    test "includes scheduled pullout without a vehicle as a ghost" do
+      vehicles = []
+      incoming_blocks_by_route = %{"route" => ["block"]}
+
+      trip = %Trip{
+        id: "trip",
+        route_id: "route",
+        service_id: "service",
+        headsign: "headsign",
+        direction_id: 0,
+        block_id: "block",
+        shape_id: "shape",
+        stop_times: [
+          %StopTime{
+            stop_id: "stop",
+            time: 1,
+            timepoint_id: "timepoint"
+          }
+        ]
+      }
+
+      block = [trip]
+      # 2019-12-20 00:00:00
+      time0 = 1_576_818_000
+
+      blocks_by_date = %{~D[2019-12-20] => [block]}
+
+      ghost = %Ghost{
+        id: "ghost-trip",
+        direction_id: 0,
+        route_id: "route",
+        trip_id: "trip",
+        headsign: "headsign",
+        block_id: "block",
+        run_id: nil,
+        via_variant: nil,
+        layover_departure_time: time0 + 1,
+        scheduled_timepoint_status: %{
+          timepoint_id: "timepoint",
+          fraction_until_timepoint: 0.0
+        },
+        route_status: :pulling_out
+      }
+
+      assert Vehicles.group_by_route_with_blocks(
+               vehicles,
+               incoming_blocks_by_route,
+               blocks_by_date,
+               time0
+             ) == %{
+               "route" => [ghost]
+             }
+    end
+
+    test "includes ghosts that are incoming from another route" do
+      vehicles = []
+
+      incoming_blocks_by_route = %{
+        "route1" => ["block"],
+        "route2" => ["block"]
+      }
+
+      trip1 = %Trip{
+        id: "trip1",
+        route_id: "route1",
+        service_id: "service",
+        headsign: "headsign1",
+        direction_id: 0,
+        block_id: "block",
+        shape_id: "shape1",
+        stop_times: [
+          %StopTime{
+            stop_id: "stop1",
+            time: 1,
+            timepoint_id: "t1"
+          },
+          %StopTime{
+            stop_id: "stop2",
+            time: 3,
+            timepoint_id: "t2"
+          }
+        ]
+      }
+
+      trip2 = %Trip{
+        id: "trip2",
+        route_id: "route2",
+        service_id: "service",
+        headsign: "headsign2",
+        direction_id: 0,
+        block_id: "block",
+        shape_id: "shape2",
+        stop_times: [
+          %StopTime{
+            stop_id: "stop3",
+            time: 4,
+            timepoint_id: "t3"
+          }
+        ]
+      }
+
+      block = [trip1, trip2]
+
+      # 2019-12-20 00:00:00
+      time0 = 1_576_818_000
+
+      blocks_by_date = %{~D[2019-12-20] => [block]}
+
+      ghost = %Ghost{
+        id: "ghost-trip1",
+        direction_id: 0,
+        route_id: "route1",
+        trip_id: "trip1",
+        headsign: "headsign1",
+        block_id: "block",
+        run_id: nil,
+        via_variant: nil,
+        layover_departure_time: nil,
+        scheduled_timepoint_status: %{
+          timepoint_id: "t2",
+          fraction_until_timepoint: 0.5
+        },
+        route_status: :on_route
+      }
+
+      assert Vehicles.group_by_route_with_blocks(
+               vehicles,
+               incoming_blocks_by_route,
+               blocks_by_date,
+               time0 + 2
+             ) == %{
+               "route1" => [ghost],
+               "route2" => [ghost]
+             }
+    end
   end
 
   describe "incoming_blocks_by_route" do
