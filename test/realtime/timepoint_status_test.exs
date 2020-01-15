@@ -148,6 +148,7 @@ defmodule Realtime.TimepointStatusTest do
           block_id: "S28-2",
           route_pattern_id: "28-_-1",
           shape_id: "shape1",
+          run_id: "run1",
           stop_times: [
             %StopTime{
               stop_id: "6553",
@@ -170,6 +171,7 @@ defmodule Realtime.TimepointStatusTest do
                route_id: "28",
                direction_id: 1,
                trip_id: "1",
+               run_id: "run1",
                time_since_trip_start_time: -60,
                headsign: "headsign",
                via_variant: "_",
@@ -223,6 +225,7 @@ defmodule Realtime.TimepointStatusTest do
           block_id: "S28-2",
           route_pattern_id: "28-_-0",
           shape_id: "shape1",
+          run_id: "run1",
           stop_times: [
             %StopTime{
               stop_id: "6553",
@@ -245,6 +248,7 @@ defmodule Realtime.TimepointStatusTest do
           block_id: "S28-2",
           route_pattern_id: "28-_-1",
           shape_id: "shape1",
+          run_id: "run1",
           stop_times: [
             %StopTime{
               stop_id: "6553",
@@ -262,6 +266,7 @@ defmodule Realtime.TimepointStatusTest do
                route_id: "28",
                direction_id: 1,
                trip_id: "1",
+               run_id: "run1",
                time_since_trip_start_time: -180,
                headsign: "headsign",
                via_variant: "_",
@@ -283,6 +288,7 @@ defmodule Realtime.TimepointStatusTest do
           block_id: "S28-2",
           route_pattern_id: "28-_-1",
           shape_id: "shape1",
+          run_id: "run1",
           stop_times: [
             %StopTime{stop_id: "1", time: Util.Time.parse_hhmmss("12:05:00"), timepoint_id: "1"},
             %StopTime{stop_id: "2", time: Util.Time.parse_hhmmss("12:10:00"), timepoint_id: "2"},
@@ -298,6 +304,7 @@ defmodule Realtime.TimepointStatusTest do
                route_id: "28",
                direction_id: 1,
                trip_id: "1",
+               run_id: "run1",
                time_since_trip_start_time: 750,
                headsign: "headsign",
                via_variant: "_",

@@ -87,6 +87,7 @@ export interface VehicleScheduledLocation {
   routeId: RouteId
   directionId: DirectionId
   tripId: TripId
+  runId: RunId
   timeSinceTripStartTime: number
   headsign: string | null
   viaVariant: ViaVariant | null

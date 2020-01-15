@@ -210,7 +210,7 @@ const ghostFromVehicleScheduledLocation = (vehicle: Vehicle): Ghost => ({
   tripId: vehicle.scheduledLocation!.tripId,
   headsign: vehicle.scheduledLocation!.headsign || "",
   blockId: vehicle.blockId,
-  runId: vehicle.runId,
+  runId: vehicle.scheduledLocation!.runId,
   viaVariant: vehicle.scheduledLocation!.viaVariant,
   layoverDepartureTime: null,
   scheduledTimepointStatus: vehicle.scheduledLocation!.timepointStatus,

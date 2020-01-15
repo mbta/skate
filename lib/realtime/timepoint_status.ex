@@ -1,5 +1,5 @@
 defmodule Realtime.TimepointStatus do
-  alias Gtfs.{Block, Direction, RoutePattern, Stop, StopTime, Route, Trip}
+  alias Gtfs.{Block, Direction, RoutePattern, Run, Stop, StopTime, Route, Trip}
 
   @typedoc """
   fraction_until_timepoint ranges
@@ -16,6 +16,7 @@ defmodule Realtime.TimepointStatus do
             route_id: Route.id(),
             direction_id: Direction.id(),
             trip_id: Trip.id() | nil,
+            run_id: Run.id() | nil,
             time_since_trip_start_time: integer(),
             headsign: String.t() | nil,
             via_variant: RoutePattern.via_variant() | nil,
@@ -89,6 +90,7 @@ defmodule Realtime.TimepointStatus do
               route_id: trip.route_id,
               direction_id: trip.direction_id,
               trip_id: trip.id,
+              run_id: trip.run_id,
               time_since_trip_start_time: now_time_of_day - Trip.start_time(trip),
               headsign: trip.headsign,
               via_variant: RoutePattern.via_variant(trip.route_pattern_id),

@@ -76,6 +76,7 @@ const vehicle: Vehicle = {
     routeId: "39",
     directionId: 0,
     tripId: "scheduled trip",
+    runId: "scheduled run",
     timeSinceTripStartTime: 0,
     headsign: "scheduled headsign",
     viaVariant: "scheduled via variant",

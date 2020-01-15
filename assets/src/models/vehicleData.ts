@@ -4,6 +4,7 @@ import {
   EndOfTripType,
   Ghost,
   RouteStatus,
+  RunId,
   Vehicle,
   VehicleOrGhost,
   VehicleScheduledLocation,
@@ -83,6 +84,7 @@ interface VehicleScheduledLocationData {
   route_id: RouteId
   direction_id: DirectionId
   trip_id: string
+  run_id: RunId
   time_since_trip_start_time: number
   headsign: string
   via_variant: string | null
@@ -197,6 +199,7 @@ const vehicleScheduledLocationFromData = (
   routeId: vehicleScheduledLocationData.route_id,
   directionId: vehicleScheduledLocationData.direction_id,
   tripId: vehicleScheduledLocationData.trip_id,
+  runId: vehicleScheduledLocationData.run_id,
   timeSinceTripStartTime:
     vehicleScheduledLocationData.time_since_trip_start_time,
   headsign: vehicleScheduledLocationData.headsign,
