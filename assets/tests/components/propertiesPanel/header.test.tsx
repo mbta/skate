@@ -3,6 +3,11 @@ import React from "react"
 import renderer from "react-test-renderer"
 import Header from "../../../src/components/propertiesPanel/header"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
+import {
+  LadderDirections,
+  flipLadderDirectionForRoute,
+  emptyLadderDirectionsByRouteId,
+} from "../../../src/models/ladderDirection"
 import { HeadwaySpacing } from "../../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
@@ -171,6 +176,45 @@ describe("Header", () => {
       .toJSON()
 
     expect(tree).toMatchSnapshot()
+  })
+
+  test("renders pointing sideways for a laying over vehicle", () => {
+    const wrapper = mount(
+      <Header
+        vehicle={{ ...vehicle, routeStatus: "laying_over" }}
+        route={undefined}
+      />
+    )
+
+    const transform = wrapper
+      .find(".m-vehicle-icon")
+      .find("path")
+      .getDOMNode()
+      .getAttribute("transform")
+    expect(transform).toEqual(expect.stringContaining("rotate(90)"))
+  })
+
+  test("renders a vehicle that's moving down on the ladder as pointing down", () => {
+    const ladderDirections: LadderDirections = flipLadderDirectionForRoute(
+      emptyLadderDirectionsByRouteId,
+      vehicle.routeId
+    )
+
+    const wrapper = mount(
+      <StateDispatchProvider
+        state={{ ...initialState, ladderDirections: ladderDirections }}
+        dispatch={jest.fn()}
+      >
+        <Header vehicle={vehicle} route={undefined} />
+      </StateDispatchProvider>
+    )
+
+    const transform = wrapper
+      .find(".m-vehicle-icon")
+      .find("path")
+      .getDOMNode()
+      .getAttribute("transform")
+    expect(transform).toEqual(expect.stringContaining("rotate(180)"))
   })
 
   test("clicking the X close button deselects the vehicle", () => {

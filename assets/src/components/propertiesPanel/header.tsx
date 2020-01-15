@@ -2,6 +2,13 @@ import React, { useContext } from "react"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import vehicleLabel from "../../helpers/vehicleLabel"
 import {
+  directionOnLadder,
+  VehicleDirection,
+  getLadderDirectionForRoute,
+  LadderDirections,
+  LadderDirection,
+} from "../../models/ladderDirection"
+import {
   isShuttle,
   isVehicle,
   shouldShowHeadwayDiagram,
@@ -88,7 +95,9 @@ const directionName = (
 ): string => (route ? route.directionNames[directionId] : "")
 
 const Header = ({ vehicle, route }: Props) => {
-  const [{ settings }, dispatch] = useContext(StateDispatchContext)
+  const [{ ladderDirections, settings }, dispatch] = useContext(
+    StateDispatchContext
+  )
 
   const hideMe = () => dispatch(deselectVehicle())
 
@@ -97,7 +106,7 @@ const Header = ({ vehicle, route }: Props) => {
       <div className="m-properties-panel__label">
         <VehicleIcon
           size={Size.Large}
-          orientation={Orientation.Up}
+          orientation={vehicleOrientation(vehicle, ladderDirections)}
           label={vehicleLabel(vehicle, settings)}
           variant={vehicle.viaVariant}
           status={drawnStatus(vehicle)}
@@ -120,6 +129,34 @@ const Header = ({ vehicle, route }: Props) => {
       <CloseButton onClick={hideMe} />
     </div>
   )
+}
+
+const vehicleOrientation = (
+  vehicle: VehicleOrGhost,
+  ladderDirections: LadderDirections
+): Orientation => {
+  if (vehicle.routeId !== null && vehicle.directionId !== null) {
+    const ladderDirection: LadderDirection = getLadderDirectionForRoute(
+      ladderDirections,
+      vehicle.routeId
+    )
+    const vehicleDirection: VehicleDirection = directionOnLadder(
+      vehicle.directionId,
+      ladderDirection
+    )
+
+    if (vehicle.routeStatus === "laying_over") {
+      return vehicleDirection === VehicleDirection.Down
+        ? Orientation.Left
+        : Orientation.Right
+    } else {
+      return vehicleDirection === VehicleDirection.Down
+        ? Orientation.Down
+        : Orientation.Up
+    }
+  } else {
+    return Orientation.Up
+  }
 }
 
 export default Header
