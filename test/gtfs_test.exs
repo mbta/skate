@@ -465,23 +465,23 @@ defmodule GtfsTest do
 
       assert Gtfs.shapes("route", pid) == [
                %Shape{
-                 id: "shape2",
-                 points: [
-                   %Point{
-                     shape_id: "shape2",
-                     lat: 43.373178,
-                     lon: -72.118170,
-                     sequence: 0
-                   }
-                 ]
-               },
-               %Shape{
                  id: "shape1",
                  points: [
                    %Point{
                      shape_id: "shape1",
                      lat: 42.373178,
                      lon: -71.118170,
+                     sequence: 0
+                   }
+                 ]
+               },
+               %Shape{
+                 id: "shape2",
+                 points: [
+                   %Point{
+                     shape_id: "shape2",
+                     lat: 43.373178,
+                     lon: -72.118170,
                      sequence: 0
                    }
                  ]

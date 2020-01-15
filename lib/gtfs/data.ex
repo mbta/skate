@@ -220,7 +220,7 @@ defmodule Gtfs.Data do
       routes: bus_routes,
       route_patterns: route_patterns,
       timepoint_ids_by_route: timepoint_ids_for_routes(route_patterns, bus_route_ids, trips),
-      shapes: shapes_by_route_id(gtfs_files["shapes.txt"], bus_routes, bus_trips),
+      shapes: shapes_by_route_id(gtfs_files["shapes.txt"], bus_trips),
       stops: all_stops_by_id(gtfs_files["stops.txt"]),
       trips: trips,
       blocks: Block.group_trips_by_block(bus_trips),
@@ -304,39 +304,31 @@ defmodule Gtfs.Data do
     |> Gtfs.Helpers.merge_lists()
   end
 
-  @spec shapes_by_route_id(binary(), [Route.t()], [Trip.t()]) :: shapes_by_route_id()
-  defp shapes_by_route_id(shapes_data, routes, trips) do
+  @spec shapes_by_route_id(binary(), [Trip.t()]) :: shapes_by_route_id()
+  defp shapes_by_route_id(shapes_data, trips) do
     shapes_by_id = Shape.from_file(shapes_data)
 
-    Map.new(routes, fn %Route{id: route_id} ->
-      shapes =
-        trips
-        |> trips_for_route(route_id)
-        |> shapes_for_trips(shapes_by_id)
-
-      {route_id, shapes}
+    trips
+    |> Enum.group_by(fn trip -> trip.route_id end)
+    |> Helpers.map_values(&shape_ids_on_trips/1)
+    |> Helpers.map_values(fn shape_ids_on_route ->
+      get_shapes_by_ids(shape_ids_on_route, shapes_by_id)
     end)
   end
 
-  @spec trips_for_route([Trip.t()], Route.id()) :: [Trip.t()]
-  defp trips_for_route(trips, route_id),
-    do: Enum.filter(trips, fn trip -> trip.route_id == route_id end)
-
-  @spec shapes_for_trips([Trip.t()], Shape.shapes_by_id()) :: [Shape.t()]
-  defp shapes_for_trips(trips, shapes_by_id) do
+  @spec shape_ids_on_trips([Trip.t()]) :: [Shape.id()]
+  defp shape_ids_on_trips(trips) do
     trips
-    |> Enum.reduce(
-      [],
-      fn trip, acc ->
-        shape = shape_for_trip(trip, shapes_by_id)
-        if shape != nil, do: [shape | acc], else: acc
-      end
-    )
-    |> Enum.dedup()
+    |> Enum.map(fn trip -> trip.shape_id end)
+    |> Enum.uniq()
   end
 
-  @spec shape_for_trip(Trip.t(), Shape.shapes_by_id()) :: Shape.t() | nil
-  defp shape_for_trip(trip, shapes_by_id), do: Shape.by_id(shapes_by_id, trip.shape_id)
+  @spec get_shapes_by_ids([Shape.id()], Shape.shapes_by_id()) :: [Shape.t()]
+  defp get_shapes_by_ids(shape_ids, shapes_by_id) do
+    shape_ids
+    |> Enum.map(fn shape_id -> Map.get(shapes_by_id, shape_id) end)
+    |> Enum.filter(fn shape -> shape != nil end)
+  end
 
   @spec all_stops_by_id(binary()) :: stops_by_id()
   defp all_stops_by_id(stops_data) do
