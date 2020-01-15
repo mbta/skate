@@ -178,13 +178,13 @@ const generateVirtualGhostsForLateIncomingVehicles = (
   incomingVehiclesOrGhosts: VehicleOrGhost[]
 ): Ghost[] =>
   lateStartingVehicles(incomingVehiclesOrGhosts).map(vehicle =>
-    ghostFromVehicleScheduledLocation(vehicle as Vehicle)
+    ghostFromVehicleScheduledLocation(vehicle)
   )
 const generateVirtualGhostsForLateLayingOverVehicles = (
   incomingVehiclesOrGhosts: VehicleOrGhost[]
 ): Ghost[] =>
   lateStartingVehicles(incomingVehiclesOrGhosts).map(vehicle =>
-    ghostFromVehicle(vehicle as Vehicle)
+    ghostFromVehicle(vehicle)
   )
 
 const lateStartingVehicles = (
