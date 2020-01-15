@@ -160,8 +160,8 @@ defmodule Gtfs.BlockTest do
       assert %Trip{id: "t1"} = Block.trip_at_time(@block, 2)
     end
 
-    test "returns nil if the block has finished" do
-      assert Block.trip_at_time(@block, 8) == nil
+    test "returns the last trip if the block has finished" do
+      assert %Trip{id: "t2"} = Block.trip_at_time(@block, 8)
     end
   end
 end

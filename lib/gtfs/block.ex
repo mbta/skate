@@ -87,7 +87,7 @@ defmodule Gtfs.Block do
 
       now >= end_time(block) ->
         # Block is scheduled to have finished
-        nil
+        last_trip(block)
 
       true ->
         # Either the current trip or the trip that is about to start
