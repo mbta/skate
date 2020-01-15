@@ -534,6 +534,31 @@ describe("ladder", () => {
     expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle.id))
   })
 
+  test("clicking an incoming ghost selects the associated vehicle", () => {
+    const mockDispatch = jest.fn()
+
+    const timepoints = ["t0", "t1", "t2"]
+    const incomingGhost: Ghost = {
+      id: "ghost-incoming-y0622",
+    } as Ghost
+
+    const ladderDirection = LadderDirection.ZeroToOne
+
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+        <Ladder
+          timepoints={timepoints}
+          vehiclesAndGhosts={[incomingGhost]}
+          ladderDirection={ladderDirection}
+          selectedVehicleId={undefined}
+        />
+      </StateDispatchProvider>
+    )
+    wrapper.find(".m-ladder__vehicle").simulate("click")
+
+    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle("y0622"))
+  })
+
   test("renders a ladder with no timepoints", () => {
     const timepoints: TimepointId[] = []
     const vehicles: Vehicle[] = [
