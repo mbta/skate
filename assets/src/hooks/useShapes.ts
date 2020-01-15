@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
-import { fetchShapeForRoute } from "../api"
+import { fetchShapeForRoute, fetchShapeForTrip } from "../api"
 import { isASubwayRoute, subwayRouteShapes } from "../models/subwayRoute"
-import { LoadableShapesByRouteId, RouteId, Shape } from "../schedule"
+import { LoadableShapesByRouteId, RouteId, Shape, TripId } from "../schedule"
 
-const useRouteShapes = (
+export const useRouteShapes = (
   selectedRouteIds: RouteId[]
 ): LoadableShapesByRouteId => {
   const [shapesByRouteId, setShapesByRouteId] = useState<
@@ -43,4 +43,18 @@ const useRouteShapes = (
   return shapesByRouteId
 }
 
-export default useRouteShapes
+/** null means loading
+ */
+export const useTripShape = (tripId: TripId | null): Shape | null => {
+  const [shape, setShape] = useState<Shape | null>(null)
+
+  useEffect(() => {
+    if (tripId !== null) {
+      fetchShapeForTrip(tripId).then((shapeResult: Shape | null) =>
+        setShape(shapeResult)
+      )
+    }
+  }, [])
+
+  return shape
+}

@@ -590,6 +590,49 @@ defmodule GtfsTest do
     end
   end
 
+  describe "shape_for_trip" do
+    test "returns the shape for the trip" do
+      pid =
+        Gtfs.start_mocked(%{
+          gtfs: %{
+            "routes.txt" => [
+              "route_id,route_type,route_short_name,route_desc",
+              "route,3,route,\"Key Bus\""
+            ],
+            "route_patterns.txt" => [
+              "route_pattern_id,route_id,direction_id,representative_trip_id",
+              "p1,route,1,trip"
+            ],
+            "trips.txt" => [
+              "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
+              "route,service,trip,headsign,1,block,route-_-0,shape"
+            ],
+            "stop_times.txt" => [
+              "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
+              "trip,,00:00:01,stop,1,"
+            ],
+            "shapes.txt" => [
+              "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled",
+              "shape,42.373178,-71.118170,0,"
+            ]
+          }
+        })
+
+      assert Gtfs.shape_for_trip("trip", pid) ==
+               %Shape{
+                 id: "shape",
+                 points: [
+                   %Point{
+                     shape_id: "shape",
+                     lat: 42.373178,
+                     lon: -71.118170,
+                     sequence: 0
+                   }
+                 ]
+               }
+    end
+  end
+
   describe "first_route_pattern_for_route_and_direction" do
     test "returns the first route pattern matching the route and direction" do
       pid =

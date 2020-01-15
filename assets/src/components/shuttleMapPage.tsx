@@ -1,7 +1,7 @@
 import React, { ReactElement, useContext } from "react"
 import { ShuttleVehiclesContext } from "../contexts/shuttleVehiclesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import useRouteShapes from "../hooks/useRouteShapes"
+import { useRouteShapes } from "../hooks/useShapes"
 import { loadedShapes } from "../models/shape"
 import { RunId, Vehicle, VehicleId } from "../realtime"
 import { Shape } from "../schedule"

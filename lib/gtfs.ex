@@ -142,6 +142,19 @@ defmodule Gtfs do
     end
   end
 
+  @spec shape_for_trip(Trip.id()) :: Shape.t() | nil
+  @spec shape_for_trip(Trip.id(), GenServer.server()) :: Shape.t() | nil
+  def shape_for_trip(trip_id, server \\ __MODULE__) do
+    try do
+      GenServer.call(server, {:shape_for_trip, trip_id})
+    catch
+      # Handle Gtfs server timeouts gracefully
+      :exit, _ ->
+        _ = log_timeout(:shapes)
+        nil
+    end
+  end
+
   @spec first_route_pattern_for_route_and_direction(Route.id(), Direction.id()) ::
           RoutePattern.t() | nil
   @spec first_route_pattern_for_route_and_direction(
@@ -200,6 +213,10 @@ defmodule Gtfs do
 
   def handle_call({:shapes, route_id}, _from, {:loaded, gtfs_data} = state) do
     {:reply, Data.shapes(gtfs_data, route_id), state}
+  end
+
+  def handle_call({:shape_for_trip, trip_id}, _from, {:loaded, gtfs_data} = state) do
+    {:reply, Data.shape_for_trip(gtfs_data, trip_id), state}
   end
 
   def handle_call(

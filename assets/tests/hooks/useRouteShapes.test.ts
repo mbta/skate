@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react-hooks"
 import * as Api from "../../src/api"
 import shapesRed from "../../src/data/shapesRed"
-import useRouteShapes from "../../src/hooks/useRouteShapes"
+import { useRouteShapes } from "../../src/hooks/useShapes"
 import { LoadableShapesByRouteId, Shape } from "../../src/schedule.d"
 import { instantPromise, mockUseStateOnce } from "../testHelpers/mockHelpers"
 

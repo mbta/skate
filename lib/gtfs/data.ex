@@ -176,6 +176,18 @@ defmodule Gtfs.Data do
   @spec shapes(t(), Route.id()) :: [Shape.t()]
   def shapes(%__MODULE__{shapes: shapes}, route_id), do: Map.get(shapes, route_id, [])
 
+  @spec shape_for_trip(t(), Trip.id()) :: Shape.t() | nil
+  def shape_for_trip(%__MODULE__{shapes: shapes, trips: trips}, trip_id) do
+    trip = Map.get(trips, trip_id)
+
+    if trip != nil do
+      route_shapes = Map.get(shapes, trip.route_id, [])
+      Enum.find(route_shapes, fn shape -> shape.id == trip.shape_id end)
+    else
+      nil
+    end
+  end
+
   @spec first_route_pattern_for_route_and_direction(t(), Route.id(), Direction.id()) ::
           RoutePattern.t() | nil
   def first_route_pattern_for_route_and_direction(
