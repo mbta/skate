@@ -3,10 +3,10 @@ import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import vehicleLabel from "../../helpers/vehicleLabel"
 import {
   directionOnLadder,
-  VehicleDirection,
   getLadderDirectionForRoute,
   LadderDirections,
   LadderDirection,
+  VehicleDirection,
 } from "../../models/ladderDirection"
 import {
   isShuttle,

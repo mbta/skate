@@ -4,9 +4,9 @@ import renderer from "react-test-renderer"
 import Header from "../../../src/components/propertiesPanel/header"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import {
-  LadderDirections,
-  flipLadderDirectionForRoute,
   emptyLadderDirectionsByRouteId,
+  flipLadderDirectionForRoute,
+  LadderDirections,
 } from "../../../src/models/ladderDirection"
 import { HeadwaySpacing } from "../../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../../src/realtime"
@@ -202,7 +202,7 @@ describe("Header", () => {
 
     const wrapper = mount(
       <StateDispatchProvider
-        state={{ ...initialState, ladderDirections: ladderDirections }}
+        state={{ ...initialState, ladderDirections }}
         dispatch={jest.fn()}
       >
         <Header vehicle={vehicle} route={undefined} />
