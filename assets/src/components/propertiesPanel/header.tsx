@@ -4,8 +4,8 @@ import vehicleLabel from "../../helpers/vehicleLabel"
 import {
   directionOnLadder,
   getLadderDirectionForRoute,
-  LadderDirections,
   LadderDirection,
+  LadderDirections,
   VehicleDirection,
 } from "../../models/ladderDirection"
 import {
