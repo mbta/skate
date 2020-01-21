@@ -32,8 +32,7 @@ const directionsUrl = (
 const Location = ({ vehicle }: { vehicle: Vehicle }) => {
   const [epocNowInSeconds, setEpocNowInSeconds] = useState(nowInSeconds())
 
-  const shape: Shape | null = useTripShape(vehicle.tripId)
-  const shapes: Shape[] = shape ? [shape] : []
+  const shapes: Shape[] = useTripShape(vehicle.tripId)
 
   useInterval(() => setEpocNowInSeconds(nowInSeconds()), 1000)
   const secondsAgo = (epocTime: number): string =>

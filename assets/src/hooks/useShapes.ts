@@ -46,9 +46,8 @@ export const useRouteShapes = (selectedRouteIds: RouteId[]): Shape[] => {
   return loadedShapes(shapesByRouteId, selectedRouteIds)
 }
 
-/** null means loading
- */
-export const useTripShape = (tripId: TripId | null): Shape | null => {
+export const useTripShape = (tripId: TripId | null): Shape[] => {
+  // null means loading
   const [shape, setShape] = useState<Shape | null>(null)
 
   useEffect(() => {
@@ -59,7 +58,7 @@ export const useTripShape = (tripId: TripId | null): Shape | null => {
     }
   }, [])
 
-  return shape
+  return shape === null ? [] : [shape]
 }
 
 const loadedShapes = (
