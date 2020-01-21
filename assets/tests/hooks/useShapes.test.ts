@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react-hooks"
 import * as Api from "../../src/api"
 import shapesRed from "../../src/data/shapesRed"
-import { useRouteShapes } from "../../src/hooks/useShapes"
+import { useRouteShapes, useTripShape } from "../../src/hooks/useShapes"
 import { Shape } from "../../src/schedule.d"
 import { instantPromise, mockUseStateOnce } from "../testHelpers/mockHelpers"
 
@@ -10,6 +10,9 @@ import { instantPromise, mockUseStateOnce } from "../testHelpers/mockHelpers"
 jest.mock("../../src/api", () => ({
   __esModule: true,
   fetchShapeForRoute: jest.fn(
+    () => new Promise<Shape[]>(() => {})
+  ),
+  fetchShapeForTrip: jest.fn(
     () => new Promise<Shape[]>(() => {})
   ),
 }))
@@ -112,5 +115,33 @@ describe("useRouteShapes", () => {
     })
 
     expect(result.current).toEqual([])
+  })
+})
+
+describe("useTripShape", () => {
+  test("returns [] when loading", () => {
+    const mockFetchShape: jest.Mock = Api.fetchShapeForTrip as jest.Mock
+
+    const { result } = renderHook(() => {
+      return useTripShape("trip")
+    })
+
+    expect(mockFetchShape).toHaveBeenCalledTimes(1)
+    expect(mockFetchShape).toHaveBeenCalledWith("trip")
+    expect(result.current).toEqual([])
+  })
+
+  test("returns a shape when loaded", () => {
+    const shape: Shape = {
+      id: "shape",
+      points: [{ lat: 42.41356, lon: -70.99211 }],
+    }
+    const mockFetchShape: jest.Mock = Api.fetchShapeForTrip as jest.Mock
+    mockFetchShape.mockImplementationOnce(() => instantPromise(shape))
+    const { result } = renderHook(() => {
+      return useTripShape("1")
+    })
+
+    expect(result.current).toEqual([shape])
   })
 })
