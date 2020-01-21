@@ -1,9 +1,9 @@
 import {
   fetchRoutes,
   fetchShapeForRoute,
+  fetchShapeForTrip,
   fetchShuttleRoutes,
   fetchTimepointsForRoute,
-  fetchShapeForTrip,
 } from "../src/api"
 
 // tslint:disable no-empty
