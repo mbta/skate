@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react"
 import { fetchShapeForRoute, fetchShapeForTrip } from "../api"
+import { flatten } from "../helpers/array"
 import { isASubwayRoute, subwayRouteShapes } from "../models/subwayRoute"
-import { LoadableShapesByRouteId, RouteId, Shape, TripId } from "../schedule"
+import { ByRouteId, RouteId, Shape, TripId } from "../schedule"
 
-export const useRouteShapes = (
-  selectedRouteIds: RouteId[]
-): LoadableShapesByRouteId => {
+// An undefined value indicates that the shapes need to be loaded
+// A null value indicates that we are currently loading the shapes
+type LoadableShapes = Shape[] | null | undefined
+
+export const useRouteShapes = (selectedRouteIds: RouteId[]): Shape[] => {
   const [shapesByRouteId, setShapesByRouteId] = useState<
-    LoadableShapesByRouteId
+    ByRouteId<LoadableShapes>
   >({})
 
   const setLoadingShapesForRoute = (routeId: RouteId) => {
@@ -40,7 +43,7 @@ export const useRouteShapes = (
     })
   }, [selectedRouteIds, shapesByRouteId])
 
-  return shapesByRouteId
+  return loadedShapes(shapesByRouteId, selectedRouteIds)
 }
 
 /** null means loading
@@ -58,3 +61,18 @@ export const useTripShape = (tripId: TripId | null): Shape | null => {
 
   return shape
 }
+
+const loadedShapes = (
+  shapesByRouteId: ByRouteId<LoadableShapes>,
+  routeIds: RouteId[]
+): Shape[] =>
+  flatten(
+    routeIds.map((routeId: RouteId): Shape[] => {
+      const loadableShapes: LoadableShapes = shapesByRouteId[routeId]
+      if (loadableShapes === undefined || loadableShapes === null) {
+        return []
+      } else {
+        return loadableShapes
+      }
+    })
+  )

@@ -2,7 +2,6 @@ import React, { ReactElement, useContext } from "react"
 import { ShuttleVehiclesContext } from "../contexts/shuttleVehiclesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { useRouteShapes } from "../hooks/useShapes"
-import { loadedShapes } from "../models/shape"
 import { RunId, Vehicle, VehicleId } from "../realtime"
 import { Shape } from "../schedule"
 import Map from "./map"
@@ -36,11 +35,7 @@ const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
     selectedVehicleId,
   } = state
   const shuttles: Vehicle[] | null = useContext(ShuttleVehiclesContext)
-  const shuttleRouteShapesByRouteId = useRouteShapes(selectedShuttleRouteIds)
-  const shapes: Shape[] = loadedShapes(
-    shuttleRouteShapesByRouteId,
-    selectedShuttleRouteIds
-  )
+  const shapes: Shape[] = useRouteShapes(selectedShuttleRouteIds)
   const selectedShuttles: Vehicle[] = filterShuttles(
     shuttles || [],
     selectedShuttleRunIds
