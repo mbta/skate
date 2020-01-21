@@ -197,7 +197,7 @@ describe("Header", () => {
   test("renders a vehicle that's moving down on the ladder as pointing down", () => {
     const ladderDirections: LadderDirections = flipLadderDirectionForRoute(
       emptyLadderDirectionsByRouteId,
-      vehicle.routeId
+      vehicle.routeId!
     )
 
     const wrapper = mount(
@@ -215,6 +215,23 @@ describe("Header", () => {
       .getDOMNode()
       .getAttribute("transform")
     expect(transform).toEqual(expect.stringContaining("rotate(180)"))
+  })
+
+  test("renders a shuttle triangle as pointing up", () => {
+    const shuttleVehicle: Vehicle = {
+      ...vehicle,
+      runId: "999-0555",
+      routeId: null,
+      tripId: null,
+    }
+    const wrapper = mount(<Header vehicle={shuttleVehicle} route={undefined} />)
+
+    const transform = wrapper
+      .find(".m-vehicle-icon")
+      .find("path")
+      .getDOMNode()
+      .getAttribute("transform")
+    expect(transform).toEqual(expect.stringContaining("rotate(0)"))
   })
 
   test("clicking the X close button deselects the vehicle", () => {
