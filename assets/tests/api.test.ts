@@ -3,6 +3,7 @@ import {
   fetchShapeForRoute,
   fetchShuttleRoutes,
   fetchTimepointsForRoute,
+  fetchShapeForTrip,
 } from "../src/api"
 
 // tslint:disable no-empty
@@ -206,6 +207,29 @@ describe("fetchShapeForRoute", () => {
         spyConsoleError.mockRestore()
         done()
       })
+  })
+})
+
+describe("fetchShapeForTrip", () => {
+  test("fetches a shape for the trip", done => {
+    const shape = {
+      id: "shape",
+      points: [
+        {
+          shape_id: "shape1",
+          lat: 42.41356,
+          lon: -70.99211,
+          sequence: 0,
+        },
+      ],
+    }
+
+    mockFetch(200, { data: shape })
+
+    fetchShapeForTrip("trip").then(response => {
+      expect(response).toEqual(shape)
+      done()
+    })
   })
 })
 
