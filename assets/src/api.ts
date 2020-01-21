@@ -8,10 +8,6 @@ import {
   TripId,
 } from "./schedule.d"
 
-interface RoutesResponse {
-  data: RouteData[]
-}
-
 interface RouteData {
   id: string
   direction_names: {
@@ -19,14 +15,6 @@ interface RouteData {
     "1": DirectionName
   }
   name: string
-}
-
-interface ShapesForRouteResponse {
-  data: Shape[]
-}
-
-interface TimepointsForRouteResponse {
-  data: TimepointId[]
 }
 
 const checkResponseStatus = (response: Response) => {
@@ -45,6 +33,17 @@ const checkResponseStatus = (response: Response) => {
 
 const parseJson = (response: Response) => response.json()
 
+export const apiCall = <T>(url: string, parser: (data: any) => T): Promise<T> =>
+  fetch(url)
+    .then(checkResponseStatus)
+    .then(parseJson)
+    .then(({ data: data }: { data: any }) => parser(data))
+    .catch(error => {
+      // tslint:disable-next-line: no-console
+      console.error(error)
+      throw error
+    })
+
 const parseRouteData = ({ id, direction_names, name }: RouteData): Route => ({
   id,
   directionNames: direction_names,
@@ -55,56 +54,21 @@ const parseRoutesData = (routesData: RouteData[]): Route[] =>
   routesData.map(parseRouteData)
 
 export const fetchRoutes = (): Promise<Route[]> =>
-  fetch("/api/routes")
-    .then(checkResponseStatus)
-    .then(parseJson)
-    .then(({ data: routes }: RoutesResponse) => parseRoutesData(routes))
-    .catch(error => {
-      // tslint:disable-next-line: no-console
-      console.error(error)
-      throw error
-    })
+  apiCall("/api/routes", parseRoutesData)
 
 export const fetchShapeForRoute = (routeId: RouteId): Promise<Shape[]> =>
-  fetch(`/api/shapes/route/${routeId}`)
-    .then(checkResponseStatus)
-    .then(parseJson)
-    .then(({ data: shapes }: ShapesForRouteResponse) => shapes)
-    .catch(error => {
-      // tslint:disable-next-line: no-console
-      console.error(error)
-      throw error
-    })
+  apiCall(`/api/shapes/route/${routeId}`, (shapes: Shape[]) => shapes)
 
 export const fetchShapeForTrip = (tripId: TripId): Promise<Shape | null> =>
-  fetch(`/api/shapes/trip/${tripId}`)
-    .then(checkResponseStatus)
-    .then(parseJson)
-    .then(({ data: shape }: { data: Shape | null }) => shape)
-    .catch(error => {
-      // tslint:disable-next-line: no-console
-      console.error(error)
-      throw error
-    })
+  apiCall(`/api/shapes/trip/${tripId}`, (shape: Shape | null) => shape)
 
 export const fetchShuttleRoutes = (): Promise<Route[]> =>
-  fetch("/api/shuttles")
-    .then(checkResponseStatus)
-    .then(parseJson)
-    .then(({ data: shuttles }: RoutesResponse) => parseRoutesData(shuttles))
-    .catch(error => {
-      throw error
-    })
+  apiCall("/api/shuttles", parseRoutesData)
 
 export const fetchTimepointsForRoute = (
   routeId: RouteId
 ): Promise<TimepointId[]> =>
-  fetch(`/api/routes/${routeId}`)
-    .then(checkResponseStatus)
-    .then(parseJson)
-    .then(({ data: timepointIds }: TimepointsForRouteResponse) => timepointIds)
-    .catch(error => {
-      // tslint:disable-next-line: no-console
-      console.error(error)
-      throw error
-    })
+  apiCall(
+    `/api/routes/${routeId}`,
+    (timepointIds: TimepointId[]) => timepointIds
+  )
