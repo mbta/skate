@@ -598,19 +598,56 @@ describe("groupByPosition", () => {
       id: "ghost-incoming-vehicleId",
       directionId: vehicle.directionId,
       routeId: "1",
-      tripId: "tripId",
-      headsign: "test headsign",
+      tripId: "scheduled trip",
+      headsign: "scheduled headsign",
       blockId: vehicle.blockId,
-      runId: "runId",
-      viaVariant: "viaVariant",
+      runId: "scheduled run",
+      viaVariant: "scheduled via variant",
       layoverDepartureTime: null,
-      scheduledTimepointStatus: null,
+      scheduledTimepointStatus: {
+        fractionUntilTimepoint: 0.2,
+        timepointId: "timepointId",
+      },
       routeStatus: "on_route",
     }
 
     expect(groupByPosition([vehicle], "1", LadderDirection.ZeroToOne)).toEqual({
       ...emptyByPosition,
       onRoute: [expectedGhost],
+      layingOverBottom: [vehicle],
+    })
+  })
+
+  test("does not generate a virtual ghost for laying over buses that finished their last trip early", () => {
+    const vehicle: Vehicle = {
+      id: "vehicleId",
+      directionId: 0,
+      routeId: "1",
+      tripId: "tripId",
+      headsign: "test headsign",
+      blockId: "blockId",
+      routeStatus: "laying_over",
+      runId: "runId",
+      viaVariant: "viaVariant",
+      scheduleAdherenceSecs: 361,
+      scheduledLocation: {
+        routeId: "1",
+        directionId: 1,
+        tripId: "scheduled trip",
+        runId: "scheduled run",
+        timeSinceTripStartTime: 361,
+        headsign: "scheduled headsign",
+        viaVariant: "scheduled via variant",
+        timepointStatus: {
+          timepointId: "timepointId",
+          fractionUntilTimepoint: 0.2,
+        },
+      },
+    } as Vehicle
+
+    expect(groupByPosition([vehicle], "1", LadderDirection.ZeroToOne)).toEqual({
+      ...emptyByPosition,
+      onRoute: [],
       layingOverBottom: [vehicle],
     })
   })

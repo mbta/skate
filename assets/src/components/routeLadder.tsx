@@ -180,22 +180,39 @@ const generateVirtualGhostsForLateIncomingVehicles = (
   lateStartingVehicles(incomingVehiclesOrGhosts).map(vehicle =>
     ghostFromVehicleScheduledLocation(vehicle)
   )
+
 const generateVirtualGhostsForLateLayingOverVehicles = (
   incomingVehiclesOrGhosts: VehicleOrGhost[]
 ): Ghost[] =>
-  lateStartingVehicles(incomingVehiclesOrGhosts).map(vehicle =>
-    ghostFromVehicle(vehicle)
+  lateStartingLayingOverVehicles(incomingVehiclesOrGhosts).map(vehicle =>
+    ghostFromVehicleScheduledLocation(vehicle)
   )
 
 const lateStartingVehicles = (
   incomingVehiclesOrGhosts: VehicleOrGhost[]
 ): Vehicle[] =>
-  incomingVehiclesOrGhosts.filter(
-    vehicleOrGhost =>
-      isVehicle(vehicleOrGhost) &&
-      hasAScheduleLocation(vehicleOrGhost) &&
-      isLateStartingScheduledTrip(vehicleOrGhost)
+  incomingVehiclesOrGhosts.filter(vehicleOrGhost =>
+    isAVehicleThatIsLateStartingScheduledTrip(vehicleOrGhost)
   ) as Vehicle[]
+
+const lateStartingLayingOverVehicles = (
+  layingOverVehiclesOrGhosts: VehicleOrGhost[]
+): Vehicle[] =>
+  layingOverVehiclesOrGhosts.filter(
+    vehicleOrGhost =>
+      isAVehicleThatIsLateStartingScheduledTrip(vehicleOrGhost) &&
+      isScheduledForCurrentDirection(vehicleOrGhost as Vehicle)
+  ) as Vehicle[]
+
+const isAVehicleThatIsLateStartingScheduledTrip = (
+  vehicleOrGhost: VehicleOrGhost
+): boolean =>
+  isVehicle(vehicleOrGhost) &&
+  hasAScheduleLocation(vehicleOrGhost) &&
+  isLateStartingScheduledTrip(vehicleOrGhost)
+
+const isScheduledForCurrentDirection = (vehicle: Vehicle): boolean =>
+  vehicle.directionId === vehicle.scheduledLocation!.directionId
 
 const hasAScheduleLocation = (vehicle: Vehicle): boolean =>
   vehicle.scheduledLocation != null
@@ -214,20 +231,6 @@ const ghostFromVehicleScheduledLocation = (vehicle: Vehicle): Ghost => ({
   viaVariant: vehicle.scheduledLocation!.viaVariant,
   layoverDepartureTime: null,
   scheduledTimepointStatus: vehicle.scheduledLocation!.timepointStatus,
-  routeStatus: "on_route",
-})
-
-const ghostFromVehicle = (vehicle: Vehicle): Ghost => ({
-  id: `ghost-incoming-${vehicle.id}`,
-  directionId: vehicle.directionId,
-  routeId: vehicle.routeId,
-  tripId: vehicle.tripId,
-  headsign: vehicle.headsign || "",
-  blockId: vehicle.blockId,
-  runId: vehicle.runId,
-  viaVariant: vehicle.viaVariant,
-  layoverDepartureTime: null,
-  scheduledTimepointStatus: vehicle.timepointStatus || null,
   routeStatus: "on_route",
 })
 
