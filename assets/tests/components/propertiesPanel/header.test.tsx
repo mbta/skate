@@ -179,19 +179,32 @@ describe("Header", () => {
   })
 
   test("renders pointing sideways for a laying over vehicle", () => {
-    const wrapper = mount(
+    const rightFacing = mount(
       <Header
-        vehicle={{ ...vehicle, routeStatus: "laying_over" }}
+        vehicle={{ ...vehicle, directionId: 0, routeStatus: "laying_over" }}
+        route={undefined}
+      />
+    )
+    const leftFacing = mount(
+      <Header
+        vehicle={{ ...vehicle, directionId: 1, routeStatus: "laying_over" }}
         route={undefined}
       />
     )
 
-    const transform = wrapper
+    const rightFacingTransform = rightFacing
       .find(".m-vehicle-icon")
       .find("path")
       .getDOMNode()
       .getAttribute("transform")
-    expect(transform).toEqual(expect.stringContaining("rotate(90)"))
+    expect(rightFacingTransform).toEqual(expect.stringContaining("rotate(90)"))
+
+    const leftFacingTransform = leftFacing
+      .find(".m-vehicle-icon")
+      .find("path")
+      .getDOMNode()
+      .getAttribute("transform")
+    expect(leftFacingTransform).toEqual(expect.stringContaining("rotate(270)"))
   })
 
   test("renders a vehicle that's moving down on the ladder as pointing down", () => {
