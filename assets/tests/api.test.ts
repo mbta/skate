@@ -65,7 +65,21 @@ describe("apiCall", () => {
       .catch(() => ({}))
   })
 
-  test("throws an error for any other response status", done => {
+  test("returns a default and warns for any other response", done => {
+    mockFetch(500, { data: null })
+
+    const spyConsoleWarn = jest.spyOn(console, "warn")
+    spyConsoleWarn.mockImplementationOnce(() => {})
+
+    apiCall("/", () => null, "default")
+      .then(result => {
+        expect(result).toEqual("default")
+        expect(spyConsoleWarn).toHaveBeenCalled()
+        done()
+      })
+  })
+
+  test("throws an error for any other response status if there's no default", done => {
     mockFetch(500, { data: null })
 
     const spyConsoleError = jest.spyOn(console, "error")
@@ -176,6 +190,18 @@ describe("fetchShapeForRoute", () => {
       done()
     })
   })
+
+  test("defaults to [] if there's an error", done => {
+    mockFetch(500, { data: null })
+
+    const spyConsoleWarn = jest.spyOn(console, "warn")
+    spyConsoleWarn.mockImplementationOnce(() => {})
+
+    fetchShapeForRoute("28").then(result => {
+      expect(result).toEqual([])
+      done()
+    })
+  })
 })
 
 describe("fetchShapeForTrip", () => {
@@ -196,6 +222,18 @@ describe("fetchShapeForTrip", () => {
 
     fetchShapeForTrip("trip").then(response => {
       expect(response).toEqual(shape)
+      done()
+    })
+  })
+
+  test("defaults to null if there's an error", done => {
+    mockFetch(500, { data: null })
+
+    const spyConsoleWarn = jest.spyOn(console, "warn")
+    spyConsoleWarn.mockImplementationOnce(() => {})
+
+    fetchShapeForTrip("28").then(result => {
+      expect(result).toEqual(null)
       done()
     })
   })
@@ -264,6 +302,18 @@ describe("fetchTimepointsForRoute", () => {
 
     fetchTimepointsForRoute("28").then(timepoints => {
       expect(timepoints).toEqual(["MATPN", "WELLH", "MORTN"])
+      done()
+    })
+  })
+
+  test("defaults to [] if there's an error", done => {
+    mockFetch(500, { data: null })
+
+    const spyConsoleWarn = jest.spyOn(console, "warn")
+    spyConsoleWarn.mockImplementationOnce(() => {})
+
+    fetchTimepointsForRoute("28").then(result => {
+      expect(result).toEqual([])
       done()
     })
   })

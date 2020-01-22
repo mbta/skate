@@ -33,15 +33,21 @@ const checkResponseStatus = (response: Response) => {
 
 const parseJson = (response: Response) => response.json()
 
-export const apiCall = <T>(url: string, parser: (data: any) => T): Promise<T> =>
+export const apiCall = <T>(url: string, parser: (data: any) => T, defaultResult?: T): Promise<T> =>
   fetch(url)
     .then(checkResponseStatus)
     .then(parseJson)
     .then(({ data: data }: { data: any }) => parser(data))
     .catch(error => {
-      // tslint:disable-next-line: no-console
-      console.error(error)
-      throw error
+      if (defaultResult === undefined) {
+        // tslint:disable-next-line: no-console
+        console.error(error)
+        throw error
+      } else {
+        // tslint:disable-next-line: no-console
+        console.warn(error)
+        return defaultResult
+      }
     })
 
 const parseRouteData = ({ id, direction_names, name }: RouteData): Route => ({
@@ -57,18 +63,19 @@ export const fetchRoutes = (): Promise<Route[]> =>
   apiCall("/api/routes", parseRoutesData)
 
 export const fetchShapeForRoute = (routeId: RouteId): Promise<Shape[]> =>
-  apiCall(`/api/shapes/route/${routeId}`, (shapes: Shape[]) => shapes)
+  apiCall(`/api/shapes/route/${routeId}`, (shapes: Shape[]) => shapes, [])
 
 export const fetchShapeForTrip = (tripId: TripId): Promise<Shape | null> =>
-  apiCall(`/api/shapes/trip/${tripId}`, (shape: Shape | null) => shape)
+  apiCall(`/api/shapes/trip/${tripId}`, (shape: Shape | null) => shape, null)
 
 export const fetchShuttleRoutes = (): Promise<Route[]> =>
-  apiCall("/api/shuttles", parseRoutesData)
+  apiCall("/api/shuttles", parseRoutesData, [])
 
 export const fetchTimepointsForRoute = (
   routeId: RouteId
 ): Promise<TimepointId[]> =>
   apiCall(
     `/api/routes/${routeId}`,
-    (timepointIds: TimepointId[]) => timepointIds
+    (timepointIds: TimepointId[]) => timepointIds,
+    []
   )
