@@ -33,7 +33,15 @@ const checkResponseStatus = (response: Response) => {
 
 const parseJson = (response: Response) => response.json()
 
-export const apiCall = <T>(url: string, parser: (data: any) => T, defaultResult?: T): Promise<T> =>
+export const apiCall = <T>({
+  url,
+  parser,
+  defaultResult,
+}: {
+  url: string
+  parser: (data: any) => T
+  defaultResult?: T
+}): Promise<T> =>
   fetch(url)
     .then(checkResponseStatus)
     .then(parseJson)
@@ -60,22 +68,37 @@ const parseRoutesData = (routesData: RouteData[]): Route[] =>
   routesData.map(parseRouteData)
 
 export const fetchRoutes = (): Promise<Route[]> =>
-  apiCall("/api/routes", parseRoutesData)
+  apiCall({
+    url: "/api/routes",
+    parser: parseRoutesData,
+  })
 
 export const fetchShapeForRoute = (routeId: RouteId): Promise<Shape[]> =>
-  apiCall(`/api/shapes/route/${routeId}`, (shapes: Shape[]) => shapes, [])
+  apiCall({
+    url: `/api/shapes/route/${routeId}`,
+    parser: (shapes: Shape[]) => shapes,
+    defaultResult: [],
+  })
 
 export const fetchShapeForTrip = (tripId: TripId): Promise<Shape | null> =>
-  apiCall(`/api/shapes/trip/${tripId}`, (shape: Shape | null) => shape, null)
+  apiCall({
+    url: `/api/shapes/trip/${tripId}`,
+    parser: (shape: Shape | null) => shape,
+    defaultResult: null,
+  })
 
 export const fetchShuttleRoutes = (): Promise<Route[]> =>
-  apiCall("/api/shuttles", parseRoutesData, [])
+  apiCall({
+    url: "/api/shuttles",
+    parser: parseRoutesData,
+    defaultResult: [],
+  })
 
 export const fetchTimepointsForRoute = (
   routeId: RouteId
 ): Promise<TimepointId[]> =>
-  apiCall(
-    `/api/routes/${routeId}`,
-    (timepointIds: TimepointId[]) => timepointIds,
-    []
-  )
+  apiCall({
+    url: `/api/routes/${routeId}`,
+    parser: (timepointIds: TimepointId[]) => timepointIds,
+    defaultResult: [],
+  })

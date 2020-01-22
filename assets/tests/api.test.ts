@@ -30,11 +30,15 @@ describe("apiCall", () => {
 
     const parse = jest.fn(() => "parsed")
 
-    apiCall("/", parse).then(parsed => {
-      expect(parse).toHaveBeenCalledWith("raw")
-      expect(parsed).toEqual("parsed")
-      done()
+    apiCall({
+      url: "/",
+      parser: parse,
     })
+      .then(parsed => {
+        expect(parse).toHaveBeenCalledWith("raw")
+        expect(parsed).toEqual("parsed")
+        done()
+      })
   })
 
   test("reloads the page if the response status is a redirect (3xx)", () => {
@@ -44,7 +48,10 @@ describe("apiCall", () => {
     const spyConsoleError = jest.spyOn(console, "error")
     spyConsoleError.mockImplementationOnce(() => {})
 
-    apiCall("/", () => null)
+    apiCall({
+      url: "/",
+      parser: () => null,
+    })
       .then(() => {
         expect(window.location.reload).toHaveBeenCalled()
       })
@@ -58,7 +65,10 @@ describe("apiCall", () => {
     const spyConsoleError = jest.spyOn(console, "error")
     spyConsoleError.mockImplementationOnce(() => {})
 
-    apiCall("/", () => null)
+    apiCall({
+      url: "/",
+      parser: () => null,
+    })
       .then(() => {
         expect(window.location.reload).toHaveBeenCalled()
       })
@@ -71,7 +81,11 @@ describe("apiCall", () => {
     const spyConsoleWarn = jest.spyOn(console, "warn")
     spyConsoleWarn.mockImplementationOnce(() => {})
 
-    apiCall("/", () => null, "default")
+    apiCall({
+      url: "/",
+      parser: () => null,
+      defaultResult: "default",
+    })
       .then(result => {
         expect(result).toEqual("default")
         expect(spyConsoleWarn).toHaveBeenCalled()
@@ -85,7 +99,10 @@ describe("apiCall", () => {
     const spyConsoleError = jest.spyOn(console, "error")
     spyConsoleError.mockImplementationOnce(() => {})
 
-    apiCall("/", () => null)
+    apiCall({
+      url: "/",
+      parser: () => null,
+    })
       .then(() => {
         spyConsoleError.mockRestore()
         done("fetchRoutes did not throw an error")
