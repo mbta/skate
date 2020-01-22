@@ -1,8 +1,10 @@
 import React, { ReactElement, useContext } from "react"
+import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { VehiclesByRouteIdContext } from "../contexts/vehiclesByRouteIdContext"
+import { VehiclesByRouteIdProvider } from "../contexts/vehiclesByRouteIdContext"
 import useRoutes from "../hooks/useRoutes"
 import useTimepoints from "../hooks/useTimepoints"
+import useVehicles from "../hooks/useVehicles"
 import { allVehiclesAndGhosts } from "../models/vehiclesByRouteId"
 import { VehicleId, VehicleOrGhost } from "../realtime.d"
 import { ByRouteId, Route, RouteId, TimepointsByRouteId } from "../schedule.d"
@@ -41,8 +43,10 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
     selectedRouteIds
   )
 
-  const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = useContext(
-    VehiclesByRouteIdContext
+  const socket = useContext(SocketContext)
+  const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = useVehicles(
+    socket,
+    selectedRouteIds
   )
   const selectedRoutes: Route[] = selectedRouteIds
     .map(routeId => findRouteById(routes, routeId))
@@ -60,14 +64,17 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
       <RouteLadders
         routes={selectedRoutes}
         timepointsByRouteId={timepointsByRouteId}
+        vehiclesByRouteId={vehiclesByRouteId}
         selectedVehicleId={selectedVehicleId}
       />
 
       {selectedVehicleOrGhost && (
-        <PropertiesPanel
-          selectedVehicleOrGhost={selectedVehicleOrGhost}
-          route={vehicleRoute(routes, selectedVehicleOrGhost)}
-        />
+        <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
+          <PropertiesPanel
+            selectedVehicleOrGhost={selectedVehicleOrGhost}
+            route={vehicleRoute(routes, selectedVehicleOrGhost)}
+          />
+        </VehiclesByRouteIdProvider>
       )}
     </div>
   )
