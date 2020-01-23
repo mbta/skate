@@ -5,7 +5,6 @@ import ShuttlePicker, {
   activeRunCounts,
   formatRunId,
 } from "../../src/components/shuttlePicker"
-import { ShuttleVehiclesProvider } from "../../src/contexts/shuttleVehiclesContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { RunId, Vehicle } from "../../src/realtime"
@@ -83,20 +82,12 @@ jest.mock("../../src/hooks/useShuttleRoutes", () => ({
 
 describe("ShuttlePicker", () => {
   test("renders loading state", () => {
-    const tree = renderer.create(
-      <ShuttleVehiclesProvider shuttles={null}>
-        <ShuttlePicker />
-      </ShuttleVehiclesProvider>
-    )
+    const tree = renderer.create(<ShuttlePicker shuttles={null} />)
     expect(tree).toMatchSnapshot()
   })
 
   test("renders loaded state with no shuttles", () => {
-    const tree = renderer.create(
-      <ShuttleVehiclesProvider shuttles={[]}>
-        <ShuttlePicker />
-      </ShuttleVehiclesProvider>
-    )
+    const tree = renderer.create(<ShuttlePicker shuttles={[]} />)
     expect(tree).toMatchSnapshot()
   })
 
@@ -124,9 +115,7 @@ describe("ShuttlePicker", () => {
         }}
         dispatch={jest.fn()}
       >
-        <ShuttleVehiclesProvider shuttles={shuttles}>
-          <ShuttlePicker />
-        </ShuttleVehiclesProvider>
+        <ShuttlePicker shuttles={shuttles} />
       </StateDispatchProvider>
     )
 
@@ -137,9 +126,7 @@ describe("ShuttlePicker", () => {
     const dispatch = jest.fn()
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
-        <ShuttleVehiclesProvider shuttles={[vehicle]}>
-          <ShuttlePicker />
-        </ShuttleVehiclesProvider>
+        <ShuttlePicker shuttles={[vehicle]} />
       </StateDispatchProvider>
     )
     wrapper
@@ -159,9 +146,7 @@ describe("ShuttlePicker", () => {
         state={{ ...initialState, selectedShuttleRunIds: [vehicle.runId!] }}
         dispatch={dispatch}
       >
-        <ShuttleVehiclesProvider shuttles={[vehicle]}>
-          <ShuttlePicker />
-        </ShuttleVehiclesProvider>
+        <ShuttlePicker shuttles={[vehicle]} />
       </StateDispatchProvider>
     )
     wrapper
@@ -181,9 +166,7 @@ describe("ShuttlePicker", () => {
         state={{ ...initialState, selectedShuttleRunIds: [] }}
         dispatch={dispatch}
       >
-        <ShuttleVehiclesProvider shuttles={[vehicle]}>
-          <ShuttlePicker />
-        </ShuttleVehiclesProvider>
+        <ShuttlePicker shuttles={[vehicle]} />
       </StateDispatchProvider>
     )
     const allSpecialsButton = wrapper
@@ -206,9 +189,7 @@ describe("ShuttlePicker", () => {
         state={{ ...initialState, selectedShuttleRunIds: "all" }}
         dispatch={dispatch}
       >
-        <ShuttleVehiclesProvider shuttles={[vehicle]}>
-          <ShuttlePicker />
-        </ShuttleVehiclesProvider>
+        <ShuttlePicker shuttles={[vehicle]} />
       </StateDispatchProvider>
     )
     const allSpecialsButton = wrapper
@@ -228,9 +209,7 @@ describe("ShuttlePicker", () => {
     const dispatch = jest.fn()
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
-        <ShuttleVehiclesProvider shuttles={[]}>
-          <ShuttlePicker />
-        </ShuttleVehiclesProvider>
+        <ShuttlePicker shuttles={[]} />
       </StateDispatchProvider>
     )
     wrapper
@@ -251,9 +230,7 @@ describe("ShuttlePicker", () => {
         state={{ ...initialState, selectedShuttleRouteIds: [selectedRouteId] }}
         dispatch={dispatch}
       >
-        <ShuttleVehiclesProvider shuttles={[]}>
-          <ShuttlePicker />
-        </ShuttleVehiclesProvider>
+        <ShuttlePicker shuttles={[]} />
       </StateDispatchProvider>
     )
     wrapper
