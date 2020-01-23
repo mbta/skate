@@ -44,8 +44,6 @@ describe("apiCall", () => {
     mockFetch(302, { data: null })
 
     window.location.reload = jest.fn()
-    const spyConsoleError = jest.spyOn(console, "error")
-    spyConsoleError.mockImplementationOnce(() => {})
 
     apiCall({
       url: "/",
@@ -61,8 +59,6 @@ describe("apiCall", () => {
     mockFetch(403, { data: null })
 
     window.location.reload = jest.fn()
-    const spyConsoleError = jest.spyOn(console, "error")
-    spyConsoleError.mockImplementationOnce(() => {})
 
     apiCall({
       url: "/",
@@ -74,11 +70,8 @@ describe("apiCall", () => {
       .catch(() => ({}))
   })
 
-  test("returns a default and warns for any other response", done => {
+  test("returns a default for any other response", done => {
     mockFetch(500, { data: null })
-
-    const spyConsoleWarn = jest.spyOn(console, "warn")
-    spyConsoleWarn.mockImplementationOnce(() => {})
 
     apiCall({
       url: "/",
@@ -86,7 +79,6 @@ describe("apiCall", () => {
       defaultResult: "default",
     }).then(result => {
       expect(result).toEqual("default")
-      expect(spyConsoleWarn).toHaveBeenCalled()
       done()
     })
   })
@@ -94,21 +86,15 @@ describe("apiCall", () => {
   test("throws an error for any other response status if there's no default", done => {
     mockFetch(500, { data: null })
 
-    const spyConsoleError = jest.spyOn(console, "error")
-    spyConsoleError.mockImplementationOnce(() => {})
-
     apiCall({
       url: "/",
       parser: () => null,
     })
       .then(() => {
-        spyConsoleError.mockRestore()
         done("fetchRoutes did not throw an error")
       })
       .catch(error => {
         expect(error).not.toBeUndefined()
-        expect(spyConsoleError).toHaveBeenCalled()
-        spyConsoleError.mockRestore()
         done()
       })
   })
@@ -209,9 +195,6 @@ describe("fetchShapeForRoute", () => {
   test("defaults to [] if there's an error", done => {
     mockFetch(500, { data: null })
 
-    const spyConsoleWarn = jest.spyOn(console, "warn")
-    spyConsoleWarn.mockImplementationOnce(() => {})
-
     fetchShapeForRoute("28").then(result => {
       expect(result).toEqual([])
       done()
@@ -243,9 +226,6 @@ describe("fetchShapeForTrip", () => {
 
   test("defaults to null if there's an error", done => {
     mockFetch(500, { data: null })
-
-    const spyConsoleWarn = jest.spyOn(console, "warn")
-    spyConsoleWarn.mockImplementationOnce(() => {})
 
     fetchShapeForTrip("28").then(result => {
       expect(result).toEqual(null)
@@ -323,9 +303,6 @@ describe("fetchTimepointsForRoute", () => {
 
   test("defaults to [] if there's an error", done => {
     mockFetch(500, { data: null })
-
-    const spyConsoleWarn = jest.spyOn(console, "warn")
-    spyConsoleWarn.mockImplementationOnce(() => {})
 
     fetchTimepointsForRoute("28").then(result => {
       expect(result).toEqual([])

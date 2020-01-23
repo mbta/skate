@@ -48,12 +48,8 @@ export const apiCall = <T>({
     .then(({ data: data }: { data: any }) => parser(data))
     .catch(error => {
       if (defaultResult === undefined) {
-        // tslint:disable-next-line: no-console
-        console.error(error)
         throw error
       } else {
-        // tslint:disable-next-line: no-console
-        console.warn(error)
         return defaultResult
       }
     })
