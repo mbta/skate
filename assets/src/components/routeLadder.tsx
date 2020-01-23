@@ -190,7 +190,7 @@ const lateStartingLayingOverVehicles = (
   layingOverVehiclesOrGhosts.filter(
     vehicleOrGhost =>
       isAVehicleThatIsLateStartingScheduledTrip(vehicleOrGhost) &&
-      isScheduledForCurrentDirection(vehicleOrGhost as Vehicle)
+      isScheduledForCurrentTrip(vehicleOrGhost as Vehicle)
   ) as Vehicle[]
 
 const isAVehicleThatIsLateStartingScheduledTrip = (
@@ -200,8 +200,8 @@ const isAVehicleThatIsLateStartingScheduledTrip = (
   hasAScheduleLocation(vehicleOrGhost) &&
   isLateStartingScheduledTrip(vehicleOrGhost)
 
-const isScheduledForCurrentDirection = (vehicle: Vehicle): boolean =>
-  vehicle.directionId === vehicle.scheduledLocation!.directionId
+const isScheduledForCurrentTrip = (vehicle: Vehicle): boolean =>
+  vehicle.tripId === vehicle.scheduledLocation!.tripId
 
 const hasAScheduleLocation = (vehicle: Vehicle): boolean =>
   vehicle.scheduledLocation != null
