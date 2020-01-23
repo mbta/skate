@@ -6,6 +6,7 @@ import LadderPage, {
 } from "../../src/components/ladderPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useRoutes from "../../src/hooks/useRoutes"
+import useVehicles from "../../src/hooks/useVehicles"
 import { Ghost, Vehicle, VehicleOrGhost } from "../../src/realtime"
 import { ByRouteId, Route, TimepointsByRouteId } from "../../src/schedule.d"
 import { initialState } from "../../src/state"
@@ -13,6 +14,10 @@ import { initialState } from "../../src/state"
 jest.mock("../../src/hooks/useRoutes", () => ({
   __esModule: true,
   default: jest.fn(() => routes),
+}))
+jest.mock("../../src/hooks/useVehicles", () => ({
+  __esModule: true,
+  default: jest.fn(() => ({})),
 }))
 
 const mockDispatch = jest.fn()
@@ -52,6 +57,41 @@ describe("LadderPage", () => {
     const mockState = {
       ...initialState,
       timepointsByRouteId,
+    }
+    const tree = renderer
+      .create(
+        <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+          <LadderPage />
+        </StateDispatchProvider>
+      )
+      .toJSON()
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders with vehicles and selected vehicles", () => {
+    const vehicle: VehicleOrGhost = {
+      id: "ghost-id",
+      directionId: 0,
+      routeId: "1",
+      tripId: "trip",
+      headsign: "headsign",
+      blockId: "block",
+      runId: null,
+      viaVariant: null,
+      layoverDepartureTime: null,
+      scheduledTimepointStatus: {
+        timepointId: "hhgat",
+        fractionUntilTimepoint: 0.0,
+      },
+      routeStatus: "on_route",
+    }
+    ;(useVehicles as jest.Mock).mockImplementationOnce(() => ({
+      ["1"]: [vehicle],
+    }))
+    const mockState = {
+      ...initialState,
+      selectedRouteIds: ["1"],
+      selectedVehicleId: "ghost-id",
     }
     const tree = renderer
       .create(
