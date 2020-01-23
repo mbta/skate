@@ -433,13 +433,13 @@ defmodule GtfsTest do
   end
 
   describe "shapes" do
-    test "returns the shapes for all trips corresponding to the requested shuttle route" do
+    test "returns the shapes for all trips corresponding to the requested route" do
       pid =
         Gtfs.start_mocked(%{
           gtfs: %{
             "routes.txt" => [
               "route_id,route_type,route_short_name,route_desc",
-              "route,3,route,\"Rail Replacement Bus\""
+              "route,3,route,\"Key Bus\""
             ],
             "route_patterns.txt" => [
               "route_pattern_id,route_id,direction_id,representative_trip_id",
@@ -465,23 +465,23 @@ defmodule GtfsTest do
 
       assert Gtfs.shapes("route", pid) == [
                %Shape{
-                 id: "shape2",
-                 points: [
-                   %Point{
-                     shape_id: "shape2",
-                     lat: 43.373178,
-                     lon: -72.118170,
-                     sequence: 0
-                   }
-                 ]
-               },
-               %Shape{
                  id: "shape1",
                  points: [
                    %Point{
                      shape_id: "shape1",
                      lat: 42.373178,
                      lon: -71.118170,
+                     sequence: 0
+                   }
+                 ]
+               },
+               %Shape{
+                 id: "shape2",
+                 points: [
+                   %Point{
+                     shape_id: "shape2",
+                     lat: 43.373178,
+                     lon: -72.118170,
                      sequence: 0
                    }
                  ]
@@ -588,8 +588,10 @@ defmodule GtfsTest do
                }
              ]
     end
+  end
 
-    test "does not save shapes for non-shuttle routes" do
+  describe "shape_for_trip" do
+    test "returns the shape for the trip" do
       pid =
         Gtfs.start_mocked(%{
           gtfs: %{
@@ -599,15 +601,15 @@ defmodule GtfsTest do
             ],
             "route_patterns.txt" => [
               "route_pattern_id,route_id,direction_id,representative_trip_id",
-              "p1,route,1,t1"
+              "p1,route,1,trip"
             ],
             "trips.txt" => [
               "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
-              "route,service,t1,h1,1,b,route-_-0,shape"
+              "route,service,trip,headsign,1,block,route-_-0,shape"
             ],
             "stop_times.txt" => [
               "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
-              "t1,,00:00:01,s4,1,exurb"
+              "trip,,00:00:01,stop,1,"
             ],
             "shapes.txt" => [
               "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled",
@@ -616,7 +618,18 @@ defmodule GtfsTest do
           }
         })
 
-      assert Gtfs.shapes("route", pid) == []
+      assert Gtfs.shape_for_trip("trip", pid) ==
+               %Shape{
+                 id: "shape",
+                 points: [
+                   %Point{
+                     shape_id: "shape",
+                     lat: 42.373178,
+                     lon: -71.118170,
+                     sequence: 0
+                   }
+                 ]
+               }
     end
   end
 

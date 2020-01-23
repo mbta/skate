@@ -50,8 +50,8 @@ export interface Vehicle {
   latitude: number
   longitude: number
   directionId: DirectionId
-  routeId: RouteId
-  tripId: TripId
+  routeId: RouteId | null
+  tripId: TripId | null
   headsign: string | null
   viaVariant: ViaVariant | null
   operatorId: string

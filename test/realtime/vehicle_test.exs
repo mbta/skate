@@ -519,6 +519,14 @@ defmodule Realtime.VehicleTest do
       assert Vehicle.end_of_trip_type(block, last_trip_of_block, "run2", nil) == :another_trip
     end
 
+    test "doesn't consider it a swing off if the next trip's run is nil", %{
+      last_trip_of_block: last_trip_of_block,
+      block: block
+    } do
+      assert Vehicle.end_of_trip_type(block, %{last_trip_of_block | run_id: nil}, "run1", "start") ==
+               :another_trip
+    end
+
     test "defaults to :another_trip if the trip isn't in the block", %{
       last_trip_of_block: last_trip_of_block
     } do

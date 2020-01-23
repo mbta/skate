@@ -31,6 +31,8 @@ import orangeLineIconSvg from "../../static/images/icon-orange-line.svg"
 // @ts-ignore
 import redLineIconSvg from "../../static/images/icon-red-line.svg"
 // @ts-ignore
+import refreshIconSvg from "../../static/images/icon-refresh.svg"
+// @ts-ignore
 import reverseIconSvg from "../../static/images/icon-reverse-normal.svg"
 // @ts-ignore
 import reverseIconReversedSvg from "../../static/images/icon-reverse-reversed.svg"
@@ -81,6 +83,9 @@ export const orangeLineIcon = (className: string = ""): JSX.Element =>
 
 export const redLineIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, redLineIconSvg)
+
+export const refreshIcon = (className: string = ""): JSX.Element =>
+  renderSvg(className, refreshIconSvg)
 
 export const reverseIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, reverseIconSvg)

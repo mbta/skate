@@ -1,8 +1,9 @@
 import React, { useState } from "react"
 import useInterval from "../../hooks/useInterval"
+import { useTripShape } from "../../hooks/useShapes"
 import { isShuttle, shouldShowHeadwayDiagram } from "../../models/vehicle"
 import { DataDiscrepancy, Vehicle } from "../../realtime"
-import { Route } from "../../schedule"
+import { Route, Shape } from "../../schedule"
 import Map from "../map"
 import PropertiesList from "../propertiesList"
 import Header from "./header"
@@ -30,6 +31,9 @@ const directionsUrl = (
 
 const Location = ({ vehicle }: { vehicle: Vehicle }) => {
   const [epocNowInSeconds, setEpocNowInSeconds] = useState(nowInSeconds())
+
+  const shapes: Shape[] = useTripShape(vehicle.tripId)
+
   useInterval(() => setEpocNowInSeconds(nowInSeconds()), 1000)
   const secondsAgo = (epocTime: number): string =>
     `${epocNowInSeconds - epocTime}s ago`
@@ -58,7 +62,7 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
         Directions
       </a>
       <div className="m-vehicle-properties-panel__map">
-        <Map vehicles={[vehicle]} />
+        <Map vehicles={[vehicle]} shapes={shapes} />
       </div>
     </div>
   )

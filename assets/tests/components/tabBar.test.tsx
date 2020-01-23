@@ -55,4 +55,23 @@ describe("tabBar", () => {
 
     expect(reloadSpy).toHaveBeenCalled()
   })
+
+  it("reloads the page when you click on the refresh button", () => {
+    const reloadSpy = jest
+      .spyOn(window.location, "reload")
+      .mockImplementationOnce(() => ({}))
+
+    const wrapper = mount(
+      <BrowserRouter>
+        <TabBar pickerContainerIsVisible={false} />
+      </BrowserRouter>
+    )
+
+    wrapper
+      .find(".m-tab-bar__refresh")
+      .first()
+      .simulate("click")
+
+    expect(reloadSpy).toHaveBeenCalled()
+  })
 })

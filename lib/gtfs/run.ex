@@ -17,6 +17,6 @@ defmodule Gtfs.Run do
 
   @spec run_id_for_trip_id_from_row(Csv.row()) :: {Trip.id(), id()}
   def run_id_for_trip_id_from_row(row) do
-    {row["trip_id"], "#{row["area"]}-#{row["run_id"]}"}
+    {row["trip_id"], "#{row["area"]}-#{String.pad_leading(row["run_id"], 4, "0")}"}
   end
 end
