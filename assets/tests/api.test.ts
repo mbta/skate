@@ -33,12 +33,11 @@ describe("apiCall", () => {
     apiCall({
       url: "/",
       parser: parse,
+    }).then(parsed => {
+      expect(parse).toHaveBeenCalledWith("raw")
+      expect(parsed).toEqual("parsed")
+      done()
     })
-      .then(parsed => {
-        expect(parse).toHaveBeenCalledWith("raw")
-        expect(parsed).toEqual("parsed")
-        done()
-      })
   })
 
   test("reloads the page if the response status is a redirect (3xx)", () => {
@@ -85,12 +84,11 @@ describe("apiCall", () => {
       url: "/",
       parser: () => null,
       defaultResult: "default",
+    }).then(result => {
+      expect(result).toEqual("default")
+      expect(spyConsoleWarn).toHaveBeenCalled()
+      done()
     })
-      .then(result => {
-        expect(result).toEqual("default")
-        expect(spyConsoleWarn).toHaveBeenCalled()
-        done()
-      })
   })
 
   test("throws an error for any other response status if there's no default", done => {
