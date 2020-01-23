@@ -500,7 +500,7 @@ describe("groupByPosition", () => {
 
     const expectedGhost: Ghost = {
       id: "ghost-incoming-vehicleId",
-      directionId: vehicle.directionId,
+      directionId: vehicle.scheduledLocation!.directionId,
       routeId: "1",
       tripId: "scheduled trip",
       headsign: "scheduled headsign",
@@ -548,7 +548,7 @@ describe("groupByPosition", () => {
 
     const expectedGhost: Ghost = {
       id: "ghost-incoming-vehicleId",
-      directionId: vehicle.directionId,
+      directionId: vehicle.scheduledLocation!.directionId,
       routeId: "1",
       tripId: "scheduled trip",
       headsign: "scheduled headsign",
@@ -596,7 +596,7 @@ describe("groupByPosition", () => {
 
     const expectedGhost: Ghost = {
       id: "ghost-incoming-vehicleId",
-      directionId: vehicle.directionId,
+      directionId: vehicle.scheduledLocation!.directionId,
       routeId: "1",
       tripId: "scheduled trip",
       headsign: "scheduled headsign",
