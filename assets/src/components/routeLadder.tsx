@@ -160,13 +160,16 @@ export const groupByPosition = (
     } as ByPosition
   )
 
-  const incomingGhosts: Ghost[] = [
-    ...generateVirtualGhostsForLateIncomingVehicles(realVehicles.incoming),
-    ...generateVirtualGhostsForLateLayingOverVehicles([
+  const vehiclesNeedingVirtualGhosts: Vehicle[] = [
+    ...lateStartingIncomingVehicles(realVehicles.incoming),
+    ...lateStartingLayingOverVehicles([
       ...realVehicles.layingOverTop,
       ...realVehicles.layingOverBottom,
     ]),
   ]
+  const incomingGhosts: Ghost[] = vehiclesNeedingVirtualGhosts.map(vehicle =>
+    ghostFromVehicleScheduledLocation(vehicle)
+  )
 
   return {
     ...realVehicles,
@@ -174,21 +177,7 @@ export const groupByPosition = (
   }
 }
 
-const generateVirtualGhostsForLateIncomingVehicles = (
-  incomingVehiclesOrGhosts: VehicleOrGhost[]
-): Ghost[] =>
-  lateStartingVehicles(incomingVehiclesOrGhosts).map(vehicle =>
-    ghostFromVehicleScheduledLocation(vehicle)
-  )
-
-const generateVirtualGhostsForLateLayingOverVehicles = (
-  incomingVehiclesOrGhosts: VehicleOrGhost[]
-): Ghost[] =>
-  lateStartingLayingOverVehicles(incomingVehiclesOrGhosts).map(vehicle =>
-    ghostFromVehicleScheduledLocation(vehicle)
-  )
-
-const lateStartingVehicles = (
+const lateStartingIncomingVehicles = (
   incomingVehiclesOrGhosts: VehicleOrGhost[]
 ): Vehicle[] =>
   incomingVehiclesOrGhosts.filter(vehicleOrGhost =>
