@@ -5,23 +5,21 @@ import LadderPage, {
   findSelectedVehicleOrGhost,
 } from "../../src/components/ladderPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
+import useRoutes from "../../src/hooks/useRoutes"
 import { Ghost, Vehicle, VehicleOrGhost } from "../../src/realtime"
 import { ByRouteId, Route, TimepointsByRouteId } from "../../src/schedule.d"
 import { initialState } from "../../src/state"
 
 jest.mock("../../src/hooks/useRoutes", () => ({
   __esModule: true,
-  default: jest
-    .fn()
-    // Ipmlementation sequence matches tests
-    .mockImplementationOnce(() => null)
-    .mockImplementation(() => routes),
+  default: jest.fn(() => routes),
 }))
 
 const mockDispatch = jest.fn()
 
 describe("LadderPage", () => {
   test("renders the empty state", () => {
+    ;(useRoutes as jest.Mock).mockImplementationOnce(() => null)
     const tree = renderer.create(<LadderPage />).toJSON()
     expect(tree).toMatchSnapshot()
   })
