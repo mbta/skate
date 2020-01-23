@@ -58,7 +58,7 @@ const HeadwayDiagram = ({ vehicle }: { vehicle: Vehicle }) => {
     VehiclesByRouteIdContext
   )
   const { nextVehicle, previousVehicle } = nextAndPreviousVehicle(
-    allVehiclesForRoute(vehiclesByRouteId, vehicle.routeId),
+    allVehiclesForRoute(vehiclesByRouteId, vehicle.routeId!),
     vehicle
   )
   const {

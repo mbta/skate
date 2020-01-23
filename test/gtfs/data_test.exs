@@ -642,7 +642,7 @@ defmodule Gtfs.DataTest do
   end
 
   describe "shapes" do
-    test "returns the shapes for the given shuttle route" do
+    test "returns the shapes for the given route" do
       shapes = [
         %Shape{
           id: "shape1",
@@ -711,6 +711,87 @@ defmodule Gtfs.DataTest do
       }
 
       assert Data.shapes(data, "shapelessRoute") == []
+    end
+  end
+
+  describe "shape_for_trip" do
+    test "returns the shape for the given trip_id" do
+      trip = %Trip{
+        id: "trip",
+        route_id: "route",
+        service_id: "today",
+        headsign: "headsign",
+        direction_id: 0,
+        block_id: "block",
+        shape_id: "shape",
+        stop_times: []
+      }
+
+      shape = %Shape{
+        id: "shape",
+        points: [
+          %Point{
+            shape_id: "shape",
+            lat: 42.413560,
+            lon: -70.992110,
+            sequence: 0
+          }
+        ]
+      }
+
+      data = %Data{
+        routes: [],
+        route_patterns: [],
+        timepoint_ids_by_route: %{},
+        shapes: %{"route" => [shape]},
+        stops: [],
+        trips: %{"trip" => trip},
+        blocks: %{},
+        calendar: %{}
+      }
+
+      assert Data.shape_for_trip(data, "trip") == shape
+    end
+
+    test "returns nil if there is no shape" do
+      trip = %Trip{
+        id: "trip",
+        route_id: "route",
+        service_id: "today",
+        headsign: "headsign",
+        direction_id: 0,
+        block_id: "block",
+        shape_id: "shape",
+        stop_times: []
+      }
+
+      data = %Data{
+        routes: [],
+        route_patterns: [],
+        timepoint_ids_by_route: %{},
+        shapes: %{},
+        stops: [],
+        trips: %{"trip" => trip},
+        blocks: %{},
+        calendar: %{}
+      }
+
+      assert Data.shape_for_trip(data, "trip") == nil
+    end
+
+    test "returns nil if there is no trip" do
+      data = %Data{
+        routes: [],
+        route_patterns: [],
+        timepoint_ids_by_route: %{},
+        shapes: %{},
+        stops: [],
+        trips: %{},
+        blocks: %{},
+        calendar: %{}
+      }
+
+      assert Data.shape_for_trip(data, "trip") == nil
     end
   end
 

@@ -45,13 +45,15 @@ defmodule Realtime.Ghost do
     :route_status
   ]
 
-  @spec ghosts(%{Date.t() => [Block.t()]}, %{Block.id() => [Vehicle.t()]}, Util.Time.timestamp()) ::
+  @spec ghosts(%{Date.t() => [Block.t()]}, [Vehicle.t()], Util.Time.timestamp()) ::
           [t()]
-  def ghosts(blocks_by_date, vehicles_by_block_id, now) do
+  def ghosts(blocks_by_date, vehicles, now) do
+    blocks_with_vehicles = MapSet.new(vehicles, fn vehicle -> vehicle.block_id end)
+
     blocks_by_date
     |> Helpers.map_values(fn blocks ->
       Enum.reject(blocks, fn block ->
-        Map.has_key?(vehicles_by_block_id, Block.first_trip(block).block_id)
+        MapSet.member?(blocks_with_vehicles, Block.first_trip(block).block_id)
       end)
     end)
     |> Enum.flat_map(fn {date, blocks} ->

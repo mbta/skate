@@ -38,7 +38,7 @@ defmodule Realtime.GhostTest do
 
       assert Ghost.ghosts(
                %{~D[2019-01-01] => [block]},
-               %{},
+               [],
                time0 + 2
              ) == [
                %Ghost{
@@ -86,14 +86,14 @@ defmodule Realtime.GhostTest do
 
       block = [trip]
 
-      vehicles_by_block = %{"block" => :vehicle}
+      vehicles = [%{block_id: "block"}]
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
 
       assert Ghost.ghosts(
                %{~D[2019-01-01] => [block]},
-               vehicles_by_block,
+               vehicles,
                time0 + 2
              ) == []
     end
