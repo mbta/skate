@@ -40,7 +40,7 @@ describe("apiCall", () => {
     })
   })
 
-  test("reloads the page if the response status is a redirect (3xx)", () => {
+  test("reloads the page if the response status is a redirect (3xx)", done => {
     mockFetch(302, { data: null })
 
     window.location.reload = jest.fn()
@@ -49,13 +49,13 @@ describe("apiCall", () => {
       url: "/",
       parser: () => null,
     })
-      .then(() => {
+      .catch(() => {
         expect(window.location.reload).toHaveBeenCalled()
+        done()
       })
-      .catch(() => ({}))
   })
 
-  test("reloads the page if the response status is forbidden (403)", () => {
+  test("reloads the page if the response status is forbidden (403)", done => {
     mockFetch(403, { data: null })
 
     window.location.reload = jest.fn()
@@ -64,10 +64,10 @@ describe("apiCall", () => {
       url: "/",
       parser: () => null,
     })
-      .then(() => {
+      .catch(() => {
         expect(window.location.reload).toHaveBeenCalled()
+        done()
       })
-      .catch(() => ({}))
   })
 
   test("returns a default for any other response", done => {
