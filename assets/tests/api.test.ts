@@ -48,11 +48,10 @@ describe("apiCall", () => {
     apiCall({
       url: "/",
       parser: () => null,
+    }).catch(() => {
+      expect(window.location.reload).toHaveBeenCalled()
+      done()
     })
-      .catch(() => {
-        expect(window.location.reload).toHaveBeenCalled()
-        done()
-      })
   })
 
   test("reloads the page if the response status is forbidden (403)", done => {
@@ -63,11 +62,10 @@ describe("apiCall", () => {
     apiCall({
       url: "/",
       parser: () => null,
+    }).catch(() => {
+      expect(window.location.reload).toHaveBeenCalled()
+      done()
     })
-      .catch(() => {
-        expect(window.location.reload).toHaveBeenCalled()
-        done()
-      })
   })
 
   test("returns a default for any other response", done => {
