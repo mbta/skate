@@ -61,21 +61,22 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
     <div className="m-ladder-page">
       <RoutePicker routes={routes} selectedRouteIds={selectedRouteIds} />
 
-      <RouteLadders
-        routes={selectedRoutes}
-        timepointsByRouteId={timepointsByRouteId}
-        vehiclesByRouteId={vehiclesByRouteId}
-        selectedVehicleId={selectedVehicleId}
-      />
-
-      {selectedVehicleOrGhost && (
-        <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
-          <PropertiesPanel
-            selectedVehicleOrGhost={selectedVehicleOrGhost}
-            route={vehicleRoute(routes, selectedVehicleOrGhost)}
+      <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
+        <>
+          <RouteLadders
+            routes={selectedRoutes}
+            timepointsByRouteId={timepointsByRouteId}
+            selectedVehicleId={selectedVehicleId}
           />
-        </VehiclesByRouteIdProvider>
-      )}
+
+          {selectedVehicleOrGhost && (
+            <PropertiesPanel
+              selectedVehicleOrGhost={selectedVehicleOrGhost}
+              route={vehicleRoute(routes, selectedVehicleOrGhost)}
+            />
+          )}
+        </>
+      </VehiclesByRouteIdProvider>
     </div>
   )
 }

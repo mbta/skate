@@ -25,7 +25,6 @@ test("renders a route ladder", () => {
       <RouteLadders
         routes={routes}
         timepointsByRouteId={timepointsByRouteId}
-        vehiclesByRouteId={{}}
         selectedVehicleId={undefined}
       />
     )
