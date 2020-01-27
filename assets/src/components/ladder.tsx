@@ -2,7 +2,6 @@ import useComponentSize from "@rehooks/component-size"
 import React, { useContext, useRef } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { partition } from "../helpers/array"
-import vehicleLabel from "../helpers/vehicleLabel"
 import featureIsEnabled from "../laboratoryFeatures"
 import {
   LadderDirection,
@@ -16,7 +15,6 @@ import {
 import { isGhost } from "../models/vehicle"
 import { statusClass } from "../models/vehicleStatus"
 import {
-  Vehicle,
   VehicleId,
   VehicleOrGhost,
   VehicleTimepointStatus,
@@ -47,6 +45,7 @@ const Ladder = ({
   ladderDirection,
   selectedVehicleId,
 }: Props) => {
+  const [{ settings }] = useContext(StateDispatchContext)
   const elementRef = useRef(null)
   const { height } = useComponentSize(elementRef)
 
@@ -67,7 +66,8 @@ const Ladder = ({
   const { ladderVehicles, widthOfLanes } = ladderVehiclesFromVehicles(
     vehiclesWithAnActiveBlock,
     ladderDirection,
-    timepointStatusY
+    timepointStatusY,
+    settings
   )
   const [selectedLadderVehicles, unselectedLadderVehicles] = partition(
     ladderVehicles,
@@ -138,13 +138,14 @@ const VehicleSvg = ({
 }) => {
   const {
     vehicleId,
+    label,
     viaVariant,
     status,
     x,
     y,
     vehicleDirection,
   } = ladderVehicle
-  const [{ settings }, dispatch] = useContext(StateDispatchContext)
+  const [, dispatch] = useContext(StateDispatchContext)
   const selectedClass = vehicleId === selectedVehicleId ? "selected" : ""
 
   return (
@@ -157,15 +158,7 @@ const VehicleSvg = ({
         <VehicleIconSvgNode
           size={Size.Medium}
           orientation={orientationMatchingVehicle(vehicleDirection)}
-          label={vehicleLabel(
-            {
-              id: ladderVehicle.vehicleId,
-              label: ladderVehicle.label,
-              runId: ladderVehicle.runId,
-              endOfTripType: ladderVehicle.endOfTripType || "another_trip",
-            } as Vehicle,
-            settings
-          )}
+          label={label}
           variant={viaVariant}
           status={status}
         />
