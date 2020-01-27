@@ -92,7 +92,7 @@ describe("apiCall", () => {
         done("fetchRoutes did not throw an error")
       })
       .catch(error => {
-        expect(error).not.toBeUndefined()
+        expect(error).toBeDefined()
         done()
       })
   })
