@@ -1,4 +1,5 @@
 import {
+  apiCall,
   fetchRoutes,
   fetchShapeForRoute,
   fetchShapeForTrip,
@@ -22,6 +23,80 @@ const mockFetch = (status: number, json: any): void => {
       status,
     } as Response)
 }
+
+describe("apiCall", () => {
+  test("returns parsed data", done => {
+    mockFetch(200, { data: "raw" })
+
+    const parse = jest.fn(() => "parsed")
+
+    apiCall({
+      url: "/",
+      parser: parse,
+    }).then(parsed => {
+      expect(parse).toHaveBeenCalledWith("raw")
+      expect(parsed).toEqual("parsed")
+      done()
+    })
+  })
+
+  test("reloads the page if the response status is a redirect (3xx)", done => {
+    mockFetch(302, { data: null })
+
+    window.location.reload = jest.fn()
+
+    apiCall({
+      url: "/",
+      parser: () => null,
+    }).catch(() => {
+      expect(window.location.reload).toHaveBeenCalled()
+      done()
+    })
+  })
+
+  test("reloads the page if the response status is forbidden (403)", done => {
+    mockFetch(403, { data: null })
+
+    window.location.reload = jest.fn()
+
+    apiCall({
+      url: "/",
+      parser: () => null,
+    }).catch(() => {
+      expect(window.location.reload).toHaveBeenCalled()
+      done()
+    })
+  })
+
+  test("returns a default for any other response", done => {
+    mockFetch(500, { data: null })
+
+    apiCall({
+      url: "/",
+      parser: () => null,
+      defaultResult: "default",
+    }).then(result => {
+      expect(result).toEqual("default")
+      done()
+    })
+  })
+
+  test("throws an error for any other response status if there's no default", done => {
+    mockFetch(500, { data: null })
+
+    apiCall({
+      url: "/",
+      parser: () => null,
+    })
+      .then(() => {
+        done("fetchRoutes did not throw an error")
+      })
+      .catch(error => {
+        expect(error).toBeDefined()
+        done()
+      })
+  })
+})
 
 describe("fetchRoutes", () => {
   test("fetches a list of routes", done => {
@@ -78,53 +153,6 @@ describe("fetchRoutes", () => {
       done()
     })
   })
-
-  test("reloads the page if the response status is a redirect (3xx)", () => {
-    mockFetch(302, { data: null })
-
-    window.location.reload = jest.fn()
-    const spyConsoleError = jest.spyOn(console, "error")
-    spyConsoleError.mockImplementationOnce(() => {})
-
-    fetchRoutes()
-      .then(() => {
-        expect(window.location.reload).toHaveBeenCalled()
-      })
-      .catch(() => ({}))
-  })
-
-  test("reloads the page if the response status is forbidden (403)", () => {
-    mockFetch(403, { data: null })
-
-    window.location.reload = jest.fn()
-    const spyConsoleError = jest.spyOn(console, "error")
-    spyConsoleError.mockImplementationOnce(() => {})
-
-    fetchRoutes()
-      .then(() => {
-        expect(window.location.reload).toHaveBeenCalled()
-      })
-      .catch(() => ({}))
-  })
-
-  test("throws an error for any other response status", done => {
-    mockFetch(500, { data: null })
-
-    const spyConsoleError = jest.spyOn(console, "error")
-    spyConsoleError.mockImplementationOnce(() => {})
-
-    fetchRoutes()
-      .then(() => {
-        spyConsoleError.mockRestore()
-        done("fetchRoutes did not throw an error")
-      })
-      .catch(error => {
-        expect(error).not.toBeUndefined()
-        expect(spyConsoleError).toHaveBeenCalled()
-        spyConsoleError.mockRestore()
-        done()
-      })
-  })
 })
 
 describe("fetchShapeForRoute", () => {
@@ -162,51 +190,13 @@ describe("fetchShapeForRoute", () => {
     })
   })
 
-  test("reloads the page if the response status is a redirect (3xx)", () => {
-    mockFetch(302, { data: null })
-
-    window.location.reload = jest.fn()
-    const spyConsoleError = jest.spyOn(console, "error")
-    spyConsoleError.mockImplementationOnce(() => {})
-
-    fetchShapeForRoute("28")
-      .then(() => {
-        expect(window.location.reload).toHaveBeenCalled()
-      })
-      .catch(() => ({}))
-  })
-
-  test("reloads the page if the response status is forbidden (403)", () => {
-    mockFetch(403, { data: null })
-
-    window.location.reload = jest.fn()
-    const spyConsoleError = jest.spyOn(console, "error")
-    spyConsoleError.mockImplementationOnce(() => {})
-
-    fetchShapeForRoute("28")
-      .then(() => {
-        expect(window.location.reload).toHaveBeenCalled()
-      })
-      .catch(() => ({}))
-  })
-
-  test("throws an error for any other response status", done => {
+  test("defaults to [] if there's an error", done => {
     mockFetch(500, { data: null })
 
-    const spyConsoleError = jest.spyOn(console, "error")
-    spyConsoleError.mockImplementationOnce(() => {})
-
-    fetchShapeForRoute("28")
-      .then(() => {
-        spyConsoleError.mockRestore()
-        done("fetchShapeForRoute did not throw an error")
-      })
-      .catch(error => {
-        expect(error).not.toBeUndefined()
-        expect(spyConsoleError).toHaveBeenCalled()
-        spyConsoleError.mockRestore()
-        done()
-      })
+    fetchShapeForRoute("28").then(result => {
+      expect(result).toEqual([])
+      done()
+    })
   })
 })
 
@@ -228,6 +218,15 @@ describe("fetchShapeForTrip", () => {
 
     fetchShapeForTrip("trip").then(response => {
       expect(response).toEqual(shape)
+      done()
+    })
+  })
+
+  test("defaults to null if there's an error", done => {
+    mockFetch(500, { data: null })
+
+    fetchShapeForTrip("28").then(result => {
+      expect(result).toEqual(null)
       done()
     })
   })
@@ -288,47 +287,6 @@ describe("fetchShuttleRoutes", () => {
       done()
     })
   })
-
-  test("reloads the page if the response status is a redirect (3xx)", () => {
-    mockFetch(302, { data: null })
-
-    window.location.reload = jest.fn()
-    const spyConsoleError = jest.spyOn(console, "error")
-    spyConsoleError.mockImplementationOnce(() => {})
-
-    fetchShuttleRoutes()
-      .then(() => {
-        expect(window.location.reload).toHaveBeenCalled()
-      })
-      .catch(() => ({}))
-  })
-
-  test("reloads the page if the response status is forbidden (403)", () => {
-    mockFetch(403, { data: null })
-
-    window.location.reload = jest.fn()
-    const spyConsoleError = jest.spyOn(console, "error")
-    spyConsoleError.mockImplementationOnce(() => {})
-
-    fetchShuttleRoutes()
-      .then(() => {
-        expect(window.location.reload).toHaveBeenCalled()
-      })
-      .catch(() => ({}))
-  })
-
-  test("throws an error for any other response status", done => {
-    mockFetch(500, { data: null })
-
-    fetchShuttleRoutes()
-      .then(() => {
-        done("fetchRoutes did not throw an error")
-      })
-      .catch(error => {
-        expect(error).not.toBeUndefined()
-        done()
-      })
-  })
 })
 
 describe("fetchTimepointsForRoute", () => {
@@ -341,50 +299,12 @@ describe("fetchTimepointsForRoute", () => {
     })
   })
 
-  test("reloads the page if the response status is a redirect (3xx)", () => {
-    mockFetch(302, { data: null })
-
-    window.location.reload = jest.fn()
-    const spyConsoleError = jest.spyOn(console, "error")
-    spyConsoleError.mockImplementationOnce(() => {})
-
-    fetchTimepointsForRoute("28")
-      .then(() => {
-        expect(window.location.reload).toHaveBeenCalled()
-      })
-      .catch(() => ({}))
-  })
-
-  test("reloads the page if the response status is forbidden (403)", () => {
-    mockFetch(403, { data: null })
-
-    window.location.reload = jest.fn()
-    const spyConsoleError = jest.spyOn(console, "error")
-    spyConsoleError.mockImplementationOnce(() => {})
-
-    fetchTimepointsForRoute("28")
-      .then(() => {
-        expect(window.location.reload).toHaveBeenCalled()
-      })
-      .catch(() => ({}))
-  })
-
-  test("throws an error for any other response status", done => {
+  test("defaults to [] if there's an error", done => {
     mockFetch(500, { data: null })
 
-    const spyConsoleError = jest.spyOn(console, "error")
-    spyConsoleError.mockImplementationOnce(() => {})
-
-    fetchTimepointsForRoute("28")
-      .then(() => {
-        spyConsoleError.mockRestore()
-        done("fetchTimepointsForRoute did not throw an error")
-      })
-      .catch(error => {
-        expect(error).not.toBeUndefined()
-        expect(spyConsoleError).toHaveBeenCalled()
-        spyConsoleError.mockRestore()
-        done()
-      })
+    fetchTimepointsForRoute("28").then(result => {
+      expect(result).toEqual([])
+      done()
+    })
   })
 })
