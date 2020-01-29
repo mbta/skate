@@ -3,6 +3,12 @@ import { useEffect, useState } from "react"
 import appData from "../appData"
 import { UserToken } from "../skate.d"
 
+export enum ConnectionStatus {
+  Loading = 1,
+  Connected,
+  Disconnected,
+}
+
 export const readUserToken = (): UserToken | undefined => {
   const data = appData()
   if (!data) {
@@ -13,8 +19,14 @@ export const readUserToken = (): UserToken | undefined => {
   return token
 }
 
-const useSocket = (): Socket | undefined => {
+const useSocket = (): {
+  socket: Socket | undefined,
+  connectionStatus: ConnectionStatus,
+} => {
   const [socket, setSocket] = useState<Socket | undefined>(undefined)
+  const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>(
+    ConnectionStatus.Loading
+  )
 
   const userToken: UserToken | undefined = readUserToken()
 
@@ -23,10 +35,14 @@ const useSocket = (): Socket | undefined => {
       params: { token: userToken },
     })
     initialSocket.connect()
+    initialSocket.onOpen(() => setConnectionStatus(ConnectionStatus.Connected))
+    initialSocket.onClose(() =>
+      setConnectionStatus(ConnectionStatus.Disconnected)
+    )
     setSocket(initialSocket)
   }, [])
 
-  return socket
+  return { socket, connectionStatus }
 }
 
 export default useSocket
