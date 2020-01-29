@@ -251,4 +251,18 @@ input {
 $modal-overlay-color: transparentize($color-component-dark, 0.8);
 $modal-box-shadow: 0 0 2rem 0 transparentize($black, 0.5);
 
+@mixin modal-overlay {
+  background-color: $modal-overlay-color;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+@mixin modal-content {
+  background-color: $color-bg-base;
+  box-shadow: $modal-box-shadow;
+}
+
 $subtle-box-shadow: 0 2px 4px 0 rgba(176, 181, 192, 0.5);
