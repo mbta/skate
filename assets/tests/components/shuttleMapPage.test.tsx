@@ -1,13 +1,17 @@
 import React from "react"
 import renderer from "react-test-renderer"
 import ShuttleMapPage from "../../src/components/shuttleMapPage"
-import { ShuttleVehiclesProvider } from "../../src/contexts/shuttleVehiclesContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
+import useShuttleVehicles from "../../src/hooks/useShuttleVehicles"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Vehicle } from "../../src/realtime"
 import { initialState } from "../../src/state"
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
+jest.mock("../../src/hooks/useShuttleVehicles", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}))
 
 const shuttle: Vehicle = {
   id: "y1818",
@@ -49,27 +53,21 @@ const shuttle: Vehicle = {
 
 describe("Shuttle Map Page", () => {
   test("renders", () => {
-    const tree = renderer
-      .create(
-        <ShuttleVehiclesProvider shuttles={[shuttle]}>
-          <ShuttleMapPage />
-        </ShuttleVehiclesProvider>
-      )
-      .toJSON()
+    ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
+    const tree = renderer.create(<ShuttleMapPage />).toJSON()
     expect(tree).toMatchSnapshot()
   })
 
   test("renders selected shuttle routes", () => {
     const dispatch = jest.fn()
+    ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
     const tree = renderer
       .create(
         <StateDispatchProvider
           state={{ ...initialState, selectedShuttleRunIds: [shuttle.runId!] }}
           dispatch={dispatch}
         >
-          <ShuttleVehiclesProvider shuttles={[shuttle]}>
-            <ShuttleMapPage />
-          </ShuttleVehiclesProvider>
+          <ShuttleMapPage />
         </StateDispatchProvider>
       )
       .toJSON()
@@ -78,15 +76,14 @@ describe("Shuttle Map Page", () => {
 
   test("renders with all shuttles selected", () => {
     const dispatch = jest.fn()
+    ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
     const tree = renderer
       .create(
         <StateDispatchProvider
           state={{ ...initialState, selectedShuttleRunIds: "all" }}
           dispatch={dispatch}
         >
-          <ShuttleVehiclesProvider shuttles={[shuttle]}>
-            <ShuttleMapPage />
-          </ShuttleVehiclesProvider>
+          <ShuttleMapPage />
         </StateDispatchProvider>
       )
       .toJSON()
@@ -100,12 +97,11 @@ describe("Shuttle Map Page", () => {
       selectedShuttleRunIds: [shuttle.runId!],
       selectedVehicleId: shuttle.id,
     }
+    ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
     const tree = renderer
       .create(
         <StateDispatchProvider state={state} dispatch={dispatch}>
-          <ShuttleVehiclesProvider shuttles={[shuttle]}>
-            <ShuttleMapPage />
-          </ShuttleVehiclesProvider>
+          <ShuttleMapPage />
         </StateDispatchProvider>
       )
       .toJSON()

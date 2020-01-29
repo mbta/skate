@@ -1,7 +1,8 @@
 import React, { ReactElement, useContext } from "react"
-import { ShuttleVehiclesContext } from "../contexts/shuttleVehiclesContext"
+import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { useRouteShapes } from "../hooks/useShapes"
+import useShuttleVehicles from "../hooks/useShuttleVehicles"
 import { RunId, Vehicle, VehicleId } from "../realtime"
 import { Shape } from "../schedule"
 import Map from "./map"
@@ -34,7 +35,8 @@ const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
     selectedShuttleRunIds,
     selectedVehicleId,
   } = state
-  const shuttles: Vehicle[] | null = useContext(ShuttleVehiclesContext)
+  const socket = useContext(SocketContext)
+  const shuttles: Vehicle[] | null = useShuttleVehicles(socket)
   const shapes: Shape[] = useRouteShapes(selectedShuttleRouteIds)
   const selectedShuttles: Vehicle[] = filterShuttles(
     shuttles || [],
@@ -48,7 +50,7 @@ const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
 
   return (
     <div className="m-shuttle-map">
-      <ShuttlePicker />
+      <ShuttlePicker shuttles={shuttles} />
 
       <div className="m-shuttle-map__map">
         <Map vehicles={selectedShuttles} shapes={shapes} />

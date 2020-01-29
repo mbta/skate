@@ -13,6 +13,10 @@ jest.mock("../../src/laboratoryFeatures", () => ({
   __esModule: true,
   default: () => true,
 }))
+jest.mock("../../src/hooks/useVehicles", () => ({
+  __esModule: true,
+  default: () => ({}),
+}))
 
 describe("ladder", () => {
   test("renders a ladder", () => {
