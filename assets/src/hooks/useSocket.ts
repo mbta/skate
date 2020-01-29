@@ -9,6 +9,11 @@ export enum ConnectionStatus {
   Disconnected,
 }
 
+export interface SocketStatus {
+  socket: Socket | undefined
+  connectionStatus: ConnectionStatus
+}
+
 export const readUserToken = (): UserToken | undefined => {
   const data = appData()
   if (!data) {
@@ -19,10 +24,7 @@ export const readUserToken = (): UserToken | undefined => {
   return token
 }
 
-const useSocket = (): {
-  socket: Socket | undefined,
-  connectionStatus: ConnectionStatus,
-} => {
+const useSocket = (): SocketStatus => {
   const [socket, setSocket] = useState<Socket | undefined>(undefined)
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>(
     ConnectionStatus.Loading

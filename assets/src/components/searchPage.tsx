@@ -62,7 +62,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
   const [{ searchPageState, selectedVehicleId }] = useContext(
     StateDispatchContext
   )
-  const socket: Socket | undefined = useContext(SocketContext)
+  const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const vehicles: VehicleOrGhost[] | null | undefined = useSearchResults(
     socket,
     searchPageState.isActive ? searchPageState.query : null
