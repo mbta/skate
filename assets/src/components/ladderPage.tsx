@@ -1,3 +1,4 @@
+import { Socket } from "phoenix"
 import React, { ReactElement, useContext } from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
@@ -43,7 +44,7 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
     selectedRouteIds
   )
 
-  const socket = useContext(SocketContext)
+  const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = useVehicles(
     socket,
     selectedRouteIds

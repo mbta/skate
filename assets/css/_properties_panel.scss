@@ -1,6 +1,5 @@
 .m-properties-panel {
-  background-color: $color-bg-base;
-  box-shadow: $modal-box-shadow;
+  @include modal-content;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -19,11 +18,6 @@
 }
 
 .m-properties-panel__modal-overlay {
-  background-color: $modal-overlay-color;
-  height: 100%;
-  left: 0;
-  position: fixed;
-  top: 0;
-  width: 100%;
+  @include modal-overlay;
   z-index: 1000;
 }

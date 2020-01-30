@@ -9,11 +9,11 @@ import App from "./app"
 const AppStateWrapper = (): JSX.Element => {
   const [state, dispatch] = usePersistedStateReducer(reducer, initialState)
 
-  const socket = useSocket()
+  const socketStatus = useSocket()
 
   return (
     <StateDispatchProvider state={state} dispatch={dispatch}>
-      <SocketProvider socket={socket}>
+      <SocketProvider socketStatus={socketStatus}>
         <App />
       </SocketProvider>
     </StateDispatchProvider>

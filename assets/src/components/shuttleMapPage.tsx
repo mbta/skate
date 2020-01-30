@@ -1,3 +1,4 @@
+import { Socket } from "phoenix"
 import React, { ReactElement, useContext } from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
@@ -35,7 +36,7 @@ const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
     selectedShuttleRunIds,
     selectedVehicleId,
   } = state
-  const socket = useContext(SocketContext)
+  const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const shuttles: Vehicle[] | null = useShuttleVehicles(socket)
   const shapes: Shape[] = useRouteShapes(selectedShuttleRouteIds)
   const selectedShuttles: Vehicle[] = filterShuttles(
