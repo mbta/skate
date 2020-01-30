@@ -1,3 +1,4 @@
+import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import App from "../../src/components/app"
@@ -16,18 +17,16 @@ describe("App", () => {
   })
 
   test("shows disconnected modal if the socket is disconnected", () => {
-    const tree = renderer
-      .create(
-        <SocketProvider
-          socketStatus={{
-            socket: undefined,
-            connectionStatus: ConnectionStatus.Disconnected,
-          }}
-        >
-          <App />
-        </SocketProvider>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const wrapper = mount(
+      <SocketProvider
+        socketStatus={{
+          socket: undefined,
+          connectionStatus: ConnectionStatus.Disconnected,
+        }}
+      >
+        <App />
+      </SocketProvider>
+    )
+    expect(wrapper.exists(".m-disconnected-modal")).toBeTruthy()
   })
 })
