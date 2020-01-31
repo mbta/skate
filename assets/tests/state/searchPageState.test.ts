@@ -114,19 +114,29 @@ describe("addSavedQuery", () => {
     ).toEqual([{ text: "a" }, { text: "b" }])
   })
 
-  test("caps at 5 saved queries", () => {
+  test("caps at 10 saved queries", () => {
     expect(
       addSavedQuery(
         [
+          { text: "j" },
+          { text: "i" },
+          { text: "h" },
+          { text: "g" },
+          { text: "f" },
           { text: "e" },
           { text: "d" },
           { text: "c" },
           { text: "b" },
           { text: "a" },
         ],
-        { text: "f" }
+        { text: "k" }
       )
     ).toEqual([
+      { text: "k" },
+      { text: "j" },
+      { text: "i" },
+      { text: "h" },
+      { text: "g" },
       { text: "f" },
       { text: "e" },
       { text: "d" },
