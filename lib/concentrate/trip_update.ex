@@ -10,6 +10,7 @@ defmodule Concentrate.TripUpdate do
     :direction_id,
     :start_date,
     :start_time,
+    :remark,
     schedule_relationship: :SCHEDULED
   ])
 

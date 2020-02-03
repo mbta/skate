@@ -12,7 +12,8 @@ defmodule Concentrate.Supervisor do
   @type opts :: [
           busloc_url: String.t(),
           swiftly_authorization_key: String.t(),
-          swiftly_realtime_vehicles_url: String.t()
+          swiftly_realtime_vehicles_url: String.t(),
+          trip_updates_url: String.t()
         ]
 
   @spec start_link(opts()) :: Supervisor.on_start()
@@ -65,8 +66,19 @@ defmodule Concentrate.Supervisor do
         nil
       end
 
+    trip_updates_child =
+      if opts[:trip_updates_url] do
+        source_child(
+          :trip_updates_enhanced,
+          opts[:trip_updates_url],
+          Concentrate.Parser.GTFSRealtimeEnhanced
+        )
+      else
+        nil
+      end
+
     children =
-      [realtime_enhanced_child, swiftly_child]
+      [realtime_enhanced_child, swiftly_child, trip_updates_child]
       |> Enum.reject(&is_nil/1)
 
     {child_ids(children), children}
