@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+  <%
+    {static_href_module, static_href_fn} = Application.get_env(:skate, :static_href)
+    static_href = fn conn, path -> apply(static_href_module, static_href_fn, [conn, path]) end
+  %>
   <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -10,11 +14,11 @@
 
     <title>Skate</title>
 
-    <link rel="apple-touch-icon" href="<%= Routes.static_url(@conn, "/images/mbta-logo-t-180.png") %>" type="image/png">
-    <link rel="icon" href="<%= Routes.static_url(@conn, "/images/mbta-logo-t-favicon.png") %>" sizes="32x32" type="image/png">
-    <link rel="icon" href="<%= Routes.static_url(@conn, "/favicon.ico") %>" sizes="16x16" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="<%= static_href.(@conn, "/images/mbta-logo-t-180.png") %>" type="image/png">
+    <link rel="icon" href="<%= static_href.(@conn, "/images/mbta-logo-t-favicon.png") %>" sizes="32x32" type="image/png">
+    <link rel="icon" href="<%= static_href.(@conn, "/favicon.ico") %>" sizes="16x16" type="image/vnd.microsoft.icon">
 
-    <link rel="stylesheet" href="<%= Routes.static_url(@conn, "/css/app.css") %>"/>
+    <link rel="stylesheet" href="<%= static_href.(@conn, "/css/app.css") %>"/>
 
     <%= if record_fullstory?() do %>
       <%= render "_fullstory.html", assigns %>
@@ -25,7 +29,7 @@
     <main role="main" class="container">
       <%= render @view_module, @view_template, assigns %>
     </main>
-    <script type="text/javascript" src="<%= Routes.static_url(@conn, "/js/app.js") %>"></script>
+    <script type="text/javascript" src="<%= static_href.(@conn, "/js/app.js") %>"></script>
     <%= render "_drift.html" %>
     <%= render "_informizely.html" %>
   </body>
