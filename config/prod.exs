@@ -2,7 +2,7 @@ use Mix.Config
 
 config :skate,
   redirect_http?: true,
-  static_href: &SkateWeb.Router.Helpers.static_url/2
+  static_href: {SkateWeb.Router.Helpers, :static_url}
 
 # For production, don't forget to configure the url host
 # to something meaningful, Phoenix uses this information

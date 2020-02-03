@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-  <% static_href = Application.get_env(:skate, :static_href) %>
+  <%
+    {static_href_module, static_href_fn} = Application.get_env(:skate, :static_href)
+    static_href = fn conn, path -> apply(static_href_module, static_href_fn, [conn, path]) end
+  %>
   <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>

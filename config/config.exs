@@ -19,7 +19,7 @@ config :skate,
   log_duration_timing: true,
   refresh_token_store: RefreshTokenStore,
   redirect_http?: false,
-  static_href: &SkateWeb.Router.Helpers.static_path/2
+  static_href: {SkateWeb.Router.Helpers, :static_path}
 
 config :skate, Gtfs.CacheFile, cache_filename: nil
 
