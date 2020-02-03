@@ -161,7 +161,7 @@ export const groupByPosition = (
   )
 
   const vehiclesNeedingVirtualGhosts: Vehicle[] = [
-    ...lateStartingIncomingVehicles(realVehicles.incoming),
+    ...lateStartingIncomingVehicles(realVehicles.incoming, routeId),
     ...lateStartingLayingOverVehicles([
       ...realVehicles.layingOverTop,
       ...realVehicles.layingOverBottom,
@@ -178,10 +178,13 @@ export const groupByPosition = (
 }
 
 const lateStartingIncomingVehicles = (
-  incomingVehiclesOrGhosts: VehicleOrGhost[]
+  incomingVehiclesOrGhosts: VehicleOrGhost[],
+  currentRouteId: RouteId
 ): Vehicle[] =>
-  incomingVehiclesOrGhosts.filter(vehicleOrGhost =>
-    isAVehicleThatIsLateStartingScheduledTrip(vehicleOrGhost)
+  incomingVehiclesOrGhosts.filter(
+    vehicleOrGhost =>
+      isAVehicleThatIsLateStartingScheduledTrip(vehicleOrGhost) &&
+      isScheduledForCurrentRoute(vehicleOrGhost as Vehicle, currentRouteId)
   ) as Vehicle[]
 
 const lateStartingLayingOverVehicles = (
@@ -199,6 +202,11 @@ const isAVehicleThatIsLateStartingScheduledTrip = (
   isVehicle(vehicleOrGhost) &&
   hasAScheduleLocation(vehicleOrGhost) &&
   isLateStartingScheduledTrip(vehicleOrGhost)
+
+const isScheduledForCurrentRoute = (
+  vehicle: Vehicle,
+  currentRouteId: RouteId
+): boolean => vehicle.scheduledLocation!.routeId === currentRouteId
 
 const isScheduledForCurrentTrip = (vehicle: Vehicle): boolean =>
   vehicle.tripId === vehicle.scheduledLocation!.tripId
