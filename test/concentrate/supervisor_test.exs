@@ -29,8 +29,8 @@ defmodule Concentrate.SupervisorTest do
 
       actual = Concentrate.Supervisor.children(opts)
 
-      # 3 sources + merge + 1 consumer
-      assert length(actual) == 5
+      # 3 sources + merge + 2 consumers
+      assert length(actual) == 6
     end
   end
 end

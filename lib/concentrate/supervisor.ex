@@ -109,7 +109,10 @@ defmodule Concentrate.Supervisor do
     vehicle_positions_consumer =
       consumer(Concentrate.Consumer.VehiclePositions, :vehicle_positions)
 
-    [vehicle_positions_consumer]
+    stop_time_updates_consumer =
+      consumer(Concentrate.Consumer.StopTimeUpdates, :stop_time_updates)
+
+    [vehicle_positions_consumer, stop_time_updates_consumer]
   end
 
   def consumer(module, id) do
