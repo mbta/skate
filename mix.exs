@@ -57,7 +57,7 @@ defmodule Skate.MixProject do
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:gen_stage, "~> 0.14.1"},
+      {:gen_stage, "~> 1.0.0"},
       {:ueberauth, "~> 0.6.1"},
       {:ueberauth_cognito, "~> 0.1.0"},
       {:guardian, "~> 2.0"},
