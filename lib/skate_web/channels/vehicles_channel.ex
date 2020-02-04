@@ -3,7 +3,6 @@ defmodule SkateWeb.VehiclesChannel do
   require Logger
 
   alias Realtime.Server
-  alias SkateWeb.AuthManager
   alias Util.Duration
 
   @impl Phoenix.Channel
@@ -54,7 +53,10 @@ defmodule SkateWeb.VehiclesChannel do
 
   @impl Phoenix.Channel
   def handle_info({:new_realtime_data, lookup_args}, socket) do
-    if valid_token?(socket) do
+    valid_token? =
+      Application.get_env(:skate, :valid_token?, &SkateWeb.ChannelAuth.valid_token?/1)
+
+    if valid_token?.(socket) do
       event_name = event_name(lookup_args)
       data = Server.lookup(lookup_args)
       :ok = push(socket, event_name, %{data: data})
@@ -69,45 +71,4 @@ defmodule SkateWeb.VehiclesChannel do
   defp event_name({_ets, :all_shuttles}), do: "shuttles"
   defp event_name({_ets, {:search, _}}), do: "search"
   defp event_name({_ets, _}), do: "vehicles"
-
-  @spec valid_token?(Phoenix.Socket.t()) :: boolean()
-  defp valid_token?(socket) do
-    token = Guardian.Phoenix.Socket.current_token(socket)
-    case AuthManager.decode_and_verify(token) do
-      {:ok, _claims} ->
-        # Refresh a token before it expires
-        case AuthManager.refresh(token) do
-          {:ok, _old_claims, {_new_token, _new_claims}} ->
-            true
-
-          {:error, :token_expired} ->
-            handle_expired_token(socket)
-        end
-
-      {:error, :token_expired} ->
-        handle_expired_token(socket)
-
-      _ ->
-        false
-    end
-  end
-
-  @spec handle_expired_token(Phoenix.Socket.t()) :: boolean()
-  defp handle_expired_token(socket) do
-    refresh_token_store = Application.get_env(:skate, :refresh_token_store)
-
-    refresh_token =
-      socket
-      |> Guardian.Phoenix.Socket.current_resource()
-      |> refresh_token_store.get_refresh_token()
-
-    # Exchange a token of type "refresh" for a new token of type "access"
-    case AuthManager.exchange(refresh_token, "refresh", "access") do
-      {:ok, _old_stuff, {_new_token, _new_claims}} ->
-        true
-
-      _ ->
-        false
-    end
-  end
 end
