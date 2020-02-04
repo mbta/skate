@@ -35,7 +35,7 @@ if (screen.width < 1000 && screen.height < 1000) {
     .getElementsByName("viewport")[0]
     .setAttribute(
       "content",
-      "width=device-width, initial-scale=.8, mininum-scale=.8"
+      "width=device-width, initial-scale=.8, minimum-scale=.8"
     )
 }
 
