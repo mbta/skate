@@ -17,11 +17,11 @@ config :skate,
   start_data_processes: true,
   record_fullstory: false,
   log_duration_timing: true,
-  refresh_token_store: RefreshTokenStore
+  refresh_token_store: RefreshTokenStore,
+  redirect_http?: false,
+  static_href: {SkateWeb.Router.Helpers, :static_path}
 
 config :skate, Gtfs.CacheFile, cache_filename: nil
-
-config :skate, :redirect_http?, false
 
 # Configures the endpoint
 config :skate, SkateWeb.Endpoint,
