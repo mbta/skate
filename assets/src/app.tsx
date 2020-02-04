@@ -29,6 +29,16 @@ if (!("ResizeObserver" in global)) {
   window.ResizeObserver = ResizeObserver
 }
 
+// Show more content on small screens by changing the meta viewport scale.
+if (screen.width < 1000 && screen.height < 1000) {
+  document
+    .getElementsByName("viewport")[0]
+    .setAttribute(
+      "content",
+      "width=device-width, initial-scale=.8, minimum-scale=.8"
+    )
+}
+
 // Import local files
 //
 // Local files can be imported directly using relative paths, for example:
