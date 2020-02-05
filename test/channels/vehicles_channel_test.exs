@@ -41,7 +41,7 @@ defmodule SkateWeb.VehiclesChannelTest do
   }
 
   setup do
-    reassign_env(:skate, :valid_token?, fn _socket -> true end)
+    reassign_env(:skate, :valid_token_fn, fn _socket -> true end)
 
     socket = socket(UserSocket, "", %{guardian_default_resource: "test_uid"})
 
@@ -158,7 +158,7 @@ defmodule SkateWeb.VehiclesChannelTest do
       ets: ets
     } do
       assert Realtime.Server.update({%{}, [@vehicle]}) == :ok
-      reassign_env(:skate, :valid_token?, fn _socket -> false end)
+      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
 
       {:ok, _, socket} = subscribe_and_join(socket, VehiclesChannel, "vehicles:route:1")
 
