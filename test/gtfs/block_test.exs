@@ -147,7 +147,7 @@ defmodule Gtfs.BlockTest do
   end
 
   describe "trip_at_time/2" do
-    test "returns the last trip to have started if the block is active" do
+    test "returns a trip if it is active" do
       assert %Trip{id: "t1"} = Block.trip_at_time(@block, 3)
       assert %Trip{id: "t2"} = Block.trip_at_time(@block, 6)
     end
