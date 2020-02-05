@@ -336,6 +336,24 @@ defmodule Realtime.ServerTest do
     end
   end
 
+  describe "update_stop_time_updates/2" do
+    setup do
+      ets = :ets.new(__MODULE__, [:set, :protected, {:read_concurrency, true}])
+
+      :ets.insert(ets, {{:trip_id, "t1"}, [@stop_time_update]})
+
+      {:ok, %{ets: ets}}
+    end
+
+    test "removes data for trips that no longer contain stop time updates", %{ets: ets} do
+      assert {ets, {:trip_id, "t1"}} |> Server.lookup() |> length() == 1
+
+      Server.update_stop_time_updates(%Server{ets: ets}, %{})
+
+      assert {ets, {:trip_id, "t1"}} |> Server.lookup() |> length() == 0
+    end
+  end
+
   describe "backend implementation" do
     test "handles reference info calls that come in after a timeout" do
       state = %Server{ets: make_ref()}

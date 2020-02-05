@@ -219,7 +219,7 @@ defmodule Realtime.Server do
   end
 
   @spec update_stop_time_updates(t(), StopTimeUpdates.stop_time_updates_by_trip()) :: :ok
-  defp update_stop_time_updates(%__MODULE__{ets: ets}, stop_time_updates_by_trip_id) do
+  def update_stop_time_updates(%__MODULE__{ets: ets}, stop_time_updates_by_trip_id) do
     current_trip_ids = :ets.match(ets, {{:trip_id, :"$1"}, :_}) |> List.flatten()
     new_trip_ids = Map.keys(stop_time_updates_by_trip_id)
     removed_trip_ids = current_trip_ids -- new_trip_ids
