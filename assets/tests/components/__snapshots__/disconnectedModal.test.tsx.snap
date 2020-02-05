@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DisconnectedModal renders 1`] = `
+Array [
+  <div
+    className="m-disconnected-modal"
+  >
+    <div>
+      Your connection to Skate has expired. Refresh the page to continue.
+    </div>
+    <button
+      className="m-disconnected-modal__refresh-button"
+      onClick={[Function]}
+    >
+      Refresh
+    </button>
+  </div>,
+  <div
+    className="m-disconnected-modal__modal-overlay"
+  />,
+]
+`;

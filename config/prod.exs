@@ -1,5 +1,9 @@
 use Mix.Config
 
+config :skate,
+  redirect_http?: true,
+  static_href: {SkateWeb.Router.Helpers, :static_url}
+
 # For production, don't forget to configure the url host
 # to something meaningful, Phoenix uses this information
 # when generating URLs.
@@ -32,8 +36,6 @@ config :logger, level: :info
 config :logger, :console,
   format: "$time $metadata[$level] node=$node $message\n",
   metadata: [:request_id]
-
-config :skate, :redirect_http?, true
 
 # Configure Ueberauth to use Cognito
 config :ueberauth, Ueberauth,

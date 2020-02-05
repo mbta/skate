@@ -103,4 +103,4 @@ export const addSavedQuery = (
     .concat(
       previouslySaved.filter(savedQuery => savedQuery.text !== newSearch.text)
     )
-    .slice(0, 5)
+    .slice(0, 10)

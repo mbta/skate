@@ -1,5 +1,4 @@
 import React, { ReactElement, useContext } from "react"
-import { ShuttleVehiclesContext } from "../contexts/shuttleVehiclesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import {
   blueLineIcon,
@@ -22,6 +21,10 @@ import {
 } from "../state"
 import Loading from "./loading"
 import PickerContainer, { Width } from "./pickerContainer"
+
+interface Props {
+  shuttles: Vehicle[] | null
+}
 
 interface KnownShuttle {
   name: string
@@ -65,8 +68,7 @@ const KNOWN_RUN_IDS: RunId[] = KNOWN_SHUTTLES.map(
   knownShuttle => knownShuttle.runId
 )
 
-const ShuttlePicker = ({}): ReactElement<HTMLDivElement> => {
-  const shuttles: Vehicle[] | null = useContext(ShuttleVehiclesContext)
+const ShuttlePicker = ({ shuttles }: Props): ReactElement<HTMLDivElement> => {
   const shuttleRoutes: Route[] | null = useShuttleRoutes()
 
   return (
