@@ -42,8 +42,6 @@ defmodule SkateWeb.VehiclesChannelTest do
 
   setup do
     reassign_env(:skate, :valid_token?, fn _socket -> true end)
-    reassign_env(:realtime, :trip_fn, fn _trip_id -> nil end)
-    reassign_env(:realtime, :block_fn, fn _block_id, _service_id -> nil end)
 
     socket = socket(UserSocket, "", %{guardian_default_resource: "test_uid"})
 

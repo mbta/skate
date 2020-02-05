@@ -1,6 +1,5 @@
 defmodule Realtime.ServerTest do
   use ExUnit.Case, async: true
-  import Test.Support.Helpers
 
   alias Realtime.{Ghost, Server, Vehicle}
 
@@ -66,9 +65,6 @@ defmodule Realtime.ServerTest do
 
   describe "subscribe_to_route" do
     setup do
-      reassign_env(:realtime, :trip_fn, fn _trip_id -> nil end)
-      reassign_env(:realtime, :block_fn, fn _block_id, _service_id -> nil end)
-
       {:ok, server_pid} = Server.start_link([])
 
       Server.update({@vehicles_by_route_id, []}, server_pid)
@@ -134,9 +130,6 @@ defmodule Realtime.ServerTest do
 
   describe "subscribe_to_all_shuttles" do
     setup do
-      reassign_env(:realtime, :trip_fn, fn _trip_id -> nil end)
-      reassign_env(:realtime, :block_fn, fn _block_id, _service_id -> nil end)
-
       {:ok, server_pid} = Server.start_link([])
 
       :ok = Server.update({%{}, [@shuttle]}, server_pid)
@@ -160,9 +153,6 @@ defmodule Realtime.ServerTest do
 
   describe "subscribe_to_search" do
     setup do
-      reassign_env(:realtime, :trip_fn, fn _trip_id -> nil end)
-      reassign_env(:realtime, :block_fn, fn _block_id, _service_id -> nil end)
-
       {:ok, server_pid} = Server.start_link([])
 
       :ok = Server.update({@vehicles_by_route_id, [@shuttle]}, server_pid)
