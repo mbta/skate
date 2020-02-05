@@ -53,10 +53,10 @@ defmodule SkateWeb.VehiclesChannel do
 
   @impl Phoenix.Channel
   def handle_info({:new_realtime_data, lookup_args}, socket) do
-    valid_token? =
+    valid_token_fn =
       Application.get_env(:skate, :valid_token_fn, &SkateWeb.ChannelAuth.valid_token?/1)
 
-    if valid_token?.(socket) do
+    if valid_token_fn.(socket) do
       event_name = event_name(lookup_args)
       data = Server.lookup(lookup_args)
       :ok = push(socket, event_name, %{data: data})
