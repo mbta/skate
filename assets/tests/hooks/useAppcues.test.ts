@@ -1,5 +1,5 @@
 import { renderHook } from "@testing-library/react-hooks"
-import useAppcues from "../../src/hooks/useAppcues"
+import useAppcues, { cleanUsername } from "../../src/hooks/useAppcues"
 
 // Indicate that the file is a module so we can declare global
 export {}
@@ -27,7 +27,7 @@ jest.mock("react-router-dom", () => ({
   useLocation: jest.fn().mockImplementation(() => mockLocation),
 }))
 
-window.username = "test user"
+window.username = "mbta-active-directory_jdoe"
 window.Appcues = {
   identify: jest.fn(),
   page: jest.fn(),
@@ -40,9 +40,22 @@ describe("useAppcues", () => {
     expect(window.Appcues!.page).toHaveBeenCalled()
   })
 
-  test("calls Appcues indentify with the username on load", () => {
+  test("calls Appcues indentify with the clean username on load", () => {
     renderHook(() => useAppcues())
 
-    expect(window.Appcues!.identify).toHaveBeenCalledWith("test user")
+    expect(window.Appcues!.identify).toHaveBeenCalledWith("jdoe")
+  })
+})
+
+describe("cleanUsername", () => {
+  test("strips the prefix from the ActiveDirectory username", () => {
+    const usernameWithPrefix = "mbta-active-directory_jdoe"
+    const expected = "jdoe"
+
+    expect(cleanUsername(usernameWithPrefix)).toEqual(expected)
+  })
+
+  test("doesn't affect a username without the ActiveDirectory prefix", () => {
+    expect(cleanUsername("jdoe")).toEqual("jdoe")
   })
 })
