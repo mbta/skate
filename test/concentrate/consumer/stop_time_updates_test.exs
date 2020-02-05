@@ -47,6 +47,12 @@ defmodule Concentrate.Supervisor.StopTimeUpdatesTest do
     }
   ]
 
+  describe "start_link/1" do
+    test "can start" do
+      start_supervised!(StopTimeUpdates)
+    end
+  end
+
   describe "handle_events/3" do
     setup do
       events = [@groups]
