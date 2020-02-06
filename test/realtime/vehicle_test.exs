@@ -2,9 +2,9 @@ defmodule Realtime.VehicleTest do
   use ExUnit.Case
   import Test.Support.Helpers
 
-  alias Concentrate.{DataDiscrepancy, VehiclePosition}
+  alias Concentrate.{DataDiscrepancy, StopTimeUpdate, VehiclePosition}
   alias Gtfs.{StopTime, Trip}
-  alias Realtime.Vehicle
+  alias Realtime.{BlockWaiver, Vehicle}
 
   @vehicle_position %VehiclePosition{
     bearing: 0,
@@ -67,6 +67,35 @@ defmodule Realtime.VehicleTest do
         ]
       }
 
+      stop_time_updates = [
+        %StopTimeUpdate{
+          arrival_time: nil,
+          departure_time: nil,
+          platform_id: nil,
+          remark: "E:1106",
+          schedule_relationship: :SKIPPED,
+          status: nil,
+          stop_id: "18511",
+          stop_sequence: nil,
+          track: nil,
+          trip_id: "39984755",
+          uncertainty: nil
+        },
+        %StopTimeUpdate{
+          arrival_time: nil,
+          departure_time: nil,
+          platform_id: nil,
+          remark: "E:1106",
+          schedule_relationship: :SKIPPED,
+          status: nil,
+          stop_id: "18512",
+          stop_sequence: nil,
+          track: nil,
+          trip_id: "39984755",
+          uncertainty: nil
+        }
+      ]
+
       reassign_env(:realtime, :trip_fn, fn trip_id ->
         if trip_id == trip.id do
           trip
@@ -80,6 +109,14 @@ defmodule Realtime.VehicleTest do
           [trip]
         else
           nil
+        end
+      end)
+
+      reassign_env(:realtime, :stop_time_updates_fn, fn trip_id ->
+        if trip_id == trip.id do
+          stop_time_updates
+        else
+          []
         end
       end)
 
@@ -152,7 +189,15 @@ defmodule Realtime.VehicleTest do
           }
         },
         route_status: :on_route,
-        end_of_trip_type: :pull_back
+        end_of_trip_type: :pull_back,
+        block_waivers: %{
+          "39984755" => %BlockWaiver{
+            trip_id: "39984755",
+            start_time: 0,
+            end_time: 1,
+            remark: "E:1106"
+          }
+        }
       }
 
       result = Vehicle.from_vehicle_position(@vehicle_position)
