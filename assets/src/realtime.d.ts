@@ -32,7 +32,7 @@ export interface Ghost {
   runId: RunId | null
   viaVariant: ViaVariant | null
   layoverDepartureTime: number | null
-  scheduledTimepointStatus: VehicleTimepointStatus
+  scheduledTimepointStatus: VehicleTimepointStatus | null
   routeStatus: RouteStatus
 }
 
@@ -84,7 +84,13 @@ export interface VehicleStopStatus {
 }
 
 export interface VehicleScheduledLocation {
+  routeId: RouteId
   directionId: DirectionId
+  tripId: TripId
+  runId: RunId
+  timeSinceTripStartTime: number
+  headsign: string | null
+  viaVariant: ViaVariant | null
   timepointStatus: VehicleTimepointStatus
 }
 

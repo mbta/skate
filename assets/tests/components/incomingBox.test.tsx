@@ -55,7 +55,13 @@ describe("IncomingBox", () => {
         timepointId: "TIMEP",
       },
       scheduledLocation: {
+        routeId: "111",
         directionId: 1,
+        tripId: "42199996",
+        runId: "scheduled run",
+        timeSinceTripStartTime: 0,
+        headsign: "scheduled headsign",
+        viaVariant: "5",
         timepointStatus: {
           timepointId: "TIMEP",
           fractionUntilTimepoint: 0.0,

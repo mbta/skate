@@ -148,6 +148,7 @@ defmodule Realtime.TimepointStatusTest do
           block_id: "S28-2",
           route_pattern_id: "28-_-1",
           shape_id: "shape1",
+          run_id: "run1",
           stop_times: [
             %StopTime{
               stop_id: "6553",
@@ -169,6 +170,11 @@ defmodule Realtime.TimepointStatusTest do
       assert TimepointStatus.scheduled_location(block, now) == %{
                route_id: "28",
                direction_id: 1,
+               trip_id: "1",
+               run_id: "run1",
+               time_since_trip_start_time: -60,
+               headsign: "headsign",
+               via_variant: "_",
                timepoint_status: %{
                  timepoint_id: "tp1",
                  fraction_until_timepoint: 0.0
@@ -176,7 +182,7 @@ defmodule Realtime.TimepointStatusTest do
              }
     end
 
-    test "returns the last stop if the block is finished" do
+    test "returns the last stop if the block has finished" do
       block = [
         %Trip{
           id: "1",
@@ -187,6 +193,7 @@ defmodule Realtime.TimepointStatusTest do
           block_id: "S28-2",
           route_pattern_id: "28-_-1",
           shape_id: "shape1",
+          run_id: "run1",
           stop_times: [
             %StopTime{
               stop_id: "6553",
@@ -208,6 +215,11 @@ defmodule Realtime.TimepointStatusTest do
       assert TimepointStatus.scheduled_location(block, now) == %{
                route_id: "28",
                direction_id: 1,
+               trip_id: "1",
+               run_id: "run1",
+               time_since_trip_start_time: 3540,
+               headsign: "headsign",
+               via_variant: "_",
                timepoint_status: %{
                  timepoint_id: "tp2",
                  fraction_until_timepoint: 0.0
@@ -215,7 +227,7 @@ defmodule Realtime.TimepointStatusTest do
              }
     end
 
-    test "returns the last stop of the previous trip if it's in a layover" do
+    test "returns the first stop of the next trip if it's in a layover" do
       block = [
         %Trip{
           id: "0",
@@ -226,6 +238,7 @@ defmodule Realtime.TimepointStatusTest do
           block_id: "S28-2",
           route_pattern_id: "28-_-0",
           shape_id: "shape1",
+          run_id: "run1",
           stop_times: [
             %StopTime{
               stop_id: "6553",
@@ -248,6 +261,7 @@ defmodule Realtime.TimepointStatusTest do
           block_id: "S28-2",
           route_pattern_id: "28-_-1",
           shape_id: "shape1",
+          run_id: "run1",
           stop_times: [
             %StopTime{
               stop_id: "6553",
@@ -263,9 +277,14 @@ defmodule Realtime.TimepointStatusTest do
 
       assert TimepointStatus.scheduled_location(block, now) == %{
                route_id: "28",
-               direction_id: 0,
+               direction_id: 1,
+               trip_id: "1",
+               run_id: "run1",
+               time_since_trip_start_time: -180,
+               headsign: "headsign",
+               via_variant: "_",
                timepoint_status: %{
-                 timepoint_id: "tp2",
+                 timepoint_id: "tp3",
                  fraction_until_timepoint: 0.0
                }
              }
@@ -282,6 +301,7 @@ defmodule Realtime.TimepointStatusTest do
           block_id: "S28-2",
           route_pattern_id: "28-_-1",
           shape_id: "shape1",
+          run_id: "run1",
           stop_times: [
             %StopTime{stop_id: "1", time: Util.Time.parse_hhmmss("12:05:00"), timepoint_id: "1"},
             %StopTime{stop_id: "2", time: Util.Time.parse_hhmmss("12:10:00"), timepoint_id: "2"},
@@ -296,6 +316,11 @@ defmodule Realtime.TimepointStatusTest do
       assert TimepointStatus.scheduled_location(block, now) == %{
                route_id: "28",
                direction_id: 1,
+               trip_id: "1",
+               run_id: "run1",
+               time_since_trip_start_time: 750,
+               headsign: "headsign",
+               via_variant: "_",
                timepoint_status: %{
                  timepoint_id: "3",
                  fraction_until_timepoint: 0.25

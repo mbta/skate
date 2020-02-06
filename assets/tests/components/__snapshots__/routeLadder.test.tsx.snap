@@ -119,9 +119,6 @@ Array [
         y1="0"
         y2={-40}
       />
-      <g
-        className="m-ladder__headway-lines"
-      />
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
@@ -255,7 +252,7 @@ Array [
         viewBox="-13 -8.36 26 27.72"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--small "
+          className="m-vehicle-icon m-vehicle-icon--small on-time"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -311,9 +308,6 @@ Array [
         x2={40}
         y1="0"
         y2={-40}
-      />
-      <g
-        className="m-ladder__headway-lines"
       />
       <circle
         className="m-ladder__stop-circle"
@@ -397,7 +391,7 @@ Array [
         viewBox="-13 -8.36 26 27.72"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--small "
+          className="m-vehicle-icon m-vehicle-icon--small on-time"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -501,7 +495,7 @@ Array [
       width={232}
     >
       <line
-        className="m-ladder__scheduled-line "
+        className="m-ladder__scheduled-line on-time"
         x1={-63}
         x2={-40}
         y1={-40}
@@ -514,7 +508,7 @@ Array [
           transform="translate(87,-10)"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--medium "
+            className="m-vehicle-icon m-vehicle-icon--medium on-time"
           >
             <rect
               className="m-vehicle-icon__label-background"
@@ -616,7 +610,7 @@ Array [
           transform="translate(-63,-40)"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--medium "
+            className="m-vehicle-icon m-vehicle-icon--medium on-time"
           >
             <rect
               className="m-vehicle-icon__label-background"
@@ -658,30 +652,6 @@ Array [
         y1="0"
         y2={-40}
       />
-      <g
-        className="m-ladder__headway-lines"
-      >
-        <line
-          className="m-ladder__line
-                  m-ladder__headway-line
-                  m-ladder__headway-line--ok"
-          id="y0479"
-          x1={-40}
-          x2={-40}
-          y1={-40}
-          y2={-40}
-        />
-        <line
-          className="m-ladder__line
-                  m-ladder__headway-line
-                  m-ladder__headway-line--ok"
-          id="y1818"
-          x1={40}
-          x2={40}
-          y1={0}
-          y2={-10}
-        />
-      </g>
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
@@ -829,9 +799,6 @@ Array [
         y1="0"
         y2={-40}
       />
-      <g
-        className="m-ladder__headway-lines"
-      />
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
@@ -917,7 +884,7 @@ Array [
         viewBox="-8.36 -7.6 16.72 15.2"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--small "
+          className="m-vehicle-icon m-vehicle-icon--small on-time"
         >
           <path
             className="m-vehicle-icon__triangle"
@@ -955,7 +922,7 @@ Array [
         viewBox="-8.36 -7.6 16.72 15.2"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--small "
+          className="m-vehicle-icon m-vehicle-icon--small on-time"
         >
           <path
             className="m-vehicle-icon__triangle"

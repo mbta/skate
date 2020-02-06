@@ -78,6 +78,23 @@ defmodule Gtfs.Block do
     end
   end
 
+  @spec trip_at_time(t(), Util.Time.time_of_day()) :: Trip.t() | nil
+  def trip_at_time(block, now) do
+    cond do
+      now <= start_time(block) ->
+        # Block isn't scheduled to have started yet
+        first_trip(block)
+
+      now >= end_time(block) ->
+        # Block is scheduled to have finished
+        last_trip(block)
+
+      true ->
+        # Either the current trip or the trip that is about to start
+        Enum.find(block, fn trip -> Trip.end_time(trip) > now end)
+    end
+  end
+
   @spec sort_trips_by_time([Trip.t()]) :: [Trip.t()]
   defp sort_trips_by_time(trips) do
     Enum.sort_by(trips, &Trip.start_time/1)

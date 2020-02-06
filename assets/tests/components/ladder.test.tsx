@@ -93,7 +93,13 @@ describe("ladder", () => {
           timepointId: "t2",
         },
         scheduledLocation: {
+          routeId: "route",
           directionId: 0,
+          tripId: "scheduled trip",
+          runId: "scheduled run",
+          timeSinceTripStartTime: 0,
+          headsign: "scheduled headsign",
+          viaVariant: "scheduled via variant",
           timepointStatus: {
             timepointId: "t2",
             fractionUntilTimepoint: 0.75,
@@ -263,7 +269,13 @@ describe("ladder", () => {
           timepointId: "t2",
         },
         scheduledLocation: {
+          routeId: "route",
           directionId: 0,
+          tripId: "scheduled trip",
+          runId: "scheduled run",
+          timeSinceTripStartTime: 0,
+          headsign: "scheduled headsign",
+          viaVariant: "scheduled via variant",
           timepointStatus: {
             timepointId: "t2",
             fractionUntilTimepoint: 0.75,
@@ -326,7 +338,13 @@ describe("ladder", () => {
           timepointId: "t2",
         },
         scheduledLocation: {
+          routeId: "route",
           directionId: 1,
+          tripId: "scheduled trip",
+          runId: "scheduled run",
+          timeSinceTripStartTime: 0,
+          headsign: "scheduled headsign",
+          viaVariant: "scheduled via variant",
           timepointStatus: {
             timepointId: "t2",
             fractionUntilTimepoint: 0.75,
@@ -425,7 +443,13 @@ describe("ladder", () => {
           timepointId: "t2",
         },
         scheduledLocation: {
+          routeId: "route",
           directionId: 0,
+          tripId: "scheduled trip",
+          runId: "scheduled run",
+          timeSinceTripStartTime: 0,
+          headsign: "scheduled headsign",
+          viaVariant: "scheduled via variant",
           timepointStatus: {
             timepointId: "t2",
             fractionUntilTimepoint: 0.75,
@@ -508,6 +532,31 @@ describe("ladder", () => {
     wrapper.find(".m-ladder__vehicle").simulate("click")
 
     expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle.id))
+  })
+
+  test("clicking an incoming ghost selects the associated vehicle", () => {
+    const mockDispatch = jest.fn()
+
+    const timepoints = ["t0", "t1", "t2"]
+    const incomingGhost: Ghost = {
+      id: "ghost-incoming-y0622",
+    } as Ghost
+
+    const ladderDirection = LadderDirection.ZeroToOne
+
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+        <Ladder
+          timepoints={timepoints}
+          vehiclesAndGhosts={[incomingGhost]}
+          ladderDirection={ladderDirection}
+          selectedVehicleId={undefined}
+        />
+      </StateDispatchProvider>
+    )
+    wrapper.find(".m-ladder__vehicle").simulate("click")
+
+    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle("y0622"))
   })
 
   test("renders a ladder with no timepoints", () => {
@@ -604,7 +653,13 @@ describe("ladder", () => {
           timepointId: "t1",
         },
         scheduledLocation: {
+          routeId: "route",
           directionId: 1,
+          tripId: "scheduled trip",
+          runId: "scheduled run",
+          timeSinceTripStartTime: 0,
+          headsign: "scheduled headsign",
+          viaVariant: "scheduled via variant",
           timepointStatus: {
             timepointId: "t1",
             fractionUntilTimepoint: 0.4,
@@ -676,7 +731,13 @@ describe("ladder", () => {
       },
       timepointStatus: null,
       scheduledLocation: {
+        routeId: "71",
         directionId: 0,
+        tripId: "scheduled trip",
+        runId: "scheduled run",
+        timeSinceTripStartTime: 0,
+        headsign: "scheduled headsign",
+        viaVariant: "scheduled via variant",
         timepointStatus: {
           timepointId: "mtsty",
           fractionUntilTimepoint: 0,
