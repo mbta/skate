@@ -1,9 +1,7 @@
 defmodule Realtime.Vehicle do
   alias Concentrate.{DataDiscrepancy}
   alias Gtfs.{Block, Direction, Route, RoutePattern, Run, Stop, Trip}
-  alias Realtime.Headway
-  alias Realtime.RouteStatus
-  alias Realtime.TimepointStatus
+  alias Realtime.{BlockWaiver, Headway, RouteStatus, TimepointStatus}
 
   @type stop_status :: %{
           stop_id: Stop.id(),
@@ -42,7 +40,8 @@ defmodule Realtime.Vehicle do
           timepoint_status: TimepointStatus.timepoint_status() | nil,
           scheduled_location: TimepointStatus.scheduled_location() | nil,
           route_status: RouteStatus.route_status(),
-          end_of_trip_type: end_of_trip_type()
+          end_of_trip_type: end_of_trip_type(),
+          block_waivers: BlockWaiver.block_waivers_by_trip() | nil
         }
 
   @enforce_keys [
@@ -98,6 +97,7 @@ defmodule Realtime.Vehicle do
     :scheduled_location,
     :route_status,
     :end_of_trip_type,
+    :block_waivers,
     data_discrepancies: []
   ]
 
@@ -191,7 +191,8 @@ defmodule Realtime.Vehicle do
       timepoint_status: timepoint_status,
       scheduled_location: scheduled_location,
       route_status: route_status(stop_id, trip, block),
-      end_of_trip_type: end_of_trip_type(block, trip, run_id, stop_id)
+      end_of_trip_type: end_of_trip_type(block, trip, run_id, stop_id),
+      block_waivers: BlockWaiver.block_waivers_for_block(block)
     }
   end
 

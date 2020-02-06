@@ -50,6 +50,7 @@ defmodule Skate.Application do
       :busloc_url,
       :swiftly_authorization_key,
       :swiftly_realtime_vehicles_url,
+      :trip_updates_url,
       SkateWeb.Endpoint
     ]
 
