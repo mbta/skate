@@ -1,7 +1,7 @@
 defmodule Realtime.Vehicle do
   alias Concentrate.{DataDiscrepancy, VehiclePosition}
   alias Gtfs.{Block, Direction, Route, RoutePattern, Run, Stop, Trip}
-  alias Realtime.{BlockWaiver, Headway, RouteStatus, Server, TimepointStatus}
+  alias Realtime.{BlockWaiver, Headway, RouteStatus, TimepointStatus}
 
   @type stop_status :: %{
           stop_id: Stop.id(),
@@ -9,8 +9,6 @@ defmodule Realtime.Vehicle do
         }
 
   @type end_of_trip_type :: :another_trip | :swing_off | :pull_back
-
-  @type block_waivers_by_trip :: %{Trip.id() => BlockWaiver.t()}
 
   @type t :: %__MODULE__{
           id: String.t(),
@@ -43,7 +41,7 @@ defmodule Realtime.Vehicle do
           scheduled_location: TimepointStatus.scheduled_location() | nil,
           route_status: RouteStatus.route_status(),
           end_of_trip_type: end_of_trip_type(),
-          block_waivers: block_waivers_by_trip() | nil
+          block_waivers: BlockWaiver.block_waivers_by_trip() | nil
         }
 
   @enforce_keys [
@@ -197,7 +195,7 @@ defmodule Realtime.Vehicle do
       scheduled_location: scheduled_location,
       route_status: route_status(stop_id, trip, block),
       end_of_trip_type: end_of_trip_type(block, trip, run_id, stop_id),
-      block_waivers: block_waivers(block)
+      block_waivers: BlockWaiver.block_waivers_for_block(block)
     }
   end
 
@@ -344,21 +342,6 @@ defmodule Realtime.Vehicle do
         {prefix, suffix} = String.split_at(run_id, 3)
         prefix <> "-" <> suffix
     end
-  end
-
-  @spec block_waivers(Block.t() | nil) :: block_waivers_by_trip() | nil
-  defp block_waivers(nil), do: nil
-
-  defp block_waivers(block), do: Map.new(block, &block_waiver/1)
-
-  @spec block_waiver(Trip.t()) :: {Trip.id(), BlockWaiver.t()}
-  defp block_waiver(trip) do
-    stop_time_updates_fn =
-      Application.get_env(:realtime, :stop_time_updates_fn, &Server.stop_time_updates_for_trip/1)
-
-    stop_time_updates = stop_time_updates_fn.(trip.id)
-
-    {trip.id, BlockWaiver.from_trip_stop_time_updates(trip, stop_time_updates)}
   end
 end
 
