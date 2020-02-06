@@ -46,6 +46,8 @@ body {
 
 .m-app {
   display: flex;
+  position: relative;
+  width: 100vw;
 
   .__react_component_tooltip {
     border-radius: 4px;
