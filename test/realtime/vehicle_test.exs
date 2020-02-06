@@ -88,6 +88,11 @@ defmodule Realtime.VehicleTest do
     scheduled_location: %{
       route_id: "28",
       direction_id: 1,
+      trip_id: "trip",
+      run_id: "run1",
+      time_since_trip_start_time: 0,
+      headsign: "headsign",
+      via_variant: "_",
       timepoint_status: %{
         timepoint_id: "tp1",
         fraction_until_timepoint: 0.0
