@@ -108,6 +108,7 @@ defmodule Realtime.VehicleTest do
         block_id: "block",
         route_pattern_id: "route-_-0",
         shape_id: "shape1",
+        run_id: "run1",
         stop_times: [
           %StopTime{stop_id: "18511", time: 0, timepoint_id: "tp1"},
           %StopTime{stop_id: "18512", time: 1, timepoint_id: nil},

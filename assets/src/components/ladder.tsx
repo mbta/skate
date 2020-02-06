@@ -129,6 +129,13 @@ const Ladder = ({
   )
 }
 
+const associatedVehicleId = (
+  vehicleOrIncomingGhostVehicleId: string
+): string => {
+  const ghostIncomingRegex = /^ghost\-incoming\-/
+  return vehicleOrIncomingGhostVehicleId.replace(ghostIncomingRegex, "")
+}
+
 const VehicleSvg = ({
   ladderVehicle,
   selectedVehicleId,
@@ -153,7 +160,7 @@ const VehicleSvg = ({
       <g
         className={`m-ladder__vehicle ${selectedClass}`}
         transform={`translate(${x},${y})`}
-        onClick={() => dispatch(selectVehicle(vehicleId))}
+        onClick={() => dispatch(selectVehicle(associatedVehicleId(vehicleId)))}
       >
         <VehicleIconSvgNode
           size={Size.Medium}

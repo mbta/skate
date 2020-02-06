@@ -4,6 +4,26 @@ defmodule Gtfs.TripTest do
   alias Gtfs.StopTime
   alias Gtfs.Trip
 
+  @trip %Trip{
+    id: "trip",
+    route_id: "route",
+    service_id: "service",
+    headsign: "headsign",
+    direction_id: 0,
+    block_id: "block",
+    shape_id: "shape",
+    stop_times: [
+      %StopTime{
+        stop_id: "stop",
+        time: 3
+      },
+      %StopTime{
+        stop_id: "stop",
+        time: 6
+      }
+    ]
+  }
+
   describe "from_csv_row" do
     test "builds a Trip struct from a csv row" do
       csv_row = %{
@@ -53,25 +73,17 @@ defmodule Gtfs.TripTest do
     end
   end
 
-  @trip %Trip{
-    id: "trip",
-    route_id: "route",
-    service_id: "service",
-    headsign: "headsign",
-    direction_id: 0,
-    block_id: "block",
-    shape_id: "shape",
-    stop_times: [
-      %StopTime{
-        stop_id: "stop",
-        time: 3
-      },
-      %StopTime{
-        stop_id: "stop",
-        time: 6
-      }
-    ]
-  }
+  describe "start_time/1" do
+    test "returns the time of the first stop" do
+      assert Trip.start_time(@trip) == 3
+    end
+  end
+
+  describe "end_time/1" do
+    test "returns the time of the last stop" do
+      assert Trip.end_time(@trip) == 6
+    end
+  end
 
   describe "is_active" do
     test "a trip that starts before the range and ends after is active" do

@@ -105,6 +105,11 @@ describe("useSearchResults", () => {
         scheduled_headway_secs: 120,
         scheduled_location: {
           direction_id: 0,
+          trip_id: "scheduled trip",
+          run_id: "scheduled run",
+          time_since_trip_start_time: 0,
+          headsign: "scheduled headsign",
+          via_variant: "scheduled via variant",
           timepoint_status: {
             timepoint_id: "tp1",
             fraction_until_timepoint: 0.5,
@@ -188,6 +193,11 @@ describe("useSearchResults", () => {
         } as VehicleTimepointStatus,
         scheduledLocation: {
           directionId: 0,
+          tripId: "scheduled trip",
+          runId: "scheduled run",
+          timeSinceTripStartTime: 0,
+          headsign: "scheduled headsign",
+          viaVariant: "scheduled via variant",
           timepointStatus: {
             timepointId: "tp1",
             fractionUntilTimepoint: 0.5,

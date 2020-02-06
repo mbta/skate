@@ -7,7 +7,9 @@ import {
   LadderDirection,
   VehicleDirection,
 } from "../models/ladderDirection"
-import { VehicleId, VehicleOrGhost } from "../realtime.d"
+import { isVehicle } from "../models/vehicle"
+import { onTimeStatus } from "../models/vehicleStatus"
+import { Ghost, Vehicle, VehicleId, VehicleOrGhost } from "../realtime.d"
 import { LoadableTimepoints, Route, RouteId } from "../schedule.d"
 import { deselectRoute, flipLadder } from "../state"
 import CloseButton from "./closeButton"
@@ -119,7 +121,7 @@ export const groupByPosition = (
   routeId: RouteId,
   ladderDirection: LadderDirection
 ): ByPosition => {
-  return (vehiclesAndGhosts || []).reduce(
+  const realVehicles = (vehiclesAndGhosts || []).reduce(
     (acc: ByPosition, current: VehicleOrGhost) => {
       if (current.routeId === routeId) {
         switch (current.routeStatus) {
@@ -157,6 +159,76 @@ export const groupByPosition = (
       incoming: [],
     } as ByPosition
   )
+
+  const vehiclesNeedingVirtualGhosts: Vehicle[] = [
+    ...lateStartingIncomingVehicles(realVehicles.incoming, routeId),
+    ...lateStartingLayingOverVehicles([
+      ...realVehicles.layingOverTop,
+      ...realVehicles.layingOverBottom,
+    ]),
+  ]
+  const incomingGhosts: Ghost[] = vehiclesNeedingVirtualGhosts.map(vehicle =>
+    ghostFromVehicleScheduledLocation(vehicle)
+  )
+
+  return {
+    ...realVehicles,
+    onRoute: [...realVehicles.onRoute, ...incomingGhosts],
+  }
 }
+
+const lateStartingIncomingVehicles = (
+  incomingVehiclesOrGhosts: VehicleOrGhost[],
+  currentRouteId: RouteId
+): Vehicle[] =>
+  incomingVehiclesOrGhosts.filter(
+    vehicleOrGhost =>
+      isAVehicleThatIsLateStartingScheduledTrip(vehicleOrGhost) &&
+      isScheduledForCurrentRoute(vehicleOrGhost as Vehicle, currentRouteId)
+  ) as Vehicle[]
+
+const lateStartingLayingOverVehicles = (
+  layingOverVehiclesOrGhosts: VehicleOrGhost[]
+): Vehicle[] =>
+  layingOverVehiclesOrGhosts.filter(
+    vehicleOrGhost =>
+      isAVehicleThatIsLateStartingScheduledTrip(vehicleOrGhost) &&
+      isScheduledForCurrentTrip(vehicleOrGhost as Vehicle)
+  ) as Vehicle[]
+
+const isAVehicleThatIsLateStartingScheduledTrip = (
+  vehicleOrGhost: VehicleOrGhost
+): boolean =>
+  isVehicle(vehicleOrGhost) &&
+  hasAScheduleLocation(vehicleOrGhost) &&
+  isLateStartingScheduledTrip(vehicleOrGhost)
+
+const isScheduledForCurrentRoute = (
+  vehicle: Vehicle,
+  currentRouteId: RouteId
+): boolean => vehicle.scheduledLocation!.routeId === currentRouteId
+
+const isScheduledForCurrentTrip = (vehicle: Vehicle): boolean =>
+  vehicle.tripId === vehicle.scheduledLocation!.tripId
+
+const hasAScheduleLocation = (vehicle: Vehicle): boolean =>
+  vehicle.scheduledLocation != null
+
+const isLateStartingScheduledTrip = (vehicle: Vehicle): boolean =>
+  onTimeStatus(vehicle.scheduledLocation!.timeSinceTripStartTime) === "late"
+
+const ghostFromVehicleScheduledLocation = (vehicle: Vehicle): Ghost => ({
+  id: `ghost-incoming-${vehicle.id}`,
+  directionId: vehicle.scheduledLocation!.directionId,
+  routeId: vehicle.scheduledLocation!.routeId,
+  tripId: vehicle.scheduledLocation!.tripId,
+  headsign: vehicle.scheduledLocation!.headsign || "",
+  blockId: vehicle.blockId,
+  runId: vehicle.scheduledLocation!.runId,
+  viaVariant: vehicle.scheduledLocation!.viaVariant,
+  layoverDepartureTime: null,
+  scheduledTimepointStatus: vehicle.scheduledLocation!.timepointStatus,
+  routeStatus: "on_route",
+})
 
 export default RouteLadder
