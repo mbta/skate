@@ -1,4 +1,4 @@
-defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
+defmodule Concentrate.BuslocTest do
   use ExUnit.Case, async: true
 
   import Concentrate.TestHelpers
