@@ -4,9 +4,8 @@ defmodule Realtime.BlockWaiver do
   Essentially this summarizes a set of StopTimeUpdate datapoints.
   """
 
-  alias Concentrate.StopTimeUpdate
-  alias Gtfs.{Block, Trip}
-  alias Realtime.Server
+  alias Concentrate.BuslocTripUpdate
+  alias Gtfs.Trip
 
   @type t :: %__MODULE__{
           trip_id: Trip.id(),
@@ -23,46 +22,30 @@ defmodule Realtime.BlockWaiver do
 
   defstruct [:trip_id, :start_time, :end_time, :remark]
 
-  @spec from_trip_stop_time_updates(Trip.t(), [StopTimeUpdate.t()]) :: t() | nil
-  def from_trip_stop_time_updates(_trip, []) do
-    nil
+  @spec from_trip_updates(BuslocTripUpdate.t()) :: block_waivers_by_trip()
+  def from_trip_updates(trip_updates) do
+    trip_updates
+    |> Enum.map(&from_trip_update/1)
+    |> Enum.filter(& &1)
+    |> Map.new(fn block_waiver -> {block_waiver.trip_id, block_waiver} end)
   end
 
-  def from_trip_stop_time_updates(trip, stop_time_updates) do
-    stop_ids = Enum.map(stop_time_updates, & &1.stop_id)
+  @spec from_trip_update(BuslocTripUpdate.t()) :: t() | nil
+  defp from_trip_update(tu) do
+    trip = Gtfs.trip(tu.trip_id)
+    stop_ids = Enum.map(tu.stop_time_updates, & &1.stop_id)
 
-    %__MODULE__{
-      trip_id: trip.id,
-      start_time: Trip.time_of_first_stop_matching(trip, stop_ids),
-      end_time: Trip.time_of_last_stop_matching(trip, stop_ids),
-      remark: stop_time_updates |> List.first() |> Map.get(:remark)
-    }
-  end
+    case trip do
+      %Trip{} ->
+        %__MODULE__{
+          trip_id: tu.trip_id,
+          start_time: Trip.time_of_first_stop_matching(trip, stop_ids),
+          end_time: Trip.time_of_last_stop_matching(trip, stop_ids),
+          remark: tu.stop_time_updates |> List.first() |> Map.get(:remark)
+        }
 
-  @spec block_waivers_for_block(Block.t() | nil) :: block_waivers_by_trip() | nil
-  def block_waivers_for_block(nil), do: nil
-
-  def block_waivers_for_block(block) do
-    block_waivers =
-      block
-      |> Enum.map(&block_waiver_for_trip/1)
-      |> Enum.reject(fn {_, v} -> is_nil(v) end)
-      |> Map.new()
-
-    if Enum.empty?(block_waivers) do
-      nil
-    else
-      block_waivers
+      nil ->
+        nil
     end
-  end
-
-  @spec block_waiver_for_trip(Trip.t()) :: {Trip.id(), t()}
-  defp block_waiver_for_trip(trip) do
-    stop_time_updates_fn =
-      Application.get_env(:realtime, :stop_time_updates_fn, &Server.stop_time_updates_for_trip/1)
-
-    stop_time_updates = stop_time_updates_fn.(trip.id)
-
-    {trip.id, from_trip_stop_time_updates(trip, stop_time_updates)}
   end
 end
