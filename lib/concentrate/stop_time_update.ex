@@ -67,7 +67,8 @@ defmodule Concentrate.StopTimeUpdate do
             end,
           stop_id: max(first.stop_id, second.stop_id),
           platform_id: first.platform_id || second.platform_id,
-          uncertainty: first.uncertainty || second.uncertainty
+          uncertainty: first.uncertainty || second.uncertainty,
+          remark: first.remark || second.remark
       }
     end
 
