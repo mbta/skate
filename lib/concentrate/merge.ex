@@ -13,14 +13,22 @@ defmodule Concentrate.Merge do
   alias Realtime.Vehicle
   alias Realtime.Vehicles
 
-  @type source_id :: atom()
+  @type source_id :: :busloc | :swiftly
+  @type latest_data() :: %{
+          busloc: %{String.t() => Busloc.t()} | nil,
+          swiftly: %{String.t() => Swiftly.t()} | nil
+        }
+
   @type state :: %__MODULE__{
           tags: %{GenStage.from() => source_id()},
-          latest_data: %{source_id() => %{String.t() => term()} | nil}
+          latest_data: latest_data()
         }
 
   defstruct tags: %{},
-            latest_data: %{}
+            latest_data: %{
+              busloc: nil,
+              swiftly: nil
+            }
 
   @type opts :: %{
           name: atom(),
@@ -40,10 +48,10 @@ defmodule Concentrate.Merge do
 
     state = %__MODULE__{
       tags: %{},
-      latest_data:
-        source_ids
-        |> Enum.map(fn source_id -> {source_id, nil} end)
-        |> Map.new()
+      latest_data: %{
+        busloc: nil,
+        swiftly: nil
+      }
     }
 
     opts = [
@@ -69,7 +77,15 @@ defmodule Concentrate.Merge do
   def handle_events(events, from, state) do
     source_id = Map.get(state.tags, from)
     new_data = List.last(events)
-    by_id = Map.new(new_data, fn vehicle -> {vehicle.id, vehicle} end)
+
+    by_id =
+      case source_id do
+        :busloc ->
+          Map.new(new_data, fn vehicle -> {vehicle.id, vehicle} end)
+
+        :swiftly ->
+          Map.new(new_data, fn vehicle -> {vehicle.id, vehicle} end)
+      end
 
     latest_data = Map.put(state.latest_data, source_id, by_id)
     state = %{state | latest_data: latest_data}
@@ -112,14 +128,20 @@ defmodule Concentrate.Merge do
     end)
   end
 
-  @spec vehicles_from_data(%{source_id() => %{String.t() => term()} | nil}) :: [
-          Vehicle.t()
-        ]
-  def vehicles_from_data(vehicles_by_source) do
-    vehicles_by_source
+  @spec vehicles_from_data(latest_data()) :: [Vehicle.t()]
+  def vehicles_from_data(latest_data) do
+    %{
+      busloc: latest_data.busloc,
+      swiftly: latest_data.swiftly
+    }
     |> group_by_id()
     |> Map.values()
-    |> Enum.map(fn sources_for_vehicle -> Vehicle.from_sources(sources_for_vehicle) end)
+    |> Enum.map(fn sources_for_vehicle ->
+      Vehicle.from_sources(
+        sources_for_vehicle[:busloc],
+        sources_for_vehicle[:swiftly]
+      )
+    end)
   end
 
   @spec update_server([Vehicle.t()]) :: :ok

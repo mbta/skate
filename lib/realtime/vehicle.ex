@@ -1,5 +1,5 @@
 defmodule Realtime.Vehicle do
-  alias Concentrate.{DataDiscrepancy}
+  alias Concentrate.{Busloc, DataDiscrepancy, Swiftly}
   alias Gtfs.{Block, Direction, Route, RoutePattern, Run, Stop, Trip}
   alias Realtime.{BlockWaiver, Headway, RouteStatus, TimepointStatus}
 
@@ -101,8 +101,8 @@ defmodule Realtime.Vehicle do
     data_discrepancies: []
   ]
 
-  @spec from_sources(%{atom() => term() | nil}) :: t()
-  def from_sources(%{busloc: busloc, swiftly: swiftly} = sources) do
+  @spec from_sources(Busloc.t() | nil, Swiftly.t() | nil) :: t()
+  def from_sources(busloc, swiftly) do
     trip_fn = Application.get_env(:realtime, :trip_fn, &Gtfs.trip/1)
     block_fn = Application.get_env(:realtime, :block_fn, &Gtfs.block/2)
     now_fn = Application.get_env(:realtime, :now_fn, &Util.Time.now/0)
@@ -151,12 +151,14 @@ defmodule Realtime.Vehicle do
       end
 
     source_ids =
-      sources
-      |> Enum.filter(fn {_tag, value} -> value != nil end)
-      |> Enum.map(fn {tag, _value} -> tag end)
+      [
+        if(busloc != nil, do: :busloc, else: nil),
+        if(swiftly != nil, do: :swiftly, else: nil)
+      ]
+      |> Enum.filter(& &1)
 
-    data_discrepancies = data_discrepancies(sources)
-    is_off_course = off_course?(sources)
+    data_discrepancies = data_discrepancies(busloc, swiftly)
+    is_off_course = off_course?(busloc, swiftly)
 
     %__MODULE__{
       id: most_recent([busloc, swiftly], :id),
@@ -214,8 +216,8 @@ defmodule Realtime.Vehicle do
   That is a sign that Swiftly thinks the vehicle is off course, or not on any
   trip for some other reason.
   """
-  @spec off_course?(%{atom() => term() | nil}) :: boolean()
-  def off_course?(%{busloc: busloc, swiftly: swiftly}) do
+  @spec off_course?(Busloc.t() | nil, Swiftly.t() | nil) :: boolean()
+  def off_course?(busloc, swiftly) do
     busloc != nil and swiftly != nil and busloc.trip_id != nil and swiftly.trip_id == nil
   end
 
@@ -327,8 +329,8 @@ defmodule Realtime.Vehicle do
     end
   end
 
-  @spec data_discrepancies(%{atom() => term() | nil}) :: [DataDiscrepancy.t()]
-  def data_discrepancies(%{busloc: busloc, swiftly: swiftly}) do
+  @spec data_discrepancies(Busloc.t() | nil, Swiftly.t() | nil) :: [DataDiscrepancy.t()]
+  def data_discrepancies(busloc, swiftly) do
     if busloc != nil and swiftly != nil and busloc.trip_id != swiftly.trip_id do
       [
         %DataDiscrepancy{
