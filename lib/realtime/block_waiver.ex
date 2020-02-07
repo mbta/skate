@@ -5,6 +5,7 @@ defmodule Realtime.BlockWaiver do
   """
 
   alias Concentrate.BuslocTripUpdate
+  alias Gtfs.Block
   alias Gtfs.Trip
 
   @type t :: %__MODULE__{
@@ -46,6 +47,21 @@ defmodule Realtime.BlockWaiver do
 
       nil ->
         nil
+    end
+  end
+
+  @spec block_waivers_for_block(Block.t() | nil, block_waivers_by_trip()) ::
+          block_waivers_by_trip() | nil
+  def block_waivers_for_block(nil, _block_waivers_by_trip), do: nil
+
+  def block_waivers_for_block(block, block_waivers_by_trip) do
+    trip_ids = Enum.map(block, fn trip -> trip.id end)
+    block_waivers = Map.take(block_waivers_by_trip, trip_ids)
+
+    if Enum.empty?(block_waivers) do
+      nil
+    else
+      block_waivers
     end
   end
 end

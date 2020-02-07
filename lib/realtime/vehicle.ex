@@ -101,8 +101,9 @@ defmodule Realtime.Vehicle do
     data_discrepancies: []
   ]
 
-  @spec from_sources(Busloc.t() | nil, Swiftly.t() | nil) :: t()
-  def from_sources(busloc, swiftly) do
+  @spec from_sources(Busloc.t() | nil, Swiftly.t() | nil, BlockWaiver.block_waivers_by_trip()) ::
+          t()
+  def from_sources(busloc, swiftly, block_waivers) do
     trip_fn = Application.get_env(:realtime, :trip_fn, &Gtfs.trip/1)
     block_fn = Application.get_env(:realtime, :block_fn, &Gtfs.block/2)
     now_fn = Application.get_env(:realtime, :now_fn, &Util.Time.now/0)
@@ -194,7 +195,7 @@ defmodule Realtime.Vehicle do
       scheduled_location: scheduled_location,
       route_status: route_status(stop_id, trip, block),
       end_of_trip_type: end_of_trip_type(block, trip, run_id, stop_id),
-      block_waivers: BlockWaiver.block_waivers_for_block(block)
+      block_waivers: BlockWaiver.block_waivers_for_block(block, block_waivers)
     }
   end
 

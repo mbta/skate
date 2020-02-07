@@ -1,5 +1,5 @@
 defmodule Realtime.Vehicles do
-  alias Realtime.{Ghost, Vehicle, VehicleOrGhost}
+  alias Realtime.{BlockWaiver, Ghost, Vehicle, VehicleOrGhost}
   alias Gtfs.{Block, Route, Trip}
 
   @doc """
@@ -7,8 +7,9 @@ defmodule Realtime.Vehicles do
 
   Vehicles are incoming from another route if they're scheduled to run within 15 minutes but are currently on another route.
   """
-  @spec group_by_route([Vehicle.t()]) :: Route.by_id([VehicleOrGhost.t()])
-  def group_by_route(ungrouped_vehicles) do
+  @spec group_by_route([Vehicle.t()], BlockWaiver.block_waivers_by_trip()) ::
+          Route.by_id([VehicleOrGhost.t()])
+  def group_by_route(ungrouped_vehicles, block_waivers) do
     now = Util.Time.now()
     in_ten_minutes = now + 10 * 60
     in_fifteen_minutes = now + 15 * 60
@@ -21,6 +22,7 @@ defmodule Realtime.Vehicles do
 
     group_by_route_with_blocks(
       ungrouped_vehicles,
+      block_waivers,
       incoming_blocks_by_route,
       active_and_incoming_blocks_by_date,
       now
@@ -32,6 +34,7 @@ defmodule Realtime.Vehicles do
   """
   @spec group_by_route_with_blocks(
           [Vehicle.t()],
+          BlockWaiver.block_waivers_by_trip(),
           Route.by_id([Block.id()]),
           %{Date.t() => [Block.t()]},
           Util.Time.timestamp()
@@ -39,11 +42,14 @@ defmodule Realtime.Vehicles do
           Route.by_id([VehicleOrGhost.t()])
   def group_by_route_with_blocks(
         ungrouped_vehicles,
+        block_waivers,
         incoming_blocks_by_route,
         active_and_incoming_blocks_by_date,
         now
       ) do
-    ghosts = Ghost.ghosts(active_and_incoming_blocks_by_date, ungrouped_vehicles, now)
+    ghosts =
+      Ghost.ghosts(active_and_incoming_blocks_by_date, ungrouped_vehicles, block_waivers, now)
+
     vehicles_and_ghosts = ghosts ++ ungrouped_vehicles
 
     incoming_from_another_route =

@@ -9,14 +9,19 @@ defmodule Concentrate.Merge do
   """
   use GenStage
   require Logger
+  alias Concentrate.{Busloc, Swiftly}
+  alias Gtfs.Route
+  alias Realtime.BlockWaiver
   alias Realtime.Server
   alias Realtime.Vehicle
+  alias Realtime.VehicleOrGhost
   alias Realtime.Vehicles
 
   @type source_id :: :busloc | :swiftly
   @type latest_data() :: %{
-          busloc: %{String.t() => Busloc.t()} | nil,
-          swiftly: %{String.t() => Swiftly.t()} | nil
+          busloc: %{String.t() => Busloc.t()},
+          swiftly: %{String.t() => Swiftly.t()},
+          block_waivers: BlockWaiver.block_waivers_by_trip()
         }
 
   @type state :: %__MODULE__{
@@ -26,8 +31,9 @@ defmodule Concentrate.Merge do
 
   defstruct tags: %{},
             latest_data: %{
-              busloc: nil,
-              swiftly: nil
+              busloc: %{},
+              swiftly: %{},
+              block_waivers: %{}
             }
 
   @type opts :: %{
@@ -49,8 +55,9 @@ defmodule Concentrate.Merge do
     state = %__MODULE__{
       tags: %{},
       latest_data: %{
-        busloc: nil,
-        swiftly: nil
+        busloc: %{},
+        swiftly: %{},
+        block_waivers: %{}
       }
     }
 
@@ -76,24 +83,36 @@ defmodule Concentrate.Merge do
   @impl GenStage
   def handle_events(events, from, state) do
     source_id = Map.get(state.tags, from)
-    new_data = List.last(events)
+    event = List.last(events)
 
-    by_id =
+    {key, new_data} =
       case source_id do
         :busloc ->
-          Map.new(new_data, fn vehicle -> {vehicle.id, vehicle} end)
+          {
+            :busloc,
+            Map.new(event, fn vehicle -> {vehicle.id, vehicle} end)
+          }
 
         :swiftly ->
-          Map.new(new_data, fn vehicle -> {vehicle.id, vehicle} end)
+          {
+            :swiftly,
+            Map.new(event, fn vehicle -> {vehicle.id, vehicle} end)
+          }
+
+        :busloc_trip_updates ->
+          {
+            :block_waivers,
+            BlockWaiver.from_trip_updates(event)
+          }
       end
 
-    latest_data = Map.put(state.latest_data, source_id, by_id)
+    latest_data = Map.put(state.latest_data, key, new_data)
     state = %{state | latest_data: latest_data}
 
     _ =
       latest_data
       |> vehicles_from_data()
-      |> update_server()
+      |> Server.update()
 
     {:noreply, [], state}
   end
@@ -103,7 +122,7 @@ defmodule Concentrate.Merge do
   Goes from each source having its vehicles,
   To each vehicle id having its sources.
   """
-  @spec group_by_id(%{source_id() => %{String.t() => term()} | nil}) ::
+  @spec group_by_id(%{source_id() => %{String.t() => term()}}) ::
           %{String.t() => %{source_id() => term() | nil}}
   def group_by_id(vehicles_by_source) do
     source_ids = Map.keys(vehicles_by_source)
@@ -128,27 +147,25 @@ defmodule Concentrate.Merge do
     end)
   end
 
-  @spec vehicles_from_data(latest_data()) :: [Vehicle.t()]
+  @spec vehicles_from_data(latest_data()) :: {Route.by_id([VehicleOrGhost.t()]), [Vehicle.t()]}
   def vehicles_from_data(latest_data) do
-    %{
-      busloc: latest_data.busloc,
-      swiftly: latest_data.swiftly
-    }
-    |> group_by_id()
-    |> Map.values()
-    |> Enum.map(fn sources_for_vehicle ->
-      Vehicle.from_sources(
-        sources_for_vehicle[:busloc],
-        sources_for_vehicle[:swiftly]
-      )
-    end)
-  end
+    vehicles =
+      %{
+        busloc: latest_data.busloc,
+        swiftly: latest_data.swiftly
+      }
+      |> group_by_id()
+      |> Map.values()
+      |> Enum.map(fn sources_for_vehicle ->
+        Vehicle.from_sources(
+          sources_for_vehicle[:busloc],
+          sources_for_vehicle[:swiftly],
+          latest_data.block_waivers
+        )
+      end)
 
-  @spec update_server([Vehicle.t()]) :: :ok
-  def update_server(vehicles) do
-    by_route = Vehicles.group_by_route(vehicles)
+    by_route = Vehicles.group_by_route(vehicles, latest_data.block_waivers)
     shuttles = Enum.filter(vehicles, &Vehicle.shuttle?/1)
-    _ = Server.update({by_route, shuttles})
-    :ok
+    {by_route, shuttles}
   end
 end

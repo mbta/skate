@@ -45,9 +45,14 @@ defmodule Realtime.Ghost do
     :block_waivers
   ]
 
-  @spec ghosts(%{Date.t() => [Block.t()]}, [Vehicle.t()], Util.Time.timestamp()) ::
+  @spec ghosts(
+          %{Date.t() => [Block.t()]},
+          [Vehicle.t()],
+          BlockWaiver.block_waivers_by_trip(),
+          Util.Time.timestamp()
+        ) ::
           [t()]
-  def ghosts(blocks_by_date, vehicles, now) do
+  def ghosts(blocks_by_date, vehicles, block_waivers, now) do
     blocks_with_vehicles = MapSet.new(vehicles, fn vehicle -> vehicle.block_id end)
 
     blocks_by_date
@@ -59,14 +64,16 @@ defmodule Realtime.Ghost do
     |> Enum.flat_map(fn {date, blocks} ->
       blocks
       |> Enum.map(fn block ->
-        ghost_for_block(block, date, now)
+        block_waiver = BlockWaiver.block_waivers_for_block(block, block_waivers)
+        ghost_for_block(block, block_waiver, date, now)
       end)
       |> Enum.filter(& &1)
     end)
   end
 
-  @spec ghost_for_block(Block.t(), Date.t(), Util.Time.timestamp()) :: t() | nil
-  def ghost_for_block(block, date, now) do
+  @spec ghost_for_block(Block.t(), BlockWaiver.t() | nil, Date.t(), Util.Time.timestamp()) ::
+          t() | nil
+  def ghost_for_block(block, block_waiver, date, now) do
     now_time_of_day = Util.Time.time_of_day_for_timestamp(now, date)
 
     case current_trip(block, now_time_of_day) do
@@ -105,7 +112,7 @@ defmodule Realtime.Ghost do
                 end,
               scheduled_timepoint_status: timepoint_status,
               route_status: route_status,
-              block_waivers: BlockWaiver.block_waivers_for_block(block)
+              block_waivers: block_waiver
             }
         end
     end
