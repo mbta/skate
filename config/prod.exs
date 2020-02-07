@@ -52,7 +52,9 @@ config :ueberauth, Ueberauth.Strategy.Cognito,
 
 config :skate, SkateWeb.AuthManager, secret_key: {System, :get_env, ["GUARDIAN_SECRET_KEY"]}
 
-config :skate, record_fullstory: true
+config :skate,
+  record_fullstory: true,
+  record_appcues: true
 
 config :ehmon, :report_mf, {:ehmon, :info_report}
 

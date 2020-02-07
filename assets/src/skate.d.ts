@@ -2,6 +2,10 @@ import ResizeObserver from "resize-observer-polyfill"
 
 declare global {
   interface Window {
+    Appcues?: {
+      identify: (userId: string) => void
+      page: () => void
+    }
     FS?: {
       // FullStory
       // see https://help.fullstory.com/develop-js/137379 for documentation
