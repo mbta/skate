@@ -59,7 +59,18 @@ defmodule Concentrate.Supervisor do
         nil
       end
 
-    [busloc, swiftly]
+    busloc_trip_updates =
+      if opts[:trip_updates_url] do
+        source_child(
+          :busloc_trip_updates,
+          opts[:trip_updates_url],
+          Concentrate.BuslocTripUpdate
+        )
+      else
+        nil
+      end
+
+    [busloc, swiftly, busloc_trip_updates]
     |> Enum.reject(&is_nil/1)
   end
 
