@@ -84,9 +84,9 @@ defmodule Realtime.Server do
   @spec subscribe(GenServer.server(), :all_shuttles) :: [Vehicle.t()]
   @spec subscribe(GenServer.server(), {:search, search_params()}) :: [VehicleOrGhost.t()]
   defp subscribe(server, subscription_key) do
-    {registry_key, data} = GenServer.call(server, {:subscribe, subscription_key})
+    {registry_key, ets} = GenServer.call(server, :subscription_info)
     Registry.register(Realtime.Registry, registry_key, subscription_key)
-    data
+    lookup({ets, subscription_key})
   end
 
   @spec update({Route.by_id([VehicleOrGhost.t()]), [Vehicle.t()]}, GenServer.server()) :: term()
@@ -131,11 +131,9 @@ defmodule Realtime.Server do
     do: {:noreply, state}
 
   @impl true
-  def handle_call({:subscribe, subscription_key}, _from, %__MODULE__{} = state) do
+  def handle_call(:subscription_info, _from, %__MODULE__{} = state) do
     registry_key = self()
-
-    data = lookup({state.ets, subscription_key})
-    {:reply, {registry_key, data}, state}
+    {:reply, {registry_key, state.ets}, state}
   end
 
   def handle_call(:ets, _from, %__MODULE__{ets: ets} = state) do
