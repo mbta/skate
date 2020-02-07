@@ -103,7 +103,7 @@ defmodule SkateWeb.VehiclesChannelTest do
       socket: socket,
       ets: ets
     } do
-      assert Realtime.Server.update({%{"1" => [@vehicle]}, []}) == :ok
+      assert Realtime.Server.update({:vehicle_positions, %{"1" => [@vehicle]}, []}) == :ok
 
       {:ok, _, socket} = subscribe_and_join(socket, VehiclesChannel, "vehicles:route:1")
 
@@ -121,7 +121,7 @@ defmodule SkateWeb.VehiclesChannelTest do
       socket: socket,
       ets: ets
     } do
-      assert Realtime.Server.update({%{}, [@vehicle]}) == :ok
+      assert Realtime.Server.update({:vehicle_positions, %{}, [@vehicle]}) == :ok
 
       {:ok, _, socket} = subscribe_and_join(socket, VehiclesChannel, "vehicles:shuttle:all")
 
@@ -139,7 +139,7 @@ defmodule SkateWeb.VehiclesChannelTest do
       socket: socket,
       ets: ets
     } do
-      assert Realtime.Server.update({%{}, [@vehicle]}) == :ok
+      assert Realtime.Server.update({:vehicle_positions, %{}, [@vehicle]}) == :ok
 
       {:ok, _, socket} = subscribe_and_join(socket, VehiclesChannel, "vehicles:search:all:507")
 

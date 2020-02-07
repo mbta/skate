@@ -34,7 +34,7 @@ defmodule Concentrate.Consumer.VehiclePositions do
     by_route = Vehicles.group_by_route(all_vehicles)
     shuttles = Enum.filter(all_vehicles, &Vehicle.shuttle?/1)
 
-    _ = Server.update({by_route, shuttles})
+    _ = Server.update({:vehicle_positions, by_route, shuttles})
 
     {:noreply, [], state}
   end

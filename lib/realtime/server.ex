@@ -89,9 +89,10 @@ defmodule Realtime.Server do
     lookup({ets, subscription_key})
   end
 
-  @spec update({Route.by_id([VehicleOrGhost.t()]), [Vehicle.t()]}, GenServer.server()) :: term()
-  def update({vehicles_by_route_id, shuttles}, server \\ __MODULE__) do
-    GenServer.cast(server, {:update, vehicles_by_route_id, shuttles})
+  @spec update({:vehicle_positions, Route.by_id([VehicleOrGhost.t()]), [Vehicle.t()]}) :: term()
+  @spec update({:vehicle_positions, Route.by_id([VehicleOrGhost.t()]), [Vehicle.t()]}, GenServer.server()) :: term()
+  def update({:vehicle_positions, vehicles_by_route_id, shuttles}, server \\ __MODULE__) do
+    GenServer.cast(server, {:update, :vehicle_positions, vehicles_by_route_id, shuttles})
   end
 
   @spec lookup({:ets.tid(), {:route_id, Route.id()}}) :: [VehicleOrGhost.t()]
@@ -142,7 +143,7 @@ defmodule Realtime.Server do
   end
 
   @impl true
-  def handle_cast({:update, vehicles_by_route_id, shuttles}, %__MODULE__{} = state) do
+  def handle_cast({:update, :vehicle_positions, vehicles_by_route_id, shuttles}, %__MODULE__{} = state) do
     new_active_route_ids = Map.keys(vehicles_by_route_id)
 
     _ = update_ets(state, vehicles_by_route_id, shuttles, new_active_route_ids)

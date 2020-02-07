@@ -63,11 +63,23 @@ defmodule Realtime.ServerTest do
     :ok
   end
 
+  describe "update" do
+    setup do
+      {:ok, server_pid} = Server.start_link([])
+
+      %{server_pid: server_pid}
+    end
+
+    test "accepts vehicle positions", %{server_pid: server_pid} do
+      assert Server.update({:vehicle_positions, @vehicles_by_route_id, []}, server_pid) == :ok
+    end
+  end
+
   describe "subscribe_to_route" do
     setup do
       {:ok, server_pid} = Server.start_link([])
 
-      Server.update({@vehicles_by_route_id, []}, server_pid)
+      Server.update({:vehicle_positions, @vehicles_by_route_id, []}, server_pid)
 
       %{server_pid: server_pid}
     end
@@ -80,7 +92,7 @@ defmodule Realtime.ServerTest do
     test "clients subscribed to a route get data pushed to them", %{server_pid: server_pid} do
       Server.subscribe_to_route("1", server_pid)
 
-      Server.update({@vehicles_by_route_id, []}, server_pid)
+      Server.update({:vehicle_positions, @vehicles_by_route_id, []}, server_pid)
 
       assert_receive(
         {:new_realtime_data, lookup_args},
@@ -94,7 +106,7 @@ defmodule Realtime.ServerTest do
     test "clients subscribed to a route get repeated messages", %{server_pid: server_pid} do
       Server.subscribe_to_route("1", server_pid)
 
-      Server.update({@vehicles_by_route_id, []}, server_pid)
+      Server.update({:vehicle_positions, @vehicles_by_route_id, []}, server_pid)
 
       assert_receive(
         {:new_realtime_data, _},
@@ -102,7 +114,7 @@ defmodule Realtime.ServerTest do
         "Client didn't receive vehicle positions the first time"
       )
 
-      Server.update({@vehicles_by_route_id, []}, server_pid)
+      Server.update({:vehicle_positions, @vehicles_by_route_id, []}, server_pid)
 
       assert_receive(
         {:new_realtime_data, lookup_args},
@@ -116,7 +128,7 @@ defmodule Realtime.ServerTest do
     test "inactive routes have all their vehicle data removed", %{server_pid: server_pid} do
       Server.subscribe_to_route("1", server_pid)
 
-      Server.update({%{}, []}, server_pid)
+      Server.update({:vehicle_positions, %{}, []}, server_pid)
 
       assert_receive(
         {:new_realtime_data, lookup_args},
@@ -132,7 +144,7 @@ defmodule Realtime.ServerTest do
     setup do
       {:ok, server_pid} = Server.start_link([])
 
-      :ok = Server.update({%{}, [@shuttle]}, server_pid)
+      :ok = Server.update({:vehicle_positions, %{}, [@shuttle]}, server_pid)
 
       %{server_pid: server_pid}
     end
@@ -144,7 +156,7 @@ defmodule Realtime.ServerTest do
     test "clients get updated data pushed to them", %{server_pid: pid} do
       Server.subscribe_to_all_shuttles(pid)
 
-      Server.update({%{}, [@shuttle, @shuttle]}, pid)
+      Server.update({:vehicle_positions, %{}, [@shuttle, @shuttle]}, pid)
 
       assert_receive {:new_realtime_data, lookup_args}
       assert Server.lookup(lookup_args) == [@shuttle, @shuttle]
@@ -155,7 +167,7 @@ defmodule Realtime.ServerTest do
     setup do
       {:ok, server_pid} = Server.start_link([])
 
-      :ok = Server.update({@vehicles_by_route_id, [@shuttle]}, server_pid)
+      :ok = Server.update({:vehicle_positions, @vehicles_by_route_id, [@shuttle]}, server_pid)
 
       %{server_pid: server_pid}
     end
@@ -171,7 +183,7 @@ defmodule Realtime.ServerTest do
     test "clients get updated search results pushed to them", %{server_pid: pid} do
       Server.subscribe_to_search("90", :all, pid)
 
-      Server.update({%{}, [@shuttle]}, pid)
+      Server.update({:vehicle_positions, %{}, [@shuttle]}, pid)
 
       assert_receive {:new_realtime_data, lookup_args}
       assert Server.lookup(lookup_args) == [@shuttle]
@@ -180,7 +192,7 @@ defmodule Realtime.ServerTest do
     test "does not receive duplicate vehicles", %{server_pid: pid} do
       Server.subscribe_to_search("90", :all, pid)
 
-      Server.update({%{}, [@shuttle, @shuttle]}, pid)
+      Server.update({:vehicle_positions, %{}, [@shuttle, @shuttle]}, pid)
 
       assert_receive {:new_realtime_data, lookup_args}
       assert Server.lookup(lookup_args) == [@shuttle]
