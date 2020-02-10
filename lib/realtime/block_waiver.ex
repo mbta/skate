@@ -17,11 +17,20 @@ defmodule Realtime.BlockWaiver do
 
   @type block_waivers_by_trip :: %{Trip.id() => t()}
 
-  @enforce_keys [:trip_id, :start_time, :end_time]
+  @enforce_keys [
+    :trip_id,
+    :start_time,
+    :end_time
+  ]
 
   @derive Jason.Encoder
 
-  defstruct [:trip_id, :start_time, :end_time, :remark]
+  defstruct [
+    :trip_id,
+    :start_time,
+    :end_time,
+    :remark
+  ]
 
   @spec from_trip_stop_time_updates(Trip.t(), [StopTimeUpdate.t()]) :: t() | nil
   def from_trip_stop_time_updates(_trip, []) do
