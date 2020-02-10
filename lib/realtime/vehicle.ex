@@ -41,7 +41,7 @@ defmodule Realtime.Vehicle do
           scheduled_location: TimepointStatus.scheduled_location() | nil,
           route_status: RouteStatus.route_status(),
           end_of_trip_type: end_of_trip_type(),
-          block_waivers: BlockWaiver.block_waivers_by_trip() | nil
+          block_waivers: BlockWaiver.block_waivers_by_trip()
         }
 
   @enforce_keys [

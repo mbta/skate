@@ -260,7 +260,8 @@ defmodule Realtime.GhostTest do
                  timepoint_id: "t2",
                  fraction_until_timepoint: 0.0
                },
-               route_status: :laying_over
+               route_status: :laying_over,
+               block_waivers: %{}
              }
     end
 

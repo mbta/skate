@@ -48,21 +48,14 @@ defmodule Realtime.BlockWaiver do
     }
   end
 
-  @spec block_waivers_for_block(Block.t() | nil) :: block_waivers_by_trip() | nil
-  def block_waivers_for_block(nil), do: nil
+  @spec block_waivers_for_block(Block.t() | nil) :: block_waivers_by_trip()
+  def block_waivers_for_block(nil), do: %{}
 
   def block_waivers_for_block(block) do
-    block_waivers =
-      block
-      |> Enum.map(&block_waiver_for_trip/1)
-      |> Enum.reject(fn {_, v} -> is_nil(v) end)
-      |> Map.new()
-
-    if Enum.empty?(block_waivers) do
-      nil
-    else
-      block_waivers
-    end
+    block
+    |> Enum.map(&block_waiver_for_trip/1)
+    |> Enum.reject(fn {_, v} -> is_nil(v) end)
+    |> Map.new()
   end
 
   @spec block_waiver_for_trip(Trip.t()) :: {Trip.id(), t()}

@@ -442,7 +442,8 @@ defmodule Realtime.VehiclesTest do
           timepoint_id: "t2",
           fraction_until_timepoint: 0.5
         },
-        route_status: :on_route
+        route_status: :on_route,
+        block_waivers: %{}
       }
 
       assert Vehicles.group_by_route_with_blocks(

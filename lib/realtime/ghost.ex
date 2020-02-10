@@ -14,7 +14,7 @@ defmodule Realtime.Ghost do
           layover_departure_time: Util.Time.timestamp() | nil,
           scheduled_timepoint_status: TimepointStatus.timepoint_status(),
           route_status: RouteStatus.route_status(),
-          block_waivers: BlockWaiver.block_waivers_by_trip() | nil
+          block_waivers: BlockWaiver.block_waivers_by_trip()
         }
 
   @enforce_keys [

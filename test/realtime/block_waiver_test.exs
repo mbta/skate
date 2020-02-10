@@ -167,12 +167,12 @@ defmodule Realtime.BlockWaiverTest do
       assert BlockWaiver.block_waivers_for_block(block) == expected
     end
 
-    test "returns nil if no trips have skipped stops" do
-      assert BlockWaiver.block_waivers_for_block([]) == nil
+    test "returns an empty map if no trips have skipped stops" do
+      assert BlockWaiver.block_waivers_for_block([]) == %{}
     end
 
-    test "returns nil if the block was nil" do
-      assert BlockWaiver.block_waivers_for_block(nil) == nil
+    test "returns an empty map if the block was nil" do
+      assert BlockWaiver.block_waivers_for_block(nil) == %{}
     end
   end
 end
