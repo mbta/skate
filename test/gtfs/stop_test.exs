@@ -17,7 +17,7 @@ defmodule Gtfs.StopTid do
     "stop_url" => "https://www.mbta.com/stops/1",
     "level_id" => "",
     "location_type" => "0",
-    "parent_station" => "",
+    "parent_station" => "place-asmnl",
     "wheelchair_boarding" => "1"
   }
 
@@ -52,7 +52,24 @@ defmodule Gtfs.StopTid do
       assert Stop.from_csv_row(@csv_row) == %Stop{
                id: "1",
                name: "Washington St opp Ruggles St",
-               parent_station_id: nil
+               parent_station_id: "place-asmnl",
+               latitude: 42.330957,
+               longitude: -71.082754
+             }
+    end
+
+    test "tolerates missing optional fields" do
+      assert Stop.from_csv_row(
+               @csv_row
+               |> Map.put("parent_station", "")
+               |> Map.put("stop_lat", "")
+               |> Map.put("stop_lon", "")
+             ) == %Stop{
+               id: "1",
+               name: "Washington St opp Ruggles St",
+               parent_station_id: nil,
+               latitude: nil,
+               longitude: nil
              }
     end
   end

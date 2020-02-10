@@ -205,9 +205,9 @@ defmodule GtfsTest do
         Gtfs.start_mocked(%{
           gtfs: %{
             "stops.txt" => [
-              "stop_id,stop_name,parent_station",
-              "1,One,",
-              "2,Two,3"
+              "stop_id,stop_name,stop_lat,stop_lon,parent_station",
+              "1,One,1.0,1.5,",
+              "2,Two,2.0,2.5,3"
             ]
           }
         })
@@ -215,7 +215,9 @@ defmodule GtfsTest do
       assert Gtfs.stop("2", pid) == %Stop{
                id: "2",
                name: "Two",
-               parent_station_id: "3"
+               parent_station_id: "3",
+               latitude: 2.0,
+               longitude: 2.5
              }
     end
 
