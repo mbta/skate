@@ -200,7 +200,7 @@ defmodule Realtime.TimepointStatusTest do
       end)
     end
 
-    test "if either stop is missing, return 1.0 (at the second stop)" do
+    test "if either stop or latlon is missing, default to 1.0 (at the second stop)" do
       latlon = {42.5, -71.5}
       assert TimepointStatus.fraction_between_stops(latlon, "stop1", nil) == 1.0
       assert TimepointStatus.fraction_between_stops(latlon, "stop1", "missing") == 1.0
