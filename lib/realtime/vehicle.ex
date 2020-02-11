@@ -120,7 +120,14 @@ defmodule Realtime.Vehicle do
     via_variant = trip && trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id)
     stop_times_on_trip = (trip && trip.stop_times) || []
     stop_name = stop_name(vehicle_position, stop_id)
-    timepoint_status = TimepointStatus.timepoint_status(stop_times_on_trip, stop_id)
+
+    timepoint_status =
+      TimepointStatus.timepoint_status(
+        stop_times_on_trip,
+        stop_id,
+        {VehiclePosition.latitude(vehicle_position), VehiclePosition.longitude(vehicle_position)}
+      )
+
     scheduled_location = TimepointStatus.scheduled_location(block, now_fn.())
 
     # If a vehicle is scheduled to be on another line, don't draw any line.
