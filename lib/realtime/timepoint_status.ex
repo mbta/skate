@@ -42,9 +42,9 @@ defmodule Realtime.TimepointStatus do
         fraction_until_next_stop =
           1.0 -
             fraction_between_stops(
+              latlon,
               previous_stop_time && previous_stop_time.stop_id,
-              stop_id,
-              latlon
+              stop_id
             )
 
         %{
@@ -69,8 +69,8 @@ defmodule Realtime.TimepointStatus do
   If the bus is not directly between the two stops,
   measures from the closest point to the bus that is between the stops.
   """
-  @spec fraction_between_stops(Stop.id() | nil, Stop.id() | nil, {float(), float()}) :: float()
-  def fraction_between_stops(start_id, finish_id, {lat, lon}) do
+  @spec fraction_between_stops({float(), float()}, Stop.id() | nil, Stop.id() | nil) :: float()
+  def fraction_between_stops(latlon, start_id, finish_id) do
     stop_fn = Application.get_env(:skate, :stop_fn, &Gtfs.stop/1)
     start = start_id && stop_fn.(start_id)
     finish = finish_id && stop_fn.(finish_id)
@@ -86,15 +86,12 @@ defmodule Realtime.TimepointStatus do
       # A degree of longitude is smaller than a degree of latitude,
       # but if the bus is directly between the stops, that has no effect at all
       # and if the bus is not on that straight line, it will have an acceptably small effect.
-      clamp(
-        fraction_between_points(
-          {start.latitude, start.longitude},
-          {finish.latitude, finish.longitude},
-          {lat, lon}
-        ),
-        0.0,
-        1.0
+      latlon
+      |> fraction_between_points(
+        {start.latitude, start.longitude},
+        {finish.latitude, finish.longitude}
       )
+      |> clamp(0.0, 1.0)
     else
       1.0
     end
@@ -104,9 +101,9 @@ defmodule Realtime.TimepointStatus do
   @spec fraction_between_points({float(), float()}, {float(), float()}, {float(), float()}) ::
           float()
   defp fraction_between_points(
+         {point_lat, point_lon},
          {start_lat, start_lon},
-         {finish_lat, finish_lon},
-         {point_lat, point_lon}
+         {finish_lat, finish_lon}
        ) do
     start_to_finish = {finish_lat - start_lat, finish_lon - start_lon}
     start_to_point = {point_lat - start_lat, point_lon - start_lon}

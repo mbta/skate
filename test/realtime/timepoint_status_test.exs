@@ -202,25 +202,25 @@ defmodule Realtime.TimepointStatusTest do
 
     test "if either stop is missing, return 1.0 (at the second stop)" do
       latlon = {42.5, -71.5}
-      assert TimepointStatus.fraction_between_stops("stop1", nil, latlon) == 1.0
-      assert TimepointStatus.fraction_between_stops("stop1", "missing", latlon) == 1.0
-      assert TimepointStatus.fraction_between_stops("stop1", "without_latlon", latlon) == 1.0
-      assert TimepointStatus.fraction_between_stops(nil, "stop1", latlon) == 1.0
-      assert TimepointStatus.fraction_between_stops("missing", "stop1", latlon) == 1.0
-      assert TimepointStatus.fraction_between_stops("without_latlon", "stop1", latlon) == 1.0
+      assert TimepointStatus.fraction_between_stops(latlon, "stop1", nil) == 1.0
+      assert TimepointStatus.fraction_between_stops(latlon, "stop1", "missing") == 1.0
+      assert TimepointStatus.fraction_between_stops(latlon, "stop1", "without_latlon") == 1.0
+      assert TimepointStatus.fraction_between_stops(latlon, nil, "stop1") == 1.0
+      assert TimepointStatus.fraction_between_stops(latlon, "missing", "stop1") == 1.0
+      assert TimepointStatus.fraction_between_stops(latlon, "without_latlon", "stop1") == 1.0
     end
 
     test "returns a fraction when the bus is directly between the points" do
-      assert TimepointStatus.fraction_between_stops("stop1", "stop2", {42.75, -71.25}) == 0.75
+      assert TimepointStatus.fraction_between_stops({42.75, -71.25}, "stop1", "stop2") == 0.75
     end
 
     test "returns a fraction when the bus is not between the points" do
-      assert TimepointStatus.fraction_between_stops("stop1", "stop2", {42.0, -71.0}) == 0.5
+      assert TimepointStatus.fraction_between_stops({42.0, -71.0}, "stop1", "stop2") == 0.5
     end
 
     test "the bus can't be before the first stop or after the second" do
-      assert TimepointStatus.fraction_between_stops("stop1", "stop2", {41.0, -73.0}) == 0.0
-      assert TimepointStatus.fraction_between_stops("stop1", "stop2", {44.0, -70.0}) == 1.0
+      assert TimepointStatus.fraction_between_stops({41.0, -73.0}, "stop1", "stop2") == 0.0
+      assert TimepointStatus.fraction_between_stops({44.0, -70.0}, "stop1", "stop2") == 1.0
     end
   end
 
