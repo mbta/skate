@@ -1,6 +1,8 @@
 defmodule Realtime.TimepointStatus do
   alias Gtfs.{Block, Direction, RoutePattern, Run, Stop, StopTime, Route, Trip}
 
+  @typep point :: {float(), float()}
+
   @typedoc """
   fraction_until_timepoint ranges
     from 0.0 (inclusive) if the vehicle is at the given timepoint
@@ -23,7 +25,7 @@ defmodule Realtime.TimepointStatus do
             timepoint_status: timepoint_status()
           }
 
-  @spec timepoint_status([StopTime.t()], Stop.id(), {float(), float()}) ::
+  @spec timepoint_status([StopTime.t()], Stop.id(), point()) ::
           timepoint_status() | nil
   def timepoint_status(stop_times, stop_id, latlon) do
     # future_stop_times starts with the stop that has stop_id
@@ -69,7 +71,7 @@ defmodule Realtime.TimepointStatus do
   If the bus is not directly between the two stops,
   measures from the closest point to the bus that is between the stops.
   """
-  @spec fraction_between_stops({float(), float()}, Stop.id() | nil, Stop.id() | nil) :: float()
+  @spec fraction_between_stops(point(), Stop.id() | nil, Stop.id() | nil) :: float()
   def fraction_between_stops(latlon, start_id, finish_id) do
     stop_fn = Application.get_env(:skate, :stop_fn, &Gtfs.stop/1)
     start = start_id && stop_fn.(start_id)
@@ -98,7 +100,7 @@ defmodule Realtime.TimepointStatus do
   end
 
   # Projects the point onto the straight line between the start and finish
-  @spec fraction_between_points({float(), float()}, {float(), float()}, {float(), float()}) ::
+  @spec fraction_between_points(point(), point(), point()) ::
           float()
   defp fraction_between_points(
          {point_lat, point_lon},
@@ -110,7 +112,7 @@ defmodule Realtime.TimepointStatus do
     dot_product(start_to_point, start_to_finish) / dot_product(start_to_finish, start_to_finish)
   end
 
-  @spec dot_product({float(), float()}, {float(), float()}) :: float()
+  @spec dot_product(point(), point()) :: float()
   defp dot_product({x1, y1}, {x2, y2}) do
     x1 * x2 + y1 * y2
   end
