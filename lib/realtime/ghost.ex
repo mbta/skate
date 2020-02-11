@@ -14,7 +14,7 @@ defmodule Realtime.Ghost do
           layover_departure_time: Util.Time.timestamp() | nil,
           scheduled_timepoint_status: TimepointStatus.timepoint_status(),
           route_status: RouteStatus.route_status(),
-          block_waivers: BlockWaiver.block_waivers_by_trip()
+          block_waivers: [BlockWaiver.t()]
         }
 
   @enforce_keys [
@@ -42,7 +42,7 @@ defmodule Realtime.Ghost do
     :layover_departure_time,
     :scheduled_timepoint_status,
     :route_status,
-    :block_waivers
+    block_waivers: []
   ]
 
   @spec ghosts(%{Date.t() => [Block.t()]}, [Vehicle.t()], Util.Time.timestamp()) ::

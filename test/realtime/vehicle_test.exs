@@ -190,14 +190,13 @@ defmodule Realtime.VehicleTest do
         },
         route_status: :on_route,
         end_of_trip_type: :pull_back,
-        block_waivers: %{
-          "39984755" => %BlockWaiver{
-            trip_id: "39984755",
+        block_waivers: [
+          %BlockWaiver{
             start_time: 0,
             end_time: 1,
             remark: "E:1106"
           }
-        }
+        ]
       }
 
       result = Vehicle.from_vehicle_position(@vehicle_position)

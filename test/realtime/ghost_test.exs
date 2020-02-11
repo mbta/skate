@@ -96,14 +96,13 @@ defmodule Realtime.GhostTest do
                    fraction_until_timepoint: 0.5
                  },
                  route_status: :on_route,
-                 block_waivers: %{
-                   "trip" => %BlockWaiver{
-                     trip_id: "trip",
+                 block_waivers: [
+                   %BlockWaiver{
                      start_time: 1,
                      end_time: 3,
                      remark: "E:1106"
                    }
-                 }
+                 ]
                }
              ]
     end
@@ -190,14 +189,13 @@ defmodule Realtime.GhostTest do
                  fraction_until_timepoint: 0.0
                },
                route_status: :pulling_out,
-               block_waivers: %{
-                 "trip" => %BlockWaiver{
-                   trip_id: "trip",
+               block_waivers: [
+                 %BlockWaiver{
                    start_time: 2,
                    end_time: 2,
                    remark: "E:1106"
                  }
-               }
+               ]
              }
     end
 
@@ -260,8 +258,7 @@ defmodule Realtime.GhostTest do
                  timepoint_id: "t2",
                  fraction_until_timepoint: 0.0
                },
-               route_status: :laying_over,
-               block_waivers: %{}
+               route_status: :laying_over
              }
     end
 

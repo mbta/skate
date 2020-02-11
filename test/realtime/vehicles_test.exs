@@ -242,14 +242,13 @@ defmodule Realtime.VehiclesTest do
                      fraction_until_timepoint: 0.0
                    },
                    route_status: :on_route,
-                   block_waivers: %{
-                     "trip" => %BlockWaiver{
-                       trip_id: "trip",
+                   block_waivers: [
+                     %BlockWaiver{
                        start_time: 0,
                        end_time: 0,
                        remark: "E:1106"
                      }
-                   }
+                   ]
                  }
                ]
              }
@@ -354,14 +353,13 @@ defmodule Realtime.VehiclesTest do
           fraction_until_timepoint: 0.0
         },
         route_status: :pulling_out,
-        block_waivers: %{
-          "trip" => %BlockWaiver{
-            trip_id: "trip",
+        block_waivers: [
+          %BlockWaiver{
             start_time: 1,
             end_time: 1,
             remark: "E:1106"
           }
-        }
+        ]
       }
 
       assert Vehicles.group_by_route_with_blocks(
@@ -442,8 +440,7 @@ defmodule Realtime.VehiclesTest do
           timepoint_id: "t2",
           fraction_until_timepoint: 0.5
         },
-        route_status: :on_route,
-        block_waivers: %{}
+        route_status: :on_route
       }
 
       assert Vehicles.group_by_route_with_blocks(

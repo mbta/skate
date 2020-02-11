@@ -6,7 +6,7 @@ defmodule Realtime.BlockWaiverTest do
   alias Gtfs.{StopTime, Trip}
   alias Realtime.BlockWaiver
 
-  @trip %Trip{
+  @trip1 %Trip{
     id: "trip1",
     route_id: "route",
     service_id: "service",
@@ -15,164 +15,242 @@ defmodule Realtime.BlockWaiverTest do
     block_id: "block",
     shape_id: "shape",
     stop_times: [
-      %StopTime{
-        stop_id: "stop1",
-        time: 3
-      },
-      %StopTime{
-        stop_id: "stop2",
-        time: 6
-      },
-      %StopTime{
-        stop_id: "stop3",
-        time: 9
-      }
+      %StopTime{stop_id: "stop1", time: 1},
+      %StopTime{stop_id: "stop2", time: 2},
+      %StopTime{stop_id: "stop3", time: 3}
     ]
   }
 
-  @stop_time_updates [
-    %StopTimeUpdate{
-      arrival_time: nil,
-      departure_time: nil,
-      platform_id: nil,
-      remark: "E:1106",
-      schedule_relationship: :SKIPPED,
-      status: nil,
-      stop_id: "stop1",
-      stop_sequence: nil,
-      track: nil,
-      trip_id: "trip1",
-      uncertainty: nil
-    },
-    %StopTimeUpdate{
-      arrival_time: nil,
-      departure_time: nil,
-      platform_id: nil,
-      remark: "E:1106",
-      schedule_relationship: :SKIPPED,
-      status: nil,
-      stop_id: "stop2",
-      stop_sequence: nil,
-      track: nil,
-      trip_id: "trip1",
-      uncertainty: nil
-    }
-  ]
+  @trip2 %Trip{
+    id: "trip2",
+    route_id: "route",
+    service_id: "service",
+    headsign: "headsign",
+    direction_id: 1,
+    block_id: "block",
+    shape_id: "shape",
+    stop_times: [
+      %StopTime{stop_id: "stop3", time: 4},
+      %StopTime{stop_id: "stop2", time: 5},
+      %StopTime{stop_id: "stop1", time: 6}
+    ]
+  }
 
-  describe "from_trip_stop_time_updates/2" do
-    test "builds a BlockWaiver from a set of StopTimeUpdate records for a Trip" do
-      expected = %BlockWaiver{
-        trip_id: "trip1",
-        start_time: 3,
-        end_time: 6,
-        remark: "E:1106"
-      }
+  @trip1stop1Update %StopTimeUpdate{
+    arrival_time: nil,
+    departure_time: nil,
+    platform_id: nil,
+    remark: "E:1106",
+    schedule_relationship: :SKIPPED,
+    status: nil,
+    stop_id: "stop1",
+    stop_sequence: nil,
+    track: nil,
+    trip_id: "trip1",
+    uncertainty: nil
+  }
 
-      assert BlockWaiver.from_trip_stop_time_updates(@trip, @stop_time_updates) == expected
-    end
+  @trip1stop2Update %StopTimeUpdate{
+    arrival_time: nil,
+    departure_time: nil,
+    platform_id: nil,
+    remark: "E:1106",
+    schedule_relationship: :SKIPPED,
+    status: nil,
+    stop_id: "stop2",
+    stop_sequence: nil,
+    track: nil,
+    trip_id: "trip1",
+    uncertainty: nil
+  }
 
-    test "returns nil if there are no stop time updates" do
-      assert BlockWaiver.from_trip_stop_time_updates(@trip, []) == nil
-    end
-  end
+  @trip2stop1Update %StopTimeUpdate{
+    arrival_time: nil,
+    departure_time: nil,
+    platform_id: nil,
+    remark: "E:1106",
+    schedule_relationship: :SKIPPED,
+    status: nil,
+    stop_id: "stop1",
+    stop_sequence: nil,
+    track: nil,
+    trip_id: "trip2",
+    uncertainty: nil
+  }
 
   describe "block_waivers_for_block/1" do
     setup do
-      trip1 = %Trip{
-        id: "t1",
-        route_id: "28",
-        service_id: "service",
-        headsign: "headsign",
-        direction_id: 1,
-        block_id: "b1",
-        route_pattern_id: "28-_-0",
-        shape_id: "shape1",
-        run_id: "run1",
-        stop_times: [
-          %StopTime{stop_id: "18511", time: 0, timepoint_id: "tp1"},
-          %StopTime{stop_id: "18512", time: 1, timepoint_id: nil},
-          %StopTime{stop_id: "18513", time: 2, timepoint_id: "tp2"}
-        ]
-      }
-
-      trip2 = %Trip{
-        id: "t2",
-        route_id: "28",
-        service_id: "service",
-        headsign: "headsign",
-        direction_id: 0,
-        block_id: "S28-2",
-        route_pattern_id: "28-_-0",
-        shape_id: "shape1",
-        run_id: "run1",
-        stop_times: [
-          %StopTime{stop_id: "18513", time: 3, timepoint_id: "tp2"},
-          %StopTime{stop_id: "18512", time: 4, timepoint_id: nil},
-          %StopTime{stop_id: "18511", time: 5, timepoint_id: "tp1"}
-        ]
-      }
-
-      block = [trip1, trip2]
-
-      stop_time_updates = [
-        %StopTimeUpdate{
-          arrival_time: nil,
-          departure_time: nil,
-          platform_id: nil,
-          remark: "E:1106",
-          schedule_relationship: :SKIPPED,
-          status: nil,
-          stop_id: "18511",
-          stop_sequence: nil,
-          track: nil,
-          trip_id: "39984755",
-          uncertainty: nil
-        },
-        %StopTimeUpdate{
-          arrival_time: nil,
-          departure_time: nil,
-          platform_id: nil,
-          remark: "E:1106",
-          schedule_relationship: :SKIPPED,
-          status: nil,
-          stop_id: "18512",
-          stop_sequence: nil,
-          track: nil,
-          trip_id: "39984755",
-          uncertainty: nil
-        }
-      ]
-
       reassign_env(:realtime, :stop_time_updates_fn, fn trip_id ->
-        if trip_id == trip1.id do
-          stop_time_updates
-        else
-          []
+        case trip_id do
+          "trip1" ->
+            [@trip1stop1Update, @trip1stop2Update]
+
+          "trip2" ->
+            [@trip2stop1Update]
+
+          _ ->
+            []
         end
       end)
-
-      {:ok, %{block: block}}
     end
 
-    test "returns block waivers for any trip that has skipped stops", %{block: block} do
-      expected = %{
-        "t1" => %BlockWaiver{
-          trip_id: "t1",
-          start_time: 0,
-          end_time: 1,
+    test "returns block waivers for consecutive skipped stops on a trip" do
+      block = [@trip1, @trip2]
+
+      expected = [
+        %BlockWaiver{
+          start_time: 1,
+          end_time: 2,
+          remark: "E:1106"
+        },
+        %BlockWaiver{
+          start_time: 6,
+          end_time: 6,
           remark: "E:1106"
         }
-      }
+      ]
 
       assert BlockWaiver.block_waivers_for_block(block) == expected
     end
 
-    test "returns an empty map if no trips have skipped stops" do
-      assert BlockWaiver.block_waivers_for_block([]) == %{}
+    test "returns an empty list if no trips have skipped stops" do
+      assert BlockWaiver.block_waivers_for_block([]) == []
     end
 
-    test "returns an empty map if the block was nil" do
-      assert BlockWaiver.block_waivers_for_block(nil) == %{}
+    test "returns an empty list if the block was nil" do
+      assert BlockWaiver.block_waivers_for_block(nil) == []
+    end
+  end
+
+  describe "trip_stop_time_waivers/1" do
+    setup do
+      reassign_env(:realtime, :stop_time_updates_fn, fn trip_id ->
+        if trip_id == @trip1.id do
+          [@trip1stop1Update, @trip1stop2Update]
+        else
+          []
+        end
+      end)
+    end
+
+    test "breaks out trip_stop_time_waivers for each stop on the trip" do
+      expected = [
+        {"trip1", "stop1", 1, @trip1stop1Update},
+        {"trip1", "stop2", 2, @trip1stop2Update},
+        {"trip1", "stop3", 3, nil}
+      ]
+
+      assert BlockWaiver.trip_stop_time_waivers(@trip1) == expected
+    end
+  end
+
+  describe "group_consecutive_sequences/1" do
+    test "removes trip_stop_time_waivers missing a waiver" do
+      trip_stop_time_waivers = [
+        {"trip1", "stop1", 1, nil}
+      ]
+
+      assert BlockWaiver.group_consecutive_sequences(trip_stop_time_waivers) == []
+    end
+
+    test "includes trip_stop_time_waivers with a waiver" do
+      trip_stop_time_waiver1 = {"trip1", "stop1", 1, @trip1stop1Update}
+      trip_stop_time_waiver2 = {"trip1", "stop2", 2, @trip1stop2Update}
+
+      trip_stop_time_waivers = [
+        trip_stop_time_waiver1,
+        trip_stop_time_waiver2,
+        {"trip1", "stop3", 3, nil}
+      ]
+
+      expected = [
+        [trip_stop_time_waiver1, trip_stop_time_waiver2]
+      ]
+
+      assert BlockWaiver.group_consecutive_sequences(trip_stop_time_waivers) == expected
+    end
+
+    test "extends groups across trips" do
+      trip_stop_time_waivers = [
+        {"trip1", "stop1", 1, @trip1stop1Update},
+        {"trip1", "stop2", 1, @trip1stop2Update},
+        {"trip2", "stop1", 1, @trip2stop1Update}
+      ]
+
+      expected = [trip_stop_time_waivers]
+
+      assert BlockWaiver.group_consecutive_sequences(trip_stop_time_waivers) == expected
+    end
+
+    test "breaks apart groups at a stop without a waiver" do
+      trip_stop_time_waiver1 = {"trip1", "stop1", 1, @trip1stop1Update}
+      trip_stop_time_waiver2 = {"trip1", "stop2", 1, @trip1stop2Update}
+
+      trip_stop_time_waivers = [
+        trip_stop_time_waiver1,
+        {"trip1", "stop3", 1, nil},
+        trip_stop_time_waiver2
+      ]
+
+      expected = [
+        [trip_stop_time_waiver1],
+        [trip_stop_time_waiver2]
+      ]
+
+      assert BlockWaiver.group_consecutive_sequences(trip_stop_time_waivers) == expected
+    end
+
+    test "breaks apart groups at a new waiver remark" do
+      trip_stop_time_waiver1 = {"trip1", "stop1", 1, @trip1stop1Update}
+
+      trip_stop_time_waiver2 =
+        {"trip1", "stop2", 1, %StopTimeUpdate{@trip1stop2Update | remark: "new remark"}}
+
+      trip_stop_time_waivers = [
+        trip_stop_time_waiver1,
+        trip_stop_time_waiver2
+      ]
+
+      expected = [
+        [trip_stop_time_waiver1],
+        [trip_stop_time_waiver2]
+      ]
+
+      assert BlockWaiver.group_consecutive_sequences(trip_stop_time_waivers) == expected
+    end
+
+    test "breaks apart groups if the time gap is > 60 minutes" do
+      trip_stop_time_waiver1 = {"trip1", "stop1", 0, @trip1stop1Update}
+      trip_stop_time_waiver2 = {"trip1", "stop2", 3601, @trip1stop2Update}
+
+      trip_stop_time_waivers = [
+        trip_stop_time_waiver1,
+        trip_stop_time_waiver2
+      ]
+
+      expected = [
+        [trip_stop_time_waiver1],
+        [trip_stop_time_waiver2]
+      ]
+
+      assert BlockWaiver.group_consecutive_sequences(trip_stop_time_waivers) == expected
+    end
+  end
+
+  describe "from_trip_stop_time_waivers" do
+    test "builds a BlockWaiver from a list of trip_stop_time_waivers" do
+      trip_stop_time_waivers = [
+        {"trip1", "stop1", 1, @trip1stop1Update},
+        {"trip1", "stop2", 2, @trip1stop2Update}
+      ]
+
+      expected = %BlockWaiver{
+        start_time: 1,
+        end_time: 2,
+        remark: "E:1106"
+      }
+
+      assert BlockWaiver.from_trip_stop_time_waivers(trip_stop_time_waivers) == expected
     end
   end
 end
