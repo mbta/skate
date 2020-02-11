@@ -104,10 +104,10 @@ defmodule Realtime.TimepointStatus do
   @spec fraction_between_points({float(), float()}, {float(), float()}, {float(), float()}) ::
           float()
   defp fraction_between_points(
-        {start_lat, start_lon},
-        {finish_lat, finish_lon},
-        {point_lat, point_lon}
-      ) do
+         {start_lat, start_lon},
+         {finish_lat, finish_lon},
+         {point_lat, point_lon}
+       ) do
     start_to_finish = {finish_lat - start_lat, finish_lon - start_lon}
     start_to_point = {point_lat - start_lat, point_lon - start_lon}
     dot_product(start_to_point, start_to_finish) / dot_product(start_to_finish, start_to_finish)
