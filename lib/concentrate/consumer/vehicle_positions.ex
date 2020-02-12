@@ -31,8 +31,8 @@ defmodule Concentrate.Consumer.VehiclePositions do
       |> vehicle_positions_from_groups()
       |> Enum.map(&Vehicle.from_vehicle_position/1)
 
-    data_status_fn = Application.get_env(:skate, :data_status_fn) || &DataStatus.data_status/0
-    data_status = data_status_fn.()
+    data_status_fn = Application.get_env(:skate, :data_status_fn) || (&DataStatus.data_status/1)
+    data_status = data_status_fn.(all_vehicles)
 
     by_route = Vehicles.group_by_route(all_vehicles)
     shuttles = Enum.filter(all_vehicles, &Vehicle.shuttle?/1)
