@@ -71,7 +71,7 @@ defmodule Realtime.TimepointStatus do
   If the bus is not directly between the two stops,
   measures from the closest point to the bus that is between the stops.
   """
-  @spec fraction_between_stops(point(), Stop.id() | nil, Stop.id() | nil) :: float()
+  @spec fraction_between_stops(point(), Stop.id() | nil, Stop.id()) :: float()
   def fraction_between_stops(vehicle_latlon, start_id, finish_id) do
     start_latlon = stop_latlon(start_id)
     finish_latlon = stop_latlon(finish_id)
