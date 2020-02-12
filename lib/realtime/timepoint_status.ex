@@ -27,7 +27,7 @@ defmodule Realtime.TimepointStatus do
 
   @spec timepoint_status([StopTime.t()], Stop.id(), point()) ::
           timepoint_status() | nil
-  def timepoint_status(stop_times, stop_id, latlon) do
+  def timepoint_status(stop_times, stop_id, vehicle_latlon) do
     # future_stop_times starts with the stop that has stop_id
     {past_stop_times, future_stop_times} = Enum.split_while(stop_times, &(&1.stop_id != stop_id))
 
@@ -44,7 +44,7 @@ defmodule Realtime.TimepointStatus do
         fraction_until_next_stop =
           1.0 -
             fraction_between_stops(
-              latlon,
+              vehicle_latlon,
               previous_stop_time && previous_stop_time.stop_id,
               stop_id
             )
@@ -72,30 +72,33 @@ defmodule Realtime.TimepointStatus do
   measures from the closest point to the bus that is between the stops.
   """
   @spec fraction_between_stops(point(), Stop.id() | nil, Stop.id() | nil) :: float()
-  def fraction_between_stops(latlon, start_id, finish_id) do
-    stop_fn = Application.get_env(:skate, :stop_fn, &Gtfs.stop/1)
-    start = start_id && stop_fn.(start_id)
-    finish = finish_id && stop_fn.(finish_id)
+  def fraction_between_stops(vehicle_latlon, start_id, finish_id) do
+    start_latlon = stop_latlon(start_id)
+    finish_latlon = stop_latlon(finish_id)
 
-    if start &&
-         finish &&
-         start.latitude &&
-         start.longitude &&
-         finish.latitude &&
-         finish.longitude do
+    if start_latlon && finish_latlon do
       # Treating the latlons as if they're cartesian coordinates works fine at this scale.
       # We don't need fancy great circle distance measurements around the globe
       # A degree of longitude is smaller than a degree of latitude,
       # but if the bus is directly between the stops, that has no effect at all
       # and if the bus is not on that straight line, it will have an acceptably small effect.
-      latlon
-      |> fraction_between_points(
-        {start.latitude, start.longitude},
-        {finish.latitude, finish.longitude}
-      )
+      vehicle_latlon
+      |> fraction_between_points(start_latlon, finish_latlon)
       |> clamp(0.0, 1.0)
     else
       1.0
+    end
+  end
+
+  @spec stop_latlon(Stop.id()) :: point() | nil
+  defp stop_latlon(stop_id) do
+    stop_fn = Application.get_env(:skate, :stop_fn, &Gtfs.stop/1)
+    stop = stop_id && stop_fn.(stop_id)
+
+    if stop && stop.latitude && stop.longitude do
+      {stop.latitude, stop.longitude}
+    else
+      nil
     end
   end
 
