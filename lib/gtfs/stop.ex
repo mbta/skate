@@ -6,13 +6,14 @@ defmodule Gtfs.Stop do
   @type t :: %__MODULE__{
           id: id(),
           name: String.t(),
-          parent_station_id: id() | nil
+          parent_station_id: id() | nil,
+          latitude: float() | nil,
+          longitude: float() | nil
         }
 
   @enforce_keys [
     :id,
-    :name,
-    :parent_station_id
+    :name
   ]
 
   @derive Jason.Encoder
@@ -20,7 +21,9 @@ defmodule Gtfs.Stop do
   defstruct [
     :id,
     :name,
-    :parent_station_id
+    :parent_station_id,
+    :latitude,
+    :longitude
   ]
 
   @spec parent_station_id(t() | nil) :: id() | nil
@@ -35,7 +38,13 @@ defmodule Gtfs.Stop do
     %__MODULE__{
       id: row["stop_id"],
       name: row["stop_name"],
-      parent_station_id: parent_station_id
+      parent_station_id: parent_station_id,
+      latitude: parse_lat_lon(row["stop_lat"]),
+      longitude: parse_lat_lon(row["stop_lon"])
     }
   end
+
+  @spec parse_lat_lon(String.t()) :: float() | nil
+  defp parse_lat_lon(""), do: nil
+  defp parse_lat_lon(s), do: String.to_float(s)
 end

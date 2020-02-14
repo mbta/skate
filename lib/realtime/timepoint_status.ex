@@ -1,6 +1,8 @@
 defmodule Realtime.TimepointStatus do
   alias Gtfs.{Block, Direction, RoutePattern, Run, Stop, StopTime, Route, Trip}
 
+  @typep point :: {float(), float()}
+
   @typedoc """
   fraction_until_timepoint ranges
     from 0.0 (inclusive) if the vehicle is at the given timepoint
@@ -23,24 +25,106 @@ defmodule Realtime.TimepointStatus do
             timepoint_status: timepoint_status()
           }
 
-  @spec timepoint_status([StopTime.t()], Stop.id()) :: timepoint_status() | nil
-  def timepoint_status(stop_times, stop_id) do
+  @spec timepoint_status([StopTime.t()], Stop.id(), point()) ::
+          timepoint_status() | nil
+  def timepoint_status(stop_times, stop_id, vehicle_latlon) do
+    # future_stop_times starts with the stop that has stop_id
     {past_stop_times, future_stop_times} = Enum.split_while(stop_times, &(&1.stop_id != stop_id))
 
     case Enum.find(future_stop_times, &StopTime.is_timepoint?(&1)) do
       %StopTime{timepoint_id: next_timepoint_id} ->
-        # past_count needs +1 for the step between the current timepoint and the first of the past stops
-        past_count = count_to_timepoint(Enum.reverse(past_stop_times)) + 1
-        future_count = count_to_timepoint(future_stop_times)
+        stops_until_timepoint = count_to_timepoint(future_stop_times)
+
+        # +1 for the step between the most recent stop and the next stop
+        stops_in_this_timepoint_segment =
+          count_to_timepoint(Enum.reverse(past_stop_times)) + 1 + stops_until_timepoint
+
+        previous_stop_time = List.last(past_stop_times)
+
+        fraction_until_next_stop =
+          1.0 -
+            fraction_between_stops(
+              vehicle_latlon,
+              previous_stop_time && previous_stop_time.stop_id,
+              stop_id
+            )
 
         %{
           timepoint_id: next_timepoint_id,
-          fraction_until_timepoint: future_count / (future_count + past_count)
+          fraction_until_timepoint:
+            (stops_until_timepoint + fraction_until_next_stop) / stops_in_this_timepoint_segment
         }
 
       nil ->
         nil
     end
+  end
+
+  @doc """
+  How far a bus is between two stops.
+  0.0 means the bus is still at the first stop.
+  1.0 means it's at the second stop.
+  0.5 means it's halfway between.
+  If either stop is missing lat lon data, default to being at the second stop.
+
+  Approximates the path between the stops as a straight line.
+  If the bus is not directly between the two stops,
+  measures from the closest point to the bus that is between the stops.
+  """
+  @spec fraction_between_stops(point(), Stop.id() | nil, Stop.id()) :: float()
+  def fraction_between_stops(vehicle_latlon, start_id, finish_id) do
+    start_latlon = stop_latlon(start_id)
+    finish_latlon = stop_latlon(finish_id)
+
+    if start_latlon && finish_latlon do
+      # Treating the latlons as if they're cartesian coordinates works fine at this scale.
+      # We don't need fancy great circle distance measurements around the globe
+      # A degree of longitude is smaller than a degree of latitude,
+      # but if the bus is directly between the stops, that has no effect at all
+      # and if the bus is not on that straight line, it will have an acceptably small effect.
+      vehicle_latlon
+      |> fraction_between_points(start_latlon, finish_latlon)
+      |> clamp(0.0, 1.0)
+    else
+      1.0
+    end
+  end
+
+  @spec stop_latlon(Stop.id()) :: point() | nil
+  defp stop_latlon(stop_id) do
+    stop_fn = Application.get_env(:skate, :stop_fn, &Gtfs.stop/1)
+    stop = stop_id && stop_fn.(stop_id)
+
+    if stop && stop.latitude && stop.longitude do
+      {stop.latitude, stop.longitude}
+    else
+      nil
+    end
+  end
+
+  # Projects the point onto the straight line between the start and finish
+  @spec fraction_between_points(point(), point(), point()) ::
+          float()
+  defp fraction_between_points(
+         {point_lat, point_lon},
+         {start_lat, start_lon},
+         {finish_lat, finish_lon}
+       ) do
+    start_to_finish = {finish_lat - start_lat, finish_lon - start_lon}
+    start_to_point = {point_lat - start_lat, point_lon - start_lon}
+    dot_product(start_to_point, start_to_finish) / dot_product(start_to_finish, start_to_finish)
+  end
+
+  @spec dot_product(point(), point()) :: float()
+  defp dot_product({x1, y1}, {x2, y2}) do
+    x1 * x2 + y1 * y2
+  end
+
+  @spec clamp(float(), float(), float()) :: float()
+  defp clamp(f, min, max) do
+    f
+    |> min(max)
+    |> max(min)
   end
 
   @doc """

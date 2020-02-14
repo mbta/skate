@@ -1,16 +1,19 @@
 defmodule Realtime.TimepointStatusTest do
   use ExUnit.Case
+  import Test.Support.Helpers
 
-  alias Gtfs.{StopTime, Trip}
+  alias Gtfs.{Stop, StopTime, Trip}
   alias Realtime.TimepointStatus
 
-  describe "timepoint_status/2" do
+  describe "timepoint_status" do
     test "returns 0.0 if the stop is a timepoint, plus the timepoint" do
+      reassign_env(:skate, :stop_fn, fn _ -> nil end)
+
       stop_times = [
         %StopTime{
           stop_id: "s1",
           time: 0,
-          timepoint_id: "tp1"
+          timepoint_id: "first"
         },
         %StopTime{
           stop_id: "s2",
@@ -20,7 +23,7 @@ defmodule Realtime.TimepointStatusTest do
         %StopTime{
           stop_id: "s3",
           time: 0,
-          timepoint_id: "tp3"
+          timepoint_id: "middle"
         },
         %StopTime{
           stop_id: "s4",
@@ -35,19 +38,29 @@ defmodule Realtime.TimepointStatusTest do
         %StopTime{
           stop_id: "s6",
           time: 0,
-          timepoint_id: "tp2"
+          timepoint_id: "last"
         }
       ]
 
-      stop_id = "s3"
+      assert TimepointStatus.timepoint_status(stop_times, "s1", {0.0, 0.0}) == %{
+               timepoint_id: "first",
+               fraction_until_timepoint: 0.0
+             }
 
-      assert TimepointStatus.timepoint_status(stop_times, stop_id) == %{
-               timepoint_id: "tp3",
+      assert TimepointStatus.timepoint_status(stop_times, "s3", {0.0, 0.0}) == %{
+               timepoint_id: "middle",
+               fraction_until_timepoint: 0.0
+             }
+
+      assert TimepointStatus.timepoint_status(stop_times, "s6", {0.0, 0.0}) == %{
+               timepoint_id: "last",
                fraction_until_timepoint: 0.0
              }
     end
 
     test "returns the ratio of stops to next timepoint vs stops to last timepoint if the stop is not a timepoint, plus the next timepoint" do
+      reassign_env(:skate, :stop_fn, fn _ -> nil end)
+
       stop_times = [
         %StopTime{
           stop_id: "s1",
@@ -83,13 +96,13 @@ defmodule Realtime.TimepointStatusTest do
 
       stop_id = "s3"
 
-      assert TimepointStatus.timepoint_status(stop_times, stop_id) == %{
+      assert TimepointStatus.timepoint_status(stop_times, stop_id, {0.0, 0.0}) == %{
                timepoint_id: "tp2",
                fraction_until_timepoint: 0.6
              }
     end
 
-    test "returns 0.0 if the stop is the first timepoint" do
+    test "takes into account the position between the stops" do
       stop_times = [
         %StopTime{
           stop_id: "s1",
@@ -104,19 +117,39 @@ defmodule Realtime.TimepointStatusTest do
         %StopTime{
           stop_id: "s3",
           time: 0,
-          timepoint_id: "tp3"
+          timepoint_id: "tp2"
         }
       ]
 
-      stop_id = "s1"
+      reassign_env(:skate, :stop_fn, fn stop_id ->
+        case stop_id do
+          "s2" ->
+            %Stop{
+              id: "s2",
+              name: "s2",
+              latitude: 42.0,
+              longitude: -72.0
+            }
 
-      assert TimepointStatus.timepoint_status(stop_times, stop_id) == %{
-               timepoint_id: "tp1",
-               fraction_until_timepoint: 0.0
+          "s3" ->
+            %Stop{
+              id: "s3",
+              name: "s3",
+              latitude: 43.0,
+              longitude: -71.0
+            }
+        end
+      end)
+
+      assert TimepointStatus.timepoint_status(stop_times, "s3", {42.75, -71.25}) == %{
+               timepoint_id: "tp2",
+               fraction_until_timepoint: 0.125
              }
     end
 
     test "returns nil if on a route without timepoints" do
+      reassign_env(:skate, :stop_fn, fn _ -> nil end)
+
       stop_times = [
         %StopTime{
           stop_id: "s1",
@@ -132,7 +165,62 @@ defmodule Realtime.TimepointStatusTest do
 
       stop_id = "s2"
 
-      assert TimepointStatus.timepoint_status(stop_times, stop_id) == nil
+      assert TimepointStatus.timepoint_status(stop_times, stop_id, {0.0, 0.0}) == nil
+    end
+  end
+
+  describe "fraction_between_stops" do
+    setup do
+      stop1 = %Stop{
+        id: "stop1",
+        name: "stop1",
+        latitude: 42.0,
+        longitude: -72.0
+      }
+
+      stop2 = %Stop{
+        id: "stop2",
+        name: "stop2",
+        latitude: 43.0,
+        longitude: -71.0
+      }
+
+      stop_without_latlon = %Stop{
+        id: "without_latlon",
+        name: "without_latlon"
+      }
+
+      reassign_env(:skate, :stop_fn, fn stop_id ->
+        case stop_id do
+          "stop1" -> stop1
+          "stop2" -> stop2
+          "without_latlon" -> stop_without_latlon
+          "missing" -> nil
+        end
+      end)
+    end
+
+    test "if either stop or latlon is missing, default to 1.0 (at the second stop)" do
+      latlon = {42.5, -71.5}
+      assert TimepointStatus.fraction_between_stops(latlon, "stop1", nil) == 1.0
+      assert TimepointStatus.fraction_between_stops(latlon, "stop1", "missing") == 1.0
+      assert TimepointStatus.fraction_between_stops(latlon, "stop1", "without_latlon") == 1.0
+      assert TimepointStatus.fraction_between_stops(latlon, nil, "stop1") == 1.0
+      assert TimepointStatus.fraction_between_stops(latlon, "missing", "stop1") == 1.0
+      assert TimepointStatus.fraction_between_stops(latlon, "without_latlon", "stop1") == 1.0
+    end
+
+    test "returns a fraction when the bus is directly between the points" do
+      assert TimepointStatus.fraction_between_stops({42.75, -71.25}, "stop1", "stop2") == 0.75
+    end
+
+    test "returns a fraction when the bus is not between the points" do
+      assert TimepointStatus.fraction_between_stops({42.0, -71.0}, "stop1", "stop2") == 0.5
+    end
+
+    test "the bus can't be before the first stop or after the second" do
+      assert TimepointStatus.fraction_between_stops({41.0, -73.0}, "stop1", "stop2") == 0.0
+      assert TimepointStatus.fraction_between_stops({44.0, -70.0}, "stop1", "stop2") == 1.0
     end
   end
 
