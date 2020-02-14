@@ -219,6 +219,7 @@ const LadderTimepoint = ({
       textAnchor="middle"
       dominantBaseline="middle"
       data-tip={timepoint.name}
+      data-event="click"
     >
       {timepoint.id}
     </text>

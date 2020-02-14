@@ -92,6 +92,7 @@ exports[`renders a route ladder 1`] = `
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
         data-tip="WASMA Name"
         dominantBaseline="middle"
         textAnchor="middle"
@@ -114,6 +115,7 @@ exports[`renders a route ladder 1`] = `
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
         data-tip="MELWA Name"
         dominantBaseline="middle"
         textAnchor="middle"
@@ -136,6 +138,7 @@ exports[`renders a route ladder 1`] = `
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
         data-tip="HHGAT Name"
         dominantBaseline="middle"
         textAnchor="middle"
@@ -244,6 +247,7 @@ exports[`renders a route ladder 1`] = `
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
         data-tip="MATPN Name"
         dominantBaseline="middle"
         textAnchor="middle"
@@ -266,6 +270,7 @@ exports[`renders a route ladder 1`] = `
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
         data-tip="WELLH Name"
         dominantBaseline="middle"
         textAnchor="middle"
@@ -288,6 +293,7 @@ exports[`renders a route ladder 1`] = `
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
         data-tip="MORTN Name"
         dominantBaseline="middle"
         textAnchor="middle"

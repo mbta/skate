@@ -133,6 +133,7 @@ Array [
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
         data-tip="MATPN Name"
         dominantBaseline="middle"
         textAnchor="middle"
@@ -155,6 +156,7 @@ Array [
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
         data-tip="WELLH Name"
         dominantBaseline="middle"
         textAnchor="middle"
@@ -177,6 +179,7 @@ Array [
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
         data-tip="MORTN Name"
         dominantBaseline="middle"
         textAnchor="middle"
@@ -330,6 +333,7 @@ Array [
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
         data-tip="MATPN Name"
         dominantBaseline="middle"
         textAnchor="middle"
@@ -352,6 +356,7 @@ Array [
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
         data-tip="WELLH Name"
         dominantBaseline="middle"
         textAnchor="middle"
@@ -374,6 +379,7 @@ Array [
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
         data-tip="MORTN Name"
         dominantBaseline="middle"
         textAnchor="middle"
@@ -680,6 +686,7 @@ Array [
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
         data-tip="MATPN Name"
         dominantBaseline="middle"
         textAnchor="middle"
@@ -702,6 +709,7 @@ Array [
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
         data-tip="WELLH Name"
         dominantBaseline="middle"
         textAnchor="middle"
@@ -724,6 +732,7 @@ Array [
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
         data-tip="MORTN Name"
         dominantBaseline="middle"
         textAnchor="middle"
@@ -834,6 +843,7 @@ Array [
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
         data-tip="MATPN Name"
         dominantBaseline="middle"
         textAnchor="middle"
@@ -856,6 +866,7 @@ Array [
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
         data-tip="WELLH Name"
         dominantBaseline="middle"
         textAnchor="middle"
@@ -878,6 +889,7 @@ Array [
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
         data-tip="MORTN Name"
         dominantBaseline="middle"
         textAnchor="middle"
