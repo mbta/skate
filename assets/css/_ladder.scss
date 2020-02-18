@@ -45,6 +45,7 @@
 
 .m-ladder__timepoint-name {
   @include font-timepoint;
+  cursor: pointer;
 }
 
 .m-ladder__vehicle {
@@ -95,6 +96,7 @@
   &.early {
     stroke: $color-vehicle-early;
   }
+
   &.late {
     stroke: $color-vehicle-late;
   }
