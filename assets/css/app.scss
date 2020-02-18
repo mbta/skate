@@ -46,4 +46,9 @@ body {
 
 .m-app {
   display: flex;
+
+  .__react_component_tooltip {
+    border-radius: 4px;
+    text-align: center;
+  }
 }
