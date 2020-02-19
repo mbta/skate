@@ -122,7 +122,7 @@ const Ladder = ({
           )
         })}
       </svg>
-      <ReactTooltip effect="solid" />
+      <ReactTooltip effect="solid" globalEventOff="click" />
     </div>
   )
 }
