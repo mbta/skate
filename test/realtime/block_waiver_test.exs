@@ -135,9 +135,9 @@ defmodule Realtime.BlockWaiverTest do
 
     test "breaks out trip_stop_time_waivers for each stop on the trip" do
       expected = [
-        {"trip1", "stop1", 1, @trip1stop1Update},
-        {"trip1", "stop2", 2, @trip1stop2Update},
-        {"trip1", "stop3", 3, nil}
+        {1, @trip1stop1Update},
+        {2, @trip1stop2Update},
+        {3, nil}
       ]
 
       assert BlockWaiver.trip_stop_time_waivers(@trip1) == expected
@@ -146,21 +146,19 @@ defmodule Realtime.BlockWaiverTest do
 
   describe "group_consecutive_sequences/1" do
     test "removes trip_stop_time_waivers missing a waiver" do
-      trip_stop_time_waivers = [
-        {"trip1", "stop1", 1, nil}
-      ]
+      trip_stop_time_waivers = [{1, nil}]
 
       assert BlockWaiver.group_consecutive_sequences(trip_stop_time_waivers) == []
     end
 
     test "includes trip_stop_time_waivers with a waiver" do
-      trip_stop_time_waiver1 = {"trip1", "stop1", 1, @trip1stop1Update}
-      trip_stop_time_waiver2 = {"trip1", "stop2", 2, @trip1stop2Update}
+      trip_stop_time_waiver1 = {1, @trip1stop1Update}
+      trip_stop_time_waiver2 = {2, @trip1stop2Update}
 
       trip_stop_time_waivers = [
         trip_stop_time_waiver1,
         trip_stop_time_waiver2,
-        {"trip1", "stop3", 3, nil}
+        {3, nil}
       ]
 
       expected = [
@@ -172,9 +170,9 @@ defmodule Realtime.BlockWaiverTest do
 
     test "extends groups across trips" do
       trip_stop_time_waivers = [
-        {"trip1", "stop1", 1, @trip1stop1Update},
-        {"trip1", "stop2", 1, @trip1stop2Update},
-        {"trip2", "stop1", 1, @trip2stop1Update}
+        {1, @trip1stop1Update},
+        {1, @trip1stop2Update},
+        {1, @trip2stop1Update}
       ]
 
       expected = [trip_stop_time_waivers]
@@ -183,12 +181,12 @@ defmodule Realtime.BlockWaiverTest do
     end
 
     test "breaks apart groups at a stop without a waiver" do
-      trip_stop_time_waiver1 = {"trip1", "stop1", 1, @trip1stop1Update}
-      trip_stop_time_waiver2 = {"trip1", "stop2", 1, @trip1stop2Update}
+      trip_stop_time_waiver1 = {1, @trip1stop1Update}
+      trip_stop_time_waiver2 = {1, @trip1stop2Update}
 
       trip_stop_time_waivers = [
         trip_stop_time_waiver1,
-        {"trip1", "stop3", 1, nil},
+        {1, nil},
         trip_stop_time_waiver2
       ]
 
@@ -201,10 +199,9 @@ defmodule Realtime.BlockWaiverTest do
     end
 
     test "breaks apart groups at a new waiver remark" do
-      trip_stop_time_waiver1 = {"trip1", "stop1", 1, @trip1stop1Update}
+      trip_stop_time_waiver1 = {1, @trip1stop1Update}
 
-      trip_stop_time_waiver2 =
-        {"trip1", "stop2", 1, %StopTimeUpdate{@trip1stop2Update | remark: "new remark"}}
+      trip_stop_time_waiver2 = {1, %StopTimeUpdate{@trip1stop2Update | remark: "new remark"}}
 
       trip_stop_time_waivers = [
         trip_stop_time_waiver1,
@@ -220,8 +217,8 @@ defmodule Realtime.BlockWaiverTest do
     end
 
     test "breaks apart groups if the time gap is > 60 minutes" do
-      trip_stop_time_waiver1 = {"trip1", "stop1", 0, @trip1stop1Update}
-      trip_stop_time_waiver2 = {"trip1", "stop2", 3601, @trip1stop2Update}
+      trip_stop_time_waiver1 = {0, @trip1stop1Update}
+      trip_stop_time_waiver2 = {3601, @trip1stop2Update}
 
       trip_stop_time_waivers = [
         trip_stop_time_waiver1,
@@ -240,8 +237,8 @@ defmodule Realtime.BlockWaiverTest do
   describe "from_trip_stop_time_waivers" do
     test "builds a BlockWaiver from a list of trip_stop_time_waivers" do
       trip_stop_time_waivers = [
-        {"trip1", "stop1", 1, @trip1stop1Update},
-        {"trip1", "stop2", 2, @trip1stop2Update}
+        {1, @trip1stop1Update},
+        {2, @trip1stop2Update}
       ]
 
       expected = %BlockWaiver{

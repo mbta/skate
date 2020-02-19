@@ -5,7 +5,7 @@ defmodule Realtime.BlockWaiver do
   """
 
   alias Concentrate.StopTimeUpdate
-  alias Gtfs.{Block, Stop, Trip}
+  alias Gtfs.{Block, Trip}
   alias Realtime.Server
 
   @type t :: %__MODULE__{
@@ -37,8 +37,7 @@ defmodule Realtime.BlockWaiver do
     |> Enum.map(&from_trip_stop_time_waivers/1)
   end
 
-  @type trip_stop_time_waiver ::
-          {Trip.id(), Stop.id(), Util.Time.time_of_day(), StopTimeUpdate.t() | nil}
+  @type trip_stop_time_waiver :: {Util.Time.time_of_day(), StopTimeUpdate.t() | nil}
   @spec trip_stop_time_waivers(Trip.t()) :: [trip_stop_time_waiver()]
   def trip_stop_time_waivers(trip) do
     stop_time_updates_fn =
@@ -47,7 +46,7 @@ defmodule Realtime.BlockWaiver do
     stop_time_updates = stop_time_updates_fn.(trip.id)
 
     Enum.map(trip.stop_times, fn stop_time ->
-      {trip.id, stop_time.stop_id, stop_time.time,
+      {stop_time.time,
        Enum.find(stop_time_updates, &(StopTimeUpdate.stop_id(&1) == stop_time.stop_id))}
     end)
   end
@@ -61,7 +60,7 @@ defmodule Realtime.BlockWaiver do
     bank_working(acc, working)
   end
 
-  def group_consecutive_sequences([{_trip_id, _stop_id, _time, nil} | tail], acc, working) do
+  def group_consecutive_sequences([{_time, nil} | tail], acc, working) do
     group_consecutive_sequences(tail, bank_working(acc, working))
   end
 
@@ -70,11 +69,11 @@ defmodule Realtime.BlockWaiver do
   end
 
   def group_consecutive_sequences(
-        [{_trip_id, _stop_id, time, stop_time_update} = trip_stop_time_waiver | tail],
+        [{time, stop_time_update} = trip_stop_time_waiver | tail],
         acc,
         working
       ) do
-    {_trip_id, _stop_id, previous_time, previous_stop_time_update} = List.last(working)
+    {previous_time, previous_stop_time_update} = List.last(working)
 
     if same_remark?(stop_time_update, previous_stop_time_update) &&
          within_60_minutes?(time, previous_time) do
@@ -101,8 +100,8 @@ defmodule Realtime.BlockWaiver do
 
   @spec from_trip_stop_time_waivers([trip_stop_time_waiver()]) :: t()
   def from_trip_stop_time_waivers(trip_stop_time_waivers) do
-    {_, _, start_time, %StopTimeUpdate{remark: remark}} = List.first(trip_stop_time_waivers)
-    {_, _, end_time, _} = List.last(trip_stop_time_waivers)
+    {start_time, %StopTimeUpdate{remark: remark}} = List.first(trip_stop_time_waivers)
+    {end_time, _} = List.last(trip_stop_time_waivers)
 
     %__MODULE__{
       start_time: start_time,
