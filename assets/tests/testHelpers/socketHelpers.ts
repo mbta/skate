@@ -1,9 +1,12 @@
-export const makeMockSocket = () => ({
-  channel: jest.fn(),
-})
+import { Socket } from "phoenix"
+
+export const makeMockSocket = (): Socket & { channel: jest.Mock } =>
+  ({
+    channel: jest.fn(),
+  } as Socket & { channel: jest.Mock })
 
 export const makeMockChannel = (
-  expectedJoinMessage: "ok" | "error" | "timeout"
+  expectedJoinMessage?: "ok" | "error" | "timeout"
 ) => {
   const result = {
     join: jest.fn(),
