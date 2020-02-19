@@ -6,6 +6,7 @@ import {
   fetchShuttleRoutes,
   fetchTimepointsForRoute,
 } from "../src/api"
+import * as browser from "../src/models/browser"
 
 // tslint:disable no-empty
 
@@ -43,13 +44,13 @@ describe("apiCall", () => {
   test("reloads the page if the response status is a redirect (3xx)", done => {
     mockFetch(302, { data: null })
 
-    window.location.reload = jest.fn()
+    jest.spyOn(browser, "reload").mockImplementation(() => {})
 
     apiCall({
       url: "/",
       parser: () => null,
     }).catch(() => {
-      expect(window.location.reload).toHaveBeenCalled()
+      expect(browser.reload).toHaveBeenCalled()
       done()
     })
   })
@@ -57,13 +58,13 @@ describe("apiCall", () => {
   test("reloads the page if the response status is forbidden (403)", done => {
     mockFetch(403, { data: null })
 
-    window.location.reload = jest.fn()
+    jest.spyOn(browser, "reload").mockImplementation(() => {})
 
     apiCall({
       url: "/",
       parser: () => null,
     }).catch(() => {
-      expect(window.location.reload).toHaveBeenCalled()
+      expect(browser.reload).toHaveBeenCalled()
       done()
     })
   })

@@ -1,6 +1,7 @@
 import React, { ReactElement } from "react"
 import { NavLink } from "react-router-dom"
 import { ladderIcon, mapIcon, refreshIcon, searchIcon } from "../helpers/icon"
+import { reload } from "../models/browser"
 
 interface Props {
   pickerContainerIsVisible: boolean
@@ -12,10 +13,7 @@ const TabBar = ({
   <div
     className={`m-tab-bar ${pickerContainerIsVisible ? "visible" : "hidden"}`}
   >
-    <button
-      className="m-tab-bar__logo"
-      onClick={() => window.location.reload()}
-    >
+    <button className="m-tab-bar__logo" onClick={() => reload()}>
       {skateLogo}
     </button>
     <ul className="m-tab-bar__links">
@@ -72,10 +70,7 @@ const TabBar = ({
         </NavLink>
       </li>
     </ul>
-    <button
-      className="m-tab-bar__refresh"
-      onClick={() => window.location.reload()}
-    >
+    <button className="m-tab-bar__refresh" onClick={() => reload()}>
       {refreshIcon("m-tab-bar__icon")}
     </button>
   </div>

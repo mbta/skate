@@ -3,6 +3,7 @@ import React from "react"
 import { BrowserRouter } from "react-router-dom"
 import renderer from "react-test-renderer"
 import TabBar from "../../src/components/tabBar"
+import * as browser from "../../src/models/browser"
 
 describe("tabBar", () => {
   it("renders", () => {
@@ -39,7 +40,7 @@ describe("tabBar", () => {
 
   it("reloads the page when you click on the logo", () => {
     const reloadSpy = jest
-      .spyOn(window.location, "reload")
+      .spyOn(browser, "reload")
       .mockImplementationOnce(() => ({}))
 
     const wrapper = mount(
@@ -58,7 +59,7 @@ describe("tabBar", () => {
 
   it("reloads the page when you click on the refresh button", () => {
     const reloadSpy = jest
-      .spyOn(window.location, "reload")
+      .spyOn(browser, "reload")
       .mockImplementationOnce(() => ({}))
 
     const wrapper = mount(

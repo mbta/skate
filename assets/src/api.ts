@@ -1,4 +1,5 @@
 import "whatwg-fetch"
+import { reload } from "./models/browser"
 import {
   DirectionName,
   Route,
@@ -25,7 +26,7 @@ const checkResponseStatus = (response: Response) => {
   if (Math.floor(response.status / 100) === 3 || response.status === 403) {
     // If the API sends us a redirect or forbidden, the user needs to
     // re-authenticate. Reload to go through the auth flow again.
-    window.location.reload(true)
+    reload(true)
   }
 
   throw new Error(`Response error: ${response.status}`)

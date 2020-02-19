@@ -1,5 +1,6 @@
 import { Channel, Socket } from "phoenix"
 import { Dispatch as ReactDispatch, useEffect, useReducer } from "react"
+import { reload } from "../models/browser"
 import {
   VehicleOrGhostData,
   vehicleOrGhostFromData,
@@ -129,7 +130,7 @@ const subscribe = (
 
   // Reload our session if the auth has expired
   channel.on("auth_expired", () => {
-    window.location.reload(true)
+    reload(true)
   })
 
   channel
@@ -138,7 +139,7 @@ const subscribe = (
     // tslint:disable-next-line: no-console
     .receive("error", ({ reason }) => console.error("join failed", reason))
     .receive("timeout", () => {
-      window.location.reload(true)
+      reload(true)
     })
   return channel
 }
