@@ -20,6 +20,16 @@ interface Props {
   route?: Route
 }
 
+const InvalidBanner = () => (
+  <div className="m-vehicle-properties-panel__invalid-banner">
+    <span className="m-vehicle-properties-panel__invalid-banner-title">
+      Invalid
+    </span>
+    — We cannot match this vehicle to a scheduled trip at this time. This
+    vehicle may be off-route or severely off-schedule.
+  </div>
+)
+
 const NotAvailable = () => (
   <span className="m-vehicle-properties-panel__not-available">
     Not available
@@ -121,6 +131,8 @@ const shouldShowDataDiscrepancies = ({ dataDiscrepancies }: Vehicle): boolean =>
 const VehiclePropertiesPanel = ({ selectedVehicle, route }: Props) => (
   <div className="m-vehicle-properties-panel">
     <Header vehicle={selectedVehicle} route={route} />
+
+    {selectedVehicle.isOffCourse && <InvalidBanner />}
 
     {featureIsEnabled("block_waivers") && hasBlockWaivers(selectedVehicle) && (
       <BlockWaiverList blockWaivers={selectedVehicle.blockWaivers} />
