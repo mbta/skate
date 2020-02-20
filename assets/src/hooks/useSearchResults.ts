@@ -1,5 +1,6 @@
 import { Channel, Socket } from "phoenix"
 import { useEffect, useState } from "react"
+import { reload } from "../models/browser"
 import { SearchQuery } from "../models/searchQuery"
 import {
   VehicleOrGhostData,
@@ -37,7 +38,7 @@ const subscribe = (
       console.error("search channel join failed", reason)
     )
     .receive("timeout", () => {
-      window.location.reload(true)
+      reload(true)
     })
 
   return channel

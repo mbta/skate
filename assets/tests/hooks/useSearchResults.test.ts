@@ -1,6 +1,7 @@
 import { renderHook } from "@testing-library/react-hooks"
 import { Socket } from "phoenix"
 import useSearchResults from "../../src/hooks/useSearchResults"
+import * as browser from "../../src/models/browser"
 import { emptySearchQuery, SearchQuery } from "../../src/models/searchQuery"
 import { VehicleData, VehicleOrGhostData } from "../../src/models/vehicleData"
 import {
@@ -327,7 +328,7 @@ describe("useSearchResults", () => {
   })
 
   test("reloads the window on channel timeout", async () => {
-    const reloadSpy = jest.spyOn(window.location, "reload")
+    const reloadSpy = jest.spyOn(browser, "reload")
     reloadSpy.mockImplementationOnce(() => ({}))
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("timeout")

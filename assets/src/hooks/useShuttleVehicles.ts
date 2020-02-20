@@ -1,5 +1,6 @@
 import { Channel, Socket } from "phoenix"
 import { Dispatch, useEffect, useReducer } from "react"
+import { reload } from "../models/browser"
 import { VehicleData, vehicleFromData } from "../models/vehicleData"
 import { Vehicle } from "../realtime"
 
@@ -69,7 +70,7 @@ const subscribe = (socket: Socket, dispatch: Dispatch<Action>): Channel => {
       console.error("shuttle vehicles join failed", reason)
     )
     .receive("timeout", () => {
-      window.location.reload(true)
+      reload(true)
     })
 
   return channel

@@ -1,4 +1,5 @@
 import React from "react"
+import { reload } from "../models/browser"
 
 const DisconnectedModal = () => (
   <>
@@ -8,7 +9,7 @@ const DisconnectedModal = () => (
       </div>
       <button
         className="m-disconnected-modal__refresh-button"
-        onClick={() => window.location.reload(false)}
+        onClick={() => reload(false)}
       >
         Refresh
       </button>

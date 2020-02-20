@@ -1,6 +1,7 @@
 import { renderHook } from "@testing-library/react-hooks"
 import { Socket } from "phoenix"
 import useVehicles from "../../src/hooks/useVehicles"
+import * as browser from "../../src/models/browser"
 import { VehicleData } from "../../src/models/vehicleData"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle, VehicleTimepointStatus } from "../../src/realtime.d"
@@ -370,7 +371,7 @@ describe("useVehicles", () => {
   })
 
   test("reloads the window on channel timeout", async () => {
-    const reloadSpy = jest.spyOn(window.location, "reload")
+    const reloadSpy = jest.spyOn(browser, "reload")
     reloadSpy.mockImplementationOnce(() => ({}))
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("timeout")
