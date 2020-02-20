@@ -26,6 +26,18 @@ const mockFetch = (status: number, json: any): void => {
 }
 
 describe("apiCall", () => {
+  let browserReloadSpy: jest.SpyInstance
+
+  beforeEach(() => {
+    browserReloadSpy = jest
+      .spyOn(browser, "reload")
+      .mockImplementation(() => {})
+  })
+
+  afterAll(() => {
+    browserReloadSpy.mockRestore()
+  })
+
   test("returns parsed data", done => {
     mockFetch(200, { data: "raw" })
 
@@ -44,8 +56,6 @@ describe("apiCall", () => {
   test("reloads the page if the response status is a redirect (3xx)", done => {
     mockFetch(302, { data: null })
 
-    jest.spyOn(browser, "reload").mockImplementation(() => {})
-
     apiCall({
       url: "/",
       parser: () => null,
@@ -57,8 +67,6 @@ describe("apiCall", () => {
 
   test("reloads the page if the response status is forbidden (403)", done => {
     mockFetch(403, { data: null })
-
-    jest.spyOn(browser, "reload").mockImplementation(() => {})
 
     apiCall({
       url: "/",
