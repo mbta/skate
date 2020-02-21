@@ -272,7 +272,7 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
             <td
               className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--start-time"
             >
-              0:5am
+              5:05am
             </td>
           </tr>
           <tr>
@@ -284,7 +284,7 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
             <td
               className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--end-time"
             >
-              7:38am
+              12:38pm
             </td>
           </tr>
         </tbody>

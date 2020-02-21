@@ -52,9 +52,9 @@ describe("BlockWaiverBanner", () => {
 
 describe("formatEpochSeconds", () => {
   test("formats an epoch time in seconds nicely", () => {
-    expect(formatEpochSeconds(1582646000)).toEqual("10:53am")
-    expect(formatEpochSeconds(1582650500)).toEqual("12:08pm")
-    expect(formatEpochSeconds(1582659000)).toEqual("2:30pm")
+    expect(formatEpochSeconds(1582628000)).toEqual("10:53am")
+    expect(formatEpochSeconds(1582632500)).toEqual("12:08pm")
+    expect(formatEpochSeconds(1582641000)).toEqual("2:30pm")
   })
 })
 

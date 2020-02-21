@@ -47,7 +47,7 @@ exports[`BlockWaiverBanner renders a current time waiver 1`] = `
         <td
           className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--start-time"
         >
-          10:53am
+          3:53pm
         </td>
       </tr>
       <tr>
@@ -59,7 +59,7 @@ exports[`BlockWaiverBanner renders a current time waiver 1`] = `
         <td
           className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--end-time"
         >
-          11:26am
+          4:26pm
         </td>
       </tr>
     </tbody>
@@ -114,7 +114,7 @@ exports[`BlockWaiverBanner renders a future time waiver 1`] = `
         <td
           className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--start-time"
         >
-          11:26am
+          4:26pm
         </td>
       </tr>
       <tr>
@@ -126,7 +126,7 @@ exports[`BlockWaiverBanner renders a future time waiver 1`] = `
         <td
           className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--end-time"
         >
-          11:43am
+          4:43pm
         </td>
       </tr>
     </tbody>
@@ -181,7 +181,7 @@ exports[`BlockWaiverBanner renders a past time waiver 1`] = `
         <td
           className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--start-time"
         >
-          10:36am
+          3:36pm
         </td>
       </tr>
       <tr>
@@ -193,7 +193,7 @@ exports[`BlockWaiverBanner renders a past time waiver 1`] = `
         <td
           className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--end-time"
         >
-          10:53am
+          3:53pm
         </td>
       </tr>
     </tbody>

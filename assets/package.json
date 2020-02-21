@@ -95,6 +95,7 @@
       "ts-jest": {
         "tsConfig": "./tsconfig.test.json"
       }
-    }
+    },
+    "globalSetup": "./tests/global-setup.js"
   }
 }
