@@ -1,7 +1,7 @@
 defmodule Gtfs.DataTest do
   use ExUnit.Case, async: true
 
-  alias Gtfs.{Block, Data, Route, RoutePattern, Shape, Stop, StopTime, Trip}
+  alias Gtfs.{Block, Data, Route, RoutePattern, Shape, Stop, StopTime, Timepoint, Trip}
   alias Gtfs.Shape.Point
 
   test "all_routes/1 returns all the routes" do
@@ -29,7 +29,7 @@ defmodule Gtfs.DataTest do
     data = %Data{
       routes: routes,
       route_patterns: [],
-      timepoint_ids_by_route: %{},
+      timepoints_by_route: %{},
       shapes: %{},
       stops: %{},
       trips: %{},
@@ -40,13 +40,18 @@ defmodule Gtfs.DataTest do
     assert Data.all_routes(data) == routes
   end
 
-  describe "timepoint_ids_on_route/2" do
+  describe "timepoints_on_route/2" do
     test "returns the timepoints for the given route ID" do
       data = %Data{
         routes: [],
         route_patterns: [],
-        timepoint_ids_by_route: %{
-          "1" => ["t1", "t2", "t3", "t4"]
+        timepoints_by_route: %{
+          "1" => [
+            %Timepoint{id: "t1", name: "t1 name"},
+            %Timepoint{id: "t2", name: "t2 name"},
+            %Timepoint{id: "t3", name: "t3 name"},
+            %Timepoint{id: "t4", name: "t4 name"}
+          ]
         },
         shapes: %{},
         stops: %{},
@@ -55,15 +60,25 @@ defmodule Gtfs.DataTest do
         calendar: %{}
       }
 
-      assert Data.timepoint_ids_on_route(data, "1") == ["t1", "t2", "t3", "t4"]
+      assert Data.timepoints_on_route(data, "1") == [
+               %Timepoint{id: "t1", name: "t1 name"},
+               %Timepoint{id: "t2", name: "t2 name"},
+               %Timepoint{id: "t3", name: "t3 name"},
+               %Timepoint{id: "t4", name: "t4 name"}
+             ]
     end
 
     test "returns an empty list if the route ID isn't found" do
       data = %Data{
         routes: [],
         route_patterns: [],
-        timepoint_ids_by_route: %{
-          "1" => ["t1", "t2", "t3", "t4"]
+        timepoints_by_route: %{
+          "1" => [
+            %Timepoint{id: "t1", name: "t1 name"},
+            %Timepoint{id: "t2", name: "t2 name"},
+            %Timepoint{id: "t3", name: "t3 name"},
+            %Timepoint{id: "t4", name: "t4 name"}
+          ]
         },
         shapes: %{},
         stops: %{},
@@ -72,7 +87,7 @@ defmodule Gtfs.DataTest do
         calendar: %{}
       }
 
-      assert Data.timepoint_ids_on_route(data, "2") == []
+      assert Data.timepoints_on_route(data, "2") == []
     end
   end
 
@@ -81,7 +96,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
-        timepoint_ids_by_route: %{},
+        timepoints_by_route: %{},
         shapes: %{},
         stops: %{
           "1" => %Stop{
@@ -111,7 +126,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
-        timepoint_ids_by_route: %{},
+        timepoints_by_route: %{},
         shapes: %{},
         stops: %{
           "1" => %Stop{
@@ -139,7 +154,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
-        timepoint_ids_by_route: %{},
+        timepoints_by_route: %{},
         shapes: %{},
         stops: %{},
         trips: %{
@@ -168,7 +183,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
-        timepoint_ids_by_route: %{},
+        timepoints_by_route: %{},
         shapes: %{},
         stops: %{},
         trips: %{},
@@ -199,7 +214,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
-        timepoint_ids_by_route: %{},
+        timepoints_by_route: %{},
         shapes: %{},
         stops: %{},
         trips: %{},
@@ -228,7 +243,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
-        timepoint_ids_by_route: %{},
+        timepoints_by_route: %{},
         shapes: %{},
         stops: %{},
         trips: %{},
@@ -243,7 +258,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
-        timepoint_ids_by_route: %{},
+        timepoints_by_route: %{},
         shapes: %{},
         stops: %{},
         trips: %{},
@@ -308,7 +323,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
-        timepoint_ids_by_route: %{},
+        timepoints_by_route: %{},
         shapes: %{},
         stops: [],
         trips: %{trip.id => trip},
@@ -343,7 +358,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
-        timepoint_ids_by_route: %{},
+        timepoints_by_route: %{},
         shapes: %{},
         stops: [],
         trips: %{
@@ -380,7 +395,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
-        timepoint_ids_by_route: %{},
+        timepoints_by_route: %{},
         shapes: %{},
         stops: [],
         trips: %{
@@ -418,7 +433,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
-        timepoint_ids_by_route: %{},
+        timepoints_by_route: %{},
         shapes: %{},
         stops: [],
         trips: %{
@@ -463,7 +478,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
-        timepoint_ids_by_route: %{},
+        timepoints_by_route: %{},
         shapes: %{},
         stops: [],
         trips: %{},
@@ -485,7 +500,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
-        timepoint_ids_by_route: %{},
+        timepoints_by_route: %{},
         shapes: %{},
         stops: [],
         trips: %{},
@@ -560,7 +575,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
-        timepoint_ids_by_route: %{},
+        timepoints_by_route: %{},
         shapes: %{},
         stops: [],
         trips: %{},
@@ -617,7 +632,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
-        timepoint_ids_by_route: %{},
+        timepoints_by_route: %{},
         shapes: %{},
         stops: [],
         trips: %{},
@@ -671,7 +686,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
-        timepoint_ids_by_route: %{},
+        timepoints_by_route: %{},
         shapes: %{
           "route1" => shapes
         },
@@ -688,7 +703,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
-        timepoint_ids_by_route: %{},
+        timepoints_by_route: %{},
         shapes: %{
           "route1" => [
             %Shape{
@@ -742,7 +757,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
-        timepoint_ids_by_route: %{},
+        timepoints_by_route: %{},
         shapes: %{"route" => [shape]},
         stops: [],
         trips: %{"trip" => trip},
@@ -768,7 +783,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
-        timepoint_ids_by_route: %{},
+        timepoints_by_route: %{},
         shapes: %{},
         stops: [],
         trips: %{"trip" => trip},
@@ -783,7 +798,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: [],
-        timepoint_ids_by_route: %{},
+        timepoints_by_route: %{},
         shapes: %{},
         stops: [],
         trips: %{},
@@ -831,7 +846,7 @@ defmodule Gtfs.DataTest do
       data = %Data{
         routes: [],
         route_patterns: route_patterns,
-        timepoint_ids_by_route: %{},
+        timepoints_by_route: %{},
         shapes: %{},
         stops: [],
         trips: %{},
@@ -857,7 +872,7 @@ defmodule Gtfs.DataTest do
     end
   end
 
-  describe "timepoint_ids_for_route/3" do
+  describe "timepoints_for_route/4" do
     test "returns all timepoint IDs for this route (either direction), sorted" do
       route_patterns = [
         %RoutePattern{
@@ -928,7 +943,17 @@ defmodule Gtfs.DataTest do
         }
       }
 
-      assert Data.timepoint_ids_for_route(route_patterns, "r1", trips) == ["tp4", "tp1"]
+      timepoints_by_id = %{
+        "tp1" => %Timepoint{id: "tp1", name: "tp1 name"},
+        "tp2" => %Timepoint{id: "tp2", name: "tp2 name"},
+        "tp3" => %Timepoint{id: "tp3", name: "tp3 name"},
+        "tp4" => %Timepoint{id: "tp4", name: "tp4 name"}
+      }
+
+      assert Data.timepoints_for_route(route_patterns, "r1", trips, timepoints_by_id) == [
+               %Timepoint{id: "tp4", name: "tp4 name"},
+               %Timepoint{id: "tp1", name: "tp1 name"}
+             ]
     end
 
     test "groups timepoints together even when they're on different stops" do
@@ -960,8 +985,8 @@ defmodule Gtfs.DataTest do
           route_pattern_id: "rp1",
           shape_id: "shape1",
           stop_times: [
-            %StopTime{stop_id: "s1", time: 1, timepoint_id: "t1"},
-            %StopTime{stop_id: "s3b", time: 2, timepoint_id: "t3"}
+            %StopTime{stop_id: "s1", time: 1, timepoint_id: "tp1"},
+            %StopTime{stop_id: "s3b", time: 2, timepoint_id: "tp3"}
           ]
         },
         "t2" => %Trip{
@@ -974,15 +999,27 @@ defmodule Gtfs.DataTest do
           route_pattern_id: "rp2",
           shape_id: "shape2",
           stop_times: [
-            %StopTime{stop_id: "s1", time: 1, timepoint_id: "t1"},
-            %StopTime{stop_id: "s2", time: 2, timepoint_id: "t2"},
-            %StopTime{stop_id: "s3a", time: 3, timepoint_id: "t3"},
-            %StopTime{stop_id: "s4", time: 4, timepoint_id: "t4"}
+            %StopTime{stop_id: "s1", time: 1, timepoint_id: "tp1"},
+            %StopTime{stop_id: "s2", time: 2, timepoint_id: "tp2"},
+            %StopTime{stop_id: "s3a", time: 3, timepoint_id: "tp3"},
+            %StopTime{stop_id: "s4", time: 4, timepoint_id: "tp4"}
           ]
         }
       }
 
-      assert Data.timepoint_ids_for_route(route_patterns, "r1", trips) == ["t1", "t2", "t3", "t4"]
+      timepoints_by_id = %{
+        "tp1" => %Timepoint{id: "tp1", name: "tp1 name"},
+        "tp2" => %Timepoint{id: "tp2", name: "tp2 name"},
+        "tp3" => %Timepoint{id: "tp3", name: "tp3 name"},
+        "tp4" => %Timepoint{id: "tp4", name: "tp4 name"}
+      }
+
+      assert Data.timepoints_for_route(route_patterns, "r1", trips, timepoints_by_id) == [
+               %Timepoint{id: "tp1", name: "tp1 name"},
+               %Timepoint{id: "tp2", name: "tp2 name"},
+               %Timepoint{id: "tp3", name: "tp3 name"},
+               %Timepoint{id: "tp4", name: "tp4 name"}
+             ]
     end
   end
 end

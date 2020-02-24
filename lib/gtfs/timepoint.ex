@@ -8,16 +8,17 @@ defmodule Gtfs.Timepoint do
           name: String.t() | nil
         }
 
+  @type timepoints_by_id :: %{id() => t()}
+
   @enforce_keys [
-    :id,
-    :name
+    :id
   ]
 
   @derive Jason.Encoder
 
   defstruct [
     :id,
-    :name
+    name: nil
   ]
 
   @spec from_csv_row(Csv.row()) :: t()
@@ -26,5 +27,12 @@ defmodule Gtfs.Timepoint do
       id: row["checkpoint_id"],
       name: row["checkpoint_name"]
     }
+  end
+
+  @spec timepoint_for_id(timepoints_by_id(), id()) :: t() | nil
+  def timepoint_for_id(_timepoints_by_id, nil), do: nil
+
+  def timepoint_for_id(timepoints_by_id, id) do
+    Map.get(timepoints_by_id, id, %__MODULE__{id: id})
   end
 end

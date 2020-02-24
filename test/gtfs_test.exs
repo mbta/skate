@@ -309,13 +309,13 @@ defmodule GtfsTest do
                    %StopTime{
                      stop_id: "s4",
                      time: 1,
-                     timepoint: %Timepoint{id: "exurb", name: "exurb name"}
+                     timepoint_id: "exurb"
                    },
-                   %StopTime{stop_id: "s5", time: 2, timepoint: nil},
+                   %StopTime{stop_id: "s5", time: 2, timepoint_id: nil},
                    %StopTime{
                      stop_id: "s3",
                      time: 3,
-                     timepoint: %Timepoint{id: "suburb", name: "suburb name"}
+                     timepoint_id: "suburb"
                    }
                  ]
                }
@@ -405,13 +405,13 @@ defmodule GtfsTest do
                    %StopTime{
                      stop_id: "s4",
                      time: 1,
-                     timepoint: %Timepoint{id: "exurb", name: "exurb name"}
+                     timepoint_id: "exurb"
                    },
-                   %StopTime{stop_id: "s5", time: 2, timepoint: nil},
+                   %StopTime{stop_id: "s5", time: 2, timepoint_id: nil},
                    %StopTime{
                      stop_id: "s3",
                      time: 3,
-                     timepoint: %Timepoint{id: "suburb", name: "suburb name"}
+                     timepoint_id: "suburb"
                    }
                  ]
                }

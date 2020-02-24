@@ -16,4 +16,38 @@ defmodule Gtfs.TimepointTest do
              }
     end
   end
+
+  describe "timpoint_for_id/2" do
+    setup do
+      timepoint = %Timepoint{
+        id: "t1",
+        name: "t1 name"
+      }
+
+      timepoints_by_id = %{
+        "t1" => timepoint
+      }
+
+      {:ok, %{timepoints_by_id: timepoints_by_id, timepoint: timepoint}}
+    end
+
+    test "retrieves a timepoint from a collection", %{
+      timepoints_by_id: timepoints_by_id,
+      timepoint: timepoint
+    } do
+      assert Timepoint.timepoint_for_id(timepoints_by_id, "t1") == timepoint
+    end
+
+    test "returns a timepoint with no name if the ID does not exist in the collection", %{
+      timepoints_by_id: timepoints_by_id
+    } do
+      assert Timepoint.timepoint_for_id(timepoints_by_id, "missing") == %Timepoint{id: "missing"}
+    end
+
+    test "returns nil if the ID is nil", %{
+      timepoints_by_id: timepoints_by_id
+    } do
+      assert Timepoint.timepoint_for_id(timepoints_by_id, nil) == nil
+    end
+  end
 end

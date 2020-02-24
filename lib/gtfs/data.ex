@@ -41,8 +41,6 @@ defmodule Gtfs.Data do
 
   @type directions_by_route_and_id :: %{Route.id() => %{Direction.id() => Direction.t()}}
 
-  @type timepoints_by_id :: %{Timepoint.id() => Timepoint.t()}
-
   @enforce_keys [
     :routes,
     :route_patterns,
@@ -228,8 +226,7 @@ defmodule Gtfs.Data do
         gtfs_files["trips.txt"],
         gtfs_files["stop_times.txt"],
         bus_route_ids,
-        run_ids_by_trip_id,
-        timepoints_by_id
+        run_ids_by_trip_id
       )
 
     trips = Map.new(bus_trips, fn trip -> {trip.id, trip} end)
@@ -237,7 +234,8 @@ defmodule Gtfs.Data do
     %__MODULE__{
       routes: bus_routes,
       route_patterns: route_patterns,
-      timepoints_by_route: timepoints_for_routes(route_patterns, bus_route_ids, trips),
+      timepoints_by_route:
+        timepoints_for_routes(route_patterns, bus_route_ids, trips, timepoints_by_id),
       shapes: shapes_by_route_id(gtfs_files["shapes.txt"], bus_trips),
       stops: all_stops_by_id(gtfs_files["stops.txt"]),
       trips: trips,
@@ -280,30 +278,45 @@ defmodule Gtfs.Data do
     )
   end
 
-  @spec all_timepoints_by_id(binary()) :: timepoints_by_id()
+  @spec all_timepoints_by_id(binary()) :: Timepoint.timepoints_by_id()
   defp all_timepoints_by_id(timepoints_data) do
     timepoints_data
     |> Csv.parse(parse: &Timepoint.from_csv_row/1)
     |> Map.new(fn timepoint -> {timepoint.id, timepoint} end)
   end
 
-  @spec timepoints_for_routes([RoutePattern.t()], MapSet.t(Route.id()), trips_by_id()) ::
+  @spec timepoints_for_routes(
+          [RoutePattern.t()],
+          MapSet.t(Route.id()),
+          trips_by_id(),
+          Timepoint.timepoints_by_id()
+        ) ::
           timepoints_by_route()
-  defp timepoints_for_routes(route_patterns, route_ids, trips) do
+  defp timepoints_for_routes(route_patterns, route_ids, trips, timepoints_by_id) do
     Enum.reduce(route_ids, %{}, fn route_id, acc ->
-      Map.put(acc, route_id, timepoints_for_route(route_patterns, route_id, trips))
+      Map.put(
+        acc,
+        route_id,
+        timepoints_for_route(route_patterns, route_id, trips, timepoints_by_id)
+      )
     end)
   end
 
-  @spec timepoints_for_route([RoutePattern.t()], Route.id(), trips_by_id()) :: [
-          Timepoint.t()
-        ]
-  def timepoints_for_route(route_patterns, route_id, trips) do
+  @spec timepoints_for_route(
+          [RoutePattern.t()],
+          Route.id(),
+          trips_by_id(),
+          Timepoint.timepoints_by_id()
+        ) ::
+          [
+            Timepoint.t()
+          ]
+  def timepoints_for_route(route_patterns, route_id, trips, timepoints_by_id) do
     timepoints_by_direction =
       route_patterns
       |> route_patterns_by_direction(route_id)
       |> Helpers.map_values(fn route_patterns ->
-        timepoints_for_route_patterns(route_patterns, trips)
+        timepoints_for_route_patterns(route_patterns, trips, timepoints_by_id)
       end)
 
     Gtfs.Helpers.merge_lists([
@@ -313,17 +326,23 @@ defmodule Gtfs.Data do
   end
 
   # All route_patterns should be in the same direction
-  @spec timepoints_for_route_patterns([RoutePattern.t()], trips_by_id()) :: [
+  @spec timepoints_for_route_patterns(
+          [RoutePattern.t()],
+          trips_by_id(),
+          Timepoint.timepoints_by_id()
+        ) :: [
           Timepoint.t()
         ]
-  defp timepoints_for_route_patterns(route_patterns, trips) do
+  defp timepoints_for_route_patterns(route_patterns, trips, timepoints_by_id) do
     route_patterns
     |> Enum.map(fn route_pattern ->
       trip_id = route_pattern.representative_trip_id
       trip = trips[trip_id]
 
       trip.stop_times
-      |> Enum.map(fn stop_time -> stop_time.timepoint end)
+      |> Enum.map(fn stop_time ->
+        Timepoint.timepoint_for_id(timepoints_by_id, stop_time.timepoint_id)
+      end)
       |> Enum.filter(& &1)
     end)
     |> Gtfs.Helpers.merge_lists()
@@ -366,11 +385,10 @@ defmodule Gtfs.Data do
           binary(),
           binary(),
           MapSet.t(Route.id()),
-          %{Trip.id() => Run.id()},
-          timepoints_by_id()
+          %{Trip.id() => Run.id()}
         ) ::
           [Trip.t()]
-  defp bus_trips(trips_data, stop_times_data, bus_route_ids, run_ids, timepoints_by_id) do
+  defp bus_trips(trips_data, stop_times_data, bus_route_ids, run_ids) do
     bus_trips =
       Csv.parse(
         trips_data,
@@ -383,7 +401,7 @@ defmodule Gtfs.Data do
     bus_trip_stop_times =
       stop_times_data
       |> Csv.parse(filter: &StopTime.row_in_trip_id_set?(&1, bus_trip_ids))
-      |> StopTime.trip_stop_times_from_csv(timepoints_by_id)
+      |> StopTime.trip_stop_times_from_csv()
 
     Enum.map(bus_trips, fn trip ->
       %{trip | stop_times: Map.fetch!(bus_trip_stop_times, trip.id), run_id: run_ids[trip.id]}
