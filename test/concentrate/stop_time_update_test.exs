@@ -57,7 +57,8 @@ defmodule Concentrate.StopTimeUpdateTest do
           departure_time: 4,
           track: "track",
           schedule_relationship: :SKIPPED,
-          uncertainty: 300
+          uncertainty: 300,
+          remark: "B"
         )
 
       expected =
@@ -71,7 +72,8 @@ defmodule Concentrate.StopTimeUpdateTest do
           track: "track",
           schedule_relationship: :SKIPPED,
           platform_id: "platform",
-          uncertainty: 300
+          uncertainty: 300,
+          remark: "B"
         )
 
       assert Mergeable.merge(first, second) == expected

@@ -1,0 +1,5663 @@
+{
+  "entity": [
+    {
+      "alert": null,
+      "id": "C23-216:23:42844961:458",
+      "is_deleted": null,
+      "trip_update": {
+        "delay": null,
+        "remark": null,
+        "stop_time_update": [
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "458",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1224",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "473",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "460",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11149",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "388",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "17861",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "387",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "334",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "64000",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "369",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "470",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "21151",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "21148",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "469",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11148",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "392",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "461",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "371",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "394",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "393",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "457",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1148",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "390",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "465",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "463",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "395",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "467",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "396",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "367",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "386",
+            "stop_sequence": null
+          }
+        ],
+        "timestamp": null,
+        "trip": {
+          "direction_id": null,
+          "route_id": "23",
+          "schedule_relationship": "SCHEDULED",
+          "start_date": null,
+          "start_time": null,
+          "trip_id": "42844961"
+        },
+        "vehicle": null
+      },
+      "vehicle": null
+    },
+    {
+      "alert": null,
+      "id": "C23-219:23:42844962:17861",
+      "is_deleted": null,
+      "trip_update": {
+        "delay": null,
+        "remark": null,
+        "stop_time_update": [
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "17861",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "21148",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "396",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "393",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11148",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "470",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "388",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "463",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1224",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "392",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "21151",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "473",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "395",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "461",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "465",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "369",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "457",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "371",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1148",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "469",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "467",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "387",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "334",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "458",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "386",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "390",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "460",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "64000",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "367",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "394",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11149",
+            "stop_sequence": null
+          }
+        ],
+        "timestamp": null,
+        "trip": {
+          "direction_id": null,
+          "route_id": "23",
+          "schedule_relationship": "SCHEDULED",
+          "start_date": null,
+          "start_time": null,
+          "trip_id": "42844962"
+        },
+        "vehicle": null
+      },
+      "vehicle": null
+    },
+    {
+      "alert": null,
+      "id": "C23-216:23:42844971:64000",
+      "is_deleted": null,
+      "trip_update": {
+        "delay": null,
+        "remark": null,
+        "stop_time_update": [
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "64000",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1224",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "458",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "394",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "390",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "457",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "21148",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "367",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "461",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1148",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "463",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "465",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "470",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "393",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "334",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "371",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "460",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11148",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "396",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "387",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "469",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11149",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "369",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "392",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "473",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "388",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "386",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "17861",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "395",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "467",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "21151",
+            "stop_sequence": null
+          }
+        ],
+        "timestamp": null,
+        "trip": {
+          "direction_id": null,
+          "route_id": "23",
+          "schedule_relationship": "SCHEDULED",
+          "start_date": null,
+          "start_time": null,
+          "trip_id": "42844971"
+        },
+        "vehicle": null
+      },
+      "vehicle": null
+    },
+    {
+      "alert": null,
+      "id": "C23-219:23:42844972:461",
+      "is_deleted": null,
+      "trip_update": {
+        "delay": null,
+        "remark": null,
+        "stop_time_update": [
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "461",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1148",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "386",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "395",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "463",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "469",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "467",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "394",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "369",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "371",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "473",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "457",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "17861",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "465",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "470",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "392",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "64000",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11149",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "388",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "460",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "21151",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "393",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "387",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "458",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1224",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "396",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "367",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "390",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "334",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11148",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "21148",
+            "stop_sequence": null
+          }
+        ],
+        "timestamp": null,
+        "trip": {
+          "direction_id": null,
+          "route_id": "23",
+          "schedule_relationship": "SCHEDULED",
+          "start_date": null,
+          "start_time": null,
+          "trip_id": "42844972"
+        },
+        "vehicle": null
+      },
+      "vehicle": null
+    },
+    {
+      "alert": null,
+      "id": "C23-232:23:42844975:394",
+      "is_deleted": null,
+      "trip_update": {
+        "delay": null,
+        "remark": null,
+        "stop_time_update": [
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "394",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "461",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "460",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "469",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "392",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11149",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "458",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "395",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "390",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "371",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1148",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "470",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "465",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "21148",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "334",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "473",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "467",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1224",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "21151",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "369",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "388",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "396",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "463",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "387",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "386",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "64000",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "367",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11148",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "393",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "17861",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "457",
+            "stop_sequence": null
+          }
+        ],
+        "timestamp": null,
+        "trip": {
+          "direction_id": null,
+          "route_id": "23",
+          "schedule_relationship": "SCHEDULED",
+          "start_date": null,
+          "start_time": null,
+          "trip_id": "42844975"
+        },
+        "vehicle": null
+      },
+      "vehicle": null
+    },
+    {
+      "alert": null,
+      "id": "C23-216:23:42845073:426",
+      "is_deleted": null,
+      "trip_update": {
+        "delay": null,
+        "remark": null,
+        "stop_time_update": [
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "426",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "472",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "412",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1259",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "471",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "401",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11323",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "475",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "404",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "430",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "406",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "17862",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "478",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11257",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "482",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "334",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "405",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11259",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "428",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "411",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "480",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "468",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "40001",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "410",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "64000",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "477",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "483",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "407",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "485",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "399",
+            "stop_sequence": null
+          }
+        ],
+        "timestamp": null,
+        "trip": {
+          "direction_id": null,
+          "route_id": "23",
+          "schedule_relationship": "SCHEDULED",
+          "start_date": null,
+          "start_time": null,
+          "trip_id": "42845073"
+        },
+        "vehicle": null
+      },
+      "vehicle": null
+    },
+    {
+      "alert": null,
+      "id": "C23-219:23:42845074:406",
+      "is_deleted": null,
+      "trip_update": {
+        "delay": null,
+        "remark": null,
+        "stop_time_update": [
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "406",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11259",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "471",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "407",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "478",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "483",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "404",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "477",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "334",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "482",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "480",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "411",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "430",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "485",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "428",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1259",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "472",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "410",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11257",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "64000",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "475",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "40001",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "401",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "426",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "405",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "468",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "412",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "399",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11323",
+            "stop_sequence": null
+          }
+        ],
+        "timestamp": null,
+        "trip": {
+          "direction_id": null,
+          "route_id": "23",
+          "schedule_relationship": "SCHEDULED",
+          "start_date": null,
+          "start_time": null,
+          "trip_id": "42845074"
+        },
+        "vehicle": null
+      },
+      "vehicle": null
+    },
+    {
+      "alert": null,
+      "id": "C23-216:23:42845081:407",
+      "is_deleted": null,
+      "trip_update": {
+        "delay": null,
+        "remark": null,
+        "stop_time_update": [
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "407",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "17862",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11257",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "483",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "471",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "410",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "64000",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "401",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "405",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "480",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "334",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "412",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "430",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11323",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "485",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "426",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "482",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "40001",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "406",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "472",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "475",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1259",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "399",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "477",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "404",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "478",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "468",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11259",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "411",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "428",
+            "stop_sequence": null
+          }
+        ],
+        "timestamp": null,
+        "trip": {
+          "direction_id": null,
+          "route_id": "23",
+          "schedule_relationship": "SCHEDULED",
+          "start_date": null,
+          "start_time": null,
+          "trip_id": "42845081"
+        },
+        "vehicle": null
+      },
+      "vehicle": null
+    },
+    {
+      "alert": null,
+      "id": "C23-219:23:42845082:471",
+      "is_deleted": null,
+      "trip_update": {
+        "delay": null,
+        "remark": null,
+        "stop_time_update": [
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "471",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "412",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "404",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "407",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "399",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "17862",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "472",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "428",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "406",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "401",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "410",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "405",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "478",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "482",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "483",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "430",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "480",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11259",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "477",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11257",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "485",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "40001",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "426",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "64000",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "334",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "475",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11323",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "411",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1259",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "468",
+            "stop_sequence": null
+          }
+        ],
+        "timestamp": null,
+        "trip": {
+          "direction_id": null,
+          "route_id": "23",
+          "schedule_relationship": "SCHEDULED",
+          "start_date": null,
+          "start_time": null,
+          "trip_id": "42845082"
+        },
+        "vehicle": null
+      },
+      "vehicle": null
+    },
+    {
+      "alert": null,
+      "id": "C23-232:23:42845084:406",
+      "is_deleted": null,
+      "trip_update": {
+        "delay": null,
+        "remark": null,
+        "stop_time_update": [
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "406",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "480",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1259",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "478",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "405",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11323",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "401",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "482",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11259",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "399",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "483",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "334",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "411",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "404",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "412",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "477",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "472",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "64000",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "426",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "468",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "40001",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "428",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "485",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11257",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "410",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "471",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "17862",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "475",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "407",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "E-R-1067",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "430",
+            "stop_sequence": null
+          }
+        ],
+        "timestamp": null,
+        "trip": {
+          "direction_id": null,
+          "route_id": "23",
+          "schedule_relationship": "SCHEDULED",
+          "start_date": null,
+          "start_time": null,
+          "trip_id": "42845084"
+        },
+        "vehicle": null
+      },
+      "vehicle": null
+    },
+    {
+      "alert": null,
+      "id": "C23-216:23:42845092:17862",
+      "is_deleted": null,
+      "trip_update": {
+        "delay": null,
+        "remark": null,
+        "stop_time_update": [
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "e-r-1556",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "17862",
+            "stop_sequence": null
+          }
+        ],
+        "timestamp": null,
+        "trip": {
+          "direction_id": null,
+          "route_id": "23",
+          "schedule_relationship": "SCHEDULED",
+          "start_date": null,
+          "start_time": null,
+          "trip_id": "42845092"
+        },
+        "vehicle": null
+      },
+      "vehicle": null
+    },
+    {
+      "alert": null,
+      "id": "C23-219:23:42845093:17862",
+      "is_deleted": null,
+      "trip_update": {
+        "delay": null,
+        "remark": null,
+        "stop_time_update": [
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "inactive/unknown",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "17862",
+            "stop_sequence": null
+          }
+        ],
+        "timestamp": null,
+        "trip": {
+          "direction_id": null,
+          "route_id": "23",
+          "schedule_relationship": "SCHEDULED",
+          "start_date": null,
+          "start_time": null,
+          "trip_id": "42845093"
+        },
+        "vehicle": null
+      },
+      "vehicle": null
+    },
+    {
+      "alert": null,
+      "id": "S28-11:28:43160735:381",
+      "is_deleted": null,
+      "trip_update": {
+        "delay": null,
+        "remark": null,
+        "stop_time_update": [
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "381",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1723",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "383",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1148",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "394",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "387",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1724",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "395",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "21148",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1722",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "385",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "18511",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "392",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1734",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "64000",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1737",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "17861",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1731",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "21151",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "390",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1732",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1736",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1735",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1728",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1733",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11149",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "384",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "396",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "388",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "393",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1224",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1726",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1725",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "382",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1730",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "386",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11148",
+            "stop_sequence": null
+          }
+        ],
+        "timestamp": null,
+        "trip": {
+          "direction_id": null,
+          "route_id": "28",
+          "schedule_relationship": "SCHEDULED",
+          "start_date": null,
+          "start_time": null,
+          "trip_id": "43160735"
+        },
+        "vehicle": null
+      },
+      "vehicle": null
+    },
+    {
+      "alert": null,
+      "id": "S28-11:28:43160740:401",
+      "is_deleted": null,
+      "trip_update": {
+        "delay": null,
+        "remark": null,
+        "stop_time_update": [
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "401",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11712",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "405",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "407",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "413",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "412",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1714",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "410",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "18511",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11719",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1708",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "415",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "40001",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "411",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "404",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "419",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1710",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1718",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11257",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11323",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "406",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "17862",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1721",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1717",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11259",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "416",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "417",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1259",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "414",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "64000",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1709",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1713",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1720",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "399",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1716",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1706",
+            "stop_sequence": null
+          }
+        ],
+        "timestamp": null,
+        "trip": {
+          "direction_id": null,
+          "route_id": "28",
+          "schedule_relationship": "SCHEDULED",
+          "start_date": null,
+          "start_time": null,
+          "trip_id": "43160740"
+        },
+        "vehicle": null
+      },
+      "vehicle": null
+    },
+    {
+      "alert": null,
+      "id": "S28-11:28:43160742:17862",
+      "is_deleted": null,
+      "trip_update": {
+        "delay": null,
+        "remark": null,
+        "stop_time_update": [
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "17862",
+            "stop_sequence": null
+          }
+        ],
+        "timestamp": null,
+        "trip": {
+          "direction_id": null,
+          "route_id": "28",
+          "schedule_relationship": "SCHEDULED",
+          "start_date": null,
+          "start_time": null,
+          "trip_id": "43160742"
+        },
+        "vehicle": null
+      },
+      "vehicle": null
+    },
+    {
+      "alert": null,
+      "id": "S28-11:28:43160743:1724",
+      "is_deleted": null,
+      "trip_update": {
+        "delay": null,
+        "remark": null,
+        "stop_time_update": [
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1724",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1148",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "21148",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1737",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11149",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1726",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "390",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "382",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1722",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "395",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1736",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1723",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "381",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1730",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1735",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "393",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "385",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "386",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "64000",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "392",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1733",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "396",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1728",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "384",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1224",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1734",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1725",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "21151",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "394",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11148",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "388",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1732",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "387",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "383",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1731",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "17861",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "18511",
+            "stop_sequence": null
+          }
+        ],
+        "timestamp": null,
+        "trip": {
+          "direction_id": null,
+          "route_id": "28",
+          "schedule_relationship": "SCHEDULED",
+          "start_date": null,
+          "start_time": null,
+          "trip_id": "43160743"
+        },
+        "vehicle": null
+      },
+      "vehicle": null
+    },
+    {
+      "alert": null,
+      "id": "S28-11:28:43160749:404",
+      "is_deleted": null,
+      "trip_update": {
+        "delay": null,
+        "remark": null,
+        "stop_time_update": [
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "404",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1706",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "406",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11712",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "414",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1718",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "416",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1708",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1713",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "407",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1717",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1259",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "18511",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11323",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "410",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1721",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1709",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "399",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "419",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "411",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "415",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11719",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "17862",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "40001",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "405",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "64000",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11257",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "412",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "417",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "413",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1720",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1716",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1710",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1714",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11259",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "j",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "401",
+            "stop_sequence": null
+          }
+        ],
+        "timestamp": null,
+        "trip": {
+          "direction_id": null,
+          "route_id": "28",
+          "schedule_relationship": "SCHEDULED",
+          "start_date": null,
+          "start_time": null,
+          "trip_id": "43160749"
+        },
+        "vehicle": null
+      },
+      "vehicle": null
+    },
+    {
+      "alert": null,
+      "id": "L455-133:455:42997508:6822",
+      "is_deleted": null,
+      "trip_update": {
+        "delay": null,
+        "remark": null,
+        "stop_time_update": [
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6822",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "7155",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "4562",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "4523",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6153",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6773",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "17150",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "4524",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6171",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6159",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6144",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6156",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6833",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "4525",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6174",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6834",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6166",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6164",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "14748",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6148",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6175",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6168",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "16156",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6142",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6157",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6173",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "4522",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6146",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6181",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6169",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "37150",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "4521",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6165",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6831",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6143",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6154",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6102",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6167",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6161",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "16170",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6145",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6151",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "45211",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "16177",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6155",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6150",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6830",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6163",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "4520",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6152",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6827",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6176",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6158",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6100",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6177",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6160",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6600",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6147",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6824",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6162",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "4563",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6170",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6149",
+            "stop_sequence": null
+          }
+        ],
+        "timestamp": null,
+        "trip": {
+          "direction_id": null,
+          "route_id": "455",
+          "schedule_relationship": "SCHEDULED",
+          "start_date": null,
+          "start_time": null,
+          "trip_id": "42997508"
+        },
+        "vehicle": null
+      },
+      "vehicle": null
+    },
+    {
+      "alert": null,
+      "id": "L455-133:455:42997942:6131",
+      "is_deleted": null,
+      "trip_update": {
+        "delay": null,
+        "remark": null,
+        "stop_time_update": [
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6131",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6112",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6132",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6109",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6138",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6669",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6119",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6137",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6123",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "16131",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "7234",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "4492",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6140",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6135",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6121",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "16653",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "4489",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "16126",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "7236",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6104",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "4487",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6107",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6113",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "4451",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6674",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "37150",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6120",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6106",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6139",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "4490",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6108",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "4453",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "7153",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "16118",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6122",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "4488",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6115",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6114",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "7233",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6111",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6118",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6116",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6128",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6134",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "17231",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6136",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6103",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "16102",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "7154",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6783",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6126",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6780",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6124",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6125",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6133",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6127",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6110",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6129",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "16132",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "4491",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "Inactive",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6130",
+            "stop_sequence": null
+          }
+        ],
+        "timestamp": null,
+        "trip": {
+          "direction_id": null,
+          "route_id": "455",
+          "schedule_relationship": "SCHEDULED",
+          "start_date": null,
+          "start_time": null,
+          "trip_id": "42997942"
+        },
+        "vehicle": null
+      },
+      "vehicle": null
+    },
+    {
+      "alert": null,
+      "id": "C47-299:47:42843311:1805",
+      "is_deleted": null,
+      "trip_update": {
+        "delay": null,
+        "remark": null,
+        "stop_time_update": [
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1805",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1804",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11803",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "2",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1811",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "5090",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "2755",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1791",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11799",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "10015",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1810",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11792",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "10013",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11802",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "150",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1816",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "64",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1812",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1808",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1806",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "7",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "10011",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1813",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11809",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1807",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1809",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1799",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1790",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "10012",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1798",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "63",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1814",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "62",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1123",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "17863",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11",
+            "stop_sequence": null
+          }
+        ],
+        "timestamp": null,
+        "trip": {
+          "direction_id": null,
+          "route_id": "47",
+          "schedule_relationship": "SCHEDULED",
+          "start_date": null,
+          "start_time": null,
+          "trip_id": "42843311"
+        },
+        "vehicle": null
+      },
+      "vehicle": null
+    },
+    {
+      "alert": null,
+      "id": "C47-299:47:42843370:10005",
+      "is_deleted": null,
+      "trip_update": {
+        "delay": null,
+        "remark": null,
+        "stop_time_update": [
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "10005",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1817",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "10014",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1771",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1778",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "9434",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1226",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11780",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1779",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1780",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1775",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "10008",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "72",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11592",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11593",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "10003",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "6",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "17862",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "17861",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1785",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11767",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1593",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "10007",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "64",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "10006",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1784",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1764",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1766",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1777",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1772",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "2",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "11781",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "150",
+            "stop_sequence": null
+          },
+          {
+            "arrival": null,
+            "departure": null,
+            "remark": "B",
+            "schedule_relationship": "SKIPPED",
+            "stop_id": "1773",
+            "stop_sequence": null
+          }
+        ],
+        "timestamp": null,
+        "trip": {
+          "direction_id": null,
+          "route_id": "47",
+          "schedule_relationship": "SCHEDULED",
+          "start_date": null,
+          "start_time": null,
+          "trip_id": "42843370"
+        },
+        "vehicle": null
+      },
+      "vehicle": null
+    }
+  ],
+  "header": {
+    "gtfs_realtime_version": "2.0",
+    "incrementality": "FULL_DATASET",
+    "timestamp": 1580405036
+  }
+}

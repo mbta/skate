@@ -1,6 +1,7 @@
 defmodule Realtime.ServerTest do
   use ExUnit.Case, async: true
 
+  alias Concentrate.StopTimeUpdate
   alias Realtime.{Ghost, Server, Vehicle}
 
   @vehicle %Vehicle{
@@ -58,16 +59,50 @@ defmodule Realtime.ServerTest do
     "1" => [@vehicle, @ghost]
   }
 
+  @stop_time_update %StopTimeUpdate{
+    arrival_time: nil,
+    departure_time: nil,
+    platform_id: nil,
+    remark: nil,
+    schedule_relationship: :SKIPPED,
+    status: nil,
+    stop_id: "s1",
+    stop_sequence: nil,
+    track: nil,
+    trip_id: "t1",
+    uncertainty: nil
+  }
+
+  @stop_time_updates_by_trip_id %{
+    "t1" => [@stop_time_update]
+  }
+
   setup do
     start_supervised({Registry, keys: :duplicate, name: Realtime.Server.registry_name()})
     :ok
+  end
+
+  describe "update" do
+    setup do
+      {:ok, server_pid} = Server.start_link([])
+
+      %{server_pid: server_pid}
+    end
+
+    test "accepts vehicle positions", %{server_pid: server_pid} do
+      assert Server.update({:vehicle_positions, @vehicles_by_route_id, []}, server_pid) == :ok
+    end
+
+    test "accepts stop time updates", %{server_pid: server_pid} do
+      assert Server.update({:stop_time_updates, @stop_time_updates_by_trip_id}, server_pid) == :ok
+    end
   end
 
   describe "subscribe_to_route" do
     setup do
       {:ok, server_pid} = Server.start_link([])
 
-      Server.update({@vehicles_by_route_id, []}, server_pid)
+      Server.update({:vehicle_positions, @vehicles_by_route_id, []}, server_pid)
 
       %{server_pid: server_pid}
     end
@@ -80,7 +115,7 @@ defmodule Realtime.ServerTest do
     test "clients subscribed to a route get data pushed to them", %{server_pid: server_pid} do
       Server.subscribe_to_route("1", server_pid)
 
-      Server.update({@vehicles_by_route_id, []}, server_pid)
+      Server.update({:vehicle_positions, @vehicles_by_route_id, []}, server_pid)
 
       assert_receive(
         {:new_realtime_data, lookup_args},
@@ -94,7 +129,7 @@ defmodule Realtime.ServerTest do
     test "clients subscribed to a route get repeated messages", %{server_pid: server_pid} do
       Server.subscribe_to_route("1", server_pid)
 
-      Server.update({@vehicles_by_route_id, []}, server_pid)
+      Server.update({:vehicle_positions, @vehicles_by_route_id, []}, server_pid)
 
       assert_receive(
         {:new_realtime_data, _},
@@ -102,7 +137,7 @@ defmodule Realtime.ServerTest do
         "Client didn't receive vehicle positions the first time"
       )
 
-      Server.update({@vehicles_by_route_id, []}, server_pid)
+      Server.update({:vehicle_positions, @vehicles_by_route_id, []}, server_pid)
 
       assert_receive(
         {:new_realtime_data, lookup_args},
@@ -116,7 +151,7 @@ defmodule Realtime.ServerTest do
     test "inactive routes have all their vehicle data removed", %{server_pid: server_pid} do
       Server.subscribe_to_route("1", server_pid)
 
-      Server.update({%{}, []}, server_pid)
+      Server.update({:vehicle_positions, %{}, []}, server_pid)
 
       assert_receive(
         {:new_realtime_data, lookup_args},
@@ -132,7 +167,7 @@ defmodule Realtime.ServerTest do
     setup do
       {:ok, server_pid} = Server.start_link([])
 
-      :ok = Server.update({%{}, [@shuttle]}, server_pid)
+      :ok = Server.update({:vehicle_positions, %{}, [@shuttle]}, server_pid)
 
       %{server_pid: server_pid}
     end
@@ -144,7 +179,7 @@ defmodule Realtime.ServerTest do
     test "clients get updated data pushed to them", %{server_pid: pid} do
       Server.subscribe_to_all_shuttles(pid)
 
-      Server.update({%{}, [@shuttle, @shuttle]}, pid)
+      Server.update({:vehicle_positions, %{}, [@shuttle, @shuttle]}, pid)
 
       assert_receive {:new_realtime_data, lookup_args}
       assert Server.lookup(lookup_args) == [@shuttle, @shuttle]
@@ -155,7 +190,7 @@ defmodule Realtime.ServerTest do
     setup do
       {:ok, server_pid} = Server.start_link([])
 
-      :ok = Server.update({@vehicles_by_route_id, [@shuttle]}, server_pid)
+      :ok = Server.update({:vehicle_positions, @vehicles_by_route_id, [@shuttle]}, server_pid)
 
       %{server_pid: server_pid}
     end
@@ -171,7 +206,7 @@ defmodule Realtime.ServerTest do
     test "clients get updated search results pushed to them", %{server_pid: pid} do
       Server.subscribe_to_search("90", :all, pid)
 
-      Server.update({%{}, [@shuttle]}, pid)
+      Server.update({:vehicle_positions, %{}, [@shuttle]}, pid)
 
       assert_receive {:new_realtime_data, lookup_args}
       assert Server.lookup(lookup_args) == [@shuttle]
@@ -180,10 +215,30 @@ defmodule Realtime.ServerTest do
     test "does not receive duplicate vehicles", %{server_pid: pid} do
       Server.subscribe_to_search("90", :all, pid)
 
-      Server.update({%{}, [@shuttle, @shuttle]}, pid)
+      Server.update({:vehicle_positions, %{}, [@shuttle, @shuttle]}, pid)
 
       assert_receive {:new_realtime_data, lookup_args}
       assert Server.lookup(lookup_args) == [@shuttle]
+    end
+  end
+
+  describe "stop_time_updates_for_trip" do
+    setup do
+      {:ok, server_pid} = Server.start_link([])
+
+      :ok = Server.update({:stop_time_updates, @stop_time_updates_by_trip_id}, server_pid)
+
+      %{server_pid: server_pid}
+    end
+
+    test "returns the stop time updates for the requested trip", %{server_pid: server_pid} do
+      assert Server.stop_time_updates_for_trip("t1", server_pid) == [@stop_time_update]
+    end
+
+    test "returns an empty list if there are no stop time updates for this trip", %{
+      server_pid: server_pid
+    } do
+      assert Server.stop_time_updates_for_trip("missing", server_pid) == []
     end
   end
 
@@ -194,6 +249,7 @@ defmodule Realtime.ServerTest do
       :ets.insert(ets, {{:route_id, "1"}, [@vehicle, @ghost]})
       :ets.insert(ets, {:all_vehicles, [@vehicle, @shuttle]})
       :ets.insert(ets, {:all_shuttles, [@shuttle]})
+      :ets.insert(ets, {{:trip_id, "t1"}, [@stop_time_update]})
 
       {:ok, %{ets: ets}}
     end
@@ -273,6 +329,28 @@ defmodule Realtime.ServerTest do
       results = Server.lookup({ets, {:search, search_params}})
 
       assert Enum.member?(results, @vehicle)
+    end
+
+    test "fetches stop time updates by trip ID", %{ets: ets} do
+      assert Server.lookup({ets, {:trip_id, "t1"}}) == [@stop_time_update]
+    end
+  end
+
+  describe "update_stop_time_updates/2" do
+    setup do
+      ets = :ets.new(__MODULE__, [:set, :protected, {:read_concurrency, true}])
+
+      :ets.insert(ets, {{:trip_id, "t1"}, [@stop_time_update]})
+
+      {:ok, %{ets: ets}}
+    end
+
+    test "removes data for trips that no longer contain stop time updates", %{ets: ets} do
+      assert {ets, {:trip_id, "t1"}} |> Server.lookup() |> length() == 1
+
+      Server.update_stop_time_updates(%Server{ets: ets}, %{})
+
+      assert {ets, {:trip_id, "t1"}} |> Server.lookup() |> length() == 0
     end
   end
 

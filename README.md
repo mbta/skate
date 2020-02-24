@@ -28,9 +28,10 @@ Quick setup:
 
 There are a number of configuration details defined in environment variables. These define where data sources live, as well as authentication and CDN details. See `.env.example` for naming and syntax.
 
-- **BUSLOC_URL**: Source of GTFS-realtime enhanced data file
+- **BUSLOC_URL**: Source of GTFS-realtime enhanced VehiclePositions json data file
 - **SWIFTLY_REALTIME_VEHICLES_URL** and **SWIFTLY_AUTHORIZATION_KEY**: Source of Swiftly vehicle data
 - **SKATE_HASTUS_URL**: Source of extended schedule data
+- **TRIP_UPDATES_URL**: Source of GTFS-realtime enhanced TripUpdates json data file (optional)
 - **SECRET_KEY_BASE** Used for writing encrypted cookies. Generate a value using `mix phx.gen.secret` (only required in production)
 - **ERLANG_COOKIE** Used by Erlang (only required in production)
 - **COGNITO_DOMAIN**, **COGNITO_CLIENT_ID**, **COGNITO_CLIENT_SECRET**, **COGNITO_USER_POOL_ID**, **COGNITO_AWS_REGION**, and **GUARDIAN_SECRET_KEY**: Authentication/authorization details (only required in production)

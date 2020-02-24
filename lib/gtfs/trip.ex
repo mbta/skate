@@ -1,5 +1,5 @@
 defmodule Gtfs.Trip do
-  alias Gtfs.{Block, Csv, Direction, Route, RoutePattern, Run, Service, Shape, StopTime}
+  alias Gtfs.{Block, Csv, Direction, Route, RoutePattern, Run, Service, Shape, Stop, StopTime}
 
   @type id :: String.t()
 
@@ -66,13 +66,25 @@ defmodule Gtfs.Trip do
   def row_in_route_id_set?(row, route_id_set), do: MapSet.member?(route_id_set, row["route_id"])
 
   @spec start_time(t()) :: Util.Time.time_of_day()
-  def start_time(trip) do
-    List.first(trip.stop_times).time
+  def start_time(%__MODULE__{stop_times: stop_times}) do
+    List.first(stop_times).time
   end
 
   @spec end_time(t()) :: Util.Time.time_of_day()
-  def end_time(trip) do
-    List.last(trip.stop_times).time
+  def end_time(%__MODULE__{stop_times: stop_times}) do
+    List.last(stop_times).time
+  end
+
+  @spec time_of_first_stop_matching(t(), [Stop.id()]) :: Util.Time.time_of_day()
+  def time_of_first_stop_matching(%__MODULE__{stop_times: stop_times}, stop_ids) do
+    time_of_stop_matching(stop_times, stop_ids)
+  end
+
+  @spec time_of_last_stop_matching(t(), [Stop.id()]) :: Util.Time.time_of_day()
+  def time_of_last_stop_matching(%__MODULE__{stop_times: stop_times}, stop_ids) do
+    stop_times
+    |> Enum.reverse()
+    |> time_of_stop_matching(stop_ids)
   end
 
   @doc """
@@ -83,4 +95,13 @@ defmodule Gtfs.Trip do
     end_time_of_day > start_time(trip) and
       start_time_of_day < end_time(trip)
   end
+
+  @spec time_of_stop_matching([StopTime.t()], [Stop.id()]) :: Util.Time.time_of_day()
+  defp time_of_stop_matching(stop_times, stop_ids) do
+    stop_times
+    |> Enum.find(&is_in_list_of_stop_ids(&1, stop_ids))
+    |> Map.get(:time)
+  end
+
+  defp is_in_list_of_stop_ids(stop_time, stop_ids), do: Enum.member?(stop_ids, stop_time.stop_id)
 end

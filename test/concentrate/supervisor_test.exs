@@ -23,13 +23,14 @@ defmodule Concentrate.SupervisorTest do
       opts = [
         busloc_url: "http://example.com/busloc.json",
         swiftly_authorization_key: "12345",
-        swiftly_realtime_vehicles_url: "http://example.com/swiftly_realtime_vehicles.json"
+        swiftly_realtime_vehicles_url: "http://example.com/swiftly_realtime_vehicles.json",
+        trip_updates_url: "http://example.com/TripUpdates_enhanced.json"
       ]
 
       actual = Concentrate.Supervisor.children(opts)
 
-      # 2 sources + merge + 1 consumer
-      assert length(actual) == 4
+      # 3 sources + merge + 2 consumers
+      assert length(actual) == 6
     end
   end
 end

@@ -1,13 +1,51 @@
 defmodule Realtime.VehiclesTest do
   use ExUnit.Case, async: true
+  import Test.Support.Helpers
 
-  alias Gtfs.StopTime
-  alias Gtfs.Trip
-  alias Realtime.Ghost
-  alias Realtime.Vehicle
-  alias Realtime.Vehicles
+  alias Concentrate.StopTimeUpdate
+  alias Gtfs.{StopTime, Trip}
+  alias Realtime.{BlockWaiver, Ghost, Vehicle, Vehicles}
 
   describe "group_by_route_with_blocks" do
+    setup do
+      stop_time_updates = [
+        %StopTimeUpdate{
+          arrival_time: nil,
+          departure_time: nil,
+          platform_id: nil,
+          remark: "E:1106",
+          schedule_relationship: :SKIPPED,
+          status: nil,
+          stop_id: "stop1",
+          stop_sequence: nil,
+          track: nil,
+          trip_id: "39984755",
+          uncertainty: nil
+        },
+        %StopTimeUpdate{
+          arrival_time: nil,
+          departure_time: nil,
+          platform_id: nil,
+          remark: "E:1106",
+          schedule_relationship: :SKIPPED,
+          status: nil,
+          stop_id: "stop2",
+          stop_sequence: nil,
+          track: nil,
+          trip_id: "39984755",
+          uncertainty: nil
+        }
+      ]
+
+      reassign_env(:realtime, :stop_time_updates_fn, fn trip_id ->
+        if trip_id == "trip" do
+          stop_time_updates
+        else
+          []
+        end
+      end)
+    end
+
     test "groups on_route, laying_over, and pulling_out vehicles together by their route_id" do
       on_route_vehicle = %Vehicle{
         id: "on_route",
@@ -172,7 +210,7 @@ defmodule Realtime.VehiclesTest do
         shape_id: "shape1",
         stop_times: [
           %StopTime{
-            stop_id: "stop",
+            stop_id: "stop1",
             time: 0,
             timepoint_id: "timepoint"
           }
@@ -203,7 +241,14 @@ defmodule Realtime.VehiclesTest do
                      timepoint_id: "timepoint",
                      fraction_until_timepoint: 0.0
                    },
-                   route_status: :on_route
+                   route_status: :on_route,
+                   block_waivers: [
+                     %BlockWaiver{
+                       start_time: 0,
+                       end_time: 0,
+                       remark: "E:1106"
+                     }
+                   ]
                  }
                ]
              }
@@ -280,7 +325,7 @@ defmodule Realtime.VehiclesTest do
         shape_id: "shape",
         stop_times: [
           %StopTime{
-            stop_id: "stop",
+            stop_id: "stop1",
             time: 1,
             timepoint_id: "timepoint"
           }
@@ -307,7 +352,14 @@ defmodule Realtime.VehiclesTest do
           timepoint_id: "timepoint",
           fraction_until_timepoint: 0.0
         },
-        route_status: :pulling_out
+        route_status: :pulling_out,
+        block_waivers: [
+          %BlockWaiver{
+            start_time: 1,
+            end_time: 1,
+            remark: "E:1106"
+          }
+        ]
       }
 
       assert Vehicles.group_by_route_with_blocks(

@@ -15,6 +15,7 @@ defmodule Concentrate.StopTimeUpdate do
     :track,
     :platform_id,
     :uncertainty,
+    :remark,
     schedule_relationship: :SCHEDULED
   ])
 
@@ -37,7 +38,7 @@ defmodule Concentrate.StopTimeUpdate do
 
   defimpl Concentrate.Mergeable do
     @default_key_opts [stop_fn: &Gtfs.stop/1]
-    def key(%{trip_id: trip_id, stop_id: stop_id, stop_sequence: stop_sequence}, opts) do
+    def key(%{trip_id: trip_id, stop_id: stop_id, stop_sequence: stop_sequence}, opts \\ []) do
       opts = Keyword.merge(@default_key_opts, opts)
       stop_fn = opts[:stop_fn]
 
@@ -66,7 +67,8 @@ defmodule Concentrate.StopTimeUpdate do
             end,
           stop_id: max(first.stop_id, second.stop_id),
           platform_id: first.platform_id || second.platform_id,
-          uncertainty: first.uncertainty || second.uncertainty
+          uncertainty: first.uncertainty || second.uncertainty,
+          remark: first.remark || second.remark
       }
     end
 

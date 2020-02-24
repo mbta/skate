@@ -10,6 +10,7 @@ defmodule Concentrate.TripUpdate do
     :direction_id,
     :start_date,
     :start_time,
+    :remark,
     schedule_relationship: :SCHEDULED
   ])
 
@@ -28,6 +29,7 @@ defmodule Concentrate.TripUpdate do
           direction_id: first.direction_id || second.direction_id,
           start_date: first.start_date || second.start_date,
           start_time: first.start_time || second.start_time,
+          remark: first.remark || second.remark,
           schedule_relationship:
             if first.schedule_relationship == :SCHEDULED do
               second.schedule_relationship
