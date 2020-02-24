@@ -40,10 +40,6 @@
 .m-block-waiver-banner__detail-value {
   @include font-body;
   margin-bottom: 1rem;
-
-  .highlighted {
-    background-color: $color-secondary-light;
-  }
 }
 
 .m-block-waiver-banner__detail-label--end-time,
