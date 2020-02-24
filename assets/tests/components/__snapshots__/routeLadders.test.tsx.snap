@@ -92,6 +92,7 @@ exports[`renders a route ladder 1`] = `
       />
       <text
         className="m-ladder__timepoint-name"
+        data-tip="WASMA Name"
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
@@ -113,6 +114,7 @@ exports[`renders a route ladder 1`] = `
       />
       <text
         className="m-ladder__timepoint-name"
+        data-tip="MELWA Name"
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
@@ -134,6 +136,7 @@ exports[`renders a route ladder 1`] = `
       />
       <text
         className="m-ladder__timepoint-name"
+        data-tip="HHGAT Name"
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
@@ -142,6 +145,10 @@ exports[`renders a route ladder 1`] = `
         HHGAT
       </text>
     </svg>
+    <div
+      className="__react_component_tooltip place-top type-dark"
+      data-id="tooltip"
+    />
   </div>
   <div
     className="m-layover-box m-layover-box--bottom"
@@ -237,6 +244,7 @@ exports[`renders a route ladder 1`] = `
       />
       <text
         className="m-ladder__timepoint-name"
+        data-tip="MATPN Name"
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
@@ -258,6 +266,7 @@ exports[`renders a route ladder 1`] = `
       />
       <text
         className="m-ladder__timepoint-name"
+        data-tip="WELLH Name"
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
@@ -279,6 +288,7 @@ exports[`renders a route ladder 1`] = `
       />
       <text
         className="m-ladder__timepoint-name"
+        data-tip="MORTN Name"
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
@@ -287,6 +297,10 @@ exports[`renders a route ladder 1`] = `
         MORTN
       </text>
     </svg>
+    <div
+      className="__react_component_tooltip place-top type-dark"
+      data-id="tooltip"
+    />
   </div>
   <div
     className="m-layover-box m-layover-box--bottom"

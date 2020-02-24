@@ -1,5 +1,6 @@
 import useComponentSize from "@rehooks/component-size"
 import React, { useContext, useRef } from "react"
+import ReactTooltip from "react-tooltip"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { partition } from "../helpers/array"
 import featureIsEnabled from "../laboratoryFeatures"
@@ -121,6 +122,7 @@ const Ladder = ({
           )
         })}
       </svg>
+      <ReactTooltip />
     </div>
   )
 }
@@ -216,6 +218,7 @@ const LadderTimepoint = ({
       y={y}
       textAnchor="middle"
       dominantBaseline="middle"
+      data-tip={timepoint.name}
     >
       {timepoint.id}
     </text>
