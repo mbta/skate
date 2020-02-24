@@ -11,7 +11,7 @@ import { DataDiscrepancy, Vehicle } from "../../realtime"
 import { Route, Shape } from "../../schedule"
 import Map from "../map"
 import PropertiesList from "../propertiesList"
-import BlockWaivers from "./blockWaivers"
+import BlockWaiverList from "./blockWaiverList"
 import Header from "./header"
 import HeadwayDiagram from "./headwayDiagram"
 
@@ -123,7 +123,7 @@ const VehiclePropertiesPanel = ({ selectedVehicle, route }: Props) => (
     <Header vehicle={selectedVehicle} route={route} />
 
     {featureIsEnabled("block_waivers") && hasBlockWaivers(selectedVehicle) && (
-      <BlockWaivers blockWaivers={selectedVehicle.blockWaivers} />
+      <BlockWaiverList blockWaivers={selectedVehicle.blockWaivers} />
     )}
 
     {shouldShowHeadwayDiagram(selectedVehicle) && (

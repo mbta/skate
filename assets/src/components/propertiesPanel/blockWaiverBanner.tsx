@@ -3,7 +3,7 @@ import { alertCircleIcon } from "../../helpers/icon"
 import { BlockWaiver } from "../../realtime"
 
 interface Props {
-  blockWaivers: BlockWaiver[]
+  blockWaiver: BlockWaiver
 }
 
 export const hours12 = (hours24plus: number): number => {
@@ -84,38 +84,40 @@ export const currentFuturePastTitle = (blockWaiver: BlockWaiver): string => {
   }
 }
 
-const BlockWaiver = ({ blockWaiver }: { blockWaiver: BlockWaiver }) => (
+const BlockWaiverBanner = ({ blockWaiver }: Props) => (
   <div
-    className={`m-block-waiver m-block-waiver--${currentFuturePastClass(
+    className={`m-block-waiver-banner m-block-waiver-banner--${currentFuturePastClass(
       blockWaiver
     )}`}
   >
-    <div className="m-block-waiver__header">
-      {alertCircleIcon("m-block-waiver__alert-icon")}
-      <div className="m-block-waiver__title">
+    <div className="m-block-waiver-banner__header">
+      {alertCircleIcon("m-block-waiver-banner__alert-icon")}
+      <div className="m-block-waiver-banner__title">
         Dispatcher Note — {currentFuturePastTitle(blockWaiver)}
       </div>
     </div>
 
-    <table className="m-block-waiver__details">
+    <table className="m-block-waiver-banner__details">
       <tbody>
         <tr>
-          <td className="m-block-waiver__detail-label">Reason</td>
-          <td className="m-block-waiver__detail-value">{blockWaiver.remark}</td>
+          <td className="m-block-waiver-banner__detail-label">Reason</td>
+          <td className="m-block-waiver-banner__detail-value">
+            {blockWaiver.remark}
+          </td>
         </tr>
         <tr>
-          <td className="m-block-waiver__detail-label m-block-waiver__detail-label--start-time">
+          <td className="m-block-waiver-banner__detail-label m-block-waiver-banner__detail-label--start-time">
             Start Time
           </td>
-          <td className="m-block-waiver__detail-value m-block-waiver__detail-value--start-time">
+          <td className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--start-time">
             {formatTimeOfDay(blockWaiver.startTime)}
           </td>
         </tr>
         <tr>
-          <td className="m-block-waiver__detail-label m-block-waiver__detail-label--end-time">
+          <td className="m-block-waiver-banner__detail-label m-block-waiver-banner__detail-label--end-time">
             End Time
           </td>
-          <td className="m-block-waiver__detail-value m-block-waiver__detail-value--end-time">
+          <td className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--end-time">
             {formatTimeOfDay(blockWaiver.endTime)}
           </td>
         </tr>
@@ -124,15 +126,4 @@ const BlockWaiver = ({ blockWaiver }: { blockWaiver: BlockWaiver }) => (
   </div>
 )
 
-const BlockWaivers = ({ blockWaivers }: Props) => (
-  <div className="m-block-waivers">
-    {blockWaivers.map(blockWaiver => (
-      <BlockWaiver
-        blockWaiver={blockWaiver}
-        key={`${blockWaiver.startTime}-${blockWaiver.endTime}`}
-      />
-    ))}
-  </div>
-)
-
-export default BlockWaivers
+export default BlockWaiverBanner

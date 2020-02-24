@@ -1,6 +1,6 @@
 import React from "react"
 import renderer from "react-test-renderer"
-import BlockWaivers, * as blockWaivers from "../../../src/components/propertiesPanel/blockWaivers"
+import BlockWaiverBanner, * as blockWaiverBanner from "../../../src/components/propertiesPanel/blockWaiverBanner"
 import { BlockWaiver } from "../../../src/realtime"
 
 const {
@@ -11,9 +11,9 @@ const {
   formatTimeOfDay,
   hours12,
   nowTimeOfDay,
-} = blockWaivers
+} = blockWaiverBanner
 
-describe("BlockWaivers", () => {
+describe("BlockWaiverList", () => {
   test("renders", () => {
     const blockWaiver: BlockWaiver = {
       startTime: 18300,
@@ -21,7 +21,7 @@ describe("BlockWaivers", () => {
       remark: "E:1106",
     }
     const tree = renderer
-      .create(<BlockWaivers blockWaivers={[blockWaiver]} />)
+      .create(<BlockWaiverBanner blockWaiver={blockWaiver} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -63,7 +63,7 @@ describe("currentFuturePastType", () => {
   }
 
   test("returns the Current type for a block waiver that is currently active", () => {
-    jest.spyOn(blockWaivers, "nowTimeOfDay").mockImplementation(() => 3)
+    jest.spyOn(blockWaiverBanner, "nowTimeOfDay").mockImplementation(() => 3)
 
     expect(currentFuturePastType(blockWaiver)).toEqual(
       CurrentFuturePastType.Current
@@ -71,7 +71,7 @@ describe("currentFuturePastType", () => {
   })
 
   test("returns Future type for a block waiver that hasn't yet started", () => {
-    jest.spyOn(blockWaivers, "nowTimeOfDay").mockImplementation(() => 1)
+    jest.spyOn(blockWaiverBanner, "nowTimeOfDay").mockImplementation(() => 1)
 
     expect(currentFuturePastType(blockWaiver)).toEqual(
       CurrentFuturePastType.Future
@@ -79,7 +79,7 @@ describe("currentFuturePastType", () => {
   })
 
   test("returns Past type for a block waiver that has ended", () => {
-    jest.spyOn(blockWaivers, "nowTimeOfDay").mockImplementation(() => 5)
+    jest.spyOn(blockWaiverBanner, "nowTimeOfDay").mockImplementation(() => 5)
 
     expect(currentFuturePastType(blockWaiver)).toEqual(
       CurrentFuturePastType.Past
@@ -96,7 +96,7 @@ describe("currentFuturePastClass", () => {
 
   test("returns 'current' for a block waiver that is currently active", () => {
     jest
-      .spyOn(blockWaivers, "currentFuturePastType")
+      .spyOn(blockWaiverBanner, "currentFuturePastType")
       .mockImplementation(() => CurrentFuturePastType.Current)
 
     expect(currentFuturePastClass(blockWaiver)).toEqual("current")
@@ -104,7 +104,7 @@ describe("currentFuturePastClass", () => {
 
   test("returns 'future' for a block waiver that hasn't yet started", () => {
     jest
-      .spyOn(blockWaivers, "currentFuturePastType")
+      .spyOn(blockWaiverBanner, "currentFuturePastType")
       .mockImplementation(() => CurrentFuturePastType.Future)
 
     expect(currentFuturePastClass(blockWaiver)).toEqual("future")
@@ -112,7 +112,7 @@ describe("currentFuturePastClass", () => {
 
   test("returns 'past' for a block waiver that has ended", () => {
     jest
-      .spyOn(blockWaivers, "currentFuturePastType")
+      .spyOn(blockWaiverBanner, "currentFuturePastType")
       .mockImplementation(() => CurrentFuturePastType.Past)
 
     expect(currentFuturePastClass(blockWaiver)).toEqual("past")
@@ -128,7 +128,7 @@ describe("currentFuturePastTitle", () => {
 
   test("returns 'Current' for a block waiver that is currently active", () => {
     jest
-      .spyOn(blockWaivers, "currentFuturePastType")
+      .spyOn(blockWaiverBanner, "currentFuturePastType")
       .mockImplementation(() => CurrentFuturePastType.Current)
 
     expect(currentFuturePastTitle(blockWaiver)).toEqual("Current")
@@ -136,7 +136,7 @@ describe("currentFuturePastTitle", () => {
 
   test("returns 'Future Notice' for a block waiver that hasn't yet started", () => {
     jest
-      .spyOn(blockWaivers, "currentFuturePastType")
+      .spyOn(blockWaiverBanner, "currentFuturePastType")
       .mockImplementation(() => CurrentFuturePastType.Future)
 
     expect(currentFuturePastTitle(blockWaiver)).toEqual("Future Notice")
@@ -144,7 +144,7 @@ describe("currentFuturePastTitle", () => {
 
   test("returns 'Past Notice' for a block waiver that has ended", () => {
     jest
-      .spyOn(blockWaivers, "currentFuturePastType")
+      .spyOn(blockWaiverBanner, "currentFuturePastType")
       .mockImplementation(() => CurrentFuturePastType.Past)
 
     expect(currentFuturePastTitle(blockWaiver)).toEqual("Past Notice")

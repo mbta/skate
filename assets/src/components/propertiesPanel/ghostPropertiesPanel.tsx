@@ -4,7 +4,7 @@ import { hasBlockWaivers } from "../../models/vehicle"
 import { Ghost } from "../../realtime"
 import { Route } from "../../schedule"
 import PropertiesList from "../propertiesList"
-import BlockWaivers from "./blockWaivers"
+import BlockWaiverList from "./blockWaiverList"
 import Header from "./header"
 
 interface Props {
@@ -17,7 +17,7 @@ const GhostPropertiesPanel = ({ selectedGhost, route }: Props) => (
     <Header vehicle={selectedGhost} route={route} />
 
     {featureIsEnabled("block_waivers") && hasBlockWaivers(selectedGhost) && (
-      <BlockWaivers blockWaivers={selectedGhost.blockWaivers} />
+      <BlockWaiverList blockWaivers={selectedGhost.blockWaivers} />
     )}
 
     <PropertiesList vehicleOrGhost={selectedGhost} />
