@@ -3,7 +3,7 @@ defmodule GtfsTest do
 
   import Test.Support.Helpers
 
-  alias Gtfs.{Route, RoutePattern, Shape, Stop, StopTime, Trip}
+  alias Gtfs.{Route, RoutePattern, Shape, Stop, StopTime, Timepoint, Trip}
   alias Gtfs.Shape.Point
 
   describe "all_routes" do
@@ -52,11 +52,16 @@ defmodule GtfsTest do
     end
   end
 
-  describe "timepoint_ids_on_route" do
-    test "timepoint_ids_on_route" do
+  describe "timepoints_on_route" do
+    test "returns all of the timepoints for route patterns on this route" do
       pid =
         Gtfs.start_mocked(%{
           gtfs: %{
+            "checkpoints.txt" => [
+              "checkpoint_id,checkpoint_name",
+              "check,Check Name",
+              "other,Other Name"
+            ],
             "routes.txt" => [
               "route_id,route_type,route_short_name",
               "39,3,39"
@@ -79,13 +84,17 @@ defmodule GtfsTest do
           }
         })
 
-      assert Gtfs.timepoint_ids_on_route("39", pid) == ["check"]
+      assert Gtfs.timepoints_on_route("39", pid) == [%Timepoint{id: "check", name: "Check Name"}]
     end
 
     test "filters out non-bus trips, route patterns, and timepoints" do
       pid =
         Gtfs.start_mocked(%{
           gtfs: %{
+            "checkpoints.txt" => [
+              "checkpoint_id,checkpoint_name",
+              "check,Check Name"
+            ],
             "routes.txt" => [
               "route_id,route_type,route_short_name",
               "39,3,39",
@@ -109,14 +118,25 @@ defmodule GtfsTest do
           }
         })
 
-      assert Gtfs.timepoint_ids_on_route("39", pid) == ["check"]
-      assert Gtfs.timepoint_ids_on_route("Blue", pid) == []
+      assert Gtfs.timepoints_on_route("39", pid) == [%Timepoint{id: "check", name: "Check Name"}]
+      assert Gtfs.timepoints_on_route("Blue", pid) == []
     end
 
     test "merges multiple trips into a coherent order" do
       pid =
         Gtfs.start_mocked(%{
           gtfs: %{
+            "checkpoints.txt" => [
+              "checkpoint_id,checkpoint_name",
+              "check,Check Name",
+              "c1,c1 name",
+              "c2,c2 name",
+              "c4,c4 name",
+              "c5,c5 name",
+              "c2,c2 name",
+              "c3,c3 name",
+              "c4,c4 name"
+            ],
             "routes.txt" => [
               "route_id,route_type,route_short_name",
               "route,3,39"
@@ -146,13 +166,26 @@ defmodule GtfsTest do
           }
         })
 
-      assert Gtfs.timepoint_ids_on_route("route", pid) == ["c1", "c2", "c3", "c4", "c5"]
+      assert Gtfs.timepoints_on_route("route", pid) == [
+               %Timepoint{id: "c1", name: "c1 name"},
+               %Timepoint{id: "c2", name: "c2 name"},
+               %Timepoint{id: "c3", name: "c3 name"},
+               %Timepoint{id: "c4", name: "c4 name"},
+               %Timepoint{id: "c5", name: "c5 name"}
+             ]
     end
 
     test "merges stops from both directions, flipping direction 0" do
       pid =
         Gtfs.start_mocked(%{
           gtfs: %{
+            "checkpoints.txt" => [
+              "checkpoint_id,checkpoint_name",
+              "downtown,downtown name",
+              "suburb,suburb name",
+              "exurb,exurb name",
+              "suburb,suburb name"
+            ],
             "routes.txt" => [
               "route_id,route_type,route_short_name",
               "route,3,route"
@@ -177,7 +210,11 @@ defmodule GtfsTest do
           }
         })
 
-      assert Gtfs.timepoint_ids_on_route("route", pid) == ["exurb", "suburb", "downtown"]
+      assert Gtfs.timepoints_on_route("route", pid) == [
+               %Timepoint{id: "exurb", name: "exurb name"},
+               %Timepoint{id: "suburb", name: "suburb name"},
+               %Timepoint{id: "downtown", name: "downtown name"}
+             ]
     end
 
     test "gracefully returns [] for route without timepoints" do
@@ -195,7 +232,7 @@ defmodule GtfsTest do
           }
         })
 
-      assert Gtfs.timepoint_ids_on_route("route", pid) == []
+      assert Gtfs.timepoints_on_route("route", pid) == []
     end
   end
 
@@ -232,6 +269,11 @@ defmodule GtfsTest do
       pid =
         Gtfs.start_mocked(%{
           gtfs: %{
+            "checkpoints.txt" => [
+              "checkpoint_id,checkpoint_name",
+              "exurb,exurb name",
+              "suburb,suburb name"
+            ],
             "routes.txt" => [
               "route_id,route_type,route_short_name",
               "route,3,route"
@@ -264,9 +306,17 @@ defmodule GtfsTest do
                  route_pattern_id: "route-_-0",
                  shape_id: "shape1",
                  stop_times: [
-                   %StopTime{stop_id: "s4", time: 1, timepoint_id: "exurb"},
-                   %StopTime{stop_id: "s5", time: 2, timepoint_id: nil},
-                   %StopTime{stop_id: "s3", time: 3, timepoint_id: "suburb"}
+                   %StopTime{
+                     stop_id: "s4",
+                     time: 1,
+                     timepoint: %Timepoint{id: "exurb", name: "exurb name"}
+                   },
+                   %StopTime{stop_id: "s5", time: 2, timepoint: nil},
+                   %StopTime{
+                     stop_id: "s3",
+                     time: 3,
+                     timepoint: %Timepoint{id: "suburb", name: "suburb name"}
+                   }
                  ]
                }
     end
@@ -314,6 +364,11 @@ defmodule GtfsTest do
       pid =
         Gtfs.start_mocked(%{
           gtfs: %{
+            "checkpoints.txt" => [
+              "checkpoint_id,checkpoint_name",
+              "exurb,exurb name",
+              "suburb,suburb name"
+            ],
             "routes.txt" => [
               "route_id,route_type,route_short_name",
               "route,3,route"
@@ -347,9 +402,17 @@ defmodule GtfsTest do
                  route_pattern_id: "route-_-0",
                  shape_id: "shape1",
                  stop_times: [
-                   %StopTime{stop_id: "s4", time: 1, timepoint_id: "exurb"},
-                   %StopTime{stop_id: "s5", time: 2, timepoint_id: nil},
-                   %StopTime{stop_id: "s3", time: 3, timepoint_id: "suburb"}
+                   %StopTime{
+                     stop_id: "s4",
+                     time: 1,
+                     timepoint: %Timepoint{id: "exurb", name: "exurb name"}
+                   },
+                   %StopTime{stop_id: "s5", time: 2, timepoint: nil},
+                   %StopTime{
+                     stop_id: "s3",
+                     time: 3,
+                     timepoint: %Timepoint{id: "suburb", name: "suburb name"}
+                   }
                  ]
                }
              ]
@@ -439,6 +502,11 @@ defmodule GtfsTest do
       pid =
         Gtfs.start_mocked(%{
           gtfs: %{
+            "checkpoints.txt" => [
+              "checkpoint_id,checkpoint_name",
+              "exurb,exurb name",
+              "suburb,suburb name"
+            ],
             "routes.txt" => [
               "route_id,route_type,route_short_name,route_desc",
               "route,3,route,\"Key Bus\""
@@ -495,6 +563,10 @@ defmodule GtfsTest do
       pid =
         Gtfs.start_mocked(%{
           gtfs: %{
+            "checkpoints.txt" => [
+              "checkpoint_id,checkpoint_name",
+              "exurb,exurb name"
+            ],
             "routes.txt" => [
               "route_id,route_type,route_short_name,route_desc",
               "route,3,route,\"Rail Replacement Bus\""
@@ -539,6 +611,10 @@ defmodule GtfsTest do
       pid =
         Gtfs.start_mocked(%{
           gtfs: %{
+            "checkpoints.txt" => [
+              "checkpoint_id,checkpoint_name",
+              "exurb,exurb name"
+            ],
             "routes.txt" => [
               "route_id,route_type,route_short_name,route_desc",
               "route,3,route,\"Rail Replacement Bus\""

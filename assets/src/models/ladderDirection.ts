@@ -1,4 +1,4 @@
-import { ByRouteId, DirectionId, RouteId, TimepointId } from "../schedule"
+import { ByRouteId, DirectionId, RouteId, Timepoint } from "../schedule"
 
 export enum LadderDirection {
   ZeroToOne,
@@ -38,9 +38,9 @@ export const flipLadderDirectionForRoute = (
 }
 
 export const orderTimepoints = (
-  timepointsFromApi: TimepointId[],
+  timepointsFromApi: Timepoint[],
   ladderDirection: LadderDirection
-): TimepointId[] =>
+): Timepoint[] =>
   // Timepoints come from the API in the ZeroToOne direction
   // Use slice to make a copy of the array before destructively reversing
   ladderDirection === LadderDirection.OneToZero

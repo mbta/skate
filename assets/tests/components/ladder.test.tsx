@@ -6,7 +6,7 @@ import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { LadderDirection } from "../../src/models/ladderDirection"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../src/realtime.d"
-import { TimepointId } from "../../src/schedule.d"
+import { Timepoint } from "../../src/schedule.d"
 import { initialState, selectVehicle } from "../../src/state"
 
 jest.mock("../../src/laboratoryFeatures", () => ({
@@ -20,7 +20,11 @@ jest.mock("../../src/hooks/useVehicles", () => ({
 
 describe("ladder", () => {
   test("renders a ladder", () => {
-    const timepoints = ["t0", "t1", "t2"]
+    const timepoints: Timepoint[] = [
+      { id: "t0", name: "t0 name" },
+      { id: "t1", name: "t1 name" },
+      { id: "t2", name: "t2 name" },
+    ]
     const vehicles: Vehicle[] = [
       {
         id: "upward",
@@ -160,7 +164,11 @@ describe("ladder", () => {
   })
 
   test("renders a ghost bus", () => {
-    const timepoints = ["t0", "t1", "t2"]
+    const timepoints: Timepoint[] = [
+      { id: "t0", name: "t0 name" },
+      { id: "t1", name: "t1 name" },
+      { id: "t2", name: "t2 name" },
+    ]
 
     const ghost: Ghost = {
       id: "ghost-trip",
@@ -196,7 +204,11 @@ describe("ladder", () => {
   })
 
   test("filters out vehicles whose block is not active", () => {
-    const timepoints = ["t0", "t1", "t2"]
+    const timepoints: Timepoint[] = [
+      { id: "t0", name: "t0 name" },
+      { id: "t1", name: "t1 name" },
+      { id: "t2", name: "t2 name" },
+    ]
     const vehicles: Vehicle[] = [
       {
         id: "upward",
@@ -302,7 +314,11 @@ describe("ladder", () => {
   })
 
   test("shows schedule line in the other direction", () => {
-    const timepoints = ["t0", "t1", "t2"]
+    const timepoints: Timepoint[] = [
+      { id: "t0", name: "t0 name" },
+      { id: "t1", name: "t1 name" },
+      { id: "t2", name: "t2 name" },
+    ]
     const vehicles: Vehicle[] = [
       {
         id: "downward",
@@ -370,7 +386,11 @@ describe("ladder", () => {
   })
 
   test("highlights a selected vehicle", () => {
-    const timepoints = ["t0", "t1", "t2"]
+    const timepoints: Timepoint[] = [
+      { id: "t0", name: "t0 name" },
+      { id: "t1", name: "t1 name" },
+      { id: "t2", name: "t2 name" },
+    ]
     const vehicles: Vehicle[] = [
       {
         id: "upward",
@@ -478,7 +498,11 @@ describe("ladder", () => {
   test("clicking a vehicle selects that vehicle", () => {
     const mockDispatch = jest.fn()
 
-    const timepoints = ["t0", "t1", "t2"]
+    const timepoints: Timepoint[] = [
+      { id: "t0", name: "t0 name" },
+      { id: "t1", name: "t1 name" },
+      { id: "t2", name: "t2 name" },
+    ]
     const vehicle: Vehicle = {
       id: "upward",
       label: "upward",
@@ -537,7 +561,11 @@ describe("ladder", () => {
   test("clicking an incoming ghost selects the associated vehicle", () => {
     const mockDispatch = jest.fn()
 
-    const timepoints = ["t0", "t1", "t2"]
+    const timepoints: Timepoint[] = [
+      { id: "t0", name: "t0 name" },
+      { id: "t1", name: "t1 name" },
+      { id: "t2", name: "t2 name" },
+    ]
     const incomingGhost: Ghost = {
       id: "ghost-incoming-y0622",
     } as Ghost
@@ -560,7 +588,7 @@ describe("ladder", () => {
   })
 
   test("renders a ladder with no timepoints", () => {
-    const timepoints: TimepointId[] = []
+    const timepoints: Timepoint[] = []
     const vehicles: Vehicle[] = [
       {
         id: "upward",
@@ -617,7 +645,11 @@ describe("ladder", () => {
   })
 
   test("renders a reversed ladder", () => {
-    const timepoints = ["t0", "t1", "t2"]
+    const timepoints: Timepoint[] = [
+      { id: "t0", name: "t0 name" },
+      { id: "t1", name: "t1 name" },
+      { id: "t2", name: "t2 name" },
+    ]
     const vehicles: Vehicle[] = [
       {
         id: "upward",
@@ -747,7 +779,11 @@ describe("ladder", () => {
       endOfTripType: "another_trip",
     }
 
-    const timepoints = ["t0", "t1", "t2"]
+    const timepoints: Timepoint[] = [
+      { id: "t0", name: "t0 name" },
+      { id: "t1", name: "t1 name" },
+      { id: "t2", name: "t2 name" },
+    ]
     const ladderDirection = LadderDirection.ZeroToOne
 
     const tree = renderer

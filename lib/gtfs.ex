@@ -13,7 +13,7 @@ defmodule Gtfs do
     Service,
     Shape,
     Stop,
-    StopTime,
+    Timepoint,
     Trip
   }
 
@@ -47,10 +47,10 @@ defmodule Gtfs do
   end
 
   # Timepoint IDs on a route, sorted in order of stop sequence
-  @spec timepoint_ids_on_route(Route.id()) :: [StopTime.timepoint_id()]
-  @spec timepoint_ids_on_route(Route.id(), GenServer.server()) :: [StopTime.timepoint_id()]
-  def timepoint_ids_on_route(route_id, server \\ __MODULE__) do
-    GenServer.call(server, {:timepoint_ids_on_route, route_id})
+  @spec timepoints_on_route(Route.id()) :: [Timepoint.id()]
+  @spec timepoints_on_route(Route.id(), GenServer.server()) :: [Timepoint.id()]
+  def timepoints_on_route(route_id, server \\ __MODULE__) do
+    GenServer.call(server, {:timepoints_on_route, route_id})
   end
 
   @spec stop(Stop.id()) :: Stop.t() | nil
@@ -187,8 +187,8 @@ defmodule Gtfs do
     {:reply, Data.all_routes(gtfs_data), state}
   end
 
-  def handle_call({:timepoint_ids_on_route, route_id}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.timepoint_ids_on_route(gtfs_data, route_id), state}
+  def handle_call({:timepoints_on_route, route_id}, _from, {:loaded, gtfs_data} = state) do
+    {:reply, Data.timepoints_on_route(gtfs_data, route_id), state}
   end
 
   def handle_call({:stop, stop_id}, _from, {:loaded, gtfs_data} = state) do
@@ -334,6 +334,7 @@ defmodule Gtfs do
     gtfs_file_names = [
       "calendar.txt",
       "calendar_dates.txt",
+      "checkpoints.txt",
       "directions.txt",
       "routes.txt",
       "route_patterns.txt",

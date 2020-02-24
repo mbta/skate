@@ -144,7 +144,11 @@ describe("routeLadder", () => {
       directionNames: { 0: "Outbound", 1: "Inbound" },
       name: "28",
     }
-    const timepoints = ["MATPN", "WELLH", "MORTN"]
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
 
     const tree = renderer
       .create(
@@ -166,7 +170,11 @@ describe("routeLadder", () => {
       directionNames: { 0: "Outbound", 1: "Inbound" },
       name: "28",
     }
-    const timepoints = ["MATPN", "WELLH", "MORTN"]
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
 
     const ghost: Ghost = {
       id: "ghost-trip",
@@ -205,7 +213,11 @@ describe("routeLadder", () => {
       directionNames: { 0: "Outbound", 1: "Inbound" },
       name: "28",
     }
-    const timepoints = ["MATPN", "WELLH", "MORTN"]
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
     const tree = renderer
       .create(
         <RouteLadder
@@ -230,7 +242,11 @@ describe("routeLadder", () => {
       name: "28",
     }
 
-    const timepoints = ["MATPN", "WELLH", "MORTN"]
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
 
     const [v1, v2] = vehicles
     const tree = renderer
@@ -279,7 +295,11 @@ describe("routeLadder", () => {
       directionNames: { 0: "Outbound", 1: "Inbound" },
       name: "28",
     }
-    const timepoints = ["MATPN", "WELLH", "MORTN"]
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
 
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
@@ -303,7 +323,11 @@ describe("routeLadder", () => {
       directionNames: { 0: "Outbound", 1: "Inbound" },
       name: "28",
     }
-    const timepoints = ["MATPN", "WELLH", "MORTN"]
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
 
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
@@ -330,7 +354,11 @@ describe("routeLadder", () => {
       directionNames: { 0: "Outbound", 1: "Inbound" },
       name: "28",
     }
-    const timepoints = ["MATPN", "WELLH", "MORTN"]
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
     const vehicle: Vehicle = {
       id: "v1",
       label: "v1",

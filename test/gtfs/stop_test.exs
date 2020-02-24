@@ -1,4 +1,4 @@
-defmodule Gtfs.StopTid do
+defmodule Gtfs.StopTest do
   use ExUnit.Case, async: true
 
   alias Gtfs.Stop
