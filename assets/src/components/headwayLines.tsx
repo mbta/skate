@@ -15,8 +15,8 @@ const headwayClass = (spacing: HeadwaySpacing | null): string =>
 const drawHeadwayLine = (
   ladderVehicles: LadderVehicle[],
   yStart: number,
-  acc: Array<ReactElement<SVGPathElement>>
-): Array<ReactElement<SVGPathElement>> => {
+  acc: ReactElement<SVGPathElement>[]
+): ReactElement<SVGPathElement>[] => {
   if (ladderVehicles.length === 0) {
     return acc
   }

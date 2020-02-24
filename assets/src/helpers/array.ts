@@ -1,7 +1,7 @@
 export function partition<T, U extends T>(
   items: T[],
   predicate: (value: T) => value is U
-): [U[], Array<Exclude<T, U>>]
+): [U[], Exclude<T, U>[]]
 export function partition<T>(
   items: T[],
   predicate: (value: T) => boolean
