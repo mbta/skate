@@ -605,7 +605,7 @@ describe("groupByPosition", () => {
   })
 
   test("generates virtual ghosts for laying over buses that are late", () => {
-    const vehicle: Vehicle = ({
+    const vehicle: Vehicle = {
       id: "vehicleId",
       directionId: 0,
       routeId: "1",
@@ -629,8 +629,8 @@ describe("groupByPosition", () => {
           fractionUntilTimepoint: 0.2,
         },
       },
-      blockWaivers: [],
-    } as unknown) as Vehicle
+      blockWaivers: [] as BlockWaiver[],
+    } as Vehicle
 
     const expectedGhost: Ghost = {
       id: "ghost-incoming-vehicleId",
