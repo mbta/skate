@@ -88,6 +88,7 @@ describe("useVehicles", () => {
       via_variant: "X",
       route_status: "on_route",
       end_of_trip_type: "another_trip",
+      block_waivers: [],
     },
   ]
   const vehicles: Vehicle[] = [
@@ -166,6 +167,7 @@ describe("useVehicles", () => {
       },
       routeStatus: "on_route",
       endOfTripType: "another_trip",
+      blockWaivers: [],
     },
   ]
 
@@ -238,6 +240,7 @@ describe("useVehicles", () => {
         fractionUntilTimepoint: 0.0,
       },
       routeStatus: "on_route",
+      blockWaivers: [],
     }
 
     const ghostData = {
@@ -255,6 +258,7 @@ describe("useVehicles", () => {
         fraction_until_timepoint: 0.0,
       },
       route_status: "on_route",
+      block_waivers: [],
     }
 
     const mockSocket = makeMockSocket()

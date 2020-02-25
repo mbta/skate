@@ -63,6 +63,7 @@ const vehicles: Vehicle[] = [
     scheduledLocation: null,
     routeStatus: "on_route",
     endOfTripType: "another_trip",
+    blockWaivers: [],
   },
   {
     id: "y0479",
@@ -112,6 +113,7 @@ const vehicles: Vehicle[] = [
     },
     routeStatus: "on_route",
     endOfTripType: "another_trip",
+    blockWaivers: [],
   },
 ]
 
@@ -191,6 +193,7 @@ describe("routeLadder", () => {
         fractionUntilTimepoint: 0.0,
       },
       routeStatus: "on_route",
+      blockWaivers: [],
     }
 
     const tree = renderer
@@ -395,6 +398,7 @@ describe("routeLadder", () => {
       scheduledLocation: null,
       routeStatus: "pulling_out",
       endOfTripType: "another_trip",
+      blockWaivers: [],
     }
 
     const wrapper = mount(
@@ -500,7 +504,7 @@ describe("groupByPosition", () => {
   })
 
   test("generates virtual ghosts for incoming buses that are late", () => {
-    const vehicle: Vehicle = {
+    const vehicle: Vehicle = ({
       id: "vehicleId",
       directionId: 0,
       routeId: "2",
@@ -524,7 +528,8 @@ describe("groupByPosition", () => {
           fractionUntilTimepoint: 0.2,
         },
       },
-    } as Vehicle
+      blockWaivers: [],
+    } as unknown) as Vehicle
 
     const expectedGhost: Ghost = {
       id: "ghost-incoming-vehicleId",
@@ -538,6 +543,7 @@ describe("groupByPosition", () => {
       layoverDepartureTime: null,
       scheduledTimepointStatus: vehicle.scheduledLocation!.timepointStatus,
       routeStatus: "on_route",
+      blockWaivers: [],
     }
 
     expect(groupByPosition([vehicle], "1", LadderDirection.ZeroToOne)).toEqual({
@@ -548,7 +554,7 @@ describe("groupByPosition", () => {
   })
 
   test("generates virtual ghosts for pulling out buses that are late", () => {
-    const vehicle: Vehicle = {
+    const vehicle: Vehicle = ({
       id: "vehicleId",
       directionId: 0,
       routeId: "1",
@@ -572,7 +578,8 @@ describe("groupByPosition", () => {
           fractionUntilTimepoint: 0.2,
         },
       },
-    } as Vehicle
+      blockWaivers: [],
+    } as unknown) as Vehicle
 
     const expectedGhost: Ghost = {
       id: "ghost-incoming-vehicleId",
@@ -586,6 +593,7 @@ describe("groupByPosition", () => {
       layoverDepartureTime: null,
       scheduledTimepointStatus: vehicle.scheduledLocation!.timepointStatus,
       routeStatus: "on_route",
+      blockWaivers: [],
     }
 
     expect(groupByPosition([vehicle], "1", LadderDirection.ZeroToOne)).toEqual({
@@ -596,7 +604,7 @@ describe("groupByPosition", () => {
   })
 
   test("generates virtual ghosts for laying over buses that are late", () => {
-    const vehicle: Vehicle = {
+    const vehicle: Vehicle = ({
       id: "vehicleId",
       directionId: 0,
       routeId: "1",
@@ -620,7 +628,8 @@ describe("groupByPosition", () => {
           fractionUntilTimepoint: 0.2,
         },
       },
-    } as Vehicle
+      blockWaivers: [],
+    } as unknown) as Vehicle
 
     const expectedGhost: Ghost = {
       id: "ghost-incoming-vehicleId",
@@ -637,6 +646,7 @@ describe("groupByPosition", () => {
         timepointId: "timepointId",
       },
       routeStatus: "on_route",
+      blockWaivers: [],
     }
 
     expect(groupByPosition([vehicle], "1", LadderDirection.ZeroToOne)).toEqual({

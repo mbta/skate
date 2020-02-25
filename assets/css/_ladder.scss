@@ -73,6 +73,10 @@
       fill: $color-secondary-medium;
     }
   }
+
+  &--with-block-waivers {
+    stroke: $black;
+  }
 }
 
 .m-ladder__vehicle-label-background {

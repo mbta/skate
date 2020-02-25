@@ -1,0 +1,55 @@
+.m-block-waiver {
+  background-color: $color-secondary-light;
+  border: 1px solid $color-secondary-dark;
+  padding: 1rem 1rem 1rem 2rem;
+}
+
+.m-block-waiver__header {
+  display: flex;
+  flex-direction: row;
+  margin-left: -1.2rem;
+}
+
+.m-block-waiver__alert-icon {
+  display: block;
+  fill: $black;
+  margin-right: 0.3rem;
+  width: 15px;
+}
+
+.m-block-waiver__title {
+  @include font-body;
+  margin-bottom: 0.8rem;
+}
+
+.m-block-waiver__details {
+  border-spacing: 0;
+
+  td {
+    padding-bottom: 0.3rem;
+  }
+}
+
+.m-block-waiver__detail-label {
+  @include font-label;
+  margin-bottom: 0.5rem;
+  text-align: left;
+  width: 7rem;
+}
+
+.m-block-waiver__detail-value {
+  @include font-body;
+  margin-bottom: 1rem;
+
+  .highlighted {
+    background-color: $color-secondary-light;
+  }
+}
+
+.m-block-waiver__detail-label--end-time,
+.m-block-waiver__detail-value--end-time {
+  .m-block-waiver--current & {
+    color: $color-font-dark;
+    font-weight: 700;
+  }
+}

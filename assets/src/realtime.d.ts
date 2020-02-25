@@ -10,6 +10,12 @@ import {
 
 import { HeadwaySpacing } from "./models/vehicleStatus"
 
+export interface BlockWaiver {
+  startTime: number
+  endTime: number
+  remark: string | null
+}
+
 export interface DataDiscrepancy {
   attribute: string
   sources: DataDiscrepancySource[]
@@ -34,6 +40,7 @@ export interface Ghost {
   layoverDepartureTime: number | null
   scheduledTimepointStatus: VehicleTimepointStatus | null
   routeStatus: RouteStatus
+  blockWaivers: BlockWaiver[]
 }
 
 export type SourceId = string
@@ -72,6 +79,7 @@ export interface Vehicle {
   scheduledLocation: VehicleScheduledLocation | null
   routeStatus: RouteStatus
   endOfTripType: EndOfTripType
+  blockWaivers: BlockWaiver[]
 }
 
 export type VehicleOrGhost = Vehicle | Ghost

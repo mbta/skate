@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BlockWaivers renders 1`] = `
+<div
+  className="m-block-waivers"
+>
+  <div
+    className="m-block-waiver m-block-waiver--past"
+  >
+    <div
+      className="m-block-waiver__header"
+    >
+      <span
+        className="m-block-waiver__alert-icon"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
+        }
+      />
+      <div
+        className="m-block-waiver__title"
+      >
+        Dispatcher Note — 
+        Past Notice
+      </div>
+    </div>
+    <table
+      className="m-block-waiver__details"
+    >
+      <tbody>
+        <tr>
+          <td
+            className="m-block-waiver__detail-label"
+          >
+            Reason
+          </td>
+          <td
+            className="m-block-waiver__detail-value"
+          >
+            E:1106
+          </td>
+        </tr>
+        <tr>
+          <td
+            className="m-block-waiver__detail-label m-block-waiver__detail-label--start-time"
+          >
+            Start Time
+          </td>
+          <td
+            className="m-block-waiver__detail-value m-block-waiver__detail-value--start-time"
+          >
+            5:05am
+          </td>
+        </tr>
+        <tr>
+          <td
+            className="m-block-waiver__detail-label m-block-waiver__detail-label--end-time"
+          >
+            End Time
+          </td>
+          <td
+            className="m-block-waiver__detail-value m-block-waiver__detail-value--end-time"
+          >
+            12:38pm
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;

@@ -1,4 +1,5 @@
 import {
+  hasBlockWaivers,
   isGhost,
   isShuttle,
   isVehicle,
@@ -87,6 +88,7 @@ const vehicle: Vehicle = {
   },
   routeStatus: "on_route",
   endOfTripType: "another_trip",
+  blockWaivers: [],
 }
 const ghost: Ghost = {
   id: "ghost-trip",
@@ -103,6 +105,7 @@ const ghost: Ghost = {
     fractionUntilTimepoint: 0.0,
   },
   routeStatus: "on_route",
+  blockWaivers: [],
 }
 
 describe("isVehicle", () => {
@@ -132,6 +135,27 @@ describe("isShuttle", () => {
 
     expect(isShuttle(shuttle)).toBeTruthy()
     expect(isShuttle(notShuttle)).toBeFalsy()
+  })
+})
+
+describe("hasBlockWaivers", () => {
+  test("returns true if the vehicle or ghost has block waivers", () => {
+    const vehicleWithBlockWaivers = {
+      ...vehicle,
+      blockWaivers: [
+        {
+          startTime: 1,
+          endTime: 5,
+          remark: "test block waiver",
+        },
+      ],
+    }
+
+    expect(hasBlockWaivers(vehicleWithBlockWaivers)).toBeTruthy()
+  })
+
+  test("returns false if the vehicle or ghost has no block waivers", () => {
+    expect(hasBlockWaivers(vehicle)).toBeFalsy()
   })
 })
 

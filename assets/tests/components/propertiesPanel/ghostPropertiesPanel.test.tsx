@@ -1,8 +1,17 @@
 import React from "react"
 import renderer from "react-test-renderer"
 import GhostPropertiesPanel from "../../../src/components/propertiesPanel/ghostPropertiesPanel"
-import { Ghost } from "../../../src/realtime"
+import { BlockWaiver, Ghost } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
+
+// Enable feature flags
+jest.mock("../../../src/laboratoryFeatures", () => ({
+  __esModule: true,
+  default: jest
+    .fn()
+    // Ipmlementation sequence matches tests
+    .mockImplementation(() => true),
+}))
 
 const ghost: Ghost = {
   id: "ghost-trip",
@@ -19,6 +28,7 @@ const ghost: Ghost = {
     fractionUntilTimepoint: 0.0,
   },
   routeStatus: "on_route",
+  blockWaivers: [],
 }
 
 const route: Route = {
@@ -45,6 +55,24 @@ describe("GhostPropertiesPanel", () => {
       .create(
         <GhostPropertiesPanel selectedGhost={ghostWithoutRun} route={route} />
       )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders ghost with block waivers", () => {
+    const blockWaiver: BlockWaiver = {
+      startTime: 18300,
+      endTime: 45480,
+      remark: "E:1106",
+    }
+    const ghostWithBlockWaivers: Ghost = {
+      ...ghost,
+      blockWaivers: [blockWaiver],
+    }
+
+    const tree = renderer
+      .create(<GhostPropertiesPanel selectedGhost={ghostWithBlockWaivers} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()
