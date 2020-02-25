@@ -48,7 +48,7 @@ export type TimepointId = string
 
 export interface Timepoint {
   id: TimepointId
-  name: string
+  name: string | null
 }
 
 // An undefined value indicates that the timepoints need to be loaded
