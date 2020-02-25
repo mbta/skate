@@ -22,24 +22,21 @@ export const hours12 = (hours24plus: number): number => {
 const ampm = (hours24plus: number): string =>
   hours24plus >= 12 && hours24plus < 24 ? "pm" : "am"
 
-/**
- * Formats a time of day (seconds after midnight) nicely.
- * e.g. given 18300, returns "5:05am"
- * e.g. given 81840, returns "10:42pm"
- *
- * @param timeOfDay seconds after midnight
- */
-export const formatTimeOfDay = (timeOfDay: number): string => {
-  const hours24plus = Math.floor(timeOfDay / 3600)
-  const hours = hours12(hours24plus)
-  const minutesNum = Math.floor((timeOfDay % 3600) / 60)
-  const minutesStr = minutesNum < 10 ? `0${minutesNum}` : minutesNum
+export const dateFromEpochSeconds = (time: number): Date =>
+  new Date(time * 1_000)
 
-  return `${hours}:${minutesStr}${ampm(hours24plus)}`
+export const formattedTime = (date: Date): string => {
+  const hours24 = date.getHours()
+  return `${hours12(hours24)}:${date.getMinutes()}${ampm(hours24)}`
 }
 
-export const nowTimeOfDay = (now = new Date()): number =>
-  now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds()
+export const formatEpochSeconds = (epochSeconds: number): string => {
+  const date = dateFromEpochSeconds(epochSeconds)
+  return formattedTime(date)
+}
+
+export const nowEpochSeconds = (now = Date.now()): number =>
+  Math.floor(now / 1_000)
 
 export enum CurrentFuturePastType {
   Current = 1,
@@ -51,7 +48,7 @@ export const currentFuturePastType = ({
   startTime,
   endTime,
 }: BlockWaiver): CurrentFuturePastType => {
-  const now = nowTimeOfDay()
+  const now = nowEpochSeconds()
 
   if (startTime > now) {
     return CurrentFuturePastType.Future
@@ -110,7 +107,7 @@ const BlockWaiverBanner = ({ blockWaiver }: Props) => (
             Start Time
           </td>
           <td className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--start-time">
-            {formatTimeOfDay(blockWaiver.startTime)}
+            {formatEpochSeconds(blockWaiver.startTime)}
           </td>
         </tr>
         <tr>
@@ -118,7 +115,7 @@ const BlockWaiverBanner = ({ blockWaiver }: Props) => (
             End Time
           </td>
           <td className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--end-time">
-            {formatTimeOfDay(blockWaiver.endTime)}
+            {formatEpochSeconds(blockWaiver.endTime)}
           </td>
         </tr>
       </tbody>

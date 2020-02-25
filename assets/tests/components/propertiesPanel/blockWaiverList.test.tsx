@@ -4,7 +4,7 @@ import BlockWaiverList from "../../../src/components/propertiesPanel/blockWaiver
 import { BlockWaiver } from "../../../src/realtime"
 import * as blockWaiverBanner from "../../../src/components/propertiesPanel/blockWaiverBanner"
 
-jest.spyOn(blockWaiverBanner, "nowTimeOfDay").mockImplementation(() => 81720)
+jest.spyOn(blockWaiverBanner, "nowEpochSeconds").mockImplementation(() => 81720)
 
 describe("BlockWaiverList", () => {
   test("renders", () => {

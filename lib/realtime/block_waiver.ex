@@ -104,8 +104,8 @@ defmodule Realtime.BlockWaiver do
     {end_time, _} = List.last(trip_stop_time_waivers)
 
     %__MODULE__{
-      start_time: start_time,
-      end_time: end_time,
+      start_time: Util.Time.timestamp_for_time_of_day(start_time),
+      end_time: Util.Time.timestamp_for_time_of_day(end_time),
       remark: remark
     }
   end

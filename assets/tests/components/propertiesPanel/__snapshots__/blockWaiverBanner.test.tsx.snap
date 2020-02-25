@@ -47,7 +47,7 @@ exports[`BlockWaiverBanner renders 1`] = `
         <td
           className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--start-time"
         >
-          5:05am
+          10:53am
         </td>
       </tr>
       <tr>
@@ -59,7 +59,7 @@ exports[`BlockWaiverBanner renders 1`] = `
         <td
           className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--end-time"
         >
-          12:38pm
+          11:10am
         </td>
       </tr>
     </tbody>

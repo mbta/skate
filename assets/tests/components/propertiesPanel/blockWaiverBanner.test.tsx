@@ -8,18 +8,20 @@ const {
   currentFuturePastClass,
   currentFuturePastTitle,
   currentFuturePastType,
-  formatTimeOfDay,
+  formatEpochSeconds,
   hours12,
-  nowTimeOfDay,
+  nowEpochSeconds,
 } = blockWaiverBanner
 
 describe("BlockWaiverBanner", () => {
-  jest.spyOn(blockWaiverBanner, "nowTimeOfDay").mockImplementation(() => 81720)
+  jest
+    .spyOn(blockWaiverBanner, "nowEpochSeconds")
+    .mockImplementation(() => 1582647451)
 
   test("renders", () => {
     const blockWaiver: BlockWaiver = {
-      startTime: 18300,
-      endTime: 45480,
+      startTime: 1582646000,
+      endTime: 1582647000,
       remark: "E:1106",
     }
     const tree = renderer
@@ -30,11 +32,10 @@ describe("BlockWaiverBanner", () => {
   })
 })
 
-describe("formatTimeOfDay", () => {
-  test("formats a time of day (seconds after midnight) nicely", () => {
-    expect(formatTimeOfDay(18300)).toEqual("5:05am")
-    expect(formatTimeOfDay(45480)).toEqual("12:38pm")
-    expect(formatTimeOfDay(81720)).toEqual("10:42pm")
+describe("formatEpochSeconds", () => {
+  test("formats an epoch time in seconds nicely", () => {
+    expect(formatEpochSeconds(1582646000)).toEqual("10:53am")
+    expect(formatEpochSeconds(1582659000)).toEqual("2:30pm")
   })
 })
 
@@ -49,11 +50,9 @@ describe("hours12", () => {
   })
 })
 
-describe("nowTimeOfDay", () => {
-  test("returns a 'time of day' for the given time (defaulting to now)", () => {
-    expect(nowTimeOfDay(new Date("Februrary 18, 2020 5:05"))).toEqual(18300)
-    expect(nowTimeOfDay(new Date("Februrary 18, 2020 12:38"))).toEqual(45480)
-    expect(nowTimeOfDay(new Date("Februrary 18, 2020 22:42"))).toEqual(81720)
+describe("nowEpochSeconds", () => {
+  test("returns an epoch time in seconds (defaulting to now)", () => {
+    expect(nowEpochSeconds(1582647451124)).toEqual(1582647451)
   })
 })
 
@@ -65,7 +64,7 @@ describe("currentFuturePastType", () => {
   }
 
   test("returns the Current type for a block waiver that is currently active", () => {
-    jest.spyOn(blockWaiverBanner, "nowTimeOfDay").mockImplementation(() => 3)
+    jest.spyOn(blockWaiverBanner, "nowEpochSeconds").mockImplementation(() => 3)
 
     expect(currentFuturePastType(blockWaiver)).toEqual(
       CurrentFuturePastType.Current
@@ -73,7 +72,7 @@ describe("currentFuturePastType", () => {
   })
 
   test("returns Future type for a block waiver that hasn't yet started", () => {
-    jest.spyOn(blockWaiverBanner, "nowTimeOfDay").mockImplementation(() => 1)
+    jest.spyOn(blockWaiverBanner, "nowEpochSeconds").mockImplementation(() => 1)
 
     expect(currentFuturePastType(blockWaiver)).toEqual(
       CurrentFuturePastType.Future
@@ -81,7 +80,7 @@ describe("currentFuturePastType", () => {
   })
 
   test("returns Past type for a block waiver that has ended", () => {
-    jest.spyOn(blockWaiverBanner, "nowTimeOfDay").mockImplementation(() => 5)
+    jest.spyOn(blockWaiverBanner, "nowEpochSeconds").mockImplementation(() => 5)
 
     expect(currentFuturePastType(blockWaiver)).toEqual(
       CurrentFuturePastType.Past

@@ -18,6 +18,12 @@ defmodule Util.Time do
     System.system_time(:second)
   end
 
+  @spec today() :: Date.t()
+  def today() do
+    now()
+    |> date_of_timestamp()
+  end
+
   @doc """
   Times greater than 24:00:00 are allowed.
 
@@ -128,9 +134,14 @@ defmodule Util.Time do
     ...>   ~D[2019-01-01]
     ...> )
     1546408800 # 2019-01-02 01:00:00 EST
+
+    # Defaults to today
+    iex> Util.Time.timestamp_for_time_of_day(90000) |> is_number()
+    true
   """
+  @spec timestamp_for_time_of_day(time_of_day()) :: timestamp()
   @spec timestamp_for_time_of_day(time_of_day(), Date.t()) :: timestamp()
-  def timestamp_for_time_of_day(time_of_day, date) do
+  def timestamp_for_time_of_day(time_of_day, date \\ today()) do
     noon = noon_on_date(date)
     twelve_hours_before_noon = noon - 12 * 60 * 60
     twelve_hours_before_noon + time_of_day
