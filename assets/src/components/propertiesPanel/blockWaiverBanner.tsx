@@ -22,12 +22,14 @@ export const hours12 = (hours24plus: number): number => {
 const ampm = (hours24plus: number): string =>
   hours24plus >= 12 && hours24plus < 24 ? "pm" : "am"
 
+const zeroPad = (time: number): string => (time < 10 ? `0${time}` : `${time}`)
+
 export const dateFromEpochSeconds = (time: number): Date =>
   new Date(time * 1_000)
 
 export const formattedTime = (date: Date): string => {
   const hours24 = date.getHours()
-  return `${hours12(hours24)}:${date.getMinutes()}${ampm(hours24)}`
+  return `${hours12(hours24)}:${zeroPad(date.getMinutes())}${ampm(hours24)}`
 }
 
 export const formatEpochSeconds = (epochSeconds: number): string => {
