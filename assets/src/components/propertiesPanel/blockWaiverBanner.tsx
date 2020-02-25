@@ -77,9 +77,9 @@ export const currentFuturePastTitle = (blockWaiver: BlockWaiver): string => {
     case CurrentFuturePastType.Current:
       return "Current"
     case CurrentFuturePastType.Future:
-      return "Future Notice"
+      return "Future"
     case CurrentFuturePastType.Past:
-      return "Past Notice"
+      return "Past"
   }
 }
 

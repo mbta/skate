@@ -1277,7 +1277,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
           className="m-block-waiver-banner__title"
         >
           Dispatcher Note - 
-          Past Notice
+          Past
         </div>
       </div>
       <table
