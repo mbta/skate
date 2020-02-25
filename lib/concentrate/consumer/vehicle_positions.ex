@@ -6,7 +6,7 @@ defmodule Concentrate.Consumer.VehiclePositions do
   use GenStage
 
   alias Concentrate.{Merge, VehiclePosition}
-  alias Realtime.{Vehicles, Server, Vehicle}
+  alias Realtime.{DataStatus, Vehicles, Server, Vehicle}
 
   def start_link(opts) do
     GenStage.start_link(__MODULE__, opts)
@@ -31,10 +31,13 @@ defmodule Concentrate.Consumer.VehiclePositions do
       |> vehicle_positions_from_groups()
       |> Enum.map(&Vehicle.from_vehicle_position/1)
 
+    data_status_fn = Application.get_env(:skate, :data_status_fn) || &DataStatus.data_status/0
+    data_status = data_status_fn.()
+
     by_route = Vehicles.group_by_route(all_vehicles)
     shuttles = Enum.filter(all_vehicles, &Vehicle.shuttle?/1)
 
-    _ = Server.update({:vehicle_positions, by_route, shuttles})
+    _ = Server.update({:vehicle_positions, by_route, shuttles, data_status})
 
     {:noreply, [], state}
   end

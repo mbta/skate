@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DataStatusBanner doesn't show anything when status is good 1`] = `null`;
+
+exports[`DataStatusBanner shows outage banner when there's an outage 1`] = `
+<div
+  className="m-data-status-banner m-data-status-banner--outage"
+>
+  <div
+    className="m-data-status-banner__heading"
+  >
+    Ongoing MBTA Data Outage
+  </div>
+  <div
+    className="m-data-status-banner__content"
+  >
+    Vehicle information may be missing or inaccurate. Thank you for your patience as we work to fix this issue.
+  </div>
+</div>
+`;

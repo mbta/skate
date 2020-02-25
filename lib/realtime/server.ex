@@ -13,6 +13,7 @@ defmodule Realtime.Server do
   alias Gtfs.{Route, Trip}
 
   alias Realtime.{
+    DataStatus,
     Vehicle,
     VehicleOrGhost
   }
@@ -22,7 +23,8 @@ defmodule Realtime.Server do
   @enforce_keys [:ets]
 
   defstruct ets: nil,
-            active_route_ids: []
+            active_route_ids: [],
+            data_status: :outage
 
   @type subscription_key ::
           {:route_id, Route.id()} | :all_shuttles | :all_vehicles | {:search, search_params()}
@@ -40,7 +42,8 @@ defmodule Realtime.Server do
 
   @typep t :: %__MODULE__{
            ets: :ets.tid(),
-           active_route_ids: [Route.id()]
+           active_route_ids: [Route.id()],
+           data_status: DataStatus.t()
          }
 
   # Client functions
@@ -58,7 +61,8 @@ defmodule Realtime.Server do
 
   @doc """
   The subscribing process will get a message when there's new data, with the form
-  {:new_realtime_data, vehicles_on_route()}
+  {:new_realtime_data, lookup_args}
+  Those lookup_args can be passed into Server.lookup(lookup_args) to get the data.
   """
   @spec subscribe_to_route(Route.id(), GenServer.server()) :: [VehicleOrGhost.t()]
   def subscribe_to_route(route_id, server \\ default_name()) do
@@ -88,6 +92,17 @@ defmodule Realtime.Server do
     GenServer.call(server, {:stop_time_updates_for_trip, trip_id})
   end
 
+  @doc """
+  The subscribing process will get a message when there's new data, with the form
+  {:new_data_status, data_status}
+  """
+  @spec subscribe_to_data_status(GenServer.server()) :: DataStatus.t()
+  def subscribe_to_data_status(server \\ default_name()) do
+    {registry_key, data_status} = GenServer.call(server, :subscribe_to_data_status)
+    Registry.register(Realtime.Registry, registry_key, :data_status)
+    data_status
+  end
+
   @spec subscribe(GenServer.server(), {:route_id, Route.id()}) :: [VehicleOrGhost.t()]
   @spec subscribe(GenServer.server(), :all_shuttles) :: [Vehicle.t()]
   @spec subscribe(GenServer.server(), {:search, search_params()}) :: [VehicleOrGhost.t()]
@@ -97,9 +112,11 @@ defmodule Realtime.Server do
     lookup({ets, subscription_key})
   end
 
-  @spec update({:vehicle_positions, Route.by_id([VehicleOrGhost.t()]), [Vehicle.t()]}) :: term()
   @spec update(
-          {:vehicle_positions, Route.by_id([VehicleOrGhost.t()]), [Vehicle.t()]},
+          {:vehicle_positions, Route.by_id([VehicleOrGhost.t()]), [Vehicle.t()], DataStatus.t()}
+        ) :: term()
+  @spec update(
+          {:vehicle_positions, Route.by_id([VehicleOrGhost.t()]), [Vehicle.t()], DataStatus.t()},
           GenServer.server()
         ) :: term()
   @spec update({:stop_time_updates, StopTimeUpdates.stop_time_updates_by_trip()}) :: term()
@@ -109,8 +126,11 @@ defmodule Realtime.Server do
         ) :: term()
   def update(update_term, server \\ __MODULE__)
 
-  def update({:vehicle_positions, vehicles_by_route_id, shuttles}, server) do
-    GenServer.cast(server, {:update, :vehicle_positions, vehicles_by_route_id, shuttles})
+  def update({:vehicle_positions, vehicles_by_route_id, shuttles, data_status}, server) do
+    GenServer.cast(
+      server,
+      {:update, :vehicle_positions, vehicles_by_route_id, shuttles, data_status}
+    )
   end
 
   def update({:stop_time_updates, stop_time_updates_by_trip_id}, server) do
@@ -163,6 +183,11 @@ defmodule Realtime.Server do
     {:reply, stop_time_updates, state}
   end
 
+  def handle_call(:subscribe_to_data_status, _from, %__MODULE__{} = state) do
+    registry_key = self()
+    {:reply, {registry_key, state.data_status}, state}
+  end
+
   def handle_call(:ets, _from, %__MODULE__{ets: ets} = state) do
     # used only by tests
     {:reply, ets, state}
@@ -170,14 +195,18 @@ defmodule Realtime.Server do
 
   @impl true
   def handle_cast(
-        {:update, :vehicle_positions, vehicles_by_route_id, shuttles},
+        {:update, :vehicle_positions, vehicles_by_route_id, shuttles, data_status},
         %__MODULE__{} = state
       ) do
     new_active_route_ids = Map.keys(vehicles_by_route_id)
 
     _ = update_vehicle_positions(state, vehicles_by_route_id, shuttles, new_active_route_ids)
 
-    new_state = Map.put(state, :active_route_ids, new_active_route_ids)
+    new_state =
+      state
+      |> Map.put(:active_route_ids, new_active_route_ids)
+      |> Map.put(:data_status, data_status)
+
     _ = broadcast(new_state)
 
     {:noreply, new_state}
@@ -254,6 +283,12 @@ defmodule Realtime.Server do
 
   @spec send_data({pid, subscription_key}, t) :: broadcast_message
   defp send_data({pid, subscription_key}, state) do
-    send(pid, {:new_realtime_data, {state.ets, subscription_key}})
+    case subscription_key do
+      :data_status ->
+        send(pid, {:new_data_status, state.data_status})
+
+      _ ->
+        send(pid, {:new_realtime_data, {state.ets, subscription_key}})
+    end
   end
 end

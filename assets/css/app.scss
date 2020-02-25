@@ -10,6 +10,7 @@ $picker-width-wide: $picker-width-narrow + 3.1;
 @import "leaflet";
 
 @import "close_button";
+@import "data_status_banner";
 @import "disconnected_modal";
 @import "incoming_box";
 @import "ladder";
@@ -45,12 +46,25 @@ body {
 }
 
 .m-app {
+  height: 100vh;
   display: flex;
-  position: relative;
+  flex-direction: column;
   width: 100vw;
 
   .__react_component_tooltip {
     border-radius: 4px;
     text-align: center;
   }
+}
+
+.m-app__banner {
+  width: 100%;
+  flex: 0 0 auto;
+}
+
+.m-app__main {
+  display: flex;
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
 }
