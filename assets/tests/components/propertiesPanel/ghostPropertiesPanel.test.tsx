@@ -3,6 +3,9 @@ import renderer from "react-test-renderer"
 import GhostPropertiesPanel from "../../../src/components/propertiesPanel/ghostPropertiesPanel"
 import { BlockWaiver, Ghost } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
+import * as blockWaiverBanner from "../../../src/components/propertiesPanel/blockWaiverBanner"
+
+jest.spyOn(blockWaiverBanner, "nowTimeOfDay").mockImplementation(() => 81720)
 
 // Enable feature flags
 jest.mock("../../../src/laboratoryFeatures", () => ({

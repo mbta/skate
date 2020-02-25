@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BlockWaiverList renders 1`] = `
+exports[`BlockWaiverBanner renders 1`] = `
 <div
   className="m-block-waiver-banner m-block-waiver-banner--past"
 >

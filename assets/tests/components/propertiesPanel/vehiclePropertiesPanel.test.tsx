@@ -5,6 +5,9 @@ import VehiclePropertiesPanel from "../../../src/components/propertiesPanel/vehi
 import { HeadwaySpacing } from "../../../src/models/vehicleStatus"
 import { BlockWaiver, Vehicle } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
+import * as blockWaiverBanner from "../../../src/components/propertiesPanel/blockWaiverBanner"
+
+jest.spyOn(blockWaiverBanner, "nowTimeOfDay").mockImplementation(() => 81720)
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 

@@ -13,7 +13,9 @@ const {
   nowTimeOfDay,
 } = blockWaiverBanner
 
-describe("BlockWaiverList", () => {
+describe("BlockWaiverBanner", () => {
+  jest.spyOn(blockWaiverBanner, "nowTimeOfDay").mockImplementation(() => 81720)
+
   test("renders", () => {
     const blockWaiver: BlockWaiver = {
       startTime: 18300,
