@@ -47,8 +47,8 @@ defmodule Gtfs do
   end
 
   # Timepoint IDs on a route, sorted in order of stop sequence
-  @spec timepoints_on_route(Route.id()) :: [Timepoint.id()]
-  @spec timepoints_on_route(Route.id(), GenServer.server()) :: [Timepoint.id()]
+  @spec timepoints_on_route(Route.id()) :: [Timepoint.t()]
+  @spec timepoints_on_route(Route.id(), GenServer.server()) :: [Timepoint.t()]
   def timepoints_on_route(route_id, server \\ __MODULE__) do
     GenServer.call(server, {:timepoints_on_route, route_id})
   end
