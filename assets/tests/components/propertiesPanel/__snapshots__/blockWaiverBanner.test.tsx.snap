@@ -1,6 +1,140 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BlockWaiverBanner renders 1`] = `
+exports[`BlockWaiverBanner renders a current time waiver 1`] = `
+<div
+  className="m-block-waiver-banner m-block-waiver-banner--current"
+>
+  <div
+    className="m-block-waiver-banner__header"
+  >
+    <span
+      className="m-block-waiver-banner__alert-icon"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "SVG",
+        }
+      }
+    />
+    <div
+      className="m-block-waiver-banner__title"
+    >
+      Dispatcher Note — 
+      Current
+    </div>
+  </div>
+  <table
+    className="m-block-waiver-banner__details"
+  >
+    <tbody>
+      <tr>
+        <td
+          className="m-block-waiver-banner__detail-label"
+        >
+          Reason
+        </td>
+        <td
+          className="m-block-waiver-banner__detail-value"
+        >
+          E:1106
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="m-block-waiver-banner__detail-label m-block-waiver-banner__detail-label--start-time"
+        >
+          Start Time
+        </td>
+        <td
+          className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--start-time"
+        >
+          10:53am
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="m-block-waiver-banner__detail-label m-block-waiver-banner__detail-label--end-time"
+        >
+          End Time
+        </td>
+        <td
+          className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--end-time"
+        >
+          11:26am
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`BlockWaiverBanner renders a future time waiver 1`] = `
+<div
+  className="m-block-waiver-banner m-block-waiver-banner--future"
+>
+  <div
+    className="m-block-waiver-banner__header"
+  >
+    <span
+      className="m-block-waiver-banner__alert-icon"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "SVG",
+        }
+      }
+    />
+    <div
+      className="m-block-waiver-banner__title"
+    >
+      Dispatcher Note — 
+      Future Notice
+    </div>
+  </div>
+  <table
+    className="m-block-waiver-banner__details"
+  >
+    <tbody>
+      <tr>
+        <td
+          className="m-block-waiver-banner__detail-label"
+        >
+          Reason
+        </td>
+        <td
+          className="m-block-waiver-banner__detail-value"
+        >
+          E:1106
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="m-block-waiver-banner__detail-label m-block-waiver-banner__detail-label--start-time"
+        >
+          Start Time
+        </td>
+        <td
+          className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--start-time"
+        >
+          11:26am
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="m-block-waiver-banner__detail-label m-block-waiver-banner__detail-label--end-time"
+        >
+          End Time
+        </td>
+        <td
+          className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--end-time"
+        >
+          11:43am
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`BlockWaiverBanner renders a past time waiver 1`] = `
 <div
   className="m-block-waiver-banner m-block-waiver-banner--past"
 >
@@ -47,7 +181,7 @@ exports[`BlockWaiverBanner renders 1`] = `
         <td
           className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--start-time"
         >
-          10:53am
+          10:36am
         </td>
       </tr>
       <tr>
@@ -59,7 +193,7 @@ exports[`BlockWaiverBanner renders 1`] = `
         <td
           className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--end-time"
         >
-          11:10am
+          10:53am
         </td>
       </tr>
     </tbody>
