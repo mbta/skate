@@ -43,11 +43,5 @@ defmodule Gtfs.TimepointTest do
     } do
       assert Timepoint.timepoint_for_id(timepoints_by_id, "missing") == %Timepoint{id: "missing"}
     end
-
-    test "returns nil if the ID is nil", %{
-      timepoints_by_id: timepoints_by_id
-    } do
-      assert Timepoint.timepoint_for_id(timepoints_by_id, nil) == nil
-    end
   end
 end

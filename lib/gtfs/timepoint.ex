@@ -29,9 +29,7 @@ defmodule Gtfs.Timepoint do
     }
   end
 
-  @spec timepoint_for_id(timepoints_by_id(), id()) :: t() | nil
-  def timepoint_for_id(_timepoints_by_id, nil), do: nil
-
+  @spec timepoint_for_id(timepoints_by_id(), id()) :: t()
   def timepoint_for_id(timepoints_by_id, id) do
     Map.get(timepoints_by_id, id, %__MODULE__{id: id})
   end

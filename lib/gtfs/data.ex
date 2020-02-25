@@ -336,10 +336,10 @@ defmodule Gtfs.Data do
       trip = trips[trip_id]
 
       trip.stop_times
+      |> Enum.filter(& &1.timepoint_id)
       |> Enum.map(fn stop_time ->
         Timepoint.timepoint_for_id(timepoints_by_id, stop_time.timepoint_id)
       end)
-      |> Enum.filter(& &1)
     end)
     |> Gtfs.Helpers.merge_lists()
   end
