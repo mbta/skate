@@ -6,6 +6,7 @@ import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { LadderDirection } from "../../src/models/ladderDirection"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import {
+  BlockWaiver,
   Ghost,
   RouteStatus,
   Vehicle,
@@ -504,7 +505,7 @@ describe("groupByPosition", () => {
   })
 
   test("generates virtual ghosts for incoming buses that are late", () => {
-    const vehicle: Vehicle = ({
+    const vehicle: Vehicle = {
       id: "vehicleId",
       directionId: 0,
       routeId: "2",
@@ -528,8 +529,8 @@ describe("groupByPosition", () => {
           fractionUntilTimepoint: 0.2,
         },
       },
-      blockWaivers: [],
-    } as unknown) as Vehicle
+      blockWaivers: [] as BlockWaiver[],
+    } as Vehicle
 
     const expectedGhost: Ghost = {
       id: "ghost-incoming-vehicleId",
@@ -554,7 +555,7 @@ describe("groupByPosition", () => {
   })
 
   test("generates virtual ghosts for pulling out buses that are late", () => {
-    const vehicle: Vehicle = ({
+    const vehicle: Vehicle = {
       id: "vehicleId",
       directionId: 0,
       routeId: "1",
@@ -578,8 +579,8 @@ describe("groupByPosition", () => {
           fractionUntilTimepoint: 0.2,
         },
       },
-      blockWaivers: [],
-    } as unknown) as Vehicle
+      blockWaivers: [] as BlockWaiver[],
+    } as Vehicle
 
     const expectedGhost: Ghost = {
       id: "ghost-incoming-vehicleId",
