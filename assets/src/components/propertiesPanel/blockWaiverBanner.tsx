@@ -43,7 +43,7 @@ export enum CurrentFuturePastType {
   Past,
 }
 
-export const currentFuturePastType = ({
+const currentFuturePastType = ({
   startTime,
   endTime,
 }: BlockWaiver): CurrentFuturePastType => {
@@ -58,7 +58,7 @@ export const currentFuturePastType = ({
   }
 }
 
-export const currentFuturePastClass = (blockWaiver: BlockWaiver): string => {
+const currentFuturePastClass = (blockWaiver: BlockWaiver): string => {
   switch (currentFuturePastType(blockWaiver)) {
     case CurrentFuturePastType.Current:
       return "current"
@@ -69,7 +69,7 @@ export const currentFuturePastClass = (blockWaiver: BlockWaiver): string => {
   }
 }
 
-export const currentFuturePastTitle = (blockWaiver: BlockWaiver): string => {
+const currentFuturePastTitle = (blockWaiver: BlockWaiver): string => {
   switch (currentFuturePastType(blockWaiver)) {
     case CurrentFuturePastType.Current:
       return "Current"
