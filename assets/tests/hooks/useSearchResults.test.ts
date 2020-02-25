@@ -1,6 +1,5 @@
 import { renderHook } from "@testing-library/react-hooks"
 import useSearchResults from "../../src/hooks/useSearchResults"
-import * as browser from "../../src/models/browser"
 import { emptySearchQuery, SearchQuery } from "../../src/models/searchQuery"
 import { VehicleData, VehicleOrGhostData } from "../../src/models/vehicleData"
 import { Vehicle, VehicleOrGhost } from "../../src/realtime"
@@ -227,27 +226,6 @@ describe("useSearchResults", () => {
     expect(result.current).toEqual(vehicles)
   })
 
-  test("leaves the channel on unmount", () => {
-    const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok")
-    const vehicles: Vehicle[] = []
-    mockUseStateOnce(vehicles)
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
-    mockUseStateOnce(mockChannel)
-
-    const searchQuery: SearchQuery = {
-      text: "one",
-      property: "run",
-    }
-    const { unmount } = renderHook(() =>
-      useSearchResults(mockSocket, searchQuery)
-    )
-
-    unmount()
-
-    expect(mockChannel.leave).toHaveBeenCalled()
-  })
-
   test("leaves the channel and joins a new one when the search changes", () => {
     const mockSocket = makeMockSocket()
     const vehicles: Vehicle[] = []
@@ -297,41 +275,5 @@ describe("useSearchResults", () => {
     rerender(search2)
 
     expect(mockChannel.leave).toHaveBeenCalledTimes(1)
-  })
-
-  test("console.error on join error", async () => {
-    const spyConsoleError = jest.spyOn(console, "error")
-    spyConsoleError.mockImplementationOnce(msg => msg)
-    const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("error")
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
-
-    const searchQuery: SearchQuery = {
-      text: "test",
-      property: "run",
-    }
-
-    renderHook(() => useSearchResults(mockSocket, searchQuery))
-
-    expect(spyConsoleError).toHaveBeenCalled()
-    spyConsoleError.mockRestore()
-  })
-
-  test("reloads the window on channel timeout", async () => {
-    const reloadSpy = jest.spyOn(browser, "reload")
-    reloadSpy.mockImplementationOnce(() => ({}))
-    const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("timeout")
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
-
-    const searchQuery: SearchQuery = {
-      text: "test",
-      property: "run",
-    }
-
-    renderHook(() => useSearchResults(mockSocket, searchQuery))
-
-    expect(reloadSpy).toHaveBeenCalled()
-    reloadSpy.mockRestore()
   })
 })

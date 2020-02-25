@@ -1,6 +1,5 @@
 import { renderHook } from "@testing-library/react-hooks"
 import useShuttleVehicles from "../../src/hooks/useShuttleVehicles"
-import * as browser from "../../src/models/browser"
 import { Vehicle, VehicleTimepointStatus } from "../../src/realtime.d"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 
@@ -178,31 +177,5 @@ describe("useShuttleVehicles", () => {
     const { result } = renderHook(() => useShuttleVehicles(mockSocket))
 
     expect(result.current).toEqual(shuttles)
-  })
-
-  test("console.error on join error", async () => {
-    const spyConsoleError = jest.spyOn(console, "error")
-    spyConsoleError.mockImplementationOnce(msg => msg)
-    const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("error")
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
-
-    renderHook(() => useShuttleVehicles(mockSocket))
-
-    expect(spyConsoleError).toHaveBeenCalled()
-    spyConsoleError.mockRestore()
-  })
-
-  test("reloads the window on channel timeout", async () => {
-    const reloadSpy = jest.spyOn(browser, "reload")
-    reloadSpy.mockImplementationOnce(() => ({}))
-    const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("timeout")
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
-
-    renderHook(() => useShuttleVehicles(mockSocket))
-
-    expect(reloadSpy).toHaveBeenCalled()
-    reloadSpy.mockRestore()
   })
 })
