@@ -42,7 +42,7 @@ defmodule SkateWeb.RouteControllerTest do
 
   describe "GET /api/routes/:route_id" do
     setup do
-      reassign_env(:skate_web, :timepoint_ids_on_route_fn, fn _route_id -> [] end)
+      reassign_env(:skate_web, :timepoints_on_route_fn, fn _route_id -> [] end)
     end
 
     test "when logged out, redirects you to cognito auth", %{conn: conn} do

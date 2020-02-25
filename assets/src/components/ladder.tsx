@@ -1,5 +1,6 @@
 import useComponentSize from "@rehooks/component-size"
 import React, { useContext, useRef } from "react"
+import ReactTooltip from "react-tooltip"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { partition } from "../helpers/array"
 import featureIsEnabled from "../laboratoryFeatures"
@@ -19,13 +20,13 @@ import {
   VehicleOrGhost,
   VehicleTimepointStatus,
 } from "../realtime.d"
-import { TimepointId } from "../schedule.d"
+import { Timepoint } from "../schedule.d"
 import { selectVehicle } from "../state"
 import HeadwayLines from "./headwayLines"
 import { Orientation, Size, VehicleIconSvgNode } from "./vehicleIcon"
 
 export interface Props {
-  timepoints: TimepointId[]
+  timepoints: Timepoint[]
   vehiclesAndGhosts: VehicleOrGhost[]
   ladderDirection: LadderDirection
   selectedVehicleId?: VehicleId
@@ -49,7 +50,7 @@ const Ladder = ({
   const elementRef = useRef(null)
   const { height } = useComponentSize(elementRef)
 
-  const orderedTimepoints: TimepointId[] = orderTimepoints(
+  const orderedTimepoints: Timepoint[] = orderTimepoints(
     timepoints,
     ladderDirection
   )
@@ -114,17 +115,14 @@ const Ladder = ({
             ladderVehicles={ladderVehicles}
           />
         )}
-        {orderedTimepoints.map((timepointId: TimepointId, index: number) => {
+        {orderedTimepoints.map((timepoint: Timepoint, index: number) => {
           const y = timepointSpacingY * index
           return (
-            <LadderTimepoint
-              key={timepointId}
-              timepointId={timepointId}
-              y={y}
-            />
+            <LadderTimepoint key={timepoint.id} timepoint={timepoint} y={y} />
           )
         })}
       </svg>
+      <ReactTooltip effect="solid" globalEventOff="click" />
     </div>
   )
 }
@@ -195,10 +193,10 @@ const RoadLines = ({ height }: { height: number }) => (
 )
 
 const LadderTimepoint = ({
-  timepointId,
+  timepoint,
   y,
 }: {
-  timepointId: TimepointId
+  timepoint: Timepoint
   y: number
 }) => (
   <>
@@ -220,15 +218,17 @@ const LadderTimepoint = ({
       y={y}
       textAnchor="middle"
       dominantBaseline="middle"
+      data-tip={timepoint.name}
+      data-event="click"
     >
-      {timepointId}
+      {timepoint.id}
     </text>
   </>
 )
 
 /** timepoints should be ordered top to bottom */
 const timepointStatusYFromTimepoints = (
-  timepoints: TimepointId[],
+  timepoints: Timepoint[],
   timepointSpacingY: number
 ) => (
   timepointStatus: VehicleTimepointStatus | null,
@@ -236,7 +236,7 @@ const timepointStatusYFromTimepoints = (
 ): number => {
   if (timepointStatus) {
     const timepointIndex = timepoints.findIndex(
-      timepointId => timepointId === timepointStatus.timepointId
+      timepoint => timepoint.id === timepointStatus.timepointId
     )
     if (timepointIndex !== -1) {
       const fractionDirection = direction === VehicleDirection.Up ? +1 : -1

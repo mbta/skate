@@ -161,4 +161,14 @@ defmodule Gtfs.StopTimeTest do
       assert StopTime.stop_sequence_integer(List.first(@csv_rows)) == 1
     end
   end
+
+  describe "is_timepoint?/1" do
+    test "returns true if there is a timepoint_id" do
+      stop_time_with_timepoint = %StopTime{stop_id: "s1", time: 1, timepoint_id: "tmpt"}
+      stop_time_without_timepoint = %StopTime{stop_id: "s2", time: 2, timepoint_id: nil}
+
+      assert StopTime.is_timepoint?(stop_time_with_timepoint)
+      refute StopTime.is_timepoint?(stop_time_without_timepoint)
+    end
+  end
 end

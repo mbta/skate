@@ -5,7 +5,7 @@ import {
   Route,
   RouteId,
   Shape,
-  TimepointId,
+  Timepoint,
   TripId,
 } from "./schedule.d"
 
@@ -93,9 +93,9 @@ export const fetchShuttleRoutes = (): Promise<Route[]> =>
 
 export const fetchTimepointsForRoute = (
   routeId: RouteId
-): Promise<TimepointId[]> =>
+): Promise<Timepoint[]> =>
   apiCall({
     url: `/api/routes/${routeId}`,
-    parser: (timepointIds: TimepointId[]) => timepointIds,
+    parser: (timepoints: Timepoint[]) => timepoints,
     defaultResult: [],
   })

@@ -16,10 +16,10 @@ defmodule SkateWeb.RouteController do
 
   @spec show(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def show(conn, %{"route_id" => route_id}) do
-    timepoint_ids_on_route_fn =
-      Application.get_env(:skate_web, :timepoint_ids_on_route_fn, &Gtfs.timepoint_ids_on_route/1)
+    timepoints_on_route_fn =
+      Application.get_env(:skate_web, :timepoints_on_route_fn, &Gtfs.timepoints_on_route/1)
 
-    timepoint_ids = timepoint_ids_on_route_fn.(route_id)
-    json(conn, %{data: timepoint_ids})
+    timepoints = timepoints_on_route_fn.(route_id)
+    json(conn, %{data: timepoints})
   end
 end

@@ -133,6 +133,8 @@ Array [
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
+        data-tip="MATPN Name"
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
@@ -154,6 +156,8 @@ Array [
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
+        data-tip="WELLH Name"
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
@@ -175,6 +179,8 @@ Array [
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
+        data-tip="MORTN Name"
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
@@ -183,6 +189,10 @@ Array [
         MORTN
       </text>
     </svg>
+    <div
+      className="__react_component_tooltip place-top type-dark"
+      data-id="tooltip"
+    />
   </div>,
   <div
     className="m-layover-box m-layover-box--bottom"
@@ -323,6 +333,8 @@ Array [
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
+        data-tip="MATPN Name"
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
@@ -344,6 +356,8 @@ Array [
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
+        data-tip="WELLH Name"
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
@@ -365,6 +379,8 @@ Array [
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
+        data-tip="MORTN Name"
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
@@ -373,6 +389,10 @@ Array [
         MORTN
       </text>
     </svg>
+    <div
+      className="__react_component_tooltip place-top type-dark"
+      data-id="tooltip"
+    />
   </div>,
   <div
     className="m-layover-box m-layover-box--bottom"
@@ -666,6 +686,8 @@ Array [
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
+        data-tip="MATPN Name"
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
@@ -687,6 +709,8 @@ Array [
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
+        data-tip="WELLH Name"
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
@@ -708,6 +732,8 @@ Array [
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
+        data-tip="MORTN Name"
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
@@ -716,6 +742,10 @@ Array [
         MORTN
       </text>
     </svg>
+    <div
+      className="__react_component_tooltip place-top type-dark"
+      data-id="tooltip"
+    />
   </div>,
   <div
     className="m-layover-box m-layover-box--bottom"
@@ -813,6 +843,8 @@ Array [
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
+        data-tip="MATPN Name"
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
@@ -834,6 +866,8 @@ Array [
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
+        data-tip="WELLH Name"
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
@@ -855,6 +889,8 @@ Array [
       />
       <text
         className="m-ladder__timepoint-name"
+        data-event="click"
+        data-tip="MORTN Name"
         dominantBaseline="middle"
         textAnchor="middle"
         x="0"
@@ -863,6 +899,10 @@ Array [
         MORTN
       </text>
     </svg>
+    <div
+      className="__react_component_tooltip place-top type-dark"
+      data-id="tooltip"
+    />
   </div>,
   <div
     className="m-layover-box m-layover-box--bottom"

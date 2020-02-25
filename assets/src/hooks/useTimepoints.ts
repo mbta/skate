@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { fetchTimepointsForRoute } from "../api"
-import { RouteId, TimepointId, TimepointsByRouteId } from "../schedule.d"
+import { RouteId, Timepoint, TimepointsByRouteId } from "../schedule.d"
 
 const useTimepoints = (selectedRouteIds: RouteId[]): TimepointsByRouteId => {
   const [timepointsByRouteId, setTimepointsByRouteId] = useState<
@@ -16,7 +16,7 @@ const useTimepoints = (selectedRouteIds: RouteId[]): TimepointsByRouteId => {
 
   const setTimepointsForRoute = (
     routeId: RouteId,
-    timepoints: TimepointId[]
+    timepoints: Timepoint[]
   ): void => {
     setTimepointsByRouteId(previousTimepointsByRouteId => ({
       ...previousTimepointsByRouteId,
@@ -29,7 +29,7 @@ const useTimepoints = (selectedRouteIds: RouteId[]): TimepointsByRouteId => {
       if (!(routeId in timepointsByRouteId)) {
         setLoadingTimepointsForRoute(routeId)
 
-        fetchTimepointsForRoute(routeId).then((newTimepoints: TimepointId[]) =>
+        fetchTimepointsForRoute(routeId).then((newTimepoints: Timepoint[]) =>
           setTimepointsForRoute(routeId, newTimepoints)
         )
       }

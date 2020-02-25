@@ -16,13 +16,14 @@ defmodule Gtfs.Data do
     Shape,
     Stop,
     StopTime,
+    Timepoint,
     Trip
   }
 
   @type t :: %__MODULE__{
           routes: [Route.t()],
           route_patterns: [RoutePattern.t()],
-          timepoint_ids_by_route: timepoint_ids_by_route(),
+          timepoints_by_route: timepoints_by_route(),
           shapes: shapes_by_route_id(),
           stops: stops_by_id(),
           trips: trips_by_id(),
@@ -30,7 +31,7 @@ defmodule Gtfs.Data do
           calendar: Calendar.t()
         }
 
-  @type timepoint_ids_by_route :: %{Route.id() => [StopTime.timepoint_id()]}
+  @type timepoints_by_route :: %{Route.id() => [Timepoint.t()]}
 
   @type shapes_by_route_id :: %{Route.id() => [Shape.t()]}
 
@@ -43,7 +44,7 @@ defmodule Gtfs.Data do
   @enforce_keys [
     :routes,
     :route_patterns,
-    :timepoint_ids_by_route,
+    :timepoints_by_route,
     :shapes,
     :stops,
     :trips,
@@ -54,7 +55,7 @@ defmodule Gtfs.Data do
   defstruct [
     :routes,
     :route_patterns,
-    :timepoint_ids_by_route,
+    :timepoints_by_route,
     :shapes,
     :stops,
     :trips,
@@ -72,12 +73,12 @@ defmodule Gtfs.Data do
   @spec all_routes(t()) :: [Route.t()]
   def all_routes(%__MODULE__{routes: routes}), do: routes
 
-  @spec timepoint_ids_on_route(t(), Route.id()) :: [StopTime.timepoint_id()]
-  def timepoint_ids_on_route(
-        %__MODULE__{timepoint_ids_by_route: timepoint_ids_by_route},
+  @spec timepoints_on_route(t(), Route.id()) :: [Timepoint.t()]
+  def timepoints_on_route(
+        %__MODULE__{timepoints_by_route: timepoints_by_route},
         route_id
       ),
-      do: Map.get(timepoint_ids_by_route, route_id, [])
+      do: Map.get(timepoints_by_route, route_id, [])
 
   @spec stop(t(), Stop.id()) :: Stop.t() | nil
   def stop(%__MODULE__{stops: stops}, stop_id), do: stops[stop_id]
@@ -218,6 +219,8 @@ defmodule Gtfs.Data do
 
     route_patterns = bus_route_patterns(gtfs_files["route_patterns.txt"], bus_route_ids)
 
+    timepoints_by_id = all_timepoints_by_id(gtfs_files["checkpoints.txt"])
+
     bus_trips =
       bus_trips(
         gtfs_files["trips.txt"],
@@ -231,7 +234,8 @@ defmodule Gtfs.Data do
     %__MODULE__{
       routes: bus_routes,
       route_patterns: route_patterns,
-      timepoint_ids_by_route: timepoint_ids_for_routes(route_patterns, bus_route_ids, trips),
+      timepoints_by_route:
+        timepoints_for_routes(route_patterns, bus_route_ids, trips, timepoints_by_id),
       shapes: shapes_by_route_id(gtfs_files["shapes.txt"], bus_trips),
       stops: all_stops_by_id(gtfs_files["stops.txt"]),
       trips: trips,
@@ -274,44 +278,68 @@ defmodule Gtfs.Data do
     )
   end
 
-  @spec timepoint_ids_for_routes([RoutePattern.t()], MapSet.t(Route.id()), trips_by_id()) ::
-          timepoint_ids_by_route()
-  defp timepoint_ids_for_routes(route_patterns, route_ids, trips) do
-    Enum.reduce(route_ids, %{}, fn route_id, acc ->
-      Map.put(acc, route_id, timepoint_ids_for_route(route_patterns, route_id, trips))
+  @spec all_timepoints_by_id(binary()) :: Timepoint.timepoints_by_id()
+  defp all_timepoints_by_id(timepoints_data) do
+    timepoints_data
+    |> Csv.parse(parse: &Timepoint.from_csv_row/1)
+    |> Map.new(fn timepoint -> {timepoint.id, timepoint} end)
+  end
+
+  @spec timepoints_for_routes(
+          [RoutePattern.t()],
+          MapSet.t(Route.id()),
+          trips_by_id(),
+          Timepoint.timepoints_by_id()
+        ) ::
+          timepoints_by_route()
+  defp timepoints_for_routes(route_patterns, route_ids, trips, timepoints_by_id) do
+    Map.new(route_ids, fn route_id ->
+      {route_id, timepoints_for_route(route_patterns, route_id, trips, timepoints_by_id)}
     end)
   end
 
-  @spec timepoint_ids_for_route([RoutePattern.t()], Route.id(), trips_by_id()) :: [
-          StopTime.timepoint_id()
-        ]
-  def timepoint_ids_for_route(route_patterns, route_id, trips) do
-    timepoint_ids_by_direction =
+  @spec timepoints_for_route(
+          [RoutePattern.t()],
+          Route.id(),
+          trips_by_id(),
+          Timepoint.timepoints_by_id()
+        ) ::
+          [
+            Timepoint.t()
+          ]
+  def timepoints_for_route(route_patterns, route_id, trips, timepoints_by_id) do
+    timepoints_by_direction =
       route_patterns
       |> route_patterns_by_direction(route_id)
       |> Helpers.map_values(fn route_patterns ->
-        timepoint_ids_for_route_patterns(route_patterns, trips)
+        timepoints_for_route_patterns(route_patterns, trips, timepoints_by_id)
       end)
 
     Gtfs.Helpers.merge_lists([
-      timepoint_ids_by_direction |> Map.get(0, []) |> Enum.reverse(),
-      Map.get(timepoint_ids_by_direction, 1, [])
+      timepoints_by_direction |> Map.get(0, []) |> Enum.reverse(),
+      Map.get(timepoints_by_direction, 1, [])
     ])
   end
 
   # All route_patterns should be in the same direction
-  @spec timepoint_ids_for_route_patterns([RoutePattern.t()], trips_by_id()) :: [
-          StopTime.timepoint_id()
+  @spec timepoints_for_route_patterns(
+          [RoutePattern.t()],
+          trips_by_id(),
+          Timepoint.timepoints_by_id()
+        ) :: [
+          Timepoint.t()
         ]
-  defp timepoint_ids_for_route_patterns(route_patterns, trips) do
+  defp timepoints_for_route_patterns(route_patterns, trips, timepoints_by_id) do
     route_patterns
     |> Enum.map(fn route_pattern ->
       trip_id = route_pattern.representative_trip_id
       trip = trips[trip_id]
 
       trip.stop_times
-      |> Enum.map(fn stop_time -> stop_time.timepoint_id end)
-      |> Enum.filter(& &1)
+      |> Enum.filter(& &1.timepoint_id)
+      |> Enum.map(fn stop_time ->
+        Timepoint.timepoint_for_id(timepoints_by_id, stop_time.timepoint_id)
+      end)
     end)
     |> Gtfs.Helpers.merge_lists()
   end
@@ -349,7 +377,12 @@ defmodule Gtfs.Data do
     |> Map.new(fn stop -> {stop.id, stop} end)
   end
 
-  @spec bus_trips(binary(), binary(), MapSet.t(Route.id()), %{Trip.id() => Run.id()}) ::
+  @spec bus_trips(
+          binary(),
+          binary(),
+          MapSet.t(Route.id()),
+          %{Trip.id() => Run.id()}
+        ) ::
           [Trip.t()]
   defp bus_trips(trips_data, stop_times_data, bus_route_ids, run_ids) do
     bus_trips =

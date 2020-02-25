@@ -14,8 +14,16 @@ test("renders a route ladder", () => {
     { id: "28", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "28" },
   ]
   const timepointsByRouteId: TimepointsByRouteId = {
-    "1": ["WASMA", "MELWA", "HHGAT"],
-    "28": ["MATPN", "WELLH", "MORTN"],
+    "1": [
+      { id: "WASMA", name: "WASMA Name" },
+      { id: "MELWA", name: "MELWA Name" },
+      { id: "HHGAT", name: "HHGAT Name" },
+    ],
+    "28": [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ],
     "71": undefined,
     "73": null,
   }
