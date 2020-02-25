@@ -1,5 +1,4 @@
 import { renderHook } from "@testing-library/react-hooks"
-import { Socket } from "phoenix"
 import useSearchResults from "../../src/hooks/useSearchResults"
 import * as browser from "../../src/models/browser"
 import { emptySearchQuery, SearchQuery } from "../../src/models/searchQuery"
@@ -33,9 +32,7 @@ describe("useSearchResults", () => {
       property: "run",
     }
 
-    renderHook(() =>
-      useSearchResults((mockSocket as any) as Socket, searchQuery)
-    )
+    renderHook(() => useSearchResults(mockSocket, searchQuery))
 
     expect(mockSocket.channel).toHaveBeenCalledTimes(1)
     expect(mockSocket.channel).toHaveBeenCalledWith("vehicles:search:run:test")
@@ -47,7 +44,7 @@ describe("useSearchResults", () => {
     const mockChannel = makeMockChannel("ok")
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    renderHook(() => useSearchResults((mockSocket as any) as Socket, null))
+    renderHook(() => useSearchResults(mockSocket, null))
 
     expect(mockSocket.channel).toHaveBeenCalledTimes(0)
     expect(mockChannel.join).toHaveBeenCalledTimes(0)
@@ -224,7 +221,7 @@ describe("useSearchResults", () => {
       property: "run",
     }
     const { result } = renderHook(() =>
-      useSearchResults((mockSocket as any) as Socket, searchQuery)
+      useSearchResults(mockSocket, searchQuery)
     )
 
     expect(result.current).toEqual(vehicles)
@@ -243,7 +240,7 @@ describe("useSearchResults", () => {
       property: "run",
     }
     const { unmount } = renderHook(() =>
-      useSearchResults((mockSocket as any) as Socket, searchQuery)
+      useSearchResults(mockSocket, searchQuery)
     )
 
     unmount()
@@ -268,8 +265,7 @@ describe("useSearchResults", () => {
       property: "run",
     }
     const { rerender } = renderHook(
-      searchQuery =>
-        useSearchResults((mockSocket as any) as Socket, searchQuery),
+      searchQuery => useSearchResults(mockSocket, searchQuery),
       { initialProps: search1 }
     )
 
@@ -293,8 +289,7 @@ describe("useSearchResults", () => {
       property: "run",
     }
     const { rerender } = renderHook(
-      searchQuery =>
-        useSearchResults((mockSocket as any) as Socket, searchQuery),
+      searchQuery => useSearchResults(mockSocket, searchQuery),
       { initialProps: search1 as SearchQuery | null }
     )
 
@@ -316,9 +311,7 @@ describe("useSearchResults", () => {
       property: "run",
     }
 
-    renderHook(() =>
-      useSearchResults((mockSocket as any) as Socket, searchQuery)
-    )
+    renderHook(() => useSearchResults(mockSocket, searchQuery))
 
     expect(spyConsoleError).toHaveBeenCalledWith(
       "search channel join failed",
@@ -339,9 +332,7 @@ describe("useSearchResults", () => {
       property: "run",
     }
 
-    renderHook(() =>
-      useSearchResults((mockSocket as any) as Socket, searchQuery)
-    )
+    renderHook(() => useSearchResults(mockSocket, searchQuery))
 
     expect(reloadSpy).toHaveBeenCalled()
     reloadSpy.mockRestore()

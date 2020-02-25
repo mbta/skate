@@ -1,5 +1,4 @@
 import { renderHook } from "@testing-library/react-hooks"
-import { Socket } from "phoenix"
 import useShuttleVehicles from "../../src/hooks/useShuttleVehicles"
 import * as browser from "../../src/models/browser"
 import { Vehicle, VehicleTimepointStatus } from "../../src/realtime.d"
@@ -152,9 +151,7 @@ describe("useShuttleVehicles", () => {
     const mockChannel = makeMockChannel("ok")
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    const { rerender } = renderHook(() =>
-      useShuttleVehicles((mockSocket as any) as Socket)
-    )
+    const { rerender } = renderHook(() => useShuttleVehicles(mockSocket))
 
     // Needs to be kicked to do the effects again after the socket initializes
     rerender()
@@ -176,9 +173,7 @@ describe("useShuttleVehicles", () => {
       }
     })
 
-    const { result } = renderHook(() =>
-      useShuttleVehicles((mockSocket as any) as Socket)
-    )
+    const { result } = renderHook(() => useShuttleVehicles(mockSocket))
 
     expect(result.current).toEqual(shuttles)
   })
@@ -190,7 +185,7 @@ describe("useShuttleVehicles", () => {
     const mockChannel = makeMockChannel("error")
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    renderHook(() => useShuttleVehicles((mockSocket as any) as Socket))
+    renderHook(() => useShuttleVehicles(mockSocket))
 
     expect(spyConsoleError).toHaveBeenCalledWith(
       "shuttle vehicles join failed",
@@ -206,7 +201,7 @@ describe("useShuttleVehicles", () => {
     const mockChannel = makeMockChannel("timeout")
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    renderHook(() => useShuttleVehicles((mockSocket as any) as Socket))
+    renderHook(() => useShuttleVehicles(mockSocket))
 
     expect(reloadSpy).toHaveBeenCalled()
     reloadSpy.mockRestore()

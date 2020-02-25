@@ -1,46 +1,14 @@
 import { renderHook } from "@testing-library/react-hooks"
-import { Socket } from "phoenix"
 import useVehicles from "../../src/hooks/useVehicles"
 import * as browser from "../../src/models/browser"
 import { VehicleData } from "../../src/models/vehicleData"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle, VehicleTimepointStatus } from "../../src/realtime.d"
 import { RouteId } from "../../src/schedule.d"
+import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 
 // tslint:disable: react-hooks-nesting
 // tslint:disable: object-literal-sort-keys
-
-const makeMockSocket = () => ({
-  channel: jest.fn(),
-})
-
-const makeMockChannel = (expectedJoinMessage?: "ok" | "error" | "timeout") => {
-  const result = {
-    join: jest.fn(),
-    leave: jest.fn(),
-    on: jest.fn(),
-    receive: jest.fn(),
-  }
-  result.join.mockImplementation(() => result)
-  result.receive.mockImplementation((message, handler) => {
-    if (message === expectedJoinMessage) {
-      switch (message) {
-        case "ok":
-          return result
-
-        case "error":
-          handler({ reason: "ERROR_REASON" })
-          break
-
-        case "timeout":
-          handler()
-      }
-    }
-
-    return result
-  })
-  return result
-}
 
 describe("useVehicles", () => {
   const vehiclesData: VehicleData[] = [
@@ -211,9 +179,7 @@ describe("useVehicles", () => {
     const mockChannel = makeMockChannel()
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    const { rerender } = renderHook(() =>
-      useVehicles((mockSocket as any) as Socket, ["1"])
-    )
+    const { rerender } = renderHook(() => useVehicles(mockSocket, ["1"]))
 
     // Needs to be kicked to do the effects again after the socket initializes
     rerender()
@@ -230,7 +196,7 @@ describe("useVehicles", () => {
 
     const { rerender } = renderHook(
       (selectedRouteIds: RouteId[]) =>
-        useVehicles((mockSocket as any) as Socket, selectedRouteIds),
+        useVehicles(mockSocket, selectedRouteIds),
       { initialProps: ["1"] }
     )
     rerender([]) // Deselect the route
@@ -249,9 +215,7 @@ describe("useVehicles", () => {
       return mockChannel
     })
 
-    const { result } = renderHook(() =>
-      useVehicles((mockSocket as any) as Socket, ["1"])
-    )
+    const { result } = renderHook(() => useVehicles(mockSocket, ["1"]))
 
     expect(result.current).toEqual({
       "1": vehicles,
@@ -303,9 +267,7 @@ describe("useVehicles", () => {
       return mockChannel
     })
 
-    const { result } = renderHook(() =>
-      useVehicles((mockSocket as any) as Socket, ["1"])
-    )
+    const { result } = renderHook(() => useVehicles(mockSocket, ["1"]))
 
     expect(result.current).toEqual({
       "1": [ghost],
@@ -322,9 +284,7 @@ describe("useVehicles", () => {
       }
     })
 
-    const { result } = renderHook(() =>
-      useVehicles((mockSocket as any) as Socket, ["1"])
-    )
+    const { result } = renderHook(() => useVehicles(mockSocket, ["1"]))
 
     expect(result.current).toEqual({
       "1": vehicles,
@@ -361,9 +321,7 @@ describe("useVehicles", () => {
       }
     })
 
-    const { result } = renderHook(() =>
-      useVehicles((mockSocket as any) as Socket, ["1"])
-    )
+    const { result } = renderHook(() => useVehicles(mockSocket, ["1"]))
 
     expect(result.current).toEqual({
       "1": expectedVehicles,
@@ -377,7 +335,7 @@ describe("useVehicles", () => {
     const mockChannel = makeMockChannel("timeout")
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    renderHook(() => useVehicles((mockSocket as any) as Socket, ["1"]))
+    renderHook(() => useVehicles(mockSocket, ["1"]))
 
     expect(reloadSpy).toHaveBeenCalled()
     reloadSpy.mockRestore()
