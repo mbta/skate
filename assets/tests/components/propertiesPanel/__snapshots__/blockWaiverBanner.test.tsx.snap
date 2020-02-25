@@ -18,7 +18,7 @@ exports[`BlockWaiverBanner renders a current time waiver 1`] = `
     <div
       className="m-block-waiver-banner__title"
     >
-      Dispatcher Note — 
+      Dispatcher Note - 
       Current
     </div>
   </div>
@@ -85,7 +85,7 @@ exports[`BlockWaiverBanner renders a future time waiver 1`] = `
     <div
       className="m-block-waiver-banner__title"
     >
-      Dispatcher Note — 
+      Dispatcher Note - 
       Future Notice
     </div>
   </div>
@@ -152,7 +152,7 @@ exports[`BlockWaiverBanner renders a past time waiver 1`] = `
     <div
       className="m-block-waiver-banner__title"
     >
-      Dispatcher Note — 
+      Dispatcher Note - 
       Past Notice
     </div>
   </div>

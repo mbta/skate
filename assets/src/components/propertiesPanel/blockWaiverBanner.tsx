@@ -92,7 +92,7 @@ const BlockWaiverBanner = ({ blockWaiver }: Props) => (
     <div className="m-block-waiver-banner__header">
       {alertCircleIcon("m-block-waiver-banner__alert-icon")}
       <div className="m-block-waiver-banner__title">
-        Dispatcher Note — {currentFuturePastTitle(blockWaiver)}
+        Dispatcher Note - {currentFuturePastTitle(blockWaiver)}
       </div>
     </div>
 
