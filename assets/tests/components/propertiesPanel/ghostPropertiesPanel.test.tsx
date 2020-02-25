@@ -10,10 +10,7 @@ jest.spyOn(blockWaiverBanner, "nowTimeOfDay").mockImplementation(() => 81720)
 // Enable feature flags
 jest.mock("../../../src/laboratoryFeatures", () => ({
   __esModule: true,
-  default: jest
-    .fn()
-    // Ipmlementation sequence matches tests
-    .mockImplementation(() => true),
+  default: jest.fn(() => true),
 }))
 
 const ghost: Ghost = {
