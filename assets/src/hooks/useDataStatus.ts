@@ -1,33 +1,17 @@
-import { Channel, Socket } from "phoenix"
-import { useState, useEffect } from "react"
-import { reload } from "../models/browser"
+import { Socket } from "phoenix"
+import { useChannel } from "./useChannel"
 
 export type DataStatus = "good" | "outage"
 
-const topic = "data_status"
-
 const useDataStatus = (socket: Socket | undefined) => {
-  const [state, setState] = useState<DataStatus>("good")
-
-  useEffect(() => {
-    if (socket !== undefined) {
-      const channel: Channel = socket.channel(topic)
-      channel.on("data_status", ({ data: status }) => {
-        setState(status)
-      })
-      channel
-        .join()
-        .receive("ok", ({ data: status }) => {
-          setState(status)
-        })
-        // tslint:disable-next-line: no-console
-        .receive("error", ({ reason }) => console.error("join failed", reason))
-        .receive("timeout", () => {
-          reload(true)
-        })
-    }
-  }, [socket])
-  return state
+  return useChannel<DataStatus>({
+    socket,
+    topic: "data_status",
+    event: "data_status",
+    parser: status => status,
+    loadingState: "good",
+    offState: "good",
+  })
 }
 
 export default useDataStatus

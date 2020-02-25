@@ -50,7 +50,7 @@ describe("useDataStatus", () => {
 
     renderHook(() => useDataStatus(mockSocket))
 
-    expect(spyConsoleError).toHaveBeenCalledWith("join failed", "ERROR_REASON")
+    expect(spyConsoleError).toHaveBeenCalled()
     spyConsoleError.mockRestore()
   })
 

@@ -313,10 +313,7 @@ describe("useSearchResults", () => {
 
     renderHook(() => useSearchResults(mockSocket, searchQuery))
 
-    expect(spyConsoleError).toHaveBeenCalledWith(
-      "search channel join failed",
-      "ERROR_REASON"
-    )
+    expect(spyConsoleError).toHaveBeenCalled()
     spyConsoleError.mockRestore()
   })
 

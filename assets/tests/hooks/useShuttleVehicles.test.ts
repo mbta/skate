@@ -189,10 +189,7 @@ describe("useShuttleVehicles", () => {
 
     renderHook(() => useShuttleVehicles(mockSocket))
 
-    expect(spyConsoleError).toHaveBeenCalledWith(
-      "shuttle vehicles join failed",
-      "ERROR_REASON"
-    )
+    expect(spyConsoleError).toHaveBeenCalled()
     spyConsoleError.mockRestore()
   })
 
