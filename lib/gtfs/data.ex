@@ -293,12 +293,8 @@ defmodule Gtfs.Data do
         ) ::
           timepoints_by_route()
   defp timepoints_for_routes(route_patterns, route_ids, trips, timepoints_by_id) do
-    Enum.reduce(route_ids, %{}, fn route_id, acc ->
-      Map.put(
-        acc,
-        route_id,
-        timepoints_for_route(route_patterns, route_id, trips, timepoints_by_id)
-      )
+    Map.new(route_ids, fn route_id ->
+      {route_id, timepoints_for_route(route_patterns, route_id, trips, timepoints_by_id)}
     end)
   end
 
