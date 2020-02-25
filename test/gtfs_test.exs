@@ -269,11 +269,6 @@ defmodule GtfsTest do
       pid =
         Gtfs.start_mocked(%{
           gtfs: %{
-            "checkpoints.txt" => [
-              "checkpoint_id,checkpoint_name",
-              "exurb,exurb name",
-              "suburb,suburb name"
-            ],
             "routes.txt" => [
               "route_id,route_type,route_short_name",
               "route,3,route"
@@ -364,11 +359,6 @@ defmodule GtfsTest do
       pid =
         Gtfs.start_mocked(%{
           gtfs: %{
-            "checkpoints.txt" => [
-              "checkpoint_id,checkpoint_name",
-              "exurb,exurb name",
-              "suburb,suburb name"
-            ],
             "routes.txt" => [
               "route_id,route_type,route_short_name",
               "route,3,route"
@@ -502,11 +492,6 @@ defmodule GtfsTest do
       pid =
         Gtfs.start_mocked(%{
           gtfs: %{
-            "checkpoints.txt" => [
-              "checkpoint_id,checkpoint_name",
-              "exurb,exurb name",
-              "suburb,suburb name"
-            ],
             "routes.txt" => [
               "route_id,route_type,route_short_name,route_desc",
               "route,3,route,\"Key Bus\""
@@ -563,10 +548,6 @@ defmodule GtfsTest do
       pid =
         Gtfs.start_mocked(%{
           gtfs: %{
-            "checkpoints.txt" => [
-              "checkpoint_id,checkpoint_name",
-              "exurb,exurb name"
-            ],
             "routes.txt" => [
               "route_id,route_type,route_short_name,route_desc",
               "route,3,route,\"Rail Replacement Bus\""
@@ -611,10 +592,6 @@ defmodule GtfsTest do
       pid =
         Gtfs.start_mocked(%{
           gtfs: %{
-            "checkpoints.txt" => [
-              "checkpoint_id,checkpoint_name",
-              "exurb,exurb name"
-            ],
             "routes.txt" => [
               "route_id,route_type,route_short_name,route_desc",
               "route,3,route,\"Rail Replacement Bus\""
