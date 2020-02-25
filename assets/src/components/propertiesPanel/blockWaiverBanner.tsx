@@ -6,21 +6,18 @@ interface Props {
   blockWaiver: BlockWaiver
 }
 
-export const hours12 = (hours24plus: number): number => {
-  if (hours24plus === 24) {
+export const hours12 = (hours24: number): number => {
+  if (hours24 === 0) {
     return 12
   }
-  if (hours24plus > 24) {
-    return hours24plus - 24
+  if (hours24 > 12) {
+    return hours24 - 12
   }
-  if (hours24plus > 12) {
-    return hours24plus - 12
-  }
-  return hours24plus
+  return hours24
 }
 
-const ampm = (hours24plus: number): string =>
-  hours24plus >= 12 && hours24plus < 24 ? "pm" : "am"
+const ampm = (hours24: number): string =>
+  hours24 >= 12 && hours24 < 24 ? "pm" : "am"
 
 const zeroPad = (time: number): string => (time < 10 ? `0${time}` : `${time}`)
 

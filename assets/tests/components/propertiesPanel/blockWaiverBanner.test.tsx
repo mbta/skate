@@ -60,12 +60,10 @@ describe("formatEpochSeconds", () => {
 
 describe("hours12", () => {
   test("returns the 12-hour version of the 24-hour-plus hour", () => {
-    expect(hours12(0)).toEqual(0)
+    expect(hours12(0)).toEqual(12)
     expect(hours12(5)).toEqual(5)
     expect(hours12(12)).toEqual(12)
     expect(hours12(13)).toEqual(1)
-    expect(hours12(24)).toEqual(12)
-    expect(hours12(25)).toEqual(1)
   })
 })
 
