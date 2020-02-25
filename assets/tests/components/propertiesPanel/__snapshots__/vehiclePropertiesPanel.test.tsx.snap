@@ -1908,7 +1908,7 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
     >
       Invalid
     </span>
-    — We cannot match this vehicle to a scheduled trip at this time. This vehicle may be off-route or severely off-schedule.
+    - We cannot match this vehicle to a scheduled trip at this time. This vehicle may be off-route or severely off-schedule.
   </div>
   <div
     className="m-headway-diagram"

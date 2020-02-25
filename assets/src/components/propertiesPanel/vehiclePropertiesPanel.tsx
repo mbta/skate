@@ -25,7 +25,7 @@ const InvalidBanner = () => (
     <span className="m-vehicle-properties-panel__invalid-banner-title">
       Invalid
     </span>
-    — We cannot match this vehicle to a scheduled trip at this time. This
+    - We cannot match this vehicle to a scheduled trip at this time. This
     vehicle may be off-route or severely off-schedule.
   </div>
 )
