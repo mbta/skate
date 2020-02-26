@@ -47,6 +47,7 @@ const vehicles: Vehicle[] = [
     scheduledLocation: null,
     routeStatus: "on_route",
     endOfTripType: "another_trip",
+    blockWaivers: [],
   },
   {
     id: "y0479",
@@ -96,6 +97,7 @@ const vehicles: Vehicle[] = [
     },
     routeStatus: "on_route",
     endOfTripType: "another_trip",
+    blockWaivers: [],
   },
 ]
 
@@ -114,6 +116,7 @@ const ghost: Ghost = {
     fractionUntilTimepoint: 0.0,
   },
   routeStatus: "laying_over",
+  blockWaivers: [],
 }
 
 describe("LayoverBox", () => {

@@ -229,6 +229,7 @@ const ghostFromVehicleScheduledLocation = (vehicle: Vehicle): Ghost => ({
   layoverDepartureTime: null,
   scheduledTimepointStatus: vehicle.scheduledLocation!.timepointStatus,
   routeStatus: "on_route",
+  blockWaivers: vehicle.blockWaivers,
 })
 
 export default RouteLadder

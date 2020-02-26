@@ -76,11 +76,7 @@ defmodule Realtime.GhostTest do
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
 
-      assert Ghost.ghosts(
-               %{~D[2019-01-01] => [block]},
-               [],
-               time0 + 2
-             ) == [
+      assert [
                %Ghost{
                  id: "ghost-trip",
                  direction_id: 0,
@@ -98,13 +94,16 @@ defmodule Realtime.GhostTest do
                  route_status: :on_route,
                  block_waivers: [
                    %BlockWaiver{
-                     start_time: 1,
-                     end_time: 3,
                      remark: "E:1106"
                    }
                  ]
                }
-             ]
+             ] =
+               Ghost.ghosts(
+                 %{~D[2019-01-01] => [block]},
+                 [],
+                 time0 + 2
+               )
     end
 
     test "does not make a ghost for a block if there's a vehicle on that block" do
@@ -167,14 +166,8 @@ defmodule Realtime.GhostTest do
       }
 
       block = [trip]
-      # 2019-01-01 00:00:00 EST
-      time0 = 1_546_318_800
 
-      assert Ghost.ghost_for_block(
-               block,
-               ~D[2019-01-01],
-               time0 + 1
-             ) == %Ghost{
+      assert %Ghost{
                id: "ghost-trip",
                direction_id: 0,
                route_id: "route",
@@ -183,7 +176,7 @@ defmodule Realtime.GhostTest do
                block_id: "block",
                run_id: "run",
                via_variant: nil,
-               layover_departure_time: time0 + 2,
+               layover_departure_time: 1_546_318_802,
                scheduled_timepoint_status: %{
                  timepoint_id: "t1",
                  fraction_until_timepoint: 0.0
@@ -191,12 +184,15 @@ defmodule Realtime.GhostTest do
                route_status: :pulling_out,
                block_waivers: [
                  %BlockWaiver{
-                   start_time: 2,
-                   end_time: 2,
                    remark: "E:1106"
                  }
                ]
-             }
+             } =
+               Ghost.ghost_for_block(
+                 block,
+                 ~D[2019-01-01],
+                 1_546_318_801
+               )
     end
 
     test "makes a ghost for a block that should be laying over" do

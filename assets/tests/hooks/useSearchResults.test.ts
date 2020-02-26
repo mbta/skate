@@ -3,11 +3,7 @@ import useSearchResults from "../../src/hooks/useSearchResults"
 import * as browser from "../../src/models/browser"
 import { emptySearchQuery, SearchQuery } from "../../src/models/searchQuery"
 import { VehicleData, VehicleOrGhostData } from "../../src/models/vehicleData"
-import {
-  Vehicle,
-  VehicleOrGhost,
-  VehicleTimepointStatus,
-} from "../../src/realtime"
+import { Vehicle, VehicleOrGhost } from "../../src/realtime"
 import { mockUseStateOnce } from "../testHelpers/mockHelpers"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 
@@ -51,159 +47,163 @@ describe("useSearchResults", () => {
   })
 
   test("returns results pushed to the channel", async () => {
-    const searchResultsData: VehicleOrGhostData[] = [
-      {
-        bearing: 33,
-        block_id: "block-1",
-        block_is_active: true,
-        data_discrepancies: [
-          {
-            attribute: "trip_id",
-            sources: [
-              {
-                id: "swiftly",
-                value: "swiftly-trip-id",
-              },
-              {
-                id: "busloc",
-                value: "busloc-trip-id",
-              },
-            ],
-          },
-          {
-            attribute: "route_id",
-            sources: [
-              {
-                id: "swiftly",
-                value: null,
-              },
-              {
-                id: "busloc",
-                value: "busloc-route-id",
-              },
-            ],
-          },
-        ],
-        direction_id: 0,
-        headsign: "Forest Hills",
-        headway_secs: 859.1,
-        headway_spacing: null,
-        id: "v1",
-        is_off_course: false,
-        layover_departure_time: null,
-        label: "v1-label",
-        latitude: 0,
-        longitude: 0,
-        operator_id: "op1",
-        operator_name: "SMITH",
-        previous_vehicle_id: "v2",
+    const vehicleData: VehicleData = {
+      bearing: 33,
+      block_id: "block-1",
+      block_is_active: true,
+      data_discrepancies: [
+        {
+          attribute: "trip_id",
+          sources: [
+            {
+              id: "swiftly",
+              value: "swiftly-trip-id",
+            },
+            {
+              id: "busloc",
+              value: "busloc-trip-id",
+            },
+          ],
+        },
+        {
+          attribute: "route_id",
+          sources: [
+            {
+              id: "swiftly",
+              value: null,
+            },
+            {
+              id: "busloc",
+              value: "busloc-route-id",
+            },
+          ],
+        },
+      ],
+      direction_id: 0,
+      headsign: "Forest Hills",
+      headway_secs: 859.1,
+      headway_spacing: null,
+      id: "v1",
+      is_off_course: false,
+      layover_departure_time: null,
+      label: "v1-label",
+      latitude: 0,
+      longitude: 0,
+      operator_id: "op1",
+      operator_name: "SMITH",
+      previous_vehicle_id: "v2",
+      route_id: "39",
+      run_id: "run-1",
+      schedule_adherence_secs: 0,
+      scheduled_headway_secs: 120,
+      scheduled_location: {
         route_id: "39",
-        run_id: "run-1",
-        schedule_adherence_secs: 0,
-        scheduled_headway_secs: 120,
-        scheduled_location: {
-          direction_id: 0,
-          trip_id: "scheduled trip",
-          run_id: "scheduled run",
-          time_since_trip_start_time: 0,
-          headsign: "scheduled headsign",
-          via_variant: "scheduled via variant",
-          timepoint_status: {
-            timepoint_id: "tp1",
-            fraction_until_timepoint: 0.5,
-          },
-        },
-        sources: ["swiftly", "busloc"],
-        stop_status: {
-          stop_id: "s1",
-          stop_name: "Stop Name",
-        },
+        direction_id: 0,
+        trip_id: "scheduled trip",
+        run_id: "scheduled run",
+        time_since_trip_start_time: 0,
+        headsign: "scheduled headsign",
+        via_variant: "scheduled via variant",
         timepoint_status: {
           timepoint_id: "tp1",
           fraction_until_timepoint: 0.5,
         },
-        timestamp: 123,
-        trip_id: "t1",
-        via_variant: "X",
-        route_status: "on_route",
-      } as VehicleData,
-    ]
-    const vehicles: VehicleOrGhost[] = [
-      {
-        id: "v1",
-        label: "v1-label",
-        runId: "run-1",
-        timestamp: 123,
-        latitude: 0,
-        longitude: 0,
-        directionId: 0,
-        routeId: "39",
-        tripId: "t1",
-        headsign: "Forest Hills",
-        viaVariant: "X",
-        operatorId: "op1",
-        operatorName: "SMITH",
-        bearing: 33,
-        blockId: "block-1",
-        headwaySecs: 859.1,
-        headwaySpacing: null,
-        previousVehicleId: "v2",
-        scheduleAdherenceSecs: 0,
-        scheduledHeadwaySecs: 120,
-        isOffCourse: false,
-        layoverDepartureTime: null,
-        blockIsActive: true,
-        dataDiscrepancies: [
-          {
-            attribute: "trip_id",
-            sources: [
-              {
-                id: "swiftly",
-                value: "swiftly-trip-id",
-              },
-              {
-                id: "busloc",
-                value: "busloc-trip-id",
-              },
-            ],
-          },
-          {
-            attribute: "route_id",
-            sources: [
-              {
-                id: "swiftly",
-                value: null,
-              },
-              {
-                id: "busloc",
-                value: "busloc-route-id",
-              },
-            ],
-          },
-        ],
-        stopStatus: {
-          stopId: "s1",
-          stopName: "Stop Name",
+      },
+      sources: ["swiftly", "busloc"],
+      stop_status: {
+        stop_id: "s1",
+        stop_name: "Stop Name",
+      },
+      timepoint_status: {
+        timepoint_id: "tp1",
+        fraction_until_timepoint: 0.5,
+      },
+      timestamp: 123,
+      trip_id: "t1",
+      via_variant: "X",
+      route_status: "on_route",
+      end_of_trip_type: "another_trip",
+      block_waivers: [],
+    }
+    const searchResultsData: VehicleOrGhostData[] = [vehicleData]
+    const vehicle: Vehicle = {
+      id: "v1",
+      label: "v1-label",
+      runId: "run-1",
+      timestamp: 123,
+      latitude: 0,
+      longitude: 0,
+      directionId: 0,
+      routeId: "39",
+      tripId: "t1",
+      headsign: "Forest Hills",
+      viaVariant: "X",
+      operatorId: "op1",
+      operatorName: "SMITH",
+      bearing: 33,
+      blockId: "block-1",
+      headwaySecs: 859.1,
+      headwaySpacing: null,
+      previousVehicleId: "v2",
+      scheduleAdherenceSecs: 0,
+      scheduledHeadwaySecs: 120,
+      isOffCourse: false,
+      layoverDepartureTime: null,
+      blockIsActive: true,
+      dataDiscrepancies: [
+        {
+          attribute: "trip_id",
+          sources: [
+            {
+              id: "swiftly",
+              value: "swiftly-trip-id",
+            },
+            {
+              id: "busloc",
+              value: "busloc-trip-id",
+            },
+          ],
         },
+        {
+          attribute: "route_id",
+          sources: [
+            {
+              id: "swiftly",
+              value: null,
+            },
+            {
+              id: "busloc",
+              value: "busloc-route-id",
+            },
+          ],
+        },
+      ],
+      stopStatus: {
+        stopId: "s1",
+        stopName: "Stop Name",
+      },
+      timepointStatus: {
+        timepointId: "tp1",
+        fractionUntilTimepoint: 0.5,
+      },
+      scheduledLocation: {
+        routeId: "39",
+        directionId: 0,
+        tripId: "scheduled trip",
+        runId: "scheduled run",
+        timeSinceTripStartTime: 0,
+        headsign: "scheduled headsign",
+        viaVariant: "scheduled via variant",
         timepointStatus: {
           timepointId: "tp1",
           fractionUntilTimepoint: 0.5,
-        } as VehicleTimepointStatus,
-        scheduledLocation: {
-          directionId: 0,
-          tripId: "scheduled trip",
-          runId: "scheduled run",
-          timeSinceTripStartTime: 0,
-          headsign: "scheduled headsign",
-          viaVariant: "scheduled via variant",
-          timepointStatus: {
-            timepointId: "tp1",
-            fractionUntilTimepoint: 0.5,
-          },
         },
-        routeStatus: "on_route",
-      } as Vehicle,
-    ]
+      },
+      routeStatus: "on_route",
+      endOfTripType: "another_trip",
+      blockWaivers: [],
+    }
+    const vehicles: VehicleOrGhost[] = [vehicle]
 
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok")

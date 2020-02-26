@@ -52,6 +52,7 @@ const vehicle: Vehicle = {
   },
   routeStatus: "on_route",
   endOfTripType: "another_trip",
+  blockWaivers: [],
 }
 
 jest.mock("../../../src/models/vehiclesByRouteId", () => ({
@@ -125,6 +126,7 @@ describe("HeadwayDiagram", () => {
       },
       routeStatus: "on_route",
       endOfTripType: "another_trip",
+      blockWaivers: [],
     }
 
     const tree = renderer
@@ -180,6 +182,7 @@ describe("HeadwayDiagram", () => {
       },
       routeStatus: "on_route",
       endOfTripType: "another_trip",
+      blockWaivers: [],
     }
 
     const tree = renderer

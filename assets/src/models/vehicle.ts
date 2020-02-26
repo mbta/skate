@@ -12,6 +12,9 @@ export const isGhost = (
 export const isShuttle = (vehicle: Vehicle): boolean =>
   (vehicle.runId || "").startsWith("999")
 
+export const hasBlockWaivers = ({ blockWaivers }: VehicleOrGhost): boolean =>
+  blockWaivers.length !== 0
+
 export const shouldShowHeadwayDiagram = ({
   headwaySpacing,
   routeStatus,

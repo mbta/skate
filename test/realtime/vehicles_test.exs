@@ -222,12 +222,7 @@ defmodule Realtime.VehiclesTest do
       # 2019-12-20 00:00:00
       time0 = 1_576_818_000
 
-      assert Vehicles.group_by_route_with_blocks(
-               [],
-               %{},
-               %{~D[2019-12-20] => [block]},
-               time0
-             ) == %{
+      assert %{
                "route" => [
                  %Ghost{
                    id: "ghost-trip",
@@ -244,14 +239,18 @@ defmodule Realtime.VehiclesTest do
                    route_status: :on_route,
                    block_waivers: [
                      %BlockWaiver{
-                       start_time: 0,
-                       end_time: 0,
                        remark: "E:1106"
                      }
                    ]
                  }
                ]
-             }
+             } =
+               Vehicles.group_by_route_with_blocks(
+                 [],
+                 %{},
+                 %{~D[2019-12-20] => [block]},
+                 time0
+               )
     end
 
     test "doesn't include block as ghost if it has a vehicle on that block" do
@@ -338,38 +337,37 @@ defmodule Realtime.VehiclesTest do
 
       blocks_by_date = %{~D[2019-12-20] => [block]}
 
-      ghost = %Ghost{
-        id: "ghost-trip",
-        direction_id: 0,
-        route_id: "route",
-        trip_id: "trip",
-        headsign: "headsign",
-        block_id: "block",
-        run_id: nil,
-        via_variant: nil,
-        layover_departure_time: time0 + 1,
-        scheduled_timepoint_status: %{
-          timepoint_id: "timepoint",
-          fraction_until_timepoint: 0.0
-        },
-        route_status: :pulling_out,
-        block_waivers: [
-          %BlockWaiver{
-            start_time: 1,
-            end_time: 1,
-            remark: "E:1106"
-          }
-        ]
-      }
-
-      assert Vehicles.group_by_route_with_blocks(
-               vehicles,
-               incoming_blocks_by_route,
-               blocks_by_date,
-               time0
-             ) == %{
+      assert %{
                "route" => [ghost]
-             }
+             } =
+               Vehicles.group_by_route_with_blocks(
+                 vehicles,
+                 incoming_blocks_by_route,
+                 blocks_by_date,
+                 time0
+               )
+
+      assert %Ghost{
+               id: "ghost-trip",
+               direction_id: 0,
+               route_id: "route",
+               trip_id: "trip",
+               headsign: "headsign",
+               block_id: "block",
+               run_id: nil,
+               via_variant: nil,
+               layover_departure_time: 1_576_818_001,
+               scheduled_timepoint_status: %{
+                 timepoint_id: "timepoint",
+                 fraction_until_timepoint: 0.0
+               },
+               route_status: :pulling_out,
+               block_waivers: [
+                 %BlockWaiver{
+                   remark: "E:1106"
+                 }
+               ]
+             } = ghost
     end
 
     test "includes ghosts that are incoming from another route" do

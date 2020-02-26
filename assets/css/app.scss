@@ -19,6 +19,7 @@ $picker-width-wide: $picker-width-narrow + 3.1;
 @import "picker_container";
 @import "properties_list";
 @import "properties_panel";
+@import "properties_panel/block_waiver_banner";
 @import "properties_panel/close_button";
 @import "properties_panel/ghost_properties_panel";
 @import "properties_panel/header";

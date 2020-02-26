@@ -34,7 +34,7 @@ defmodule Realtime.BlockWaiver do
     block
     |> Enum.flat_map(&trip_stop_time_waivers/1)
     |> group_consecutive_sequences()
-    |> Enum.map(&from_trip_stop_time_waivers/1)
+    |> Enum.map(&from_trip_stop_time_waivers(&1, date_for_block(block)))
   end
 
   @type trip_stop_time_waiver :: {Util.Time.time_of_day(), StopTimeUpdate.t() | nil}
@@ -98,15 +98,34 @@ defmodule Realtime.BlockWaiver do
   @spec within_60_minutes?(Util.Time.time_of_day(), Util.Time.time_of_day()) :: boolean
   defp within_60_minutes?(time, previous_time), do: time - previous_time <= 3600
 
-  @spec from_trip_stop_time_waivers([trip_stop_time_waiver()]) :: t()
-  def from_trip_stop_time_waivers(trip_stop_time_waivers) do
+  @spec from_trip_stop_time_waivers([trip_stop_time_waiver()], Date.t()) :: t()
+  def from_trip_stop_time_waivers(trip_stop_time_waivers, date_for_block) do
     {start_time, %StopTimeUpdate{remark: remark}} = List.first(trip_stop_time_waivers)
     {end_time, _} = List.last(trip_stop_time_waivers)
 
     %__MODULE__{
-      start_time: start_time,
-      end_time: end_time,
+      start_time: Util.Time.timestamp_for_time_of_day(start_time, date_for_block),
+      end_time: Util.Time.timestamp_for_time_of_day(end_time, date_for_block),
       remark: remark
     }
+  end
+
+  @spec date_for_block(Block.t()) :: Date.t()
+  defp date_for_block(block) do
+    active_blocks_fn = Application.get_env(:realtime, :active_blocks_fn, &Gtfs.active_blocks/2)
+
+    now = Util.Time.now()
+    one_hour_ago = now - 60 * 60
+    in_ten_minutes = now + 10 * 60
+
+    {date, _blocks} =
+      one_hour_ago
+      |> active_blocks_fn.(in_ten_minutes)
+      |> Enum.find(
+        {Util.Time.today(), []},
+        fn {_date, blocks} -> Enum.member?(blocks, block) end
+      )
+
+    date
   end
 end

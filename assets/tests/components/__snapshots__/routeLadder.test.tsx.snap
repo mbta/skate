@@ -523,7 +523,7 @@ Array [
       />
       <g>
         <g
-          className="m-ladder__vehicle "
+          className="m-ladder__vehicle  "
           onClick={[Function]}
           transform="translate(87,-10)"
         >
@@ -567,7 +567,7 @@ Array [
       </g>
       <g>
         <g
-          className="m-ladder__vehicle "
+          className="m-ladder__vehicle  "
           onClick={[Function]}
           transform="translate(63,-40)"
         >
@@ -625,7 +625,7 @@ Array [
       </g>
       <g>
         <g
-          className="m-ladder__vehicle "
+          className="m-ladder__vehicle  "
           onClick={[Function]}
           transform="translate(-63,-40)"
         >

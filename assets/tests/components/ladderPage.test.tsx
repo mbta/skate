@@ -84,6 +84,7 @@ describe("LadderPage", () => {
         fractionUntilTimepoint: 0.0,
       },
       routeStatus: "on_route",
+      blockWaivers: [],
     }
     ;(useVehicles as jest.Mock).mockImplementationOnce(() => ({
       ["1"]: [vehicle],

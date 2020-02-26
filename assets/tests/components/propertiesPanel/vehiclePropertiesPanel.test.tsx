@@ -3,8 +3,11 @@ import React from "react"
 import renderer from "react-test-renderer"
 import VehiclePropertiesPanel from "../../../src/components/propertiesPanel/vehiclePropertiesPanel"
 import { HeadwaySpacing } from "../../../src/models/vehicleStatus"
-import { Vehicle } from "../../../src/realtime"
+import { BlockWaiver, Vehicle } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
+import * as blockWaiverBanner from "../../../src/components/propertiesPanel/blockWaiverBanner"
+
+jest.spyOn(blockWaiverBanner, "nowEpochSeconds").mockImplementation(() => 81720)
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
@@ -67,6 +70,7 @@ const vehicle: Vehicle = {
   scheduledLocation: null,
   routeStatus: "on_route",
   endOfTripType: "another_trip",
+  blockWaivers: [],
 }
 
 describe("VehiclePropertiesPanel", () => {
@@ -154,6 +158,26 @@ describe("VehiclePropertiesPanel", () => {
 
     const tree = renderer
       .create(<VehiclePropertiesPanel selectedVehicle={shuttleVehicle} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders for a vehicle with block waivers", () => {
+    const blockWaiver: BlockWaiver = {
+      startTime: 18300,
+      endTime: 45480,
+      remark: "E:1106",
+    }
+    const vehicleWithBlockWaivers: Vehicle = {
+      ...vehicle,
+      blockWaivers: [blockWaiver],
+    }
+
+    const tree = renderer
+      .create(
+        <VehiclePropertiesPanel selectedVehicle={vehicleWithBlockWaivers} />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()

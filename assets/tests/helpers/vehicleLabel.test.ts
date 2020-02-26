@@ -51,6 +51,7 @@ const vehicle: Vehicle = {
   },
   routeStatus: "on_route",
   endOfTripType: "another_trip",
+  blockWaivers: [],
 }
 
 describe("vehicleLabel", () => {
@@ -135,6 +136,7 @@ describe("vehicleLabel", () => {
       fractionUntilTimepoint: 0.0,
     },
     routeStatus: "on_route",
+    blockWaivers: [],
   }
 
   test("shows ghost run id without area", () => {

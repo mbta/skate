@@ -69,6 +69,7 @@ describe("IncomingBox", () => {
       },
       routeStatus: "pulling_out",
       endOfTripType: "another_trip",
+      blockWaivers: [],
     }
 
     const tree = renderer
@@ -100,6 +101,7 @@ describe("IncomingBox", () => {
         fractionUntilTimepoint: 0.0,
       },
       routeStatus: "pulling_out",
+      blockWaivers: [],
     }
 
     const tree = renderer

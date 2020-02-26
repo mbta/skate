@@ -146,17 +146,22 @@ const VehicleSvg = ({
     label,
     viaVariant,
     status,
+    hasBlockWaivers,
     x,
     y,
     vehicleDirection,
   } = ladderVehicle
   const [, dispatch] = useContext(StateDispatchContext)
   const selectedClass = vehicleId === selectedVehicleId ? "selected" : ""
+  const blockWaiversClass =
+    featureIsEnabled("block_waivers") && hasBlockWaivers
+      ? "m-ladder__vehicle--with-block-waivers"
+      : ""
 
   return (
     <g>
       <g
-        className={`m-ladder__vehicle ${selectedClass}`}
+        className={`m-ladder__vehicle ${selectedClass} ${blockWaiversClass}`}
         transform={`translate(${x},${y})`}
         onClick={() => dispatch(selectVehicle(associatedVehicleId(vehicleId)))}
       >

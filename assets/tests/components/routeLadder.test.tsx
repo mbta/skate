@@ -6,6 +6,7 @@ import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { LadderDirection } from "../../src/models/ladderDirection"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import {
+  BlockWaiver,
   Ghost,
   RouteStatus,
   Vehicle,
@@ -63,6 +64,7 @@ const vehicles: Vehicle[] = [
     scheduledLocation: null,
     routeStatus: "on_route",
     endOfTripType: "another_trip",
+    blockWaivers: [],
   },
   {
     id: "y0479",
@@ -112,6 +114,7 @@ const vehicles: Vehicle[] = [
     },
     routeStatus: "on_route",
     endOfTripType: "another_trip",
+    blockWaivers: [],
   },
 ]
 
@@ -191,6 +194,7 @@ describe("routeLadder", () => {
         fractionUntilTimepoint: 0.0,
       },
       routeStatus: "on_route",
+      blockWaivers: [],
     }
 
     const tree = renderer
@@ -395,6 +399,7 @@ describe("routeLadder", () => {
       scheduledLocation: null,
       routeStatus: "pulling_out",
       endOfTripType: "another_trip",
+      blockWaivers: [],
     }
 
     const wrapper = mount(
@@ -524,6 +529,7 @@ describe("groupByPosition", () => {
           fractionUntilTimepoint: 0.2,
         },
       },
+      blockWaivers: [] as BlockWaiver[],
     } as Vehicle
 
     const expectedGhost: Ghost = {
@@ -538,6 +544,7 @@ describe("groupByPosition", () => {
       layoverDepartureTime: null,
       scheduledTimepointStatus: vehicle.scheduledLocation!.timepointStatus,
       routeStatus: "on_route",
+      blockWaivers: [],
     }
 
     expect(groupByPosition([vehicle], "1", LadderDirection.ZeroToOne)).toEqual({
@@ -572,6 +579,7 @@ describe("groupByPosition", () => {
           fractionUntilTimepoint: 0.2,
         },
       },
+      blockWaivers: [] as BlockWaiver[],
     } as Vehicle
 
     const expectedGhost: Ghost = {
@@ -586,6 +594,7 @@ describe("groupByPosition", () => {
       layoverDepartureTime: null,
       scheduledTimepointStatus: vehicle.scheduledLocation!.timepointStatus,
       routeStatus: "on_route",
+      blockWaivers: [],
     }
 
     expect(groupByPosition([vehicle], "1", LadderDirection.ZeroToOne)).toEqual({
@@ -620,6 +629,7 @@ describe("groupByPosition", () => {
           fractionUntilTimepoint: 0.2,
         },
       },
+      blockWaivers: [] as BlockWaiver[],
     } as Vehicle
 
     const expectedGhost: Ghost = {
@@ -637,6 +647,7 @@ describe("groupByPosition", () => {
         timepointId: "timepointId",
       },
       routeStatus: "on_route",
+      blockWaivers: [],
     }
 
     expect(groupByPosition([vehicle], "1", LadderDirection.ZeroToOne)).toEqual({

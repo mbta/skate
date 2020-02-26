@@ -18,6 +18,12 @@ defmodule Util.Time do
     System.system_time(:second)
   end
 
+  @spec today() :: Date.t()
+  def today() do
+    now()
+    |> date_of_timestamp()
+  end
+
   @doc """
   Times greater than 24:00:00 are allowed.
 

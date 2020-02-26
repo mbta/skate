@@ -10,7 +10,7 @@ import {
   LadderDirection,
   VehicleDirection,
 } from "./ladderDirection"
-import { isVehicle } from "./vehicle"
+import { hasBlockWaivers, isVehicle } from "./vehicle"
 import { DrawnStatus, drawnStatus, HeadwaySpacing } from "./vehicleStatus"
 
 export interface LadderVehicle {
@@ -18,6 +18,7 @@ export interface LadderVehicle {
   label: string
   viaVariant: ViaVariant | null
   status: DrawnStatus
+  hasBlockWaivers: boolean
   headwaySpacing: HeadwaySpacing | null
   x: number
   y: number
@@ -33,6 +34,7 @@ interface WithVehicle {
   label: string
   viaVariant: ViaVariant | null
   status: DrawnStatus
+  hasBlockWaivers: boolean
 }
 
 interface OnLadder {
@@ -52,6 +54,8 @@ interface VehicleInLane extends WithVehicle, InLane {}
 
 const widthOfVehicleGroup = 32
 const heightOfVehicleGroup = 34
+
+// tslint:disable:object-literal-sort-keys
 
 /**
  * The LadderVehicle data has some order dependency in how the properties are calculated.
@@ -129,7 +133,6 @@ export const putIntoLanes = (
         return [
           {
             ...ladderVehicle,
-            // tslint:disable-next-line:object-literal-sort-keys
             lane,
           },
           ...previousLadderVehiclePositions,
@@ -174,6 +177,7 @@ const vehicleOnLadder = (
     label: ladderVehicleLabel,
     viaVariant,
     status: drawnStatus(vehicle),
+    hasBlockWaivers: hasBlockWaivers(vehicle),
     vehicleDirection,
     y,
     scheduledY,
@@ -235,6 +239,7 @@ const ghostOnLadder = (
     label: ladderVehicleLabel,
     viaVariant: ghost.viaVariant,
     status: "ghost",
+    hasBlockWaivers: hasBlockWaivers(ghost),
     vehicleDirection,
     y,
     scheduledY: y,

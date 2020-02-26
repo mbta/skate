@@ -37,6 +37,8 @@ config :skate, SkateWeb.AuthManager,
 
 config :laboratory,
   features: [
+    {:block_waivers, "Block Waivers",
+     "Display block waivers in property panels and highlight vehicles on the route ladder."},
     {:headway_ladder_colors, "Headway Route Ladder Colors",
      "Turns on colored headway spacing lines on key route route ladders showing when service is bunched or gapped."}
   ],
