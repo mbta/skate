@@ -48,9 +48,6 @@ defmodule Realtime.Server do
 
   # Client functions
 
-  @spec registry_name() :: Registry.registry()
-  def registry_name(), do: Realtime.Registry
-
   @spec default_name() :: GenServer.name()
   def default_name(), do: Realtime.Server
 
@@ -276,7 +273,7 @@ defmodule Realtime.Server do
   defp broadcast(state) do
     registry_key = self()
 
-    Registry.dispatch(registry_name(), registry_key, fn entries ->
+    Registry.dispatch(Realtime.Supervisor.registry_name(), registry_key, fn entries ->
       Enum.each(entries, &send_data(&1, state))
     end)
   end

@@ -78,7 +78,7 @@ defmodule Realtime.ServerTest do
   }
 
   setup do
-    start_supervised({Registry, keys: :duplicate, name: Realtime.Server.registry_name()})
+    start_supervised({Registry, keys: :duplicate, name: Realtime.Supervisor.registry_name()})
     :ok
   end
 

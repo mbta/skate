@@ -45,7 +45,7 @@ defmodule SkateWeb.VehiclesChannelTest do
 
     socket = socket(UserSocket, "", %{guardian_default_resource: "test_uid"})
 
-    start_supervised({Registry, keys: :duplicate, name: Realtime.Server.registry_name()})
+    start_supervised({Registry, keys: :duplicate, name: Realtime.Supervisor.registry_name()})
     start_supervised({Realtime.Server, name: Realtime.Server.default_name()})
 
     {:ok, socket: socket}
