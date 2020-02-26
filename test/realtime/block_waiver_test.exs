@@ -80,6 +80,12 @@ defmodule Realtime.BlockWaiverTest do
 
   describe "block_waivers_for_block/1" do
     setup do
+      block = [@trip1, @trip2]
+
+      reassign_env(:realtime, :active_blocks_fn, fn _, _ ->
+        %{Util.Time.today() => block}
+      end)
+
       reassign_env(:realtime, :stop_time_updates_fn, fn trip_id ->
         case trip_id do
           "trip1" ->
@@ -92,11 +98,11 @@ defmodule Realtime.BlockWaiverTest do
             []
         end
       end)
+
+      {:ok, block: block}
     end
 
-    test "returns block waivers for consecutive skipped stops on a trip" do
-      block = [@trip1, @trip2]
-
+    test "returns block waivers for consecutive skipped stops on a trip", %{block: block} do
       assert [
                %BlockWaiver{},
                %BlockWaiver{}
@@ -235,7 +241,8 @@ defmodule Realtime.BlockWaiverTest do
                start_time: start_time,
                end_time: end_time,
                remark: "E:1106"
-             } = BlockWaiver.from_trip_stop_time_waivers(trip_stop_time_waivers)
+             } =
+               BlockWaiver.from_trip_stop_time_waivers(trip_stop_time_waivers, Util.Time.today())
 
       assert is_number(start_time)
       assert is_number(end_time)
