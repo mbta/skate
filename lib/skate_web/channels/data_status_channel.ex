@@ -1,11 +1,11 @@
 defmodule SkateWeb.DataStatusChannel do
   use SkateWeb, :channel
 
-  alias Realtime.Server
+  alias Realtime.DataStatusRegistry
 
   @impl Phoenix.Channel
   def join("data_status", _message, socket) do
-    data_status = Server.subscribe_to_data_status()
+    data_status = DataStatusRegistry.subscribe()
     {:ok, %{data: data_status}, socket}
   end
 

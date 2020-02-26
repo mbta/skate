@@ -13,6 +13,7 @@ defmodule Realtime.Supervisor do
     children = [
       {Registry, keys: :duplicate, name: registry_name()},
       {Realtime.Server, name: Realtime.Server.default_name()},
+      {Realtime.DataStatusRegistry, name: Realtime.DataStatusRegistry.default_name()},
       {Concentrate.Supervisor,
        [
          busloc_url: Application.get_env(:skate, :busloc_url),
