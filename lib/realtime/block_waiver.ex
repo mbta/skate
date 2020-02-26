@@ -115,12 +115,11 @@ defmodule Realtime.BlockWaiver do
     active_blocks_fn = Application.get_env(:realtime, :active_blocks_fn, &Gtfs.active_blocks/2)
 
     now = Util.Time.now()
-    ten_minutes = 10 * 60
-    ten_minutes_ago = now - ten_minutes
-    in_ten_minutes = now + ten_minutes
+    one_hour_ago = now - 60 * 60
+    in_ten_minutes = now + 10 * 60
 
     {date, _blocks} =
-      ten_minutes_ago
+      one_hour_ago
       |> active_blocks_fn.(in_ten_minutes)
       |> Enum.find(
         {Util.Time.today(), []},
