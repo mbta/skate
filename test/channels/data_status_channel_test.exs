@@ -13,10 +13,7 @@ defmodule SkateWeb.DataStatusChannelTest do
     socket = socket(UserSocket, "", %{guardian_default_resource: "test_uid"})
 
     start_supervised({Registry, keys: :duplicate, name: Realtime.Supervisor.registry_name()})
-
-    start_supervised(
-      {Realtime.DataStatusPubSub, name: Realtime.DataStatusPubSub.default_name()}
-    )
+    start_supervised({Realtime.DataStatusPubSub, name: Realtime.DataStatusPubSub.default_name()})
 
     {:ok, socket: socket}
   end
