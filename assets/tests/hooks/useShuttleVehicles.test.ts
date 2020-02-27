@@ -162,17 +162,10 @@ describe("useShuttleVehicles", () => {
     expect(mockChannel.join).toHaveBeenCalledTimes(1)
   })
 
-  test("returns results pushed to the channel", async () => {
+  test("returns resulting vehicles", () => {
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok")
+    const mockChannel = makeMockChannel("ok", { data: shuttlesData })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
-    mockChannel.on.mockImplementation((event, handler) => {
-      if (event === "shuttles") {
-        handler({
-          data: shuttlesData,
-        })
-      }
-    })
 
     const { result } = renderHook(() => useShuttleVehicles(mockSocket))
 

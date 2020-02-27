@@ -75,6 +75,27 @@ describe("useChannel", () => {
     expect(result.current).toEqual("loading")
   })
 
+  test("returns data from the initial join", () => {
+    const parser = jest.fn(() => "parsed")
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok", { data: "raw" })
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+
+    const { result } = renderHook(() =>
+      useChannel({
+        socket: mockSocket,
+        topic: "topic",
+        event: "event",
+        parser,
+        loadingState: "loading",
+        offState: "off",
+      })
+    )
+
+    expect(parser).toHaveBeenCalledWith("raw")
+    expect(result.current).toEqual("parsed")
+  })
+
   test("returns data pushed to the channel", async () => {
     const parser = jest.fn(() => "parsed")
     const mockSocket = makeMockSocket()
@@ -98,6 +119,7 @@ describe("useChannel", () => {
         offState: "off",
       })
     )
+
     expect(parser).toHaveBeenCalledWith("raw")
     expect(result.current).toEqual("parsed")
   })

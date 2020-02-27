@@ -25,15 +25,10 @@ describe("useDataStatus", () => {
     expect(mockChannel.join).toHaveBeenCalledTimes(1)
   })
 
-  test("returns the data_status when pushed", () => {
+  test("returns the resulting data_status", () => {
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok")
+    const mockChannel = makeMockChannel("ok", { data: "outage" })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
-    mockChannel.on.mockImplementation((event, handler) => {
-      if (event === "data_status") {
-        handler({ data: "outage" })
-      }
-    })
 
     const { result } = renderHook(() => useDataStatus(mockSocket))
 

@@ -6,7 +6,8 @@ export const makeMockSocket = (): Socket & { channel: jest.Mock } =>
   } as Socket & { channel: jest.Mock })
 
 export const makeMockChannel = (
-  expectedJoinMessage?: "ok" | "error" | "timeout"
+  expectedJoinMessage?: "ok" | "error" | "timeout",
+  expectedJoinData?: any
 ) => {
   const result = {
     join: jest.fn(),
@@ -19,6 +20,9 @@ export const makeMockChannel = (
     if (message === expectedJoinMessage) {
       switch (message) {
         case "ok":
+          if (expectedJoinData !== undefined) {
+            handler(expectedJoinData)
+          }
           return result
 
         case "error":

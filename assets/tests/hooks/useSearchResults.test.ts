@@ -45,7 +45,7 @@ describe("useSearchResults", () => {
     expect(mockChannel.join).toHaveBeenCalledTimes(0)
   })
 
-  test("returns results pushed to the channel", async () => {
+  test("returns results pushed to the channel", () => {
     const vehicleData: VehicleData = {
       bearing: 33,
       block_id: "block-1",
@@ -205,15 +205,8 @@ describe("useSearchResults", () => {
     const vehicles: VehicleOrGhost[] = [vehicle]
 
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok")
+    const mockChannel = makeMockChannel("ok", { data: searchResultsData })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
-    mockChannel.on.mockImplementation((event, handler) => {
-      if (event === "search") {
-        handler({
-          data: searchResultsData,
-        })
-      }
-    })
 
     const searchQuery: SearchQuery = {
       text: "test",
