@@ -1,7 +1,18 @@
 .m-block-waiver-banner {
   background-color: $color-secondary-light;
-  border: 1px solid $color-secondary-dark;
+  border: 1px solid;
   padding: 1rem 1rem 1rem 2rem;
+
+  &--current {
+    background-color: $color-secondary-light;
+    border-color: $color-secondary-dark;
+  }
+
+  &--past,
+  &--future {
+    background-color: $color-bg-medium;
+    border-color: $color-component-medium;
+  }
 }
 
 .m-block-waiver-banner__header {
@@ -12,9 +23,28 @@
 
 .m-block-waiver-banner__alert-icon {
   display: block;
-  fill: $black;
   margin-right: 0.3rem;
   width: 15px;
+
+  .c-icon-alert-circle__outline {
+    fill: $white;
+  }
+
+  .c-icon-alert-circle__circle-fill {
+    fill: $color-component-dark;
+
+    .m-block-waiver-banner--past & {
+      fill: $color-component-medium;
+    }
+  }
+
+  .c-icon-alert-circle__exclamation-point {
+    fill: $white;
+
+    .m-block-waiver-banner--past & {
+      fill: $color-bg-medium;
+    }
+  }
 }
 
 .m-block-waiver-banner__title {
@@ -30,6 +60,13 @@
   }
 }
 
+.m-block-waiver-banner__detail-label,
+.m-block-waiver-banner__detail-value {
+  .m-block-waiver-banner--past & {
+    color: $color-font-grey;
+  }
+}
+
 .m-block-waiver-banner__detail-label {
   @include font-label;
   margin-bottom: 0.5rem;
@@ -42,10 +79,22 @@
   margin-bottom: 1rem;
 }
 
-.m-block-waiver-banner__detail-label--end-time,
-.m-block-waiver-banner__detail-value--end-time {
-  .m-block-waiver-banner--current & {
+.m-block-waiver-banner__detail-label--start-time,
+.m-block-waiver-banner__detail-value--start-time {
+  .m-block-waiver-banner--future & {
     color: $color-font-dark;
     font-weight: 700;
+  }
+}
+
+.m-block-waiver-banner__detail-label--end-time,
+.m-block-waiver-banner__detail-value--end-time {
+  .m-block-waiver-banner--current &,
+  .m-block-waiver-banner--past & {
+    font-weight: 700;
+  }
+
+  .m-block-waiver-banner--current & {
+    color: $color-font-dark;
   }
 }
