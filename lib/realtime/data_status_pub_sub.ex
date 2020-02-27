@@ -1,4 +1,4 @@
-defmodule Realtime.DataStatusRegistry do
+defmodule Realtime.DataStatusPubSub do
   @moduledoc """
 
   Uses a global regsitry, with this genserver's pid as the key.
@@ -19,7 +19,7 @@ defmodule Realtime.DataStatusRegistry do
   # Client functions
 
   @spec default_name() :: GenServer.name()
-  def default_name(), do: Realtime.DataStatusRegistry
+  def default_name(), do: Realtime.DataStatusPubSub
 
   @spec start_link(Keyword.t()) :: GenServer.on_start()
   def start_link(start_link_opts) do

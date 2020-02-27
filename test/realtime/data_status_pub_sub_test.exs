@@ -1,38 +1,38 @@
-defmodule Realtime.DataStatusRegistryTest do
+defmodule Realtime.DataStatusPubSubTest do
   use ExUnit.Case, async: true
 
-  alias Realtime.DataStatusRegistry
+  alias Realtime.DataStatusPubSub
 
   setup do
     start_supervised({Registry, keys: :duplicate, name: Realtime.Supervisor.registry_name()})
-    {:ok, pid} = DataStatusRegistry.start_link([])
+    {:ok, pid} = DataStatusPubSub.start_link([])
     %{pid: pid}
   end
 
   describe "update" do
     test "can call update", %{pid: pid} do
-      assert DataStatusRegistry.update(:outage, pid) == :ok
+      assert DataStatusPubSub.update(:outage, pid) == :ok
     end
   end
 
   describe "subscribe" do
     test "clients get data_status upon subscribing", %{pid: pid} do
-      :ok = DataStatusRegistry.update(:good, pid)
-      assert DataStatusRegistry.subscribe(pid) == :good
+      :ok = DataStatusPubSub.update(:good, pid)
+      assert DataStatusPubSub.subscribe(pid) == :good
     end
 
     test "clients get updates pushed to them", %{pid: pid} do
-      :ok = DataStatusRegistry.update(:good, pid)
-      _ = DataStatusRegistry.subscribe(pid)
-      :ok = DataStatusRegistry.update(:outage, pid)
+      :ok = DataStatusPubSub.update(:good, pid)
+      _ = DataStatusPubSub.subscribe(pid)
+      :ok = DataStatusPubSub.update(:outage, pid)
       assert_receive {:new_data_status, :outage}
     end
   end
 
   describe "backend implementation" do
     test "handles reference info calls that come in after a timeout" do
-      state = %DataStatusRegistry{}
-      response = DataStatusRegistry.handle_info({make_ref(), []}, state)
+      state = %DataStatusPubSub{}
+      response = DataStatusPubSub.handle_info({make_ref(), []}, state)
       assert response == {:noreply, state}
     end
   end

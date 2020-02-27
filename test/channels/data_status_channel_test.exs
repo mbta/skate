@@ -3,7 +3,7 @@ defmodule SkateWeb.DataStatusChannelTest do
   import Test.Support.Helpers
 
   alias Phoenix.Socket
-  alias Realtime.DataStatusRegistry
+  alias Realtime.DataStatusPubSub
   alias SkateWeb.DataStatusChannel
   alias SkateWeb.UserSocket
 
@@ -15,7 +15,7 @@ defmodule SkateWeb.DataStatusChannelTest do
     start_supervised({Registry, keys: :duplicate, name: Realtime.Supervisor.registry_name()})
 
     start_supervised(
-      {Realtime.DataStatusRegistry, name: Realtime.DataStatusRegistry.default_name()}
+      {Realtime.DataStatusPubSub, name: Realtime.DataStatusPubSub.default_name()}
     )
 
     {:ok, socket: socket}
@@ -23,7 +23,7 @@ defmodule SkateWeb.DataStatusChannelTest do
 
   describe "join/3" do
     test "subscribes to data status", %{socket: socket} do
-      :ok = DataStatusRegistry.update(:outage)
+      :ok = DataStatusPubSub.update(:outage)
 
       assert {:ok, %{data: :outage}, %Socket{}} =
                subscribe_and_join(socket, DataStatusChannel, "data_status")
