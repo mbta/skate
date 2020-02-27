@@ -1,7 +1,18 @@
 .m-block-waiver-banner {
   background-color: $color-secondary-light;
-  border: 1px solid $color-secondary-dark;
+  border: 1px solid;
   padding: 1rem 1rem 1rem 2rem;
+
+  &--current {
+    background-color: $color-secondary-light;
+    border-color: $color-secondary-dark;
+  }
+
+  &--past,
+  &--future {
+    background-color: $color-bg-medium;
+    border-color: $color-component-medium;
+  }
 }
 
 .m-block-waiver-banner__header {
@@ -40,6 +51,14 @@
 .m-block-waiver-banner__detail-value {
   @include font-body;
   margin-bottom: 1rem;
+}
+
+.m-block-waiver-banner__detail-label--start-time,
+.m-block-waiver-banner__detail-value--start-time {
+  .m-block-waiver-banner--future & {
+    color: $color-font-dark;
+    font-weight: 700;
+  }
 }
 
 .m-block-waiver-banner__detail-label--end-time,
