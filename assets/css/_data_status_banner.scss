@@ -9,6 +9,7 @@
 
 .m-data-status-banner__heading {
   @include font-emph;
+  font-weight: 700;
   padding-left: 0.625rem;
   padding-top: 0.625rem;
 }
