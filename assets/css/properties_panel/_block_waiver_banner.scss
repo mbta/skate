@@ -63,8 +63,12 @@
 
 .m-block-waiver-banner__detail-label--end-time,
 .m-block-waiver-banner__detail-value--end-time {
+  .m-block-waiver-banner--current &,
+  .m-block-waiver-banner--past & {
+    font-weight: 700;
+  }
+
   .m-block-waiver-banner--current & {
     color: $color-font-dark;
-    font-weight: 700;
   }
 }
