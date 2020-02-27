@@ -26,6 +26,26 @@
   fill: $black;
   margin-right: 0.3rem;
   width: 15px;
+
+  .c-icon-alert-circle__outline {
+    fill: $white;
+  }
+
+  .c-icon-alert-circle__circle-fill {
+    fill: $color-component-dark;
+
+    .m-block-waiver-banner--past & {
+      fill: $color-component-medium;
+    }
+  }
+
+  .c-icon-alert-circle__exclamation-point {
+    fill: $white;
+
+    .m-block-waiver-banner--past & {
+      fill: $color-bg-medium;
+    }
+  }
 }
 
 .m-block-waiver-banner__title {
@@ -38,6 +58,13 @@
 
   td {
     padding-bottom: 0.3rem;
+  }
+}
+
+.m-block-waiver-banner__detail-label,
+.m-block-waiver-banner__detail-value {
+  .m-block-waiver-banner--past & {
+    color: $color-font-grey;
   }
 }
 
