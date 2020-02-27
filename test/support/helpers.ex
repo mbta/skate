@@ -7,7 +7,11 @@ defmodule Test.Support.Helpers do
       Application.put_env(unquote(app), unquote(var), unquote(value))
 
       on_exit(fn ->
-        Application.put_env(unquote(app), unquote(var), old_value)
+        if old_value == nil do
+          Application.delete_env(unquote(app), unquote(var))
+        else
+          Application.put_env(unquote(app), unquote(var), old_value)
+        end
       end)
     end
   end
