@@ -247,6 +247,10 @@ input {
   }
 }
 
+// transitions
+
+$transition-slide: all 0.2s ease-in-out;
+
 // modals
 $modal-overlay-color: transparentize($color-component-dark, 0.8);
 $modal-box-shadow: 0 0 2rem 0 transparentize($black, 0.5);

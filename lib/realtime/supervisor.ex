@@ -5,11 +5,15 @@ defmodule Realtime.Supervisor do
     Supervisor.start_link(__MODULE__, :ok)
   end
 
+  @spec registry_name() :: Registry.registry()
+  def registry_name(), do: Realtime.Registry
+
   @impl true
   def init(:ok) do
     children = [
-      {Registry, keys: :duplicate, name: Realtime.Server.registry_name()},
+      {Registry, keys: :duplicate, name: registry_name()},
       {Realtime.Server, name: Realtime.Server.default_name()},
+      {Realtime.DataStatusPubSub, name: Realtime.DataStatusPubSub.default_name()},
       {Concentrate.Supervisor,
        [
          busloc_url: Application.get_env(:skate, :busloc_url),

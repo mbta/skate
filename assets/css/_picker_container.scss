@@ -5,11 +5,11 @@
   flex-direction: column;
   height: 100%;
   // Required for pinning to the left side of the screen on the tablets
-  left: $tab-bar-width;
+  left: 0;
   padding: 1rem;
-  position: fixed;
+  position: absolute;
   top: inherit;
-  transition: left 0.2s ease-in-out;
+  transition: $transition-slide;
   width: $picker-width-narrow;
   z-index: 1;
 
@@ -18,7 +18,7 @@
   }
 
   &.visible {
-    left: $tab-bar-width;
+    left: 0;
   }
 
   &.hidden {

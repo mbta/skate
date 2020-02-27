@@ -5,6 +5,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useAppcues from "../hooks/useAppcues"
 import { ConnectionStatus } from "../hooks/useSocket"
 import AboutPage from "./aboutPage"
+import DataStatusBanner from "./dataStatusBanner"
 import DisconnectedModal from "./disconnectedModal"
 import LadderPage from "./ladderPage"
 import SearchPage from "./searchPage"
@@ -20,19 +21,24 @@ const AppRoutes = () => {
 
   return (
     <div className="m-app">
-      <TabBar pickerContainerIsVisible={pickerContainerIsVisible} />
-      <BrowserRoute exact={true} path="/" component={LadderPage} />
-      <BrowserRoute
-        exact={true}
-        path="/shuttle-map"
-        component={ShuttleMapPage}
-      />
-      <BrowserRoute exact={true} path="/settings" component={SettingsPage} />
-      <BrowserRoute path="/about" component={AboutPage} />
-      <BrowserRoute exact={true} path="/search" component={SearchPage} />
-      {connectionStatus === ConnectionStatus.Disconnected ? (
-        <DisconnectedModal />
-      ) : null}
+      <div className="m-app__banner">
+        <DataStatusBanner />
+      </div>
+      <div className="m-app__main">
+        <TabBar pickerContainerIsVisible={pickerContainerIsVisible} />
+        <BrowserRoute exact={true} path="/" component={LadderPage} />
+        <BrowserRoute
+          exact={true}
+          path="/shuttle-map"
+          component={ShuttleMapPage}
+        />
+        <BrowserRoute exact={true} path="/settings" component={SettingsPage} />
+        <BrowserRoute path="/about" component={AboutPage} />
+        <BrowserRoute exact={true} path="/search" component={SearchPage} />
+        {connectionStatus === ConnectionStatus.Disconnected ? (
+          <DisconnectedModal />
+        ) : null}
+      </div>
     </div>
   )
 }

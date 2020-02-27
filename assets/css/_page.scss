@@ -1,13 +1,16 @@
 .c-page {
-  background: $color-bg-medium;
+  height: 100%;
   margin-left: $tab-bar-width;
+  overflow: scroll;
+  width: 100%;
 }
 
 .c-page__container {
   background: $color-bg-light;
+  box-sizing: border-box;
+  max-width: 34rem;
+  min-height: 100%;
   padding: 2rem;
-  max-width: 30rem;
-  min-height: 100vh;
 }
 
 .c-page__title {

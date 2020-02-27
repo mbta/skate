@@ -9,6 +9,11 @@
     [m-ladder] auto
     [m-layover-box--bottom] minmax(auto, max-content)
     [m-incoming-box] max-content;
-  height: 100vh;
+  height: 100%;
+  max-width: 100%;
+  overflow-x: scroll;
   padding: 1rem;
+  // leave space for the picker container tab, which is always visible
+  padding-left: 3rem;
+  width: min-content;
 }

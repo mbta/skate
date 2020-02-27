@@ -6,7 +6,7 @@
   max-width: 100%;
   overflow-x: hidden;
   overflow-y: scroll;
-  position: fixed;
+  position: absolute;
   right: 0;
   top: 0;
   width: 23.5rem;
@@ -19,5 +19,6 @@
 
 .m-properties-panel__modal-overlay {
   @include modal-overlay;
+  position: absolute;
   z-index: 1000;
 }

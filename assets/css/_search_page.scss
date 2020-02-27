@@ -2,7 +2,7 @@
   display: flex;
   flex: 1 1 auto;
   flex-direction: row;
-  height: 100vh;
+  height: 100%;
   position: relative;
   overflow-y: hidden;
 }
@@ -49,7 +49,7 @@
   .m-search-page--show-list {
     .m-search-page__input-and-results {
       flex: 1 1 auto;
-      height: 100vh;
+      height: 100%;
       overflow: scroll;
     }
 
@@ -83,6 +83,6 @@
   .m-search-page__map {
     box-sizing: border-box;
     height: 75%;
-    width: calc(100vw - #{$tab-bar-width});
+    width: 100%;
   }
 }

@@ -45,9 +45,6 @@ defmodule Realtime.Server do
 
   # Client functions
 
-  @spec registry_name() :: Registry.registry()
-  def registry_name(), do: Realtime.Registry
-
   @spec default_name() :: GenServer.name()
   def default_name(), do: Realtime.Server
 
@@ -58,7 +55,8 @@ defmodule Realtime.Server do
 
   @doc """
   The subscribing process will get a message when there's new data, with the form
-  {:new_realtime_data, vehicles_on_route()}
+  {:new_realtime_data, lookup_args}
+  Those lookup_args can be passed into Server.lookup(lookup_args) to get the data.
   """
   @spec subscribe_to_route(Route.id(), GenServer.server()) :: [VehicleOrGhost.t()]
   def subscribe_to_route(route_id, server \\ default_name()) do
@@ -247,7 +245,7 @@ defmodule Realtime.Server do
   defp broadcast(state) do
     registry_key = self()
 
-    Registry.dispatch(registry_name(), registry_key, fn entries ->
+    Registry.dispatch(Realtime.Supervisor.registry_name(), registry_key, fn entries ->
       Enum.each(entries, &send_data(&1, state))
     end)
   end

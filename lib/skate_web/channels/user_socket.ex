@@ -2,6 +2,7 @@ defmodule SkateWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
+  channel("data_status", SkateWeb.DataStatusChannel)
   channel("vehicles:*", SkateWeb.VehiclesChannel)
 
   # Socket params are passed from the client and can
