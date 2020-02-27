@@ -4,6 +4,18 @@
   flex-direction: column;
 }
 
+.m-vehicle-properties-panel__invalid-banner {
+  @include font-body;
+  background-color: $color-secondary-light;
+  border: 1px solid $color-secondary-dark;
+  padding: 1rem;
+}
+
+.m-vehicle-properties-panel__invalid-banner-title {
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
 .m-vehicle-properties-panel__location {
   border-top: 1px solid $color-rule;
   display: flex;

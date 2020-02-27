@@ -1901,6 +1901,16 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
     </button>
   </div>
   <div
+    className="m-vehicle-properties-panel__invalid-banner"
+  >
+    <span
+      className="m-vehicle-properties-panel__invalid-banner-title"
+    >
+      Invalid
+    </span>
+    - We cannot match this vehicle to a scheduled trip at this time. This vehicle may be off-route or severely off-schedule.
+  </div>
+  <div
     className="m-headway-diagram"
   >
     <div
