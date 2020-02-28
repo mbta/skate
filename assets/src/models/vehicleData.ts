@@ -36,6 +36,7 @@ export interface VehicleData {
   via_variant: string | null
   operator_id: string
   operator_name: string
+  operator_logon_time: number | null
   bearing: number
   block_id: string
   headway_secs: number
@@ -124,6 +125,7 @@ export const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
   viaVariant: vehicleData.via_variant,
   operatorId: vehicleData.operator_id,
   operatorName: vehicleData.operator_name,
+  operatorLogonTime: vehicleData.operator_logon_time,
   bearing: vehicleData.bearing,
   blockId: vehicleData.block_id,
   headwaySecs: vehicleData.headway_secs,

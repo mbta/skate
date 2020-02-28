@@ -63,6 +63,7 @@ export interface Vehicle {
   viaVariant: ViaVariant | null
   operatorId: string
   operatorName: string
+  operatorLogonTime: number | null
   bearing: number
   blockId: BlockId
   headwaySecs: number | null

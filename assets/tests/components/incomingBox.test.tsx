@@ -35,6 +35,7 @@ describe("IncomingBox", () => {
       viaVariant: "5",
       operatorId: "1",
       operatorName: "OPERATOR",
+      operatorLogonTime: 1_534_340_301,
       bearing: 137.5,
       blockId: "G111-165",
       headwaySecs: 396.3,
