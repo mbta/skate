@@ -140,51 +140,55 @@ describe("useChannel", () => {
     expect(mockChannel.leave).toHaveBeenCalled()
   })
 
-  test("leaves the channel and joins a new one when the topic changes", () => {
+  test("leaves the channel, removes old data, and joins new channel when the topic changes", () => {
     const mockSocket = makeMockSocket()
-    const channel1 = makeMockChannel()
+    const channel1 = makeMockChannel("ok", { data: "raw" })
     const channel2 = makeMockChannel()
     mockSocket.channel.mockImplementationOnce(() => channel1)
     mockSocket.channel.mockImplementationOnce(() => channel2)
 
-    const { rerender } = renderHook(
+    const { rerender, result } = renderHook(
       topic =>
         useChannel({
           socket: mockSocket,
           topic,
           event: "event",
-          parser: jest.fn(),
+          parser: jest.fn(() => "parsed"),
           loadingState: "loading",
         }),
       { initialProps: "topic1" }
     )
 
+    expect(result.current).toEqual("parsed")
     rerender("topic2")
 
     expect(channel1.leave).toHaveBeenCalled()
+    expect(result.current).toEqual("loading")
     expect(channel2.join).toHaveBeenCalled()
   })
 
-  test("leaves the channel when topic is set changed to null", () => {
+  test("leaves the channel and removes old data when topic is changed to null", () => {
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel()
+    const mockChannel = makeMockChannel("ok", { data: "raw" })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    const { rerender } = renderHook<string | null, any>(
+    const { rerender, result } = renderHook<string | null, any>(
       topic =>
         useChannel({
           socket: mockSocket,
           topic,
           event: "event",
-          parser: jest.fn(),
+          parser: jest.fn(() => "parsed"),
           loadingState: "loading",
         }),
       { initialProps: "topic" }
     )
 
+    expect(result.current).toEqual("parsed")
     rerender(null)
 
     expect(mockChannel.leave).toHaveBeenCalledTimes(1)
+    expect(result.current).toEqual("loading")
   })
 
   test("console.error on join error", async () => {
