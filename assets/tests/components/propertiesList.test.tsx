@@ -109,6 +109,18 @@ describe("PropertiesList", () => {
 
     expect(tree).toMatchSnapshot()
   })
+
+  test("reports 'Not Available' if missing a login time", () => {
+    const vehicleSansLoginTime = {
+      ...vehicle,
+      operatorLogonTime: null,
+    }
+    const tree = renderer
+      .create(<PropertiesList vehicleOrGhost={vehicleSansLoginTime} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
 })
 
 describe("Highlighted", () => {
