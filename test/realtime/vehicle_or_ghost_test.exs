@@ -16,6 +16,7 @@ defmodule Realtime.VehicleOrGhostTest do
     block_id: "A505-106",
     operator_id: "71041",
     operator_name: "FRANK",
+    operator_logon_time: 1_558_121_726,
     run_id: "vehicle-run-1",
     headway_secs: 600,
     headway_spacing: :ok,

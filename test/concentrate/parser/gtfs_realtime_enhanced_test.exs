@@ -88,7 +88,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
         "current_stop_sequence" => 670,
         "location_source" => "samsara",
         "occupancy_status" => nil,
-        "operator" => %{"id" => "2841", "name" => "EVANS"},
+        "operator" => %{"id" => "2841", "logon_time" => 1_534_340_301, "name" => "EVANS"},
         "position" => %{
           "bearing" => 135,
           "latitude" => 42.32951,
@@ -140,6 +140,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
                  block_id: "Q238-135",
                  operator_id: "2841",
                  operator_name: "EVANS",
+                 operator_logon_time: 1_534_340_301,
                  run_id: "128-1007",
                  current_status: :STOPPED_AT,
                  last_updated: 1_534_340_406,
