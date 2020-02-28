@@ -10,11 +10,11 @@ import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 // tslint:disable: object-literal-sort-keys
 
 describe("useSearchResults", () => {
-  test("returns undefined initially", () => {
+  test("returns null initially", () => {
     const { result } = renderHook(() =>
       useSearchResults(undefined, emptySearchQuery)
     )
-    expect(result.current).toEqual(undefined)
+    expect(result.current).toEqual(null)
   })
 
   test("initializing the hook subscribes to the search results", () => {

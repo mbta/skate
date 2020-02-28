@@ -13,16 +13,16 @@ const parser = (data: VehicleOrGhostData[]): VehicleOrGhost[] =>
 const useSearchResults = (
   socket: Socket | undefined,
   searchQuery: SearchQuery | null
-): VehicleOrGhost[] | null | undefined => {
+): VehicleOrGhost[] | null => {
   const topic: string | null =
     searchQuery && `vehicles:search:${searchQuery.property}:${searchQuery.text}`
-  return useChannel<VehicleOrGhost[] | null | undefined>({
+  return useChannel<VehicleOrGhost[] | null>({
     socket,
     topic,
     event: "search",
     parser,
     loadingState: null,
-    offState: undefined,
+    offState: null,
   })
 }
 
