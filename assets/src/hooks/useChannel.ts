@@ -22,21 +22,21 @@ export const useChannel = <T>({
   parser: (data: any) => T
   loadingState: T
 }): T => {
-  const [result, setResult] = useState<T>(loadingState)
+  const [state, setState] = useState<T>(loadingState)
 
   useEffect(() => {
-    setResult(loadingState)
+    setState(loadingState)
     let channel: Channel | undefined
 
     if (socket !== undefined && topic !== null) {
       channel = socket.channel(topic)
       channel.on(event, ({ data: data }) => {
-        setResult(parser(data))
+        setState(parser(data))
       })
       channel
         .join()
         .receive("ok", ({ data: data }) => {
-          setResult(parser(data))
+          setState(parser(data))
         })
         .receive("error", ({ reason }) =>
           // tslint:disable-next-line: no-console
@@ -54,5 +54,5 @@ export const useChannel = <T>({
       }
     }
   }, [socket, topic, event, loadingState])
-  return result
+  return state
 }
