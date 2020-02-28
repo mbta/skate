@@ -1,40 +1,24 @@
 import { TimepointStatusYFunc } from "../components/ladder"
 import { partition } from "../helpers/array"
-import vehicleLabel from "../helpers/vehicleLabel"
-import featureIsEnabled from "../laboratoryFeatures"
-import { Ghost, Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
-import { ViaVariant } from "../schedule"
-import { Settings } from "../settings"
+import { Ghost, Vehicle, VehicleOrGhost } from "../realtime"
 import {
   directionOnLadder,
   LadderDirection,
   VehicleDirection,
 } from "./ladderDirection"
-import { hasBlockWaivers, isVehicle } from "./vehicle"
-import { DrawnStatus, drawnStatus, HeadwaySpacing } from "./vehicleStatus"
+import { isVehicle } from "./vehicle"
 
 export interface LadderVehicle {
-  vehicleId: VehicleId
-  label: string
-  viaVariant: ViaVariant | null
-  status: DrawnStatus
-  hasBlockWaivers: boolean
-  headwaySpacing: HeadwaySpacing | null
+  vehicle: VehicleOrGhost
   x: number
   y: number
   vehicleDirection: VehicleDirection
   scheduledY?: number
   scheduledVehicleDirection?: VehicleDirection
-  lane: number
 }
 
 interface WithVehicle {
-  vehicleId: VehicleId
-  headwaySpacing: HeadwaySpacing | null
-  label: string
-  viaVariant: ViaVariant | null
-  status: DrawnStatus
-  hasBlockWaivers: boolean
+  vehicle: VehicleOrGhost
 }
 
 interface OnLadder {
@@ -69,8 +53,7 @@ const heightOfVehicleGroup = 34
 export const ladderVehiclesFromVehicles = (
   vehiclesAndGhosts: VehicleOrGhost[],
   ladderDirection: LadderDirection,
-  timepointStatusYFunc: TimepointStatusYFunc,
-  settings: Settings
+  timepointStatusYFunc: TimepointStatusYFunc
 ): {
   ladderVehicles: LadderVehicle[]
   widthOfLanes: number
@@ -81,11 +64,11 @@ export const ladderVehiclesFromVehicles = (
   )
 
   const vehiclesOnLadder: VehicleOnLadder[] = vehicles.map(vehicle =>
-    vehicleOnLadder(vehicle, ladderDirection, timepointStatusYFunc, settings)
+    vehicleOnLadder(vehicle, ladderDirection, timepointStatusYFunc)
   )
 
   const ghostsOnLadder: VehicleOnLadder[] = ghosts.map(ghost =>
-    ghostOnLadder(ghost, ladderDirection, timepointStatusYFunc, settings)
+    ghostOnLadder(ghost, ladderDirection, timepointStatusYFunc)
   )
 
   const vehiclesInLane: VehicleInLane[] = putIntoLanes(
@@ -144,13 +127,8 @@ export const putIntoLanes = (
 const vehicleOnLadder = (
   vehicle: Vehicle,
   ladderDirection: LadderDirection,
-  timepointStatusYFunc: TimepointStatusYFunc,
-  settings: Settings
+  timepointStatusYFunc: TimepointStatusYFunc
 ): VehicleOnLadder => {
-  const { id: vehicleId, headwaySpacing, isOffCourse, viaVariant } = vehicle
-
-  const ladderVehicleLabel = vehicleLabel(vehicle, settings)
-
   const { scheduledY, scheduledVehicleDirection } = scheduledToBe(
     vehicle,
     ladderDirection,
@@ -158,26 +136,18 @@ const vehicleOnLadder = (
   )
 
   const vehicleDirection: VehicleDirection =
-    isOffCourse && scheduledVehicleDirection !== undefined
+    vehicle.isOffCourse && scheduledVehicleDirection !== undefined
       ? scheduledVehicleDirection
       : directionOnLadder(vehicle.directionId, ladderDirection)
 
   const y =
-    isOffCourse && scheduledY
+    vehicle.isOffCourse && scheduledY
       ? scheduledY
       : timepointStatusYFunc(vehicle.timepointStatus, vehicleDirection)
 
   return {
     // tslint:disable-next-line:object-literal-sort-keys
-    vehicleId,
-    headwaySpacing:
-      featureIsEnabled("headway_ladder_colors") && !isOffCourse
-        ? headwaySpacing
-        : null,
-    label: ladderVehicleLabel,
-    viaVariant,
-    status: drawnStatus(vehicle),
-    hasBlockWaivers: hasBlockWaivers(vehicle),
+    vehicle,
     vehicleDirection,
     y,
     scheduledY,
@@ -220,10 +190,8 @@ const scheduledToBe = (
 const ghostOnLadder = (
   ghost: Ghost,
   ladderDirection: LadderDirection,
-  timepointStatusYFunc: TimepointStatusYFunc,
-  settings: Settings
+  timepointStatusYFunc: TimepointStatusYFunc
 ): VehicleOnLadder => {
-  const ladderVehicleLabel = vehicleLabel(ghost, settings)
   const vehicleDirection: VehicleDirection = directionOnLadder(
     ghost.directionId,
     ladderDirection
@@ -234,12 +202,7 @@ const ghostOnLadder = (
   )
   return {
     // tslint:disable-next-line:object-literal-sort-keys
-    vehicleId: ghost.id,
-    headwaySpacing: null,
-    label: ladderVehicleLabel,
-    viaVariant: ghost.viaVariant,
-    status: "ghost",
-    hasBlockWaivers: hasBlockWaivers(ghost),
+    vehicle: ghost,
     vehicleDirection,
     y,
     scheduledY: y,
