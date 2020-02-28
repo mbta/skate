@@ -22,7 +22,6 @@ const useSearchResults = (
     event: "search",
     parser,
     loadingState: null,
-    offState: null,
   })
 }
 

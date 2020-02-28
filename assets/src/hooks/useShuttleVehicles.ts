@@ -12,7 +12,6 @@ const useShuttleVehicles = (socket: Socket | undefined): Vehicle[] | null => {
     event: "shuttles",
     parser,
     loadingState: null,
-    offState: null,
   })
 }
 

@@ -6,7 +6,7 @@ import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 // tslint:disable: react-hooks-nesting
 
 describe("useChannel", () => {
-  test("returns off state initially", () => {
+  test("returns loadingState initially", () => {
     const { result } = renderHook(() =>
       useChannel({
         socket: undefined,
@@ -14,13 +14,12 @@ describe("useChannel", () => {
         event: "event",
         parser: jest.fn(),
         loadingState: "loading",
-        offState: "off",
       })
     )
-    expect(result.current).toEqual("off")
+    expect(result.current).toEqual("loading")
   })
 
-  test("if given no topic, doesn't open a channel and returns offState", () => {
+  test("if given no topic, doesn't open a channel and returns loadingState", () => {
     const mockSocket = makeMockSocket()
     const { result } = renderHook(() =>
       useChannel({
@@ -29,10 +28,9 @@ describe("useChannel", () => {
         event: "event",
         parser: jest.fn(),
         loadingState: "loading",
-        offState: "off",
       })
     )
-    expect(result.current).toEqual("off")
+    expect(result.current).toEqual("loading")
     expect(mockSocket.channel).not.toHaveBeenCalled()
   })
 
@@ -48,7 +46,6 @@ describe("useChannel", () => {
         event: "event",
         parser: jest.fn(),
         loadingState: "loading",
-        offState: "off",
       })
     )
 
@@ -69,7 +66,6 @@ describe("useChannel", () => {
         event: "event",
         parser: jest.fn(),
         loadingState: "loading",
-        offState: "off",
       })
     )
     expect(result.current).toEqual("loading")
@@ -88,7 +84,6 @@ describe("useChannel", () => {
         event: "event",
         parser,
         loadingState: "loading",
-        offState: "off",
       })
     )
 
@@ -116,7 +111,6 @@ describe("useChannel", () => {
         event: "event",
         parser,
         loadingState: "loading",
-        offState: "off",
       })
     )
 
@@ -136,7 +130,6 @@ describe("useChannel", () => {
         event: "event",
         parser: jest.fn(),
         loadingState: "loading",
-        offState: "off",
       })
     )
 
@@ -162,7 +155,6 @@ describe("useChannel", () => {
           event: "event",
           parser: jest.fn(),
           loadingState: "loading",
-          offState: "off",
         }),
       { initialProps: "topic1" }
     )
@@ -186,7 +178,6 @@ describe("useChannel", () => {
           event: "event",
           parser: jest.fn(),
           loadingState: "loading",
-          offState: "off",
         }),
       { initialProps: "topic" }
     )
@@ -210,7 +201,6 @@ describe("useChannel", () => {
         event: "event",
         parser: jest.fn(),
         loadingState: "loading",
-        offState: "off",
       })
     )
 
@@ -232,7 +222,6 @@ describe("useChannel", () => {
         event: "event",
         parser: jest.fn(),
         loadingState: "loading",
-        offState: "off",
       })
     )
 

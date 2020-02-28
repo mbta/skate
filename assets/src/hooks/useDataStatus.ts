@@ -10,7 +10,6 @@ const useDataStatus = (socket: Socket | undefined) => {
     event: "data_status",
     parser: status => status,
     loadingState: "good",
-    offState: "good",
   })
 }
 

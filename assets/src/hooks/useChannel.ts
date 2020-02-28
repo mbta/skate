@@ -8,8 +8,6 @@ import { reload } from "../models/browser"
  *  Only listens for a single event
  *  Assumes the data returned on join and the data from subsequent pushes are the same format
  *  If topic is null, does not open a channel.
- *  Returns offState if the channel is not open yet
- *  Returns loadingState after the channel has been opened but before receiving the first response
  */
 export const useChannel = <T>({
   socket,
@@ -17,22 +15,20 @@ export const useChannel = <T>({
   event,
   parser,
   loadingState,
-  offState,
 }: {
   socket: Socket | undefined
   topic: string | null
   event: string
   parser: (data: any) => T
   loadingState: T
-  offState: T
 }): T => {
-  const [result, setResult] = useState<T>(offState)
+  const [result, setResult] = useState<T>(loadingState)
 
   useEffect(() => {
+    setResult(loadingState)
     let channel: Channel | undefined
 
     if (socket !== undefined && topic !== null) {
-      setResult(loadingState)
       channel = socket.channel(topic)
       channel.on(event, ({ data: data }) => {
         setResult(parser(data))
@@ -49,8 +45,6 @@ export const useChannel = <T>({
         .receive("timeout", () => {
           reload(true)
         })
-    } else {
-      setResult(offState)
     }
 
     return () => {
@@ -59,6 +53,6 @@ export const useChannel = <T>({
         channel = undefined
       }
     }
-  }, [socket, topic, event, loadingState, offState])
+  }, [socket, topic, event, loadingState])
   return result
 }
