@@ -1,5 +1,4 @@
 import { TimepointStatusYFunc } from "../components/ladder"
-import { partition } from "../helpers/array"
 import { Ghost, Vehicle, VehicleOrGhost } from "../realtime"
 import {
   directionOnLadder,
@@ -58,22 +57,14 @@ export const ladderVehiclesFromVehicles = (
   ladderVehicles: LadderVehicle[]
   widthOfLanes: number
 } => {
-  const [vehicles, ghosts]: [Vehicle[], Ghost[]] = partition(
-    vehiclesAndGhosts,
-    isVehicle
+  const vehiclesOnLadder: VehicleOnLadder[] = vehiclesAndGhosts.map(
+    vehicleOrGhost =>
+      isVehicle(vehicleOrGhost)
+        ? vehicleOnLadder(vehicleOrGhost, ladderDirection, timepointStatusYFunc)
+        : ghostOnLadder(vehicleOrGhost, ladderDirection, timepointStatusYFunc)
   )
 
-  const vehiclesOnLadder: VehicleOnLadder[] = vehicles.map(vehicle =>
-    vehicleOnLadder(vehicle, ladderDirection, timepointStatusYFunc)
-  )
-
-  const ghostsOnLadder: VehicleOnLadder[] = ghosts.map(ghost =>
-    ghostOnLadder(ghost, ladderDirection, timepointStatusYFunc)
-  )
-
-  const vehiclesInLane: VehicleInLane[] = putIntoLanes(
-    vehiclesOnLadder.concat(ghostsOnLadder)
-  )
+  const vehiclesInLane: VehicleInLane[] = putIntoLanes(vehiclesOnLadder)
 
   const maxOccupiedLane: number = numOccupiedLanes(vehiclesInLane)
   const ladderVehicleHorizontalOffset: number = horizontalOffsetForLanes(
