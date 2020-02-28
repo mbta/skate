@@ -18,7 +18,9 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
           className="m-properties-list__table"
         >
           <tbody>
-            <tr>
+            <tr
+              className="m-properties-list__property--run"
+            >
               <td
                 className="m-properties-list__property-label"
               >
@@ -30,7 +32,9 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
                 run-1
               </td>
             </tr>
-            <tr>
+            <tr
+              className="m-properties-list__property--vehicle"
+            >
               <td
                 className="m-properties-list__property-label"
               >
@@ -42,7 +46,9 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
                 v1-label
               </td>
             </tr>
-            <tr>
+            <tr
+              className="m-properties-list__property--operator"
+            >
               <td
                 className="m-properties-list__property-label"
               >
@@ -52,6 +58,20 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
                 className="m-properties-list__property-value"
               >
                 SMITH #op1
+              </td>
+            </tr>
+            <tr
+              className="m-properties-list__property--last-login"
+            >
+              <td
+                className="m-properties-list__property-label"
+              >
+                Last Login
+              </td>
+              <td
+                className="m-properties-list__property-value"
+              >
+                4h 3m; 1:38pm
               </td>
             </tr>
           </tbody>
@@ -83,7 +103,9 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
           className="m-properties-list__table"
         >
           <tbody>
-            <tr>
+            <tr
+              className="m-properties-list__property--run"
+            >
               <td
                 className="m-properties-list__property-label"
               >
@@ -126,7 +148,9 @@ exports[`SearchResults renders a selected result card 1`] = `
           className="m-properties-list__table"
         >
           <tbody>
-            <tr>
+            <tr
+              className="m-properties-list__property--run"
+            >
               <td
                 className="m-properties-list__property-label"
               >
@@ -138,7 +162,9 @@ exports[`SearchResults renders a selected result card 1`] = `
                 run-1
               </td>
             </tr>
-            <tr>
+            <tr
+              className="m-properties-list__property--vehicle"
+            >
               <td
                 className="m-properties-list__property-label"
               >
@@ -150,7 +176,9 @@ exports[`SearchResults renders a selected result card 1`] = `
                 v1-label
               </td>
             </tr>
-            <tr>
+            <tr
+              className="m-properties-list__property--operator"
+            >
               <td
                 className="m-properties-list__property-label"
               >
@@ -160,6 +188,20 @@ exports[`SearchResults renders a selected result card 1`] = `
                 className="m-properties-list__property-value"
               >
                 SMITH #op1
+              </td>
+            </tr>
+            <tr
+              className="m-properties-list__property--last-login"
+            >
+              <td
+                className="m-properties-list__property-label"
+              >
+                Last Login
+              </td>
+              <td
+                className="m-properties-list__property-value"
+              >
+                4h 3m; 1:38pm
               </td>
             </tr>
           </tbody>
@@ -191,7 +233,9 @@ exports[`SearchResults renders a selected result card 1`] = `
           className="m-properties-list__table"
         >
           <tbody>
-            <tr>
+            <tr
+              className="m-properties-list__property--run"
+            >
               <td
                 className="m-properties-list__property-label"
               >

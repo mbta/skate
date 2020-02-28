@@ -6,6 +6,11 @@ import useShuttleVehicles from "../../src/hooks/useShuttleVehicles"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Vehicle } from "../../src/realtime"
 import { initialState } from "../../src/state"
+import * as dateTime from "../../src/util/dateTime"
+
+jest
+  .spyOn(dateTime, "now")
+  .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 jest.mock("../../src/hooks/useShuttleVehicles", () => ({

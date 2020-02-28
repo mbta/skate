@@ -1,32 +1,10 @@
 import React from "react"
 import { alertCircleIcon } from "../../helpers/icon"
 import { BlockWaiver } from "../../realtime"
+import { dateFromEpochSeconds, formattedTime } from "../../util/dateTime"
 
 interface Props {
   blockWaiver: BlockWaiver
-}
-
-export const hours12 = (hours24: number): number => {
-  if (hours24 === 0) {
-    return 12
-  }
-  if (hours24 > 12) {
-    return hours24 - 12
-  }
-  return hours24
-}
-
-const ampm = (hours24: number): string =>
-  hours24 >= 12 && hours24 < 24 ? "pm" : "am"
-
-const zeroPad = (time: number): string => (time < 10 ? `0${time}` : `${time}`)
-
-export const dateFromEpochSeconds = (time: number): Date =>
-  new Date(time * 1_000)
-
-export const formattedTime = (date: Date): string => {
-  const hours24 = date.getHours()
-  return `${hours12(hours24)}:${zeroPad(date.getMinutes())}${ampm(hours24)}`
 }
 
 export const formatEpochSeconds = (epochSeconds: number): string => {

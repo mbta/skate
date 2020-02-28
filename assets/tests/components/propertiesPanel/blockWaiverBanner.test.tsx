@@ -3,7 +3,7 @@ import renderer from "react-test-renderer"
 import BlockWaiverBanner, * as blockWaiverBanner from "../../../src/components/propertiesPanel/blockWaiverBanner"
 import { BlockWaiver } from "../../../src/realtime"
 
-const { formatEpochSeconds, hours12, nowEpochSeconds } = blockWaiverBanner
+const { formatEpochSeconds, nowEpochSeconds } = blockWaiverBanner
 
 describe("BlockWaiverBanner", () => {
   jest
@@ -55,15 +55,6 @@ describe("formatEpochSeconds", () => {
     expect(formatEpochSeconds(1582628000)).toEqual("10:53am")
     expect(formatEpochSeconds(1582632500)).toEqual("12:08pm")
     expect(formatEpochSeconds(1582641000)).toEqual("2:30pm")
-  })
-})
-
-describe("hours12", () => {
-  test("returns the 12-hour version of the 24-hour-plus hour", () => {
-    expect(hours12(0)).toEqual(12)
-    expect(hours12(5)).toEqual(5)
-    expect(hours12(12)).toEqual(12)
-    expect(hours12(13)).toEqual(1)
   })
 })
 

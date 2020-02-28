@@ -8,6 +8,11 @@ import { Route } from "../../../src/schedule"
 import * as blockWaiverBanner from "../../../src/components/propertiesPanel/blockWaiverBanner"
 
 jest.spyOn(blockWaiverBanner, "nowEpochSeconds").mockImplementation(() => 81720)
+import * as dateTime from "../../../src/util/dateTime"
+
+jest
+  .spyOn(dateTime, "now")
+  .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 

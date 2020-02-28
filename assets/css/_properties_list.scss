@@ -24,4 +24,9 @@
   .highlighted {
     background-color: $color-secondary-light;
   }
+
+  .m-properties-list__property--last-login & {
+    color: $color-font-grey;
+    font-size: 0.75rem;
+  }
 }

@@ -2,10 +2,16 @@ import { shallow } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import PropertiesList, {
+  formattedLogonTime,
   Highlighted,
 } from "../../src/components/propertiesList"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../src/realtime"
+import * as dateTime from "../../src/util/dateTime"
+
+jest
+  .spyOn(dateTime, "now")
+  .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
 
 const vehicle: Vehicle = {
   id: "v1",
@@ -160,5 +166,14 @@ describe("Highlighted", () => {
     const wrapper = shallow(<Highlighted content={content} />)
 
     expect(wrapper.html()).toEqual(content)
+  })
+})
+
+describe("formattedLogonTime", () => {
+  test("formats the logon time relative to now, and with the actual time", () => {
+    const logonTime = 1_534_340_301
+    const expected = "4h 3m; 1:38pm"
+
+    expect(formattedLogonTime(logonTime)).toEqual(expected)
   })
 })

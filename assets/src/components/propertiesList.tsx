@@ -4,6 +4,12 @@ import { filterToAlphanumeric } from "../models/searchQuery"
 import { formattedRunNumber } from "../models/shuttle"
 import { isShuttle, isVehicle } from "../models/vehicle"
 import { Ghost, Vehicle, VehicleOrGhost } from "../realtime"
+import {
+  dateFromEpochSeconds,
+  formattedTime,
+  formattedTimeDiff,
+  now,
+} from "../util/dateTime"
 
 interface Props {
   vehicleOrGhost: VehicleOrGhost
@@ -15,8 +21,15 @@ export interface Property {
   value: string
 }
 
+export const formattedLogonTime = (logonTime: number): string => {
+  const nowDate: Date = now()
+  const logonDate: Date = dateFromEpochSeconds(logonTime)
+
+  return `${formattedTimeDiff(nowDate, logonDate)}; ${formattedTime(logonDate)}`
+}
+
 const vehicleProperties = (vehicle: Vehicle): Property[] => {
-  const { runId, label, operatorId, operatorName } = vehicle
+  const { runId, label, operatorId, operatorName, operatorLogonTime } = vehicle
 
   return [
     {
@@ -32,6 +45,12 @@ const vehicleProperties = (vehicle: Vehicle): Property[] => {
     {
       label: "Operator",
       value: `${operatorName} #${operatorId}`,
+    },
+    {
+      label: "Last Login",
+      value: operatorLogonTime
+        ? formattedLogonTime(operatorLogonTime)
+        : "Not Available",
     },
   ]
 }
@@ -90,6 +109,9 @@ const highlightRegex = (highlightText: string): RegExp => {
   return new RegExp(allowNonAlphanumeric, "i")
 }
 
+const labelName = (label: string): string =>
+  label.toLowerCase().replace(" ", "-")
+
 const PropertyRow = ({
   property: { label, value },
   highlightText,
@@ -97,7 +119,7 @@ const PropertyRow = ({
   property: Property
   highlightText?: string
 }) => (
-  <tr>
+  <tr className={`m-properties-list__property--${labelName(label)}`}>
     <td className="m-properties-list__property-label">{label}</td>
     <td className="m-properties-list__property-value">
       <Highlighted content={value} highlightText={highlightText} />

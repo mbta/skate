@@ -7,6 +7,11 @@ import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../src/realtime"
 import { initialState, selectVehicle, State } from "../../src/state"
 import { setSearchText } from "../../src/state/searchPageState"
+import * as dateTime from "../../src/util/dateTime"
+
+jest
+  .spyOn(dateTime, "now")
+  .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
 
 const state: State = {
   ...initialState,
