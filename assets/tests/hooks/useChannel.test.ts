@@ -34,7 +34,7 @@ describe("useChannel", () => {
     expect(mockSocket.channel).not.toHaveBeenCalled()
   })
 
-  test("giving a topic subscribes to that topic", () => {
+  test("subscribes to the given topic", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel()
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
