@@ -2,9 +2,9 @@ import React from "react"
 import renderer from "react-test-renderer"
 import BlockWaiverList from "../../../src/components/propertiesPanel/blockWaiverList"
 import { BlockWaiver } from "../../../src/realtime"
-import * as blockWaiverBanner from "../../../src/components/propertiesPanel/blockWaiverBanner"
+import * as dateTime from "../../../src/util/dateTime"
 
-jest.spyOn(blockWaiverBanner, "nowEpochSeconds").mockImplementation(() => 81720)
+jest.spyOn(dateTime, "nowEpochSeconds").mockImplementation(() => 81720)
 
 describe("BlockWaiverList", () => {
   test("renders", () => {

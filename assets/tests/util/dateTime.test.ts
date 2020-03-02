@@ -5,6 +5,8 @@ import {
   formattedTimeDiff,
   hours12,
   now,
+  nowEpochSeconds,
+  formatEpochSeconds,
 } from "../../src/util/dateTime"
 
 describe("dateFromEpochSeconds", () => {
@@ -19,6 +21,12 @@ describe("dateFromEpochSeconds", () => {
 describe("now", () => {
   test("returns a Date for the current date-time", () => {
     expect(now() instanceof Date).toBeTruthy()
+  })
+})
+
+describe("nowEpochSeconds", () => {
+  test("returns an epoch time in seconds (defaulting to now)", () => {
+    expect(nowEpochSeconds(1582647451124)).toEqual(1582647451)
   })
 })
 
@@ -54,6 +62,14 @@ describe("formattedTimeDiff", () => {
     const expected: string = "59m"
 
     expect(formattedTimeDiff(a, b)).toEqual(expected)
+  })
+})
+
+describe("formatEpochSeconds", () => {
+  test("formats an epoch time in seconds nicely", () => {
+    expect(formatEpochSeconds(1582628000)).toEqual("10:53am")
+    expect(formatEpochSeconds(1582632500)).toEqual("12:08pm")
+    expect(formatEpochSeconds(1582641000)).toEqual("2:30pm")
   })
 })
 

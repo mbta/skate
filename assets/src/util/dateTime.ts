@@ -3,6 +3,9 @@ export const dateFromEpochSeconds = (time: number): Date =>
 
 export const now = (): Date => new Date()
 
+export const nowEpochSeconds = (nowTime = Date.now()): number =>
+  Math.floor(nowTime / 1_000)
+
 export const formattedTime = (date: Date): string => {
   const hours24 = date.getHours()
   return `${hours12(hours24)}:${zeroPad(date.getMinutes())}${ampm(hours24)}`
@@ -16,6 +19,11 @@ export const formattedTimeDiff = (a: Date, b: Date): string => {
   const diffMinutesStr = `${diffMinutes}m`
 
   return diffHours >= 1 ? `${diffHours}h ${diffMinutesStr}` : diffMinutesStr
+}
+
+export const formatEpochSeconds = (epochSeconds: number): string => {
+  const date = dateFromEpochSeconds(epochSeconds)
+  return formattedTime(date)
 }
 
 export const hours12 = (hours24: number): number => {

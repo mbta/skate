@@ -1,19 +1,11 @@
 import React from "react"
 import { alertCircleIcon } from "../../helpers/icon"
 import { BlockWaiver } from "../../realtime"
-import { dateFromEpochSeconds, formattedTime } from "../../util/dateTime"
+import { formatEpochSeconds, nowEpochSeconds } from "../../util/dateTime"
 
 interface Props {
   blockWaiver: BlockWaiver
 }
-
-export const formatEpochSeconds = (epochSeconds: number): string => {
-  const date = dateFromEpochSeconds(epochSeconds)
-  return formattedTime(date)
-}
-
-export const nowEpochSeconds = (now = Date.now()): number =>
-  Math.floor(now / 1_000)
 
 export enum CurrentFuturePastType {
   Current = 1,

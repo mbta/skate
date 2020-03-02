@@ -1,14 +1,11 @@
 import React from "react"
 import renderer from "react-test-renderer"
-import BlockWaiverBanner, * as blockWaiverBanner from "../../../src/components/propertiesPanel/blockWaiverBanner"
+import BlockWaiverBanner from "../../../src/components/propertiesPanel/blockWaiverBanner"
 import { BlockWaiver } from "../../../src/realtime"
-
-const { formatEpochSeconds, nowEpochSeconds } = blockWaiverBanner
+import * as dateTime from "../../../src/util/dateTime"
 
 describe("BlockWaiverBanner", () => {
-  jest
-    .spyOn(blockWaiverBanner, "nowEpochSeconds")
-    .mockImplementation(() => 1582647000)
+  jest.spyOn(dateTime, "nowEpochSeconds").mockImplementation(() => 1582647000)
 
   test("renders a current time waiver", () => {
     const blockWaiver: BlockWaiver = {
@@ -47,19 +44,5 @@ describe("BlockWaiverBanner", () => {
       .toJSON()
 
     expect(tree).toMatchSnapshot()
-  })
-})
-
-describe("formatEpochSeconds", () => {
-  test("formats an epoch time in seconds nicely", () => {
-    expect(formatEpochSeconds(1582628000)).toEqual("10:53am")
-    expect(formatEpochSeconds(1582632500)).toEqual("12:08pm")
-    expect(formatEpochSeconds(1582641000)).toEqual("2:30pm")
-  })
-})
-
-describe("nowEpochSeconds", () => {
-  test("returns an epoch time in seconds (defaulting to now)", () => {
-    expect(nowEpochSeconds(1582647451124)).toEqual(1582647451)
   })
 })
