@@ -29,7 +29,7 @@ test("renders in all directions and sizes", () => {
   expect(tree).toMatchSnapshot()
 })
 
-test("renders with variants and labels", () => {
+test("renders with variants, labels, and alert icons", () => {
   const tree = renderer
     .create(
       <>
@@ -38,72 +38,84 @@ test("renders with variants and labels", () => {
           orientation={Orientation.Up}
           label="0617"
           variant="X"
+          alertIcon={true}
         />
         <VehicleIcon
           size={Size.Small}
           orientation={Orientation.Right}
           label="0617"
           variant="X"
+          alertIcon={true}
         />
         <VehicleIcon
           size={Size.Small}
           orientation={Orientation.Down}
           label="0617"
           variant="X"
+          alertIcon={true}
         />
         <VehicleIcon
           size={Size.Small}
           orientation={Orientation.Left}
           label="0617"
           variant="X"
+          alertIcon={true}
         />
         <VehicleIcon
           size={Size.Medium}
           orientation={Orientation.Up}
           label="0617"
           variant="X"
+          alertIcon={true}
         />
         <VehicleIcon
           size={Size.Medium}
           orientation={Orientation.Right}
           label="0617"
           variant="X"
+          alertIcon={true}
         />
         <VehicleIcon
           size={Size.Medium}
           orientation={Orientation.Down}
           label="0617"
           variant="X"
+          alertIcon={true}
         />
         <VehicleIcon
           size={Size.Medium}
           orientation={Orientation.Left}
           label="0617"
           variant="X"
+          alertIcon={true}
         />
         <VehicleIcon
           size={Size.Large}
           orientation={Orientation.Up}
           label="0617"
           variant="X"
+          alertIcon={true}
         />
         <VehicleIcon
           size={Size.Large}
           orientation={Orientation.Right}
           label="0617"
           variant="X"
+          alertIcon={true}
         />
         <VehicleIcon
           size={Size.Large}
           orientation={Orientation.Down}
           label="0617"
           variant="X"
+          alertIcon={true}
         />
         <VehicleIcon
           size={Size.Large}
           orientation={Orientation.Left}
           label="0617"
           variant="X"
+          alertIcon={true}
         />
       </>
     )
@@ -265,6 +277,29 @@ test("ghost going down puts label above it", () => {
     .toJSON()
 
   expect(ghostDownWithlabel).toMatchSnapshot()
+})
+
+test("renders ghost with alert icon", () => {
+  const tree = renderer
+    .create(
+      <>
+        <VehicleIcon
+          size={Size.Small}
+          orientation={Orientation.Up}
+          status={"ghost"}
+          alertIcon={true}
+        />
+        <VehicleIcon
+          size={Size.Medium}
+          orientation={Orientation.Down}
+          status={"ghost"}
+          alertIcon={true}
+        />
+      </>
+    )
+    .toJSON()
+
+  expect(tree).toMatchSnapshot()
 })
 
 test("renders an unwrapped svg node", () => {

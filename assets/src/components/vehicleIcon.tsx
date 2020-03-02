@@ -1,5 +1,6 @@
 import React from "react"
 import { DrawnStatus, statusClass } from "../models/vehicleStatus"
+import { IconAlertCircleSvgNode } from "./iconAlertCircle"
 
 export enum Orientation {
   Up,
@@ -20,6 +21,7 @@ export interface Props {
   label?: string
   variant?: string | null
   status?: DrawnStatus
+  alertIcon?: boolean
 }
 
 /*
@@ -107,6 +109,7 @@ export const VehicleIconSvgNode = ({
   label,
   variant,
   status,
+  alertIcon,
 }: Props) => {
   status = status || "plain"
   variant = variant && variant !== "_" ? variant : undefined
@@ -138,6 +141,13 @@ export const VehicleIconSvgNode = ({
           variant={variant}
           status={status}
         />
+      ) : null}
+      {alertIcon ? (
+        status === "ghost" ? (
+          <AlertCircleIconForGhost orientation={orientation} size={size} />
+        ) : (
+          <AlertCircleIconForTriangle orientation={orientation} size={size} />
+        )
       ) : null}
     </g>
   )
@@ -331,6 +341,54 @@ const Variant = ({
     </text>
   )
 }
+
+const AlertCircleIconForTriangle = ({
+  orientation,
+  size,
+}: {
+  orientation: Orientation
+  size: Size
+}) => {
+  const scale = scaleForSize(size)
+  const [x, y] = rotate(14, 3, orientation)
+  return AlertCircleIcon(x * scale, y * scale)
+}
+
+const rotate = (
+  upX: number,
+  upY: number,
+  orientation: Orientation
+): [number, number] => {
+  switch (orientation) {
+    case Orientation.Up:
+      return [upX, upY]
+    case Orientation.Down:
+      return [-upX, -upY]
+    case Orientation.Left:
+      return [upY, -upX]
+    case Orientation.Right:
+      return [-upY, upX]
+  }
+}
+
+const AlertCircleIconForGhost = ({
+  orientation,
+  size,
+}: {
+  orientation: Orientation
+  size: Size
+}) => {
+  const scale = scaleForSize(size)
+  const y = -10
+  const x = orientation === Orientation.Down ? -15 : 15
+  return AlertCircleIcon(x * scale, y * scale)
+}
+
+const AlertCircleIcon = (x: number, y: number) => (
+  <g transform={`translate(${x}, ${y}) scale(0.2) translate(-24, -24)`}>
+    <IconAlertCircleSvgNode />
+  </g>
+)
 
 const sizeClassSuffix = (size: Size): string => {
   switch (size) {
