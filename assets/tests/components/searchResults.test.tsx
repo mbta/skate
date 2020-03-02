@@ -1,7 +1,9 @@
 import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
-import SearchResults from "../../src/components/searchResults"
+import SearchResults, {
+  byOperatorLogonTime,
+} from "../../src/components/searchResults"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../src/realtime"
@@ -116,6 +118,142 @@ describe("SearchResults", () => {
       .toJSON()
 
     expect(tree).toMatchSnapshot()
+  })
+
+  test("sorts vehicles by most recent operator logon time, ghosts at the top", () => {
+    const oldVehicle: Vehicle = {
+      id: "old",
+      label: "old-label",
+      runId: "run-1",
+      timestamp: 123,
+      latitude: 0,
+      longitude: 0,
+      directionId: 0,
+      routeId: "39",
+      tripId: "t1",
+      headsign: "Forest Hills",
+      viaVariant: "X",
+      operatorId: "op1",
+      operatorName: "SMITH",
+      operatorLogonTime: new Date("2018-08-15T13:30:00.000Z"),
+      bearing: 33,
+      blockId: "block-1",
+      headwaySecs: 859.1,
+      headwaySpacing: HeadwaySpacing.Ok,
+      previousVehicleId: "v2",
+      scheduleAdherenceSecs: 0,
+      scheduledHeadwaySecs: 120,
+      isOffCourse: false,
+      layoverDepartureTime: null,
+      blockIsActive: false,
+      dataDiscrepancies: [
+        {
+          attribute: "trip_id",
+          sources: [
+            {
+              id: "swiftly",
+              value: "swiftly-trip-id",
+            },
+            {
+              id: "busloc",
+              value: "busloc-trip-id",
+            },
+          ],
+        },
+      ],
+      stopStatus: {
+        stopId: "s1",
+        stopName: "Stop Name",
+      },
+      timepointStatus: {
+        fractionUntilTimepoint: 0.5,
+        timepointId: "tp1",
+      },
+      scheduledLocation: null,
+      routeStatus: "on_route",
+      endOfTripType: "another_trip",
+      blockWaivers: [],
+    }
+    const newVehicle: Vehicle = {
+      id: "new",
+      label: "new-label",
+      runId: "run-1",
+      timestamp: 123,
+      latitude: 0,
+      longitude: 0,
+      directionId: 0,
+      routeId: "39",
+      tripId: "t1",
+      headsign: "Forest Hills",
+      viaVariant: "X",
+      operatorId: "op1",
+      operatorName: "SMITH",
+      operatorLogonTime: new Date("2018-08-15T13:40:00.000Z"),
+      bearing: 33,
+      blockId: "block-1",
+      headwaySecs: 859.1,
+      headwaySpacing: HeadwaySpacing.Ok,
+      previousVehicleId: "v2",
+      scheduleAdherenceSecs: 0,
+      scheduledHeadwaySecs: 120,
+      isOffCourse: false,
+      layoverDepartureTime: null,
+      blockIsActive: false,
+      dataDiscrepancies: [
+        {
+          attribute: "trip_id",
+          sources: [
+            {
+              id: "swiftly",
+              value: "swiftly-trip-id",
+            },
+            {
+              id: "busloc",
+              value: "busloc-trip-id",
+            },
+          ],
+        },
+      ],
+      stopStatus: {
+        stopId: "s1",
+        stopName: "Stop Name",
+      },
+      timepointStatus: {
+        fractionUntilTimepoint: 0.5,
+        timepointId: "tp1",
+      },
+      scheduledLocation: null,
+      routeStatus: "on_route",
+      endOfTripType: "another_trip",
+      blockWaivers: [],
+    }
+    const ghost: Ghost = {
+      id: "ghost-trip",
+      directionId: 0,
+      routeId: "39",
+      tripId: "trip",
+      headsign: "headsign",
+      blockId: "block",
+      runId: "ghost-run",
+      viaVariant: "X",
+      layoverDepartureTime: null,
+      scheduledTimepointStatus: {
+        timepointId: "t0",
+        fractionUntilTimepoint: 0.0,
+      },
+      routeStatus: "on_route",
+      blockWaivers: [],
+    }
+
+    const tree = renderer
+      .create(
+        <StateDispatchProvider state={state} dispatch={jest.fn()}>
+          <SearchResults vehicles={[oldVehicle, newVehicle, ghost]} />
+        </StateDispatchProvider>
+      )
+      .toJSON()
+
+    expect(JSON.stringify(tree)).toMatch(/ghost-run.*new-label.*old-label/)
   })
 
   test("renders a selected result card", () => {
@@ -283,5 +421,36 @@ describe("SearchResults", () => {
     wrapper.find(".m-search-results__clear-search-button").simulate("click")
 
     expect(testDispatch).toHaveBeenCalledWith(setSearchText(""))
+  })
+})
+
+describe("byOperatorLogonTime", () => {
+  test("sorts more recent logons ahead of less recent ones", () => {
+    const oldVehicle: Vehicle = {
+      id: "1",
+      operatorLogonTime: new Date("2018-08-15T13:30:00.000Z"),
+    } as Vehicle
+    const newVehicle: Vehicle = {
+      id: "2",
+      operatorLogonTime: new Date("2018-08-15T13:40:00.000Z"),
+    } as Vehicle
+
+    expect(byOperatorLogonTime(oldVehicle, newVehicle)).toEqual(1)
+    expect(byOperatorLogonTime(newVehicle, oldVehicle)).toEqual(-1)
+    expect(byOperatorLogonTime(newVehicle, newVehicle)).toEqual(0)
+  })
+
+  test("sorts ghosts ahead of vehicles", () => {
+    const vehicle: Vehicle = {
+      id: "1",
+      operatorLogonTime: new Date("2018-08-15T13:30:00.000Z"),
+    } as Vehicle
+    const ghost: Vehicle = {
+      id: "ghost-2",
+    } as Vehicle
+
+    expect(byOperatorLogonTime(vehicle, ghost)).toEqual(1)
+    expect(byOperatorLogonTime(ghost, vehicle)).toEqual(-1)
+    expect(byOperatorLogonTime(ghost, ghost)).toEqual(0)
   })
 })

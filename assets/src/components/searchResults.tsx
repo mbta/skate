@@ -59,9 +59,43 @@ const SearchResultCard = ({
   )
 }
 
+const operatorLogonTimeForSorting = (
+  vehicleOrGhost: VehicleOrGhost
+): Date | undefined =>
+  isVehicle(vehicleOrGhost) && vehicleOrGhost.operatorLogonTime !== null
+    ? vehicleOrGhost.operatorLogonTime
+    : undefined
+
+export const byOperatorLogonTime = (
+  a: VehicleOrGhost,
+  b: VehicleOrGhost
+): number => {
+  const operatorLogonTimeA = operatorLogonTimeForSorting(a)
+  const operatorLogonTimeB = operatorLogonTimeForSorting(b)
+
+  // Sort ghosts or vehicles without logon times to the top
+  if (!operatorLogonTimeA && !operatorLogonTimeB) {
+    return 0
+  }
+  if (!operatorLogonTimeA) {
+    return -1
+  }
+  if (!operatorLogonTimeB) {
+    return 1
+  }
+
+  if (operatorLogonTimeA > operatorLogonTimeB) {
+    return -1
+  }
+  if (operatorLogonTimeB > operatorLogonTimeA) {
+    return 1
+  }
+  return 0
+}
+
 const ResultsList = ({ vehicles }: { vehicles: VehicleOrGhost[] }) => (
   <div className="m-search-results__list">
-    {vehicles.map(vehicleOrGhost => (
+    {vehicles.sort(byOperatorLogonTime).map(vehicleOrGhost => (
       <SearchResultCard
         vehicleOrGhost={vehicleOrGhost}
         key={`search-result-card-${vehicleOrGhost.id}`}

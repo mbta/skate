@@ -29,6 +29,35 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
               <td
                 className="m-properties-list__property-value"
               >
+                123-0123
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div
+      className="m-search-results__card "
+      onClick={[Function]}
+    >
+      <div
+        className="m-properties-list"
+      >
+        <table
+          className="m-properties-list__table"
+        >
+          <tbody>
+            <tr
+              className="m-properties-list__property "
+            >
+              <td
+                className="m-properties-list__property-label"
+              >
+                Run
+              </td>
+              <td
+                className="m-properties-list__property-value"
+              >
                 run-1
               </td>
             </tr>
@@ -92,6 +121,22 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
         </div>
       </div>
     </div>
+    <p
+      className="m-search-results__note"
+    >
+      Please note that at this time search is limited to active vehicles and logged-in personnel.
+    </p>
+  </div>
+</div>
+`;
+
+exports[`SearchResults renders a selected result card 1`] = `
+<div
+  className="m-search-results"
+>
+  <div
+    className="m-search-results__list"
+  >
     <div
       className="m-search-results__card "
       onClick={[Function]}
@@ -121,22 +166,6 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
         </table>
       </div>
     </div>
-    <p
-      className="m-search-results__note"
-    >
-      Please note that at this time search is limited to active vehicles and logged-in personnel.
-    </p>
-  </div>
-</div>
-`;
-
-exports[`SearchResults renders a selected result card 1`] = `
-<div
-  className="m-search-results"
->
-  <div
-    className="m-search-results__list"
-  >
     <div
       className="m-search-results__card m-search-results__card--selected"
       onClick={[Function]}
@@ -220,35 +249,6 @@ exports[`SearchResults renders a selected result card 1`] = `
           </span>
            Forest Hills
         </div>
-      </div>
-    </div>
-    <div
-      className="m-search-results__card "
-      onClick={[Function]}
-    >
-      <div
-        className="m-properties-list"
-      >
-        <table
-          className="m-properties-list__table"
-        >
-          <tbody>
-            <tr
-              className="m-properties-list__property "
-            >
-              <td
-                className="m-properties-list__property-label"
-              >
-                Run
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                123-0123
-              </td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </div>
     <p
