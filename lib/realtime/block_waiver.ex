@@ -6,7 +6,7 @@ defmodule Realtime.BlockWaiver do
 
   alias Concentrate.StopTimeUpdate
   alias Gtfs.{Block, Trip}
-  alias Realtime.Server
+  alias Realtime.StopTimeUpdateStore
 
   @type t :: %__MODULE__{
           start_time: Util.Time.time_of_day(),
@@ -41,7 +41,11 @@ defmodule Realtime.BlockWaiver do
   @spec trip_stop_time_waivers(Trip.t()) :: [trip_stop_time_waiver()]
   def trip_stop_time_waivers(trip) do
     stop_time_updates_fn =
-      Application.get_env(:realtime, :stop_time_updates_fn, &Server.stop_time_updates_for_trip/1)
+      Application.get_env(
+        :realtime,
+        :stop_time_updates_fn,
+        &StopTimeUpdateStore.stop_time_updates_for_trip/1
+      )
 
     stop_time_updates = stop_time_updates_fn.(trip.id)
 

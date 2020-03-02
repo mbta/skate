@@ -1,7 +1,6 @@
 defmodule Realtime.ServerTest do
   use ExUnit.Case, async: true
 
-  alias Concentrate.StopTimeUpdate
   alias Realtime.{Ghost, Server, Vehicle}
 
   @vehicle %Vehicle{
@@ -59,24 +58,6 @@ defmodule Realtime.ServerTest do
     "1" => [@vehicle, @ghost]
   }
 
-  @stop_time_update %StopTimeUpdate{
-    arrival_time: nil,
-    departure_time: nil,
-    platform_id: nil,
-    remark: nil,
-    schedule_relationship: :SKIPPED,
-    status: nil,
-    stop_id: "s1",
-    stop_sequence: nil,
-    track: nil,
-    trip_id: "t1",
-    uncertainty: nil
-  }
-
-  @stop_time_updates_by_trip_id %{
-    "t1" => [@stop_time_update]
-  }
-
   setup do
     start_supervised({Registry, keys: :duplicate, name: Realtime.Supervisor.registry_name()})
     :ok
@@ -91,10 +72,6 @@ defmodule Realtime.ServerTest do
 
     test "accepts vehicle positions", %{server_pid: server_pid} do
       assert Server.update({:vehicle_positions, @vehicles_by_route_id, []}, server_pid) == :ok
-    end
-
-    test "accepts stop time updates", %{server_pid: server_pid} do
-      assert Server.update({:stop_time_updates, @stop_time_updates_by_trip_id}, server_pid) == :ok
     end
   end
 
@@ -222,26 +199,6 @@ defmodule Realtime.ServerTest do
     end
   end
 
-  describe "stop_time_updates_for_trip" do
-    setup do
-      {:ok, server_pid} = Server.start_link([])
-
-      :ok = Server.update({:stop_time_updates, @stop_time_updates_by_trip_id}, server_pid)
-
-      %{server_pid: server_pid}
-    end
-
-    test "returns the stop time updates for the requested trip", %{server_pid: server_pid} do
-      assert Server.stop_time_updates_for_trip("t1", server_pid) == [@stop_time_update]
-    end
-
-    test "returns an empty list if there are no stop time updates for this trip", %{
-      server_pid: server_pid
-    } do
-      assert Server.stop_time_updates_for_trip("missing", server_pid) == []
-    end
-  end
-
   describe "lookup/2" do
     setup do
       ets = :ets.new(__MODULE__, [:set, :protected, {:read_concurrency, true}])
@@ -249,7 +206,6 @@ defmodule Realtime.ServerTest do
       :ets.insert(ets, {{:route_id, "1"}, [@vehicle, @ghost]})
       :ets.insert(ets, {:all_vehicles, [@vehicle, @shuttle]})
       :ets.insert(ets, {:all_shuttles, [@shuttle]})
-      :ets.insert(ets, {{:trip_id, "t1"}, [@stop_time_update]})
 
       {:ok, %{ets: ets}}
     end
@@ -329,28 +285,6 @@ defmodule Realtime.ServerTest do
       results = Server.lookup({ets, {:search, search_params}})
 
       assert Enum.member?(results, @vehicle)
-    end
-
-    test "fetches stop time updates by trip ID", %{ets: ets} do
-      assert Server.lookup({ets, {:trip_id, "t1"}}) == [@stop_time_update]
-    end
-  end
-
-  describe "update_stop_time_updates/2" do
-    setup do
-      ets = :ets.new(__MODULE__, [:set, :protected, {:read_concurrency, true}])
-
-      :ets.insert(ets, {{:trip_id, "t1"}, [@stop_time_update]})
-
-      {:ok, %{ets: ets}}
-    end
-
-    test "removes data for trips that no longer contain stop time updates", %{ets: ets} do
-      assert {ets, {:trip_id, "t1"}} |> Server.lookup() |> length() == 1
-
-      Server.update_stop_time_updates(%Server{ets: ets}, %{})
-
-      assert {ets, {:trip_id, "t1"}} |> Server.lookup() |> length() == 0
     end
   end
 

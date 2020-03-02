@@ -8,7 +8,6 @@ defmodule Realtime.Server do
 
   use GenServer
 
-  alias Concentrate.Consumer.StopTimeUpdates
   alias Concentrate.StopTimeUpdate
   alias Gtfs.{Route, Trip}
 
@@ -80,12 +79,6 @@ defmodule Realtime.Server do
     )
   end
 
-  @spec stop_time_updates_for_trip(Trip.id()) :: [StopTimeUpdate.t()]
-  @spec stop_time_updates_for_trip(Trip.id(), GenServer.server()) :: [StopTimeUpdate.t()]
-  def stop_time_updates_for_trip(trip_id, server \\ __MODULE__) do
-    GenServer.call(server, {:stop_time_updates_for_trip, trip_id})
-  end
-
   @spec subscribe(GenServer.server(), {:route_id, Route.id()}) :: [VehicleOrGhost.t()]
   @spec subscribe(GenServer.server(), :all_shuttles) :: [Vehicle.t()]
   @spec subscribe(GenServer.server(), {:search, search_params()}) :: [VehicleOrGhost.t()]
@@ -100,19 +93,10 @@ defmodule Realtime.Server do
           {:vehicle_positions, Route.by_id([VehicleOrGhost.t()]), [Vehicle.t()]},
           GenServer.server()
         ) :: term()
-  @spec update({:stop_time_updates, StopTimeUpdates.stop_time_updates_by_trip()}) :: term()
-  @spec update(
-          {:stop_time_updates, StopTimeUpdates.stop_time_updates_by_trip()},
-          GenServer.server()
-        ) :: term()
   def update(update_term, server \\ __MODULE__)
 
   def update({:vehicle_positions, vehicles_by_route_id, shuttles}, server) do
     GenServer.cast(server, {:update, :vehicle_positions, vehicles_by_route_id, shuttles})
-  end
-
-  def update({:stop_time_updates, stop_time_updates_by_trip_id}, server) do
-    GenServer.cast(server, {:update, :stop_time_updates, stop_time_updates_by_trip_id})
   end
 
   @spec lookup({:ets.tid(), {:route_id, Route.id()}}) :: [VehicleOrGhost.t()]
@@ -154,13 +138,6 @@ defmodule Realtime.Server do
     {:reply, {registry_key, state.ets}, state}
   end
 
-  @impl true
-  def handle_call({:stop_time_updates_for_trip, trip_id}, _from, %__MODULE__{ets: ets} = state) do
-    stop_time_updates = lookup({ets, {:trip_id, trip_id}})
-
-    {:reply, stop_time_updates, state}
-  end
-
   def handle_call(:ets, _from, %__MODULE__{ets: ets} = state) do
     # used only by tests
     {:reply, ets, state}
@@ -179,16 +156,6 @@ defmodule Realtime.Server do
     _ = broadcast(new_state)
 
     {:noreply, new_state}
-  end
-
-  @impl true
-  def handle_cast(
-        {:update, :stop_time_updates, stop_time_updates_by_trip_id},
-        %__MODULE__{} = state
-      ) do
-    :ok = update_stop_time_updates(state, stop_time_updates_by_trip_id)
-
-    {:noreply, state}
   end
 
   defp update_vehicle_positions(
@@ -210,23 +177,6 @@ defmodule Realtime.Server do
     :ets.insert(ets, {:all_vehicles, Enum.uniq(all_vehicles(vehicles_by_route_id) ++ shuttles)})
 
     :ets.insert(ets, {:all_shuttles, shuttles})
-  end
-
-  @spec update_stop_time_updates(t(), StopTimeUpdates.stop_time_updates_by_trip()) :: :ok
-  def update_stop_time_updates(%__MODULE__{ets: ets}, stop_time_updates_by_trip_id) do
-    current_trip_ids = :ets.match(ets, {{:trip_id, :"$1"}, :_}) |> List.flatten()
-    new_trip_ids = Map.keys(stop_time_updates_by_trip_id)
-    removed_trip_ids = current_trip_ids -- new_trip_ids
-
-    for trip_id <- removed_trip_ids do
-      _ = :ets.delete(ets, {:trip_id, trip_id})
-    end
-
-    for {trip_id, stop_time_updates} <- stop_time_updates_by_trip_id do
-      _ = :ets.insert(ets, {{:trip_id, trip_id}, stop_time_updates})
-    end
-
-    :ok
   end
 
   @spec all_vehicles(Route.by_id([VehicleOrGhost.t()])) :: [VehicleOrGhost.t()]
