@@ -61,7 +61,7 @@
     "tslint-config-prettier": "^1.18.0",
     "tslint-react": "^4.2.0",
     "tslint-react-hooks": "^2.2.1",
-    "typescript": "^3.8.2",
+    "typescript": "^3.8.3",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "4.42.0",
     "webpack-bundle-analyzer": "^3.6.0",
