@@ -107,7 +107,7 @@ exports[`GhostPropertiesPanel renders 1`] = `
     >
       <tbody>
         <tr
-          className="m-properties-list__property--run"
+          className="m-properties-list__property "
         >
           <td
             className="m-properties-list__property-label"
@@ -301,7 +301,7 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
     >
       <tbody>
         <tr
-          className="m-properties-list__property--run"
+          className="m-properties-list__property "
         >
           <td
             className="m-properties-list__property-label"
@@ -427,7 +427,7 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
     >
       <tbody>
         <tr
-          className="m-properties-list__property--run"
+          className="m-properties-list__property "
         >
           <td
             className="m-properties-list__property-label"

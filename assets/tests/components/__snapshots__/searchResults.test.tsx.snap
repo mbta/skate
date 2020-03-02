@@ -19,7 +19,7 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
         >
           <tbody>
             <tr
-              className="m-properties-list__property--run"
+              className="m-properties-list__property "
             >
               <td
                 className="m-properties-list__property-label"
@@ -33,7 +33,7 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
               </td>
             </tr>
             <tr
-              className="m-properties-list__property--vehicle"
+              className="m-properties-list__property "
             >
               <td
                 className="m-properties-list__property-label"
@@ -47,7 +47,7 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
               </td>
             </tr>
             <tr
-              className="m-properties-list__property--operator"
+              className="m-properties-list__property "
             >
               <td
                 className="m-properties-list__property-label"
@@ -61,7 +61,7 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
               </td>
             </tr>
             <tr
-              className="m-properties-list__property--last-login"
+              className="m-properties-list__property m-properties-list__property--last-login"
             >
               <td
                 className="m-properties-list__property-label"
@@ -104,7 +104,7 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
         >
           <tbody>
             <tr
-              className="m-properties-list__property--run"
+              className="m-properties-list__property "
             >
               <td
                 className="m-properties-list__property-label"
@@ -149,7 +149,7 @@ exports[`SearchResults renders a selected result card 1`] = `
         >
           <tbody>
             <tr
-              className="m-properties-list__property--run"
+              className="m-properties-list__property "
             >
               <td
                 className="m-properties-list__property-label"
@@ -163,7 +163,7 @@ exports[`SearchResults renders a selected result card 1`] = `
               </td>
             </tr>
             <tr
-              className="m-properties-list__property--vehicle"
+              className="m-properties-list__property "
             >
               <td
                 className="m-properties-list__property-label"
@@ -177,7 +177,7 @@ exports[`SearchResults renders a selected result card 1`] = `
               </td>
             </tr>
             <tr
-              className="m-properties-list__property--operator"
+              className="m-properties-list__property "
             >
               <td
                 className="m-properties-list__property-label"
@@ -191,7 +191,7 @@ exports[`SearchResults renders a selected result card 1`] = `
               </td>
             </tr>
             <tr
-              className="m-properties-list__property--last-login"
+              className="m-properties-list__property m-properties-list__property--last-login"
             >
               <td
                 className="m-properties-list__property-label"
@@ -234,7 +234,7 @@ exports[`SearchResults renders a selected result card 1`] = `
         >
           <tbody>
             <tr
-              className="m-properties-list__property--run"
+              className="m-properties-list__property "
             >
               <td
                 className="m-properties-list__property-label"

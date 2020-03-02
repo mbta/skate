@@ -9,7 +9,7 @@ exports[`PropertiesList highlights requested text 1`] = `
   >
     <tbody>
       <tr
-        className="m-properties-list__property--run"
+        className="m-properties-list__property "
       >
         <td
           className="m-properties-list__property-label"
@@ -29,7 +29,7 @@ exports[`PropertiesList highlights requested text 1`] = `
         </td>
       </tr>
       <tr
-        className="m-properties-list__property--vehicle"
+        className="m-properties-list__property "
       >
         <td
           className="m-properties-list__property-label"
@@ -43,7 +43,7 @@ exports[`PropertiesList highlights requested text 1`] = `
         </td>
       </tr>
       <tr
-        className="m-properties-list__property--operator"
+        className="m-properties-list__property "
       >
         <td
           className="m-properties-list__property-label"
@@ -57,7 +57,7 @@ exports[`PropertiesList highlights requested text 1`] = `
         </td>
       </tr>
       <tr
-        className="m-properties-list__property--last-login"
+        className="m-properties-list__property m-properties-list__property--last-login"
       >
         <td
           className="m-properties-list__property-label"
@@ -84,7 +84,7 @@ exports[`PropertiesList renders a properties list for a ghost 1`] = `
   >
     <tbody>
       <tr
-        className="m-properties-list__property--run"
+        className="m-properties-list__property "
       >
         <td
           className="m-properties-list__property-label"
@@ -111,7 +111,7 @@ exports[`PropertiesList renders a properties list for a vehicle 1`] = `
   >
     <tbody>
       <tr
-        className="m-properties-list__property--run"
+        className="m-properties-list__property "
       >
         <td
           className="m-properties-list__property-label"
@@ -125,7 +125,7 @@ exports[`PropertiesList renders a properties list for a vehicle 1`] = `
         </td>
       </tr>
       <tr
-        className="m-properties-list__property--vehicle"
+        className="m-properties-list__property "
       >
         <td
           className="m-properties-list__property-label"
@@ -139,7 +139,7 @@ exports[`PropertiesList renders a properties list for a vehicle 1`] = `
         </td>
       </tr>
       <tr
-        className="m-properties-list__property--operator"
+        className="m-properties-list__property "
       >
         <td
           className="m-properties-list__property-label"
@@ -153,7 +153,7 @@ exports[`PropertiesList renders a properties list for a vehicle 1`] = `
         </td>
       </tr>
       <tr
-        className="m-properties-list__property--last-login"
+        className="m-properties-list__property m-properties-list__property--last-login"
       >
         <td
           className="m-properties-list__property-label"
@@ -180,7 +180,7 @@ exports[`PropertiesList reports 'Not Available' if missing a login time 1`] = `
   >
     <tbody>
       <tr
-        className="m-properties-list__property--run"
+        className="m-properties-list__property "
       >
         <td
           className="m-properties-list__property-label"
@@ -194,7 +194,7 @@ exports[`PropertiesList reports 'Not Available' if missing a login time 1`] = `
         </td>
       </tr>
       <tr
-        className="m-properties-list__property--vehicle"
+        className="m-properties-list__property "
       >
         <td
           className="m-properties-list__property-label"
@@ -208,7 +208,7 @@ exports[`PropertiesList reports 'Not Available' if missing a login time 1`] = `
         </td>
       </tr>
       <tr
-        className="m-properties-list__property--operator"
+        className="m-properties-list__property "
       >
         <td
           className="m-properties-list__property-label"
@@ -222,7 +222,7 @@ exports[`PropertiesList reports 'Not Available' if missing a login time 1`] = `
         </td>
       </tr>
       <tr
-        className="m-properties-list__property--last-login"
+        className="m-properties-list__property m-properties-list__property--last-login"
       >
         <td
           className="m-properties-list__property-label"

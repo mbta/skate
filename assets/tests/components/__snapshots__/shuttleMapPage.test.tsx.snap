@@ -513,7 +513,7 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
         >
           <tbody>
             <tr
-              className="m-properties-list__property--run"
+              className="m-properties-list__property "
             >
               <td
                 className="m-properties-list__property-label"
@@ -527,7 +527,7 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
               </td>
             </tr>
             <tr
-              className="m-properties-list__property--vehicle"
+              className="m-properties-list__property "
             >
               <td
                 className="m-properties-list__property-label"
@@ -541,7 +541,7 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
               </td>
             </tr>
             <tr
-              className="m-properties-list__property--operator"
+              className="m-properties-list__property "
             >
               <td
                 className="m-properties-list__property-label"
@@ -555,7 +555,7 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
               </td>
             </tr>
             <tr
-              className="m-properties-list__property--last-login"
+              className="m-properties-list__property m-properties-list__property--last-login"
             >
               <td
                 className="m-properties-list__property-label"

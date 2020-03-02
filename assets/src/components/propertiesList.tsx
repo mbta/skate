@@ -19,6 +19,7 @@ interface Props {
 export interface Property {
   label: string
   value: string
+  classNameModifier?: string
 }
 
 export const formattedLogonTime = (logonTime: number): string => {
@@ -51,6 +52,7 @@ const vehicleProperties = (vehicle: Vehicle): Property[] => {
       value: operatorLogonTime
         ? formattedLogonTime(operatorLogonTime)
         : "Not Available",
+      classNameModifier: "last-login",
     },
   ]
 }
@@ -109,17 +111,21 @@ const highlightRegex = (highlightText: string): RegExp => {
   return new RegExp(allowNonAlphanumeric, "i")
 }
 
-const labelName = (label: string): string =>
-  label.toLowerCase().replace(" ", "-")
+const modifiedClassName = (classNameModifier?: string): string =>
+  classNameModifier ? `m-properties-list__property--${classNameModifier}` : ""
 
 const PropertyRow = ({
-  property: { label, value },
+  property: { label, value, classNameModifier },
   highlightText,
 }: {
   property: Property
   highlightText?: string
 }) => (
-  <tr className={`m-properties-list__property--${labelName(label)}`}>
+  <tr
+    className={`m-properties-list__property ${modifiedClassName(
+      classNameModifier
+    )}`}
+  >
     <td className="m-properties-list__property-label">{label}</td>
     <td className="m-properties-list__property-value">
       <Highlighted content={value} highlightText={highlightText} />

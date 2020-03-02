@@ -780,7 +780,7 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
         >
           <tbody>
             <tr
-              className="m-properties-list__property--run"
+              className="m-properties-list__property "
             >
               <td
                 className="m-properties-list__property-label"
