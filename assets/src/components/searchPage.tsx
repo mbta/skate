@@ -18,19 +18,16 @@ enum MobileDisplay {
 }
 
 const thereIsAnActiveSearch = (
-  vehicles: VehicleOrGhost[] | null | undefined,
+  vehicles: VehicleOrGhost[] | null,
   searchPageState: SearchPageState
-): boolean =>
-  vehicles !== null && vehicles !== undefined && searchPageState.isActive
+): boolean => vehicles !== null && searchPageState.isActive
 
 const filterVehicles = (
-  vehiclesOrGhosts: VehicleOrGhost[] | null | undefined
+  vehiclesOrGhosts: VehicleOrGhost[] | null
 ): Vehicle[] => {
-  if (vehiclesOrGhosts === null || vehiclesOrGhosts === undefined) {
-    return []
-  }
-
-  return vehiclesOrGhosts.filter(vog => isVehicle(vog)) as Vehicle[]
+  return vehiclesOrGhosts === null
+    ? []
+    : (vehiclesOrGhosts.filter(vog => isVehicle(vog)) as Vehicle[])
 }
 
 const findSelectedVehicle = (
@@ -63,7 +60,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
     StateDispatchContext
   )
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
-  const vehicles: VehicleOrGhost[] | null | undefined = useSearchResults(
+  const vehicles: VehicleOrGhost[] | null = useSearchResults(
     socket,
     searchPageState.isActive ? searchPageState.query : null
   )

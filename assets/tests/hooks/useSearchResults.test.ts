@@ -1,6 +1,5 @@
 import { renderHook } from "@testing-library/react-hooks"
 import useSearchResults from "../../src/hooks/useSearchResults"
-import * as browser from "../../src/models/browser"
 import { emptySearchQuery, SearchQuery } from "../../src/models/searchQuery"
 import { VehicleData, VehicleOrGhostData } from "../../src/models/vehicleData"
 import { Vehicle, VehicleOrGhost } from "../../src/realtime"
@@ -11,11 +10,11 @@ import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 // tslint:disable: object-literal-sort-keys
 
 describe("useSearchResults", () => {
-  test("returns undefined initially", () => {
+  test("returns null initially", () => {
     const { result } = renderHook(() =>
       useSearchResults(undefined, emptySearchQuery)
     )
-    expect(result.current).toEqual(undefined)
+    expect(result.current).toEqual(null)
   })
 
   test("initializing the hook subscribes to the search results", () => {
@@ -46,7 +45,7 @@ describe("useSearchResults", () => {
     expect(mockChannel.join).toHaveBeenCalledTimes(0)
   })
 
-  test("returns results pushed to the channel", async () => {
+  test("returns results pushed to the channel", () => {
     const vehicleData: VehicleData = {
       bearing: 33,
       block_id: "block-1",
@@ -206,15 +205,8 @@ describe("useSearchResults", () => {
     const vehicles: VehicleOrGhost[] = [vehicle]
 
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok")
+    const mockChannel = makeMockChannel("ok", { data: searchResultsData })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
-    mockChannel.on.mockImplementation((event, handler) => {
-      if (event === "search") {
-        handler({
-          data: searchResultsData,
-        })
-      }
-    })
 
     const searchQuery: SearchQuery = {
       text: "test",
@@ -225,27 +217,6 @@ describe("useSearchResults", () => {
     )
 
     expect(result.current).toEqual(vehicles)
-  })
-
-  test("leaves the channel on unmount", () => {
-    const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok")
-    const vehicles: Vehicle[] = []
-    mockUseStateOnce(vehicles)
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
-    mockUseStateOnce(mockChannel)
-
-    const searchQuery: SearchQuery = {
-      text: "one",
-      property: "run",
-    }
-    const { unmount } = renderHook(() =>
-      useSearchResults(mockSocket, searchQuery)
-    )
-
-    unmount()
-
-    expect(mockChannel.leave).toHaveBeenCalled()
   })
 
   test("leaves the channel and joins a new one when the search changes", () => {
@@ -297,44 +268,5 @@ describe("useSearchResults", () => {
     rerender(search2)
 
     expect(mockChannel.leave).toHaveBeenCalledTimes(1)
-  })
-
-  test("console.error on join error", async () => {
-    const spyConsoleError = jest.spyOn(console, "error")
-    spyConsoleError.mockImplementationOnce(msg => msg)
-    const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("error")
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
-
-    const searchQuery: SearchQuery = {
-      text: "test",
-      property: "run",
-    }
-
-    renderHook(() => useSearchResults(mockSocket, searchQuery))
-
-    expect(spyConsoleError).toHaveBeenCalledWith(
-      "search channel join failed",
-      "ERROR_REASON"
-    )
-    spyConsoleError.mockRestore()
-  })
-
-  test("reloads the window on channel timeout", async () => {
-    const reloadSpy = jest.spyOn(browser, "reload")
-    reloadSpy.mockImplementationOnce(() => ({}))
-    const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("timeout")
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
-
-    const searchQuery: SearchQuery = {
-      text: "test",
-      property: "run",
-    }
-
-    renderHook(() => useSearchResults(mockSocket, searchQuery))
-
-    expect(reloadSpy).toHaveBeenCalled()
-    reloadSpy.mockRestore()
   })
 })

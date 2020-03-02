@@ -278,6 +278,18 @@ describe("useVehicles", () => {
     })
   })
 
+  test("returns results from the initial join", async () => {
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok", { data: vehiclesData })
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+
+    const { result } = renderHook(() => useVehicles(mockSocket, ["1"]))
+
+    expect(result.current).toEqual({
+      "1": vehicles,
+    })
+  })
+
   test("returns results pushed to the channel", async () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel()
@@ -315,15 +327,10 @@ describe("useVehicles", () => {
     ]
 
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel()
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
-    mockChannel.on.mockImplementation((event, handler) => {
-      if (event === "vehicles") {
-        handler({
-          data: vehiclesDataVaryingHeadway,
-        })
-      }
+    const mockChannel = makeMockChannel("ok", {
+      data: vehiclesDataVaryingHeadway,
     })
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     const { result } = renderHook(() => useVehicles(mockSocket, ["1"]))
 

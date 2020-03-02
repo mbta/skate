@@ -1,6 +1,5 @@
 import { renderHook } from "@testing-library/react-hooks"
 import useDataStatus from "../../src/hooks/useDataStatus"
-import * as browser from "../../src/models/browser"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 
 // tslint:disable: react-hooks-nesting
@@ -26,44 +25,13 @@ describe("useDataStatus", () => {
     expect(mockChannel.join).toHaveBeenCalledTimes(1)
   })
 
-  test("returns the data_status when pushed", () => {
+  test("returns the resulting data_status", () => {
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok")
+    const mockChannel = makeMockChannel("ok", { data: "outage" })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
-    mockChannel.on.mockImplementation((event, handler) => {
-      if (event === "data_status") {
-        handler({ data: "outage" })
-      }
-    })
 
     const { result } = renderHook(() => useDataStatus(mockSocket))
 
     expect(result.current).toEqual("outage")
-  })
-
-  test("console.error on join error", async () => {
-    const spyConsoleError = jest.spyOn(console, "error")
-    spyConsoleError.mockImplementationOnce(msg => msg)
-    const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("error")
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
-
-    renderHook(() => useDataStatus(mockSocket))
-
-    expect(spyConsoleError).toHaveBeenCalledWith("join failed", "ERROR_REASON")
-    spyConsoleError.mockRestore()
-  })
-
-  test("reloads the window on channel timeout", async () => {
-    const reloadSpy = jest.spyOn(browser, "reload")
-    reloadSpy.mockImplementationOnce(() => ({}))
-    const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("timeout")
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
-
-    renderHook(() => useDataStatus(mockSocket))
-
-    expect(reloadSpy).toHaveBeenCalled()
-    reloadSpy.mockRestore()
   })
 })

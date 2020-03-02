@@ -86,7 +86,7 @@ jest.mock("../../src/hooks/useSearchResults", () => ({
 
 describe("SearchPage", () => {
   test("renders the empty state", () => {
-    ;(useSearchResults as jest.Mock).mockImplementationOnce(() => undefined)
+    ;(useSearchResults as jest.Mock).mockImplementationOnce(() => null)
     const tree = renderer
       .create(
         <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
