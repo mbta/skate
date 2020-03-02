@@ -1,7 +1,7 @@
 import React from "react"
 import { alertCircleIcon } from "../../helpers/icon"
 import { BlockWaiver } from "../../realtime"
-import { formatEpochSeconds, nowEpochSeconds } from "../../util/dateTime"
+import { now, formattedTime } from "../../util/dateTime"
 
 interface Props {
   blockWaiver: BlockWaiver
@@ -17,11 +17,11 @@ const currentFuturePastType = ({
   startTime,
   endTime,
 }: BlockWaiver): CurrentFuturePastType => {
-  const now = nowEpochSeconds()
+  const nowDate = now()
 
-  if (startTime > now) {
+  if (startTime > nowDate) {
     return CurrentFuturePastType.Future
-  } else if (endTime < now) {
+  } else if (endTime < nowDate) {
     return CurrentFuturePastType.Past
   } else {
     return CurrentFuturePastType.Current
@@ -76,7 +76,7 @@ const BlockWaiverBanner = ({ blockWaiver }: Props) => (
             Start Time
           </td>
           <td className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--start-time">
-            {formatEpochSeconds(blockWaiver.startTime)}
+            {formattedTime(blockWaiver.startTime)}
           </td>
         </tr>
         <tr>
@@ -84,7 +84,7 @@ const BlockWaiverBanner = ({ blockWaiver }: Props) => (
             End Time
           </td>
           <td className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--end-time">
-            {formatEpochSeconds(blockWaiver.endTime)}
+            {formattedTime(blockWaiver.endTime)}
           </td>
         </tr>
       </tbody>

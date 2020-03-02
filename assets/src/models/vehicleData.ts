@@ -13,6 +13,7 @@ import {
   VehicleTimepointStatus,
 } from "../realtime.d"
 import { DirectionId, RouteId } from "../schedule.d"
+import { dateFromEpochSeconds } from "../util/dateTime"
 
 type RawHeadwaySpacing =
   | "very_bunched"
@@ -243,7 +244,7 @@ const blockWaiversFromData = (
 const blockWaiverFromData = (
   blockWaiverData: BlockWaiverData
 ): BlockWaiver => ({
-  startTime: blockWaiverData.start_time,
-  endTime: blockWaiverData.end_time,
+  startTime: dateFromEpochSeconds(blockWaiverData.start_time),
+  endTime: dateFromEpochSeconds(blockWaiverData.end_time),
   remark: blockWaiverData.remark,
 })

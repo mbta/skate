@@ -10,7 +10,6 @@ import * as dateTime from "../../../src/util/dateTime"
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
-jest.spyOn(dateTime, "nowEpochSeconds").mockImplementation(() => 81720)
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
@@ -169,8 +168,8 @@ describe("VehiclePropertiesPanel", () => {
 
   test("renders for a vehicle with block waivers", () => {
     const blockWaiver: BlockWaiver = {
-      startTime: 18300,
-      endTime: 45480,
+      startTime: new Date("1970-01-01T05:05:00.000Z"),
+      endTime: new Date("1970-01-01T12:38:00.000Z"),
       remark: "E:1106",
     }
     const vehicleWithBlockWaivers: Vehicle = {

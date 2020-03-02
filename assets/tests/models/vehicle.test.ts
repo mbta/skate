@@ -145,8 +145,8 @@ describe("hasBlockWaivers", () => {
       ...vehicle,
       blockWaivers: [
         {
-          startTime: 1,
-          endTime: 5,
+          startTime: new Date("1970-01-01T05:05:00.000Z"),
+          endTime: new Date("1970-01-01T12:38:00.000Z"),
           remark: "test block waiver",
         },
       ],

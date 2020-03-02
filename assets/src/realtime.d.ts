@@ -11,8 +11,8 @@ import {
 import { HeadwaySpacing } from "./models/vehicleStatus"
 
 export interface BlockWaiver {
-  startTime: number
-  endTime: number
+  startTime: Date
+  endTime: Date
   remark: string | null
 }
 
