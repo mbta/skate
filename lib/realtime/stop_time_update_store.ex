@@ -13,7 +13,7 @@ defmodule Realtime.StopTimeUpdateStore do
           stop_time_updates_by_trip: StopTimeUpdates.stop_time_updates_by_trip()
         }
 
-  defstruct stop_time_updates_by_trip: []
+  defstruct stop_time_updates_by_trip: %{}
 
   # Client
 
