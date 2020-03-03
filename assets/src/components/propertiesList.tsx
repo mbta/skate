@@ -4,6 +4,7 @@ import { filterToAlphanumeric } from "../models/searchQuery"
 import { formattedRunNumber } from "../models/shuttle"
 import { isShuttle, isVehicle } from "../models/vehicle"
 import { Ghost, Vehicle, VehicleOrGhost } from "../realtime"
+import { formattedTime, formattedTimeDiff, now } from "../util/dateTime"
 
 interface Props {
   vehicleOrGhost: VehicleOrGhost
@@ -13,10 +14,17 @@ interface Props {
 export interface Property {
   label: string
   value: string
+  classNameModifier?: string
+}
+
+export const formattedLogonTime = (logonDate: Date): string => {
+  const nowDate: Date = now()
+
+  return `${formattedTimeDiff(nowDate, logonDate)}; ${formattedTime(logonDate)}`
 }
 
 const vehicleProperties = (vehicle: Vehicle): Property[] => {
-  const { runId, label, operatorId, operatorName } = vehicle
+  const { runId, label, operatorId, operatorName, operatorLogonTime } = vehicle
 
   return [
     {
@@ -32,6 +40,13 @@ const vehicleProperties = (vehicle: Vehicle): Property[] => {
     {
       label: "Operator",
       value: `${operatorName} #${operatorId}`,
+    },
+    {
+      label: "Last Login",
+      value: operatorLogonTime
+        ? formattedLogonTime(operatorLogonTime)
+        : "Not Available",
+      classNameModifier: "last-login",
     },
   ]
 }
@@ -90,14 +105,21 @@ const highlightRegex = (highlightText: string): RegExp => {
   return new RegExp(allowNonAlphanumeric, "i")
 }
 
+const modifiedClassName = (classNameModifier?: string): string =>
+  classNameModifier ? `m-properties-list__property--${classNameModifier}` : ""
+
 const PropertyRow = ({
-  property: { label, value },
+  property: { label, value, classNameModifier },
   highlightText,
 }: {
   property: Property
   highlightText?: string
 }) => (
-  <tr>
+  <tr
+    className={`m-properties-list__property ${modifiedClassName(
+      classNameModifier
+    )}`}
+  >
     <td className="m-properties-list__property-label">{label}</td>
     <td className="m-properties-list__property-value">
       <Highlighted content={value} highlightText={highlightText} />

@@ -1,41 +1,11 @@
 import React from "react"
 import { alertCircleIcon } from "../../helpers/icon"
 import { BlockWaiver } from "../../realtime"
+import { now, formattedTime } from "../../util/dateTime"
 
 interface Props {
   blockWaiver: BlockWaiver
 }
-
-export const hours12 = (hours24: number): number => {
-  if (hours24 === 0) {
-    return 12
-  }
-  if (hours24 > 12) {
-    return hours24 - 12
-  }
-  return hours24
-}
-
-const ampm = (hours24: number): string =>
-  hours24 >= 12 && hours24 < 24 ? "pm" : "am"
-
-const zeroPad = (time: number): string => (time < 10 ? `0${time}` : `${time}`)
-
-export const dateFromEpochSeconds = (time: number): Date =>
-  new Date(time * 1_000)
-
-export const formattedTime = (date: Date): string => {
-  const hours24 = date.getHours()
-  return `${hours12(hours24)}:${zeroPad(date.getMinutes())}${ampm(hours24)}`
-}
-
-export const formatEpochSeconds = (epochSeconds: number): string => {
-  const date = dateFromEpochSeconds(epochSeconds)
-  return formattedTime(date)
-}
-
-export const nowEpochSeconds = (now = Date.now()): number =>
-  Math.floor(now / 1_000)
 
 export enum CurrentFuturePastType {
   Current = 1,
@@ -47,11 +17,11 @@ const currentFuturePastType = ({
   startTime,
   endTime,
 }: BlockWaiver): CurrentFuturePastType => {
-  const now = nowEpochSeconds()
+  const nowDate = now()
 
-  if (startTime > now) {
+  if (startTime > nowDate) {
     return CurrentFuturePastType.Future
-  } else if (endTime < now) {
+  } else if (endTime < nowDate) {
     return CurrentFuturePastType.Past
   } else {
     return CurrentFuturePastType.Current
@@ -106,7 +76,7 @@ const BlockWaiverBanner = ({ blockWaiver }: Props) => (
             Start Time
           </td>
           <td className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--start-time">
-            {formatEpochSeconds(blockWaiver.startTime)}
+            {formattedTime(blockWaiver.startTime)}
           </td>
         </tr>
         <tr>
@@ -114,7 +84,7 @@ const BlockWaiverBanner = ({ blockWaiver }: Props) => (
             End Time
           </td>
           <td className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--end-time">
-            {formatEpochSeconds(blockWaiver.endTime)}
+            {formattedTime(blockWaiver.endTime)}
           </td>
         </tr>
       </tbody>

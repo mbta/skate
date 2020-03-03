@@ -27,6 +27,7 @@ const vehicle: Vehicle = {
   viaVariant: "X",
   operatorId: "op1",
   operatorName: "SMITH",
+  operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
   bearing: 33,
   blockId: "block-1",
   headwaySecs: 859.1,
@@ -144,8 +145,8 @@ describe("hasBlockWaivers", () => {
       ...vehicle,
       blockWaivers: [
         {
-          startTime: 1,
-          endTime: 5,
+          startTime: new Date("1970-01-01T05:05:00.000Z"),
+          endTime: new Date("1970-01-01T12:38:00.000Z"),
           remark: "test block waiver",
         },
       ],

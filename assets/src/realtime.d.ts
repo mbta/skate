@@ -11,8 +11,8 @@ import {
 import { HeadwaySpacing } from "./models/vehicleStatus"
 
 export interface BlockWaiver {
-  startTime: number
-  endTime: number
+  startTime: Date
+  endTime: Date
   remark: string | null
 }
 
@@ -63,6 +63,7 @@ export interface Vehicle {
   viaVariant: ViaVariant | null
   operatorId: string
   operatorName: string
+  operatorLogonTime: Date | null
   bearing: number
   blockId: BlockId
   headwaySecs: number | null

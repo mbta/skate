@@ -20,6 +20,7 @@ defmodule SkateWeb.VehiclesChannelTest do
     block_id: nil,
     operator_id: nil,
     operator_name: nil,
+    operator_logon_time: nil,
     run_id: "123-4567",
     headway_secs: 600,
     headway_spacing: :ok,

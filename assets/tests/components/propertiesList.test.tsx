@@ -2,10 +2,16 @@ import { shallow } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import PropertiesList, {
+  formattedLogonTime,
   Highlighted,
 } from "../../src/components/propertiesList"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../src/realtime"
+import * as dateTime from "../../src/util/dateTime"
+
+jest
+  .spyOn(dateTime, "now")
+  .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
 
 const vehicle: Vehicle = {
   id: "v1",
@@ -21,6 +27,7 @@ const vehicle: Vehicle = {
   viaVariant: "X",
   operatorId: "op1",
   operatorName: "SMITH",
+  operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
   bearing: 33,
   blockId: "block-1",
   headwaySecs: 859.1,
@@ -102,6 +109,18 @@ describe("PropertiesList", () => {
 
     expect(tree).toMatchSnapshot()
   })
+
+  test("reports 'Not Available' if missing a login time", () => {
+    const vehicleSansLoginTime = {
+      ...vehicle,
+      operatorLogonTime: null,
+    }
+    const tree = renderer
+      .create(<PropertiesList vehicleOrGhost={vehicleSansLoginTime} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
 })
 
 describe("Highlighted", () => {
@@ -159,5 +178,14 @@ describe("Highlighted", () => {
     const wrapper = shallow(<Highlighted content={content} />)
 
     expect(wrapper.html()).toEqual(content)
+  })
+})
+
+describe("formattedLogonTime", () => {
+  test("formats the logon time relative to now, and with the actual time", () => {
+    const logonTime = new Date("2018-08-15T13:38:21.000Z")
+    const expected = "4h 3m; 1:38pm"
+
+    expect(formattedLogonTime(logonTime)).toEqual(expected)
   })
 })

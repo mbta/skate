@@ -1,19 +1,18 @@
 import React from "react"
 import renderer from "react-test-renderer"
-import BlockWaiverBanner, * as blockWaiverBanner from "../../../src/components/propertiesPanel/blockWaiverBanner"
+import BlockWaiverBanner from "../../../src/components/propertiesPanel/blockWaiverBanner"
 import { BlockWaiver } from "../../../src/realtime"
-
-const { formatEpochSeconds, hours12, nowEpochSeconds } = blockWaiverBanner
+import * as dateTime from "../../../src/util/dateTime"
 
 describe("BlockWaiverBanner", () => {
   jest
-    .spyOn(blockWaiverBanner, "nowEpochSeconds")
-    .mockImplementation(() => 1582647000)
+    .spyOn(dateTime, "now")
+    .mockImplementation(() => new Date("2020-02-25T16:10:00.000Z"))
 
   test("renders a current time waiver", () => {
     const blockWaiver: BlockWaiver = {
-      startTime: 1582646000,
-      endTime: 1582648000,
+      startTime: new Date("2020-02-25T15:53:20.000Z"),
+      endTime: new Date("2020-02-25T16:26:40.000Z"),
       remark: "E:1106",
     }
     const tree = renderer
@@ -25,8 +24,8 @@ describe("BlockWaiverBanner", () => {
 
   test("renders a future time waiver", () => {
     const blockWaiver: BlockWaiver = {
-      startTime: 1582648000,
-      endTime: 1582649000,
+      startTime: new Date("2020-02-25T16:26:40.000Z"),
+      endTime: new Date("2020-02-25T16:43:20.000Z"),
       remark: "E:1106",
     }
     const tree = renderer
@@ -38,8 +37,8 @@ describe("BlockWaiverBanner", () => {
 
   test("renders a past time waiver", () => {
     const blockWaiver: BlockWaiver = {
-      startTime: 1582645000,
-      endTime: 1582646000,
+      startTime: new Date("2020-02-25T15:36:40.000Z"),
+      endTime: new Date("2020-02-25T15:53:20.000Z"),
       remark: "E:1106",
     }
     const tree = renderer
@@ -47,28 +46,5 @@ describe("BlockWaiverBanner", () => {
       .toJSON()
 
     expect(tree).toMatchSnapshot()
-  })
-})
-
-describe("formatEpochSeconds", () => {
-  test("formats an epoch time in seconds nicely", () => {
-    expect(formatEpochSeconds(1582628000)).toEqual("10:53am")
-    expect(formatEpochSeconds(1582632500)).toEqual("12:08pm")
-    expect(formatEpochSeconds(1582641000)).toEqual("2:30pm")
-  })
-})
-
-describe("hours12", () => {
-  test("returns the 12-hour version of the 24-hour-plus hour", () => {
-    expect(hours12(0)).toEqual(12)
-    expect(hours12(5)).toEqual(5)
-    expect(hours12(12)).toEqual(12)
-    expect(hours12(13)).toEqual(1)
-  })
-})
-
-describe("nowEpochSeconds", () => {
-  test("returns an epoch time in seconds (defaulting to now)", () => {
-    expect(nowEpochSeconds(1582647451124)).toEqual(1582647451)
   })
 })

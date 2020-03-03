@@ -5,9 +5,11 @@ import VehiclePropertiesPanel from "../../../src/components/propertiesPanel/vehi
 import { HeadwaySpacing } from "../../../src/models/vehicleStatus"
 import { BlockWaiver, Vehicle } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
-import * as blockWaiverBanner from "../../../src/components/propertiesPanel/blockWaiverBanner"
+import * as dateTime from "../../../src/util/dateTime"
 
-jest.spyOn(blockWaiverBanner, "nowEpochSeconds").mockImplementation(() => 81720)
+jest
+  .spyOn(dateTime, "now")
+  .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
@@ -34,6 +36,7 @@ const vehicle: Vehicle = {
   viaVariant: "X",
   operatorId: "op1",
   operatorName: "SMITH",
+  operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
   bearing: 33,
   blockId: "block-1",
   headwaySecs: 859.1,
@@ -165,8 +168,8 @@ describe("VehiclePropertiesPanel", () => {
 
   test("renders for a vehicle with block waivers", () => {
     const blockWaiver: BlockWaiver = {
-      startTime: 18300,
-      endTime: 45480,
+      startTime: new Date("1970-01-01T05:05:00.000Z"),
+      endTime: new Date("1970-01-01T12:38:00.000Z"),
       remark: "E:1106",
     }
     const vehicleWithBlockWaivers: Vehicle = {

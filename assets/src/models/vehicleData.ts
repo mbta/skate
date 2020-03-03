@@ -13,6 +13,7 @@ import {
   VehicleTimepointStatus,
 } from "../realtime.d"
 import { DirectionId, RouteId } from "../schedule.d"
+import { dateFromEpochSeconds } from "../util/dateTime"
 
 type RawHeadwaySpacing =
   | "very_bunched"
@@ -36,6 +37,7 @@ export interface VehicleData {
   via_variant: string | null
   operator_id: string
   operator_name: string
+  operator_logon_time: number | null
   bearing: number
   block_id: string
   headway_secs: number
@@ -124,6 +126,9 @@ export const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
   viaVariant: vehicleData.via_variant,
   operatorId: vehicleData.operator_id,
   operatorName: vehicleData.operator_name,
+  operatorLogonTime: vehicleData.operator_logon_time
+    ? dateFromEpochSeconds(vehicleData.operator_logon_time)
+    : null,
   bearing: vehicleData.bearing,
   blockId: vehicleData.block_id,
   headwaySecs: vehicleData.headway_secs,
@@ -241,7 +246,7 @@ const blockWaiversFromData = (
 const blockWaiverFromData = (
   blockWaiverData: BlockWaiverData
 ): BlockWaiver => ({
-  startTime: blockWaiverData.start_time,
-  endTime: blockWaiverData.end_time,
+  startTime: dateFromEpochSeconds(blockWaiverData.start_time),
+  endTime: dateFromEpochSeconds(blockWaiverData.end_time),
   remark: blockWaiverData.remark,
 })

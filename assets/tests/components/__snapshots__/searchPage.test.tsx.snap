@@ -303,7 +303,9 @@ exports[`SearchPage renders a selected vehicle 1`] = `
           className="m-properties-list__table"
         >
           <tbody>
-            <tr>
+            <tr
+              className="m-properties-list__property "
+            >
               <td
                 className="m-properties-list__property-label"
               >
@@ -315,7 +317,9 @@ exports[`SearchPage renders a selected vehicle 1`] = `
                 run-1
               </td>
             </tr>
-            <tr>
+            <tr
+              className="m-properties-list__property "
+            >
               <td
                 className="m-properties-list__property-label"
               >
@@ -327,7 +331,9 @@ exports[`SearchPage renders a selected vehicle 1`] = `
                 v1-label
               </td>
             </tr>
-            <tr>
+            <tr
+              className="m-properties-list__property "
+            >
               <td
                 className="m-properties-list__property-label"
               >
@@ -337,6 +343,20 @@ exports[`SearchPage renders a selected vehicle 1`] = `
                 className="m-properties-list__property-value"
               >
                 SMITH #op1
+              </td>
+            </tr>
+            <tr
+              className="m-properties-list__property m-properties-list__property--last-login"
+            >
+              <td
+                className="m-properties-list__property-label"
+              >
+                Last Login
+              </td>
+              <td
+                className="m-properties-list__property-value"
+              >
+                4h 3m; 1:38pm
               </td>
             </tr>
           </tbody>

@@ -8,7 +8,9 @@ exports[`PropertiesList highlights requested text 1`] = `
     className="m-properties-list__table"
   >
     <tbody>
-      <tr>
+      <tr
+        className="m-properties-list__property "
+      >
         <td
           className="m-properties-list__property-label"
         >
@@ -26,7 +28,9 @@ exports[`PropertiesList highlights requested text 1`] = `
           -1
         </td>
       </tr>
-      <tr>
+      <tr
+        className="m-properties-list__property "
+      >
         <td
           className="m-properties-list__property-label"
         >
@@ -38,7 +42,9 @@ exports[`PropertiesList highlights requested text 1`] = `
           v1-label
         </td>
       </tr>
-      <tr>
+      <tr
+        className="m-properties-list__property "
+      >
         <td
           className="m-properties-list__property-label"
         >
@@ -48,6 +54,20 @@ exports[`PropertiesList highlights requested text 1`] = `
           className="m-properties-list__property-value"
         >
           SMITH #op1
+        </td>
+      </tr>
+      <tr
+        className="m-properties-list__property m-properties-list__property--last-login"
+      >
+        <td
+          className="m-properties-list__property-label"
+        >
+          Last Login
+        </td>
+        <td
+          className="m-properties-list__property-value"
+        >
+          4h 3m; 1:38pm
         </td>
       </tr>
     </tbody>
@@ -63,7 +83,9 @@ exports[`PropertiesList renders a properties list for a ghost 1`] = `
     className="m-properties-list__table"
   >
     <tbody>
-      <tr>
+      <tr
+        className="m-properties-list__property "
+      >
         <td
           className="m-properties-list__property-label"
         >
@@ -88,7 +110,9 @@ exports[`PropertiesList renders a properties list for a vehicle 1`] = `
     className="m-properties-list__table"
   >
     <tbody>
-      <tr>
+      <tr
+        className="m-properties-list__property "
+      >
         <td
           className="m-properties-list__property-label"
         >
@@ -100,7 +124,9 @@ exports[`PropertiesList renders a properties list for a vehicle 1`] = `
           run-1
         </td>
       </tr>
-      <tr>
+      <tr
+        className="m-properties-list__property "
+      >
         <td
           className="m-properties-list__property-label"
         >
@@ -112,7 +138,9 @@ exports[`PropertiesList renders a properties list for a vehicle 1`] = `
           v1-label
         </td>
       </tr>
-      <tr>
+      <tr
+        className="m-properties-list__property "
+      >
         <td
           className="m-properties-list__property-label"
         >
@@ -122,6 +150,89 @@ exports[`PropertiesList renders a properties list for a vehicle 1`] = `
           className="m-properties-list__property-value"
         >
           SMITH #op1
+        </td>
+      </tr>
+      <tr
+        className="m-properties-list__property m-properties-list__property--last-login"
+      >
+        <td
+          className="m-properties-list__property-label"
+        >
+          Last Login
+        </td>
+        <td
+          className="m-properties-list__property-value"
+        >
+          4h 3m; 1:38pm
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`PropertiesList reports 'Not Available' if missing a login time 1`] = `
+<div
+  className="m-properties-list"
+>
+  <table
+    className="m-properties-list__table"
+  >
+    <tbody>
+      <tr
+        className="m-properties-list__property "
+      >
+        <td
+          className="m-properties-list__property-label"
+        >
+          Run
+        </td>
+        <td
+          className="m-properties-list__property-value"
+        >
+          run-1
+        </td>
+      </tr>
+      <tr
+        className="m-properties-list__property "
+      >
+        <td
+          className="m-properties-list__property-label"
+        >
+          Vehicle
+        </td>
+        <td
+          className="m-properties-list__property-value"
+        >
+          v1-label
+        </td>
+      </tr>
+      <tr
+        className="m-properties-list__property "
+      >
+        <td
+          className="m-properties-list__property-label"
+        >
+          Operator
+        </td>
+        <td
+          className="m-properties-list__property-value"
+        >
+          SMITH #op1
+        </td>
+      </tr>
+      <tr
+        className="m-properties-list__property m-properties-list__property--last-login"
+      >
+        <td
+          className="m-properties-list__property-label"
+        >
+          Last Login
+        </td>
+        <td
+          className="m-properties-list__property-value"
+        >
+          Not Available
         </td>
       </tr>
     </tbody>

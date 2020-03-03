@@ -9,6 +9,11 @@ import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../src/realtime"
 import { Route } from "../../src/schedule"
 import { deselectVehicle, initialState } from "../../src/state"
+import * as dateTime from "../../src/util/dateTime"
+
+jest
+  .spyOn(dateTime, "now")
+  .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
@@ -34,6 +39,7 @@ const vehicle: Vehicle = {
   viaVariant: "X",
   operatorId: "op1",
   operatorName: "SMITH",
+  operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
   bearing: 33,
   blockId: "block-1",
   headwaySecs: 859.1,
