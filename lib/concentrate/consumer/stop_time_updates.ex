@@ -7,7 +7,7 @@ defmodule Concentrate.Consumer.StopTimeUpdates do
 
   alias Concentrate.{Merge, StopTimeUpdate}
   alias Gtfs.Trip
-  alias Realtime.Server
+  alias Realtime.StopTimeUpdateStore
 
   @type stop_time_updates_by_trip :: %{Trip.id() => [StopTimeUpdate.t()]}
 
@@ -29,9 +29,10 @@ defmodule Concentrate.Consumer.StopTimeUpdates do
   def handle_events(events, _from, state) do
     groups = List.last(events)
 
-    stop_time_updates_by_trip = stop_time_updates_from_groups(groups)
-
-    :ok = Server.update({:stop_time_updates, stop_time_updates_by_trip})
+    :ok =
+      groups
+      |> stop_time_updates_from_groups()
+      |> StopTimeUpdateStore.set()
 
     {:noreply, [], state}
   end
