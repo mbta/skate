@@ -27,7 +27,7 @@ const vehicle: Vehicle = {
   viaVariant: "X",
   operatorId: "op1",
   operatorName: "SMITH",
-  operatorLogonTime: 1_534_340_301,
+  operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
   bearing: 33,
   blockId: "block-1",
   headwaySecs: 859.1,
@@ -183,7 +183,7 @@ describe("Highlighted", () => {
 
 describe("formattedLogonTime", () => {
   test("formats the logon time relative to now, and with the actual time", () => {
-    const logonTime = 1_534_340_301
+    const logonTime = new Date("2018-08-15T13:38:21.000Z")
     const expected = "4h 3m; 1:38pm"
 
     expect(formattedLogonTime(logonTime)).toEqual(expected)

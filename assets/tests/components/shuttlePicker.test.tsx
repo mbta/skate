@@ -33,7 +33,7 @@ const vehicle: Vehicle = {
   viaVariant: "4",
   operatorId: "op1",
   operatorName: "SMITH",
-  operatorLogonTime: 1_534_340_301,
+  operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
   bearing: 33,
   blockId: "block-1",
   headwaySecs: 859.1,

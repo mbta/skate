@@ -126,7 +126,9 @@ export const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
   viaVariant: vehicleData.via_variant,
   operatorId: vehicleData.operator_id,
   operatorName: vehicleData.operator_name,
-  operatorLogonTime: vehicleData.operator_logon_time,
+  operatorLogonTime: vehicleData.operator_logon_time
+    ? dateFromEpochSeconds(vehicleData.operator_logon_time)
+    : null,
   bearing: vehicleData.bearing,
   blockId: vehicleData.block_id,
   headwaySecs: vehicleData.headway_secs,

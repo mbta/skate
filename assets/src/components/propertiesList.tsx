@@ -4,12 +4,7 @@ import { filterToAlphanumeric } from "../models/searchQuery"
 import { formattedRunNumber } from "../models/shuttle"
 import { isShuttle, isVehicle } from "../models/vehicle"
 import { Ghost, Vehicle, VehicleOrGhost } from "../realtime"
-import {
-  dateFromEpochSeconds,
-  formattedTime,
-  formattedTimeDiff,
-  now,
-} from "../util/dateTime"
+import { formattedTime, formattedTimeDiff, now } from "../util/dateTime"
 
 interface Props {
   vehicleOrGhost: VehicleOrGhost
@@ -22,9 +17,8 @@ export interface Property {
   classNameModifier?: string
 }
 
-export const formattedLogonTime = (logonTime: number): string => {
+export const formattedLogonTime = (logonDate: Date): string => {
   const nowDate: Date = now()
-  const logonDate: Date = dateFromEpochSeconds(logonTime)
 
   return `${formattedTimeDiff(nowDate, logonDate)}; ${formattedTime(logonDate)}`
 }
