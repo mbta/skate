@@ -12,7 +12,7 @@ defmodule Realtime.Supervisor do
   def init(:ok) do
     children = [
       {Registry, keys: :duplicate, name: registry_name()},
-      {Realtime.StopTimeUpdateStore, name: Realtime.Server.default_name()},
+      {Realtime.StopTimeUpdateStore, name: Realtime.StopTimeUpdateStore.default_name()},
       {Realtime.Server, name: Realtime.Server.default_name()},
       {Realtime.DataStatusPubSub, name: Realtime.DataStatusPubSub.default_name()},
       {Concentrate.Supervisor,
