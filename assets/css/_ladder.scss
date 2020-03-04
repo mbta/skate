@@ -74,8 +74,41 @@
     }
   }
 
-  &--with-block-waivers {
-    stroke: $black;
+  &--block-waiver-black {
+    .c-icon-alert-circle__outline,
+    .c-icon-alert-circle__exclamation-point {
+      fill: $color-bg-base;
+    }
+
+    .c-icon-alert-circle__circle-fill {
+      fill: $color-component-dark;
+    }
+  }
+
+  &--block-waiver-grey {
+    .c-icon-alert-circle__outline,
+    .c-icon-alert-circle__exclamation-point {
+      fill: $color-bg-base;
+    }
+
+    .c-icon-alert-circle__circle-fill {
+      fill: $color-component-medium;
+    }
+  }
+
+  &--block-waiver-highlighted {
+    .c-icon-alert-circle__outline,
+    .c-icon-alert-circle__exclamation-point {
+      fill: $color-component-dark;
+    }
+
+    .c-icon-alert-circle__circle-fill {
+      fill: $color-component-highlight;
+    }
+
+    .m-ladder__vehicle-label-background {
+      fill: $color-component-highlight;
+    }
   }
 }
 

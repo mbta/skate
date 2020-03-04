@@ -5,7 +5,10 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { partition } from "../helpers/array"
 import vehicleLabel from "../helpers/vehicleLabel"
 import featureIsEnabled from "../laboratoryFeatures"
-import { hasBlockWaiver } from "../models/blockWaiver"
+import {
+  blockWaiverDecoratorStyle,
+  BlockWaiverDecoratorStyle,
+} from "../models/blockWaiver"
 import {
   LadderDirection,
   orderTimepoints,
@@ -144,15 +147,14 @@ const VehicleSvg = ({
   const { vehicle, x, y, vehicleDirection } = ladderVehicle
   const [{ settings }, dispatch] = useContext(StateDispatchContext)
   const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
-  const blockWaiversClass =
-    featureIsEnabled("block_waivers") && hasBlockWaiver(vehicle)
-      ? "m-ladder__vehicle--with-block-waivers"
-      : ""
+  const [hasBlockWaiverIcon, classModifier] = blockWaiverDecoratorClass(vehicle)
+  const blockWaiverClass =
+    classModifier === "" ? "" : `m-ladder__vehicle${classModifier}`
 
   return (
     <g>
       <g
-        className={`m-ladder__vehicle ${selectedClass} ${blockWaiversClass}`}
+        className={`m-ladder__vehicle ${selectedClass} ${blockWaiverClass}`}
         transform={`translate(${x},${y})`}
         onClick={() => dispatch(selectVehicle(associatedVehicleId(vehicle.id)))}
       >
@@ -162,10 +164,26 @@ const VehicleSvg = ({
           label={vehicleLabel(vehicle, settings)}
           variant={vehicle.viaVariant}
           status={drawnStatus(vehicle)}
+          alertIcon={hasBlockWaiverIcon}
         />
       </g>
     </g>
   )
+}
+
+const blockWaiverDecoratorClass = (
+  vehicleOrGhost: VehicleOrGhost
+): [boolean, string] => {
+  switch (blockWaiverDecoratorStyle(vehicleOrGhost)) {
+    case BlockWaiverDecoratorStyle.None:
+      return [false, ""]
+    case BlockWaiverDecoratorStyle.Black:
+      return [true, "--block-waiver-black"]
+    case BlockWaiverDecoratorStyle.Grey:
+      return [true, "--block-waiver-grey"]
+    case BlockWaiverDecoratorStyle.Highlighted:
+      return [true, "--block-waiver-highlighted"]
+  }
 }
 
 // The long vertical lines on the sides of the ladder
