@@ -1350,21 +1350,19 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
         >
           <svg
             className="c-icon-alert-circle"
-            viewBox="0 0 48 48"
+            viewBox="-3 -3 54 54"
           >
-            <path
+            <circle
               className="c-icon-alert-circle__outline"
-              d="m24 0a24 24 0 1 0 17 7 23.93 23.93 0 0 0 -17-7z"
+              cx="24"
+              cy="24"
+              r="27"
             />
             <circle
-              className="c-icon-alert-circle__circle"
+              className="c-icon-alert-circle__fill"
               cx="24"
               cy="24"
               r="22.59"
-            />
-            <path
-              className="c-icon-alert-circle__circle-fill"
-              d="m23.89 46.59a22.59 22.59 0 1 0 -22.48-22.7 22.59 22.59 0 0 0 22.48 22.7z"
             />
             <g
               className="c-icon-alert-circle__exclamation-point"

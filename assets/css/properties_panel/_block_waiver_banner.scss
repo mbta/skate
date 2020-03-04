@@ -25,25 +25,28 @@
   display: block;
   margin-right: 0.3rem;
   width: 15px;
+}
 
-  .c-icon-alert-circle__outline {
-    fill: $white;
-  }
-
-  .c-icon-alert-circle__circle-fill {
+.m-block-waiver-banner--current {
+  .c-icon-alert-circle__fill {
     fill: $color-component-dark;
-
-    .m-block-waiver-banner--past & {
-      fill: $color-component-medium;
-    }
   }
 
+  .c-icon-alert-circle__outline,
   .c-icon-alert-circle__exclamation-point {
     fill: $white;
+  }
+}
 
-    .m-block-waiver-banner--past & {
-      fill: $color-bg-medium;
-    }
+.m-block-waiver-banner--future,
+.m-block-waiver-banner--past {
+  .c-icon-alert-circle__fill {
+    fill: $color-component-medium;
+  }
+
+  .c-icon-alert-circle__outline,
+  .c-icon-alert-circle__exclamation-point {
+    fill: $color-bg-medium;
   }
 }
 
