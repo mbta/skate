@@ -3,6 +3,7 @@ import React, { useContext, useRef } from "react"
 import ReactTooltip from "react-tooltip"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { partition } from "../helpers/array"
+import vehicleLabel from "../helpers/vehicleLabel"
 import featureIsEnabled from "../laboratoryFeatures"
 import {
   LadderDirection,
@@ -13,8 +14,8 @@ import {
   LadderVehicle,
   ladderVehiclesFromVehicles,
 } from "../models/ladderVehicle"
-import { isGhost } from "../models/vehicle"
-import { statusClass } from "../models/vehicleStatus"
+import { hasBlockWaivers, isGhost } from "../models/vehicle"
+import { drawnStatus, statusClass } from "../models/vehicleStatus"
 import {
   VehicleId,
   VehicleOrGhost,
@@ -46,7 +47,6 @@ const Ladder = ({
   ladderDirection,
   selectedVehicleId,
 }: Props) => {
-  const [{ settings }] = useContext(StateDispatchContext)
   const elementRef = useRef(null)
   const { height } = useComponentSize(elementRef)
 
@@ -67,12 +67,11 @@ const Ladder = ({
   const { ladderVehicles, widthOfLanes } = ladderVehiclesFromVehicles(
     vehiclesWithAnActiveBlock,
     ladderDirection,
-    timepointStatusY,
-    settings
+    timepointStatusY
   )
   const [selectedLadderVehicles, unselectedLadderVehicles] = partition(
     ladderVehicles,
-    ladderVehicle => ladderVehicle.vehicleId === selectedVehicleId
+    ladderVehicle => ladderVehicle.vehicle.id === selectedVehicleId
   )
 
   const width = 120 + 2 * widthOfLanes
@@ -89,13 +88,13 @@ const Ladder = ({
       >
         {ladderVehicles.map(ladderVehicle => (
           <ScheduledLine
-            key={`line-${ladderVehicle.vehicleId}`}
+            key={`line-${ladderVehicle.vehicle.id}`}
             ladderVehicle={ladderVehicle}
           />
         ))}
         {unselectedLadderVehicles.map(ladderVehicle => (
           <VehicleSvg
-            key={`vehicle-${ladderVehicle.vehicleId}`}
+            key={`vehicle-${ladderVehicle.vehicle.id}`}
             ladderVehicle={ladderVehicle}
             selectedVehicleId={selectedVehicleId}
           />
@@ -103,7 +102,7 @@ const Ladder = ({
         {/* Display the selected vehicle on top of all others if there is one */}
         {selectedLadderVehicles.map(ladderVehicle => (
           <VehicleSvg
-            key={`vehicle-${ladderVehicle.vehicleId}`}
+            key={`vehicle-${ladderVehicle.vehicle.id}`}
             ladderVehicle={ladderVehicle}
             selectedVehicleId={selectedVehicleId}
           />
@@ -141,20 +140,11 @@ const VehicleSvg = ({
   ladderVehicle: LadderVehicle
   selectedVehicleId: VehicleId | undefined
 }) => {
-  const {
-    vehicleId,
-    label,
-    viaVariant,
-    status,
-    hasBlockWaivers,
-    x,
-    y,
-    vehicleDirection,
-  } = ladderVehicle
-  const [, dispatch] = useContext(StateDispatchContext)
-  const selectedClass = vehicleId === selectedVehicleId ? "selected" : ""
+  const { vehicle, x, y, vehicleDirection } = ladderVehicle
+  const [{ settings }, dispatch] = useContext(StateDispatchContext)
+  const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
   const blockWaiversClass =
-    featureIsEnabled("block_waivers") && hasBlockWaivers
+    featureIsEnabled("block_waivers") && hasBlockWaivers(vehicle)
       ? "m-ladder__vehicle--with-block-waivers"
       : ""
 
@@ -163,14 +153,14 @@ const VehicleSvg = ({
       <g
         className={`m-ladder__vehicle ${selectedClass} ${blockWaiversClass}`}
         transform={`translate(${x},${y})`}
-        onClick={() => dispatch(selectVehicle(associatedVehicleId(vehicleId)))}
+        onClick={() => dispatch(selectVehicle(associatedVehicleId(vehicle.id)))}
       >
         <VehicleIconSvgNode
           size={Size.Medium}
           orientation={orientationMatchingVehicle(vehicleDirection)}
-          label={label}
-          variant={viaVariant}
-          status={status}
+          label={vehicleLabel(vehicle, settings)}
+          variant={vehicle.viaVariant}
+          status={drawnStatus(vehicle)}
         />
       </g>
     </g>
@@ -264,10 +254,11 @@ const orientationMatchingVehicle = (
   vehicleDirection === VehicleDirection.Down ? Orientation.Down : Orientation.Up
 
 const ScheduledLine = ({
-  ladderVehicle: { status, x, y, scheduledY, scheduledVehicleDirection },
+  ladderVehicle: { vehicle, x, y, scheduledY, scheduledVehicleDirection },
 }: {
   ladderVehicle: LadderVehicle
 }) => {
+  const status = drawnStatus(vehicle)
   if (!scheduledY || status === "off-course" || status === "ghost") {
     return null
   }

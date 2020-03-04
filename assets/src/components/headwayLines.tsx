@@ -3,6 +3,8 @@ import { VehicleDirection } from "../models/ladderDirection"
 import { LadderVehicle } from "../models/ladderVehicle"
 import { HeadwaySpacing, headwaySpacingToString } from "../models/vehicleStatus"
 import { CENTER_TO_LINE } from "./ladder"
+import { VehicleOrGhost } from "../realtime"
+import { isVehicle } from "../models/vehicle"
 
 interface Props {
   height: number
@@ -21,32 +23,35 @@ const drawHeadwayLine = (
     return acc
   }
 
-  const [currentVehicle, ...rest] = ladderVehicles
+  const [currentLadderVehicle, ...rest] = ladderVehicles
+  const vehicle: VehicleOrGhost = currentLadderVehicle.vehicle
+  const headwaySpacing =
+    isVehicle(vehicle) && !vehicle.isOffCourse ? vehicle.headwaySpacing : null
 
-  if (currentVehicle.headwaySpacing === null) {
+  if (headwaySpacing === null) {
     return drawHeadwayLine(rest, yStart, acc)
   }
 
   const centerToLine =
-    currentVehicle.vehicleDirection === VehicleDirection.Down
+    currentLadderVehicle.vehicleDirection === VehicleDirection.Down
       ? -CENTER_TO_LINE
       : CENTER_TO_LINE
 
   const newAcc = acc.concat([
     <line
-      key={`${currentVehicle.vehicleId}-headway-line`}
-      id={currentVehicle.vehicleId}
+      key={`${vehicle.id}-headway-line`}
+      id={vehicle.id}
       className={`m-ladder__line
                   m-ladder__headway-line
-                  ${headwayClass(currentVehicle.headwaySpacing)}`}
+                  ${headwayClass(headwaySpacing)}`}
       x1={centerToLine}
       y1={yStart}
       x2={centerToLine}
-      y2={currentVehicle.y}
+      y2={currentLadderVehicle.y}
     />,
   ])
 
-  return drawHeadwayLine(rest, currentVehicle.y, newAcc)
+  return drawHeadwayLine(rest, currentLadderVehicle.y, newAcc)
 }
 
 interface VehiclesByDirection {

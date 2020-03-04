@@ -6,58 +6,34 @@ import {
   LadderVehicle,
   putIntoLanes,
 } from "../../src/models/ladderVehicle"
-import { DrawnStatus, HeadwaySpacing } from "../../src/models/vehicleStatus"
+import { Vehicle } from "../../src/realtime"
+
+// tslint:disable:object-literal-sort-keys
 
 describe("putIntoLanes", () => {
   test("adds lane properties", () => {
-    const status: DrawnStatus = "on-time"
-    const headwaySpacing: HeadwaySpacing = HeadwaySpacing.Ok
-    const original = [
+    const original: LadderVehicle[] = [
       {
-        headwaySpacing,
-        isOffCourse: false,
-        label: "v1-label",
-        status,
-        hasBlockWaivers: false,
+        vehicle: { id: "v1" } as Vehicle,
         vehicleDirection: VehicleDirection.Up,
-        vehicleId: "v1",
-        viaVariant: "2",
         x: 0,
         y: 10,
       },
       {
-        headwaySpacing,
-        isOffCourse: false,
-        label: "v2-label",
-        status,
-        hasBlockWaivers: false,
+        vehicle: { id: "v2" } as Vehicle,
         vehicleDirection: VehicleDirection.Up,
-        vehicleId: "v2",
-        viaVariant: "2",
         x: 0,
         y: 20,
       },
       {
-        headwaySpacing,
-        isOffCourse: false,
-        label: "v3-label",
-        status,
-        hasBlockWaivers: false,
+        vehicle: { id: "v3" } as Vehicle,
         vehicleDirection: VehicleDirection.Down,
-        vehicleId: "v3",
-        viaVariant: "2",
         x: 0,
         y: 20,
       },
       {
-        headwaySpacing,
-        isOffCourse: false,
-        label: "v4-label",
-        status,
-        hasBlockWaivers: false,
+        vehicle: { id: "v4" } as Vehicle,
         vehicleDirection: VehicleDirection.Down,
-        vehicleId: "v4",
-        viaVariant: "2",
         x: 0,
         y: 10,
       },
