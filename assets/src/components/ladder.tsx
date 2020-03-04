@@ -5,6 +5,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { partition } from "../helpers/array"
 import vehicleLabel from "../helpers/vehicleLabel"
 import featureIsEnabled from "../laboratoryFeatures"
+import { hasBlockWaiver } from "../models/blockWaiver"
 import {
   LadderDirection,
   orderTimepoints,
@@ -14,7 +15,7 @@ import {
   LadderVehicle,
   ladderVehiclesFromVehicles,
 } from "../models/ladderVehicle"
-import { hasBlockWaivers, isGhost } from "../models/vehicle"
+import { isGhost } from "../models/vehicle"
 import { drawnStatus, statusClass } from "../models/vehicleStatus"
 import {
   VehicleId,
@@ -144,7 +145,7 @@ const VehicleSvg = ({
   const [{ settings }, dispatch] = useContext(StateDispatchContext)
   const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
   const blockWaiversClass =
-    featureIsEnabled("block_waivers") && hasBlockWaivers(vehicle)
+    featureIsEnabled("block_waivers") && hasBlockWaiver(vehicle)
       ? "m-ladder__vehicle--with-block-waivers"
       : ""
 

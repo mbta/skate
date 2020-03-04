@@ -1,5 +1,5 @@
+import { BlockWaiver, VehicleOrGhost } from "../realtime"
 import { now } from "../util/dateTime"
-import { BlockWaiver } from "../realtime"
 
 export enum CurrentFuturePastType {
   Current = 1,
@@ -21,3 +21,6 @@ export const currentFuturePastType = ({
     return CurrentFuturePastType.Current
   }
 }
+
+export const hasBlockWaiver = ({ blockWaivers }: VehicleOrGhost): boolean =>
+  blockWaivers.length !== 0
