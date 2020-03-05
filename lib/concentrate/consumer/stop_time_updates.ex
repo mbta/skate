@@ -5,7 +5,7 @@ defmodule Concentrate.Consumer.StopTimeUpdates do
 
   use GenStage
 
-  alias Concentrate.{Merge, StopTimeUpdate}
+  alias Concentrate.{StopTimeUpdate, TripUpdate}
   alias Gtfs.Trip
   alias Realtime.StopTimeUpdateStore
 
@@ -27,37 +27,21 @@ defmodule Concentrate.Consumer.StopTimeUpdates do
 
   @impl GenStage
   def handle_events(events, _from, state) do
-    groups = List.last(events)
+    all_updates = List.last(events)
 
     :ok =
-      groups
-      |> stop_time_updates_from_groups()
+      all_updates
+      |> stop_time_updates_by_trip()
       |> StopTimeUpdateStore.set()
 
     {:noreply, [], state}
   end
 
-  @spec stop_time_updates_from_groups([Merge.trip_group()]) :: stop_time_updates_by_trip()
-  def stop_time_updates_from_groups(groups) do
-    groups
-    |> Enum.map(&stop_time_updates_from_group/1)
-    |> Enum.filter(&(&1 != nil))
-    |> Map.new()
-  end
-
-  @spec stop_time_updates_from_group(Merge.trip_group()) ::
-          {Trip.id(), [StopTimeUpdate.t()]} | nil
-  defp stop_time_updates_from_group({_trip_update, _vehicle_positions, nil}) do
-    nil
-  end
-
-  defp stop_time_updates_from_group({_trip_update, _vehicle_positions, []}) do
-    nil
-  end
-
-  defp stop_time_updates_from_group(
-         {%Concentrate.TripUpdate{trip_id: trip_id}, _vehicle_positions, stop_time_updates}
-       ) do
-    {trip_id, stop_time_updates}
+  @spec stop_time_updates_by_trip([TripUpdate.t() | StopTimeUpdate.t()]) ::
+          stop_time_updates_by_trip()
+  def stop_time_updates_by_trip(all_updates) do
+    all_updates
+    |> Enum.filter(&match?(%StopTimeUpdate{}, &1))
+    |> Enum.group_by(& &1.trip_id)
   end
 end

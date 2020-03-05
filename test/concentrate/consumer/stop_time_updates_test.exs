@@ -18,33 +18,17 @@ defmodule Concentrate.Supervisor.StopTimeUpdatesTest do
     uncertainty: nil
   }
 
-  @groups [
-    {
-      %Concentrate.TripUpdate{
-        direction_id: nil,
-        remark: nil,
-        route_id: "r1",
-        schedule_relationship: :SCHEDULED,
-        start_date: nil,
-        start_time: nil,
-        trip_id: "t1"
-      },
-      [],
-      [@stop_time_update]
+  @all_updates [
+    %Concentrate.TripUpdate{
+      direction_id: nil,
+      remark: nil,
+      route_id: "r1",
+      schedule_relationship: :SCHEDULED,
+      start_date: nil,
+      start_time: nil,
+      trip_id: "t1"
     },
-    {
-      %Concentrate.TripUpdate{
-        direction_id: nil,
-        remark: nil,
-        route_id: "r1",
-        schedule_relationship: :SCHEDULED,
-        start_date: nil,
-        start_time: nil,
-        trip_id: "t2"
-      },
-      [],
-      []
-    }
+    @stop_time_update
   ]
 
   describe "start_link/1" do
@@ -55,7 +39,7 @@ defmodule Concentrate.Supervisor.StopTimeUpdatesTest do
 
   describe "handle_events/3" do
     setup do
-      events = [@groups]
+      events = [@all_updates]
 
       {:ok, events: events}
     end
@@ -67,13 +51,13 @@ defmodule Concentrate.Supervisor.StopTimeUpdatesTest do
     end
   end
 
-  describe "stop_time_updates_from_groups/1" do
+  describe "stop_time_updates_by_trip/1" do
     test "groups stop time updates by trip, filtering out trips with no stop time updates" do
       expected = %{
         "t1" => [@stop_time_update]
       }
 
-      assert StopTimeUpdates.stop_time_updates_from_groups(@groups) == expected
+      assert StopTimeUpdates.stop_time_updates_by_trip(@all_updates) == expected
     end
   end
 

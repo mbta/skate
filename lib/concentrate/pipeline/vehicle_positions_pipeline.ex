@@ -1,9 +1,10 @@
 defmodule Concentrate.Pipeline.VehiclePositionsPipeline do
+  alias Concentrate.Pipeline
+
   @type opts :: [
           busloc_url: String.t(),
           swiftly_authorization_key: String.t(),
-          swiftly_realtime_vehicles_url: String.t(),
-          trip_updates_url: String.t()
+          swiftly_realtime_vehicles_url: String.t()
         ]
 
   @spec pipeline(opts()) :: list()
@@ -20,7 +21,7 @@ defmodule Concentrate.Pipeline.VehiclePositionsPipeline do
   def sources(opts) do
     realtime_enhanced_child =
       if opts[:busloc_url] do
-        source_child(
+        Pipeline.source(
           :gtfs_realtime_enhanced,
           opts[:busloc_url],
           Concentrate.Parser.GTFSRealtimeEnhanced
@@ -31,7 +32,7 @@ defmodule Concentrate.Pipeline.VehiclePositionsPipeline do
 
     swiftly_child =
       if opts[:swiftly_realtime_vehicles_url] && opts[:swiftly_authorization_key] do
-        source_child(
+        Pipeline.source(
           :swiftly_realtime_vehicles,
           opts[:swiftly_realtime_vehicles_url],
           Concentrate.Parser.SwiftlyRealtimeVehicles,
@@ -47,32 +48,11 @@ defmodule Concentrate.Pipeline.VehiclePositionsPipeline do
         nil
       end
 
-    trip_updates_child =
-      if opts[:trip_updates_url] do
-        source_child(
-          :trip_updates_enhanced,
-          opts[:trip_updates_url],
-          Concentrate.Parser.GTFSRealtimeEnhanced
-        )
-      else
-        nil
-      end
-
     children =
-      [realtime_enhanced_child, swiftly_child, trip_updates_child]
+      [realtime_enhanced_child, swiftly_child]
       |> Enum.reject(&is_nil/1)
 
     {child_ids(children), children}
-  end
-
-  defp source_child(source, url, parser, opts \\ []) do
-    Supervisor.child_spec(
-      {
-        Concentrate.Producer.HTTP,
-        {url, [name: source, parser: parser] ++ opts}
-      },
-      id: source
-    )
   end
 
   def merge(source_names) do
@@ -88,19 +68,9 @@ defmodule Concentrate.Pipeline.VehiclePositionsPipeline do
 
   def consumers do
     vehicle_positions_consumer =
-      consumer(Concentrate.Consumer.VehiclePositions, :vehicle_positions)
+      Pipeline.consumer(Concentrate.Consumer.VehiclePositions, :vehicle_positions, :merge)
 
-    stop_time_updates_consumer =
-      consumer(Concentrate.Consumer.StopTimeUpdates, :stop_time_updates)
-
-    [vehicle_positions_consumer, stop_time_updates_consumer]
-  end
-
-  def consumer(module, id) do
-    Supervisor.child_spec(
-      {module, subscribe_to: [merge: [max_demand: 1]]},
-      id: id
-    )
+    [vehicle_positions_consumer]
   end
 
   defp child_ids(children) do

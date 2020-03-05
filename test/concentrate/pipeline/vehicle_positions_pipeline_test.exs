@@ -8,17 +8,16 @@ defmodule Concentrate.Pipeline.VehiclePositionsPipelineTest do
       reassign_env(:realtime, :block_fn, fn _block_id, _service_id -> nil end)
     end
 
-    test "includes 3 sources, merge, and 2 consumers in the pipeline" do
+    test "includes 2 sources, merge, and 1 consumer in the pipeline" do
       opts = [
         busloc_url: "http://example.com/busloc.json",
         swiftly_authorization_key: "12345",
-        swiftly_realtime_vehicles_url: "http://example.com/swiftly_realtime_vehicles.json",
-        trip_updates_url: "http://example.com/TripUpdates_enhanced.json"
+        swiftly_realtime_vehicles_url: "http://example.com/swiftly_realtime_vehicles.json"
       ]
 
       pipeline_elements = Concentrate.Pipeline.VehiclePositionsPipeline.pipeline(opts)
 
-      assert length(pipeline_elements) == 6
+      assert length(pipeline_elements) == 4
     end
   end
 end
