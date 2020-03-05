@@ -5,9 +5,15 @@ import Ladder from "../../src/components/ladder"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { LadderDirection } from "../../src/models/ladderDirection"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { BlockWaiver, Ghost, Vehicle } from "../../src/realtime.d"
+import {
+  BlockWaiver,
+  Ghost,
+  Vehicle,
+  VehicleOrGhost,
+} from "../../src/realtime.d"
 import { Timepoint } from "../../src/schedule.d"
 import { initialState, selectVehicle } from "../../src/state"
+import * as dateTime from "../../src/util/dateTime"
 
 jest.mock("../../src/laboratoryFeatures", () => ({
   __esModule: true,
@@ -505,6 +511,114 @@ describe("ladder", () => {
           vehiclesAndGhosts={vehicles}
           ladderDirection={ladderDirection}
           selectedVehicleId={"upward"}
+        />
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("shows vehicles with block waivers", () => {
+    jest
+      .spyOn(dateTime, "now")
+      .mockImplementation(() => new Date("2020-01-01T01:00:00.000Z"))
+    const timepoints: Timepoint[] = [
+      { id: "t0", name: "t0 name" },
+      { id: "t1", name: "t1 name" },
+      { id: "t2", name: "t2 name" },
+    ]
+    const ghostWithBlockWaiver: Ghost = {
+      id: "ghost-trip",
+      directionId: 0,
+      routeId: "route",
+      tripId: "trip",
+      headsign: "headsign",
+      blockId: "block",
+      runId: "123-0123",
+      viaVariant: "X",
+      layoverDepartureTime: null,
+      scheduledTimepointStatus: {
+        timepointId: "t0",
+        fractionUntilTimepoint: 0.0,
+      },
+      routeStatus: "on_route",
+      blockWaivers: [
+        {
+          startTime: new Date("2020-01-01T00:00:00.000Z"),
+          endTime: new Date("2020-01-01T02:00:00.000Z"),
+          remark: "test block waiver",
+        },
+      ],
+    }
+    const vehicleWithOldBlockWaiver: Vehicle = {
+      id: "id",
+      label: "label",
+      runId: "run",
+      timestamp: 0,
+      latitude: 0,
+      longitude: 0,
+      directionId: 1,
+      routeId: "route",
+      tripId: "trip",
+      headsign: null,
+      viaVariant: null,
+      operatorId: "op",
+      operatorName: "JONES",
+      operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
+      bearing: 33,
+      blockId: "block",
+      headwaySecs: null,
+      headwaySpacing: null,
+      previousVehicleId: "",
+      scheduleAdherenceSecs: 0,
+      scheduledHeadwaySecs: 120,
+      isOffCourse: false,
+      layoverDepartureTime: null,
+      blockIsActive: true,
+      dataDiscrepancies: [],
+      stopStatus: {
+        stopId: "stop",
+        stopName: "stop",
+      },
+      timepointStatus: {
+        fractionUntilTimepoint: 0.75,
+        timepointId: "t2",
+      },
+      scheduledLocation: {
+        routeId: "route",
+        directionId: 0,
+        tripId: "scheduled trip",
+        runId: "scheduled run",
+        timeSinceTripStartTime: 0,
+        headsign: "scheduled headsign",
+        viaVariant: "scheduled via variant",
+        timepointStatus: {
+          timepointId: "t2",
+          fractionUntilTimepoint: 0.75,
+        },
+      },
+      routeStatus: "on_route",
+      endOfTripType: "another_trip",
+      blockWaivers: [
+        {
+          startTime: new Date("2019-12-31T22:00:00.000Z"),
+          endTime: new Date("2019-12-31T23:00:00.000Z"),
+          remark: "test block waiver",
+        },
+      ],
+    }
+    const vehiclesAndGhosts: VehicleOrGhost[] = [
+      ghostWithBlockWaiver,
+      vehicleWithOldBlockWaiver,
+    ]
+    const ladderDirection = LadderDirection.ZeroToOne
+
+    const tree = renderer
+      .create(
+        <Ladder
+          timepoints={timepoints}
+          vehiclesAndGhosts={vehiclesAndGhosts}
+          ladderDirection={ladderDirection}
         />
       )
       .toJSON()

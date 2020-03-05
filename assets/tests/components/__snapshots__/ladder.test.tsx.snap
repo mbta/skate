@@ -1371,3 +1371,259 @@ exports[`ladder shows schedule line in the other direction 1`] = `
   />
 </div>
 `;
+
+exports[`ladder shows vehicles with block waivers 1`] = `
+<div
+  className="m-ladder"
+  style={
+    Object {
+      "width": 184,
+    }
+  }
+>
+  <svg
+    className="m-ladder__svg"
+    height={0}
+    viewBox="-92 -20 184 0"
+    width={184}
+  >
+    <line
+      className="m-ladder__scheduled-line on-time"
+      x1={-63}
+      x2={40}
+      y1={-25}
+      y2={-55}
+    />
+    <g>
+      <g
+        className="m-ladder__vehicle  m-ladder__vehicle--block-waiver-black"
+        onClick={[Function]}
+        transform="translate(63,0)"
+      >
+        <g
+          className="m-vehicle-icon m-vehicle-icon--medium ghost"
+        >
+          <rect
+            className="m-vehicle-icon__label-background"
+            height={11}
+            rx={5.5}
+            ry={5.5}
+            width={26}
+            x={-13}
+            y={11.5}
+          />
+          <text
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            dominantBaseline="central"
+            textAnchor="middle"
+            x="0"
+            y={17}
+          >
+            0123
+          </text>
+          <g
+            transform="scale(0.4375) translate(-24,-23)"
+          >
+            <path
+              className="m-vehicle-icon__ghost-highlight"
+              d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
+              stroke-join="round"
+            />
+            <path
+              className="m-vehicle-icon__ghost-body"
+              d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
+              stroke-join="round"
+            />
+          </g>
+          <text
+            className="m-vehicle-icon__variant"
+            dominantBaseline="alphabetic"
+            textAnchor="middle"
+            x={0}
+            y={4.5}
+          >
+            X
+          </text>
+          <g
+            transform="translate(9.375, -6.25) scale(0.2) translate(-24, -24)"
+          >
+            <circle
+              className="c-icon-alert-circle__outline"
+              cx="24"
+              cy="24"
+              r="27"
+            />
+            <circle
+              className="c-icon-alert-circle__fill"
+              cx="24"
+              cy="24"
+              r="22.59"
+            />
+            <g
+              className="c-icon-alert-circle__exclamation-point"
+            >
+              <path
+                d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+              />
+              <path
+                d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+              />
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+    <g>
+      <g
+        className="m-ladder__vehicle  m-ladder__vehicle--block-waiver-grey"
+        onClick={[Function]}
+        transform="translate(-63,-25)"
+      >
+        <g
+          className="m-vehicle-icon m-vehicle-icon--medium on-time"
+        >
+          <rect
+            className="m-vehicle-icon__label-background"
+            height={11}
+            rx={5.5}
+            ry={5.5}
+            width={26}
+            x={-13}
+            y={-22.5}
+          />
+          <text
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            dominantBaseline="central"
+            textAnchor="middle"
+            x="0"
+            y={-17}
+          >
+            run
+          </text>
+          <path
+            className="m-vehicle-icon__triangle"
+            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+            transform="scale(0.625) rotate(180) translate(-24,-22)"
+          />
+          <g
+            transform="translate(-8.75, -1.875) scale(0.2) translate(-24, -24)"
+          >
+            <circle
+              className="c-icon-alert-circle__outline"
+              cx="24"
+              cy="24"
+              r="27"
+            />
+            <circle
+              className="c-icon-alert-circle__fill"
+              cx="24"
+              cy="24"
+              r="22.59"
+            />
+            <g
+              className="c-icon-alert-circle__exclamation-point"
+            >
+              <path
+                d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+              />
+              <path
+                d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+              />
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+    <line
+      className="m-ladder__line"
+      x1={-40}
+      x2={-40}
+      y1="0"
+      y2={-40}
+    />
+    <line
+      className="m-ladder__line"
+      x1={40}
+      x2={40}
+      y1="0"
+      y2={-40}
+    />
+    <g
+      className="m-ladder__headway-lines"
+    />
+    <circle
+      className="m-ladder__stop-circle"
+      cx={-40}
+      cy={-0}
+      r="3"
+    />
+    <circle
+      className="m-ladder__stop-circle"
+      cx={40}
+      cy={-0}
+      r="3"
+    />
+    <text
+      className="m-ladder__timepoint-name"
+      data-event="click"
+      data-tip="t0 name"
+      dominantBaseline="middle"
+      textAnchor="middle"
+      x="0"
+      y={-0}
+    >
+      t0
+    </text>
+    <circle
+      className="m-ladder__stop-circle"
+      cx={-40}
+      cy={-20}
+      r="3"
+    />
+    <circle
+      className="m-ladder__stop-circle"
+      cx={40}
+      cy={-20}
+      r="3"
+    />
+    <text
+      className="m-ladder__timepoint-name"
+      data-event="click"
+      data-tip="t1 name"
+      dominantBaseline="middle"
+      textAnchor="middle"
+      x="0"
+      y={-20}
+    >
+      t1
+    </text>
+    <circle
+      className="m-ladder__stop-circle"
+      cx={-40}
+      cy={-40}
+      r="3"
+    />
+    <circle
+      className="m-ladder__stop-circle"
+      cx={40}
+      cy={-40}
+      r="3"
+    />
+    <text
+      className="m-ladder__timepoint-name"
+      data-event="click"
+      data-tip="t2 name"
+      dominantBaseline="middle"
+      textAnchor="middle"
+      x="0"
+      y={-40}
+    >
+      t2
+    </text>
+  </svg>
+  <div
+    className="__react_component_tooltip place-top type-dark"
+    data-id="tooltip"
+  />
+</div>
+`;
