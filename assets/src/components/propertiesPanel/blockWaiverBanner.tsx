@@ -1,7 +1,7 @@
 import React from "react"
-import { alertCircleIcon } from "../../helpers/icon"
 import { BlockWaiver } from "../../realtime"
 import { now, formattedTime } from "../../util/dateTime"
+import IconAlertCircle from "../iconAlertCircle"
 
 interface Props {
   blockWaiver: BlockWaiver
@@ -57,7 +57,9 @@ const BlockWaiverBanner = ({ blockWaiver }: Props) => (
     )}`}
   >
     <div className="m-block-waiver-banner__header">
-      {alertCircleIcon("m-block-waiver-banner__alert-icon")}
+      <span className="m-block-waiver-banner__alert-icon">
+        <IconAlertCircle />
+      </span>
       <div className="m-block-waiver-banner__title">
         Dispatcher Note - {currentFuturePastTitle(blockWaiver)}
       </div>

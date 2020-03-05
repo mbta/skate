@@ -1,6 +1,5 @@
 import React from "react"
 import {
-  alertCircleIcon,
   blueLineIcon,
   closeIcon,
   commuterRailIcon,
@@ -16,40 +15,6 @@ import {
   redLineIcon,
   reverseIcon,
 } from "../../src/helpers/icon"
-
-describe("alertCircleIcon", () => {
-  it("renders an icon with a class name", () => {
-    const className = "test-class-name"
-
-    const expected = (
-      <span
-        className={className}
-        dangerouslySetInnerHTML={{
-          __html: "SVG",
-        }}
-      />
-    )
-
-    const result = alertCircleIcon(className)
-
-    expect(result).toEqual(expected)
-  })
-
-  it("renders without a class name", () => {
-    const expected = (
-      <span
-        className=""
-        dangerouslySetInnerHTML={{
-          __html: "SVG",
-        }}
-      />
-    )
-
-    const result = alertCircleIcon()
-
-    expect(result).toEqual(expected)
-  })
-})
 
 describe("blueLineIcon", () => {
   it("renders an icon with a class name", () => {

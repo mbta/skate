@@ -1,6 +1,4 @@
 // @ts-ignore
-import alertCircleIconSvg from "../../static/images/icon-alert-circle.svg"
-// @ts-ignore
 import blueLineIconSvg from "../../static/images/icon-blue-line.svg"
 // @ts-ignore
 import collapseIconSvg from "../../static/images/icon-caret-left.svg"
@@ -41,9 +39,6 @@ import reverseIconReversedSvg from "../../static/images/icon-reverse-reversed.sv
 // @ts-ignore
 import searchIconSvg from "../../static/images/icon-search.svg"
 import renderSvg from "./renderSvg"
-
-export const alertCircleIcon = (className: string = ""): JSX.Element =>
-  renderSvg(className, alertCircleIconSvg)
 
 export const blueLineIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, blueLineIconSvg)
