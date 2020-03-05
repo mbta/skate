@@ -29,7 +29,10 @@ defmodule Concentrate.SupervisorTest do
 
       actual = Concentrate.Supervisor.children(opts)
 
-      # VehiclePositions Pipeline: 3 sources + merge + 2 consumers
+      # Total children =
+      # VehiclePositions Pipeline: 2 sources + merge + 1 consumers (4)
+      # +
+      # StopTimeUpdatesPipeline: 1 source + 1 consumer (2)
       assert length(actual) == 6
     end
   end
