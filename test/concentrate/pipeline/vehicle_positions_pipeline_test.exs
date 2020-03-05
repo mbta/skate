@@ -1,25 +1,14 @@
-defmodule Concentrate.SupervisorTest do
-  @moduledoc false
+defmodule Concentrate.Pipeline.VehiclePositionsPipelineTest do
   use ExUnit.Case, async: true
   import Test.Support.Helpers
 
-  describe "start_link/0" do
-    test "can start the application" do
-      Application.ensure_all_started(:concentrate)
-
-      on_exit(fn ->
-        Application.stop(:concentrate)
-      end)
-    end
-  end
-
-  describe "children/1" do
+  describe "pipeline/1" do
     setup do
       reassign_env(:realtime, :trip_fn, fn _trip_id -> nil end)
       reassign_env(:realtime, :block_fn, fn _block_id, _service_id -> nil end)
     end
 
-    test "builds the right number of children" do
+    test "includes 3 sources, merge, and 2 consumers in the pipeline" do
       opts = [
         busloc_url: "http://example.com/busloc.json",
         swiftly_authorization_key: "12345",
@@ -27,10 +16,9 @@ defmodule Concentrate.SupervisorTest do
         trip_updates_url: "http://example.com/TripUpdates_enhanced.json"
       ]
 
-      actual = Concentrate.Supervisor.children(opts)
+      pipeline_elements = Concentrate.Pipeline.VehiclePositionsPipeline.pipeline(opts)
 
-      # VehiclePositions Pipeline: 3 sources + merge + 2 consumers
-      assert length(actual) == 6
+      assert length(pipeline_elements) == 6
     end
   end
 end
