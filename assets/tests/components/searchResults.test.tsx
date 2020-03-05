@@ -435,9 +435,18 @@ describe("byOperatorLogonTime", () => {
       operatorLogonTime: new Date("2018-08-15T13:40:00.000Z"),
     } as Vehicle
 
-    expect(byOperatorLogonTime(oldVehicle, newVehicle)).toEqual(1)
-    expect(byOperatorLogonTime(newVehicle, oldVehicle)).toEqual(-1)
-    expect(byOperatorLogonTime(newVehicle, newVehicle)).toEqual(0)
+    expect([oldVehicle, newVehicle].sort(byOperatorLogonTime)).toEqual([
+      newVehicle,
+      oldVehicle,
+    ])
+    expect([newVehicle, oldVehicle].sort(byOperatorLogonTime)).toEqual([
+      newVehicle,
+      oldVehicle,
+    ])
+    expect([newVehicle, newVehicle].sort(byOperatorLogonTime)).toEqual([
+      newVehicle,
+      newVehicle,
+    ])
   })
 
   test("sorts ghosts ahead of vehicles", () => {
@@ -449,8 +458,8 @@ describe("byOperatorLogonTime", () => {
       id: "ghost-2",
     } as Vehicle
 
-    expect(byOperatorLogonTime(vehicle, ghost)).toEqual(1)
-    expect(byOperatorLogonTime(ghost, vehicle)).toEqual(-1)
-    expect(byOperatorLogonTime(ghost, ghost)).toEqual(0)
+    expect([vehicle, ghost].sort(byOperatorLogonTime)).toEqual([ghost, vehicle])
+    expect([ghost, vehicle].sort(byOperatorLogonTime)).toEqual([ghost, vehicle])
+    expect([ghost, ghost].sort(byOperatorLogonTime)).toEqual([ghost, ghost])
   })
 })
