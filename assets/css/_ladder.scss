@@ -106,15 +106,10 @@
       fill: $color-component-highlight;
     }
 
-    .m-ladder__vehicle-label-background {
+    .m-vehicle-icon__label-background {
       fill: $color-component-highlight;
     }
   }
-}
-
-.m-ladder__vehicle-label-background {
-  fill: $color-bg-base;
-  stroke: none;
 }
 
 .m-ladder__vehicle-label-text {
