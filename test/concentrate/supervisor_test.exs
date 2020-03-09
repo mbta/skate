@@ -27,13 +27,10 @@ defmodule Concentrate.SupervisorTest do
         trip_updates_url: "http://example.com/TripUpdates_enhanced.json"
       ]
 
-      actual = Concentrate.Supervisor.children(opts)
+      pipelines = Concentrate.Supervisor.children(opts)
 
-      # Total children =
-      # VehiclePositions Pipeline: 2 sources + merge + 1 consumers (4)
-      # +
-      # StopTimeUpdatesPipeline: 1 source + 1 consumer (2)
-      assert length(actual) == 6
+      # Pipelines = VehiclePositionsPipeline + StopTimeUpdatesPipeline
+      assert length(pipelines) == 2
     end
   end
 end
