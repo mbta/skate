@@ -2,11 +2,8 @@ import React, { useState } from "react"
 import useInterval from "../../hooks/useInterval"
 import { useTripShape } from "../../hooks/useShapes"
 import featureIsEnabled from "../../laboratoryFeatures"
-import {
-  hasBlockWaivers,
-  isShuttle,
-  shouldShowHeadwayDiagram,
-} from "../../models/vehicle"
+import { hasBlockWaiver } from "../../models/blockWaiver"
+import { isShuttle, shouldShowHeadwayDiagram } from "../../models/vehicle"
 import { DataDiscrepancy, Vehicle } from "../../realtime"
 import { Route, Shape } from "../../schedule"
 import Map from "../map"
@@ -134,7 +131,7 @@ const VehiclePropertiesPanel = ({ selectedVehicle, route }: Props) => (
 
     {selectedVehicle.isOffCourse && <InvalidBanner />}
 
-    {featureIsEnabled("block_waivers") && hasBlockWaivers(selectedVehicle) && (
+    {featureIsEnabled("block_waivers") && hasBlockWaiver(selectedVehicle) && (
       <BlockWaiverList blockWaivers={selectedVehicle.blockWaivers} />
     )}
 

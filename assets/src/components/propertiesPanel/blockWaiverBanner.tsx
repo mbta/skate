@@ -1,31 +1,14 @@
 import React from "react"
+import {
+  CurrentFuturePastType,
+  currentFuturePastType,
+} from "../../models/blockWaiver"
 import { BlockWaiver } from "../../realtime"
-import { now, formattedTime } from "../../util/dateTime"
+import { formattedTime } from "../../util/dateTime"
 import IconAlertCircle from "../iconAlertCircle"
 
 interface Props {
   blockWaiver: BlockWaiver
-}
-
-export enum CurrentFuturePastType {
-  Current = 1,
-  Future,
-  Past,
-}
-
-const currentFuturePastType = ({
-  startTime,
-  endTime,
-}: BlockWaiver): CurrentFuturePastType => {
-  const nowDate = now()
-
-  if (startTime > nowDate) {
-    return CurrentFuturePastType.Future
-  } else if (endTime < nowDate) {
-    return CurrentFuturePastType.Past
-  } else {
-    return CurrentFuturePastType.Current
-  }
 }
 
 const currentFuturePastClass = (blockWaiver: BlockWaiver): string => {
