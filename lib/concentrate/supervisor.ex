@@ -21,8 +21,8 @@ defmodule Concentrate.Supervisor do
 
   def children(opts) do
     Enum.concat([
-      Concentrate.Pipeline.VehiclePositionsPipeline.pipeline(opts),
-      Concentrate.Pipeline.StopTimeUpdatesPipeline.pipeline(opts)
+      Concentrate.Pipeline.VehiclePositionsPipeline.init(opts),
+      Concentrate.Pipeline.StopTimeUpdatesPipeline.init(opts)
     ])
   end
 end

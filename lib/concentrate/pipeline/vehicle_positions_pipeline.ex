@@ -1,5 +1,6 @@
 defmodule Concentrate.Pipeline.VehiclePositionsPipeline do
-  alias Concentrate.Pipeline
+  @behaviour Concentrate.Pipeline
+  alias Concentrate.PipelineHelpers
 
   @type opts :: [
           busloc_url: String.t(),
@@ -7,8 +8,9 @@ defmodule Concentrate.Pipeline.VehiclePositionsPipeline do
           swiftly_realtime_vehicles_url: String.t()
         ]
 
-  @spec pipeline(opts()) :: list()
-  def pipeline(opts) do
+  @impl Concentrate.Pipeline
+  @spec init(opts()) :: [Supervisor.child_spec()]
+  def init(opts) do
     {source_names, source_children} = sources(opts)
 
     merge = merge(source_names)
@@ -21,7 +23,7 @@ defmodule Concentrate.Pipeline.VehiclePositionsPipeline do
   def sources(opts) do
     realtime_enhanced_child =
       if opts[:busloc_url] do
-        Pipeline.source(
+        PipelineHelpers.source(
           :gtfs_realtime_enhanced,
           opts[:busloc_url],
           Concentrate.Parser.GTFSRealtimeEnhanced
@@ -32,7 +34,7 @@ defmodule Concentrate.Pipeline.VehiclePositionsPipeline do
 
     swiftly_child =
       if opts[:swiftly_realtime_vehicles_url] && opts[:swiftly_authorization_key] do
-        Pipeline.source(
+        PipelineHelpers.source(
           :swiftly_realtime_vehicles,
           opts[:swiftly_realtime_vehicles_url],
           Concentrate.Parser.SwiftlyRealtimeVehicles,
@@ -68,7 +70,7 @@ defmodule Concentrate.Pipeline.VehiclePositionsPipeline do
 
   def consumers do
     vehicle_positions_consumer =
-      Pipeline.consumer(Concentrate.Consumer.VehiclePositions, :vehicle_positions, :merge)
+      PipelineHelpers.consumer(Concentrate.Consumer.VehiclePositions, :vehicle_positions, :merge)
 
     [vehicle_positions_consumer]
   end

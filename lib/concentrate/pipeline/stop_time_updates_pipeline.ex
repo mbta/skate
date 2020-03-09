@@ -1,17 +1,19 @@
 defmodule Concentrate.Pipeline.StopTimeUpdatesPipeline do
-  alias Concentrate.Pipeline
+  @behaviour Concentrate.Pipeline
+  alias Concentrate.PipelineHelpers
 
   @type opts :: [
           trip_updates_url: String.t()
         ]
 
-  @spec pipeline(opts()) :: list()
-  def pipeline(opts) do
+  @impl Concentrate.Pipeline
+  @spec init(opts()) :: [Supervisor.child_spec()]
+  def init(opts) do
     [source(opts), consumer()]
   end
 
   def source(opts) do
-    Pipeline.source(
+    PipelineHelpers.source(
       :trip_updates_enhanced,
       opts[:trip_updates_url],
       Concentrate.Parser.GTFSRealtimeEnhanced
@@ -19,7 +21,7 @@ defmodule Concentrate.Pipeline.StopTimeUpdatesPipeline do
   end
 
   def consumer() do
-    Pipeline.consumer(
+    PipelineHelpers.consumer(
       Concentrate.Consumer.StopTimeUpdates,
       :stop_time_updates,
       :trip_updates_enhanced
