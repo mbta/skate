@@ -70,7 +70,7 @@ defmodule Concentrate.Pipeline.VehiclePositionsPipeline do
 
   def consumers do
     vehicle_positions_consumer =
-      PipelineHelpers.consumer(Concentrate.Consumer.VehiclePositions, :vehicle_positions, :merge)
+      PipelineHelpers.consumer(Concentrate.Consumer.VehiclePositions, :merge)
 
     [vehicle_positions_consumer]
   end

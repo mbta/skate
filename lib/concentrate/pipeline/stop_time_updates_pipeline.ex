@@ -21,10 +21,6 @@ defmodule Concentrate.Pipeline.StopTimeUpdatesPipeline do
   end
 
   def consumer() do
-    PipelineHelpers.consumer(
-      Concentrate.Consumer.StopTimeUpdates,
-      :stop_time_updates,
-      :trip_updates_enhanced
-    )
+    PipelineHelpers.consumer(Concentrate.Consumer.StopTimeUpdates, :trip_updates_enhanced)
   end
 end

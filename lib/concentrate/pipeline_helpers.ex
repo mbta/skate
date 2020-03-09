@@ -11,11 +11,8 @@ defmodule Concentrate.PipelineHelpers do
     )
   end
 
-  @spec consumer(module(), term(), term()) :: Supervisor.child_spec()
-  def consumer(module, id, provider) do
-    Supervisor.child_spec(
-      {module, subscribe_to: [{provider, [max_demand: 1]}]},
-      id: id
-    )
+  @spec consumer(module(), term()) :: Supervisor.child_spec()
+  def consumer(module, provider) do
+    Supervisor.child_spec({module, subscribe_to: [{provider, [max_demand: 1]}]}, [])
   end
 end

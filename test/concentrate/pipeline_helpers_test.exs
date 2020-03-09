@@ -24,13 +24,11 @@ defmodule Concentrate.PipelineHelpersTest do
     end
   end
 
-  describe "consumer/3" do
+  describe "consumer/2" do
     test "builds a child_spec" do
-      child_spec =
-      PipelineHelpers.consumer(Concentrate.Consumer.StopTimeUpdates, :test_name, :test_provider)
+      child_spec = PipelineHelpers.consumer(Concentrate.Consumer.StopTimeUpdates, :test_provider)
 
       assert %{
-               id: :test_name,
                start:
                  {Concentrate.Consumer.StopTimeUpdates, :start_link,
                   [[subscribe_to: [test_provider: [max_demand: 1]]]]}
