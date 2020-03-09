@@ -1,12 +1,12 @@
-defmodule Concentrate.PipelineHelpersTest do
+defmodule Concentrate.PipelineTest do
   use ExUnit.Case, async: true
 
-  alias Concentrate.PipelineHelpers
+  alias Concentrate.Pipeline
 
   describe "source/4" do
     test "builds a child_spec for an HTTP Producer" do
       child_spec =
-        PipelineHelpers.source(
+        Pipeline.source(
           :test_name,
           "http://example.com",
           Concentrate.Parser.GTFSRealtimeEnhanced
@@ -26,7 +26,7 @@ defmodule Concentrate.PipelineHelpersTest do
 
   describe "consumer/2" do
     test "builds a child_spec" do
-      child_spec = PipelineHelpers.consumer(Concentrate.Consumer.StopTimeUpdates, :test_provider)
+      child_spec = Pipeline.consumer(Concentrate.Consumer.StopTimeUpdates, :test_provider)
 
       assert %{
                start:
