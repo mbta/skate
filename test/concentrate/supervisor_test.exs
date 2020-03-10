@@ -19,7 +19,7 @@ defmodule Concentrate.SupervisorTest do
     test "defines a supervisor spec, passing along the given opts" do
       assert %{
                type: :supervisor,
-               start: {Concentrate.Supervisor, :start_link, @opts}
+               start: {Concentrate.Supervisor, :start_link, [@opts]}
              } = Concentrate.Supervisor.child_spec(@opts)
     end
   end

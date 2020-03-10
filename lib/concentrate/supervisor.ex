@@ -22,7 +22,7 @@ defmodule Concentrate.Supervisor do
     %{
       type: :supervisor,
       id: __MODULE__,
-      start: {__MODULE__, :start_link, opts}
+      start: {__MODULE__, :start_link, [opts]}
     }
   end
 end
