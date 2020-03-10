@@ -12,6 +12,7 @@ defmodule Concentrate.Pipeline do
     Supervisor.start_link(children, strategy: :rest_for_one)
   end
 
+  @spec child_spec(keyword()) :: Supervisor.child_spec()
   def child_spec(opts) do
     module = Keyword.fetch!(opts, :module)
 
