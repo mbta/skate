@@ -2,22 +2,26 @@ defmodule Concentrate.Supervisor do
   @moduledoc """
   Supervisor for the Concentrate pipeline.
   """
-  use Supervisor
+
+  alias Concentrate.Pipeline
+  alias Concentrate.Pipeline.{StopTimeUpdatesPipeline, VehiclePositionsPipeline}
 
   @spec start_link(keyword()) :: Supervisor.on_start()
   def start_link(opts) do
-    Supervisor.start_link(__MODULE__, opts)
+    Supervisor.start_link(
+      [
+        {Pipeline, Keyword.merge(opts, module: StopTimeUpdatesPipeline)},
+        {Pipeline, Keyword.merge(opts, module: VehiclePositionsPipeline)}
+      ],
+      strategy: :one_for_one
+    )
   end
 
-  @impl true
-  def init(opts) do
-    Supervisor.init(children(opts), strategy: :one_for_one)
-  end
-
-  def children(opts) do
-    [
-      {Concentrate.Pipeline.VehiclePositionsPipelineSupervisor, opts},
-      {Concentrate.Pipeline.StopTimeUpdatesPipelineSupervisor, opts}
-    ]
+  def child_spec(opts) do
+    %{
+      type: :supervisor,
+      id: __MODULE__,
+      start: {__MODULE__, :start_link, opts}
+    }
   end
 end

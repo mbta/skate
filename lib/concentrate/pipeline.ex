@@ -5,6 +5,23 @@ defmodule Concentrate.Pipeline do
 
   @callback init(keyword()) :: [Supervisor.child_spec()]
 
+  @spec start_link(module(), keyword()) :: Supervisor.on_start()
+  def start_link(module, opts) do
+    children = module.init(opts)
+
+    Supervisor.start_link(children, strategy: :rest_for_one)
+  end
+
+  def child_spec(opts) do
+    module = Keyword.fetch!(opts, :module)
+
+    %{
+      type: :supervisor,
+      id: module,
+      start: {__MODULE__, :start_link, [module, opts]}
+    }
+  end
+
   @spec source(term(), String.t(), module()) :: Supervisor.child_spec()
   @spec source(term(), String.t(), module(), keyword()) :: Supervisor.child_spec()
   def source(source, url, parser, opts \\ []) do

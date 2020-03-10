@@ -17,11 +17,13 @@ defmodule Realtime.Supervisor do
       {Realtime.DataStatusPubSub, name: Realtime.DataStatusPubSub.default_name()},
       {Concentrate.Supervisor,
        [
-         busloc_url: Application.get_env(:skate, :busloc_url),
-         swiftly_authorization_key: Application.get_env(:skate, :swiftly_authorization_key),
-         swiftly_realtime_vehicles_url:
-           Application.get_env(:skate, :swiftly_realtime_vehicles_url),
-         trip_updates_url: Application.get_env(:skate, :trip_updates_url)
+         [
+           busloc_url: Application.get_env(:skate, :busloc_url),
+           swiftly_authorization_key: Application.get_env(:skate, :swiftly_authorization_key),
+           swiftly_realtime_vehicles_url:
+             Application.get_env(:skate, :swiftly_realtime_vehicles_url),
+           trip_updates_url: Application.get_env(:skate, :trip_updates_url)
+         ]
        ]}
     ]
 
