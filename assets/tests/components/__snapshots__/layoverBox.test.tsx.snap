@@ -102,11 +102,11 @@ exports[`LayoverBox renders ghost 1`] = `
     <svg
       style={
         Object {
-          "height": 26.200000000000003,
+          "height": 27.8,
           "width": 40,
         }
       }
-      viewBox="-20 -7.6 40 26.200000000000003"
+      viewBox="-20 -9.2 40 27.8"
     >
       <g
         className="m-vehicle-icon m-vehicle-icon--small ghost"

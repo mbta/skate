@@ -31,6 +31,7 @@ Sizes are before scaling, relative to the center of the triangle
 const X_CENTER_TO_SIDE = 22
 const Y_CENTER_TO_POINT = 20
 const Y_CENTER_TO_BASE = 20
+const ALERT_ICON_RADIUS = 27
 
 export const VehicleIcon = (props: Props) => {
   if (
@@ -61,6 +62,8 @@ const viewBox = ({
   size,
   orientation,
   label,
+  status,
+  alertIcon,
 }: Props): { left: number; top: number; width: number; height: number } => {
   // shrink the viewbox to fit around the triangle and label
   const scale = scaleForSize(size)
@@ -96,8 +99,17 @@ const viewBox = ({
       bottom = scale * X_CENTER_TO_SIDE + labelBgHeight
       break
   }
+  // expand to fit the label
   left = Math.min(left, -labelBgWidth / 2)
   right = Math.max(right, labelBgWidth / 2)
+  // expand to fit the alert icon
+  if (alertIcon !== undefined) {
+    const [alertIconX, alertIconY] = alertIconXY(size, orientation, status)
+    left = Math.min(left, alertIconX - ALERT_ICON_RADIUS * 0.2)
+    right = Math.max(right, alertIconX + ALERT_ICON_RADIUS * 0.2)
+    top = Math.min(top, alertIconY - ALERT_ICON_RADIUS * 0.2)
+    bottom = Math.max(bottom, alertIconY + ALERT_ICON_RADIUS * 0.2)
+  }
   const width = right - left
   const height = bottom - top
   return { left, top, width, height }
@@ -142,20 +154,14 @@ export const VehicleIconSvgNode = ({
           status={status}
         />
       ) : null}
+
       {alertIcon ? (
-        status === "ghost" ? (
-          <AlertCircleIconForGhost
-            orientation={orientation}
-            size={size}
-            alertIconStyle={alertIcon}
-          />
-        ) : (
-          <AlertCircleIconForTriangle
-            orientation={orientation}
-            size={size}
-            alertIconStyle={alertIcon}
-          />
-        )
+        <AlertCircleIcon
+          size={size}
+          orientation={orientation}
+          status={status}
+          alertIcon={alertIcon}
+        />
       ) : null}
     </g>
   )
@@ -350,24 +356,20 @@ const Variant = ({
   )
 }
 
-const AlertCircleIconForTriangle = ({
-  orientation,
-  size,
-  alertIconStyle,
-}: {
-  orientation: Orientation
-  size: Size
-  alertIconStyle: AlertIconStyle
-}) => {
+const alertIconXY = (
+  size: Size,
+  orientation: Orientation,
+  status?: DrawnStatus
+): [number, number] => {
   const scale = scaleForSize(size)
-  const [x, y] = rotate(14, 3, orientation)
-  return (
-    <AlertCircleIcon
-      x={x * scale}
-      y={y * scale}
-      alertIconStyle={alertIconStyle}
-    />
-  )
+  if (status === "ghost") {
+    const y = -10
+    const x = orientation === Orientation.Down ? -15 : 15
+    return [x * scale, y * scale]
+  } else {
+    const [x, y] = rotate(14, 3, orientation)
+    return [x * scale, y * scale]
+  }
 }
 
 const rotate = (
@@ -387,40 +389,24 @@ const rotate = (
   }
 }
 
-const AlertCircleIconForGhost = ({
-  orientation,
+const AlertCircleIcon = ({
   size,
-  alertIconStyle,
+  orientation,
+  status,
+  alertIcon,
 }: {
-  orientation: Orientation
   size: Size
-  alertIconStyle: AlertIconStyle
+  orientation: Orientation
+  status: DrawnStatus
+  alertIcon: AlertIconStyle
 }) => {
-  const scale = scaleForSize(size)
-  const y = -10
-  const x = orientation === Orientation.Down ? -15 : 15
+  const [x, y] = alertIconXY(size, orientation, status)
   return (
-    <AlertCircleIcon
-      x={x * scale}
-      y={y * scale}
-      alertIconStyle={alertIconStyle}
-    />
+    <g transform={`translate(${x}, ${y}) scale(0.2) translate(-24, -24)`}>
+      <IconAlertCircleSvgNode style={alertIcon} />
+    </g>
   )
 }
-
-const AlertCircleIcon = ({
-  x,
-  y,
-  alertIconStyle,
-}: {
-  x: number
-  y: number
-  alertIconStyle: AlertIconStyle
-}) => (
-  <g transform={`translate(${x}, ${y}) scale(0.2) translate(-24, -24)`}>
-    <IconAlertCircleSvgNode style={alertIconStyle} />
-  </g>
-)
 
 const sizeClassSuffix = (size: Size): string => {
   switch (size) {
