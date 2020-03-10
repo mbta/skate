@@ -2,13 +2,25 @@ defmodule Concentrate.SupervisorTest do
   @moduledoc false
   use ExUnit.Case, async: true
 
-  describe "start_link/0" do
-    test "can start the application" do
-      Application.ensure_all_started(:concentrate)
+  @opts [
+    busloc_url: "http://example.com/busloc.json",
+    swiftly_authorization_key: "12345",
+    swiftly_realtime_vehicles_url: "http://example.com/swiftly_realtime_vehicles.json",
+    trip_updates_url: "http://example.com/TripUpdates_enhanced.json"
+  ]
 
-      on_exit(fn ->
-        Application.stop(:concentrate)
-      end)
+  describe "start_link/1" do
+    test "can start the application" do
+      assert {:ok, _pid} = Concentrate.Supervisor.start_link(@opts)
+    end
+  end
+
+  describe "child_spec/1" do
+    test "defines a supervisor spec, passing along the given opts" do
+      assert %{
+               type: :supervisor,
+               start: {Concentrate.Supervisor, :start_link, @opts}
+             } = Concentrate.Supervisor.child_spec(@opts)
     end
   end
 end

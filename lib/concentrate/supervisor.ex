@@ -17,6 +17,7 @@ defmodule Concentrate.Supervisor do
     )
   end
 
+  @spec child_spec(keyword()) :: Supervisor.child_spec()
   def child_spec(opts) do
     %{
       type: :supervisor,
