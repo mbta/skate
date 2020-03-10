@@ -34,12 +34,14 @@ const IncomingBoxVehicle = ({
       className={`m-incoming-box__vehicle ${selectedClass}`}
       onClick={() => dispatch(selectVehicle(vehicleOrGhost.id))}
     >
-      <VehicleIcon
-        size={Size.Small}
-        orientation={orientation}
-        variant={vehicleOrGhost.viaVariant}
-        status={drawnStatus(vehicleOrGhost)}
-      />
+      <div className="m-incoming-box__vehicle-icon">
+        <VehicleIcon
+          size={Size.Small}
+          orientation={orientation}
+          variant={vehicleOrGhost.viaVariant}
+          status={drawnStatus(vehicleOrGhost)}
+        />
+      </div>
       <div className="m-incoming-box__vehicle-label">
         {vehicleLabel(vehicleOrGhost, settings)}
       </div>
