@@ -27,29 +27,6 @@
   width: 15px;
 }
 
-.m-block-waiver-banner--current {
-  .c-icon-alert-circle__fill {
-    fill: $color-component-dark;
-  }
-
-  .c-icon-alert-circle__outline,
-  .c-icon-alert-circle__exclamation-point {
-    fill: $white;
-  }
-}
-
-.m-block-waiver-banner--future,
-.m-block-waiver-banner--past {
-  .c-icon-alert-circle__fill {
-    fill: $color-component-medium;
-  }
-
-  .c-icon-alert-circle__outline,
-  .c-icon-alert-circle__exclamation-point {
-    fill: $color-bg-medium;
-  }
-}
-
 .m-block-waiver-banner__title {
   @include font-body;
   margin-bottom: 0.8rem;

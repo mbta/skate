@@ -1,6 +1,6 @@
 import React from "react"
 import { DrawnStatus, statusClass } from "../models/vehicleStatus"
-import { IconAlertCircleSvgNode } from "./iconAlertCircle"
+import { IconAlertCircleSvgNode, AlertIconStyle } from "./iconAlertCircle"
 
 export enum Orientation {
   Up,
@@ -21,7 +21,7 @@ export interface Props {
   label?: string
   variant?: string | null
   status?: DrawnStatus
-  alertIcon?: boolean
+  alertIcon?: AlertIconStyle
 }
 
 /*
@@ -144,9 +144,17 @@ export const VehicleIconSvgNode = ({
       ) : null}
       {alertIcon ? (
         status === "ghost" ? (
-          <AlertCircleIconForGhost orientation={orientation} size={size} />
+          <AlertCircleIconForGhost
+            orientation={orientation}
+            size={size}
+            alertIconStyle={alertIcon}
+          />
         ) : (
-          <AlertCircleIconForTriangle orientation={orientation} size={size} />
+          <AlertCircleIconForTriangle
+            orientation={orientation}
+            size={size}
+            alertIconStyle={alertIcon}
+          />
         )
       ) : null}
     </g>
@@ -345,13 +353,21 @@ const Variant = ({
 const AlertCircleIconForTriangle = ({
   orientation,
   size,
+  alertIconStyle,
 }: {
   orientation: Orientation
   size: Size
+  alertIconStyle: AlertIconStyle
 }) => {
   const scale = scaleForSize(size)
   const [x, y] = rotate(14, 3, orientation)
-  return AlertCircleIcon(x * scale, y * scale)
+  return (
+    <AlertCircleIcon
+      x={x * scale}
+      y={y * scale}
+      alertIconStyle={alertIconStyle}
+    />
+  )
 }
 
 const rotate = (
@@ -374,19 +390,35 @@ const rotate = (
 const AlertCircleIconForGhost = ({
   orientation,
   size,
+  alertIconStyle,
 }: {
   orientation: Orientation
   size: Size
+  alertIconStyle: AlertIconStyle
 }) => {
   const scale = scaleForSize(size)
   const y = -10
   const x = orientation === Orientation.Down ? -15 : 15
-  return AlertCircleIcon(x * scale, y * scale)
+  return (
+    <AlertCircleIcon
+      x={x * scale}
+      y={y * scale}
+      alertIconStyle={alertIconStyle}
+    />
+  )
 }
 
-const AlertCircleIcon = (x: number, y: number) => (
+const AlertCircleIcon = ({
+  x,
+  y,
+  alertIconStyle,
+}: {
+  x: number
+  y: number
+  alertIconStyle: AlertIconStyle
+}) => (
   <g transform={`translate(${x}, ${y}) scale(0.2) translate(-24, -24)`}>
-    <IconAlertCircleSvgNode />
+    <IconAlertCircleSvgNode style={alertIconStyle} />
   </g>
 )
 

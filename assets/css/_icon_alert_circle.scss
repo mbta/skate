@@ -1,0 +1,32 @@
+.c-icon-alert-circle--black {
+  .c-icon-alert-circle__outline,
+  .c-icon-alert-circle__exclamation-point {
+    fill: $color-bg-base;
+  }
+
+  .c-icon-alert-circle__fill {
+    fill: $color-component-dark;
+  }
+}
+
+.c-icon-alert-circle--grey {
+  .c-icon-alert-circle__outline,
+  .c-icon-alert-circle__exclamation-point {
+    fill: $color-bg-base;
+  }
+
+  .c-icon-alert-circle__fill {
+    fill: $color-component-medium;
+  }
+}
+
+.c-icon-alert-circle--highlighted {
+  .c-icon-alert-circle__outline,
+  .c-icon-alert-circle__exclamation-point {
+    fill: $color-component-dark;
+  }
+
+  .c-icon-alert-circle__fill {
+    fill: $color-component-highlight;
+  }
+}

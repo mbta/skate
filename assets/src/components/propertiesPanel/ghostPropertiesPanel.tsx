@@ -6,7 +6,7 @@ import { Route } from "../../schedule"
 import PropertiesList from "../propertiesList"
 import BlockWaiverList from "./blockWaiverList"
 import Header from "./header"
-import IconAlertCircle from "../iconAlertCircle"
+import IconAlertCircle, { AlertIconStyle } from "../iconAlertCircle"
 
 interface Props {
   selectedGhost: Ghost
@@ -17,7 +17,7 @@ const NoWaiverBanner = () => (
   <div className="m-ghost-properties-panel__no-waiver-banner">
     <div className="m-ghost-properties-panel__no-waiver-banner-header">
       <span className="m-ghost-properties-panel__no-waiver-banner-alert-icon">
-        <IconAlertCircle />
+        <IconAlertCircle style={AlertIconStyle.Highlighted} />
       </span>
       <div className="m-ghost-properties-panel__no-waiver-banner-title">
         Unknown Ghost Bus - No Dispatcher Note
