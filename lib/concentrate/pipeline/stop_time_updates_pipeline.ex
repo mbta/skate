@@ -6,8 +6,7 @@ defmodule Concentrate.Pipeline.StopTimeUpdatesPipeline do
           trip_updates_url: String.t()
         ]
 
-  @impl Concentrate.Pipeline
-  @spec init(opts()) :: [Supervisor.child_spec()]
+  @impl Pipeline
   def init(opts) do
     [source(opts), consumer()]
   end

@@ -8,8 +8,7 @@ defmodule Concentrate.Pipeline.VehiclePositionsPipeline do
           swiftly_realtime_vehicles_url: String.t()
         ]
 
-  @impl Concentrate.Pipeline
-  @spec init(opts()) :: [Supervisor.child_spec()]
+  @impl Pipeline
   def init(opts) do
     {source_names, source_children} = sources(opts)
 
