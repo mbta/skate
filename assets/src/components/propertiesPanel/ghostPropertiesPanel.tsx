@@ -7,7 +7,6 @@ import PropertiesList from "../propertiesList"
 import BlockWaiverList from "./blockWaiverList"
 import Header from "./header"
 import IconAlertCircle from "../iconAlertCircle"
-import { isLateVehicleIndicator } from "../../models/ghost"
 
 interface Props {
   selectedGhost: Ghost
@@ -34,15 +33,13 @@ const GhostPropertiesPanel = ({ selectedGhost, route }: Props) => (
   <div className="m-ghost-properties-panel">
     <Header vehicle={selectedGhost} route={route} />
 
-    {featureIsEnabled("block_waivers") && hasBlockWaiver(selectedGhost) && (
-      <BlockWaiverList blockWaivers={selectedGhost.blockWaivers} />
-    )}
-
-    {featureIsEnabled("block_waivers") &&
-      !hasBlockWaiver(selectedGhost) &&
-      !isLateVehicleIndicator(selectedGhost) && (
+    {featureIsEnabled("block_waivers") ? (
+      hasBlockWaiver(selectedGhost) ? (
+        <BlockWaiverList blockWaivers={selectedGhost.blockWaivers} />
+      ) : (
         <NoWaiverBanner ghost={selectedGhost} />
-      )}
+      )
+    ) : null}
 
     <PropertiesList vehicleOrGhost={selectedGhost} />
   </div>
