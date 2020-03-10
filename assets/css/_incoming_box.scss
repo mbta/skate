@@ -22,8 +22,16 @@
   &.selected {
     background-color: $color-secondary-medium;
   }
+
+  .c-icon-alert-circle {
+    width: 10px;
+  }
+}
+
+.m-incoming-box__vehicle-icon {
+  margin-right: 0.25rem;
 }
 
 .m-incoming-box__vehicle-label {
-  margin-left: 0.5rem;
+  margin-left: 0.25rem;
 }

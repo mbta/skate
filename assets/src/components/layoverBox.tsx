@@ -5,6 +5,7 @@ import { drawnStatus } from "../models/vehicleStatus"
 import { VehicleOrGhost } from "../realtime"
 import { selectVehicle } from "../state"
 import VehicleIcon, { Orientation, Size } from "./vehicleIcon"
+import { blockWaiverDecoratorStyle } from "../models/blockWaiver"
 
 export enum LayoverBoxPosition {
   Top = 1,
@@ -24,6 +25,7 @@ const LayoverVehicle = ({
   isBottomLayoverBox: boolean
 }): ReactElement<HTMLDivElement> => {
   const [{ settings }, dispatch] = useContext(StateDispatchContext)
+  const alertIconStyle = blockWaiverDecoratorStyle(vehicleOrGhost)
 
   return (
     <div
@@ -37,6 +39,7 @@ const LayoverVehicle = ({
         size={Size.Small}
         status={drawnStatus(vehicleOrGhost)}
         variant={vehicleOrGhost.viaVariant}
+        alertIcon={alertIconStyle}
       />
     </div>
   )

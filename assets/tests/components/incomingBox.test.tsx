@@ -5,6 +5,11 @@ import { LadderDirection } from "../../src/models/ladderDirection"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../src/realtime"
 
+jest.mock("../../src/laboratoryFeatures", () => ({
+  __esModule: true,
+  default: () => true,
+}))
+
 describe("IncomingBox", () => {
   test("renders empty state", () => {
     const tree = renderer
