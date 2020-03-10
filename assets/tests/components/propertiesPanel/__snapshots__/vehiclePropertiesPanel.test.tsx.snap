@@ -1391,7 +1391,21 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
             <td
               className="m-block-waiver-banner__detail-label"
             >
-              Reason
+              <button
+                className="m-block-waiver-banner__reason-button"
+                onClick={[Function]}
+              >
+                Reason
+                 
+                <span
+                  className="m-block-waiver-banner__reason-button-icon"
+                  dangerouslySetInnerHTML={
+                    Object {
+                      "__html": "SVG",
+                    }
+                  }
+                />
+              </button>
             </td>
             <td
               className="m-block-waiver-banner__detail-value"

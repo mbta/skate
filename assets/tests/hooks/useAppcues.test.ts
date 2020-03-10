@@ -12,6 +12,7 @@ declare global {
     Appcues?: {
       identify: (userId: string) => void
       page: () => void
+      show: (id: string) => void
     }
     username: string
   }
@@ -31,6 +32,7 @@ window.username = "mbta-active-directory_jdoe"
 window.Appcues = {
   identify: jest.fn(),
   page: jest.fn(),
+  show: jest.fn(),
 }
 
 describe("useAppcues", () => {

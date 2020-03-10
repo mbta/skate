@@ -1,4 +1,5 @@
 import React from "react"
+import { questionMarkIcon } from "../../helpers/icon"
 import {
   CurrentFuturePastType,
   currentFuturePastType,
@@ -33,6 +34,9 @@ const currentFuturePastTitle = (blockWaiver: BlockWaiver): string => {
   }
 }
 
+const showReasonHint = () =>
+  window.Appcues && window.Appcues.show("-M24vWmcz1vj7U87v0AA")
+
 const BlockWaiverBanner = ({ blockWaiver }: Props) => (
   <div
     className={`m-block-waiver-banner m-block-waiver-banner--${currentFuturePastClass(
@@ -51,7 +55,15 @@ const BlockWaiverBanner = ({ blockWaiver }: Props) => (
     <table className="m-block-waiver-banner__details">
       <tbody>
         <tr>
-          <td className="m-block-waiver-banner__detail-label">Reason</td>
+          <td className="m-block-waiver-banner__detail-label">
+            <button
+              className="m-block-waiver-banner__reason-button"
+              onClick={showReasonHint}
+            >
+              Reason{" "}
+              {questionMarkIcon("m-block-waiver-banner__reason-button-icon")}
+            </button>
+          </td>
           <td className="m-block-waiver-banner__detail-value">
             {blockWaiver.remark}
           </td>

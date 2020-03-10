@@ -5,6 +5,7 @@ declare global {
     Appcues?: {
       identify: (userId: string) => void
       page: () => void
+      show: (id: string) => void
     }
     FS?: {
       // FullStory

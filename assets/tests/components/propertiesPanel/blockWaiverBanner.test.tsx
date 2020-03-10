@@ -1,3 +1,4 @@
+import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import BlockWaiverBanner from "../../../src/components/propertiesPanel/blockWaiverBanner"
@@ -46,5 +47,27 @@ describe("BlockWaiverBanner", () => {
       .toJSON()
 
     expect(tree).toMatchSnapshot()
+  })
+
+  test("clicking reason button triggers an Appcues hint", () => {
+    window.Appcues = {
+      identify: jest.fn(),
+      page: jest.fn(),
+      show: jest.fn(),
+    }
+    const blockWaiver: BlockWaiver = {
+      startTime: new Date("2020-02-25T15:53:20.000Z"),
+      endTime: new Date("2020-02-25T16:26:40.000Z"),
+      remark: "E:1106",
+    }
+
+    const wrapper = mount(<BlockWaiverBanner blockWaiver={blockWaiver} />)
+    const reasonButton = wrapper
+      .find(".m-block-waiver-banner__reason-button")
+      .first()
+
+    reasonButton.simulate("click")
+
+    expect(window.Appcues.show).toHaveBeenCalled()
   })
 })
