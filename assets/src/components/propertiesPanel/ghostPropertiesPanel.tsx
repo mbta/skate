@@ -6,19 +6,40 @@ import { Route } from "../../schedule"
 import PropertiesList from "../propertiesList"
 import BlockWaiverList from "./blockWaiverList"
 import Header from "./header"
+import IconAlertCircle from "../iconAlertCircle"
 
 interface Props {
   selectedGhost: Ghost
   route?: Route
 }
 
+const NoWaiverBanner = () => (
+  <div className="m-ghost-properties-panel__no-waiver-banner">
+    <div className="m-ghost-properties-panel__no-waiver-banner-header">
+      <span className="m-ghost-properties-panel__no-waiver-banner-alert-icon">
+        <IconAlertCircle />
+      </span>
+      <div className="m-ghost-properties-panel__no-waiver-banner-title">
+        Unknown Ghost Bus - No Dispatcher Note
+      </div>
+    </div>
+    A ghost bus or dropped trip has been automatically detected on this route.
+    Please follow up with dispatch as needed, if a Dispatcher Note is generated
+    - it will appear here.
+  </div>
+)
+
 const GhostPropertiesPanel = ({ selectedGhost, route }: Props) => (
   <div className="m-ghost-properties-panel">
     <Header vehicle={selectedGhost} route={route} />
 
-    {featureIsEnabled("block_waivers") && hasBlockWaiver(selectedGhost) && (
-      <BlockWaiverList blockWaivers={selectedGhost.blockWaivers} />
-    )}
+    {featureIsEnabled("block_waivers") ? (
+      hasBlockWaiver(selectedGhost) ? (
+        <BlockWaiverList blockWaivers={selectedGhost.blockWaivers} />
+      ) : (
+        <NoWaiverBanner />
+      )
+    ) : null}
 
     <PropertiesList vehicleOrGhost={selectedGhost} />
   </div>
