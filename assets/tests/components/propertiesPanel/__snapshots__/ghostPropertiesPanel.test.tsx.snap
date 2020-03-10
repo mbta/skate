@@ -142,9 +142,7 @@ exports[`GhostPropertiesPanel renders 1`] = `
         Unknown Ghost Bus - No Dispatcher Note
       </div>
     </div>
-    A ghost bus or dropped trip has been automatically detected on this route. Please follow up with dispatch about Run 
-    123-0123
-     as needed, if a Dispatcher Note is generated - it will appear here.
+    A ghost bus or dropped trip has been automatically detected on this route. Please follow up with dispatch as needed, if a Dispatcher Note is generated - it will appear here.
   </div>
   <div
     className="m-properties-list"
@@ -532,9 +530,7 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
         Unknown Ghost Bus - No Dispatcher Note
       </div>
     </div>
-    A ghost bus or dropped trip has been automatically detected on this route. Please follow up with dispatch about Run 
-    Not Available
-     as needed, if a Dispatcher Note is generated - it will appear here.
+    A ghost bus or dropped trip has been automatically detected on this route. Please follow up with dispatch as needed, if a Dispatcher Note is generated - it will appear here.
   </div>
   <div
     className="m-properties-list"
