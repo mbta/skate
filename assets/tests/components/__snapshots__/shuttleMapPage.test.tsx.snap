@@ -440,7 +440,7 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
             viewBox="-32 -20 64 64"
           >
             <g
-              className="m-vehicle-icon m-vehicle-icon--large "
+              className="m-vehicle-icon m-vehicle-icon--large"
             >
               <rect
                 className="m-vehicle-icon__label-background"

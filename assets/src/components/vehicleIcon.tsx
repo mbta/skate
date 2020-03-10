@@ -132,12 +132,16 @@ export const VehicleIconSvgNode = ({
   ) {
     orientation = Orientation.Up
   }
+  const classes: string[] = [
+    "m-vehicle-icon",
+    `m-vehicle-icon${sizeClassSuffix(size)}`,
+    statusClass(status),
+    alertIcon === AlertIconStyle.Highlighted
+      ? "m-vehicle-icon--highlighted"
+      : "",
+  ]
   return (
-    <g
-      className={`m-vehicle-icon m-vehicle-icon${sizeClassSuffix(
-        size
-      )} ${statusClass(status)}`}
-    >
+    <g className={classes.filter(className => className !== "").join(" ")}>
       {label ? (
         <Label size={size} orientation={orientation} label={label} />
       ) : null}

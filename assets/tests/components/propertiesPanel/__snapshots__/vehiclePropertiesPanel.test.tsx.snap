@@ -20,7 +20,7 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
         viewBox="-32 -20 64 64"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--large "
+          className="m-vehicle-icon m-vehicle-icon--large"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -144,7 +144,7 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
           viewBox="-13 -13.75 26 38.5"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--medium "
+            className="m-vehicle-icon m-vehicle-icon--medium"
           >
             <rect
               className="m-vehicle-icon__label-background"
@@ -328,7 +328,7 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
         viewBox="-32 -20 64 64"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--large "
+          className="m-vehicle-icon m-vehicle-icon--large"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -452,7 +452,7 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
           viewBox="-13 -13.75 26 38.5"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--medium "
+            className="m-vehicle-icon m-vehicle-icon--medium"
           >
             <rect
               className="m-vehicle-icon__label-background"
@@ -636,7 +636,7 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
         viewBox="-32 -20 64 64"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--large "
+          className="m-vehicle-icon m-vehicle-icon--large"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -760,7 +760,7 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
           viewBox="-13 -13.75 26 38.5"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--medium "
+            className="m-vehicle-icon m-vehicle-icon--medium"
           >
             <rect
               className="m-vehicle-icon__label-background"
@@ -944,7 +944,7 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
         viewBox="-36 -20 72 64"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--large "
+          className="m-vehicle-icon m-vehicle-icon--large"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -1063,7 +1063,7 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
           viewBox="-20 -13.75 40 38.5"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--medium "
+            className="m-vehicle-icon m-vehicle-icon--medium"
           >
             <rect
               className="m-vehicle-icon__label-background"
@@ -1251,7 +1251,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
         viewBox="-32 -20 64 64"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--large "
+          className="m-vehicle-icon m-vehicle-icon--large"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -1546,7 +1546,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
           viewBox="-13 -13.75 26 38.5"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--medium "
+            className="m-vehicle-icon m-vehicle-icon--medium"
           >
             <rect
               className="m-vehicle-icon__label-background"
@@ -1730,7 +1730,7 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
         viewBox="-32 -20 64 64"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--large "
+          className="m-vehicle-icon m-vehicle-icon--large"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -1854,7 +1854,7 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
           viewBox="-13 -13.75 26 38.5"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--medium "
+            className="m-vehicle-icon m-vehicle-icon--medium"
           >
             <rect
               className="m-vehicle-icon__label-background"
@@ -2172,7 +2172,7 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
           viewBox="-13 -13.75 26 38.5"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--medium "
+            className="m-vehicle-icon m-vehicle-icon--medium"
           >
             <rect
               className="m-vehicle-icon__label-background"
@@ -2360,7 +2360,7 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
         viewBox="-32 -20 64 64"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--large "
+          className="m-vehicle-icon m-vehicle-icon--large"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -2484,7 +2484,7 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
           viewBox="-13 -13.75 26 38.5"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--medium "
+            className="m-vehicle-icon m-vehicle-icon--medium"
           >
             <rect
               className="m-vehicle-icon__label-background"

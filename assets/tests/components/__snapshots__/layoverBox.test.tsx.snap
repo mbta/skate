@@ -18,7 +18,7 @@ exports[`LayoverBox renders 1`] = `
       viewBox="-20 -8.36 40 27.72"
     >
       <g
-        className="m-vehicle-icon m-vehicle-icon--small "
+        className="m-vehicle-icon m-vehicle-icon--small"
       >
         <rect
           className="m-vehicle-icon__label-background"
@@ -60,7 +60,7 @@ exports[`LayoverBox renders 1`] = `
       viewBox="-20 -8.36 40 27.72"
     >
       <g
-        className="m-vehicle-icon m-vehicle-icon--small "
+        className="m-vehicle-icon m-vehicle-icon--small"
       >
         <rect
           className="m-vehicle-icon__label-background"
@@ -109,7 +109,7 @@ exports[`LayoverBox renders ghost 1`] = `
       viewBox="-20 -9.2 40 27.8"
     >
       <g
-        className="m-vehicle-icon m-vehicle-icon--small ghost"
+        className="m-vehicle-icon m-vehicle-icon--small ghost m-vehicle-icon--highlighted"
       >
         <rect
           className="m-vehicle-icon__label-background"
