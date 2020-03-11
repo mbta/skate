@@ -102,10 +102,15 @@
   }
 }
 
-.m-block-waiver-banner__reason-button {
-  @include button-text;
+.m-block-waiver-banner__reason {
   @include font-label;
-  margin: 0;
+  color: $color-font-link;
+  cursor: pointer;
+
+  &:focus,
+  &:hover {
+    color: $color-primary;
+  }
 
   .m-block-waiver-banner--future &,
   .m-block-waiver-banner--past & {
@@ -118,13 +123,13 @@
   }
 }
 
-.m-block-waiver-banner__reason-button-icon {
+.m-block-waiver-banner__reason-icon {
   fill: $color-button-secondary;
   display: inline-block;
   width: 9px;
 
-  .m-block-waiver-banner__reason-button:focus &,
-  .m-block-waiver-banner__reason-button:hover & {
+  .m-block-waiver-banner__reason:focus &,
+  .m-block-waiver-banner__reason:hover & {
     fill: $color-primary;
   }
 
@@ -132,4 +137,9 @@
   .m-block-waiver-banner--past & {
     fill: $color-font-grey;
   }
+}
+
+.m-block-waiver-banner__reason-tooltip.__react_component_tooltip.show {
+  opacity: 1;
+  text-align: left;
 }

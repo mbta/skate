@@ -323,23 +323,20 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
         <tbody>
           <tr>
             <td
-              className="m-block-waiver-banner__detail-label"
+              className="m-block-waiver-banner__detail-label m-block-waiver-banner__reason"
+              data-event="click"
+              data-for="reason"
+              data-tip={true}
             >
-              <button
-                className="m-block-waiver-banner__reason-button"
-                onClick={[Function]}
-              >
-                Reason
-                 
-                <span
-                  className="m-block-waiver-banner__reason-button-icon"
-                  dangerouslySetInnerHTML={
-                    Object {
-                      "__html": "SVG",
-                    }
+              Reason 
+              <span
+                className="m-block-waiver-banner__reason-icon"
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
                   }
-                />
-              </button>
+                }
+              />
             </td>
             <td
               className="m-block-waiver-banner__detail-value"
@@ -373,6 +370,71 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
           </tr>
         </tbody>
       </table>
+      <div
+        className="__react_component_tooltip-304517788 __react_component_tooltip place-bottom type-dark"
+        data-id="tooltip"
+        id="reason"
+      >
+        <h3>
+          Reason codes
+        </h3>
+        <ul>
+          <li>
+            <strong>
+              B
+            </strong>
+             - Manpower
+          </li>
+          <li>
+            <strong>
+              C
+            </strong>
+             - No equipment
+          </li>
+          <li>
+            <strong>
+              D
+            </strong>
+             - Disabled bus
+          </li>
+          <li>
+            <strong>
+              E
+            </strong>
+             - Diverted to other work
+          </li>
+          <li>
+            <strong>
+              F
+            </strong>
+             - Traffic
+          </li>
+          <li>
+            <strong>
+              G
+            </strong>
+             - Accident
+          </li>
+          <li>
+            <strong>
+              H
+            </strong>
+             - Weather
+          </li>
+          <li>
+            <strong>
+              I
+            </strong>
+             - Operator Error
+          </li>
+          <li>
+            <strong>
+              J
+            </strong>
+             - Other
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
   <div

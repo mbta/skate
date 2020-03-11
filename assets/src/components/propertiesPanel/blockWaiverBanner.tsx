@@ -1,4 +1,5 @@
 import React from "react"
+import ReactTooltip from "react-tooltip"
 import { questionMarkIcon } from "../../helpers/icon"
 import {
   CurrentFuturePastType,
@@ -34,8 +35,47 @@ const currentFuturePastTitle = (blockWaiver: BlockWaiver): string => {
   }
 }
 
-const showReasonHint = () =>
-  window.Appcues && window.Appcues.show("-M24vWmcz1vj7U87v0AA")
+const ReasonTooltip = () => (
+  <ReactTooltip
+    id="reason"
+    className="m-block-waiver-banner__reason-tooltip"
+    place="bottom"
+    effect="solid"
+    globalEventOff="click"
+  >
+    <h3>Reason codes</h3>
+
+    <ul>
+      <li>
+        <strong>B</strong> - Manpower
+      </li>
+      <li>
+        <strong>C</strong> - No equipment
+      </li>
+      <li>
+        <strong>D</strong> - Disabled bus
+      </li>
+      <li>
+        <strong>E</strong> - Diverted to other work
+      </li>
+      <li>
+        <strong>F</strong> - Traffic
+      </li>
+      <li>
+        <strong>G</strong> - Accident
+      </li>
+      <li>
+        <strong>H</strong> - Weather
+      </li>
+      <li>
+        <strong>I</strong> - Operator Error
+      </li>
+      <li>
+        <strong>J</strong> - Other
+      </li>
+    </ul>
+  </ReactTooltip>
+)
 
 const BlockWaiverBanner = ({ blockWaiver }: Props) => (
   <div
@@ -55,14 +95,13 @@ const BlockWaiverBanner = ({ blockWaiver }: Props) => (
     <table className="m-block-waiver-banner__details">
       <tbody>
         <tr>
-          <td className="m-block-waiver-banner__detail-label">
-            <button
-              className="m-block-waiver-banner__reason-button"
-              onClick={showReasonHint}
-            >
-              Reason{" "}
-              {questionMarkIcon("m-block-waiver-banner__reason-button-icon")}
-            </button>
+          <td
+            className="m-block-waiver-banner__detail-label m-block-waiver-banner__reason"
+            data-tip={true}
+            data-for="reason"
+            data-event="click"
+          >
+            Reason {questionMarkIcon("m-block-waiver-banner__reason-icon")}
           </td>
           <td className="m-block-waiver-banner__detail-value">
             {blockWaiver.remark}
@@ -86,6 +125,8 @@ const BlockWaiverBanner = ({ blockWaiver }: Props) => (
         </tr>
       </tbody>
     </table>
+
+    <ReasonTooltip />
   </div>
 )
 
