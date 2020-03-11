@@ -1,36 +1,26 @@
 defmodule Concentrate.SupervisorTest do
   @moduledoc false
   use ExUnit.Case, async: true
-  import Test.Support.Helpers
 
-  describe "start_link/0" do
+  @opts [
+    busloc_url: "http://example.com/busloc.json",
+    swiftly_authorization_key: "12345",
+    swiftly_realtime_vehicles_url: "http://example.com/swiftly_realtime_vehicles.json",
+    trip_updates_url: "http://example.com/TripUpdates_enhanced.json"
+  ]
+
+  describe "start_link/1" do
     test "can start the application" do
-      Application.ensure_all_started(:concentrate)
-
-      on_exit(fn ->
-        Application.stop(:concentrate)
-      end)
+      assert {:ok, _pid} = Concentrate.Supervisor.start_link(@opts)
     end
   end
 
-  describe "children/1" do
-    setup do
-      reassign_env(:realtime, :trip_fn, fn _trip_id -> nil end)
-      reassign_env(:realtime, :block_fn, fn _block_id, _service_id -> nil end)
-    end
-
-    test "builds the right number of children" do
-      opts = [
-        busloc_url: "http://example.com/busloc.json",
-        swiftly_authorization_key: "12345",
-        swiftly_realtime_vehicles_url: "http://example.com/swiftly_realtime_vehicles.json",
-        trip_updates_url: "http://example.com/TripUpdates_enhanced.json"
-      ]
-
-      actual = Concentrate.Supervisor.children(opts)
-
-      # 3 sources + merge + 2 consumers
-      assert length(actual) == 6
+  describe "child_spec/1" do
+    test "defines a supervisor spec, passing along the given opts" do
+      assert %{
+               type: :supervisor,
+               start: {Concentrate.Supervisor, :start_link, [@opts]}
+             } = Concentrate.Supervisor.child_spec(@opts)
     end
   end
 end
