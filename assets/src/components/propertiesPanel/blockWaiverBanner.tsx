@@ -1,4 +1,6 @@
 import React from "react"
+import ReactTooltip from "react-tooltip"
+import { questionMarkIcon } from "../../helpers/icon"
 import {
   CurrentFuturePastType,
   currentFuturePastType,
@@ -33,6 +35,48 @@ const currentFuturePastTitle = (blockWaiver: BlockWaiver): string => {
   }
 }
 
+const ReasonTooltip = () => (
+  <ReactTooltip
+    id="reason"
+    className="m-block-waiver-banner__reason-tooltip"
+    place="bottom"
+    effect="solid"
+    globalEventOff="click"
+  >
+    <h3>Reason codes</h3>
+
+    <ul>
+      <li>
+        <strong>B</strong> - Manpower
+      </li>
+      <li>
+        <strong>C</strong> - No equipment
+      </li>
+      <li>
+        <strong>D</strong> - Disabled bus
+      </li>
+      <li>
+        <strong>E</strong> - Diverted to other work
+      </li>
+      <li>
+        <strong>F</strong> - Traffic
+      </li>
+      <li>
+        <strong>G</strong> - Accident
+      </li>
+      <li>
+        <strong>H</strong> - Weather
+      </li>
+      <li>
+        <strong>I</strong> - Operator error
+      </li>
+      <li>
+        <strong>J</strong> - Other
+      </li>
+    </ul>
+  </ReactTooltip>
+)
+
 const BlockWaiverBanner = ({ blockWaiver }: Props) => (
   <div
     className={`m-block-waiver-banner m-block-waiver-banner--${currentFuturePastClass(
@@ -51,7 +95,14 @@ const BlockWaiverBanner = ({ blockWaiver }: Props) => (
     <table className="m-block-waiver-banner__details">
       <tbody>
         <tr>
-          <td className="m-block-waiver-banner__detail-label">Reason</td>
+          <td
+            className="m-block-waiver-banner__detail-label m-block-waiver-banner__reason"
+            data-tip={true}
+            data-for="reason"
+            data-event="click"
+          >
+            Reason {questionMarkIcon("m-block-waiver-banner__reason-icon")}
+          </td>
           <td className="m-block-waiver-banner__detail-value">
             {blockWaiver.remark}
           </td>
@@ -74,6 +125,8 @@ const BlockWaiverBanner = ({ blockWaiver }: Props) => (
         </tr>
       </tbody>
     </table>
+
+    <ReasonTooltip />
   </div>
 )
 

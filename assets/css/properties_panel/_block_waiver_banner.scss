@@ -101,3 +101,44 @@
     color: $color-font-dark;
   }
 }
+
+.m-block-waiver-banner__reason {
+  @include font-label;
+  color: $color-font-link;
+  cursor: pointer;
+
+  &:focus,
+  &:hover {
+    color: $color-primary;
+  }
+
+  .m-block-waiver-banner--future &,
+  .m-block-waiver-banner--past & {
+    color: $color-font-grey;
+
+    &:focus,
+    &:hover {
+      color: $color-primary;
+    }
+  }
+}
+
+.m-block-waiver-banner__reason-icon {
+  fill: $color-button-secondary;
+  display: inline-block;
+  width: 9px;
+
+  .m-block-waiver-banner__reason:focus &,
+  .m-block-waiver-banner__reason:hover & {
+    fill: $color-primary;
+  }
+
+  .m-block-waiver-banner--future &,
+  .m-block-waiver-banner--past & {
+    fill: $color-font-grey;
+  }
+}
+
+.m-block-waiver-banner__reason-tooltip.__react_component_tooltip.show {
+  opacity: 1;
+}

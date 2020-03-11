@@ -29,6 +29,8 @@ import mattapanLineIconSvg from "../../static/images/icon-mattapan-line.svg"
 // @ts-ignore
 import orangeLineIconSvg from "../../static/images/icon-orange-line.svg"
 // @ts-ignore
+import questionMarkIconSvg from "../../static/images/icon-question-mark.svg"
+// @ts-ignore
 import redLineIconSvg from "../../static/images/icon-red-line.svg"
 // @ts-ignore
 import refreshIconSvg from "../../static/images/icon-refresh.svg"
@@ -80,6 +82,9 @@ export const mattapanLineIcon = (className: string = ""): JSX.Element =>
 
 export const orangeLineIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, orangeLineIconSvg)
+
+export const questionMarkIcon = (className: string = ""): JSX.Element =>
+  renderSvg(className, questionMarkIconSvg)
 
 export const redLineIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, redLineIconSvg)
