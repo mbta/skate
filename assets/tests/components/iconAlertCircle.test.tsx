@@ -19,6 +19,13 @@ test("renders grey", () => {
   expect(tree).toMatchSnapshot()
 })
 
+test("renders greyOnGrey", () => {
+  const tree = renderer
+    .create(<IconAlertCircle style={AlertIconStyle.GreyOnGrey} />)
+    .toJSON()
+  expect(tree).toMatchSnapshot()
+})
+
 test("renders highlighted", () => {
   const tree = renderer
     .create(<IconAlertCircle style={AlertIconStyle.Highlighted} />)

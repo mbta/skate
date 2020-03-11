@@ -40,9 +40,9 @@ const alertIconStyle = (blockWaiver: BlockWaiver): AlertIconStyle => {
     case CurrentFuturePastType.Current:
       return AlertIconStyle.Black
     case CurrentFuturePastType.Future:
-      return AlertIconStyle.Grey
+      return AlertIconStyle.GreyOnGrey
     case CurrentFuturePastType.Past:
-      return AlertIconStyle.Grey
+      return AlertIconStyle.GreyOnGrey
   }
 }
 

@@ -185,7 +185,7 @@ exports[`BlockWaiverBanner renders a future time waiver 1`] = `
         viewBox="-3 -3 54 54"
       >
         <g
-          className="c-icon-alert-circle--grey"
+          className="c-icon-alert-circle--grey-on-grey"
         >
           <circle
             className="c-icon-alert-circle__outline"
@@ -355,7 +355,7 @@ exports[`BlockWaiverBanner renders a past time waiver 1`] = `
         viewBox="-3 -3 54 54"
       >
         <g
-          className="c-icon-alert-circle--grey"
+          className="c-icon-alert-circle--grey-on-grey"
         >
           <circle
             className="c-icon-alert-circle__outline"

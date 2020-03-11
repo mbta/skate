@@ -1353,7 +1353,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
             viewBox="-3 -3 54 54"
           >
             <g
-              className="c-icon-alert-circle--grey"
+              className="c-icon-alert-circle--grey-on-grey"
             >
               <circle
                 className="c-icon-alert-circle__outline"

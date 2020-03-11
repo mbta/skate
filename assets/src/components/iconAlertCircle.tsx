@@ -3,6 +3,7 @@ import React from "react"
 export enum AlertIconStyle {
   Black = 1,
   Grey,
+  GreyOnGrey,
   Highlighted,
 }
 
@@ -12,6 +13,8 @@ const styleClass = (style: AlertIconStyle): string => {
       return "--black"
     case AlertIconStyle.Grey:
       return "--grey"
+    case AlertIconStyle.GreyOnGrey:
+      return "--grey-on-grey"
     case AlertIconStyle.Highlighted:
       return "--highlighted"
   }
