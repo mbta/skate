@@ -68,7 +68,7 @@ const ReasonTooltip = () => (
         <strong>H</strong> - Weather
       </li>
       <li>
-        <strong>I</strong> - Operator Error
+        <strong>I</strong> - Operator error
       </li>
       <li>
         <strong>J</strong> - Other

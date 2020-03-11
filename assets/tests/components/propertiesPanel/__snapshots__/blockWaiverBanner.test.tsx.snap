@@ -153,7 +153,7 @@ exports[`BlockWaiverBanner renders a current time waiver 1`] = `
         <strong>
           I
         </strong>
-         - Operator Error
+         - Operator error
       </li>
       <li>
         <strong>
@@ -319,7 +319,7 @@ exports[`BlockWaiverBanner renders a future time waiver 1`] = `
         <strong>
           I
         </strong>
-         - Operator Error
+         - Operator error
       </li>
       <li>
         <strong>
@@ -485,7 +485,7 @@ exports[`BlockWaiverBanner renders a past time waiver 1`] = `
         <strong>
           I
         </strong>
-         - Operator Error
+         - Operator error
       </li>
       <li>
         <strong>
