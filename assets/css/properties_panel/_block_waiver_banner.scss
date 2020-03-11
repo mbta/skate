@@ -104,6 +104,8 @@
 
 .m-block-waiver-banner__reason-button {
   @include button-text;
+  @include font-label;
+  margin: 0;
 
   .m-block-waiver-banner--future &,
   .m-block-waiver-banner--past & {
