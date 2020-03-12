@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import vehicleLabel from "../helpers/vehicleLabel"
-import { blockWaiverDecoratorStyle } from "../models/blockWaiver"
+import { blockWaiverAlertStyle } from "../models/blockWaiver"
 import {
   directionOnLadder,
   LadderDirection,
@@ -30,7 +30,7 @@ const IncomingBoxVehicle = ({
     VehicleDirection.Down
       ? Orientation.Down
       : Orientation.Up
-  const alertIconStyle: AlertIconStyle | undefined = blockWaiverDecoratorStyle(
+  const alertIconStyle: AlertIconStyle | undefined = blockWaiverAlertStyle(
     vehicleOrGhost
   )
 

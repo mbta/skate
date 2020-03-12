@@ -43,7 +43,7 @@ export const hasCurrentBlockWaiver = ({
  * yes, not current | highlighted | grey
  * none             | highlighted | none
  */
-export const blockWaiverDecoratorStyle = (
+export const blockWaiverAlertStyle = (
   vehicleOrGhost: VehicleOrGhost
 ): AlertIconStyle | undefined => {
   if (!featureIsEnabled("block_waivers")) {

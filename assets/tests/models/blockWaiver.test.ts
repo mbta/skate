@@ -1,6 +1,6 @@
 import { AlertIconStyle } from "../../src/components/iconAlertCircle"
 import {
-  blockWaiverDecoratorStyle,
+  blockWaiverAlertStyle,
   currentFuturePastType,
   CurrentFuturePastType,
   hasBlockWaiver,
@@ -97,13 +97,13 @@ describe("hasCurrentBlockWaiver", () => {
   })
 })
 
-describe("blockWaiverDecoratorStyle", () => {
+describe("blockWaiverAlertStyle", () => {
   test("vehicle with no waiver gets no icon", () => {
     const vehicle = {
       id: "id",
       blockWaivers: [] as BlockWaiver[],
     } as Vehicle
-    expect(blockWaiverDecoratorStyle(vehicle)).toEqual(undefined)
+    expect(blockWaiverAlertStyle(vehicle)).toEqual(undefined)
   })
 
   test("vehicle with a current waiver gets a black icon", () => {
@@ -111,7 +111,7 @@ describe("blockWaiverDecoratorStyle", () => {
       id: "id",
       blockWaivers: [currentBlockWaiver],
     } as Vehicle
-    expect(blockWaiverDecoratorStyle(vehicle)).toEqual(AlertIconStyle.Black)
+    expect(blockWaiverAlertStyle(vehicle)).toEqual(AlertIconStyle.Black)
   })
 
   test("vehicle with a non-current waiver gets a grey icon", () => {
@@ -119,7 +119,7 @@ describe("blockWaiverDecoratorStyle", () => {
       id: "id",
       blockWaivers: [pastBlockWaiver],
     } as Vehicle
-    expect(blockWaiverDecoratorStyle(vehicle)).toEqual(AlertIconStyle.Grey)
+    expect(blockWaiverAlertStyle(vehicle)).toEqual(AlertIconStyle.Grey)
   })
 
   test("ghost with no waiver gets a highlighted icon", () => {
@@ -127,9 +127,7 @@ describe("blockWaiverDecoratorStyle", () => {
       id: "ghost-id",
       blockWaivers: [] as BlockWaiver[],
     } as Vehicle
-    expect(blockWaiverDecoratorStyle(vehicle)).toEqual(
-      AlertIconStyle.Highlighted
-    )
+    expect(blockWaiverAlertStyle(vehicle)).toEqual(AlertIconStyle.Highlighted)
   })
 
   test("ghost with a current waiver gets a black icon", () => {
@@ -137,7 +135,7 @@ describe("blockWaiverDecoratorStyle", () => {
       id: "ghost-id",
       blockWaivers: [currentBlockWaiver],
     } as Vehicle
-    expect(blockWaiverDecoratorStyle(vehicle)).toEqual(AlertIconStyle.Black)
+    expect(blockWaiverAlertStyle(vehicle)).toEqual(AlertIconStyle.Black)
   })
 
   test("ghost with a non-current waiver gets a highlighted icon", () => {
@@ -145,8 +143,6 @@ describe("blockWaiverDecoratorStyle", () => {
       id: "ghost-id",
       blockWaivers: [pastBlockWaiver],
     } as Vehicle
-    expect(blockWaiverDecoratorStyle(vehicle)).toEqual(
-      AlertIconStyle.Highlighted
-    )
+    expect(blockWaiverAlertStyle(vehicle)).toEqual(AlertIconStyle.Highlighted)
   })
 })

@@ -5,7 +5,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { partition } from "../helpers/array"
 import vehicleLabel from "../helpers/vehicleLabel"
 import featureIsEnabled from "../laboratoryFeatures"
-import { blockWaiverDecoratorStyle } from "../models/blockWaiver"
+import { blockWaiverAlertStyle } from "../models/blockWaiver"
 import {
   LadderDirection,
   orderTimepoints,
@@ -144,7 +144,7 @@ const VehicleSvg = ({
   const { vehicle, x, y, vehicleDirection } = ladderVehicle
   const [{ settings }, dispatch] = useContext(StateDispatchContext)
   const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
-  const alertIconStyle = blockWaiverDecoratorStyle(vehicle)
+  const alertIconStyle = blockWaiverAlertStyle(vehicle)
 
   return (
     <g>
