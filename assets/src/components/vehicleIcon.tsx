@@ -21,7 +21,7 @@ export interface Props {
   label?: string
   variant?: string | null
   status?: DrawnStatus
-  alertIcon?: AlertIconStyle
+  alertIconStyle?: AlertIconStyle
 }
 
 /*
@@ -63,7 +63,7 @@ const viewBox = ({
   orientation,
   label,
   status,
-  alertIcon,
+  alertIconStyle,
 }: Props): { left: number; top: number; width: number; height: number } => {
   // shrink the viewbox to fit around the triangle and label
   const scale = scaleForSize(size)
@@ -103,7 +103,7 @@ const viewBox = ({
   left = Math.min(left, -labelBgWidth / 2)
   right = Math.max(right, labelBgWidth / 2)
   // expand to fit the alert icon
-  if (alertIcon !== undefined) {
+  if (alertIconStyle !== undefined) {
     const [alertIconX, alertIconY] = alertIconXY(size, orientation, status)
     left = Math.min(left, alertIconX - ALERT_ICON_RADIUS * 0.2)
     right = Math.max(right, alertIconX + ALERT_ICON_RADIUS * 0.2)
@@ -121,7 +121,7 @@ export const VehicleIconSvgNode = ({
   label,
   variant,
   status,
-  alertIcon,
+  alertIconStyle,
 }: Props) => {
   status = status || "plain"
   variant = variant && variant !== "_" ? variant : undefined
@@ -136,7 +136,7 @@ export const VehicleIconSvgNode = ({
     "m-vehicle-icon",
     `m-vehicle-icon${sizeClassSuffix(size)}`,
     statusClass(status),
-    alertIcon === AlertIconStyle.Highlighted
+    alertIconStyle === AlertIconStyle.Highlighted
       ? "m-vehicle-icon--highlighted"
       : "",
   ]
@@ -159,12 +159,12 @@ export const VehicleIconSvgNode = ({
         />
       ) : null}
 
-      {alertIcon ? (
+      {alertIconStyle ? (
         <AlertCircleIcon
           size={size}
           orientation={orientation}
           status={status}
-          alertIcon={alertIcon}
+          alertIconStyle={alertIconStyle}
         />
       ) : null}
     </g>
@@ -397,17 +397,17 @@ const AlertCircleIcon = ({
   size,
   orientation,
   status,
-  alertIcon,
+  alertIconStyle,
 }: {
   size: Size
   orientation: Orientation
   status: DrawnStatus
-  alertIcon: AlertIconStyle
+  alertIconStyle: AlertIconStyle
 }) => {
   const [x, y] = alertIconXY(size, orientation, status)
   return (
     <g transform={`translate(${x}, ${y}) scale(0.2) translate(-24, -24)`}>
-      <IconAlertCircleSvgNode style={alertIcon} />
+      <IconAlertCircleSvgNode style={alertIconStyle} />
     </g>
   )
 }

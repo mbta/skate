@@ -159,7 +159,7 @@ const VehicleSvg = ({
           label={vehicleLabel(vehicle, settings)}
           variant={vehicle.viaVariant}
           status={drawnStatus(vehicle)}
-          alertIcon={alertIconStyle}
+          alertIconStyle={alertIconStyle}
         />
       </g>
     </g>

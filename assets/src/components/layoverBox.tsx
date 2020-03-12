@@ -39,7 +39,7 @@ const LayoverVehicle = ({
         size={Size.Small}
         status={drawnStatus(vehicleOrGhost)}
         variant={vehicleOrGhost.viaVariant}
-        alertIcon={alertIconStyle}
+        alertIconStyle={alertIconStyle}
       />
     </div>
   )
