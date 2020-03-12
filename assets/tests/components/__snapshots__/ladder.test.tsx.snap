@@ -156,9 +156,91 @@ exports[`ladder filters out vehicles whose block is not active 1`] = `
     </text>
   </svg>
   <div
-    className="__react_component_tooltip-304517788 __react_component_tooltip place-top type-dark"
+    className="__react_component_tooltip t66e9900-73cf-427d-b80e-db11c83868ff place-top type-dark"
     data-id="tooltip"
-  />
+  >
+    <style
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "
+  	.t66e9900-73cf-427d-b80e-db11c83868ff {
+	    color: #fff;
+	    background: #222;
+	    border: 1px solid transparent;
+  	}
+
+  	.t66e9900-73cf-427d-b80e-db11c83868ff.place-top {
+        margin-top: -10px;
+    }
+    .t66e9900-73cf-427d-b80e-db11c83868ff.place-top::before {
+        border-top: 8px solid transparent;
+    }
+    .t66e9900-73cf-427d-b80e-db11c83868ff.place-top::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        bottom: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-top-color: #222;
+        border-top-style: solid;
+        border-top-width: 6px;
+    }
+
+    .t66e9900-73cf-427d-b80e-db11c83868ff.place-bottom {
+        margin-top: 10px;
+    }
+    .t66e9900-73cf-427d-b80e-db11c83868ff.place-bottom::before {
+        border-bottom: 8px solid transparent;
+    }
+    .t66e9900-73cf-427d-b80e-db11c83868ff.place-bottom::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        top: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-bottom-color: #222;
+        border-bottom-style: solid;
+        border-bottom-width: 6px;
+    }
+
+    .t66e9900-73cf-427d-b80e-db11c83868ff.place-left {
+        margin-left: -10px;
+    }
+    .t66e9900-73cf-427d-b80e-db11c83868ff.place-left::before {
+        border-left: 8px solid transparent;
+    }
+    .t66e9900-73cf-427d-b80e-db11c83868ff.place-left::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        right: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-left-color: #222;
+        border-left-style: solid;
+        border-left-width: 6px;
+    }
+
+    .t66e9900-73cf-427d-b80e-db11c83868ff.place-right {
+        margin-left: 10px;
+    }
+    .t66e9900-73cf-427d-b80e-db11c83868ff.place-right::before {
+        border-right: 8px solid transparent;
+    }
+    .t66e9900-73cf-427d-b80e-db11c83868ff.place-right::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        left: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-right-color: #222;
+        border-right-style: solid;
+        border-right-width: 6px;
+    }
+  ",
+        }
+      }
+    />
+  </div>
 </div>
 `;
 
@@ -363,9 +445,91 @@ exports[`ladder highlights a selected vehicle 1`] = `
     </text>
   </svg>
   <div
-    className="__react_component_tooltip-304517788 __react_component_tooltip place-top type-dark"
+    className="__react_component_tooltip tca2521d-3475-4eac-8a61-beb85d06a289 place-top type-dark"
     data-id="tooltip"
-  />
+  >
+    <style
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "
+  	.tca2521d-3475-4eac-8a61-beb85d06a289 {
+	    color: #fff;
+	    background: #222;
+	    border: 1px solid transparent;
+  	}
+
+  	.tca2521d-3475-4eac-8a61-beb85d06a289.place-top {
+        margin-top: -10px;
+    }
+    .tca2521d-3475-4eac-8a61-beb85d06a289.place-top::before {
+        border-top: 8px solid transparent;
+    }
+    .tca2521d-3475-4eac-8a61-beb85d06a289.place-top::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        bottom: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-top-color: #222;
+        border-top-style: solid;
+        border-top-width: 6px;
+    }
+
+    .tca2521d-3475-4eac-8a61-beb85d06a289.place-bottom {
+        margin-top: 10px;
+    }
+    .tca2521d-3475-4eac-8a61-beb85d06a289.place-bottom::before {
+        border-bottom: 8px solid transparent;
+    }
+    .tca2521d-3475-4eac-8a61-beb85d06a289.place-bottom::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        top: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-bottom-color: #222;
+        border-bottom-style: solid;
+        border-bottom-width: 6px;
+    }
+
+    .tca2521d-3475-4eac-8a61-beb85d06a289.place-left {
+        margin-left: -10px;
+    }
+    .tca2521d-3475-4eac-8a61-beb85d06a289.place-left::before {
+        border-left: 8px solid transparent;
+    }
+    .tca2521d-3475-4eac-8a61-beb85d06a289.place-left::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        right: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-left-color: #222;
+        border-left-style: solid;
+        border-left-width: 6px;
+    }
+
+    .tca2521d-3475-4eac-8a61-beb85d06a289.place-right {
+        margin-left: 10px;
+    }
+    .tca2521d-3475-4eac-8a61-beb85d06a289.place-right::before {
+        border-right: 8px solid transparent;
+    }
+    .tca2521d-3475-4eac-8a61-beb85d06a289.place-right::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        left: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-right-color: #222;
+        border-right-style: solid;
+        border-right-width: 6px;
+    }
+  ",
+        }
+      }
+    />
+  </div>
 </div>
 `;
 
@@ -555,9 +719,91 @@ exports[`ladder renders a ghost bus 1`] = `
     </text>
   </svg>
   <div
-    className="__react_component_tooltip-304517788 __react_component_tooltip place-top type-dark"
+    className="__react_component_tooltip t0cd1199-fae1-4375-bf6a-f343e4685426 place-top type-dark"
     data-id="tooltip"
-  />
+  >
+    <style
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "
+  	.t0cd1199-fae1-4375-bf6a-f343e4685426 {
+	    color: #fff;
+	    background: #222;
+	    border: 1px solid transparent;
+  	}
+
+  	.t0cd1199-fae1-4375-bf6a-f343e4685426.place-top {
+        margin-top: -10px;
+    }
+    .t0cd1199-fae1-4375-bf6a-f343e4685426.place-top::before {
+        border-top: 8px solid transparent;
+    }
+    .t0cd1199-fae1-4375-bf6a-f343e4685426.place-top::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        bottom: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-top-color: #222;
+        border-top-style: solid;
+        border-top-width: 6px;
+    }
+
+    .t0cd1199-fae1-4375-bf6a-f343e4685426.place-bottom {
+        margin-top: 10px;
+    }
+    .t0cd1199-fae1-4375-bf6a-f343e4685426.place-bottom::before {
+        border-bottom: 8px solid transparent;
+    }
+    .t0cd1199-fae1-4375-bf6a-f343e4685426.place-bottom::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        top: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-bottom-color: #222;
+        border-bottom-style: solid;
+        border-bottom-width: 6px;
+    }
+
+    .t0cd1199-fae1-4375-bf6a-f343e4685426.place-left {
+        margin-left: -10px;
+    }
+    .t0cd1199-fae1-4375-bf6a-f343e4685426.place-left::before {
+        border-left: 8px solid transparent;
+    }
+    .t0cd1199-fae1-4375-bf6a-f343e4685426.place-left::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        right: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-left-color: #222;
+        border-left-style: solid;
+        border-left-width: 6px;
+    }
+
+    .t0cd1199-fae1-4375-bf6a-f343e4685426.place-right {
+        margin-left: 10px;
+    }
+    .t0cd1199-fae1-4375-bf6a-f343e4685426.place-right::before {
+        border-right: 8px solid transparent;
+    }
+    .t0cd1199-fae1-4375-bf6a-f343e4685426.place-right::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        left: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-right-color: #222;
+        border-right-style: solid;
+        border-right-width: 6px;
+    }
+  ",
+        }
+      }
+    />
+  </div>
 </div>
 `;
 
@@ -807,9 +1053,91 @@ exports[`ladder renders a ladder 1`] = `
     </text>
   </svg>
   <div
-    className="__react_component_tooltip-304517788 __react_component_tooltip place-top type-dark"
+    className="__react_component_tooltip t6d81993-464f-4efa-bfe6-a557b2e672d1 place-top type-dark"
     data-id="tooltip"
-  />
+  >
+    <style
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "
+  	.t6d81993-464f-4efa-bfe6-a557b2e672d1 {
+	    color: #fff;
+	    background: #222;
+	    border: 1px solid transparent;
+  	}
+
+  	.t6d81993-464f-4efa-bfe6-a557b2e672d1.place-top {
+        margin-top: -10px;
+    }
+    .t6d81993-464f-4efa-bfe6-a557b2e672d1.place-top::before {
+        border-top: 8px solid transparent;
+    }
+    .t6d81993-464f-4efa-bfe6-a557b2e672d1.place-top::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        bottom: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-top-color: #222;
+        border-top-style: solid;
+        border-top-width: 6px;
+    }
+
+    .t6d81993-464f-4efa-bfe6-a557b2e672d1.place-bottom {
+        margin-top: 10px;
+    }
+    .t6d81993-464f-4efa-bfe6-a557b2e672d1.place-bottom::before {
+        border-bottom: 8px solid transparent;
+    }
+    .t6d81993-464f-4efa-bfe6-a557b2e672d1.place-bottom::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        top: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-bottom-color: #222;
+        border-bottom-style: solid;
+        border-bottom-width: 6px;
+    }
+
+    .t6d81993-464f-4efa-bfe6-a557b2e672d1.place-left {
+        margin-left: -10px;
+    }
+    .t6d81993-464f-4efa-bfe6-a557b2e672d1.place-left::before {
+        border-left: 8px solid transparent;
+    }
+    .t6d81993-464f-4efa-bfe6-a557b2e672d1.place-left::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        right: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-left-color: #222;
+        border-left-style: solid;
+        border-left-width: 6px;
+    }
+
+    .t6d81993-464f-4efa-bfe6-a557b2e672d1.place-right {
+        margin-left: 10px;
+    }
+    .t6d81993-464f-4efa-bfe6-a557b2e672d1.place-right::before {
+        border-right: 8px solid transparent;
+    }
+    .t6d81993-464f-4efa-bfe6-a557b2e672d1.place-right::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        left: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-right-color: #222;
+        border-right-style: solid;
+        border-right-width: 6px;
+    }
+  ",
+        }
+      }
+    />
+  </div>
 </div>
 `;
 
@@ -893,9 +1221,91 @@ exports[`ladder renders a ladder with no timepoints 1`] = `
     </g>
   </svg>
   <div
-    className="__react_component_tooltip-304517788 __react_component_tooltip place-top type-dark"
+    className="__react_component_tooltip tc7f0409-196d-4c79-9326-4fb52faaa038 place-top type-dark"
     data-id="tooltip"
-  />
+  >
+    <style
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "
+  	.tc7f0409-196d-4c79-9326-4fb52faaa038 {
+	    color: #fff;
+	    background: #222;
+	    border: 1px solid transparent;
+  	}
+
+  	.tc7f0409-196d-4c79-9326-4fb52faaa038.place-top {
+        margin-top: -10px;
+    }
+    .tc7f0409-196d-4c79-9326-4fb52faaa038.place-top::before {
+        border-top: 8px solid transparent;
+    }
+    .tc7f0409-196d-4c79-9326-4fb52faaa038.place-top::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        bottom: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-top-color: #222;
+        border-top-style: solid;
+        border-top-width: 6px;
+    }
+
+    .tc7f0409-196d-4c79-9326-4fb52faaa038.place-bottom {
+        margin-top: 10px;
+    }
+    .tc7f0409-196d-4c79-9326-4fb52faaa038.place-bottom::before {
+        border-bottom: 8px solid transparent;
+    }
+    .tc7f0409-196d-4c79-9326-4fb52faaa038.place-bottom::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        top: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-bottom-color: #222;
+        border-bottom-style: solid;
+        border-bottom-width: 6px;
+    }
+
+    .tc7f0409-196d-4c79-9326-4fb52faaa038.place-left {
+        margin-left: -10px;
+    }
+    .tc7f0409-196d-4c79-9326-4fb52faaa038.place-left::before {
+        border-left: 8px solid transparent;
+    }
+    .tc7f0409-196d-4c79-9326-4fb52faaa038.place-left::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        right: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-left-color: #222;
+        border-left-style: solid;
+        border-left-width: 6px;
+    }
+
+    .tc7f0409-196d-4c79-9326-4fb52faaa038.place-right {
+        margin-left: 10px;
+    }
+    .tc7f0409-196d-4c79-9326-4fb52faaa038.place-right::before {
+        border-right: 8px solid transparent;
+    }
+    .tc7f0409-196d-4c79-9326-4fb52faaa038.place-right::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        left: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-right-color: #222;
+        border-right-style: solid;
+        border-right-width: 6px;
+    }
+  ",
+        }
+      }
+    />
+  </div>
 </div>
 `;
 
@@ -1055,9 +1465,91 @@ exports[`ladder renders a reversed ladder 1`] = `
     </text>
   </svg>
   <div
-    className="__react_component_tooltip-304517788 __react_component_tooltip place-top type-dark"
+    className="__react_component_tooltip t3e7a891-6cee-42d9-8559-dad548d58b0d place-top type-dark"
     data-id="tooltip"
-  />
+  >
+    <style
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "
+  	.t3e7a891-6cee-42d9-8559-dad548d58b0d {
+	    color: #fff;
+	    background: #222;
+	    border: 1px solid transparent;
+  	}
+
+  	.t3e7a891-6cee-42d9-8559-dad548d58b0d.place-top {
+        margin-top: -10px;
+    }
+    .t3e7a891-6cee-42d9-8559-dad548d58b0d.place-top::before {
+        border-top: 8px solid transparent;
+    }
+    .t3e7a891-6cee-42d9-8559-dad548d58b0d.place-top::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        bottom: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-top-color: #222;
+        border-top-style: solid;
+        border-top-width: 6px;
+    }
+
+    .t3e7a891-6cee-42d9-8559-dad548d58b0d.place-bottom {
+        margin-top: 10px;
+    }
+    .t3e7a891-6cee-42d9-8559-dad548d58b0d.place-bottom::before {
+        border-bottom: 8px solid transparent;
+    }
+    .t3e7a891-6cee-42d9-8559-dad548d58b0d.place-bottom::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        top: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-bottom-color: #222;
+        border-bottom-style: solid;
+        border-bottom-width: 6px;
+    }
+
+    .t3e7a891-6cee-42d9-8559-dad548d58b0d.place-left {
+        margin-left: -10px;
+    }
+    .t3e7a891-6cee-42d9-8559-dad548d58b0d.place-left::before {
+        border-left: 8px solid transparent;
+    }
+    .t3e7a891-6cee-42d9-8559-dad548d58b0d.place-left::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        right: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-left-color: #222;
+        border-left-style: solid;
+        border-left-width: 6px;
+    }
+
+    .t3e7a891-6cee-42d9-8559-dad548d58b0d.place-right {
+        margin-left: 10px;
+    }
+    .t3e7a891-6cee-42d9-8559-dad548d58b0d.place-right::before {
+        border-right: 8px solid transparent;
+    }
+    .t3e7a891-6cee-42d9-8559-dad548d58b0d.place-right::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        left: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-right-color: #222;
+        border-right-style: solid;
+        border-right-width: 6px;
+    }
+  ",
+        }
+      }
+    />
+  </div>
 </div>
 `;
 
@@ -1208,9 +1700,91 @@ exports[`ladder renders an off-course vehicle 1`] = `
     </text>
   </svg>
   <div
-    className="__react_component_tooltip-304517788 __react_component_tooltip place-top type-dark"
+    className="__react_component_tooltip tba23d2e-67a5-49b7-90d8-4e766b3c125c place-top type-dark"
     data-id="tooltip"
-  />
+  >
+    <style
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "
+  	.tba23d2e-67a5-49b7-90d8-4e766b3c125c {
+	    color: #fff;
+	    background: #222;
+	    border: 1px solid transparent;
+  	}
+
+  	.tba23d2e-67a5-49b7-90d8-4e766b3c125c.place-top {
+        margin-top: -10px;
+    }
+    .tba23d2e-67a5-49b7-90d8-4e766b3c125c.place-top::before {
+        border-top: 8px solid transparent;
+    }
+    .tba23d2e-67a5-49b7-90d8-4e766b3c125c.place-top::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        bottom: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-top-color: #222;
+        border-top-style: solid;
+        border-top-width: 6px;
+    }
+
+    .tba23d2e-67a5-49b7-90d8-4e766b3c125c.place-bottom {
+        margin-top: 10px;
+    }
+    .tba23d2e-67a5-49b7-90d8-4e766b3c125c.place-bottom::before {
+        border-bottom: 8px solid transparent;
+    }
+    .tba23d2e-67a5-49b7-90d8-4e766b3c125c.place-bottom::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        top: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-bottom-color: #222;
+        border-bottom-style: solid;
+        border-bottom-width: 6px;
+    }
+
+    .tba23d2e-67a5-49b7-90d8-4e766b3c125c.place-left {
+        margin-left: -10px;
+    }
+    .tba23d2e-67a5-49b7-90d8-4e766b3c125c.place-left::before {
+        border-left: 8px solid transparent;
+    }
+    .tba23d2e-67a5-49b7-90d8-4e766b3c125c.place-left::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        right: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-left-color: #222;
+        border-left-style: solid;
+        border-left-width: 6px;
+    }
+
+    .tba23d2e-67a5-49b7-90d8-4e766b3c125c.place-right {
+        margin-left: 10px;
+    }
+    .tba23d2e-67a5-49b7-90d8-4e766b3c125c.place-right::before {
+        border-right: 8px solid transparent;
+    }
+    .tba23d2e-67a5-49b7-90d8-4e766b3c125c.place-right::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        left: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-right-color: #222;
+        border-right-style: solid;
+        border-right-width: 6px;
+    }
+  ",
+        }
+      }
+    />
+  </div>
 </div>
 `;
 
@@ -1370,9 +1944,91 @@ exports[`ladder shows schedule line in the other direction 1`] = `
     </text>
   </svg>
   <div
-    className="__react_component_tooltip-304517788 __react_component_tooltip place-top type-dark"
+    className="__react_component_tooltip t0d47182-fe4c-48aa-94f6-a617b44295f3 place-top type-dark"
     data-id="tooltip"
-  />
+  >
+    <style
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "
+  	.t0d47182-fe4c-48aa-94f6-a617b44295f3 {
+	    color: #fff;
+	    background: #222;
+	    border: 1px solid transparent;
+  	}
+
+  	.t0d47182-fe4c-48aa-94f6-a617b44295f3.place-top {
+        margin-top: -10px;
+    }
+    .t0d47182-fe4c-48aa-94f6-a617b44295f3.place-top::before {
+        border-top: 8px solid transparent;
+    }
+    .t0d47182-fe4c-48aa-94f6-a617b44295f3.place-top::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        bottom: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-top-color: #222;
+        border-top-style: solid;
+        border-top-width: 6px;
+    }
+
+    .t0d47182-fe4c-48aa-94f6-a617b44295f3.place-bottom {
+        margin-top: 10px;
+    }
+    .t0d47182-fe4c-48aa-94f6-a617b44295f3.place-bottom::before {
+        border-bottom: 8px solid transparent;
+    }
+    .t0d47182-fe4c-48aa-94f6-a617b44295f3.place-bottom::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        top: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-bottom-color: #222;
+        border-bottom-style: solid;
+        border-bottom-width: 6px;
+    }
+
+    .t0d47182-fe4c-48aa-94f6-a617b44295f3.place-left {
+        margin-left: -10px;
+    }
+    .t0d47182-fe4c-48aa-94f6-a617b44295f3.place-left::before {
+        border-left: 8px solid transparent;
+    }
+    .t0d47182-fe4c-48aa-94f6-a617b44295f3.place-left::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        right: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-left-color: #222;
+        border-left-style: solid;
+        border-left-width: 6px;
+    }
+
+    .t0d47182-fe4c-48aa-94f6-a617b44295f3.place-right {
+        margin-left: 10px;
+    }
+    .t0d47182-fe4c-48aa-94f6-a617b44295f3.place-right::before {
+        border-right: 8px solid transparent;
+    }
+    .t0d47182-fe4c-48aa-94f6-a617b44295f3.place-right::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        left: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-right-color: #222;
+        border-right-style: solid;
+        border-right-width: 6px;
+    }
+  ",
+        }
+      }
+    />
+  </div>
 </div>
 `;
 
@@ -1634,8 +2290,90 @@ exports[`ladder shows vehicles with block waivers 1`] = `
     </text>
   </svg>
   <div
-    className="__react_component_tooltip-304517788 __react_component_tooltip place-top type-dark"
+    className="__react_component_tooltip t3bc7c7d-ec4d-4aad-b043-b8143c802711 place-top type-dark"
     data-id="tooltip"
-  />
+  >
+    <style
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "
+  	.t3bc7c7d-ec4d-4aad-b043-b8143c802711 {
+	    color: #fff;
+	    background: #222;
+	    border: 1px solid transparent;
+  	}
+
+  	.t3bc7c7d-ec4d-4aad-b043-b8143c802711.place-top {
+        margin-top: -10px;
+    }
+    .t3bc7c7d-ec4d-4aad-b043-b8143c802711.place-top::before {
+        border-top: 8px solid transparent;
+    }
+    .t3bc7c7d-ec4d-4aad-b043-b8143c802711.place-top::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        bottom: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-top-color: #222;
+        border-top-style: solid;
+        border-top-width: 6px;
+    }
+
+    .t3bc7c7d-ec4d-4aad-b043-b8143c802711.place-bottom {
+        margin-top: 10px;
+    }
+    .t3bc7c7d-ec4d-4aad-b043-b8143c802711.place-bottom::before {
+        border-bottom: 8px solid transparent;
+    }
+    .t3bc7c7d-ec4d-4aad-b043-b8143c802711.place-bottom::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        top: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-bottom-color: #222;
+        border-bottom-style: solid;
+        border-bottom-width: 6px;
+    }
+
+    .t3bc7c7d-ec4d-4aad-b043-b8143c802711.place-left {
+        margin-left: -10px;
+    }
+    .t3bc7c7d-ec4d-4aad-b043-b8143c802711.place-left::before {
+        border-left: 8px solid transparent;
+    }
+    .t3bc7c7d-ec4d-4aad-b043-b8143c802711.place-left::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        right: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-left-color: #222;
+        border-left-style: solid;
+        border-left-width: 6px;
+    }
+
+    .t3bc7c7d-ec4d-4aad-b043-b8143c802711.place-right {
+        margin-left: 10px;
+    }
+    .t3bc7c7d-ec4d-4aad-b043-b8143c802711.place-right::before {
+        border-right: 8px solid transparent;
+    }
+    .t3bc7c7d-ec4d-4aad-b043-b8143c802711.place-right::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        left: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-right-color: #222;
+        border-right-style: solid;
+        border-right-width: 6px;
+    }
+  ",
+        }
+      }
+    />
+  </div>
 </div>
 `;

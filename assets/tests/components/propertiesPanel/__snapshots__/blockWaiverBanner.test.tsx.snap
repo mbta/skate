@@ -103,10 +103,91 @@ exports[`BlockWaiverBanner renders a current time waiver 1`] = `
     </tbody>
   </table>
   <div
-    className="__react_component_tooltip-304517788 __react_component_tooltip place-bottom type-dark"
+    className="__react_component_tooltip t231a1bb-5cbe-474f-9298-aa07d450b75a place-bottom type-dark"
     data-id="tooltip"
     id="reason"
   >
+    <style
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "
+  	.t231a1bb-5cbe-474f-9298-aa07d450b75a {
+	    color: #fff;
+	    background: #222;
+	    border: 1px solid transparent;
+  	}
+
+  	.t231a1bb-5cbe-474f-9298-aa07d450b75a.place-top {
+        margin-top: -10px;
+    }
+    .t231a1bb-5cbe-474f-9298-aa07d450b75a.place-top::before {
+        border-top: 8px solid transparent;
+    }
+    .t231a1bb-5cbe-474f-9298-aa07d450b75a.place-top::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        bottom: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-top-color: #222;
+        border-top-style: solid;
+        border-top-width: 6px;
+    }
+
+    .t231a1bb-5cbe-474f-9298-aa07d450b75a.place-bottom {
+        margin-top: 10px;
+    }
+    .t231a1bb-5cbe-474f-9298-aa07d450b75a.place-bottom::before {
+        border-bottom: 8px solid transparent;
+    }
+    .t231a1bb-5cbe-474f-9298-aa07d450b75a.place-bottom::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        top: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-bottom-color: #222;
+        border-bottom-style: solid;
+        border-bottom-width: 6px;
+    }
+
+    .t231a1bb-5cbe-474f-9298-aa07d450b75a.place-left {
+        margin-left: -10px;
+    }
+    .t231a1bb-5cbe-474f-9298-aa07d450b75a.place-left::before {
+        border-left: 8px solid transparent;
+    }
+    .t231a1bb-5cbe-474f-9298-aa07d450b75a.place-left::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        right: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-left-color: #222;
+        border-left-style: solid;
+        border-left-width: 6px;
+    }
+
+    .t231a1bb-5cbe-474f-9298-aa07d450b75a.place-right {
+        margin-left: 10px;
+    }
+    .t231a1bb-5cbe-474f-9298-aa07d450b75a.place-right::before {
+        border-right: 8px solid transparent;
+    }
+    .t231a1bb-5cbe-474f-9298-aa07d450b75a.place-right::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        left: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-right-color: #222;
+        border-right-style: solid;
+        border-right-width: 6px;
+    }
+  ",
+        }
+      }
+    />
     <h3>
       Reason codes
     </h3>
@@ -273,10 +354,91 @@ exports[`BlockWaiverBanner renders a future time waiver 1`] = `
     </tbody>
   </table>
   <div
-    className="__react_component_tooltip-304517788 __react_component_tooltip place-bottom type-dark"
+    className="__react_component_tooltip t81d3f30-ec4b-48e4-9366-dd9f2c4b9c1a place-bottom type-dark"
     data-id="tooltip"
     id="reason"
   >
+    <style
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "
+  	.t81d3f30-ec4b-48e4-9366-dd9f2c4b9c1a {
+	    color: #fff;
+	    background: #222;
+	    border: 1px solid transparent;
+  	}
+
+  	.t81d3f30-ec4b-48e4-9366-dd9f2c4b9c1a.place-top {
+        margin-top: -10px;
+    }
+    .t81d3f30-ec4b-48e4-9366-dd9f2c4b9c1a.place-top::before {
+        border-top: 8px solid transparent;
+    }
+    .t81d3f30-ec4b-48e4-9366-dd9f2c4b9c1a.place-top::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        bottom: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-top-color: #222;
+        border-top-style: solid;
+        border-top-width: 6px;
+    }
+
+    .t81d3f30-ec4b-48e4-9366-dd9f2c4b9c1a.place-bottom {
+        margin-top: 10px;
+    }
+    .t81d3f30-ec4b-48e4-9366-dd9f2c4b9c1a.place-bottom::before {
+        border-bottom: 8px solid transparent;
+    }
+    .t81d3f30-ec4b-48e4-9366-dd9f2c4b9c1a.place-bottom::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        top: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-bottom-color: #222;
+        border-bottom-style: solid;
+        border-bottom-width: 6px;
+    }
+
+    .t81d3f30-ec4b-48e4-9366-dd9f2c4b9c1a.place-left {
+        margin-left: -10px;
+    }
+    .t81d3f30-ec4b-48e4-9366-dd9f2c4b9c1a.place-left::before {
+        border-left: 8px solid transparent;
+    }
+    .t81d3f30-ec4b-48e4-9366-dd9f2c4b9c1a.place-left::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        right: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-left-color: #222;
+        border-left-style: solid;
+        border-left-width: 6px;
+    }
+
+    .t81d3f30-ec4b-48e4-9366-dd9f2c4b9c1a.place-right {
+        margin-left: 10px;
+    }
+    .t81d3f30-ec4b-48e4-9366-dd9f2c4b9c1a.place-right::before {
+        border-right: 8px solid transparent;
+    }
+    .t81d3f30-ec4b-48e4-9366-dd9f2c4b9c1a.place-right::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        left: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-right-color: #222;
+        border-right-style: solid;
+        border-right-width: 6px;
+    }
+  ",
+        }
+      }
+    />
     <h3>
       Reason codes
     </h3>
@@ -443,10 +605,91 @@ exports[`BlockWaiverBanner renders a past time waiver 1`] = `
     </tbody>
   </table>
   <div
-    className="__react_component_tooltip-304517788 __react_component_tooltip place-bottom type-dark"
+    className="__react_component_tooltip tdcbfc89-e2b9-4280-9283-f6ebe208ea37 place-bottom type-dark"
     data-id="tooltip"
     id="reason"
   >
+    <style
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "
+  	.tdcbfc89-e2b9-4280-9283-f6ebe208ea37 {
+	    color: #fff;
+	    background: #222;
+	    border: 1px solid transparent;
+  	}
+
+  	.tdcbfc89-e2b9-4280-9283-f6ebe208ea37.place-top {
+        margin-top: -10px;
+    }
+    .tdcbfc89-e2b9-4280-9283-f6ebe208ea37.place-top::before {
+        border-top: 8px solid transparent;
+    }
+    .tdcbfc89-e2b9-4280-9283-f6ebe208ea37.place-top::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        bottom: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-top-color: #222;
+        border-top-style: solid;
+        border-top-width: 6px;
+    }
+
+    .tdcbfc89-e2b9-4280-9283-f6ebe208ea37.place-bottom {
+        margin-top: 10px;
+    }
+    .tdcbfc89-e2b9-4280-9283-f6ebe208ea37.place-bottom::before {
+        border-bottom: 8px solid transparent;
+    }
+    .tdcbfc89-e2b9-4280-9283-f6ebe208ea37.place-bottom::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        top: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-bottom-color: #222;
+        border-bottom-style: solid;
+        border-bottom-width: 6px;
+    }
+
+    .tdcbfc89-e2b9-4280-9283-f6ebe208ea37.place-left {
+        margin-left: -10px;
+    }
+    .tdcbfc89-e2b9-4280-9283-f6ebe208ea37.place-left::before {
+        border-left: 8px solid transparent;
+    }
+    .tdcbfc89-e2b9-4280-9283-f6ebe208ea37.place-left::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        right: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-left-color: #222;
+        border-left-style: solid;
+        border-left-width: 6px;
+    }
+
+    .tdcbfc89-e2b9-4280-9283-f6ebe208ea37.place-right {
+        margin-left: 10px;
+    }
+    .tdcbfc89-e2b9-4280-9283-f6ebe208ea37.place-right::before {
+        border-right: 8px solid transparent;
+    }
+    .tdcbfc89-e2b9-4280-9283-f6ebe208ea37.place-right::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        left: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-right-color: #222;
+        border-right-style: solid;
+        border-right-width: 6px;
+    }
+  ",
+        }
+      }
+    />
     <h3>
       Reason codes
     </h3>

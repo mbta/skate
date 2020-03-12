@@ -190,9 +190,91 @@ Array [
       </text>
     </svg>
     <div
-      className="__react_component_tooltip-304517788 __react_component_tooltip place-top type-dark"
+      className="__react_component_tooltip tc7efc29-d284-4650-8bc6-a8604222d773 place-top type-dark"
       data-id="tooltip"
-    />
+    >
+      <style
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "
+  	.tc7efc29-d284-4650-8bc6-a8604222d773 {
+	    color: #fff;
+	    background: #222;
+	    border: 1px solid transparent;
+  	}
+
+  	.tc7efc29-d284-4650-8bc6-a8604222d773.place-top {
+        margin-top: -10px;
+    }
+    .tc7efc29-d284-4650-8bc6-a8604222d773.place-top::before {
+        border-top: 8px solid transparent;
+    }
+    .tc7efc29-d284-4650-8bc6-a8604222d773.place-top::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        bottom: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-top-color: #222;
+        border-top-style: solid;
+        border-top-width: 6px;
+    }
+
+    .tc7efc29-d284-4650-8bc6-a8604222d773.place-bottom {
+        margin-top: 10px;
+    }
+    .tc7efc29-d284-4650-8bc6-a8604222d773.place-bottom::before {
+        border-bottom: 8px solid transparent;
+    }
+    .tc7efc29-d284-4650-8bc6-a8604222d773.place-bottom::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        top: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-bottom-color: #222;
+        border-bottom-style: solid;
+        border-bottom-width: 6px;
+    }
+
+    .tc7efc29-d284-4650-8bc6-a8604222d773.place-left {
+        margin-left: -10px;
+    }
+    .tc7efc29-d284-4650-8bc6-a8604222d773.place-left::before {
+        border-left: 8px solid transparent;
+    }
+    .tc7efc29-d284-4650-8bc6-a8604222d773.place-left::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        right: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-left-color: #222;
+        border-left-style: solid;
+        border-left-width: 6px;
+    }
+
+    .tc7efc29-d284-4650-8bc6-a8604222d773.place-right {
+        margin-left: 10px;
+    }
+    .tc7efc29-d284-4650-8bc6-a8604222d773.place-right::before {
+        border-right: 8px solid transparent;
+    }
+    .tc7efc29-d284-4650-8bc6-a8604222d773.place-right::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        left: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-right-color: #222;
+        border-right-style: solid;
+        border-right-width: 6px;
+    }
+  ",
+          }
+        }
+      />
+    </div>
   </div>,
   <div
     className="m-layover-box m-layover-box--bottom"
@@ -390,9 +472,91 @@ Array [
       </text>
     </svg>
     <div
-      className="__react_component_tooltip-304517788 __react_component_tooltip place-top type-dark"
+      className="__react_component_tooltip t4c74825-ac7d-4e48-86c3-3d067ed58c41 place-top type-dark"
       data-id="tooltip"
-    />
+    >
+      <style
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "
+  	.t4c74825-ac7d-4e48-86c3-3d067ed58c41 {
+	    color: #fff;
+	    background: #222;
+	    border: 1px solid transparent;
+  	}
+
+  	.t4c74825-ac7d-4e48-86c3-3d067ed58c41.place-top {
+        margin-top: -10px;
+    }
+    .t4c74825-ac7d-4e48-86c3-3d067ed58c41.place-top::before {
+        border-top: 8px solid transparent;
+    }
+    .t4c74825-ac7d-4e48-86c3-3d067ed58c41.place-top::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        bottom: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-top-color: #222;
+        border-top-style: solid;
+        border-top-width: 6px;
+    }
+
+    .t4c74825-ac7d-4e48-86c3-3d067ed58c41.place-bottom {
+        margin-top: 10px;
+    }
+    .t4c74825-ac7d-4e48-86c3-3d067ed58c41.place-bottom::before {
+        border-bottom: 8px solid transparent;
+    }
+    .t4c74825-ac7d-4e48-86c3-3d067ed58c41.place-bottom::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        top: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-bottom-color: #222;
+        border-bottom-style: solid;
+        border-bottom-width: 6px;
+    }
+
+    .t4c74825-ac7d-4e48-86c3-3d067ed58c41.place-left {
+        margin-left: -10px;
+    }
+    .t4c74825-ac7d-4e48-86c3-3d067ed58c41.place-left::before {
+        border-left: 8px solid transparent;
+    }
+    .t4c74825-ac7d-4e48-86c3-3d067ed58c41.place-left::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        right: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-left-color: #222;
+        border-left-style: solid;
+        border-left-width: 6px;
+    }
+
+    .t4c74825-ac7d-4e48-86c3-3d067ed58c41.place-right {
+        margin-left: 10px;
+    }
+    .t4c74825-ac7d-4e48-86c3-3d067ed58c41.place-right::before {
+        border-right: 8px solid transparent;
+    }
+    .t4c74825-ac7d-4e48-86c3-3d067ed58c41.place-right::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        left: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-right-color: #222;
+        border-right-style: solid;
+        border-right-width: 6px;
+    }
+  ",
+          }
+        }
+      />
+    </div>
   </div>,
   <div
     className="m-layover-box m-layover-box--bottom"
@@ -743,9 +907,91 @@ Array [
       </text>
     </svg>
     <div
-      className="__react_component_tooltip-304517788 __react_component_tooltip place-top type-dark"
+      className="__react_component_tooltip tca9dcee-f5da-4b31-bfaf-dd40dd5068f0 place-top type-dark"
       data-id="tooltip"
-    />
+    >
+      <style
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "
+  	.tca9dcee-f5da-4b31-bfaf-dd40dd5068f0 {
+	    color: #fff;
+	    background: #222;
+	    border: 1px solid transparent;
+  	}
+
+  	.tca9dcee-f5da-4b31-bfaf-dd40dd5068f0.place-top {
+        margin-top: -10px;
+    }
+    .tca9dcee-f5da-4b31-bfaf-dd40dd5068f0.place-top::before {
+        border-top: 8px solid transparent;
+    }
+    .tca9dcee-f5da-4b31-bfaf-dd40dd5068f0.place-top::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        bottom: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-top-color: #222;
+        border-top-style: solid;
+        border-top-width: 6px;
+    }
+
+    .tca9dcee-f5da-4b31-bfaf-dd40dd5068f0.place-bottom {
+        margin-top: 10px;
+    }
+    .tca9dcee-f5da-4b31-bfaf-dd40dd5068f0.place-bottom::before {
+        border-bottom: 8px solid transparent;
+    }
+    .tca9dcee-f5da-4b31-bfaf-dd40dd5068f0.place-bottom::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        top: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-bottom-color: #222;
+        border-bottom-style: solid;
+        border-bottom-width: 6px;
+    }
+
+    .tca9dcee-f5da-4b31-bfaf-dd40dd5068f0.place-left {
+        margin-left: -10px;
+    }
+    .tca9dcee-f5da-4b31-bfaf-dd40dd5068f0.place-left::before {
+        border-left: 8px solid transparent;
+    }
+    .tca9dcee-f5da-4b31-bfaf-dd40dd5068f0.place-left::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        right: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-left-color: #222;
+        border-left-style: solid;
+        border-left-width: 6px;
+    }
+
+    .tca9dcee-f5da-4b31-bfaf-dd40dd5068f0.place-right {
+        margin-left: 10px;
+    }
+    .tca9dcee-f5da-4b31-bfaf-dd40dd5068f0.place-right::before {
+        border-right: 8px solid transparent;
+    }
+    .tca9dcee-f5da-4b31-bfaf-dd40dd5068f0.place-right::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        left: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-right-color: #222;
+        border-right-style: solid;
+        border-right-width: 6px;
+    }
+  ",
+          }
+        }
+      />
+    </div>
   </div>,
   <div
     className="m-layover-box m-layover-box--bottom"
@@ -900,9 +1146,91 @@ Array [
       </text>
     </svg>
     <div
-      className="__react_component_tooltip-304517788 __react_component_tooltip place-top type-dark"
+      className="__react_component_tooltip tcafea6f-866c-429d-90ed-3a501e10d2e7 place-top type-dark"
       data-id="tooltip"
-    />
+    >
+      <style
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "
+  	.tcafea6f-866c-429d-90ed-3a501e10d2e7 {
+	    color: #fff;
+	    background: #222;
+	    border: 1px solid transparent;
+  	}
+
+  	.tcafea6f-866c-429d-90ed-3a501e10d2e7.place-top {
+        margin-top: -10px;
+    }
+    .tcafea6f-866c-429d-90ed-3a501e10d2e7.place-top::before {
+        border-top: 8px solid transparent;
+    }
+    .tcafea6f-866c-429d-90ed-3a501e10d2e7.place-top::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        bottom: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-top-color: #222;
+        border-top-style: solid;
+        border-top-width: 6px;
+    }
+
+    .tcafea6f-866c-429d-90ed-3a501e10d2e7.place-bottom {
+        margin-top: 10px;
+    }
+    .tcafea6f-866c-429d-90ed-3a501e10d2e7.place-bottom::before {
+        border-bottom: 8px solid transparent;
+    }
+    .tcafea6f-866c-429d-90ed-3a501e10d2e7.place-bottom::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        top: -6px;
+        left: 50%;
+        margin-left: -8px;
+        border-bottom-color: #222;
+        border-bottom-style: solid;
+        border-bottom-width: 6px;
+    }
+
+    .tcafea6f-866c-429d-90ed-3a501e10d2e7.place-left {
+        margin-left: -10px;
+    }
+    .tcafea6f-866c-429d-90ed-3a501e10d2e7.place-left::before {
+        border-left: 8px solid transparent;
+    }
+    .tcafea6f-866c-429d-90ed-3a501e10d2e7.place-left::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        right: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-left-color: #222;
+        border-left-style: solid;
+        border-left-width: 6px;
+    }
+
+    .tcafea6f-866c-429d-90ed-3a501e10d2e7.place-right {
+        margin-left: 10px;
+    }
+    .tcafea6f-866c-429d-90ed-3a501e10d2e7.place-right::before {
+        border-right: 8px solid transparent;
+    }
+    .tcafea6f-866c-429d-90ed-3a501e10d2e7.place-right::after {
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        left: -6px;
+        top: 50%;
+        margin-top: -4px;
+        border-right-color: #222;
+        border-right-style: solid;
+        border-right-width: 6px;
+    }
+  ",
+          }
+        }
+      />
+    </div>
   </div>,
   <div
     className="m-layover-box m-layover-box--bottom"
