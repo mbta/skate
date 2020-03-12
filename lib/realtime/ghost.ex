@@ -1,6 +1,6 @@
 defmodule Realtime.Ghost do
   alias Gtfs.{Block, Direction, Route, RoutePattern, Run, StopTime, Trip}
-  alias Realtime.{BlockWaiver, RouteStatus, TimepointStatus, Vehicle}
+  alias Realtime.{BlockWaiver, BlockWaiverStore, RouteStatus, TimepointStatus, Vehicle}
 
   @type t :: %__MODULE__{
           id: String.t(),
@@ -81,6 +81,15 @@ defmodule Realtime.Ghost do
             nil
 
           _ ->
+            block_waivers_for_block_and_service_fn =
+              Application.get_env(
+                :realtime,
+                :block_waivers_for_block_and_service_fn,
+                &BlockWaiverStore.block_waivers_for_block_and_service/2
+              )
+
+            block_id = Block.first_trip(block).block_id
+
             timepoint_status =
               TimepointStatus.scheduled_timepoint_status(timepoints, now_time_of_day)
 
@@ -90,7 +99,7 @@ defmodule Realtime.Ghost do
               route_id: trip.route_id,
               trip_id: trip.id,
               headsign: trip.headsign,
-              block_id: Block.first_trip(block).block_id,
+              block_id: block_id,
               run_id: trip.run_id,
               via_variant:
                 trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id),
@@ -105,7 +114,7 @@ defmodule Realtime.Ghost do
                 end,
               scheduled_timepoint_status: timepoint_status,
               route_status: route_status,
-              block_waivers: BlockWaiver.block_waivers_for_block(block)
+              block_waivers: block_waivers_for_block_and_service_fn.(block_id, trip.service_id)
             }
         end
     end

@@ -78,25 +78,17 @@ defmodule Realtime.BlockWaiverTest do
     uncertainty: nil
   }
 
+  @stop_time_updates_by_trip %{
+    @trip1.id => [@trip1stop1Update, @trip1stop2Update],
+    @trip2.id => [@trip2stop1Update]
+  }
+
   describe "block_waivers_for_block/1" do
     setup do
       block = [@trip1, @trip2]
 
       reassign_env(:realtime, :active_blocks_fn, fn _, _ ->
         %{Util.Time.today() => block}
-      end)
-
-      reassign_env(:realtime, :stop_time_updates_fn, fn trip_id ->
-        case trip_id do
-          "trip1" ->
-            [@trip1stop1Update, @trip1stop2Update]
-
-          "trip2" ->
-            [@trip2stop1Update]
-
-          _ ->
-            []
-        end
       end)
 
       {:ok, block: block}
@@ -106,29 +98,19 @@ defmodule Realtime.BlockWaiverTest do
       assert [
                %BlockWaiver{},
                %BlockWaiver{}
-             ] = BlockWaiver.block_waivers_for_block(block)
+             ] = BlockWaiver.block_waivers_for_block(block, @stop_time_updates_by_trip)
     end
 
     test "returns an empty list if no trips have skipped stops" do
-      assert BlockWaiver.block_waivers_for_block([]) == []
+      assert BlockWaiver.block_waivers_for_block([], @stop_time_updates_by_trip) == []
     end
 
     test "returns an empty list if the block was nil" do
-      assert BlockWaiver.block_waivers_for_block(nil) == []
+      assert BlockWaiver.block_waivers_for_block(nil, @stop_time_updates_by_trip) == []
     end
   end
 
   describe "trip_stop_time_waivers/1" do
-    setup do
-      reassign_env(:realtime, :stop_time_updates_fn, fn trip_id ->
-        if trip_id == @trip1.id do
-          [@trip1stop1Update, @trip1stop2Update]
-        else
-          []
-        end
-      end)
-    end
-
     test "breaks out trip_stop_time_waivers for each stop on the trip" do
       expected = [
         {1, @trip1stop1Update},
@@ -136,7 +118,7 @@ defmodule Realtime.BlockWaiverTest do
         {3, nil}
       ]
 
-      assert BlockWaiver.trip_stop_time_waivers(@trip1) == expected
+      assert BlockWaiver.trip_stop_time_waivers(@trip1, @stop_time_updates_by_trip) == expected
     end
   end
 

@@ -2,46 +2,18 @@ defmodule Realtime.GhostTest do
   use ExUnit.Case
   import Test.Support.Helpers
 
-  alias Concentrate.StopTimeUpdate
   alias Gtfs.{StopTime, Trip}
   alias Realtime.{BlockWaiver, Ghost}
 
   setup do
-    stop_time_updates = [
-      %StopTimeUpdate{
-        arrival_time: nil,
-        departure_time: nil,
-        platform_id: nil,
-        remark: "E:1106",
-        schedule_relationship: :SKIPPED,
-        status: nil,
-        stop_id: "stop1",
-        stop_sequence: nil,
-        track: nil,
-        trip_id: "39984755",
-        uncertainty: nil
-      },
-      %StopTimeUpdate{
-        arrival_time: nil,
-        departure_time: nil,
-        platform_id: nil,
-        remark: "E:1106",
-        schedule_relationship: :SKIPPED,
-        status: nil,
-        stop_id: "stop2",
-        stop_sequence: nil,
-        track: nil,
-        trip_id: "39984755",
-        uncertainty: nil
-      }
-    ]
-
-    reassign_env(:realtime, :stop_time_updates_fn, fn trip_id ->
-      if trip_id == "trip" do
-        stop_time_updates
-      else
-        []
-      end
+    reassign_env(:realtime, :block_waivers_for_block_and_service_fn, fn _, _ ->
+      [
+        %BlockWaiver{
+          start_time: 10,
+          end_time: 20,
+          remark: "E:1106"
+        }
+      ]
     end)
   end
 
@@ -76,34 +48,37 @@ defmodule Realtime.GhostTest do
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
 
-      assert [
-               %Ghost{
-                 id: "ghost-trip",
-                 direction_id: 0,
-                 route_id: "route",
-                 trip_id: "trip",
-                 headsign: "headsign",
-                 block_id: "block",
-                 run_id: "run",
-                 via_variant: "X",
-                 layover_departure_time: nil,
-                 scheduled_timepoint_status: %{
-                   timepoint_id: "t2",
-                   fraction_until_timepoint: 0.5
-                 },
-                 route_status: :on_route,
-                 block_waivers: [
-                   %BlockWaiver{
-                     remark: "E:1106"
-                   }
-                 ]
-               }
-             ] =
-               Ghost.ghosts(
-                 %{~D[2019-01-01] => [block]},
-                 [],
-                 time0 + 2
-               )
+      expected = [
+        %Ghost{
+          id: "ghost-trip",
+          direction_id: 0,
+          route_id: "route",
+          trip_id: "trip",
+          headsign: "headsign",
+          block_id: "block",
+          run_id: "run",
+          via_variant: "X",
+          layover_departure_time: nil,
+          scheduled_timepoint_status: %{
+            timepoint_id: "t2",
+            fraction_until_timepoint: 0.5
+          },
+          route_status: :on_route,
+          block_waivers: [
+            %BlockWaiver{
+              start_time: 10,
+              end_time: 20,
+              remark: "E:1106"
+            }
+          ]
+        }
+      ]
+
+      assert Ghost.ghosts(
+               %{~D[2019-01-01] => [block]},
+               [],
+               time0 + 2
+             ) == expected
     end
 
     test "does not make a ghost for a block if there's a vehicle on that block" do
@@ -254,7 +229,10 @@ defmodule Realtime.GhostTest do
                  timepoint_id: "t2",
                  fraction_until_timepoint: 0.0
                },
-               route_status: :laying_over
+               route_status: :laying_over,
+               block_waivers: [
+                 %Realtime.BlockWaiver{end_time: 20, remark: "E:1106", start_time: 10}
+               ]
              }
     end
 

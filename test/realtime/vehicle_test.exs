@@ -2,7 +2,7 @@ defmodule Realtime.VehicleTest do
   use ExUnit.Case
   import Test.Support.Helpers
 
-  alias Concentrate.{DataDiscrepancy, StopTimeUpdate, VehiclePosition}
+  alias Concentrate.{DataDiscrepancy, VehiclePosition}
   alias Gtfs.{StopTime, Trip}
   alias Realtime.{BlockWaiver, Vehicle}
 
@@ -68,35 +68,6 @@ defmodule Realtime.VehicleTest do
         ]
       }
 
-      stop_time_updates = [
-        %StopTimeUpdate{
-          arrival_time: nil,
-          departure_time: nil,
-          platform_id: nil,
-          remark: "E:1106",
-          schedule_relationship: :SKIPPED,
-          status: nil,
-          stop_id: "18511",
-          stop_sequence: nil,
-          track: nil,
-          trip_id: "39984755",
-          uncertainty: nil
-        },
-        %StopTimeUpdate{
-          arrival_time: nil,
-          departure_time: nil,
-          platform_id: nil,
-          remark: "E:1106",
-          schedule_relationship: :SKIPPED,
-          status: nil,
-          stop_id: "18512",
-          stop_sequence: nil,
-          track: nil,
-          trip_id: "39984755",
-          uncertainty: nil
-        }
-      ]
-
       reassign_env(:realtime, :trip_fn, fn trip_id ->
         if trip_id == trip.id do
           trip
@@ -113,14 +84,6 @@ defmodule Realtime.VehicleTest do
         end
       end)
 
-      reassign_env(:realtime, :stop_time_updates_fn, fn trip_id ->
-        if trip_id == trip.id do
-          stop_time_updates
-        else
-          []
-        end
-      end)
-
       reassign_env(:realtime, :now_fn, fn ->
         # 2019-01-01 00:00:00 EST
         1_546_318_800
@@ -129,6 +92,16 @@ defmodule Realtime.VehicleTest do
       reassign_env(:realtime, :date_time_now_fn, fn ->
         # Monday at noon
         Timex.to_datetime({{2019, 7, 8}, {12, 00, 00}}, :local)
+      end)
+
+      reassign_env(:realtime, :block_waivers_for_block_and_service_fn, fn _, _ ->
+        [
+          %BlockWaiver{
+            start_time: 10,
+            end_time: 20,
+            remark: "E:1106"
+          }
+        ]
       end)
     end
 

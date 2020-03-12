@@ -1,7 +1,7 @@
 defmodule Realtime.Vehicle do
   alias Concentrate.{DataDiscrepancy, VehiclePosition}
   alias Gtfs.{Block, Direction, Route, RoutePattern, Run, Stop, Trip}
-  alias Realtime.{BlockWaiver, Headway, RouteStatus, TimepointStatus}
+  alias Realtime.{BlockWaiver, BlockWaiverStore, Headway, RouteStatus, TimepointStatus}
 
   @type stop_status :: %{
           stop_id: Stop.id(),
@@ -110,6 +110,13 @@ defmodule Realtime.Vehicle do
     block_fn = Application.get_env(:realtime, :block_fn, &Gtfs.block/2)
     now_fn = Application.get_env(:realtime, :now_fn, &Util.Time.now/0)
 
+    block_waivers_for_block_and_service_fn =
+      Application.get_env(
+        :realtime,
+        :block_waivers_for_block_and_service_fn,
+        &BlockWaiverStore.block_waivers_for_block_and_service/2
+      )
+
     trip_id = VehiclePosition.trip_id(vehicle_position)
     block_id = VehiclePosition.block_id(vehicle_position)
     stop_id = VehiclePosition.stop_id(vehicle_position)
@@ -164,6 +171,11 @@ defmodule Realtime.Vehicle do
     data_discrepancies = VehiclePosition.data_discrepancies(vehicle_position)
     is_off_course = off_course?(data_discrepancies)
 
+    block_waivers =
+      if trip,
+        do: block_waivers_for_block_and_service_fn.(block_id, trip.service_id),
+        else: []
+
     %__MODULE__{
       id: VehiclePosition.id(vehicle_position),
       label: VehiclePosition.label(vehicle_position),
@@ -199,7 +211,7 @@ defmodule Realtime.Vehicle do
       scheduled_location: scheduled_location,
       route_status: route_status(stop_id, trip, block),
       end_of_trip_type: end_of_trip_type(block, trip, run_id, stop_id),
-      block_waivers: BlockWaiver.block_waivers_for_block(block)
+      block_waivers: block_waivers
     }
   end
 
