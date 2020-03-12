@@ -4,6 +4,13 @@ import BlockWaiverBanner from "../../../src/components/propertiesPanel/blockWaiv
 import { BlockWaiver } from "../../../src/realtime"
 import * as dateTime from "../../../src/util/dateTime"
 
+jest.mock("react-tooltip", () => ({
+  __esModule: true,
+  default: jest
+    .fn()
+    .mockImplementation(() => <div className="mock-react-tooltip" />),
+}))
+
 describe("BlockWaiverBanner", () => {
   jest
     .spyOn(dateTime, "now")

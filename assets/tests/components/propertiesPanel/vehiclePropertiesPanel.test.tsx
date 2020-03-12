@@ -21,6 +21,12 @@ jest.mock("../../../src/laboratoryFeatures", () => ({
     // Ipmlementation sequence matches tests
     .mockImplementation(() => true),
 }))
+jest.mock("react-tooltip", () => ({
+  __esModule: true,
+  default: jest
+    .fn()
+    .mockImplementation(() => <div className="mock-react-tooltip" />),
+}))
 
 const vehicle: Vehicle = {
   id: "v1",

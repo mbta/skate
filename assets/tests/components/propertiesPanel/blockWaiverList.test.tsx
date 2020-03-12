@@ -4,6 +4,13 @@ import BlockWaiverList from "../../../src/components/propertiesPanel/blockWaiver
 import { BlockWaiver } from "../../../src/realtime"
 import * as dateTime from "../../../src/util/dateTime"
 
+jest.mock("react-tooltip", () => ({
+  __esModule: true,
+  default: jest
+    .fn()
+    .mockImplementation(() => <div className="mock-react-tooltip" />),
+}))
+
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("1970-01-01T22:42:00.000Z"))

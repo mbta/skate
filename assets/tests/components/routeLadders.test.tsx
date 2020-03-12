@@ -7,6 +7,12 @@ jest.mock("../../src/laboratoryFeatures", () => ({
   __esModule: true,
   default: () => true,
 }))
+jest.mock("react-tooltip", () => ({
+  __esModule: true,
+  default: jest
+    .fn()
+    .mockImplementation(() => <div className="mock-react-tooltip" />),
+}))
 
 test("renders a route ladder", () => {
   const routes: Route[] = [
