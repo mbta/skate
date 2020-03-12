@@ -1,6 +1,7 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import vehicleLabel from "../helpers/vehicleLabel"
+import { blockWaiverDecoratorStyle } from "../models/blockWaiver"
 import {
   directionOnLadder,
   LadderDirection,
@@ -9,9 +10,8 @@ import {
 import { drawnStatus } from "../models/vehicleStatus"
 import { VehicleId, VehicleOrGhost } from "../realtime.d"
 import { selectVehicle } from "../state"
-import VehicleIcon, { Orientation, Size } from "./vehicleIcon"
-import { blockWaiverDecoratorStyle } from "../models/blockWaiver"
 import IconAlertCircle from "./iconAlertCircle"
+import VehicleIcon, { Orientation, Size } from "./vehicleIcon"
 
 const IncomingBoxVehicle = ({
   vehicleOrGhost,
