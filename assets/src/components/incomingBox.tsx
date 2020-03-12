@@ -10,7 +10,7 @@ import {
 import { drawnStatus } from "../models/vehicleStatus"
 import { VehicleId, VehicleOrGhost } from "../realtime.d"
 import { selectVehicle } from "../state"
-import IconAlertCircle from "./iconAlertCircle"
+import IconAlertCircle, { AlertIconStyle } from "./iconAlertCircle"
 import VehicleIcon, { Orientation, Size } from "./vehicleIcon"
 
 const IncomingBoxVehicle = ({
@@ -30,7 +30,9 @@ const IncomingBoxVehicle = ({
     VehicleDirection.Down
       ? Orientation.Down
       : Orientation.Up
-  const alertIconStyle = blockWaiverDecoratorStyle(vehicleOrGhost)
+  const alertIconStyle: AlertIconStyle | undefined = blockWaiverDecoratorStyle(
+    vehicleOrGhost
+  )
 
   return (
     <button
@@ -45,7 +47,9 @@ const IncomingBoxVehicle = ({
           status={drawnStatus(vehicleOrGhost)}
         />
       </div>
-      {alertIconStyle ? <IconAlertCircle style={alertIconStyle} /> : null}
+      {alertIconStyle === undefined ? null : (
+        <IconAlertCircle style={alertIconStyle} />
+      )}
       <div className="m-incoming-box__vehicle-label">
         {vehicleLabel(vehicleOrGhost, settings)}
       </div>
