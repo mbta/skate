@@ -1,5 +1,6 @@
 import {
   isGhost,
+  isLateVehicleIndicator,
   isShuttle,
   isVehicle,
   shouldShowHeadwayDiagram,
@@ -125,6 +126,24 @@ describe("isGhost", () => {
 
   test("returns false for a Vehicle", () => {
     expect(isGhost(vehicle)).toBeFalsy()
+  })
+})
+
+describe("isLateVehicleIndicator", () => {
+  test("returns true for a late vehicle indicator", () => {
+    const lateVehicleIndicatorGhost: Ghost = {
+      id: "ghost-incoming-123",
+    } as Ghost
+
+    expect(isLateVehicleIndicator(lateVehicleIndicatorGhost)).toBeTruthy()
+  })
+
+  test("returns false for a normal ghost", () => {
+    const regularGhost: Ghost = {
+      id: "ghost-123",
+    } as Ghost
+
+    expect(isLateVehicleIndicator(regularGhost)).toBeFalsy()
   })
 })
 
