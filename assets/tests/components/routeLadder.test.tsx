@@ -26,12 +26,6 @@ jest.mock("../../src/laboratoryFeatures", () => ({
   __esModule: true,
   default: () => false,
 }))
-jest.mock("react-tooltip", () => ({
-  __esModule: true,
-  default: jest
-    .fn()
-    .mockImplementation(() => <div className="mock-react-tooltip" />),
-}))
 
 const vehicles: Vehicle[] = [
   {

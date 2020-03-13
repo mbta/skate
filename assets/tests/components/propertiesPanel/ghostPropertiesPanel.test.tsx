@@ -14,12 +14,6 @@ jest.mock("../../../src/laboratoryFeatures", () => ({
   __esModule: true,
   default: jest.fn(() => true),
 }))
-jest.mock("react-tooltip", () => ({
-  __esModule: true,
-  default: jest
-    .fn()
-    .mockImplementation(() => <div className="mock-react-tooltip" />),
-}))
 
 const ghost: Ghost = {
   id: "ghost-trip",
