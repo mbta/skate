@@ -15,10 +15,6 @@ import { Timepoint } from "../../src/schedule.d"
 import { initialState, selectVehicle } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
 
-jest.mock("../../src/laboratoryFeatures", () => ({
-  __esModule: true,
-  default: () => true,
-}))
 jest.mock("../../src/hooks/useVehicles", () => ({
   __esModule: true,
   default: () => ({}),

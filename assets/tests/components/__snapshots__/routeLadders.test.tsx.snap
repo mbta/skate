@@ -75,9 +75,6 @@ exports[`renders a route ladder 1`] = `
         y1="0"
         y2={-40}
       />
-      <g
-        className="m-ladder__headway-lines"
-      />
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
@@ -228,9 +225,6 @@ exports[`renders a route ladder 1`] = `
         x2={40}
         y1="0"
         y2={-40}
-      />
-      <g
-        className="m-ladder__headway-lines"
       />
       <circle
         className="m-ladder__stop-circle"
