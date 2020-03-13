@@ -35,6 +35,10 @@
 
 .m-vehicle-icon__label-background {
   fill: $color-bg-base;
+
+  .m-vehicle-icon--highlighted & {
+    fill: $color-component-highlight;
+  }
 }
 
 .m-vehicle-icon__label {

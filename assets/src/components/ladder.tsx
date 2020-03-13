@@ -5,10 +5,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { partition } from "../helpers/array"
 import vehicleLabel from "../helpers/vehicleLabel"
 import featureIsEnabled from "../laboratoryFeatures"
-import {
-  blockWaiverDecoratorStyle,
-  BlockWaiverDecoratorStyle,
-} from "../models/blockWaiver"
+import { blockWaiverAlertStyle } from "../models/blockWaiver"
 import {
   LadderDirection,
   orderTimepoints,
@@ -147,14 +144,12 @@ const VehicleSvg = ({
   const { vehicle, x, y, vehicleDirection } = ladderVehicle
   const [{ settings }, dispatch] = useContext(StateDispatchContext)
   const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
-  const [hasBlockWaiverIcon, classModifier] = blockWaiverDecoratorClass(vehicle)
-  const blockWaiverClass =
-    classModifier === "" ? "" : `m-ladder__vehicle${classModifier}`
+  const alertIconStyle = blockWaiverAlertStyle(vehicle)
 
   return (
     <g>
       <g
-        className={`m-ladder__vehicle ${selectedClass} ${blockWaiverClass}`}
+        className={`m-ladder__vehicle ${selectedClass} `}
         transform={`translate(${x},${y})`}
         onClick={() => dispatch(selectVehicle(associatedVehicleId(vehicle.id)))}
       >
@@ -164,26 +159,11 @@ const VehicleSvg = ({
           label={vehicleLabel(vehicle, settings)}
           variant={vehicle.viaVariant}
           status={drawnStatus(vehicle)}
-          alertIcon={hasBlockWaiverIcon}
+          alertIconStyle={alertIconStyle}
         />
       </g>
     </g>
   )
-}
-
-const blockWaiverDecoratorClass = (
-  vehicleOrGhost: VehicleOrGhost
-): [boolean, string] => {
-  switch (blockWaiverDecoratorStyle(vehicleOrGhost)) {
-    case BlockWaiverDecoratorStyle.None:
-      return [false, ""]
-    case BlockWaiverDecoratorStyle.Black:
-      return [true, "--block-waiver-black"]
-    case BlockWaiverDecoratorStyle.Grey:
-      return [true, "--block-waiver-grey"]
-    case BlockWaiverDecoratorStyle.Highlighted:
-      return [true, "--block-waiver-highlighted"]
-  }
 }
 
 // The long vertical lines on the sides of the ladder

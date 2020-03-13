@@ -7,7 +7,7 @@ import {
 } from "../../models/blockWaiver"
 import { BlockWaiver } from "../../realtime"
 import { formattedTime } from "../../util/dateTime"
-import IconAlertCircle from "../iconAlertCircle"
+import IconAlertCircle, { AlertIconStyle } from "../iconAlertCircle"
 
 interface Props {
   blockWaiver: BlockWaiver
@@ -32,6 +32,17 @@ const currentFuturePastTitle = (blockWaiver: BlockWaiver): string => {
       return "Future"
     case CurrentFuturePastType.Past:
       return "Past"
+  }
+}
+
+const alertIconStyle = (blockWaiver: BlockWaiver): AlertIconStyle => {
+  switch (currentFuturePastType(blockWaiver)) {
+    case CurrentFuturePastType.Current:
+      return AlertIconStyle.Black
+    case CurrentFuturePastType.Future:
+      return AlertIconStyle.GreyOnGrey
+    case CurrentFuturePastType.Past:
+      return AlertIconStyle.GreyOnGrey
   }
 }
 
@@ -85,7 +96,7 @@ const BlockWaiverBanner = ({ blockWaiver }: Props) => (
   >
     <div className="m-block-waiver-banner__header">
       <span className="m-block-waiver-banner__alert-icon">
-        <IconAlertCircle />
+        <IconAlertCircle style={alertIconStyle(blockWaiver)} />
       </span>
       <div className="m-block-waiver-banner__title">
         Dispatcher Note - {currentFuturePastTitle(blockWaiver)}

@@ -1,6 +1,6 @@
 import React from "react"
 import { DrawnStatus, statusClass } from "../models/vehicleStatus"
-import { IconAlertCircleSvgNode } from "./iconAlertCircle"
+import { IconAlertCircleSvgNode, AlertIconStyle } from "./iconAlertCircle"
 
 export enum Orientation {
   Up,
@@ -21,7 +21,7 @@ export interface Props {
   label?: string
   variant?: string | null
   status?: DrawnStatus
-  alertIcon?: boolean
+  alertIconStyle?: AlertIconStyle
 }
 
 /*
@@ -31,6 +31,7 @@ Sizes are before scaling, relative to the center of the triangle
 const X_CENTER_TO_SIDE = 22
 const Y_CENTER_TO_POINT = 20
 const Y_CENTER_TO_BASE = 20
+const ALERT_ICON_RADIUS = 27
 
 export const VehicleIcon = (props: Props) => {
   if (
@@ -61,6 +62,8 @@ const viewBox = ({
   size,
   orientation,
   label,
+  status,
+  alertIconStyle,
 }: Props): { left: number; top: number; width: number; height: number } => {
   // shrink the viewbox to fit around the triangle and label
   const scale = scaleForSize(size)
@@ -96,8 +99,18 @@ const viewBox = ({
       bottom = scale * X_CENTER_TO_SIDE + labelBgHeight
       break
   }
+  // expand to fit the label
   left = Math.min(left, -labelBgWidth / 2)
   right = Math.max(right, labelBgWidth / 2)
+  // expand to fit the alert icon
+  if (alertIconStyle !== undefined) {
+    const [alertIconX, alertIconY] = alertIconXY(size, orientation, status)
+    const alertIconRadius = ALERT_ICON_RADIUS * alertCircleIconScale(size)
+    left = Math.min(left, alertIconX - alertIconRadius)
+    right = Math.max(right, alertIconX + alertIconRadius)
+    top = Math.min(top, alertIconY - alertIconRadius)
+    bottom = Math.max(bottom, alertIconY + alertIconRadius)
+  }
   const width = right - left
   const height = bottom - top
   return { left, top, width, height }
@@ -109,7 +122,7 @@ export const VehicleIconSvgNode = ({
   label,
   variant,
   status,
-  alertIcon,
+  alertIconStyle,
 }: Props) => {
   status = status || "plain"
   variant = variant && variant !== "_" ? variant : undefined
@@ -120,12 +133,16 @@ export const VehicleIconSvgNode = ({
   ) {
     orientation = Orientation.Up
   }
+  const classes: string[] = [
+    "m-vehicle-icon",
+    `m-vehicle-icon${sizeClassSuffix(size)}`,
+    statusClass(status),
+    alertIconStyle === AlertIconStyle.Highlighted
+      ? "m-vehicle-icon--highlighted"
+      : "",
+  ]
   return (
-    <g
-      className={`m-vehicle-icon m-vehicle-icon${sizeClassSuffix(
-        size
-      )} ${statusClass(status)}`}
-    >
+    <g className={classes.filter(className => className !== "").join(" ")}>
       {label ? (
         <Label size={size} orientation={orientation} label={label} />
       ) : null}
@@ -142,12 +159,14 @@ export const VehicleIconSvgNode = ({
           status={status}
         />
       ) : null}
-      {alertIcon ? (
-        status === "ghost" ? (
-          <AlertCircleIconForGhost orientation={orientation} size={size} />
-        ) : (
-          <AlertCircleIconForTriangle orientation={orientation} size={size} />
-        )
+
+      {alertIconStyle ? (
+        <AlertCircleIcon
+          size={size}
+          orientation={orientation}
+          status={status}
+          alertIconStyle={alertIconStyle}
+        />
       ) : null}
     </g>
   )
@@ -342,16 +361,21 @@ const Variant = ({
   )
 }
 
-const AlertCircleIconForTriangle = ({
-  orientation,
-  size,
-}: {
-  orientation: Orientation
-  size: Size
-}) => {
+const alertIconXY = (
+  size: Size,
+  orientation: Orientation,
+  status?: DrawnStatus
+): [number, number] => {
   const scale = scaleForSize(size)
-  const [x, y] = rotate(14, 3, orientation)
-  return AlertCircleIcon(x * scale, y * scale)
+  if (status === "ghost") {
+    const y = -10
+    const x = orientation === Orientation.Down ? -15 : 15
+    return [x * scale, y * scale]
+  } else {
+    let [x, y] = size === Size.Small ? [13, -5] : [14, 3]
+    ;[x, y] = rotate(x, y, orientation)
+    return [x * scale, y * scale]
+  }
 }
 
 const rotate = (
@@ -371,24 +395,36 @@ const rotate = (
   }
 }
 
-const AlertCircleIconForGhost = ({
-  orientation,
+const AlertCircleIcon = ({
   size,
+  orientation,
+  status,
+  alertIconStyle,
 }: {
-  orientation: Orientation
   size: Size
+  orientation: Orientation
+  status: DrawnStatus
+  alertIconStyle: AlertIconStyle
 }) => {
-  const scale = scaleForSize(size)
-  const y = -10
-  const x = orientation === Orientation.Down ? -15 : 15
-  return AlertCircleIcon(x * scale, y * scale)
+  const [x, y] = alertIconXY(size, orientation, status)
+  const scale = alertCircleIconScale(size)
+  return (
+    <g transform={`translate(${x}, ${y}) scale(${scale}) translate(-24, -24)`}>
+      <IconAlertCircleSvgNode style={alertIconStyle} />
+    </g>
+  )
 }
 
-const AlertCircleIcon = (x: number, y: number) => (
-  <g transform={`translate(${x}, ${y}) scale(0.2) translate(-24, -24)`}>
-    <IconAlertCircleSvgNode />
-  </g>
-)
+const alertCircleIconScale = (size: Size): number => {
+  switch (size) {
+    case Size.Small:
+      return 0.16
+    case Size.Medium:
+      return 0.2
+    case Size.Large:
+      return 0.3
+  }
+}
 
 const sizeClassSuffix = (size: Size): string => {
   switch (size) {

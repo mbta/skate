@@ -10,6 +10,11 @@ import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle, VehicleOrGhost } from "../../src/realtime.d"
 import { initialState, selectVehicle } from "../../src/state"
 
+jest.mock("../../src/laboratoryFeatures", () => ({
+  __esModule: true,
+  default: () => true,
+}))
+
 const vehicles: Vehicle[] = [
   {
     id: "y1818",

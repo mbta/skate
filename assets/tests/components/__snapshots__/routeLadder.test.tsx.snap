@@ -914,34 +914,38 @@ Array [
       className="m-incoming-box__vehicle "
       onClick={[Function]}
     >
-      <svg
-        style={
-          Object {
-            "height": 15.2,
-            "width": 16.72,
-          }
-        }
-        viewBox="-8.36 -7.6 16.72 15.2"
+      <div
+        className="m-incoming-box__vehicle-icon"
       >
-        <g
-          className="m-vehicle-icon m-vehicle-icon--small on-time"
+        <svg
+          style={
+            Object {
+              "height": 15.2,
+              "width": 16.72,
+            }
+          }
+          viewBox="-8.36 -7.6 16.72 15.2"
         >
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-            transform="scale(0.38) rotate(0) translate(-24,-22)"
-          />
-          <text
-            className="m-vehicle-icon__variant"
-            dominantBaseline="alphabetic"
-            textAnchor="middle"
-            x={0}
-            y={5.6}
+          <g
+            className="m-vehicle-icon m-vehicle-icon--small on-time"
           >
-            4
-          </text>
-        </g>
-      </svg>
+            <path
+              className="m-vehicle-icon__triangle"
+              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              transform="scale(0.38) rotate(0) translate(-24,-22)"
+            />
+            <text
+              className="m-vehicle-icon__variant"
+              dominantBaseline="alphabetic"
+              textAnchor="middle"
+              x={0}
+              y={5.6}
+            >
+              4
+            </text>
+          </g>
+        </svg>
+      </div>
       <div
         className="m-incoming-box__vehicle-label"
       >
@@ -952,25 +956,29 @@ Array [
       className="m-incoming-box__vehicle "
       onClick={[Function]}
     >
-      <svg
-        style={
-          Object {
-            "height": 15.2,
-            "width": 16.72,
-          }
-        }
-        viewBox="-8.36 -7.6 16.72 15.2"
+      <div
+        className="m-incoming-box__vehicle-icon"
       >
-        <g
-          className="m-vehicle-icon m-vehicle-icon--small on-time"
+        <svg
+          style={
+            Object {
+              "height": 15.2,
+              "width": 16.72,
+            }
+          }
+          viewBox="-8.36 -7.6 16.72 15.2"
         >
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-            transform="scale(0.38) rotate(180) translate(-24,-22)"
-          />
-        </g>
-      </svg>
+          <g
+            className="m-vehicle-icon m-vehicle-icon--small on-time"
+          >
+            <path
+              className="m-vehicle-icon__triangle"
+              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              transform="scale(0.38) rotate(180) translate(-24,-22)"
+            />
+          </g>
+        </svg>
+      </div>
       <div
         className="m-incoming-box__vehicle-label"
       >

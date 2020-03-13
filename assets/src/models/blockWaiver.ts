@@ -2,6 +2,7 @@ import featureIsEnabled from "../laboratoryFeatures"
 import { BlockWaiver, VehicleOrGhost } from "../realtime"
 import { now } from "../util/dateTime"
 import { isGhost } from "./vehicle"
+import { AlertIconStyle } from "../components/iconAlertCircle"
 
 export enum CurrentFuturePastType {
   Current = 1,
@@ -35,13 +36,6 @@ export const hasCurrentBlockWaiver = ({
       currentFuturePastType(blockWaiver) === CurrentFuturePastType.Current
   )
 
-export enum BlockWaiverDecoratorStyle {
-  None = 0,
-  Black,
-  Grey,
-  Highlighted,
-}
-
 /**
  * has waiver?      | ghost       | vehicle
  * ---------------- | ----------- | -------
@@ -49,20 +43,18 @@ export enum BlockWaiverDecoratorStyle {
  * yes, not current | highlighted | grey
  * none             | highlighted | none
  */
-export const blockWaiverDecoratorStyle = (
+export const blockWaiverAlertStyle = (
   vehicleOrGhost: VehicleOrGhost
-): BlockWaiverDecoratorStyle => {
+): AlertIconStyle | undefined => {
   if (!featureIsEnabled("block_waivers")) {
-    return BlockWaiverDecoratorStyle.None
+    return undefined
   }
   if (hasCurrentBlockWaiver(vehicleOrGhost)) {
-    return BlockWaiverDecoratorStyle.Black
+    return AlertIconStyle.Black
   }
   if (isGhost(vehicleOrGhost)) {
-    return BlockWaiverDecoratorStyle.Highlighted
+    return AlertIconStyle.Highlighted
   } else {
-    return hasBlockWaiver(vehicleOrGhost)
-      ? BlockWaiverDecoratorStyle.Grey
-      : BlockWaiverDecoratorStyle.None
+    return hasBlockWaiver(vehicleOrGhost) ? AlertIconStyle.Grey : undefined
   }
 }

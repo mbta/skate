@@ -106,7 +106,7 @@ exports[`ghost with variant doesn't have eyes 1`] = `
 exports[`renders an unwrapped svg node 1`] = `
 <svg>
   <g
-    className="m-vehicle-icon m-vehicle-icon--medium "
+    className="m-vehicle-icon m-vehicle-icon--medium"
   >
     <rect
       className="m-vehicle-icon__label-background"
@@ -147,7 +147,7 @@ Array [
     viewBox="-36 -20 72 64"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--large "
+      className="m-vehicle-icon m-vehicle-icon--large"
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -184,7 +184,7 @@ Array [
     viewBox="-36 -20 72 64"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--large "
+      className="m-vehicle-icon m-vehicle-icon--large"
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -219,11 +219,11 @@ Array [
   <svg
     style={
       Object {
-        "height": 15.2,
-        "width": 16.72,
+        "height": 15.72,
+        "width": 18.38,
       }
     }
-    viewBox="-8.36 -7.6 16.72 15.2"
+    viewBox="-8.36 -8.120000000000001 18.38 15.72"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--small ghost"
@@ -257,29 +257,33 @@ Array [
         />
       </g>
       <g
-        transform="translate(5.7, -3.8) scale(0.2) translate(-24, -24)"
+        transform="translate(5.7, -3.8) scale(0.16) translate(-24, -24)"
       >
-        <circle
-          className="c-icon-alert-circle__outline"
-          cx="24"
-          cy="24"
-          r="27"
-        />
-        <circle
-          className="c-icon-alert-circle__fill"
-          cx="24"
-          cy="24"
-          r="22.59"
-        />
         <g
-          className="c-icon-alert-circle__exclamation-point"
+          className="c-icon-alert-circle--black"
         >
-          <path
-            d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+          <circle
+            className="c-icon-alert-circle__outline"
+            cx="24"
+            cy="24"
+            r="27"
           />
-          <path
-            d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+          <circle
+            className="c-icon-alert-circle__fill"
+            cx="24"
+            cy="24"
+            r="22.59"
           />
+          <g
+            className="c-icon-alert-circle__exclamation-point"
+          >
+            <path
+              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            />
+            <path
+              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            />
+          </g>
         </g>
       </g>
     </g>
@@ -288,13 +292,13 @@ Array [
     style={
       Object {
         "height": 25,
-        "width": 27.5,
+        "width": 28.525,
       }
     }
-    viewBox="-13.75 -12.5 27.5 25"
+    viewBox="-14.775 -12.5 28.525 25"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium ghost"
+      className="m-vehicle-icon m-vehicle-icon--medium ghost m-vehicle-icon--highlighted"
     >
       <g
         transform="scale(0.4375) translate(-24,-23)"
@@ -327,27 +331,31 @@ Array [
       <g
         transform="translate(-9.375, -6.25) scale(0.2) translate(-24, -24)"
       >
-        <circle
-          className="c-icon-alert-circle__outline"
-          cx="24"
-          cy="24"
-          r="27"
-        />
-        <circle
-          className="c-icon-alert-circle__fill"
-          cx="24"
-          cy="24"
-          r="22.59"
-        />
         <g
-          className="c-icon-alert-circle__exclamation-point"
+          className="c-icon-alert-circle--highlighted"
         >
-          <path
-            d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+          <circle
+            className="c-icon-alert-circle__outline"
+            cx="24"
+            cy="24"
+            r="27"
           />
-          <path
-            d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+          <circle
+            className="c-icon-alert-circle__fill"
+            cx="24"
+            cy="24"
+            r="22.59"
           />
+          <g
+            className="c-icon-alert-circle__exclamation-point"
+          >
+            <path
+              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            />
+            <path
+              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            />
+          </g>
         </g>
       </g>
     </g>
@@ -367,7 +375,7 @@ Array [
     viewBox="-8.36 -7.6 16.72 15.2"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--small "
+      className="m-vehicle-icon m-vehicle-icon--small"
     >
       <path
         className="m-vehicle-icon__triangle"
@@ -386,7 +394,7 @@ Array [
     viewBox="-7.6 -8.36 15.2 16.72"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--small "
+      className="m-vehicle-icon m-vehicle-icon--small"
     >
       <path
         className="m-vehicle-icon__triangle"
@@ -405,7 +413,7 @@ Array [
     viewBox="-8.36 -7.6 16.72 15.2"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--small "
+      className="m-vehicle-icon m-vehicle-icon--small"
     >
       <path
         className="m-vehicle-icon__triangle"
@@ -424,7 +432,7 @@ Array [
     viewBox="-7.6 -8.36 15.2 16.72"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--small "
+      className="m-vehicle-icon m-vehicle-icon--small"
     >
       <path
         className="m-vehicle-icon__triangle"
@@ -443,7 +451,7 @@ Array [
     viewBox="-13.75 -12.5 27.5 25"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium "
+      className="m-vehicle-icon m-vehicle-icon--medium"
     >
       <path
         className="m-vehicle-icon__triangle"
@@ -462,7 +470,7 @@ Array [
     viewBox="-12.5 -13.75 25 27.5"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium "
+      className="m-vehicle-icon m-vehicle-icon--medium"
     >
       <path
         className="m-vehicle-icon__triangle"
@@ -481,7 +489,7 @@ Array [
     viewBox="-13.75 -12.5 27.5 25"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium "
+      className="m-vehicle-icon m-vehicle-icon--medium"
     >
       <path
         className="m-vehicle-icon__triangle"
@@ -500,7 +508,7 @@ Array [
     viewBox="-12.5 -13.75 25 27.5"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium "
+      className="m-vehicle-icon m-vehicle-icon--medium"
     >
       <path
         className="m-vehicle-icon__triangle"
@@ -519,7 +527,7 @@ Array [
     viewBox="-22 -20 44 40"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--large "
+      className="m-vehicle-icon m-vehicle-icon--large"
     >
       <path
         className="m-vehicle-icon__triangle"
@@ -538,7 +546,7 @@ Array [
     viewBox="-20 -22 40 44"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--large "
+      className="m-vehicle-icon m-vehicle-icon--large"
     >
       <path
         className="m-vehicle-icon__triangle"
@@ -557,7 +565,7 @@ Array [
     viewBox="-22 -20 44 40"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--large "
+      className="m-vehicle-icon m-vehicle-icon--large"
     >
       <path
         className="m-vehicle-icon__triangle"
@@ -576,7 +584,7 @@ Array [
     viewBox="-20 -22 40 44"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--large "
+      className="m-vehicle-icon m-vehicle-icon--large"
     >
       <path
         className="m-vehicle-icon__triangle"
@@ -718,7 +726,7 @@ Array [
     viewBox="-13.75 -12.5 27.5 25"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium "
+      className="m-vehicle-icon m-vehicle-icon--medium"
     >
       <path
         className="m-vehicle-icon__triangle"
@@ -737,7 +745,7 @@ Array [
     viewBox="-13.75 -12.5 27.5 25"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium "
+      className="m-vehicle-icon m-vehicle-icon--medium"
     >
       <path
         className="m-vehicle-icon__triangle"
@@ -761,7 +769,7 @@ Array [
     viewBox="-13 -7.6 26 26.200000000000003"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--small "
+      className="m-vehicle-icon m-vehicle-icon--small"
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -796,29 +804,33 @@ Array [
         X
       </text>
       <g
-        transform="translate(5.32, 1.1400000000000001) scale(0.2) translate(-24, -24)"
+        transform="translate(4.94, -1.9) scale(0.16) translate(-24, -24)"
       >
-        <circle
-          className="c-icon-alert-circle__outline"
-          cx="24"
-          cy="24"
-          r="27"
-        />
-        <circle
-          className="c-icon-alert-circle__fill"
-          cx="24"
-          cy="24"
-          r="22.59"
-        />
         <g
-          className="c-icon-alert-circle__exclamation-point"
+          className="c-icon-alert-circle--black"
         >
-          <path
-            d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+          <circle
+            className="c-icon-alert-circle__outline"
+            cx="24"
+            cy="24"
+            r="27"
           />
-          <path
-            d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+          <circle
+            className="c-icon-alert-circle__fill"
+            cx="24"
+            cy="24"
+            r="22.59"
           />
+          <g
+            className="c-icon-alert-circle__exclamation-point"
+          >
+            <path
+              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            />
+            <path
+              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            />
+          </g>
         </g>
       </g>
     </g>
@@ -833,7 +845,7 @@ Array [
     viewBox="-13 -8.36 26 27.72"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--small "
+      className="m-vehicle-icon m-vehicle-icon--small"
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -868,29 +880,33 @@ Array [
         X
       </text>
       <g
-        transform="translate(-1.1400000000000001, 5.32) scale(0.2) translate(-24, -24)"
+        transform="translate(1.9, 4.94) scale(0.16) translate(-24, -24)"
       >
-        <circle
-          className="c-icon-alert-circle__outline"
-          cx="24"
-          cy="24"
-          r="27"
-        />
-        <circle
-          className="c-icon-alert-circle__fill"
-          cx="24"
-          cy="24"
-          r="22.59"
-        />
         <g
-          className="c-icon-alert-circle__exclamation-point"
+          className="c-icon-alert-circle--black"
         >
-          <path
-            d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+          <circle
+            className="c-icon-alert-circle__outline"
+            cx="24"
+            cy="24"
+            r="27"
           />
-          <path
-            d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+          <circle
+            className="c-icon-alert-circle__fill"
+            cx="24"
+            cy="24"
+            r="22.59"
           />
+          <g
+            className="c-icon-alert-circle__exclamation-point"
+          >
+            <path
+              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            />
+            <path
+              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            />
+          </g>
         </g>
       </g>
     </g>
@@ -905,7 +921,7 @@ Array [
     viewBox="-13 -18.6 26 26.200000000000003"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--small "
+      className="m-vehicle-icon m-vehicle-icon--small"
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -940,29 +956,33 @@ Array [
         X
       </text>
       <g
-        transform="translate(-5.32, -1.1400000000000001) scale(0.2) translate(-24, -24)"
+        transform="translate(-4.94, 1.9) scale(0.16) translate(-24, -24)"
       >
-        <circle
-          className="c-icon-alert-circle__outline"
-          cx="24"
-          cy="24"
-          r="27"
-        />
-        <circle
-          className="c-icon-alert-circle__fill"
-          cx="24"
-          cy="24"
-          r="22.59"
-        />
         <g
-          className="c-icon-alert-circle__exclamation-point"
+          className="c-icon-alert-circle--black"
         >
-          <path
-            d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+          <circle
+            className="c-icon-alert-circle__outline"
+            cx="24"
+            cy="24"
+            r="27"
           />
-          <path
-            d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+          <circle
+            className="c-icon-alert-circle__fill"
+            cx="24"
+            cy="24"
+            r="22.59"
           />
+          <g
+            className="c-icon-alert-circle__exclamation-point"
+          >
+            <path
+              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            />
+            <path
+              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            />
+          </g>
         </g>
       </g>
     </g>
@@ -970,14 +990,14 @@ Array [
   <svg
     style={
       Object {
-        "height": 27.72,
+        "height": 28.62,
         "width": 26,
       }
     }
-    viewBox="-13 -8.36 26 27.72"
+    viewBox="-13 -9.260000000000002 26 28.62"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--small "
+      className="m-vehicle-icon m-vehicle-icon--small"
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -1012,29 +1032,33 @@ Array [
         X
       </text>
       <g
-        transform="translate(1.1400000000000001, -5.32) scale(0.2) translate(-24, -24)"
+        transform="translate(-1.9, -4.94) scale(0.16) translate(-24, -24)"
       >
-        <circle
-          className="c-icon-alert-circle__outline"
-          cx="24"
-          cy="24"
-          r="27"
-        />
-        <circle
-          className="c-icon-alert-circle__fill"
-          cx="24"
-          cy="24"
-          r="22.59"
-        />
         <g
-          className="c-icon-alert-circle__exclamation-point"
+          className="c-icon-alert-circle--black"
         >
-          <path
-            d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+          <circle
+            className="c-icon-alert-circle__outline"
+            cx="24"
+            cy="24"
+            r="27"
           />
-          <path
-            d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+          <circle
+            className="c-icon-alert-circle__fill"
+            cx="24"
+            cy="24"
+            r="22.59"
           />
+          <g
+            className="c-icon-alert-circle__exclamation-point"
+          >
+            <path
+              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            />
+            <path
+              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            />
+          </g>
         </g>
       </g>
     </g>
@@ -1043,13 +1067,13 @@ Array [
     style={
       Object {
         "height": 36,
-        "width": 27.5,
+        "width": 27.9,
       }
     }
-    viewBox="-13.75 -12.5 27.5 36"
+    viewBox="-13.75 -12.5 27.9 36"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium "
+      className="m-vehicle-icon m-vehicle-icon--medium"
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -1086,27 +1110,31 @@ Array [
       <g
         transform="translate(8.75, 1.875) scale(0.2) translate(-24, -24)"
       >
-        <circle
-          className="c-icon-alert-circle__outline"
-          cx="24"
-          cy="24"
-          r="27"
-        />
-        <circle
-          className="c-icon-alert-circle__fill"
-          cx="24"
-          cy="24"
-          r="22.59"
-        />
         <g
-          className="c-icon-alert-circle__exclamation-point"
+          className="c-icon-alert-circle--black"
         >
-          <path
-            d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+          <circle
+            className="c-icon-alert-circle__outline"
+            cx="24"
+            cy="24"
+            r="27"
           />
-          <path
-            d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+          <circle
+            className="c-icon-alert-circle__fill"
+            cx="24"
+            cy="24"
+            r="22.59"
           />
+          <g
+            className="c-icon-alert-circle__exclamation-point"
+          >
+            <path
+              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            />
+            <path
+              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            />
+          </g>
         </g>
       </g>
     </g>
@@ -1121,7 +1149,7 @@ Array [
     viewBox="-13 -13.75 26 38.5"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium "
+      className="m-vehicle-icon m-vehicle-icon--medium"
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -1158,27 +1186,31 @@ Array [
       <g
         transform="translate(-1.875, 8.75) scale(0.2) translate(-24, -24)"
       >
-        <circle
-          className="c-icon-alert-circle__outline"
-          cx="24"
-          cy="24"
-          r="27"
-        />
-        <circle
-          className="c-icon-alert-circle__fill"
-          cx="24"
-          cy="24"
-          r="22.59"
-        />
         <g
-          className="c-icon-alert-circle__exclamation-point"
+          className="c-icon-alert-circle--black"
         >
-          <path
-            d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+          <circle
+            className="c-icon-alert-circle__outline"
+            cx="24"
+            cy="24"
+            r="27"
           />
-          <path
-            d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+          <circle
+            className="c-icon-alert-circle__fill"
+            cx="24"
+            cy="24"
+            r="22.59"
           />
+          <g
+            className="c-icon-alert-circle__exclamation-point"
+          >
+            <path
+              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            />
+            <path
+              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            />
+          </g>
         </g>
       </g>
     </g>
@@ -1187,13 +1219,13 @@ Array [
     style={
       Object {
         "height": 36,
-        "width": 27.5,
+        "width": 27.9,
       }
     }
-    viewBox="-13.75 -23.5 27.5 36"
+    viewBox="-14.15 -23.5 27.9 36"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium "
+      className="m-vehicle-icon m-vehicle-icon--medium"
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -1230,27 +1262,31 @@ Array [
       <g
         transform="translate(-8.75, -1.875) scale(0.2) translate(-24, -24)"
       >
-        <circle
-          className="c-icon-alert-circle__outline"
-          cx="24"
-          cy="24"
-          r="27"
-        />
-        <circle
-          className="c-icon-alert-circle__fill"
-          cx="24"
-          cy="24"
-          r="22.59"
-        />
         <g
-          className="c-icon-alert-circle__exclamation-point"
+          className="c-icon-alert-circle--black"
         >
-          <path
-            d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+          <circle
+            className="c-icon-alert-circle__outline"
+            cx="24"
+            cy="24"
+            r="27"
           />
-          <path
-            d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+          <circle
+            className="c-icon-alert-circle__fill"
+            cx="24"
+            cy="24"
+            r="22.59"
           />
+          <g
+            className="c-icon-alert-circle__exclamation-point"
+          >
+            <path
+              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            />
+            <path
+              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            />
+          </g>
         </g>
       </g>
     </g>
@@ -1258,14 +1294,14 @@ Array [
   <svg
     style={
       Object {
-        "height": 38.5,
+        "height": 38.9,
         "width": 26,
       }
     }
-    viewBox="-13 -13.75 26 38.5"
+    viewBox="-13 -14.15 26 38.9"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--medium "
+      className="m-vehicle-icon m-vehicle-icon--medium"
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -1302,27 +1338,31 @@ Array [
       <g
         transform="translate(1.875, -8.75) scale(0.2) translate(-24, -24)"
       >
-        <circle
-          className="c-icon-alert-circle__outline"
-          cx="24"
-          cy="24"
-          r="27"
-        />
-        <circle
-          className="c-icon-alert-circle__fill"
-          cx="24"
-          cy="24"
-          r="22.59"
-        />
         <g
-          className="c-icon-alert-circle__exclamation-point"
+          className="c-icon-alert-circle--black"
         >
-          <path
-            d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+          <circle
+            className="c-icon-alert-circle__outline"
+            cx="24"
+            cy="24"
+            r="27"
           />
-          <path
-            d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+          <circle
+            className="c-icon-alert-circle__fill"
+            cx="24"
+            cy="24"
+            r="22.59"
           />
+          <g
+            className="c-icon-alert-circle__exclamation-point"
+          >
+            <path
+              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            />
+            <path
+              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            />
+          </g>
         </g>
       </g>
     </g>
@@ -1337,7 +1377,7 @@ Array [
     viewBox="-32 -20 64 64"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--large "
+      className="m-vehicle-icon m-vehicle-icon--large"
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -1372,29 +1412,33 @@ Array [
         X
       </text>
       <g
-        transform="translate(14, 3) scale(0.2) translate(-24, -24)"
+        transform="translate(14, 3) scale(0.3) translate(-24, -24)"
       >
-        <circle
-          className="c-icon-alert-circle__outline"
-          cx="24"
-          cy="24"
-          r="27"
-        />
-        <circle
-          className="c-icon-alert-circle__fill"
-          cx="24"
-          cy="24"
-          r="22.59"
-        />
         <g
-          className="c-icon-alert-circle__exclamation-point"
+          className="c-icon-alert-circle--black"
         >
-          <path
-            d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+          <circle
+            className="c-icon-alert-circle__outline"
+            cx="24"
+            cy="24"
+            r="27"
           />
-          <path
-            d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+          <circle
+            className="c-icon-alert-circle__fill"
+            cx="24"
+            cy="24"
+            r="22.59"
           />
+          <g
+            className="c-icon-alert-circle__exclamation-point"
+          >
+            <path
+              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            />
+            <path
+              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            />
+          </g>
         </g>
       </g>
     </g>
@@ -1409,7 +1453,7 @@ Array [
     viewBox="-32 -22 64 68"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--large "
+      className="m-vehicle-icon m-vehicle-icon--large"
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -1444,29 +1488,33 @@ Array [
         X
       </text>
       <g
-        transform="translate(-3, 14) scale(0.2) translate(-24, -24)"
+        transform="translate(-3, 14) scale(0.3) translate(-24, -24)"
       >
-        <circle
-          className="c-icon-alert-circle__outline"
-          cx="24"
-          cy="24"
-          r="27"
-        />
-        <circle
-          className="c-icon-alert-circle__fill"
-          cx="24"
-          cy="24"
-          r="22.59"
-        />
         <g
-          className="c-icon-alert-circle__exclamation-point"
+          className="c-icon-alert-circle--black"
         >
-          <path
-            d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+          <circle
+            className="c-icon-alert-circle__outline"
+            cx="24"
+            cy="24"
+            r="27"
           />
-          <path
-            d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+          <circle
+            className="c-icon-alert-circle__fill"
+            cx="24"
+            cy="24"
+            r="22.59"
           />
+          <g
+            className="c-icon-alert-circle__exclamation-point"
+          >
+            <path
+              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            />
+            <path
+              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            />
+          </g>
         </g>
       </g>
     </g>
@@ -1481,7 +1529,7 @@ Array [
     viewBox="-32 -44 64 64"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--large "
+      className="m-vehicle-icon m-vehicle-icon--large"
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -1516,29 +1564,33 @@ Array [
         X
       </text>
       <g
-        transform="translate(-14, -3) scale(0.2) translate(-24, -24)"
+        transform="translate(-14, -3) scale(0.3) translate(-24, -24)"
       >
-        <circle
-          className="c-icon-alert-circle__outline"
-          cx="24"
-          cy="24"
-          r="27"
-        />
-        <circle
-          className="c-icon-alert-circle__fill"
-          cx="24"
-          cy="24"
-          r="22.59"
-        />
         <g
-          className="c-icon-alert-circle__exclamation-point"
+          className="c-icon-alert-circle--black"
         >
-          <path
-            d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+          <circle
+            className="c-icon-alert-circle__outline"
+            cx="24"
+            cy="24"
+            r="27"
           />
-          <path
-            d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+          <circle
+            className="c-icon-alert-circle__fill"
+            cx="24"
+            cy="24"
+            r="22.59"
           />
+          <g
+            className="c-icon-alert-circle__exclamation-point"
+          >
+            <path
+              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            />
+            <path
+              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            />
+          </g>
         </g>
       </g>
     </g>
@@ -1546,14 +1598,14 @@ Array [
   <svg
     style={
       Object {
-        "height": 68,
+        "height": 68.1,
         "width": 64,
       }
     }
-    viewBox="-32 -22 64 68"
+    viewBox="-32 -22.1 64 68.1"
   >
     <g
-      className="m-vehicle-icon m-vehicle-icon--large "
+      className="m-vehicle-icon m-vehicle-icon--large"
     >
       <rect
         className="m-vehicle-icon__label-background"
@@ -1588,29 +1640,33 @@ Array [
         X
       </text>
       <g
-        transform="translate(3, -14) scale(0.2) translate(-24, -24)"
+        transform="translate(3, -14) scale(0.3) translate(-24, -24)"
       >
-        <circle
-          className="c-icon-alert-circle__outline"
-          cx="24"
-          cy="24"
-          r="27"
-        />
-        <circle
-          className="c-icon-alert-circle__fill"
-          cx="24"
-          cy="24"
-          r="22.59"
-        />
         <g
-          className="c-icon-alert-circle__exclamation-point"
+          className="c-icon-alert-circle--black"
         >
-          <path
-            d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+          <circle
+            className="c-icon-alert-circle__outline"
+            cx="24"
+            cy="24"
+            r="27"
           />
-          <path
-            d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+          <circle
+            className="c-icon-alert-circle__fill"
+            cx="24"
+            cy="24"
+            r="22.59"
           />
+          <g
+            className="c-icon-alert-circle__exclamation-point"
+          >
+            <path
+              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            />
+            <path
+              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            />
+          </g>
         </g>
       </g>
     </g>

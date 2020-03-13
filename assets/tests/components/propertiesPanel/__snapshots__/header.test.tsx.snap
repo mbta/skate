@@ -466,7 +466,7 @@ exports[`Header renders for a shuttle 1`] = `
       viewBox="-36 -20 72 64"
     >
       <g
-        className="m-vehicle-icon m-vehicle-icon--large "
+        className="m-vehicle-icon m-vehicle-icon--large"
       >
         <rect
           className="m-vehicle-icon__label-background"

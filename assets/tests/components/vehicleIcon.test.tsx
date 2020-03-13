@@ -5,6 +5,7 @@ import VehicleIcon, {
   Size,
   VehicleIconSvgNode,
 } from "../../src/components/vehicleIcon"
+import { AlertIconStyle } from "../../src/components/iconAlertCircle"
 
 test("renders in all directions and sizes", () => {
   const tree = renderer
@@ -38,84 +39,84 @@ test("renders with variants, labels, and alert icons", () => {
           orientation={Orientation.Up}
           label="0617"
           variant="X"
-          alertIcon={true}
+          alertIconStyle={AlertIconStyle.Black}
         />
         <VehicleIcon
           size={Size.Small}
           orientation={Orientation.Right}
           label="0617"
           variant="X"
-          alertIcon={true}
+          alertIconStyle={AlertIconStyle.Black}
         />
         <VehicleIcon
           size={Size.Small}
           orientation={Orientation.Down}
           label="0617"
           variant="X"
-          alertIcon={true}
+          alertIconStyle={AlertIconStyle.Black}
         />
         <VehicleIcon
           size={Size.Small}
           orientation={Orientation.Left}
           label="0617"
           variant="X"
-          alertIcon={true}
+          alertIconStyle={AlertIconStyle.Black}
         />
         <VehicleIcon
           size={Size.Medium}
           orientation={Orientation.Up}
           label="0617"
           variant="X"
-          alertIcon={true}
+          alertIconStyle={AlertIconStyle.Black}
         />
         <VehicleIcon
           size={Size.Medium}
           orientation={Orientation.Right}
           label="0617"
           variant="X"
-          alertIcon={true}
+          alertIconStyle={AlertIconStyle.Black}
         />
         <VehicleIcon
           size={Size.Medium}
           orientation={Orientation.Down}
           label="0617"
           variant="X"
-          alertIcon={true}
+          alertIconStyle={AlertIconStyle.Black}
         />
         <VehicleIcon
           size={Size.Medium}
           orientation={Orientation.Left}
           label="0617"
           variant="X"
-          alertIcon={true}
+          alertIconStyle={AlertIconStyle.Black}
         />
         <VehicleIcon
           size={Size.Large}
           orientation={Orientation.Up}
           label="0617"
           variant="X"
-          alertIcon={true}
+          alertIconStyle={AlertIconStyle.Black}
         />
         <VehicleIcon
           size={Size.Large}
           orientation={Orientation.Right}
           label="0617"
           variant="X"
-          alertIcon={true}
+          alertIconStyle={AlertIconStyle.Black}
         />
         <VehicleIcon
           size={Size.Large}
           orientation={Orientation.Down}
           label="0617"
           variant="X"
-          alertIcon={true}
+          alertIconStyle={AlertIconStyle.Black}
         />
         <VehicleIcon
           size={Size.Large}
           orientation={Orientation.Left}
           label="0617"
           variant="X"
-          alertIcon={true}
+          alertIconStyle={AlertIconStyle.Black}
         />
       </>
     )
@@ -287,13 +288,13 @@ test("renders ghost with alert icon", () => {
           size={Size.Small}
           orientation={Orientation.Up}
           status={"ghost"}
-          alertIcon={true}
+          alertIconStyle={AlertIconStyle.Black}
         />
         <VehicleIcon
           size={Size.Medium}
           orientation={Orientation.Down}
           status={"ghost"}
-          alertIcon={true}
+          alertIconStyle={AlertIconStyle.Highlighted}
         />
       </>
     )
