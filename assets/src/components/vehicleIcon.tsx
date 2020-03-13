@@ -372,7 +372,7 @@ const alertIconXY = (
     const x = orientation === Orientation.Down ? -15 : 15
     return [x * scale, y * scale]
   } else {
-    let [x, y] = size === Size.Small ? [14, -2] : [14, 3]
+    let [x, y] = size === Size.Small ? [13, -5] : [14, 3]
     ;[x, y] = rotate(x, y, orientation)
     return [x * scale, y * scale]
   }

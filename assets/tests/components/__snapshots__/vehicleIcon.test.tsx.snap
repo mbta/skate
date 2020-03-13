@@ -804,7 +804,7 @@ Array [
         X
       </text>
       <g
-        transform="translate(5.32, -0.76) scale(0.16) translate(-24, -24)"
+        transform="translate(4.94, -1.9) scale(0.16) translate(-24, -24)"
       >
         <g
           className="c-icon-alert-circle--black"
@@ -880,7 +880,7 @@ Array [
         X
       </text>
       <g
-        transform="translate(0.76, 5.32) scale(0.16) translate(-24, -24)"
+        transform="translate(1.9, 4.94) scale(0.16) translate(-24, -24)"
       >
         <g
           className="c-icon-alert-circle--black"
@@ -956,7 +956,7 @@ Array [
         X
       </text>
       <g
-        transform="translate(-5.32, 0.76) scale(0.16) translate(-24, -24)"
+        transform="translate(-4.94, 1.9) scale(0.16) translate(-24, -24)"
       >
         <g
           className="c-icon-alert-circle--black"
@@ -990,11 +990,11 @@ Array [
   <svg
     style={
       Object {
-        "height": 29,
+        "height": 28.62,
         "width": 26,
       }
     }
-    viewBox="-13 -9.64 26 29"
+    viewBox="-13 -9.260000000000002 26 28.62"
   >
     <g
       className="m-vehicle-icon m-vehicle-icon--small"
@@ -1032,7 +1032,7 @@ Array [
         X
       </text>
       <g
-        transform="translate(-0.76, -5.32) scale(0.16) translate(-24, -24)"
+        transform="translate(-1.9, -4.94) scale(0.16) translate(-24, -24)"
       >
         <g
           className="c-icon-alert-circle--black"
