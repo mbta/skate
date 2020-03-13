@@ -102,11 +102,11 @@ exports[`LayoverBox renders ghost 1`] = `
     <svg
       style={
         Object {
-          "height": 27.8,
+          "height": 26.720000000000002,
           "width": 40,
         }
       }
-      viewBox="-20 -9.2 40 27.8"
+      viewBox="-20 -8.120000000000001 40 26.720000000000002"
     >
       <g
         className="m-vehicle-icon m-vehicle-icon--small ghost m-vehicle-icon--highlighted"
@@ -158,7 +158,7 @@ exports[`LayoverBox renders ghost 1`] = `
           />
         </g>
         <g
-          transform="translate(5.7, -3.8) scale(0.2) translate(-24, -24)"
+          transform="translate(5.7, -3.8) scale(0.16) translate(-24, -24)"
         >
           <g
             className="c-icon-alert-circle--highlighted"

@@ -105,10 +105,11 @@ const viewBox = ({
   // expand to fit the alert icon
   if (alertIconStyle !== undefined) {
     const [alertIconX, alertIconY] = alertIconXY(size, orientation, status)
-    left = Math.min(left, alertIconX - ALERT_ICON_RADIUS * 0.2)
-    right = Math.max(right, alertIconX + ALERT_ICON_RADIUS * 0.2)
-    top = Math.min(top, alertIconY - ALERT_ICON_RADIUS * 0.2)
-    bottom = Math.max(bottom, alertIconY + ALERT_ICON_RADIUS * 0.2)
+    const alertIconRadius = ALERT_ICON_RADIUS * alertCircleIconScale(size)
+    left = Math.min(left, alertIconX - alertIconRadius)
+    right = Math.max(right, alertIconX + alertIconRadius)
+    top = Math.min(top, alertIconY - alertIconRadius)
+    bottom = Math.max(bottom, alertIconY + alertIconRadius)
   }
   const width = right - left
   const height = bottom - top
@@ -371,7 +372,8 @@ const alertIconXY = (
     const x = orientation === Orientation.Down ? -15 : 15
     return [x * scale, y * scale]
   } else {
-    const [x, y] = rotate(14, 3, orientation)
+    let [x, y] = size === Size.Small ? [14, -2] : [14, 3]
+    ;[x, y] = rotate(x, y, orientation)
     return [x * scale, y * scale]
   }
 }
@@ -405,11 +407,23 @@ const AlertCircleIcon = ({
   alertIconStyle: AlertIconStyle
 }) => {
   const [x, y] = alertIconXY(size, orientation, status)
+  const scale = alertCircleIconScale(size)
   return (
-    <g transform={`translate(${x}, ${y}) scale(0.2) translate(-24, -24)`}>
+    <g transform={`translate(${x}, ${y}) scale(${scale}) translate(-24, -24)`}>
       <IconAlertCircleSvgNode style={alertIconStyle} />
     </g>
   )
+}
+
+const alertCircleIconScale = (size: Size): number => {
+  switch (size) {
+    case Size.Small:
+      return 0.16
+    case Size.Medium:
+      return 0.2
+    case Size.Large:
+      return 0.3
+  }
 }
 
 const sizeClassSuffix = (size: Size): string => {
