@@ -6,7 +6,7 @@ defmodule Concentrate.Consumer.StopTimeUpdates do
   use GenStage
 
   alias Concentrate.{StopTimeUpdate, TripUpdate}
-  alias Gtfs.{Block, Service, Trip}
+  alias Gtfs.{Block, Trip}
   alias Realtime.{BlockWaiver, BlockWaiverStore, StopTimeUpdatesByTrip}
 
   def start_link(opts) do
@@ -47,8 +47,7 @@ defmodule Concentrate.Consumer.StopTimeUpdates do
     |> Enum.group_by(& &1.trip_id)
   end
 
-  @type block_and_service_id :: {Block.id(), Service.id()}
-  @type block_and_service_ids_set :: MapSet.t(block_and_service_id())
+  @type block_and_service_ids_set :: MapSet.t(Block.key())
   @spec block_and_service_ids([Trip.id()]) :: block_and_service_ids_set()
   defp block_and_service_ids(trip_ids) do
     Enum.reduce(trip_ids, MapSet.new(), fn trip_id, acc ->
@@ -74,10 +73,10 @@ defmodule Concentrate.Consumer.StopTimeUpdates do
   end
 
   @spec block_waivers_for_block_id_and_service_id(
-          block_and_service_id(),
+          Block.key(),
           StopTimeUpdatesByTrip.t()
         ) ::
-          {block_and_service_id(), [BlockWaiver.t()]}
+          {Block.key(), [BlockWaiver.t()]}
   defp block_waivers_for_block_id_and_service_id(
          {block_id, service_id},
          stop_time_updates_by_trip
@@ -90,7 +89,7 @@ defmodule Concentrate.Consumer.StopTimeUpdates do
     {{block_id, service_id}, block_waivers}
   end
 
-  @spec has_block_waivers?({block_and_service_id(), [BlockWaiver.t()]}) :: boolean
+  @spec has_block_waivers?({Block.key(), [BlockWaiver.t()]}) :: boolean
   defp has_block_waivers?({_, []}), do: false
   defp has_block_waivers?({_, _}), do: true
 end

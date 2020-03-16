@@ -12,8 +12,7 @@ defmodule Realtime.BlockWaiverStore do
           block_waivers_by_block_and_service_ids: block_waivers_by_block_and_service_ids()
         }
 
-  @type block_and_service_id :: {Block.id(), Service.id()}
-  @type block_waivers_by_block_and_service_ids :: %{block_and_service_id() => [BlockWaiver.t()]}
+  @type block_waivers_by_block_and_service_ids :: %{Block.key() => [BlockWaiver.t()]}
 
   defstruct block_waivers_by_block_and_service_ids: %{}
 
