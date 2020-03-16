@@ -1441,70 +1441,8 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
         </tbody>
       </table>
       <div
-        className="__react_component_tooltip-304517788 __react_component_tooltip place-bottom type-dark"
-        data-id="tooltip"
-        id="reason"
-      >
-        <h3>
-          Reason codes
-        </h3>
-        <ul>
-          <li>
-            <strong>
-              B
-            </strong>
-             - Manpower
-          </li>
-          <li>
-            <strong>
-              C
-            </strong>
-             - No equipment
-          </li>
-          <li>
-            <strong>
-              D
-            </strong>
-             - Disabled bus
-          </li>
-          <li>
-            <strong>
-              E
-            </strong>
-             - Diverted to other work
-          </li>
-          <li>
-            <strong>
-              F
-            </strong>
-             - Traffic
-          </li>
-          <li>
-            <strong>
-              G
-            </strong>
-             - Accident
-          </li>
-          <li>
-            <strong>
-              H
-            </strong>
-             - Weather
-          </li>
-          <li>
-            <strong>
-              I
-            </strong>
-             - Operator error
-          </li>
-          <li>
-            <strong>
-              J
-            </strong>
-             - Other
-          </li>
-        </ul>
-      </div>
+        className="mock-react-tooltip"
+      />
     </div>
   </div>
   <div

@@ -149,8 +149,7 @@ exports[`renders a route ladder 1`] = `
       </text>
     </svg>
     <div
-      className="__react_component_tooltip-304517788 __react_component_tooltip place-top type-dark"
-      data-id="tooltip"
+      className="mock-react-tooltip"
     />
   </div>
   <div
@@ -304,8 +303,7 @@ exports[`renders a route ladder 1`] = `
       </text>
     </svg>
     <div
-      className="__react_component_tooltip-304517788 __react_component_tooltip place-top type-dark"
-      data-id="tooltip"
+      className="mock-react-tooltip"
     />
   </div>
   <div

@@ -156,8 +156,7 @@ exports[`ladder filters out vehicles whose block is not active 1`] = `
     </text>
   </svg>
   <div
-    className="__react_component_tooltip-304517788 __react_component_tooltip place-top type-dark"
-    data-id="tooltip"
+    className="mock-react-tooltip"
   />
 </div>
 `;
@@ -363,8 +362,7 @@ exports[`ladder highlights a selected vehicle 1`] = `
     </text>
   </svg>
   <div
-    className="__react_component_tooltip-304517788 __react_component_tooltip place-top type-dark"
-    data-id="tooltip"
+    className="mock-react-tooltip"
   />
 </div>
 `;
@@ -555,8 +553,7 @@ exports[`ladder renders a ghost bus 1`] = `
     </text>
   </svg>
   <div
-    className="__react_component_tooltip-304517788 __react_component_tooltip place-top type-dark"
-    data-id="tooltip"
+    className="mock-react-tooltip"
   />
 </div>
 `;
@@ -807,8 +804,7 @@ exports[`ladder renders a ladder 1`] = `
     </text>
   </svg>
   <div
-    className="__react_component_tooltip-304517788 __react_component_tooltip place-top type-dark"
-    data-id="tooltip"
+    className="mock-react-tooltip"
   />
 </div>
 `;
@@ -893,8 +889,7 @@ exports[`ladder renders a ladder with no timepoints 1`] = `
     </g>
   </svg>
   <div
-    className="__react_component_tooltip-304517788 __react_component_tooltip place-top type-dark"
-    data-id="tooltip"
+    className="mock-react-tooltip"
   />
 </div>
 `;
@@ -1055,8 +1050,7 @@ exports[`ladder renders a reversed ladder 1`] = `
     </text>
   </svg>
   <div
-    className="__react_component_tooltip-304517788 __react_component_tooltip place-top type-dark"
-    data-id="tooltip"
+    className="mock-react-tooltip"
   />
 </div>
 `;
@@ -1208,8 +1202,7 @@ exports[`ladder renders an off-course vehicle 1`] = `
     </text>
   </svg>
   <div
-    className="__react_component_tooltip-304517788 __react_component_tooltip place-top type-dark"
-    data-id="tooltip"
+    className="mock-react-tooltip"
   />
 </div>
 `;
@@ -1370,8 +1363,7 @@ exports[`ladder shows schedule line in the other direction 1`] = `
     </text>
   </svg>
   <div
-    className="__react_component_tooltip-304517788 __react_component_tooltip place-top type-dark"
-    data-id="tooltip"
+    className="mock-react-tooltip"
   />
 </div>
 `;
@@ -1634,8 +1626,7 @@ exports[`ladder shows vehicles with block waivers 1`] = `
     </text>
   </svg>
   <div
-    className="__react_component_tooltip-304517788 __react_component_tooltip place-top type-dark"
-    data-id="tooltip"
+    className="mock-react-tooltip"
   />
 </div>
 `;
