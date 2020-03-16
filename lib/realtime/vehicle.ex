@@ -172,7 +172,7 @@ defmodule Realtime.Vehicle do
       end
 
     data_discrepancies = VehiclePosition.data_discrepancies(vehicle_position)
-    is_off_course = off_course?(data_discrepancies)
+    is_off_course = off_course?(block_id, data_discrepancies)
 
     block_waivers =
       if trip,
@@ -224,19 +224,23 @@ defmodule Realtime.Vehicle do
   That is a sign that Swiftly thinks the vehicle is off course, or not on any
   trip for some other reason.
   """
-  @spec off_course?([DataDiscrepancy.t()] | DataDiscrepancy.t()) :: boolean
-  def off_course?(data_discrepancies) when is_list(data_discrepancies) do
-    trip_id_discrepency =
-      Enum.find(data_discrepancies, fn data_discrepancy ->
-        data_discrepancy.attribute == :trip_id
-      end)
+  @spec off_course?(Block.id(), [DataDiscrepancy.t()] | DataDiscrepancy.t()) :: boolean
+  def off_course?(block_id, data_discrepancies) when is_list(data_discrepancies) do
+    if block_overload?(block_id) do
+      false
+    else
+      trip_id_discrepency =
+        Enum.find(data_discrepancies, fn data_discrepancy ->
+          data_discrepancy.attribute == :trip_id
+        end)
 
-    off_course?(trip_id_discrepency)
+      off_course?(block_id, trip_id_discrepency)
+    end
   end
 
-  def off_course?(nil), do: false
+  def off_course?(_block_id, nil), do: false
 
-  def off_course?(%{sources: sources}) do
+  def off_course?(_block_id, %{sources: sources}) do
     case Enum.find(sources, fn source -> source.id == "swiftly" end) do
       %{value: nil} ->
         true
@@ -245,6 +249,9 @@ defmodule Realtime.Vehicle do
         false
     end
   end
+
+  @spec block_overload?(Block.id()) :: boolean
+  def block_overload?(block_id), do: String.match?(block_id, ~r/.+-OL.+/)
 
   def shuttle?(%__MODULE__{run_id: "999" <> _}), do: true
   def shuttle?(%__MODULE__{}), do: false

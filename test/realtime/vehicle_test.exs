@@ -195,7 +195,7 @@ defmodule Realtime.VehicleTest do
         }
       ]
 
-      assert Vehicle.off_course?(data_discrepancies)
+      assert Vehicle.off_course?("S28-2", data_discrepancies)
     end
 
     test "returns false if the swiftly defined a value" do
@@ -215,7 +215,7 @@ defmodule Realtime.VehicleTest do
         }
       ]
 
-      refute Vehicle.off_course?(data_discrepancies)
+      refute Vehicle.off_course?("S28-2", data_discrepancies)
     end
 
     test "returns false if there isn't a trip_id data discrepancy" do
@@ -235,7 +235,31 @@ defmodule Realtime.VehicleTest do
         }
       ]
 
-      refute Vehicle.off_course?(data_discrepancies)
+      refute Vehicle.off_course?("S28-2", data_discrepancies)
+    end
+
+    test "returns false if this vehicle is on a 'block overload'" do
+      data_discrepancies = [
+        %DataDiscrepancy{
+          attribute: :trip_id,
+          sources: [
+            %{id: "swiftly", value: nil},
+            %{id: "busloc", value: "busloc-trip-id"}
+          ]
+        }
+      ]
+
+      refute Vehicle.off_course?("S28-2-OL1", data_discrepancies)
+    end
+  end
+
+  describe "block_overload?" do
+    test "returns true if there is a `-OL<number> appendend to the block_id" do
+      assert Vehicle.block_overload?("C01-14-OL1")
+    end
+
+    test "returns false if there is nothing appended to the block_id" do
+      refute Vehicle.block_overload?("C01-14")
     end
   end
 
