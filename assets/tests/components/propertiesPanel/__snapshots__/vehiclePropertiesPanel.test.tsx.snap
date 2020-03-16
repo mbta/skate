@@ -20,7 +20,7 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
         viewBox="-32 -20 64 64"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--large"
+          className="m-vehicle-icon m-vehicle-icon--large on-time"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -76,19 +76,32 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
          Forest Hills
       </div>
       <div
-        className="m-properties-panel__headway-target"
+        className="m-properties-panel__schedule-adherence on-time"
       >
-        <span
-          className="m-properties-panel__headway-target-label"
+        <div
+          className="m-properties-panel__schedule-adherence-status-icon"
         >
-          HEADWAY TARGET
-        </span>
-        <span
-          className="m-properties-panel__headway-target-value"
+          <svg
+            height="10"
+            width="10"
+          >
+            <circle
+              cx="5"
+              cy="5"
+              r="5"
+            />
+          </svg>
+        </div>
+        <div
+          className="m-properties-panel__schedule-adherence-status-string"
         >
-          2
-           min
-        </span>
+          on time
+        </div>
+        <div
+          className="m-properties-panel__schedule-adherence-label"
+        >
+          (0 min early)
+        </div>
       </div>
     </div>
     <button
@@ -104,101 +117,6 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
         }
       />
     </button>
-  </div>
-  <div
-    className="m-headway-diagram"
-  >
-    <div
-      className="m-headway-diagram__route-line-background"
-    />
-    <div
-      className="m-headway-diagram__vehicles"
-    >
-      <div
-        className="m-headway-diagram__headway ok"
-      >
-        <div
-          className="m-headway-diagram__headway-amount"
-        >
-          +0.0 min
-        </div>
-        <div
-          className="m-headway-diagram__headway-line"
-        />
-        <div
-          className="m-headway-diagram__headway-status"
-        >
-          good
-        </div>
-      </div>
-      <div
-        className="m-headway-diagram__selected-vehicle"
-      >
-        <svg
-          style={
-            Object {
-              "height": 38.5,
-              "width": 26,
-            }
-          }
-          viewBox="-13 -13.75 26 38.5"
-        >
-          <g
-            className="m-vehicle-icon m-vehicle-icon--medium"
-          >
-            <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={26}
-              x={-13}
-              y={12.75}
-            />
-            <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominantBaseline="central"
-              textAnchor="middle"
-              x="0"
-              y={18.25}
-            >
-              1
-            </text>
-            <path
-              className="m-vehicle-icon__triangle"
-              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-              transform="scale(0.625) rotate(90) translate(-24,-22)"
-            />
-            <text
-              className="m-vehicle-icon__variant"
-              dominantBaseline="central"
-              textAnchor="start"
-              x={-8.5}
-              y={0}
-            >
-              X
-            </text>
-          </g>
-        </svg>
-      </div>
-      <div
-        className="m-headway-diagram__headway ok"
-      >
-        <div
-          className="m-headway-diagram__headway-amount"
-        >
-          +12.3 min
-        </div>
-        <div
-          className="m-headway-diagram__headway-line"
-        />
-        <div
-          className="m-headway-diagram__headway-status"
-        >
-          good
-        </div>
-      </div>
-    </div>
   </div>
   <div
     className="m-properties-list"
@@ -328,7 +246,7 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
         viewBox="-32 -20 64 64"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--large"
+          className="m-vehicle-icon m-vehicle-icon--large on-time"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -384,19 +302,32 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
          Forest Hills
       </div>
       <div
-        className="m-properties-panel__headway-target"
+        className="m-properties-panel__schedule-adherence on-time"
       >
-        <span
-          className="m-properties-panel__headway-target-label"
+        <div
+          className="m-properties-panel__schedule-adherence-status-icon"
         >
-          HEADWAY TARGET
-        </span>
-        <span
-          className="m-properties-panel__headway-target-value"
+          <svg
+            height="10"
+            width="10"
+          >
+            <circle
+              cx="5"
+              cy="5"
+              r="5"
+            />
+          </svg>
+        </div>
+        <div
+          className="m-properties-panel__schedule-adherence-status-string"
         >
-          2
-           min
-        </span>
+          on time
+        </div>
+        <div
+          className="m-properties-panel__schedule-adherence-label"
+        >
+          (0 min early)
+        </div>
       </div>
     </div>
     <button
@@ -412,101 +343,6 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
         }
       />
     </button>
-  </div>
-  <div
-    className="m-headway-diagram"
-  >
-    <div
-      className="m-headway-diagram__route-line-background"
-    />
-    <div
-      className="m-headway-diagram__vehicles"
-    >
-      <div
-        className="m-headway-diagram__headway ok"
-      >
-        <div
-          className="m-headway-diagram__headway-amount"
-        >
-          +0.0 min
-        </div>
-        <div
-          className="m-headway-diagram__headway-line"
-        />
-        <div
-          className="m-headway-diagram__headway-status"
-        >
-          good
-        </div>
-      </div>
-      <div
-        className="m-headway-diagram__selected-vehicle"
-      >
-        <svg
-          style={
-            Object {
-              "height": 38.5,
-              "width": 26,
-            }
-          }
-          viewBox="-13 -13.75 26 38.5"
-        >
-          <g
-            className="m-vehicle-icon m-vehicle-icon--medium"
-          >
-            <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={26}
-              x={-13}
-              y={12.75}
-            />
-            <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominantBaseline="central"
-              textAnchor="middle"
-              x="0"
-              y={18.25}
-            >
-              1
-            </text>
-            <path
-              className="m-vehicle-icon__triangle"
-              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-              transform="scale(0.625) rotate(90) translate(-24,-22)"
-            />
-            <text
-              className="m-vehicle-icon__variant"
-              dominantBaseline="central"
-              textAnchor="start"
-              x={-8.5}
-              y={0}
-            >
-              X
-            </text>
-          </g>
-        </svg>
-      </div>
-      <div
-        className="m-headway-diagram__headway ok"
-      >
-        <div
-          className="m-headway-diagram__headway-amount"
-        >
-          +12.3 min
-        </div>
-        <div
-          className="m-headway-diagram__headway-line"
-        />
-        <div
-          className="m-headway-diagram__headway-status"
-        >
-          good
-        </div>
-      </div>
-    </div>
   </div>
   <div
     className="m-properties-list"
@@ -636,7 +472,7 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
         viewBox="-32 -20 64 64"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--large"
+          className="m-vehicle-icon m-vehicle-icon--large late"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -692,19 +528,32 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
          Forest Hills
       </div>
       <div
-        className="m-properties-panel__headway-target"
+        className="m-properties-panel__schedule-adherence late"
       >
-        <span
-          className="m-properties-panel__headway-target-label"
+        <div
+          className="m-properties-panel__schedule-adherence-status-icon"
         >
-          HEADWAY TARGET
-        </span>
-        <span
-          className="m-properties-panel__headway-target-value"
+          <svg
+            height="10"
+            width="10"
+          >
+            <circle
+              cx="5"
+              cy="5"
+              r="5"
+            />
+          </svg>
+        </div>
+        <div
+          className="m-properties-panel__schedule-adherence-status-string"
         >
-          2
-           min
-        </span>
+          late
+        </div>
+        <div
+          className="m-properties-panel__schedule-adherence-label"
+        >
+          (6 min late)
+        </div>
       </div>
     </div>
     <button
@@ -720,101 +569,6 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
         }
       />
     </button>
-  </div>
-  <div
-    className="m-headway-diagram"
-  >
-    <div
-      className="m-headway-diagram__route-line-background"
-    />
-    <div
-      className="m-headway-diagram__vehicles"
-    >
-      <div
-        className="m-headway-diagram__headway ok"
-      >
-        <div
-          className="m-headway-diagram__headway-amount"
-        >
-          +0.0 min
-        </div>
-        <div
-          className="m-headway-diagram__headway-line"
-        />
-        <div
-          className="m-headway-diagram__headway-status"
-        >
-          good
-        </div>
-      </div>
-      <div
-        className="m-headway-diagram__selected-vehicle"
-      >
-        <svg
-          style={
-            Object {
-              "height": 38.5,
-              "width": 26,
-            }
-          }
-          viewBox="-13 -13.75 26 38.5"
-        >
-          <g
-            className="m-vehicle-icon m-vehicle-icon--medium"
-          >
-            <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={26}
-              x={-13}
-              y={12.75}
-            />
-            <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominantBaseline="central"
-              textAnchor="middle"
-              x="0"
-              y={18.25}
-            >
-              1
-            </text>
-            <path
-              className="m-vehicle-icon__triangle"
-              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-              transform="scale(0.625) rotate(90) translate(-24,-22)"
-            />
-            <text
-              className="m-vehicle-icon__variant"
-              dominantBaseline="central"
-              textAnchor="start"
-              x={-8.5}
-              y={0}
-            >
-              X
-            </text>
-          </g>
-        </svg>
-      </div>
-      <div
-        className="m-headway-diagram__headway ok"
-      >
-        <div
-          className="m-headway-diagram__headway-amount"
-        >
-          +12.3 min
-        </div>
-        <div
-          className="m-headway-diagram__headway-line"
-        />
-        <div
-          className="m-headway-diagram__headway-status"
-        >
-          good
-        </div>
-      </div>
-    </div>
   </div>
   <div
     className="m-properties-list"
@@ -994,21 +748,6 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
       >
         Shuttle
       </div>
-      <div
-        className="m-properties-panel__headway-target"
-      >
-        <span
-          className="m-properties-panel__headway-target-label"
-        >
-          HEADWAY TARGET
-        </span>
-        <span
-          className="m-properties-panel__headway-target-value"
-        >
-          2
-           min
-        </span>
-      </div>
     </div>
     <button
       className="m-close-button"
@@ -1023,101 +762,6 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
         }
       />
     </button>
-  </div>
-  <div
-    className="m-headway-diagram"
-  >
-    <div
-      className="m-headway-diagram__route-line-background"
-    />
-    <div
-      className="m-headway-diagram__vehicles"
-    >
-      <div
-        className="m-headway-diagram__headway ok"
-      >
-        <div
-          className="m-headway-diagram__headway-amount"
-        >
-          +0.0 min
-        </div>
-        <div
-          className="m-headway-diagram__headway-line"
-        />
-        <div
-          className="m-headway-diagram__headway-status"
-        >
-          good
-        </div>
-      </div>
-      <div
-        className="m-headway-diagram__selected-vehicle"
-      >
-        <svg
-          style={
-            Object {
-              "height": 38.5,
-              "width": 40,
-            }
-          }
-          viewBox="-20 -13.75 40 38.5"
-        >
-          <g
-            className="m-vehicle-icon m-vehicle-icon--medium"
-          >
-            <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={40}
-              x={-20}
-              y={12.75}
-            />
-            <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--extended"
-              dominantBaseline="central"
-              textAnchor="middle"
-              x="0"
-              y={18.25}
-            >
-              v1-label
-            </text>
-            <path
-              className="m-vehicle-icon__triangle"
-              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-              transform="scale(0.625) rotate(90) translate(-24,-22)"
-            />
-            <text
-              className="m-vehicle-icon__variant"
-              dominantBaseline="central"
-              textAnchor="start"
-              x={-8.5}
-              y={0}
-            >
-              X
-            </text>
-          </g>
-        </svg>
-      </div>
-      <div
-        className="m-headway-diagram__headway ok"
-      >
-        <div
-          className="m-headway-diagram__headway-amount"
-        >
-          +12.3 min
-        </div>
-        <div
-          className="m-headway-diagram__headway-line"
-        />
-        <div
-          className="m-headway-diagram__headway-status"
-        >
-          good
-        </div>
-      </div>
-    </div>
   </div>
   <div
     className="m-properties-list"
@@ -1251,7 +895,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
         viewBox="-32 -20 64 64"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--large"
+          className="m-vehicle-icon m-vehicle-icon--large on-time"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -1307,19 +951,32 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
          Forest Hills
       </div>
       <div
-        className="m-properties-panel__headway-target"
+        className="m-properties-panel__schedule-adherence on-time"
       >
-        <span
-          className="m-properties-panel__headway-target-label"
+        <div
+          className="m-properties-panel__schedule-adherence-status-icon"
         >
-          HEADWAY TARGET
-        </span>
-        <span
-          className="m-properties-panel__headway-target-value"
+          <svg
+            height="10"
+            width="10"
+          >
+            <circle
+              cx="5"
+              cy="5"
+              r="5"
+            />
+          </svg>
+        </div>
+        <div
+          className="m-properties-panel__schedule-adherence-status-string"
         >
-          2
-           min
-        </span>
+          on time
+        </div>
+        <div
+          className="m-properties-panel__schedule-adherence-label"
+        >
+          (0 min early)
+        </div>
       </div>
     </div>
     <button
@@ -1443,101 +1100,6 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
       <div
         className="mock-react-tooltip"
       />
-    </div>
-  </div>
-  <div
-    className="m-headway-diagram"
-  >
-    <div
-      className="m-headway-diagram__route-line-background"
-    />
-    <div
-      className="m-headway-diagram__vehicles"
-    >
-      <div
-        className="m-headway-diagram__headway ok"
-      >
-        <div
-          className="m-headway-diagram__headway-amount"
-        >
-          +0.0 min
-        </div>
-        <div
-          className="m-headway-diagram__headway-line"
-        />
-        <div
-          className="m-headway-diagram__headway-status"
-        >
-          good
-        </div>
-      </div>
-      <div
-        className="m-headway-diagram__selected-vehicle"
-      >
-        <svg
-          style={
-            Object {
-              "height": 38.5,
-              "width": 26,
-            }
-          }
-          viewBox="-13 -13.75 26 38.5"
-        >
-          <g
-            className="m-vehicle-icon m-vehicle-icon--medium"
-          >
-            <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={26}
-              x={-13}
-              y={12.75}
-            />
-            <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominantBaseline="central"
-              textAnchor="middle"
-              x="0"
-              y={18.25}
-            >
-              1
-            </text>
-            <path
-              className="m-vehicle-icon__triangle"
-              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-              transform="scale(0.625) rotate(90) translate(-24,-22)"
-            />
-            <text
-              className="m-vehicle-icon__variant"
-              dominantBaseline="central"
-              textAnchor="start"
-              x={-8.5}
-              y={0}
-            >
-              X
-            </text>
-          </g>
-        </svg>
-      </div>
-      <div
-        className="m-headway-diagram__headway ok"
-      >
-        <div
-          className="m-headway-diagram__headway-amount"
-        >
-          +12.3 min
-        </div>
-        <div
-          className="m-headway-diagram__headway-line"
-        />
-        <div
-          className="m-headway-diagram__headway-status"
-        >
-          good
-        </div>
-      </div>
     </div>
   </div>
   <div
@@ -1668,7 +1230,7 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
         viewBox="-32 -20 64 64"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--large"
+          className="m-vehicle-icon m-vehicle-icon--large early"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -1724,19 +1286,32 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
          Forest Hills
       </div>
       <div
-        className="m-properties-panel__headway-target"
+        className="m-properties-panel__schedule-adherence early"
       >
-        <span
-          className="m-properties-panel__headway-target-label"
+        <div
+          className="m-properties-panel__schedule-adherence-status-icon"
         >
-          HEADWAY TARGET
-        </span>
-        <span
-          className="m-properties-panel__headway-target-value"
+          <svg
+            height="10"
+            width="10"
+          >
+            <circle
+              cx="5"
+              cy="5"
+              r="5"
+            />
+          </svg>
+        </div>
+        <div
+          className="m-properties-panel__schedule-adherence-status-string"
         >
-          2
-           min
-        </span>
+          early
+        </div>
+        <div
+          className="m-properties-panel__schedule-adherence-label"
+        >
+          (2 min early)
+        </div>
       </div>
     </div>
     <button
@@ -1752,101 +1327,6 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
         }
       />
     </button>
-  </div>
-  <div
-    className="m-headway-diagram"
-  >
-    <div
-      className="m-headway-diagram__route-line-background"
-    />
-    <div
-      className="m-headway-diagram__vehicles"
-    >
-      <div
-        className="m-headway-diagram__headway ok"
-      >
-        <div
-          className="m-headway-diagram__headway-amount"
-        >
-          +0.0 min
-        </div>
-        <div
-          className="m-headway-diagram__headway-line"
-        />
-        <div
-          className="m-headway-diagram__headway-status"
-        >
-          good
-        </div>
-      </div>
-      <div
-        className="m-headway-diagram__selected-vehicle"
-      >
-        <svg
-          style={
-            Object {
-              "height": 38.5,
-              "width": 26,
-            }
-          }
-          viewBox="-13 -13.75 26 38.5"
-        >
-          <g
-            className="m-vehicle-icon m-vehicle-icon--medium"
-          >
-            <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={26}
-              x={-13}
-              y={12.75}
-            />
-            <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominantBaseline="central"
-              textAnchor="middle"
-              x="0"
-              y={18.25}
-            >
-              1
-            </text>
-            <path
-              className="m-vehicle-icon__triangle"
-              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-              transform="scale(0.625) rotate(90) translate(-24,-22)"
-            />
-            <text
-              className="m-vehicle-icon__variant"
-              dominantBaseline="central"
-              textAnchor="start"
-              x={-8.5}
-              y={0}
-            >
-              X
-            </text>
-          </g>
-        </svg>
-      </div>
-      <div
-        className="m-headway-diagram__headway ok"
-      >
-        <div
-          className="m-headway-diagram__headway-amount"
-        >
-          +12.3 min
-        </div>
-        <div
-          className="m-headway-diagram__headway-line"
-        />
-        <div
-          className="m-headway-diagram__headway-status"
-        >
-          good
-        </div>
-      </div>
-    </div>
   </div>
   <div
     className="m-properties-list"
@@ -2032,19 +1512,32 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
          Forest Hills
       </div>
       <div
-        className="m-properties-panel__headway-target"
+        className="m-properties-panel__schedule-adherence off-course"
       >
-        <span
-          className="m-properties-panel__headway-target-label"
+        <div
+          className="m-properties-panel__schedule-adherence-status-icon"
         >
-          HEADWAY TARGET
-        </span>
-        <span
-          className="m-properties-panel__headway-target-value"
+          <svg
+            height="10"
+            width="10"
+          >
+            <circle
+              cx="5"
+              cy="5"
+              r="5"
+            />
+          </svg>
+        </div>
+        <div
+          className="m-properties-panel__schedule-adherence-status-string"
         >
-          2
-           min
-        </span>
+          Invalid
+        </div>
+        <div
+          className="m-properties-panel__schedule-adherence-label"
+        >
+          
+        </div>
       </div>
     </div>
     <button
@@ -2070,101 +1563,6 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
       Invalid
     </span>
     - We cannot match this vehicle to a scheduled trip at this time. This vehicle may be off-route or severely off-schedule.
-  </div>
-  <div
-    className="m-headway-diagram"
-  >
-    <div
-      className="m-headway-diagram__route-line-background"
-    />
-    <div
-      className="m-headway-diagram__vehicles"
-    >
-      <div
-        className="m-headway-diagram__headway ok"
-      >
-        <div
-          className="m-headway-diagram__headway-amount"
-        >
-          +0.0 min
-        </div>
-        <div
-          className="m-headway-diagram__headway-line"
-        />
-        <div
-          className="m-headway-diagram__headway-status"
-        >
-          good
-        </div>
-      </div>
-      <div
-        className="m-headway-diagram__selected-vehicle"
-      >
-        <svg
-          style={
-            Object {
-              "height": 38.5,
-              "width": 26,
-            }
-          }
-          viewBox="-13 -13.75 26 38.5"
-        >
-          <g
-            className="m-vehicle-icon m-vehicle-icon--medium"
-          >
-            <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={26}
-              x={-13}
-              y={12.75}
-            />
-            <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominantBaseline="central"
-              textAnchor="middle"
-              x="0"
-              y={18.25}
-            >
-              1
-            </text>
-            <path
-              className="m-vehicle-icon__triangle"
-              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-              transform="scale(0.625) rotate(90) translate(-24,-22)"
-            />
-            <text
-              className="m-vehicle-icon__variant"
-              dominantBaseline="central"
-              textAnchor="start"
-              x={-8.5}
-              y={0}
-            >
-              X
-            </text>
-          </g>
-        </svg>
-      </div>
-      <div
-        className="m-headway-diagram__headway ok"
-      >
-        <div
-          className="m-headway-diagram__headway-amount"
-        >
-          +12.3 min
-        </div>
-        <div
-          className="m-headway-diagram__headway-line"
-        />
-        <div
-          className="m-headway-diagram__headway-status"
-        >
-          good
-        </div>
-      </div>
-    </div>
   </div>
   <div
     className="m-properties-list"
@@ -2298,7 +1696,7 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
         viewBox="-32 -20 64 64"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--large"
+          className="m-vehicle-icon m-vehicle-icon--large on-time"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -2354,19 +1752,32 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
          Forest Hills
       </div>
       <div
-        className="m-properties-panel__headway-target"
+        className="m-properties-panel__schedule-adherence on-time"
       >
-        <span
-          className="m-properties-panel__headway-target-label"
+        <div
+          className="m-properties-panel__schedule-adherence-status-icon"
         >
-          HEADWAY TARGET
-        </span>
-        <span
-          className="m-properties-panel__headway-target-value"
+          <svg
+            height="10"
+            width="10"
+          >
+            <circle
+              cx="5"
+              cy="5"
+              r="5"
+            />
+          </svg>
+        </div>
+        <div
+          className="m-properties-panel__schedule-adherence-status-string"
         >
-          2
-           min
-        </span>
+          on time
+        </div>
+        <div
+          className="m-properties-panel__schedule-adherence-label"
+        >
+          (0 min early)
+        </div>
       </div>
     </div>
     <button
@@ -2382,101 +1793,6 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
         }
       />
     </button>
-  </div>
-  <div
-    className="m-headway-diagram"
-  >
-    <div
-      className="m-headway-diagram__route-line-background"
-    />
-    <div
-      className="m-headway-diagram__vehicles"
-    >
-      <div
-        className="m-headway-diagram__headway ok"
-      >
-        <div
-          className="m-headway-diagram__headway-amount"
-        >
-          +0.0 min
-        </div>
-        <div
-          className="m-headway-diagram__headway-line"
-        />
-        <div
-          className="m-headway-diagram__headway-status"
-        >
-          good
-        </div>
-      </div>
-      <div
-        className="m-headway-diagram__selected-vehicle"
-      >
-        <svg
-          style={
-            Object {
-              "height": 38.5,
-              "width": 26,
-            }
-          }
-          viewBox="-13 -13.75 26 38.5"
-        >
-          <g
-            className="m-vehicle-icon m-vehicle-icon--medium"
-          >
-            <rect
-              className="m-vehicle-icon__label-background"
-              height={11}
-              rx={5.5}
-              ry={5.5}
-              width={26}
-              x={-13}
-              y={12.75}
-            />
-            <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominantBaseline="central"
-              textAnchor="middle"
-              x="0"
-              y={18.25}
-            >
-              1
-            </text>
-            <path
-              className="m-vehicle-icon__triangle"
-              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-              transform="scale(0.625) rotate(90) translate(-24,-22)"
-            />
-            <text
-              className="m-vehicle-icon__variant"
-              dominantBaseline="central"
-              textAnchor="start"
-              x={-8.5}
-              y={0}
-            >
-              X
-            </text>
-          </g>
-        </svg>
-      </div>
-      <div
-        className="m-headway-diagram__headway ok"
-      >
-        <div
-          className="m-headway-diagram__headway-amount"
-        >
-          +12.3 min
-        </div>
-        <div
-          className="m-headway-diagram__headway-line"
-        />
-        <div
-          className="m-headway-diagram__headway-status"
-        >
-          good
-        </div>
-      </div>
-    </div>
   </div>
   <div
     className="m-properties-list"

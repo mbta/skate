@@ -9,11 +9,6 @@ import {
 import { BlockWaiver, Vehicle } from "../../src/realtime"
 import * as dateTime from "../../src/util/dateTime"
 
-jest.mock("../../src/laboratoryFeatures", () => ({
-  __esModule: true,
-  default: jest.fn(() => true),
-}))
-
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("2020-02-25T16:10:00.000Z"))
