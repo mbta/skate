@@ -56,7 +56,7 @@ defmodule Concentrate.Supervisor.StopTimeUpdatesTest do
   describe "handle_events/3" do
     setup do
       reassign_env(:realtime, :trip_fn, fn _trip_id -> @trip end)
-      reassign_env(:realtime, :block_fn, fn _block_id, _service_id -> nil end)
+      reassign_env(:realtime, :block_fn, fn _block_id, _service_id -> [@trip] end)
 
       events = [@all_updates]
 
