@@ -52,7 +52,9 @@ defmodule Realtime.VehicleOrGhost do
     |> matches?(text)
   end
 
-  @spec matches?(String.t(), String.t()) :: boolean()
+  @spec matches?(String.t() | nil, String.t()) :: boolean()
+  defp matches?(nil, _text), do: false
+
   defp matches?("999-0" <> shuttle_run, text) do
     # special case to match shuttle runs even without the leading 0
     matches?("999" <> shuttle_run, text) || matches?("9990" <> shuttle_run, text)
