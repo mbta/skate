@@ -43,6 +43,25 @@ defmodule Realtime.BlockWaiverStoreTest do
       assert BlockWaiverStore.block_waivers_for_block_and_service("block1", "service1", server) ==
                @block_waivers
     end
+
+    test "returns an empty list if there are no waivers for the requested block and services", %{
+      server: server
+    } do
+      :sys.replace_state(server, fn state ->
+        Map.put(
+          state,
+          :block_waivers_by_block_and_service_ids,
+          @block_waivers_by_block_and_service_ids
+        )
+      end)
+
+      assert BlockWaiverStore.block_waivers_for_block_and_service(
+               "missing-block",
+               "missing-service",
+               server
+             ) ==
+               []
+    end
   end
 
   describe "set/1" do
