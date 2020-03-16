@@ -9,7 +9,7 @@ defmodule Realtime.Ghost do
           trip_id: Trip.id(),
           headsign: String.t(),
           block_id: Block.id(),
-          run_id: Run.id(),
+          run_id: Run.id() | nil,
           via_variant: RoutePattern.via_variant() | nil,
           layover_departure_time: Util.Time.timestamp() | nil,
           scheduled_timepoint_status: TimepointStatus.timepoint_status(),

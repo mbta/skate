@@ -122,5 +122,11 @@ defmodule Realtime.VehicleOrGhostTest do
     test "short circuits to an empty result if trying to match on the empty string" do
       assert VehicleOrGhost.find_by(@vehicles, %{text: "", property: :all}) == []
     end
+
+    test "handles nil values" do
+      ghost_with_nil_run_id = %{@ghost | run_id: nil}
+
+      assert VehicleOrGhost.find_by([ghost_with_nil_run_id], %{text: "710", property: :all}) == []
+    end
   end
 end
