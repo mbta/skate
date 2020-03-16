@@ -9,6 +9,9 @@ export const isGhost = (
   vehicleOrGhost: VehicleOrGhost
 ): vehicleOrGhost is Ghost => vehicleOrGhost.id.startsWith("ghost")
 
+export const isLateVehicleIndicator = ({ id }: Ghost): boolean =>
+  id.startsWith("ghost-incoming-")
+
 export const isShuttle = (vehicle: Vehicle): boolean =>
   (vehicle.runId || "").startsWith("999")
 
