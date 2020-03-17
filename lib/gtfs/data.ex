@@ -445,20 +445,17 @@ defmodule Gtfs.Data do
 
   @spec copy_timepoints_from_trip(Trip.t(), Trip.t()) :: Trip.t()
   defp copy_timepoints_from_trip(from, to) do
-    %{to | stop_times: copy_timepoints_from_stop_times(from.stop_times, to.stop_times)}
-  end
+    from_timepoints =
+      from.stop_times
+      |> Enum.filter(&StopTime.is_timepoint?/1)
+      |> Map.new(fn stop_time -> {stop_time.stop_id, stop_time.timepoint_id} end)
 
-  @spec copy_timepoints_from_stop_times([StopTime.t()], [StopTime.t()]) :: [StopTime.t()]
-  defp copy_timepoints_from_stop_times([], []), do: []
-
-  defp copy_timepoints_from_stop_times([from_first | from_rest], [to_first | to_rest]) do
-    if from_first.stop_id == to_first.stop_id do
-      [
-        %{to_first | timepoint_id: from_first.timepoint_id}
-        | copy_timepoints_from_stop_times(from_rest, to_rest)
-      ]
-    else
-      [to_first | to_rest]
-    end
+    %{
+      to
+      | stop_times:
+          Enum.map(to.stop_times, fn stop_time ->
+            %{stop_time | timepoint_id: from_timepoints[stop_time.stop_id]}
+          end)
+    }
   end
 end
