@@ -110,7 +110,7 @@ exports[`IncomingBox renders a vehicle 1`] = `
         viewBox="-8.36 -7.6 16.72 15.2"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--small"
+          className="m-vehicle-icon m-vehicle-icon--small on-time"
         >
           <path
             className="m-vehicle-icon__triangle"

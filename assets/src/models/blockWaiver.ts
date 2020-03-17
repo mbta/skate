@@ -1,5 +1,4 @@
 import { AlertIconStyle } from "../components/iconAlertCircle"
-import featureIsEnabled from "../laboratoryFeatures"
 import { BlockWaiver, VehicleOrGhost } from "../realtime"
 import { now } from "../util/dateTime"
 import { isGhost, isLateVehicleIndicator } from "./vehicle"
@@ -46,9 +45,6 @@ export const hasCurrentBlockWaiver = ({
 export const blockWaiverAlertStyle = (
   vehicleOrGhost: VehicleOrGhost
 ): AlertIconStyle | undefined => {
-  if (!featureIsEnabled("block_waivers")) {
-    return undefined
-  }
   if (hasCurrentBlockWaiver(vehicleOrGhost)) {
     return AlertIconStyle.Black
   }

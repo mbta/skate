@@ -22,11 +22,6 @@ import {
 
 // tslint:disable: object-literal-sort-keys
 
-jest.mock("../../src/laboratoryFeatures", () => ({
-  __esModule: true,
-  default: () => false,
-}))
-
 const vehicles: Vehicle[] = [
   {
     id: "y1818",

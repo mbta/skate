@@ -6,11 +6,6 @@ import { SocketProvider } from "../../src/contexts/socketContext"
 import useDataStatus from "../../src/hooks/useDataStatus"
 import { ConnectionStatus } from "../../src/hooks/useSocket"
 
-jest.mock("../../src/laboratoryFeatures", () => ({
-  __esModule: true,
-  default: () => true,
-}))
-
 jest.mock("../../src/hooks/useDataStatus", () => ({
   __esModule: true,
   default: jest.fn(() => "good"),

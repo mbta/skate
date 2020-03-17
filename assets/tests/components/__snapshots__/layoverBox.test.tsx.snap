@@ -18,7 +18,7 @@ exports[`LayoverBox renders 1`] = `
       viewBox="-20 -8.36 40 27.72"
     >
       <g
-        className="m-vehicle-icon m-vehicle-icon--small"
+        className="m-vehicle-icon m-vehicle-icon--small on-time"
       >
         <rect
           className="m-vehicle-icon__label-background"
@@ -60,7 +60,7 @@ exports[`LayoverBox renders 1`] = `
       viewBox="-20 -8.36 40 27.72"
     >
       <g
-        className="m-vehicle-icon m-vehicle-icon--small"
+        className="m-vehicle-icon m-vehicle-icon--small on-time"
       >
         <rect
           className="m-vehicle-icon__label-background"

@@ -13,15 +13,6 @@ jest
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
-// Enable feature flags for "renders for a headway-based vehicle" test
-jest.mock("../../../src/laboratoryFeatures", () => ({
-  __esModule: true,
-  default: jest
-    .fn()
-    // Ipmlementation sequence matches tests
-    .mockImplementation(() => true),
-}))
-
 const vehicle: Vehicle = {
   id: "v1",
   label: "v1-label",

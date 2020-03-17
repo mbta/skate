@@ -3,11 +3,6 @@ import renderer from "react-test-renderer"
 import RouteLadders from "../../src/components/routeLadders"
 import { Route, TimepointsByRouteId } from "../../src/schedule.d"
 
-jest.mock("../../src/laboratoryFeatures", () => ({
-  __esModule: true,
-  default: () => true,
-}))
-
 test("renders a route ladder", () => {
   const routes: Route[] = [
     { id: "1", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "1" },

@@ -16,7 +16,7 @@ exports[`ladder filters out vehicles whose block is not active 1`] = `
     width={184}
   >
     <line
-      className="m-ladder__scheduled-line "
+      className="m-ladder__scheduled-line on-time"
       x1={-63}
       x2={40}
       y1={-25}
@@ -29,7 +29,7 @@ exports[`ladder filters out vehicles whose block is not active 1`] = `
         transform="translate(-63,-25)"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium"
+          className="m-vehicle-icon m-vehicle-icon--medium on-time"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -71,20 +71,6 @@ exports[`ladder filters out vehicles whose block is not active 1`] = `
       y1="0"
       y2={-40}
     />
-    <g
-      className="m-ladder__headway-lines"
-    >
-      <line
-        className="m-ladder__line
-                  m-ladder__headway-line
-                  m-ladder__headway-line--ok"
-        id="downward"
-        x1={-40}
-        x2={-40}
-        y1={-40}
-        y2={-25}
-      />
-    </g>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -177,7 +163,7 @@ exports[`ladder highlights a selected vehicle 1`] = `
     width={184}
   >
     <line
-      className="m-ladder__scheduled-line "
+      className="m-ladder__scheduled-line on-time"
       x1={-63}
       x2={40}
       y1={-25}
@@ -190,7 +176,7 @@ exports[`ladder highlights a selected vehicle 1`] = `
         transform="translate(-63,-25)"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium"
+          className="m-vehicle-icon m-vehicle-icon--medium on-time"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -225,7 +211,7 @@ exports[`ladder highlights a selected vehicle 1`] = `
         transform="translate(63,-30)"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium"
+          className="m-vehicle-icon m-vehicle-icon--medium on-time"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -267,30 +253,6 @@ exports[`ladder highlights a selected vehicle 1`] = `
       y1="0"
       y2={-40}
     />
-    <g
-      className="m-ladder__headway-lines"
-    >
-      <line
-        className="m-ladder__line
-                  m-ladder__headway-line
-                  m-ladder__headway-line--ok"
-        id="downward"
-        x1={-40}
-        x2={-40}
-        y1={-40}
-        y2={-25}
-      />
-      <line
-        className="m-ladder__line
-                  m-ladder__headway-line
-                  m-ladder__headway-line--ok"
-        id="upward"
-        x1={40}
-        x2={40}
-        y1={0}
-        y2={-30}
-      />
-    </g>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -479,9 +441,6 @@ exports[`ladder renders a ghost bus 1`] = `
       y1="0"
       y2={-40}
     />
-    <g
-      className="m-ladder__headway-lines"
-    />
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -574,7 +533,7 @@ exports[`ladder renders a ladder 1`] = `
     width={232}
   >
     <line
-      className="m-ladder__scheduled-line "
+      className="m-ladder__scheduled-line on-time"
       x1={-87}
       x2={40}
       y1={-25}
@@ -587,7 +546,7 @@ exports[`ladder renders a ladder 1`] = `
         transform="translate(63,-30)"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium"
+          className="m-vehicle-icon m-vehicle-icon--medium on-time"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -622,7 +581,7 @@ exports[`ladder renders a ladder 1`] = `
         transform="translate(-87,-25)"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium"
+          className="m-vehicle-icon m-vehicle-icon--medium on-time"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -657,7 +616,7 @@ exports[`ladder renders a ladder 1`] = `
         transform="translate(-63,0)"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium"
+          className="m-vehicle-icon m-vehicle-icon--medium on-time"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -699,40 +658,6 @@ exports[`ladder renders a ladder 1`] = `
       y1="0"
       y2={-40}
     />
-    <g
-      className="m-ladder__headway-lines"
-    >
-      <line
-        className="m-ladder__line
-                  m-ladder__headway-line
-                  m-ladder__headway-line--ok"
-        id="notimepoint"
-        x1={-40}
-        x2={-40}
-        y1={-40}
-        y2={0}
-      />
-      <line
-        className="m-ladder__line
-                  m-ladder__headway-line
-                  m-ladder__headway-line--ok"
-        id="downward"
-        x1={-40}
-        x2={-40}
-        y1={0}
-        y2={-25}
-      />
-      <line
-        className="m-ladder__line
-                  m-ladder__headway-line
-                  m-ladder__headway-line--ok"
-        id="upward"
-        x1={40}
-        x2={40}
-        y1={0}
-        y2={-30}
-      />
-    </g>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -831,7 +756,7 @@ exports[`ladder renders a ladder with no timepoints 1`] = `
         transform="translate(63,0)"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium"
+          className="m-vehicle-icon m-vehicle-icon--medium on-time"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -873,20 +798,6 @@ exports[`ladder renders a ladder with no timepoints 1`] = `
       y1="0"
       y2={-40}
     />
-    <g
-      className="m-ladder__headway-lines"
-    >
-      <line
-        className="m-ladder__line
-                  m-ladder__headway-line
-                  m-ladder__headway-line--ok"
-        id="upward"
-        x1={40}
-        x2={40}
-        y1={0}
-        y2={0}
-      />
-    </g>
   </svg>
   <div
     className="mock-react-tooltip"
@@ -910,7 +821,7 @@ exports[`ladder renders a reversed ladder 1`] = `
     width={184}
   >
     <line
-      className="m-ladder__scheduled-line "
+      className="m-ladder__scheduled-line on-time"
       x1={63}
       x2={40}
       y1={-30}
@@ -923,7 +834,7 @@ exports[`ladder renders a reversed ladder 1`] = `
         transform="translate(63,-30)"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium"
+          className="m-vehicle-icon m-vehicle-icon--medium on-time"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -965,20 +876,6 @@ exports[`ladder renders a reversed ladder 1`] = `
       y1="0"
       y2={-40}
     />
-    <g
-      className="m-ladder__headway-lines"
-    >
-      <line
-        className="m-ladder__line
-                  m-ladder__headway-line
-                  m-ladder__headway-line--ok"
-        id="upward"
-        x1={40}
-        x2={40}
-        y1={0}
-        y2={-30}
-      />
-    </g>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -1128,9 +1025,6 @@ exports[`ladder renders an off-course vehicle 1`] = `
       y1="0"
       y2={-40}
     />
-    <g
-      className="m-ladder__headway-lines"
-    />
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -1223,7 +1117,7 @@ exports[`ladder shows schedule line in the other direction 1`] = `
     width={184}
   >
     <line
-      className="m-ladder__scheduled-line "
+      className="m-ladder__scheduled-line on-time"
       x1={-63}
       x2={40}
       y1={15}
@@ -1236,7 +1130,7 @@ exports[`ladder shows schedule line in the other direction 1`] = `
         transform="translate(-63,15)"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium"
+          className="m-vehicle-icon m-vehicle-icon--medium on-time"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -1278,20 +1172,6 @@ exports[`ladder shows schedule line in the other direction 1`] = `
       y1="0"
       y2={-40}
     />
-    <g
-      className="m-ladder__headway-lines"
-    >
-      <line
-        className="m-ladder__line
-                  m-ladder__headway-line
-                  m-ladder__headway-line--ok"
-        id="downward"
-        x1={-40}
-        x2={-40}
-        y1={-40}
-        y2={15}
-      />
-    </g>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -1551,9 +1431,6 @@ exports[`ladder shows vehicles with block waivers 1`] = `
       x2={40}
       y1="0"
       y2={-40}
-    />
-    <g
-      className="m-ladder__headway-lines"
     />
     <circle
       className="m-ladder__stop-circle"

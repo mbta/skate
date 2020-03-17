@@ -9,12 +9,6 @@ jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("1970-01-01T22:42:00.000Z"))
 
-// Enable feature flags
-jest.mock("../../../src/laboratoryFeatures", () => ({
-  __esModule: true,
-  default: jest.fn(() => true),
-}))
-
 const ghost: Ghost = {
   id: "ghost-trip",
   directionId: 0,

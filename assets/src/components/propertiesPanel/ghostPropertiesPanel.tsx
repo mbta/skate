@@ -1,5 +1,4 @@
 import React from "react"
-import featureIsEnabled from "../../laboratoryFeatures"
 import { hasBlockWaiver } from "../../models/blockWaiver"
 import { Ghost } from "../../realtime"
 import { Route } from "../../schedule"
@@ -33,13 +32,11 @@ const GhostPropertiesPanel = ({ selectedGhost, route }: Props) => (
   <div className="m-ghost-properties-panel">
     <Header vehicle={selectedGhost} route={route} />
 
-    {featureIsEnabled("block_waivers") ? (
-      hasBlockWaiver(selectedGhost) ? (
-        <BlockWaiverList blockWaivers={selectedGhost.blockWaivers} />
-      ) : (
-        <NoWaiverBanner />
-      )
-    ) : null}
+    {hasBlockWaiver(selectedGhost) ? (
+      <BlockWaiverList blockWaivers={selectedGhost.blockWaivers} />
+    ) : (
+      <NoWaiverBanner />
+    )}
 
     <PropertiesList vehicleOrGhost={selectedGhost} />
   </div>
