@@ -229,10 +229,7 @@ defmodule Gtfs.Data do
         run_ids_by_trip_id
       )
 
-    trips =
-      bus_trips
-      |> fix_trips
-      |> Map.new(fn trip -> {trip.id, trip} end)
+    trips = Map.new(bus_trips, fn trip -> {trip.id, trip} end)
 
     %__MODULE__{
       routes: bus_routes,
@@ -405,60 +402,5 @@ defmodule Gtfs.Data do
     Enum.map(bus_trips, fn trip ->
       %{trip | stop_times: Map.fetch!(bus_trip_stop_times, trip.id), run_id: run_ids[trip.id]}
     end)
-  end
-
-  @doc """
-  Replace the timepoints on trips with ids ending in C0 with timepoints from a trip with a known good
-  TODO 2020-03-017 remove once GTFS is fixed
-  """
-  @spec fix_trips([Trip.t()]) :: [Trip.t()]
-  def fix_trips(trips) do
-    trips_by_route_pattern =
-      trips
-      |> Enum.group_by(fn trip -> trip.route_pattern_id end)
-
-    Enum.map(trips, fn trip ->
-      if broken_trip?(trip) do
-        fix_trip(trip, trips_by_route_pattern)
-      else
-        trip
-      end
-    end)
-  end
-
-  @spec fix_trip(Trip.t(), %{RoutePattern.id() => [Trip.t()]}) :: Trip.t()
-  def fix_trip(trip, trips_by_route_pattern) do
-    good_trip =
-      Enum.find(trips_by_route_pattern[trip.route_pattern_id], fn other_trip ->
-        !broken_trip?(other_trip)
-      end)
-
-    if good_trip != nil do
-      copy_timepoints_from_trip(good_trip, trip)
-    else
-      trip
-    end
-  end
-
-  @spec broken_trip?(Trip.t()) :: bool()
-  defp broken_trip?(trip), do: String.ends_with?(trip.id, "C0")
-
-  @spec copy_timepoints_from_trip(Trip.t(), Trip.t()) :: Trip.t()
-  defp copy_timepoints_from_trip(from, to) do
-    %{to | stop_times: copy_timepoints_from_stop_times(from.stop_times, to.stop_times)}
-  end
-
-  @spec copy_timepoints_from_stop_times([StopTime.t()], [StopTime.t()]) :: [StopTime.t()]
-  defp copy_timepoints_from_stop_times([], []), do: []
-
-  defp copy_timepoints_from_stop_times([from_first | from_rest], [to_first | to_rest]) do
-    if from_first.stop_id == to_first.stop_id do
-      [
-        %{to_first | timepoint_id: from_first.timepoint_id}
-        | copy_timepoints_from_stop_times(from_rest, to_rest)
-      ]
-    else
-      [to_first | to_rest]
-    end
   end
 end
