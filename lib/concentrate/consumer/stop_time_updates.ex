@@ -32,8 +32,8 @@ defmodule Concentrate.Consumer.StopTimeUpdates do
     :ok =
       stop_time_updates_by_trip
       |> StopTimeUpdatesByTrip.trip_ids()
-      |> block_and_service_ids()
-      |> block_waivers_by_block_and_service_ids(stop_time_updates_by_trip)
+      |> block_keys()
+      |> block_waivers_by_block_key(stop_time_updates_by_trip)
       |> BlockWaiverStore.set()
 
     {:noreply, [], state}
@@ -47,9 +47,9 @@ defmodule Concentrate.Consumer.StopTimeUpdates do
     |> Enum.group_by(& &1.trip_id)
   end
 
-  @type block_and_service_ids_set :: MapSet.t(Block.key())
-  @spec block_and_service_ids([Trip.id()]) :: block_and_service_ids_set()
-  defp block_and_service_ids(trip_ids) do
+  @type block_keys_set :: MapSet.t(Block.key())
+  @spec block_keys([Trip.id()]) :: block_keys_set()
+  defp block_keys(trip_ids) do
     Enum.reduce(trip_ids, MapSet.new(), fn trip_id, acc ->
       trip_fn = Application.get_env(:realtime, :trip_fn, &Gtfs.trip/1)
       trip = trip_fn.(trip_id)
@@ -58,15 +58,15 @@ defmodule Concentrate.Consumer.StopTimeUpdates do
     end)
   end
 
-  @spec block_waivers_by_block_and_service_ids(
-          block_and_service_ids_set(),
+  @spec block_waivers_by_block_key(
+          block_keys_set(),
           StopTimeUpdatesByTrip.t()
-        ) :: BlockWaiverStore.block_waivers_by_block_and_service_ids()
-  defp block_waivers_by_block_and_service_ids(
-         block_and_service_ids_set,
+        ) :: BlockWaiverStore.block_waivers_by_block_key()
+  defp block_waivers_by_block_key(
+         block_keys_set,
          stop_time_updates_by_trip
        ) do
-    block_and_service_ids_set
+    block_keys_set
     |> Enum.map(&block_waivers_for_block_id_and_service_id(&1, stop_time_updates_by_trip))
     |> Enum.filter(&has_block_waivers?/1)
     |> Map.new()

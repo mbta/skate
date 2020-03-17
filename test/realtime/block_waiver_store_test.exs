@@ -10,7 +10,7 @@ defmodule Realtime.BlockWaiverStoreTest do
       remark: "E:1106"
     }
   ]
-  @block_waivers_by_block_and_service_ids %{
+  @block_waivers_by_block_key %{
     {"block1", "service1"} => @block_waivers
   }
 
@@ -35,8 +35,8 @@ defmodule Realtime.BlockWaiverStoreTest do
       :sys.replace_state(server, fn state ->
         Map.put(
           state,
-          :block_waivers_by_block_and_service_ids,
-          @block_waivers_by_block_and_service_ids
+          :block_waivers_by_block_key,
+          @block_waivers_by_block_key
         )
       end)
 
@@ -50,8 +50,8 @@ defmodule Realtime.BlockWaiverStoreTest do
       :sys.replace_state(server, fn state ->
         Map.put(
           state,
-          :block_waivers_by_block_and_service_ids,
-          @block_waivers_by_block_and_service_ids
+          :block_waivers_by_block_key,
+          @block_waivers_by_block_key
         )
       end)
 
@@ -72,10 +72,9 @@ defmodule Realtime.BlockWaiverStoreTest do
     end
 
     test "stores the StopTimeUpdates by trip ID", %{server: server} do
-      assert BlockWaiverStore.set(@block_waivers_by_block_and_service_ids, server) == :ok
+      assert BlockWaiverStore.set(@block_waivers_by_block_key, server) == :ok
 
-      assert %{block_waivers_by_block_and_service_ids: @block_waivers_by_block_and_service_ids} =
-               :sys.get_state(server)
+      assert %{block_waivers_by_block_key: @block_waivers_by_block_key} = :sys.get_state(server)
     end
   end
 end

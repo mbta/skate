@@ -9,12 +9,12 @@ defmodule Realtime.BlockWaiverStore do
   alias Realtime.BlockWaiver
 
   @type t :: %__MODULE__{
-          block_waivers_by_block_and_service_ids: block_waivers_by_block_and_service_ids()
+          block_waivers_by_block_key: block_waivers_by_block_key()
         }
 
-  @type block_waivers_by_block_and_service_ids :: %{Block.key() => [BlockWaiver.t()]}
+  @type block_waivers_by_block_key :: %{Block.key() => [BlockWaiver.t()]}
 
-  defstruct block_waivers_by_block_and_service_ids: %{}
+  defstruct block_waivers_by_block_key: %{}
 
   # Client
 
@@ -35,10 +35,10 @@ defmodule Realtime.BlockWaiverStore do
     GenServer.call(server, {:block_waivers_for_block_and_service, block_id, service_id})
   end
 
-  @spec set(block_waivers_by_block_and_service_ids()) :: :ok
-  @spec set(block_waivers_by_block_and_service_ids(), GenServer.server()) :: :ok
-  def set(block_waivers_by_block_and_service_ids, server \\ default_name()) do
-    GenServer.cast(server, {:set, block_waivers_by_block_and_service_ids})
+  @spec set(block_waivers_by_block_key()) :: :ok
+  @spec set(block_waivers_by_block_key(), GenServer.server()) :: :ok
+  def set(block_waivers_by_block_key, server \\ default_name()) do
+    GenServer.cast(server, {:set, block_waivers_by_block_key})
   end
 
   # Server
@@ -53,24 +53,24 @@ defmodule Realtime.BlockWaiverStore do
         {:block_waivers_for_block_and_service, block_id, service_id},
         _from,
         %__MODULE__{
-          block_waivers_by_block_and_service_ids: block_waivers_by_block_and_service_ids
+          block_waivers_by_block_key: block_waivers_by_block_key
         } = state
       ) do
-    block_waivers = Map.get(block_waivers_by_block_and_service_ids, {block_id, service_id}, [])
+    block_waivers = Map.get(block_waivers_by_block_key, {block_id, service_id}, [])
 
     {:reply, block_waivers, state}
   end
 
   @impl true
   def handle_cast(
-        {:set, block_waivers_by_block_and_service_ids},
+        {:set, block_waivers_by_block_key},
         %__MODULE__{} = state
       ) do
     {:noreply,
      Map.put(
        state,
-       :block_waivers_by_block_and_service_ids,
-       block_waivers_by_block_and_service_ids
+       :block_waivers_by_block_key,
+       block_waivers_by_block_key
      )}
   end
 end
