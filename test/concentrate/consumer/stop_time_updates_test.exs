@@ -1,10 +1,26 @@
 defmodule Concentrate.Supervisor.StopTimeUpdatesTest do
   @moduledoc false
   use ExUnit.Case, async: true
+  import Test.Support.Helpers
 
+  alias Concentrate.{StopTimeUpdate, TripUpdate}
   alias Concentrate.Consumer.StopTimeUpdates
+  alias Gtfs.Trip
 
-  @stop_time_update %Concentrate.StopTimeUpdate{
+  @trip %Trip{
+    id: "t1",
+    route_id: "28",
+    service_id: "service",
+    headsign: "headsign",
+    direction_id: 1,
+    block_id: "S28-2",
+    route_pattern_id: "28-_-0",
+    shape_id: "shape1",
+    run_id: "run1",
+    stop_times: []
+  }
+
+  @stop_time_update %StopTimeUpdate{
     arrival_time: nil,
     departure_time: nil,
     platform_id: nil,
@@ -19,7 +35,7 @@ defmodule Concentrate.Supervisor.StopTimeUpdatesTest do
   }
 
   @all_updates [
-    %Concentrate.TripUpdate{
+    %TripUpdate{
       direction_id: nil,
       remark: nil,
       route_id: "r1",
@@ -39,6 +55,9 @@ defmodule Concentrate.Supervisor.StopTimeUpdatesTest do
 
   describe "handle_events/3" do
     setup do
+      reassign_env(:realtime, :trip_fn, fn _trip_id -> @trip end)
+      reassign_env(:realtime, :block_fn, fn _block_id, _service_id -> [@trip] end)
+
       events = [@all_updates]
 
       {:ok, events: events}

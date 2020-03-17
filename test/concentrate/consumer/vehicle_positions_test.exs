@@ -9,7 +9,7 @@ defmodule Concentrate.Supervisor.VehiclePositionsTest do
     setup do
       reassign_env(:realtime, :trip_fn, fn _trip_id -> nil end)
       reassign_env(:realtime, :block_fn, fn _block_id, _service_id -> nil end)
-      reassign_env(:realtime, :stop_time_updates_fn, fn _trip_id -> [] end)
+      reassign_env(:realtime, :block_waivers_for_block_and_service_fn, fn _, _ -> [] end)
 
       events = [
         [

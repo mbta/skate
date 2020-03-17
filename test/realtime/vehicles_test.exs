@@ -2,47 +2,19 @@ defmodule Realtime.VehiclesTest do
   use ExUnit.Case, async: true
   import Test.Support.Helpers
 
-  alias Concentrate.StopTimeUpdate
   alias Gtfs.{StopTime, Trip}
   alias Realtime.{BlockWaiver, Ghost, Vehicle, Vehicles}
 
   describe "group_by_route_with_blocks" do
     setup do
-      stop_time_updates = [
-        %StopTimeUpdate{
-          arrival_time: nil,
-          departure_time: nil,
-          platform_id: nil,
-          remark: "E:1106",
-          schedule_relationship: :SKIPPED,
-          status: nil,
-          stop_id: "stop1",
-          stop_sequence: nil,
-          track: nil,
-          trip_id: "39984755",
-          uncertainty: nil
-        },
-        %StopTimeUpdate{
-          arrival_time: nil,
-          departure_time: nil,
-          platform_id: nil,
-          remark: "E:1106",
-          schedule_relationship: :SKIPPED,
-          status: nil,
-          stop_id: "stop2",
-          stop_sequence: nil,
-          track: nil,
-          trip_id: "39984755",
-          uncertainty: nil
-        }
-      ]
-
-      reassign_env(:realtime, :stop_time_updates_fn, fn trip_id ->
-        if trip_id == "trip" do
-          stop_time_updates
-        else
-          []
-        end
+      reassign_env(:realtime, :block_waivers_for_block_and_service_fn, fn _, _ ->
+        [
+          %BlockWaiver{
+            start_time: 10,
+            end_time: 20,
+            remark: "E:1106"
+          }
+        ]
       end)
     end
 
@@ -443,7 +415,8 @@ defmodule Realtime.VehiclesTest do
           timepoint_id: "t2",
           fraction_until_timepoint: 0.5
         },
-        route_status: :on_route
+        route_status: :on_route,
+        block_waivers: [%Realtime.BlockWaiver{end_time: 20, remark: "E:1106", start_time: 10}]
       }
 
       assert Vehicles.group_by_route_with_blocks(

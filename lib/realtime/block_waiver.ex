@@ -6,7 +6,7 @@ defmodule Realtime.BlockWaiver do
 
   alias Concentrate.StopTimeUpdate
   alias Gtfs.{Block, Trip}
-  alias Realtime.StopTimeUpdateStore
+  alias Realtime.StopTimeUpdatesByTrip
 
   @type t :: %__MODULE__{
           start_time: Util.Time.time_of_day(),
@@ -27,27 +27,21 @@ defmodule Realtime.BlockWaiver do
     :remark
   ]
 
-  @spec block_waivers_for_block(Block.t() | nil) :: [t()]
-  def block_waivers_for_block(nil), do: []
+  @spec block_waivers_for_block(Block.t() | nil, StopTimeUpdatesByTrip.t()) :: [t()]
+  def block_waivers_for_block(nil, _), do: []
 
-  def block_waivers_for_block(block) do
+  def block_waivers_for_block(block, stop_time_updates_by_trip) do
     block
-    |> Enum.flat_map(&trip_stop_time_waivers/1)
+    |> Enum.flat_map(&trip_stop_time_waivers(&1, stop_time_updates_by_trip))
     |> group_consecutive_sequences()
     |> Enum.map(&from_trip_stop_time_waivers(&1, date_for_block(block)))
   end
 
   @type trip_stop_time_waiver :: {Util.Time.time_of_day(), StopTimeUpdate.t() | nil}
-  @spec trip_stop_time_waivers(Trip.t()) :: [trip_stop_time_waiver()]
-  def trip_stop_time_waivers(trip) do
-    stop_time_updates_fn =
-      Application.get_env(
-        :realtime,
-        :stop_time_updates_fn,
-        &StopTimeUpdateStore.stop_time_updates_for_trip/1
-      )
-
-    stop_time_updates = stop_time_updates_fn.(trip.id)
+  @spec trip_stop_time_waivers(Trip.t(), StopTimeUpdatesByTrip.t()) :: [trip_stop_time_waiver()]
+  def trip_stop_time_waivers(trip, stop_time_updates_by_trip) do
+    stop_time_updates =
+      StopTimeUpdatesByTrip.stop_time_updates_for_trip(stop_time_updates_by_trip, trip.id)
 
     Enum.map(trip.stop_times, fn stop_time ->
       {stop_time.time,
