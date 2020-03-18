@@ -5,6 +5,7 @@ defmodule Concentrate.VehiclePosition do
   import Concentrate.StructHelpers
 
   alias Concentrate.DataDiscrepancy
+  alias Gtfs.Block
 
   defstruct_accessors([
     :id,
@@ -187,10 +188,10 @@ defmodule Concentrate.VehiclePosition do
 
     defp overload_priority(block_id1, block_id2) do
       cond do
-        String.contains?(block_id1, "-OL") ->
+        Block.overload?(block_id1) ->
           block_id1
 
-        String.contains?(block_id2, "-OL") ->
+        Block.overload?(block_id2) ->
           block_id2
 
         true ->
