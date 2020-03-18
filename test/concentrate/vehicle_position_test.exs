@@ -12,10 +12,18 @@ defmodule Concentrate.VehiclePositionTest do
           longitude: 1,
           trip_id: "trip",
           route_id: "route",
+          block_id: "block1",
           sources: MapSet.new(["first"])
         )
 
-      second = new(last_updated: 2, latitude: 2, longitude: 2, sources: MapSet.new(["second"]))
+      second =
+        new(
+          last_updated: 2,
+          latitude: 2,
+          longitude: 2,
+          block_id: "block2",
+          sources: MapSet.new(["second"])
+        )
 
       expected =
         new(
@@ -24,8 +32,13 @@ defmodule Concentrate.VehiclePositionTest do
           longitude: 2,
           trip_id: "trip",
           route_id: "route",
+          block_id: "block2",
           sources: MapSet.new(["first", "second"]),
           data_discrepancies: [
+            %DataDiscrepancy{
+              attribute: :block_id,
+              sources: [%{id: "first", value: "block1"}, %{id: "second", value: "block2"}]
+            },
             %DataDiscrepancy{
               attribute: :trip_id,
               sources: [
@@ -169,6 +182,107 @@ defmodule Concentrate.VehiclePositionTest do
 
       assert Mergeable.merge(swiftly, non_swiftly) == expected
       assert Mergeable.merge(non_swiftly, swiftly) == expected
+    end
+
+    test "merge/2 takes the overloaded block_id" do
+      non_overloaded =
+        new(
+          last_updated: 1,
+          block_id: "G89-5",
+          latitude: 1,
+          longitude: 1,
+          sources: MapSet.new(["first"])
+        )
+
+      overloaded =
+        new(
+          last_updated: 1,
+          block_id: "G89-5-OL1",
+          latitude: 1,
+          longitude: 1,
+          sources: MapSet.new(["second"])
+        )
+
+      nil_block_id =
+        new(
+          last_updated: 1,
+          block_id: nil,
+          latitude: 1,
+          longitude: 1,
+          sources: MapSet.new(["third"])
+        )
+
+      assert Mergeable.merge(non_overloaded, overloaded) ==
+               new(
+                 last_updated: 1,
+                 block_id: "G89-5-OL1",
+                 latitude: 1,
+                 longitude: 1,
+                 sources: MapSet.new(["first", "second"]),
+                 data_discrepancies: [
+                   %DataDiscrepancy{
+                     attribute: :block_id,
+                     sources: [
+                       %{id: "first", value: "G89-5"},
+                       %{id: "second", value: "G89-5-OL1"}
+                     ]
+                   }
+                 ]
+               )
+
+      assert Mergeable.merge(overloaded, non_overloaded) ==
+               new(
+                 last_updated: 1,
+                 block_id: "G89-5-OL1",
+                 latitude: 1,
+                 longitude: 1,
+                 sources: MapSet.new(["first", "second"]),
+                 data_discrepancies: [
+                   %DataDiscrepancy{
+                     attribute: :block_id,
+                     sources: [
+                       %{id: "second", value: "G89-5-OL1"},
+                       %{id: "first", value: "G89-5"}
+                     ]
+                   }
+                 ]
+               )
+
+      assert Mergeable.merge(nil_block_id, overloaded) ==
+               new(
+                 last_updated: 1,
+                 block_id: "G89-5-OL1",
+                 latitude: 1,
+                 longitude: 1,
+                 sources: MapSet.new(["second", "third"]),
+                 data_discrepancies: [
+                   %DataDiscrepancy{
+                     attribute: :block_id,
+                     sources: [
+                       %{id: "third", value: nil},
+                       %{id: "second", value: "G89-5-OL1"}
+                     ]
+                   }
+                 ]
+               )
+
+      assert Mergeable.merge(overloaded, nil_block_id) ==
+               new(
+                 last_updated: 1,
+                 block_id: "G89-5-OL1",
+                 latitude: 1,
+                 longitude: 1,
+                 sources: MapSet.new(["second", "third"]),
+                 data_discrepancies: [
+                   %DataDiscrepancy{
+                     attribute: :block_id,
+                     sources: [
+                       %{id: "second", value: "G89-5-OL1"},
+                       %{id: "third", value: nil}
+                     ]
+                   }
+                 ]
+               )
     end
 
     test "merge/2 doesn't include any data discrepancies if they values are the same" do

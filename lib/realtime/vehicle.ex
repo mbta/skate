@@ -118,7 +118,8 @@ defmodule Realtime.Vehicle do
       )
 
     trip_id = VehiclePosition.trip_id(vehicle_position)
-    block_id = VehiclePosition.block_id(vehicle_position)
+    block_id_with_overload = VehiclePosition.block_id(vehicle_position)
+    block_id = Block.id_sans_overload(block_id_with_overload)
     stop_id = VehiclePosition.stop_id(vehicle_position)
     run_id = ensure_run_id_hyphen(VehiclePosition.run_id(vehicle_position))
 
@@ -169,7 +170,7 @@ defmodule Realtime.Vehicle do
       end
 
     data_discrepancies = VehiclePosition.data_discrepancies(vehicle_position)
-    is_off_course = off_course?(data_discrepancies)
+    is_off_course = off_course?(block_id_with_overload, data_discrepancies)
 
     block_waivers =
       if trip,
@@ -220,19 +221,25 @@ defmodule Realtime.Vehicle do
   That is a sign that Swiftly thinks the vehicle is off course, or not on any
   trip for some other reason.
   """
-  @spec off_course?([DataDiscrepancy.t()] | DataDiscrepancy.t()) :: boolean
-  def off_course?(data_discrepancies) when is_list(data_discrepancies) do
-    trip_id_discrepency =
-      Enum.find(data_discrepancies, fn data_discrepancy ->
-        data_discrepancy.attribute == :trip_id
-      end)
+  @spec off_course?(Block.id() | nil, [DataDiscrepancy.t()] | DataDiscrepancy.t()) :: boolean
+  def off_course?(nil, _data_discrepancies), do: false
 
-    off_course?(trip_id_discrepency)
+  def off_course?(block_id, data_discrepancies) when is_list(data_discrepancies) do
+    if Block.overload?(block_id) do
+      false
+    else
+      trip_id_discrepency =
+        Enum.find(data_discrepancies, fn data_discrepancy ->
+          data_discrepancy.attribute == :trip_id
+        end)
+
+      off_course?(block_id, trip_id_discrepency)
+    end
   end
 
-  def off_course?(nil), do: false
+  def off_course?(_block_id, nil), do: false
 
-  def off_course?(%{sources: sources}) do
+  def off_course?(_block_id, %{sources: sources}) do
     case Enum.find(sources, fn source -> source.id == "swiftly" end) do
       %{value: nil} ->
         true

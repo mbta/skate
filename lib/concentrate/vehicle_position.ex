@@ -5,6 +5,7 @@ defmodule Concentrate.VehiclePosition do
   import Concentrate.StructHelpers
 
   alias Concentrate.DataDiscrepancy
+  alias Gtfs.Block
 
   defstruct_accessors([
     :id,
@@ -96,7 +97,7 @@ defmodule Concentrate.VehiclePosition do
           speed: first_value(second.speed, first.speed),
           odometer: first_value(second.odometer, first.odometer),
           stop_sequence: first_value(second.stop_sequence, first.stop_sequence),
-          block_id: first_value(second.block_id, first.block_id),
+          block_id: overload_priority(second.block_id, first.block_id),
           operator_id: first_value(second.operator_id, first.operator_id),
           operator_name: first_value(second.operator_name, first.operator_name),
           operator_logon_time: first_value(second.operator_logon_time, first.operator_logon_time),
@@ -181,6 +182,23 @@ defmodule Concentrate.VehiclePosition do
       end
     end
 
+    defp overload_priority(block_id1, nil), do: block_id1
+
+    defp overload_priority(nil, block_id2), do: block_id2
+
+    defp overload_priority(block_id1, block_id2) do
+      cond do
+        Block.overload?(block_id1) ->
+          block_id1
+
+        Block.overload?(block_id2) ->
+          block_id2
+
+        true ->
+          block_id1
+      end
+    end
+
     defp merge_sources(first, second) do
       [first, second]
       |> Enum.flat_map(&(VehiclePosition.sources(&1) || MapSet.new()))
@@ -189,6 +207,7 @@ defmodule Concentrate.VehiclePosition do
 
     defp discrepancies(first, second) do
       attributes = [
+        {:block_id, &VehiclePosition.block_id/1},
         {:trip_id, &VehiclePosition.trip_id/1}
       ]
 

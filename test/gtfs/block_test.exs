@@ -164,4 +164,28 @@ defmodule Gtfs.BlockTest do
       assert %Trip{id: "t2"} = Block.trip_at_time(@block, 8)
     end
   end
+
+  describe "overload?" do
+    test "returns true if there is a `-OL<number> appendend to the block_id" do
+      assert Block.overload?("C01-14-OL1")
+    end
+
+    test "returns false if there is nothing appended to the block_id" do
+      refute Block.overload?("C01-14")
+    end
+  end
+
+  describe "id_sans_overload/1" do
+    test "removes the overload portion of the ID" do
+      assert Block.id_sans_overload("T80-140-OL1") == "T80-140"
+    end
+
+    test "does not change an ID without an overload" do
+      assert Block.id_sans_overload("T80-140") == "T80-140"
+    end
+
+    test "returns nil when given nil" do
+      assert Block.id_sans_overload(nil) == nil
+    end
+  end
 end
