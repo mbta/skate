@@ -207,6 +207,7 @@ defmodule Concentrate.VehiclePosition do
 
     defp discrepancies(first, second) do
       attributes = [
+        {:block_id, &VehiclePosition.block_id/1},
         {:trip_id, &VehiclePosition.trip_id/1}
       ]
 

@@ -15,7 +15,6 @@ describe("useVehicles", () => {
     {
       bearing: 33,
       block_id: "block-1",
-      block_id_with_overload: "block-1-OL1",
       block_is_active: true,
       data_discrepancies: [
         {
@@ -117,7 +116,6 @@ describe("useVehicles", () => {
       operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
       bearing: 33,
       blockId: "block-1",
-      blockIdWithOverload: "block-1-OL1",
       headwaySecs: 859.1,
       headwaySpacing: null,
       previousVehicleId: "v2",

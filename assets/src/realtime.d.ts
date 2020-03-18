@@ -66,7 +66,6 @@ export interface Vehicle {
   operatorLogonTime: Date | null
   bearing: number
   blockId: BlockId
-  blockIdWithOverload?: BlockId
   headwaySecs: number | null
   headwaySpacing: HeadwaySpacing | null
   previousVehicleId: string
