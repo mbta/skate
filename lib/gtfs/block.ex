@@ -95,13 +95,18 @@ defmodule Gtfs.Block do
     end
   end
 
+  @spec overload?(id()) :: boolean
+  def overload?(block_id), do: String.match?(block_id, overload_id_regex())
+
   @spec id_sans_overload(id() | nil) :: id() | nil
   def id_sans_overload(nil), do: nil
 
-  def id_sans_overload(id), do: String.replace(id, ~r/-OL.+$/, "")
+  def id_sans_overload(id), do: String.replace(id, overload_id_regex(), "")
 
   @spec sort_trips_by_time([Trip.t()]) :: [Trip.t()]
   defp sort_trips_by_time(trips) do
     Enum.sort_by(trips, &Trip.start_time/1)
   end
+
+  defp overload_id_regex(), do: ~r/-OL.+$/
 end

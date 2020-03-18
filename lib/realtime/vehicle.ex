@@ -226,7 +226,7 @@ defmodule Realtime.Vehicle do
   """
   @spec off_course?(Block.id(), [DataDiscrepancy.t()] | DataDiscrepancy.t()) :: boolean
   def off_course?(block_id, data_discrepancies) when is_list(data_discrepancies) do
-    if block_overload?(block_id) do
+    if Block.overload?(block_id) do
       false
     else
       trip_id_discrepency =
@@ -249,9 +249,6 @@ defmodule Realtime.Vehicle do
         false
     end
   end
-
-  @spec block_overload?(Block.id()) :: boolean
-  def block_overload?(block_id), do: String.match?(block_id, ~r/.+-OL.+/)
 
   def shuttle?(%__MODULE__{run_id: "999" <> _}), do: true
   def shuttle?(%__MODULE__{}), do: false

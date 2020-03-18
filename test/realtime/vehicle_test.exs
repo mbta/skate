@@ -253,16 +253,6 @@ defmodule Realtime.VehicleTest do
     end
   end
 
-  describe "block_overload?" do
-    test "returns true if there is a `-OL<number> appendend to the block_id" do
-      assert Vehicle.block_overload?("C01-14-OL1")
-    end
-
-    test "returns false if there is nothing appended to the block_id" do
-      refute Vehicle.block_overload?("C01-14")
-    end
-  end
-
   describe "active_block?" do
     setup do
       block = [
