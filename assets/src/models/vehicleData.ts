@@ -40,6 +40,7 @@ export interface VehicleData {
   operator_logon_time: number | null
   bearing: number
   block_id: string
+  block_id_with_overload?: string
   headway_secs: number
   headway_spacing: RawHeadwaySpacing
   previous_vehicle_id: string
@@ -131,6 +132,7 @@ export const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
     : null,
   bearing: vehicleData.bearing,
   blockId: vehicleData.block_id,
+  blockIdWithOverload: vehicleData.block_id_with_overload,
   headwaySecs: vehicleData.headway_secs,
   headwaySpacing: headwaySpacing(vehicleData.headway_spacing),
   previousVehicleId: vehicleData.previous_vehicle_id,
