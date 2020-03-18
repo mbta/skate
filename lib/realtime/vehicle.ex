@@ -23,6 +23,7 @@ defmodule Realtime.Vehicle do
           via_variant: RoutePattern.via_variant() | nil,
           bearing: integer() | nil,
           block_id: Block.id() | nil,
+          block_id_with_overload: Block.id() | nil,
           operator_id: String.t() | nil,
           operator_name: String.t() | nil,
           operator_logon_time: Util.Time.timestamp() | nil,
@@ -82,6 +83,7 @@ defmodule Realtime.Vehicle do
     :via_variant,
     :bearing,
     :block_id,
+    :block_id_with_overload,
     :operator_id,
     :operator_name,
     :operator_logon_time,
@@ -118,7 +120,8 @@ defmodule Realtime.Vehicle do
       )
 
     trip_id = VehiclePosition.trip_id(vehicle_position)
-    block_id = VehiclePosition.block_id(vehicle_position)
+    block_id_with_overload = VehiclePosition.block_id(vehicle_position)
+    block_id = Block.id_sans_overload(block_id_with_overload)
     stop_id = VehiclePosition.stop_id(vehicle_position)
     run_id = ensure_run_id_hyphen(VehiclePosition.run_id(vehicle_position))
 
@@ -189,6 +192,7 @@ defmodule Realtime.Vehicle do
       via_variant: via_variant,
       bearing: VehiclePosition.bearing(vehicle_position),
       block_id: block_id,
+      block_id_with_overload: block_id_with_overload,
       operator_id: VehiclePosition.operator_id(vehicle_position),
       operator_name: VehiclePosition.operator_name(vehicle_position),
       operator_logon_time: VehiclePosition.operator_logon_time(vehicle_position),

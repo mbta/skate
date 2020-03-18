@@ -164,4 +164,18 @@ defmodule Gtfs.BlockTest do
       assert %Trip{id: "t2"} = Block.trip_at_time(@block, 8)
     end
   end
+
+  describe "id_sans_overload/1" do
+    test "removes the overload portion of the ID" do
+      assert Block.id_sans_overload("T80-140-OL1") == "T80-140"
+    end
+
+    test "does not change an ID without an overload" do
+      assert Block.id_sans_overload("T80-140") == "T80-140"
+    end
+
+    test "returns nil when given nil" do
+      assert Block.id_sans_overload(nil) == nil
+    end
+  end
 end
