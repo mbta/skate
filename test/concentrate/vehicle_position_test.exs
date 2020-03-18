@@ -171,6 +171,24 @@ defmodule Concentrate.VehiclePositionTest do
       assert Mergeable.merge(non_swiftly, swiftly) == expected
     end
 
+    test "merge/2 takes the overloaded block_id" do
+      non_overloaded = new(last_updated: 1, block_id: "G89-5", latitude: 1, longitude: 1)
+      overloaded = new(last_updated: 1, block_id: "G89-5-OL1", latitude: 1, longitude: 1)
+
+      expected =
+        new(
+          last_updated: 1,
+          block_id: "G89-5-OL1",
+          latitude: 1,
+          longitude: 1,
+          sources: MapSet.new(),
+          data_discrepancies: []
+        )
+
+      assert Mergeable.merge(non_overloaded, overloaded) == expected
+      assert Mergeable.merge(overloaded, non_overloaded) == expected
+    end
+
     test "merge/2 doesn't include any data discrepancies if they values are the same" do
       first =
         new(

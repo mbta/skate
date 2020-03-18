@@ -96,7 +96,7 @@ defmodule Concentrate.VehiclePosition do
           speed: first_value(second.speed, first.speed),
           odometer: first_value(second.odometer, first.odometer),
           stop_sequence: first_value(second.stop_sequence, first.stop_sequence),
-          block_id: first_value(second.block_id, first.block_id),
+          block_id: overload_priority(second.block_id, first.block_id),
           operator_id: first_value(second.operator_id, first.operator_id),
           operator_name: first_value(second.operator_name, first.operator_name),
           operator_logon_time: first_value(second.operator_logon_time, first.operator_logon_time),
@@ -178,6 +178,23 @@ defmodule Concentrate.VehiclePosition do
 
         true ->
           first_value(value1, value2)
+      end
+    end
+
+    defp overload_priority(block_id1, nil), do: block_id1
+
+    defp overload_priority(nil, block_id2), do: block_id2
+
+    defp overload_priority(block_id1, block_id2) do
+      cond do
+        String.contains?(block_id1, "-OL") ->
+          block_id1
+
+        String.contains?(block_id2, "-OL") ->
+          block_id2
+
+        true ->
+          first_value(block_id1, block_id2)
       end
     end
 
