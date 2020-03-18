@@ -1,12 +1,18 @@
 import {
   isGhost,
   isLateVehicleIndicator,
+  isRecentlyLoggedOn,
   isShuttle,
   isVehicle,
   shouldShowHeadwayDiagram,
 } from "../../src/models/vehicle"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle, VehicleTimepointStatus } from "../../src/realtime"
+import * as dateTime from "../../src/util/dateTime"
+
+jest
+  .spyOn(dateTime, "now")
+  .mockImplementation(() => new Date("2020-03-17T12:00:00.000Z"))
 
 jest.mock("../../src/laboratoryFeatures", () => ({
   __esModule: true,
@@ -154,6 +160,39 @@ describe("isShuttle", () => {
 
     expect(isShuttle(shuttle)).toBeTruthy()
     expect(isShuttle(notShuttle)).toBeFalsy()
+  })
+})
+
+describe("isRecentlyLoggedOn", () => {
+  test("true if the operatorLogonTime is within the past 30 minutes", () => {
+    const recentVehicle = {
+      id: "1",
+      operatorLogonTime: new Date("2020-03-17T11:31:00.000Z"),
+    } as Vehicle
+
+    expect(isRecentlyLoggedOn(recentVehicle)).toBeTruthy()
+  })
+
+  test("false if the operatorLogonTime is more than 30 minutes ago", () => {
+    const oldVehicle = {
+      id: "1",
+      operatorLogonTime: new Date("2020-03-17T11:29:00.000Z"),
+    } as Vehicle
+
+    expect(isRecentlyLoggedOn(oldVehicle)).toBeFalsy()
+  })
+
+  test("false if operatorLogonTime is null", () => {
+    const vehicleMissingLogonTime = {
+      id: "1",
+      operatorLogonTime: null,
+    } as Vehicle
+
+    expect(isRecentlyLoggedOn(vehicleMissingLogonTime)).toBeFalsy()
+  })
+
+  test("false if given a ghost", () => {
+    expect(isRecentlyLoggedOn(ghost)).toBeFalsy()
   })
 })
 

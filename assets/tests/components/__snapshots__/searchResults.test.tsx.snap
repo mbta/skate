@@ -8,7 +8,7 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
     className="m-search-results__list"
   >
     <div
-      className="m-search-results__card "
+      className="m-search-results__card"
       onClick={[Function]}
     >
       <div
@@ -37,7 +37,7 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
       </div>
     </div>
     <div
-      className="m-search-results__card "
+      className="m-search-results__card"
       onClick={[Function]}
     >
       <div
@@ -138,7 +138,7 @@ exports[`SearchResults renders a selected result card 1`] = `
     className="m-search-results__list"
   >
     <div
-      className="m-search-results__card "
+      className="m-search-results__card"
       onClick={[Function]}
     >
       <div
@@ -288,6 +288,130 @@ exports[`SearchResults renders no results 1`] = `
     >
       Clear search
     </button>
+  </div>
+</div>
+`;
+
+exports[`SearchResults renders vehicles that have logged in within the past 30 minutes 1`] = `
+<div
+  className="m-search-results"
+>
+  <div
+    className="m-search-results__list"
+  >
+    <div
+      className="m-search-results__card m-search-results__card--new"
+      onClick={[Function]}
+    >
+      <div
+        className="m-search-results__card-new-badge"
+      >
+        <span
+          className="m-search-results__card-new-badge-label"
+        >
+          New
+        </span>
+        <span
+          className="m-search-results__card-new-badge-icon"
+        >
+          <svg
+            viewBox="0 0 9 9"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="4.5"
+              cy="4.5"
+              r="4.5"
+            />
+          </svg>
+        </span>
+      </div>
+      <div
+        className="m-properties-list"
+      >
+        <table
+          className="m-properties-list__table"
+        >
+          <tbody>
+            <tr
+              className="m-properties-list__property "
+            >
+              <td
+                className="m-properties-list__property-label"
+              >
+                Run
+              </td>
+              <td
+                className="m-properties-list__property-value"
+              >
+                run-1
+              </td>
+            </tr>
+            <tr
+              className="m-properties-list__property "
+            >
+              <td
+                className="m-properties-list__property-label"
+              >
+                Vehicle
+              </td>
+              <td
+                className="m-properties-list__property-value"
+              >
+                v1-label
+              </td>
+            </tr>
+            <tr
+              className="m-properties-list__property "
+            >
+              <td
+                className="m-properties-list__property-label"
+              >
+                Operator
+              </td>
+              <td
+                className="m-properties-list__property-value"
+              >
+                SMITH #op1
+              </td>
+            </tr>
+            <tr
+              className="m-properties-list__property m-properties-list__property--last-login"
+            >
+              <td
+                className="m-properties-list__property-label"
+              >
+                Last Login
+              </td>
+              <td
+                className="m-properties-list__property-value"
+              >
+                1m; 5:40pm
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div
+        className="m-search-results__card-route-label"
+      >
+        <div
+          className="m-route-variant-name"
+        >
+          <span
+            className="m-route-variant-name__route-id"
+          >
+            39_X
+          </span>
+           Forest Hills
+        </div>
+      </div>
+    </div>
+    <p
+      className="m-search-results__note"
+    >
+      Please note that at this time search is limited to active vehicles and logged-in personnel.
+    </p>
   </div>
 </div>
 `;

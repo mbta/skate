@@ -120,6 +120,72 @@ describe("SearchResults", () => {
     expect(tree).toMatchSnapshot()
   })
 
+  test("renders vehicles that have logged in within the past 30 minutes", () => {
+    const vehicle: Vehicle = {
+      id: "v1",
+      label: "v1-label",
+      runId: "run-1",
+      timestamp: 123,
+      latitude: 0,
+      longitude: 0,
+      directionId: 0,
+      routeId: "39",
+      tripId: "t1",
+      headsign: "Forest Hills",
+      viaVariant: "X",
+      operatorId: "op1",
+      operatorName: "SMITH",
+      operatorLogonTime: new Date("2018-08-15T17:40:21.000Z"),
+      bearing: 33,
+      blockId: "block-1",
+      headwaySecs: 859.1,
+      headwaySpacing: HeadwaySpacing.Ok,
+      previousVehicleId: "v2",
+      scheduleAdherenceSecs: 0,
+      scheduledHeadwaySecs: 120,
+      isOffCourse: false,
+      layoverDepartureTime: null,
+      blockIsActive: false,
+      dataDiscrepancies: [
+        {
+          attribute: "trip_id",
+          sources: [
+            {
+              id: "swiftly",
+              value: "swiftly-trip-id",
+            },
+            {
+              id: "busloc",
+              value: "busloc-trip-id",
+            },
+          ],
+        },
+      ],
+      stopStatus: {
+        stopId: "s1",
+        stopName: "Stop Name",
+      },
+      timepointStatus: {
+        fractionUntilTimepoint: 0.5,
+        timepointId: "tp1",
+      },
+      scheduledLocation: null,
+      routeStatus: "on_route",
+      endOfTripType: "another_trip",
+      blockWaivers: [],
+    }
+
+    const tree = renderer
+      .create(
+        <StateDispatchProvider state={state} dispatch={jest.fn()}>
+          <SearchResults vehicles={[vehicle]} />
+        </StateDispatchProvider>
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
   test("sorts vehicles by most recent operator logon time, ghosts at the top", () => {
     const oldVehicle: Vehicle = {
       id: "old",

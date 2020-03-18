@@ -28,5 +28,9 @@
   .m-properties-list__property--last-login & {
     color: $color-font-grey;
     font-size: 0.75rem;
+
+    .m-search-results__card--new & {
+      color: $color-secondary-dark;
+    }
   }
 }
