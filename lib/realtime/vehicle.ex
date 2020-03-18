@@ -172,7 +172,7 @@ defmodule Realtime.Vehicle do
       end
 
     data_discrepancies = VehiclePosition.data_discrepancies(vehicle_position)
-    is_off_course = off_course?(block_id, data_discrepancies)
+    is_off_course = off_course?(block_id_with_overload, data_discrepancies)
 
     block_waivers =
       if trip,
@@ -224,7 +224,9 @@ defmodule Realtime.Vehicle do
   That is a sign that Swiftly thinks the vehicle is off course, or not on any
   trip for some other reason.
   """
-  @spec off_course?(Block.id(), [DataDiscrepancy.t()] | DataDiscrepancy.t()) :: boolean
+  @spec off_course?(Block.id() | nil, [DataDiscrepancy.t()] | DataDiscrepancy.t()) :: boolean
+  def off_course?(nil, _data_discrepancies), do: false
+
   def off_course?(block_id, data_discrepancies) when is_list(data_discrepancies) do
     if Block.overload?(block_id) do
       false
