@@ -68,6 +68,14 @@ defmodule Concentrate.Supervisor.StopTimeUpdatesTest do
 
       assert response == {:noreply, [], %{}}
     end
+
+    test "handles missing trips", %{events: events} do
+      reassign_env(:realtime, :trip_fn, fn _trip_id -> nil end)
+
+      response = StopTimeUpdates.handle_events(events, nil, %{})
+
+      assert response == {:noreply, [], %{}}
+    end
   end
 
   describe "stop_time_updates_by_trip/1" do
