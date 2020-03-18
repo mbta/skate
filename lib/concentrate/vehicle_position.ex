@@ -194,7 +194,7 @@ defmodule Concentrate.VehiclePosition do
           block_id2
 
         true ->
-          first_value(block_id1, block_id2)
+          block_id1
       end
     end
 
