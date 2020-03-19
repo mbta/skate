@@ -31,6 +31,11 @@
   &--new {
     border: 1px solid $color-secondary-dark;
     box-shadow: 0 2px 4px 0 rgba(77, 182, 172, 0.3);
+
+    .m-properties-list__property--last-login
+      .m-properties-list__property-value {
+      color: $color-secondary-dark;
+    }
   }
 
   .m-properties-list {
