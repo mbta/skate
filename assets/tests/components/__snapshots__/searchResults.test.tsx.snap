@@ -292,7 +292,7 @@ exports[`SearchResults renders no results 1`] = `
 </div>
 `;
 
-exports[`SearchResults renders vehicles that have logged in within the past 30 minutes 1`] = `
+exports[`SearchResults shows the new badge for vehicle that have logged in within the past 30 minutes 1`] = `
 <div
   className="m-search-results"
 >

@@ -120,7 +120,7 @@ describe("SearchResults", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("renders vehicles that have logged in within the past 30 minutes", () => {
+  test("shows the new badge for vehicle that have logged in within the past 30 minutes", () => {
     const vehicle: Vehicle = {
       id: "v1",
       label: "v1-label",
