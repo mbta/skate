@@ -1,6 +1,7 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { isVehicle } from "../models/vehicle"
+import { className } from "../helpers/dom"
+import { isVehicle, isRecentlyLoggedOn } from "../models/vehicle"
 import { Vehicle, VehicleOrGhost } from "../realtime"
 import { selectVehicle } from "../state"
 import { setSearchText } from "../state/searchPageState"
@@ -16,6 +17,17 @@ const SearchResultsNote = () => (
     Please note that at this time search is limited to active vehicles and
     logged-in personnel.
   </p>
+)
+
+const NewBadge = () => (
+  <div className="m-search-results__card-new-badge">
+    <span className="m-search-results__card-new-badge-label">New</span>
+    <span className="m-search-results__card-new-badge-icon">
+      <svg viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="4.5" cy="4.5" r="4.5" />
+      </svg>
+    </span>
+  </div>
 )
 
 const RouteLabel = ({ vehicle }: { vehicle: Vehicle }) => (
@@ -37,18 +49,20 @@ const SearchResultCard = ({
     dispatch,
   ] = useContext(StateDispatchContext)
 
-  const selectedClass =
+  const classes = [
+    "m-search-results__card",
     vehicleOrGhost.id === selectedVehicleId
       ? "m-search-results__card--selected"
-      : ""
+      : "",
+    isRecentlyLoggedOn(vehicleOrGhost) ? "m-search-results__card--new" : "",
+  ]
 
   const selectVehicleOrGhost = () => dispatch(selectVehicle(vehicleOrGhost.id))
 
   return (
-    <div
-      className={`m-search-results__card ${selectedClass}`}
-      onClick={selectVehicleOrGhost}
-    >
+    <div className={className(classes)} onClick={selectVehicleOrGhost}>
+      {isRecentlyLoggedOn(vehicleOrGhost) && <NewBadge />}
+
       <PropertiesList
         vehicleOrGhost={vehicleOrGhost}
         highlightText={query.text}

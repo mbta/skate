@@ -1,5 +1,6 @@
 import featureIsEnabled from "../laboratoryFeatures"
 import { Ghost, Vehicle, VehicleOrGhost } from "../realtime"
+import { now } from "../util/dateTime"
 
 export const isVehicle = (
   vehicleOrGhost: VehicleOrGhost
@@ -14,6 +15,18 @@ export const isLateVehicleIndicator = ({ id }: Ghost): boolean =>
 
 export const isShuttle = (vehicle: Vehicle): boolean =>
   (vehicle.runId || "").startsWith("999")
+
+export const isRecentlyLoggedOn = (vehicleOrGhost: VehicleOrGhost): boolean => {
+  if (isGhost(vehicleOrGhost) || !vehicleOrGhost.operatorLogonTime) {
+    return false
+  }
+
+  const thirtyMinutesInMs = 30 * 60 * 1000
+  const timeDiffInMs =
+    now().valueOf() - vehicleOrGhost.operatorLogonTime.valueOf()
+
+  return timeDiffInMs <= thirtyMinutesInMs
+}
 
 export const shouldShowHeadwayDiagram = ({
   headwaySpacing,

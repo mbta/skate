@@ -1,4 +1,5 @@
 import React from "react"
+import { className } from "../helpers/dom"
 import { DrawnStatus, statusClass } from "../models/vehicleStatus"
 import { IconAlertCircleSvgNode, AlertIconStyle } from "./iconAlertCircle"
 
@@ -142,7 +143,7 @@ export const VehicleIconSvgNode = ({
       : "",
   ]
   return (
-    <g className={classes.filter(className => className !== "").join(" ")}>
+    <g className={className(classes)}>
       {label ? (
         <Label size={size} orientation={orientation} label={label} />
       ) : null}

@@ -17,6 +17,7 @@
   cursor: pointer;
   margin-bottom: 1rem;
   padding: 1rem 1rem 0.5rem;
+  position: relative;
 
   &--selected,
   &:hover {
@@ -27,9 +28,38 @@
     }
   }
 
+  &--new {
+    border: 1px solid $color-secondary-dark;
+    box-shadow: 0 2px 4px 0 rgba(77, 182, 172, 0.3);
+
+    .m-properties-list__property--last-login
+      .m-properties-list__property-value {
+      color: $color-secondary-dark;
+    }
+  }
+
   .m-properties-list {
     padding: 0;
   }
+}
+
+.m-search-results__card-new-badge {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+}
+
+.m-search-results__card-new-badge-label {
+  @include font-label;
+  color: $color-secondary-dark;
+}
+
+.m-search-results__card-new-badge-icon {
+  display: inline-block;
+  fill: $color-secondary-dark;
+  margin-left: 0.3rem;
+  stroke: none;
+  width: 9px;
 }
 
 .m-search-results__card-route-label {
