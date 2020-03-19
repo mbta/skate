@@ -722,4 +722,107 @@ describe("groupByPosition", () => {
       incoming: [vehicle],
     })
   })
+
+  test("does not generate a virtual ghost if another vehicle is on this run", () => {
+    const lateVehicle: Vehicle = {
+      id: "vehicleId",
+      directionId: 0,
+      routeId: "1",
+      tripId: "tripId",
+      headsign: "test headsign",
+      blockId: "blockId",
+      routeStatus: "laying_over",
+      runId: "runId",
+      viaVariant: "viaVariant",
+      scheduleAdherenceSecs: 361,
+      scheduledLocation: {
+        routeId: "1",
+        directionId: 0,
+        tripId: "tripId",
+        runId: "runId",
+        timeSinceTripStartTime: 361,
+        headsign: "test headsign",
+        viaVariant: "viaVariant",
+        timepointStatus: {
+          timepointId: "timepointId",
+          fractionUntilTimepoint: 0.2,
+        },
+      },
+      blockWaivers: [] as BlockWaiver[],
+    } as Vehicle
+    const otherVehicleOnRun: Vehicle = {
+      id: "otherVehicleId",
+      directionId: 0,
+      routeId: "1",
+      tripId: "trip2",
+      headsign: "test headsign",
+      blockId: "blockId",
+      routeStatus: "on_route",
+      runId: "runId",
+      viaVariant: "viaVariant",
+      scheduleAdherenceSecs: 5,
+      scheduledLocation: {
+        routeId: "1",
+        directionId: 0,
+        tripId: "trip2",
+        runId: "runId",
+        timeSinceTripStartTime: 5,
+        headsign: "test headsign",
+        viaVariant: "viaVariant",
+        timepointStatus: {
+          timepointId: "timepointId",
+          fractionUntilTimepoint: 0.2,
+        },
+      },
+      blockWaivers: [] as BlockWaiver[],
+    } as Vehicle
+
+    expect(
+      groupByPosition(
+        [lateVehicle, otherVehicleOnRun],
+        "1",
+        LadderDirection.ZeroToOne
+      )
+    ).toEqual({
+      ...emptyByPosition,
+      onRoute: [otherVehicleOnRun],
+      layingOverBottom: [lateVehicle],
+    })
+  })
+
+  test("does not generate a virtual ghost if the vehicle doesn't have a run ID", () => {
+    const lateVehicle: Vehicle = {
+      id: "vehicleId",
+      directionId: 0,
+      routeId: "1",
+      tripId: "tripId",
+      headsign: "test headsign",
+      blockId: "blockId",
+      routeStatus: "laying_over",
+      runId: null,
+      viaVariant: "viaVariant",
+      scheduleAdherenceSecs: 361,
+      scheduledLocation: {
+        routeId: "1",
+        directionId: 0,
+        tripId: "tripId",
+        runId: "runId",
+        timeSinceTripStartTime: 361,
+        headsign: "test headsign",
+        viaVariant: "viaVariant",
+        timepointStatus: {
+          timepointId: "timepointId",
+          fractionUntilTimepoint: 0.2,
+        },
+      },
+      blockWaivers: [] as BlockWaiver[],
+    } as Vehicle
+
+    expect(
+      groupByPosition([lateVehicle], "1", LadderDirection.ZeroToOne)
+    ).toEqual({
+      ...emptyByPosition,
+      layingOverBottom: [lateVehicle],
+    })
+  })
 })
