@@ -184,19 +184,16 @@ const runNotSharedByAnotherVehicle = (vehiclesAndGhosts: VehicleOrGhost[]) => (
     return false
   }
 
-  const otherVehicles = onlyVehicles(vehiclesAndGhosts).filter(
-    ({ id }) => id !== vehicle.id
-  )
+  const otherVehicles = vehiclesAndGhosts.filter(({ id }) => id !== vehicle.id)
   const otherRunIds = runIds(otherVehicles)
 
   return !otherRunIds.includes(vehicle.runId)
 }
 
-const onlyVehicles = (vehiclesAndGhosts: VehicleOrGhost[]): Vehicle[] =>
-  vehiclesAndGhosts.filter(vog => isVehicle(vog)) as Vehicle[]
-
-const runIds = (vehicles: Vehicle[]): RunId[] =>
-  vehicles.map(({ runId }) => runId).filter(runId => runId !== null) as RunId[]
+const runIds = (vehiclesAndGhosts: VehicleOrGhost[]): RunId[] =>
+  vehiclesAndGhosts
+    .map(({ runId }) => runId)
+    .filter(runId => runId !== null) as RunId[]
 
 const lateStartingIncomingVehicles = (
   incomingVehiclesOrGhosts: VehicleOrGhost[],
