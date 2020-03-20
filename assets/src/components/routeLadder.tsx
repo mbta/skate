@@ -9,7 +9,7 @@ import {
 } from "../models/ladderDirection"
 import { isVehicle } from "../models/vehicle"
 import { onTimeStatus } from "../models/vehicleStatus"
-import { Ghost, Vehicle, VehicleId, VehicleOrGhost } from "../realtime.d"
+import { Ghost, Vehicle, VehicleId, VehicleOrGhost, RunId } from "../realtime.d"
 import { LoadableTimepoints, Route, RouteId } from "../schedule.d"
 import { deselectRoute, flipLadder } from "../state"
 import CloseButton from "./closeButton"
@@ -166,7 +166,7 @@ export const groupByPosition = (
       ...realVehicles.layingOverTop,
       ...realVehicles.layingOverBottom,
     ]),
-  ]
+  ].filter(runNotSharedByAnotherVehicle(vehiclesAndGhosts || []))
   const incomingGhosts: Ghost[] = vehiclesNeedingVirtualGhosts.map(vehicle =>
     ghostFromVehicleScheduledLocation(vehicle)
   )
@@ -176,6 +176,24 @@ export const groupByPosition = (
     onRoute: [...realVehicles.onRoute, ...incomingGhosts],
   }
 }
+
+const runNotSharedByAnotherVehicle = (vehiclesAndGhosts: VehicleOrGhost[]) => (
+  vehicle: Vehicle
+): boolean => {
+  if (vehicle.runId === null) {
+    return false
+  }
+
+  const otherVehicles = vehiclesAndGhosts.filter(({ id }) => id !== vehicle.id)
+  const otherRunIds = runIds(otherVehicles)
+
+  return !otherRunIds.includes(vehicle.runId)
+}
+
+const runIds = (vehiclesAndGhosts: VehicleOrGhost[]): RunId[] =>
+  vehiclesAndGhosts
+    .map(({ runId }) => runId)
+    .filter(runId => runId !== null) as RunId[]
 
 const lateStartingIncomingVehicles = (
   incomingVehiclesOrGhosts: VehicleOrGhost[],
