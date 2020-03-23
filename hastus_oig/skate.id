@@ -14,7 +14,7 @@ file trips
       {
       item half_header
          {
-         value ' "schedule_id;area;run_id;route_id;trip_id;block_id" '
+         value ' "schedule_id;area;run_id;route_id;trip_id;block_id;start_time;end_time;start_place;end_place" '
          }
       }
 
@@ -35,6 +35,47 @@ file trips
          item trp_route { value 'trp_route' }
          item trp_int_number { value 'trp_int_number' }
          item trp_block { value 'trp_block' }
+         item trp_time_start { value 'trp_time_start' } { mask "_0hh'mm" }
+         item trp_time_end { value 'trp_time_end' } { mask "_0hh'mm" }
+         item trp_place_start { value 'trp_place_start' }
+         item trp_place_end { value 'trp_place_end' }
          }
       }
    } #file trips
+
+file activities
+   {
+   name ' "activities.csv" '
+
+   line header_half
+      {
+      item halfheader
+         {
+         value ' "schedule_id;area;run_id;start_time;end_time;start_place;end_place;activity_name;activity_type" '
+         }
+      }
+
+   foreach duty_activity
+      {
+      sort_by duty_activitySort
+         {
+         criteria csc_name { value 'Get(crew_schedule).csc_name' }
+         criteria csc_gar_rating_area { value 'Get(crew_schedule).csc_gar_rating_area' }
+         criteria dty_number { value 'dty_number' }
+         criteria dty_act_start_time { value 'dty_act_start_time' }
+         }
+
+      line duty_activity
+         {
+         item csc_name { value 'Get(crew_schedule).csc_name' }
+         item csc_gar_rating_area { value 'Get(crew_schedule).csc_gar_rating_area' }
+         item dty_number { value 'dty_number' }
+         item dty_act_start_time { value 'dty_act_start_time' } { mask "_0hh'mm" }
+         item dty_act_end_time { value 'dty_act_end_time' } { mask "_0hh'mm" }
+         item dty_act_start_place { value 'dty_act_start_place' }
+         item dty_act_end_place { value 'dty_act_end_place' }
+         item dty_act_name { value 'dty_act_name' }
+         item dty_act_activity { value 'dty_act_activity' }
+         }
+      }
+   } #file activities
