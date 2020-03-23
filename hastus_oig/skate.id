@@ -6,16 +6,19 @@
 
 att hide_inaccessible_values
 
-file trip_runs
+file trips
    {
    name ' "trips.csv" '
-   
+
    line header_half
-    {item half_header
-       { value ' "schedule_id;area;run_id;route_id;trip_id;block_id" ' }
-    }
-   
-      foreach trip
+      {
+      item half_header
+         {
+         value ' "schedule_id;area;run_id;route_id;trip_id;block_id" '
+         }
+      }
+
+   foreach trip
       {
       sort_by tripSort
          {
@@ -34,4 +37,4 @@ file trip_runs
          item trp_block { value 'trp_block' }
          }
       }
-    } #file trips.csv
+   } #file trips
