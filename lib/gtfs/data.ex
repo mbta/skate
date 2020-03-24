@@ -205,8 +205,12 @@ defmodule Gtfs.Data do
 
   @spec parse_files(all_files()) :: t()
   def parse_files(%{gtfs: gtfs_files, hastus: hastus_files}) do
+    hastus_trips = Gtfs.Hastus.Trip.parse(hastus_files["trips.csv"])
+
     directions_by_route_id = directions_by_route_id(gtfs_files["directions.txt"])
-    run_ids_by_trip_id = Run.run_ids_by_trip_id(hastus_files["trips.csv"])
+
+    run_ids_by_trip_id =
+      Map.new(hastus_trips, fn hastus_trip -> {hastus_trip.trip_id, hastus_trip.run_id} end)
 
     bus_routes =
       Csv.parse(
