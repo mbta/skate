@@ -252,7 +252,7 @@ const selectedRouteIdsReducer = (
     case "SELECT_ROUTE":
       return [...state, action.payload.routeId]
     case "DESELECT_ROUTE":
-      return state.filter(id => id !== action.payload.routeId)
+      return state.filter((id) => id !== action.payload.routeId)
     default:
       return state
   }
@@ -279,7 +279,7 @@ const selectedShuttleRouteIdsReducer = (
     case "SELECT_SHUTTLE_ROUTE":
       return [...state, action.payload.routeId]
     case "DESELECT_SHUTTLE_ROUTE":
-      return state.filter(id => id !== action.payload.routeId)
+      return state.filter((id) => id !== action.payload.routeId)
     default:
       return state
   }
@@ -293,7 +293,9 @@ const selectedShuttleRunIdsReducer = (
     case "SELECT_SHUTTLE_RUN":
       return [...shuttleRunIdsList(state), action.payload.runId]
     case "DESELECT_SHUTTLE_RUN":
-      return shuttleRunIdsList(state).filter(id => id !== action.payload.runId)
+      return shuttleRunIdsList(state).filter(
+        (id) => id !== action.payload.runId
+      )
     case "SELECT_ALL_SHUTTLE_RUNS":
       return "all"
     case "DESELECT_ALL_SHUTTLE_RUNS":

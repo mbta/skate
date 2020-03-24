@@ -47,7 +47,7 @@ export const apiCall = <T>({
     .then(checkResponseStatus)
     .then(parseJson)
     .then(({ data: data }: { data: any }) => parser(data))
-    .catch(error => {
+    .catch((error) => {
       if (defaultResult === undefined) {
         throw error
       } else {

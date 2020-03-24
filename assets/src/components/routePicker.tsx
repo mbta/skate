@@ -50,7 +50,7 @@ const SelectedRoutesList = ({
 
   return (
     <ul className="m-route-picker__selected-routes">
-      {selectedRouteIds.map(routeId => (
+      {selectedRouteIds.map((routeId) => (
         <li key={routeId}>
           <button
             className="m-route-picker__selected-routes-button"
@@ -72,7 +72,7 @@ const RoutesList = ({
   selectedRouteIds: RouteId[]
 }) => (
   <ul className="m-route-picker__route-list">
-    {routes.map(route => (
+    {routes.map((route) => (
       <li key={route.id}>
         <RouteListButton
           route={route}

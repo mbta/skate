@@ -204,7 +204,7 @@ const headwaySpacing = (raw: RawHeadwaySpacing): HeadwaySpacing | null => {
 const dataDiscrepanciesFromData = (
   dataDiscrepancies: DataDiscrepancyData[]
 ): DataDiscrepancy[] =>
-  dataDiscrepancies.map(dataDiscrepancy => ({
+  dataDiscrepancies.map((dataDiscrepancy) => ({
     attribute: dataDiscrepancy.attribute,
     sources: dataDiscrepancy.sources,
   }))

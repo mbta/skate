@@ -67,7 +67,7 @@ const IncomingBox = ({
   selectedVehicleId: VehicleId | undefined
 }) => (
   <div className="m-incoming-box">
-    {vehiclesAndGhosts.map(vehicleOrGhost => (
+    {vehiclesAndGhosts.map((vehicleOrGhost) => (
       <IncomingBoxVehicle
         vehicleOrGhost={vehicleOrGhost}
         ladderDirection={ladderDirection}

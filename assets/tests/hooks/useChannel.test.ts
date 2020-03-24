@@ -148,7 +148,7 @@ describe("useChannel", () => {
     mockSocket.channel.mockImplementationOnce(() => channel2)
 
     const { rerender, result } = renderHook(
-      topic =>
+      (topic) =>
         useChannel({
           socket: mockSocket,
           topic,
@@ -173,7 +173,7 @@ describe("useChannel", () => {
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     const { rerender, result } = renderHook<string | null, any>(
-      topic =>
+      (topic) =>
         useChannel({
           socket: mockSocket,
           topic,
@@ -193,7 +193,7 @@ describe("useChannel", () => {
 
   test("console.error on join error", async () => {
     const spyConsoleError = jest.spyOn(console, "error")
-    spyConsoleError.mockImplementationOnce(msg => msg)
+    spyConsoleError.mockImplementationOnce((msg) => msg)
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("error")
     mockSocket.channel.mockImplementationOnce(() => mockChannel)

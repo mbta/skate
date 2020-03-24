@@ -295,7 +295,7 @@ const spyMapResult = (): MutableRefObject<LeafletMap | null> => {
 }
 
 const animationFramePromise = (): Promise<null> => {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     window.requestAnimationFrame(() => resolve(null))
   })
 }

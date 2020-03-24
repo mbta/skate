@@ -16,14 +16,14 @@ import RoutePicker from "./routePicker"
 export const findRouteById = (
   routes: Route[] | null,
   routeId: RouteId
-): Route | undefined => (routes || []).find(route => route.id === routeId)
+): Route | undefined => (routes || []).find((route) => route.id === routeId)
 
 export const findSelectedVehicleOrGhost = (
   vehiclesByRouteId: ByRouteId<VehicleOrGhost[]>,
   selectedVehicleId: VehicleId | undefined
 ): VehicleOrGhost | undefined => {
   return allVehiclesAndGhosts(vehiclesByRouteId).find(
-    bus => bus.id === selectedVehicleId
+    (bus) => bus.id === selectedVehicleId
   )
 }
 
@@ -32,7 +32,7 @@ const vehicleRoute = (
   vehicleOrGhost: VehicleOrGhost | undefined
 ): Route | undefined =>
   (allRoutes || []).find(
-    route => route.id === (vehicleOrGhost && vehicleOrGhost.routeId)
+    (route) => route.id === (vehicleOrGhost && vehicleOrGhost.routeId)
   )
 
 const LadderPage = (): ReactElement<HTMLDivElement> => {
@@ -50,8 +50,8 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
     selectedRouteIds
   )
   const selectedRoutes: Route[] = selectedRouteIds
-    .map(routeId => findRouteById(routes, routeId))
-    .filter(route => route) as Route[]
+    .map((routeId) => findRouteById(routes, routeId))
+    .filter((route) => route) as Route[]
 
   const selectedVehicleOrGhost = findSelectedVehicleOrGhost(
     vehiclesByRouteId,

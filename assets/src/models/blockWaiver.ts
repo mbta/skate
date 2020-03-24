@@ -31,7 +31,7 @@ export const hasCurrentBlockWaiver = ({
   blockWaivers,
 }: VehicleOrGhost): boolean =>
   blockWaivers.some(
-    blockWaiver =>
+    (blockWaiver) =>
       currentFuturePastType(blockWaiver) === CurrentFuturePastType.Current
   )
 

@@ -72,7 +72,7 @@ const LayoverBox = ({
     <div className={`m-layover-box m-layover-box--${classModifier}`}>
       {vehiclesAndGhosts
         .sort(byLayoverDeparture(isBottomLayoverBox))
-        .map(vehicleOrGhost => (
+        .map((vehicleOrGhost) => (
           <LayoverVehicle
             vehicleOrGhost={vehicleOrGhost}
             isBottomLayoverBox={isBottomLayoverBox}

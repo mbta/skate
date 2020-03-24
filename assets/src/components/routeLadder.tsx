@@ -167,7 +167,7 @@ export const groupByPosition = (
       ...realVehicles.layingOverBottom,
     ]),
   ].filter(runNotSharedByAnotherVehicle(vehiclesAndGhosts || []))
-  const incomingGhosts: Ghost[] = vehiclesNeedingVirtualGhosts.map(vehicle =>
+  const incomingGhosts: Ghost[] = vehiclesNeedingVirtualGhosts.map((vehicle) =>
     ghostFromVehicleScheduledLocation(vehicle)
   )
 
@@ -193,14 +193,14 @@ const runNotSharedByAnotherVehicle = (vehiclesAndGhosts: VehicleOrGhost[]) => (
 const runIds = (vehiclesAndGhosts: VehicleOrGhost[]): RunId[] =>
   vehiclesAndGhosts
     .map(({ runId }) => runId)
-    .filter(runId => runId !== null) as RunId[]
+    .filter((runId) => runId !== null) as RunId[]
 
 const lateStartingIncomingVehicles = (
   incomingVehiclesOrGhosts: VehicleOrGhost[],
   currentRouteId: RouteId
 ): Vehicle[] =>
   incomingVehiclesOrGhosts.filter(
-    vehicleOrGhost =>
+    (vehicleOrGhost) =>
       isAVehicleThatIsLateStartingScheduledTrip(vehicleOrGhost) &&
       isScheduledForCurrentRoute(vehicleOrGhost as Vehicle, currentRouteId)
   ) as Vehicle[]
@@ -209,7 +209,7 @@ const lateStartingLayingOverVehicles = (
   layingOverVehiclesOrGhosts: VehicleOrGhost[]
 ): Vehicle[] =>
   layingOverVehiclesOrGhosts.filter(
-    vehicleOrGhost =>
+    (vehicleOrGhost) =>
       isAVehicleThatIsLateStartingScheduledTrip(vehicleOrGhost) &&
       isScheduledForCurrentTrip(vehicleOrGhost as Vehicle)
   ) as Vehicle[]

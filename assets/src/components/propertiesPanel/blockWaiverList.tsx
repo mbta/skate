@@ -8,7 +8,7 @@ interface Props {
 
 const BlockWaiverList = ({ blockWaivers }: Props) => (
   <div className="m-block-waiver-list">
-    {blockWaivers.map(blockWaiver => (
+    {blockWaivers.map((blockWaiver) => (
       <BlockWaiverBanner
         blockWaiver={blockWaiver}
         key={`${blockWaiver.startTime}-${blockWaiver.endTime}`}

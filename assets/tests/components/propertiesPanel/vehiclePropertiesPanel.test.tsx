@@ -178,7 +178,9 @@ describe("VehiclePropertiesPanel", () => {
   })
 
   test("renders data discrepancies when in debug mode", () => {
-    jest.spyOn(URLSearchParams.prototype, "get").mockImplementation(_key => "1")
+    jest
+      .spyOn(URLSearchParams.prototype, "get")
+      .mockImplementation((_key) => "1")
 
     const wrapper = mount(<VehiclePropertiesPanel selectedVehicle={vehicle} />)
 
@@ -190,7 +192,7 @@ describe("VehiclePropertiesPanel", () => {
   test("does not render data discrepancies when not in debug mode", () => {
     jest
       .spyOn(URLSearchParams.prototype, "get")
-      .mockImplementation(_key => null)
+      .mockImplementation((_key) => null)
 
     const wrapper = mount(<VehiclePropertiesPanel selectedVehicle={vehicle} />)
 

@@ -109,7 +109,7 @@ export const byOperatorLogonTime = (
 
 const ResultsList = ({ vehicles }: { vehicles: VehicleOrGhost[] }) => (
   <div className="m-search-results__list">
-    {vehicles.sort(byOperatorLogonTime).map(vehicleOrGhost => (
+    {vehicles.sort(byOperatorLogonTime).map((vehicleOrGhost) => (
       <SearchResultCard
         vehicleOrGhost={vehicleOrGhost}
         key={`search-result-card-${vehicleOrGhost.id}`}

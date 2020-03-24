@@ -58,7 +58,7 @@ export const ladderVehiclesFromVehicles = (
   widthOfLanes: number
 } => {
   const vehiclesOnLadder: VehicleOnLadder[] = vehiclesAndGhosts.map(
-    vehicleOrGhost =>
+    (vehicleOrGhost) =>
       isVehicle(vehicleOrGhost)
         ? vehicleOnLadder(vehicleOrGhost, ladderDirection, timepointStatusYFunc)
         : ghostOnLadder(vehicleOrGhost, ladderDirection, timepointStatusYFunc)
@@ -74,7 +74,7 @@ export const ladderVehiclesFromVehicles = (
   const widthOfLanes =
     widthOfVehicleGroup + (maxOccupiedLane - 1) * ladderVehicleHorizontalOffset
 
-  const ladderVehicles: LadderVehicle[] = vehiclesInLane.map(vehicleInLane =>
+  const ladderVehicles: LadderVehicle[] = vehiclesInLane.map((vehicleInLane) =>
     addX(vehicleInLane, xInLane)
   )
 
@@ -100,7 +100,7 @@ export const putIntoLanes = (
           ladderVehicle
         )
         const occupiedLanes: number[] = overlappers.map(
-          overlapper => overlapper.lane
+          (overlapper) => overlapper.lane
         )
         const lane = firstOpenLane(occupiedLanes)
 
@@ -276,7 +276,7 @@ const overlappingPreviousVehicles = (
   previousVehicles: InLane[],
   vehicle: OnLadder
 ): InLane[] =>
-  previousVehicles.filter(previousVehicle =>
+  previousVehicles.filter((previousVehicle) =>
     areOverlapping(previousVehicle, vehicle)
   )
 

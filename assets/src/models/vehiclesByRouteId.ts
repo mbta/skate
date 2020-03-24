@@ -18,7 +18,7 @@ export const allVehiclesForRoute = (
 ): Vehicle[] =>
   (vehiclesByRouteId[routeId] || [])
     .filter(isVehicle)
-    .filter(vehicle => vehicle.routeId === routeId)
+    .filter((vehicle) => vehicle.routeId === routeId)
 
 /**
  * Partition vehicles by direction
@@ -35,12 +35,12 @@ export const nextAndPreviousVehicle = (
   ]
 
   const nextVehicle = vehiclesGoingTheSameDirection.find(
-    vehicle =>
+    (vehicle) =>
       vehicle.previousVehicleId === currentVehicle.id &&
       vehicle.routeStatus === "on_route"
   )
   const previousVehicle = vehiclesGoingTheSameDirection.find(
-    vehicle =>
+    (vehicle) =>
       vehicle.id === currentVehicle.previousVehicleId &&
       vehicle.routeStatus === "on_route"
   )

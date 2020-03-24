@@ -49,10 +49,7 @@ describe("tabBar", () => {
       </BrowserRouter>
     )
 
-    wrapper
-      .find(".m-tab-bar__logo")
-      .first()
-      .simulate("click")
+    wrapper.find(".m-tab-bar__logo").first().simulate("click")
 
     expect(reloadSpy).toHaveBeenCalled()
   })
@@ -68,10 +65,7 @@ describe("tabBar", () => {
       </BrowserRouter>
     )
 
-    wrapper
-      .find(".m-tab-bar__refresh")
-      .first()
-      .simulate("click")
+    wrapper.find(".m-tab-bar__refresh").first().simulate("click")
 
     expect(reloadSpy).toHaveBeenCalled()
   })

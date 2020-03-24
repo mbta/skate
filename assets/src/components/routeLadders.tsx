@@ -21,7 +21,7 @@ const RouteLadders = ({
 
   return (
     <div className="m-route-ladders">
-      {routes.map(route => (
+      {routes.map((route) => (
         <RouteLadder
           key={route.id}
           route={route}

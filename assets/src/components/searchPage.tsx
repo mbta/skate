@@ -27,14 +27,14 @@ const filterVehicles = (
 ): Vehicle[] => {
   return vehiclesOrGhosts === null
     ? []
-    : (vehiclesOrGhosts.filter(vog => isVehicle(vog)) as Vehicle[])
+    : (vehiclesOrGhosts.filter((vog) => isVehicle(vog)) as Vehicle[])
 }
 
 const findSelectedVehicle = (
   vehicles: VehicleOrGhost[],
   selectedVehicleId: VehicleId | undefined
 ): VehicleOrGhost | undefined =>
-  vehicles.find(vehicle => vehicle.id === selectedVehicleId)
+  vehicles.find((vehicle) => vehicle.id === selectedVehicleId)
 
 const ToggleMobileDisplayButton = ({
   mobileDisplay,
