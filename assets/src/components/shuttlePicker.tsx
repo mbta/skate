@@ -65,7 +65,7 @@ const KNOWN_SHUTTLES: KnownShuttle[] = [
 ]
 
 const KNOWN_RUN_IDS: RunId[] = KNOWN_SHUTTLES.map(
-  knownShuttle => knownShuttle.runId
+  (knownShuttle) => knownShuttle.runId
 )
 
 const ShuttlePicker = ({ shuttles }: Props): ReactElement<HTMLDivElement> => {
@@ -98,12 +98,12 @@ const RunIds = ({ shuttles }: { shuttles: Vehicle[] }) => (
 
 const RunIdButtons = ({ shuttles }: { shuttles: Vehicle[] }) => {
   const runCounts = activeRunCounts(shuttles)
-  const activeRunIds = Object.keys(runCounts).filter(runId => runId !== "all")
+  const activeRunIds = Object.keys(runCounts).filter((runId) => runId !== "all")
 
   return (
     <>
       <AllSpecialsButton count={runCounts.all} />
-      {KNOWN_SHUTTLES.map(knownShuttle => (
+      {KNOWN_SHUTTLES.map((knownShuttle) => (
         <RunIdButton
           key={knownShuttle.runId}
           name={`${knownShuttle.name} ${formatRunId(knownShuttle.runId)}`}
@@ -113,7 +113,7 @@ const RunIdButtons = ({ shuttles }: { shuttles: Vehicle[] }) => {
           isActive={activeRunIds.includes(knownShuttle.runId)}
         />
       ))}
-      {activeRunIds.map(runId =>
+      {activeRunIds.map((runId) =>
         KNOWN_RUN_IDS.includes(runId) ? null : (
           <RunIdButton
             key={runId}
@@ -257,10 +257,10 @@ const Routes = ({ shuttleRoutes }: { shuttleRoutes: Route[] | null }) => (
 
 const RouteButtons = ({ shuttleRoutes }: { shuttleRoutes: Route[] }) => (
   <>
-    {subwayRoutes.map(subwayRoute => (
+    {subwayRoutes.map((subwayRoute) => (
       <RouteButton route={subwayRoute} key={`route-button-${subwayRoute.id}`} />
     ))}
-    {shuttleRoutes.map(shuttleRoute => (
+    {shuttleRoutes.map((shuttleRoute) => (
       <RouteButton
         route={shuttleRoute}
         key={`route-button-${shuttleRoute.id}`}

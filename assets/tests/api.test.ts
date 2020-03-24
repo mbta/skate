@@ -38,7 +38,7 @@ describe("apiCall", () => {
     browserReloadSpy.mockRestore()
   })
 
-  test("returns parsed data", done => {
+  test("returns parsed data", (done) => {
     mockFetch(200, { data: "raw" })
 
     const parse = jest.fn(() => "parsed")
@@ -46,14 +46,14 @@ describe("apiCall", () => {
     apiCall({
       url: "/",
       parser: parse,
-    }).then(parsed => {
+    }).then((parsed) => {
       expect(parse).toHaveBeenCalledWith("raw")
       expect(parsed).toEqual("parsed")
       done()
     })
   })
 
-  test("reloads the page if the response status is a redirect (3xx)", done => {
+  test("reloads the page if the response status is a redirect (3xx)", (done) => {
     mockFetch(302, { data: null })
 
     apiCall({
@@ -65,7 +65,7 @@ describe("apiCall", () => {
     })
   })
 
-  test("reloads the page if the response status is forbidden (403)", done => {
+  test("reloads the page if the response status is forbidden (403)", (done) => {
     mockFetch(403, { data: null })
 
     apiCall({
@@ -77,20 +77,20 @@ describe("apiCall", () => {
     })
   })
 
-  test("returns a default for any other response", done => {
+  test("returns a default for any other response", (done) => {
     mockFetch(500, { data: null })
 
     apiCall({
       url: "/",
       parser: () => null,
       defaultResult: "default",
-    }).then(result => {
+    }).then((result) => {
       expect(result).toEqual("default")
       done()
     })
   })
 
-  test("throws an error for any other response status if there's no default", done => {
+  test("throws an error for any other response status if there's no default", (done) => {
     mockFetch(500, { data: null })
 
     apiCall({
@@ -100,7 +100,7 @@ describe("apiCall", () => {
       .then(() => {
         done("fetchRoutes did not throw an error")
       })
-      .catch(error => {
+      .catch((error) => {
         expect(error).toBeDefined()
         done()
       })
@@ -108,7 +108,7 @@ describe("apiCall", () => {
 })
 
 describe("fetchRoutes", () => {
-  test("fetches a list of routes", done => {
+  test("fetches a list of routes", (done) => {
     mockFetch(200, {
       data: [
         {
@@ -135,7 +135,7 @@ describe("fetchRoutes", () => {
       ],
     })
 
-    fetchRoutes().then(routes => {
+    fetchRoutes().then((routes) => {
       expect(routes).toEqual([
         {
           directionNames: {
@@ -165,7 +165,7 @@ describe("fetchRoutes", () => {
 })
 
 describe("fetchShapeForRoute", () => {
-  test("fetches a shape for the route", done => {
+  test("fetches a shape for the route", (done) => {
     const shapes = [
       {
         id: "shape1",
@@ -193,16 +193,16 @@ describe("fetchShapeForRoute", () => {
 
     mockFetch(200, { data: shapes })
 
-    fetchShapeForRoute("28").then(response => {
+    fetchShapeForRoute("28").then((response) => {
       expect(response).toEqual(shapes)
       done()
     })
   })
 
-  test("defaults to [] if there's an error", done => {
+  test("defaults to [] if there's an error", (done) => {
     mockFetch(500, { data: null })
 
-    fetchShapeForRoute("28").then(result => {
+    fetchShapeForRoute("28").then((result) => {
       expect(result).toEqual([])
       done()
     })
@@ -210,7 +210,7 @@ describe("fetchShapeForRoute", () => {
 })
 
 describe("fetchShapeForTrip", () => {
-  test("fetches a shape for the trip", done => {
+  test("fetches a shape for the trip", (done) => {
     const shape = {
       id: "shape",
       points: [
@@ -225,16 +225,16 @@ describe("fetchShapeForTrip", () => {
 
     mockFetch(200, { data: shape })
 
-    fetchShapeForTrip("trip").then(response => {
+    fetchShapeForTrip("trip").then((response) => {
       expect(response).toEqual(shape)
       done()
     })
   })
 
-  test("defaults to null if there's an error", done => {
+  test("defaults to null if there's an error", (done) => {
     mockFetch(500, { data: null })
 
-    fetchShapeForTrip("28").then(result => {
+    fetchShapeForTrip("28").then((result) => {
       expect(result).toEqual(null)
       done()
     })
@@ -242,7 +242,7 @@ describe("fetchShapeForTrip", () => {
 })
 
 describe("fetchShuttleRoutes", () => {
-  test("fetches a list of shuttle routes", done => {
+  test("fetches a list of shuttle routes", (done) => {
     mockFetch(200, {
       data: [
         {
@@ -269,7 +269,7 @@ describe("fetchShuttleRoutes", () => {
       ],
     })
 
-    fetchShuttleRoutes().then(routes => {
+    fetchShuttleRoutes().then((routes) => {
       expect(routes).toEqual([
         {
           directionNames: {
@@ -299,19 +299,19 @@ describe("fetchShuttleRoutes", () => {
 })
 
 describe("fetchTimepointsForRoute", () => {
-  test("fetches a list of timepoints for a route", done => {
+  test("fetches a list of timepoints for a route", (done) => {
     mockFetch(200, { data: ["MATPN", "WELLH", "MORTN"] })
 
-    fetchTimepointsForRoute("28").then(timepoints => {
+    fetchTimepointsForRoute("28").then((timepoints) => {
       expect(timepoints).toEqual(["MATPN", "WELLH", "MORTN"])
       done()
     })
   })
 
-  test("defaults to [] if there's an error", done => {
+  test("defaults to [] if there's an error", (done) => {
     mockFetch(500, { data: null })
 
-    fetchTimepointsForRoute("28").then(result => {
+    fetchTimepointsForRoute("28").then((result) => {
       expect(result).toEqual([])
       done()
     })

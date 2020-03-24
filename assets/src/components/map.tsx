@@ -162,14 +162,14 @@ const removeDeselectedRouteShapes = (
   previousShapes: PolylinesByShapeId,
   shapes: Shape[]
 ) => {
-  const shapeIds = shapes.map(shape => shape.id)
+  const shapeIds = shapes.map((shape) => shape.id)
 
   Object.entries(previousShapes).forEach(([shapeId, routeShapeWithStops]) => {
     if (!shapeIds.includes(shapeId)) {
       routeShapeWithStops.routeLine.remove()
 
       if (routeShapeWithStops.stopCicles) {
-        routeShapeWithStops.stopCicles.forEach(stopCircle =>
+        routeShapeWithStops.stopCicles.forEach((stopCircle) =>
           stopCircle.remove()
         )
       }
@@ -179,7 +179,7 @@ const removeDeselectedRouteShapes = (
 
 type LatLon = [number, number]
 export const latLons = ({ points }: Shape): LatLon[] =>
-  points.map(point => [point.lat, point.lon] as LatLon)
+  points.map((point) => [point.lat, point.lon] as LatLon)
 
 export const strokeOptions = ({ color }: Shape): object =>
   color
@@ -211,7 +211,7 @@ const drawShape = (shape: Shape, map: LeafletMap): RouteShapeWithStops => {
   let stopCicles
 
   if (shape.stops) {
-    stopCicles = shape.stops.map(stop => drawStop(stop, map))
+    stopCicles = shape.stops.map((stop) => drawStop(stop, map))
   }
 
   return {
@@ -244,7 +244,7 @@ export const autoCenter = (
   isAutoCentering: MutableRefObject<boolean>,
   appState: AppState
 ): void => {
-  const latLngs: LatLng[] = vehicles.map(vehicle =>
+  const latLngs: LatLng[] = vehicles.map((vehicle) =>
     Leaflet.latLng(vehicle.latitude, vehicle.longitude)
   )
   isAutoCentering.current = true
@@ -292,7 +292,7 @@ const recenterControl = (
       link.setAttribute("role", "button")
       link.setAttribute("aria-label", "Recenter map")
       Leaflet.DomEvent.disableClickPropagation(link)
-      link.onclick = e => {
+      link.onclick = (e) => {
         e.preventDefault()
         setShouldAutoCenter(true)
       }
@@ -391,7 +391,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
     <div
       id="id-vehicle-map"
       className="m-vehicle-map"
-      ref={container => (containerRef.current = container)}
+      ref={(container) => (containerRef.current = container)}
     />
   )
 }

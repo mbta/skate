@@ -202,10 +202,7 @@ describe("HeadwayDiagram", () => {
         <HeadwayDiagram vehicle={vehicle} />
       </StateDispatchProvider>
     )
-    wrapper
-      .find(".m-headway-diagram__other-vehicle")
-      .first()
-      .simulate("click")
+    wrapper.find(".m-headway-diagram__other-vehicle").first().simulate("click")
 
     expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle.id))
   })

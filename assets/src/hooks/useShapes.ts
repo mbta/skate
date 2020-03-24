@@ -14,14 +14,14 @@ export const useRouteShapes = (selectedRouteIds: RouteId[]): Shape[] => {
   >({})
 
   const setLoadingShapesForRoute = (routeId: RouteId) => {
-    setShapesByRouteId(previousShapesByRouteId => ({
+    setShapesByRouteId((previousShapesByRouteId) => ({
       ...previousShapesByRouteId,
       [routeId]: null,
     }))
   }
 
   const setShapesForRoute = (routeId: RouteId, shapes: Shape[]) => {
-    setShapesByRouteId(previousShapesByRouteId => ({
+    setShapesByRouteId((previousShapesByRouteId) => ({
       ...previousShapesByRouteId,
       [routeId]: shapes,
     }))

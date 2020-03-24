@@ -131,7 +131,7 @@ const PropertiesList = ({ vehicleOrGhost, highlightText }: Props) => (
   <div className="m-properties-list">
     <table className="m-properties-list__table">
       <tbody>
-        {properties(vehicleOrGhost).map(property => (
+        {properties(vehicleOrGhost).map((property) => (
           <PropertyRow
             property={property}
             highlightText={highlightText}

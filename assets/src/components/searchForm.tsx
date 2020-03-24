@@ -71,7 +71,7 @@ const SearchForm = () => {
 
       <div className="m-search-form__row">
         <ul className="m-search-form__property-buttons">
-          {SEARCH_PROPERTIES.map(property => (
+          {SEARCH_PROPERTIES.map((property) => (
             <li
               className="m-search-form__property-button"
               key={`search-property-${property}`}

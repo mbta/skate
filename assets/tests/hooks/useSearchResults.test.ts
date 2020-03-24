@@ -238,7 +238,7 @@ describe("useSearchResults", () => {
       property: "run",
     }
     const { rerender } = renderHook(
-      searchQuery => useSearchResults(mockSocket, searchQuery),
+      (searchQuery) => useSearchResults(mockSocket, searchQuery),
       { initialProps: search1 }
     )
 
@@ -262,7 +262,7 @@ describe("useSearchResults", () => {
       property: "run",
     }
     const { rerender } = renderHook(
-      searchQuery => useSearchResults(mockSocket, searchQuery),
+      (searchQuery) => useSearchResults(mockSocket, searchQuery),
       { initialProps: search1 as SearchQuery | null }
     )
 

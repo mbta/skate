@@ -88,7 +88,7 @@ describe("allVehiclesForRoute", () => {
           ],
         },
         "1"
-      ).map(v => v.id)
+      ).map((v) => v.id)
     ).toEqual(["1"])
   })
 
@@ -108,7 +108,7 @@ describe("allVehiclesForRoute", () => {
           ],
         },
         "1"
-      ).map(v => v.id)
+      ).map((v) => v.id)
     ).toEqual(["1"])
   })
 
@@ -128,7 +128,7 @@ describe("allVehiclesForRoute", () => {
           ],
         },
         "1"
-      ).map(v => v.id)
+      ).map((v) => v.id)
     ).toEqual(["1"])
   })
 })

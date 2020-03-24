@@ -72,7 +72,7 @@ const Ladder = ({
   )
   const [selectedLadderVehicles, unselectedLadderVehicles] = partition(
     ladderVehicles,
-    ladderVehicle => ladderVehicle.vehicle.id === selectedVehicleId
+    (ladderVehicle) => ladderVehicle.vehicle.id === selectedVehicleId
   )
 
   const width = 120 + 2 * widthOfLanes
@@ -87,13 +87,13 @@ const Ladder = ({
         width={width}
         height={height}
       >
-        {ladderVehicles.map(ladderVehicle => (
+        {ladderVehicles.map((ladderVehicle) => (
           <ScheduledLine
             key={`line-${ladderVehicle.vehicle.id}`}
             ladderVehicle={ladderVehicle}
           />
         ))}
-        {unselectedLadderVehicles.map(ladderVehicle => (
+        {unselectedLadderVehicles.map((ladderVehicle) => (
           <VehicleSvg
             key={`vehicle-${ladderVehicle.vehicle.id}`}
             ladderVehicle={ladderVehicle}
@@ -101,7 +101,7 @@ const Ladder = ({
           />
         ))}
         {/* Display the selected vehicle on top of all others if there is one */}
-        {selectedLadderVehicles.map(ladderVehicle => (
+        {selectedLadderVehicles.map((ladderVehicle) => (
           <VehicleSvg
             key={`vehicle-${ladderVehicle.vehicle.id}`}
             ladderVehicle={ladderVehicle}
@@ -230,7 +230,7 @@ const timepointStatusYFromTimepoints = (
 ): number => {
   if (timepointStatus) {
     const timepointIndex = timepoints.findIndex(
-      timepoint => timepoint.id === timepointStatus.timepointId
+      (timepoint) => timepoint.id === timepointStatus.timepointId
     )
     if (timepointIndex !== -1) {
       const fractionDirection = direction === VehicleDirection.Up ? +1 : -1

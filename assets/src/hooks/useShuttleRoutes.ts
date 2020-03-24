@@ -21,9 +21,7 @@ export const sortByName = (unsortedRoutes: Route[]): Route[] =>
 const useShuttleRoutes = (): Route[] | null => {
   const [shuttleRoutes, setShuttleRoutes] = useState<Route[] | null>(null)
   useEffect(() => {
-    fetchShuttleRoutes()
-      .then(sortByName)
-      .then(setShuttleRoutes)
+    fetchShuttleRoutes().then(sortByName).then(setShuttleRoutes)
   }, [])
   return shuttleRoutes
 }

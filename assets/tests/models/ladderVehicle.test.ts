@@ -43,8 +43,8 @@ describe("putIntoLanes", () => {
     const expectedLanes = [1, 0, 1, 0]
 
     const result = putIntoLanes(original)
-    const ys = result.map(v => v.y)
-    const lanes = result.map(v => v.lane)
+    const ys = result.map((v) => v.y)
+    const lanes = result.map((v) => v.lane)
 
     expect(ys).toEqual(expectedYs)
     expect(lanes).toEqual(expectedLanes)
@@ -75,7 +75,7 @@ describe("byDirectionAndY", () => {
     const expectedYs = [2, 1, 1, 2]
 
     const result = array.sort(byDirectionAndY)
-    const ys = result.map(v => v.y)
+    const ys = result.map((v) => v.y)
 
     expect(ys).toEqual(expectedYs)
   })

@@ -110,7 +110,7 @@ const DataDiscrepancies = ({
   vehicle: Vehicle
 }) => (
   <ul className="m-vehicle-properties-panel__data-discrepancies">
-    {dataDiscrepancies.map(dataDiscrepancy => (
+    {dataDiscrepancies.map((dataDiscrepancy) => (
       <li key={dataDiscrepancy.attribute}>
         <Discrepancy dataDiscrepancy={dataDiscrepancy} />
       </li>
