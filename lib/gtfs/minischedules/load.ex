@@ -16,19 +16,6 @@ defmodule Gtfs.Minischedules.Load do
     %{}
   end
 
-  # The trips that form a piece together
-  @typep trip_group :: {Run.key(), [Trip.t()]}
-
-  @spec group_trips_by_run([Trip.t()]) :: [trip_group()]
-  defp group_trips_by_run(trips) do
-    split_by(trips, &run_key_for_trip/1)
-  end
-
-  @spec run_key_for_trip(Trip.t()) :: Run.key()
-  defp run_key_for_trip(trip) do
-    {trip.schedule_id, trip.run_id}
-  end
-
   # All the activities on a run
   @typep activity_group :: {Run.key(), [Activity.t()]}
 
@@ -42,14 +29,27 @@ defmodule Gtfs.Minischedules.Load do
     {activity.schedule_id, activity.run_id}
   end
 
+  # The trips that form a piece together
+  @typep trip_group :: {Run.key(), [Trip.t()]}
+
+  @spec group_trips_by_run([Trip.t()]) :: [trip_group()]
+  defp group_trips_by_run(trips) do
+    split_by(trips, &run_key_for_trip/1)
+  end
+
+  @spec run_key_for_trip(Trip.t()) :: Run.key()
+  defp run_key_for_trip(trip) do
+    {trip.schedule_id, trip.run_id}
+  end
+
   @typep run_group :: {Run.key(), Activity.t(), Trip.t()}
 
   @spec pair_activities_and_trips([activity_group()], [trip_group()]) :: [run_group()]
-  def pair_activities_and_trips([], _trip_groups) do
+  defp pair_activities_and_trips([], _trip_groups) do
     []
   end
 
-  def pair_activities_and_trips([activity_group | other_activity_groups], trip_groups) do
+  defp pair_activities_and_trips([activity_group | other_activity_groups], trip_groups) do
     {run_key, activities} = activity_group
 
     case trip_groups do
