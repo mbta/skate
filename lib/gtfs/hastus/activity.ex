@@ -1,5 +1,4 @@
 defmodule Gtfs.Hastus.Activity do
-
   alias Gtfs.{Block, Csv, Run}
   alias Gtfs.Hastus.{Place, Schedule}
 
@@ -38,6 +37,7 @@ defmodule Gtfs.Hastus.Activity do
   @spec from_csv_row(Csv.row()) :: t()
   def from_csv_row(row) do
     activity_type = row["activity_type"]
+
     block_id =
       if activity_type == "Operator" do
         String.replace(row["activity_name"], " ", "")
