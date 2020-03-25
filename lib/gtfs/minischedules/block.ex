@@ -4,10 +4,10 @@ defmodule Gtfs.Minischedules.Block do
   alias Gtfs.Minischedules.Piece
 
   @type t :: %__MODULE__{
-    schedule_id: Schedule.id(),
-    id: Block.id(),
-    pieces: [Piece.t()],
-  }
+          schedule_id: Schedule.id(),
+          id: Block.id(),
+          pieces: [Piece.t()]
+        }
 
   @enforce_keys [
     :schedule_id,

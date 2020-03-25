@@ -4,19 +4,19 @@ defmodule Gtfs.Minischedules.Piece do
   alias Gtfs.Minischedules.Trip
 
   @type sign_on_off :: %{
-    time: String.t(),
-    place: Place.id(),
-    mid_route?: boolean(),
-  }
+          time: String.t(),
+          place: Place.id(),
+          mid_route?: boolean()
+        }
 
   @type t :: %__MODULE__{
-    schedule_id: Schedule.id(),
-    run_id: Run.id(),
-    block_id: Block.id(),
-    start: sign_on_off(),
-    trips: [Trip.t()],
-    end: sign_on_off()
-  }
+          schedule_id: Schedule.id(),
+          run_id: Run.id(),
+          block_id: Block.id(),
+          start: sign_on_off(),
+          trips: [Trip.t()],
+          end: sign_on_off()
+        }
 
   @enforce_keys [
     :schedule_id,
@@ -36,4 +36,3 @@ defmodule Gtfs.Minischedules.Piece do
     :end
   ]
 end
-
