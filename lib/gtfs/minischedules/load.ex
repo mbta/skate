@@ -8,8 +8,8 @@ defmodule Gtfs.Minischedules.Load do
 
   @type loaded :: %{}
 
-  @spec load([Trip.t()], [Activity.t()]) :: loaded()
-  def load(trips, activities) do
+  @spec load([Activity.t()], [Trip.t()]) :: loaded()
+  def load(activities, trips) do
     activities_by_run = group_activities_by_run(activities)
     trips_by_run = group_trips_by_run(trips)
     run_groups = pair_activities_and_trips(activities_by_run, trips_by_run)

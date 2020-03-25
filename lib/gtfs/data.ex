@@ -205,7 +205,9 @@ defmodule Gtfs.Data do
 
   @spec parse_files(all_files()) :: t()
   def parse_files(%{gtfs: gtfs_files, hastus: hastus_files}) do
+    hastus_activities = Gtfs.Hastus.Activity.parse(hastus_files["activities.csv"])
     hastus_trips = Gtfs.Hastus.Trip.parse(hastus_files["trips.csv"])
+    Gtfs.Minischedules.Load.load(hastus_activities, hastus_trips)
 
     directions_by_route_id = directions_by_route_id(gtfs_files["directions.txt"])
 
