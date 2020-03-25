@@ -4,20 +4,15 @@ defmodule Gtfs.Minischedules.Load do
   """
 
   alias Gtfs.Hastus.{Activity, Trip}
-  alias Gtfs.Minischedules.Piece
+  alias Gtfs.Minischedules.{Piece, Run}
 
   @type loaded :: %{}
 
   @spec load([Trip.t()], [Activity.t()]) :: loaded()
-  def load(_trips, _activities) do
+  def load(trips, activities) do
+    _trip_groups = group_trips(trips)
+    _activity_groups = group_activities(activities)
     %{}
-  end
-
-  @spec pieces_from_trips([Trip.t()]) :: [Piece.t()]
-  def pieces_from_trips(trips) do
-    trips
-    |> group_trips
-    |> Enum.map(&piece_from_trip_group/1)
   end
 
   # The trips that form a piece together
@@ -33,27 +28,17 @@ defmodule Gtfs.Minischedules.Load do
     {trip.schedule_id, trip.run_id, trip.block_id}
   end
 
-  @spec piece_from_trip_group(trip_group()) :: Piece.t()
-  defp piece_from_trip_group({{schedule_id, run_id, block_id}, trips}) do
-    first_trip = List.first(trips)
-    last_trip = List.last(trips)
+  # All the activities on a run
+  @typep activity_group :: {Run.key(), [Activity.t()]}
 
-    %Piece{
-      schedule_id: schedule_id,
-      run_id: run_id,
-      block_id: block_id,
-      start: %{
-        time: first_trip.start_time,
-        place: first_trip.start_place,
-        mid_route?: false
-      },
-      trips: trips,
-      end: %{
-        time: last_trip.end_time,
-        place: last_trip.end_place,
-        mid_route?: false
-      }
-    }
+  @spec group_activities([Activity.t()]) :: [activity_group()]
+  defp group_activities(activities) do
+    split_by(activities, &run_key_for_activity/1)
+  end
+
+  @spec run_key_for_activity(Activity.t()) :: Run.key()
+  defp run_key_for_activity(activity) do
+    {activity.schedule_id, activity.run_id}
   end
 
   @doc """
