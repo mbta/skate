@@ -10,29 +10,29 @@ defmodule Gtfs.Minischedules.Load do
 
   @spec load([Trip.t()], [Activity.t()]) :: loaded()
   def load(trips, activities) do
-    _trip_groups = group_trips(trips)
-    _activity_groups = group_activities(activities)
+    _trips_by_run = group_trips_by_run(trips)
+    _activities_by_run = group_activities_by_run(activities)
     %{}
   end
 
   # The trips that form a piece together
-  @typep trip_group :: {Piece.key(), [Trip.t()]}
+  @typep trip_group :: {Run.key(), [Trip.t()]}
 
-  @spec group_trips([Trip.t()]) :: [trip_group()]
+  @spec group_trips_by_run([Trip.t()]) :: [trip_group()]
   defp group_trips(trips) do
-    split_by(trips, &piece_key_for_trip/1)
+    split_by(trips, &ruN_key_for_trip/1)
   end
 
-  @spec piece_key_for_trip(Trip.t()) :: Piece.key()
-  defp piece_key_for_trip(trip) do
-    {trip.schedule_id, trip.run_id, trip.block_id}
+  @spec run_key_for_trip(Trip.t()) :: Run.key()
+  defp run_key_for_trip(trip) do
+    {trip.schedule_id, trip.run_id}
   end
 
   # All the activities on a run
   @typep activity_group :: {Run.key(), [Activity.t()]}
 
-  @spec group_activities([Activity.t()]) :: [activity_group()]
-  defp group_activities(activities) do
+  @spec group_activities_by_run([Activity.t()]) :: [activity_group()]
+  defp group_activities_by_run(activities) do
     split_by(activities, &run_key_for_activity/1)
   end
 
