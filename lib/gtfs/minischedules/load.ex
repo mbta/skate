@@ -74,17 +74,46 @@ defmodule Gtfs.Minischedules.Load do
   end
 
   @spec run_and_pieces_from_run_group(run_group) :: {Run.key(), Run.t(), [Piece.t()]}
-  defp run_and_pieces_from_run_group({run_key, activities, _trips}) do
+  defp run_and_pieces_from_run_group({run_key, activities, trips}) do
+    # TODO real implementation.
+    # Currently, turns the trips directly into pieces, and makes every activity a break.
+    # The real way to do it would be to integrate Sign-on and Operator activities into pieces.
     {schedule_id, run_id} = run_key
+
+    breaks = Enum.map(activities, &break_from_activity/1)
+
+    pieces =
+      trips
+      |> split_by(fn trip -> trip.block_id end)
+      |> Enum.map(fn {_block_id, trips} ->
+        first_trip = List.first(trips)
+        last_trip = List.last(trips)
+
+        %Piece{
+          schedule_id: first_trip.schedule_id,
+          run_id: first_trip.run_id,
+          block_id: first_trip.block_id,
+          start: %{
+            time: first_trip.start_time,
+            place: first_trip.start_place,
+            mid_route?: false
+          },
+          trips: trips,
+          end: %{
+            time: last_trip.end_time,
+            place: last_trip.end_place,
+            mid_route?: false
+          }
+        }
+      end)
 
     run = %Run{
       schedule_id: schedule_id,
       id: run_id,
-      # TODO real implementation
-      activities: Enum.map(activities, &break_from_activity/1)
+      activities: breaks ++ pieces
     }
 
-    {run_key, run, []}
+    {run_key, run, pieces}
   end
 
   @spec break_from_activity(Activity.t()) :: Break.t()
