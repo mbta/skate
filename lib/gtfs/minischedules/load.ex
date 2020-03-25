@@ -24,17 +24,8 @@ defmodule Gtfs.Minischedules.Load do
   @typep trip_group :: {Piece.key(), [Trip.t()]}
 
   @spec group_trips([Trip.t()]) :: [trip_group()]
-  defp group_trips([]) do
-    []
-  end
-
   defp group_trips(trips) do
-    first_key = piece_key_for_trip(List.first(trips))
-
-    {first_piece_trips, other_trips} =
-      Enum.split_while(trips, fn trip -> piece_key_for_trip(trip) == first_key end)
-
-    [{first_key, first_piece_trips} | group_trips(other_trips)]
+    split_by(trips, &piece_key_for_trip/1)
   end
 
   @spec piece_key_for_trip(Trip.t()) :: Piece.key()
@@ -63,5 +54,24 @@ defmodule Gtfs.Minischedules.Load do
         mid_route?: false
       }
     }
+  end
+
+  @doc """
+  Like group_by, but preserves the order that the groups appear.
+  Only groups consecutive elements together.
+  """
+  @spec split_by([element], (element -> key)) :: [{key, [element]}]
+        when element: term(), key: term()
+  def split_by([], _key_fn) do
+    []
+  end
+
+  def split_by(elements, key_fn) do
+    first_key = key_fn.(List.first(elements))
+
+    {first_group, rest} =
+      Enum.split_while(elements, fn element -> key_fn.(element) == first_key end)
+
+    [{first_key, first_group} | split_by(rest, key_fn)]
   end
 end
