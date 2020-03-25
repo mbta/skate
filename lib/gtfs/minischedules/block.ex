@@ -3,6 +3,10 @@ defmodule Gtfs.Minischedules.Block do
   alias Gtfs.Hastus.Schedule
   alias Gtfs.Minischedules.Piece
 
+  @type key :: {Schedule.id(), Block.id()}
+
+  @type by_id :: %{key() => t()}
+
   @type t :: %__MODULE__{
           schedule_id: Schedule.id(),
           id: Block.id(),

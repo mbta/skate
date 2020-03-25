@@ -5,6 +5,8 @@ defmodule Gtfs.Minischedules.Run do
 
   @type key :: {Schedule.id(), Run.id()}
 
+  @type by_id :: %{key() => t()}
+
   @type t :: %__MODULE__{
           schedule_id: Schedule.id(),
           id: Run.id(),
