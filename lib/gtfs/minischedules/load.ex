@@ -4,7 +4,7 @@ defmodule Gtfs.Minischedules.Load do
   """
 
   alias Gtfs.Hastus.{Activity, Trip}
-  alias Gtfs.Minischedules.Run
+  alias Gtfs.Minischedules.{Break, Piece, Run}
 
   @type loaded :: %{}
 
@@ -12,7 +12,8 @@ defmodule Gtfs.Minischedules.Load do
   def load(trips, activities) do
     activities_by_run = group_activities_by_run(activities)
     trips_by_run = group_trips_by_run(trips)
-    _run_groups = pair_activities_and_trips(activities_by_run, trips_by_run)
+    run_groups = pair_activities_and_trips(activities_by_run, trips_by_run)
+    _runs_and_pieces = Enum.map(run_groups, &run_and_pieces_from_run_group/1)
     %{}
   end
 
@@ -44,6 +45,8 @@ defmodule Gtfs.Minischedules.Load do
 
   @typep run_group :: {Run.key(), Activity.t(), Trip.t()}
 
+  # Assumes inputs are both sorted by run_key.
+  # Assumes no runs are in trips.csv but not in activities.csv
   @spec pair_activities_and_trips([activity_group()], [trip_group()]) :: [run_group()]
   defp pair_activities_and_trips([], _trip_groups) do
     []
@@ -65,6 +68,30 @@ defmodule Gtfs.Minischedules.Load do
           | pair_activities_and_trips(other_activity_groups, trip_groups)
         ]
     end
+  end
+
+  @spec run_and_pieces_from_run_group(run_group) :: {Run.t(), [Piece.t()]}
+  defp run_and_pieces_from_run_group({run_key, activities, _trips}) do
+    {schedule_id, run_id} = run_key
+    run =
+      %Run{
+        schedule_id: schedule_id,
+        id: run_id,
+        # TODO real implementation
+        activities: Enum.map(activities, &break_from_activity/1)
+      }
+    {run, []}
+  end
+
+  @spec break_from_activity(Activity.t()) :: Break.t()
+  defp break_from_activity(activity) do
+    %Break{
+      break_type: activity.activity_type,
+      start_time: activity.start_time,
+      end_time: activity.end_time,
+      start_place: activity.start_place,
+      end_place: activity.end_place
+    }
   end
 
   @doc """
