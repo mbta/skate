@@ -4,14 +4,15 @@ defmodule Gtfs.Minischedules.Load do
   """
 
   alias Gtfs.Hastus.{Activity, Trip}
-  alias Gtfs.Minischedules.{Piece, Run}
+  alias Gtfs.Minischedules.Run
 
   @type loaded :: %{}
 
   @spec load([Trip.t()], [Activity.t()]) :: loaded()
   def load(trips, activities) do
-    _trips_by_run = group_trips_by_run(trips)
-    _activities_by_run = group_activities_by_run(activities)
+    activities_by_run = group_activities_by_run(activities)
+    trips_by_run = group_trips_by_run(trips)
+    _run_groups = pair_activities_and_trips(activities_by_run, trips_by_run)
     %{}
   end
 
@@ -19,8 +20,8 @@ defmodule Gtfs.Minischedules.Load do
   @typep trip_group :: {Run.key(), [Trip.t()]}
 
   @spec group_trips_by_run([Trip.t()]) :: [trip_group()]
-  defp group_trips(trips) do
-    split_by(trips, &ruN_key_for_trip/1)
+  defp group_trips_by_run(trips) do
+    split_by(trips, &run_key_for_trip/1)
   end
 
   @spec run_key_for_trip(Trip.t()) :: Run.key()
@@ -39,6 +40,31 @@ defmodule Gtfs.Minischedules.Load do
   @spec run_key_for_activity(Activity.t()) :: Run.key()
   defp run_key_for_activity(activity) do
     {activity.schedule_id, activity.run_id}
+  end
+
+  @typep run_group :: {Run.key(), Activity.t(), Trip.t()}
+
+  @spec pair_activities_and_trips([activity_group()], [trip_group()]) :: [run_group()]
+  def pair_activities_and_trips([], _trip_groups) do
+    []
+  end
+
+  def pair_activities_and_trips([activity_group | other_activity_groups], trip_groups) do
+    {run_key, activities} = activity_group
+
+    case trip_groups do
+      [{^run_key, trips} | other_trip_groups] ->
+        [
+          {run_key, activities, trips}
+          | pair_activities_and_trips(other_activity_groups, other_trip_groups)
+        ]
+
+      _ ->
+        [
+          {run_key, activities, []}
+          | pair_activities_and_trips(other_activity_groups, trip_groups)
+        ]
+    end
   end
 
   @doc """
