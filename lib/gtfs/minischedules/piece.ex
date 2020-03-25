@@ -3,6 +3,8 @@ defmodule Gtfs.Minischedules.Piece do
   alias Gtfs.Hastus.{Place, Schedule}
   alias Gtfs.Minischedules.Trip
 
+  @type key :: {Schedule.id(), Run.id(), Block.id()}
+
   @type sign_on_off :: %{
           time: String.t(),
           place: Place.id(),
