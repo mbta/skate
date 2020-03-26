@@ -344,8 +344,8 @@ defmodule GtfsTest do
           },
           hastus: %{
             "trips.csv" => [
-              "schedule_id;area;run_id;route_id;trip_id;block_id",
-              "aba49011;123;    1501;route;       trip;553 -140"
+              "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
+              "aba20021;123;    1501;block;04:30;05:05;wtryd;hayms;route;trip"
             ]
           }
         })
