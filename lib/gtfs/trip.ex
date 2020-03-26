@@ -96,6 +96,11 @@ defmodule Gtfs.Trip do
       start_time_of_day < end_time(trip)
   end
 
+  @spec id_sans_overload(id() | nil) :: id() | nil
+  def id_sans_overload(nil), do: nil
+
+  def id_sans_overload(id), do: String.replace(id, ~r/-OL.+$/, "")
+
   @spec time_of_stop_matching([StopTime.t()], [Stop.id()]) :: Util.Time.time_of_day()
   defp time_of_stop_matching(stop_times, stop_ids) do
     stop_times
