@@ -133,4 +133,18 @@ defmodule Gtfs.TripTest do
       refute Trip.is_active(@trip, 1, 2)
     end
   end
+
+  describe "id_sans_overload/1" do
+    test "removes the overload portion of the ID" do
+      assert Trip.id_sans_overload("44169914-OL1") == "44169914"
+    end
+
+    test "does not change an ID without an overload" do
+      assert Trip.id_sans_overload("44169914") == "44169914"
+    end
+
+    test "returns nil when given nil" do
+      assert Trip.id_sans_overload(nil) == nil
+    end
+  end
 end

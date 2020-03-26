@@ -117,7 +117,7 @@ defmodule Realtime.Vehicle do
         &BlockWaiverStore.block_waivers_for_block_and_service/2
       )
 
-    trip_id = VehiclePosition.trip_id(vehicle_position)
+    trip_id = vehicle_position |> VehiclePosition.trip_id() |> Trip.id_sans_overload()
     block_id_with_overload = VehiclePosition.block_id(vehicle_position)
     block_id = Block.id_sans_overload(block_id_with_overload)
     stop_id = VehiclePosition.stop_id(vehicle_position)
