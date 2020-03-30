@@ -26,7 +26,7 @@ defmodule Realtime.Vehicle do
           operator_id: String.t() | nil,
           operator_name: String.t() | nil,
           operator_logon_time: Util.Time.timestamp() | nil,
-          run_id: String.t() | nil,
+          run_id: Run.id() | nil,
           headway_secs: non_neg_integer() | nil,
           headway_spacing: Headway.headway_spacing() | nil,
           previous_vehicle_id: String.t() | nil,
@@ -121,7 +121,7 @@ defmodule Realtime.Vehicle do
     block_id_with_overload = VehiclePosition.block_id(vehicle_position)
     block_id = Block.id_sans_overload(block_id_with_overload)
     stop_id = VehiclePosition.stop_id(vehicle_position)
-    run_id = ensure_run_id_hyphen(VehiclePosition.run_id(vehicle_position))
+    run_id = vehicle_position |> VehiclePosition.run_id() |> ensure_run_id_hyphen()
 
     trip = trip_fn.(trip_id)
     route_id = VehiclePosition.route_id(vehicle_position) || (trip && trip.route_id)
@@ -170,7 +170,7 @@ defmodule Realtime.Vehicle do
       end
 
     data_discrepancies = VehiclePosition.data_discrepancies(vehicle_position)
-    is_off_course = off_course?(block_id_with_overload, data_discrepancies)
+    is_off_course = off_course?(block_id_with_overload, run_id, data_discrepancies)
 
     block_waivers =
       if trip,
@@ -221,25 +221,31 @@ defmodule Realtime.Vehicle do
   That is a sign that Swiftly thinks the vehicle is off course, or not on any
   trip for some other reason.
   """
-  @spec off_course?(Block.id() | nil, [DataDiscrepancy.t()] | DataDiscrepancy.t()) :: boolean
-  def off_course?(nil, _data_discrepancies), do: false
+  @spec off_course?(Block.id() | nil, Run.id() | nil, [DataDiscrepancy.t()] | DataDiscrepancy.t()) ::
+          boolean
+  def off_course?(nil, _run_id, _data_discrepancies), do: false
 
-  def off_course?(block_id, data_discrepancies) when is_list(data_discrepancies) do
-    if Block.overload?(block_id) do
-      false
-    else
-      trip_id_discrepency =
-        Enum.find(data_discrepancies, fn data_discrepancy ->
-          data_discrepancy.attribute == :trip_id
-        end)
+  def off_course?(block_id, run_id, data_discrepancies) when is_list(data_discrepancies) do
+    cond do
+      shuttle?(run_id) ->
+        false
 
-      off_course?(block_id, trip_id_discrepency)
+      Block.overload?(block_id) ->
+        false
+
+      true ->
+        trip_id_discrepency =
+          Enum.find(data_discrepancies, fn data_discrepancy ->
+            data_discrepancy.attribute == :trip_id
+          end)
+
+        off_course?(block_id, run_id, trip_id_discrepency)
     end
   end
 
-  def off_course?(_block_id, nil), do: false
+  def off_course?(_block_id, _run_id, nil), do: false
 
-  def off_course?(_block_id, %{sources: sources}) do
+  def off_course?(_block_id, _run_id, %{sources: sources}) do
     case Enum.find(sources, fn source -> source.id == "swiftly" end) do
       %{value: nil} ->
         true
@@ -249,6 +255,9 @@ defmodule Realtime.Vehicle do
     end
   end
 
+  @spec shuttle?(t() | Run.id()) :: boolean
+  def shuttle?("999" <> _), do: true
+  def shuttle?(run_id) when is_binary(run_id), do: false
   def shuttle?(%__MODULE__{run_id: "999" <> _}), do: true
   def shuttle?(%__MODULE__{}), do: false
 

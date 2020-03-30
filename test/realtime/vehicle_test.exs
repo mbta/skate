@@ -195,7 +195,7 @@ defmodule Realtime.VehicleTest do
         }
       ]
 
-      assert Vehicle.off_course?("S28-2", data_discrepancies)
+      assert Vehicle.off_course?("S28-2", "138-1038", data_discrepancies)
     end
 
     test "returns false if the swiftly defined a value" do
@@ -215,7 +215,7 @@ defmodule Realtime.VehicleTest do
         }
       ]
 
-      refute Vehicle.off_course?("S28-2", data_discrepancies)
+      refute Vehicle.off_course?("S28-2", "138-1038", data_discrepancies)
     end
 
     test "returns false if there isn't a trip_id data discrepancy" do
@@ -235,7 +235,21 @@ defmodule Realtime.VehicleTest do
         }
       ]
 
-      refute Vehicle.off_course?("S28-2", data_discrepancies)
+      refute Vehicle.off_course?("S28-2", "138-1038", data_discrepancies)
+    end
+
+    test "returns false if the vehicle is logged into a shuttle run" do
+      data_discrepancies = [
+        %DataDiscrepancy{
+          attribute: :trip_id,
+          sources: [
+            %{id: "swiftly", value: nil},
+            %{id: "busloc", value: "busloc-trip-id"}
+          ]
+        }
+      ]
+
+      refute Vehicle.off_course?("S28-2", "999-0555", data_discrepancies)
     end
 
     test "returns false if this vehicle is on a 'block overload'" do
@@ -249,7 +263,141 @@ defmodule Realtime.VehicleTest do
         }
       ]
 
-      refute Vehicle.off_course?("S28-2-OL1", data_discrepancies)
+      refute Vehicle.off_course?("S28-2-OL1", "138-1038", data_discrepancies)
+    end
+  end
+
+  describe "shuttle?/1" do
+    test "returns true when given a Vehicle with a run ID starting with 999" do
+      vehicle = %Vehicle{
+        id: "y1261",
+        label: "1261",
+        timestamp: 1_558_364_020,
+        latitude: 42.31777347,
+        longitude: -71.08206019,
+        direction_id: 1,
+        route_id: "28",
+        trip_id: "39984755",
+        headsign: "headsign",
+        via_variant: "_",
+        bearing: 0,
+        block_id: "S28-2",
+        operator_id: "72032",
+        operator_name: "MAUPIN",
+        operator_logon_time: 1_558_364_010,
+        run_id: "999-0555",
+        headway_secs: 900,
+        headway_spacing: :ok,
+        is_off_course: false,
+        layover_departure_time: nil,
+        block_is_active: true,
+        sources: %MapSet{},
+        data_discrepancies: [
+          %DataDiscrepancy{
+            attribute: :trip_id,
+            sources: [
+              %{id: "swiftly", value: "swiftly-trip-id"},
+              %{id: "busloc", value: "busloc-trip-id"}
+            ]
+          },
+          %DataDiscrepancy{
+            attribute: :route_id,
+            sources: [
+              %{id: "swiftly", value: "swiftly-route-id"},
+              %{id: "busloc", value: "busloc-route-id"}
+            ]
+          }
+        ],
+        stop_status: %{
+          stop_id: "392",
+          stop_name: "392"
+        },
+        timepoint_status: nil,
+        scheduled_location: %{
+          route_id: "28",
+          direction_id: 1,
+          trip_id: "39984755",
+          run_id: "run1",
+          time_since_trip_start_time: 0,
+          headsign: "headsign",
+          via_variant: "_",
+          timepoint_status: %{
+            timepoint_id: "tp1",
+            fraction_until_timepoint: 0.0
+          }
+        },
+        route_status: :on_route,
+        end_of_trip_type: :pull_back,
+        block_waivers: []
+      }
+
+      assert Vehicle.shuttle?(vehicle)
+    end
+
+    test "returns false when given a Vehicle with a run ID that doesn't start with 999" do
+      vehicle = %Vehicle{
+        id: "y1261",
+        label: "1261",
+        timestamp: 1_558_364_020,
+        latitude: 42.31777347,
+        longitude: -71.08206019,
+        direction_id: 1,
+        route_id: "28",
+        trip_id: "39984755",
+        headsign: "headsign",
+        via_variant: "_",
+        bearing: 0,
+        block_id: "S28-2",
+        operator_id: "72032",
+        operator_name: "MAUPIN",
+        operator_logon_time: 1_558_364_010,
+        run_id: "138-1038",
+        headway_secs: 900,
+        headway_spacing: :ok,
+        is_off_course: false,
+        layover_departure_time: nil,
+        block_is_active: true,
+        sources: %MapSet{},
+        data_discrepancies: [
+          %DataDiscrepancy{
+            attribute: :trip_id,
+            sources: [
+              %{id: "swiftly", value: "swiftly-trip-id"},
+              %{id: "busloc", value: "busloc-trip-id"}
+            ]
+          },
+          %DataDiscrepancy{
+            attribute: :route_id,
+            sources: [
+              %{id: "swiftly", value: "swiftly-route-id"},
+              %{id: "busloc", value: "busloc-route-id"}
+            ]
+          }
+        ],
+        stop_status: %{
+          stop_id: "392",
+          stop_name: "392"
+        },
+        timepoint_status: nil,
+        scheduled_location: %{
+          route_id: "28",
+          direction_id: 1,
+          trip_id: "39984755",
+          run_id: "run1",
+          time_since_trip_start_time: 0,
+          headsign: "headsign",
+          via_variant: "_",
+          timepoint_status: %{
+            timepoint_id: "tp1",
+            fraction_until_timepoint: 0.0
+          }
+        },
+        route_status: :on_route,
+        end_of_trip_type: :pull_back,
+        block_waivers: []
+      }
+
+      refute Vehicle.shuttle?(vehicle)
     end
   end
 
