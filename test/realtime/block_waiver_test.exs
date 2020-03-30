@@ -120,6 +120,31 @@ defmodule Realtime.BlockWaiverTest do
 
       assert BlockWaiver.trip_stop_time_waivers(@trip1, @stop_time_updates_by_trip) == expected
     end
+
+    test "does not include stop time updates without remarks" do
+      trip1stop1UpdateNilRemark = %{
+        @trip1stop1Update
+        | remark: nil
+      }
+
+      trip1stop2UpdateEmptyRemark = %{
+        @trip1stop2Update
+        | remark: ""
+      }
+
+      stop_time_updates_by_trip = %{
+        @stop_time_updates_by_trip
+        | @trip1.id => [trip1stop1UpdateNilRemark, trip1stop2UpdateEmptyRemark]
+      }
+
+      expected = [
+        {1, nil},
+        {2, nil},
+        {3, nil}
+      ]
+
+      assert BlockWaiver.trip_stop_time_waivers(@trip1, stop_time_updates_by_trip) == expected
+    end
   end
 
   describe "group_consecutive_sequences/1" do
