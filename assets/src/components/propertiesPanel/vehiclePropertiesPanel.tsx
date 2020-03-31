@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import useInterval from "../../hooks/useInterval"
 import { useTripShape } from "../../hooks/useShapes"
 import { hasBlockWaiver } from "../../models/blockWaiver"
-import { isShuttle, shouldShowHeadwayDiagram } from "../../models/vehicle"
+import { shouldShowHeadwayDiagram } from "../../models/vehicle"
 import { DataDiscrepancy, Vehicle } from "../../realtime"
 import { Route, Shape } from "../../schedule"
 import Map from "../map"
@@ -56,7 +56,7 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
     <div className="m-vehicle-properties-panel__location">
       <div className="m-properties-list__property-label">Next Stop</div>
       <div className="m-properties-list__property-value">
-        {isOffCourse || isShuttle(vehicle) ? (
+        {isOffCourse || vehicle.isShuttle ? (
           <NotAvailable />
         ) : (
           <>{stopStatus.stopName}</>

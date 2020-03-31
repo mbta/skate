@@ -40,6 +40,7 @@ const shuttle: Vehicle = {
   previousVehicleId: "v2",
   scheduleAdherenceSecs: 0,
   scheduledHeadwaySecs: 120,
+  isShuttle: true,
   isOffCourse: false,
   layoverDepartureTime: null,
   blockIsActive: true,

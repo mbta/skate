@@ -45,6 +45,7 @@ export interface VehicleData {
   previous_vehicle_id: string
   schedule_adherence_secs: number
   scheduled_headway_secs: number
+  is_shuttle: boolean
   is_off_course: boolean
   layover_departure_time: number | null
   block_is_active: boolean
@@ -136,6 +137,7 @@ export const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
   previousVehicleId: vehicleData.previous_vehicle_id,
   scheduleAdherenceSecs: vehicleData.schedule_adherence_secs,
   scheduledHeadwaySecs: vehicleData.scheduled_headway_secs,
+  isShuttle: vehicleData.is_shuttle,
   isOffCourse: vehicleData.is_off_course,
   layoverDepartureTime: vehicleData.layover_departure_time,
   blockIsActive: vehicleData.block_is_active,
