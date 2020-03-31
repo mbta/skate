@@ -35,6 +35,7 @@ const vehicle: Vehicle = {
   previousVehicleId: "v2",
   scheduleAdherenceSecs: 0,
   scheduledHeadwaySecs: 120,
+  isShuttle: false,
   isOffCourse: false,
   layoverDepartureTime: null,
   blockIsActive: false,
@@ -145,7 +146,7 @@ describe("Header", () => {
   test("renders for a shuttle", () => {
     const shuttleVehicle: Vehicle = {
       ...vehicle,
-      runId: "999-0555",
+      isShuttle: true,
     }
 
     const tree = renderer

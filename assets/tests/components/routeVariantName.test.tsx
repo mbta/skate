@@ -25,6 +25,7 @@ const vehicle: Vehicle = {
   previousVehicleId: "v2",
   scheduleAdherenceSecs: 0,
   scheduledHeadwaySecs: 120,
+  isShuttle: false,
   isOffCourse: false,
   layoverDepartureTime: null,
   blockIsActive: false,
@@ -91,7 +92,7 @@ describe("RouteVariantName", () => {
   test("renders a static label for a shuttle", () => {
     const testVehicle: Vehicle = {
       ...vehicle,
-      runId: "999-0604",
+      isShuttle: true,
     }
 
     const wrapper = shallow(<RouteVariantName vehicle={testVehicle} />)

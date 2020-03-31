@@ -8,11 +8,7 @@ import {
   LadderDirections,
   VehicleDirection,
 } from "../../models/ladderDirection"
-import {
-  isShuttle,
-  isVehicle,
-  shouldShowHeadwayDiagram,
-} from "../../models/vehicle"
+import { isVehicle, shouldShowHeadwayDiagram } from "../../models/vehicle"
 import {
   drawnStatus,
   humanReadableScheduleAdherence,
@@ -123,7 +119,7 @@ const Header = ({ vehicle, route }: Props) => {
           <HeadwayTarget vehicle={vehicle} />
         ) : (
           isVehicle(vehicle) &&
-          !isShuttle(vehicle) && <ScheduleAdherence vehicle={vehicle} />
+          !vehicle.isShuttle && <ScheduleAdherence vehicle={vehicle} />
         )}
       </div>
       <CloseButton onClick={hideMe} />

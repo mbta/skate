@@ -25,6 +25,7 @@ const vehicle: Vehicle = {
   previousVehicleId: "v2",
   scheduleAdherenceSecs: 0,
   scheduledHeadwaySecs: 120,
+  isShuttle: false,
   isOffCourse: false,
   layoverDepartureTime: null,
   blockIsActive: true,
@@ -111,7 +112,7 @@ describe("vehicleLabel", () => {
   test("uses the shuttle vehicle label setting if the vehicle is a shuttle", () => {
     const shuttle = {
       ...vehicle,
-      runId: "999-2000",
+      isShuttle: true,
     }
 
     expect(

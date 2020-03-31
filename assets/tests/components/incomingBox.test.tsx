@@ -43,6 +43,7 @@ describe("IncomingBox", () => {
       previousVehicleId: "y0620",
       scheduleAdherenceSecs: 0,
       scheduledHeadwaySecs: 420,
+      isShuttle: false,
       isOffCourse: false,
       layoverDepartureTime: 1576091880,
       blockIsActive: true,

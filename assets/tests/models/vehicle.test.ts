@@ -2,7 +2,6 @@ import {
   isGhost,
   isLateVehicleIndicator,
   isRecentlyLoggedOn,
-  isShuttle,
   isVehicle,
   shouldShowHeadwayDiagram,
 } from "../../src/models/vehicle"
@@ -41,6 +40,7 @@ const vehicle: Vehicle = {
   previousVehicleId: "v2",
   scheduleAdherenceSecs: 0,
   scheduledHeadwaySecs: 120,
+  isShuttle: false,
   isOffCourse: false,
   layoverDepartureTime: null,
   blockIsActive: true,
@@ -150,16 +150,6 @@ describe("isLateVehicleIndicator", () => {
     } as Ghost
 
     expect(isLateVehicleIndicator(regularGhost)).toBeFalsy()
-  })
-})
-
-describe("isShuttle", () => {
-  test("true if the vehicle's runId starts with 999", () => {
-    const shuttle = { runId: "999-0555" } as Vehicle
-    const notShuttle = { runId: "998-0555" } as Vehicle
-
-    expect(isShuttle(shuttle)).toBeTruthy()
-    expect(isShuttle(notShuttle)).toBeFalsy()
   })
 })
 

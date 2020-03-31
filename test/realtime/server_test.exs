@@ -20,6 +20,7 @@ defmodule Realtime.ServerTest do
     run_id: "123-9048",
     headway_secs: 600,
     headway_spacing: :ok,
+    is_shuttle: false,
     is_off_course: false,
     layover_departure_time: nil,
     block_is_active: true,

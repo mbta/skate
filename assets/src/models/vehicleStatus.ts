@@ -1,6 +1,6 @@
 import featureIsEnabled from "../laboratoryFeatures"
 import { Vehicle, VehicleOrGhost } from "../realtime.d"
-import { isGhost, isShuttle } from "./vehicle"
+import { isGhost, isVehicle } from "./vehicle"
 
 /** Where a vehicle is relative to its schedule.
  * Swiftly assigns this to all vehicles.
@@ -39,7 +39,7 @@ export const drawnStatus = (vehicleOrGhost: VehicleOrGhost): DrawnStatus => {
   }
   const vehicle = vehicleOrGhost
 
-  if (isShuttle(vehicle)) {
+  if (isVehicle(vehicle) && vehicle.isShuttle) {
     return "plain"
   }
 

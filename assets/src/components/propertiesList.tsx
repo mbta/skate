@@ -2,7 +2,7 @@ import React from "react"
 import { intersperseString } from "../helpers/array"
 import { filterToAlphanumeric } from "../models/searchQuery"
 import { formattedRunNumber } from "../models/shuttle"
-import { isShuttle, isVehicle } from "../models/vehicle"
+import { isVehicle } from "../models/vehicle"
 import { Ghost, Vehicle, VehicleOrGhost } from "../realtime"
 import { formattedTime, formattedTimeDiff, now } from "../util/dateTime"
 
@@ -29,9 +29,10 @@ const vehicleProperties = (vehicle: Vehicle): Property[] => {
   return [
     {
       label: "Run",
-      value: isShuttle(vehicle)
-        ? formattedRunNumber(vehicle)
-        : runId || "Not Available",
+      value:
+        isVehicle(vehicle) && vehicle.isShuttle
+          ? formattedRunNumber(vehicle)
+          : runId || "Not Available",
     },
     {
       label: "Vehicle",

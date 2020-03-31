@@ -127,6 +127,7 @@ defmodule Realtime.VehicleTest do
                run_id: "138-1038",
                headway_secs: 900,
                headway_spacing: :ok,
+               is_shuttle: false,
                is_off_course: false,
                layover_departure_time: nil,
                block_is_active: true,
@@ -195,7 +196,7 @@ defmodule Realtime.VehicleTest do
         }
       ]
 
-      assert Vehicle.off_course?("S28-2", data_discrepancies)
+      assert Vehicle.off_course?("S28-2", false, data_discrepancies)
     end
 
     test "returns false if the swiftly defined a value" do
@@ -215,7 +216,7 @@ defmodule Realtime.VehicleTest do
         }
       ]
 
-      refute Vehicle.off_course?("S28-2", data_discrepancies)
+      refute Vehicle.off_course?("S28-2", false, data_discrepancies)
     end
 
     test "returns false if there isn't a trip_id data discrepancy" do
@@ -235,7 +236,21 @@ defmodule Realtime.VehicleTest do
         }
       ]
 
-      refute Vehicle.off_course?("S28-2", data_discrepancies)
+      refute Vehicle.off_course?("S28-2", false, data_discrepancies)
+    end
+
+    test "returns false if the vehicle is logged into a shuttle run" do
+      data_discrepancies = [
+        %DataDiscrepancy{
+          attribute: :trip_id,
+          sources: [
+            %{id: "swiftly", value: nil},
+            %{id: "busloc", value: "busloc-trip-id"}
+          ]
+        }
+      ]
+
+      refute Vehicle.off_course?("S28-2", true, data_discrepancies)
     end
 
     test "returns false if this vehicle is on a 'block overload'" do
@@ -249,7 +264,21 @@ defmodule Realtime.VehicleTest do
         }
       ]
 
-      refute Vehicle.off_course?("S28-2-OL1", data_discrepancies)
+      refute Vehicle.off_course?("S28-2-OL1", false, data_discrepancies)
+    end
+  end
+
+  describe "shuttle?/1" do
+    test "returns true for a run ID starting with 999" do
+      assert Vehicle.shuttle?("999-0555")
+    end
+
+    test "returns false for a run ID that doesn't start with 999" do
+      refute Vehicle.shuttle?("138-1038")
+    end
+
+    test "returns false when the run ID is nil" do
+      refute Vehicle.shuttle?(nil)
     end
   end
 
@@ -585,6 +614,7 @@ defmodule Realtime.VehicleTest do
         run_id: "138-1038",
         headway_secs: 600,
         headway_spacing: :ok,
+        is_shuttle: false,
         is_off_course: false,
         layover_departure_time: nil,
         block_is_active: true,

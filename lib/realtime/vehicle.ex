@@ -26,12 +26,13 @@ defmodule Realtime.Vehicle do
           operator_id: String.t() | nil,
           operator_name: String.t() | nil,
           operator_logon_time: Util.Time.timestamp() | nil,
-          run_id: String.t() | nil,
+          run_id: Run.id() | nil,
           headway_secs: non_neg_integer() | nil,
           headway_spacing: Headway.headway_spacing() | nil,
           previous_vehicle_id: String.t() | nil,
           schedule_adherence_secs: float() | nil,
           scheduled_headway_secs: float() | nil,
+          is_shuttle: boolean,
           is_off_course: boolean(),
           layover_departure_time: Util.Time.timestamp() | nil,
           block_is_active: boolean(),
@@ -59,6 +60,7 @@ defmodule Realtime.Vehicle do
     :operator_logon_time,
     :run_id,
     :headway_spacing,
+    :is_shuttle,
     :is_off_course,
     :block_is_active,
     :sources,
@@ -91,6 +93,7 @@ defmodule Realtime.Vehicle do
     :previous_vehicle_id,
     :schedule_adherence_secs,
     :scheduled_headway_secs,
+    :is_shuttle,
     :is_off_course,
     :layover_departure_time,
     :block_is_active,
@@ -121,7 +124,7 @@ defmodule Realtime.Vehicle do
     block_id_with_overload = VehiclePosition.block_id(vehicle_position)
     block_id = Block.id_sans_overload(block_id_with_overload)
     stop_id = VehiclePosition.stop_id(vehicle_position)
-    run_id = ensure_run_id_hyphen(VehiclePosition.run_id(vehicle_position))
+    run_id = vehicle_position |> VehiclePosition.run_id() |> ensure_run_id_hyphen()
 
     trip = trip_fn.(trip_id)
     route_id = VehiclePosition.route_id(vehicle_position) || (trip && trip.route_id)
@@ -170,7 +173,8 @@ defmodule Realtime.Vehicle do
       end
 
     data_discrepancies = VehiclePosition.data_discrepancies(vehicle_position)
-    is_off_course = off_course?(block_id_with_overload, data_discrepancies)
+    is_shuttle = shuttle?(run_id)
+    is_off_course = off_course?(block_id_with_overload, is_shuttle, data_discrepancies)
 
     block_waivers =
       if trip,
@@ -199,6 +203,7 @@ defmodule Realtime.Vehicle do
       previous_vehicle_id: VehiclePosition.previous_vehicle_id(vehicle_position),
       schedule_adherence_secs: VehiclePosition.schedule_adherence_secs(vehicle_position),
       scheduled_headway_secs: VehiclePosition.scheduled_headway_secs(vehicle_position),
+      is_shuttle: is_shuttle,
       is_off_course: is_off_course,
       layover_departure_time: VehiclePosition.layover_departure_time(vehicle_position),
       block_is_active: active_block?(is_off_course, block, now_fn.()),
@@ -221,10 +226,13 @@ defmodule Realtime.Vehicle do
   That is a sign that Swiftly thinks the vehicle is off course, or not on any
   trip for some other reason.
   """
-  @spec off_course?(Block.id() | nil, [DataDiscrepancy.t()] | DataDiscrepancy.t()) :: boolean
-  def off_course?(nil, _data_discrepancies), do: false
+  @spec off_course?(Block.id() | nil, boolean(), [DataDiscrepancy.t()] | DataDiscrepancy.t()) ::
+          boolean
+  def off_course?(nil, _is_shuttle, _data_discrepancies), do: false
 
-  def off_course?(block_id, data_discrepancies) when is_list(data_discrepancies) do
+  def off_course?(_bolck_id, true, _data_discrepancies), do: false
+
+  def off_course?(block_id, false, data_discrepancies) when is_list(data_discrepancies) do
     if Block.overload?(block_id) do
       false
     else
@@ -233,13 +241,13 @@ defmodule Realtime.Vehicle do
           data_discrepancy.attribute == :trip_id
         end)
 
-      off_course?(block_id, trip_id_discrepency)
+      off_course?(block_id, false, trip_id_discrepency)
     end
   end
 
-  def off_course?(_block_id, nil), do: false
+  def off_course?(_block_id, false, nil), do: false
 
-  def off_course?(_block_id, %{sources: sources}) do
+  def off_course?(_block_id, false, %{sources: sources}) do
     case Enum.find(sources, fn source -> source.id == "swiftly" end) do
       %{value: nil} ->
         true
@@ -249,8 +257,10 @@ defmodule Realtime.Vehicle do
     end
   end
 
-  def shuttle?(%__MODULE__{run_id: "999" <> _}), do: true
-  def shuttle?(%__MODULE__{}), do: false
+  @spec shuttle?(Run.id() | nil) :: boolean
+  def shuttle?(nil), do: false
+  def shuttle?("999" <> _), do: true
+  def shuttle?(run_id) when is_binary(run_id), do: false
 
   @doc """
   Check whether the vehicle is off course. If so, check if the assigned block

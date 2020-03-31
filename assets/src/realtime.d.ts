@@ -71,6 +71,7 @@ export interface Vehicle {
   previousVehicleId: string
   scheduleAdherenceSecs: number
   scheduledHeadwaySecs: number
+  isShuttle: boolean
   isOffCourse: boolean
   layoverDepartureTime: number | null
   blockIsActive: boolean

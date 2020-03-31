@@ -66,9 +66,9 @@ describe("drawnStatus", () => {
     mockHeadwaysOff()
     const shuttle: Vehicle = {
       id: "y0001",
-      runId: "999-0555",
       headwaySpacing: null,
       scheduleAdherenceSecs: 0,
+      isShuttle: true,
       isOffCourse: true,
     } as Vehicle
     expect(drawnStatus(shuttle)).toEqual("plain")
