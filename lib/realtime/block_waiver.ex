@@ -11,12 +11,13 @@ defmodule Realtime.BlockWaiver do
   @type t :: %__MODULE__{
           start_time: Util.Time.time_of_day(),
           end_time: Util.Time.time_of_day(),
-          remark: String.t() | nil
+          remark: String.t()
         }
 
   @enforce_keys [
     :start_time,
-    :end_time
+    :end_time,
+    :remark
   ]
 
   @derive Jason.Encoder
@@ -45,7 +46,11 @@ defmodule Realtime.BlockWaiver do
 
     Enum.map(trip.stop_times, fn stop_time ->
       {stop_time.time,
-       Enum.find(stop_time_updates, &(StopTimeUpdate.stop_id(&1) == stop_time.stop_id))}
+       Enum.find(
+         stop_time_updates,
+         &(StopTimeUpdate.stop_id(&1) == stop_time.stop_id && StopTimeUpdate.remark(&1) != nil &&
+             StopTimeUpdate.remark(&1) != "")
+       )}
     end)
   end
 
