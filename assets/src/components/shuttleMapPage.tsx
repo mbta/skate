@@ -2,6 +2,7 @@ import { Socket } from "phoenix"
 import React, { ReactElement, useContext } from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import { flatten } from "../helpers/array"
 import { useRouteShapes } from "../hooks/useShapes"
 import useShuttleVehicles from "../hooks/useShuttleVehicles"
 import featureIsEnabled from "../laboratoryFeatures"
@@ -29,11 +30,7 @@ const filterShuttles = (
 
 export const allTrainVehicles = (
   trainVehiclesByRouteId: ByRouteId<TrainVehicle[]>
-): TrainVehicle[] =>
-  Object.values(trainVehiclesByRouteId).reduce(
-    (acc, trains) => acc.concat(trains),
-    []
-  )
+): TrainVehicle[] => flatten(Object.values(trainVehiclesByRouteId))
 
 const findSelectedVehicle = (
   vehicles: Vehicle[],
