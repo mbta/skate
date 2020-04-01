@@ -256,7 +256,7 @@ export const strokeOptions = ({ color }: Shape): object =>
     ? {
         color,
         opacity: 1.0,
-        weight: 3,
+        weight: 4,
       }
     : {
         color: "#4db6ac",

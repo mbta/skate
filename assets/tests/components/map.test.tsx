@@ -497,7 +497,7 @@ describe("strokeOptions", () => {
     const expected = {
       color: "#DA291C",
       opacity: 1.0,
-      weight: 3,
+      weight: 4,
     }
 
     expect(strokeOptions(subwayShape)).toEqual(expected)
