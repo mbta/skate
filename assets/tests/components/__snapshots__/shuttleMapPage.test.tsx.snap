@@ -1063,3 +1063,213 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
   </div>
 </div>
 `;
+
+exports[`Shuttle Map Page renders with train vehicles 1`] = `
+<div
+  className="m-shuttle-map"
+>
+  <div
+    className="m-picker-container m-picker-container--wide visible"
+  >
+    <div
+      className="m-picker-container__tab"
+    >
+      <button
+        className="m-picker-container__tab-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <div
+      className="m-route-picker"
+    >
+      <div
+        className="m-route-picker__label"
+      >
+        Run #
+      </div>
+      <ul
+        className="m-route-picker__route-list m-route-picker__shuttle-run-list"
+      >
+        <li>
+          <button
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--selected"
+            disabled={false}
+            onClick={[Function]}
+          >
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              All Specials (999*)
+            </span>
+            <span
+              className="m-route-picker__route-list-button-count"
+            >
+              1
+            </span>
+          </button>
+        </li>
+        <li>
+          <button
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--unselected"
+            disabled={false}
+            onClick={[Function]}
+          >
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              Special 999 555
+            </span>
+            <span
+              className="m-route-picker__route-list-button-count"
+            >
+              1
+            </span>
+          </button>
+        </li>
+        <li>
+          <button
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
+            disabled={true}
+            onClick={[Function]}
+          >
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
+              Blue 999 501
+            </span>
+            <span
+              className="m-route-picker__route-list-button-count"
+            />
+          </button>
+        </li>
+        <li>
+          <button
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
+            disabled={true}
+            onClick={[Function]}
+          >
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
+              Green 999 502
+            </span>
+            <span
+              className="m-route-picker__route-list-button-count"
+            />
+          </button>
+        </li>
+        <li>
+          <button
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
+            disabled={true}
+            onClick={[Function]}
+          >
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
+              Orange 999 503
+            </span>
+            <span
+              className="m-route-picker__route-list-button-count"
+            />
+          </button>
+        </li>
+        <li>
+          <button
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
+            disabled={true}
+            onClick={[Function]}
+          >
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
+              Red 999 504
+            </span>
+            <span
+              className="m-route-picker__route-list-button-count"
+            />
+          </button>
+        </li>
+        <li>
+          <button
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
+            disabled={true}
+            onClick={[Function]}
+          >
+            <span
+              className="m-route-picker__route-list-button-name"
+            >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
+              CR 999 505
+            </span>
+            <span
+              className="m-route-picker__route-list-button-count"
+            />
+          </button>
+        </li>
+      </ul>
+      <div
+        className="m-route-picker__label"
+      >
+        Routes
+      </div>
+    </div>
+  </div>
+  <div
+    className="m-shuttle-map__map"
+  >
+    <div
+      className="m-vehicle-map"
+      id="id-vehicle-map"
+    />
+  </div>
+</div>
+`;
