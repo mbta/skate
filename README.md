@@ -32,6 +32,7 @@ Quick setup:
 
 There are a number of configuration details defined in environment variables. These define where data sources live, as well as authentication and CDN details. See `.env.example` for naming and syntax.
 
+- **GTFS_URL**: Location of the GTFS zip file
 - **BUSLOC_URL**: Source of GTFS-realtime enhanced VehiclePositions json data file
 - **SWIFTLY_REALTIME_VEHICLES_URL** and **SWIFTLY_AUTHORIZATION_KEY**: Source of Swiftly vehicle data
 - **SKATE_HASTUS_URL**: Source of extended schedule data
