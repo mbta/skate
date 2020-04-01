@@ -2,7 +2,7 @@ import { Channel, Socket } from "phoenix"
 import { Dispatch as ReactDispatch, useEffect, useReducer } from "react"
 import { reload } from "../models/browser"
 import { TrainVehicle } from "../realtime"
-import { ByRouteId, DirectionId, RouteId } from "../schedule"
+import { ByRouteId, RouteId } from "../schedule"
 
 interface State {
   channelsByRouteId: ByRouteId<Channel>
@@ -107,7 +107,6 @@ const reducer = (state: State, action: Action): State => {
 
 export interface TrainVehicleData {
   id: string
-  direction_id: DirectionId
   latitude: number
   longitude: number
   bearing: number
@@ -117,7 +116,6 @@ const trainVehicleFromData = (
   trainVehicleData: TrainVehicleData
 ): TrainVehicle => ({
   id: trainVehicleData.id,
-  directionId: trainVehicleData.direction_id,
   latitude: trainVehicleData.latitude,
   longitude: trainVehicleData.longitude,
   bearing: trainVehicleData.bearing,

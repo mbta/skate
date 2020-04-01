@@ -8,8 +8,7 @@ defmodule TrainVehicles.StreamTest do
         type: "vehicle",
         id: "vehicle1",
         attributes: %{
-          "current_status" => "STOPPED_AT",
-          "direction_id" => 0
+          "current_status" => "STOPPED_AT"
         },
         relationships: %{
           "route" => [%JsonApi.Item{id: "Red"}],

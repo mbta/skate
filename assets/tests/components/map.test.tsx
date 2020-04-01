@@ -80,7 +80,6 @@ const vehicle: Vehicle = {
 }
 const trainVehicle: TrainVehicle = {
   id: "red1",
-  directionId: 0,
   latitude: 42.24615,
   longitude: -71.00369,
   bearing: 15,

@@ -13,7 +13,6 @@ describe("useTrainVehicles", () => {
   const trainVehiclesData: TrainVehicleData[] = [
     {
       id: "R-5463D2D3",
-      direction_id: 1,
       latitude: 42.24615,
       longitude: -71.00369,
       bearing: 15,
@@ -22,7 +21,6 @@ describe("useTrainVehicles", () => {
   const trainVehicles: TrainVehicle[] = [
     {
       id: "R-5463D2D3",
-      directionId: 1,
       latitude: 42.24615,
       longitude: -71.00369,
       bearing: 15,

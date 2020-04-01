@@ -5,7 +5,6 @@ defmodule TrainVehicles.ParserTest do
   @item %JsonApi.Item{
     attributes: %{
       "current_status" => "STOPPED_AT",
-      "direction_id" => 1,
       "longitude" => 1.1,
       "latitude" => 2.2,
       "bearing" => 140
@@ -31,7 +30,6 @@ defmodule TrainVehicles.ParserTest do
       expected = %TrainVehicle{
         id: "y1799",
         route_id: "1",
-        direction_id: 1,
         latitude: 2.2,
         longitude: 1.1,
         bearing: 140
@@ -46,7 +44,6 @@ defmodule TrainVehicles.ParserTest do
       expected = %TrainVehicle{
         id: "y1799",
         route_id: nil,
-        direction_id: 1,
         latitude: 2.2,
         longitude: 1.1,
         bearing: 140

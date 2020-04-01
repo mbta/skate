@@ -53,7 +53,6 @@ export type TrainVehicleId = string
 
 export interface TrainVehicle {
   id: TrainVehicleId
-  directionId: DirectionId
   latitude: number
   longitude: number
   bearing: number

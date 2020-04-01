@@ -7,7 +7,6 @@ defmodule Realtime.TrainVehiclesPubSubTest do
   @blue_train_vehicle %TrainVehicle{
     id: "blue1",
     route_id: "Blue",
-    direction_id: 1,
     latitude: 42.24615,
     longitude: -71.00369,
     bearing: 15
@@ -15,7 +14,6 @@ defmodule Realtime.TrainVehiclesPubSubTest do
   @red_train_vehicle %TrainVehicle{
     id: "red1",
     route_id: "Red",
-    direction_id: 0,
     latitude: 42.24615,
     longitude: -71.00369,
     bearing: 15
@@ -113,7 +111,7 @@ defmodule Realtime.TrainVehiclesPubSubTest do
     test "updates the given train vehicles in the state", %{
       server: server
     } do
-      new_red_train_vehicle = %{@red_train_vehicle | direction_id: 1}
+      new_red_train_vehicle = %{@red_train_vehicle | bearing: 20}
 
       send(server, {:update, [new_red_train_vehicle]})
 

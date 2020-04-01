@@ -124,7 +124,6 @@ describe("allTrainVehicles", () => {
   test("returns all train vehicles in a single list", () => {
     const trainVehicle: TrainVehicle = {
       id: "R-5463D2D3",
-      directionId: 1,
       latitude: 42.24615,
       longitude: -71.00369,
       bearing: 15,

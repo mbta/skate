@@ -2,7 +2,7 @@ defmodule TrainVehicles.Supervisor do
   use Supervisor
 
   @api_params [
-    "fields[vehicle]": "direction_id,latitude,longitude,bearing"
+    "fields[vehicle]": "latitude,longitude,bearing"
   ]
 
   def start_link(_opts) do

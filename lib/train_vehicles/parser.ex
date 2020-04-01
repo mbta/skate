@@ -6,7 +6,6 @@ defmodule TrainVehicles.Parser do
     %TrainVehicle{
       id: id,
       route_id: optional_id(relationships["route"]),
-      direction_id: attributes["direction_id"],
       longitude: attributes["longitude"],
       latitude: attributes["latitude"],
       bearing: attributes["bearing"] || 0

@@ -10,7 +10,6 @@ defmodule SkateWeb.TrainVehiclesChannelTest do
     %TrainVehicle{
       id: "red1",
       route_id: "Red",
-      direction_id: 0,
       latitude: 42.24615,
       longitude: -71.00369,
       bearing: 15
