@@ -175,7 +175,7 @@ const makeTrainVehicleIcon = ({ bearing }: TrainVehicle): Leaflet.DivIcon => {
 }
 
 export const updateTrainVehicleMarkers = (
-  newTrainVehicles: { [id: string]: TrainVehicle },
+  newTrainVehicles: TrainVehiclesById,
   oldMarkerDict: MarkerDict,
   map: LeafletMap
 ): MarkerDict => {
