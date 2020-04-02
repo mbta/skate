@@ -55,6 +55,8 @@ defmodule Skate.MixProject do
       {:phoenix_pubsub, "~> 1.1"},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:ex_aws, "~> 2.1"},
+      {:ex_aws_secretsmanager, "~> 2.0"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:gen_stage, "~> 1.0.0"},

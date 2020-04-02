@@ -56,4 +56,6 @@ config :skate,
   record_fullstory: true,
   record_appcues: true
 
+config :ex_aws, json_codec: Jason
+
 config :ehmon, :report_mf, {:ehmon, :info_report}
