@@ -5,7 +5,8 @@ defmodule Realtime.BlockWaiverStore do
 
   use GenServer
 
-  alias Gtfs.{Block, Service}
+  alias Static.Block
+  alias Static.Gtfs.Service
   alias Realtime.BlockWaiver
 
   @type t :: %__MODULE__{

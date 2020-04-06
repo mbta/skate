@@ -2,7 +2,8 @@ defmodule Realtime.VehiclesTest do
   use ExUnit.Case, async: true
   import Test.Support.Helpers
 
-  alias Gtfs.{StopTime, Trip}
+  alias Static.Trip
+  alias Static.Gtfs.StopTime
   alias Realtime.{BlockWaiver, Ghost, Vehicle, Vehicles}
 
   describe "group_by_route_with_blocks" do

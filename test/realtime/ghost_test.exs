@@ -2,7 +2,8 @@ defmodule Realtime.GhostTest do
   use ExUnit.Case
   import Test.Support.Helpers
 
-  alias Gtfs.{StopTime, Trip}
+  alias Static.Trip
+  alias Static.Gtfs.StopTime
   alias Realtime.{BlockWaiver, Ghost}
 
   setup do

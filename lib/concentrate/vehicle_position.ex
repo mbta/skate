@@ -5,7 +5,7 @@ defmodule Concentrate.VehiclePosition do
   import Concentrate.StructHelpers
 
   alias Concentrate.DataDiscrepancy
-  alias Gtfs.Block
+  alias Static.Block
 
   defstruct_accessors([
     :id,

@@ -23,7 +23,7 @@ config :skate,
   redirect_http?: false,
   static_href: {SkateWeb.Router.Helpers, :static_path}
 
-config :skate, Gtfs.CacheFile, cache_filename: nil
+config :skate, Static.CacheFile, cache_filename: nil
 
 # Configures the endpoint
 config :skate, SkateWeb.Endpoint,

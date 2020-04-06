@@ -2,7 +2,7 @@ defmodule SkateWeb.RouteControllerTest do
   use SkateWeb.ConnCase
   import Test.Support.Helpers
 
-  alias Gtfs.Route
+  alias Static.Gtfs.Route
   alias SkateWeb.AuthManager
 
   @routes [

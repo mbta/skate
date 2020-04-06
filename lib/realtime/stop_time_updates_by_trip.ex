@@ -1,6 +1,6 @@
 defmodule Realtime.StopTimeUpdatesByTrip do
   alias Concentrate.StopTimeUpdate
-  alias Gtfs.Trip
+  alias Static.Trip
 
   @type t :: %{Trip.id() => [StopTimeUpdate.t()]}
 

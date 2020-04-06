@@ -2,7 +2,7 @@ defmodule Concentrate.StopTimeUpdateTest do
   use ExUnit.Case
 
   alias Concentrate.{Mergeable, StopTimeUpdate}
-  alias Gtfs.Stop
+  alias Static.Gtfs.Stop
 
   describe "Concentrate.Mergeable" do
     test "key/1 uses the parent station ID" do

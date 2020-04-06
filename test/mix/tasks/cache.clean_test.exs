@@ -2,7 +2,7 @@ defmodule Mix.Tasks.Cache.CleanTest do
   use ExUnit.Case, async: true
 
   alias ExUnit.CaptureIO
-  alias Gtfs.CacheFile
+  alias Static.CacheFile
   alias Mix.Tasks.Cache
 
   @test_cache_filepath CacheFile.cache_filename() |> CacheFile.generate_filepath()

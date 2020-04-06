@@ -1,5 +1,7 @@
 defmodule Realtime.Ghost do
-  alias Gtfs.{Block, Direction, Route, RoutePattern, Run, StopTime, Trip}
+  alias Static.{Block, Route, Trip}
+  alias Static.Gtfs.{Direction, RoutePattern, StopTime}
+  alias Static.Hastus.Run
   alias Realtime.{BlockWaiver, BlockWaiverStore, RouteStatus, TimepointStatus, Vehicle}
 
   @type t :: %__MODULE__{

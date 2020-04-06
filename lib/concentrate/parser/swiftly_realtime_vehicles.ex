@@ -8,7 +8,7 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehicles do
   @behaviour Concentrate.Parser
 
   alias Concentrate.VehiclePosition
-  alias Gtfs.Direction
+  alias Static.Gtfs.Direction
 
   @impl Concentrate.Parser
   def parse(binary) when is_binary(binary) do

@@ -17,7 +17,7 @@ defmodule Skate.Application do
       ] ++
         if Application.get_env(:skate, :start_data_processes) do
           [
-            Gtfs.Supervisor,
+            Static.Supervisor,
             Realtime.Supervisor
           ]
         else

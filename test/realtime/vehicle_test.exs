@@ -3,7 +3,8 @@ defmodule Realtime.VehicleTest do
   import Test.Support.Helpers
 
   alias Concentrate.{DataDiscrepancy, VehiclePosition}
-  alias Gtfs.{StopTime, Trip}
+  alias Static.Trip
+  alias Static.Gtfs.StopTime
   alias Realtime.{BlockWaiver, Vehicle}
 
   @vehicle_position %VehiclePosition{
