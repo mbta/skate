@@ -16,12 +16,12 @@ defmodule Gtfs.Hastus.ActivityTest do
                %Activity{
                  schedule_id: "aba20021",
                  run_id: "123-1501",
-                 block_id: nil,
                  start_time: "04:05",
                  end_time: "04:15",
                  start_place: "albny",
                  end_place: "albny",
-                 activity_type: "Sign-on"
+                 activity_type: "Sign-on",
+                 partial_block_id: nil
                }
              ]
     end
@@ -38,12 +38,12 @@ defmodule Gtfs.Hastus.ActivityTest do
                %Activity{
                  schedule_id: "aba20021",
                  run_id: "123-1501",
-                 block_id: "57-11",
                  start_time: "04:15",
                  end_time: "09:29",
                  start_place: "albny",
                  end_place: "albny",
-                 activity_type: "Operator"
+                 activity_type: "Operator",
+                 partial_block_id: "57-11"
                }
              ]
     end
