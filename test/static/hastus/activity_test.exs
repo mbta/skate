@@ -47,20 +47,5 @@ defmodule Static.Hastus.ActivityTest do
                }
              ]
     end
-
-    test "0 pads short run ids" do
-      binary =
-        [
-          "schedule_id;area;run_id;start_time;end_time;start_place;end_place;activity_name;activity_type",
-          "aba20021;123;     501;04:05;04:15;albny;albny;Sign-on;Sign-on"
-        ]
-        |> Enum.join("\n")
-
-      assert binary
-             |> Activity.parse()
-             |> Enum.at(0)
-             |> (fn activity -> activity.run_id end).() ==
-               "123-0501"
-    end
   end
 end

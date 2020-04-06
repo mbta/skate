@@ -52,7 +52,7 @@ defmodule Static.Hastus.Activity do
 
     %__MODULE__{
       schedule_id: row["schedule_id"],
-      run_id: run_id(row),
+      run_id: Run.from_parts(row["area"], row["run_id"]),
       start_time: Util.Time.parse_hhmm(row["start_time"]),
       end_time: Util.Time.parse_hhmm(row["end_time"]),
       start_place: row["start_place"],
@@ -60,11 +60,6 @@ defmodule Static.Hastus.Activity do
       activity_type: activity_type,
       partial_block_id: partial_block_id
     }
-  end
-
-  @spec run_id(Csv.row()) :: Run.id()
-  def run_id(row) do
-    "#{row["area"]}-#{String.pad_leading(row["run_id"], 4, "0")}"
   end
 
   @spec parse(binary() | nil) :: [t()]

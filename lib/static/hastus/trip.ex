@@ -43,7 +43,7 @@ defmodule Static.Hastus.Trip do
   def from_csv_row(row) do
     %__MODULE__{
       schedule_id: row["schedule_id"],
-      run_id: run_id(row),
+      run_id: Run.from_parts(row["area"], row["run_id"]),
       block_id: String.replace(row["block_id"], " ", ""),
       start_time: Util.Time.parse_hhmm(row["start_time"]),
       end_time: Util.Time.parse_hhmm(row["end_time"]),
@@ -57,11 +57,6 @@ defmodule Static.Hastus.Trip do
   @spec nonempty_string(String.t()) :: String.t() | nil
   defp nonempty_string(""), do: nil
   defp nonempty_string(s), do: s
-
-  @spec run_id(Csv.row()) :: Run.id()
-  def run_id(row) do
-    "#{row["area"]}-#{String.pad_leading(row["run_id"], 4, "0")}"
-  end
 
   @doc """
   Some rows in trips.csv are missing a lot of data. Drop them.

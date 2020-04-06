@@ -49,20 +49,5 @@ defmodule Static.Hastus.TripTest do
 
       assert Trip.parse(binary) == []
     end
-
-    test "0 pads short run ids" do
-      binary =
-        [
-          "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
-          "aba20021;123;     501; 57 - 11;04:15;04:30;albny;wtryd;;   43858890"
-        ]
-        |> Enum.join("\n")
-
-      assert binary
-             |> Trip.parse()
-             |> Enum.at(0)
-             |> (fn trip -> trip.run_id end).() ==
-               "123-0501"
-    end
   end
 end
