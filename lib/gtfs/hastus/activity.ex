@@ -57,7 +57,7 @@ defmodule Gtfs.Hastus.Activity do
       start_place: row["start_place"],
       end_place: row["end_place"],
       activity_type: activity_type,
-      partial_block_id: block_id
+      partial_block_id: partial_block_id
     }
   end
 
