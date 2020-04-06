@@ -39,7 +39,7 @@ defmodule Gtfs.Hastus.TripTest do
              ]
     end
 
-    test "filters out rows with missing data" do
+    test "filters out malformed rows" do
       binary =
         [
           "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
