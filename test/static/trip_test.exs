@@ -4,6 +4,20 @@ defmodule Static.TripTest do
   alias Static.Trip
   alias Static.Gtfs.StopTime
 
+  @stop_times [
+    %StopTime{
+      stop_id: "stop1",
+      time: 3
+    },
+    %StopTime{
+      stop_id: "stop2",
+      time: 6
+    },
+    %StopTime{
+      stop_id: "stop3",
+      time: 9
+    }
+  ]
   @trip %Trip{
     id: "trip",
     route_id: "route",
@@ -12,21 +26,25 @@ defmodule Static.TripTest do
     direction_id: 0,
     block_id: "block",
     shape_id: "shape",
-    stop_times: [
-      %StopTime{
-        stop_id: "stop1",
-        time: 3
-      },
-      %StopTime{
-        stop_id: "stop2",
-        time: 6
-      },
-      %StopTime{
-        stop_id: "stop3",
-        time: 9
-      }
-    ]
+    run_id: "run",
+    stop_times: @stop_times
   }
+
+  describe "merge" do
+    test "combines gtfs trip, stop_times, and run_id" do
+      gtfs_trip = %Static.Gtfs.Trip{
+        id: "trip",
+        route_id: "route",
+        service_id: "service",
+        headsign: "headsign",
+        direction_id: 0,
+        block_id: "block",
+        shape_id: "shape"
+      }
+
+      assert Trip.merge(gtfs_trip, @stop_times, "run") == @trip
+    end
+  end
 
   describe "start_time/1" do
     test "returns the time of the trip's first stop" do
