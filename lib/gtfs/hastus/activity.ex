@@ -5,8 +5,8 @@ defmodule Gtfs.Hastus.Activity do
   @type t :: %__MODULE__{
           schedule_id: Schedule.id(),
           run_id: Run.id(),
-          start_time: String.t(),
-          end_time: String.t(),
+          start_time: Util.Time.time_of_day(),
+          end_time: Util.Time.time_of_day(),
           start_place: Place.id(),
           end_place: Place.id(),
           activity_type: String.t(),
@@ -52,8 +52,8 @@ defmodule Gtfs.Hastus.Activity do
     %__MODULE__{
       schedule_id: row["schedule_id"],
       run_id: run_id(row),
-      start_time: row["start_time"],
-      end_time: row["end_time"],
+      start_time: Util.Time.parse_hhmm(row["start_time"]),
+      end_time: Util.Time.parse_hhmm(row["end_time"]),
       start_place: row["start_place"],
       end_place: row["end_place"],
       activity_type: activity_type,

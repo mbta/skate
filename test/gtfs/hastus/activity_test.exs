@@ -16,8 +16,8 @@ defmodule Gtfs.Hastus.ActivityTest do
                %Activity{
                  schedule_id: "aba20021",
                  run_id: "123-1501",
-                 start_time: "04:05",
-                 end_time: "04:15",
+                 start_time: 14700,
+                 end_time: 15300,
                  start_place: "albny",
                  end_place: "albny",
                  activity_type: "Sign-on",
@@ -38,8 +38,8 @@ defmodule Gtfs.Hastus.ActivityTest do
                %Activity{
                  schedule_id: "aba20021",
                  run_id: "123-1501",
-                 start_time: "04:15",
-                 end_time: "09:29",
+                 start_time: 15300,
+                 end_time: 34140,
                  start_place: "albny",
                  end_place: "albny",
                  activity_type: "Operator",
