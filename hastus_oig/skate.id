@@ -51,7 +51,7 @@ file activities
       {
       item halfheader
          {
-         value ' "schedule_id;area;run_id;start_time;end_time;start_place;end_place;activity_name;activity_type" '
+         value ' "schedule_id;area;run_id;start_time;end_time;start_place;end_place;activity_type;activity_name" '
          }
       }
 
@@ -73,8 +73,8 @@ file activities
          item dty_act_end_time { value 'dty_act_end_time' } { mask "_0hh'mm" }
          item dty_act_start_place { value 'dty_act_start_place' }
          item dty_act_end_place { value 'dty_act_end_place' }
-         item dty_act_name { value 'dty_act_name' }
          item dty_act_activity { value 'dty_act_activity' }
+         item dty_act_name { value 'dty_act_name' }
          }
       }
    } #file activities
