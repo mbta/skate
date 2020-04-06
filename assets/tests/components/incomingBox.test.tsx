@@ -44,6 +44,7 @@ describe("IncomingBox", () => {
       scheduleAdherenceSecs: 0,
       scheduledHeadwaySecs: 420,
       isShuttle: false,
+      isOverload: false,
       isOffCourse: false,
       layoverDepartureTime: 1576091880,
       blockIsActive: true,

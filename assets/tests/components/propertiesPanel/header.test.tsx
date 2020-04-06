@@ -36,6 +36,7 @@ const vehicle: Vehicle = {
   scheduleAdherenceSecs: 0,
   scheduledHeadwaySecs: 120,
   isShuttle: false,
+  isOverload: false,
   isOffCourse: false,
   layoverDepartureTime: null,
   blockIsActive: false,

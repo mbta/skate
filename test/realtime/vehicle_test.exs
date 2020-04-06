@@ -128,6 +128,7 @@ defmodule Realtime.VehicleTest do
                headway_secs: 900,
                headway_spacing: :ok,
                is_shuttle: false,
+               is_overload: false,
                is_off_course: false,
                layover_departure_time: nil,
                block_is_active: true,
@@ -196,7 +197,7 @@ defmodule Realtime.VehicleTest do
         }
       ]
 
-      assert Vehicle.off_course?("S28-2", false, data_discrepancies)
+      assert Vehicle.off_course?(false, false, data_discrepancies)
     end
 
     test "returns false if the swiftly defined a value" do
@@ -216,7 +217,7 @@ defmodule Realtime.VehicleTest do
         }
       ]
 
-      refute Vehicle.off_course?("S28-2", false, data_discrepancies)
+      refute Vehicle.off_course?(false, false, data_discrepancies)
     end
 
     test "returns false if there isn't a trip_id data discrepancy" do
@@ -236,7 +237,7 @@ defmodule Realtime.VehicleTest do
         }
       ]
 
-      refute Vehicle.off_course?("S28-2", false, data_discrepancies)
+      refute Vehicle.off_course?(false, false, data_discrepancies)
     end
 
     test "returns false if the vehicle is logged into a shuttle run" do
@@ -250,7 +251,7 @@ defmodule Realtime.VehicleTest do
         }
       ]
 
-      refute Vehicle.off_course?("S28-2", true, data_discrepancies)
+      refute Vehicle.off_course?(false, true, data_discrepancies)
     end
 
     test "returns false if this vehicle is on a 'block overload'" do
@@ -264,7 +265,7 @@ defmodule Realtime.VehicleTest do
         }
       ]
 
-      refute Vehicle.off_course?("S28-2-OL1", false, data_discrepancies)
+      refute Vehicle.off_course?(true, false, data_discrepancies)
     end
   end
 
@@ -615,6 +616,7 @@ defmodule Realtime.VehicleTest do
         headway_secs: 600,
         headway_spacing: :ok,
         is_shuttle: false,
+        is_overload: false,
         is_off_course: false,
         layover_departure_time: nil,
         block_is_active: true,

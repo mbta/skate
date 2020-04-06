@@ -21,6 +21,7 @@ defmodule Realtime.VehicleOrGhostTest do
     headway_secs: 600,
     headway_spacing: :ok,
     is_shuttle: false,
+    is_overload: false,
     is_off_course: false,
     layover_departure_time: nil,
     block_is_active: true,

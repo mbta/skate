@@ -33,6 +33,7 @@ defmodule Realtime.Vehicle do
           schedule_adherence_secs: float() | nil,
           scheduled_headway_secs: float() | nil,
           is_shuttle: boolean,
+          is_overload: boolean(),
           is_off_course: boolean(),
           layover_departure_time: Util.Time.timestamp() | nil,
           block_is_active: boolean(),
@@ -61,6 +62,7 @@ defmodule Realtime.Vehicle do
     :run_id,
     :headway_spacing,
     :is_shuttle,
+    :is_overload,
     :is_off_course,
     :block_is_active,
     :sources,
@@ -94,6 +96,7 @@ defmodule Realtime.Vehicle do
     :schedule_adherence_secs,
     :scheduled_headway_secs,
     :is_shuttle,
+    :is_overload,
     :is_off_course,
     :layover_departure_time,
     :block_is_active,
@@ -174,7 +177,8 @@ defmodule Realtime.Vehicle do
 
     data_discrepancies = VehiclePosition.data_discrepancies(vehicle_position)
     is_shuttle = shuttle?(run_id)
-    is_off_course = off_course?(block_id_with_overload, is_shuttle, data_discrepancies)
+    is_overload = block_id_with_overload != nil && Block.overload?(block_id_with_overload)
+    is_off_course = off_course?(is_overload, is_shuttle, data_discrepancies)
 
     block_waivers =
       if trip,
@@ -204,6 +208,7 @@ defmodule Realtime.Vehicle do
       schedule_adherence_secs: VehiclePosition.schedule_adherence_secs(vehicle_position),
       scheduled_headway_secs: VehiclePosition.scheduled_headway_secs(vehicle_position),
       is_shuttle: is_shuttle,
+      is_overload: is_overload,
       is_off_course: is_off_course,
       layover_departure_time: VehiclePosition.layover_departure_time(vehicle_position),
       block_is_active: active_block?(is_off_course, block, now_fn.()),
@@ -226,28 +231,24 @@ defmodule Realtime.Vehicle do
   That is a sign that Swiftly thinks the vehicle is off course, or not on any
   trip for some other reason.
   """
-  @spec off_course?(Block.id() | nil, boolean(), [DataDiscrepancy.t()] | DataDiscrepancy.t()) ::
+  @spec off_course?(boolean(), boolean(), [DataDiscrepancy.t()] | DataDiscrepancy.t()) ::
           boolean
-  def off_course?(nil, _is_shuttle, _data_discrepancies), do: false
+  def off_course?(true, _is_shuttle, _data_discrepancies), do: false
 
   def off_course?(_bolck_id, true, _data_discrepancies), do: false
 
-  def off_course?(block_id, false, data_discrepancies) when is_list(data_discrepancies) do
-    if Block.overload?(block_id) do
-      false
-    else
-      trip_id_discrepency =
-        Enum.find(data_discrepancies, fn data_discrepancy ->
-          data_discrepancy.attribute == :trip_id
-        end)
+  def off_course?(false, false, data_discrepancies) when is_list(data_discrepancies) do
+    trip_id_discrepency =
+      Enum.find(data_discrepancies, fn data_discrepancy ->
+        data_discrepancy.attribute == :trip_id
+      end)
 
-      off_course?(block_id, false, trip_id_discrepency)
-    end
+    off_course?(false, false, trip_id_discrepency)
   end
 
-  def off_course?(_block_id, false, nil), do: false
+  def off_course?(false, false, nil), do: false
 
-  def off_course?(_block_id, false, %{sources: sources}) do
+  def off_course?(false, false, %{sources: sources}) do
     case Enum.find(sources, fn source -> source.id == "swiftly" end) do
       %{value: nil} ->
         true
