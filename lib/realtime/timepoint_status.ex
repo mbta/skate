@@ -1,5 +1,7 @@
 defmodule Realtime.TimepointStatus do
-  alias Gtfs.{Block, Direction, RoutePattern, Run, Stop, StopTime, Route, Trip}
+  alias Schedule.{Block, Route, Trip}
+  alias Schedule.Gtfs.{Direction, RoutePattern, Stop, StopTime}
+  alias Schedule.Hastus.Run
 
   @typep point :: {float(), float()}
 
@@ -92,7 +94,7 @@ defmodule Realtime.TimepointStatus do
 
   @spec stop_latlon(Stop.id()) :: point() | nil
   defp stop_latlon(stop_id) do
-    stop_fn = Application.get_env(:skate, :stop_fn, &Gtfs.stop/1)
+    stop_fn = Application.get_env(:skate, :stop_fn, &Schedule.stop/1)
     stop = stop_id && stop_fn.(stop_id)
 
     if stop && stop.latitude && stop.longitude do

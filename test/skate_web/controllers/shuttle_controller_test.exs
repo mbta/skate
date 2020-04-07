@@ -2,7 +2,7 @@ defmodule SkateWeb.ShuttleControllerTest do
   use SkateWeb.ConnCase
   import Test.Support.Helpers
 
-  alias Gtfs.{Route, RoutePattern, Shape}
+  alias Schedule.Gtfs.{Route, RoutePattern, Shape}
   alias SkateWeb.AuthManager
 
   describe "GET /api/shuttles" do

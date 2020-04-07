@@ -1,11 +1,11 @@
 defmodule SkateWeb.ShuttleController do
   use SkateWeb, :controller
 
-  alias Gtfs.Route
+  alias Schedule.Gtfs.Route
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
-    routes_fn = Application.get_env(:skate_web, :routes_fn, &Gtfs.all_routes/0)
+    routes_fn = Application.get_env(:skate_web, :routes_fn, &Schedule.all_routes/0)
 
     routes =
       routes_fn.()
@@ -22,7 +22,7 @@ defmodule SkateWeb.ShuttleController do
       Application.get_env(
         :skate_web,
         :route_pattern_fn,
-        &Gtfs.first_route_pattern_for_route_and_direction/2
+        &Schedule.first_route_pattern_for_route_and_direction/2
       )
 
     route_pattern = route_pattern_fn.(route.id, 0)
@@ -34,7 +34,7 @@ defmodule SkateWeb.ShuttleController do
 
   @spec has_shape?(Route.t()) :: bool()
   defp has_shape?(route) do
-    shapes_fn = Application.get_env(:skate_web, :shapes_fn, &Gtfs.shapes/1)
+    shapes_fn = Application.get_env(:skate_web, :shapes_fn, &Schedule.shapes/1)
     length(shapes_fn.(route.id)) > 0
   end
 end

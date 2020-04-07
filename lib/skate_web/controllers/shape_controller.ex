@@ -3,7 +3,7 @@ defmodule SkateWeb.ShapeController do
 
   @spec route(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def route(conn, %{"route_id" => route_id}) do
-    shapes_fn = Application.get_env(:skate_web, :shapes_fn, &Gtfs.shapes/1)
+    shapes_fn = Application.get_env(:skate_web, :shapes_fn, &Schedule.shapes/1)
     shapes = shapes_fn.(route_id)
 
     json(conn, %{data: shapes})
@@ -12,7 +12,7 @@ defmodule SkateWeb.ShapeController do
   @spec trip(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def trip(conn, %{"trip_id" => trip_id}) do
     shape_for_trip_fn =
-      Application.get_env(:skate_web, :shape_for_trip_fn, &Gtfs.shape_for_trip/1)
+      Application.get_env(:skate_web, :shape_for_trip_fn, &Schedule.shape_for_trip/1)
 
     shape = shape_for_trip_fn.(trip_id)
 

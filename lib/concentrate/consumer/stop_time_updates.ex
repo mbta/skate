@@ -6,7 +6,7 @@ defmodule Concentrate.Consumer.StopTimeUpdates do
   use GenStage
 
   alias Concentrate.{StopTimeUpdate, TripUpdate}
-  alias Gtfs.{Block, Trip}
+  alias Schedule.{Block, Trip}
   alias Realtime.{BlockWaiver, BlockWaiverStore, StopTimeUpdatesByTrip}
 
   def start_link(opts) do
@@ -51,7 +51,7 @@ defmodule Concentrate.Consumer.StopTimeUpdates do
   @spec block_keys([Trip.id()]) :: block_keys_set()
   defp block_keys(trip_ids) do
     Enum.reduce(trip_ids, MapSet.new(), fn trip_id, acc ->
-      trip_fn = Application.get_env(:realtime, :trip_fn, &Gtfs.trip/1)
+      trip_fn = Application.get_env(:realtime, :trip_fn, &Schedule.trip/1)
       trip = trip_fn.(trip_id)
 
       if trip != nil do
@@ -85,7 +85,7 @@ defmodule Concentrate.Consumer.StopTimeUpdates do
          {block_id, service_id},
          stop_time_updates_by_trip
        ) do
-    block_fn = Application.get_env(:realtime, :block_fn, &Gtfs.block/2)
+    block_fn = Application.get_env(:realtime, :block_fn, &Schedule.block/2)
     block = block_fn.(block_id, service_id)
 
     block_waivers = BlockWaiver.block_waivers_for_block(block, stop_time_updates_by_trip)

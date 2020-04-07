@@ -6,9 +6,9 @@ defmodule SkateWeb.HealthController do
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
-    health_server_pid = conn.assigns[:health_server_pid] || Gtfs.HealthServer.default_server()
+    health_server_pid = conn.assigns[:health_server_pid] || Schedule.HealthServer.default_server()
 
-    if Gtfs.HealthServer.ready?(health_server_pid) do
+    if Schedule.HealthServer.ready?(health_server_pid) do
       send_resp(conn, :ok, "")
     else
       send_resp(conn, :service_unavailable, "")

@@ -1,6 +1,8 @@
 defmodule Realtime.Vehicle do
   alias Concentrate.{DataDiscrepancy, VehiclePosition}
-  alias Gtfs.{Block, Direction, Route, RoutePattern, Run, Stop, Trip}
+  alias Schedule.{Block, Route, Trip}
+  alias Schedule.Gtfs.{Direction, RoutePattern, Stop}
+  alias Schedule.Hastus.Run
   alias Realtime.{BlockWaiver, BlockWaiverStore, Headway, RouteStatus, TimepointStatus}
 
   @type stop_status :: %{
@@ -112,8 +114,8 @@ defmodule Realtime.Vehicle do
 
   @spec from_vehicle_position(map()) :: t()
   def from_vehicle_position(vehicle_position) do
-    trip_fn = Application.get_env(:realtime, :trip_fn, &Gtfs.trip/1)
-    block_fn = Application.get_env(:realtime, :block_fn, &Gtfs.block/2)
+    trip_fn = Application.get_env(:realtime, :trip_fn, &Schedule.trip/1)
+    block_fn = Application.get_env(:realtime, :block_fn, &Schedule.block/2)
     now_fn = Application.get_env(:realtime, :now_fn, &Util.Time.now/0)
 
     block_waivers_for_block_and_service_fn =
@@ -294,7 +296,7 @@ defmodule Realtime.Vehicle do
 
   @spec stop_name_from_stop(String.t() | nil) :: String.t() | nil
   defp stop_name_from_stop(stop_id) do
-    stop = Gtfs.stop(stop_id)
+    stop = Schedule.stop(stop_id)
     if stop, do: stop.name, else: stop_id
   end
 
