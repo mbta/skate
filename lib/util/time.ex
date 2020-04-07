@@ -27,6 +27,27 @@ defmodule Util.Time do
   @doc """
   Times greater than 24:00:00 are allowed.
 
+      iex> Util.Time.parse_hhmm("05:00")
+      18000
+
+      iex> Util.Time.parse_hhmm("22:00")
+      79200
+
+      # Times past 24:00 are measured from the previous day
+      iex> Util.Time.parse_hhmm("25:00")
+      90000
+  """
+  @spec parse_hhmm(String.t()) :: time_of_day()
+  def parse_hhmm(time_string) do
+    [hh_string, mm_string] = String.split(time_string, ":")
+    h = String.to_integer(hh_string)
+    m = String.to_integer(mm_string)
+    h * 60 * 60 + m * 60
+  end
+
+  @doc """
+  Times greater than 24:00:00 are allowed.
+
       iex> Util.Time.parse_hhmmss("05:00:00")
       18000
 
