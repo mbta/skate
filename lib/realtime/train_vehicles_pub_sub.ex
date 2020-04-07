@@ -4,7 +4,7 @@ defmodule Realtime.TrainVehiclesPubSub do
   """
   use GenServer
 
-  alias Gtfs.Route
+  alias Schedule.Route
   alias Realtime.TrainVehiclesStore
   alias TrainVehicles.TrainVehicle
 

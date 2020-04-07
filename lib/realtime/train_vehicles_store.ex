@@ -3,7 +3,7 @@ defmodule Realtime.TrainVehiclesStore do
   Stores train vehicles by route ID.
   """
 
-  alias Gtfs.Route
+  alias Schedule.Route
   alias TrainVehicles.TrainVehicle
 
   @type t :: %__MODULE__{
