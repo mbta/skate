@@ -100,8 +100,8 @@ defmodule Api.Stream do
   end
 
   @spec event(String.t()) :: Event.event()
-  for atom <- ~w(reset add update remove)a do
-    str = Atom.to_string(atom)
-    defp event(unquote(str)), do: unquote(atom)
-  end
+  defp event("reset"), do: :reset
+  defp event("add"), do: :add
+  defp event("update"), do: :update
+  defp event("remove"), do: :remove
 end
