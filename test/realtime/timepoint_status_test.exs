@@ -2,8 +2,8 @@ defmodule Realtime.TimepointStatusTest do
   use ExUnit.Case
   import Test.Support.Helpers
 
-  alias Static.Trip
-  alias Static.Gtfs.{Stop, StopTime}
+  alias Schedule.Trip
+  alias Schedule.Gtfs.{Stop, StopTime}
   alias Realtime.TimepointStatus
 
   describe "timepoint_status" do

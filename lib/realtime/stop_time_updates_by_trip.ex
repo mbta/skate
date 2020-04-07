@@ -1,6 +1,6 @@
 defmodule Realtime.StopTimeUpdatesByTrip do
   alias Concentrate.StopTimeUpdate
-  alias Static.Trip
+  alias Schedule.Trip
 
   @type t :: %{Trip.id() => [StopTimeUpdate.t()]}
 

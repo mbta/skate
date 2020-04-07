@@ -1,5 +1,5 @@
 defmodule Realtime.Headway do
-  alias Static.Gtfs.{Direction, Route, Stop}
+  alias Schedule.Gtfs.{Direction, Route, Stop}
   alias Realtime.TimePeriod
 
   defmodule Parser do

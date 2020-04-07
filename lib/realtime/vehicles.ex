@@ -1,6 +1,6 @@
 defmodule Realtime.Vehicles do
   alias Realtime.{Ghost, Vehicle, VehicleOrGhost}
-  alias Static.{Block, Route, Trip}
+  alias Schedule.{Block, Route, Trip}
 
   @doc """
   Also fills in ghost buses and checks for buses incoming from another route
@@ -14,10 +14,10 @@ defmodule Realtime.Vehicles do
     in_fifteen_minutes = now + 15 * 60
 
     # We show vehicles incoming from another route if they'll start the new route within 15 minutes
-    incoming_trips = Static.active_trips(now, in_fifteen_minutes)
+    incoming_trips = Schedule.active_trips(now, in_fifteen_minutes)
     incoming_blocks_by_route = incoming_blocks_by_route(incoming_trips)
     # We show pulling out ghosts if they'll start within 10 minutes
-    active_and_incoming_blocks_by_date = Static.active_blocks(now, in_ten_minutes)
+    active_and_incoming_blocks_by_date = Schedule.active_blocks(now, in_ten_minutes)
 
     group_by_route_with_blocks(
       ungrouped_vehicles,

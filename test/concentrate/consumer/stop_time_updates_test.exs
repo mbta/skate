@@ -5,7 +5,7 @@ defmodule Concentrate.Supervisor.StopTimeUpdatesTest do
 
   alias Concentrate.{StopTimeUpdate, TripUpdate}
   alias Concentrate.Consumer.StopTimeUpdates
-  alias Static.Trip
+  alias Schedule.Trip
 
   @trip %Trip{
     id: "t1",

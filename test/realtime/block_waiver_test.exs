@@ -3,8 +3,8 @@ defmodule Realtime.BlockWaiverTest do
   import Test.Support.Helpers
 
   alias Concentrate.StopTimeUpdate
-  alias Static.Trip
-  alias Static.Gtfs.StopTime
+  alias Schedule.Trip
+  alias Schedule.Gtfs.StopTime
   alias Realtime.BlockWaiver
 
   @trip1 %Trip{

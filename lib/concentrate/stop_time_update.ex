@@ -3,7 +3,7 @@ defmodule Concentrate.StopTimeUpdate do
   Structure for representing an update to a StopTime (e.g. a predicted arrival or departure)
   """
   import Concentrate.StructHelpers
-  alias Static.Gtfs.Stop
+  alias Schedule.Gtfs.Stop
 
   defstruct_accessors([
     :trip_id,
@@ -37,7 +37,7 @@ defmodule Concentrate.StopTimeUpdate do
   end
 
   defimpl Concentrate.Mergeable do
-    @default_key_opts [stop_fn: &Static.stop/1]
+    @default_key_opts [stop_fn: &Schedule.stop/1]
     def key(%{trip_id: trip_id, stop_id: stop_id, stop_sequence: stop_sequence}, opts \\ []) do
       opts = Keyword.merge(@default_key_opts, opts)
       stop_fn = opts[:stop_fn]

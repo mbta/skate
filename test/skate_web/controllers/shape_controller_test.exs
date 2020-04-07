@@ -2,8 +2,8 @@ defmodule SkateWeb.ShapeControllerTest do
   use SkateWeb.ConnCase
   import Test.Support.Helpers
 
-  alias Static.Gtfs.Shape
-  alias Static.Gtfs.Shape.Point
+  alias Schedule.Gtfs.Shape
+  alias Schedule.Gtfs.Shape.Point
   alias SkateWeb.AuthManager
 
   @shape %Shape{

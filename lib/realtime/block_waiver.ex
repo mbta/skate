@@ -5,7 +5,7 @@ defmodule Realtime.BlockWaiver do
   """
 
   alias Concentrate.StopTimeUpdate
-  alias Static.{Block, Trip}
+  alias Schedule.{Block, Trip}
   alias Realtime.StopTimeUpdatesByTrip
 
   @type t :: %__MODULE__{
@@ -115,7 +115,7 @@ defmodule Realtime.BlockWaiver do
 
   @spec date_for_block(Block.t()) :: Date.t()
   defp date_for_block(block) do
-    active_blocks_fn = Application.get_env(:realtime, :active_blocks_fn, &Static.active_blocks/2)
+    active_blocks_fn = Application.get_env(:realtime, :active_blocks_fn, &Schedule.active_blocks/2)
 
     now = Util.Time.now()
     one_hour_ago = now - 60 * 60

@@ -9,7 +9,7 @@ defmodule Realtime.Server do
   use GenServer
 
   alias Concentrate.StopTimeUpdate
-  alias Static.{Route, Trip}
+  alias Schedule.{Route, Trip}
 
   alias Realtime.{
     Vehicle,
