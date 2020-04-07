@@ -83,6 +83,7 @@ defmodule JsonApi do
     {:error, :invalid}
   end
 
+  @spec parse_data_item(map(), map()) :: JsonApi.Item.t()
   defp parse_data_item(%{"type" => type, "id" => id, "attributes" => attributes} = item, included) do
     %JsonApi.Item{
       type: type,
@@ -99,6 +100,7 @@ defmodule JsonApi do
     }
   end
 
+  @spec load_relationships(map() | nil, map()) :: map()
   defp load_relationships(nil, _) do
     %{}
   end
@@ -108,6 +110,7 @@ defmodule JsonApi do
     |> Helpers.map_values(&load_single_relationship(&1, included))
   end
 
+  @spec load_single_relationship(any, map()) :: list()
   defp load_single_relationship(relationship, _) when relationship == %{} do
     []
   end
@@ -130,6 +133,7 @@ defmodule JsonApi do
     []
   end
 
+  @spec match_included(map() | nil, map()) :: any()
   defp match_included(nil, _) do
     nil
   end
@@ -138,6 +142,7 @@ defmodule JsonApi do
     Map.get(included, {type, id}, item)
   end
 
+  @spec parse_included(term()) :: map()
   defp parse_included(params) do
     included = Map.get(params, "included", [])
 
@@ -157,10 +162,12 @@ defmodule JsonApi do
     end)
   end
 
+  @spec parse_errors(list()) :: [JsonApi.Error.t()]
   defp parse_errors(errors) do
     Enum.map(errors, &parse_error/1)
   end
 
+  @spec parse_error(any()) :: JsonApi.Error.t()
   defp parse_error(error) do
     %JsonApi.Error{
       code: error["code"],
