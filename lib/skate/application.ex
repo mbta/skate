@@ -18,6 +18,7 @@ defmodule Skate.Application do
         if Application.get_env(:skate, :start_data_processes) do
           [
             Schedule.Supervisor,
+            TrainVehicles.Supervisor,
             Realtime.Supervisor
           ]
         else
@@ -45,6 +46,8 @@ defmodule Skate.Application do
   @spec load_runtime_config() :: :ok
   def load_runtime_config() do
     application_keys = [
+      :api_url,
+      :api_key,
       :gtfs_url,
       :hastus_url,
       :busloc_url,
