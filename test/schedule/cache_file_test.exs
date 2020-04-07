@@ -69,7 +69,7 @@ defmodule Schedule.CacheFileTest do
   test "generate_filepath/1 given a filename returns a path" do
     filepath = CacheFile.generate_filepath("foo.bar")
 
-    assert filepath =~ "priv/gtfs_cache"
+    assert filepath =~ "priv/schedule_cache"
     assert filepath =~ "foo.bar"
   end
 end

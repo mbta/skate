@@ -4,7 +4,7 @@ config :skate,
   hastus_url: "https://cdn.mbta.com/hastus_export/skate/hastus_skate_dev.zip",
   log_duration_timing: false
 
-config :skate, Gtfs.CacheFile, cache_filename: "dev_cache.terms"
+config :skate, Schedule.CacheFile, cache_filename: "dev_cache.terms"
 
 # For development, we disable any cache and enable
 # debugging and code reloading.

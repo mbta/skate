@@ -11,7 +11,7 @@ defmodule Schedule.CacheFile do
 
   alias Schedule.Data
 
-  @directory Path.join([File.cwd!(), "priv/gtfs_cache"])
+  @directory Path.join([File.cwd!(), "priv/schedule_cache"])
 
   @doc """
   The application should use the file to load data for GTFS
