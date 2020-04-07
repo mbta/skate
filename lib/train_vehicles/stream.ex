@@ -74,15 +74,15 @@ defmodule TrainVehicles.Stream do
   defp broadcast(data, type, broadcast_fn) do
     TrainVehicles.PubSub
     |> broadcast_fn.("train_vehicles", {type, data})
-    |> do_broadcast()
+    |> log_errors()
   end
 
-  @spec do_broadcast(:ok | {:error, any}) :: :ok
-  defp do_broadcast(:ok) do
+  @spec log_errors(:ok | {:error, any}) :: :ok
+  defp log_errors(:ok) do
     :ok
   end
 
-  defp do_broadcast({:error, error}) do
+  defp log_errors({:error, error}) do
     Logger.error("module=#{__MODULE__} error=#{inspect(error)}")
   end
 end
