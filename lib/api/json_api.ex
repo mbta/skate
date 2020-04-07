@@ -83,7 +83,7 @@ defmodule JsonApi do
     {:error, :invalid}
   end
 
-  def parse_data_item(%{"type" => type, "id" => id, "attributes" => attributes} = item, included) do
+  defp parse_data_item(%{"type" => type, "id" => id, "attributes" => attributes} = item, included) do
     %JsonApi.Item{
       type: type,
       id: id,
@@ -92,7 +92,7 @@ defmodule JsonApi do
     }
   end
 
-  def parse_data_item(%{"type" => type, "id" => id}, _) do
+  defp parse_data_item(%{"type" => type, "id" => id}, _) do
     %JsonApi.Item{
       type: type,
       id: id
