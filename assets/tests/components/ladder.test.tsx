@@ -961,4 +961,69 @@ describe("ladder", () => {
 
     expect(tree).toMatchSnapshot()
   })
+
+  test("renders an overload vehicle", () => {
+    const timepoints: Timepoint[] = [
+      { id: "t0", name: "t0 name" },
+      { id: "t1", name: "t1 name" },
+      { id: "t2", name: "t2 name" },
+    ]
+    const vehicles: Vehicle[] = [
+      {
+        id: "upward",
+        label: "upward",
+        runId: "run-1",
+        timestamp: 0,
+        latitude: 0,
+        longitude: 0,
+        directionId: 0,
+        routeId: "route",
+        tripId: "trip",
+        headsign: null,
+        viaVariant: null,
+        operatorId: "op1",
+        operatorName: "SMITH",
+        operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
+        bearing: 33,
+        blockId: "block-1",
+        headwaySecs: 859.1,
+        headwaySpacing: HeadwaySpacing.Ok,
+        previousVehicleId: "v2",
+        scheduleAdherenceSecs: 0,
+        scheduledHeadwaySecs: 120,
+        isShuttle: false,
+        isOverload: true,
+        isOffCourse: false,
+        layoverDepartureTime: null,
+        blockIsActive: true,
+        dataDiscrepancies: [],
+        stopStatus: {
+          stopId: "stop",
+          stopName: "stop",
+        },
+        timepointStatus: {
+          fractionUntilTimepoint: 0.5,
+          timepointId: "t1",
+        },
+        scheduledLocation: null,
+        routeStatus: "on_route",
+        endOfTripType: "another_trip",
+        blockWaivers: [],
+      },
+    ]
+    const ladderDirection = LadderDirection.ZeroToOne
+
+    const tree = renderer
+      .create(
+        <Ladder
+          timepoints={timepoints}
+          vehiclesAndGhosts={vehicles}
+          ladderDirection={ladderDirection}
+          selectedVehicleId={undefined}
+        />
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
 })

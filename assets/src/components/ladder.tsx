@@ -42,6 +42,9 @@ export type TimepointStatusYFunc = (
 export const CENTER_TO_LINE = 40 // x-distance between the center of the ladder and the center of the line
 const MARGIN_TOP_BOTTOM = 20 // space between the top of the route and the top of the viewbox
 
+const notOverload = ({ vehicle }: LadderVehicle): boolean =>
+  isGhost(vehicle) || !vehicle.isOverload
+
 const Ladder = ({
   timepoints,
   vehiclesAndGhosts,
@@ -87,7 +90,7 @@ const Ladder = ({
         width={width}
         height={height}
       >
-        {ladderVehicles.map((ladderVehicle) => (
+        {ladderVehicles.filter(notOverload).map((ladderVehicle) => (
           <ScheduledLine
             key={`line-${ladderVehicle.vehicle.id}`}
             ladderVehicle={ladderVehicle}
