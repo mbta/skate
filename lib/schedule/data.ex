@@ -8,6 +8,7 @@ defmodule Schedule.Data do
   alias Schedule.Csv
   alias Schedule.Trip
   alias Schedule.Hastus.Run
+  alias Schedule.Minischedule
 
   alias Schedule.Gtfs.{
     Calendar,
@@ -29,7 +30,9 @@ defmodule Schedule.Data do
           stops: stops_by_id(),
           trips: trips_by_id(),
           blocks: Block.by_id(),
-          calendar: Calendar.t()
+          calendar: Calendar.t(),
+          minischedule_runs: Minischedule.Run.by_id(),
+          minischedule_blocks: Minischedule.Block.by_id()
         }
 
   @type timepoints_by_route :: %{Route.id() => [Timepoint.t()]}
@@ -61,7 +64,9 @@ defmodule Schedule.Data do
     :stops,
     :trips,
     :blocks,
-    :calendar
+    :calendar,
+    minischedule_runs: %{},
+    minischedule_blocks: %{}
   ]
 
   @type files :: %{String.t() => binary()}
@@ -206,8 +211,13 @@ defmodule Schedule.Data do
 
   @spec parse_files(all_files()) :: t()
   def parse_files(%{gtfs: gtfs_files, hastus: hastus_files}) do
-    _hastus_activities = Schedule.Hastus.Activity.parse(hastus_files["activities.csv"])
+    hastus_activities = Schedule.Hastus.Activity.parse(hastus_files["activities.csv"])
     hastus_trips = Schedule.Hastus.Trip.parse(hastus_files["trips.csv"])
+
+    %{
+      runs: minischedules_runs,
+      blocks: minischedules_blocks
+    } = Schedule.Minischedule.Load.from_hastus(hastus_activities, hastus_trips)
 
     directions_by_route_id = directions_by_route_id(gtfs_files["directions.txt"])
 
@@ -246,7 +256,9 @@ defmodule Schedule.Data do
       stops: all_stops_by_id(gtfs_files["stops.txt"]),
       trips: trips,
       blocks: Block.group_trips_by_block(bus_trips),
-      calendar: Calendar.from_files(gtfs_files["calendar.txt"], gtfs_files["calendar_dates.txt"])
+      calendar: Calendar.from_files(gtfs_files["calendar.txt"], gtfs_files["calendar_dates.txt"]),
+      minischedule_runs: minischedules_runs,
+      minischedule_blocks: minischedules_blocks
     }
   end
 
