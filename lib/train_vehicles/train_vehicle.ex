@@ -1,6 +1,8 @@
 defmodule TrainVehicles.TrainVehicle do
+  @type id :: String.t()
+
   @type t :: %__MODULE__{
-          id: String.t(),
+          id: id(),
           route_id: String.t() | nil,
           latitude: float,
           longitude: float,

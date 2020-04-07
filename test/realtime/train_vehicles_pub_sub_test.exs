@@ -91,6 +91,42 @@ defmodule Realtime.TrainVehiclesPubSubTest do
     end
   end
 
+  describe "handle_info/2 - {:add, train_vehicles}" do
+    setup do
+      start_supervised({Registry, keys: :duplicate, name: Realtime.Supervisor.registry_name()})
+      subscribe_fn = fn _, _ -> :ok end
+      {:ok, server} = TrainVehiclesPubSub.start_link(name: :subscribe, subscribe_fn: subscribe_fn)
+
+      :sys.replace_state(server, fn state ->
+        Map.put(
+          state,
+          :train_vehicles_by_route_id,
+          %{}
+        )
+      end)
+
+      {:ok, server: server}
+    end
+
+    test "adds the new train vehicles by route ID", %{
+      server: server
+    } do
+      send(server, {:add, [@blue_train_vehicle, @red_train_vehicle]})
+
+      assert server |> :sys.get_state() |> Map.get(:train_vehicles_by_route_id) ==
+               @train_vehicles_by_route_id
+    end
+
+    test "broadcasts new train lists to subscribers", %{server: server} do
+      _ = TrainVehiclesPubSub.subscribe("Red", server)
+
+      send(server, {:reset, [@blue_train_vehicle, @red_train_vehicle]})
+
+      assert_receive {:new_train_vehicles, [@red_train_vehicle]}
+      refute_receive {:new_train_vehicles, [@blue_train_vehicle]}
+    end
+  end
+
   describe "handle_info/2 - {:update, train_vehicles}" do
     setup do
       start_supervised({Registry, keys: :duplicate, name: Realtime.Supervisor.registry_name()})
@@ -121,42 +157,6 @@ defmodule Realtime.TrainVehiclesPubSubTest do
       }
 
       assert server |> :sys.get_state() |> Map.get(:train_vehicles_by_route_id) == expected
-    end
-
-    test "broadcasts new train lists to subscribers", %{server: server} do
-      _ = TrainVehiclesPubSub.subscribe("Red", server)
-
-      send(server, {:reset, [@blue_train_vehicle, @red_train_vehicle]})
-
-      assert_receive {:new_train_vehicles, [@red_train_vehicle]}
-      refute_receive {:new_train_vehicles, [@blue_train_vehicle]}
-    end
-  end
-
-  describe "handle_info/2 - {:add, train_vehicles}" do
-    setup do
-      start_supervised({Registry, keys: :duplicate, name: Realtime.Supervisor.registry_name()})
-      subscribe_fn = fn _, _ -> :ok end
-      {:ok, server} = TrainVehiclesPubSub.start_link(name: :subscribe, subscribe_fn: subscribe_fn)
-
-      :sys.replace_state(server, fn state ->
-        Map.put(
-          state,
-          :train_vehicles_by_route_id,
-          %{}
-        )
-      end)
-
-      {:ok, server: server}
-    end
-
-    test "adds the new train vehicles by route ID", %{
-      server: server
-    } do
-      send(server, {:add, [@blue_train_vehicle, @red_train_vehicle]})
-
-      assert server |> :sys.get_state() |> Map.get(:train_vehicles_by_route_id) ==
-               @train_vehicles_by_route_id
     end
 
     test "broadcasts new train lists to subscribers", %{server: server} do
