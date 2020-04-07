@@ -105,12 +105,7 @@ defmodule JsonApi do
 
   defp load_relationships(%{} = relationships, included) do
     relationships
-    |> map_values(&load_single_relationship(&1, included))
-  end
-
-  defp map_values(map, f) do
-    map
-    |> Map.new(fn {key, value} -> {key, f.(value)} end)
+    |> Helpers.map_values(&load_single_relationship(&1, included))
   end
 
   defp load_single_relationship(relationship, _) when relationship == %{} do
