@@ -21,13 +21,12 @@ defmodule JsonApi.Error do
 end
 
 defmodule JsonApi do
-  defstruct links: %{}, data: []
-  @type t :: %JsonApi{links: %{String.t() => String.t()}, data: list(JsonApi.Item.t())}
+  defstruct data: []
+  @type t :: %JsonApi{data: list(JsonApi.Item.t())}
 
   @spec empty() :: JsonApi.t()
   def empty do
     %JsonApi{
-      links: %{},
       data: []
     }
   end
@@ -35,7 +34,6 @@ defmodule JsonApi do
   @spec merge(JsonApi.t(), JsonApi.t()) :: JsonApi.t()
   def merge(j1, j2) do
     %JsonApi{
-      links: Map.merge(j1.links, j2.links),
       data: j1.data ++ j2.data
     }
   end
@@ -45,7 +43,6 @@ defmodule JsonApi do
     with {:ok, parsed} <- Jason.decode(body),
          {:ok, data} <- parse_data(parsed) do
       %JsonApi{
-        links: parse_links(parsed),
         data: data
       }
     else
@@ -55,17 +52,6 @@ defmodule JsonApi do
       error ->
         error
     end
-  end
-
-  @spec parse_links(term()) :: %{String.t() => String.t()}
-  defp parse_links(%{"links" => links}) do
-    links
-    |> Enum.filter(fn {key, value} -> is_binary(key) && is_binary(value) end)
-    |> Enum.into(%{})
-  end
-
-  defp parse_links(_) do
-    %{}
   end
 
   @spec parse_data(term()) :: {:ok, [JsonApi.Item.t()]} | {:error, any}

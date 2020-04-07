@@ -55,7 +55,6 @@ defmodule JsonApiTest do
     """
 
     assert JsonApi.parse(body) == %JsonApi{
-             links: %{},
              data: [
                %JsonApi.Item{
                  type: "stop",
@@ -92,7 +91,6 @@ defmodule JsonApiTest do
     """
 
     assert JsonApi.parse(body) == %JsonApi{
-             links: %{},
              data: [
                %JsonApi.Item{
                  type: "stop",
@@ -140,7 +138,6 @@ defmodule JsonApiTest do
     """
 
     assert JsonApi.parse(body) == %JsonApi{
-             links: %{},
              data: [
                %JsonApi.Item{
                  type: "stop",
@@ -161,7 +158,6 @@ defmodule JsonApiTest do
         data: %{
           attributes: %{},
           id: "Worcester",
-          links: %{},
           relationships: %{
             facilities: %{
               data: [
@@ -169,8 +165,7 @@ defmodule JsonApiTest do
                   id: "subplat-056",
                   type: "facility"
                 }
-              ],
-              links: %{}
+              ]
             }
           },
           type: "stop"
@@ -179,7 +174,6 @@ defmodule JsonApiTest do
           %{
             attributes: %{},
             id: "subplat-056",
-            links: %{},
             relationships: %{
               stop: %{
                 data: %{
@@ -195,7 +189,6 @@ defmodule JsonApiTest do
       })
 
     assert JsonApi.parse(body) == %JsonApi{
-             links: %{},
              data: [
                %JsonApi.Item{
                  type: "stop",
@@ -234,7 +227,6 @@ defmodule JsonApiTest do
     """
 
     assert JsonApi.parse(body) == %JsonApi{
-             links: %{},
              data: [
                %JsonApi.Item{
                  type: "stop",
@@ -266,7 +258,6 @@ defmodule JsonApiTest do
   describe "empty/0" do
     test "empty generates the correct struct" do
       assert JsonApi.empty() == %JsonApi{
-               links: %{},
                data: []
              }
     end
@@ -275,17 +266,14 @@ defmodule JsonApiTest do
   describe "merge/2" do
     test "merged item contains all data" do
       expected = %JsonApi{
-        links: %{"a" => "a", "b" => "b"},
         data: ["a", "b"]
       }
 
       first = %JsonApi{
-        links: %{"a" => "a"},
         data: ["a"]
       }
 
       second = %JsonApi{
-        links: %{"b" => "b"},
         data: ["b"]
       }
 
