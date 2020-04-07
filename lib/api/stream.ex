@@ -13,7 +13,6 @@ defmodule Api.Stream do
   started as part of a supervision tree.
 
   Other options are made available for tests, and can include:
-  - :name (name of the GenStage process)
   - :base_url
   - :api_key
   """
