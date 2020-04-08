@@ -1,8 +1,10 @@
 defmodule SkateWeb.HealthControllerTest do
   use SkateWeb.ConnCase
+  import Test.Support.Helpers
 
   describe "index" do
     test "returns 200 when health server is ready", %{conn: conn} do
+      reassign_env(:skate, :checker_healthy_fn, fn -> true end)
       health_server_pid = Schedule.HealthServer.start_mocked()
       Schedule.HealthServer.loaded(health_server_pid)
       conn = Plug.Conn.assign(conn, :health_server_pid, health_server_pid)

@@ -28,8 +28,9 @@ defmodule Schedule.HealthServer do
     GenServer.cast(server, :loaded)
   end
 
+  @spec ready?() :: boolean()
   @spec ready?(GenServer.server()) :: boolean()
-  def ready?(server) do
+  def ready?(server \\ default_server()) do
     GenServer.call(server, :ready?)
   end
 
@@ -47,6 +48,11 @@ defmodule Schedule.HealthServer do
 
   @impl true
   def handle_call(:ready?, _from, state) do
-    {:reply, state == :loaded, state}
+    checker_healthy_fn =
+      Application.get_env(:skate, :checker_healthy_fn, &Schedule.Health.Checker.healthy?/0)
+
+    healthy? = state == :loaded && checker_healthy_fn.()
+
+    {:reply, healthy?, state}
   end
 end

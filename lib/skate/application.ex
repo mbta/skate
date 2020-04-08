@@ -51,6 +51,7 @@ defmodule Skate.Application do
       :swiftly_authorization_key,
       :swiftly_realtime_vehicles_url,
       :trip_updates_url,
+      :schedule_health_checks,
       SkateWeb.Endpoint
     ]
 
