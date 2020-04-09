@@ -1,6 +1,6 @@
 defmodule Schedule.Health.Checkers.TripStopTimesChecker do
   @moduledoc """
-  Check that Schedules returns at least a minimum number of timepoints for each configured route.
+  Check that Schedules returns at least a minimum number of stop times for a representative trip of each configured route.
   """
 
   alias Schedule.Gtfs.{Route, RoutePattern}
