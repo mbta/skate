@@ -28,29 +28,45 @@ config :skate,
     },
     timepoints: [
       %{
-        route_id: "1",
+        route_id: "32",
         min_length: 5
       },
       %{
-        route_id: "39",
+        route_id: "71",
         min_length: 5
       },
       %{
-        route_id: "66",
+        route_id: "220",
+        min_length: 5
+      },
+      %{
+        route_id: "450",
+        min_length: 5
+      },
+      %{
+        route_id: "742",
         min_length: 5
       }
     ],
     trip_stop_times: [
       %{
-        route_id: "1",
+        route_id: "32",
         min_length: 10
       },
       %{
-        route_id: "39",
+        route_id: "71",
         min_length: 10
       },
       %{
-        route_id: "66",
+        route_id: "220",
+        min_length: 10
+      },
+      %{
+        route_id: "450",
+        min_length: 10
+      },
+      %{
+        route_id: "742",
         min_length: 10
       }
     ]
