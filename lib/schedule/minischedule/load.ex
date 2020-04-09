@@ -15,16 +15,16 @@ defmodule Schedule.Minischedule.Load do
     trips_by_run = Enum.group_by(trips, fn t -> {t.schedule_id, t.run_id} end)
     activities_and_trips_by_run = Helpers.pair_maps(activities_by_run, trips_by_run)
 
-    runs_by_id =
-      Map.new(
+    runs =
+      Enum.map(
         activities_and_trips_by_run,
         fn {run_key, {activities, trips}} ->
-          run = run(run_key, activities, trips)
-          {run_key, run}
+          run(run_key, activities, trips)
         end
       )
 
-    pieces = pieces_from_runs(runs_by_id)
+    runs_by_id = Map.new(runs, fn run -> {Run.key(run), run} end)
+    pieces = Enum.flat_map(runs, &Run.pieces/1)
     blocks_by_id = blocks_from_pieces(pieces)
 
     %{
@@ -85,13 +85,6 @@ defmodule Schedule.Minischedule.Load do
       start_place: activity.start_place,
       end_place: activity.end_place
     }
-  end
-
-  @spec pieces_from_runs(Run.by_id()) :: [Piece.t()]
-  defp pieces_from_runs(runs_by_id) do
-    Enum.flat_map(runs_by_id, fn {_run_key, run} ->
-      Enum.filter(run.activities, fn activity -> match?(%Piece{}, activity) end)
-    end)
   end
 
   @spec blocks_from_pieces([Piece.t()]) :: Block.by_id()

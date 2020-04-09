@@ -25,4 +25,14 @@ defmodule Schedule.Minischedule.Run do
     :id,
     :activities
   ]
+
+  @spec key(t()) :: key()
+  def key(run) do
+    {run.schedule_id, run.id}
+  end
+
+  @spec pieces(t()) :: [Piece.t()]
+  def pieces(run) do
+    Enum.filter(run.activities, fn activity -> match?(%Piece{}, activity) end)
+  end
 end
