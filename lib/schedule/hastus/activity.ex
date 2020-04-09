@@ -70,4 +70,9 @@ defmodule Schedule.Hastus.Activity do
       format: :hastus
     )
   end
+
+  @spec run_key(t()) :: Run.key()
+  def run_key(activity) do
+    {activity.schedule_id, activity.run_id}
+  end
 end

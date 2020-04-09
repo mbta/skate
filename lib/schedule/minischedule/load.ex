@@ -11,8 +11,8 @@ defmodule Schedule.Minischedule.Load do
   @spec from_hastus([Activity.t()], [Trip.t()]) ::
           %{runs: Run.by_id(), blocks: Block.by_id()}
   def from_hastus(activities, trips) do
-    activities_by_run = Enum.group_by(activities, fn a -> {a.schedule_id, a.run_id} end)
-    trips_by_run = Enum.group_by(trips, fn t -> {t.schedule_id, t.run_id} end)
+    activities_by_run = Enum.group_by(activities, &Activity.run_key/1)
+    trips_by_run = Enum.group_by(trips, &Trip.run_key/1)
     activities_and_trips_by_run = Helpers.pair_maps(activities_by_run, trips_by_run)
 
     runs =

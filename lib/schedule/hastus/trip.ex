@@ -75,4 +75,9 @@ defmodule Schedule.Hastus.Trip do
       format: :hastus
     )
   end
+
+  @spec run_key(t()) :: Run.key()
+  def run_key(trip) do
+    {trip.schedule_id, trip.run_id}
+  end
 end
