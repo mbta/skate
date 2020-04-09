@@ -215,8 +215,8 @@ defmodule Schedule.Data do
     hastus_trips = Schedule.Hastus.Trip.parse(hastus_files["trips.csv"])
 
     %{
-      runs: minischedules_runs,
-      blocks: minischedules_blocks
+      runs: minischedule_runs,
+      blocks: minischedule_blocks
     } = Schedule.Minischedule.Load.from_hastus(hastus_activities, hastus_trips)
 
     directions_by_route_id = directions_by_route_id(gtfs_files["directions.txt"])
@@ -257,8 +257,8 @@ defmodule Schedule.Data do
       trips: trips,
       blocks: Block.group_trips_by_block(bus_trips),
       calendar: Calendar.from_files(gtfs_files["calendar.txt"], gtfs_files["calendar_dates.txt"]),
-      minischedule_runs: minischedules_runs,
-      minischedule_blocks: minischedules_blocks
+      minischedule_runs: minischedule_runs,
+      minischedule_blocks: minischedule_blocks
     }
   end
 
