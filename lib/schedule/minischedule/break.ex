@@ -38,5 +38,4 @@ defmodule Schedule.Minischedule.Break do
       end_place: activity.end_place
     }
   end
-
 end

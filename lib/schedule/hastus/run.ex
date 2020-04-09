@@ -3,7 +3,7 @@ defmodule Schedule.Hastus.Run do
 
   @type id :: String.t()
 
-  @type key :: {Schedule.id, id()}
+  @type key :: {Schedule.id(), id()}
 
   @doc """
       iex> Schedule.Hastus.Run.from_parts("123", "4567")
