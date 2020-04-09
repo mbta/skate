@@ -42,7 +42,7 @@ defmodule Schedule.Minischedule.Load do
     # The real way to do it would be to integrate Sign-on and Operator activities into pieces.
     {schedule_id, run_id} = run_key
 
-    breaks = Enum.map(activities, &break_from_activity/1)
+    breaks = Enum.map(activities, &Break.from_activity/1)
 
     pieces =
       trips
@@ -73,17 +73,6 @@ defmodule Schedule.Minischedule.Load do
       schedule_id: schedule_id,
       id: run_id,
       activities: breaks ++ pieces
-    }
-  end
-
-  @spec break_from_activity(Activity.t()) :: Break.t()
-  defp break_from_activity(activity) do
-    %Break{
-      break_type: activity.activity_type,
-      start_time: activity.start_time,
-      end_time: activity.end_time,
-      start_place: activity.start_place,
-      end_place: activity.end_place
     }
   end
 
