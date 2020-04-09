@@ -1,4 +1,4 @@
-import React from "react"
+import React, { ReactElement } from "react"
 import { className } from "../helpers/dom"
 import { DrawnStatus, statusClass } from "../models/vehicleStatus"
 import { IconAlertCircleSvgNode, AlertIconStyle } from "./iconAlertCircle"
@@ -34,7 +34,7 @@ const Y_CENTER_TO_POINT = 20
 const Y_CENTER_TO_BASE = 20
 const ALERT_ICON_RADIUS = 27
 
-export const VehicleIcon = (props: Props) => {
+export const VehicleIcon = (props: Props): ReactElement<HTMLElement> => {
   if (
     props.status === "ghost" &&
     (props.orientation === Orientation.Left ||
@@ -124,7 +124,7 @@ export const VehicleIconSvgNode = ({
   variant,
   status,
   alertIconStyle,
-}: Props) => {
+}: Props): ReactElement<SVGElement> => {
   status = status || "plain"
   variant = variant && variant !== "_" ? variant : undefined
   // ghosts can't be drawn sideways

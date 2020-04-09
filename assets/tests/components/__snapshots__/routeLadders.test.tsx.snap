@@ -44,8 +44,11 @@ exports[`renders a route ladder 1`] = `
       Reverse
     </button>
   </div>
-  <div
+  <svg
     className="m-layover-box m-layover-box--top"
+    height={32}
+    viewBox="0 -10 0 32"
+    width={0}
   />
   <div
     className="m-ladder"
@@ -149,8 +152,11 @@ exports[`renders a route ladder 1`] = `
       className="mock-react-tooltip"
     />
   </div>
-  <div
+  <svg
     className="m-layover-box m-layover-box--bottom"
+    height={32}
+    viewBox="0 -10 0 32"
+    width={0}
   />
   <div
     className="m-incoming-box"
@@ -195,8 +201,11 @@ exports[`renders a route ladder 1`] = `
       Reverse
     </button>
   </div>
-  <div
+  <svg
     className="m-layover-box m-layover-box--top"
+    height={32}
+    viewBox="0 -10 0 32"
+    width={0}
   />
   <div
     className="m-ladder"
@@ -300,8 +309,11 @@ exports[`renders a route ladder 1`] = `
       className="mock-react-tooltip"
     />
   </div>
-  <div
+  <svg
     className="m-layover-box m-layover-box--bottom"
+    height={32}
+    viewBox="0 -10 0 32"
+    width={0}
   />
   <div
     className="m-incoming-box"

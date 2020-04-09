@@ -88,8 +88,11 @@ Array [
       Reverse
     </button>
   </div>,
-  <div
+  <svg
     className="m-layover-box m-layover-box--top"
+    height={32}
+    viewBox="0 -10 0 32"
+    width={0}
   />,
   <div
     className="m-ladder"
@@ -193,8 +196,11 @@ Array [
       className="mock-react-tooltip"
     />
   </div>,
-  <div
+  <svg
     className="m-layover-box m-layover-box--bottom"
+    height={32}
+    viewBox="0 -10 0 32"
+    width={0}
   />,
   <div
     className="m-incoming-box"
@@ -244,52 +250,45 @@ Array [
       Reverse
     </button>
   </div>,
-  <div
+  <svg
     className="m-layover-box m-layover-box--top"
+    height={32}
+    viewBox="-15 -10 30 32"
+    width={30}
   >
-    <div
-      className="m-layover-box__vehicle"
+    <g
       onClick={[Function]}
+      transform="translate(0,0)"
     >
-      <svg
-        style={
-          Object {
-            "height": 27.72,
-            "width": 26,
-          }
-        }
-        viewBox="-13 -8.36 26 27.72"
+      <g
+        className="m-vehicle-icon m-vehicle-icon--small on-time"
       >
-        <g
-          className="m-vehicle-icon m-vehicle-icon--small on-time"
+        <rect
+          className="m-vehicle-icon__label-background"
+          height={11}
+          rx={5.5}
+          ry={5.5}
+          width={26}
+          x={-13}
+          y={7.359999999999999}
+        />
+        <text
+          className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+          dominantBaseline="central"
+          textAnchor="middle"
+          x="0"
+          y={12.86}
         >
-          <rect
-            className="m-vehicle-icon__label-background"
-            height={11}
-            rx={5.5}
-            ry={5.5}
-            width={26}
-            x={-13}
-            y={7.359999999999999}
-          />
-          <text
-            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-            dominantBaseline="central"
-            textAnchor="middle"
-            x="0"
-            y={12.86}
-          >
-            2
-          </text>
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-            transform="scale(0.38) rotate(270) translate(-24,-22)"
-          />
-        </g>
-      </svg>
-    </div>
-  </div>,
+          2
+        </text>
+        <path
+          className="m-vehicle-icon__triangle"
+          d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+          transform="scale(0.38) rotate(270) translate(-24,-22)"
+        />
+      </g>
+    </g>
+  </svg>,
   <div
     className="m-ladder"
     style={
@@ -392,61 +391,54 @@ Array [
       className="mock-react-tooltip"
     />
   </div>,
-  <div
+  <svg
     className="m-layover-box m-layover-box--bottom"
+    height={32}
+    viewBox="-15 -10 30 32"
+    width={30}
   >
-    <div
-      className="m-layover-box__vehicle"
+    <g
       onClick={[Function]}
+      transform="translate(0,0)"
     >
-      <svg
-        style={
-          Object {
-            "height": 27.72,
-            "width": 26,
-          }
-        }
-        viewBox="-13 -8.36 26 27.72"
+      <g
+        className="m-vehicle-icon m-vehicle-icon--small on-time"
       >
-        <g
-          className="m-vehicle-icon m-vehicle-icon--small on-time"
+        <rect
+          className="m-vehicle-icon__label-background"
+          height={11}
+          rx={5.5}
+          ry={5.5}
+          width={26}
+          x={-13}
+          y={7.359999999999999}
+        />
+        <text
+          className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+          dominantBaseline="central"
+          textAnchor="middle"
+          x="0"
+          y={12.86}
         >
-          <rect
-            className="m-vehicle-icon__label-background"
-            height={11}
-            rx={5.5}
-            ry={5.5}
-            width={26}
-            x={-13}
-            y={7.359999999999999}
-          />
-          <text
-            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-            dominantBaseline="central"
-            textAnchor="middle"
-            x="0"
-            y={12.86}
-          >
-            1
-          </text>
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-            transform="scale(0.38) rotate(90) translate(-24,-22)"
-          />
-          <text
-            className="m-vehicle-icon__variant"
-            dominantBaseline="central"
-            textAnchor="start"
-            x={-5.6}
-            y={0}
-          >
-            4
-          </text>
-        </g>
-      </svg>
-    </div>
-  </div>,
+          1
+        </text>
+        <path
+          className="m-vehicle-icon__triangle"
+          d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+          transform="scale(0.38) rotate(90) translate(-24,-22)"
+        />
+        <text
+          className="m-vehicle-icon__variant"
+          dominantBaseline="central"
+          textAnchor="start"
+          x={-5.6}
+          y={0}
+        >
+          4
+        </text>
+      </g>
+    </g>
+  </svg>,
   <div
     className="m-incoming-box"
   />,
@@ -495,8 +487,11 @@ Array [
       Reverse
     </button>
   </div>,
-  <div
+  <svg
     className="m-layover-box m-layover-box--top"
+    height={32}
+    viewBox="0 -10 0 32"
+    width={0}
   />,
   <div
     className="m-ladder"
@@ -774,8 +769,11 @@ Array [
       className="mock-react-tooltip"
     />
   </div>,
-  <div
+  <svg
     className="m-layover-box m-layover-box--bottom"
+    height={32}
+    viewBox="0 -10 0 32"
+    width={0}
   />,
   <div
     className="m-incoming-box"
@@ -825,8 +823,11 @@ Array [
       Reverse
     </button>
   </div>,
-  <div
+  <svg
     className="m-layover-box m-layover-box--top"
+    height={32}
+    viewBox="0 -10 0 32"
+    width={0}
   />,
   <div
     className="m-ladder"
@@ -930,8 +931,11 @@ Array [
       className="mock-react-tooltip"
     />
   </div>,
-  <div
+  <svg
     className="m-layover-box m-layover-box--bottom"
+    height={32}
+    viewBox="0 -10 0 32"
+    width={0}
   />,
   <div
     className="m-incoming-box"
