@@ -163,7 +163,7 @@ describe("LayoverBox", () => {
       </StateDispatchProvider>
     )
 
-    wrapper.find(".m-layover-box__vehicle").first().simulate("click")
+    wrapper.find(".m-vehicle-icon").first().simulate("click")
 
     expect(dispatch).toHaveBeenCalledWith(selectVehicle(vehicles[0].id))
   })
@@ -188,11 +188,11 @@ describe("LayoverBox", () => {
     )
 
     expect(
-      topWrapper.find(".m-layover-box__vehicle").map((icon) => icon.text())
+      topWrapper.find(".m-vehicle-icon").map((icon) => icon.text())
     ).toEqual(["ghost_soonest", "sooner", "later"])
 
     expect(
-      bottomWrapper.find(".m-layover-box__vehicle").map((icon) => icon.text())
+      bottomWrapper.find(".m-vehicle-icon").map((icon) => icon.text())
     ).toEqual(["later", "sooner", "ghost_soonest"])
   })
 })
