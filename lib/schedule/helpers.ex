@@ -31,31 +31,19 @@ defmodule Schedule.Helpers do
   end
 
   @doc """
-  Like group_by, but preserves the order that the groups appear.
-  Only groups consecutive elements together.
+  Pairs up the values that appear on the same key in the two maps.
+  Leaves nil if a value is not present in one map.
 
-      iex> Schedule.Helpers.split_by(
-      ...>   ["a1", "a2", "b3", "b4", "a5"],
-      ...>   &String.first/1
-      ...> )
-      [
-        {"a", ["a1", "a2"]},
-        {"b", ["b3", "b4"]},
-        {"a", ["a5"]}
-      ]
+      iex> Schedule.Helpers.pair_maps(%{a: "a1", b: "b1"}, %{b: "b2", c: "c2"})
+      %{a: {"a1", nil}, b: {"b1", "b2"}, c: {nil, "c2"}}
   """
-  @spec split_by([element], (element -> key)) :: [{key, [element]}]
-        when element: term(), key: term()
-  def split_by([], _key_fn) do
-    []
-  end
+  @spec pair_maps(%{k => v1}, %{k => v2}) :: %{k => {v1 | nil, v2 | nil}}
+        when k: any(), v1: any(), v2: any()
+  def pair_maps(m1, m2) do
+    keys = Enum.uniq(Map.keys(m1) ++ Map.keys(m2))
 
-  def split_by(elements, key_fn) do
-    first_key = key_fn.(List.first(elements))
-
-    {first_group, rest} =
-      Enum.split_while(elements, fn element -> key_fn.(element) == first_key end)
-
-    [{first_key, first_group} | split_by(rest, key_fn)]
+    Map.new(keys, fn k ->
+      {k, {Map.get(m1, k), Map.get(m2, k)}}
+    end)
   end
 end

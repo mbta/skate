@@ -254,7 +254,7 @@ defmodule Schedule.Minischedule.LoadTest do
   end
 
   # TODO when there's a real implementation for making pieces
-  describe "run_and_pieces_from_run_group" do
+  describe "run_and_pieces" do
     test "multiple trips are grouped into the same piece" do
     end
 

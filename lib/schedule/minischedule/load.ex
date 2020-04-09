@@ -11,10 +11,12 @@ defmodule Schedule.Minischedule.Load do
   @spec from_hastus([Activity.t()], [Trip.t()]) ::
           %{runs: Run.by_id(), blocks: Block.by_id()}
   def from_hastus(activities, trips) do
-    activities_by_run = group_activities_by_run(activities)
-    trips_by_run = group_trips_by_run(trips)
-    run_groups = pair_activities_and_trips(activities_by_run, trips_by_run)
-    runs_and_pieces = Enum.map(run_groups, &run_and_pieces_from_run_group/1)
+    activities_by_run = Enum.group_by(activities, fn a -> {a.schedule_id, a.run_id} end)
+    trips_by_run = Enum.group_by(trips, fn t -> {t.schedule_id, t.run_id} end)
+    activities_and_trips_by_run = Helpers.pair_maps(activities_by_run, trips_by_run)
+    runs_and_pieces = Enum.map(activities_and_trips_by_run, fn {run_key, {activities, trips}} ->
+      run_and_pieces(run_key, activities, trips)
+    end)
     runs_by_id = Map.new(runs_and_pieces, fn {run_key, run, _pieces} -> {run_key, run} end)
     pieces = Enum.flat_map(runs_and_pieces, fn {_run_key, _run, pieces} -> pieces end)
     blocks_by_id = blocks_from_pieces(pieces)
@@ -25,61 +27,10 @@ defmodule Schedule.Minischedule.Load do
     }
   end
 
-  # All the activities on a run
-  @typep activity_group :: {Run.key(), [Activity.t()]}
-
-  @spec group_activities_by_run([Activity.t()]) :: [activity_group()]
-  defp group_activities_by_run(activities) do
-    Helpers.split_by(activities, &run_key_for_activity/1)
-  end
-
-  @spec run_key_for_activity(Activity.t()) :: Run.key()
-  defp run_key_for_activity(activity) do
-    {activity.schedule_id, activity.run_id}
-  end
-
-  # The trips that form a piece together
-  @typep trip_group :: {Run.key(), [Trip.t()]}
-
-  @spec group_trips_by_run([Trip.t()]) :: [trip_group()]
-  defp group_trips_by_run(trips) do
-    Helpers.split_by(trips, &run_key_for_trip/1)
-  end
-
-  @spec run_key_for_trip(Trip.t()) :: Run.key()
-  defp run_key_for_trip(trip) do
-    {trip.schedule_id, trip.run_id}
-  end
-
-  @typep run_group :: {Run.key(), [Activity.t()], [Trip.t()]}
-
-  # Assumes inputs are both sorted by run_key.
-  # Assumes no runs are in trips.csv but not in activities.csv
-  @spec pair_activities_and_trips([activity_group()], [trip_group()]) :: [run_group()]
-  defp pair_activities_and_trips([], _trip_groups) do
-    []
-  end
-
-  defp pair_activities_and_trips([activity_group | other_activity_groups], trip_groups) do
-    {run_key, activities} = activity_group
-
-    case trip_groups do
-      [{^run_key, trips} | other_trip_groups] ->
-        [
-          {run_key, activities, trips}
-          | pair_activities_and_trips(other_activity_groups, other_trip_groups)
-        ]
-
-      _ ->
-        [
-          {run_key, activities, []}
-          | pair_activities_and_trips(other_activity_groups, trip_groups)
-        ]
-    end
-  end
-
-  @spec run_and_pieces_from_run_group(run_group) :: {Run.key(), Run.t(), [Piece.t()]}
-  def run_and_pieces_from_run_group({run_key, activities, trips}) do
+  @spec run_and_pieces(Run.key(), [Activity.t()] | nil, [Trip.t()] | nil) :: {Run.key(), Run.t(), [Piece.t()]}
+  def run_and_pieces(run_key, activities, trips) do
+    activities = activities || []
+    trips = trips || []
     # TODO real implementation.
     # Currently, turns the trips directly into pieces, and makes every activity a break.
     # The real way to do it would be to integrate Sign-on and Operator activities into pieces.
@@ -89,7 +40,7 @@ defmodule Schedule.Minischedule.Load do
 
     pieces =
       trips
-      |> Helpers.split_by(fn trip -> trip.block_id end)
+      |> Enum.group_by(fn trip -> trip.block_id end)
       |> Enum.map(fn {block_id, trips} ->
         first_trip = List.first(trips)
         last_trip = List.last(trips)
