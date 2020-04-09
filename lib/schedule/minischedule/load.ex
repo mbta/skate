@@ -6,10 +6,7 @@ defmodule Schedule.Minischedule.Load do
   alias Schedule.Helpers
   alias Schedule.Hastus.Activity
   alias Schedule.Hastus.Trip
-  alias Schedule.Minischedule.Block
-  alias Schedule.Minischedule.Break
-  alias Schedule.Minischedule.Piece
-  alias Schedule.Minischedule.Run
+  alias Schedule.Minischedule.{Block, Break, Piece, Run}
 
   @spec from_hastus([Activity.t()], [Trip.t()]) ::
           %{runs: Run.by_id(), blocks: Block.by_id()}
