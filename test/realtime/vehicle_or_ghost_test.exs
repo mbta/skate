@@ -1,5 +1,5 @@
 defmodule Realtime.VehicleOrGhostTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   alias Realtime.{Ghost, Vehicle, VehicleOrGhost}
 

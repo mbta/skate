@@ -1,6 +1,5 @@
-defmodule Concentrate.Supervisor.StopTimeUpdatesTest do
-  @moduledoc false
-  use ExUnit.Case, async: true
+defmodule Concentrate.Consumer.StopTimeUpdatesTest do
+  use ExUnit.Case
   import Test.Support.Helpers
 
   alias Concentrate.{StopTimeUpdate, TripUpdate}

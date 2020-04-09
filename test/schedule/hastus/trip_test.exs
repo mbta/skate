@@ -1,5 +1,5 @@
 defmodule Schedule.Hastus.TripTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   alias Schedule.Hastus.Trip
 

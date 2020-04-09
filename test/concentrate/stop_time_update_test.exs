@@ -1,5 +1,5 @@
 defmodule Concentrate.StopTimeUpdateTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   alias Concentrate.{Mergeable, StopTimeUpdate}
   alias Schedule.Gtfs.Stop
