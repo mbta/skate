@@ -9,7 +9,7 @@ defmodule Schedule.Health.Checkers.TimepointsChecker do
           min_length: non_neg_integer()
         }
 
-  @spec healthy?(config) :: boolean
+  @spec healthy?(config()) :: boolean
   def healthy?(timepoint_configs) when is_list(timepoint_configs),
     do: Enum.all?(timepoint_configs, &healthy_route?/1)
 
