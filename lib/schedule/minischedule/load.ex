@@ -14,11 +14,17 @@ defmodule Schedule.Minischedule.Load do
     activities_by_run = Enum.group_by(activities, fn a -> {a.schedule_id, a.run_id} end)
     trips_by_run = Enum.group_by(trips, fn t -> {t.schedule_id, t.run_id} end)
     activities_and_trips_by_run = Helpers.pair_maps(activities_by_run, trips_by_run)
-    runs_and_pieces = Enum.map(activities_and_trips_by_run, fn {run_key, {activities, trips}} ->
-      run_and_pieces(run_key, activities, trips)
-    end)
-    runs_by_id = Map.new(runs_and_pieces, fn {run_key, run, _pieces} -> {run_key, run} end)
-    pieces = Enum.flat_map(runs_and_pieces, fn {_run_key, _run, pieces} -> pieces end)
+
+    runs_by_id =
+      Map.new(
+        activities_and_trips_by_run,
+        fn {run_key, {activities, trips}} ->
+          run = run(run_key, activities, trips)
+          {run_key, run}
+        end
+      )
+
+    pieces = pieces_from_runs(runs_by_id)
     blocks_by_id = blocks_from_pieces(pieces)
 
     %{
@@ -27,8 +33,8 @@ defmodule Schedule.Minischedule.Load do
     }
   end
 
-  @spec run_and_pieces(Run.key(), [Activity.t()] | nil, [Trip.t()] | nil) :: {Run.key(), Run.t(), [Piece.t()]}
-  def run_and_pieces(run_key, activities, trips) do
+  @spec run(Run.key(), [Activity.t()] | nil, [Trip.t()] | nil) :: Run.t()
+  def run(run_key, activities, trips) do
     activities = activities || []
     trips = trips || []
     # TODO real implementation.
@@ -63,13 +69,11 @@ defmodule Schedule.Minischedule.Load do
         }
       end)
 
-    run = %Run{
+    %Run{
       schedule_id: schedule_id,
       id: run_id,
       activities: breaks ++ pieces
     }
-
-    {run_key, run, pieces}
   end
 
   @spec break_from_activity(Activity.t()) :: Break.t()
@@ -81,6 +85,13 @@ defmodule Schedule.Minischedule.Load do
       start_place: activity.start_place,
       end_place: activity.end_place
     }
+  end
+
+  @spec pieces_from_runs(Run.by_id()) :: [Piece.t()]
+  defp pieces_from_runs(runs_by_id) do
+    Enum.flat_map(runs_by_id, fn {_run_key, run} ->
+      Enum.filter(run.activities, fn activity -> match?(%Piece{}, activity) end)
+    end)
   end
 
   @spec blocks_from_pieces([Piece.t()]) :: Block.by_id()
