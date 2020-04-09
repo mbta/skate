@@ -28,9 +28,8 @@ defmodule Schedule.HealthServer do
     GenServer.cast(server, :loaded)
   end
 
-  @spec ready?() :: boolean()
   @spec ready?(GenServer.server()) :: boolean()
-  def ready?(server \\ default_server()) do
+  def ready?(server) do
     GenServer.call(server, :ready?)
   end
 
