@@ -35,7 +35,7 @@
     "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jest": "^25.2.1",
     "@types/leaflet": "^1.5.12",
-    "@types/phoenix": "^1.4.3",
+    "@types/phoenix": "^1.4.4",
     "@types/react": "^16.9.33",
     "@types/react-dom": "^16.9.6",
     "@types/react-router-dom": "^5.1.3",
