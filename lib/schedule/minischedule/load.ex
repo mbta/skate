@@ -80,7 +80,7 @@ defmodule Schedule.Minischedule.Load do
   defp blocks_from_pieces(pieces) do
     pieces
     |> Enum.group_by(&block_key_for_piece/1)
-    |> Enum.map(fn {{schedule_id, block_id} = block_key, pieces} ->
+    |> Map.new(fn {{schedule_id, block_id} = block_key, pieces} ->
       {block_key,
        %Block{
          schedule_id: schedule_id,
@@ -88,7 +88,6 @@ defmodule Schedule.Minischedule.Load do
          pieces: Enum.sort_by(pieces, fn piece -> piece.start.time end)
        }}
     end)
-    |> Map.new()
   end
 
   @spec block_key_for_piece(Piece.t()) :: Block.key()
