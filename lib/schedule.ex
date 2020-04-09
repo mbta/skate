@@ -6,7 +6,7 @@ defmodule Schedule do
     Block,
     CacheFile,
     Data,
-    HealthServer,
+    Health,
     Trip
   }
 
@@ -237,7 +237,7 @@ defmodule Schedule do
   def start_link([]) do
     GenServer.start_link(
       __MODULE__,
-      {:remote, HealthServer.default_server()},
+      {:remote, Health.Server.default_server()},
       name: __MODULE__
     )
   end
@@ -271,7 +271,7 @@ defmodule Schedule do
       end)
 
       if health_server_pid do
-        HealthServer.loaded(health_server_pid)
+        Health.Server.loaded(health_server_pid)
       end
 
       {:noreply, state}

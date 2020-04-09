@@ -1,4 +1,4 @@
-defmodule Schedule.HealthServer do
+defmodule Schedule.Health.Server do
   @moduledoc """
   GenServer to keep track of whether the GTFS GenServer is up and running
   """
