@@ -1,5 +1,5 @@
 defmodule Schedule.Hastus.ActivityTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   alias Schedule.Hastus.Activity
 

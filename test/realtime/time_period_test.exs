@@ -1,5 +1,5 @@
 defmodule Realtime.TimePeriodTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   alias Realtime.TimePeriod
 
   @time_periods TimePeriod.data()

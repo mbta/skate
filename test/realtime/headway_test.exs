@@ -1,5 +1,5 @@
 defmodule Realtime.HeadwayTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   alias Realtime.Headway
 
   describe "current_headway_spacing" do
