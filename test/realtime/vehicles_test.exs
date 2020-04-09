@@ -1,5 +1,5 @@
 defmodule Realtime.VehiclesTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case
   import Test.Support.Helpers
 
   alias Schedule.Trip

@@ -1,5 +1,5 @@
 defmodule SkateWeb.LayoutViewTest do
-  use SkateWeb.ConnCase, async: true
+  use SkateWeb.ConnCase
   import Test.Support.Helpers
 
   alias SkateWeb.LayoutView

@@ -1,6 +1,5 @@
-defmodule Concentrate.Supervisor.VehiclePositionsTest do
-  @moduledoc false
-  use ExUnit.Case, async: true
+defmodule Concentrate.Consumer.VehiclePositionsTest do
+  use ExUnit.Case
   import Test.Support.Helpers
 
   alias Concentrate.Consumer.VehiclePositions

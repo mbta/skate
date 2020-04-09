@@ -1,5 +1,5 @@
 defmodule Concentrate.Pipeline.VehiclePositionsPipelineTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case
   import Test.Support.Helpers
 
   describe "init/1" do

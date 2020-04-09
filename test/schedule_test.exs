@@ -1,5 +1,5 @@
 defmodule GtfsTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case
 
   import Test.Support.Helpers
 
