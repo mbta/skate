@@ -5,7 +5,7 @@ defmodule Schedule.Health.Server do
 
   use GenServer
 
-  @type state :: :not_loaded | :loaded | :unhealthy | :healthy
+  @type state :: :not_ready | :ready
 
   # Client functions
 
@@ -37,36 +37,21 @@ defmodule Schedule.Health.Server do
 
   @impl true
   def init(nil) do
-    {:ok, :not_loaded}
+    {:ok, :not_ready}
   end
 
   @impl true
   def handle_cast(:loaded, _state) do
-    {:noreply, :loaded}
-  end
-
-  @impl true
-  def handle_call(:ready?, _from, :not_loaded = state) do
-    {:reply, false, state}
-  end
-
-  def handle_call(:ready?, _from, :unhealthy = state) do
-    {:reply, false, state}
-  end
-
-  def handle_call(:ready?, _from, :healthy = state) do
-    {:reply, true, state}
-  end
-
-  # We currently don't reload GTFS data after the initial load.
-  # Therefore, we can just check the state of it once after loading and retain the result.
-  def handle_call(:ready?, _from, :loaded) do
     checker_healthy_fn =
       Application.get_env(:skate, :checker_healthy_fn, &Schedule.Health.Checker.healthy?/0)
 
     healthy? = checker_healthy_fn.()
-    new_state = if healthy?, do: :healthy, else: :unhealthy
+    new_state = if healthy?, do: :ready, else: :not_ready
 
-    {:reply, healthy?, new_state}
+    {:noreply, new_state}
   end
+
+  @impl true
+  def handle_call(:ready?, _from, :not_ready = state), do: {:reply, false, state}
+  def handle_call(:ready?, _from, :ready = state), do: {:reply, true, state}
 end
