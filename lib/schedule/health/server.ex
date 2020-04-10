@@ -1,11 +1,11 @@
-defmodule Schedule.HealthServer do
+defmodule Schedule.Health.Server do
   @moduledoc """
   GenServer to keep track of whether the GTFS GenServer is up and running
   """
 
   use GenServer
 
-  @type state :: :not_loaded | :loaded
+  @type state :: :not_ready | :ready
 
   # Client functions
 
@@ -37,16 +37,21 @@ defmodule Schedule.HealthServer do
 
   @impl true
   def init(nil) do
-    {:ok, :not_loaded}
+    {:ok, :not_ready}
   end
 
   @impl true
   def handle_cast(:loaded, _state) do
-    {:noreply, :loaded}
+    checker_healthy_fn =
+      Application.get_env(:skate, :checker_healthy_fn, &Schedule.Health.Checker.healthy?/0)
+
+    healthy? = checker_healthy_fn.()
+    new_state = if healthy?, do: :ready, else: :not_ready
+
+    {:noreply, new_state}
   end
 
   @impl true
-  def handle_call(:ready?, _from, state) do
-    {:reply, state == :loaded, state}
-  end
+  def handle_call(:ready?, _from, :not_ready = state), do: {:reply, false, state}
+  def handle_call(:ready?, _from, :ready = state), do: {:reply, true, state}
 end

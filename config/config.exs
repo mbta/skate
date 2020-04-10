@@ -21,7 +21,56 @@ config :skate,
   log_duration_timing: true,
   refresh_token_store: RefreshTokenStore,
   redirect_http?: false,
-  static_href: {SkateWeb.Router.Helpers, :static_path}
+  static_href: {SkateWeb.Router.Helpers, :static_path},
+  schedule_health_checks: %{
+    routes: %{
+      min_length: 100
+    },
+    timepoints: [
+      %{
+        route_id: "32",
+        min_length: 5
+      },
+      %{
+        route_id: "71",
+        min_length: 5
+      },
+      %{
+        route_id: "220",
+        min_length: 5
+      },
+      %{
+        route_id: "450",
+        min_length: 5
+      },
+      %{
+        route_id: "742",
+        min_length: 5
+      }
+    ],
+    trip_stop_times: [
+      %{
+        route_id: "32",
+        min_length: 10
+      },
+      %{
+        route_id: "71",
+        min_length: 10
+      },
+      %{
+        route_id: "220",
+        min_length: 10
+      },
+      %{
+        route_id: "450",
+        min_length: 10
+      },
+      %{
+        route_id: "742",
+        min_length: 10
+      }
+    ]
+  }
 
 config :skate, Schedule.CacheFile, cache_filename: nil
 
