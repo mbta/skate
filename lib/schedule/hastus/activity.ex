@@ -11,7 +11,7 @@ defmodule Schedule.Hastus.Activity do
           start_place: Place.id(),
           end_place: Place.id(),
           activity_type: String.t(),
-          # present only if
+          # present only for activity_type "Operator"
           # block ids elsewhere have a letter indicating the garage
           # the block id from the activity name is missing it
           # e.g. "57-11" instead of "A57-11"
@@ -69,5 +69,10 @@ defmodule Schedule.Hastus.Activity do
       parse: &from_csv_row/1,
       format: :hastus
     )
+  end
+
+  @spec run_key(t()) :: Run.key()
+  def run_key(activity) do
+    {activity.schedule_id, activity.run_id}
   end
 end
