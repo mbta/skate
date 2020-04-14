@@ -29,10 +29,11 @@ const vehicleProperties = (vehicle: Vehicle): Property[] => {
   return [
     {
       label: "Run",
-      value:
-        isVehicle(vehicle) && vehicle.isShuttle
-          ? formattedRunNumber(vehicle)
-          : runId || "Not Available",
+      value: vehicle.isShuttle
+        ? formattedRunNumber(vehicle)
+        : vehicle.isOverload && !!vehicle.runId
+        ? `ADDED ${runId}`
+        : runId || "Not Available",
     },
     {
       label: "Vehicle",

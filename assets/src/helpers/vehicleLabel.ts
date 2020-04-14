@@ -21,7 +21,11 @@ const vehicleLabel = (
 
   switch (vehicleLabelSetting(settings, vehicleOrGhost)) {
     case VehicleLabelSetting.RunNumber:
-      return runIdToLabel(vehicleOrGhost.runId)
+      if (isVehicle(vehicleOrGhost) && vehicleOrGhost.isOverload) {
+        return "ADDED"
+      } else {
+        return runIdToLabel(vehicleOrGhost.runId)
+      }
     case VehicleLabelSetting.VehicleNumber:
       return isVehicle(vehicleOrGhost) ? vehicleOrGhost.label : "N/A"
   }

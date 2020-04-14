@@ -93,7 +93,20 @@ describe("vehicleLabel", () => {
     ).toEqual("PULL-B")
   })
 
-  test("uses the vehicle run ID for the label given the run number setting", () => {
+  test("displays 'ADDED' for an overloaded vehicle given the run number setting", () => {
+    const overloadedVehicle: Vehicle = {
+      ...vehicle,
+      isOverload: true,
+    }
+
+    expect(
+      vehicleLabel(overloadedVehicle, {
+        ladderVehicleLabel: VehicleLabelSetting.RunNumber,
+      } as Settings)
+    ).toEqual("ADDED")
+  })
+
+  test("uses the vehicle run ID for the label given the run number setting and not overloaded", () => {
     expect(
       vehicleLabel(vehicle, {
         ladderVehicleLabel: VehicleLabelSetting.RunNumber,

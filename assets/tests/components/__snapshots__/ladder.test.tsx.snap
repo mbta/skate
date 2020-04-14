@@ -983,18 +983,18 @@ exports[`ladder renders an overload vehicle 1`] = `
             height={11}
             rx={5.5}
             ry={5.5}
-            width={26}
-            x={-13}
+            width={40}
+            x={-20}
             y={11.5}
           />
           <text
-            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+            className="m-vehicle-icon__label m-vehicle-icon__label--extended"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
             y={17}
           >
-            1
+            ADDED
           </text>
           <path
             className="m-vehicle-icon__triangle"
