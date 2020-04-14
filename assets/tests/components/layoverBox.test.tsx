@@ -37,7 +37,6 @@ const vehicles: Vehicle[] = [
     isOverload: false,
     isOffCourse: false,
     layoverDepartureTime: 1000002,
-    blockIsActive: true,
     dataDiscrepancies: [],
     stopStatus: {
       stopId: "57",
@@ -78,7 +77,6 @@ const vehicles: Vehicle[] = [
     isOverload: false,
     isOffCourse: false,
     layoverDepartureTime: 1000001,
-    blockIsActive: true,
     dataDiscrepancies: [],
     stopStatus: {
       stopId: "59",

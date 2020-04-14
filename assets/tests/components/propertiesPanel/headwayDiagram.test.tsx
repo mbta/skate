@@ -33,7 +33,6 @@ const vehicle: Vehicle = {
   isOverload: false,
   isOffCourse: false,
   layoverDepartureTime: null,
-  blockIsActive: true,
   dataDiscrepancies: [],
   stopStatus: {
     stopId: "77",
@@ -110,7 +109,6 @@ describe("HeadwayDiagram", () => {
       isOverload: false,
       isOffCourse: false,
       layoverDepartureTime: null,
-      blockIsActive: true,
       dataDiscrepancies: [],
       stopStatus: {
         stopId: "72",
@@ -169,7 +167,6 @@ describe("HeadwayDiagram", () => {
       isOverload: false,
       isOffCourse: false,
       layoverDepartureTime: null,
-      blockIsActive: true,
       dataDiscrepancies: [],
       stopStatus: {
         stopId: "11413",

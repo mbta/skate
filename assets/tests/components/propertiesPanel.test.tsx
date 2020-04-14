@@ -51,7 +51,6 @@ const vehicle: Vehicle = {
   isOverload: false,
   isOffCourse: false,
   layoverDepartureTime: null,
-  blockIsActive: false,
   dataDiscrepancies: [
     {
       attribute: "trip_id",
