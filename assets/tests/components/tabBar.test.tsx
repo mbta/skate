@@ -5,6 +5,12 @@ import renderer from "react-test-renderer"
 import TabBar from "../../src/components/tabBar"
 import * as browser from "../../src/models/browser"
 
+window.Appcues = {
+  identify: jest.fn(),
+  page: jest.fn(),
+  show: jest.fn(),
+}
+
 describe("tabBar", () => {
   it("renders", () => {
     const tree = renderer
@@ -52,6 +58,18 @@ describe("tabBar", () => {
     wrapper.find(".m-tab-bar__logo").first().simulate("click")
 
     expect(reloadSpy).toHaveBeenCalled()
+  })
+
+  it("displays an appcue for the current page when you click on the help button", () => {
+    const wrapper = mount(
+      <BrowserRouter>
+        <TabBar pickerContainerIsVisible={false} />
+      </BrowserRouter>
+    )
+
+    wrapper.find(".m-tab-bar__help").first().simulate("click")
+
+    expect(window.Appcues!.show).toHaveBeenCalledWith("-M2dVpHSaOJ4PddV1K9i")
   })
 
   it("reloads the page when you click on the refresh button", () => {
