@@ -15,13 +15,14 @@ import {
   LadderVehicle,
   ladderVehiclesFromVehicles,
 } from "../models/ladderVehicle"
-import { isGhost } from "../models/vehicle"
-import { drawnStatus, statusClass } from "../models/vehicleStatus"
 import {
-  VehicleId,
-  VehicleOrGhost,
-  VehicleTimepointStatus,
-} from "../realtime.d"
+  ladderVehiclesForLayovers,
+  LayoverBoxPosition,
+} from "../models/layoverVehicle"
+import { isGhost } from "../models/vehicle"
+import { VehiclesByPosition } from "../models/vehiclesByPosition"
+import { drawnStatus, statusClass } from "../models/vehicleStatus"
+import { VehicleId, VehicleTimepointStatus } from "../realtime.d"
 import { Timepoint } from "../schedule.d"
 import { selectVehicle } from "../state"
 import HeadwayLines from "./headwayLines"
@@ -29,7 +30,7 @@ import { Orientation, Size, VehicleIconSvgNode } from "./vehicleIcon"
 
 export interface Props {
   timepoints: Timepoint[]
-  vehiclesAndGhosts: VehicleOrGhost[]
+  vehiclesByPosition: VehiclesByPosition
   ladderDirection: LadderDirection
   selectedVehicleId?: VehicleId
 }
@@ -40,34 +41,47 @@ export type TimepointStatusYFunc = (
 ) => number
 
 export const CENTER_TO_LINE = 40 // x-distance between the center of the ladder and the center of the line
-const MARGIN_TOP_BOTTOM = 20 // space between the top of the route and the top of the viewbox
+const MARGIN_TOP_BOTTOM = 55 // space between the ends of the ladder and the ends of the viewbox
+const MARGIN_LAYOVER_TOP = 35 // space between the top of the ladder and the center of laying over vehicles
+const MARGIN_LAYOVER_BOTTOM = 25 // space between the bottom of the ladder and the center of laying over vehicles
 
 const notOverload = ({ vehicle }: LadderVehicle): boolean =>
   isGhost(vehicle) || !vehicle.isOverload
 
 const Ladder = ({
   timepoints,
-  vehiclesAndGhosts,
+  vehiclesByPosition,
   ladderDirection,
   selectedVehicleId,
 }: Props) => {
   const elementRef = useRef(null)
   const { height } = useComponentSize(elementRef)
+  const ladderHeight = height - MARGIN_TOP_BOTTOM * 2
+
+  const layoverTopLadderVehicles: LadderVehicle[] = ladderVehiclesForLayovers(
+    vehiclesByPosition.layingOverTop,
+    LayoverBoxPosition.Top,
+    -MARGIN_LAYOVER_TOP
+  )
+  const layoverBottomLadderVehicles: LadderVehicle[] = ladderVehiclesForLayovers(
+    vehiclesByPosition.layingOverBottom,
+    LayoverBoxPosition.Bottom,
+    ladderHeight + MARGIN_LAYOVER_BOTTOM
+  )
 
   const orderedTimepoints: Timepoint[] = orderTimepoints(
     timepoints,
     ladderDirection
   )
 
-  const timepointSpacingY: number =
-    (height - MARGIN_TOP_BOTTOM * 2) / (timepoints.length - 1)
+  const timepointSpacingY: number = ladderHeight / (timepoints.length - 1)
   const timepointStatusY = timepointStatusYFromTimepoints(
     orderedTimepoints,
     timepointSpacingY
   )
 
   const { ladderVehicles, widthOfLanes } = ladderVehiclesFromVehicles(
-    vehiclesAndGhosts,
+    vehiclesByPosition.onRoute,
     ladderDirection,
     timepointStatusY
   )
@@ -94,11 +108,28 @@ const Ladder = ({
             ladderVehicle={ladderVehicle}
           />
         ))}
+        {layoverTopLadderVehicles.map((ladderVehicle) => (
+          <VehicleSvg
+            key={`vehicle-${ladderVehicle.vehicle.id}`}
+            ladderVehicle={ladderVehicle}
+            selectedVehicleId={selectedVehicleId}
+            isLayingOver={true}
+          />
+        ))}
+        {layoverBottomLadderVehicles.map((ladderVehicle) => (
+          <VehicleSvg
+            key={`vehicle-${ladderVehicle.vehicle.id}`}
+            ladderVehicle={ladderVehicle}
+            selectedVehicleId={selectedVehicleId}
+            isLayingOver={true}
+          />
+        ))}
         {unselectedLadderVehicles.map((ladderVehicle) => (
           <VehicleSvg
             key={`vehicle-${ladderVehicle.vehicle.id}`}
             ladderVehicle={ladderVehicle}
             selectedVehicleId={selectedVehicleId}
+            isLayingOver={false}
           />
         ))}
         {/* Display the selected vehicle on top of all others if there is one */}
@@ -107,6 +138,7 @@ const Ladder = ({
             key={`vehicle-${ladderVehicle.vehicle.id}`}
             ladderVehicle={ladderVehicle}
             selectedVehicleId={selectedVehicleId}
+            isLayingOver={false}
           />
         ))}
         <RoadLines height={height} />
@@ -138,9 +170,11 @@ const associatedVehicleId = (
 const VehicleSvg = ({
   ladderVehicle,
   selectedVehicleId,
+  isLayingOver,
 }: {
   ladderVehicle: LadderVehicle
   selectedVehicleId: VehicleId | undefined
+  isLayingOver: boolean
 }) => {
   const { vehicle, x, y, vehicleDirection } = ladderVehicle
   const [{ settings }, dispatch] = useContext(StateDispatchContext)
@@ -154,8 +188,8 @@ const VehicleSvg = ({
       onClick={() => dispatch(selectVehicle(associatedVehicleId(vehicle.id)))}
     >
       <VehicleIconSvgNode
-        size={Size.Medium}
-        orientation={orientationMatchingVehicle(vehicleDirection)}
+        size={isLayingOver ? Size.Small : Size.Medium}
+        orientation={orientationMatchingVehicle(isLayingOver, vehicleDirection)}
         label={vehicleLabel(vehicle, settings)}
         variant={vehicle.viaVariant}
         status={drawnStatus(vehicle)}
@@ -244,9 +278,19 @@ const timepointStatusYFromTimepoints = (
 }
 
 const orientationMatchingVehicle = (
+  isLayingOver: boolean,
   vehicleDirection: VehicleDirection
-): Orientation =>
-  vehicleDirection === VehicleDirection.Down ? Orientation.Down : Orientation.Up
+): Orientation => {
+  if (isLayingOver) {
+    return vehicleDirection === VehicleDirection.Down
+      ? Orientation.Left
+      : Orientation.Right
+  } else {
+    return vehicleDirection === VehicleDirection.Down
+      ? Orientation.Down
+      : Orientation.Up
+  }
+}
 
 const ScheduledLine = ({
   ladderVehicle: { vehicle, x, y, scheduledY, scheduledVehicleDirection },

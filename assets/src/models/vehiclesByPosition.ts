@@ -18,6 +18,13 @@ export interface VehiclesByPosition {
   incoming: VehicleOrGhost[]
 }
 
+export const emptyVehiclesByPosition: VehiclesByPosition = {
+  onRoute: [],
+  layingOverTop: [],
+  layingOverBottom: [],
+  incoming: [],
+}
+
 export const groupByPosition = (
   vehiclesAndGhosts: VehicleOrGhost[] | undefined,
   routeId: RouteId,
@@ -54,12 +61,7 @@ export const groupByPosition = (
         return { ...acc, incoming: [...acc.incoming, current] }
       }
     },
-    {
-      onRoute: [],
-      layingOverTop: [],
-      layingOverBottom: [],
-      incoming: [],
-    } as VehiclesByPosition
+    emptyVehiclesByPosition
   )
 
   const vehiclesNeedingVirtualGhosts: Vehicle[] = [

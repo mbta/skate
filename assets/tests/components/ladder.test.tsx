@@ -14,6 +14,7 @@ import {
 import { Timepoint } from "../../src/schedule.d"
 import { initialState, selectVehicle } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
+import { emptyVehiclesByPosition } from "../../src/models/vehiclesByPosition"
 
 jest.mock("../../src/hooks/useVehicles", () => ({
   __esModule: true,
@@ -164,7 +165,7 @@ describe("ladder", () => {
       .create(
         <Ladder
           timepoints={timepoints}
-          vehiclesAndGhosts={vehicles}
+          vehiclesByPosition={{ ...emptyVehiclesByPosition, onRoute: vehicles }}
           ladderDirection={ladderDirection}
           selectedVehicleId={undefined}
         />
@@ -205,7 +206,7 @@ describe("ladder", () => {
       .create(
         <Ladder
           timepoints={timepoints}
-          vehiclesAndGhosts={[ghost]}
+          vehiclesByPosition={{ ...emptyVehiclesByPosition, onRoute: [ghost] }}
           ladderDirection={ladderDirection}
           selectedVehicleId={undefined}
         />
@@ -280,7 +281,7 @@ describe("ladder", () => {
       .create(
         <Ladder
           timepoints={timepoints}
-          vehiclesAndGhosts={vehicles}
+          vehiclesByPosition={{ ...emptyVehiclesByPosition, onRoute: vehicles }}
           ladderDirection={ladderDirection}
           selectedVehicleId={undefined}
         />
@@ -396,7 +397,7 @@ describe("ladder", () => {
       .create(
         <Ladder
           timepoints={timepoints}
-          vehiclesAndGhosts={vehicles}
+          vehiclesByPosition={{ ...emptyVehiclesByPosition, onRoute: vehicles }}
           ladderDirection={ladderDirection}
           selectedVehicleId={"upward"}
         />
@@ -506,7 +507,10 @@ describe("ladder", () => {
       .create(
         <Ladder
           timepoints={timepoints}
-          vehiclesAndGhosts={vehiclesAndGhosts}
+          vehiclesByPosition={{
+            ...emptyVehiclesByPosition,
+            onRoute: vehiclesAndGhosts,
+          }}
           ladderDirection={ladderDirection}
         />
       )
@@ -570,7 +574,10 @@ describe("ladder", () => {
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <Ladder
           timepoints={timepoints}
-          vehiclesAndGhosts={[vehicle]}
+          vehiclesByPosition={{
+            ...emptyVehiclesByPosition,
+            onRoute: [vehicle],
+          }}
           ladderDirection={ladderDirection}
           selectedVehicleId={undefined}
         />
@@ -600,7 +607,10 @@ describe("ladder", () => {
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <Ladder
           timepoints={timepoints}
-          vehiclesAndGhosts={[incomingGhost]}
+          vehiclesByPosition={{
+            ...emptyVehiclesByPosition,
+            onRoute: [incomingGhost],
+          }}
           ladderDirection={ladderDirection}
           selectedVehicleId={undefined}
         />
@@ -661,7 +671,7 @@ describe("ladder", () => {
       .create(
         <Ladder
           timepoints={timepoints}
-          vehiclesAndGhosts={vehicles}
+          vehiclesByPosition={{ ...emptyVehiclesByPosition, onRoute: vehicles }}
           ladderDirection={ladderDirection}
           selectedVehicleId={undefined}
         />
@@ -737,7 +747,7 @@ describe("ladder", () => {
       .create(
         <Ladder
           timepoints={timepoints}
-          vehiclesAndGhosts={vehicles}
+          vehiclesByPosition={{ ...emptyVehiclesByPosition, onRoute: vehicles }}
           ladderDirection={ladderDirection}
           selectedVehicleId={undefined}
         />
@@ -823,7 +833,10 @@ describe("ladder", () => {
       .create(
         <Ladder
           timepoints={timepoints}
-          vehiclesAndGhosts={[vehicle]}
+          vehiclesByPosition={{
+            ...emptyVehiclesByPosition,
+            onRoute: [vehicle],
+          }}
           ladderDirection={ladderDirection}
           selectedVehicleId={undefined}
         />
@@ -887,7 +900,74 @@ describe("ladder", () => {
       .create(
         <Ladder
           timepoints={timepoints}
-          vehiclesAndGhosts={vehicles}
+          vehiclesByPosition={{ ...emptyVehiclesByPosition, onRoute: vehicles }}
+          ladderDirection={ladderDirection}
+          selectedVehicleId={undefined}
+        />
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders a laying over vehicle", () => {
+    const timepoints: Timepoint[] = [
+      { id: "t0", name: "t0 name" },
+      { id: "t1", name: "t1 name" },
+      { id: "t2", name: "t2 name" },
+    ]
+    const vehicles: Vehicle[] = [
+      {
+        id: "laying-over",
+        label: "laying-over",
+        runId: "laying-over",
+        timestamp: 0,
+        latitude: 0,
+        longitude: 0,
+        directionId: 1,
+        routeId: "route",
+        tripId: "trip",
+        headsign: null,
+        viaVariant: null,
+        operatorId: "op1",
+        operatorName: "SMITH",
+        operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
+        bearing: 33,
+        blockId: "block-1",
+        headwaySecs: 859.1,
+        headwaySpacing: HeadwaySpacing.Ok,
+        previousVehicleId: "v2",
+        scheduleAdherenceSecs: 0,
+        scheduledHeadwaySecs: 120,
+        isShuttle: false,
+        isOverload: true,
+        isOffCourse: false,
+        layoverDepartureTime: 1,
+        dataDiscrepancies: [],
+        stopStatus: {
+          stopId: "stop",
+          stopName: "stop",
+        },
+        timepointStatus: {
+          fractionUntilTimepoint: 0.0,
+          timepointId: "t0",
+        },
+        scheduledLocation: null,
+        routeStatus: "laying_over",
+        endOfTripType: "another_trip",
+        blockWaivers: [],
+      },
+    ]
+    const ladderDirection = LadderDirection.ZeroToOne
+
+    const tree = renderer
+      .create(
+        <Ladder
+          timepoints={timepoints}
+          vehiclesByPosition={{
+            ...emptyVehiclesByPosition,
+            layingOverTop: vehicles,
+          }}
           ladderDirection={ladderDirection}
           selectedVehicleId={undefined}
         />
