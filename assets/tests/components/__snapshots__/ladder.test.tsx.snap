@@ -22,74 +22,70 @@ exports[`ladder highlights a selected vehicle 1`] = `
       y1={-25}
       y2={-55}
     />
-    <g>
+    <g
+      className="m-ladder__vehicle  "
+      onClick={[Function]}
+      transform="translate(-63,-25)"
+    >
       <g
-        className="m-ladder__vehicle  "
-        onClick={[Function]}
-        transform="translate(-63,-25)"
+        className="m-vehicle-icon m-vehicle-icon--medium on-time"
       >
-        <g
-          className="m-vehicle-icon m-vehicle-icon--medium on-time"
+        <rect
+          className="m-vehicle-icon__label-background"
+          height={11}
+          rx={5.5}
+          ry={5.5}
+          width={26}
+          x={-13}
+          y={-22.5}
+        />
+        <text
+          className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+          dominantBaseline="central"
+          textAnchor="middle"
+          x="0"
+          y={-17}
         >
-          <rect
-            className="m-vehicle-icon__label-background"
-            height={11}
-            rx={5.5}
-            ry={5.5}
-            width={26}
-            x={-13}
-            y={-22.5}
-          />
-          <text
-            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-            dominantBaseline="central"
-            textAnchor="middle"
-            x="0"
-            y={-17}
-          >
-            2
-          </text>
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-            transform="scale(0.625) rotate(180) translate(-24,-22)"
-          />
-        </g>
+          2
+        </text>
+        <path
+          className="m-vehicle-icon__triangle"
+          d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+          transform="scale(0.625) rotate(180) translate(-24,-22)"
+        />
       </g>
     </g>
-    <g>
+    <g
+      className="m-ladder__vehicle selected "
+      onClick={[Function]}
+      transform="translate(63,-30)"
+    >
       <g
-        className="m-ladder__vehicle selected "
-        onClick={[Function]}
-        transform="translate(63,-30)"
+        className="m-vehicle-icon m-vehicle-icon--medium on-time"
       >
-        <g
-          className="m-vehicle-icon m-vehicle-icon--medium on-time"
+        <rect
+          className="m-vehicle-icon__label-background"
+          height={11}
+          rx={5.5}
+          ry={5.5}
+          width={26}
+          x={-13}
+          y={11.5}
+        />
+        <text
+          className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+          dominantBaseline="central"
+          textAnchor="middle"
+          x="0"
+          y={17}
         >
-          <rect
-            className="m-vehicle-icon__label-background"
-            height={11}
-            rx={5.5}
-            ry={5.5}
-            width={26}
-            x={-13}
-            y={11.5}
-          />
-          <text
-            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-            dominantBaseline="central"
-            textAnchor="middle"
-            x="0"
-            y={17}
-          >
-            1
-          </text>
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-            transform="scale(0.625) rotate(0) translate(-24,-22)"
-          />
-        </g>
+          1
+        </text>
+        <path
+          className="m-vehicle-icon__triangle"
+          d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+          transform="scale(0.625) rotate(0) translate(-24,-22)"
+        />
       </g>
     </g>
     <line
@@ -197,84 +193,82 @@ exports[`ladder renders a ghost bus 1`] = `
     viewBox="-92 -20 184 0"
     width={184}
   >
-    <g>
+    <g
+      className="m-ladder__vehicle  "
+      onClick={[Function]}
+      transform="translate(63,0)"
+    >
       <g
-        className="m-ladder__vehicle  "
-        onClick={[Function]}
-        transform="translate(63,0)"
+        className="m-vehicle-icon m-vehicle-icon--medium ghost m-vehicle-icon--highlighted"
       >
-        <g
-          className="m-vehicle-icon m-vehicle-icon--medium ghost m-vehicle-icon--highlighted"
+        <rect
+          className="m-vehicle-icon__label-background"
+          height={11}
+          rx={5.5}
+          ry={5.5}
+          width={26}
+          x={-13}
+          y={11.5}
+        />
+        <text
+          className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+          dominantBaseline="central"
+          textAnchor="middle"
+          x="0"
+          y={17}
         >
-          <rect
-            className="m-vehicle-icon__label-background"
-            height={11}
-            rx={5.5}
-            ry={5.5}
-            width={26}
-            x={-13}
-            y={11.5}
+          0123
+        </text>
+        <g
+          transform="scale(0.4375) translate(-24,-23)"
+        >
+          <path
+            className="m-vehicle-icon__ghost-highlight"
+            d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
+            stroke-join="round"
           />
-          <text
-            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-            dominantBaseline="central"
-            textAnchor="middle"
-            x="0"
-            y={17}
-          >
-            0123
-          </text>
+          <path
+            className="m-vehicle-icon__ghost-body"
+            d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
+            stroke-join="round"
+          />
+        </g>
+        <text
+          className="m-vehicle-icon__variant"
+          dominantBaseline="alphabetic"
+          textAnchor="middle"
+          x={0}
+          y={4.5}
+        >
+          X
+        </text>
+        <g
+          transform="translate(9.375, -6.25) scale(0.2) translate(-24, -24)"
+        >
           <g
-            transform="scale(0.4375) translate(-24,-23)"
+            className="c-icon-alert-circle--highlighted"
           >
-            <path
-              className="m-vehicle-icon__ghost-highlight"
-              d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-              stroke-join="round"
+            <circle
+              className="c-icon-alert-circle__outline"
+              cx="24"
+              cy="24"
+              r="27"
             />
-            <path
-              className="m-vehicle-icon__ghost-body"
-              d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-              stroke-join="round"
+            <circle
+              className="c-icon-alert-circle__fill"
+              cx="24"
+              cy="24"
+              r="22.59"
             />
-          </g>
-          <text
-            className="m-vehicle-icon__variant"
-            dominantBaseline="alphabetic"
-            textAnchor="middle"
-            x={0}
-            y={4.5}
-          >
-            X
-          </text>
-          <g
-            transform="translate(9.375, -6.25) scale(0.2) translate(-24, -24)"
-          >
             <g
-              className="c-icon-alert-circle--highlighted"
+              className="c-icon-alert-circle__exclamation-point"
             >
-              <circle
-                className="c-icon-alert-circle__outline"
-                cx="24"
-                cy="24"
-                r="27"
+              <path
+                d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
               />
-              <circle
-                className="c-icon-alert-circle__fill"
-                cx="24"
-                cy="24"
-                r="22.59"
+              <path
+                d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
               />
-              <g
-                className="c-icon-alert-circle__exclamation-point"
-              >
-                <path
-                  d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
-                />
-                <path
-                  d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
-                />
-              </g>
             </g>
           </g>
         </g>
@@ -392,109 +386,103 @@ exports[`ladder renders a ladder 1`] = `
       y1={-25}
       y2={-55}
     />
-    <g>
+    <g
+      className="m-ladder__vehicle  "
+      onClick={[Function]}
+      transform="translate(63,-30)"
+    >
       <g
-        className="m-ladder__vehicle  "
-        onClick={[Function]}
-        transform="translate(63,-30)"
+        className="m-vehicle-icon m-vehicle-icon--medium on-time"
       >
-        <g
-          className="m-vehicle-icon m-vehicle-icon--medium on-time"
+        <rect
+          className="m-vehicle-icon__label-background"
+          height={11}
+          rx={5.5}
+          ry={5.5}
+          width={26}
+          x={-13}
+          y={11.5}
+        />
+        <text
+          className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+          dominantBaseline="central"
+          textAnchor="middle"
+          x="0"
+          y={17}
         >
-          <rect
-            className="m-vehicle-icon__label-background"
-            height={11}
-            rx={5.5}
-            ry={5.5}
-            width={26}
-            x={-13}
-            y={11.5}
-          />
-          <text
-            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-            dominantBaseline="central"
-            textAnchor="middle"
-            x="0"
-            y={17}
-          >
-            1
-          </text>
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-            transform="scale(0.625) rotate(0) translate(-24,-22)"
-          />
-        </g>
+          1
+        </text>
+        <path
+          className="m-vehicle-icon__triangle"
+          d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+          transform="scale(0.625) rotate(0) translate(-24,-22)"
+        />
       </g>
     </g>
-    <g>
+    <g
+      className="m-ladder__vehicle  "
+      onClick={[Function]}
+      transform="translate(-87,-25)"
+    >
       <g
-        className="m-ladder__vehicle  "
-        onClick={[Function]}
-        transform="translate(-87,-25)"
+        className="m-vehicle-icon m-vehicle-icon--medium on-time"
       >
-        <g
-          className="m-vehicle-icon m-vehicle-icon--medium on-time"
+        <rect
+          className="m-vehicle-icon__label-background"
+          height={11}
+          rx={5.5}
+          ry={5.5}
+          width={26}
+          x={-13}
+          y={-22.5}
+        />
+        <text
+          className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+          dominantBaseline="central"
+          textAnchor="middle"
+          x="0"
+          y={-17}
         >
-          <rect
-            className="m-vehicle-icon__label-background"
-            height={11}
-            rx={5.5}
-            ry={5.5}
-            width={26}
-            x={-13}
-            y={-22.5}
-          />
-          <text
-            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-            dominantBaseline="central"
-            textAnchor="middle"
-            x="0"
-            y={-17}
-          >
-            2
-          </text>
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-            transform="scale(0.625) rotate(180) translate(-24,-22)"
-          />
-        </g>
+          2
+        </text>
+        <path
+          className="m-vehicle-icon__triangle"
+          d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+          transform="scale(0.625) rotate(180) translate(-24,-22)"
+        />
       </g>
     </g>
-    <g>
+    <g
+      className="m-ladder__vehicle  "
+      onClick={[Function]}
+      transform="translate(-63,0)"
+    >
       <g
-        className="m-ladder__vehicle  "
-        onClick={[Function]}
-        transform="translate(-63,0)"
+        className="m-vehicle-icon m-vehicle-icon--medium on-time"
       >
-        <g
-          className="m-vehicle-icon m-vehicle-icon--medium on-time"
+        <rect
+          className="m-vehicle-icon__label-background"
+          height={11}
+          rx={5.5}
+          ry={5.5}
+          width={26}
+          x={-13}
+          y={-22.5}
+        />
+        <text
+          className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+          dominantBaseline="central"
+          textAnchor="middle"
+          x="0"
+          y={-17}
         >
-          <rect
-            className="m-vehicle-icon__label-background"
-            height={11}
-            rx={5.5}
-            ry={5.5}
-            width={26}
-            x={-13}
-            y={-22.5}
-          />
-          <text
-            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-            dominantBaseline="central"
-            textAnchor="middle"
-            x="0"
-            y={-17}
-          >
-            3
-          </text>
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-            transform="scale(0.625) rotate(180) translate(-24,-22)"
-          />
-        </g>
+          3
+        </text>
+        <path
+          className="m-vehicle-icon__triangle"
+          d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+          transform="scale(0.625) rotate(180) translate(-24,-22)"
+        />
       </g>
     </g>
     <line
@@ -602,39 +590,37 @@ exports[`ladder renders a ladder with no timepoints 1`] = `
     viewBox="-92 -20 184 0"
     width={184}
   >
-    <g>
+    <g
+      className="m-ladder__vehicle  "
+      onClick={[Function]}
+      transform="translate(63,0)"
+    >
       <g
-        className="m-ladder__vehicle  "
-        onClick={[Function]}
-        transform="translate(63,0)"
+        className="m-vehicle-icon m-vehicle-icon--medium on-time"
       >
-        <g
-          className="m-vehicle-icon m-vehicle-icon--medium on-time"
+        <rect
+          className="m-vehicle-icon__label-background"
+          height={11}
+          rx={5.5}
+          ry={5.5}
+          width={26}
+          x={-13}
+          y={11.5}
+        />
+        <text
+          className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+          dominantBaseline="central"
+          textAnchor="middle"
+          x="0"
+          y={17}
         >
-          <rect
-            className="m-vehicle-icon__label-background"
-            height={11}
-            rx={5.5}
-            ry={5.5}
-            width={26}
-            x={-13}
-            y={11.5}
-          />
-          <text
-            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-            dominantBaseline="central"
-            textAnchor="middle"
-            x="0"
-            y={17}
-          >
-            1
-          </text>
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-            transform="scale(0.625) rotate(0) translate(-24,-22)"
-          />
-        </g>
+          1
+        </text>
+        <path
+          className="m-vehicle-icon__triangle"
+          d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+          transform="scale(0.625) rotate(0) translate(-24,-22)"
+        />
       </g>
     </g>
     <line
@@ -680,39 +666,37 @@ exports[`ladder renders a reversed ladder 1`] = `
       y1={-30}
       y2={-28}
     />
-    <g>
+    <g
+      className="m-ladder__vehicle  "
+      onClick={[Function]}
+      transform="translate(63,-30)"
+    >
       <g
-        className="m-ladder__vehicle  "
-        onClick={[Function]}
-        transform="translate(63,-30)"
+        className="m-vehicle-icon m-vehicle-icon--medium on-time"
       >
-        <g
-          className="m-vehicle-icon m-vehicle-icon--medium on-time"
+        <rect
+          className="m-vehicle-icon__label-background"
+          height={11}
+          rx={5.5}
+          ry={5.5}
+          width={26}
+          x={-13}
+          y={11.5}
+        />
+        <text
+          className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+          dominantBaseline="central"
+          textAnchor="middle"
+          x="0"
+          y={17}
         >
-          <rect
-            className="m-vehicle-icon__label-background"
-            height={11}
-            rx={5.5}
-            ry={5.5}
-            width={26}
-            x={-13}
-            y={11.5}
-          />
-          <text
-            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-            dominantBaseline="central"
-            textAnchor="middle"
-            x="0"
-            y={17}
-          >
-            1
-          </text>
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-            transform="scale(0.625) rotate(0) translate(-24,-22)"
-          />
-        </g>
+          1
+        </text>
+        <path
+          className="m-vehicle-icon__triangle"
+          d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+          transform="scale(0.625) rotate(0) translate(-24,-22)"
+        />
       </g>
     </g>
     <line
@@ -820,48 +804,46 @@ exports[`ladder renders an off-course vehicle 1`] = `
     viewBox="-92 -20 184 0"
     width={184}
   >
-    <g>
+    <g
+      className="m-ladder__vehicle  "
+      onClick={[Function]}
+      transform="translate(63,0)"
+    >
       <g
-        className="m-ladder__vehicle  "
-        onClick={[Function]}
-        transform="translate(63,0)"
+        className="m-vehicle-icon m-vehicle-icon--medium off-course"
       >
-        <g
-          className="m-vehicle-icon m-vehicle-icon--medium off-course"
+        <rect
+          className="m-vehicle-icon__label-background"
+          height={11}
+          rx={5.5}
+          ry={5.5}
+          width={26}
+          x={-13}
+          y={11.5}
+        />
+        <text
+          className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+          dominantBaseline="central"
+          textAnchor="middle"
+          x="0"
+          y={17}
         >
-          <rect
-            className="m-vehicle-icon__label-background"
-            height={11}
-            rx={5.5}
-            ry={5.5}
-            width={26}
-            x={-13}
-            y={11.5}
-          />
-          <text
-            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-            dominantBaseline="central"
-            textAnchor="middle"
-            x="0"
-            y={17}
-          >
-            1
-          </text>
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-            transform="scale(0.625) rotate(0) translate(-24,-22)"
-          />
-          <text
-            className="m-vehicle-icon__variant"
-            dominantBaseline="alphabetic"
-            textAnchor="middle"
-            x={0}
-            y={8.5}
-          >
-            D
-          </text>
-        </g>
+          1
+        </text>
+        <path
+          className="m-vehicle-icon__triangle"
+          d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+          transform="scale(0.625) rotate(0) translate(-24,-22)"
+        />
+        <text
+          className="m-vehicle-icon__variant"
+          dominantBaseline="alphabetic"
+          textAnchor="middle"
+          x={0}
+          y={8.5}
+        >
+          D
+        </text>
       </g>
     </g>
     <line
@@ -969,39 +951,37 @@ exports[`ladder renders an overload vehicle 1`] = `
     viewBox="-92 -20 184 0"
     width={184}
   >
-    <g>
+    <g
+      className="m-ladder__vehicle  "
+      onClick={[Function]}
+      transform="translate(63,-30)"
+    >
       <g
-        className="m-ladder__vehicle  "
-        onClick={[Function]}
-        transform="translate(63,-30)"
+        className="m-vehicle-icon m-vehicle-icon--medium on-time"
       >
-        <g
-          className="m-vehicle-icon m-vehicle-icon--medium on-time"
+        <rect
+          className="m-vehicle-icon__label-background"
+          height={11}
+          rx={5.5}
+          ry={5.5}
+          width={40}
+          x={-20}
+          y={11.5}
+        />
+        <text
+          className="m-vehicle-icon__label m-vehicle-icon__label--extended"
+          dominantBaseline="central"
+          textAnchor="middle"
+          x="0"
+          y={17}
         >
-          <rect
-            className="m-vehicle-icon__label-background"
-            height={11}
-            rx={5.5}
-            ry={5.5}
-            width={40}
-            x={-20}
-            y={11.5}
-          />
-          <text
-            className="m-vehicle-icon__label m-vehicle-icon__label--extended"
-            dominantBaseline="central"
-            textAnchor="middle"
-            x="0"
-            y={17}
-          >
-            ADDED
-          </text>
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-            transform="scale(0.625) rotate(0) translate(-24,-22)"
-          />
-        </g>
+          ADDED
+        </text>
+        <path
+          className="m-vehicle-icon__triangle"
+          d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+          transform="scale(0.625) rotate(0) translate(-24,-22)"
+        />
       </g>
     </g>
     <line
@@ -1116,39 +1096,37 @@ exports[`ladder shows schedule line in the other direction 1`] = `
       y1={15}
       y2={-15}
     />
-    <g>
+    <g
+      className="m-ladder__vehicle  "
+      onClick={[Function]}
+      transform="translate(-63,15)"
+    >
       <g
-        className="m-ladder__vehicle  "
-        onClick={[Function]}
-        transform="translate(-63,15)"
+        className="m-vehicle-icon m-vehicle-icon--medium on-time"
       >
-        <g
-          className="m-vehicle-icon m-vehicle-icon--medium on-time"
+        <rect
+          className="m-vehicle-icon__label-background"
+          height={11}
+          rx={5.5}
+          ry={5.5}
+          width={26}
+          x={-13}
+          y={-22.5}
+        />
+        <text
+          className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+          dominantBaseline="central"
+          textAnchor="middle"
+          x="0"
+          y={-17}
         >
-          <rect
-            className="m-vehicle-icon__label-background"
-            height={11}
-            rx={5.5}
-            ry={5.5}
-            width={26}
-            x={-13}
-            y={-22.5}
-          />
-          <text
-            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-            dominantBaseline="central"
-            textAnchor="middle"
-            x="0"
-            y={-17}
-          >
-            2
-          </text>
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-            transform="scale(0.625) rotate(180) translate(-24,-22)"
-          />
-        </g>
+          2
+        </text>
+        <path
+          className="m-vehicle-icon__triangle"
+          d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+          transform="scale(0.625) rotate(180) translate(-24,-22)"
+        />
       </g>
     </g>
     <line
@@ -1263,149 +1241,145 @@ exports[`ladder shows vehicles with block waivers 1`] = `
       y1={-25}
       y2={-55}
     />
-    <g>
+    <g
+      className="m-ladder__vehicle  "
+      onClick={[Function]}
+      transform="translate(63,0)"
+    >
       <g
-        className="m-ladder__vehicle  "
-        onClick={[Function]}
-        transform="translate(63,0)"
+        className="m-vehicle-icon m-vehicle-icon--medium ghost"
       >
-        <g
-          className="m-vehicle-icon m-vehicle-icon--medium ghost"
+        <rect
+          className="m-vehicle-icon__label-background"
+          height={11}
+          rx={5.5}
+          ry={5.5}
+          width={26}
+          x={-13}
+          y={11.5}
+        />
+        <text
+          className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+          dominantBaseline="central"
+          textAnchor="middle"
+          x="0"
+          y={17}
         >
-          <rect
-            className="m-vehicle-icon__label-background"
-            height={11}
-            rx={5.5}
-            ry={5.5}
-            width={26}
-            x={-13}
-            y={11.5}
+          0123
+        </text>
+        <g
+          transform="scale(0.4375) translate(-24,-23)"
+        >
+          <path
+            className="m-vehicle-icon__ghost-highlight"
+            d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
+            stroke-join="round"
           />
-          <text
-            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-            dominantBaseline="central"
-            textAnchor="middle"
-            x="0"
-            y={17}
-          >
-            0123
-          </text>
+          <path
+            className="m-vehicle-icon__ghost-body"
+            d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
+            stroke-join="round"
+          />
+        </g>
+        <text
+          className="m-vehicle-icon__variant"
+          dominantBaseline="alphabetic"
+          textAnchor="middle"
+          x={0}
+          y={4.5}
+        >
+          X
+        </text>
+        <g
+          transform="translate(9.375, -6.25) scale(0.2) translate(-24, -24)"
+        >
           <g
-            transform="scale(0.4375) translate(-24,-23)"
+            className="c-icon-alert-circle--black"
           >
-            <path
-              className="m-vehicle-icon__ghost-highlight"
-              d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-              stroke-join="round"
+            <circle
+              className="c-icon-alert-circle__outline"
+              cx="24"
+              cy="24"
+              r="27"
             />
-            <path
-              className="m-vehicle-icon__ghost-body"
-              d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-              stroke-join="round"
+            <circle
+              className="c-icon-alert-circle__fill"
+              cx="24"
+              cy="24"
+              r="22.59"
             />
-          </g>
-          <text
-            className="m-vehicle-icon__variant"
-            dominantBaseline="alphabetic"
-            textAnchor="middle"
-            x={0}
-            y={4.5}
-          >
-            X
-          </text>
-          <g
-            transform="translate(9.375, -6.25) scale(0.2) translate(-24, -24)"
-          >
             <g
-              className="c-icon-alert-circle--black"
+              className="c-icon-alert-circle__exclamation-point"
             >
-              <circle
-                className="c-icon-alert-circle__outline"
-                cx="24"
-                cy="24"
-                r="27"
+              <path
+                d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
               />
-              <circle
-                className="c-icon-alert-circle__fill"
-                cx="24"
-                cy="24"
-                r="22.59"
+              <path
+                d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
               />
-              <g
-                className="c-icon-alert-circle__exclamation-point"
-              >
-                <path
-                  d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
-                />
-                <path
-                  d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
-                />
-              </g>
             </g>
           </g>
         </g>
       </g>
     </g>
-    <g>
+    <g
+      className="m-ladder__vehicle  "
+      onClick={[Function]}
+      transform="translate(-63,-25)"
+    >
       <g
-        className="m-ladder__vehicle  "
-        onClick={[Function]}
-        transform="translate(-63,-25)"
+        className="m-vehicle-icon m-vehicle-icon--medium on-time"
       >
-        <g
-          className="m-vehicle-icon m-vehicle-icon--medium on-time"
+        <rect
+          className="m-vehicle-icon__label-background"
+          height={11}
+          rx={5.5}
+          ry={5.5}
+          width={26}
+          x={-13}
+          y={-22.5}
+        />
+        <text
+          className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+          dominantBaseline="central"
+          textAnchor="middle"
+          x="0"
+          y={-17}
         >
-          <rect
-            className="m-vehicle-icon__label-background"
-            height={11}
-            rx={5.5}
-            ry={5.5}
-            width={26}
-            x={-13}
-            y={-22.5}
-          />
-          <text
-            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-            dominantBaseline="central"
-            textAnchor="middle"
-            x="0"
-            y={-17}
-          >
-            run
-          </text>
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-            transform="scale(0.625) rotate(180) translate(-24,-22)"
-          />
+          run
+        </text>
+        <path
+          className="m-vehicle-icon__triangle"
+          d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+          transform="scale(0.625) rotate(180) translate(-24,-22)"
+        />
+        <g
+          transform="translate(-8.75, -1.875) scale(0.2) translate(-24, -24)"
+        >
           <g
-            transform="translate(-8.75, -1.875) scale(0.2) translate(-24, -24)"
+            className="c-icon-alert-circle--grey"
           >
+            <circle
+              className="c-icon-alert-circle__outline"
+              cx="24"
+              cy="24"
+              r="27"
+            />
+            <circle
+              className="c-icon-alert-circle__fill"
+              cx="24"
+              cy="24"
+              r="22.59"
+            />
             <g
-              className="c-icon-alert-circle--grey"
+              className="c-icon-alert-circle__exclamation-point"
             >
-              <circle
-                className="c-icon-alert-circle__outline"
-                cx="24"
-                cy="24"
-                r="27"
+              <path
+                d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
               />
-              <circle
-                className="c-icon-alert-circle__fill"
-                cx="24"
-                cy="24"
-                r="22.59"
+              <path
+                d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
               />
-              <g
-                className="c-icon-alert-circle__exclamation-point"
-              >
-                <path
-                  d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
-                />
-                <path
-                  d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
-                />
-              </g>
             </g>
           </g>
         </g>

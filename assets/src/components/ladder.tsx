@@ -148,21 +148,19 @@ const VehicleSvg = ({
   const alertIconStyle = blockWaiverAlertStyle(vehicle)
 
   return (
-    <g>
-      <g
-        className={`m-ladder__vehicle ${selectedClass} `}
-        transform={`translate(${x},${y})`}
-        onClick={() => dispatch(selectVehicle(associatedVehicleId(vehicle.id)))}
-      >
-        <VehicleIconSvgNode
-          size={Size.Medium}
-          orientation={orientationMatchingVehicle(vehicleDirection)}
-          label={vehicleLabel(vehicle, settings)}
-          variant={vehicle.viaVariant}
-          status={drawnStatus(vehicle)}
-          alertIconStyle={alertIconStyle}
-        />
-      </g>
+    <g
+      className={`m-ladder__vehicle ${selectedClass} `}
+      transform={`translate(${x},${y})`}
+      onClick={() => dispatch(selectVehicle(associatedVehicleId(vehicle.id)))}
+    >
+      <VehicleIconSvgNode
+        size={Size.Medium}
+        orientation={orientationMatchingVehicle(vehicleDirection)}
+        label={vehicleLabel(vehicle, settings)}
+        variant={vehicle.viaVariant}
+        status={drawnStatus(vehicle)}
+        alertIconStyle={alertIconStyle}
+      />
     </g>
   )
 }
