@@ -203,7 +203,7 @@ exports[`Shuttle Map Page renders 1`] = `
     className="m-shuttle-map__map"
   >
     <div
-      className="m-vehicle-map"
+      className="m-vehicle-map m-vehicle-map--auto-centering"
       id="id-vehicle-map"
     />
   </div>
@@ -413,7 +413,7 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
     className="m-shuttle-map__map"
   >
     <div
-      className="m-vehicle-map"
+      className="m-vehicle-map m-vehicle-map--auto-centering"
       id="id-vehicle-map"
     />
   </div>
@@ -609,7 +609,7 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
           className="m-vehicle-properties-panel__map"
         >
           <div
-            className="m-vehicle-map"
+            className="m-vehicle-map m-vehicle-map--auto-centering"
             id="id-vehicle-map"
           />
         </div>
@@ -832,7 +832,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
     className="m-shuttle-map__map"
   >
     <div
-      className="m-vehicle-map"
+      className="m-vehicle-map m-vehicle-map--auto-centering"
       id="id-vehicle-map"
     />
   </div>
@@ -1042,7 +1042,7 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
     className="m-shuttle-map__map"
   >
     <div
-      className="m-vehicle-map"
+      className="m-vehicle-map m-vehicle-map--auto-centering"
       id="id-vehicle-map"
     />
   </div>
