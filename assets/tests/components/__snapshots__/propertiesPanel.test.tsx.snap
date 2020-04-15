@@ -415,7 +415,7 @@ Array [
           className="m-vehicle-properties-panel__map"
         >
           <div
-            className="m-vehicle-map"
+            className="m-vehicle-map m-vehicle-map--auto-centering"
             id="id-vehicle-map"
           />
         </div>
