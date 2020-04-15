@@ -6,6 +6,9 @@ const vehicleLabel = (
   vehicleOrGhost: VehicleOrGhost,
   settings: Settings
 ): string => {
+  if (isVehicle(vehicleOrGhost) && vehicleOrGhost.isOverload) {
+    return "ADDED"
+  }
   if (
     isVehicle(vehicleOrGhost) &&
     vehicleOrGhost.endOfTripType === "swing_off"
@@ -21,11 +24,7 @@ const vehicleLabel = (
 
   switch (vehicleLabelSetting(settings, vehicleOrGhost)) {
     case VehicleLabelSetting.RunNumber:
-      if (isVehicle(vehicleOrGhost) && vehicleOrGhost.isOverload) {
-        return "ADDED"
-      } else {
-        return runIdToLabel(vehicleOrGhost.runId)
-      }
+      return runIdToLabel(vehicleOrGhost.runId)
     case VehicleLabelSetting.VehicleNumber:
       return isVehicle(vehicleOrGhost) ? vehicleOrGhost.label : "N/A"
   }
