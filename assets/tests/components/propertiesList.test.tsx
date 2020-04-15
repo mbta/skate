@@ -103,6 +103,19 @@ describe("PropertiesList", () => {
     expect(tree).toMatchSnapshot()
   })
 
+  test("renders a properties list for an overloaded vehicle", () => {
+    const overloadedVehicle: Vehicle = {
+      ...vehicle,
+      isOverload: true,
+    }
+
+    const tree = renderer
+      .create(<PropertiesList vehicleOrGhost={overloadedVehicle} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
   test("highlights requested text", () => {
     const tree = renderer
       .create(<PropertiesList vehicleOrGhost={vehicle} highlightText="run" />)

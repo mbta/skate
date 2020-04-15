@@ -6,6 +6,9 @@ const vehicleLabel = (
   vehicleOrGhost: VehicleOrGhost,
   settings: Settings
 ): string => {
+  if (isVehicle(vehicleOrGhost) && vehicleOrGhost.isOverload) {
+    return "ADDED"
+  }
   if (
     isVehicle(vehicleOrGhost) &&
     vehicleOrGhost.endOfTripType === "swing_off"
