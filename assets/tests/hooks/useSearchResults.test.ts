@@ -49,7 +49,6 @@ describe("useSearchResults", () => {
     const vehicleData: VehicleData = {
       bearing: 33,
       block_id: "block-1",
-      block_is_active: true,
       data_discrepancies: [
         {
           attribute: "trip_id",
@@ -154,7 +153,6 @@ describe("useSearchResults", () => {
       isOverload: false,
       isOffCourse: false,
       layoverDepartureTime: null,
-      blockIsActive: true,
       dataDiscrepancies: [
         {
           attribute: "trip_id",

@@ -8,10 +8,10 @@ defmodule Realtime.Server do
 
   use GenServer
 
-  alias Concentrate.StopTimeUpdate
-  alias Schedule.{Route, Trip}
+  alias Schedule.Route
 
   alias Realtime.{
+    Ghost,
     Vehicle,
     VehicleOrGhost
   }
@@ -103,7 +103,6 @@ defmodule Realtime.Server do
   @spec lookup({:ets.tid(), :all_vehicles}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), :all_shuttles}) :: [Vehicle.t()]
   @spec lookup({:ets.tid(), {:search, search_params()}}) :: [VehicleOrGhost.t()]
-  @spec lookup({:ets.tid(), {:trip_id, Trip.id()}}) :: [StopTimeUpdate.t()]
   def lookup({table, {:search, search_params}}) do
     {table, :all_vehicles}
     |> lookup()
@@ -171,7 +170,8 @@ defmodule Realtime.Server do
     end
 
     for {route_id, vehicles_and_ghosts} <- vehicles_by_route_id do
-      _ = :ets.insert(ets, {{:route_id, route_id}, vehicles_and_ghosts})
+      active_vehicles_and_ghosts = Enum.filter(vehicles_and_ghosts, &block_is_active?/1)
+      _ = :ets.insert(ets, {{:route_id, route_id}, active_vehicles_and_ghosts})
     end
 
     :ets.insert(ets, {:all_vehicles, Enum.uniq(all_vehicles(vehicles_by_route_id) ++ shuttles)})
@@ -204,4 +204,8 @@ defmodule Realtime.Server do
   defp send_data({pid, subscription_key}, state) do
     send(pid, {:new_realtime_data, {state.ets, subscription_key}})
   end
+
+  @spec block_is_active?(VehicleOrGhost.t()) :: boolean
+  defp block_is_active?(%Vehicle{block_is_active: block_is_active}), do: block_is_active
+  defp block_is_active?(%Ghost{}), do: true
 end

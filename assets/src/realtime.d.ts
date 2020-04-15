@@ -75,7 +75,6 @@ export interface Vehicle {
   isOverload: boolean
   isOffCourse: boolean
   layoverDepartureTime: number | null
-  blockIsActive: boolean
   dataDiscrepancies: DataDiscrepancy[]
   stopStatus: VehicleStopStatus
   timepointStatus: VehicleTimepointStatus | null

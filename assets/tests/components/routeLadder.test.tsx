@@ -49,7 +49,6 @@ const vehicles: Vehicle[] = [
     isOverload: false,
     isOffCourse: false,
     layoverDepartureTime: null,
-    blockIsActive: true,
     dataDiscrepancies: [],
     stopStatus: {
       stopId: "57",
@@ -90,7 +89,6 @@ const vehicles: Vehicle[] = [
     isOverload: false,
     isOffCourse: false,
     layoverDepartureTime: null,
-    blockIsActive: true,
     dataDiscrepancies: [],
     stopStatus: {
       stopId: "59",
@@ -390,7 +388,6 @@ describe("routeLadder", () => {
       isOverload: false,
       isOffCourse: false,
       layoverDepartureTime: null,
-      blockIsActive: true,
       dataDiscrepancies: [],
       stopStatus: {
         stopId: "stop",

@@ -38,6 +38,14 @@ defmodule Realtime.ServerTest do
     end_of_trip_type: :another_trip
   }
 
+  @inactive_block %{
+    @vehicle
+    | block_is_active: false,
+      id: "v2",
+      label: "v2-label",
+      run_id: "456-7890"
+  }
+
   @ghost %Ghost{
     id: "ghost-trip",
     direction_id: 0,
@@ -141,6 +149,20 @@ defmodule Realtime.ServerTest do
 
       assert Server.lookup(lookup_args) == []
     end
+
+    test "vehicles on inactive blocks are removed", %{server_pid: server_pid} do
+      Server.subscribe_to_route("1", server_pid)
+
+      Server.update({%{"1" => [@inactive_block]}, []}, server_pid)
+
+      assert_receive(
+        {:new_realtime_data, lookup_args},
+        200,
+        "Client received vehicle positions"
+      )
+
+      assert Server.lookup(lookup_args) == []
+    end
   end
 
   describe "subscribe_to_all_shuttles" do
@@ -200,6 +222,16 @@ defmodule Realtime.ServerTest do
       assert_receive {:new_realtime_data, lookup_args}
       assert Server.lookup(lookup_args) == [@shuttle]
     end
+
+    test "vehicles on inactive blocks are included", %{server_pid: pid} do
+      Server.subscribe_to_search("v2-label", :vehicle, pid)
+
+      Server.update({%{"1" => [@inactive_block]}, []}, pid)
+
+      assert_receive {:new_realtime_data, lookup_args}
+
+      assert Server.lookup(lookup_args) == [@inactive_block]
+    end
   end
 
   describe "lookup/2" do
@@ -213,7 +245,7 @@ defmodule Realtime.ServerTest do
       {:ok, %{ets: ets}}
     end
 
-    test "fetches shuttles by route from the ets table", %{ets: ets} do
+    test "fetches vehicles by route from the ets table", %{ets: ets} do
       assert Server.lookup({ets, {:route_id, "1"}}) == [@vehicle, @ghost]
     end
 
@@ -236,13 +268,13 @@ defmodule Realtime.ServerTest do
       }
 
       vehicle_search_params = %{
-        text: "123",
-        property: :run
+        text: "v1-label",
+        property: :all
       }
 
       operator_search_params = %{
         text: "frank",
-        property: :operator
+        property: :all
       }
 
       assert Server.lookup({ets, {:search, run_search_params}}) == [@vehicle]

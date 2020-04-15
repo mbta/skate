@@ -64,7 +64,6 @@ describe("SearchResults", () => {
       isOverload: false,
       isOffCourse: false,
       layoverDepartureTime: null,
-      blockIsActive: false,
       dataDiscrepancies: [
         {
           attribute: "trip_id",
@@ -149,7 +148,6 @@ describe("SearchResults", () => {
       isOverload: false,
       isOffCourse: false,
       layoverDepartureTime: null,
-      blockIsActive: false,
       dataDiscrepancies: [
         {
           attribute: "trip_id",
@@ -217,7 +215,6 @@ describe("SearchResults", () => {
       isOverload: false,
       isOffCourse: false,
       layoverDepartureTime: null,
-      blockIsActive: false,
       dataDiscrepancies: [
         {
           attribute: "trip_id",
@@ -272,7 +269,6 @@ describe("SearchResults", () => {
       isOverload: false,
       isOffCourse: false,
       layoverDepartureTime: null,
-      blockIsActive: false,
       dataDiscrepancies: [
         {
           attribute: "trip_id",
@@ -357,7 +353,6 @@ describe("SearchResults", () => {
       isOverload: false,
       isOffCourse: false,
       layoverDepartureTime: null,
-      blockIsActive: false,
       dataDiscrepancies: [
         {
           attribute: "trip_id",
@@ -448,7 +443,6 @@ describe("SearchResults", () => {
       isOverload: false,
       isOffCourse: false,
       layoverDepartureTime: null,
-      blockIsActive: false,
       dataDiscrepancies: [
         {
           attribute: "trip_id",

@@ -45,7 +45,6 @@ const vehicle: Vehicle = {
   isOverload: false,
   isOffCourse: false,
   layoverDepartureTime: null,
-  blockIsActive: true,
   dataDiscrepancies: [],
   stopStatus: {
     stopId: "57",
