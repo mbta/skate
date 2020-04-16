@@ -16,19 +16,6 @@ defmodule SkateWeb.RouterTest do
     end
   end
 
-  describe "GET /about (client-side route)" do
-    test "shows you the app, letting the client handle routing", %{conn: conn} do
-      {:ok, token, _} = AuthManager.encode_and_sign("FAKE_UID")
-
-      conn =
-        conn
-        |> put_req_header("authorization", "bearer: " <> token)
-        |> get("/about")
-
-      assert html_response(conn, 200) =~ "div id=\"app\""
-    end
-  end
-
   describe "GET /search (client-side route)" do
     test "shows you the app, letting the client handle routing", %{conn: conn} do
       {:ok, token, _} = AuthManager.encode_and_sign("FAKE_UID")

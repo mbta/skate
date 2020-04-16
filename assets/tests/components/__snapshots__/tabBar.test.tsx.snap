@@ -86,24 +86,6 @@ exports[`tabBar renders 1`] = `
       <a
         aria-current={null}
         className="m-tab-bar__link"
-        href="/about"
-        onClick={[Function]}
-        title="About Skate"
-      >
-        <span
-          className="m-tab-bar__icon"
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </a>
-    </li>
-    <li>
-      <a
-        aria-current={null}
-        className="m-tab-bar__link"
         href="/search"
         onClick={[Function]}
         title="Search"
@@ -119,18 +101,35 @@ exports[`tabBar renders 1`] = `
       </a>
     </li>
   </ul>
-  <button
-    className="m-tab-bar__refresh"
-    onClick={[Function]}
+  <div
+    className="m-tab-bar__bottom-buttons"
   >
-    <span
-      className="m-tab-bar__icon"
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "SVG",
+    <button
+      className="m-tab-bar__help"
+      onClick={[Function]}
+    >
+      <span
+        className="m-tab-bar__icon"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
         }
-      }
-    />
-  </button>
+      />
+    </button>
+    <button
+      className="m-tab-bar__refresh"
+      onClick={[Function]}
+    >
+      <span
+        className="m-tab-bar__icon"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
+        }
+      />
+    </button>
+  </div>
 </div>
 `;

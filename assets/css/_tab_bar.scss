@@ -53,9 +53,14 @@
   }
 }
 
-.m-tab-bar__refresh {
+.m-tab-bar__bottom-buttons {
   bottom: 0;
-  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
   position: absolute;
   width: 100%;
+
+  button {
+    padding: 0.5rem;
+  }
 }

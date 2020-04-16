@@ -4,7 +4,6 @@ import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useAppcues from "../hooks/useAppcues"
 import { ConnectionStatus } from "../hooks/useSocket"
-import AboutPage from "./aboutPage"
 import DataStatusBanner from "./dataStatusBanner"
 import DisconnectedModal from "./disconnectedModal"
 import LadderPage from "./ladderPage"
@@ -33,7 +32,6 @@ const AppRoutes = () => {
           component={ShuttleMapPage}
         />
         <BrowserRoute exact={true} path="/settings" component={SettingsPage} />
-        <BrowserRoute path="/about" component={AboutPage} />
         <BrowserRoute exact={true} path="/search" component={SearchPage} />
         {connectionStatus === ConnectionStatus.Disconnected ? (
           <DisconnectedModal />

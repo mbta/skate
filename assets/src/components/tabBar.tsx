@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react"
-import { NavLink } from "react-router-dom"
+import { NavLink, useLocation } from "react-router-dom"
 import {
   ladderIcon,
   mapIcon,
@@ -15,72 +15,91 @@ interface Props {
 
 const TabBar = ({
   pickerContainerIsVisible,
-}: Props): ReactElement<HTMLDivElement> => (
-  <div
-    className={`m-tab-bar ${pickerContainerIsVisible ? "visible" : "hidden"}`}
-  >
-    <button className="m-tab-bar__logo" onClick={() => reload()}>
-      {skateLogo}
-    </button>
-    <ul className="m-tab-bar__links">
-      <li>
-        <NavLink
-          activeClassName="m-tab-bar__link--active"
-          className="m-tab-bar__link"
-          exact={true}
-          title="Routes"
-          to="/"
-        >
-          {ladderIcon("m-tab-bar__icon")}
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
-          activeClassName="m-tab-bar__link--active"
-          className="m-tab-bar__link"
-          exact={true}
-          title="Shuttle Map"
-          to="/shuttle-map"
-        >
-          {mapIcon("m-tab-bar__icon")}
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
-          activeClassName="m-tab-bar__link--active"
-          className="m-tab-bar__link"
-          title="Settings"
-          to="/settings"
-        >
-          {settingsIcon}
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
-          activeClassName="m-tab-bar__link--active"
-          className="m-tab-bar__link"
-          title="About Skate"
-          to="/about"
-        >
+}: Props): ReactElement<HTMLDivElement> => {
+  const location = useLocation()
+  const displayHelp = (): void => {
+    switch (location.pathname) {
+      case "/":
+        showAppcue("-M2dVpHSaOJ4PddV1K9i")
+        break
+      case "/shuttle-map":
+        showAppcue("-M2i04n1MzdepApShKRj")
+        break
+      case "/settings":
+        showAppcue("-M3lWY6d4P9iQqah5Qjz")
+        break
+      case "/search":
+        showAppcue("-M2iXlrreUJAdmvj29GV")
+        break
+      default:
+        // Show nothing, we shouldn't get here
+        break
+    }
+  }
+
+  return (
+    <div
+      className={`m-tab-bar ${pickerContainerIsVisible ? "visible" : "hidden"}`}
+    >
+      <button className="m-tab-bar__logo" onClick={() => reload()}>
+        {skateLogo}
+      </button>
+      <ul className="m-tab-bar__links">
+        <li>
+          <NavLink
+            activeClassName="m-tab-bar__link--active"
+            className="m-tab-bar__link"
+            exact={true}
+            title="Routes"
+            to="/"
+          >
+            {ladderIcon("m-tab-bar__icon")}
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            activeClassName="m-tab-bar__link--active"
+            className="m-tab-bar__link"
+            exact={true}
+            title="Shuttle Map"
+            to="/shuttle-map"
+          >
+            {mapIcon("m-tab-bar__icon")}
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            activeClassName="m-tab-bar__link--active"
+            className="m-tab-bar__link"
+            title="Settings"
+            to="/settings"
+          >
+            {settingsIcon}
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            activeClassName="m-tab-bar__link--active"
+            className="m-tab-bar__link"
+            title="Search"
+            to="/search"
+          >
+            {searchIcon("m-tab-bar__icon")}
+          </NavLink>
+        </li>
+      </ul>
+
+      <div className="m-tab-bar__bottom-buttons">
+        <button className="m-tab-bar__help" onClick={displayHelp}>
           {questionMarkIcon("m-tab-bar__icon")}
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
-          activeClassName="m-tab-bar__link--active"
-          className="m-tab-bar__link"
-          title="Search"
-          to="/search"
-        >
-          {searchIcon("m-tab-bar__icon")}
-        </NavLink>
-      </li>
-    </ul>
-    <button className="m-tab-bar__refresh" onClick={() => reload()}>
-      {refreshIcon("m-tab-bar__icon")}
-    </button>
-  </div>
-)
+        </button>
+        <button className="m-tab-bar__refresh" onClick={() => reload()}>
+          {refreshIcon("m-tab-bar__icon")}
+        </button>
+      </div>
+    </div>
+  )
+}
 
 const skateLogo = (
   <svg
@@ -110,5 +129,11 @@ const settingsIcon = (
     />
   </svg>
 )
+
+const showAppcue = (appcueId: string): void => {
+  if (window.Appcues) {
+    window.Appcues.show(appcueId)
+  }
+}
 
 export default TabBar
