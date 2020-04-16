@@ -52,7 +52,7 @@
     stroke-width: 1.8;
   }
 
-  .m-vehicle-map--auto-centering & a {
+  .m-vehicle-map-state--auto-centering + .m-vehicle-map & a {
     background-color: $color-button-disabled;
     color: $color-font-grey;
 

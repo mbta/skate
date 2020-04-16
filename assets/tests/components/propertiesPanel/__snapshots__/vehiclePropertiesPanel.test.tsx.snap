@@ -218,7 +218,10 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
       className="m-vehicle-properties-panel__map"
     >
       <div
-        className="m-vehicle-map m-vehicle-map--auto-centering"
+        className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+      />
+      <div
+        className="m-vehicle-map"
         id="id-vehicle-map"
       />
     </div>
@@ -444,7 +447,10 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
       className="m-vehicle-properties-panel__map"
     >
       <div
-        className="m-vehicle-map m-vehicle-map--auto-centering"
+        className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+      />
+      <div
+        className="m-vehicle-map"
         id="id-vehicle-map"
       />
     </div>
@@ -670,7 +676,10 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
       className="m-vehicle-properties-panel__map"
     >
       <div
-        className="m-vehicle-map m-vehicle-map--auto-centering"
+        className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+      />
+      <div
+        className="m-vehicle-map"
         id="id-vehicle-map"
       />
     </div>
@@ -867,7 +876,10 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
       className="m-vehicle-properties-panel__map"
     >
       <div
-        className="m-vehicle-map m-vehicle-map--auto-centering"
+        className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+      />
+      <div
+        className="m-vehicle-map"
         id="id-vehicle-map"
       />
     </div>
@@ -1202,7 +1214,10 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
       className="m-vehicle-properties-panel__map"
     >
       <div
-        className="m-vehicle-map m-vehicle-map--auto-centering"
+        className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+      />
+      <div
+        className="m-vehicle-map"
         id="id-vehicle-map"
       />
     </div>
@@ -1428,7 +1443,10 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
       className="m-vehicle-properties-panel__map"
     >
       <div
-        className="m-vehicle-map m-vehicle-map--auto-centering"
+        className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+      />
+      <div
+        className="m-vehicle-map"
         id="id-vehicle-map"
       />
     </div>
@@ -1668,7 +1686,10 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
       className="m-vehicle-properties-panel__map"
     >
       <div
-        className="m-vehicle-map m-vehicle-map--auto-centering"
+        className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+      />
+      <div
+        className="m-vehicle-map"
         id="id-vehicle-map"
       />
     </div>
@@ -1894,7 +1915,10 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
       className="m-vehicle-properties-panel__map"
     >
       <div
-        className="m-vehicle-map m-vehicle-map--auto-centering"
+        className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+      />
+      <div
+        className="m-vehicle-map"
         id="id-vehicle-map"
       />
     </div>

@@ -388,15 +388,18 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
   }, [shouldAutoCenter, props, containerRef, appState])
 
   const autoCenteringClass = shouldAutoCenter
-    ? "m-vehicle-map--auto-centering"
+    ? "m-vehicle-map-state--auto-centering"
     : ""
 
   return (
-    <div
-      id="id-vehicle-map"
-      className={`m-vehicle-map ${autoCenteringClass}`}
-      ref={(container) => (containerRef.current = container)}
-    />
+    <>
+      <div className={`m-vehicle-map-state ${autoCenteringClass}`} />
+      <div
+        id="id-vehicle-map"
+        className="m-vehicle-map"
+        ref={(container) => (containerRef.current = container)}
+      />
+    </>
   )
 }
 
