@@ -171,7 +171,7 @@ exports[`SearchPage renders a selected vehicle 1`] = `
     className="m-search-page__map"
   >
     <div
-      className="m-vehicle-map m-vehicle-map--auto-centering"
+      className="m-vehicle-map"
       id="id-vehicle-map"
     />
   </div>
@@ -396,7 +396,7 @@ exports[`SearchPage renders a selected vehicle 1`] = `
           className="m-vehicle-properties-panel__map"
         >
           <div
-            className="m-vehicle-map m-vehicle-map--auto-centering"
+            className="m-vehicle-map"
             id="id-vehicle-map"
           />
         </div>
@@ -587,7 +587,7 @@ exports[`SearchPage renders the empty state 1`] = `
     className="m-search-page__map"
   >
     <div
-      className="m-vehicle-map m-vehicle-map--auto-centering"
+      className="m-vehicle-map"
       id="id-vehicle-map"
     />
   </div>
@@ -765,7 +765,7 @@ exports[`SearchPage renders vehicle data 1`] = `
     className="m-search-page__map"
   >
     <div
-      className="m-vehicle-map m-vehicle-map--auto-centering"
+      className="m-vehicle-map"
       id="id-vehicle-map"
     />
   </div>
