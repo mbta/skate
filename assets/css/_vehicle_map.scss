@@ -55,6 +55,7 @@
   .m-vehicle-map-state--auto-centering + .m-vehicle-map & a {
     background-color: $color-button-disabled;
     color: $color-font-grey;
+    cursor: default;
 
     path {
       stroke: $color-font-grey;
