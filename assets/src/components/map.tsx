@@ -278,7 +278,7 @@ const recenterControl = (
       ) as HTMLLinkElement
       link.innerHTML = `<svg
         height="30"
-        viewBox="-7 -5 36 36"
+        viewBox="-5 -2 36 36"
         width="30"
         xmlns="http://www.w3.org/2000/svg"
       >
