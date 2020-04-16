@@ -2,7 +2,7 @@
 
 exports[`map renders 1`] = `
 <div
-  className="m-vehicle-map"
+  className="m-vehicle-map m-vehicle-map--auto-centering"
   id="id-vehicle-map"
 />
 `;
