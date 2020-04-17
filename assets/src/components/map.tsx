@@ -278,7 +278,7 @@ const recenterControl = (
       ) as HTMLLinkElement
       link.innerHTML = `<svg
         height="30"
-        viewBox="-7 -5 36 36"
+        viewBox="-5 -2 36 36"
         width="30"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -387,12 +387,19 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
     setMapState({ map, markers, shapes })
   }, [shouldAutoCenter, props, containerRef, appState])
 
+  const autoCenteringClass = shouldAutoCenter
+    ? "m-vehicle-map-state--auto-centering"
+    : ""
+
   return (
-    <div
-      id="id-vehicle-map"
-      className="m-vehicle-map"
-      ref={(container) => (containerRef.current = container)}
-    />
+    <>
+      <div className={`m-vehicle-map-state ${autoCenteringClass}`} />
+      <div
+        id="id-vehicle-map"
+        className="m-vehicle-map"
+        ref={(container) => (containerRef.current = container)}
+      />
+    </>
   )
 }
 
