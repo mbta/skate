@@ -4,10 +4,12 @@ import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { useRouteShapes } from "../hooks/useShapes"
 import useShuttleVehicles from "../hooks/useShuttleVehicles"
+import featureIsEnabled from "../laboratoryFeatures"
 import { RunId, Vehicle, VehicleId } from "../realtime"
 import { Shape } from "../schedule"
 import Map from "./map"
 import PropertiesPanel from "./propertiesPanel"
+import STABLEPropertiesPanel from "./STABLE/propertiesPanel"
 import ShuttlePicker from "./shuttlePicker"
 
 const filterShuttles = (
@@ -57,9 +59,12 @@ const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
         <Map vehicles={selectedShuttles} shapes={shapes} />
       </div>
 
-      {selectedVehicle && (
-        <PropertiesPanel selectedVehicleOrGhost={selectedVehicle} />
-      )}
+      {selectedVehicle &&
+        (featureIsEnabled("mini_schedule") ? (
+          <PropertiesPanel selectedVehicleOrGhost={selectedVehicle} />
+        ) : (
+          <STABLEPropertiesPanel selectedVehicleOrGhost={selectedVehicle} />
+        ))}
     </div>
   )
 }
