@@ -9,11 +9,7 @@ defmodule Schedule.BlockTest do
     id: "t1",
     route_id: "r",
     service_id: "service",
-    headsign: "h",
-    direction_id: 0,
     block_id: "b",
-    route_pattern_id: "rp",
-    shape_id: "shape1",
     stop_times: [
       %StopTime{stop_id: "s1", time: 3, timepoint_id: "tp1"},
       %StopTime{stop_id: "s7", time: 4, timepoint_id: nil}
@@ -24,11 +20,7 @@ defmodule Schedule.BlockTest do
     id: "t2",
     route_id: "r",
     service_id: "service",
-    headsign: "h",
-    direction_id: 1,
     block_id: "b",
-    route_pattern_id: "rp",
-    shape_id: "shape1",
     stop_times: [
       %StopTime{stop_id: "s7", time: 6, timepoint_id: nil},
       %StopTime{stop_id: "s1", time: 7, timepoint_id: "tp1"}

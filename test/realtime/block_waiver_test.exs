@@ -11,10 +11,7 @@ defmodule Realtime.BlockWaiverTest do
     id: "trip1",
     route_id: "route",
     service_id: "service",
-    headsign: "headsign",
-    direction_id: 0,
     block_id: "block",
-    shape_id: "shape",
     stop_times: [
       %StopTime{stop_id: "stop1", time: 1},
       %StopTime{stop_id: "stop2", time: 2},
@@ -26,10 +23,7 @@ defmodule Realtime.BlockWaiverTest do
     id: "trip2",
     route_id: "route",
     service_id: "service",
-    headsign: "headsign",
-    direction_id: 1,
     block_id: "block",
-    shape_id: "shape",
     stop_times: [
       %StopTime{stop_id: "stop3", time: 4},
       %StopTime{stop_id: "stop2", time: 5},

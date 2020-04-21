@@ -28,7 +28,6 @@ defmodule Realtime.GhostTest do
         direction_id: 0,
         block_id: "block",
         route_pattern_id: "route-X-0",
-        shape_id: "shape1",
         run_id: "run",
         stop_times: [
           %StopTime{
@@ -90,7 +89,6 @@ defmodule Realtime.GhostTest do
         headsign: "headsign",
         direction_id: 0,
         block_id: "block",
-        shape_id: "shape1",
         run_id: "run",
         stop_times: [
           %StopTime{
@@ -130,7 +128,6 @@ defmodule Realtime.GhostTest do
         headsign: "headsign",
         direction_id: 0,
         block_id: "block",
-        shape_id: "shape1",
         run_id: "run",
         stop_times: [
           %StopTime{
@@ -180,7 +177,6 @@ defmodule Realtime.GhostTest do
           headsign: "headsign1",
           direction_id: 0,
           block_id: "block",
-          shape_id: "shape1",
           run_id: "run",
           stop_times: [
             %StopTime{
@@ -197,7 +193,6 @@ defmodule Realtime.GhostTest do
           headsign: "headsign2",
           direction_id: 1,
           block_id: "block",
-          shape_id: "shape2",
           run_id: "run",
           stop_times: [
             %StopTime{
@@ -245,7 +240,6 @@ defmodule Realtime.GhostTest do
         headsign: "headsign",
         direction_id: 0,
         block_id: "block",
-        shape_id: "shape1",
         run_id: "run",
         stop_times: [
           %StopTime{
@@ -284,7 +278,6 @@ defmodule Realtime.GhostTest do
         direction_id: 0,
         block_id: "block",
         route_pattern_id: nil,
-        shape_id: "shape",
         run_id: "run",
         stop_times: [
           %StopTime{
@@ -308,7 +301,6 @@ defmodule Realtime.GhostTest do
         direction_id: 1,
         block_id: "block",
         route_pattern_id: nil,
-        shape_id: "shape",
         run_id: "run",
         stop_times: [
           %StopTime{

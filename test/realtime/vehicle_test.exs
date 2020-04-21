@@ -60,7 +60,6 @@ defmodule Realtime.VehicleTest do
         direction_id: 1,
         block_id: "S28-2",
         route_pattern_id: "28-_-0",
-        shape_id: "shape1",
         run_id: "run1",
         stop_times: [
           %StopTime{stop_id: "18511", time: 0, timepoint_id: "tp1"},
@@ -290,12 +289,7 @@ defmodule Realtime.VehicleTest do
         %Trip{
           id: "1",
           route_id: "28",
-          service_id: "service",
-          headsign: "headsign",
-          direction_id: 1,
           block_id: "S28-2",
-          route_pattern_id: "28-_-1",
-          shape_id: "shape1",
           stop_times: [
             %StopTime{
               stop_id: "6553",
@@ -360,11 +354,7 @@ defmodule Realtime.VehicleTest do
       trip1 = %Trip{
         id: "t1",
         route_id: "r1",
-        service_id: "service",
-        headsign: "Trip 1",
-        direction_id: 1,
         block_id: "b",
-        shape_id: "shape1",
         stop_times: [
           %StopTime{
             stop_id: "s1",
@@ -382,11 +372,7 @@ defmodule Realtime.VehicleTest do
       trip2 = %Trip{
         id: "t2",
         route_id: "r1",
-        service_id: "service",
-        headsign: "Trip 2",
-        direction_id: 0,
         block_id: "b",
-        shape_id: "shape2",
         stop_times: [
           %StopTime{
             stop_id: "s2",
@@ -440,11 +426,7 @@ defmodule Realtime.VehicleTest do
       first_trip = %Trip{
         id: "t1",
         route_id: "r1",
-        service_id: "service",
-        headsign: "Trip 1",
-        direction_id: 1,
         block_id: "b",
-        shape_id: "shape1",
         run_id: "run1",
         stop_times: [
           %StopTime{
@@ -465,11 +447,7 @@ defmodule Realtime.VehicleTest do
       last_trip_of_run = %Trip{
         id: "t2",
         route_id: "r1",
-        service_id: "service",
-        headsign: "Trip 2",
-        direction_id: 0,
         block_id: "b",
-        shape_id: "shape2",
         run_id: "run1",
         stop_times: [
           %StopTime{
@@ -490,11 +468,7 @@ defmodule Realtime.VehicleTest do
       last_trip_of_block = %Trip{
         id: "t3",
         route_id: "r1",
-        service_id: "service",
-        headsign: "Trip 33",
-        direction_id: 0,
         block_id: "b",
-        shape_id: "shape3",
         run_id: "run2",
         stop_times: [
           %StopTime{

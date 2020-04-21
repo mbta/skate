@@ -23,7 +23,7 @@ defmodule Schedule.Trip do
   @enforce_keys [
     :id,
     :route_id,
-    :block_id,
+    :block_id
   ]
 
   @derive Jason.Encoder
