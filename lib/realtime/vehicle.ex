@@ -134,7 +134,7 @@ defmodule Realtime.Vehicle do
     trip = trip_fn.(trip_id)
     route_id = VehiclePosition.route_id(vehicle_position) || (trip && trip.route_id)
     direction_id = VehiclePosition.direction_id(vehicle_position) || (trip && trip.direction_id)
-    block = trip && block_fn.(block_id, trip.service_id)
+    block = trip && trip.service_id && block_fn.(block_id, trip.service_id)
     headsign = trip && trip.headsign
     via_variant = trip && trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id)
     stop_times_on_trip = (trip && trip.stop_times) || []
@@ -183,7 +183,7 @@ defmodule Realtime.Vehicle do
     is_off_course = off_course?(is_overload, is_shuttle, data_discrepancies)
 
     block_waivers =
-      if trip,
+      if trip && trip.service_id,
         do: block_waivers_for_block_and_service_fn.(block_id, trip.service_id),
         else: []
 
@@ -306,6 +306,10 @@ defmodule Realtime.Vehicle do
     :pulling_out
   end
 
+  def route_status(_stop_id, %Trip{stop_times: []}, _block) do
+    :pulling_out
+  end
+
   def route_status(stop_id, trip, block) do
     if stop_id == List.first(trip.stop_times).stop_id do
       # hasn't started trip yet
@@ -328,6 +332,10 @@ defmodule Realtime.Vehicle do
         ) :: end_of_trip_type()
   def end_of_trip_type(block, trip, run_id, stop_id)
       when block == nil or trip == nil or stop_id == nil or run_id == nil do
+    :another_trip
+  end
+
+  def end_of_trip_type(_, %Trip{stop_times: []}, _, _) do
     :another_trip
   end
 

@@ -379,6 +379,7 @@ defmodule Schedule.Data do
     trips
     |> Enum.map(fn trip -> trip.shape_id end)
     |> Enum.uniq()
+    |> Enum.filter(fn shape_id -> shape_id != nil end)
   end
 
   @spec get_shapes_by_ids([Shape.id()], Shape.shapes_by_id()) :: [Shape.t()]

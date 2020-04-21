@@ -9,13 +9,13 @@ defmodule Schedule.Trip do
   @type t :: %__MODULE__{
           id: id(),
           route_id: Route.id(),
-          service_id: Service.id(),
-          headsign: String.t(),
-          direction_id: Direction.id(),
           block_id: Block.id(),
+          service_id: Service.id() | nil,
+          headsign: String.t() | nil,
+          direction_id: Direction.id() | nil,
           # Shuttles do not have route_pattern_ids
           route_pattern_id: RoutePattern.id() | nil,
-          shape_id: Shape.id(),
+          shape_id: Shape.id() | nil,
           run_id: Run.id() | nil,
           stop_times: [StopTime.t()]
         }
@@ -23,11 +23,7 @@ defmodule Schedule.Trip do
   @enforce_keys [
     :id,
     :route_id,
-    :service_id,
-    :headsign,
-    :direction_id,
     :block_id,
-    :shape_id
   ]
 
   @derive Jason.Encoder
@@ -35,14 +31,14 @@ defmodule Schedule.Trip do
   defstruct [
     :id,
     :route_id,
-    :service_id,
-    :headsign,
-    :direction_id,
     :block_id,
-    :route_pattern_id,
-    :shape_id,
-    run_id: nil,
-    stop_times: []
+    service_id: nil,
+    headsign: nil,
+    direction_id: nil,
+    route_pattern_id: nil,
+    shape_id: nil,
+    stop_times: [],
+    run_id: nil
   ]
 
   @spec merge(Gtfs.Trip.t(), [StopTime.t()], Run.id() | nil) :: t()
@@ -50,10 +46,10 @@ defmodule Schedule.Trip do
     %__MODULE__{
       id: gtfs_trip.id,
       route_id: gtfs_trip.route_id,
+      block_id: gtfs_trip.block_id,
       service_id: gtfs_trip.service_id,
       headsign: gtfs_trip.headsign,
       direction_id: gtfs_trip.direction_id,
-      block_id: gtfs_trip.block_id,
       route_pattern_id: gtfs_trip.route_pattern_id,
       shape_id: gtfs_trip.shape_id,
       run_id: run_id,

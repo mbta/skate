@@ -54,7 +54,7 @@ defmodule Concentrate.Consumer.StopTimeUpdates do
       trip_fn = Application.get_env(:realtime, :trip_fn, &Schedule.trip/1)
       trip = trip_fn.(trip_id)
 
-      if trip != nil do
+      if trip != nil and trip.service_id != nil do
         MapSet.put(acc, {trip.block_id, trip.service_id})
       else
         acc
