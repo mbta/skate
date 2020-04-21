@@ -86,6 +86,7 @@ config :skate, SkateWeb.AuthManager,
 
 config :laboratory,
   features: [
+    {:mini_schedule, "Mini-schedule", "Turns on the mini-schedule in the properties panel."},
     {:headway_ladder_colors, "Headway Route Ladder Colors",
      "Turns on colored headway spacing lines on key route route ladders showing when service is bunched or gapped."}
   ],

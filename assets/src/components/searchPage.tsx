@@ -3,11 +3,13 @@ import React, { ReactElement, useContext, useState } from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSearchResults from "../hooks/useSearchResults"
+import featureIsEnabled from "../laboratoryFeatures"
 import { isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
 import { SearchPageState } from "../state/searchPageState"
 import Map from "./map"
 import PropertiesPanel from "./propertiesPanel"
+import STABLEPropertiesPanel from "./STABLE/propertiesPanel"
 import RecentSearches from "./recentSearches"
 import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
@@ -110,9 +112,12 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
         <Map vehicles={onlyVehicles} />
       </div>
 
-      {selectedVehicle && (
-        <PropertiesPanel selectedVehicleOrGhost={selectedVehicle} />
-      )}
+      {selectedVehicle &&
+        (featureIsEnabled("mini_schedule") ? (
+          <PropertiesPanel selectedVehicleOrGhost={selectedVehicle} />
+        ) : (
+          <STABLEPropertiesPanel selectedVehicleOrGhost={selectedVehicle} />
+        ))}
     </div>
   )
 }
