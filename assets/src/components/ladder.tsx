@@ -2,7 +2,7 @@ import useComponentSize from "@rehooks/component-size"
 import React, { useContext, useRef } from "react"
 import ReactTooltip from "react-tooltip"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { partition } from "../helpers/array"
+import { partition, flatten } from "../helpers/array"
 import vehicleLabel from "../helpers/vehicleLabel"
 import featureIsEnabled from "../laboratoryFeatures"
 import { blockWaiverAlertStyle } from "../models/blockWaiver"
@@ -58,17 +58,6 @@ const Ladder = ({
   const { height } = useComponentSize(elementRef)
   const ladderHeight = height - MARGIN_TOP_BOTTOM * 2
 
-  const layoverTopLadderVehicles: LadderVehicle[] = ladderVehiclesForLayovers(
-    vehiclesByPosition.layingOverTop,
-    LayoverBoxPosition.Top,
-    -MARGIN_LAYOVER_TOP
-  )
-  const layoverBottomLadderVehicles: LadderVehicle[] = ladderVehiclesForLayovers(
-    vehiclesByPosition.layingOverBottom,
-    LayoverBoxPosition.Bottom,
-    ladderHeight + MARGIN_LAYOVER_BOTTOM
-  )
-
   const orderedTimepoints: Timepoint[] = orderTimepoints(
     timepoints,
     ladderDirection
@@ -78,6 +67,19 @@ const Ladder = ({
   const timepointStatusY = timepointStatusYFromTimepoints(
     orderedTimepoints,
     timepointSpacingY
+  )
+
+  const layoverTopLadderVehicles: LadderVehicle[] = ladderVehiclesForLayovers(
+    vehiclesByPosition.layingOverTop,
+    LayoverBoxPosition.Top,
+    timepointStatusY,
+    -MARGIN_LAYOVER_TOP
+  )
+  const layoverBottomLadderVehicles: LadderVehicle[] = ladderVehiclesForLayovers(
+    vehiclesByPosition.layingOverBottom,
+    LayoverBoxPosition.Bottom,
+    timepointStatusY,
+    ladderHeight + MARGIN_LAYOVER_BOTTOM
   )
 
   const { ladderVehicles, widthOfLanes } = ladderVehiclesFromVehicles(
@@ -102,12 +104,18 @@ const Ladder = ({
         width={width}
         height={height}
       >
-        {ladderVehicles.filter(notOverload).map((ladderVehicle) => (
-          <ScheduledLine
-            key={`line-${ladderVehicle.vehicle.id}`}
-            ladderVehicle={ladderVehicle}
-          />
-        ))}
+        {flatten([
+          layoverTopLadderVehicles,
+          layoverBottomLadderVehicles,
+          ladderVehicles,
+        ])
+          .filter(notOverload)
+          .map((ladderVehicle) => (
+            <ScheduledLine
+              key={`line-${ladderVehicle.vehicle.id}`}
+              ladderVehicle={ladderVehicle}
+            />
+          ))}
         {layoverTopLadderVehicles.map((ladderVehicle) => (
           <VehicleSvg
             key={`vehicle-${ladderVehicle.vehicle.id}`}
@@ -298,7 +306,11 @@ const ScheduledLine = ({
   ladderVehicle: LadderVehicle
 }) => {
   const status = drawnStatus(vehicle)
-  if (!scheduledY || status === "off-course" || status === "ghost") {
+  if (
+    scheduledY === undefined ||
+    status === "off-course" ||
+    status === "ghost"
+  ) {
     return null
   }
 

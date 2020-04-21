@@ -1,4 +1,4 @@
-import { Vehicle } from "../../src/realtime.d"
+import { Vehicle, VehicleScheduledLocation } from "../../src/realtime.d"
 import {
   byLayoverDeparture,
   ladderVehiclesForLayovers,
@@ -7,31 +7,129 @@ import {
 import { VehicleDirection } from "../../src/models/ladderDirection"
 
 describe("ladderVehiclesForLayovers", () => {
+  const vehicle: Vehicle = {
+    id: "vehicle",
+    tripId: "next-trip",
+    layoverDepartureTime: 0,
+    scheduledLocation: null,
+  } as Vehicle
   const soonest: Vehicle = {
     id: "soonest",
+    tripId: "soonest",
     layoverDepartureTime: 1500000000,
+    scheduledLocation: null,
   } as Vehicle
   const soon: Vehicle = {
     id: "soon",
+    tripId: "soon",
     layoverDepartureTime: 1500000002,
+    scheduledLocation: null,
   } as Vehicle
   const later: Vehicle = {
     id: "later",
+    tripId: "later",
     layoverDepartureTime: 1500000004,
+    scheduledLocation: null,
   } as Vehicle
 
   test("works for 0 vehicles", () => {
     expect(
-      ladderVehiclesForLayovers([], LayoverBoxPosition.Bottom, 99)
+      ladderVehiclesForLayovers([], LayoverBoxPosition.Bottom, () => 55, 99)
     ).toEqual([])
   })
 
   test("works for 1 vehicle", () => {
     expect(
-      ladderVehiclesForLayovers([soon], LayoverBoxPosition.Bottom, 99)
+      ladderVehiclesForLayovers(
+        [vehicle],
+        LayoverBoxPosition.Bottom,
+        () => 55,
+        99
+      )
     ).toEqual([
       {
-        vehicle: soon,
+        vehicle,
+        x: 0,
+        y: 99,
+        vehicleDirection: VehicleDirection.Up,
+        scheduledY: undefined,
+        scheduledVehicleDirection: undefined,
+      },
+    ])
+  })
+
+  test("includes info for scheduled line", () => {
+    const vehicleWithScheduledLocation = {
+      ...vehicle,
+      scheduledLocation: {
+        tripId: "next-trip",
+        timeSinceTripStartTime: 10,
+      } as VehicleScheduledLocation,
+    }
+    expect(
+      ladderVehiclesForLayovers(
+        [vehicleWithScheduledLocation],
+        LayoverBoxPosition.Bottom,
+        () => 55,
+        99
+      )
+    ).toEqual([
+      {
+        vehicle: vehicleWithScheduledLocation,
+        x: 0,
+        y: 99,
+        vehicleDirection: VehicleDirection.Up,
+        scheduledY: 55,
+        scheduledVehicleDirection: VehicleDirection.Up,
+      },
+    ])
+  })
+
+  test("does not include scheduled line if the layover isn't scheduled to be done", () => {
+    const vehicleWithScheduledLocation = {
+      ...vehicle,
+      scheduledLocation: {
+        tripId: "next-trip",
+        timeSinceTripStartTime: -10,
+      } as VehicleScheduledLocation,
+    }
+    expect(
+      ladderVehiclesForLayovers(
+        [vehicleWithScheduledLocation],
+        LayoverBoxPosition.Bottom,
+        () => 55,
+        99
+      )
+    ).toEqual([
+      {
+        vehicle: vehicleWithScheduledLocation,
+        x: 0,
+        y: 99,
+        vehicleDirection: VehicleDirection.Up,
+        scheduledY: undefined,
+        scheduledVehicleDirection: undefined,
+      },
+    ])
+  })
+
+  test("does not include scheduled line if the layover isn't scheduled to be started", () => {
+    const vehicleWithScheduledLocation = {
+      ...vehicle,
+      scheduledLocation: {
+        tripId: "previous-trip",
+        timeSinceTripStartTime: 10,
+      } as VehicleScheduledLocation,
+    }
+    expect(
+      ladderVehiclesForLayovers(
+        [vehicleWithScheduledLocation],
+        LayoverBoxPosition.Bottom,
+        () => 55,
+        99
+      )
+    ).toEqual([
+      {
+        vehicle: vehicleWithScheduledLocation,
         x: 0,
         y: 99,
         vehicleDirection: VehicleDirection.Up,
@@ -46,6 +144,7 @@ describe("ladderVehiclesForLayovers", () => {
       ladderVehiclesForLayovers(
         [soon, later],
         LayoverBoxPosition.Bottom,
+        () => 55,
         99
       ).map((ladderVehicle) => ladderVehicle.x)
     ).toEqual([-15, 15])
@@ -54,7 +153,7 @@ describe("ladderVehiclesForLayovers", () => {
   test("on the top, puts soonest departure on the left", () => {
     const vehicles = [soon, soonest, later]
     expect(
-      ladderVehiclesForLayovers(vehicles, LayoverBoxPosition.Top, -5)
+      ladderVehiclesForLayovers(vehicles, LayoverBoxPosition.Top, () => 55, -5)
     ).toEqual([
       {
         vehicle: soonest,
@@ -86,7 +185,12 @@ describe("ladderVehiclesForLayovers", () => {
   test("on the bottom, puts soonest departure on the right", () => {
     const vehicles = [soon, soonest, later]
     expect(
-      ladderVehiclesForLayovers(vehicles, LayoverBoxPosition.Bottom, 99)
+      ladderVehiclesForLayovers(
+        vehicles,
+        LayoverBoxPosition.Bottom,
+        () => 55,
+        99
+      )
     ).toEqual([
       {
         vehicle: later,
