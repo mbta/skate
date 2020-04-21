@@ -1,6 +1,8 @@
 import { VehicleDirection } from "../models/ladderDirection"
 import { LadderVehicle } from "../models/ladderVehicle"
 import { VehicleOrGhost } from "../realtime"
+import { TimepointStatusYFunc } from "../components/ladder"
+import { isVehicle } from "./vehicle"
 
 export enum LayoverBoxPosition {
   Top = 1,
@@ -26,25 +28,53 @@ export const byLayoverDeparture = (isBottomLayoverBox: boolean) => (
 export const ladderVehiclesForLayovers = (
   vehiclesAndGhosts: VehicleOrGhost[],
   position: LayoverBoxPosition,
+  timepointStatusY: TimepointStatusYFunc,
   y: number
 ): LadderVehicle[] => {
   const isBottomLayoverBox = position === LayoverBoxPosition.Bottom
   const numVehicles = vehiclesAndGhosts.length
-  const widthPerVehicle = 30
+  // vehicleDirection for the trip that will be starting soon
+  const vehicleDirection: VehicleDirection = isBottomLayoverBox
+    ? VehicleDirection.Up
+    : VehicleDirection.Down
   return vehiclesAndGhosts
     .sort(byLayoverDeparture(isBottomLayoverBox))
     .map((vehicleOrGhost, index) => {
-      const x = (index - (numVehicles - 1) / 2) * widthPerVehicle
+      const scheduledY = vehicleScheduledY(
+        vehicleOrGhost,
+        timepointStatusY,
+        /* We can only use the realtime vehicleDirection to calculate the scheduled position because
+        we only show the scheduled line if the scheduled trip is the same as the realtime trip. */
+        vehicleDirection
+      )
       return {
         vehicle: vehicleOrGhost,
-        x,
+        x: x(index, numVehicles),
         y,
-        // vehicleDirection for the trip that will be starting soon
-        vehicleDirection: isBottomLayoverBox
-          ? VehicleDirection.Up
-          : VehicleDirection.Down,
-        scheduledY: undefined,
-        scheduledVehicleDirection: undefined,
+        vehicleDirection,
+        scheduledY,
+        scheduledVehicleDirection:
+          scheduledY !== undefined ? vehicleDirection : undefined,
       }
     })
 }
+
+const x = (index: number, numVehicles: number): number => {
+  const widthPerVehicle = 30
+  return (index - (numVehicles - 1) / 2) * widthPerVehicle
+}
+
+const vehicleScheduledY = (
+  vehicle: VehicleOrGhost,
+  timepointStatusY: TimepointStatusYFunc,
+  scheduledVehicleDirection: VehicleDirection
+) =>
+  isVehicle(vehicle) &&
+  vehicle.scheduledLocation !== null &&
+  vehicle.scheduledLocation.tripId === vehicle.tripId &&
+  vehicle.scheduledLocation.timeSinceTripStartTime >= 0
+    ? timepointStatusY(
+        vehicle.scheduledLocation.timepointStatus,
+        scheduledVehicleDirection
+      )
+    : undefined

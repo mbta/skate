@@ -58,17 +58,6 @@ const Ladder = ({
   const { height } = useComponentSize(elementRef)
   const ladderHeight = height - MARGIN_TOP_BOTTOM * 2
 
-  const layoverTopLadderVehicles: LadderVehicle[] = ladderVehiclesForLayovers(
-    vehiclesByPosition.layingOverTop,
-    LayoverBoxPosition.Top,
-    -MARGIN_LAYOVER_TOP
-  )
-  const layoverBottomLadderVehicles: LadderVehicle[] = ladderVehiclesForLayovers(
-    vehiclesByPosition.layingOverBottom,
-    LayoverBoxPosition.Bottom,
-    ladderHeight + MARGIN_LAYOVER_BOTTOM
-  )
-
   const orderedTimepoints: Timepoint[] = orderTimepoints(
     timepoints,
     ladderDirection
@@ -78,6 +67,19 @@ const Ladder = ({
   const timepointStatusY = timepointStatusYFromTimepoints(
     orderedTimepoints,
     timepointSpacingY
+  )
+
+  const layoverTopLadderVehicles: LadderVehicle[] = ladderVehiclesForLayovers(
+    vehiclesByPosition.layingOverTop,
+    LayoverBoxPosition.Top,
+    timepointStatusY,
+    -MARGIN_LAYOVER_TOP
+  )
+  const layoverBottomLadderVehicles: LadderVehicle[] = ladderVehiclesForLayovers(
+    vehiclesByPosition.layingOverBottom,
+    LayoverBoxPosition.Bottom,
+    timepointStatusY,
+    ladderHeight + MARGIN_LAYOVER_BOTTOM
   )
 
   const { ladderVehicles, widthOfLanes } = ladderVehiclesFromVehicles(
