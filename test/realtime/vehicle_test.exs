@@ -183,6 +183,25 @@ defmodule Realtime.VehicleTest do
       assert result.headway_secs == nil
       assert result.headway_spacing == nil
     end
+
+    test "handles unknown trips" do
+      reassign_env(:realtime, :trip_fn, fn _ -> nil end)
+      result = Vehicle.from_vehicle_position(@vehicle_position)
+      assert %Vehicle{} = result
+    end
+
+    test "handles trips with incomplete data" do
+      reassign_env(:realtime, :trip_fn, fn _ ->
+        %Trip{
+          id: "39984755",
+          route_id: "28",
+          block_id: "S28-2"
+        }
+      end)
+
+      result = Vehicle.from_vehicle_position(@vehicle_position)
+      assert %Vehicle{} = result
+    end
   end
 
   describe "off_course?/2" do

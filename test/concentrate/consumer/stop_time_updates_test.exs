@@ -69,6 +69,14 @@ defmodule Concentrate.Consumer.StopTimeUpdatesTest do
 
       assert response == {:noreply, [], %{}}
     end
+
+    test "trips with missing data", %{events: events} do
+      reassign_env(:realtime, :trip_fn, fn _trip_id -> %{@trip | service_id: nil} end)
+
+      response = StopTimeUpdates.handle_events(events, nil, %{})
+
+      assert response == {:noreply, [], %{}}
+    end
   end
 
   describe "stop_time_updates_by_trip/1" do
