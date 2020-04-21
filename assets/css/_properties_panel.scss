@@ -13,8 +13,8 @@
   z-index: 1001;
 }
 
-.m-properties-panel .m-properties-list {
-  border-top: 1px solid $color-rule;
+.m-properties-panel .m-properties-panel__header {
+  border-bottom: 1px solid $color-rule;
 }
 
 .m-properties-panel__modal-overlay {

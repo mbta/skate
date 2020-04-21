@@ -10,6 +10,7 @@ import PropertiesList from "../propertiesList"
 import BlockWaiverList from "./blockWaiverList"
 import Header from "./header"
 import HeadwayDiagram from "./headwayDiagram"
+import StatusRunBlockTabs from "./status_run_block_tabs"
 
 interface Props {
   selectedVehicle: Vehicle
@@ -124,6 +125,18 @@ const inDebugMode = (): boolean =>
 const shouldShowDataDiscrepancies = ({ dataDiscrepancies }: Vehicle): boolean =>
   inDebugMode() && dataDiscrepancies.length > 0
 
+const StatusContent = ({ selectedVehicle }: { selectedVehicle: Vehicle }) => (
+  <>
+    <PropertiesList vehicleOrGhost={selectedVehicle} />
+
+    <Location vehicle={selectedVehicle} />
+
+    {shouldShowDataDiscrepancies(selectedVehicle) && (
+      <DataDiscrepancies vehicle={selectedVehicle} />
+    )}
+  </>
+)
+
 const VehiclePropertiesPanel = ({ selectedVehicle, route }: Props) => (
   <div className="m-vehicle-properties-panel">
     <Header vehicle={selectedVehicle} route={route} />
@@ -138,12 +151,12 @@ const VehiclePropertiesPanel = ({ selectedVehicle, route }: Props) => (
       <HeadwayDiagram vehicle={selectedVehicle} />
     )}
 
-    <PropertiesList vehicleOrGhost={selectedVehicle} />
-
-    <Location vehicle={selectedVehicle} />
-
-    {shouldShowDataDiscrepancies(selectedVehicle) && (
-      <DataDiscrepancies vehicle={selectedVehicle} />
+    {selectedVehicle.isShuttle ? (
+      <StatusContent selectedVehicle={selectedVehicle} />
+    ) : (
+      <StatusRunBlockTabs
+        statusContent={<StatusContent selectedVehicle={selectedVehicle} />}
+      />
     )}
   </div>
 )
