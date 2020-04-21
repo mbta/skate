@@ -298,7 +298,11 @@ const ScheduledLine = ({
   ladderVehicle: LadderVehicle
 }) => {
   const status = drawnStatus(vehicle)
-  if (!scheduledY || status === "off-course" || status === "ghost") {
+  if (
+    scheduledY === undefined ||
+    status === "off-course" ||
+    status === "ghost"
+  ) {
     return null
   }
 
