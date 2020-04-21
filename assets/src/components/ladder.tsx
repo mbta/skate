@@ -2,7 +2,7 @@ import useComponentSize from "@rehooks/component-size"
 import React, { useContext, useRef } from "react"
 import ReactTooltip from "react-tooltip"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { partition } from "../helpers/array"
+import { partition, flatten } from "../helpers/array"
 import vehicleLabel from "../helpers/vehicleLabel"
 import featureIsEnabled from "../laboratoryFeatures"
 import { blockWaiverAlertStyle } from "../models/blockWaiver"
@@ -104,12 +104,18 @@ const Ladder = ({
         width={width}
         height={height}
       >
-        {ladderVehicles.filter(notOverload).map((ladderVehicle) => (
-          <ScheduledLine
-            key={`line-${ladderVehicle.vehicle.id}`}
-            ladderVehicle={ladderVehicle}
-          />
-        ))}
+        {flatten([
+          layoverTopLadderVehicles,
+          layoverBottomLadderVehicles,
+          ladderVehicles,
+        ])
+          .filter(notOverload)
+          .map((ladderVehicle) => (
+            <ScheduledLine
+              key={`line-${ladderVehicle.vehicle.id}`}
+              ladderVehicle={ladderVehicle}
+            />
+          ))}
         {layoverTopLadderVehicles.map((ladderVehicle) => (
           <VehicleSvg
             key={`vehicle-${ladderVehicle.vehicle.id}`}
