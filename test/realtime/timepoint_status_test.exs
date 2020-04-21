@@ -231,10 +231,10 @@ defmodule Realtime.TimepointStatusTest do
         %Trip{
           id: "1",
           route_id: "28",
+          block_id: "S28-2",
           service_id: "service",
           headsign: "headsign",
           direction_id: 1,
-          block_id: "S28-2",
           route_pattern_id: "28-_-1",
           run_id: "run1",
           stop_times: [
@@ -275,10 +275,10 @@ defmodule Realtime.TimepointStatusTest do
         %Trip{
           id: "1",
           route_id: "28",
+          block_id: "S28-2",
           service_id: "service",
           headsign: "headsign",
           direction_id: 1,
-          block_id: "S28-2",
           route_pattern_id: "28-_-1",
           run_id: "run1",
           stop_times: [
@@ -319,10 +319,10 @@ defmodule Realtime.TimepointStatusTest do
         %Trip{
           id: "0",
           route_id: "28",
+          block_id: "S28-2",
           service_id: "service",
           headsign: "headsign",
           direction_id: 0,
-          block_id: "S28-2",
           route_pattern_id: "28-_-0",
           run_id: "run1",
           stop_times: [
@@ -341,10 +341,10 @@ defmodule Realtime.TimepointStatusTest do
         %Trip{
           id: "1",
           route_id: "28",
+          block_id: "S28-2",
           service_id: "service",
           headsign: "headsign",
           direction_id: 1,
-          block_id: "S28-2",
           route_pattern_id: "28-_-1",
           run_id: "run1",
           stop_times: [
@@ -380,10 +380,10 @@ defmodule Realtime.TimepointStatusTest do
         %Trip{
           id: "1",
           route_id: "28",
+          block_id: "S28-2",
           service_id: "service",
           headsign: "headsign",
           direction_id: 1,
-          block_id: "S28-2",
           route_pattern_id: "28-_-1",
           run_id: "run1",
           stop_times: [

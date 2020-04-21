@@ -21,10 +21,10 @@ defmodule Schedule.TripTest do
   @trip %Trip{
     id: "trip",
     route_id: "route",
+    block_id: "block",
     service_id: "service",
     headsign: "headsign",
     direction_id: 0,
-    block_id: "block",
     shape_id: "shape",
     run_id: "run",
     stop_times: @stop_times

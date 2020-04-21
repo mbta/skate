@@ -55,10 +55,10 @@ defmodule Realtime.VehicleTest do
       trip = %Trip{
         id: "39984755",
         route_id: "28",
+        block_id: "S28-2",
         service_id: "service",
         headsign: "headsign",
         direction_id: 1,
-        block_id: "S28-2",
         route_pattern_id: "28-_-0",
         run_id: "run1",
         stop_times: [

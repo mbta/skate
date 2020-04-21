@@ -195,8 +195,8 @@ defmodule Schedule.DataTest do
       trip = %Trip{
         id: "t1",
         route_id: "r1",
-        service_id: "service",
         block_id: "b",
+        service_id: "service",
         stop_times: [
           %StopTime{stop_id: "s1", time: 1, timepoint_id: nil}
         ]
@@ -220,8 +220,8 @@ defmodule Schedule.DataTest do
       trip = %Trip{
         id: "t1",
         route_id: "r1",
-        service_id: "service",
         block_id: "b",
+        service_id: "service",
         stop_times: [
           %StopTime{stop_id: "s1", time: 1, timepoint_id: nil}
         ]
@@ -290,8 +290,8 @@ defmodule Schedule.DataTest do
       trip = %Trip{
         id: "active",
         route_id: "route",
-        service_id: "today",
         block_id: "active",
+        service_id: "today",
         stop_times: [
           %StopTime{
             stop_id: "stop",
@@ -326,8 +326,8 @@ defmodule Schedule.DataTest do
       trip = %Trip{
         id: "trip",
         route_id: "route",
-        service_id: "today",
         block_id: "block",
+        service_id: "today",
         stop_times: [
           %StopTime{
             stop_id: "stop",
@@ -360,8 +360,8 @@ defmodule Schedule.DataTest do
       trip = %Trip{
         id: "trip",
         route_id: "route",
-        service_id: "tomorrow",
         block_id: "block",
+        service_id: "tomorrow",
         stop_times: [
           %StopTime{
             stop_id: "stop",
@@ -394,8 +394,8 @@ defmodule Schedule.DataTest do
       trip = %Trip{
         id: "trip",
         route_id: "route",
-        service_id: "yesterday",
         block_id: "block",
+        service_id: "yesterday",
         stop_times: [
           %StopTime{
             stop_id: "stop",
@@ -432,8 +432,8 @@ defmodule Schedule.DataTest do
         %Trip{
           id: "trip",
           route_id: "route",
-          service_id: "today",
           block_id: "block",
+          service_id: "today",
           stop_times: [
             %StopTime{
               stop_id: "stop",
@@ -481,8 +481,8 @@ defmodule Schedule.DataTest do
             %Trip{
               id: "trip",
               route_id: "route",
-              service_id: "today",
               block_id: "block",
+              service_id: "today",
               stop_times: [
                 %StopTime{
                   stop_id: "stop",
@@ -512,8 +512,8 @@ defmodule Schedule.DataTest do
         %Trip{
           id: "first",
           route_id: "route",
-          service_id: "today",
           block_id: "block",
+          service_id: "today",
           stop_times: [
             %StopTime{
               stop_id: "stop",
@@ -524,8 +524,8 @@ defmodule Schedule.DataTest do
         %Trip{
           id: "second",
           route_id: "route",
-          service_id: "today",
           block_id: "block",
+          service_id: "today",
           stop_times: [
             %StopTime{
               stop_id: "stop",
@@ -560,8 +560,8 @@ defmodule Schedule.DataTest do
         %Trip{
           id: "first",
           route_id: "route",
-          service_id: "today",
           block_id: "block",
+          service_id: "today",
           stop_times: [
             %StopTime{
               stop_id: "stop",
@@ -575,8 +575,8 @@ defmodule Schedule.DataTest do
         %Trip{
           id: "second",
           route_id: "route",
-          service_id: "tomorrow",
           block_id: "block",
+          service_id: "tomorrow",
           stop_times: [
             %StopTime{
               stop_id: "stop",
