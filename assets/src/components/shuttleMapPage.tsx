@@ -5,8 +5,10 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { useRouteShapes } from "../hooks/useShapes"
 import useShuttleVehicles from "../hooks/useShuttleVehicles"
 import featureIsEnabled from "../laboratoryFeatures"
-import { RunId, Vehicle, VehicleId } from "../realtime"
-import { Shape } from "../schedule"
+import useTrainVehicles from "../hooks/useTrainVehicles"
+import { isASubwayRoute } from "../models/subwayRoute"
+import { RunId, TrainVehicle, Vehicle, VehicleId } from "../realtime"
+import { ByRouteId, RouteId, Shape } from "../schedule"
 import Map from "./map"
 import PropertiesPanel from "./propertiesPanel"
 import STABLEPropertiesPanel from "./STABLE/propertiesPanel"
@@ -25,6 +27,14 @@ const filterShuttles = (
   )
 }
 
+export const allTrainVehicles = (
+  trainVehiclesByRouteId: ByRouteId<TrainVehicle[]>
+): TrainVehicle[] =>
+  Object.values(trainVehiclesByRouteId).reduce(
+    (acc, trains) => acc.concat(trains),
+    []
+  )
+
 const findSelectedVehicle = (
   vehicles: Vehicle[],
   selectedVehicleId: VehicleId | undefined
@@ -41,6 +51,14 @@ const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const shuttles: Vehicle[] | null = useShuttleVehicles(socket)
   const shapes: Shape[] = useRouteShapes(selectedShuttleRouteIds)
+
+  const selectedSubwayRouteIds: RouteId[] = selectedShuttleRouteIds.filter(
+    isASubwayRoute
+  )
+  const trainVehicles: TrainVehicle[] = allTrainVehicles(
+    useTrainVehicles(socket, selectedSubwayRouteIds)
+  )
+
   const selectedShuttles: Vehicle[] = filterShuttles(
     shuttles || [],
     selectedShuttleRunIds
@@ -56,7 +74,11 @@ const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
       <ShuttlePicker shuttles={shuttles} />
 
       <div className="m-shuttle-map__map">
-        <Map vehicles={selectedShuttles} shapes={shapes} />
+        <Map
+          vehicles={selectedShuttles}
+          shapes={shapes}
+          trainVehicles={trainVehicles}
+        />
       </div>
 
       {selectedVehicle &&

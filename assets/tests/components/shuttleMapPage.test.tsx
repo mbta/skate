@@ -1,10 +1,13 @@
 import React from "react"
 import renderer from "react-test-renderer"
-import ShuttleMapPage from "../../src/components/shuttleMapPage"
+import ShuttleMapPage, {
+  allTrainVehicles,
+} from "../../src/components/shuttleMapPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useShuttleVehicles from "../../src/hooks/useShuttleVehicles"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { Vehicle } from "../../src/realtime"
+import { TrainVehicle, Vehicle } from "../../src/realtime"
+import { ByRouteId } from "../../src/schedule"
 import { initialState } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
 
@@ -114,5 +117,22 @@ describe("Shuttle Map Page", () => {
       )
       .toJSON()
     expect(tree).toMatchSnapshot()
+  })
+})
+
+describe("allTrainVehicles", () => {
+  test("returns all train vehicles in a single list", () => {
+    const trainVehicle: TrainVehicle = {
+      id: "R-5463D2D3",
+      directionId: 1,
+      latitude: 42.24615,
+      longitude: -71.00369,
+      bearing: 15,
+    }
+    const trainVehiclesByRouteId: ByRouteId<TrainVehicle[]> = {
+      Red: [trainVehicle],
+    }
+
+    expect(allTrainVehicles(trainVehiclesByRouteId)).toEqual([trainVehicle])
   })
 })
