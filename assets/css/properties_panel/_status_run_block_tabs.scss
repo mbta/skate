@@ -16,7 +16,7 @@
 .m-tabs__tab {
   @include button-base;
   background-color: $color-button-simple;
-  border-left: 1px solid $white;
+  border-left: 1px solid $color-bg-base;
   border-radius: 0;
   color: $color-font-grey;
   display: inline-block;
@@ -31,7 +31,12 @@
 
   &--selected {
     background-color: $color-button-light;
+    border-left-color: $white;
     color: $color-font-dark;
+  }
+
+  &--selected + & {
+    border-left-color: $white;
   }
 }
 
