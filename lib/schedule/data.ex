@@ -7,10 +7,10 @@ defmodule Schedule.Data do
   alias Schedule.Block
   alias Schedule.Csv
   alias Schedule.Trip
-  alias Schedule.Hastus.Run
   alias Schedule.Minischedule
 
   alias Schedule.Gtfs
+
   alias Schedule.Gtfs.{
     Calendar,
     Direction,
@@ -222,9 +222,6 @@ defmodule Schedule.Data do
 
     directions_by_route_id = directions_by_route_id(gtfs_files["directions.txt"])
 
-    run_ids_by_trip_id =
-      Map.new(hastus_trips, fn hastus_trip -> {hastus_trip.trip_id, hastus_trip.run_id} end)
-
     bus_routes =
       Csv.parse(
         gtfs_files["routes.txt"],
@@ -238,25 +235,25 @@ defmodule Schedule.Data do
 
     timepoints_by_id = all_timepoints_by_id(gtfs_files["checkpoints.txt"])
 
-    bus_trips =
-      bus_trips(
-        gtfs_files["trips.txt"],
-        gtfs_files["stop_times.txt"],
-        bus_route_ids,
-        run_ids_by_trip_id
-      )
+    gtfs_trips = Gtfs.Trip.parse(gtfs_files["trips.txt"], bus_route_ids)
+    gtfs_trip_ids = MapSet.new(gtfs_trips, & &1.id)
 
-    trips = Map.new(bus_trips, fn trip -> {trip.id, trip} end)
+    stop_times_by_id =
+      gtfs_files["stop_times.txt"]
+      |> Csv.parse(filter: &StopTime.row_in_trip_id_set?(&1, gtfs_trip_ids))
+      |> StopTime.trip_stop_times_from_csv()
+
+    trips_by_id = Trip.merge_trips(gtfs_trips, hastus_trips, stop_times_by_id)
 
     %__MODULE__{
       routes: bus_routes,
       route_patterns: route_patterns,
       timepoints_by_route:
-        timepoints_for_routes(route_patterns, bus_route_ids, trips, timepoints_by_id),
-      shapes: shapes_by_route_id(gtfs_files["shapes.txt"], bus_trips),
+        timepoints_for_routes(route_patterns, bus_route_ids, stop_times_by_id, timepoints_by_id),
+      shapes: shapes_by_route_id(gtfs_files["shapes.txt"], gtfs_trips),
       stops: all_stops_by_id(gtfs_files["stops.txt"]),
-      trips: trips,
-      blocks: Block.group_trips_by_block(bus_trips),
+      trips: trips_by_id,
+      blocks: Block.group_trips_by_block(Map.values(trips_by_id)),
       calendar: Calendar.from_files(gtfs_files["calendar.txt"], gtfs_files["calendar_dates.txt"]),
       minischedule_runs: minischedule_runs,
       minischedule_blocks: minischedule_blocks
@@ -307,31 +304,32 @@ defmodule Schedule.Data do
   @spec timepoints_for_routes(
           [RoutePattern.t()],
           MapSet.t(Route.id()),
-          trips_by_id(),
+          StopTime.by_id(),
           Timepoint.timepoints_by_id()
         ) ::
           timepoints_by_route()
-  defp timepoints_for_routes(route_patterns, route_ids, trips, timepoints_by_id) do
+  defp timepoints_for_routes(route_patterns, route_ids, stop_times_by_id, timepoints_by_id) do
     Map.new(route_ids, fn route_id ->
-      {route_id, timepoints_for_route(route_patterns, route_id, trips, timepoints_by_id)}
+      {route_id,
+       timepoints_for_route(route_patterns, route_id, stop_times_by_id, timepoints_by_id)}
     end)
   end
 
   @spec timepoints_for_route(
           [RoutePattern.t()],
           Route.id(),
-          trips_by_id(),
+          StopTime.by_id(),
           Timepoint.timepoints_by_id()
         ) ::
           [
             Timepoint.t()
           ]
-  def timepoints_for_route(route_patterns, route_id, trips, timepoints_by_id) do
+  def timepoints_for_route(route_patterns, route_id, stop_times_by_id, timepoints_by_id) do
     timepoints_by_direction =
       route_patterns
       |> route_patterns_by_direction(route_id)
       |> Helpers.map_values(fn route_patterns ->
-        timepoints_for_route_patterns(route_patterns, trips, timepoints_by_id)
+        timepoints_for_route_patterns(route_patterns, stop_times_by_id, timepoints_by_id)
       end)
 
     Schedule.Helpers.merge_lists([
@@ -343,18 +341,18 @@ defmodule Schedule.Data do
   # All route_patterns should be in the same direction
   @spec timepoints_for_route_patterns(
           [RoutePattern.t()],
-          trips_by_id(),
+          StopTime.by_id(),
           Timepoint.timepoints_by_id()
         ) :: [
           Timepoint.t()
         ]
-  defp timepoints_for_route_patterns(route_patterns, trips, timepoints_by_id) do
+  defp timepoints_for_route_patterns(route_patterns, stop_times_by_id, timepoints_by_id) do
     route_patterns
     |> Enum.map(fn route_pattern ->
       trip_id = route_pattern.representative_trip_id
-      trip = trips[trip_id]
+      stop_times = stop_times_by_id[trip_id]
 
-      trip.stop_times
+      stop_times
       |> Enum.filter(& &1.timepoint_id)
       |> Enum.map(fn stop_time ->
         Timepoint.timepoint_for_id(timepoints_by_id, stop_time.timepoint_id)
@@ -363,7 +361,7 @@ defmodule Schedule.Data do
     |> Schedule.Helpers.merge_lists()
   end
 
-  @spec shapes_by_route_id(binary(), [Trip.t()]) :: shapes_by_route_id()
+  @spec shapes_by_route_id(binary(), [Gtfs.Trip.t()]) :: shapes_by_route_id()
   defp shapes_by_route_id(shapes_data, trips) do
     shapes_by_id = Shape.from_file(shapes_data)
 
@@ -375,7 +373,7 @@ defmodule Schedule.Data do
     end)
   end
 
-  @spec shape_ids_on_trips([Trip.t()]) :: [Shape.id()]
+  @spec shape_ids_on_trips([Gtfs.Trip.t()]) :: [Shape.id()]
   defp shape_ids_on_trips(trips) do
     trips
     |> Enum.map(fn trip -> trip.shape_id end)
@@ -395,29 +393,5 @@ defmodule Schedule.Data do
     stops_data
     |> Csv.parse(parse: &Stop.from_csv_row/1)
     |> Map.new(fn stop -> {stop.id, stop} end)
-  end
-
-  @spec bus_trips(
-          binary(),
-          binary(),
-          MapSet.t(Route.id()),
-          %{Trip.id() => Run.id()}
-        ) ::
-          [Trip.t()]
-  defp bus_trips(trips_data, stop_times_data, bus_route_ids, run_ids) do
-    gtfs_bus_trips = Gtfs.Trip.parse(trips_data, bus_route_ids)
-
-    bus_trip_ids = MapSet.new(gtfs_bus_trips, & &1.id)
-
-    bus_trip_stop_times =
-      stop_times_data
-      |> Csv.parse(filter: &StopTime.row_in_trip_id_set?(&1, bus_trip_ids))
-      |> StopTime.trip_stop_times_from_csv()
-
-    Enum.map(gtfs_bus_trips, fn gtfs_trip ->
-      stop_times = Map.fetch!(bus_trip_stop_times, gtfs_trip.id)
-      run_id = run_ids[gtfs_trip.id]
-      Trip.merge(gtfs_trip, stop_times, run_id)
-    end)
   end
 end

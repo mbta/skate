@@ -2,6 +2,7 @@ defmodule Schedule.Trip do
   alias Schedule.Block
   alias Schedule.Gtfs
   alias Schedule.Gtfs.{Direction, Route, RoutePattern, Service, Shape, StopTime}
+  alias Schedule.Hastus
   alias Schedule.Hastus.Run
 
   @type id :: String.t()
@@ -37,23 +38,41 @@ defmodule Schedule.Trip do
     direction_id: nil,
     route_pattern_id: nil,
     shape_id: nil,
-    stop_times: [],
-    run_id: nil
+    run_id: nil,
+    stop_times: []
   ]
 
-  @spec merge(Gtfs.Trip.t(), [StopTime.t()], Run.id() | nil) :: t()
-  def merge(gtfs_trip, stop_times, run_id) do
+  @spec merge_trips([Gtfs.Trip.t()], [Hastus.Trip.t()], %{id() => [StopTime.t()]}) :: %{
+          id() => t()
+        }
+  def merge_trips(gtfs_trips, hastus_trips, stop_times_by_id) do
+    gtfs_trips_by_id = Map.new(gtfs_trips, fn trip -> {trip.id, trip} end)
+    hastus_trips_by_id = Map.new(hastus_trips, fn trip -> {trip.trip_id, trip} end)
+
+    [
+      gtfs_trips_by_id,
+      hastus_trips_by_id,
+      stop_times_by_id
+    ]
+    |> Schedule.Helpers.zip_maps()
+    |> Helpers.map_values(fn [gtfs_trip, hastus_trip, stop_times] ->
+      merge(gtfs_trip, hastus_trip, stop_times)
+    end)
+  end
+
+  @spec merge(Gtfs.Trip.t() | nil, Hastus.Trip.t() | nil, [StopTime.t()] | nil) :: t()
+  def merge(gtfs_trip, hastus_trip, stop_times) when gtfs_trip != nil or hastus_trip != nil do
     %__MODULE__{
-      id: gtfs_trip.id,
-      route_id: gtfs_trip.route_id,
-      block_id: gtfs_trip.block_id,
-      service_id: gtfs_trip.service_id,
-      headsign: gtfs_trip.headsign,
-      direction_id: gtfs_trip.direction_id,
-      route_pattern_id: gtfs_trip.route_pattern_id,
-      shape_id: gtfs_trip.shape_id,
-      run_id: run_id,
-      stop_times: stop_times
+      id: (gtfs_trip && gtfs_trip.id) || (hastus_trip && hastus_trip.trip_id),
+      route_id: (gtfs_trip && gtfs_trip.route_id) || (hastus_trip && hastus_trip.route_id),
+      block_id: (gtfs_trip && gtfs_trip.block_id) || (hastus_trip && hastus_trip.block_id),
+      service_id: gtfs_trip && gtfs_trip.service_id,
+      headsign: gtfs_trip && gtfs_trip.headsign,
+      direction_id: gtfs_trip && gtfs_trip.direction_id,
+      route_pattern_id: gtfs_trip && gtfs_trip.route_pattern_id,
+      shape_id: gtfs_trip && gtfs_trip.shape_id,
+      run_id: hastus_trip && hastus_trip.run_id,
+      stop_times: stop_times || []
     }
   end
 

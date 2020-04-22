@@ -3,6 +3,31 @@ defmodule Schedule.TripTest do
 
   alias Schedule.Trip
   alias Schedule.Gtfs.StopTime
+  alias Schedule.Gtfs
+  alias Schedule.Hastus
+
+  @gtfs_trip %Gtfs.Trip{
+    id: "trip",
+    route_id: "route",
+    service_id: "service",
+    headsign: "headsign",
+    direction_id: 0,
+    block_id: "block",
+    shape_id: "shape"
+  }
+
+  @hastus_trip %Hastus.Trip{
+    schedule_id: "schedule",
+    run_id: "run",
+    block_id: "block",
+    start_time: 0,
+    end_time: 0,
+    start_place: "start",
+    end_place: "end",
+    # nil means nonrevenue
+    route_id: "route",
+    trip_id: "trip"
+  }
 
   @stop_times [
     %StopTime{
@@ -30,19 +55,49 @@ defmodule Schedule.TripTest do
     stop_times: @stop_times
   }
 
-  describe "merge" do
-    test "combines gtfs trip, stop_times, and run_id" do
-      gtfs_trip = %Schedule.Gtfs.Trip{
-        id: "trip",
-        route_id: "route",
-        service_id: "service",
-        headsign: "headsign",
-        direction_id: 0,
-        block_id: "block",
-        shape_id: "shape"
-      }
+  describe "merge_trips" do
+    test "matches up gtfs and hastus trips" do
+      assert Trip.merge_trips([@gtfs_trip], [@hastus_trip], %{"trip" => @stop_times}) == %{
+               "trip" => @trip
+             }
+    end
 
-      assert Trip.merge(gtfs_trip, @stop_times, "run") == @trip
+    test "makes a gtfs trip without a hastus trip" do
+      assert Trip.merge_trips([@gtfs_trip], [], %{"trip" => @stop_times}) == %{
+               "trip" => %Trip{
+                 id: "trip",
+                 route_id: "route",
+                 block_id: "block",
+                 service_id: "service",
+                 headsign: "headsign",
+                 direction_id: 0,
+                 shape_id: "shape",
+                 run_id: nil,
+                 stop_times: @stop_times
+               }
+             }
+    end
+
+    test "makes a hastus trip without a gtfs trip" do
+      assert Trip.merge_trips([], [@hastus_trip], %{}) == %{
+               "trip" => %Trip{
+                 id: "trip",
+                 route_id: "route",
+                 block_id: "block",
+                 service_id: nil,
+                 headsign: nil,
+                 direction_id: nil,
+                 shape_id: nil,
+                 run_id: "run",
+                 stop_times: []
+               }
+             }
+    end
+  end
+
+  describe "merge" do
+    test "combines gtfs trip, hastus_trip, and stop_times" do
+      assert Trip.merge(@gtfs_trip, @hastus_trip, @stop_times) == @trip
     end
   end
 
