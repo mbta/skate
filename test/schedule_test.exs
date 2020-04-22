@@ -1,4 +1,4 @@
-defmodule GtfsTest do
+defmodule ScheduleTest do
   use ExUnit.Case
 
   import Test.Support.Helpers
