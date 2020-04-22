@@ -51,6 +51,7 @@ defmodule Schedule.TripTest do
     headsign: "headsign",
     direction_id: 0,
     shape_id: "shape",
+    schedule_id: "schedule",
     run_id: "run",
     stop_times: @stop_times
   }
@@ -72,6 +73,7 @@ defmodule Schedule.TripTest do
                  headsign: "headsign",
                  direction_id: 0,
                  shape_id: "shape",
+                 schedule_id: nil,
                  run_id: nil,
                  stop_times: @stop_times
                }
@@ -88,6 +90,7 @@ defmodule Schedule.TripTest do
                  headsign: nil,
                  direction_id: nil,
                  shape_id: nil,
+                 schedule_id: "schedule",
                  run_id: "run",
                  stop_times: []
                }
