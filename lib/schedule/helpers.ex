@@ -31,19 +31,31 @@ defmodule Schedule.Helpers do
   end
 
   @doc """
-  Pairs up the values that appear on the same key in the two maps.
+  Groups up the values that appear on the same key in the two maps.
   Leaves nil if a value is not present in one map.
 
-      iex> Schedule.Helpers.pair_maps(%{a: "a1", b: "b1"}, %{b: "b2", c: "c2"})
-      %{a: {"a1", nil}, b: {"b1", "b2"}, c: {nil, "c2"}}
+      iex> Schedule.Helpers.zip_maps([%{a: "a1", b: "b1"}, %{b: "b2", c: "c2"}])
+      %{a: ["a1", nil], b: ["b1", "b2"], c: [nil, "c2"]}
+
+  Can work with any number of inputs.
+  Each value in the result will be the same length as the length of the input.
+
+      iex> Schedule.Helpers.zip_maps([%{x: "1"}, %{}, %{x: "3"}])
+      %{x: ["1", nil, "3"]}
+
+      iex> Schedule.Helpers.zip_maps([])
+      %{}
   """
-  @spec pair_maps(%{k => v1}, %{k => v2}) :: %{k => {v1 | nil, v2 | nil}}
-        when k: any(), v1: any(), v2: any()
-  def pair_maps(m1, m2) do
-    keys = Enum.uniq(Map.keys(m1) ++ Map.keys(m2))
+  @spec zip_maps([%{k => any()}]) :: %{k => [any()]} when k: any()
+  def zip_maps(maps) do
+    keys =
+      maps
+      |> Enum.map(&Map.keys/1)
+      |> List.flatten()
+      |> Enum.uniq()
 
     Map.new(keys, fn k ->
-      {k, {Map.get(m1, k), Map.get(m2, k)}}
+      {k, Enum.map(maps, fn map -> Map.get(map, k) end)}
     end)
   end
 end
