@@ -1,8 +1,8 @@
 # Fail if any command fails
 set -e
 
-ELIXIR_VERSION=1.8.1
-ERLANG_VERSION=21
+ELIXIR_VERSION=1.9.4
+ERLANG_VERSION=22
 NODEJS_VERSION=10.15
 
 change-phantomjs-version 2.1.1
