@@ -23,43 +23,41 @@ const TabStatusIcon = () => (
 )
 
 const StatusRunBlockTabs = ({ statusContent }: Props) => (
-  <div className="m-tabs">
-    <Tabs className="m-tabs__tabs">
-      <TabList className="m-tabs__tab-list">
-        <Tab className="m-tabs__tab" selectedClassName="m-tabs__tab--selected">
-          <TabStatusIcon />
-          Status
-        </Tab>
-        <Tab className="m-tabs__tab" selectedClassName="m-tabs__tab--selected">
-          <TabStatusIcon />
-          Run
-        </Tab>
-        <Tab className="m-tabs__tab" selectedClassName="m-tabs__tab--selected">
-          <TabStatusIcon />
-          Block
-        </Tab>
-      </TabList>
+  <Tabs className="m-tabs">
+    <TabList className="m-tabs__tab-list">
+      <Tab className="m-tabs__tab" selectedClassName="m-tabs__tab--selected">
+        <TabStatusIcon />
+        Status
+      </Tab>
+      <Tab className="m-tabs__tab" selectedClassName="m-tabs__tab--selected">
+        <TabStatusIcon />
+        Run
+      </Tab>
+      <Tab className="m-tabs__tab" selectedClassName="m-tabs__tab--selected">
+        <TabStatusIcon />
+        Block
+      </Tab>
+    </TabList>
 
-      <TabPanel
-        className="m-tabs__tab-panel"
-        selectedClassName="m-tabs__tab-panel--selected"
-      >
-        {statusContent}
-      </TabPanel>
-      <TabPanel
-        className="m-tabs__tab-panel"
-        selectedClassName="m-tabs__tab-panel--selected"
-      >
-        <h2>Run Content</h2>
-      </TabPanel>
-      <TabPanel
-        className="m-tabs__tab-panel"
-        selectedClassName="m-tabs__tab-panel--selected"
-      >
-        <h2>Block Content</h2>
-      </TabPanel>
-    </Tabs>
-  </div>
+    <TabPanel
+      className="m-tabs__tab-panel"
+      selectedClassName="m-tabs__tab-panel--selected"
+    >
+      {statusContent}
+    </TabPanel>
+    <TabPanel
+      className="m-tabs__tab-panel"
+      selectedClassName="m-tabs__tab-panel--selected"
+    >
+      <h2>Run Content</h2>
+    </TabPanel>
+    <TabPanel
+      className="m-tabs__tab-panel"
+      selectedClassName="m-tabs__tab-panel--selected"
+    >
+      <h2>Block Content</h2>
+    </TabPanel>
+  </Tabs>
 )
 
 export default StatusRunBlockTabs
