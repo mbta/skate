@@ -10,11 +10,8 @@ defmodule Realtime.BlockWaiverTest do
   @trip1 %Trip{
     id: "trip1",
     route_id: "route",
-    service_id: "service",
-    headsign: "headsign",
-    direction_id: 0,
     block_id: "block",
-    shape_id: "shape",
+    service_id: "service",
     stop_times: [
       %StopTime{stop_id: "stop1", time: 1},
       %StopTime{stop_id: "stop2", time: 2},
@@ -25,11 +22,8 @@ defmodule Realtime.BlockWaiverTest do
   @trip2 %Trip{
     id: "trip2",
     route_id: "route",
-    service_id: "service",
-    headsign: "headsign",
-    direction_id: 1,
     block_id: "block",
-    shape_id: "shape",
+    service_id: "service",
     stop_times: [
       %StopTime{stop_id: "stop3", time: 4},
       %StopTime{stop_id: "stop2", time: 5},

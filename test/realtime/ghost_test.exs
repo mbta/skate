@@ -23,12 +23,11 @@ defmodule Realtime.GhostTest do
       trip = %Trip{
         id: "trip",
         route_id: "route",
+        block_id: "block",
         service_id: "service",
         headsign: "headsign",
         direction_id: 0,
-        block_id: "block",
         route_pattern_id: "route-X-0",
-        shape_id: "shape1",
         run_id: "run",
         stop_times: [
           %StopTime{
@@ -86,11 +85,10 @@ defmodule Realtime.GhostTest do
       trip = %Trip{
         id: "trip1",
         route_id: "route",
+        block_id: "block",
         service_id: "service",
         headsign: "headsign",
         direction_id: 0,
-        block_id: "block",
-        shape_id: "shape1",
         run_id: "run",
         stop_times: [
           %StopTime{
@@ -126,11 +124,10 @@ defmodule Realtime.GhostTest do
       trip = %Trip{
         id: "trip",
         route_id: "route",
+        block_id: "block",
         service_id: "service",
         headsign: "headsign",
         direction_id: 0,
-        block_id: "block",
-        shape_id: "shape1",
         run_id: "run",
         stop_times: [
           %StopTime{
@@ -176,11 +173,10 @@ defmodule Realtime.GhostTest do
         %Trip{
           id: "trip1",
           route_id: "route",
+          block_id: "block",
           service_id: "service",
           headsign: "headsign1",
           direction_id: 0,
-          block_id: "block",
-          shape_id: "shape1",
           run_id: "run",
           stop_times: [
             %StopTime{
@@ -193,11 +189,10 @@ defmodule Realtime.GhostTest do
         %Trip{
           id: "trip2",
           route_id: "route",
+          block_id: "block",
           service_id: "service",
           headsign: "headsign2",
           direction_id: 1,
-          block_id: "block",
-          shape_id: "shape2",
           run_id: "run",
           stop_times: [
             %StopTime{
@@ -241,11 +236,10 @@ defmodule Realtime.GhostTest do
       trip = %Trip{
         id: "trip1",
         route_id: "route",
+        block_id: "block",
         service_id: "service",
         headsign: "headsign",
         direction_id: 0,
-        block_id: "block",
-        shape_id: "shape1",
         run_id: "run",
         stop_times: [
           %StopTime{
@@ -279,12 +273,11 @@ defmodule Realtime.GhostTest do
       trip1 = %Trip{
         id: "1",
         route_id: "route",
+        block_id: "block",
         service_id: "service",
         headsign: "headsign1",
         direction_id: 0,
-        block_id: "block",
         route_pattern_id: nil,
-        shape_id: "shape",
         run_id: "run",
         stop_times: [
           %StopTime{
@@ -303,12 +296,11 @@ defmodule Realtime.GhostTest do
       trip2 = %Trip{
         id: "2",
         route_id: "route",
+        block_id: "block",
         service_id: "service",
         headsign: "headsign2",
         direction_id: 1,
-        block_id: "block",
         route_pattern_id: nil,
-        shape_id: "shape",
         run_id: "run",
         stop_times: [
           %StopTime{

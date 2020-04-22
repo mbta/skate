@@ -300,10 +300,10 @@ defmodule GtfsTest do
                %Trip{
                  id: "t1",
                  route_id: "route",
+                 block_id: "b",
                  service_id: "service",
                  headsign: "h1",
                  direction_id: 1,
-                 block_id: "b",
                  route_pattern_id: "route-_-0",
                  shape_id: "shape1",
                  stop_times: [
@@ -390,11 +390,11 @@ defmodule GtfsTest do
                %Trip{
                  id: "t1",
                  route_id: "route",
+                 block_id: "b",
                  service_id: "service",
                  # Shuttles do not have route_pattern_ids
                  headsign: "h1",
                  direction_id: 1,
-                 block_id: "b",
                  route_pattern_id: "route-_-0",
                  shape_id: "shape1",
                  stop_times: [

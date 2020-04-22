@@ -164,15 +164,7 @@ defmodule Schedule.DataTest do
           "t1" => %Trip{
             id: "t1",
             route_id: "r1",
-            service_id: "service",
-            headsign: "h",
-            direction_id: 1,
-            block_id: "b",
-            route_pattern_id: "r1-_-0",
-            shape_id: "shape1",
-            stop_times: [
-              %StopTime{stop_id: "s1", time: 1, timepoint_id: nil}
-            ]
+            block_id: "b"
           }
         },
         blocks: %{},
@@ -203,12 +195,8 @@ defmodule Schedule.DataTest do
       trip = %Trip{
         id: "t1",
         route_id: "r1",
-        service_id: "service",
-        headsign: "h",
-        direction_id: 1,
         block_id: "b",
-        route_pattern_id: "r1-_-0",
-        shape_id: "shape1",
+        service_id: "service",
         stop_times: [
           %StopTime{stop_id: "s1", time: 1, timepoint_id: nil}
         ]
@@ -232,12 +220,8 @@ defmodule Schedule.DataTest do
       trip = %Trip{
         id: "t1",
         route_id: "r1",
-        service_id: "service",
-        headsign: "h",
-        direction_id: 1,
         block_id: "b",
-        route_pattern_id: "r1-_-0",
-        shape_id: "shape1",
+        service_id: "service",
         stop_times: [
           %StopTime{stop_id: "s1", time: 1, timepoint_id: nil}
         ]
@@ -306,11 +290,8 @@ defmodule Schedule.DataTest do
       trip = %Trip{
         id: "active",
         route_id: "route",
-        service_id: "today",
-        headsign: "headsign",
-        direction_id: 0,
         block_id: "active",
-        shape_id: "shape",
+        service_id: "today",
         stop_times: [
           %StopTime{
             stop_id: "stop",
@@ -345,11 +326,8 @@ defmodule Schedule.DataTest do
       trip = %Trip{
         id: "trip",
         route_id: "route",
-        service_id: "today",
-        headsign: "headsign",
-        direction_id: 0,
         block_id: "block",
-        shape_id: "shape1",
+        service_id: "today",
         stop_times: [
           %StopTime{
             stop_id: "stop",
@@ -382,11 +360,8 @@ defmodule Schedule.DataTest do
       trip = %Trip{
         id: "trip",
         route_id: "route",
-        service_id: "tomorrow",
-        headsign: "headsign",
-        direction_id: 0,
         block_id: "block",
-        shape_id: "shape1",
+        service_id: "tomorrow",
         stop_times: [
           %StopTime{
             stop_id: "stop",
@@ -419,11 +394,8 @@ defmodule Schedule.DataTest do
       trip = %Trip{
         id: "trip",
         route_id: "route",
-        service_id: "yesterday",
-        headsign: "headsign",
-        direction_id: 0,
         block_id: "block",
-        shape_id: "shape1",
+        service_id: "yesterday",
         stop_times: [
           %StopTime{
             stop_id: "stop",
@@ -460,11 +432,8 @@ defmodule Schedule.DataTest do
         %Trip{
           id: "trip",
           route_id: "route",
-          service_id: "today",
-          headsign: "headsign",
-          direction_id: 0,
           block_id: "block",
-          shape_id: "shape1",
+          service_id: "today",
           stop_times: [
             %StopTime{
               stop_id: "stop",
@@ -512,11 +481,8 @@ defmodule Schedule.DataTest do
             %Trip{
               id: "trip",
               route_id: "route",
-              service_id: "today",
-              headsign: "headsign",
-              direction_id: 0,
               block_id: "block",
-              shape_id: "shape1",
+              service_id: "today",
               stop_times: [
                 %StopTime{
                   stop_id: "stop",
@@ -546,11 +512,8 @@ defmodule Schedule.DataTest do
         %Trip{
           id: "first",
           route_id: "route",
-          service_id: "today",
-          headsign: "headsign",
-          direction_id: 0,
           block_id: "block",
-          shape_id: "shape1",
+          service_id: "today",
           stop_times: [
             %StopTime{
               stop_id: "stop",
@@ -561,11 +524,8 @@ defmodule Schedule.DataTest do
         %Trip{
           id: "second",
           route_id: "route",
-          service_id: "today",
-          headsign: "headsign",
-          direction_id: 0,
           block_id: "block",
-          shape_id: "shape1",
+          service_id: "today",
           stop_times: [
             %StopTime{
               stop_id: "stop",
@@ -600,11 +560,8 @@ defmodule Schedule.DataTest do
         %Trip{
           id: "first",
           route_id: "route",
-          service_id: "today",
-          headsign: "headsign1",
-          direction_id: 0,
           block_id: "block",
-          shape_id: "shape1",
+          service_id: "today",
           stop_times: [
             %StopTime{
               stop_id: "stop",
@@ -618,11 +575,8 @@ defmodule Schedule.DataTest do
         %Trip{
           id: "second",
           route_id: "route",
-          service_id: "tomorrow",
-          headsign: "headsign2",
-          direction_id: 0,
           block_id: "block",
-          shape_id: "shape1",
+          service_id: "tomorrow",
           stop_times: [
             %StopTime{
               stop_id: "stop",
@@ -737,12 +691,8 @@ defmodule Schedule.DataTest do
       trip = %Trip{
         id: "trip",
         route_id: "route",
-        service_id: "today",
-        headsign: "headsign",
-        direction_id: 0,
         block_id: "block",
-        shape_id: "shape",
-        stop_times: []
+        shape_id: "shape"
       }
 
       shape = %Shape{
@@ -775,12 +725,8 @@ defmodule Schedule.DataTest do
       trip = %Trip{
         id: "trip",
         route_id: "route",
-        service_id: "today",
-        headsign: "headsign",
-        direction_id: 0,
         block_id: "block",
-        shape_id: "shape",
-        stop_times: []
+        shape_id: "shape"
       }
 
       data = %Data{
@@ -905,12 +851,8 @@ defmodule Schedule.DataTest do
         "t1" => %Trip{
           id: "t1",
           route_id: "r1",
-          service_id: "service",
-          headsign: "h1",
-          direction_id: 0,
           block_id: "b1",
           route_pattern_id: "rp1",
-          shape_id: "shape1",
           stop_times: [
             %StopTime{stop_id: "s1", time: 1, timepoint_id: "tp1"},
             %StopTime{stop_id: "s7", time: 2, timepoint_id: nil}
@@ -919,12 +861,8 @@ defmodule Schedule.DataTest do
         "t2" => %Trip{
           id: "t2",
           route_id: "r2",
-          service_id: "service",
-          headsign: "h2",
-          direction_id: 0,
           block_id: "b2",
           route_pattern_id: "rp2",
-          shape_id: "shape2",
           stop_times: [
             %StopTime{stop_id: "s2", time: 1, timepoint_id: "tp2"},
             %StopTime{stop_id: "s3", time: 2, timepoint_id: "tp3"}
@@ -933,12 +871,8 @@ defmodule Schedule.DataTest do
         "t3" => %Trip{
           id: "t3",
           route_id: "r1",
-          service_id: "service",
-          headsign: "h3",
-          direction_id: 1,
           block_id: "b3",
           route_pattern_id: "rp3",
-          shape_id: "shape3",
           stop_times: [
             %StopTime{stop_id: "s4", time: 1, timepoint_id: "tp4"},
             %StopTime{stop_id: "s5", time: 2, timepoint_id: "tp1"}
@@ -981,12 +915,8 @@ defmodule Schedule.DataTest do
         "t1" => %Trip{
           id: "t1",
           route_id: "r1",
-          service_id: "service",
-          headsign: "h1",
-          direction_id: 1,
           block_id: "b1",
           route_pattern_id: "rp1",
-          shape_id: "shape1",
           stop_times: [
             %StopTime{stop_id: "s1", time: 1, timepoint_id: "tp1"},
             %StopTime{stop_id: "s3b", time: 2, timepoint_id: "tp3"}
@@ -995,12 +925,8 @@ defmodule Schedule.DataTest do
         "t2" => %Trip{
           id: "t2",
           route_id: "r1",
-          service_id: "service",
-          headsign: "h2",
-          direction_id: 1,
           block_id: "b2",
           route_pattern_id: "rp2",
-          shape_id: "shape2",
           stop_times: [
             %StopTime{stop_id: "s1", time: 1, timepoint_id: "tp1"},
             %StopTime{stop_id: "s2", time: 2, timepoint_id: "tp2"},

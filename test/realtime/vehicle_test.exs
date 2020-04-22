@@ -55,12 +55,11 @@ defmodule Realtime.VehicleTest do
       trip = %Trip{
         id: "39984755",
         route_id: "28",
+        block_id: "S28-2",
         service_id: "service",
         headsign: "headsign",
         direction_id: 1,
-        block_id: "S28-2",
         route_pattern_id: "28-_-0",
-        shape_id: "shape1",
         run_id: "run1",
         stop_times: [
           %StopTime{stop_id: "18511", time: 0, timepoint_id: "tp1"},
@@ -184,6 +183,25 @@ defmodule Realtime.VehicleTest do
       assert result.headway_secs == nil
       assert result.headway_spacing == nil
     end
+
+    test "handles unknown trips" do
+      reassign_env(:realtime, :trip_fn, fn _ -> nil end)
+      result = Vehicle.from_vehicle_position(@vehicle_position)
+      assert %Vehicle{} = result
+    end
+
+    test "handles trips with incomplete data" do
+      reassign_env(:realtime, :trip_fn, fn _ ->
+        %Trip{
+          id: "39984755",
+          route_id: "28",
+          block_id: "S28-2"
+        }
+      end)
+
+      result = Vehicle.from_vehicle_position(@vehicle_position)
+      assert %Vehicle{} = result
+    end
   end
 
   describe "off_course?/2" do
@@ -290,12 +308,7 @@ defmodule Realtime.VehicleTest do
         %Trip{
           id: "1",
           route_id: "28",
-          service_id: "service",
-          headsign: "headsign",
-          direction_id: 1,
           block_id: "S28-2",
-          route_pattern_id: "28-_-1",
-          shape_id: "shape1",
           stop_times: [
             %StopTime{
               stop_id: "6553",
@@ -360,11 +373,7 @@ defmodule Realtime.VehicleTest do
       trip1 = %Trip{
         id: "t1",
         route_id: "r1",
-        service_id: "service",
-        headsign: "Trip 1",
-        direction_id: 1,
         block_id: "b",
-        shape_id: "shape1",
         stop_times: [
           %StopTime{
             stop_id: "s1",
@@ -382,11 +391,7 @@ defmodule Realtime.VehicleTest do
       trip2 = %Trip{
         id: "t2",
         route_id: "r1",
-        service_id: "service",
-        headsign: "Trip 2",
-        direction_id: 0,
         block_id: "b",
-        shape_id: "shape2",
         stop_times: [
           %StopTime{
             stop_id: "s2",
@@ -440,11 +445,7 @@ defmodule Realtime.VehicleTest do
       first_trip = %Trip{
         id: "t1",
         route_id: "r1",
-        service_id: "service",
-        headsign: "Trip 1",
-        direction_id: 1,
         block_id: "b",
-        shape_id: "shape1",
         run_id: "run1",
         stop_times: [
           %StopTime{
@@ -465,11 +466,7 @@ defmodule Realtime.VehicleTest do
       last_trip_of_run = %Trip{
         id: "t2",
         route_id: "r1",
-        service_id: "service",
-        headsign: "Trip 2",
-        direction_id: 0,
         block_id: "b",
-        shape_id: "shape2",
         run_id: "run1",
         stop_times: [
           %StopTime{
@@ -490,11 +487,7 @@ defmodule Realtime.VehicleTest do
       last_trip_of_block = %Trip{
         id: "t3",
         route_id: "r1",
-        service_id: "service",
-        headsign: "Trip 33",
-        direction_id: 0,
         block_id: "b",
-        shape_id: "shape3",
         run_id: "run2",
         stop_times: [
           %StopTime{

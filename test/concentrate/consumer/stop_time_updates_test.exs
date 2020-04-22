@@ -9,14 +9,8 @@ defmodule Concentrate.Consumer.StopTimeUpdatesTest do
   @trip %Trip{
     id: "t1",
     route_id: "28",
-    service_id: "service",
-    headsign: "headsign",
-    direction_id: 1,
     block_id: "S28-2",
-    route_pattern_id: "28-_-0",
-    shape_id: "shape1",
-    run_id: "run1",
-    stop_times: []
+    service_id: "service"
   }
 
   @stop_time_update %StopTimeUpdate{
@@ -70,6 +64,14 @@ defmodule Concentrate.Consumer.StopTimeUpdatesTest do
 
     test "handles missing trips", %{events: events} do
       reassign_env(:realtime, :trip_fn, fn _trip_id -> nil end)
+
+      response = StopTimeUpdates.handle_events(events, nil, %{})
+
+      assert response == {:noreply, [], %{}}
+    end
+
+    test "trips with missing data", %{events: events} do
+      reassign_env(:realtime, :trip_fn, fn _trip_id -> %{@trip | service_id: nil} end)
 
       response = StopTimeUpdates.handle_events(events, nil, %{})
 

@@ -188,11 +188,10 @@ defmodule Realtime.VehiclesTest do
       trip = %Trip{
         id: "trip",
         route_id: "route",
+        block_id: "block",
         service_id: "service",
         headsign: "headsign",
         direction_id: 0,
-        block_id: "block",
-        shape_id: "shape1",
         stop_times: [
           %StopTime{
             stop_id: "stop1",
@@ -269,11 +268,10 @@ defmodule Realtime.VehiclesTest do
       trip = %Trip{
         id: "trip",
         route_id: "route",
+        block_id: "block",
         service_id: "service",
         headsign: "headsign",
         direction_id: 0,
-        block_id: "block",
-        shape_id: "shape1",
         stop_times: [
           %StopTime{
             stop_id: "stop",
@@ -305,11 +303,10 @@ defmodule Realtime.VehiclesTest do
       trip = %Trip{
         id: "trip",
         route_id: "route",
+        block_id: "block",
         service_id: "service",
         headsign: "headsign",
         direction_id: 0,
-        block_id: "block",
-        shape_id: "shape",
         stop_times: [
           %StopTime{
             stop_id: "stop1",
@@ -369,11 +366,10 @@ defmodule Realtime.VehiclesTest do
       trip1 = %Trip{
         id: "trip1",
         route_id: "route1",
+        block_id: "block",
         service_id: "service",
         headsign: "headsign1",
         direction_id: 0,
-        block_id: "block",
-        shape_id: "shape1",
         stop_times: [
           %StopTime{
             stop_id: "stop1",
@@ -391,11 +387,10 @@ defmodule Realtime.VehiclesTest do
       trip2 = %Trip{
         id: "trip2",
         route_id: "route2",
+        block_id: "block",
         service_id: "service",
         headsign: "headsign2",
         direction_id: 0,
-        block_id: "block",
-        shape_id: "shape2",
         stop_times: [
           %StopTime{
             stop_id: "stop3",
@@ -448,32 +443,12 @@ defmodule Realtime.VehiclesTest do
         %Trip{
           id: "first",
           route_id: "first",
-          service_id: "today",
-          headsign: "headsign",
-          direction_id: 0,
-          block_id: "block",
-          shape_id: "shape1",
-          stop_times: [
-            %StopTime{
-              stop_id: "stop",
-              time: 2
-            }
-          ]
+          block_id: "block"
         },
         %Trip{
           id: "second",
           route_id: "second",
-          service_id: "today",
-          headsign: "headsign",
-          direction_id: 0,
-          block_id: "block",
-          shape_id: "shape1",
-          stop_times: [
-            %StopTime{
-              stop_id: "stop",
-              time: 3
-            }
-          ]
+          block_id: "block"
         }
       ]
 
@@ -488,32 +463,12 @@ defmodule Realtime.VehiclesTest do
         %Trip{
           id: "first",
           route_id: "route",
-          service_id: "today",
-          headsign: "headsign",
-          direction_id: 0,
-          block_id: "block",
-          shape_id: "shape1",
-          stop_times: [
-            %StopTime{
-              stop_id: "stop",
-              time: 2
-            }
-          ]
+          block_id: "block"
         },
         %Trip{
           id: "second",
           route_id: "route",
-          service_id: "today",
-          headsign: "headsign",
-          direction_id: 0,
-          block_id: "block",
-          shape_id: "shape1",
-          stop_times: [
-            %StopTime{
-              stop_id: "stop",
-              time: 3
-            }
-          ]
+          block_id: "block"
         }
       ]
 
