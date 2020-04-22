@@ -10,6 +10,7 @@ defmodule Schedule.Data do
   alias Schedule.Hastus.Run
   alias Schedule.Minischedule
 
+  alias Schedule.Gtfs
   alias Schedule.Gtfs.{
     Calendar,
     Direction,
@@ -404,12 +405,7 @@ defmodule Schedule.Data do
         ) ::
           [Trip.t()]
   defp bus_trips(trips_data, stop_times_data, bus_route_ids, run_ids) do
-    gtfs_bus_trips =
-      Csv.parse(
-        trips_data,
-        filter: &Schedule.Gtfs.Trip.row_in_route_id_set?(&1, bus_route_ids),
-        parse: &Schedule.Gtfs.Trip.from_csv_row/1
-      )
+    gtfs_bus_trips = Gtfs.Trip.parse(trips_data, bus_route_ids)
 
     bus_trip_ids = MapSet.new(gtfs_bus_trips, & &1.id)
 

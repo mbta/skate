@@ -3,6 +3,20 @@ defmodule Schedule.Gtfs.TripTest do
 
   alias Schedule.Gtfs.Trip
 
+  describe "parse" do
+    test "filters out other routes" do
+      binary =
+        [
+          "route_id,service_id,trip_id,trip_headsign,trip_short_name,direction_id,block_id,shape_id,wheelchair_accessible,trip_route_type,route_pattern_id,bikes_allowed",
+          "1,service,trip1,headsign,,0,block,shape,1,,1-_-0,1",
+          "2,service,trip2,headsign,,0,block,shape,1,,1-_-0,1"
+        ]
+        |> Enum.join("\n")
+
+      assert [%Trip{id: "trip1"}] = Trip.parse(binary, MapSet.new(["1"]))
+    end
+  end
+
   describe "from_csv_row" do
     test "builds a Trip struct from a csv row" do
       csv_row = %{
