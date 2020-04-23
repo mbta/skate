@@ -6,6 +6,7 @@ import PropertiesList from "../propertiesList"
 import BlockWaiverList from "./blockWaiverList"
 import Header from "./header"
 import IconAlertCircle, { AlertIconStyle } from "../iconAlertCircle"
+import StatusRunBlockTabs from "./status_run_block_tabs"
 
 interface Props {
   selectedGhost: Ghost
@@ -38,7 +39,9 @@ const GhostPropertiesPanel = ({ selectedGhost, route }: Props) => (
       <NoWaiverBanner />
     )}
 
-    <PropertiesList vehicleOrGhost={selectedGhost} />
+    <StatusRunBlockTabs
+      statusContent={<PropertiesList vehicleOrGhost={selectedGhost} />}
+    />
   </div>
 )
 

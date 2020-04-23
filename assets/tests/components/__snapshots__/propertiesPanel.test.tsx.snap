@@ -154,28 +154,146 @@ Array [
         A ghost bus or dropped trip has been automatically detected on this route. Please follow up with dispatch as needed, if a Dispatcher Note is generated - it will appear here.
       </div>
       <div
-        className="m-properties-list"
+        className="m-tabs"
+        data-tabs={true}
+        onClick={[Function]}
+        onKeyDown={[Function]}
       >
-        <table
-          className="m-properties-list__table"
+        <ul
+          className="m-tabs__tab-list"
+          role="tablist"
         >
-          <tbody>
-            <tr
-              className="m-properties-list__property "
+          <li
+            aria-controls="react-tabs-7"
+            aria-disabled="false"
+            aria-selected="true"
+            className="m-tabs__tab m-tabs__tab--selected"
+            id="react-tabs-6"
+            role="tab"
+            tabIndex="0"
+          >
+            <svg
+              className="m-tabs__tab-status-icon"
+              height="14"
+              width="14"
             >
-              <td
-                className="m-properties-list__property-label"
-              >
-                Run
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                123-0123
-              </td>
-            </tr>
-          </tbody>
-        </table>
+              <circle
+                className="m-tabs__tab-status-icon-outer-circle"
+                cx="7"
+                cy="7"
+                r="6"
+              />
+              <circle
+                className="m-tabs__tab-status-icon-inner-circle"
+                cx="7"
+                cy="7"
+                r="4"
+              />
+            </svg>
+            Status
+          </li>
+          <li
+            aria-controls="react-tabs-9"
+            aria-disabled="false"
+            aria-selected="false"
+            className="m-tabs__tab"
+            id="react-tabs-8"
+            role="tab"
+            tabIndex={null}
+          >
+            <svg
+              className="m-tabs__tab-status-icon"
+              height="14"
+              width="14"
+            >
+              <circle
+                className="m-tabs__tab-status-icon-outer-circle"
+                cx="7"
+                cy="7"
+                r="6"
+              />
+              <circle
+                className="m-tabs__tab-status-icon-inner-circle"
+                cx="7"
+                cy="7"
+                r="4"
+              />
+            </svg>
+            Run
+          </li>
+          <li
+            aria-controls="react-tabs-11"
+            aria-disabled="false"
+            aria-selected="false"
+            className="m-tabs__tab"
+            id="react-tabs-10"
+            role="tab"
+            tabIndex={null}
+          >
+            <svg
+              className="m-tabs__tab-status-icon"
+              height="14"
+              width="14"
+            >
+              <circle
+                className="m-tabs__tab-status-icon-outer-circle"
+                cx="7"
+                cy="7"
+                r="6"
+              />
+              <circle
+                className="m-tabs__tab-status-icon-inner-circle"
+                cx="7"
+                cy="7"
+                r="4"
+              />
+            </svg>
+            Block
+          </li>
+        </ul>
+        <div
+          aria-labelledby="react-tabs-6"
+          className="m-tabs__tab-panel m-tabs__tab-panel--selected"
+          id="react-tabs-7"
+          role="tabpanel"
+        >
+          <div
+            className="m-properties-list"
+          >
+            <table
+              className="m-properties-list__table"
+            >
+              <tbody>
+                <tr
+                  className="m-properties-list__property "
+                >
+                  <td
+                    className="m-properties-list__property-label"
+                  >
+                    Run
+                  </td>
+                  <td
+                    className="m-properties-list__property-value"
+                  >
+                    123-0123
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div
+          aria-labelledby="react-tabs-8"
+          className="m-tabs__tab-panel"
+          id="react-tabs-9"
+          role="tabpanel"
+        />
+        <div
+          aria-labelledby="react-tabs-10"
+          className="m-tabs__tab-panel"
+          id="react-tabs-11"
+          role="tabpanel"
+        />
       </div>
     </div>
     <button
@@ -316,112 +434,230 @@ Array [
         </button>
       </div>
       <div
-        className="m-properties-list"
+        className="m-tabs"
+        data-tabs={true}
+        onClick={[Function]}
+        onKeyDown={[Function]}
       >
-        <table
-          className="m-properties-list__table"
+        <ul
+          className="m-tabs__tab-list"
+          role="tablist"
         >
-          <tbody>
-            <tr
-              className="m-properties-list__property "
+          <li
+            aria-controls="react-tabs-1"
+            aria-disabled="false"
+            aria-selected="true"
+            className="m-tabs__tab m-tabs__tab--selected"
+            id="react-tabs-0"
+            role="tab"
+            tabIndex="0"
+          >
+            <svg
+              className="m-tabs__tab-status-icon"
+              height="14"
+              width="14"
             >
-              <td
-                className="m-properties-list__property-label"
-              >
-                Run
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                run-1
-              </td>
-            </tr>
-            <tr
-              className="m-properties-list__property "
+              <circle
+                className="m-tabs__tab-status-icon-outer-circle"
+                cx="7"
+                cy="7"
+                r="6"
+              />
+              <circle
+                className="m-tabs__tab-status-icon-inner-circle"
+                cx="7"
+                cy="7"
+                r="4"
+              />
+            </svg>
+            Status
+          </li>
+          <li
+            aria-controls="react-tabs-3"
+            aria-disabled="false"
+            aria-selected="false"
+            className="m-tabs__tab"
+            id="react-tabs-2"
+            role="tab"
+            tabIndex={null}
+          >
+            <svg
+              className="m-tabs__tab-status-icon"
+              height="14"
+              width="14"
             >
-              <td
-                className="m-properties-list__property-label"
-              >
-                Vehicle
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                v1-label
-              </td>
-            </tr>
-            <tr
-              className="m-properties-list__property "
+              <circle
+                className="m-tabs__tab-status-icon-outer-circle"
+                cx="7"
+                cy="7"
+                r="6"
+              />
+              <circle
+                className="m-tabs__tab-status-icon-inner-circle"
+                cx="7"
+                cy="7"
+                r="4"
+              />
+            </svg>
+            Run
+          </li>
+          <li
+            aria-controls="react-tabs-5"
+            aria-disabled="false"
+            aria-selected="false"
+            className="m-tabs__tab"
+            id="react-tabs-4"
+            role="tab"
+            tabIndex={null}
+          >
+            <svg
+              className="m-tabs__tab-status-icon"
+              height="14"
+              width="14"
             >
-              <td
-                className="m-properties-list__property-label"
-              >
-                Operator
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                SMITH #op1
-              </td>
-            </tr>
-            <tr
-              className="m-properties-list__property m-properties-list__property--last-login"
-            >
-              <td
-                className="m-properties-list__property-label"
-              >
-                Last Login
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                4h 3m; 1:38pm
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div
-        className="m-vehicle-properties-panel__location"
-      >
+              <circle
+                className="m-tabs__tab-status-icon-outer-circle"
+                cx="7"
+                cy="7"
+                r="6"
+              />
+              <circle
+                className="m-tabs__tab-status-icon-inner-circle"
+                cx="7"
+                cy="7"
+                r="4"
+              />
+            </svg>
+            Block
+          </li>
+        </ul>
         <div
-          className="m-properties-list__property-label"
-        >
-          Next Stop
-        </div>
-        <div
-          className="m-properties-list__property-value"
-        >
-          Stop Name
-        </div>
-        <div
-          className="m-properties-list__property-label"
-        >
-          Last GPS Ping
-        </div>
-        <div
-          className="m-properties-list__property-value"
-        >
-          111s ago
-        </div>
-        <a
-          className="m-vehicle-properties-panel__link"
-          href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
-          target="_blank"
-        >
-          Directions
-        </a>
-        <div
-          className="m-vehicle-properties-panel__map"
+          aria-labelledby="react-tabs-0"
+          className="m-tabs__tab-panel m-tabs__tab-panel--selected"
+          id="react-tabs-1"
+          role="tabpanel"
         >
           <div
-            className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
-          />
+            className="m-properties-list"
+          >
+            <table
+              className="m-properties-list__table"
+            >
+              <tbody>
+                <tr
+                  className="m-properties-list__property "
+                >
+                  <td
+                    className="m-properties-list__property-label"
+                  >
+                    Run
+                  </td>
+                  <td
+                    className="m-properties-list__property-value"
+                  >
+                    run-1
+                  </td>
+                </tr>
+                <tr
+                  className="m-properties-list__property "
+                >
+                  <td
+                    className="m-properties-list__property-label"
+                  >
+                    Vehicle
+                  </td>
+                  <td
+                    className="m-properties-list__property-value"
+                  >
+                    v1-label
+                  </td>
+                </tr>
+                <tr
+                  className="m-properties-list__property "
+                >
+                  <td
+                    className="m-properties-list__property-label"
+                  >
+                    Operator
+                  </td>
+                  <td
+                    className="m-properties-list__property-value"
+                  >
+                    SMITH #op1
+                  </td>
+                </tr>
+                <tr
+                  className="m-properties-list__property m-properties-list__property--last-login"
+                >
+                  <td
+                    className="m-properties-list__property-label"
+                  >
+                    Last Login
+                  </td>
+                  <td
+                    className="m-properties-list__property-value"
+                  >
+                    4h 3m; 1:38pm
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <div
-            className="m-vehicle-map"
-            id="id-vehicle-map"
-          />
+            className="m-vehicle-properties-panel__location"
+          >
+            <div
+              className="m-properties-list__property-label"
+            >
+              Next Stop
+            </div>
+            <div
+              className="m-properties-list__property-value"
+            >
+              Stop Name
+            </div>
+            <div
+              className="m-properties-list__property-label"
+            >
+              Last GPS Ping
+            </div>
+            <div
+              className="m-properties-list__property-value"
+            >
+              111s ago
+            </div>
+            <a
+              className="m-vehicle-properties-panel__link"
+              href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+              target="_blank"
+            >
+              Directions
+            </a>
+            <div
+              className="m-vehicle-properties-panel__map"
+            >
+              <div
+                className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+              />
+              <div
+                className="m-vehicle-map"
+                id="id-vehicle-map"
+              />
+            </div>
+          </div>
         </div>
+        <div
+          aria-labelledby="react-tabs-2"
+          className="m-tabs__tab-panel"
+          id="react-tabs-3"
+          role="tabpanel"
+        />
+        <div
+          aria-labelledby="react-tabs-4"
+          className="m-tabs__tab-panel"
+          id="react-tabs-5"
+          role="tabpanel"
+        />
       </div>
     </div>
     <button
