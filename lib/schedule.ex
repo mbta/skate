@@ -339,6 +339,7 @@ defmodule Schedule do
       "calendar_dates.txt",
       "checkpoints.txt",
       "directions.txt",
+      "feed_info.txt",
       "routes.txt",
       "route_patterns.txt",
       "shapes.txt",
