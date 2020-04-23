@@ -17,6 +17,7 @@ defmodule Schedule.Trip do
           # Shuttles do not have route_pattern_ids
           route_pattern_id: RoutePattern.id() | nil,
           shape_id: Shape.id() | nil,
+          schedule_id: Hastus.Schedule.id() | nil,
           run_id: Run.id() | nil,
           stop_times: [StopTime.t()]
         }
@@ -38,6 +39,7 @@ defmodule Schedule.Trip do
     direction_id: nil,
     route_pattern_id: nil,
     shape_id: nil,
+    schedule_id: nil,
     run_id: nil,
     stop_times: []
   ]
@@ -71,6 +73,7 @@ defmodule Schedule.Trip do
       direction_id: gtfs_trip && gtfs_trip.direction_id,
       route_pattern_id: gtfs_trip && gtfs_trip.route_pattern_id,
       shape_id: gtfs_trip && gtfs_trip.shape_id,
+      schedule_id: hastus_trip && hastus_trip.schedule_id,
       run_id: hastus_trip && hastus_trip.run_id,
       stop_times: stop_times || []
     }

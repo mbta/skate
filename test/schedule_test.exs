@@ -293,6 +293,12 @@ defmodule ScheduleTest do
               "t1,,00:00:02,s5,2,",
               "t1,,00:00:03,s3,3,suburb"
             ]
+          },
+          hastus: %{
+            "trips.csv" => [
+              "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
+              "schedule;123;    1501;b;04:30;05:05;wtryd;hayms;route;t1"
+            ]
           }
         })
 
@@ -306,6 +312,8 @@ defmodule ScheduleTest do
                  direction_id: 1,
                  route_pattern_id: "route-_-0",
                  shape_id: "shape1",
+                 schedule_id: "schedule",
+                 run_id: "123-1501",
                  stop_times: [
                    %StopTime{
                      stop_id: "s4",
@@ -325,38 +333,6 @@ defmodule ScheduleTest do
     test "returns nil if the trip doesn't exist" do
       pid = Schedule.start_mocked(%{})
       assert Schedule.trip("t1", pid) == nil
-    end
-
-    test "includes run from hastus" do
-      pid =
-        Schedule.start_mocked(%{
-          gtfs: %{
-            "routes.txt" => [
-              "route_id,route_type,route_short_name",
-              "route,3,route"
-            ],
-            "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,representative_trip_id",
-              "pattern,route,1,trip"
-            ],
-            "trips.txt" => [
-              "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
-              "route,service,trip,heasign,1,block,route-_-0,shape"
-            ],
-            "stop_times.txt" => [
-              "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
-              "trip,,00:00:02,stop,1,"
-            ]
-          },
-          hastus: %{
-            "trips.csv" => [
-              "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
-              "aba20021;123;    1501;block;04:30;05:05;wtryd;hayms;route;trip"
-            ]
-          }
-        })
-
-      assert Schedule.trip("trip", pid).run_id == "123-1501"
     end
   end
 
@@ -383,6 +359,12 @@ defmodule ScheduleTest do
               "t1,,00:00:02,s5,2,",
               "t1,,00:00:03,s3,3,suburb"
             ]
+          },
+          hastus: %{
+            "trips.csv" => [
+              "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
+              "schedule;123;    1501;b;04:30;05:05;wtryd;hayms;route;t1"
+            ]
           }
         })
 
@@ -397,6 +379,8 @@ defmodule ScheduleTest do
                  direction_id: 1,
                  route_pattern_id: "route-_-0",
                  shape_id: "shape1",
+                 schedule_id: "schedule",
+                 run_id: "123-1501",
                  stop_times: [
                    %StopTime{
                      stop_id: "s4",
