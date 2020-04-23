@@ -40,6 +40,15 @@ defmodule Schedule.Gtfs.Trip do
     :shape_id
   ]
 
+  @spec parse(binary() | nil, MapSet.t(Route.id())) :: [t()]
+  def parse(file_binary, route_ids) do
+    Csv.parse(
+      file_binary,
+      filter: &row_in_route_id_set?(&1, route_ids),
+      parse: &from_csv_row/1
+    )
+  end
+
   @spec from_csv_row(Csv.row()) :: t()
   def from_csv_row(row) do
     route_pattern_id =
@@ -61,5 +70,5 @@ defmodule Schedule.Gtfs.Trip do
   end
 
   @spec row_in_route_id_set?(Csv.row(), MapSet.t(Route.id())) :: boolean
-  def row_in_route_id_set?(row, route_id_set), do: MapSet.member?(route_id_set, row["route_id"])
+  defp row_in_route_id_set?(row, route_id_set), do: MapSet.member?(route_id_set, row["route_id"])
 end

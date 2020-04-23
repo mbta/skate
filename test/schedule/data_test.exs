@@ -847,37 +847,19 @@ defmodule Schedule.DataTest do
         }
       ]
 
-      trips = %{
-        "t1" => %Trip{
-          id: "t1",
-          route_id: "r1",
-          block_id: "b1",
-          route_pattern_id: "rp1",
-          stop_times: [
-            %StopTime{stop_id: "s1", time: 1, timepoint_id: "tp1"},
-            %StopTime{stop_id: "s7", time: 2, timepoint_id: nil}
-          ]
-        },
-        "t2" => %Trip{
-          id: "t2",
-          route_id: "r2",
-          block_id: "b2",
-          route_pattern_id: "rp2",
-          stop_times: [
-            %StopTime{stop_id: "s2", time: 1, timepoint_id: "tp2"},
-            %StopTime{stop_id: "s3", time: 2, timepoint_id: "tp3"}
-          ]
-        },
-        "t3" => %Trip{
-          id: "t3",
-          route_id: "r1",
-          block_id: "b3",
-          route_pattern_id: "rp3",
-          stop_times: [
-            %StopTime{stop_id: "s4", time: 1, timepoint_id: "tp4"},
-            %StopTime{stop_id: "s5", time: 2, timepoint_id: "tp1"}
-          ]
-        }
+      stop_times_by_id = %{
+        "t1" => [
+          %StopTime{stop_id: "s1", time: 1, timepoint_id: "tp1"},
+          %StopTime{stop_id: "s7", time: 2, timepoint_id: nil}
+        ],
+        "t2" => [
+          %StopTime{stop_id: "s2", time: 1, timepoint_id: "tp2"},
+          %StopTime{stop_id: "s3", time: 2, timepoint_id: "tp3"}
+        ],
+        "t3" => [
+          %StopTime{stop_id: "s4", time: 1, timepoint_id: "tp4"},
+          %StopTime{stop_id: "s5", time: 2, timepoint_id: "tp1"}
+        ]
       }
 
       timepoints_by_id = %{
@@ -887,10 +869,11 @@ defmodule Schedule.DataTest do
         "tp4" => %Timepoint{id: "tp4", name: "tp4 name"}
       }
 
-      assert Data.timepoints_for_route(route_patterns, "r1", trips, timepoints_by_id) == [
-               %Timepoint{id: "tp4", name: "tp4 name"},
-               %Timepoint{id: "tp1", name: "tp1 name"}
-             ]
+      assert Data.timepoints_for_route(route_patterns, "r1", stop_times_by_id, timepoints_by_id) ==
+               [
+                 %Timepoint{id: "tp4", name: "tp4 name"},
+                 %Timepoint{id: "tp1", name: "tp1 name"}
+               ]
     end
 
     test "groups timepoints together even when they're on different stops" do
@@ -911,29 +894,17 @@ defmodule Schedule.DataTest do
         }
       ]
 
-      trips = %{
-        "t1" => %Trip{
-          id: "t1",
-          route_id: "r1",
-          block_id: "b1",
-          route_pattern_id: "rp1",
-          stop_times: [
-            %StopTime{stop_id: "s1", time: 1, timepoint_id: "tp1"},
-            %StopTime{stop_id: "s3b", time: 2, timepoint_id: "tp3"}
-          ]
-        },
-        "t2" => %Trip{
-          id: "t2",
-          route_id: "r1",
-          block_id: "b2",
-          route_pattern_id: "rp2",
-          stop_times: [
-            %StopTime{stop_id: "s1", time: 1, timepoint_id: "tp1"},
-            %StopTime{stop_id: "s2", time: 2, timepoint_id: "tp2"},
-            %StopTime{stop_id: "s3a", time: 3, timepoint_id: "tp3"},
-            %StopTime{stop_id: "s4", time: 4, timepoint_id: "tp4"}
-          ]
-        }
+      stop_times_by_id = %{
+        "t1" => [
+          %StopTime{stop_id: "s1", time: 1, timepoint_id: "tp1"},
+          %StopTime{stop_id: "s3b", time: 2, timepoint_id: "tp3"}
+        ],
+        "t2" => [
+          %StopTime{stop_id: "s1", time: 1, timepoint_id: "tp1"},
+          %StopTime{stop_id: "s2", time: 2, timepoint_id: "tp2"},
+          %StopTime{stop_id: "s3a", time: 3, timepoint_id: "tp3"},
+          %StopTime{stop_id: "s4", time: 4, timepoint_id: "tp4"}
+        ]
       }
 
       timepoints_by_id = %{
@@ -943,12 +914,13 @@ defmodule Schedule.DataTest do
         "tp4" => %Timepoint{id: "tp4", name: "tp4 name"}
       }
 
-      assert Data.timepoints_for_route(route_patterns, "r1", trips, timepoints_by_id) == [
-               %Timepoint{id: "tp1", name: "tp1 name"},
-               %Timepoint{id: "tp2", name: "tp2 name"},
-               %Timepoint{id: "tp3", name: "tp3 name"},
-               %Timepoint{id: "tp4", name: "tp4 name"}
-             ]
+      assert Data.timepoints_for_route(route_patterns, "r1", stop_times_by_id, timepoints_by_id) ==
+               [
+                 %Timepoint{id: "tp1", name: "tp1 name"},
+                 %Timepoint{id: "tp2", name: "tp2 name"},
+                 %Timepoint{id: "tp3", name: "tp3 name"},
+                 %Timepoint{id: "tp4", name: "tp4 name"}
+               ]
     end
   end
 end

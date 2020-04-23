@@ -13,12 +13,12 @@ defmodule Schedule.Minischedule.Load do
   def from_hastus(activities, trips) do
     activities_by_run = Enum.group_by(activities, &Activity.run_key/1)
     trips_by_run = Enum.group_by(trips, &Trip.run_key/1)
-    activities_and_trips_by_run = Helpers.pair_maps(activities_by_run, trips_by_run)
+    activities_and_trips_by_run = Helpers.zip_maps([activities_by_run, trips_by_run])
 
     runs =
       Enum.map(
         activities_and_trips_by_run,
-        fn {run_key, {activities, trips}} ->
+        fn {run_key, [activities, trips]} ->
           run(run_key, activities, trips)
         end
       )

@@ -8,6 +8,8 @@ defmodule Schedule.Gtfs.StopTime do
   alias Schedule.Gtfs.Stop
   alias Schedule.Gtfs.Trip
 
+  @type by_trip_id :: %{Trip.id() => [t()]}
+
   @type t :: %__MODULE__{
           stop_id: Stop.id(),
           time: Util.Time.time_of_day(),
@@ -29,7 +31,14 @@ defmodule Schedule.Gtfs.StopTime do
 
   @type timepoint_id :: String.t()
 
-  @spec trip_stop_times_from_csv([Csv.row()]) :: %{Trip.id() => [t()]}
+  @spec parse(binary(), MapSet.t(Trip.id())) :: by_trip_id()
+  def parse(file_binary, trip_ids) do
+    file_binary
+    |> Csv.parse(filter: &row_in_trip_id_set?(&1, trip_ids))
+    |> trip_stop_times_from_csv()
+  end
+
+  @spec trip_stop_times_from_csv([Csv.row()]) :: by_trip_id()
   def trip_stop_times_from_csv(stop_times_csv) do
     stop_times_csv
     |> Enum.group_by(fn stop_time_row -> stop_time_row["trip_id"] end)
