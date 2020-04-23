@@ -7,6 +7,8 @@ defmodule Schedule.Trip do
 
   @type id :: String.t()
 
+  @type by_id :: %{id() => t()}
+
   @type t :: %__MODULE__{
           id: id(),
           block_id: Block.id(),
@@ -43,9 +45,7 @@ defmodule Schedule.Trip do
     stop_times: []
   ]
 
-  @spec merge_trips([Gtfs.Trip.t()], [Hastus.Trip.t()], %{id() => [StopTime.t()]}) :: %{
-          id() => t()
-        }
+  @spec merge_trips([Gtfs.Trip.t()], [Hastus.Trip.t()], StopTime.by_trip_id()) :: by_id()
   def merge_trips(gtfs_trips, hastus_trips, stop_times_by_id) do
     gtfs_trips_by_id = Map.new(gtfs_trips, fn trip -> {trip.id, trip} end)
     hastus_trips_by_id = Map.new(hastus_trips, fn trip -> {trip.trip_id, trip} end)
