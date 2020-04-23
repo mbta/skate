@@ -8,7 +8,7 @@ defmodule Schedule.Gtfs.StopTime do
   alias Schedule.Gtfs.Stop
   alias Schedule.Gtfs.Trip
 
-  @type by_id :: %{Trip.id() => [t()]}
+  @type by_trip_id :: %{Trip.id() => [t()]}
 
   @type t :: %__MODULE__{
           stop_id: Stop.id(),
@@ -31,7 +31,7 @@ defmodule Schedule.Gtfs.StopTime do
 
   @type timepoint_id :: String.t()
 
-  @spec trip_stop_times_from_csv([Csv.row()]) :: by_id()
+  @spec trip_stop_times_from_csv([Csv.row()]) :: by_trip_id()
   def trip_stop_times_from_csv(stop_times_csv) do
     stop_times_csv
     |> Enum.group_by(fn stop_time_row -> stop_time_row["trip_id"] end)

@@ -304,7 +304,7 @@ defmodule Schedule.Data do
   @spec timepoints_for_routes(
           [RoutePattern.t()],
           MapSet.t(Route.id()),
-          StopTime.by_id(),
+          StopTime.by_trip_id(),
           Timepoint.timepoints_by_id()
         ) ::
           timepoints_by_route()
@@ -318,7 +318,7 @@ defmodule Schedule.Data do
   @spec timepoints_for_route(
           [RoutePattern.t()],
           Route.id(),
-          StopTime.by_id(),
+          StopTime.by_trip_id(),
           Timepoint.timepoints_by_id()
         ) ::
           [
@@ -341,7 +341,7 @@ defmodule Schedule.Data do
   # All route_patterns should be in the same direction
   @spec timepoints_for_route_patterns(
           [RoutePattern.t()],
-          StopTime.by_id(),
+          StopTime.by_trip_id(),
           Timepoint.timepoints_by_id()
         ) :: [
           Timepoint.t()
