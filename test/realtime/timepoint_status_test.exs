@@ -230,8 +230,8 @@ defmodule Realtime.TimepointStatusTest do
       block = [
         %Trip{
           id: "1",
-          route_id: "28",
           block_id: "S28-2",
+          route_id: "28",
           service_id: "service",
           headsign: "headsign",
           direction_id: 1,
@@ -274,8 +274,8 @@ defmodule Realtime.TimepointStatusTest do
       block = [
         %Trip{
           id: "1",
-          route_id: "28",
           block_id: "S28-2",
+          route_id: "28",
           service_id: "service",
           headsign: "headsign",
           direction_id: 1,
@@ -318,8 +318,8 @@ defmodule Realtime.TimepointStatusTest do
       block = [
         %Trip{
           id: "0",
-          route_id: "28",
           block_id: "S28-2",
+          route_id: "28",
           service_id: "service",
           headsign: "headsign",
           direction_id: 0,
@@ -340,8 +340,8 @@ defmodule Realtime.TimepointStatusTest do
         },
         %Trip{
           id: "1",
-          route_id: "28",
           block_id: "S28-2",
+          route_id: "28",
           service_id: "service",
           headsign: "headsign",
           direction_id: 1,
@@ -379,8 +379,8 @@ defmodule Realtime.TimepointStatusTest do
       block = [
         %Trip{
           id: "1",
-          route_id: "28",
           block_id: "S28-2",
+          route_id: "28",
           service_id: "service",
           headsign: "headsign",
           direction_id: 1,

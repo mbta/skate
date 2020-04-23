@@ -99,6 +99,10 @@ defmodule Schedule.TripTest do
     test "combines gtfs trip, hastus_trip, and stop_times" do
       assert Trip.merge(@gtfs_trip, @hastus_trip, @stop_times) == @trip
     end
+
+    test "works for nonrevenue trips" do
+      assert %Trip{route_id: nil} = Trip.merge(nil, %{@hastus_trip | route_id: nil}, nil)
+    end
   end
 
   describe "start_time/1" do

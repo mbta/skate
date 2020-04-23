@@ -22,8 +22,8 @@ defmodule Realtime.GhostTest do
     test "makes a ghost bus for a block that doesn't have a vehicle" do
       trip = %Trip{
         id: "trip",
-        route_id: "route",
         block_id: "block",
+        route_id: "route",
         service_id: "service",
         headsign: "headsign",
         direction_id: 0,
@@ -84,8 +84,8 @@ defmodule Realtime.GhostTest do
     test "does not make a ghost for a block if there's a vehicle on that block" do
       trip = %Trip{
         id: "trip1",
-        route_id: "route",
         block_id: "block",
+        route_id: "route",
         service_id: "service",
         headsign: "headsign",
         direction_id: 0,
@@ -123,8 +123,8 @@ defmodule Realtime.GhostTest do
     test "makes a ghost for a block that should be pulling out" do
       trip = %Trip{
         id: "trip",
-        route_id: "route",
         block_id: "block",
+        route_id: "route",
         service_id: "service",
         headsign: "headsign",
         direction_id: 0,
@@ -172,8 +172,8 @@ defmodule Realtime.GhostTest do
       block = [
         %Trip{
           id: "trip1",
-          route_id: "route",
           block_id: "block",
+          route_id: "route",
           service_id: "service",
           headsign: "headsign1",
           direction_id: 0,
@@ -188,8 +188,8 @@ defmodule Realtime.GhostTest do
         },
         %Trip{
           id: "trip2",
-          route_id: "route",
           block_id: "block",
+          route_id: "route",
           service_id: "service",
           headsign: "headsign2",
           direction_id: 1,
@@ -235,8 +235,8 @@ defmodule Realtime.GhostTest do
     test "no ghost for a trip without timepoints" do
       trip = %Trip{
         id: "trip1",
-        route_id: "route",
         block_id: "block",
+        route_id: "route",
         service_id: "service",
         headsign: "headsign",
         direction_id: 0,
@@ -272,8 +272,8 @@ defmodule Realtime.GhostTest do
     setup do
       trip1 = %Trip{
         id: "1",
-        route_id: "route",
         block_id: "block",
+        route_id: "route",
         service_id: "service",
         headsign: "headsign1",
         direction_id: 0,
@@ -295,8 +295,8 @@ defmodule Realtime.GhostTest do
 
       trip2 = %Trip{
         id: "2",
-        route_id: "route",
         block_id: "block",
+        route_id: "route",
         service_id: "service",
         headsign: "headsign2",
         direction_id: 1,

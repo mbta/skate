@@ -7,7 +7,6 @@ defmodule Schedule.BlockTest do
 
   @trip1 %Trip{
     id: "t1",
-    route_id: "r",
     block_id: "b",
     service_id: "service",
     stop_times: [
@@ -18,7 +17,6 @@ defmodule Schedule.BlockTest do
 
   @trip2 %Trip{
     id: "t2",
-    route_id: "r",
     block_id: "b",
     service_id: "service",
     stop_times: [
