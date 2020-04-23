@@ -8,7 +8,6 @@ defmodule Concentrate.Consumer.StopTimeUpdatesTest do
 
   @trip %Trip{
     id: "t1",
-    route_id: "28",
     block_id: "S28-2",
     service_id: "service"
   }

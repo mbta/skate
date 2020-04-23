@@ -305,8 +305,8 @@ defmodule ScheduleTest do
       assert Schedule.trip("t1", pid) ==
                %Trip{
                  id: "t1",
-                 route_id: "route",
                  block_id: "b",
+                 route_id: "route",
                  service_id: "service",
                  headsign: "h1",
                  direction_id: 1,
@@ -371,8 +371,8 @@ defmodule ScheduleTest do
       assert Schedule.block("b", "service", pid) == [
                %Trip{
                  id: "t1",
-                 route_id: "route",
                  block_id: "b",
+                 route_id: "route",
                  service_id: "service",
                  # Shuttles do not have route_pattern_ids
                  headsign: "h1",

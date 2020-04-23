@@ -187,8 +187,8 @@ defmodule Realtime.VehiclesTest do
     test "includes trip without a vehicle as a ghost" do
       trip = %Trip{
         id: "trip",
-        route_id: "route",
         block_id: "block",
+        route_id: "route",
         service_id: "service",
         headsign: "headsign",
         direction_id: 0,
@@ -267,8 +267,8 @@ defmodule Realtime.VehiclesTest do
 
       trip = %Trip{
         id: "trip",
-        route_id: "route",
         block_id: "block",
+        route_id: "route",
         service_id: "service",
         headsign: "headsign",
         direction_id: 0,
@@ -302,8 +302,8 @@ defmodule Realtime.VehiclesTest do
 
       trip = %Trip{
         id: "trip",
-        route_id: "route",
         block_id: "block",
+        route_id: "route",
         service_id: "service",
         headsign: "headsign",
         direction_id: 0,
@@ -365,8 +365,8 @@ defmodule Realtime.VehiclesTest do
 
       trip1 = %Trip{
         id: "trip1",
-        route_id: "route1",
         block_id: "block",
+        route_id: "route1",
         service_id: "service",
         headsign: "headsign1",
         direction_id: 0,
@@ -386,8 +386,8 @@ defmodule Realtime.VehiclesTest do
 
       trip2 = %Trip{
         id: "trip2",
-        route_id: "route2",
         block_id: "block",
+        route_id: "route2",
         service_id: "service",
         headsign: "headsign2",
         direction_id: 0,
@@ -442,13 +442,13 @@ defmodule Realtime.VehiclesTest do
       incoming_trips = [
         %Trip{
           id: "first",
-          route_id: "first",
-          block_id: "block"
+          block_id: "block",
+          route_id: "first"
         },
         %Trip{
           id: "second",
-          route_id: "second",
-          block_id: "block"
+          block_id: "block",
+          route_id: "second"
         }
       ]
 
@@ -462,13 +462,13 @@ defmodule Realtime.VehiclesTest do
       incoming_trips = [
         %Trip{
           id: "first",
-          route_id: "route",
-          block_id: "block"
+          block_id: "block",
+          route_id: "route"
         },
         %Trip{
           id: "second",
-          route_id: "route",
-          block_id: "block"
+          block_id: "block",
+          route_id: "route"
         }
       ]
 

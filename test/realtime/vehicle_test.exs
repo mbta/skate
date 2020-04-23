@@ -54,8 +54,8 @@ defmodule Realtime.VehicleTest do
     setup do
       trip = %Trip{
         id: "39984755",
-        route_id: "28",
         block_id: "S28-2",
+        route_id: "28",
         service_id: "service",
         headsign: "headsign",
         direction_id: 1,
@@ -194,7 +194,6 @@ defmodule Realtime.VehicleTest do
       reassign_env(:realtime, :trip_fn, fn _ ->
         %Trip{
           id: "39984755",
-          route_id: "28",
           block_id: "S28-2"
         }
       end)
@@ -307,7 +306,6 @@ defmodule Realtime.VehicleTest do
       block = [
         %Trip{
           id: "1",
-          route_id: "28",
           block_id: "S28-2",
           stop_times: [
             %StopTime{
@@ -372,7 +370,6 @@ defmodule Realtime.VehicleTest do
     setup do
       trip1 = %Trip{
         id: "t1",
-        route_id: "r1",
         block_id: "b",
         stop_times: [
           %StopTime{
@@ -390,7 +387,6 @@ defmodule Realtime.VehicleTest do
 
       trip2 = %Trip{
         id: "t2",
-        route_id: "r1",
         block_id: "b",
         stop_times: [
           %StopTime{
@@ -444,7 +440,6 @@ defmodule Realtime.VehicleTest do
     setup do
       first_trip = %Trip{
         id: "t1",
-        route_id: "r1",
         block_id: "b",
         run_id: "run1",
         stop_times: [
@@ -465,7 +460,6 @@ defmodule Realtime.VehicleTest do
 
       last_trip_of_run = %Trip{
         id: "t2",
-        route_id: "r1",
         block_id: "b",
         run_id: "run1",
         stop_times: [
@@ -486,7 +480,6 @@ defmodule Realtime.VehicleTest do
 
       last_trip_of_block = %Trip{
         id: "t3",
-        route_id: "r1",
         block_id: "b",
         run_id: "run2",
         stop_times: [

@@ -163,7 +163,6 @@ defmodule Schedule.DataTest do
         trips: %{
           "t1" => %Trip{
             id: "t1",
-            route_id: "r1",
             block_id: "b"
           }
         },
@@ -194,7 +193,6 @@ defmodule Schedule.DataTest do
     test "block returns the trips on the block" do
       trip = %Trip{
         id: "t1",
-        route_id: "r1",
         block_id: "b",
         service_id: "service",
         stop_times: [
@@ -219,7 +217,6 @@ defmodule Schedule.DataTest do
     test "block doesn't return trips on the same block but a different date" do
       trip = %Trip{
         id: "t1",
-        route_id: "r1",
         block_id: "b",
         service_id: "service",
         stop_times: [
@@ -289,7 +286,6 @@ defmodule Schedule.DataTest do
     test "returns an active trip" do
       trip = %Trip{
         id: "active",
-        route_id: "route",
         block_id: "active",
         service_id: "today",
         stop_times: [
@@ -325,7 +321,6 @@ defmodule Schedule.DataTest do
     test "doesn't return a trip active at a different time today" do
       trip = %Trip{
         id: "trip",
-        route_id: "route",
         block_id: "block",
         service_id: "today",
         stop_times: [
@@ -359,7 +354,6 @@ defmodule Schedule.DataTest do
     test "doesn't return a trip active at this time on a different day" do
       trip = %Trip{
         id: "trip",
-        route_id: "route",
         block_id: "block",
         service_id: "tomorrow",
         stop_times: [
@@ -393,7 +387,6 @@ defmodule Schedule.DataTest do
     test "returns late-night trips that are still active from yesterday" do
       trip = %Trip{
         id: "trip",
-        route_id: "route",
         block_id: "block",
         service_id: "yesterday",
         stop_times: [
@@ -431,7 +424,6 @@ defmodule Schedule.DataTest do
       block = [
         %Trip{
           id: "trip",
-          route_id: "route",
           block_id: "block",
           service_id: "today",
           stop_times: [
@@ -480,7 +472,6 @@ defmodule Schedule.DataTest do
           "block" => [
             %Trip{
               id: "trip",
-              route_id: "route",
               block_id: "block",
               service_id: "today",
               stop_times: [
@@ -507,11 +498,10 @@ defmodule Schedule.DataTest do
       assert Data.active_blocks(data, time0 + 5, time0 + 5) == %{}
     end
 
-    test "returns a block only once per route if it has multiple active trips" do
+    test "returns a block only once if it has multiple active trips" do
       block = [
         %Trip{
           id: "first",
-          route_id: "route",
           block_id: "block",
           service_id: "today",
           stop_times: [
@@ -523,7 +513,6 @@ defmodule Schedule.DataTest do
         },
         %Trip{
           id: "second",
-          route_id: "route",
           block_id: "block",
           service_id: "today",
           stop_times: [
@@ -559,7 +548,6 @@ defmodule Schedule.DataTest do
       block1 = [
         %Trip{
           id: "first",
-          route_id: "route",
           block_id: "block",
           service_id: "today",
           stop_times: [
@@ -574,7 +562,6 @@ defmodule Schedule.DataTest do
       block2 = [
         %Trip{
           id: "second",
-          route_id: "route",
           block_id: "block",
           service_id: "tomorrow",
           stop_times: [
@@ -690,8 +677,8 @@ defmodule Schedule.DataTest do
     test "returns the shape for the given trip_id" do
       trip = %Trip{
         id: "trip",
-        route_id: "route",
         block_id: "block",
+        route_id: "route",
         shape_id: "shape"
       }
 
@@ -724,8 +711,8 @@ defmodule Schedule.DataTest do
     test "returns nil if there is no shape" do
       trip = %Trip{
         id: "trip",
-        route_id: "route",
         block_id: "block",
+        route_id: "route",
         shape_id: "shape"
       }
 

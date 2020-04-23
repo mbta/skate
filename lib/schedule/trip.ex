@@ -9,8 +9,8 @@ defmodule Schedule.Trip do
 
   @type t :: %__MODULE__{
           id: id(),
-          route_id: Route.id(),
           block_id: Block.id(),
+          route_id: Route.id() | nil,
           service_id: Service.id() | nil,
           headsign: String.t() | nil,
           direction_id: Direction.id() | nil,
@@ -24,7 +24,6 @@ defmodule Schedule.Trip do
 
   @enforce_keys [
     :id,
-    :route_id,
     :block_id
   ]
 
@@ -32,8 +31,8 @@ defmodule Schedule.Trip do
 
   defstruct [
     :id,
-    :route_id,
     :block_id,
+    route_id: nil,
     service_id: nil,
     headsign: nil,
     direction_id: nil,
@@ -66,8 +65,8 @@ defmodule Schedule.Trip do
   def merge(gtfs_trip, hastus_trip, stop_times) when gtfs_trip != nil or hastus_trip != nil do
     %__MODULE__{
       id: (gtfs_trip && gtfs_trip.id) || (hastus_trip && hastus_trip.trip_id),
-      route_id: (gtfs_trip && gtfs_trip.route_id) || (hastus_trip && hastus_trip.route_id),
       block_id: (gtfs_trip && gtfs_trip.block_id) || (hastus_trip && hastus_trip.block_id),
+      route_id: (gtfs_trip && gtfs_trip.route_id) || (hastus_trip && hastus_trip.route_id),
       service_id: gtfs_trip && gtfs_trip.service_id,
       headsign: gtfs_trip && gtfs_trip.headsign,
       direction_id: gtfs_trip && gtfs_trip.direction_id,
