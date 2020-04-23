@@ -222,7 +222,7 @@ defmodule Schedule.Data do
     } = Schedule.Minischedule.Load.from_hastus(hastus_activities, hastus_trips)
 
     gtfs_files["feed_info.txt"]
-    |> feed_info()
+    |> FeedInfo.parse()
     |> FeedInfo.log_gtfs_version()
 
     directions_by_route_id = directions_by_route_id(gtfs_files["directions.txt"])
@@ -267,13 +267,6 @@ defmodule Schedule.Data do
     route_patterns
     |> RoutePattern.for_route_id(route_id)
     |> RoutePattern.by_direction()
-  end
-
-  @spec feed_info(binary()) :: FeedInfo.t()
-  defp feed_info(feed_info_data) do
-    feed_info_data
-    |> Csv.parse(parse: &FeedInfo.from_csv_row/1)
-    |> List.first()
   end
 
   @spec directions_by_route_id(binary()) :: directions_by_route_and_id()

@@ -16,6 +16,17 @@ defmodule Schedule.Gtfs.FeedInfoTest do
     version: "Spring 2020, 2020-04-16T08:39:02+00:00, version D"
   }
 
+  describe "parse" do
+    test "parses a binary file into a single FeedInfo struct" do
+      file_binary = """
+      feed_publisher_name,feed_publisher_url,feed_lang,feed_start_date,feed_end_date,feed_version,feed_contact_email
+      MBTA,http://www.mbta.com,EN,20200409,20200514,"Spring 2020, 2020-04-16T08:39:02+00:00, version D",developer@mbta.com
+      """
+
+      assert FeedInfo.parse(file_binary) == @feed_info
+    end
+  end
+
   describe "from_csv_row/1" do
     test "builds a FeedInfo struct from a csv row" do
       assert FeedInfo.from_csv_row(@csv_row) == @feed_info

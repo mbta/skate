@@ -21,6 +21,13 @@ defmodule Schedule.Gtfs.FeedInfo do
     :version
   ]
 
+  @spec parse(binary()) :: t()
+  def parse(file_binary) do
+    file_binary
+    |> Csv.parse(parse: &from_csv_row/1)
+    |> List.first()
+  end
+
   @spec from_csv_row(Csv.row()) :: t()
   def from_csv_row(row) do
     %__MODULE__{
