@@ -1,7 +1,7 @@
 # Fail if any command fails
 set -e
 
-ELIXIR_VERSION=1.9.4
+ELIXIR_VERSION=1.10.2
 ERLANG_VERSION=22.3.2
 NODEJS_VERSION=10.15
 

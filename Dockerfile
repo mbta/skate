@@ -1,7 +1,7 @@
 FROM elixir:1.8-alpine as builder
 
 # elixir expects utf8.
-ENV ELIXIR_VERSION="v1.9.4" \
+ENV ELIXIR_VERSION="v1.10.2" \
   LANG=C.UTF-8
 
 WORKDIR /root
