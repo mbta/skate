@@ -14,6 +14,7 @@ defmodule Schedule.Data do
   alias Schedule.Gtfs.{
     Calendar,
     Direction,
+    FeedInfo,
     Route,
     RoutePattern,
     Service,
@@ -219,6 +220,10 @@ defmodule Schedule.Data do
       runs: minischedule_runs,
       blocks: minischedule_blocks
     } = Schedule.Minischedule.Load.from_hastus(hastus_activities, hastus_trips)
+
+    gtfs_files["feed_info.txt"]
+    |> FeedInfo.parse()
+    |> FeedInfo.log_gtfs_version()
 
     directions_by_route_id = directions_by_route_id(gtfs_files["directions.txt"])
 
