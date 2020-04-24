@@ -67,7 +67,7 @@ defmodule Concentrate.MergeTest do
     end
 
     property "with multiple sources, returns the merged data" do
-      check all multi_source_mergeables <- list_of_mergeables() do
+      check all(multi_source_mergeables <- list_of_mergeables()) do
         {_, state, _} = init([])
 
         expected =
@@ -178,14 +178,16 @@ defmodule Concentrate.MergeTest do
   end
 
   defp list_of_vehicles do
-    gen all vehicles <- list_of(vehicle()) do
+    gen all(vehicles <- list_of(vehicle())) do
       Enum.uniq_by(vehicles, &VehiclePosition.id/1)
     end
   end
 
   defp vehicle do
-    gen all last_updated <- StreamData.positive_integer(),
-            vehicle_id <- StreamData.string(:ascii) do
+    gen all(
+          last_updated <- StreamData.positive_integer(),
+          vehicle_id <- StreamData.string(:ascii)
+        ) do
       VehiclePosition.new(
         id: vehicle_id,
         last_updated: last_updated,

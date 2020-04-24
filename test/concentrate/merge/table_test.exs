@@ -7,7 +7,7 @@ defmodule Concentrate.Merge.TableTest do
 
   describe "items/2" do
     property "with one source, returns the data" do
-      check all mergeables <- TestMergeable.mergeables() do
+      check all(mergeables <- TestMergeable.mergeables()) do
         from = :from
         table = new()
         table = add(table, from)
@@ -17,7 +17,7 @@ defmodule Concentrate.Merge.TableTest do
     end
 
     property "with multiple sources, returns the merged data" do
-      check all multi_source_mergeables <- sourced_mergeables() do
+      check all(multi_source_mergeables <- sourced_mergeables()) do
         # reverse so we get the latest data
         # get the uniq sources
         expected =
@@ -41,7 +41,7 @@ defmodule Concentrate.Merge.TableTest do
     end
 
     property "updating a source returns the latest data for that source" do
-      check all all_mergeables <- list_of_mergeables() do
+      check all(all_mergeables <- list_of_mergeables()) do
         from = :from
         table = new()
         table = add(table, from)
