@@ -26,6 +26,11 @@ defmodule Schedule.Minischedule.Block do
     :pieces
   ]
 
+  @spec key(t()) :: key()
+  def key(block) do
+    {block.schedule_id, block.id}
+  end
+
   defmodule Hydrated do
     @type t :: %__MODULE__{
             schedule_id: Schedule.id(),

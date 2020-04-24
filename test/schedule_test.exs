@@ -6,6 +6,7 @@ defmodule ScheduleTest do
   alias Schedule.Trip
   alias Schedule.Gtfs.{Route, RoutePattern, Shape, Stop, StopTime, Timepoint}
   alias Schedule.Gtfs.Shape.Point
+  alias Schedule.Minischedule
 
   describe "all_routes" do
     test "maps each row to a Route" do
@@ -721,6 +722,70 @@ defmodule ScheduleTest do
                  route_id: "Shuttle-BabcockBostonCollege",
                  direction_id: 0,
                  representative_trip_id: "41836966-20:45-BabcockBCNewtonHighlandsKenmore1"
+               }
+    end
+  end
+
+  describe "minischedule" do
+    test "returns run and block for trip" do
+      pid =
+        Schedule.start_mocked(%{
+          hastus: %{
+            "activities.csv" => [
+              "schedule_id;area;run_id;start_time;end_time;start_place;end_place;activity_type;activity_name",
+              "schedule;123;4567;00:00;00:00;start;end;Operator;block"
+            ],
+            "trips.csv" => [
+              "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
+              "schedule;123;4567;block;00:00;00:00;start;end;route;trip"
+            ]
+          }
+        })
+
+      expected_piece = %Minischedule.Piece.Hydrated{
+        schedule_id: "schedule",
+        run_id: "123-4567",
+        block_id: "block",
+        start: %{
+          time: 0,
+          place: "start",
+          mid_route?: false
+        },
+        trips: [
+          %Minischedule.Trip{
+            id: "trip",
+            route_id: "route"
+          }
+        ],
+        end: %{
+          time: 0,
+          place: "end",
+          mid_route?: false
+        }
+      }
+
+      assert Schedule.minischedule("trip", pid) ==
+               {
+                 %Minischedule.Run.Hydrated{
+                   schedule_id: "schedule",
+                   id: "123-4567",
+                   activities: [
+                     # TODO remove the break once Minischedule.Load.run is finished
+                     %Minischedule.Break{
+                       break_type: "Operator",
+                       start_time: 0,
+                       end_time: 0,
+                       start_place: "start",
+                       end_place: "end"
+                     },
+                     expected_piece
+                   ]
+                 },
+                 %Minischedule.Block.Hydrated{
+                   schedule_id: "schedule",
+                   id: "block",
+                   pieces: [expected_piece]
+                 }
                }
     end
   end
