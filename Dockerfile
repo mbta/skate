@@ -1,4 +1,4 @@
-FROM elixir:1.8-alpine as builder
+FROM elixir:1.10-alpine as builder
 
 # elixir expects utf8.
 ENV ELIXIR_VERSION="v1.10.2" \
@@ -25,7 +25,4 @@ WORKDIR /root/assets/
 RUN npm ci && npm run deploy
 
 WORKDIR /root
-RUN mix phx.digest
-
-WORKDIR /root
-RUN mix distillery.release --verbose
+RUN mix do phx.digest, release
