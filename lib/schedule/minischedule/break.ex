@@ -6,8 +6,8 @@ defmodule Schedule.Minischedule.Break do
 
   @type t :: %__MODULE__{
           break_type: break_type(),
-          start_time: String.t(),
-          end_time: String.t(),
+          start_time: Util.Time.time_of_day(),
+          end_time: Util.Time.time_of_day(),
           start_place: Place.id(),
           end_place: Place.id()
         }

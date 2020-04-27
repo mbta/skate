@@ -8,7 +8,7 @@ defmodule Schedule.Minischedule.Piece do
   @type key :: {Schedule.id(), Run.id(), Block.id()}
 
   @type sign_on_off :: %{
-          time: String.t(),
+          time: Util.Time.time_of_day(),
           place: Place.id(),
           mid_route?: boolean()
         }

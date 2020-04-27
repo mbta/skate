@@ -30,7 +30,7 @@ defmodule Schedule.Data do
           timepoints_by_route: timepoints_by_route(),
           shapes: shapes_by_route_id(),
           stops: stops_by_id(),
-          trips: trips_by_id(),
+          trips: Trip.by_id(),
           blocks: Block.by_id(),
           calendar: Calendar.t(),
           minischedule_runs: Minischedule.Run.by_id(),
@@ -42,8 +42,6 @@ defmodule Schedule.Data do
   @type shapes_by_route_id :: %{Route.id() => [Shape.t()]}
 
   @type stops_by_id :: %{Stop.id() => Stop.t()}
-
-  @type trips_by_id :: %{Trip.id() => Trip.t()}
 
   @type directions_by_route_and_id :: %{Route.id() => %{Direction.id() => Direction.t()}}
 
