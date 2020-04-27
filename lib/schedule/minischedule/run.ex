@@ -21,6 +21,8 @@ defmodule Schedule.Minischedule.Run do
     :activities
   ]
 
+  @derive Jason.Encoder
+
   defstruct [
     :schedule_id,
     :id,
