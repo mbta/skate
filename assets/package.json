@@ -58,7 +58,7 @@
     "svgo-loader": "^2.2.1",
     "ts-jest": "^25.4.0",
     "ts-loader": "^7.0.1",
-    "tslint": "^6.1.1",
+    "tslint": "^6.1.2",
     "tslint-config-prettier": "^1.18.0",
     "tslint-react": "^5.0.0",
     "tslint-react-hooks": "^2.2.2",
