@@ -31,32 +31,8 @@ defmodule Schedule.Minischedule.Block do
     {block.schedule_id, block.id}
   end
 
-  defmodule Hydrated do
-    @type t :: %__MODULE__{
-            schedule_id: Schedule.id(),
-            id: Block.id(),
-            pieces: [Piece.Hydrated.t()]
-          }
-
-    @enforce_keys [
-      :schedule_id,
-      :id,
-      :pieces
-    ]
-
-    defstruct [
-      :schedule_id,
-      :id,
-      :pieces
-    ]
-  end
-
-  @spec hydrate(t(), Trip.by_id()) :: Hydrated.t()
+  @spec hydrate(t(), Trip.by_id()) :: t()
   def hydrate(block, trips_by_id) do
-    %Hydrated{
-      schedule_id: block.schedule_id,
-      id: block.id,
-      pieces: Enum.map(block.pieces, fn piece -> Piece.hydrate(piece, trips_by_id) end)
-    }
+    %{block | pieces: Enum.map(block.pieces, &Piece.hydrate(&1, trips_by_id))}
   end
 end

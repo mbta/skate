@@ -947,12 +947,12 @@ defmodule Schedule.DataTest do
       }
 
       assert Data.minischedule(data, trip.id) == {
-               %Minischedule.Run.Hydrated{
+               %Minischedule.Run{
                  schedule_id: "schedule",
                  id: "run",
                  activities: []
                },
-               %Minischedule.Block.Hydrated{
+               %Minischedule.Block{
                  schedule_id: "schedule",
                  id: "block",
                  pieces: []

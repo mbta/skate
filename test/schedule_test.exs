@@ -742,7 +742,7 @@ defmodule ScheduleTest do
           }
         })
 
-      expected_piece = %Minischedule.Piece.Hydrated{
+      expected_piece = %Minischedule.Piece{
         schedule_id: "schedule",
         run_id: "123-4567",
         block_id: "block",
@@ -752,9 +752,12 @@ defmodule ScheduleTest do
           mid_route?: false
         },
         trips: [
-          %Minischedule.Trip{
+          %Trip{
             id: "trip",
-            route_id: "route"
+            block_id: "block",
+            route_id: "route",
+            run_id: "123-4567",
+            schedule_id: "schedule"
           }
         ],
         end: %{
@@ -766,7 +769,7 @@ defmodule ScheduleTest do
 
       assert Schedule.minischedule("trip", pid) ==
                {
-                 %Minischedule.Run.Hydrated{
+                 %Minischedule.Run{
                    schedule_id: "schedule",
                    id: "123-4567",
                    activities: [
@@ -781,7 +784,7 @@ defmodule ScheduleTest do
                      expected_piece
                    ]
                  },
-                 %Minischedule.Block.Hydrated{
+                 %Minischedule.Block{
                    schedule_id: "schedule",
                    id: "block",
                    pieces: [expected_piece]

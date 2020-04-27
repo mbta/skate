@@ -1,7 +1,7 @@
 defmodule Schedule.Minischedule.RunTest do
   use ExUnit.Case, async: true
 
-  alias Schedule.Minischedule
+  alias Schedule.Trip
   alias Schedule.Minischedule.Break
   alias Schedule.Minischedule.Piece
   alias Schedule.Minischedule.Run
@@ -10,7 +10,7 @@ defmodule Schedule.Minischedule.RunTest do
     test "hydrates the trips in pieces" do
       trip_id = "trip"
 
-      stored_trip = %Schedule.Trip{
+      stored_trip = %Trip{
         id: trip_id,
         block_id: "block"
       }
@@ -30,22 +30,22 @@ defmodule Schedule.Minischedule.RunTest do
             run_id: "run",
             block_id: "block",
             start: sign_on_off,
-            trip_ids: [trip_id],
+            trips: [trip_id],
             end: sign_on_off
           }
         ]
       }
 
-      expected_run = %Run.Hydrated{
+      expected_run = %Run{
         schedule_id: "schedule",
         id: "run",
         activities: [
-          %Piece.Hydrated{
+          %Piece{
             schedule_id: "schedule",
             run_id: "run",
             block_id: "block",
             start: sign_on_off,
-            trips: [%Minischedule.Trip{id: trip_id}],
+            trips: [%Trip{id: trip_id, block_id: "block"}],
             end: sign_on_off
           }
         ]
@@ -63,19 +63,13 @@ defmodule Schedule.Minischedule.RunTest do
         end_place: "end"
       }
 
-      stored_run = %Run{
+      run = %Run{
         schedule_id: "schedule",
         id: "run",
         activities: [break]
       }
 
-      expected_run = %Run.Hydrated{
-        schedule_id: "schedule",
-        id: "run",
-        activities: [break]
-      }
-
-      assert Run.hydrate(stored_run, %{}) == expected_run
+      assert Run.hydrate(run, %{}) == run
     end
   end
 end

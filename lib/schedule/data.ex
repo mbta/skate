@@ -208,7 +208,7 @@ defmodule Schedule.Data do
   end
 
   @spec minischedule(t(), Trip.id()) ::
-          {Minischedule.Run.Hydrated.t(), Minischedule.Block.Hydrated.t()} | nil
+          {Minischedule.Run.t(), Minischedule.Block.t()} | nil
   def minischedule(
         %__MODULE__{trips: trips, minischedule_runs: runs, minischedule_blocks: blocks},
         trip_id

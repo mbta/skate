@@ -60,7 +60,7 @@ defmodule Schedule.Minischedule.Load do
             place: first_trip.start_place,
             mid_route?: false
           },
-          trip_ids: Enum.map(trips, fn trip -> trip.trip_id end),
+          trips: Enum.map(trips, fn trip -> trip.trip_id end),
           end: %{
             time: last_trip.end_time,
             place: last_trip.end_place,

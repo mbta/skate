@@ -181,9 +181,9 @@ defmodule Schedule do
   end
 
   @spec minischedule(Trip.id()) ::
-          {Minischedule.Run.Hydrated.t(), Minischedule.Block.Hydrated.t()} | nil
+          {Minischedule.Run.t(), Minischedule.Block.t()} | nil
   @spec minischedule(Trip.id(), GenServer.server()) ::
-          {Minischedule.Run.Hydrated.t(), Minischedule.Block.Hydrated.t()} | nil
+          {Minischedule.Run.t(), Minischedule.Block.t()} | nil
   def minischedule(trip_id, server \\ __MODULE__) do
     try do
       GenServer.call(server, {:minischedule, trip_id})

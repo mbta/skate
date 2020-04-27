@@ -47,7 +47,7 @@ defmodule Schedule.Minischedule.LoadTest do
           place: "start_place",
           mid_route?: false
         },
-        trip_ids: ["trip"],
+        trips: ["trip"],
         end: %{
           time: 2,
           place: "end_place",
@@ -159,27 +159,27 @@ defmodule Schedule.Minischedule.LoadTest do
                    activities: [
                      _break_11,
                      _break_12,
-                     %Piece{trip_ids: ["trip_11"]},
-                     %Piece{trip_ids: ["trip_12"]}
+                     %Piece{trips: ["trip_11"]},
+                     %Piece{trips: ["trip_12"]}
                    ]
                  },
                  {"schedule", "run_2"} => %Run{
                    activities: [
                      _break_21,
-                     %Piece{trip_ids: ["trip_21"]}
+                     %Piece{trips: ["trip_21"]}
                    ]
                  }
                },
                blocks: %{
                  {"schedule", "block_1"} => %Block{
                    pieces: [
-                     %Piece{trip_ids: ["trip_11"]},
-                     %Piece{trip_ids: ["trip_21"]}
+                     %Piece{trips: ["trip_11"]},
+                     %Piece{trips: ["trip_21"]}
                    ]
                  },
                  {"schedule", "block_2"} => %Block{
                    pieces: [
-                     %Piece{trip_ids: ["trip_12"]}
+                     %Piece{trips: ["trip_12"]}
                    ]
                  }
                }
@@ -239,15 +239,15 @@ defmodule Schedule.Minischedule.LoadTest do
                runs: %{
                  # TODO remove breaks from runs. They're from the placeholder piece implementation.
                  {"schedule_1", "run"} => %Run{
-                   activities: [_break_1, %Piece{trip_ids: ["trip_1"]}]
+                   activities: [_break_1, %Piece{trips: ["trip_1"]}]
                  },
                  {"schedule_2", "run"} => %Run{
-                   activities: [_break_2, %Piece{trip_ids: ["trip_2"]}]
+                   activities: [_break_2, %Piece{trips: ["trip_2"]}]
                  }
                },
                blocks: %{
-                 {"schedule_1", "block"} => %Block{pieces: [%Piece{trip_ids: ["trip_1"]}]},
-                 {"schedule_2", "block"} => %Block{pieces: [%Piece{trip_ids: ["trip_2"]}]}
+                 {"schedule_1", "block"} => %Block{pieces: [%Piece{trips: ["trip_1"]}]},
+                 {"schedule_2", "block"} => %Block{pieces: [%Piece{trips: ["trip_2"]}]}
                }
              } = Load.from_hastus(activities, trips)
     end

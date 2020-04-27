@@ -37,36 +37,17 @@ defmodule Schedule.Minischedule.Run do
     Enum.filter(run.activities, fn activity -> match?(%Piece{}, activity) end)
   end
 
-  defmodule Hydrated do
-    @type t :: %__MODULE__{
-            schedule_id: Schedule.id(),
-            id: Run.id(),
-            activities: [Piece.Hydrated.t() | Break.t()]
-          }
-
-    @enforce_keys [
-      :schedule_id,
-      :id,
-      :activities
-    ]
-
-    defstruct [
-      :schedule_id,
-      :id,
-      :activities
-    ]
+  @spec hydrate(t(), Trip.by_id()) :: t()
+  def hydrate(run, trips_by_id) do
+    %{run | activities: Enum.map(run.activities, &hydrate_activity(&1, trips_by_id))}
   end
 
-  @spec hydrate(t(), Trip.by_id()) :: Hydrated.t()
-  def hydrate(run, trips_by_id) do
-    %Hydrated{
-      schedule_id: run.schedule_id,
-      id: run.id,
-      activities:
-        Enum.map(run.activities, fn
-          %Break{} = break -> break
-          %Piece{} = piece -> Piece.hydrate(piece, trips_by_id)
-        end)
-    }
+  @spec hydrate_activity(Piece.t() | Break.t(), Trip.by_id()) :: Piece.t() | Break.t()
+  def hydrate_activity(%Break{} = break, _trips_by_id) do
+    break
+  end
+
+  def hydrate_activity(%Piece{} = piece, trips_by_id) do
+    Piece.hydrate(piece, trips_by_id)
   end
 end
