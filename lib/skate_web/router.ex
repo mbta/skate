@@ -65,6 +65,8 @@ defmodule SkateWeb.Router do
     get "/shapes/route/:route_id", ShapeController, :route
     get "/shapes/trip/:trip_id", ShapeController, :trip
     get "/shuttles", ShuttleController, :index
+    get "/minischedule/run/:trip_id", MinischeduleController, :run
+    get "/minischedule/block/:trip_id", MinischeduleController, :block
   end
 
   scope "/_flags" do

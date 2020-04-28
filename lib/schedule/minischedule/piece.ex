@@ -32,6 +32,8 @@ defmodule Schedule.Minischedule.Piece do
     :end
   ]
 
+  @derive Jason.Encoder
+
   defstruct [
     :schedule_id,
     :run_id,

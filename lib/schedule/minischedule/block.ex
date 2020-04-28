@@ -20,6 +20,8 @@ defmodule Schedule.Minischedule.Block do
     :pieces
   ]
 
+  @derive Jason.Encoder
+
   defstruct [
     :schedule_id,
     :id,

@@ -20,6 +20,8 @@ defmodule Schedule.Minischedule.Break do
     :end_place
   ]
 
+  @derive Jason.Encoder
+
   defstruct [
     :break_type,
     :start_time,
