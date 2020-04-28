@@ -326,6 +326,7 @@ defmodule Schedule do
     ]
 
     hastus_file_names = [
+      "activities.csv",
       "trips.csv"
     ]
 
