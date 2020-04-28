@@ -45,18 +45,16 @@ defmodule Schedule.Data do
 
   @type directions_by_route_and_id :: %{Route.id() => %{Direction.id() => Direction.t()}}
 
-  defstruct [
-    routes: [],
-    route_patterns: [],
-    timepoints_by_route: %{},
-    shapes: %{},
-    stops: %{},
-    trips: %{},
-    blocks: %{},
-    calendar: %{},
-    minischedule_runs: %{},
-    minischedule_blocks: %{}
-  ]
+  defstruct routes: [],
+            route_patterns: [],
+            timepoints_by_route: %{},
+            shapes: %{},
+            stops: %{},
+            trips: %{},
+            blocks: %{},
+            calendar: %{},
+            minischedule_runs: %{},
+            minischedule_blocks: %{}
 
   @type files :: %{String.t() => binary()}
 
