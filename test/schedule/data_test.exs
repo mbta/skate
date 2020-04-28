@@ -6,6 +6,7 @@ defmodule Schedule.DataTest do
   alias Schedule.Trip
   alias Schedule.Gtfs.{Route, RoutePattern, Shape, Stop, StopTime, Timepoint}
   alias Schedule.Gtfs.Shape.Point
+  alias Schedule.Minischedule
 
   test "all_routes/1 returns all the routes" do
     routes = [
@@ -908,6 +909,90 @@ defmodule Schedule.DataTest do
                  %Timepoint{id: "tp3", name: "tp3 name"},
                  %Timepoint{id: "tp4", name: "tp4 name"}
                ]
+    end
+  end
+
+  describe "minischedule" do
+    test "returns run and block for trip" do
+      trip = %Trip{
+        id: "trip",
+        block_id: "block",
+        schedule_id: "schedule",
+        run_id: "run"
+      }
+
+      run = %Minischedule.Run{
+        schedule_id: "schedule",
+        id: "run",
+        activities: []
+      }
+
+      block = %Minischedule.Block{
+        schedule_id: "schedule",
+        id: "block",
+        pieces: []
+      }
+
+      data = %Data{
+        routes: [],
+        route_patterns: [],
+        timepoints_by_route: %{},
+        shapes: %{},
+        stops: [],
+        trips: %{trip.id => trip},
+        blocks: %{},
+        calendar: %{},
+        minischedule_runs: %{Minischedule.Run.key(run) => run},
+        minischedule_blocks: %{Minischedule.Block.key(block) => block}
+      }
+
+      assert Data.minischedule(data, trip.id) == {
+               %Minischedule.Run{
+                 schedule_id: "schedule",
+                 id: "run",
+                 activities: []
+               },
+               %Minischedule.Block{
+                 schedule_id: "schedule",
+                 id: "block",
+                 pieces: []
+               }
+             }
+    end
+
+    test "returns nil if the trip isn't known" do
+      data = %Data{
+        routes: [],
+        route_patterns: [],
+        timepoints_by_route: %{},
+        shapes: %{},
+        stops: [],
+        trips: %{},
+        blocks: %{},
+        calendar: %{}
+      }
+
+      assert Data.minischedule(data, "trip") == nil
+    end
+
+    test "returns nil if the trip is in gtfs but not hastus" do
+      trip = %Trip{
+        id: "trip",
+        block_id: "block"
+      }
+
+      data = %Data{
+        routes: [],
+        route_patterns: [],
+        timepoints_by_route: %{},
+        shapes: %{},
+        stops: [],
+        trips: %{trip.id => trip},
+        blocks: %{},
+        calendar: %{}
+      }
+
+      assert Data.minischedule(data, trip.id) == nil
     end
   end
 end

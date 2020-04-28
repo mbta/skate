@@ -7,6 +7,7 @@ defmodule Schedule do
     CacheFile,
     Data,
     Health,
+    Minischedule,
     Trip
   }
 
@@ -179,6 +180,21 @@ defmodule Schedule do
     end
   end
 
+  @spec minischedule(Trip.id()) ::
+          {Minischedule.Run.t(), Minischedule.Block.t()} | nil
+  @spec minischedule(Trip.id(), GenServer.server()) ::
+          {Minischedule.Run.t(), Minischedule.Block.t()} | nil
+  def minischedule(trip_id, server \\ __MODULE__) do
+    try do
+      GenServer.call(server, {:minischedule, trip_id})
+    catch
+      # Handle Schedule server timeouts gracefully
+      :exit, _ ->
+        _ = log_timeout(:minischedule)
+        nil
+    end
+  end
+
   defp log_timeout(function) do
     Logger.warn("module=#{__MODULE__} function=#{function} error=timeout")
   end
@@ -229,6 +245,10 @@ defmodule Schedule do
       ) do
     {:reply, Data.first_route_pattern_for_route_and_direction(gtfs_data, route_id, direction_id),
      state}
+  end
+
+  def handle_call({:minischedule, trip_id}, _from, {:loaded, gtfs_data} = state) do
+    {:reply, Data.minischedule(gtfs_data, trip_id), state}
   end
 
   # Initialization (Client)

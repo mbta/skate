@@ -207,6 +207,28 @@ defmodule Schedule.Data do
     end)
   end
 
+  @spec minischedule(t(), Trip.id()) ::
+          {Minischedule.Run.t(), Minischedule.Block.t()} | nil
+  def minischedule(
+        %__MODULE__{trips: trips, minischedule_runs: runs, minischedule_blocks: blocks},
+        trip_id
+      ) do
+    trip = trips[trip_id]
+
+    if trip != nil && trip.schedule_id != nil do
+      # we have HASTUS data for this trip
+      run = runs[{trip.schedule_id, trip.run_id}]
+      block = blocks[{trip.schedule_id, trip.block_id}]
+
+      {
+        Minischedule.Run.hydrate(run, trips),
+        Minischedule.Block.hydrate(block, trips)
+      }
+    else
+      nil
+    end
+  end
+
   # Initialization
 
   @spec parse_files(all_files()) :: t()
