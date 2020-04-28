@@ -126,12 +126,16 @@ defmodule Schedule do
     )
   end
 
-  @spec minischedule(Trip.id()) ::
-          {Minischedule.Run.t(), Minischedule.Block.t()} | nil
-  @spec minischedule(Trip.id(), GenServer.server()) ::
-          {Minischedule.Run.t(), Minischedule.Block.t()} | nil
-  def minischedule(trip_id, server \\ __MODULE__) do
-    call_catch_timeout(server, {:minischedule, trip_id}, :minischedule, nil)
+  @spec minischedule_run(Trip.id()) :: Minischedule.Run.t() | nil
+  @spec minischedule_run(Trip.id(), GenServer.server()) :: Minischedule.Run.t() | nil
+  def minischedule_run(trip_id, server \\ __MODULE__) do
+    call_catch_timeout(server, {:minischedule_run, trip_id}, :minischedule_run, nil)
+  end
+
+  @spec minischedule_block(Trip.id()) :: Minischedule.Block.t() | nil
+  @spec minischedule_block(Trip.id(), GenServer.server()) :: Minischedule.Block.t() | nil
+  def minischedule_block(trip_id, server \\ __MODULE__) do
+    call_catch_timeout(server, {:minischedule_block, trip_id}, :minischedule_block, nil)
   end
 
   @doc """
@@ -196,8 +200,12 @@ defmodule Schedule do
      state}
   end
 
-  def handle_call({:minischedule, trip_id}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.minischedule(gtfs_data, trip_id), state}
+  def handle_call({:minischedule_run, trip_id}, _from, {:loaded, gtfs_data} = state) do
+    {:reply, Data.minischedule_run(gtfs_data, trip_id), state}
+  end
+
+  def handle_call({:minischedule_block, trip_id}, _from, {:loaded, gtfs_data} = state) do
+    {:reply, Data.minischedule_block(gtfs_data, trip_id), state}
   end
 
   # Initialization (Client)

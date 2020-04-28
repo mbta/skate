@@ -194,10 +194,9 @@ defmodule Schedule.Data do
     end)
   end
 
-  @spec minischedule(t(), Trip.id()) ::
-          {Minischedule.Run.t(), Minischedule.Block.t()} | nil
-  def minischedule(
-        %__MODULE__{trips: trips, minischedule_runs: runs, minischedule_blocks: blocks},
+  @spec minischedule_run(t(), Trip.id()) :: Minischedule.Run.t() | nil
+  def minischedule_run(
+        %__MODULE__{trips: trips, minischedule_runs: runs},
         trip_id
       ) do
     trip = trips[trip_id]
@@ -205,12 +204,23 @@ defmodule Schedule.Data do
     if trip != nil && trip.schedule_id != nil do
       # we have HASTUS data for this trip
       run = runs[{trip.schedule_id, trip.run_id}]
-      block = blocks[{trip.schedule_id, trip.block_id}]
+      Minischedule.Run.hydrate(run, trips)
+    else
+      nil
+    end
+  end
 
-      {
-        Minischedule.Run.hydrate(run, trips),
-        Minischedule.Block.hydrate(block, trips)
-      }
+  @spec minischedule_block(t(), Trip.id()) :: Minischedule.Block.t() | nil
+  def minischedule_block(
+        %__MODULE__{trips: trips, minischedule_blocks: blocks},
+        trip_id
+      ) do
+    trip = trips[trip_id]
+
+    if trip != nil && trip.schedule_id != nil do
+      # we have HASTUS data for this trip
+      block = blocks[{trip.schedule_id, trip.block_id}]
+      Minischedule.Block.hydrate(block, trips)
     else
       nil
     end

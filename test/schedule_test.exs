@@ -727,7 +727,7 @@ defmodule ScheduleTest do
   end
 
   describe "minischedule" do
-    test "returns run and block for trip" do
+    setup do
       pid =
         Schedule.start_mocked(%{
           hastus: %{
@@ -767,28 +767,34 @@ defmodule ScheduleTest do
         }
       }
 
-      assert Schedule.minischedule("trip", pid) ==
-               {
-                 %Minischedule.Run{
-                   schedule_id: "schedule",
-                   id: "123-4567",
-                   activities: [
-                     # TODO remove the break once Minischedule.Load.run is finished
-                     %Minischedule.Break{
-                       break_type: "Operator",
-                       start_time: 0,
-                       end_time: 0,
-                       start_place: "start",
-                       end_place: "end"
-                     },
-                     expected_piece
-                   ]
-                 },
-                 %Minischedule.Block{
-                   schedule_id: "schedule",
-                   id: "block",
-                   pieces: [expected_piece]
-                 }
+      %{pid: pid, expected_piece: expected_piece}
+    end
+
+    test "can get run", %{pid: pid, expected_piece: expected_piece} do
+      assert Schedule.minischedule_run("trip", pid) ==
+               %Minischedule.Run{
+                 schedule_id: "schedule",
+                 id: "123-4567",
+                 activities: [
+                   # TODO remove the break once Minischedule.Load.run is finished
+                   %Minischedule.Break{
+                     break_type: "Operator",
+                     start_time: 0,
+                     end_time: 0,
+                     start_place: "start",
+                     end_place: "end"
+                   },
+                   expected_piece
+                 ]
+               }
+    end
+
+    test "can get block", %{pid: pid, expected_piece: expected_piece} do
+      assert Schedule.minischedule_block("trip", pid) ==
+               %Minischedule.Block{
+                 schedule_id: "schedule",
+                 id: "block",
+                 pieces: [expected_piece]
                }
     end
   end
