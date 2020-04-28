@@ -47,53 +47,32 @@ defmodule Schedule do
   @spec all_routes() :: [Route.t()]
   @spec all_routes(GenServer.server()) :: [Route.t()]
   def all_routes(server \\ __MODULE__) do
-    GenServer.call(server, :all_routes)
+    call_catch_timeout(server, :all_routes, :all_routes, [])
   end
 
   # Timepoint IDs on a route, sorted in order of stop sequence
   @spec timepoints_on_route(Route.id()) :: [Timepoint.t()]
   @spec timepoints_on_route(Route.id(), GenServer.server()) :: [Timepoint.t()]
   def timepoints_on_route(route_id, server \\ __MODULE__) do
-    GenServer.call(server, {:timepoints_on_route, route_id})
+    call_catch_timeout(server, {:timepoints_on_route, route_id}, :timepoints_on_route, [])
   end
 
   @spec stop(Stop.id()) :: Stop.t() | nil
   @spec stop(Stop.id(), GenServer.server()) :: Stop.t() | nil
   def stop(stop_id, server \\ __MODULE__) do
-    try do
-      GenServer.call(server, {:stop, stop_id})
-    catch
-      # Handle Schedule server timeouts gracefully
-      :exit, _ ->
-        _ = log_timeout(:stop)
-        nil
-    end
+    call_catch_timeout(server, {:stop, stop_id}, :stop, nil)
   end
 
   @spec trip(Trip.id()) :: Trip.t() | nil
   @spec trip(Trip.id(), GenServer.server()) :: Trip.t() | nil
   def trip(trip_id, server \\ __MODULE__) do
-    try do
-      GenServer.call(server, {:trip, trip_id})
-    catch
-      # Handle Schedule server timeouts gracefully
-      :exit, _ ->
-        _ = log_timeout(:trip)
-        nil
-    end
+    call_catch_timeout(server, {:trip, trip_id}, :trip, nil)
   end
 
   @spec block(Block.id(), Service.id()) :: Block.t() | nil
   @spec block(Block.id(), Service.id(), GenServer.server()) :: Block.t() | nil
   def block(block_id, service_id, server \\ __MODULE__) do
-    try do
-      GenServer.call(server, {:block, block_id, service_id})
-    catch
-      # Handle Schedule server timeouts gracefully
-      :exit, _ ->
-        _ = log_timeout(:block)
-        nil
-    end
+    call_catch_timeout(server, {:block, block_id, service_id}, :block, nil)
   end
 
   @doc """
@@ -103,60 +82,32 @@ defmodule Schedule do
   @spec active_trips(Util.Time.timestamp(), Util.Time.timestamp(), GenServer.server()) ::
           [Trip.t()]
   def active_trips(start_time, end_time, server \\ __MODULE__) do
-    try do
-      GenServer.call(server, {:active_trips, start_time, end_time})
-    catch
-      # Handle Schedule server timeouts gracefully
-      :exit, _ ->
-        _ = log_timeout(:active_trips)
-        []
-    end
+    call_catch_timeout(server, {:active_trips, start_time, end_time}, :active_trips, [])
   end
 
   @doc """
   All of the blocks that are scheduled to be active any time between the start_time and end_time.
 
-  The result is grouped by route.
-  If a block is scheduled to be active on two routes during that time, it wil be in both routes' lists.
+  The result is grouped by date.
+  If a block is scheduled to be active on two dates during that time, it wil be in both dates' lists.
   """
   @spec active_blocks(Util.Time.timestamp(), Util.Time.timestamp()) :: %{Date.t() => [Block.t()]}
   @spec active_blocks(Util.Time.timestamp(), Util.Time.timestamp(), GenServer.server()) ::
           %{Date.t() => [Block.t()]}
   def active_blocks(start_time, end_time, server \\ __MODULE__) do
-    try do
-      GenServer.call(server, {:active_blocks, start_time, end_time})
-    catch
-      # Handle Schedule server timeouts gracefully
-      :exit, _ ->
-        _ = log_timeout(:active_blocks)
-        []
-    end
+    call_catch_timeout(server, {:active_blocks, start_time, end_time}, :active_blocks, %{})
   end
 
   @spec shapes(Route.id()) :: [Shape.t()]
   @spec shapes(Route.id(), GenServer.server()) :: [Shape.t()]
   def shapes(route_id, server \\ __MODULE__) do
-    try do
-      GenServer.call(server, {:shapes, route_id})
-    catch
-      # Handle Schedule server timeouts gracefully
-      :exit, _ ->
-        _ = log_timeout(:shapes)
-        nil
-    end
+    call_catch_timeout(server, {:shapes, route_id}, :shapes, [])
   end
 
   @spec shape_for_trip(Trip.id()) :: Shape.t() | nil
   @spec shape_for_trip(Trip.id(), GenServer.server()) :: Shape.t() | nil
   def shape_for_trip(trip_id, server \\ __MODULE__) do
-    try do
-      GenServer.call(server, {:shape_for_trip, trip_id})
-    catch
-      # Handle Schedule server timeouts gracefully
-      :exit, _ ->
-        _ = log_timeout(:shapes)
-        nil
-    end
+    call_catch_timeout(server, {:shape_for_trip, trip_id}, :shapes, nil)
   end
 
   @spec first_route_pattern_for_route_and_direction(Route.id(), Direction.id()) ::
@@ -167,17 +118,12 @@ defmodule Schedule do
           GenServer.server()
         ) :: RoutePattern.t() | nil
   def first_route_pattern_for_route_and_direction(route_id, direction_id, server \\ __MODULE__) do
-    try do
-      GenServer.call(
-        server,
-        {:first_route_pattern_for_route_and_direction, route_id, direction_id}
-      )
-    catch
-      # Handle Schedule server timeouts gracefully
-      :exit, _ ->
-        _ = log_timeout(:first_route_pattern_for_route_and_direction)
-        nil
-    end
+    call_catch_timeout(
+      server,
+      {:first_route_pattern_for_route_and_direction, route_id, direction_id},
+      :first_route_pattern_for_route_and_direction,
+      nil
+    )
   end
 
   @spec minischedule(Trip.id()) ::
@@ -185,18 +131,21 @@ defmodule Schedule do
   @spec minischedule(Trip.id(), GenServer.server()) ::
           {Minischedule.Run.t(), Minischedule.Block.t()} | nil
   def minischedule(trip_id, server \\ __MODULE__) do
-    try do
-      GenServer.call(server, {:minischedule, trip_id})
-    catch
-      # Handle Schedule server timeouts gracefully
-      :exit, _ ->
-        _ = log_timeout(:minischedule)
-        nil
-    end
+    call_catch_timeout(server, {:minischedule, trip_id}, :minischedule, nil)
   end
 
-  defp log_timeout(function) do
-    Logger.warn("module=#{__MODULE__} function=#{function} error=timeout")
+  @doc """
+  Handle Schedule server timeouts gracefully
+  """
+  @spec call_catch_timeout(GenServer.server(), any(), atom(), any()) :: any()
+  def call_catch_timeout(server, arg, function_name, default_result) do
+    try do
+      GenServer.call(server, arg)
+    catch
+      :exit, _ ->
+        Logger.warn("module=#{__MODULE__} function=#{function_name} error=timeout")
+        default_result
+    end
   end
 
   # Queries (Server)
