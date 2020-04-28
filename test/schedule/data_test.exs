@@ -31,14 +31,7 @@ defmodule Schedule.DataTest do
     ]
 
     data = %Data{
-      routes: routes,
-      route_patterns: [],
-      timepoints_by_route: %{},
-      shapes: %{},
-      stops: %{},
-      trips: %{},
-      blocks: %{},
-      calendar: %{}
+      routes: routes
     }
 
     assert Data.all_routes(data) == routes
@@ -47,8 +40,6 @@ defmodule Schedule.DataTest do
   describe "timepoints_on_route/2" do
     test "returns the timepoints for the given route ID" do
       data = %Data{
-        routes: [],
-        route_patterns: [],
         timepoints_by_route: %{
           "1" => [
             %Timepoint{id: "t1", name: "t1 name"},
@@ -56,12 +47,7 @@ defmodule Schedule.DataTest do
             %Timepoint{id: "t3", name: "t3 name"},
             %Timepoint{id: "t4", name: "t4 name"}
           ]
-        },
-        shapes: %{},
-        stops: %{},
-        trips: %{},
-        blocks: %{},
-        calendar: %{}
+        }
       }
 
       assert Data.timepoints_on_route(data, "1") == [
@@ -74,8 +60,6 @@ defmodule Schedule.DataTest do
 
     test "returns an empty list if the route ID isn't found" do
       data = %Data{
-        routes: [],
-        route_patterns: [],
         timepoints_by_route: %{
           "1" => [
             %Timepoint{id: "t1", name: "t1 name"},
@@ -83,12 +67,7 @@ defmodule Schedule.DataTest do
             %Timepoint{id: "t3", name: "t3 name"},
             %Timepoint{id: "t4", name: "t4 name"}
           ]
-        },
-        shapes: %{},
-        stops: %{},
-        trips: %{},
-        blocks: %{},
-        calendar: %{}
+        }
       }
 
       assert Data.timepoints_on_route(data, "2") == []
@@ -98,10 +77,6 @@ defmodule Schedule.DataTest do
   describe "stop/2" do
     test "returns the stop for the given stop ID" do
       data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoints_by_route: %{},
-        shapes: %{},
         stops: %{
           "1" => %Stop{
             id: "1",
@@ -113,10 +88,7 @@ defmodule Schedule.DataTest do
             name: "Two",
             parent_station_id: "3"
           }
-        },
-        trips: %{},
-        blocks: %{},
-        calendar: %{}
+        }
       }
 
       assert Data.stop(data, "2") == %Stop{
@@ -128,10 +100,6 @@ defmodule Schedule.DataTest do
 
     test "returns nil if the given stop ID is not found" do
       data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoints_by_route: %{},
-        shapes: %{},
         stops: %{
           "1" => %Stop{
             id: "1",
@@ -143,10 +111,7 @@ defmodule Schedule.DataTest do
             name: "Two",
             parent_station_id: "3"
           }
-        },
-        trips: %{},
-        blocks: %{},
-        calendar: %{}
+        }
       }
 
       assert Data.stop(data, "4") == nil
@@ -156,35 +121,19 @@ defmodule Schedule.DataTest do
   describe "trip" do
     test "trip/1 returns the trip" do
       data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoints_by_route: %{},
-        shapes: %{},
-        stops: %{},
         trips: %{
           "t1" => %Trip{
             id: "t1",
             block_id: "b"
           }
-        },
-        blocks: %{},
-        calendar: %{}
+        }
       }
 
       assert %Trip{id: "t1"} = Data.trip(data, "t1")
     end
 
     test "trip/1 returns nil if the trip doesn't exist" do
-      data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoints_by_route: %{},
-        shapes: %{},
-        stops: %{},
-        trips: %{},
-        blocks: %{},
-        calendar: %{}
-      }
+      data = %Data{}
 
       assert Data.trip(data, "t1") == nil
     end
@@ -202,14 +151,7 @@ defmodule Schedule.DataTest do
       }
 
       data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoints_by_route: %{},
-        shapes: %{},
-        stops: %{},
-        trips: %{},
-        blocks: Block.group_trips_by_block([trip]),
-        calendar: %{}
+        blocks: Block.group_trips_by_block([trip])
       }
 
       assert [%Trip{id: "t1"}] = Data.block(data, "b", "service")
@@ -226,30 +168,14 @@ defmodule Schedule.DataTest do
       }
 
       data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoints_by_route: %{},
-        shapes: %{},
-        stops: %{},
-        trips: %{},
-        blocks: Block.group_trips_by_block([trip]),
-        calendar: %{}
+        blocks: Block.group_trips_by_block([trip])
       }
 
       assert Data.block(data, "b", "other_service") == nil
     end
 
     test "block returns nil if the block doesn't exist" do
-      data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoints_by_route: %{},
-        shapes: %{},
-        stops: %{},
-        trips: %{},
-        blocks: %{},
-        calendar: %{}
-      }
+      data = %Data{}
 
       assert Data.trip(data, "block") == nil
     end
@@ -302,13 +228,7 @@ defmodule Schedule.DataTest do
       }
 
       data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoints_by_route: %{},
-        shapes: %{},
-        stops: [],
         trips: %{trip.id => trip},
-        blocks: %{},
         calendar: %{
           ~D[2019-01-01] => ["today"]
         }
@@ -333,15 +253,9 @@ defmodule Schedule.DataTest do
       }
 
       data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoints_by_route: %{},
-        shapes: %{},
-        stops: [],
         trips: %{
           "trip" => trip
         },
-        blocks: %{},
         calendar: %{
           ~D[2019-01-01] => ["today"]
         }
@@ -366,15 +280,9 @@ defmodule Schedule.DataTest do
       }
 
       data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoints_by_route: %{},
-        shapes: %{},
-        stops: [],
         trips: %{
           "trip" => trip
         },
-        blocks: %{},
         calendar: %{
           ~D[2019-01-02] => ["tomorrow"]
         }
@@ -400,15 +308,9 @@ defmodule Schedule.DataTest do
       }
 
       data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoints_by_route: %{},
-        shapes: %{},
-        stops: [],
         trips: %{
           "trip" => trip
         },
-        blocks: %{},
         calendar: %{
           ~D[2018-12-31] => ["yesterday"]
         }
@@ -441,12 +343,6 @@ defmodule Schedule.DataTest do
       ]
 
       data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoints_by_route: %{},
-        shapes: %{},
-        stops: [],
-        trips: %{},
         blocks: %{
           "block" => block
         },
@@ -463,12 +359,6 @@ defmodule Schedule.DataTest do
 
     test "doesn't return inactive blocks" do
       data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoints_by_route: %{},
-        shapes: %{},
-        stops: [],
-        trips: %{},
         blocks: %{
           "block" => [
             %Trip{
@@ -526,12 +416,6 @@ defmodule Schedule.DataTest do
       ]
 
       data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoints_by_route: %{},
-        shapes: %{},
-        stops: [],
-        trips: %{},
         blocks: %{
           "block" => block
         },
@@ -575,12 +459,6 @@ defmodule Schedule.DataTest do
       ]
 
       data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoints_by_route: %{},
-        shapes: %{},
-        stops: [],
-        trips: %{},
         blocks: %{
           "block1" => block1,
           "block2" => block2
@@ -629,16 +507,9 @@ defmodule Schedule.DataTest do
       ]
 
       data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoints_by_route: %{},
         shapes: %{
           "route1" => shapes
-        },
-        stops: [],
-        trips: %{},
-        blocks: %{},
-        calendar: %{}
+        }
       }
 
       assert Data.shapes(data, "route1") == shapes
@@ -646,9 +517,6 @@ defmodule Schedule.DataTest do
 
     test "returns [] if there are no shapes for the given route" do
       data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoints_by_route: %{},
         shapes: %{
           "route1" => [
             %Shape{
@@ -663,11 +531,7 @@ defmodule Schedule.DataTest do
               ]
             }
           ]
-        },
-        stops: [],
-        trips: %{},
-        blocks: %{},
-        calendar: %{}
+        }
       }
 
       assert Data.shapes(data, "shapelessRoute") == []
@@ -696,14 +560,8 @@ defmodule Schedule.DataTest do
       }
 
       data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoints_by_route: %{},
         shapes: %{"route" => [shape]},
-        stops: [],
-        trips: %{"trip" => trip},
-        blocks: %{},
-        calendar: %{}
+        trips: %{"trip" => trip}
       }
 
       assert Data.shape_for_trip(data, "trip") == shape
@@ -718,30 +576,14 @@ defmodule Schedule.DataTest do
       }
 
       data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoints_by_route: %{},
-        shapes: %{},
-        stops: [],
-        trips: %{"trip" => trip},
-        blocks: %{},
-        calendar: %{}
+        trips: %{"trip" => trip}
       }
 
       assert Data.shape_for_trip(data, "trip") == nil
     end
 
     test "returns nil if there is no trip" do
-      data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoints_by_route: %{},
-        shapes: %{},
-        stops: [],
-        trips: %{},
-        blocks: %{},
-        calendar: %{}
-      }
+      data = %Data{}
 
       assert Data.shape_for_trip(data, "trip") == nil
     end
@@ -781,14 +623,7 @@ defmodule Schedule.DataTest do
       ]
 
       data = %Data{
-        routes: [],
-        route_patterns: route_patterns,
-        timepoints_by_route: %{},
-        shapes: %{},
-        stops: [],
-        trips: %{},
-        blocks: %{},
-        calendar: %{}
+        route_patterns: route_patterns
       }
 
       {:ok, data: data}
@@ -934,14 +769,7 @@ defmodule Schedule.DataTest do
       }
 
       data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoints_by_route: %{},
-        shapes: %{},
-        stops: [],
         trips: %{trip.id => trip},
-        blocks: %{},
-        calendar: %{},
         minischedule_runs: %{Minischedule.Run.key(run) => run},
         minischedule_blocks: %{Minischedule.Block.key(block) => block}
       }
@@ -961,16 +789,7 @@ defmodule Schedule.DataTest do
     end
 
     test "returns nil if the trip isn't known" do
-      data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoints_by_route: %{},
-        shapes: %{},
-        stops: [],
-        trips: %{},
-        blocks: %{},
-        calendar: %{}
-      }
+      data = %Data{}
 
       assert Data.minischedule(data, "trip") == nil
     end
@@ -982,14 +801,7 @@ defmodule Schedule.DataTest do
       }
 
       data = %Data{
-        routes: [],
-        route_patterns: [],
-        timepoints_by_route: %{},
-        shapes: %{},
-        stops: [],
-        trips: %{trip.id => trip},
-        blocks: %{},
-        calendar: %{}
+        trips: %{trip.id => trip}
       }
 
       assert Data.minischedule(data, trip.id) == nil
