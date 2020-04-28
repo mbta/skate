@@ -45,26 +45,15 @@ defmodule Schedule.Data do
 
   @type directions_by_route_and_id :: %{Route.id() => %{Direction.id() => Direction.t()}}
 
-  @enforce_keys [
-    :routes,
-    :route_patterns,
-    :timepoints_by_route,
-    :shapes,
-    :stops,
-    :trips,
-    :blocks,
-    :calendar
-  ]
-
   defstruct [
-    :routes,
-    :route_patterns,
-    :timepoints_by_route,
-    :shapes,
-    :stops,
-    :trips,
-    :blocks,
-    :calendar,
+    routes: [],
+    route_patterns: [],
+    timepoints_by_route: %{},
+    shapes: %{},
+    stops: %{},
+    trips: %{},
+    blocks: %{},
+    calendar: %{},
     minischedule_runs: %{},
     minischedule_blocks: %{}
   ]
