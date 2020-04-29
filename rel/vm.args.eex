@@ -1,9 +1,0 @@
-## Customize flags given to the VM: http://erlang.org/doc/man/erl.html
-## -mode/-name/-sname/-setcookie are configured via env vars, do not set them here
-
-## Name of the node
--sname ${NODE_NAME}
-
-# Enable SMP automatically based on availability
-# On OTP21+, this is not needed anymore.
--smp auto
