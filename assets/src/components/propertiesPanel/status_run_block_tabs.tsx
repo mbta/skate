@@ -1,7 +1,10 @@
 import React from "react"
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs"
+import { Tab, TabList, TabPanel, Tabs } from "react-tabs"
+import { TripId } from "../../schedule"
+import { MinischeduleBlock, MinischeduleRun } from "./minischedule"
 
 interface Props {
+  activeTripId: TripId | null
   statusContent: JSX.Element
 }
 
@@ -22,7 +25,7 @@ const TabStatusIcon = () => (
   </svg>
 )
 
-const StatusRunBlockTabs = ({ statusContent }: Props) => (
+const StatusRunBlockTabs = ({ activeTripId, statusContent }: Props) => (
   <Tabs className="m-tabs">
     <TabList className="m-tabs__tab-list">
       <Tab className="m-tabs__tab" selectedClassName="m-tabs__tab--selected">
@@ -49,13 +52,13 @@ const StatusRunBlockTabs = ({ statusContent }: Props) => (
       className="m-tabs__tab-panel"
       selectedClassName="m-tabs__tab-panel--selected"
     >
-      <h2>Run Content</h2>
+      {activeTripId && <MinischeduleRun activeTripId={activeTripId} />}
     </TabPanel>
     <TabPanel
       className="m-tabs__tab-panel"
       selectedClassName="m-tabs__tab-panel--selected"
     >
-      <h2>Block Content</h2>
+      {activeTripId && <MinischeduleBlock activeTripId={activeTripId} />}
     </TabPanel>
   </Tabs>
 )

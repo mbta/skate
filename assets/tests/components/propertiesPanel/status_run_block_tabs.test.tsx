@@ -5,7 +5,12 @@ import StatusRunBlockTabs from "../../../src/components/propertiesPanel/status_r
 describe("StatusRunBlockTabs", () => {
   test("renders", () => {
     const tree = renderer
-      .create(<StatusRunBlockTabs statusContent={<>Test content</>} />)
+      .create(
+        <StatusRunBlockTabs
+          activeTripId={null}
+          statusContent={<>Test content</>}
+        />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()

@@ -155,6 +155,7 @@ const VehiclePropertiesPanel = ({ selectedVehicle, route }: Props) => (
       <StatusContent selectedVehicle={selectedVehicle} />
     ) : (
       <StatusRunBlockTabs
+        activeTripId={selectedVehicle.tripId}
         statusContent={<StatusContent selectedVehicle={selectedVehicle} />}
       />
     )}
