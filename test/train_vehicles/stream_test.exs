@@ -1,6 +1,5 @@
 defmodule TrainVehicles.StreamTest do
   use ExUnit.Case, async: true
-  alias ExUnit.CaptureLog
 
   @train_vehicles %JsonApi{
     data: [
@@ -72,36 +71,6 @@ defmodule TrainVehicles.StreamTest do
       assert_receive {:received_broadcast, {type, data}}
       assert type == :remove
       assert data == ["vehicle1"]
-    end
-
-    test "logs an error when broadcast fails", %{mock_api: mock_api, name: name} do
-      old_level = Logger.level()
-
-      on_exit(fn ->
-        Logger.configure(level: old_level)
-      end)
-
-      Logger.configure(level: :warn)
-
-      test_pid = self()
-
-      broadcast_fn = fn TrainVehicles.PubSub, "train_vehicles", {_type, _data} ->
-        send(test_pid, :received_broadcast)
-        {:error, "error"}
-      end
-
-      log =
-        CaptureLog.capture_log(fn ->
-          assert {:ok, _} =
-                   TrainVehicles.Stream.start_link(
-                     name: name,
-                     broadcast_fn: broadcast_fn,
-                     subscribe_to: mock_api
-                   )
-        end)
-
-      assert_receive :received_broadcast
-      assert log =~ "error=#{inspect("error")}"
     end
   end
 end
