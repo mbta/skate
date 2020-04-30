@@ -21,4 +21,4 @@ RUN mkdir /root/work
 
 WORKDIR /root/work
 
-CMD ["/root/rel/skate/bin/startup", "foreground"]
+CMD ["/root/rel/skate/bin/startup", "start"]
