@@ -49,6 +49,15 @@ export type RouteStatus = "on_route" | "laying_over" | "pulling_out"
 
 export type RunId = string
 
+export type TrainVehicleId = string
+
+export interface TrainVehicle {
+  id: TrainVehicleId
+  latitude: number
+  longitude: number
+  bearing: number
+}
+
 export interface Vehicle {
   id: VehicleId
   label: string

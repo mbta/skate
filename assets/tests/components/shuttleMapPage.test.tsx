@@ -1,10 +1,14 @@
 import React from "react"
 import renderer from "react-test-renderer"
-import ShuttleMapPage from "../../src/components/shuttleMapPage"
+import ShuttleMapPage, {
+  allTrainVehicles,
+} from "../../src/components/shuttleMapPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useShuttleVehicles from "../../src/hooks/useShuttleVehicles"
+import useTrainVehicles from "../../src/hooks/useTrainVehicles"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { Vehicle } from "../../src/realtime"
+import { TrainVehicle, Vehicle } from "../../src/realtime"
+import { ByRouteId } from "../../src/schedule"
 import { initialState } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
 
@@ -14,6 +18,10 @@ jest
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 jest.mock("../../src/hooks/useShuttleVehicles", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}))
+jest.mock("../../src/hooks/useTrainVehicles", () => ({
   __esModule: true,
   default: jest.fn(),
 }))
@@ -62,6 +70,23 @@ const shuttle: Vehicle = {
 describe("Shuttle Map Page", () => {
   test("renders", () => {
     ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
+    ;(useTrainVehicles as jest.Mock).mockImplementationOnce(() => ({}))
+    const tree = renderer.create(<ShuttleMapPage />).toJSON()
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders with train vehicles", () => {
+    ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
+    const trainVehicle: TrainVehicle = {
+      id: "R-5463D2D3",
+      latitude: 42.24615,
+      longitude: -71.00369,
+      bearing: 15,
+    }
+    ;(useTrainVehicles as jest.Mock).mockImplementationOnce(() => ({
+      [trainVehicle.id]: trainVehicle,
+    }))
+
     const tree = renderer.create(<ShuttleMapPage />).toJSON()
     expect(tree).toMatchSnapshot()
   })
@@ -69,6 +94,7 @@ describe("Shuttle Map Page", () => {
   test("renders selected shuttle routes", () => {
     const dispatch = jest.fn()
     ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
+    ;(useTrainVehicles as jest.Mock).mockImplementationOnce(() => ({}))
     const tree = renderer
       .create(
         <StateDispatchProvider
@@ -85,6 +111,7 @@ describe("Shuttle Map Page", () => {
   test("renders with all shuttles selected", () => {
     const dispatch = jest.fn()
     ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
+    ;(useTrainVehicles as jest.Mock).mockImplementationOnce(() => ({}))
     const tree = renderer
       .create(
         <StateDispatchProvider
@@ -106,6 +133,7 @@ describe("Shuttle Map Page", () => {
       selectedVehicleId: shuttle.id,
     }
     ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
+    ;(useTrainVehicles as jest.Mock).mockImplementationOnce(() => ({}))
     const tree = renderer
       .create(
         <StateDispatchProvider state={state} dispatch={dispatch}>
@@ -114,5 +142,21 @@ describe("Shuttle Map Page", () => {
       )
       .toJSON()
     expect(tree).toMatchSnapshot()
+  })
+})
+
+describe("allTrainVehicles", () => {
+  test("returns all train vehicles in a single list", () => {
+    const trainVehicle: TrainVehicle = {
+      id: "R-5463D2D3",
+      latitude: 42.24615,
+      longitude: -71.00369,
+      bearing: 15,
+    }
+    const trainVehiclesByRouteId: ByRouteId<TrainVehicle[]> = {
+      Red: [trainVehicle],
+    }
+
+    expect(allTrainVehicles(trainVehiclesByRouteId)).toEqual([trainVehicle])
   })
 })

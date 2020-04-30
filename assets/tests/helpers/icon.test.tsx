@@ -15,6 +15,7 @@ import {
   questionMarkIcon,
   redLineIcon,
   reverseIcon,
+  searchIcon,
 } from "../../src/helpers/icon"
 
 describe("blueLineIcon", () => {
@@ -505,6 +506,40 @@ describe("reverseIcon", () => {
     )
 
     const result = reverseIcon()
+
+    expect(result).toEqual(expected)
+  })
+})
+
+describe("searchIcon", () => {
+  it("renders an icon with a class name", () => {
+    const className = "test-class-name"
+
+    const expected = (
+      <span
+        className={className}
+        dangerouslySetInnerHTML={{
+          __html: "SVG",
+        }}
+      />
+    )
+
+    const result = searchIcon(className)
+
+    expect(result).toEqual(expected)
+  })
+
+  it("renders without a class name", () => {
+    const expected = (
+      <span
+        className=""
+        dangerouslySetInnerHTML={{
+          __html: "SVG",
+        }}
+      />
+    )
+
+    const result = searchIcon()
 
     expect(result).toEqual(expected)
   })

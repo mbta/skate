@@ -11,7 +11,7 @@ import React, {
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClass } from "../models/vehicleStatus"
-import { Vehicle, VehicleId } from "../realtime.d"
+import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
 import { Shape, Stop } from "../schedule"
 import { Settings } from "../settings"
 import {
@@ -23,6 +23,7 @@ import {
 interface Props {
   vehicles: Vehicle[]
   shapes?: Shape[]
+  trainVehicles?: TrainVehicle[]
 }
 
 interface VehicleMarkers {
@@ -45,7 +46,8 @@ export interface PolylinesByShapeId {
 
 interface MapState {
   map: LeafletMap | null
-  markers: MarkerDict
+  vehicleMarkers: MarkerDict
+  trainVehicleMarkers: MarkerDict
   shapes: PolylinesByShapeId
 }
 
@@ -98,7 +100,7 @@ const makeLabelIcon = (
   })
 }
 
-export const updateMarkers = (
+export const updateVehicleMarkers = (
   newVehicles: { [id: string]: Vehicle },
   oldMarkerDict: MarkerDict,
   map: LeafletMap,
@@ -158,6 +160,74 @@ export const updateMarkers = (
   )
 }
 
+const makeTrainVehicleIcon = ({ bearing }: TrainVehicle): Leaflet.DivIcon => {
+  const centerX = 12
+  const centerY = 12
+  return Leaflet.divIcon({
+    html: `<svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 36 36">
+        <g transform="rotate(${bearing}, ${centerX}, ${centerY})">
+          <path fill="#fff" d="m42.88 45.83a2.1 2.1 0 0 1 -.87-.19l-15.92-7.17a5.23 5.23 0 0 0 -2.09-.47 5.14 5.14 0 0 0 -2.08.44l-15.92 7.2a2.1 2.1 0 0 1 -.87.19 2.14 2.14 0 0 1 -1.76-1 2 2 0 0 1 -.12-2l18.86-40.83a2.08 2.08 0 0 1 3.78 0l18.87 40.87a2 2 0 0 1 -.12 2 2.14 2.14 0 0 1 -1.76.96z"/>
+        </g>
+    </svg>`,
+    iconAnchor: [centerX, centerY],
+    className: "m-vehicle-map__train-icon",
+  })
+}
+
+export const updateTrainVehicleMarkers = (
+  newTrainVehicles: TrainVehiclesById,
+  oldMarkerDict: MarkerDict,
+  map: LeafletMap
+): MarkerDict => {
+  const markersToKeep: MarkerDict = Object.entries(oldMarkerDict).reduce(
+    (acc: MarkerDict, [trainVehicleId, oldMarkers]) => {
+      if (newTrainVehicles[trainVehicleId] === undefined) {
+        // Vehicle doesn't exist. Remove stale markers from the map.
+        oldMarkers.icon.remove()
+        oldMarkers.label.remove()
+        return acc
+      } else {
+        // Keep the markers. We'll update them later.
+        return { ...acc, [trainVehicleId]: oldMarkers }
+      }
+    },
+    {} as MarkerDict
+  )
+
+  return Object.entries(newTrainVehicles).reduce(
+    (existingMarkers, [trainVehicleId, trainVehicle]) => {
+      const trainVehicleIcon: Leaflet.DivIcon = makeTrainVehicleIcon(
+        trainVehicle
+      )
+      if (existingMarkers[trainVehicleId] === undefined) {
+        // A new vehicle. Make new markers for it.
+        const markers = {
+          icon: Leaflet.marker(
+            [trainVehicle.latitude, trainVehicle.longitude],
+            {
+              icon: trainVehicleIcon,
+            }
+          ).addTo(map),
+          label: Leaflet.marker(
+            [trainVehicle.latitude, trainVehicle.longitude],
+            {}
+          ).addTo(map),
+        }
+        return { ...existingMarkers, [trainVehicleId]: markers }
+      } else {
+        // Markers already exist for this vehicle. Update them.
+        const markers = existingMarkers[trainVehicleId]
+        markers.icon.setLatLng([trainVehicle.latitude, trainVehicle.longitude])
+        markers.label.setLatLng([trainVehicle.latitude, trainVehicle.longitude])
+
+        markers.icon.setIcon(trainVehicleIcon)
+        return existingMarkers
+      }
+    },
+    markersToKeep
+  )
+}
+
 const removeDeselectedRouteShapes = (
   previousShapes: PolylinesByShapeId,
   shapes: Shape[]
@@ -186,7 +256,7 @@ export const strokeOptions = ({ color }: Shape): object =>
     ? {
         color,
         opacity: 1.0,
-        weight: 3,
+        weight: 4,
       }
     : {
         color: "#4db6ac",
@@ -342,12 +412,28 @@ export const newLeafletMap = (
   return map
 }
 
+interface TrainVehiclesById {
+  [id: string]: TrainVehicle
+}
+
+export const trainVehiclesById = (
+  trainVehicles: TrainVehicle[]
+): TrainVehiclesById =>
+  trainVehicles.reduce(
+    (acc, trainVehicle) => ({
+      ...acc,
+      [trainVehicle.id]: trainVehicle,
+    }),
+    {} as TrainVehiclesById
+  )
+
 const Map = (props: Props): ReactElement<HTMLDivElement> => {
   const [appState, dispatch] = useContext(StateDispatchContext)
   const containerRef: MutableRefObject<HTMLDivElement | null> = useRef(null)
   const [mapState, setMapState] = useState<MapState>({
     map: null,
-    markers: {},
+    vehicleMarkers: {},
+    trainVehicleMarkers: {},
     shapes: {},
   })
   const [shouldAutoCenter, setShouldAutoCenter] = useState<boolean>(true)
@@ -367,12 +453,20 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
       {} as { [id: string]: Vehicle }
     )
 
-    const markers = updateMarkers(
+    const vehicleMarkers = updateVehicleMarkers(
       newVehicles,
-      mapState.markers,
+      mapState.vehicleMarkers,
       map,
       appState,
       dispatch
+    )
+
+    const newTrainVehicles = trainVehiclesById(props.trainVehicles || [])
+
+    const trainVehicleMarkers = updateTrainVehicleMarkers(
+      newTrainVehicles,
+      mapState.trainVehicleMarkers,
+      map
     )
 
     const shapes =
@@ -384,7 +478,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
       autoCenter(map, props.vehicles, isAutoCentering, appState)
     }
 
-    setMapState({ map, markers, shapes })
+    setMapState({ map, vehicleMarkers, trainVehicleMarkers, shapes })
   }, [shouldAutoCenter, props, containerRef, appState])
 
   const autoCenteringClass = shouldAutoCenter

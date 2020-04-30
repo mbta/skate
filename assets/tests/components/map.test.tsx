@@ -10,11 +10,13 @@ import Map, {
   newLeafletMap,
   PolylinesByShapeId,
   strokeOptions,
-  updateMarkers,
+  trainVehiclesById,
+  updateTrainVehicleMarkers,
+  updateVehicleMarkers,
   updateShapes,
 } from "../../src/components/map"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { Vehicle } from "../../src/realtime"
+import { TrainVehicle, Vehicle } from "../../src/realtime"
 import { Shape, Stop } from "../../src/schedule"
 import { defaultSettings } from "../../src/settings"
 import { State as AppState } from "../../src/state"
@@ -76,6 +78,12 @@ const vehicle: Vehicle = {
   endOfTripType: "another_trip",
   blockWaivers: [],
 }
+const trainVehicle: TrainVehicle = {
+  id: "red1",
+  latitude: 42.24615,
+  longitude: -71.00369,
+  bearing: 15,
+}
 
 describe("map", () => {
   test("renders", () => {
@@ -83,9 +91,17 @@ describe("map", () => {
 
     expect(tree).toMatchSnapshot()
   })
+
+  test("renders with train vehicles", () => {
+    const tree = renderer
+      .create(<Map vehicles={[vehicle]} trainVehicles={[trainVehicle]} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
 })
 
-describe("updateMarkers", () => {
+describe("updateVehicleMarkers", () => {
   const appState: AppState = {
     selectedVehicleId: undefined,
     settings: defaultSettings,
@@ -99,7 +115,13 @@ describe("updateMarkers", () => {
       [vehicle.id]: vehicle,
     }
 
-    const icons = updateMarkers(vehicles, {}, map, appState, mockDispatch)
+    const icons = updateVehicleMarkers(
+      vehicles,
+      {},
+      map,
+      appState,
+      mockDispatch
+    )
 
     expect(Object.keys(icons)).toEqual([vehicle.id])
     expect(icons[vehicle.id]!.icon.getLatLng()).toEqual({
@@ -122,7 +144,7 @@ describe("updateMarkers", () => {
       },
     }
 
-    const icons = updateMarkers(
+    const icons = updateVehicleMarkers(
       {},
       existingVehicles,
       map,
@@ -141,7 +163,7 @@ describe("updateMarkers", () => {
 
     expect(icon.getLatLng()).toEqual({ lat: 0, lng: 0 })
 
-    const icons = updateMarkers(
+    const icons = updateVehicleMarkers(
       { [vehicle.id]: vehicle },
       { [vehicle.id]: { icon, label } },
       map,
@@ -153,6 +175,70 @@ describe("updateMarkers", () => {
     expect(icon.getLatLng()).toEqual({
       lat: vehicle.latitude,
       lng: vehicle.longitude,
+    })
+  })
+})
+
+describe("updateTrainVehicleMarkers", () => {
+  test("adds a new marker set for a train vehicle if it doesn't exist", () => {
+    document.body.innerHTML = "<div id='map'></div>"
+    const map = Leaflet.map("map", {})
+    const trainVehicles = {
+      [trainVehicle.id]: trainVehicle,
+    }
+
+    const icons = updateTrainVehicleMarkers(trainVehicles, {}, map)
+
+    expect(Object.keys(icons)).toEqual([trainVehicle.id])
+    expect(icons[trainVehicle.id]!.icon.getLatLng()).toEqual({
+      lat: trainVehicle.latitude,
+      lng: trainVehicle.longitude,
+    })
+    expect(icons[trainVehicle.id]!.label.getLatLng()).toEqual({
+      lat: trainVehicle.latitude,
+      lng: trainVehicle.longitude,
+    })
+  })
+
+  test("removes icon if it is not in the list of current train vehicles", () => {
+    document.body.innerHTML = "<div id='map'></div>"
+    const map = Leaflet.map("map", {})
+    const existingTrainVehicles = {
+      [trainVehicle.id]: {
+        label: Leaflet.marker([
+          trainVehicle.latitude,
+          trainVehicle.longitude,
+        ]).addTo(map),
+        icon: Leaflet.marker([
+          trainVehicle.latitude,
+          trainVehicle.longitude,
+        ]).addTo(map),
+      },
+    }
+
+    const icons = updateTrainVehicleMarkers({}, existingTrainVehicles, map)
+    expect(icons[trainVehicle.id]).toBeUndefined()
+  })
+
+  test("updates existing icons", () => {
+    document.body.innerHTML = "<div id='map'></div>"
+    const map = Leaflet.map("map", {})
+    const previousLatLng: [number, number] = [0, 0]
+    const icon = Leaflet.marker(previousLatLng).addTo(map)
+    const label = Leaflet.marker(previousLatLng).addTo(map)
+
+    expect(icon.getLatLng()).toEqual({ lat: 0, lng: 0 })
+
+    const icons = updateTrainVehicleMarkers(
+      { [trainVehicle.id]: trainVehicle },
+      { [trainVehicle.id]: { icon, label } },
+      map
+    )
+
+    expect(icons[trainVehicle.id]).toEqual({ label, icon })
+    expect(icon.getLatLng()).toEqual({
+      lat: trainVehicle.latitude,
+      lng: trainVehicle.longitude,
     })
   })
 })
@@ -410,7 +496,7 @@ describe("strokeOptions", () => {
     const expected = {
       color: "#DA291C",
       opacity: 1.0,
-      weight: 3,
+      weight: 4,
     }
 
     expect(strokeOptions(subwayShape)).toEqual(expected)
@@ -428,5 +514,15 @@ describe("strokeOptions", () => {
     }
 
     expect(strokeOptions(shuttleShape)).toEqual(expected)
+  })
+})
+
+describe("trainVehiclesById", () => {
+  test("groups train vehicles by ID", () => {
+    const expected = {
+      [trainVehicle.id]: trainVehicle,
+    }
+
+    expect(trainVehiclesById([trainVehicle])).toEqual(expected)
   })
 })

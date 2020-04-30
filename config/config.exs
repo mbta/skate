@@ -9,6 +9,8 @@ use Mix.Config
 
 config :skate,
   # Default. Can be configured via environment variable, which is loaded in application.ex
+  api_url: {:system, "API_URL"},
+  api_key: {:system, "API_KEY"},
   gtfs_url: {:system, "GTFS_URL"},
   hastus_url: {:system, "SKATE_HASTUS_URL"},
   busloc_url: {:system, "BUSLOC_URL"},

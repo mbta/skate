@@ -14,6 +14,7 @@ defmodule Realtime.Supervisor do
       {Registry, keys: :duplicate, name: registry_name()},
       {Realtime.BlockWaiverStore, name: Realtime.BlockWaiverStore.default_name()},
       {Realtime.Server, name: Realtime.Server.default_name()},
+      {Realtime.TrainVehiclesPubSub, name: Realtime.TrainVehiclesPubSub.default_name()},
       {Realtime.DataStatusPubSub, name: Realtime.DataStatusPubSub.default_name()},
       {Concentrate.Supervisor,
        [
