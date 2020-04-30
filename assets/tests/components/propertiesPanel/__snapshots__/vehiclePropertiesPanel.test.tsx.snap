@@ -104,19 +104,28 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
         </div>
       </div>
     </div>
-    <button
-      className="m-close-button"
-      onClick={[Function]}
+    <div
+      className="m-properties-panel__close-ping"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+      <div
+        className="m-properties-panel__last-gps-ping"
+      >
+        111s ago
+      </div>
+    </div>
   </div>
   <div
     className="m-tabs"
@@ -301,16 +310,6 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
         >
           Stop Name
         </div>
-        <div
-          className="m-properties-list__property-label"
-        >
-          Last GPS Ping
-        </div>
-        <div
-          className="m-properties-list__property-value"
-        >
-          111s ago
-        </div>
         <a
           className="m-vehicle-properties-panel__link"
           href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
@@ -451,19 +450,28 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
         </div>
       </div>
     </div>
-    <button
-      className="m-close-button"
-      onClick={[Function]}
+    <div
+      className="m-properties-panel__close-ping"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+      <div
+        className="m-properties-panel__last-gps-ping"
+      >
+        111s ago
+      </div>
+    </div>
   </div>
   <div
     className="m-tabs"
@@ -648,16 +656,6 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
         >
           Stop Name
         </div>
-        <div
-          className="m-properties-list__property-label"
-        >
-          Last GPS Ping
-        </div>
-        <div
-          className="m-properties-list__property-value"
-        >
-          111s ago
-        </div>
         <a
           className="m-vehicle-properties-panel__link"
           href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
@@ -798,19 +796,28 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
         </div>
       </div>
     </div>
-    <button
-      className="m-close-button"
-      onClick={[Function]}
+    <div
+      className="m-properties-panel__close-ping"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+      <div
+        className="m-properties-panel__last-gps-ping"
+      >
+        111s ago
+      </div>
+    </div>
   </div>
   <div
     className="m-tabs"
@@ -995,16 +1002,6 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
         >
           Stop Name
         </div>
-        <div
-          className="m-properties-list__property-label"
-        >
-          Last GPS Ping
-        </div>
-        <div
-          className="m-properties-list__property-value"
-        >
-          111s ago
-        </div>
         <a
           className="m-vehicle-properties-panel__link"
           href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
@@ -1112,19 +1109,28 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
         Shuttle
       </div>
     </div>
-    <button
-      className="m-close-button"
-      onClick={[Function]}
+    <div
+      className="m-properties-panel__close-ping"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+      <div
+        className="m-properties-panel__last-gps-ping"
+      >
+        111s ago
+      </div>
+    </div>
   </div>
   <div
     className="m-properties-list"
@@ -1208,16 +1214,6 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
       >
         Not available
       </span>
-    </div>
-    <div
-      className="m-properties-list__property-label"
-    >
-      Last GPS Ping
-    </div>
-    <div
-      className="m-properties-list__property-value"
-    >
-      111s ago
     </div>
     <a
       className="m-vehicle-properties-panel__link"
@@ -1345,19 +1341,28 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
         </div>
       </div>
     </div>
-    <button
-      className="m-close-button"
-      onClick={[Function]}
+    <div
+      className="m-properties-panel__close-ping"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+      <div
+        className="m-properties-panel__last-gps-ping"
+      >
+        111s ago
+      </div>
+    </div>
   </div>
   <div
     className="m-block-waiver-list"
@@ -1651,16 +1656,6 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
         >
           Stop Name
         </div>
-        <div
-          className="m-properties-list__property-label"
-        >
-          Last GPS Ping
-        </div>
-        <div
-          className="m-properties-list__property-value"
-        >
-          111s ago
-        </div>
         <a
           className="m-vehicle-properties-panel__link"
           href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
@@ -1801,19 +1796,28 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
         </div>
       </div>
     </div>
-    <button
-      className="m-close-button"
-      onClick={[Function]}
+    <div
+      className="m-properties-panel__close-ping"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+      <div
+        className="m-properties-panel__last-gps-ping"
+      >
+        111s ago
+      </div>
+    </div>
   </div>
   <div
     className="m-tabs"
@@ -1998,16 +2002,6 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
         >
           Stop Name
         </div>
-        <div
-          className="m-properties-list__property-label"
-        >
-          Last GPS Ping
-        </div>
-        <div
-          className="m-properties-list__property-value"
-        >
-          111s ago
-        </div>
         <a
           className="m-vehicle-properties-panel__link"
           href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
@@ -2148,19 +2142,28 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
         </div>
       </div>
     </div>
-    <button
-      className="m-close-button"
-      onClick={[Function]}
+    <div
+      className="m-properties-panel__close-ping"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+      <div
+        className="m-properties-panel__last-gps-ping"
+      >
+        111s ago
+      </div>
+    </div>
   </div>
   <div
     className="m-vehicle-properties-panel__invalid-banner"
@@ -2359,16 +2362,6 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
             Not available
           </span>
         </div>
-        <div
-          className="m-properties-list__property-label"
-        >
-          Last GPS Ping
-        </div>
-        <div
-          className="m-properties-list__property-value"
-        >
-          111s ago
-        </div>
         <a
           className="m-vehicle-properties-panel__link"
           href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
@@ -2509,19 +2502,28 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
         </div>
       </div>
     </div>
-    <button
-      className="m-close-button"
-      onClick={[Function]}
+    <div
+      className="m-properties-panel__close-ping"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+      <div
+        className="m-properties-panel__last-gps-ping"
+      >
+        111s ago
+      </div>
+    </div>
   </div>
   <div
     className="m-tabs"
@@ -2705,16 +2707,6 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
           className="m-properties-list__property-value"
         >
           Stop Name
-        </div>
-        <div
-          className="m-properties-list__property-label"
-        >
-          Last GPS Ping
-        </div>
-        <div
-          className="m-properties-list__property-value"
-        >
-          111s ago
         </div>
         <a
           className="m-vehicle-properties-panel__link"

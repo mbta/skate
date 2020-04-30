@@ -85,19 +85,23 @@ exports[`GhostPropertiesPanel renders 1`] = `
          headsign
       </div>
     </div>
-    <button
-      className="m-close-button"
-      onClick={[Function]}
+    <div
+      className="m-properties-panel__close-ping"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+    </div>
   </div>
   <div
     className="m-ghost-properties-panel__no-waiver-banner"
@@ -260,19 +264,23 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
          headsign
       </div>
     </div>
-    <button
-      className="m-close-button"
-      onClick={[Function]}
+    <div
+      className="m-properties-panel__close-ping"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+    </div>
   </div>
   <div
     className="m-block-waiver-list"
@@ -495,19 +503,23 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
          headsign
       </div>
     </div>
-    <button
-      className="m-close-button"
-      onClick={[Function]}
+    <div
+      className="m-properties-panel__close-ping"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+    </div>
   </div>
   <div
     className="m-ghost-properties-panel__no-waiver-banner"
