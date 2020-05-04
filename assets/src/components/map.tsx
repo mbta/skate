@@ -1,4 +1,4 @@
-import Leaflet, { LatLng, Map as LeafletMap, Marker } from "leaflet"
+import Leaflet, { LatLngExpression, Map as LeafletMap } from "leaflet"
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
 import React, {
   MutableRefObject,
@@ -8,51 +8,35 @@ import React, {
   useRef,
   useState,
 } from "react"
+import {
+  CircleMarker,
+  Map as ReactLeafletMap,
+  Marker,
+  Polyline,
+  TileLayer,
+  ZoomControl,
+} from "react-leaflet"
+// @ts-ignore
+import Control from "react-leaflet-control"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClass } from "../models/vehicleStatus"
 import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
-import { Shape, Stop } from "../schedule"
+import { Shape } from "../schedule"
 import { Settings } from "../settings"
-import {
-  Dispatch,
-  selectVehicle as selectVehicleAction,
-  State as AppState,
-} from "../state"
+import { selectVehicle, State as AppState } from "../state"
 
 interface Props {
   vehicles: Vehicle[]
   shapes?: Shape[]
   trainVehicles?: TrainVehicle[]
+  reactLeafletRef?: MutableRefObject<ReactLeafletMap | null>
 }
 
-interface VehicleMarkers {
-  icon: Marker
-  label: Marker
+export const defaultCenter: LatLngExpression = {
+  lat: 42.360718,
+  lng: -71.05891,
 }
-
-interface MarkerDict {
-  [id: string]: VehicleMarkers
-}
-
-interface RouteShapeWithStops {
-  routeLine: Leaflet.Polyline
-  stopCicles?: Leaflet.CircleMarker[]
-}
-
-export interface PolylinesByShapeId {
-  [shapeId: string]: RouteShapeWithStops
-}
-
-interface MapState {
-  map: LeafletMap | null
-  vehicleMarkers: MarkerDict
-  trainVehicleMarkers: MarkerDict
-  shapes: PolylinesByShapeId
-}
-
-const selectVehicle = ({ id }: Vehicle, dispatch: Dispatch) => () =>
-  dispatch(selectVehicleAction(id))
 
 const makeVehicleIcon = (vehicle: Vehicle): Leaflet.DivIcon => {
   const centerX = 12
@@ -83,7 +67,6 @@ const makeLabelIcon = (
   const labelString = vehicleLabelString(vehicle, settings)
   const labelBackgroundWidth = labelString.length <= 4 ? 40 : 62
   const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
-
   return Leaflet.divIcon({
     className: `m-vehicle-map__label ${selectedClass}`,
     html: `<svg viewBox="0 0 ${labelBackgroundWidth} 16" width="${labelBackgroundWidth}" height="16">
@@ -100,63 +83,21 @@ const makeLabelIcon = (
   })
 }
 
-export const updateVehicleMarkers = (
-  newVehicles: { [id: string]: Vehicle },
-  oldMarkerDict: MarkerDict,
-  map: LeafletMap,
-  appState: AppState,
-  dispatch: Dispatch
-): MarkerDict => {
-  const markersToKeep: MarkerDict = Object.entries(oldMarkerDict).reduce(
-    (acc: MarkerDict, [vehicleId, oldMarkers]) => {
-      if (newVehicles[vehicleId] === undefined) {
-        // Vehicle doesn't exist. Remove stale markers from the map.
-        oldMarkers.icon.remove()
-        oldMarkers.label.remove()
-        return acc
-      } else {
-        // Keep the markers. We'll update them later.
-        return { ...acc, [vehicleId]: oldMarkers }
-      }
-    },
-    {} as MarkerDict
+const Vehicle = ({ vehicle }: { vehicle: Vehicle }) => {
+  const [appState, dispatch] = useContext(StateDispatchContext)
+  const select = () => dispatch(selectVehicle(vehicle.id))
+  const position: LatLngExpression = [vehicle.latitude, vehicle.longitude]
+  const vehicleIcon: Leaflet.DivIcon = makeVehicleIcon(vehicle)
+  const labelIcon: Leaflet.DivIcon = makeLabelIcon(
+    vehicle,
+    appState.settings,
+    appState.selectedVehicleId
   )
-
-  return Object.entries(newVehicles).reduce(
-    (existingMarkers, [vehicleId, vehicle]) => {
-      const vehicleIcon: Leaflet.DivIcon = makeVehicleIcon(vehicle)
-      const labelIcon: Leaflet.DivIcon = makeLabelIcon(
-        vehicle,
-        appState.settings,
-        appState.selectedVehicleId
-      )
-      if (existingMarkers[vehicleId] === undefined) {
-        // A new vehicle. Make new markers for it.
-        const markers = {
-          icon: Leaflet.marker([vehicle.latitude, vehicle.longitude], {
-            icon: vehicleIcon,
-          })
-            .on("click", selectVehicle(vehicle, dispatch))
-            .addTo(map),
-          label: Leaflet.marker([vehicle.latitude, vehicle.longitude], {
-            icon: labelIcon,
-          })
-            .on("click", selectVehicle(vehicle, dispatch))
-            .addTo(map),
-        }
-        return { ...existingMarkers, [vehicleId]: markers }
-      } else {
-        // Markers already exist for this vehicle. Update them.
-        const markers = existingMarkers[vehicleId]
-        markers.icon.setLatLng([vehicle.latitude, vehicle.longitude])
-        markers.label.setLatLng([vehicle.latitude, vehicle.longitude])
-
-        markers.icon.setIcon(vehicleIcon)
-        markers.label.setIcon(labelIcon)
-        return existingMarkers
-      }
-    },
-    markersToKeep
+  return (
+    <>
+      <Marker position={position} icon={vehicleIcon} onClick={select} />
+      <Marker position={position} icon={labelIcon} onClick={select} />
+    </>
   )
 }
 
@@ -174,82 +115,14 @@ const makeTrainVehicleIcon = ({ bearing }: TrainVehicle): Leaflet.DivIcon => {
   })
 }
 
-export const updateTrainVehicleMarkers = (
-  newTrainVehicles: TrainVehiclesById,
-  oldMarkerDict: MarkerDict,
-  map: LeafletMap
-): MarkerDict => {
-  const markersToKeep: MarkerDict = Object.entries(oldMarkerDict).reduce(
-    (acc: MarkerDict, [trainVehicleId, oldMarkers]) => {
-      if (newTrainVehicles[trainVehicleId] === undefined) {
-        // Vehicle doesn't exist. Remove stale markers from the map.
-        oldMarkers.icon.remove()
-        oldMarkers.label.remove()
-        return acc
-      } else {
-        // Keep the markers. We'll update them later.
-        return { ...acc, [trainVehicleId]: oldMarkers }
-      }
-    },
-    {} as MarkerDict
-  )
-
-  return Object.entries(newTrainVehicles).reduce(
-    (existingMarkers, [trainVehicleId, trainVehicle]) => {
-      const trainVehicleIcon: Leaflet.DivIcon = makeTrainVehicleIcon(
-        trainVehicle
-      )
-      if (existingMarkers[trainVehicleId] === undefined) {
-        // A new vehicle. Make new markers for it.
-        const markers = {
-          icon: Leaflet.marker(
-            [trainVehicle.latitude, trainVehicle.longitude],
-            {
-              icon: trainVehicleIcon,
-            }
-          ).addTo(map),
-          label: Leaflet.marker(
-            [trainVehicle.latitude, trainVehicle.longitude],
-            {}
-          ).addTo(map),
-        }
-        return { ...existingMarkers, [trainVehicleId]: markers }
-      } else {
-        // Markers already exist for this vehicle. Update them.
-        const markers = existingMarkers[trainVehicleId]
-        markers.icon.setLatLng([trainVehicle.latitude, trainVehicle.longitude])
-        markers.label.setLatLng([trainVehicle.latitude, trainVehicle.longitude])
-
-        markers.icon.setIcon(trainVehicleIcon)
-        return existingMarkers
-      }
-    },
-    markersToKeep
-  )
+const TrainVehicle = ({ trainVehicle }: { trainVehicle: TrainVehicle }) => {
+  const position: LatLngExpression = [
+    trainVehicle.latitude,
+    trainVehicle.longitude,
+  ]
+  const icon: Leaflet.DivIcon = makeTrainVehicleIcon(trainVehicle)
+  return <Marker position={position} icon={icon} />
 }
-
-const removeDeselectedRouteShapes = (
-  previousShapes: PolylinesByShapeId,
-  shapes: Shape[]
-) => {
-  const shapeIds = shapes.map((shape) => shape.id)
-
-  Object.entries(previousShapes).forEach(([shapeId, routeShapeWithStops]) => {
-    if (!shapeIds.includes(shapeId)) {
-      routeShapeWithStops.routeLine.remove()
-
-      if (routeShapeWithStops.stopCicles) {
-        routeShapeWithStops.stopCicles.forEach((stopCircle) =>
-          stopCircle.remove()
-        )
-      }
-    }
-  })
-}
-
-type LatLon = [number, number]
-export const latLons = ({ points }: Shape): LatLon[] =>
-  points.map((point) => [point.lat, point.lon] as LatLon)
 
 export const strokeOptions = ({ color }: Shape): object =>
   color
@@ -264,49 +137,30 @@ export const strokeOptions = ({ color }: Shape): object =>
         weight: 6,
       }
 
-const toPolyline = (shape: Shape): Leaflet.Polyline =>
-  Leaflet.polyline(latLons(shape), {
-    className: "m-vehicle-map__route-shape",
-    ...strokeOptions(shape),
-  })
+const Shape = ({ shape }: { shape: Shape }) => {
+  const positions: LatLngExpression[] = shape.points.map((point) => [
+    point.lat,
+    point.lon,
+  ])
 
-const drawStop = ({ lat, lon }: Stop, map: LeafletMap): Leaflet.CircleMarker =>
-  Leaflet.circleMarker([lat, lon], {
-    radius: 3,
-    className: "m-vehicle-map__stop",
-  }).addTo(map)
-
-const drawShape = (shape: Shape, map: LeafletMap): RouteShapeWithStops => {
-  const routeLine = toPolyline(shape).addTo(map)
-  let stopCicles
-
-  if (shape.stops) {
-    stopCicles = shape.stops.map((stop) => drawStop(stop, map))
-  }
-
-  return {
-    routeLine,
-    stopCicles,
-  }
-}
-
-export const updateShapes = (
-  shapes: Shape[],
-  previousShapes: PolylinesByShapeId,
-  map: LeafletMap
-): PolylinesByShapeId => {
-  removeDeselectedRouteShapes(previousShapes, shapes)
-
-  return shapes.reduce(
-    (acc, shape) => ({
-      ...acc,
-      [shape.id]: previousShapes[shape.id] || drawShape(shape, map),
-    }),
-    {} as PolylinesByShapeId
+  return (
+    <>
+      <Polyline
+        className="m-vehicle-map__route-shape"
+        positions={positions}
+        {...strokeOptions(shape)}
+      />
+      {(shape.stops || []).map((stop) => (
+        <CircleMarker
+          key={stop.id}
+          className="m-vehicle-map__stop"
+          center={[stop.lat, stop.lon]}
+          radius={3}
+        />
+      ))}
+    </>
   )
 }
-
-export const defaultCenter: [number, number] = [42.360718, -71.05891]
 
 export const autoCenter = (
   map: LeafletMap,
@@ -314,7 +168,7 @@ export const autoCenter = (
   isAutoCentering: MutableRefObject<boolean>,
   appState: AppState
 ): void => {
-  const latLngs: LatLng[] = vehicles.map((vehicle) =>
+  const latLngs: LatLngExpression[] = vehicles.map((vehicle) =>
     Leaflet.latLng(vehicle.latitude, vehicle.longitude)
   )
   isAutoCentering.current = true
@@ -330,156 +184,56 @@ export const autoCenter = (
   }
 }
 
-const recenterControl = (
-  setShouldAutoCenter: (shouldAutoCenter: boolean) => void,
-  controlOptions: Leaflet.ControlOptions
-): Leaflet.Control => {
-  const RecenterControl = Leaflet.Control.extend({
-    options: controlOptions,
-    onAdd: () => {
-      const container: HTMLElement = Leaflet.DomUtil.create(
-        "div",
-        "leaflet-bar leaflet-control m-vehicle-map__recenter-button"
-      )
-      const link: HTMLLinkElement = Leaflet.DomUtil.create(
-        "a",
-        "",
-        container
-      ) as HTMLLinkElement
-      link.innerHTML = `<svg
-        height="30"
-        viewBox="-5 -2 36 36"
-        width="30"
-        xmlns="http://www.w3.org/2000/svg"
+const RecenterControl = ({
+  turnOnAutoCenter,
+}: {
+  turnOnAutoCenter: () => void
+}) => (
+  <Control position="topright">
+    <div className="leaflet-bar m-vehicle-map__recenter-button">
+      <a
+        href="#"
+        title="Recenter map"
+        role="button"
+        aria-label="Recenter map"
+        onClick={(e) => {
+          e.stopPropagation()
+          e.preventDefault()
+          turnOnAutoCenter()
+        }}
       >
-        <path
-          d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
-          transform="rotate(60, 12, 12)"
-        />
-      </svg>`
-      link.href = "#"
-      link.title = "Recenter map"
-      link.setAttribute("role", "button")
-      link.setAttribute("aria-label", "Recenter map")
-      Leaflet.DomEvent.disableClickPropagation(link)
-      link.onclick = (e) => {
-        e.preventDefault()
-        setShouldAutoCenter(true)
-      }
-      return container
-    },
-  })
-  return new RecenterControl()
-}
-
-export const newLeafletMap = (
-  container: HTMLDivElement | string,
-  isAutoCentering: MutableRefObject<boolean>,
-  setShouldAutoCenter: (shouldAutoCenter: boolean) => void
-): LeafletMap => {
-  const map: LeafletMap = Leaflet.map(container, {
-    maxBounds: [
-      [41.2, -72],
-      [43, -69.8],
-    ],
-    center: undefined,
-    layers: [
-      Leaflet.tileLayer(
-        `https://mbta-map-tiles-dev.s3.amazonaws.com/osm_tiles/{z}/{x}/{y}.png`,
-        {
-          attribution:
-            '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-        }
-      ),
-    ],
-    zoomControl: false,
-  })
-  map.on("movestart", () => {
-    // If the user drags or zooms, they want manual control of the map.
-    // But don't disable shouldAutoCenter if the move was triggered by an auto center.
-    if (!isAutoCentering.current) {
-      setShouldAutoCenter(false)
-    }
-  })
-  map.on("moveend", () => {
-    // Wait until the auto centering is finished to start listening for manual moves again.
-    if (isAutoCentering.current) {
-      isAutoCentering.current = false
-    }
-  })
-  Leaflet.control.zoom({ position: "topright" }).addTo(map)
-  recenterControl(setShouldAutoCenter, { position: "topright" }).addTo(map)
-  return map
-}
-
-interface TrainVehiclesById {
-  [id: string]: TrainVehicle
-}
-
-export const trainVehiclesById = (
-  trainVehicles: TrainVehicle[]
-): TrainVehiclesById =>
-  trainVehicles.reduce(
-    (acc, trainVehicle) => ({
-      ...acc,
-      [trainVehicle.id]: trainVehicle,
-    }),
-    {} as TrainVehiclesById
-  )
+        <svg
+          height="26"
+          viewBox="-5 -5 32 32"
+          width="26"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+            transform="rotate(60, 12, 12)"
+          />
+        </svg>
+      </a>
+    </div>
+  </Control>
+)
 
 const Map = (props: Props): ReactElement<HTMLDivElement> => {
-  const [appState, dispatch] = useContext(StateDispatchContext)
-  const containerRef: MutableRefObject<HTMLDivElement | null> = useRef(null)
-  const [mapState, setMapState] = useState<MapState>({
-    map: null,
-    vehicleMarkers: {},
-    trainVehicleMarkers: {},
-    shapes: {},
-  })
+  const [appState] = useContext(StateDispatchContext)
+  const mapRef: MutableRefObject<ReactLeafletMap | null> =
+    // this prop is only for tests, and is consistent between renders, so the hook call is consistent
+    // tslint:disable-next-line: react-hooks-nesting
+    props.reactLeafletRef || useRef(null)
   const [shouldAutoCenter, setShouldAutoCenter] = useState<boolean>(true)
   const isAutoCentering: MutableRefObject<boolean> = useRef(false)
 
   useEffect(() => {
-    if (!containerRef.current) {
-      return
+    const reactLeafletMap: ReactLeafletMap | null = mapRef.current
+    if (reactLeafletMap !== null && shouldAutoCenter) {
+      const leafletMap: LeafletMap = reactLeafletMap.leafletElement
+      autoCenter(leafletMap, props.vehicles, isAutoCentering, appState)
     }
-
-    const map =
-      mapState.map ||
-      newLeafletMap(containerRef.current, isAutoCentering, setShouldAutoCenter)
-
-    const newVehicles = props.vehicles.reduce(
-      (acc, vehicle) => ({ ...acc, [vehicle.id]: vehicle }),
-      {} as { [id: string]: Vehicle }
-    )
-
-    const vehicleMarkers = updateVehicleMarkers(
-      newVehicles,
-      mapState.vehicleMarkers,
-      map,
-      appState,
-      dispatch
-    )
-
-    const newTrainVehicles = trainVehiclesById(props.trainVehicles || [])
-
-    const trainVehicleMarkers = updateTrainVehicleMarkers(
-      newTrainVehicles,
-      mapState.trainVehicleMarkers,
-      map
-    )
-
-    const shapes =
-      props.shapes !== undefined
-        ? updateShapes(props.shapes, mapState.shapes, map)
-        : {}
-
-    if (shouldAutoCenter) {
-      autoCenter(map, props.vehicles, isAutoCentering, appState)
-    }
-
-    setMapState({ map, vehicleMarkers, trainVehicleMarkers, shapes })
-  }, [shouldAutoCenter, props, containerRef, appState])
+  }, [shouldAutoCenter, props.vehicles, appState])
 
   const autoCenteringClass = shouldAutoCenter
     ? "m-vehicle-map-state--auto-centering"
@@ -488,11 +242,46 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
   return (
     <>
       <div className={`m-vehicle-map-state ${autoCenteringClass}`} />
-      <div
-        id="id-vehicle-map"
+      <ReactLeafletMap
         className="m-vehicle-map"
-        ref={(container) => (containerRef.current = container)}
-      />
+        ref={mapRef}
+        maxBounds={[
+          [41.2, -72],
+          [43, -69.8],
+        ]}
+        zoomControl={false}
+        center={defaultCenter}
+        zoom={13}
+        onmovestart={() => {
+          // If the user drags or zooms, they want manual control of the map.
+          // But don't disable shouldAutoCenter if the move was triggered by an auto center.
+          if (!isAutoCentering.current) {
+            setShouldAutoCenter(false)
+          }
+        }}
+        onmoveend={() => {
+          // Wait until the auto centering is finished to start listening for manual moves again.
+          if (isAutoCentering.current) {
+            isAutoCentering.current = false
+          }
+        }}
+      >
+        <ZoomControl position="topright" />
+        <RecenterControl turnOnAutoCenter={() => setShouldAutoCenter(true)} />
+        <TileLayer
+          url="https://mbta-map-tiles-dev.s3.amazonaws.com/osm_tiles/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        />
+        {props.vehicles.map((vehicle: Vehicle) => (
+          <Vehicle key={vehicle.id} vehicle={vehicle} />
+        ))}
+        {(props.trainVehicles || []).map((trainVehicle: TrainVehicle) => (
+          <TrainVehicle key={trainVehicle.id} trainVehicle={trainVehicle} />
+        ))}
+        {(props.shapes || []).map((shape) => (
+          <Shape key={shape.id} shape={shape} />
+        ))}
+      </ReactLeafletMap>
     </>
   )
 }

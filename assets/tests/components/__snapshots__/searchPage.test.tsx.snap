@@ -175,7 +175,6 @@ exports[`SearchPage renders a selected vehicle 1`] = `
     />
     <div
       className="m-vehicle-map"
-      id="id-vehicle-map"
     />
   </div>
   <div
@@ -403,7 +402,6 @@ exports[`SearchPage renders a selected vehicle 1`] = `
           />
           <div
             className="m-vehicle-map"
-            id="id-vehicle-map"
           />
         </div>
       </div>
@@ -597,7 +595,6 @@ exports[`SearchPage renders the empty state 1`] = `
     />
     <div
       className="m-vehicle-map"
-      id="id-vehicle-map"
     />
   </div>
 </div>
@@ -778,7 +775,6 @@ exports[`SearchPage renders vehicle data 1`] = `
     />
     <div
       className="m-vehicle-map"
-      id="id-vehicle-map"
     />
   </div>
 </div>

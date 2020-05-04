@@ -419,7 +419,6 @@ Array [
           />
           <div
             className="m-vehicle-map"
-            id="id-vehicle-map"
           />
         </div>
       </div>
