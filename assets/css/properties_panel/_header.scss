@@ -80,7 +80,11 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 1rem;
+
+  .m-close-button,
+  .m-properties-panel__last-gps-ping {
+    padding: 1rem;
+  }
 }
 
 .m-properties-panel__last-gps-ping {
