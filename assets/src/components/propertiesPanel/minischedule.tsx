@@ -11,11 +11,23 @@ export interface Props {
   activeTripId: TripId
 }
 export const MinischeduleRun = ({ activeTripId }: Props) => {
-  const run: Run | null = useMinischeduleRun(activeTripId)
-  return run === null ? <Loading /> : <div>{JSON.stringify(run)}</div>
+  const run: Run | null | undefined = useMinischeduleRun(activeTripId)
+  if (run === undefined) {
+    return <Loading />
+  } else if (run === null) {
+    return <>No run found</>
+  } else {
+    return <div>{JSON.stringify(run)}</div>
+  }
 }
 
 export const MinischeduleBlock = ({ activeTripId }: Props) => {
-  const block: Block | null = useMinischeduleBlock(activeTripId)
-  return block === null ? <Loading /> : <div>{JSON.stringify(block)}</div>
+  const block: Block | null | undefined = useMinischeduleBlock(activeTripId)
+  if (block === undefined) {
+    return <Loading />
+  } else if (block === null) {
+    return <>No block found</>
+  } else {
+    return <div>{JSON.stringify(block)}</div>
+  }
 }

@@ -16,13 +16,13 @@ jest.mock("../../src/api", () => ({
 }))
 
 describe("useMinischeduleRun", () => {
-  test("returns null while loading", () => {
+  test("returns undefined while loading", () => {
     const mockFetchMinischeduleRun: jest.Mock = Api.fetchMinischeduleRun as jest.Mock
     const { result } = renderHook(() => {
       return useMinischeduleRun("trip")
     })
     expect(mockFetchMinischeduleRun).toHaveBeenCalledTimes(1)
-    expect(result.current).toEqual(null)
+    expect(result.current).toEqual(undefined)
   })
 
   test("returns a run", () => {
@@ -46,13 +46,13 @@ describe("useMinischeduleRun", () => {
 })
 
 describe("useMinischeduleBlock", () => {
-  test("returns null while loading", () => {
+  test("returns undefined while loading", () => {
     const mockFetchMinischeduleBlock: jest.Mock = Api.fetchMinischeduleBlock as jest.Mock
     const { result } = renderHook(() => {
       return useMinischeduleBlock("trip")
     })
     expect(mockFetchMinischeduleBlock).toHaveBeenCalledTimes(1)
-    expect(result.current).toEqual(null)
+    expect(result.current).toEqual(undefined)
   })
 
   test("returns a block", () => {
