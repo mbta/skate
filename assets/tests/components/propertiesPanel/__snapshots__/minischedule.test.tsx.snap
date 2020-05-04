@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MinischeduleBlock renders a block 1`] = `
+<div>
+  {"block":"block"}
+</div>
+`;
+
+exports[`MinischeduleBlock renders a not found state 1`] = `"No block found"`;
+
+exports[`MinischeduleBlock renders the loading state 1`] = `"loading..."`;
+
+exports[`MinischeduleRun renders a not found state 1`] = `"No run found"`;
+
+exports[`MinischeduleRun renders a run 1`] = `
+<div>
+  {"run":"run"}
+</div>
+`;
+
+exports[`MinischeduleRun renders the loading state 1`] = `"loading..."`;
