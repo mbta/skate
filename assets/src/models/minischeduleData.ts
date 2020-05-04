@@ -67,13 +67,13 @@ export const blockFromData = (blockData: BlockData): Block => ({
   pieces: blockData.pieces.map(pieceFromData),
 })
 
-export const breakFromData = (breakData: BreakData): Break => ({
+const breakFromData = (breakData: BreakData): Break => ({
   breakType: breakData.break_type,
   startTime: breakData.start_time,
   endTime: breakData.end_time,
 })
 
-export const pieceFromData = (pieceData: PieceData): Piece => ({
+const pieceFromData = (pieceData: PieceData): Piece => ({
   runId: pieceData.run_id,
   blockId: pieceData.block_id,
   start: signOnOffFromData(pieceData.start),
@@ -81,13 +81,13 @@ export const pieceFromData = (pieceData: PieceData): Piece => ({
   end: signOnOffFromData(pieceData.end),
 })
 
-export const signOnOffFromData = (signOnOffData: SignOnOffData): SignOnOff => ({
+const signOnOffFromData = (signOnOffData: SignOnOffData): SignOnOff => ({
   time: signOnOffData.time,
   place: signOnOffData.place,
   midRoute: signOnOffData["mid_route?"],
 })
 
-export const tripFromData = (tripData: TripData): Trip => ({
+const tripFromData = (tripData: TripData): Trip => ({
   id: tripData.id,
   blockId: tripData.block_id,
   routeId: tripData.route_id,
