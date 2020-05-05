@@ -39,7 +39,7 @@ There are a number of configuration details defined in environment variables. Th
 - **SKATE_HASTUS_URL**: Source of extended schedule data
 - **TRIP_UPDATES_URL**: Source of GTFS-realtime enhanced TripUpdates json data file (optional)
 - **API_URL**: URL of the API for retrieving live train positions
-- **API_KEY**: Access key for the API (for dev only, see below for prod)
+- **API_KEY**: Access key for the API (For dev only, see below for prod. We want API_KEY to come from SecretsManager in prod, but that doesn't work for dev. So the env var lets you continue setting the value locally for development.)
 - **ENVIRONMENT_NAME**: The first part of the key names in SecretsManager (only required in production)
 - **RELEASE_COOKIE**: Used by Erlang (only required in production)
 - **COGNITO_DOMAIN**, **COGNITO_CLIENT_ID**, **COGNITO_CLIENT_SECRET**, **COGNITO_USER_POOL_ID**, **COGNITO_AWS_REGION**, and **GUARDIAN_SECRET_KEY**: Authentication/authorization details (only required in production)
