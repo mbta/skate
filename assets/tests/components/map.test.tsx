@@ -11,7 +11,6 @@ import Map, {
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { TrainVehicle, Vehicle } from "../../src/realtime"
 import { Shape } from "../../src/schedule"
-import { State as AppState } from "../../src/state"
 
 jest.unmock("leaflet")
 jest.unmock("react-leaflet-control")
@@ -114,28 +113,34 @@ describe("map", () => {
 describe("autoCenter", () => {
   const Leaflet = jest.requireActual("leaflet")
   const isAutoCentering = { current: false }
-  const appState: AppState = { pickerContainerIsVisible: false } as AppState
+  const pickerContainerIsVisible: boolean = false
 
   test("centers the map on a single vehicle", () => {
     document.body.innerHTML = "<div id='map'></div>"
     const map = Leaflet.map("map")
-    autoCenter(map, [vehicle], isAutoCentering, appState)
+    autoCenter(map, [[42, -71]], isAutoCentering, pickerContainerIsVisible)
     expect(map.getCenter()).toEqual({ lat: 42, lng: -71 })
   })
 
   test("fits around multiple vehicles", () => {
-    const vehicle1 = { ...vehicle, latitude: 42.0 }
-    const vehicle2 = { ...vehicle, latitude: 42.5 }
     document.body.innerHTML = "<div id='map'></div>"
     const map = Leaflet.map("map")
-    autoCenter(map, [vehicle1, vehicle2], isAutoCentering, appState)
+    autoCenter(
+      map,
+      [
+        [42.0, -71],
+        [42.5, -71],
+      ],
+      isAutoCentering,
+      pickerContainerIsVisible
+    )
     expect(map.getCenter().lat).toBeCloseTo(42.25, 3)
   })
 
   test("does not center the map if there are no vehicles", () => {
     document.body.innerHTML = "<div id='map'></div>"
     const map = Leaflet.map("map")
-    autoCenter(map, [], isAutoCentering, appState)
+    autoCenter(map, [], isAutoCentering, pickerContainerIsVisible)
     expect(map.getCenter()).toEqual(defaultCenter)
   })
 })
