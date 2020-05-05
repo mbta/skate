@@ -1,5 +1,4 @@
-import React, { useState } from "react"
-import useInterval from "../../hooks/useInterval"
+import React from "react"
 import { useTripShape } from "../../hooks/useShapes"
 import { hasBlockWaiver } from "../../models/blockWaiver"
 import { shouldShowHeadwayDiagram } from "../../models/vehicle"
@@ -33,8 +32,6 @@ const NotAvailable = () => (
   </span>
 )
 
-const nowInSeconds = (): number => Math.floor(Date.now() / 1000)
-
 const directionsUrl = (
   latitude: number,
   longitude: number
@@ -43,15 +40,9 @@ const directionsUrl = (
 &travelmode=driving`
 
 const Location = ({ vehicle }: { vehicle: Vehicle }) => {
-  const [epocNowInSeconds, setEpocNowInSeconds] = useState(nowInSeconds())
-
   const shapes: Shape[] = useTripShape(vehicle.tripId)
 
-  useInterval(() => setEpocNowInSeconds(nowInSeconds()), 1000)
-  const secondsAgo = (epocTime: number): string =>
-    `${epocNowInSeconds - epocTime}s ago`
-
-  const { isOffCourse, latitude, longitude, stopStatus, timestamp } = vehicle
+  const { isOffCourse, latitude, longitude, stopStatus } = vehicle
 
   return (
     <div className="m-vehicle-properties-panel__location">
@@ -62,10 +53,6 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
         ) : (
           <>{stopStatus.stopName}</>
         )}
-      </div>
-      <div className="m-properties-list__property-label">Last GPS Ping</div>
-      <div className="m-properties-list__property-value">
-        {secondsAgo(timestamp)}
       </div>
       <a
         className="m-vehicle-properties-panel__link"

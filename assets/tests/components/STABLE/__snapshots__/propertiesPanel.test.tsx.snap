@@ -90,19 +90,23 @@ Array [
              headsign
           </div>
         </div>
-        <button
-          className="m-close-button"
-          onClick={[Function]}
+        <div
+          className="m-properties-panel__close-ping"
         >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
+          <button
+            className="m-close-button"
+            onClick={[Function]}
+          >
+            <span
+              className=""
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
               }
-            }
-          />
-        </button>
+            />
+          </button>
+        </div>
       </div>
       <div
         className="m-ghost-properties-panel__no-waiver-banner"
@@ -301,19 +305,23 @@ Array [
             </div>
           </div>
         </div>
-        <button
-          className="m-close-button"
-          onClick={[Function]}
+        <div
+          className="m-properties-panel__close-ping"
         >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
+          <button
+            className="m-close-button"
+            onClick={[Function]}
+          >
+            <span
+              className=""
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
               }
-            }
-          />
-        </button>
+            />
+          </button>
+        </div>
       </div>
       <div
         className="m-properties-list"

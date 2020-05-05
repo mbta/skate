@@ -1,6 +1,7 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import vehicleLabel from "../../helpers/vehicleLabel"
+import useInterval from "../../hooks/useInterval"
 import {
   directionOnLadder,
   getLadderDirectionForRoute,
@@ -24,6 +25,34 @@ import VehicleIcon, { Orientation, Size } from "../vehicleIcon"
 interface Props {
   vehicle: VehicleOrGhost
   route?: Route
+}
+
+const vehicleOrientation = (
+  vehicle: VehicleOrGhost,
+  ladderDirections: LadderDirections
+): Orientation => {
+  if (vehicle.routeId !== null && vehicle.directionId !== null) {
+    const ladderDirection: LadderDirection = getLadderDirectionForRoute(
+      ladderDirections,
+      vehicle.routeId
+    )
+    const vehicleDirection: VehicleDirection = directionOnLadder(
+      vehicle.directionId,
+      ladderDirection
+    )
+
+    if (vehicle.routeStatus === "laying_over") {
+      return vehicleDirection === VehicleDirection.Down
+        ? Orientation.Left
+        : Orientation.Right
+    } else {
+      return vehicleDirection === VehicleDirection.Down
+        ? Orientation.Down
+        : Orientation.Up
+    }
+  } else {
+    return Orientation.Up
+  }
 }
 
 const ScheduleAdherenceStatusIcon = () => (
@@ -90,10 +119,17 @@ const directionName = (
   route?: Route
 ): string => (route ? route.directionNames[directionId] : "")
 
+const nowInSeconds = (): number => Math.floor(Date.now() / 1000)
+
 const Header = ({ vehicle, route }: Props) => {
   const [{ ladderDirections, settings }, dispatch] = useContext(
     StateDispatchContext
   )
+  const [epocNowInSeconds, setEpocNowInSeconds] = useState(nowInSeconds())
+  useInterval(() => setEpocNowInSeconds(nowInSeconds()), 1000)
+
+  const secondsAgo = (epocTime: number): string =>
+    `${epocNowInSeconds - epocTime}s ago`
 
   const hideMe = () => dispatch(deselectVehicle())
 
@@ -122,37 +158,17 @@ const Header = ({ vehicle, route }: Props) => {
           !vehicle.isShuttle && <ScheduleAdherence vehicle={vehicle} />
         )}
       </div>
-      <CloseButton onClick={hideMe} />
+      <div className="m-properties-panel__close-ping">
+        <CloseButton onClick={hideMe} />
+
+        {isVehicle(vehicle) && (
+          <div className="m-properties-panel__last-gps-ping">
+            {secondsAgo(vehicle.timestamp)}
+          </div>
+        )}
+      </div>
     </div>
   )
-}
-
-const vehicleOrientation = (
-  vehicle: VehicleOrGhost,
-  ladderDirections: LadderDirections
-): Orientation => {
-  if (vehicle.routeId !== null && vehicle.directionId !== null) {
-    const ladderDirection: LadderDirection = getLadderDirectionForRoute(
-      ladderDirections,
-      vehicle.routeId
-    )
-    const vehicleDirection: VehicleDirection = directionOnLadder(
-      vehicle.directionId,
-      ladderDirection
-    )
-
-    if (vehicle.routeStatus === "laying_over") {
-      return vehicleDirection === VehicleDirection.Down
-        ? Orientation.Left
-        : Orientation.Right
-    } else {
-      return vehicleDirection === VehicleDirection.Down
-        ? Orientation.Down
-        : Orientation.Up
-    }
-  } else {
-    return Orientation.Up
-  }
 }
 
 export default Header

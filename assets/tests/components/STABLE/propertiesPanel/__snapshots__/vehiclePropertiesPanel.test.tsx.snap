@@ -104,19 +104,23 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
         </div>
       </div>
     </div>
-    <button
-      className="m-close-button"
-      onClick={[Function]}
+    <div
+      className="m-properties-panel__close-ping"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+    </div>
   </div>
   <div
     className="m-properties-list"
@@ -333,19 +337,23 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
         </div>
       </div>
     </div>
-    <button
-      className="m-close-button"
-      onClick={[Function]}
+    <div
+      className="m-properties-panel__close-ping"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+    </div>
   </div>
   <div
     className="m-properties-list"
@@ -562,19 +570,23 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
         </div>
       </div>
     </div>
-    <button
-      className="m-close-button"
-      onClick={[Function]}
+    <div
+      className="m-properties-panel__close-ping"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+    </div>
   </div>
   <div
     className="m-properties-list"
@@ -758,19 +770,23 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
         Shuttle
       </div>
     </div>
-    <button
-      className="m-close-button"
-      onClick={[Function]}
+    <div
+      className="m-properties-panel__close-ping"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+    </div>
   </div>
   <div
     className="m-properties-list"
@@ -991,19 +1007,23 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
         </div>
       </div>
     </div>
-    <button
-      className="m-close-button"
-      onClick={[Function]}
+    <div
+      className="m-properties-panel__close-ping"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+    </div>
   </div>
   <div
     className="m-block-waiver-list"
@@ -1329,19 +1349,23 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
         </div>
       </div>
     </div>
-    <button
-      className="m-close-button"
-      onClick={[Function]}
+    <div
+      className="m-properties-panel__close-ping"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+    </div>
   </div>
   <div
     className="m-properties-list"
@@ -1558,19 +1582,23 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
         </div>
       </div>
     </div>
-    <button
-      className="m-close-button"
-      onClick={[Function]}
+    <div
+      className="m-properties-panel__close-ping"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+    </div>
   </div>
   <div
     className="m-vehicle-properties-panel__invalid-banner"
@@ -1801,19 +1829,23 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
         </div>
       </div>
     </div>
-    <button
-      className="m-close-button"
-      onClick={[Function]}
+    <div
+      className="m-properties-panel__close-ping"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+    </div>
   </div>
   <div
     className="m-properties-list"

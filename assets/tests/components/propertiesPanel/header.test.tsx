@@ -13,6 +13,8 @@ import { Ghost, Vehicle } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
 import { deselectVehicle, initialState } from "../../../src/state"
 
+jest.spyOn(Date, "now").mockImplementation(() => 234000)
+
 const vehicle: Vehicle = {
   id: "v1",
   label: "v1-label",

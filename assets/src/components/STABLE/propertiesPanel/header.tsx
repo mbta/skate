@@ -122,7 +122,9 @@ const Header = ({ vehicle, route }: Props) => {
           !vehicle.isShuttle && <ScheduleAdherence vehicle={vehicle} />
         )}
       </div>
-      <CloseButton onClick={hideMe} />
+      <div className="m-properties-panel__close-ping">
+        <CloseButton onClick={hideMe} />
+      </div>
     </div>
   )
 }
