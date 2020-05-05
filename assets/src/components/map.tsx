@@ -165,10 +165,8 @@ const Shape = ({ shape }: { shape: Shape }) => {
 export const autoCenter = (
   map: LeafletMap,
   latLngs: LatLngExpression[],
-  isAutoCentering: MutableRefObject<boolean>,
   pickerContainerIsVisible: boolean
 ): void => {
-  isAutoCentering.current = true
   if (latLngs.length === 0) {
     map.setView(defaultCenter, 13)
   } else if (latLngs.length === 1) {
@@ -231,12 +229,8 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
     const reactLeafletMap: ReactLeafletMap | null = mapRef.current
     if (reactLeafletMap !== null && shouldAutoCenter) {
       const leafletMap: LeafletMap = reactLeafletMap.leafletElement
-      autoCenter(
-        leafletMap,
-        latLngs,
-        isAutoCentering,
-        appState.pickerContainerIsVisible
-      )
+      isAutoCentering.current = true
+      autoCenter(leafletMap, latLngs, appState.pickerContainerIsVisible)
     }
   }, [
     shouldAutoCenter,
