@@ -40,6 +40,7 @@ There are a number of configuration details defined in environment variables. Th
 - **TRIP_UPDATES_URL**: Source of GTFS-realtime enhanced TripUpdates json data file (optional)
 - **API_URL**: URL of the API for retrieving live train positions
 - **API_KEY**: Access key for the API (for dev only, see below for prod)
+- **ENVIRONMENT_NAME**: The first part of the key names in SecretsManager (only required in production)
 - **RELEASE_COOKIE**: Used by Erlang (only required in production)
 - **COGNITO_DOMAIN**, **COGNITO_CLIENT_ID**, **COGNITO_CLIENT_SECRET**, **COGNITO_USER_POOL_ID**, **COGNITO_AWS_REGION**, and **GUARDIAN_SECRET_KEY**: Authentication/authorization details (only required in production)
 - **STATIC_SCHEME**, **STATIC_HOST**, **STATIC_PATH**, and **STATIC_PORT**: CDN details (only required in production)
