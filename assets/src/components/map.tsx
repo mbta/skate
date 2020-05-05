@@ -238,7 +238,11 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         appState.pickerContainerIsVisible
       )
     }
-  }, [shouldAutoCenter, latLngs, appState.pickerContainerIsVisible])
+  }, [
+    shouldAutoCenter,
+    JSON.stringify(latLngs),
+    appState.pickerContainerIsVisible,
+  ])
 
   const autoCenteringClass = shouldAutoCenter
     ? "m-vehicle-map-state--auto-centering"
