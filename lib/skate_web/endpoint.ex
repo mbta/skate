@@ -1,8 +1,6 @@
 defmodule SkateWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :skate
 
-  alias Skate.SecretsManager
-
   socket "/socket", SkateWeb.UserSocket,
     websocket: [check_origin: Application.get_env(:skate, :websocket_check_origin, false)],
     longpoll: false
@@ -48,14 +46,14 @@ defmodule SkateWeb.Endpoint do
 
   # callback for runtime configuration
   def init(:supervisor, config) do
+    secret_key_base = Application.get_env(:skate, :secret_key_base)
+
     config =
-      try do
-        secret_key_base = SecretsManager.fetch!("SECRET_KEY_BASE")
+      if secret_key_base do
         Keyword.put(config, :secret_key_base, secret_key_base)
-      rescue
-        _ ->
-          config[:secret_key_base] || raise "No SECRET_KEY_BASE ENV var!"
-          config
+      else
+        config[:secret_key_base] || raise "No SECRET_KEY_BASE ENV var!"
+        config
       end
 
     {:ok, config}
