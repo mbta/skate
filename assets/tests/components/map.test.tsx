@@ -14,6 +14,7 @@ import { Shape } from "../../src/schedule"
 import { State as AppState } from "../../src/state"
 
 jest.unmock("leaflet")
+jest.unmock("react-leaflet-control")
 
 const vehicle: Vehicle = {
   id: "y1818",
@@ -186,6 +187,11 @@ describe("auto centering", () => {
     const mapRef: MutableRefObject<ReactLeafletMap | null> = { current: null }
     const wrapper = mount(<Map vehicles={[vehicle]} reactLeafletRef={mapRef} />)
     await animationFramePromise()
+    expect(
+      wrapper
+        .find(".m-vehicle-map-state")
+        .hasClass("m-vehicle-map-state--auto-centering")
+    ).toBe(true)
     const manualLatLng = { lat: 41.9, lng: -70.9 }
     act(() => {
       mapRef.current!.leafletElement.panTo(manualLatLng)
@@ -200,6 +206,11 @@ describe("auto centering", () => {
     wrapper!.setProps({ vehicles: [newVehicle] })
     await animationFramePromise()
     expect(getCenter(mapRef)).toEqual(manualLatLng)
+    expect(
+      wrapper
+        .find(".m-vehicle-map-state")
+        .hasClass("m-vehicle-map-state--auto-centering")
+    ).toBe(false)
   })
 
   test("auto recentering does not disable auto centering", async () => {
@@ -231,6 +242,37 @@ describe("auto centering", () => {
     wrapper.setProps({ vehicles: [vehicle3] })
     await animationFramePromise()
     expect(getCenter(mapRef)).toEqual(latLng3)
+  })
+
+  test("recenter control turns on auto center", async () => {
+    const mapRef: MutableRefObject<ReactLeafletMap | null> = { current: null }
+    const wrapper = mount(<Map vehicles={[]} reactLeafletRef={mapRef} />)
+    await animationFramePromise()
+
+    // Manual move to turn off auto centering
+    const manualLatLng = { lat: 41.9, lng: -70.9 }
+    act(() => {
+      mapRef.current!.leafletElement.panTo(manualLatLng)
+    })
+    await animationFramePromise()
+    wrapper.update()
+    expect(
+      wrapper
+        .find(".m-vehicle-map-state")
+        .hasClass("m-vehicle-map-state--auto-centering")
+    ).toBe(false)
+    expect(getCenter(mapRef)).toEqual(manualLatLng)
+
+    // Click the recenter button
+    wrapper.find(".m-vehicle-map__recenter-button").find("a").simulate("click")
+    await animationFramePromise()
+    wrapper.update()
+    expect(
+      wrapper
+        .find(".m-vehicle-map-state")
+        .hasClass("m-vehicle-map-state--auto-centering")
+    ).toBe(true)
+    expect(getCenter(mapRef)).toEqual(defaultCenter)
   })
 })
 
