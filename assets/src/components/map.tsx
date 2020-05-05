@@ -240,6 +240,8 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
     }
   }, [
     shouldAutoCenter,
+    // useEffect uses ===, which doesn't work on arrays.
+    // convert the array to a string so useEffect can tell if it doesn't change.
     JSON.stringify(latLngs),
     appState.pickerContainerIsVisible,
   ])
