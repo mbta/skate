@@ -8,6 +8,8 @@ import {
   Timepoint,
   TripId,
 } from "./schedule.d"
+import { runFromData, blockFromData } from "./models/minischeduleData"
+import { Run, Block } from "./minischedule"
 
 interface RouteData {
   id: string
@@ -99,3 +101,22 @@ export const fetchTimepointsForRoute = (
     parser: (timepoints: Timepoint[]) => timepoints,
     defaultResult: [],
   })
+
+export const fetchMinischeduleRun = (tripId: TripId): Promise<Run | null> =>
+  apiCall({
+    url: `/api/minischedule/run/${tripId}`,
+    parser: nullableParser(runFromData),
+    defaultResult: null,
+  })
+
+export const fetchMinischeduleBlock = (tripId: TripId): Promise<Block | null> =>
+  apiCall({
+    url: `/api/minischedule/block/${tripId}`,
+    parser: nullableParser(blockFromData),
+    defaultResult: null,
+  })
+
+const nullableParser = <Data, T>(
+  parser: (data: Data) => T
+): ((data: Data | null) => T | null) => (data: Data | null) =>
+  data === null ? null : parser(data)

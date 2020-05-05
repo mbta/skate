@@ -40,6 +40,7 @@ const GhostPropertiesPanel = ({ selectedGhost, route }: Props) => (
     )}
 
     <StatusRunBlockTabs
+      activeTripId={selectedGhost.tripId}
       statusContent={<PropertiesList vehicleOrGhost={selectedGhost} />}
     />
   </div>

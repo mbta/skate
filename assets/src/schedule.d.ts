@@ -28,8 +28,6 @@ export interface Route {
   name: string
 }
 
-export type RoutePatternId = string
-
 export interface Shape {
   id: ShapeId
   color?: string

@@ -1,5 +1,7 @@
 import {
   apiCall,
+  fetchMinischeduleBlock,
+  fetchMinischeduleRun,
   fetchRoutes,
   fetchShapeForRoute,
   fetchShapeForTrip,
@@ -313,6 +315,122 @@ describe("fetchTimepointsForRoute", () => {
 
     fetchTimepointsForRoute("28").then((result) => {
       expect(result).toEqual([])
+      done()
+    })
+  })
+})
+
+describe("minischedulesRun", () => {
+  test("fetches a run with a break", (done) => {
+    mockFetch(200, {
+      data: {
+        id: "run",
+        activities: [
+          {
+            break_type: "break type",
+            start_time: 0,
+            end_time: 1,
+          },
+        ],
+      },
+    })
+
+    fetchMinischeduleRun("trip").then((result) => {
+      expect(result).toEqual({
+        id: "run",
+        activities: [
+          {
+            breakType: "break type",
+            startTime: 0,
+            endTime: 1,
+          },
+        ],
+      })
+      done()
+    })
+  })
+
+  test("can return null", (done) => {
+    mockFetch(200, { data: null })
+    fetchMinischeduleRun("trip").then((result) => {
+      expect(result).toEqual(null)
+      done()
+    })
+  })
+})
+
+describe("minischedulesBlock", () => {
+  test("fetches a block with a piece", (done) => {
+    mockFetch(200, {
+      data: {
+        id: "block",
+        pieces: [
+          {
+            run_id: "run",
+            block_id: "block",
+            start: {
+              time: 0,
+              place: "start place",
+              "mid_route?": false,
+            },
+            trips: [
+              {
+                id: "trip",
+                block_id: "block",
+                route_id: "route",
+                headsign: "headsign",
+                direction_id: 0,
+                run_id: "run",
+              },
+            ],
+            end: {
+              time: 1,
+              place: "end place",
+              "mid_route?": false,
+            },
+          },
+        ],
+      },
+    })
+
+    fetchMinischeduleBlock("trip").then((result) => {
+      expect(result).toEqual({
+        id: "block",
+        pieces: [
+          {
+            runId: "run",
+            blockId: "block",
+            start: {
+              time: 0,
+              place: "start place",
+              midRoute: false,
+            },
+            trips: [
+              {
+                id: "trip",
+                blockId: "block",
+                routeId: "route",
+                headsign: "headsign",
+                directionId: 0,
+                runId: "run",
+              },
+            ],
+            end: {
+              time: 1,
+              place: "end place",
+              midRoute: false,
+            },
+          },
+        ],
+      })
+      done()
+    })
+  })
+
+  test("can return null", (done) => {
+    mockFetch(200, { data: null })
+    fetchMinischeduleBlock("trip").then((result) => {
+      expect(result).toEqual(null)
       done()
     })
   })
