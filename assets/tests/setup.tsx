@@ -11,3 +11,23 @@ jest.mock("react-tooltip", () => ({
     .fn()
     .mockImplementation(() => <div className="mock-react-tooltip" />),
 }))
+
+// JSDOM doesn't support part of SVG that's needed for Leaflet to run in tests.
+// https://stackoverflow.com/questions/54382414/fixing-react-leaflet-testing-error-cannot-read-property-layeradd-of-null
+const createElementNSOrig = document.createElementNS
+// @ts-ignore
+// tslint:disable-next-line only-arrow-functions
+document.createElementNS = function (namespaceURI, qualifiedName) {
+  if (
+    namespaceURI === "http://www.w3.org/2000/svg" &&
+    qualifiedName === "svg"
+  ) {
+    // @ts-ignore
+    const element = createElementNSOrig.apply(this, arguments)
+    // tslint:disable-next-line no-empty
+    element.createSVGRect = () => {}
+    return element
+  }
+  // @ts-ignore
+  return createElementNSOrig.apply(this, arguments)
+}

@@ -226,7 +226,6 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
       />
       <div
         className="m-vehicle-map"
-        id="id-vehicle-map"
       />
     </div>
   </div>
@@ -459,7 +458,6 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
       />
       <div
         className="m-vehicle-map"
-        id="id-vehicle-map"
       />
     </div>
   </div>
@@ -692,7 +690,6 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
       />
       <div
         className="m-vehicle-map"
-        id="id-vehicle-map"
       />
     </div>
   </div>
@@ -896,7 +893,6 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
       />
       <div
         className="m-vehicle-map"
-        id="id-vehicle-map"
       />
     </div>
   </div>
@@ -1238,7 +1234,6 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
       />
       <div
         className="m-vehicle-map"
-        id="id-vehicle-map"
       />
     </div>
   </div>
@@ -1471,7 +1466,6 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
       />
       <div
         className="m-vehicle-map"
-        id="id-vehicle-map"
       />
     </div>
   </div>
@@ -1718,7 +1712,6 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
       />
       <div
         className="m-vehicle-map"
-        id="id-vehicle-map"
       />
     </div>
   </div>
@@ -1951,7 +1944,6 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
       />
       <div
         className="m-vehicle-map"
-        id="id-vehicle-map"
       />
     </div>
   </div>
