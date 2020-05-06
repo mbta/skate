@@ -30,7 +30,7 @@ Skate is read-only, so it only needs to ingest data and present it. Skate uses t
     - Inferred location information (what stop is the bus approaching)
     - Schedule adherence (On-Time Performance)
     - Headway
-    - "Predicted" route assignments based on location
+    - Trip assignments based on location
 - MBTA V3 API: For train locations
 
 ## Authentication
