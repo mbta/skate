@@ -24,7 +24,7 @@ import { drawnStatus, statusClass } from "../models/vehicleStatus"
 import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
 import { Shape } from "../schedule"
 import { Settings } from "../settings"
-import { selectVehicle, State as AppState } from "../state"
+import { selectVehicle } from "../state"
 
 interface Props {
   vehicles: Vehicle[]
@@ -164,13 +164,10 @@ const Shape = ({ shape }: { shape: Shape }) => {
 
 export const autoCenter = (
   map: LeafletMap,
-  vehicles: Vehicle[],
+  latLngs: LatLngExpression[],
   isAutoCentering: MutableRefObject<boolean>,
-  appState: AppState
+  pickerContainerIsVisible: boolean
 ): void => {
-  const latLngs: LatLngExpression[] = vehicles.map((vehicle) =>
-    Leaflet.latLng(vehicle.latitude, vehicle.longitude)
-  )
   isAutoCentering.current = true
   if (latLngs.length === 0) {
     map.setView(defaultCenter, 13)
@@ -179,7 +176,7 @@ export const autoCenter = (
   } else if (latLngs.length > 1) {
     map.fitBounds(Leaflet.latLngBounds(latLngs), {
       paddingBottomRight: [20, 50],
-      paddingTopLeft: [appState.pickerContainerIsVisible ? 220 : 20, 20],
+      paddingTopLeft: [pickerContainerIsVisible ? 220 : 20, 20],
     })
   }
 }
@@ -227,13 +224,27 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
   const [shouldAutoCenter, setShouldAutoCenter] = useState<boolean>(true)
   const isAutoCentering: MutableRefObject<boolean> = useRef(false)
 
+  const latLngs: LatLngExpression[] = props.vehicles.map(
+    ({ latitude, longitude }) => Leaflet.latLng(latitude, longitude)
+  )
   useEffect(() => {
     const reactLeafletMap: ReactLeafletMap | null = mapRef.current
     if (reactLeafletMap !== null && shouldAutoCenter) {
       const leafletMap: LeafletMap = reactLeafletMap.leafletElement
-      autoCenter(leafletMap, props.vehicles, isAutoCentering, appState)
+      autoCenter(
+        leafletMap,
+        latLngs,
+        isAutoCentering,
+        appState.pickerContainerIsVisible
+      )
     }
-  }, [shouldAutoCenter, props.vehicles, appState])
+  }, [
+    shouldAutoCenter,
+    // useEffect uses ===, which doesn't work on arrays.
+    // convert the array to a string so useEffect can tell if it doesn't change.
+    JSON.stringify(latLngs),
+    appState.pickerContainerIsVisible,
+  ])
 
   const autoCenteringClass = shouldAutoCenter
     ? "m-vehicle-map-state--auto-centering"
