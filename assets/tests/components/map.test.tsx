@@ -112,13 +112,12 @@ describe("map", () => {
 
 describe("autoCenter", () => {
   const Leaflet = jest.requireActual("leaflet")
-  const isAutoCentering = { current: false }
   const pickerContainerIsVisible: boolean = false
 
   test("centers the map on a single vehicle", () => {
     document.body.innerHTML = "<div id='map'></div>"
     const map = Leaflet.map("map")
-    autoCenter(map, [[42, -71]], isAutoCentering, pickerContainerIsVisible)
+    autoCenter(map, [[42, -71]], pickerContainerIsVisible)
     expect(map.getCenter()).toEqual({ lat: 42, lng: -71 })
   })
 
@@ -131,7 +130,6 @@ describe("autoCenter", () => {
         [42.0, -71],
         [42.5, -71],
       ],
-      isAutoCentering,
       pickerContainerIsVisible
     )
     expect(map.getCenter().lat).toBeCloseTo(42.25, 3)
@@ -140,7 +138,7 @@ describe("autoCenter", () => {
   test("does not center the map if there are no vehicles", () => {
     document.body.innerHTML = "<div id='map'></div>"
     const map = Leaflet.map("map")
-    autoCenter(map, [], isAutoCentering, pickerContainerIsVisible)
+    autoCenter(map, [], pickerContainerIsVisible)
     expect(map.getCenter()).toEqual(defaultCenter)
   })
 })
