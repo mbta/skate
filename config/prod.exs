@@ -1,8 +1,13 @@
 use Mix.Config
 
 config :skate,
+  api_key: {:secret, "API_KEY"},
   redirect_http?: true,
-  static_href: {SkateWeb.Router.Helpers, :static_url}
+  record_fullstory: true,
+  record_appcues: true,
+  secret_key_base: {:secret, "SECRET_KEY_BASE"},
+  static_href: {SkateWeb.Router.Helpers, :static_url},
+  swiftly_authorization_key: {:secret, "SWIFTLY_AUTHORIZATION_KEY"}
 
 # For production, don't forget to configure the url host
 # to something meaningful, Phoenix uses this information
@@ -46,14 +51,9 @@ config :ueberauth, Ueberauth,
 config :ueberauth, Ueberauth.Strategy.Cognito,
   auth_domain: {System, :get_env, ["COGNITO_DOMAIN"]},
   client_id: {System, :get_env, ["COGNITO_CLIENT_ID"]},
-  client_secret: {System, :get_env, ["COGNITO_CLIENT_SECRET"]},
   user_pool_id: {System, :get_env, ["COGNITO_USER_POOL_ID"]},
   aws_region: {System, :get_env, ["COGNITO_AWS_REGION"]}
 
-config :skate, SkateWeb.AuthManager, secret_key: {System, :get_env, ["GUARDIAN_SECRET_KEY"]}
-
-config :skate,
-  record_fullstory: true,
-  record_appcues: true
+config :ex_aws, json_codec: Jason
 
 config :ehmon, :report_mf, {:ehmon, :info_report}

@@ -34,10 +34,21 @@ There are a number of configuration details defined in environment variables. Th
 
 - **GTFS_URL**: Location of the GTFS zip file
 - **BUSLOC_URL**: Source of GTFS-realtime enhanced VehiclePositions json data file
-- **SWIFTLY_REALTIME_VEHICLES_URL** and **SWIFTLY_AUTHORIZATION_KEY**: Source of Swiftly vehicle data
+- **SWIFTLY_REALTIME_VEHICLES_URL**: Source of Swiftly vehicle data
+- **SWIFTLY_AUTHORIZATION_KEY**: for dev only, see below for prod
 - **SKATE_HASTUS_URL**: Source of extended schedule data
 - **TRIP_UPDATES_URL**: Source of GTFS-realtime enhanced TripUpdates json data file (optional)
-- **SECRET_KEY_BASE** Used for writing encrypted cookies. Generate a value using `mix phx.gen.secret` (only required in production)
-- **ERLANG_COOKIE** Used by Erlang (only required in production)
+- **API_URL**: URL of the API for retrieving live train positions
+- **API_KEY**: Access key for the API (For dev only, see below for prod. We want API_KEY to come from SecretsManager in prod, but that doesn't work for dev. So the env var lets you continue setting the value locally for development.)
+- **ENVIRONMENT_NAME**: The first part of the key names in SecretsManager (only required in production)
+- **RELEASE_COOKIE**: Used by Erlang (only required in production)
 - **COGNITO_DOMAIN**, **COGNITO_CLIENT_ID**, **COGNITO_CLIENT_SECRET**, **COGNITO_USER_POOL_ID**, **COGNITO_AWS_REGION**, and **GUARDIAN_SECRET_KEY**: Authentication/authorization details (only required in production)
 - **STATIC_SCHEME**, **STATIC_HOST**, **STATIC_PATH**, and **STATIC_PORT**: CDN details (only required in production)
+
+Additionally, there a number of secret variables (only required in production) defined in [AWS SecretsManager](https://console.aws.amazon.com/secretsmanager):
+
+- **API_KEY**: Access key for the API
+- **COGNITO_CLIENT_SECRET**: Authentication/authorization secret
+- **GUARDIAN_SECRET_KEY**: Authentication/authorization secret
+- **SECRET_KEY_BASE**: Used for writing encrypted cookies. Generate a value using `mix phx.gen.secret` (only required in production)
+- **SWIFTLY_AUTHORIZATION_KEY**: Authorization key for Swiftly

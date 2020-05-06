@@ -46,7 +46,7 @@ defmodule SkateWeb.Endpoint do
 
   # callback for runtime configuration
   def init(:supervisor, config) do
-    secret_key_base = System.get_env("SECRET_KEY_BASE")
+    secret_key_base = Application.get_env(:skate, :secret_key_base)
 
     config =
       if secret_key_base do
