@@ -213,8 +213,31 @@ const RecenterControl = ({
   </Control>
 )
 
-const Map = (props: Props): ReactElement<HTMLDivElement> => {
+const useAutoCenter = (
+  reactLeafletMapRef: MutableRefObject<ReactLeafletMap | null>,
+  shouldAutoCenter: boolean,
+  isAutoCentering: MutableRefObject<boolean>,
+  latLngs: LatLngExpression[]
+) => {
   const [appState] = useContext(StateDispatchContext)
+  const pickerContainerIsVisible: boolean = appState.pickerContainerIsVisible
+  useEffect(() => {
+    const reactLeafletMap: ReactLeafletMap | null = reactLeafletMapRef.current
+    if (reactLeafletMap !== null && shouldAutoCenter) {
+      const leafletMap: LeafletMap = reactLeafletMap.leafletElement
+      isAutoCentering.current = true
+      autoCenter(leafletMap, latLngs, pickerContainerIsVisible)
+    }
+  }, [
+    shouldAutoCenter,
+    // useEffect uses ===, which doesn't work on arrays.
+    // convert the array to a string so useEffect can tell if it doesn't change.
+    JSON.stringify(latLngs),
+    pickerContainerIsVisible,
+  ])
+}
+
+const Map = (props: Props): ReactElement<HTMLDivElement> => {
   const mapRef: MutableRefObject<ReactLeafletMap | null> =
     // this prop is only for tests, and is consistent between renders, so the hook call is consistent
     // tslint:disable-next-line: react-hooks-nesting
@@ -225,20 +248,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
   const latLngs: LatLngExpression[] = props.vehicles.map(
     ({ latitude, longitude }) => Leaflet.latLng(latitude, longitude)
   )
-  useEffect(() => {
-    const reactLeafletMap: ReactLeafletMap | null = mapRef.current
-    if (reactLeafletMap !== null && shouldAutoCenter) {
-      const leafletMap: LeafletMap = reactLeafletMap.leafletElement
-      isAutoCentering.current = true
-      autoCenter(leafletMap, latLngs, appState.pickerContainerIsVisible)
-    }
-  }, [
-    shouldAutoCenter,
-    // useEffect uses ===, which doesn't work on arrays.
-    // convert the array to a string so useEffect can tell if it doesn't change.
-    JSON.stringify(latLngs),
-    appState.pickerContainerIsVisible,
-  ])
+  useAutoCenter(mapRef, shouldAutoCenter, isAutoCentering, latLngs)
 
   const autoCenteringClass = shouldAutoCenter
     ? "m-vehicle-map-state--auto-centering"
