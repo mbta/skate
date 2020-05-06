@@ -30,7 +30,7 @@
 
   <body>
     <main role="main" class="container">
-      <%= render @view_module, @view_template, assigns %>
+      <%= render view_module(@conn), view_template(@conn), assigns %>
     </main>
     <script type="text/javascript" src="<%= static_href.(@conn, "/js/app.js") %>"></script>
     <%= render "_drift.html" %>
