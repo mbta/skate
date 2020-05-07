@@ -10,6 +10,10 @@ jest.mock("../../src/hooks/useDataStatus", () => ({
   __esModule: true,
   default: jest.fn(() => "good"),
 }))
+jest.mock("../../src/hooks/useRoutes", () => ({
+  __esModule: true,
+  default: jest.fn(() => null),
+}))
 
 describe("App", () => {
   test("renders", () => {

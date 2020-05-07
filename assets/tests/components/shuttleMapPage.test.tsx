@@ -4,11 +4,12 @@ import ShuttleMapPage, {
   allTrainVehicles,
 } from "../../src/components/shuttleMapPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
+import { useRouteShapes, useTripShape } from "../../src/hooks/useShapes"
 import useShuttleVehicles from "../../src/hooks/useShuttleVehicles"
 import useTrainVehicles from "../../src/hooks/useTrainVehicles"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { TrainVehicle, Vehicle } from "../../src/realtime"
-import { ByRouteId } from "../../src/schedule"
+import { ByRouteId, Shape } from "../../src/schedule"
 import { initialState } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
 
@@ -17,13 +18,22 @@ jest
   .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
+jest.mock("../../src/hooks/useShuttleRoutes", () => ({
+  __esModule: true,
+  default: jest.fn(() => null),
+}))
+jest.mock("../../src/hooks/useShapes", () => ({
+  __esModule: true,
+  useRouteShapes: jest.fn(() => []),
+  useTripShape: jest.fn(() => []),
+}))
 jest.mock("../../src/hooks/useShuttleVehicles", () => ({
   __esModule: true,
-  default: jest.fn(),
+  default: jest.fn(() => null),
 }))
 jest.mock("../../src/hooks/useTrainVehicles", () => ({
   __esModule: true,
-  default: jest.fn(),
+  default: jest.fn(() => ({})),
 }))
 
 const shuttle: Vehicle = {
@@ -67,10 +77,21 @@ const shuttle: Vehicle = {
   blockWaivers: [],
 }
 
+const shape: Shape = {
+  id: "shape",
+  points: [],
+}
+
 describe("Shuttle Map Page", () => {
   test("renders", () => {
     ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
-    ;(useTrainVehicles as jest.Mock).mockImplementationOnce(() => ({}))
+    const tree = renderer.create(<ShuttleMapPage />).toJSON()
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders with shapes selected", () => {
+    ;(useRouteShapes as jest.Mock).mockImplementationOnce(() => [shape])
+    ;(useTripShape as jest.Mock).mockImplementationOnce(() => [shape])
     const tree = renderer.create(<ShuttleMapPage />).toJSON()
     expect(tree).toMatchSnapshot()
   })
@@ -94,7 +115,6 @@ describe("Shuttle Map Page", () => {
   test("renders selected shuttle routes", () => {
     const dispatch = jest.fn()
     ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
-    ;(useTrainVehicles as jest.Mock).mockImplementationOnce(() => ({}))
     const tree = renderer
       .create(
         <StateDispatchProvider
@@ -111,7 +131,6 @@ describe("Shuttle Map Page", () => {
   test("renders with all shuttles selected", () => {
     const dispatch = jest.fn()
     ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
-    ;(useTrainVehicles as jest.Mock).mockImplementationOnce(() => ({}))
     const tree = renderer
       .create(
         <StateDispatchProvider
@@ -133,7 +152,6 @@ describe("Shuttle Map Page", () => {
       selectedVehicleId: shuttle.id,
     }
     ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
-    ;(useTrainVehicles as jest.Mock).mockImplementationOnce(() => ({}))
     const tree = renderer
       .create(
         <StateDispatchProvider state={state} dispatch={dispatch}>

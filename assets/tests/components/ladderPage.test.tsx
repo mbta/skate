@@ -6,6 +6,7 @@ import LadderPage, {
 } from "../../src/components/ladderPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useRoutes from "../../src/hooks/useRoutes"
+import useTimepoints from "../../src/hooks/useTimepoints"
 import useVehicles from "../../src/hooks/useVehicles"
 import { Ghost, Vehicle, VehicleOrGhost } from "../../src/realtime"
 import { ByRouteId, Route, TimepointsByRouteId } from "../../src/schedule.d"
@@ -14,6 +15,10 @@ import { initialState } from "../../src/state"
 jest.mock("../../src/hooks/useRoutes", () => ({
   __esModule: true,
   default: jest.fn(() => routes),
+}))
+jest.mock("../../src/hooks/useTimepoints", () => ({
+  __esModule: true,
+  default: jest.fn(() => ({})),
 }))
 jest.mock("../../src/hooks/useVehicles", () => ({
   __esModule: true,
@@ -54,17 +59,10 @@ describe("LadderPage", () => {
   })
 
   test("renders with timepoints", () => {
-    const mockState = {
-      ...initialState,
-      timepointsByRouteId,
-    }
-    const tree = renderer
-      .create(
-        <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-          <LadderPage />
-        </StateDispatchProvider>
-      )
-      .toJSON()
+    ;(useTimepoints as jest.Mock).mockImplementationOnce(
+      () => timepointsByRouteId
+    )
+    const tree = renderer.create(<LadderPage />).toJSON()
     expect(tree).toMatchSnapshot()
   })
 
