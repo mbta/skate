@@ -360,17 +360,95 @@ defmodule Schedule.Minischedule.LoadTest do
 
       assert %Run{
                activities: [
+                 # %Piece{},
+                 # %Piece{} = _p
                  %Piece{
                    block_id: "block",
                    start: %{time: 101},
                    trips: ["trip1"],
                    end: %{time: 102}
-                 },
+                 } = _,
                  %Piece{
                    block_id: "block",
                    start: %{time: 103},
                    trips: ["trip2"],
                    end: %{time: 104}
+                 } = _
+               ]
+             } = Load.run(run_key, activities, trips)
+    end
+
+    test "Deadhead from becomes part of following piece" do
+      run_key = {"schedule", "run"}
+
+      activities = [
+        %Activity{
+          schedule_id: "schedule",
+          run_id: "run",
+          start_time: 101,
+          end_time: 102,
+          start_place: "",
+          end_place: "",
+          activity_type: "Deadhead from"
+        },
+        %Activity{
+          schedule_id: "schedule",
+          run_id: "run",
+          start_time: 102,
+          end_time: 103,
+          start_place: "",
+          end_place: "",
+          activity_type: "Operator",
+          partial_block_id: "block"
+        }
+      ]
+
+      trips = []
+
+      assert %Run{
+               activities: [
+                 %Piece{
+                   start: %{time: 101},
+                   trips: [],
+                   end: %{time: 103}
+                 }
+               ]
+             } = Load.run(run_key, activities, trips)
+    end
+
+    test "Deadhead to becomes part of previous piece" do
+      run_key = {"schedule", "run"}
+
+      activities = [
+        %Activity{
+          schedule_id: "schedule",
+          run_id: "run",
+          start_time: 101,
+          end_time: 102,
+          start_place: "",
+          end_place: "",
+          activity_type: "Operator",
+          partial_block_id: "block"
+        },
+        %Activity{
+          schedule_id: "schedule",
+          run_id: "run",
+          start_time: 102,
+          end_time: 103,
+          start_place: "",
+          end_place: "",
+          activity_type: "Deadhead to"
+        }
+      ]
+
+      trips = []
+
+      assert %Run{
+               activities: [
+                 %Piece{
+                   start: %{time: 101},
+                   trips: [],
+                   end: %{time: 103}
                  }
                ]
              } = Load.run(run_key, activities, trips)

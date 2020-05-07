@@ -44,6 +44,7 @@ defmodule Schedule.Minischedule.Load do
     activities =
       activities
       |> operators_to_pieces(trips)
+      |> add_deadheads_to_pieces()
       |> add_sign_ons_to_pieces()
       |> activities_to_breaks()
 
@@ -119,8 +120,74 @@ defmodule Schedule.Minischedule.Load do
       String.contains?(trip.block_id, activity.partial_block_id)
   end
 
+  @spec add_deadheads_to_pieces([Activity.t() | Piece.t()]) :: [Activity.t() | Piece.t()]
+  defp add_deadheads_to_pieces([]) do
+    []
+  end
+
+  defp add_deadheads_to_pieces([
+         %Activity{activity_type: "Deadhead from"} = deadhead,
+         %Piece{} = piece
+         | rest
+       ]) do
+    new_piece = %{
+      piece
+      | start: %{
+          time: deadhead.start_time,
+          place: deadhead.start_place,
+          mid_route?: false
+        }
+    }
+
+    add_deadheads_to_pieces([new_piece | rest])
+  end
+
+  defp add_deadheads_to_pieces([
+         %Piece{} = piece,
+         %Activity{activity_type: "Deadhead to"} = deadhead
+         | rest
+       ]) do
+    new_piece = %{
+      piece
+      | end: %{
+          time: deadhead.end_time,
+          place: deadhead.end_place,
+          mid_route?: false
+        }
+    }
+
+    add_deadheads_to_pieces([new_piece | rest])
+  end
+
+  defp add_deadheads_to_pieces([first | rest]) do
+    [first | add_deadheads_to_pieces(rest)]
+  end
+
   @spec add_sign_ons_to_pieces([Activity.t() | Piece.t()]) :: [Activity.t() | Piece.t()]
-  defp add_sign_ons_to_pieces(x), do: x
+  defp add_sign_ons_to_pieces([]) do
+    []
+  end
+
+  defp add_sign_ons_to_pieces([
+         %Activity{activity_type: "Sign-on"} = sign_on,
+         %Piece{} = piece
+         | rest
+       ]) do
+    new_piece = %{
+      piece
+      | start: %{
+          time: sign_on.start_time,
+          place: sign_on.start_place,
+          mid_route?: false
+        }
+    }
+
+    add_sign_ons_to_pieces([new_piece | rest])
+  end
+
+  defp add_sign_ons_to_pieces([first | rest]) do
+    [first | add_sign_ons_to_pieces(rest)]
+  end
 
   @spec activities_to_breaks([Activity.t() | Piece.t()]) :: [Break.t() | Piece.t()]
   defp activities_to_breaks(activities_and_pieces) do
