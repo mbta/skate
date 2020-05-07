@@ -55,7 +55,7 @@ export const MinischeduleBlock = ({ activeTripId }: Props): ReactElement => {
 
 const Header = ({ label, value }: { label: string; value: string }) => (
   <div className="m-minischedule__header">
-    <span className="m-minischedule__label">{label}</span>
+    <span className="m-minischedule__header-label">{label}</span>
     {value}
   </div>
 )

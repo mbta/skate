@@ -1,0 +1,18 @@
+.m-minischedule__header {
+  padding: 0.5rem;
+}
+
+.m-minischedule__header-label {
+  @include font-label;
+  margin-right: 1rem;
+}
+
+.m-minischedule__run-header {
+  background-color: $color-bg-light;
+  padding: 0.5rem;
+}
+
+.m-minischedule__row {
+  border-top: 1px solid $color-component-light;
+  padding: 0.5rem;
+}
