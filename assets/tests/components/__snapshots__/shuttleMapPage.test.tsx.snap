@@ -1063,6 +1063,49 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
 </div>
 `;
 
+exports[`Shuttle Map Page renders with shapes selected 1`] = `
+<div
+  className="m-shuttle-map"
+>
+  <div
+    className="m-picker-container m-picker-container--wide visible"
+  >
+    <div
+      className="m-picker-container__tab"
+    >
+      <button
+        className="m-picker-container__tab-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <div
+      className="m-route-picker"
+    >
+      loading...
+    </div>
+  </div>
+  <div
+    className="m-shuttle-map__map"
+  >
+    <div
+      className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+    />
+    <div
+      className="m-vehicle-map"
+    />
+  </div>
+</div>
+`;
+
 exports[`Shuttle Map Page renders with train vehicles 1`] = `
 <div
   className="m-shuttle-map"
