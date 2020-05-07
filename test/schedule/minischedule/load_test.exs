@@ -55,21 +55,12 @@ defmodule Schedule.Minischedule.LoadTest do
         }
       }
 
-      # TODO remove this once the placeholder piece implementation handles Operator activities correctly.
-      placeholder_break = %Break{
-        break_type: "Operator",
-        start_time: 1,
-        end_time: 2,
-        start_place: "start_place",
-        end_place: "end_place"
-      }
-
       assert Load.from_hastus(activities, trips) == %{
                runs: %{
                  {"schedule", "run"} => %Run{
                    schedule_id: "schedule",
                    id: "run",
-                   activities: [placeholder_break, expected_piece]
+                   activities: [expected_piece]
                  }
                },
                blocks: %{
@@ -154,18 +145,14 @@ defmodule Schedule.Minischedule.LoadTest do
 
       assert %{
                runs: %{
-                 # TODO remove breaks from runs. They're from the placeholder piece implementation.
                  {"schedule", "run_1"} => %Run{
                    activities: [
-                     _break_11,
-                     _break_12,
                      %Piece{trips: ["trip_11"]},
                      %Piece{trips: ["trip_12"]}
                    ]
                  },
                  {"schedule", "run_2"} => %Run{
                    activities: [
-                     _break_21,
                      %Piece{trips: ["trip_21"]}
                    ]
                  }
@@ -237,12 +224,11 @@ defmodule Schedule.Minischedule.LoadTest do
 
       assert %{
                runs: %{
-                 # TODO remove breaks from runs. They're from the placeholder piece implementation.
                  {"schedule_1", "run"} => %Run{
-                   activities: [_break_1, %Piece{trips: ["trip_1"]}]
+                   activities: [%Piece{trips: ["trip_1"]}]
                  },
                  {"schedule_2", "run"} => %Run{
-                   activities: [_break_2, %Piece{trips: ["trip_2"]}]
+                   activities: [%Piece{trips: ["trip_2"]}]
                  }
                },
                blocks: %{
@@ -253,21 +239,206 @@ defmodule Schedule.Minischedule.LoadTest do
     end
   end
 
-  # TODO when there's a real implementation for making pieces
   describe "run" do
     test "multiple trips are grouped into the same piece" do
+      run_key = {"schedule", "run"}
+
+      activities = [
+        %Activity{
+          schedule_id: "schedule",
+          run_id: "run",
+          start_time: 100,
+          end_time: 105,
+          start_place: "place1",
+          end_place: "place3",
+          activity_type: "Operator",
+          partial_block_id: "lock"
+        }
+      ]
+
+      trips = [
+        %Trip{
+          schedule_id: "schedule",
+          run_id: "run",
+          block_id: "block",
+          start_time: 101,
+          end_time: 102,
+          start_place: "place1",
+          end_place: "place2",
+          route_id: "route",
+          trip_id: "trip1"
+        },
+        %Trip{
+          schedule_id: "schedule",
+          run_id: "run",
+          block_id: "block",
+          start_time: 103,
+          end_time: 104,
+          start_place: "place2",
+          end_place: "place3",
+          trip_id: "trip2"
+        }
+      ]
+
+      expected_run = %Run{
+        id: "run",
+        schedule_id: "schedule",
+        activities: [
+          %Piece{
+            schedule_id: "schedule",
+            run_id: "run",
+            block_id: "block",
+            start: %{
+              time: 100,
+              place: "place1",
+              mid_route?: false
+            },
+            trips: [
+              "trip1",
+              "trip2"
+            ],
+            end: %{
+              time: 105,
+              place: "place3",
+              mid_route?: false
+            }
+          }
+        ]
+      }
+
+      assert Load.run(run_key, activities, trips) == expected_run
     end
 
     test "trips become multiple pieces if there are multiple Operator activities" do
+      run_key = {"schedule", "run"}
+
+      activities = [
+        %Activity{
+          schedule_id: "schedule",
+          run_id: "run",
+          start_time: 101,
+          end_time: 102,
+          start_place: "",
+          end_place: "",
+          activity_type: "Operator",
+          partial_block_id: "lock"
+        },
+        %Activity{
+          schedule_id: "schedule",
+          run_id: "run",
+          start_time: 103,
+          end_time: 104,
+          start_place: "",
+          end_place: "",
+          activity_type: "Operator",
+          partial_block_id: "lock"
+        }
+      ]
+
+      trips = [
+        %Trip{
+          schedule_id: "schedule",
+          run_id: "run",
+          block_id: "block",
+          start_time: 101,
+          end_time: 102,
+          start_place: "",
+          end_place: "",
+          trip_id: "trip1"
+        },
+        %Trip{
+          schedule_id: "schedule",
+          run_id: "run",
+          block_id: "block",
+          start_time: 103,
+          end_time: 104,
+          start_place: "",
+          end_place: "",
+          trip_id: "trip2"
+        }
+      ]
+
+      assert %Run{
+               activities: [
+                 %Piece{
+                   block_id: "block",
+                   start: %{time: 101},
+                   trips: ["trip1"],
+                   end: %{time: 102}
+                 },
+                 %Piece{
+                   block_id: "block",
+                   start: %{time: 103},
+                   trips: ["trip2"],
+                   end: %{time: 104}
+                 }
+               ]
+             } = Load.run(run_key, activities, trips)
     end
 
     test "piece start time is based on sign_on activity" do
+      run_key = {"schedule", "run"}
+
+      activities = [
+        %Activity{
+          schedule_id: "schedule",
+          run_id: "run",
+          start_time: 101,
+          end_time: 102,
+          start_place: "",
+          end_place: "",
+          activity_type: "Sign-on"
+        },
+        %Activity{
+          schedule_id: "schedule",
+          run_id: "run",
+          start_time: 102,
+          end_time: 103,
+          start_place: "",
+          end_place: "",
+          activity_type: "Operator",
+          partial_block_id: "block"
+        }
+      ]
+
+      trips = []
+
+      assert %Run{
+               activities: [
+                 %Piece{
+                   start: %{time: 101},
+                   end: %{time: 103}
+                 }
+               ]
+             } = Load.run(run_key, activities, trips)
     end
 
     test "makes breaks" do
-    end
+      run_key = {"schedule", "run"}
 
-    test "matches break_id in trips with partial_break_id in activities" do
+      activities = [
+        %Activity{
+          schedule_id: "schedule",
+          run_id: "run",
+          start_time: 101,
+          end_time: 102,
+          start_place: "start place",
+          end_place: "end place",
+          activity_type: "Paid meal after"
+        }
+      ]
+
+      trips = []
+
+      expected_break = %Break{
+        break_type: "Paid meal after",
+        start_time: 101,
+        end_time: 102,
+        start_place: "start place",
+        end_place: "end place"
+      }
+
+      assert Load.run(run_key, activities, trips).activities == [expected_break]
     end
   end
 end

@@ -3,6 +3,8 @@ defmodule Schedule.Minischedule.Load do
   Load the HASTUS data into minischedules data
   """
 
+  require Logger
+
   alias Schedule.Helpers
   alias Schedule.Hastus.Activity
   alias Schedule.Hastus.Trip
@@ -35,45 +37,97 @@ defmodule Schedule.Minischedule.Load do
 
   @spec run(Run.key(), [Activity.t()] | nil, [Trip.t()] | nil) :: Run.t()
   def run(run_key, activities, trips) do
+    {schedule_id, run_id} = run_key
     activities = activities || []
     trips = trips || []
-    # TODO real implementation.
-    # Currently, turns the trips directly into pieces, and makes every activity a break.
-    # The real way to do it would be to integrate Sign-on and Operator activities into pieces.
-    {schedule_id, run_id} = run_key
 
-    breaks = Enum.map(activities, &Break.from_activity/1)
-
-    pieces =
-      trips
-      |> Enum.group_by(fn trip -> trip.block_id end)
-      |> Enum.map(fn {block_id, trips} ->
-        first_trip = List.first(trips)
-        last_trip = List.last(trips)
-
-        %Piece{
-          schedule_id: schedule_id,
-          run_id: run_id,
-          block_id: block_id,
-          start: %{
-            time: first_trip.start_time,
-            place: first_trip.start_place,
-            mid_route?: false
-          },
-          trips: Enum.map(trips, fn trip -> trip.trip_id end),
-          end: %{
-            time: last_trip.end_time,
-            place: last_trip.end_place,
-            mid_route?: false
-          }
-        }
-      end)
+    activities =
+      activities
+      |> operators_to_pieces(trips)
+      |> add_sign_ons_to_pieces()
+      |> activities_to_breaks()
 
     %Run{
       schedule_id: schedule_id,
       id: run_id,
-      activities: breaks ++ pieces
+      activities: activities
     }
+  end
+
+  @spec operators_to_pieces([Activity.t()], [Trip.t()]) :: [Activity.t() | Piece.t()]
+  defp operators_to_pieces([], trips) do
+    if !Enum.empty?(trips) do
+      Logger.warn("Some trips not matched", trips: trips)
+    end
+
+    []
+  end
+
+  defp operators_to_pieces([activity | rest], trips) do
+    case activity.activity_type do
+      "Operator" ->
+        {piece, remaining_trips} = operator_to_piece(activity, trips)
+        [piece | operators_to_pieces(rest, remaining_trips)]
+
+      _ ->
+        # non-Operator activities are untouched
+        [activity | operators_to_pieces(rest, trips)]
+    end
+  end
+
+  @spec operator_to_piece(Activity.t(), [Trip.t()]) :: {Piece.t(), [Trip.t()]}
+  defp operator_to_piece(%Activity{activity_type: "Operator"} = activity, trips) do
+    {trips_in_piece, remaining_trips} =
+      Enum.split_while(trips, fn trip ->
+        trip_in_operator(activity, trip)
+      end)
+
+    block_id =
+      case trips_in_piece do
+        [trip | _] ->
+          trip.block_id
+
+        _ ->
+          Logger.warn("Operator activity with no trips", activity: activity)
+          activity.partial_block_id
+      end
+
+    piece = %Piece{
+      schedule_id: activity.schedule_id,
+      run_id: activity.run_id,
+      block_id: block_id,
+      start: %{
+        time: activity.start_time,
+        place: activity.start_place,
+        mid_route?: false
+      },
+      trips: Enum.map(trips_in_piece, fn trip -> trip.trip_id end),
+      end: %{
+        time: activity.end_time,
+        place: activity.end_place,
+        mid_route?: false
+      }
+    }
+
+    {piece, remaining_trips}
+  end
+
+  @spec trip_in_operator(Activity.t(), Trip.t()) :: boolean()
+  defp trip_in_operator(%Activity{activity_type: "Operator"} = activity, trip) do
+    trip.start_time >= activity.start_time and
+      trip.end_time <= activity.end_time and
+      String.contains?(trip.block_id, activity.partial_block_id)
+  end
+
+  @spec add_sign_ons_to_pieces([Activity.t() | Piece.t()]) :: [Activity.t() | Piece.t()]
+  defp add_sign_ons_to_pieces(x), do: x
+
+  @spec activities_to_breaks([Activity.t() | Piece.t()]) :: [Break.t() | Piece.t()]
+  defp activities_to_breaks(activities_and_pieces) do
+    Enum.map(activities_and_pieces, fn
+      %Piece{} = piece -> piece
+      %Activity{} = activity -> Break.from_activity(activity)
+    end)
   end
 
   @spec blocks_from_pieces([Piece.t()]) :: Block.by_id()
