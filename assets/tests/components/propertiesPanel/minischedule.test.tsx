@@ -8,12 +8,35 @@ import {
   useMinischeduleBlock,
   useMinischeduleRun,
 } from "../../../src/hooks/useMinischedule"
+import { Break, Piece, Trip } from "../../../src/minischedule"
 
 jest.mock("../../../src/hooks/useMinischedule", () => ({
   __esModule: true,
   useMinischeduleRun: jest.fn(),
   useMinischeduleBlock: jest.fn(),
 }))
+
+const breakk: Break = {
+  breakType: "Break",
+  startTime: 10,
+  endTime: 11,
+}
+
+const piece: Piece = {
+  blockId: "block",
+  runId: "run",
+  start: {
+    time: 20,
+    place: "start",
+    midRoute: false,
+  },
+  trips: [{ id: "trip" } as Trip],
+  end: {
+    time: 21,
+    place: "end",
+    midRoute: false,
+  },
+}
 
 describe("MinischeduleRun", () => {
   test("renders the loading state", () => {
@@ -36,7 +59,8 @@ describe("MinischeduleRun", () => {
 
   test("renders a run", () => {
     ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => ({
-      run: "run",
+      id: "run",
+      activities: [breakk, piece],
     }))
     const tree = renderer
       .create(<MinischeduleRun activeTripId={"trip"} />)
@@ -67,7 +91,8 @@ describe("MinischeduleBlock", () => {
 
   test("renders a block", () => {
     ;(useMinischeduleBlock as jest.Mock).mockImplementationOnce(() => ({
-      block: "block",
+      id: "block",
+      pieces: [piece],
     }))
     const tree = renderer
       .create(<MinischeduleBlock activeTripId={"trip"} />)
