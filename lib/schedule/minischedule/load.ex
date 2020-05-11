@@ -3,6 +3,8 @@ defmodule Schedule.Minischedule.Load do
   Load the HASTUS data into minischedules data
   """
 
+  require Logger
+
   alias Schedule.Helpers
   alias Schedule.Hastus.Activity
   alias Schedule.Hastus.Trip
@@ -35,45 +37,150 @@ defmodule Schedule.Minischedule.Load do
 
   @spec run(Run.key(), [Activity.t()] | nil, [Trip.t()] | nil) :: Run.t()
   def run(run_key, activities, trips) do
+    {schedule_id, run_id} = run_key
     activities = activities || []
     trips = trips || []
-    # TODO real implementation.
-    # Currently, turns the trips directly into pieces, and makes every activity a break.
-    # The real way to do it would be to integrate Sign-on and Operator activities into pieces.
-    {schedule_id, run_id} = run_key
 
-    breaks = Enum.map(activities, &Break.from_activity/1)
-
-    pieces =
-      trips
-      |> Enum.group_by(fn trip -> trip.block_id end)
-      |> Enum.map(fn {block_id, trips} ->
-        first_trip = List.first(trips)
-        last_trip = List.last(trips)
-
-        %Piece{
-          schedule_id: schedule_id,
-          run_id: run_id,
-          block_id: block_id,
-          start: %{
-            time: first_trip.start_time,
-            place: first_trip.start_place,
-            mid_route?: false
-          },
-          trips: Enum.map(trips, fn trip -> trip.trip_id end),
-          end: %{
-            time: last_trip.end_time,
-            place: last_trip.end_place,
-            mid_route?: false
-          }
-        }
-      end)
+    activities =
+      activities
+      |> Enum.map(fn activity -> operator_to_piece(activity, trips) end)
+      |> add_deadheads_to_pieces()
+      |> add_sign_ons_to_pieces()
+      |> activities_to_breaks()
 
     %Run{
       schedule_id: schedule_id,
       id: run_id,
-      activities: breaks ++ pieces
+      activities: activities
     }
+  end
+
+  @spec operator_to_piece(Activity.t(), [Trip.t()]) :: Piece.t() | Activity.t()
+  defp operator_to_piece(%Activity{activity_type: "Operator"} = activity, trips) do
+    trips_in_piece =
+      Enum.filter(trips, fn trip ->
+        trip_in_operator(activity, trip)
+      end)
+
+    block_id =
+      case trips_in_piece do
+        [trip | _] ->
+          trip.block_id
+
+        _ ->
+          Logger.warn(fn ->
+            "Operator activity with no trips: #{activity.schedule_id} #{activity.run_id} start_time:#{
+              activity.start_time
+            }"
+          end)
+
+          activity.partial_block_id
+      end
+
+    %Piece{
+      schedule_id: activity.schedule_id,
+      run_id: activity.run_id,
+      block_id: block_id,
+      start: %{
+        time: activity.start_time,
+        place: activity.start_place,
+        mid_route?: false
+      },
+      trips: Enum.map(trips_in_piece, fn trip -> trip.trip_id end),
+      end: %{
+        time: activity.end_time,
+        place: activity.end_place,
+        mid_route?: false
+      }
+    }
+  end
+
+  defp operator_to_piece(activity, _trips) do
+    activity
+  end
+
+  @spec trip_in_operator(Activity.t(), Trip.t()) :: boolean()
+  defp trip_in_operator(%Activity{activity_type: "Operator"} = activity, trip) do
+    trip.start_time >= activity.start_time and
+      trip.end_time <= activity.end_time and
+      String.contains?(trip.block_id, activity.partial_block_id)
+  end
+
+  @spec add_deadheads_to_pieces([Activity.t() | Piece.t()]) :: [Activity.t() | Piece.t()]
+  defp add_deadheads_to_pieces([]) do
+    []
+  end
+
+  defp add_deadheads_to_pieces([
+         %Activity{activity_type: "Deadhead from"} = deadhead,
+         %Piece{} = piece
+         | rest
+       ]) do
+    new_piece = %{
+      piece
+      | start: %{
+          time: deadhead.start_time,
+          place: deadhead.start_place,
+          mid_route?: false
+        }
+    }
+
+    add_deadheads_to_pieces([new_piece | rest])
+  end
+
+  defp add_deadheads_to_pieces([
+         %Piece{} = piece,
+         %Activity{activity_type: "Deadhead to"} = deadhead
+         | rest
+       ]) do
+    new_piece = %{
+      piece
+      | end: %{
+          time: deadhead.end_time,
+          place: deadhead.end_place,
+          mid_route?: false
+        }
+    }
+
+    add_deadheads_to_pieces([new_piece | rest])
+  end
+
+  defp add_deadheads_to_pieces([first | rest]) do
+    [first | add_deadheads_to_pieces(rest)]
+  end
+
+  @spec add_sign_ons_to_pieces([Activity.t() | Piece.t()]) :: [Activity.t() | Piece.t()]
+  defp add_sign_ons_to_pieces([]) do
+    []
+  end
+
+  defp add_sign_ons_to_pieces([
+         %Activity{activity_type: "Sign-on"} = sign_on,
+         %Piece{} = piece
+         | rest
+       ]) do
+    new_piece = %{
+      piece
+      | start: %{
+          time: sign_on.start_time,
+          place: sign_on.start_place,
+          mid_route?: false
+        }
+    }
+
+    add_sign_ons_to_pieces([new_piece | rest])
+  end
+
+  defp add_sign_ons_to_pieces([first | rest]) do
+    [first | add_sign_ons_to_pieces(rest)]
+  end
+
+  @spec activities_to_breaks([Activity.t() | Piece.t()]) :: [Break.t() | Piece.t()]
+  defp activities_to_breaks(activities_and_pieces) do
+    Enum.map(activities_and_pieces, fn
+      %Piece{} = piece -> piece
+      %Activity{} = activity -> Break.from_activity(activity)
+    end)
   end
 
   @spec blocks_from_pieces([Piece.t()]) :: Block.by_id()

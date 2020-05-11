@@ -776,14 +776,6 @@ defmodule ScheduleTest do
                  schedule_id: "schedule",
                  id: "123-4567",
                  activities: [
-                   # TODO remove the break once Minischedule.Load.run is finished
-                   %Minischedule.Break{
-                     break_type: "Operator",
-                     start_time: 0,
-                     end_time: 0,
-                     start_place: "start",
-                     end_place: "end"
-                   },
                    expected_piece
                  ]
                }
