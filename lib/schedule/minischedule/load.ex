@@ -43,7 +43,7 @@ defmodule Schedule.Minischedule.Load do
 
     activities =
       activities
-      |> operators_to_pieces(trips)
+      |> Enum.map(fn activity -> operator_to_piece(activity, trips) end)
       |> add_deadheads_to_pieces()
       |> add_sign_ons_to_pieces()
       |> activities_to_breaks()
@@ -55,31 +55,10 @@ defmodule Schedule.Minischedule.Load do
     }
   end
 
-  @spec operators_to_pieces([Activity.t()], [Trip.t()]) :: [Activity.t() | Piece.t()]
-  defp operators_to_pieces([], trips) do
-    if !Enum.empty?(trips) do
-      Logger.warn("Some trips not matched", trips: trips)
-    end
-
-    []
-  end
-
-  defp operators_to_pieces([activity | rest], trips) do
-    case activity.activity_type do
-      "Operator" ->
-        {piece, remaining_trips} = operator_to_piece(activity, trips)
-        [piece | operators_to_pieces(rest, remaining_trips)]
-
-      _ ->
-        # non-Operator activities are untouched
-        [activity | operators_to_pieces(rest, trips)]
-    end
-  end
-
-  @spec operator_to_piece(Activity.t(), [Trip.t()]) :: {Piece.t(), [Trip.t()]}
+  @spec operator_to_piece(Activity.t(), [Trip.t()]) :: Piece.t() | Activity.t()
   defp operator_to_piece(%Activity{activity_type: "Operator"} = activity, trips) do
-    {trips_in_piece, remaining_trips} =
-      Enum.split_while(trips, fn trip ->
+    trips_in_piece =
+      Enum.filter(trips, fn trip ->
         trip_in_operator(activity, trip)
       end)
 
@@ -93,7 +72,7 @@ defmodule Schedule.Minischedule.Load do
           activity.partial_block_id
       end
 
-    piece = %Piece{
+    %Piece{
       schedule_id: activity.schedule_id,
       run_id: activity.run_id,
       block_id: block_id,
@@ -109,8 +88,10 @@ defmodule Schedule.Minischedule.Load do
         mid_route?: false
       }
     }
+  end
 
-    {piece, remaining_trips}
+  defp operator_to_piece(activity, _trips) do
+    activity
   end
 
   @spec trip_in_operator(Activity.t(), Trip.t()) :: boolean()
