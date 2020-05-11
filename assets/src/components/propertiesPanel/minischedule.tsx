@@ -64,24 +64,26 @@ const Break = ({ break: breakk }: { break: Break }) => (
 )
 
 const Piece = ({ piece, view }: { piece: Piece; view: "run" | "block" }) => (
-  <div>
+  <>
     {view === "block" ? (
       <div className="m-minischedule__run-header">{piece.runId}</div>
     ) : null}
-    <Row
-      key="sign-on"
-      icon={questionMarkIcon()}
-      text={JSON.stringify(piece.start)}
-    />
-    {piece.trips.map((trip) => (
-      <Trip trip={trip} key={trip.id} />
-    ))}
-    <Row
-      key="sign-off"
-      icon={questionMarkIcon()}
-      text={JSON.stringify(piece.end)}
-    />
-  </div>
+    <div className="m-minischedule__piece-rows">
+      <Row
+        key="sign-on"
+        icon={questionMarkIcon()}
+        text={JSON.stringify(piece.start)}
+      />
+      {piece.trips.map((trip) => (
+        <Trip trip={trip} key={trip.id} />
+      ))}
+      <Row
+        key="sign-off"
+        icon={questionMarkIcon()}
+        text={JSON.stringify(piece.end)}
+      />
+    </div>
+  </>
 )
 
 const Trip = ({ trip }: { trip: Trip }) => {
