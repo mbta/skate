@@ -14,5 +14,24 @@
 
 .m-minischedule__row {
   border-top: 1px solid $color-component-light;
+  display: flex;
   padding: 0.5rem;
+}
+
+.m-minischedule__icon {
+  flex: 0 0 auto;
+  width: 2rem;
+
+  svg {
+    fill: $color-secondary-medium;
+    height: 1rem;
+  }
+}
+
+.m-minischedule__left-text {
+  flex: 1 1 auto;
+}
+
+.m-minischedule__right-text {
+  flex: 0 0 auto;
 }

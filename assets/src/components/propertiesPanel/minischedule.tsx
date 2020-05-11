@@ -6,6 +6,7 @@ import {
 import { Block, Break, Piece, Run, Trip } from "../../minischedule"
 import { TripId } from "../../schedule"
 import Loading from "../loading"
+import { questionMarkIcon } from "../../helpers/icon"
 
 export interface Props {
   activeTripId: TripId
@@ -66,18 +67,40 @@ const Piece = ({ piece, view }: { piece: Piece; view: "run" | "block" }) => (
     {view === "block" ? (
       <div className="m-minischedule__run-header">{piece.runId}</div>
     ) : null}
-    <Row key="sign-on" text={JSON.stringify(piece.start)} />
+    <Row
+      key="sign-on"
+      icon={questionMarkIcon()}
+      text={JSON.stringify(piece.start)}
+    />
     {piece.trips.map((trip) => (
       <Trip trip={trip} key={trip.id} />
     ))}
-    <Row key="sign-off" text={JSON.stringify(piece.end)} />
+    <Row
+      key="sign-off"
+      icon={questionMarkIcon()}
+      text={JSON.stringify(piece.end)}
+    />
   </div>
 )
 
-const Trip = ({ trip }: { trip: Trip }) => <Row text={JSON.stringify(trip)} />
+const Trip = ({ trip }: { trip: Trip }) => (
+  <Row icon={questionMarkIcon()} text={JSON.stringify(trip)} />
+)
 
-const Row = ({ text }: { text: string }) => (
-  <div className="m-minischedule__row">{text}</div>
+const Row = ({
+  icon,
+  text,
+  rightText,
+}: {
+  icon?: ReactElement
+  text: string
+  rightText?: string
+}) => (
+  <div className="m-minischedule__row">
+    <div className="m-minischedule__icon">{icon}</div>
+    <div className="m-minischedule__left-text">{text}</div>
+    {rightText && <div className="m-minischedule__right-text">{rightText}</div>}
+  </div>
 )
 
 const isPiece = (activity: Piece | Break): activity is Piece =>
