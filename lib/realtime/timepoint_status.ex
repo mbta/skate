@@ -177,7 +177,7 @@ defmodule Realtime.TimepointStatus do
               direction_id: trip.direction_id,
               trip_id: trip.id,
               run_id: trip.run_id,
-              time_since_trip_start_time: now_time_of_day - Trip.start_time(trip),
+              time_since_trip_start_time: now_time_of_day - trip.start_time,
               headsign: trip.headsign,
               via_variant: RoutePattern.via_variant(trip.route_pattern_id),
               timepoint_status: timepoint_status

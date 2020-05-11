@@ -21,7 +21,9 @@ defmodule Schedule.Trip do
           shape_id: Shape.id() | nil,
           schedule_id: Hastus.Schedule.id() | nil,
           run_id: Run.id() | nil,
-          stop_times: [StopTime.t()]
+          stop_times: [StopTime.t()],
+          start_time: Util.Time.time_of_day(),
+          end_time: Util.Time.time_of_day()
         }
 
   @enforce_keys [
@@ -42,7 +44,9 @@ defmodule Schedule.Trip do
     shape_id: nil,
     schedule_id: nil,
     run_id: nil,
-    stop_times: []
+    stop_times: [],
+    start_time: 0,
+    end_time: 0
   ]
 
   @spec merge_trips([Gtfs.Trip.t()], [Hastus.Trip.t()], StopTime.by_trip_id()) :: by_id()
@@ -63,6 +67,13 @@ defmodule Schedule.Trip do
 
   @spec merge(Gtfs.Trip.t() | nil, Hastus.Trip.t() | nil, [StopTime.t()] | nil) :: t()
   def merge(gtfs_trip, hastus_trip, stop_times) when gtfs_trip != nil or hastus_trip != nil do
+    {start_time, end_time} =
+      if stop_times do
+        stop_times |> Enum.map(& &1.time) |> Enum.min_max()
+      else
+        {hastus_trip.start_time, hastus_trip.end_time}
+      end
+
     %__MODULE__{
       id: (gtfs_trip && gtfs_trip.id) || (hastus_trip && hastus_trip.trip_id),
       block_id: (gtfs_trip && gtfs_trip.block_id) || (hastus_trip && hastus_trip.block_id),
@@ -74,18 +85,10 @@ defmodule Schedule.Trip do
       shape_id: gtfs_trip && gtfs_trip.shape_id,
       schedule_id: hastus_trip && hastus_trip.schedule_id,
       run_id: hastus_trip && hastus_trip.run_id,
-      stop_times: stop_times || []
+      stop_times: stop_times || [],
+      start_time: start_time,
+      end_time: end_time
     }
-  end
-
-  @spec start_time(t()) :: Util.Time.time_of_day()
-  def start_time(%__MODULE__{stop_times: stop_times}) do
-    List.first(stop_times).time
-  end
-
-  @spec end_time(t()) :: Util.Time.time_of_day()
-  def end_time(%__MODULE__{stop_times: stop_times}) do
-    List.last(stop_times).time
   end
 
   @doc """
@@ -93,8 +96,8 @@ defmodule Schedule.Trip do
   """
   @spec is_active(t(), Util.Time.time_of_day(), Util.Time.time_of_day()) :: bool
   def is_active(trip, start_time_of_day, end_time_of_day) do
-    end_time_of_day > start_time(trip) and
-      start_time_of_day < end_time(trip)
+    end_time_of_day > trip.start_time and
+      start_time_of_day < trip.end_time
   end
 
   @spec id_sans_overload(id() | nil) :: id() | nil

@@ -381,6 +381,8 @@ describe("minischedulesBlock", () => {
                 headsign: "headsign",
                 direction_id: 0,
                 run_id: "run",
+                start_time: 45,
+                end_time: 567,
               },
             ],
             end: {
@@ -413,6 +415,8 @@ describe("minischedulesBlock", () => {
                 headsign: "headsign",
                 directionId: 0,
                 runId: "run",
+                startTime: 45,
+                endTime: 567,
               },
             ],
             end: {

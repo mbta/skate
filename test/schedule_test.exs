@@ -315,6 +315,8 @@ defmodule ScheduleTest do
                  shape_id: "shape1",
                  schedule_id: "schedule",
                  run_id: "123-1501",
+                 start_time: 1,
+                 end_time: 3,
                  stop_times: [
                    %StopTime{
                      stop_id: "s4",
@@ -382,6 +384,8 @@ defmodule ScheduleTest do
                  shape_id: "shape1",
                  schedule_id: "schedule",
                  run_id: "123-1501",
+                 start_time: 1,
+                 end_time: 3,
                  stop_times: [
                    %StopTime{
                      stop_id: "s4",
@@ -755,9 +759,11 @@ defmodule ScheduleTest do
           %Trip{
             id: "trip",
             block_id: "block",
+            end_time: 0,
             route_id: "route",
             run_id: "123-4567",
-            schedule_id: "schedule"
+            schedule_id: "schedule",
+            start_time: 0
           }
         ],
         end: %{

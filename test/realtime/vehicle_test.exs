@@ -65,7 +65,9 @@ defmodule Realtime.VehicleTest do
           %StopTime{stop_id: "18511", time: 0, timepoint_id: "tp1"},
           %StopTime{stop_id: "18512", time: 1, timepoint_id: nil},
           %StopTime{stop_id: "18513", time: 2, timepoint_id: "tp2"}
-        ]
+        ],
+        start_time: 0,
+        end_time: 2
       }
 
       reassign_env(:realtime, :trip_fn, fn trip_id ->
@@ -318,7 +320,9 @@ defmodule Realtime.VehicleTest do
               time: Util.Time.parse_hhmmss("11:59:00"),
               timepoint_id: "tp2"
             }
-          ]
+          ],
+          start_time: Util.Time.parse_hhmmss("11:59:00"),
+          end_time: Util.Time.parse_hhmmss("11:59:00")
         }
       ]
 

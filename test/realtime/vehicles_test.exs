@@ -198,7 +198,9 @@ defmodule Realtime.VehiclesTest do
             time: 0,
             timepoint_id: "timepoint"
           }
-        ]
+        ],
+        start_time: 0,
+        end_time: 0
       }
 
       block = [trip]
@@ -278,7 +280,9 @@ defmodule Realtime.VehiclesTest do
             time: 0,
             timepoint_id: "timepoint"
           }
-        ]
+        ],
+        start_time: 0,
+        end_time: 0
       }
 
       block = [trip]
@@ -313,7 +317,9 @@ defmodule Realtime.VehiclesTest do
             time: 1,
             timepoint_id: "timepoint"
           }
-        ]
+        ],
+        start_time: 1,
+        end_time: 1
       }
 
       block = [trip]
@@ -381,7 +387,9 @@ defmodule Realtime.VehiclesTest do
             time: 3,
             timepoint_id: "t2"
           }
-        ]
+        ],
+        start_time: 1,
+        end_time: 3
       }
 
       trip2 = %Trip{
@@ -397,7 +405,9 @@ defmodule Realtime.VehiclesTest do
             time: 4,
             timepoint_id: "t3"
           }
-        ]
+        ],
+        start_time: 4,
+        end_time: 4
       }
 
       block = [trip1, trip2]

@@ -224,7 +224,9 @@ defmodule Schedule.DataTest do
             stop_id: "stop",
             time: 4
           }
-        ]
+        ],
+        start_time: 3,
+        end_time: 4
       }
 
       data = %Data{
@@ -304,7 +306,9 @@ defmodule Schedule.DataTest do
             # 24:00:02
             time: 86402
           }
-        ]
+        ],
+        start_time: 86402,
+        end_time: 86402
       }
 
       data = %Data{
@@ -338,7 +342,9 @@ defmodule Schedule.DataTest do
               stop_id: "stop",
               time: 4
             }
-          ]
+          ],
+          start_time: 3,
+          end_time: 4
         }
       ]
 
@@ -400,7 +406,9 @@ defmodule Schedule.DataTest do
               stop_id: "stop",
               time: 2
             }
-          ]
+          ],
+          start_time: 2,
+          end_time: 2
         },
         %Trip{
           id: "second",
@@ -411,7 +419,9 @@ defmodule Schedule.DataTest do
               stop_id: "stop",
               time: 3
             }
-          ]
+          ],
+          start_time: 3,
+          end_time: 3
         }
       ]
 
@@ -430,6 +440,8 @@ defmodule Schedule.DataTest do
     end
 
     test "blocks can be active on two different dates" do
+      just_before_midnight = 24 * 60 * 60 - 1
+
       block1 = [
         %Trip{
           id: "first",
@@ -438,9 +450,11 @@ defmodule Schedule.DataTest do
           stop_times: [
             %StopTime{
               stop_id: "stop",
-              time: 24 * 60 * 60 - 1
+              time: just_before_midnight
             }
-          ]
+          ],
+          start_time: just_before_midnight,
+          end_time: just_before_midnight
         }
       ]
 
@@ -454,7 +468,9 @@ defmodule Schedule.DataTest do
               stop_id: "stop",
               time: 1
             }
-          ]
+          ],
+          start_time: 1,
+          end_time: 1
         }
       ]
 
