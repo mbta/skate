@@ -27,7 +27,7 @@
     "react-leaflet-control": "^2.1.2",
     "react-router-dom": "^5.1.2",
     "react-tabs": "^3.1.0",
-    "react-tooltip": "^4.2.5",
+    "react-tooltip": "^4.2.6",
     "resize-observer-polyfill": "^1.5.1",
     "whatwg-fetch": "^3.0.0"
   },
@@ -59,7 +59,7 @@
     "svg-inline-loader": "^0.8.2",
     "svgo": "^1.3.2",
     "svgo-loader": "^2.2.1",
-    "ts-jest": "^25.4.0",
+    "ts-jest": "^25.5.0",
     "ts-loader": "^7.0.3",
     "tslint": "^6.1.2",
     "tslint-config-prettier": "^1.18.0",
