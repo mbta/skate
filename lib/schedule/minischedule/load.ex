@@ -68,7 +68,12 @@ defmodule Schedule.Minischedule.Load do
           trip.block_id
 
         _ ->
-          Logger.warn("Operator activity with no trips", activity: activity)
+          Logger.warn(fn ->
+            "Operator activity with no trips: #{activity.schedule_id} #{activity.run_id} start_time:#{
+              activity.start_time
+            }"
+          end)
+
           activity.partial_block_id
       end
 
