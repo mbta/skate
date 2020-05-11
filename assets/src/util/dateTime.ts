@@ -18,15 +18,16 @@ export const formattedTimeDiff = (a: Date, b: Date): string => {
   return diffHours >= 1 ? `${diffHours}h ${diffMinutesStr}` : diffMinutesStr
 }
 
-export const hours12 = (hours24: number): number => {
-  if (hours24 === 0) {
-    return 12
-  }
-  if (hours24 > 12) {
-    return hours24 - 12
-  }
-  return hours24
+/** Takes a time of day in seconds since midnight
+ */
+export const formattedScheduledTime = (time: number): string => {
+  const minutes = Math.floor(time / 60)
+  const hours25 = Math.floor(minutes / 60)
+  const minutes60 = minutes - hours25 * 60
+  return `${hours12(hours25)}:${zeroPad(minutes60)}${ampm(hours25)}`
 }
+
+export const hours12 = (hours25: number): number => hours25 % 12 || 12
 
 export const ampm = (hours24: number): string =>
   hours24 >= 12 && hours24 < 24 ? "pm" : "am"

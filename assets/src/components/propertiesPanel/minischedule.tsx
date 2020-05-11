@@ -7,6 +7,7 @@ import { Block, Break, Piece, Run, Trip } from "../../minischedule"
 import { TripId } from "../../schedule"
 import Loading from "../loading"
 import { questionMarkIcon } from "../../helpers/icon"
+import { formattedScheduledTime } from "../../util/dateTime"
 
 export interface Props {
   activeTripId: TripId
@@ -83,9 +84,24 @@ const Piece = ({ piece, view }: { piece: Piece; view: "run" | "block" }) => (
   </div>
 )
 
-const Trip = ({ trip }: { trip: Trip }) => (
-  <Row icon={questionMarkIcon()} text={JSON.stringify(trip)} />
-)
+const Trip = ({ trip }: { trip: Trip }) => {
+  const formattedVariant: string =
+    trip.viaVariant !== null && trip.viaVariant !== "_" ? trip.viaVariant : ""
+  const formattedRouteAndVariant: string =
+    trip.routeId !== null ? `${trip.routeId}_${formattedVariant}` : ""
+  return (
+    <Row
+      icon={questionMarkIcon()}
+      text={
+        <>
+          {formattedRouteAndVariant}{" "}
+          <span className="m-minischedule__headsign">{trip.headsign}</span>
+        </>
+      }
+      rightText={formattedScheduledTime(trip.startTime)}
+    />
+  )
+}
 
 const Row = ({
   icon,
@@ -93,7 +109,7 @@ const Row = ({
   rightText,
 }: {
   icon?: ReactElement
-  text: string
+  text: string | ReactElement
   rightText?: string
 }) => (
   <div className="m-minischedule__row">
