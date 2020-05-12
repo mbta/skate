@@ -1,7 +1,7 @@
 defmodule Schedule.Minischedule.RunTest do
   use ExUnit.Case, async: true
 
-  alias Schedule.Trip
+  alias Schedule.Minischedule
   alias Schedule.Minischedule.Break
   alias Schedule.Minischedule.Piece
   alias Schedule.Minischedule.Run
@@ -10,7 +10,7 @@ defmodule Schedule.Minischedule.RunTest do
     test "hydrates the trips in pieces" do
       trip_id = "trip"
 
-      stored_trip = %Trip{
+      stored_trip = %Schedule.Trip{
         id: trip_id,
         block_id: "block"
       }
@@ -45,7 +45,7 @@ defmodule Schedule.Minischedule.RunTest do
             run_id: "run",
             block_id: "block",
             start: sign_on_off,
-            trips: [%Trip{id: trip_id, block_id: "block"}],
+            trips: [%Minischedule.Trip{id: trip_id, block_id: "block"}],
             end: sign_on_off
           }
         ]

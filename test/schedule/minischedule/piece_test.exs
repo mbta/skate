@@ -2,14 +2,14 @@ defmodule Schedule.Minischedule.PieceTest do
   use ExUnit.Case, async: true
 
   alias Schedule.Gtfs.StopTime
-  alias Schedule.Trip
+  alias Schedule.Minischedule
   alias Schedule.Minischedule.Piece
 
   describe "hydrate" do
-    test "replaces trip_ids with trips (sans stop_times)" do
+    test "replaces trip_ids with trips" do
       trip_id = "trip"
 
-      stored_trip = %Trip{
+      stored_trip = %Schedule.Trip{
         id: trip_id,
         block_id: "block",
         stop_times: [
@@ -41,10 +41,9 @@ defmodule Schedule.Minischedule.PieceTest do
         end: sign_off
       }
 
-      expected_trip = %Trip{
+      expected_trip = %Minischedule.Trip{
         id: trip_id,
         block_id: "block",
-        stop_times: []
       }
 
       expected_piece = %Piece{

@@ -1,9 +1,9 @@
 defmodule Schedule.Minischedule.Piece do
   alias Schedule.Block
-  alias Schedule.Trip
   alias Schedule.Hastus
   alias Schedule.Hastus.Place
   alias Schedule.Hastus.Run
+  alias Schedule.Minischedule.Trip
 
   @type key :: {Hastus.Schedule.id(), Run.id(), Block.id()}
 
@@ -43,15 +43,14 @@ defmodule Schedule.Minischedule.Piece do
     :end
   ]
 
-  @spec hydrate(t(), Trip.by_id()) :: t()
+  @spec hydrate(t(), Schedule.Trip.by_id()) :: t()
   def hydrate(piece, trips_by_id) do
     trip_ids = piece.trips
 
     trips =
       Enum.map(trip_ids, fn trip_id ->
-        trip = trips_by_id[trip_id]
-        # Remove stop_times so we send a fraction of the data to the frontend.
-        %{trip | stop_times: []}
+        full_trip = trips_by_id[trip_id]
+        Trip.from_full_trip(full_trip)
       end)
 
     %{piece | trips: trips}

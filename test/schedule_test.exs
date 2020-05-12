@@ -756,14 +756,13 @@ defmodule ScheduleTest do
           mid_route?: false
         },
         trips: [
-          %Trip{
+          %Minischedule.Trip{
             id: "trip",
             block_id: "block",
-            end_time: 0,
             route_id: "route",
             run_id: "123-4567",
-            schedule_id: "schedule",
-            start_time: 0
+            start_time: 0,
+            end_time: 0
           }
         ],
         end: %{
