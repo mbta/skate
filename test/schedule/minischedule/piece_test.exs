@@ -43,7 +43,7 @@ defmodule Schedule.Minischedule.PieceTest do
 
       expected_trip = %Minischedule.Trip{
         id: trip_id,
-        block_id: "block",
+        block_id: "block"
       }
 
       expected_piece = %Piece{
