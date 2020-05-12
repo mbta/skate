@@ -12,7 +12,9 @@ defmodule Schedule.BlockTest do
     stop_times: [
       %StopTime{stop_id: "s1", time: 3, timepoint_id: "tp1"},
       %StopTime{stop_id: "s7", time: 4, timepoint_id: nil}
-    ]
+    ],
+    start_time: 3,
+    end_time: 4
   }
 
   @trip2 %Trip{
@@ -22,7 +24,9 @@ defmodule Schedule.BlockTest do
     stop_times: [
       %StopTime{stop_id: "s7", time: 6, timepoint_id: nil},
       %StopTime{stop_id: "s1", time: 7, timepoint_id: "tp1"}
-    ]
+    ],
+    start_time: 6,
+    end_time: 7
   }
 
   @block [@trip1, @trip2]
@@ -42,14 +46,18 @@ defmodule Schedule.BlockTest do
           | id: "t2",
             stop_times: [
               %StopTime{stop_id: "s", time: 2}
-            ]
+            ],
+            start_time: 2,
+            end_time: 2
         },
         %{
           @trip1
           | id: "t1",
             stop_times: [
               %StopTime{stop_id: "s", time: 1}
-            ]
+            ],
+            start_time: 1,
+            end_time: 1
         }
       ]
 

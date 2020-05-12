@@ -29,9 +29,7 @@ defmodule Schedule.Block do
   """
   @spec start_time(t()) :: Util.Time.time_of_day()
   def start_time(block) do
-    block
-    |> first_trip()
-    |> Trip.start_time()
+    first_trip(block).start_time
   end
 
   @doc """
@@ -39,9 +37,7 @@ defmodule Schedule.Block do
   """
   @spec end_time(t()) :: Util.Time.time_of_day()
   def end_time(block) do
-    block
-    |> last_trip()
-    |> Trip.end_time()
+    last_trip(block).end_time
   end
 
   @doc """
@@ -91,7 +87,7 @@ defmodule Schedule.Block do
 
       true ->
         # Either the current trip or the trip that is about to start
-        Enum.find(block, fn trip -> Trip.end_time(trip) > now end)
+        Enum.find(block, fn trip -> trip.end_time > now end)
     end
   end
 
@@ -105,7 +101,7 @@ defmodule Schedule.Block do
 
   @spec sort_trips_by_time([Trip.t()]) :: [Trip.t()]
   defp sort_trips_by_time(trips) do
-    Enum.sort_by(trips, &Trip.start_time/1)
+    Enum.sort_by(trips, & &1.start_time)
   end
 
   defp overload_id_regex(), do: ~r/-OL.+$/

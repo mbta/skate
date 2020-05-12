@@ -47,6 +47,8 @@ interface TripData {
   headsign: string | null
   direction_id: DirectionId | null
   run_id: RunId | null
+  start_time: Time
+  end_time: Time
 }
 
 const isBreakData = (
@@ -94,4 +96,6 @@ const tripFromData = (tripData: TripData): Trip => ({
   headsign: tripData.headsign,
   directionId: tripData.direction_id,
   runId: tripData.run_id,
+  startTime: tripData.start_time,
+  endTime: tripData.end_time,
 })

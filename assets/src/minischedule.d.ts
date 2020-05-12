@@ -38,6 +38,8 @@ export interface Trip {
   headsign: string | null
   directionId: DirectionId | null
   runId: RunId | null
+  startTime: Time
+  endTime: Time
 }
 
 export type Time = number

@@ -248,7 +248,9 @@ defmodule Realtime.TimepointStatusTest do
               time: Util.Time.parse_hhmmss("12:02:00"),
               timepoint_id: "tp2"
             }
-          ]
+          ],
+          start_time: Util.Time.parse_hhmmss("12:01:00"),
+          end_time: Util.Time.parse_hhmmss("12:02:00")
         }
       ]
 
@@ -292,7 +294,9 @@ defmodule Realtime.TimepointStatusTest do
               time: Util.Time.parse_hhmmss("11:02:00"),
               timepoint_id: "tp2"
             }
-          ]
+          ],
+          start_time: Util.Time.parse_hhmmss("11:01:00"),
+          end_time: Util.Time.parse_hhmmss("11:02:00")
         }
       ]
 
@@ -353,7 +357,9 @@ defmodule Realtime.TimepointStatusTest do
               time: Util.Time.parse_hhmmss("12:03:00"),
               timepoint_id: "tp3"
             }
-          ]
+          ],
+          start_time: Util.Time.parse_hhmmss("12:03:00"),
+          end_time: Util.Time.parse_hhmmss("12:03:00")
         }
       ]
 
@@ -390,7 +396,9 @@ defmodule Realtime.TimepointStatusTest do
             %StopTime{stop_id: "1", time: Util.Time.parse_hhmmss("12:05:00"), timepoint_id: "1"},
             %StopTime{stop_id: "2", time: Util.Time.parse_hhmmss("12:10:00"), timepoint_id: "2"},
             %StopTime{stop_id: "3", time: Util.Time.parse_hhmmss("12:20:00"), timepoint_id: "3"}
-          ]
+          ],
+          start_time: Util.Time.parse_hhmmss("12:05:00"),
+          end_time: Util.Time.parse_hhmmss("12:20:00")
         }
       ]
 

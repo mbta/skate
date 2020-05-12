@@ -108,7 +108,7 @@ defmodule Realtime.Ghost do
               layover_departure_time:
                 if route_status == :laying_over || route_status == :pulling_out do
                   Util.Time.timestamp_for_time_of_day(
-                    Trip.start_time(trip),
+                    trip.start_time,
                     date
                   )
                 else
@@ -135,14 +135,14 @@ defmodule Realtime.Ghost do
   end
 
   def current_trip([trip | later_trips], now_time_of_day) do
-    if now_time_of_day < Trip.start_time(trip) do
+    if now_time_of_day < trip.start_time do
       {:pulling_out, trip}
     else
       case current_trip(later_trips, now_time_of_day) do
         nil ->
           # the current trip is the last trip
           # has it finished?
-          if now_time_of_day > Trip.end_time(trip) do
+          if now_time_of_day > trip.end_time do
             nil
           else
             {:on_route, trip}
@@ -151,7 +151,7 @@ defmodule Realtime.Ghost do
         {:pulling_out, next_trip} ->
           # the next trip hasn't started yet.
           # are we in between trips or still in the current trip?
-          if now_time_of_day > Trip.end_time(trip) do
+          if now_time_of_day > trip.end_time do
             {:laying_over, next_trip}
           else
             {:on_route, trip}

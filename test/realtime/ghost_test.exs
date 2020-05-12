@@ -40,7 +40,9 @@ defmodule Realtime.GhostTest do
             time: 3,
             timepoint_id: "t2"
           }
-        ]
+        ],
+        start_time: 1,
+        end_time: 3
       }
 
       block = [trip]
@@ -101,7 +103,9 @@ defmodule Realtime.GhostTest do
             time: 3,
             timepoint_id: "t2"
           }
-        ]
+        ],
+        start_time: 1,
+        end_time: 3
       }
 
       block = [trip]
@@ -135,7 +139,9 @@ defmodule Realtime.GhostTest do
             time: 2,
             timepoint_id: "t1"
           }
-        ]
+        ],
+        start_time: 2,
+        end_time: 2
       }
 
       block = [trip]
@@ -184,7 +190,9 @@ defmodule Realtime.GhostTest do
               time: 10,
               timepoint_id: "t1"
             }
-          ]
+          ],
+          start_time: 10,
+          end_time: 10
         },
         %Trip{
           id: "trip2",
@@ -200,7 +208,9 @@ defmodule Realtime.GhostTest do
               time: 20,
               timepoint_id: "t2"
             }
-          ]
+          ],
+          start_time: 20,
+          end_time: 20
         }
       ]
 
@@ -252,7 +262,9 @@ defmodule Realtime.GhostTest do
             time: 3,
             timepoint_id: nil
           }
-        ]
+        ],
+        start_time: 1,
+        end_time: 3
       }
 
       block = [trip]
@@ -290,7 +302,9 @@ defmodule Realtime.GhostTest do
             time: 4,
             timepoint_id: "stop2"
           }
-        ]
+        ],
+        start_time: 2,
+        end_time: 4
       }
 
       trip2 = %Trip{
@@ -313,7 +327,9 @@ defmodule Realtime.GhostTest do
             time: 8,
             timepoint_id: "stop1"
           }
-        ]
+        ],
+        start_time: 6,
+        end_time: 8
       }
 
       %{

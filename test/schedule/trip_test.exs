@@ -20,8 +20,8 @@ defmodule Schedule.TripTest do
     schedule_id: "schedule",
     run_id: "run",
     block_id: "block",
-    start_time: 0,
-    end_time: 0,
+    start_time: 12,
+    end_time: 34,
     start_place: "start",
     end_place: "end",
     # nil means nonrevenue
@@ -53,7 +53,9 @@ defmodule Schedule.TripTest do
     shape_id: "shape",
     schedule_id: "schedule",
     run_id: "run",
-    stop_times: @stop_times
+    stop_times: @stop_times,
+    start_time: 3,
+    end_time: 9
   }
 
   describe "merge_trips" do
@@ -75,7 +77,9 @@ defmodule Schedule.TripTest do
                  shape_id: "shape",
                  schedule_id: nil,
                  run_id: nil,
-                 stop_times: @stop_times
+                 stop_times: @stop_times,
+                 start_time: 3,
+                 end_time: 9
                }
              }
     end
@@ -92,7 +96,9 @@ defmodule Schedule.TripTest do
                  shape_id: nil,
                  schedule_id: "schedule",
                  run_id: "run",
-                 stop_times: []
+                 stop_times: [],
+                 start_time: 12,
+                 end_time: 34
                }
              }
     end
@@ -105,18 +111,6 @@ defmodule Schedule.TripTest do
 
     test "works for nonrevenue trips" do
       assert %Trip{route_id: nil} = Trip.merge(nil, %{@hastus_trip | route_id: nil}, nil)
-    end
-  end
-
-  describe "start_time/1" do
-    test "returns the time of the trip's first stop" do
-      assert Trip.start_time(@trip) == 3
-    end
-  end
-
-  describe "end_time/1" do
-    test "returns the time of the trip's last stop" do
-      assert Trip.end_time(@trip) == 9
     end
   end
 
