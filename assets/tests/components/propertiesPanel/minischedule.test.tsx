@@ -22,6 +22,30 @@ const breakk: Break = {
   endTime: 11,
 }
 
+const nonrevenueTrip: Trip = {
+  id: "nonrevenue",
+  blockId: "block",
+  routeId: null,
+  headsign: null,
+  directionId: null,
+  viaVariant: null,
+  runId: null,
+  startTime: 0,
+  endTime: 1,
+}
+
+const revenueTrip: Trip = {
+  id: "trip",
+  blockId: "block",
+  routeId: "R",
+  headsign: "Revenue",
+  directionId: 1,
+  viaVariant: "X",
+  runId: "run",
+  startTime: 0,
+  endTime: 1,
+}
+
 const piece: Piece = {
   runId: "run",
   blockId: "block",
@@ -30,7 +54,7 @@ const piece: Piece = {
     place: "start",
     midRoute: false,
   },
-  trips: [{ id: "trip" } as Trip],
+  trips: [nonrevenueTrip, revenueTrip],
   end: {
     time: 21,
     place: "end",
