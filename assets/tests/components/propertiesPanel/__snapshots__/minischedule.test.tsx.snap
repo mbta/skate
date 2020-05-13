@@ -59,11 +59,7 @@ Array [
       <div
         className="m-minischedule__left-text"
       >
-        
-         
-        <span
-          className="m-minischedule__headsign"
-        />
+        Pull Out
       </div>
       <div
         className="m-minischedule__right-text"
@@ -200,11 +196,7 @@ Array [
       <div
         className="m-minischedule__left-text"
       >
-        
-         
-        <span
-          className="m-minischedule__headsign"
-        />
+        Pull Out
       </div>
       <div
         className="m-minischedule__right-text"
