@@ -49,14 +49,15 @@ defmodule Schedule.Hastus.Trip do
       end_time: Util.Time.parse_hhmm(row["end_time"]),
       start_place: row["start_place"],
       end_place: row["end_place"],
-      route_id: nonempty_string(row["route_id"]),
+      route_id: route_id(row["route_id"]),
       trip_id: row["trip_id"]
     }
   end
 
-  @spec nonempty_string(String.t()) :: String.t() | nil
-  defp nonempty_string(""), do: nil
-  defp nonempty_string(s), do: s
+  @spec route_id(String.t()) :: Route.id() | nil
+  defp route_id(""), do: nil
+  defp route_id("pull"), do: nil
+  defp route_id(s), do: s
 
   @doc """
   Some rows in trips.csv are missing a lot of data. Drop them.

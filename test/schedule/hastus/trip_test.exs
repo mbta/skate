@@ -8,23 +8,11 @@ defmodule Schedule.Hastus.TripTest do
       binary =
         [
           "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
-          "aba20021;123;    1501; 57 - 11;04:15;04:30;albny;wtryd;;   43858890",
           "aba20021;123;    1501; 57 - 11;04:30;05:05;wtryd;hayms;  193;   43857919"
         ]
         |> Enum.join("\n")
 
       assert Trip.parse(binary) == [
-               %Trip{
-                 schedule_id: "aba20021",
-                 run_id: "123-1501",
-                 block_id: "57-11",
-                 start_time: 15300,
-                 end_time: 16200,
-                 start_place: "albny",
-                 end_place: "wtryd",
-                 route_id: nil,
-                 trip_id: "43858890"
-               },
                %Trip{
                  schedule_id: "aba20021",
                  run_id: "123-1501",
@@ -48,6 +36,25 @@ defmodule Schedule.Hastus.TripTest do
         |> Enum.join("\n")
 
       assert Trip.parse(binary) == []
+    end
+
+    test "parses deadheads with null route" do
+      binary =
+        [
+          "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
+          "aba20021;123;    1501; pull;04:15;04:30;albny;wtryd;;   43858890",
+          "aba20021;123;    1501; pull;04:15;04:30;albny;wtryd; pull;   43858890"
+        ]
+        |> Enum.join("\n")
+
+      assert [
+               %Trip{
+                 route_id: nil
+               },
+               %Trip{
+                 route_id: nil
+               }
+             ] = Trip.parse(binary)
     end
   end
 end
