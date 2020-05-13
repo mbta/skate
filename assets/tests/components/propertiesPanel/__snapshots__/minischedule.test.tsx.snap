@@ -38,7 +38,12 @@ Array [
       <div
         className="m-minischedule__left-text"
       >
-        {"time":20,"place":"start","midRoute":false}
+        Start Time
+      </div>
+      <div
+        className="m-minischedule__right-text"
+      >
+        12:00am
       </div>
     </div>
     <div
@@ -237,7 +242,12 @@ Array [
       <div
         className="m-minischedule__left-text"
       >
-        {"time":21,"place":"end","midRoute":false}
+        Swing Off
+      </div>
+      <div
+        className="m-minischedule__right-text"
+      >
+        12:00am
       </div>
     </div>
   </div>,
@@ -293,7 +303,12 @@ Array [
       <div
         className="m-minischedule__left-text"
       >
-        {"time":20,"place":"start","midRoute":false}
+        Start Time
+      </div>
+      <div
+        className="m-minischedule__right-text"
+      >
+        12:00am
       </div>
     </div>
     <div
@@ -346,7 +361,12 @@ Array [
       <div
         className="m-minischedule__left-text"
       >
-        {"time":21,"place":"end","midRoute":false}
+        Swing Off
+      </div>
+      <div
+        className="m-minischedule__right-text"
+      >
+        12:00am
       </div>
     </div>
   </div>,

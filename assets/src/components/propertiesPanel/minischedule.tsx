@@ -72,7 +72,12 @@ const Piece = ({ piece, view }: { piece: Piece; view: "run" | "block" }) => (
       <Row
         key="sign-on"
         icon={questionMarkIcon()}
-        text={JSON.stringify(piece.start)}
+        text={
+          piece.trips.length === 0 || isDeadhead(piece.trips[0])
+            ? "Start Time"
+            : "Swing On"
+        }
+        rightText={formattedScheduledTime(piece.start.time)}
       />
       {piece.trips.map((trip, index) => {
         const sequence: "first" | "middle" | "last" =
@@ -86,7 +91,13 @@ const Piece = ({ piece, view }: { piece: Piece; view: "run" | "block" }) => (
       <Row
         key="sign-off"
         icon={questionMarkIcon()}
-        text={JSON.stringify(piece.end)}
+        text={
+          piece.trips.length === 0 ||
+          isDeadhead(piece.trips[piece.trips.length - 1])
+            ? "Done"
+            : "Swing Off"
+        }
+        rightText={formattedScheduledTime(piece.end.time)}
       />
     </div>
   </>
