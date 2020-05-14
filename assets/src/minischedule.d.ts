@@ -34,7 +34,7 @@ export interface SignOnOff {
 export interface Trip {
   id: TripId
   blockId: BlockId
-  routeId: RouteId
+  routeId: RouteId | null
   headsign: string | null
   directionId: DirectionId | null
   viaVariant: ViaVariant | null

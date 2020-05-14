@@ -14,5 +14,68 @@
 
 .m-minischedule__row {
   border-top: 1px solid $color-component-light;
+  display: flex;
   padding: 0.5rem;
+}
+
+.m-minischedule__icon {
+  border-radius: 50%;
+  flex: 0 0 auto;
+  height: 1rem;
+  margin-right: 0.5rem;
+  padding: 0.25rem;
+  width: 1rem;
+
+  &:not(:empty) {
+    background-color: $color-primary;
+  }
+
+  svg {
+    fill: $color-secondary-medium;
+  }
+}
+
+.m-minischedule__left-text {
+  flex: 1 1 auto;
+}
+
+.m-minischedule__headsign {
+  font-weight: bold;
+}
+
+.m-minischedule__right-text {
+  flex: 0 0 auto;
+}
+
+.m-minischedule__piece-rows {
+  // this is all about drawing the line through the icons on the left
+  .m-minischedule__row {
+    position: relative;
+
+    &::before,
+    &::after {
+      background-color: $color-primary;
+      position: absolute;
+      width: 0.5rem;
+      left: 1rem;
+      // force the line to draw below the icons
+      z-index: -1;
+    }
+  }
+
+  .m-minischedule__row:not(:first-child) {
+    &::before {
+      bottom: 50%;
+      content: "";
+      top: 0;
+    }
+  }
+
+  .m-minischedule__row:not(:last-child) {
+    &::after {
+      bottom: 0;
+      content: "";
+      top: 50%;
+    }
+  }
 }

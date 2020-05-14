@@ -6,6 +6,8 @@ import {
 import { Block, Break, Piece, Run, Trip } from "../../minischedule"
 import { TripId } from "../../schedule"
 import Loading from "../loading"
+import { questionMarkIcon } from "../../helpers/icon"
+import { formattedScheduledTime } from "../../util/dateTime"
 
 export interface Props {
   activeTripId: TripId
@@ -22,7 +24,7 @@ export const MinischeduleRun = ({ activeTripId }: Props): ReactElement => {
         <Header label="Run" value={run.id} />
         {run.activities.map((activity) =>
           isPiece(activity) ? (
-            <Piece piece={activity} key={activity.start.time} />
+            <Piece piece={activity} view="run" key={activity.start.time} />
           ) : (
             <Break break={activity} key={activity.startTime} />
           )
@@ -43,10 +45,7 @@ export const MinischeduleBlock = ({ activeTripId }: Props): ReactElement => {
       <>
         <Header label="Block" value={block.id} />
         {block.pieces.map((piece) => (
-          <React.Fragment key={piece.start.time}>
-            <div className="m-minischedule__run-header">{piece.runId}</div>
-            <Piece piece={piece} />
-          </React.Fragment>
+          <Piece piece={piece} view="block" key={piece.start.time} />
         ))}
       </>
     )
@@ -64,20 +63,62 @@ const Break = ({ break: breakk }: { break: Break }) => (
   <Row text={JSON.stringify(breakk)} />
 )
 
-const Piece = ({ piece }: { piece: Piece }) => (
+const Piece = ({ piece, view }: { piece: Piece; view: "run" | "block" }) => (
   <>
-    <Row key="sign-on" text={JSON.stringify(piece.start)} />
-    {piece.trips.map((trip) => (
-      <Trip trip={trip} key={trip.id} />
-    ))}
-    <Row key="sign-off" text={JSON.stringify(piece.end)} />
+    {view === "block" ? (
+      <div className="m-minischedule__run-header">{piece.runId}</div>
+    ) : null}
+    <div className="m-minischedule__piece-rows">
+      <Row
+        key="sign-on"
+        icon={questionMarkIcon()}
+        text={JSON.stringify(piece.start)}
+      />
+      {piece.trips.map((trip) => (
+        <Trip trip={trip} key={trip.id} />
+      ))}
+      <Row
+        key="sign-off"
+        icon={questionMarkIcon()}
+        text={JSON.stringify(piece.end)}
+      />
+    </div>
   </>
 )
 
-const Trip = ({ trip }: { trip: Trip }) => <Row text={JSON.stringify(trip)} />
+const Trip = ({ trip }: { trip: Trip }) => {
+  const formattedVariant: string =
+    trip.viaVariant !== null && trip.viaVariant !== "_" ? trip.viaVariant : ""
+  const formattedRouteAndVariant: string =
+    trip.routeId !== null ? `${trip.routeId}_${formattedVariant}` : ""
+  return (
+    <Row
+      icon={questionMarkIcon()}
+      text={
+        <>
+          {formattedRouteAndVariant}{" "}
+          <span className="m-minischedule__headsign">{trip.headsign}</span>
+        </>
+      }
+      rightText={formattedScheduledTime(trip.startTime)}
+    />
+  )
+}
 
-const Row = ({ text }: { text: string }) => (
-  <div className="m-minischedule__row">{text}</div>
+const Row = ({
+  icon,
+  text,
+  rightText,
+}: {
+  icon?: ReactElement
+  text: string | ReactElement
+  rightText?: string
+}) => (
+  <div className="m-minischedule__row">
+    <div className="m-minischedule__icon">{icon}</div>
+    <div className="m-minischedule__left-text">{text}</div>
+    {rightText && <div className="m-minischedule__right-text">{rightText}</div>}
+  </div>
 )
 
 const isPiece = (activity: Piece | Break): activity is Piece =>
