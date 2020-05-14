@@ -59,32 +59,6 @@ Array [
       <div
         className="m-minischedule__left-text"
       >
-        Pull Out
-      </div>
-      <div
-        className="m-minischedule__right-text"
-      >
-        12:00am
-      </div>
-    </div>
-    <div
-      className="m-minischedule__row"
-    >
-      <div
-        className="m-minischedule__icon"
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </div>
-      <div
-        className="m-minischedule__left-text"
-      >
         R_X
          
         <span
@@ -125,6 +99,150 @@ Array [
 `;
 
 exports[`MinischeduleBlock renders a not found state 1`] = `"No block found"`;
+
+exports[`MinischeduleBlock renders pulls and deadheads 1`] = `
+Array [
+  <div
+    className="m-minischedule__header"
+  >
+    <span
+      className="m-minischedule__header-label"
+    >
+      Block
+    </span>
+    block
+  </div>,
+  <div
+    className="m-minischedule__run-header"
+  >
+    run
+  </div>,
+  <div
+    className="m-minischedule__piece-rows"
+  >
+    <div
+      className="m-minischedule__row"
+    >
+      <div
+        className="m-minischedule__icon"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </div>
+      <div
+        className="m-minischedule__left-text"
+      >
+        {"time":20,"place":"start","midRoute":false}
+      </div>
+    </div>
+    <div
+      className="m-minischedule__row"
+    >
+      <div
+        className="m-minischedule__icon"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </div>
+      <div
+        className="m-minischedule__left-text"
+      >
+        Pull Out
+      </div>
+      <div
+        className="m-minischedule__right-text"
+      >
+        12:00am
+      </div>
+    </div>
+    <div
+      className="m-minischedule__row"
+    >
+      <div
+        className="m-minischedule__icon"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </div>
+      <div
+        className="m-minischedule__left-text"
+      >
+        Deadhead
+      </div>
+      <div
+        className="m-minischedule__right-text"
+      >
+        12:00am
+      </div>
+    </div>
+    <div
+      className="m-minischedule__row"
+    >
+      <div
+        className="m-minischedule__icon"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </div>
+      <div
+        className="m-minischedule__left-text"
+      >
+        Pull Back
+      </div>
+      <div
+        className="m-minischedule__right-text"
+      >
+        12:00am
+      </div>
+    </div>
+    <div
+      className="m-minischedule__row"
+    >
+      <div
+        className="m-minischedule__icon"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </div>
+      <div
+        className="m-minischedule__left-text"
+      >
+        {"time":21,"place":"end","midRoute":false}
+      </div>
+    </div>
+  </div>,
+]
+`;
 
 exports[`MinischeduleBlock renders the loading state 1`] = `"loading..."`;
 
@@ -176,32 +294,6 @@ Array [
         className="m-minischedule__left-text"
       >
         {"time":20,"place":"start","midRoute":false}
-      </div>
-    </div>
-    <div
-      className="m-minischedule__row"
-    >
-      <div
-        className="m-minischedule__icon"
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </div>
-      <div
-        className="m-minischedule__left-text"
-      >
-        Pull Out
-      </div>
-      <div
-        className="m-minischedule__right-text"
-      >
-        12:00am
       </div>
     </div>
     <div
