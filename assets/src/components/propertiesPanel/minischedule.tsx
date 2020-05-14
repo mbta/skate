@@ -74,9 +74,15 @@ const Piece = ({ piece, view }: { piece: Piece; view: "run" | "block" }) => (
         icon={questionMarkIcon()}
         text={JSON.stringify(piece.start)}
       />
-      {piece.trips.map((trip) => (
-        <Trip trip={trip} key={trip.id} />
-      ))}
+      {piece.trips.map((trip, index) => {
+        const sequence: "first" | "middle" | "last" =
+          index === 0
+            ? "first"
+            : index === piece.trips.length - 1
+            ? "last"
+            : "middle"
+        return <Trip trip={trip} sequence={sequence} key={trip.id} />
+      })}
       <Row
         key="sign-off"
         icon={questionMarkIcon()}
@@ -86,11 +92,48 @@ const Piece = ({ piece, view }: { piece: Piece; view: "run" | "block" }) => (
   </>
 )
 
-const Trip = ({ trip }: { trip: Trip }) => {
+const Trip = ({
+  trip,
+  sequence,
+}: {
+  trip: Trip
+  sequence: "first" | "middle" | "last"
+}) => {
+  if (isDeadhead(trip)) {
+    return <DeadheadTrip trip={trip} sequence={sequence} />
+  } else {
+    return <RevenueTrip trip={trip} />
+  }
+}
+
+const DeadheadTrip = ({
+  trip,
+  sequence,
+}: {
+  trip: Trip
+  sequence: "first" | "middle" | "last"
+}) => {
+  const startTime: string = formattedScheduledTime(trip.startTime)
+  if (sequence === "first") {
+    return (
+      <Row icon={questionMarkIcon()} text={"Pull Out"} rightText={startTime} />
+    )
+  } else if (sequence === "last") {
+    return (
+      <Row icon={questionMarkIcon()} text={"Pull Back"} rightText={startTime} />
+    )
+  } else {
+    return (
+      <Row icon={questionMarkIcon()} text={"Deadhead"} rightText={startTime} />
+    )
+  }
+}
+
+const RevenueTrip = ({ trip }: { trip: Trip }) => {
+  const startTime: string = formattedScheduledTime(trip.startTime)
   const formattedVariant: string =
     trip.viaVariant !== null && trip.viaVariant !== "_" ? trip.viaVariant : ""
-  const formattedRouteAndVariant: string =
-    trip.routeId !== null ? `${trip.routeId}_${formattedVariant}` : ""
+  const formattedRouteAndVariant: string = `${trip.routeId}_${formattedVariant}`
   return (
     <Row
       icon={questionMarkIcon()}
@@ -100,7 +143,7 @@ const Trip = ({ trip }: { trip: Trip }) => {
           <span className="m-minischedule__headsign">{trip.headsign}</span>
         </>
       }
-      rightText={formattedScheduledTime(trip.startTime)}
+      rightText={startTime}
     />
   )
 }
@@ -123,3 +166,5 @@ const Row = ({
 
 const isPiece = (activity: Piece | Break): activity is Piece =>
   activity.hasOwnProperty("trips")
+
+const isDeadhead = (trip: Trip): boolean => trip.routeId == null

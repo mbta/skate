@@ -54,7 +54,7 @@ const piece: Piece = {
     place: "start",
     midRoute: false,
   },
-  trips: [nonrevenueTrip, revenueTrip],
+  trips: [revenueTrip],
   end: {
     time: 21,
     place: "end",
@@ -117,6 +117,26 @@ describe("MinischeduleBlock", () => {
     ;(useMinischeduleBlock as jest.Mock).mockImplementationOnce(() => ({
       id: "block",
       pieces: [piece],
+    }))
+    const tree = renderer
+      .create(<MinischeduleBlock activeTripId={"trip"} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders pulls and deadheads", () => {
+    const deadheadPiece: Piece = {
+      ...piece,
+      trips: [
+        { ...nonrevenueTrip, id: "pullout" },
+        { ...nonrevenueTrip, id: "deadhead" },
+        { ...nonrevenueTrip, id: "pullback" },
+      ],
+    }
+    ;(useMinischeduleBlock as jest.Mock).mockImplementationOnce(() => ({
+      id: "block",
+      pieces: [deadheadPiece],
     }))
     const tree = renderer
       .create(<MinischeduleBlock activeTripId={"trip"} />)
