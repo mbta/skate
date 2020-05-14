@@ -1,5 +1,5 @@
 import { RunId } from "./realtime"
-import { BlockId, DirectionId, RouteId, TripId } from "./schedule"
+import { BlockId, DirectionId, RouteId, TripId, ViaVariant } from "./schedule"
 
 export interface Run {
   id: RunId
@@ -37,6 +37,7 @@ export interface Trip {
   routeId: RouteId
   headsign: string | null
   directionId: DirectionId | null
+  viaVariant: ViaVariant | null
   runId: RunId | null
   startTime: Time
   endTime: Time

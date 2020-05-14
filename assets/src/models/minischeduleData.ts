@@ -8,7 +8,7 @@ import {
   Trip,
 } from "../minischedule"
 import { RunId } from "../realtime"
-import { BlockId, DirectionId, RouteId, TripId } from "../schedule"
+import { BlockId, DirectionId, RouteId, TripId, ViaVariant } from "../schedule"
 
 interface RunData {
   id: RunId
@@ -46,6 +46,7 @@ interface TripData {
   route_id: RouteId
   headsign: string | null
   direction_id: DirectionId | null
+  via_variant: ViaVariant | null
   run_id: RunId | null
   start_time: Time
   end_time: Time
@@ -95,6 +96,7 @@ const tripFromData = (tripData: TripData): Trip => ({
   routeId: tripData.route_id,
   headsign: tripData.headsign,
   directionId: tripData.direction_id,
+  viaVariant: tripData.via_variant,
   runId: tripData.run_id,
   startTime: tripData.start_time,
   endTime: tripData.end_time,
