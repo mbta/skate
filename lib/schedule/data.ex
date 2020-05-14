@@ -141,7 +141,6 @@ defmodule Schedule.Data do
   def active_blocks(%__MODULE__{blocks: blocks, calendar: calendar}, start_time, end_time) do
     dates = potentially_active_service_dates(start_time, end_time)
     active_services = Map.take(calendar, dates)
-    IO.inspect(active_services, label: :active_services)
 
     blocks_by_service =
       blocks

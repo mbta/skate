@@ -37,7 +37,7 @@ const vehicleProperties = (vehicle: Vehicle): Property[] => {
     },
     {
       label: "Vehicle",
-      value: label || "",
+      value: label,
     },
     {
       label: "Operator",
