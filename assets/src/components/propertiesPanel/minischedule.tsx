@@ -99,50 +99,53 @@ const Trip = ({
   trip: Trip
   sequence: "first" | "middle" | "last"
 }) => {
-  const startTime: string = formattedScheduledTime(trip.startTime)
   if (isDeadhead(trip)) {
-    if (sequence === "first") {
-      return (
-        <Row
-          icon={questionMarkIcon()}
-          text={"Pull Out"}
-          rightText={startTime}
-        />
-      )
-    } else if (sequence === "last") {
-      return (
-        <Row
-          icon={questionMarkIcon()}
-          text={"Pull Back"}
-          rightText={startTime}
-        />
-      )
-    } else {
-      return (
-        <Row
-          icon={questionMarkIcon()}
-          text={"Deadhead"}
-          rightText={startTime}
-        />
-      )
-    }
+    return <DeadheadTrip trip={trip} sequence={sequence} />
   } else {
-    const formattedVariant: string =
-      trip.viaVariant !== null && trip.viaVariant !== "_" ? trip.viaVariant : ""
-    const formattedRouteAndVariant: string = `${trip.routeId}_${formattedVariant}`
+    return <RevenueTrip trip={trip} />
+  }
+}
+
+const DeadheadTrip = ({
+  trip,
+  sequence,
+}: {
+  trip: Trip
+  sequence: "first" | "middle" | "last"
+}) => {
+  const startTime: string = formattedScheduledTime(trip.startTime)
+  if (sequence === "first") {
     return (
-      <Row
-        icon={questionMarkIcon()}
-        text={
-          <>
-            {formattedRouteAndVariant}{" "}
-            <span className="m-minischedule__headsign">{trip.headsign}</span>
-          </>
-        }
-        rightText={startTime}
-      />
+      <Row icon={questionMarkIcon()} text={"Pull Out"} rightText={startTime} />
+    )
+  } else if (sequence === "last") {
+    return (
+      <Row icon={questionMarkIcon()} text={"Pull Back"} rightText={startTime} />
+    )
+  } else {
+    return (
+      <Row icon={questionMarkIcon()} text={"Deadhead"} rightText={startTime} />
     )
   }
+}
+
+const RevenueTrip = ({ trip }: { trip: Trip }) => {
+  const startTime: string = formattedScheduledTime(trip.startTime)
+  const formattedVariant: string =
+    trip.viaVariant !== null && trip.viaVariant !== "_" ? trip.viaVariant : ""
+  const formattedRouteAndVariant: string = `${trip.routeId}_${formattedVariant}`
+  return (
+    <Row
+      icon={questionMarkIcon()}
+      text={
+        <>
+          {formattedRouteAndVariant}{" "}
+          <span className="m-minischedule__headsign">{trip.headsign}</span>
+        </>
+      }
+      rightText={startTime}
+    />
+  )
 }
 
 const Row = ({
