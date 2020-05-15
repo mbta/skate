@@ -11,13 +11,16 @@ defmodule Realtime.BlockWaiver do
   @type t :: %__MODULE__{
           start_time: Util.Time.time_of_day(),
           end_time: Util.Time.time_of_day(),
-          remark: String.t()
+          cause_id: integer(),
+          cause_description: String.t(),
+          remark: String.t() | nil
         }
 
   @enforce_keys [
     :start_time,
     :end_time,
-    :remark
+    :cause_id,
+    :cause_description
   ]
 
   @derive Jason.Encoder
@@ -25,6 +28,8 @@ defmodule Realtime.BlockWaiver do
   defstruct [
     :start_time,
     :end_time,
+    :cause_id,
+    :cause_description,
     :remark
   ]
 
@@ -48,8 +53,10 @@ defmodule Realtime.BlockWaiver do
       {stop_time.time,
        Enum.find(
          stop_time_updates,
-         &(StopTimeUpdate.stop_id(&1) == stop_time.stop_id && StopTimeUpdate.remark(&1) != nil &&
-             StopTimeUpdate.remark(&1) != "")
+         fn stu ->
+           StopTimeUpdate.stop_id(stu) == stop_time.stop_id &&
+             StopTimeUpdate.cause_id(stu) != nil
+         end
        )}
     end)
   end
@@ -78,11 +85,11 @@ defmodule Realtime.BlockWaiver do
       ) do
     {previous_time, previous_stop_time_update} = List.last(working)
 
-    if same_remark?(stop_time_update, previous_stop_time_update) &&
+    if same_cause?(stop_time_update, previous_stop_time_update) &&
          within_60_minutes?(time, previous_time) do
       group_consecutive_sequences(tail, acc, working ++ [trip_stop_time_waiver])
     else
-      # Make a new group if the remark changes or there is more than 60 minutes between stops
+      # Make a new group if the cause changes or there is more than 60 minutes between stops
       group_consecutive_sequences(tail, bank_working(acc, working), [trip_stop_time_waiver])
     end
   end
@@ -94,22 +101,25 @@ defmodule Realtime.BlockWaiver do
   defp bank_working([], working), do: [working]
   defp bank_working(acc, working), do: acc ++ [working]
 
-  @spec same_remark?(map(), map()) :: boolean
-  defp same_remark?(%StopTimeUpdate{remark: remark1}, %StopTimeUpdate{remark: remark2}),
-    do: remark1 == remark2
+  @spec same_cause?(StopTimeUpdate.t(), StopTimeUpdate.t()) :: boolean
+  defp same_cause?(stu1, stu2) do
+    stu1.cause_id == stu2.cause_id and stu1.remark == stu2.remark
+  end
 
   @spec within_60_minutes?(Util.Time.time_of_day(), Util.Time.time_of_day()) :: boolean
   defp within_60_minutes?(time, previous_time), do: time - previous_time <= 3600
 
   @spec from_trip_stop_time_waivers([trip_stop_time_waiver()], Date.t()) :: t()
   def from_trip_stop_time_waivers(trip_stop_time_waivers, date_for_block) do
-    {start_time, %StopTimeUpdate{remark: remark}} = List.first(trip_stop_time_waivers)
+    {start_time, stu} = List.first(trip_stop_time_waivers)
     {end_time, _} = List.last(trip_stop_time_waivers)
 
     %__MODULE__{
       start_time: Util.Time.timestamp_for_time_of_day(start_time, date_for_block),
       end_time: Util.Time.timestamp_for_time_of_day(end_time, date_for_block),
-      remark: remark
+      cause_id: stu.cause_id,
+      cause_description: stu.cause_description,
+      remark: stu.remark
     }
   end
 

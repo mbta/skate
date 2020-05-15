@@ -15,6 +15,8 @@ defmodule Concentrate.StopTimeUpdate do
     :track,
     :platform_id,
     :uncertainty,
+    :cause_id,
+    :cause_description,
     :remark,
     schedule_relationship: :SCHEDULED
   ])
@@ -68,6 +70,8 @@ defmodule Concentrate.StopTimeUpdate do
           stop_id: max(first.stop_id, second.stop_id),
           platform_id: first.platform_id || second.platform_id,
           uncertainty: first.uncertainty || second.uncertainty,
+          cause_id: first.cause_id || second.cause_id,
+          cause_description: first.cause_description || second.cause_description,
           remark: first.remark || second.remark
       }
     end

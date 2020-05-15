@@ -16,6 +16,8 @@ defmodule Concentrate.Consumer.StopTimeUpdatesTest do
     arrival_time: nil,
     departure_time: nil,
     platform_id: nil,
+    cause_id: nil,
+    cause_description: nil,
     remark: nil,
     schedule_relationship: :SKIPPED,
     status: nil,
