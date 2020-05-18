@@ -18,14 +18,13 @@ jest.mock("react-tooltip", () => ({
 const createElementNSOrig = document.createElementNS
 // tslint:disable-next-line only-arrow-functions
 document.createElementNS = function (namespaceURI, qualifiedName) {
+  const element = createElementNSOrig.apply(this, arguments)
   if (
     namespaceURI === "http://www.w3.org/2000/svg" &&
     qualifiedName === "svg"
   ) {
-    const element = createElementNSOrig.apply(this, arguments)
     // tslint:disable-next-line no-empty
     element.createSVGRect = () => {}
-    return element
   }
-  return createElementNSOrig.apply(this, arguments)
+  return element
 }
