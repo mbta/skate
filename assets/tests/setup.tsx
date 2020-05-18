@@ -1,3 +1,4 @@
+// mocking createSVGRect does some stuff that typescript doesn't like.
 // @ts-nocheck
 import { configure } from "enzyme"
 import React from "react"
