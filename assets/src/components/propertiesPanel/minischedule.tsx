@@ -61,11 +61,12 @@ const Header = ({ label, value }: { label: string; value: string }) => (
 
 const Break = ({ break: breakk }: { break: Break }) => {
   const formattedBreakTime = formattedTimeDiff(
-    new Date(breakk.endTime * 1000), new Date(breakk.startTime * 1000)
-  );
-  return(
+    new Date(breakk.endTime * 1000),
+    new Date(breakk.startTime * 1000)
+  )
+  return (
     <Row text={`Break (${breakk.breakType})`} rightText={formattedBreakTime} />
-  );
+  )
 }
 
 const Piece = ({ piece, view }: { piece: Piece; view: "run" | "block" }) => (
