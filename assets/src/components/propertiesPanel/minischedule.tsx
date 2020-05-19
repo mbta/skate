@@ -84,6 +84,20 @@ const Break = ({ break: breakk }: { break: Break }) => {
   )
 }
 
+const Layover = ({ trips, index }: { trips: Trip[]; index: number }) => {
+  const nextTrip = trips[index + 1]
+  if (!nextTrip) {
+    return null
+  }
+  const currentTrip = trips[index]
+  const layoverDuration = nextTrip.startTime - currentTrip.endTime
+  if (layoverDuration === 0) {
+    return null
+  }
+
+  return <Row text="Layover" rightText={formattedDuration(layoverDuration)} />
+}
+
 const Piece = ({ piece, view }: { piece: Piece; view: "run" | "block" }) => (
   <>
     {view === "block" ? (
@@ -107,7 +121,18 @@ const Piece = ({ piece, view }: { piece: Piece; view: "run" | "block" }) => (
             : index === piece.trips.length - 1
             ? "last"
             : "middle"
-        return <Trip trip={trip} sequence={sequence} key={trip.id} />
+        return (
+          <React.Fragment key={trip.id}>
+            <Trip trip={trip} sequence={sequence} />
+            {view === "run" ? (
+              <Layover
+                trips={piece.trips}
+                index={index}
+                key={`layover-${trip.endTime}`}
+              />
+            ) : null}
+          </React.Fragment>
+        )
       })}
       <Row
         key="sign-off"

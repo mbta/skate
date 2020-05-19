@@ -205,7 +205,7 @@ Array [
       <div
         className="m-minischedule__right-text"
       >
-        12:00am
+        12:03am
       </div>
     </div>
     <div
@@ -231,7 +231,7 @@ Array [
       <div
         className="m-minischedule__right-text"
       >
-        12:00am
+        12:14am
       </div>
     </div>
     <div
@@ -373,7 +373,7 @@ Array [
       <div
         className="m-minischedule__right-text"
       >
-        12:00am
+        12:05am
       </div>
     </div>
     <div
@@ -405,7 +405,7 @@ Array [
       <div
         className="m-minischedule__right-text"
       >
-        12:00am
+        12:10am
       </div>
     </div>
     <div
@@ -528,6 +528,55 @@ Array [
         className="m-minischedule__right-text"
       >
         12:00am
+      </div>
+    </div>
+    <div
+      className="m-minischedule__row"
+    >
+      <div
+        className="m-minischedule__icon"
+      />
+      <div
+        className="m-minischedule__left-text"
+      >
+        Layover
+      </div>
+      <div
+        className="m-minischedule__right-text"
+      >
+        5m
+      </div>
+    </div>
+    <div
+      className="m-minischedule__row"
+    >
+      <div
+        className="m-minischedule__icon"
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </div>
+      <div
+        className="m-minischedule__left-text"
+      >
+        R_X
+         
+        <span
+          className="m-minischedule__headsign"
+        >
+          Revenue The Other Direction
+        </span>
+      </div>
+      <div
+        className="m-minischedule__right-text"
+      >
+        12:05am
       </div>
     </div>
     <div
