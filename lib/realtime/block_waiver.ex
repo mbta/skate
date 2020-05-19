@@ -55,10 +55,19 @@ defmodule Realtime.BlockWaiver do
          stop_time_updates,
          fn stu ->
            StopTimeUpdate.stop_id(stu) == stop_time.stop_id &&
-             StopTimeUpdate.cause_id(stu) != nil
+             is_block_waiver?(stu)
          end
        )}
     end)
+  end
+
+  @spec is_block_waiver?(StopTimeUpdate.t()) :: boolean()
+  def is_block_waiver?(stop_time_update) do
+    # cause_id 33 is bad TransitMaster units.
+    # Since we can fall back to swiftly data,
+    # these block waivers don't matter to people using skate.
+    StopTimeUpdate.cause_id(stop_time_update) != nil and
+      StopTimeUpdate.cause_id(stop_time_update) != 33
   end
 
   @spec group_consecutive_sequences([trip_stop_time_waiver()], [[trip_stop_time_waiver()]], [
