@@ -158,10 +158,14 @@ const DeadheadTrip = ({
 }
 
 const iconForDirectionOnLadder: (
-  directionId: DirectionId,
+  directionId: DirectionId | null,
   ladderDirections: LadderDirections,
   routeId: RouteId
 ) => ReactElement = (directionId, ladderDirections, routeId) => {
+  if (directionId === null) {
+    return questionMarkIcon()
+  }
+
   const ladderDirection = getLadderDirectionForRoute(ladderDirections, routeId)
   if (
     directionOnLadder(directionId, ladderDirection) === VehicleDirection.Down
@@ -179,15 +183,9 @@ const RevenueTrip = ({ trip }: { trip: Trip }) => {
   const [{ ladderDirections }] = useContext(StateDispatchContext)
 
   const directionIcon =
-    trip.directionId !== null
-      ? // Safe to assume routeId is not null, since if it were, we'd be
-        // rendering a deadhead row instead.
-        iconForDirectionOnLadder(
-          trip.directionId,
-          ladderDirections,
-          trip.routeId!
-        )
-      : questionMarkIcon()
+    // Safe to assume routeId is not null, since if it were, we'd be
+    // rendering a deadhead row instead.
+    iconForDirectionOnLadder(trip.directionId, ladderDirections, trip.routeId!)
 
   return (
     <Row
