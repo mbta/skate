@@ -115,7 +115,14 @@ const BlockWaiverBanner = ({ blockWaiver }: Props) => (
             Reason {questionMarkIcon("m-block-waiver-banner__reason-icon")}
           </td>
           <td className="m-block-waiver-banner__detail-value">
-            {blockWaiver.remark}
+            {[
+              blockWaiver.causeDescription,
+              (blockWaiver.remark || "")
+                .replace(blockWaiver.causeDescription, "")
+                .replace(/:$/, ""),
+            ]
+              .filter((s) => s !== null && s !== "")
+              .join(" ")}
           </td>
         </tr>
         <tr>
