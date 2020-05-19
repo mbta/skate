@@ -101,12 +101,12 @@ defmodule Realtime.BlockWaiver do
   defp bank_working([], working), do: [working]
   defp bank_working(acc, working), do: acc ++ [working]
 
-  @spec same_cause?(StopTimeUpdate.t(), StopTimeUpdate.t()) :: boolean
+  @spec same_cause?(StopTimeUpdate.t(), StopTimeUpdate.t()) :: boolean()
   defp same_cause?(stu1, stu2) do
     stu1.cause_id == stu2.cause_id and stu1.remark == stu2.remark
   end
 
-  @spec within_60_minutes?(Util.Time.time_of_day(), Util.Time.time_of_day()) :: boolean
+  @spec within_60_minutes?(Util.Time.time_of_day(), Util.Time.time_of_day()) :: boolean()
   defp within_60_minutes?(time, previous_time), do: time - previous_time <= 3600
 
   @spec from_trip_stop_time_waivers([trip_stop_time_waiver()], Date.t()) :: t()
