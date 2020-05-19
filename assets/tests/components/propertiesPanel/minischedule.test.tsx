@@ -46,6 +46,30 @@ const revenueTrip: Trip = {
   endTime: 1,
 }
 
+const revenueTrip2: Trip = {
+  id: "trip2",
+  blockId: "block",
+  routeId: "R",
+  headsign: "Revenue The Other Direction",
+  directionId: 0,
+  viaVariant: "X",
+  runId: "run",
+  startTime: 50,
+  endTime: 51,
+}
+
+const tripWithoutDirection: Trip = {
+  id: "trip3",
+  blockId: "block",
+  routeId: "R",
+  headsign: "Revenue Missing Direction",
+  directionId: null,
+  viaVariant: "X",
+  runId: "run",
+  startTime: 52,
+  endTime: 53,
+}
+
 const piece: Piece = {
   runId: "run",
   blockId: "block",
@@ -138,6 +162,23 @@ describe("MinischeduleBlock", () => {
       id: "block",
       pieces: [deadheadPiece],
     }))
+    const tree = renderer
+      .create(<MinischeduleBlock activeTripId={"trip"} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders trips in both directions, or missing direction", () => {
+    const multiDirectionPiece: Piece = {
+      ...piece,
+      trips: [revenueTrip, revenueTrip2, tripWithoutDirection],
+    }
+    ;(useMinischeduleBlock as jest.Mock).mockImplementationOnce(() => ({
+      id: "block",
+      pieces: [multiDirectionPiece],
+    }))
+
     const tree = renderer
       .create(<MinischeduleBlock activeTripId={"trip"} />)
       .toJSON()

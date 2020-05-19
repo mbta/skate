@@ -1,13 +1,29 @@
-import React, { ReactElement } from "react"
+import React, { ReactElement, useContext } from "react"
+import { StateDispatchContext } from "../../contexts/stateDispatchContext"
+import {
+  busFrontIcon,
+  busRearIcon,
+  filledCircleIcon,
+  minusIcon,
+  plusIcon,
+  questionMarkIcon,
+  triangleDownIcon,
+  triangleUpIcon,
+} from "../../helpers/icon"
 import {
   useMinischeduleBlock,
   useMinischeduleRun,
 } from "../../hooks/useMinischedule"
 import { Block, Break, Piece, Run, Trip } from "../../minischedule"
-import { TripId } from "../../schedule"
+import {
+  directionOnLadder,
+  getLadderDirectionForRoute,
+  LadderDirections,
+  VehicleDirection,
+} from "../../models/ladderDirection"
+import { DirectionId, RouteId, TripId } from "../../schedule"
+import { formattedDuration, formattedScheduledTime } from "../../util/dateTime"
 import Loading from "../loading"
-import { questionMarkIcon } from "../../helpers/icon"
-import { formattedScheduledTime, formattedDuration } from "../../util/dateTime"
 
 export interface Props {
   activeTripId: TripId
@@ -76,7 +92,7 @@ const Piece = ({ piece, view }: { piece: Piece; view: "run" | "block" }) => (
     <div className="m-minischedule__piece-rows">
       <Row
         key="sign-on"
-        icon={questionMarkIcon()}
+        icon={plusIcon()}
         text={
           piece.trips.length === 0 || isDeadhead(piece.trips[0])
             ? "Start Time"
@@ -95,7 +111,7 @@ const Piece = ({ piece, view }: { piece: Piece; view: "run" | "block" }) => (
       })}
       <Row
         key="sign-off"
-        icon={questionMarkIcon()}
+        icon={minusIcon()}
         text={
           piece.trips.length === 0 ||
           isDeadhead(piece.trips[piece.trips.length - 1])
@@ -131,18 +147,32 @@ const DeadheadTrip = ({
 }) => {
   const startTime: string = formattedScheduledTime(trip.startTime)
   if (sequence === "first") {
-    return (
-      <Row icon={questionMarkIcon()} text={"Pull Out"} rightText={startTime} />
-    )
+    return <Row icon={busFrontIcon()} text={"Pull Out"} rightText={startTime} />
   } else if (sequence === "last") {
-    return (
-      <Row icon={questionMarkIcon()} text={"Pull Back"} rightText={startTime} />
-    )
+    return <Row icon={busRearIcon()} text={"Pull Back"} rightText={startTime} />
   } else {
     return (
-      <Row icon={questionMarkIcon()} text={"Deadhead"} rightText={startTime} />
+      <Row icon={filledCircleIcon()} text={"Deadhead"} rightText={startTime} />
     )
   }
+}
+
+const iconForDirectionOnLadder: (
+  directionId: DirectionId | null,
+  ladderDirections: LadderDirections,
+  routeId: RouteId
+) => ReactElement = (directionId, ladderDirections, routeId) => {
+  if (directionId === null) {
+    return questionMarkIcon()
+  }
+
+  const ladderDirection = getLadderDirectionForRoute(ladderDirections, routeId)
+  if (
+    directionOnLadder(directionId, ladderDirection) === VehicleDirection.Down
+  ) {
+    return triangleDownIcon()
+  }
+  return triangleUpIcon()
 }
 
 const RevenueTrip = ({ trip }: { trip: Trip }) => {
@@ -150,9 +180,16 @@ const RevenueTrip = ({ trip }: { trip: Trip }) => {
   const formattedVariant: string =
     trip.viaVariant !== null && trip.viaVariant !== "_" ? trip.viaVariant : ""
   const formattedRouteAndVariant: string = `${trip.routeId}_${formattedVariant}`
+  const [{ ladderDirections }] = useContext(StateDispatchContext)
+
+  const directionIcon =
+    // Safe to assume routeId is not null, since if it were, we'd be
+    // rendering a deadhead row instead.
+    iconForDirectionOnLadder(trip.directionId, ladderDirections, trip.routeId!)
+
   return (
     <Row
-      icon={questionMarkIcon()}
+      icon={directionIcon}
       text={
         <>
           {formattedRouteAndVariant}{" "}
