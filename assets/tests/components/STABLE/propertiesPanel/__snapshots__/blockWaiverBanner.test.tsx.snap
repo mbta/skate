@@ -55,20 +55,9 @@ exports[`BlockWaiverBanner renders a current time waiver 1`] = `
     <tbody>
       <tr>
         <td
-          className="m-block-waiver-banner__detail-label m-block-waiver-banner__reason"
-          data-event="click"
-          data-for="reason"
-          data-tip={true}
+          className="m-block-waiver-banner__detail-label"
         >
-          Reason 
-          <span
-            className="m-block-waiver-banner__reason-icon"
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
+          Reason
         </td>
         <td
           className="m-block-waiver-banner__detail-value"
@@ -102,9 +91,6 @@ exports[`BlockWaiverBanner renders a current time waiver 1`] = `
       </tr>
     </tbody>
   </table>
-  <div
-    className="mock-react-tooltip"
-  />
 </div>
 `;
 
@@ -163,20 +149,9 @@ exports[`BlockWaiverBanner renders a future time waiver 1`] = `
     <tbody>
       <tr>
         <td
-          className="m-block-waiver-banner__detail-label m-block-waiver-banner__reason"
-          data-event="click"
-          data-for="reason"
-          data-tip={true}
+          className="m-block-waiver-banner__detail-label"
         >
-          Reason 
-          <span
-            className="m-block-waiver-banner__reason-icon"
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
+          Reason
         </td>
         <td
           className="m-block-waiver-banner__detail-value"
@@ -210,9 +185,6 @@ exports[`BlockWaiverBanner renders a future time waiver 1`] = `
       </tr>
     </tbody>
   </table>
-  <div
-    className="mock-react-tooltip"
-  />
 </div>
 `;
 
@@ -271,20 +243,9 @@ exports[`BlockWaiverBanner renders a past time waiver 1`] = `
     <tbody>
       <tr>
         <td
-          className="m-block-waiver-banner__detail-label m-block-waiver-banner__reason"
-          data-event="click"
-          data-for="reason"
-          data-tip={true}
+          className="m-block-waiver-banner__detail-label"
         >
-          Reason 
-          <span
-            className="m-block-waiver-banner__reason-icon"
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
+          Reason
         </td>
         <td
           className="m-block-waiver-banner__detail-value"
@@ -318,8 +279,5 @@ exports[`BlockWaiverBanner renders a past time waiver 1`] = `
       </tr>
     </tbody>
   </table>
-  <div
-    className="mock-react-tooltip"
-  />
 </div>
 `;
