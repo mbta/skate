@@ -8,15 +8,17 @@ export const formattedTime = (date: Date): string => {
   return `${hours12(hours24)}:${zeroPad(date.getMinutes())}${ampm(hours24)}`
 }
 
-export const formattedTimeDiff = (a: Date, b: Date): string => {
-  const diffMs: number = a.valueOf() - b.valueOf()
-  const diffHours = Math.floor(diffMs / 3_600_000)
-  const diffMinutes = Math.floor((diffMs % 3_600_000) / 60_000)
+export const formattedDuration = (duration: number): string => {
+  const diffHours = Math.floor(duration / 3_600)
+  const diffMinutes = Math.floor((duration % 3_600) / 60)
 
   const diffMinutesStr = `${diffMinutes}m`
 
   return diffHours >= 1 ? `${diffHours}h ${diffMinutesStr}` : diffMinutesStr
 }
+
+export const formattedTimeDiff = (a: Date, b: Date): string =>
+  formattedDuration(a.valueOf() / 1000 - b.valueOf() / 1000)
 
 /** Takes a time of day in seconds since midnight
  */

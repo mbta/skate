@@ -12,7 +12,7 @@ export interface Block {
 }
 
 export interface Break {
-  breakType: String
+  breakType: string
   startTime: Time
   endTime: Time
 }

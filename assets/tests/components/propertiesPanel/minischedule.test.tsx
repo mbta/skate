@@ -17,9 +17,9 @@ jest.mock("../../../src/hooks/useMinischedule", () => ({
 }))
 
 const breakk: Break = {
-  breakType: "Break",
+  breakType: "Paid meal before",
   startTime: 10,
-  endTime: 11,
+  endTime: 1810,
 }
 
 const nonrevenueTrip: Trip = {
@@ -50,13 +50,13 @@ const piece: Piece = {
   runId: "run",
   blockId: "block",
   start: {
-    time: 20,
+    time: 1820,
     place: "start",
     midRoute: false,
   },
   trips: [revenueTrip],
   end: {
-    time: 21,
+    time: 1821,
     place: "end",
     midRoute: false,
   },

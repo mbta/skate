@@ -7,7 +7,7 @@ import { Block, Break, Piece, Run, Trip } from "../../minischedule"
 import { TripId } from "../../schedule"
 import Loading from "../loading"
 import { questionMarkIcon } from "../../helpers/icon"
-import { formattedScheduledTime } from "../../util/dateTime"
+import { formattedScheduledTime, formattedDuration } from "../../util/dateTime"
 
 export interface Props {
   activeTripId: TripId
@@ -59,9 +59,14 @@ const Header = ({ label, value }: { label: string; value: string }) => (
   </div>
 )
 
-const Break = ({ break: breakk }: { break: Break }) => (
-  <Row text={JSON.stringify(breakk)} />
-)
+const Break = ({ break: breakk }: { break: Break }) => {
+  const formattedBreakTime = formattedDuration(
+    breakk.endTime - breakk.startTime
+  )
+  return (
+    <Row text={`Break (${breakk.breakType})`} rightText={formattedBreakTime} />
+  )
+}
 
 const Piece = ({ piece, view }: { piece: Piece; view: "run" | "block" }) => (
   <>
