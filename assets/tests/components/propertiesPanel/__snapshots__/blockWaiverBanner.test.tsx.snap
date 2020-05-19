@@ -73,7 +73,7 @@ exports[`BlockWaiverBanner renders a current time waiver 1`] = `
         <td
           className="m-block-waiver-banner__detail-value"
         >
-          E:1106
+          Block Waiver
         </td>
       </tr>
       <tr>
@@ -181,7 +181,7 @@ exports[`BlockWaiverBanner renders a future time waiver 1`] = `
         <td
           className="m-block-waiver-banner__detail-value"
         >
-          E:1106
+          Block Waiver
         </td>
       </tr>
       <tr>
@@ -289,7 +289,7 @@ exports[`BlockWaiverBanner renders a past time waiver 1`] = `
         <td
           className="m-block-waiver-banner__detail-value"
         >
-          E:1106
+          Block Waiver
         </td>
       </tr>
       <tr>

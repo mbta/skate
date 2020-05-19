@@ -13,7 +13,9 @@ describe("BlockWaiverBanner", () => {
     const blockWaiver: BlockWaiver = {
       startTime: new Date("2020-02-25T15:53:20.000Z"),
       endTime: new Date("2020-02-25T16:26:40.000Z"),
-      remark: "E:1106",
+      causeId: 0,
+      causeDescription: "Block Waiver",
+      remark: null,
     }
     const tree = renderer
       .create(<BlockWaiverBanner blockWaiver={blockWaiver} />)
@@ -26,7 +28,9 @@ describe("BlockWaiverBanner", () => {
     const blockWaiver: BlockWaiver = {
       startTime: new Date("2020-02-25T16:26:40.000Z"),
       endTime: new Date("2020-02-25T16:43:20.000Z"),
-      remark: "E:1106",
+      causeId: 0,
+      causeDescription: "Block Waiver",
+      remark: null,
     }
     const tree = renderer
       .create(<BlockWaiverBanner blockWaiver={blockWaiver} />)
@@ -39,7 +43,9 @@ describe("BlockWaiverBanner", () => {
     const blockWaiver: BlockWaiver = {
       startTime: new Date("2020-02-25T15:36:40.000Z"),
       endTime: new Date("2020-02-25T15:53:20.000Z"),
-      remark: "E:1106",
+      causeId: 0,
+      causeDescription: "Block Waiver",
+      remark: null,
     }
     const tree = renderer
       .create(<BlockWaiverBanner blockWaiver={blockWaiver} />)

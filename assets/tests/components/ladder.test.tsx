@@ -435,7 +435,9 @@ describe("ladder", () => {
         {
           startTime: new Date("2020-01-01T00:00:00.000Z"),
           endTime: new Date("2020-01-01T02:00:00.000Z"),
-          remark: "test block waiver",
+          causeId: 0,
+          causeDescription: "Block Waiver",
+          remark: null,
         },
       ],
     }
@@ -493,7 +495,9 @@ describe("ladder", () => {
         {
           startTime: new Date("2019-12-31T22:00:00.000Z"),
           endTime: new Date("2019-12-31T23:00:00.000Z"),
-          remark: "test block waiver",
+          causeId: 0,
+          causeDescription: "Block Waiver",
+          remark: null,
         },
       ],
     }

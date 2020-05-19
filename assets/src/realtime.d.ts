@@ -13,7 +13,9 @@ import { HeadwaySpacing } from "./models/vehicleStatus"
 export interface BlockWaiver {
   startTime: Date
   endTime: Date
-  remark: string
+  causeId: number
+  causeDescription: string
+  remark: string | null
 }
 
 export interface DataDiscrepancy {

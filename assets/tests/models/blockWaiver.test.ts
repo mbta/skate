@@ -16,19 +16,25 @@ jest
 const currentBlockWaiver: BlockWaiver = {
   startTime: new Date("2020-02-25T15:53:20.000Z"),
   endTime: new Date("2020-02-25T16:26:40.000Z"),
-  remark: "E:1106",
+  causeId: 0,
+  causeDescription: "Block Waiver",
+  remark: null,
 }
 
 const futureBlockWaiver: BlockWaiver = {
   startTime: new Date("2020-02-25T16:26:40.000Z"),
   endTime: new Date("2020-02-25T16:43:20.000Z"),
-  remark: "E:1106",
+  causeId: 0,
+  causeDescription: "Block Waiver",
+  remark: null,
 }
 
 const pastBlockWaiver: BlockWaiver = {
   startTime: new Date("2020-02-25T15:36:40.000Z"),
   endTime: new Date("2020-02-25T15:53:20.000Z"),
-  remark: "E:1106",
+  causeId: 0,
+  causeDescription: "Block Waiver",
+  remark: null,
 }
 
 describe("currentFuturePastType", () => {

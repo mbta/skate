@@ -110,7 +110,9 @@ interface VehicleTimepointStatusData {
 interface BlockWaiverData {
   start_time: number
   end_time: number
-  remark: string
+  cause_id: number
+  cause_description: string
+  remark: string | null
 }
 
 export const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
@@ -250,5 +252,7 @@ const blockWaiverFromData = (
 ): BlockWaiver => ({
   startTime: dateFromEpochSeconds(blockWaiverData.start_time),
   endTime: dateFromEpochSeconds(blockWaiverData.end_time),
+  causeId: blockWaiverData.cause_id,
+  causeDescription: blockWaiverData.cause_description,
   remark: blockWaiverData.remark,
 })

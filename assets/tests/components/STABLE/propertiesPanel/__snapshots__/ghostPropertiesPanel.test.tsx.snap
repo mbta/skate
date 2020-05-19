@@ -357,7 +357,7 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
             <td
               className="m-block-waiver-banner__detail-value"
             >
-              E:1106
+              Block Waiver
             </td>
           </tr>
           <tr>
