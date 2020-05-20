@@ -135,11 +135,7 @@ const Piece = ({ piece, view }: { piece: Piece; view: "run" | "block" }) => (
           <React.Fragment key={trip.id}>
             <Trip trip={trip} sequence={sequence} />
             {view === "run" ? (
-              <Layover
-                currentTrip={trip}
-                nextTrip={piece.trips[index + 1]}
-                key={`layover-${trip.endTime}`}
-              />
+              <Layover currentTrip={trip} nextTrip={piece.trips[index + 1]} />
             ) : null}
           </React.Fragment>
         )
