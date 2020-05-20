@@ -151,7 +151,7 @@ const openDrift = (): void => {
   // @ts-ignore
   if (typeof drift !== "undefined") {
     // @ts-ignore
-    drift.api.sidebar.open()
+    drift.api.sidebar.toggle()
   }
 }
 
