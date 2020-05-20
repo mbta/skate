@@ -21,7 +21,7 @@ Array [
     className="m-minischedule__piece-rows"
   >
     <div
-      className="m-minischedule__row "
+      className="m-minischedule__row"
     >
       <div
         className="m-minischedule__icon"
@@ -47,7 +47,7 @@ Array [
       </div>
     </div>
     <div
-      className="m-minischedule__row "
+      className="m-minischedule__row"
     >
       <div
         className="m-minischedule__icon"
@@ -79,7 +79,7 @@ Array [
       </div>
     </div>
     <div
-      className="m-minischedule__row "
+      className="m-minischedule__row"
     >
       <div
         className="m-minischedule__icon"
@@ -131,7 +131,7 @@ Array [
     className="m-minischedule__piece-rows"
   >
     <div
-      className="m-minischedule__row "
+      className="m-minischedule__row"
     >
       <div
         className="m-minischedule__icon"
@@ -157,7 +157,7 @@ Array [
       </div>
     </div>
     <div
-      className="m-minischedule__row "
+      className="m-minischedule__row"
     >
       <div
         className="m-minischedule__icon"
@@ -183,7 +183,7 @@ Array [
       </div>
     </div>
     <div
-      className="m-minischedule__row "
+      className="m-minischedule__row"
     >
       <div
         className="m-minischedule__icon"
@@ -209,7 +209,7 @@ Array [
       </div>
     </div>
     <div
-      className="m-minischedule__row "
+      className="m-minischedule__row"
     >
       <div
         className="m-minischedule__icon"
@@ -235,7 +235,7 @@ Array [
       </div>
     </div>
     <div
-      className="m-minischedule__row "
+      className="m-minischedule__row"
     >
       <div
         className="m-minischedule__icon"
@@ -287,7 +287,7 @@ Array [
     className="m-minischedule__piece-rows"
   >
     <div
-      className="m-minischedule__row "
+      className="m-minischedule__row"
     >
       <div
         className="m-minischedule__icon"
@@ -313,7 +313,7 @@ Array [
       </div>
     </div>
     <div
-      className="m-minischedule__row "
+      className="m-minischedule__row"
     >
       <div
         className="m-minischedule__icon"
@@ -345,7 +345,7 @@ Array [
       </div>
     </div>
     <div
-      className="m-minischedule__row "
+      className="m-minischedule__row"
     >
       <div
         className="m-minischedule__icon"
@@ -377,7 +377,7 @@ Array [
       </div>
     </div>
     <div
-      className="m-minischedule__row "
+      className="m-minischedule__row"
     >
       <div
         className="m-minischedule__icon"
@@ -409,7 +409,7 @@ Array [
       </div>
     </div>
     <div
-      className="m-minischedule__row "
+      className="m-minischedule__row"
     >
       <div
         className="m-minischedule__icon"
@@ -453,7 +453,7 @@ Array [
     run
   </div>,
   <div
-    className="m-minischedule__row "
+    className="m-minischedule__row"
   >
     <div
       className="m-minischedule__icon"
@@ -473,7 +473,7 @@ Array [
     className="m-minischedule__piece-rows"
   >
     <div
-      className="m-minischedule__row "
+      className="m-minischedule__row"
     >
       <div
         className="m-minischedule__icon"
@@ -499,7 +499,7 @@ Array [
       </div>
     </div>
     <div
-      className="m-minischedule__row "
+      className="m-minischedule__row"
     >
       <div
         className="m-minischedule__icon"
@@ -548,7 +548,7 @@ Array [
       </div>
     </div>
     <div
-      className="m-minischedule__row "
+      className="m-minischedule__row"
     >
       <div
         className="m-minischedule__icon"
@@ -580,7 +580,7 @@ Array [
       </div>
     </div>
     <div
-      className="m-minischedule__row "
+      className="m-minischedule__row"
     >
       <div
         className="m-minischedule__icon"
@@ -625,7 +625,7 @@ Array [
     className="m-minischedule__piece-rows"
   >
     <div
-      className="m-minischedule__row "
+      className="m-minischedule__row"
     >
       <div
         className="m-minischedule__icon"
@@ -651,7 +651,7 @@ Array [
       </div>
     </div>
     <div
-      className="m-minischedule__row "
+      className="m-minischedule__row"
     >
       <div
         className="m-minischedule__icon"
@@ -683,7 +683,7 @@ Array [
       </div>
     </div>
     <div
-      className="m-minischedule__row "
+      className="m-minischedule__row"
     >
       <div
         className="m-minischedule__icon"
@@ -715,7 +715,7 @@ Array [
       </div>
     </div>
     <div
-      className="m-minischedule__row "
+      className="m-minischedule__row"
     >
       <div
         className="m-minischedule__icon"

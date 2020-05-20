@@ -1,5 +1,6 @@
 import React, { ReactElement, useContext } from "react"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
+import { className } from "../../helpers/dom"
 import {
   busFrontIcon,
   busRearIcon,
@@ -243,7 +244,7 @@ const Row = ({
   rightText?: string
   extraClasses?: string
 }) => (
-  <div className={`m-minischedule__row ${extraClasses ? extraClasses : ""}`}>
+  <div className={className(["m-minischedule__row", extraClasses])}>
     <div className="m-minischedule__icon">{icon}</div>
     <div className="m-minischedule__left-text">{text}</div>
     {rightText && <div className="m-minischedule__right-text">{rightText}</div>}
