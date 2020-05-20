@@ -90,6 +90,9 @@ const TabBar = ({
       </ul>
 
       <div className="m-tab-bar__bottom-buttons">
+        <button className="m-tab-bar__drift" onClick={openDrift}>
+          {driftIcon}
+        </button>
         <button className="m-tab-bar__help" onClick={displayHelp}>
           {questionMarkIcon("m-tab-bar__icon")}
         </button>
@@ -129,6 +132,30 @@ const settingsIcon = (
     />
   </svg>
 )
+
+const driftIcon = (
+  <svg
+    width="25"
+    height="23"
+    viewBox="0 0 25 23"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      className="m-tab-bar__icon"
+      d="M24.516 9.953C24.516 4.453 19.04 0 12.258 0 5.476 0 0 4.452 0 9.953c0 3.318 1.986 6.24 5.05 8.053-.34 2.552-1.815 4.055-1.844 4.084-.14.14-.17.368-.113.567a.524.524 0 0 0 .482.312c2.95 0 5.335-1.93 6.612-3.206.652.086 1.362.142 2.07.142 6.783 0 12.26-4.452 12.26-9.953z"
+    />
+  </svg>
+)
+
+const openDrift = (): void => {
+  // drift is set by scripts loaded by _drift.html.eex
+  // but we don't have types for it
+  // @ts-ignore
+  if (typeof drift !== "undefined") {
+    // @ts-ignore
+    drift.api.sidebar.toggle()
+  }
+}
 
 const showAppcue = (appcueId: string): void => {
   if (window.Appcues) {

@@ -19,6 +19,13 @@ declare global {
       ): void
     }
     ResizeObserver: typeof ResizeObserver
+    drift: {
+      api: {
+        sidebar: {
+          toggle: () => void
+        }
+      }
+    }
     username: string
   }
 }
