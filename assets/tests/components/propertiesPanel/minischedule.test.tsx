@@ -54,8 +54,8 @@ const revenueTrip2: Trip = {
   directionId: 0,
   viaVariant: "X",
   runId: "run",
-  startTime: 50,
-  endTime: 51,
+  startTime: 350,
+  endTime: 351,
 }
 
 const tripWithoutDirection: Trip = {
@@ -66,8 +66,8 @@ const tripWithoutDirection: Trip = {
   directionId: null,
   viaVariant: "X",
   runId: "run",
-  startTime: 52,
-  endTime: 53,
+  startTime: 652,
+  endTime: 653,
 }
 
 const piece: Piece = {
@@ -106,9 +106,36 @@ describe("MinischeduleRun", () => {
   })
 
   test("renders a run", () => {
+    const multiTripPiece = {
+      ...piece,
+      trips: [revenueTrip, revenueTrip2],
+    }
+
     ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => ({
       id: "run",
-      activities: [breakk, piece],
+      activities: [breakk, multiTripPiece],
+    }))
+    const tree = renderer
+      .create(<MinischeduleRun activeTripId={"trip"} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders a run with no layovers between trips", () => {
+    const immediatelyFollowingTrip = {
+      ...revenueTrip2,
+      startTime: 1,
+    }
+
+    const multiTripPiece = {
+      ...piece,
+      trips: [revenueTrip, immediatelyFollowingTrip],
+    }
+
+    ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => ({
+      id: "run",
+      activities: [multiTripPiece],
     }))
     const tree = renderer
       .create(<MinischeduleRun activeTripId={"trip"} />)
@@ -154,8 +181,8 @@ describe("MinischeduleBlock", () => {
       ...piece,
       trips: [
         { ...nonrevenueTrip, id: "pullout" },
-        { ...nonrevenueTrip, id: "deadhead" },
-        { ...nonrevenueTrip, id: "pullback" },
+        { ...nonrevenueTrip, id: "deadhead", startTime: 180, endTime: 360 },
+        { ...nonrevenueTrip, id: "pullback", startTime: 840, endTime: 960 },
       ],
     }
     ;(useMinischeduleBlock as jest.Mock).mockImplementationOnce(() => ({

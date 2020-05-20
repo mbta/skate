@@ -15,7 +15,19 @@
 .m-minischedule__row {
   border-top: 1px solid $color-component-light;
   display: flex;
-  padding: 0.5rem;
+  padding: 0.5rem 0 0.5rem 0.5rem;
+
+  &.m-minischedule__layover-row {
+    border-top-style: none;
+    padding-top: 0;
+    padding-bottom: 0.25rem;
+
+    .m-minischedule__left-text,
+    .m-minischedule__right-text {
+      border-top: 1px solid $color-component-light;
+      padding-top: 0.25rem;
+    }
+  }
 }
 
 .m-minischedule__icon {
@@ -45,6 +57,7 @@
 
 .m-minischedule__right-text {
   flex: 0 0 auto;
+  padding-right: 0.5rem;
 }
 
 .m-minischedule__piece-rows {

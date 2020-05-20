@@ -1,5 +1,6 @@
 import React, { ReactElement, useContext } from "react"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
+import { className } from "../../helpers/dom"
 import {
   busFrontIcon,
   busRearIcon,
@@ -84,6 +85,30 @@ const Break = ({ break: breakk }: { break: Break }) => {
   )
 }
 
+const Layover = ({
+  currentTrip,
+  nextTrip,
+}: {
+  currentTrip: Trip
+  nextTrip?: Trip
+}) => {
+  if (!nextTrip) {
+    return null
+  }
+  const layoverDuration = nextTrip.startTime - currentTrip.endTime
+  if (layoverDuration === 0) {
+    return null
+  }
+
+  return (
+    <Row
+      text="Layover"
+      rightText={formattedDuration(layoverDuration)}
+      extraClasses="m-minischedule__layover-row"
+    />
+  )
+}
+
 const Piece = ({ piece, view }: { piece: Piece; view: "run" | "block" }) => (
   <>
     {view === "block" ? (
@@ -107,7 +132,14 @@ const Piece = ({ piece, view }: { piece: Piece; view: "run" | "block" }) => (
             : index === piece.trips.length - 1
             ? "last"
             : "middle"
-        return <Trip trip={trip} sequence={sequence} key={trip.id} />
+        return (
+          <React.Fragment key={trip.id}>
+            <Trip trip={trip} sequence={sequence} />
+            {view === "run" ? (
+              <Layover currentTrip={trip} nextTrip={piece.trips[index + 1]} />
+            ) : null}
+          </React.Fragment>
+        )
       })}
       <Row
         key="sign-off"
@@ -205,12 +237,14 @@ const Row = ({
   icon,
   text,
   rightText,
+  extraClasses,
 }: {
   icon?: ReactElement
   text: string | ReactElement
   rightText?: string
+  extraClasses?: string
 }) => (
-  <div className="m-minischedule__row">
+  <div className={className(["m-minischedule__row", extraClasses])}>
     <div className="m-minischedule__icon">{icon}</div>
     <div className="m-minischedule__left-text">{text}</div>
     {rightText && <div className="m-minischedule__right-text">{rightText}</div>}
