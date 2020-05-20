@@ -23,4 +23,8 @@
 }();
 drift.SNIPPET_VERSION = '0.3.1';
 drift.load('xhxx5rayxher');
+
+drift.on('ready', function(api) {
+  api.widget.hide();
+})
 </script>
