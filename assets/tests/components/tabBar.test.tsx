@@ -11,6 +11,14 @@ window.Appcues = {
   show: jest.fn(),
 }
 
+window.drift = {
+  api: {
+    sidebar: {
+      toggle: jest.fn(),
+    },
+  },
+}
+
 describe("tabBar", () => {
   it("renders", () => {
     const tree = renderer
@@ -58,6 +66,18 @@ describe("tabBar", () => {
     wrapper.find(".m-tab-bar__logo").first().simulate("click")
 
     expect(reloadSpy).toHaveBeenCalled()
+  })
+
+  it("opens drift when you click on the chat icon", () => {
+    const wrapper = mount(
+      <BrowserRouter>
+        <TabBar pickerContainerIsVisible={false} />
+      </BrowserRouter>
+    )
+
+    wrapper.find(".m-tab-bar__drift").first().simulate("click")
+
+    expect(window.drift.api.sidebar.toggle).toHaveBeenCalled()
   })
 
   it("displays an appcue for the current page when you click on the help button", () => {

@@ -90,7 +90,9 @@ const TabBar = ({
       </ul>
 
       <div className="m-tab-bar__bottom-buttons">
-        <button onClick={openDrift}>{driftIcon}</button>
+        <button className="m-tab-bar__drift" onClick={openDrift}>
+          {driftIcon}
+        </button>
         <button className="m-tab-bar__help" onClick={displayHelp}>
           {questionMarkIcon("m-tab-bar__icon")}
         </button>

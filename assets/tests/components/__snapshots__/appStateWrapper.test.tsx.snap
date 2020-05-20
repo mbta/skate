@@ -114,6 +114,7 @@ exports[`renders 1`] = `
         className="m-tab-bar__bottom-buttons"
       >
         <button
+          className="m-tab-bar__drift"
           onClick={[Function]}
         >
           <svg
