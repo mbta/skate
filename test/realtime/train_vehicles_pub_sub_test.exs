@@ -1,5 +1,5 @@
 defmodule Realtime.TrainVehiclesPubSubTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case
 
   alias Realtime.TrainVehiclesPubSub
   alias TrainVehicles.TrainVehicle
