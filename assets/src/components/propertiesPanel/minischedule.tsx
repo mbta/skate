@@ -84,12 +84,16 @@ const Break = ({ break: breakk }: { break: Break }) => {
   )
 }
 
-const Layover = ({ trips, index }: { trips: Trip[]; index: number }) => {
-  const nextTrip = trips[index + 1]
+const Layover = ({
+  currentTrip,
+  nextTrip,
+}: {
+  currentTrip: Trip
+  nextTrip?: Trip
+}) => {
   if (!nextTrip) {
     return null
   }
-  const currentTrip = trips[index]
   const layoverDuration = nextTrip.startTime - currentTrip.endTime
   if (layoverDuration === 0) {
     return null
@@ -126,8 +130,8 @@ const Piece = ({ piece, view }: { piece: Piece; view: "run" | "block" }) => (
             <Trip trip={trip} sequence={sequence} />
             {view === "run" ? (
               <Layover
-                trips={piece.trips}
-                index={index}
+                currentTrip={trip}
+                nextTrip={piece.trips[index + 1]}
                 key={`layover-${trip.endTime}`}
               />
             ) : null}
