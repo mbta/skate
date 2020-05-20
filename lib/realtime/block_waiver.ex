@@ -103,7 +103,8 @@ defmodule Realtime.BlockWaiver do
 
   @spec same_cause?(StopTimeUpdate.t(), StopTimeUpdate.t()) :: boolean()
   defp same_cause?(stu1, stu2) do
-    stu1.cause_id == stu2.cause_id and stu1.remark == stu2.remark
+    StopTimeUpdate.cause_id(stu1) == StopTimeUpdate.cause_id(stu2) and
+      StopTimeUpdate.remark(stu1) == StopTimeUpdate.remark(stu2)
   end
 
   @spec within_60_minutes?(Util.Time.time_of_day(), Util.Time.time_of_day()) :: boolean()
@@ -117,9 +118,9 @@ defmodule Realtime.BlockWaiver do
     %__MODULE__{
       start_time: Util.Time.timestamp_for_time_of_day(start_time, date_for_block),
       end_time: Util.Time.timestamp_for_time_of_day(end_time, date_for_block),
-      cause_id: stu.cause_id,
-      cause_description: stu.cause_description,
-      remark: stu.remark
+      cause_id: StopTimeUpdate.cause_id(stu),
+      cause_description: StopTimeUpdate.cause_description(stu),
+      remark: StopTimeUpdate.remark(stu)
     }
   end
 
