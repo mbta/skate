@@ -99,7 +99,13 @@ const Layover = ({
     return null
   }
 
-  return <Row text="Layover" rightText={formattedDuration(layoverDuration)} />
+  return (
+    <Row
+      text="Layover"
+      rightText={formattedDuration(layoverDuration)}
+      extraClasses="m-minischedule__layover-row"
+    />
+  )
 }
 
 const Piece = ({ piece, view }: { piece: Piece; view: "run" | "block" }) => (
@@ -234,12 +240,14 @@ const Row = ({
   icon,
   text,
   rightText,
+  extraClasses,
 }: {
   icon?: ReactElement
   text: string | ReactElement
   rightText?: string
+  extraClasses?: string
 }) => (
-  <div className="m-minischedule__row">
+  <div className={`m-minischedule__row ${extraClasses ? extraClasses : ""}`}>
     <div className="m-minischedule__icon">{icon}</div>
     <div className="m-minischedule__left-text">{text}</div>
     {rightText && <div className="m-minischedule__right-text">{rightText}</div>}
