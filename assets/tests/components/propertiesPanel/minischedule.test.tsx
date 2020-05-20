@@ -121,6 +121,28 @@ describe("MinischeduleRun", () => {
 
     expect(tree).toMatchSnapshot()
   })
+
+  test("renders a run with no layovers between trips", () => {
+    const immediatelyFollowingTrip = {
+      ...revenueTrip2,
+      startTime: 1,
+    }
+
+    const multiTripPiece = {
+      ...piece,
+      trips: [revenueTrip, immediatelyFollowingTrip],
+    }
+
+    ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => ({
+      id: "run",
+      activities: [multiTripPiece],
+    }))
+    const tree = renderer
+      .create(<MinischeduleRun activeTripId={"trip"} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
 })
 
 describe("MinischeduleBlock", () => {
