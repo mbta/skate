@@ -1,4 +1,5 @@
 import {
+  AsDirected,
   Block,
   Break,
   Piece,
@@ -18,6 +19,12 @@ interface RunData {
 interface BlockData {
   id: BlockId
   pieces: PieceData[]
+}
+
+interface AsDirectedData {
+  kind: "wad" | "rad"
+  start_time: Time
+  end_time: Time
 }
 
 interface BreakData {
@@ -80,7 +87,9 @@ const pieceFromData = (pieceData: PieceData): Piece => ({
   runId: pieceData.run_id,
   blockId: pieceData.block_id,
   start: signOnOffFromData(pieceData.start),
-  trips: pieceData.trips.map(tripFromData),
+  trips: pieceData.trips.map((data) =>
+    isTripData(data) ? tripFromData(data) : asDirectedFromData(data)
+  ),
   end: signOnOffFromData(pieceData.end),
 })
 
@@ -101,3 +110,12 @@ const tripFromData = (tripData: TripData): Trip => ({
   startTime: tripData.start_time,
   endTime: tripData.end_time,
 })
+
+const asDirectedFromData = (asDirectedData: AsDirectedData): AsDirected => ({
+  kind: asDirectedData.kind,
+  startTime: asDirectedData.start_time,
+  endTime: asDirectedData.end_time,
+})
+
+const isTripData = (data: TripData | AsDirectedData): data is TripData =>
+  data.hasOwnProperty("id")

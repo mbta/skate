@@ -15,7 +15,7 @@ import {
   useMinischeduleBlock,
   useMinischeduleRun,
 } from "../../hooks/useMinischedule"
-import { Block, Break, Piece, Run, Trip } from "../../minischedule"
+import { AsDirected, Block, Break, Piece, Run, Trip } from "../../minischedule"
 import {
   directionOnLadder,
   getLadderDirectionForRoute,
@@ -89,8 +89,8 @@ const Layover = ({
   currentTrip,
   nextTrip,
 }: {
-  currentTrip: Trip
-  nextTrip?: Trip
+  currentTrip: Trip | AsDirected
+  nextTrip?: Trip | AsDirected
 }) => {
   if (!nextTrip) {
     return null
@@ -119,7 +119,9 @@ const Piece = ({ piece, view }: { piece: Piece; view: "run" | "block" }) => (
         key="sign-on"
         icon={plusIcon()}
         text={
-          piece.trips.length === 0 || isDeadhead(piece.trips[0])
+          piece.trips.length === 0 ||
+          isAsDirected(piece.trips[0]) ||
+          isDeadhead(piece.trips[0])
             ? "Start Time"
             : "Swing On"
         }
@@ -133,8 +135,12 @@ const Piece = ({ piece, view }: { piece: Piece; view: "run" | "block" }) => (
             ? "last"
             : "middle"
         return (
-          <React.Fragment key={trip.id}>
-            <Trip trip={trip} sequence={sequence} />
+          <React.Fragment key={trip.startTime}>
+            {isTrip(trip) ? (
+              <Trip trip={trip} sequence={sequence} />
+            ) : (
+              <AsDirected asDirected={trip} />
+            )}
             {view === "run" ? (
               <Layover currentTrip={trip} nextTrip={piece.trips[index + 1]} />
             ) : null}
@@ -146,6 +152,7 @@ const Piece = ({ piece, view }: { piece: Piece; view: "run" | "block" }) => (
         icon={minusIcon()}
         text={
           piece.trips.length === 0 ||
+          isAsDirected(piece.trips[piece.trips.length - 1]) ||
           isDeadhead(piece.trips[piece.trips.length - 1])
             ? "Done"
             : "Swing Off"
@@ -233,6 +240,14 @@ const RevenueTrip = ({ trip }: { trip: Trip }) => {
   )
 }
 
+const AsDirected = ({ asDirected }: { asDirected: AsDirected }) => (
+  <Row
+    icon={busFrontIcon()}
+    text={asDirected.kind === "rad" ? "Run as directed" : "Work as directed"}
+    rightText={formattedScheduledTime(asDirected.startTime)}
+  />
+)
+
 const Row = ({
   icon,
   text,
@@ -254,4 +269,11 @@ const Row = ({
 const isPiece = (activity: Piece | Break): activity is Piece =>
   activity.hasOwnProperty("trips")
 
-const isDeadhead = (trip: Trip): boolean => trip.routeId == null
+const isTrip = (trip: Trip | AsDirected): trip is Trip =>
+  trip.hasOwnProperty("id")
+
+const isAsDirected = (trip: Trip | AsDirected): trip is AsDirected =>
+  !isTrip(trip)
+
+const isDeadhead = (trip: Trip | AsDirected): boolean =>
+  isTrip(trip) && trip.routeId == null

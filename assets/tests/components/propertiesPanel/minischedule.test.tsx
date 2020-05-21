@@ -8,7 +8,7 @@ import {
   useMinischeduleBlock,
   useMinischeduleRun,
 } from "../../../src/hooks/useMinischedule"
-import { Break, Piece, Trip } from "../../../src/minischedule"
+import { Break, Piece, Trip, Run } from "../../../src/minischedule"
 
 jest.mock("../../../src/hooks/useMinischedule", () => ({
   __esModule: true,
@@ -137,6 +137,42 @@ describe("MinischeduleRun", () => {
       id: "run",
       activities: [multiTripPiece],
     }))
+    const tree = renderer
+      .create(<MinischeduleRun activeTripId={"trip"} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders as directed pieces", () => {
+    const asDirectedPiece: Piece = {
+      runId: "run",
+      blockId: null,
+      start: {
+        time: 15600,
+        place: "place",
+        midRoute: false,
+      },
+      trips: [
+        {
+          kind: "rad",
+          startTime: 16200,
+          endTime: 44400,
+        },
+      ],
+      end: {
+        time: 16200,
+        place: "place",
+        midRoute: false,
+      },
+    }
+
+    const run: Run = {
+      id: "run",
+      activities: [asDirectedPiece],
+    }
+
+    ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => run)
     const tree = renderer
       .create(<MinischeduleRun activeTripId={"trip"} />)
       .toJSON()

@@ -3,6 +3,7 @@ defmodule Schedule.Minischedule.Piece do
   alias Schedule.Hastus
   alias Schedule.Hastus.Place
   alias Schedule.Hastus.Run
+  alias Schedule.Minischedule.AsDirected
   alias Schedule.Minischedule.Trip
 
   @type key :: {Hastus.Schedule.id(), Run.id(), Block.id()}
@@ -19,7 +20,7 @@ defmodule Schedule.Minischedule.Piece do
           block_id: Block.id() | nil,
           start: sign_on_off(),
           # stored with trip ids, but sent to the frontend as full objects
-          trips: [Trip.id()] | [Trip.t()],
+          trips: [Trip.id() | Trip.t() | AsDirected.t()],
           end: sign_on_off()
         }
 
@@ -47,9 +48,16 @@ defmodule Schedule.Minischedule.Piece do
     trip_ids = piece.trips
 
     trips =
-      Enum.map(trip_ids, fn trip_id ->
-        full_trip = trips_by_id[trip_id]
-        Trip.from_full_trip(full_trip)
+      Enum.map(trip_ids, fn
+        trip_id when is_binary(trip_id) ->
+          full_trip = trips_by_id[trip_id]
+          Trip.from_full_trip(full_trip)
+
+        %Trip{} = trip ->
+          trip
+
+        %AsDirected{} = as_directed ->
+          as_directed
       end)
 
     %{piece | trips: trips}

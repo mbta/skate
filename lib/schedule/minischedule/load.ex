@@ -8,7 +8,7 @@ defmodule Schedule.Minischedule.Load do
   alias Schedule.Helpers
   alias Schedule.Hastus.Activity
   alias Schedule.Hastus.Trip
-  alias Schedule.Minischedule.{Block, Break, Piece, Run}
+  alias Schedule.Minischedule.{AsDirected, Block, Break, Piece, Run}
 
   @spec from_hastus([Activity.t()], [Trip.t()]) ::
           %{runs: Run.by_id(), blocks: Block.by_id()}
@@ -44,6 +44,7 @@ defmodule Schedule.Minischedule.Load do
     activities =
       activities
       |> operator_activities_to_pieces(trips)
+      |> as_directed_activities_to_pieces()
       |> add_deadheads_to_pieces()
       |> add_sign_ons_to_pieces()
       |> activities_to_breaks()
@@ -78,6 +79,15 @@ defmodule Schedule.Minischedule.Load do
         trip_in_operator(activity, trip)
       end)
 
+    trips =
+      if operator_is_as_directed?(activity) do
+        [as_directed_from_trips(trips_in_piece)]
+      else
+        Enum.map(trips_in_piece, fn trip ->
+          trip.trip_id
+        end)
+      end
+
     block_id =
       case trips_in_piece do
         [trip | _] ->
@@ -102,7 +112,7 @@ defmodule Schedule.Minischedule.Load do
         place: activity.start_place,
         mid_route?: false
       },
-      trips: Enum.map(trips_in_piece, fn trip -> trip.trip_id end),
+      trips: trips,
       end: %{
         time: activity.end_time,
         place: activity.end_place,
@@ -116,6 +126,86 @@ defmodule Schedule.Minischedule.Load do
     trip.start_time >= activity.start_time and
       trip.end_time <= activity.end_time and
       String.contains?(trip.block_id, activity.partial_block_id)
+  end
+
+  @spec operator_is_as_directed?(Activity.t()) :: boolean()
+  defp operator_is_as_directed?(%Activity{activity_type: "Operator"} = activity) do
+    String.contains?(activity.partial_block_id, "ad")
+  end
+
+  @spec as_directed_from_trips([Trip.t()]) :: AsDirected.t()
+  def as_directed_from_trips(trips_in_piece) do
+    [
+      %Trip{route_id: nil} = _pullout,
+      as_directed_trip,
+      %Trip{route_id: nil} = _pull_back
+    ] = trips_in_piece
+
+    kind =
+      case as_directed_trip.route_id do
+        "rad" -> :rad
+        "wad" -> :wad
+      end
+
+    %AsDirected{
+      kind: kind,
+      start_time: as_directed_trip.start_time,
+      end_time: as_directed_trip.end_time,
+      start_place: as_directed_trip.start_place,
+      end_place: as_directed_trip.end_place
+    }
+  end
+
+  @spec as_directed_activities_to_pieces([Activity.t() | Piece.t()]) :: [Activity.t() | Piece.t()]
+  defp as_directed_activities_to_pieces(activities_and_pieces) do
+    Enum.map(activities_and_pieces, fn
+      %Piece{} = piece ->
+        piece
+
+      %Activity{} = activity ->
+        if activity_is_as_directed?(activity) do
+          as_directed_activity_to_piece(activity)
+        else
+          activity
+        end
+    end)
+  end
+
+  @spec activity_is_as_directed?(Activity.t()) :: boolean()
+  defp activity_is_as_directed?(activity) do
+    activity.activity_type == "rad" or activity.activity_type == "wad"
+  end
+
+  @spec as_directed_activity_to_piece(Activity.t()) :: Piece.t()
+  defp as_directed_activity_to_piece(activity) do
+    %Piece{
+      schedule_id: activity.schedule_id,
+      run_id: activity.run_id,
+      block_id: nil,
+      start: %{
+        time: activity.start_time,
+        place: activity.start_place,
+        mid_route?: false
+      },
+      trips: [
+        %AsDirected{
+          kind:
+            case activity.activity_type do
+              "wad" -> :wad
+              "rad" -> :rad
+            end,
+          start_time: activity.start_time,
+          end_time: activity.end_time,
+          start_place: activity.start_place,
+          end_place: activity.end_place
+        }
+      ],
+      end: %{
+        time: activity.end_time,
+        place: activity.end_place,
+        mid_route?: false
+      }
+    }
   end
 
   @spec add_deadheads_to_pieces([Activity.t() | Piece.t()]) :: [Activity.t() | Piece.t()]
