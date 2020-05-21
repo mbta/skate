@@ -94,7 +94,9 @@ describe("useVehicles", () => {
         {
           start_time: 1_534_340_301,
           end_time: 1_534_340_321,
-          remark: "test remark",
+          cause_id: 0,
+          cause_description: "Block Waiver",
+          remark: null,
         },
       ],
     },
@@ -181,7 +183,9 @@ describe("useVehicles", () => {
         {
           startTime: new Date("2018-08-15T13:38:21.000Z"),
           endTime: new Date("2018-08-15T13:38:41.000Z"),
-          remark: "test remark",
+          causeId: 0,
+          causeDescription: "Block Waiver",
+          remark: null,
         },
       ],
     },
@@ -260,7 +264,9 @@ describe("useVehicles", () => {
         {
           startTime: new Date("2018-08-15T13:38:21.000Z"),
           endTime: new Date("2018-08-15T13:38:41.000Z"),
-          remark: "test remark",
+          causeId: 0,
+          causeDescription: "Block Waiver",
+          remark: null,
         },
       ],
     }
@@ -284,7 +290,9 @@ describe("useVehicles", () => {
         {
           start_time: 1_534_340_301,
           end_time: 1_534_340_321,
-          remark: "test remark",
+          cause_id: 0,
+          cause_description: "Block Waiver",
+          remark: null,
         },
       ],
     }

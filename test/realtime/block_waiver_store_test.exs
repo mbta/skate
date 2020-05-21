@@ -7,6 +7,8 @@ defmodule Realtime.BlockWaiverStoreTest do
     %BlockWaiver{
       start_time: 10,
       end_time: 20,
+      cause_id: 26,
+      cause_description: "E - Diverted",
       remark: "E:1106"
     }
   ]

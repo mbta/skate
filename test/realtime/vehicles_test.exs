@@ -13,6 +13,8 @@ defmodule Realtime.VehiclesTest do
           %BlockWaiver{
             start_time: 10,
             end_time: 20,
+            cause_id: 26,
+            cause_description: "E - Diverted",
             remark: "E:1106"
           }
         ]
@@ -432,7 +434,15 @@ defmodule Realtime.VehiclesTest do
           fraction_until_timepoint: 0.5
         },
         route_status: :on_route,
-        block_waivers: [%Realtime.BlockWaiver{end_time: 20, remark: "E:1106", start_time: 10}]
+        block_waivers: [
+          %Realtime.BlockWaiver{
+            start_time: 10,
+            end_time: 20,
+            cause_id: 26,
+            cause_description: "E - Diverted",
+            remark: "E:1106"
+          }
+        ]
       }
 
       assert Vehicles.group_by_route_with_blocks(

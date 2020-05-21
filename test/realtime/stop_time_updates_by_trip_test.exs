@@ -16,6 +16,8 @@ defmodule Realtime.StopTimeUpdatesByTripTest do
       schedule_relationship: :SKIPPED,
       platform_id: "platform",
       uncertainty: 300,
+      cause_id: 23,
+      cause_description: "B - Manpower",
       remark: "B"
     )
   ]

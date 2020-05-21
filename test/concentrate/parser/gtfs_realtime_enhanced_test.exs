@@ -24,11 +24,18 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
       assert Enum.all?(parsed, &(&1.__struct__ in [TripUpdate, StopTimeUpdate]))
     end
 
-    test "parsing a TripUpdates file preserves the remark field on TripUpdate and StopTimeUpdate structs" do
+    test "parsing a TripUpdates file preserves the remark field on StopTimeUpdate structs" do
       binary = File.read!(fixture_path("TripUpdates_enhanced.json"))
       parsed = GTFSRealtimeEnhanced.parse(binary)
 
-      assert Enum.all?(parsed, &(%{remark: _remark} = &1))
+      stop_time_updates =
+        Enum.filter(parsed, fn
+          %StopTimeUpdate{} -> true
+          %TripUpdate{} -> false
+        end)
+
+      assert length(stop_time_updates) > 0
+      assert Enum.all?(stop_time_updates, &match?(%{remark: _remark}, &1))
     end
   end
 

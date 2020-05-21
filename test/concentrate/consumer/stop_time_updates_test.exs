@@ -16,6 +16,8 @@ defmodule Concentrate.Consumer.StopTimeUpdatesTest do
     arrival_time: nil,
     departure_time: nil,
     platform_id: nil,
+    cause_id: nil,
+    cause_description: nil,
     remark: nil,
     schedule_relationship: :SKIPPED,
     status: nil,
@@ -29,7 +31,6 @@ defmodule Concentrate.Consumer.StopTimeUpdatesTest do
   @all_updates [
     %TripUpdate{
       direction_id: nil,
-      remark: nil,
       route_id: "r1",
       schedule_relationship: :SCHEDULED,
       start_date: nil,

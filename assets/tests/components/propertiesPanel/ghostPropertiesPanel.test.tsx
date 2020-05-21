@@ -60,7 +60,9 @@ describe("GhostPropertiesPanel", () => {
     const blockWaiver: BlockWaiver = {
       startTime: new Date("1970-01-01T05:05:00.000Z"),
       endTime: new Date("1970-01-01T12:38:00.000Z"),
-      remark: "E:1106",
+      causeId: 0,
+      causeDescription: "Block Waiver",
+      remark: null,
     }
     const ghostWithBlockWaivers: Ghost = {
       ...ghost,

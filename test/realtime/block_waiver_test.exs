@@ -33,6 +33,8 @@ defmodule Realtime.BlockWaiverTest do
     arrival_time: nil,
     departure_time: nil,
     platform_id: nil,
+    cause_id: 26,
+    cause_description: "E - Diverted",
     remark: "E:1106",
     schedule_relationship: :SKIPPED,
     status: nil,
@@ -47,6 +49,8 @@ defmodule Realtime.BlockWaiverTest do
     arrival_time: nil,
     departure_time: nil,
     platform_id: nil,
+    cause_id: 26,
+    cause_description: "E - Diverted",
     remark: "E:1106",
     schedule_relationship: :SKIPPED,
     status: nil,
@@ -61,6 +65,8 @@ defmodule Realtime.BlockWaiverTest do
     arrival_time: nil,
     departure_time: nil,
     platform_id: nil,
+    cause_id: 26,
+    cause_description: "E - Diverted",
     remark: "E:1106",
     schedule_relationship: :SKIPPED,
     status: nil,
@@ -114,7 +120,36 @@ defmodule Realtime.BlockWaiverTest do
       assert BlockWaiver.trip_stop_time_waivers(@trip1, @stop_time_updates_by_trip) == expected
     end
 
-    test "does not include stop time updates without remarks" do
+    test "does not include stop time updates without block waiver causes" do
+      trip1stop1UpdateNilCause = %{
+        @trip1stop1Update
+        | cause_id: nil,
+          cause_description: nil,
+          remark: nil
+      }
+
+      trip1stop2UpdateEmptyCause = %{
+        @trip1stop2Update
+        | cause_id: nil,
+          cause_description: "",
+          remark: ""
+      }
+
+      stop_time_updates_by_trip = %{
+        @stop_time_updates_by_trip
+        | @trip1.id => [trip1stop1UpdateNilCause, trip1stop2UpdateEmptyCause]
+      }
+
+      expected = [
+        {1, nil},
+        {2, nil},
+        {3, nil}
+      ]
+
+      assert BlockWaiver.trip_stop_time_waivers(@trip1, stop_time_updates_by_trip) == expected
+    end
+
+    test "includes stop time updates with causes but no remark" do
       trip1stop1UpdateNilRemark = %{
         @trip1stop1Update
         | remark: nil
@@ -131,8 +166,8 @@ defmodule Realtime.BlockWaiverTest do
       }
 
       expected = [
-        {1, nil},
-        {2, nil},
+        {1, trip1stop1UpdateNilRemark},
+        {2, trip1stop2UpdateEmptyRemark},
         {3, nil}
       ]
 
@@ -194,7 +229,7 @@ defmodule Realtime.BlockWaiverTest do
       assert BlockWaiver.group_consecutive_sequences(trip_stop_time_waivers) == expected
     end
 
-    test "breaks apart groups at a new waiver remark" do
+    test "breaks apart groups at a new waiver remark or cause" do
       trip_stop_time_waiver1 = {1, @trip1stop1Update}
 
       trip_stop_time_waiver2 = {1, %StopTimeUpdate{@trip1stop2Update | remark: "new remark"}}

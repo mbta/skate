@@ -12,6 +12,8 @@ defmodule Realtime.GhostTest do
         %BlockWaiver{
           start_time: 10,
           end_time: 20,
+          cause_id: 26,
+          cause_description: "E - Diverted",
           remark: "E:1106"
         }
       ]
@@ -70,6 +72,8 @@ defmodule Realtime.GhostTest do
             %BlockWaiver{
               start_time: 10,
               end_time: 20,
+              cause_id: 26,
+              cause_description: "E - Diverted",
               remark: "E:1106"
             }
           ]
@@ -237,7 +241,13 @@ defmodule Realtime.GhostTest do
                },
                route_status: :laying_over,
                block_waivers: [
-                 %Realtime.BlockWaiver{end_time: 20, remark: "E:1106", start_time: 10}
+                 %Realtime.BlockWaiver{
+                   start_time: 10,
+                   end_time: 20,
+                   cause_id: 26,
+                   cause_description: "E - Diverted",
+                   remark: "E:1106"
+                 }
                ]
              }
     end
