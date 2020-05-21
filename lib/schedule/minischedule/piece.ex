@@ -16,7 +16,7 @@ defmodule Schedule.Minischedule.Piece do
   @type t :: %__MODULE__{
           schedule_id: Hastus.Schedule.id(),
           run_id: Run.id(),
-          block_id: Block.id(),
+          block_id: Block.id() | nil,
           start: sign_on_off(),
           # stored with trip ids, but sent to the frontend as full objects
           trips: [Trip.id()] | [Trip.t()],
@@ -26,7 +26,6 @@ defmodule Schedule.Minischedule.Piece do
   @enforce_keys [
     :schedule_id,
     :run_id,
-    :block_id,
     :start,
     :trips,
     :end

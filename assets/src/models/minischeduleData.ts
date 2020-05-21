@@ -28,7 +28,7 @@ interface BreakData {
 
 interface PieceData {
   run_id: RunId
-  block_id: BlockId
+  block_id: BlockId | null
   start: SignOnOffData
   trips: TripData[]
   end: SignOnOffData

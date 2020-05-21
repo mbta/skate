@@ -360,8 +360,6 @@ defmodule Schedule.Minischedule.LoadTest do
 
       assert %Run{
                activities: [
-                 # %Piece{},
-                 # %Piece{} = _p
                  %Piece{
                    block_id: "block",
                    start: %{time: 101},

@@ -19,7 +19,7 @@ export interface Break {
 
 export interface Piece {
   runId: RunId
-  blockId: BlockId
+  blockId: BlockId | null
   start: SignOnOff
   trips: Trip[]
   end: SignOnOff

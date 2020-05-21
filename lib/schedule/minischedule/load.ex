@@ -74,7 +74,7 @@ defmodule Schedule.Minischedule.Load do
             }"
           end)
 
-          activity.partial_block_id
+          nil
       end
 
     %Piece{
@@ -186,6 +186,7 @@ defmodule Schedule.Minischedule.Load do
   @spec blocks_from_pieces([Piece.t()]) :: Block.by_id()
   defp blocks_from_pieces(pieces) do
     pieces
+    |> Enum.filter(fn piece -> piece.block_id != nil end)
     |> Enum.group_by(&block_key_for_piece/1)
     |> Map.new(fn {{schedule_id, block_id} = block_key, pieces} ->
       {block_key,
