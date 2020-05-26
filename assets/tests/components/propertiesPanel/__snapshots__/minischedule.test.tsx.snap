@@ -64,13 +64,7 @@ Array [
       <div
         className="m-minischedule__left-text"
       >
-        R_X
-         
-        <span
-          className="m-minischedule__headsign"
-        >
-          Revenue
-        </span>
+        R_X Revenue
       </div>
       <div
         className="m-minischedule__right-text"
@@ -330,13 +324,7 @@ Array [
       <div
         className="m-minischedule__left-text"
       >
-        R_X
-         
-        <span
-          className="m-minischedule__headsign"
-        >
-          Revenue
-        </span>
+        R_X Revenue
       </div>
       <div
         className="m-minischedule__right-text"
@@ -362,13 +350,7 @@ Array [
       <div
         className="m-minischedule__left-text"
       >
-        R_X
-         
-        <span
-          className="m-minischedule__headsign"
-        >
-          Revenue The Other Direction
-        </span>
+        R_X Revenue The Other Direction
       </div>
       <div
         className="m-minischedule__right-text"
@@ -394,13 +376,7 @@ Array [
       <div
         className="m-minischedule__left-text"
       >
-        R_X
-         
-        <span
-          className="m-minischedule__headsign"
-        >
-          Revenue Missing Direction
-        </span>
+        R_X Revenue Missing Direction
       </div>
       <div
         className="m-minischedule__right-text"
@@ -717,13 +693,7 @@ Array [
       <div
         className="m-minischedule__left-text"
       >
-        R_X
-         
-        <span
-          className="m-minischedule__headsign"
-        >
-          Revenue
-        </span>
+        R_X Revenue
       </div>
       <div
         className="m-minischedule__right-text"
@@ -766,13 +736,7 @@ Array [
       <div
         className="m-minischedule__left-text"
       >
-        R_X
-         
-        <span
-          className="m-minischedule__headsign"
-        >
-          Revenue The Other Direction
-        </span>
+        R_X Revenue The Other Direction
       </div>
       <div
         className="m-minischedule__right-text"
@@ -1319,13 +1283,7 @@ Array [
       <div
         className="m-minischedule__left-text"
       >
-        R_X
-         
-        <span
-          className="m-minischedule__headsign"
-        >
-          Revenue
-        </span>
+        R_X Revenue
       </div>
       <div
         className="m-minischedule__right-text"
@@ -1351,13 +1309,7 @@ Array [
       <div
         className="m-minischedule__left-text"
       >
-        R_X
-         
-        <span
-          className="m-minischedule__headsign"
-        >
-          Revenue The Other Direction
-        </span>
+        R_X Revenue The Other Direction
       </div>
       <div
         className="m-minischedule__right-text"

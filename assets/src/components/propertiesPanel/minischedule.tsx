@@ -309,9 +309,13 @@ const RevenueTrip = ({
   vehicleOrGhost: VehicleOrGhost
 }) => {
   const startTime: string = formattedScheduledTime(trip.startTime)
-  const formattedVariant: string =
-    trip.viaVariant !== null && trip.viaVariant !== "_" ? trip.viaVariant : ""
-  const formattedRouteAndVariant: string = `${trip.routeId}_${formattedVariant}`
+  const formattedRouteAndHeadsign: string = [
+    trip.routeId,
+    "_",
+    trip.viaVariant !== null && trip.viaVariant !== "_" ? trip.viaVariant : "",
+    " ",
+    trip.headsign || "",
+  ].join("")
   const [{ ladderDirections }] = useContext(StateDispatchContext)
 
   const directionIcon =
@@ -322,12 +326,7 @@ const RevenueTrip = ({
   return (
     <Row
       icon={directionIcon}
-      text={
-        <>
-          {formattedRouteAndVariant}{" "}
-          <span className="m-minischedule__headsign">{trip.headsign}</span>
-        </>
-      }
+      text={formattedRouteAndHeadsign}
       rightText={startTime}
       extraClasses={currentClasses(trip, vehicleOrGhost, "on_route")}
     />
@@ -349,7 +348,7 @@ const Row = ({
   extraClasses,
 }: {
   icon?: ReactElement
-  text: string | ReactElement
+  text: string
   rightText?: string
   extraClasses?: string[]
 }) => (
