@@ -4,17 +4,16 @@ export const dateFromEpochSeconds = (time: number): Date =>
   new Date(time * 1_000)
 
 export const formattedTime = (date: Date): string => {
-  const hours24 = date.getHours()
-  return `${hours12(hours24)}:${zeroPad(date.getMinutes())}${ampm(hours24)}`
+  return formattedHoursMinutes(date.getHours(), date.getMinutes())
 }
 
 export const formattedDuration = (duration: number): string => {
   const diffHours = Math.floor(duration / 3_600)
   const diffMinutes = Math.floor((duration % 3_600) / 60)
 
-  const diffMinutesStr = `${diffMinutes}m`
+  const diffMinutesStr = `${diffMinutes} min`
 
-  return diffHours >= 1 ? `${diffHours}h ${diffMinutesStr}` : diffMinutesStr
+  return diffHours >= 1 ? `${diffHours} hr ${diffMinutesStr}` : diffMinutesStr
 }
 
 export const formattedTimeDiff = (a: Date, b: Date): string =>
@@ -26,12 +25,15 @@ export const formattedScheduledTime = (time: number): string => {
   const minutes = Math.floor(time / 60)
   const hours25 = Math.floor(minutes / 60)
   const minutes60 = minutes - hours25 * 60
-  return `${hours12(hours25)}:${zeroPad(minutes60)}${ampm(hours25)}`
+  return formattedHoursMinutes(hours25, minutes60)
 }
 
-export const hours12 = (hours25: number): number => hours25 % 12 || 12
-
-export const ampm = (hours24: number): string =>
-  hours24 >= 12 && hours24 < 24 ? "pm" : "am"
-
-const zeroPad = (time: number): string => (time < 10 ? `0${time}` : `${time}`)
+export const formattedHoursMinutes = (
+  hours25: number,
+  minutes60: number
+): string => {
+  const hours12 = hours25 % 12 || 12
+  const zeroPaddedMinutes = minutes60 < 10 ? `0${minutes60}` : `${minutes60}`
+  const ampm = hours25 >= 12 && hours25 < 24 ? "PM" : "AM"
+  return `${hours12}:${zeroPaddedMinutes} ${ampm}`
+}

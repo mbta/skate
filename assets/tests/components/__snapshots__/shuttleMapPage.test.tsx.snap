@@ -573,7 +573,7 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
               <td
                 className="m-properties-list__property-value"
               >
-                4h 3m; 1:38pm
+                4 hr 3 min; 1:38 PM
               </td>
             </tr>
           </tbody>
