@@ -149,6 +149,27 @@ defmodule Realtime.BlockWaiverTest do
       assert BlockWaiver.trip_stop_time_waivers(@trip1, stop_time_updates_by_trip) == expected
     end
 
+    test "does not include stop time updates for bad transitmaster units" do
+      trip1stop1UpdateBadTm = %{
+        @trip1stop1Update
+        | cause_id: 33,
+          cause_description: "T - Inactive TM",
+          remark: "T - Inactive TM:"
+      }
+
+      stop_time_updates_by_trip = %{
+        @trip1.id => [trip1stop1UpdateBadTm]
+      }
+
+      expected = [
+        {1, nil},
+        {2, nil},
+        {3, nil}
+      ]
+
+      assert BlockWaiver.trip_stop_time_waivers(@trip1, stop_time_updates_by_trip) == expected
+    end
+
     test "includes stop time updates with causes but no remark" do
       trip1stop1UpdateNilRemark = %{
         @trip1stop1Update
