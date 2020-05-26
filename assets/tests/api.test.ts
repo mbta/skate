@@ -385,6 +385,11 @@ describe("minischedulesBlock", () => {
                 start_time: 45,
                 end_time: 567,
               },
+              {
+                kind: "rad",
+                start_time: 567,
+                end_time: 1000,
+              },
             ],
             end: {
               time: 1,
@@ -419,6 +424,11 @@ describe("minischedulesBlock", () => {
                 runId: "run",
                 startTime: 45,
                 endTime: 567,
+              },
+              {
+                kind: "rad",
+                startTime: 567,
+                endTime: 1000,
               },
             ],
             end: {

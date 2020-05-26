@@ -3,6 +3,7 @@ defmodule Schedule.Minischedule.PieceTest do
 
   alias Schedule.Gtfs.StopTime
   alias Schedule.Minischedule
+  alias Schedule.Minischedule.AsDirected
   alias Schedule.Minischedule.Piece
 
   describe "hydrate" do
@@ -56,6 +57,44 @@ defmodule Schedule.Minischedule.PieceTest do
       }
 
       assert Piece.hydrate(stored_piece, %{trip_id => stored_trip}) == expected_piece
+    end
+
+    test "doesn't replace non-ids" do
+      trip = %Minischedule.Trip{
+        id: "trip",
+        block_id: "block"
+      }
+
+      as_directed = %AsDirected{
+        kind: :wad,
+        start_time: 0,
+        end_time: 1,
+        start_place: "start",
+        end_place: "end"
+      }
+
+      sign_on = %{
+        time: "0",
+        place: "on",
+        mid_route?: false
+      }
+
+      sign_off = %{
+        time: "1",
+        place: "off",
+        mid_route?: false
+      }
+
+      piece = %Piece{
+        schedule_id: "schedule",
+        run_id: "run",
+        block_id: "block",
+        start: sign_on,
+        trips: [trip, as_directed],
+        end: sign_off
+      }
+
+      assert Piece.hydrate(piece, %{}) == piece
     end
   end
 end

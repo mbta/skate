@@ -3,6 +3,7 @@ defmodule Schedule.Minischedule.LoadTest do
 
   alias Schedule.Hastus.Activity
   alias Schedule.Hastus.Trip
+  alias Schedule.Minischedule.AsDirected
   alias Schedule.Minischedule.Block
   alias Schedule.Minischedule.Break
   alias Schedule.Minischedule.Load
@@ -360,8 +361,6 @@ defmodule Schedule.Minischedule.LoadTest do
 
       assert %Run{
                activities: [
-                 # %Piece{},
-                 # %Piece{} = _p
                  %Piece{
                    block_id: "block",
                    start: %{time: 101},
@@ -486,6 +485,129 @@ defmodule Schedule.Minischedule.LoadTest do
                  %Piece{
                    start: %{time: 101},
                    end: %{time: 103}
+                 }
+               ]
+             } = Load.run(run_key, activities, trips)
+    end
+
+    test "makes as directed pieces when given rad/wad activities" do
+      run_key = {"aba20l31", "123-1502"}
+
+      activities = [
+        %Activity{
+          schedule_id: "aba20l31",
+          run_id: "123-1502",
+          start_time: 15600,
+          end_time: 16200,
+          start_place: "alban",
+          end_place: "alban",
+          activity_type: "Sign-on"
+        },
+        %Activity{
+          schedule_id: "aba20l31",
+          run_id: "123-1502",
+          start_time: 16200,
+          end_time: 44400,
+          start_place: "alban",
+          end_place: "alban",
+          activity_type: "wad"
+        }
+      ]
+
+      trips = []
+
+      assert %Run{
+               activities: [
+                 %Piece{
+                   block_id: nil,
+                   start: %{time: 15600},
+                   trips: [
+                     %AsDirected{
+                       kind: :wad,
+                       start_time: 16200,
+                       end_time: 44400
+                     }
+                   ],
+                   end: %{time: 44400}
+                 }
+               ]
+             } = Load.run(run_key, activities, trips)
+    end
+
+    test "makes as directed pieces when given rad/wad trips" do
+      run_key = {"abc20011", "123-9073"}
+
+      activities = [
+        %Activity{
+          schedule_id: "abc20011",
+          run_id: "123-9073",
+          start_time: 21000,
+          end_time: 21600,
+          start_place: "cabot",
+          end_place: "cabot",
+          activity_type: "Sign-on"
+        },
+        %Activity{
+          schedule_id: "abc20011",
+          run_id: "123-9073",
+          start_time: 21600,
+          end_time: 32400,
+          start_place: "cabot",
+          end_place: "cabot",
+          activity_type: "Operator",
+          partial_block_id: "rad-340"
+        }
+      ]
+
+      trips = [
+        %Trip{
+          schedule_id: "abc20011",
+          run_id: "123-9073",
+          block_id: "Crad-340",
+          start_time: 21600,
+          end_time: 21600,
+          start_place: "cabot",
+          end_place: "cabot",
+          route_id: nil,
+          trip_id: "43756185"
+        },
+        %Trip{
+          schedule_id: "abc20011",
+          run_id: "123-9073",
+          block_id: "Crad-340",
+          start_time: 21600,
+          end_time: 32400,
+          start_place: "cabot",
+          end_place: "cabot",
+          route_id: "rad",
+          trip_id: "43753838"
+        },
+        %Trip{
+          schedule_id: "abc20011",
+          run_id: "123-9073",
+          block_id: "Crad-340",
+          start_time: 32400,
+          end_time: 32400,
+          start_place: "cabot",
+          end_place: "cabot",
+          route_id: nil,
+          trip_id: "43756526"
+        }
+      ]
+
+      assert %Run{
+               activities: [
+                 %Piece{
+                   block_id: "Crad-340",
+                   start: %{time: 21000},
+                   trips: [
+                     %AsDirected{
+                       kind: :rad,
+                       start_time: 21600,
+                       end_time: 32400
+                     }
+                   ],
+                   end: %{time: 32400}
                  }
                ]
              } = Load.run(run_key, activities, trips)

@@ -17,11 +17,17 @@ export interface Break {
   endTime: Time
 }
 
+export interface AsDirected {
+  kind: "wad" | "rad"
+  startTime: Time
+  endTime: Time
+}
+
 export interface Piece {
   runId: RunId
-  blockId: BlockId
+  blockId: BlockId | null
   start: SignOnOff
-  trips: Trip[]
+  trips: (Trip | AsDirected)[]
   end: SignOnOff
 }
 
