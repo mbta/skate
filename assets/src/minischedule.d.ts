@@ -1,9 +1,11 @@
 import { RunId } from "./realtime"
 import { BlockId, DirectionId, RouteId, TripId, ViaVariant } from "./schedule"
 
+export type Activity = Break | Piece
+
 export interface Run {
   id: RunId
-  activities: (Break | Piece)[]
+  activities: Activity[]
 }
 
 export interface Block {
