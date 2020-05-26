@@ -154,7 +154,7 @@ defmodule Realtime.BlockWaiverTest do
         @trip1stop1Update
         | cause_id: 33,
           cause_description: "T - Inactive TM",
-          remark: "T - Inactive TM:",
+          remark: "T - Inactive TM:"
       }
 
       stop_time_updates_by_trip = %{
