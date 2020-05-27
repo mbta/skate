@@ -43,7 +43,7 @@ defmodule Schedule.Block do
   @doc """
   Whether the block is active at any time during the time_of_day range.
   """
-  @spec is_active(t(), Util.Time.time_of_day(), Util.Time.time_of_day()) :: bool
+  @spec is_active(t(), Util.Time.time_of_day(), Util.Time.time_of_day()) :: boolean()
   def is_active(block, start_time_of_day, end_time_of_day) do
     end_time_of_day > start_time(block) and
       start_time_of_day < end_time(block)

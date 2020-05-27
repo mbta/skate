@@ -19,7 +19,7 @@ defmodule Helpers do
   iex> Helpers.filter_values(%{a: 1, b: 2}, fn x -> x == 1 end)
   %{a: 1}
   """
-  @spec filter_values(%{optional(key) => value}, (value -> bool())) :: %{optional(key) => value}
+  @spec filter_values(%{optional(key) => value}, (value -> boolean())) :: %{optional(key) => value}
         when key: any(), value: any()
   def filter_values(map, f) do
     map
