@@ -52,7 +52,7 @@ export const MinischeduleRun = ({ vehicleOrGhost }: Props): ReactElement => {
               key={activity.start.time}
             />
           ) : (
-            <Break break={activity} key={activity.startTime} />
+            <BreakRow break={activity} key={activity.startTime} />
           )
         )}
       </>
@@ -93,13 +93,15 @@ const Header = ({ label, value }: { label: string; value: string }) => (
   </div>
 )
 
-const Break = ({ break: breakk }: { break: Break }) => {
+export const BreakRow = ({ break: breakk }: { break: Break }) => {
   const formattedBreakTime = formattedDuration(
     breakk.endTime - breakk.startTime
   )
-  return (
-    <Row text={`Break (${breakk.breakType})`} rightText={formattedBreakTime} />
-  )
+  const isPaid: boolean | null = breakIsPaid(breakk.breakType)
+  const isPaidText: string =
+    isPaid === null ? "" : isPaid ? " (Paid)" : " (Unpaid)"
+  const text: string = breakDisplayText(breakk.breakType) + isPaidText
+  return <Row text={text} rightText={formattedBreakTime} />
 }
 
 const Layover = ({
@@ -371,3 +373,35 @@ const isAsDirected = (trip: Trip | AsDirected): trip is AsDirected =>
 
 const isDeadhead = (trip: Trip | AsDirected): boolean =>
   isTrip(trip) && trip.routeId == null
+
+const breakDisplayText = (breakType: string): string => {
+  switch (breakType) {
+    case "Split break":
+    case "Paid meal after":
+    case "Paid meal before":
+      return "Break"
+    case "Travel from":
+    case "Travel to":
+      return "Travel"
+    default:
+      return breakType
+  }
+}
+
+/** null means unrecognized break type, and we're not sure if it's paid
+ */
+const breakIsPaid = (breakType: string): boolean | null => {
+  switch (breakType) {
+    case "Split break":
+      return false
+    case "Paid meal after":
+    case "Paid meal before":
+    case "Travel from":
+    case "Travel to":
+    case "Joinup":
+    case "Technical break":
+      return true
+    default:
+      return null
+  }
+}
