@@ -37,7 +37,8 @@ defmodule Realtime.DataStatus do
     age_seconds < 150
   end
 
-  @spec count_partition([element], (element -> boolean())) :: {non_neg_integer(), non_neg_integer()}
+  @spec count_partition([element], (element -> boolean())) ::
+          {non_neg_integer(), non_neg_integer()}
         when element: term()
   defp count_partition(list, predicate) do
     Enum.reduce(list, {0, 0}, fn element, {prev_trues, prev_falses} ->
