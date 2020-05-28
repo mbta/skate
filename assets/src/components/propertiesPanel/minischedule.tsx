@@ -1,6 +1,6 @@
 import React, { ReactElement, useContext } from "react"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
-import { className, MaybeString } from "../../helpers/dom"
+import { className } from "../../helpers/dom"
 import {
   busFrontIcon,
   busRearIcon,
@@ -123,11 +123,7 @@ const Break = ({ break: breakk }: { break: Break }) => {
     breakk.endTime - breakk.startTime
   )
   return (
-    <Row
-      text={`Break (${breakk.breakType})`}
-      rightText={formattedBreakTime}
-      extraClasses={[]}
-    />
+    <Row text={`Break (${breakk.breakType})`} rightText={formattedBreakTime} />
   )
 }
 
@@ -204,7 +200,6 @@ const Piece = ({
             : "Swing On"
         }
         rightText={formattedScheduledTime(piece.start.time)}
-        extraClasses={[]}
       />
       {piece.trips.map((trip, index) => {
         const sequence: "first" | "middle" | "last" =
@@ -245,7 +240,6 @@ const Piece = ({
             : "Swing Off"
         }
         rightText={formattedScheduledTime(piece.end.time)}
-        extraClasses={[]}
       />
     </div>
   </>
@@ -370,7 +364,6 @@ const AsDirected = ({ asDirected }: { asDirected: AsDirected }) => (
     icon={busFrontIcon()}
     text={asDirected.kind === "rad" ? "Run as directed" : "Work as directed"}
     rightText={formattedScheduledTime(asDirected.startTime)}
-    extraClasses={[]}
   />
 )
 
@@ -383,9 +376,9 @@ const Row = ({
   icon?: ReactElement
   text: string | ReactElement
   rightText?: string
-  extraClasses: MaybeString[]
+  extraClasses?: string[]
 }) => (
-  <div className={className(["m-minischedule__row", ...extraClasses])}>
+  <div className={className(["m-minischedule__row", ...(extraClasses || [])])}>
     <div className="m-minischedule__icon">{icon}</div>
     <div className="m-minischedule__left-text">{text}</div>
     {rightText && <div className="m-minischedule__right-text">{rightText}</div>}
