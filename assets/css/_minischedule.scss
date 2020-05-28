@@ -37,6 +37,7 @@
   margin-right: 0.5rem;
   padding: 0.25rem;
   width: 1rem;
+  z-index: 2;
 
   &:not(:empty) {
     background-color: $color-primary;
@@ -71,8 +72,6 @@
       position: absolute;
       width: 0.5rem;
       left: 1rem;
-      // force the line to draw below the icons
-      z-index: -1;
     }
   }
 
@@ -90,5 +89,23 @@
       content: "";
       top: 50%;
     }
+  }
+}
+
+.m-minischedule__row--current {
+  &.early {
+    background-color: $color-vehicle-early;
+  }
+
+  &.ghost {
+    background-color: $color-secondary-medium;
+  }
+
+  &.late {
+    background-color: $color-vehicle-late;
+  }
+
+  &.on-time {
+    background-color: $color-vehicle-ontime;
   }
 }

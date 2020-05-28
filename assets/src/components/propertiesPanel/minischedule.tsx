@@ -22,15 +22,19 @@ import {
   LadderDirections,
   VehicleDirection,
 } from "../../models/ladderDirection"
-import { DirectionId, RouteId, TripId } from "../../schedule"
+import { drawnStatus } from "../../models/vehicleStatus"
+import { RouteStatus, VehicleOrGhost } from "../../realtime"
+import { DirectionId, RouteId } from "../../schedule"
 import { formattedDuration, formattedScheduledTime } from "../../util/dateTime"
 import Loading from "../loading"
 
 export interface Props {
-  activeTripId: TripId
+  vehicleOrGhost: VehicleOrGhost
 }
-export const MinischeduleRun = ({ activeTripId }: Props): ReactElement => {
-  const run: Run | null | undefined = useMinischeduleRun(activeTripId)
+
+export const MinischeduleRun = ({ vehicleOrGhost }: Props): ReactElement => {
+  const run: Run | null | undefined = useMinischeduleRun(vehicleOrGhost.tripId!)
+
   if (run === undefined) {
     return <Loading />
   } else if (run === null) {
@@ -41,7 +45,12 @@ export const MinischeduleRun = ({ activeTripId }: Props): ReactElement => {
         <Header label="Run" value={run.id} />
         {run.activities.map((activity) =>
           isPiece(activity) ? (
-            <Piece piece={activity} view="run" key={activity.start.time} />
+            <Piece
+              piece={activity}
+              view="run"
+              vehicleOrGhost={vehicleOrGhost}
+              key={activity.start.time}
+            />
           ) : (
             <Break break={activity} key={activity.startTime} />
           )
@@ -51,8 +60,11 @@ export const MinischeduleRun = ({ activeTripId }: Props): ReactElement => {
   }
 }
 
-export const MinischeduleBlock = ({ activeTripId }: Props): ReactElement => {
-  const block: Block | null | undefined = useMinischeduleBlock(activeTripId)
+export const MinischeduleBlock = ({ vehicleOrGhost }: Props): ReactElement => {
+  const block: Block | null | undefined = useMinischeduleBlock(
+    vehicleOrGhost.tripId!
+  )
+
   if (block === undefined) {
     return <Loading />
   } else if (block === null) {
@@ -62,7 +74,12 @@ export const MinischeduleBlock = ({ activeTripId }: Props): ReactElement => {
       <>
         <Header label="Block" value={block.id} />
         {block.pieces.map((piece) => (
-          <Piece piece={piece} view="block" key={piece.start.time} />
+          <Piece
+            piece={piece}
+            view={"block"}
+            vehicleOrGhost={vehicleOrGhost}
+            key={piece.start.time}
+          />
         ))}
       </>
     )
@@ -88,9 +105,11 @@ const Break = ({ break: breakk }: { break: Break }) => {
 const Layover = ({
   currentTrip,
   nextTrip,
+  vehicleOrGhost,
 }: {
   currentTrip: Trip | AsDirected
   nextTrip?: Trip | AsDirected
+  vehicleOrGhost: VehicleOrGhost
 }) => {
   if (!nextTrip) {
     return null
@@ -100,16 +119,46 @@ const Layover = ({
     return null
   }
 
+  const extraClasses = currentClasses(nextTrip, vehicleOrGhost, "laying_over")
+
   return (
     <Row
       text="Layover"
       rightText={formattedDuration(layoverDuration)}
-      extraClasses="m-minischedule__layover-row"
+      extraClasses={["m-minischedule__layover-row", ...extraClasses]}
     />
   )
 }
 
-const Piece = ({ piece, view }: { piece: Piece; view: "run" | "block" }) => (
+const currentClasses: (
+  nextTrip: Trip | AsDirected,
+  vehicleOrGhost: VehicleOrGhost,
+  requiredStatus: RouteStatus
+) => string[] = (nextTrip, vehicleOrGhost, requiredStatus) => {
+  if (isAsDirected(nextTrip)) {
+    return []
+  }
+
+  if (vehicleOrGhost.routeStatus !== requiredStatus) {
+    return []
+  }
+
+  if (nextTrip.id !== vehicleOrGhost.tripId) {
+    return []
+  }
+
+  return ["m-minischedule__row--current", drawnStatus(vehicleOrGhost)]
+}
+
+const Piece = ({
+  piece,
+  view,
+  vehicleOrGhost,
+}: {
+  piece: Piece
+  view: "run" | "block"
+  vehicleOrGhost: VehicleOrGhost
+}) => (
   <>
     {view === "block" ? (
       <div className="m-minischedule__run-header">{piece.runId}</div>
@@ -137,12 +186,20 @@ const Piece = ({ piece, view }: { piece: Piece; view: "run" | "block" }) => (
         return (
           <React.Fragment key={trip.startTime}>
             {isTrip(trip) ? (
-              <Trip trip={trip} sequence={sequence} />
+              <Trip
+                trip={trip}
+                sequence={sequence}
+                vehicleOrGhost={vehicleOrGhost}
+              />
             ) : (
               <AsDirected asDirected={trip} />
             )}
             {view === "run" ? (
-              <Layover currentTrip={trip} nextTrip={piece.trips[index + 1]} />
+              <Layover
+                currentTrip={trip}
+                nextTrip={piece.trips[index + 1]}
+                vehicleOrGhost={vehicleOrGhost}
+              />
             ) : null}
           </React.Fragment>
         )
@@ -166,32 +223,62 @@ const Piece = ({ piece, view }: { piece: Piece; view: "run" | "block" }) => (
 const Trip = ({
   trip,
   sequence,
+  vehicleOrGhost,
 }: {
   trip: Trip
   sequence: "first" | "middle" | "last"
+  vehicleOrGhost: VehicleOrGhost
 }) => {
   if (isDeadhead(trip)) {
-    return <DeadheadTrip trip={trip} sequence={sequence} />
+    return (
+      <DeadheadTrip
+        trip={trip}
+        sequence={sequence}
+        vehicleOrGhost={vehicleOrGhost}
+      />
+    )
   } else {
-    return <RevenueTrip trip={trip} />
+    return <RevenueTrip trip={trip} vehicleOrGhost={vehicleOrGhost} />
   }
 }
 
 const DeadheadTrip = ({
   trip,
   sequence,
+  vehicleOrGhost,
 }: {
   trip: Trip
   sequence: "first" | "middle" | "last"
+  vehicleOrGhost: VehicleOrGhost
 }) => {
+  const extraClasses = currentClasses(trip, vehicleOrGhost, "on_route")
   const startTime: string = formattedScheduledTime(trip.startTime)
   if (sequence === "first") {
-    return <Row icon={busFrontIcon()} text={"Pull Out"} rightText={startTime} />
+    return (
+      <Row
+        icon={busFrontIcon()}
+        text={"Pull Out"}
+        rightText={startTime}
+        extraClasses={extraClasses}
+      />
+    )
   } else if (sequence === "last") {
-    return <Row icon={busRearIcon()} text={"Pull Back"} rightText={startTime} />
+    return (
+      <Row
+        icon={busRearIcon()}
+        text={"Pull Back"}
+        rightText={startTime}
+        extraClasses={extraClasses}
+      />
+    )
   } else {
     return (
-      <Row icon={filledCircleIcon()} text={"Deadhead"} rightText={startTime} />
+      <Row
+        icon={filledCircleIcon()}
+        text={"Deadhead"}
+        rightText={startTime}
+        extraClasses={extraClasses}
+      />
     )
   }
 }
@@ -214,7 +301,13 @@ const iconForDirectionOnLadder: (
   return triangleUpIcon()
 }
 
-const RevenueTrip = ({ trip }: { trip: Trip }) => {
+const RevenueTrip = ({
+  trip,
+  vehicleOrGhost,
+}: {
+  trip: Trip
+  vehicleOrGhost: VehicleOrGhost
+}) => {
   const startTime: string = formattedScheduledTime(trip.startTime)
   const formattedVariant: string =
     trip.viaVariant !== null && trip.viaVariant !== "_" ? trip.viaVariant : ""
@@ -236,6 +329,7 @@ const RevenueTrip = ({ trip }: { trip: Trip }) => {
         </>
       }
       rightText={startTime}
+      extraClasses={currentClasses(trip, vehicleOrGhost, "on_route")}
     />
   )
 }
@@ -257,9 +351,9 @@ const Row = ({
   icon?: ReactElement
   text: string | ReactElement
   rightText?: string
-  extraClasses?: string
+  extraClasses?: string[]
 }) => (
-  <div className={className(["m-minischedule__row", extraClasses])}>
+  <div className={className(["m-minischedule__row", ...(extraClasses || [])])}>
     <div className="m-minischedule__icon">{icon}</div>
     <div className="m-minischedule__left-text">{text}</div>
     {rightText && <div className="m-minischedule__right-text">{rightText}</div>}

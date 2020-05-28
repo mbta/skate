@@ -2,10 +2,10 @@ import React from "react"
 import { hasBlockWaiver } from "../../models/blockWaiver"
 import { Ghost } from "../../realtime"
 import { Route } from "../../schedule"
+import IconAlertCircle, { AlertIconStyle } from "../iconAlertCircle"
 import PropertiesList from "../propertiesList"
 import BlockWaiverList from "./blockWaiverList"
 import Header from "./header"
-import IconAlertCircle, { AlertIconStyle } from "../iconAlertCircle"
 import StatusRunBlockTabs from "./status_run_block_tabs"
 
 interface Props {
@@ -40,7 +40,7 @@ const GhostPropertiesPanel = ({ selectedGhost, route }: Props) => (
     )}
 
     <StatusRunBlockTabs
-      activeTripId={selectedGhost.tripId}
+      vehicleOrGhost={selectedGhost}
       statusContent={<PropertiesList vehicleOrGhost={selectedGhost} />}
     />
   </div>
