@@ -32,7 +32,7 @@ defmodule SkateWeb.ShuttleController do
     Map.put(route, :name, name)
   end
 
-  @spec has_shape?(Route.t()) :: bool()
+  @spec has_shape?(Route.t()) :: boolean()
   defp has_shape?(route) do
     shapes_fn = Application.get_env(:skate_web, :shapes_fn, &Schedule.shapes/1)
     length(shapes_fn.(route.id)) > 0

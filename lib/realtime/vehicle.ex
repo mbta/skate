@@ -368,7 +368,7 @@ defmodule Realtime.Vehicle do
     end
   end
 
-  @spec first_stop_on_trip?(Stop.id(), Trip.t()) :: bool()
+  @spec first_stop_on_trip?(Stop.id(), Trip.t()) :: boolean()
   defp first_stop_on_trip?(stop_id, trip) do
     stop_id == List.first(trip.stop_times).stop_id
   end

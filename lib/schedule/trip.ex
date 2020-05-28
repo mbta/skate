@@ -94,7 +94,7 @@ defmodule Schedule.Trip do
   @doc """
   Whether the trip is active at any time during the time_of_day range.
   """
-  @spec is_active(t(), Util.Time.time_of_day(), Util.Time.time_of_day()) :: bool
+  @spec is_active(t(), Util.Time.time_of_day(), Util.Time.time_of_day()) :: boolean()
   def is_active(trip, start_time_of_day, end_time_of_day) do
     end_time_of_day > trip.start_time and
       start_time_of_day < trip.end_time
