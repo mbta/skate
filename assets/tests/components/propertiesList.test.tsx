@@ -198,7 +198,7 @@ describe("Highlighted", () => {
 describe("formattedLogonTime", () => {
   test("formats the logon time relative to now, and with the actual time", () => {
     const logonTime = new Date("2018-08-15T13:38:21.000Z")
-    const expected = "4h 3m; 1:38pm"
+    const expected = "4 hr 3 min; 1:38 PM"
 
     expect(formattedLogonTime(logonTime)).toEqual(expected)
   })

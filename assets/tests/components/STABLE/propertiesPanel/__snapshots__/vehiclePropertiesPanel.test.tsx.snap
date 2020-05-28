@@ -182,7 +182,7 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
           <td
             className="m-properties-list__property-value"
           >
-            4h 3m; 1:38pm
+            4 hr 3 min; 1:38 PM
           </td>
         </tr>
       </tbody>
@@ -414,7 +414,7 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
           <td
             className="m-properties-list__property-value"
           >
-            4h 3m; 1:38pm
+            4 hr 3 min; 1:38 PM
           </td>
         </tr>
       </tbody>
@@ -646,7 +646,7 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
           <td
             className="m-properties-list__property-value"
           >
-            4h 3m; 1:38pm
+            4 hr 3 min; 1:38 PM
           </td>
         </tr>
       </tbody>
@@ -845,7 +845,7 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
           <td
             className="m-properties-list__property-value"
           >
-            4h 3m; 1:38pm
+            4 hr 3 min; 1:38 PM
           </td>
         </tr>
       </tbody>
@@ -1097,7 +1097,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
             <td
               className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--start-time"
             >
-              5:05am
+              5:05 AM
             </td>
           </tr>
           <tr>
@@ -1109,7 +1109,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
             <td
               className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--end-time"
             >
-              12:38pm
+              12:38 PM
             </td>
           </tr>
         </tbody>
@@ -1176,7 +1176,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
           <td
             className="m-properties-list__property-value"
           >
-            4h 3m; 1:38pm
+            4 hr 3 min; 1:38 PM
           </td>
         </tr>
       </tbody>
@@ -1408,7 +1408,7 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
           <td
             className="m-properties-list__property-value"
           >
-            4h 3m; 1:38pm
+            4 hr 3 min; 1:38 PM
           </td>
         </tr>
       </tbody>
@@ -1650,7 +1650,7 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
           <td
             className="m-properties-list__property-value"
           >
-            4h 3m; 1:38pm
+            4 hr 3 min; 1:38 PM
           </td>
         </tr>
       </tbody>
@@ -1886,7 +1886,7 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
           <td
             className="m-properties-list__property-value"
           >
-            4h 3m; 1:38pm
+            4 hr 3 min; 1:38 PM
           </td>
         </tr>
       </tbody>

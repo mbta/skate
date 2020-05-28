@@ -1,9 +1,8 @@
 import {
-  ampm,
   dateFromEpochSeconds,
+  formattedHoursMinutes,
   formattedTime,
   formattedTimeDiff,
-  hours12,
   now,
   formattedScheduledTime,
 } from "../../src/util/dateTime"
@@ -26,14 +25,16 @@ describe("dateFromEpochSeconds", () => {
 describe("formattedTime", () => {
   test("returns a formatted string version of the time", () => {
     expect(formattedTime(new Date("Februrary 18, 2020 0:38"))).toEqual(
-      "12:38am"
+      "12:38 AM"
     )
-    expect(formattedTime(new Date("Februrary 18, 2020 9:38"))).toEqual("9:38am")
+    expect(formattedTime(new Date("Februrary 18, 2020 9:38"))).toEqual(
+      "9:38 AM"
+    )
     expect(formattedTime(new Date("Februrary 18, 2020 12:38"))).toEqual(
-      "12:38pm"
+      "12:38 PM"
     )
     expect(formattedTime(new Date("Februrary 18, 2020 21:08"))).toEqual(
-      "9:08pm"
+      "9:08 PM"
     )
   })
 })
@@ -43,7 +44,7 @@ describe("formattedTimeDiff", () => {
     const a: Date = new Date("Februrary 18, 2020 14:42")
     const b: Date = new Date("Februrary 18, 2020 9:38")
 
-    const expected: string = "5h 4m"
+    const expected: string = "5 hr 4 min"
 
     expect(formattedTimeDiff(a, b)).toEqual(expected)
   })
@@ -52,7 +53,7 @@ describe("formattedTimeDiff", () => {
     const a: Date = new Date("Februrary 18, 2020 2:00")
     const b: Date = new Date("Februrary 18, 2020 1:01")
 
-    const expected: string = "59m"
+    const expected: string = "59 min"
 
     expect(formattedTimeDiff(a, b)).toEqual(expected)
   })
@@ -60,33 +61,41 @@ describe("formattedTimeDiff", () => {
 
 describe("formattedScheduledTime", () => {
   test("formats time", () => {
-    expect(formattedScheduledTime(0)).toEqual("12:00am")
-    expect(formattedScheduledTime(34100)).toEqual("9:28am")
-    expect(formattedScheduledTime(43200)).toEqual("12:00pm")
-    expect(formattedScheduledTime(47100)).toEqual("1:05pm")
-    expect(formattedScheduledTime(86400)).toEqual("12:00am")
-    expect(formattedScheduledTime(90900)).toEqual("1:15am")
+    expect(formattedScheduledTime(0)).toEqual("12:00 AM")
+    expect(formattedScheduledTime(34100)).toEqual("9:28 AM")
+    expect(formattedScheduledTime(43200)).toEqual("12:00 PM")
+    expect(formattedScheduledTime(47100)).toEqual("1:05 PM")
+    expect(formattedScheduledTime(86400)).toEqual("12:00 AM")
+    expect(formattedScheduledTime(90900)).toEqual("1:15 AM")
   })
 })
 
-describe("hours12", () => {
-  test("returns the 12-hour version of the 24-hour-plus hour", () => {
-    expect(hours12(0)).toEqual(12)
-    expect(hours12(5)).toEqual(5)
-    expect(hours12(12)).toEqual(12)
-    expect(hours12(13)).toEqual(1)
-    expect(hours12(24)).toEqual(12)
-    expect(hours12(25)).toEqual(1)
+describe("formattedHoursMinutes", () => {
+  test("works at midnight 00:00", () => {
+    expect(formattedHoursMinutes(0, 0)).toEqual("12:00 AM")
   })
-})
 
-describe("ampm", () => {
-  test("returns whether a 24-hour-plus hours number represents 'am' or 'pm'", () => {
-    expect(ampm(0)).toEqual("am")
-    expect(ampm(9)).toEqual("am")
-    expect(ampm(12)).toEqual("pm")
-    expect(ampm(21)).toEqual("pm")
-    expect(ampm(24)).toEqual("am")
-    expect(ampm(25)).toEqual("am")
+  test("works in am", () => {
+    expect(formattedHoursMinutes(10, 55)).toEqual("10:55 AM")
+  })
+
+  test("works at noon", () => {
+    expect(formattedHoursMinutes(12, 0)).toEqual("12:00 PM")
+  })
+
+  test("works in pm", () => {
+    expect(formattedHoursMinutes(22, 55)).toEqual("10:55 PM")
+  })
+
+  test("works at midnight 24:00", () => {
+    expect(formattedHoursMinutes(24, 0)).toEqual("12:00 AM")
+  })
+
+  test("works after midnight", () => {
+    expect(formattedHoursMinutes(25, 55)).toEqual("1:55 AM")
+  })
+
+  test("zero pads short minutes, but not hours", () => {
+    expect(formattedHoursMinutes(5, 5)).toEqual("5:05 AM")
   })
 })
