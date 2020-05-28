@@ -23,7 +23,9 @@ defmodule Schedule.Trip do
           run_id: Run.id() | nil,
           stop_times: [StopTime.t()],
           start_time: Util.Time.time_of_day(),
-          end_time: Util.Time.time_of_day()
+          end_time: Util.Time.time_of_day(),
+          start_place: String.t(),
+          end_place: String.t()
         }
 
   @enforce_keys [
@@ -46,7 +48,9 @@ defmodule Schedule.Trip do
     run_id: nil,
     stop_times: [],
     start_time: 0,
-    end_time: 0
+    end_time: 0,
+    start_place: "",
+    end_place: ""
   ]
 
   @spec merge_trips([Gtfs.Trip.t()], [Hastus.Trip.t()], StopTime.by_trip_id()) :: by_id()
@@ -87,7 +91,9 @@ defmodule Schedule.Trip do
       run_id: hastus_trip && hastus_trip.run_id,
       stop_times: stop_times || [],
       start_time: start_time,
-      end_time: end_time
+      end_time: end_time,
+      start_place: hastus_trip && hastus_trip.start_place,
+      end_place: hastus_trip && hastus_trip.end_place
     }
   end
 

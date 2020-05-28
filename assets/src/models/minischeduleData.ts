@@ -11,9 +11,11 @@ import {
 import { RunId } from "../realtime"
 import { BlockId, DirectionId, RouteId, TripId, ViaVariant } from "../schedule"
 
+type ActivityData = BreakData | PieceData
+
 interface RunData {
   id: RunId
-  activities: (BreakData | PieceData)[]
+  activities: ActivityData[]
 }
 
 interface BlockData {
@@ -57,6 +59,8 @@ interface TripData {
   run_id: RunId | null
   start_time: Time
   end_time: Time
+  start_place: string
+  end_place: string
 }
 
 const isBreakData = (
@@ -109,6 +113,8 @@ const tripFromData = (tripData: TripData): Trip => ({
   runId: tripData.run_id,
   startTime: tripData.start_time,
   endTime: tripData.end_time,
+  startPlace: tripData.start_place,
+  endPlace: tripData.end_place,
 })
 
 const asDirectedFromData = (asDirectedData: AsDirectedData): AsDirected => ({

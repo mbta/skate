@@ -49,6 +49,8 @@ export interface Trip {
   runId: RunId | null
   startTime: Time
   endTime: Time
+  startPlace: string
+  endPlace: string
 }
 
 export type Time = number

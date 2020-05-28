@@ -51,6 +51,7 @@ defmodule Schedule.Minischedule.Piece do
       Enum.map(trip_ids, fn
         trip_id when is_binary(trip_id) ->
           full_trip = trips_by_id[trip_id]
+
           Trip.from_full_trip(full_trip)
 
         %Trip{} = trip ->

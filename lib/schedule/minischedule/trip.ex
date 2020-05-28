@@ -14,7 +14,9 @@ defmodule Schedule.Minischedule.Trip do
           via_variant: RoutePattern.via_variant() | nil,
           run_id: Run.id() | nil,
           start_time: Util.Time.time_of_day(),
-          end_time: Util.Time.time_of_day()
+          end_time: Util.Time.time_of_day(),
+          start_place: String.t(),
+          end_place: String.t()
         }
 
   @enforce_keys [
@@ -33,7 +35,9 @@ defmodule Schedule.Minischedule.Trip do
     via_variant: nil,
     run_id: nil,
     start_time: 0,
-    end_time: 0
+    end_time: 0,
+    start_place: "",
+    end_place: ""
   ]
 
   @spec from_full_trip(Schedule.Trip.t()) :: t()
@@ -47,7 +51,9 @@ defmodule Schedule.Minischedule.Trip do
       via_variant: trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id),
       run_id: trip.run_id,
       start_time: trip.start_time,
-      end_time: trip.end_time
+      end_time: trip.end_time,
+      start_place: trip.start_place,
+      end_place: trip.end_place
     }
   end
 

@@ -272,6 +272,7 @@ const DeadheadTrip = ({
         icon={busFrontIcon()}
         text={"Pull out"}
         rightText={startTime}
+        belowText={trip.startPlace}
         extraClasses={extraClasses}
       />
     )
@@ -281,6 +282,7 @@ const DeadheadTrip = ({
         icon={busRearIcon()}
         text={"Pull back"}
         rightText={startTime}
+        belowText={trip.endPlace}
         extraClasses={extraClasses}
       />
     )
@@ -290,6 +292,7 @@ const DeadheadTrip = ({
         icon={filledCircleIcon()}
         text={"Deadhead"}
         rightText={startTime}
+        belowText={trip.endPlace}
         extraClasses={extraClasses}
       />
     )
@@ -358,16 +361,26 @@ const Row = ({
   icon,
   text,
   rightText,
+  belowText,
   extraClasses,
 }: {
   icon?: ReactElement
   text: string
   rightText?: string
+  belowText?: string
   extraClasses?: string[]
 }) => (
   <div className={className(["m-minischedule__row", ...(extraClasses || [])])}>
     <div className="m-minischedule__icon">{icon}</div>
-    <div className="m-minischedule__left-text">{text}</div>
+    <div className="m-minischedule__left-text">
+      {text}
+      {belowText && (
+        <>
+          <br />
+          {belowText}
+        </>
+      )}
+    </div>
     {rightText && <div className="m-minischedule__right-text">{rightText}</div>}
   </div>
 )
