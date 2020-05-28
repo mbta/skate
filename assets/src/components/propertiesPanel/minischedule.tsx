@@ -31,7 +31,7 @@ import {
   VehicleDirection,
 } from "../../models/ladderDirection"
 import { drawnStatus } from "../../models/vehicleStatus"
-import { VehicleOrGhost } from "../../realtime"
+import { RouteStatus, VehicleOrGhost } from "../../realtime"
 import { DirectionId, RouteId } from "../../schedule"
 import { formattedDuration, formattedScheduledTime } from "../../util/dateTime"
 import Loading from "../loading"
@@ -148,26 +148,27 @@ const Layover = ({
     return null
   }
 
-  const currentClasses = currentLayoverClasses(nextTrip, vehicleOrGhost)
+  const extraClasses = currentClasses(nextTrip, vehicleOrGhost, "laying_over")
 
   return (
     <Row
       text="Layover"
       rightText={formattedDuration(layoverDuration)}
-      extraClasses={["m-minischedule__layover-row", ...currentClasses]}
+      extraClasses={["m-minischedule__layover-row", ...extraClasses]}
     />
   )
 }
 
-const currentLayoverClasses: (
+const currentClasses: (
   nextTrip: Trip | AsDirected,
-  vehicleOrGhost: VehicleOrGhost
-) => string[] = (nextTrip, vehicleOrGhost) => {
+  vehicleOrGhost: VehicleOrGhost,
+  requiredStatus: RouteStatus
+) => string[] = (nextTrip, vehicleOrGhost, requiredStatus) => {
   if (isAsDirected(nextTrip)) {
     return []
   }
 
-  if (vehicleOrGhost.routeStatus !== "laying_over") {
+  if (vehicleOrGhost.routeStatus !== requiredStatus) {
     return []
   }
 
@@ -175,10 +176,7 @@ const currentLayoverClasses: (
     return []
   }
 
-  return [
-    "m-minischedule__row--current-layover",
-    `m-minischedule__row--current-layover-${drawnStatus(vehicleOrGhost)}`,
-  ]
+  return ["m-minischedule__row--current", drawnStatus(vehicleOrGhost)]
 }
 
 const Piece = ({
@@ -284,7 +282,7 @@ const DeadheadTrip = ({
   sequence: "first" | "middle" | "last"
   vehicleOrGhost: VehicleOrGhost
 }) => {
-  const currentClasses = currentTripClasses(trip, vehicleOrGhost)
+  const extraClasses = currentClasses(trip, vehicleOrGhost, "on_route")
   const startTime: string = formattedScheduledTime(trip.startTime)
   if (sequence === "first") {
     return (
@@ -292,7 +290,7 @@ const DeadheadTrip = ({
         icon={busFrontIcon()}
         text={"Pull Out"}
         rightText={startTime}
-        extraClasses={currentClasses}
+        extraClasses={extraClasses}
       />
     )
   } else if (sequence === "last") {
@@ -301,7 +299,7 @@ const DeadheadTrip = ({
         icon={busRearIcon()}
         text={"Pull Back"}
         rightText={startTime}
-        extraClasses={currentClasses}
+        extraClasses={extraClasses}
       />
     )
   } else {
@@ -310,28 +308,10 @@ const DeadheadTrip = ({
         icon={filledCircleIcon()}
         text={"Deadhead"}
         rightText={startTime}
-        extraClasses={currentClasses}
+        extraClasses={extraClasses}
       />
     )
   }
-}
-
-const currentTripClasses: (
-  currentTrip: Trip,
-  vehicleOrGhost: VehicleOrGhost
-) => string[] = (currentTrip, vehicleOrGhost) => {
-  if (currentTrip.id !== vehicleOrGhost.tripId) {
-    return []
-  }
-
-  if (vehicleOrGhost.routeStatus !== "on_route") {
-    return []
-  }
-
-  return [
-    "m-minischedule__row--current-trip",
-    `m-minischedule__row--current-trip-${drawnStatus(vehicleOrGhost)}`,
-  ]
 }
 
 const iconForDirectionOnLadder: (
@@ -380,7 +360,7 @@ const RevenueTrip = ({
         </>
       }
       rightText={startTime}
-      extraClasses={currentTripClasses(trip, vehicleOrGhost)}
+      extraClasses={currentClasses(trip, vehicleOrGhost, "on_route")}
     />
   )
 }
