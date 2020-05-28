@@ -15,15 +15,7 @@ import {
   useMinischeduleBlock,
   useMinischeduleRun,
 } from "../../hooks/useMinischedule"
-import {
-  Activity,
-  AsDirected,
-  Block,
-  Break,
-  Piece,
-  Run,
-  Trip,
-} from "../../minischedule"
+import { AsDirected, Block, Break, Piece, Run, Trip } from "../../minischedule"
 import {
   directionOnLadder,
   getLadderDirectionForRoute,
@@ -51,11 +43,18 @@ export const MinischeduleRun = ({ vehicleOrGhost }: Props): ReactElement => {
     return (
       <>
         <Header label="Run" value={run.id} />
-        <ActivityWrapper
-          activities={run.activities}
-          vehicleOrGhost={vehicleOrGhost}
-          view="run"
-        />
+        {run.activities.map((activity) =>
+          isPiece(activity) ? (
+            <Piece
+              piece={activity}
+              view="run"
+              vehicleOrGhost={vehicleOrGhost}
+              key={activity.start.time}
+            />
+          ) : (
+            <Break break={activity} key={activity.startTime} />
+          )
+        )}
       </>
     )
   }
@@ -74,41 +73,17 @@ export const MinischeduleBlock = ({ vehicleOrGhost }: Props): ReactElement => {
     return (
       <>
         <Header label="Block" value={block.id} />
-        <ActivityWrapper
-          activities={block.pieces}
-          vehicleOrGhost={vehicleOrGhost}
-          view="block"
-        />
+        {block.pieces.map((piece) => (
+          <Piece
+            piece={piece}
+            view={"block"}
+            vehicleOrGhost={vehicleOrGhost}
+            key={piece.start.time}
+          />
+        ))}
       </>
     )
   }
-}
-
-const ActivityWrapper = ({
-  activities,
-  vehicleOrGhost,
-  view,
-}: {
-  activities: Activity[]
-  vehicleOrGhost: VehicleOrGhost
-  view: "block" | "run"
-}) => {
-  return (
-    <>
-      {activities.map((activity) =>
-        isPiece(activity) ? (
-          <Piece
-            piece={activity}
-            view={view}
-            vehicleOrGhost={vehicleOrGhost}
-            key={activity.start.time}
-          />
-        ) : (
-          <Break break={activity} key={activity.startTime} />
-        )
-      )}
-    </>
-  )
 }
 
 const Header = ({ label, value }: { label: string; value: string }) => (
