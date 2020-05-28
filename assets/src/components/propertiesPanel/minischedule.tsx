@@ -172,13 +172,21 @@ const Piece = ({
       {view === "block" ? (
         <div className="m-minischedule__run-header">{piece.runId}</div>
       ) : null}
-      <div className="m-minischedule__piece-rows">
+      {isSwingOn ? null : (
         <Row
-          key="sign-on"
-          icon={plusIcon()}
-          text={isSwingOn ? "Swing on" : "Start time"}
+          text="Start time"
           rightText={formattedScheduledTime(piece.start.time)}
         />
+      )}
+      <div className="m-minischedule__piece-rows">
+        {isSwingOn ? (
+          <Row
+            key="swing-on"
+            icon={plusIcon()}
+            text="Swing on"
+            rightText={formattedScheduledTime(piece.start.time)}
+          />
+        ) : null}
         {piece.trips.map((trip, index) => {
           const sequence: "first" | "middle" | "last" =
             index === 0
@@ -207,13 +215,18 @@ const Piece = ({
             </React.Fragment>
           )
         })}
-        <Row
-          key="sign-off"
-          icon={minusIcon()}
-          text={isSwingOff ? "Swing off" : "Done"}
-          rightText={formattedScheduledTime(piece.end.time)}
-        />
+        {isSwingOff ? (
+          <Row
+            key="swing-off"
+            icon={minusIcon()}
+            text="Swing off"
+            rightText={formattedScheduledTime(piece.end.time)}
+          />
+        ) : null}
       </div>
+      {isSwingOff ? null : (
+        <Row text="Done" rightText={formattedScheduledTime(piece.end.time)} />
+      )}
     </>
   )
 }
