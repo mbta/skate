@@ -1,5 +1,5 @@
 .m-minischedule__header {
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
 }
 
 .m-minischedule__header-label {
@@ -9,13 +9,15 @@
 
 .m-minischedule__run-header {
   background-color: $color-bg-light;
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
 }
 
 .m-minischedule__row {
   border-top: 1px solid $color-component-light;
   display: flex;
-  padding: 0.5rem 0 0.5rem 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-top: 0.5rem;
 
   &.m-minischedule__layover-row {
     border-top-style: none;
@@ -52,13 +54,9 @@
   flex: 1 1 auto;
 }
 
-.m-minischedule__headsign {
-  font-weight: bold;
-}
-
 .m-minischedule__right-text {
   flex: 0 0 auto;
-  padding-right: 0.5rem;
+  padding-right: 1rem;
 }
 
 .m-minischedule__piece-rows {
@@ -69,9 +67,10 @@
     &::before,
     &::after {
       background-color: $color-primary;
+      left: 1.75rem;
       position: absolute;
-      width: 0.5rem;
-      left: 1rem;
+      transform: translateX(-50%);
+      width: 0.375rem;
     }
   }
 

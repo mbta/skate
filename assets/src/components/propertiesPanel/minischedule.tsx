@@ -171,8 +171,8 @@ const Piece = ({
           piece.trips.length === 0 ||
           isAsDirected(piece.trips[0]) ||
           isDeadhead(piece.trips[0])
-            ? "Start Time"
-            : "Swing On"
+            ? "Start time"
+            : "Swing on"
         }
         rightText={formattedScheduledTime(piece.start.time)}
       />
@@ -212,7 +212,7 @@ const Piece = ({
           isAsDirected(piece.trips[piece.trips.length - 1]) ||
           isDeadhead(piece.trips[piece.trips.length - 1])
             ? "Done"
-            : "Swing Off"
+            : "Swing off"
         }
         rightText={formattedScheduledTime(piece.end.time)}
       />
@@ -257,7 +257,7 @@ const DeadheadTrip = ({
     return (
       <Row
         icon={busFrontIcon()}
-        text={"Pull Out"}
+        text={"Pull out"}
         rightText={startTime}
         extraClasses={extraClasses}
       />
@@ -266,7 +266,7 @@ const DeadheadTrip = ({
     return (
       <Row
         icon={busRearIcon()}
-        text={"Pull Back"}
+        text={"Pull back"}
         rightText={startTime}
         extraClasses={extraClasses}
       />
@@ -309,9 +309,13 @@ const RevenueTrip = ({
   vehicleOrGhost: VehicleOrGhost
 }) => {
   const startTime: string = formattedScheduledTime(trip.startTime)
-  const formattedVariant: string =
-    trip.viaVariant !== null && trip.viaVariant !== "_" ? trip.viaVariant : ""
-  const formattedRouteAndVariant: string = `${trip.routeId}_${formattedVariant}`
+  const formattedRouteAndHeadsign: string = [
+    trip.routeId,
+    "_",
+    trip.viaVariant !== null && trip.viaVariant !== "_" ? trip.viaVariant : "",
+    " ",
+    trip.headsign || "",
+  ].join("")
   const [{ ladderDirections }] = useContext(StateDispatchContext)
 
   const directionIcon =
@@ -322,12 +326,7 @@ const RevenueTrip = ({
   return (
     <Row
       icon={directionIcon}
-      text={
-        <>
-          {formattedRouteAndVariant}{" "}
-          <span className="m-minischedule__headsign">{trip.headsign}</span>
-        </>
-      }
+      text={formattedRouteAndHeadsign}
       rightText={startTime}
       extraClasses={currentClasses(trip, vehicleOrGhost, "on_route")}
     />
@@ -349,7 +348,7 @@ const Row = ({
   extraClasses,
 }: {
   icon?: ReactElement
-  text: string | ReactElement
+  text: string
   rightText?: string
   extraClasses?: string[]
 }) => (
