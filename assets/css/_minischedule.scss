@@ -67,9 +67,10 @@
     &::before,
     &::after {
       background-color: $color-primary;
+      left: 1.75rem;
       position: absolute;
-      width: 0.5rem;
-      left: 1rem;
+      transform: translateX(-50%);
+      width: 0.375rem;
     }
   }
 
