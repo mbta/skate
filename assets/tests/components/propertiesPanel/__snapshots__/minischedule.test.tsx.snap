@@ -561,7 +561,7 @@ Array [
       </div>
     </div>
     <div
-      className="m-minischedule__row m-minischedule__layover-row m-minischedule__row--current-layover m-minischedule__row--current-layover-on-time"
+      className="m-minischedule__row m-minischedule__layover-row m-minischedule__row--current on-time"
     >
       <div
         className="m-minischedule__icon"
@@ -884,7 +884,7 @@ Array [
       </div>
     </div>
     <div
-      className="m-minischedule__row m-minischedule__layover-row m-minischedule__row--current-layover m-minischedule__row--current-layover-on-time"
+      className="m-minischedule__row m-minischedule__layover-row m-minischedule__row--current on-time"
     >
       <div
         className="m-minischedule__icon"
@@ -1199,7 +1199,7 @@ Array [
       </div>
     </div>
     <div
-      className="m-minischedule__row m-minischedule__row--current-trip m-minischedule__row--current-trip-on-time"
+      className="m-minischedule__row m-minischedule__row--current on-time"
     >
       <div
         className="m-minischedule__icon"
