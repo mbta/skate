@@ -171,8 +171,8 @@ const Piece = ({
           piece.trips.length === 0 ||
           isAsDirected(piece.trips[0]) ||
           isDeadhead(piece.trips[0])
-            ? "Start Time"
-            : "Swing On"
+            ? "Start time"
+            : "Swing on"
         }
         rightText={formattedScheduledTime(piece.start.time)}
       />
@@ -212,7 +212,7 @@ const Piece = ({
           isAsDirected(piece.trips[piece.trips.length - 1]) ||
           isDeadhead(piece.trips[piece.trips.length - 1])
             ? "Done"
-            : "Swing Off"
+            : "Swing off"
         }
         rightText={formattedScheduledTime(piece.end.time)}
       />
@@ -257,7 +257,7 @@ const DeadheadTrip = ({
     return (
       <Row
         icon={busFrontIcon()}
-        text={"Pull Out"}
+        text={"Pull out"}
         rightText={startTime}
         extraClasses={extraClasses}
       />
@@ -266,7 +266,7 @@ const DeadheadTrip = ({
     return (
       <Row
         icon={busRearIcon()}
-        text={"Pull Back"}
+        text={"Pull back"}
         rightText={startTime}
         extraClasses={extraClasses}
       />
