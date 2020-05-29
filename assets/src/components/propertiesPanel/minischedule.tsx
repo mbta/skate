@@ -23,8 +23,8 @@ import {
   VehicleDirection,
 } from "../../models/ladderDirection"
 import { drawnStatus } from "../../models/vehicleStatus"
-import { RouteStatus, VehicleOrGhost } from "../../realtime"
-import { DirectionId, RouteId } from "../../schedule"
+import { VehicleOrGhost } from "../../realtime"
+import { DirectionId, RouteId, TripId } from "../../schedule"
 import { formattedDuration, formattedScheduledTime } from "../../util/dateTime"
 import Loading from "../loading"
 
@@ -40,15 +40,18 @@ export const MinischeduleRun = ({ vehicleOrGhost }: Props): ReactElement => {
   } else if (run === null) {
     return <>No run found</>
   } else {
+    const activeIndex = getActiveIndex(run.activities, vehicleOrGhost.tripId)
     return (
       <>
         <Header label="Run" value={run.id} />
-        {run.activities.map((activity) =>
+        {run.activities.map((activity, index) =>
           isPiece(activity) ? (
             <Piece
               piece={activity}
               view="run"
               vehicleOrGhost={vehicleOrGhost}
+              pieceIndex={index}
+              activeIndex={activeIndex}
               key={activity.start.time}
             />
           ) : (
@@ -70,14 +73,17 @@ export const MinischeduleBlock = ({ vehicleOrGhost }: Props): ReactElement => {
   } else if (block === null) {
     return <>No block found</>
   } else {
+    const activeIndex = getActiveIndex(block.pieces, vehicleOrGhost.tripId)
     return (
       <>
         <Header label="Block" value={block.id} />
-        {block.pieces.map((piece) => (
+        {block.pieces.map((piece, index) => (
           <Piece
             piece={piece}
             view={"block"}
             vehicleOrGhost={vehicleOrGhost}
+            pieceIndex={index}
+            activeIndex={activeIndex}
             key={piece.start.time}
           />
         ))}
@@ -118,11 +124,11 @@ export const BreakRow = ({ break: breakk }: { break: Break }) => {
 const Layover = ({
   nextTrip,
   previousTrip,
-  vehicleOrGhost,
+  extraClasses,
 }: {
   nextTrip: Trip | AsDirected
   previousTrip?: Trip | AsDirected
-  vehicleOrGhost: VehicleOrGhost
+  extraClasses: (string | null)[]
 }) => {
   if (!previousTrip) {
     return null
@@ -131,8 +137,6 @@ const Layover = ({
   if (layoverDuration === 0) {
     return null
   }
-
-  const extraClasses = currentClasses(nextTrip, vehicleOrGhost, "laying_over")
 
   return (
     <Row
@@ -143,34 +147,18 @@ const Layover = ({
   )
 }
 
-const currentClasses: (
-  nextTrip: Trip | AsDirected,
-  vehicleOrGhost: VehicleOrGhost,
-  requiredStatus: RouteStatus
-) => string[] = (nextTrip, vehicleOrGhost, requiredStatus) => {
-  if (isAsDirected(nextTrip)) {
-    return []
-  }
-
-  if (vehicleOrGhost.routeStatus !== requiredStatus) {
-    return []
-  }
-
-  if (nextTrip.id !== vehicleOrGhost.tripId) {
-    return []
-  }
-
-  return ["m-minischedule__row--current", drawnStatus(vehicleOrGhost)]
-}
-
 const Piece = ({
   piece,
   view,
   vehicleOrGhost,
+  pieceIndex,
+  activeIndex,
 }: {
   piece: Piece
   view: "run" | "block"
   vehicleOrGhost: VehicleOrGhost
+  pieceIndex: number
+  activeIndex: [number, number] | null
 }) => {
   const isSwingOn: boolean =
     piece.trips.length > 0 &&
@@ -180,7 +168,6 @@ const Piece = ({
     piece.trips.length > 0 &&
     isTrip(piece.trips[piece.trips.length - 1]) &&
     !isDeadhead(piece.trips[piece.trips.length - 1])
-
   const startPlace: string =
     piece.trips.length > 0 && isTrip(piece.trips[0])
       ? piece.trips[0].startPlace
@@ -190,6 +177,10 @@ const Piece = ({
     isTrip(piece.trips[piece.trips.length - 1])
       ? (piece.trips[piece.trips.length - 1] as Trip).endPlace
       : ""
+  const pieceTimeBasedStyle: TimeBasedStyle = getTimeBasedStyle(
+    pieceIndex,
+    activeIndex && activeIndex[0]
+  )
 
   return (
     <>
@@ -203,7 +194,12 @@ const Piece = ({
           belowText={startPlace}
         />
       )}
-      <div className="m-minischedule__piece-rows">
+      <div
+        className={className([
+          "m-minischedule__piece-rows",
+          `m-minischedule__piece-rows--${pieceTimeBasedStyle}`,
+        ])}
+      >
         {isSwingOn ? (
           <Row
             key="swing-on"
@@ -213,30 +209,62 @@ const Piece = ({
             belowText={startPlace}
           />
         ) : null}
-        {piece.trips.map((trip, index) => {
+        {piece.trips.map((trip, tripIndex) => {
           const sequence: "first" | "middle" | "last" =
-            index === 0
+            tripIndex === 0
               ? "first"
-              : index === piece.trips.length - 1
+              : tripIndex === piece.trips.length - 1
               ? "last"
               : "middle"
+          const tripTimeBasedStyle =
+            pieceTimeBasedStyle === "current"
+              ? getTimeBasedStyle(tripIndex, activeIndex && activeIndex[1])
+              : pieceTimeBasedStyle
+          const layoverTimeBasedStyle =
+            tripTimeBasedStyle === "current"
+              ? vehicleOrGhost.routeStatus === "on_route"
+                ? "past"
+                : "current"
+              : tripTimeBasedStyle
+          const onRouteTimeBasedStyle =
+            tripTimeBasedStyle === "current"
+              ? vehicleOrGhost.routeStatus === "on_route"
+                ? "current"
+                : "future"
+              : tripTimeBasedStyle
+
           return (
             <React.Fragment key={trip.startTime}>
               {view === "run" ? (
                 <Layover
                   nextTrip={trip}
-                  previousTrip={piece.trips[index - 1]}
-                  vehicleOrGhost={vehicleOrGhost}
+                  previousTrip={piece.trips[tripIndex - 1]}
+                  extraClasses={[
+                    `m-minischedule__row--${layoverTimeBasedStyle}`,
+                    layoverTimeBasedStyle === "current"
+                      ? drawnStatus(vehicleOrGhost)
+                      : null,
+                  ]}
                 />
               ) : null}
               {isTrip(trip) ? (
                 <Trip
                   trip={trip}
                   sequence={sequence}
-                  vehicleOrGhost={vehicleOrGhost}
+                  extraClasses={[
+                    `m-minischedule__row--${onRouteTimeBasedStyle}`,
+                    onRouteTimeBasedStyle === "current"
+                      ? drawnStatus(vehicleOrGhost)
+                      : null,
+                  ]}
                 />
               ) : (
-                <AsDirected asDirected={trip} />
+                <AsDirected
+                  asDirected={trip}
+                  extraClasses={[
+                    `m-minischedule__row--${onRouteTimeBasedStyle}`,
+                  ]}
+                />
               )}
             </React.Fragment>
           )
@@ -265,35 +293,34 @@ const Piece = ({
 const Trip = ({
   trip,
   sequence,
-  vehicleOrGhost,
+  extraClasses,
 }: {
   trip: Trip
   sequence: "first" | "middle" | "last"
-  vehicleOrGhost: VehicleOrGhost
+  extraClasses: (string | null)[]
 }) => {
   if (isDeadhead(trip)) {
     return (
       <DeadheadTrip
         trip={trip}
         sequence={sequence}
-        vehicleOrGhost={vehicleOrGhost}
+        extraClasses={extraClasses}
       />
     )
   } else {
-    return <RevenueTrip trip={trip} vehicleOrGhost={vehicleOrGhost} />
+    return <RevenueTrip trip={trip} extraClasses={extraClasses} />
   }
 }
 
 const DeadheadTrip = ({
   trip,
   sequence,
-  vehicleOrGhost,
+  extraClasses,
 }: {
   trip: Trip
   sequence: "first" | "middle" | "last"
-  vehicleOrGhost: VehicleOrGhost
+  extraClasses: (string | null)[]
 }) => {
-  const extraClasses = currentClasses(trip, vehicleOrGhost, "on_route")
   const startTime: string = formattedScheduledTime(trip.startTime)
   if (sequence === "first") {
     return (
@@ -348,10 +375,10 @@ const iconForDirectionOnLadder: (
 
 const RevenueTrip = ({
   trip,
-  vehicleOrGhost,
+  extraClasses,
 }: {
   trip: Trip
-  vehicleOrGhost: VehicleOrGhost
+  extraClasses: (string | null)[]
 }) => {
   const startTime: string = formattedScheduledTime(trip.startTime)
   const formattedRouteAndHeadsign: string = [
@@ -373,16 +400,23 @@ const RevenueTrip = ({
       icon={directionIcon}
       text={formattedRouteAndHeadsign}
       rightText={startTime}
-      extraClasses={currentClasses(trip, vehicleOrGhost, "on_route")}
+      extraClasses={extraClasses}
     />
   )
 }
 
-const AsDirected = ({ asDirected }: { asDirected: AsDirected }) => (
+const AsDirected = ({
+  asDirected,
+  extraClasses,
+}: {
+  asDirected: AsDirected
+  extraClasses: string[]
+}) => (
   <Row
     icon={busFrontIcon()}
     text={asDirected.kind === "rad" ? "Run as directed" : "Work as directed"}
     rightText={formattedScheduledTime(asDirected.startTime)}
+    extraClasses={extraClasses}
   />
 )
 
@@ -397,7 +431,7 @@ const Row = ({
   text: string
   rightText?: string
   belowText?: string
-  extraClasses?: string[]
+  extraClasses?: (string | null)[]
 }) => (
   <div className={className(["m-minischedule__row", ...(extraClasses || [])])}>
     <div className="m-minischedule__icon">{icon}</div>
@@ -414,14 +448,57 @@ const Row = ({
   </div>
 )
 
+/** returns null if the active trip isn't found.
+ * returns [activeActivityIndex, activeTripIndex] if it is
+ */
+const getActiveIndex = (
+  activities: (Piece | Break)[],
+  activeTripId: TripId | null
+): [number, number] | null => {
+  if (activeTripId === null) {
+    return null
+  }
+  for (
+    let activityIndex = 0;
+    activityIndex < activities.length;
+    activityIndex++
+  ) {
+    const activity = activities[activityIndex]
+    if (isPiece(activity)) {
+      for (let tripIndex = 0; tripIndex < activity.trips.length; tripIndex++) {
+        const trip = activity.trips[tripIndex]
+        if (isTrip(trip) && trip.id === activeTripId) {
+          return [activityIndex, tripIndex]
+        }
+      }
+    }
+  }
+  return null
+}
+
+type TimeBasedStyle = "past" | "current" | "future" | "unknown"
+
+const getTimeBasedStyle = (
+  componentIndex: number,
+  activeIndex: number | null
+): TimeBasedStyle => {
+  if (activeIndex === null) {
+    return "unknown"
+  }
+  if (componentIndex < activeIndex) {
+    return "past"
+  }
+  if (componentIndex > activeIndex) {
+    return "future"
+  }
+  return "current"
+}
+
 const isPiece = (activity: Piece | Break): activity is Piece =>
   activity.hasOwnProperty("trips")
 
 const isTrip = (trip: Trip | AsDirected): trip is Trip =>
   trip.hasOwnProperty("id")
-
-const isAsDirected = (trip: Trip | AsDirected): trip is AsDirected =>
-  !isTrip(trip)
 
 const isDeadhead = (trip: Trip | AsDirected): boolean =>
   isTrip(trip) && trip.routeId == null

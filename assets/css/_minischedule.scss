@@ -40,14 +40,6 @@
   padding: 0.25rem;
   width: 1rem;
   z-index: 2;
-
-  &:not(:empty) {
-    background-color: $color-primary;
-  }
-
-  svg {
-    fill: $color-secondary-medium;
-  }
 }
 
 .m-minischedule__left-text {
@@ -70,7 +62,6 @@
 
     &::before,
     &::after {
-      background-color: $color-primary;
       left: 1.75rem;
       position: absolute;
       transform: translateX(-50%);
@@ -100,6 +91,50 @@
       top: 50%;
     }
   }
+}
+
+.m-minischedule__piece-rows--past,
+.m-minischedule__piece-rows--future {
+  .m-minischedule__icon {
+    &:not(:empty) {
+      background-color: $color-component-light;
+    }
+
+    svg {
+      fill: $color-component-medium;
+    }
+  }
+
+  .m-minischedule__row {
+    &::before,
+    &::after {
+      background-color: $color-component-light;
+    }
+  }
+}
+
+.m-minischedule__piece-rows--current,
+.m-minischedule__piece-rows--unknown {
+  .m-minischedule__icon {
+    &:not(:empty) {
+      background-color: $color-primary;
+    }
+
+    svg {
+      fill: $color-secondary-light;
+    }
+  }
+
+  .m-minischedule__row {
+    &::before,
+    &::after {
+      background-color: $color-primary;
+    }
+  }
+}
+
+.m-minischedule__row--past {
+  color: $color-font-grey;
 }
 
 .m-minischedule__row--current {
