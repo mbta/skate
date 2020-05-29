@@ -55,7 +55,9 @@ defmodule Schedule.TripTest do
     run_id: "run",
     stop_times: @stop_times,
     start_time: 3,
-    end_time: 9
+    end_time: 9,
+    start_place: "start",
+    end_place: "end"
   }
 
   describe "merge_trips" do
@@ -79,7 +81,9 @@ defmodule Schedule.TripTest do
                  run_id: nil,
                  stop_times: @stop_times,
                  start_time: 3,
-                 end_time: 9
+                 end_time: 9,
+                 start_place: nil,
+                 end_place: nil
                }
              }
     end
@@ -98,7 +102,9 @@ defmodule Schedule.TripTest do
                  run_id: "run",
                  stop_times: [],
                  start_time: 12,
-                 end_time: 34
+                 end_time: 34,
+                 start_place: "start",
+                 end_place: "end"
                }
              }
     end
