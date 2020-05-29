@@ -17,6 +17,7 @@ export interface Break {
   breakType: string
   startTime: Time
   endTime: Time
+  endPlace: string
 }
 
 export interface AsDirected {

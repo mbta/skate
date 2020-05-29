@@ -33,6 +33,7 @@ interface BreakData {
   break_type: string
   start_time: Time
   end_time: Time
+  end_place: string
 }
 
 interface PieceData {
@@ -85,6 +86,7 @@ const breakFromData = (breakData: BreakData): Break => ({
   breakType: breakData.break_type,
   startTime: breakData.start_time,
   endTime: breakData.end_time,
+  endPlace: breakData.end_place,
 })
 
 const pieceFromData = (pieceData: PieceData): Piece => ({

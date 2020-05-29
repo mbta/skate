@@ -100,8 +100,19 @@ export const BreakRow = ({ break: breakk }: { break: Break }) => {
   const isPaid: boolean | null = breakIsPaid(breakk.breakType)
   const isPaidText: string =
     isPaid === null ? "" : isPaid ? " (Paid)" : " (Unpaid)"
-  const text: string = breakDisplayText(breakk.breakType) + isPaidText
-  return <Row text={text} rightText={formattedBreakTime} />
+  const text: string = breakDisplayText(breakk) + isPaidText
+
+  if (breakk.breakType === "Travel from" || breakk.breakType === "Travel to") {
+    return <Row text={text} rightText={formattedBreakTime} />
+  } else {
+    return (
+      <Row
+        text={text}
+        rightText={formattedBreakTime}
+        belowText={breakk.endPlace}
+      />
+    )
+  }
 }
 
 const Layover = ({
@@ -397,17 +408,17 @@ const isAsDirected = (trip: Trip | AsDirected): trip is AsDirected =>
 const isDeadhead = (trip: Trip | AsDirected): boolean =>
   isTrip(trip) && trip.routeId == null
 
-const breakDisplayText = (breakType: string): string => {
-  switch (breakType) {
+const breakDisplayText = (breakk: Break): string => {
+  switch (breakk.breakType) {
     case "Split break":
     case "Paid meal after":
     case "Paid meal before":
       return "Break"
     case "Travel from":
     case "Travel to":
-      return "Travel"
+      return `Travel to ${breakk.endPlace}`
     default:
-      return breakType
+      return breakk.breakType
   }
 }
 
