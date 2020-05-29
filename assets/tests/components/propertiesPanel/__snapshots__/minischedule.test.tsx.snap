@@ -160,6 +160,8 @@ Array [
         className="m-minischedule__left-text"
       >
         Pull out
+        <br />
+        1st Street and A Ave
       </div>
       <div
         className="m-minischedule__right-text"
@@ -186,6 +188,8 @@ Array [
         className="m-minischedule__left-text"
       >
         Deadhead
+        <br />
+        999th Street and ZZZ Ave
       </div>
       <div
         className="m-minischedule__right-text"
@@ -212,6 +216,8 @@ Array [
         className="m-minischedule__left-text"
       >
         Pull back
+        <br />
+        999th Street and ZZZ Ave
       </div>
       <div
         className="m-minischedule__right-text"
@@ -603,6 +609,8 @@ Array [
       className="m-minischedule__left-text"
     >
       Break (Paid)
+      <br />
+      Timepoint Bravo
     </div>
     <div
       className="m-minischedule__right-text"
