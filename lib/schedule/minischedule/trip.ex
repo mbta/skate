@@ -3,6 +3,8 @@ defmodule Schedule.Minischedule.Trip do
   alias Schedule.Gtfs.{Direction, Route, RoutePattern}
   alias Schedule.Hastus.{Activity, Run}
 
+  @type timepoint_names_by_id :: %{String.t() => String.t()}
+
   @type id :: Schedule.Trip.id()
 
   @type t :: %__MODULE__{
@@ -40,8 +42,8 @@ defmodule Schedule.Minischedule.Trip do
     end_place: ""
   ]
 
-  @spec from_full_trip(Schedule.Trip.t()) :: t()
-  def from_full_trip(trip) do
+  @spec from_full_trip(Schedule.Trip.t(), timepoint_names_by_id()) :: t()
+  def from_full_trip(trip, timepoint_names_by_id) do
     %__MODULE__{
       id: trip.id,
       block_id: trip.block_id,
@@ -52,8 +54,8 @@ defmodule Schedule.Minischedule.Trip do
       run_id: trip.run_id,
       start_time: trip.start_time,
       end_time: trip.end_time,
-      start_place: trip.start_place,
-      end_place: trip.end_place
+      start_place: Map.get(timepoint_names_by_id, trip.start_place),
+      end_place: Map.get(timepoint_names_by_id, trip.end_place)
     }
   end
 

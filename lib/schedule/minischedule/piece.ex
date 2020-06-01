@@ -14,6 +14,8 @@ defmodule Schedule.Minischedule.Piece do
           mid_route?: boolean()
         }
 
+  @type timepoint_names_by_id :: %{String.t() => String.t()}
+
   @type t :: %__MODULE__{
           schedule_id: Hastus.Schedule.id(),
           run_id: Run.id(),
@@ -43,8 +45,8 @@ defmodule Schedule.Minischedule.Piece do
     :end
   ]
 
-  @spec hydrate(t(), Schedule.Trip.by_id()) :: t()
-  def hydrate(piece, trips_by_id) do
+  @spec hydrate(t(), Schedule.Trip.by_id(), timepoint_names_by_id()) :: t()
+  def hydrate(piece, trips_by_id, timepoint_names_by_id) do
     trip_ids = piece.trips
 
     trips =
@@ -52,7 +54,7 @@ defmodule Schedule.Minischedule.Piece do
         trip_id when is_binary(trip_id) ->
           full_trip = trips_by_id[trip_id]
 
-          Trip.from_full_trip(full_trip)
+          Trip.from_full_trip(full_trip, timepoint_names_by_id)
 
         %Trip{} = trip ->
           trip
