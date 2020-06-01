@@ -158,67 +158,78 @@ const Piece = ({
   piece: Piece
   view: "run" | "block"
   vehicleOrGhost: VehicleOrGhost
-}) => (
-  <>
-    {view === "block" ? (
-      <div className="m-minischedule__run-header">{piece.runId}</div>
-    ) : null}
-    <div className="m-minischedule__piece-rows">
-      <Row
-        key="sign-on"
-        icon={plusIcon()}
-        text={
-          piece.trips.length === 0 ||
-          isAsDirected(piece.trips[0]) ||
-          isDeadhead(piece.trips[0])
-            ? "Start time"
-            : "Swing on"
-        }
-        rightText={formattedScheduledTime(piece.start.time)}
-      />
-      {piece.trips.map((trip, index) => {
-        const sequence: "first" | "middle" | "last" =
-          index === 0
-            ? "first"
-            : index === piece.trips.length - 1
-            ? "last"
-            : "middle"
-        return (
-          <React.Fragment key={trip.startTime}>
-            {isTrip(trip) ? (
-              <Trip
-                trip={trip}
-                sequence={sequence}
-                vehicleOrGhost={vehicleOrGhost}
-              />
-            ) : (
-              <AsDirected asDirected={trip} />
-            )}
-            {view === "run" ? (
-              <Layover
-                currentTrip={trip}
-                nextTrip={piece.trips[index + 1]}
-                vehicleOrGhost={vehicleOrGhost}
-              />
-            ) : null}
-          </React.Fragment>
-        )
-      })}
-      <Row
-        key="sign-off"
-        icon={minusIcon()}
-        text={
-          piece.trips.length === 0 ||
-          isAsDirected(piece.trips[piece.trips.length - 1]) ||
-          isDeadhead(piece.trips[piece.trips.length - 1])
-            ? "Done"
-            : "Swing off"
-        }
-        rightText={formattedScheduledTime(piece.end.time)}
-      />
-    </div>
-  </>
-)
+}) => {
+  const isSwingOn: boolean =
+    piece.trips.length > 0 &&
+    isTrip(piece.trips[0]) &&
+    !isDeadhead(piece.trips[0])
+  const isSwingOff: boolean =
+    piece.trips.length > 0 &&
+    isTrip(piece.trips[piece.trips.length - 1]) &&
+    !isDeadhead(piece.trips[piece.trips.length - 1])
+  return (
+    <>
+      {view === "block" ? (
+        <div className="m-minischedule__run-header">{piece.runId}</div>
+      ) : null}
+      {isSwingOn ? null : (
+        <Row
+          text="Start time"
+          rightText={formattedScheduledTime(piece.start.time)}
+        />
+      )}
+      <div className="m-minischedule__piece-rows">
+        {isSwingOn ? (
+          <Row
+            key="swing-on"
+            icon={plusIcon()}
+            text="Swing on"
+            rightText={formattedScheduledTime(piece.start.time)}
+          />
+        ) : null}
+        {piece.trips.map((trip, index) => {
+          const sequence: "first" | "middle" | "last" =
+            index === 0
+              ? "first"
+              : index === piece.trips.length - 1
+              ? "last"
+              : "middle"
+          return (
+            <React.Fragment key={trip.startTime}>
+              {isTrip(trip) ? (
+                <Trip
+                  trip={trip}
+                  sequence={sequence}
+                  vehicleOrGhost={vehicleOrGhost}
+                />
+              ) : (
+                <AsDirected asDirected={trip} />
+              )}
+              {view === "run" ? (
+                <Layover
+                  currentTrip={trip}
+                  nextTrip={piece.trips[index + 1]}
+                  vehicleOrGhost={vehicleOrGhost}
+                />
+              ) : null}
+            </React.Fragment>
+          )
+        })}
+        {isSwingOff ? (
+          <Row
+            key="swing-off"
+            icon={minusIcon()}
+            text="Swing off"
+            rightText={formattedScheduledTime(piece.end.time)}
+          />
+        ) : null}
+      </div>
+      {isSwingOff ? null : (
+        <Row text="Done" rightText={formattedScheduledTime(piece.end.time)} />
+      )}
+    </>
+  )
+}
 
 const Trip = ({
   trip,

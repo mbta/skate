@@ -122,34 +122,25 @@ Array [
     run
   </div>,
   <div
-    className="m-minischedule__piece-rows"
+    className="m-minischedule__row"
   >
     <div
-      className="m-minischedule__row"
+      className="m-minischedule__icon"
+    />
+    <div
+      className="m-minischedule__left-text"
     >
-      <div
-        className="m-minischedule__icon"
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </div>
-      <div
-        className="m-minischedule__left-text"
-      >
-        Start time
-      </div>
-      <div
-        className="m-minischedule__right-text"
-      >
-        12:30 AM
-      </div>
+      Start time
     </div>
+    <div
+      className="m-minischedule__right-text"
+    >
+      12:30 AM
+    </div>
+  </div>,
+  <div
+    className="m-minischedule__piece-rows"
+  >
     <div
       className="m-minischedule__row"
     >
@@ -228,31 +219,22 @@ Array [
         12:14 AM
       </div>
     </div>
+  </div>,
+  <div
+    className="m-minischedule__row"
+  >
     <div
-      className="m-minischedule__row"
+      className="m-minischedule__icon"
+    />
+    <div
+      className="m-minischedule__left-text"
     >
-      <div
-        className="m-minischedule__icon"
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </div>
-      <div
-        className="m-minischedule__left-text"
-      >
-        Done
-      </div>
-      <div
-        className="m-minischedule__right-text"
-      >
-        12:30 AM
-      </div>
+      Done
+    </div>
+    <div
+      className="m-minischedule__right-text"
+    >
+      12:30 AM
     </div>
   </div>,
 ]
@@ -1006,31 +988,22 @@ Array [
         4:30 AM
       </div>
     </div>
+  </div>,
+  <div
+    className="m-minischedule__row"
+  >
     <div
-      className="m-minischedule__row"
+      className="m-minischedule__icon"
+    />
+    <div
+      className="m-minischedule__left-text"
     >
-      <div
-        className="m-minischedule__icon"
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </div>
-      <div
-        className="m-minischedule__left-text"
-      >
-        Done
-      </div>
-      <div
-        className="m-minischedule__right-text"
-      >
-        4:30 AM
-      </div>
+      Done
+    </div>
+    <div
+      className="m-minischedule__right-text"
+    >
+      4:30 AM
     </div>
   </div>,
 ]
@@ -1312,34 +1285,25 @@ Array [
     run
   </div>,
   <div
-    className="m-minischedule__piece-rows"
+    className="m-minischedule__row"
   >
     <div
-      className="m-minischedule__row"
+      className="m-minischedule__icon"
+    />
+    <div
+      className="m-minischedule__left-text"
     >
-      <div
-        className="m-minischedule__icon"
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </div>
-      <div
-        className="m-minischedule__left-text"
-      >
-        Start time
-      </div>
-      <div
-        className="m-minischedule__right-text"
-      >
-        4:20 AM
-      </div>
+      Start time
     </div>
+    <div
+      className="m-minischedule__right-text"
+    >
+      4:20 AM
+    </div>
+  </div>,
+  <div
+    className="m-minischedule__piece-rows"
+  >
     <div
       className="m-minischedule__row"
     >
@@ -1366,31 +1330,22 @@ Array [
         4:30 AM
       </div>
     </div>
+  </div>,
+  <div
+    className="m-minischedule__row"
+  >
     <div
-      className="m-minischedule__row"
+      className="m-minischedule__icon"
+    />
+    <div
+      className="m-minischedule__left-text"
     >
-      <div
-        className="m-minischedule__icon"
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </div>
-      <div
-        className="m-minischedule__left-text"
-      >
-        Done
-      </div>
-      <div
-        className="m-minischedule__right-text"
-      >
-        4:30 AM
-      </div>
+      Done
+    </div>
+    <div
+      className="m-minischedule__right-text"
+    >
+      4:30 AM
     </div>
   </div>,
 ]
