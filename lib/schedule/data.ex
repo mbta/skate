@@ -401,8 +401,9 @@ defmodule Schedule.Data do
 
   @spec timepoint_names_for_ids(Timepoint.timepoints_by_id()) :: timepoint_names_by_id()
   defp timepoint_names_for_ids(timepoints_by_id) do
-    # TODO merge in garages
-    Map.new(timepoints_by_id, fn {id, timepoint} -> {id, timepoint.name} end)
+    timepoints_by_id
+    |> Map.new(fn {id, timepoint} -> {id, timepoint.name} end)
+    |> Map.merge(Timepoint.garage_names_by_id())
   end
 
   @spec shapes_by_route_id(binary(), [Gtfs.Trip.t()]) :: shapes_by_route_id()
