@@ -11,13 +11,20 @@ defmodule Schedule.Minischedule.BlockTest do
 
       stored_trip = %Schedule.Trip{
         id: trip_id,
-        block_id: "block"
+        block_id: "block",
+        start_place: "mmill",
+        end_place: "wherv"
       }
 
       sign_on_off = %{
         time: 0,
         place: "place",
         mid_route?: false
+      }
+
+      timepoint_names_by_id = %{
+        "mmill" => "Miller's Mill",
+        "wherv" => "Wherever"
       }
 
       stored_block = %Block{
@@ -44,13 +51,21 @@ defmodule Schedule.Minischedule.BlockTest do
             run_id: "run",
             block_id: "block",
             start: sign_on_off,
-            trips: [%Minischedule.Trip{id: trip_id, block_id: "block"}],
+            trips: [
+              %Minischedule.Trip{
+                id: trip_id,
+                block_id: "block",
+                start_place: "Miller's Mill",
+                end_place: "Wherever"
+              }
+            ],
             end: sign_on_off
           }
         ]
       }
 
-      assert Block.hydrate(stored_block, %{trip_id => stored_trip}) == expected_block
+      assert Block.hydrate(stored_block, %{trip_id => stored_trip}, timepoint_names_by_id) ==
+               expected_block
     end
   end
 end

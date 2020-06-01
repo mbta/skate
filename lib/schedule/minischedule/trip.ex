@@ -38,8 +38,8 @@ defmodule Schedule.Minischedule.Trip do
     run_id: nil,
     start_time: 0,
     end_time: 0,
-    start_place: "",
-    end_place: ""
+    start_place: nil,
+    end_place: nil
   ]
 
   @spec from_full_trip(Schedule.Trip.t(), timepoint_names_by_id()) :: t()

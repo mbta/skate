@@ -6,36 +6,44 @@ defmodule Schedule.Minischedule.TripTest do
 
   describe "from_full_trip" do
     test "converts trips with minimal fields" do
-      assert Minischedule.Trip.from_full_trip(%Schedule.Trip{
-               id: "id",
-               block_id: "block_id"
-             }) == %Minischedule.Trip{
+      assert Minischedule.Trip.from_full_trip(
+               %Schedule.Trip{
+                 id: "id",
+                 block_id: "block_id"
+               },
+               %{}
+             ) == %Minischedule.Trip{
                id: "id",
                block_id: "block_id"
              }
     end
 
     test "converts trips with all fields" do
-      assert Minischedule.Trip.from_full_trip(%Schedule.Trip{
-               id: "id",
-               block_id: "block_id",
-               route_id: "route_id",
-               service_id: "service_id",
-               headsign: "headsign",
-               direction_id: 1,
-               route_pattern_id: "RP-X-1",
-               shape_id: "shape_id",
-               schedule_id: "schedule_id",
-               run_id: "run_id",
-               stop_times: [
-                 %StopTime{
-                   stop_id: "stop_id",
-                   time: 5
-                 }
-               ],
-               start_time: 4,
-               end_time: 6
-             }) == %Minischedule.Trip{
+      assert Minischedule.Trip.from_full_trip(
+               %Schedule.Trip{
+                 id: "id",
+                 block_id: "block_id",
+                 route_id: "route_id",
+                 service_id: "service_id",
+                 headsign: "headsign",
+                 direction_id: 1,
+                 route_pattern_id: "RP-X-1",
+                 shape_id: "shape_id",
+                 schedule_id: "schedule_id",
+                 run_id: "run_id",
+                 stop_times: [
+                   %StopTime{
+                     stop_id: "stop_id",
+                     time: 5
+                   }
+                 ],
+                 start_time: 4,
+                 end_time: 6,
+                 start_place: "hynes",
+                 end_place: "rugg"
+               },
+               %{"hynes" => "Hynes Convention Center", "rugg" => "Ruggles"}
+             ) == %Minischedule.Trip{
                id: "id",
                block_id: "block_id",
                route_id: "route_id",
@@ -44,7 +52,9 @@ defmodule Schedule.Minischedule.TripTest do
                via_variant: "X",
                run_id: "run_id",
                start_time: 4,
-               end_time: 6
+               end_time: 6,
+               start_place: "Hynes Convention Center",
+               end_place: "Ruggles"
              }
     end
   end

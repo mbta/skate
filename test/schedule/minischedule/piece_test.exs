@@ -18,7 +18,14 @@ defmodule Schedule.Minischedule.PieceTest do
             stop_id: "stop",
             time: 0
           }
-        ]
+        ],
+        start_place: "abcde",
+        end_place: "qwerty"
+      }
+
+      timepoint_names_by_id = %{
+        "abcde" => "Abcde Heights",
+        "qwerty" => "Qwerty Row"
       }
 
       sign_on = %{
@@ -44,7 +51,9 @@ defmodule Schedule.Minischedule.PieceTest do
 
       expected_trip = %Minischedule.Trip{
         id: trip_id,
-        block_id: "block"
+        block_id: "block",
+        start_place: "Abcde Heights",
+        end_place: "Qwerty Row"
       }
 
       expected_piece = %Piece{
@@ -56,13 +65,16 @@ defmodule Schedule.Minischedule.PieceTest do
         end: sign_off
       }
 
-      assert Piece.hydrate(stored_piece, %{trip_id => stored_trip}) == expected_piece
+      assert Piece.hydrate(stored_piece, %{trip_id => stored_trip}, timepoint_names_by_id) ==
+               expected_piece
     end
 
     test "doesn't replace non-ids" do
       trip = %Minischedule.Trip{
         id: "trip",
-        block_id: "block"
+        block_id: "block",
+        start_place: "Ruggles",
+        end_place: "Santa Cruz Boardwalk"
       }
 
       as_directed = %AsDirected{
@@ -94,7 +106,7 @@ defmodule Schedule.Minischedule.PieceTest do
         end: sign_off
       }
 
-      assert Piece.hydrate(piece, %{}) == piece
+      assert Piece.hydrate(piece, %{}, %{}) == piece
     end
   end
 end
