@@ -420,7 +420,7 @@ describe("BlockRow", () => {
 
   test("Paid breaks show as paid", () => {
     const breakk: Break = {
-      breakType: "Paid meal before",
+      breakType: "Paid meal after",
       startTime: 0,
       endTime: 0,
     }
