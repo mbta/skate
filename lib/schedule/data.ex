@@ -28,6 +28,7 @@ defmodule Schedule.Data do
           routes: [Route.t()],
           route_patterns: [RoutePattern.t()],
           timepoints_by_route: timepoints_by_route(),
+          timepoint_names_by_id: timepoint_names_by_id(),
           shapes: shapes_by_route_id(),
           stops: stops_by_id(),
           trips: Trip.by_id(),
@@ -39,6 +40,8 @@ defmodule Schedule.Data do
 
   @type timepoints_by_route :: %{Route.id() => [Timepoint.t()]}
 
+  @type timepoint_names_by_id :: %{Timepoint.id() => String.t() | nil}
+
   @type shapes_by_route_id :: %{Route.id() => [Shape.t()]}
 
   @type stops_by_id :: %{Stop.id() => Stop.t()}
@@ -48,6 +51,7 @@ defmodule Schedule.Data do
   defstruct routes: [],
             route_patterns: [],
             timepoints_by_route: %{},
+            timepoint_names_by_id: %{},
             shapes: %{},
             stops: %{},
             trips: %{},
@@ -72,6 +76,14 @@ defmodule Schedule.Data do
         route_id
       ),
       do: Map.get(timepoints_by_route, route_id, [])
+
+  @spec timepoint_name_for_id(t(), Stop.id()) :: String.t() | nil
+  def timepoint_name_for_id(
+        %__MODULE__{timepoint_names_by_id: timepoint_names_by_id},
+        timepoint_id
+      ) do
+    Map.get(timepoint_names_by_id, timepoint_id)
+  end
 
   @spec stop(t(), Stop.id()) :: Stop.t() | nil
   def stop(%__MODULE__{stops: stops}, stop_id), do: stops[stop_id]
@@ -267,6 +279,7 @@ defmodule Schedule.Data do
       route_patterns: route_patterns,
       timepoints_by_route:
         timepoints_for_routes(route_patterns, bus_route_ids, stop_times_by_id, timepoints_by_id),
+      timepoint_names_by_id: timepoint_names_for_ids(timepoints_by_id),
       shapes: shapes_by_route_id(gtfs_files["shapes.txt"], gtfs_trips),
       stops: all_stops_by_id(gtfs_files["stops.txt"]),
       trips: trips_by_id,
@@ -376,6 +389,12 @@ defmodule Schedule.Data do
       end)
     end)
     |> Schedule.Helpers.merge_lists()
+  end
+
+  @spec timepoint_names_for_ids(Timepoint.timepoints_by_id()) :: timepoint_names_by_id()
+  defp timepoint_names_for_ids(timepoints_by_id) do
+    # TODO merge in garages
+    Map.new(timepoints_by_id, fn {id, timepoint} -> {id, timepoint.name} end)
   end
 
   @spec shapes_by_route_id(binary(), [Gtfs.Trip.t()]) :: shapes_by_route_id()
