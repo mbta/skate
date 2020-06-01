@@ -1,6 +1,8 @@
+import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import {
+  BreakRow,
   MinischeduleBlock,
   MinischeduleRun,
 } from "../../../src/components/propertiesPanel/minischedule"
@@ -16,12 +18,6 @@ jest.mock("../../../src/hooks/useMinischedule", () => ({
   useMinischeduleRun: jest.fn(),
   useMinischeduleBlock: jest.fn(),
 }))
-
-const breakk: Break = {
-  breakType: "Paid meal before",
-  startTime: 10,
-  endTime: 1810,
-}
 
 const nonrevenueTrip: Trip = {
   id: "nonrevenue",
@@ -182,6 +178,11 @@ describe("MinischeduleRun", () => {
     const multiTripPiece = {
       ...piece,
       trips: [revenueTrip, revenueTrip2],
+    }
+    const breakk: Break = {
+      breakType: "Paid meal before",
+      startTime: 10,
+      endTime: 1810,
     }
 
     ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => ({
@@ -402,5 +403,53 @@ describe("MinischeduleBlock", () => {
       .toJSON()
 
     expect(tree).toMatchSnapshot()
+  })
+})
+
+describe("BlockRow", () => {
+  test("Split breaks show as unpaid", () => {
+    const breakk: Break = {
+      breakType: "Split break",
+      startTime: 0,
+      endTime: 0,
+    }
+
+    const wrapper = mount(<BreakRow break={breakk} />)
+    expect(wrapper.html()).toContain("Break (Unpaid)")
+  })
+
+  test("Paid breaks show as paid", () => {
+    const breakk: Break = {
+      breakType: "Paid meal after",
+      startTime: 0,
+      endTime: 0,
+    }
+
+    const wrapper = mount(<BreakRow break={breakk} />)
+    expect(wrapper.html()).toContain("Break (Paid)")
+  })
+
+  test("Travel times show as paid", () => {
+    const breakk: Break = {
+      breakType: "Travel from",
+      startTime: 0,
+      endTime: 0,
+    }
+
+    const wrapper = mount(<BreakRow break={breakk} />)
+    expect(wrapper.html()).toContain("Travel (Paid)")
+  })
+
+  test("Unrecognized types show their name", () => {
+    const breakk: Break = {
+      breakType: "Unrecognized break type",
+      startTime: 0,
+      endTime: 0,
+    }
+
+    const wrapper = mount(<BreakRow break={breakk} />)
+    expect(wrapper.html()).toContain("Unrecognized break type")
+    expect(wrapper.html()).not.toContain("(Paid)")
+    expect(wrapper.html()).not.toContain("(Unpaid)")
   })
 })
