@@ -1,5 +1,6 @@
 defmodule Schedule.Minischedule.Piece do
   alias Schedule.Block
+  alias Schedule.Gtfs.Timepoint
   alias Schedule.Hastus
   alias Schedule.Hastus.Place
   alias Schedule.Hastus.Run
@@ -13,8 +14,6 @@ defmodule Schedule.Minischedule.Piece do
           place: Place.id(),
           mid_route?: boolean()
         }
-
-  @type timepoint_names_by_id :: %{String.t() => String.t()}
 
   @type t :: %__MODULE__{
           schedule_id: Hastus.Schedule.id(),
@@ -45,7 +44,7 @@ defmodule Schedule.Minischedule.Piece do
     :end
   ]
 
-  @spec hydrate(t(), Schedule.Trip.by_id(), timepoint_names_by_id()) :: t()
+  @spec hydrate(t(), Schedule.Trip.by_id(), Timepoint.timepoint_names_by_id()) :: t()
   def hydrate(piece, trips_by_id, timepoint_names_by_id) do
     trip_ids = piece.trips
 

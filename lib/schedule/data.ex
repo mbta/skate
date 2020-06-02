@@ -28,7 +28,7 @@ defmodule Schedule.Data do
           routes: [Route.t()],
           route_patterns: [RoutePattern.t()],
           timepoints_by_route: timepoints_by_route(),
-          timepoint_names_by_id: timepoint_names_by_id(),
+          timepoint_names_by_id: Timepoint.timepoint_names_by_id(),
           shapes: shapes_by_route_id(),
           stops: stops_by_id(),
           trips: Trip.by_id(),
@@ -39,8 +39,6 @@ defmodule Schedule.Data do
         }
 
   @type timepoints_by_route :: %{Route.id() => [Timepoint.t()]}
-
-  @type timepoint_names_by_id :: %{Timepoint.id() => String.t() | nil}
 
   @type shapes_by_route_id :: %{Route.id() => [Shape.t()]}
 
@@ -391,7 +389,7 @@ defmodule Schedule.Data do
     |> Schedule.Helpers.merge_lists()
   end
 
-  @spec timepoint_names_for_ids(Timepoint.timepoints_by_id()) :: timepoint_names_by_id()
+  @spec timepoint_names_for_ids(Timepoint.timepoints_by_id()) :: Timepoint.timepoint_names_by_id()
   defp timepoint_names_for_ids(timepoints_by_id) do
     timepoints_by_id
     |> Map.new(fn {id, timepoint} -> {id, timepoint.name} end)

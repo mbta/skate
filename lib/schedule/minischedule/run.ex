@@ -1,4 +1,5 @@
 defmodule Schedule.Minischedule.Run do
+  alias Schedule.Gtfs.Timepoint
   alias Schedule.Trip
   alias Schedule.Minischedule.Break
   alias Schedule.Minischedule.Piece
@@ -8,8 +9,6 @@ defmodule Schedule.Minischedule.Run do
   @type key :: {Schedule.id(), Run.id()}
 
   @type by_id :: %{key() => t()}
-
-  @type timepoint_names_by_id :: %{String.t() => String.t()}
 
   @type t :: %__MODULE__{
           schedule_id: Schedule.id(),
@@ -41,7 +40,7 @@ defmodule Schedule.Minischedule.Run do
     Enum.filter(run.activities, fn activity -> match?(%Piece{}, activity) end)
   end
 
-  @spec hydrate(t(), Trip.by_id(), timepoint_names_by_id()) :: t()
+  @spec hydrate(t(), Trip.by_id(), Timepoint.timepoint_names_by_id()) :: t()
   def hydrate(run, trips_by_id, timepoint_names_by_id) do
     %{
       run
@@ -50,7 +49,7 @@ defmodule Schedule.Minischedule.Run do
     }
   end
 
-  @spec hydrate_activity(Piece.t() | Break.t(), Trip.by_id(), timepoint_names_by_id()) ::
+  @spec hydrate_activity(Piece.t() | Break.t(), Trip.by_id(), Timepoint.timepoint_names_by_id()) ::
           Piece.t() | Break.t()
   def hydrate_activity(%Break{} = break, _trips_by_id, timepoint_names_by_id) do
     %Break{

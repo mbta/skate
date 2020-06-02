@@ -19,6 +19,7 @@ defmodule Schedule.Gtfs.Timepoint do
         }
 
   @type timepoints_by_id :: %{id() => t()}
+  @type timepoint_names_by_id :: %{id() => String.t()}
 
   @enforce_keys [
     :id

@@ -1,5 +1,6 @@
 defmodule Schedule.Minischedule.Block do
   alias Schedule.Block
+  alias Schedule.Gtfs.Timepoint
   alias Schedule.Trip
   alias Schedule.Minischedule.Piece
   alias Schedule.Hastus.Schedule
@@ -7,8 +8,6 @@ defmodule Schedule.Minischedule.Block do
   @type key :: {Schedule.id(), Block.id()}
 
   @type by_id :: %{key() => t()}
-
-  @type timepoint_names_by_id :: %{String.t() => String.t()}
 
   @type t :: %__MODULE__{
           schedule_id: Schedule.id(),
@@ -35,7 +34,7 @@ defmodule Schedule.Minischedule.Block do
     {block.schedule_id, block.id}
   end
 
-  @spec hydrate(t(), Trip.by_id(), timepoint_names_by_id()) :: t()
+  @spec hydrate(t(), Trip.by_id(), Timepoint.timepoint_names_by_id()) :: t()
   def hydrate(block, trips_by_id, timepoint_names_by_id) do
     %{
       block
