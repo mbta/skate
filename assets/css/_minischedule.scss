@@ -96,6 +96,8 @@
 }
 
 .m-minischedule__row--current {
+  font-weight: bold;
+
   &.early {
     background-color: $color-vehicle-early;
   }
