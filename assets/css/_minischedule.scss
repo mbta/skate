@@ -98,19 +98,40 @@
 .m-minischedule__row--current {
   font-weight: bold;
 
+  svg {
+    stroke: white;
+    stroke-width: 0.25rem;
+  }
+
   &.early {
     background-color: $color-vehicle-early;
+
+    svg {
+      fill: $color-vehicle-early;
+    }
   }
 
   &.ghost {
     background-color: $color-secondary-medium;
+
+    svg {
+      fill: $color-secondary-medium;
+    }
   }
 
   &.late {
     background-color: $color-vehicle-late;
+
+    svg {
+      fill: $color-vehicle-late;
+    }
   }
 
   &.on-time {
     background-color: $color-vehicle-ontime;
+
+    svg {
+      fill: $color-vehicle-ontime;
+    }
   }
 }
