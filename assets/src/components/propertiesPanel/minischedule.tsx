@@ -116,18 +116,18 @@ export const BreakRow = ({ break: breakk }: { break: Break }) => {
 }
 
 const Layover = ({
-  currentTrip,
   nextTrip,
+  previousTrip,
   vehicleOrGhost,
 }: {
-  currentTrip: Trip | AsDirected
-  nextTrip?: Trip | AsDirected
+  nextTrip: Trip | AsDirected
+  previousTrip?: Trip | AsDirected
   vehicleOrGhost: VehicleOrGhost
 }) => {
-  if (!nextTrip) {
+  if (!previousTrip) {
     return null
   }
-  const layoverDuration = nextTrip.startTime - currentTrip.endTime
+  const layoverDuration = nextTrip.startTime - previousTrip.endTime
   if (layoverDuration === 0) {
     return null
   }
@@ -222,6 +222,13 @@ const Piece = ({
               : "middle"
           return (
             <React.Fragment key={trip.startTime}>
+              {view === "run" ? (
+                <Layover
+                  nextTrip={trip}
+                  previousTrip={piece.trips[index - 1]}
+                  vehicleOrGhost={vehicleOrGhost}
+                />
+              ) : null}
               {isTrip(trip) ? (
                 <Trip
                   trip={trip}
@@ -231,13 +238,6 @@ const Piece = ({
               ) : (
                 <AsDirected asDirected={trip} />
               )}
-              {view === "run" ? (
-                <Layover
-                  currentTrip={trip}
-                  nextTrip={piece.trips[index + 1]}
-                  vehicleOrGhost={vehicleOrGhost}
-                />
-              ) : null}
             </React.Fragment>
           )
         })}
