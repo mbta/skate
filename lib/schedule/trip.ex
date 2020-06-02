@@ -24,8 +24,8 @@ defmodule Schedule.Trip do
           stop_times: [StopTime.t()],
           start_time: Util.Time.time_of_day(),
           end_time: Util.Time.time_of_day(),
-          start_place: String.t(),
-          end_place: String.t()
+          start_place: String.t() | nil,
+          end_place: String.t() | nil
         }
 
   @enforce_keys [
@@ -49,8 +49,8 @@ defmodule Schedule.Trip do
     stop_times: [],
     start_time: 0,
     end_time: 0,
-    start_place: "",
-    end_place: ""
+    start_place: nil,
+    end_place: nil
   ]
 
   @spec merge_trips([Gtfs.Trip.t()], [Hastus.Trip.t()], StopTime.by_trip_id()) :: by_id()
