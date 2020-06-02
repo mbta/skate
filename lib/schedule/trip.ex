@@ -78,6 +78,14 @@ defmodule Schedule.Trip do
         {hastus_trip.start_time, hastus_trip.end_time}
       end
 
+    start_place =
+      (hastus_trip && hastus_trip.start_place) ||
+        stop_times |> List.first() |> Map.get(:timepoint_id)
+
+    end_place =
+      (hastus_trip && hastus_trip.end_place) ||
+        stop_times |> List.last() |> Map.get(:timepoint_id)
+
     %__MODULE__{
       id: (gtfs_trip && gtfs_trip.id) || (hastus_trip && hastus_trip.trip_id),
       block_id: (gtfs_trip && gtfs_trip.block_id) || (hastus_trip && hastus_trip.block_id),
@@ -92,8 +100,8 @@ defmodule Schedule.Trip do
       stop_times: stop_times || [],
       start_time: start_time,
       end_time: end_time,
-      start_place: hastus_trip && hastus_trip.start_place,
-      end_place: hastus_trip && hastus_trip.end_place
+      start_place: start_place,
+      end_place: end_place
     }
   end
 
