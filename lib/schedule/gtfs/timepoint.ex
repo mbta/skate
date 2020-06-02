@@ -5,6 +5,7 @@ defmodule Schedule.Gtfs.Timepoint do
     "cabot" => "Cabot Garage",
     "charl" => "Charlestown Garage",
     "fell" => "Fellsway Garage",
+    "lynn" => "Lynn Garage",
     "ncamb" => "North Cambridge Garage",
     "prwb" => "Paul Revere Winthrop Garage",
     "somvl" => "Somerville Garage"
