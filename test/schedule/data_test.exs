@@ -849,17 +849,4 @@ defmodule Schedule.DataTest do
       assert Data.minischedule_block(data, trip.id) == nil
     end
   end
-
-  describe "timepoint_name_for_id/2" do
-    test "looks up the timepoint name" do
-      data = %Data{
-        timepoint_names_by_id: %{
-          "hynes" => "Hynes Convention Center"
-        }
-      }
-
-      assert Data.timepoint_name_for_id(data, "hynes") == "Hynes Convention Center"
-      assert Data.timepoint_name_for_id(data, "rugg") == nil
-    end
-  end
 end

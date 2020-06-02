@@ -77,14 +77,6 @@ defmodule Schedule.Data do
       ),
       do: Map.get(timepoints_by_route, route_id, [])
 
-  @spec timepoint_name_for_id(t(), Stop.id()) :: String.t() | nil
-  def timepoint_name_for_id(
-        %__MODULE__{timepoint_names_by_id: timepoint_names_by_id},
-        timepoint_id
-      ) do
-    Map.get(timepoint_names_by_id, timepoint_id)
-  end
-
   @spec stop(t(), Stop.id()) :: Stop.t() | nil
   def stop(%__MODULE__{stops: stops}, stop_id), do: stops[stop_id]
 
