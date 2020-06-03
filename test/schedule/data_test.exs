@@ -849,4 +849,16 @@ defmodule Schedule.DataTest do
       assert Data.minischedule_block(data, trip.id) == nil
     end
   end
+
+  describe "parse_files/1" do
+    test "includes certain hardcoded garage IDs as checkpoints" do
+      hardcoded_garage_ids =
+        Data.parse_files(%{gtfs: %{}, hastus: %{}})
+        |> Map.get(:timepoint_names_by_id)
+        |> Map.keys()
+        |> Enum.sort()
+
+      assert hardcoded_garage_ids == ~w[cabot charl fell lynn ncamb prwb somvl]
+    end
+  end
 end
