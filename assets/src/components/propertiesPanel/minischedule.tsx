@@ -388,7 +388,7 @@ const Row = ({
       {belowText && (
         <>
           <br />
-          {belowText}
+          <span className="m-minischedule__below-text">{belowText}</span>
         </>
       )}
     </div>

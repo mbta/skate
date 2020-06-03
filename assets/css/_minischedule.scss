@@ -59,6 +59,10 @@
   padding-right: 1rem;
 }
 
+.m-minischedule__below-text {
+  @include font-small;
+}
+
 .m-minischedule__piece-rows {
   // this is all about drawing the line through the icons on the left
   .m-minischedule__row {
