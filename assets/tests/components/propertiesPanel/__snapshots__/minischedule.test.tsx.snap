@@ -131,6 +131,12 @@ Array [
       className="m-minischedule__left-text"
     >
       Start time
+      <br />
+      <span
+        className="m-minischedule__below-text"
+      >
+        1st Street and A Ave
+      </span>
     </div>
     <div
       className="m-minischedule__right-text"
@@ -248,6 +254,12 @@ Array [
       className="m-minischedule__left-text"
     >
       Done
+      <br />
+      <span
+        className="m-minischedule__below-text"
+      >
+        999th Street and ZZZ Ave
+      </span>
     </div>
     <div
       className="m-minischedule__right-text"
@@ -1023,6 +1035,7 @@ Array [
       className="m-minischedule__left-text"
     >
       Done
+      
     </div>
     <div
       className="m-minischedule__right-text"
@@ -1318,6 +1331,7 @@ Array [
       className="m-minischedule__left-text"
     >
       Start time
+      
     </div>
     <div
       className="m-minischedule__right-text"
@@ -1365,6 +1379,7 @@ Array [
       className="m-minischedule__left-text"
     >
       Done
+      
     </div>
     <div
       className="m-minischedule__right-text"

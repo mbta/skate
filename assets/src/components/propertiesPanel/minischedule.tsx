@@ -180,6 +180,17 @@ const Piece = ({
     piece.trips.length > 0 &&
     isTrip(piece.trips[piece.trips.length - 1]) &&
     !isDeadhead(piece.trips[piece.trips.length - 1])
+
+  const startPlace: string =
+    piece.trips.length > 0 && isTrip(piece.trips[0])
+      ? piece.trips[0].startPlace
+      : ""
+  const endPlace: string =
+    piece.trips[piece.trips.length - 1] &&
+    isTrip(piece.trips[piece.trips.length - 1])
+      ? (piece.trips[piece.trips.length - 1] as Trip).endPlace
+      : ""
+
   return (
     <>
       {view === "block" ? (
@@ -189,6 +200,7 @@ const Piece = ({
         <Row
           text="Start time"
           rightText={formattedScheduledTime(piece.start.time)}
+          belowText={startPlace}
         />
       )}
       <div className="m-minischedule__piece-rows">
@@ -238,7 +250,11 @@ const Piece = ({
         ) : null}
       </div>
       {isSwingOff ? null : (
-        <Row text="Done" rightText={formattedScheduledTime(piece.end.time)} />
+        <Row
+          text="Done"
+          rightText={formattedScheduledTime(piece.end.time)}
+          belowText={endPlace}
+        />
       )}
     </>
   )
