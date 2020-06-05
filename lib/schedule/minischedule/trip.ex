@@ -52,8 +52,8 @@ defmodule Schedule.Minischedule.Trip do
       run_id: trip.run_id,
       start_time: trip.start_time,
       end_time: trip.end_time,
-      start_place: Map.get(timepoint_names_by_id, trip.start_place),
-      end_place: Map.get(timepoint_names_by_id, trip.end_place)
+      start_place: Timepoint.pretty_name_for_id(timepoint_names_by_id, trip.start_place),
+      end_place: Timepoint.pretty_name_for_id(timepoint_names_by_id, trip.end_place)
     }
   end
 

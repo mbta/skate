@@ -49,4 +49,8 @@ defmodule Schedule.Gtfs.Timepoint do
   def garage_names_by_id do
     @garage_names_by_id
   end
+
+  def pretty_name_for_id(timepoint_names_by_id, place_id) do
+    Map.get(timepoint_names_by_id, place_id)
+  end
 end

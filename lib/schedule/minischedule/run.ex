@@ -54,8 +54,8 @@ defmodule Schedule.Minischedule.Run do
   def hydrate_activity(%Break{} = break, _trips_by_id, timepoint_names_by_id) do
     %Break{
       break
-      | start_place: Map.get(timepoint_names_by_id, break.start_place),
-        end_place: Map.get(timepoint_names_by_id, break.end_place)
+      | start_place: Timepoint.pretty_name_for_id(timepoint_names_by_id, break.start_place),
+        end_place: Timepoint.pretty_name_for_id(timepoint_names_by_id, break.end_place)
     }
   end
 
