@@ -114,17 +114,17 @@
   }
 
   &.early {
-    background-color: $color-vehicle-early;
-    border-left-color: purple;
+    background-color: $color-vehicle-early-light;
+    border-left-color: $color-vehicle-early;
 
     svg {
-      fill: $color-vehicle-early;
+      fill: $color-vehicle-early-light;
     }
   }
 
   &.ghost {
     background-color: $color-secondary-medium;
-    border-left-color: purple;
+    border-left-color: $color-secondary-dark;
 
     svg {
       fill: $color-secondary-medium;
@@ -132,20 +132,20 @@
   }
 
   &.late {
-    background-color: $color-vehicle-late;
-    border-left-color: purple;
+    background-color: $color-vehicle-late-light;
+    border-left-color: $color-vehicle-late;
 
     svg {
-      fill: $color-vehicle-late;
+      fill: $color-vehicle-late-light;
     }
   }
 
   &.on-time {
-    background-color: $color-vehicle-ontime;
-    border-left-color: purple;
+    background-color: $color-vehicle-ontime-light;
+    border-left-color: $color-vehicle-ontime;
 
     svg {
-      fill: $color-vehicle-ontime;
+      fill: $color-vehicle-ontime-light;
     }
   }
 }
