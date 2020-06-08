@@ -210,63 +210,20 @@ const Piece = ({
           />
         ) : null}
         {piece.trips.map((trip, tripIndex) => {
-          const sequence: "first" | "middle" | "last" =
-            tripIndex === 0
-              ? "first"
-              : tripIndex === piece.trips.length - 1
-              ? "last"
-              : "middle"
           const tripTimeBasedStyle =
             pieceTimeBasedStyle === "current"
               ? getTimeBasedStyle(tripIndex, activeIndex && activeIndex[1])
               : pieceTimeBasedStyle
-          const layoverTimeBasedStyle =
-            tripTimeBasedStyle === "current"
-              ? vehicleOrGhost.routeStatus === "on_route"
-                ? "past"
-                : "current"
-              : tripTimeBasedStyle
-          const onRouteTimeBasedStyle =
-            tripTimeBasedStyle === "current"
-              ? vehicleOrGhost.routeStatus === "on_route"
-                ? "current"
-                : "future"
-              : tripTimeBasedStyle
-
           return (
-            <React.Fragment key={trip.startTime}>
-              {view === "run" ? (
-                <Layover
-                  nextTrip={trip}
-                  previousTrip={piece.trips[tripIndex - 1]}
-                  extraClasses={[
-                    `m-minischedule__row--${layoverTimeBasedStyle}`,
-                    layoverTimeBasedStyle === "current"
-                      ? drawnStatus(vehicleOrGhost)
-                      : null,
-                  ]}
-                />
-              ) : null}
-              {isTrip(trip) ? (
-                <Trip
-                  trip={trip}
-                  sequence={sequence}
-                  extraClasses={[
-                    `m-minischedule__row--${onRouteTimeBasedStyle}`,
-                    onRouteTimeBasedStyle === "current"
-                      ? drawnStatus(vehicleOrGhost)
-                      : null,
-                  ]}
-                />
-              ) : (
-                <AsDirected
-                  asDirected={trip}
-                  extraClasses={[
-                    `m-minischedule__row--${onRouteTimeBasedStyle}`,
-                  ]}
-                />
-              )}
-            </React.Fragment>
+            <Trip
+              trip={trip}
+              tripIndex={tripIndex}
+              pieceTrips={piece.trips}
+              tripTimeBasedStyle={tripTimeBasedStyle}
+              vehicleOrGhost={vehicleOrGhost}
+              view={view}
+              key={trip.startTime}
+            />
           )
         })}
         {isSwingOff ? (
@@ -292,24 +249,70 @@ const Piece = ({
 
 const Trip = ({
   trip,
-  sequence,
-  extraClasses,
+  tripIndex,
+  pieceTrips,
+  tripTimeBasedStyle,
+  vehicleOrGhost,
+  view,
 }: {
-  trip: Trip
-  sequence: "first" | "middle" | "last"
-  extraClasses: (string | null)[]
+  trip: Trip | AsDirected
+  tripIndex: number
+  pieceTrips: (Trip | AsDirected)[]
+  tripTimeBasedStyle: TimeBasedStyle
+  vehicleOrGhost: VehicleOrGhost
+  view: "run" | "block"
 }) => {
-  if (isDeadhead(trip)) {
-    return (
-      <DeadheadTrip
-        trip={trip}
-        sequence={sequence}
-        extraClasses={extraClasses}
-      />
-    )
-  } else {
-    return <RevenueTrip trip={trip} extraClasses={extraClasses} />
-  }
+  const sequence: "first" | "middle" | "last" =
+    tripIndex === 0
+      ? "first"
+      : tripIndex === pieceTrips.length - 1
+      ? "last"
+      : "middle"
+  const layoverTimeBasedStyle =
+    tripTimeBasedStyle === "current"
+      ? vehicleOrGhost.routeStatus === "on_route"
+        ? "past"
+        : "current"
+      : tripTimeBasedStyle
+  const onRouteTimeBasedStyle =
+    tripTimeBasedStyle === "current"
+      ? vehicleOrGhost.routeStatus === "on_route"
+        ? "current"
+        : "future"
+      : tripTimeBasedStyle
+  const layoverExtraClasses = [
+    `m-minischedule__row--${layoverTimeBasedStyle}`,
+    layoverTimeBasedStyle === "current" ? drawnStatus(vehicleOrGhost) : null,
+  ]
+  const onRouteExtraClasses = [
+    `m-minischedule__row--${onRouteTimeBasedStyle}`,
+    onRouteTimeBasedStyle === "current" ? drawnStatus(vehicleOrGhost) : null,
+  ]
+
+  return (
+    <>
+      {view === "run" ? (
+        <Layover
+          nextTrip={trip}
+          previousTrip={pieceTrips[tripIndex - 1]}
+          extraClasses={layoverExtraClasses}
+        />
+      ) : null}
+      {isTrip(trip) ? (
+        isDeadhead(trip) ? (
+          <DeadheadTrip
+            trip={trip}
+            sequence={sequence}
+            extraClasses={onRouteExtraClasses}
+          />
+        ) : (
+          <RevenueTrip trip={trip} extraClasses={onRouteExtraClasses} />
+        )
+      ) : (
+        <AsDirected asDirected={trip} extraClasses={onRouteExtraClasses} />
+      )}
+    </>
+  )
 }
 
 const DeadheadTrip = ({
@@ -410,7 +413,7 @@ const AsDirected = ({
   extraClasses,
 }: {
   asDirected: AsDirected
-  extraClasses: string[]
+  extraClasses: (string | null)[]
 }) => (
   <Row
     icon={busFrontIcon()}
