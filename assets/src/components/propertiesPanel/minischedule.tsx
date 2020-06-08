@@ -197,15 +197,6 @@ const Piece = ({
     piece.trips.length > 0 &&
     isTrip(piece.trips[piece.trips.length - 1]) &&
     !isDeadhead(piece.trips[piece.trips.length - 1])
-  const startPlace: string =
-    piece.trips.length > 0 && isTrip(piece.trips[0])
-      ? piece.trips[0].startPlace
-      : ""
-  const endPlace: string =
-    piece.trips[piece.trips.length - 1] &&
-    isTrip(piece.trips[piece.trips.length - 1])
-      ? (piece.trips[piece.trips.length - 1] as Trip).endPlace
-      : ""
   const pieceTimeBasedStyle: TimeBasedStyle = getTimeBasedStyle(
     pieceIndex,
     activeIndex && activeIndex[0]
@@ -224,7 +215,7 @@ const Piece = ({
         <Row
           text="Start time"
           rightText={formattedScheduledTime(piece.startTime)}
-          belowText={startPlace}
+          belowText={piece.startPlace}
           timeBasedStyle={startTimeBasedStyle}
         />
       )}
@@ -240,7 +231,7 @@ const Piece = ({
             icon={plusIcon()}
             text="Swing on"
             rightText={formattedScheduledTime(piece.startTime)}
-            belowText={startPlace}
+            belowText={piece.startPlace}
             timeBasedStyle={startTimeBasedStyle}
           />
         ) : null}
@@ -267,7 +258,7 @@ const Piece = ({
             icon={minusIcon()}
             text="Swing off"
             rightText={formattedScheduledTime(piece.endTime)}
-            belowText={startPlace}
+            belowText={piece.endPlace}
             timeBasedStyle={doneTimeBasedStyle}
           />
         ) : null}
@@ -276,7 +267,7 @@ const Piece = ({
         <Row
           text="Done"
           rightText={formattedScheduledTime(piece.endTime)}
-          belowText={endPlace}
+          belowText={piece.endPlace}
           timeBasedStyle={doneTimeBasedStyle}
         />
       )}
