@@ -73,13 +73,13 @@ defmodule Schedule.Minischedule.Load do
   end
 
   @spec operator_activity_to_piece(Activity.t(), [Trip.t()]) :: Piece.t() | Activity.t()
-  defp operator_activity_to_piece(%Activity{activity_type: "Operator"} = activity, trips) do
+  defp operator_activity_to_piece(%Activity{activity_type: "Operator"} = activity, trips_in_run) do
     trips_in_piece =
-      Enum.filter(trips, fn trip ->
+      Enum.filter(trips_in_run, fn trip ->
         trip_in_operator(activity, trip)
       end)
 
-    trips =
+    dehydrated_trips =
       if operator_is_as_directed?(activity) do
         [as_directed_from_trips(trips_in_piece)]
       else
@@ -112,7 +112,7 @@ defmodule Schedule.Minischedule.Load do
         place: activity.start_place,
         mid_route?: false
       },
-      trips: trips,
+      trips: dehydrated_trips,
       end: %{
         time: activity.end_time,
         place: activity.end_place,
