@@ -426,7 +426,7 @@ defmodule Schedule.Minischedule.LoadTest do
                        direction_id: nil,
                        end_time: 102,
                        headsign: nil,
-                       id: "leading_deadhead_block_101"
+                       id: "leading_deadhead_run_101"
                      },
                      "trip"
                    ],
@@ -484,7 +484,7 @@ defmodule Schedule.Minischedule.LoadTest do
                    trips: [
                      "trip",
                      %Schedule.Minischedule.Trip{
-                       id: "following_deadhead_block_102",
+                       id: "following_deadhead_run_102",
                        block_id: "block",
                        direction_id: nil,
                        start_time: 102,

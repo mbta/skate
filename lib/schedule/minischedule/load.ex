@@ -218,7 +218,7 @@ defmodule Schedule.Minischedule.Load do
          %Piece{} = piece
          | rest
        ]) do
-    dummy_trip = Schedule.Minischedule.Trip.from_leading_deadhead(deadhead, piece)
+    dummy_trip = Schedule.Minischedule.Trip.from_leading_deadhead(deadhead, piece.block_id)
 
     new_piece = %{
       piece
@@ -238,7 +238,7 @@ defmodule Schedule.Minischedule.Load do
          %Activity{activity_type: "Deadhead to"} = deadhead
          | rest
        ]) do
-    dummy_trip = Schedule.Minischedule.Trip.from_following_deadhead(deadhead, piece)
+    dummy_trip = Schedule.Minischedule.Trip.from_following_deadhead(deadhead, piece.block_id)
 
     new_piece = %{
       piece
