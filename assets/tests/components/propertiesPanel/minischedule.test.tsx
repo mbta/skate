@@ -409,7 +409,7 @@ describe("MinischeduleBlock", () => {
   })
 })
 
-describe("BlockRow", () => {
+describe("BreakRow", () => {
   test("Split breaks show as unpaid, with place", () => {
     const breakk: Break = {
       breakType: "Split break",
