@@ -218,9 +218,12 @@ defmodule Schedule.Minischedule.Load do
          %Piece{} = piece
          | rest
        ]) do
+    dummy_trip = Schedule.Minischedule.Trip.from_leading_deadhead(deadhead, piece)
+
     new_piece = %{
       piece
-      | start: %{
+      | trips: [dummy_trip | piece.trips],
+        start: %{
           time: deadhead.start_time,
           place: deadhead.start_place,
           mid_route?: false
@@ -235,9 +238,12 @@ defmodule Schedule.Minischedule.Load do
          %Activity{activity_type: "Deadhead to"} = deadhead
          | rest
        ]) do
+    dummy_trip = Schedule.Minischedule.Trip.from_following_deadhead(deadhead, piece)
+
     new_piece = %{
       piece
-      | end: %{
+      | trips: piece.trips ++ [dummy_trip],
+        end: %{
           time: deadhead.end_time,
           place: deadhead.end_place,
           mid_route?: false
