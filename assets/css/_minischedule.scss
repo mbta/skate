@@ -118,7 +118,7 @@
     border-left-color: $color-vehicle-early;
 
     svg {
-      fill: $color-vehicle-early-light;
+      fill: $color-vehicle-early;
     }
   }
 
@@ -127,7 +127,7 @@
     border-left-color: $color-secondary-dark;
 
     svg {
-      fill: $color-secondary-medium;
+      fill: $color-secondary-dark;
     }
   }
 
@@ -136,7 +136,7 @@
     border-left-color: $color-vehicle-late;
 
     svg {
-      fill: $color-vehicle-late-light;
+      fill: $color-vehicle-late;
     }
   }
 
@@ -145,7 +145,7 @@
     border-left-color: $color-vehicle-ontime;
 
     svg {
-      fill: $color-vehicle-ontime-light;
+      fill: $color-vehicle-ontime;
     }
   }
 }
