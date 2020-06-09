@@ -106,7 +106,13 @@
   border-left-style: solid;
   border-left-width: 0.5rem;
   font-weight: bold;
-  padding-left: 0.5rem;
+  padding-left: 0.25rem;
+
+  .m-minischedule__icon {
+    height: 1.5rem;
+    margin-right: 0.25rem;
+    width: 1.5rem;
+  }
 
   svg {
     stroke: white;
