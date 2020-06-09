@@ -1,7 +1,7 @@
 defmodule Schedule.Minischedule.Trip do
   alias Schedule.Block
   alias Schedule.Gtfs.{Direction, Route, RoutePattern, Timepoint}
-  alias Schedule.Hastus.{Activity, Run}
+  alias Schedule.Hastus.Run
 
   @type id :: Schedule.Trip.id()
 
@@ -57,7 +57,6 @@ defmodule Schedule.Minischedule.Trip do
     }
   end
 
-  @spec from_following_deadhead(Activity.t(), Block.id()) :: t()
   def from_following_deadhead(deadhead, block_id) do
     %__MODULE__{
       id: "following_deadhead_#{deadhead.run_id}_#{deadhead.start_time}",
@@ -69,7 +68,6 @@ defmodule Schedule.Minischedule.Trip do
     }
   end
 
-  @spec from_leading_deadhead(Activity.t(), Block.id()) :: t()
   def from_leading_deadhead(deadhead, block_id) do
     %__MODULE__{
       id: "leading_deadhead_#{deadhead.run_id}_#{deadhead.start_time}",
