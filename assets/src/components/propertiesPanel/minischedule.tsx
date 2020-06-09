@@ -210,6 +210,7 @@ const Piece = ({
             icon={plusIcon()}
             text="Swing on"
             rightText={formattedScheduledTime(piece.start.time)}
+            belowText={startPlace}
           />
         ) : null}
         {piece.trips.map((trip, index) => {
@@ -246,6 +247,7 @@ const Piece = ({
             icon={minusIcon()}
             text="Swing off"
             rightText={formattedScheduledTime(piece.end.time)}
+            belowText={startPlace}
           />
         ) : null}
       </div>

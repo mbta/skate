@@ -39,6 +39,12 @@ Array [
         className="m-minischedule__left-text"
       >
         Swing on
+        <br />
+        <span
+          className="m-minischedule__below-text"
+        >
+          Red Square
+        </span>
       </div>
       <div
         className="m-minischedule__right-text"
@@ -91,6 +97,12 @@ Array [
         className="m-minischedule__left-text"
       >
         Swing off
+        <br />
+        <span
+          className="m-minischedule__below-text"
+        >
+          Red Square
+        </span>
       </div>
       <div
         className="m-minischedule__right-text"
@@ -311,6 +323,12 @@ Array [
         className="m-minischedule__left-text"
       >
         Swing on
+        <br />
+        <span
+          className="m-minischedule__below-text"
+        >
+          Red Square
+        </span>
       </div>
       <div
         className="m-minischedule__right-text"
@@ -415,6 +433,12 @@ Array [
         className="m-minischedule__left-text"
       >
         Swing off
+        <br />
+        <span
+          className="m-minischedule__below-text"
+        >
+          Red Square
+        </span>
       </div>
       <div
         className="m-minischedule__right-text"
@@ -460,6 +484,12 @@ Array [
         className="m-minischedule__left-text"
       >
         Swing on
+        <br />
+        <span
+          className="m-minischedule__below-text"
+        >
+          Red Square
+        </span>
       </div>
       <div
         className="m-minischedule__right-text"
@@ -598,6 +628,12 @@ Array [
         className="m-minischedule__left-text"
       >
         Swing off
+        <br />
+        <span
+          className="m-minischedule__below-text"
+        >
+          Red Square
+        </span>
       </div>
       <div
         className="m-minischedule__right-text"
@@ -668,6 +704,12 @@ Array [
         className="m-minischedule__left-text"
       >
         Swing on
+        <br />
+        <span
+          className="m-minischedule__below-text"
+        >
+          Red Square
+        </span>
       </div>
       <div
         className="m-minischedule__right-text"
@@ -763,6 +805,12 @@ Array [
         className="m-minischedule__left-text"
       >
         Swing off
+        <br />
+        <span
+          className="m-minischedule__below-text"
+        >
+          Red Square
+        </span>
       </div>
       <div
         className="m-minischedule__right-text"
@@ -808,6 +856,12 @@ Array [
         className="m-minischedule__left-text"
       >
         Swing on
+        <br />
+        <span
+          className="m-minischedule__below-text"
+        >
+          Red Square
+        </span>
       </div>
       <div
         className="m-minischedule__right-text"
@@ -903,6 +957,12 @@ Array [
         className="m-minischedule__left-text"
       >
         Swing off
+        <br />
+        <span
+          className="m-minischedule__below-text"
+        >
+          Red Square
+        </span>
       </div>
       <div
         className="m-minischedule__right-text"
@@ -948,6 +1008,12 @@ Array [
         className="m-minischedule__left-text"
       >
         Swing on
+        <br />
+        <span
+          className="m-minischedule__below-text"
+        >
+          Red Square
+        </span>
       </div>
       <div
         className="m-minischedule__right-text"
@@ -1080,6 +1146,12 @@ Array [
         className="m-minischedule__left-text"
       >
         Swing on
+        <br />
+        <span
+          className="m-minischedule__below-text"
+        >
+          Red Square
+        </span>
       </div>
       <div
         className="m-minischedule__right-text"
@@ -1175,6 +1247,12 @@ Array [
         className="m-minischedule__left-text"
       >
         Swing off
+        <br />
+        <span
+          className="m-minischedule__below-text"
+        >
+          Red Square
+        </span>
       </div>
       <div
         className="m-minischedule__right-text"
@@ -1220,6 +1298,12 @@ Array [
         className="m-minischedule__left-text"
       >
         Swing on
+        <br />
+        <span
+          className="m-minischedule__below-text"
+        >
+          Red Square
+        </span>
       </div>
       <div
         className="m-minischedule__right-text"
@@ -1298,6 +1382,12 @@ Array [
         className="m-minischedule__left-text"
       >
         Swing off
+        <br />
+        <span
+          className="m-minischedule__below-text"
+        >
+          Red Square
+        </span>
       </div>
       <div
         className="m-minischedule__right-text"
