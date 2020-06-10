@@ -32,10 +32,10 @@ defmodule Schedule.Minischedule.PieceTest do
         schedule_id: "schedule",
         run_id: "run",
         block_id: "block",
-        start_time: "0",
+        start_time: 0,
         start_place: "on",
         trips: [trip_id],
-        end_time: "1",
+        end_time: 1,
         end_place: "off"
       }
 
@@ -72,10 +72,10 @@ defmodule Schedule.Minischedule.PieceTest do
         schedule_id: "schedule",
         run_id: "run",
         block_id: "block",
-        start_time: "0",
+        start_time: 0,
         start_place: "on",
         trips: [trip, as_directed],
-        end_time: "1",
+        end_time: 1,
         end_place: "off"
       }
 
