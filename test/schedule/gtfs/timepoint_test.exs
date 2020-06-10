@@ -44,4 +44,26 @@ defmodule Schedule.Gtfs.TimepointTest do
       assert Timepoint.timepoint_for_id(timepoints_by_id, "missing") == %Timepoint{id: "missing"}
     end
   end
+
+  describe "pretty_name_for_id/2" do
+    test "looks up the given place ID" do
+      pretty_name =
+        Timepoint.pretty_name_for_id(
+          %{"hynes" => "Hynes Convention Center", "rugg" => "Ruggles"},
+          "rugg"
+        )
+
+      assert pretty_name == "Ruggles"
+    end
+
+    test "returns the place ID if no match" do
+      pretty_name =
+        Timepoint.pretty_name_for_id(
+          %{"hynes" => "Hynes Convention Center", "rugg" => "Ruggles"},
+          "abcde"
+        )
+
+      assert pretty_name == "abcde"
+    end
+  end
 end

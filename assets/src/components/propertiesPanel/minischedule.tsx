@@ -100,8 +100,19 @@ export const BreakRow = ({ break: breakk }: { break: Break }) => {
   const isPaid: boolean | null = breakIsPaid(breakk.breakType)
   const isPaidText: string =
     isPaid === null ? "" : isPaid ? " (Paid)" : " (Unpaid)"
-  const text: string = breakDisplayText(breakk.breakType) + isPaidText
-  return <Row text={text} rightText={formattedBreakTime} />
+  const text: string = breakDisplayText(breakk) + isPaidText
+
+  if (breakk.breakType === "Travel from" || breakk.breakType === "Travel to") {
+    return <Row text={text} rightText={formattedBreakTime} />
+  } else {
+    return (
+      <Row
+        text={text}
+        rightText={formattedBreakTime}
+        belowText={breakk.endPlace}
+      />
+    )
+  }
 }
 
 const Layover = ({
@@ -169,6 +180,17 @@ const Piece = ({
     piece.trips.length > 0 &&
     isTrip(piece.trips[piece.trips.length - 1]) &&
     !isDeadhead(piece.trips[piece.trips.length - 1])
+
+  const startPlace: string =
+    piece.trips.length > 0 && isTrip(piece.trips[0])
+      ? piece.trips[0].startPlace
+      : ""
+  const endPlace: string =
+    piece.trips[piece.trips.length - 1] &&
+    isTrip(piece.trips[piece.trips.length - 1])
+      ? (piece.trips[piece.trips.length - 1] as Trip).endPlace
+      : ""
+
   return (
     <>
       {view === "block" ? (
@@ -178,6 +200,7 @@ const Piece = ({
         <Row
           text="Start time"
           rightText={formattedScheduledTime(piece.start.time)}
+          belowText={startPlace}
         />
       )}
       <div className="m-minischedule__piece-rows">
@@ -187,6 +210,7 @@ const Piece = ({
             icon={plusIcon()}
             text="Swing on"
             rightText={formattedScheduledTime(piece.start.time)}
+            belowText={startPlace}
           />
         ) : null}
         {piece.trips.map((trip, index) => {
@@ -223,11 +247,16 @@ const Piece = ({
             icon={minusIcon()}
             text="Swing off"
             rightText={formattedScheduledTime(piece.end.time)}
+            belowText={startPlace}
           />
         ) : null}
       </div>
       {isSwingOff ? null : (
-        <Row text="Done" rightText={formattedScheduledTime(piece.end.time)} />
+        <Row
+          text="Done"
+          rightText={formattedScheduledTime(piece.end.time)}
+          belowText={endPlace}
+        />
       )}
     </>
   )
@@ -272,6 +301,7 @@ const DeadheadTrip = ({
         icon={busFrontIcon()}
         text={"Pull out"}
         rightText={startTime}
+        belowText={trip.startPlace}
         extraClasses={extraClasses}
       />
     )
@@ -281,6 +311,7 @@ const DeadheadTrip = ({
         icon={busRearIcon()}
         text={"Pull back"}
         rightText={startTime}
+        belowText={trip.endPlace}
         extraClasses={extraClasses}
       />
     )
@@ -290,6 +321,7 @@ const DeadheadTrip = ({
         icon={filledCircleIcon()}
         text={"Deadhead"}
         rightText={startTime}
+        belowText={trip.endPlace}
         extraClasses={extraClasses}
       />
     )
@@ -358,16 +390,26 @@ const Row = ({
   icon,
   text,
   rightText,
+  belowText,
   extraClasses,
 }: {
   icon?: ReactElement
   text: string
   rightText?: string
+  belowText?: string
   extraClasses?: string[]
 }) => (
   <div className={className(["m-minischedule__row", ...(extraClasses || [])])}>
     <div className="m-minischedule__icon">{icon}</div>
-    <div className="m-minischedule__left-text">{text}</div>
+    <div className="m-minischedule__left-text">
+      {text}
+      {belowText && (
+        <>
+          <br />
+          <span className="m-minischedule__below-text">{belowText}</span>
+        </>
+      )}
+    </div>
     {rightText && <div className="m-minischedule__right-text">{rightText}</div>}
   </div>
 )
@@ -384,17 +426,17 @@ const isAsDirected = (trip: Trip | AsDirected): trip is AsDirected =>
 const isDeadhead = (trip: Trip | AsDirected): boolean =>
   isTrip(trip) && trip.routeId == null
 
-const breakDisplayText = (breakType: string): string => {
-  switch (breakType) {
+const breakDisplayText = (breakk: Break): string => {
+  switch (breakk.breakType) {
     case "Split break":
     case "Paid meal after":
     case "Paid meal before":
       return "Break"
     case "Travel from":
     case "Travel to":
-      return "Travel"
+      return `Travel to ${breakk.endPlace}`
     default:
-      return breakType
+      return breakk.breakType
   }
 }
 

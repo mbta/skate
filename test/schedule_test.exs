@@ -317,6 +317,8 @@ defmodule ScheduleTest do
                  run_id: "123-1501",
                  start_time: 1,
                  end_time: 3,
+                 start_place: "wtryd",
+                 end_place: "hayms",
                  stop_times: [
                    %StopTime{
                      stop_id: "s4",
@@ -386,6 +388,8 @@ defmodule ScheduleTest do
                  run_id: "123-1501",
                  start_time: 1,
                  end_time: 3,
+                 start_place: "wtryd",
+                 end_place: "hayms",
                  stop_times: [
                    %StopTime{
                      stop_id: "s4",
@@ -743,6 +747,13 @@ defmodule ScheduleTest do
               "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
               "schedule;123;4567;block;00:00;00:00;start;end;route;trip"
             ]
+          },
+          gtfs: %{
+            "checkpoints.txt" => [
+              "checkpoint_id,checkpoint_name",
+              "start,Starting Timepoint",
+              "end,Ending Timepoint"
+            ]
           }
         })
 
@@ -762,7 +773,9 @@ defmodule ScheduleTest do
             route_id: "route",
             run_id: "123-4567",
             start_time: 0,
-            end_time: 0
+            end_time: 0,
+            start_place: "Starting Timepoint",
+            end_place: "Ending Timepoint"
           }
         ],
         end: %{

@@ -28,6 +28,7 @@ defmodule Schedule.Data do
           routes: [Route.t()],
           route_patterns: [RoutePattern.t()],
           timepoints_by_route: timepoints_by_route(),
+          timepoint_names_by_id: Timepoint.timepoint_names_by_id(),
           shapes: shapes_by_route_id(),
           stops: stops_by_id(),
           trips: Trip.by_id(),
@@ -48,6 +49,7 @@ defmodule Schedule.Data do
   defstruct routes: [],
             route_patterns: [],
             timepoints_by_route: %{},
+            timepoint_names_by_id: %{},
             shapes: %{},
             stops: %{},
             trips: %{},
@@ -196,7 +198,11 @@ defmodule Schedule.Data do
 
   @spec minischedule_run(t(), Trip.id()) :: Minischedule.Run.t() | nil
   def minischedule_run(
-        %__MODULE__{trips: trips, minischedule_runs: runs},
+        %__MODULE__{
+          trips: trips,
+          minischedule_runs: runs,
+          timepoint_names_by_id: timepoint_names_by_id
+        },
         trip_id
       ) do
     trip = trips[trip_id]
@@ -204,7 +210,7 @@ defmodule Schedule.Data do
     if trip != nil && trip.schedule_id != nil do
       # we have HASTUS data for this trip
       run = runs[{trip.schedule_id, trip.run_id}]
-      Minischedule.Run.hydrate(run, trips)
+      Minischedule.Run.hydrate(run, trips, timepoint_names_by_id)
     else
       nil
     end
@@ -212,7 +218,11 @@ defmodule Schedule.Data do
 
   @spec minischedule_block(t(), Trip.id()) :: Minischedule.Block.t() | nil
   def minischedule_block(
-        %__MODULE__{trips: trips, minischedule_blocks: blocks},
+        %__MODULE__{
+          trips: trips,
+          minischedule_blocks: blocks,
+          timepoint_names_by_id: timepoint_names_by_id
+        },
         trip_id
       ) do
     trip = trips[trip_id]
@@ -220,7 +230,7 @@ defmodule Schedule.Data do
     if trip != nil && trip.schedule_id != nil do
       # we have HASTUS data for this trip
       block = blocks[{trip.schedule_id, trip.block_id}]
-      Minischedule.Block.hydrate(block, trips)
+      Minischedule.Block.hydrate(block, trips, timepoint_names_by_id)
     else
       nil
     end
@@ -267,6 +277,7 @@ defmodule Schedule.Data do
       route_patterns: route_patterns,
       timepoints_by_route:
         timepoints_for_routes(route_patterns, bus_route_ids, stop_times_by_id, timepoints_by_id),
+      timepoint_names_by_id: timepoint_names_for_ids(timepoints_by_id),
       shapes: shapes_by_route_id(gtfs_files["shapes.txt"], gtfs_trips),
       stops: all_stops_by_id(gtfs_files["stops.txt"]),
       trips: trips_by_id,
@@ -376,6 +387,13 @@ defmodule Schedule.Data do
       end)
     end)
     |> Schedule.Helpers.merge_lists()
+  end
+
+  @spec timepoint_names_for_ids(Timepoint.timepoints_by_id()) :: Timepoint.timepoint_names_by_id()
+  defp timepoint_names_for_ids(timepoints_by_id) do
+    timepoints_by_id
+    |> Map.new(fn {id, timepoint} -> {id, timepoint.name} end)
+    |> Map.merge(Timepoint.garage_names_by_id())
   end
 
   @spec shapes_by_route_id(binary(), [Gtfs.Trip.t()]) :: shapes_by_route_id()

@@ -1,5 +1,6 @@
 defmodule Schedule.Minischedule.Piece do
   alias Schedule.Block
+  alias Schedule.Gtfs.Timepoint
   alias Schedule.Hastus
   alias Schedule.Hastus.Place
   alias Schedule.Hastus.Run
@@ -43,15 +44,16 @@ defmodule Schedule.Minischedule.Piece do
     :end
   ]
 
-  @spec hydrate(t(), Schedule.Trip.by_id()) :: t()
-  def hydrate(piece, trips_by_id) do
+  @spec hydrate(t(), Schedule.Trip.by_id(), Timepoint.timepoint_names_by_id()) :: t()
+  def hydrate(piece, trips_by_id, timepoint_names_by_id) do
     trip_ids = piece.trips
 
     trips =
       Enum.map(trip_ids, fn
         trip_id when is_binary(trip_id) ->
           full_trip = trips_by_id[trip_id]
-          Trip.from_full_trip(full_trip)
+
+          Trip.from_full_trip(full_trip, timepoint_names_by_id)
 
         %Trip{} = trip ->
           trip

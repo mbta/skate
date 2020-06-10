@@ -1,5 +1,6 @@
 defmodule Schedule.Minischedule.Block do
   alias Schedule.Block
+  alias Schedule.Gtfs.Timepoint
   alias Schedule.Trip
   alias Schedule.Minischedule.Piece
   alias Schedule.Hastus.Schedule
@@ -33,8 +34,11 @@ defmodule Schedule.Minischedule.Block do
     {block.schedule_id, block.id}
   end
 
-  @spec hydrate(t(), Trip.by_id()) :: t()
-  def hydrate(block, trips_by_id) do
-    %{block | pieces: Enum.map(block.pieces, &Piece.hydrate(&1, trips_by_id))}
+  @spec hydrate(t(), Trip.by_id(), Timepoint.timepoint_names_by_id()) :: t()
+  def hydrate(block, trips_by_id, timepoint_names_by_id) do
+    %{
+      block
+      | pieces: Enum.map(block.pieces, &Piece.hydrate(&1, trips_by_id, timepoint_names_by_id))
+    }
   end
 end

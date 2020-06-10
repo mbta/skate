@@ -1,6 +1,16 @@
 defmodule Schedule.Gtfs.Timepoint do
   alias Schedule.Csv
 
+  @garage_names_by_id %{
+    "cabot" => "Cabot Garage",
+    "charl" => "Charlestown Garage",
+    "fell" => "Fellsway Garage",
+    "lynn" => "Lynn Garage",
+    "ncamb" => "North Cambridge Garage",
+    "prwb" => "Paul Revere Winthrop Garage",
+    "somvl" => "Somerville Garage"
+  }
+
   @type id :: String.t()
 
   @type t :: %__MODULE__{
@@ -9,6 +19,7 @@ defmodule Schedule.Gtfs.Timepoint do
         }
 
   @type timepoints_by_id :: %{id() => t()}
+  @type timepoint_names_by_id :: %{id() => String.t()}
 
   @enforce_keys [
     :id
@@ -32,5 +43,14 @@ defmodule Schedule.Gtfs.Timepoint do
   @spec timepoint_for_id(timepoints_by_id(), id()) :: t()
   def timepoint_for_id(timepoints_by_id, id) do
     Map.get(timepoints_by_id, id, %__MODULE__{id: id})
+  end
+
+  @spec garage_names_by_id() :: %{String.t() => String.t()}
+  def garage_names_by_id do
+    @garage_names_by_id
+  end
+
+  def pretty_name_for_id(timepoint_names_by_id, place_id) do
+    Map.get(timepoint_names_by_id, place_id, place_id)
   end
 end

@@ -29,6 +29,8 @@ const nonrevenueTrip: Trip = {
   runId: null,
   startTime: 0,
   endTime: 1,
+  startPlace: "1st Street and A Ave",
+  endPlace: "999th Street and ZZZ Ave",
 }
 
 const revenueTrip: Trip = {
@@ -41,6 +43,8 @@ const revenueTrip: Trip = {
   runId: "run",
   startTime: 0,
   endTime: 1,
+  startPlace: "Red Square",
+  endPlace: "Blue Triangle",
 }
 
 const revenueTrip2: Trip = {
@@ -53,6 +57,8 @@ const revenueTrip2: Trip = {
   runId: "run",
   startTime: 350,
   endTime: 351,
+  startPlace: "Sometown Center",
+  endPlace: "Othertown Village",
 }
 
 const tripWithoutDirection: Trip = {
@@ -65,6 +71,8 @@ const tripWithoutDirection: Trip = {
   runId: "run",
   startTime: 652,
   endTime: 653,
+  startPlace: "Highway 1",
+  endPlace: "Trouble",
 }
 
 const piece: Piece = {
@@ -183,6 +191,7 @@ describe("MinischeduleRun", () => {
       breakType: "Paid meal before",
       startTime: 10,
       endTime: 1810,
+      endPlace: "Timepoint Bravo",
     }
 
     ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => ({
@@ -275,6 +284,8 @@ describe("MinischeduleRun", () => {
       runId: "run",
       startTime: 650,
       endTime: 651,
+      startPlace: "A Streetcorner",
+      endPlace: "Prominent Landmark",
     }
 
     const multiTripPiece = {
@@ -407,48 +418,55 @@ describe("MinischeduleBlock", () => {
 })
 
 describe("BlockRow", () => {
-  test("Split breaks show as unpaid", () => {
+  test("Split breaks show as unpaid, with place", () => {
     const breakk: Break = {
       breakType: "Split break",
       startTime: 0,
       endTime: 0,
+      endPlace: "Charlie Circle",
     }
 
     const wrapper = mount(<BreakRow break={breakk} />)
     expect(wrapper.html()).toContain("Break (Unpaid)")
+    expect(wrapper.html()).toContain("Charlie Circle")
   })
 
-  test("Paid breaks show as paid", () => {
+  test("Paid breaks show as paid, with place", () => {
     const breakk: Break = {
       breakType: "Paid meal after",
       startTime: 0,
       endTime: 0,
+      endPlace: "Delta Drive",
     }
 
     const wrapper = mount(<BreakRow break={breakk} />)
     expect(wrapper.html()).toContain("Break (Paid)")
+    expect(wrapper.html()).toContain("Delta Drive")
   })
 
-  test("Travel times show as paid", () => {
+  test("Travel times show as paid, with destination", () => {
     const breakk: Break = {
       breakType: "Travel from",
       startTime: 0,
       endTime: 0,
+      endPlace: "Echo Avenue",
     }
 
     const wrapper = mount(<BreakRow break={breakk} />)
-    expect(wrapper.html()).toContain("Travel (Paid)")
+    expect(wrapper.html()).toContain("Travel to Echo Avenue (Paid)")
   })
 
-  test("Unrecognized types show their name", () => {
+  test("Unrecognized types show their name and place", () => {
     const breakk: Break = {
       breakType: "Unrecognized break type",
       startTime: 0,
       endTime: 0,
+      endPlace: "Foxtrot Village",
     }
 
     const wrapper = mount(<BreakRow break={breakk} />)
     expect(wrapper.html()).toContain("Unrecognized break type")
+    expect(wrapper.html()).toContain("Foxtrot Village")
     expect(wrapper.html()).not.toContain("(Paid)")
     expect(wrapper.html()).not.toContain("(Unpaid)")
   })

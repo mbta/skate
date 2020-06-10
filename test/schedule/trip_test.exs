@@ -32,15 +32,18 @@ defmodule Schedule.TripTest do
   @stop_times [
     %StopTime{
       stop_id: "stop1",
-      time: 3
+      time: 3,
+      timepoint_id: "timepoint1"
     },
     %StopTime{
       stop_id: "stop2",
-      time: 6
+      time: 6,
+      timepoint_id: "timepoint2"
     },
     %StopTime{
       stop_id: "stop3",
-      time: 9
+      time: 9,
+      timepoint_id: "timepoint3"
     }
   ]
   @trip %Trip{
@@ -55,7 +58,9 @@ defmodule Schedule.TripTest do
     run_id: "run",
     stop_times: @stop_times,
     start_time: 3,
-    end_time: 9
+    end_time: 9,
+    start_place: "start",
+    end_place: "end"
   }
 
   describe "merge_trips" do
@@ -79,7 +84,9 @@ defmodule Schedule.TripTest do
                  run_id: nil,
                  stop_times: @stop_times,
                  start_time: 3,
-                 end_time: 9
+                 end_time: 9,
+                 start_place: "timepoint1",
+                 end_place: "timepoint3"
                }
              }
     end
@@ -98,7 +105,9 @@ defmodule Schedule.TripTest do
                  run_id: "run",
                  stop_times: [],
                  start_time: 12,
-                 end_time: 34
+                 end_time: 34,
+                 start_place: "start",
+                 end_place: "end"
                }
              }
     end

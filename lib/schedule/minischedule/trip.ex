@@ -1,7 +1,7 @@
 defmodule Schedule.Minischedule.Trip do
   alias Schedule.Block
-  alias Schedule.Gtfs.{Direction, Route, RoutePattern}
-  alias Schedule.Hastus.{Activity, Run}
+  alias Schedule.Gtfs.{Direction, Route, RoutePattern, Timepoint}
+  alias Schedule.Hastus.Run
 
   @type id :: Schedule.Trip.id()
 
@@ -14,7 +14,9 @@ defmodule Schedule.Minischedule.Trip do
           via_variant: RoutePattern.via_variant() | nil,
           run_id: Run.id() | nil,
           start_time: Util.Time.time_of_day(),
-          end_time: Util.Time.time_of_day()
+          end_time: Util.Time.time_of_day(),
+          start_place: String.t(),
+          end_place: String.t()
         }
 
   @enforce_keys [
@@ -33,11 +35,13 @@ defmodule Schedule.Minischedule.Trip do
     via_variant: nil,
     run_id: nil,
     start_time: 0,
-    end_time: 0
+    end_time: 0,
+    start_place: nil,
+    end_place: nil
   ]
 
-  @spec from_full_trip(Schedule.Trip.t()) :: t()
-  def from_full_trip(trip) do
+  @spec from_full_trip(Schedule.Trip.t(), Timepoint.timepoint_names_by_id()) :: t()
+  def from_full_trip(trip, timepoint_names_by_id) do
     %__MODULE__{
       id: trip.id,
       block_id: trip.block_id,
@@ -47,11 +51,12 @@ defmodule Schedule.Minischedule.Trip do
       via_variant: trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id),
       run_id: trip.run_id,
       start_time: trip.start_time,
-      end_time: trip.end_time
+      end_time: trip.end_time,
+      start_place: Timepoint.pretty_name_for_id(timepoint_names_by_id, trip.start_place),
+      end_place: Timepoint.pretty_name_for_id(timepoint_names_by_id, trip.end_place)
     }
   end
 
-  @spec from_following_deadhead(Activity.t(), Block.id()) :: t()
   def from_following_deadhead(deadhead, block_id) do
     %__MODULE__{
       id: "following_deadhead_#{deadhead.run_id}_#{deadhead.start_time}",
@@ -63,7 +68,6 @@ defmodule Schedule.Minischedule.Trip do
     }
   end
 
-  @spec from_leading_deadhead(Activity.t(), Block.id()) :: t()
   def from_leading_deadhead(deadhead, block_id) do
     %__MODULE__{
       id: "leading_deadhead_#{deadhead.run_id}_#{deadhead.start_time}",

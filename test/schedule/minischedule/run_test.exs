@@ -12,7 +12,9 @@ defmodule Schedule.Minischedule.RunTest do
 
       stored_trip = %Schedule.Trip{
         id: trip_id,
-        block_id: "block"
+        block_id: "block",
+        start_place: "start",
+        end_place: "end"
       }
 
       sign_on_off = %{
@@ -45,16 +47,26 @@ defmodule Schedule.Minischedule.RunTest do
             run_id: "run",
             block_id: "block",
             start: sign_on_off,
-            trips: [%Minischedule.Trip{id: trip_id, block_id: "block"}],
+            trips: [
+              %Minischedule.Trip{
+                id: trip_id,
+                block_id: "block",
+                start_place: "Start place",
+                end_place: "End place"
+              }
+            ],
             end: sign_on_off
           }
         ]
       }
 
-      assert Run.hydrate(stored_run, %{trip_id => stored_trip}) == expected_run
+      assert Run.hydrate(stored_run, %{trip_id => stored_trip}, %{
+               "start" => "Start place",
+               "end" => "End place"
+             }) == expected_run
     end
 
-    test "passes breaks through unchanged" do
+    test "passes breaks through unchanged apart from making names human-readable" do
       break = %Break{
         break_type: "break",
         start_time: 0,
@@ -69,7 +81,15 @@ defmodule Schedule.Minischedule.RunTest do
         activities: [break]
       }
 
-      assert Run.hydrate(run, %{}) == run
+      expected_result = %Run{
+        run
+        | activities: [
+            %{break | start_place: "Startpoint", end_place: "End Of The Line"}
+          ]
+      }
+
+      assert Run.hydrate(run, %{}, %{"start" => "Startpoint", "end" => "End Of The Line"}) ==
+               expected_result
     end
   end
 end
