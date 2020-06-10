@@ -32,7 +32,7 @@
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
-    "@testing-library/react-hooks": "^3.2.1",
+    "@testing-library/react-hooks": "^3.3.0",
     "@types/enzyme": "^3.10.5",
     "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jest": "^25.2.3",
