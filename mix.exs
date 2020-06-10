@@ -68,7 +68,7 @@ defmodule Skate.MixProject do
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
       {:ehmon, github: "mbta/ehmon", only: :prod},
       {:diskusage_logger, "~> 0.2.0"},
-      {:httpoison, "~> 1.6.1"},
+      {:httpoison, "~> 1.7.0"},
       {:bypass, "~> 1.0.0", only: :test},
       {:csv, "~> 2.3.0"},
       {:timex, "~> 3.6.1"},
