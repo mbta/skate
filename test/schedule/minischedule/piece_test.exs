@@ -28,25 +28,15 @@ defmodule Schedule.Minischedule.PieceTest do
         "qwerty" => "Qwerty Row"
       }
 
-      sign_on = %{
-        time: "0",
-        place: "on",
-        mid_route?: false
-      }
-
-      sign_off = %{
-        time: "1",
-        place: "off",
-        mid_route?: false
-      }
-
       stored_piece = %Piece{
         schedule_id: "schedule",
         run_id: "run",
         block_id: "block",
-        start: sign_on,
+        start_time: "0",
+        start_place: "on",
         trips: [trip_id],
-        end: sign_off
+        end_time: "1",
+        end_place: "off"
       }
 
       expected_trip = %Minischedule.Trip{
@@ -56,14 +46,7 @@ defmodule Schedule.Minischedule.PieceTest do
         end_place: "Qwerty Row"
       }
 
-      expected_piece = %Piece{
-        schedule_id: "schedule",
-        run_id: "run",
-        block_id: "block",
-        start: sign_on,
-        trips: [expected_trip],
-        end: sign_off
-      }
+      expected_piece = %{stored_piece | trips: [expected_trip]}
 
       assert Piece.hydrate(stored_piece, %{trip_id => stored_trip}, timepoint_names_by_id) ==
                expected_piece
@@ -85,25 +68,15 @@ defmodule Schedule.Minischedule.PieceTest do
         end_place: "end"
       }
 
-      sign_on = %{
-        time: "0",
-        place: "on",
-        mid_route?: false
-      }
-
-      sign_off = %{
-        time: "1",
-        place: "off",
-        mid_route?: false
-      }
-
       piece = %Piece{
         schedule_id: "schedule",
         run_id: "run",
         block_id: "block",
-        start: sign_on,
+        start_time: "0",
+        start_place: "on",
         trips: [trip, as_directed],
-        end: sign_off
+        end_time: "1",
+        end_place: "off"
       }
 
       assert Piece.hydrate(piece, %{}, %{}) == piece

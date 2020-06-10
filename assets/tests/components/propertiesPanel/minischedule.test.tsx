@@ -78,27 +78,20 @@ const tripWithoutDirection: Trip = {
 const piece: Piece = {
   runId: "run",
   blockId: "block",
-  start: {
-    time: 1820,
-    place: "start",
-    midRoute: false,
-  },
+  startTime: 1820,
+  startPlace: "start",
   trips: [revenueTrip],
-  end: {
-    time: 1821,
-    place: "end",
-    midRoute: false,
-  },
+  endTime: 1821,
+  endPlace: "end",
+  startMidRoute: false,
+  endMidRoute: false,
 }
 
 const asDirectedPiece: Piece = {
   runId: "run",
   blockId: null,
-  start: {
-    time: 15600,
-    place: "place",
-    midRoute: false,
-  },
+  startTime: 15600,
+  startPlace: "place",
   trips: [
     {
       kind: "rad",
@@ -106,11 +99,10 @@ const asDirectedPiece: Piece = {
       endTime: 44400,
     },
   ],
-  end: {
-    time: 16200,
-    place: "place",
-    midRoute: false,
-  },
+  endTime: 16200,
+  endPlace: "place",
+  startMidRoute: false,
+  endMidRoute: false,
 }
 
 const vehicle: Vehicle = {

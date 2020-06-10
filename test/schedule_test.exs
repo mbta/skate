@@ -761,11 +761,8 @@ defmodule ScheduleTest do
         schedule_id: "schedule",
         run_id: "123-4567",
         block_id: "block",
-        start: %{
-          time: 0,
-          place: "start",
-          mid_route?: false
-        },
+        start_time: 0,
+        start_place: "start",
         trips: [
           %Minischedule.Trip{
             id: "trip",
@@ -778,11 +775,8 @@ defmodule ScheduleTest do
             end_place: "Ending Timepoint"
           }
         ],
-        end: %{
-          time: 0,
-          place: "end",
-          mid_route?: false
-        }
+        end_time: 0,
+        end_place: "end"
       }
 
       %{pid: pid, expected_piece: expected_piece}

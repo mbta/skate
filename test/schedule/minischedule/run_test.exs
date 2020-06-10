@@ -17,12 +17,6 @@ defmodule Schedule.Minischedule.RunTest do
         end_place: "end"
       }
 
-      sign_on_off = %{
-        time: 0,
-        place: "place",
-        mid_route?: false
-      }
-
       stored_run = %Run{
         schedule_id: "schedule",
         id: "run",
@@ -31,9 +25,11 @@ defmodule Schedule.Minischedule.RunTest do
             schedule_id: "schedule",
             run_id: "run",
             block_id: "block",
-            start: sign_on_off,
+            start_time: 0,
+            start_place: "place",
             trips: [trip_id],
-            end: sign_on_off
+            end_time: 0,
+            end_place: "place"
           }
         ]
       }
@@ -46,7 +42,8 @@ defmodule Schedule.Minischedule.RunTest do
             schedule_id: "schedule",
             run_id: "run",
             block_id: "block",
-            start: sign_on_off,
+            start_time: 0,
+            start_place: "place",
             trips: [
               %Minischedule.Trip{
                 id: trip_id,
@@ -55,7 +52,8 @@ defmodule Schedule.Minischedule.RunTest do
                 end_place: "End place"
               }
             ],
-            end: sign_on_off
+            end_time: 0,
+            end_place: "place"
           }
         ]
       }

@@ -52,7 +52,7 @@ export const MinischeduleRun = ({ vehicleOrGhost }: Props): ReactElement => {
               vehicleOrGhost={vehicleOrGhost}
               pieceIndex={index}
               activeIndex={activeIndex}
-              key={activity.start.time}
+              key={activity.startTime}
             />
           ) : (
             <BreakRow
@@ -89,7 +89,7 @@ export const MinischeduleBlock = ({ vehicleOrGhost }: Props): ReactElement => {
             vehicleOrGhost={vehicleOrGhost}
             pieceIndex={index}
             activeIndex={activeIndex}
-            key={piece.start.time}
+            key={piece.startTime}
           />
         ))}
       </>
@@ -223,7 +223,7 @@ const Piece = ({
       {isSwingOn ? null : (
         <Row
           text="Start time"
-          rightText={formattedScheduledTime(piece.start.time)}
+          rightText={formattedScheduledTime(piece.startTime)}
           belowText={startPlace}
           timeBasedStyle={startTimeBasedStyle}
         />
@@ -239,7 +239,7 @@ const Piece = ({
             key="swing-on"
             icon={plusIcon()}
             text="Swing on"
-            rightText={formattedScheduledTime(piece.start.time)}
+            rightText={formattedScheduledTime(piece.startTime)}
             belowText={startPlace}
             timeBasedStyle={startTimeBasedStyle}
           />
@@ -266,7 +266,7 @@ const Piece = ({
             key="swing-off"
             icon={minusIcon()}
             text="Swing off"
-            rightText={formattedScheduledTime(piece.end.time)}
+            rightText={formattedScheduledTime(piece.endTime)}
             belowText={startPlace}
             timeBasedStyle={doneTimeBasedStyle}
           />
@@ -275,7 +275,7 @@ const Piece = ({
       {isSwingOff ? null : (
         <Row
           text="Done"
-          rightText={formattedScheduledTime(piece.end.time)}
+          rightText={formattedScheduledTime(piece.endTime)}
           belowText={endPlace}
           timeBasedStyle={doneTimeBasedStyle}
         />

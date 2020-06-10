@@ -9,28 +9,28 @@ defmodule Schedule.Minischedule.Piece do
 
   @type key :: {Hastus.Schedule.id(), Run.id(), Block.id()}
 
-  @type sign_on_off :: %{
-          time: Util.Time.time_of_day(),
-          place: Place.id(),
-          mid_route?: boolean()
-        }
-
   @type t :: %__MODULE__{
           schedule_id: Hastus.Schedule.id(),
           run_id: Run.id(),
           block_id: Block.id() | nil,
-          start: sign_on_off(),
+          start_time: Util.Time.time_of_day(),
+          start_place: Place.id(),
           # stored with trip ids, but sent to the frontend as full objects
           trips: [Trip.id() | Trip.t() | AsDirected.t()],
-          end: sign_on_off()
+          end_time: Util.Time.time_of_day(),
+          end_place: Place.id(),
+          start_mid_route?: boolean(),
+          end_mid_route?: boolean()
         }
 
   @enforce_keys [
     :schedule_id,
     :run_id,
-    :start,
+    :start_time,
+    :start_place,
     :trips,
-    :end
+    :end_time,
+    :end_place
   ]
 
   @derive Jason.Encoder
@@ -39,9 +39,13 @@ defmodule Schedule.Minischedule.Piece do
     :schedule_id,
     :run_id,
     :block_id,
-    :start,
+    :start_time,
+    :start_place,
     :trips,
-    :end
+    :end_time,
+    :end_place,
+    start_mid_route?: false,
+    end_mid_route?: false
   ]
 
   @spec hydrate(t(), Schedule.Trip.by_id(), Timepoint.timepoint_names_by_id()) :: t()
