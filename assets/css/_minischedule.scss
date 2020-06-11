@@ -76,6 +76,13 @@
       transform: translateX(-50%);
       width: 0.375rem;
     }
+
+    &.m-minischedule__row--current {
+      &::before,
+      &::after {
+        left: 1.25rem;
+      }
+    }
   }
 
   .m-minischedule__row:not(:first-child) {
@@ -96,19 +103,55 @@
 }
 
 .m-minischedule__row--current {
+  border-left-style: solid;
+  border-left-width: 0.5rem;
+  font-weight: bold;
+  padding-left: 0.25rem;
+
+  .m-minischedule__icon {
+    height: 1.5rem;
+    margin-right: 0.25rem;
+    width: 1.5rem;
+  }
+
+  svg {
+    stroke: white;
+    stroke-width: 0.25rem;
+  }
+
   &.early {
-    background-color: $color-vehicle-early;
+    background-color: $color-vehicle-early-light;
+    border-left-color: $color-vehicle-early;
+
+    svg {
+      fill: $color-vehicle-early;
+    }
   }
 
   &.ghost {
     background-color: $color-secondary-medium;
+    border-left-color: $color-secondary-dark;
+
+    svg {
+      fill: $color-secondary-dark;
+    }
   }
 
   &.late {
-    background-color: $color-vehicle-late;
+    background-color: $color-vehicle-late-light;
+    border-left-color: $color-vehicle-late;
+
+    svg {
+      fill: $color-vehicle-late;
+    }
   }
 
   &.on-time {
-    background-color: $color-vehicle-ontime;
+    background-color: $color-vehicle-ontime-light;
+    border-left-color: $color-vehicle-ontime;
+
+    svg {
+      fill: $color-vehicle-ontime;
+    }
   }
 }
