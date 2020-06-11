@@ -524,7 +524,7 @@ Array [
       </div>
     </div>
     <div
-      className="m-minischedule__row m-minischedule__layover-row m-minischedule__row--past"
+      className="m-minischedule__row m-minischedule__row--past m-minischedule__layover-row"
     >
       <div
         className="m-minischedule__icon"
@@ -567,7 +567,7 @@ Array [
       </div>
     </div>
     <div
-      className="m-minischedule__row m-minischedule__layover-row m-minischedule__row--current on-time"
+      className="m-minischedule__row m-minischedule__row--current on-time m-minischedule__layover-row"
     >
       <div
         className="m-minischedule__icon"
@@ -744,7 +744,7 @@ Array [
       </div>
     </div>
     <div
-      className="m-minischedule__row m-minischedule__layover-row m-minischedule__row--unknown"
+      className="m-minischedule__row m-minischedule__row--unknown m-minischedule__layover-row"
     >
       <div
         className="m-minischedule__icon"
@@ -896,7 +896,7 @@ Array [
       </div>
     </div>
     <div
-      className="m-minischedule__row m-minischedule__layover-row m-minischedule__row--current on-time"
+      className="m-minischedule__row m-minischedule__row--current on-time m-minischedule__layover-row"
     >
       <div
         className="m-minischedule__icon"
@@ -1048,7 +1048,7 @@ Array [
       </div>
     </div>
     <div
-      className="m-minischedule__row m-minischedule__layover-row m-minischedule__row--unknown"
+      className="m-minischedule__row m-minischedule__row--unknown m-minischedule__layover-row"
     >
       <div
         className="m-minischedule__icon"
@@ -1186,7 +1186,7 @@ Array [
       </div>
     </div>
     <div
-      className="m-minischedule__row m-minischedule__layover-row m-minischedule__row--past"
+      className="m-minischedule__row m-minischedule__row--past m-minischedule__layover-row"
     >
       <div
         className="m-minischedule__icon"

@@ -22,7 +22,7 @@ import {
   LadderDirections,
   VehicleDirection,
 } from "../../models/ladderDirection"
-import { drawnStatus } from "../../models/vehicleStatus"
+import { drawnStatus, DrawnStatus } from "../../models/vehicleStatus"
 import { VehicleOrGhost } from "../../realtime"
 import { DirectionId, RouteId, TripId } from "../../schedule"
 import { formattedDuration, formattedScheduledTime } from "../../util/dateTime"
@@ -124,11 +124,13 @@ export const BreakRow = ({ break: breakk }: { break: Break }) => {
 const Layover = ({
   nextTrip,
   previousTrip,
-  extraClasses,
+  timeBasedStyle,
+  activeStatus,
 }: {
   nextTrip: Trip | AsDirected
   previousTrip?: Trip | AsDirected
-  extraClasses: (string | null)[]
+  timeBasedStyle: TimeBasedStyle
+  activeStatus: DrawnStatus | null
 }) => {
   if (!previousTrip) {
     return null
@@ -142,7 +144,9 @@ const Layover = ({
     <Row
       text="Layover"
       rightText={formattedDuration(layoverDuration)}
-      extraClasses={["m-minischedule__layover-row", ...extraClasses]}
+      timeBasedStyle={timeBasedStyle}
+      activeStatus={activeStatus}
+      extraClasses={["m-minischedule__layover-row"]}
     />
   )
 }
@@ -280,14 +284,10 @@ const Trip = ({
         ? "current"
         : "future"
       : tripTimeBasedStyle
-  const layoverExtraClasses = [
-    `m-minischedule__row--${layoverTimeBasedStyle}`,
-    layoverTimeBasedStyle === "current" ? drawnStatus(vehicleOrGhost) : null,
-  ]
-  const onRouteExtraClasses = [
-    `m-minischedule__row--${onRouteTimeBasedStyle}`,
-    onRouteTimeBasedStyle === "current" ? drawnStatus(vehicleOrGhost) : null,
-  ]
+  const layoverActiveStatus: DrawnStatus | null =
+    layoverTimeBasedStyle === "current" ? drawnStatus(vehicleOrGhost) : null
+  const onRouteActiveStatus: DrawnStatus | null =
+    onRouteTimeBasedStyle === "current" ? drawnStatus(vehicleOrGhost) : null
 
   return (
     <>
@@ -295,7 +295,8 @@ const Trip = ({
         <Layover
           nextTrip={trip}
           previousTrip={pieceTrips[tripIndex - 1]}
-          extraClasses={layoverExtraClasses}
+          timeBasedStyle={layoverTimeBasedStyle}
+          activeStatus={layoverActiveStatus}
         />
       ) : null}
       {isTrip(trip) ? (
@@ -303,13 +304,17 @@ const Trip = ({
           <DeadheadTrip
             trip={trip}
             sequence={sequence}
-            extraClasses={onRouteExtraClasses}
+            timeBasedStyle={onRouteTimeBasedStyle}
           />
         ) : (
-          <RevenueTrip trip={trip} extraClasses={onRouteExtraClasses} />
+          <RevenueTrip
+            trip={trip}
+            timeBasedStyle={onRouteTimeBasedStyle}
+            activeStatus={onRouteActiveStatus}
+          />
         )
       ) : (
-        <AsDirected asDirected={trip} extraClasses={onRouteExtraClasses} />
+        <AsDirected asDirected={trip} timeBasedStyle={onRouteTimeBasedStyle} />
       )}
     </>
   )
@@ -318,11 +323,11 @@ const Trip = ({
 const DeadheadTrip = ({
   trip,
   sequence,
-  extraClasses,
+  timeBasedStyle,
 }: {
   trip: Trip
   sequence: "first" | "middle" | "last"
-  extraClasses: (string | null)[]
+  timeBasedStyle: TimeBasedStyle
 }) => {
   const startTime: string = formattedScheduledTime(trip.startTime)
   if (sequence === "first") {
@@ -332,7 +337,7 @@ const DeadheadTrip = ({
         text={"Pull out"}
         rightText={startTime}
         belowText={trip.startPlace}
-        extraClasses={extraClasses}
+        timeBasedStyle={timeBasedStyle}
       />
     )
   } else if (sequence === "last") {
@@ -342,7 +347,7 @@ const DeadheadTrip = ({
         text={"Pull back"}
         rightText={startTime}
         belowText={trip.endPlace}
-        extraClasses={extraClasses}
+        timeBasedStyle={timeBasedStyle}
       />
     )
   } else {
@@ -352,7 +357,7 @@ const DeadheadTrip = ({
         text={"Deadhead"}
         rightText={startTime}
         belowText={trip.endPlace}
-        extraClasses={extraClasses}
+        timeBasedStyle={timeBasedStyle}
       />
     )
   }
@@ -378,10 +383,12 @@ const iconForDirectionOnLadder: (
 
 const RevenueTrip = ({
   trip,
-  extraClasses,
+  timeBasedStyle,
+  activeStatus,
 }: {
   trip: Trip
-  extraClasses: (string | null)[]
+  timeBasedStyle: TimeBasedStyle
+  activeStatus: DrawnStatus | null
 }) => {
   const startTime: string = formattedScheduledTime(trip.startTime)
   const formattedRouteAndHeadsign: string = [
@@ -403,23 +410,24 @@ const RevenueTrip = ({
       icon={directionIcon}
       text={formattedRouteAndHeadsign}
       rightText={startTime}
-      extraClasses={extraClasses}
+      timeBasedStyle={timeBasedStyle}
+      activeStatus={activeStatus}
     />
   )
 }
 
 const AsDirected = ({
   asDirected,
-  extraClasses,
+  timeBasedStyle,
 }: {
   asDirected: AsDirected
-  extraClasses: (string | null)[]
+  timeBasedStyle: TimeBasedStyle
 }) => (
   <Row
     icon={busFrontIcon()}
     text={asDirected.kind === "rad" ? "Run as directed" : "Work as directed"}
     rightText={formattedScheduledTime(asDirected.startTime)}
-    extraClasses={extraClasses}
+    timeBasedStyle={timeBasedStyle}
   />
 )
 
@@ -428,15 +436,26 @@ const Row = ({
   text,
   rightText,
   belowText,
+  timeBasedStyle,
+  activeStatus,
   extraClasses,
 }: {
   icon?: ReactElement
   text: string
   rightText?: string
   belowText?: string
-  extraClasses?: (string | null)[]
+  timeBasedStyle?: TimeBasedStyle
+  activeStatus?: DrawnStatus | null
+  extraClasses?: string[]
 }) => (
-  <div className={className(["m-minischedule__row", ...(extraClasses || [])])}>
+  <div
+    className={className([
+      "m-minischedule__row",
+      timeBasedStyle && "m-minischedule__row--" + timeBasedStyle,
+      activeStatus,
+      ...(extraClasses || []),
+    ])}
+  >
     <div className="m-minischedule__icon">{icon}</div>
     <div className="m-minischedule__left-text">
       {text}
