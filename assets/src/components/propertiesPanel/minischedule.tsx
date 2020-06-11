@@ -55,7 +55,12 @@ export const MinischeduleRun = ({ vehicleOrGhost }: Props): ReactElement => {
               key={activity.start.time}
             />
           ) : (
-            <BreakRow break={activity} key={activity.startTime} />
+            <BreakRow
+              key={activity.startTime}
+              break={activity}
+              index={index}
+              activeIndex={activeIndex}
+            />
           )
         )}
       </>
@@ -99,7 +104,15 @@ const Header = ({ label, value }: { label: string; value: string }) => (
   </div>
 )
 
-export const BreakRow = ({ break: breakk }: { break: Break }) => {
+export const BreakRow = ({
+  break: breakk,
+  index,
+  activeIndex,
+}: {
+  break: Break
+  index: number
+  activeIndex: [number, number] | null
+}) => {
   const formattedBreakTime = formattedDuration(
     breakk.endTime - breakk.startTime
   )
@@ -108,14 +121,26 @@ export const BreakRow = ({ break: breakk }: { break: Break }) => {
     isPaid === null ? "" : isPaid ? " (Paid)" : " (Unpaid)"
   const text: string = breakDisplayText(breakk) + isPaidText
 
+  const timeBasedStyle: TimeBasedStyle = getTimeBasedStyle(
+    index,
+    activeIndex && activeIndex[0]
+  )
+
   if (breakk.breakType === "Travel from" || breakk.breakType === "Travel to") {
-    return <Row text={text} rightText={formattedBreakTime} />
+    return (
+      <Row
+        text={text}
+        rightText={formattedBreakTime}
+        timeBasedStyle={timeBasedStyle}
+      />
+    )
   } else {
     return (
       <Row
         text={text}
         rightText={formattedBreakTime}
         belowText={breakk.endPlace}
+        timeBasedStyle={timeBasedStyle}
       />
     )
   }
@@ -185,6 +210,10 @@ const Piece = ({
     pieceIndex,
     activeIndex && activeIndex[0]
   )
+  const startTimeBasedStyle: TimeBasedStyle =
+    pieceTimeBasedStyle === "current" ? "past" : pieceTimeBasedStyle
+  const doneTimeBasedStyle: TimeBasedStyle =
+    pieceTimeBasedStyle === "current" ? "future" : pieceTimeBasedStyle
 
   return (
     <>
@@ -196,6 +225,7 @@ const Piece = ({
           text="Start time"
           rightText={formattedScheduledTime(piece.start.time)}
           belowText={startPlace}
+          timeBasedStyle={startTimeBasedStyle}
         />
       )}
       <div
@@ -211,6 +241,7 @@ const Piece = ({
             text="Swing on"
             rightText={formattedScheduledTime(piece.start.time)}
             belowText={startPlace}
+            timeBasedStyle={startTimeBasedStyle}
           />
         ) : null}
         {piece.trips.map((trip, tripIndex) => {
@@ -237,6 +268,7 @@ const Piece = ({
             text="Swing off"
             rightText={formattedScheduledTime(piece.end.time)}
             belowText={startPlace}
+            timeBasedStyle={doneTimeBasedStyle}
           />
         ) : null}
       </div>
@@ -245,6 +277,7 @@ const Piece = ({
           text="Done"
           rightText={formattedScheduledTime(piece.end.time)}
           belowText={endPlace}
+          timeBasedStyle={doneTimeBasedStyle}
         />
       )}
     </>
