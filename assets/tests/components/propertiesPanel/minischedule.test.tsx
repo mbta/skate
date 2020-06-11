@@ -426,7 +426,9 @@ describe("BlockRow", () => {
       endPlace: "Charlie Circle",
     }
 
-    const wrapper = mount(<BreakRow break={breakk} />)
+    const wrapper = mount(
+      <BreakRow break={breakk} index={0} activeIndex={null} />
+    )
     expect(wrapper.html()).toContain("Break (Unpaid)")
     expect(wrapper.html()).toContain("Charlie Circle")
   })
@@ -439,7 +441,9 @@ describe("BlockRow", () => {
       endPlace: "Delta Drive",
     }
 
-    const wrapper = mount(<BreakRow break={breakk} />)
+    const wrapper = mount(
+      <BreakRow break={breakk} index={0} activeIndex={null} />
+    )
     expect(wrapper.html()).toContain("Break (Paid)")
     expect(wrapper.html()).toContain("Delta Drive")
   })
@@ -452,7 +456,9 @@ describe("BlockRow", () => {
       endPlace: "Echo Avenue",
     }
 
-    const wrapper = mount(<BreakRow break={breakk} />)
+    const wrapper = mount(
+      <BreakRow break={breakk} index={0} activeIndex={null} />
+    )
     expect(wrapper.html()).toContain("Travel to Echo Avenue (Paid)")
   })
 
@@ -464,7 +470,9 @@ describe("BlockRow", () => {
       endPlace: "Foxtrot Village",
     }
 
-    const wrapper = mount(<BreakRow break={breakk} />)
+    const wrapper = mount(
+      <BreakRow break={breakk} index={0} activeIndex={null} />
+    )
     expect(wrapper.html()).toContain("Unrecognized break type")
     expect(wrapper.html()).toContain("Foxtrot Village")
     expect(wrapper.html()).not.toContain("(Paid)")
