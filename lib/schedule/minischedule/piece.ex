@@ -66,6 +66,11 @@ defmodule Schedule.Minischedule.Piece do
           as_directed
       end)
 
-    %{piece | trips: trips}
+    %{
+      piece
+      | trips: trips,
+        start_place: Timepoint.pretty_name_for_id(timepoint_names_by_id, piece.start_place),
+        end_place: Timepoint.pretty_name_for_id(timepoint_names_by_id, piece.end_place)
+    }
   end
 end

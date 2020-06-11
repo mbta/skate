@@ -762,7 +762,7 @@ defmodule ScheduleTest do
         run_id: "123-4567",
         block_id: "block",
         start_time: 0,
-        start_place: "start",
+        start_place: "Starting Timepoint",
         trips: [
           %Minischedule.Trip{
             id: "trip",
@@ -776,7 +776,7 @@ defmodule ScheduleTest do
           }
         ],
         end_time: 0,
-        end_place: "end"
+        end_place: "Ending Timepoint"
       }
 
       %{pid: pid, expected_piece: expected_piece}

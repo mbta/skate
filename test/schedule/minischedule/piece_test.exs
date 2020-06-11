@@ -81,5 +81,28 @@ defmodule Schedule.Minischedule.PieceTest do
 
       assert Piece.hydrate(piece, %{}, %{}) == piece
     end
+
+    test "hydrates start and end place" do
+      piece = %Piece{
+        schedule_id: "schedule",
+        run_id: "run",
+        block_id: "block",
+        start_time: 0,
+        start_place: "start_place",
+        trips: [],
+        end_time: 1,
+        end_place: "end_place"
+      }
+
+      timepoint_names_by_id = %{
+        "start_place" => "Start Place",
+        "end_place" => "End Place"
+      }
+
+      assert %Piece{
+               start_place: "Start Place",
+               end_place: "End Place"
+             } = Piece.hydrate(piece, %{}, timepoint_names_by_id)
+    end
   end
 end
