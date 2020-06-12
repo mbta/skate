@@ -15,7 +15,15 @@ import {
   useMinischeduleBlock,
   useMinischeduleRun,
 } from "../../hooks/useMinischedule"
-import { AsDirected, Block, Break, Piece, Run, Trip } from "../../minischedule"
+import {
+  AsDirected,
+  Block,
+  Break,
+  Piece,
+  Run,
+  Time,
+  Trip,
+} from "../../minischedule"
 import {
   directionOnLadder,
   getLadderDirectionForRoute,
@@ -211,6 +219,9 @@ const Piece = ({
       {view === "block" ? (
         <div className="m-minischedule__run-header">{piece.runId}</div>
       ) : null}
+      {view === "run" && piece.startMidRoute ? (
+        <MidRouteSwingOnFirstHalf trip={piece.startMidRoute.trip} />
+      ) : null}
       {isSwingOn ? null : (
         <Row
           text="Start time"
@@ -229,10 +240,18 @@ const Piece = ({
           <Row
             key="swing-on"
             icon={plusIcon()}
-            text="Swing on"
+            text={piece.startMidRoute ? "Swing on mid-route" : "Swing on"}
             rightText={formattedScheduledTime(piece.startTime)}
             belowText={piece.startPlace}
             timeBasedStyle={startTimeBasedStyle}
+          />
+        ) : null}
+        {piece.startMidRoute ? (
+          <MidRouteSwingOnSecondHalf
+            key="mid-route-swing-on"
+            time={piece.startMidRoute.time}
+            trip={piece.startMidRoute.trip}
+            place={piece.startPlace}
           />
         ) : null}
         {piece.trips.map((trip, tripIndex) => {
@@ -256,7 +275,7 @@ const Piece = ({
           <Row
             key="swing-off"
             icon={minusIcon()}
-            text="Swing off"
+            text={piece.endMidRoute ? "Swing off mid-route" : "Swing off"}
             rightText={formattedScheduledTime(piece.endTime)}
             belowText={piece.endPlace}
             timeBasedStyle={doneTimeBasedStyle}
@@ -274,6 +293,33 @@ const Piece = ({
     </>
   )
 }
+
+const MidRouteSwingOnFirstHalf = ({ trip }: { trip: Trip }) => (
+  <RevenueTrip
+    trip={trip}
+    timeBasedStyle={"unknown"}
+    activeStatus={null}
+    belowText={`Run ${trip.runId}`}
+    extraClasses={["m-minischedule__row--mid-route-first-half"]}
+  />
+)
+
+const MidRouteSwingOnSecondHalf = ({
+  time,
+  trip,
+  place,
+}: {
+  time: Time
+  trip: Trip
+  place: string
+}) => (
+  <RevenueTrip
+    trip={{ ...trip, startTime: time }}
+    timeBasedStyle={"unknown"}
+    activeStatus={null}
+    belowText={`Mid route @ ${place}`}
+  />
+)
 
 const Trip = ({
   trip,
@@ -409,10 +455,14 @@ const RevenueTrip = ({
   trip,
   timeBasedStyle,
   activeStatus,
+  belowText,
+  extraClasses,
 }: {
   trip: Trip
   timeBasedStyle: TimeBasedStyle
   activeStatus: DrawnStatus | null
+  belowText?: string
+  extraClasses?: string[]
 }) => {
   const startTime: string = formattedScheduledTime(trip.startTime)
   const formattedRouteAndHeadsign: string = [
@@ -434,8 +484,10 @@ const RevenueTrip = ({
       icon={directionIcon}
       text={formattedRouteAndHeadsign}
       rightText={startTime}
+      belowText={belowText}
       timeBasedStyle={timeBasedStyle}
       activeStatus={activeStatus}
+      extraClasses={extraClasses}
     />
   )
 }
