@@ -112,7 +112,7 @@ defmodule Schedule.Minischedule.Load do
       trips: dehydrated_trips,
       end_time: activity.end_time,
       end_place: activity.end_place,
-      start_mid_route?: false,
+      start_mid_route?: nil,
       end_mid_route?: false
     }
   end

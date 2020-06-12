@@ -9,6 +9,11 @@ defmodule Schedule.Minischedule.Piece do
 
   @type key :: {Hastus.Schedule.id(), Run.id(), Block.id()}
 
+  @type mid_route_swing :: %{
+          time: Util.Time.time_of_day(),
+          trip: Trip.id() | Trip.t()
+        }
+
   @type t :: %__MODULE__{
           schedule_id: Hastus.Schedule.id(),
           run_id: Run.id(),
@@ -19,7 +24,7 @@ defmodule Schedule.Minischedule.Piece do
           trips: [Trip.id() | Trip.t() | AsDirected.t()],
           end_time: Util.Time.time_of_day(),
           end_place: Place.id(),
-          start_mid_route?: boolean(),
+          start_mid_route?: mid_route_swing() | nil,
           end_mid_route?: boolean()
         }
 
@@ -44,7 +49,7 @@ defmodule Schedule.Minischedule.Piece do
     :trips,
     :end_time,
     :end_place,
-    start_mid_route?: false,
+    start_mid_route?: nil,
     end_mid_route?: false
   ]
 
@@ -70,7 +75,22 @@ defmodule Schedule.Minischedule.Piece do
       piece
       | trips: trips,
         start_place: Timepoint.pretty_name_for_id(timepoint_names_by_id, piece.start_place),
-        end_place: Timepoint.pretty_name_for_id(timepoint_names_by_id, piece.end_place)
+        end_place: Timepoint.pretty_name_for_id(timepoint_names_by_id, piece.end_place),
+        start_mid_route?:
+          piece.start_mid_route? &&
+            hydrate_mid_route_swing(piece.start_mid_route?, trips_by_id, timepoint_names_by_id)
     }
+  end
+
+  @spec hydrate_mid_route_swing(
+          mid_route_swing(),
+          Schedule.Trip.by_id(),
+          Timepoint.timepoint_names_by_id()
+        ) :: mid_route_swing()
+  defp hydrate_mid_route_swing(mid_route_swing, trips_by_id, timepoint_names_by_id) do
+    trip_id = mid_route_swing.trip
+    full_trip = trips_by_id[trip_id]
+    minischedule_trip = Trip.from_full_trip(full_trip, timepoint_names_by_id)
+    %{mid_route_swing | trip: minischedule_trip}
   end
 end

@@ -83,7 +83,7 @@ const piece: Piece = {
   trips: [revenueTrip],
   endTime: 1821,
   endPlace: "end",
-  startMidRoute: false,
+  startMidRoute: null,
   endMidRoute: false,
 }
 
@@ -101,7 +101,7 @@ const asDirectedPiece: Piece = {
   ],
   endTime: 16200,
   endPlace: "place",
-  startMidRoute: false,
+  startMidRoute: null,
   endMidRoute: false,
 }
 

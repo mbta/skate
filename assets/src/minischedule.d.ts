@@ -34,7 +34,10 @@ export interface Piece {
   trips: (Trip | AsDirected)[]
   endTime: Time
   endPlace: string
-  startMidRoute: boolean
+  startMidRoute: {
+    time: Time
+    trip: Trip
+  } | null
   endMidRoute: boolean
 }
 
