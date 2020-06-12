@@ -232,6 +232,119 @@ defmodule Schedule.Minischedule.LoadTest do
                }
              } = Load.from_hastus(activities, trips)
     end
+
+    test "labels mid route swings" do
+      activities = [
+        %Activity{
+          schedule_id: "schedule",
+          run_id: "run1",
+          start_time: 1,
+          end_time: 3,
+          start_place: "terminal1",
+          end_place: "swing",
+          activity_type: "Operator",
+          partial_block_id: "block"
+        },
+        %Activity{
+          schedule_id: "schedule",
+          run_id: "run2",
+          start_time: 2,
+          end_time: 3,
+          start_place: "swing",
+          end_place: "swing",
+          activity_type: "Sign-on"
+        },
+        %Activity{
+          schedule_id: "schedule",
+          run_id: "run2",
+          start_time: 3,
+          end_time: 6,
+          start_place: "swing",
+          end_place: "terminal1",
+          activity_type: "Operator",
+          partial_block_id: "block"
+        }
+      ]
+
+      trips = [
+        %Trip{
+          schedule_id: "schedule",
+          run_id: "run1",
+          block_id: "block",
+          start_time: 1,
+          end_time: 4,
+          start_place: "terminal1",
+          end_place: "terminal2",
+          route_id: "route",
+          trip_id: "trip1"
+        },
+        %Trip{
+          schedule_id: "schedule",
+          run_id: "run2",
+          block_id: "block",
+          start_time: 5,
+          end_time: 6,
+          start_place: "terminal2",
+          end_place: "terminal1",
+          route_id: "route",
+          trip_id: "trip2"
+        }
+      ]
+
+      expected_piece1 = %Piece{
+        schedule_id: "schedule",
+        run_id: "run1",
+        block_id: "block",
+        start_time: 1,
+        start_place: "terminal1",
+        trips: ["trip1"],
+        end_time: 3,
+        end_place: "swing",
+        start_mid_route?: nil,
+        end_mid_route?: true
+      }
+
+      expected_piece2 = %Piece{
+        schedule_id: "schedule",
+        run_id: "run2",
+        block_id: "block",
+        start_time: 2,
+        start_place: "swing",
+        trips: ["trip2"],
+        end_time: 6,
+        end_place: "terminal1",
+        start_mid_route?: %{
+          time: 3,
+          trip: "trip1"
+        },
+        end_mid_route?: false
+      }
+
+      assert Load.from_hastus(activities, trips) == %{
+               runs: %{
+                 {"schedule", "run1"} => %Run{
+                   schedule_id: "schedule",
+                   id: "run1",
+                   activities: [expected_piece1]
+                 },
+                 {"schedule", "run2"} => %Run{
+                   schedule_id: "schedule",
+                   id: "run2",
+                   activities: [expected_piece2]
+                 }
+               },
+               blocks: %{
+                 {"schedule", "block"} => %Block{
+                   schedule_id: "schedule",
+                   id: "block",
+                   pieces: [
+                     expected_piece1,
+                     expected_piece2
+                   ]
+                 }
+               }
+             }
+    end
   end
 
   describe "run" do
@@ -256,7 +369,7 @@ defmodule Schedule.Minischedule.LoadTest do
           schedule_id: "schedule",
           run_id: "run",
           block_id: "block",
-          start_time: 101,
+          start_time: 100,
           end_time: 102,
           start_place: "place1",
           end_place: "place2",
@@ -268,7 +381,7 @@ defmodule Schedule.Minischedule.LoadTest do
           run_id: "run",
           block_id: "block",
           start_time: 103,
-          end_time: 104,
+          end_time: 105,
           start_place: "place2",
           end_place: "place3",
           trip_id: "trip2"
@@ -295,7 +408,7 @@ defmodule Schedule.Minischedule.LoadTest do
         ]
       }
 
-      assert Load.run(run_key, activities, trips) == expected_run
+      assert Load.run(run_key, activities, trips, %{}) == expected_run
     end
 
     test "trips become multiple pieces if there are multiple Operator activities" do
@@ -362,7 +475,7 @@ defmodule Schedule.Minischedule.LoadTest do
                    end_time: 104
                  } = _
                ]
-             } = Load.run(run_key, activities, trips)
+             } = Load.run(run_key, activities, trips, %{})
     end
 
     test "Deadhead from becomes part of following piece as a trip" do
@@ -423,7 +536,7 @@ defmodule Schedule.Minischedule.LoadTest do
                    run_id: "run"
                  }
                ]
-             } = Load.run(run_key, activities, trips)
+             } = Load.run(run_key, activities, trips, %{})
     end
 
     test "Deadhead to becomes part of previous piece" do
@@ -485,7 +598,7 @@ defmodule Schedule.Minischedule.LoadTest do
                    schedule_id: "schedule"
                  }
                ]
-             } = Load.run(run_key, activities, trips)
+             } = Load.run(run_key, activities, trips, %{})
     end
 
     test "piece start time is based on sign_on activity" do
@@ -522,7 +635,7 @@ defmodule Schedule.Minischedule.LoadTest do
                    end_time: 103
                  }
                ]
-             } = Load.run(run_key, activities, trips)
+             } = Load.run(run_key, activities, trips, %{})
     end
 
     test "makes as directed pieces when given rad/wad activities" do
@@ -566,7 +679,7 @@ defmodule Schedule.Minischedule.LoadTest do
                    end_time: 44400
                  }
                ]
-             } = Load.run(run_key, activities, trips)
+             } = Load.run(run_key, activities, trips, %{})
     end
 
     test "makes as directed pieces when given rad/wad trips" do
@@ -645,7 +758,7 @@ defmodule Schedule.Minischedule.LoadTest do
                    end_time: 32400
                  }
                ]
-             } = Load.run(run_key, activities, trips)
+             } = Load.run(run_key, activities, trips, %{})
     end
 
     test "makes breaks" do
@@ -673,7 +786,7 @@ defmodule Schedule.Minischedule.LoadTest do
         end_place: "end place"
       }
 
-      assert Load.run(run_key, activities, trips).activities == [expected_break]
+      assert Load.run(run_key, activities, trips, %{}).activities == [expected_break]
     end
   end
 end

@@ -81,4 +81,9 @@ defmodule Schedule.Hastus.Trip do
   def run_key(trip) do
     {trip.schedule_id, trip.run_id}
   end
+
+  @spec block_key(t()) :: Block.key()
+  def block_key(trip) do
+    {trip.schedule_id, trip.block_id}
+  end
 end

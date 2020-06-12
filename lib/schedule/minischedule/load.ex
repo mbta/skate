@@ -17,11 +17,13 @@ defmodule Schedule.Minischedule.Load do
     trips_by_run = Enum.group_by(trips, &Trip.run_key/1)
     activities_and_trips_by_run = Helpers.zip_maps([activities_by_run, trips_by_run])
 
+    trips_by_block = Enum.group_by(trips, &Trip.block_key/1)
+
     runs =
       Enum.map(
         activities_and_trips_by_run,
         fn {run_key, [activities, trips]} ->
-          run(run_key, activities, trips)
+          run(run_key, activities, trips, trips_by_block)
         end
       )
 
@@ -35,15 +37,16 @@ defmodule Schedule.Minischedule.Load do
     }
   end
 
-  @spec run(Run.key(), [Activity.t()] | nil, [Trip.t()] | nil) :: Run.t()
-  def run(run_key, activities, trips) do
+  @spec run(Run.key(), [Activity.t()] | nil, [Trip.t()] | nil, %{Block.key() => [Trip.t()]}) ::
+          Run.t()
+  def run(run_key, activities, trips, all_trips_by_block) do
     {schedule_id, run_id} = run_key
     activities = activities || []
     trips = trips || []
 
     activities =
       activities
-      |> operator_activities_to_pieces(trips)
+      |> operator_activities_to_pieces(trips, all_trips_by_block)
       |> as_directed_activities_to_pieces()
       |> add_deadheads_to_pieces()
       |> add_sign_ons_to_pieces()
@@ -56,11 +59,12 @@ defmodule Schedule.Minischedule.Load do
     }
   end
 
-  @spec operator_activities_to_pieces([Activity.t()], [Trip.t()]) :: [Activity.t() | Piece.t()]
-  defp operator_activities_to_pieces(activities, trips) do
+  @spec operator_activities_to_pieces([Activity.t()], [Trip.t()], %{Block.key() => [Trip.t()]}) ::
+          [Activity.t() | Piece.t()]
+  defp operator_activities_to_pieces(activities, trips, all_trips_by_block) do
     Enum.map(activities, fn activity ->
       if activity_is_operator?(activity) do
-        operator_activity_to_piece(activity, trips)
+        operator_activity_to_piece(activity, trips, all_trips_by_block)
       else
         activity
       end
@@ -72,8 +76,13 @@ defmodule Schedule.Minischedule.Load do
     activity.activity_type == "Operator"
   end
 
-  @spec operator_activity_to_piece(Activity.t(), [Trip.t()]) :: Piece.t() | Activity.t()
-  defp operator_activity_to_piece(%Activity{activity_type: "Operator"} = activity, trips_in_run) do
+  @spec operator_activity_to_piece(Activity.t(), [Trip.t()], %{Block.key() => [Trip.t()]}) ::
+          Piece.t() | Activity.t()
+  defp operator_activity_to_piece(
+         %Activity{activity_type: "Operator"} = activity,
+         trips_in_run,
+         all_trips_by_block
+       ) do
     trips_in_piece =
       Enum.filter(trips_in_run, fn trip ->
         trip_in_operator(activity, trip)
@@ -103,6 +112,30 @@ defmodule Schedule.Minischedule.Load do
           nil
       end
 
+    start_mid_route? =
+      if trips_in_piece != [] and List.first(trips_in_piece).start_time > activity.start_time do
+        trips_in_block = Map.get(all_trips_by_block, {activity.schedule_id, block_id}, [])
+
+        trip_with_swing =
+          Enum.find(trips_in_block, fn trip ->
+            trip.start_time < activity.start_time && trip.end_time > activity.start_time
+          end)
+
+        if trip_with_swing do
+          %{
+            time: activity.start_time,
+            trip: trip_with_swing.trip_id
+          }
+        else
+          nil
+        end
+      else
+        nil
+      end
+
+    end_mid_route? =
+      trips_in_piece != [] and List.last(trips_in_piece).end_time > activity.end_time
+
     %Piece{
       schedule_id: activity.schedule_id,
       run_id: activity.run_id,
@@ -112,8 +145,8 @@ defmodule Schedule.Minischedule.Load do
       trips: dehydrated_trips,
       end_time: activity.end_time,
       end_place: activity.end_place,
-      start_mid_route?: nil,
-      end_mid_route?: false
+      start_mid_route?: start_mid_route?,
+      end_mid_route?: end_mid_route?
     }
   end
 
