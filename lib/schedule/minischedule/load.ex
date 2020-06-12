@@ -119,9 +119,9 @@ defmodule Schedule.Minischedule.Load do
 
   @spec trip_in_operator(Activity.t(), Trip.t()) :: boolean()
   defp trip_in_operator(%Activity{activity_type: "Operator"} = activity, trip) do
-    trip.start_time >= activity.start_time and
-      trip.end_time <= activity.end_time and
-      String.contains?(trip.block_id, activity.partial_block_id)
+    String.contains?(trip.block_id, activity.partial_block_id) and
+      trip.start_time >= activity.start_time and
+      trip.start_time <= activity.end_time
   end
 
   @spec operator_is_as_directed?(Activity.t()) :: boolean()
