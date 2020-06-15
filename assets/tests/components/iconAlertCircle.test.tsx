@@ -1,20 +1,13 @@
 import React from "react"
 import renderer from "react-test-renderer"
 import IconAlertCircle, {
-  IconAlertCircleSvgNode,
   AlertIconStyle,
+  IconAlertCircleSvgNode,
 } from "../../src/components/iconAlertCircle"
 
 test("renders black", () => {
   const tree = renderer
     .create(<IconAlertCircle style={AlertIconStyle.Black} />)
-    .toJSON()
-  expect(tree).toMatchSnapshot()
-})
-
-test("renders grey", () => {
-  const tree = renderer
-    .create(<IconAlertCircle style={AlertIconStyle.Grey} />)
     .toJSON()
   expect(tree).toMatchSnapshot()
 })

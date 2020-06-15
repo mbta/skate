@@ -9,13 +9,16 @@ export enum CurrentFuturePastType {
   Past,
 }
 
-export const currentFuturePastType = ({
-  startTime,
-  endTime,
-}: BlockWaiver): CurrentFuturePastType => {
+export const currentFuturePastType = (
+  { startTime, endTime }: BlockWaiver,
+  startThresholdInMinutes: number = 0
+): CurrentFuturePastType => {
   const nowDate: Date = now()
+  const startThresholdInMilliseconds = startThresholdInMinutes * 60_000
+  const maxStartTimeForCurrent =
+    nowDate.valueOf() + startThresholdInMilliseconds
 
-  if (startTime > nowDate) {
+  if (startTime.valueOf() > maxStartTimeForCurrent) {
     return CurrentFuturePastType.Future
   } else if (endTime < nowDate) {
     return CurrentFuturePastType.Past
@@ -32,15 +35,15 @@ export const hasCurrentBlockWaiver = ({
 }: VehicleOrGhost): boolean =>
   blockWaivers.some(
     (blockWaiver) =>
-      currentFuturePastType(blockWaiver) === CurrentFuturePastType.Current
+      currentFuturePastType(blockWaiver, 240) === CurrentFuturePastType.Current
   )
 
 /**
- * has waiver?      | ghost       | vehicle and late indicator ghosts
- * ---------------- | ----------- | ---------------------------------
- * yes, current     | black       | black
- * yes, not current | highlighted | grey
- * none             | highlighted | none
+ * has waiver?              | ghost       | late ghost | vehicle
+ * ------------------------ | ----------- | ---------- | -------
+ * yes, current or soon     | black       | black      | black
+ * yes, not current         | highlighted | none       | none
+ * none                     | highlighted | none       | none
  */
 export const blockWaiverAlertStyle = (
   vehicleOrGhost: VehicleOrGhost
@@ -48,9 +51,10 @@ export const blockWaiverAlertStyle = (
   if (hasCurrentBlockWaiver(vehicleOrGhost)) {
     return AlertIconStyle.Black
   }
+
   if (isGhost(vehicleOrGhost) && !isLateVehicleIndicator(vehicleOrGhost)) {
     return AlertIconStyle.Highlighted
-  } else {
-    return hasBlockWaiver(vehicleOrGhost) ? AlertIconStyle.Grey : undefined
   }
+
+  return undefined
 }

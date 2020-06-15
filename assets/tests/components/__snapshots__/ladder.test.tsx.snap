@@ -1502,21 +1502,28 @@ exports[`ladder shows schedule line in the other direction 1`] = `
 </div>
 `;
 
-exports[`ladder shows vehicles with block waivers 1`] = `
+exports[`ladder shows vehicles with current block waivers 1`] = `
 <div
   className="m-ladder"
   style={
     Object {
-      "width": 184,
+      "width": 232,
     }
   }
 >
   <svg
     className="m-ladder__svg"
     height={0}
-    viewBox="-92 -55 184 0"
-    width={184}
+    viewBox="-116 -55 232 0"
+    width={232}
   >
+    <line
+      className="m-ladder__scheduled-line on-time"
+      x1={-87}
+      x2={40}
+      y1={-68.75}
+      y2={-151.25}
+    />
     <line
       className="m-ladder__scheduled-line on-time"
       x1={-63}
@@ -1608,7 +1615,7 @@ exports[`ladder shows vehicles with block waivers 1`] = `
     <g
       className="m-ladder__vehicle  "
       onClick={[Function]}
-      transform="translate(-63,-68.75)"
+      transform="translate(-87,-68.75)"
     >
       <g
         className="m-vehicle-icon m-vehicle-icon--medium on-time"
@@ -1640,7 +1647,7 @@ exports[`ladder shows vehicles with block waivers 1`] = `
           transform="translate(-8.75, -1.875) scale(0.2) translate(-24, -24)"
         >
           <g
-            className="c-icon-alert-circle--grey"
+            className="c-icon-alert-circle--black"
           >
             <circle
               className="c-icon-alert-circle__outline"
@@ -1666,6 +1673,39 @@ exports[`ladder shows vehicles with block waivers 1`] = `
             </g>
           </g>
         </g>
+      </g>
+    </g>
+    <g
+      className="m-ladder__vehicle  "
+      onClick={[Function]}
+      transform="translate(-63,-68.75)"
+    >
+      <g
+        className="m-vehicle-icon m-vehicle-icon--medium on-time"
+      >
+        <rect
+          className="m-vehicle-icon__label-background"
+          height={11}
+          rx={5.5}
+          ry={5.5}
+          width={26}
+          x={-13}
+          y={-22.5}
+        />
+        <text
+          className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+          dominantBaseline="central"
+          textAnchor="middle"
+          x="0"
+          y={-17}
+        >
+          run
+        </text>
+        <path
+          className="m-vehicle-icon__triangle"
+          d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+          transform="scale(0.625) rotate(180) translate(-24,-22)"
+        />
       </g>
     </g>
     <line

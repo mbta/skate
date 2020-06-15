@@ -2,7 +2,6 @@ import React from "react"
 
 export enum AlertIconStyle {
   Black = 1,
-  Grey,
   GreyOnGrey,
   Highlighted,
 }
@@ -11,8 +10,6 @@ const styleClass = (style: AlertIconStyle): string => {
   switch (style) {
     case AlertIconStyle.Black:
       return "--black"
-    case AlertIconStyle.Grey:
-      return "--grey"
     case AlertIconStyle.GreyOnGrey:
       return "--grey-on-grey"
     case AlertIconStyle.Highlighted:
