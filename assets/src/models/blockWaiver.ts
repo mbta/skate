@@ -9,13 +9,16 @@ export enum CurrentFuturePastType {
   Past,
 }
 
-export const currentFuturePastType = ({
-  startTime,
-  endTime,
-}: BlockWaiver): CurrentFuturePastType => {
+export const currentFuturePastType = (
+  { startTime, endTime }: BlockWaiver,
+  startThresholdInMinutes: number = 0
+): CurrentFuturePastType => {
   const nowDate: Date = now()
+  const startThresholdInMilliseconds = startThresholdInMinutes * 60_000
+  const maxStartTimeForCurrent =
+    nowDate.valueOf() + startThresholdInMilliseconds
 
-  if (startTime > nowDate) {
+  if (startTime.valueOf() > maxStartTimeForCurrent) {
     return CurrentFuturePastType.Future
   } else if (endTime < nowDate) {
     return CurrentFuturePastType.Past
@@ -32,7 +35,7 @@ export const hasCurrentBlockWaiver = ({
 }: VehicleOrGhost): boolean =>
   blockWaivers.some(
     (blockWaiver) =>
-      currentFuturePastType(blockWaiver) === CurrentFuturePastType.Current
+      currentFuturePastType(blockWaiver, 240) === CurrentFuturePastType.Current
   )
 
 /**

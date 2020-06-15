@@ -22,8 +22,8 @@ const currentBlockWaiver: BlockWaiver = {
 }
 
 const futureBlockWaiver: BlockWaiver = {
-  startTime: new Date("2020-02-25T16:26:40.000Z"),
-  endTime: new Date("2020-02-25T16:43:20.000Z"),
+  startTime: new Date("2020-02-25T20:26:40.000Z"),
+  endTime: new Date("2020-02-25T20:43:20.000Z"),
   causeId: 0,
   causeDescription: "Block Waiver",
   remark: null,
@@ -81,6 +81,29 @@ describe("hasCurrentBlockWaiver", () => {
     } as Vehicle
 
     expect(hasCurrentBlockWaiver(vehicleWithBlockWaivers)).toBeTruthy()
+  })
+
+  test("considers a block waiver starting within the next 240 minutes to be current", () => {
+    const vehicleWithWaiverBeforeCutoff: Vehicle = {
+      blockWaivers: [
+        {
+          ...currentBlockWaiver,
+          startTime: new Date("2020-02-25T20:10:00.000Z"),
+        },
+      ],
+    } as Vehicle
+
+    const vehicleWithWaiverAfterCutoff: Vehicle = {
+      blockWaivers: [
+        {
+          ...currentBlockWaiver,
+          startTime: new Date("2020-02-25T20:10:00.001Z"),
+        },
+      ],
+    } as Vehicle
+
+    expect(hasCurrentBlockWaiver(vehicleWithWaiverBeforeCutoff)).toBeTruthy()
+    expect(hasCurrentBlockWaiver(vehicleWithWaiverAfterCutoff)).toBeFalsy()
   })
 
   test("returns false if the vehicle or ghost has only non-current block waivers", () => {
