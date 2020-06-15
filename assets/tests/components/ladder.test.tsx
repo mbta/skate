@@ -4,6 +4,7 @@ import renderer from "react-test-renderer"
 import Ladder from "../../src/components/ladder"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { LadderDirection } from "../../src/models/ladderDirection"
+import { emptyVehiclesByPosition } from "../../src/models/vehiclesByPosition"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import {
   BlockWaiver,
@@ -14,7 +15,6 @@ import {
 import { Timepoint } from "../../src/schedule.d"
 import { initialState, selectVehicle } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
-import { emptyVehiclesByPosition } from "../../src/models/vehiclesByPosition"
 
 jest.mock("../../src/hooks/useVehicles", () => ({
   __esModule: true,
@@ -407,7 +407,7 @@ describe("ladder", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("shows vehicles with block waivers", () => {
+  test("shows vehicles with current block waivers", () => {
     jest
       .spyOn(dateTime, "now")
       .mockImplementation(() => new Date("2020-01-01T01:00:00.000Z"))
@@ -501,9 +501,25 @@ describe("ladder", () => {
         },
       ],
     }
+
+    const vehicleWithCurrentBlockWaiver: Vehicle = {
+      ...vehicleWithOldBlockWaiver,
+      id: "otherVehicle",
+      blockWaivers: [
+        {
+          startTime: new Date("2019-12-31T00:00:00.000Z"),
+          endTime: new Date("2020-01-01T02:00:00.000Z"),
+          causeId: 0,
+          causeDescription: "Block Waiver",
+          remark: null,
+        },
+      ],
+    }
+
     const vehiclesAndGhosts: VehicleOrGhost[] = [
       ghostWithBlockWaiver,
       vehicleWithOldBlockWaiver,
+      vehicleWithCurrentBlockWaiver,
     ]
     const ladderDirection = LadderDirection.ZeroToOne
 

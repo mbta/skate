@@ -115,12 +115,12 @@ describe("blockWaiverAlertStyle", () => {
     expect(blockWaiverAlertStyle(vehicle)).toEqual(AlertIconStyle.Black)
   })
 
-  test("vehicle with a non-current waiver gets a grey icon", () => {
+  test("vehicle with a non-current waiver gets no icon", () => {
     const vehicle = {
       id: "id",
-      blockWaivers: [pastBlockWaiver],
+      blockWaivers: [pastBlockWaiver, futureBlockWaiver],
     } as Vehicle
-    expect(blockWaiverAlertStyle(vehicle)).toEqual(AlertIconStyle.Grey)
+    expect(blockWaiverAlertStyle(vehicle)).toEqual(undefined)
   })
 
   test("ghost with no waiver gets a highlighted icon", () => {
@@ -155,13 +155,21 @@ describe("blockWaiverAlertStyle", () => {
     expect(blockWaiverAlertStyle(lateIndicatorGhost)).toEqual(undefined)
   })
 
-  test("late indicator ghost whose vehicle has a waiver gets an alert", () => {
+  test("late indicator ghost whose vehicle has a current waiver gets an alert", () => {
     const lateIndicatorGhost = {
       id: "ghost-incoming-id",
-      blockWaivers: [pastBlockWaiver],
+      blockWaivers: [currentBlockWaiver],
     } as Vehicle
     expect(blockWaiverAlertStyle(lateIndicatorGhost)).toEqual(
-      AlertIconStyle.Grey
+      AlertIconStyle.Black
     )
+  })
+
+  test("late indicator ghost whose vehicle has a no waiver gets no alert", () => {
+    const lateIndicatorGhost = {
+      id: "ghost-incoming-id",
+      blockWaivers: [pastBlockWaiver, futureBlockWaiver],
+    } as Vehicle
+    expect(blockWaiverAlertStyle(lateIndicatorGhost)).toEqual(undefined)
   })
 })

@@ -36,11 +36,11 @@ export const hasCurrentBlockWaiver = ({
   )
 
 /**
- * has waiver?      | ghost       | vehicle and late indicator ghosts
- * ---------------- | ----------- | ---------------------------------
- * yes, current     | black       | black
- * yes, not current | highlighted | grey
- * none             | highlighted | none
+ * has waiver?              | ghost       | late ghost | vehicle
+ * ------------------------ | ----------- | ---------- | -------
+ * yes, current or soon     | black       | black      | black
+ * yes, not current         | highlighted | none       | none
+ * none                     | highlighted | none       | none
  */
 export const blockWaiverAlertStyle = (
   vehicleOrGhost: VehicleOrGhost
@@ -48,9 +48,10 @@ export const blockWaiverAlertStyle = (
   if (hasCurrentBlockWaiver(vehicleOrGhost)) {
     return AlertIconStyle.Black
   }
+
   if (isGhost(vehicleOrGhost) && !isLateVehicleIndicator(vehicleOrGhost)) {
     return AlertIconStyle.Highlighted
-  } else {
-    return hasBlockWaiver(vehicleOrGhost) ? AlertIconStyle.Grey : undefined
   }
+
+  return undefined
 }
