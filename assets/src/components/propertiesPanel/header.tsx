@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { Dispatch, SetStateAction, useContext, useState } from "react"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import vehicleLabel from "../../helpers/vehicleLabel"
 import useInterval from "../../hooks/useInterval"
@@ -21,11 +21,31 @@ import { deselectVehicle } from "../../state"
 import CloseButton from "../closeButton"
 import { RouteVariantName } from "../routeVariantName"
 import VehicleIcon, { Orientation, Size } from "../vehicleIcon"
+import { TabMode } from "./tabPanels"
 
 interface Props {
   vehicle: VehicleOrGhost
   route?: Route
+  tabMode: TabMode
+  setTabMode: Dispatch<SetStateAction<TabMode>>
 }
+
+const TabStatusIcon = () => (
+  <svg className="m-tabs__tab-status-icon" width="14" height="14">
+    <circle
+      className="m-tabs__tab-status-icon-outer-circle"
+      cx="7"
+      cy="7"
+      r="6"
+    />
+    <circle
+      className="m-tabs__tab-status-icon-inner-circle"
+      cx="7"
+      cy="7"
+      r="4"
+    />
+  </svg>
+)
 
 const vehicleOrientation = (
   vehicle: VehicleOrGhost,
@@ -121,7 +141,30 @@ const directionName = (
 
 const nowInSeconds = (): number => Math.floor(Date.now() / 1000)
 
-const Header = ({ vehicle, route }: Props) => {
+const Tab = ({
+  tabName,
+  activeTab,
+  setActiveTab,
+}: {
+  tabName: TabMode
+  activeTab: TabMode
+  setActiveTab: Dispatch<SetStateAction<TabMode>>
+}) => {
+  const classes =
+    tabName === activeTab ? "m-tabs__tab m-tabs__tab--selected" : "m-tabs__tab"
+
+  const tabTitle = tabName[0].toUpperCase() + tabName.slice(1)
+  const clickCallback = () => setActiveTab(tabName)
+
+  return (
+    <li className={classes} onClick={clickCallback}>
+      <TabStatusIcon />
+      {tabTitle}
+    </li>
+  )
+}
+
+const Header = ({ vehicle, route, tabMode, setTabMode }: Props) => {
   const [{ ladderDirections, settings }, dispatch] = useContext(
     StateDispatchContext
   )
@@ -134,39 +177,47 @@ const Header = ({ vehicle, route }: Props) => {
   const hideMe = () => dispatch(deselectVehicle())
 
   return (
-    <div className="m-properties-panel__header">
-      <div className="m-properties-panel__label">
-        <VehicleIcon
-          size={Size.Large}
-          orientation={vehicleOrientation(vehicle, ladderDirections)}
-          label={vehicleLabel(vehicle, settings)}
-          variant={vehicle.viaVariant}
-          status={drawnStatus(vehicle)}
-        />
-      </div>
-      <div className="m-properties-panel__variant">
-        <div className="m-properties-panel__inbound-outbound">
-          {directionName(vehicle, route)}
+    <div className="m-properties-panel__header-wrapper">
+      {" "}
+      <div className="m-properties-panel__header">
+        <div className="m-properties-panel__label">
+          <VehicleIcon
+            size={Size.Large}
+            orientation={vehicleOrientation(vehicle, ladderDirections)}
+            label={vehicleLabel(vehicle, settings)}
+            variant={vehicle.viaVariant}
+            status={drawnStatus(vehicle)}
+          />
         </div>
-
-        <RouteVariantName vehicle={vehicle} />
-
-        {isVehicle(vehicle) && shouldShowHeadwayDiagram(vehicle) ? (
-          <HeadwayTarget vehicle={vehicle} />
-        ) : (
-          isVehicle(vehicle) &&
-          !vehicle.isShuttle && <ScheduleAdherence vehicle={vehicle} />
-        )}
-      </div>
-      <div className="m-properties-panel__close-ping">
-        <CloseButton onClick={hideMe} />
-
-        {isVehicle(vehicle) && (
-          <div className="m-properties-panel__last-gps-ping">
-            {secondsAgo(vehicle.timestamp)}
+        <div className="m-properties-panel__variant">
+          <div className="m-properties-panel__inbound-outbound">
+            {directionName(vehicle, route)}
           </div>
-        )}
-      </div>
+
+          <RouteVariantName vehicle={vehicle} />
+
+          {isVehicle(vehicle) && shouldShowHeadwayDiagram(vehicle) ? (
+            <HeadwayTarget vehicle={vehicle} />
+          ) : (
+            isVehicle(vehicle) &&
+            !vehicle.isShuttle && <ScheduleAdherence vehicle={vehicle} />
+          )}
+        </div>
+        <div className="m-properties-panel__close-ping">
+          <CloseButton onClick={hideMe} />
+
+          {isVehicle(vehicle) && (
+            <div className="m-properties-panel__last-gps-ping">
+              {secondsAgo(vehicle.timestamp)}
+            </div>
+          )}
+        </div>
+      </div>{" "}
+      <ul className="m-tabs__tab-list">
+        <Tab tabName="status" activeTab={tabMode} setActiveTab={setTabMode} />
+        <Tab tabName="run" activeTab={tabMode} setActiveTab={setTabMode} />
+        <Tab tabName="block" activeTab={tabMode} setActiveTab={setTabMode} />
+      </ul>
     </div>
   )
 }

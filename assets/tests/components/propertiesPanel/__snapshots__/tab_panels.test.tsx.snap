@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TabPanels renders the block tab 1`] = `
+<div
+  className="m-tabs"
+>
+  <div
+    className="m-tabs__tab-panel m-tabs__tab-panel--selected"
+  >
+    loading...
+  </div>
+</div>
+`;
+
+exports[`TabPanels renders the run tab 1`] = `
+<div
+  className="m-tabs"
+>
+  <div
+    className="m-tabs__tab-panel m-tabs__tab-panel--selected"
+  >
+    loading...
+  </div>
+</div>
+`;
+
+exports[`TabPanels renders the status tab 1`] = `
+<div
+  className="m-tabs"
+>
+  <div
+    className="m-tabs__tab-panel m-tabs__tab-panel--selected"
+  >
+    Test content
+  </div>
+</div>
+`;

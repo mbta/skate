@@ -1,6 +1,6 @@
 import React from "react"
 import renderer from "react-test-renderer"
-import StatusRunBlockTabs from "../../../src/components/propertiesPanel/status_run_block_tabs"
+import TabPanels from "../../../src/components/propertiesPanel/tabPanels"
 import { Vehicle } from "../../../src/realtime"
 
 const vehicle: Vehicle = {
@@ -53,13 +53,42 @@ const vehicle: Vehicle = {
   blockWaivers: [],
 }
 
-describe("StatusRunBlockTabs", () => {
-  test("renders", () => {
+describe("TabPanels", () => {
+  test("renders the status tab", () => {
     const tree = renderer
       .create(
-        <StatusRunBlockTabs
+        <TabPanels
           statusContent={<>Test content</>}
           vehicleOrGhost={vehicle}
+          mode="status"
+        />
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders the run tab", () => {
+    const tree = renderer
+      .create(
+        <TabPanels
+          statusContent={<>Test content</>}
+          vehicleOrGhost={vehicle}
+          mode="run"
+        />
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders the block tab", () => {
+    const tree = renderer
+      .create(
+        <TabPanels
+          statusContent={<>Test content</>}
+          vehicleOrGhost={vehicle}
+          mode="block"
         />
       )
       .toJSON()

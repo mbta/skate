@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { hasBlockWaiver } from "../../models/blockWaiver"
 import { Ghost } from "../../realtime"
 import { Route } from "../../schedule"
@@ -6,7 +6,7 @@ import IconAlertCircle, { AlertIconStyle } from "../iconAlertCircle"
 import PropertiesList from "../propertiesList"
 import BlockWaiverList from "./blockWaiverList"
 import Header from "./header"
-import StatusRunBlockTabs from "./status_run_block_tabs"
+import TabPanels, { TabMode } from "./tabPanels"
 
 interface Props {
   selectedGhost: Ghost
@@ -29,21 +29,31 @@ const NoWaiverBanner = () => (
   </div>
 )
 
-const GhostPropertiesPanel = ({ selectedGhost, route }: Props) => (
-  <div className="m-ghost-properties-panel">
-    <Header vehicle={selectedGhost} route={route} />
+const GhostPropertiesPanel = ({ selectedGhost, route }: Props) => {
+  const [tabMode, setTabMode] = useState<TabMode>("status")
 
-    {hasBlockWaiver(selectedGhost) ? (
-      <BlockWaiverList blockWaivers={selectedGhost.blockWaivers} />
-    ) : (
-      <NoWaiverBanner />
-    )}
+  return (
+    <div className="m-ghost-properties-panel">
+      <Header
+        vehicle={selectedGhost}
+        route={route}
+        tabMode={tabMode}
+        setTabMode={setTabMode}
+      />
 
-    <StatusRunBlockTabs
-      vehicleOrGhost={selectedGhost}
-      statusContent={<PropertiesList vehicleOrGhost={selectedGhost} />}
-    />
-  </div>
-)
+      {hasBlockWaiver(selectedGhost) ? (
+        <BlockWaiverList blockWaivers={selectedGhost.blockWaivers} />
+      ) : (
+        <NoWaiverBanner />
+      )}
+
+      <TabPanels
+        vehicleOrGhost={selectedGhost}
+        statusContent={<PropertiesList vehicleOrGhost={selectedGhost} />}
+        mode={tabMode}
+      />
+    </div>
+  )
+}
 
 export default GhostPropertiesPanel

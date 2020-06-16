@@ -5,146 +5,139 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
   className="m-vehicle-properties-panel"
 >
   <div
-    className="m-properties-panel__header"
+    className="m-properties-panel__header-wrapper"
   >
+     
     <div
-      className="m-properties-panel__label"
-    >
-      <svg
-        style={
-          Object {
-            "height": 64,
-            "width": 64,
-          }
-        }
-        viewBox="-32 -20 64 64"
-      >
-        <g
-          className="m-vehicle-icon m-vehicle-icon--large on-time"
-        >
-          <rect
-            className="m-vehicle-icon__label-background"
-            height={24}
-            rx={12}
-            ry={12}
-            width={64}
-            x={-32}
-            y={19}
-          />
-          <text
-            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-            dominantBaseline="central"
-            textAnchor="middle"
-            x="0"
-            y={31}
-          >
-            1
-          </text>
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-            transform="scale(1) rotate(0) translate(-24,-22)"
-          />
-          <text
-            className="m-vehicle-icon__variant"
-            dominantBaseline="alphabetic"
-            textAnchor="middle"
-            x={0}
-            y={14}
-          >
-            X
-          </text>
-        </g>
-      </svg>
-    </div>
-    <div
-      className="m-properties-panel__variant"
+      className="m-properties-panel__header"
     >
       <div
-        className="m-properties-panel__inbound-outbound"
+        className="m-properties-panel__label"
       >
-        
-      </div>
-      <div
-        className="m-route-variant-name"
-      >
-        <span
-          className="m-route-variant-name__route-id"
-        >
-          39_X
-        </span>
-         Forest Hills
-      </div>
-      <div
-        className="m-properties-panel__schedule-adherence on-time"
-      >
-        <div
-          className="m-properties-panel__schedule-adherence-status-icon"
-        >
-          <svg
-            height="10"
-            width="10"
-          >
-            <circle
-              cx="5"
-              cy="5"
-              r="5"
-            />
-          </svg>
-        </div>
-        <div
-          className="m-properties-panel__schedule-adherence-status-string"
-        >
-          on time
-        </div>
-        <div
-          className="m-properties-panel__schedule-adherence-label"
-        >
-          (0 min early)
-        </div>
-      </div>
-    </div>
-    <div
-      className="m-properties-panel__close-ping"
-    >
-      <button
-        className="m-close-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
+        <svg
+          style={
             Object {
-              "__html": "SVG",
+              "height": 64,
+              "width": 64,
             }
           }
-        />
-      </button>
+          viewBox="-32 -20 64 64"
+        >
+          <g
+            className="m-vehicle-icon m-vehicle-icon--large on-time"
+          >
+            <rect
+              className="m-vehicle-icon__label-background"
+              height={24}
+              rx={12}
+              ry={12}
+              width={64}
+              x={-32}
+              y={19}
+            />
+            <text
+              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              dominantBaseline="central"
+              textAnchor="middle"
+              x="0"
+              y={31}
+            >
+              1
+            </text>
+            <path
+              className="m-vehicle-icon__triangle"
+              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              transform="scale(1) rotate(0) translate(-24,-22)"
+            />
+            <text
+              className="m-vehicle-icon__variant"
+              dominantBaseline="alphabetic"
+              textAnchor="middle"
+              x={0}
+              y={14}
+            >
+              X
+            </text>
+          </g>
+        </svg>
+      </div>
       <div
-        className="m-properties-panel__last-gps-ping"
+        className="m-properties-panel__variant"
       >
-        111s ago
+        <div
+          className="m-properties-panel__inbound-outbound"
+        >
+          
+        </div>
+        <div
+          className="m-route-variant-name"
+        >
+          <span
+            className="m-route-variant-name__route-id"
+          >
+            39_X
+          </span>
+           Forest Hills
+        </div>
+        <div
+          className="m-properties-panel__schedule-adherence on-time"
+        >
+          <div
+            className="m-properties-panel__schedule-adherence-status-icon"
+          >
+            <svg
+              height="10"
+              width="10"
+            >
+              <circle
+                cx="5"
+                cy="5"
+                r="5"
+              />
+            </svg>
+          </div>
+          <div
+            className="m-properties-panel__schedule-adherence-status-string"
+          >
+            on time
+          </div>
+          <div
+            className="m-properties-panel__schedule-adherence-label"
+          >
+            (0 min early)
+          </div>
+        </div>
+      </div>
+      <div
+        className="m-properties-panel__close-ping"
+      >
+        <button
+          className="m-close-button"
+          onClick={[Function]}
+        >
+          <span
+            className=""
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "SVG",
+              }
+            }
+          />
+        </button>
+        <div
+          className="m-properties-panel__last-gps-ping"
+        >
+          111s ago
+        </div>
       </div>
     </div>
-  </div>
-  <div
-    className="m-tabs"
-    data-tabs={true}
-    onClick={[Function]}
-    onKeyDown={[Function]}
-  >
+     
     <ul
       className="m-tabs__tab-list"
-      role="tablist"
     >
       <li
-        aria-controls="react-tabs-1"
-        aria-disabled="false"
-        aria-selected="true"
         className="m-tabs__tab m-tabs__tab--selected"
-        id="react-tabs-0"
-        role="tab"
-        tabIndex="0"
+        onClick={[Function]}
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -167,13 +160,8 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
         Status
       </li>
       <li
-        aria-controls="react-tabs-3"
-        aria-disabled="false"
-        aria-selected="false"
         className="m-tabs__tab"
-        id="react-tabs-2"
-        role="tab"
-        tabIndex={null}
+        onClick={[Function]}
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -196,13 +184,8 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
         Run
       </li>
       <li
-        aria-controls="react-tabs-5"
-        aria-disabled="false"
-        aria-selected="false"
         className="m-tabs__tab"
-        id="react-tabs-4"
-        role="tab"
-        tabIndex={null}
+        onClick={[Function]}
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -225,11 +208,12 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
         Block
       </li>
     </ul>
+  </div>
+  <div
+    className="m-tabs"
+  >
     <div
-      aria-labelledby="react-tabs-0"
       className="m-tabs__tab-panel m-tabs__tab-panel--selected"
-      id="react-tabs-1"
-      role="tabpanel"
     >
       <div
         className="m-properties-list"
@@ -329,18 +313,6 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
         </div>
       </div>
     </div>
-    <div
-      aria-labelledby="react-tabs-2"
-      className="m-tabs__tab-panel"
-      id="react-tabs-3"
-      role="tabpanel"
-    />
-    <div
-      aria-labelledby="react-tabs-4"
-      className="m-tabs__tab-panel"
-      id="react-tabs-5"
-      role="tabpanel"
-    />
   </div>
 </div>
 `;
@@ -350,146 +322,139 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
   className="m-vehicle-properties-panel"
 >
   <div
-    className="m-properties-panel__header"
+    className="m-properties-panel__header-wrapper"
   >
+     
     <div
-      className="m-properties-panel__label"
-    >
-      <svg
-        style={
-          Object {
-            "height": 64,
-            "width": 64,
-          }
-        }
-        viewBox="-32 -20 64 64"
-      >
-        <g
-          className="m-vehicle-icon m-vehicle-icon--large on-time"
-        >
-          <rect
-            className="m-vehicle-icon__label-background"
-            height={24}
-            rx={12}
-            ry={12}
-            width={64}
-            x={-32}
-            y={19}
-          />
-          <text
-            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-            dominantBaseline="central"
-            textAnchor="middle"
-            x="0"
-            y={31}
-          >
-            1
-          </text>
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-            transform="scale(1) rotate(0) translate(-24,-22)"
-          />
-          <text
-            className="m-vehicle-icon__variant"
-            dominantBaseline="alphabetic"
-            textAnchor="middle"
-            x={0}
-            y={14}
-          >
-            X
-          </text>
-        </g>
-      </svg>
-    </div>
-    <div
-      className="m-properties-panel__variant"
+      className="m-properties-panel__header"
     >
       <div
-        className="m-properties-panel__inbound-outbound"
+        className="m-properties-panel__label"
       >
-        
-      </div>
-      <div
-        className="m-route-variant-name"
-      >
-        <span
-          className="m-route-variant-name__route-id"
-        >
-          39_X
-        </span>
-         Forest Hills
-      </div>
-      <div
-        className="m-properties-panel__schedule-adherence on-time"
-      >
-        <div
-          className="m-properties-panel__schedule-adherence-status-icon"
-        >
-          <svg
-            height="10"
-            width="10"
-          >
-            <circle
-              cx="5"
-              cy="5"
-              r="5"
-            />
-          </svg>
-        </div>
-        <div
-          className="m-properties-panel__schedule-adherence-status-string"
-        >
-          on time
-        </div>
-        <div
-          className="m-properties-panel__schedule-adherence-label"
-        >
-          (0 min early)
-        </div>
-      </div>
-    </div>
-    <div
-      className="m-properties-panel__close-ping"
-    >
-      <button
-        className="m-close-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
+        <svg
+          style={
             Object {
-              "__html": "SVG",
+              "height": 64,
+              "width": 64,
             }
           }
-        />
-      </button>
+          viewBox="-32 -20 64 64"
+        >
+          <g
+            className="m-vehicle-icon m-vehicle-icon--large on-time"
+          >
+            <rect
+              className="m-vehicle-icon__label-background"
+              height={24}
+              rx={12}
+              ry={12}
+              width={64}
+              x={-32}
+              y={19}
+            />
+            <text
+              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              dominantBaseline="central"
+              textAnchor="middle"
+              x="0"
+              y={31}
+            >
+              1
+            </text>
+            <path
+              className="m-vehicle-icon__triangle"
+              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              transform="scale(1) rotate(0) translate(-24,-22)"
+            />
+            <text
+              className="m-vehicle-icon__variant"
+              dominantBaseline="alphabetic"
+              textAnchor="middle"
+              x={0}
+              y={14}
+            >
+              X
+            </text>
+          </g>
+        </svg>
+      </div>
       <div
-        className="m-properties-panel__last-gps-ping"
+        className="m-properties-panel__variant"
       >
-        111s ago
+        <div
+          className="m-properties-panel__inbound-outbound"
+        >
+          
+        </div>
+        <div
+          className="m-route-variant-name"
+        >
+          <span
+            className="m-route-variant-name__route-id"
+          >
+            39_X
+          </span>
+           Forest Hills
+        </div>
+        <div
+          className="m-properties-panel__schedule-adherence on-time"
+        >
+          <div
+            className="m-properties-panel__schedule-adherence-status-icon"
+          >
+            <svg
+              height="10"
+              width="10"
+            >
+              <circle
+                cx="5"
+                cy="5"
+                r="5"
+              />
+            </svg>
+          </div>
+          <div
+            className="m-properties-panel__schedule-adherence-status-string"
+          >
+            on time
+          </div>
+          <div
+            className="m-properties-panel__schedule-adherence-label"
+          >
+            (0 min early)
+          </div>
+        </div>
+      </div>
+      <div
+        className="m-properties-panel__close-ping"
+      >
+        <button
+          className="m-close-button"
+          onClick={[Function]}
+        >
+          <span
+            className=""
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "SVG",
+              }
+            }
+          />
+        </button>
+        <div
+          className="m-properties-panel__last-gps-ping"
+        >
+          111s ago
+        </div>
       </div>
     </div>
-  </div>
-  <div
-    className="m-tabs"
-    data-tabs={true}
-    onClick={[Function]}
-    onKeyDown={[Function]}
-  >
+     
     <ul
       className="m-tabs__tab-list"
-      role="tablist"
     >
       <li
-        aria-controls="react-tabs-31"
-        aria-disabled="false"
-        aria-selected="true"
         className="m-tabs__tab m-tabs__tab--selected"
-        id="react-tabs-30"
-        role="tab"
-        tabIndex="0"
+        onClick={[Function]}
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -512,13 +477,8 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
         Status
       </li>
       <li
-        aria-controls="react-tabs-33"
-        aria-disabled="false"
-        aria-selected="false"
         className="m-tabs__tab"
-        id="react-tabs-32"
-        role="tab"
-        tabIndex={null}
+        onClick={[Function]}
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -541,13 +501,8 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
         Run
       </li>
       <li
-        aria-controls="react-tabs-35"
-        aria-disabled="false"
-        aria-selected="false"
         className="m-tabs__tab"
-        id="react-tabs-34"
-        role="tab"
-        tabIndex={null}
+        onClick={[Function]}
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -570,11 +525,12 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
         Block
       </li>
     </ul>
+  </div>
+  <div
+    className="m-tabs"
+  >
     <div
-      aria-labelledby="react-tabs-30"
       className="m-tabs__tab-panel m-tabs__tab-panel--selected"
-      id="react-tabs-31"
-      role="tabpanel"
     >
       <div
         className="m-properties-list"
@@ -674,18 +630,6 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
         </div>
       </div>
     </div>
-    <div
-      aria-labelledby="react-tabs-32"
-      className="m-tabs__tab-panel"
-      id="react-tabs-33"
-      role="tabpanel"
-    />
-    <div
-      aria-labelledby="react-tabs-34"
-      className="m-tabs__tab-panel"
-      id="react-tabs-35"
-      role="tabpanel"
-    />
   </div>
 </div>
 `;
@@ -695,146 +639,139 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
   className="m-vehicle-properties-panel"
 >
   <div
-    className="m-properties-panel__header"
+    className="m-properties-panel__header-wrapper"
   >
+     
     <div
-      className="m-properties-panel__label"
-    >
-      <svg
-        style={
-          Object {
-            "height": 64,
-            "width": 64,
-          }
-        }
-        viewBox="-32 -20 64 64"
-      >
-        <g
-          className="m-vehicle-icon m-vehicle-icon--large late"
-        >
-          <rect
-            className="m-vehicle-icon__label-background"
-            height={24}
-            rx={12}
-            ry={12}
-            width={64}
-            x={-32}
-            y={19}
-          />
-          <text
-            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-            dominantBaseline="central"
-            textAnchor="middle"
-            x="0"
-            y={31}
-          >
-            1
-          </text>
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-            transform="scale(1) rotate(0) translate(-24,-22)"
-          />
-          <text
-            className="m-vehicle-icon__variant"
-            dominantBaseline="alphabetic"
-            textAnchor="middle"
-            x={0}
-            y={14}
-          >
-            X
-          </text>
-        </g>
-      </svg>
-    </div>
-    <div
-      className="m-properties-panel__variant"
+      className="m-properties-panel__header"
     >
       <div
-        className="m-properties-panel__inbound-outbound"
+        className="m-properties-panel__label"
       >
-        
-      </div>
-      <div
-        className="m-route-variant-name"
-      >
-        <span
-          className="m-route-variant-name__route-id"
-        >
-          39_X
-        </span>
-         Forest Hills
-      </div>
-      <div
-        className="m-properties-panel__schedule-adherence late"
-      >
-        <div
-          className="m-properties-panel__schedule-adherence-status-icon"
-        >
-          <svg
-            height="10"
-            width="10"
-          >
-            <circle
-              cx="5"
-              cy="5"
-              r="5"
-            />
-          </svg>
-        </div>
-        <div
-          className="m-properties-panel__schedule-adherence-status-string"
-        >
-          late
-        </div>
-        <div
-          className="m-properties-panel__schedule-adherence-label"
-        >
-          (6 min late)
-        </div>
-      </div>
-    </div>
-    <div
-      className="m-properties-panel__close-ping"
-    >
-      <button
-        className="m-close-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
+        <svg
+          style={
             Object {
-              "__html": "SVG",
+              "height": 64,
+              "width": 64,
             }
           }
-        />
-      </button>
+          viewBox="-32 -20 64 64"
+        >
+          <g
+            className="m-vehicle-icon m-vehicle-icon--large late"
+          >
+            <rect
+              className="m-vehicle-icon__label-background"
+              height={24}
+              rx={12}
+              ry={12}
+              width={64}
+              x={-32}
+              y={19}
+            />
+            <text
+              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              dominantBaseline="central"
+              textAnchor="middle"
+              x="0"
+              y={31}
+            >
+              1
+            </text>
+            <path
+              className="m-vehicle-icon__triangle"
+              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              transform="scale(1) rotate(0) translate(-24,-22)"
+            />
+            <text
+              className="m-vehicle-icon__variant"
+              dominantBaseline="alphabetic"
+              textAnchor="middle"
+              x={0}
+              y={14}
+            >
+              X
+            </text>
+          </g>
+        </svg>
+      </div>
       <div
-        className="m-properties-panel__last-gps-ping"
+        className="m-properties-panel__variant"
       >
-        111s ago
+        <div
+          className="m-properties-panel__inbound-outbound"
+        >
+          
+        </div>
+        <div
+          className="m-route-variant-name"
+        >
+          <span
+            className="m-route-variant-name__route-id"
+          >
+            39_X
+          </span>
+           Forest Hills
+        </div>
+        <div
+          className="m-properties-panel__schedule-adherence late"
+        >
+          <div
+            className="m-properties-panel__schedule-adherence-status-icon"
+          >
+            <svg
+              height="10"
+              width="10"
+            >
+              <circle
+                cx="5"
+                cy="5"
+                r="5"
+              />
+            </svg>
+          </div>
+          <div
+            className="m-properties-panel__schedule-adherence-status-string"
+          >
+            late
+          </div>
+          <div
+            className="m-properties-panel__schedule-adherence-label"
+          >
+            (6 min late)
+          </div>
+        </div>
+      </div>
+      <div
+        className="m-properties-panel__close-ping"
+      >
+        <button
+          className="m-close-button"
+          onClick={[Function]}
+        >
+          <span
+            className=""
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "SVG",
+              }
+            }
+          />
+        </button>
+        <div
+          className="m-properties-panel__last-gps-ping"
+        >
+          111s ago
+        </div>
       </div>
     </div>
-  </div>
-  <div
-    className="m-tabs"
-    data-tabs={true}
-    onClick={[Function]}
-    onKeyDown={[Function]}
-  >
+     
     <ul
       className="m-tabs__tab-list"
-      role="tablist"
     >
       <li
-        aria-controls="react-tabs-19"
-        aria-disabled="false"
-        aria-selected="true"
         className="m-tabs__tab m-tabs__tab--selected"
-        id="react-tabs-18"
-        role="tab"
-        tabIndex="0"
+        onClick={[Function]}
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -857,13 +794,8 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
         Status
       </li>
       <li
-        aria-controls="react-tabs-21"
-        aria-disabled="false"
-        aria-selected="false"
         className="m-tabs__tab"
-        id="react-tabs-20"
-        role="tab"
-        tabIndex={null}
+        onClick={[Function]}
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -886,13 +818,8 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
         Run
       </li>
       <li
-        aria-controls="react-tabs-23"
-        aria-disabled="false"
-        aria-selected="false"
         className="m-tabs__tab"
-        id="react-tabs-22"
-        role="tab"
-        tabIndex={null}
+        onClick={[Function]}
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -915,11 +842,12 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
         Block
       </li>
     </ul>
+  </div>
+  <div
+    className="m-tabs"
+  >
     <div
-      aria-labelledby="react-tabs-18"
       className="m-tabs__tab-panel m-tabs__tab-panel--selected"
-      id="react-tabs-19"
-      role="tabpanel"
     >
       <div
         className="m-properties-list"
@@ -1019,18 +947,6 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
         </div>
       </div>
     </div>
-    <div
-      aria-labelledby="react-tabs-20"
-      className="m-tabs__tab-panel"
-      id="react-tabs-21"
-      role="tabpanel"
-    />
-    <div
-      aria-labelledby="react-tabs-22"
-      className="m-tabs__tab-panel"
-      id="react-tabs-23"
-      role="tabpanel"
-    />
   </div>
 </div>
 `;
@@ -1040,94 +956,176 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
   className="m-vehicle-properties-panel"
 >
   <div
-    className="m-properties-panel__header"
+    className="m-properties-panel__header-wrapper"
   >
+     
     <div
-      className="m-properties-panel__label"
-    >
-      <svg
-        style={
-          Object {
-            "height": 64,
-            "width": 72,
-          }
-        }
-        viewBox="-36 -20 72 64"
-      >
-        <g
-          className="m-vehicle-icon m-vehicle-icon--large"
-        >
-          <rect
-            className="m-vehicle-icon__label-background"
-            height={24}
-            rx={12}
-            ry={12}
-            width={72}
-            x={-36}
-            y={19}
-          />
-          <text
-            className="m-vehicle-icon__label m-vehicle-icon__label--extended"
-            dominantBaseline="central"
-            textAnchor="middle"
-            x="0"
-            y={31}
-          >
-            v1-label
-          </text>
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-            transform="scale(1) rotate(0) translate(-24,-22)"
-          />
-          <text
-            className="m-vehicle-icon__variant"
-            dominantBaseline="alphabetic"
-            textAnchor="middle"
-            x={0}
-            y={14}
-          >
-            X
-          </text>
-        </g>
-      </svg>
-    </div>
-    <div
-      className="m-properties-panel__variant"
+      className="m-properties-panel__header"
     >
       <div
-        className="m-properties-panel__inbound-outbound"
+        className="m-properties-panel__label"
       >
-        
-      </div>
-      <div
-        className="m-route-variant-name"
-      >
-        Shuttle
-      </div>
-    </div>
-    <div
-      className="m-properties-panel__close-ping"
-    >
-      <button
-        className="m-close-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
+        <svg
+          style={
             Object {
-              "__html": "SVG",
+              "height": 64,
+              "width": 72,
             }
           }
-        />
-      </button>
+          viewBox="-36 -20 72 64"
+        >
+          <g
+            className="m-vehicle-icon m-vehicle-icon--large"
+          >
+            <rect
+              className="m-vehicle-icon__label-background"
+              height={24}
+              rx={12}
+              ry={12}
+              width={72}
+              x={-36}
+              y={19}
+            />
+            <text
+              className="m-vehicle-icon__label m-vehicle-icon__label--extended"
+              dominantBaseline="central"
+              textAnchor="middle"
+              x="0"
+              y={31}
+            >
+              v1-label
+            </text>
+            <path
+              className="m-vehicle-icon__triangle"
+              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              transform="scale(1) rotate(0) translate(-24,-22)"
+            />
+            <text
+              className="m-vehicle-icon__variant"
+              dominantBaseline="alphabetic"
+              textAnchor="middle"
+              x={0}
+              y={14}
+            >
+              X
+            </text>
+          </g>
+        </svg>
+      </div>
       <div
-        className="m-properties-panel__last-gps-ping"
+        className="m-properties-panel__variant"
       >
-        111s ago
+        <div
+          className="m-properties-panel__inbound-outbound"
+        >
+          
+        </div>
+        <div
+          className="m-route-variant-name"
+        >
+          Shuttle
+        </div>
+      </div>
+      <div
+        className="m-properties-panel__close-ping"
+      >
+        <button
+          className="m-close-button"
+          onClick={[Function]}
+        >
+          <span
+            className=""
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "SVG",
+              }
+            }
+          />
+        </button>
+        <div
+          className="m-properties-panel__last-gps-ping"
+        >
+          111s ago
+        </div>
       </div>
     </div>
+     
+    <ul
+      className="m-tabs__tab-list"
+    >
+      <li
+        className="m-tabs__tab m-tabs__tab--selected"
+        onClick={[Function]}
+      >
+        <svg
+          className="m-tabs__tab-status-icon"
+          height="14"
+          width="14"
+        >
+          <circle
+            className="m-tabs__tab-status-icon-outer-circle"
+            cx="7"
+            cy="7"
+            r="6"
+          />
+          <circle
+            className="m-tabs__tab-status-icon-inner-circle"
+            cx="7"
+            cy="7"
+            r="4"
+          />
+        </svg>
+        Status
+      </li>
+      <li
+        className="m-tabs__tab"
+        onClick={[Function]}
+      >
+        <svg
+          className="m-tabs__tab-status-icon"
+          height="14"
+          width="14"
+        >
+          <circle
+            className="m-tabs__tab-status-icon-outer-circle"
+            cx="7"
+            cy="7"
+            r="6"
+          />
+          <circle
+            className="m-tabs__tab-status-icon-inner-circle"
+            cx="7"
+            cy="7"
+            r="4"
+          />
+        </svg>
+        Run
+      </li>
+      <li
+        className="m-tabs__tab"
+        onClick={[Function]}
+      >
+        <svg
+          className="m-tabs__tab-status-icon"
+          height="14"
+          width="14"
+        >
+          <circle
+            className="m-tabs__tab-status-icon-outer-circle"
+            cx="7"
+            cy="7"
+            r="6"
+          />
+          <circle
+            className="m-tabs__tab-status-icon-inner-circle"
+            cx="7"
+            cy="7"
+            r="4"
+          />
+        </svg>
+        Block
+      </li>
+    </ul>
   </div>
   <div
     className="m-properties-list"
@@ -1238,127 +1236,209 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
   className="m-vehicle-properties-panel"
 >
   <div
-    className="m-properties-panel__header"
+    className="m-properties-panel__header-wrapper"
   >
+     
     <div
-      className="m-properties-panel__label"
-    >
-      <svg
-        style={
-          Object {
-            "height": 64,
-            "width": 64,
-          }
-        }
-        viewBox="-32 -20 64 64"
-      >
-        <g
-          className="m-vehicle-icon m-vehicle-icon--large on-time"
-        >
-          <rect
-            className="m-vehicle-icon__label-background"
-            height={24}
-            rx={12}
-            ry={12}
-            width={64}
-            x={-32}
-            y={19}
-          />
-          <text
-            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-            dominantBaseline="central"
-            textAnchor="middle"
-            x="0"
-            y={31}
-          >
-            1
-          </text>
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-            transform="scale(1) rotate(0) translate(-24,-22)"
-          />
-          <text
-            className="m-vehicle-icon__variant"
-            dominantBaseline="alphabetic"
-            textAnchor="middle"
-            x={0}
-            y={14}
-          >
-            X
-          </text>
-        </g>
-      </svg>
-    </div>
-    <div
-      className="m-properties-panel__variant"
+      className="m-properties-panel__header"
     >
       <div
-        className="m-properties-panel__inbound-outbound"
+        className="m-properties-panel__label"
       >
-        
-      </div>
-      <div
-        className="m-route-variant-name"
-      >
-        <span
-          className="m-route-variant-name__route-id"
-        >
-          39_X
-        </span>
-         Forest Hills
-      </div>
-      <div
-        className="m-properties-panel__schedule-adherence on-time"
-      >
-        <div
-          className="m-properties-panel__schedule-adherence-status-icon"
-        >
-          <svg
-            height="10"
-            width="10"
-          >
-            <circle
-              cx="5"
-              cy="5"
-              r="5"
-            />
-          </svg>
-        </div>
-        <div
-          className="m-properties-panel__schedule-adherence-status-string"
-        >
-          on time
-        </div>
-        <div
-          className="m-properties-panel__schedule-adherence-label"
-        >
-          (0 min early)
-        </div>
-      </div>
-    </div>
-    <div
-      className="m-properties-panel__close-ping"
-    >
-      <button
-        className="m-close-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
+        <svg
+          style={
             Object {
-              "__html": "SVG",
+              "height": 64,
+              "width": 64,
             }
           }
-        />
-      </button>
+          viewBox="-32 -20 64 64"
+        >
+          <g
+            className="m-vehicle-icon m-vehicle-icon--large on-time"
+          >
+            <rect
+              className="m-vehicle-icon__label-background"
+              height={24}
+              rx={12}
+              ry={12}
+              width={64}
+              x={-32}
+              y={19}
+            />
+            <text
+              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              dominantBaseline="central"
+              textAnchor="middle"
+              x="0"
+              y={31}
+            >
+              1
+            </text>
+            <path
+              className="m-vehicle-icon__triangle"
+              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              transform="scale(1) rotate(0) translate(-24,-22)"
+            />
+            <text
+              className="m-vehicle-icon__variant"
+              dominantBaseline="alphabetic"
+              textAnchor="middle"
+              x={0}
+              y={14}
+            >
+              X
+            </text>
+          </g>
+        </svg>
+      </div>
       <div
-        className="m-properties-panel__last-gps-ping"
+        className="m-properties-panel__variant"
       >
-        111s ago
+        <div
+          className="m-properties-panel__inbound-outbound"
+        >
+          
+        </div>
+        <div
+          className="m-route-variant-name"
+        >
+          <span
+            className="m-route-variant-name__route-id"
+          >
+            39_X
+          </span>
+           Forest Hills
+        </div>
+        <div
+          className="m-properties-panel__schedule-adherence on-time"
+        >
+          <div
+            className="m-properties-panel__schedule-adherence-status-icon"
+          >
+            <svg
+              height="10"
+              width="10"
+            >
+              <circle
+                cx="5"
+                cy="5"
+                r="5"
+              />
+            </svg>
+          </div>
+          <div
+            className="m-properties-panel__schedule-adherence-status-string"
+          >
+            on time
+          </div>
+          <div
+            className="m-properties-panel__schedule-adherence-label"
+          >
+            (0 min early)
+          </div>
+        </div>
+      </div>
+      <div
+        className="m-properties-panel__close-ping"
+      >
+        <button
+          className="m-close-button"
+          onClick={[Function]}
+        >
+          <span
+            className=""
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "SVG",
+              }
+            }
+          />
+        </button>
+        <div
+          className="m-properties-panel__last-gps-ping"
+        >
+          111s ago
+        </div>
       </div>
     </div>
+     
+    <ul
+      className="m-tabs__tab-list"
+    >
+      <li
+        className="m-tabs__tab m-tabs__tab--selected"
+        onClick={[Function]}
+      >
+        <svg
+          className="m-tabs__tab-status-icon"
+          height="14"
+          width="14"
+        >
+          <circle
+            className="m-tabs__tab-status-icon-outer-circle"
+            cx="7"
+            cy="7"
+            r="6"
+          />
+          <circle
+            className="m-tabs__tab-status-icon-inner-circle"
+            cx="7"
+            cy="7"
+            r="4"
+          />
+        </svg>
+        Status
+      </li>
+      <li
+        className="m-tabs__tab"
+        onClick={[Function]}
+      >
+        <svg
+          className="m-tabs__tab-status-icon"
+          height="14"
+          width="14"
+        >
+          <circle
+            className="m-tabs__tab-status-icon-outer-circle"
+            cx="7"
+            cy="7"
+            r="6"
+          />
+          <circle
+            className="m-tabs__tab-status-icon-inner-circle"
+            cx="7"
+            cy="7"
+            r="4"
+          />
+        </svg>
+        Run
+      </li>
+      <li
+        className="m-tabs__tab"
+        onClick={[Function]}
+      >
+        <svg
+          className="m-tabs__tab-status-icon"
+          height="14"
+          width="14"
+        >
+          <circle
+            className="m-tabs__tab-status-icon-outer-circle"
+            cx="7"
+            cy="7"
+            r="6"
+          />
+          <circle
+            className="m-tabs__tab-status-icon-inner-circle"
+            cx="7"
+            cy="7"
+            r="4"
+          />
+        </svg>
+        Block
+      </li>
+    </ul>
   </div>
   <div
     className="m-block-waiver-list"
@@ -1457,107 +1537,9 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
   </div>
   <div
     className="m-tabs"
-    data-tabs={true}
-    onClick={[Function]}
-    onKeyDown={[Function]}
   >
-    <ul
-      className="m-tabs__tab-list"
-      role="tablist"
-    >
-      <li
-        aria-controls="react-tabs-37"
-        aria-disabled="false"
-        aria-selected="true"
-        className="m-tabs__tab m-tabs__tab--selected"
-        id="react-tabs-36"
-        role="tab"
-        tabIndex="0"
-      >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
-        >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Status
-      </li>
-      <li
-        aria-controls="react-tabs-39"
-        aria-disabled="false"
-        aria-selected="false"
-        className="m-tabs__tab"
-        id="react-tabs-38"
-        role="tab"
-        tabIndex={null}
-      >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
-        >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Run
-      </li>
-      <li
-        aria-controls="react-tabs-41"
-        aria-disabled="false"
-        aria-selected="false"
-        className="m-tabs__tab"
-        id="react-tabs-40"
-        role="tab"
-        tabIndex={null}
-      >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
-        >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Block
-      </li>
-    </ul>
     <div
-      aria-labelledby="react-tabs-36"
       className="m-tabs__tab-panel m-tabs__tab-panel--selected"
-      id="react-tabs-37"
-      role="tabpanel"
     >
       <div
         className="m-properties-list"
@@ -1657,18 +1639,6 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
         </div>
       </div>
     </div>
-    <div
-      aria-labelledby="react-tabs-38"
-      className="m-tabs__tab-panel"
-      id="react-tabs-39"
-      role="tabpanel"
-    />
-    <div
-      aria-labelledby="react-tabs-40"
-      className="m-tabs__tab-panel"
-      id="react-tabs-41"
-      role="tabpanel"
-    />
   </div>
 </div>
 `;
@@ -1678,146 +1648,139 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
   className="m-vehicle-properties-panel"
 >
   <div
-    className="m-properties-panel__header"
+    className="m-properties-panel__header-wrapper"
   >
+     
     <div
-      className="m-properties-panel__label"
-    >
-      <svg
-        style={
-          Object {
-            "height": 64,
-            "width": 64,
-          }
-        }
-        viewBox="-32 -20 64 64"
-      >
-        <g
-          className="m-vehicle-icon m-vehicle-icon--large early"
-        >
-          <rect
-            className="m-vehicle-icon__label-background"
-            height={24}
-            rx={12}
-            ry={12}
-            width={64}
-            x={-32}
-            y={19}
-          />
-          <text
-            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-            dominantBaseline="central"
-            textAnchor="middle"
-            x="0"
-            y={31}
-          >
-            1
-          </text>
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-            transform="scale(1) rotate(0) translate(-24,-22)"
-          />
-          <text
-            className="m-vehicle-icon__variant"
-            dominantBaseline="alphabetic"
-            textAnchor="middle"
-            x={0}
-            y={14}
-          >
-            X
-          </text>
-        </g>
-      </svg>
-    </div>
-    <div
-      className="m-properties-panel__variant"
+      className="m-properties-panel__header"
     >
       <div
-        className="m-properties-panel__inbound-outbound"
+        className="m-properties-panel__label"
       >
-        
-      </div>
-      <div
-        className="m-route-variant-name"
-      >
-        <span
-          className="m-route-variant-name__route-id"
-        >
-          39_X
-        </span>
-         Forest Hills
-      </div>
-      <div
-        className="m-properties-panel__schedule-adherence early"
-      >
-        <div
-          className="m-properties-panel__schedule-adherence-status-icon"
-        >
-          <svg
-            height="10"
-            width="10"
-          >
-            <circle
-              cx="5"
-              cy="5"
-              r="5"
-            />
-          </svg>
-        </div>
-        <div
-          className="m-properties-panel__schedule-adherence-status-string"
-        >
-          early
-        </div>
-        <div
-          className="m-properties-panel__schedule-adherence-label"
-        >
-          (2 min early)
-        </div>
-      </div>
-    </div>
-    <div
-      className="m-properties-panel__close-ping"
-    >
-      <button
-        className="m-close-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
+        <svg
+          style={
             Object {
-              "__html": "SVG",
+              "height": 64,
+              "width": 64,
             }
           }
-        />
-      </button>
+          viewBox="-32 -20 64 64"
+        >
+          <g
+            className="m-vehicle-icon m-vehicle-icon--large early"
+          >
+            <rect
+              className="m-vehicle-icon__label-background"
+              height={24}
+              rx={12}
+              ry={12}
+              width={64}
+              x={-32}
+              y={19}
+            />
+            <text
+              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              dominantBaseline="central"
+              textAnchor="middle"
+              x="0"
+              y={31}
+            >
+              1
+            </text>
+            <path
+              className="m-vehicle-icon__triangle"
+              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              transform="scale(1) rotate(0) translate(-24,-22)"
+            />
+            <text
+              className="m-vehicle-icon__variant"
+              dominantBaseline="alphabetic"
+              textAnchor="middle"
+              x={0}
+              y={14}
+            >
+              X
+            </text>
+          </g>
+        </svg>
+      </div>
       <div
-        className="m-properties-panel__last-gps-ping"
+        className="m-properties-panel__variant"
       >
-        111s ago
+        <div
+          className="m-properties-panel__inbound-outbound"
+        >
+          
+        </div>
+        <div
+          className="m-route-variant-name"
+        >
+          <span
+            className="m-route-variant-name__route-id"
+          >
+            39_X
+          </span>
+           Forest Hills
+        </div>
+        <div
+          className="m-properties-panel__schedule-adherence early"
+        >
+          <div
+            className="m-properties-panel__schedule-adherence-status-icon"
+          >
+            <svg
+              height="10"
+              width="10"
+            >
+              <circle
+                cx="5"
+                cy="5"
+                r="5"
+              />
+            </svg>
+          </div>
+          <div
+            className="m-properties-panel__schedule-adherence-status-string"
+          >
+            early
+          </div>
+          <div
+            className="m-properties-panel__schedule-adherence-label"
+          >
+            (2 min early)
+          </div>
+        </div>
+      </div>
+      <div
+        className="m-properties-panel__close-ping"
+      >
+        <button
+          className="m-close-button"
+          onClick={[Function]}
+        >
+          <span
+            className=""
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "SVG",
+              }
+            }
+          />
+        </button>
+        <div
+          className="m-properties-panel__last-gps-ping"
+        >
+          111s ago
+        </div>
       </div>
     </div>
-  </div>
-  <div
-    className="m-tabs"
-    data-tabs={true}
-    onClick={[Function]}
-    onKeyDown={[Function]}
-  >
+     
     <ul
       className="m-tabs__tab-list"
-      role="tablist"
     >
       <li
-        aria-controls="react-tabs-13"
-        aria-disabled="false"
-        aria-selected="true"
         className="m-tabs__tab m-tabs__tab--selected"
-        id="react-tabs-12"
-        role="tab"
-        tabIndex="0"
+        onClick={[Function]}
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -1840,13 +1803,8 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
         Status
       </li>
       <li
-        aria-controls="react-tabs-15"
-        aria-disabled="false"
-        aria-selected="false"
         className="m-tabs__tab"
-        id="react-tabs-14"
-        role="tab"
-        tabIndex={null}
+        onClick={[Function]}
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -1869,13 +1827,8 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
         Run
       </li>
       <li
-        aria-controls="react-tabs-17"
-        aria-disabled="false"
-        aria-selected="false"
         className="m-tabs__tab"
-        id="react-tabs-16"
-        role="tab"
-        tabIndex={null}
+        onClick={[Function]}
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -1898,11 +1851,12 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
         Block
       </li>
     </ul>
+  </div>
+  <div
+    className="m-tabs"
+  >
     <div
-      aria-labelledby="react-tabs-12"
       className="m-tabs__tab-panel m-tabs__tab-panel--selected"
-      id="react-tabs-13"
-      role="tabpanel"
     >
       <div
         className="m-properties-list"
@@ -2002,18 +1956,6 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
         </div>
       </div>
     </div>
-    <div
-      aria-labelledby="react-tabs-14"
-      className="m-tabs__tab-panel"
-      id="react-tabs-15"
-      role="tabpanel"
-    />
-    <div
-      aria-labelledby="react-tabs-16"
-      className="m-tabs__tab-panel"
-      id="react-tabs-17"
-      role="tabpanel"
-    />
   </div>
 </div>
 `;
@@ -2023,127 +1965,209 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
   className="m-vehicle-properties-panel"
 >
   <div
-    className="m-properties-panel__header"
+    className="m-properties-panel__header-wrapper"
   >
+     
     <div
-      className="m-properties-panel__label"
+      className="m-properties-panel__header"
     >
-      <svg
-        style={
-          Object {
-            "height": 64,
-            "width": 64,
+      <div
+        className="m-properties-panel__label"
+      >
+        <svg
+          style={
+            Object {
+              "height": 64,
+              "width": 64,
+            }
           }
-        }
-        viewBox="-32 -20 64 64"
-      >
-        <g
-          className="m-vehicle-icon m-vehicle-icon--large off-course"
+          viewBox="-32 -20 64 64"
         >
-          <rect
-            className="m-vehicle-icon__label-background"
-            height={24}
-            rx={12}
-            ry={12}
-            width={64}
-            x={-32}
-            y={19}
-          />
-          <text
-            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-            dominantBaseline="central"
-            textAnchor="middle"
-            x="0"
-            y={31}
+          <g
+            className="m-vehicle-icon m-vehicle-icon--large off-course"
           >
-            1
-          </text>
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-            transform="scale(1) rotate(0) translate(-24,-22)"
-          />
-          <text
-            className="m-vehicle-icon__variant"
-            dominantBaseline="alphabetic"
-            textAnchor="middle"
-            x={0}
-            y={14}
-          >
-            X
-          </text>
-        </g>
-      </svg>
-    </div>
-    <div
-      className="m-properties-panel__variant"
-    >
-      <div
-        className="m-properties-panel__inbound-outbound"
-      >
-        
-      </div>
-      <div
-        className="m-route-variant-name"
-      >
-        <span
-          className="m-route-variant-name__route-id"
-        >
-          39_X
-        </span>
-         Forest Hills
-      </div>
-      <div
-        className="m-properties-panel__schedule-adherence off-course"
-      >
-        <div
-          className="m-properties-panel__schedule-adherence-status-icon"
-        >
-          <svg
-            height="10"
-            width="10"
-          >
-            <circle
-              cx="5"
-              cy="5"
-              r="5"
+            <rect
+              className="m-vehicle-icon__label-background"
+              height={24}
+              rx={12}
+              ry={12}
+              width={64}
+              x={-32}
+              y={19}
             />
-          </svg>
-        </div>
+            <text
+              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              dominantBaseline="central"
+              textAnchor="middle"
+              x="0"
+              y={31}
+            >
+              1
+            </text>
+            <path
+              className="m-vehicle-icon__triangle"
+              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              transform="scale(1) rotate(0) translate(-24,-22)"
+            />
+            <text
+              className="m-vehicle-icon__variant"
+              dominantBaseline="alphabetic"
+              textAnchor="middle"
+              x={0}
+              y={14}
+            >
+              X
+            </text>
+          </g>
+        </svg>
+      </div>
+      <div
+        className="m-properties-panel__variant"
+      >
         <div
-          className="m-properties-panel__schedule-adherence-status-string"
-        >
-          Invalid
-        </div>
-        <div
-          className="m-properties-panel__schedule-adherence-label"
+          className="m-properties-panel__inbound-outbound"
         >
           
         </div>
+        <div
+          className="m-route-variant-name"
+        >
+          <span
+            className="m-route-variant-name__route-id"
+          >
+            39_X
+          </span>
+           Forest Hills
+        </div>
+        <div
+          className="m-properties-panel__schedule-adherence off-course"
+        >
+          <div
+            className="m-properties-panel__schedule-adherence-status-icon"
+          >
+            <svg
+              height="10"
+              width="10"
+            >
+              <circle
+                cx="5"
+                cy="5"
+                r="5"
+              />
+            </svg>
+          </div>
+          <div
+            className="m-properties-panel__schedule-adherence-status-string"
+          >
+            Invalid
+          </div>
+          <div
+            className="m-properties-panel__schedule-adherence-label"
+          >
+            
+          </div>
+        </div>
+      </div>
+      <div
+        className="m-properties-panel__close-ping"
+      >
+        <button
+          className="m-close-button"
+          onClick={[Function]}
+        >
+          <span
+            className=""
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "SVG",
+              }
+            }
+          />
+        </button>
+        <div
+          className="m-properties-panel__last-gps-ping"
+        >
+          111s ago
+        </div>
       </div>
     </div>
-    <div
-      className="m-properties-panel__close-ping"
+     
+    <ul
+      className="m-tabs__tab-list"
     >
-      <button
-        className="m-close-button"
+      <li
+        className="m-tabs__tab m-tabs__tab--selected"
         onClick={[Function]}
       >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </button>
-      <div
-        className="m-properties-panel__last-gps-ping"
+        <svg
+          className="m-tabs__tab-status-icon"
+          height="14"
+          width="14"
+        >
+          <circle
+            className="m-tabs__tab-status-icon-outer-circle"
+            cx="7"
+            cy="7"
+            r="6"
+          />
+          <circle
+            className="m-tabs__tab-status-icon-inner-circle"
+            cx="7"
+            cy="7"
+            r="4"
+          />
+        </svg>
+        Status
+      </li>
+      <li
+        className="m-tabs__tab"
+        onClick={[Function]}
       >
-        111s ago
-      </div>
-    </div>
+        <svg
+          className="m-tabs__tab-status-icon"
+          height="14"
+          width="14"
+        >
+          <circle
+            className="m-tabs__tab-status-icon-outer-circle"
+            cx="7"
+            cy="7"
+            r="6"
+          />
+          <circle
+            className="m-tabs__tab-status-icon-inner-circle"
+            cx="7"
+            cy="7"
+            r="4"
+          />
+        </svg>
+        Run
+      </li>
+      <li
+        className="m-tabs__tab"
+        onClick={[Function]}
+      >
+        <svg
+          className="m-tabs__tab-status-icon"
+          height="14"
+          width="14"
+        >
+          <circle
+            className="m-tabs__tab-status-icon-outer-circle"
+            cx="7"
+            cy="7"
+            r="6"
+          />
+          <circle
+            className="m-tabs__tab-status-icon-inner-circle"
+            cx="7"
+            cy="7"
+            r="4"
+          />
+        </svg>
+        Block
+      </li>
+    </ul>
   </div>
   <div
     className="m-vehicle-properties-panel__invalid-banner"
@@ -2157,107 +2181,9 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
   </div>
   <div
     className="m-tabs"
-    data-tabs={true}
-    onClick={[Function]}
-    onKeyDown={[Function]}
   >
-    <ul
-      className="m-tabs__tab-list"
-      role="tablist"
-    >
-      <li
-        aria-controls="react-tabs-25"
-        aria-disabled="false"
-        aria-selected="true"
-        className="m-tabs__tab m-tabs__tab--selected"
-        id="react-tabs-24"
-        role="tab"
-        tabIndex="0"
-      >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
-        >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Status
-      </li>
-      <li
-        aria-controls="react-tabs-27"
-        aria-disabled="false"
-        aria-selected="false"
-        className="m-tabs__tab"
-        id="react-tabs-26"
-        role="tab"
-        tabIndex={null}
-      >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
-        >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Run
-      </li>
-      <li
-        aria-controls="react-tabs-29"
-        aria-disabled="false"
-        aria-selected="false"
-        className="m-tabs__tab"
-        id="react-tabs-28"
-        role="tab"
-        tabIndex={null}
-      >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
-        >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Block
-      </li>
-    </ul>
     <div
-      aria-labelledby="react-tabs-24"
       className="m-tabs__tab-panel m-tabs__tab-panel--selected"
-      id="react-tabs-25"
-      role="tabpanel"
     >
       <div
         className="m-properties-list"
@@ -2361,18 +2287,6 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
         </div>
       </div>
     </div>
-    <div
-      aria-labelledby="react-tabs-26"
-      className="m-tabs__tab-panel"
-      id="react-tabs-27"
-      role="tabpanel"
-    />
-    <div
-      aria-labelledby="react-tabs-28"
-      className="m-tabs__tab-panel"
-      id="react-tabs-29"
-      role="tabpanel"
-    />
   </div>
 </div>
 `;
@@ -2382,146 +2296,139 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
   className="m-vehicle-properties-panel"
 >
   <div
-    className="m-properties-panel__header"
+    className="m-properties-panel__header-wrapper"
   >
+     
     <div
-      className="m-properties-panel__label"
-    >
-      <svg
-        style={
-          Object {
-            "height": 64,
-            "width": 64,
-          }
-        }
-        viewBox="-32 -20 64 64"
-      >
-        <g
-          className="m-vehicle-icon m-vehicle-icon--large on-time"
-        >
-          <rect
-            className="m-vehicle-icon__label-background"
-            height={24}
-            rx={12}
-            ry={12}
-            width={64}
-            x={-32}
-            y={19}
-          />
-          <text
-            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-            dominantBaseline="central"
-            textAnchor="middle"
-            x="0"
-            y={31}
-          >
-            1
-          </text>
-          <path
-            className="m-vehicle-icon__triangle"
-            d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-            transform="scale(1) rotate(0) translate(-24,-22)"
-          />
-          <text
-            className="m-vehicle-icon__variant"
-            dominantBaseline="alphabetic"
-            textAnchor="middle"
-            x={0}
-            y={14}
-          >
-            X
-          </text>
-        </g>
-      </svg>
-    </div>
-    <div
-      className="m-properties-panel__variant"
+      className="m-properties-panel__header"
     >
       <div
-        className="m-properties-panel__inbound-outbound"
+        className="m-properties-panel__label"
       >
-        Outbound
-      </div>
-      <div
-        className="m-route-variant-name"
-      >
-        <span
-          className="m-route-variant-name__route-id"
-        >
-          39_X
-        </span>
-         Forest Hills
-      </div>
-      <div
-        className="m-properties-panel__schedule-adherence on-time"
-      >
-        <div
-          className="m-properties-panel__schedule-adherence-status-icon"
-        >
-          <svg
-            height="10"
-            width="10"
-          >
-            <circle
-              cx="5"
-              cy="5"
-              r="5"
-            />
-          </svg>
-        </div>
-        <div
-          className="m-properties-panel__schedule-adherence-status-string"
-        >
-          on time
-        </div>
-        <div
-          className="m-properties-panel__schedule-adherence-label"
-        >
-          (0 min early)
-        </div>
-      </div>
-    </div>
-    <div
-      className="m-properties-panel__close-ping"
-    >
-      <button
-        className="m-close-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
+        <svg
+          style={
             Object {
-              "__html": "SVG",
+              "height": 64,
+              "width": 64,
             }
           }
-        />
-      </button>
+          viewBox="-32 -20 64 64"
+        >
+          <g
+            className="m-vehicle-icon m-vehicle-icon--large on-time"
+          >
+            <rect
+              className="m-vehicle-icon__label-background"
+              height={24}
+              rx={12}
+              ry={12}
+              width={64}
+              x={-32}
+              y={19}
+            />
+            <text
+              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              dominantBaseline="central"
+              textAnchor="middle"
+              x="0"
+              y={31}
+            >
+              1
+            </text>
+            <path
+              className="m-vehicle-icon__triangle"
+              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              transform="scale(1) rotate(0) translate(-24,-22)"
+            />
+            <text
+              className="m-vehicle-icon__variant"
+              dominantBaseline="alphabetic"
+              textAnchor="middle"
+              x={0}
+              y={14}
+            >
+              X
+            </text>
+          </g>
+        </svg>
+      </div>
       <div
-        className="m-properties-panel__last-gps-ping"
+        className="m-properties-panel__variant"
       >
-        111s ago
+        <div
+          className="m-properties-panel__inbound-outbound"
+        >
+          Outbound
+        </div>
+        <div
+          className="m-route-variant-name"
+        >
+          <span
+            className="m-route-variant-name__route-id"
+          >
+            39_X
+          </span>
+           Forest Hills
+        </div>
+        <div
+          className="m-properties-panel__schedule-adherence on-time"
+        >
+          <div
+            className="m-properties-panel__schedule-adherence-status-icon"
+          >
+            <svg
+              height="10"
+              width="10"
+            >
+              <circle
+                cx="5"
+                cy="5"
+                r="5"
+              />
+            </svg>
+          </div>
+          <div
+            className="m-properties-panel__schedule-adherence-status-string"
+          >
+            on time
+          </div>
+          <div
+            className="m-properties-panel__schedule-adherence-label"
+          >
+            (0 min early)
+          </div>
+        </div>
+      </div>
+      <div
+        className="m-properties-panel__close-ping"
+      >
+        <button
+          className="m-close-button"
+          onClick={[Function]}
+        >
+          <span
+            className=""
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "SVG",
+              }
+            }
+          />
+        </button>
+        <div
+          className="m-properties-panel__last-gps-ping"
+        >
+          111s ago
+        </div>
       </div>
     </div>
-  </div>
-  <div
-    className="m-tabs"
-    data-tabs={true}
-    onClick={[Function]}
-    onKeyDown={[Function]}
-  >
+     
     <ul
       className="m-tabs__tab-list"
-      role="tablist"
     >
       <li
-        aria-controls="react-tabs-7"
-        aria-disabled="false"
-        aria-selected="true"
         className="m-tabs__tab m-tabs__tab--selected"
-        id="react-tabs-6"
-        role="tab"
-        tabIndex="0"
+        onClick={[Function]}
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -2544,13 +2451,8 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
         Status
       </li>
       <li
-        aria-controls="react-tabs-9"
-        aria-disabled="false"
-        aria-selected="false"
         className="m-tabs__tab"
-        id="react-tabs-8"
-        role="tab"
-        tabIndex={null}
+        onClick={[Function]}
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -2573,13 +2475,8 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
         Run
       </li>
       <li
-        aria-controls="react-tabs-11"
-        aria-disabled="false"
-        aria-selected="false"
         className="m-tabs__tab"
-        id="react-tabs-10"
-        role="tab"
-        tabIndex={null}
+        onClick={[Function]}
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -2602,11 +2499,12 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
         Block
       </li>
     </ul>
+  </div>
+  <div
+    className="m-tabs"
+  >
     <div
-      aria-labelledby="react-tabs-6"
       className="m-tabs__tab-panel m-tabs__tab-panel--selected"
-      id="react-tabs-7"
-      role="tabpanel"
     >
       <div
         className="m-properties-list"
@@ -2706,18 +2604,6 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
         </div>
       </div>
     </div>
-    <div
-      aria-labelledby="react-tabs-8"
-      className="m-tabs__tab-panel"
-      id="react-tabs-9"
-      role="tabpanel"
-    />
-    <div
-      aria-labelledby="react-tabs-10"
-      className="m-tabs__tab-panel"
-      id="react-tabs-11"
-      role="tabpanel"
-    />
   </div>
 </div>
 `;

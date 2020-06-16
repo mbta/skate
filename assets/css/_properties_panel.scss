@@ -13,12 +13,15 @@
   z-index: 1001;
 }
 
-.m-properties-panel .m-properties-panel__header {
-  background-color: $color-bg-base;
-  border-bottom: 1px solid $color-rule;
+.m-properties-panel .m-properties-panel__header-wrapper {
   position: sticky;
   top: 0;
   z-index: 10;
+}
+
+.m-properties-panel .m-properties-panel__header {
+  background-color: $color-bg-base;
+  border-bottom: 1px solid $color-rule;
 }
 
 .m-properties-panel__modal-overlay {
