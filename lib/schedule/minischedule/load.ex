@@ -73,13 +73,13 @@ defmodule Schedule.Minischedule.Load do
   end
 
   @spec operator_activity_to_piece(Activity.t(), [Trip.t()]) :: Piece.t() | Activity.t()
-  defp operator_activity_to_piece(%Activity{activity_type: "Operator"} = activity, trips) do
+  defp operator_activity_to_piece(%Activity{activity_type: "Operator"} = activity, trips_in_run) do
     trips_in_piece =
-      Enum.filter(trips, fn trip ->
+      Enum.filter(trips_in_run, fn trip ->
         trip_in_operator(activity, trip)
       end)
 
-    trips =
+    dehydrated_trips =
       if operator_is_as_directed?(activity) do
         [as_directed_from_trips(trips_in_piece)]
       else
@@ -107,17 +107,13 @@ defmodule Schedule.Minischedule.Load do
       schedule_id: activity.schedule_id,
       run_id: activity.run_id,
       block_id: block_id,
-      start: %{
-        time: activity.start_time,
-        place: activity.start_place,
-        mid_route?: false
-      },
-      trips: trips,
-      end: %{
-        time: activity.end_time,
-        place: activity.end_place,
-        mid_route?: false
-      }
+      start_time: activity.start_time,
+      start_place: activity.start_place,
+      trips: dehydrated_trips,
+      end_time: activity.end_time,
+      end_place: activity.end_place,
+      start_mid_route?: false,
+      end_mid_route?: false
     }
   end
 
@@ -182,11 +178,8 @@ defmodule Schedule.Minischedule.Load do
       schedule_id: activity.schedule_id,
       run_id: activity.run_id,
       block_id: nil,
-      start: %{
-        time: activity.start_time,
-        place: activity.start_place,
-        mid_route?: false
-      },
+      start_time: activity.start_time,
+      start_place: activity.start_place,
       trips: [
         %AsDirected{
           kind:
@@ -200,11 +193,8 @@ defmodule Schedule.Minischedule.Load do
           end_place: activity.end_place
         }
       ],
-      end: %{
-        time: activity.end_time,
-        place: activity.end_place,
-        mid_route?: false
-      }
+      end_time: activity.end_time,
+      end_place: activity.end_place
     }
   end
 
@@ -222,12 +212,9 @@ defmodule Schedule.Minischedule.Load do
 
     new_piece = %{
       piece
-      | trips: [dummy_trip | piece.trips],
-        start: %{
-          time: deadhead.start_time,
-          place: deadhead.start_place,
-          mid_route?: false
-        }
+      | start_time: deadhead.start_time,
+        start_place: deadhead.start_place,
+        trips: [dummy_trip | piece.trips]
     }
 
     add_deadheads_to_pieces([new_piece | rest])
@@ -243,11 +230,8 @@ defmodule Schedule.Minischedule.Load do
     new_piece = %{
       piece
       | trips: piece.trips ++ [dummy_trip],
-        end: %{
-          time: deadhead.end_time,
-          place: deadhead.end_place,
-          mid_route?: false
-        }
+        end_time: deadhead.end_time,
+        end_place: deadhead.end_place
     }
 
     add_deadheads_to_pieces([new_piece | rest])
@@ -269,11 +253,8 @@ defmodule Schedule.Minischedule.Load do
        ]) do
     new_piece = %{
       piece
-      | start: %{
-          time: sign_on.start_time,
-          place: sign_on.start_place,
-          mid_route?: false
-        }
+      | start_time: sign_on.start_time,
+        start_place: sign_on.start_place
     }
 
     add_sign_ons_to_pieces([new_piece | rest])
@@ -301,7 +282,7 @@ defmodule Schedule.Minischedule.Load do
        %Block{
          schedule_id: schedule_id,
          id: block_id,
-         pieces: Enum.sort_by(pieces, fn piece -> piece.start.time end)
+         pieces: Enum.sort_by(pieces, fn piece -> piece.start_time end)
        }}
     end)
   end

@@ -43,17 +43,11 @@ defmodule Schedule.Minischedule.LoadTest do
         schedule_id: "schedule",
         run_id: "run",
         block_id: "block",
-        start: %{
-          time: 1,
-          place: "start_place",
-          mid_route?: false
-        },
+        start_time: 1,
+        start_place: "start_place",
         trips: ["trip"],
-        end: %{
-          time: 2,
-          place: "end_place",
-          mid_route?: false
-        }
+        end_time: 2,
+        end_place: "end_place"
       }
 
       assert Load.from_hastus(activities, trips) == %{
@@ -289,20 +283,14 @@ defmodule Schedule.Minischedule.LoadTest do
             schedule_id: "schedule",
             run_id: "run",
             block_id: "block",
-            start: %{
-              time: 100,
-              place: "place1",
-              mid_route?: false
-            },
+            start_time: 100,
+            start_place: "place1",
             trips: [
               "trip1",
               "trip2"
             ],
-            end: %{
-              time: 105,
-              place: "place3",
-              mid_route?: false
-            }
+            end_time: 105,
+            end_place: "place3"
           }
         ]
       }
@@ -363,15 +351,15 @@ defmodule Schedule.Minischedule.LoadTest do
                activities: [
                  %Piece{
                    block_id: "block",
-                   start: %{time: 101},
+                   start_time: 101,
                    trips: ["trip1"],
-                   end: %{time: 102}
+                   end_time: 102
                  } = _,
                  %Piece{
                    block_id: "block",
-                   start: %{time: 103},
+                   start_time: 103,
                    trips: ["trip2"],
-                   end: %{time: 104}
+                   end_time: 104
                  } = _
                ]
              } = Load.run(run_key, activities, trips)
@@ -419,7 +407,7 @@ defmodule Schedule.Minischedule.LoadTest do
       assert %Run{
                activities: [
                  %Piece{
-                   start: %{time: 101},
+                   start_time: 101,
                    trips: [
                      %Schedule.Minischedule.Trip{
                        block_id: "block",
@@ -430,7 +418,7 @@ defmodule Schedule.Minischedule.LoadTest do
                      },
                      "trip"
                    ],
-                   end: %{time: 103},
+                   end_time: 103,
                    schedule_id: "schedule",
                    run_id: "run"
                  }
@@ -480,7 +468,7 @@ defmodule Schedule.Minischedule.LoadTest do
       assert %Run{
                activities: [
                  %Piece{
-                   start: %{time: 101},
+                   start_time: 101,
                    trips: [
                      "trip",
                      %Schedule.Minischedule.Trip{
@@ -491,7 +479,7 @@ defmodule Schedule.Minischedule.LoadTest do
                        end_time: 103
                      }
                    ],
-                   end: %{time: 103},
+                   end_time: 103,
                    run_id: "run",
                    block_id: "block",
                    schedule_id: "schedule"
@@ -530,8 +518,8 @@ defmodule Schedule.Minischedule.LoadTest do
       assert %Run{
                activities: [
                  %Piece{
-                   start: %{time: 101},
-                   end: %{time: 103}
+                   start_time: 101,
+                   end_time: 103
                  }
                ]
              } = Load.run(run_key, activities, trips)
@@ -567,7 +555,7 @@ defmodule Schedule.Minischedule.LoadTest do
                activities: [
                  %Piece{
                    block_id: nil,
-                   start: %{time: 15600},
+                   start_time: 15600,
                    trips: [
                      %AsDirected{
                        kind: :wad,
@@ -575,7 +563,7 @@ defmodule Schedule.Minischedule.LoadTest do
                        end_time: 44400
                      }
                    ],
-                   end: %{time: 44400}
+                   end_time: 44400
                  }
                ]
              } = Load.run(run_key, activities, trips)
@@ -646,7 +634,7 @@ defmodule Schedule.Minischedule.LoadTest do
                activities: [
                  %Piece{
                    block_id: "Crad-340",
-                   start: %{time: 21000},
+                   start_time: 21000,
                    trips: [
                      %AsDirected{
                        kind: :rad,
@@ -654,7 +642,7 @@ defmodule Schedule.Minischedule.LoadTest do
                        end_time: 32400
                      }
                    ],
-                   end: %{time: 32400}
+                   end_time: 32400
                  }
                ]
              } = Load.run(run_key, activities, trips)

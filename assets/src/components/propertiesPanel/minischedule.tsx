@@ -52,7 +52,7 @@ export const MinischeduleRun = ({ vehicleOrGhost }: Props): ReactElement => {
               vehicleOrGhost={vehicleOrGhost}
               pieceIndex={index}
               activeIndex={activeIndex}
-              key={activity.start.time}
+              key={activity.startTime}
             />
           ) : (
             <BreakRow
@@ -89,7 +89,7 @@ export const MinischeduleBlock = ({ vehicleOrGhost }: Props): ReactElement => {
             vehicleOrGhost={vehicleOrGhost}
             pieceIndex={index}
             activeIndex={activeIndex}
-            key={piece.start.time}
+            key={piece.startTime}
           />
         ))}
       </>
@@ -197,15 +197,6 @@ const Piece = ({
     piece.trips.length > 0 &&
     isTrip(piece.trips[piece.trips.length - 1]) &&
     !isDeadhead(piece.trips[piece.trips.length - 1])
-  const startPlace: string =
-    piece.trips.length > 0 && isTrip(piece.trips[0])
-      ? piece.trips[0].startPlace
-      : ""
-  const endPlace: string =
-    piece.trips[piece.trips.length - 1] &&
-    isTrip(piece.trips[piece.trips.length - 1])
-      ? (piece.trips[piece.trips.length - 1] as Trip).endPlace
-      : ""
   const pieceTimeBasedStyle: TimeBasedStyle = getTimeBasedStyle(
     pieceIndex,
     activeIndex && activeIndex[0]
@@ -223,8 +214,8 @@ const Piece = ({
       {isSwingOn ? null : (
         <Row
           text="Start time"
-          rightText={formattedScheduledTime(piece.start.time)}
-          belowText={startPlace}
+          rightText={formattedScheduledTime(piece.startTime)}
+          belowText={piece.startPlace}
           timeBasedStyle={startTimeBasedStyle}
         />
       )}
@@ -239,8 +230,8 @@ const Piece = ({
             key="swing-on"
             icon={plusIcon()}
             text="Swing on"
-            rightText={formattedScheduledTime(piece.start.time)}
-            belowText={startPlace}
+            rightText={formattedScheduledTime(piece.startTime)}
+            belowText={piece.startPlace}
             timeBasedStyle={startTimeBasedStyle}
           />
         ) : null}
@@ -266,8 +257,8 @@ const Piece = ({
             key="swing-off"
             icon={minusIcon()}
             text="Swing off"
-            rightText={formattedScheduledTime(piece.end.time)}
-            belowText={startPlace}
+            rightText={formattedScheduledTime(piece.endTime)}
+            belowText={piece.endPlace}
             timeBasedStyle={doneTimeBasedStyle}
           />
         ) : null}
@@ -275,8 +266,8 @@ const Piece = ({
       {isSwingOff ? null : (
         <Row
           text="Done"
-          rightText={formattedScheduledTime(piece.end.time)}
-          belowText={endPlace}
+          rightText={formattedScheduledTime(piece.endTime)}
+          belowText={piece.endPlace}
           timeBasedStyle={doneTimeBasedStyle}
         />
       )}

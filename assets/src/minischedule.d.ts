@@ -29,15 +29,13 @@ export interface AsDirected {
 export interface Piece {
   runId: RunId
   blockId: BlockId | null
-  start: SignOnOff
+  startTime: Time
+  startPlace: string
   trips: (Trip | AsDirected)[]
-  end: SignOnOff
-}
-
-export interface SignOnOff {
-  time: Time
-  place: string
-  midRoute: boolean
+  endTime: Time
+  endPlace: string
+  startMidRoute: boolean
+  endMidRoute: boolean
 }
 
 export interface Trip {

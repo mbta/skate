@@ -16,12 +16,6 @@ defmodule Schedule.Minischedule.BlockTest do
         end_place: "wherv"
       }
 
-      sign_on_off = %{
-        time: 0,
-        place: "place",
-        mid_route?: false
-      }
-
       timepoint_names_by_id = %{
         "mmill" => "Miller's Mill",
         "wherv" => "Wherever"
@@ -35,9 +29,11 @@ defmodule Schedule.Minischedule.BlockTest do
             schedule_id: "schedule",
             run_id: "run",
             block_id: "block",
-            start: sign_on_off,
+            start_time: 0,
+            start_place: "place",
             trips: [trip_id],
-            end: sign_on_off
+            end_time: 0,
+            end_place: "place"
           }
         ]
       }
@@ -50,7 +46,8 @@ defmodule Schedule.Minischedule.BlockTest do
             schedule_id: "schedule",
             run_id: "run",
             block_id: "block",
-            start: sign_on_off,
+            start_time: 0,
+            start_place: "place",
             trips: [
               %Minischedule.Trip{
                 id: trip_id,
@@ -59,7 +56,8 @@ defmodule Schedule.Minischedule.BlockTest do
                 end_place: "Wherever"
               }
             ],
-            end: sign_on_off
+            end_time: 0,
+            end_place: "place"
           }
         ]
       }

@@ -43,7 +43,7 @@ Array [
         <span
           className="m-minischedule__below-text"
         >
-          Red Square
+          start
         </span>
       </div>
       <div
@@ -101,7 +101,7 @@ Array [
         <span
           className="m-minischedule__below-text"
         >
-          Red Square
+          end
         </span>
       </div>
       <div
@@ -147,7 +147,7 @@ Array [
       <span
         className="m-minischedule__below-text"
       >
-        1st Street and A Ave
+        start
       </span>
     </div>
     <div
@@ -270,7 +270,7 @@ Array [
       <span
         className="m-minischedule__below-text"
       >
-        999th Street and ZZZ Ave
+        end
       </span>
     </div>
     <div
@@ -327,7 +327,7 @@ Array [
         <span
           className="m-minischedule__below-text"
         >
-          Red Square
+          start
         </span>
       </div>
       <div
@@ -437,7 +437,7 @@ Array [
         <span
           className="m-minischedule__below-text"
         >
-          Red Square
+          end
         </span>
       </div>
       <div
@@ -488,7 +488,7 @@ Array [
         <span
           className="m-minischedule__below-text"
         >
-          Red Square
+          start
         </span>
       </div>
       <div
@@ -632,7 +632,7 @@ Array [
         <span
           className="m-minischedule__below-text"
         >
-          Red Square
+          end
         </span>
       </div>
       <div
@@ -708,7 +708,7 @@ Array [
         <span
           className="m-minischedule__below-text"
         >
-          Red Square
+          start
         </span>
       </div>
       <div
@@ -809,7 +809,7 @@ Array [
         <span
           className="m-minischedule__below-text"
         >
-          Red Square
+          end
         </span>
       </div>
       <div
@@ -860,7 +860,7 @@ Array [
         <span
           className="m-minischedule__below-text"
         >
-          Red Square
+          start
         </span>
       </div>
       <div
@@ -961,7 +961,7 @@ Array [
         <span
           className="m-minischedule__below-text"
         >
-          Red Square
+          end
         </span>
       </div>
       <div
@@ -1012,7 +1012,7 @@ Array [
         <span
           className="m-minischedule__below-text"
         >
-          Red Square
+          place
         </span>
       </div>
       <div
@@ -1101,7 +1101,12 @@ Array [
       className="m-minischedule__left-text"
     >
       Done
-      
+      <br />
+      <span
+        className="m-minischedule__below-text"
+      >
+        place
+      </span>
     </div>
     <div
       className="m-minischedule__right-text"
@@ -1150,7 +1155,7 @@ Array [
         <span
           className="m-minischedule__below-text"
         >
-          Red Square
+          start
         </span>
       </div>
       <div
@@ -1251,7 +1256,7 @@ Array [
         <span
           className="m-minischedule__below-text"
         >
-          Red Square
+          end
         </span>
       </div>
       <div
@@ -1302,7 +1307,7 @@ Array [
         <span
           className="m-minischedule__below-text"
         >
-          Red Square
+          start
         </span>
       </div>
       <div
@@ -1386,7 +1391,7 @@ Array [
         <span
           className="m-minischedule__below-text"
         >
-          Red Square
+          end
         </span>
       </div>
       <div
@@ -1421,7 +1426,12 @@ Array [
       className="m-minischedule__left-text"
     >
       Start time
-      
+      <br />
+      <span
+        className="m-minischedule__below-text"
+      >
+        place
+      </span>
     </div>
     <div
       className="m-minischedule__right-text"
@@ -1469,7 +1479,12 @@ Array [
       className="m-minischedule__left-text"
     >
       Done
-      
+      <br />
+      <span
+        className="m-minischedule__below-text"
+      >
+        place
+      </span>
     </div>
     <div
       className="m-minischedule__right-text"

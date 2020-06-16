@@ -4,7 +4,6 @@ import {
   Break,
   Piece,
   Run,
-  SignOnOff,
   Time,
   Trip,
 } from "../minischedule"
@@ -39,15 +38,13 @@ interface BreakData {
 interface PieceData {
   run_id: RunId
   block_id: BlockId | null
-  start: SignOnOffData
+  start_time: Time
+  start_place: string
   trips: TripData[]
-  end: SignOnOffData
-}
-
-interface SignOnOffData {
-  time: Time
-  place: string
-  "mid_route?": boolean
+  end_time: Time
+  end_place: string
+  "start_mid_route?": boolean
+  "end_mid_route?": boolean
 }
 
 interface TripData {
@@ -92,17 +89,15 @@ const breakFromData = (breakData: BreakData): Break => ({
 const pieceFromData = (pieceData: PieceData): Piece => ({
   runId: pieceData.run_id,
   blockId: pieceData.block_id,
-  start: signOnOffFromData(pieceData.start),
+  startTime: pieceData.start_time,
+  startPlace: pieceData.start_place,
   trips: pieceData.trips.map((data) =>
     isTripData(data) ? tripFromData(data) : asDirectedFromData(data)
   ),
-  end: signOnOffFromData(pieceData.end),
-})
-
-const signOnOffFromData = (signOnOffData: SignOnOffData): SignOnOff => ({
-  time: signOnOffData.time,
-  place: signOnOffData.place,
-  midRoute: signOnOffData["mid_route?"],
+  endTime: pieceData.end_time,
+  endPlace: pieceData.end_place,
+  startMidRoute: pieceData["start_mid_route?"],
+  endMidRoute: pieceData["end_mid_route?"],
 })
 
 const tripFromData = (tripData: TripData): Trip => ({

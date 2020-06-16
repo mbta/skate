@@ -368,11 +368,8 @@ describe("minischedulesBlock", () => {
           {
             run_id: "run",
             block_id: "block",
-            start: {
-              time: 0,
-              place: "start place",
-              "mid_route?": false,
-            },
+            start_time: 0,
+            start_place: "start place",
             trips: [
               {
                 id: "trip",
@@ -391,11 +388,10 @@ describe("minischedulesBlock", () => {
                 end_time: 1000,
               },
             ],
-            end: {
-              time: 1,
-              place: "end place",
-              "mid_route?": false,
-            },
+            end_time: 1,
+            end_place: "end place",
+            "end_mid_route?": false,
+            "start_mid_route?": false,
           },
         ],
       },
@@ -408,11 +404,8 @@ describe("minischedulesBlock", () => {
           {
             runId: "run",
             blockId: "block",
-            start: {
-              time: 0,
-              place: "start place",
-              midRoute: false,
-            },
+            startTime: 0,
+            startPlace: "start place",
             trips: [
               {
                 id: "trip",
@@ -431,11 +424,10 @@ describe("minischedulesBlock", () => {
                 endTime: 1000,
               },
             ],
-            end: {
-              time: 1,
-              place: "end place",
-              midRoute: false,
-            },
+            endTime: 1,
+            endPlace: "end place",
+            startMidRoute: false,
+            endMidRoute: false,
           },
         ],
       })
