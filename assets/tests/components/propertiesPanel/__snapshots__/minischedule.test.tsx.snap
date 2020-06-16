@@ -1099,6 +1099,23 @@ Array [
       </div>
     </div>
     <div
+      className="m-minischedule__row m-minischedule__row--unknown m-minischedule__layover-row"
+    >
+      <div
+        className="m-minischedule__icon"
+      />
+      <div
+        className="m-minischedule__left-text"
+      >
+        Layover
+      </div>
+      <div
+        className="m-minischedule__right-text"
+      >
+        1 min
+      </div>
+    </div>
+    <div
       className="m-minischedule__row m-minischedule__row--unknown"
     >
       <div
