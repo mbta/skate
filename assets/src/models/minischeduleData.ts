@@ -43,7 +43,7 @@ interface PieceData {
   trips: TripData[]
   end_time: Time
   end_place: string
-  "start_mid_route?": boolean
+  "start_mid_route?": { time: Time; trip: TripData } | null
   "end_mid_route?": boolean
 }
 
@@ -96,7 +96,13 @@ const pieceFromData = (pieceData: PieceData): Piece => ({
   ),
   endTime: pieceData.end_time,
   endPlace: pieceData.end_place,
-  startMidRoute: pieceData["start_mid_route?"],
+  startMidRoute:
+    pieceData["start_mid_route?"] === null
+      ? null
+      : {
+          time: pieceData["start_mid_route?"].time,
+          trip: tripFromData(pieceData["start_mid_route?"].trip),
+        },
   endMidRoute: pieceData["end_mid_route?"],
 })
 

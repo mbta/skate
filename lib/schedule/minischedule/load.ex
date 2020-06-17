@@ -17,11 +17,13 @@ defmodule Schedule.Minischedule.Load do
     trips_by_run = Enum.group_by(trips, &Trip.run_key/1)
     activities_and_trips_by_run = Helpers.zip_maps([activities_by_run, trips_by_run])
 
+    trips_by_block = Enum.group_by(trips, &Trip.block_key/1)
+
     runs =
       Enum.map(
         activities_and_trips_by_run,
         fn {run_key, [activities, trips]} ->
-          run(run_key, activities, trips)
+          run(run_key, activities, trips, trips_by_block)
         end
       )
 
@@ -35,15 +37,16 @@ defmodule Schedule.Minischedule.Load do
     }
   end
 
-  @spec run(Run.key(), [Activity.t()] | nil, [Trip.t()] | nil) :: Run.t()
-  def run(run_key, activities, trips) do
+  @spec run(Run.key(), [Activity.t()] | nil, [Trip.t()] | nil, %{Block.key() => [Trip.t()]}) ::
+          Run.t()
+  def run(run_key, activities, trips, all_trips_by_block) do
     {schedule_id, run_id} = run_key
     activities = activities || []
     trips = trips || []
 
     activities =
       activities
-      |> operator_activities_to_pieces(trips)
+      |> operator_activities_to_pieces(trips, all_trips_by_block)
       |> as_directed_activities_to_pieces()
       |> add_deadheads_to_pieces()
       |> add_sign_ons_to_pieces()
@@ -56,11 +59,12 @@ defmodule Schedule.Minischedule.Load do
     }
   end
 
-  @spec operator_activities_to_pieces([Activity.t()], [Trip.t()]) :: [Activity.t() | Piece.t()]
-  defp operator_activities_to_pieces(activities, trips) do
+  @spec operator_activities_to_pieces([Activity.t()], [Trip.t()], %{Block.key() => [Trip.t()]}) ::
+          [Activity.t() | Piece.t()]
+  defp operator_activities_to_pieces(activities, trips, all_trips_by_block) do
     Enum.map(activities, fn activity ->
       if activity_is_operator?(activity) do
-        operator_activity_to_piece(activity, trips)
+        operator_activity_to_piece(activity, trips, all_trips_by_block)
       else
         activity
       end
@@ -72,56 +76,52 @@ defmodule Schedule.Minischedule.Load do
     activity.activity_type == "Operator"
   end
 
-  @spec operator_activity_to_piece(Activity.t(), [Trip.t()]) :: Piece.t() | Activity.t()
-  defp operator_activity_to_piece(%Activity{activity_type: "Operator"} = activity, trips_in_run) do
+  @spec operator_activity_to_piece(Activity.t(), [Trip.t()], %{Block.key() => [Trip.t()]}) ::
+          Piece.t() | Activity.t()
+  defp operator_activity_to_piece(
+         %Activity{activity_type: "Operator"} = activity,
+         trips_in_run,
+         all_trips_by_block
+       ) do
     trips_in_piece =
       Enum.filter(trips_in_run, fn trip ->
         trip_in_operator(activity, trip)
       end)
 
+    if trips_in_piece == [] do
+      Logger.warn(fn ->
+        "Operator activity with no trips: #{activity.schedule_id} #{activity.run_id} start_time:#{
+          activity.start_time
+        }"
+      end)
+    end
+
     dehydrated_trips =
       if operator_is_as_directed?(activity) do
         [as_directed_from_trips(trips_in_piece)]
       else
-        Enum.map(trips_in_piece, fn trip ->
-          trip.trip_id
-        end)
-      end
-
-    block_id =
-      case trips_in_piece do
-        [trip | _] ->
-          trip.block_id
-
-        _ ->
-          Logger.warn(fn ->
-            "Operator activity with no trips: #{activity.schedule_id} #{activity.run_id} start_time:#{
-              activity.start_time
-            }"
-          end)
-
-          nil
+        Enum.map(trips_in_piece, fn trip -> trip.trip_id end)
       end
 
     %Piece{
       schedule_id: activity.schedule_id,
       run_id: activity.run_id,
-      block_id: block_id,
+      block_id: block_id_from_trips(trips_in_piece),
       start_time: activity.start_time,
       start_place: activity.start_place,
       trips: dehydrated_trips,
       end_time: activity.end_time,
       end_place: activity.end_place,
-      start_mid_route?: false,
-      end_mid_route?: false
+      start_mid_route?: start_mid_route?(activity, trips_in_piece, all_trips_by_block),
+      end_mid_route?: end_mid_route?(activity, trips_in_piece)
     }
   end
 
   @spec trip_in_operator(Activity.t(), Trip.t()) :: boolean()
   defp trip_in_operator(%Activity{activity_type: "Operator"} = activity, trip) do
-    trip.start_time >= activity.start_time and
-      trip.end_time <= activity.end_time and
-      String.contains?(trip.block_id, activity.partial_block_id)
+    String.contains?(trip.block_id, activity.partial_block_id) and
+      trip.start_time >= activity.start_time and
+      trip.start_time <= activity.end_time
   end
 
   @spec operator_is_as_directed?(Activity.t()) :: boolean()
@@ -151,6 +151,44 @@ defmodule Schedule.Minischedule.Load do
       end_place: as_directed_trip.end_place
     }
   end
+
+  @spec start_mid_route?(Activity.t(), [Trip.t()], %{Block.key() => [Trip.t()]}) ::
+          Piece.mid_route_swing() | nil
+  defp start_mid_route?(
+         %Activity{activity_type: "Operator"} = activity,
+         trips_in_piece,
+         all_trips_by_block
+       ) do
+    if trips_in_piece != [] and List.first(trips_in_piece).start_time > activity.start_time do
+      block_id = block_id_from_trips(trips_in_piece)
+      trips_in_block = Map.get(all_trips_by_block, {activity.schedule_id, block_id}, [])
+
+      trip_with_swing =
+        Enum.find(trips_in_block, fn trip ->
+          trip.start_time < activity.start_time && trip.end_time > activity.start_time
+        end)
+
+      if trip_with_swing do
+        %{
+          time: activity.start_time,
+          trip: trip_with_swing.trip_id
+        }
+      else
+        nil
+      end
+    else
+      nil
+    end
+  end
+
+  @spec end_mid_route?(Activity.t(), [Trip.t()]) :: boolean()
+  defp end_mid_route?(%Activity{activity_type: "Operator"} = activity, trips_in_piece) do
+    trips_in_piece != [] and List.last(trips_in_piece).end_time > activity.end_time
+  end
+
+  @spec block_id_from_trips([Trip.t()]) :: Block.id() | nil
+  defp block_id_from_trips([]), do: nil
+  defp block_id_from_trips([trip | _]), do: trip.block_id
 
   @spec as_directed_activities_to_pieces([Activity.t() | Piece.t()]) :: [Activity.t() | Piece.t()]
   defp as_directed_activities_to_pieces(activities_and_pieces) do

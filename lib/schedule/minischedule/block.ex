@@ -5,13 +5,15 @@ defmodule Schedule.Minischedule.Block do
   alias Schedule.Minischedule.Piece
   alias Schedule.Hastus.Schedule
 
-  @type key :: {Schedule.id(), Block.id()}
+  @type id :: Block.id()
+
+  @type key :: {Schedule.id(), id()}
 
   @type by_id :: %{key() => t()}
 
   @type t :: %__MODULE__{
           schedule_id: Schedule.id(),
-          id: Block.id(),
+          id: id(),
           pieces: [Piece.t()]
         }
 

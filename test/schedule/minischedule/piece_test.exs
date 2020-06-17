@@ -104,5 +104,51 @@ defmodule Schedule.Minischedule.PieceTest do
                end_place: "End Place"
              } = Piece.hydrate(piece, %{}, timepoint_names_by_id)
     end
+
+    test "hydrates trip in mid route swing" do
+      trip_id = "trip"
+
+      stored_trip = %Schedule.Trip{
+        id: trip_id,
+        block_id: "block",
+        stop_times: [],
+        start_place: "abcde",
+        end_place: "qwerty"
+      }
+
+      timepoint_names_by_id = %{
+        "abcde" => "Abcde Heights",
+        "qwerty" => "Qwerty Row"
+      }
+
+      stored_piece = %Piece{
+        schedule_id: "schedule",
+        run_id: "run",
+        block_id: "block",
+        start_time: 0,
+        start_place: "on",
+        trips: [],
+        end_time: 2,
+        end_place: "off",
+        start_mid_route?: %{
+          time: 1,
+          trip: trip_id
+        },
+        end_mid_route?: true
+      }
+
+      expected_trip = %Minischedule.Trip{
+        id: trip_id,
+        block_id: "block",
+        start_place: "Abcde Heights",
+        end_place: "Qwerty Row"
+      }
+
+      assert %Piece{
+               start_mid_route?: %{
+                 trip: ^expected_trip
+               }
+             } = Piece.hydrate(stored_piece, %{trip_id => stored_trip}, timepoint_names_by_id)
+    end
   end
 end

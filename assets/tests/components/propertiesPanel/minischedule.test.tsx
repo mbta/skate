@@ -83,7 +83,7 @@ const piece: Piece = {
   trips: [revenueTrip],
   endTime: 1821,
   endPlace: "end",
-  startMidRoute: false,
+  startMidRoute: null,
   endMidRoute: false,
 }
 
@@ -101,7 +101,62 @@ const asDirectedPiece: Piece = {
   ],
   endTime: 16200,
   endPlace: "place",
-  startMidRoute: false,
+  startMidRoute: null,
+  endMidRoute: false,
+}
+
+const midRouteSwingTrip1: Trip = {
+  id: "trip1",
+  blockId: "block",
+  routeId: "R",
+  headsign: "Trip 1",
+  directionId: 0,
+  viaVariant: null,
+  runId: "run1",
+  startTime: 60,
+  endTime: 240,
+  startPlace: "terminal1",
+  endPlace: "terminal2",
+}
+
+const midRouteSwingTrip2: Trip = {
+  id: "trip2",
+  blockId: "block",
+  routeId: "R",
+  headsign: "Trip 2",
+  directionId: 1,
+  viaVariant: null,
+  runId: "run2",
+  startTime: 300,
+  endTime: 480,
+  startPlace: "terminal2",
+  endPlace: "terminal1",
+}
+
+const midRouteSwingPiece1: Piece = {
+  runId: "run1",
+  blockId: "block",
+  startTime: 0,
+  startPlace: "terminal1",
+  trips: [midRouteSwingTrip1],
+  endTime: 180,
+  endPlace: "swingplace",
+  startMidRoute: null,
+  endMidRoute: true,
+}
+
+const midRouteSwingPiece2: Piece = {
+  runId: "run2",
+  blockId: "block",
+  startTime: 120,
+  startPlace: "swingplace",
+  trips: [midRouteSwingTrip2],
+  endTime: 480,
+  endPlace: "terminal1",
+  startMidRoute: {
+    time: 180,
+    trip: midRouteSwingTrip1,
+  },
   endMidRoute: false,
 }
 
@@ -338,6 +393,32 @@ describe("MinischeduleRun", () => {
 
     expect(tree).toMatchSnapshot()
   })
+
+  test("renders a mid route swing on", () => {
+    const run: Run = {
+      id: "run2",
+      activities: [midRouteSwingPiece2],
+    }
+    ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => run)
+    const tree = renderer
+      .create(<MinischeduleRun vehicleOrGhost={vehicle} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders a mid route swing off", () => {
+    const run: Run = {
+      id: "run1",
+      activities: [midRouteSwingPiece1],
+    }
+    ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => run)
+    const tree = renderer
+      .create(<MinischeduleRun vehicleOrGhost={vehicle} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
 })
 
 describe("MinischeduleBlock", () => {
@@ -399,6 +480,19 @@ describe("MinischeduleBlock", () => {
     ;(useMinischeduleBlock as jest.Mock).mockImplementationOnce(() => ({
       id: "block",
       pieces: [multiDirectionPiece],
+    }))
+
+    const tree = renderer
+      .create(<MinischeduleBlock vehicleOrGhost={vehicle} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders a mid route swing", () => {
+    ;(useMinischeduleBlock as jest.Mock).mockImplementationOnce(() => ({
+      id: "block",
+      pieces: [midRouteSwingPiece1, midRouteSwingPiece2],
     }))
 
     const tree = renderer

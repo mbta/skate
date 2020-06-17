@@ -190,3 +190,17 @@
     }
   }
 }
+
+.m-minischedule__row--mid-route-first-half {
+  color: $color-font-grey;
+
+  .m-minischedule__icon {
+    &:not(:empty) {
+      background-color: $color-component-light;
+    }
+
+    svg {
+      fill: $color-component-medium;
+    }
+  }
+}

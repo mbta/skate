@@ -15,7 +15,15 @@ import {
   useMinischeduleBlock,
   useMinischeduleRun,
 } from "../../hooks/useMinischedule"
-import { AsDirected, Block, Break, Piece, Run, Trip } from "../../minischedule"
+import {
+  AsDirected,
+  Block,
+  Break,
+  Piece,
+  Run,
+  Time,
+  Trip,
+} from "../../minischedule"
 import {
   directionOnLadder,
   getLadderDirectionForRoute,
@@ -148,19 +156,19 @@ export const BreakRow = ({
 
 const Layover = ({
   nextTrip,
-  previousTrip,
+  previousEndTime,
   timeBasedStyle,
   activeStatus,
 }: {
   nextTrip: Trip | AsDirected
-  previousTrip?: Trip | AsDirected
+  previousEndTime: Time | undefined
   timeBasedStyle: TimeBasedStyle
   activeStatus: DrawnStatus | null
 }) => {
-  if (!previousTrip) {
+  if (!previousEndTime) {
     return null
   }
-  const layoverDuration = nextTrip.startTime - previousTrip.endTime
+  const layoverDuration = nextTrip.startTime - previousEndTime
   if (layoverDuration === 0) {
     return null
   }
@@ -211,6 +219,9 @@ const Piece = ({
       {view === "block" ? (
         <div className="m-minischedule__run-header">{piece.runId}</div>
       ) : null}
+      {view === "run" && piece.startMidRoute ? (
+        <MidRouteSwingOnFirstHalf trip={piece.startMidRoute.trip} />
+      ) : null}
       {isSwingOn ? null : (
         <Row
           text="Start time"
@@ -229,10 +240,17 @@ const Piece = ({
           <Row
             key="swing-on"
             icon={plusIcon()}
-            text="Swing on"
+            text={piece.startMidRoute ? "Swing on mid-route" : "Swing on"}
             rightText={formattedScheduledTime(piece.startTime)}
             belowText={piece.startPlace}
             timeBasedStyle={startTimeBasedStyle}
+          />
+        ) : null}
+        {piece.startMidRoute ? (
+          <MidRouteSwingOnSecondHalf
+            key="mid-route-swing-on"
+            time={piece.startMidRoute.time}
+            trip={piece.startMidRoute.trip}
           />
         ) : null}
         {piece.trips.map((trip, tripIndex) => {
@@ -243,8 +261,11 @@ const Piece = ({
           return (
             <Trip
               trip={trip}
-              tripIndex={tripIndex}
-              pieceTrips={piece.trips}
+              previousEndTime={
+                piece.trips[tripIndex - 1]?.endTime ||
+                piece.startMidRoute?.trip.endTime
+              }
+              sequence={getSequence(tripIndex, piece.trips)}
               tripTimeBasedStyle={tripTimeBasedStyle}
               vehicleOrGhost={vehicleOrGhost}
               view={view}
@@ -256,7 +277,7 @@ const Piece = ({
           <Row
             key="swing-off"
             icon={minusIcon()}
-            text="Swing off"
+            text={piece.endMidRoute ? "Swing off mid-route" : "Swing off"}
             rightText={formattedScheduledTime(piece.endTime)}
             belowText={piece.endPlace}
             timeBasedStyle={doneTimeBasedStyle}
@@ -275,27 +296,55 @@ const Piece = ({
   )
 }
 
+const MidRouteSwingOnFirstHalf = ({ trip }: { trip: Trip }) => (
+  <RevenueTrip
+    trip={trip}
+    timeBasedStyle={"unknown"}
+    activeStatus={null}
+    belowText={`Run ${trip.runId}`}
+    extraClasses={["m-minischedule__row--mid-route-first-half"]}
+  />
+)
+
+const MidRouteSwingOnSecondHalf = ({
+  time,
+  trip,
+}: {
+  time: Time
+  trip: Trip
+}) => (
+  <RevenueTrip
+    trip={{ ...trip, startTime: time }}
+    timeBasedStyle={"unknown"}
+    activeStatus={null}
+  />
+)
+
+const getSequence = (tripIndex: number, pieceTrips: (Trip | AsDirected)[]) => {
+  if (tripIndex === 0) {
+    return "first"
+  } else if (tripIndex === pieceTrips.length - 1) {
+    return "last"
+  } else {
+    return "middle"
+  }
+}
+
 const Trip = ({
   trip,
-  tripIndex,
-  pieceTrips,
+  previousEndTime,
+  sequence,
   tripTimeBasedStyle,
   vehicleOrGhost,
   view,
 }: {
   trip: Trip | AsDirected
-  tripIndex: number
-  pieceTrips: (Trip | AsDirected)[]
+  previousEndTime: Time | undefined
+  sequence: "first" | "middle" | "last"
   tripTimeBasedStyle: TimeBasedStyle
   vehicleOrGhost: VehicleOrGhost
   view: "run" | "block"
 }) => {
-  const sequence: "first" | "middle" | "last" =
-    tripIndex === 0
-      ? "first"
-      : tripIndex === pieceTrips.length - 1
-      ? "last"
-      : "middle"
   const layoverTimeBasedStyle =
     tripTimeBasedStyle === "current"
       ? vehicleOrGhost.routeStatus === "on_route"
@@ -318,7 +367,7 @@ const Trip = ({
       {view === "run" ? (
         <Layover
           nextTrip={trip}
-          previousTrip={pieceTrips[tripIndex - 1]}
+          previousEndTime={previousEndTime}
           timeBasedStyle={layoverTimeBasedStyle}
           activeStatus={layoverActiveStatus}
         />
@@ -409,10 +458,14 @@ const RevenueTrip = ({
   trip,
   timeBasedStyle,
   activeStatus,
+  belowText,
+  extraClasses,
 }: {
   trip: Trip
   timeBasedStyle: TimeBasedStyle
   activeStatus: DrawnStatus | null
+  belowText?: string
+  extraClasses?: string[]
 }) => {
   const startTime: string = formattedScheduledTime(trip.startTime)
   const formattedRouteAndHeadsign: string = [
@@ -434,8 +487,10 @@ const RevenueTrip = ({
       icon={directionIcon}
       text={formattedRouteAndHeadsign}
       rightText={startTime}
+      belowText={belowText}
       timeBasedStyle={timeBasedStyle}
       activeStatus={activeStatus}
+      extraClasses={extraClasses}
     />
   )
 }
