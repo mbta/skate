@@ -12,7 +12,6 @@ Array [
       <div
         className="m-properties-panel__header-wrapper"
       >
-         
         <div
           className="m-properties-panel__header"
         >
@@ -112,7 +111,6 @@ Array [
             </button>
           </div>
         </div>
-         
         <ul
           className="m-tabs__tab-list"
         >
@@ -298,7 +296,6 @@ Array [
       <div
         className="m-properties-panel__header-wrapper"
       >
-         
         <div
           className="m-properties-panel__header"
         >
@@ -422,7 +419,6 @@ Array [
             </div>
           </div>
         </div>
-         
         <ul
           className="m-tabs__tab-list"
         >

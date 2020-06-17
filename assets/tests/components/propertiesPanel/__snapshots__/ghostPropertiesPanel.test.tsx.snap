@@ -7,7 +7,6 @@ exports[`GhostPropertiesPanel renders 1`] = `
   <div
     className="m-properties-panel__header-wrapper"
   >
-     
     <div
       className="m-properties-panel__header"
     >
@@ -107,7 +106,6 @@ exports[`GhostPropertiesPanel renders 1`] = `
         </button>
       </div>
     </div>
-     
     <ul
       className="m-tabs__tab-list"
     >
@@ -276,7 +274,6 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
   <div
     className="m-properties-panel__header-wrapper"
   >
-     
     <div
       className="m-properties-panel__header"
     >
@@ -376,7 +373,6 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
         </button>
       </div>
     </div>
-     
     <ul
       className="m-tabs__tab-list"
     >
@@ -591,7 +587,6 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
   <div
     className="m-properties-panel__header-wrapper"
   >
-     
     <div
       className="m-properties-panel__header"
     >
@@ -691,7 +686,6 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
         </button>
       </div>
     </div>
-     
     <ul
       className="m-tabs__tab-list"
     >

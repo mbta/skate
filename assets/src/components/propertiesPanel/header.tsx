@@ -139,7 +139,6 @@ const Header = ({ vehicle, route, tabMode, setTabMode }: Props) => {
 
   return (
     <div className="m-properties-panel__header-wrapper">
-      {" "}
       <div className="m-properties-panel__header">
         <div className="m-properties-panel__label">
           <VehicleIcon
@@ -173,7 +172,7 @@ const Header = ({ vehicle, route, tabMode, setTabMode }: Props) => {
             </div>
           )}
         </div>
-      </div>{" "}
+      </div>
       <ul className="m-tabs__tab-list">
         <Tab tabName="status" activeTab={tabMode} setActiveTab={setTabMode} />
         <Tab tabName="run" activeTab={tabMode} setActiveTab={setTabMode} />
