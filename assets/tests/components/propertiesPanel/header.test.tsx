@@ -15,9 +15,7 @@ import { deselectVehicle, initialState } from "../../../src/state"
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
-const setTabMode = jest.fn(() => {
-  return
-})
+const setTabMode = jest.fn()
 
 const vehicle: Vehicle = {
   id: "v1",
