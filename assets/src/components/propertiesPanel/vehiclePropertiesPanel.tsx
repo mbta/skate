@@ -114,6 +114,10 @@ const shouldShowDataDiscrepancies = ({ dataDiscrepancies }: Vehicle): boolean =>
 
 const StatusContent = ({ selectedVehicle }: { selectedVehicle: Vehicle }) => (
   <>
+    {hasBlockWaiver(selectedVehicle) && (
+      <BlockWaiverList blockWaivers={selectedVehicle.blockWaivers} />
+    )}
+
     <PropertiesList vehicleOrGhost={selectedVehicle} />
 
     <Location vehicle={selectedVehicle} />
@@ -137,10 +141,6 @@ const VehiclePropertiesPanel = ({ selectedVehicle, route }: Props) => {
       />
 
       {selectedVehicle.isOffCourse && <InvalidBanner />}
-
-      {hasBlockWaiver(selectedVehicle) && (
-        <BlockWaiverList blockWaivers={selectedVehicle.blockWaivers} />
-      )}
 
       {
         /* istanbul ignore next */

@@ -29,6 +29,18 @@ const NoWaiverBanner = () => (
   </div>
 )
 
+const StatusContent = ({ ghost }: { ghost: Ghost }) => (
+  <>
+    {hasBlockWaiver(ghost) ? (
+      <BlockWaiverList blockWaivers={ghost.blockWaivers} />
+    ) : (
+      <NoWaiverBanner />
+    )}
+
+    <PropertiesList vehicleOrGhost={ghost} />
+  </>
+)
+
 const GhostPropertiesPanel = ({ selectedGhost, route }: Props) => {
   const [tabMode, setTabMode] = useState<TabMode>("status")
 
@@ -41,15 +53,9 @@ const GhostPropertiesPanel = ({ selectedGhost, route }: Props) => {
         setTabMode={setTabMode}
       />
 
-      {hasBlockWaiver(selectedGhost) ? (
-        <BlockWaiverList blockWaivers={selectedGhost.blockWaivers} />
-      ) : (
-        <NoWaiverBanner />
-      )}
-
       <TabPanels
         vehicleOrGhost={selectedGhost}
-        statusContent={<PropertiesList vehicleOrGhost={selectedGhost} />}
+        statusContent={<StatusContent ghost={selectedGhost} />}
         mode={tabMode}
       />
     </div>
