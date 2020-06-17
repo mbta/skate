@@ -88,65 +88,32 @@ defmodule Schedule.Minischedule.Load do
         trip_in_operator(activity, trip)
       end)
 
+    if trips_in_piece == [] do
+      Logger.warn(fn ->
+        "Operator activity with no trips: #{activity.schedule_id} #{activity.run_id} start_time:#{
+          activity.start_time
+        }"
+      end)
+    end
+
     dehydrated_trips =
       if operator_is_as_directed?(activity) do
         [as_directed_from_trips(trips_in_piece)]
       else
-        Enum.map(trips_in_piece, fn trip ->
-          trip.trip_id
-        end)
+        Enum.map(trips_in_piece, fn trip -> trip.trip_id end)
       end
-
-    block_id =
-      case trips_in_piece do
-        [trip | _] ->
-          trip.block_id
-
-        _ ->
-          Logger.warn(fn ->
-            "Operator activity with no trips: #{activity.schedule_id} #{activity.run_id} start_time:#{
-              activity.start_time
-            }"
-          end)
-
-          nil
-      end
-
-    start_mid_route? =
-      if trips_in_piece != [] and List.first(trips_in_piece).start_time > activity.start_time do
-        trips_in_block = Map.get(all_trips_by_block, {activity.schedule_id, block_id}, [])
-
-        trip_with_swing =
-          Enum.find(trips_in_block, fn trip ->
-            trip.start_time < activity.start_time && trip.end_time > activity.start_time
-          end)
-
-        if trip_with_swing do
-          %{
-            time: activity.start_time,
-            trip: trip_with_swing.trip_id
-          }
-        else
-          nil
-        end
-      else
-        nil
-      end
-
-    end_mid_route? =
-      trips_in_piece != [] and List.last(trips_in_piece).end_time > activity.end_time
 
     %Piece{
       schedule_id: activity.schedule_id,
       run_id: activity.run_id,
-      block_id: block_id,
+      block_id: block_id_from_trips(trips_in_piece),
       start_time: activity.start_time,
       start_place: activity.start_place,
       trips: dehydrated_trips,
       end_time: activity.end_time,
       end_place: activity.end_place,
-      start_mid_route?: start_mid_route?,
-      end_mid_route?: end_mid_route?
+      start_mid_route?: start_mid_route?(activity, trips_in_piece, all_trips_by_block),
+      end_mid_route?: end_mid_route?(activity, trips_in_piece)
     }
   end
 
@@ -184,6 +151,44 @@ defmodule Schedule.Minischedule.Load do
       end_place: as_directed_trip.end_place
     }
   end
+
+  @spec start_mid_route?(Activity.t(), [Trip.t()], %{Block.key() => [Trip.t()]}) ::
+          Piece.mid_route_swing() | nil
+  defp start_mid_route?(
+         %Activity{activity_type: "Operator"} = activity,
+         trips_in_piece,
+         all_trips_by_block
+       ) do
+    if trips_in_piece != [] and List.first(trips_in_piece).start_time > activity.start_time do
+      block_id = block_id_from_trips(trips_in_piece)
+      trips_in_block = Map.get(all_trips_by_block, {activity.schedule_id, block_id}, [])
+
+      trip_with_swing =
+        Enum.find(trips_in_block, fn trip ->
+          trip.start_time < activity.start_time && trip.end_time > activity.start_time
+        end)
+
+      if trip_with_swing do
+        %{
+          time: activity.start_time,
+          trip: trip_with_swing.trip_id
+        }
+      else
+        nil
+      end
+    else
+      nil
+    end
+  end
+
+  @spec end_mid_route?(Activity.t(), [Trip.t()]) :: boolean()
+  defp end_mid_route?(%Activity{activity_type: "Operator"} = activity, trips_in_piece) do
+    trips_in_piece != [] and List.last(trips_in_piece).end_time > activity.end_time
+  end
+
+  @spec block_id_from_trips([Trip.t()]) :: Block.id() | nil
+  defp block_id_from_trips([]), do: nil
+  defp block_id_from_trips([trip | _]), do: trip.block_id
 
   @spec as_directed_activities_to_pieces([Activity.t() | Piece.t()]) :: [Activity.t() | Piece.t()]
   defp as_directed_activities_to_pieces(activities_and_pieces) do
