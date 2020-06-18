@@ -18,6 +18,9 @@ import {
 } from "react-leaflet"
 // @ts-ignore
 import Control from "react-leaflet-control"
+// @ts-ignore
+import FullscreenControl from "react-leaflet-fullscreen"
+import "react-leaflet-fullscreen/dist/styles.css"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClass } from "../models/vehicleStatus"
@@ -283,6 +286,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
       >
         <ZoomControl position="topright" />
         <RecenterControl turnOnAutoCenter={() => setShouldAutoCenter(true)} />
+        <FullscreenControl position="topright" />
         <TileLayer
           url="https://mbta-map-tiles-dev.s3.amazonaws.com/osm_tiles/{z}/{x}/{y}.png"
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
