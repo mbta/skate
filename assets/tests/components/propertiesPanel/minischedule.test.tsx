@@ -419,6 +419,97 @@ describe("MinischeduleRun", () => {
 
     expect(tree).toMatchSnapshot()
   })
+
+  test("renders duty details of run", () => {
+    const piece1: Piece = {
+      runId: "run",
+      blockId: "block",
+      startTime: 22000,
+      startPlace: "cabot",
+      trips: [],
+      endTime: 36450,
+      endPlace: "cabot",
+      startMidRoute: null,
+      endMidRoute: false,
+    }
+    const break1: Break = {
+      breakType: "Paid meal before",
+      startTime: 36450,
+      endTime: 38070,
+      endPlace: "cabot",
+    }
+    const piece2: Piece = {
+      runId: "run",
+      blockId: "block",
+      startTime: 38070,
+      startPlace: "cabot",
+      trips: [],
+      endTime: 40760,
+      endPlace: "cabot",
+      startMidRoute: null,
+      endMidRoute: false,
+    }
+    const break2: Break = {
+      breakType: "Split break",
+      startTime: 40760,
+      endTime: 43760,
+      endPlace: "cabot",
+    }
+    const piece3: Piece = {
+      runId: "run",
+      blockId: "block",
+      startTime: 43760,
+      startPlace: "cabot",
+      trips: [],
+      endTime: 52590,
+      endPlace: "cabot",
+      startMidRoute: null,
+      endMidRoute: false,
+    }
+    const break3: Break = {
+      breakType: "Technical break",
+      startTime: 52590,
+      endTime: 63240,
+      endPlace: "cabot",
+    }
+    const piece4: Piece = {
+      runId: "run",
+      blockId: "block",
+      startTime: 63240,
+      startPlace: "cabot",
+      trips: [],
+      endTime: 78000,
+      endPlace: "cabot",
+      startMidRoute: null,
+      endMidRoute: false,
+    }
+    const break4: Break = {
+      breakType: "Split break",
+      startTime: 78000,
+      endTime: 83000,
+      endPlace: "cabot",
+    }
+
+    const run: Run = {
+      id: "run",
+      activities: [
+        piece1,
+        break1,
+        piece2,
+        break2,
+        piece3,
+        break3,
+        piece4,
+        break4,
+      ],
+    }
+    ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => run)
+    const tree = renderer
+      .create(<MinischeduleRun vehicleOrGhost={vehicle} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
 })
 
 describe("MinischeduleBlock", () => {

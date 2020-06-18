@@ -702,6 +702,42 @@ Array [
     run
   </div>,
   <div
+    className="m-minischedule__duty-details"
+  >
+    <span
+      className="m-minischedule__header-label"
+    >
+      Paid break
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      0 min
+    </span>
+    <br />
+    <span
+      className="m-minischedule__header-label"
+    >
+      Working hours
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      0 min
+    </span>
+    <br />
+    <span
+      className="m-minischedule__header-label"
+    >
+      Total hours
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      -10 min
+    </span>
+  </div>,
+  <div
     className="m-minischedule__piece-rows m-minischedule__piece-rows--current"
   >
     <div
@@ -897,6 +933,42 @@ Array [
     run1
   </div>,
   <div
+    className="m-minischedule__duty-details"
+  >
+    <span
+      className="m-minischedule__header-label"
+    >
+      Paid break
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      0 min
+    </span>
+    <br />
+    <span
+      className="m-minischedule__header-label"
+    >
+      Working hours
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      3 min
+    </span>
+    <br />
+    <span
+      className="m-minischedule__header-label"
+    >
+      Total hours
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      -7 min
+    </span>
+  </div>,
+  <div
     className="m-minischedule__piece-rows m-minischedule__piece-rows--unknown"
   >
     <div
@@ -1004,6 +1076,42 @@ Array [
       Run
     </span>
     run2
+  </div>,
+  <div
+    className="m-minischedule__duty-details"
+  >
+    <span
+      className="m-minischedule__header-label"
+    >
+      Paid break
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      0 min
+    </span>
+    <br />
+    <span
+      className="m-minischedule__header-label"
+    >
+      Working hours
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      6 min
+    </span>
+    <br />
+    <span
+      className="m-minischedule__header-label"
+    >
+      Total hours
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      -4 min
+    </span>
   </div>,
   <div
     className="m-minischedule__row m-minischedule__row--unknown m-minischedule__row--mid-route-first-half"
@@ -1192,6 +1300,42 @@ Array [
     run
   </div>,
   <div
+    className="m-minischedule__duty-details"
+  >
+    <span
+      className="m-minischedule__header-label"
+    >
+      Paid break
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      30 min
+    </span>
+    <br />
+    <span
+      className="m-minischedule__header-label"
+    >
+      Working hours
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      0 min
+    </span>
+    <br />
+    <span
+      className="m-minischedule__header-label"
+    >
+      Total hours
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      20 min
+    </span>
+  </div>,
+  <div
     className="m-minischedule__row m-minischedule__row--unknown"
   >
     <div
@@ -1367,6 +1511,42 @@ Array [
     run
   </div>,
   <div
+    className="m-minischedule__duty-details"
+  >
+    <span
+      className="m-minischedule__header-label"
+    >
+      Paid break
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      0 min
+    </span>
+    <br />
+    <span
+      className="m-minischedule__header-label"
+    >
+      Working hours
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      0 min
+    </span>
+    <br />
+    <span
+      className="m-minischedule__header-label"
+    >
+      Total hours
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      -10 min
+    </span>
+  </div>,
+  <div
     className="m-minischedule__piece-rows m-minischedule__piece-rows--current"
   >
     <div
@@ -1519,6 +1699,42 @@ Array [
     run
   </div>,
   <div
+    className="m-minischedule__duty-details"
+  >
+    <span
+      className="m-minischedule__header-label"
+    >
+      Paid break
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      0 min
+    </span>
+    <br />
+    <span
+      className="m-minischedule__header-label"
+    >
+      Working hours
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      10 min
+    </span>
+    <br />
+    <span
+      className="m-minischedule__header-label"
+    >
+      Total hours
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      0 min
+    </span>
+  </div>,
+  <div
     className="m-minischedule__piece-rows m-minischedule__piece-rows--unknown"
   >
     <div
@@ -1660,6 +1876,42 @@ Array [
       Run
     </span>
     run
+  </div>,
+  <div
+    className="m-minischedule__duty-details"
+  >
+    <span
+      className="m-minischedule__header-label"
+    >
+      Paid break
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      0 min
+    </span>
+    <br />
+    <span
+      className="m-minischedule__header-label"
+    >
+      Working hours
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      0 min
+    </span>
+    <br />
+    <span
+      className="m-minischedule__header-label"
+    >
+      Total hours
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      -10 min
+    </span>
   </div>,
   <div
     className="m-minischedule__piece-rows m-minischedule__piece-rows--current"
@@ -1814,6 +2066,42 @@ Array [
     run
   </div>,
   <div
+    className="m-minischedule__duty-details"
+  >
+    <span
+      className="m-minischedule__header-label"
+    >
+      Paid break
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      0 min
+    </span>
+    <br />
+    <span
+      className="m-minischedule__header-label"
+    >
+      Working hours
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      0 min
+    </span>
+    <br />
+    <span
+      className="m-minischedule__header-label"
+    >
+      Total hours
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      -10 min
+    </span>
+  </div>,
+  <div
     className="m-minischedule__piece-rows m-minischedule__piece-rows--unknown"
   >
     <div
@@ -1949,6 +2237,42 @@ Array [
     run
   </div>,
   <div
+    className="m-minischedule__duty-details"
+  >
+    <span
+      className="m-minischedule__header-label"
+    >
+      Paid break
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      0 min
+    </span>
+    <br />
+    <span
+      className="m-minischedule__header-label"
+    >
+      Working hours
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      10 min
+    </span>
+    <br />
+    <span
+      className="m-minischedule__header-label"
+    >
+      Total hours
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      0 min
+    </span>
+  </div>,
+  <div
     className="m-minischedule__row m-minischedule__row--unknown"
   >
     <div
@@ -2022,6 +2346,345 @@ Array [
       className="m-minischedule__right-text"
     >
       4:30 AM
+    </div>
+  </div>,
+]
+`;
+
+exports[`MinischeduleRun renders duty details of run 1`] = `
+Array [
+  <div
+    className="m-minischedule__header"
+  >
+    <span
+      className="m-minischedule__header-label"
+    >
+      Run
+    </span>
+    run
+  </div>,
+  <div
+    className="m-minischedule__duty-details"
+  >
+    <span
+      className="m-minischedule__header-label"
+    >
+      Paid break
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      3 hr 24 min
+    </span>
+    <br />
+    <span
+      className="m-minischedule__header-label"
+    >
+      Working hours
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      11 hr 18 min
+    </span>
+    <br />
+    <span
+      className="m-minischedule__header-label"
+    >
+      Total hours
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      16 hr 46 min
+    </span>
+  </div>,
+  <div
+    className="m-minischedule__row m-minischedule__row--unknown"
+  >
+    <div
+      className="m-minischedule__icon"
+    />
+    <div
+      className="m-minischedule__left-text"
+    >
+      Start time
+      <br />
+      <span
+        className="m-minischedule__below-text"
+      >
+        cabot
+      </span>
+    </div>
+    <div
+      className="m-minischedule__right-text"
+    >
+      6:06 AM
+    </div>
+  </div>,
+  <div
+    className="m-minischedule__piece-rows m-minischedule__piece-rows--unknown"
+  />,
+  <div
+    className="m-minischedule__row m-minischedule__row--unknown"
+  >
+    <div
+      className="m-minischedule__icon"
+    />
+    <div
+      className="m-minischedule__left-text"
+    >
+      Done
+      <br />
+      <span
+        className="m-minischedule__below-text"
+      >
+        cabot
+      </span>
+    </div>
+    <div
+      className="m-minischedule__right-text"
+    >
+      10:07 AM
+    </div>
+  </div>,
+  <div
+    className="m-minischedule__row m-minischedule__row--unknown"
+  >
+    <div
+      className="m-minischedule__icon"
+    />
+    <div
+      className="m-minischedule__left-text"
+    >
+      Break (Paid)
+      <br />
+      <span
+        className="m-minischedule__below-text"
+      >
+        cabot
+      </span>
+    </div>
+    <div
+      className="m-minischedule__right-text"
+    >
+      27 min
+    </div>
+  </div>,
+  <div
+    className="m-minischedule__row m-minischedule__row--unknown"
+  >
+    <div
+      className="m-minischedule__icon"
+    />
+    <div
+      className="m-minischedule__left-text"
+    >
+      Start time
+      <br />
+      <span
+        className="m-minischedule__below-text"
+      >
+        cabot
+      </span>
+    </div>
+    <div
+      className="m-minischedule__right-text"
+    >
+      10:34 AM
+    </div>
+  </div>,
+  <div
+    className="m-minischedule__piece-rows m-minischedule__piece-rows--unknown"
+  />,
+  <div
+    className="m-minischedule__row m-minischedule__row--unknown"
+  >
+    <div
+      className="m-minischedule__icon"
+    />
+    <div
+      className="m-minischedule__left-text"
+    >
+      Done
+      <br />
+      <span
+        className="m-minischedule__below-text"
+      >
+        cabot
+      </span>
+    </div>
+    <div
+      className="m-minischedule__right-text"
+    >
+      11:19 AM
+    </div>
+  </div>,
+  <div
+    className="m-minischedule__row m-minischedule__row--unknown"
+  >
+    <div
+      className="m-minischedule__icon"
+    />
+    <div
+      className="m-minischedule__left-text"
+    >
+      Break (Unpaid)
+      <br />
+      <span
+        className="m-minischedule__below-text"
+      >
+        cabot
+      </span>
+    </div>
+    <div
+      className="m-minischedule__right-text"
+    >
+      50 min
+    </div>
+  </div>,
+  <div
+    className="m-minischedule__row m-minischedule__row--unknown"
+  >
+    <div
+      className="m-minischedule__icon"
+    />
+    <div
+      className="m-minischedule__left-text"
+    >
+      Start time
+      <br />
+      <span
+        className="m-minischedule__below-text"
+      >
+        cabot
+      </span>
+    </div>
+    <div
+      className="m-minischedule__right-text"
+    >
+      12:09 PM
+    </div>
+  </div>,
+  <div
+    className="m-minischedule__piece-rows m-minischedule__piece-rows--unknown"
+  />,
+  <div
+    className="m-minischedule__row m-minischedule__row--unknown"
+  >
+    <div
+      className="m-minischedule__icon"
+    />
+    <div
+      className="m-minischedule__left-text"
+    >
+      Done
+      <br />
+      <span
+        className="m-minischedule__below-text"
+      >
+        cabot
+      </span>
+    </div>
+    <div
+      className="m-minischedule__right-text"
+    >
+      2:36 PM
+    </div>
+  </div>,
+  <div
+    className="m-minischedule__row m-minischedule__row--unknown"
+  >
+    <div
+      className="m-minischedule__icon"
+    />
+    <div
+      className="m-minischedule__left-text"
+    >
+      Technical break (Paid)
+      <br />
+      <span
+        className="m-minischedule__below-text"
+      >
+        cabot
+      </span>
+    </div>
+    <div
+      className="m-minischedule__right-text"
+    >
+      2 hr 57 min
+    </div>
+  </div>,
+  <div
+    className="m-minischedule__row m-minischedule__row--unknown"
+  >
+    <div
+      className="m-minischedule__icon"
+    />
+    <div
+      className="m-minischedule__left-text"
+    >
+      Start time
+      <br />
+      <span
+        className="m-minischedule__below-text"
+      >
+        cabot
+      </span>
+    </div>
+    <div
+      className="m-minischedule__right-text"
+    >
+      5:34 PM
+    </div>
+  </div>,
+  <div
+    className="m-minischedule__piece-rows m-minischedule__piece-rows--unknown"
+  />,
+  <div
+    className="m-minischedule__row m-minischedule__row--unknown"
+  >
+    <div
+      className="m-minischedule__icon"
+    />
+    <div
+      className="m-minischedule__left-text"
+    >
+      Done
+      <br />
+      <span
+        className="m-minischedule__below-text"
+      >
+        cabot
+      </span>
+    </div>
+    <div
+      className="m-minischedule__right-text"
+    >
+      9:40 PM
+    </div>
+  </div>,
+  <div
+    className="m-minischedule__row m-minischedule__row--unknown"
+  >
+    <div
+      className="m-minischedule__icon"
+    />
+    <div
+      className="m-minischedule__left-text"
+    >
+      Break (Unpaid)
+      <br />
+      <span
+        className="m-minischedule__below-text"
+      >
+        cabot
+      </span>
+    </div>
+    <div
+      className="m-minischedule__right-text"
+    >
+      1 hr 23 min
     </div>
   </div>,
 ]

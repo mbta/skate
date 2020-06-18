@@ -52,6 +52,7 @@ export const MinischeduleRun = ({ vehicleOrGhost }: Props): ReactElement => {
     return (
       <>
         <Header label="Run" value={run.id} />
+        <DutyDetails run={run} />
         {run.activities.map((activity, index) =>
           isPiece(activity) ? (
             <Piece
@@ -111,6 +112,69 @@ const Header = ({ label, value }: { label: string; value: string }) => (
     {value}
   </div>
 )
+
+const DutyDetails = ({ run }: { run: Run }) => {
+  const paidBreakTotal = paidBreakTotalDuration(run)
+  const workingHours = workingHoursDuration(run)
+  const totalHours = totalHoursDuration(run)
+  const formattedPaidBreakTotal = formattedDuration(paidBreakTotal)
+  const formattedWorkingHours = formattedDuration(workingHours)
+  const formattedTotalHours = formattedDuration(totalHours)
+
+  return (
+    <div className="m-minischedule__duty-details">
+      <span className="m-minischedule__header-label">Paid break</span>
+      <span className="m-minischedule__duty-details-data">
+        {formattedPaidBreakTotal}
+      </span>
+      <br />
+      <span className="m-minischedule__header-label">Working hours</span>
+      <span className="m-minischedule__duty-details-data">
+        {formattedWorkingHours}
+      </span>
+      <br />
+      <span className="m-minischedule__header-label">Total hours</span>
+      <span className="m-minischedule__duty-details-data">
+        {formattedTotalHours}
+      </span>
+    </div>
+  )
+}
+
+const paidBreakTotalDuration = (run: Run): number => {
+  const paidBreaks: Break[] = run.activities.filter(
+    (activity) => isBreak(activity) && breakIsPaid(activity.breakType)
+  ) as Break[]
+  return paidBreaks.reduce(
+    (total, breakk) => total + breakk.endTime - breakk.startTime,
+    0
+  )
+}
+
+const workingHoursDuration = (run: Run): number => {
+  const pieces: Piece[] = run.activities.filter((activity) =>
+    isPiece(activity)
+  ) as Piece[]
+
+  return pieces.reduce(
+    (total, piece) => total + piece.endTime - piece.startTime,
+    0
+  )
+}
+
+const runHasPartTimeOperator = (run: Run): boolean =>
+  // Runs driven by part-timers have a run number starting with "9"
+  !!run.id.match(/^\d{3}-9\d{3}$/)
+
+const totalHoursDuration = (run: Run): number => {
+  const firstActivity = run.activities[0]
+  const lastActivity = run.activities[run.activities.length - 1]
+  const realDuration = lastActivity.endTime - firstActivity.startTime
+
+  // Part-timers have their 10-minute report time counted in total hours.
+  // Full-timers do not.
+  return runHasPartTimeOperator(run) ? realDuration : realDuration - 600
+}
 
 export const BreakRow = ({
   break: breakk,
@@ -597,6 +661,9 @@ const getTimeBasedStyle = (
 
 const isPiece = (activity: Piece | Break): activity is Piece =>
   activity.hasOwnProperty("trips")
+
+const isBreak = (activity: Piece | Break): activity is Break =>
+  activity.hasOwnProperty("breakType")
 
 const isTrip = (trip: Trip | AsDirected): trip is Trip =>
   trip.hasOwnProperty("id")
