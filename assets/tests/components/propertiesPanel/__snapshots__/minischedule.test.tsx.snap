@@ -729,12 +729,12 @@ Array [
     <span
       className="m-minischedule__header-label"
     >
-      Spread
+      Total hours
     </span>
     <span
       className="m-minischedule__duty-details-data"
     >
-      0 min
+      -10 min
     </span>
   </div>,
   <div
@@ -960,12 +960,12 @@ Array [
     <span
       className="m-minischedule__header-label"
     >
-      Spread
+      Total hours
     </span>
     <span
       className="m-minischedule__duty-details-data"
     >
-      3 min
+      -7 min
     </span>
   </div>,
   <div
@@ -1105,12 +1105,12 @@ Array [
     <span
       className="m-minischedule__header-label"
     >
-      Spread
+      Total hours
     </span>
     <span
       className="m-minischedule__duty-details-data"
     >
-      6 min
+      -4 min
     </span>
   </div>,
   <div
@@ -1327,12 +1327,12 @@ Array [
     <span
       className="m-minischedule__header-label"
     >
-      Spread
+      Total hours
     </span>
     <span
       className="m-minischedule__duty-details-data"
     >
-      30 min
+      20 min
     </span>
   </div>,
   <div
@@ -1538,12 +1538,12 @@ Array [
     <span
       className="m-minischedule__header-label"
     >
-      Spread
+      Total hours
     </span>
     <span
       className="m-minischedule__duty-details-data"
     >
-      0 min
+      -10 min
     </span>
   </div>,
   <div
@@ -1726,12 +1726,12 @@ Array [
     <span
       className="m-minischedule__header-label"
     >
-      Spread
+      Total hours
     </span>
     <span
       className="m-minischedule__duty-details-data"
     >
-      10 min
+      0 min
     </span>
   </div>,
   <div
@@ -1905,12 +1905,12 @@ Array [
     <span
       className="m-minischedule__header-label"
     >
-      Spread
+      Total hours
     </span>
     <span
       className="m-minischedule__duty-details-data"
     >
-      0 min
+      -10 min
     </span>
   </div>,
   <div
@@ -2093,12 +2093,12 @@ Array [
     <span
       className="m-minischedule__header-label"
     >
-      Spread
+      Total hours
     </span>
     <span
       className="m-minischedule__duty-details-data"
     >
-      0 min
+      -10 min
     </span>
   </div>,
   <div
@@ -2264,12 +2264,12 @@ Array [
     <span
       className="m-minischedule__header-label"
     >
-      Spread
+      Total hours
     </span>
     <span
       className="m-minischedule__duty-details-data"
     >
-      10 min
+      0 min
     </span>
   </div>,
   <div
@@ -2391,12 +2391,12 @@ Array [
     <span
       className="m-minischedule__header-label"
     >
-      Spread
+      Total hours
     </span>
     <span
       className="m-minischedule__duty-details-data"
     >
-      16 hr 56 min
+      16 hr 46 min
     </span>
   </div>,
   <div

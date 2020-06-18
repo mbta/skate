@@ -116,10 +116,10 @@ const Header = ({ label, value }: { label: string; value: string }) => (
 const DutyDetails = ({ run }: { run: Run }) => {
   const paidBreakTotal = paidBreakTotalDuration(run)
   const workingHours = workingHoursDuration(run)
-  const spread = spreadDuration(run)
+  const totalHours = totalHoursDuration(run)
   const formattedPaidBreakTotal = formattedDuration(paidBreakTotal)
   const formattedWorkingHours = formattedDuration(workingHours)
-  const formattedSpread = formattedDuration(spread)
+  const formattedTotalHours = formattedDuration(totalHours)
 
   return (
     <div className="m-minischedule__duty-details">
@@ -133,9 +133,9 @@ const DutyDetails = ({ run }: { run: Run }) => {
         {formattedWorkingHours}
       </span>
       <br />
-      <span className="m-minischedule__header-label">Spread</span>
+      <span className="m-minischedule__header-label">Total hours</span>
       <span className="m-minischedule__duty-details-data">
-        {formattedSpread}
+        {formattedTotalHours}
       </span>
     </div>
   )
@@ -162,10 +162,18 @@ const workingHoursDuration = (run: Run): number => {
   )
 }
 
-const spreadDuration = (run: Run): number => {
+const runHasPartTimeOperator = (run: Run): boolean =>
+  // Runs driven by part-timers have a run number starting with "9"
+  !!run.id.match(/^\d{3}-9\d{3}$/)
+
+const totalHoursDuration = (run: Run): number => {
   const firstActivity = run.activities[0]
   const lastActivity = run.activities[run.activities.length - 1]
-  return lastActivity.endTime - firstActivity.startTime
+  const realDuration = lastActivity.endTime - firstActivity.startTime
+
+  // Part-timers have their 10-minute report time counted in total hours.
+  // Full-timers do not.
+  return runHasPartTimeOperator(run) ? realDuration : realDuration - 600
 }
 
 export const BreakRow = ({
