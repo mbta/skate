@@ -21,7 +21,7 @@ import { deselectVehicle } from "../../state"
 import CloseButton from "../closeButton"
 import { RouteVariantName } from "../routeVariantName"
 import VehicleIcon, { Orientation, Size } from "../vehicleIcon"
-import Tab from "./tab"
+import TabList from "./tabList"
 import { TabMode } from "./tabPanels"
 
 interface Props {
@@ -173,11 +173,7 @@ const Header = ({ vehicle, route, tabMode, setTabMode }: Props) => {
           )}
         </div>
       </div>
-      <ul className="m-tabs__tab-list">
-        <Tab tabName="status" activeTab={tabMode} setActiveTab={setTabMode} />
-        <Tab tabName="run" activeTab={tabMode} setActiveTab={setTabMode} />
-        <Tab tabName="block" activeTab={tabMode} setActiveTab={setTabMode} />
-      </ul>
+      <TabList activeTab={tabMode} setActiveTab={setTabMode} />
     </div>
   )
 }
