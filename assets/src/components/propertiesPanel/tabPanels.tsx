@@ -26,11 +26,7 @@ const activePanelContent = ({ mode, statusContent, vehicleOrGhost }: Props) => {
 }
 
 const TabPanels = (props: Props) => (
-  <div className="m-tabs">
-    <div className="m-tabs__tab-panel m-tabs__tab-panel--selected">
-      {activePanelContent(props)}
-    </div>
-  </div>
+  <div className="m-tabs__tab-panel">{activePanelContent(props)}</div>
 )
 
 export default TabPanels
