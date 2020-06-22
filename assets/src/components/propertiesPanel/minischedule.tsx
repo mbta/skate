@@ -10,14 +10,13 @@ import { className } from "../../helpers/dom"
 import {
   busFrontIcon,
   busRearIcon,
-  collapseDownUpIcon,
-  expandUpDownIcon,
   filledCircleIcon,
   minusIcon,
   plusIcon,
   questionMarkIcon,
   triangleDownIcon,
   triangleUpIcon,
+  upDownIcon,
 } from "../../helpers/icon"
 import {
   useMinischeduleBlock,
@@ -134,9 +133,7 @@ const PastToggle = ({
     className="m-minischedule__show-past"
     onClick={() => setShowPast(!showPast)}
   >
-    {showPast
-      ? expandUpDownIcon("m-minischedule__show-past-icon")
-      : collapseDownUpIcon("m-minischedule__show-past-icon")}
+    {upDownIcon("m-minischedule__show-past-icon")}
     {`${showPast ? "Hide" : "Show"} past trips`}
   </button>
 )

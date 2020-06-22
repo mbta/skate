@@ -5,11 +5,9 @@ import {
   busRearIcon,
   circleXIcon,
   closeIcon,
-  collapseDownUpIcon,
   collapseIcon,
   commuterRailIcon,
   expandIcon,
-  expandUpDownIcon,
   filledCircleIcon,
   greenLineBIcon,
   greenLineCIcon,
@@ -28,6 +26,7 @@ import {
   searchIcon,
   triangleDownIcon,
   triangleUpIcon,
+  upDownIcon,
 } from "../../src/helpers/icon"
 
 const testMap: { [index: string]: (className?: string) => JSX.Element } = {
@@ -36,11 +35,9 @@ const testMap: { [index: string]: (className?: string) => JSX.Element } = {
   busRearIcon,
   circleXIcon,
   closeIcon,
-  collapseDownUpIcon,
   collapseIcon,
   commuterRailIcon,
   expandIcon,
-  expandUpDownIcon,
   filledCircleIcon,
   greenLineBIcon,
   greenLineCIcon,
@@ -59,6 +56,7 @@ const testMap: { [index: string]: (className?: string) => JSX.Element } = {
   searchIcon,
   triangleDownIcon,
   triangleUpIcon,
+  upDownIcon,
 }
 
 for (const key in testMap) {
