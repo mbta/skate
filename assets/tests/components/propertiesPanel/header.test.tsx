@@ -15,6 +15,8 @@ import { deselectVehicle, initialState } from "../../../src/state"
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
+const setTabMode = jest.fn()
+
 const vehicle: Vehicle = {
   id: "v1",
   label: "v1-label",
@@ -73,7 +75,14 @@ const vehicle: Vehicle = {
 describe("Header", () => {
   test("renders a header", () => {
     const tree = renderer
-      .create(<Header vehicle={vehicle} route={undefined} />)
+      .create(
+        <Header
+          vehicle={vehicle}
+          route={undefined}
+          tabMode={"status"}
+          setTabMode={setTabMode}
+        />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -89,7 +98,14 @@ describe("Header", () => {
       name: "39",
     }
     const tree = renderer
-      .create(<Header vehicle={vehicle} route={route} />)
+      .create(
+        <Header
+          vehicle={vehicle}
+          route={route}
+          tabMode={"status"}
+          setTabMode={setTabMode}
+        />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -101,7 +117,14 @@ describe("Header", () => {
       scheduleAdherenceSecs: -61,
     }
     const tree = renderer
-      .create(<Header vehicle={earlyVehicle} route={undefined} />)
+      .create(
+        <Header
+          vehicle={earlyVehicle}
+          route={undefined}
+          tabMode={"status"}
+          setTabMode={setTabMode}
+        />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -113,7 +136,14 @@ describe("Header", () => {
       scheduleAdherenceSecs: 361,
     }
     const tree = renderer
-      .create(<Header vehicle={earlyVehicle} route={undefined} />)
+      .create(
+        <Header
+          vehicle={earlyVehicle}
+          route={undefined}
+          tabMode={"status"}
+          setTabMode={setTabMode}
+        />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -126,7 +156,14 @@ describe("Header", () => {
     }
 
     const tree = renderer
-      .create(<Header vehicle={offCourseVehicle} route={undefined} />)
+      .create(
+        <Header
+          vehicle={offCourseVehicle}
+          route={undefined}
+          tabMode={"status"}
+          setTabMode={setTabMode}
+        />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -139,7 +176,14 @@ describe("Header", () => {
     }
 
     const tree = renderer
-      .create(<Header vehicle={headwayVehicle} route={undefined} />)
+      .create(
+        <Header
+          vehicle={headwayVehicle}
+          route={undefined}
+          tabMode={"status"}
+          setTabMode={setTabMode}
+        />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -152,7 +196,14 @@ describe("Header", () => {
     }
 
     const tree = renderer
-      .create(<Header vehicle={shuttleVehicle} route={undefined} />)
+      .create(
+        <Header
+          vehicle={shuttleVehicle}
+          route={undefined}
+          tabMode={"status"}
+          setTabMode={setTabMode}
+        />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -178,7 +229,14 @@ describe("Header", () => {
     }
 
     const tree = renderer
-      .create(<Header vehicle={ghost} route={undefined} />)
+      .create(
+        <Header
+          vehicle={ghost}
+          route={undefined}
+          tabMode={"status"}
+          setTabMode={setTabMode}
+        />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -189,12 +247,16 @@ describe("Header", () => {
       <Header
         vehicle={{ ...vehicle, directionId: 0, routeStatus: "laying_over" }}
         route={undefined}
+        tabMode={"status"}
+        setTabMode={setTabMode}
       />
     )
     const leftFacing = mount(
       <Header
         vehicle={{ ...vehicle, directionId: 1, routeStatus: "laying_over" }}
         route={undefined}
+        tabMode={"status"}
+        setTabMode={setTabMode}
       />
     )
 
@@ -224,7 +286,12 @@ describe("Header", () => {
         state={{ ...initialState, ladderDirections }}
         dispatch={jest.fn()}
       >
-        <Header vehicle={vehicle} route={undefined} />
+        <Header
+          vehicle={vehicle}
+          route={undefined}
+          tabMode={"status"}
+          setTabMode={setTabMode}
+        />
       </StateDispatchProvider>
     )
 
@@ -243,7 +310,14 @@ describe("Header", () => {
       routeId: null,
       tripId: null,
     }
-    const wrapper = mount(<Header vehicle={shuttleVehicle} route={undefined} />)
+    const wrapper = mount(
+      <Header
+        vehicle={shuttleVehicle}
+        route={undefined}
+        tabMode={"status"}
+        setTabMode={setTabMode}
+      />
+    )
 
     const transform = wrapper
       .find(".m-vehicle-icon")
@@ -258,7 +332,12 @@ describe("Header", () => {
 
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <Header vehicle={vehicle} route={undefined} />
+        <Header
+          vehicle={vehicle}
+          route={undefined}
+          tabMode={"status"}
+          setTabMode={setTabMode}
+        />
       </StateDispatchProvider>
     )
     wrapper

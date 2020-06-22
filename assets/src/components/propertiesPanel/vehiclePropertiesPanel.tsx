@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { useTripShape } from "../../hooks/useShapes"
 import { hasBlockWaiver } from "../../models/blockWaiver"
 import { shouldShowHeadwayDiagram } from "../../models/vehicle"
@@ -9,7 +9,7 @@ import PropertiesList from "../propertiesList"
 import BlockWaiverList from "./blockWaiverList"
 import Header from "./header"
 import HeadwayDiagram from "./headwayDiagram"
-import StatusRunBlockTabs from "./status_run_block_tabs"
+import TabPanels, { TabMode } from "./tabPanels"
 
 interface Props {
   selectedVehicle: Vehicle
@@ -114,6 +114,10 @@ const shouldShowDataDiscrepancies = ({ dataDiscrepancies }: Vehicle): boolean =>
 
 const StatusContent = ({ selectedVehicle }: { selectedVehicle: Vehicle }) => (
   <>
+    {hasBlockWaiver(selectedVehicle) && (
+      <BlockWaiverList blockWaivers={selectedVehicle.blockWaivers} />
+    )}
+
     <PropertiesList vehicleOrGhost={selectedVehicle} />
 
     <Location vehicle={selectedVehicle} />
@@ -124,29 +128,38 @@ const StatusContent = ({ selectedVehicle }: { selectedVehicle: Vehicle }) => (
   </>
 )
 
-const VehiclePropertiesPanel = ({ selectedVehicle, route }: Props) => (
-  <div className="m-vehicle-properties-panel">
-    <Header vehicle={selectedVehicle} route={route} />
+const VehiclePropertiesPanel = ({ selectedVehicle, route }: Props) => {
+  const [tabMode, setTabMode] = useState<TabMode>("status")
 
-    {selectedVehicle.isOffCourse && <InvalidBanner />}
-
-    {hasBlockWaiver(selectedVehicle) && (
-      <BlockWaiverList blockWaivers={selectedVehicle.blockWaivers} />
-    )}
-
-    {shouldShowHeadwayDiagram(selectedVehicle) && (
-      <HeadwayDiagram vehicle={selectedVehicle} />
-    )}
-
-    {selectedVehicle.isShuttle ? (
-      <StatusContent selectedVehicle={selectedVehicle} />
-    ) : (
-      <StatusRunBlockTabs
-        vehicleOrGhost={selectedVehicle}
-        statusContent={<StatusContent selectedVehicle={selectedVehicle} />}
+  return (
+    <div className="m-vehicle-properties-panel">
+      <Header
+        vehicle={selectedVehicle}
+        route={route}
+        tabMode={tabMode}
+        setTabMode={setTabMode}
       />
-    )}
-  </div>
-)
+
+      {selectedVehicle.isOffCourse && <InvalidBanner />}
+
+      {
+        /* istanbul ignore next */
+        shouldShowHeadwayDiagram(selectedVehicle) && (
+          <HeadwayDiagram vehicle={selectedVehicle} />
+        )
+      }
+
+      {selectedVehicle.isShuttle ? (
+        <StatusContent selectedVehicle={selectedVehicle} />
+      ) : (
+        <TabPanels
+          vehicleOrGhost={selectedVehicle}
+          statusContent={<StatusContent selectedVehicle={selectedVehicle} />}
+          mode={tabMode}
+        />
+      )}
+    </div>
+  )
+}
 
 export default VehiclePropertiesPanel
