@@ -42,22 +42,53 @@ export interface Props {
 
 export const MinischeduleRun = ({ vehicleOrGhost }: Props): ReactElement => {
   const run: Run | null | undefined = useMinischeduleRun(vehicleOrGhost.tripId!)
+  return (
+    <Minischedule runOrBlock={run} vehicleOrGhost={vehicleOrGhost} view="run" />
+  )
+}
 
-  if (run === undefined) {
+export const MinischeduleBlock = ({ vehicleOrGhost }: Props): ReactElement => {
+  const block: Block | null | undefined = useMinischeduleBlock(
+    vehicleOrGhost.tripId!
+  )
+  return (
+    <Minischedule
+      runOrBlock={block}
+      vehicleOrGhost={vehicleOrGhost}
+      view="block"
+    />
+  )
+}
+
+export const Minischedule = ({
+  runOrBlock,
+  vehicleOrGhost,
+  view,
+}: {
+  runOrBlock: Run | Block | null | undefined
+  vehicleOrGhost: VehicleOrGhost
+  view: "run" | "block"
+}) => {
+  if (runOrBlock === undefined) {
     return <Loading />
-  } else if (run === null) {
-    return <>No run found</>
+  } else if (runOrBlock === null) {
+    return view === "run" ? <>No run found</> : <>No block found</>
   } else {
-    const activeIndex = getActiveIndex(run.activities, vehicleOrGhost.tripId)
+    const activities: (Piece | Break)[] =
+      (runOrBlock as Run).activities || (runOrBlock as Block).pieces
+    const activeIndex = getActiveIndex(activities, vehicleOrGhost.tripId)
     return (
       <>
-        <Header label="Run" value={run.id} />
-        <DutyDetails run={run} />
-        {run.activities.map((activity, index) =>
+        <Header
+          label={view === "run" ? "Run" : "Block"}
+          value={runOrBlock.id}
+        />
+        {view === "run" ? <DutyDetails run={runOrBlock as Run} /> : null}
+        {activities.map((activity, index) =>
           isPiece(activity) ? (
             <Piece
               piece={activity}
-              view="run"
+              view={view}
               vehicleOrGhost={vehicleOrGhost}
               pieceIndex={index}
               activeIndex={activeIndex}
@@ -72,35 +103,6 @@ export const MinischeduleRun = ({ vehicleOrGhost }: Props): ReactElement => {
             />
           )
         )}
-      </>
-    )
-  }
-}
-
-export const MinischeduleBlock = ({ vehicleOrGhost }: Props): ReactElement => {
-  const block: Block | null | undefined = useMinischeduleBlock(
-    vehicleOrGhost.tripId!
-  )
-
-  if (block === undefined) {
-    return <Loading />
-  } else if (block === null) {
-    return <>No block found</>
-  } else {
-    const activeIndex = getActiveIndex(block.pieces, vehicleOrGhost.tripId)
-    return (
-      <>
-        <Header label="Block" value={block.id} />
-        {block.pieces.map((piece, index) => (
-          <Piece
-            piece={piece}
-            view={"block"}
-            vehicleOrGhost={vehicleOrGhost}
-            pieceIndex={index}
-            activeIndex={activeIndex}
-            key={piece.startTime}
-          />
-        ))}
       </>
     )
   }
