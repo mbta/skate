@@ -45,7 +45,7 @@
   flex: 1 1 auto;
   flex-direction: column;
   margin-top: 1rem;
-  min-height: 5rem;
+  z-index: 9;
 
   .m-vehicle-map {
     flex: 1 0 auto;
