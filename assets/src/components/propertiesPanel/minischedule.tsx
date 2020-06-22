@@ -1,9 +1,17 @@
-import React, { ReactElement, useContext } from "react"
+import React, {
+  Dispatch,
+  ReactElement,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { className } from "../../helpers/dom"
 import {
   busFrontIcon,
   busRearIcon,
+  collapseDownUpIcon,
+  expandUpDownIcon,
   filledCircleIcon,
   minusIcon,
   plusIcon,
@@ -69,6 +77,7 @@ export const Minischedule = ({
   vehicleOrGhost: VehicleOrGhost
   view: "run" | "block"
 }) => {
+  const [showPast, setShowPast] = useState<boolean>(false)
   if (runOrBlock === undefined) {
     return <Loading />
   } else if (runOrBlock === null) {
@@ -78,7 +87,13 @@ export const Minischedule = ({
       (runOrBlock as Run).activities || (runOrBlock as Block).pieces
     const activeIndex = getActiveIndex(activities, vehicleOrGhost.tripId)
     return (
-      <>
+      <div
+        className={className([
+          "m-minischedule",
+          `m-minischedule--${showPast ? "show-past" : "hide-past"}`,
+        ])}
+      >
+        <PastToggle showPast={showPast} setShowPast={setShowPast} />
         <Header
           label={view === "run" ? "Run" : "Block"}
           value={runOrBlock.id}
@@ -103,10 +118,28 @@ export const Minischedule = ({
             />
           )
         )}
-      </>
+      </div>
     )
   }
 }
+
+const PastToggle = ({
+  showPast,
+  setShowPast,
+}: {
+  showPast: boolean
+  setShowPast: Dispatch<SetStateAction<boolean>>
+}) => (
+  <button
+    className="m-minischedule__show-past"
+    onClick={() => setShowPast(!showPast)}
+  >
+    {showPast
+      ? expandUpDownIcon("m-minischedule__show-past-icon")
+      : collapseDownUpIcon("m-minischedule__show-past-icon")}
+    {`${showPast ? "Hide" : "Show"} past trips`}
+  </button>
+)
 
 const Header = ({ label, value }: { label: string; value: string }) => (
   <div className="m-minischedule__header">
@@ -281,7 +314,7 @@ const Piece = ({
     pieceTimeBasedStyle === "current" ? "future" : pieceTimeBasedStyle
 
   return (
-    <>
+    <div className={`m-minischedule__piece--${pieceTimeBasedStyle}`}>
       {view === "block" ? (
         <div className="m-minischedule__run-header">{piece.runId}</div>
       ) : null}
@@ -296,12 +329,7 @@ const Piece = ({
           timeBasedStyle={startTimeBasedStyle}
         />
       )}
-      <div
-        className={className([
-          "m-minischedule__piece-rows",
-          `m-minischedule__piece-rows--${pieceTimeBasedStyle}`,
-        ])}
-      >
+      <div className="m-minischedule__piece-rows">
         {isSwingOn ? (
           <Row
             key="swing-on"
@@ -358,7 +386,7 @@ const Piece = ({
           timeBasedStyle={doneTimeBasedStyle}
         />
       )}
-    </>
+    </div>
   )
 }
 

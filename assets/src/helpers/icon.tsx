@@ -5,9 +5,13 @@ import busFrontIconSvg from "../../static/images/icon-bus-front.svg"
 // @ts-ignore
 import busRearIconSvg from "../../static/images/icon-bus-rear.svg"
 // @ts-ignore
+import collapseDownUpIconSvg from "../../static/images/icon-caret-left.svg"
+// @ts-ignore
 import collapseIconSvg from "../../static/images/icon-caret-left.svg"
 // @ts-ignore
 import expandIconSvg from "../../static/images/icon-caret-right.svg"
+// @ts-ignore
+import expandUpDownIconSvg from "../../static/images/icon-caret-right.svg"
 // @ts-ignore
 import circleXIconSvg from "../../static/images/icon-circle-x.svg"
 // @ts-ignore
@@ -74,11 +78,17 @@ export const closeIcon = (className: string = ""): JSX.Element =>
 export const collapseIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, collapseIconSvg)
 
+export const collapseDownUpIcon = (className: string = ""): JSX.Element =>
+  renderSvg(className, collapseDownUpIconSvg)
+
 export const commuterRailIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, commuterRailIconSvg)
 
 export const expandIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, expandIconSvg)
+
+export const expandUpDownIcon = (className: string = ""): JSX.Element =>
+  renderSvg(className, expandUpDownIconSvg)
 
 export const filledCircleIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, filledCircleIconSvg)

@@ -3,6 +3,7 @@ import React from "react"
 import renderer from "react-test-renderer"
 import {
   BreakRow,
+  Minischedule,
   MinischeduleBlock,
   MinischeduleRun,
 } from "../../../src/components/propertiesPanel/minischedule"
@@ -12,6 +13,7 @@ import {
 } from "../../../src/hooks/useMinischedule"
 import { Break, Piece, Run, Trip } from "../../../src/minischedule"
 import { Vehicle } from "../../../src/realtime"
+import { mockUseStateOnce } from "../../testHelpers/mockHelpers"
 
 jest.mock("../../../src/hooks/useMinischedule", () => ({
   __esModule: true,
@@ -591,6 +593,52 @@ describe("MinischeduleBlock", () => {
       .toJSON()
 
     expect(tree).toMatchSnapshot()
+  })
+})
+
+describe("Minischedule", () => {
+  test("renders a Show past trips button", () => {
+    const block = { id: "block", pieces: [] }
+    const tree = renderer
+      .create(
+        <Minischedule
+          runOrBlock={block}
+          vehicleOrGhost={vehicle}
+          view="block"
+        />
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders a Hide past trips button", () => {
+    mockUseStateOnce(true)
+    const block = { id: "block", pieces: [] }
+    const tree = renderer
+      .create(
+        <Minischedule
+          runOrBlock={block}
+          vehicleOrGhost={vehicle}
+          view="block"
+        />
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("clicking the show/hide button toggles whether past trips are shown", () => {
+    const block = { id: "block", pieces: [] }
+    const wrapper = mount(
+      <Minischedule runOrBlock={block} vehicleOrGhost={vehicle} view="block" />
+    )
+
+    expect(wrapper.html()).toContain("m-minischedule--hide-past")
+    wrapper.find(".m-minischedule__show-past").simulate("click")
+    expect(wrapper.html()).toContain("m-minischedule--show-past")
+    wrapper.find(".m-minischedule__show-past").simulate("click")
+    expect(wrapper.html()).toContain("m-minischedule--hide-past")
   })
 })
 
