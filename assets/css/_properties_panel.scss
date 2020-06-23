@@ -11,6 +11,20 @@
   top: 0;
   width: 23.5rem;
   z-index: 1001;
+
+  .m-vehicle-map {
+    .fullscreen-icon {
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m0 0v3.73 13.07h3.73v-13.07h13.07v-3.73h-13.07z'/%3E%3Cpath d='m3.73 31.2h-3.73v13.07 3.73h3.73 13.07v-3.73h-13.07z'/%3E%3Cpath d='m44.27 0h-13.07v3.73h13.07v13.07h3.73v-13.07-3.73z'/%3E%3Cpath d='m44.27 44.27h-13.07v3.73h13.07 3.73v-3.73-13.07h-3.73z'/%3E%3C/svg%3E");
+      background-size: 16px;
+
+      // You might think that the FullscreenControl library would apply
+      // different CSS classes to the icon depending on if it were in the
+      // expanded or collapsed state. But it doesn't, hence this hack.
+      &[title="Exit Full Screen"] {
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m13.07 13.07h-13.07v3.73h13.07 3.73v-3.73-13.07h-3.73z'/%3E%3Cpath d='m0 31.2v3.73h13.07v13.07h3.73v-13.07-3.73h-3.73z'/%3E%3Cpath d='m34.93 13.07v-13.07h-3.73v13.07 3.73h3.73 13.07v-3.73z'/%3E%3Cpath d='m31.2 31.2v3.73 13.07h3.73v-13.07h13.07v-3.73h-13.07z'/%3E%3C/svg%3E");
+      }
+    }
+  }
 }
 
 .m-properties-panel .m-properties-panel__header-wrapper {
