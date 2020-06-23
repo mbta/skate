@@ -88,8 +88,7 @@
       "node"
     ],
     "moduleNameMapper": {
-      "\\.svg$": "<rootDir>/tests/testHelpers/svgStubber.js",
-      "\\.s?css": "<rootDir>/tests/testHelpers/cssStubber.js"
+      "\\.svg$": "<rootDir>/tests/testHelpers/svgStubber.js"
     },
     "setupFilesAfterEnv": [
       "<rootDir>/tests/setup.tsx"

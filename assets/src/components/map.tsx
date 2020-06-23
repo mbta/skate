@@ -20,7 +20,6 @@ import {
 import Control from "react-leaflet-control"
 // @ts-ignore
 import FullscreenControl from "react-leaflet-fullscreen"
-import "react-leaflet-fullscreen/dist/styles.css"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClass } from "../models/vehicleStatus"
