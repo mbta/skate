@@ -46,7 +46,12 @@ defmodule Realtime.Vehicle do
           scheduled_location: TimepointStatus.scheduled_location() | nil,
           route_status: RouteStatus.route_status(),
           end_of_trip_type: end_of_trip_type(),
-          block_waivers: [BlockWaiver.t()]
+          block_waivers: [BlockWaiver.t()],
+          load: non_neg_integer() | nil,
+          capacity: non_neg_integer() | nil,
+          occupancy_status: String.t() | nil,
+          occupancy_percentage: float() | nil,
+          route_has_reliable_crowding_data: boolean
         }
 
   @enforce_keys [
@@ -108,6 +113,11 @@ defmodule Realtime.Vehicle do
     :scheduled_location,
     :route_status,
     :end_of_trip_type,
+    :load,
+    :capacity,
+    :occupancy_status,
+    :occupancy_percentage,
+    :route_has_reliable_crowding_data,
     block_waivers: [],
     data_discrepancies: []
   ]
@@ -224,7 +234,12 @@ defmodule Realtime.Vehicle do
       scheduled_location: scheduled_location,
       route_status: route_status(stop_id, trip, block),
       end_of_trip_type: end_of_trip_type(block, trip, run_id, stop_id),
-      block_waivers: block_waivers
+      block_waivers: block_waivers,
+      load: vehicle_position.load,
+      capacity: vehicle_position.capacity,
+      occupancy_status: vehicle_position.occupancy_status,
+      occupancy_percentage: vehicle_position.occupancy_percentage,
+      route_has_reliable_crowding_data: vehicle_position.route_has_reliable_crowding_data
     }
   end
 

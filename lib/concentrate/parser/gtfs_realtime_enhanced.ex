@@ -83,7 +83,12 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
             operator_name: Map.get(operator, "name"),
             operator_logon_time: Map.get(operator, "logon_time"),
             sources: MapSet.new(["busloc"]),
-            data_discrepancies: []
+            data_discrepancies: [],
+            load: Map.get(vp, "load"),
+            route_has_reliable_crowding_data: Map.has_key?(vp, "load"),
+            capacity: Map.get(vp, "capacity"),
+            occupancy_status: Map.get(vp, "occupancy_status"),
+            occupancy_percentage: Map.get(vp, "occupancy_percentage")
           )
         ]
 

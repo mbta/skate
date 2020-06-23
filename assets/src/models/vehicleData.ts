@@ -57,6 +57,11 @@ export interface VehicleData {
   route_status: RouteStatus
   end_of_trip_type: EndOfTripType
   block_waivers: BlockWaiverData[]
+  load: number | null
+  capacity: number | null
+  occupancy_status: string | null
+  occupancy_percentage: number | null
+  route_has_reliable_crowding_data: boolean
 }
 
 export interface GhostData {
@@ -154,6 +159,11 @@ export const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
   routeStatus: vehicleData.route_status,
   endOfTripType: vehicleData.end_of_trip_type,
   blockWaivers: blockWaiversFromData(vehicleData.block_waivers),
+  load: vehicleData.load,
+  capacity: vehicleData.capacity,
+  occupancyStatus: vehicleData.occupancy_status,
+  occupancyPercentage: vehicleData.occupancy_percentage,
+  routeHasReliableCrowdingData: vehicleData.route_has_reliable_crowding_data,
 })
 
 export const ghostFromData = (ghostData: GhostData): Ghost => ({

@@ -93,6 +93,11 @@ export interface Vehicle {
   routeStatus: RouteStatus
   endOfTripType: EndOfTripType
   blockWaivers: BlockWaiver[]
+  load: number | null
+  capacity: number | null
+  occupancyStatus: string | null
+  occupancyPercentage: number | null
+  routeHasReliableCrowdingData: boolean
 }
 
 export type VehicleOrGhost = Vehicle | Ghost

@@ -41,6 +41,11 @@ defmodule Concentrate.VehiclePosition do
     :scheduled_headway_secs,
     :sources,
     :data_discrepancies,
+    :load,
+    :route_has_reliable_crowding_data,
+    :capacity,
+    :occupancy_status,
+    :occupancy_percentage,
     current_status: :IN_TRANSIT_TO
   ])
 
@@ -152,7 +157,14 @@ defmodule Concentrate.VehiclePosition do
               second.layover_departure_time,
               first.sources,
               first.layover_departure_time
-            )
+            ),
+          load: first_value(second.load, first.load),
+          capacity: first_value(second.capacity, first.capacity),
+          occupancy_status: first_value(second.occupancy_status, first.occupancy_status),
+          occupancy_percentage:
+            first_value(second.occupancy_percentage, first.occupancy_percentage),
+          route_has_reliable_crowding_data:
+            first.route_has_reliable_crowding_data || second.route_has_reliable_crowding_data
       }
     end
 
