@@ -285,8 +285,8 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         }}
       >
         <ZoomControl position="topright" />
-        <RecenterControl turnOnAutoCenter={() => setShouldAutoCenter(true)} />
         <FullscreenControl position="topright" />
+        <RecenterControl turnOnAutoCenter={() => setShouldAutoCenter(true)} />
         <TileLayer
           url="https://mbta-map-tiles-dev.s3.amazonaws.com/osm_tiles/{z}/{x}/{y}.png"
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
