@@ -429,89 +429,174 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
       className="m-vehicle-properties-panel"
     >
       <div
-        className="m-properties-panel__header"
+        className="m-properties-panel__header-wrapper"
       >
         <div
-          className="m-properties-panel__label"
-        >
-          <svg
-            style={
-              Object {
-                "height": 64,
-                "width": 64,
-              }
-            }
-            viewBox="-32 -20 64 64"
-          >
-            <g
-              className="m-vehicle-icon m-vehicle-icon--large"
-            >
-              <rect
-                className="m-vehicle-icon__label-background"
-                height={24}
-                rx={12}
-                ry={12}
-                width={64}
-                x={-32}
-                y={19}
-              />
-              <text
-                className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-                dominantBaseline="central"
-                textAnchor="middle"
-                x="0"
-                y={31}
-              >
-                1818
-              </text>
-              <path
-                className="m-vehicle-icon__triangle"
-                d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-                transform="scale(1) rotate(0) translate(-24,-22)"
-              />
-              <text
-                className="m-vehicle-icon__variant"
-                dominantBaseline="alphabetic"
-                textAnchor="middle"
-                x={0}
-                y={14}
-              >
-                4
-              </text>
-            </g>
-          </svg>
-        </div>
-        <div
-          className="m-properties-panel__variant"
+          className="m-properties-panel__header"
         >
           <div
-            className="m-properties-panel__inbound-outbound"
+            className="m-properties-panel__label"
           >
-            
-          </div>
-          <div
-            className="m-route-variant-name"
-          >
-            Shuttle
-          </div>
-        </div>
-        <div
-          className="m-properties-panel__close-ping"
-        >
-          <button
-            className="m-close-button"
-            onClick={[Function]}
-          >
-            <span
-              className=""
-              dangerouslySetInnerHTML={
+            <svg
+              style={
                 Object {
-                  "__html": "SVG",
+                  "height": 64,
+                  "width": 64,
                 }
               }
-            />
-          </button>
+              viewBox="-32 -20 64 64"
+            >
+              <g
+                className="m-vehicle-icon m-vehicle-icon--large"
+              >
+                <rect
+                  className="m-vehicle-icon__label-background"
+                  height={24}
+                  rx={12}
+                  ry={12}
+                  width={64}
+                  x={-32}
+                  y={19}
+                />
+                <text
+                  className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+                  dominantBaseline="central"
+                  textAnchor="middle"
+                  x="0"
+                  y={31}
+                >
+                  1818
+                </text>
+                <path
+                  className="m-vehicle-icon__triangle"
+                  d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+                  transform="scale(1) rotate(0) translate(-24,-22)"
+                />
+                <text
+                  className="m-vehicle-icon__variant"
+                  dominantBaseline="alphabetic"
+                  textAnchor="middle"
+                  x={0}
+                  y={14}
+                >
+                  4
+                </text>
+              </g>
+            </svg>
+          </div>
+          <div
+            className="m-properties-panel__variant"
+          >
+            <div
+              className="m-properties-panel__inbound-outbound"
+            >
+              
+            </div>
+            <div
+              className="m-route-variant-name"
+            >
+              Shuttle
+            </div>
+          </div>
+          <div
+            className="m-properties-panel__close-ping"
+          >
+            <button
+              className="m-close-button"
+              onClick={[Function]}
+            >
+              <span
+                className=""
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
+            </button>
+            <div
+              className="m-properties-panel__last-gps-ping"
+            >
+              -1557160073s ago
+            </div>
+          </div>
         </div>
+        <ul
+          className="m-tabs__tab-list"
+        >
+          <li
+            className="m-tabs__tab m-tabs__tab--selected"
+            onClick={[Function]}
+          >
+            <svg
+              className="m-tabs__tab-status-icon"
+              height="14"
+              width="14"
+            >
+              <circle
+                className="m-tabs__tab-status-icon-outer-circle"
+                cx="7"
+                cy="7"
+                r="6"
+              />
+              <circle
+                className="m-tabs__tab-status-icon-inner-circle"
+                cx="7"
+                cy="7"
+                r="4"
+              />
+            </svg>
+            Status
+          </li>
+          <li
+            className="m-tabs__tab"
+            onClick={[Function]}
+          >
+            <svg
+              className="m-tabs__tab-status-icon"
+              height="14"
+              width="14"
+            >
+              <circle
+                className="m-tabs__tab-status-icon-outer-circle"
+                cx="7"
+                cy="7"
+                r="6"
+              />
+              <circle
+                className="m-tabs__tab-status-icon-inner-circle"
+                cx="7"
+                cy="7"
+                r="4"
+              />
+            </svg>
+            Run
+          </li>
+          <li
+            className="m-tabs__tab"
+            onClick={[Function]}
+          >
+            <svg
+              className="m-tabs__tab-status-icon"
+              height="14"
+              width="14"
+            >
+              <circle
+                className="m-tabs__tab-status-icon-outer-circle"
+                cx="7"
+                cy="7"
+                r="6"
+              />
+              <circle
+                className="m-tabs__tab-status-icon-inner-circle"
+                cx="7"
+                cy="7"
+                r="4"
+              />
+            </svg>
+            Block
+          </li>
+        </ul>
       </div>
       <div
         className="m-properties-list"
@@ -595,16 +680,6 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
           >
             Not available
           </span>
-        </div>
-        <div
-          className="m-properties-list__property-label"
-        >
-          Last GPS Ping
-        </div>
-        <div
-          className="m-properties-list__property-value"
-        >
-          -1557160073s ago
         </div>
         <a
           className="m-vehicle-properties-panel__link"

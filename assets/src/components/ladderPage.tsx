@@ -6,12 +6,10 @@ import { VehiclesByRouteIdProvider } from "../contexts/vehiclesByRouteIdContext"
 import useRoutes from "../hooks/useRoutes"
 import useTimepoints from "../hooks/useTimepoints"
 import useVehicles from "../hooks/useVehicles"
-import featureIsEnabled from "../laboratoryFeatures"
 import { allVehiclesAndGhosts } from "../models/vehiclesByRouteId"
 import { VehicleId, VehicleOrGhost } from "../realtime.d"
 import { ByRouteId, Route, RouteId, TimepointsByRouteId } from "../schedule.d"
 import PropertiesPanel from "./propertiesPanel"
-import STABLEPropertiesPanel from "./STABLE/propertiesPanel"
 import RouteLadders from "./routeLadders"
 import RoutePicker from "./routePicker"
 
@@ -72,18 +70,12 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
             selectedVehicleId={selectedVehicleId}
           />
 
-          {selectedVehicleOrGhost &&
-            (featureIsEnabled("mini_schedule") ? (
-              <PropertiesPanel
-                selectedVehicleOrGhost={selectedVehicleOrGhost}
-                route={vehicleRoute(routes, selectedVehicleOrGhost)}
-              />
-            ) : (
-              <STABLEPropertiesPanel
-                selectedVehicleOrGhost={selectedVehicleOrGhost}
-                route={vehicleRoute(routes, selectedVehicleOrGhost)}
-              />
-            ))}
+          {selectedVehicleOrGhost && (
+            <PropertiesPanel
+              selectedVehicleOrGhost={selectedVehicleOrGhost}
+              route={vehicleRoute(routes, selectedVehicleOrGhost)}
+            />
+          )}
         </>
       </VehiclesByRouteIdProvider>
     </div>
