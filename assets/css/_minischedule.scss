@@ -1,3 +1,26 @@
+.m-minischedule--hide-past {
+  .m-minischedule__piece--past,
+  .m-minischedule__row--past {
+    display: none;
+  }
+}
+
+.m-minischedule__show-past {
+  @include font-link;
+  border-bottom: 1px solid $color-component-light;
+  padding: 1rem;
+  text-align: left;
+  width: 100%;
+}
+
+.m-minischedule__show-past-icon {
+  display: inline-block;
+  fill: $color-font-link;
+  margin-right: 0.25rem;
+  vertical-align: middle;
+  width: 0.875rem;
+}
+
 .m-minischedule__header {
   font-size: 0.875rem;
   padding: 0.5rem 1rem;
@@ -107,42 +130,46 @@
   }
 }
 
-.m-minischedule__piece-rows--past,
-.m-minischedule__piece-rows--future {
-  .m-minischedule__icon {
-    &:not(:empty) {
-      background-color: $color-component-light;
+.m-minischedule__piece--past,
+.m-minischedule__piece--future {
+  .m-minischedule__piece-rows {
+    .m-minischedule__icon {
+      &:not(:empty) {
+        background-color: $color-component-light;
+      }
+
+      svg {
+        fill: $color-component-medium;
+      }
     }
 
-    svg {
-      fill: $color-component-medium;
-    }
-  }
-
-  .m-minischedule__row {
-    &::before,
-    &::after {
-      background-color: $color-component-light;
+    .m-minischedule__row {
+      &::before,
+      &::after {
+        background-color: $color-component-light;
+      }
     }
   }
 }
 
-.m-minischedule__piece-rows--current,
-.m-minischedule__piece-rows--unknown {
-  .m-minischedule__icon {
-    &:not(:empty) {
-      background-color: $color-primary;
+.m-minischedule__piece--current,
+.m-minischedule__piece--unknown {
+  .m-minischedule__piece-rows {
+    .m-minischedule__icon {
+      &:not(:empty) {
+        background-color: $color-primary;
+      }
+
+      svg {
+        fill: $color-secondary-light;
+      }
     }
 
-    svg {
-      fill: $color-secondary-light;
-    }
-  }
-
-  .m-minischedule__row {
-    &::before,
-    &::after {
-      background-color: $color-primary;
+    .m-minischedule__row {
+      &::before,
+      &::after {
+        background-color: $color-primary;
+      }
     }
   }
 }

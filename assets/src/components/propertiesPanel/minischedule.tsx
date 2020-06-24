@@ -1,4 +1,10 @@
-import React, { ReactElement, useContext } from "react"
+import React, {
+  Dispatch,
+  ReactElement,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { className } from "../../helpers/dom"
 import {
@@ -10,6 +16,7 @@ import {
   questionMarkIcon,
   triangleDownIcon,
   triangleUpIcon,
+  upDownIcon,
 } from "../../helpers/icon"
 import {
   useMinischeduleBlock,
@@ -42,22 +49,60 @@ export interface Props {
 
 export const MinischeduleRun = ({ vehicleOrGhost }: Props): ReactElement => {
   const run: Run | null | undefined = useMinischeduleRun(vehicleOrGhost.tripId!)
+  return (
+    <Minischedule runOrBlock={run} vehicleOrGhost={vehicleOrGhost} view="run" />
+  )
+}
 
-  if (run === undefined) {
+export const MinischeduleBlock = ({ vehicleOrGhost }: Props): ReactElement => {
+  const block: Block | null | undefined = useMinischeduleBlock(
+    vehicleOrGhost.tripId!
+  )
+  return (
+    <Minischedule
+      runOrBlock={block}
+      vehicleOrGhost={vehicleOrGhost}
+      view="block"
+    />
+  )
+}
+
+export const Minischedule = ({
+  runOrBlock,
+  vehicleOrGhost,
+  view,
+}: {
+  runOrBlock: Run | Block | null | undefined
+  vehicleOrGhost: VehicleOrGhost
+  view: "run" | "block"
+}) => {
+  const [showPast, setShowPast] = useState<boolean>(false)
+  if (runOrBlock === undefined) {
     return <Loading />
-  } else if (run === null) {
-    return <>No run found</>
+  } else if (runOrBlock === null) {
+    return view === "run" ? <>No run found</> : <>No block found</>
   } else {
-    const activeIndex = getActiveIndex(run.activities, vehicleOrGhost.tripId)
+    const activities: (Piece | Break)[] =
+      (runOrBlock as Run).activities || (runOrBlock as Block).pieces
+    const activeIndex = getActiveIndex(activities, vehicleOrGhost.tripId)
     return (
-      <>
-        <Header label="Run" value={run.id} />
-        <DutyDetails run={run} />
-        {run.activities.map((activity, index) =>
+      <div
+        className={className([
+          "m-minischedule",
+          `m-minischedule--${showPast ? "show-past" : "hide-past"}`,
+        ])}
+      >
+        <PastToggle showPast={showPast} setShowPast={setShowPast} />
+        <Header
+          label={view === "run" ? "Run" : "Block"}
+          value={runOrBlock.id}
+        />
+        {view === "run" ? <DutyDetails run={runOrBlock as Run} /> : null}
+        {activities.map((activity, index) =>
           isPiece(activity) ? (
             <Piece
               piece={activity}
-              view="run"
+              view={view}
               vehicleOrGhost={vehicleOrGhost}
               pieceIndex={index}
               activeIndex={activeIndex}
@@ -72,39 +117,26 @@ export const MinischeduleRun = ({ vehicleOrGhost }: Props): ReactElement => {
             />
           )
         )}
-      </>
+      </div>
     )
   }
 }
 
-export const MinischeduleBlock = ({ vehicleOrGhost }: Props): ReactElement => {
-  const block: Block | null | undefined = useMinischeduleBlock(
-    vehicleOrGhost.tripId!
-  )
-
-  if (block === undefined) {
-    return <Loading />
-  } else if (block === null) {
-    return <>No block found</>
-  } else {
-    const activeIndex = getActiveIndex(block.pieces, vehicleOrGhost.tripId)
-    return (
-      <>
-        <Header label="Block" value={block.id} />
-        {block.pieces.map((piece, index) => (
-          <Piece
-            piece={piece}
-            view={"block"}
-            vehicleOrGhost={vehicleOrGhost}
-            pieceIndex={index}
-            activeIndex={activeIndex}
-            key={piece.startTime}
-          />
-        ))}
-      </>
-    )
-  }
-}
+const PastToggle = ({
+  showPast,
+  setShowPast,
+}: {
+  showPast: boolean
+  setShowPast: Dispatch<SetStateAction<boolean>>
+}) => (
+  <button
+    className="m-minischedule__show-past"
+    onClick={() => setShowPast(!showPast)}
+  >
+    {upDownIcon("m-minischedule__show-past-icon")}
+    {`${showPast ? "Hide" : "Show"} past trips`}
+  </button>
+)
 
 const Header = ({ label, value }: { label: string; value: string }) => (
   <div className="m-minischedule__header">
@@ -279,7 +311,7 @@ const Piece = ({
     pieceTimeBasedStyle === "current" ? "future" : pieceTimeBasedStyle
 
   return (
-    <>
+    <div className={`m-minischedule__piece--${pieceTimeBasedStyle}`}>
       {view === "block" ? (
         <div className="m-minischedule__run-header">{piece.runId}</div>
       ) : null}
@@ -294,12 +326,7 @@ const Piece = ({
           timeBasedStyle={startTimeBasedStyle}
         />
       )}
-      <div
-        className={className([
-          "m-minischedule__piece-rows",
-          `m-minischedule__piece-rows--${pieceTimeBasedStyle}`,
-        ])}
-      >
+      <div className="m-minischedule__piece-rows">
         {isSwingOn ? (
           <Row
             key="swing-on"
@@ -356,7 +383,7 @@ const Piece = ({
           timeBasedStyle={doneTimeBasedStyle}
         />
       )}
-    </>
+    </div>
   )
 }
 
