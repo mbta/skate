@@ -1,4 +1,5 @@
 .m-minischedule__header {
+  font-size: 0.875rem;
   padding: 0.5rem 1rem;
 }
 
@@ -9,15 +10,18 @@
 
 .m-minischedule__run-header {
   background-color: $color-bg-light;
+  font-size: 0.875rem;
   padding: 0.5rem 1rem;
 }
 
 .m-minischedule__duty-details {
   background-color: $color-secondary-light;
+  font-size: 0.875rem;
   padding: 0.5rem 1rem;
 
   .m-minischedule__header-label {
     display: inline-block;
+    margin-bottom: 0.5rem;
     width: 40%;
   }
 }
