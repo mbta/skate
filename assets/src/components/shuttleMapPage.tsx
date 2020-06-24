@@ -5,14 +5,12 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { flatten } from "../helpers/array"
 import { useRouteShapes } from "../hooks/useShapes"
 import useShuttleVehicles from "../hooks/useShuttleVehicles"
-import featureIsEnabled from "../laboratoryFeatures"
 import useTrainVehicles from "../hooks/useTrainVehicles"
 import { isASubwayRoute } from "../models/subwayRoute"
 import { RunId, TrainVehicle, Vehicle, VehicleId } from "../realtime"
 import { ByRouteId, RouteId, Shape } from "../schedule"
 import Map from "./map"
 import PropertiesPanel from "./propertiesPanel"
-import STABLEPropertiesPanel from "./STABLE/propertiesPanel"
 import ShuttlePicker from "./shuttlePicker"
 
 const filterShuttles = (
@@ -80,12 +78,9 @@ const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
         />
       </div>
 
-      {selectedVehicle &&
-        (featureIsEnabled("mini_schedule") ? (
-          <PropertiesPanel selectedVehicleOrGhost={selectedVehicle} />
-        ) : (
-          <STABLEPropertiesPanel selectedVehicleOrGhost={selectedVehicle} />
-        ))}
+      {selectedVehicle && (
+        <PropertiesPanel selectedVehicleOrGhost={selectedVehicle} />
+      )}
     </div>
   )
 }
