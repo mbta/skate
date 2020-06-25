@@ -16,7 +16,9 @@
 .m-properties-panel__variant {
   border-left: 1px solid $color-rule;
   flex: 1 1 auto;
-  padding: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 1rem;
+  padding-top: 1rem;
 }
 
 .m-properties-panel__inbound-outbound {
@@ -78,16 +80,20 @@
 .m-properties-panel__close-ping {
   align-items: flex-end;
   display: flex;
+  flex: 0 0 auto;
   flex-direction: column;
   justify-content: space-between;
 
   .m-close-button,
   .m-properties-panel__last-gps-ping {
-    padding: 1rem;
+    padding-bottom: 1rem;
+    padding-right: 1rem;
+    padding-top: 1rem;
   }
 }
 
 .m-properties-panel__last-gps-ping {
   @include font-small;
   color: $color-font-grey;
+  min-width: 3rem;
 }
