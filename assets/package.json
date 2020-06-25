@@ -25,6 +25,7 @@
     "react-dom": "^16.13.1",
     "react-leaflet": "^2.7.0",
     "react-leaflet-control": "^2.1.2",
+    "react-leaflet-fullscreen": "^1.0.1",
     "react-router-dom": "^5.2.0",
     "react-tooltip": "^4.2.7",
     "resize-observer-polyfill": "^1.5.1",

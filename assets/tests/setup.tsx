@@ -6,6 +6,11 @@ import Adapter from "enzyme-adapter-react-16"
 
 configure({ adapter: new Adapter() })
 
+jest.mock("react-leaflet-fullscreen", () => ({
+  __esModule: true,
+  default: jest.fn(() => null),
+}))
+
 jest.mock("react-tooltip", () => ({
   __esModule: true,
   default: jest
