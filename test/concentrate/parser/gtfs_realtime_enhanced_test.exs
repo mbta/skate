@@ -90,11 +90,14 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
     test "decodes a VehiclePosition JSON map" do
       input = %{
         "block_id" => "Q238-135",
+        "capacity" => 18,
         "congestion_level" => nil,
         "current_status" => "STOPPED_AT",
         "current_stop_sequence" => 670,
         "location_source" => "samsara",
-        "occupancy_status" => nil,
+        "load" => 12,
+        "occupancy_percentage" => 0.67,
+        "occupancy_status" => "FEW_SEATS_AVAILABLE",
         "operator" => %{"id" => "2841", "logon_time" => 1_534_340_301, "name" => "EVANS"},
         "position" => %{
           "bearing" => 135,
@@ -152,7 +155,12 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
                  current_status: :STOPPED_AT,
                  last_updated: 1_534_340_406,
                  sources: MapSet.new(["busloc"]),
-                 data_discrepancies: []
+                 data_discrepancies: [],
+                 load: 12,
+                 capacity: 18,
+                 occupancy_percentage: 0.67,
+                 occupancy_status: "FEW_SEATS_AVAILABLE",
+                 route_has_reliable_crowding_data: true
                )
     end
   end

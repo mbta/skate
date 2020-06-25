@@ -68,6 +68,11 @@ const vehicle: Vehicle = {
   routeStatus: "on_route",
   endOfTripType: "another_trip",
   blockWaivers: [],
+  load: null,
+  capacity: null,
+  occupancyStatus: null,
+  occupancyPercentage: null,
+  routeHasReliableCrowdingData: false,
 }
 
 describe("map", () => {

@@ -125,6 +125,11 @@ describe("useSearchResults", () => {
       route_status: "on_route",
       end_of_trip_type: "another_trip",
       block_waivers: [],
+      load: null,
+      capacity: null,
+      occupancy_percentage: null,
+      occupancy_status: null,
+      route_has_reliable_crowding_data: false,
     }
     const searchResultsData: VehicleOrGhostData[] = [vehicleData]
     const vehicle: Vehicle = {
@@ -205,6 +210,11 @@ describe("useSearchResults", () => {
       routeStatus: "on_route",
       endOfTripType: "another_trip",
       blockWaivers: [],
+      load: null,
+      capacity: null,
+      occupancyStatus: null,
+      occupancyPercentage: null,
+      routeHasReliableCrowdingData: false,
     }
     const vehicles: VehicleOrGhost[] = [vehicle]
 
