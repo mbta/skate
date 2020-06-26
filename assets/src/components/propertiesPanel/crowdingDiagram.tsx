@@ -76,7 +76,7 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
           Riders onboard
         </span>
         <br />
-        {statusDescription !== "NO_DATA" ? (
+        {crowding.load !== null ? (
           <>
             {loadPhrase} / {crowding.capacity} maximum
             <br />

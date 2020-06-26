@@ -186,15 +186,7 @@ exports[`CrowdingDiagram renders correctly for an untrusted APC 1`] = `
       Riders onboard
     </span>
     <br />
-    null riders
-     / 
-     maximum
-    <br />
-    <span
-      className="m-crowding-diagram__status-description m-crowding-diagram__status-description--no-data"
-    >
-      No data available
-    </span>
+    No data available
   </div>
   <div
     className="m-crowding-diagram__crowding-icon-wrapper"
