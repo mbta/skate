@@ -7,6 +7,7 @@ import { Route, Shape } from "../../schedule"
 import Map from "../map"
 import PropertiesList from "../propertiesList"
 import BlockWaiverList from "./blockWaiverList"
+import CrowdingDiagram from "./crowdingDiagram"
 import Header from "./header"
 import HeadwayDiagram from "./headwayDiagram"
 import TabPanels, { TabMode } from "./tabPanels"
@@ -119,6 +120,8 @@ const StatusContent = ({ selectedVehicle }: { selectedVehicle: Vehicle }) => (
     )}
 
     <PropertiesList vehicleOrGhost={selectedVehicle} />
+
+    <CrowdingDiagram vehicle={selectedVehicle} />
 
     <Location vehicle={selectedVehicle} />
 

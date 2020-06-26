@@ -1,0 +1,26 @@
+.m-crowding-diagram {
+  border-top: 1px solid $color-rule;
+  font-size: 0.875rem;
+  line-height: 1.3rem;
+  padding: 1rem;
+}
+
+.m-crowding-diagram__status-description {
+  text-transform: uppercase;
+
+  &--empty {
+    color: $color-component-medium;
+  }
+
+  &--not-crowded {
+    color: #5cbf95;
+  }
+
+  &--some-crowding {
+    color: #fca400;
+  }
+
+  &--crowded {
+    color: #e90d0d;
+  }
+}
