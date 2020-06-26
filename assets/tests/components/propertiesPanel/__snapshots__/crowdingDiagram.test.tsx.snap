@@ -3,6 +3,7 @@
 exports[`CrowdingDiagram renders correctly for a crowded bus 1`] = `
 <div
   className="m-crowding-diagram"
+  data-tip="This data is an estimate based on the onboard APC units."
 >
   <div
     className="m-crowding-diagram__properties"
@@ -36,12 +37,16 @@ exports[`CrowdingDiagram renders correctly for a crowded bus 1`] = `
       }
     />
   </div>
+  <div
+    className="mock-react-tooltip"
+  />
 </div>
 `;
 
 exports[`CrowdingDiagram renders correctly for a somewhat crowded bus 1`] = `
 <div
   className="m-crowding-diagram"
+  data-tip="This data is an estimate based on the onboard APC units."
 >
   <div
     className="m-crowding-diagram__properties"
@@ -75,12 +80,16 @@ exports[`CrowdingDiagram renders correctly for a somewhat crowded bus 1`] = `
       }
     />
   </div>
+  <div
+    className="mock-react-tooltip"
+  />
 </div>
 `;
 
 exports[`CrowdingDiagram renders correctly for an empty bus 1`] = `
 <div
   className="m-crowding-diagram"
+  data-tip="This data is an estimate based on the onboard APC units."
 >
   <div
     className="m-crowding-diagram__properties"
@@ -114,12 +123,16 @@ exports[`CrowdingDiagram renders correctly for an empty bus 1`] = `
       }
     />
   </div>
+  <div
+    className="mock-react-tooltip"
+  />
 </div>
 `;
 
 exports[`CrowdingDiagram renders correctly for an uncrowded bus 1`] = `
 <div
   className="m-crowding-diagram"
+  data-tip="This data is an estimate based on the onboard APC units."
 >
   <div
     className="m-crowding-diagram__properties"
@@ -153,12 +166,16 @@ exports[`CrowdingDiagram renders correctly for an uncrowded bus 1`] = `
       }
     />
   </div>
+  <div
+    className="mock-react-tooltip"
+  />
 </div>
 `;
 
 exports[`CrowdingDiagram renders correctly for an untrusted APC 1`] = `
 <div
   className="m-crowding-diagram"
+  data-tip="This data is an estimate based on the onboard APC units."
 >
   <div
     className="m-crowding-diagram__properties"
@@ -191,6 +208,9 @@ exports[`CrowdingDiagram renders correctly for an untrusted APC 1`] = `
       }
     />
   </div>
+  <div
+    className="mock-react-tooltip"
+  />
 </div>
 `;
 

@@ -1,4 +1,5 @@
 import React from "react"
+import ReactTooltip from "react-tooltip"
 import { crowdingIcon } from "../../helpers/icon"
 import { Crowding, OccupancyStatus } from "../../realtime"
 
@@ -66,7 +67,10 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
   const loadPhrase = crowding.load === 1 ? "1 rider" : `${crowding.load} riders`
 
   return (
-    <div className="m-crowding-diagram">
+    <div
+      className="m-crowding-diagram"
+      data-tip="This data is an estimate based on the onboard APC units."
+    >
       <div className="m-crowding-diagram__properties">
         <span className="m-properties-list__property-label">
           Riders onboard
@@ -91,6 +95,7 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
           `m-crowding-diagram__crowding-icon m-crowding-diagram__crowding-icon--${classModifier}`
         )}
       </div>
+      <ReactTooltip effect="solid" globalEventOff="click" />
     </div>
   )
 }
