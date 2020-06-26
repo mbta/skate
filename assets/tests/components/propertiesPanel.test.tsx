@@ -78,6 +78,7 @@ const vehicle: Vehicle = {
   routeStatus: "on_route",
   endOfTripType: "another_trip",
   blockWaivers: [],
+  crowding: null,
 }
 const ghost: Ghost = {
   id: "ghost-trip",

@@ -58,6 +58,7 @@ const vehicle: Vehicle = {
   routeStatus: "on_route",
   endOfTripType: "another_trip",
   blockWaivers: [],
+  crowding: null,
 }
 
 const shuttleRoutes: Route[] = [

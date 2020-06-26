@@ -19,10 +19,10 @@ export interface BlockWaiver {
 }
 
 export interface Crowding {
-  load: number
-  capacity: number
-  occupancyStatus: string
-  occupancyPercentage: number
+  load: number | null
+  capacity: number | null
+  occupancyStatus: string | null
+  occupancyPercentage: number | null
 }
 
 export interface DataDiscrepancy {

@@ -99,6 +99,7 @@ describe("useVehicles", () => {
           remark: null,
         },
       ],
+      crowding: null,
     },
   ]
   const vehicles: Vehicle[] = [
@@ -188,6 +189,7 @@ describe("useVehicles", () => {
           remark: null,
         },
       ],
+      crowding: null,
     },
   ]
 
