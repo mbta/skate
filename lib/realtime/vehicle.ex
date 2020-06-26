@@ -3,7 +3,7 @@ defmodule Realtime.Vehicle do
   alias Schedule.{Block, Route, Trip}
   alias Schedule.Gtfs.{Direction, RoutePattern, Stop}
   alias Schedule.Hastus.Run
-  alias Realtime.{BlockWaiver, BlockWaiverStore, Headway, RouteStatus, TimepointStatus}
+  alias Realtime.{BlockWaiver, BlockWaiverStore, Crowding, Headway, RouteStatus, TimepointStatus}
 
   @type stop_status :: %{
           stop_id: Stop.id(),
@@ -47,11 +47,7 @@ defmodule Realtime.Vehicle do
           route_status: RouteStatus.route_status(),
           end_of_trip_type: end_of_trip_type(),
           block_waivers: [BlockWaiver.t()],
-          load: non_neg_integer() | nil,
-          capacity: non_neg_integer() | nil,
-          occupancy_status: String.t() | nil,
-          occupancy_percentage: float() | nil,
-          route_has_reliable_crowding_data: boolean
+          crowding: Crowding.t() | nil
         }
 
   @enforce_keys [
@@ -113,11 +109,7 @@ defmodule Realtime.Vehicle do
     :scheduled_location,
     :route_status,
     :end_of_trip_type,
-    :load,
-    :capacity,
-    :occupancy_status,
-    :occupancy_percentage,
-    :route_has_reliable_crowding_data,
+    :crowding,
     block_waivers: [],
     data_discrepancies: []
   ]
@@ -235,11 +227,7 @@ defmodule Realtime.Vehicle do
       route_status: route_status(stop_id, trip, block),
       end_of_trip_type: end_of_trip_type(block, trip, run_id, stop_id),
       block_waivers: block_waivers,
-      load: vehicle_position.load,
-      capacity: vehicle_position.capacity,
-      occupancy_status: vehicle_position.occupancy_status,
-      occupancy_percentage: vehicle_position.occupancy_percentage,
-      route_has_reliable_crowding_data: vehicle_position.route_has_reliable_crowding_data
+      crowding: vehicle_position.crowding
     }
   end
 

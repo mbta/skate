@@ -5,6 +5,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
   @behaviour Concentrate.Parser
   require Logger
   alias Concentrate.{StopTimeUpdate, TripUpdate, VehiclePosition}
+  alias Realtime.Crowding
 
   @impl Concentrate.Parser
   def parse(binary) when is_binary(binary) do
@@ -84,11 +85,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
             operator_logon_time: Map.get(operator, "logon_time"),
             sources: MapSet.new(["busloc"]),
             data_discrepancies: [],
-            load: Map.get(vp, "load"),
-            route_has_reliable_crowding_data: Map.has_key?(vp, "load"),
-            capacity: Map.get(vp, "capacity"),
-            occupancy_status: Map.get(vp, "occupancy_status"),
-            occupancy_percentage: Map.get(vp, "occupancy_percentage")
+            crowding: decode_crowding(vp)
           )
         ]
 
@@ -113,6 +110,20 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
         schedule_relationship: schedule_relationship(Map.get(trip, "schedule_relationship"))
       )
     ]
+  end
+
+  @spec decode_crowding(map()) :: Crowding.t() | nil
+  def decode_crowding(vp) do
+    if Map.has_key?(vp, "load") do
+      %Crowding{
+        load: Map.get(vp, "load"),
+        capacity: Map.get(vp, "capacity"),
+        occupancy_status: Map.get(vp, "occupancy_status"),
+        occupancy_percentage: Map.get(vp, "occupancy_percentage")
+      }
+    else
+      nil
+    end
   end
 
   @spec date(String.t() | nil) :: :calendar.date() | nil
