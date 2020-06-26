@@ -212,7 +212,7 @@ defmodule Concentrate.VehiclePosition do
     defp merge_crowding(nil, second), do: second
 
     defp merge_crowding(first, second) do
-      %{
+      %Crowding{
         load: first_value(second.load, first.load),
         capacity: first_value(second.capacity, first.capacity),
         occupancy_status: first_value(second.occupancy_status, first.occupancy_status),
