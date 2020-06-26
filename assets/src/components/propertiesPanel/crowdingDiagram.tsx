@@ -20,14 +20,54 @@ const extendedOccupancyStatus = (crowding: Crowding): string => {
   return crowding.occupancyStatus!
 }
 
-const GenericCrowdingDiagram = ({
-  crowding,
-  statusDescription,
-}: {
-  crowding: Crowding
-  statusDescription: string
-}) => {
-  const classModifier = statusDescription.toLowerCase().replace(" ", "-")
+const statusDescriptionForStatus = (status: string): string => {
+  switch (status) {
+    case "NO_DATA":
+      return "No data available"
+    case "EMPTY":
+      return "Empty"
+    case "MANY_SEATS_AVAILABLE":
+      return "Not crowded"
+    case "FEW_SEATS_AVAILABLE":
+      return "Some crowding"
+    case "FULL":
+      return "Crowded"
+  }
+
+  // We should never get here.
+  return ""
+}
+
+const classModifierForStatus = (status: string): string => {
+  switch (status) {
+    case "NO_DATA":
+      return "no-data"
+    case "EMPTY":
+      return "empty"
+    case "MANY_SEATS_AVAILABLE":
+      return "not-crowded"
+    case "FEW_SEATS_AVAILABLE":
+      return "some-crowding"
+    case "FULL":
+      return "crowded"
+  }
+
+  // We should never get here.
+  return ""
+}
+
+const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
+  if (crowding === null) {
+    return null
+  }
+
+  const statusDescription = statusDescriptionForStatus(
+    extendedOccupancyStatus(crowding)
+  )
+
+  const classModifier = classModifierForStatus(
+    extendedOccupancyStatus(crowding)
+  )
 
   return (
     <div className="m-crowding-diagram">
@@ -36,13 +76,19 @@ const GenericCrowdingDiagram = ({
           Riders onboard
         </span>
         <br />
-        {crowding.load} riders / {crowding.capacity} maximum
-        <br />
-        <span
-          className={`m-crowding-diagram__status-description m-crowding-diagram__status-description--${classModifier}`}
-        >
-          {statusDescription}
-        </span>
+        {statusDescription !== "NO_DATA" ? (
+          <>
+            {crowding.load} riders / {crowding.capacity} maximum
+            <br />
+            <span
+              className={`m-crowding-diagram__status-description m-crowding-diagram__status-description--${classModifier}`}
+            >
+              {statusDescription}
+            </span>
+          </>
+        ) : (
+          "No data available"
+        )}
       </div>
       <div className="m-crowding-diagram__crowding-icon-wrapper">
         {crowdingIcon(
@@ -51,63 +97,6 @@ const GenericCrowdingDiagram = ({
       </div>
     </div>
   )
-}
-
-const NoDataCrowdingDiagram = () => (
-  <div className="m-crowding-diagram">
-    <div className="m-crowding-diagram__properties">
-      <span className="m-properties-list__property-label">Riders onboard</span>
-      <br />
-      No data available.
-      <br />
-    </div>
-    <div className="m-crowding-diagram__crowding-icon-wrapper">
-      {crowdingIcon(
-        "m-crowding-diagram__crowding-icon m-crowding-diagram__crowding-icon--empty"
-      )}
-    </div>
-  </div>
-)
-
-const EmptyCrowdingDiagram = ({ crowding }: { crowding: Crowding }) => (
-  <GenericCrowdingDiagram crowding={crowding} statusDescription="Empty" />
-)
-
-const NotCrowdedCrowdingDiagram = ({ crowding }: { crowding: Crowding }) => (
-  <GenericCrowdingDiagram crowding={crowding} statusDescription="Not crowded" />
-)
-
-const SomeCrowdingCrowdingDiagram = ({ crowding }: { crowding: Crowding }) => (
-  <GenericCrowdingDiagram
-    crowding={crowding}
-    statusDescription="Some crowding"
-  />
-)
-
-const CrowdedCrowdingDiagram = ({ crowding }: { crowding: Crowding }) => (
-  <GenericCrowdingDiagram crowding={crowding} statusDescription="Crowded" />
-)
-
-const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
-  if (crowding === null) {
-    return null
-  }
-
-  switch (extendedOccupancyStatus(crowding)) {
-    case "NO_DATA":
-      return <NoDataCrowdingDiagram />
-    case "EMPTY":
-      return <EmptyCrowdingDiagram crowding={crowding} />
-    case "MANY_SEATS_AVAILABLE":
-      return <NotCrowdedCrowdingDiagram crowding={crowding} />
-    case "FEW_SEATS_AVAILABLE":
-      return <SomeCrowdingCrowdingDiagram crowding={crowding} />
-    case "FULL":
-      return <CrowdedCrowdingDiagram crowding={crowding} />
-  }
-
-  // If we get here, something has gone wrong.
-  return null
 }
 
 export default CrowdingDiagram
