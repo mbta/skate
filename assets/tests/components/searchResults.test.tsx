@@ -91,11 +91,6 @@ describe("SearchResults", () => {
       routeStatus: "on_route",
       endOfTripType: "another_trip",
       blockWaivers: [],
-      load: null,
-      capacity: null,
-      occupancyStatus: null,
-      occupancyPercentage: null,
-      routeHasReliableCrowdingData: false,
     }
     const ghost: Ghost = {
       id: "ghost-trip",
@@ -180,11 +175,6 @@ describe("SearchResults", () => {
       routeStatus: "on_route",
       endOfTripType: "another_trip",
       blockWaivers: [],
-      load: null,
-      capacity: null,
-      occupancyStatus: null,
-      occupancyPercentage: null,
-      routeHasReliableCrowdingData: false,
     }
 
     const tree = renderer
@@ -252,11 +242,6 @@ describe("SearchResults", () => {
       routeStatus: "on_route",
       endOfTripType: "another_trip",
       blockWaivers: [],
-      load: null,
-      capacity: null,
-      occupancyStatus: null,
-      occupancyPercentage: null,
-      routeHasReliableCrowdingData: false,
     }
     const newVehicle: Vehicle = {
       id: "new",
@@ -311,11 +296,6 @@ describe("SearchResults", () => {
       routeStatus: "on_route",
       endOfTripType: "another_trip",
       blockWaivers: [],
-      load: null,
-      capacity: null,
-      occupancyStatus: null,
-      occupancyPercentage: null,
-      routeHasReliableCrowdingData: false,
     }
     const ghost: Ghost = {
       id: "ghost-trip",
@@ -400,11 +380,6 @@ describe("SearchResults", () => {
       routeStatus: "on_route",
       endOfTripType: "another_trip",
       blockWaivers: [],
-      load: null,
-      capacity: null,
-      occupancyStatus: null,
-      occupancyPercentage: null,
-      routeHasReliableCrowdingData: false,
     }
     const ghost: Ghost = {
       id: "ghost-trip",
@@ -495,11 +470,6 @@ describe("SearchResults", () => {
       routeStatus: "on_route",
       endOfTripType: "another_trip",
       blockWaivers: [],
-      load: null,
-      capacity: null,
-      occupancyStatus: null,
-      occupancyPercentage: null,
-      routeHasReliableCrowdingData: false,
     }
     const wrapper = mount(
       <StateDispatchProvider state={state} dispatch={testDispatch}>

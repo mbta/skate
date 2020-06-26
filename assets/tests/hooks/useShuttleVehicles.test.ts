@@ -73,11 +73,6 @@ const shuttlesData = [
     route_status: "pulling_out",
     end_of_trip_type: "another_trip",
     block_waivers: [],
-    load: null,
-    capacity: null,
-    occupancy_status: null,
-    occupancy_percentage: null,
-    route_has_reliable_crowding_data: false,
   },
 ]
 const shuttles: Vehicle[] = [
@@ -147,11 +142,6 @@ const shuttles: Vehicle[] = [
     routeStatus: "pulling_out",
     endOfTripType: "another_trip",
     blockWaivers: [],
-    load: null,
-    capacity: null,
-    occupancyStatus: null,
-    occupancyPercentage: null,
-    routeHasReliableCrowdingData: false,
   },
 ]
 

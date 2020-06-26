@@ -60,11 +60,6 @@ const vehicles: Vehicle[] = [
     routeStatus: "on_route",
     endOfTripType: "another_trip",
     blockWaivers: [],
-    load: null,
-    capacity: null,
-    occupancyStatus: null,
-    occupancyPercentage: null,
-    routeHasReliableCrowdingData: false,
   },
   {
     id: "y0479",
@@ -117,11 +112,6 @@ const vehicles: Vehicle[] = [
     routeStatus: "on_route",
     endOfTripType: "another_trip",
     blockWaivers: [],
-    load: null,
-    capacity: null,
-    occupancyStatus: null,
-    occupancyPercentage: null,
-    routeHasReliableCrowdingData: false,
   },
 ]
 
@@ -409,11 +399,6 @@ describe("routeLadder", () => {
       routeStatus: "pulling_out",
       endOfTripType: "another_trip",
       blockWaivers: [],
-      load: null,
-      capacity: null,
-      occupancyStatus: null,
-      occupancyPercentage: null,
-      routeHasReliableCrowdingData: false,
     }
 
     const wrapper = mount(

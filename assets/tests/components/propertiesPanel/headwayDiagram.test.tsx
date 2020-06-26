@@ -55,11 +55,6 @@ const vehicle: Vehicle = {
   routeStatus: "on_route",
   endOfTripType: "another_trip",
   blockWaivers: [],
-  load: null,
-  capacity: null,
-  occupancyStatus: null,
-  occupancyPercentage: null,
-  routeHasReliableCrowdingData: false,
 }
 
 jest.mock("../../../src/models/vehiclesByRouteId", () => ({
@@ -136,11 +131,6 @@ describe("HeadwayDiagram", () => {
       routeStatus: "on_route",
       endOfTripType: "another_trip",
       blockWaivers: [],
-      load: null,
-      capacity: null,
-      occupancyStatus: null,
-      occupancyPercentage: null,
-      routeHasReliableCrowdingData: false,
     }
 
     const tree = renderer
@@ -199,11 +189,6 @@ describe("HeadwayDiagram", () => {
       routeStatus: "on_route",
       endOfTripType: "another_trip",
       blockWaivers: [],
-      load: null,
-      capacity: null,
-      occupancyStatus: null,
-      occupancyPercentage: null,
-      routeHasReliableCrowdingData: false,
     }
 
     const tree = renderer

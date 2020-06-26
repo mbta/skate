@@ -99,11 +99,6 @@ describe("useVehicles", () => {
           remark: null,
         },
       ],
-      load: null,
-      capacity: null,
-      occupancy_status: null,
-      occupancy_percentage: null,
-      route_has_reliable_crowding_data: false,
     },
   ]
   const vehicles: Vehicle[] = [
@@ -193,11 +188,6 @@ describe("useVehicles", () => {
           remark: null,
         },
       ],
-      load: null,
-      capacity: null,
-      occupancyStatus: null,
-      occupancyPercentage: null,
-      routeHasReliableCrowdingData: false,
     },
   ]
 

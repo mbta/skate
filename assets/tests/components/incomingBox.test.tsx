@@ -72,11 +72,6 @@ describe("IncomingBox", () => {
       routeStatus: "pulling_out",
       endOfTripType: "another_trip",
       blockWaivers: [],
-      load: null,
-      capacity: null,
-      occupancyStatus: null,
-      occupancyPercentage: null,
-      routeHasReliableCrowdingData: false,
     }
 
     const tree = renderer
