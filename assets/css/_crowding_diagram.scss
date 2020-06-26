@@ -1,5 +1,6 @@
 $color-crowding-empty-text: $color-component-medium;
 $color-crowding-empty-icon: $color-secondary-light;
+$color-crowding-no-data-icon: $color-secondary-light;
 $color-crowding-not-crowded: #5cbf95;
 $color-crowding-some-crowding: #fca400;
 $color-crowding-crowded: #e90d0d;
@@ -14,6 +15,7 @@ $color-crowding-icon-bg: $color-bg-medium;
 }
 
 .m-crowding-diagram__status-description {
+  font-weight: 500;
   text-transform: uppercase;
 
   &--empty {
@@ -55,6 +57,12 @@ $color-crowding-icon-bg: $color-bg-medium;
       * {
         fill: $color-crowding-empty-icon;
       }
+    }
+  }
+
+  &--no-data {
+    svg * {
+      fill: $color-crowding-no-data-icon;
     }
   }
 
