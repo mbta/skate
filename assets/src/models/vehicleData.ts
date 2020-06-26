@@ -4,6 +4,7 @@ import {
   DataDiscrepancy,
   EndOfTripType,
   Ghost,
+  OccupancyStatus,
   RouteStatus,
   RunId,
   Vehicle,
@@ -60,7 +61,7 @@ export interface VehicleData {
   crowding: {
     load: number
     capacity: number
-    occupancy_status: string
+    occupancy_status: OccupancyStatus
     occupancy_percentage: number
   } | null
 }

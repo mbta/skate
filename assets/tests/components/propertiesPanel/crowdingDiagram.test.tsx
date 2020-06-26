@@ -1,6 +1,7 @@
 import React from "react"
 import renderer from "react-test-renderer"
 import CrowdingDiagram from "../../../src/components/propertiesPanel/crowdingDiagram"
+import { Crowding } from "../../../src/realtime"
 
 describe("CrowdingDiagram", () => {
   test("renders nothing if route isn't considered reliable", () => {
@@ -25,7 +26,7 @@ describe("CrowdingDiagram", () => {
   })
 
   test("renders correctly for an empty bus", () => {
-    const emptyCrowding = {
+    const emptyCrowding: Crowding = {
       load: 0,
       capacity: 18,
       occupancyStatus: "MANY_SEATS_AVAILABLE",
@@ -40,11 +41,11 @@ describe("CrowdingDiagram", () => {
   })
 
   test("renders correctly for an uncrowded bus", () => {
-    const uncrowded = {
+    const uncrowded: Crowding = {
       load: 1,
       capacity: 20,
-      occupancyPercentage: 0.05,
       occupancyStatus: "MANY_SEATS_AVAILABLE",
+      occupancyPercentage: 0.05,
     }
 
     const tree = renderer
@@ -55,11 +56,11 @@ describe("CrowdingDiagram", () => {
   })
 
   test("renders correctly for a somewhat crowded bus", () => {
-    const somewhatCrowded = {
+    const somewhatCrowded: Crowding = {
       load: 10,
       capacity: 20,
-      occupancyPercentage: 0.5,
       occupancyStatus: "FEW_SEATS_AVAILABLE",
+      occupancyPercentage: 0.5,
     }
 
     const tree = renderer
@@ -70,11 +71,11 @@ describe("CrowdingDiagram", () => {
   })
 
   test("renders correctly for a crowded bus", () => {
-    const crowded = {
+    const crowded: Crowding = {
       load: 45,
       capacity: 30,
-      occupancyPercentage: 1.5,
       occupancyStatus: "FULL",
+      occupancyPercentage: 1.5,
     }
 
     const tree = renderer
