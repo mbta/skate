@@ -121,7 +121,7 @@ const StatusContent = ({ selectedVehicle }: { selectedVehicle: Vehicle }) => (
 
     <PropertiesList vehicleOrGhost={selectedVehicle} />
 
-    <CrowdingDiagram vehicle={selectedVehicle} />
+    <CrowdingDiagram crowding={selectedVehicle.crowding} />
 
     <Location vehicle={selectedVehicle} />
 

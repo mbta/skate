@@ -6,5 +6,6 @@ defmodule Realtime.Crowding do
           occupancy_percentage: float()
         }
 
+  @derive Jason.Encoder
   defstruct [:load, :capacity, :occupancy_status, :occupancy_percentage]
 end

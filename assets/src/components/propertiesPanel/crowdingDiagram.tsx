@@ -1,30 +1,30 @@
 import React from "react"
 import { crowdingIcon } from "../../helpers/icon"
-import { Vehicle } from "../../realtime"
+import { Crowding } from "../../realtime"
 
-const extendedOccupancyStatus = (vehicle: Vehicle): string => {
+const extendedOccupancyStatus = (crowding: Crowding): string => {
   // GTFS-RT has an EMPTY occupancy status but we don't use it; an empty
-  // vehicle will have a MANY_SEATS_AVAILABLE status. Additionally, it's
-  // possible that the route this vehicle is on generally has crowding data,
-  // but it's not working at the moment for this vehicle in particular.
+  // crowding will have a MANY_SEATS_AVAILABLE status. Additionally, it's
+  // possible that the route this crowding is on generally has crowding data,
+  // but it's not working at the moment for this crowding in particular.
 
-  if (vehicle.load === null) {
+  if (crowding.load === null) {
     return "NO_DATA"
   }
 
-  if (vehicle.load === 0) {
+  if (crowding.load === 0) {
     return "EMPTY"
   }
 
-  // If vehicle.load isn't null, vehicle.occupancyStatus shouldn't be either.
-  return vehicle.occupancyStatus!
+  // If crowding.load isn't null, crowding.occupancyStatus shouldn't be either.
+  return crowding.occupancyStatus!
 }
 
 const GenericCrowdingDiagram = ({
-  vehicle,
+  crowding,
   statusDescription,
 }: {
-  vehicle: Vehicle
+  crowding: Crowding
   statusDescription: string
 }) => {
   const classModifier = statusDescription.toLowerCase().replace(" ", "-")
@@ -36,7 +36,7 @@ const GenericCrowdingDiagram = ({
           Riders onboard
         </span>
         <br />
-        {vehicle.load} riders / {vehicle.capacity} maximum
+        {crowding.load} riders / {crowding.capacity} maximum
         <br />
         <span
           className={`m-crowding-diagram__status-description m-crowding-diagram__status-description--${classModifier}`}
@@ -69,38 +69,41 @@ const NoDataCrowdingDiagram = () => (
   </div>
 )
 
-const EmptyCrowdingDiagram = ({ vehicle }: { vehicle: Vehicle }) => (
-  <GenericCrowdingDiagram vehicle={vehicle} statusDescription="Empty" />
+const EmptyCrowdingDiagram = ({ crowding }: { crowding: Crowding }) => (
+  <GenericCrowdingDiagram crowding={crowding} statusDescription="Empty" />
 )
 
-const NotCrowdedCrowdingDiagram = ({ vehicle }: { vehicle: Vehicle }) => (
-  <GenericCrowdingDiagram vehicle={vehicle} statusDescription="Not crowded" />
+const NotCrowdedCrowdingDiagram = ({ crowding }: { crowding: Crowding }) => (
+  <GenericCrowdingDiagram crowding={crowding} statusDescription="Not crowded" />
 )
 
-const SomeCrowdingCrowdingDiagram = ({ vehicle }: { vehicle: Vehicle }) => (
-  <GenericCrowdingDiagram vehicle={vehicle} statusDescription="Some crowding" />
+const SomeCrowdingCrowdingDiagram = ({ crowding }: { crowding: Crowding }) => (
+  <GenericCrowdingDiagram
+    crowding={crowding}
+    statusDescription="Some crowding"
+  />
 )
 
-const CrowdedCrowdingDiagram = ({ vehicle }: { vehicle: Vehicle }) => (
-  <GenericCrowdingDiagram vehicle={vehicle} statusDescription="Crowded" />
+const CrowdedCrowdingDiagram = ({ crowding }: { crowding: Crowding }) => (
+  <GenericCrowdingDiagram crowding={crowding} statusDescription="Crowded" />
 )
 
-const CrowdingDiagram = ({ vehicle }: { vehicle: Vehicle }) => {
-  if (!vehicle.routeHasReliableCrowdingData) {
+const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
+  if (crowding === null) {
     return null
   }
 
-  switch (extendedOccupancyStatus(vehicle)) {
+  switch (extendedOccupancyStatus(crowding)) {
     case "NO_DATA":
       return <NoDataCrowdingDiagram />
     case "EMPTY":
-      return <EmptyCrowdingDiagram vehicle={vehicle} />
+      return <EmptyCrowdingDiagram crowding={crowding} />
     case "MANY_SEATS_AVAILABLE":
-      return <NotCrowdedCrowdingDiagram vehicle={vehicle} />
+      return <NotCrowdedCrowdingDiagram crowding={crowding} />
     case "FEW_SEATS_AVAILABLE":
-      return <SomeCrowdingCrowdingDiagram vehicle={vehicle} />
+      return <SomeCrowdingCrowdingDiagram crowding={crowding} />
     case "FULL":
-      return <CrowdedCrowdingDiagram vehicle={vehicle} />
+      return <CrowdedCrowdingDiagram crowding={crowding} />
   }
 
   // If we get here, something has gone wrong.
