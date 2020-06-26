@@ -1,8 +1,8 @@
 import React from "react"
 import { crowdingIcon } from "../../helpers/icon"
-import { Crowding } from "../../realtime"
+import { Crowding, OccupancyStatus } from "../../realtime"
 
-const extendedOccupancyStatus = (crowding: Crowding): string => {
+const extendedOccupancyStatus = (crowding: Crowding): OccupancyStatus => {
   // GTFS-RT has an EMPTY occupancy status but we don't use it; an empty
   // crowding will have a MANY_SEATS_AVAILABLE status. Additionally, it's
   // possible that the route this crowding is on generally has crowding data,
@@ -20,7 +20,7 @@ const extendedOccupancyStatus = (crowding: Crowding): string => {
   return crowding.occupancyStatus!
 }
 
-const statusDescriptionForStatus = (status: string): string => {
+const statusDescriptionForStatus = (status: OccupancyStatus): string => {
   switch (status) {
     case "NO_DATA":
       return "No data available"
@@ -33,12 +33,9 @@ const statusDescriptionForStatus = (status: string): string => {
     case "FULL":
       return "Crowded"
   }
-
-  // We should never get here.
-  return ""
 }
 
-const classModifierForStatus = (status: string): string => {
+const classModifierForStatus = (status: OccupancyStatus): string => {
   switch (status) {
     case "NO_DATA":
       return "no-data"
@@ -51,9 +48,6 @@ const classModifierForStatus = (status: string): string => {
     case "FULL":
       return "crowded"
   }
-
-  // We should never get here.
-  return ""
 }
 
 const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
