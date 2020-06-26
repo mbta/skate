@@ -63,6 +63,8 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
     extendedOccupancyStatus(crowding)
   )
 
+  const loadPhrase = crowding.load === 1 ? "1 rider" : `${crowding.load} riders`
+
   return (
     <div className="m-crowding-diagram">
       <div className="m-crowding-diagram__properties">
@@ -72,7 +74,7 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
         <br />
         {statusDescription !== "NO_DATA" ? (
           <>
-            {crowding.load} riders / {crowding.capacity} maximum
+            {loadPhrase} / {crowding.capacity} maximum
             <br />
             <span
               className={`m-crowding-diagram__status-description m-crowding-diagram__status-description--${classModifier}`}

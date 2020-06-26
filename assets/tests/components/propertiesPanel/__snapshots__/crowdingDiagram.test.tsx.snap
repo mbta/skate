@@ -13,8 +13,8 @@ exports[`CrowdingDiagram renders correctly for a crowded bus 1`] = `
       Riders onboard
     </span>
     <br />
-    45
-     riders / 
+    45 riders
+     / 
     30
      maximum
     <br />
@@ -52,8 +52,8 @@ exports[`CrowdingDiagram renders correctly for a somewhat crowded bus 1`] = `
       Riders onboard
     </span>
     <br />
-    10
-     riders / 
+    10 riders
+     / 
     20
      maximum
     <br />
@@ -91,8 +91,8 @@ exports[`CrowdingDiagram renders correctly for an empty bus 1`] = `
       Riders onboard
     </span>
     <br />
-    0
-     riders / 
+    0 riders
+     / 
     18
      maximum
     <br />
@@ -130,8 +130,8 @@ exports[`CrowdingDiagram renders correctly for an uncrowded bus 1`] = `
       Riders onboard
     </span>
     <br />
-    1
-     riders / 
+    1 rider
+     / 
     20
      maximum
     <br />
@@ -169,7 +169,8 @@ exports[`CrowdingDiagram renders correctly for an untrusted APC 1`] = `
       Riders onboard
     </span>
     <br />
-     riders / 
+    null riders
+     / 
      maximum
     <br />
     <span
