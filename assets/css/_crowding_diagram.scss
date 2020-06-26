@@ -1,8 +1,9 @@
-$color-empty-text: $color-component-medium;
-$color-empty-icon: $color-secondary-light;
-$color-not-crowded: #5cbf95;
-$color-some-crowding: #fca400;
-$color-crowded: #e90d0d;
+$color-crowding-empty-text: $color-component-medium;
+$color-crowding-empty-icon: $color-secondary-light;
+$color-crowding-not-crowded: #5cbf95;
+$color-crowding-some-crowding: #fca400;
+$color-crowding-crowded: #e90d0d;
+$color-crowding-icon-bg: $color-bg-medium;
 
 .m-crowding-diagram {
   border-top: 1px solid $color-rule;
@@ -16,19 +17,19 @@ $color-crowded: #e90d0d;
   text-transform: uppercase;
 
   &--empty {
-    color: $color-empty-text;
+    color: $color-crowding-empty-text;
   }
 
   &--not-crowded {
-    color: $color-not-crowded;
+    color: $color-crowding-not-crowded;
   }
 
   &--some-crowding {
-    color: $color-some-crowding;
+    color: $color-crowding-some-crowding;
   }
 
   &--crowded {
-    color: $color-crowded;
+    color: $color-crowding-crowded;
   }
 }
 
@@ -43,7 +44,7 @@ $color-crowded: #e90d0d;
 
     circle,
     path {
-      fill: $color-bg-medium;
+      fill: $color-crowding-icon-bg;
     }
   }
 
@@ -52,7 +53,7 @@ $color-crowded: #e90d0d;
     top: 1rem;
     svg {
       * {
-        fill: $color-empty-icon;
+        fill: $color-crowding-empty-icon;
       }
     }
   }
@@ -60,7 +61,7 @@ $color-crowded: #e90d0d;
   &--not-crowded {
     svg * {
       &:nth-of-type(1) {
-        fill: $color-not-crowded;
+        fill: $color-crowding-not-crowded;
       }
     }
   }
@@ -69,14 +70,14 @@ $color-crowded: #e90d0d;
     svg * {
       &:nth-of-type(1),
       &:nth-of-type(2) {
-        fill: $color-some-crowding;
+        fill: $color-crowding-some-crowding;
       }
     }
   }
 
   &--crowded {
     svg * {
-      fill: $color-crowded;
+      fill: $color-crowding-crowded;
     }
   }
 }
