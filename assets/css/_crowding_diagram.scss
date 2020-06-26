@@ -1,26 +1,82 @@
+$color-empty-text: $color-component-medium;
+$color-empty-icon: $color-secondary-light;
+$color-not-crowded: #5cbf95;
+$color-some-crowding: #fca400;
+$color-crowded: #e90d0d;
+
 .m-crowding-diagram {
   border-top: 1px solid $color-rule;
   font-size: 0.875rem;
   line-height: 1.3rem;
   padding: 1rem;
+  position: relative;
 }
 
 .m-crowding-diagram__status-description {
   text-transform: uppercase;
 
   &--empty {
-    color: $color-component-medium;
+    color: $color-empty-text;
   }
 
   &--not-crowded {
-    color: #5cbf95;
+    color: $color-not-crowded;
   }
 
   &--some-crowding {
-    color: #fca400;
+    color: $color-some-crowding;
   }
 
   &--crowded {
-    color: #e90d0d;
+    color: $color-crowded;
+  }
+}
+
+.m-crowding-diagram__crowding-icon {
+  bottom: 1rem;
+  position: absolute;
+  right: 1rem;
+
+  svg {
+    height: 2.5rem;
+    width: 2.5rem;
+
+    circle,
+    path {
+      fill: $color-bg-medium;
+    }
+  }
+
+  &--empty {
+    bottom: auto;
+    top: 1rem;
+    svg {
+      * {
+        fill: $color-empty-icon;
+      }
+    }
+  }
+
+  &--not-crowded {
+    svg * {
+      &:nth-of-type(1) {
+        fill: $color-not-crowded;
+      }
+    }
+  }
+
+  &--some-crowding {
+    svg * {
+      &:nth-of-type(1),
+      &:nth-of-type(2) {
+        fill: $color-some-crowding;
+      }
+    }
+  }
+
+  &--crowded {
+    svg * {
+      fill: $color-crowded;
+    }
   }
 }

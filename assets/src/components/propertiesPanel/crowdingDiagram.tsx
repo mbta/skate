@@ -1,4 +1,5 @@
 import React from "react"
+import { crowdingIcon } from "../../helpers/icon"
 import { Vehicle } from "../../realtime"
 
 const extendedOccupancyStatus = (vehicle: Vehicle): string => {
@@ -30,20 +31,43 @@ const GenericCrowdingDiagram = ({
 
   return (
     <div className="m-crowding-diagram">
-      <span className="m-properties-list__property-label">Riders onboard</span>
-      <br />
-      {vehicle.load} riders / {vehicle.capacity} maximum
-      <br />
-      <span
-        className={`m-crowding-diagram__status-description m-crowding-diagram__status-description--${classModifier}`}
-      >
-        {statusDescription}
-      </span>
+      <div className="m-crowding-diagram__properties">
+        <span className="m-properties-list__property-label">
+          Riders onboard
+        </span>
+        <br />
+        {vehicle.load} riders / {vehicle.capacity} maximum
+        <br />
+        <span
+          className={`m-crowding-diagram__status-description m-crowding-diagram__status-description--${classModifier}`}
+        >
+          {statusDescription}
+        </span>
+      </div>
+      <div className="m-crowding-diagram__crowding-icon-wrapper">
+        {crowdingIcon(
+          `m-crowding-diagram__crowding-icon m-crowding-diagram__crowding-icon--${classModifier}`
+        )}
+      </div>
     </div>
   )
 }
 
-const NoDataCrowdingDiagram = () => <div>TK NO DATA</div>
+const NoDataCrowdingDiagram = () => (
+  <div className="m-crowding-diagram">
+    <div className="m-crowding-diagram__properties">
+      <span className="m-properties-list__property-label">Riders onboard</span>
+      <br />
+      No data available.
+      <br />
+    </div>
+    <div className="m-crowding-diagram__crowding-icon-wrapper">
+      {crowdingIcon(
+        "m-crowding-diagram__crowding-icon m-crowding-diagram__crowding-icon--empty"
+      )}
+    </div>
+  </div>
+)
 
 const EmptyCrowdingDiagram = ({ vehicle }: { vehicle: Vehicle }) => (
   <GenericCrowdingDiagram vehicle={vehicle} statusDescription="Empty" />
