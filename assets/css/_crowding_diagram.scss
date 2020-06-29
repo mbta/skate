@@ -84,7 +84,8 @@ $color-crowding-icon-bg: $color-bg-medium;
   }
 
   &--crowded {
-    svg * {
+    svg path,
+    svg circle {
       fill: $color-crowding-crowded;
     }
   }
