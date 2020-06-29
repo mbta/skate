@@ -118,8 +118,8 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
       %Crowding{
         load: Map.get(vp, "load"),
         capacity: Map.get(vp, "capacity"),
-        occupancy_status: Map.get(vp, "occupancy_status"),
-        occupancy_percentage: decode_occupancy_status(vp)
+        occupancy_percentage: Map.get(vp, "occupancy_percentage"),
+        occupancy_status: decode_occupancy_status(vp)
       }
     else
       nil
@@ -142,7 +142,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
   end
 
   defp decode_occupancy_status(vp) do
-    Map.get(vp, "occupancy_percentage")
+    Map.get(vp, "occupancy_status")
   end
 
   @spec date(String.t() | nil) :: :calendar.date() | nil
