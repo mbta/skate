@@ -5,7 +5,6 @@ defmodule Concentrate.VehiclePosition do
   import Concentrate.StructHelpers
 
   alias Concentrate.DataDiscrepancy
-  alias Realtime.Crowding
   alias Schedule.Block
 
   defstruct_accessors([
@@ -155,7 +154,7 @@ defmodule Concentrate.VehiclePosition do
               first.sources,
               first.layover_departure_time
             ),
-          crowding: merge_crowding(first.crowding, second.crowding)
+          crowding: first_value(first.crowding, second.crowding)
       }
     end
 
@@ -206,18 +205,6 @@ defmodule Concentrate.VehiclePosition do
       [first, second]
       |> Enum.flat_map(&(VehiclePosition.sources(&1) || MapSet.new()))
       |> MapSet.new()
-    end
-
-    defp merge_crowding(%Crowding{} = first, nil), do: first
-    defp merge_crowding(nil, second), do: second
-
-    defp merge_crowding(first, second) do
-      %{
-        load: first_value(second.load, first.load),
-        capacity: first_value(second.capacity, first.capacity),
-        occupancy_status: first_value(second.occupancy_status, first.occupancy_status),
-        occupancy_percentage: first_value(second.occupancy_percentage, first.occupancy_percentage)
-      }
     end
 
     defp discrepancies(first, second) do
