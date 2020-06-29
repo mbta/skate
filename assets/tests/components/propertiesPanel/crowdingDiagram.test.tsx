@@ -14,9 +14,9 @@ describe("CrowdingDiagram", () => {
     const untrustedApcCrowding = {
       load: null,
       capacity: null,
-      occupancyStatus: null,
+      occupancyStatus: "NO_DATA",
       occupancyPercentage: null,
-    }
+    } as Crowding
 
     const tree = renderer
       .create(<CrowdingDiagram crowding={untrustedApcCrowding} />)
@@ -29,7 +29,7 @@ describe("CrowdingDiagram", () => {
     const emptyCrowding: Crowding = {
       load: 0,
       capacity: 18,
-      occupancyStatus: "MANY_SEATS_AVAILABLE",
+      occupancyStatus: "EMPTY",
       occupancyPercentage: 0.0,
     }
 

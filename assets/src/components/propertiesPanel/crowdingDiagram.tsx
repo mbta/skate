@@ -3,24 +3,6 @@ import ReactTooltip from "react-tooltip"
 import { crowdingIcon } from "../../helpers/icon"
 import { Crowding, OccupancyStatus } from "../../realtime"
 
-const extendedOccupancyStatus = (crowding: Crowding): OccupancyStatus => {
-  // GTFS-RT has an EMPTY occupancy status but we don't use it; an empty
-  // crowding will have a MANY_SEATS_AVAILABLE status. Additionally, it's
-  // possible that the route this crowding is on generally has crowding data,
-  // but it's not working at the moment for this crowding in particular.
-
-  if (crowding.load === null) {
-    return "NO_DATA"
-  }
-
-  if (crowding.load === 0) {
-    return "EMPTY"
-  }
-
-  // If crowding.load isn't null, crowding.occupancyStatus shouldn't be either.
-  return crowding.occupancyStatus!
-}
-
 const statusDescriptionForStatus = (status: OccupancyStatus): string => {
   switch (status) {
     case "NO_DATA":
@@ -56,13 +38,9 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
     return null
   }
 
-  const statusDescription = statusDescriptionForStatus(
-    extendedOccupancyStatus(crowding)
-  )
+  const statusDescription = statusDescriptionForStatus(crowding.occupancyStatus)
 
-  const classModifier = classModifierForStatus(
-    extendedOccupancyStatus(crowding)
-  )
+  const classModifier = classModifierForStatus(crowding.occupancyStatus)
 
   const loadPhrase = crowding.load === 1 ? "1 rider" : `${crowding.load} riders`
 

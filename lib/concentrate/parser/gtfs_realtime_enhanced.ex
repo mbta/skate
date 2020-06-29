@@ -119,11 +119,30 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
         load: Map.get(vp, "load"),
         capacity: Map.get(vp, "capacity"),
         occupancy_status: Map.get(vp, "occupancy_status"),
-        occupancy_percentage: Map.get(vp, "occupancy_percentage")
+        occupancy_percentage: decode_occupancy_status(vp)
       }
     else
       nil
     end
+  end
+
+  # GTFS-RT has an EMPTY occupancy status but we don't use it; an empty
+  # crowding will have a MANY_SEATS_AVAILABLE status. Additionally, it's
+  # possible that the route this crowding is on generally has crowding data,
+  # but it's not working at the moment for this crowding in particular, in
+  # which case the load (and other fields) will be nil.
+
+  @spec decode_occupancy_status(map()) :: String.t()
+  defp decode_occupancy_status(%{load: nil}) do
+    "NO_DATA"
+  end
+
+  defp decode_occupancy_status(%{load: 0}) do
+    "EMPTY"
+  end
+
+  defp decode_occupancy_status(vp) do
+    Map.get(vp, "occupancy_percentage")
   end
 
   @spec date(String.t() | nil) :: :calendar.date() | nil

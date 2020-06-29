@@ -28,7 +28,7 @@ export type OccupancyStatus =
 export interface Crowding {
   load: number | null
   capacity: number | null
-  occupancyStatus: OccupancyStatus | null
+  occupancyStatus: OccupancyStatus
   occupancyPercentage: number | null
 }
 
