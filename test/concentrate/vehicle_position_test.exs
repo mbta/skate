@@ -2,7 +2,6 @@ defmodule Concentrate.VehiclePositionTest do
   use ExUnit.Case, async: true
   import Concentrate.VehiclePosition
   alias Concentrate.{DataDiscrepancy, Mergeable}
-  alias Realtime.Crowding
 
   describe "Concentrate.Mergeable" do
     test "merge/2 takes the latest of the two positions and notes discrepancies" do
@@ -319,55 +318,6 @@ defmodule Concentrate.VehiclePositionTest do
         )
 
       assert Mergeable.merge(first, second) == expected
-    end
-
-    test "merge/2 merges crowding data" do
-      first =
-        new(
-          last_updated: 1,
-          latitude: 1,
-          longitude: 1,
-          trip_id: "trip",
-          route_id: "route",
-          sources: MapSet.new(["first"]),
-          crowding: %Crowding{
-            load: 12,
-            capacity: 34,
-            occupancy_percentage: 0.35,
-            occupancy_status: "MANY_SEATS_AVAILABLE"
-          }
-        )
-
-      second =
-        new(
-          last_updated: 2,
-          latitude: 2,
-          longitude: 2,
-          trip_id: "trip",
-          route_id: "route",
-          sources: MapSet.new(["second"]),
-          crowding: %Crowding{
-            load: 34,
-            capacity: 56,
-            occupancy_percentage: 0.61,
-            occupancy_status: "FEW_SEATS_AVAILABLE"
-          }
-        )
-
-      result =
-        Mergeable.merge(first, %Concentrate.VehiclePosition{second | crowding: nil})
-        |> Map.get(:crowding)
-
-      assert result == first.crowding
-
-      result =
-        Mergeable.merge(%Concentrate.VehiclePosition{first | crowding: nil}, second)
-        |> Map.get(:crowding)
-
-      assert result == second.crowding
-
-      result = Mergeable.merge(first, second) |> Map.get(:crowding)
-      assert result == second.crowding
     end
   end
 
