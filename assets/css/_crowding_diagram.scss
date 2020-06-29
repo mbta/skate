@@ -61,13 +61,15 @@ $color-crowding-icon-bg: $color-bg-medium;
   }
 
   &--no-data {
-    svg * {
+    svg path,
+    svg circle {
       fill: $color-crowding-no-data-icon;
     }
   }
 
   &--not-crowded {
-    svg * {
+    svg path,
+    svg circle {
       &:nth-of-type(1) {
         fill: $color-crowding-not-crowded;
       }
@@ -75,7 +77,8 @@ $color-crowding-icon-bg: $color-bg-medium;
   }
 
   &--some-crowding {
-    svg * {
+    svg path,
+    svg circle {
       &:nth-of-type(1),
       &:nth-of-type(2) {
         fill: $color-crowding-some-crowding;
