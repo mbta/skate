@@ -133,11 +133,11 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
   # which case the load (and other fields) will be nil.
 
   @spec decode_occupancy_status(map()) :: String.t()
-  defp decode_occupancy_status(%{load: nil}) do
+  defp decode_occupancy_status(%{"load" => nil}) do
     "NO_DATA"
   end
 
-  defp decode_occupancy_status(%{load: 0}) do
+  defp decode_occupancy_status(%{"load" => 0}) do
     "EMPTY"
   end
 
