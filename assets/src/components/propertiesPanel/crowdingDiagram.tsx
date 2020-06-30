@@ -51,7 +51,7 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
           Riders onboard
         </span>
         <span
-          data-tip="Where available, riders are <br/> estimated using Automated <br/> Passenger Counters (APCs)."
+          data-tip="Riders are estimated using Automated <br/> Passenger Counters (APCs)."
           data-html="true"
           data-class="m-crowding-diagram__crowding-tooltip"
         >
