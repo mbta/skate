@@ -11,6 +11,7 @@ require("../css/app.scss")
 //
 // Import dependencies
 //
+import * as Sentry from "@sentry/react"
 import "core-js/stable"
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
 import "leaflet/dist/leaflet.css"
@@ -19,6 +20,11 @@ import * as React from "react"
 import ReactDOM from "react-dom"
 import ResizeObserver from "resize-observer-polyfill"
 import AppStateWrapper from "./components/appStateWrapper"
+
+Sentry.init({
+  dsn:
+    "https://e4ef550df0f644d5916bef033772db15@o89189.ingest.sentry.io/5303927",
+})
 
 if (window.FS && window.username) {
   window.FS.identify(window.username, { displayName: window.username })
