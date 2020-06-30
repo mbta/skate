@@ -1,5 +1,6 @@
 import React from "react"
-import { crowdingIcon } from "../../helpers/icon"
+import ReactTooltip from "react-tooltip"
+import { crowdingIcon, questionMarkIcon } from "../../helpers/icon"
 import { Crowding, OccupancyStatus } from "../../realtime"
 
 const statusDescriptionForStatus = (status: OccupancyStatus): string => {
@@ -49,6 +50,9 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
         <span className="m-properties-list__property-label">
           Riders onboard
         </span>
+        <span data-tip="Where available, riders are estimated using Automated Passenger Counters (APCs).">
+          {questionMarkIcon("m-crowding-diagram__tooltip-anchor")}
+        </span>
         <br />
         {crowding.load !== null ? (
           <>
@@ -69,6 +73,7 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
           `m-crowding-diagram__crowding-icon m-crowding-diagram__crowding-icon--${classModifier}`
         )}
       </div>
+      <ReactTooltip effect="solid" event="click" />
     </div>
   )
 }

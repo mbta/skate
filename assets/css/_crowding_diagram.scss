@@ -93,3 +93,17 @@ $color-crowding-icon-bg: $color-bg-medium;
     }
   }
 }
+
+.m-crowding-diagram__tooltip-anchor {
+  margin-left: 0.25rem;
+  vertical-align: middle;
+
+  svg {
+    height: 0.75rem;
+    width: 0.75rem;
+
+    * {
+      fill: $color-bg-medium;
+    }
+  }
+}
