@@ -53,6 +53,7 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
         <span
           data-tip="Where available, riders are <br/> estimated using Automated <br/> Passenger Counters (APCs)."
           data-html="true"
+          data-class="m-crowding-diagram__crowding-tooltip"
         >
           {questionMarkIcon("m-crowding-diagram__tooltip-anchor")}
         </span>
@@ -76,7 +77,7 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
           `m-crowding-diagram__crowding-icon m-crowding-diagram__crowding-icon--${classModifier}`
         )}
       </div>
-      <ReactTooltip effect="solid" event="click" />
+      <ReactTooltip effect="solid" event="click" globalEventOff="click" />
     </div>
   )
 }

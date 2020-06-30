@@ -13,6 +13,7 @@ exports[`CrowdingDiagram renders correctly for a crowded bus 1`] = `
       Riders onboard
     </span>
     <span
+      data-class="m-crowding-diagram__crowding-tooltip"
       data-html="true"
       data-tip="Where available, riders are <br/> estimated using Automated <br/> Passenger Counters (APCs)."
     >
@@ -68,6 +69,7 @@ exports[`CrowdingDiagram renders correctly for a somewhat crowded bus 1`] = `
       Riders onboard
     </span>
     <span
+      data-class="m-crowding-diagram__crowding-tooltip"
       data-html="true"
       data-tip="Where available, riders are <br/> estimated using Automated <br/> Passenger Counters (APCs)."
     >
@@ -123,6 +125,7 @@ exports[`CrowdingDiagram renders correctly for an empty bus 1`] = `
       Riders onboard
     </span>
     <span
+      data-class="m-crowding-diagram__crowding-tooltip"
       data-html="true"
       data-tip="Where available, riders are <br/> estimated using Automated <br/> Passenger Counters (APCs)."
     >
@@ -178,6 +181,7 @@ exports[`CrowdingDiagram renders correctly for an uncrowded bus 1`] = `
       Riders onboard
     </span>
     <span
+      data-class="m-crowding-diagram__crowding-tooltip"
       data-html="true"
       data-tip="Where available, riders are <br/> estimated using Automated <br/> Passenger Counters (APCs)."
     >
@@ -233,6 +237,7 @@ exports[`CrowdingDiagram renders correctly for an untrusted APC 1`] = `
       Riders onboard
     </span>
     <span
+      data-class="m-crowding-diagram__crowding-tooltip"
       data-html="true"
       data-tip="Where available, riders are <br/> estimated using Automated <br/> Passenger Counters (APCs)."
     >
