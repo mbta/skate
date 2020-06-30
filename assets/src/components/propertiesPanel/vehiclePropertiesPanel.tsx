@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { useTripShape } from "../../hooks/useShapes"
+import featureIsEnabled from "../../laboratoryFeatures"
 import { hasBlockWaiver } from "../../models/blockWaiver"
 import { shouldShowHeadwayDiagram } from "../../models/vehicle"
 import { DataDiscrepancy, Vehicle } from "../../realtime"
@@ -7,6 +8,7 @@ import { Route, Shape } from "../../schedule"
 import Map from "../map"
 import PropertiesList from "../propertiesList"
 import BlockWaiverList from "./blockWaiverList"
+import CrowdingDiagram from "./crowdingDiagram"
 import Header from "./header"
 import HeadwayDiagram from "./headwayDiagram"
 import TabPanels, { TabMode } from "./tabPanels"
@@ -119,6 +121,10 @@ const StatusContent = ({ selectedVehicle }: { selectedVehicle: Vehicle }) => (
     )}
 
     <PropertiesList vehicleOrGhost={selectedVehicle} />
+
+    {featureIsEnabled("crowding") && (
+      <CrowdingDiagram crowding={selectedVehicle.crowding} />
+    )}
 
     <Location vehicle={selectedVehicle} />
 

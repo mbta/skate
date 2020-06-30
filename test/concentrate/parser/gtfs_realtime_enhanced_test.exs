@@ -5,6 +5,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
 
   alias Concentrate.{TripUpdate, StopTimeUpdate, VehiclePosition}
   alias Concentrate.Parser.GTFSRealtimeEnhanced
+  alias Realtime.Crowding
 
   describe "parse/1" do
     test "parsing an enhanced VehiclePositions JSON file returns only VehiclePosition or TripUpdate structs" do
@@ -90,11 +91,14 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
     test "decodes a VehiclePosition JSON map" do
       input = %{
         "block_id" => "Q238-135",
+        "capacity" => 18,
         "congestion_level" => nil,
         "current_status" => "STOPPED_AT",
         "current_stop_sequence" => 670,
+        "load" => 12,
         "location_source" => "samsara",
-        "occupancy_status" => nil,
+        "occupancy_percentage" => 0.67,
+        "occupancy_status" => "FEW_SEATS_AVAILABLE",
         "operator" => %{"id" => "2841", "logon_time" => 1_534_340_301, "name" => "EVANS"},
         "position" => %{
           "bearing" => 135,
@@ -152,7 +156,13 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
                  current_status: :STOPPED_AT,
                  last_updated: 1_534_340_406,
                  sources: MapSet.new(["busloc"]),
-                 data_discrepancies: []
+                 data_discrepancies: [],
+                 crowding: %Crowding{
+                   load: 12,
+                   capacity: 18,
+                   occupancy_percentage: 0.67,
+                   occupancy_status: "FEW_SEATS_AVAILABLE"
+                 }
                )
     end
   end

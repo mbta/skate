@@ -75,6 +75,7 @@ const shuttle: Vehicle = {
   routeStatus: "on_route",
   endOfTripType: "another_trip",
   blockWaivers: [],
+  crowding: null,
 }
 
 const shape: Shape = {

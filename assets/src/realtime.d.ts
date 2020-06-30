@@ -18,6 +18,20 @@ export interface BlockWaiver {
   remark: string | null
 }
 
+export type OccupancyStatus =
+  | "NO_DATA"
+  | "EMPTY"
+  | "MANY_SEATS_AVAILABLE"
+  | "FEW_SEATS_AVAILABLE"
+  | "FULL"
+
+export interface Crowding {
+  load: number | null
+  capacity: number | null
+  occupancyStatus: OccupancyStatus
+  occupancyPercentage: number | null
+}
+
 export interface DataDiscrepancy {
   attribute: string
   sources: DataDiscrepancySource[]
@@ -93,6 +107,7 @@ export interface Vehicle {
   routeStatus: RouteStatus
   endOfTripType: EndOfTripType
   blockWaivers: BlockWaiver[]
+  crowding: Crowding | null
 }
 
 export type VehicleOrGhost = Vehicle | Ghost

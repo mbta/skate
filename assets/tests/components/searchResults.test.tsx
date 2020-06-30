@@ -91,6 +91,7 @@ describe("SearchResults", () => {
       routeStatus: "on_route",
       endOfTripType: "another_trip",
       blockWaivers: [],
+      crowding: null,
     }
     const ghost: Ghost = {
       id: "ghost-trip",
@@ -175,6 +176,7 @@ describe("SearchResults", () => {
       routeStatus: "on_route",
       endOfTripType: "another_trip",
       blockWaivers: [],
+      crowding: null,
     }
 
     const tree = renderer
@@ -242,6 +244,7 @@ describe("SearchResults", () => {
       routeStatus: "on_route",
       endOfTripType: "another_trip",
       blockWaivers: [],
+      crowding: null,
     }
     const newVehicle: Vehicle = {
       id: "new",
@@ -296,6 +299,7 @@ describe("SearchResults", () => {
       routeStatus: "on_route",
       endOfTripType: "another_trip",
       blockWaivers: [],
+      crowding: null,
     }
     const ghost: Ghost = {
       id: "ghost-trip",
@@ -380,6 +384,7 @@ describe("SearchResults", () => {
       routeStatus: "on_route",
       endOfTripType: "another_trip",
       blockWaivers: [],
+      crowding: null,
     }
     const ghost: Ghost = {
       id: "ghost-trip",
@@ -470,6 +475,7 @@ describe("SearchResults", () => {
       routeStatus: "on_route",
       endOfTripType: "another_trip",
       blockWaivers: [],
+      crowding: null,
     }
     const wrapper = mount(
       <StateDispatchProvider state={state} dispatch={testDispatch}>

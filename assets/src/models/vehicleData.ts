@@ -4,6 +4,7 @@ import {
   DataDiscrepancy,
   EndOfTripType,
   Ghost,
+  OccupancyStatus,
   RouteStatus,
   RunId,
   Vehicle,
@@ -57,6 +58,12 @@ export interface VehicleData {
   route_status: RouteStatus
   end_of_trip_type: EndOfTripType
   block_waivers: BlockWaiverData[]
+  crowding: {
+    load: number
+    capacity: number
+    occupancy_status: OccupancyStatus
+    occupancy_percentage: number
+  } | null
 }
 
 export interface GhostData {
@@ -154,6 +161,12 @@ export const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
   routeStatus: vehicleData.route_status,
   endOfTripType: vehicleData.end_of_trip_type,
   blockWaivers: blockWaiversFromData(vehicleData.block_waivers),
+  crowding: vehicleData.crowding && {
+    load: vehicleData.crowding.load,
+    capacity: vehicleData.crowding.capacity,
+    occupancyStatus: vehicleData.crowding.occupancy_status,
+    occupancyPercentage: vehicleData.crowding.occupancy_percentage,
+  },
 })
 
 export const ghostFromData = (ghostData: GhostData): Ghost => ({

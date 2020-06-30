@@ -3,7 +3,7 @@ defmodule Realtime.Vehicle do
   alias Schedule.{Block, Route, Trip}
   alias Schedule.Gtfs.{Direction, RoutePattern, Stop}
   alias Schedule.Hastus.Run
-  alias Realtime.{BlockWaiver, BlockWaiverStore, Headway, RouteStatus, TimepointStatus}
+  alias Realtime.{BlockWaiver, BlockWaiverStore, Crowding, Headway, RouteStatus, TimepointStatus}
 
   @type stop_status :: %{
           stop_id: Stop.id(),
@@ -46,7 +46,8 @@ defmodule Realtime.Vehicle do
           scheduled_location: TimepointStatus.scheduled_location() | nil,
           route_status: RouteStatus.route_status(),
           end_of_trip_type: end_of_trip_type(),
-          block_waivers: [BlockWaiver.t()]
+          block_waivers: [BlockWaiver.t()],
+          crowding: Crowding.t() | nil
         }
 
   @enforce_keys [
@@ -108,6 +109,7 @@ defmodule Realtime.Vehicle do
     :scheduled_location,
     :route_status,
     :end_of_trip_type,
+    :crowding,
     block_waivers: [],
     data_discrepancies: []
   ]
@@ -224,7 +226,8 @@ defmodule Realtime.Vehicle do
       scheduled_location: scheduled_location,
       route_status: route_status(stop_id, trip, block),
       end_of_trip_type: end_of_trip_type(block, trip, run_id, stop_id),
-      block_waivers: block_waivers
+      block_waivers: block_waivers,
+      crowding: vehicle_position.crowding
     }
   end
 

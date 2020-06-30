@@ -5,6 +5,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
   @behaviour Concentrate.Parser
   require Logger
   alias Concentrate.{StopTimeUpdate, TripUpdate, VehiclePosition}
+  alias Realtime.Crowding
 
   @impl Concentrate.Parser
   def parse(binary) when is_binary(binary) do
@@ -83,7 +84,8 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
             operator_name: Map.get(operator, "name"),
             operator_logon_time: Map.get(operator, "logon_time"),
             sources: MapSet.new(["busloc"]),
-            data_discrepancies: []
+            data_discrepancies: [],
+            crowding: decode_crowding(vp)
           )
         ]
 
@@ -108,6 +110,39 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
         schedule_relationship: schedule_relationship(Map.get(trip, "schedule_relationship"))
       )
     ]
+  end
+
+  @spec decode_crowding(map()) :: Crowding.t() | nil
+  def decode_crowding(vp) do
+    if Map.has_key?(vp, "load") do
+      %Crowding{
+        load: Map.get(vp, "load"),
+        capacity: Map.get(vp, "capacity"),
+        occupancy_percentage: Map.get(vp, "occupancy_percentage"),
+        occupancy_status: decode_occupancy_status(vp)
+      }
+    else
+      nil
+    end
+  end
+
+  # GTFS-RT has an EMPTY occupancy status but we don't use it; an empty
+  # crowding will have a MANY_SEATS_AVAILABLE status. Additionally, it's
+  # possible that the route this crowding is on generally has crowding data,
+  # but it's not working at the moment for this crowding in particular, in
+  # which case the load (and other fields) will be nil.
+
+  @spec decode_occupancy_status(map()) :: String.t()
+  defp decode_occupancy_status(%{"load" => nil}) do
+    "NO_DATA"
+  end
+
+  defp decode_occupancy_status(%{"load" => 0}) do
+    "EMPTY"
+  end
+
+  defp decode_occupancy_status(vp) do
+    Map.get(vp, "occupancy_status")
   end
 
   @spec date(String.t() | nil) :: :calendar.date() | nil

@@ -41,6 +41,7 @@ defmodule Concentrate.VehiclePosition do
     :scheduled_headway_secs,
     :sources,
     :data_discrepancies,
+    :crowding,
     current_status: :IN_TRANSIT_TO
   ])
 
@@ -152,7 +153,8 @@ defmodule Concentrate.VehiclePosition do
               second.layover_departure_time,
               first.sources,
               first.layover_departure_time
-            )
+            ),
+          crowding: first_value(first.crowding, second.crowding)
       }
     end
 
