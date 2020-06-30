@@ -13,7 +13,8 @@ exports[`CrowdingDiagram renders correctly for a crowded bus 1`] = `
       Riders onboard
     </span>
     <span
-      data-tip="Where available, riders are estimated using Automated Passenger Counters (APCs)."
+      data-html="true"
+      data-tip="Where available, riders are <br/> estimated using Automated <br/> Passenger Counters (APCs)."
     >
       <span
         className="m-crowding-diagram__tooltip-anchor"
@@ -67,7 +68,8 @@ exports[`CrowdingDiagram renders correctly for a somewhat crowded bus 1`] = `
       Riders onboard
     </span>
     <span
-      data-tip="Where available, riders are estimated using Automated Passenger Counters (APCs)."
+      data-html="true"
+      data-tip="Where available, riders are <br/> estimated using Automated <br/> Passenger Counters (APCs)."
     >
       <span
         className="m-crowding-diagram__tooltip-anchor"
@@ -121,7 +123,8 @@ exports[`CrowdingDiagram renders correctly for an empty bus 1`] = `
       Riders onboard
     </span>
     <span
-      data-tip="Where available, riders are estimated using Automated Passenger Counters (APCs)."
+      data-html="true"
+      data-tip="Where available, riders are <br/> estimated using Automated <br/> Passenger Counters (APCs)."
     >
       <span
         className="m-crowding-diagram__tooltip-anchor"
@@ -175,7 +178,8 @@ exports[`CrowdingDiagram renders correctly for an uncrowded bus 1`] = `
       Riders onboard
     </span>
     <span
-      data-tip="Where available, riders are estimated using Automated Passenger Counters (APCs)."
+      data-html="true"
+      data-tip="Where available, riders are <br/> estimated using Automated <br/> Passenger Counters (APCs)."
     >
       <span
         className="m-crowding-diagram__tooltip-anchor"
@@ -229,7 +233,8 @@ exports[`CrowdingDiagram renders correctly for an untrusted APC 1`] = `
       Riders onboard
     </span>
     <span
-      data-tip="Where available, riders are estimated using Automated Passenger Counters (APCs)."
+      data-html="true"
+      data-tip="Where available, riders are <br/> estimated using Automated <br/> Passenger Counters (APCs)."
     >
       <span
         className="m-crowding-diagram__tooltip-anchor"
