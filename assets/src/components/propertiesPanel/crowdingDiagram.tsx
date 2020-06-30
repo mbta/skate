@@ -50,7 +50,10 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
         <span className="m-properties-list__property-label">
           Riders onboard
         </span>
-        <span data-tip="Where available, riders are estimated using Automated Passenger Counters (APCs).">
+        <span
+          data-tip="Where available, riders are <br/> estimated using Automated <br/> Passenger Counters (APCs)."
+          data-html="true"
+        >
           {questionMarkIcon("m-crowding-diagram__tooltip-anchor")}
         </span>
         <br />
