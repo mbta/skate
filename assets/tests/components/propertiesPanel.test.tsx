@@ -3,6 +3,7 @@ import React from "react"
 import renderer from "react-test-renderer"
 import PropertiesPanel, {
   handleSwipe,
+  hideMeIfNoCrowdingTooltip,
 } from "../../src/components/propertiesPanel"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
@@ -154,5 +155,24 @@ describe("handleSwipe", () => {
     const map = document.createElement("div")
     map.id = "id-vehicle-map"
     handleSwipe(hidePanelCB)("Right", map)
+  })
+})
+
+describe("hideMeIfNoCrowdingTooltip", () => {
+  test("hides panel if no tooltip open", () => {
+    const hidePanelCB = jest.fn()
+    hideMeIfNoCrowdingTooltip(hidePanelCB)
+
+    expect(hidePanelCB).toHaveBeenCalled()
+  })
+
+  test("does not hide panel if a tooltip is open", () => {
+    const hidePanelCB = jest.fn()
+    const newDiv = document.createElement("div")
+    // @ts-ignore
+    document.getElementsByClassName = () => [newDiv]
+    hideMeIfNoCrowdingTooltip(hidePanelCB)
+
+    expect(hidePanelCB).not.toHaveBeenCalled()
   })
 })
