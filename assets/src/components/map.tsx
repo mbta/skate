@@ -77,7 +77,9 @@ const makeLabelIcon = (
   selectedVehicleId?: VehicleId
 ): Leaflet.DivIcon => {
   const labelString = vehicleLabelString(vehicle, settings)
-  const labelBackgroundWidth = labelString.length <= 4 ? 40 : 62
+  const labelBackgroundHeight = isPrimary ? 16 : 12
+  const labelBackgroundWidth =
+    labelString.length <= 4 ? (isPrimary ? 40 : 30) : isPrimary ? 62 : 40
   const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
   return Leaflet.divIcon({
     className: className([
@@ -85,7 +87,7 @@ const makeLabelIcon = (
       isPrimary ? "primary" : "secondary",
       selectedClass,
     ]),
-    html: `<svg viewBox="0 0 ${labelBackgroundWidth} 16" width="${labelBackgroundWidth}" height="16">
+    html: `<svg viewBox="0 0 ${labelBackgroundWidth} ${labelBackgroundHeight}" width="${labelBackgroundWidth}" height="${labelBackgroundHeight}">
             <rect
                 class="m-vehicle-icon__label-background"
                 width="100%" height="100%"
@@ -95,7 +97,7 @@ const makeLabelIcon = (
               ${labelString}
             </text>
           </svg>`,
-    iconAnchor: [labelBackgroundWidth / 2, -16],
+    iconAnchor: [labelBackgroundWidth / 2, isPrimary ? -16 : -10],
   })
 }
 
