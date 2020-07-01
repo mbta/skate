@@ -29,7 +29,7 @@ import { Shape } from "../schedule"
 import { Settings } from "../settings"
 import { selectVehicle } from "../state"
 
-interface Props {
+export interface Props {
   vehicles: Vehicle[]
   shapes?: Shape[]
   // secondaryVehicles are smaller, deemphasized, and don't affect autocentering

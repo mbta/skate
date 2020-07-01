@@ -1,9 +1,11 @@
 import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
+import * as map from "../../../src/components/map"
 import VehiclePropertiesPanel from "../../../src/components/propertiesPanel/vehiclePropertiesPanel"
+import { VehiclesByRouteIdProvider } from "../../../src/contexts/vehiclesByRouteIdContext"
 import { HeadwaySpacing } from "../../../src/models/vehicleStatus"
-import { BlockWaiver, Vehicle } from "../../../src/realtime"
+import { BlockWaiver, Ghost, Vehicle } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
 import * as dateTime from "../../../src/util/dateTime"
 
@@ -12,6 +14,8 @@ jest
   .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
+
+jest.spyOn(map, "default")
 
 const vehicle: Vehicle = {
   id: "v1",
@@ -204,5 +208,22 @@ describe("VehiclePropertiesPanel", () => {
     expect(
       wrapper.find(".m-vehicle-properties-panel__data-discrepancies").length
     ).toBe(0)
+  })
+
+  test("fetches other vehicles on the route for the map", () => {
+    const thisVehicle = vehicle
+    const otherVehicle = { ...vehicle, id: "other" }
+    const ghost = { id: "ghost" } as Ghost
+    jest.spyOn(map, "default")
+    renderer.create(
+      <VehiclesByRouteIdProvider
+        vehiclesByRouteId={{ "39": [thisVehicle, otherVehicle, ghost] }}
+      >
+        <VehiclePropertiesPanel selectedVehicle={thisVehicle} />
+      </VehiclesByRouteIdProvider>
+    )
+    expect(map.default).toHaveBeenCalledTimes(1)
+    const mapArgs: map.Props = (map.default as jest.Mock).mock.calls[0][0]
+    expect(mapArgs.secondaryVehicles).toEqual([otherVehicle])
   })
 })
