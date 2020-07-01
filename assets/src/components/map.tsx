@@ -46,7 +46,7 @@ export const defaultCenter: LatLngExpression = {
 
 const makeVehicleIcon = (
   vehicle: Vehicle,
-  primary: boolean
+  isPrimary: boolean
 ): Leaflet.DivIcon => {
   const centerX = 12
   const centerY = 12
@@ -60,7 +60,7 @@ const makeVehicleIcon = (
         <path
           class="${statusClass(drawnStatus(vehicle))}"
           d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
-          transform="scale(${primary ? 1.0 : 0.8}) rotate(${
+          transform="scale(${isPrimary ? 1.0 : 0.8}) rotate(${
       vehicle.bearing
     }) translate(${-centerX}, ${-centerY})"
         />
@@ -72,7 +72,7 @@ const makeVehicleIcon = (
 
 const makeLabelIcon = (
   vehicle: Vehicle,
-  primary: boolean,
+  isPrimary: boolean,
   settings: Settings,
   selectedVehicleId?: VehicleId
 ): Leaflet.DivIcon => {
@@ -82,7 +82,7 @@ const makeLabelIcon = (
   return Leaflet.divIcon({
     className: className([
       "m-vehicle-map__label",
-      primary ? "primary" : "secondary",
+      isPrimary ? "primary" : "secondary",
       selectedClass,
     ]),
     html: `<svg viewBox="0 0 ${labelBackgroundWidth} 16" width="${labelBackgroundWidth}" height="16">
@@ -101,22 +101,22 @@ const makeLabelIcon = (
 
 const Vehicle = ({
   vehicle,
-  primary,
+  isPrimary,
 }: {
   vehicle: Vehicle
-  primary: boolean
+  isPrimary: boolean
 }) => {
   const [appState, dispatch] = useContext(StateDispatchContext)
   const select = () => dispatch(selectVehicle(vehicle.id))
   const position: LatLngExpression = [vehicle.latitude, vehicle.longitude]
-  const vehicleIcon: Leaflet.DivIcon = makeVehicleIcon(vehicle, primary)
+  const vehicleIcon: Leaflet.DivIcon = makeVehicleIcon(vehicle, isPrimary)
   const labelIcon: Leaflet.DivIcon = makeLabelIcon(
     vehicle,
-    primary,
+    isPrimary,
     appState.settings,
     appState.selectedVehicleId
   )
-  const zIndexOffset = primary ? 2000 : 0
+  const zIndexOffset = isPrimary ? 2000 : 0
   return (
     <>
       <Marker
@@ -323,10 +323,10 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
         {props.vehicles.map((vehicle: Vehicle) => (
-          <Vehicle key={vehicle.id} vehicle={vehicle} primary={true} />
+          <Vehicle key={vehicle.id} vehicle={vehicle} isPrimary={true} />
         ))}
         {(props.secondaryVehicles || []).map((vehicle: Vehicle) => (
-          <Vehicle key={vehicle.id} vehicle={vehicle} primary={false} />
+          <Vehicle key={vehicle.id} vehicle={vehicle} isPrimary={false} />
         ))}
         {(props.trainVehicles || []).map((trainVehicle: TrainVehicle) => (
           <TrainVehicle key={trainVehicle.id} trainVehicle={trainVehicle} />
