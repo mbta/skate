@@ -1,5 +1,7 @@
 defmodule SkateWeb.Router do
   use SkateWeb, :router
+  use Plug.ErrorHandler
+  use Sentry.Plug
 
   pipeline :redirect_prod_http do
     if Application.get_env(:skate, :redirect_http?) do

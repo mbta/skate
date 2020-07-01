@@ -5,6 +5,7 @@ config :skate,
   redirect_http?: true,
   record_fullstory: true,
   record_appcues: true,
+  record_sentry: true,
   secret_key_base: {:secret, "SECRET_KEY_BASE"},
   static_href: {SkateWeb.Router.Helpers, :static_url},
   swiftly_authorization_key: {:secret, "SWIFTLY_AUTHORIZATION_KEY"}

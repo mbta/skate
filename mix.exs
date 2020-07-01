@@ -75,7 +75,8 @@ defmodule Skate.MixProject do
       {:stream_data, "~> 0.5.0", only: :test},
       {:server_sent_event_stage, "~> 1.0.2"},
       {:castore, "~> 0.1.5"},
-      {:laboratory, github: "paulswartz/laboratory", ref: "cookie_opts"}
+      {:laboratory, github: "paulswartz/laboratory", ref: "cookie_opts"},
+      {:sentry, "~> 7.0"}
     ]
   end
 end

@@ -27,6 +27,9 @@ declare global {
       }
     }
     username: string
+    sentry?: {
+      dsn: string
+    }
   }
 }
 
