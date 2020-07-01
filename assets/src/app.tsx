@@ -21,10 +21,9 @@ import ReactDOM from "react-dom"
 import ResizeObserver from "resize-observer-polyfill"
 import AppStateWrapper from "./components/appStateWrapper"
 
-if (window.recordSentry) {
+if (window.sentry) {
   Sentry.init({
-    dsn:
-      "https://e4ef550df0f644d5916bef033772db15@o89189.ingest.sentry.io/5303927",
+    dsn: window.sentry.dsn,
   })
 }
 

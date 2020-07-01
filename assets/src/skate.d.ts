@@ -27,7 +27,9 @@ declare global {
       }
     }
     username: string
-    recordSentry?: boolean
+    sentry?: {
+      dsn: string
+    }
   }
 }
 

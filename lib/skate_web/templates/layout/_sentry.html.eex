@@ -1,3 +1,5 @@
 <script>
-  window.recordSentry = true;
+  window.sentry = {
+    dsn: "<%= Application.get_env(:skate, :sentry_frontend_dsn) %>"
+  }
 </script>
