@@ -1,6 +1,5 @@
 import React, { useState } from "react"
 import { useTripShape } from "../../hooks/useShapes"
-import featureIsEnabled from "../../laboratoryFeatures"
 import { hasBlockWaiver } from "../../models/blockWaiver"
 import { shouldShowHeadwayDiagram } from "../../models/vehicle"
 import { DataDiscrepancy, Vehicle } from "../../realtime"
@@ -122,9 +121,7 @@ const StatusContent = ({ selectedVehicle }: { selectedVehicle: Vehicle }) => (
 
     <PropertiesList vehicleOrGhost={selectedVehicle} />
 
-    {featureIsEnabled("crowding") && (
-      <CrowdingDiagram crowding={selectedVehicle.crowding} />
-    )}
+    <CrowdingDiagram crowding={selectedVehicle.crowding} />
 
     <Location vehicle={selectedVehicle} />
 
