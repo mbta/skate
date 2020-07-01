@@ -27,11 +27,19 @@ export const handleSwipe = (hideMe: () => void) => (
   }
 }
 
+export const hideMeIfNoCrowdingTooltip = (hideMe: () => void) => {
+  const noTooltipOpen =
+    document.getElementsByClassName("m-crowding-diagram__crowding-tooltip show")
+      .length === 0
+  if (noTooltipOpen) {
+    hideMe()
+  }
+}
+
 const PropertiesPanel = ({ selectedVehicleOrGhost, route }: Props) => {
   const [, dispatch] = useContext(StateDispatchContext)
 
   const hideMe = () => dispatch(deselectVehicle())
-
   useEffect(() => {
     return detectSwipe("m-properties-panel", handleSwipe(hideMe))
   })
@@ -53,7 +61,13 @@ const PropertiesPanel = ({ selectedVehicleOrGhost, route }: Props) => {
 
         <CloseButton />
       </div>
-      <div className="m-properties-panel__modal-overlay" onClick={hideMe} />
+      <div
+        className="m-properties-panel__modal-overlay"
+        onClick={
+          /* istanbul ignore next */
+          () => hideMeIfNoCrowdingTooltip(hideMe)
+        }
+      />
     </>
   )
 }
