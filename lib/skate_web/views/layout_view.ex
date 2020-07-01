@@ -6,4 +6,7 @@ defmodule SkateWeb.LayoutView do
 
   @spec record_appcues?() :: boolean
   def record_appcues?, do: Application.get_env(:skate, :record_appcues, false)
+
+  @spec record_sentry?() :: boolean
+  def record_sentry?, do: Application.get_env(:skate, :record_sentry, false)
 end

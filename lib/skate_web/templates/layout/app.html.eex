@@ -26,6 +26,9 @@
     <%= if record_appcues?() do %>
       <%= render "_appcues.html", assigns %>
     <% end %>
+    <%= if record_sentry?() do %>
+      <%= render "_sentry.html", assigns %>
+    <% end %>
   </head>
 
   <body>

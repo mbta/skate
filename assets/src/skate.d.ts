@@ -27,6 +27,7 @@ declare global {
       }
     }
     username: string
+    recordSentry?: boolean
   }
 }
 
