@@ -159,6 +159,12 @@ describe("handleSwipe", () => {
 })
 
 describe("hideMeIfNoCrowdingTooltip", () => {
+  const originalGetElementsByClassName = document.getElementsByClassName
+
+  afterEach(() => {
+    document.getElementsByClassName = originalGetElementsByClassName
+  })
+
   test("hides panel if no tooltip open", () => {
     const hidePanelCB = jest.fn()
     hideMeIfNoCrowdingTooltip(hidePanelCB)
