@@ -266,13 +266,10 @@ const Layover = ({
   activeStatus,
 }: {
   nextTrip: Trip | AsDirected
-  previousEndTime: Time | undefined
+  previousEndTime: Time
   timeBasedStyle: TimeBasedStyle
   activeStatus: DrawnStatus | null
 }) => {
-  if (!previousEndTime) {
-    return null
-  }
   const layoverDuration = nextTrip.startTime - previousEndTime
   if (layoverDuration === 0) {
     return null
@@ -483,7 +480,7 @@ const Trip = ({
 
   return (
     <>
-      {view === "run" ? (
+      {view === "run" && previousEndTime !== undefined ? (
         <Layover
           nextTrip={trip}
           previousEndTime={previousEndTime}
