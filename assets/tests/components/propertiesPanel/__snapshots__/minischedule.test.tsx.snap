@@ -161,23 +161,6 @@ exports[`Minischedule highlights deadheads if they're active 1`] = `
         </div>
       </div>
       <div
-        className="m-minischedule__row m-minischedule__row--future m-minischedule__layover-row"
-      >
-        <div
-          className="m-minischedule__icon"
-        />
-        <div
-          className="m-minischedule__left-text"
-        >
-          Layover
-        </div>
-        <div
-          className="m-minischedule__right-text"
-        >
-          -1 min
-        </div>
-      </div>
-      <div
         className="m-minischedule__row m-minischedule__row--future"
       >
         <div
@@ -363,23 +346,6 @@ exports[`Minischedule highlights pullouts if they're active 1`] = `
           className="m-minischedule__right-text"
         >
           12:00 AM
-        </div>
-      </div>
-      <div
-        className="m-minischedule__row m-minischedule__row--future m-minischedule__layover-row"
-      >
-        <div
-          className="m-minischedule__icon"
-        />
-        <div
-          className="m-minischedule__left-text"
-        >
-          Layover
-        </div>
-        <div
-          className="m-minischedule__right-text"
-        >
-          -1 min
         </div>
       </div>
       <div

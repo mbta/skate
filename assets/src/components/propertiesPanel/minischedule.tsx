@@ -361,12 +361,15 @@ const Piece = ({
             pieceTimeBasedStyle === "current"
               ? getTimeBasedStyle(tripIndex, activeIndex && activeIndex[1])
               : pieceTimeBasedStyle
+          const previousTrip: Trip | AsDirected | null =
+            piece.trips[tripIndex - 1] || piece.startMidRoute?.trip
           return (
             <Trip
               trip={trip}
               previousEndTime={
-                piece.trips[tripIndex - 1]?.endTime ||
-                piece.startMidRoute?.trip.endTime
+                previousTrip && !isDeadhead(previousTrip)
+                  ? previousTrip.endTime
+                  : null
               }
               sequence={getSequence(tripIndex, piece.trips)}
               tripTimeBasedStyle={tripTimeBasedStyle}
@@ -454,7 +457,7 @@ const Trip = ({
   routes,
 }: {
   trip: Trip | AsDirected
-  previousEndTime: Time | undefined
+  previousEndTime: Time | null
   sequence: "first" | "middle" | "last"
   tripTimeBasedStyle: TimeBasedStyle
   vehicleOrGhost: VehicleOrGhost
@@ -483,7 +486,7 @@ const Trip = ({
 
   return (
     <>
-      {view === "run" && previousEndTime !== undefined && !isDeadhead(trip) ? (
+      {view === "run" && previousEndTime !== null && !isDeadhead(trip) ? (
         <Layover
           nextTrip={trip}
           previousEndTime={previousEndTime}
