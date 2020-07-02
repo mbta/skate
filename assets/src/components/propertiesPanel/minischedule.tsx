@@ -511,7 +511,7 @@ const Trip = ({
           />
         )
       ) : (
-        <AsDirected asDirected={trip} timeBasedStyle={tripTimeBasedStyle} />
+        <AsDirected asDirected={trip} timeBasedStyle={onRouteTimeBasedStyle} />
       )}
     </>
   )
