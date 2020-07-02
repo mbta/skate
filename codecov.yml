@@ -1,3 +1,0 @@
-ignore:
-  - "lib/skate_web/router.ex"
-  - "lib/skate_web/controllers/deliberately_fail_controller.ex"
