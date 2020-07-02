@@ -25,15 +25,23 @@
 .m-route-ladder__controls {
   display: flex;
   grid-row-start: m-route-ladder__controls;
+  position: relative;
 }
 
-.m-route-ladder__reverse {
+.m-route-ladder__reverse,
+.m-route-ladder__crowding-toggle {
   @include font-small;
   @include button-transparent;
   @include button-icon(0.625rem);
   margin-top: 0.5rem;
 }
 
-.m-route-ladder__reverse-icon {
+.m-route-ladder__crowding-toggle {
+  position: absolute;
+  right: 0;
+}
+
+.m-route-ladder__reverse-icon,
+.m-route-ladder__crowding-toggle-icon {
   margin-right: 0.25rem;
 }

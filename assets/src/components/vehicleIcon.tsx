@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react"
 import { className } from "../helpers/dom"
 import { DrawnStatus, statusClass } from "../models/vehicleStatus"
-import { IconAlertCircleSvgNode, AlertIconStyle } from "./iconAlertCircle"
+import { AlertIconStyle, IconAlertCircleSvgNode } from "./iconAlertCircle"
 
 export enum Orientation {
   Up,
@@ -169,6 +169,20 @@ export const VehicleIconSvgNode = ({
           alertIconStyle={alertIconStyle}
         />
       ) : null}
+    </g>
+  )
+}
+
+export const CrowdingIconSvgNode = ({
+  size,
+  orientation,
+  label,
+}: Props): ReactElement<SVGElement> => {
+  // ghosts can't be drawn sideways
+  const classes: string[] = []
+  return (
+    <g className={className(classes)}>
+      <Label size={size} orientation={orientation} label={label!} />
     </g>
   )
 }
