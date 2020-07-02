@@ -4,6 +4,7 @@ import renderer from "react-test-renderer"
 import * as map from "../../../src/components/map"
 import VehiclePropertiesPanel from "../../../src/components/propertiesPanel/vehiclePropertiesPanel"
 import { VehiclesByRouteIdProvider } from "../../../src/contexts/vehiclesByRouteIdContext"
+import useVehiclesForRoute from "../../../src/hooks/useVehiclesForRoute"
 import { HeadwaySpacing } from "../../../src/models/vehicleStatus"
 import { BlockWaiver, Ghost, Vehicle } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
@@ -16,6 +17,11 @@ jest
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
 jest.spyOn(map, "default")
+
+jest.mock("../../../src/hooks/useVehiclesForRoute", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}))
 
 const vehicle: Vehicle = {
   id: "v1",
@@ -210,7 +216,7 @@ describe("VehiclePropertiesPanel", () => {
     ).toBe(0)
   })
 
-  test("fetches other vehicles on the route for the map", () => {
+  test("map includes other vehicles on the route", () => {
     const thisVehicle = vehicle
     const otherVehicle = { ...vehicle, id: "other" }
     const ghost = { id: "ghost" } as Ghost
@@ -222,6 +228,23 @@ describe("VehiclePropertiesPanel", () => {
         <VehiclePropertiesPanel selectedVehicle={thisVehicle} />
       </VehiclesByRouteIdProvider>
     )
+    expect(map.default).toHaveBeenCalledTimes(1)
+    const mapArgs: map.Props = (map.default as jest.Mock).mock.calls[0][0]
+    expect(mapArgs.secondaryVehicles).toEqual([otherVehicle])
+  })
+
+  test("fetches other vehicles on the route if they don't already exist", () => {
+    const thisVehicle = vehicle
+    const otherVehicle = { ...vehicle, id: "other" }
+    const ghost = { id: "ghost" } as Ghost
+    jest.spyOn(map, "default")
+    ;(useVehiclesForRoute as jest.Mock).mockImplementationOnce(() => [
+      thisVehicle,
+      otherVehicle,
+      ghost,
+    ])
+    renderer.create(<VehiclePropertiesPanel selectedVehicle={thisVehicle} />)
+    expect(useVehiclesForRoute).toHaveBeenCalled()
     expect(map.default).toHaveBeenCalledTimes(1)
     const mapArgs: map.Props = (map.default as jest.Mock).mock.calls[0][0]
     expect(mapArgs.secondaryVehicles).toEqual([otherVehicle])
