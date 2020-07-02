@@ -109,7 +109,10 @@ const Vehicle = ({
   isPrimary: boolean
 }) => {
   const [appState, dispatch] = useContext(StateDispatchContext)
-  const select = () => dispatch(selectVehicle(vehicle.id))
+  const select = isPrimary
+    ? () => dispatch(selectVehicle(vehicle.id))
+    : // tslint:disable-next-line: no-empty
+      () => {}
   const position: LatLngExpression = [vehicle.latitude, vehicle.longitude]
   const vehicleIcon: Leaflet.DivIcon = makeVehicleIcon(vehicle, isPrimary)
   const labelIcon: Leaflet.DivIcon = makeLabelIcon(
