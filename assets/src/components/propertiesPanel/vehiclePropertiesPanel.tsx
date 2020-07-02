@@ -1,9 +1,17 @@
-import React, { useState } from "react"
+import React, { useContext, useState } from "react"
+import { SocketContext } from "../../contexts/socketContext"
+import { VehiclesByRouteIdContext } from "../../contexts/vehiclesByRouteIdContext"
 import { useTripShape } from "../../hooks/useShapes"
+import useVehiclesForRoute from "../../hooks/useVehiclesForRoute"
 import { hasBlockWaiver } from "../../models/blockWaiver"
-import { shouldShowHeadwayDiagram } from "../../models/vehicle"
-import { DataDiscrepancy, Vehicle } from "../../realtime"
-import { Route, Shape } from "../../schedule"
+import { isVehicle, shouldShowHeadwayDiagram } from "../../models/vehicle"
+import {
+  DataDiscrepancy,
+  Vehicle,
+  VehicleId,
+  VehicleOrGhost,
+} from "../../realtime"
+import { Route, RouteId, Shape } from "../../schedule"
 import Map from "../map"
 import PropertiesList from "../propertiesList"
 import BlockWaiverList from "./blockWaiverList"
@@ -40,7 +48,27 @@ const directionsUrl = (
 &destination=${latitude.toString()},${longitude.toString()}\
 &travelmode=driving`
 
+const useRouteVehicles = (
+  routeId: RouteId | null,
+  primaryVehicleId: VehicleId
+): Vehicle[] => {
+  // Get vehicles we've already fetched from the context.
+  const vehiclesByRouteId = useContext(VehiclesByRouteIdContext)
+  const existingVehiclesAndGhosts: VehicleOrGhost[] | undefined =
+    routeId === null ? undefined : vehiclesByRouteId[routeId]
+  // If we haven't already fetched this route, open a new channel.
+  const { socket } = useContext(SocketContext)
+  const newVehiclesAndGhosts: VehicleOrGhost[] | null = useVehiclesForRoute(
+    socket,
+    existingVehiclesAndGhosts === undefined ? routeId : null
+  )
+  return (existingVehiclesAndGhosts || newVehiclesAndGhosts || [])
+    .filter(isVehicle)
+    .filter((v) => v.id !== primaryVehicleId)
+}
+
 const Location = ({ vehicle }: { vehicle: Vehicle }) => {
+  const routeVehicles: Vehicle[] = useRouteVehicles(vehicle.routeId, vehicle.id)
   const shapes: Shape[] = useTripShape(vehicle.tripId)
 
   const { isOffCourse, latitude, longitude, stopStatus } = vehicle
@@ -63,7 +91,11 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
         Directions
       </a>
       <div className="m-vehicle-properties-panel__map">
-        <Map vehicles={[vehicle]} shapes={shapes} />
+        <Map
+          vehicles={[vehicle]}
+          shapes={shapes}
+          secondaryVehicles={routeVehicles}
+        />
       </div>
     </div>
   )

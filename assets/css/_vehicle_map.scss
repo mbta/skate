@@ -1,8 +1,14 @@
 .m-vehicle-map__label {
-  @include font-emph;
-
   svg {
     overflow: visible;
+  }
+
+  &.primary {
+    @include font-emph;
+  }
+
+  &.secondary {
+    @include font-tiny;
   }
 }
 

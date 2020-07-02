@@ -21,6 +21,7 @@ import Control from "react-leaflet-control"
 // @ts-ignore
 import FullscreenControl from "react-leaflet-fullscreen"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import { className } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClass } from "../models/vehicleStatus"
 import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
@@ -28,9 +29,12 @@ import { Shape } from "../schedule"
 import { Settings } from "../settings"
 import { selectVehicle } from "../state"
 
-interface Props {
+export interface Props {
   vehicles: Vehicle[]
   shapes?: Shape[]
+  // secondaryVehicles are smaller, deemphasized, and don't affect autocentering
+  secondaryVehicles?: Vehicle[]
+  // trainVehicles are white, don't get a label, and don't affect autocentering
   trainVehicles?: TrainVehicle[]
   reactLeafletRef?: MutableRefObject<ReactLeafletMap | null>
 }
@@ -40,7 +44,10 @@ export const defaultCenter: LatLngExpression = {
   lng: -71.05891,
 }
 
-const makeVehicleIcon = (vehicle: Vehicle): Leaflet.DivIcon => {
+const makeVehicleIcon = (
+  vehicle: Vehicle,
+  isPrimary: boolean
+): Leaflet.DivIcon => {
   const centerX = 12
   const centerY = 12
   return Leaflet.divIcon({
@@ -53,25 +60,34 @@ const makeVehicleIcon = (vehicle: Vehicle): Leaflet.DivIcon => {
         <path
           class="${statusClass(drawnStatus(vehicle))}"
           d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
-          transform="rotate(${vehicle.bearing}, ${centerX}, ${centerY})"
+          transform="scale(${isPrimary ? 1.0 : 0.8}) rotate(${
+      vehicle.bearing
+    }) translate(${-centerX}, ${-centerY})"
         />
       </svg>`,
-    iconAnchor: [centerX, centerY],
+    iconAnchor: [0, 0],
     className: "m-vehicle-map__icon",
   })
 }
 
 const makeLabelIcon = (
   vehicle: Vehicle,
+  isPrimary: boolean,
   settings: Settings,
   selectedVehicleId?: VehicleId
 ): Leaflet.DivIcon => {
   const labelString = vehicleLabelString(vehicle, settings)
-  const labelBackgroundWidth = labelString.length <= 4 ? 40 : 62
+  const labelBackgroundHeight = isPrimary ? 16 : 12
+  const labelBackgroundWidth =
+    labelString.length <= 4 ? (isPrimary ? 40 : 30) : isPrimary ? 62 : 40
   const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
   return Leaflet.divIcon({
-    className: `m-vehicle-map__label ${selectedClass}`,
-    html: `<svg viewBox="0 0 ${labelBackgroundWidth} 16" width="${labelBackgroundWidth}" height="16">
+    className: className([
+      "m-vehicle-map__label",
+      isPrimary ? "primary" : "secondary",
+      selectedClass,
+    ]),
+    html: `<svg viewBox="0 0 ${labelBackgroundWidth} ${labelBackgroundHeight}" width="${labelBackgroundWidth}" height="${labelBackgroundHeight}">
             <rect
                 class="m-vehicle-icon__label-background"
                 width="100%" height="100%"
@@ -81,24 +97,45 @@ const makeLabelIcon = (
               ${labelString}
             </text>
           </svg>`,
-    iconAnchor: [labelBackgroundWidth / 2, -16],
+    iconAnchor: [labelBackgroundWidth / 2, isPrimary ? -16 : -10],
   })
 }
 
-const Vehicle = ({ vehicle }: { vehicle: Vehicle }) => {
+const Vehicle = ({
+  vehicle,
+  isPrimary,
+}: {
+  vehicle: Vehicle
+  isPrimary: boolean
+}) => {
   const [appState, dispatch] = useContext(StateDispatchContext)
-  const select = () => dispatch(selectVehicle(vehicle.id))
+  const select = isPrimary
+    ? () => dispatch(selectVehicle(vehicle.id))
+    : // tslint:disable-next-line: no-empty
+      () => {}
   const position: LatLngExpression = [vehicle.latitude, vehicle.longitude]
-  const vehicleIcon: Leaflet.DivIcon = makeVehicleIcon(vehicle)
+  const vehicleIcon: Leaflet.DivIcon = makeVehicleIcon(vehicle, isPrimary)
   const labelIcon: Leaflet.DivIcon = makeLabelIcon(
     vehicle,
+    isPrimary,
     appState.settings,
     appState.selectedVehicleId
   )
+  const zIndexOffset = isPrimary ? 2000 : 0
   return (
     <>
-      <Marker position={position} icon={vehicleIcon} onClick={select} />
-      <Marker position={position} icon={labelIcon} onClick={select} />
+      <Marker
+        position={position}
+        icon={vehicleIcon}
+        onClick={select}
+        zIndexOffset={zIndexOffset}
+      />
+      <Marker
+        position={position}
+        icon={labelIcon}
+        onClick={select}
+        zIndexOffset={zIndexOffset}
+      />
     </>
   )
 }
@@ -291,7 +328,10 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
         {props.vehicles.map((vehicle: Vehicle) => (
-          <Vehicle key={vehicle.id} vehicle={vehicle} />
+          <Vehicle key={vehicle.id} vehicle={vehicle} isPrimary={true} />
+        ))}
+        {(props.secondaryVehicles || []).map((vehicle: Vehicle) => (
+          <Vehicle key={vehicle.id} vehicle={vehicle} isPrimary={false} />
         ))}
         {(props.trainVehicles || []).map((trainVehicle: TrainVehicle) => (
           <TrainVehicle key={trainVehicle.id} trainVehicle={trainVehicle} />

@@ -78,6 +78,12 @@ describe("map", () => {
     expect(wrapper.html()).toContain("m-vehicle-map__label")
   })
 
+  test("draws secondary vehicles", () => {
+    const wrapper = mount(<Map vehicles={[]} secondaryVehicles={[vehicle]} />)
+    expect(wrapper.html()).toContain("m-vehicle-map__icon")
+    expect(wrapper.html()).toContain("m-vehicle-map__label")
+  })
+
   test("draws train vehicles", () => {
     const trainVehicle: TrainVehicle = {
       id: "red1",
