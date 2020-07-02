@@ -1,6 +1,8 @@
 import React, { useContext, useState } from "react"
+import { SocketContext } from "../../contexts/socketContext"
 import { VehiclesByRouteIdContext } from "../../contexts/vehiclesByRouteIdContext"
 import { useTripShape } from "../../hooks/useShapes"
+import useVehiclesForRoute from "../../hooks/useVehiclesForRoute"
 import { hasBlockWaiver } from "../../models/blockWaiver"
 import { isVehicle, shouldShowHeadwayDiagram } from "../../models/vehicle"
 import {
@@ -50,10 +52,17 @@ const useRouteVehicles = (
   routeId: RouteId | null,
   primaryVehicleId: VehicleId
 ): Vehicle[] => {
+  // Get vehicles we've already fetched from the context.
   const vehiclesByRouteId = useContext(VehiclesByRouteIdContext)
   const existingVehiclesAndGhosts: VehicleOrGhost[] | undefined =
     routeId === null ? undefined : vehiclesByRouteId[routeId]
-  return (existingVehiclesAndGhosts || [])
+  // If we haven't already fetched this route, open a new channel.
+  const { socket } = useContext(SocketContext)
+  const newVehiclesAndGhosts: VehicleOrGhost[] | null = useVehiclesForRoute(
+    socket,
+    existingVehiclesAndGhosts === undefined ? routeId : null
+  )
+  return (existingVehiclesAndGhosts || newVehiclesAndGhosts || [])
     .filter(isVehicle)
     .filter((v) => v.id !== primaryVehicleId)
 }
