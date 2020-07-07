@@ -1,37 +1,11 @@
 import React from "react"
 import ReactTooltip from "react-tooltip"
 import { crowdingIcon, questionMarkIcon } from "../../helpers/icon"
-import { Crowding, OccupancyStatus } from "../../realtime"
-
-const statusDescriptionForStatus = (status: OccupancyStatus): string => {
-  switch (status) {
-    case "NO_DATA":
-      return "No data available"
-    case "EMPTY":
-      return "Empty"
-    case "MANY_SEATS_AVAILABLE":
-      return "Not crowded"
-    case "FEW_SEATS_AVAILABLE":
-      return "Some crowding"
-    case "FULL":
-      return "Crowded"
-  }
-}
-
-const classModifierForStatus = (status: OccupancyStatus): string => {
-  switch (status) {
-    case "NO_DATA":
-      return "no-data"
-    case "EMPTY":
-      return "empty"
-    case "MANY_SEATS_AVAILABLE":
-      return "not-crowded"
-    case "FEW_SEATS_AVAILABLE":
-      return "some-crowding"
-    case "FULL":
-      return "crowded"
-  }
-}
+import {
+  classModifierForStatus,
+  Crowding,
+  statusDescriptionForStatus,
+} from "../../models/crowding"
 
 const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
   if (crowding === null) {

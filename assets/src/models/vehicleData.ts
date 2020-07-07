@@ -1,10 +1,8 @@
-import { HeadwaySpacing } from "../models/vehicleStatus"
 import {
   BlockWaiver,
   DataDiscrepancy,
   EndOfTripType,
   Ghost,
-  OccupancyStatus,
   RouteStatus,
   RunId,
   Vehicle,
@@ -15,6 +13,8 @@ import {
 } from "../realtime.d"
 import { DirectionId, RouteId } from "../schedule.d"
 import { dateFromEpochSeconds } from "../util/dateTime"
+import { OccupancyStatus } from "./crowding"
+import { HeadwaySpacing } from "./vehicleStatus"
 
 type RawHeadwaySpacing =
   | "very_bunched"
