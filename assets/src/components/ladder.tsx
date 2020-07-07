@@ -111,18 +111,19 @@ const Ladder = ({
         width={width}
         height={height}
       >
-        {flatten([
-          layoverTopLadderVehicles,
-          layoverBottomLadderVehicles,
-          ladderVehicles,
-        ])
-          .filter(notOverload)
-          .map((ladderVehicle) => (
-            <ScheduledLine
-              key={`line-${ladderVehicle.vehicle.id}`}
-              ladderVehicle={ladderVehicle}
-            />
-          ))}
+        {!displayCrowding &&
+          flatten([
+            layoverTopLadderVehicles,
+            layoverBottomLadderVehicles,
+            ladderVehicles,
+          ])
+            .filter(notOverload)
+            .map((ladderVehicle) => (
+              <ScheduledLine
+                key={`line-${ladderVehicle.vehicle.id}`}
+                ladderVehicle={ladderVehicle}
+              />
+            ))}
         {layoverTopLadderVehicles.map((ladderVehicle) => (
           <VehicleOrCrowdingSvg
             key={`vehicle-${ladderVehicle.vehicle.id}`}
