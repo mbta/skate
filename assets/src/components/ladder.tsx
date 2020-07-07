@@ -6,6 +6,7 @@ import { flatten, partition } from "../helpers/array"
 import vehicleLabel from "../helpers/vehicleLabel"
 import featureIsEnabled from "../laboratoryFeatures"
 import { blockWaiverAlertStyle } from "../models/blockWaiver"
+import { classModifierForStatus } from "../models/crowding"
 import {
   LadderDirection,
   orderTimepoints,
@@ -225,10 +226,14 @@ const CrowdingSvg = ({
   const { vehicle, x, y, vehicleDirection } = ladderVehicle
   const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
   const [{}, dispatch] = useContext(StateDispatchContext)
+  const crowding = (vehicle as Vehicle).crowding
+  const crowdingClass = `m-ladder__crowding--${classModifierForStatus(
+    crowding.occupancyStatus
+  )}`
 
   return (
     <g
-      className={`m-ladder__crowding ${selectedClass} `}
+      className={`m-ladder__crowding ${selectedClass} ${crowdingClass}`}
       transform={`translate(${x},${y})`}
       onClick={() => dispatch(selectVehicle(associatedVehicleId(vehicle.id)))}
     >
