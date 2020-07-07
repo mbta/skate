@@ -180,8 +180,11 @@ export const CrowdingIconSvgNode = ({
 }: Props): ReactElement<SVGElement> => {
   const classes: string[] = []
   return (
-    <svg>
-      <g className={className(classes)}>
+    <g
+      className={className(classes)}
+      transform={`scale(${scaleForSize(size)}) translate(-24, -30)`}
+    >
+      <svg>
         <Label size={size} orientation={orientation} label={label!} />
         <path d="M6.74,16.17A6.86,6.86,0,0,0-.12,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.42,3.42,0,0,0,3.42-3.42V23A6.87,6.87,0,0,0,6.74,16.17Z" />
         <circle cx="6.74" cy="8.54" r="4.93" />
@@ -189,8 +192,8 @@ export const CrowdingIconSvgNode = ({
         <circle cx="23.88" cy="8.48" r="4.93" />
         <path d="M41,16.17A6.87,6.87,0,0,0,34.17,23V40.8a3.42,3.42,0,0,0,3.42,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23A6.86,6.86,0,0,0,41,16.17Z" />
         <circle cx="41.03" cy="8.48" r="4.93" />
-      </g>
-    </svg>
+      </svg>
+    </g>
   )
 }
 
