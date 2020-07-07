@@ -53,31 +53,34 @@ const Controls = ({
   ladderCrowdingToggle: LadderCrowdingToggle
   reverseLadder: () => void
   toggleCrowding: () => void
-}) => (
-  <div className="m-route-ladder__controls">
-    <button className="m-route-ladder__reverse" onClick={reverseLadder}>
-      {ladderDirection === LadderDirection.OneToZero
-        ? reverseIcon("m-route-ladder__reverse-icon")
-        : reverseIconReversed("m-route-ladder__reverse-icon")}
-      Reverse
-    </button>
-    {displayCrowdingToggleIcon && ladderCrowdingToggle ? (
-      <button
-        className="m-route-ladder__crowding-toggle--hide"
-        onClick={toggleCrowding}
-      >
-        Hide riders
+}) => {
+  return (
+    <div className="m-route-ladder__controls">
+      <button className="m-route-ladder__reverse" onClick={reverseLadder}>
+        {ladderDirection === LadderDirection.OneToZero
+          ? reverseIcon("m-route-ladder__reverse-icon")
+          : reverseIconReversed("m-route-ladder__reverse-icon")}
+        Reverse
       </button>
-    ) : (
-      <button
-        className="m-route-ladder__crowding-toggle--show"
-        onClick={toggleCrowding}
-      >
-        Show riders
-      </button>
-    )}
-  </div>
-)
+      {displayCrowdingToggleIcon &&
+        (ladderCrowdingToggle ? (
+          <button
+            className="m-route-ladder__crowding-toggle--hide"
+            onClick={toggleCrowding}
+          >
+            Hide riders
+          </button>
+        ) : (
+          <button
+            className="m-route-ladder__crowding-toggle--show"
+            onClick={toggleCrowding}
+          >
+            Show riders
+          </button>
+        ))}
+    </div>
+  )
+}
 
 const someVehicleHasCrowding = (
   vehiclesAndGhosts?: VehicleOrGhost[]
@@ -93,7 +96,7 @@ const someVehicleHasCrowding = (
       vehicleOrGhost.crowding !== null
   )
 
-  return vehicleWithCrowding !== undefined
+  return !!vehicleWithCrowding
 }
 
 const RouteLadder = ({
@@ -138,12 +141,14 @@ const RouteLadder = ({
       {timepoints ? (
         <>
           <Ladder
+            displayCrowding={ladderCrowdingToggle}
             timepoints={timepoints}
             vehiclesByPosition={byPosition}
             ladderDirection={ladderDirection}
             selectedVehicleId={selectedVehicleId}
           />
           <IncomingBox
+            displayCrowding={ladderCrowdingToggle}
             vehiclesAndGhosts={byPosition.incoming}
             ladderDirection={ladderDirection}
             selectedVehicleId={selectedVehicleId}

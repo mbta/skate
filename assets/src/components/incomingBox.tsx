@@ -7,6 +7,7 @@ import {
   LadderDirection,
   VehicleDirection,
 } from "../models/ladderDirection"
+import { isVehicle } from "../models/vehicle"
 import { drawnStatus } from "../models/vehicleStatus"
 import { VehicleId, VehicleOrGhost } from "../realtime.d"
 import { selectVehicle } from "../state"
@@ -57,18 +58,45 @@ const IncomingBoxVehicle = ({
   )
 }
 
+const IncomingBoxVehicleOrCrowding = ({
+  displayCrowding,
+  vehicleOrGhost,
+  ladderDirection,
+  selectedVehicleId,
+}: {
+  displayCrowding?: boolean
+  vehicleOrGhost: VehicleOrGhost
+  ladderDirection: LadderDirection
+  selectedVehicleId: VehicleId | undefined
+}) => {
+  const useCrowdingIcon = displayCrowding && isVehicle(vehicleOrGhost)
+  if (useCrowdingIcon) {
+    return <span>TODO</span>
+  }
+  return (
+    <IncomingBoxVehicle
+      vehicleOrGhost={vehicleOrGhost}
+      ladderDirection={ladderDirection}
+      selectedVehicleId={selectedVehicleId}
+    />
+  )
+}
+
 const IncomingBox = ({
+  displayCrowding,
   vehiclesAndGhosts,
   ladderDirection,
   selectedVehicleId,
 }: {
+  displayCrowding?: boolean
   vehiclesAndGhosts: VehicleOrGhost[]
   ladderDirection: LadderDirection
   selectedVehicleId: VehicleId | undefined
 }) => (
   <div className="m-incoming-box">
     {vehiclesAndGhosts.map((vehicleOrGhost) => (
-      <IncomingBoxVehicle
+      <IncomingBoxVehicleOrCrowding
+        displayCrowding={displayCrowding}
         vehicleOrGhost={vehicleOrGhost}
         ladderDirection={ladderDirection}
         selectedVehicleId={selectedVehicleId}
