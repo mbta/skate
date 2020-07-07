@@ -228,7 +228,7 @@ const CrowdingSvg = ({
 
   return (
     <g
-      className={`m-ladder__vehicle ${selectedClass} `}
+      className={`m-ladder__crowding ${selectedClass} `}
       transform={`translate(${x},${y})`}
       onClick={() => dispatch(selectVehicle(associatedVehicleId(vehicle.id)))}
     >
