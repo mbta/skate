@@ -227,8 +227,9 @@ const CrowdingSvg = ({
   const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
   const [{}, dispatch] = useContext(StateDispatchContext)
   const crowding = (vehicle as Vehicle).crowding
+  const occupancyStatus = crowding ? crowding.occupancyStatus : "NO_DATA"
   const crowdingClass = `m-ladder__crowding--${classModifierForStatus(
-    crowding.occupancyStatus
+    occupancyStatus
   )}`
 
   return (
