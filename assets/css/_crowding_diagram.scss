@@ -6,6 +6,53 @@ $color-crowding-some-crowding: #fca400;
 $color-crowding-crowded: #e90d0d;
 $color-crowding-icon-bg: $color-bg-medium;
 
+@mixin crowding-icon-colors {
+  circle,
+  path {
+    fill: $color-crowding-icon-bg;
+  }
+
+  &--empty {
+    circle,
+    path {
+      fill: $color-crowding-empty-icon;
+    }
+  }
+
+  &--no-data {
+    circle,
+    path {
+      fill: $color-crowding-no-data-icon;
+    }
+  }
+
+  &--not-crowded {
+    circle,
+    path {
+      &:nth-of-type(1) {
+        fill: $color-crowding-not-crowded;
+      }
+    }
+  }
+
+  &--some-crowding {
+    circle,
+    path {
+      &:nth-of-type(1),
+      &:nth-of-type(2) {
+        fill: $color-crowding-some-crowding;
+      }
+    }
+  }
+
+  &--crowded {
+    circle,
+    path {
+      fill: $color-crowding-crowded;
+    }
+  }
+}
+
 .m-crowding-diagram {
   border-top: 1px solid $color-rule;
   font-size: 0.875rem;
@@ -36,6 +83,8 @@ $color-crowding-icon-bg: $color-bg-medium;
 }
 
 .m-crowding-diagram__crowding-icon {
+  @include crowding-icon-colors;
+
   bottom: 1rem;
   position: absolute;
   right: 1rem;
@@ -43,54 +92,11 @@ $color-crowding-icon-bg: $color-bg-medium;
   svg {
     height: 2.5rem;
     width: 2.5rem;
-
-    circle,
-    path {
-      fill: $color-crowding-icon-bg;
-    }
   }
 
   &--empty {
     bottom: auto;
     top: 1rem;
-    svg {
-      * {
-        fill: $color-crowding-empty-icon;
-      }
-    }
-  }
-
-  &--no-data {
-    svg path,
-    svg circle {
-      fill: $color-crowding-no-data-icon;
-    }
-  }
-
-  &--not-crowded {
-    svg path,
-    svg circle {
-      &:nth-of-type(1) {
-        fill: $color-crowding-not-crowded;
-      }
-    }
-  }
-
-  &--some-crowding {
-    svg path,
-    svg circle {
-      &:nth-of-type(1),
-      &:nth-of-type(2) {
-        fill: $color-crowding-some-crowding;
-      }
-    }
-  }
-
-  &--crowded {
-    svg path,
-    svg circle {
-      fill: $color-crowding-crowded;
-    }
   }
 }
 

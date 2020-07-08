@@ -173,20 +173,6 @@ export const VehicleIconSvgNode = ({
   )
 }
 
-export const CrowdingIconSvgNode = ({
-  size,
-  orientation,
-  label,
-}: Props): ReactElement<SVGElement> => {
-  // ghosts can't be drawn sideways
-  const classes: string[] = []
-  return (
-    <g className={className(classes)}>
-      <Label size={size} orientation={orientation} label={label!} />
-    </g>
-  )
-}
-
 const Triangle = ({
   size,
   orientation,
@@ -248,7 +234,7 @@ const Ghost = ({ size, variant }: { size: Size; variant?: string }) => {
   )
 }
 
-const Label = ({
+export const Label = ({
   size,
   orientation,
   label,
@@ -441,7 +427,7 @@ const alertCircleIconScale = (size: Size): number => {
   }
 }
 
-const sizeClassSuffix = (size: Size): string => {
+export const sizeClassSuffix = (size: Size): string => {
   switch (size) {
     case Size.Small:
       return "--small"
@@ -452,7 +438,7 @@ const sizeClassSuffix = (size: Size): string => {
   }
 }
 
-const scaleForSize = (size: Size): number => {
+export const scaleForSize = (size: Size): number => {
   switch (size) {
     case Size.Small:
       return 0.38

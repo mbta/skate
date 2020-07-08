@@ -6,6 +6,7 @@ import { flatten, partition } from "../helpers/array"
 import vehicleLabel from "../helpers/vehicleLabel"
 import featureIsEnabled from "../laboratoryFeatures"
 import { blockWaiverAlertStyle } from "../models/blockWaiver"
+import { OccupancyStatus } from "../models/crowding"
 import {
   LadderDirection,
   orderTimepoints,
@@ -25,13 +26,9 @@ import { drawnStatus, statusClass } from "../models/vehicleStatus"
 import { Vehicle, VehicleId, VehicleTimepointStatus } from "../realtime.d"
 import { Timepoint } from "../schedule.d"
 import { selectVehicle } from "../state"
+import { CrowdingIconSvgNode } from "./crowdingIcon"
 import HeadwayLines from "./headwayLines"
-import {
-  CrowdingIconSvgNode,
-  Orientation,
-  Size,
-  VehicleIconSvgNode,
-} from "./vehicleIcon"
+import { Orientation, Size, VehicleIconSvgNode } from "./vehicleIcon"
 
 export interface Props {
   timepoints: Timepoint[]
@@ -224,9 +221,13 @@ const CrowdingSvg = ({
   isLayingOver: boolean
 }) => {
   const { vehicle, x, y, vehicleDirection } = ladderVehicle
+  const crowding = (vehicle as Vehicle).crowding
   const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
   const [{}, dispatch] = useContext(StateDispatchContext)
 
+  const occupancyStatus: OccupancyStatus = crowding
+    ? crowding.occupancyStatus
+    : "NO_DATA"
   return (
     <g
       className={`m-ladder__vehicle ${selectedClass} `}
@@ -237,6 +238,7 @@ const CrowdingSvg = ({
         size={isLayingOver ? Size.Small : Size.Medium}
         orientation={orientationMatchingVehicle(isLayingOver, vehicleDirection)}
         label={crowdingLabel(vehicle as Vehicle)}
+        occupancyStatus={occupancyStatus}
       />
     </g>
   )
