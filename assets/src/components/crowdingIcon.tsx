@@ -7,6 +7,7 @@ import {
   scaleForSize,
   Size,
   sizeClassSuffix,
+  viewBox,
 } from "./vehicleIcon"
 
 interface Props {
@@ -16,6 +17,17 @@ interface Props {
   occupancyStatus: OccupancyStatus
 }
 
+export const CrowdingIcon = (props: Props): ReactElement<HTMLElement> => {
+  const { left, top, width, height } = viewBox(props)
+  return (
+    <svg
+      style={{ width, height }}
+      viewBox={`${left} ${top} ${width} ${height}`}
+    >
+      <CrowdingIconSvgNode {...props} />
+    </svg>
+  )
+}
 const Crowd = ({ size, orientation, occupancyStatus }: Props) => {
   const scale = scaleForSize(size)
   const yOffset =
@@ -65,3 +77,4 @@ export const CrowdingIconSvgNode = ({
   )
 }
 
+export default CrowdingIcon

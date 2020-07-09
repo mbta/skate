@@ -59,7 +59,7 @@ export const VehicleIcon = (props: Props): ReactElement<HTMLElement> => {
   )
 }
 
-const viewBox = ({
+export const viewBox = ({
   size,
   orientation,
   label,

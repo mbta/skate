@@ -6,7 +6,7 @@ import { flatten, partition } from "../helpers/array"
 import vehicleLabel from "../helpers/vehicleLabel"
 import featureIsEnabled from "../laboratoryFeatures"
 import { blockWaiverAlertStyle } from "../models/blockWaiver"
-import { OccupancyStatus } from "../models/crowding"
+import { crowdingLabel, OccupancyStatus } from "../models/crowding"
 import {
   LadderDirection,
   orderTimepoints,
@@ -242,14 +242,6 @@ const CrowdingSvg = ({
       />
     </g>
   )
-}
-
-const crowdingLabel = (vehicle: Vehicle): string => {
-  if (vehicle.crowding && vehicle.crowding.load !== null) {
-    return `${vehicle.crowding.load}/${vehicle.crowding.capacity}`
-  } else {
-    return "NO DATA"
-  }
 }
 
 const VehicleSvg = ({

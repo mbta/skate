@@ -1,3 +1,5 @@
+import { Vehicle } from "../realtime"
+
 export type OccupancyStatus =
   | "NO_DATA"
   | "EMPTY"
@@ -27,6 +29,14 @@ export const classModifierForStatus = (status: OccupancyStatus): string => {
   }
 }
 
+export const crowdingLabel = (vehicle: Vehicle): string => {
+  if (vehicle.crowding && vehicle.crowding.load !== null) {
+    return `${vehicle.crowding.load}/${vehicle.crowding.capacity}`
+  } else {
+    return "NO DATA"
+  }
+}
+
 export const statusDescriptionForStatus = (status: OccupancyStatus): string => {
   switch (status) {
     case "NO_DATA":
@@ -41,4 +51,3 @@ export const statusDescriptionForStatus = (status: OccupancyStatus): string => {
       return "Crowded"
   }
 }
-
