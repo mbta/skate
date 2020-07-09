@@ -91,7 +91,9 @@ config :skate, SkateWeb.AuthManager,
 config :laboratory,
   features: [
     {:headway_ladder_colors, "Headway Route Ladder Colors",
-     "Turns on colored headway spacing lines on key route route ladders showing when service is bunched or gapped."}
+     "Turns on colored headway spacing lines on key route route ladders showing when service is bunched or gapped."},
+    {:route_ladder_crowding, "Crowding Display In Route Ladder",
+     "Allows toggling display of routes with crowding data to a mode that shows crowding icons/labels rather than the usual vehicle display"}
   ],
   cookie: [
     # one month,

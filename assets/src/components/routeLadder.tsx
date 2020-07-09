@@ -1,6 +1,7 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { crowdingIcon, reverseIcon, reverseIconReversed } from "../helpers/icon"
+import featureIsEnabled from "../laboratoryFeatures"
 import {
   getLadderCrowdingToggleForRoute,
   LadderCrowdingToggle,
@@ -133,11 +134,14 @@ const RouteLadder = ({
     ladderDirection
   )
 
+  const displayCrowding =
+    featureIsEnabled("route_ladder_crowding") &&
+    someVehicleHasCrowding(vehiclesAndGhosts)
   return (
     <>
       <Header route={route} />
       <Controls
-        displayCrowdingToggleIcon={someVehicleHasCrowding(vehiclesAndGhosts)}
+        displayCrowdingToggleIcon={displayCrowding}
         ladderDirection={ladderDirection}
         ladderCrowdingToggle={ladderCrowdingToggle}
         reverseLadder={reverseLadder}
@@ -147,14 +151,14 @@ const RouteLadder = ({
       {timepoints ? (
         <>
           <Ladder
-            displayCrowding={ladderCrowdingToggle}
+            displayCrowding={displayCrowding}
             timepoints={timepoints}
             vehiclesByPosition={byPosition}
             ladderDirection={ladderDirection}
             selectedVehicleId={selectedVehicleId}
           />
           <IncomingBox
-            displayCrowding={ladderCrowdingToggle}
+            displayCrowding={displayCrowding}
             vehiclesAndGhosts={byPosition.incoming}
             ladderDirection={ladderDirection}
             selectedVehicleId={selectedVehicleId}
