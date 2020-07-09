@@ -8,6 +8,8 @@ import {
   ViaVariant,
 } from "./schedule.d"
 
+import { Crowding } from "./models/crowding"
+
 import { HeadwaySpacing } from "./models/vehicleStatus"
 
 export interface BlockWaiver {
