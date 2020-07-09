@@ -16,6 +16,7 @@ import {
   flipLadder,
   initialState,
   selectVehicle,
+  toggleLadderCrowding,
 } from "../../src/state"
 
 // tslint:disable: object-literal-sort-keys
@@ -269,6 +270,77 @@ describe("routeLadder", () => {
     expect(tree).toMatchSnapshot()
   })
 
+  test("renders correctly in crowding mode before vehicles loaded", () => {
+    const route: Route = {
+      id: "28",
+      directionNames: { 0: "Outbound", 1: "Inbound" },
+      name: "28",
+    }
+
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    const tree = renderer
+      .create(
+        <RouteLadder
+          crowdingEnabled={true}
+          route={route}
+          selectedVehicleId={undefined}
+          timepoints={timepoints}
+          vehiclesAndGhosts={undefined}
+        />
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders a route ladder with crowding instead of vehicles", () => {
+    const route: Route = {
+      id: "28",
+      directionNames: { 0: "Outbound", 1: "Inbound" },
+      name: "28",
+    }
+
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    const [v1, v2] = vehicles
+    const tree = renderer
+      .create(
+        <RouteLadder
+          crowdingEnabled={true}
+          route={route}
+          selectedVehicleId={undefined}
+          timepoints={timepoints}
+          vehiclesAndGhosts={[
+            {
+              ...v1,
+              crowding: {
+                occupancyStatus: "FEW_SEATS_AVAILABLE",
+                occupancyPercentage: 0.78,
+                load: 14,
+                capacity: 18,
+              },
+            },
+            {
+              ...v2,
+              crowding: null,
+            },
+          ]}
+        />
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
   test("displays loading if we are fetching the timepoints", () => {
     const route: Route = {
       id: "28",
@@ -347,6 +419,49 @@ describe("routeLadder", () => {
     })
 
     expect(mockDispatch).toHaveBeenCalledWith(flipLadder("28"))
+  })
+
+  test("clicking the crowding toggle toggles crowding", () => {
+    const mockDispatch = jest.fn()
+    const route: Route = {
+      id: "28",
+      directionNames: { 0: "Outbound", 1: "Inbound" },
+      name: "28",
+    }
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    const [v1] = vehicles
+
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+        <RouteLadder
+          route={route}
+          timepoints={timepoints}
+          vehiclesAndGhosts={[
+            {
+              ...v1,
+              crowding: {
+                occupancyStatus: "EMPTY",
+                load: 0,
+                capacity: 18,
+                occupancyPercentage: 0,
+              },
+            },
+          ]}
+          selectedVehicleId={undefined}
+          crowdingEnabled={true}
+        />
+      </StateDispatchProvider>
+    )
+    act(() => {
+      wrapper.find(".m-route-ladder__crowding-toggle--show").simulate("click")
+    })
+
+    expect(mockDispatch).toHaveBeenCalledWith(toggleLadderCrowding("28"))
   })
 
   test("clicking an incoming vehicle selects that vehicle", () => {

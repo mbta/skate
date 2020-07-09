@@ -649,6 +649,158 @@ describe("ladder", () => {
     expect(mockDispatch).toHaveBeenCalledWith(selectVehicle("y0622"))
   })
 
+  test("clicking a crowding icon selects the associated vehicle", () => {
+    const mockDispatch = jest.fn()
+
+    const timepoints: Timepoint[] = [
+      { id: "t0", name: "t0 name" },
+      { id: "t1", name: "t1 name" },
+      { id: "t2", name: "t2 name" },
+    ]
+    const vehicle: Vehicle = {
+      id: "upward",
+      label: "upward",
+      runId: "run-1",
+      timestamp: 0,
+      latitude: 0,
+      longitude: 0,
+      directionId: 0,
+      routeId: "route",
+      tripId: "trip",
+      headsign: null,
+      viaVariant: null,
+      operatorId: "op1",
+      operatorName: "SMITH",
+      operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
+      bearing: 33,
+      blockId: "block-1",
+      headwaySecs: 859.1,
+      headwaySpacing: HeadwaySpacing.Ok,
+      previousVehicleId: "v2",
+      scheduleAdherenceSecs: 0,
+      scheduledHeadwaySecs: 120,
+      isShuttle: false,
+      isOverload: false,
+      isOffCourse: false,
+      layoverDepartureTime: null,
+      dataDiscrepancies: [],
+      stopStatus: {
+        stopId: "stop",
+        stopName: "stop",
+      },
+      timepointStatus: {
+        fractionUntilTimepoint: 0.5,
+        timepointId: "t1",
+      },
+      scheduledLocation: null,
+      routeStatus: "on_route",
+      endOfTripType: "another_trip",
+      blockWaivers: [],
+      crowding: {
+        load: 0,
+        occupancyStatus: "EMPTY",
+        capacity: 18,
+        occupancyPercentage: 0,
+      },
+    }
+
+    const ladderDirection = LadderDirection.ZeroToOne
+
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+        <Ladder
+          timepoints={timepoints}
+          vehiclesByPosition={{
+            ...emptyVehiclesByPosition,
+            onRoute: [vehicle],
+          }}
+          ladderDirection={ladderDirection}
+          selectedVehicleId={undefined}
+          displayCrowding={true}
+        />
+      </StateDispatchProvider>
+    )
+    wrapper.find(".m-ladder__vehicle").simulate("click")
+
+    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle.id))
+  })
+
+  test("clicking an incoming crowding icon selects the associated vehicle", () => {
+    const mockDispatch = jest.fn()
+
+    const timepoints: Timepoint[] = [
+      { id: "t0", name: "t0 name" },
+      { id: "t1", name: "t1 name" },
+      { id: "t2", name: "t2 name" },
+    ]
+    const vehicle: Vehicle = {
+      id: "upward",
+      label: "upward",
+      runId: "run-1",
+      timestamp: 0,
+      latitude: 0,
+      longitude: 0,
+      directionId: 0,
+      routeId: "route",
+      tripId: "trip",
+      headsign: null,
+      viaVariant: null,
+      operatorId: "op1",
+      operatorName: "SMITH",
+      operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
+      bearing: 33,
+      blockId: "block-1",
+      headwaySecs: 859.1,
+      headwaySpacing: HeadwaySpacing.Ok,
+      previousVehicleId: "v2",
+      scheduleAdherenceSecs: 0,
+      scheduledHeadwaySecs: 120,
+      isShuttle: false,
+      isOverload: false,
+      isOffCourse: false,
+      layoverDepartureTime: null,
+      dataDiscrepancies: [],
+      stopStatus: {
+        stopId: "stop",
+        stopName: "stop",
+      },
+      timepointStatus: {
+        fractionUntilTimepoint: 0.5,
+        timepointId: "t1",
+      },
+      scheduledLocation: null,
+      routeStatus: "pulling_out",
+      endOfTripType: "another_trip",
+      blockWaivers: [],
+      crowding: {
+        load: 0,
+        occupancyStatus: "EMPTY",
+        capacity: 18,
+        occupancyPercentage: 0,
+      },
+    }
+
+    const ladderDirection = LadderDirection.ZeroToOne
+
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+        <Ladder
+          timepoints={timepoints}
+          vehiclesByPosition={{
+            ...emptyVehiclesByPosition,
+            onRoute: [vehicle],
+          }}
+          ladderDirection={ladderDirection}
+          selectedVehicleId={undefined}
+          displayCrowding={true}
+        />
+      </StateDispatchProvider>
+    )
+    wrapper.find(".m-ladder__vehicle").simulate("click")
+
+    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle.id))
+  })
+
   test("renders a ladder with no timepoints", () => {
     const timepoints: Timepoint[] = []
     const vehicles: Vehicle[] = [

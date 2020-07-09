@@ -229,4 +229,13 @@ describe("reducer", () => {
 
     expect(newState).toEqual(expectedState)
   })
+
+  test("toggleLadderCrowdingForRoute", () => {
+    const state = initialState
+
+    const newState = reducer(state, State.toggleLadderCrowding("77"))
+    const expectedState = { ...state, ladderCrowdingToggles: { "77": true } }
+
+    expect(newState).toEqual(expectedState)
+  })
 })

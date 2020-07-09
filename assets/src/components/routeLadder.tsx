@@ -1,7 +1,6 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { crowdingIcon, reverseIcon, reverseIconReversed } from "../helpers/icon"
-import featureIsEnabled from "../laboratoryFeatures"
 import {
   getLadderCrowdingToggleForRoute,
   LadderCrowdingToggle,
@@ -28,6 +27,7 @@ interface Props {
   timepoints: LoadableTimepoints
   vehiclesAndGhosts?: VehicleOrGhost[]
   selectedVehicleId: VehicleId | undefined
+  crowdingEnabled?: boolean
 }
 
 const Header = ({ route }: { route: Route }) => {
@@ -111,6 +111,7 @@ const RouteLadder = ({
   timepoints,
   vehiclesAndGhosts,
   selectedVehicleId,
+  crowdingEnabled,
 }: Props) => {
   const [{ ladderDirections, ladderCrowdingToggles }, dispatch] = useContext(
     StateDispatchContext
@@ -134,9 +135,9 @@ const RouteLadder = ({
     ladderDirection
   )
 
-  const displayCrowding =
-    featureIsEnabled("route_ladder_crowding") &&
-    someVehicleHasCrowding(vehiclesAndGhosts)
+  const displayCrowding = !!(
+    crowdingEnabled && someVehicleHasCrowding(vehiclesAndGhosts)
+  )
   return (
     <>
       <Header route={route} />

@@ -1,5 +1,133 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`IncomingBox renders a crowding view missing crowding data 1`] = `
+<div
+  className="m-incoming-box"
+>
+  <button
+    className="m-incoming-box__vehicle "
+    onClick={[Function]}
+  >
+    <div
+      className="m-incoming-box__vehicle-icon"
+    >
+      <svg
+        style={
+          Object {
+            "height": 15.2,
+            "width": 16.72,
+          }
+        }
+        viewBox="-8.36 -7.6 16.72 15.2"
+      >
+        <g
+          className="m-vehicle-icon m-vehicle-icon--small"
+        >
+          <g
+            className="m-ladder__crowding m-ladder__crowding--no-data"
+            transform="scale(0.38) translate(-24,-22)"
+          >
+            <path
+              d="M6.74,16.17A6.86,6.86,0,0,0-.12,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.42,3.42,0,0,0,3.42-3.42V23A6.87,6.87,0,0,0,6.74,16.17Z"
+            />
+            <circle
+              cx="6.74"
+              cy="8.54"
+              r="4.93"
+            />
+            <path
+              d="M23.88,16.17A6.86,6.86,0,0,0,17,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23a6.86,6.86,0,0,0-6.86-6.86Z"
+            />
+            <circle
+              cx="23.88"
+              cy="8.48"
+              r="4.93"
+            />
+            <path
+              d="M41,16.17A6.87,6.87,0,0,0,34.17,23V40.8a3.42,3.42,0,0,0,3.42,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23A6.86,6.86,0,0,0,41,16.17Z"
+            />
+            <circle
+              cx="41.03"
+              cy="8.48"
+              r="4.93"
+            />
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div
+      className="m-incoming-box__vehicle-label"
+    >
+      NO DATA
+    </div>
+  </button>
+</div>
+`;
+
+exports[`IncomingBox renders a crowding view of a vehicle 1`] = `
+<div
+  className="m-incoming-box"
+>
+  <button
+    className="m-incoming-box__vehicle "
+    onClick={[Function]}
+  >
+    <div
+      className="m-incoming-box__vehicle-icon"
+    >
+      <svg
+        style={
+          Object {
+            "height": 15.2,
+            "width": 16.72,
+          }
+        }
+        viewBox="-8.36 -7.6 16.72 15.2"
+      >
+        <g
+          className="m-vehicle-icon m-vehicle-icon--small"
+        >
+          <g
+            className="m-ladder__crowding m-ladder__crowding--empty"
+            transform="scale(0.38) translate(-24,-22)"
+          >
+            <path
+              d="M6.74,16.17A6.86,6.86,0,0,0-.12,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.42,3.42,0,0,0,3.42-3.42V23A6.87,6.87,0,0,0,6.74,16.17Z"
+            />
+            <circle
+              cx="6.74"
+              cy="8.54"
+              r="4.93"
+            />
+            <path
+              d="M23.88,16.17A6.86,6.86,0,0,0,17,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23a6.86,6.86,0,0,0-6.86-6.86Z"
+            />
+            <circle
+              cx="23.88"
+              cy="8.48"
+              r="4.93"
+            />
+            <path
+              d="M41,16.17A6.87,6.87,0,0,0,34.17,23V40.8a3.42,3.42,0,0,0,3.42,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23A6.86,6.86,0,0,0,41,16.17Z"
+            />
+            <circle
+              cx="41.03"
+              cy="8.48"
+              r="4.93"
+            />
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div
+      className="m-incoming-box__vehicle-label"
+    >
+      0/18
+    </div>
+  </button>
+</div>
+`;
+
 exports[`IncomingBox renders a ghost 1`] = `
 <div
   className="m-incoming-box"

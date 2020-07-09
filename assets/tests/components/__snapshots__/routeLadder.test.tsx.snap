@@ -196,6 +196,284 @@ Array [
 ]
 `;
 
+exports[`routeLadder renders a route ladder with crowding instead of vehicles 1`] = `
+Array [
+  <div
+    className="m-route-ladder__header"
+  >
+    <button
+      className="m-close-button"
+      onClick={[Function]}
+    >
+      <span
+        className=""
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
+        }
+      />
+    </button>
+    <div
+      className="m-route-ladder__route-name"
+    >
+      28
+    </div>
+  </div>,
+  <div
+    className="m-route-ladder__controls"
+  >
+    <button
+      className="m-route-ladder__reverse"
+      onClick={[Function]}
+    >
+      <span
+        className="m-route-ladder__reverse-icon"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
+        }
+      />
+      Reverse
+    </button>
+    <button
+      className="m-route-ladder__crowding-toggle m-route-ladder__crowding-toggle--show"
+      onClick={[Function]}
+    >
+      <span
+        className="m-route-ladder__crowding-toggle-icon m-route-ladder__crowding-toggle-icon"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
+        }
+      />
+      Show riders
+    </button>
+  </div>,
+  <div
+    className="m-ladder"
+    style={
+      Object {
+        "width": 184,
+      }
+    }
+  >
+    <svg
+      className="m-ladder__svg"
+      height={0}
+      viewBox="-92 -55 184 0"
+      width={184}
+    >
+      <g
+        className="m-ladder__vehicle  "
+        onClick={[Function]}
+        transform="translate(63,-27.5)"
+      >
+        <g
+          className="m-vehicle-icon m-vehicle-icon--medium"
+        >
+          <rect
+            className="m-vehicle-icon__label-background"
+            height={11}
+            rx={5.5}
+            ry={5.5}
+            width={40}
+            x={-20}
+            y={11.5}
+          />
+          <text
+            className="m-vehicle-icon__label m-vehicle-icon__label--extended"
+            dominantBaseline="central"
+            textAnchor="middle"
+            x="0"
+            y={17}
+          >
+            14/18
+          </text>
+          <g
+            className="m-ladder__crowding m-ladder__crowding--some-crowding"
+            transform="scale(0.625) translate(-24,-27)"
+          >
+            <path
+              d="M6.74,16.17A6.86,6.86,0,0,0-.12,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.42,3.42,0,0,0,3.42-3.42V23A6.87,6.87,0,0,0,6.74,16.17Z"
+            />
+            <circle
+              cx="6.74"
+              cy="8.54"
+              r="4.93"
+            />
+            <path
+              d="M23.88,16.17A6.86,6.86,0,0,0,17,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23a6.86,6.86,0,0,0-6.86-6.86Z"
+            />
+            <circle
+              cx="23.88"
+              cy="8.48"
+              r="4.93"
+            />
+            <path
+              d="M41,16.17A6.87,6.87,0,0,0,34.17,23V40.8a3.42,3.42,0,0,0,3.42,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23A6.86,6.86,0,0,0,41,16.17Z"
+            />
+            <circle
+              cx="41.03"
+              cy="8.48"
+              r="4.93"
+            />
+          </g>
+        </g>
+      </g>
+      <g
+        className="m-ladder__vehicle  "
+        onClick={[Function]}
+        transform="translate(-63,-110)"
+      >
+        <g
+          className="m-vehicle-icon m-vehicle-icon--medium"
+        >
+          <rect
+            className="m-vehicle-icon__label-background"
+            height={11}
+            rx={5.5}
+            ry={5.5}
+            width={40}
+            x={-20}
+            y={-22.5}
+          />
+          <text
+            className="m-vehicle-icon__label m-vehicle-icon__label--extended"
+            dominantBaseline="central"
+            textAnchor="middle"
+            x="0"
+            y={-17}
+          >
+            NO DATA
+          </text>
+          <g
+            className="m-ladder__crowding m-ladder__crowding--no-data"
+            transform="scale(0.625) translate(-24,-17)"
+          >
+            <path
+              d="M6.74,16.17A6.86,6.86,0,0,0-.12,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.42,3.42,0,0,0,3.42-3.42V23A6.87,6.87,0,0,0,6.74,16.17Z"
+            />
+            <circle
+              cx="6.74"
+              cy="8.54"
+              r="4.93"
+            />
+            <path
+              d="M23.88,16.17A6.86,6.86,0,0,0,17,23h0V40.8a3.43,3.43,0,0,0,3.43,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23a6.86,6.86,0,0,0-6.86-6.86Z"
+            />
+            <circle
+              cx="23.88"
+              cy="8.48"
+              r="4.93"
+            />
+            <path
+              d="M41,16.17A6.87,6.87,0,0,0,34.17,23V40.8a3.42,3.42,0,0,0,3.42,3.42h6.86a3.43,3.43,0,0,0,3.43-3.42V23A6.86,6.86,0,0,0,41,16.17Z"
+            />
+            <circle
+              cx="41.03"
+              cy="8.48"
+              r="4.93"
+            />
+          </g>
+        </g>
+      </g>
+      <line
+        className="m-ladder__line"
+        x1={-40}
+        x2={-40}
+        y1="0"
+        y2={-110}
+      />
+      <line
+        className="m-ladder__line"
+        x1={40}
+        x2={40}
+        y1="0"
+        y2={-110}
+      />
+      <circle
+        className="m-ladder__stop-circle"
+        cx={-40}
+        cy={-0}
+        r="3"
+      />
+      <circle
+        className="m-ladder__stop-circle"
+        cx={40}
+        cy={-0}
+        r="3"
+      />
+      <text
+        className="m-ladder__timepoint-name"
+        data-event="click"
+        data-tip="MATPN Name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-0}
+      >
+        MATPN
+      </text>
+      <circle
+        className="m-ladder__stop-circle"
+        cx={-40}
+        cy={-55}
+        r="3"
+      />
+      <circle
+        className="m-ladder__stop-circle"
+        cx={40}
+        cy={-55}
+        r="3"
+      />
+      <text
+        className="m-ladder__timepoint-name"
+        data-event="click"
+        data-tip="WELLH Name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-55}
+      >
+        WELLH
+      </text>
+      <circle
+        className="m-ladder__stop-circle"
+        cx={-40}
+        cy={-110}
+        r="3"
+      />
+      <circle
+        className="m-ladder__stop-circle"
+        cx={40}
+        cy={-110}
+        r="3"
+      />
+      <text
+        className="m-ladder__timepoint-name"
+        data-event="click"
+        data-tip="MORTN Name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-110}
+      >
+        MORTN
+      </text>
+    </svg>
+    <div
+      className="mock-react-tooltip"
+    />
+  </div>,
+  <div
+    className="m-incoming-box"
+  />,
+]
+`;
+
 exports[`routeLadder renders a route ladder with laying over vehicles 1`] = `
 Array [
   <div
@@ -962,5 +1240,155 @@ Array [
       </div>
     </button>
   </div>,
+]
+`;
+
+exports[`routeLadder renders correctly in crowding mode before vehicles loaded 1`] = `
+Array [
+  <div
+    className="m-route-ladder__header"
+  >
+    <button
+      className="m-close-button"
+      onClick={[Function]}
+    >
+      <span
+        className=""
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
+        }
+      />
+    </button>
+    <div
+      className="m-route-ladder__route-name"
+    >
+      28
+    </div>
+  </div>,
+  <div
+    className="m-route-ladder__controls"
+  >
+    <button
+      className="m-route-ladder__reverse"
+      onClick={[Function]}
+    >
+      <span
+        className="m-route-ladder__reverse-icon"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
+        }
+      />
+      Reverse
+    </button>
+  </div>,
+  <div
+    className="m-ladder"
+    style={
+      Object {
+        "width": 184,
+      }
+    }
+  >
+    <svg
+      className="m-ladder__svg"
+      height={0}
+      viewBox="-92 -55 184 0"
+      width={184}
+    >
+      <line
+        className="m-ladder__line"
+        x1={-40}
+        x2={-40}
+        y1="0"
+        y2={-110}
+      />
+      <line
+        className="m-ladder__line"
+        x1={40}
+        x2={40}
+        y1="0"
+        y2={-110}
+      />
+      <circle
+        className="m-ladder__stop-circle"
+        cx={-40}
+        cy={-0}
+        r="3"
+      />
+      <circle
+        className="m-ladder__stop-circle"
+        cx={40}
+        cy={-0}
+        r="3"
+      />
+      <text
+        className="m-ladder__timepoint-name"
+        data-event="click"
+        data-tip="MATPN Name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-0}
+      >
+        MATPN
+      </text>
+      <circle
+        className="m-ladder__stop-circle"
+        cx={-40}
+        cy={-55}
+        r="3"
+      />
+      <circle
+        className="m-ladder__stop-circle"
+        cx={40}
+        cy={-55}
+        r="3"
+      />
+      <text
+        className="m-ladder__timepoint-name"
+        data-event="click"
+        data-tip="WELLH Name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-55}
+      >
+        WELLH
+      </text>
+      <circle
+        className="m-ladder__stop-circle"
+        cx={-40}
+        cy={-110}
+        r="3"
+      />
+      <circle
+        className="m-ladder__stop-circle"
+        cx={40}
+        cy={-110}
+        r="3"
+      />
+      <text
+        className="m-ladder__timepoint-name"
+        data-event="click"
+        data-tip="MORTN Name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-110}
+      >
+        MORTN
+      </text>
+    </svg>
+    <div
+      className="mock-react-tooltip"
+    />
+  </div>,
+  <div
+    className="m-incoming-box"
+  />,
 ]
 `;
