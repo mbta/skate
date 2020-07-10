@@ -934,12 +934,6 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
         </div>
       </div>
     </div>
-    <button
-      className="m-properties-panel__close-button"
-      onClick={[Function]}
-    >
-      Close
-    </button>
   </div>
   <div
     className="m-properties-panel__modal-overlay"
