@@ -39,7 +39,7 @@
     "@types/jest": "^26.0.3",
     "@types/leaflet": "^1.5.13",
     "@types/phoenix": "^1.4.4",
-    "@types/react": "^16.9.41",
+    "@types/react": "^16.9.42",
     "@types/react-dom": "^16.9.8",
     "@types/react-leaflet": "^2.5.2",
     "@types/react-router-dom": "^5.1.5",
