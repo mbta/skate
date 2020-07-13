@@ -18,6 +18,11 @@ describe("RoutePicker", () => {
         directionNames: { 0: "Outbound", 1: "Inbound" },
         name: "111",
       },
+      {
+        id: "741",
+        directionNames: { 0: "Outbound", 1: "Inbound" },
+        name: "SL1",
+      },
     ]
     const selectedRouteIds: RouteId[] = ["28", "39"]
 

@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { Dispatch, useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import {
   filterRoutes,
@@ -7,7 +7,7 @@ import {
   useRouteFilter,
 } from "../hooks/useRouteFilter"
 import { Route, RouteId } from "../schedule.d"
-import { deselectRoute, selectRoute } from "../state"
+import { deselectRoute, DeselectRouteAction, selectRoute } from "../state"
 import Loading from "./loading"
 import PickerContainer from "./pickerContainer"
 
@@ -24,7 +24,10 @@ const RoutePicker = ({ routes, selectedRouteIds }: Props) => {
   return (
     <PickerContainer>
       <div className="m-route-picker">
-        <SelectedRoutesList selectedRouteIds={selectedRouteIds} />
+        <SelectedRoutesList
+          routes={routes}
+          selectedRouteIds={selectedRouteIds}
+        />
 
         <RouteFilter {...routeFilterData} />
 
@@ -42,8 +45,10 @@ const RoutePicker = ({ routes, selectedRouteIds }: Props) => {
 }
 
 const SelectedRoutesList = ({
+  routes,
   selectedRouteIds,
 }: {
+  routes: Route[] | null
   selectedRouteIds: RouteId[]
 }) => {
   const [, dispatch] = useContext(StateDispatchContext)
@@ -51,16 +56,37 @@ const SelectedRoutesList = ({
   return (
     <ul className="m-route-picker__selected-routes">
       {selectedRouteIds.map((routeId) => (
-        <li key={routeId}>
-          <button
-            className="m-route-picker__selected-routes-button"
-            onClick={() => dispatch(deselectRoute(routeId))}
-          >
-            {routeId}
-          </button>
-        </li>
+        <SelectedRouteButton
+          key={routeId}
+          routeId={routeId}
+          routes={routes}
+          dispatch={dispatch}
+        />
       ))}
     </ul>
+  )
+}
+
+const SelectedRouteButton = ({
+  routeId,
+  routes,
+  dispatch,
+}: {
+  routeId: RouteId
+  routes: Route[] | null
+  dispatch: Dispatch<DeselectRouteAction>
+}) => {
+  const matchingRoute = routes && routes.find((route) => route.id === routeId)
+  const buttonText = matchingRoute ? matchingRoute.name : routeId
+  return (
+    <li>
+      <button
+        className="m-route-picker__selected-routes-button"
+        onClick={() => dispatch(deselectRoute(routeId))}
+      >
+        {buttonText}
+      </button>
+    </li>
   )
 }
 
