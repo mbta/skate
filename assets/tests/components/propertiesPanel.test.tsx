@@ -1,15 +1,12 @@
-import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import PropertiesPanel, {
   handleSwipe,
   hideMeIfNoCrowdingTooltip,
 } from "../../src/components/propertiesPanel"
-import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../src/realtime"
 import { Route } from "../../src/schedule"
-import { deselectVehicle, initialState } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
 
 jest
@@ -116,19 +113,6 @@ describe("PropertiesPanel", () => {
       .toJSON()
 
     expect(tree).toMatchSnapshot()
-  })
-
-  test("clicking the Close button deselects the vehicle", () => {
-    const mockDispatch = jest.fn()
-
-    const wrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <PropertiesPanel selectedVehicleOrGhost={ghost} route={route} />
-      </StateDispatchProvider>
-    )
-    wrapper.find(".m-properties-panel__close-button").simulate("click")
-
-    expect(mockDispatch).toHaveBeenCalledWith(deselectVehicle())
   })
 })
 

@@ -29,6 +29,7 @@
 
 .m-properties-panel .m-properties-panel__header-wrapper {
   position: sticky;
+  position: -webkit-sticky;
   top: 0;
   z-index: 10;
 }
