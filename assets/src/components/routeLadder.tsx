@@ -159,7 +159,7 @@ const RouteLadder = ({
             selectedVehicleId={selectedVehicleId}
           />
           <IncomingBox
-            displayCrowding={displayCrowding}
+            displayCrowding={displayCrowding && ladderCrowdingToggle}
             vehiclesAndGhosts={byPosition.incoming}
             ladderDirection={ladderDirection}
             selectedVehicleId={selectedVehicleId}
