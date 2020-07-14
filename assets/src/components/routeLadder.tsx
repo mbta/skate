@@ -152,7 +152,7 @@ const RouteLadder = ({
       {timepoints ? (
         <>
           <Ladder
-            displayCrowding={displayCrowding}
+            displayCrowding={displayCrowding && ladderCrowdingToggle}
             timepoints={timepoints}
             vehiclesByPosition={byPosition}
             ladderDirection={ladderDirection}
