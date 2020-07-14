@@ -113,21 +113,3 @@ $color-crowding-icon-bg: $color-bg-medium;
     }
   }
 }
-
-.m-route-ladder__crowding-toggle {
-  &--hide {
-    circle,
-    path {
-      fill: $color-secondary-dark;
-      stroke: $color-secondary-dark;
-    }
-  }
-
-  &--show {
-    circle,
-    path {
-      fill: currentColor;
-      stroke: currentColor;
-    }
-  }
-}

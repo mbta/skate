@@ -45,3 +45,21 @@
 .m-route-ladder__crowding-toggle-icon {
   margin-right: 0.25rem;
 }
+
+.m-route-ladder__crowding-toggle {
+  &--hide {
+    circle,
+    path {
+      fill: $color-secondary-dark;
+      stroke: $color-secondary-dark;
+    }
+  }
+
+  &--show {
+    circle,
+    path {
+      fill: currentColor;
+      stroke: currentColor;
+    }
+  }
+}
