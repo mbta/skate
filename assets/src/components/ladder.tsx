@@ -235,7 +235,7 @@ const CrowdingSvg = ({
       onClick={() => dispatch(selectVehicle(associatedVehicleId(vehicle.id)))}
     >
       <CrowdingIconSvgNode
-        size={isLayingOver ? Size.Small : Size.Medium}
+        size={Size.Small}
         orientation={orientationMatchingVehicle(isLayingOver, vehicleDirection)}
         label={crowdingLabel(vehicle as Vehicle)}
         occupancyStatus={occupancyStatus}

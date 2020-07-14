@@ -15,6 +15,7 @@ interface Props {
   orientation: Orientation
   label?: string
   occupancyStatus: OccupancyStatus
+  isLayingOver?: boolean
 }
 
 export const CrowdingIcon = (props: Props): ReactElement<HTMLElement> => {
@@ -28,11 +29,15 @@ export const CrowdingIcon = (props: Props): ReactElement<HTMLElement> => {
     </svg>
   )
 }
-const Crowd = ({ size, orientation, occupancyStatus }: Props) => {
-  const scale = scaleForSize(size)
-  const yOffset =
-    size === Size.Small ? 0 : orientation === Orientation.Up ? -5 : 5
 
+const Crowd = ({ size, orientation, occupancyStatus, isLayingOver }: Props) => {
+  const scale = scaleForSize(size)
+  const useDownwardOrientation =
+    orientation === Orientation.Down || isLayingOver
+  let yOffset = size === Size.Small ? 8 : 5
+  if (!useDownwardOrientation) {
+    yOffset = -yOffset
+  }
   const classNames = [
     "m-ladder__crowding",
     `m-ladder__crowding--${classModifierForStatus(occupancyStatus)}`,
@@ -58,6 +63,7 @@ export const CrowdingIconSvgNode = ({
   orientation,
   label,
   occupancyStatus,
+  isLayingOver,
 }: Props): ReactElement<SVGElement> => {
   const classes: string[] = [
     "m-vehicle-icon",
@@ -72,6 +78,7 @@ export const CrowdingIconSvgNode = ({
         size={size}
         orientation={orientation}
         occupancyStatus={occupancyStatus}
+        isLayingOver={isLayingOver}
       />
     </g>
   )
