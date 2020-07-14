@@ -1,4 +1,7 @@
-import { toggleLadderCrowdingForRoute } from "../../src/models/ladderCrowdingToggle"
+import {
+  getLadderCrowdingToggleForRoute,
+  toggleLadderCrowdingForRoute,
+} from "../../src/models/ladderCrowdingToggle"
 
 describe("toggleLadderCrowdingForRoute", () => {
   test("toggles true, false, and undefined correctly", () => {
@@ -16,5 +19,11 @@ describe("toggleLadderCrowdingForRoute", () => {
       "2": true,
       "3": true,
     })
+  })
+})
+
+describe("getLadderCrowdingToggleForRoute", () => {
+  test("returns false for an unset route ID", () => {
+    expect(getLadderCrowdingToggleForRoute({}, "unset_route")).toEqual(false)
   })
 })
