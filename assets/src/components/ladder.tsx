@@ -194,61 +194,22 @@ const VehicleOrCrowdingSvg = ({
   selectedVehicleId: VehicleId | undefined
   isLayingOver: boolean
   displayCrowding?: boolean
-}) => {
-  const useCrowdingIcon = displayCrowding && isVehicle(ladderVehicle.vehicle)
-  return useCrowdingIcon ? (
-    <CrowdingSvg
-      ladderVehicle={ladderVehicle}
-      selectedVehicleId={selectedVehicleId}
-      isLayingOver={isLayingOver}
-    />
-  ) : (
-    <VehicleSvg
-      ladderVehicle={ladderVehicle}
-      selectedVehicleId={selectedVehicleId}
-      isLayingOver={isLayingOver}
-    />
-  )
-}
-
-const CrowdingSvg = ({
-  ladderVehicle,
-  selectedVehicleId,
-  isLayingOver,
-}: {
-  ladderVehicle: LadderVehicle
-  selectedVehicleId: VehicleId | undefined
-  isLayingOver: boolean
-}) => {
-  const { vehicle, x, y, vehicleDirection } = ladderVehicle
-  const crowding = (vehicle as Vehicle).crowding
-  const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
-  const [{}, dispatch] = useContext(StateDispatchContext)
-
-  const occupancyStatus: OccupancyStatus = crowding
-    ? crowding.occupancyStatus
-    : "NO_DATA"
-  return (
-    <g
-      className={`m-ladder__vehicle ${selectedClass} `}
-      transform={`translate(${x},${y})`}
-      onClick={() => dispatch(selectVehicle(associatedVehicleId(vehicle.id)))}
-    >
-      <CrowdingIconSvgNode
-        size={Size.Small}
-        orientation={orientationMatchingVehicle(isLayingOver, vehicleDirection)}
-        label={crowdingLabel(vehicle as Vehicle)}
-        occupancyStatus={occupancyStatus}
-      />
-    </g>
-  )
-}
+}) => (
+  <VehicleSvg
+    displayCrowding={!!displayCrowding && isVehicle(ladderVehicle.vehicle)}
+    ladderVehicle={ladderVehicle}
+    selectedVehicleId={selectedVehicleId}
+    isLayingOver={isLayingOver}
+  />
+)
 
 const VehicleSvg = ({
+  displayCrowding,
   ladderVehicle,
   selectedVehicleId,
   isLayingOver,
 }: {
+  displayCrowding: boolean
   ladderVehicle: LadderVehicle
   selectedVehicleId: VehicleId | undefined
   isLayingOver: boolean
@@ -258,20 +219,40 @@ const VehicleSvg = ({
   const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
   const alertIconStyle = blockWaiverAlertStyle(vehicle)
 
+  const crowding = isVehicle(vehicle) ? vehicle.crowding : null
+  const occupancyStatus: OccupancyStatus = crowding
+    ? crowding.occupancyStatus
+    : "NO_DATA"
+
   return (
     <g
       className={`m-ladder__vehicle ${selectedClass} `}
       transform={`translate(${x},${y})`}
       onClick={() => dispatch(selectVehicle(associatedVehicleId(vehicle.id)))}
     >
-      <VehicleIconSvgNode
-        size={isLayingOver ? Size.Small : Size.Medium}
-        orientation={orientationMatchingVehicle(isLayingOver, vehicleDirection)}
-        label={vehicleLabel(vehicle, settings)}
-        variant={vehicle.viaVariant}
-        status={drawnStatus(vehicle)}
-        alertIconStyle={alertIconStyle}
-      />
+      {displayCrowding ? (
+        <CrowdingIconSvgNode
+          size={Size.Small}
+          orientation={orientationMatchingVehicle(
+            isLayingOver,
+            vehicleDirection
+          )}
+          label={crowdingLabel(vehicle as Vehicle)}
+          occupancyStatus={occupancyStatus}
+        />
+      ) : (
+        <VehicleIconSvgNode
+          size={isLayingOver ? Size.Small : Size.Medium}
+          orientation={orientationMatchingVehicle(
+            isLayingOver,
+            vehicleDirection
+          )}
+          label={vehicleLabel(vehicle, settings)}
+          variant={vehicle.viaVariant}
+          status={drawnStatus(vehicle)}
+          alertIconStyle={alertIconStyle}
+        />
+      )}
     </g>
   )
 }
