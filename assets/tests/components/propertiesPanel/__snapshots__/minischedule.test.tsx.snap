@@ -109,7 +109,7 @@ exports[`Minischedule highlights deadheads if they're active 1`] = `
           className="m-minischedule__icon"
         >
           <span
-            className=""
+            className="m-minischedule__svg--revenue"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -167,7 +167,7 @@ exports[`Minischedule highlights deadheads if they're active 1`] = `
           className="m-minischedule__icon"
         >
           <span
-            className=""
+            className="m-minischedule__svg--revenue"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -355,7 +355,7 @@ exports[`Minischedule highlights pullouts if they're active 1`] = `
           className="m-minischedule__icon"
         >
           <span
-            className=""
+            className="m-minischedule__svg--revenue"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -551,7 +551,7 @@ exports[`MinischeduleBlock renders a block 1`] = `
           className="m-minischedule__icon"
         >
           <span
-            className=""
+            className="m-minischedule__svg--revenue"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -685,7 +685,7 @@ exports[`MinischeduleBlock renders a mid route swing 1`] = `
           className="m-minischedule__icon"
         >
           <span
-            className=""
+            className="m-minischedule__svg--revenue"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -788,7 +788,7 @@ exports[`MinischeduleBlock renders a mid route swing 1`] = `
           className="m-minischedule__icon"
         >
           <span
-            className=""
+            className="m-minischedule__svg--revenue"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -814,7 +814,7 @@ exports[`MinischeduleBlock renders a mid route swing 1`] = `
           className="m-minischedule__icon"
         >
           <span
-            className=""
+            className="m-minischedule__svg--revenue"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -1138,7 +1138,7 @@ exports[`MinischeduleBlock renders trips in both directions, or missing directio
           className="m-minischedule__icon"
         >
           <span
-            className=""
+            className="m-minischedule__svg--revenue"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -1164,7 +1164,7 @@ exports[`MinischeduleBlock renders trips in both directions, or missing directio
           className="m-minischedule__icon"
         >
           <span
-            className=""
+            className="m-minischedule__svg--revenue"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -1190,7 +1190,7 @@ exports[`MinischeduleBlock renders trips in both directions, or missing directio
           className="m-minischedule__icon"
         >
           <span
-            className=""
+            className="m-minischedule__svg--revenue"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -1355,7 +1355,7 @@ exports[`MinischeduleRun on a run with multiple layovers, marks the correct one 
           className="m-minischedule__icon"
         >
           <span
-            className=""
+            className="m-minischedule__svg--revenue"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -1398,7 +1398,7 @@ exports[`MinischeduleRun on a run with multiple layovers, marks the correct one 
           className="m-minischedule__icon"
         >
           <span
-            className=""
+            className="m-minischedule__svg--revenue"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -1441,7 +1441,7 @@ exports[`MinischeduleRun on a run with multiple layovers, marks the correct one 
           className="m-minischedule__icon"
         >
           <span
-            className=""
+            className="m-minischedule__svg--revenue"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -1606,7 +1606,7 @@ exports[`MinischeduleRun renders a mid route swing off 1`] = `
           className="m-minischedule__icon"
         >
           <span
-            className=""
+            className="m-minischedule__svg--revenue"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -1736,7 +1736,7 @@ exports[`MinischeduleRun renders a mid route swing on 1`] = `
         className="m-minischedule__icon"
       >
         <span
-          className=""
+          className="m-minischedule__svg--revenue"
           dangerouslySetInnerHTML={
             Object {
               "__html": "SVG",
@@ -1803,7 +1803,7 @@ exports[`MinischeduleRun renders a mid route swing on 1`] = `
           className="m-minischedule__icon"
         >
           <span
-            className=""
+            className="m-minischedule__svg--revenue"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -1846,7 +1846,7 @@ exports[`MinischeduleRun renders a mid route swing on 1`] = `
           className="m-minischedule__icon"
         >
           <span
-            className=""
+            className="m-minischedule__svg--revenue"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -2036,7 +2036,7 @@ exports[`MinischeduleRun renders a run 1`] = `
           className="m-minischedule__icon"
         >
           <span
-            className=""
+            className="m-minischedule__svg--revenue"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -2079,7 +2079,7 @@ exports[`MinischeduleRun renders a run 1`] = `
           className="m-minischedule__icon"
         >
           <span
-            className=""
+            className="m-minischedule__svg--revenue"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -2244,7 +2244,7 @@ exports[`MinischeduleRun renders a run with a current layover between trips 1`] 
           className="m-minischedule__icon"
         >
           <span
-            className=""
+            className="m-minischedule__svg--revenue"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -2287,7 +2287,7 @@ exports[`MinischeduleRun renders a run with a current layover between trips 1`] 
           className="m-minischedule__icon"
         >
           <span
-            className=""
+            className="m-minischedule__svg--revenue"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -2452,7 +2452,7 @@ exports[`MinischeduleRun renders a run with a layover before an as-directed 1`] 
           className="m-minischedule__icon"
         >
           <span
-            className=""
+            className="m-minischedule__svg--revenue"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -2651,7 +2651,7 @@ exports[`MinischeduleRun renders a run with a non-current layover between trips 
           className="m-minischedule__icon"
         >
           <span
-            className=""
+            className="m-minischedule__svg--revenue"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -2694,7 +2694,7 @@ exports[`MinischeduleRun renders a run with a non-current layover between trips 
           className="m-minischedule__icon"
         >
           <span
-            className=""
+            className="m-minischedule__svg--revenue"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -2859,7 +2859,7 @@ exports[`MinischeduleRun renders a run with no layovers between trips 1`] = `
           className="m-minischedule__icon"
         >
           <span
-            className=""
+            className="m-minischedule__svg--revenue"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -2885,7 +2885,7 @@ exports[`MinischeduleRun renders a run with no layovers between trips 1`] = `
           className="m-minischedule__icon"
         >
           <span
-            className=""
+            className="m-minischedule__svg--revenue"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
