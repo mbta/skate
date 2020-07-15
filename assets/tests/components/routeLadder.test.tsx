@@ -270,33 +270,6 @@ describe("routeLadder", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("renders correctly in crowding mode before vehicles loaded", () => {
-    const route: Route = {
-      id: "28",
-      directionNames: { 0: "Outbound", 1: "Inbound" },
-      name: "28",
-    }
-
-    const timepoints = [
-      { id: "MATPN", name: "MATPN Name" },
-      { id: "WELLH", name: "WELLH Name" },
-      { id: "MORTN", name: "MORTN Name" },
-    ]
-
-    const tree = renderer
-      .create(
-        <RouteLadder
-          route={route}
-          selectedVehicleId={undefined}
-          timepoints={timepoints}
-          vehiclesAndGhosts={undefined}
-        />
-      )
-      .toJSON()
-
-    expect(tree).toMatchSnapshot()
-  })
-
   test("renders a route ladder with crowding instead of vehicles", () => {
     const route: Route = {
       id: "28",
