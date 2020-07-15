@@ -33,7 +33,7 @@ export const crowdingLabel = (vehicle: Vehicle): string => {
   if (vehicle.crowding && vehicle.crowding.load !== null) {
     return `${vehicle.crowding.load}/${vehicle.crowding.capacity}`
   } else {
-    return "NO DATA"
+    return "?/?"
   }
 }
 
