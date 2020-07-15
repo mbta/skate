@@ -74,6 +74,7 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
             <PropertiesPanel
               selectedVehicleOrGhost={selectedVehicleOrGhost}
               route={vehicleRoute(routes, selectedVehicleOrGhost)}
+              routes={routes}
             />
           )}
         </>

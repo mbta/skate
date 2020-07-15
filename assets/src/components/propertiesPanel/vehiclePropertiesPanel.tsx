@@ -23,6 +23,7 @@ import TabPanels, { TabMode } from "./tabPanels"
 interface Props {
   selectedVehicle: Vehicle
   route?: Route
+  routes: Route[] | null
 }
 
 const InvalidBanner = () => (
@@ -163,7 +164,7 @@ const StatusContent = ({ selectedVehicle }: { selectedVehicle: Vehicle }) => (
   </>
 )
 
-const VehiclePropertiesPanel = ({ selectedVehicle, route }: Props) => {
+const VehiclePropertiesPanel = ({ selectedVehicle, route, routes }: Props) => {
   const [tabMode, setTabMode] = useState<TabMode>("status")
 
   return (
@@ -171,6 +172,7 @@ const VehiclePropertiesPanel = ({ selectedVehicle, route }: Props) => {
       <Header
         vehicle={selectedVehicle}
         route={route}
+        routes={routes}
         tabMode={tabMode}
         setTabMode={setTabMode}
       />

@@ -29,7 +29,7 @@ describe("SearchResults", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={state} dispatch={jest.fn()}>
-          <SearchResults vehicles={[]} />
+          <SearchResults vehicles={[]} routes={[]} />
         </StateDispatchProvider>
       )
       .toJSON()
@@ -114,7 +114,7 @@ describe("SearchResults", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={state} dispatch={jest.fn()}>
-          <SearchResults vehicles={[vehicle, ghost]} />
+          <SearchResults vehicles={[vehicle, ghost]} routes={[]} />
         </StateDispatchProvider>
       )
       .toJSON()
@@ -182,7 +182,7 @@ describe("SearchResults", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={state} dispatch={jest.fn()}>
-          <SearchResults vehicles={[vehicle]} />
+          <SearchResults vehicles={[vehicle]} routes={[]} />
         </StateDispatchProvider>
       )
       .toJSON()
@@ -322,7 +322,10 @@ describe("SearchResults", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={state} dispatch={jest.fn()}>
-          <SearchResults vehicles={[oldVehicle, newVehicle, ghost]} />
+          <SearchResults
+            vehicles={[oldVehicle, newVehicle, ghost]}
+            routes={[]}
+          />
         </StateDispatchProvider>
       )
       .toJSON()
@@ -412,7 +415,7 @@ describe("SearchResults", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={stateWithSelected} dispatch={jest.fn()}>
-          <SearchResults vehicles={[vehicle, ghost]} />
+          <SearchResults vehicles={[vehicle, ghost]} routes={[]} />
         </StateDispatchProvider>
       )
       .toJSON()
@@ -479,7 +482,7 @@ describe("SearchResults", () => {
     }
     const wrapper = mount(
       <StateDispatchProvider state={state} dispatch={testDispatch}>
-        <SearchResults vehicles={[vehicle]} />
+        <SearchResults vehicles={[vehicle]} routes={[]} />
       </StateDispatchProvider>
     )
 
@@ -492,7 +495,7 @@ describe("SearchResults", () => {
     const testDispatch = jest.fn()
     const wrapper = mount(
       <StateDispatchProvider state={state} dispatch={testDispatch}>
-        <SearchResults vehicles={[]} />
+        <SearchResults vehicles={[]} routes={[]} />
       </StateDispatchProvider>
     )
 

@@ -2,6 +2,7 @@ import { shallow } from "enzyme"
 import React from "react"
 import { RouteVariantName } from "../../src/components/routeVariantName"
 import { Vehicle } from "../../src/realtime"
+import { Route } from "../../src/schedule"
 
 const vehicle: Vehicle = {
   id: "v1",
@@ -61,7 +62,7 @@ const vehicle: Vehicle = {
 
 describe("RouteVariantName", () => {
   test("renders for a vehicle with variant and headsign", () => {
-    const wrapper = shallow(<RouteVariantName vehicle={vehicle} />)
+    const wrapper = shallow(<RouteVariantName vehicle={vehicle} routes={[]} />)
 
     expect(wrapper.text()).toEqual("39_X Forest Hills")
   })
@@ -73,7 +74,9 @@ describe("RouteVariantName", () => {
       viaVariant: null,
     }
 
-    const wrapper = shallow(<RouteVariantName vehicle={testVehicle} />)
+    const wrapper = shallow(
+      <RouteVariantName vehicle={testVehicle} routes={[]} />
+    )
 
     expect(wrapper.text()).toEqual("39_")
   })
@@ -85,7 +88,9 @@ describe("RouteVariantName", () => {
       viaVariant: "_",
     }
 
-    const wrapper = shallow(<RouteVariantName vehicle={testVehicle} />)
+    const wrapper = shallow(
+      <RouteVariantName vehicle={testVehicle} routes={[]} />
+    )
 
     expect(wrapper.text()).toEqual("39_")
   })
@@ -96,8 +101,23 @@ describe("RouteVariantName", () => {
       isShuttle: true,
     }
 
-    const wrapper = shallow(<RouteVariantName vehicle={testVehicle} />)
+    const wrapper = shallow(
+      <RouteVariantName vehicle={testVehicle} routes={[]} />
+    )
 
     expect(wrapper.text()).toEqual("Shuttle")
+  })
+
+  test("uses route name if available", () => {
+    const route: Route = {
+      id: "39",
+      directionNames: { "0": "Outbound", "1": "Inbound" },
+      name: "ThirtyNine",
+    }
+    const wrapper = shallow(
+      <RouteVariantName vehicle={vehicle} routes={[route]} />
+    )
+
+    expect(wrapper.text()).toEqual("ThirtyNine_X Forest Hills")
   })
 })

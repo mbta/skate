@@ -79,7 +79,10 @@ const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
       </div>
 
       {selectedVehicle && (
-        <PropertiesPanel selectedVehicleOrGhost={selectedVehicle} />
+        <PropertiesPanel
+          selectedVehicleOrGhost={selectedVehicle}
+          routes={null}
+        />
       )}
     </div>
   )

@@ -11,6 +11,7 @@ import TabPanels, { TabMode } from "./tabPanels"
 interface Props {
   selectedGhost: Ghost
   route?: Route
+  routes: Route[] | null
 }
 
 const NoWaiverBanner = () => (
@@ -41,7 +42,7 @@ const StatusContent = ({ ghost }: { ghost: Ghost }) => (
   </>
 )
 
-const GhostPropertiesPanel = ({ selectedGhost, route }: Props) => {
+const GhostPropertiesPanel = ({ selectedGhost, route, routes }: Props) => {
   const [tabMode, setTabMode] = useState<TabMode>("status")
 
   return (
@@ -49,6 +50,7 @@ const GhostPropertiesPanel = ({ selectedGhost, route }: Props) => {
       <Header
         vehicle={selectedGhost}
         route={route}
+        routes={routes}
         tabMode={tabMode}
         setTabMode={setTabMode}
       />

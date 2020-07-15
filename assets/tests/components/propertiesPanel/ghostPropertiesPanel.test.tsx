@@ -39,7 +39,9 @@ const route: Route = {
 describe("GhostPropertiesPanel", () => {
   test("renders", () => {
     const tree = renderer
-      .create(<GhostPropertiesPanel selectedGhost={ghost} route={route} />)
+      .create(
+        <GhostPropertiesPanel selectedGhost={ghost} route={route} routes={[]} />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -49,7 +51,11 @@ describe("GhostPropertiesPanel", () => {
     const ghostWithoutRun: Ghost = { ...ghost, runId: null }
     const tree = renderer
       .create(
-        <GhostPropertiesPanel selectedGhost={ghostWithoutRun} route={route} />
+        <GhostPropertiesPanel
+          selectedGhost={ghostWithoutRun}
+          route={route}
+          routes={[]}
+        />
       )
       .toJSON()
 
@@ -70,7 +76,12 @@ describe("GhostPropertiesPanel", () => {
     }
 
     const tree = renderer
-      .create(<GhostPropertiesPanel selectedGhost={ghostWithBlockWaivers} />)
+      .create(
+        <GhostPropertiesPanel
+          selectedGhost={ghostWithBlockWaivers}
+          routes={[]}
+        />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()

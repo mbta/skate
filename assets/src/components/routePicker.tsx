@@ -8,6 +8,7 @@ import {
 } from "../hooks/useRouteFilter"
 import { Route, RouteId } from "../schedule.d"
 import { deselectRoute, DeselectRouteAction, selectRoute } from "../state"
+import { routeNameOrId } from "../util/route"
 import Loading from "./loading"
 import PickerContainer from "./pickerContainer"
 
@@ -76,15 +77,13 @@ const SelectedRouteButton = ({
   routes: Route[] | null
   dispatch: Dispatch<DeselectRouteAction>
 }) => {
-  const matchingRoute = routes && routes.find((route) => route.id === routeId)
-  const buttonText = matchingRoute ? matchingRoute.name : routeId
   return (
     <li>
       <button
         className="m-route-picker__selected-routes-button"
         onClick={() => dispatch(deselectRoute(routeId))}
       >
-        {buttonText}
+        {routeNameOrId(routeId, routes)}
       </button>
     </li>
   )

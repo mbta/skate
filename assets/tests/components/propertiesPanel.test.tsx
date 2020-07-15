@@ -103,7 +103,11 @@ describe("PropertiesPanel", () => {
   test("renders a vehicle", () => {
     const tree = renderer
       .create(
-        <PropertiesPanel selectedVehicleOrGhost={vehicle} route={route} />
+        <PropertiesPanel
+          selectedVehicleOrGhost={vehicle}
+          route={route}
+          routes={[]}
+        />
       )
       .toJSON()
 
@@ -112,7 +116,13 @@ describe("PropertiesPanel", () => {
 
   test("renders a ghost", () => {
     const tree = renderer
-      .create(<PropertiesPanel selectedVehicleOrGhost={ghost} route={route} />)
+      .create(
+        <PropertiesPanel
+          selectedVehicleOrGhost={ghost}
+          route={route}
+          routes={[]}
+        />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -123,7 +133,11 @@ describe("PropertiesPanel", () => {
 
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <PropertiesPanel selectedVehicleOrGhost={ghost} route={route} />
+        <PropertiesPanel
+          selectedVehicleOrGhost={ghost}
+          route={route}
+          routes={[]}
+        />
       </StateDispatchProvider>
     )
     wrapper.find(".m-properties-panel__close-button").simulate("click")

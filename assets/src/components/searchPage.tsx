@@ -2,9 +2,11 @@ import { Socket } from "phoenix"
 import React, { ReactElement, useContext, useState } from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import useRoutes from "../hooks/useRoutes"
 import useSearchResults from "../hooks/useSearchResults"
 import { isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
+import { Route } from "../schedule"
 import { SearchPageState } from "../state/searchPageState"
 import Map from "./map"
 import PropertiesPanel from "./propertiesPanel"
@@ -67,6 +69,8 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
   const onlyVehicles: Vehicle[] = filterVehicles(vehicles)
   const [mobileDisplay, setMobileDisplay] = useState(MobileDisplay.List)
 
+  const routes: Route[] | null = useRoutes()
+
   const toggleMobileDisplay = () => {
     setMobileDisplay(
       mobileDisplay === MobileDisplay.List
@@ -99,7 +103,10 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
 
         <div className="m-search-display">
           {thereIsAnActiveSearch(vehicles, searchPageState) ? (
-            <SearchResults vehicles={vehicles as VehicleOrGhost[]} />
+            <SearchResults
+              vehicles={vehicles as VehicleOrGhost[]}
+              routes={routes}
+            />
           ) : (
             <RecentSearches />
           )}
@@ -111,7 +118,10 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
       </div>
 
       {selectedVehicle && (
-        <PropertiesPanel selectedVehicleOrGhost={selectedVehicle} />
+        <PropertiesPanel
+          selectedVehicleOrGhost={selectedVehicle}
+          routes={routes}
+        />
       )}
     </div>
   )

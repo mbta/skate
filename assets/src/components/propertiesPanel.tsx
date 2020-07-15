@@ -12,6 +12,7 @@ import VehiclePropertiesPanel from "./propertiesPanel/vehiclePropertiesPanel"
 interface Props {
   selectedVehicleOrGhost: VehicleOrGhost
   route?: Route
+  routes: Route[] | null
 }
 
 export const handleSwipe = (hideMe: () => void) => (
@@ -36,7 +37,7 @@ export const hideMeIfNoCrowdingTooltip = (hideMe: () => void) => {
   }
 }
 
-const PropertiesPanel = ({ selectedVehicleOrGhost, route }: Props) => {
+const PropertiesPanel = ({ selectedVehicleOrGhost, route, routes }: Props) => {
   const [, dispatch] = useContext(StateDispatchContext)
 
   const hideMe = () => dispatch(deselectVehicle())
@@ -51,11 +52,13 @@ const PropertiesPanel = ({ selectedVehicleOrGhost, route }: Props) => {
           <VehiclePropertiesPanel
             selectedVehicle={selectedVehicleOrGhost}
             route={route}
+            routes={routes}
           />
         ) : (
           <GhostPropertiesPanel
             selectedGhost={selectedVehicleOrGhost}
             route={route}
+            routes={routes}
           />
         )}
 
