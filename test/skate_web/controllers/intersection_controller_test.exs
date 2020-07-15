@@ -15,6 +15,10 @@ defmodule SkateWeb.IntersectionControllerTest do
     end
 
     test "returns data", %{conn: conn} do
+      reassign_env(:skate, :intersection_fn, fn _latitude, _longitude ->
+        "Sesame St & Electric Avenue"
+      end)
+
       conn =
         conn
         |> api_headers()
@@ -22,7 +26,21 @@ defmodule SkateWeb.IntersectionControllerTest do
         |> get("/api/intersection/?latitude=40&longitude=-70")
 
       assert json_response(conn, 200) == %{
-               "data" => ["40", "-70"]
+               "data" => "Sesame St & Electric Avenue"
+             }
+    end
+
+    test "gracefully handles geonames api failures", %{conn: conn} do
+      reassign_env(:skate, :intersection_fn, fn _latitude, _longitude -> nil end)
+
+      conn =
+        conn
+        |> api_headers()
+        |> logged_in()
+        |> get("/api/intersection/?latitude=40&longitude=-70")
+
+      assert json_response(conn, 200) == %{
+               "data" => nil
              }
     end
   end
