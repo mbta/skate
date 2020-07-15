@@ -3,6 +3,7 @@ import React from "react"
 import renderer, { act } from "react-test-renderer"
 import RouteLadder from "../../src/components/routeLadder"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
+import { LadderCrowdingToggles } from "../../src/models/ladderCrowdingToggle"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import {
   Ghost,
@@ -16,6 +17,7 @@ import {
   flipLadder,
   initialState,
   selectVehicle,
+  State,
   toggleLadderCrowding,
 } from "../../src/state"
 
@@ -271,6 +273,12 @@ describe("routeLadder", () => {
   })
 
   test("renders a route ladder with crowding instead of vehicles", () => {
+    const mockDispatch = jest.fn()
+    const ladderCrowdingToggles: LadderCrowdingToggles = { "28": true }
+    const state: State = {
+      ...initialState,
+      ladderCrowdingToggles,
+    }
     const route: Route = {
       id: "28",
       directionNames: { 0: "Outbound", 1: "Inbound" },
@@ -286,26 +294,28 @@ describe("routeLadder", () => {
     const [v1, v2] = vehicles
     const tree = renderer
       .create(
-        <RouteLadder
-          route={route}
-          selectedVehicleId={undefined}
-          timepoints={timepoints}
-          vehiclesAndGhosts={[
-            {
-              ...v1,
-              crowding: {
-                occupancyStatus: "FEW_SEATS_AVAILABLE",
-                occupancyPercentage: 0.78,
-                load: 14,
-                capacity: 18,
+        <StateDispatchProvider state={state} dispatch={mockDispatch}>
+          <RouteLadder
+            route={route}
+            selectedVehicleId={undefined}
+            timepoints={timepoints}
+            vehiclesAndGhosts={[
+              {
+                ...v1,
+                crowding: {
+                  occupancyStatus: "FEW_SEATS_AVAILABLE",
+                  occupancyPercentage: 0.78,
+                  load: 14,
+                  capacity: 18,
+                },
               },
-            },
-            {
-              ...v2,
-              crowding: null,
-            },
-          ]}
-        />
+              {
+                ...v2,
+                crowding: null,
+              },
+            ]}
+          />
+        </StateDispatchProvider>
       )
       .toJSON()
 
