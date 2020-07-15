@@ -32,8 +32,19 @@
   float: right;
 }
 
+.m-vehicle-properties-panel__label {
+  @include font-label;
+  margin-bottom: 0.5rem;
+}
+
+.m-vehicle-properties-panel__value {
+  @include font-body;
+  margin-bottom: 0.5rem;
+}
+
 .m-vehicle-properties-panel__link {
   @include font-link;
+  margin-bottom: 0.5rem;
 }
 
 .m-vehicle-properties-panel__not-available {

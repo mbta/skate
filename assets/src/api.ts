@@ -116,6 +116,16 @@ export const fetchMinischeduleBlock = (tripId: TripId): Promise<Block | null> =>
     defaultResult: null,
   })
 
+export const fetchNearestIntersection = (
+  latitude: number,
+  longitude: number
+): Promise<string | null> =>
+  apiCall({
+    url: `/api/intersection?latitude=${latitude}&longitude=${longitude}`,
+    parser: nullableParser((intersection: string) => intersection),
+    defaultResult: null,
+  })
+
 const nullableParser = <Data, T>(
   parser: (data: Data) => T
 ): ((data: Data | null) => T | null) => (data: Data | null) =>

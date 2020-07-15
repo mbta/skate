@@ -280,14 +280,9 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
       className="m-vehicle-properties-panel__location"
     >
       <div
-        className="m-properties-list__property-label"
+        className="m-vehicle-properties-panel__label"
       >
-        Next Stop
-      </div>
-      <div
-        className="m-properties-list__property-value"
-      >
-        Stop Name
+        Current Location
       </div>
       <a
         className="m-vehicle-properties-panel__link"
@@ -296,6 +291,16 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
       >
         Directions
       </a>
+      <div
+        className="m-vehicle-properties-panel__label"
+      >
+        Next Stop
+      </div>
+      <div
+        className="m-vehicle-properties-panel__value"
+      >
+        Stop Name
+      </div>
       <div
         className="m-vehicle-properties-panel__map"
       >
@@ -591,14 +596,9 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
       className="m-vehicle-properties-panel__location"
     >
       <div
-        className="m-properties-list__property-label"
+        className="m-vehicle-properties-panel__label"
       >
-        Next Stop
-      </div>
-      <div
-        className="m-properties-list__property-value"
-      >
-        Stop Name
+        Current Location
       </div>
       <a
         className="m-vehicle-properties-panel__link"
@@ -607,6 +607,16 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
       >
         Directions
       </a>
+      <div
+        className="m-vehicle-properties-panel__label"
+      >
+        Next Stop
+      </div>
+      <div
+        className="m-vehicle-properties-panel__value"
+      >
+        Stop Name
+      </div>
       <div
         className="m-vehicle-properties-panel__map"
       >
@@ -902,14 +912,9 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
       className="m-vehicle-properties-panel__location"
     >
       <div
-        className="m-properties-list__property-label"
+        className="m-vehicle-properties-panel__label"
       >
-        Next Stop
-      </div>
-      <div
-        className="m-properties-list__property-value"
-      >
-        Stop Name
+        Current Location
       </div>
       <a
         className="m-vehicle-properties-panel__link"
@@ -918,6 +923,16 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
       >
         Directions
       </a>
+      <div
+        className="m-vehicle-properties-panel__label"
+      >
+        Next Stop
+      </div>
+      <div
+        className="m-vehicle-properties-panel__value"
+      >
+        Stop Name
+      </div>
       <div
         className="m-vehicle-properties-panel__map"
       >
@@ -1177,18 +1192,9 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
     className="m-vehicle-properties-panel__location"
   >
     <div
-      className="m-properties-list__property-label"
+      className="m-vehicle-properties-panel__label"
     >
-      Next Stop
-    </div>
-    <div
-      className="m-properties-list__property-value"
-    >
-      <span
-        className="m-vehicle-properties-panel__not-available"
-      >
-        Not available
-      </span>
+      Current Location
     </div>
     <a
       className="m-vehicle-properties-panel__link"
@@ -1197,6 +1203,20 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
     >
       Directions
     </a>
+    <div
+      className="m-vehicle-properties-panel__label"
+    >
+      Next Stop
+    </div>
+    <div
+      className="m-vehicle-properties-panel__value"
+    >
+      <span
+        className="m-vehicle-properties-panel__not-available"
+      >
+        Not available
+      </span>
+    </div>
     <div
       className="m-vehicle-properties-panel__map"
     >
@@ -1586,14 +1606,9 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
       className="m-vehicle-properties-panel__location"
     >
       <div
-        className="m-properties-list__property-label"
+        className="m-vehicle-properties-panel__label"
       >
-        Next Stop
-      </div>
-      <div
-        className="m-properties-list__property-value"
-      >
-        Stop Name
+        Current Location
       </div>
       <a
         className="m-vehicle-properties-panel__link"
@@ -1602,6 +1617,16 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
       >
         Directions
       </a>
+      <div
+        className="m-vehicle-properties-panel__label"
+      >
+        Next Stop
+      </div>
+      <div
+        className="m-vehicle-properties-panel__value"
+      >
+        Stop Name
+      </div>
       <div
         className="m-vehicle-properties-panel__map"
       >
@@ -1897,14 +1922,9 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
       className="m-vehicle-properties-panel__location"
     >
       <div
-        className="m-properties-list__property-label"
+        className="m-vehicle-properties-panel__label"
       >
-        Next Stop
-      </div>
-      <div
-        className="m-properties-list__property-value"
-      >
-        Stop Name
+        Current Location
       </div>
       <a
         className="m-vehicle-properties-panel__link"
@@ -1913,6 +1933,16 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
       >
         Directions
       </a>
+      <div
+        className="m-vehicle-properties-panel__label"
+      >
+        Next Stop
+      </div>
+      <div
+        className="m-vehicle-properties-panel__value"
+      >
+        Stop Name
+      </div>
       <div
         className="m-vehicle-properties-panel__map"
       >
@@ -2218,18 +2248,9 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
       className="m-vehicle-properties-panel__location"
     >
       <div
-        className="m-properties-list__property-label"
+        className="m-vehicle-properties-panel__label"
       >
-        Next Stop
-      </div>
-      <div
-        className="m-properties-list__property-value"
-      >
-        <span
-          className="m-vehicle-properties-panel__not-available"
-        >
-          Not available
-        </span>
+        Current Location
       </div>
       <a
         className="m-vehicle-properties-panel__link"
@@ -2238,6 +2259,20 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
       >
         Directions
       </a>
+      <div
+        className="m-vehicle-properties-panel__label"
+      >
+        Next Stop
+      </div>
+      <div
+        className="m-vehicle-properties-panel__value"
+      >
+        <span
+          className="m-vehicle-properties-panel__not-available"
+        >
+          Not available
+        </span>
+      </div>
       <div
         className="m-vehicle-properties-panel__map"
       >
@@ -2533,14 +2568,9 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
       className="m-vehicle-properties-panel__location"
     >
       <div
-        className="m-properties-list__property-label"
+        className="m-vehicle-properties-panel__label"
       >
-        Next Stop
-      </div>
-      <div
-        className="m-properties-list__property-value"
-      >
-        Stop Name
+        Current Location
       </div>
       <a
         className="m-vehicle-properties-panel__link"
@@ -2549,6 +2579,16 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
       >
         Directions
       </a>
+      <div
+        className="m-vehicle-properties-panel__label"
+      >
+        Next Stop
+      </div>
+      <div
+        className="m-vehicle-properties-panel__value"
+      >
+        Stop Name
+      </div>
       <div
         className="m-vehicle-properties-panel__map"
       >

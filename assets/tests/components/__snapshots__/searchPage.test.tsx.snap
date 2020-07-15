@@ -460,14 +460,9 @@ exports[`SearchPage renders a selected vehicle 1`] = `
           className="m-vehicle-properties-panel__location"
         >
           <div
-            className="m-properties-list__property-label"
+            className="m-vehicle-properties-panel__label"
           >
-            Next Stop
-          </div>
-          <div
-            className="m-properties-list__property-value"
-          >
-            Stop Name
+            Current Location
           </div>
           <a
             className="m-vehicle-properties-panel__link"
@@ -476,6 +471,16 @@ exports[`SearchPage renders a selected vehicle 1`] = `
           >
             Directions
           </a>
+          <div
+            className="m-vehicle-properties-panel__label"
+          >
+            Next Stop
+          </div>
+          <div
+            className="m-vehicle-properties-panel__value"
+          >
+            Stop Name
+          </div>
           <div
             className="m-vehicle-properties-panel__map"
           >

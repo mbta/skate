@@ -19,6 +19,7 @@ import CrowdingDiagram from "./crowdingDiagram"
 import Header from "./header"
 import HeadwayDiagram from "./headwayDiagram"
 import TabPanels, { TabMode } from "./tabPanels"
+import { useNearestIntersection } from "../../hooks/useNearestIntersection"
 
 interface Props {
   selectedVehicle: Vehicle
@@ -70,19 +71,20 @@ const useRouteVehicles = (
 const Location = ({ vehicle }: { vehicle: Vehicle }) => {
   const routeVehicles: Vehicle[] = useRouteVehicles(vehicle.routeId, vehicle.id)
   const shapes: Shape[] = useTripShape(vehicle.tripId)
-
   const { isOffCourse, latitude, longitude, stopStatus } = vehicle
+  const nearestIntersection: string | null = useNearestIntersection(
+    latitude,
+    longitude
+  )
 
   return (
     <div className="m-vehicle-properties-panel__location">
-      <div className="m-properties-list__property-label">Next Stop</div>
-      <div className="m-properties-list__property-value">
-        {isOffCourse || vehicle.isShuttle ? (
-          <NotAvailable />
-        ) : (
-          <>{stopStatus.stopName}</>
-        )}
-      </div>
+      <div className="m-vehicle-properties-panel__label">Current Location</div>
+      {nearestIntersection ? (
+        <div className="m-vehicle-properties-panel__value">
+          {nearestIntersection}
+        </div>
+      ) : null}
       <a
         className="m-vehicle-properties-panel__link"
         href={directionsUrl(latitude, longitude)}
@@ -90,6 +92,14 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
       >
         Directions
       </a>
+      <div className="m-vehicle-properties-panel__label">Next Stop</div>
+      <div className="m-vehicle-properties-panel__value">
+        {isOffCourse || vehicle.isShuttle ? (
+          <NotAvailable />
+        ) : (
+          <>{stopStatus.stopName}</>
+        )}
+      </div>
       <div className="m-vehicle-properties-panel__map">
         <Map
           vehicles={[vehicle]}
