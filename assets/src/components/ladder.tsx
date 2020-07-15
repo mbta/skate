@@ -122,7 +122,7 @@ const Ladder = ({
               />
             ))}
         {layoverTopLadderVehicles.map((ladderVehicle) => (
-          <VehicleOrCrowdingSvg
+          <VehicleSvg
             key={`vehicle-${ladderVehicle.vehicle.id}`}
             ladderVehicle={ladderVehicle}
             selectedVehicleId={selectedVehicleId}
@@ -131,7 +131,7 @@ const Ladder = ({
           />
         ))}
         {layoverBottomLadderVehicles.map((ladderVehicle) => (
-          <VehicleOrCrowdingSvg
+          <VehicleSvg
             key={`vehicle-${ladderVehicle.vehicle.id}`}
             ladderVehicle={ladderVehicle}
             selectedVehicleId={selectedVehicleId}
@@ -140,7 +140,7 @@ const Ladder = ({
           />
         ))}
         {unselectedLadderVehicles.map((ladderVehicle) => (
-          <VehicleOrCrowdingSvg
+          <VehicleSvg
             key={`vehicle-${ladderVehicle.vehicle.id}`}
             ladderVehicle={ladderVehicle}
             selectedVehicleId={selectedVehicleId}
@@ -150,7 +150,7 @@ const Ladder = ({
         ))}
         {/* Display the selected vehicle on top of all others if there is one */}
         {selectedLadderVehicles.map((ladderVehicle) => (
-          <VehicleOrCrowdingSvg
+          <VehicleSvg
             key={`vehicle-${ladderVehicle.vehicle.id}`}
             ladderVehicle={ladderVehicle}
             selectedVehicleId={selectedVehicleId}
@@ -184,36 +184,18 @@ const associatedVehicleId = (
   return vehicleOrIncomingGhostVehicleId.replace(ghostIncomingRegex, "")
 }
 
-const VehicleOrCrowdingSvg = ({
-  ladderVehicle,
-  selectedVehicleId,
-  isLayingOver,
-  displayCrowding,
-}: {
-  ladderVehicle: LadderVehicle
-  selectedVehicleId: VehicleId | undefined
-  isLayingOver: boolean
-  displayCrowding?: boolean
-}) => (
-  <VehicleSvg
-    displayCrowding={!!displayCrowding && isVehicle(ladderVehicle.vehicle)}
-    ladderVehicle={ladderVehicle}
-    selectedVehicleId={selectedVehicleId}
-    isLayingOver={isLayingOver}
-  />
-)
-
 const VehicleSvg = ({
   displayCrowding,
   ladderVehicle,
   selectedVehicleId,
   isLayingOver,
 }: {
-  displayCrowding: boolean
+  displayCrowding: boolean | undefined
   ladderVehicle: LadderVehicle
   selectedVehicleId: VehicleId | undefined
   isLayingOver: boolean
 }) => {
+  displayCrowding = !!displayCrowding && isVehicle(ladderVehicle.vehicle)
   const { vehicle, x, y, vehicleDirection } = ladderVehicle
   const [{ settings }, dispatch] = useContext(StateDispatchContext)
   const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
