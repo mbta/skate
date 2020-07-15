@@ -286,7 +286,6 @@ describe("routeLadder", () => {
     const tree = renderer
       .create(
         <RouteLadder
-          crowdingEnabled={true}
           route={route}
           selectedVehicleId={undefined}
           timepoints={timepoints}
@@ -315,7 +314,6 @@ describe("routeLadder", () => {
     const tree = renderer
       .create(
         <RouteLadder
-          crowdingEnabled={true}
           route={route}
           selectedVehicleId={undefined}
           timepoints={timepoints}
@@ -453,7 +451,6 @@ describe("routeLadder", () => {
             },
           ]}
           selectedVehicleId={undefined}
-          crowdingEnabled={true}
         />
       </StateDispatchProvider>
     )

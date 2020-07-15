@@ -27,7 +27,6 @@ interface Props {
   timepoints: LoadableTimepoints
   vehiclesAndGhosts?: VehicleOrGhost[]
   selectedVehicleId: VehicleId | undefined
-  crowdingEnabled?: boolean
 }
 
 const Header = ({ route }: { route: Route }) => {
