@@ -111,7 +111,6 @@ const RouteLadder = ({
   timepoints,
   vehiclesAndGhosts,
   selectedVehicleId,
-  crowdingEnabled,
 }: Props) => {
   const [{ ladderDirections, ladderCrowdingToggles }, dispatch] = useContext(
     StateDispatchContext
@@ -135,9 +134,8 @@ const RouteLadder = ({
     ladderDirection
   )
 
-  const displayCrowding = !!(
-    crowdingEnabled && someVehicleHasCrowding(vehiclesAndGhosts)
-  )
+  const displayCrowding = someVehicleHasCrowding(vehiclesAndGhosts)
+
   return (
     <>
       <Header route={route} />
