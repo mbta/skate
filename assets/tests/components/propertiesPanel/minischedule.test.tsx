@@ -645,7 +645,15 @@ describe("Minischedule", () => {
   test("highlights pullouts if they're active", () => {
     const run = {
       id: "run",
-      activities: [{ ...piece, trips: [nonrevenueTrip, revenueTrip] }],
+      activities: [
+        {
+          ...piece,
+          trips: [
+            { ...nonrevenueTrip, startTime: 0 },
+            { ...revenueTrip, startTime: 1 },
+          ],
+        },
+      ],
     }
     const tree = renderer
       .create(
@@ -670,9 +678,9 @@ describe("Minischedule", () => {
         {
           ...piece,
           trips: [
-            { ...revenueTrip, id: "before" },
-            { ...nonrevenueTrip, id: "deadhead" },
-            { ...revenueTrip, id: "after" },
+            { ...revenueTrip, id: "before", startTime: 0 },
+            { ...nonrevenueTrip, id: "deadhead", startTime: 1 },
+            { ...revenueTrip, id: "after", startTime: 2 },
           ],
         },
       ],
