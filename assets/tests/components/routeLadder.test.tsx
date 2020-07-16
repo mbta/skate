@@ -3,6 +3,7 @@ import React from "react"
 import renderer, { act } from "react-test-renderer"
 import RouteLadder from "../../src/components/routeLadder"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
+import { LadderCrowdingToggles } from "../../src/models/ladderCrowdingToggle"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import {
   Ghost,
@@ -16,6 +17,8 @@ import {
   flipLadder,
   initialState,
   selectVehicle,
+  State,
+  toggleLadderCrowding,
 } from "../../src/state"
 
 // tslint:disable: object-literal-sort-keys
@@ -269,6 +272,158 @@ describe("routeLadder", () => {
     expect(tree).toMatchSnapshot()
   })
 
+  test("renders a route ladder with crowding instead of vehicles", () => {
+    const mockDispatch = jest.fn()
+    const ladderCrowdingToggles: LadderCrowdingToggles = { "28": true }
+    const state: State = {
+      ...initialState,
+      ladderCrowdingToggles,
+    }
+    const route: Route = {
+      id: "28",
+      directionNames: { 0: "Outbound", 1: "Inbound" },
+      name: "28",
+    }
+
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    const [v1, v2] = vehicles
+    const tree = renderer
+      .create(
+        <StateDispatchProvider state={state} dispatch={mockDispatch}>
+          <RouteLadder
+            route={route}
+            selectedVehicleId={undefined}
+            timepoints={timepoints}
+            vehiclesAndGhosts={[
+              {
+                ...v1,
+                crowding: {
+                  occupancyStatus: "FEW_SEATS_AVAILABLE",
+                  occupancyPercentage: 0.78,
+                  load: 14,
+                  capacity: 18,
+                },
+              },
+              {
+                ...v2,
+                crowding: null,
+              },
+            ]}
+          />
+        </StateDispatchProvider>
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("displays no crowding data for a bus coming off a route with no crowding data onto a route with crowding data", () => {
+    const mockDispatch = jest.fn()
+    const ladderCrowdingToggles: LadderCrowdingToggles = { "28": true }
+    const state: State = {
+      ...initialState,
+      ladderCrowdingToggles,
+    }
+    const route: Route = {
+      id: "28",
+      directionNames: { 0: "Outbound", 1: "Inbound" },
+      name: "28",
+    }
+
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    const [v1, v2] = vehicles
+    const tree = renderer
+      .create(
+        <StateDispatchProvider state={state} dispatch={mockDispatch}>
+          <RouteLadder
+            route={route}
+            selectedVehicleId={undefined}
+            timepoints={timepoints}
+            vehiclesAndGhosts={[
+              {
+                ...v1,
+                crowding: {
+                  occupancyStatus: "FEW_SEATS_AVAILABLE",
+                  occupancyPercentage: 0.78,
+                  load: 14,
+                  capacity: 18,
+                },
+              },
+              {
+                ...v2,
+                routeId: "741",
+                crowding: null,
+              },
+            ]}
+          />
+        </StateDispatchProvider>
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("doesn't display crowding data for a vehicle coming off a route with crowding data onto a route with none", () => {
+    const mockDispatch = jest.fn()
+    const ladderCrowdingToggles: LadderCrowdingToggles = { "28": true }
+    const state: State = {
+      ...initialState,
+      ladderCrowdingToggles,
+    }
+    const route: Route = {
+      id: "28",
+      directionNames: { 0: "Outbound", 1: "Inbound" },
+      name: "28",
+    }
+
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    const [v1, v2] = vehicles
+    const tree = renderer
+      .create(
+        <StateDispatchProvider state={state} dispatch={mockDispatch}>
+          <RouteLadder
+            route={route}
+            selectedVehicleId={undefined}
+            timepoints={timepoints}
+            vehiclesAndGhosts={[
+              {
+                ...v1,
+                crowding: null,
+              },
+              {
+                ...v2,
+                routeId: "741",
+                crowding: {
+                  occupancyStatus: "FEW_SEATS_AVAILABLE",
+                  occupancyPercentage: 0.78,
+                  load: 14,
+                  capacity: 18,
+                },
+              },
+            ]}
+          />
+        </StateDispatchProvider>
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
   test("displays loading if we are fetching the timepoints", () => {
     const route: Route = {
       id: "28",
@@ -347,6 +502,48 @@ describe("routeLadder", () => {
     })
 
     expect(mockDispatch).toHaveBeenCalledWith(flipLadder("28"))
+  })
+
+  test("clicking the crowding toggle toggles crowding", () => {
+    const mockDispatch = jest.fn()
+    const route: Route = {
+      id: "28",
+      directionNames: { 0: "Outbound", 1: "Inbound" },
+      name: "28",
+    }
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    const [v1] = vehicles
+
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+        <RouteLadder
+          route={route}
+          timepoints={timepoints}
+          vehiclesAndGhosts={[
+            {
+              ...v1,
+              crowding: {
+                occupancyStatus: "EMPTY",
+                load: 0,
+                capacity: 18,
+                occupancyPercentage: 0,
+              },
+            },
+          ]}
+          selectedVehicleId={undefined}
+        />
+      </StateDispatchProvider>
+    )
+    act(() => {
+      wrapper.find(".m-route-ladder__crowding-toggle--show").simulate("click")
+    })
+
+    expect(mockDispatch).toHaveBeenCalledWith(toggleLadderCrowding("28"))
   })
 
   test("clicking an incoming vehicle selects that vehicle", () => {

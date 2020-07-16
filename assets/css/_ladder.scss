@@ -96,3 +96,7 @@
     stroke: $color-vehicle-late;
   }
 }
+
+.m-ladder__crowding {
+  @include crowding-icon-colors;
+}

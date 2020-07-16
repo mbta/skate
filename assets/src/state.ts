@@ -1,5 +1,10 @@
 import { Dispatch as ReactDispatch } from "react"
 import {
+  emptyLadderCrowdingTogglesByRouteId,
+  LadderCrowdingToggles,
+  toggleLadderCrowdingForRoute,
+} from "./models/ladderCrowdingToggle"
+import {
   emptyLadderDirectionsByRouteId,
   flipLadderDirectionForRoute,
   LadderDirections,
@@ -19,6 +24,7 @@ export interface State {
   searchPageState: SearchPageState
   selectedRouteIds: RouteId[]
   ladderDirections: LadderDirections
+  ladderCrowdingToggles: LadderCrowdingToggles
   selectedShuttleRouteIds: RouteId[]
   selectedShuttleRunIds: RunId[] | "all"
   selectedVehicleId?: VehicleId
@@ -30,6 +36,7 @@ export const initialState: State = {
   searchPageState: initialSearchPageState,
   selectedRouteIds: [],
   ladderDirections: emptyLadderDirectionsByRouteId,
+  ladderCrowdingToggles: emptyLadderCrowdingTogglesByRouteId,
   selectedShuttleRouteIds: [],
   selectedShuttleRunIds: "all",
   selectedVehicleId: undefined,
@@ -69,6 +76,18 @@ interface FlipLadderAction {
 
 export const flipLadder = (routeId: RouteId): FlipLadderAction => ({
   type: "FLIP_LADDER",
+  payload: { routeId },
+})
+
+interface ToggleLadderCrowdingAction {
+  type: "TOGGLE_LADDER_CROWDING"
+  payload: { routeId: RouteId }
+}
+
+export const toggleLadderCrowding = (
+  routeId: RouteId
+): ToggleLadderCrowdingAction => ({
+  type: "TOGGLE_LADDER_CROWDING",
   payload: { routeId },
 })
 
@@ -212,6 +231,7 @@ type Action =
   | SelectRouteAction
   | DeselectRouteAction
   | FlipLadderAction
+  | ToggleLadderCrowdingAction
   | SelectShuttleRunAction
   | DeselectShuttleRunAction
   | SelectAllShuttleRunsAction
@@ -266,6 +286,19 @@ const ladderDirectionsReducer = (
     case "FLIP_LADDER":
       const routeId = action.payload.routeId
       return flipLadderDirectionForRoute(state, routeId)
+    default:
+      return state
+  }
+}
+
+const ladderCrowdingTogglesReducer = (
+  state: LadderCrowdingToggles,
+  action: Action
+): LadderCrowdingToggles => {
+  switch (action.type) {
+    case "TOGGLE_LADDER_CROWDING":
+      const routeId = action.payload.routeId
+      return toggleLadderCrowdingForRoute(state, routeId)
     default:
       return state
   }
@@ -344,6 +377,10 @@ export const reducer = (state: State, action: Action): State => ({
   searchPageState: searchReducer(state.searchPageState, action as SearchAction),
   selectedRouteIds: selectedRouteIdsReducer(state.selectedRouteIds, action),
   ladderDirections: ladderDirectionsReducer(state.ladderDirections, action),
+  ladderCrowdingToggles: ladderCrowdingTogglesReducer(
+    state.ladderCrowdingToggles,
+    action
+  ),
   selectedShuttleRouteIds: selectedShuttleRouteIdsReducer(
     state.selectedShuttleRouteIds,
     action

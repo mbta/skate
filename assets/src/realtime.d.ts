@@ -8,6 +8,8 @@ import {
   ViaVariant,
 } from "./schedule.d"
 
+import { Crowding } from "./models/crowding"
+
 import { HeadwaySpacing } from "./models/vehicleStatus"
 
 export interface BlockWaiver {
@@ -16,20 +18,6 @@ export interface BlockWaiver {
   causeId: number
   causeDescription: string
   remark: string | null
-}
-
-export type OccupancyStatus =
-  | "NO_DATA"
-  | "EMPTY"
-  | "MANY_SEATS_AVAILABLE"
-  | "FEW_SEATS_AVAILABLE"
-  | "FULL"
-
-export interface Crowding {
-  load: number | null
-  capacity: number | null
-  occupancyStatus: OccupancyStatus
-  occupancyPercentage: number | null
 }
 
 export interface DataDiscrepancy {

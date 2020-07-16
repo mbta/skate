@@ -2,10 +2,11 @@ import useComponentSize from "@rehooks/component-size"
 import React, { useContext, useRef } from "react"
 import ReactTooltip from "react-tooltip"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { partition, flatten } from "../helpers/array"
+import { flatten, partition } from "../helpers/array"
 import vehicleLabel from "../helpers/vehicleLabel"
 import featureIsEnabled from "../laboratoryFeatures"
 import { blockWaiverAlertStyle } from "../models/blockWaiver"
+import { crowdingLabel, OccupancyStatus } from "../models/crowding"
 import {
   LadderDirection,
   orderTimepoints,
@@ -19,12 +20,13 @@ import {
   ladderVehiclesForLayovers,
   LayoverBoxPosition,
 } from "../models/layoverVehicle"
-import { isGhost } from "../models/vehicle"
+import { isGhost, isVehicle } from "../models/vehicle"
 import { VehiclesByPosition } from "../models/vehiclesByPosition"
 import { drawnStatus, statusClass } from "../models/vehicleStatus"
-import { VehicleId, VehicleTimepointStatus } from "../realtime.d"
+import { Vehicle, VehicleId, VehicleTimepointStatus } from "../realtime.d"
 import { Timepoint } from "../schedule.d"
 import { selectVehicle } from "../state"
+import { CrowdingIconSvgNode } from "./crowdingIcon"
 import HeadwayLines from "./headwayLines"
 import { Orientation, Size, VehicleIconSvgNode } from "./vehicleIcon"
 
@@ -33,6 +35,7 @@ export interface Props {
   vehiclesByPosition: VehiclesByPosition
   ladderDirection: LadderDirection
   selectedVehicleId?: VehicleId
+  displayCrowding?: boolean
 }
 
 export type TimepointStatusYFunc = (
@@ -53,6 +56,7 @@ const Ladder = ({
   vehiclesByPosition,
   ladderDirection,
   selectedVehicleId,
+  displayCrowding,
 }: Props) => {
   const elementRef = useRef(null)
   const { height } = useComponentSize(elementRef)
@@ -104,24 +108,26 @@ const Ladder = ({
         width={width}
         height={height}
       >
-        {flatten([
-          layoverTopLadderVehicles,
-          layoverBottomLadderVehicles,
-          ladderVehicles,
-        ])
-          .filter(notOverload)
-          .map((ladderVehicle) => (
-            <ScheduledLine
-              key={`line-${ladderVehicle.vehicle.id}`}
-              ladderVehicle={ladderVehicle}
-            />
-          ))}
+        {!displayCrowding &&
+          flatten([
+            layoverTopLadderVehicles,
+            layoverBottomLadderVehicles,
+            ladderVehicles,
+          ])
+            .filter(notOverload)
+            .map((ladderVehicle) => (
+              <ScheduledLine
+                key={`line-${ladderVehicle.vehicle.id}`}
+                ladderVehicle={ladderVehicle}
+              />
+            ))}
         {layoverTopLadderVehicles.map((ladderVehicle) => (
           <VehicleSvg
             key={`vehicle-${ladderVehicle.vehicle.id}`}
             ladderVehicle={ladderVehicle}
             selectedVehicleId={selectedVehicleId}
             isLayingOver={true}
+            displayCrowding={displayCrowding}
           />
         ))}
         {layoverBottomLadderVehicles.map((ladderVehicle) => (
@@ -130,6 +136,7 @@ const Ladder = ({
             ladderVehicle={ladderVehicle}
             selectedVehicleId={selectedVehicleId}
             isLayingOver={true}
+            displayCrowding={displayCrowding}
           />
         ))}
         {unselectedLadderVehicles.map((ladderVehicle) => (
@@ -138,6 +145,7 @@ const Ladder = ({
             ladderVehicle={ladderVehicle}
             selectedVehicleId={selectedVehicleId}
             isLayingOver={false}
+            displayCrowding={displayCrowding}
           />
         ))}
         {/* Display the selected vehicle on top of all others if there is one */}
@@ -147,6 +155,7 @@ const Ladder = ({
             ladderVehicle={ladderVehicle}
             selectedVehicleId={selectedVehicleId}
             isLayingOver={false}
+            displayCrowding={displayCrowding}
           />
         ))}
         <RoadLines height={height} />
@@ -176,18 +185,26 @@ const associatedVehicleId = (
 }
 
 const VehicleSvg = ({
+  displayCrowding,
   ladderVehicle,
   selectedVehicleId,
   isLayingOver,
 }: {
+  displayCrowding: boolean | undefined
   ladderVehicle: LadderVehicle
   selectedVehicleId: VehicleId | undefined
   isLayingOver: boolean
 }) => {
+  displayCrowding = !!displayCrowding && isVehicle(ladderVehicle.vehicle)
   const { vehicle, x, y, vehicleDirection } = ladderVehicle
   const [{ settings }, dispatch] = useContext(StateDispatchContext)
   const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
   const alertIconStyle = blockWaiverAlertStyle(vehicle)
+
+  const crowding = isVehicle(vehicle) ? vehicle.crowding : null
+  const occupancyStatus: OccupancyStatus = crowding
+    ? crowding.occupancyStatus
+    : "NO_DATA"
 
   return (
     <g
@@ -195,14 +212,29 @@ const VehicleSvg = ({
       transform={`translate(${x},${y})`}
       onClick={() => dispatch(selectVehicle(associatedVehicleId(vehicle.id)))}
     >
-      <VehicleIconSvgNode
-        size={isLayingOver ? Size.Small : Size.Medium}
-        orientation={orientationMatchingVehicle(isLayingOver, vehicleDirection)}
-        label={vehicleLabel(vehicle, settings)}
-        variant={vehicle.viaVariant}
-        status={drawnStatus(vehicle)}
-        alertIconStyle={alertIconStyle}
-      />
+      {displayCrowding ? (
+        <CrowdingIconSvgNode
+          size={Size.Small}
+          orientation={orientationMatchingVehicle(
+            isLayingOver,
+            vehicleDirection
+          )}
+          label={crowdingLabel(vehicle as Vehicle)}
+          occupancyStatus={occupancyStatus}
+        />
+      ) : (
+        <VehicleIconSvgNode
+          size={isLayingOver ? Size.Small : Size.Medium}
+          orientation={orientationMatchingVehicle(
+            isLayingOver,
+            vehicleDirection
+          )}
+          label={vehicleLabel(vehicle, settings)}
+          variant={vehicle.viaVariant}
+          status={drawnStatus(vehicle)}
+          alertIconStyle={alertIconStyle}
+        />
+      )}
     </g>
   )
 }

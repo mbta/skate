@@ -1,7 +1,7 @@
 import React from "react"
 import renderer from "react-test-renderer"
 import CrowdingDiagram from "../../../src/components/propertiesPanel/crowdingDiagram"
-import { Crowding } from "../../../src/realtime"
+import { Crowding } from "../../../src/models/crowding"
 
 describe("CrowdingDiagram", () => {
   test("renders nothing if route isn't considered reliable", () => {

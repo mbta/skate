@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react"
 import { className } from "../helpers/dom"
 import { DrawnStatus, statusClass } from "../models/vehicleStatus"
-import { IconAlertCircleSvgNode, AlertIconStyle } from "./iconAlertCircle"
+import { AlertIconStyle, IconAlertCircleSvgNode } from "./iconAlertCircle"
 
 export enum Orientation {
   Up,
@@ -59,7 +59,7 @@ export const VehicleIcon = (props: Props): ReactElement<HTMLElement> => {
   )
 }
 
-const viewBox = ({
+export const viewBox = ({
   size,
   orientation,
   label,
@@ -234,7 +234,7 @@ const Ghost = ({ size, variant }: { size: Size; variant?: string }) => {
   )
 }
 
-const Label = ({
+export const Label = ({
   size,
   orientation,
   label,
@@ -427,7 +427,7 @@ const alertCircleIconScale = (size: Size): number => {
   }
 }
 
-const sizeClassSuffix = (size: Size): string => {
+export const sizeClassSuffix = (size: Size): string => {
   switch (size) {
     case Size.Small:
       return "--small"
@@ -438,7 +438,7 @@ const sizeClassSuffix = (size: Size): string => {
   }
 }
 
-const scaleForSize = (size: Size): number => {
+export const scaleForSize = (size: Size): number => {
   switch (size) {
     case Size.Small:
       return 0.38
