@@ -343,18 +343,18 @@ Array [
             height={11}
             rx={5.5}
             ry={5.5}
-            width={40}
-            x={-20}
+            width={26}
+            x={-13}
             y={-17.6}
           />
           <text
-            className="m-vehicle-icon__label m-vehicle-icon__label--extended"
+            className="m-vehicle-icon__label m-vehicle-icon__label--normal"
             dominantBaseline="central"
             textAnchor="middle"
             x="0"
             y={-12.100000000000001}
           >
-            NO DATA
+            ?/?
           </text>
           <g
             className="m-ladder__crowding m-ladder__crowding--no-data"

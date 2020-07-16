@@ -65,7 +65,7 @@ exports[`IncomingBox renders a crowding view missing crowding data 1`] = `
     <div
       className="m-incoming-box__vehicle-label"
     >
-      NO DATA
+      ?/?
     </div>
   </button>
 </div>
