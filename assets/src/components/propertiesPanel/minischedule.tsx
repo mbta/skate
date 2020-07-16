@@ -39,7 +39,7 @@ import {
   VehicleDirection,
 } from "../../models/ladderDirection"
 import { drawnStatus, DrawnStatus } from "../../models/vehicleStatus"
-import { VehicleOrGhost } from "../../realtime"
+import { RouteStatus, VehicleOrGhost } from "../../realtime"
 import { DirectionId, Route, RouteId, TripId } from "../../schedule"
 import { formattedDuration, formattedScheduledTime } from "../../util/dateTime"
 import { routeNameOrId } from "../../util/route"
@@ -88,7 +88,11 @@ export const Minischedule = ({
   } else {
     const activities: (Piece | Break)[] =
       (runOrBlock as Run).activities || (runOrBlock as Block).pieces
-    const activeIndex = getActiveIndex(activities, vehicleOrGhost.tripId)
+    const activeIndex = getActiveIndex(
+      activities,
+      vehicleOrGhost.tripId,
+      vehicleOrGhost.routeStatus
+    )
     return (
       <div
         className={className([
@@ -462,20 +466,20 @@ const Trip = ({
 }) => {
   const layoverTimeBasedStyle =
     tripTimeBasedStyle === "current"
-      ? vehicleOrGhost.routeStatus === "on_route"
-        ? "past"
-        : "current"
-      : tripTimeBasedStyle
-  const onRouteTimeBasedStyle =
-    tripTimeBasedStyle === "current"
-      ? vehicleOrGhost.routeStatus === "on_route"
+      ? vehicleOrGhost.routeStatus === "laying_over"
         ? "current"
-        : "future"
+        : "past"
+      : tripTimeBasedStyle
+  tripTimeBasedStyle =
+    tripTimeBasedStyle === "current"
+      ? vehicleOrGhost.routeStatus === "laying_over"
+        ? "future"
+        : "current"
       : tripTimeBasedStyle
   const layoverActiveStatus: DrawnStatus | null =
     layoverTimeBasedStyle === "current" ? drawnStatus(vehicleOrGhost) : null
-  const onRouteActiveStatus: DrawnStatus | null =
-    onRouteTimeBasedStyle === "current" ? drawnStatus(vehicleOrGhost) : null
+  const tripActiveStatus: DrawnStatus | null =
+    tripTimeBasedStyle === "current" ? drawnStatus(vehicleOrGhost) : null
 
   return (
     <>
@@ -492,18 +496,19 @@ const Trip = ({
           <DeadheadTrip
             trip={trip}
             sequence={sequence}
-            timeBasedStyle={onRouteTimeBasedStyle}
+            timeBasedStyle={tripTimeBasedStyle}
+            activeStatus={tripActiveStatus}
           />
         ) : (
           <RevenueTrip
             trip={trip}
-            timeBasedStyle={onRouteTimeBasedStyle}
-            activeStatus={onRouteActiveStatus}
+            timeBasedStyle={tripTimeBasedStyle}
+            activeStatus={tripActiveStatus}
             routes={routes}
           />
         )
       ) : (
-        <AsDirected asDirected={trip} timeBasedStyle={onRouteTimeBasedStyle} />
+        <AsDirected asDirected={trip} timeBasedStyle={tripTimeBasedStyle} />
       )}
     </>
   )
@@ -513,10 +518,12 @@ const DeadheadTrip = ({
   trip,
   sequence,
   timeBasedStyle,
+  activeStatus,
 }: {
   trip: Trip
   sequence: "first" | "middle" | "last"
   timeBasedStyle: TimeBasedStyle
+  activeStatus: DrawnStatus | null
 }) => {
   const startTime: string = formattedScheduledTime(trip.startTime)
   if (sequence === "first") {
@@ -527,6 +534,7 @@ const DeadheadTrip = ({
         rightText={startTime}
         belowText={trip.startPlace}
         timeBasedStyle={timeBasedStyle}
+        activeStatus={activeStatus}
       />
     )
   } else if (sequence === "last") {
@@ -537,6 +545,7 @@ const DeadheadTrip = ({
         rightText={startTime}
         belowText={trip.endPlace}
         timeBasedStyle={timeBasedStyle}
+        activeStatus={activeStatus}
       />
     )
   } else {
@@ -547,6 +556,7 @@ const DeadheadTrip = ({
         rightText={startTime}
         belowText={trip.endPlace}
         timeBasedStyle={timeBasedStyle}
+        activeStatus={activeStatus}
       />
     )
   }
@@ -672,7 +682,8 @@ const Row = ({
  */
 const getActiveIndex = (
   activities: (Piece | Break)[],
-  activeTripId: TripId | null
+  activeTripId: TripId | null,
+  routeStatus: RouteStatus
 ): [number, number] | null => {
   if (activeTripId === null) {
     return null
@@ -686,6 +697,16 @@ const getActiveIndex = (
     if (isPiece(activity)) {
       for (let tripIndex = 0; tripIndex < activity.trips.length; tripIndex++) {
         const trip = activity.trips[tripIndex]
+        if (
+          isPullingOut(
+            trip,
+            activity.trips[tripIndex + 1],
+            activeTripId,
+            routeStatus
+          )
+        ) {
+          return [activityIndex, tripIndex]
+        }
         if (isTrip(trip) && trip.id === activeTripId) {
           return [activityIndex, tripIndex]
         }
@@ -694,6 +715,18 @@ const getActiveIndex = (
   }
   return null
 }
+
+const isPullingOut = (
+  scheduledTrip: Trip | AsDirected,
+  nextScheduledTrip: Trip | AsDirected | undefined,
+  activeTripId: TripId | null,
+  routeStatus: RouteStatus
+): boolean =>
+  routeStatus === "pulling_out" &&
+  isDeadhead(scheduledTrip) &&
+  nextScheduledTrip !== undefined &&
+  isTrip(nextScheduledTrip) &&
+  nextScheduledTrip.id === activeTripId
 
 type TimeBasedStyle = "past" | "current" | "future" | "unknown"
 

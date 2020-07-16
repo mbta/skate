@@ -641,6 +641,27 @@ describe("Minischedule", () => {
     wrapper.find(".m-minischedule__show-past").simulate("click")
     expect(wrapper.html()).toContain("m-minischedule--hide-past")
   })
+
+  test("highlights pullouts if they're active", () => {
+    const run = {
+      id: "run",
+      activities: [{ ...piece, trips: [nonrevenueTrip, revenueTrip] }],
+    }
+    const tree = renderer
+      .create(
+        <Minischedule
+          runOrBlock={run}
+          vehicleOrGhost={{
+            ...vehicle,
+            tripId: revenueTrip.id,
+            routeStatus: "pulling_out",
+          }}
+          view="run"
+        />
+      )
+      .toJSON()
+    expect(tree).toMatchSnapshot()
+  })
 })
 
 describe("BreakRow", () => {
