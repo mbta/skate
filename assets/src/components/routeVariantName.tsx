@@ -1,16 +1,11 @@
-import React from "react"
+import React, { useContext } from "react"
+import RoutesContext from "../contexts/routesContext"
 import { isVehicle } from "../models/vehicle"
 import { VehicleOrGhost } from "../realtime"
-import { Route } from "../schedule"
 import { routeNameOrId } from "../util/route"
 
-export const RouteVariantName = ({
-  vehicle,
-  routes,
-}: {
-  vehicle: VehicleOrGhost
-  routes: Route[] | null
-}) => {
+export const RouteVariantName = ({ vehicle }: { vehicle: VehicleOrGhost }) => {
+  const routes = useContext(RoutesContext)
   if (isVehicle(vehicle) && vehicle.isShuttle) {
     return <div className="m-route-variant-name">Shuttle</div>
   }

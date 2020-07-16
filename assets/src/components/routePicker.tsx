@@ -1,4 +1,5 @@
 import React, { Dispatch, useContext } from "react"
+import RoutesContext from "../contexts/routesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import {
   filterRoutes,
@@ -13,11 +14,11 @@ import Loading from "./loading"
 import PickerContainer from "./pickerContainer"
 
 interface Props {
-  routes: null | Route[]
   selectedRouteIds: RouteId[]
 }
 
-const RoutePicker = ({ routes, selectedRouteIds }: Props) => {
+const RoutePicker = ({ selectedRouteIds }: Props) => {
+  const routes = useContext(RoutesContext)
   const routeFilterData: RouteFilterData = useRouteFilter()
 
   const filteredRoutes = filterRoutes(routes || [], routeFilterData)

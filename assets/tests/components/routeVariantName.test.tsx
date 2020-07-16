@@ -1,6 +1,7 @@
-import { shallow } from "enzyme"
+import { mount, shallow } from "enzyme"
 import React from "react"
 import { RouteVariantName } from "../../src/components/routeVariantName"
+import RoutesContext from "../../src/contexts/routesContext"
 import { Vehicle } from "../../src/realtime"
 import { Route } from "../../src/schedule"
 
@@ -62,7 +63,7 @@ const vehicle: Vehicle = {
 
 describe("RouteVariantName", () => {
   test("renders for a vehicle with variant and headsign", () => {
-    const wrapper = shallow(<RouteVariantName vehicle={vehicle} routes={[]} />)
+    const wrapper = shallow(<RouteVariantName vehicle={vehicle} />)
 
     expect(wrapper.text()).toEqual("39_X Forest Hills")
   })
@@ -74,9 +75,7 @@ describe("RouteVariantName", () => {
       viaVariant: null,
     }
 
-    const wrapper = shallow(
-      <RouteVariantName vehicle={testVehicle} routes={[]} />
-    )
+    const wrapper = shallow(<RouteVariantName vehicle={testVehicle} />)
 
     expect(wrapper.text()).toEqual("39_")
   })
@@ -88,9 +87,7 @@ describe("RouteVariantName", () => {
       viaVariant: "_",
     }
 
-    const wrapper = shallow(
-      <RouteVariantName vehicle={testVehicle} routes={[]} />
-    )
+    const wrapper = shallow(<RouteVariantName vehicle={testVehicle} />)
 
     expect(wrapper.text()).toEqual("39_")
   })
@@ -101,9 +98,7 @@ describe("RouteVariantName", () => {
       isShuttle: true,
     }
 
-    const wrapper = shallow(
-      <RouteVariantName vehicle={testVehicle} routes={[]} />
-    )
+    const wrapper = shallow(<RouteVariantName vehicle={testVehicle} />)
 
     expect(wrapper.text()).toEqual("Shuttle")
   })
@@ -114,10 +109,12 @@ describe("RouteVariantName", () => {
       directionNames: { "0": "Outbound", "1": "Inbound" },
       name: "ThirtyNine",
     }
-    const wrapper = shallow(
-      <RouteVariantName vehicle={vehicle} routes={[route]} />
-    )
 
+    const wrapper = mount(
+      <RoutesContext.Provider value={[route]}>
+        <RouteVariantName vehicle={vehicle} />
+      </RoutesContext.Provider>
+    )
     expect(wrapper.text()).toEqual("ThirtyNine_X Forest Hills")
   })
 })

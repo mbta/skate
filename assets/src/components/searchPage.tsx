@@ -1,12 +1,12 @@
 import { Socket } from "phoenix"
 import React, { ReactElement, useContext, useState } from "react"
+import RoutesContext from "../contexts/routesContext"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useRoutes from "../hooks/useRoutes"
 import useSearchResults from "../hooks/useSearchResults"
 import { isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
-import { Route } from "../schedule"
 import { SearchPageState } from "../state/searchPageState"
 import Map from "./map"
 import PropertiesPanel from "./propertiesPanel"
@@ -69,7 +69,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
   const onlyVehicles: Vehicle[] = filterVehicles(vehicles)
   const [mobileDisplay, setMobileDisplay] = useState(MobileDisplay.List)
 
-  const routes: Route[] | null = useRoutes()
+  const routes = useRoutes()
 
   const toggleMobileDisplay = () => {
     setMobileDisplay(
@@ -90,40 +90,36 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
   )
 
   return (
-    <div className={`c-page m-search-page ${mobileDisplayClass}`}>
-      <div className="m-search-page__input-and-results">
-        <div className="m-search-page__input">
-          <SearchForm />
+    <RoutesContext.Provider value={routes}>
+      <div className={`c-page m-search-page ${mobileDisplayClass}`}>
+        <div className="m-search-page__input-and-results">
+          <div className="m-search-page__input">
+            <SearchForm />
 
-          <ToggleMobileDisplayButton
-            mobileDisplay={mobileDisplay}
-            onToggleMobileDisplay={toggleMobileDisplay}
-          />
-        </div>
-
-        <div className="m-search-display">
-          {thereIsAnActiveSearch(vehicles, searchPageState) ? (
-            <SearchResults
-              vehicles={vehicles as VehicleOrGhost[]}
-              routes={routes}
+            <ToggleMobileDisplayButton
+              mobileDisplay={mobileDisplay}
+              onToggleMobileDisplay={toggleMobileDisplay}
             />
-          ) : (
-            <RecentSearches />
-          )}
+          </div>
+
+          <div className="m-search-display">
+            {thereIsAnActiveSearch(vehicles, searchPageState) ? (
+              <SearchResults vehicles={vehicles as VehicleOrGhost[]} />
+            ) : (
+              <RecentSearches />
+            )}
+          </div>
         </div>
-      </div>
 
-      <div className="m-search-page__map">
-        <Map vehicles={onlyVehicles} />
-      </div>
+        <div className="m-search-page__map">
+          <Map vehicles={onlyVehicles} />
+        </div>
 
-      {selectedVehicle && (
-        <PropertiesPanel
-          selectedVehicleOrGhost={selectedVehicle}
-          routes={routes}
-        />
-      )}
-    </div>
+        {selectedVehicle && (
+          <PropertiesPanel selectedVehicleOrGhost={selectedVehicle} />
+        )}
+      </div>
+    </RoutesContext.Provider>
   )
 }
 

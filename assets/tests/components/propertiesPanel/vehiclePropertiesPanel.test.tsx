@@ -82,7 +82,7 @@ const vehicle: Vehicle = {
 describe("VehiclePropertiesPanel", () => {
   test("renders a vehicle properties panel", () => {
     const tree = renderer
-      .create(<VehiclePropertiesPanel selectedVehicle={vehicle} routes={[]} />)
+      .create(<VehiclePropertiesPanel selectedVehicle={vehicle} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -99,11 +99,7 @@ describe("VehiclePropertiesPanel", () => {
     }
     const tree = renderer
       .create(
-        <VehiclePropertiesPanel
-          selectedVehicle={vehicle}
-          route={route}
-          routes={[]}
-        />
+        <VehiclePropertiesPanel selectedVehicle={vehicle} route={route} />
       )
       .toJSON()
 
@@ -116,9 +112,7 @@ describe("VehiclePropertiesPanel", () => {
       scheduleAdherenceSecs: -61,
     }
     const tree = renderer
-      .create(
-        <VehiclePropertiesPanel selectedVehicle={earlyVehicle} routes={[]} />
-      )
+      .create(<VehiclePropertiesPanel selectedVehicle={earlyVehicle} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -130,9 +124,7 @@ describe("VehiclePropertiesPanel", () => {
       scheduleAdherenceSecs: 361,
     }
     const tree = renderer
-      .create(
-        <VehiclePropertiesPanel selectedVehicle={earlyVehicle} routes={[]} />
-      )
+      .create(<VehiclePropertiesPanel selectedVehicle={earlyVehicle} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -145,12 +137,7 @@ describe("VehiclePropertiesPanel", () => {
     }
 
     const tree = renderer
-      .create(
-        <VehiclePropertiesPanel
-          selectedVehicle={offCourseVehicle}
-          routes={[]}
-        />
-      )
+      .create(<VehiclePropertiesPanel selectedVehicle={offCourseVehicle} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -163,12 +150,7 @@ describe("VehiclePropertiesPanel", () => {
     }
 
     const tree = renderer
-      .create(
-        <VehiclePropertiesPanel
-          selectedVehicle={offCourseVehicle}
-          routes={[]}
-        />
-      )
+      .create(<VehiclePropertiesPanel selectedVehicle={offCourseVehicle} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -182,9 +164,7 @@ describe("VehiclePropertiesPanel", () => {
     }
 
     const tree = renderer
-      .create(
-        <VehiclePropertiesPanel selectedVehicle={shuttleVehicle} routes={[]} />
-      )
+      .create(<VehiclePropertiesPanel selectedVehicle={shuttleVehicle} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -205,10 +185,7 @@ describe("VehiclePropertiesPanel", () => {
 
     const tree = renderer
       .create(
-        <VehiclePropertiesPanel
-          selectedVehicle={vehicleWithBlockWaivers}
-          routes={[]}
-        />
+        <VehiclePropertiesPanel selectedVehicle={vehicleWithBlockWaivers} />
       )
       .toJSON()
 
@@ -220,9 +197,7 @@ describe("VehiclePropertiesPanel", () => {
       .spyOn(URLSearchParams.prototype, "get")
       .mockImplementation((_key) => "1")
 
-    const wrapper = mount(
-      <VehiclePropertiesPanel selectedVehicle={vehicle} routes={[]} />
-    )
+    const wrapper = mount(<VehiclePropertiesPanel selectedVehicle={vehicle} />)
 
     expect(
       wrapper.find(".m-vehicle-properties-panel__data-discrepancies").length
@@ -234,9 +209,7 @@ describe("VehiclePropertiesPanel", () => {
       .spyOn(URLSearchParams.prototype, "get")
       .mockImplementation((_key) => null)
 
-    const wrapper = mount(
-      <VehiclePropertiesPanel selectedVehicle={vehicle} routes={[]} />
-    )
+    const wrapper = mount(<VehiclePropertiesPanel selectedVehicle={vehicle} />)
 
     expect(
       wrapper.find(".m-vehicle-properties-panel__data-discrepancies").length
@@ -252,7 +225,7 @@ describe("VehiclePropertiesPanel", () => {
       <VehiclesByRouteIdProvider
         vehiclesByRouteId={{ "39": [thisVehicle, otherVehicle, ghost] }}
       >
-        <VehiclePropertiesPanel selectedVehicle={thisVehicle} routes={[]} />
+        <VehiclePropertiesPanel selectedVehicle={thisVehicle} />
       </VehiclesByRouteIdProvider>
     )
     expect(map.default).toHaveBeenCalledTimes(1)
@@ -270,9 +243,7 @@ describe("VehiclePropertiesPanel", () => {
       otherVehicle,
       ghost,
     ])
-    renderer.create(
-      <VehiclePropertiesPanel selectedVehicle={thisVehicle} routes={[]} />
-    )
+    renderer.create(<VehiclePropertiesPanel selectedVehicle={thisVehicle} />)
     expect(useVehiclesForRoute).toHaveBeenCalled()
     expect(map.default).toHaveBeenCalledTimes(1)
     const mapArgs: map.Props = (map.default as jest.Mock).mock.calls[0][0]

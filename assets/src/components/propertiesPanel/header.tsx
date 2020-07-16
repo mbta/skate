@@ -27,7 +27,6 @@ import { TabMode } from "./tabPanels"
 interface Props {
   vehicle: VehicleOrGhost
   route?: Route
-  routes: Route[] | null
   tabMode: TabMode
   setTabMode: Dispatch<SetStateAction<TabMode>>
 }
@@ -126,7 +125,7 @@ const directionName = (
 
 const nowInSeconds = (): number => Math.floor(Date.now() / 1000)
 
-const Header = ({ vehicle, route, routes, tabMode, setTabMode }: Props) => {
+const Header = ({ vehicle, route, tabMode, setTabMode }: Props) => {
   const [{ ladderDirections, settings }, dispatch] = useContext(
     StateDispatchContext
   )
@@ -155,7 +154,7 @@ const Header = ({ vehicle, route, routes, tabMode, setTabMode }: Props) => {
             {directionName(vehicle, route)}
           </div>
 
-          <RouteVariantName vehicle={vehicle} routes={routes} />
+          <RouteVariantName vehicle={vehicle} />
 
           {isVehicle(vehicle) && shouldShowHeadwayDiagram(vehicle) ? (
             <HeadwayTarget vehicle={vehicle} />

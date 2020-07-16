@@ -82,7 +82,6 @@ describe("Header", () => {
           route={undefined}
           tabMode={"status"}
           setTabMode={setTabMode}
-          routes={[]}
         />
       )
       .toJSON()
@@ -106,7 +105,6 @@ describe("Header", () => {
           route={route}
           tabMode={"status"}
           setTabMode={setTabMode}
-          routes={[]}
         />
       )
       .toJSON()
@@ -126,7 +124,6 @@ describe("Header", () => {
           route={undefined}
           tabMode={"status"}
           setTabMode={setTabMode}
-          routes={[]}
         />
       )
       .toJSON()
@@ -146,7 +143,6 @@ describe("Header", () => {
           route={undefined}
           tabMode={"status"}
           setTabMode={setTabMode}
-          routes={[]}
         />
       )
       .toJSON()
@@ -167,7 +163,6 @@ describe("Header", () => {
           route={undefined}
           tabMode={"status"}
           setTabMode={setTabMode}
-          routes={[]}
         />
       )
       .toJSON()
@@ -188,7 +183,6 @@ describe("Header", () => {
           route={undefined}
           tabMode={"status"}
           setTabMode={setTabMode}
-          routes={[]}
         />
       )
       .toJSON()
@@ -209,7 +203,6 @@ describe("Header", () => {
           route={undefined}
           tabMode={"status"}
           setTabMode={setTabMode}
-          routes={[]}
         />
       )
       .toJSON()
@@ -243,7 +236,6 @@ describe("Header", () => {
           route={undefined}
           tabMode={"status"}
           setTabMode={setTabMode}
-          routes={[]}
         />
       )
       .toJSON()
@@ -258,7 +250,6 @@ describe("Header", () => {
         route={undefined}
         tabMode={"status"}
         setTabMode={setTabMode}
-        routes={[]}
       />
     )
     const leftFacing = mount(
@@ -267,7 +258,6 @@ describe("Header", () => {
         route={undefined}
         tabMode={"status"}
         setTabMode={setTabMode}
-        routes={[]}
       />
     )
 
@@ -302,7 +292,6 @@ describe("Header", () => {
           route={undefined}
           tabMode={"status"}
           setTabMode={setTabMode}
-          routes={[]}
         />
       </StateDispatchProvider>
     )
@@ -328,7 +317,6 @@ describe("Header", () => {
         route={undefined}
         tabMode={"status"}
         setTabMode={setTabMode}
-        routes={[]}
       />
     )
 
@@ -350,7 +338,6 @@ describe("Header", () => {
           route={undefined}
           tabMode={"status"}
           setTabMode={setTabMode}
-          routes={[]}
         />
       </StateDispatchProvider>
     )

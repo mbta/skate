@@ -5,6 +5,7 @@ import React, {
   useContext,
   useState,
 } from "react"
+import RoutesContext from "../../contexts/routesContext"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { className } from "../../helpers/dom"
 import {
@@ -22,7 +23,6 @@ import {
   useMinischeduleBlock,
   useMinischeduleRun,
 } from "../../hooks/useMinischedule"
-import useRoutes from "../../hooks/useRoutes"
 import {
   AsDirected,
   Block,
@@ -79,7 +79,7 @@ export const Minischedule = ({
   view: "run" | "block"
 }) => {
   const [showPast, setShowPast] = useState<boolean>(false)
-  const routes = useRoutes()
+  const routes = useContext(RoutesContext)
 
   if (runOrBlock === undefined) {
     return <Loading />

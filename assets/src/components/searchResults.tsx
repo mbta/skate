@@ -3,7 +3,6 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
 import { isRecentlyLoggedOn, isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleOrGhost } from "../realtime"
-import { Route } from "../schedule"
 import { selectVehicle } from "../state"
 import { setSearchText } from "../state/searchPageState"
 import PropertiesList from "./propertiesList"
@@ -11,7 +10,6 @@ import { RouteVariantName } from "./routeVariantName"
 
 interface Props {
   vehicles: VehicleOrGhost[]
-  routes: Route[] | null
 }
 
 const SearchResultsNote = () => (
@@ -32,24 +30,16 @@ const NewBadge = () => (
   </div>
 )
 
-const RouteLabel = ({
-  vehicle,
-  routes,
-}: {
-  vehicle: Vehicle
-  routes: Route[] | null
-}) => (
+const RouteLabel = ({ vehicle }: { vehicle: Vehicle }) => (
   <div className="m-search-results__card-route-label">
-    <RouteVariantName vehicle={vehicle} routes={routes} />
+    <RouteVariantName vehicle={vehicle} />
   </div>
 )
 
 const SearchResultCard = ({
   vehicleOrGhost,
-  routes,
 }: {
   vehicleOrGhost: VehicleOrGhost
-  routes: Route[] | null
 }) => {
   const [
     {
@@ -78,9 +68,7 @@ const SearchResultCard = ({
         highlightText={query.text}
       />
 
-      {isVehicle(vehicleOrGhost) && (
-        <RouteLabel vehicle={vehicleOrGhost} routes={routes} />
-      )}
+      {isVehicle(vehicleOrGhost) && <RouteLabel vehicle={vehicleOrGhost} />}
     </div>
   )
 }
@@ -119,18 +107,11 @@ export const byOperatorLogonTime = (
   return 0
 }
 
-const ResultsList = ({
-  vehicles,
-  routes,
-}: {
-  vehicles: VehicleOrGhost[]
-  routes: Route[] | null
-}) => (
+const ResultsList = ({ vehicles }: { vehicles: VehicleOrGhost[] }) => (
   <div className="m-search-results__list">
     {vehicles.sort(byOperatorLogonTime).map((vehicleOrGhost) => (
       <SearchResultCard
         vehicleOrGhost={vehicleOrGhost}
-        routes={routes}
         key={`search-result-card-${vehicleOrGhost.id}`}
       />
     ))}
@@ -167,13 +148,9 @@ const NoResults = () => {
   )
 }
 
-const SearchResults = ({ vehicles, routes }: Props) => (
+const SearchResults = ({ vehicles }: Props) => (
   <div className="m-search-results">
-    {vehicles.length ? (
-      <ResultsList vehicles={vehicles} routes={routes} />
-    ) : (
-      <NoResults />
-    )}
+    {vehicles.length ? <ResultsList vehicles={vehicles} /> : <NoResults />}
   </div>
 )
 
