@@ -5,6 +5,7 @@ import React, {
   useContext,
   useState,
 } from "react"
+import RoutesContext from "../../contexts/routesContext"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { className } from "../../helpers/dom"
 import {
@@ -39,8 +40,9 @@ import {
 } from "../../models/ladderDirection"
 import { drawnStatus, DrawnStatus } from "../../models/vehicleStatus"
 import { VehicleOrGhost } from "../../realtime"
-import { DirectionId, RouteId, TripId } from "../../schedule"
+import { DirectionId, Route, RouteId, TripId } from "../../schedule"
 import { formattedDuration, formattedScheduledTime } from "../../util/dateTime"
+import { routeNameOrId } from "../../util/route"
 import Loading from "../loading"
 
 export interface Props {
@@ -77,6 +79,8 @@ export const Minischedule = ({
   view: "run" | "block"
 }) => {
   const [showPast, setShowPast] = useState<boolean>(false)
+  const routes = useContext(RoutesContext)
+
   if (runOrBlock === undefined) {
     return <Loading />
   } else if (runOrBlock === null) {
@@ -107,6 +111,7 @@ export const Minischedule = ({
               pieceIndex={index}
               activeIndex={activeIndex}
               key={activity.startTime}
+              routes={routes}
             />
           ) : (
             <BreakRow
@@ -286,12 +291,14 @@ const Piece = ({
   vehicleOrGhost,
   pieceIndex,
   activeIndex,
+  routes,
 }: {
   piece: Piece
   view: "run" | "block"
   vehicleOrGhost: VehicleOrGhost
   pieceIndex: number
   activeIndex: [number, number] | null
+  routes: Route[] | null
 }) => {
   const isSwingOn: boolean =
     piece.trips.length > 0 &&
@@ -316,7 +323,10 @@ const Piece = ({
         <div className="m-minischedule__run-header">{piece.runId}</div>
       ) : null}
       {view === "run" && piece.startMidRoute ? (
-        <MidRouteSwingOnFirstHalf trip={piece.startMidRoute.trip} />
+        <MidRouteSwingOnFirstHalf
+          trip={piece.startMidRoute.trip}
+          routes={routes}
+        />
       ) : null}
       {isSwingOn ? null : (
         <Row
@@ -342,6 +352,7 @@ const Piece = ({
             key="mid-route-swing-on"
             time={piece.startMidRoute.time}
             trip={piece.startMidRoute.trip}
+            routes={routes}
           />
         ) : null}
         {piece.trips.map((trip, tripIndex) => {
@@ -360,6 +371,7 @@ const Piece = ({
               tripTimeBasedStyle={tripTimeBasedStyle}
               vehicleOrGhost={vehicleOrGhost}
               view={view}
+              routes={routes}
               key={trip.startTime}
             />
           )
@@ -387,27 +399,37 @@ const Piece = ({
   )
 }
 
-const MidRouteSwingOnFirstHalf = ({ trip }: { trip: Trip }) => (
+const MidRouteSwingOnFirstHalf = ({
+  trip,
+  routes,
+}: {
+  trip: Trip
+  routes: Route[] | null
+}) => (
   <RevenueTrip
     trip={trip}
     timeBasedStyle={"unknown"}
     activeStatus={null}
     belowText={`Run ${trip.runId}`}
     extraClasses={["m-minischedule__row--mid-route-first-half"]}
+    routes={routes}
   />
 )
 
 const MidRouteSwingOnSecondHalf = ({
   time,
   trip,
+  routes,
 }: {
   time: Time
   trip: Trip
+  routes: Route[] | null
 }) => (
   <RevenueTrip
     trip={{ ...trip, startTime: time }}
     timeBasedStyle={"unknown"}
     activeStatus={null}
+    routes={routes}
   />
 )
 
@@ -428,6 +450,7 @@ const Trip = ({
   tripTimeBasedStyle,
   vehicleOrGhost,
   view,
+  routes,
 }: {
   trip: Trip | AsDirected
   previousEndTime: Time | undefined
@@ -435,6 +458,7 @@ const Trip = ({
   tripTimeBasedStyle: TimeBasedStyle
   vehicleOrGhost: VehicleOrGhost
   view: "run" | "block"
+  routes: Route[] | null
 }) => {
   const layoverTimeBasedStyle =
     tripTimeBasedStyle === "current"
@@ -475,6 +499,7 @@ const Trip = ({
             trip={trip}
             timeBasedStyle={onRouteTimeBasedStyle}
             activeStatus={onRouteActiveStatus}
+            routes={routes}
           />
         )
       ) : (
@@ -551,16 +576,18 @@ const RevenueTrip = ({
   activeStatus,
   belowText,
   extraClasses,
+  routes,
 }: {
   trip: Trip
   timeBasedStyle: TimeBasedStyle
   activeStatus: DrawnStatus | null
   belowText?: string
   extraClasses?: string[]
+  routes: Route[] | null
 }) => {
   const startTime: string = formattedScheduledTime(trip.startTime)
   const formattedRouteAndHeadsign: string = [
-    trip.routeId,
+    routeNameOrId(trip.routeId, routes),
     "_",
     trip.viaVariant !== null && trip.viaVariant !== "_" ? trip.viaVariant : "",
     " ",

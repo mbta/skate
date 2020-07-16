@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
-import { isVehicle, isRecentlyLoggedOn } from "../models/vehicle"
+import { isRecentlyLoggedOn, isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleOrGhost } from "../realtime"
 import { selectVehicle } from "../state"
 import { setSearchText } from "../state/searchPageState"

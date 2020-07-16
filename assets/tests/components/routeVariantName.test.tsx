@@ -1,7 +1,9 @@
-import { shallow } from "enzyme"
+import { mount, shallow } from "enzyme"
 import React from "react"
 import { RouteVariantName } from "../../src/components/routeVariantName"
+import RoutesContext from "../../src/contexts/routesContext"
 import { Vehicle } from "../../src/realtime"
+import { Route } from "../../src/schedule"
 
 const vehicle: Vehicle = {
   id: "v1",
@@ -99,5 +101,20 @@ describe("RouteVariantName", () => {
     const wrapper = shallow(<RouteVariantName vehicle={testVehicle} />)
 
     expect(wrapper.text()).toEqual("Shuttle")
+  })
+
+  test("uses route name if available", () => {
+    const route: Route = {
+      id: "39",
+      directionNames: { "0": "Outbound", "1": "Inbound" },
+      name: "ThirtyNine",
+    }
+
+    const wrapper = mount(
+      <RoutesContext.Provider value={[route]}>
+        <RouteVariantName vehicle={vehicle} />
+      </RoutesContext.Provider>
+    )
+    expect(wrapper.text()).toEqual("ThirtyNine_X Forest Hills")
   })
 })

@@ -126,6 +126,14 @@ exports[`RoutePicker renders a list of routes 1`] = `
           111
         </button>
       </li>
+      <li>
+        <button
+          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+          onClick={[Function]}
+        >
+          SL1
+        </button>
+      </li>
     </ul>
   </div>
 </div>

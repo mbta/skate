@@ -1,5 +1,6 @@
 import { Socket } from "phoenix"
 import React, { ReactElement, useContext } from "react"
+import RoutesContext from "../contexts/routesContext"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { VehiclesByRouteIdProvider } from "../contexts/vehiclesByRouteIdContext"
@@ -59,26 +60,28 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
   )
 
   return (
-    <div className="m-ladder-page">
-      <RoutePicker routes={routes} selectedRouteIds={selectedRouteIds} />
+    <RoutesContext.Provider value={routes}>
+      <div className="m-ladder-page">
+        <RoutePicker selectedRouteIds={selectedRouteIds} />
 
-      <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
-        <>
-          <RouteLadders
-            routes={selectedRoutes}
-            timepointsByRouteId={timepointsByRouteId}
-            selectedVehicleId={selectedVehicleId}
-          />
-
-          {selectedVehicleOrGhost && (
-            <PropertiesPanel
-              selectedVehicleOrGhost={selectedVehicleOrGhost}
-              route={vehicleRoute(routes, selectedVehicleOrGhost)}
+        <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
+          <>
+            <RouteLadders
+              routes={selectedRoutes}
+              timepointsByRouteId={timepointsByRouteId}
+              selectedVehicleId={selectedVehicleId}
             />
-          )}
-        </>
-      </VehiclesByRouteIdProvider>
-    </div>
+
+            {selectedVehicleOrGhost && (
+              <PropertiesPanel
+                selectedVehicleOrGhost={selectedVehicleOrGhost}
+                route={vehicleRoute(routes, selectedVehicleOrGhost)}
+              />
+            )}
+          </>
+        </VehiclesByRouteIdProvider>
+      </div>
+    </RoutesContext.Provider>
   )
 }
 

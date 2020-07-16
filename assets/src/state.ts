@@ -55,7 +55,7 @@ export const selectRoute = (routeId: RouteId): SelectRouteAction => ({
   payload: { routeId },
 })
 
-interface DeselectRouteAction {
+export interface DeselectRouteAction {
   type: "DESELECT_ROUTE"
   payload: {
     routeId: RouteId
