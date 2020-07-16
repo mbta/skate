@@ -662,6 +662,36 @@ describe("Minischedule", () => {
       .toJSON()
     expect(tree).toMatchSnapshot()
   })
+
+  test("highlights deadheads if they're active", () => {
+    const run = {
+      id: "run",
+      activities: [
+        {
+          ...piece,
+          trips: [
+            { ...revenueTrip, id: "before" },
+            { ...nonrevenueTrip, id: "deadhead" },
+            { ...revenueTrip, id: "after" },
+          ],
+        },
+      ],
+    }
+    const tree = renderer
+      .create(
+        <Minischedule
+          runOrBlock={run}
+          vehicleOrGhost={{
+            ...vehicle,
+            tripId: "after",
+            routeStatus: "laying_over",
+          }}
+          view="run"
+        />
+      )
+      .toJSON()
+    expect(tree).toMatchSnapshot()
+  })
 })
 
 describe("BreakRow", () => {

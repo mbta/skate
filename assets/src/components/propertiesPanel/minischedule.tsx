@@ -467,20 +467,23 @@ const Trip = ({
         ? "current"
         : "past"
       : tripTimeBasedStyle
-  tripTimeBasedStyle =
+  const onRouteTimeBasedStyle =
     tripTimeBasedStyle === "current"
       ? vehicleOrGhost.routeStatus === "laying_over"
         ? "future"
         : "current"
       : tripTimeBasedStyle
+  const deadheadTimeBasedStyle = tripTimeBasedStyle
   const layoverActiveStatus: DrawnStatus | null =
     layoverTimeBasedStyle === "current" ? drawnStatus(vehicleOrGhost) : null
-  const tripActiveStatus: DrawnStatus | null =
-    tripTimeBasedStyle === "current" ? drawnStatus(vehicleOrGhost) : null
+  const onRouteActiveStatus: DrawnStatus | null =
+    onRouteTimeBasedStyle === "current" ? drawnStatus(vehicleOrGhost) : null
+  const deadheadActiveStatus: DrawnStatus | null =
+    deadheadTimeBasedStyle === "current" ? drawnStatus(vehicleOrGhost) : null
 
   return (
     <>
-      {view === "run" && previousEndTime !== undefined ? (
+      {view === "run" && previousEndTime !== undefined && !isDeadhead(trip) ? (
         <Layover
           nextTrip={trip}
           previousEndTime={previousEndTime}
@@ -493,14 +496,14 @@ const Trip = ({
           <DeadheadTrip
             trip={trip}
             sequence={sequence}
-            timeBasedStyle={tripTimeBasedStyle}
-            activeStatus={tripActiveStatus}
+            timeBasedStyle={deadheadTimeBasedStyle}
+            activeStatus={deadheadActiveStatus}
           />
         ) : (
           <RevenueTrip
             trip={trip}
-            timeBasedStyle={tripTimeBasedStyle}
-            activeStatus={tripActiveStatus}
+            timeBasedStyle={onRouteTimeBasedStyle}
+            activeStatus={onRouteActiveStatus}
             routes={routes}
           />
         )
@@ -695,7 +698,7 @@ const getActiveIndex = (
       for (let tripIndex = 0; tripIndex < activity.trips.length; tripIndex++) {
         const trip = activity.trips[tripIndex]
         if (
-          isPullingOut(
+          isDeadheading(
             trip,
             activity.trips[tripIndex + 1],
             activeTripId,
@@ -713,13 +716,13 @@ const getActiveIndex = (
   return null
 }
 
-const isPullingOut = (
+const isDeadheading = (
   scheduledTrip: Trip | AsDirected,
   nextScheduledTrip: Trip | AsDirected | undefined,
   activeTripId: TripId | null,
   routeStatus: RouteStatus
 ): boolean =>
-  routeStatus === "pulling_out" &&
+  routeStatus !== "on_route" &&
   isDeadhead(scheduledTrip) &&
   nextScheduledTrip !== undefined &&
   isTrip(nextScheduledTrip) &&
