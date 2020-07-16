@@ -37,5 +37,15 @@ defmodule GeonamesTest do
 
       assert Geonames.nearest_intersection("40", "-70") == "Roble Ave & Curtis St"
     end
+
+    test "returns nil if there is no nearby intersection" do
+      reassign_env(:skate, :geonames_fn, fn _latitude, _longitude ->
+        %{
+          "credits" => "1.0"
+        }
+      end)
+
+      assert Geonames.nearest_intersection("40", "-70") == nil
+    end
   end
 end

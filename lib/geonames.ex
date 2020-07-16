@@ -32,6 +32,10 @@ defmodule Geonames do
 
   @spec parse(map()) :: String.t() | nil
   defp parse(data) do
-    "#{data["intersection"]["street1"]} & #{data["intersection"]["street2"]}"
+    if Map.has_key?(data, "intersection") do
+      "#{data["intersection"]["street1"]} & #{data["intersection"]["street2"]}"
+    else
+      nil
+    end
   end
 end
