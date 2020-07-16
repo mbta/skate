@@ -15,7 +15,7 @@ import {
   VehiclesByPosition,
 } from "../models/vehiclesByPosition"
 import { VehicleId, VehicleOrGhost } from "../realtime.d"
-import { LoadableTimepoints, Route } from "../schedule.d"
+import { LoadableTimepoints, Route, RouteId } from "../schedule.d"
 import { deselectRoute, flipLadder, toggleLadderCrowding } from "../state"
 import CloseButton from "./closeButton"
 import IncomingBox from "./incomingBox"
@@ -89,7 +89,8 @@ const Controls = ({
 }
 
 const someVehicleHasCrowding = (
-  vehiclesAndGhosts?: VehicleOrGhost[]
+  vehiclesAndGhosts: VehicleOrGhost[] | undefined,
+  routeId: RouteId
 ): boolean => {
   if (vehiclesAndGhosts === undefined) {
     return false
@@ -98,6 +99,7 @@ const someVehicleHasCrowding = (
   const vehicleWithCrowding = vehiclesAndGhosts.find(
     (vehicleOrGhost) =>
       isVehicle(vehicleOrGhost) &&
+      vehicleOrGhost.routeId === routeId &&
       vehicleOrGhost.hasOwnProperty("crowding") &&
       vehicleOrGhost.crowding !== null
   )
@@ -133,7 +135,7 @@ const RouteLadder = ({
     ladderDirection
   )
 
-  const displayCrowding = someVehicleHasCrowding(vehiclesAndGhosts)
+  const displayCrowding = someVehicleHasCrowding(vehiclesAndGhosts, route.id)
 
   return (
     <>
