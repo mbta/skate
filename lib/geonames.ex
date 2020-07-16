@@ -17,7 +17,7 @@ defmodule Geonames do
   @spec call(String.t(), String.t()) :: map() | nil
   defp call(latitude, longitude) do
     url =
-      "http://api.geonames.org/findNearestIntersectionJSON?lat=#{latitude}&lng=#{longitude}&username=mbta_busloc"
+      "http://api.geonames.org/findNearestIntersectionOSMJSON?lat=#{latitude}&lng=#{longitude}&username=mbta_busloc"
 
     case HTTPoison.get(url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
