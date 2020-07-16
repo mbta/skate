@@ -668,30 +668,38 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
         className="m-vehicle-properties-panel__location"
       >
         <div
-          className="m-vehicle-properties-panel__label"
+          className="m-vehicle-properties-panel__latlng"
         >
-          Current Location
-        </div>
-        <a
-          className="m-vehicle-properties-panel__link"
-          href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
-          target="_blank"
-        >
-          Directions
-        </a>
-        <div
-          className="m-vehicle-properties-panel__label"
-        >
-          Next Stop
-        </div>
-        <div
-          className="m-vehicle-properties-panel__value"
-        >
-          <span
-            className="m-vehicle-properties-panel__not-available"
+          <div
+            className="m-vehicle-properties-panel__label"
           >
-            Not available
-          </span>
+            Current Location
+          </div>
+          <a
+            className="m-vehicle-properties-panel__link"
+            href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+            target="_blank"
+          >
+            Directions
+          </a>
+        </div>
+        <div
+          className="m-vehicle-properties-panel__next-stop"
+        >
+          <div
+            className="m-vehicle-properties-panel__label"
+          >
+            Next Stop
+          </div>
+          <div
+            className="m-vehicle-properties-panel__value"
+          >
+            <span
+              className="m-vehicle-properties-panel__not-available"
+            >
+              Not available
+            </span>
+          </div>
         </div>
         <div
           className="m-vehicle-properties-panel__map"

@@ -460,26 +460,34 @@ exports[`SearchPage renders a selected vehicle 1`] = `
           className="m-vehicle-properties-panel__location"
         >
           <div
-            className="m-vehicle-properties-panel__label"
+            className="m-vehicle-properties-panel__latlng"
           >
-            Current Location
+            <div
+              className="m-vehicle-properties-panel__label"
+            >
+              Current Location
+            </div>
+            <a
+              className="m-vehicle-properties-panel__link"
+              href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+              target="_blank"
+            >
+              Directions
+            </a>
           </div>
-          <a
-            className="m-vehicle-properties-panel__link"
-            href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
-            target="_blank"
-          >
-            Directions
-          </a>
           <div
-            className="m-vehicle-properties-panel__label"
+            className="m-vehicle-properties-panel__next-stop"
           >
-            Next Stop
-          </div>
-          <div
-            className="m-vehicle-properties-panel__value"
-          >
-            Stop Name
+            <div
+              className="m-vehicle-properties-panel__label"
+            >
+              Next Stop
+            </div>
+            <div
+              className="m-vehicle-properties-panel__value"
+            >
+              Stop Name
+            </div>
           </div>
           <div
             className="m-vehicle-properties-panel__map"

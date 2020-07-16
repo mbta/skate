@@ -280,26 +280,34 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
       className="m-vehicle-properties-panel__location"
     >
       <div
-        className="m-vehicle-properties-panel__label"
+        className="m-vehicle-properties-panel__latlng"
       >
-        Current Location
+        <div
+          className="m-vehicle-properties-panel__label"
+        >
+          Current Location
+        </div>
+        <a
+          className="m-vehicle-properties-panel__link"
+          href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+          target="_blank"
+        >
+          Directions
+        </a>
       </div>
-      <a
-        className="m-vehicle-properties-panel__link"
-        href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
-        target="_blank"
-      >
-        Directions
-      </a>
       <div
-        className="m-vehicle-properties-panel__label"
+        className="m-vehicle-properties-panel__next-stop"
       >
-        Next Stop
-      </div>
-      <div
-        className="m-vehicle-properties-panel__value"
-      >
-        Stop Name
+        <div
+          className="m-vehicle-properties-panel__label"
+        >
+          Next Stop
+        </div>
+        <div
+          className="m-vehicle-properties-panel__value"
+        >
+          Stop Name
+        </div>
       </div>
       <div
         className="m-vehicle-properties-panel__map"
@@ -596,26 +604,34 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
       className="m-vehicle-properties-panel__location"
     >
       <div
-        className="m-vehicle-properties-panel__label"
+        className="m-vehicle-properties-panel__latlng"
       >
-        Current Location
+        <div
+          className="m-vehicle-properties-panel__label"
+        >
+          Current Location
+        </div>
+        <a
+          className="m-vehicle-properties-panel__link"
+          href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+          target="_blank"
+        >
+          Directions
+        </a>
       </div>
-      <a
-        className="m-vehicle-properties-panel__link"
-        href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
-        target="_blank"
-      >
-        Directions
-      </a>
       <div
-        className="m-vehicle-properties-panel__label"
+        className="m-vehicle-properties-panel__next-stop"
       >
-        Next Stop
-      </div>
-      <div
-        className="m-vehicle-properties-panel__value"
-      >
-        Stop Name
+        <div
+          className="m-vehicle-properties-panel__label"
+        >
+          Next Stop
+        </div>
+        <div
+          className="m-vehicle-properties-panel__value"
+        >
+          Stop Name
+        </div>
       </div>
       <div
         className="m-vehicle-properties-panel__map"
@@ -912,26 +928,34 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
       className="m-vehicle-properties-panel__location"
     >
       <div
-        className="m-vehicle-properties-panel__label"
+        className="m-vehicle-properties-panel__latlng"
       >
-        Current Location
+        <div
+          className="m-vehicle-properties-panel__label"
+        >
+          Current Location
+        </div>
+        <a
+          className="m-vehicle-properties-panel__link"
+          href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+          target="_blank"
+        >
+          Directions
+        </a>
       </div>
-      <a
-        className="m-vehicle-properties-panel__link"
-        href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
-        target="_blank"
-      >
-        Directions
-      </a>
       <div
-        className="m-vehicle-properties-panel__label"
+        className="m-vehicle-properties-panel__next-stop"
       >
-        Next Stop
-      </div>
-      <div
-        className="m-vehicle-properties-panel__value"
-      >
-        Stop Name
+        <div
+          className="m-vehicle-properties-panel__label"
+        >
+          Next Stop
+        </div>
+        <div
+          className="m-vehicle-properties-panel__value"
+        >
+          Stop Name
+        </div>
       </div>
       <div
         className="m-vehicle-properties-panel__map"
@@ -1192,30 +1216,38 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
     className="m-vehicle-properties-panel__location"
   >
     <div
-      className="m-vehicle-properties-panel__label"
+      className="m-vehicle-properties-panel__latlng"
     >
-      Current Location
-    </div>
-    <a
-      className="m-vehicle-properties-panel__link"
-      href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
-      target="_blank"
-    >
-      Directions
-    </a>
-    <div
-      className="m-vehicle-properties-panel__label"
-    >
-      Next Stop
-    </div>
-    <div
-      className="m-vehicle-properties-panel__value"
-    >
-      <span
-        className="m-vehicle-properties-panel__not-available"
+      <div
+        className="m-vehicle-properties-panel__label"
       >
-        Not available
-      </span>
+        Current Location
+      </div>
+      <a
+        className="m-vehicle-properties-panel__link"
+        href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+        target="_blank"
+      >
+        Directions
+      </a>
+    </div>
+    <div
+      className="m-vehicle-properties-panel__next-stop"
+    >
+      <div
+        className="m-vehicle-properties-panel__label"
+      >
+        Next Stop
+      </div>
+      <div
+        className="m-vehicle-properties-panel__value"
+      >
+        <span
+          className="m-vehicle-properties-panel__not-available"
+        >
+          Not available
+        </span>
+      </div>
     </div>
     <div
       className="m-vehicle-properties-panel__map"
@@ -1606,26 +1638,34 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
       className="m-vehicle-properties-panel__location"
     >
       <div
-        className="m-vehicle-properties-panel__label"
+        className="m-vehicle-properties-panel__latlng"
       >
-        Current Location
+        <div
+          className="m-vehicle-properties-panel__label"
+        >
+          Current Location
+        </div>
+        <a
+          className="m-vehicle-properties-panel__link"
+          href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+          target="_blank"
+        >
+          Directions
+        </a>
       </div>
-      <a
-        className="m-vehicle-properties-panel__link"
-        href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
-        target="_blank"
-      >
-        Directions
-      </a>
       <div
-        className="m-vehicle-properties-panel__label"
+        className="m-vehicle-properties-panel__next-stop"
       >
-        Next Stop
-      </div>
-      <div
-        className="m-vehicle-properties-panel__value"
-      >
-        Stop Name
+        <div
+          className="m-vehicle-properties-panel__label"
+        >
+          Next Stop
+        </div>
+        <div
+          className="m-vehicle-properties-panel__value"
+        >
+          Stop Name
+        </div>
       </div>
       <div
         className="m-vehicle-properties-panel__map"
@@ -1922,26 +1962,34 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
       className="m-vehicle-properties-panel__location"
     >
       <div
-        className="m-vehicle-properties-panel__label"
+        className="m-vehicle-properties-panel__latlng"
       >
-        Current Location
+        <div
+          className="m-vehicle-properties-panel__label"
+        >
+          Current Location
+        </div>
+        <a
+          className="m-vehicle-properties-panel__link"
+          href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+          target="_blank"
+        >
+          Directions
+        </a>
       </div>
-      <a
-        className="m-vehicle-properties-panel__link"
-        href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
-        target="_blank"
-      >
-        Directions
-      </a>
       <div
-        className="m-vehicle-properties-panel__label"
+        className="m-vehicle-properties-panel__next-stop"
       >
-        Next Stop
-      </div>
-      <div
-        className="m-vehicle-properties-panel__value"
-      >
-        Stop Name
+        <div
+          className="m-vehicle-properties-panel__label"
+        >
+          Next Stop
+        </div>
+        <div
+          className="m-vehicle-properties-panel__value"
+        >
+          Stop Name
+        </div>
       </div>
       <div
         className="m-vehicle-properties-panel__map"
@@ -2248,30 +2296,38 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
       className="m-vehicle-properties-panel__location"
     >
       <div
-        className="m-vehicle-properties-panel__label"
+        className="m-vehicle-properties-panel__latlng"
       >
-        Current Location
-      </div>
-      <a
-        className="m-vehicle-properties-panel__link"
-        href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
-        target="_blank"
-      >
-        Directions
-      </a>
-      <div
-        className="m-vehicle-properties-panel__label"
-      >
-        Next Stop
-      </div>
-      <div
-        className="m-vehicle-properties-panel__value"
-      >
-        <span
-          className="m-vehicle-properties-panel__not-available"
+        <div
+          className="m-vehicle-properties-panel__label"
         >
-          Not available
-        </span>
+          Current Location
+        </div>
+        <a
+          className="m-vehicle-properties-panel__link"
+          href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+          target="_blank"
+        >
+          Directions
+        </a>
+      </div>
+      <div
+        className="m-vehicle-properties-panel__next-stop"
+      >
+        <div
+          className="m-vehicle-properties-panel__label"
+        >
+          Next Stop
+        </div>
+        <div
+          className="m-vehicle-properties-panel__value"
+        >
+          <span
+            className="m-vehicle-properties-panel__not-available"
+          >
+            Not available
+          </span>
+        </div>
       </div>
       <div
         className="m-vehicle-properties-panel__map"
@@ -2568,26 +2624,34 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
       className="m-vehicle-properties-panel__location"
     >
       <div
-        className="m-vehicle-properties-panel__label"
+        className="m-vehicle-properties-panel__latlng"
       >
-        Current Location
+        <div
+          className="m-vehicle-properties-panel__label"
+        >
+          Current Location
+        </div>
+        <a
+          className="m-vehicle-properties-panel__link"
+          href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+          target="_blank"
+        >
+          Directions
+        </a>
       </div>
-      <a
-        className="m-vehicle-properties-panel__link"
-        href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
-        target="_blank"
-      >
-        Directions
-      </a>
       <div
-        className="m-vehicle-properties-panel__label"
+        className="m-vehicle-properties-panel__next-stop"
       >
-        Next Stop
-      </div>
-      <div
-        className="m-vehicle-properties-panel__value"
-      >
-        Stop Name
+        <div
+          className="m-vehicle-properties-panel__label"
+        >
+          Next Stop
+        </div>
+        <div
+          className="m-vehicle-properties-panel__value"
+        >
+          Stop Name
+        </div>
       </div>
       <div
         className="m-vehicle-properties-panel__map"

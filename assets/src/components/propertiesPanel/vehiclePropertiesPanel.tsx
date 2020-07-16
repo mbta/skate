@@ -79,26 +79,32 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
 
   return (
     <div className="m-vehicle-properties-panel__location">
-      <div className="m-vehicle-properties-panel__label">Current Location</div>
-      {nearestIntersection ? (
-        <div className="m-vehicle-properties-panel__value">
-          {nearestIntersection}
+      <div className="m-vehicle-properties-panel__latlng">
+        <div className="m-vehicle-properties-panel__label">
+          Current Location
         </div>
-      ) : null}
-      <a
-        className="m-vehicle-properties-panel__link"
-        href={directionsUrl(latitude, longitude)}
-        target="_blank"
-      >
-        Directions
-      </a>
-      <div className="m-vehicle-properties-panel__label">Next Stop</div>
-      <div className="m-vehicle-properties-panel__value">
-        {isOffCourse || vehicle.isShuttle ? (
-          <NotAvailable />
-        ) : (
-          <>{stopStatus.stopName}</>
-        )}
+        {nearestIntersection ? (
+          <div className="m-vehicle-properties-panel__value">
+            {nearestIntersection}
+          </div>
+        ) : null}
+        <a
+          className="m-vehicle-properties-panel__link"
+          href={directionsUrl(latitude, longitude)}
+          target="_blank"
+        >
+          Directions
+        </a>
+      </div>
+      <div className="m-vehicle-properties-panel__next-stop">
+        <div className="m-vehicle-properties-panel__label">Next Stop</div>
+        <div className="m-vehicle-properties-panel__value">
+          {isOffCourse || vehicle.isShuttle ? (
+            <NotAvailable />
+          ) : (
+            <>{stopStatus.stopName}</>
+          )}
+        </div>
       </div>
       <div className="m-vehicle-properties-panel__map">
         <Map
