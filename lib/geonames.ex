@@ -3,9 +3,7 @@ defmodule Geonames do
 
   @spec nearest_intersection(String.t(), String.t()) :: String.t() | nil
   def nearest_intersection(latitude, longitude) do
-    call_fn = Application.get_env(:skate, :geonames_fn, &call/2)
-
-    case call_fn.(latitude, longitude) do
+    case get(latitude, longitude) do
       nil ->
         nil
 
@@ -14,10 +12,12 @@ defmodule Geonames do
     end
   end
 
-  @spec call(String.t(), String.t()) :: map() | nil
-  defp call(latitude, longitude) do
+  @spec get(String.t(), String.t()) :: map() | nil
+  defp get(latitude, longitude) do
+    geonames_url_base = Application.get_env(:skate, :geonames_url_base, "http://api.geonames.org")
+
     url =
-      "http://api.geonames.org/findNearestIntersectionOSMJSON?lat=#{latitude}&lng=#{longitude}&username=mbta_busloc"
+      "#{geonames_url_base}/findNearestIntersectionOSMJSON?lat=#{latitude}&lng=#{longitude}&username=mbta_busloc"
 
     case HTTPoison.get(url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
