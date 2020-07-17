@@ -4,6 +4,7 @@ import renderer from "react-test-renderer"
 import * as map from "../../../src/components/map"
 import VehiclePropertiesPanel from "../../../src/components/propertiesPanel/vehiclePropertiesPanel"
 import { VehiclesByRouteIdProvider } from "../../../src/contexts/vehiclesByRouteIdContext"
+import { useNearestIntersection } from "../../../src/hooks/useNearestIntersection"
 import useVehiclesForRoute from "../../../src/hooks/useVehiclesForRoute"
 import { HeadwaySpacing } from "../../../src/models/vehicleStatus"
 import { BlockWaiver, Ghost, Vehicle } from "../../../src/realtime"
@@ -21,6 +22,11 @@ jest.spyOn(map, "default")
 jest.mock("../../../src/hooks/useVehiclesForRoute", () => ({
   __esModule: true,
   default: jest.fn(),
+}))
+
+jest.mock("../../../src/hooks/useNearestIntersection", () => ({
+  __esModule: true,
+  useNearestIntersection: jest.fn(() => null),
 }))
 
 const vehicle: Vehicle = {
@@ -190,6 +196,14 @@ describe("VehiclePropertiesPanel", () => {
       .toJSON()
 
     expect(tree).toMatchSnapshot()
+  })
+
+  test("shows the nearest intersection", () => {
+    ;(useNearestIntersection as jest.Mock).mockImplementationOnce(
+      () => "Atlantic Ave & Summer St"
+    )
+    const wrapper = mount(<VehiclePropertiesPanel selectedVehicle={vehicle} />)
+    expect(wrapper.html()).toContain("Atlantic Ave &amp; Summer St")
   })
 
   test("renders data discrepancies when in debug mode", () => {

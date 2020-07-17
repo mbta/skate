@@ -2,6 +2,7 @@ import {
   apiCall,
   fetchMinischeduleBlock,
   fetchMinischeduleRun,
+  fetchNearestIntersection,
   fetchRoutes,
   fetchShapeForRoute,
   fetchShapeForTrip,
@@ -443,6 +444,30 @@ describe("minischedulesBlock", () => {
     mockFetch(200, { data: null })
     fetchMinischeduleBlock("trip").then((result) => {
       expect(result).toEqual(null)
+      done()
+    })
+  })
+})
+
+describe("fetchNearestIntersection", () => {
+  test("parses an intersection name", (done) => {
+    mockFetch(200, {
+      data: "Broadway & 7th Ave",
+    })
+
+    fetchNearestIntersection(0, 0).then((intersection) => {
+      expect(intersection).toEqual("Broadway & 7th Ave")
+      done()
+    })
+  })
+
+  test("handles a missing intersection", (done) => {
+    mockFetch(200, {
+      data: null,
+    })
+
+    fetchNearestIntersection(0, 0).then((intersection) => {
+      expect(intersection).toEqual(null)
       done()
     })
   })

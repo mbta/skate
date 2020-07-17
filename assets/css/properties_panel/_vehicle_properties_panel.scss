@@ -24,16 +24,28 @@
   padding: 1rem;
 }
 
-// Not in use temporarily - will be used once we have a current location and
-// can move the "seconds ago" timestamp back up to the top-right. --MSS 2019-08-16
-.m-vehicle-properties-panel__timestamp {
-  @include font-small;
-  color: $color-font-grey;
-  float: right;
+.m-vehicle-properties-panel__latlng {
+  flex: 0 1 4.25rem;
+}
+
+.m-vehicle-properties-panel__next-stop {
+  flex: 0 0 auto;
+}
+
+.m-vehicle-properties-panel__label {
+  @include font-label;
+  margin-bottom: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.m-vehicle-properties-panel__value {
+  @include font-body;
+  margin-bottom: 0.25rem;
 }
 
 .m-vehicle-properties-panel__link {
   @include font-link;
+  margin-bottom: 0.25rem;
 }
 
 .m-vehicle-properties-panel__not-available {

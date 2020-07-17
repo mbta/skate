@@ -559,22 +559,35 @@ Array [
           className="m-vehicle-properties-panel__location"
         >
           <div
-            className="m-properties-list__property-label"
+            className="m-vehicle-properties-panel__latlng"
           >
-            Next Stop
+            <div
+              className="m-vehicle-properties-panel__label"
+            >
+              Current Location
+            </div>
+            <a
+              className="m-vehicle-properties-panel__link"
+              href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+              target="_blank"
+            >
+              Directions
+            </a>
           </div>
           <div
-            className="m-properties-list__property-value"
+            className="m-vehicle-properties-panel__next-stop"
           >
-            Stop Name
+            <div
+              className="m-vehicle-properties-panel__label"
+            >
+              Next Stop
+            </div>
+            <div
+              className="m-vehicle-properties-panel__value"
+            >
+              Stop Name
+            </div>
           </div>
-          <a
-            className="m-vehicle-properties-panel__link"
-            href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
-            target="_blank"
-          >
-            Directions
-          </a>
           <div
             className="m-vehicle-properties-panel__map"
           >
