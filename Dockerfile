@@ -15,6 +15,10 @@ RUN mix local.hex --force && \
 
 RUN apk add --update nodejs nodejs-npm
 
+ARG SENTRY_ORG=$SENTRY_ORG
+ARG SENTRY_PROJECT=$SENTRY_PROJECT
+ARG SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
+
 ENV MIX_ENV=prod
 
 ADD . .
