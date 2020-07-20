@@ -2,6 +2,7 @@ use Mix.Config
 
 config :skate,
   hastus_url: "https://cdn.mbta.com/hastus_export/skate/hastus_skate_dev.zip",
+  geonames_url_base: "http://api.geonames.org",
   log_duration_timing: false
 
 config :skate, Schedule.CacheFile, cache_filename: "dev_cache.terms"

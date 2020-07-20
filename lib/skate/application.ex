@@ -59,6 +59,8 @@ defmodule Skate.Application do
       :swiftly_authorization_key,
       :swiftly_realtime_vehicles_url,
       :trip_updates_url,
+      :geonames_url_base,
+      :geonames_token,
       :sentry_frontend_dsn,
       SkateWeb.Endpoint
     ]

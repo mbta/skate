@@ -2,6 +2,8 @@ use Mix.Config
 
 config :skate,
   api_key: {:secret, "API_KEY"},
+  geonames_url_base: "https://ba-secure.geonames.net",
+  geonames_token: {:secret, "GEONAMES_TOKEN"},
   redirect_http?: true,
   record_fullstory: true,
   record_appcues: true,
