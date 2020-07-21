@@ -15,6 +15,7 @@ import * as Sentry from "@sentry/react"
 import "core-js/stable"
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
 import "leaflet/dist/leaflet.css"
+import NoSleep from "nosleep.js"
 import "phoenix_html"
 import * as React from "react"
 import ReactDOM from "react-dom"
@@ -45,6 +46,17 @@ if (screen.width < 1000 && screen.height < 1000) {
       "width=device-width, initial-scale=.8, minimum-scale=.8"
     )
 }
+
+const noSleep = new NoSleep()
+
+function enableNoSleep() {
+  noSleep.enable()
+  document.removeEventListener("touchstart", enableNoSleep, false)
+}
+
+// Enable wake lock.
+// (must be wrapped in a user input event handler e.g. a mouse or touch handler)
+document.addEventListener("touchstart", enableNoSleep, false)
 
 // Import local files
 //
