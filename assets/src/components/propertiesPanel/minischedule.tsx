@@ -713,8 +713,6 @@ const getActiveIndex = (
         }
         if (isTrip(trip) && trip.id === activeTripId) {
           return [activityIndex, tripIndex]
-        } else {
-          throw new Error("TEST ERROR PLEASE DON'T PANIC")
         }
       }
     }
