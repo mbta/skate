@@ -297,6 +297,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
       <div className={`m-vehicle-map-state ${autoCenteringClass}`} />
       <ReactLeafletMap
         className="m-vehicle-map"
+        id="id-vehicle-map"
         ref={mapRef}
         maxBounds={[
           [41.2, -72],
