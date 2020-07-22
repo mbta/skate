@@ -17,6 +17,7 @@
   "dependencies": {
     "@rehooks/component-size": "^1.0.3",
     "@sentry/react": "^5.19.2",
+    "@sentry/webpack-plugin": "^1.12.0",
     "core-js": "^3.6.4",
     "leaflet": "^1.6.0",
     "leaflet-defaulticon-compatibility": "^0.1.1",
