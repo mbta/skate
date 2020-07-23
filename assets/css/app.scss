@@ -72,3 +72,12 @@ body {
   flex: 1 1 0;
   min-height: 0;
 }
+
+// Hack to prevent iPhones from automatically zooming in when an input is
+// selected. A font size of 16px is supposed to do the job, but for some
+// reason this doesn't work at less than 24 px.
+@media screen and (max-width: 767px) {
+  input {
+    font-size: 24px !important;
+  }
+}
