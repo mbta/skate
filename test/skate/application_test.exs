@@ -14,9 +14,13 @@ defmodule Skate.ApplicationTest do
 
     test "replaces {:secret, var_name} with secret from AWS SecretsManager" do
       System.put_env("ENVIRONMENT_NAME", "TEST")
-      reassign_env(:skate, :get_secret_value_fn, fn _ -> "mock response" end)
+
+      reassign_env(:skate, :get_secret_value_fn, fn "TEST-test-variable" ->
+        "mock aws operation"
+      end)
+
       reassign_env(:skate, :aws_request_fn, fn _ -> %{"SecretString" => "TEST VALUE"} end)
-      Application.put_env(:skate, :swiftly_authorization_key, {:secret, "TEST_VARIABLE"})
+      Application.put_env(:skate, :swiftly_authorization_key, {:secret, "ENV-test-variable"})
 
       Skate.Application.load_runtime_config()
 

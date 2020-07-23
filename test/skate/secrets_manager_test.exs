@@ -6,7 +6,7 @@ defmodule Skate.SecretsManagerTest do
 
   setup do
     System.put_env("ENVIRONMENT_NAME", "TEST")
-    reassign_env(:skate, :get_secret_value_fn, fn _ -> "mock response" end)
+    reassign_env(:skate, :get_secret_value_fn, fn _ -> "mock aws operation" end)
     reassign_env(:skate, :aws_request_fn, fn _ -> %{"SecretString" => "mock secret value"} end)
   end
 
@@ -16,21 +16,13 @@ defmodule Skate.SecretsManagerTest do
     end
   end
 
-  describe "env_specific_key_name/1" do
+  describe "replace_env_in_key_name/1" do
     test "returns the SecretsManager version of the key name specific to the current environment" do
-      assert SecretsManager.env_specific_key_name("TEST_KEY") == "TEST-test-key"
+      assert SecretsManager.replace_env_in_key_name("ENV-test-key") == "TEST-test-key"
     end
-  end
 
-  describe "env/0" do
-    test "returns the system environment name" do
-      assert SecretsManager.env() == "TEST"
-    end
-  end
-
-  describe "secret_key_name/1" do
-    test "converts the key name from env format to SecretsManager format" do
-      assert SecretsManager.secret_key_name("COGNITO_CLIENT_SECRET") == "cognito-client-secret"
+    test "allows key names to not include the env" do
+      assert SecretsManager.replace_env_in_key_name("test-key") == "test-key"
     end
   end
 end

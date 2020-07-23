@@ -45,7 +45,7 @@ defmodule Skate.Application do
   Will recursively check the keys below in the application config for any {:system, "ENVIRONMENT_VARIABLE"},
   and replace them with the value in the given environment variable.
 
-  Will recursively check the keys below in the application config for any {:secret, "SECRET_VARIABLE"},
+  Will recursively check the keys below in the application config for any {:secret, "secret-variable"},
   and replace them with the value in the given value from SecretsManager.
   """
   @spec load_runtime_config() :: :ok
@@ -93,8 +93,8 @@ defmodule Skate.Application do
     System.get_env(environment_variable)
   end
 
-  defp runtime_config({:secret, environment_variable}) do
-    SecretsManager.fetch!(environment_variable)
+  defp runtime_config({:secret, secret_variable}) do
+    SecretsManager.fetch!(secret_variable)
   end
 
   defp runtime_config(value) do
