@@ -4,7 +4,7 @@ APP=skate
 BUILD_TAG=$APP:_build
 BUILD_ARTIFACT=$APP-build.zip
 
-docker build --pull -t $BUILD_TAG .
+docker build --build-arg SENTRY_ORG --build-arg SENTRY_PROJECT --build-arg SENTRY_AUTH_TOKEN --pull -t $BUILD_TAG .
 CONTAINER=$(docker run -d ${BUILD_TAG} sleep 2000)
 
 docker cp $CONTAINER:/root/_build/prod/rel/$APP/. rel/
