@@ -24,7 +24,6 @@ const activePanelContent = ({ mode, statusContent, vehicleOrGhost }: Props) => {
       )
   }
 }
-
 const TabPanels = (props: Props) => (
   <div className="m-tabs__tab-panel">{activePanelContent(props)}</div>
 )
