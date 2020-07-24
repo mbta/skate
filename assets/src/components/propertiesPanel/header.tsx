@@ -137,6 +137,8 @@ const Header = ({ vehicle, route, tabMode, setTabMode }: Props) => {
 
   const hideMe = () => dispatch(deselectVehicle())
 
+  const vehicleIsShuttle = isVehicle(vehicle) && vehicle.isShuttle
+
   return (
     <div className="m-properties-panel__header-wrapper">
       <div className="m-properties-panel__header">
@@ -173,7 +175,9 @@ const Header = ({ vehicle, route, tabMode, setTabMode }: Props) => {
           )}
         </div>
       </div>
-      <TabList activeTab={tabMode} setActiveTab={setTabMode} />
+      {vehicleIsShuttle || (
+        <TabList activeTab={tabMode} setActiveTab={setTabMode} />
+      )}
     </div>
   )
 }
