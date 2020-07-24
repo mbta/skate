@@ -8,6 +8,7 @@ const SentryCliPlugin = require('@sentry/webpack-plugin');
 
 module.exports = (env, options) => {
   const uploadSourceMapToSentry = options.mode === "production";
+
   const basePlugins = [
     new MiniCssExtractPlugin({ filename: "../css/app.css" }),
     new CopyWebpackPlugin({ patterns: [{ from: "static/", to: "../" }] })
@@ -20,9 +21,11 @@ module.exports = (env, options) => {
       })
     ] : basePlugins
 
+  const useMinimization = options.mode === "production";
+
   return({
     optimization: {
-      minimize: true,
+      minimize: useMinimization,
       minimizer: [
         new TerserPlugin({ parallel: true, sourceMap: true }),
         new OptimizeCSSAssetsPlugin({}),
