@@ -12,6 +12,23 @@ defmodule GeonamesTest do
       assert Geonames.nearest_intersection("0.0", "0.0") == nil
     end
 
+    test "passes all query params" do
+      bypass = Bypass.open()
+      reassign_env(:skate, :geonames_url_base, "http://localhost:#{bypass.port}")
+      reassign_env(:skate, :geonames_token, "TOKEN")
+
+      Bypass.expect(bypass, fn conn ->
+        conn = Plug.Conn.fetch_query_params(conn)
+        assert conn.params["lat"] == "40.0"
+        assert conn.params["lng"] == "-70.0"
+        assert conn.params["username"] == "mbta_busloc"
+        assert conn.params["token"] == "TOKEN"
+        Plug.Conn.resp(conn, 200, "{}")
+      end)
+
+      assert Geonames.nearest_intersection("40.0", "-70.0") == nil
+    end
+
     test "parses the street names out" do
       bypass = Bypass.open()
       reassign_env(:skate, :geonames_url_base, "http://localhost:#{bypass.port}")

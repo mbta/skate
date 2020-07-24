@@ -1,14 +1,16 @@
 use Mix.Config
 
 config :skate,
-  api_key: {:secret, "API_KEY"},
+  api_key: {:secret, "ENV-api-key"},
+  geonames_url_base: "https://ba-secure.geonames.net",
+  geonames_token: {:secret, "geonames-token"},
   redirect_http?: true,
   record_fullstory: true,
   record_appcues: true,
   record_sentry: true,
-  secret_key_base: {:secret, "SECRET_KEY_BASE"},
+  secret_key_base: {:secret, "ENV-secret-key-base"},
   static_href: {SkateWeb.Router.Helpers, :static_url},
-  swiftly_authorization_key: {:secret, "SWIFTLY_AUTHORIZATION_KEY"}
+  swiftly_authorization_key: {:secret, "ENV-swiftly-authorization-key"}
 
 # For production, don't forget to configure the url host
 # to something meaningful, Phoenix uses this information
