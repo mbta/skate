@@ -131,12 +131,29 @@ defmodule Realtime.VehiclesTest do
         end_of_trip_type: :another_trip
       }
 
+      trip = %Trip{
+        id: "trip",
+        block_id: "block",
+        route_id: "route2",
+        service_id: "service",
+        headsign: "headsign2",
+        direction_id: 0,
+        stop_times: [
+          %StopTime{
+            stop_id: "stop3",
+            time: 4,
+            timepoint_id: "t3"
+          }
+        ],
+        start_time: 4,
+        end_time: 4
+      }
+
       ungrouped_vehicles = [vehicle, vehicle_2]
-      incoming_blocks_by_route = %{"route2" => ["block"]}
 
       assert Vehicles.group_by_route_with_blocks(
                ungrouped_vehicles,
-               incoming_blocks_by_route,
+               [trip],
                %{},
                0
              ) == %{
@@ -173,12 +190,29 @@ defmodule Realtime.VehiclesTest do
         end_of_trip_type: :another_trip
       }
 
+      trip = %Trip{
+        id: "trip",
+        block_id: "block",
+        route_id: "route2",
+        service_id: "service",
+        headsign: "headsign",
+        direction_id: 0,
+        stop_times: [
+          %StopTime{
+            stop_id: "stop1",
+            time: 0,
+            timepoint_id: "timepoint"
+          }
+        ],
+        start_time: 0,
+        end_time: 0
+      }
+
       ungrouped_vehicles = [vehicle]
-      incoming_blocks_by_route = %{"route2" => ["block"]}
 
       assert Vehicles.group_by_route_with_blocks(
                ungrouped_vehicles,
-               incoming_blocks_by_route,
+               [trip],
                %{},
                0
              ) == %{
@@ -304,7 +338,6 @@ defmodule Realtime.VehiclesTest do
 
     test "includes scheduled pullout without a vehicle as a ghost" do
       vehicles = []
-      incoming_blocks_by_route = %{"route" => ["block"]}
 
       trip = %Trip{
         id: "trip",
@@ -335,7 +368,7 @@ defmodule Realtime.VehiclesTest do
              } =
                Vehicles.group_by_route_with_blocks(
                  vehicles,
-                 incoming_blocks_by_route,
+                 [trip],
                  blocks_by_date,
                  time0
                )
@@ -365,11 +398,6 @@ defmodule Realtime.VehiclesTest do
 
     test "includes ghosts that are incoming from another route" do
       vehicles = []
-
-      incoming_blocks_by_route = %{
-        "route1" => ["block"],
-        "route2" => ["block"]
-      }
 
       trip1 = %Trip{
         id: "trip1",
@@ -447,7 +475,7 @@ defmodule Realtime.VehiclesTest do
 
       assert Vehicles.group_by_route_with_blocks(
                vehicles,
-               incoming_blocks_by_route,
+               [trip1, trip2],
                blocks_by_date,
                time0 + 2
              ) == %{

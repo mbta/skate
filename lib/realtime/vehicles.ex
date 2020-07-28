@@ -14,14 +14,13 @@ defmodule Realtime.Vehicles do
 
     # We show vehicles incoming from another route if they'll start the new route within 15 minutes
     incoming_trips = Schedule.active_trips(now, in_fifteen_minutes)
-    incoming_blocks_by_route = incoming_blocks_by_route(incoming_trips)
     # Includes blocks that are scheduled to be pulling out
     active_blocks_by_date = Schedule.active_blocks(now, now)
 
     result =
       group_by_route_with_blocks(
         ungrouped_vehicles,
-        incoming_blocks_by_route,
+        incoming_trips,
         active_blocks_by_date,
         now
       )
@@ -42,22 +41,21 @@ defmodule Realtime.Vehicles do
   """
   @spec group_by_route_with_blocks(
           [Vehicle.t()],
-          Route.by_id([Block.id()]),
+          [Trip.t()],
           %{Date.t() => [Block.t()]},
           Util.Time.timestamp()
         ) ::
           Route.by_id([VehicleOrGhost.t()])
   def group_by_route_with_blocks(
         ungrouped_vehicles,
-        incoming_blocks_by_route,
+        incoming_trips,
         active_blocks_by_date,
         now
       ) do
     ghosts = Ghost.ghosts(active_blocks_by_date, ungrouped_vehicles, now)
     vehicles_and_ghosts = ghosts ++ ungrouped_vehicles
 
-    incoming_from_another_route =
-      incoming_from_another_route(incoming_blocks_by_route, vehicles_and_ghosts)
+    incoming_from_another_route = incoming_from_another_route(incoming_trips, vehicles_and_ghosts)
 
     vehicles_and_ghosts
     |> Enum.filter(fn vehicle_or_ghost -> vehicle_or_ghost.route_id != nil end)
@@ -78,13 +76,15 @@ defmodule Realtime.Vehicles do
     end)
   end
 
-  @spec incoming_from_another_route(Route.by_id([Block.id()]), [VehicleOrGhost.t()]) ::
+  @spec incoming_from_another_route([Trip.t()], [VehicleOrGhost.t()]) ::
           Route.by_id([VehicleOrGhost.t()])
-  defp incoming_from_another_route(incoming_blocks_by_route, vehicles_and_ghosts) do
+  defp incoming_from_another_route(incoming_trips, vehicles_and_ghosts) do
     vehicles_and_ghosts_by_block =
       Enum.group_by(vehicles_and_ghosts, fn vehicle_or_ghost -> vehicle_or_ghost.block_id end)
 
-    Map.new(incoming_blocks_by_route, fn {route_id, block_ids} ->
+    incoming_trips
+    |> incoming_blocks_by_route
+    |> Map.new(fn {route_id, block_ids} ->
       incoming_vehicles_and_ghosts =
         Enum.flat_map(block_ids, fn block_id ->
           vehicles_and_ghosts_by_block
