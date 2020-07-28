@@ -18,12 +18,23 @@ defmodule Realtime.Vehicles do
     # Includes blocks that are scheduled to be pulling out
     active_blocks_by_date = Schedule.active_blocks(now, now)
 
-    group_by_route_with_blocks(
-      ungrouped_vehicles,
-      incoming_blocks_by_route,
-      active_blocks_by_date,
-      now
-    )
+    result =
+      group_by_route_with_blocks(
+        ungrouped_vehicles,
+        incoming_blocks_by_route,
+        active_blocks_by_date,
+        now
+      )
+
+    ## TODO: don't forget to take this bit out before you merge
+    result
+    |> Enum.map(fn {k, v} ->
+      {k, v |> Enum.map(& &1.route_id) |> Enum.filter(&(&1 && &1 != k))}
+    end)
+    |> Enum.reject(fn {_k, v} -> length(v) == 0 end)
+    |> IO.inspect()
+
+    result
   end
 
   @doc """
