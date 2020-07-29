@@ -71,6 +71,9 @@ defmodule Realtime.Vehicles do
     end)
   end
 
+  @spec sort_incoming_vehicles_and_ghosts(Route.id(), [Vehicle.t() | Ghost.t()], [Trip.t()]) :: [
+          Vehicle.t() | Ghost.t()
+        ]
   defp sort_incoming_vehicles_and_ghosts(route_id, vehicles_and_ghosts, incoming_trips) do
     vehicles_and_ghosts
     |> Enum.sort_by(fn vehicle_or_ghost ->
