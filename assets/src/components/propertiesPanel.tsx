@@ -1,6 +1,5 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import detectSwipe, { SwipeDirection } from "../helpers/detectSwipe"
 import { isVehicle } from "../models/vehicle"
 import { VehicleOrGhost } from "../realtime.d"
 import { Route } from "../schedule"
@@ -11,19 +10,6 @@ import VehiclePropertiesPanel from "./propertiesPanel/vehiclePropertiesPanel"
 interface Props {
   selectedVehicleOrGhost: VehicleOrGhost
   route?: Route
-}
-
-export const handleSwipe = (hideMe: () => void) => (
-  swipeDirection: SwipeDirection,
-  target: HTMLElement | null
-) => {
-  if (target && target.id === "id-vehicle-map") {
-    return
-  }
-
-  if (swipeDirection === "Right") {
-    hideMe()
-  }
 }
 
 export const hideMeIfNoCrowdingTooltip = (hideMe: () => void) => {
@@ -39,9 +25,6 @@ const PropertiesPanel = ({ selectedVehicleOrGhost, route }: Props) => {
   const [, dispatch] = useContext(StateDispatchContext)
 
   const hideMe = () => dispatch(deselectVehicle())
-  useEffect(() => {
-    return detectSwipe("m-properties-panel", handleSwipe(hideMe))
-  })
 
   return (
     <>
