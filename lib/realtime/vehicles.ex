@@ -28,7 +28,7 @@ defmodule Realtime.Vehicles do
     ## TODO: don't forget to take this bit out before you merge
     result
     |> Enum.map(fn {k, v} ->
-      {k, v |> Enum.map(& &1.route_id) |> Enum.filter(&(&1 && &1 != k))}
+      {k, v |> Enum.map(& &1.route_id) |> Enum.filter(&(&1 != k))}
     end)
     |> Enum.reject(fn {_k, v} -> length(v) == 0 end)
     |> IO.inspect()
@@ -55,13 +55,32 @@ defmodule Realtime.Vehicles do
     ghosts = Ghost.ghosts(active_blocks_by_date, ungrouped_vehicles, now)
     vehicles_and_ghosts = ghosts ++ ungrouped_vehicles
 
-    incoming_from_another_route = incoming_from_another_route(incoming_trips, vehicles_and_ghosts)
+    incoming_from_another_route =
+      incoming_from_another_route(incoming_trips, vehicles_and_ghosts)
+      |> Enum.map(fn {route_id, vehicles_and_ghosts} ->
+        {route_id,
+         sort_incoming_vehicles_and_ghosts(route_id, vehicles_and_ghosts, incoming_trips)}
+      end)
+      |> Map.new()
 
     vehicles_and_ghosts
     |> Enum.filter(fn vehicle_or_ghost -> vehicle_or_ghost.route_id != nil end)
     |> Enum.group_by(fn vehicle_or_ghost -> vehicle_or_ghost.route_id end)
     |> Map.merge(incoming_from_another_route, fn _route_id, on_route, incoming ->
       on_route ++ incoming
+    end)
+  end
+
+  defp sort_incoming_vehicles_and_ghosts(route_id, vehicles_and_ghosts, incoming_trips) do
+    vehicles_and_ghosts
+    |> Enum.sort_by(fn vehicle_or_ghost ->
+      incoming_trip =
+        incoming_trips
+        |> Enum.find(fn trip ->
+          trip.block_id == vehicle_or_ghost.block_id && trip.route_id == route_id
+        end)
+
+      incoming_trip.start_time
     end)
   end
 
