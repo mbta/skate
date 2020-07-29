@@ -483,6 +483,162 @@ defmodule Realtime.VehiclesTest do
                "route2" => [ghost]
              }
     end
+
+    test "orders vehicles/ghosts by the time that they enter the route" do
+      vehicle_1 = %Vehicle{
+        id: "on_route_1",
+        label: "on_route_1",
+        timestamp: 0,
+        latitude: 0,
+        longitude: 0,
+        direction_id: 1,
+        route_id: "route1",
+        trip_id: "trip",
+        bearing: 0,
+        block_id: "block_1",
+        operator_id: "",
+        operator_name: "",
+        operator_logon_time: nil,
+        run_id: "",
+        headway_spacing: :ok,
+        is_shuttle: false,
+        is_overload: false,
+        is_off_course: false,
+        layover_departure_time: nil,
+        block_is_active: true,
+        sources: "",
+        stop_status: "",
+        route_status: :on_route,
+        end_of_trip_type: :another_trip
+      }
+
+      vehicle_2 = %Vehicle{
+        id: "on_route_2",
+        label: "on_route_2",
+        timestamp: 0,
+        latitude: 0,
+        longitude: 0,
+        direction_id: 1,
+        route_id: "route2",
+        trip_id: "trip",
+        bearing: 0,
+        block_id: "block_2",
+        operator_id: "",
+        operator_name: "",
+        operator_logon_time: nil,
+        run_id: "",
+        headway_spacing: :ok,
+        is_shuttle: false,
+        is_overload: false,
+        is_off_course: false,
+        layover_departure_time: nil,
+        block_is_active: true,
+        sources: "",
+        stop_status: "",
+        route_status: :on_route,
+        end_of_trip_type: :another_trip
+      }
+
+      vehicle_3 = %Vehicle{
+        id: "on_nil_route",
+        label: "on_nil_route",
+        timestamp: 0,
+        latitude: 0,
+        longitude: 0,
+        direction_id: 1,
+        route_id: nil,
+        trip_id: "trip",
+        bearing: 0,
+        block_id: "block_3",
+        operator_id: "",
+        operator_name: "",
+        operator_logon_time: nil,
+        run_id: "",
+        headway_spacing: :ok,
+        is_shuttle: false,
+        is_overload: false,
+        is_off_course: false,
+        layover_departure_time: nil,
+        block_is_active: true,
+        sources: "",
+        stop_status: "",
+        route_status: :on_route,
+        end_of_trip_type: :another_trip
+      }
+
+      trip_1 = %Trip{
+        id: "trip_1",
+        block_id: "block_1",
+        route_id: "route99",
+        service_id: "service",
+        headsign: "headsign2",
+        direction_id: 0,
+        stop_times: [
+          %StopTime{
+            stop_id: "stop3",
+            time: 4,
+            timepoint_id: "t3"
+          }
+        ],
+        start_time: 4,
+        end_time: 4
+      }
+
+      trip_2 = %Trip{
+        id: "trip_2",
+        block_id: "block_2",
+        route_id: "route99",
+        service_id: "service",
+        headsign: "headsign2",
+        direction_id: 0,
+        stop_times: [
+          %StopTime{
+            stop_id: "stop3",
+            time: 2,
+            timepoint_id: "t3"
+          }
+        ],
+        start_time: 2,
+        end_time: 2
+      }
+
+      trip_3 = %Trip{
+        id: "trip_3",
+        block_id: "block_3",
+        route_id: "route99",
+        service_id: "service",
+        headsign: "headsign2",
+        direction_id: 0,
+        stop_times: [
+          %StopTime{
+            stop_id: "stop3",
+            time: 6,
+            timepoint_id: "t3"
+          }
+        ],
+        start_time: 6,
+        end_time: 6
+      }
+
+      ungrouped_vehicles = [vehicle_1, vehicle_2, vehicle_3]
+      blocks_by_date = %{~D[2019-12-20] => [[trip_1, trip_2, trip_3]]}
+
+      # 2019-12-20 00:00:00
+      time0 = 1_576_818_000
+
+      assert [
+               %Vehicle{id: "on_route_2"},
+               %Vehicle{id: "on_route_1"},
+               %Vehicle{id: "on_nil_route"}
+             ] =
+               Vehicles.group_by_route_with_blocks(
+                 ungrouped_vehicles,
+                 [trip_1, trip_2, trip_3],
+                 blocks_by_date,
+                 time0 + 2
+               )
+               |> Map.fetch!("route99")
+    end
   end
 
   describe "incoming_blocks_by_route" do
