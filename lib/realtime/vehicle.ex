@@ -283,7 +283,7 @@ defmodule Realtime.Vehicle do
     one_hour_in_seconds = 1 * 60 * 60
     now_time_of_day = Util.Time.time_of_day_for_timestamp(now, Util.Time.date_of_timestamp(now))
 
-    now_time_of_day - Block.end_time(block) <= one_hour_in_seconds
+    now_time_of_day - block.end_time <= one_hour_in_seconds
   end
 
   @spec stop_name(map() | nil, String.t() | nil) :: String.t() | nil
@@ -316,7 +316,7 @@ defmodule Realtime.Vehicle do
   def route_status(stop_id, trip, block) do
     if stop_id == List.first(trip.stop_times).stop_id do
       # hasn't started trip yet
-      if block != nil && trip.id == List.first(block).id do
+      if block != nil && trip.id == List.first(block.trips).id do
         # starting the block, pulling out from garage
         :pulling_out
       else

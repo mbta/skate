@@ -3,7 +3,7 @@ defmodule ScheduleTest do
 
   import Test.Support.Helpers
 
-  alias Schedule.Trip
+  alias Schedule.{Block, Trip}
   alias Schedule.Gtfs.{Route, RoutePattern, Shape, Stop, StopTime, Timepoint}
   alias Schedule.Gtfs.Shape.Point
   alias Schedule.Minischedule
@@ -373,38 +373,44 @@ defmodule ScheduleTest do
           }
         })
 
-      assert Schedule.block("b", "service", pid) == [
-               %Trip{
-                 id: "t1",
-                 block_id: "b",
-                 route_id: "route",
-                 service_id: "service",
-                 # Shuttles do not have route_pattern_ids
-                 headsign: "h1",
-                 direction_id: 1,
-                 route_pattern_id: "route-_-0",
-                 shape_id: "shape1",
-                 schedule_id: "schedule",
-                 run_id: "123-1501",
-                 start_time: 1,
-                 end_time: 3,
-                 start_place: "wtryd",
-                 end_place: "hayms",
-                 stop_times: [
-                   %StopTime{
-                     stop_id: "s4",
-                     time: 1,
-                     timepoint_id: "exurb"
-                   },
-                   %StopTime{stop_id: "s5", time: 2, timepoint_id: nil},
-                   %StopTime{
-                     stop_id: "s3",
-                     time: 3,
-                     timepoint_id: "suburb"
-                   }
-                 ]
-               }
-             ]
+      assert Schedule.block("b", "service", pid) == %Block{
+               id: "b",
+               service_id: "service",
+               start_time: 1,
+               end_time: 3,
+               trips: [
+                 %Trip{
+                   id: "t1",
+                   block_id: "b",
+                   route_id: "route",
+                   service_id: "service",
+                   # Shuttles do not have route_pattern_ids
+                   headsign: "h1",
+                   direction_id: 1,
+                   route_pattern_id: "route-_-0",
+                   shape_id: "shape1",
+                   schedule_id: "schedule",
+                   run_id: "123-1501",
+                   start_time: 1,
+                   end_time: 3,
+                   start_place: "wtryd",
+                   end_place: "hayms",
+                   stop_times: [
+                     %StopTime{
+                       stop_id: "s4",
+                       time: 1,
+                       timepoint_id: "exurb"
+                     },
+                     %StopTime{stop_id: "s5", time: 2, timepoint_id: nil},
+                     %StopTime{
+                       stop_id: "s3",
+                       time: 3,
+                       timepoint_id: "suburb"
+                     }
+                   ]
+                 }
+               ]
+             }
     end
 
     test "returns nil if the block doesn't exist" do
@@ -481,7 +487,7 @@ defmodule ScheduleTest do
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
 
-      assert %{~D[2019-01-01] => [[%Trip{id: "now", block_id: "now"}]]} =
+      assert %{~D[2019-01-01] => [%Block{id: "now"}]} =
                Schedule.active_blocks(time0 + 1, time0 + 3, pid)
     end
   end

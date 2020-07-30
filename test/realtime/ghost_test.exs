@@ -2,7 +2,7 @@ defmodule Realtime.GhostTest do
   use ExUnit.Case
   import Test.Support.Helpers
 
-  alias Schedule.Trip
+  alias Schedule.{Block, Trip}
   alias Schedule.Gtfs.StopTime
   alias Realtime.{BlockWaiver, Ghost}
 
@@ -47,7 +47,7 @@ defmodule Realtime.GhostTest do
         end_time: 3
       }
 
-      block = [trip]
+      block = Block.block_from_trips([trip])
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
@@ -112,7 +112,7 @@ defmodule Realtime.GhostTest do
         end_time: 3
       }
 
-      block = [trip]
+      block = Block.block_from_trips([trip])
 
       vehicles = [%{block_id: "block"}]
 
@@ -148,7 +148,7 @@ defmodule Realtime.GhostTest do
         end_time: 2
       }
 
-      block = [trip]
+      block = Block.block_from_trips([trip])
 
       assert %Ghost{
                id: "ghost-trip",
@@ -179,7 +179,7 @@ defmodule Realtime.GhostTest do
     end
 
     test "makes a ghost for a block that should be laying over" do
-      block = [
+      trips = [
         %Trip{
           id: "trip1",
           block_id: "block",
@@ -217,6 +217,8 @@ defmodule Realtime.GhostTest do
           end_time: 20
         }
       ]
+
+      block = Block.block_from_trips(trips)
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
@@ -277,7 +279,7 @@ defmodule Realtime.GhostTest do
         end_time: 3
       }
 
-      block = [trip]
+      block = Block.block_from_trips([trip])
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
@@ -345,32 +347,32 @@ defmodule Realtime.GhostTest do
       %{
         trip1: trip1,
         trip2: trip2,
-        block: [trip1, trip2]
+        trips: [trip1, trip2]
       }
     end
 
-    test "returns pulling out for a block that hasn't started yet", %{block: block, trip1: trip1} do
-      assert Ghost.current_trip(block, 1) == {:pulling_out, trip1}
+    test "returns pulling out for a block that hasn't started yet", %{trips: trips, trip1: trip1} do
+      assert Ghost.current_trip(trips, 1) == {:pulling_out, trip1}
     end
 
     test "returns on_route if a trip is scheduled to be in progress", %{
-      block: block,
+      trips: trips,
       trip1: trip1,
       trip2: trip2
     } do
-      assert Ghost.current_trip(block, 3) == {:on_route, trip1}
-      assert Ghost.current_trip(block, 7) == {:on_route, trip2}
+      assert Ghost.current_trip(trips, 3) == {:on_route, trip1}
+      assert Ghost.current_trip(trips, 7) == {:on_route, trip2}
     end
 
     test "returns laying_over if the block is scheduled to be between trips", %{
-      block: block,
+      trips: trips,
       trip2: trip2
     } do
-      assert Ghost.current_trip(block, 5) == {:laying_over, trip2}
+      assert Ghost.current_trip(trips, 5) == {:laying_over, trip2}
     end
 
-    test "returns nil if the block is scheduled to have finished", %{block: block} do
-      assert Ghost.current_trip(block, 9) == nil
+    test "returns nil if the block is scheduled to have finished", %{trips: trips} do
+      assert Ghost.current_trip(trips, 9) == nil
     end
   end
 end

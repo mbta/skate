@@ -3,7 +3,7 @@ defmodule Realtime.BlockWaiverTest do
   import Test.Support.Helpers
 
   alias Concentrate.StopTimeUpdate
-  alias Schedule.Trip
+  alias Schedule.{Block, Trip}
   alias Schedule.Gtfs.StopTime
   alias Realtime.BlockWaiver
 
@@ -27,6 +27,14 @@ defmodule Realtime.BlockWaiverTest do
       %StopTime{stop_id: "stop2", time: 5},
       %StopTime{stop_id: "stop1", time: 6}
     ]
+  }
+
+  @block %Block{
+    id: "block",
+    service_id: "service",
+    start_time: 1,
+    end_time: 6,
+    trips: [@trip1, @trip2]
   }
 
   @trip1stop1Update %StopTimeUpdate{
@@ -84,24 +92,20 @@ defmodule Realtime.BlockWaiverTest do
 
   describe "block_waivers_for_block/1" do
     setup do
-      block = [@trip1, @trip2]
-
       reassign_env(:realtime, :active_blocks_fn, fn _, _ ->
-        %{Util.Time.today() => block}
+        %{Util.Time.today() => [@block]}
       end)
-
-      {:ok, block: block}
     end
 
-    test "returns block waivers for consecutive skipped stops on a trip", %{block: block} do
+    test "returns block waivers for consecutive skipped stops on a trip" do
       assert [
                %BlockWaiver{},
                %BlockWaiver{}
-             ] = BlockWaiver.block_waivers_for_block(block, @stop_time_updates_by_trip)
+             ] = BlockWaiver.block_waivers_for_block(@block, @stop_time_updates_by_trip)
     end
 
     test "returns an empty list if no trips have skipped stops" do
-      assert BlockWaiver.block_waivers_for_block([], @stop_time_updates_by_trip) == []
+      assert BlockWaiver.block_waivers_for_block(@block, %{}) == []
     end
 
     test "returns an empty list if the block was nil" do

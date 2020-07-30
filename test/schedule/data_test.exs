@@ -140,35 +140,33 @@ defmodule Schedule.DataTest do
   end
 
   describe "block" do
-    test "block returns the trips on the block" do
-      trip = %Trip{
-        id: "t1",
-        block_id: "b",
+    test "block returns the block" do
+      block = %Block{
+        id: "block",
         service_id: "service",
-        stop_times: [
-          %StopTime{stop_id: "s1", time: 1, timepoint_id: nil}
-        ]
+        start_time: 0,
+        end_time: 0,
+        trips: []
       }
 
       data = %Data{
-        blocks: Block.group_trips_by_block([trip])
+        blocks: %{{"block", "service"} => block}
       }
 
-      assert [%Trip{id: "t1"}] = Data.block(data, "b", "service")
+      assert Data.block(data, "block", "service") == block
     end
 
-    test "block doesn't return trips on the same block but a different date" do
-      trip = %Trip{
-        id: "t1",
-        block_id: "b",
+    test "block doesn't return blocks with the same block_id but a different date" do
+      block = %Block{
+        id: "block",
         service_id: "service",
-        stop_times: [
-          %StopTime{stop_id: "s1", time: 1, timepoint_id: nil}
-        ]
+        start_time: 0,
+        end_time: 0,
+        trips: []
       }
 
       data = %Data{
-        blocks: Block.group_trips_by_block([trip])
+        blocks: %{{"block", "service"} => block}
       }
 
       assert Data.block(data, "b", "other_service") == nil
@@ -177,7 +175,7 @@ defmodule Schedule.DataTest do
     test "block returns nil if the block doesn't exist" do
       data = %Data{}
 
-      assert Data.trip(data, "block") == nil
+      assert Data.block(data, "block", "service") == nil
     end
   end
 
@@ -328,25 +326,13 @@ defmodule Schedule.DataTest do
 
   describe "active_blocks" do
     test "returns active blocks" do
-      block = [
-        %Trip{
-          id: "trip",
-          block_id: "block",
-          service_id: "today",
-          stop_times: [
-            %StopTime{
-              stop_id: "stop",
-              time: 3
-            },
-            %StopTime{
-              stop_id: "stop",
-              time: 4
-            }
-          ],
-          start_time: 3,
-          end_time: 4
-        }
-      ]
+      block = %Block{
+        id: "block",
+        service_id: "today",
+        start_time: 3,
+        end_time: 4,
+        trips: []
+      }
 
       data = %Data{
         blocks: %{
@@ -364,66 +350,13 @@ defmodule Schedule.DataTest do
     end
 
     test "doesn't return inactive blocks" do
-      data = %Data{
-        blocks: %{
-          "block" => [
-            %Trip{
-              id: "trip",
-              block_id: "block",
-              service_id: "today",
-              stop_times: [
-                %StopTime{
-                  stop_id: "stop",
-                  time: 3
-                },
-                %StopTime{
-                  stop_id: "stop",
-                  time: 4
-                }
-              ]
-            }
-          ]
-        },
-        calendar: %{
-          ~D[2019-01-01] => ["today"]
-        }
+      block = %Block{
+        id: "block",
+        service_id: "today",
+        start_time: 3,
+        end_time: 4,
+        trips: []
       }
-
-      # 2019-01-01 00:00:00 EST
-      time0 = 1_546_318_800
-
-      assert Data.active_blocks(data, time0 + 5, time0 + 5) == %{}
-    end
-
-    test "returns a block only once if it has multiple active trips" do
-      block = [
-        %Trip{
-          id: "first",
-          block_id: "block",
-          service_id: "today",
-          stop_times: [
-            %StopTime{
-              stop_id: "stop",
-              time: 2
-            }
-          ],
-          start_time: 2,
-          end_time: 2
-        },
-        %Trip{
-          id: "second",
-          block_id: "block",
-          service_id: "today",
-          stop_times: [
-            %StopTime{
-              stop_id: "stop",
-              time: 3
-            }
-          ],
-          start_time: 3,
-          end_time: 3
-        }
-      ]
 
       data = %Data{
         blocks: %{
@@ -436,43 +369,28 @@ defmodule Schedule.DataTest do
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-      assert Data.active_blocks(data, time0 + 1, time0 + 4) == %{~D[2019-01-01] => [block]}
+
+      assert Data.active_blocks(data, time0 + 5, time0 + 5) == %{}
     end
 
     test "blocks can be active on two different dates" do
       just_before_midnight = 24 * 60 * 60 - 1
 
-      block1 = [
-        %Trip{
-          id: "first",
-          block_id: "block",
-          service_id: "today",
-          stop_times: [
-            %StopTime{
-              stop_id: "stop",
-              time: just_before_midnight
-            }
-          ],
-          start_time: just_before_midnight,
-          end_time: just_before_midnight
-        }
-      ]
+      block1 = %Block{
+        id: "block",
+        service_id: "today",
+        start_time: just_before_midnight,
+        end_time: just_before_midnight,
+        trips: []
+      }
 
-      block2 = [
-        %Trip{
-          id: "second",
-          block_id: "block",
-          service_id: "tomorrow",
-          stop_times: [
-            %StopTime{
-              stop_id: "stop",
-              time: 1
-            }
-          ],
-          start_time: 1,
-          end_time: 1
-        }
-      ]
+      block2 = %Block{
+        id: "block",
+        service_id: "tomorrow",
+        start_time: 1,
+        end_time: 1,
+        trips: []
+      }
 
       data = %Data{
         blocks: %{

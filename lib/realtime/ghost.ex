@@ -55,7 +55,7 @@ defmodule Realtime.Ghost do
     blocks_by_date
     |> Helpers.map_values(fn blocks ->
       Enum.reject(blocks, fn block ->
-        MapSet.member?(blocks_with_vehicles, Block.first_trip(block).block_id)
+        MapSet.member?(blocks_with_vehicles, block.id)
       end)
     end)
     |> Enum.flat_map(fn {date, blocks} ->
@@ -71,7 +71,7 @@ defmodule Realtime.Ghost do
   def ghost_for_block(block, date, now) do
     now_time_of_day = Util.Time.time_of_day_for_timestamp(now, date)
 
-    case current_trip(block, now_time_of_day) do
+    case current_trip(block.trips, now_time_of_day) do
       nil ->
         nil
 
@@ -90,8 +90,6 @@ defmodule Realtime.Ghost do
                 &BlockWaiverStore.block_waivers_for_block_and_service/2
               )
 
-            block_id = Block.first_trip(block).block_id
-
             timepoint_status =
               TimepointStatus.scheduled_timepoint_status(timepoints, now_time_of_day)
 
@@ -101,7 +99,7 @@ defmodule Realtime.Ghost do
               route_id: trip.route_id,
               trip_id: trip.id,
               headsign: trip.headsign,
-              block_id: block_id,
+              block_id: block.id,
               run_id: trip.run_id,
               via_variant:
                 trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id),
@@ -116,7 +114,7 @@ defmodule Realtime.Ghost do
                 end,
               scheduled_timepoint_status: timepoint_status,
               route_status: route_status,
-              block_waivers: block_waivers_for_block_and_service_fn.(block_id, trip.service_id)
+              block_waivers: block_waivers_for_block_and_service_fn.(block.id, block.service_id)
             }
         end
     end
@@ -128,7 +126,7 @@ defmodule Realtime.Ghost do
   If the block is scheduled to be between trips, it's laying_over and returns the next trip that will start
   If the block is scheduled to have finished, returns nil,
   """
-  @spec current_trip(Block.t(), Util.Time.time_of_day()) ::
+  @spec current_trip([Trip.t()], Util.Time.time_of_day()) ::
           {RouteStatus.route_status(), Trip.t()} | nil
   def current_trip([], _now_time_of_day) do
     nil
