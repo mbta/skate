@@ -9,6 +9,7 @@ defmodule Schedule.BlockTest do
     id: "t1",
     block_id: "b",
     service_id: "service",
+    schedule_id: "schedule",
     stop_times: [
       %StopTime{stop_id: "s1", time: 3, timepoint_id: "tp1"},
       %StopTime{stop_id: "s7", time: 4, timepoint_id: nil}
@@ -21,6 +22,7 @@ defmodule Schedule.BlockTest do
     id: "t2",
     block_id: "b",
     service_id: "service",
+    schedule_id: "schedule",
     stop_times: [
       %StopTime{stop_id: "s7", time: 6, timepoint_id: nil},
       %StopTime{stop_id: "s1", time: 7, timepoint_id: "tp1"}
@@ -32,6 +34,7 @@ defmodule Schedule.BlockTest do
   @block %Block{
     id: "b",
     service_id: "service",
+    schedule_id: "schedule",
     start_time: 3,
     end_time: 7,
     trips: [@trip1, @trip2]
@@ -44,6 +47,7 @@ defmodule Schedule.BlockTest do
       assert Block.get(by_id, @trip1.block_id, @trip1.service_id) == %Block{
                id: @trip1.block_id,
                service_id: @trip1.service_id,
+               schedule_id: @trip1.schedule_id,
                start_time: 3,
                end_time: 4,
                trips: [@trip1]

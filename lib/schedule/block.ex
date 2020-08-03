@@ -1,5 +1,6 @@
 defmodule Schedule.Block do
   alias Schedule.Gtfs.Service
+  alias Schedule.Hastus
   alias Schedule.Trip
 
   @type id :: String.t()
@@ -13,6 +14,7 @@ defmodule Schedule.Block do
   @type t :: %__MODULE__{
           id: id(),
           service_id: Service.id(),
+          schedule_id: Hastus.Schedule.id() | nil,
           start_time: Util.Time.time_of_day(),
           end_time: Util.Time.time_of_day(),
           # only revenue trips. always nonempty
@@ -30,6 +32,7 @@ defmodule Schedule.Block do
   defstruct [
     :id,
     :service_id,
+    :schedule_id,
     :start_time,
     :end_time,
     :trips
@@ -55,6 +58,7 @@ defmodule Schedule.Block do
     %__MODULE__{
       id: first_trip.block_id,
       service_id: first_trip.service_id,
+      schedule_id: first_trip.schedule_id,
       start_time: first_trip.start_time,
       end_time: List.last(trips).end_time,
       trips: trips

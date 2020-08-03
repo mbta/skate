@@ -376,6 +376,7 @@ defmodule ScheduleTest do
       assert Schedule.block("b", "service", pid) == %Block{
                id: "b",
                service_id: "service",
+               schedule_id: "schedule",
                start_time: 1,
                end_time: 3,
                trips: [
