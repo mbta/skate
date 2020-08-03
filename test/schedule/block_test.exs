@@ -5,17 +5,36 @@ defmodule Schedule.BlockTest do
   alias Schedule.{Block, Trip}
   alias Schedule.Gtfs.StopTime
 
+  @pullout %Trip{
+    id: "pullout",
+    block_id: "b",
+    schedule_id: "schedule",
+    route_id: nil,
+    start_time: 1,
+    end_time: 3
+  }
+
   @trip1 %Trip{
     id: "t1",
     block_id: "b",
     service_id: "service",
     schedule_id: "schedule",
+    route_id: "route",
     stop_times: [
       %StopTime{stop_id: "s1", time: 3, timepoint_id: "tp1"},
       %StopTime{stop_id: "s7", time: 4, timepoint_id: nil}
     ],
-    start_time: 3,
-    end_time: 4
+    start_time: 5,
+    end_time: 7
+  }
+
+  @deadhead %Trip{
+    id: "deadhead",
+    block_id: "b",
+    schedule_id: "schedule",
+    route_id: nil,
+    start_time: 9,
+    end_time: 11
   }
 
   @trip2 %Trip{
@@ -23,20 +42,30 @@ defmodule Schedule.BlockTest do
     block_id: "b",
     service_id: "service",
     schedule_id: "schedule",
+    route_id: "route",
     stop_times: [
       %StopTime{stop_id: "s7", time: 6, timepoint_id: nil},
       %StopTime{stop_id: "s1", time: 7, timepoint_id: "tp1"}
     ],
-    start_time: 6,
-    end_time: 7
+    start_time: 13,
+    end_time: 15
+  }
+
+  @pullback %Trip{
+    id: "deadhead",
+    block_id: "b",
+    schedule_id: "schedule",
+    route_id: nil,
+    start_time: 17,
+    end_time: 19
   }
 
   @block %Block{
     id: "b",
     service_id: "service",
     schedule_id: "schedule",
-    start_time: 3,
-    end_time: 7,
+    start_time: 1,
+    end_time: 19,
     trips: [@trip1, @trip2]
   }
 
@@ -44,42 +73,32 @@ defmodule Schedule.BlockTest do
     test "can create blocks and then get them" do
       by_id = Block.blocks_from_trips([@trip1])
 
-      assert Block.get(by_id, @trip1.block_id, @trip1.service_id) == %Block{
-               id: @trip1.block_id,
-               service_id: @trip1.service_id,
-               schedule_id: @trip1.schedule_id,
-               start_time: 3,
-               end_time: 4,
-               trips: [@trip1]
+      assert Block.get(by_id, "b", "service") == %{
+               @block
+               | start_time: @trip1.start_time,
+                 end_time: @trip1.end_time,
+                 trips: [@trip1]
+             }
+    end
+
+    test "sets start_time and end_time based on pulls" do
+      by_id = Block.blocks_from_trips([@pullout, @trip1, @trip2, @pullback])
+      assert Block.get(by_id, "b", "service") == @block
+    end
+
+    test "ignores deadheads" do
+      by_id = Block.blocks_from_trips([@trip1, @deadhead, @trip2])
+
+      assert Block.get(by_id, "b", "service") == %{
+               @block
+               | start_time: @trip1.start_time,
+                 end_time: @trip2.end_time
              }
     end
 
     test "sorts trips by time" do
-      trips = [
-        %{
-          @trip1
-          | id: "t2",
-            stop_times: [
-              %StopTime{stop_id: "s", time: 2}
-            ],
-            start_time: 2,
-            end_time: 2
-        },
-        %{
-          @trip1
-          | id: "t1",
-            stop_times: [
-              %StopTime{stop_id: "s", time: 1}
-            ],
-            start_time: 1,
-            end_time: 1
-        }
-      ]
-
-      assert %Block{trips: [%Trip{id: "t1"}, %Trip{id: "t2"}]} =
-               trips
-               |> Block.blocks_from_trips()
-               |> Block.get("b", "service")
+      by_id = Block.blocks_from_trips([@trip2, @pullback, @trip1, @pullout])
+      assert Block.get(by_id, "b", "service") == @block
     end
 
     test "ignores trips without stop times" do
@@ -107,50 +126,54 @@ defmodule Schedule.BlockTest do
 
   describe "is_active" do
     test "a block that starts before the range and ends after is active" do
-      assert Block.is_active(@block, 4, 5)
+      assert Block.is_active(@block, 2, 18)
     end
 
     test "a block that starts before the range and ends during is active" do
-      assert Block.is_active(@block, 5, 7)
+      assert Block.is_active(@block, 2, 20)
     end
 
     test "a block that starts during the range and ends after is active" do
-      assert Block.is_active(@block, 2, 4)
+      assert Block.is_active(@block, 0, 18)
     end
 
     test "a block that's laying over is active" do
-      assert Block.is_active(@block, 2, 7)
+      assert Block.is_active(@block, 8, 12)
     end
 
     test "a block is active if the start and end times are the same" do
-      assert Block.is_active(@block, 4, 4)
+      assert Block.is_active(@block, 6, 6)
     end
 
     test "a block totally before the range is inactive" do
-      refute Block.is_active(@block, 7, 8)
+      refute Block.is_active(@block, 20, 21)
     end
 
     test "a block totally after the range is inactive" do
-      refute Block.is_active(@block, 1, 2)
+      refute Block.is_active(@block, 0, 0)
     end
   end
 
   describe "trip_at_time/2" do
     test "returns a trip if it is active" do
-      assert %Trip{id: "t1"} = Block.trip_at_time(@block, 3)
-      assert %Trip{id: "t2"} = Block.trip_at_time(@block, 6)
+      assert %Trip{id: "t1"} = Block.trip_at_time(@block, 6)
+      assert %Trip{id: "t2"} = Block.trip_at_time(@block, 14)
     end
 
     test "returns the next trip if the previous one has ended" do
-      assert %Trip{id: "t2"} = Block.trip_at_time(@block, 5)
+      assert %Trip{id: "t2"} = Block.trip_at_time(@block, 8)
     end
 
     test "returns the first trip if the block hasn't started yet" do
+      assert %Trip{id: "t1"} = Block.trip_at_time(@block, 0)
+    end
+
+    test "returns the first trip if pulling out" do
       assert %Trip{id: "t1"} = Block.trip_at_time(@block, 2)
     end
 
-    test "returns the last trip if the block has finished" do
-      assert %Trip{id: "t2"} = Block.trip_at_time(@block, 8)
+    test "returns the last trip if pulling back" do
+      assert %Trip{id: "t2"} = Block.trip_at_time(@block, 18)
     end
   end
 

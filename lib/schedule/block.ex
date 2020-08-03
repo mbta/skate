@@ -40,28 +40,56 @@ defmodule Schedule.Block do
 
   @spec blocks_from_trips([Trip.t()]) :: by_id()
   def blocks_from_trips(trips) do
-    trips
-    |> group_trips_by_block()
-    |> Helpers.map_values(&block_from_trips/1)
-  end
+    {revenue_trips, nonrevenue_trips} =
+      Enum.split_with(trips, fn trip -> trip.route_id != nil end)
 
-  @spec group_trips_by_block([Trip.t()]) :: %{key() => [Trip.t()]}
-  defp group_trips_by_block(trips) do
-    trips
+    nonrevenue_trips =
+      Enum.group_by(nonrevenue_trips, fn trip -> {trip.block_id, trip.schedule_id} end)
+
+    revenue_trips
     |> Enum.filter(fn trip -> trip.stop_times != [] end)
     |> Enum.group_by(fn trip -> {trip.block_id, trip.service_id} end)
-    |> Helpers.map_values(&sort_trips_by_time/1)
+    |> Helpers.map_values(fn trips ->
+      block_id = List.first(trips).block_id
+      schedule_id = List.first(trips).schedule_id
+      deadheads = nonrevenue_trips[{block_id, schedule_id}] || []
+      block_from_trips(trips, deadheads)
+    end)
   end
 
-  @spec block_from_trips([Trip.t()]) :: t()
-  def block_from_trips([first_trip | _] = trips) do
+  @spec block_from_trips([Trip.t()], [Trip.t()]) :: t()
+  def block_from_trips(revenue_trips, nonrevenue_trips \\ []) do
+    revenue_trips = Enum.sort_by(revenue_trips, & &1.start_time)
+    nonrevenue_trips = Enum.sort_by(nonrevenue_trips, & &1.start_time)
+    [first_trip | _] = revenue_trips
+
+    start_time =
+      if nonrevenue_trips == [] do
+        first_trip.start_time
+      else
+        min(
+          first_trip.start_time,
+          List.first(nonrevenue_trips).start_time
+        )
+      end
+
+    end_time =
+      if nonrevenue_trips == [] do
+        List.last(revenue_trips).end_time
+      else
+        max(
+          List.last(revenue_trips).end_time,
+          List.last(nonrevenue_trips).end_time
+        )
+      end
+
     %__MODULE__{
       id: first_trip.block_id,
       service_id: first_trip.service_id,
       schedule_id: first_trip.schedule_id,
-      start_time: first_trip.start_time,
-      end_time: List.last(trips).end_time,
-      trips: trips
+      start_time: start_time,
+      end_time: end_time,
+      trips: revenue_trips
     }
   end
 
@@ -126,11 +154,6 @@ defmodule Schedule.Block do
   def id_sans_overload(nil), do: nil
 
   def id_sans_overload(id), do: String.replace(id, overload_id_regex(), "")
-
-  @spec sort_trips_by_time([Trip.t()]) :: [Trip.t()]
-  defp sort_trips_by_time(trips) do
-    Enum.sort_by(trips, & &1.start_time)
-  end
 
   defp overload_id_regex(), do: ~r/-OL.+$/
 end
