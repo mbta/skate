@@ -10,19 +10,18 @@ defmodule Realtime.Vehicles do
   @spec group_by_route([Vehicle.t()]) :: Route.by_id([VehicleOrGhost.t()])
   def group_by_route(ungrouped_vehicles) do
     now = Util.Time.now()
-    in_ten_minutes = now + 10 * 60
     in_fifteen_minutes = now + 15 * 60
 
     # We show vehicles incoming from another route if they'll start the new route within 15 minutes
     incoming_trips = Schedule.active_trips(now, in_fifteen_minutes)
     incoming_blocks_by_route = incoming_blocks_by_route(incoming_trips)
-    # We show pulling out ghosts if they'll start within 10 minutes
-    active_and_incoming_blocks_by_date = Schedule.active_blocks(now, in_ten_minutes)
+    # Includes blocks that are scheduled to be pulling out
+    active_blocks_by_date = Schedule.active_blocks(now, now)
 
     group_by_route_with_blocks(
       ungrouped_vehicles,
       incoming_blocks_by_route,
-      active_and_incoming_blocks_by_date,
+      active_blocks_by_date,
       now
     )
   end
@@ -40,10 +39,10 @@ defmodule Realtime.Vehicles do
   def group_by_route_with_blocks(
         ungrouped_vehicles,
         incoming_blocks_by_route,
-        active_and_incoming_blocks_by_date,
+        active_blocks_by_date,
         now
       ) do
-    ghosts = Ghost.ghosts(active_and_incoming_blocks_by_date, ungrouped_vehicles, now)
+    ghosts = Ghost.ghosts(active_blocks_by_date, ungrouped_vehicles, now)
     vehicles_and_ghosts = ghosts ++ ungrouped_vehicles
 
     incoming_from_another_route =
