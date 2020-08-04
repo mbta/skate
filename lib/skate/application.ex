@@ -15,7 +15,8 @@ defmodule Skate.Application do
     children =
       [
         SkateWeb.Endpoint,
-        RefreshTokenStore
+        RefreshTokenStore,
+        {Skate.Repo, []}
       ] ++
         if Application.get_env(:skate, :start_data_processes) do
           [
