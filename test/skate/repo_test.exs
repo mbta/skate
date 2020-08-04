@@ -1,0 +1,48 @@
+defmodule Skate.RepoTest do
+  use ExUnit.Case, async: false
+
+  describe "add_prod_credentials/2" do
+    setup do
+      original_hostname = System.get_env("POSTGRES_HOSTNAME", "localhost")
+      original_port = System.get_env("POSTGRES_PORT", "5432")
+      original_username = System.get_env("POSTGRES_USERNAME", System.get_env("USER"))
+
+      System.put_env("POSTGRES_HOSTNAME", "db_server_hostname")
+      System.put_env("POSTGRES_USERNAME", "my_username")
+      System.put_env("POSTGRES_PORT", "6789")
+
+      on_exit(fn ->
+        System.put_env("POSTGRES_HOSTNAME", original_hostname)
+        System.put_env("POSTGRES_USERNAME", original_username)
+        System.put_env("POSTGRES_PORT", original_port)
+      end)
+
+      :ok
+    end
+
+    test "gets credentials from environment variables, except the temporary password gotten from RDS" do
+      mock_auth_token_fn = fn "db_server_hostname", "my_username", 6789, %{} ->
+        "temporary_password"
+      end
+
+      input_config = [
+        username: nil,
+        password: nil,
+        hostname: nil,
+        port: 5432,
+        ssl: true
+      ]
+
+      expected_output = [
+        username: "my_username",
+        password: "temporary_password",
+        hostname: "db_server_hostname",
+        port: 6789,
+        ssl: true
+      ]
+
+      assert expected_output |> Enum.sort() ==
+               Skate.Repo.add_prod_credentials(input_config, mock_auth_token_fn) |> Enum.sort()
+    end
+  end
+end

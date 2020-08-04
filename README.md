@@ -12,11 +12,15 @@ The MBTA Customer Technology Department supports a shared Slack channel that tra
 
 Doing development on Skate requires Elixir, Erlang, and node, as dsecribed in [.tool-versions](https://github.com/mbta/skate/blob/master/.tool-versions). Most developers use [asdf](https://asdf-vm.com/) to help manage the required versions, but that isn't required.
 
+Skate also requires Postgres. If you don't already have Postgres installed, and you're on a Mac, [Postgres.app](https://postgresapp.com/downloads.html) is an easy way to get started. However, any Postgres instance to which you can connect and in which you have sufficient privileges should work.
+
 Quick setup:
 
 1. Install languange dependencies with `asdf install`
 1. Install Elixir dependencies with `mix deps.get`
 1. Install Node.js dependencies with `cd assets && npm install`
+1. Install Postgres by your favorite method, possibly by downloading the latest install image from the [Postgres.app download page](https://postgresapp.com/downloads.html), opening it, and copying the Postgres.app application into Applications.
+1. To create the database, back in the Terminal, `` env `cat .env` mix ecto.create && env `cat .env` mix ecto.migrate ``
 
 ## Running the application
 
@@ -45,6 +49,9 @@ There are a number of configuration details defined in environment variables. Th
 - **COGNITO_DOMAIN**, **COGNITO_CLIENT_ID**, **COGNITO_CLIENT_SECRET**, **COGNITO_USER_POOL_ID**, **COGNITO_AWS_REGION**, and **GUARDIAN_SECRET_KEY**: Authentication/authorization details (only required in production)
 - **STATIC_SCHEME**, **STATIC_HOST**, **STATIC_PATH**, and **STATIC_PORT**: CDN details (only required in production)
 - **SENTRY_BACKEND_DSN**, **SENTRY_FRONTEND_DSN**: Endpoints for logging errors to Sentry (optional, only used in production)
+- **POSTGRES_USERNAME**, **POSTGRES_HOSTNAME**: Postgres username and hostname (optional in dev, default to system username and "localhost" respectively. Required in production.)
+- **POSTGRES_PASSWORD**: Postgres password (optional in dev, defaults to blank string. Not used in production.)
+- **POSTGRES_PORT**: Port to connect to Postgres (optional, defaults to 5432, the standard Postgres server port)
 
 Additionally, there a number of secret variables (only required in production) defined in [AWS SecretsManager](https://console.aws.amazon.com/secretsmanager):
 

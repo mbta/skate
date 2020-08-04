@@ -2,6 +2,10 @@
 
 set -e
 
+export MIX_ENV=test
+
+mix ecto.create &&
+mix ecto.migrate &&
 mix coveralls.json &&
 pushd assets && npm test && popd &&
 bash <(curl -s https://codecov.io/bash)

@@ -76,7 +76,11 @@ defmodule Skate.MixProject do
       {:server_sent_event_stage, "~> 1.0.2"},
       {:castore, "~> 0.1.5"},
       {:laboratory, github: "paulswartz/laboratory", ref: "cookie_opts"},
-      {:sentry, "~> 7.0"}
+      {:sentry, "~> 7.0"},
+      {:phoenix_ecto, "~> 4.0"},
+      {:ecto_sql, "~> 3.4"},
+      {:postgrex, "~> 0.15"},
+      {:ex_aws_rds, "~> 2.0.2"}
     ]
   end
 end
