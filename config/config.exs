@@ -7,6 +7,8 @@
 # General application configuration
 use Mix.Config
 
+config :skate, ecto_repos: [Skate.Repo]
+
 config :skate,
   # Default. Can be configured via environment variable, which is loaded in application.ex
   api_url: {:system, "API_URL"},
@@ -87,6 +89,14 @@ config :skate, SkateWeb.Endpoint,
 config :skate, SkateWeb.AuthManager,
   issuer: "skate",
   secret_key: nil
+
+config :skate, Skate.Repo,
+  database: "skate_dev",
+  username: System.get_env("POSTGRES_USERNAME", System.get_env("USER")),
+  password: System.get_env("POSTGRES_PASSWORD", ""),
+  hostname: System.get_env("POSTGRES_HOSTNAME", "localhost"),
+  port: System.get_env("POSTGRES_PORT", "5432") |> String.to_integer(),
+  show_sensitive_data_on_connection_error: true
 
 config :laboratory,
   features: [

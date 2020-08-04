@@ -15,7 +15,8 @@ defmodule Skate.Application do
     children =
       [
         SkateWeb.Endpoint,
-        RefreshTokenStore
+        RefreshTokenStore,
+        {Skate.Repo, []}
       ] ++
         if Application.get_env(:skate, :start_data_processes) do
           [
@@ -63,7 +64,8 @@ defmodule Skate.Application do
       :geonames_url_base,
       :geonames_token,
       :sentry_frontend_dsn,
-      SkateWeb.Endpoint
+      SkateWeb.Endpoint,
+      Skate.Repo
     ]
 
     for application_key <- application_keys do

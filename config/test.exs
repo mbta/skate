@@ -14,6 +14,8 @@ config :skate, SkateWeb.Endpoint,
 
 config :skate, SkateWeb.AuthManager, secret_key: "dev key"
 
+config :skate, Skate.Repo, database: "skate_test"
+
 config :ueberauth, Ueberauth,
   providers: [
     cognito: {Skate.Ueberauth.Strategy.Fake, []}
