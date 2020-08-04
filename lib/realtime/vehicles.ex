@@ -10,7 +10,8 @@ defmodule Realtime.Vehicles do
   @spec group_by_route([Vehicle.t()]) :: Route.by_id([VehicleOrGhost.t()])
   def group_by_route(ungrouped_vehicles) do
     now = Util.Time.now()
-    in_fifteen_minutes = now + 15 * 60
+    # TODO: don't merge this, even though it would be sort of funny.
+    in_fifteen_minutes = now + 150 * 60
 
     # We show vehicles incoming from another route if they'll start the new route within 15 minutes
     incoming_trips = Schedule.active_trips(now, in_fifteen_minutes)
