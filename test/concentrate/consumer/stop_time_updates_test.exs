@@ -4,12 +4,20 @@ defmodule Concentrate.Consumer.StopTimeUpdatesTest do
 
   alias Concentrate.{StopTimeUpdate, TripUpdate}
   alias Concentrate.Consumer.StopTimeUpdates
-  alias Schedule.Trip
+  alias Schedule.{Block, Trip}
 
   @trip %Trip{
     id: "t1",
     block_id: "S28-2",
     service_id: "service"
+  }
+
+  @block %Block{
+    id: "S28-2",
+    service_id: "service",
+    start_time: 0,
+    end_time: 0,
+    trips: [@trip]
   }
 
   @stop_time_update %StopTimeUpdate{
@@ -49,7 +57,7 @@ defmodule Concentrate.Consumer.StopTimeUpdatesTest do
   describe "handle_events/3" do
     setup do
       reassign_env(:realtime, :trip_fn, fn _trip_id -> @trip end)
-      reassign_env(:realtime, :block_fn, fn _block_id, _service_id -> [@trip] end)
+      reassign_env(:realtime, :block_fn, fn _block_id, _service_id -> @block end)
 
       events = [@all_updates]
 

@@ -147,7 +147,7 @@ defmodule Schedule.Data do
     blocks_by_service =
       blocks
       |> Map.values()
-      |> Enum.group_by(fn block -> List.first(block).service_id end)
+      |> Enum.group_by(fn block -> block.service_id end)
 
     active_services
     |> Map.new(fn {date, service_ids} ->
@@ -281,7 +281,7 @@ defmodule Schedule.Data do
       shapes: shapes_by_route_id(gtfs_files["shapes.txt"], gtfs_trips),
       stops: all_stops_by_id(gtfs_files["stops.txt"]),
       trips: trips_by_id,
-      blocks: Block.group_trips_by_block(Map.values(trips_by_id)),
+      blocks: Block.blocks_from_trips(Map.values(trips_by_id)),
       calendar: Calendar.from_files(gtfs_files["calendar.txt"], gtfs_files["calendar_dates.txt"]),
       minischedule_runs: minischedule_runs,
       minischedule_blocks: minischedule_blocks

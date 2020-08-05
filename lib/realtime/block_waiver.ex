@@ -37,7 +37,7 @@ defmodule Realtime.BlockWaiver do
   def block_waivers_for_block(nil, _), do: []
 
   def block_waivers_for_block(block, stop_time_updates_by_trip) do
-    block
+    block.trips
     |> Enum.flat_map(&trip_stop_time_waivers(&1, stop_time_updates_by_trip))
     |> group_consecutive_sequences()
     |> Enum.map(&from_trip_stop_time_waivers(&1, date_for_block(block)))

@@ -2,7 +2,7 @@ defmodule Realtime.TimepointStatusTest do
   use ExUnit.Case
   import Test.Support.Helpers
 
-  alias Schedule.Trip
+  alias Schedule.{Block, Trip}
   alias Schedule.Gtfs.{Stop, StopTime}
   alias Realtime.TimepointStatus
 
@@ -226,153 +226,75 @@ defmodule Realtime.TimepointStatusTest do
   end
 
   describe "scheduled_location/2" do
-    test "returns the first stop if the block hasn't started yet" do
-      block = [
-        %Trip{
-          id: "1",
-          block_id: "S28-2",
-          route_id: "28",
-          service_id: "service",
-          headsign: "headsign",
-          direction_id: 1,
-          route_pattern_id: "28-_-1",
-          run_id: "run1",
-          stop_times: [
-            %StopTime{
-              stop_id: "6553",
-              time: Util.Time.parse_hhmmss("12:01:00"),
-              timepoint_id: "tp1"
-            },
-            %StopTime{
-              stop_id: "6555",
-              time: Util.Time.parse_hhmmss("12:02:00"),
-              timepoint_id: "tp2"
-            }
-          ],
-          start_time: Util.Time.parse_hhmmss("12:01:00"),
-          end_time: Util.Time.parse_hhmmss("12:02:00")
-        }
-      ]
-
+    setup do
       # 2019-01-01 12:00:00 EST
-      now = 1_546_362_000
+      time0 = 1_546_362_000
+      time_of_day0 = Util.Time.parse_hhmmss("12:00:00")
 
-      assert TimepointStatus.scheduled_location(block, now) == %{
-               route_id: "28",
-               direction_id: 1,
-               trip_id: "1",
-               run_id: "run1",
-               time_since_trip_start_time: -60,
-               headsign: "headsign",
-               via_variant: "_",
-               timepoint_status: %{
-                 timepoint_id: "tp1",
-                 fraction_until_timepoint: 0.0
-               }
-             }
+      trip0 = %Trip{
+        id: "0",
+        block_id: "block",
+        route_id: "28",
+        service_id: "service",
+        headsign: "headsign0",
+        direction_id: 0,
+        route_pattern_id: "28-_-1",
+        run_id: "run",
+        stop_times: [
+          %StopTime{
+            stop_id: "3",
+            time: time_of_day0 + 3,
+            timepoint_id: "tp3"
+          },
+          %StopTime{
+            stop_id: "5",
+            time: time_of_day0 + 5,
+            timepoint_id: "tp5"
+          }
+        ],
+        start_time: time_of_day0 + 3,
+        end_time: time_of_day0 + 5
+      }
+
+      trip1 = %Trip{
+        id: "1",
+        block_id: "S28-2",
+        route_id: "28",
+        service_id: "service",
+        headsign: "headsign1",
+        direction_id: 1,
+        route_pattern_id: "28-_-1",
+        run_id: "run",
+        stop_times: [
+          %StopTime{stop_id: "7", time: time_of_day0 + 7, timepoint_id: "tp7"},
+          %StopTime{stop_id: "9", time: time_of_day0 + 9, timepoint_id: nil},
+          %StopTime{stop_id: "11", time: time_of_day0 + 11, timepoint_id: "tp11"}
+        ],
+        start_time: time_of_day0 + 7,
+        end_time: time_of_day0 + 11
+      }
+
+      block = %Block{
+        id: "block",
+        service_id: "service",
+        start_time: time_of_day0 + 1,
+        end_time: time_of_day0 + 13,
+        trips: [trip0, trip1]
+      }
+
+      %{block: block, time0: time0}
     end
 
-    test "returns the last stop if the block has finished" do
-      block = [
-        %Trip{
-          id: "1",
-          block_id: "S28-2",
-          route_id: "28",
-          service_id: "service",
-          headsign: "headsign",
-          direction_id: 1,
-          route_pattern_id: "28-_-1",
-          run_id: "run1",
-          stop_times: [
-            %StopTime{
-              stop_id: "6553",
-              time: Util.Time.parse_hhmmss("11:01:00"),
-              timepoint_id: "tp1"
-            },
-            %StopTime{
-              stop_id: "6555",
-              time: Util.Time.parse_hhmmss("11:02:00"),
-              timepoint_id: "tp2"
-            }
-          ],
-          start_time: Util.Time.parse_hhmmss("11:01:00"),
-          end_time: Util.Time.parse_hhmmss("11:02:00")
-        }
-      ]
-
-      # 2019-01-01 12:00:00 EST
-      now = 1_546_362_000
+    test "returns the first stop if the block hasn't started yet", %{block: block, time0: time0} do
+      now = time0
 
       assert TimepointStatus.scheduled_location(block, now) == %{
                route_id: "28",
-               direction_id: 1,
-               trip_id: "1",
-               run_id: "run1",
-               time_since_trip_start_time: 3540,
-               headsign: "headsign",
-               via_variant: "_",
-               timepoint_status: %{
-                 timepoint_id: "tp2",
-                 fraction_until_timepoint: 0.0
-               }
-             }
-    end
-
-    test "returns the first stop of the next trip if it's in a layover" do
-      block = [
-        %Trip{
-          id: "0",
-          block_id: "S28-2",
-          route_id: "28",
-          service_id: "service",
-          headsign: "headsign",
-          direction_id: 0,
-          route_pattern_id: "28-_-0",
-          run_id: "run1",
-          stop_times: [
-            %StopTime{
-              stop_id: "6553",
-              time: Util.Time.parse_hhmmss("11:01:00"),
-              timepoint_id: "tp1"
-            },
-            %StopTime{
-              stop_id: "6555",
-              time: Util.Time.parse_hhmmss("11:02:00"),
-              timepoint_id: "tp2"
-            }
-          ]
-        },
-        %Trip{
-          id: "1",
-          block_id: "S28-2",
-          route_id: "28",
-          service_id: "service",
-          headsign: "headsign",
-          direction_id: 1,
-          route_pattern_id: "28-_-1",
-          run_id: "run1",
-          stop_times: [
-            %StopTime{
-              stop_id: "6553",
-              time: Util.Time.parse_hhmmss("12:03:00"),
-              timepoint_id: "tp3"
-            }
-          ],
-          start_time: Util.Time.parse_hhmmss("12:03:00"),
-          end_time: Util.Time.parse_hhmmss("12:03:00")
-        }
-      ]
-
-      # 2019-01-01 12:00:00 EST
-      now = 1_546_362_000
-
-      assert TimepointStatus.scheduled_location(block, now) == %{
-               route_id: "28",
-               direction_id: 1,
-               trip_id: "1",
-               run_id: "run1",
-               time_since_trip_start_time: -180,
-               headsign: "headsign",
+               direction_id: 0,
+               trip_id: "0",
+               run_id: "run",
+               time_since_trip_start_time: 0 - 3,
+               headsign: "headsign0",
                via_variant: "_",
                timepoint_status: %{
                  timepoint_id: "tp3",
@@ -381,48 +303,110 @@ defmodule Realtime.TimepointStatusTest do
              }
     end
 
-    test "returns the next timepoint it's scheduled to be at if in the middle of a trip" do
-      block = [
-        %Trip{
-          id: "1",
-          block_id: "S28-2",
-          route_id: "28",
-          service_id: "service",
-          headsign: "headsign",
-          direction_id: 1,
-          route_pattern_id: "28-_-1",
-          run_id: "run1",
-          stop_times: [
-            %StopTime{stop_id: "1", time: Util.Time.parse_hhmmss("12:05:00"), timepoint_id: "1"},
-            %StopTime{stop_id: "2", time: Util.Time.parse_hhmmss("12:10:00"), timepoint_id: "2"},
-            %StopTime{stop_id: "3", time: Util.Time.parse_hhmmss("12:20:00"), timepoint_id: "3"}
-          ],
-          start_time: Util.Time.parse_hhmmss("12:05:00"),
-          end_time: Util.Time.parse_hhmmss("12:20:00")
-        }
-      ]
+    test "returns the first stop if the block is scheduled to be pulling out", %{
+      block: block,
+      time0: time0
+    } do
+      now = time0 + 2
 
-      # 2019-01-01 12:17:30 EST
-      now = 1_546_363_050
+      assert TimepointStatus.scheduled_location(block, now) == %{
+               route_id: "28",
+               direction_id: 0,
+               trip_id: "0",
+               run_id: "run",
+               time_since_trip_start_time: 2 - 3,
+               headsign: "headsign0",
+               via_variant: "_",
+               timepoint_status: %{
+                 timepoint_id: "tp3",
+                 fraction_until_timepoint: 0.0
+               }
+             }
+    end
+
+    test "returns the last stop if the block is scheduled to be pulling back", %{
+      block: block,
+      time0: time0
+    } do
+      now = time0 + 12
 
       assert TimepointStatus.scheduled_location(block, now) == %{
                route_id: "28",
                direction_id: 1,
                trip_id: "1",
-               run_id: "run1",
-               time_since_trip_start_time: 750,
-               headsign: "headsign",
+               run_id: "run",
+               time_since_trip_start_time: 12 - 7,
+               headsign: "headsign1",
                via_variant: "_",
                timepoint_status: %{
-                 timepoint_id: "3",
+                 timepoint_id: "tp11",
+                 fraction_until_timepoint: 0.0
+               }
+             }
+    end
+
+    test "returns the last stop if the block has finished", %{block: block, time0: time0} do
+      now = time0 + 15
+
+      assert TimepointStatus.scheduled_location(block, now) == %{
+               route_id: "28",
+               direction_id: 1,
+               trip_id: "1",
+               run_id: "run",
+               time_since_trip_start_time: 15 - 7,
+               headsign: "headsign1",
+               via_variant: "_",
+               timepoint_status: %{
+                 timepoint_id: "tp11",
+                 fraction_until_timepoint: 0.0
+               }
+             }
+    end
+
+    test "returns the first stop of the next trip if it's in a layover", %{
+      block: block,
+      time0: time0
+    } do
+      now = time0 + 6
+
+      assert TimepointStatus.scheduled_location(block, now) == %{
+               route_id: "28",
+               direction_id: 1,
+               trip_id: "1",
+               run_id: "run",
+               time_since_trip_start_time: 6 - 7,
+               headsign: "headsign1",
+               via_variant: "_",
+               timepoint_status: %{
+                 timepoint_id: "tp7",
+                 fraction_until_timepoint: 0.0
+               }
+             }
+    end
+
+    test "returns the next timepoint it's scheduled to be at if in the middle of a trip", %{
+      block: block,
+      time0: time0
+    } do
+      now = time0 + 10
+
+      assert TimepointStatus.scheduled_location(block, now) == %{
+               route_id: "28",
+               direction_id: 1,
+               trip_id: "1",
+               run_id: "run",
+               time_since_trip_start_time: 10 - 7,
+               headsign: "headsign1",
+               via_variant: "_",
+               timepoint_status: %{
+                 timepoint_id: "tp11",
                  fraction_until_timepoint: 0.25
                }
              }
     end
 
-    test "returns nil if we can't find the block" do
-      # 2019-01-01 12:00:00 EST
-      now = 1_546_362_000
+    test "returns nil if we can't find the block", %{time0: time0} do
+      now = time0
       assert TimepointStatus.scheduled_location(nil, now) == nil
     end
   end

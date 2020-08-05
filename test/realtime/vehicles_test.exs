@@ -2,7 +2,7 @@ defmodule Realtime.VehiclesTest do
   use ExUnit.Case
   import Test.Support.Helpers
 
-  alias Schedule.Trip
+  alias Schedule.{Block, Trip}
   alias Schedule.Gtfs.StopTime
   alias Realtime.{BlockWaiver, Ghost, Vehicle, Vehicles}
 
@@ -69,7 +69,7 @@ defmodule Realtime.VehiclesTest do
       assert Vehicles.group_by_route_with_blocks(
                ungrouped_vehicles,
                pulling_out_blocks_by_route,
-               [],
+               %{},
                0
              ) == %{
                "route" => [on_route_vehicle, laying_over_vehicle, pulling_out_vehicle]
@@ -137,7 +137,7 @@ defmodule Realtime.VehiclesTest do
       assert Vehicles.group_by_route_with_blocks(
                ungrouped_vehicles,
                incoming_blocks_by_route,
-               [],
+               %{},
                0
              ) == %{
                "route1" => [vehicle],
@@ -179,7 +179,7 @@ defmodule Realtime.VehiclesTest do
       assert Vehicles.group_by_route_with_blocks(
                ungrouped_vehicles,
                incoming_blocks_by_route,
-               [],
+               %{},
                0
              ) == %{
                "route2" => [vehicle]
@@ -205,7 +205,7 @@ defmodule Realtime.VehiclesTest do
         end_time: 0
       }
 
-      block = [trip]
+      block = Block.block_from_trips([trip])
 
       # 2019-12-20 00:00:00
       time0 = 1_576_818_000
@@ -287,7 +287,7 @@ defmodule Realtime.VehiclesTest do
         end_time: 0
       }
 
-      block = [trip]
+      block = Block.block_from_trips([trip])
 
       # 2019-12-20 00:00:00
       time0 = 1_576_818_000
@@ -324,7 +324,7 @@ defmodule Realtime.VehiclesTest do
         end_time: 1
       }
 
-      block = [trip]
+      block = Block.block_from_trips([trip])
       # 2019-12-20 00:00:00
       time0 = 1_576_818_000
 
@@ -412,7 +412,7 @@ defmodule Realtime.VehiclesTest do
         end_time: 4
       }
 
-      block = [trip1, trip2]
+      block = Block.block_from_trips([trip1, trip2])
 
       # 2019-12-20 00:00:00
       time0 = 1_576_818_000

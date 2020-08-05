@@ -144,16 +144,12 @@ defmodule Realtime.TimepointStatus do
     nil
   end
 
-  def scheduled_location([], _now) do
-    nil
-  end
-
   def scheduled_location(block, now) do
     now_time_of_day =
       Util.Time.next_time_of_day_for_timestamp_after(
         now,
         # Allow a little wiggle room in case a bus appears just before its block starts
-        Util.Time.time_of_day_add_minutes(Block.start_time(block), -60)
+        Util.Time.time_of_day_add_minutes(block.start_time, -60)
       )
 
     trip = Block.trip_at_time(block, now_time_of_day)
@@ -179,7 +175,8 @@ defmodule Realtime.TimepointStatus do
               run_id: trip.run_id,
               time_since_trip_start_time: now_time_of_day - trip.start_time,
               headsign: trip.headsign,
-              via_variant: RoutePattern.via_variant(trip.route_pattern_id),
+              via_variant:
+                trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id),
               timepoint_status: timepoint_status
             }
         end

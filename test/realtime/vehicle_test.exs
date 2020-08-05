@@ -3,7 +3,7 @@ defmodule Realtime.VehicleTest do
   import Test.Support.Helpers
 
   alias Concentrate.{DataDiscrepancy, VehiclePosition}
-  alias Schedule.Trip
+  alias Schedule.{Block, Trip}
   alias Schedule.Gtfs.StopTime
   alias Realtime.{BlockWaiver, Vehicle}
 
@@ -80,7 +80,7 @@ defmodule Realtime.VehicleTest do
 
       reassign_env(:realtime, :block_fn, fn block_id, service_id ->
         if block_id == trip.block_id and service_id == trip.service_id do
-          [trip]
+          Block.block_from_trips([trip])
         else
           nil
         end
@@ -307,26 +307,13 @@ defmodule Realtime.VehicleTest do
 
   describe "active_block?" do
     setup do
-      block = [
-        %Trip{
-          id: "1",
-          block_id: "S28-2",
-          stop_times: [
-            %StopTime{
-              stop_id: "6553",
-              time: Util.Time.parse_hhmmss("11:01:00"),
-              timepoint_id: "tp1"
-            },
-            %StopTime{
-              stop_id: "6555",
-              time: Util.Time.parse_hhmmss("11:59:00"),
-              timepoint_id: "tp2"
-            }
-          ],
-          start_time: Util.Time.parse_hhmmss("11:59:00"),
-          end_time: Util.Time.parse_hhmmss("11:59:00")
-        }
-      ]
+      block = %Block{
+        id: "block",
+        service_id: "service",
+        start_time: Util.Time.parse_hhmmss("11:01:00"),
+        end_time: Util.Time.parse_hhmmss("11:59:00"),
+        trips: []
+      }
 
       {:ok, block: block}
     end
@@ -408,7 +395,7 @@ defmodule Realtime.VehicleTest do
         ]
       }
 
-      block = [trip1, trip2]
+      block = Block.block_from_trips([trip1, trip2])
 
       {:ok, trip1: trip1, trip2: trip2, block: block}
     end
@@ -504,7 +491,7 @@ defmodule Realtime.VehicleTest do
         ]
       }
 
-      block = [first_trip, last_trip_of_run, last_trip_of_block]
+      block = Block.block_from_trips([first_trip, last_trip_of_run, last_trip_of_block])
 
       {:ok,
        first_trip: first_trip,
@@ -581,9 +568,15 @@ defmodule Realtime.VehicleTest do
     end
 
     test "defaults to :another_trip if the trip isn't in the block", %{
-      last_trip_of_block: last_trip_of_block
+      last_trip_of_block: last_trip_of_block,
+      block: block
     } do
-      assert Vehicle.end_of_trip_type([], last_trip_of_block, "run2", "middle") == :another_trip
+      assert Vehicle.end_of_trip_type(
+               block,
+               %{last_trip_of_block | id: "not_in_this_block"},
+               "run2",
+               "middle"
+             ) == :another_trip
     end
   end
 

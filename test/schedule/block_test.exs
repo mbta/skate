@@ -2,7 +2,7 @@ defmodule Schedule.BlockTest do
   use ExUnit.Case, async: true
 
   alias Schedule.Block
-  alias Schedule.Trip
+  alias Schedule.{Block, Trip}
   alias Schedule.Gtfs.StopTime
 
   @trip1 %Trip{
@@ -29,14 +29,25 @@ defmodule Schedule.BlockTest do
     end_time: 7
   }
 
-  @block [@trip1, @trip2]
+  @block %Block{
+    id: "b",
+    service_id: "service",
+    start_time: 3,
+    end_time: 7,
+    trips: [@trip1, @trip2]
+  }
 
-  describe "group_trips_by_block/ and get/3 " do
-    test "can group trips and then get them" do
-      assert [@trip1] ==
-               [@trip1]
-               |> Block.group_trips_by_block()
-               |> Block.get(@trip1.block_id, @trip1.service_id)
+  describe "blocks_from_trips/ and get/3 " do
+    test "can create blocks and then get them" do
+      by_id = Block.blocks_from_trips([@trip1])
+
+      assert Block.get(by_id, @trip1.block_id, @trip1.service_id) == %Block{
+               id: @trip1.block_id,
+               service_id: @trip1.service_id,
+               start_time: 3,
+               end_time: 4,
+               trips: [@trip1]
+             }
     end
 
     test "sorts trips by time" do
@@ -61,9 +72,9 @@ defmodule Schedule.BlockTest do
         }
       ]
 
-      assert [%Trip{id: "t1"}, %Trip{id: "t2"}] =
+      assert %Block{trips: [%Trip{id: "t1"}, %Trip{id: "t2"}]} =
                trips
-               |> Block.group_trips_by_block()
+               |> Block.blocks_from_trips()
                |> Block.get("b", "service")
     end
 
@@ -72,31 +83,7 @@ defmodule Schedule.BlockTest do
         %{@trip1 | stop_times: []}
       ]
 
-      assert Block.group_trips_by_block(trips) == %{}
-    end
-  end
-
-  describe "start_time/1" do
-    test "returns the time of the first stop of the first trip for this block" do
-      assert Block.start_time(@block) == 3
-    end
-  end
-
-  describe "end_time/1" do
-    test "returns the time of the last stop of the last trip for this block" do
-      assert Block.end_time(@block) == 7
-    end
-  end
-
-  describe "first_trip/1" do
-    test "returns the first trip of the block" do
-      assert Block.first_trip(@block) == @trip1
-    end
-  end
-
-  describe "last_trip/1" do
-    test "returns the last trip of the block" do
-      assert Block.last_trip(@block) == @trip2
+      assert Block.blocks_from_trips(trips) == %{}
     end
   end
 
