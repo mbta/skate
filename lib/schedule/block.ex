@@ -52,7 +52,7 @@ defmodule Schedule.Block do
     |> Helpers.map_values(fn trips ->
       block_id = List.first(trips).block_id
       schedule_id = List.first(trips).schedule_id
-      deadheads = nonrevenue_trips[{block_id, schedule_id}] || []
+      deadheads = Map.get(nonrevenue_trips, {block_id, schedule_id}, [])
       block_from_trips(trips, deadheads)
     end)
   end
@@ -61,7 +61,7 @@ defmodule Schedule.Block do
   def block_from_trips(revenue_trips, nonrevenue_trips \\ []) do
     revenue_trips = Enum.sort_by(revenue_trips, & &1.start_time)
     nonrevenue_trips = Enum.sort_by(nonrevenue_trips, & &1.start_time)
-    [first_trip | _] = revenue_trips
+    first_trip = List.first(revenue_trips)
 
     start_time =
       if nonrevenue_trips == [] do
