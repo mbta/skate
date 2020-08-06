@@ -64,7 +64,8 @@ defmodule Skate.Application do
       :geonames_url_base,
       :geonames_token,
       :sentry_frontend_dsn,
-      SkateWeb.Endpoint
+      SkateWeb.Endpoint,
+      Skate.Repo
     ]
 
     for application_key <- application_keys do
@@ -93,6 +94,10 @@ defmodule Skate.Application do
 
   defp runtime_config({:system, environment_variable}) do
     System.get_env(environment_variable)
+  end
+
+  defp runtime_config({:system, environment_variable, default}) do
+    System.get_env(environment_variable) || default
   end
 
   defp runtime_config({:secret, secret_variable}) do

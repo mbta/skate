@@ -91,9 +91,9 @@ config :skate, SkateWeb.AuthManager,
   secret_key: nil
 
 config :skate, Skate.Repo,
-  user: System.get_env("POSTGRES_USERNAME"),
-  password: System.get_env("POSTGRES_PASSWORD"),
-  hostname: System.get_env("POSTGRES_HOSTNAME")
+  user: {:system, "POSTGRES_USERNAME", System.get_env("USER")},
+  password: {:system, "POSTGRES_PASSWORD", ""},
+  hostname: {:system, "POSTGRES_HOSTNAME", "localhost"}
 
 config :laboratory,
   features: [
