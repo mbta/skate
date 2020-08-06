@@ -1,10 +1,12 @@
 .m-settings-page__row {
   align-items: baseline;
   display: flex;
+  justify-content: space-between;
 }
 
 .m-settings-page__icon {
   align-self: normal;
+  flex: 0 1 auto;
   margin: 0.2rem 0.5rem 0 0;
 }
 
@@ -16,14 +18,13 @@
 
 .m-settings-page__label {
   @include font-body;
-  flex: 1 0 auto;
-  margin-right: 2rem;
+  flex: 1 1 6rem;
 }
 
 .m-settings-page__select {
   background-color: $color-bg-base;
+  flex: 1 0 6.5rem;
   height: 2rem;
   margin-bottom: 0.7rem;
-  min-width: 9.5rem;
   padding-left: 0.4rem;
 }
