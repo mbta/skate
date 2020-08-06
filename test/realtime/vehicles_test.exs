@@ -70,6 +70,7 @@ defmodule Realtime.VehiclesTest do
                ungrouped_vehicles,
                pulling_out_blocks_by_route,
                %{},
+               %{},
                0
              ) == %{
                "route" => [on_route_vehicle, laying_over_vehicle, pulling_out_vehicle]
@@ -87,7 +88,7 @@ defmodule Realtime.VehiclesTest do
         route_id: "route1",
         trip_id: "trip",
         bearing: 0,
-        block_id: "block",
+        block_id: "block1",
         operator_id: "",
         operator_name: "",
         operator_logon_time: nil,
@@ -114,7 +115,7 @@ defmodule Realtime.VehiclesTest do
         route_id: "route2",
         trip_id: "trip",
         bearing: 0,
-        block_id: "block",
+        block_id: "block2",
         operator_id: "",
         operator_name: "",
         operator_logon_time: nil,
@@ -133,7 +134,7 @@ defmodule Realtime.VehiclesTest do
 
       trip = %Trip{
         id: "trip",
-        block_id: "block",
+        block_id: "block1",
         route_id: "route2",
         service_id: "service",
         headsign: "headsign2",
@@ -155,6 +156,7 @@ defmodule Realtime.VehiclesTest do
                ungrouped_vehicles,
                [trip],
                %{},
+               %{"block1" => ~D[2019-12-20], "block2" => ~D[2019-12-20]},
                0
              ) == %{
                "route1" => [vehicle],
@@ -214,6 +216,7 @@ defmodule Realtime.VehiclesTest do
                ungrouped_vehicles,
                [trip],
                %{},
+               %{},
                0
              ) == %{
                "route2" => [vehicle]
@@ -271,6 +274,7 @@ defmodule Realtime.VehiclesTest do
                  [],
                  %{},
                  %{~D[2019-12-20] => [block]},
+                 %{[block.id] => ~D[2019-12-20]},
                  time0
                )
     end
@@ -330,6 +334,7 @@ defmodule Realtime.VehiclesTest do
                [vehicle],
                %{},
                %{~D[2019-12-20] => [block]},
+               %{block.id => ~D[2019-12-20]},
                time0
              ) == %{
                "route" => [vehicle]
@@ -362,6 +367,7 @@ defmodule Realtime.VehiclesTest do
       time0 = 1_576_818_000
 
       blocks_by_date = %{~D[2019-12-20] => [block]}
+      date_by_block_id = %{block.id => ~D[2019-12-20]}
 
       assert %{
                "route" => [ghost]
@@ -370,6 +376,7 @@ defmodule Realtime.VehiclesTest do
                  vehicles,
                  [trip],
                  blocks_by_date,
+                 date_by_block_id,
                  time0
                )
 
@@ -446,6 +453,7 @@ defmodule Realtime.VehiclesTest do
       time0 = 1_576_818_000
 
       blocks_by_date = %{~D[2019-12-20] => [block]}
+      date_by_block_id = %{block.id => ~D[2019-12-20]}
 
       ghost = %Ghost{
         id: "ghost-trip1",
@@ -477,6 +485,7 @@ defmodule Realtime.VehiclesTest do
                vehicles,
                [trip1, trip2],
                blocks_by_date,
+               date_by_block_id,
                time0 + 2
              ) == %{
                "route1" => [ghost],
@@ -623,6 +632,7 @@ defmodule Realtime.VehiclesTest do
       block = Block.block_from_trips([trip_1, trip_2, trip_3])
       ungrouped_vehicles = [vehicle_1, vehicle_2, vehicle_3]
       blocks_by_date = %{~D[2019-12-20] => [block]}
+      date_by_block_id = %{block.id => ~D[2019-12-20]}
 
       # 2019-12-20 00:00:00
       time0 = 1_576_818_000
@@ -636,6 +646,7 @@ defmodule Realtime.VehiclesTest do
                  ungrouped_vehicles,
                  block.trips,
                  blocks_by_date,
+                 date_by_block_id,
                  time0 + 2
                )
                |> Map.fetch!("route99")
