@@ -21,13 +21,13 @@ exports[`SettingsPage renders 1`] = `
         Vehicle Label
       </h2>
       <div
-        className="c-page__section-row"
+        className="m-settings-page__row"
       >
         <div
-          className="c-page__section-row-icon"
+          className="m-settings-page__icon"
         >
           <span
-            className="c-page__section-row-icon-path"
+            className="m-settings-page__icon-path"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -36,12 +36,12 @@ exports[`SettingsPage renders 1`] = `
           />
         </div>
         <div
-          className="c-page__section-row-label"
+          className="m-settings-page__label"
         >
           Route Ladders
         </div>
         <select
-          className="c-page__select"
+          className="m-settings-page__select"
           id="ladder-vehicle-label-setting"
           onChange={[Function]}
           value={1}
@@ -59,13 +59,13 @@ exports[`SettingsPage renders 1`] = `
         </select>
       </div>
       <div
-        className="c-page__section-row"
+        className="m-settings-page__row"
       >
         <div
-          className="c-page__section-row-icon"
+          className="m-settings-page__icon"
         >
           <span
-            className="c-page__section-row-icon-path"
+            className="m-settings-page__icon-path"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
@@ -74,12 +74,12 @@ exports[`SettingsPage renders 1`] = `
           />
         </div>
         <div
-          className="c-page__section-row-label"
+          className="m-settings-page__label"
         >
           Map
         </div>
         <select
-          className="c-page__select"
+          className="m-settings-page__select"
           id="map-vehicle-label-setting"
           onChange={[Function]}
           value={2}

@@ -29,39 +29,3 @@
   @include font-emph;
   font-weight: bold;
 }
-
-.c-page__section-row {
-  display: flex;
-  align-items: baseline;
-}
-
-.c-page__section-row-icon {
-  align-self: normal;
-  margin: 0.2rem 0.5rem 0 0;
-}
-
-.c-page__section-row-icon-path {
-  display: block;
-  fill: $color-primary;
-  width: 24px;
-}
-
-.c-page__section-row-label {
-  @include font-body;
-  flex: 1 0 auto;
-  margin-right: 2rem;
-}
-
-.c-page__link {
-  @include button-primary;
-  display: block;
-  text-align: center;
-}
-
-.c-page__select {
-  background-color: $color-bg-base;
-  height: 2rem;
-  margin-bottom: 0.7rem;
-  min-width: 9.5rem;
-  padding-left: 0.4rem;
-}

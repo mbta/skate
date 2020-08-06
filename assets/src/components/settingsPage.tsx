@@ -33,14 +33,14 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
         <div className="c-page__section">
           <h2 className="c-page__header">Vehicle Label</h2>
 
-          <div className="c-page__section-row">
-            <div className="c-page__section-row-icon">
-              {ladderIcon("c-page__section-row-icon-path")}
+          <div className="m-settings-page__row">
+            <div className="m-settings-page__icon">
+              {ladderIcon("m-settings-page__icon-path")}
             </div>
-            <div className="c-page__section-row-label">Route Ladders</div>
+            <div className="m-settings-page__label">Route Ladders</div>
             <select
               id="ladder-vehicle-label-setting"
-              className="c-page__select"
+              className="m-settings-page__select"
               value={settings.ladderVehicleLabel}
               onChange={setLadderVehicleLabel(dispatch)}
             >
@@ -51,14 +51,14 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
             </select>
           </div>
 
-          <div className="c-page__section-row">
-            <div className="c-page__section-row-icon">
-              {mapIcon("c-page__section-row-icon-path")}
+          <div className="m-settings-page__row">
+            <div className="m-settings-page__icon">
+              {mapIcon("m-settings-page__icon-path")}
             </div>
-            <div className="c-page__section-row-label">Map</div>
+            <div className="m-settings-page__label">Map</div>
             <select
               id="map-vehicle-label-setting"
-              className="c-page__select"
+              className="m-settings-page__select"
               value={settings.shuttleVehicleLabel}
               onChange={setShuttleVehicleLabel(dispatch)}
             >
