@@ -620,8 +620,9 @@ defmodule Realtime.VehiclesTest do
         end_time: 6
       }
 
+      block = Block.block_from_trips([trip_1, trip_2, trip_3])
       ungrouped_vehicles = [vehicle_1, vehicle_2, vehicle_3]
-      blocks_by_date = %{~D[2019-12-20] => [[trip_1, trip_2, trip_3]]}
+      blocks_by_date = %{~D[2019-12-20] => [block]}
 
       # 2019-12-20 00:00:00
       time0 = 1_576_818_000
@@ -633,7 +634,7 @@ defmodule Realtime.VehiclesTest do
              ] =
                Vehicles.group_by_route_with_blocks(
                  ungrouped_vehicles,
-                 [trip_1, trip_2, trip_3],
+                 block.trips,
                  blocks_by_date,
                  time0 + 2
                )
