@@ -17,18 +17,13 @@ defmodule Realtime.Vehicles do
     # Includes blocks that are scheduled to be pulling out
     active_blocks_by_date = Schedule.active_blocks(now, now)
 
-    date_by_block_id =
-      Schedule.active_blocks(now, in_fifteen_minutes)
-      |> Enum.flat_map(fn {date, blocks} ->
-        Enum.map(blocks, &{&1.id, date})
-      end)
-      |> Map.new()
+    potential_interlining_blocks_by_date = Schedule.active_blocks(now, in_fifteen_minutes)
 
     group_by_route_with_blocks(
       ungrouped_vehicles,
       incoming_trips,
       active_blocks_by_date,
-      date_by_block_id,
+      potential_interlining_blocks_by_date,
       now
     )
   end
@@ -40,7 +35,7 @@ defmodule Realtime.Vehicles do
           [Vehicle.t()],
           [Trip.t()],
           %{Date.t() => [Block.t()]},
-          %{Block.id() => Date.t()},
+          %{Date.t() => [Block.t()]},
           Util.Time.timestamp()
         ) ::
           Route.by_id([VehicleOrGhost.t()])
@@ -48,7 +43,7 @@ defmodule Realtime.Vehicles do
         ungrouped_vehicles,
         incoming_trips,
         active_blocks_by_date,
-        date_by_block_id,
+        potential_interlining_blocks_by_date,
         now
       ) do
     ghosts = Ghost.ghosts(active_blocks_by_date, ungrouped_vehicles, now)
@@ -62,6 +57,13 @@ defmodule Realtime.Vehicles do
     |> Map.merge(incoming_from_another_route, fn route_id, on_route, interlining ->
       {pulling_out, not_pulling_out} =
         Enum.split_with(on_route, &(&1.route_status == :pulling_out))
+
+      date_by_block_id =
+        potential_interlining_blocks_by_date
+        |> Enum.flat_map(fn {date, blocks} ->
+          Enum.map(blocks, &{&1.id, date})
+        end)
+        |> Map.new()
 
       not_pulling_out ++
         sort_incoming_vehicles_and_ghosts(
