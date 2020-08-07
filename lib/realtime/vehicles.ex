@@ -10,8 +10,7 @@ defmodule Realtime.Vehicles do
   @spec group_by_route([Vehicle.t()]) :: Route.by_id([VehicleOrGhost.t()])
   def group_by_route(ungrouped_vehicles) do
     now = Util.Time.now()
-    # TODO: don't merge this, even though it would be sort of funny.
-    in_fifteen_minutes = now + 150 * 60
+    in_fifteen_minutes = now + 15 * 60
 
     # We show vehicles incoming from another route if they'll start the new route within 15 minutes
     incoming_trips = Schedule.active_trips(now, in_fifteen_minutes)
@@ -25,24 +24,13 @@ defmodule Realtime.Vehicles do
       end)
       |> Map.new()
 
-    result =
-      group_by_route_with_blocks(
-        ungrouped_vehicles,
-        incoming_trips,
-        active_blocks_by_date,
-        date_by_block_id,
-        now
-      )
-
-    ## TODO: don't forget to take this bit out before you merge
-    result
-    |> Enum.map(fn {k, v} ->
-      {k, v |> Enum.map(& &1.route_id) |> Enum.filter(&(&1 != k))}
-    end)
-    |> Enum.reject(fn {_k, v} -> length(v) == 0 end)
-    |> IO.inspect()
-
-    result
+    group_by_route_with_blocks(
+      ungrouped_vehicles,
+      incoming_trips,
+      active_blocks_by_date,
+      date_by_block_id,
+      now
+    )
   end
 
   @doc """
