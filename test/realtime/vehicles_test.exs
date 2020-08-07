@@ -494,6 +494,9 @@ defmodule Realtime.VehiclesTest do
     end
 
     test "orders vehicles/ghosts by the time that they enter the route" do
+      # 2019-12-20 00:00:00
+      time0 = 1_576_818_000
+
       vehicle_1 = %Vehicle{
         id: "on_route_1",
         label: "on_route_1",
@@ -575,6 +578,33 @@ defmodule Realtime.VehiclesTest do
         end_of_trip_type: :another_trip
       }
 
+      vehicle_4 = %Vehicle{
+        id: "pulling_out",
+        label: "pulling_out",
+        timestamp: 0,
+        latitude: 0,
+        longitude: 0,
+        direction_id: 1,
+        route_id: "route99",
+        trip_id: nil,
+        bearing: 0,
+        block_id: "",
+        operator_id: "",
+        operator_name: "",
+        operator_logon_time: nil,
+        run_id: "",
+        headway_spacing: :ok,
+        is_shuttle: false,
+        is_overload: false,
+        is_off_course: false,
+        layover_departure_time: time0 + 5000,
+        block_is_active: true,
+        sources: "",
+        stop_status: "",
+        route_status: :pulling_out,
+        end_of_trip_type: :another_trip
+      }
+
       trip_1 = %Trip{
         id: "trip_1",
         block_id: "block_1",
@@ -585,12 +615,12 @@ defmodule Realtime.VehiclesTest do
         stop_times: [
           %StopTime{
             stop_id: "stop3",
-            time: 4,
+            time: 4000,
             timepoint_id: "t3"
           }
         ],
-        start_time: 4,
-        end_time: 4
+        start_time: 4000,
+        end_time: 4100
       }
 
       trip_2 = %Trip{
@@ -603,12 +633,12 @@ defmodule Realtime.VehiclesTest do
         stop_times: [
           %StopTime{
             stop_id: "stop3",
-            time: 2,
+            time: 2000,
             timepoint_id: "t3"
           }
         ],
-        start_time: 2,
-        end_time: 2
+        start_time: 2000,
+        end_time: 2100
       }
 
       trip_3 = %Trip{
@@ -621,30 +651,35 @@ defmodule Realtime.VehiclesTest do
         stop_times: [
           %StopTime{
             stop_id: "stop3",
-            time: 6,
+            time: 6000,
             timepoint_id: "t3"
           }
         ],
-        start_time: 6,
-        end_time: 6
+        start_time: 6000,
+        end_time: 6100
       }
 
-      block = Block.block_from_trips([trip_1, trip_2, trip_3])
-      ungrouped_vehicles = [vehicle_1, vehicle_2, vehicle_3]
-      blocks_by_date = %{~D[2019-12-20] => [block]}
-      date_by_block_id = %{block.id => ~D[2019-12-20]}
+      block_1 = Block.block_from_trips([trip_1])
+      block_2 = Block.block_from_trips([trip_2])
+      block_3 = Block.block_from_trips([trip_3])
+      ungrouped_vehicles = [vehicle_1, vehicle_2, vehicle_3, vehicle_4]
+      blocks_by_date = %{~D[2019-12-20] => [block_1, block_2, block_3]}
 
-      # 2019-12-20 00:00:00
-      time0 = 1_576_818_000
+      date_by_block_id = %{
+        block_1.id => ~D[2019-12-20],
+        block_2.id => ~D[2019-12-20],
+        block_3.id => ~D[2019-12-20]
+      }
 
       assert [
                %Vehicle{id: "on_route_2"},
                %Vehicle{id: "on_route_1"},
+               %Vehicle{id: "pulling_out"},
                %Vehicle{id: "on_nil_route"}
              ] =
                Vehicles.group_by_route_with_blocks(
                  ungrouped_vehicles,
-                 block.trips,
+                 [trip_1, trip_2, trip_3],
                  blocks_by_date,
                  date_by_block_id,
                  time0 + 2
