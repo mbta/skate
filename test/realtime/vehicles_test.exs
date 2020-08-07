@@ -70,6 +70,7 @@ defmodule Realtime.VehiclesTest do
                ungrouped_vehicles,
                pulling_out_blocks_by_route,
                %{},
+               %{},
                0
              ) == %{
                "route" => [on_route_vehicle, laying_over_vehicle, pulling_out_vehicle]
@@ -87,7 +88,7 @@ defmodule Realtime.VehiclesTest do
         route_id: "route1",
         trip_id: "trip",
         bearing: 0,
-        block_id: "block",
+        block_id: "block1",
         operator_id: "",
         operator_name: "",
         operator_logon_time: nil,
@@ -114,7 +115,7 @@ defmodule Realtime.VehiclesTest do
         route_id: "route2",
         trip_id: "trip",
         bearing: 0,
-        block_id: "block",
+        block_id: "block2",
         operator_id: "",
         operator_name: "",
         operator_logon_time: nil,
@@ -131,13 +132,52 @@ defmodule Realtime.VehiclesTest do
         end_of_trip_type: :another_trip
       }
 
+      trip_1 = %Trip{
+        id: "trip",
+        block_id: "block1",
+        route_id: "route2",
+        service_id: "service",
+        headsign: "headsign2",
+        direction_id: 0,
+        stop_times: [
+          %StopTime{
+            stop_id: "stop3",
+            time: 4,
+            timepoint_id: "t3"
+          }
+        ],
+        start_time: 4,
+        end_time: 4
+      }
+
+      trip_2 = %Trip{
+        id: "trip2",
+        block_id: "block2",
+        route_id: "route2",
+        service_id: "service",
+        headsign: "headsign2",
+        direction_id: 0,
+        stop_times: [
+          %StopTime{
+            stop_id: "stop3",
+            time: 4,
+            timepoint_id: "t3"
+          }
+        ],
+        start_time: 4,
+        end_time: 4
+      }
+
+      block_1 = Block.block_from_trips([trip_1])
+      block_2 = Block.block_from_trips([trip_2])
+
       ungrouped_vehicles = [vehicle, vehicle_2]
-      incoming_blocks_by_route = %{"route2" => ["block"]}
 
       assert Vehicles.group_by_route_with_blocks(
                ungrouped_vehicles,
-               incoming_blocks_by_route,
+               [trip_1],
                %{},
+               %{~D[2019-12-20] => [block_1, block_2]},
                0
              ) == %{
                "route1" => [vehicle],
@@ -173,12 +213,30 @@ defmodule Realtime.VehiclesTest do
         end_of_trip_type: :another_trip
       }
 
+      trip = %Trip{
+        id: "trip",
+        block_id: "block",
+        route_id: "route2",
+        service_id: "service",
+        headsign: "headsign",
+        direction_id: 0,
+        stop_times: [
+          %StopTime{
+            stop_id: "stop1",
+            time: 0,
+            timepoint_id: "timepoint"
+          }
+        ],
+        start_time: 0,
+        end_time: 0
+      }
+
       ungrouped_vehicles = [vehicle]
-      incoming_blocks_by_route = %{"route2" => ["block"]}
 
       assert Vehicles.group_by_route_with_blocks(
                ungrouped_vehicles,
-               incoming_blocks_by_route,
+               [trip],
+               %{},
                %{},
                0
              ) == %{
@@ -237,6 +295,7 @@ defmodule Realtime.VehiclesTest do
                  [],
                  %{},
                  %{~D[2019-12-20] => [block]},
+                 %{[block.id] => ~D[2019-12-20]},
                  time0
                )
     end
@@ -296,6 +355,7 @@ defmodule Realtime.VehiclesTest do
                [vehicle],
                %{},
                %{~D[2019-12-20] => [block]},
+               %{block.id => ~D[2019-12-20]},
                time0
              ) == %{
                "route" => [vehicle]
@@ -304,7 +364,6 @@ defmodule Realtime.VehiclesTest do
 
     test "includes scheduled pullout without a vehicle as a ghost" do
       vehicles = []
-      incoming_blocks_by_route = %{"route" => ["block"]}
 
       trip = %Trip{
         id: "trip",
@@ -335,7 +394,8 @@ defmodule Realtime.VehiclesTest do
              } =
                Vehicles.group_by_route_with_blocks(
                  vehicles,
-                 incoming_blocks_by_route,
+                 [trip],
+                 blocks_by_date,
                  blocks_by_date,
                  time0
                )
@@ -365,11 +425,6 @@ defmodule Realtime.VehiclesTest do
 
     test "includes ghosts that are incoming from another route" do
       vehicles = []
-
-      incoming_blocks_by_route = %{
-        "route1" => ["block"],
-        "route2" => ["block"]
-      }
 
       trip1 = %Trip{
         id: "trip1",
@@ -447,13 +502,202 @@ defmodule Realtime.VehiclesTest do
 
       assert Vehicles.group_by_route_with_blocks(
                vehicles,
-               incoming_blocks_by_route,
+               [trip1, trip2],
+               blocks_by_date,
                blocks_by_date,
                time0 + 2
              ) == %{
                "route1" => [ghost],
                "route2" => [ghost]
              }
+    end
+
+    test "orders vehicles/ghosts by the time that they enter the route" do
+      # 2019-12-20 00:00:00
+      time0 = 1_576_818_000
+
+      vehicle_1 = %Vehicle{
+        id: "on_route_1",
+        label: "on_route_1",
+        timestamp: 0,
+        latitude: 0,
+        longitude: 0,
+        direction_id: 1,
+        route_id: "route1",
+        trip_id: "trip",
+        bearing: 0,
+        block_id: "block_1",
+        operator_id: "",
+        operator_name: "",
+        operator_logon_time: nil,
+        run_id: "",
+        headway_spacing: :ok,
+        is_shuttle: false,
+        is_overload: false,
+        is_off_course: false,
+        layover_departure_time: nil,
+        block_is_active: true,
+        sources: "",
+        stop_status: "",
+        route_status: :on_route,
+        end_of_trip_type: :another_trip
+      }
+
+      vehicle_2 = %Vehicle{
+        id: "on_route_2",
+        label: "on_route_2",
+        timestamp: 0,
+        latitude: 0,
+        longitude: 0,
+        direction_id: 1,
+        route_id: "route2",
+        trip_id: "trip",
+        bearing: 0,
+        block_id: "block_2",
+        operator_id: "",
+        operator_name: "",
+        operator_logon_time: nil,
+        run_id: "",
+        headway_spacing: :ok,
+        is_shuttle: false,
+        is_overload: false,
+        is_off_course: false,
+        layover_departure_time: nil,
+        block_is_active: true,
+        sources: "",
+        stop_status: "",
+        route_status: :on_route,
+        end_of_trip_type: :another_trip
+      }
+
+      vehicle_3 = %Vehicle{
+        id: "on_nil_route",
+        label: "on_nil_route",
+        timestamp: 0,
+        latitude: 0,
+        longitude: 0,
+        direction_id: 1,
+        route_id: nil,
+        trip_id: "trip",
+        bearing: 0,
+        block_id: "block_3",
+        operator_id: "",
+        operator_name: "",
+        operator_logon_time: nil,
+        run_id: "",
+        headway_spacing: :ok,
+        is_shuttle: false,
+        is_overload: false,
+        is_off_course: false,
+        layover_departure_time: nil,
+        block_is_active: true,
+        sources: "",
+        stop_status: "",
+        route_status: :on_route,
+        end_of_trip_type: :another_trip
+      }
+
+      vehicle_4 = %Vehicle{
+        id: "pulling_out",
+        label: "pulling_out",
+        timestamp: 0,
+        latitude: 0,
+        longitude: 0,
+        direction_id: 1,
+        route_id: "route99",
+        trip_id: nil,
+        bearing: 0,
+        block_id: "",
+        operator_id: "",
+        operator_name: "",
+        operator_logon_time: nil,
+        run_id: "",
+        headway_spacing: :ok,
+        is_shuttle: false,
+        is_overload: false,
+        is_off_course: false,
+        layover_departure_time: time0 + 5000,
+        block_is_active: true,
+        sources: "",
+        stop_status: "",
+        route_status: :pulling_out,
+        end_of_trip_type: :another_trip
+      }
+
+      trip_1 = %Trip{
+        id: "trip_1",
+        block_id: "block_1",
+        route_id: "route99",
+        service_id: "service",
+        headsign: "headsign2",
+        direction_id: 0,
+        stop_times: [
+          %StopTime{
+            stop_id: "stop3",
+            time: 4000,
+            timepoint_id: "t3"
+          }
+        ],
+        start_time: 4000,
+        end_time: 4100
+      }
+
+      trip_2 = %Trip{
+        id: "trip_2",
+        block_id: "block_2",
+        route_id: "route99",
+        service_id: "service",
+        headsign: "headsign2",
+        direction_id: 0,
+        stop_times: [
+          %StopTime{
+            stop_id: "stop3",
+            time: 2000,
+            timepoint_id: "t3"
+          }
+        ],
+        start_time: 2000,
+        end_time: 2100
+      }
+
+      trip_3 = %Trip{
+        id: "trip_3",
+        block_id: "block_3",
+        route_id: "route99",
+        service_id: "service",
+        headsign: "headsign2",
+        direction_id: 0,
+        stop_times: [
+          %StopTime{
+            stop_id: "stop3",
+            time: 6000,
+            timepoint_id: "t3"
+          }
+        ],
+        start_time: 6000,
+        end_time: 6100
+      }
+
+      block_1 = Block.block_from_trips([trip_1])
+      block_2 = Block.block_from_trips([trip_2])
+      block_3 = Block.block_from_trips([trip_3])
+      ungrouped_vehicles = [vehicle_1, vehicle_2, vehicle_3, vehicle_4]
+      blocks_by_date = %{~D[2019-12-20] => [block_1, block_2, block_3]}
+
+      assert [
+               %Vehicle{id: "on_route_2"},
+               %Vehicle{id: "on_route_1"},
+               %Vehicle{id: "pulling_out"},
+               %Vehicle{id: "on_nil_route"}
+             ] =
+               Vehicles.group_by_route_with_blocks(
+                 ungrouped_vehicles,
+                 [trip_1, trip_2, trip_3],
+                 blocks_by_date,
+                 blocks_by_date,
+                 time0 + 2
+               )
+               |> Map.fetch!("route99")
     end
   end
 
