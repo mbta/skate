@@ -16,6 +16,8 @@ defmodule Realtime.BlockWaiver do
           remark: String.t() | nil
         }
 
+  @type block_waivers_by_block_key :: %{Block.key() => [t()]}
+
   @enforce_keys [
     :start_time,
     :end_time,
