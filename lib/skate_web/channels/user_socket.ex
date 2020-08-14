@@ -5,6 +5,7 @@ defmodule SkateWeb.UserSocket do
   channel("data_status", SkateWeb.DataStatusChannel)
   channel("vehicles:*", SkateWeb.VehiclesChannel)
   channel("train_vehicles:*", SkateWeb.TrainVehiclesChannel)
+  channel("notifications", SkateWeb.NotificationsChannel)
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
