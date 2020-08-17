@@ -7,10 +7,6 @@ defmodule Notifications.NotificationServer do
 
   require Logger
 
-  @type __MODULE__ :: {schedule_data_mod :: module()}
-
-  defstruct [:schedule_data_mod]
-
   # Client
 
   @spec default_name() :: GenServer.name()
@@ -19,8 +15,7 @@ defmodule Notifications.NotificationServer do
   @spec start_link(Keyword.t()) :: GenServer.on_start()
   def start_link(opts \\ []) do
     name = Keyword.get(opts, :name, __MODULE__)
-    schedule_data_mod = Keyword.get(opts, :schedule_data_mod, Schedule)
-    GenServer.start_link(__MODULE__, %{schedule_data_mod: schedule_data_mod}, name: name)
+    GenServer.start_link(__MODULE__, nil, name: name)
   end
 
   @spec new_block_waivers(BlockWaiver.block_waivers_by_block_key(), GenServer.server()) :: :ok
@@ -31,16 +26,15 @@ defmodule Notifications.NotificationServer do
   # Server
 
   @impl GenServer
-  def init(initial_state) do
-    schedule_data_mod = Map.fetch!(initial_state, :schedule_data_mod)
-    {:ok, %__MODULE__{schedule_data_mod: schedule_data_mod}}
+  def init(_) do
+    {:ok, nil}
   end
 
   @impl true
   def handle_cast({:new_block_waivers, new_block_waivers_by_block_key}, state) do
     new_notifications =
       new_block_waivers_by_block_key
-      |> convert_new_block_waivers_to_notifications(state.schedule_data_mod)
+      |> convert_new_block_waivers_to_notifications()
 
     if !Enum.empty?(new_notifications) do
       Logger.warn(
@@ -53,29 +47,30 @@ defmodule Notifications.NotificationServer do
     {:noreply, state}
   end
 
-  @spec convert_new_block_waivers_to_notifications([BlockWaiver.t()], module()) :: [
+  @spec convert_new_block_waivers_to_notifications([BlockWaiver.t()]) :: [
           Notification.t()
         ]
-  defp convert_new_block_waivers_to_notifications(new_block_waivers, schedule_data_mod) do
+  defp convert_new_block_waivers_to_notifications(new_block_waivers) do
     new_block_waivers
     |> Enum.flat_map(fn {block_key, block_waivers} ->
       Enum.map(
         block_waivers,
-        &convert_block_waiver_to_notification(block_key, &1, schedule_data_mod)
+        &convert_block_waiver_to_notification(block_key, &1)
       )
     end)
     |> Enum.filter(& &1)
   end
 
-  @spec convert_block_waiver_to_notification(Block.key(), BlockWaiver.t(), module()) ::
+  @spec convert_block_waiver_to_notification(Block.key(), BlockWaiver.t()) ::
           Notification.t() | nil
   defp convert_block_waiver_to_notification(
          {block_id, service_id},
-         block_waiver,
-         schedule_data_mod
+         block_waiver
        ) do
     if reason = get_notification_reason(block_waiver) do
-      block = apply(schedule_data_mod, :block, [block_id, service_id])
+      block_fn = Application.get_env(:realtime, :block_fn, &Schedule.block/2)
+
+      block = block_fn.(block_id, service_id)
 
       waiver_range = Range.new(block_waiver.start_time, block_waiver.end_time)
 

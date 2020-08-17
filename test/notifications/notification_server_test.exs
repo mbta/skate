@@ -1,5 +1,5 @@
 defmodule Notifications.NotificationServerTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case
 
   alias Notifications.NotificationServer
   alias Realtime.BlockWaiver
@@ -7,49 +7,42 @@ defmodule Notifications.NotificationServerTest do
   alias Schedule.Trip
 
   import ExUnit.CaptureLog, only: [capture_log: 1]
+  import Test.Support.Helpers, only: [reassign_env: 3]
 
   require Logger
 
-  defmodule MockSchedule do
-    def block(block_id, service_id) do
-      map = %{
-        {"block1", "service1"} => %Block{
-          id: "block1",
-          service_id: "service1",
-          start_time: 1,
-          end_time: 1000,
-          trips: [
-            %Trip{
-              id: "trip1",
-              block_id: "block1",
-              run_id: "run1",
-              route_id: "1",
-              start_time: 50,
-              end_time: 200
-            },
-            %Trip{
-              id: "trip2",
-              block_id: "block1",
-              run_id: "run2",
-              route_id: "2",
-              start_time: 400,
-              end_time: 800
-            },
-            %Trip{
-              id: "not_covered_by_waiver",
-              block_id: "block1",
-              run_id: "run3",
-              route_id: "3",
-              start_time: 501,
-              end_time: 800
-            }
-          ]
-        }
+  @block %Block{
+    id: "block1",
+    service_id: "service1",
+    start_time: 1,
+    end_time: 1000,
+    trips: [
+      %Trip{
+        id: "trip1",
+        block_id: "block1",
+        run_id: "run1",
+        route_id: "1",
+        start_time: 50,
+        end_time: 200
+      },
+      %Trip{
+        id: "trip2",
+        block_id: "block1",
+        run_id: "run2",
+        route_id: "2",
+        start_time: 400,
+        end_time: 800
+      },
+      %Trip{
+        id: "not_covered_by_waiver",
+        block_id: "block1",
+        run_id: "run3",
+        route_id: "3",
+        start_time: 501,
+        end_time: 800
       }
-
-      Map.get(map, {block_id, service_id})
-    end
-  end
+    ]
+  }
 
   describe "start_link/1" do
     test "starts up and lives" do
@@ -62,12 +55,16 @@ defmodule Notifications.NotificationServerTest do
   end
 
   describe "handle_cast/2" do
+    setup do
+      reassign_env(:realtime, :block_fn, fn _, _ ->
+        @block
+      end)
+    end
+
     test "creates new notifications for waivers with recognized reason" do
       log =
         capture_log(fn ->
-          NotificationServer.handle_cast({:new_block_waivers, %{}}, %{
-            schedule_data_mod: MockSchedule
-          })
+          NotificationServer.handle_cast({:new_block_waivers, %{}}, nil)
         end)
 
       assert log == ""
@@ -102,7 +99,7 @@ defmodule Notifications.NotificationServerTest do
                    }
                  ]
                }},
-              %{schedule_data_mod: MockSchedule}
+              nil
             )
           end)
 
