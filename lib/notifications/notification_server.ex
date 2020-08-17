@@ -23,11 +23,38 @@ defmodule Notifications.NotificationServer do
     GenServer.cast(server, {:new_block_waivers, new_waivers_by_block_key})
   end
 
+  def subscribe(server \\ default_name()) do
+    registry_key = GenServer.call(server, :subscribe)
+    Registry.register(Notifications.Supervisor.registry_name(), registry_key, :dummy_value)
+    :ok
+  end
+
+  # TODO: after merging this with version of the server that can receive
+  # block waivers, make this function private. For now it's nice to have
+  # it exposed for testing.
+  def broadcast(message, server \\ default_name()) do
+    GenServer.cast(server, {:broadcast, message})
+    :ok
+  end
+
   # Server
 
   @impl GenServer
   def init(_) do
     {:ok, nil}
+  end
+
+  @impl true
+  def handle_cast({:broadcast, message}, state) do
+    registry_key = self()
+
+    Registry.dispatch(Notifications.Supervisor.registry_name(), registry_key, fn entries ->
+      Enum.each(entries, fn {pid, _} ->
+        send(pid, {:notification, message})
+      end)
+    end)
+
+    {:noreply, state}
   end
 
   @impl true
@@ -111,5 +138,11 @@ defmodule Notifications.NotificationServer do
       "G - Accident" -> :accident
       _ -> nil
     end
+  end
+
+  @impl true
+  def handle_call(:subscribe, _from, state) do
+    registry_key = self()
+    {:reply, registry_key, state}
   end
 end

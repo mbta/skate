@@ -21,7 +21,7 @@ defmodule Skate.Application do
           [
             Schedule.Supervisor,
             TrainVehicles.Supervisor,
-            Notifications.NotificationServer,
+            Notifications.Supervisor,
             Realtime.Supervisor
           ]
         else
