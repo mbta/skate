@@ -1,8 +1,11 @@
 import React, { useContext } from "react"
+import { SocketContext } from "../contexts/socketContext"
 import { VehiclesByRouteIdContext } from "../contexts/vehiclesByRouteIdContext"
 import { VehicleId, VehicleOrGhost } from "../realtime.d"
 import { ByRouteId, Route, TimepointsByRouteId } from "../schedule.d"
 import RouteLadder from "./routeLadder"
+
+import { useChannel } from "../hooks/useChannel"
 
 interface Props {
   routes: Route[]
@@ -15,6 +18,14 @@ const RouteLadders = ({
   timepointsByRouteId,
   selectedVehicleId,
 }: Props) => {
+  const { socket } = useContext(SocketContext)
+  useChannel<void | null>({
+    socket,
+    topic: "notifications",
+    event: "notification",
+    parser: console.log,
+    loadingState: null,
+  })
   const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = useContext(
     VehiclesByRouteIdContext
   )
