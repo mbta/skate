@@ -54,6 +54,13 @@ defmodule Notifications.NotificationServerTest do
     end
   end
 
+  describe "new_block_waivers/2" do
+    test "sends appropriate cast" do
+      NotificationServer.new_block_waivers("dummy list of new waivers", self())
+      assert_received({:"$gen_cast", {:new_block_waivers, "dummy list of new waivers"}})
+    end
+  end
+
   describe "handle_cast/2" do
     setup do
       reassign_env(:realtime, :block_fn, fn _, _ -> @block end)

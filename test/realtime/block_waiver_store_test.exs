@@ -18,37 +18,6 @@ defmodule Realtime.BlockWaiverStoreTest do
     {"block1", "service1"} => @block_waivers
   }
 
-  defmodule MockNotificationServer do
-    use GenServer
-
-    def start_link() do
-      GenServer.start_link(__MODULE__, nil, name: __MODULE__)
-    end
-
-    def new_block_waivers(new_waivers) do
-      GenServer.cast(__MODULE__, new_waivers)
-    end
-
-    def last_received_cast() do
-      GenServer.call(__MODULE__, :last_received_cast)
-    end
-
-    @impl GenServer
-    def init(_) do
-      {:ok, []}
-    end
-
-    @impl true
-    def handle_cast(message, state) do
-      {:noreply, [message | state]}
-    end
-
-    @impl true
-    def handle_call(:last_received_cast, _from, state) do
-      {:reply, List.first(state), state}
-    end
-  end
-
   describe "start_link/1" do
     test "starts up and lives" do
       {:ok, server} = BlockWaiverStore.start_link(name: :start_link)
@@ -113,12 +82,12 @@ defmodule Realtime.BlockWaiverStoreTest do
     end
 
     test "sends new BlockWaivers to the notification server" do
-      {:ok, _} = MockNotificationServer.start_link()
+      test_pid = self()
 
       reassign_env(
         :notifications,
         :notifications_server_new_block_waivers_fn,
-        &MockNotificationServer.new_block_waivers/1
+        fn waiver_message -> send(test_pid, waiver_message) end
       )
 
       {:ok, server} = BlockWaiverStore.start_link(name: :send_test)
@@ -126,13 +95,13 @@ defmodule Realtime.BlockWaiverStoreTest do
       # This is the first time we're storing waivers, so no notification.
       block_waivers_by_block_key = @block_waivers_by_block_key
       BlockWaiverStore.set(block_waivers_by_block_key, server)
-      refute_received {:new_block_waivers, _}
+      refute_received _
 
       # Called again, but with the same arguments, so the difference
       # between iterations is empty.
       BlockWaiverStore.set(block_waivers_by_block_key, server)
       Process.sleep(10)
-      assert MockNotificationServer.last_received_cast() == %{}
+      assert_received %{}
 
       # Called with a waiver added; existing waiver for block ignored.
       new_waiver_1 = %BlockWaiver{
@@ -150,9 +119,9 @@ defmodule Realtime.BlockWaiverStoreTest do
       BlockWaiverStore.set(block_waivers_by_block_key, server)
       Process.sleep(10)
 
-      assert MockNotificationServer.last_received_cast() == %{
-               {"block1", "service1"} => [new_waiver_1]
-             }
+      assert_received %{
+        {"block1", "service1"} => [new_waiver_1]
+      }
 
       # Two existing waivers continue on, and are not passed to the
       # notification server. Two notifications on two other blocks
@@ -183,10 +152,10 @@ defmodule Realtime.BlockWaiverStoreTest do
       BlockWaiverStore.set(block_waivers_by_block_key, server)
       Process.sleep(10)
 
-      assert MockNotificationServer.last_received_cast() == %{
-               {"block2", "service2"} => [new_waiver_2],
-               {"block3", "service3"} => [new_waiver_3]
-             }
+      assert_received %{
+        {"block2", "service2"} => [new_waiver_2],
+        {"block3", "service3"} => [new_waiver_3]
+      }
     end
   end
 end
