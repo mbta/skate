@@ -56,8 +56,10 @@ defmodule Notifications.NotificationServerTest do
 
   describe "handle_cast/2" do
     setup do
-      reassign_env(:realtime, :block_fn, fn _, _ ->
-        @block
+      reassign_env(:realtime, :block_fn, fn _, _ -> @block end)
+
+      reassign_env(:realtime, :active_blocks_fn, fn _, _ ->
+        %{~D[2020-08-17] => [@block]}
       end)
     end
 
@@ -76,6 +78,9 @@ defmodule Notifications.NotificationServerTest do
         "G - Accident" => :accident
       }
 
+      # Midnight Eastern time, 8/17/2020
+      midnight = 1_597_636_800
+
       for {reason_string, reason_atom} <- reasons_map do
         log =
           capture_log(fn ->
@@ -84,15 +89,15 @@ defmodule Notifications.NotificationServerTest do
                %{
                  {"block1", "service1"} => [
                    %BlockWaiver{
-                     start_time: 100,
-                     end_time: 500,
+                     start_time: midnight + 100,
+                     end_time: midnight + 500,
                      cause_id: 666,
                      cause_description: reason_string,
                      remark: "some_remark"
                    },
                    %BlockWaiver{
-                     start_time: 0,
-                     end_time: 86400,
+                     start_time: midnight,
+                     end_time: midnight + 86400,
                      cause_id: 999,
                      cause_description: "W - Whatever",
                      remark: "Ignored due to unrecognized cause_description"

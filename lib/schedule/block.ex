@@ -155,5 +155,25 @@ defmodule Schedule.Block do
 
   def id_sans_overload(id), do: String.replace(id, overload_id_regex(), "")
 
+  @spec date_for_block(t()) :: Date.t()
+  def date_for_block(block) do
+    active_blocks_fn =
+      Application.get_env(:realtime, :active_blocks_fn, &Schedule.active_blocks/2)
+
+    now = Util.Time.now()
+    one_hour_ago = now - 60 * 60
+    in_ten_minutes = now + 10 * 60
+
+    {date, _blocks} =
+      one_hour_ago
+      |> active_blocks_fn.(in_ten_minutes)
+      |> Enum.find(
+        {Util.Time.today(), []},
+        fn {_date, blocks} -> Enum.member?(blocks, block) end
+      )
+
+    date
+  end
+
   defp overload_id_regex(), do: ~r/-OL.+$/
 end
