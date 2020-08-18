@@ -9,12 +9,14 @@ defmodule Realtime.BlockWaiver do
   alias Realtime.StopTimeUpdatesByTrip
 
   @type t :: %__MODULE__{
-          start_time: Util.Time.time_of_day(),
-          end_time: Util.Time.time_of_day(),
+          start_time: Util.Time.timestamp(),
+          end_time: Util.Time.timestamp(),
           cause_id: integer(),
           cause_description: String.t(),
           remark: String.t() | nil
         }
+
+  @type block_waivers_by_block_key :: %{Block.key() => [t()]}
 
   @enforce_keys [
     :start_time,
@@ -40,7 +42,7 @@ defmodule Realtime.BlockWaiver do
     block.trips
     |> Enum.flat_map(&trip_stop_time_waivers(&1, stop_time_updates_by_trip))
     |> group_consecutive_sequences()
-    |> Enum.map(&from_trip_stop_time_waivers(&1, date_for_block(block)))
+    |> Enum.map(&from_trip_stop_time_waivers(&1, Block.date_for_block(block)))
   end
 
   @type trip_stop_time_waiver :: {Util.Time.time_of_day(), StopTimeUpdate.t() | nil}
@@ -131,25 +133,5 @@ defmodule Realtime.BlockWaiver do
       cause_description: StopTimeUpdate.cause_description(stu),
       remark: StopTimeUpdate.remark(stu)
     }
-  end
-
-  @spec date_for_block(Block.t()) :: Date.t()
-  defp date_for_block(block) do
-    active_blocks_fn =
-      Application.get_env(:realtime, :active_blocks_fn, &Schedule.active_blocks/2)
-
-    now = Util.Time.now()
-    one_hour_ago = now - 60 * 60
-    in_ten_minutes = now + 10 * 60
-
-    {date, _blocks} =
-      one_hour_ago
-      |> active_blocks_fn.(in_ten_minutes)
-      |> Enum.find(
-        {Util.Time.today(), []},
-        fn {_date, blocks} -> Enum.member?(blocks, block) end
-      )
-
-    date
   end
 end

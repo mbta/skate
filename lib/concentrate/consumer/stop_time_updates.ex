@@ -65,7 +65,7 @@ defmodule Concentrate.Consumer.StopTimeUpdates do
   @spec block_waivers_by_block_key(
           block_keys_set(),
           StopTimeUpdatesByTrip.t()
-        ) :: BlockWaiverStore.block_waivers_by_block_key()
+        ) :: BlockWaiver.block_waivers_by_block_key()
   defp block_waivers_by_block_key(
          block_keys_set,
          stop_time_updates_by_trip
