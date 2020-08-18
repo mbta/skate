@@ -11,37 +11,23 @@ defmodule Realtime.BlockWaiverStore do
 
   @type t :: %__MODULE__{
           block_waivers_by_block_key: BlockWaiver.block_waivers_by_block_key(),
-          notification_server_mod: GenServer.name(),
           never_set: boolean()
         }
 
-  defstruct [
-    :notification_server_mod,
-    block_waivers_by_block_key: %{},
-    never_set: true
-  ]
+  defstruct block_waivers_by_block_key: %{},
+            never_set: true
 
   # Client
 
   @spec default_name() :: GenServer.name()
   def default_name(), do: Realtime.BlockWaiverStore
 
-  @spec default_notification_server_mod :: module()
-  def default_notification_server_mod(), do: Notifications.NotificationServer
-
   @spec start_link() :: GenServer.on_start()
   @spec start_link(Keyword.t()) :: GenServer.on_start()
   def start_link(opts \\ []) do
     name = Keyword.get(opts, :name, default_name())
 
-    notification_server_mod =
-      Keyword.get(opts, :notification_server_mod, default_notification_server_mod())
-
-    initial_state = %__MODULE__{
-      notification_server_mod: notification_server_mod
-    }
-
-    GenServer.start_link(__MODULE__, initial_state, name: name)
+    GenServer.start_link(__MODULE__, %__MODULE__{}, name: name)
   end
 
   @spec block_waivers_for_block_and_service(Block.id(), Service.id()) :: [BlockWaiver.t()]
@@ -96,7 +82,14 @@ defmodule Realtime.BlockWaiverStore do
       new_block_waivers =
         waiver_diff(state.block_waivers_by_block_key, new_block_waivers_by_block_key)
 
-      apply(state.notification_server_mod, :new_block_waivers, [new_block_waivers])
+      notification_server_new_block_waivers_fn =
+        Application.get_env(
+          :notifications,
+          :notifications_server_new_block_waivers_fn,
+          &Notifications.NotificationServer.new_block_waivers/1
+        )
+
+      notification_server_new_block_waivers_fn.(new_block_waivers)
     end
 
     {:noreply,

@@ -3,6 +3,8 @@ defmodule Realtime.BlockWaiverStoreTest do
 
   alias Realtime.{BlockWaiver, BlockWaiverStore}
 
+  import Test.Support.Helpers
+
   @block_waivers [
     %BlockWaiver{
       start_time: 10,
@@ -113,11 +115,13 @@ defmodule Realtime.BlockWaiverStoreTest do
     test "sends new BlockWaivers to the notification server" do
       {:ok, _} = MockNotificationServer.start_link()
 
-      {:ok, server} =
-        BlockWaiverStore.start_link(
-          name: :send_test,
-          notification_server_mod: MockNotificationServer
-        )
+      reassign_env(
+        :notifications,
+        :notifications_server_new_block_waivers_fn,
+        &MockNotificationServer.new_block_waivers/1
+      )
+
+      {:ok, server} = BlockWaiverStore.start_link(name: :send_test)
 
       # This is the first time we're storing waivers, so no notification.
       block_waivers_by_block_key = @block_waivers_by_block_key
