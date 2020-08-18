@@ -107,6 +107,10 @@ defmodule Realtime.BlockWaiverStore do
      }}
   end
 
+  @spec waiver_diff(
+          BlockWaiver.block_waivers_by_block_key(),
+          BlockWaiver.block_waivers_by_block_key()
+        ) :: %{Block.key() => MapSet.t()}
   defp waiver_diff(old_block_waivers_by_block_key, new_block_waivers_by_block_key) do
     Enum.reduce(
       new_block_waivers_by_block_key,
