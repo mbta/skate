@@ -23,6 +23,7 @@ const RouteLadders = ({
     socket,
     topic: "notifications",
     event: "notification",
+    // tslint:disable-next-line
     parser: console.log,
     loadingState: null,
   })
