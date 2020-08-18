@@ -12,11 +12,11 @@ defmodule Notifications.Notification do
           trip_ids: [Trip.id()]
         }
 
-  defstruct ~w[
-    created_at
-    reason
-    route_ids
-    run_ids
-    trip_ids
-  ]a
+  defstruct [
+    :created_at,
+    :reason,
+    :route_ids,
+    :run_ids,
+    :trip_ids
+  ]
 end
