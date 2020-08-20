@@ -6,7 +6,9 @@ defmodule Notifications.Supervisor do
   end
 
   @spec registry_name() :: Registry.registry()
-  def registry_name(), do: Notifications.Registry
+  def registry_name() do
+    Application.get_env(:notifications, :registry, Notifications.Registry)
+  end
 
   @impl true
   def init(:ok) do

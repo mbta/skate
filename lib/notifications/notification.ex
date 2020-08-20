@@ -12,6 +12,8 @@ defmodule Notifications.Notification do
           trip_ids: [Trip.id()]
         }
 
+  @derive Jason.Encoder
+
   defstruct [
     :created_at,
     :reason,
