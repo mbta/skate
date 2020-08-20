@@ -78,24 +78,25 @@ defmodule Notifications.NotificationServerTest do
 
       assert log == ""
 
+      # See Notifications.NotificationsServer for the full mapping
       reasons_map = %{
-        "B - Manpower" => :manpower,
-        "D - Disabled" => :disabled,
-        "E - Diverted" => :diverted,
-        "G - Accident" => :accident
+        23 => {"B - Manpower", :manpower},
+        25 => {"D - Disabled", :disabled},
+        26 => {"E - Diverted", :diverted},
+        28 => {"G - Accident", :accident}
       }
 
       # Midnight Eastern time, 8/17/2020
       midnight = 1_597_636_800
 
-      for {reason_string, reason_atom} <- reasons_map do
+      for {cause_id, {cause_description, cause_atom}} <- reasons_map do
         waiver_map = %{
           {"block1", "service1"} => [
             %BlockWaiver{
               start_time: midnight + 100,
               end_time: midnight + 500,
-              cause_id: 666,
-              cause_description: reason_string,
+              cause_id: cause_id,
+              cause_description: cause_description,
               remark: "some_remark"
             },
             %BlockWaiver{
@@ -119,7 +120,7 @@ defmodule Notifications.NotificationServerTest do
            [
              %Notifications.Notification{
                created_at: _,
-               reason: ^reason_atom,
+               reason: ^cause_atom,
                route_ids: ["1", "2"],
                run_ids: ["run1", "run2"],
                trip_ids: ["trip1", "trip2"]
@@ -127,7 +128,7 @@ defmodule Notifications.NotificationServerTest do
            ]}
         )
 
-        assert String.contains?(log, "reason: :#{reason_atom}")
+        assert String.contains?(log, "reason: :#{cause_atom}")
         assert String.contains?(log, "route_ids: [\"1\", \"2\"]")
         assert String.contains?(log, "run_ids: [\"run1\", \"run2\"]")
         assert String.contains?(log, "trip_ids: [\"trip1\", \"trip2\"]")
