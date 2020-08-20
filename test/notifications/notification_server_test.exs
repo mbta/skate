@@ -1,5 +1,5 @@
 defmodule Notifications.NotificationServerTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: false
 
   alias Notifications.NotificationServer
   alias Realtime.BlockWaiver
@@ -55,13 +55,6 @@ defmodule Notifications.NotificationServerTest do
   end
 
   describe "new_block_waivers/2" do
-    test "sends appropriate cast" do
-      NotificationServer.new_block_waivers("dummy list of new waivers", self())
-      assert_received({:"$gen_cast", {:new_block_waivers, "dummy list of new waivers"}})
-    end
-  end
-
-  describe "handle_cast/2" do
     setup do
       reassign_env(:realtime, :block_fn, fn _, _ -> @block end)
 
@@ -70,7 +63,14 @@ defmodule Notifications.NotificationServerTest do
       end)
     end
 
-    test "creates new notifications for waivers with recognized reason" do
+    test "broadcasts and logs new notifications for waivers with recognized reason" do
+      registry_name = :new_notifications_registry
+      start_supervised({Registry, keys: :duplicate, name: registry_name})
+      reassign_env(:notifications, :registry, registry_name)
+
+      {:ok, server} = NotificationServer.start_link(name: :new_notifications)
+      NotificationServer.subscribe(server)
+
       log =
         capture_log(fn ->
           NotificationServer.handle_cast({:new_block_waivers, %{}}, nil)
@@ -89,31 +89,43 @@ defmodule Notifications.NotificationServerTest do
       midnight = 1_597_636_800
 
       for {reason_string, reason_atom} <- reasons_map do
+        waiver_map = %{
+          {"block1", "service1"} => [
+            %BlockWaiver{
+              start_time: midnight + 100,
+              end_time: midnight + 500,
+              cause_id: 666,
+              cause_description: reason_string,
+              remark: "some_remark"
+            },
+            %BlockWaiver{
+              start_time: midnight,
+              end_time: midnight + 86400,
+              cause_id: 999,
+              cause_description: "W - Whatever",
+              remark: "Ignored due to unrecognized cause_description"
+            }
+          ]
+        }
+
         log =
           capture_log(fn ->
-            NotificationServer.handle_cast(
-              {:new_block_waivers,
-               %{
-                 {"block1", "service1"} => [
-                   %BlockWaiver{
-                     start_time: midnight + 100,
-                     end_time: midnight + 500,
-                     cause_id: 666,
-                     cause_description: reason_string,
-                     remark: "some_remark"
-                   },
-                   %BlockWaiver{
-                     start_time: midnight,
-                     end_time: midnight + 86400,
-                     cause_id: 999,
-                     cause_description: "W - Whatever",
-                     remark: "Ignored due to unrecognized cause_description"
-                   }
-                 ]
-               }},
-              nil
-            )
+            NotificationServer.new_block_waivers(waiver_map, server)
+            Process.sleep(10)
           end)
+
+        assert_received(
+          {:notification,
+           [
+             %Notifications.Notification{
+               created_at: _,
+               reason: ^reason_atom,
+               route_ids: ["1", "2"],
+               run_ids: ["run1", "run2"],
+               trip_ids: ["trip1", "trip2"]
+             }
+           ]}
+        )
 
         assert String.contains?(log, "reason: :#{reason_atom}")
         assert String.contains?(log, "route_ids: [\"1\", \"2\"]")

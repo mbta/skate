@@ -23,6 +23,13 @@ defmodule Notifications.NotificationServer do
     GenServer.cast(server, {:new_block_waivers, new_waivers_by_block_key})
   end
 
+  def subscribe(server \\ default_name()) do
+    registry_key = GenServer.call(server, :subscribe)
+
+    Registry.register(Notifications.Supervisor.registry_name(), registry_key, :dummy_value)
+    :ok
+  end
+
   # Server
 
   @impl GenServer
@@ -42,6 +49,8 @@ defmodule Notifications.NotificationServer do
           inspect(new_notifications)
         }"
       )
+
+      broadcast(new_notifications, self())
     end
 
     {:noreply, state}
@@ -111,5 +120,19 @@ defmodule Notifications.NotificationServer do
       "G - Accident" -> :accident
       _ -> nil
     end
+  end
+
+  defp broadcast(message, registry_key) do
+    Registry.dispatch(Notifications.Supervisor.registry_name(), registry_key, fn entries ->
+      Enum.each(entries, fn {pid, _} ->
+        send(pid, {:notification, message})
+      end)
+    end)
+  end
+
+  @impl true
+  def handle_call(:subscribe, _from, state) do
+    registry_key = self()
+    {:reply, registry_key, state}
   end
 end
