@@ -1,0 +1,64 @@
+.m-notifications {
+  padding-right: 1rem;
+  padding-top: 1rem;
+  right: 0;
+  top: 0;
+  position: absolute;
+  z-index: 900;
+}
+
+.m-notifications__card {
+  background-color: $color-secondary-light;
+  border: 1px solid $color-secondary-dark;
+  border-radius: 4px;
+  box-shadow: $box-shadow-secondary;
+  display: flex;
+  margin-bottom: 0.5rem;
+  width: 25rem;
+}
+
+.m-notifications__card-info {
+  flex: 1 1 20rem;
+  padding: 0.5rem 1rem;
+  text-align: left;
+
+  &:focus,
+  &:hover {
+    background-color: $color-secondary-medium;
+  }
+}
+
+.m-notification__title-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.m-notification__title {
+  @include font-emph;
+  font-weight: 700;
+}
+
+.m-notification__age {
+  color: $color-font-grey;
+  @include font-small;
+}
+
+.m-notification__description {
+  margin-bottom: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+.m-notifications .m-properties-list {
+  padding: 0;
+}
+
+.m-notifications__close {
+  border-left: 1px solid $color-secondary-dark;
+  color: $color-font-grey;
+  flex: 0 1 5rem;
+
+  &:focus,
+  &:hover {
+    background-color: $color-secondary-medium;
+  }
+}

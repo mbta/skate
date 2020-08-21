@@ -21,11 +21,11 @@ const AppRoutes = () => {
 
   return (
     <div className="m-app">
-      <Notifications />
       <div className="m-app__banner">
         <DataStatusBanner />
       </div>
       <div className="m-app__main">
+        <Notifications />
         <TabBar pickerContainerIsVisible={pickerContainerIsVisible} />
         <BrowserRoute exact={true} path="/" component={LadderPage} />
         <BrowserRoute
