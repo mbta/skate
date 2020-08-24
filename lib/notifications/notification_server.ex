@@ -121,10 +121,10 @@ defmodule Notifications.NotificationServer do
     end
   end
 
-  defp broadcast(message, registry_key) do
+  defp broadcast(notifications, registry_key) do
     Registry.dispatch(Notifications.Supervisor.registry_name(), registry_key, fn entries ->
       Enum.each(entries, fn {pid, _} ->
-        send(pid, {:notification, message})
+        send(pid, {:notifications, notifications})
       end)
     end)
   end

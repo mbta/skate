@@ -11,6 +11,7 @@ import SearchPage from "./searchPage"
 import SettingsPage from "./settingsPage"
 import ShuttleMapPage from "./shuttleMapPage"
 import TabBar from "./tabBar"
+import { Notifications } from "./notifications"
 
 const AppRoutes = () => {
   useAppcues()
@@ -20,6 +21,7 @@ const AppRoutes = () => {
 
   return (
     <div className="m-app">
+      <Notifications />
       <div className="m-app__banner">
         <DataStatusBanner />
       </div>

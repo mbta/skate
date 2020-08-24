@@ -47,6 +47,21 @@ export interface Ghost {
   blockWaivers: BlockWaiver[]
 }
 
+export interface Notification {
+  id: number
+  createdAt: Date
+  reason: NotificationReason
+  routeIds: RouteId[]
+  runIds: RunId[]
+  tripIds: TripId[]
+}
+
+export type NotificationReason =
+  | "manpower"
+  | "disabled"
+  | "diverted"
+  | "accident"
+
 export type SourceId = string
 
 export type RouteStatus = "on_route" | "laying_over" | "pulling_out"

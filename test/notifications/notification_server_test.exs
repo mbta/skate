@@ -116,7 +116,7 @@ defmodule Notifications.NotificationServerTest do
           end)
 
         assert_received(
-          {:notification,
+          {:notifications,
            [
              %Notifications.Notification{
                created_at: _,
