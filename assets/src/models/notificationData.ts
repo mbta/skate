@@ -18,6 +18,8 @@ const notificationFromData = (
   notificationData: NotificationData,
   index: number
 ): Notification => ({
+  // Add the index so the id is unique between notifications received at the same time.
+  // Batches only come every few seconds, so it won't overlap with future notifications.
   id: Date.now() + index,
   createdAt: dateFromEpochSeconds(notificationData.created_at),
   reason: notificationData.reason,
