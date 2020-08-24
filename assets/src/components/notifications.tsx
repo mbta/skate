@@ -7,8 +7,6 @@ export const Notifications = () => {
   const [, setNotifications] = useState<Notification[]>([])
   const addNotification = (notification: Notification): void => {
     if (featureIsEnabled("notifications")) {
-      // tslint:disable-next-line
-      console.log(notification)
       setNotifications((previous) => [...previous, notification])
     }
   }
