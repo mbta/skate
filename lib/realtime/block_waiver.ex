@@ -35,6 +35,20 @@ defmodule Realtime.BlockWaiver do
     :remark
   ]
 
+  # The full mapping between "cause_description" and "cause_id":
+  # B - Manpower	      23
+  # C - No Equipment	  24
+  # D - Disabled Bus	  25
+  # E - Diverted	      26
+  # F - Traffic	        27
+  # G - Accident	      28
+  # H - Weather	        29
+  # I - Operator Error	30
+  # J - Other	          1
+  # K - Adjusted	      31
+  # L - Shuttle	        32
+  # T - Inactive TM	    33
+
   @spec block_waivers_for_block(Block.t() | nil, StopTimeUpdatesByTrip.t()) :: [t()]
   def block_waivers_for_block(nil, _), do: []
 

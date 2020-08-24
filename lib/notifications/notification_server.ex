@@ -108,16 +108,15 @@ defmodule Notifications.NotificationServer do
     end
   end
 
+  # See Realtime.BlockWaiver for the full mapping between numeric
+  # `cause_id`s and textual `cause_description`s.
   @spec get_notification_reason(BlockWaiver.t()) :: Notification.notification_reason() | nil
   defp get_notification_reason(block_waiver) do
-    # TODO: Once a list of possible values of BlockWaiver.cause_id is
-    # available, match on that rather than the text description.
-    #
-    case block_waiver.cause_description do
-      "B - Manpower" -> :manpower
-      "D - Disabled" -> :disabled
-      "E - Diverted" -> :diverted
-      "G - Accident" -> :accident
+    case block_waiver.cause_id do
+      23 -> :manpower
+      25 -> :disabled
+      26 -> :diverted
+      28 -> :accident
       _ -> nil
     end
   end
