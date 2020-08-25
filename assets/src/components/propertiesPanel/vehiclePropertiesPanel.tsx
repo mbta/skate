@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react"
 import { SocketContext } from "../../contexts/socketContext"
 import { VehiclesByRouteIdContext } from "../../contexts/vehiclesByRouteIdContext"
+import { useNearestIntersection } from "../../hooks/useNearestIntersection"
 import { useTripShape } from "../../hooks/useShapes"
 import useVehiclesForRoute from "../../hooks/useVehiclesForRoute"
 import { hasBlockWaiver } from "../../models/blockWaiver"
@@ -13,13 +14,12 @@ import {
 } from "../../realtime"
 import { Route, RouteId, Shape } from "../../schedule"
 import Map from "../map"
-import PropertiesList from "../propertiesList"
+import PropertiesList, { vehicleProperties } from "../propertiesList"
 import BlockWaiverList from "./blockWaiverList"
 import CrowdingDiagram from "./crowdingDiagram"
 import Header from "./header"
 import HeadwayDiagram from "./headwayDiagram"
 import TabPanels, { TabMode } from "./tabPanels"
-import { useNearestIntersection } from "../../hooks/useNearestIntersection"
 
 interface Props {
   selectedVehicle: Vehicle
@@ -167,7 +167,7 @@ const StatusContent = ({ selectedVehicle }: { selectedVehicle: Vehicle }) => (
       <BlockWaiverList blockWaivers={selectedVehicle.blockWaivers} />
     )}
 
-    <PropertiesList vehicleOrGhost={selectedVehicle} />
+    <PropertiesList properties={vehicleProperties(selectedVehicle)} />
 
     <CrowdingDiagram crowding={selectedVehicle.crowding} />
 

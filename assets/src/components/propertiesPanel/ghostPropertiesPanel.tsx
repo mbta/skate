@@ -3,7 +3,7 @@ import { hasBlockWaiver } from "../../models/blockWaiver"
 import { Ghost } from "../../realtime"
 import { Route } from "../../schedule"
 import IconAlertCircle, { AlertIconStyle } from "../iconAlertCircle"
-import PropertiesList from "../propertiesList"
+import PropertiesList, { ghostProperties } from "../propertiesList"
 import BlockWaiverList from "./blockWaiverList"
 import Header from "./header"
 import TabPanels, { TabMode } from "./tabPanels"
@@ -37,7 +37,7 @@ const StatusContent = ({ ghost }: { ghost: Ghost }) => (
       <NoWaiverBanner />
     )}
 
-    <PropertiesList vehicleOrGhost={ghost} />
+    <PropertiesList properties={ghostProperties(ghost)} />
   </>
 )
 

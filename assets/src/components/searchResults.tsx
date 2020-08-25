@@ -5,7 +5,7 @@ import { isRecentlyLoggedOn, isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleOrGhost } from "../realtime"
 import { selectVehicle } from "../state"
 import { setSearchText } from "../state/searchPageState"
-import PropertiesList from "./propertiesList"
+import PropertiesList, { vehicleOrGhostProperties } from "./propertiesList"
 import { RouteVariantName } from "./routeVariantName"
 
 interface Props {
@@ -64,7 +64,7 @@ const SearchResultCard = ({
       {isRecentlyLoggedOn(vehicleOrGhost) && <NewBadge />}
 
       <PropertiesList
-        vehicleOrGhost={vehicleOrGhost}
+        properties={vehicleOrGhostProperties(vehicleOrGhost)}
         highlightText={query.text}
       />
 
