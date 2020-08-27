@@ -61,6 +61,10 @@ export type NotificationReason =
   | "disabled"
   | "diverted"
   | "accident"
+  | "other"
+  | "adjusted"
+  | "operator_error"
+  | "traffic"
 
 export type SourceId = string
 

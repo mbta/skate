@@ -113,10 +113,14 @@ defmodule Notifications.NotificationServer do
   @spec get_notification_reason(BlockWaiver.t()) :: Notification.notification_reason() | nil
   defp get_notification_reason(block_waiver) do
     case block_waiver.cause_id do
+      1 -> :other
       23 -> :manpower
       25 -> :disabled
       26 -> :diverted
+      27 -> :traffic
       28 -> :accident
+      30 -> :operator_error
+      31 -> :adjusted
       _ -> nil
     end
   end

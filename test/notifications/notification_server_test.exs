@@ -78,12 +78,16 @@ defmodule Notifications.NotificationServerTest do
 
       assert log == ""
 
-      # See Notifications.NotificationsServer for the full mapping
+      # See Realtime.BlockWaiver for the full mapping
       reasons_map = %{
+        1 => {"J - Other", :other},
         23 => {"B - Manpower", :manpower},
         25 => {"D - Disabled", :disabled},
         26 => {"E - Diverted", :diverted},
-        28 => {"G - Accident", :accident}
+        27 => {"F - Traffic", :traffic},
+        28 => {"G - Accident", :accident},
+        30 => {"I - Operator Error", :operator_error},
+        31 => {"K - Adjusted", :adjusted}
       }
 
       # Midnight Eastern time, 8/17/2020
