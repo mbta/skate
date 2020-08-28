@@ -28,7 +28,7 @@
     "react-leaflet-control": "^2.1.2",
     "react-leaflet-fullscreen": "^1.0.1",
     "react-router-dom": "^5.2.0",
-    "react-tooltip": "^4.2.8",
+    "react-tooltip": "^4.2.9",
     "resize-observer-polyfill": "^1.5.1",
     "whatwg-fetch": "^3.4.0"
   },
