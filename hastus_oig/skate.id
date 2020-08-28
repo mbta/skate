@@ -25,6 +25,7 @@ file trips
          criteria csc_name { value 'Get(crew_schedule).csc_name' }
          criteria dty_number { value 'Get(duty).dty_number' }
          criteria trp_time_start { value 'trp_time_start' }
+         criteria trp_time_end { value 'trp_time_end' }
          }
 
       line trip
