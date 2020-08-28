@@ -7,6 +7,10 @@ jest.mock("../../src/hooks/useNotifications", () => ({
   __esModule: true,
   useNotifications: jest.fn(),
 }))
+jest.mock("../../src/laboratoryFeatures", () => ({
+  __esModule: true,
+  default: () => true,
+}))
 
 describe("Notification", () => {
   test("does not render", () => {
