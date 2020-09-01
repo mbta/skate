@@ -92,4 +92,18 @@ describe("NotificationCard", () => {
     )
     expect(wrapper.html()).toContain("NO OPERATOR")
   })
+
+  test("renders a notification with an unexpected reason", () => {
+    const n = { ...notification, reason: "weird reason" }
+    const tree = renderer
+      .create(
+        <NotificationCard
+          notification={n}
+          remove={jest.fn()}
+          currentTime={now()}
+        />
+      )
+      .toJSON()
+    expect(tree).toMatchSnapshot()
+  })
 })
