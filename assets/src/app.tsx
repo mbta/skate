@@ -28,7 +28,11 @@ if (window.sentry) {
 }
 
 if (window.FS && window.username) {
+  // tslint:disable
   window.FS.identify(window.username, { displayName: window.username })
+  console.log("IDENTITY ESTABLISHED, CALLING FS.EVENT")
+  console.log(window.FS.event("Product Added"))
+  console.log("FS.EVENT CALLED")
 }
 
 if (!("ResizeObserver" in global)) {
