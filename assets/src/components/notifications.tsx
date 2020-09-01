@@ -7,9 +7,6 @@ import { formattedTimeDiff, now } from "../util/dateTime"
 import PropertiesList from "./propertiesList"
 
 export const Notifications = () => {
-  const [currentTime, setCurrentTime] = useState(now())
-  useInterval(() => setCurrentTime(now()), 1000)
-
   const [notifications, setNotifications] = useState<Notification[]>([])
   const addNotification = (notification: Notification): void => {
     if (featureIsEnabled("notifications")) {
@@ -20,6 +17,10 @@ export const Notifications = () => {
     setNotifications((previous) => previous.filter((n) => n.id !== id))
   }
   useNotifications(addNotification)
+
+  const [currentTime, setCurrentTime] = useState(now())
+  useInterval(() => setCurrentTime(now()), 1000)
+
   return (
     <div className="m-notifications">
       {notifications.map((notification) => (
@@ -34,7 +35,7 @@ export const Notifications = () => {
   )
 }
 
-const NotificationCard = ({
+export const NotificationCard = ({
   notification,
   remove,
   currentTime,

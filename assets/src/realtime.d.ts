@@ -65,6 +65,7 @@ export type NotificationReason =
   | "adjusted"
   | "operator_error"
   | "traffic"
+  | string
 
 export type SourceId = string
 

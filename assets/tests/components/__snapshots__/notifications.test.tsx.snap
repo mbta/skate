@@ -1,0 +1,128 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Notification renders empty state 1`] = `
+<div
+  className="m-notifications"
+/>
+`;
+
+exports[`Notification renders notifications 1`] = `
+<div
+  className="m-notifications"
+>
+  <div
+    className="m-notifications__card"
+  >
+    <button
+      className="m-notifications__card-info"
+    >
+      <div
+        className="m-notification__title-row"
+      >
+        <div
+          className="m-notification__title"
+        >
+          NO OPERATOR
+        </div>
+        <div
+          className="m-notification__age"
+        >
+          0 min
+        </div>
+      </div>
+      <div
+        className="m-notification__description"
+      >
+        OCC reported that an operator is not available on the route1, route2.
+      </div>
+      <div
+        className="m-properties-list"
+      >
+        <table
+          className="m-properties-list__table"
+        >
+          <tbody>
+            <tr
+              className="m-properties-list__property "
+            >
+              <td
+                className="m-properties-list__property-label"
+              >
+                Run
+              </td>
+              <td
+                className="m-properties-list__property-value"
+              >
+                run1, run2
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </button>
+    <button
+      className="m-notifications__close"
+      onClick={[Function]}
+    >
+      Close
+    </button>
+  </div>
+  <div
+    className="m-notifications__card"
+  >
+    <button
+      className="m-notifications__card-info"
+    >
+      <div
+        className="m-notification__title-row"
+      >
+        <div
+          className="m-notification__title"
+        >
+          NO OPERATOR
+        </div>
+        <div
+          className="m-notification__age"
+        >
+          0 min
+        </div>
+      </div>
+      <div
+        className="m-notification__description"
+      >
+        OCC reported that an operator is not available on the route1, route2.
+      </div>
+      <div
+        className="m-properties-list"
+      >
+        <table
+          className="m-properties-list__table"
+        >
+          <tbody>
+            <tr
+              className="m-properties-list__property "
+            >
+              <td
+                className="m-properties-list__property-label"
+              >
+                Run
+              </td>
+              <td
+                className="m-properties-list__property-value"
+              >
+                run1, run2
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </button>
+    <button
+      className="m-notifications__close"
+      onClick={[Function]}
+    >
+      Close
+    </button>
+  </div>
+</div>
+`;
