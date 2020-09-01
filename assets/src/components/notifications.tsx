@@ -44,7 +44,7 @@ const NotificationCard = ({
   currentTime: Date
 }) => (
   <div className="m-notifications__card">
-    <button className="m-notifications__card-info" onClick={() => {}}>
+    <button className="m-notifications__card-info">
       <div className="m-notification__title-row">
         <div className="m-notification__title">
           {title(notification.reason)}
