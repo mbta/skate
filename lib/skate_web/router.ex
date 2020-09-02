@@ -59,6 +59,16 @@ defmodule SkateWeb.Router do
     get "/settings", PageController, :index
   end
 
+  scope "/__fullstory_test", SkateWeb do
+    pipe_through [
+      :redirect_prod_http,
+      :accepts_html,
+      :browser
+    ]
+
+    get "/", FullStoryTestController, :index
+  end
+
   scope "/api", SkateWeb do
     pipe_through [:accepts_json, :browser, :auth, :ensure_auth]
 
