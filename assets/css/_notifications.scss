@@ -1,9 +1,10 @@
 .m-notifications {
-  padding-right: 1rem;
-  padding-top: 1rem;
+  box-sizing: border-box;
+  max-width: 100vw;
+  padding: 1rem;
+  position: absolute;
   right: 0;
   top: 0;
-  position: absolute;
   z-index: 900;
 }
 
@@ -14,6 +15,7 @@
   box-shadow: $box-shadow-secondary;
   display: flex;
   margin-bottom: 0.5rem;
+  max-width: 100%;
   width: 25rem;
 }
 
