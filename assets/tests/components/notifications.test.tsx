@@ -1,15 +1,15 @@
 import { mount } from "enzyme"
 import React from "react"
+import { act } from "react-dom/test-utils"
 import renderer from "react-test-renderer"
 import {
-  Notifications,
   NotificationCard,
+  Notifications,
 } from "../../src/components/notifications"
 import { useNotifications } from "../../src/hooks/useNotifications"
-import { Notification } from "../../src/realtime.d"
+import { Notification, NotificationReason } from "../../src/realtime.d"
 import { now } from "../../src/util/dateTime"
 import { mockUseStateOnce } from "../testHelpers/mockHelpers"
-import { act } from "react-dom/test-utils"
 
 jest.mock("../../src/hooks/useNotifications", () => ({
   __esModule: true,
@@ -70,7 +70,7 @@ describe("Notification", () => {
 
 describe("NotificationCard", () => {
   test("transforms reasons into human-readable titles", () => {
-    const n = { ...notification, reason: "operator_error" }
+    const n: Notification = { ...notification, reason: "operator_error" }
     const wrapper = mount(
       <NotificationCard
         notification={n}
@@ -82,7 +82,7 @@ describe("NotificationCard", () => {
   })
 
   test("uses custom titles if available", () => {
-    const n = { ...notification, reason: "manpower" }
+    const n: Notification = { ...notification, reason: "manpower" }
     const wrapper = mount(
       <NotificationCard
         notification={n}
@@ -94,7 +94,7 @@ describe("NotificationCard", () => {
   })
 
   test("renders a notification with an unexpected reason", () => {
-    const n = { ...notification, reason: "weird reason" }
+    const n: Notification = { ...notification, reason: "other" }
     const tree = renderer
       .create(
         <NotificationCard
@@ -105,5 +105,26 @@ describe("NotificationCard", () => {
       )
       .toJSON()
     expect(tree).toMatchSnapshot()
+  })
+
+  const reasons: NotificationReason[] = [
+    "manpower",
+    "disabled",
+    "diverted",
+    "accident",
+    "other",
+    "adjusted",
+    "operator_error",
+    "traffic",
+  ]
+  test.each(reasons)("renders notification with reason %s", (reason) => {
+    const n: Notification = { ...notification, reason }
+    mount(
+      <NotificationCard
+        notification={n}
+        remove={jest.fn()}
+        currentTime={now()}
+      />
+    )
   })
 })
