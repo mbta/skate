@@ -3,7 +3,10 @@ import React from "react"
 import renderer from "react-test-renderer"
 import PropertiesList, {
   formattedLogonTime,
+  ghostProperties,
   Highlighted,
+  vehicleOrGhostProperties,
+  vehicleProperties,
 } from "../../src/components/propertiesList"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../src/realtime"
@@ -69,49 +72,48 @@ const vehicle: Vehicle = {
   crowding: null,
 }
 
+const ghost: Ghost = {
+  id: "ghost-trip",
+  directionId: 0,
+  routeId: "39",
+  tripId: "trip",
+  headsign: "headsign",
+  blockId: "block",
+  runId: "123-0123",
+  viaVariant: "X",
+  layoverDepartureTime: null,
+  scheduledTimepointStatus: {
+    timepointId: "t0",
+    fractionUntilTimepoint: 0.0,
+  },
+  routeStatus: "on_route",
+  blockWaivers: [],
+}
+
 describe("PropertiesList", () => {
+  test("renders generic properties", () => {
+    const properties = [
+      { label: "Label 1", value: "Value 1" },
+      { label: "Label 2", value: "Value 2" },
+    ]
+    const tree = renderer
+      .create(<PropertiesList properties={properties} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
   test("renders a properties list for a vehicle", () => {
     const tree = renderer
-      .create(<PropertiesList vehicleOrGhost={vehicle} />)
+      .create(<PropertiesList properties={vehicleProperties(vehicle)} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()
   })
 
   test("renders a properties list for a ghost", () => {
-    const ghost: Ghost = {
-      id: "ghost-trip",
-      directionId: 0,
-      routeId: "39",
-      tripId: "trip",
-      headsign: "headsign",
-      blockId: "block",
-      runId: "123-0123",
-      viaVariant: "X",
-      layoverDepartureTime: null,
-      scheduledTimepointStatus: {
-        timepointId: "t0",
-        fractionUntilTimepoint: 0.0,
-      },
-      routeStatus: "on_route",
-      blockWaivers: [],
-    }
-
     const tree = renderer
-      .create(<PropertiesList vehicleOrGhost={ghost} />)
-      .toJSON()
-
-    expect(tree).toMatchSnapshot()
-  })
-
-  test("renders a properties list for an overloaded vehicle", () => {
-    const overloadedVehicle: Vehicle = {
-      ...vehicle,
-      isOverload: true,
-    }
-
-    const tree = renderer
-      .create(<PropertiesList vehicleOrGhost={overloadedVehicle} />)
+      .create(<PropertiesList properties={ghostProperties(ghost)} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -119,22 +121,52 @@ describe("PropertiesList", () => {
 
   test("highlights requested text", () => {
     const tree = renderer
-      .create(<PropertiesList vehicleOrGhost={vehicle} highlightText="run" />)
+      .create(
+        <PropertiesList
+          properties={vehicleOrGhostProperties(vehicle)}
+          highlightText="run"
+        />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
   })
+})
 
-  test("reports 'Not Available' if missing a login time", () => {
+describe("vehicleOrGhostProperties", () => {
+  test("uses vehicle properties for vehicles", () => {
+    expect(vehicleOrGhostProperties(vehicle)).toEqual(
+      vehicleProperties(vehicle)
+    )
+  })
+
+  test("uses ghost properties for ghosts", () => {
+    expect(vehicleOrGhostProperties(ghost)).toEqual(ghostProperties(ghost))
+  })
+})
+
+describe("vehicleProperties", () => {
+  test("an overloaded vehicle's run has 'ADDED'", () => {
+    const overloadedVehicle: Vehicle = {
+      ...vehicle,
+      isOverload: true,
+    }
+    const properties = vehicleProperties(overloadedVehicle)
+    expect(properties.find((prop) => prop.label === "Run")!.value).toContain(
+      "ADDED"
+    )
+  })
+
+  test("login time is 'Not Available' if missing a login time", () => {
     const vehicleSansLoginTime = {
       ...vehicle,
       operatorLogonTime: null,
     }
-    const tree = renderer
-      .create(<PropertiesList vehicleOrGhost={vehicleSansLoginTime} />)
-      .toJSON()
+    const properties = vehicleProperties(vehicleSansLoginTime)
 
-    expect(tree).toMatchSnapshot()
+    expect(
+      properties.find((prop) => prop.label === "Last Login")!.value
+    ).toEqual("Not Available")
   })
 })
 

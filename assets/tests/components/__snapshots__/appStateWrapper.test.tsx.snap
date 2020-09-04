@@ -11,6 +11,9 @@ exports[`renders 1`] = `
     className="m-app__main"
   >
     <div
+      className="m-notifications"
+    />
+    <div
       className="m-tab-bar visible"
     >
       <button

@@ -7,7 +7,7 @@ import { Ghost, Vehicle, VehicleOrGhost } from "../realtime"
 import { formattedTime, formattedTimeDiff, now } from "../util/dateTime"
 
 interface Props {
-  vehicleOrGhost: VehicleOrGhost
+  properties: Property[]
   highlightText?: string
 }
 
@@ -23,7 +23,7 @@ export const formattedLogonTime = (logonDate: Date): string => {
   return `${formattedTimeDiff(nowDate, logonDate)}; ${formattedTime(logonDate)}`
 }
 
-const vehicleProperties = (vehicle: Vehicle): Property[] => {
+export const vehicleProperties = (vehicle: Vehicle): Property[] => {
   const { runId, label, operatorId, operatorName, operatorLogonTime } = vehicle
 
   return [
@@ -53,14 +53,16 @@ const vehicleProperties = (vehicle: Vehicle): Property[] => {
   ]
 }
 
-const ghostProperties = (ghost: Ghost): Property[] => [
+export const ghostProperties = (ghost: Ghost): Property[] => [
   {
     label: "Run",
     value: ghost.runId || "Not Available",
   },
 ]
 
-const properties = (vehicleOrGhost: VehicleOrGhost): Property[] =>
+export const vehicleOrGhostProperties = (
+  vehicleOrGhost: VehicleOrGhost
+): Property[] =>
   isVehicle(vehicleOrGhost)
     ? vehicleProperties(vehicleOrGhost)
     : ghostProperties(vehicleOrGhost)
@@ -129,11 +131,11 @@ const PropertyRow = ({
   </tr>
 )
 
-const PropertiesList = ({ vehicleOrGhost, highlightText }: Props) => (
+const PropertiesList = ({ properties, highlightText }: Props) => (
   <div className="m-properties-list">
     <table className="m-properties-list__table">
       <tbody>
-        {properties(vehicleOrGhost).map((property) => (
+        {properties.map((property) => (
           <PropertyRow
             property={property}
             highlightText={highlightText}

@@ -11,6 +11,9 @@ exports[`App renders 1`] = `
     className="m-app__main"
   >
     <div
+      className="m-notifications"
+    />
+    <div
       className="m-tab-bar visible"
     >
       <button
@@ -261,6 +264,9 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
   <div
     className="m-app__main"
   >
+    <div
+      className="m-notifications"
+    />
     <div
       className="m-tab-bar visible"
     >
