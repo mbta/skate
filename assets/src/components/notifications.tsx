@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import useInterval from "../hooks/useInterval"
 import { useNotifications } from "../hooks/useNotifications"
 import featureIsEnabled from "../laboratoryFeatures"
@@ -43,37 +43,49 @@ export const NotificationCard = ({
   notification: Notification
   remove: (id: number) => void
   currentTime: Date
-}) => (
-  <div className="m-notifications__card">
-    <button className="m-notifications__card-info">
-      <div className="m-notification__title-row">
-        <div className="m-notification__title">
-          {title(notification.reason)}
-        </div>
-        <div className="m-notification__age">
-          {formattedTimeDiff(currentTime, notification.createdAt)}
-        </div>
-      </div>
-      <div className="m-notification__description">
-        {description(notification)}
-      </div>
-      <PropertiesList
-        properties={[
-          {
-            label: "Run",
-            value: notification.runIds.join(", "),
-          },
-        ]}
-      />
-    </button>
-    <button
-      className="m-notifications__close"
-      onClick={() => remove(notification.id)}
+}) => {
+  const [isNew, setIsNew] = useState<boolean>(true)
+  useEffect(() => {
+    setTimeout(() => {
+      setIsNew(false)
+    }, 20)
+  }, [])
+  return (
+    <div
+      className={
+        "m-notifications__card" + (isNew ? " m-notifications__card--new" : "")
+      }
     >
-      Close
-    </button>
-  </div>
-)
+      <button className="m-notifications__card-info">
+        <div className="m-notification__title-row">
+          <div className="m-notification__title">
+            {title(notification.reason)}
+          </div>
+          <div className="m-notification__age">
+            {formattedTimeDiff(currentTime, notification.createdAt)}
+          </div>
+        </div>
+        <div className="m-notification__description">
+          {description(notification)}
+        </div>
+        <PropertiesList
+          properties={[
+            {
+              label: "Run",
+              value: notification.runIds.join(", "),
+            },
+          ]}
+        />
+      </button>
+      <button
+        className="m-notifications__close"
+        onClick={() => remove(notification.id)}
+      >
+        Close
+      </button>
+    </div>
+  )
+}
 
 const title = (reason: NotificationReason): string => {
   switch (reason) {

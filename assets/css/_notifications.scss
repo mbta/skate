@@ -16,7 +16,12 @@
   display: flex;
   margin-bottom: 0.5rem;
   max-width: 100%;
+  transition: transform 0.25s;
   width: 25rem;
+}
+
+.m-notifications__card--new {
+  transform: scale(0.1, 0.1);
 }
 
 .m-notifications__card-info {

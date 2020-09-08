@@ -127,4 +127,21 @@ describe("NotificationCard", () => {
       />
     )
   })
+
+  test("sets and removes class to animate pop-in", () => {
+    jest.useFakeTimers()
+    const wrapper = mount(
+      <NotificationCard
+        notification={notification}
+        remove={jest.fn()}
+        currentTime={now()}
+      />
+    )
+    expect(wrapper.find(".m-notifications__card--new")).toHaveLength(1)
+    act(() => {
+      jest.runAllTimers()
+    })
+    wrapper.update()
+    expect(wrapper.find(".m-notifications__card--new")).toHaveLength(0)
+  })
 })
