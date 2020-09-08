@@ -92,10 +92,10 @@ config :skate, SkateWeb.AuthManager,
 
 config :skate, Skate.Repo,
   database: "skate_dev",
-  username: System.get_env("POSTGRES_USERNAME", System.get_env("USER")),
-  password: System.get_env("POSTGRES_PASSWORD", ""),
-  hostname: System.get_env("POSTGRES_HOSTNAME", "localhost"),
-  port: System.get_env("POSTGRES_PORT", "5432") |> String.to_integer(),
+  username: {:system, "POSTGRES_USERNAME"},
+  password: {:system, "POSTGRES_PASSWORD"},
+  hostname: {:system, "POSTGRES_HOSTNAME"},
+  port: {:system, "POSTGRES_PORT"},
   show_sensitive_data_on_connection_error: true
 
 config :laboratory,
