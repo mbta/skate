@@ -38,6 +38,12 @@ config :skate, :websocket_check_origin, [
   "https://*.mbtace.com"
 ]
 
+config :skate, Skate.Repo,
+  database: "skate",
+  ssl: true,
+  show_sensitive_data_on_connection_error: false,
+  configure: {Skate.Repo, :add_prod_credentials, []}
+
 # Do not print debug messages in production
 config :logger, level: :info
 
