@@ -128,7 +128,7 @@ describe("NotificationCard", () => {
     )
   })
 
-  test.only("sets and removes class to animate pop-in", () => {
+  test("sets and removes class to animate pop-in", () => {
     jest.useFakeTimers()
     const wrapper = mount(
       <NotificationCard
