@@ -8,9 +8,12 @@ import PropertiesList from "./propertiesList"
 
 const deliveryFullstoryEvent = (numStacked: number): void => {
   if (window.FS && window.username) {
+    console.log("sending fullstory event")
     window.FS.event("Notification delivered", {
       num_stacked_int: numStacked,
     })
+  } else {
+    console.log("tried and failed to send fullstory event")
   }
 }
 
@@ -29,6 +32,17 @@ export const Notifications = () => {
     setNotifications((previous) => previous.filter((n) => n.id !== id))
   }
   useNotifications(addNotification)
+
+  useEffect(() => {
+    addNotification({
+      id: 0,
+      createdAt: new Date(),
+      reason: "manpower",
+      routeIds: ["route1"],
+      runIds: ["run1"],
+      tripIds: ["trip1"],
+    })
+  }, [])
 
   const [currentTime, setCurrentTime] = useState(now())
   useInterval(() => setCurrentTime(now()), 1000)
