@@ -59,6 +59,24 @@ describe("Notification", () => {
     expect(wrapper.find(".m-notifications__card")).toHaveLength(1)
   })
 
+  test("makes a fullstory event when a notification arrives", () => {
+    let handler: (notification: Notification) => void
+    ;(useNotifications as jest.Mock).mockImplementationOnce((h) => {
+      handler = h
+    })
+    mount(<Notifications />)
+    const originalFS = window.FS
+    const originalUsername = window.username
+    window.FS = { event: jest.fn(), identify: jest.fn() }
+    window.username = "username"
+    act(() => {
+      handler!(notification)
+    })
+    expect(window.FS!.event).toHaveBeenCalledWith("Notification delivered")
+    window.FS = originalFS
+    window.username = originalUsername
+  })
+
   test("can close notification", () => {
     mockUseStateOnce([notification])
     const wrapper = mount(<Notifications />)
