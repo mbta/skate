@@ -72,7 +72,9 @@ describe("Notification", () => {
     act(() => {
       handler!(notification)
     })
-    expect(window.FS!.event).toHaveBeenCalledWith("Notification delivered")
+    expect(window.FS!.event).toHaveBeenCalledWith("Notification delivered", {
+      num_stacked_int: 1,
+    })
     window.FS = originalFS
     window.username = originalUsername
   })
