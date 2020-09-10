@@ -6,7 +6,7 @@ import { Notification, NotificationReason } from "../realtime.d"
 import { formattedTimeDiff, now } from "../util/dateTime"
 import PropertiesList from "./propertiesList"
 
-const fullstoryEvent = (): void => {
+const deliveryFullstoryEvent = (): void => {
   if (window.FS && window.username) {
     window.FS.event("Notification delivered")
   }
@@ -16,7 +16,7 @@ export const Notifications = () => {
   const [notifications, setNotifications] = useState<Notification[]>([])
   const addNotification = (notification: Notification): void => {
     if (featureIsEnabled("notifications")) {
-      fullstoryEvent()
+      deliveryFullstoryEvent()
       setNotifications((previous) => [...previous, notification])
     }
   }
