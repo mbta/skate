@@ -23,7 +23,8 @@ defmodule Geonames do
         token_param
       }"
 
-    case HTTPoison.get(url) do
+    # force TLS v1.2, see https://campezzi.ghost.io/httpoison-ssl-connection-closed/
+    case HTTPoison.get(url, [], ssl: [versions: [:"tlsv1.2"]]) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         body
         |> Jason.decode!(strings: :copy)
