@@ -29,7 +29,14 @@ defmodule Geonames do
         |> Jason.decode!(strings: :copy)
 
       response ->
-        Logger.warn(fn -> "Unexpected response from #{url} : #{inspect(response)}" end)
+        sanitized_url =
+          if geonames_token do
+            String.replace(url, geonames_token, "SECRET")
+          else
+            url
+          end
+
+        Logger.warn(fn -> "Unexpected response from #{sanitized_url} : #{inspect(response)}" end)
         nil
     end
   end
