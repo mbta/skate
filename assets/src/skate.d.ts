@@ -17,7 +17,7 @@ declare global {
           email?: string
         }
       ): void
-      event(event: string): void
+      event(event: string, properties?: object): void
     }
     ResizeObserver: typeof ResizeObserver
     drift: {
