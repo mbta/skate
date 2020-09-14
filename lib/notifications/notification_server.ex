@@ -2,7 +2,7 @@ defmodule Notifications.NotificationServer do
   use GenServer
 
   alias Notifications.Notification
-  alias Realtime.BlockWaiver
+  alias Realtime.{BlockWaiver, Ghost, Vehicle}
   alias Schedule.Block
 
   require Logger
@@ -78,7 +78,6 @@ defmodule Notifications.NotificationServer do
        ) do
     if reason = get_notification_reason(block_waiver) do
       block_fn = Application.get_env(:realtime, :block_fn, &Schedule.block/2)
-
       block = block_fn.(block_id, service_id)
 
       block_date = Block.date_for_block(block)
@@ -98,12 +97,31 @@ defmodule Notifications.NotificationServer do
       run_ids = trips |> Enum.map(& &1.run_id) |> Enum.uniq()
       trip_ids = trips |> Enum.map(& &1.id)
 
+      peek_at_vehicles_fn =
+        Application.get_env(:realtime, :peek_at_vehicles_fn, &Realtime.Server.peek_at_vehicles/1)
+
+      vehicle_or_ghost =
+        case peek_at_vehicles_fn.(trip_ids) do
+          [v] -> v
+          _ -> nil
+        end
+
+      {operator_id, operator_name, route_id} =
+        case vehicle_or_ghost do
+          %Vehicle{} = vehicle -> {vehicle.operator_id, vehicle.operator_name, vehicle.route_id}
+          %Ghost{} = ghost -> {nil, nil, ghost.route_id}
+          nil -> {nil, nil, nil}
+        end
+
       %Notification{
         reason: reason,
         created_at: created_at,
         route_ids: route_ids,
         run_ids: run_ids,
-        trip_ids: trip_ids
+        trip_ids: trip_ids,
+        operator_id: operator_id,
+        operator_name: operator_name,
+        current_route_id: route_id
       }
     end
   end

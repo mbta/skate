@@ -50,7 +50,7 @@ defmodule Realtime.ServerTest do
     id: "ghost-trip",
     direction_id: 0,
     route_id: "1",
-    trip_id: "trip",
+    trip_id: "t2",
     headsign: "headsign",
     block_id: "block",
     run_id: "123-9049",
@@ -239,6 +239,8 @@ defmodule Realtime.ServerTest do
       ets = :ets.new(__MODULE__, [:set, :protected, {:read_concurrency, true}])
 
       :ets.insert(ets, {{:route_id, "1"}, [@vehicle, @ghost]})
+      :ets.insert(ets, {{:trip_id, "t1"}, @vehicle})
+      :ets.insert(ets, {{:trip_id, "t2"}, @ghost})
       :ets.insert(ets, {:all_vehicles, [@vehicle, @shuttle]})
       :ets.insert(ets, {:all_shuttles, [@shuttle]})
 
@@ -259,6 +261,11 @@ defmodule Realtime.ServerTest do
 
     test "fetches all shuttles from the ets table", %{ets: ets} do
       assert Server.lookup({ets, :all_shuttles}) == [@shuttle]
+    end
+
+    test "fetches a vehicle by trip ID from the ets table", %{ets: ets} do
+      assert Server.lookup({ets, {:trip_id, "t1"}}) == @vehicle
+      assert Server.lookup({ets, {:trip_id, "t2"}}) == @ghost
     end
 
     test "searches all vehicles by any of run, vehicle, or operator", %{ets: ets} do

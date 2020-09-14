@@ -3,6 +3,7 @@ defmodule Notifications.NotificationServerTest do
 
   alias Notifications.NotificationServer
   alias Realtime.BlockWaiver
+  alias Realtime.Vehicle
   alias Schedule.Block
   alias Schedule.Trip
 
@@ -43,6 +44,41 @@ defmodule Notifications.NotificationServerTest do
       }
     ]
   }
+  @vehicle %Vehicle{
+    id: "y0507",
+    label: "0507",
+    timestamp: 123,
+    latitude: 0.0,
+    longitude: 0.0,
+    direction_id: "234",
+    route_id: "SL9001",
+    trip_id: "456",
+    bearing: nil,
+    block_id: nil,
+    operator_id: "56785678",
+    operator_name: "CHARLIE",
+    operator_logon_time: nil,
+    run_id: "123-4567",
+    headway_secs: 600,
+    headway_spacing: :ok,
+    is_shuttle: false,
+    is_overload: false,
+    is_off_course: false,
+    layover_departure_time: nil,
+    block_is_active: true,
+    sources: MapSet.new(["swiftly"]),
+    data_discrepancies: [],
+    stop_status: %{
+      stop_id: "567",
+      stop_name: "567"
+    },
+    timepoint_status: %{
+      timepoint_id: "tp2",
+      fraction_until_timepoint: 0.4
+    },
+    route_status: :on_route,
+    end_of_trip_type: :another_trip
+  }
 
   describe "start_link/1" do
     test "starts up and lives" do
@@ -64,6 +100,10 @@ defmodule Notifications.NotificationServerTest do
     end
 
     test "broadcasts and logs new notifications for waivers with recognized reason" do
+      reassign_env(:realtime, :peek_at_vehicles_fn, fn _ ->
+        [@vehicle]
+      end)
+
       registry_name = :new_notifications_registry
       start_supervised({Registry, keys: :duplicate, name: registry_name})
       reassign_env(:notifications, :registry, registry_name)
@@ -116,7 +156,7 @@ defmodule Notifications.NotificationServerTest do
         log =
           capture_log(fn ->
             NotificationServer.new_block_waivers(waiver_map, server)
-            Process.sleep(10)
+            Process.sleep(50)
           end)
 
         assert_received(
