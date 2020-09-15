@@ -4,7 +4,7 @@
   flex-direction: row;
   height: 100%;
   position: relative;
-  overflow-y: hidden;
+  overflow: visible;
 }
 
 .m-search-page__input-and-results {
@@ -50,12 +50,11 @@
     .m-search-page__input-and-results {
       flex: 1 1 auto;
       height: 100%;
-      overflow: scroll;
     }
 
     .m-search-page__map {
       // Needs to be hidden instead of not displayed so the map still gets drawn properly
-      position: absolute;
+      position: fixed;
       top: 100vh;
     }
   }
