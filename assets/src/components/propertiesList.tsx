@@ -13,7 +13,7 @@ interface Props {
 
 export interface Property {
   label: string
-  value: string
+  value: string | null
   classNameModifier?: string
 }
 
@@ -118,18 +118,19 @@ const PropertyRow = ({
 }: {
   property: Property
   highlightText?: string
-}) => (
-  <tr
-    className={`m-properties-list__property ${modifiedClassName(
-      classNameModifier
-    )}`}
-  >
-    <td className="m-properties-list__property-label">{label}</td>
-    <td className="m-properties-list__property-value">
-      <Highlighted content={value} highlightText={highlightText} />
-    </td>
-  </tr>
-)
+}) =>
+  value === null ? null : (
+    <tr
+      className={`m-properties-list__property ${modifiedClassName(
+        classNameModifier
+      )}`}
+    >
+      <td className="m-properties-list__property-label">{label}</td>
+      <td className="m-properties-list__property-value">
+        <Highlighted content={value} highlightText={highlightText} />
+      </td>
+    </tr>
+  )
 
 const PropertiesList = ({ properties, highlightText }: Props) => (
   <div className="m-properties-list">

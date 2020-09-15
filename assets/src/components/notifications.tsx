@@ -86,6 +86,14 @@ export const NotificationCard = ({
               label: "Run",
               value: notification.runIds.join(", "),
             },
+            {
+              label: "Operator",
+              value:
+                notification.operatorName !== undefined &&
+                notification.operatorId !== undefined
+                  ? `${notification.operatorName} #${notification.operatorId}`
+                  : null,
+            },
           ]}
         />
       </button>
