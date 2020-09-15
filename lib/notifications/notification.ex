@@ -9,7 +9,10 @@ defmodule Notifications.Notification do
           reason: notification_reason(),
           route_ids: [Route.id()],
           run_ids: [String.t()],
-          trip_ids: [Trip.id()]
+          trip_ids: [Trip.id()],
+          operator_id: String.t() | nil,
+          operator_name: String.t() | nil,
+          route_id_at_creation: Route.id() | nil
         }
 
   @derive Jason.Encoder
@@ -19,6 +22,9 @@ defmodule Notifications.Notification do
     :reason,
     :route_ids,
     :run_ids,
-    :trip_ids
+    :trip_ids,
+    :operator_id,
+    :operator_name,
+    :route_id_at_creation
   ]
 end

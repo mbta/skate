@@ -50,7 +50,7 @@ defmodule Realtime.ServerTest do
     id: "ghost-trip",
     direction_id: 0,
     route_id: "1",
-    trip_id: "trip",
+    trip_id: "t2",
     headsign: "headsign",
     block_id: "block",
     run_id: "123-9049",
@@ -63,7 +63,14 @@ defmodule Realtime.ServerTest do
     route_status: :on_route
   }
 
-  @shuttle %{@vehicle | id: "shuttle", label: "shuttle", run_id: "9990555", route_id: nil}
+  @shuttle %{
+    @vehicle
+    | id: "shuttle",
+      label: "shuttle",
+      run_id: "9990555",
+      route_id: nil,
+      trip_id: "t3"
+  }
 
   @vehicles_by_route_id %{
     "1" => [@vehicle, @ghost]
@@ -239,6 +246,8 @@ defmodule Realtime.ServerTest do
       ets = :ets.new(__MODULE__, [:set, :protected, {:read_concurrency, true}])
 
       :ets.insert(ets, {{:route_id, "1"}, [@vehicle, @ghost]})
+      :ets.insert(ets, {{:trip_id, "t1"}, @vehicle})
+      :ets.insert(ets, {{:trip_id, "t2"}, @ghost})
       :ets.insert(ets, {:all_vehicles, [@vehicle, @shuttle]})
       :ets.insert(ets, {:all_shuttles, [@shuttle]})
 
@@ -259,6 +268,11 @@ defmodule Realtime.ServerTest do
 
     test "fetches all shuttles from the ets table", %{ets: ets} do
       assert Server.lookup({ets, :all_shuttles}) == [@shuttle]
+    end
+
+    test "fetches a vehicle by trip ID from the ets table", %{ets: ets} do
+      assert Server.lookup({ets, {:trip_id, "t1"}}) == @vehicle
+      assert Server.lookup({ets, {:trip_id, "t2"}}) == @ghost
     end
 
     test "searches all vehicles by any of run, vehicle, or operator", %{ets: ets} do
@@ -330,6 +344,20 @@ defmodule Realtime.ServerTest do
       response = Server.handle_info({make_ref(), []}, state)
 
       assert response == {:noreply, state}
+    end
+  end
+
+  describe "peek_at_vehicles/2" do
+    test "looks up vehicles active on the given trip IDs" do
+      {:ok, server_pid} = Server.start_link([])
+      Server.update({@vehicles_by_route_id, [@shuttle]}, server_pid)
+
+      assert Server.peek_at_vehicles([], server_pid) == []
+      assert Server.peek_at_vehicles(["no_such_t"], server_pid) == []
+      assert Server.peek_at_vehicles(["t1"], server_pid) == [@vehicle]
+      assert Server.peek_at_vehicles(["t2"], server_pid) == [@ghost]
+      assert Server.peek_at_vehicles(["t1", "t2"], server_pid) == [@vehicle, @ghost]
+      assert Server.peek_at_vehicles(["t1", "no_such_t", "t2"], server_pid) == [@vehicle, @ghost]
     end
   end
 end
