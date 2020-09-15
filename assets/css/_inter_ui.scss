@@ -8,10 +8,8 @@ $font-family: "Inter UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-style: normal;
   font-weight: 400;
   src: url("https://cdn.mbta.com/fonts/Inter-UI-Regular.woff2") format("woff2"),
-    // Modern Browsers
-      url("https://cdn.mbta.com/fonts/Inter-UI-Regular.woff") format("woff"),
-    // Modern Browsers
-      url("https://cdn.mbta.com/fonts/Inter-UI-Regular.ttf") format("truetype");
+    url("https://cdn.mbta.com/fonts/Inter-UI-Regular.woff") format("woff"),
+    url("https://cdn.mbta.com/fonts/Inter-UI-Regular.ttf") format("truetype");
   text-rendering: optimizeLegibility;
 }
 
