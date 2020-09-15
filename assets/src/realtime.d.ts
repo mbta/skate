@@ -54,6 +54,9 @@ export interface Notification {
   routeIds: RouteId[]
   runIds: RunId[]
   tripIds: TripId[]
+  operatorName?: string
+  operatorId?: string
+  routeIdAtCreation?: string
 }
 
 export type NotificationReason =
