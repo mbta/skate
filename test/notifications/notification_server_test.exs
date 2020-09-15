@@ -167,7 +167,10 @@ defmodule Notifications.NotificationServerTest do
                reason: ^cause_atom,
                route_ids: ["1", "2"],
                run_ids: ["run1", "run2"],
-               trip_ids: ["trip1", "trip2"]
+               trip_ids: ["trip1", "trip2"],
+               operator_name: "CHARLIE",
+               operator_id: "56785678",
+               route_id_at_creation: "SL9001"
              }
            ]}
         )
