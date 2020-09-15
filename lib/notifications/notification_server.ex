@@ -121,7 +121,7 @@ defmodule Notifications.NotificationServer do
         trip_ids: trip_ids,
         operator_id: operator_id,
         operator_name: operator_name,
-        current_route_id: route_id
+        route_id_at_creation: route_id
       }
     end
   end

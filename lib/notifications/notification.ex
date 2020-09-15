@@ -12,7 +12,7 @@ defmodule Notifications.Notification do
           trip_ids: [Trip.id()],
           operator_id: String.t() | nil,
           operator_name: String.t() | nil,
-          current_route_id: Route.id() | nil
+          route_id_at_creation: Route.id() | nil
         }
 
   @derive Jason.Encoder
@@ -25,6 +25,6 @@ defmodule Notifications.Notification do
     :trip_ids,
     :operator_id,
     :operator_name,
-    :current_route_id
+    :route_id_at_creation
   ]
 end
