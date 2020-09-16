@@ -35,7 +35,7 @@
   "devDependencies": {
     "@sentry/webpack-plugin": "^1.12.1",
     "@testing-library/react-hooks": "^3.4.1",
-    "@types/enzyme": "^3.10.5",
+    "@types/enzyme": "^3.10.6",
     "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jest": "^26.0.10",
     "@types/leaflet": "^1.5.17",
