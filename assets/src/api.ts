@@ -1,5 +1,14 @@
 import "whatwg-fetch"
+import { Block, Run } from "./minischedule"
 import { reload } from "./models/browser"
+import { blockFromData, runFromData } from "./models/minischeduleData"
+import {
+  GhostData,
+  ghostFromData,
+  VehicleData,
+  vehicleFromData,
+} from "./models/vehicleData"
+import { VehicleOrGhost } from "./realtime.d"
 import {
   DirectionName,
   Route,
@@ -8,8 +17,6 @@ import {
   Timepoint,
   TripId,
 } from "./schedule.d"
-import { runFromData, blockFromData } from "./models/minischeduleData"
-import { Run, Block } from "./minischedule"
 
 interface RouteData {
   id: string
@@ -123,6 +130,43 @@ export const fetchNearestIntersection = (
   apiCall({
     url: `/api/intersection?latitude=${latitude}&longitude=${longitude}`,
     parser: nullableParser((intersection: string) => intersection),
+    defaultResult: null,
+  })
+
+type TaggedVehicleOrGhostData =
+  | { dataType: "vehicle"; vehicle: VehicleData; route: RouteData }
+  | { dataType: "ghost"; ghost: GhostData; route: RouteData }
+
+export interface VehicleOrGhostAndRoute {
+  vehicleOrGhost: VehicleOrGhost
+  route: Route
+}
+
+const parseVehicleOrGhostData = (
+  vehicleOrGhostData: TaggedVehicleOrGhostData
+): VehicleOrGhostAndRoute | null => {
+  switch (vehicleOrGhostData.dataType) {
+    case "vehicle":
+      return {
+        vehicleOrGhost: vehicleFromData(vehicleOrGhostData.vehicle),
+        route: parseRouteData(vehicleOrGhostData.route),
+      }
+    case "ghost":
+      return {
+        vehicleOrGhost: ghostFromData(vehicleOrGhostData.ghost),
+        route: parseRouteData(vehicleOrGhostData.route),
+      }
+    default:
+      return null
+  }
+}
+
+export const fetchCurrentVehicleForTrips = (
+  tripIds: string[]
+): Promise<VehicleOrGhostAndRoute | null> =>
+  apiCall({
+    url: `/api/vehicle_for_trips?trip_ids=${tripIds.join(",")}`,
+    parser: nullableParser(parseVehicleOrGhostData),
     defaultResult: null,
   })
 

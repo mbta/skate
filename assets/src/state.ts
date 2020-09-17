@@ -1,4 +1,5 @@
 import { Dispatch as ReactDispatch } from "react"
+import { VehicleOrGhostAndRoute } from "./api"
 import {
   emptyLadderCrowdingTogglesByRouteId,
   LadderCrowdingToggles,
@@ -29,6 +30,7 @@ export interface State {
   selectedShuttleRunIds: RunId[] | "all"
   selectedVehicleId?: VehicleId
   settings: Settings
+  vehicleAndRouteForNotification?: VehicleOrGhostAndRoute
 }
 
 export const initialState: State = {
@@ -41,6 +43,7 @@ export const initialState: State = {
   selectedShuttleRunIds: "all",
   selectedVehicleId: undefined,
   settings: defaultSettings,
+  vehicleAndRouteForNotification: undefined,
 }
 
 interface SelectRouteAction {
@@ -227,6 +230,22 @@ export const setShuttleVehicleLabelSetting = (
   },
 })
 
+interface SetVehicleOrGhostAndRouteAction {
+  type: "SET_VEHICLE_AND_ROUTE_FOR_NOTIFICATION"
+  payload: {
+    vehicleAndRouteForNotification: VehicleOrGhostAndRoute
+  }
+}
+
+export const setVehicleOrGhostAndRoute = (
+  vehicleAndRouteForNotification: VehicleOrGhostAndRoute
+): SetVehicleOrGhostAndRouteAction => ({
+  type: "SET_VEHICLE_AND_ROUTE_FOR_NOTIFICATION",
+  payload: {
+    vehicleAndRouteForNotification,
+  },
+})
+
 type Action =
   | SelectRouteAction
   | DeselectRouteAction
@@ -244,6 +263,7 @@ type Action =
   | SetLadderVehicleLabelSettingAction
   | SetShuttleVehicleLabelSettingAction
   | SearchAction
+  | SetVehicleOrGhostAndRouteAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -346,6 +366,7 @@ const selectedVehicleIdReducer = (
     case "SELECT_VEHICLE":
       return action.payload.vehicleId
     case "DESELECT_VEHICLE":
+    case "SET_VEHICLE_AND_ROUTE_FOR_NOTIFICATION":
       return undefined
     default:
       return state
@@ -364,6 +385,21 @@ const settingsReducer = (state: Settings, action: Action): Settings => {
         ...state,
         shuttleVehicleLabel: action.payload.shuttleVehicleLabel,
       }
+    default:
+      return state
+  }
+}
+
+const vehicleAndRouteForNotificationReducer = (
+  state: VehicleOrGhostAndRoute | undefined,
+  action: Action
+): VehicleOrGhostAndRoute | undefined => {
+  switch (action.type) {
+    case "SELECT_VEHICLE":
+    case "DESELECT_VEHICLE":
+      return undefined
+    case "SET_VEHICLE_AND_ROUTE_FOR_NOTIFICATION":
+      return action.payload.vehicleAndRouteForNotification
     default:
       return state
   }
@@ -391,4 +427,8 @@ export const reducer = (state: State, action: Action): State => ({
   ),
   selectedVehicleId: selectedVehicleIdReducer(state.selectedVehicleId, action),
   settings: settingsReducer(state.settings, action),
+  vehicleAndRouteForNotification: vehicleAndRouteForNotificationReducer(
+    state.vehicleAndRouteForNotification,
+    action
+  ),
 })

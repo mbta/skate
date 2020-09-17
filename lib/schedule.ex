@@ -50,6 +50,11 @@ defmodule Schedule do
     call_catch_timeout(server, :all_routes, :all_routes, [])
   end
 
+  @spec route_by_id(Route.id(), GenServer.server()) :: Route.t() | nil
+  def route_by_id(route_id, server \\ __MODULE__) do
+    all_routes(server) |> Enum.find(&(&1.id == route_id))
+  end
+
   # Timepoint IDs on a route, sorted in order of stop sequence
   @spec timepoints_on_route(Route.id()) :: [Timepoint.t()]
   @spec timepoints_on_route(Route.id(), GenServer.server()) :: [Timepoint.t()]

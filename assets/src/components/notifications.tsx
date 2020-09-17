@@ -1,7 +1,10 @@
 import React, { useContext, useEffect, useState } from "react"
+import { fetchCurrentVehicleForTrips, VehicleOrGhostAndRoute } from "../api"
 import { NotificationsContext } from "../contexts/notificationsContext"
+import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useInterval from "../hooks/useInterval"
 import { Notification, NotificationReason } from "../realtime.d"
+import { selectVehicle, setVehicleOrGhostAndRoute } from "../state"
 import { formattedTimeDiff, now } from "../util/dateTime"
 import PropertiesList from "./propertiesList"
 
@@ -9,6 +12,25 @@ export const Notifications = () => {
   const { notifications, removeNotification } = useContext(NotificationsContext)
   const [currentTime, setCurrentTime] = useState(now())
   useInterval(() => setCurrentTime(now()), 1000)
+
+  const [state, dispatch] = useContext(StateDispatchContext)
+  const fetchCurrentVehicle = (notification: Notification) => {
+    fetchCurrentVehicleForTrips(notification.tripIds).then(
+      (vehicleOrGhostAndRoute: VehicleOrGhostAndRoute | null) => {
+        if (vehicleOrGhostAndRoute) {
+          if (
+            state.selectedRouteIds.find(
+              (id) => id === vehicleOrGhostAndRoute.route.id
+            )
+          ) {
+            dispatch(selectVehicle(vehicleOrGhostAndRoute.vehicleOrGhost.id))
+          } else {
+            dispatch(setVehicleOrGhostAndRoute(vehicleOrGhostAndRoute))
+          }
+        }
+      }
+    )
+  }
 
   return (
     <div className="m-notifications">
@@ -18,6 +40,7 @@ export const Notifications = () => {
           notification={notification}
           remove={removeNotification}
           currentTime={currentTime}
+          fetchCurrentVehicle={fetchCurrentVehicle}
         />
       ))}
     </div>
@@ -28,10 +51,12 @@ export const NotificationCard = ({
   notification,
   remove,
   currentTime,
+  fetchCurrentVehicle,
 }: {
   notification: Notification
   remove: (id: number) => void
   currentTime: Date
+  fetchCurrentVehicle: (notification: Notification) => any
 }) => {
   const [isNew, setIsNew] = useState<boolean>(true)
   useEffect(() => {
@@ -45,7 +70,10 @@ export const NotificationCard = ({
         "m-notifications__card" + (isNew ? " m-notifications__card--new" : "")
       }
     >
-      <button className="m-notifications__card-info">
+      <button
+        className="m-notifications__card-info"
+        onClick={() => fetchCurrentVehicle(notification)}
+      >
         <div className="m-notification__title-row">
           <div className="m-notification__title">
             {title(notification.reason)}

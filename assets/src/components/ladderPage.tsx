@@ -39,7 +39,11 @@ const vehicleRoute = (
 
 const LadderPage = (): ReactElement<HTMLDivElement> => {
   const [state] = useContext(StateDispatchContext)
-  const { selectedRouteIds, selectedVehicleId } = state
+  const {
+    selectedRouteIds,
+    selectedVehicleId,
+    vehicleAndRouteForNotification,
+  } = state
 
   const routes: Route[] | null = useRoutes()
   const timepointsByRouteId: TimepointsByRouteId = useTimepoints(
@@ -78,6 +82,14 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
               <PropertiesPanel
                 selectedVehicleOrGhost={selectedVehicleOrGhost}
                 route={vehicleRoute(routes, selectedVehicleOrGhost)}
+              />
+            )}
+            {vehicleAndRouteForNotification && (
+              <PropertiesPanel
+                selectedVehicleOrGhost={
+                  vehicleAndRouteForNotification.vehicleOrGhost
+                }
+                route={vehicleAndRouteForNotification.route}
               />
             )}
           </>

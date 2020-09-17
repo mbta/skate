@@ -15,6 +15,7 @@ exports[`Notification renders notifications 1`] = `
   >
     <button
       className="m-notifications__card-info"
+      onClick={[Function]}
     >
       <div
         className="m-notification__title-row"
@@ -72,6 +73,7 @@ exports[`Notification renders notifications 1`] = `
   >
     <button
       className="m-notifications__card-info"
+      onClick={[Function]}
     >
       <div
         className="m-notification__title-row"
@@ -133,6 +135,7 @@ exports[`NotificationCard renders a notification with an unexpected reason 1`] =
 >
   <button
     className="m-notifications__card-info"
+    onClick={[Function]}
   >
     <div
       className="m-notification__title-row"
