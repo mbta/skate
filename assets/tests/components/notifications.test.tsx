@@ -104,6 +104,7 @@ describe("NotificationCard", () => {
         notification={n}
         remove={jest.fn()}
         currentTime={now()}
+        fetchCurrentVehicle={() => null}
       />
     )
     expect(wrapper.html()).toContain("OPERATOR ERROR")
@@ -116,6 +117,7 @@ describe("NotificationCard", () => {
         notification={n}
         remove={jest.fn()}
         currentTime={now()}
+        fetchCurrentVehicle={() => null}
       />
     )
     expect(wrapper.html()).toContain("NO OPERATOR")
@@ -129,6 +131,7 @@ describe("NotificationCard", () => {
           notification={n}
           remove={jest.fn()}
           currentTime={now()}
+          fetchCurrentVehicle={() => null}
         />
       )
       .toJSON()
@@ -203,6 +206,7 @@ describe("NotificationCard", () => {
         notification={n}
         remove={jest.fn()}
         currentTime={now()}
+        fetchCurrentVehicle={() => null}
       />
     )
   })
@@ -214,6 +218,7 @@ describe("NotificationCard", () => {
         notification={notification}
         remove={jest.fn()}
         currentTime={now()}
+        fetchCurrentVehicle={() => null}
       />
     )
     expect(wrapper.find(".m-notifications__card--new")).toHaveLength(1)
