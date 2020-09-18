@@ -3,6 +3,7 @@ import { fetchCurrentVehicleForTrips, VehicleOrGhostAndRoute } from "../api"
 import { NotificationsContext } from "../contexts/notificationsContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useInterval from "../hooks/useInterval"
+import { isVehicle } from "../models/vehicle"
 import { Notification, NotificationReason } from "../realtime.d"
 import { selectVehicle, setVehicleOrGhostAndRoute } from "../state"
 import { formattedTimeDiff, now } from "../util/dateTime"
@@ -17,6 +18,18 @@ export const Notifications = () => {
   const fetchCurrentVehicle = (notification: Notification) => {
     fetchCurrentVehicleForTrips(notification.tripIds).then(
       (vehicleOrGhostAndRoute: VehicleOrGhostAndRoute | null) => {
+        if (window.FS) {
+          if (vehicleOrGhostAndRoute) {
+            if (isVehicle(vehicleOrGhostAndRoute.vehicleOrGhost)) {
+              window.FS.event("Notification linked to VPP")
+            } else {
+              window.FS.event("Notification linked to ghost")
+            }
+          } else {
+            window.FS.event("Notification link failed")
+          }
+        }
+
         if (vehicleOrGhostAndRoute) {
           if (
             state.selectedRouteIds.find(
