@@ -11,7 +11,6 @@ import SearchPage from "./searchPage"
 import SettingsPage from "./settingsPage"
 import ShuttleMapPage from "./shuttleMapPage"
 import TabBar from "./tabBar"
-import { Notifications } from "./notifications"
 
 const AppRoutes = () => {
   useAppcues()
@@ -25,7 +24,6 @@ const AppRoutes = () => {
         <DataStatusBanner />
       </div>
       <div className="m-app__main">
-        <Notifications />
         <TabBar pickerContainerIsVisible={pickerContainerIsVisible} />
         <BrowserRoute exact={true} path="/" component={LadderPage} />
         <BrowserRoute

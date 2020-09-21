@@ -10,6 +10,7 @@ import useVehicles from "../hooks/useVehicles"
 import { allVehiclesAndGhosts } from "../models/vehiclesByRouteId"
 import { VehicleId, VehicleOrGhost } from "../realtime.d"
 import { ByRouteId, Route, RouteId, TimepointsByRouteId } from "../schedule.d"
+import { Notifications } from "./notifications"
 import PropertiesPanel from "./propertiesPanel"
 import RouteLadders from "./routeLadders"
 import RoutePicker from "./routePicker"
@@ -62,6 +63,7 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
   return (
     <RoutesContext.Provider value={routes}>
       <div className="m-ladder-page">
+        <Notifications />
         <RoutePicker selectedRouteIds={selectedRouteIds} />
 
         <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
