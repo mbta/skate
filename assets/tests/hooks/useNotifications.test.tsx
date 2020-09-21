@@ -19,6 +19,9 @@ const notificationData: NotificationData = {
   route_ids: ["route"],
   run_ids: ["run"],
   trip_ids: ["trip"],
+  operator_name: null,
+  operator_id: null,
+  route_id_at_creation: null,
 }
 
 describe("useNotifications", () => {

@@ -8,9 +8,9 @@ export interface NotificationData {
   route_ids: RouteId[]
   run_ids: RunId[]
   trip_ids: TripId[]
-  operator_name?: string
-  operator_id?: string
-  route_id_at_creation?: string
+  operator_name: string | null
+  operator_id: string | null
+  route_id_at_creation: string | null
 }
 
 export const notificationsFromData = (
