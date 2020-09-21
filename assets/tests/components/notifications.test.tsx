@@ -6,10 +6,9 @@ import {
   NotificationCard,
   Notifications,
 } from "../../src/components/notifications"
-import { useNotifications } from "../../src/hooks/useNotifications"
+import { NotificationsContext } from "../../src/contexts/notificationsContext"
 import { Notification, NotificationReason } from "../../src/realtime.d"
 import { now } from "../../src/util/dateTime"
-import { mockUseStateOnce } from "../testHelpers/mockHelpers"
 
 jest.mock("../../src/hooks/useNotifications", () => ({
   __esModule: true,
@@ -47,54 +46,40 @@ describe("Notification", () => {
   })
 
   test("renders notifications", () => {
-    mockUseStateOnce([
+    const notifications = [
       { ...notification, id: 0 },
       { ...notification, id: 1 },
-    ])
-    const tree = renderer.create(<Notifications />).toJSON()
+    ]
+    const tree = renderer
+      .create(
+        <NotificationsContext.Provider
+          value={{
+            notifications,
+            removeNotification: jest.fn(),
+          }}
+        >
+          <Notifications />
+        </NotificationsContext.Provider>
+      )
+      .toJSON()
     expect(tree).toMatchSnapshot()
   })
 
-  test("receives incoming notifications", () => {
-    let handler: (notification: Notification) => void
-    ;(useNotifications as jest.Mock).mockImplementationOnce((h) => {
-      handler = h
-    })
-    const wrapper = mount(<Notifications />)
-    expect(wrapper.find(".m-notifications__card")).toHaveLength(0)
-    act(() => {
-      handler!(notification)
-    })
-    wrapper.update()
-    expect(wrapper.find(".m-notifications__card")).toHaveLength(1)
-  })
-
-  test("makes a fullstory event when a notification arrives", () => {
-    let handler: (notification: Notification) => void
-    ;(useNotifications as jest.Mock).mockImplementationOnce((h) => {
-      handler = h
-    })
-    mount(<Notifications />)
-    const originalFS = window.FS
-    const originalUsername = window.username
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-    window.username = "username"
-    act(() => {
-      handler!(notification)
-    })
-    expect(window.FS!.event).toHaveBeenCalledWith("Notification delivered", {
-      num_stacked_int: 1,
-    })
-    window.FS = originalFS
-    window.username = originalUsername
-  })
-
   test("can close notification", () => {
-    mockUseStateOnce([notification])
-    const wrapper = mount(<Notifications />)
+    const removeNotification = jest.fn()
+    const wrapper = mount(
+      <NotificationsContext.Provider
+        value={{
+          notifications: [notification],
+          removeNotification,
+        }}
+      >
+        <Notifications />
+      </NotificationsContext.Provider>
+    )
     expect(wrapper.find(".m-notifications__card")).toHaveLength(1)
     wrapper.find(".m-notifications__close").simulate("click")
-    expect(wrapper.find(".m-notifications__card")).toHaveLength(0)
+    expect(removeNotification).toHaveBeenCalledWith(notification.id)
   })
 })
 
