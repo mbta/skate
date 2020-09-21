@@ -1,7 +1,7 @@
 defmodule SkateWeb.VehicleForTripController do
   use SkateWeb, :controller
 
-  alias Realtime.{Ghost, Server, Vehicle}
+  alias Realtime.Server
 
   @spec show(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def show(conn, %{"trip_ids" => trip_ids}) do
@@ -17,9 +17,8 @@ defmodule SkateWeb.VehicleForTripController do
 
     payload = %{
       data:
-        case vehicle_or_ghost do
-          %Vehicle{} -> %{dataType: "vehicle", vehicle: vehicle_or_ghost, route: route}
-          %Ghost{} -> %{dataType: "ghost", ghost: vehicle_or_ghost, route: route}
+        if vehicle_or_ghost do
+          %{vehicleOrGhostData: vehicle_or_ghost, routeData: route}
         end
     }
 

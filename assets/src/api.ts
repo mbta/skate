@@ -3,10 +3,8 @@ import { Block, Run } from "./minischedule"
 import { reload } from "./models/browser"
 import { blockFromData, runFromData } from "./models/minischeduleData"
 import {
-  GhostData,
-  ghostFromData,
-  VehicleData,
-  vehicleFromData,
+  VehicleOrGhostData,
+  vehicleOrGhostFromData,
 } from "./models/vehicleData"
 import { VehicleOrGhost } from "./realtime.d"
 import {
@@ -133,32 +131,28 @@ export const fetchNearestIntersection = (
     defaultResult: null,
   })
 
-type TaggedVehicleOrGhostData =
-  | { dataType: "vehicle"; vehicle: VehicleData; route: RouteData }
-  | { dataType: "ghost"; ghost: GhostData; route: RouteData }
-
 export interface VehicleOrGhostAndRoute {
   vehicleOrGhost: VehicleOrGhost
   route: Route
 }
 
-const parseVehicleOrGhostData = (
-  vehicleOrGhostData: TaggedVehicleOrGhostData
-): VehicleOrGhostAndRoute | null => {
-  switch (vehicleOrGhostData.dataType) {
-    case "vehicle":
-      return {
-        vehicleOrGhost: vehicleFromData(vehicleOrGhostData.vehicle),
-        route: parseRouteData(vehicleOrGhostData.route),
-      }
-    case "ghost":
-      return {
-        vehicleOrGhost: ghostFromData(vehicleOrGhostData.ghost),
-        route: parseRouteData(vehicleOrGhostData.route),
-      }
-    default:
-      return null
+const parseVehicleOrGhostAndRouteData = ({
+  vehicleOrGhostData,
+  routeData,
+}: {
+  vehicleOrGhostData: VehicleOrGhostData
+  routeData: RouteData
+}): VehicleOrGhostAndRoute | null => {
+  const vehicleOrGhost = vehicleOrGhostFromData(vehicleOrGhostData)
+
+  if (vehicleOrGhost) {
+    return {
+      vehicleOrGhost,
+      route: parseRouteData(routeData),
+    }
   }
+
+  return null
 }
 
 export const fetchCurrentVehicleForTrips = (
@@ -166,7 +160,7 @@ export const fetchCurrentVehicleForTrips = (
 ): Promise<VehicleOrGhostAndRoute | null> =>
   apiCall({
     url: `/api/vehicle_for_trips?trip_ids=${tripIds.join(",")}`,
-    parser: nullableParser(parseVehicleOrGhostData),
+    parser: nullableParser(parseVehicleOrGhostAndRouteData),
     defaultResult: null,
   })
 
