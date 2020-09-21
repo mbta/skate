@@ -30,6 +30,13 @@ const notification: Notification = {
   tripIds: [],
 }
 
+const notificationWithMatchedVehicle: Notification = {
+  ...notification,
+  operatorName: "operatorName",
+  operatorId: "operatorId",
+  routeIdAtCreation: "route1",
+}
+
 describe("Notification", () => {
   test("renders empty state", () => {
     const tree = renderer.create(<Notifications />).toJSON()
@@ -89,6 +96,19 @@ describe("Notification", () => {
 })
 
 describe("NotificationCard", () => {
+  test("renders notification with matched vehicle", () => {
+    const tree = renderer
+      .create(
+        <NotificationCard
+          notification={notificationWithMatchedVehicle}
+          remove={jest.fn()}
+          currentTime={now()}
+        />
+      )
+      .toJSON()
+    expect(tree).toMatchSnapshot()
+  })
+
   test("transforms reasons into human-readable titles", () => {
     const n: Notification = { ...notification, reason: "operator_error" }
     const wrapper = mount(
@@ -125,6 +145,57 @@ describe("NotificationCard", () => {
       )
       .toJSON()
     expect(tree).toMatchSnapshot()
+  })
+
+  test("routeIdAtCreation shows when relevant", () => {
+    const n: Notification = {
+      ...notificationWithMatchedVehicle,
+      reason: "accident",
+      routeIds: ["r2", "r3"],
+      routeIdAtCreation: "r1",
+    }
+    const wrapper = mount(
+      <NotificationCard
+        notification={n}
+        remove={jest.fn()}
+        currentTime={now()}
+      />
+    )
+    expect(wrapper.html()).toContain("r1")
+  })
+
+  test("falls back to affected routeIds if routeIdAtCreation is missing", () => {
+    const n: Notification = {
+      ...notification,
+      reason: "accident",
+      routeIds: ["r2", "r3"],
+      routeIdAtCreation: undefined,
+    }
+    const wrapper = mount(
+      <NotificationCard
+        notification={n}
+        remove={jest.fn()}
+        currentTime={now()}
+      />
+    )
+    expect(wrapper.html()).toContain("r2, r3")
+  })
+
+  test("shows affected routeIds if routeIdAtCreation isn't relevant", () => {
+    const n: Notification = {
+      ...notificationWithMatchedVehicle,
+      reason: "diverted",
+      routeIds: ["r2", "r3"],
+      routeIdAtCreation: "r1",
+    }
+    const wrapper = mount(
+      <NotificationCard
+        notification={n}
+        remove={jest.fn()}
+        currentTime={now()}
+      />
+    )
+    expect(wrapper.html()).toContain("r2, r3")
   })
 
   const reasons: NotificationReason[] = [

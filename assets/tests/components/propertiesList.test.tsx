@@ -1,4 +1,4 @@
-import { shallow } from "enzyme"
+import { shallow, mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import PropertiesList, {
@@ -130,6 +130,22 @@ describe("PropertiesList", () => {
       .toJSON()
 
     expect(tree).toMatchSnapshot()
+  })
+
+  test("ignores properties with null values", () => {
+    const wrapper = mount(
+      <PropertiesList
+        properties={[
+          {
+            label: "Label",
+            value: null,
+          },
+        ]}
+        highlightText="run"
+      />
+    )
+
+    expect(wrapper.html()).not.toContain("Label")
   })
 })
 

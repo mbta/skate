@@ -86,6 +86,14 @@ export const NotificationCard = ({
               label: "Run",
               value: notification.runIds.join(", "),
             },
+            {
+              label: "Operator",
+              value:
+                notification.operatorName !== undefined &&
+                notification.operatorId !== undefined
+                  ? `${notification.operatorName} #${notification.operatorId}`
+                  : null,
+            },
           ]}
         />
       </button>
@@ -116,17 +124,25 @@ const description = (notification: Notification): string => {
     case "manpower":
       return `OCC reported that an operator is not available on the ${routeIds}.`
     case "disabled":
-      return `OCC reported that a vehicle is disabled on the ${routeIds}.`
+      return `OCC reported that a vehicle is disabled on the ${
+        notification.routeIdAtCreation || routeIds
+      }.`
     case "diverted":
       return `OCC reported that an operator has been diverted from the ${routeIds}.`
     case "accident":
-      return `OCC reported that an operator has been in an accident on the ${routeIds}.`
+      return `OCC reported that an operator has been in an accident on the ${
+        notification.routeIdAtCreation || routeIds
+      }.`
     case "adjusted":
       return `OCC reported an adjustment on the ${routeIds}.`
     case "operator_error":
-      return `OCC reported an operator error on the ${routeIds}.`
+      return `OCC reported an operator error on the ${
+        notification.routeIdAtCreation || routeIds
+      }.`
     case "traffic":
-      return `OCC created a dispatcher note due to traffic on the ${routeIds}.`
+      return `OCC created a dispatcher note due to traffic on the ${
+        notification.routeIdAtCreation || routeIds
+      }.`
     case "other":
     default:
       return `OCC created a dispatcher note for the ${routeIds}.`
