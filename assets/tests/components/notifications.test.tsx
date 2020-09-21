@@ -28,6 +28,9 @@ const notification: Notification = {
   routeIds: ["route1", "route2"],
   runIds: ["run1", "run2"],
   tripIds: [],
+  operatorName: null,
+  operatorId: null,
+  routeIdAtCreation: null,
 }
 
 const notificationWithMatchedVehicle: Notification = {
@@ -169,7 +172,7 @@ describe("NotificationCard", () => {
       ...notification,
       reason: "accident",
       routeIds: ["r2", "r3"],
-      routeIdAtCreation: undefined,
+      routeIdAtCreation: null,
     }
     const wrapper = mount(
       <NotificationCard

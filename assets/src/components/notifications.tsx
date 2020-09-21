@@ -89,8 +89,8 @@ export const NotificationCard = ({
             {
               label: "Operator",
               value:
-                notification.operatorName !== undefined &&
-                notification.operatorId !== undefined
+                notification.operatorName !== null &&
+                notification.operatorId !== null
                   ? `${notification.operatorName} #${notification.operatorId}`
                   : null,
             },
