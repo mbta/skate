@@ -6,6 +6,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { VehiclesByRouteIdProvider } from "../contexts/vehiclesByRouteIdContext"
 import useRoutes from "../hooks/useRoutes"
 import useTimepoints from "../hooks/useTimepoints"
+import useVehicleAndRouteForNotification from "../hooks/useVehicleAndRouteForNotification"
 import useVehicles from "../hooks/useVehicles"
 import { allVehiclesAndGhosts } from "../models/vehiclesByRouteId"
 import { VehicleId, VehicleOrGhost } from "../realtime.d"
@@ -42,7 +43,7 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
   const {
     selectedRouteIds,
     selectedVehicleId,
-    vehicleAndRouteForNotification,
+    selectedTripIdsForNotification,
   } = state
 
   const routes: Route[] | null = useRoutes()
@@ -55,6 +56,11 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
     socket,
     selectedRouteIds
   )
+
+  const vehicleAndRouteForNotification = useVehicleAndRouteForNotification(
+    selectedTripIdsForNotification
+  )
+
   const selectedRoutes: Route[] = selectedRouteIds
     .map((routeId) => findRouteById(routes, routeId))
     .filter((route) => route) as Route[]
@@ -84,6 +90,7 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
                 route={vehicleRoute(routes, selectedVehicleOrGhost)}
               />
             )}
+
             {vehicleAndRouteForNotification && (
               <PropertiesPanel
                 selectedVehicleOrGhost={

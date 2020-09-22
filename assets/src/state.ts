@@ -1,5 +1,4 @@
 import { Dispatch as ReactDispatch } from "react"
-import { VehicleOrGhostAndRoute } from "./api"
 import {
   emptyLadderCrowdingTogglesByRouteId,
   LadderCrowdingToggles,
@@ -11,7 +10,7 @@ import {
   LadderDirections,
 } from "./models/ladderDirection"
 import { RunId, VehicleId } from "./realtime.d"
-import { RouteId } from "./schedule.d"
+import { RouteId, TripId } from "./schedule.d"
 import { defaultSettings, Settings, VehicleLabelSetting } from "./settings"
 import {
   Action as SearchAction,
@@ -30,7 +29,7 @@ export interface State {
   selectedShuttleRunIds: RunId[] | "all"
   selectedVehicleId?: VehicleId
   settings: Settings
-  vehicleAndRouteForNotification?: VehicleOrGhostAndRoute
+  selectedTripIdsForNotification?: TripId[]
 }
 
 export const initialState: State = {
@@ -43,7 +42,7 @@ export const initialState: State = {
   selectedShuttleRunIds: "all",
   selectedVehicleId: undefined,
   settings: defaultSettings,
-  vehicleAndRouteForNotification: undefined,
+  selectedTripIdsForNotification: undefined,
 }
 
 interface SelectRouteAction {
@@ -230,19 +229,19 @@ export const setShuttleVehicleLabelSetting = (
   },
 })
 
-interface SetVehicleOrGhostAndRouteAction {
-  type: "SET_VEHICLE_AND_ROUTE_FOR_NOTIFICATION"
+interface SetSelectedTripIdsForNotificationAction {
+  type: "SET_SELECTED_TRIP_IDS_FOR_NOTIFICATION"
   payload: {
-    vehicleAndRouteForNotification: VehicleOrGhostAndRoute
+    selectedTripIdsForNotification: TripId[]
   }
 }
 
-export const setVehicleOrGhostAndRoute = (
-  vehicleAndRouteForNotification: VehicleOrGhostAndRoute
-): SetVehicleOrGhostAndRouteAction => ({
-  type: "SET_VEHICLE_AND_ROUTE_FOR_NOTIFICATION",
+export const setSelectedTripIdsForNotification = (
+  selectedTripIdsForNotification: TripId[]
+): SetSelectedTripIdsForNotificationAction => ({
+  type: "SET_SELECTED_TRIP_IDS_FOR_NOTIFICATION",
   payload: {
-    vehicleAndRouteForNotification,
+    selectedTripIdsForNotification,
   },
 })
 
@@ -263,7 +262,7 @@ type Action =
   | SetLadderVehicleLabelSettingAction
   | SetShuttleVehicleLabelSettingAction
   | SearchAction
-  | SetVehicleOrGhostAndRouteAction
+  | SetSelectedTripIdsForNotificationAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -366,7 +365,7 @@ const selectedVehicleIdReducer = (
     case "SELECT_VEHICLE":
       return action.payload.vehicleId
     case "DESELECT_VEHICLE":
-    case "SET_VEHICLE_AND_ROUTE_FOR_NOTIFICATION":
+    case "SET_SELECTED_TRIP_IDS_FOR_NOTIFICATION":
       return undefined
     default:
       return state
@@ -390,16 +389,16 @@ const settingsReducer = (state: Settings, action: Action): Settings => {
   }
 }
 
-const vehicleAndRouteForNotificationReducer = (
-  state: VehicleOrGhostAndRoute | undefined,
+const selectedTripIdsForNotificationReducer = (
+  state: TripId[] | undefined,
   action: Action
-): VehicleOrGhostAndRoute | undefined => {
+): TripId[] | undefined => {
   switch (action.type) {
     case "SELECT_VEHICLE":
     case "DESELECT_VEHICLE":
       return undefined
-    case "SET_VEHICLE_AND_ROUTE_FOR_NOTIFICATION":
-      return action.payload.vehicleAndRouteForNotification
+    case "SET_SELECTED_TRIP_IDS_FOR_NOTIFICATION":
+      return action.payload.selectedTripIdsForNotification
     default:
       return state
   }
@@ -427,8 +426,8 @@ export const reducer = (state: State, action: Action): State => ({
   ),
   selectedVehicleId: selectedVehicleIdReducer(state.selectedVehicleId, action),
   settings: settingsReducer(state.settings, action),
-  vehicleAndRouteForNotification: vehicleAndRouteForNotificationReducer(
-    state.vehicleAndRouteForNotification,
+  selectedTripIdsForNotification: selectedTripIdsForNotificationReducer(
+    state.selectedTripIdsForNotification,
     action
   ),
 })

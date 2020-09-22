@@ -6,7 +6,7 @@ import {
   VehicleOrGhostData,
   vehicleOrGhostFromData,
 } from "./models/vehicleData"
-import { VehicleOrGhost } from "./realtime.d"
+import { VehicleOrGhostAndRoute } from "./realtime.d"
 import {
   DirectionName,
   Route,
@@ -130,11 +130,6 @@ export const fetchNearestIntersection = (
     parser: nullableParser((intersection: string) => intersection),
     defaultResult: null,
   })
-
-export interface VehicleOrGhostAndRoute {
-  vehicleOrGhost: VehicleOrGhost
-  route: Route
-}
 
 const parseVehicleOrGhostAndRouteData = ({
   vehicleOrGhostData,
