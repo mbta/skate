@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react"
 import { Socket } from "phoenix"
 import React, { ReactElement, useContext } from "react"
 import RoutesContext from "../contexts/routesContext"
@@ -70,6 +71,22 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
     selectedVehicleId
   )
 
+  const vehicleOrGhostForVPP:
+    | VehicleOrGhost
+    | undefined = vehicleAndRouteForNotification
+    ? vehicleAndRouteForNotification.vehicleOrGhost
+    : selectedVehicleOrGhost
+
+  const routeForVPP: Route | undefined = vehicleAndRouteForNotification
+    ? vehicleAndRouteForNotification.route
+    : selectedVehicleOrGhost && vehicleRoute(routes, selectedVehicleOrGhost)
+
+  if (vehicleAndRouteForNotification && selectedVehicleOrGhost) {
+    Sentry.captureMessage(
+      "vehicleAndRouteForNotification and selectedVehicleOrGhost both set, which should be impossible"
+    )
+  }
+
   return (
     <RoutesContext.Provider value={routes}>
       <div className="m-ladder-page">
@@ -84,19 +101,10 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
               selectedVehicleId={selectedVehicleId}
             />
 
-            {selectedVehicleOrGhost && (
+            {vehicleOrGhostForVPP && routeForVPP && (
               <PropertiesPanel
-                selectedVehicleOrGhost={selectedVehicleOrGhost}
-                route={vehicleRoute(routes, selectedVehicleOrGhost)}
-              />
-            )}
-
-            {vehicleAndRouteForNotification && (
-              <PropertiesPanel
-                selectedVehicleOrGhost={
-                  vehicleAndRouteForNotification.vehicleOrGhost
-                }
-                route={vehicleAndRouteForNotification.route}
+                selectedVehicleOrGhost={vehicleOrGhostForVPP}
+                route={routeForVPP}
               />
             )}
           </>
