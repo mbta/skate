@@ -3,11 +3,6 @@ import { Block, Run } from "./minischedule"
 import { reload } from "./models/browser"
 import { blockFromData, runFromData } from "./models/minischeduleData"
 import {
-  VehicleOrGhostData,
-  vehicleOrGhostFromData,
-} from "./models/vehicleData"
-import { VehicleOrGhostAndRoute } from "./realtime.d"
-import {
   DirectionName,
   Route,
   RouteId,
@@ -16,7 +11,7 @@ import {
   TripId,
 } from "./schedule.d"
 
-interface RouteData {
+export interface RouteData {
   id: string
   direction_names: {
     "0": DirectionName
@@ -62,7 +57,11 @@ export const apiCall = <T>({
       }
     })
 
-const parseRouteData = ({ id, direction_names, name }: RouteData): Route => ({
+export const parseRouteData = ({
+  id,
+  direction_names,
+  name,
+}: RouteData): Route => ({
   id,
   directionNames: direction_names,
   name,
@@ -128,34 +127,6 @@ export const fetchNearestIntersection = (
   apiCall({
     url: `/api/intersection?latitude=${latitude}&longitude=${longitude}`,
     parser: nullableParser((intersection: string) => intersection),
-    defaultResult: null,
-  })
-
-const parseVehicleOrGhostAndRouteData = ({
-  vehicleOrGhostData,
-  routeData,
-}: {
-  vehicleOrGhostData: VehicleOrGhostData
-  routeData: RouteData
-}): VehicleOrGhostAndRoute | null => {
-  const vehicleOrGhost = vehicleOrGhostFromData(vehicleOrGhostData)
-
-  if (vehicleOrGhost) {
-    return {
-      vehicleOrGhost,
-      route: parseRouteData(routeData),
-    }
-  }
-
-  return null
-}
-
-export const fetchCurrentVehicleForTrips = (
-  tripIds: string[]
-): Promise<VehicleOrGhostAndRoute | null> =>
-  apiCall({
-    url: `/api/vehicle_for_trips?trip_ids=${tripIds.join(",")}`,
-    parser: nullableParser(parseVehicleOrGhostAndRouteData),
     defaultResult: null,
   })
 

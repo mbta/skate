@@ -25,7 +25,11 @@ defmodule Realtime.Server do
             active_trip_ids: []
 
   @type subscription_key ::
-          {:route_id, Route.id()} | :all_shuttles | :all_vehicles | {:search, search_params()}
+          {:route_id, Route.id()}
+          | :all_shuttles
+          | :all_vehicles
+          | {:search, search_params()}
+          | {:vehicle_id, Vehicle.id()}
 
   @type search_params :: %{
           text: String.t(),
@@ -81,6 +85,13 @@ defmodule Realtime.Server do
     )
   end
 
+  def subscribe_to_vehicle(vehicle_id, server \\ default_name()) do
+    subscribe(
+      server,
+      {:vehicle, vehicle_id}
+    )
+  end
+
   def peek_at_vehicles(trip_ids, server \\ default_name()) do
     {_registry_key, ets} = GenServer.call(server, :subscription_info)
     lookup({ets, {:trip_ids, trip_ids}})
@@ -111,6 +122,7 @@ defmodule Realtime.Server do
   @spec lookup({:ets.tid(), :all_vehicles}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), :all_shuttles}) :: [Vehicle.t()]
   @spec lookup({:ets.tid(), {:search, search_params()}}) :: [VehicleOrGhost.t()]
+  @spec lookup({:ets.tid(), {:vehicle, Vehicle.id()}}) :: [VehicleOrGhost.t()]
   def lookup({table, {:search, search_params}}) do
     {table, :all_vehicles}
     |> lookup()
@@ -129,6 +141,12 @@ defmodule Realtime.Server do
       end
     end)
     |> Enum.filter(& &1)
+  end
+
+  def lookup({table, {:vehicle, vehicle_or_ghost_id}}) do
+    {table, :all_vehicles}
+    |> lookup()
+    |> Enum.filter(&(&1.id == vehicle_or_ghost_id))
   end
 
   def lookup({table, key}) do
