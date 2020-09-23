@@ -29,7 +29,7 @@ defmodule Realtime.Server do
           | :all_shuttles
           | :all_vehicles
           | {:search, search_params()}
-          | {:vehicle_id, Vehicle.id()}
+          | {:vehicle_id, String.t()}
 
   @type search_params :: %{
           text: String.t(),
@@ -100,6 +100,7 @@ defmodule Realtime.Server do
   @spec subscribe(GenServer.server(), {:route_id, Route.id()}) :: [VehicleOrGhost.t()]
   @spec subscribe(GenServer.server(), :all_shuttles) :: [Vehicle.t()]
   @spec subscribe(GenServer.server(), {:search, search_params()}) :: [VehicleOrGhost.t()]
+  @spec subscribe(GenServer.server(), {:vehicle, String.t()}) :: [VehicleOrGhost.t()]
   defp subscribe(server, subscription_key) do
     {registry_key, ets} = GenServer.call(server, :subscription_info)
     Registry.register(Realtime.Registry, registry_key, subscription_key)
@@ -122,7 +123,7 @@ defmodule Realtime.Server do
   @spec lookup({:ets.tid(), :all_vehicles}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), :all_shuttles}) :: [Vehicle.t()]
   @spec lookup({:ets.tid(), {:search, search_params()}}) :: [VehicleOrGhost.t()]
-  @spec lookup({:ets.tid(), {:vehicle, Vehicle.id()}}) :: [VehicleOrGhost.t()]
+  @spec lookup({:ets.tid(), {:vehicle, String.t()}}) :: [VehicleOrGhost.t()]
   def lookup({table, {:search, search_params}}) do
     {table, :all_vehicles}
     |> lookup()
