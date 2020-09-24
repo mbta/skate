@@ -11,13 +11,15 @@ import {
 import { VehicleOrGhostAndRoute } from "../realtime.d"
 import { TripId } from "../schedule.d"
 
+export interface VehicleOrGhostAndRouteData {
+  vehicleOrGhostData?: VehicleOrGhostData
+  routeData?: RouteData
+}
+
 const parseVehicleOrGhostAndRouteData = ({
   vehicleOrGhostData,
   routeData,
-}: {
-  vehicleOrGhostData?: VehicleOrGhostData
-  routeData?: RouteData
-}): VehicleOrGhostAndRoute | undefined => {
+}: VehicleOrGhostAndRouteData): VehicleOrGhostAndRoute | undefined => {
   if (vehicleOrGhostData === undefined || routeData === undefined) {
     return undefined
   }
