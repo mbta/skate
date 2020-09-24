@@ -53,6 +53,7 @@ const useVehicleAndRouteForNotification = (
   })
 
   useEffect(() => {
+    /* istanbul ignore next */
     if (window.FS) {
       if (newVehicleOrGhostAndRoute) {
         if (isVehicle(newVehicleOrGhostAndRoute.vehicleOrGhost)) {

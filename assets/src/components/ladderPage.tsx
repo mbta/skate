@@ -82,6 +82,7 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
     : selectedVehicleOrGhost && vehicleRoute(routes, selectedVehicleOrGhost)
 
   if (vehicleAndRouteForNotification && selectedVehicleOrGhost) {
+    /* istanbul ignore next */
     Sentry.captureMessage(
       "vehicleAndRouteForNotification and selectedVehicleOrGhost both set, which should be impossible"
     )
