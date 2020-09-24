@@ -7,8 +7,15 @@ import {
   Notifications,
 } from "../../src/components/notifications"
 import { NotificationsContext } from "../../src/contexts/notificationsContext"
+import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { Notification, NotificationReason } from "../../src/realtime.d"
+import {
+  Dispatch,
+  initialState,
+  setSelectedTripIdsForNotification,
+} from "../../src/state"
 import { now } from "../../src/util/dateTime"
+import { mockUseStateOnce } from "../testHelpers/mockHelpers"
 
 jest.mock("../../src/hooks/useNotifications", () => ({
   __esModule: true,
@@ -91,6 +98,7 @@ describe("NotificationCard", () => {
           notification={notificationWithMatchedVehicle}
           remove={jest.fn()}
           currentTime={now()}
+          openVPPForCurrentVehicle={jest.fn()}
         />
       )
       .toJSON()
@@ -150,6 +158,7 @@ describe("NotificationCard", () => {
         notification={n}
         remove={jest.fn()}
         currentTime={now()}
+        openVPPForCurrentVehicle={jest.fn()}
       />
     )
     expect(wrapper.html()).toContain("r1")
@@ -167,6 +176,7 @@ describe("NotificationCard", () => {
         notification={n}
         remove={jest.fn()}
         currentTime={now()}
+        openVPPForCurrentVehicle={jest.fn()}
       />
     )
     expect(wrapper.html()).toContain("r2, r3")
@@ -184,6 +194,7 @@ describe("NotificationCard", () => {
         notification={n}
         remove={jest.fn()}
         currentTime={now()}
+        openVPPForCurrentVehicle={jest.fn()}
       />
     )
     expect(wrapper.html()).toContain("r2, r3")
@@ -227,5 +238,22 @@ describe("NotificationCard", () => {
     })
     wrapper.update()
     expect(wrapper.find(".m-notifications__card--new")).toHaveLength(0)
+  })
+
+  test("clicking through opens VPP", () => {
+    mockUseStateOnce([{ ...notification, tripIds: ["123", "456", "789"] }])
+    const mockDispatch: Dispatch = jest.fn()
+
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+        <Notifications />
+      </StateDispatchProvider>
+    )
+
+    expect(mockDispatch).not.toHaveBeenCalled()
+    wrapper.find(".m-notifications__card-info").simulate("click")
+    expect(mockDispatch).toHaveBeenCalledWith(
+      setSelectedTripIdsForNotification(["123", "456", "789"])
+    )
   })
 })
