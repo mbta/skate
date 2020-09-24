@@ -1,35 +1,12 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
+import { NotificationsContext } from "../contexts/notificationsContext"
 import useInterval from "../hooks/useInterval"
-import { useNotifications } from "../hooks/useNotifications"
-import featureIsEnabled from "../laboratoryFeatures"
 import { Notification, NotificationReason } from "../realtime.d"
 import { formattedTimeDiff, now } from "../util/dateTime"
 import PropertiesList from "./propertiesList"
 
-const deliveryFullstoryEvent = (numStacked: number): void => {
-  if (window.FS && window.username) {
-    window.FS.event("Notification delivered", {
-      num_stacked_int: numStacked,
-    })
-  }
-}
-
 export const Notifications = () => {
-  const [notifications, setNotifications] = useState<Notification[]>([])
-  const addNotification = (notification: Notification): void => {
-    if (featureIsEnabled("notifications")) {
-      setNotifications((previous) => {
-        const newNotifications = [...previous, notification]
-        deliveryFullstoryEvent(newNotifications.length)
-        return newNotifications
-      })
-    }
-  }
-  const removeNotification = (id: number): void => {
-    setNotifications((previous) => previous.filter((n) => n.id !== id))
-  }
-  useNotifications(addNotification)
-
+  const { notifications, removeNotification } = useContext(NotificationsContext)
   const [currentTime, setCurrentTime] = useState(now())
   useInterval(() => setCurrentTime(now()), 1000)
 

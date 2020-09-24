@@ -47,8 +47,10 @@ export interface Ghost {
   blockWaivers: BlockWaiver[]
 }
 
+export type NotificationId = number
+
 export interface Notification {
-  id: number
+  id: NotificationId
   createdAt: Date
   reason: NotificationReason
   routeIds: RouteId[]
