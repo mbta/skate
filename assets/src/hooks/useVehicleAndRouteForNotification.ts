@@ -26,14 +26,10 @@ const parseVehicleOrGhostAndRouteData = ({
 
   const vehicleOrGhost = vehicleOrGhostFromData(vehicleOrGhostData)
 
-  if (vehicleOrGhost) {
-    return {
-      vehicleOrGhost,
-      route: parseRouteData(routeData),
-    }
+  return {
+    vehicleOrGhost,
+    route: parseRouteData(routeData),
   }
-
-  return undefined
 }
 
 const useVehicleAndRouteForNotification = (
