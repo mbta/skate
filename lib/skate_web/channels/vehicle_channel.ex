@@ -1,12 +1,12 @@
 defmodule SkateWeb.VehicleChannel do
   use SkateWeb, :channel
 
-  alias Realtime.Server
+  alias Realtime.{Server, VehicleOrGhost}
 
   @impl true
   def handle_info({:new_realtime_data, lookup_params}, socket) do
     vehicle_or_ghost = Realtime.Server.lookup(lookup_params)
-    :ok = push(socket, "vehicle", make_payload(vehicle_or_ghost))
+    :ok = push(socket, "vehicle", vehicle_or_ghost |> List.first() |> make_payload())
 
     {:noreply, socket}
   end
@@ -24,14 +24,12 @@ defmodule SkateWeb.VehicleChannel do
     {:ok, payload, socket}
   end
 
-  defp make_payload([]) do
+  @spec make_payload(nil) :: %{data: map}
+  defp make_payload(nil) do
     %{data: %{}}
   end
 
-  defp make_payload([vehicle_or_ghost]) do
-    make_payload(vehicle_or_ghost)
-  end
-
+  @spec make_payload(VehicleOrGhost.t()) :: %{data: map}
   defp make_payload(vehicle_or_ghost) do
     route = Schedule.route_by_id(vehicle_or_ghost.route_id)
     data = %{vehicleOrGhostData: vehicle_or_ghost, routeData: route}
