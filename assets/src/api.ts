@@ -1,5 +1,7 @@
 import "whatwg-fetch"
+import { Block, Run } from "./minischedule"
 import { reload } from "./models/browser"
+import { blockFromData, runFromData } from "./models/minischeduleData"
 import {
   DirectionName,
   Route,
@@ -8,10 +10,8 @@ import {
   Timepoint,
   TripId,
 } from "./schedule.d"
-import { runFromData, blockFromData } from "./models/minischeduleData"
-import { Run, Block } from "./minischedule"
 
-interface RouteData {
+export interface RouteData {
   id: string
   direction_names: {
     "0": DirectionName
@@ -57,7 +57,11 @@ export const apiCall = <T>({
       }
     })
 
-const parseRouteData = ({ id, direction_names, name }: RouteData): Route => ({
+export const parseRouteData = ({
+  id,
+  direction_names,
+  name,
+}: RouteData): Route => ({
   id,
   directionNames: direction_names,
   name,

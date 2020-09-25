@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react"
 import { Socket } from "phoenix"
 import React, { ReactElement, useContext } from "react"
 import RoutesContext from "../contexts/routesContext"
@@ -6,9 +7,14 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { VehiclesByRouteIdProvider } from "../contexts/vehiclesByRouteIdContext"
 import useRoutes from "../hooks/useRoutes"
 import useTimepoints from "../hooks/useTimepoints"
+import useVehicleAndRouteForNotification from "../hooks/useVehicleAndRouteForNotification"
 import useVehicles from "../hooks/useVehicles"
 import { allVehiclesAndGhosts } from "../models/vehiclesByRouteId"
-import { VehicleId, VehicleOrGhost } from "../realtime.d"
+import {
+  VehicleId,
+  VehicleOrGhost,
+  VehicleOrGhostAndRoute,
+} from "../realtime.d"
 import { ByRouteId, Route, RouteId, TimepointsByRouteId } from "../schedule.d"
 import { Notifications } from "./notifications"
 import PropertiesPanel from "./propertiesPanel"
@@ -37,9 +43,21 @@ const vehicleRoute = (
     (route) => route.id === (vehicleOrGhost && vehicleOrGhost.routeId)
   )
 
+export const chooseVehicleOrGhostForVPP = (
+  vehicleAndRouteForNotification?: VehicleOrGhostAndRoute,
+  selectedVehicleOrGhost?: VehicleOrGhost
+): VehicleOrGhost | undefined =>
+  vehicleAndRouteForNotification
+    ? vehicleAndRouteForNotification.vehicleOrGhost
+    : selectedVehicleOrGhost
+
 const LadderPage = (): ReactElement<HTMLDivElement> => {
   const [state] = useContext(StateDispatchContext)
-  const { selectedRouteIds, selectedVehicleId } = state
+  const {
+    selectedRouteIds,
+    selectedVehicleId,
+    selectedTripIdsForNotification,
+  } = state
 
   const routes: Route[] | null = useRoutes()
   const timepointsByRouteId: TimepointsByRouteId = useTimepoints(
@@ -51,6 +69,11 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
     socket,
     selectedRouteIds
   )
+
+  const vehicleAndRouteForNotification = useVehicleAndRouteForNotification(
+    selectedTripIdsForNotification
+  )
+
   const selectedRoutes: Route[] = selectedRouteIds
     .map((routeId) => findRouteById(routes, routeId))
     .filter((route) => route) as Route[]
@@ -59,6 +82,24 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
     vehiclesByRouteId,
     selectedVehicleId
   )
+
+  const vehicleOrGhostForVPP:
+    | VehicleOrGhost
+    | undefined = chooseVehicleOrGhostForVPP(
+    vehicleAndRouteForNotification,
+    selectedVehicleOrGhost
+  )
+
+  const routeForVPP: Route | undefined = vehicleAndRouteForNotification
+    ? vehicleAndRouteForNotification.route
+    : selectedVehicleOrGhost && vehicleRoute(routes, selectedVehicleOrGhost)
+
+  if (vehicleAndRouteForNotification && selectedVehicleOrGhost) {
+    /* istanbul ignore next */
+    Sentry.captureMessage(
+      "vehicleAndRouteForNotification and selectedVehicleOrGhost both set, which should be impossible"
+    )
+  }
 
   return (
     <RoutesContext.Provider value={routes}>
@@ -74,10 +115,10 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
               selectedVehicleId={selectedVehicleId}
             />
 
-            {selectedVehicleOrGhost && (
+            {vehicleOrGhostForVPP && routeForVPP && (
               <PropertiesPanel
-                selectedVehicleOrGhost={selectedVehicleOrGhost}
-                route={vehicleRoute(routes, selectedVehicleOrGhost)}
+                selectedVehicleOrGhost={vehicleOrGhostForVPP}
+                route={routeForVPP}
               />
             )}
           </>

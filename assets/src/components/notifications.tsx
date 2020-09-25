@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useState } from "react"
 import { NotificationsContext } from "../contexts/notificationsContext"
+import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useInterval from "../hooks/useInterval"
 import { Notification, NotificationReason } from "../realtime.d"
+import { setSelectedTripIdsForNotification } from "../state"
 import { formattedTimeDiff, now } from "../util/dateTime"
 import PropertiesList from "./propertiesList"
 
@@ -9,6 +11,12 @@ export const Notifications = () => {
   const { notifications, removeNotification } = useContext(NotificationsContext)
   const [currentTime, setCurrentTime] = useState(now())
   useInterval(() => setCurrentTime(now()), 1000)
+
+  const [, dispatch] = useContext(StateDispatchContext)
+
+  const openVPPForCurrentVehicle = (notification: Notification) => {
+    dispatch(setSelectedTripIdsForNotification(notification.tripIds))
+  }
 
   return (
     <div className="m-notifications">
@@ -18,6 +26,7 @@ export const Notifications = () => {
           notification={notification}
           remove={removeNotification}
           currentTime={currentTime}
+          openVPPForCurrentVehicle={openVPPForCurrentVehicle}
         />
       ))}
     </div>
@@ -28,10 +37,12 @@ export const NotificationCard = ({
   notification,
   remove,
   currentTime,
+  openVPPForCurrentVehicle,
 }: {
   notification: Notification
   remove: (id: number) => void
   currentTime: Date
+  openVPPForCurrentVehicle: (notification: Notification) => void
 }) => {
   const [isNew, setIsNew] = useState<boolean>(true)
   useEffect(() => {
@@ -45,7 +56,10 @@ export const NotificationCard = ({
         "m-notifications__card" + (isNew ? " m-notifications__card--new" : "")
       }
     >
-      <button className="m-notifications__card-info">
+      <button
+        className="m-notifications__card-info"
+        onClick={() => openVPPForCurrentVehicle(notification)}
+      >
         <div className="m-notification__title-row">
           <div className="m-notification__title">
             {title(notification.reason)}

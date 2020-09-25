@@ -3,6 +3,7 @@ defmodule SkateWeb.UserSocket do
 
   ## Channels
   channel("data_status", SkateWeb.DataStatusChannel)
+  channel("vehicle:*", SkateWeb.VehicleChannel)
   channel("vehicles:*", SkateWeb.VehiclesChannel)
   channel("train_vehicles:*", SkateWeb.TrainVehiclesChannel)
   channel("notifications", SkateWeb.NotificationsChannel)
