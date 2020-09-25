@@ -1,5 +1,5 @@
 import { Socket } from "phoenix"
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import { parseRouteData, RouteData } from "../api"
 import { SocketContext } from "../contexts/socketContext"
 import { useChannel } from "../hooks/useChannel"
@@ -54,17 +54,23 @@ const useVehicleAndRouteForNotification = (
     loadingState: undefined,
   })
 
+  const [clickthroughLogged, setClickthroughLogged] = useState<boolean>(false)
+
   useEffect(() => {
     /* istanbul ignore next */
     if (window.FS) {
-      if (newVehicleOrGhostAndRoute) {
-        if (isVehicle(newVehicleOrGhostAndRoute.vehicleOrGhost)) {
-          window.FS.event("Notification linked to VPP")
-        } else {
-          window.FS.event("Notification linked to ghost")
+      if (!clickthroughLogged) {
+        if (newVehicleOrGhostAndRoute) {
+          setClickthroughLogged(true)
+          if (isVehicle(newVehicleOrGhostAndRoute.vehicleOrGhost)) {
+            window.FS.event("Notification linked to VPP")
+          } else {
+            window.FS.event("Notification linked to ghost")
+          }
+        } else if (selectedTripIdsForNotification) {
+          setClickthroughLogged(true)
+          window.FS.event("Notification link failed")
         }
-      } else if (selectedTripIdsForNotification) {
-        window.FS.event("Notification link failed")
       }
     }
   }, [newVehicleOrGhostAndRoute])
