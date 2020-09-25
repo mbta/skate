@@ -196,6 +196,7 @@ exports[`NotificationCard renders notification with matched vehicle 1`] = `
 >
   <button
     className="m-notifications__card-info"
+    onClick={[Function]}
   >
     <div
       className="m-notification__title-row"

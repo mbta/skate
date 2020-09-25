@@ -6,7 +6,10 @@ import {
   NotificationCard,
   Notifications,
 } from "../../src/components/notifications"
-import { NotificationsContext } from "../../src/contexts/notificationsContext"
+import {
+  NotificationsContext,
+  NotificationsProvider,
+} from "../../src/contexts/notificationsContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { Notification, NotificationReason } from "../../src/realtime.d"
 import {
@@ -246,7 +249,9 @@ describe("NotificationCard", () => {
 
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <Notifications />
+        <NotificationsProvider>
+          <Notifications />
+        </NotificationsProvider>
       </StateDispatchProvider>
     )
 
