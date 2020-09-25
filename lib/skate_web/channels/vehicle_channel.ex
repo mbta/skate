@@ -2,7 +2,6 @@ defmodule SkateWeb.VehicleChannel do
   use SkateWeb, :channel
 
   alias Realtime.Server
-  alias Util.Duration
 
   @impl true
   def handle_info({:new_realtime_data, lookup_params}, socket) do
@@ -19,7 +18,7 @@ defmodule SkateWeb.VehicleChannel do
     payload = make_payload(vehicle_or_ghost)
 
     if vehicle_or_ghost do
-      _ = Duration.log_duration(Server, :subscribe_to_vehicle, [vehicle_or_ghost.id])
+      _ = Server.subscribe_to_vehicle(vehicle_or_ghost.id)
     end
 
     {:ok, payload, socket}
