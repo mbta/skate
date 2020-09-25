@@ -10,7 +10,11 @@ import useTimepoints from "../hooks/useTimepoints"
 import useVehicleAndRouteForNotification from "../hooks/useVehicleAndRouteForNotification"
 import useVehicles from "../hooks/useVehicles"
 import { allVehiclesAndGhosts } from "../models/vehiclesByRouteId"
-import { VehicleId, VehicleOrGhost } from "../realtime.d"
+import {
+  VehicleId,
+  VehicleOrGhost,
+  VehicleOrGhostAndRoute,
+} from "../realtime.d"
 import { ByRouteId, Route, RouteId, TimepointsByRouteId } from "../schedule.d"
 import { Notifications } from "./notifications"
 import PropertiesPanel from "./propertiesPanel"
@@ -38,6 +42,14 @@ const vehicleRoute = (
   (allRoutes || []).find(
     (route) => route.id === (vehicleOrGhost && vehicleOrGhost.routeId)
   )
+
+export const chooseVehicleOrGhostForVPP = (
+  vehicleAndRouteForNotification?: VehicleOrGhostAndRoute,
+  selectedVehicleOrGhost?: VehicleOrGhost
+): VehicleOrGhost | undefined =>
+  vehicleAndRouteForNotification
+    ? vehicleAndRouteForNotification.vehicleOrGhost
+    : selectedVehicleOrGhost
 
 const LadderPage = (): ReactElement<HTMLDivElement> => {
   const [state] = useContext(StateDispatchContext)
@@ -73,9 +85,10 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
 
   const vehicleOrGhostForVPP:
     | VehicleOrGhost
-    | undefined = vehicleAndRouteForNotification
-    ? vehicleAndRouteForNotification.vehicleOrGhost
-    : selectedVehicleOrGhost
+    | undefined = chooseVehicleOrGhostForVPP(
+    vehicleAndRouteForNotification,
+    selectedVehicleOrGhost
+  )
 
   const routeForVPP: Route | undefined = vehicleAndRouteForNotification
     ? vehicleAndRouteForNotification.route
