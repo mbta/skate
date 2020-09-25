@@ -238,4 +238,17 @@ describe("reducer", () => {
 
     expect(newState).toEqual(expectedState)
   })
+
+  test("selectedTripIdsForNotification", () => {
+    const state = initialState
+    const newState = reducer(
+      state,
+      State.setSelectedTripIdsForNotification(["1", "39", "77"])
+    )
+    const expectedState = {
+      ...state,
+      selectedTripIdsForNotification: ["1", "39", "77"],
+    }
+    expect(newState).toEqual(expectedState)
+  })
 })
