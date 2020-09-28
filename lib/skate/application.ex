@@ -29,7 +29,11 @@ defmodule Skate.Application do
           []
         end
 
-    Supervisor.start_link(children, strategy: :one_for_all, name: Skate.Supervisor)
+    link = Supervisor.start_link(children, strategy: :one_for_all, name: Skate.Supervisor)
+
+    migrate()
+
+    link
   end
 
   # Tell Phoenix to update the endpoint configuration
@@ -102,5 +106,14 @@ defmodule Skate.Application do
 
   defp runtime_config(value) do
     value
+  end
+
+  defp migrate() do
+    Ecto.Migrator.run(
+      Skate.Repo,
+      Application.app_dir(:skate, "priv/repo/migrations"),
+      :up,
+      all: true
+    )
   end
 end
