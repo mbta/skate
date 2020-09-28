@@ -1,1 +1,4 @@
-<div id="app" data-user-token="<%= @user_token %>" data-laboratory-features="<%= Jason.encode!(@laboratory_features) %>"></div>
+<div id="app"
+  data-user-token="<%= @user_token %>"
+  data-laboratory-features="<%= Jason.encode!(@laboratory_features) %>"
+></div>
