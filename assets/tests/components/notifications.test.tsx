@@ -12,11 +12,7 @@ import {
 } from "../../src/contexts/notificationsContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { Notification, NotificationReason } from "../../src/realtime.d"
-import {
-  Dispatch,
-  initialState,
-  setSelectedTripIdsForNotification,
-} from "../../src/state"
+import { Dispatch, initialState, setNotification } from "../../src/state"
 import { now } from "../../src/util/dateTime"
 import { mockUseStateOnce } from "../testHelpers/mockHelpers"
 
@@ -244,7 +240,11 @@ describe("NotificationCard", () => {
   })
 
   test("clicking through opens VPP", () => {
-    mockUseStateOnce([{ ...notification, tripIds: ["123", "456", "789"] }])
+    const updatedNotification = {
+      ...notification,
+      tripIds: ["123", "456", "789"],
+    }
+    mockUseStateOnce([updatedNotification])
     const mockDispatch: Dispatch = jest.fn()
 
     const wrapper = mount(
@@ -258,7 +258,7 @@ describe("NotificationCard", () => {
     expect(mockDispatch).not.toHaveBeenCalled()
     wrapper.find(".m-notifications__card-info").simulate("click")
     expect(mockDispatch).toHaveBeenCalledWith(
-      setSelectedTripIdsForNotification(["123", "456", "789"])
+      setNotification(updatedNotification)
     )
   })
 })

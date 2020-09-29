@@ -53,11 +53,7 @@ export const chooseVehicleOrGhostForVPP = (
 
 const LadderPage = (): ReactElement<HTMLDivElement> => {
   const [state] = useContext(StateDispatchContext)
-  const {
-    selectedRouteIds,
-    selectedVehicleId,
-    selectedTripIdsForNotification,
-  } = state
+  const { selectedRouteIds, selectedVehicleId, selectedNotification } = state
 
   const routes: Route[] | null = useRoutes()
   const timepointsByRouteId: TimepointsByRouteId = useTimepoints(
@@ -71,7 +67,7 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
   )
 
   const vehicleAndRouteForNotification = useVehicleAndRouteForNotification(
-    selectedTripIdsForNotification
+    selectedNotification
   )
 
   const selectedRoutes: Route[] = selectedRouteIds

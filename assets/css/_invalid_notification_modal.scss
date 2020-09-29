@@ -1,0 +1,37 @@
+.m-invalid-notification-modal__close-button {
+  height: 1rem;
+  position: relative;
+
+  button {
+    position: absolute;
+    right: 0;
+
+    svg {
+      height: 1rem;
+    }
+  }
+}
+
+.m-invalid-notification-modal__body {
+  margin-top: 1rem;
+}
+
+.m-invalid-notification-modal__buttons {
+  height: 1rem;
+  margin-top: 1.5rem;
+  position: relative;
+}
+
+.m-invalid-notification-modal__keep-button {
+  @include button-primary;
+  left: 0;
+  position: absolute;
+  width: 30%;
+}
+
+.m-invalid-notification-modal__discard-button {
+  @include button-secondary;
+  position: absolute;
+  right: 0;
+  width: 30%;
+}

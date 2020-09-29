@@ -1,5 +1,5 @@
 import { LadderDirection } from "../src/models/ladderDirection"
-import { VehicleId } from "../src/realtime.d"
+import { NotificationReason, VehicleId } from "../src/realtime.d"
 import { VehicleLabelSetting } from "../src/settings"
 import * as State from "../src/state"
 
@@ -240,14 +240,22 @@ describe("reducer", () => {
   })
 
   test("selectedTripIdsForNotification", () => {
+    const notification = {
+      id: 123,
+      createdAt: new Date(),
+      tripIds: ["123", "456", "789"],
+      reason: "other" as NotificationReason,
+      routeIds: [],
+      runIds: [],
+      operatorName: null,
+      operatorId: null,
+      routeIdAtCreation: null,
+    }
     const state = initialState
-    const newState = reducer(
-      state,
-      State.setSelectedTripIdsForNotification(["1", "39", "77"])
-    )
+    const newState = reducer(state, State.setNotification(notification))
     const expectedState = {
       ...state,
-      selectedTripIdsForNotification: ["1", "39", "77"],
+      selectedNotification: notification,
     }
     expect(newState).toEqual(expectedState)
   })
