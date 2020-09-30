@@ -23,14 +23,14 @@
 }
 
 .m-invalid-notification-modal__keep-button {
-  @include button-primary;
+  @include button-simple;
   left: 0;
   position: absolute;
   width: 30%;
 }
 
 .m-invalid-notification-modal__discard-button {
-  @include button-secondary;
+  @include button-primary;
   position: absolute;
   right: 0;
   width: 30%;
