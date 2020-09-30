@@ -27,7 +27,21 @@ export const NotificationsProvider = ({
 }: {
   children: ReactElement<HTMLElement>
 }) => {
-  const [notifications, setNotifications] = useState<Notification[]>([])
+  const fakeNotification: Notification = {
+    id: 123456,
+    createdAt: new Date(),
+    reason: "other",
+    routeIds: ["SL9001"],
+    runIds: ["123-4567"],
+    tripIds: [],
+    operatorName: null,
+    operatorId: null,
+    routeIdAtCreation: null,
+  }
+
+  const [notifications, setNotifications] = useState<Notification[]>([
+    fakeNotification,
+  ])
   const addNotification = (notification: Notification): void => {
     if (featureIsEnabled("notifications")) {
       setNotifications((previous) => {
