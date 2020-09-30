@@ -17,21 +17,26 @@
 }
 
 .m-invalid-notification-modal__buttons {
+  display: flex;
   height: 1rem;
   margin-top: 1.5rem;
+}
+
+.m-invalid-notification-modal__button-wrapper {
+  flex: 1;
   position: relative;
 }
 
 .m-invalid-notification-modal__keep-button {
   @include button-simple;
-  left: 0;
   position: absolute;
-  width: 30%;
+  right: 0.25rem;
+  width: 60%;
 }
 
 .m-invalid-notification-modal__discard-button {
   @include button-primary;
   position: absolute;
-  right: 0;
-  width: 30%;
+  left: 0.25rem;
+  width: 60%;
 }

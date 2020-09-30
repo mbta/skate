@@ -36,18 +36,26 @@ Array [
     <div
       className="m-invalid-notification-modal__buttons"
     >
-      <button
-        className="m-invalid-notification-modal__keep-button"
-        onClick={[Function]}
+      <div
+        className="m-invalid-notification-modal__button-wrapper"
       >
-        Keep
-      </button>
-      <button
-        className="m-invalid-notification-modal__discard-button"
-        onClick={[Function]}
+        <button
+          className="m-invalid-notification-modal__keep-button"
+          onClick={[Function]}
+        >
+          Keep
+        </button>
+      </div>
+      <div
+        className="m-invalid-notification-modal__button-wrapper"
       >
-        Remove
-      </button>
+        <button
+          className="m-invalid-notification-modal__discard-button"
+          onClick={[Function]}
+        >
+          Remove
+        </button>
+      </div>
     </div>
   </div>,
   <div
@@ -92,18 +100,26 @@ Array [
     <div
       className="m-invalid-notification-modal__buttons"
     >
-      <button
-        className="m-invalid-notification-modal__keep-button"
-        onClick={[Function]}
+      <div
+        className="m-invalid-notification-modal__button-wrapper"
       >
-        Keep
-      </button>
-      <button
-        className="m-invalid-notification-modal__discard-button"
-        onClick={[Function]}
+        <button
+          className="m-invalid-notification-modal__keep-button"
+          onClick={[Function]}
+        >
+          Keep
+        </button>
+      </div>
+      <div
+        className="m-invalid-notification-modal__button-wrapper"
       >
-        Remove
-      </button>
+        <button
+          className="m-invalid-notification-modal__discard-button"
+          onClick={[Function]}
+        >
+          Remove
+        </button>
+      </div>
     </div>
   </div>,
   <div
@@ -148,18 +164,26 @@ Array [
     <div
       className="m-invalid-notification-modal__buttons"
     >
-      <button
-        className="m-invalid-notification-modal__keep-button"
-        onClick={[Function]}
+      <div
+        className="m-invalid-notification-modal__button-wrapper"
       >
-        Keep
-      </button>
-      <button
-        className="m-invalid-notification-modal__discard-button"
-        onClick={[Function]}
+        <button
+          className="m-invalid-notification-modal__keep-button"
+          onClick={[Function]}
+        >
+          Keep
+        </button>
+      </div>
+      <div
+        className="m-invalid-notification-modal__button-wrapper"
       >
-        Remove
-      </button>
+        <button
+          className="m-invalid-notification-modal__discard-button"
+          onClick={[Function]}
+        >
+          Remove
+        </button>
+      </div>
     </div>
   </div>,
   <div
