@@ -1,15 +1,15 @@
 import React, { ReactElement, useContext } from "react"
-import { InactiveNotificationContext } from "../contexts/inactiveNotificationContext"
 import { NotificationsContext } from "../contexts/notificationsContext"
 import { SocketContext } from "../contexts/socketContext"
+import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { ConnectionStatus } from "../hooks/useSocket"
 import DisconnectedModal from "./disconnectedModal"
 import InactiveNotificationModal from "./inactiveNotificationModal"
 
 const Modal = (): ReactElement | null => {
   const { connectionStatus } = useContext(SocketContext)
-  const [inactiveNotification, setInactiveNotification] = useContext(
-    InactiveNotificationContext
+  const [{ selectedNotification, selectedNotificationIsInactive }] = useContext(
+    StateDispatchContext
   )
   const { removeNotification } = useContext(NotificationsContext)
 
@@ -17,12 +17,11 @@ const Modal = (): ReactElement | null => {
     return <DisconnectedModal />
   }
 
-  if (inactiveNotification) {
+  if (selectedNotification && selectedNotificationIsInactive) {
     return (
       <InactiveNotificationModal
-        notification={inactiveNotification}
+        notification={selectedNotification}
         removeNotification={removeNotification}
-        setInactiveNotification={setInactiveNotification}
       />
     )
   }

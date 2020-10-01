@@ -51,6 +51,7 @@ describe("usePersistedStateReducer", () => {
         ladderVehicleLabel: VehicleLabelSetting.RunNumber,
         shuttleVehicleLabel: VehicleLabelSetting.VehicleNumber,
       },
+      selectedNotificationIsInactive: true,
     }
 
     const { result } = renderHook(() =>
@@ -87,6 +88,7 @@ describe("usePersistedStateReducer", () => {
         ladderVehicleLabel: VehicleLabelSetting.RunNumber,
         shuttleVehicleLabel: VehicleLabelSetting.VehicleNumber,
       },
+      selectedNotificationIsInactive: true,
     }
     const expectedState: State = {
       pickerContainerIsVisible: true,
@@ -105,6 +107,7 @@ describe("usePersistedStateReducer", () => {
         ladderVehicleLabel: VehicleLabelSetting.RunNumber,
         shuttleVehicleLabel: VehicleLabelSetting.RunNumber,
       },
+      selectedNotificationIsInactive: true,
     }
 
     const { result } = renderHook(() =>

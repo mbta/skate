@@ -8,16 +8,13 @@ import { title } from "./notifications"
 const InactiveNotificationModal = ({
   notification,
   removeNotification,
-  setInactiveNotification,
 }: {
   notification: Notification
   removeNotification: (id: number) => void
-  setInactiveNotification: (notification: Notification | null) => void
 }) => {
   const [, dispatch] = useContext(StateDispatchContext)
 
   const closeModal = () => {
-    setInactiveNotification(null)
     dispatch(setNotification(undefined))
   }
 

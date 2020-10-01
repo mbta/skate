@@ -30,6 +30,7 @@ export interface State {
   selectedVehicleId?: VehicleId
   settings: Settings
   selectedNotification?: Notification
+  selectedNotificationIsInactive: boolean
 }
 
 export const initialState: State = {
@@ -43,6 +44,7 @@ export const initialState: State = {
   selectedVehicleId: undefined,
   settings: defaultSettings,
   selectedNotification: undefined,
+  selectedNotificationIsInactive: false,
 }
 
 interface SelectRouteAction {
@@ -245,6 +247,14 @@ export const setNotification = (
   },
 })
 
+interface SetNotificationIsInactiveAction {
+  type: "SET_NOTIFICATION_IS_INACTIVE"
+}
+
+export const setNotificationIsInactive = (): SetNotificationIsInactiveAction => ({
+  type: "SET_NOTIFICATION_IS_INACTIVE",
+})
+
 type Action =
   | SelectRouteAction
   | DeselectRouteAction
@@ -263,6 +273,7 @@ type Action =
   | SetShuttleVehicleLabelSettingAction
   | SearchAction
   | SetNotificationAction
+  | SetNotificationIsInactiveAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -404,6 +415,20 @@ const selectedNotificationReducer = (
   }
 }
 
+const selectedNotificationIsInactiveReducer = (
+  state: boolean,
+  action: Action
+): boolean => {
+  switch (action.type) {
+    case "SET_NOTIFICATION_IS_INACTIVE":
+      return true
+    case "SET_NOTIFICATION":
+      return false
+    default:
+      return state
+  }
+}
+
 export const reducer = (state: State, action: Action): State => ({
   pickerContainerIsVisible: pickerContainerIsVisibleReducer(
     state.pickerContainerIsVisible,
@@ -428,6 +453,10 @@ export const reducer = (state: State, action: Action): State => ({
   settings: settingsReducer(state.settings, action),
   selectedNotification: selectedNotificationReducer(
     state.selectedNotification,
+    action
+  ),
+  selectedNotificationIsInactive: selectedNotificationIsInactiveReducer(
+    state.selectedNotificationIsInactive,
     action
   ),
 })

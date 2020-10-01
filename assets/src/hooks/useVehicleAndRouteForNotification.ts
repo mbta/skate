@@ -1,7 +1,6 @@
 import { Socket } from "phoenix"
 import { useContext, useEffect, useState } from "react"
 import { parseRouteData, RouteData } from "../api"
-import { InactiveNotificationContext } from "../contexts/inactiveNotificationContext"
 import { SocketContext } from "../contexts/socketContext"
 import { useChannel } from "../hooks/useChannel"
 import { isVehicle } from "../models/vehicle"
@@ -34,7 +33,7 @@ const parseVehicleOrGhostAndRouteData = ({
 
 const useVehicleAndRouteForNotification = (
   notification?: Notification
-): VehicleOrGhostAndRoute | undefined => {
+): VehicleOrGhostAndRoute | undefined | null => {
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
 
   const topic: string | null = notification
@@ -55,17 +54,7 @@ const useVehicleAndRouteForNotification = (
 
   const [clickthroughLogged, setClickthroughLogged] = useState<boolean>(false)
 
-  const [, setInactiveNotification] = useContext(InactiveNotificationContext)
-
   useEffect(() => {
-    if (newVehicleOrGhostAndRoute === null && notification) {
-      setInactiveNotification(notification)
-    }
-
-    if (newVehicleOrGhostAndRoute) {
-      setInactiveNotification(null)
-    }
-
     /* istanbul ignore next */
     if (window.FS) {
       if (!clickthroughLogged) {
@@ -84,7 +73,7 @@ const useVehicleAndRouteForNotification = (
     }
   }, [newVehicleOrGhostAndRoute, notification])
 
-  return newVehicleOrGhostAndRoute || undefined
+  return newVehicleOrGhostAndRoute
 }
 
 export default useVehicleAndRouteForNotification

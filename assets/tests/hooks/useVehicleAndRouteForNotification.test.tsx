@@ -264,6 +264,6 @@ describe("useVehicleAndRouteForNotification", () => {
       },
       { wrapper: wrapper(mockSocket) }
     )
-    expect(result.current).toBeUndefined()
+    expect(result.current).toBeNull()
   })
 })

@@ -17,7 +17,6 @@ describe("InactiveNotificationModal", () => {
     routeIdAtCreation: null,
   }
   const removeNotification = jest.fn()
-  const setInactiveNotification = jest.fn()
 
   test("renders for a notification with no runs", () => {
     const tree = renderer
@@ -25,7 +24,6 @@ describe("InactiveNotificationModal", () => {
         <InactiveNotificationModal
           notification={notification}
           removeNotification={removeNotification}
-          setInactiveNotification={setInactiveNotification}
         />
       )
       .toJSON()
@@ -38,7 +36,6 @@ describe("InactiveNotificationModal", () => {
         <InactiveNotificationModal
           notification={{ ...notification, runIds: ["111"] }}
           removeNotification={removeNotification}
-          setInactiveNotification={setInactiveNotification}
         />
       )
       .toJSON()
@@ -50,7 +47,6 @@ describe("InactiveNotificationModal", () => {
       .create(
         <InactiveNotificationModal
           notification={{ ...notification, runIds: ["111", "222"] }}
-          setInactiveNotification={setInactiveNotification}
           removeNotification={removeNotification}
         />
       )
@@ -63,7 +59,6 @@ describe("InactiveNotificationModal", () => {
       <InactiveNotificationModal
         notification={notification}
         removeNotification={removeNotification}
-        setInactiveNotification={setInactiveNotification}
       />
     )
 
@@ -72,7 +67,6 @@ describe("InactiveNotificationModal", () => {
       .first()
       .simulate("click")
     expect(removeNotification).toHaveBeenCalledWith(notification.id)
-    expect(setInactiveNotification).toHaveBeenCalledWith(null)
   })
 
   test("allows closing the modal", () => {
@@ -80,7 +74,6 @@ describe("InactiveNotificationModal", () => {
       <InactiveNotificationModal
         notification={notification}
         removeNotification={removeNotification}
-        setInactiveNotification={setInactiveNotification}
       />
     )
 
@@ -89,6 +82,5 @@ describe("InactiveNotificationModal", () => {
       .first()
       .simulate("click")
     expect(removeNotification).not.toHaveBeenCalled()
-    expect(setInactiveNotification).toHaveBeenCalledWith(null)
   })
 })
