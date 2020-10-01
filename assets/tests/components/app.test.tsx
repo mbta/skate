@@ -32,7 +32,7 @@ describe("App", () => {
         <App />
       </SocketProvider>
     )
-    expect(wrapper.exists(".m-modal")).toBeTruthy()
+    expect(wrapper.exists(".c-modal")).toBeTruthy()
   })
 
   test("shows data outage banner if there's a data outage", () => {

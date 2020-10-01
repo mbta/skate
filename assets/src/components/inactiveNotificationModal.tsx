@@ -25,7 +25,7 @@ const InactiveNotificationModal = ({
 
   return (
     <>
-      <div className="m-modal">
+      <div className="c-modal">
         <div className="m-inactive-notification-modal__close-button">
           <button onClick={closeModal}>{closeIcon()}</button>
         </div>
@@ -55,7 +55,7 @@ const InactiveNotificationModal = ({
           </div>
         </div>
       </div>
-      <div className="m-modal-overlay" />
+      <div className="c-modal-overlay" />
     </>
   )
 }

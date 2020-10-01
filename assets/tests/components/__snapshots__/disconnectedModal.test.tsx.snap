@@ -3,7 +3,7 @@
 exports[`DisconnectedModal renders 1`] = `
 Array [
   <div
-    className="m-modal"
+    className="c-modal"
   >
     <div>
       Your connection to Skate has expired. Refresh the page to continue.
@@ -16,7 +16,7 @@ Array [
     </button>
   </div>,
   <div
-    className="m-modal-overlay"
+    className="c-modal-overlay"
   />,
 ]
 `;

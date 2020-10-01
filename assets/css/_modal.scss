@@ -1,4 +1,4 @@
-.m-modal {
+.c-modal {
   @include modal-content;
   left: 50%;
   max-width: 75vw;
@@ -10,7 +10,7 @@
   z-index: 2001;
 }
 
-.m-modal-overlay {
+.c-modal-overlay {
   @include modal-overlay;
   z-index: 2000;
 }

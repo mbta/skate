@@ -3,7 +3,7 @@ import { reload } from "../models/browser"
 
 const DisconnectedModal = () => (
   <>
-    <div className="m-modal">
+    <div className="c-modal">
       <div>
         Your connection to Skate has expired. Refresh the page to continue.
       </div>
@@ -14,7 +14,7 @@ const DisconnectedModal = () => (
         Refresh
       </button>
     </div>
-    <div className="m-modal-overlay" />
+    <div className="c-modal-overlay" />
   </>
 )
 
