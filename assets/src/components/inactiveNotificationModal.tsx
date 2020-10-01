@@ -26,28 +26,28 @@ const InactiveNotificationModal = ({
   return (
     <>
       <div className="m-modal">
-        <div className="m-invalid-notification-modal__close-button">
+        <div className="m-inactive-notification-modal__close-button">
           <button onClick={closeModal}>{closeIcon()}</button>
         </div>
         <div className="m-notification__title">
           {title(notification.reason)} NOTIFICATION
         </div>
-        <div className="m-invalid-notification-modal__body">
+        <div className="m-inactive-notification-modal__body">
           {runIdPhrase(notification)} currently active in Skate. This
           notification may no longer be relevant.
         </div>
-        <div className="m-invalid-notification-modal__buttons">
-          <div className="m-invalid-notification-modal__button-wrapper">
+        <div className="m-inactive-notification-modal__buttons">
+          <div className="m-inactive-notification-modal__button-wrapper">
             <button
-              className="m-invalid-notification-modal__keep-button"
+              className="m-inactive-notification-modal__keep-button"
               onClick={closeModal}
             >
               Keep
             </button>
           </div>
-          <div className="m-invalid-notification-modal__button-wrapper">
+          <div className="m-inactive-notification-modal__button-wrapper">
             <button
-              className="m-invalid-notification-modal__discard-button"
+              className="m-inactive-notification-modal__discard-button"
               onClick={removeNotificationAndClose}
             >
               Remove

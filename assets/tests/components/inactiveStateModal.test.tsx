@@ -63,7 +63,7 @@ describe("InactiveNotificationModal", () => {
     )
 
     wrapper
-      .find(".m-invalid-notification-modal__discard-button")
+      .find(".m-inactive-notification-modal__discard-button")
       .first()
       .simulate("click")
     expect(removeNotification).toHaveBeenCalledWith(notification.id)
@@ -78,7 +78,7 @@ describe("InactiveNotificationModal", () => {
     )
 
     wrapper
-      .find(".m-invalid-notification-modal__keep-button")
+      .find(".m-inactive-notification-modal__keep-button")
       .first()
       .simulate("click")
     expect(removeNotification).not.toHaveBeenCalled()

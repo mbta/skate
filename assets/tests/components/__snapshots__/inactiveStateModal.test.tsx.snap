@@ -6,7 +6,7 @@ Array [
     className="m-modal"
   >
     <div
-      className="m-invalid-notification-modal__close-button"
+      className="m-inactive-notification-modal__close-button"
     >
       <button
         onClick={[Function]}
@@ -28,29 +28,29 @@ Array [
        NOTIFICATION
     </div>
     <div
-      className="m-invalid-notification-modal__body"
+      className="m-inactive-notification-modal__body"
     >
       Runs 111, 222 are not
        currently active in Skate. This notification may no longer be relevant.
     </div>
     <div
-      className="m-invalid-notification-modal__buttons"
+      className="m-inactive-notification-modal__buttons"
     >
       <div
-        className="m-invalid-notification-modal__button-wrapper"
+        className="m-inactive-notification-modal__button-wrapper"
       >
         <button
-          className="m-invalid-notification-modal__keep-button"
+          className="m-inactive-notification-modal__keep-button"
           onClick={[Function]}
         >
           Keep
         </button>
       </div>
       <div
-        className="m-invalid-notification-modal__button-wrapper"
+        className="m-inactive-notification-modal__button-wrapper"
       >
         <button
-          className="m-invalid-notification-modal__discard-button"
+          className="m-inactive-notification-modal__discard-button"
           onClick={[Function]}
         >
           Remove
@@ -70,7 +70,7 @@ Array [
     className="m-modal"
   >
     <div
-      className="m-invalid-notification-modal__close-button"
+      className="m-inactive-notification-modal__close-button"
     >
       <button
         onClick={[Function]}
@@ -92,29 +92,29 @@ Array [
        NOTIFICATION
     </div>
     <div
-      className="m-invalid-notification-modal__body"
+      className="m-inactive-notification-modal__body"
     >
       No runs associated with this notification are
        currently active in Skate. This notification may no longer be relevant.
     </div>
     <div
-      className="m-invalid-notification-modal__buttons"
+      className="m-inactive-notification-modal__buttons"
     >
       <div
-        className="m-invalid-notification-modal__button-wrapper"
+        className="m-inactive-notification-modal__button-wrapper"
       >
         <button
-          className="m-invalid-notification-modal__keep-button"
+          className="m-inactive-notification-modal__keep-button"
           onClick={[Function]}
         >
           Keep
         </button>
       </div>
       <div
-        className="m-invalid-notification-modal__button-wrapper"
+        className="m-inactive-notification-modal__button-wrapper"
       >
         <button
-          className="m-invalid-notification-modal__discard-button"
+          className="m-inactive-notification-modal__discard-button"
           onClick={[Function]}
         >
           Remove
@@ -134,7 +134,7 @@ Array [
     className="m-modal"
   >
     <div
-      className="m-invalid-notification-modal__close-button"
+      className="m-inactive-notification-modal__close-button"
     >
       <button
         onClick={[Function]}
@@ -156,29 +156,29 @@ Array [
        NOTIFICATION
     </div>
     <div
-      className="m-invalid-notification-modal__body"
+      className="m-inactive-notification-modal__body"
     >
       Run 111 is not
        currently active in Skate. This notification may no longer be relevant.
     </div>
     <div
-      className="m-invalid-notification-modal__buttons"
+      className="m-inactive-notification-modal__buttons"
     >
       <div
-        className="m-invalid-notification-modal__button-wrapper"
+        className="m-inactive-notification-modal__button-wrapper"
       >
         <button
-          className="m-invalid-notification-modal__keep-button"
+          className="m-inactive-notification-modal__keep-button"
           onClick={[Function]}
         >
           Keep
         </button>
       </div>
       <div
-        className="m-invalid-notification-modal__button-wrapper"
+        className="m-inactive-notification-modal__button-wrapper"
       >
         <button
-          className="m-invalid-notification-modal__discard-button"
+          className="m-inactive-notification-modal__discard-button"
           onClick={[Function]}
         >
           Remove
