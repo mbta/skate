@@ -239,7 +239,7 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
-  test("selectedTripIdsForNotification", () => {
+  test("setNotification", () => {
     const notification = {
       id: 123,
       createdAt: new Date(),
@@ -256,6 +256,16 @@ describe("reducer", () => {
     const expectedState = {
       ...state,
       selectedNotification: notification,
+    }
+    expect(newState).toEqual(expectedState)
+  })
+
+  test("setNotificationIsInactive", () => {
+    const state = initialState
+    const newState = reducer(state, State.setNotificationIsInactive())
+    const expectedState = {
+      ...state,
+      selectedNotificationIsInactive: true,
     }
     expect(newState).toEqual(expectedState)
   })

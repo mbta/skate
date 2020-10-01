@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Modal renders inactive notification modal when appropriate 1`] = `
+Array [
+  <div
+    className="c-modal"
+  >
+    <div
+      className="m-inactive-notification-modal__close-button"
+    >
+      <button
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <div
+      className="m-notification__title"
+    >
+      OTHER
+       NOTIFICATION
+    </div>
+    <div
+      className="m-inactive-notification-modal__body"
+    >
+      No runs associated with this notification are
+       currently active in Skate. This notification may no longer be relevant.
+    </div>
+    <div
+      className="m-inactive-notification-modal__buttons"
+    >
+      <button
+        className="m-inactive-notification-modal__keep-button"
+        onClick={[Function]}
+      >
+        Keep
+      </button>
+      <button
+        className="m-inactive-notification-modal__discard-button"
+        onClick={[Function]}
+      >
+        Remove
+      </button>
+    </div>
+  </div>,
+  <div
+    className="c-modal-overlay"
+  />,
+]
+`;

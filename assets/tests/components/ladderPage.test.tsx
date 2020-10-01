@@ -1,3 +1,4 @@
+import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import LadderPage, {
@@ -8,10 +9,11 @@ import LadderPage, {
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useRoutes from "../../src/hooks/useRoutes"
 import useTimepoints from "../../src/hooks/useTimepoints"
+import useVehicleAndRouteForNotification from "../../src/hooks/useVehicleAndRouteForNotification"
 import useVehicles from "../../src/hooks/useVehicles"
 import { Ghost, Vehicle, VehicleOrGhost } from "../../src/realtime"
 import { ByRouteId, Route, TimepointsByRouteId } from "../../src/schedule.d"
-import { initialState } from "../../src/state"
+import { initialState, setNotificationIsInactive } from "../../src/state"
 
 jest.mock("../../src/hooks/useRoutes", () => ({
   __esModule: true,
@@ -24,6 +26,10 @@ jest.mock("../../src/hooks/useTimepoints", () => ({
 jest.mock("../../src/hooks/useVehicles", () => ({
   __esModule: true,
   default: jest.fn(() => ({})),
+}))
+jest.mock("../../src/hooks/useVehicleAndRouteForNotification", () => ({
+  __esModule: true,
+  default: jest.fn(() => undefined),
 }))
 
 const mockDispatch = jest.fn()
@@ -101,6 +107,19 @@ describe("LadderPage", () => {
       )
       .toJSON()
     expect(tree).toMatchSnapshot()
+  })
+
+  test("sets notification as inactive when appropriate", () => {
+    ;(useVehicleAndRouteForNotification as jest.Mock).mockImplementationOnce(
+      () => null
+    )
+
+    mount(
+      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+        <LadderPage />
+      </StateDispatchProvider>
+    )
+    expect(mockDispatch).toHaveBeenCalledWith(setNotificationIsInactive())
   })
 })
 
