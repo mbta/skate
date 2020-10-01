@@ -18,25 +18,21 @@
 
 .m-inactive-notification-modal__buttons {
   display: flex;
-  height: 1rem;
+  height: 2rem;
+  justify-content: center;
   margin-top: 1.5rem;
-}
-
-.m-inactive-notification-modal__button-wrapper {
-  flex: 1;
-  position: relative;
 }
 
 .m-inactive-notification-modal__keep-button {
   @include button-simple;
-  position: absolute;
-  right: 0.25rem;
-  width: 60%;
+  flex: 0 1 auto;
+  margin-right: 0.25rem;
+  width: 30%;
 }
 
 .m-inactive-notification-modal__discard-button {
   @include button-primary;
-  position: absolute;
-  left: 0.25rem;
-  width: 60%;
+  flex: 0 1 auto;
+  margin-left: 0.25rem;
+  width: 30%;
 }

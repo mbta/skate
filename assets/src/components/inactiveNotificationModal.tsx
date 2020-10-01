@@ -37,22 +37,18 @@ const InactiveNotificationModal = ({
           notification may no longer be relevant.
         </div>
         <div className="m-inactive-notification-modal__buttons">
-          <div className="m-inactive-notification-modal__button-wrapper">
-            <button
-              className="m-inactive-notification-modal__keep-button"
-              onClick={closeModal}
-            >
-              Keep
-            </button>
-          </div>
-          <div className="m-inactive-notification-modal__button-wrapper">
-            <button
-              className="m-inactive-notification-modal__discard-button"
-              onClick={removeNotificationAndClose}
-            >
-              Remove
-            </button>
-          </div>
+          <button
+            className="m-inactive-notification-modal__keep-button"
+            onClick={closeModal}
+          >
+            Keep
+          </button>
+          <button
+            className="m-inactive-notification-modal__discard-button"
+            onClick={removeNotificationAndClose}
+          >
+            Remove
+          </button>
         </div>
       </div>
       <div className="c-modal-overlay" />

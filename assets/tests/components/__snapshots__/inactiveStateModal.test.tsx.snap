@@ -36,26 +36,18 @@ Array [
     <div
       className="m-inactive-notification-modal__buttons"
     >
-      <div
-        className="m-inactive-notification-modal__button-wrapper"
+      <button
+        className="m-inactive-notification-modal__keep-button"
+        onClick={[Function]}
       >
-        <button
-          className="m-inactive-notification-modal__keep-button"
-          onClick={[Function]}
-        >
-          Keep
-        </button>
-      </div>
-      <div
-        className="m-inactive-notification-modal__button-wrapper"
+        Keep
+      </button>
+      <button
+        className="m-inactive-notification-modal__discard-button"
+        onClick={[Function]}
       >
-        <button
-          className="m-inactive-notification-modal__discard-button"
-          onClick={[Function]}
-        >
-          Remove
-        </button>
-      </div>
+        Remove
+      </button>
     </div>
   </div>,
   <div
@@ -100,26 +92,18 @@ Array [
     <div
       className="m-inactive-notification-modal__buttons"
     >
-      <div
-        className="m-inactive-notification-modal__button-wrapper"
+      <button
+        className="m-inactive-notification-modal__keep-button"
+        onClick={[Function]}
       >
-        <button
-          className="m-inactive-notification-modal__keep-button"
-          onClick={[Function]}
-        >
-          Keep
-        </button>
-      </div>
-      <div
-        className="m-inactive-notification-modal__button-wrapper"
+        Keep
+      </button>
+      <button
+        className="m-inactive-notification-modal__discard-button"
+        onClick={[Function]}
       >
-        <button
-          className="m-inactive-notification-modal__discard-button"
-          onClick={[Function]}
-        >
-          Remove
-        </button>
-      </div>
+        Remove
+      </button>
     </div>
   </div>,
   <div
@@ -164,26 +148,18 @@ Array [
     <div
       className="m-inactive-notification-modal__buttons"
     >
-      <div
-        className="m-inactive-notification-modal__button-wrapper"
+      <button
+        className="m-inactive-notification-modal__keep-button"
+        onClick={[Function]}
       >
-        <button
-          className="m-inactive-notification-modal__keep-button"
-          onClick={[Function]}
-        >
-          Keep
-        </button>
-      </div>
-      <div
-        className="m-inactive-notification-modal__button-wrapper"
+        Keep
+      </button>
+      <button
+        className="m-inactive-notification-modal__discard-button"
+        onClick={[Function]}
       >
-        <button
-          className="m-inactive-notification-modal__discard-button"
-          onClick={[Function]}
-        >
-          Remove
-        </button>
-      </div>
+        Remove
+      </button>
     </div>
   </div>,
   <div
