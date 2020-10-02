@@ -3,7 +3,7 @@ import { NotificationsContext } from "../contexts/notificationsContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useInterval from "../hooks/useInterval"
 import { Notification, NotificationReason } from "../realtime.d"
-import { setSelectedTripIdsForNotification } from "../state"
+import { setNotification } from "../state"
 import { formattedTimeDiff, now } from "../util/dateTime"
 import PropertiesList from "./propertiesList"
 
@@ -15,7 +15,7 @@ export const Notifications = () => {
   const [, dispatch] = useContext(StateDispatchContext)
 
   const openVPPForCurrentVehicle = (notification: Notification) => {
-    dispatch(setSelectedTripIdsForNotification(notification.tripIds))
+    dispatch(setNotification(notification))
   }
 
   return (
@@ -98,7 +98,7 @@ export const NotificationCard = ({
   )
 }
 
-const title = (reason: NotificationReason): string => {
+export const title = (reason: NotificationReason): string => {
   switch (reason) {
     case "manpower":
       return "NO OPERATOR"

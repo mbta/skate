@@ -1,0 +1,16 @@
+.c-modal {
+  @include modal-content;
+  left: 50%;
+  max-width: 75vw;
+  padding: 1.5rem;
+  position: fixed;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 23.5rem;
+  z-index: 2001;
+}
+
+.c-modal-overlay {
+  @include modal-overlay;
+  z-index: 2000;
+}

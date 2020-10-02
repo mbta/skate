@@ -1,22 +1,5 @@
-.m-disconnected-modal {
-  @include modal-content;
-  left: 50%;
-  max-width: 90vw;
-  padding: 1.5rem;
-  position: fixed;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 23.5rem;
-  z-index: 2001;
-}
-
 .m-disconnected-modal__refresh-button {
   @include button-primary;
   margin-top: 1.5rem;
   width: 100%;
-}
-
-.m-disconnected-modal__modal-overlay {
-  @include modal-overlay;
-  z-index: 2000;
 }

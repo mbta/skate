@@ -9,6 +9,7 @@ import useVehicleAndRouteForNotification, {
   VehicleOrGhostAndRouteData,
 } from "../../src/hooks/useVehicleAndRouteForNotification"
 import { GhostData, VehicleData } from "../../src/models/vehicleData"
+import { NotificationReason } from "../../src/realtime"
 import { initialState } from "../../src/state"
 import { dateFromEpochSeconds } from "../../src/util/dateTime"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
@@ -112,6 +113,18 @@ const wrapper = (socket: Socket | undefined) => ({
 )
 
 describe("useVehicleAndRouteForNotification", () => {
+  const notification = {
+    id: 123,
+    createdAt: new Date(),
+    tripIds: ["123", "456", "789"],
+    reason: "other" as NotificationReason,
+    routeIds: [],
+    runIds: [],
+    operatorName: null,
+    operatorId: null,
+    routeIdAtCreation: null,
+  }
+
   test("parses vehicle and route data from channel", () => {
     const vehicleAndRouteData: VehicleOrGhostAndRouteData = {
       vehicleOrGhostData: vehicleData,
@@ -124,7 +137,7 @@ describe("useVehicleAndRouteForNotification", () => {
     // tslint:disable: react-hooks-nesting
     const { result } = renderHook(
       () => {
-        return useVehicleAndRouteForNotification(["123", "456", "789"])
+        return useVehicleAndRouteForNotification(notification)
       },
       { wrapper: wrapper(mockSocket) }
     )
@@ -209,7 +222,7 @@ describe("useVehicleAndRouteForNotification", () => {
     // tslint:disable: react-hooks-nesting
     const { result } = renderHook(
       () => {
-        return useVehicleAndRouteForNotification(["123", "456", "789"])
+        return useVehicleAndRouteForNotification(notification)
       },
       { wrapper: wrapper(mockSocket) }
     )
@@ -247,10 +260,10 @@ describe("useVehicleAndRouteForNotification", () => {
     // tslint:disable: react-hooks-nesting
     const { result } = renderHook(
       () => {
-        return useVehicleAndRouteForNotification(["123", "456", "789"])
+        return useVehicleAndRouteForNotification(notification)
       },
       { wrapper: wrapper(mockSocket) }
     )
-    expect(result.current).toBeUndefined()
+    expect(result.current).toBeNull()
   })
 })

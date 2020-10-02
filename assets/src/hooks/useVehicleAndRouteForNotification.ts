@@ -8,8 +8,7 @@ import {
   VehicleOrGhostData,
   vehicleOrGhostFromData,
 } from "../models/vehicleData"
-import { VehicleOrGhostAndRoute } from "../realtime.d"
-import { TripId } from "../schedule.d"
+import { Notification, VehicleOrGhostAndRoute } from "../realtime.d"
 
 export interface VehicleOrGhostAndRouteData {
   vehicleOrGhostData?: VehicleOrGhostData
@@ -19,9 +18,9 @@ export interface VehicleOrGhostAndRouteData {
 const parseVehicleOrGhostAndRouteData = ({
   vehicleOrGhostData,
   routeData,
-}: VehicleOrGhostAndRouteData): VehicleOrGhostAndRoute | undefined => {
+}: VehicleOrGhostAndRouteData): VehicleOrGhostAndRoute | null => {
   if (vehicleOrGhostData === undefined || routeData === undefined) {
-    return undefined
+    return null
   }
 
   const vehicleOrGhost = vehicleOrGhostFromData(vehicleOrGhostData)
@@ -33,15 +32,18 @@ const parseVehicleOrGhostAndRouteData = ({
 }
 
 const useVehicleAndRouteForNotification = (
-  selectedTripIdsForNotification?: TripId[]
-): VehicleOrGhostAndRoute | undefined => {
+  notification?: Notification
+): VehicleOrGhostAndRoute | undefined | null => {
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
-  const topic: string | null = selectedTripIdsForNotification
-    ? `vehicle:trip_ids:${selectedTripIdsForNotification.join(",")}`
+
+  const topic: string | null = notification
+    ? `vehicle:trip_ids:${notification.tripIds.join(",")}`
     : null
 
+  // undefined means we're still trying to load the vehicle,
+  // null means we tried and failed
   const newVehicleOrGhostAndRoute = useChannel<
-    VehicleOrGhostAndRoute | undefined
+    VehicleOrGhostAndRoute | undefined | null
   >({
     socket,
     topic,
@@ -63,13 +65,13 @@ const useVehicleAndRouteForNotification = (
           } else {
             window.FS.event("Notification linked to ghost")
           }
-        } else if (selectedTripIdsForNotification) {
+        } else if (notification) {
           setClickthroughLogged(true)
           window.FS.event("Notification link failed")
         }
       }
     }
-  }, [newVehicleOrGhostAndRoute])
+  }, [newVehicleOrGhostAndRoute, notification])
 
   return newVehicleOrGhostAndRoute
 }

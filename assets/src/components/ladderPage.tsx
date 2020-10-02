@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/react"
 import { Socket } from "phoenix"
-import React, { ReactElement, useContext } from "react"
+import React, { ReactElement, useContext, useEffect } from "react"
 import RoutesContext from "../contexts/routesContext"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
@@ -16,6 +16,7 @@ import {
   VehicleOrGhostAndRoute,
 } from "../realtime.d"
 import { ByRouteId, Route, RouteId, TimepointsByRouteId } from "../schedule.d"
+import { setNotificationIsInactive } from "../state"
 import { Notifications } from "./notifications"
 import PropertiesPanel from "./propertiesPanel"
 import RouteLadders from "./routeLadders"
@@ -44,7 +45,7 @@ const vehicleRoute = (
   )
 
 export const chooseVehicleOrGhostForVPP = (
-  vehicleAndRouteForNotification?: VehicleOrGhostAndRoute,
+  vehicleAndRouteForNotification?: VehicleOrGhostAndRoute | null,
   selectedVehicleOrGhost?: VehicleOrGhost
 ): VehicleOrGhost | undefined =>
   vehicleAndRouteForNotification
@@ -52,12 +53,8 @@ export const chooseVehicleOrGhostForVPP = (
     : selectedVehicleOrGhost
 
 const LadderPage = (): ReactElement<HTMLDivElement> => {
-  const [state] = useContext(StateDispatchContext)
-  const {
-    selectedRouteIds,
-    selectedVehicleId,
-    selectedTripIdsForNotification,
-  } = state
+  const [state, dispatch] = useContext(StateDispatchContext)
+  const { selectedRouteIds, selectedVehicleId, selectedNotification } = state
 
   const routes: Route[] | null = useRoutes()
   const timepointsByRouteId: TimepointsByRouteId = useTimepoints(
@@ -71,8 +68,13 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
   )
 
   const vehicleAndRouteForNotification = useVehicleAndRouteForNotification(
-    selectedTripIdsForNotification
+    selectedNotification
   )
+  useEffect(() => {
+    if (vehicleAndRouteForNotification === null) {
+      dispatch(setNotificationIsInactive())
+    }
+  }, [vehicleAndRouteForNotification])
 
   const selectedRoutes: Route[] = selectedRouteIds
     .map((routeId) => findRouteById(routes, routeId))
@@ -85,7 +87,8 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
 
   const vehicleOrGhostForVPP:
     | VehicleOrGhost
-    | undefined = chooseVehicleOrGhostForVPP(
+    | undefined
+    | null = chooseVehicleOrGhostForVPP(
     vehicleAndRouteForNotification,
     selectedVehicleOrGhost
   )
