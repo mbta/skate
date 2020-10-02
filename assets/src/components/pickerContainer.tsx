@@ -1,6 +1,12 @@
 import React, { ReactElement, useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { collapseIcon, expandIcon } from "../helpers/icon"
+import {
+  askPermission,
+  browserSupportsPush,
+  subscribeUserToPush,
+} from "../pushSpike"
+
 import { togglePickerContainer } from "../state"
 
 interface Props {
@@ -11,6 +17,14 @@ interface Props {
 export enum Width {
   Narrow = 1,
   Wide,
+}
+
+const triggerPush = () => {
+  if (browserSupportsPush()) {
+    if (askPermission()) {
+      subscribeUserToPush()
+    }
+  }
 }
 
 const PickerContainer = ({
@@ -31,6 +45,7 @@ const PickerContainer = ({
         state.pickerContainerIsVisible ? "visible" : "hidden"
       }`}
     >
+      <button onClick={triggerPush}>CLICK ME FOR A SURPRISE</button>
       <Tab
         isVisible={state.pickerContainerIsVisible}
         toggleVisibility={toggleVisibility}

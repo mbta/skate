@@ -26,6 +26,7 @@ defmodule SkateWeb.Router do
   end
 
   pipeline :browser do
+    plug Plug.Parsers, parsers: [:json], pass: ["text/*"], json_decoder: Jason
     plug :fetch_session
     plug :fetch_flash
     plug :protect_from_forgery
@@ -70,6 +71,7 @@ defmodule SkateWeb.Router do
     get "/minischedule/run/:trip_id", MinischeduleController, :run
     get "/minischedule/block/:trip_id", MinischeduleController, :block
     get "/intersection", IntersectionController, :intersection
+    post "/subscribe_to_spike", PushSpikeController, :create
   end
 
   scope "/_flags" do

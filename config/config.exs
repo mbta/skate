@@ -131,6 +131,12 @@ config :sentry,
   included_environments: [:prod],
   environment_name: Mix.env()
 
+config :web_push_encryption, :vapid_details,
+  subject: "mailto:administrator@example.com",
+  public_key:
+    "BOI28VqmZHiQADYnj2swJQAYypNp9xyhsuTAzZgs8GQn-5aqxbvQsxcbL1hDw3jvlHoCV5PP5p-golUXrlkaLu8",
+  private_key: "aClGS-IFhPLLZ8GnTIkpKY8FRPwiNnkHQoUCD21aHW0"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
