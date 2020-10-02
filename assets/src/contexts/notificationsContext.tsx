@@ -1,6 +1,5 @@
 import React, { createContext, ReactElement, useState } from "react"
 import { useNotifications } from "../hooks/useNotifications"
-import featureIsEnabled from "../laboratoryFeatures"
 import { Notification, NotificationId } from "../realtime.d"
 
 export interface NotificationsStatus {
@@ -29,13 +28,11 @@ export const NotificationsProvider = ({
 }) => {
   const [notifications, setNotifications] = useState<Notification[]>([])
   const addNotification = (notification: Notification): void => {
-    if (featureIsEnabled("notifications")) {
-      setNotifications((previous) => {
-        const newNotifications = [...previous, notification]
-        deliveryFullstoryEvent(newNotifications.length)
-        return newNotifications
-      })
-    }
+    setNotifications((previous) => {
+      const newNotifications = [...previous, notification]
+      deliveryFullstoryEvent(newNotifications.length)
+      return newNotifications
+    })
   }
   const removeNotification = (id: number): void => {
     setNotifications((previous) => previous.filter((n) => n.id !== id))
