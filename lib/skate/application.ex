@@ -5,6 +5,7 @@ defmodule Skate.Application do
 
   use Application
 
+  alias Skate.Migrate
   alias Skate.SecretsManager
 
   @impl true
@@ -31,7 +32,7 @@ defmodule Skate.Application do
 
     link = Supervisor.start_link(children, strategy: :one_for_all, name: Skate.Supervisor)
 
-    migrate()
+    Migrate.migrate()
 
     link
   end
@@ -106,14 +107,5 @@ defmodule Skate.Application do
 
   defp runtime_config(value) do
     value
-  end
-
-  defp migrate() do
-    Ecto.Migrator.run(
-      Skate.Repo,
-      Application.app_dir(:skate, "priv/repo/migrations"),
-      :up,
-      all: true
-    )
   end
 end
