@@ -16,6 +16,8 @@ defmodule Skate.Settings do
     :shuttle_page_vehicle_label
   ]
 
+  @derive Jason.Encoder
+
   defstruct [
     :ladder_page_vehicle_label,
     :shuttle_page_vehicle_label

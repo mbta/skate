@@ -1,16 +1,20 @@
 defmodule SkateWeb.PageController do
   require Logger
   use SkateWeb, :controller
+  alias Skate.Settings
   alias SkateWeb.AuthManager
 
   plug(:laboratory_features)
 
   def index(conn, _params) do
-    uid = AuthManager.Plug.current_resource(conn)
-    _ = Logger.info("uid=#{uid}")
+    username = AuthManager.Plug.current_resource(conn)
+    _ = Logger.info("uid=#{username}")
+
+    settings = Settings.get_or_create(username)
 
     conn
-    |> assign(:username, uid)
+    |> assign(:username, username)
+    |> assign(:settings, settings)
     |> render("index.html")
   end
 
