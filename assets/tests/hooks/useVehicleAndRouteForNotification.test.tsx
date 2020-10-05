@@ -126,6 +126,11 @@ describe("useVehicleAndRouteForNotification", () => {
   }
 
   test("parses vehicle and route data from channel", () => {
+    const originalFS = window.FS
+    const originalUsername = window.username
+    window.FS = { event: jest.fn(), identify: jest.fn() }
+    window.username = "username"
+
     const vehicleAndRouteData: VehicleOrGhostAndRouteData = {
       vehicleOrGhostData: vehicleData,
       routeData,
@@ -209,8 +214,17 @@ describe("useVehicleAndRouteForNotification", () => {
         viaVariant: "3",
       },
     })
+    expect(window.FS!.event).toHaveBeenCalledWith("Notification linked to VPP")
+    window.FS = originalFS
+    window.username = originalUsername
   })
+
   test("parses ghost and route data from channel", () => {
+    const originalFS = window.FS
+    const originalUsername = window.username
+    window.FS = { event: jest.fn(), identify: jest.fn() }
+    window.username = "username"
+
     const vehicleAndRouteData: VehicleOrGhostAndRouteData = {
       vehicleOrGhostData: ghostData,
       routeData,
@@ -251,8 +265,19 @@ describe("useVehicleAndRouteForNotification", () => {
         viaVariant: "3",
       },
     })
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      "Notification linked to ghost"
+    )
+    window.FS = originalFS
+    window.username = originalUsername
   })
+
   test("handles missing data from channel", () => {
+    const originalFS = window.FS
+    const originalUsername = window.username
+    window.FS = { event: jest.fn(), identify: jest.fn() }
+    window.username = "username"
+
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok", { data: {} })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
@@ -265,5 +290,8 @@ describe("useVehicleAndRouteForNotification", () => {
       { wrapper: wrapper(mockSocket) }
     )
     expect(result.current).toBeNull()
+    expect(window.FS!.event).toHaveBeenCalledWith("Notification link failed")
+    window.FS = originalFS
+    window.username = originalUsername
   })
 })
