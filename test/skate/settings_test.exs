@@ -50,4 +50,14 @@ defmodule Skate.SettingsTest do
       assert [_id] = Repo.all(from(us in "user_settings", select: us.user_id))
     end
   end
+
+  describe "set" do
+    test "cat set a setting" do
+      username = "username"
+      Settings.get_or_create(username)
+      Settings.set(username, :ladder_page_vehicle_label, :vehicle_id)
+      result = Settings.get_or_create(username)
+      assert result.ladder_page_vehicle_label == :vehicle_id
+    end
+  end
 end

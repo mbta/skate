@@ -1,5 +1,6 @@
 defmodule Skate.Settings do
   import Skate.Repo
+  import Ecto.Query
 
   alias Skate.Settings.User
   alias Skate.Settings.UserSettings
@@ -48,5 +49,21 @@ defmodule Skate.Settings do
       ladder_page_vehicle_label: user_settings.ladder_page_vehicle_label,
       shuttle_page_vehicle_label: user_settings.shuttle_page_vehicle_label
     }
+  end
+
+  @spec set(String.t(), atom(), any()) :: :ok
+  def set(username, field, value) do
+    {:ok, db_value} = VehicleLabel.dump(value)
+
+    update_all(
+      from(user_settings in "user_settings",
+        join: user in User,
+        on: user.id == user_settings.user_id,
+        where: user.username == ^username
+      ),
+      set: [{field, db_value}]
+    )
+
+    :ok
   end
 end
