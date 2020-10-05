@@ -55,7 +55,6 @@ const useVehicleAndRouteForNotification = (
   const [clickthroughLogged, setClickthroughLogged] = useState<boolean>(false)
 
   useEffect(() => {
-    /* istanbul ignore next */
     if (window.FS) {
       if (!clickthroughLogged) {
         if (newVehicleOrGhostAndRoute) {
@@ -65,7 +64,7 @@ const useVehicleAndRouteForNotification = (
           } else {
             window.FS.event("Notification linked to ghost")
           }
-        } else if (notification) {
+        } else if (notification && newVehicleOrGhostAndRoute === null) {
           setClickthroughLogged(true)
           window.FS.event("Notification link failed")
         }
