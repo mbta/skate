@@ -6,11 +6,9 @@ import usePersistedStateReducer, {
   merge,
 } from "../../src/hooks/usePersistedStateReducer"
 import { VehicleLabelSetting } from "../../src/settings"
-import { Reducer, State } from "../../src/state"
+import { initialState, State } from "../../src/state"
 
 // tslint:disable: react-hooks-nesting
-
-const reducer: Reducer = (state, _action) => state
 
 const mockLocalStorage = {
   getItem: jest.fn(),
@@ -33,30 +31,8 @@ describe("usePersistedStateReducer", () => {
     Object.defineProperty(window, "localStorage", originalLocalStorage)
   })
 
-  test("initializes the state with the given initial value", () => {
-    const initialState: State = {
-      pickerContainerIsVisible: true,
-      searchPageState: {
-        query: { text: "search text", property: "run" },
-        isActive: true,
-        savedQueries: [],
-      },
-      selectedRouteIds: ["1", "2"],
-      ladderDirections: {},
-      ladderCrowdingToggles: {},
-      selectedShuttleRouteIds: [],
-      selectedShuttleRunIds: [],
-      selectedVehicleId: "2",
-      settings: {
-        ladderVehicleLabel: VehicleLabelSetting.RunNumber,
-        shuttleVehicleLabel: VehicleLabelSetting.VehicleNumber,
-      },
-      selectedNotificationIsInactive: true,
-    }
-
-    const { result } = renderHook(() =>
-      usePersistedStateReducer(reducer, initialState)
-    )
+  test("initializes the state", () => {
+    const { result } = renderHook(() => usePersistedStateReducer())
     const [state, dispatch] = result.current
 
     expect(state).toEqual(initialState)
@@ -71,48 +47,16 @@ describe("usePersistedStateReducer", () => {
           '{"selectedRouteIds":["28","39"],"settings":{"ladderVehicleLabel":1,"shuttleVehicleLabel":1}}'
       )
 
-    const initialState: State = {
-      pickerContainerIsVisible: true,
-      searchPageState: {
-        query: { text: "search text", property: "run" },
-        isActive: true,
-        savedQueries: [],
-      },
-      selectedRouteIds: ["1", "2"],
-      ladderDirections: {},
-      ladderCrowdingToggles: {},
-      selectedShuttleRouteIds: [],
-      selectedShuttleRunIds: [],
-      selectedVehicleId: "2",
-      settings: {
-        ladderVehicleLabel: VehicleLabelSetting.RunNumber,
-        shuttleVehicleLabel: VehicleLabelSetting.VehicleNumber,
-      },
-      selectedNotificationIsInactive: true,
-    }
     const expectedState: State = {
-      pickerContainerIsVisible: true,
-      searchPageState: {
-        query: { text: "search text", property: "run" },
-        isActive: true,
-        savedQueries: [],
-      },
+      ...initialState,
       selectedRouteIds: ["28", "39"],
-      ladderDirections: {},
-      ladderCrowdingToggles: {},
-      selectedShuttleRouteIds: [],
-      selectedShuttleRunIds: [],
-      selectedVehicleId: "2",
       settings: {
         ladderVehicleLabel: VehicleLabelSetting.RunNumber,
         shuttleVehicleLabel: VehicleLabelSetting.RunNumber,
       },
-      selectedNotificationIsInactive: true,
     }
 
-    const { result } = renderHook(() =>
-      usePersistedStateReducer(reducer, initialState)
-    )
+    const { result } = renderHook(() => usePersistedStateReducer())
     const [state] = result.current
 
     expect(state).toEqual(expectedState)

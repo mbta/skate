@@ -1,6 +1,6 @@
 import { useEffect, useReducer } from "react"
 import { loadState, saveState } from "../localStorage"
-import { Dispatch, Reducer, State } from "../state"
+import { Dispatch, initialState, reducer, State } from "../state"
 
 const APP_STATE_KEY = "mbta-skate-state"
 
@@ -17,23 +17,20 @@ const PERSISTED_KEYS: Key[] = [
   ["searchPageState", "savedQueries"],
 ]
 
-const usePersistedStateReducer = (
-  reducer: Reducer,
-  defaultValue: State
-): [State, Dispatch] => {
-  const loadedState = loadState(APP_STATE_KEY) as State | undefined
-  const [state, dispatch] = useReducer(
-    reducer,
-    defaultValue,
-    (initial: State) => merge<State>(initial, loadedState || {}, PERSISTED_KEYS)
-  )
-  const persistableState = filter(state, PERSISTED_KEYS)
+const usePersistedStateReducer = (): [State, Dispatch] => {
+  const [state, dispatch] = useReducer(reducer, undefined, init)
 
+  const persistableState = filter(state, PERSISTED_KEYS)
   useEffect(() => {
     saveState(APP_STATE_KEY, persistableState)
   }, [persistableState])
 
   return [state, dispatch]
+}
+
+const init = (): State => {
+  const loadedState = loadState(APP_STATE_KEY) as State | undefined
+  return merge<State>(initialState, loadedState || {}, PERSISTED_KEYS)
 }
 
 export const get = (obj: object, key: Key): any | undefined =>
