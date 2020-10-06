@@ -1,5 +1,13 @@
 import { useEffect, useReducer } from "react"
+import appData from "../appData"
 import { loadState, saveState } from "../localStorage"
+import {
+  defaultSettings,
+  putLadderVehicleLabel,
+  putShuttleVehicleLabel,
+  Settings,
+  settingsFromData,
+} from "../settings"
 import { Dispatch, initialState, reducer, State } from "../state"
 
 const APP_STATE_KEY = "mbta-skate-state"
@@ -13,7 +21,6 @@ const PERSISTED_KEYS: Key[] = [
   ["selectedVehicleId"],
   ["selectedShuttleRouteIds"],
   ["selectedShuttleRunIds"],
-  ["settings"],
   ["searchPageState", "savedQueries"],
 ]
 
@@ -29,8 +36,31 @@ const usePersistedStateReducer = (): [State, Dispatch] => {
 }
 
 const init = (): State => {
-  const loadedState = loadState(APP_STATE_KEY) as State | undefined
-  return merge<State>(initialState, loadedState || {}, PERSISTED_KEYS)
+  const loadedState: object | undefined = loadState(APP_STATE_KEY)
+  let settings: Settings
+  if (loadedState !== undefined && loadedState.hasOwnProperty("settings")) {
+    // migrating settings from localStorage to database
+    const localStorageSettings: Settings = (loadedState as {
+      settings: Settings
+    }).settings
+    putLadderVehicleLabel(localStorageSettings.ladderVehicleLabel)
+    putShuttleVehicleLabel(localStorageSettings.shuttleVehicleLabel)
+    // settings will be removed from localStorage when they're next saved
+    // prefer these settings to the ones that came from the backend
+    settings = localStorageSettings
+  } else {
+    const backendSettingsString: string | undefined = appData()?.settings
+    if (backendSettingsString !== undefined) {
+      settings = settingsFromData(JSON.parse(backendSettingsString))
+    } else {
+      settings = defaultSettings
+    }
+  }
+  return merge<State>(
+    { ...initialState, settings },
+    loadedState || {},
+    PERSISTED_KEYS
+  )
 }
 
 export const get = (obj: object, key: Key): any | undefined =>

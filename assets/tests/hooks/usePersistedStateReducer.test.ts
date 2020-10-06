@@ -1,4 +1,6 @@
 import { act, renderHook } from "@testing-library/react-hooks"
+import { putSetting } from "../../src/api"
+import appData from "../../src/appData"
 import usePersistedStateReducer, {
   filter,
   get,
@@ -14,6 +16,21 @@ const mockLocalStorage = {
   getItem: jest.fn(),
   setItem: jest.fn(),
 }
+
+jest.mock("../../src/api", () => ({
+  __esModule: true,
+  putSetting: jest.fn(),
+}))
+
+jest.mock("../../src/appData", () => ({
+  __esModule: true,
+  default: jest.fn(() => ({
+    settings: JSON.stringify({
+      ladder_page_vehicle_label: "run_id",
+      shuttle_page_vehicle_label: "vehicle_id",
+    }),
+  })),
+}))
 
 describe("usePersistedStateReducer", () => {
   const originalLocalStorage = window.localStorage
@@ -43,17 +60,12 @@ describe("usePersistedStateReducer", () => {
     jest
       .spyOn(window.localStorage, "getItem")
       .mockImplementation(
-        (_stateKey: string) =>
-          '{"selectedRouteIds":["28","39"],"settings":{"ladderVehicleLabel":1,"shuttleVehicleLabel":1}}'
+        (_stateKey: string) => '{"selectedRouteIds":["28","39"]}'
       )
 
     const expectedState: State = {
       ...initialState,
       selectedRouteIds: ["28", "39"],
-      settings: {
-        ladderVehicleLabel: VehicleLabelSetting.RunNumber,
-        shuttleVehicleLabel: VehicleLabelSetting.RunNumber,
-      },
     }
 
     const { result } = renderHook(() => usePersistedStateReducer())
@@ -81,6 +93,43 @@ describe("usePersistedStateReducer", () => {
       (window.localStorage.setItem as jest.Mock).mock.calls[1][1]
     )
     expect(persistedState.selectedVehicleId).toEqual("vehicle_id")
+  })
+
+  test("loads settings from the backend", () => {
+    ;(appData as jest.Mock).mockImplementationOnce(() => ({
+      settings: JSON.stringify({
+        ladder_page_vehicle_label: "run_id",
+        shuttle_page_vehicle_label: "run_id",
+      }),
+    }))
+    const { result } = renderHook(() => usePersistedStateReducer())
+    const [state] = result.current
+    expect(state.settings.shuttleVehicleLabel).toEqual(
+      VehicleLabelSetting.RunNumber
+    )
+  })
+
+  test("if settings are in localstorage, copies them to the backend and uses them", () => {
+    jest
+      .spyOn(window.localStorage, "getItem")
+      .mockImplementation(
+        (_stateKey: string) =>
+          '{"settings":{"ladderVehicleLabel":1,"shuttleVehicleLabel":1}}'
+      )
+
+    const { result } = renderHook(() => usePersistedStateReducer())
+    const [state] = result.current
+
+    expect(state.settings).toEqual({
+      ladderVehicleLabel: VehicleLabelSetting.RunNumber,
+      shuttleVehicleLabel: VehicleLabelSetting.RunNumber,
+    })
+    // settings were saved to the database
+    expect(putSetting).toHaveBeenCalled()
+    // settings were removed from local storage
+    expect(
+      (window.localStorage.setItem as jest.Mock).mock.calls[0][1]
+    ).not.toContain("settings")
   })
 })
 

@@ -130,6 +130,11 @@ export const fetchNearestIntersection = (
     defaultResult: null,
   })
 
+export const putSetting = (field: string, value: string): void => {
+  const url = `/api/settings?field=${field}&value=${value}`
+  fetch(url, { method: "PUT" })
+}
+
 const nullableParser = <Data, T>(
   parser: (data: Data) => T
 ): ((data: Data | null) => T | null) => (data: Data | null) =>
