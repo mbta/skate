@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`InactiveNotificationModal renders for a notification with multiple runs 1`] = `
+exports[`InactiveNotificationModal renders for a notification with multiple current or past runs 1`] = `
 Array [
   <div
     className="c-modal"
@@ -30,8 +30,62 @@ Array [
     <div
       className="m-inactive-notification-modal__body"
     >
-      Runs 111, 222 are not
-       currently active in Skate. This notification may no longer be relevant.
+      Runs 111, 222 are not currently active in Skate. This notification may no longer be relevant.
+    </div>
+    <div
+      className="m-inactive-notification-modal__buttons"
+    >
+      <button
+        className="m-inactive-notification-modal__keep-button"
+        onClick={[Function]}
+      >
+        Keep
+      </button>
+      <button
+        className="m-inactive-notification-modal__discard-button"
+        onClick={[Function]}
+      >
+        Remove
+      </button>
+    </div>
+  </div>,
+  <div
+    className="c-modal-overlay"
+  />,
+]
+`;
+
+exports[`InactiveNotificationModal renders for a notification with multiple upcoming runs 1`] = `
+Array [
+  <div
+    className="c-modal"
+  >
+    <div
+      className="m-inactive-notification-modal__close-button"
+    >
+      <button
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <div
+      className="m-notification__title"
+    >
+      OTHER
+       NOTIFICATION
+    </div>
+    <div
+      className="m-inactive-notification-modal__body"
+    >
+      Runs 111, 222 are upcoming and not yet active in Skate. Please check back later to see details for these runs.
     </div>
     <div
       className="m-inactive-notification-modal__buttons"
@@ -86,8 +140,7 @@ Array [
     <div
       className="m-inactive-notification-modal__body"
     >
-      No runs associated with this notification are
-       currently active in Skate. This notification may no longer be relevant.
+      No runs associated with this notification are currently active in Skate. This notification may no longer be relevant.
     </div>
     <div
       className="m-inactive-notification-modal__buttons"
@@ -112,7 +165,7 @@ Array [
 ]
 `;
 
-exports[`InactiveNotificationModal renders for a notification with one run 1`] = `
+exports[`InactiveNotificationModal renders for a notification with one current or past run 1`] = `
 Array [
   <div
     className="c-modal"
@@ -142,8 +195,62 @@ Array [
     <div
       className="m-inactive-notification-modal__body"
     >
-      Run 111 is not
-       currently active in Skate. This notification may no longer be relevant.
+      Run 111 is not currently active in Skate. This notification may no longer be relevant.
+    </div>
+    <div
+      className="m-inactive-notification-modal__buttons"
+    >
+      <button
+        className="m-inactive-notification-modal__keep-button"
+        onClick={[Function]}
+      >
+        Keep
+      </button>
+      <button
+        className="m-inactive-notification-modal__discard-button"
+        onClick={[Function]}
+      >
+        Remove
+      </button>
+    </div>
+  </div>,
+  <div
+    className="c-modal-overlay"
+  />,
+]
+`;
+
+exports[`InactiveNotificationModal renders for a notification with one upcoming run 1`] = `
+Array [
+  <div
+    className="c-modal"
+  >
+    <div
+      className="m-inactive-notification-modal__close-button"
+    >
+      <button
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+    </div>
+    <div
+      className="m-notification__title"
+    >
+      OTHER
+       NOTIFICATION
+    </div>
+    <div
+      className="m-inactive-notification-modal__body"
+    >
+      Run 111 is upcoming and not yet active in Skate. Please check back later to see details for this run.
     </div>
     <div
       className="m-inactive-notification-modal__buttons"

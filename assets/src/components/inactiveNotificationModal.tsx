@@ -33,8 +33,7 @@ const InactiveNotificationModal = ({
           {title(notification.reason)} NOTIFICATION
         </div>
         <div className="m-inactive-notification-modal__body">
-          {runIdPhrase(notification)} currently active in Skate. This
-          notification may no longer be relevant.
+          {bodyCopy(notification)}
         </div>
         <div className="m-inactive-notification-modal__buttons">
           <button
@@ -56,11 +55,32 @@ const InactiveNotificationModal = ({
   )
 }
 
-const runIdPhrase = (notification: Notification): string => {
+const bodyCopy = (notification: Notification): string => {
   if (notification.runIds.length === 0) {
-    return "No runs associated with this notification are"
+    return "No runs associated with this notification are currently active in Skate. This notification may no longer be relevant."
   }
 
+  return notification.startTime < new Date()
+    ? pastNotificationBodyCopy(notification)
+    : futureNotificationBodyCopy(notification)
+}
+
+const pastNotificationBodyCopy = (notification: Notification): string =>
+  `${pastRunIdPhrase(
+    notification
+  )} currently active in Skate. This notification may no longer be relevant.`
+
+const futureNotificationBodyCopy = (notification: Notification): string => {
+  if (notification.runIds.length === 1) {
+    return `Run ${notification.runIds[0]} is upcoming and not yet active in Skate. Please check back later to see details for this run.`
+  }
+
+  return `Runs ${notification.runIds.join(
+    ", "
+  )} are upcoming and not yet active in Skate. Please check back later to see details for these runs.`
+}
+
+const pastRunIdPhrase = (notification: Notification): string => {
   if (notification.runIds.length === 1) {
     return `Run ${notification.runIds[0]} is not`
   }
