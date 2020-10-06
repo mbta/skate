@@ -127,6 +127,8 @@ defmodule Notifications.NotificationServerTest do
     operator_id = Keyword.get(opts, :operator_id)
     route_id_at_creation = Keyword.get(opts, :route_id_at_creation)
 
+    start_time = @midnight + 100
+
     assert_received(
       {:notifications,
        [
@@ -138,7 +140,8 @@ defmodule Notifications.NotificationServerTest do
            trip_ids: ["trip1", "trip2"],
            operator_name: ^operator_name,
            operator_id: ^operator_id,
-           route_id_at_creation: ^route_id_at_creation
+           route_id_at_creation: ^route_id_at_creation,
+           start_time: ^start_time
          }
        ]}
     )
@@ -147,6 +150,7 @@ defmodule Notifications.NotificationServerTest do
     assert String.contains?(log, "route_ids: [\"1\", \"2\"]")
     assert String.contains?(log, "run_ids: [\"run1\", \"run2\"]")
     assert String.contains?(log, "trip_ids: [\"trip1\", \"trip2\"]")
+    assert String.contains?(log, "start_time: #{start_time}")
   end
 
   def setup_server do

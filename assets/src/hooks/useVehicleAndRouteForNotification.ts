@@ -66,7 +66,11 @@ const useVehicleAndRouteForNotification = (
           }
         } else if (notification && newVehicleOrGhostAndRoute === null) {
           setClickthroughLogged(true)
-          window.FS.event("Notification link failed")
+          window.FS.event(
+            new Date() < notification.startTime
+              ? "Notification link failed upcoming"
+              : "Notification link failed"
+          )
         }
       }
     }

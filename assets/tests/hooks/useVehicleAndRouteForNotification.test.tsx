@@ -123,6 +123,7 @@ describe("useVehicleAndRouteForNotification", () => {
     operatorName: null,
     operatorId: null,
     routeIdAtCreation: null,
+    startTime: new Date(),
   }
 
   test("parses vehicle and route data from channel", () => {
@@ -272,7 +273,7 @@ describe("useVehicleAndRouteForNotification", () => {
     window.username = originalUsername
   })
 
-  test("handles missing data from channel", () => {
+  test("handles missing data from channel for a current or past notification", () => {
     const originalFS = window.FS
     const originalUsername = window.username
     window.FS = { event: jest.fn(), identify: jest.fn() }
@@ -285,12 +286,43 @@ describe("useVehicleAndRouteForNotification", () => {
     // tslint:disable: react-hooks-nesting
     const { result } = renderHook(
       () => {
-        return useVehicleAndRouteForNotification(notification)
+        return useVehicleAndRouteForNotification({
+          ...notification,
+          startTime: new Date("2019-10-06"),
+        })
       },
       { wrapper: wrapper(mockSocket) }
     )
     expect(result.current).toBeNull()
     expect(window.FS!.event).toHaveBeenCalledWith("Notification link failed")
+    window.FS = originalFS
+    window.username = originalUsername
+  })
+
+  test("handles missing data from channel for an upcoming notification", () => {
+    const originalFS = window.FS
+    const originalUsername = window.username
+    window.FS = { event: jest.fn(), identify: jest.fn() }
+    window.username = "username"
+
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok", { data: {} })
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+
+    // tslint:disable: react-hooks-nesting
+    const { result } = renderHook(
+      () => {
+        return useVehicleAndRouteForNotification({
+          ...notification,
+          startTime: new Date("20200-10-06"),
+        })
+      },
+      { wrapper: wrapper(mockSocket) }
+    )
+    expect(result.current).toBeNull()
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      "Notification link failed upcoming"
+    )
     window.FS = originalFS
     window.username = originalUsername
   })

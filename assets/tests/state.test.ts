@@ -250,6 +250,7 @@ describe("reducer", () => {
       operatorName: null,
       operatorId: null,
       routeIdAtCreation: null,
+      startTime: new Date(),
     }
     const state = initialState
     const newState = reducer(state, State.setNotification(notification))

@@ -121,7 +121,8 @@ defmodule Notifications.NotificationServer do
         trip_ids: trip_ids,
         operator_id: operator_id,
         operator_name: operator_name,
-        route_id_at_creation: route_id
+        route_id_at_creation: route_id,
+        start_time: block_waiver.start_time
       }
     end
   end

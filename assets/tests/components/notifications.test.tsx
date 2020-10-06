@@ -36,6 +36,7 @@ const notification: Notification = {
   operatorName: null,
   operatorId: null,
   routeIdAtCreation: null,
+  startTime: now(),
 }
 
 const notificationWithMatchedVehicle: Notification = {
