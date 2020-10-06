@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { act, renderHook } from "@testing-library/react-hooks"
 import usePersistedStateReducer, {
   filter,
   get,
@@ -6,7 +6,7 @@ import usePersistedStateReducer, {
   merge,
 } from "../../src/hooks/usePersistedStateReducer"
 import { VehicleLabelSetting } from "../../src/settings"
-import { initialState, State } from "../../src/state"
+import { initialState, selectVehicle, State } from "../../src/state"
 
 // tslint:disable: react-hooks-nesting
 
@@ -60,6 +60,27 @@ describe("usePersistedStateReducer", () => {
     const [state] = result.current
 
     expect(state).toEqual(expectedState)
+  })
+
+  test("stores persisted keys in localstorage when they change", () => {
+    const { result } = renderHook(() => usePersistedStateReducer())
+    const dispatch = result.current[1]
+
+    act(() => {
+      dispatch(selectVehicle("vehicle_id"))
+    })
+
+    const state = result.current[0]
+
+    expect(state.selectedVehicleId).toEqual("vehicle_id")
+
+    // first call is persisting the initial state
+    // second call is persisting the edit we're testing
+    expect(window.localStorage.setItem).toHaveBeenCalledTimes(2)
+    const persistedState = JSON.parse(
+      (window.localStorage.setItem as jest.Mock).mock.calls[1][1]
+    )
+    expect(persistedState.selectedVehicleId).toEqual("vehicle_id")
   })
 })
 
