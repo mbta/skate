@@ -22,6 +22,7 @@ const notificationData: NotificationData = {
   operator_name: null,
   operator_id: null,
   route_id_at_creation: null,
+  start_time: 123_456,
 }
 
 describe("useNotifications", () => {

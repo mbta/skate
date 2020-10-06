@@ -60,6 +60,7 @@ export interface Notification {
   operatorName: string | null
   operatorId: string | null
   routeIdAtCreation: string | null
+  startTime: Date
 }
 
 export type NotificationReason =

@@ -11,6 +11,7 @@ export interface NotificationData {
   operator_name: string | null
   operator_id: string | null
   route_id_at_creation: string | null
+  start_time: number
 }
 
 export const notificationsFromData = (
@@ -32,4 +33,5 @@ const notificationFromData = (
   operatorName: notificationData.operator_name,
   operatorId: notificationData.operator_id,
   routeIdAtCreation: notificationData.route_id_at_creation,
+  startTime: new Date(notificationData.start_time),
 })

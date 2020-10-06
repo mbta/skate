@@ -15,6 +15,7 @@ describe("InactiveNotificationModal", () => {
     operatorName: null,
     operatorId: null,
     routeIdAtCreation: null,
+    startTime: new Date(),
   }
   const removeNotification = jest.fn()
 

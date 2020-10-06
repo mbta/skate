@@ -17,6 +17,7 @@ describe("Modal", () => {
       operatorName: null,
       operatorId: null,
       routeIdAtCreation: null,
+      startTime: new Date(),
     }
 
     const state: State = {

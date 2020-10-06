@@ -123,6 +123,7 @@ describe("useVehicleAndRouteForNotification", () => {
     operatorName: null,
     operatorId: null,
     routeIdAtCreation: null,
+    startTime: new Date(),
   }
 
   test("parses vehicle and route data from channel", () => {

@@ -31,6 +31,7 @@ const notification: Notification = {
   operatorName: null,
   operatorId: null,
   routeIdAtCreation: null,
+  startTime: now(),
 }
 
 // tslint:disable: react-hooks-nesting
