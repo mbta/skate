@@ -37,7 +37,7 @@ const useVehicleAndRouteForNotification = (
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
 
   const topic: string | null = notification
-    ? `vehicle:trip_ids:${notification.tripIds.join(",")}`
+    ? `vehicle:run_ids:${notification.runIds.join(",")}`
     : null
 
   // undefined means we're still trying to load the vehicle,

@@ -8,7 +8,8 @@ defmodule Realtime.Server do
 
   use GenServer
 
-  alias Schedule.{Route, Trip}
+  alias Schedule.Hastus.Run
+  alias Schedule.Route
 
   alias Realtime.{
     Ghost,
@@ -22,7 +23,7 @@ defmodule Realtime.Server do
 
   defstruct ets: nil,
             active_route_ids: [],
-            active_trip_ids: []
+            active_run_ids: []
 
   @type subscription_key ::
           {:route_id, Route.id()}
@@ -45,7 +46,7 @@ defmodule Realtime.Server do
   @typep t :: %__MODULE__{
            ets: :ets.tid(),
            active_route_ids: [Route.id()],
-           active_trip_ids: [Trip.id()]
+           active_run_ids: [Run.id()]
          }
 
   # Client functions
@@ -92,9 +93,9 @@ defmodule Realtime.Server do
     )
   end
 
-  def peek_at_vehicles(trip_ids, server \\ default_name()) do
+  def peek_at_vehicles(run_ids, server \\ default_name()) do
     {_registry_key, ets} = GenServer.call(server, :subscription_info)
-    lookup({ets, {:trip_ids, trip_ids}})
+    lookup({ets, {:run_ids, run_ids}})
   end
 
   @spec subscribe(GenServer.server(), {:route_id, Route.id()}) :: [VehicleOrGhost.t()]
@@ -119,7 +120,7 @@ defmodule Realtime.Server do
   end
 
   @spec lookup({:ets.tid(), {:route_id, Route.id()}}) :: [VehicleOrGhost.t()]
-  @spec lookup({:ets.tid(), {:trip_ids, [Trip.id()]}}) :: [VehicleOrGhost.t()]
+  @spec lookup({:ets.tid(), {:run_ids, [Run.id()]}}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), :all_vehicles}) :: [VehicleOrGhost.t()]
   @spec lookup({:ets.tid(), :all_shuttles}) :: [Vehicle.t()]
   @spec lookup({:ets.tid(), {:search, search_params()}}) :: [VehicleOrGhost.t()]
@@ -130,11 +131,11 @@ defmodule Realtime.Server do
     |> VehicleOrGhost.find_by(search_params)
   end
 
-  def lookup({table, {:trip_ids, trip_ids}}) do
-    trip_ids
-    |> Enum.map(fn trip_id ->
+  def lookup({table, {:run_ids, run_ids}}) do
+    run_ids
+    |> Enum.map(fn run_id ->
       try do
-        :ets.lookup_element(table, {:trip_id, trip_id}, 2)
+        :ets.lookup_element(table, {:run_id, run_id}, 2)
       rescue
         # :ets.lookup_element/3 exits with :badarg when key is not found
         ArgumentError ->
@@ -190,11 +191,11 @@ defmodule Realtime.Server do
       ) do
     new_active_route_ids = Map.keys(vehicles_by_route_id)
 
-    new_active_trip_ids =
+    new_active_run_ids =
       vehicles_by_route_id
       |> Map.values()
       |> List.flatten()
-      |> Enum.map(& &1.trip_id)
+      |> Enum.map(& &1.run_id)
       |> Enum.filter(& &1)
 
     _ =
@@ -203,13 +204,13 @@ defmodule Realtime.Server do
         vehicles_by_route_id,
         shuttles,
         new_active_route_ids,
-        new_active_trip_ids
+        new_active_run_ids
       )
 
     new_state =
       Map.merge(state, %{
         active_route_ids: new_active_route_ids,
-        active_trip_ids: new_active_trip_ids
+        active_run_ids: new_active_run_ids
       })
 
     _ = broadcast(new_state)
@@ -221,22 +222,22 @@ defmodule Realtime.Server do
          %__MODULE__{
            ets: ets,
            active_route_ids: active_route_ids,
-           active_trip_ids: active_trip_ids
+           active_run_ids: active_run_ids
          },
          vehicles_by_route_id,
          shuttles,
          new_active_route_ids,
-         new_active_trip_ids
+         new_active_run_ids
        ) do
     removed_route_ids = active_route_ids -- new_active_route_ids
-    removed_trip_ids = active_trip_ids -- new_active_trip_ids
+    removed_run_ids = active_run_ids -- new_active_run_ids
 
     for route_id <- removed_route_ids do
       _ = :ets.delete(ets, {:route_id, route_id})
     end
 
-    for trip_id <- removed_trip_ids do
-      _ = :ets.delete(ets, {:trip_id, trip_id})
+    for run_id <- removed_run_ids do
+      _ = :ets.delete(ets, {:run_id, run_id})
     end
 
     for {route_id, vehicles_and_ghosts} <- vehicles_by_route_id do
@@ -247,7 +248,7 @@ defmodule Realtime.Server do
     all_vehicles = Enum.uniq(all_vehicles(vehicles_by_route_id) ++ shuttles)
 
     for vehicle <- all_vehicles do
-      _ = :ets.insert(ets, {{:trip_id, vehicle.trip_id}, vehicle})
+      _ = :ets.insert(ets, {{:run_id, vehicle.run_id}, vehicle})
     end
 
     :ets.insert(ets, {:all_vehicles, all_vehicles})

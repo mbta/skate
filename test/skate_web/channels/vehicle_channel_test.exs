@@ -54,18 +54,18 @@ defmodule SkateWeb.VehicleChannelTest do
   end
 
   describe "join/3" do
-    test "subscribes to the active vehicle for given trip IDs and returns that vehicle", %{
+    test "subscribes to the active vehicle for given run IDs and returns that vehicle", %{
       socket: socket
     } do
       assert Realtime.Server.update({%{"1" => [@vehicle]}, []}) == :ok
-      assert Realtime.Server.peek_at_vehicles(["123", "456", "789"]) == [@vehicle]
+      assert Realtime.Server.peek_at_vehicles(["123-4567"]) == [@vehicle]
 
       expected_payload = %{
         data: %{vehicleOrGhostData: @vehicle, routeData: nil}
       }
 
       assert {:ok, ^expected_payload, %Socket{} = socket} =
-               subscribe_and_join(socket, VehicleChannel, "vehicle:trip_ids:123,456,789")
+               subscribe_and_join(socket, VehicleChannel, "vehicle:run_ids:123-4567")
     end
   end
 
@@ -76,8 +76,7 @@ defmodule SkateWeb.VehicleChannelTest do
       ets = GenServer.call(Realtime.Server.default_name(), :ets)
       assert Realtime.Server.update({%{"1" => [@vehicle]}, []}) == :ok
 
-      {:ok, _, socket} =
-        subscribe_and_join(socket, VehicleChannel, "vehicle:trip_ids:111,222,333")
+      {:ok, _, socket} = subscribe_and_join(socket, VehicleChannel, "vehicle:run_ids:123-4567")
 
       assert {:noreply, socket} =
                VehicleChannel.handle_info(

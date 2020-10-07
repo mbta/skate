@@ -12,9 +12,9 @@ defmodule SkateWeb.VehicleChannel do
   end
 
   @impl Phoenix.Channel
-  def join("vehicle:trip_ids:" <> trip_ids, _message, socket) do
-    trip_ids = String.split(trip_ids, ",")
-    vehicle_or_ghost = Realtime.Server.peek_at_vehicles(trip_ids) |> List.first()
+  def join("vehicle:run_ids:" <> run_ids, _message, socket) do
+    run_ids = String.split(run_ids, ",")
+    vehicle_or_ghost = Realtime.Server.peek_at_vehicles(run_ids) |> List.first()
     payload = make_payload(vehicle_or_ghost)
 
     if vehicle_or_ghost do
