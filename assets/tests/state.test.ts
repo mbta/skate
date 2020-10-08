@@ -208,6 +208,7 @@ describe("reducer", () => {
     )
 
     expect(newState).toEqual(expectedState)
+    // TODO expect PUT /api/settings was called
   })
 
   test("setShuttleVehicleLabelSetting", () => {
@@ -228,6 +229,7 @@ describe("reducer", () => {
     )
 
     expect(newState).toEqual(expectedState)
+    // TODO expect PUT /api/settings was called
   })
 
   test("toggleLadderCrowdingForRoute", () => {
