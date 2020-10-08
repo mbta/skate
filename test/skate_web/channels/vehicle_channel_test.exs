@@ -5,6 +5,7 @@ defmodule SkateWeb.VehicleChannelTest do
 
   alias Phoenix.Socket
   alias Realtime.Vehicle
+
   alias SkateWeb.{UserSocket, VehicleChannel}
 
   @vehicle %Vehicle{
