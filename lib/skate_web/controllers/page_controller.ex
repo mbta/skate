@@ -14,6 +14,7 @@ defmodule SkateWeb.PageController do
 
     conn
     |> assign(:username, username)
+    |> assign(:csrf_token, Plug.CSRFProtection.get_csrf_token())
     |> assign(:settings, settings)
     |> render("index.html")
   end
