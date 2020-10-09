@@ -101,7 +101,8 @@ config :skate, Skate.Repo,
 config :laboratory,
   features: [
     {:headway_ladder_colors, "Headway Route Ladder Colors",
-     "Turns on colored headway spacing lines on key route route ladders showing when service is bunched or gapped."}
+     "Turns on colored headway spacing lines on key route route ladders showing when service is bunched or gapped."},
+    {:notifications_drawer, "Notifications Drawer", "Turns on notifications v2."}
   ],
   cookie: [
     # one month,
