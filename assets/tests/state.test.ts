@@ -191,8 +191,6 @@ describe("reducer", () => {
   })
 
   test("setLadderVehicleLabelSetting", () => {
-    window.fetch = jest.fn()
-
     const ladderVehicleLabel: VehicleLabelSetting =
       VehicleLabelSetting.VehicleNumber
     const state = initialState
@@ -210,15 +208,9 @@ describe("reducer", () => {
     )
 
     expect(newState).toEqual(expectedState)
-    // Updates the backend database
-    expect((window.fetch as jest.Mock).mock.calls[0][0]).toEqual(
-      "/api/settings?field=ladder_page_vehicle_label&value=vehicle_id"
-    )
   })
 
   test("setShuttleVehicleLabelSetting", () => {
-    window.fetch = jest.fn()
-
     const shuttleVehicleLabel: VehicleLabelSetting =
       VehicleLabelSetting.VehicleNumber
     const state = initialState
@@ -236,10 +228,6 @@ describe("reducer", () => {
     )
 
     expect(newState).toEqual(expectedState)
-    // Updates the backend database
-    expect((window.fetch as jest.Mock).mock.calls[0][0]).toEqual(
-      "/api/settings?field=shuttle_page_vehicle_label&value=vehicle_id"
-    )
   })
 
   test("toggleLadderCrowdingForRoute", () => {

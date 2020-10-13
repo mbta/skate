@@ -11,13 +11,7 @@ import {
 } from "./models/ladderDirection"
 import { Notification, RunId, VehicleId } from "./realtime.d"
 import { RouteId } from "./schedule.d"
-import {
-  defaultSettings,
-  putLadderVehicleLabel,
-  putShuttleVehicleLabel,
-  Settings,
-  VehicleLabelSetting,
-} from "./settings"
+import { defaultSettings, Settings, VehicleLabelSetting } from "./settings"
 import {
   Action as SearchAction,
   initialSearchPageState,
@@ -392,13 +386,11 @@ const selectedVehicleIdReducer = (
 const settingsReducer = (state: Settings, action: Action): Settings => {
   switch (action.type) {
     case "SET_LADDER_VEHICLE_LABEL_SETTING":
-      putLadderVehicleLabel(action.payload.ladderVehicleLabel)
       return {
         ...state,
         ladderVehicleLabel: action.payload.ladderVehicleLabel,
       }
     case "SET_MAP_VEHICLE_LABEL_SETTING":
-      putShuttleVehicleLabel(action.payload.shuttleVehicleLabel)
       return {
         ...state,
         shuttleVehicleLabel: action.payload.shuttleVehicleLabel,
