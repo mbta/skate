@@ -1,5 +1,6 @@
 defmodule SkateWeb.PageControllerTest do
   use SkateWeb.ConnCase
+  use Skate.DataCase
 
   alias SkateWeb.AuthManager
 
