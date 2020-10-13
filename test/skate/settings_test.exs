@@ -52,7 +52,7 @@ defmodule Skate.SettingsTest do
   end
 
   describe "set" do
-    test "cat set a setting" do
+    test "can set a setting" do
       username = "username"
       Settings.get_or_create(username)
       Settings.set(username, :ladder_page_vehicle_label, :vehicle_id)
