@@ -101,7 +101,7 @@ defmodule Notifications.NotificationServer do
         Application.get_env(:realtime, :peek_at_vehicles_fn, &Realtime.Server.peek_at_vehicles/1)
 
       vehicle_or_ghost =
-        case peek_at_vehicles_fn.(trip_ids) do
+        case peek_at_vehicles_fn.(run_ids) do
           [v] -> v
           _ -> nil
         end

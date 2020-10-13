@@ -353,11 +353,15 @@ defmodule Realtime.ServerTest do
       Server.update({@vehicles_by_route_id, [@shuttle]}, server_pid)
 
       assert Server.peek_at_vehicles([], server_pid) == []
-      assert Server.peek_at_vehicles(["no_such_t"], server_pid) == []
-      assert Server.peek_at_vehicles(["t1"], server_pid) == [@vehicle]
-      assert Server.peek_at_vehicles(["t2"], server_pid) == [@ghost]
-      assert Server.peek_at_vehicles(["t1", "t2"], server_pid) == [@vehicle, @ghost]
-      assert Server.peek_at_vehicles(["t1", "no_such_t", "t2"], server_pid) == [@vehicle, @ghost]
+      assert Server.peek_at_vehicles(["no_such_run"], server_pid) == []
+      assert Server.peek_at_vehicles(["123-9048"], server_pid) == [@vehicle]
+      assert Server.peek_at_vehicles(["123-9049"], server_pid) == [@ghost]
+      assert Server.peek_at_vehicles(["123-9048", "123-9049"], server_pid) == [@vehicle, @ghost]
+
+      assert Server.peek_at_vehicles(["123-9048", "no_such_run", "123-9049"], server_pid) == [
+               @vehicle,
+               @ghost
+             ]
     end
   end
 end
