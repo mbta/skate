@@ -71,7 +71,7 @@ defmodule Schedule.TimepointOrderTest do
     end
   end
 
-  describe "timepoints_for_route" do
+  describe "timepoint_ids_for_route" do
     test "groups timepoints together even when they're on different stops" do
       route_patterns = [
         %RoutePattern{
@@ -103,24 +103,12 @@ defmodule Schedule.TimepointOrderTest do
         ]
       }
 
-      timepoints_by_id = %{
-        "tp1" => %Timepoint{id: "tp1", name: "tp1 name"},
-        "tp2" => %Timepoint{id: "tp2", name: "tp2 name"},
-        "tp3" => %Timepoint{id: "tp3", name: "tp3 name"},
-        "tp4" => %Timepoint{id: "tp4", name: "tp4 name"}
-      }
-
-      assert TimepointOrder.timepoints_for_route(
-               route_patterns,
-               stop_times_by_id,
-               timepoints_by_id
-             ) ==
-               [
-                 %Timepoint{id: "tp1", name: "tp1 name"},
-                 %Timepoint{id: "tp2", name: "tp2 name"},
-                 %Timepoint{id: "tp3", name: "tp3 name"},
-                 %Timepoint{id: "tp4", name: "tp4 name"}
-               ]
+      assert TimepointOrder.timepoint_ids_for_route(route_patterns, stop_times_by_id) == [
+               "tp1",
+               "tp2",
+               "tp3",
+               "tp4"
+             ]
     end
 
     test "flips timepoints from trips in the 1 to 0 direction" do
@@ -141,20 +129,10 @@ defmodule Schedule.TimepointOrderTest do
         ]
       }
 
-      timepoints_by_id = %{
-        "tp1" => %Timepoint{id: "tp1", name: "tp1 name"},
-        "tp2" => %Timepoint{id: "tp2", name: "tp2 name"}
-      }
-
-      assert TimepointOrder.timepoints_for_route(
-               route_patterns,
-               stop_times_by_id,
-               timepoints_by_id
-             ) ==
-               [
-                 %Timepoint{id: "tp2", name: "tp2 name"},
-                 %Timepoint{id: "tp1", name: "tp1 name"}
-               ]
+      assert TimepointOrder.timepoint_ids_for_route(route_patterns, stop_times_by_id) == [
+               "tp2",
+               "tp1"
+             ]
     end
   end
 end
