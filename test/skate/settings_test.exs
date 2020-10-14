@@ -43,11 +43,14 @@ defmodule Skate.SettingsTest do
                shuttle_page_vehicle_label: :vehicle_id
              }
 
-      assert Repo.all(
-               from(user in "users", where: user.username == ^username, select: user.username)
-             ) == [username]
+      # created data for the new user
+      assert [user_id] =
+               Repo.all(from(user in "users", where: user.username == ^username, select: user.id))
 
-      assert [_id] = Repo.all(from(us in "user_settings", select: us.user_id))
+      assert [^user_id] =
+               Repo.all(
+                 from(us in "user_settings", where: us.user_id == ^user_id, select: us.user_id)
+               )
     end
   end
 
