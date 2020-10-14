@@ -4,70 +4,57 @@ defmodule Schedule.TimepointOrder do
 
   @spec timepoints_for_routes(
           [RoutePattern.t()],
-          MapSet.t(Route.id()),
           StopTime.by_trip_id(),
           Timepoint.timepoints_by_id()
         ) ::
           Schedule.timepoints_by_route()
-  def timepoints_for_routes(route_patterns, route_ids, stop_times_by_id, timepoints_by_id) do
-    Map.new(route_ids, fn route_id ->
-      {route_id,
-       timepoints_for_route(route_patterns, route_id, stop_times_by_id, timepoints_by_id)}
+  def timepoints_for_routes(route_patterns, stop_times_by_id, timepoints_by_id) do
+    route_patterns
+    |> Enum.group_by(fn route_pattern -> route_pattern.route_id end)
+    |> Helpers.map_values(fn route_patterns ->
+      timepoints_for_route(route_patterns, stop_times_by_id, timepoints_by_id)
     end)
   end
 
   @spec timepoints_for_route(
           [RoutePattern.t()],
-          Route.id(),
           StopTime.by_trip_id(),
           Timepoint.timepoints_by_id()
         ) ::
           [
             Timepoint.t()
           ]
-  def timepoints_for_route(route_patterns, route_id, stop_times_by_id, timepoints_by_id) do
-    timepoints_by_direction =
-      route_patterns
-      |> route_patterns_by_direction(route_id)
-      |> Helpers.map_values(fn route_patterns ->
-        timepoints_for_route_patterns(route_patterns, stop_times_by_id, timepoints_by_id)
-      end)
-
-    Schedule.Helpers.merge_lists([
-      timepoints_by_direction |> Map.get(0, []) |> Enum.reverse(),
-      Map.get(timepoints_by_direction, 1, [])
-    ])
+  def timepoints_for_route(route_patterns, stop_times_by_id, timepoints_by_id) do
+    route_patterns
+    |> Enum.map(fn route_pattern ->
+      timepoints_for_route_pattern(route_pattern, stop_times_by_id, timepoints_by_id)
+    end)
+    |> Schedule.Helpers.merge_lists()
   end
 
-  # All route_patterns should be in the same direction
-  @spec timepoints_for_route_patterns(
-          [RoutePattern.t()],
+  # Returns timepoints in the 0 to 1 order
+  @spec timepoints_for_route_pattern(
+          RoutePattern.t(),
           StopTime.by_trip_id(),
           Timepoint.timepoints_by_id()
         ) :: [
           Timepoint.t()
         ]
-  defp timepoints_for_route_patterns(route_patterns, stop_times_by_id, timepoints_by_id) do
-    route_patterns
-    |> Enum.map(fn route_pattern ->
-      trip_id = route_pattern.representative_trip_id
-      stop_times = stop_times_by_id[trip_id]
+  defp timepoints_for_route_pattern(route_pattern, stop_times_by_id, timepoints_by_id) do
+    trip_id = route_pattern.representative_trip_id
+    stop_times = stop_times_by_id[trip_id]
 
+    timepoints =
       stop_times
       |> Enum.filter(& &1.timepoint_id)
       |> Enum.map(fn stop_time ->
         Timepoint.timepoint_for_id(timepoints_by_id, stop_time.timepoint_id)
       end)
-    end)
-    |> Schedule.Helpers.merge_lists()
-  end
 
-  @spec route_patterns_by_direction([RoutePattern.t()], Route.id()) :: %{
-          Direction.id() => [RoutePattern.t()]
-        }
-  defp route_patterns_by_direction(route_patterns, route_id) do
-    route_patterns
-    |> RoutePattern.for_route_id(route_id)
-    |> RoutePattern.by_direction()
+    if route_pattern.direction_id == 0 do
+      Enum.reverse(timepoints)
+    else
+      timepoints
+    end
   end
 end

@@ -6,8 +6,8 @@ defmodule Schedule.TimepointOrderTest do
   alias Schedule.Gtfs.Timepoint
   alias Schedule.TimepointOrder
 
-  describe "timepoints_for_route/4" do
-    test "returns all timepoint IDs for this route (either direction), sorted" do
+  describe "timepoints_for_routes" do
+    test "returns all timepoint IDs for all routes (either direction), sorted" do
       route_patterns = [
         %RoutePattern{
           id: "rp1",
@@ -20,7 +20,7 @@ defmodule Schedule.TimepointOrderTest do
           id: "rp2",
           name: "rp2",
           route_id: "r2",
-          direction_id: 0,
+          direction_id: 1,
           representative_trip_id: "t2"
         },
         %RoutePattern{
@@ -54,13 +54,24 @@ defmodule Schedule.TimepointOrderTest do
         "tp4" => %Timepoint{id: "tp4", name: "tp4 name"}
       }
 
-      assert TimepointOrder.timepoints_for_route(route_patterns, "r1", stop_times_by_id, timepoints_by_id) ==
-               [
+      assert TimepointOrder.timepoints_for_routes(
+               route_patterns,
+               stop_times_by_id,
+               timepoints_by_id
+             ) == %{
+               "r1" => [
                  %Timepoint{id: "tp4", name: "tp4 name"},
                  %Timepoint{id: "tp1", name: "tp1 name"}
+               ],
+               "r2" => [
+                 %Timepoint{id: "tp2", name: "tp2 name"},
+                 %Timepoint{id: "tp3", name: "tp3 name"}
                ]
+             }
     end
+  end
 
+  describe "timepoints_for_route" do
     test "groups timepoints together even when they're on different stops" do
       route_patterns = [
         %RoutePattern{
@@ -99,12 +110,50 @@ defmodule Schedule.TimepointOrderTest do
         "tp4" => %Timepoint{id: "tp4", name: "tp4 name"}
       }
 
-      assert TimepointOrder.timepoints_for_route(route_patterns, "r1", stop_times_by_id, timepoints_by_id) ==
+      assert TimepointOrder.timepoints_for_route(
+               route_patterns,
+               stop_times_by_id,
+               timepoints_by_id
+             ) ==
                [
                  %Timepoint{id: "tp1", name: "tp1 name"},
                  %Timepoint{id: "tp2", name: "tp2 name"},
                  %Timepoint{id: "tp3", name: "tp3 name"},
                  %Timepoint{id: "tp4", name: "tp4 name"}
+               ]
+    end
+
+    test "flips timepoints from trips in the 1 to 0 direction" do
+      route_patterns = [
+        %RoutePattern{
+          id: "rp",
+          name: "rp",
+          route_id: "r",
+          direction_id: 0,
+          representative_trip_id: "t"
+        }
+      ]
+
+      stop_times_by_id = %{
+        "t" => [
+          %StopTime{stop_id: "s1", time: 1, timepoint_id: "tp1"},
+          %StopTime{stop_id: "s2", time: 2, timepoint_id: "tp2"}
+        ]
+      }
+
+      timepoints_by_id = %{
+        "tp1" => %Timepoint{id: "tp1", name: "tp1 name"},
+        "tp2" => %Timepoint{id: "tp2", name: "tp2 name"}
+      }
+
+      assert TimepointOrder.timepoints_for_route(
+               route_patterns,
+               stop_times_by_id,
+               timepoints_by_id
+             ) ==
+               [
+                 %Timepoint{id: "tp2", name: "tp2 name"},
+                 %Timepoint{id: "tp1", name: "tp1 name"}
                ]
     end
   end

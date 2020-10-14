@@ -279,7 +279,6 @@ defmodule Schedule.Data do
       timepoints_by_route:
         TimepointOrder.timepoints_for_routes(
           route_patterns,
-          bus_route_ids,
           stop_times_by_id,
           timepoints_by_id
         ),
