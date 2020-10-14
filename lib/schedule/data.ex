@@ -6,6 +6,7 @@ defmodule Schedule.Data do
 
   alias Schedule.Block
   alias Schedule.Csv
+  alias Schedule.TimepointOrder
   alias Schedule.Trip
   alias Schedule.Minischedule
 
@@ -276,7 +277,12 @@ defmodule Schedule.Data do
       routes: bus_routes,
       route_patterns: route_patterns,
       timepoints_by_route:
-        timepoints_for_routes(route_patterns, bus_route_ids, stop_times_by_id, timepoints_by_id),
+        TimepointOrder.timepoints_for_routes(
+          route_patterns,
+          bus_route_ids,
+          stop_times_by_id,
+          timepoints_by_id
+        ),
       timepoint_names_by_id: timepoint_names_for_ids(timepoints_by_id),
       shapes: shapes_by_route_id(gtfs_files["shapes.txt"], gtfs_trips),
       stops: all_stops_by_id(gtfs_files["stops.txt"]),
@@ -286,15 +292,6 @@ defmodule Schedule.Data do
       minischedule_runs: minischedule_runs,
       minischedule_blocks: minischedule_blocks
     }
-  end
-
-  @spec route_patterns_by_direction([RoutePattern.t()], Route.id()) :: %{
-          Direction.id() => [RoutePattern.t()]
-        }
-  defp route_patterns_by_direction(route_patterns, route_id) do
-    route_patterns
-    |> RoutePattern.for_route_id(route_id)
-    |> RoutePattern.by_direction()
   end
 
   @spec directions_by_route_id(binary()) :: directions_by_route_and_id()
@@ -327,66 +324,6 @@ defmodule Schedule.Data do
     timepoints_data
     |> Csv.parse(parse: &Timepoint.from_csv_row/1)
     |> Map.new(fn timepoint -> {timepoint.id, timepoint} end)
-  end
-
-  @spec timepoints_for_routes(
-          [RoutePattern.t()],
-          MapSet.t(Route.id()),
-          StopTime.by_trip_id(),
-          Timepoint.timepoints_by_id()
-        ) ::
-          timepoints_by_route()
-  defp timepoints_for_routes(route_patterns, route_ids, stop_times_by_id, timepoints_by_id) do
-    Map.new(route_ids, fn route_id ->
-      {route_id,
-       timepoints_for_route(route_patterns, route_id, stop_times_by_id, timepoints_by_id)}
-    end)
-  end
-
-  @spec timepoints_for_route(
-          [RoutePattern.t()],
-          Route.id(),
-          StopTime.by_trip_id(),
-          Timepoint.timepoints_by_id()
-        ) ::
-          [
-            Timepoint.t()
-          ]
-  def timepoints_for_route(route_patterns, route_id, stop_times_by_id, timepoints_by_id) do
-    timepoints_by_direction =
-      route_patterns
-      |> route_patterns_by_direction(route_id)
-      |> Helpers.map_values(fn route_patterns ->
-        timepoints_for_route_patterns(route_patterns, stop_times_by_id, timepoints_by_id)
-      end)
-
-    Schedule.Helpers.merge_lists([
-      timepoints_by_direction |> Map.get(0, []) |> Enum.reverse(),
-      Map.get(timepoints_by_direction, 1, [])
-    ])
-  end
-
-  # All route_patterns should be in the same direction
-  @spec timepoints_for_route_patterns(
-          [RoutePattern.t()],
-          StopTime.by_trip_id(),
-          Timepoint.timepoints_by_id()
-        ) :: [
-          Timepoint.t()
-        ]
-  defp timepoints_for_route_patterns(route_patterns, stop_times_by_id, timepoints_by_id) do
-    route_patterns
-    |> Enum.map(fn route_pattern ->
-      trip_id = route_pattern.representative_trip_id
-      stop_times = stop_times_by_id[trip_id]
-
-      stop_times
-      |> Enum.filter(& &1.timepoint_id)
-      |> Enum.map(fn stop_time ->
-        Timepoint.timepoint_for_id(timepoints_by_id, stop_time.timepoint_id)
-      end)
-    end)
-    |> Schedule.Helpers.merge_lists()
   end
 
   @spec timepoint_names_for_ids(Timepoint.timepoints_by_id()) :: Timepoint.timepoint_names_by_id()
