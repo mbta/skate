@@ -16,7 +16,7 @@ import {
   VehicleOrGhostAndRoute,
 } from "../realtime.d"
 import { ByRouteId, Route, RouteId, TimepointsByRouteId } from "../schedule.d"
-import { setNotificationIsInactive } from "../state"
+import { setNotificationIsInactive, setNotificationIsLoading } from "../state"
 import { Notifications } from "./notifications"
 import PropertiesPanel from "./propertiesPanel"
 import RouteLadders from "./routeLadders"
@@ -73,8 +73,15 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
   useEffect(() => {
     if (vehicleAndRouteForNotification === null) {
       dispatch(setNotificationIsInactive())
+    } else if (
+      vehicleAndRouteForNotification === undefined &&
+      selectedNotification
+    ) {
+      dispatch(setNotificationIsLoading(true))
+    } else if (vehicleAndRouteForNotification) {
+      dispatch(setNotificationIsLoading(false))
     }
-  }, [vehicleAndRouteForNotification])
+  }, [vehicleAndRouteForNotification, selectedNotification])
 
   const selectedRoutes: Route[] = selectedRouteIds
     .map((routeId) => findRouteById(routes, routeId))

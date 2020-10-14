@@ -18,6 +18,8 @@ $picker-width-wide: $picker-width-narrow + 3.1;
 @import "inactive_notification_modal";
 @import "ladder";
 @import "ladder_page";
+@import "loading_modal";
+@import "loading_spinner";
 @import "minischedule";
 @import "modal";
 @import "notifications";

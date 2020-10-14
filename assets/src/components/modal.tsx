@@ -5,12 +5,17 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { ConnectionStatus } from "../hooks/useSocket"
 import DisconnectedModal from "./disconnectedModal"
 import InactiveNotificationModal from "./inactiveNotificationModal"
+import NotificationLoadingModal from "./notificationLoadingModal"
 
 const Modal = (): ReactElement | null => {
   const { connectionStatus } = useContext(SocketContext)
-  const [{ selectedNotification, selectedNotificationIsInactive }] = useContext(
-    StateDispatchContext
-  )
+  const [
+    {
+      selectedNotification,
+      selectedNotificationIsInactive,
+      selectedNotificationIsLoading,
+    },
+  ] = useContext(StateDispatchContext)
   const { removeNotification } = useContext(NotificationsContext)
 
   if (connectionStatus === ConnectionStatus.Disconnected) {
@@ -26,6 +31,9 @@ const Modal = (): ReactElement | null => {
     )
   }
 
+  if (selectedNotification && selectedNotificationIsLoading) {
+    return <NotificationLoadingModal />
+  }
   return null
 }
 

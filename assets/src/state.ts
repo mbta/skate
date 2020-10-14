@@ -31,6 +31,7 @@ export interface State {
   settings: Settings
   selectedNotification?: Notification
   selectedNotificationIsInactive: boolean
+  selectedNotificationIsLoading: boolean
 }
 
 export const initialState: State = {
@@ -45,6 +46,7 @@ export const initialState: State = {
   settings: defaultSettings,
   selectedNotification: undefined,
   selectedNotificationIsInactive: false,
+  selectedNotificationIsLoading: false,
 }
 
 interface SelectRouteAction {
@@ -255,6 +257,20 @@ export const setNotificationIsInactive = (): SetNotificationIsInactiveAction => 
   type: "SET_NOTIFICATION_IS_INACTIVE",
 })
 
+interface SetNotificationIsLoadingAction {
+  type: "SET_NOTIFICATION_IS_LOADING"
+  payload: {
+    loadingStatus: boolean
+  }
+}
+
+export const setNotificationIsLoading = (
+  loadingStatus: boolean
+): SetNotificationIsLoadingAction => ({
+  type: "SET_NOTIFICATION_IS_LOADING",
+  payload: { loadingStatus },
+})
+
 type Action =
   | SelectRouteAction
   | DeselectRouteAction
@@ -274,6 +290,7 @@ type Action =
   | SearchAction
   | SetNotificationAction
   | SetNotificationIsInactiveAction
+  | SetNotificationIsLoadingAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -429,6 +446,21 @@ const selectedNotificationIsInactiveReducer = (
   }
 }
 
+const selectedNotificationIsLoadingReducer = (
+  state: boolean,
+  action: Action
+): boolean => {
+  switch (action.type) {
+    case "SET_NOTIFICATION":
+    case "SET_NOTIFICATION_IS_INACTIVE":
+      return false
+    case "SET_NOTIFICATION_IS_LOADING":
+      return action.payload.loadingStatus
+    default:
+      return state
+  }
+}
+
 export const reducer = (state: State, action: Action): State => ({
   pickerContainerIsVisible: pickerContainerIsVisibleReducer(
     state.pickerContainerIsVisible,
@@ -457,6 +489,10 @@ export const reducer = (state: State, action: Action): State => ({
   ),
   selectedNotificationIsInactive: selectedNotificationIsInactiveReducer(
     state.selectedNotificationIsInactive,
+    action
+  ),
+  selectedNotificationIsLoading: selectedNotificationIsLoadingReducer(
+    state.selectedNotificationIsLoading,
     action
   ),
 })

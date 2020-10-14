@@ -31,6 +31,8 @@ import greenLineIconSvg from "../../static/images/icon-green-line.svg"
 // @ts-ignore
 import ladderIconSvg from "../../static/images/icon-ladder.svg"
 // @ts-ignore
+import loadingIconSvg from "../../static/images/icon-loading.svg"
+// @ts-ignore
 import mapIconSvg from "../../static/images/icon-map.svg"
 // @ts-ignore
 import mattapanLineIconSvg from "../../static/images/icon-mattapan-line.svg"
@@ -107,6 +109,9 @@ export const greenLineIcon = (className: string = ""): JSX.Element =>
 
 export const ladderIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, ladderIconSvg)
+
+export const loadingIcon = (className: string = ""): JSX.Element =>
+  renderSvg(className, loadingIconSvg)
 
 export const mapIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, mapIconSvg)
