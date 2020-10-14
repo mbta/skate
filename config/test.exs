@@ -14,7 +14,10 @@ config :skate, SkateWeb.Endpoint,
 
 config :skate, SkateWeb.AuthManager, secret_key: "dev key"
 
-config :skate, Skate.Repo, database: "skate_test"
+config :skate, Skate.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  database: "skate_test",
+  pool: Ecto.Adapters.SQL.Sandbox
 
 config :ueberauth, Ueberauth,
   providers: [

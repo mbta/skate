@@ -10,7 +10,7 @@ declare global {
   interface Window {
     /* eslint-disable typescript/no-explicit-any */
     Appcues?: {
-      identify: (userId: string) => void
+      identify: (shortUsername: string) => void
       page: () => void
       show: (id: string) => void
     }

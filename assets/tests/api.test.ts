@@ -8,6 +8,7 @@ import {
   fetchShapeForTrip,
   fetchShuttleRoutes,
   fetchTimepointsForRoute,
+  putSetting,
 } from "../src/api"
 import * as browser from "../src/models/browser"
 
@@ -21,11 +22,12 @@ declare global {
 }
 
 const mockFetch = (status: number, json: any): void => {
-  window.fetch = () =>
+  window.fetch = jest.fn(() =>
     Promise.resolve({
       json: () => json,
       status,
     } as Response)
+  )
 }
 
 describe("apiCall", () => {
@@ -470,5 +472,16 @@ describe("fetchNearestIntersection", () => {
       expect(intersection).toEqual(null)
       done()
     })
+  })
+})
+
+describe("putSetting", () => {
+  test("uses PUT and CSRF token", () => {
+    mockFetch(200, "")
+    putSetting("name", "value")
+    expect(window.fetch).toHaveBeenCalledTimes(1)
+    const args = (window.fetch as jest.Mock).mock.calls[0][1]
+    expect(args.method).toEqual("PUT")
+    expect(args.headers).toHaveProperty("x-csrf-token")
   })
 })

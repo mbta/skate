@@ -1,7 +1,11 @@
 import React, { ReactElement, useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { ladderIcon, mapIcon } from "../helpers/icon"
-import { VehicleLabelSetting } from "../settings"
+import {
+  putLadderVehicleLabel,
+  putShuttleVehicleLabel,
+  VehicleLabelSetting,
+} from "../settings"
 import {
   setLadderVehicleLabelSetting,
   setShuttleVehicleLabelSetting,
@@ -24,7 +28,9 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
             selectId="ladder-vehicle-label-setting"
             value={settings.ladderVehicleLabel}
             onChange={(value) => {
-              dispatch(setLadderVehicleLabelSetting(parseInt(value, 10)))
+              const newSetting: VehicleLabelSetting = parseInt(value, 10)
+              dispatch(setLadderVehicleLabelSetting(newSetting))
+              putLadderVehicleLabel(newSetting)
             }}
             options={[
               { label: "Run #", value: VehicleLabelSetting.RunNumber },
@@ -37,7 +43,9 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
             selectId="map-vehicle-label-setting"
             value={settings.shuttleVehicleLabel}
             onChange={(value) => {
-              dispatch(setShuttleVehicleLabelSetting(parseInt(value, 10)))
+              const newSetting: VehicleLabelSetting = parseInt(value, 10)
+              dispatch(setShuttleVehicleLabelSetting(newSetting))
+              putShuttleVehicleLabel(newSetting)
             }}
             options={[
               { label: "Run #", value: VehicleLabelSetting.RunNumber },

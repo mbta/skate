@@ -5,6 +5,7 @@ defmodule Skate.Application do
 
   use Application
 
+  alias Skate.Migrate
   alias Skate.SecretsManager
 
   @impl true
@@ -29,7 +30,11 @@ defmodule Skate.Application do
           []
         end
 
-    Supervisor.start_link(children, strategy: :one_for_all, name: Skate.Supervisor)
+    link = Supervisor.start_link(children, strategy: :one_for_all, name: Skate.Supervisor)
+
+    Migrate.up()
+
+    link
   end
 
   # Tell Phoenix to update the endpoint configuration

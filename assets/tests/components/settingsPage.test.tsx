@@ -50,6 +50,7 @@ describe("SettingsPage", () => {
 
   test("selecting a ladder vehicle label setting sets that value", () => {
     const testDispatch = jest.fn()
+    window.fetch = jest.fn()
 
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={testDispatch}>
@@ -65,6 +66,10 @@ describe("SettingsPage", () => {
 
     expect(testDispatch).toHaveBeenCalledWith(
       setLadderVehicleLabelSetting(VehicleLabelSetting.RunNumber)
+    )
+    // Updates the backend database
+    expect((window.fetch as jest.Mock).mock.calls[0][0]).toEqual(
+      "/api/settings?field=ladder_page_vehicle_label&value=run_id"
     )
   })
 
@@ -93,6 +98,7 @@ describe("SettingsPage", () => {
 
   test("selecting a map vehicle label setting sets that value", () => {
     const testDispatch = jest.fn()
+    window.fetch = jest.fn()
 
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={testDispatch}>
@@ -108,6 +114,10 @@ describe("SettingsPage", () => {
 
     expect(testDispatch).toHaveBeenCalledWith(
       setShuttleVehicleLabelSetting(VehicleLabelSetting.VehicleNumber)
+    )
+    // Updates the backend database
+    expect((window.fetch as jest.Mock).mock.calls[0][0]).toEqual(
+      "/api/settings?field=shuttle_page_vehicle_label&value=vehicle_id"
     )
   })
 })

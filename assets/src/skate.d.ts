@@ -3,7 +3,7 @@ import ResizeObserver from "resize-observer-polyfill"
 declare global {
   interface Window {
     Appcues?: {
-      identify: (userId: string) => void
+      identify: (shortUsername: string) => void
       page: () => void
       show: (id: string) => void
     }

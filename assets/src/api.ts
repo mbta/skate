@@ -1,4 +1,5 @@
 import "whatwg-fetch"
+import appData from "./appData"
 import { Block, Run } from "./minischedule"
 import { reload } from "./models/browser"
 import { blockFromData, runFromData } from "./models/minischeduleData"
@@ -129,6 +130,18 @@ export const fetchNearestIntersection = (
     parser: nullableParser((intersection: string) => intersection),
     defaultResult: null,
   })
+
+export const putSetting = (field: string, value: string): void => {
+  const url = `/api/settings?field=${field}&value=${value}`
+  const csrfToken: string = appData()?.csrfToken || ""
+  fetch(url, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "x-csrf-token": csrfToken,
+    },
+  })
+}
 
 const nullableParser = <Data, T>(
   parser: (data: Data) => T
