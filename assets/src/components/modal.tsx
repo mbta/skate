@@ -13,7 +13,7 @@ const Modal = (): ReactElement | null => {
     {
       selectedNotification,
       selectedNotificationIsInactive,
-      // selectedNotificationIsLoading,
+      selectedNotificationIsLoading,
     },
   ] = useContext(StateDispatchContext)
   const { removeNotification } = useContext(NotificationsContext)
@@ -31,9 +31,9 @@ const Modal = (): ReactElement | null => {
     )
   }
 
-  //if (selectedNotification && selectedNotificationIsLoading) {
-  return <NotificationLoadingModal />
-  //}
+  if (selectedNotification && selectedNotificationIsLoading) {
+    return <NotificationLoadingModal />
+  }
   return null
 }
 
