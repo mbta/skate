@@ -2,3 +2,4 @@
 /deps
 /assets/node_modules
 /priv
+!/priv/repo/migrations
