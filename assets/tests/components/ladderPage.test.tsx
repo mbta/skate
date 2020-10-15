@@ -158,6 +158,20 @@ describe("LadderPage", () => {
     )
     expect(mockDispatch).toHaveBeenCalledWith(setNotificationIsLoading(true))
   })
+
+  test("clears loading spinner when appropriate", () => {
+    ;(useVehicleAndRouteForNotification as jest.Mock).mockImplementationOnce(
+      () => ({ vehicleOrGhostData: undefined, routeData: undefined })
+    )
+
+    const state = initialState
+    mount(
+      <StateDispatchProvider state={state} dispatch={mockDispatch}>
+        <LadderPage />
+      </StateDispatchProvider>
+    )
+    expect(mockDispatch).toHaveBeenCalledWith(setNotificationIsLoading(false))
+  })
 })
 
 describe("findRouteById", () => {
