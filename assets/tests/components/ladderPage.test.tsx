@@ -11,9 +11,19 @@ import useRoutes from "../../src/hooks/useRoutes"
 import useTimepoints from "../../src/hooks/useTimepoints"
 import useVehicleAndRouteForNotification from "../../src/hooks/useVehicleAndRouteForNotification"
 import useVehicles from "../../src/hooks/useVehicles"
-import { Ghost, Vehicle, VehicleOrGhost } from "../../src/realtime"
+import {
+  Ghost,
+  Notification,
+  NotificationReason,
+  Vehicle,
+  VehicleOrGhost,
+} from "../../src/realtime"
 import { ByRouteId, Route, TimepointsByRouteId } from "../../src/schedule.d"
-import { initialState, setNotificationIsInactive } from "../../src/state"
+import {
+  initialState,
+  setNotificationIsInactive,
+  setNotificationIsLoading,
+} from "../../src/state"
 
 jest.mock("../../src/hooks/useRoutes", () => ({
   __esModule: true,
@@ -120,6 +130,33 @@ describe("LadderPage", () => {
       </StateDispatchProvider>
     )
     expect(mockDispatch).toHaveBeenCalledWith(setNotificationIsInactive())
+  })
+
+  test("shows loading spinner when appropriate", () => {
+    ;(useVehicleAndRouteForNotification as jest.Mock).mockImplementationOnce(
+      () => undefined
+    )
+
+    const notification: Notification = {
+      id: 123,
+      createdAt: new Date(),
+      reason: "other" as NotificationReason,
+      routeIds: [],
+      runIds: [],
+      tripIds: ["123", "456", "789"],
+      operatorName: null,
+      operatorId: null,
+      routeIdAtCreation: null,
+      startTime: new Date(),
+    }
+
+    const state = { ...initialState, selectedNotification: notification }
+    mount(
+      <StateDispatchProvider state={state} dispatch={mockDispatch}>
+        <LadderPage />
+      </StateDispatchProvider>
+    )
+    expect(mockDispatch).toHaveBeenCalledWith(setNotificationIsLoading(true))
   })
 })
 

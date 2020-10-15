@@ -54,3 +54,32 @@ Array [
   />,
 ]
 `;
+
+exports[`Modal renders loading modal when appropriate 1`] = `
+Array [
+  <div
+    className="c-modal m-notification-loading-modal"
+  >
+    <div
+      className="m-notification-loading-modal__spinner-wrapper"
+    >
+      <span
+        className="c-loading-spinner"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
+        }
+      />
+    </div>
+    <div
+      className="m-notification-loading-modal__text-wrapper"
+    >
+      Loading...
+    </div>
+  </div>,
+  <div
+    className="c-modal-overlay"
+  />,
+]
+`;
