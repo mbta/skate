@@ -1,6 +1,10 @@
 defmodule Schedule.TimepointOrder do
+  alias Schedule.Gtfs.Direction
+  alias Schedule.Gtfs.Route
   alias Schedule.Gtfs.RoutePattern
   alias Schedule.Gtfs.Timepoint
+
+  @type hints :: %{Route.id() => %{Direction.id() => [Timepoint.id()]}}
 
   @spec timepoints_for_routes(
           [RoutePattern.t()],
@@ -9,27 +13,44 @@ defmodule Schedule.TimepointOrder do
         ) ::
           Schedule.timepoints_by_route()
   def timepoints_for_routes(route_patterns, stop_times_by_id, timepoints_by_id) do
+    hints_by_route =
+      Application.get_env(
+        :skate,
+        Schedule.TimepointOrder,
+        %{hints: &hints/0}
+      )[:hints].()
+
     route_patterns
     |> Enum.group_by(fn route_pattern -> route_pattern.route_id end)
-    |> Helpers.map_values(fn route_patterns ->
-      route_patterns
-      |> timepoint_ids_for_route(stop_times_by_id)
-      |> Enum.map(fn timepoint_id ->
-        Timepoint.timepoint_for_id(timepoints_by_id, timepoint_id)
-      end)
+    |> Map.new(fn {route_id, route_patterns} ->
+      hints = Map.get(hints_by_route, route_id, %{})
+
+      timepoints =
+        route_patterns
+        |> timepoint_ids_for_route(hints, stop_times_by_id)
+        |> Enum.map(fn timepoint_id ->
+          Timepoint.timepoint_for_id(timepoints_by_id, timepoint_id)
+        end)
+
+      {route_id, timepoints}
     end)
   end
 
   @spec timepoint_ids_for_route(
           [RoutePattern.t()],
+          %{Direction.id() => [Timepoint.id()]},
           StopTime.by_trip_id()
         ) :: [Timepoint.id()]
-  def timepoint_ids_for_route(route_patterns, stop_times_by_id) do
-    route_patterns
-    |> Enum.map(fn route_pattern ->
-      timepoint_ids_for_route_pattern(route_pattern, stop_times_by_id)
-    end)
-    |> Schedule.Helpers.merge_lists()
+  def timepoint_ids_for_route(route_patterns, hints, stop_times_by_id) do
+    Schedule.Helpers.merge_lists(
+      [
+        Enum.reverse(Map.get(hints, 0, [])),
+        Map.get(hints, 1, [])
+      ] ++
+        Enum.map(route_patterns, fn route_pattern ->
+          timepoint_ids_for_route_pattern(route_pattern, stop_times_by_id)
+        end)
+    )
   end
 
   # Returns timepoints in the 0 to 1 order
@@ -51,5 +72,22 @@ defmodule Schedule.TimepointOrder do
     else
       timepoint_ids
     end
+  end
+
+  @spec hints :: hints()
+  def hints do
+    [File.cwd!(), "data", "timepoint_order.json"]
+    |> Path.join()
+    |> File.read!()
+    |> parse_hints()
+  end
+
+  @spec parse_hints(binary()) :: hints()
+  def parse_hints(file_binary) do
+    file_binary
+    |> Jason.decode!()
+    |> Helpers.map_values(fn timepoint_ids_by_direction ->
+      Helpers.map_keys(timepoint_ids_by_direction, &Direction.id_from_string/1)
+    end)
   end
 end

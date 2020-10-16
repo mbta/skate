@@ -1,5 +1,6 @@
 defmodule Schedule.TimepointOrderTest do
   use ExUnit.Case, async: true
+  import Test.Support.Helpers
 
   alias Schedule.Gtfs.RoutePattern
   alias Schedule.Gtfs.StopTime
@@ -8,6 +9,12 @@ defmodule Schedule.TimepointOrderTest do
 
   describe "timepoints_for_routes" do
     test "returns all timepoint IDs for all routes (either direction), sorted" do
+      reassign_env(:skate, TimepointOrder, %{
+        hints: fn ->
+          %{"r2" => %{1 => ["tp3", "tp5"]}}
+        end
+      })
+
       route_patterns = [
         %RoutePattern{
           id: "rp1",
@@ -51,7 +58,8 @@ defmodule Schedule.TimepointOrderTest do
         "tp1" => %Timepoint{id: "tp1", name: "tp1 name"},
         "tp2" => %Timepoint{id: "tp2", name: "tp2 name"},
         "tp3" => %Timepoint{id: "tp3", name: "tp3 name"},
-        "tp4" => %Timepoint{id: "tp4", name: "tp4 name"}
+        "tp4" => %Timepoint{id: "tp4", name: "tp4 name"},
+        "tp5" => %Timepoint{id: "tp5", name: "tp5 name"}
       }
 
       assert TimepointOrder.timepoints_for_routes(
@@ -65,7 +73,8 @@ defmodule Schedule.TimepointOrderTest do
                ],
                "r2" => [
                  %Timepoint{id: "tp2", name: "tp2 name"},
-                 %Timepoint{id: "tp3", name: "tp3 name"}
+                 %Timepoint{id: "tp3", name: "tp3 name"},
+                 %Timepoint{id: "tp5", name: "tp5 name"}
                ]
              }
     end
@@ -90,6 +99,8 @@ defmodule Schedule.TimepointOrderTest do
         }
       ]
 
+      hints = %{}
+
       stop_times_by_id = %{
         "t1" => [
           %StopTime{stop_id: "s1", time: 1, timepoint_id: "tp1"},
@@ -103,7 +114,7 @@ defmodule Schedule.TimepointOrderTest do
         ]
       }
 
-      assert TimepointOrder.timepoint_ids_for_route(route_patterns, stop_times_by_id) == [
+      assert TimepointOrder.timepoint_ids_for_route(route_patterns, hints, stop_times_by_id) == [
                "tp1",
                "tp2",
                "tp3",
@@ -122,6 +133,8 @@ defmodule Schedule.TimepointOrderTest do
         }
       ]
 
+      hints = %{}
+
       stop_times_by_id = %{
         "t" => [
           %StopTime{stop_id: "s1", time: 1, timepoint_id: "tp1"},
@@ -129,10 +142,81 @@ defmodule Schedule.TimepointOrderTest do
         ]
       }
 
-      assert TimepointOrder.timepoint_ids_for_route(route_patterns, stop_times_by_id) == [
+      assert TimepointOrder.timepoint_ids_for_route(route_patterns, hints, stop_times_by_id) == [
                "tp2",
                "tp1"
              ]
+    end
+
+    test "hardcoded hints take priority over gtfs data" do
+      route_patterns = [
+        %RoutePattern{
+          id: "rp",
+          name: "rp",
+          route_id: "r",
+          direction_id: 1,
+          representative_trip_id: "t"
+        }
+      ]
+
+      hints = %{
+        0 => [
+          "tp3",
+          "tp2"
+        ],
+        1 => [
+          "tp1",
+          "tp2"
+        ]
+      }
+
+      stop_times_by_id = %{
+        "t" => [
+          %StopTime{stop_id: "s3", time: 3, timepoint_id: "tp3"},
+          %StopTime{stop_id: "s2", time: 2, timepoint_id: "tp2"},
+          %StopTime{stop_id: "s1", time: 1, timepoint_id: "tp1"}
+        ]
+      }
+
+      assert TimepointOrder.timepoint_ids_for_route(route_patterns, hints, stop_times_by_id) == [
+               "tp1",
+               "tp2",
+               "tp3"
+             ]
+    end
+  end
+
+  describe "parse_hints" do
+    test "parses hints" do
+      json = """
+        {
+          "r1": {
+            "0": [
+              "tp1",
+              "tp2"
+            ],
+            "1": [
+              "tp3",
+              "tp4"
+            ]
+          },
+          "r2": {
+            "1": [
+              "tp5"
+            ]
+          }
+        }
+      """
+
+      assert TimepointOrder.parse_hints(json) == %{
+               "r1" => %{
+                 0 => ["tp1", "tp2"],
+                 1 => ["tp3", "tp4"]
+               },
+               "r2" => %{
+                 1 => ["tp5"]
+               }
+             }
     end
   end
 end
