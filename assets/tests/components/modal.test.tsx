@@ -32,4 +32,31 @@ describe("Modal", () => {
     )
     expect(tree).toMatchSnapshot()
   })
+
+  test("renders loading modal when appropriate", () => {
+    const notification: Notification = {
+      id: 123,
+      createdAt: new Date(),
+      reason: "other" as NotificationReason,
+      routeIds: [],
+      runIds: [],
+      tripIds: ["123", "456", "789"],
+      operatorName: null,
+      operatorId: null,
+      routeIdAtCreation: null,
+      startTime: new Date(),
+    }
+
+    const state: State = {
+      ...initialState,
+      selectedNotification: notification,
+      selectedNotificationIsLoading: true,
+    }
+    const tree = renderer.create(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <Modal />
+      </StateDispatchProvider>
+    )
+    expect(tree).toMatchSnapshot()
+  })
 })

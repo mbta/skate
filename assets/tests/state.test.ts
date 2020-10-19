@@ -252,21 +252,33 @@ describe("reducer", () => {
       routeIdAtCreation: null,
       startTime: new Date(),
     }
-    const state = initialState
+    const state = { ...initialState, selectedNotificationIsLoading: true }
     const newState = reducer(state, State.setNotification(notification))
     const expectedState = {
       ...state,
       selectedNotification: notification,
+      selectedNotificationIsLoading: false,
     }
     expect(newState).toEqual(expectedState)
   })
 
   test("setNotificationIsInactive", () => {
-    const state = initialState
+    const state = { ...initialState, selectedNotificationIsLoading: true }
     const newState = reducer(state, State.setNotificationIsInactive())
     const expectedState = {
       ...state,
       selectedNotificationIsInactive: true,
+      selectedNotificationIsLoading: false,
+    }
+    expect(newState).toEqual(expectedState)
+  })
+
+  test("setNotificationIsLoading", () => {
+    const state = initialState
+    const newState = reducer(state, State.setNotificationIsLoading(true))
+    const expectedState = {
+      ...state,
+      selectedNotificationIsLoading: true,
     }
     expect(newState).toEqual(expectedState)
   })

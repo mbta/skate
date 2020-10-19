@@ -1,6 +1,7 @@
 import * as Sentry from "@sentry/react"
 import { Socket } from "phoenix"
 import React, { ReactElement, useContext, useEffect } from "react"
+import { useHistory } from "react-router-dom"
 import RoutesContext from "../contexts/routesContext"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
@@ -16,7 +17,11 @@ import {
   VehicleOrGhostAndRoute,
 } from "../realtime.d"
 import { ByRouteId, Route, RouteId, TimepointsByRouteId } from "../schedule.d"
-import { setNotificationIsInactive } from "../state"
+import {
+  setNotification,
+  setNotificationIsInactive,
+  setNotificationIsLoading,
+} from "../state"
 import { Notifications } from "./notifications"
 import PropertiesPanel from "./propertiesPanel"
 import RouteLadders from "./routeLadders"
@@ -53,6 +58,12 @@ export const chooseVehicleOrGhostForVPP = (
     : selectedVehicleOrGhost
 
 const LadderPage = (): ReactElement<HTMLDivElement> => {
+  const history = useHistory()
+  if (history) {
+    /* istanbul ignore next */
+    history.listen(() => dispatch(setNotification(undefined)))
+  }
+
   const [state, dispatch] = useContext(StateDispatchContext)
   const { selectedRouteIds, selectedVehicleId, selectedNotification } = state
 
@@ -73,8 +84,15 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
   useEffect(() => {
     if (vehicleAndRouteForNotification === null) {
       dispatch(setNotificationIsInactive())
+    } else if (
+      vehicleAndRouteForNotification === undefined &&
+      selectedNotification
+    ) {
+      dispatch(setNotificationIsLoading(true))
+    } else if (vehicleAndRouteForNotification) {
+      dispatch(setNotificationIsLoading(false))
     }
-  }, [vehicleAndRouteForNotification])
+  }, [vehicleAndRouteForNotification, selectedNotification])
 
   const selectedRoutes: Route[] = selectedRouteIds
     .map((routeId) => findRouteById(routes, routeId))

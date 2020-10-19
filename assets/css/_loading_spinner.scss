@@ -1,0 +1,12 @@
+.c-loading-spinner {
+  svg {
+    animation: rotate 2s linear infinite;
+    fill: $color-secondary-dark;
+  }
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
