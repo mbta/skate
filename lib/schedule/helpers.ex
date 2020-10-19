@@ -5,14 +5,25 @@ defmodule Schedule.Helpers do
       iex> Schedule.Helpers.merge_lists([[:b, :c], [:a, :b]])
       [:a, :b, :c]
 
-      iex> Schedule.Helpers.merge_lists([[:c, :a], [:a, :b], [:b, :c]])
-      [:c, :a, :b]
-
       iex> Schedule.Helpers.merge_lists([[:a, :b]])
       [:a, :b]
 
       iex> Schedule.Helpers.merge_lists([])
       []
+
+  If there's a cycle, gives preference to earlier inputs.
+
+      iex> Schedule.Helpers.merge_lists([[:a, :b], [:b, :c], [:c, :a]])
+      [:a, :b, :c]
+
+  Non-greedily avoids conflicts when possible.
+
+      iex> Schedule.Helpers.merge_lists([[:a, :b], [:a, :c], [:b, :c]])
+      [:a, :b, :c]
+
+      # Passing this test would require a completely new implementation
+      #iex> Schedule.Helpers.merge_lists([[:a, :b], [:a, :c], [:c, :b]])
+      #[:a, :c, :b]
   """
   @spec merge_lists([[any()]]) :: [any()]
   def merge_lists(lists) do
