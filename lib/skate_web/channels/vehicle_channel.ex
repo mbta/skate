@@ -21,8 +21,6 @@ defmodule SkateWeb.VehicleChannel do
       _ = Server.subscribe_to_vehicle(vehicle_or_ghost.id)
     end
 
-    Process.sleep(5000)
-
     {:ok, payload, socket}
   end
 
