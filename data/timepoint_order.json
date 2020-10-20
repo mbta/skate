@@ -1,18 +1,55 @@
 {
+  "11": {
+    "1": ["brway", "waher", "tumed", "sosta", "bdfch"]
+  },
   "15": {
-    "0": ["roxbs", "malcx", "nubn", "kane", "peter", "genbo"]
+    "comment": "malcx and peter are timepoints when they're a short turn terminal",
+    "0": [
+      "roxbs",
+      "malcx",
+      "nubn",
+      "upham",
+      "kane",
+      "peter",
+      "genbo",
+      "fldcr",
+      "dotav",
+      "ashmt"
+    ]
   },
   "19": {
-    "0": ["brlng", "louis", "hrugg", "rugg", "malcx", "nubn"],
-    "1": ["nubn", "roxbs", "louis"]
+    "0": ["brlng", "louis", "hrugg", "rugg", "malcx", "nubn"]
   },
   "23": {
+    "comment": "malcx is a timepoint only for school trip short turns",
     "0": ["roxbs", "malcx", "nubn"]
   },
   "28": {
+    "comment": "malcx is a timepoint only for school trip short turns",
     "0": ["roxbs", "malcx", "nubn"]
   },
   "47": {
     "1": ["brlng", "child", "rugg"]
+  },
+  "60": {
+    "comment": "all round trips loop boham-cnhlm-botul-boham, but some layovers are at cnhlm, and some at botul",
+    "1": ["cnhlm", "botul", "boham"]
+  },
+  "101": {
+    "comment": "mnhen is a short turn terminal between tufts and whill. show school branch to west medford (mngrg,wnbrk) before main brain (medfd)",
+    "0": ["whill", "mnhen", "tufts", "mngrg", "wnbrk", "medfd"]
+  },
+  "426": {
+    "comment": "wlynn is terminal for trips to/from boston. osbrn and holyk are terminals for trips to/from lynn. no trips go to wondw and hayms so force hayms to be later",
+    "0": ["esaug", "wlynn", "osbrn", "holyk", "wasum"],
+    "1": ["lindn", "brown", "bell", "wondw", "hayms"]
+  },
+  "435": {
+    "comment": "435-4-0 visits libtr twice",
+    "0": ["libtr", "danvr"]
+  },
+  "708": {
+    "comment": "all round trips loop hrugg-louis-child-bethi-hrugg, but some layovers are at louis, and some at bethi",
+    "0": ["louis", "child", "bethi"]
   }
 }

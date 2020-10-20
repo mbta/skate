@@ -90,7 +90,9 @@ defmodule Schedule.TimepointOrder do
     file_binary
     |> Jason.decode!()
     |> Helpers.map_values(fn timepoint_ids_by_direction ->
-      Helpers.map_keys(timepoint_ids_by_direction, &Direction.id_from_string/1)
+      timepoint_ids_by_direction
+      |> Map.delete("comment")
+      |> Helpers.map_keys(&Direction.id_from_string/1)
     end)
   end
 end
