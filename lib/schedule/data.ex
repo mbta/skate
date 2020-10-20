@@ -28,7 +28,7 @@ defmodule Schedule.Data do
   @type t :: %__MODULE__{
           routes: [Route.t()],
           route_patterns: [RoutePattern.t()],
-          timepoints_by_route: timepoints_by_route(),
+          timepoints_by_route: TimepointOrder.timepoints_by_route(),
           timepoint_names_by_id: Timepoint.timepoint_names_by_id(),
           shapes: shapes_by_route_id(),
           stops: stops_by_id(),
@@ -38,8 +38,6 @@ defmodule Schedule.Data do
           minischedule_runs: Minischedule.Run.by_id(),
           minischedule_blocks: Minischedule.Block.by_id()
         }
-
-  @type timepoints_by_route :: %{Route.id() => [Timepoint.t()]}
 
   @type shapes_by_route_id :: %{Route.id() => [Shape.t()]}
 

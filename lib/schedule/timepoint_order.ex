@@ -2,7 +2,10 @@ defmodule Schedule.TimepointOrder do
   alias Schedule.Gtfs.Direction
   alias Schedule.Gtfs.Route
   alias Schedule.Gtfs.RoutePattern
+  alias Schedule.Gtfs.StopTime
   alias Schedule.Gtfs.Timepoint
+
+  @type timepoints_by_route :: %{Route.id() => [Timepoint.t()]}
 
   @type hints :: %{Route.id() => %{Direction.id() => [Timepoint.id()]}}
 
@@ -11,7 +14,7 @@ defmodule Schedule.TimepointOrder do
           StopTime.by_trip_id(),
           Timepoint.timepoints_by_id()
         ) ::
-          Schedule.timepoints_by_route()
+          timepoints_by_route()
   def timepoints_for_routes(route_patterns, stop_times_by_id, timepoints_by_id) do
     hints_by_route =
       Application.get_env(
