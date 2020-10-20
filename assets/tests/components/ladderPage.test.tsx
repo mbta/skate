@@ -6,8 +6,8 @@ import LadderPage, {
   findRouteById,
   findSelectedVehicleOrGhost,
 } from "../../src/components/ladderPage"
+import RoutesContext from "../../src/contexts/routesContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import useRoutes from "../../src/hooks/useRoutes"
 import useTimepoints from "../../src/hooks/useTimepoints"
 import useVehicleAndRouteForNotification from "../../src/hooks/useVehicleAndRouteForNotification"
 import useVehicles from "../../src/hooks/useVehicles"
@@ -25,10 +25,6 @@ import {
   setNotificationIsLoading,
 } from "../../src/state"
 
-jest.mock("../../src/hooks/useRoutes", () => ({
-  __esModule: true,
-  default: jest.fn(() => routes),
-}))
 jest.mock("../../src/hooks/useTimepoints", () => ({
   __esModule: true,
   default: jest.fn(() => ({})),
@@ -46,7 +42,6 @@ const mockDispatch = jest.fn()
 
 describe("LadderPage", () => {
   test("renders the empty state", () => {
-    ;(useRoutes as jest.Mock).mockImplementationOnce(() => null)
     const tree = renderer.create(<LadderPage />).toJSON()
     expect(tree).toMatchSnapshot()
   })
@@ -56,7 +51,9 @@ describe("LadderPage", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-          <LadderPage />
+          <RoutesContext.Provider value={routes}>
+            <LadderPage />
+          </RoutesContext.Provider>
         </StateDispatchProvider>
       )
       .toJSON()
@@ -68,7 +65,9 @@ describe("LadderPage", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-          <LadderPage />
+          <RoutesContext.Provider value={routes}>
+            <LadderPage />
+          </RoutesContext.Provider>
         </StateDispatchProvider>
       )
       .toJSON()
@@ -76,10 +75,19 @@ describe("LadderPage", () => {
   })
 
   test("renders with timepoints", () => {
+    const mockState = { ...initialState, selectedRouteIds: ["28", "1"] }
     ;(useTimepoints as jest.Mock).mockImplementationOnce(
       () => timepointsByRouteId
     )
-    const tree = renderer.create(<LadderPage />).toJSON()
+    const tree = renderer
+      .create(
+        <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+          <RoutesContext.Provider value={routes}>
+            <LadderPage />
+          </RoutesContext.Provider>
+        </StateDispatchProvider>
+      )
+      .toJSON()
     expect(tree).toMatchSnapshot()
   })
 
@@ -112,7 +120,9 @@ describe("LadderPage", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-          <LadderPage />
+          <RoutesContext.Provider value={routes}>
+            <LadderPage />
+          </RoutesContext.Provider>
         </StateDispatchProvider>
       )
       .toJSON()
@@ -126,7 +136,9 @@ describe("LadderPage", () => {
 
     mount(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <LadderPage />
+        <RoutesContext.Provider value={routes}>
+          <LadderPage />
+        </RoutesContext.Provider>
       </StateDispatchProvider>
     )
     expect(mockDispatch).toHaveBeenCalledWith(setNotificationIsInactive())
@@ -153,7 +165,9 @@ describe("LadderPage", () => {
     const state = { ...initialState, selectedNotification: notification }
     mount(
       <StateDispatchProvider state={state} dispatch={mockDispatch}>
-        <LadderPage />
+        <RoutesContext.Provider value={routes}>
+          <LadderPage />
+        </RoutesContext.Provider>
       </StateDispatchProvider>
     )
     expect(mockDispatch).toHaveBeenCalledWith(setNotificationIsLoading(true))
@@ -167,7 +181,9 @@ describe("LadderPage", () => {
     const state = initialState
     mount(
       <StateDispatchProvider state={state} dispatch={mockDispatch}>
-        <LadderPage />
+        <RoutesContext.Provider value={routes}>
+          <LadderPage />
+        </RoutesContext.Provider>
       </StateDispatchProvider>
     )
     expect(mockDispatch).toHaveBeenCalledWith(setNotificationIsLoading(false))

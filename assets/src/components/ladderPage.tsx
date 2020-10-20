@@ -6,7 +6,6 @@ import RoutesContext from "../contexts/routesContext"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { VehiclesByRouteIdProvider } from "../contexts/vehiclesByRouteIdContext"
-import useRoutes from "../hooks/useRoutes"
 import useTimepoints from "../hooks/useTimepoints"
 import useVehicleAndRouteForNotification from "../hooks/useVehicleAndRouteForNotification"
 import useVehicles from "../hooks/useVehicles"
@@ -67,7 +66,7 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
   const [state, dispatch] = useContext(StateDispatchContext)
   const { selectedRouteIds, selectedVehicleId, selectedNotification } = state
 
-  const routes: Route[] | null = useRoutes()
+  const routes: Route[] | null = useContext(RoutesContext)
   const timepointsByRouteId: TimepointsByRouteId = useTimepoints(
     selectedRouteIds
   )
@@ -123,29 +122,27 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
   }
 
   return (
-    <RoutesContext.Provider value={routes}>
-      <div className="m-ladder-page">
-        <Notifications />
-        <RoutePicker selectedRouteIds={selectedRouteIds} />
+    <div className="m-ladder-page">
+      <Notifications />
+      <RoutePicker selectedRouteIds={selectedRouteIds} />
 
-        <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
-          <>
-            <RouteLadders
-              routes={selectedRoutes}
-              timepointsByRouteId={timepointsByRouteId}
-              selectedVehicleId={selectedVehicleId}
+      <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
+        <>
+          <RouteLadders
+            routes={selectedRoutes}
+            timepointsByRouteId={timepointsByRouteId}
+            selectedVehicleId={selectedVehicleId}
+          />
+
+          {vehicleOrGhostForVPP && routeForVPP && (
+            <PropertiesPanel
+              selectedVehicleOrGhost={vehicleOrGhostForVPP}
+              route={routeForVPP}
             />
-
-            {vehicleOrGhostForVPP && routeForVPP && (
-              <PropertiesPanel
-                selectedVehicleOrGhost={vehicleOrGhostForVPP}
-                route={routeForVPP}
-              />
-            )}
-          </>
-        </VehiclesByRouteIdProvider>
-      </div>
-    </RoutesContext.Provider>
+          )}
+        </>
+      </VehiclesByRouteIdProvider>
+    </div>
   )
 }
 
