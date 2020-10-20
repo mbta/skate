@@ -32,6 +32,7 @@ export interface State {
   selectedShuttleRouteIds: RouteId[]
   selectedShuttleRunIds: RunId[] | "all"
   selectedVehicleId?: VehicleId
+  notificationDrawerIsOpen: boolean
   userSettings: UserSettings
   selectedNotification?: Notification
 }
@@ -45,6 +46,7 @@ export const initialState: State = {
   selectedShuttleRouteIds: [],
   selectedShuttleRunIds: "all",
   selectedVehicleId: undefined,
+  notificationDrawerIsOpen: true,
   userSettings: defaultUserSettings,
   selectedNotification: undefined,
 }
@@ -201,6 +203,30 @@ export const togglePickerContainer = (): TogglePickerContainerAction => ({
   type: "TOGGLE_PICKER_CONTAINER",
 })
 
+interface OpenNotificationDrawerAction {
+  type: "OPEN_NOTIFICATION_DRAWER"
+}
+
+export const openNotificationDrawer = (): OpenNotificationDrawerAction => ({
+  type: "OPEN_NOTIFICATION_DRAWER",
+})
+
+interface CloseNotificationDrawerAction {
+  type: "CLOSE_NOTIFICATION_DRAWER"
+}
+
+export const closeNotificationDrawer = (): CloseNotificationDrawerAction => ({
+  type: "CLOSE_NOTIFICATION_DRAWER",
+})
+
+interface ToggleNotificationDrawerAction {
+  type: "TOGGLE_NOTIFICATION_DRAWER"
+}
+
+export const toggleNotificationDrawer = (): ToggleNotificationDrawerAction => ({
+  type: "TOGGLE_NOTIFICATION_DRAWER",
+})
+
 interface SetLadderVehicleLabelSettingAction {
   type: "SET_LADDER_VEHICLE_LABEL_SETTING"
   payload: {
@@ -263,6 +289,9 @@ type Action =
   | SelectVehicleAction
   | DeselectVehicleAction
   | TogglePickerContainerAction
+  | OpenNotificationDrawerAction
+  | CloseNotificationDrawerAction
+  | ToggleNotificationDrawerAction
   | SetLadderVehicleLabelSettingAction
   | SetShuttleVehicleLabelSettingAction
   | SearchAction
@@ -376,6 +405,19 @@ const selectedVehicleIdReducer = (
   }
 }
 
+const notificationDrawerReducer = (state: boolean, action: Action): boolean => {
+  switch (action.type) {
+    case "OPEN_NOTIFICATION_DRAWER":
+      return true
+    case "CLOSE_NOTIFICATION_DRAWER":
+      return false
+    case "TOGGLE_NOTIFICATION_DRAWER":
+      return !state
+    default:
+      return state
+  }
+}
+
 const userSettingsReducer = (
   state: UserSettings,
   action: Action
@@ -432,6 +474,10 @@ export const reducer = (state: State, action: Action): State => ({
     action
   ),
   selectedVehicleId: selectedVehicleIdReducer(state.selectedVehicleId, action),
+  notificationDrawerIsOpen: notificationDrawerReducer(
+    state.notificationDrawerIsOpen,
+    action
+  ),
   userSettings: userSettingsReducer(state.userSettings, action),
   selectedNotification: selectedNotificationReducer(
     state.selectedNotification,
