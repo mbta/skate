@@ -18,6 +18,8 @@ defmodule Helpers do
 
   iex> Helpers.map_keys(%{"a" => 1, "b" => 2}, fn s -> s <> s end)
   %{"aa" => 1, "bb" => 2}
+
+  If any resulting keys overlap, one arbitrary entry will be kept.
   """
   @spec map_keys(%{optional(key1) => value}, (key1 -> key2)) :: %{optional(key2) => value}
         when key1: any(), key2: any(), value: any()
