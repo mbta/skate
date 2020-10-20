@@ -190,6 +190,72 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
+  describe("notification drawer", () => {
+    test("openNotificationDrawer opens the drawer", () => {
+      const state = {
+        ...initialState,
+        notificationDrawerIsOpen: false,
+      }
+      const expectedState = {
+        ...initialState,
+        notificationDrawerIsOpen: true,
+      }
+      expect(reducer(state, State.openNotificationDrawer())).toEqual(
+        expectedState
+      )
+    })
+
+    test("openNotificationDrawer does nothing if the drawer is already open", () => {
+      const state = {
+        ...initialState,
+        notificationDrawerIsOpen: true,
+      }
+      expect(reducer(state, State.openNotificationDrawer())).toEqual(state)
+    })
+
+    test("closeNotificationDrawer closes the drawer", () => {
+      const state = {
+        ...initialState,
+        notificationDrawerIsOpen: true,
+      }
+      const expectedState = {
+        ...initialState,
+        notificationDrawerIsOpen: false,
+      }
+      expect(reducer(state, State.closeNotificationDrawer())).toEqual(
+        expectedState
+      )
+    })
+
+    test("toggleNotificationDrawer opens the drawer if it's closed", () => {
+      const state = {
+        ...initialState,
+        notificationDrawerIsOpen: false,
+      }
+      const expectedState = {
+        ...initialState,
+        notificationDrawerIsOpen: true,
+      }
+      expect(reducer(state, State.toggleNotificationDrawer())).toEqual(
+        expectedState
+      )
+    })
+
+    test("toggleNotificationDrawer closes the drawer if it's open", () => {
+      const state = {
+        ...initialState,
+        notificationDrawerIsOpen: true,
+      }
+      const expectedState = {
+        ...initialState,
+        notificationDrawerIsOpen: false,
+      }
+      expect(reducer(state, State.toggleNotificationDrawer())).toEqual(
+        expectedState
+      )
+    })
+  })
+
   test("setLadderVehicleLabelSetting", () => {
     const ladderVehicleLabel: VehicleLabelSetting =
       VehicleLabelSetting.VehicleNumber
