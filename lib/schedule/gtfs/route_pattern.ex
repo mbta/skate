@@ -53,14 +53,6 @@ defmodule Schedule.Gtfs.RoutePattern do
   def row_in_route_id_set?(row, route_id_set),
     do: MapSet.member?(route_id_set, row["route_id"])
 
-  @spec for_route_id([t()], Route.id()) :: [t()]
-  def for_route_id(route_patterns, route_id),
-    do: Enum.filter(route_patterns, fn route_pattern -> route_pattern.route_id == route_id end)
-
-  @spec by_direction([t()]) :: %{Direction.id() => [t()]}
-  def by_direction(route_patterns),
-    do: Enum.group_by(route_patterns, fn route_pattern -> route_pattern.direction_id end)
-
   @doc """
   via_variants are given by hastus, but not propogated through GTFS.
   But we can reconstruct them from the route_pattern_id
