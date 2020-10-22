@@ -319,9 +319,7 @@ const Piece = ({
         <div className="m-minischedule__run-header">{piece.runId}</div>
       ) : null}
       {view === "run" && piece.startMidRoute ? (
-        <MidRouteSwingOnFirstHalf
-          trip={piece.startMidRoute.trip}
-        />
+        <MidRouteSwingOnFirstHalf trip={piece.startMidRoute.trip} />
       ) : null}
       {isSwingOn ? null : (
         <Row
@@ -395,11 +393,7 @@ const Piece = ({
   )
 }
 
-const MidRouteSwingOnFirstHalf = ({
-  trip,
-}: {
-  trip: Trip
-}) => (
+const MidRouteSwingOnFirstHalf = ({ trip }: { trip: Trip }) => (
   <RevenueTrip
     trip={trip}
     timeBasedStyle={"unknown"}
