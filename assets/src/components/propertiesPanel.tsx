@@ -1,9 +1,7 @@
 import React, { useContext } from "react"
-import { useRoute } from "../contexts/routesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { isVehicle } from "../models/vehicle"
 import { VehicleOrGhost } from "../realtime.d"
-import { Route } from "../schedule"
 import { deselectVehicle } from "../state"
 import GhostPropertiesPanel from "./propertiesPanel/ghostPropertiesPanel"
 import VehiclePropertiesPanel from "./propertiesPanel/vehiclePropertiesPanel"
@@ -22,7 +20,6 @@ export const hideMeIfNoCrowdingTooltip = (hideMe: () => void) => {
 }
 
 const PropertiesPanel = ({ selectedVehicleOrGhost }: Props) => {
-  const route: Route | null = useRoute(selectedVehicleOrGhost.routeId)
   const [, dispatch] = useContext(StateDispatchContext)
 
   const hideMe = () => dispatch(deselectVehicle())
@@ -31,15 +28,9 @@ const PropertiesPanel = ({ selectedVehicleOrGhost }: Props) => {
     <>
       <div id="m-properties-panel" className="m-properties-panel">
         {isVehicle(selectedVehicleOrGhost) ? (
-          <VehiclePropertiesPanel
-            selectedVehicle={selectedVehicleOrGhost}
-            route={route || undefined}
-          />
+          <VehiclePropertiesPanel selectedVehicle={selectedVehicleOrGhost} />
         ) : (
-          <GhostPropertiesPanel
-            selectedGhost={selectedVehicleOrGhost}
-            route={route || undefined}
-          />
+          <GhostPropertiesPanel selectedGhost={selectedVehicleOrGhost} />
         )}
       </div>
       <div
