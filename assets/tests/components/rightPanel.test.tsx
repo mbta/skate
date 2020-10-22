@@ -1,151 +1,171 @@
-import { mount } from "enzyme"
 import React from "react"
-import RightPanel, {
-  chooseVehicleOrGhostForVPP,
-} from "../../src/components/rightPanel"
-import RoutesContext from "../../src/contexts/routesContext"
+import renderer from "react-test-renderer"
+import RightPanel from "../../src/components/rightPanel"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import useVehicleAndRouteForNotification from "../../src/hooks/useVehicleAndRouteForNotification"
-import {
-  Notification,
-  NotificationReason,
-  VehicleOrGhost,
-} from "../../src/realtime"
-import { Route } from "../../src/schedule.d"
-import {
-  initialState,
-  setNotificationIsInactive,
-  setNotificationIsLoading,
-} from "../../src/state"
+import VehicleAndRouteForNotificationContext from "../../src/contexts/vehicleAndRouteForNotificationContext"
+import { HeadwaySpacing } from "../../src/models/vehicleStatus"
+import { Ghost, Notification, Vehicle } from "../../src/realtime"
+import { Route } from "../../src/schedule"
+import { initialState, State } from "../../src/state"
+import * as dateTime from "../../src/util/dateTime"
 
-jest.mock("../../src/hooks/useTimepoints", () => ({
-  __esModule: true,
-  default: jest.fn(() => ({})),
-}))
-jest.mock("../../src/hooks/useVehicles", () => ({
-  __esModule: true,
-  default: jest.fn(() => ({})),
-}))
-jest.mock("../../src/hooks/useVehicleAndRouteForNotification", () => ({
-  __esModule: true,
-  default: jest.fn(() => undefined),
-}))
+jest
+  .spyOn(dateTime, "now")
+  .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
 
-const mockDispatch = jest.fn()
+jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
-describe("RightPanel", () => {
-  test("sets notification as inactive when appropriate", () => {
-    ;(useVehicleAndRouteForNotification as jest.Mock).mockImplementationOnce(
-      () => null
-    )
-
-    mount(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <RoutesContext.Provider value={routes}>
-          <RightPanel />
-        </RoutesContext.Provider>
-      </StateDispatchProvider>
-    )
-    expect(mockDispatch).toHaveBeenCalledWith(setNotificationIsInactive())
+describe("rightPanel", () => {
+  test("shows nothing if nothing is selected", () => {
+    const tree = renderer.create(<RightPanel />).toJSON()
+    expect(tree).toEqual(null)
   })
 
-  test("shows loading spinner when appropriate", () => {
-    ;(useVehicleAndRouteForNotification as jest.Mock).mockImplementationOnce(
-      () => undefined
-    )
-
-    const notification: Notification = {
-      id: 123,
-      createdAt: new Date(),
-      reason: "other" as NotificationReason,
-      routeIds: [],
-      runIds: [],
-      tripIds: ["123", "456", "789"],
-      operatorName: null,
-      operatorId: null,
-      routeIdAtCreation: null,
-      startTime: new Date(),
-    }
-
-    const state = { ...initialState, selectedNotification: notification }
-    mount(
-      <StateDispatchProvider state={state} dispatch={mockDispatch}>
-        <RoutesContext.Provider value={routes}>
-          <RightPanel />
-        </RoutesContext.Provider>
-      </StateDispatchProvider>
-    )
-    expect(mockDispatch).toHaveBeenCalledWith(setNotificationIsLoading(true))
+  test("shows a selected vehicle", () => {
+    const state: State = { ...initialState, selectedVehicleId: "id" }
+    const tree = renderer
+      .create(
+        <StateDispatchProvider state={state} dispatch={jest.fn()}>
+          <RightPanel selectedVehicleOrGhost={vehicle} />
+        </StateDispatchProvider>
+      )
+      .toJSON()
+    expect(tree).toMatchSnapshot()
   })
 
-  test("clears loading spinner when appropriate", () => {
-    ;(useVehicleAndRouteForNotification as jest.Mock).mockImplementationOnce(
-      () => ({ vehicleOrGhostData: undefined, routeData: undefined })
-    )
-
-    const state = initialState
-    mount(
-      <StateDispatchProvider state={state} dispatch={mockDispatch}>
-        <RoutesContext.Provider value={routes}>
-          <RightPanel />
-        </RoutesContext.Provider>
-      </StateDispatchProvider>
-    )
-    expect(mockDispatch).toHaveBeenCalledWith(setNotificationIsLoading(false))
+  test("shows a selected ghost", () => {
+    const state: State = { ...initialState, selectedVehicleId: "ghost-id" }
+    const tree = renderer
+      .create(
+        <StateDispatchProvider state={state} dispatch={jest.fn()}>
+          <RightPanel selectedVehicleOrGhost={ghost} />
+        </StateDispatchProvider>
+      )
+      .toJSON()
+    expect(tree).toMatchSnapshot()
   })
-})
 
-describe("chooseVehicleOrGhostForVPP", () => {
-  test("uses the vehicleAndRouteForNotification by preference", () => {
-    const vehicle1: VehicleOrGhost = {
-      id: "v1",
-      directionId: 0,
-      routeId: "1",
-      tripId: "trip",
-      headsign: "headsign",
-      blockId: "block",
-      runId: null,
-      viaVariant: null,
-      layoverDepartureTime: null,
-      scheduledTimepointStatus: {
-        timepointId: "hhgat",
-        fractionUntilTimepoint: 0.0,
-      },
-      routeStatus: "on_route",
-      blockWaivers: [],
-    }
-
-    const vehicle2: VehicleOrGhost = {
-      id: "v2",
-      directionId: 0,
-      routeId: "1",
-      tripId: "trip",
-      headsign: "headsign",
-      blockId: "block",
-      runId: null,
-      viaVariant: null,
-      layoverDepartureTime: null,
-      scheduledTimepointStatus: {
-        timepointId: "hhgat",
-        fractionUntilTimepoint: 0.0,
-      },
-      routeStatus: "on_route",
-      blockWaivers: [],
-    }
-
+  test("shows a vehicle from a selected notification", () => {
+    const notification: Notification = { runIds: ["run_id"] } as Notification
     const route: Route = {
-      id: "1",
-      directionNames: { 0: "Outbound", 1: "Inbound" },
-      name: "1",
-    }
-    expect(
-      chooseVehicleOrGhostForVPP({ vehicleOrGhost: vehicle1, route }, vehicle2)
-    ).toEqual(vehicle1)
-    expect(chooseVehicleOrGhostForVPP(undefined, vehicle2)).toEqual(vehicle2)
+      id: "route",
+      directionNames: { 0: "0", 1: "1" },
+    } as Route
+    const state: State = { ...initialState, selectedNotification: notification }
+    const tree = renderer
+      .create(
+        <StateDispatchProvider state={state} dispatch={jest.fn()}>
+          <VehicleAndRouteForNotificationContext.Provider
+            value={{ vehicleOrGhost: vehicle, route }}
+          >
+            <RightPanel />
+          </VehicleAndRouteForNotificationContext.Provider>
+        </StateDispatchProvider>
+      )
+      .toJSON()
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("if a vehicle from a notification is loading, show nothing", () => {
+    const notification: Notification = { runIds: ["run_id"] } as Notification
+    const state: State = { ...initialState, selectedNotification: notification }
+    const tree = renderer
+      .create(
+        <StateDispatchProvider state={state} dispatch={jest.fn()}>
+          <VehicleAndRouteForNotificationContext.Provider value={undefined}>
+            <RightPanel />
+          </VehicleAndRouteForNotificationContext.Provider>
+        </StateDispatchProvider>
+      )
+      .toJSON()
+    expect(tree).toEqual(null)
+  })
+
+  test("if a vehicle from a notification failed to load, show nothing", () => {
+    const notification: Notification = { runIds: ["run_id"] } as Notification
+    const state: State = { ...initialState, selectedNotification: notification }
+    const tree = renderer
+      .create(
+        <StateDispatchProvider state={state} dispatch={jest.fn()}>
+          <VehicleAndRouteForNotificationContext.Provider value={null}>
+            <RightPanel />
+          </VehicleAndRouteForNotificationContext.Provider>
+        </StateDispatchProvider>
+      )
+      .toJSON()
+    expect(tree).toEqual(null)
   })
 })
 
-const routes: Route[] = [
-  { id: "1", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "1" },
-  { id: "28", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "28" },
-]
+const vehicle: Vehicle = {
+  id: "id",
+  label: "label",
+  runId: "run",
+  timestamp: 123,
+  latitude: 0,
+  longitude: 0,
+  directionId: 0,
+  routeId: "route",
+  tripId: "t1",
+  headsign: "Forest Hills",
+  viaVariant: "X",
+  operatorId: "op1",
+  operatorName: "SMITH",
+  operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
+  bearing: 33,
+  blockId: "block-1",
+  headwaySecs: 859.1,
+  headwaySpacing: HeadwaySpacing.Ok,
+  previousVehicleId: "v2",
+  scheduleAdherenceSecs: 0,
+  scheduledHeadwaySecs: 120,
+  isShuttle: false,
+  isOverload: false,
+  isOffCourse: false,
+  layoverDepartureTime: null,
+  dataDiscrepancies: [
+    {
+      attribute: "trip_id",
+      sources: [
+        {
+          id: "swiftly",
+          value: "swiftly-trip-id",
+        },
+        {
+          id: "busloc",
+          value: "busloc-trip-id",
+        },
+      ],
+    },
+  ],
+  stopStatus: {
+    stopId: "s1",
+    stopName: "Stop Name",
+  },
+  timepointStatus: {
+    fractionUntilTimepoint: 0.5,
+    timepointId: "tp1",
+  },
+  scheduledLocation: null,
+  routeStatus: "on_route",
+  endOfTripType: "another_trip",
+  blockWaivers: [],
+  crowding: null,
+}
+const ghost: Ghost = {
+  id: "ghost-id",
+  directionId: 0,
+  routeId: "route",
+  tripId: "trip",
+  headsign: "headsign",
+  blockId: "block",
+  runId: "123-0123",
+  viaVariant: "X",
+  layoverDepartureTime: null,
+  scheduledTimepointStatus: {
+    timepointId: "t0",
+    fractionUntilTimepoint: 0.0,
+  },
+  routeStatus: "on_route",
+  blockWaivers: [],
+}
