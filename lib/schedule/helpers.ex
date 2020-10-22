@@ -16,6 +16,9 @@ defmodule Schedule.Helpers do
       iex> Schedule.Helpers.merge_lists([[:a, :b], [:b, :c], [:c, :a]])
       [:a, :b, :c]
 
+      iex> Schedule.Helpers.merge_lists([[:a, :b], [:b, :a, :b]])
+      [:a, :b]
+
   Non-greedily avoids conflicts when possible.
 
       iex> Schedule.Helpers.merge_lists([[:a, :b], [:a, :c], [:b, :c]])
@@ -27,7 +30,9 @@ defmodule Schedule.Helpers do
   """
   @spec merge_lists([[any()]]) :: [any()]
   def merge_lists(lists) do
-    Enum.reduce(lists, [], fn next_order, previously_defined_orders ->
+    lists
+    |> Enum.map(&Enum.uniq/1)
+    |> Enum.reduce([], fn next_order, previously_defined_orders ->
       merge_two_lists(previously_defined_orders, next_order)
     end)
   end
