@@ -2,10 +2,9 @@ import React from "react"
 import renderer from "react-test-renderer"
 import RightPanel from "../../src/components/rightPanel"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import VehicleAndRouteForNotificationContext from "../../src/contexts/vehicleAndRouteForNotificationContext"
+import VehicleForNotificationContext from "../../src/contexts/vehicleForNotificationContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Notification, Vehicle } from "../../src/realtime"
-import { Route } from "../../src/schedule"
 import { initialState, State } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
 
@@ -47,19 +46,13 @@ describe("rightPanel", () => {
 
   test("shows a vehicle from a selected notification", () => {
     const notification: Notification = { runIds: ["run_id"] } as Notification
-    const route: Route = {
-      id: "route",
-      directionNames: { 0: "0", 1: "1" },
-    } as Route
     const state: State = { ...initialState, selectedNotification: notification }
     const tree = renderer
       .create(
         <StateDispatchProvider state={state} dispatch={jest.fn()}>
-          <VehicleAndRouteForNotificationContext.Provider
-            value={{ vehicleOrGhost: vehicle, route }}
-          >
+          <VehicleForNotificationContext.Provider value={vehicle}>
             <RightPanel />
-          </VehicleAndRouteForNotificationContext.Provider>
+          </VehicleForNotificationContext.Provider>
         </StateDispatchProvider>
       )
       .toJSON()
@@ -72,9 +65,9 @@ describe("rightPanel", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={state} dispatch={jest.fn()}>
-          <VehicleAndRouteForNotificationContext.Provider value={undefined}>
+          <VehicleForNotificationContext.Provider value={undefined}>
             <RightPanel />
-          </VehicleAndRouteForNotificationContext.Provider>
+          </VehicleForNotificationContext.Provider>
         </StateDispatchProvider>
       )
       .toJSON()
@@ -87,9 +80,9 @@ describe("rightPanel", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={state} dispatch={jest.fn()}>
-          <VehicleAndRouteForNotificationContext.Provider value={null}>
+          <VehicleForNotificationContext.Provider value={null}>
             <RightPanel />
-          </VehicleAndRouteForNotificationContext.Provider>
+          </VehicleForNotificationContext.Provider>
         </StateDispatchProvider>
       )
       .toJSON()

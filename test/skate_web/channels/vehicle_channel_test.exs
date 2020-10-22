@@ -61,9 +61,7 @@ defmodule SkateWeb.VehicleChannelTest do
       assert Realtime.Server.update({%{"1" => [@vehicle]}, []}) == :ok
       assert Realtime.Server.peek_at_vehicles(["123-4567"]) == [@vehicle]
 
-      expected_payload = %{
-        data: %{vehicleOrGhostData: @vehicle, routeData: nil}
-      }
+      expected_payload = %{data: @vehicle}
 
       assert {:ok, ^expected_payload, %Socket{} = socket} =
                subscribe_and_join(socket, VehicleChannel, "vehicle:run_ids:123-4567")
@@ -85,7 +83,7 @@ defmodule SkateWeb.VehicleChannelTest do
                  socket
                )
 
-      assert_push("vehicle", %{data: %{routeData: nil, vehicleOrGhostData: @vehicle}})
+      assert_push("vehicle", %{data: @vehicle})
     end
   end
 end

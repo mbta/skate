@@ -3,11 +3,11 @@ import { NotificationsProvider } from "../contexts/notificationsContext"
 import RoutesContext from "../contexts/routesContext"
 import { SocketProvider } from "../contexts/socketContext"
 import { StateDispatchProvider } from "../contexts/stateDispatchContext"
-import VehicleAndRouteForNotificationContext from "../contexts/vehicleAndRouteForNotificationContext"
+import VehicleForNotificationContext from "../contexts/vehicleForNotificationContext"
 import usePersistedStateReducer from "../hooks/usePersistedStateReducer"
 import useRoutes from "../hooks/useRoutes"
 import useSocket from "../hooks/useSocket"
-import useVehicleAndRouteForNotification from "../hooks/useVehicleAndRouteForNotification"
+import useVehicleForNotification from "../hooks/useVehicleForNotification"
 import App from "./app"
 
 const AppStateWrapper = (): JSX.Element => {
@@ -15,7 +15,7 @@ const AppStateWrapper = (): JSX.Element => {
   const socketStatus = useSocket()
   const routes = useRoutes()
 
-  const vehicleAndRouteForNotification = useVehicleAndRouteForNotification(
+  const vehicleForNotification = useVehicleForNotification(
     state.selectedNotification
   )
 
@@ -24,11 +24,11 @@ const AppStateWrapper = (): JSX.Element => {
       <SocketProvider socketStatus={socketStatus}>
         <RoutesContext.Provider value={routes}>
           <NotificationsProvider>
-            <VehicleAndRouteForNotificationContext.Provider
-              value={vehicleAndRouteForNotification}
+            <VehicleForNotificationContext.Provider
+              value={vehicleForNotification}
             >
               <App />
-            </VehicleAndRouteForNotificationContext.Provider>
+            </VehicleForNotificationContext.Provider>
           </NotificationsProvider>
         </RoutesContext.Provider>
       </SocketProvider>

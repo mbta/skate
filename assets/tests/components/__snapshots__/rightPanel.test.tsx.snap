@@ -681,7 +681,7 @@ Array [
             <div
               className="m-properties-panel__inbound-outbound"
             >
-              0
+              
             </div>
             <div
               className="m-route-variant-name"

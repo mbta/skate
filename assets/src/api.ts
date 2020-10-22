@@ -143,7 +143,7 @@ export const putSetting = (field: string, value: string): void => {
   })
 }
 
-const nullableParser = <Data, T>(
+export const nullableParser = <Data, T>(
   parser: (data: Data) => T
 ): ((data: Data | null) => T | null) => (data: Data | null) =>
   data === null ? null : parser(data)

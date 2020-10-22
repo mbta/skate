@@ -1,4 +1,5 @@
 import React, { useContext } from "react"
+import { useRoute } from "../contexts/routesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { isVehicle } from "../models/vehicle"
 import { VehicleOrGhost } from "../realtime.d"
@@ -9,7 +10,6 @@ import VehiclePropertiesPanel from "./propertiesPanel/vehiclePropertiesPanel"
 
 interface Props {
   selectedVehicleOrGhost: VehicleOrGhost
-  route?: Route
 }
 
 export const hideMeIfNoCrowdingTooltip = (hideMe: () => void) => {
@@ -21,7 +21,8 @@ export const hideMeIfNoCrowdingTooltip = (hideMe: () => void) => {
   }
 }
 
-const PropertiesPanel = ({ selectedVehicleOrGhost, route }: Props) => {
+const PropertiesPanel = ({ selectedVehicleOrGhost }: Props) => {
+  const route: Route | null = useRoute(selectedVehicleOrGhost.routeId)
   const [, dispatch] = useContext(StateDispatchContext)
 
   const hideMe = () => dispatch(deselectVehicle())
@@ -32,12 +33,12 @@ const PropertiesPanel = ({ selectedVehicleOrGhost, route }: Props) => {
         {isVehicle(selectedVehicleOrGhost) ? (
           <VehiclePropertiesPanel
             selectedVehicle={selectedVehicleOrGhost}
-            route={route}
+            route={route || undefined}
           />
         ) : (
           <GhostPropertiesPanel
             selectedGhost={selectedVehicleOrGhost}
-            route={route}
+            route={route || undefined}
           />
         )}
       </div>

@@ -20,7 +20,7 @@ jest.mock("../../src/hooks/useVehicles", () => ({
   __esModule: true,
   default: jest.fn(() => ({})),
 }))
-jest.mock("../../src/hooks/useVehicleAndRouteForNotification", () => ({
+jest.mock("../../src/hooks/useVehicleForNotification", () => ({
   __esModule: true,
   default: jest.fn(() => undefined),
 }))
