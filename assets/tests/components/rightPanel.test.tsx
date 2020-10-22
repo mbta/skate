@@ -1,3 +1,4 @@
+import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import RightPanel from "../../src/components/rightPanel"
@@ -22,41 +23,35 @@ describe("rightPanel", () => {
 
   test("shows a selected vehicle", () => {
     const state: State = { ...initialState, selectedVehicleId: "id" }
-    const tree = renderer
-      .create(
-        <StateDispatchProvider state={state} dispatch={jest.fn()}>
-          <RightPanel selectedVehicleOrGhost={vehicle} />
-        </StateDispatchProvider>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const wrapper = mount(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <RightPanel selectedVehicleOrGhost={vehicle} />
+      </StateDispatchProvider>
+    )
+    expect(wrapper.html()).toContain(vehicle.runId)
   })
 
   test("shows a selected ghost", () => {
     const state: State = { ...initialState, selectedVehicleId: "ghost-id" }
-    const tree = renderer
-      .create(
-        <StateDispatchProvider state={state} dispatch={jest.fn()}>
-          <RightPanel selectedVehicleOrGhost={ghost} />
-        </StateDispatchProvider>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const wrapper = mount(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <RightPanel selectedVehicleOrGhost={ghost} />
+      </StateDispatchProvider>
+    )
+    expect(wrapper.html()).toContain(ghost.runId)
   })
 
   test("shows a vehicle from a selected notification", () => {
     const notification: Notification = { runIds: ["run_id"] } as Notification
     const state: State = { ...initialState, selectedNotification: notification }
-    const tree = renderer
-      .create(
-        <StateDispatchProvider state={state} dispatch={jest.fn()}>
-          <VehicleForNotificationContext.Provider value={vehicle}>
-            <RightPanel />
-          </VehicleForNotificationContext.Provider>
-        </StateDispatchProvider>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const wrapper = mount(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <VehicleForNotificationContext.Provider value={vehicle}>
+          <RightPanel />
+        </VehicleForNotificationContext.Provider>
+      </StateDispatchProvider>
+    )
+    expect(wrapper.html()).toContain(vehicle.runId)
   })
 
   test("if a vehicle from a notification is loading, show nothing", () => {
