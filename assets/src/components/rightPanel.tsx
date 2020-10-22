@@ -1,21 +1,13 @@
 import * as Sentry from "@sentry/react"
 import React, { ReactElement, useContext } from "react"
 import { useHistory } from "react-router-dom"
-import RoutesContext from "../contexts/routesContext"
+import { useRoute } from "../contexts/routesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import VehicleAndRouteForNotificationContext from "../contexts/vehicleAndRouteForNotificationContext"
 import { VehicleOrGhost } from "../realtime.d"
 import { Route } from "../schedule.d"
 import { setNotification } from "../state"
 import PropertiesPanel from "./propertiesPanel"
-
-const vehicleRoute = (
-  allRoutes: Route[] | null,
-  vehicleOrGhost: VehicleOrGhost | undefined
-): Route | undefined =>
-  (allRoutes || []).find(
-    (route) => route.id === (vehicleOrGhost && vehicleOrGhost.routeId)
-  )
 
 const RightPanel = ({
   selectedVehicleOrGhost,
@@ -24,7 +16,9 @@ const RightPanel = ({
 }): ReactElement<HTMLElement> | null => {
   const [state, dispatch] = useContext(StateDispatchContext)
   const { selectedNotification } = state
-  const routes: Route[] | null = useContext(RoutesContext)
+  const selectedVehicleRoute: Route | null = useRoute(
+    selectedVehicleOrGhost?.routeId
+  )
   const vehicleAndRouteForNotification = useContext(
     VehicleAndRouteForNotificationContext
   )
@@ -58,7 +52,7 @@ const RightPanel = ({
     return (
       <PropertiesPanel
         selectedVehicleOrGhost={selectedVehicleOrGhost}
-        route={vehicleRoute(routes, selectedVehicleOrGhost)}
+        route={selectedVehicleRoute || undefined}
       />
     )
   } else {
