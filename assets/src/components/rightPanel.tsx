@@ -14,7 +14,10 @@ const RightPanel = ({
 }): ReactElement<HTMLElement> | null => {
   const [state, dispatch] = useContext(StateDispatchContext)
   const { selectedNotification } = state
-  const vehicleForNotification = useContext(VehicleForNotificationContext)
+  // undefined means loading. null means failed
+  const vehicleForNotification: VehicleOrGhost | null | undefined = useContext(
+    VehicleForNotificationContext
+  )
 
   // close notification if you move away from ladder page
   // TODO delete when notifications are viewable from anywhere
