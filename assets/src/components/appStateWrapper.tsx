@@ -1,9 +1,9 @@
 import React from "react"
 import { NotificationsProvider } from "../contexts/notificationsContext"
-import RoutesContext from "../contexts/routesContext"
+import { RoutesProvider } from "../contexts/routesContext"
 import { SocketProvider } from "../contexts/socketContext"
 import { StateDispatchProvider } from "../contexts/stateDispatchContext"
-import VehicleForNotificationContext from "../contexts/vehicleForNotificationContext"
+import { VehicleForNotificationProvider } from "../contexts/vehicleForNotificationContext"
 import usePersistedStateReducer from "../hooks/usePersistedStateReducer"
 import useRoutes from "../hooks/useRoutes"
 import useSocket from "../hooks/useSocket"
@@ -23,15 +23,15 @@ const AppStateWrapper = (): JSX.Element => {
   return (
     <StateDispatchProvider state={state} dispatch={dispatch}>
       <SocketProvider socketStatus={socketStatus}>
-        <RoutesContext.Provider value={routes}>
+        <RoutesProvider routes={routes}>
           <NotificationsProvider>
-            <VehicleForNotificationContext.Provider
-              value={vehicleForNotification}
+            <VehicleForNotificationProvider
+              vehicleForNotification={vehicleForNotification}
             >
               <App />
-            </VehicleForNotificationContext.Provider>
+            </VehicleForNotificationProvider>
           </NotificationsProvider>
-        </RoutesContext.Provider>
+        </RoutesProvider>
       </SocketProvider>
     </StateDispatchProvider>
   )

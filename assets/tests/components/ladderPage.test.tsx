@@ -4,7 +4,7 @@ import LadderPage, {
   findRouteById,
   findSelectedVehicleOrGhost,
 } from "../../src/components/ladderPage"
-import RoutesContext from "../../src/contexts/routesContext"
+import { RoutesProvider } from "../../src/contexts/routesContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useTimepoints from "../../src/hooks/useTimepoints"
 import useVehicles from "../../src/hooks/useVehicles"
@@ -38,9 +38,9 @@ describe("LadderPage", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-          <RoutesContext.Provider value={routes}>
+          <RoutesProvider routes={routes}>
             <LadderPage />
-          </RoutesContext.Provider>
+          </RoutesProvider>
         </StateDispatchProvider>
       )
       .toJSON()
@@ -52,9 +52,9 @@ describe("LadderPage", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-          <RoutesContext.Provider value={routes}>
+          <RoutesProvider routes={routes}>
             <LadderPage />
-          </RoutesContext.Provider>
+          </RoutesProvider>
         </StateDispatchProvider>
       )
       .toJSON()
@@ -69,9 +69,9 @@ describe("LadderPage", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-          <RoutesContext.Provider value={routes}>
+          <RoutesProvider routes={routes}>
             <LadderPage />
-          </RoutesContext.Provider>
+          </RoutesProvider>
         </StateDispatchProvider>
       )
       .toJSON()
@@ -107,9 +107,9 @@ describe("LadderPage", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-          <RoutesContext.Provider value={routes}>
+          <RoutesProvider routes={routes}>
             <LadderPage />
-          </RoutesContext.Provider>
+          </RoutesProvider>
         </StateDispatchProvider>
       )
       .toJSON()

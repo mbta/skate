@@ -1,7 +1,7 @@
 import React from "react"
 import renderer from "react-test-renderer"
 import GhostPropertiesPanel from "../../../src/components/propertiesPanel/ghostPropertiesPanel"
-import RoutesContext from "../../../src/contexts/routesContext"
+import { RoutesProvider } from "../../../src/contexts/routesContext"
 import { BlockWaiver, Ghost } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
 import * as dateTime from "../../../src/util/dateTime"
@@ -41,9 +41,9 @@ describe("GhostPropertiesPanel", () => {
   test("renders", () => {
     const tree = renderer
       .create(
-        <RoutesContext.Provider value={[route]}>
+        <RoutesProvider routes={[route]}>
           <GhostPropertiesPanel selectedGhost={ghost} />
-        </RoutesContext.Provider>
+        </RoutesProvider>
       )
       .toJSON()
 
@@ -54,9 +54,9 @@ describe("GhostPropertiesPanel", () => {
     const ghostWithoutRun: Ghost = { ...ghost, runId: null }
     const tree = renderer
       .create(
-        <RoutesContext.Provider value={[route]}>
+        <RoutesProvider routes={[route]}>
           <GhostPropertiesPanel selectedGhost={ghostWithoutRun} />
-        </RoutesContext.Provider>
+        </RoutesProvider>
       )
       .toJSON()
 

@@ -2,7 +2,7 @@ import React from "react"
 import renderer from "react-test-renderer"
 import Modal from "../../src/components/modal"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import VehicleForNotificationContext from "../../src/contexts/vehicleForNotificationContext"
+import { VehicleForNotificationProvider } from "../../src/contexts/vehicleForNotificationContext"
 import { Notification, NotificationReason } from "../../src/realtime"
 import { initialState, State } from "../../src/state"
 
@@ -27,9 +27,9 @@ describe("Modal", () => {
     }
     const tree = renderer.create(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
-        <VehicleForNotificationContext.Provider value={null}>
+        <VehicleForNotificationProvider vehicleForNotification={null}>
           <Modal />
-        </VehicleForNotificationContext.Provider>
+        </VehicleForNotificationProvider>
       </StateDispatchProvider>
     )
     expect(tree).toMatchSnapshot()
@@ -55,9 +55,9 @@ describe("Modal", () => {
     }
     const tree = renderer.create(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
-        <VehicleForNotificationContext.Provider value={undefined}>
+        <VehicleForNotificationProvider vehicleForNotification={undefined}>
           <Modal />
-        </VehicleForNotificationContext.Provider>
+        </VehicleForNotificationProvider>
       </StateDispatchProvider>
     )
     expect(tree).toMatchSnapshot()

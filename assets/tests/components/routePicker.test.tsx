@@ -2,7 +2,7 @@ import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import RoutePicker from "../../src/components/routePicker"
-import RoutesContext from "../../src/contexts/routesContext"
+import { RoutesProvider } from "../../src/contexts/routesContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { Route, RouteId } from "../../src/schedule.d"
 import { deselectRoute, initialState, selectRoute } from "../../src/state"
@@ -30,9 +30,9 @@ describe("RoutePicker", () => {
 
     const tree = renderer
       .create(
-        <RoutesContext.Provider value={routes}>
+        <RoutesProvider routes={routes}>
           <RoutePicker selectedRouteIds={selectedRouteIds} />
-        </RoutesContext.Provider>
+        </RoutesProvider>
       )
       .toJSON()
 
@@ -53,11 +53,11 @@ describe("RoutePicker", () => {
     ]
 
     const routePicker = mount(
-      <RoutesContext.Provider value={routes}>
+      <RoutesProvider routes={routes}>
         <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
           <RoutePicker selectedRouteIds={[]} />
         </StateDispatchProvider>
-      </RoutesContext.Provider>
+      </RoutesProvider>
     )
 
     routePicker
@@ -76,11 +76,11 @@ describe("RoutePicker", () => {
     ]
 
     const routePicker = mount(
-      <RoutesContext.Provider value={routes}>
+      <RoutesProvider routes={routes}>
         <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
           <RoutePicker selectedRouteIds={["id"]} />
         </StateDispatchProvider>
-      </RoutesContext.Provider>
+      </RoutesProvider>
     )
 
     routePicker

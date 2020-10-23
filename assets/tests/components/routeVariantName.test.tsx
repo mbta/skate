@@ -1,7 +1,7 @@
 import { mount, shallow } from "enzyme"
 import React from "react"
 import { RouteVariantName } from "../../src/components/routeVariantName"
-import RoutesContext from "../../src/contexts/routesContext"
+import { RoutesProvider } from "../../src/contexts/routesContext"
 import { Vehicle } from "../../src/realtime"
 import { Route } from "../../src/schedule"
 
@@ -111,9 +111,9 @@ describe("RouteVariantName", () => {
     }
 
     const wrapper = mount(
-      <RoutesContext.Provider value={[route]}>
+      <RoutesProvider routes={[route]}>
         <RouteVariantName vehicle={vehicle} />
-      </RoutesContext.Provider>
+      </RoutesProvider>
     )
     expect(wrapper.text()).toEqual("ThirtyNine_X Forest Hills")
   })

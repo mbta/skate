@@ -3,7 +3,7 @@ import React from "react"
 import renderer from "react-test-renderer"
 import RightPanel from "../../src/components/rightPanel"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import VehicleForNotificationContext from "../../src/contexts/vehicleForNotificationContext"
+import { VehicleForNotificationProvider } from "../../src/contexts/vehicleForNotificationContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Notification, Vehicle } from "../../src/realtime"
 import { initialState, State } from "../../src/state"
@@ -46,9 +46,9 @@ describe("rightPanel", () => {
     const state: State = { ...initialState, selectedNotification: notification }
     const wrapper = mount(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
-        <VehicleForNotificationContext.Provider value={vehicle}>
+        <VehicleForNotificationProvider vehicleForNotification={vehicle}>
           <RightPanel />
-        </VehicleForNotificationContext.Provider>
+        </VehicleForNotificationProvider>
       </StateDispatchProvider>
     )
     expect(wrapper.html()).toContain(vehicle.runId)
@@ -60,9 +60,9 @@ describe("rightPanel", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={state} dispatch={jest.fn()}>
-          <VehicleForNotificationContext.Provider value={undefined}>
+          <VehicleForNotificationProvider vehicleForNotification={undefined}>
             <RightPanel />
-          </VehicleForNotificationContext.Provider>
+          </VehicleForNotificationProvider>
         </StateDispatchProvider>
       )
       .toJSON()
@@ -75,9 +75,9 @@ describe("rightPanel", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={state} dispatch={jest.fn()}>
-          <VehicleForNotificationContext.Provider value={null}>
+          <VehicleForNotificationProvider vehicleForNotification={null}>
             <RightPanel />
-          </VehicleForNotificationContext.Provider>
+          </VehicleForNotificationProvider>
         </StateDispatchProvider>
       )
       .toJSON()

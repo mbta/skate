@@ -2,7 +2,7 @@ import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import Header from "../../../src/components/propertiesPanel/header"
-import RoutesContext from "../../../src/contexts/routesContext"
+import { RoutesProvider } from "../../../src/contexts/routesContext"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import {
   emptyLadderDirectionsByRouteId,
@@ -96,13 +96,13 @@ describe("Header", () => {
     }
     const tree = renderer
       .create(
-        <RoutesContext.Provider value={[route]}>
+        <RoutesProvider routes={[route]}>
           <Header
             vehicle={vehicle}
             tabMode={"status"}
             setTabMode={setTabMode}
           />
-        </RoutesContext.Provider>
+        </RoutesProvider>
       )
       .toJSON()
 
