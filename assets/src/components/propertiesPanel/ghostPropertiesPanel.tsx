@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import { hasBlockWaiver } from "../../models/blockWaiver"
 import { Ghost } from "../../realtime"
-import { Route } from "../../schedule"
 import IconAlertCircle, { AlertIconStyle } from "../iconAlertCircle"
 import PropertiesList, { ghostProperties } from "../propertiesList"
 import BlockWaiverList from "./blockWaiverList"
@@ -10,7 +9,6 @@ import TabPanels, { TabMode } from "./tabPanels"
 
 interface Props {
   selectedGhost: Ghost
-  route?: Route
 }
 
 const NoWaiverBanner = () => (
@@ -41,14 +39,13 @@ const StatusContent = ({ ghost }: { ghost: Ghost }) => (
   </>
 )
 
-const GhostPropertiesPanel = ({ selectedGhost, route }: Props) => {
+const GhostPropertiesPanel = ({ selectedGhost }: Props) => {
   const [tabMode, setTabMode] = useState<TabMode>("status")
 
   return (
     <div className="m-ghost-properties-panel">
       <Header
         vehicle={selectedGhost}
-        route={route}
         tabMode={tabMode}
         setTabMode={setTabMode}
       />

@@ -3,6 +3,7 @@ import renderer from "react-test-renderer"
 import PropertiesPanel, {
   hideMeIfNoCrowdingTooltip,
 } from "../../src/components/propertiesPanel"
+import { RoutesProvider } from "../../src/contexts/routesContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../src/realtime"
 import { Route } from "../../src/schedule"
@@ -99,7 +100,9 @@ describe("PropertiesPanel", () => {
   test("renders a vehicle", () => {
     const tree = renderer
       .create(
-        <PropertiesPanel selectedVehicleOrGhost={vehicle} route={route} />
+        <RoutesProvider routes={[route]}>
+          <PropertiesPanel selectedVehicleOrGhost={vehicle} />
+        </RoutesProvider>
       )
       .toJSON()
 
@@ -108,7 +111,11 @@ describe("PropertiesPanel", () => {
 
   test("renders a ghost", () => {
     const tree = renderer
-      .create(<PropertiesPanel selectedVehicleOrGhost={ghost} route={route} />)
+      .create(
+        <RoutesProvider routes={[route]}>
+          <PropertiesPanel selectedVehicleOrGhost={ghost} />
+        </RoutesProvider>
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()

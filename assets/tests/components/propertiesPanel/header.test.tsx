@@ -2,6 +2,7 @@ import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import Header from "../../../src/components/propertiesPanel/header"
+import { RoutesProvider } from "../../../src/contexts/routesContext"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import {
   emptyLadderDirectionsByRouteId,
@@ -77,12 +78,7 @@ describe("Header", () => {
   test("renders a header", () => {
     const tree = renderer
       .create(
-        <Header
-          vehicle={vehicle}
-          route={undefined}
-          tabMode={"status"}
-          setTabMode={setTabMode}
-        />
+        <Header vehicle={vehicle} tabMode={"status"} setTabMode={setTabMode} />
       )
       .toJSON()
 
@@ -100,12 +96,13 @@ describe("Header", () => {
     }
     const tree = renderer
       .create(
-        <Header
-          vehicle={vehicle}
-          route={route}
-          tabMode={"status"}
-          setTabMode={setTabMode}
-        />
+        <RoutesProvider routes={[route]}>
+          <Header
+            vehicle={vehicle}
+            tabMode={"status"}
+            setTabMode={setTabMode}
+          />
+        </RoutesProvider>
       )
       .toJSON()
 
@@ -121,7 +118,6 @@ describe("Header", () => {
       .create(
         <Header
           vehicle={earlyVehicle}
-          route={undefined}
           tabMode={"status"}
           setTabMode={setTabMode}
         />
@@ -140,7 +136,6 @@ describe("Header", () => {
       .create(
         <Header
           vehicle={earlyVehicle}
-          route={undefined}
           tabMode={"status"}
           setTabMode={setTabMode}
         />
@@ -160,7 +155,6 @@ describe("Header", () => {
       .create(
         <Header
           vehicle={offCourseVehicle}
-          route={undefined}
           tabMode={"status"}
           setTabMode={setTabMode}
         />
@@ -180,7 +174,6 @@ describe("Header", () => {
       .create(
         <Header
           vehicle={headwayVehicle}
-          route={undefined}
           tabMode={"status"}
           setTabMode={setTabMode}
         />
@@ -200,7 +193,6 @@ describe("Header", () => {
       .create(
         <Header
           vehicle={shuttleVehicle}
-          route={undefined}
           tabMode={"status"}
           setTabMode={setTabMode}
         />
@@ -231,12 +223,7 @@ describe("Header", () => {
 
     const tree = renderer
       .create(
-        <Header
-          vehicle={ghost}
-          route={undefined}
-          tabMode={"status"}
-          setTabMode={setTabMode}
-        />
+        <Header vehicle={ghost} tabMode={"status"} setTabMode={setTabMode} />
       )
       .toJSON()
 
@@ -247,7 +234,6 @@ describe("Header", () => {
     const rightFacing = mount(
       <Header
         vehicle={{ ...vehicle, directionId: 0, routeStatus: "laying_over" }}
-        route={undefined}
         tabMode={"status"}
         setTabMode={setTabMode}
       />
@@ -255,7 +241,6 @@ describe("Header", () => {
     const leftFacing = mount(
       <Header
         vehicle={{ ...vehicle, directionId: 1, routeStatus: "laying_over" }}
-        route={undefined}
         tabMode={"status"}
         setTabMode={setTabMode}
       />
@@ -287,12 +272,7 @@ describe("Header", () => {
         state={{ ...initialState, ladderDirections }}
         dispatch={jest.fn()}
       >
-        <Header
-          vehicle={vehicle}
-          route={undefined}
-          tabMode={"status"}
-          setTabMode={setTabMode}
-        />
+        <Header vehicle={vehicle} tabMode={"status"} setTabMode={setTabMode} />
       </StateDispatchProvider>
     )
 
@@ -314,7 +294,6 @@ describe("Header", () => {
     const wrapper = mount(
       <Header
         vehicle={shuttleVehicle}
-        route={undefined}
         tabMode={"status"}
         setTabMode={setTabMode}
       />
@@ -333,12 +312,7 @@ describe("Header", () => {
 
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <Header
-          vehicle={vehicle}
-          route={undefined}
-          tabMode={"status"}
-          setTabMode={setTabMode}
-        />
+        <Header vehicle={vehicle} tabMode={"status"} setTabMode={setTabMode} />
       </StateDispatchProvider>
     )
     wrapper

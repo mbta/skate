@@ -3,6 +3,7 @@ import React from "react"
 import renderer from "react-test-renderer"
 import * as map from "../../../src/components/map"
 import VehiclePropertiesPanel from "../../../src/components/propertiesPanel/vehiclePropertiesPanel"
+import { RoutesProvider } from "../../../src/contexts/routesContext"
 import { VehiclesByRouteIdProvider } from "../../../src/contexts/vehiclesByRouteIdContext"
 import { useNearestIntersection } from "../../../src/hooks/useNearestIntersection"
 import useVehiclesForRoute from "../../../src/hooks/useVehiclesForRoute"
@@ -105,7 +106,9 @@ describe("VehiclePropertiesPanel", () => {
     }
     const tree = renderer
       .create(
-        <VehiclePropertiesPanel selectedVehicle={vehicle} route={route} />
+        <RoutesProvider routes={[route]}>
+          <VehiclePropertiesPanel selectedVehicle={vehicle} />
+        </RoutesProvider>
       )
       .toJSON()
 

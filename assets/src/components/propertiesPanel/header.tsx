@@ -1,4 +1,5 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from "react"
+import { useRoute } from "../../contexts/routesContext"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import vehicleLabel from "../../helpers/vehicleLabel"
 import useInterval from "../../hooks/useInterval"
@@ -26,7 +27,6 @@ import { TabMode } from "./tabPanels"
 
 interface Props {
   vehicle: VehicleOrGhost
-  route?: Route
   tabMode: TabMode
   setTabMode: Dispatch<SetStateAction<TabMode>>
 }
@@ -120,17 +120,18 @@ const HeadwayTarget = ({
 
 const directionName = (
   { directionId }: VehicleOrGhost,
-  route?: Route
+  route: Route | null
 ): string => (route ? route.directionNames[directionId] : "")
 
 const nowInSeconds = (): number => Math.floor(Date.now() / 1000)
 
-const Header = ({ vehicle, route, tabMode, setTabMode }: Props) => {
+const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
   const [{ ladderDirections, settings }, dispatch] = useContext(
     StateDispatchContext
   )
   const [epocNowInSeconds, setEpocNowInSeconds] = useState(nowInSeconds())
   useInterval(() => setEpocNowInSeconds(nowInSeconds()), 1000)
+  const route = useRoute(vehicle.routeId)
 
   const secondsAgo = (epocTime: number): string =>
     `${epocNowInSeconds - epocTime}s ago`

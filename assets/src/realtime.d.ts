@@ -126,11 +126,6 @@ export interface Vehicle {
 
 export type VehicleOrGhost = Vehicle | Ghost
 
-export interface VehicleOrGhostAndRoute {
-  vehicleOrGhost: VehicleOrGhost
-  route: Route
-}
-
 export type VehicleId = string
 
 export interface VehicleStopStatus {

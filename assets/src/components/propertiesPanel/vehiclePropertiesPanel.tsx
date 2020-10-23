@@ -12,7 +12,7 @@ import {
   VehicleId,
   VehicleOrGhost,
 } from "../../realtime"
-import { Route, RouteId, Shape } from "../../schedule"
+import { RouteId, Shape } from "../../schedule"
 import Map from "../map"
 import PropertiesList, { vehicleProperties } from "../propertiesList"
 import BlockWaiverList from "./blockWaiverList"
@@ -23,7 +23,6 @@ import TabPanels, { TabMode } from "./tabPanels"
 
 interface Props {
   selectedVehicle: Vehicle
-  route?: Route
 }
 
 const InvalidBanner = () => (
@@ -179,14 +178,13 @@ const StatusContent = ({ selectedVehicle }: { selectedVehicle: Vehicle }) => (
   </>
 )
 
-const VehiclePropertiesPanel = ({ selectedVehicle, route }: Props) => {
+const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
   const [tabMode, setTabMode] = useState<TabMode>("status")
 
   return (
     <div className="m-vehicle-properties-panel">
       <Header
         vehicle={selectedVehicle}
-        route={route}
         tabMode={tabMode}
         setTabMode={setTabMode}
       />

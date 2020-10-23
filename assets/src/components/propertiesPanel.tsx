@@ -2,14 +2,12 @@ import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { isVehicle } from "../models/vehicle"
 import { VehicleOrGhost } from "../realtime.d"
-import { Route } from "../schedule"
 import { deselectVehicle } from "../state"
 import GhostPropertiesPanel from "./propertiesPanel/ghostPropertiesPanel"
 import VehiclePropertiesPanel from "./propertiesPanel/vehiclePropertiesPanel"
 
 interface Props {
   selectedVehicleOrGhost: VehicleOrGhost
-  route?: Route
 }
 
 export const hideMeIfNoCrowdingTooltip = (hideMe: () => void) => {
@@ -21,7 +19,7 @@ export const hideMeIfNoCrowdingTooltip = (hideMe: () => void) => {
   }
 }
 
-const PropertiesPanel = ({ selectedVehicleOrGhost, route }: Props) => {
+const PropertiesPanel = ({ selectedVehicleOrGhost }: Props) => {
   const [, dispatch] = useContext(StateDispatchContext)
 
   const hideMe = () => dispatch(deselectVehicle())
@@ -30,15 +28,9 @@ const PropertiesPanel = ({ selectedVehicleOrGhost, route }: Props) => {
     <>
       <div id="m-properties-panel" className="m-properties-panel">
         {isVehicle(selectedVehicleOrGhost) ? (
-          <VehiclePropertiesPanel
-            selectedVehicle={selectedVehicleOrGhost}
-            route={route}
-          />
+          <VehiclePropertiesPanel selectedVehicle={selectedVehicleOrGhost} />
         ) : (
-          <GhostPropertiesPanel
-            selectedGhost={selectedVehicleOrGhost}
-            route={route}
-          />
+          <GhostPropertiesPanel selectedGhost={selectedVehicleOrGhost} />
         )}
       </div>
       <div

@@ -464,7 +464,24 @@ exports[`LadderPage renders with timepoints 1`] = `
     >
       <ul
         className="m-route-picker__selected-routes"
-      />
+      >
+        <li>
+          <button
+            className="m-route-picker__selected-routes-button"
+            onClick={[Function]}
+          >
+            28
+          </button>
+        </li>
+        <li>
+          <button
+            className="m-route-picker__selected-routes-button"
+            onClick={[Function]}
+          >
+            1
+          </button>
+        </li>
+      </ul>
       <div
         className="m-route-filter"
       >
@@ -509,7 +526,7 @@ exports[`LadderPage renders with timepoints 1`] = `
       >
         <li>
           <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
             onClick={[Function]}
           >
             1
@@ -517,7 +534,7 @@ exports[`LadderPage renders with timepoints 1`] = `
         </li>
         <li>
           <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
             onClick={[Function]}
           >
             28
@@ -528,7 +545,298 @@ exports[`LadderPage renders with timepoints 1`] = `
   </div>
   <div
     className="m-route-ladders"
-  />
+  >
+    <div
+      className="m-route-ladder__header"
+    >
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+      <div
+        className="m-route-ladder__route-name"
+      >
+        28
+      </div>
+    </div>
+    <div
+      className="m-route-ladder__controls"
+    >
+      <button
+        className="m-route-ladder__reverse"
+        onClick={[Function]}
+      >
+        <span
+          className="m-route-ladder__reverse-icon"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+        Reverse
+      </button>
+    </div>
+    <div
+      className="m-ladder"
+      style={
+        Object {
+          "width": 184,
+        }
+      }
+    >
+      <svg
+        className="m-ladder__svg"
+        height={0}
+        viewBox="-92 -55 184 0"
+        width={184}
+      >
+        <line
+          className="m-ladder__line"
+          x1={-40}
+          x2={-40}
+          y1="0"
+          y2={-110}
+        />
+        <line
+          className="m-ladder__line"
+          x1={40}
+          x2={40}
+          y1="0"
+          y2={-110}
+        />
+        <circle
+          className="m-ladder__stop-circle"
+          cx={-40}
+          cy={-0}
+          r="3"
+        />
+        <circle
+          className="m-ladder__stop-circle"
+          cx={40}
+          cy={-0}
+          r="3"
+        />
+        <text
+          className="m-ladder__timepoint-name"
+          data-event="click"
+          data-tip="MATPN Name"
+          dominantBaseline="middle"
+          textAnchor="middle"
+          x="0"
+          y={-0}
+        >
+          MATPN
+        </text>
+        <circle
+          className="m-ladder__stop-circle"
+          cx={-40}
+          cy={-55}
+          r="3"
+        />
+        <circle
+          className="m-ladder__stop-circle"
+          cx={40}
+          cy={-55}
+          r="3"
+        />
+        <text
+          className="m-ladder__timepoint-name"
+          data-event="click"
+          data-tip="WELLH Name"
+          dominantBaseline="middle"
+          textAnchor="middle"
+          x="0"
+          y={-55}
+        >
+          WELLH
+        </text>
+        <circle
+          className="m-ladder__stop-circle"
+          cx={-40}
+          cy={-110}
+          r="3"
+        />
+        <circle
+          className="m-ladder__stop-circle"
+          cx={40}
+          cy={-110}
+          r="3"
+        />
+        <text
+          className="m-ladder__timepoint-name"
+          data-event="click"
+          data-tip="MORTN Name"
+          dominantBaseline="middle"
+          textAnchor="middle"
+          x="0"
+          y={-110}
+        >
+          MORTN
+        </text>
+      </svg>
+      <div
+        className="mock-react-tooltip"
+      />
+    </div>
+    <div
+      className="m-incoming-box"
+    />
+    <div
+      className="m-route-ladder__header"
+    >
+      <button
+        className="m-close-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </button>
+      <div
+        className="m-route-ladder__route-name"
+      >
+        1
+      </div>
+    </div>
+    <div
+      className="m-route-ladder__controls"
+    >
+      <button
+        className="m-route-ladder__reverse"
+        onClick={[Function]}
+      >
+        <span
+          className="m-route-ladder__reverse-icon"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+        Reverse
+      </button>
+    </div>
+    <div
+      className="m-ladder"
+      style={
+        Object {
+          "width": 184,
+        }
+      }
+    >
+      <svg
+        className="m-ladder__svg"
+        height={0}
+        viewBox="-92 -55 184 0"
+        width={184}
+      >
+        <line
+          className="m-ladder__line"
+          x1={-40}
+          x2={-40}
+          y1="0"
+          y2={-110}
+        />
+        <line
+          className="m-ladder__line"
+          x1={40}
+          x2={40}
+          y1="0"
+          y2={-110}
+        />
+        <circle
+          className="m-ladder__stop-circle"
+          cx={-40}
+          cy={-0}
+          r="3"
+        />
+        <circle
+          className="m-ladder__stop-circle"
+          cx={40}
+          cy={-0}
+          r="3"
+        />
+        <text
+          className="m-ladder__timepoint-name"
+          data-event="click"
+          data-tip="WASMA Name"
+          dominantBaseline="middle"
+          textAnchor="middle"
+          x="0"
+          y={-0}
+        >
+          WASMA
+        </text>
+        <circle
+          className="m-ladder__stop-circle"
+          cx={-40}
+          cy={-55}
+          r="3"
+        />
+        <circle
+          className="m-ladder__stop-circle"
+          cx={40}
+          cy={-55}
+          r="3"
+        />
+        <text
+          className="m-ladder__timepoint-name"
+          data-event="click"
+          data-tip="MELWA Name"
+          dominantBaseline="middle"
+          textAnchor="middle"
+          x="0"
+          y={-55}
+        >
+          MELWA
+        </text>
+        <circle
+          className="m-ladder__stop-circle"
+          cx={-40}
+          cy={-110}
+          r="3"
+        />
+        <circle
+          className="m-ladder__stop-circle"
+          cx={40}
+          cy={-110}
+          r="3"
+        />
+        <text
+          className="m-ladder__timepoint-name"
+          data-event="click"
+          data-tip="HHGAT Name"
+          dominantBaseline="middle"
+          textAnchor="middle"
+          x="0"
+          y={-110}
+        >
+          HHGAT
+        </text>
+      </svg>
+      <div
+        className="mock-react-tooltip"
+      />
+    </div>
+    <div
+      className="m-incoming-box"
+    />
+  </div>
 </div>
 `;
 

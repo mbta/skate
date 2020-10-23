@@ -1,34 +1,17 @@
-import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import LadderPage, {
-  chooseVehicleOrGhostForVPP,
   findRouteById,
   findSelectedVehicleOrGhost,
 } from "../../src/components/ladderPage"
+import { RoutesProvider } from "../../src/contexts/routesContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import useRoutes from "../../src/hooks/useRoutes"
 import useTimepoints from "../../src/hooks/useTimepoints"
-import useVehicleAndRouteForNotification from "../../src/hooks/useVehicleAndRouteForNotification"
 import useVehicles from "../../src/hooks/useVehicles"
-import {
-  Ghost,
-  Notification,
-  NotificationReason,
-  Vehicle,
-  VehicleOrGhost,
-} from "../../src/realtime"
+import { Ghost, Vehicle, VehicleOrGhost } from "../../src/realtime"
 import { ByRouteId, Route, TimepointsByRouteId } from "../../src/schedule.d"
-import {
-  initialState,
-  setNotificationIsInactive,
-  setNotificationIsLoading,
-} from "../../src/state"
+import { initialState } from "../../src/state"
 
-jest.mock("../../src/hooks/useRoutes", () => ({
-  __esModule: true,
-  default: jest.fn(() => routes),
-}))
 jest.mock("../../src/hooks/useTimepoints", () => ({
   __esModule: true,
   default: jest.fn(() => ({})),
@@ -37,7 +20,7 @@ jest.mock("../../src/hooks/useVehicles", () => ({
   __esModule: true,
   default: jest.fn(() => ({})),
 }))
-jest.mock("../../src/hooks/useVehicleAndRouteForNotification", () => ({
+jest.mock("../../src/hooks/useVehicleForNotification", () => ({
   __esModule: true,
   default: jest.fn(() => undefined),
 }))
@@ -46,7 +29,6 @@ const mockDispatch = jest.fn()
 
 describe("LadderPage", () => {
   test("renders the empty state", () => {
-    ;(useRoutes as jest.Mock).mockImplementationOnce(() => null)
     const tree = renderer.create(<LadderPage />).toJSON()
     expect(tree).toMatchSnapshot()
   })
@@ -56,7 +38,9 @@ describe("LadderPage", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-          <LadderPage />
+          <RoutesProvider routes={routes}>
+            <LadderPage />
+          </RoutesProvider>
         </StateDispatchProvider>
       )
       .toJSON()
@@ -68,7 +52,9 @@ describe("LadderPage", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-          <LadderPage />
+          <RoutesProvider routes={routes}>
+            <LadderPage />
+          </RoutesProvider>
         </StateDispatchProvider>
       )
       .toJSON()
@@ -76,10 +62,19 @@ describe("LadderPage", () => {
   })
 
   test("renders with timepoints", () => {
+    const mockState = { ...initialState, selectedRouteIds: ["28", "1"] }
     ;(useTimepoints as jest.Mock).mockImplementationOnce(
       () => timepointsByRouteId
     )
-    const tree = renderer.create(<LadderPage />).toJSON()
+    const tree = renderer
+      .create(
+        <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+          <RoutesProvider routes={routes}>
+            <LadderPage />
+          </RoutesProvider>
+        </StateDispatchProvider>
+      )
+      .toJSON()
     expect(tree).toMatchSnapshot()
   })
 
@@ -112,65 +107,13 @@ describe("LadderPage", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-          <LadderPage />
+          <RoutesProvider routes={routes}>
+            <LadderPage />
+          </RoutesProvider>
         </StateDispatchProvider>
       )
       .toJSON()
     expect(tree).toMatchSnapshot()
-  })
-
-  test("sets notification as inactive when appropriate", () => {
-    ;(useVehicleAndRouteForNotification as jest.Mock).mockImplementationOnce(
-      () => null
-    )
-
-    mount(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <LadderPage />
-      </StateDispatchProvider>
-    )
-    expect(mockDispatch).toHaveBeenCalledWith(setNotificationIsInactive())
-  })
-
-  test("shows loading spinner when appropriate", () => {
-    ;(useVehicleAndRouteForNotification as jest.Mock).mockImplementationOnce(
-      () => undefined
-    )
-
-    const notification: Notification = {
-      id: 123,
-      createdAt: new Date(),
-      reason: "other" as NotificationReason,
-      routeIds: [],
-      runIds: [],
-      tripIds: ["123", "456", "789"],
-      operatorName: null,
-      operatorId: null,
-      routeIdAtCreation: null,
-      startTime: new Date(),
-    }
-
-    const state = { ...initialState, selectedNotification: notification }
-    mount(
-      <StateDispatchProvider state={state} dispatch={mockDispatch}>
-        <LadderPage />
-      </StateDispatchProvider>
-    )
-    expect(mockDispatch).toHaveBeenCalledWith(setNotificationIsLoading(true))
-  })
-
-  test("clears loading spinner when appropriate", () => {
-    ;(useVehicleAndRouteForNotification as jest.Mock).mockImplementationOnce(
-      () => ({ vehicleOrGhostData: undefined, routeData: undefined })
-    )
-
-    const state = initialState
-    mount(
-      <StateDispatchProvider state={state} dispatch={mockDispatch}>
-        <LadderPage />
-      </StateDispatchProvider>
-    )
-    expect(mockDispatch).toHaveBeenCalledWith(setNotificationIsLoading(false))
   })
 })
 
@@ -227,56 +170,6 @@ describe("findSelectedVehicleOrGhost", () => {
     expect(
       findSelectedVehicleOrGhost(vehiclesByRouteId, undefined)
     ).toBeUndefined()
-  })
-})
-
-describe("chooseVehicleOrGhostForVPP", () => {
-  test("uses the vehicleAndRouteForNotification by preference", () => {
-    const vehicle1: VehicleOrGhost = {
-      id: "v1",
-      directionId: 0,
-      routeId: "1",
-      tripId: "trip",
-      headsign: "headsign",
-      blockId: "block",
-      runId: null,
-      viaVariant: null,
-      layoverDepartureTime: null,
-      scheduledTimepointStatus: {
-        timepointId: "hhgat",
-        fractionUntilTimepoint: 0.0,
-      },
-      routeStatus: "on_route",
-      blockWaivers: [],
-    }
-
-    const vehicle2: VehicleOrGhost = {
-      id: "v2",
-      directionId: 0,
-      routeId: "1",
-      tripId: "trip",
-      headsign: "headsign",
-      blockId: "block",
-      runId: null,
-      viaVariant: null,
-      layoverDepartureTime: null,
-      scheduledTimepointStatus: {
-        timepointId: "hhgat",
-        fractionUntilTimepoint: 0.0,
-      },
-      routeStatus: "on_route",
-      blockWaivers: [],
-    }
-
-    const route: Route = {
-      id: "1",
-      directionNames: { 0: "Outbound", 1: "Inbound" },
-      name: "1",
-    }
-    expect(
-      chooseVehicleOrGhostForVPP({ vehicleOrGhost: vehicle1, route }, vehicle2)
-    ).toEqual(vehicle1)
-    expect(chooseVehicleOrGhostForVPP(undefined, vehicle2)).toEqual(vehicle2)
   })
 })
 

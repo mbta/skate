@@ -1,8 +1,23 @@
-import { createContext } from "react"
-import { Route } from "../schedule"
+import React, { createContext, ReactElement, useContext } from "react"
+import { Route, RouteId } from "../schedule"
 
-type RoutesData = Route[] | null
+const RoutesContext = createContext<Route[] | null>(null)
 
-const RoutesContext = createContext(null as RoutesData)
+export const useRoute = (routeId: RouteId | null | undefined): Route | null => {
+  const routes: Route[] | null = useContext(RoutesContext)
+  return (routes || []).find((route) => route.id === routeId) || null
+}
+
+export const RoutesProvider = ({
+  routes,
+  children,
+}: {
+  routes: Route[] | null
+  children: ReactElement<HTMLElement>
+}) => {
+  return (
+    <RoutesContext.Provider value={routes}>{children}</RoutesContext.Provider>
+  )
+}
 
 export default RoutesContext

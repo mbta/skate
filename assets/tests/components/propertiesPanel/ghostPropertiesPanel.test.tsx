@@ -1,6 +1,7 @@
 import React from "react"
 import renderer from "react-test-renderer"
 import GhostPropertiesPanel from "../../../src/components/propertiesPanel/ghostPropertiesPanel"
+import { RoutesProvider } from "../../../src/contexts/routesContext"
 import { BlockWaiver, Ghost } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
 import * as dateTime from "../../../src/util/dateTime"
@@ -39,7 +40,11 @@ const route: Route = {
 describe("GhostPropertiesPanel", () => {
   test("renders", () => {
     const tree = renderer
-      .create(<GhostPropertiesPanel selectedGhost={ghost} route={route} />)
+      .create(
+        <RoutesProvider routes={[route]}>
+          <GhostPropertiesPanel selectedGhost={ghost} />
+        </RoutesProvider>
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -49,7 +54,9 @@ describe("GhostPropertiesPanel", () => {
     const ghostWithoutRun: Ghost = { ...ghost, runId: null }
     const tree = renderer
       .create(
-        <GhostPropertiesPanel selectedGhost={ghostWithoutRun} route={route} />
+        <RoutesProvider routes={[route]}>
+          <GhostPropertiesPanel selectedGhost={ghostWithoutRun} />
+        </RoutesProvider>
       )
       .toJSON()
 
