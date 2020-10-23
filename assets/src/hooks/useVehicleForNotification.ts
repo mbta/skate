@@ -1,17 +1,15 @@
 import { Socket } from "phoenix"
-import { useContext, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { nullableParser } from "../api"
-import { SocketContext } from "../contexts/socketContext"
 import { useChannel } from "../hooks/useChannel"
 import { isVehicle } from "../models/vehicle"
 import { vehicleOrGhostFromData } from "../models/vehicleData"
 import { Notification, VehicleOrGhost } from "../realtime.d"
 
 const useVehicleForNotification = (
-  notification?: Notification
+  notification?: Notification,
+  socket?: Socket
 ): VehicleOrGhost | undefined | null => {
-  const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
-
   const topic: string | null = notification
     ? `vehicle:run_ids:${notification.runIds.join(",")}`
     : null

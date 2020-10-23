@@ -1,9 +1,6 @@
 import { renderHook } from "@testing-library/react-hooks"
-import { Socket } from "phoenix"
 import React, { ReactElement } from "react"
-import { SocketProvider } from "../../src/contexts/socketContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import { ConnectionStatus } from "../../src/hooks/useSocket"
 import useVehicleForNotification from "../../src/hooks/useVehicleForNotification"
 import { GhostData, VehicleData } from "../../src/models/vehicleData"
 import { NotificationReason } from "../../src/realtime"
@@ -89,18 +86,10 @@ const vehicleData: VehicleData = {
   },
 }
 
-const wrapper = (socket: Socket | undefined) => ({
-  children,
-}: {
-  children: ReactElement<HTMLElement>
-}) => (
-  <SocketProvider
-    socketStatus={{ socket, connectionStatus: ConnectionStatus.Connected }}
-  >
-    <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
-      {children}
-    </StateDispatchProvider>
-  </SocketProvider>
+const wrapper = ({ children }: { children: ReactElement<HTMLElement> }) => (
+  <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+    {children}
+  </StateDispatchProvider>
 )
 
 describe("useVehicleForNotification", () => {
@@ -130,9 +119,9 @@ describe("useVehicleForNotification", () => {
     // tslint:disable: react-hooks-nesting
     const { result } = renderHook(
       () => {
-        return useVehicleForNotification(notification)
+        return useVehicleForNotification(notification, mockSocket)
       },
-      { wrapper: wrapper(mockSocket) }
+      { wrapper }
     )
 
     expect(result.current).toEqual({
@@ -211,9 +200,9 @@ describe("useVehicleForNotification", () => {
     // tslint:disable: react-hooks-nesting
     const { result } = renderHook(
       () => {
-        return useVehicleForNotification(notification)
+        return useVehicleForNotification(notification, mockSocket)
       },
-      { wrapper: wrapper(mockSocket) }
+      { wrapper }
     )
 
     expect(result.current).toEqual({
@@ -253,12 +242,15 @@ describe("useVehicleForNotification", () => {
     // tslint:disable: react-hooks-nesting
     const { result } = renderHook(
       () => {
-        return useVehicleForNotification({
-          ...notification,
-          startTime: new Date("2019-10-06"),
-        })
+        return useVehicleForNotification(
+          {
+            ...notification,
+            startTime: new Date("2019-10-06"),
+          },
+          mockSocket
+        )
       },
-      { wrapper: wrapper(mockSocket) }
+      { wrapper }
     )
     expect(result.current).toBeNull()
     expect(window.FS!.event).toHaveBeenCalledWith("Notification link failed")
@@ -279,12 +271,15 @@ describe("useVehicleForNotification", () => {
     // tslint:disable: react-hooks-nesting
     const { result } = renderHook(
       () => {
-        return useVehicleForNotification({
-          ...notification,
-          startTime: new Date("20200-10-06"),
-        })
+        return useVehicleForNotification(
+          {
+            ...notification,
+            startTime: new Date("20200-10-06"),
+          },
+          mockSocket
+        )
       },
-      { wrapper: wrapper(mockSocket) }
+      { wrapper }
     )
     expect(result.current).toBeNull()
     expect(window.FS!.event).toHaveBeenCalledWith(

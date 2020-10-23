@@ -16,7 +16,8 @@ const AppStateWrapper = (): JSX.Element => {
   const routes = useRoutes()
 
   const vehicleForNotification = useVehicleForNotification(
-    state.selectedNotification
+    state.selectedNotification,
+    socketStatus.socket
   )
 
   return (
