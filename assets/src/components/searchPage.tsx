@@ -7,8 +7,8 @@ import { isVehicle } from "../models/vehicle"
 import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
 import { SearchPageState } from "../state/searchPageState"
 import Map from "./map"
-import PropertiesPanel from "./propertiesPanel"
 import RecentSearches from "./recentSearches"
+import RightPanel from "./rightPanel"
 import SearchForm from "./searchForm"
 import SearchResults from "./searchResults"
 
@@ -110,9 +110,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
         <Map vehicles={onlyVehicles} />
       </div>
 
-      {selectedVehicle && (
-        <PropertiesPanel selectedVehicleOrGhost={selectedVehicle} />
-      )}
+      <RightPanel selectedVehicleOrGhost={selectedVehicle} />
     </div>
   )
 }
