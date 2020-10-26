@@ -1,4 +1,4 @@
-defmodule Skate.Settings.RouteSettings do
+defmodule Skate.Settings.Db.RouteSettings do
   use Ecto.Schema
   import Ecto.Changeset
 

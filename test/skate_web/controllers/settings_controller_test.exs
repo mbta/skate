@@ -2,14 +2,14 @@ defmodule SkateWeb.SettingsControllerTest do
   use SkateWeb.ConnCase
   use Skate.DataCase
 
-  alias Skate.Settings
+  alias Skate.Settings.UserSettings
   alias SkateWeb.AuthManager
 
   @username "FAKE_UID"
 
   describe "PUT /api/settings" do
     setup do
-      Settings.get_or_create(@username)
+      UserSettings.get_or_create(@username)
       :ok
     end
 
@@ -23,7 +23,7 @@ defmodule SkateWeb.SettingsControllerTest do
         })
 
       response(conn, 200)
-      result = Settings.get_or_create(@username)
+      result = UserSettings.get_or_create(@username)
       assert result.ladder_page_vehicle_label == :vehicle_id
     end
 
@@ -37,7 +37,7 @@ defmodule SkateWeb.SettingsControllerTest do
         })
 
       response(conn, 200)
-      result = Settings.get_or_create(@username)
+      result = UserSettings.get_or_create(@username)
       assert result.shuttle_page_vehicle_label == :run_id
     end
 

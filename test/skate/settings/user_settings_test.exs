@@ -1,11 +1,11 @@
-defmodule Skate.SettingsTest do
+defmodule Skate.Settings.UserSettingsTest do
   use Skate.DataCase
 
   import Skate.Repo
 
-  alias Skate.Settings
-  alias Skate.Settings.User
   alias Skate.Settings.UserSettings
+  alias Skate.Settings.Db.User, as: DbUser
+  alias Skate.Settings.Db.UserSettings, as: DbUserSettings
 
   describe "get_or_create" do
     test "gets settings for an existing user" do
@@ -13,12 +13,12 @@ defmodule Skate.SettingsTest do
 
       user =
         insert!(
-          User.changeset(%User{}, %{username: username}),
+          DbUser.changeset(%DbUser{}, %{username: username}),
           returning: true
         )
 
       insert!(
-        UserSettings.changeset(%UserSettings{}, %{
+        DbUserSettings.changeset(%DbUserSettings{}, %{
           user_id: user.id,
           ladder_page_vehicle_label: :vehicle_id,
           shuttle_page_vehicle_label: :run_id
@@ -26,9 +26,9 @@ defmodule Skate.SettingsTest do
         returning: true
       )
 
-      result = Settings.get_or_create(username)
+      result = UserSettings.get_or_create(username)
 
-      assert result == %Settings{
+      assert result == %UserSettings{
                ladder_page_vehicle_label: :vehicle_id,
                shuttle_page_vehicle_label: :run_id
              }
@@ -36,9 +36,9 @@ defmodule Skate.SettingsTest do
 
     test "for a new user, initializes and stores the default settings" do
       username = "username"
-      result = Settings.get_or_create(username)
+      result = UserSettings.get_or_create(username)
 
-      assert result == %Settings{
+      assert result == %UserSettings{
                ladder_page_vehicle_label: :run_id,
                shuttle_page_vehicle_label: :vehicle_id
              }
@@ -57,9 +57,9 @@ defmodule Skate.SettingsTest do
   describe "set" do
     test "can set a setting" do
       username = "username"
-      Settings.get_or_create(username)
-      Settings.set(username, :ladder_page_vehicle_label, :vehicle_id)
-      result = Settings.get_or_create(username)
+      UserSettings.get_or_create(username)
+      UserSettings.set(username, :ladder_page_vehicle_label, :vehicle_id)
+      result = UserSettings.get_or_create(username)
       assert result.ladder_page_vehicle_label == :vehicle_id
     end
   end

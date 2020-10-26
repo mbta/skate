@@ -1,6 +1,6 @@
 defmodule SkateWeb.SettingsController do
   use SkateWeb, :controller
-  alias Skate.Settings
+  alias Skate.Settings.UserSettings
   alias Skate.Settings.VehicleLabel
   alias SkateWeb.AuthManager
 
@@ -11,7 +11,7 @@ defmodule SkateWeb.SettingsController do
 
     case {field, value} do
       {field, {:ok, value}} when not is_nil(field) ->
-        Settings.set(username, field, value)
+        UserSettings.set(username, field, value)
         send_resp(conn, 200, "")
 
       _ ->
