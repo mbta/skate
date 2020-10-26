@@ -3,8 +3,10 @@ import React, { ReactElement, useContext } from "react"
 import { useHistory } from "react-router-dom"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import VehicleForNotificationContext from "../contexts/vehicleForNotificationContext"
+import featureIsEnabled from "../laboratoryFeatures"
 import { VehicleOrGhost } from "../realtime.d"
 import { setNotification } from "../state"
+import NotificationDrawer from "./notificationDrawer"
 import PropertiesPanel from "./propertiesPanel"
 
 const RightPanel = ({
@@ -41,6 +43,11 @@ const RightPanel = ({
     selectedVehicleOrGhost?.id === state.selectedVehicleId
   ) {
     return <PropertiesPanel selectedVehicleOrGhost={selectedVehicleOrGhost} />
+  } else if (
+    state.notificationDrawerIsOpen &&
+    featureIsEnabled("notifications_drawer")
+  ) {
+    return <NotificationDrawer />
   } else {
     return null
   }

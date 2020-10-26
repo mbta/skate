@@ -23,6 +23,8 @@ $picker-width-wide: $picker-width-narrow + 3.1;
 @import "minischedule";
 @import "modal";
 @import "notifications";
+@import "notification_bell_icon";
+@import "notification_drawer";
 @import "page";
 @import "picker_container";
 @import "properties_list";

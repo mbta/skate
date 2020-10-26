@@ -19,6 +19,11 @@ window.drift = {
   },
 }
 
+jest.mock("../../src/laboratoryFeatures", () => ({
+  __esModule: true,
+  default: jest.fn(() => true),
+}))
+
 describe("tabBar", () => {
   it("renders", () => {
     const tree = renderer

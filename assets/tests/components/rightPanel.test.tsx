@@ -15,6 +15,11 @@ jest
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
+jest.mock("../../src/laboratoryFeatures", () => ({
+  __esModule: true,
+  default: jest.fn(() => true),
+}))
+
 describe("rightPanel", () => {
   test("shows nothing if nothing is selected", () => {
     const tree = renderer.create(<RightPanel />).toJSON()
@@ -82,6 +87,31 @@ describe("rightPanel", () => {
       )
       .toJSON()
     expect(tree).toEqual(null)
+  })
+
+  test("shows notification drawer", () => {
+    const state: State = { ...initialState, notificationDrawerIsOpen: true }
+    const wrapper = mount(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <RightPanel />
+      </StateDispatchProvider>
+    )
+    expect(wrapper.html()).toContain("m-notification-drawer")
+  })
+
+  test("prefers VPP to notification drawer", () => {
+    const state: State = {
+      ...initialState,
+      selectedVehicleId: "id",
+      notificationDrawerIsOpen: true,
+    }
+    const wrapper = mount(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <RightPanel selectedVehicleOrGhost={vehicle} />
+      </StateDispatchProvider>
+    )
+    expect(wrapper.html()).toContain("m-vehicle-properties-panel")
+    expect(wrapper.html()).not.toContain("m-notification-drawer")
   })
 })
 

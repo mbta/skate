@@ -1,0 +1,16 @@
+.m-notification-drawer {
+  @include modal-content;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: scroll;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 23.5rem;
+  z-index: 1001;
+
+  @media screen and (max-width: $mobile-max-width) {
+    width: 100vw;
+  }
+}
