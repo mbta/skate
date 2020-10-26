@@ -14,3 +14,27 @@
     width: 100vw;
   }
 }
+
+.m-notification-drawer__title-bar {
+  background-color: $color-primary;
+  color: $color-font-light;
+  display: flex;
+  justify-content: space-between;
+
+  .m-notification-bell-icon {
+    flex: 0 1 auto;
+    margin: 1rem;
+    width: 1.5rem;
+  }
+
+  .m-notification-drawer__title {
+    @include font-header;
+    flex: 0 1 auto;
+    margin: 1rem;
+  }
+
+  .m-close-button {
+    flex: 0 1 auto;
+    padding: 1rem;
+  }
+}
