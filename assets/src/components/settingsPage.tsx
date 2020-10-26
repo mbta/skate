@@ -10,6 +10,7 @@ import {
   putShuttleVehicleLabel,
   VehicleLabelSetting,
 } from "../userSettings"
+import RightPanel from "./rightPanel"
 
 const SettingsPage = (): ReactElement<HTMLDivElement> => {
   const [{ userSettings }, dispatch] = useContext(StateDispatchContext)
@@ -54,6 +55,7 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
           />
         </div>
       </div>
+      <RightPanel />
     </div>
   )
 }
