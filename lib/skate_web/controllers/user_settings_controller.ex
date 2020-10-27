@@ -1,4 +1,4 @@
-defmodule SkateWeb.SettingsController do
+defmodule SkateWeb.UserSettingsController do
   use SkateWeb, :controller
   alias Skate.Settings.UserSettings
   alias Skate.Settings.VehicleLabel

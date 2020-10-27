@@ -1,4 +1,4 @@
-defmodule SkateWeb.SettingsControllerTest do
+defmodule SkateWeb.UserSettingsControllerTest do
   use SkateWeb.ConnCase
   use Skate.DataCase
 
@@ -7,7 +7,7 @@ defmodule SkateWeb.SettingsControllerTest do
 
   @username "FAKE_UID"
 
-  describe "PUT /api/settings" do
+  describe "PUT /api/user_settings" do
     setup do
       UserSettings.get_or_create(@username)
       :ok
@@ -17,7 +17,7 @@ defmodule SkateWeb.SettingsControllerTest do
       conn =
         conn
         |> login()
-        |> put("/api/settings", %{
+        |> put("/api/user_settings", %{
           "field" => "ladder_page_vehicle_label",
           "value" => "vehicle_id"
         })
@@ -31,7 +31,7 @@ defmodule SkateWeb.SettingsControllerTest do
       conn =
         conn
         |> login()
-        |> put("/api/settings", %{
+        |> put("/api/user_settings", %{
           "field" => "shuttle_page_vehicle_label",
           "value" => "run_id"
         })
@@ -45,7 +45,7 @@ defmodule SkateWeb.SettingsControllerTest do
       conn =
         conn
         |> login()
-        |> put("/api/settings", %{
+        |> put("/api/user_settings", %{
           "field" => "invalid_field",
           "value" => "run_id"
         })
@@ -57,7 +57,7 @@ defmodule SkateWeb.SettingsControllerTest do
       conn =
         conn
         |> login()
-        |> put("/api/settings", %{
+        |> put("/api/user_settings", %{
           "field" => "ladder_page_vehicle_label",
           "value" => "invalid_value"
         })

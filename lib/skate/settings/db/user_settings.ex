@@ -2,7 +2,7 @@ defmodule Skate.Settings.Db.UserSettings do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias Skate.Settings.User
+  alias Skate.Settings.Db.User
   alias Skate.Settings.VehicleLabel
 
   @primary_key false

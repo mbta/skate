@@ -132,7 +132,7 @@ export const fetchNearestIntersection = (
   })
 
 export const putSetting = (field: string, value: string): void => {
-  const url = `/api/settings?field=${field}&value=${value}`
+  const url = `/api/user_settings?field=${field}&value=${value}`
   const csrfToken: string = appData()?.csrfToken || ""
   fetch(url, {
     method: "PUT",
