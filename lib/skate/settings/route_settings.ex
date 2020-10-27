@@ -1,7 +1,10 @@
 defmodule Skate.Settings.RouteSettings do
+  import Ecto.Query
   import Skate.Repo
+
   alias Skate.Settings.Db.RouteSettings, as: DbRouteSettings
   alias Skate.Settings.RouteSetting
+  alias Skate.Settings.Db.User, as: DbUser
   alias Skate.Settings.User
 
   @type t :: %__MODULE__{settings: [RouteSetting.t()]}
@@ -26,5 +29,19 @@ defmodule Skate.Settings.RouteSettings do
       )
 
     %__MODULE__{settings: route_settings}
+  end
+
+  @spec set(String.t(), [RouteSetting.t()]) :: :ok
+  def set(username, new_settings) do
+    update_all(
+      from(route_settings in "route_settings",
+        join: user in DbUser,
+        on: user.id == route_settings.user_id,
+        where: user.username == ^username
+      ),
+      set: [{:settings, new_settings}]
+    )
+
+    :ok
   end
 end

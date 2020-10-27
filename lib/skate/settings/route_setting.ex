@@ -6,6 +6,7 @@ defmodule Skate.Settings.RouteSetting do
 
   @primary_key false
 
+  @derive Jason.Encoder
   @type t :: %__MODULE__{}
 
   embedded_schema do
