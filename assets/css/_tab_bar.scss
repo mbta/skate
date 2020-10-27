@@ -53,6 +53,14 @@
   }
 }
 
+.m-tab-bar__logo.halloween {
+  background-color: $color-logo-halloween;
+
+  .m-tab-bar__icon {
+    fill: $black;
+  }
+}
+
 .m-tab-bar__bottom-buttons {
   bottom: 0;
   display: flex;
