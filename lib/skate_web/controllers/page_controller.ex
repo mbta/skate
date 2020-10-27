@@ -10,12 +10,12 @@ defmodule SkateWeb.PageController do
     username = AuthManager.Plug.current_resource(conn)
     _ = Logger.info("uid=#{username}")
 
-    settings = UserSettings.get_or_create(username)
+    user_settings = UserSettings.get_or_create(username)
 
     conn
     |> assign(:username, username)
     |> assign(:csrf_token, Plug.CSRFProtection.get_csrf_token())
-    |> assign(:settings, settings)
+    |> assign(:user_settings, user_settings)
     |> render("index.html")
   end
 

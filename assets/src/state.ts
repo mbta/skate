@@ -11,13 +11,17 @@ import {
 } from "./models/ladderDirection"
 import { Notification, RunId, VehicleId } from "./realtime.d"
 import { RouteId } from "./schedule.d"
-import { defaultSettings, Settings, VehicleLabelSetting } from "./settings"
 import {
   Action as SearchAction,
   initialSearchPageState,
   reducer as searchReducer,
   SearchPageState,
 } from "./state/searchPageState"
+import {
+  defaultUserSettings,
+  UserSettings,
+  VehicleLabelSetting,
+} from "./userSettings"
 
 export interface State {
   pickerContainerIsVisible: boolean
@@ -28,7 +32,7 @@ export interface State {
   selectedShuttleRouteIds: RouteId[]
   selectedShuttleRunIds: RunId[] | "all"
   selectedVehicleId?: VehicleId
-  settings: Settings
+  userSettings: UserSettings
   selectedNotification?: Notification
 }
 
@@ -41,7 +45,7 @@ export const initialState: State = {
   selectedShuttleRouteIds: [],
   selectedShuttleRunIds: "all",
   selectedVehicleId: undefined,
-  settings: defaultSettings,
+  userSettings: defaultUserSettings,
   selectedNotification: undefined,
 }
 
@@ -372,7 +376,10 @@ const selectedVehicleIdReducer = (
   }
 }
 
-const settingsReducer = (state: Settings, action: Action): Settings => {
+const userSettingsReducer = (
+  state: UserSettings,
+  action: Action
+): UserSettings => {
   switch (action.type) {
     case "SET_LADDER_VEHICLE_LABEL_SETTING":
       return {
@@ -425,7 +432,7 @@ export const reducer = (state: State, action: Action): State => ({
     action
   ),
   selectedVehicleId: selectedVehicleIdReducer(state.selectedVehicleId, action),
-  settings: settingsReducer(state.settings, action),
+  userSettings: userSettingsReducer(state.userSettings, action),
   selectedNotification: selectedNotificationReducer(
     state.selectedNotification,
     action

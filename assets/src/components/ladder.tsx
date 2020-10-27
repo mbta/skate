@@ -197,7 +197,7 @@ const VehicleSvg = ({
 }) => {
   displayCrowding = !!displayCrowding && isVehicle(ladderVehicle.vehicle)
   const { vehicle, x, y, vehicleDirection } = ladderVehicle
-  const [{ settings }, dispatch] = useContext(StateDispatchContext)
+  const [{ userSettings }, dispatch] = useContext(StateDispatchContext)
   const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
   const alertIconStyle = blockWaiverAlertStyle(vehicle)
 
@@ -229,7 +229,7 @@ const VehicleSvg = ({
             isLayingOver,
             vehicleDirection
           )}
-          label={vehicleLabel(vehicle, settings)}
+          label={vehicleLabel(vehicle, userSettings)}
           variant={vehicle.viaVariant}
           status={drawnStatus(vehicle)}
           alertIconStyle={alertIconStyle}

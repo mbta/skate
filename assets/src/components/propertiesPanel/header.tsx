@@ -126,7 +126,7 @@ const directionName = (
 const nowInSeconds = (): number => Math.floor(Date.now() / 1000)
 
 const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
-  const [{ ladderDirections, settings }, dispatch] = useContext(
+  const [{ ladderDirections, userSettings }, dispatch] = useContext(
     StateDispatchContext
   )
   const [epocNowInSeconds, setEpocNowInSeconds] = useState(nowInSeconds())
@@ -147,7 +147,7 @@ const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
           <VehicleIcon
             size={Size.Large}
             orientation={vehicleOrientation(vehicle, ladderDirections)}
-            label={vehicleLabel(vehicle, settings)}
+            label={vehicleLabel(vehicle, userSettings)}
             variant={vehicle.viaVariant}
             status={drawnStatus(vehicle)}
           />

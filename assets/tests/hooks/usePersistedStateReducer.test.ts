@@ -1,5 +1,5 @@
 import { act, renderHook } from "@testing-library/react-hooks"
-import { putSetting } from "../../src/api"
+import { putUserSetting } from "../../src/api"
 import appData from "../../src/appData"
 import usePersistedStateReducer, {
   filter,
@@ -7,8 +7,8 @@ import usePersistedStateReducer, {
   insert,
   merge,
 } from "../../src/hooks/usePersistedStateReducer"
-import { VehicleLabelSetting } from "../../src/settings"
 import { initialState, selectVehicle, State } from "../../src/state"
+import { VehicleLabelSetting } from "../../src/userSettings"
 
 // tslint:disable: react-hooks-nesting
 
@@ -19,7 +19,7 @@ const mockLocalStorage = {
 
 jest.mock("../../src/api", () => ({
   __esModule: true,
-  putSetting: jest.fn(),
+  putUserSetting: jest.fn(),
 }))
 
 jest.mock("../../src/appData", () => ({
@@ -97,19 +97,19 @@ describe("usePersistedStateReducer", () => {
 
   test("loads settings from the backend", () => {
     ;(appData as jest.Mock).mockImplementationOnce(() => ({
-      settings: JSON.stringify({
+      userSettings: JSON.stringify({
         ladder_page_vehicle_label: "run_id",
         shuttle_page_vehicle_label: "run_id",
       }),
     }))
     const { result } = renderHook(() => usePersistedStateReducer())
     const [state] = result.current
-    expect(state.settings.shuttleVehicleLabel).toEqual(
+    expect(state.userSettings.shuttleVehicleLabel).toEqual(
       VehicleLabelSetting.RunNumber
     )
   })
 
-  test("if settings are in localstorage, copies them to the backend and uses them", () => {
+  test("if user settings are in localstorage, copies them to the backend and uses them", () => {
     jest
       .spyOn(window.localStorage, "getItem")
       .mockImplementation(
@@ -120,12 +120,12 @@ describe("usePersistedStateReducer", () => {
     const { result } = renderHook(() => usePersistedStateReducer())
     const [state] = result.current
 
-    expect(state.settings).toEqual({
+    expect(state.userSettings).toEqual({
       ladderVehicleLabel: VehicleLabelSetting.RunNumber,
       shuttleVehicleLabel: VehicleLabelSetting.RunNumber,
     })
     // settings were saved to the database
-    expect(putSetting).toHaveBeenCalled()
+    expect(putUserSetting).toHaveBeenCalled()
     // settings were removed from local storage
     expect(
       (window.localStorage.setItem as jest.Mock).mock.calls[0][1]

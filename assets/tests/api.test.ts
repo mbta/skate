@@ -8,7 +8,7 @@ import {
   fetchShapeForTrip,
   fetchShuttleRoutes,
   fetchTimepointsForRoute,
-  putSetting,
+  putUserSetting,
 } from "../src/api"
 import * as browser from "../src/models/browser"
 
@@ -475,10 +475,10 @@ describe("fetchNearestIntersection", () => {
   })
 })
 
-describe("putSetting", () => {
+describe("putUserSetting", () => {
   test("uses PUT and CSRF token", () => {
     mockFetch(200, "")
-    putSetting("name", "value")
+    putUserSetting("name", "value")
     expect(window.fetch).toHaveBeenCalledTimes(1)
     const args = (window.fetch as jest.Mock).mock.calls[0][1]
     expect(args.method).toEqual("PUT")

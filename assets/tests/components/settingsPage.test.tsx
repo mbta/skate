@@ -3,12 +3,15 @@ import React from "react"
 import renderer from "react-test-renderer"
 import SettingsPage from "../../src/components/settingsPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import { defaultSettings, VehicleLabelSetting } from "../../src/settings"
 import {
   initialState,
   setLadderVehicleLabelSetting,
   setShuttleVehicleLabelSetting,
 } from "../../src/state"
+import {
+  defaultUserSettings,
+  VehicleLabelSetting,
+} from "../../src/userSettings"
 
 const mockDispatch = jest.fn()
 
@@ -28,8 +31,8 @@ describe("SettingsPage", () => {
   test("displays the current ladder vehicle label setting", () => {
     const mockState = {
       ...initialState,
-      settings: {
-        ...defaultSettings,
+      userSettings: {
+        ...defaultUserSettings,
         ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
       },
     }
@@ -76,8 +79,8 @@ describe("SettingsPage", () => {
   test("displays the current map vehicle label setting", () => {
     const mockState = {
       ...initialState,
-      settings: {
-        ...defaultSettings,
+      userSettings: {
+        ...defaultUserSettings,
         shuttleVehicleLabel: VehicleLabelSetting.RunNumber,
       },
     }

@@ -1,14 +1,14 @@
 import { useEffect, useReducer } from "react"
 import appData from "../appData"
 import { loadState, saveState } from "../localStorage"
+import { Dispatch, initialState, reducer, State } from "../state"
 import {
-  defaultSettings,
+  defaultUserSettings,
   putLadderVehicleLabel,
   putShuttleVehicleLabel,
-  Settings,
   settingsFromData,
-} from "../settings"
-import { Dispatch, initialState, reducer, State } from "../state"
+  UserSettings,
+} from "../userSettings"
 
 const APP_STATE_KEY = "mbta-skate-state"
 
@@ -37,27 +37,27 @@ const usePersistedStateReducer = (): [State, Dispatch] => {
 
 const init = (): State => {
   const loadedState: object | undefined = loadState(APP_STATE_KEY)
-  let settings: Settings
+  let userSettings: UserSettings
   if (loadedState !== undefined && loadedState.hasOwnProperty("settings")) {
     // migrating settings from localStorage to database
-    const localStorageSettings: Settings = (loadedState as {
-      settings: Settings
+    const localStorageSettings: UserSettings = (loadedState as {
+      settings: UserSettings
     }).settings
     putLadderVehicleLabel(localStorageSettings.ladderVehicleLabel)
     putShuttleVehicleLabel(localStorageSettings.shuttleVehicleLabel)
     // settings will be removed from localStorage when they're next saved
     // prefer these settings to the ones that came from the backend
-    settings = localStorageSettings
+    userSettings = localStorageSettings
   } else {
-    const backendSettingsString: string | undefined = appData()?.settings
+    const backendSettingsString: string | undefined = appData()?.userSettings
     if (backendSettingsString !== undefined) {
-      settings = settingsFromData(JSON.parse(backendSettingsString))
+      userSettings = settingsFromData(JSON.parse(backendSettingsString))
     } else {
-      settings = defaultSettings
+      userSettings = defaultUserSettings
     }
   }
   return merge<State>(
-    { ...initialState, settings },
+    { ...initialState, userSettings },
     loadedState || {},
     PERSISTED_KEYS
   )

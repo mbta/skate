@@ -2,17 +2,17 @@ import React, { ReactElement, useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { ladderIcon, mapIcon } from "../helpers/icon"
 import {
-  putLadderVehicleLabel,
-  putShuttleVehicleLabel,
-  VehicleLabelSetting,
-} from "../settings"
-import {
   setLadderVehicleLabelSetting,
   setShuttleVehicleLabelSetting,
 } from "../state"
+import {
+  putLadderVehicleLabel,
+  putShuttleVehicleLabel,
+  VehicleLabelSetting,
+} from "../userSettings"
 
 const SettingsPage = (): ReactElement<HTMLDivElement> => {
-  const [{ settings }, dispatch] = useContext(StateDispatchContext)
+  const [{ userSettings }, dispatch] = useContext(StateDispatchContext)
 
   return (
     <div className="c-page c-page--settings">
@@ -26,7 +26,7 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
             icon={ladderIcon}
             label="Route Ladders"
             selectId="ladder-vehicle-label-setting"
-            value={settings.ladderVehicleLabel}
+            value={userSettings.ladderVehicleLabel}
             onChange={(value) => {
               const newSetting: VehicleLabelSetting = parseInt(value, 10)
               dispatch(setLadderVehicleLabelSetting(newSetting))
@@ -41,7 +41,7 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
             icon={mapIcon}
             label="Map"
             selectId="map-vehicle-label-setting"
-            value={settings.shuttleVehicleLabel}
+            value={userSettings.shuttleVehicleLabel}
             onChange={(value) => {
               const newSetting: VehicleLabelSetting = parseInt(value, 10)
               dispatch(setShuttleVehicleLabelSetting(newSetting))
