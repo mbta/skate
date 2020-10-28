@@ -3,7 +3,6 @@ defmodule Skate.Settings.RouteSettings do
   import Skate.Repo
 
   alias Skate.Settings.Db.RouteSettings, as: DbRouteSettings
-  alias Skate.Settings.RouteSetting
   alias Skate.Settings.Db.User, as: DbUser
   alias Skate.Settings.User
 
@@ -21,7 +20,9 @@ defmodule Skate.Settings.RouteSettings do
       insert!(
         DbRouteSettings.changeset(%DbRouteSettings{}, %{
           user_id: user.id,
-          settings: []
+          route_ids: [],
+          ladder_directions: %{},
+          crowding_toggles: %{}
         }),
         returning: true,
         conflict_target: [:user_id],
@@ -32,14 +33,14 @@ defmodule Skate.Settings.RouteSettings do
   end
 
   @spec set(String.t(), [RouteSetting.t()]) :: :ok
-  def set(username, new_settings) do
+  def set(username, new_values) do
     update_all(
       from(route_settings in "route_settings",
         join: user in DbUser,
         on: user.id == route_settings.user_id,
         where: user.username == ^username
       ),
-      set: [{:settings, new_settings}]
+      set: new_values
     )
 
     :ok
