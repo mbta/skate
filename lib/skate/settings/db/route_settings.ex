@@ -10,7 +10,7 @@ defmodule Skate.Settings.Db.RouteSettings do
 
   schema "route_settings" do
     belongs_to(:user, User, primary_key: true)
-    field(:route_ids, {:array, :string})
+    field(:selected_route_ids, {:array, :string})
     field(:ladder_directions, :map)
     field(:crowding_toggles, :map)
     timestamps()
@@ -18,7 +18,7 @@ defmodule Skate.Settings.Db.RouteSettings do
 
   def changeset(route_settings, attrs \\ %{}) do
     route_settings
-    |> cast(attrs, [:user_id, :route_ids, :ladder_directions, :crowding_toggles])
-    |> validate_required([:user_id, :route_ids, :ladder_directions, :crowding_toggles])
+    |> cast(attrs, [:user_id, :selected_route_ids, :ladder_directions, :crowding_toggles])
+    |> validate_required([:user_id, :selected_route_ids, :ladder_directions, :crowding_toggles])
   end
 end

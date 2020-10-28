@@ -20,7 +20,7 @@ defmodule Skate.Settings.RouteSettings do
       insert!(
         DbRouteSettings.changeset(%DbRouteSettings{}, %{
           user_id: user.id,
-          route_ids: [],
+          selected_route_ids: [],
           ladder_directions: %{},
           crowding_toggles: %{}
         }),
