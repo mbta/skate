@@ -19,6 +19,7 @@ const mockLocalStorage = {
 
 jest.mock("../../src/api", () => ({
   __esModule: true,
+  putRouteSettings: jest.fn(),
   putUserSetting: jest.fn(),
 }))
 
@@ -60,12 +61,15 @@ describe("usePersistedStateReducer", () => {
     jest
       .spyOn(window.localStorage, "getItem")
       .mockImplementation(
-        (_stateKey: string) => '{"selectedRouteIds":["28","39"]}'
+        (_stateKey: string) =>
+          '{"selectedRouteIds":["28","39"],"ladderDirections":{"39":0},"ladderCrowdingToggles":{"77":true}}'
       )
 
     const expectedState: State = {
       ...initialState,
       selectedRouteIds: ["28", "39"],
+      ladderDirections: { "39": 0 },
+      ladderCrowdingToggles: { "77": true },
     }
 
     const { result } = renderHook(() => usePersistedStateReducer())

@@ -1,13 +1,15 @@
 import { useEffect, useReducer } from "react"
+import { putRouteSettings } from "../api"
 import appData from "../appData"
 import { loadState, saveState } from "../localStorage"
+import { defaultRouteSettings, RouteSettings } from "../routeSettings"
 import { Dispatch, initialState, reducer, State } from "../state"
 import {
   defaultUserSettings,
   putLadderVehicleLabel,
   putShuttleVehicleLabel,
-  settingsFromData,
   UserSettings,
+  userSettingsFromData,
 } from "../userSettings"
 
 const APP_STATE_KEY = "mbta-skate-state"
@@ -15,9 +17,6 @@ const APP_STATE_KEY = "mbta-skate-state"
 type Key = string[]
 
 const PERSISTED_KEYS: Key[] = [
-  ["selectedRouteIds"],
-  ["ladderDirections"],
-  ["ladderCrowdingToggles"],
   ["selectedVehicleId"],
   ["selectedShuttleRouteIds"],
   ["selectedShuttleRunIds"],
@@ -37,6 +36,16 @@ const usePersistedStateReducer = (): [State, Dispatch] => {
 
 const init = (): State => {
   const loadedState: object | undefined = loadState(APP_STATE_KEY)
+  const userSettings = getUserSettings(loadedState)
+  const routeSettings = getRouteSettings(loadedState)
+  return merge<State>(
+    { ...initialState, ...routeSettings, userSettings },
+    loadedState || {},
+    PERSISTED_KEYS
+  )
+}
+
+const getUserSettings = (loadedState: object | undefined): UserSettings => {
   let userSettings: UserSettings
   if (loadedState !== undefined && loadedState.hasOwnProperty("settings")) {
     // migrating settings from localStorage to database
@@ -51,16 +60,39 @@ const init = (): State => {
   } else {
     const backendSettingsString: string | undefined = appData()?.userSettings
     if (backendSettingsString !== undefined) {
-      userSettings = settingsFromData(JSON.parse(backendSettingsString))
+      userSettings = userSettingsFromData(JSON.parse(backendSettingsString))
     } else {
       userSettings = defaultUserSettings
     }
   }
-  return merge<State>(
-    { ...initialState, userSettings },
-    loadedState || {},
-    PERSISTED_KEYS
-  )
+
+  return userSettings
+}
+
+const getRouteSettings = (loadedState: object | undefined): RouteSettings => {
+  let routeSettings: RouteSettings
+  if (
+    loadedState !== undefined &&
+    loadedState.hasOwnProperty("selectedRouteIds")
+  ) {
+    // migrating settings from localStorage to database
+    const localStorageData = loadedState as RouteSettings
+    routeSettings = {
+      selectedRouteIds: localStorageData.selectedRouteIds,
+      ladderDirections: localStorageData.ladderDirections,
+      ladderCrowdingToggles: localStorageData.ladderCrowdingToggles,
+    }
+    putRouteSettings(routeSettings)
+  } else {
+    const backendSettingsString: string | undefined = appData()?.routeSettings
+    if (backendSettingsString !== undefined) {
+      routeSettings = JSON.parse(backendSettingsString)
+    } else {
+      routeSettings = defaultRouteSettings
+    }
+  }
+
+  return routeSettings
 }
 
 export const get = (obj: object, key: Key): any | undefined =>

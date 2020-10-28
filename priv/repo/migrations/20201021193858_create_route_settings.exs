@@ -12,7 +12,7 @@ defmodule Skate.Repo.Migrations.CreateRouteSettings do
 
       add(:selected_route_ids, {:array, :string}, null: false)
       add(:ladder_directions, :map, null: false)
-      add(:crowding_toggles, :map, null: false)
+      add(:ladder_crowding_toggles, :map, null: false)
       timestamps()
     end
   end

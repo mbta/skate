@@ -22,7 +22,7 @@ defmodule Skate.Settings.RouteSettings do
           user_id: user.id,
           selected_route_ids: [],
           ladder_directions: %{},
-          crowding_toggles: %{}
+          ladder_crowding_toggles: %{}
         }),
         returning: true,
         conflict_target: [:user_id],

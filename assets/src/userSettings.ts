@@ -41,7 +41,7 @@ const vehicleLabelFromData = (data: VehicleLabelData): VehicleLabelSetting => {
   }
 }
 
-export const settingsFromData = (data: SettingsData): UserSettings => {
+export const userSettingsFromData = (data: SettingsData): UserSettings => {
   return {
     ladderVehicleLabel: vehicleLabelFromData(data.ladder_page_vehicle_label),
     shuttleVehicleLabel: vehicleLabelFromData(data.shuttle_page_vehicle_label),
