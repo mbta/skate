@@ -151,7 +151,7 @@ const openDrift = (): void => {
   // drift is set by scripts loaded by _drift.html.eex
   // but we don't have types for it
   // @ts-ignore
-  if (typeof drift !== "undefined") {
+  if (drift !== undefined && drift.api !== undefined) {
     // @ts-ignore
     drift.api.sidebar.toggle()
   }
