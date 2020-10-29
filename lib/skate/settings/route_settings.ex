@@ -41,7 +41,7 @@ defmodule Skate.Settings.RouteSettings do
     }
   end
 
-  @spec set(String.t(), [RouteSetting.t()]) :: :ok
+  @spec set(String.t(), [{atom(), any()}]) :: :ok
   def set(username, new_values) do
     update_all(
       from(route_settings in "route_settings",
