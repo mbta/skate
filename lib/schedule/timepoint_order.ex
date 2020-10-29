@@ -9,6 +9,10 @@ defmodule Schedule.TimepointOrder do
 
   @type hints :: %{Route.id() => %{Direction.id() => [Timepoint.id()]}}
 
+  @timepoint_hint_raw_data [File.cwd!(), "data", "timepoint_order.json"]
+                           |> Path.join()
+                           |> File.read!()
+
   @spec timepoints_for_routes(
           [RoutePattern.t()],
           StopTime.by_trip_id(),
@@ -79,10 +83,7 @@ defmodule Schedule.TimepointOrder do
 
   @spec hints :: hints()
   def hints do
-    [File.cwd!(), "data", "timepoint_order.json"]
-    |> Path.join()
-    |> File.read!()
-    |> parse_hints()
+    parse_hints(@timepoint_hint_raw_data)
   end
 
   @spec parse_hints(binary()) :: hints()
