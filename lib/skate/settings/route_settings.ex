@@ -2,15 +2,20 @@ defmodule Skate.Settings.RouteSettings do
   import Ecto.Query
   import Skate.Repo
 
+  alias Schedule.Route
   alias Skate.Settings.Db.RouteSettings, as: DbRouteSettings
   alias Skate.Settings.Db.User, as: DbUser
   alias Skate.Settings.User
 
-  @type t :: %__MODULE__{settings: [RouteSetting.t()]}
+  @type t :: %__MODULE__{
+          selected_route_ids: [Route.id()],
+          ladder_directions: map(),
+          ladder_crowding_toggles: map()
+        }
 
-  @enforce_keys [:settings]
+  @enforce_keys [:selected_route_ids, :ladder_directions, :ladder_crowding_toggles]
   @derive Jason.Encoder
-  defstruct [:settings]
+  defstruct [:selected_route_ids, :ladder_directions, :ladder_crowding_toggles]
 
   @spec get_or_create(String.t()) :: t()
   def get_or_create(username) do
@@ -29,7 +34,11 @@ defmodule Skate.Settings.RouteSettings do
         on_conflict: {:replace, [:user_id]}
       )
 
-    %__MODULE__{settings: route_settings}
+    %__MODULE__{
+      selected_route_ids: route_settings.selected_route_ids,
+      ladder_directions: route_settings.ladder_directions,
+      ladder_crowding_toggles: route_settings.ladder_crowding_toggles
+    }
   end
 
   @spec set(String.t(), [RouteSetting.t()]) :: :ok

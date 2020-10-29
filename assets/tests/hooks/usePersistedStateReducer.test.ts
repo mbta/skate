@@ -26,7 +26,7 @@ jest.mock("../../src/api", () => ({
 jest.mock("../../src/appData", () => ({
   __esModule: true,
   default: jest.fn(() => ({
-    settings: JSON.stringify({
+    userSettings: JSON.stringify({
       ladder_page_vehicle_label: "run_id",
       shuttle_page_vehicle_label: "vehicle_id",
     }),
@@ -90,12 +90,10 @@ describe("usePersistedStateReducer", () => {
 
     expect(state.selectedVehicleId).toEqual("vehicle_id")
 
-    // first call is persisting the initial state
-    // second call is persisting the edit we're testing
-    expect(window.localStorage.setItem).toHaveBeenCalledTimes(2)
-    const persistedState = JSON.parse(
-      (window.localStorage.setItem as jest.Mock).mock.calls[1][1]
-    )
+    // last call is persisting the edit we're testing
+    const calls = (window.localStorage.setItem as jest.Mock).mock.calls
+    const lastCallIndex = calls.length - 1
+    const persistedState = JSON.parse(calls[lastCallIndex][1])
     expect(persistedState.selectedVehicleId).toEqual("vehicle_id")
   })
 

@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react"
+import { useEffect, useReducer, useState } from "react"
 import { putRouteSettings } from "../api"
 import appData from "../appData"
 import { loadState, saveState } from "../localStorage"
@@ -16,7 +16,7 @@ const APP_STATE_KEY = "mbta-skate-state"
 
 type Key = string[]
 
-const PERSISTED_KEYS: Key[] = [
+const LOCALLY_PERSISTED_KEYS: Key[] = [
   ["selectedVehicleId"],
   ["selectedShuttleRouteIds"],
   ["selectedShuttleRunIds"],
@@ -26,10 +26,23 @@ const PERSISTED_KEYS: Key[] = [
 const usePersistedStateReducer = (): [State, Dispatch] => {
   const [state, dispatch] = useReducer(reducer, undefined, init)
 
-  const persistableState = filter(state, PERSISTED_KEYS)
+  const locallyPersistableState = filter(state, LOCALLY_PERSISTED_KEYS)
+
   useEffect(() => {
-    saveState(APP_STATE_KEY, persistableState)
-  }, [persistableState])
+    saveState(APP_STATE_KEY, locallyPersistableState)
+  }, [locallyPersistableState])
+
+  const { selectedRouteIds, ladderDirections, ladderCrowdingToggles } = state
+
+  const [firstLoadDone, setFirstLoadDone] = useState(false)
+
+  useEffect(() => {
+    if (firstLoadDone) {
+      putRouteSettings(state)
+    } else {
+      setFirstLoadDone(true)
+    }
+  }, [selectedRouteIds, ladderDirections, ladderCrowdingToggles])
 
   return [state, dispatch]
 }
@@ -38,11 +51,12 @@ const init = (): State => {
   const loadedState: object | undefined = loadState(APP_STATE_KEY)
   const userSettings = getUserSettings(loadedState)
   const routeSettings = getRouteSettings(loadedState)
-  return merge<State>(
+  const result = merge<State>(
     { ...initialState, ...routeSettings, userSettings },
     loadedState || {},
-    PERSISTED_KEYS
+    LOCALLY_PERSISTED_KEYS
   )
+  return result
 }
 
 const getUserSettings = (loadedState: object | undefined): UserSettings => {
@@ -86,7 +100,16 @@ const getRouteSettings = (loadedState: object | undefined): RouteSettings => {
   } else {
     const backendSettingsString: string | undefined = appData()?.routeSettings
     if (backendSettingsString !== undefined) {
-      routeSettings = JSON.parse(backendSettingsString)
+      const {
+        selected_route_ids,
+        ladder_directions,
+        ladder_crowding_toggles,
+      } = JSON.parse(backendSettingsString)
+      routeSettings = {
+        selectedRouteIds: selected_route_ids,
+        ladderDirections: ladder_directions,
+        ladderCrowdingToggles: ladder_crowding_toggles,
+      }
     } else {
       routeSettings = defaultRouteSettings
     }
