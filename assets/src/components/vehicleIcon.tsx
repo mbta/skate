@@ -1,4 +1,5 @@
 import React, { ReactElement } from "react"
+import { todayIsHalloween } from "../helpers/date"
 import { className } from "../helpers/dom"
 import { DrawnStatus, statusClass } from "../models/vehicleStatus"
 import { AlertIconStyle, IconAlertCircleSvgNode } from "./iconAlertCircle"
@@ -149,6 +150,8 @@ export const VehicleIconSvgNode = ({
       ) : null}
       {status === "ghost" ? (
         <Ghost size={size} variant={variant} />
+      ) : status === "off-course" && todayIsHalloween() ? (
+        <Bat size={size} />
       ) : (
         <Triangle size={size} orientation={orientation} />
       )}
@@ -188,6 +191,17 @@ const Triangle = ({
       d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
       // Move the center to 0,0
       transform={`scale(${scale}) rotate(${rotation}) translate(-24,-22)`}
+    />
+  )
+}
+
+const Bat = ({ size }: { size: Size }) => {
+  const scale = scaleBatForSize(size)
+  return (
+    <path
+      d="m33.19 37.76a1.53 1.53 0 0 0 1.11.31 1.48 1.48 0 0 0 1-.58c1.21-1.62 2.54-2.42 3.83-2.41 2.51.06 5 2.94 5.78 4.05a1.5 1.5 0 0 0 1.55.61 1.47 1.47 0 0 0 1.12-1.23c3.27-23.76-13.42-30.31-13.58-30.37a1.47 1.47 0 0 0 -2 1.54c.58 4.94-.09 8.32-2 9.8a3.11 3.11 0 0 1 -.54.35v-5a1.47 1.47 0 1 0 -2.93 0v4.17a4.38 4.38 0 0 0 -4.81 0v-4.2a1.47 1.47 0 1 0 -2.93 0v5.2a3.79 3.79 0 0 1 -.91-.53c-1.87-1.48-2.54-4.86-2-9.8a1.47 1.47 0 0 0 -2-1.54c-.04.07-16.73 6.62-13.45 30.38a1.47 1.47 0 0 0 1.12 1.23 1.5 1.5 0 0 0 1.55-.61c.75-1.11 3.25-4 5.77-4.05 1.35 0 2.63.78 3.84 2.41a1.47 1.47 0 0 0 2.1.27s4.82-2.91 8 1.61a1.43 1.43 0 0 0 2.39-.12c1.33-2.25 3.9-4.65 7.99-1.49z"
+      // Move the center to 0,0
+      transform={`scale(${scale}) translate(-24,-22)`}
     />
   )
 }
@@ -444,6 +458,17 @@ export const scaleForSize = (size: Size): number => {
       return 0.38
     case Size.Medium:
       return 0.625
+    case Size.Large:
+      return 1
+  }
+}
+
+const scaleBatForSize = (size: Size): number => {
+  switch (size) {
+    case Size.Small:
+      return 0.38
+    case Size.Medium:
+      return 0.5
     case Size.Large:
       return 1
   }
