@@ -1,7 +1,7 @@
 import { LadderDirection } from "../src/models/ladderDirection"
 import { NotificationReason, VehicleId } from "../src/realtime.d"
-import { VehicleLabelSetting } from "../src/settings"
 import * as State from "../src/state"
+import { VehicleLabelSetting } from "../src/userSettings"
 
 const initialState = State.initialState
 const reducer = State.reducer
@@ -196,8 +196,8 @@ describe("reducer", () => {
     const state = initialState
     const expectedState = {
       ...state,
-      settings: {
-        ...state.settings,
+      userSettings: {
+        ...state.userSettings,
         ladderVehicleLabel,
       },
     }
@@ -216,8 +216,8 @@ describe("reducer", () => {
     const state = initialState
     const expectedState = {
       ...state,
-      settings: {
-        ...state.settings,
+      userSettings: {
+        ...state.userSettings,
         shuttleVehicleLabel,
       },
     }

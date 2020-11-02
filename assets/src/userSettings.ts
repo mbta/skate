@@ -1,4 +1,4 @@
-import { putSetting } from "./api"
+import { putUserSetting } from "./api"
 import { isVehicle } from "./models/vehicle"
 import { VehicleOrGhost } from "./realtime"
 
@@ -7,18 +7,18 @@ export enum VehicleLabelSetting {
   VehicleNumber,
 }
 
-export interface Settings {
+export interface UserSettings {
   ladderVehicleLabel: VehicleLabelSetting
   shuttleVehicleLabel: VehicleLabelSetting
 }
 
-export const defaultSettings: Settings = {
+export const defaultUserSettings: UserSettings = {
   ladderVehicleLabel: VehicleLabelSetting.RunNumber,
   shuttleVehicleLabel: VehicleLabelSetting.VehicleNumber,
 }
 
 export const vehicleLabelSetting = (
-  settings: Settings,
+  settings: UserSettings,
   vehicle: VehicleOrGhost
 ): VehicleLabelSetting =>
   isVehicle(vehicle) && vehicle.isShuttle
@@ -41,7 +41,7 @@ const vehicleLabelFromData = (data: VehicleLabelData): VehicleLabelSetting => {
   }
 }
 
-export const settingsFromData = (data: SettingsData): Settings => {
+export const userSettingsFromData = (data: SettingsData): UserSettings => {
   return {
     ladderVehicleLabel: vehicleLabelFromData(data.ladder_page_vehicle_label),
     shuttleVehicleLabel: vehicleLabelFromData(data.shuttle_page_vehicle_label),
@@ -60,11 +60,17 @@ const vehicleLabelToString = (setting: VehicleLabelSetting): string => {
 export const putLadderVehicleLabel = (
   vehicleLabel: VehicleLabelSetting
 ): void => {
-  putSetting("ladder_page_vehicle_label", vehicleLabelToString(vehicleLabel))
+  putUserSetting(
+    "ladder_page_vehicle_label",
+    vehicleLabelToString(vehicleLabel)
+  )
 }
 
 export const putShuttleVehicleLabel = (
   vehicleLabel: VehicleLabelSetting
 ): void => {
-  putSetting("shuttle_page_vehicle_label", vehicleLabelToString(vehicleLabel))
+  putUserSetting(
+    "shuttle_page_vehicle_label",
+    vehicleLabelToString(vehicleLabel)
+  )
 }

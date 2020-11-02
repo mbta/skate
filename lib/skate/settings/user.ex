@@ -1,25 +1,13 @@
 defmodule Skate.Settings.User do
-  use Ecto.Schema
-  import Ecto.Changeset
+  alias Skate.Settings.Db.User, as: DbUser
 
-  alias Skate.Settings.UserSettings
-
-  @type t :: %__MODULE__{}
-
-  schema "users" do
-    field(:username, :string)
-    has_one(:user_settings, UserSettings)
-    timestamps()
-  end
-
-  def changeset(user, attrs \\ %{}) do
-    user
-    |> cast(attrs, [
-      :id,
-      :username
-    ])
-    |> validate_required([
-      :username
-    ])
+  def get_or_create(username) do
+    Skate.Repo.insert!(
+      DbUser.changeset(%DbUser{}, %{username: username}),
+      returning: true,
+      conflict_target: [:username],
+      # update a row with no effect so the returning works
+      on_conflict: {:replace, [:username]}
+    )
   end
 end

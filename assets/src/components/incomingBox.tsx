@@ -27,7 +27,7 @@ const IncomingBoxVehicle = ({
   ladderDirection: LadderDirection
   selectedVehicleId: VehicleId | undefined
 }) => {
-  const [{ settings }, dispatch] = useContext(StateDispatchContext)
+  const [{ userSettings }, dispatch] = useContext(StateDispatchContext)
   const selectedClass =
     vehicleOrGhost.id === selectedVehicleId ? "selected" : ""
   const orientation =
@@ -70,7 +70,7 @@ const IncomingBoxVehicle = ({
       <div className="m-incoming-box__vehicle-label">
         {displayCrowding
           ? crowdingLabel(vehicleOrGhost as Vehicle)
-          : vehicleLabel(vehicleOrGhost, settings)}
+          : vehicleLabel(vehicleOrGhost, userSettings)}
       </div>
     </button>
   )

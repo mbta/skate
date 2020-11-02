@@ -1,6 +1,7 @@
 <div id="app"
   data-user-token="<%= @user_token %>"
   data-csrf-token="<%= @csrf_token %>"
-  data-settings="<%= Jason.encode!(@settings) %>"
+  data-user-settings="<%= Jason.encode!(@user_settings) %>"
+  data-route-settings="<%= Jason.encode!(@route_settings) %>"
   data-laboratory-features="<%= Jason.encode!(@laboratory_features) %>"
 ></div>

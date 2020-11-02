@@ -3,12 +3,15 @@ import React from "react"
 import renderer from "react-test-renderer"
 import SettingsPage from "../../src/components/settingsPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import { defaultSettings, VehicleLabelSetting } from "../../src/settings"
 import {
   initialState,
   setLadderVehicleLabelSetting,
   setShuttleVehicleLabelSetting,
 } from "../../src/state"
+import {
+  defaultUserSettings,
+  VehicleLabelSetting,
+} from "../../src/userSettings"
 
 const mockDispatch = jest.fn()
 
@@ -28,8 +31,8 @@ describe("SettingsPage", () => {
   test("displays the current ladder vehicle label setting", () => {
     const mockState = {
       ...initialState,
-      settings: {
-        ...defaultSettings,
+      userSettings: {
+        ...defaultUserSettings,
         ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
       },
     }
@@ -69,15 +72,15 @@ describe("SettingsPage", () => {
     )
     // Updates the backend database
     expect((window.fetch as jest.Mock).mock.calls[0][0]).toEqual(
-      "/api/settings?field=ladder_page_vehicle_label&value=run_id"
+      "/api/user_settings?field=ladder_page_vehicle_label&value=run_id"
     )
   })
 
   test("displays the current map vehicle label setting", () => {
     const mockState = {
       ...initialState,
-      settings: {
-        ...defaultSettings,
+      userSettings: {
+        ...defaultUserSettings,
         shuttleVehicleLabel: VehicleLabelSetting.RunNumber,
       },
     }
@@ -117,7 +120,7 @@ describe("SettingsPage", () => {
     )
     // Updates the backend database
     expect((window.fetch as jest.Mock).mock.calls[0][0]).toEqual(
-      "/api/settings?field=shuttle_page_vehicle_label&value=vehicle_id"
+      "/api/user_settings?field=shuttle_page_vehicle_label&value=vehicle_id"
     )
   })
 })

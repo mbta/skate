@@ -1,7 +1,7 @@
 import vehicleLabel, { runIdToLabel } from "../../src/helpers/vehicleLabel"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../src/realtime"
-import { Settings, VehicleLabelSetting } from "../../src/settings"
+import { UserSettings, VehicleLabelSetting } from "../../src/userSettings"
 
 const vehicle: Vehicle = {
   id: "y0479",
@@ -67,12 +67,12 @@ describe("vehicleLabel", () => {
     expect(
       vehicleLabel(swingingOffVehicle, {
         ladderVehicleLabel: VehicleLabelSetting.RunNumber,
-      } as Settings)
+      } as UserSettings)
     ).toEqual("SW-OFF")
     expect(
       vehicleLabel(swingingOffVehicle, {
         ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
-      } as Settings)
+      } as UserSettings)
     ).toEqual("SW-OFF")
   })
 
@@ -85,12 +85,12 @@ describe("vehicleLabel", () => {
     expect(
       vehicleLabel(pullingBackVehicle, {
         ladderVehicleLabel: VehicleLabelSetting.RunNumber,
-      } as Settings)
+      } as UserSettings)
     ).toEqual("PULL-B")
     expect(
       vehicleLabel(pullingBackVehicle, {
         ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
-      } as Settings)
+      } as UserSettings)
     ).toEqual("PULL-B")
   })
 
@@ -103,7 +103,7 @@ describe("vehicleLabel", () => {
     expect(
       vehicleLabel(overloadedVehicle, {
         ladderVehicleLabel: VehicleLabelSetting.RunNumber,
-      } as Settings)
+      } as UserSettings)
     ).toEqual("ADDED")
   })
 
@@ -111,7 +111,7 @@ describe("vehicleLabel", () => {
     expect(
       vehicleLabel(vehicle, {
         ladderVehicleLabel: VehicleLabelSetting.RunNumber,
-      } as Settings)
+      } as UserSettings)
     ).toEqual("2000")
   })
 
@@ -119,7 +119,7 @@ describe("vehicleLabel", () => {
     expect(
       vehicleLabel(vehicle, {
         ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
-      } as Settings)
+      } as UserSettings)
     ).toEqual("0479")
   })
 
@@ -133,7 +133,7 @@ describe("vehicleLabel", () => {
       vehicleLabel(shuttle, {
         ladderVehicleLabel: VehicleLabelSetting.RunNumber,
         shuttleVehicleLabel: VehicleLabelSetting.VehicleNumber,
-      } as Settings)
+      } as UserSettings)
     ).toEqual("0479")
   })
 
@@ -159,7 +159,7 @@ describe("vehicleLabel", () => {
     expect(
       vehicleLabel({ ...ghost, runId: "123-1234" }, {
         ladderVehicleLabel: VehicleLabelSetting.RunNumber,
-      } as Settings)
+      } as UserSettings)
     ).toEqual("1234")
   })
 
@@ -167,7 +167,7 @@ describe("vehicleLabel", () => {
     expect(
       vehicleLabel({ ...ghost, runId: null }, {
         ladderVehicleLabel: VehicleLabelSetting.RunNumber,
-      } as Settings)
+      } as UserSettings)
     ).toEqual("N/A")
   })
 
@@ -175,7 +175,7 @@ describe("vehicleLabel", () => {
     expect(
       vehicleLabel(ghost, {
         ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
-      } as Settings)
+      } as UserSettings)
     ).toEqual("N/A")
   })
 })

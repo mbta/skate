@@ -3,6 +3,7 @@ import appData from "./appData"
 import { Block, Run } from "./minischedule"
 import { reload } from "./models/browser"
 import { blockFromData, runFromData } from "./models/minischeduleData"
+import { RouteSettings } from "./routeSettings"
 import {
   DirectionName,
   Route,
@@ -131,17 +132,29 @@ export const fetchNearestIntersection = (
     defaultResult: null,
   })
 
-export const putSetting = (field: string, value: string): void => {
-  const url = `/api/settings?field=${field}&value=${value}`
-  const csrfToken: string = appData()?.csrfToken || ""
+export const putUserSetting = (field: string, value: string): void => {
+  const url = `/api/user_settings?field=${field}&value=${value}`
   fetch(url, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      "x-csrf-token": csrfToken,
+      "x-csrf-token": getCsrfToken(),
     },
   })
 }
+
+export const putRouteSettings = (routeSettings: RouteSettings): void => {
+  fetch("/api/route_settings", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "x-csrf-token": getCsrfToken(),
+    },
+    body: JSON.stringify(routeSettings),
+  })
+}
+
+const getCsrfToken = (): string => appData()?.csrfToken || ""
 
 export const nullableParser = <Data, T>(
   parser: (data: Data) => T

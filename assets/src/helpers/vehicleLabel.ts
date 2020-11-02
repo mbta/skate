@@ -1,10 +1,14 @@
 import { isVehicle } from "../models/vehicle"
 import { RunId, VehicleOrGhost } from "../realtime"
-import { Settings, vehicleLabelSetting, VehicleLabelSetting } from "../settings"
+import {
+  UserSettings,
+  vehicleLabelSetting,
+  VehicleLabelSetting,
+} from "../userSettings"
 
 const vehicleLabel = (
   vehicleOrGhost: VehicleOrGhost,
-  settings: Settings
+  settings: UserSettings
 ): string => {
   if (isVehicle(vehicleOrGhost) && vehicleOrGhost.isOverload) {
     return "ADDED"

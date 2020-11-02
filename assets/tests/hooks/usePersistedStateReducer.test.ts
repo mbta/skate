@@ -1,5 +1,5 @@
 import { act, renderHook } from "@testing-library/react-hooks"
-import { putSetting } from "../../src/api"
+import { putRouteSettings, putUserSetting } from "../../src/api"
 import appData from "../../src/appData"
 import usePersistedStateReducer, {
   filter,
@@ -7,8 +7,15 @@ import usePersistedStateReducer, {
   insert,
   merge,
 } from "../../src/hooks/usePersistedStateReducer"
-import { VehicleLabelSetting } from "../../src/settings"
-import { initialState, selectVehicle, State } from "../../src/state"
+import {
+  flipLadder,
+  initialState,
+  selectRoute,
+  selectVehicle,
+  State,
+  toggleLadderCrowding,
+} from "../../src/state"
+import { VehicleLabelSetting } from "../../src/userSettings"
 
 // tslint:disable: react-hooks-nesting
 
@@ -19,13 +26,14 @@ const mockLocalStorage = {
 
 jest.mock("../../src/api", () => ({
   __esModule: true,
-  putSetting: jest.fn(),
+  putRouteSettings: jest.fn(),
+  putUserSetting: jest.fn(),
 }))
 
 jest.mock("../../src/appData", () => ({
   __esModule: true,
   default: jest.fn(() => ({
-    settings: JSON.stringify({
+    userSettings: JSON.stringify({
       ladder_page_vehicle_label: "run_id",
       shuttle_page_vehicle_label: "vehicle_id",
     }),
@@ -35,7 +43,7 @@ jest.mock("../../src/appData", () => ({
 describe("usePersistedStateReducer", () => {
   const originalLocalStorage = window.localStorage
 
-  beforeAll(() => {
+  beforeEach(() => {
     Object.defineProperty(window, "localStorage", {
       value: mockLocalStorage,
     })
@@ -59,13 +67,16 @@ describe("usePersistedStateReducer", () => {
   test("loads initial state from local storage", () => {
     jest
       .spyOn(window.localStorage, "getItem")
-      .mockImplementation(
-        (_stateKey: string) => '{"selectedRouteIds":["28","39"]}'
+      .mockImplementationOnce(
+        (_stateKey: string) =>
+          '{"selectedRouteIds":["28","39"],"ladderDirections":{"39":0},"ladderCrowdingToggles":{"77":true}}'
       )
 
     const expectedState: State = {
       ...initialState,
       selectedRouteIds: ["28", "39"],
+      ladderDirections: { "39": 0 },
+      ladderCrowdingToggles: { "77": true },
     }
 
     const { result } = renderHook(() => usePersistedStateReducer())
@@ -86,27 +97,35 @@ describe("usePersistedStateReducer", () => {
 
     expect(state.selectedVehicleId).toEqual("vehicle_id")
 
-    // first call is persisting the initial state
-    // second call is persisting the edit we're testing
-    expect(window.localStorage.setItem).toHaveBeenCalledTimes(2)
-    const persistedState = JSON.parse(
-      (window.localStorage.setItem as jest.Mock).mock.calls[1][1]
-    )
+    // last call is persisting the edit we're testing
+    const calls = (window.localStorage.setItem as jest.Mock).mock.calls
+    const lastCallIndex = calls.length - 1
+    const persistedState = JSON.parse(calls[lastCallIndex][1])
     expect(persistedState.selectedVehicleId).toEqual("vehicle_id")
   })
 
   test("loads settings from the backend", () => {
-    ;(appData as jest.Mock).mockImplementationOnce(() => ({
-      settings: JSON.stringify({
+    const mockSettings = {
+      userSettings: JSON.stringify({
         ladder_page_vehicle_label: "run_id",
         shuttle_page_vehicle_label: "run_id",
       }),
-    }))
+      routeSettings: JSON.stringify({
+        selected_route_ids: ["39"],
+        ladder_directions: { "77": 1 },
+        ladder_crowding_toggles: { "83": true },
+      }),
+    }
+    ;(appData as jest.Mock).mockImplementationOnce(() => mockSettings)
+    ;(appData as jest.Mock).mockImplementationOnce(() => mockSettings)
     const { result } = renderHook(() => usePersistedStateReducer())
     const [state] = result.current
-    expect(state.settings.shuttleVehicleLabel).toEqual(
+    expect(state.userSettings.shuttleVehicleLabel).toEqual(
       VehicleLabelSetting.RunNumber
     )
+    expect(state.selectedRouteIds).toEqual(["39"])
+    expect(state.ladderDirections).toEqual({ "77": 1 })
+    expect(state.ladderCrowdingToggles).toEqual({ "83": true })
   })
 
   test("if settings are in localstorage, copies them to the backend and uses them", () => {
@@ -114,22 +133,46 @@ describe("usePersistedStateReducer", () => {
       .spyOn(window.localStorage, "getItem")
       .mockImplementation(
         (_stateKey: string) =>
-          '{"settings":{"ladderVehicleLabel":1,"shuttleVehicleLabel":1}}'
+          '{"settings":{"ladderVehicleLabel":1,"shuttleVehicleLabel":1},"selectedRouteIds":["39"],"ladderDirections":{"77":1},"ladderCrowdingToggles":{"83":true}}'
       )
 
     const { result } = renderHook(() => usePersistedStateReducer())
     const [state] = result.current
 
-    expect(state.settings).toEqual({
+    expect(state.userSettings).toEqual({
       ladderVehicleLabel: VehicleLabelSetting.RunNumber,
       shuttleVehicleLabel: VehicleLabelSetting.RunNumber,
     })
+    expect(state.selectedRouteIds).toEqual(["39"])
+    expect(state.ladderDirections).toEqual({ "77": 1 })
+    expect(state.ladderCrowdingToggles).toEqual({ "83": true })
     // settings were saved to the database
-    expect(putSetting).toHaveBeenCalled()
+    expect(putUserSetting).toHaveBeenCalled()
+    expect(putRouteSettings).toHaveBeenCalled()
     // settings were removed from local storage
-    expect(
-      (window.localStorage.setItem as jest.Mock).mock.calls[0][1]
-    ).not.toContain("settings")
+    const setItemParam = (window.localStorage.setItem as jest.Mock).mock
+      .calls[0][1]
+    expect(setItemParam).not.toContain("settings")
+    expect(setItemParam).not.toContain("selectedRouteIds")
+    expect(setItemParam).not.toContain("ladderDirections")
+    expect(setItemParam).not.toContain("ladderCrowdingToggles")
+  })
+
+  test("sends updated route settings to backend when one changes", () => {
+    const { result } = renderHook(() => usePersistedStateReducer())
+    const [, dispatch] = result.current
+
+    act(() => {
+      dispatch(selectRoute("39"))
+      dispatch(flipLadder("39"))
+      dispatch(selectRoute("83"))
+      dispatch(toggleLadderCrowding("83"))
+    })
+    expect(putRouteSettings).toHaveBeenCalledWith({
+      selectedRouteIds: ["39", "83"],
+      ladderDirections: { "39": 1 },
+      ladderCrowdingToggles: { "83": true },
+    })
   })
 })
 

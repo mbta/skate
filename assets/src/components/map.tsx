@@ -26,8 +26,8 @@ import vehicleLabelString from "../helpers/vehicleLabel"
 import { drawnStatus, statusClass } from "../models/vehicleStatus"
 import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
 import { Shape } from "../schedule"
-import { Settings } from "../settings"
 import { selectVehicle } from "../state"
+import { UserSettings } from "../userSettings"
 
 export interface Props {
   vehicles: Vehicle[]
@@ -73,7 +73,7 @@ const makeVehicleIcon = (
 const makeLabelIcon = (
   vehicle: Vehicle,
   isPrimary: boolean,
-  settings: Settings,
+  settings: UserSettings,
   selectedVehicleId?: VehicleId
 ): Leaflet.DivIcon => {
   const labelString = vehicleLabelString(vehicle, settings)
@@ -118,7 +118,7 @@ const Vehicle = ({
   const labelIcon: Leaflet.DivIcon = makeLabelIcon(
     vehicle,
     isPrimary,
-    appState.settings,
+    appState.userSettings,
     appState.selectedVehicleId
   )
   const zIndexOffset = isPrimary ? 2000 : 0

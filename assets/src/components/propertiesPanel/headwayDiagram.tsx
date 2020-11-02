@@ -34,7 +34,7 @@ const minutes = (seconds: number): string => {
 }
 
 const OtherVehicle = ({ vehicle }: { vehicle: Vehicle }) => {
-  const [{ settings }, dispatch] = useContext(StateDispatchContext)
+  const [{ userSettings }, dispatch] = useContext(StateDispatchContext)
   const { id, viaVariant } = vehicle
 
   return (
@@ -45,7 +45,7 @@ const OtherVehicle = ({ vehicle }: { vehicle: Vehicle }) => {
       <VehicleIcon
         size={Size.Small}
         orientation={Orientation.Right}
-        label={vehicleLabel(vehicle, settings)}
+        label={vehicleLabel(vehicle, userSettings)}
         variant={viaVariant}
       />
     </div>
@@ -53,7 +53,7 @@ const OtherVehicle = ({ vehicle }: { vehicle: Vehicle }) => {
 }
 
 const HeadwayDiagram = ({ vehicle }: { vehicle: Vehicle }) => {
-  const [{ settings }] = useContext(StateDispatchContext)
+  const [{ userSettings }] = useContext(StateDispatchContext)
   const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = useContext(
     VehiclesByRouteIdContext
   )
@@ -108,7 +108,7 @@ const HeadwayDiagram = ({ vehicle }: { vehicle: Vehicle }) => {
           <VehicleIcon
             size={Size.Medium}
             orientation={Orientation.Right}
-            label={vehicleLabel(vehicle, settings)}
+            label={vehicleLabel(vehicle, userSettings)}
             variant={viaVariant}
           />
         </div>

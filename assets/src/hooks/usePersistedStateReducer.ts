@@ -1,23 +1,22 @@
-import { useEffect, useReducer } from "react"
+import { useEffect, useReducer, useState } from "react"
+import { putRouteSettings } from "../api"
 import appData from "../appData"
 import { loadState, saveState } from "../localStorage"
+import { defaultRouteSettings, RouteSettings } from "../routeSettings"
+import { Dispatch, initialState, reducer, State } from "../state"
 import {
-  defaultSettings,
+  defaultUserSettings,
   putLadderVehicleLabel,
   putShuttleVehicleLabel,
-  Settings,
-  settingsFromData,
-} from "../settings"
-import { Dispatch, initialState, reducer, State } from "../state"
+  UserSettings,
+  userSettingsFromData,
+} from "../userSettings"
 
 const APP_STATE_KEY = "mbta-skate-state"
 
 type Key = string[]
 
-const PERSISTED_KEYS: Key[] = [
-  ["selectedRouteIds"],
-  ["ladderDirections"],
-  ["ladderCrowdingToggles"],
+const LOCALLY_PERSISTED_KEYS: Key[] = [
   ["selectedVehicleId"],
   ["selectedShuttleRouteIds"],
   ["selectedShuttleRunIds"],
@@ -27,40 +26,100 @@ const PERSISTED_KEYS: Key[] = [
 const usePersistedStateReducer = (): [State, Dispatch] => {
   const [state, dispatch] = useReducer(reducer, undefined, init)
 
-  const persistableState = filter(state, PERSISTED_KEYS)
+  const locallyPersistableState = filter(state, LOCALLY_PERSISTED_KEYS)
+
   useEffect(() => {
-    saveState(APP_STATE_KEY, persistableState)
-  }, [persistableState])
+    saveState(APP_STATE_KEY, locallyPersistableState)
+  }, [locallyPersistableState])
+
+  const { selectedRouteIds, ladderDirections, ladderCrowdingToggles } = state
+
+  const [firstLoadDone, setFirstLoadDone] = useState(false)
+
+  useEffect(() => {
+    if (firstLoadDone) {
+      putRouteSettings({
+        selectedRouteIds: state.selectedRouteIds,
+        ladderDirections: state.ladderDirections,
+        ladderCrowdingToggles: state.ladderCrowdingToggles,
+      })
+    } else {
+      setFirstLoadDone(true)
+    }
+  }, [selectedRouteIds, ladderDirections, ladderCrowdingToggles])
 
   return [state, dispatch]
 }
 
 const init = (): State => {
   const loadedState: object | undefined = loadState(APP_STATE_KEY)
-  let settings: Settings
+  const userSettings = getUserSettings(loadedState)
+  const routeSettings = getRouteSettings(loadedState)
+  const result = merge<State>(
+    { ...initialState, ...routeSettings, userSettings },
+    loadedState || {},
+    LOCALLY_PERSISTED_KEYS
+  )
+  return result
+}
+
+const getUserSettings = (loadedState: object | undefined): UserSettings => {
+  let userSettings: UserSettings
   if (loadedState !== undefined && loadedState.hasOwnProperty("settings")) {
     // migrating settings from localStorage to database
-    const localStorageSettings: Settings = (loadedState as {
-      settings: Settings
+    const localStorageSettings: UserSettings = (loadedState as {
+      settings: UserSettings
     }).settings
     putLadderVehicleLabel(localStorageSettings.ladderVehicleLabel)
     putShuttleVehicleLabel(localStorageSettings.shuttleVehicleLabel)
     // settings will be removed from localStorage when they're next saved
     // prefer these settings to the ones that came from the backend
-    settings = localStorageSettings
+    userSettings = localStorageSettings
   } else {
-    const backendSettingsString: string | undefined = appData()?.settings
+    const backendSettingsString: string | undefined = appData()?.userSettings
     if (backendSettingsString !== undefined) {
-      settings = settingsFromData(JSON.parse(backendSettingsString))
+      userSettings = userSettingsFromData(JSON.parse(backendSettingsString))
     } else {
-      settings = defaultSettings
+      userSettings = defaultUserSettings
     }
   }
-  return merge<State>(
-    { ...initialState, settings },
-    loadedState || {},
-    PERSISTED_KEYS
-  )
+
+  return userSettings
+}
+
+const getRouteSettings = (loadedState: object | undefined): RouteSettings => {
+  let routeSettings: RouteSettings
+  if (
+    loadedState !== undefined &&
+    loadedState.hasOwnProperty("selectedRouteIds")
+  ) {
+    // migrating settings from localStorage to database
+    const localStorageData = loadedState as RouteSettings
+    routeSettings = {
+      selectedRouteIds: localStorageData.selectedRouteIds,
+      ladderDirections: localStorageData.ladderDirections,
+      ladderCrowdingToggles: localStorageData.ladderCrowdingToggles,
+    }
+    putRouteSettings(routeSettings)
+  } else {
+    const backendSettingsString: string | undefined = appData()?.routeSettings
+    if (backendSettingsString !== undefined) {
+      const {
+        selected_route_ids,
+        ladder_directions,
+        ladder_crowding_toggles,
+      } = JSON.parse(backendSettingsString)
+      routeSettings = {
+        selectedRouteIds: selected_route_ids,
+        ladderDirections: ladder_directions,
+        ladderCrowdingToggles: ladder_crowding_toggles,
+      }
+    } else {
+      routeSettings = defaultRouteSettings
+    }
+  }
+
+  return routeSettings
 }
 
 export const get = (obj: object, key: Key): any | undefined =>
