@@ -60,7 +60,7 @@ describe("usePersistedStateReducer", () => {
   test("loads initial state from local storage", () => {
     jest
       .spyOn(window.localStorage, "getItem")
-      .mockImplementation(
+      .mockImplementationOnce(
         (_stateKey: string) =>
           '{"selectedRouteIds":["28","39"],"ladderDirections":{"39":0},"ladderCrowdingToggles":{"77":true}}'
       )
@@ -98,10 +98,15 @@ describe("usePersistedStateReducer", () => {
   })
 
   test("loads settings from the backend", () => {
-    ;(appData as jest.Mock).mockImplementationOnce(() => ({
+    ;(appData as jest.Mock).mockImplementation(() => ({
       userSettings: JSON.stringify({
         ladder_page_vehicle_label: "run_id",
         shuttle_page_vehicle_label: "run_id",
+      }),
+      routeSettings: JSON.stringify({
+        selected_route_ids: ["39"],
+        ladder_directions: { "77": 1 },
+        ladder_crowding_toggles: { "83": true },
       }),
     }))
     const { result } = renderHook(() => usePersistedStateReducer())
@@ -109,6 +114,9 @@ describe("usePersistedStateReducer", () => {
     expect(state.userSettings.shuttleVehicleLabel).toEqual(
       VehicleLabelSetting.RunNumber
     )
+    expect(state.selectedRouteIds).toEqual(["39"])
+    expect(state.ladderDirections).toEqual({ "77": 1 })
+    expect(state.ladderCrowdingToggles).toEqual({ "83": true })
   })
 
   test("if user settings are in localstorage, copies them to the backend and uses them", () => {
