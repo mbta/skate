@@ -21,15 +21,7 @@ export const useNotifications = (
       channel = socket.channel(topic)
       channel.on(event, ({ data: data }) => {
         const notifications: Notification[] = notificationsFromData(data)
-        notifications.forEach((notification) => {
-          if (
-            notification.routeIds.some((routeId) =>
-              selectedRouteIds.includes(routeId)
-            )
-          ) {
-            handleNewNotification(notification)
-          }
-        })
+        notifications.forEach(handleNewNotification)
       })
       channel
         .join()

@@ -98,29 +98,6 @@ describe("useNotifications", () => {
     expect(notification0.id).not.toEqual(notification1.id)
   })
 
-  test("doesn't call callback for notifications for unselected routes", () => {
-    const selectedRoutes: RouteId[] = []
-    const handler = jest.fn()
-    const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel()
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
-
-    mockChannel.on.mockImplementation((_event, dataHandler) => {
-      dataHandler({
-        data: [notificationData],
-      })
-    })
-
-    renderHook(
-      () => {
-        useNotifications(handler)
-      },
-      { wrapper: wrapper(mockSocket, selectedRoutes) }
-    )
-
-    expect(handler).not.toHaveBeenCalled()
-  })
-
   test("leaves the channel on unmount", () => {
     const handler = jest.fn()
     const mockSocket = makeMockSocket()
