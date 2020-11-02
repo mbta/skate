@@ -97,6 +97,7 @@ const TabBar = ({
       <div className="m-tab-bar__bottom-buttons">
         {featureIsEnabled("notifications_drawer") ? (
           <button
+            className="m-tab-bar__notifications"
             onClick={() => {
               dispatch(toggleNotificationDrawer())
             }}
