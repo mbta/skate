@@ -1,5 +1,6 @@
-import React, { ReactElement } from "react"
+import React, { ReactElement, useContext } from "react"
 import { NavLink, useLocation } from "react-router-dom"
+import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import {
   ladderIcon,
   mapIcon,
@@ -7,7 +8,10 @@ import {
   refreshIcon,
   searchIcon,
 } from "../helpers/icon"
+import featureIsEnabled from "../laboratoryFeatures"
 import { reload } from "../models/browser"
+import { toggleNotificationDrawer } from "../state"
+import NotificationBellIcon from "./notificationBellIcon"
 
 interface Props {
   pickerContainerIsVisible: boolean
@@ -17,6 +21,7 @@ const TabBar = ({
   pickerContainerIsVisible,
 }: Props): ReactElement<HTMLDivElement> => {
   const location = useLocation()
+  const [, dispatch] = useContext(StateDispatchContext)
   const displayHelp = (): void => {
     switch (location.pathname) {
       case "/":
@@ -90,6 +95,15 @@ const TabBar = ({
       </ul>
 
       <div className="m-tab-bar__bottom-buttons">
+        {featureIsEnabled("notifications_drawer") ? (
+          <button
+            onClick={() => {
+              dispatch(toggleNotificationDrawer())
+            }}
+          >
+            <NotificationBellIcon extraClasses={["m-tab-bar__icon"]} />
+          </button>
+        ) : null}
         <button className="m-tab-bar__drift" onClick={openDrift}>
           {driftIcon}
         </button>

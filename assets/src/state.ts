@@ -46,7 +46,7 @@ export const initialState: State = {
   selectedShuttleRouteIds: [],
   selectedShuttleRunIds: "all",
   selectedVehicleId: undefined,
-  notificationDrawerIsOpen: true,
+  notificationDrawerIsOpen: false,
   userSettings: defaultUserSettings,
   selectedNotification: undefined,
 }
