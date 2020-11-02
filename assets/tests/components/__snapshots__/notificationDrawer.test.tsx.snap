@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NotificationDrawer renders 1`] = `
+<div
+  className="m-notification-drawer"
+>
+  <div
+    className="m-notification-drawer__title-bar"
+  >
+    <span
+      className="m-notification-bell-icon m-notification-bell-icon--closed m-notification-bell-icon--read"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "SVG",
+        }
+      }
+    />
+    <div
+      className="m-notification-drawer__title"
+    >
+      Notifications
+    </div>
+    <button
+      className="m-close-button"
+      onClick={[Function]}
+    >
+      <span
+        className=""
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
+        }
+      />
+    </button>
+  </div>
+</div>
+`;

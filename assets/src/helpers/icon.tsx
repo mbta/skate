@@ -39,6 +39,8 @@ import mattapanLineIconSvg from "../../static/images/icon-mattapan-line.svg"
 // @ts-ignore
 import minusIconSvg from "../../static/images/icon-minus.svg"
 // @ts-ignore
+import notificationBellIconSvg from "../../static/images/icon-notification-bell.svg"
+// @ts-ignore
 import orangeLineIconSvg from "../../static/images/icon-orange-line.svg"
 // @ts-ignore
 import plusIconSvg from "../../static/images/icon-plus.svg"
@@ -121,6 +123,9 @@ export const mattapanLineIcon = (className: string = ""): JSX.Element =>
 
 export const minusIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, minusIconSvg)
+
+export const notificationBellIcon = (className: string = ""): JSX.Element =>
+  renderSvg(className, notificationBellIconSvg)
 
 export const orangeLineIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, orangeLineIconSvg)

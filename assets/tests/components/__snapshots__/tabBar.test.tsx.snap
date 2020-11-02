@@ -105,6 +105,19 @@ exports[`tabBar renders 1`] = `
     className="m-tab-bar__bottom-buttons"
   >
     <button
+      className="m-tab-bar__notifications"
+      onClick={[Function]}
+    >
+      <span
+        className="m-notification-bell-icon m-notification-bell-icon--closed m-notification-bell-icon--read m-tab-bar__icon"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
+        }
+      />
+    </button>
+    <button
       className="m-tab-bar__drift"
       onClick={[Function]}
     >

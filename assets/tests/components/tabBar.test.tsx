@@ -3,7 +3,9 @@ import React from "react"
 import { BrowserRouter } from "react-router-dom"
 import renderer from "react-test-renderer"
 import TabBar from "../../src/components/tabBar"
+import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import * as browser from "../../src/models/browser"
+import { initialState, toggleNotificationDrawer } from "../../src/state"
 
 window.Appcues = {
   identify: jest.fn(),
@@ -18,6 +20,11 @@ window.drift = {
     },
   },
 }
+
+jest.mock("../../src/laboratoryFeatures", () => ({
+  __esModule: true,
+  default: jest.fn(() => true),
+}))
 
 describe("tabBar", () => {
   it("renders", () => {
@@ -66,6 +73,20 @@ describe("tabBar", () => {
     wrapper.find(".m-tab-bar__logo").first().simulate("click")
 
     expect(reloadSpy).toHaveBeenCalled()
+  })
+
+  test("clicking the notification icon toggles the notification drawer", () => {
+    const dispatch = jest.fn()
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+        <BrowserRouter>
+          <TabBar pickerContainerIsVisible={true} />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    wrapper.find(".m-tab-bar__notifications").first().simulate("click")
+    expect(dispatch).toHaveBeenCalledWith(toggleNotificationDrawer())
   })
 
   it("opens drift when you click on the chat icon", () => {

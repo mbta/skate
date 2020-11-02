@@ -10,7 +10,7 @@ import { isASubwayRoute } from "../models/subwayRoute"
 import { RunId, TrainVehicle, Vehicle, VehicleId } from "../realtime"
 import { ByRouteId, RouteId, Shape } from "../schedule"
 import Map from "./map"
-import PropertiesPanel from "./propertiesPanel"
+import RightPanel from "./rightPanel"
 import ShuttlePicker from "./shuttlePicker"
 
 const filterShuttles = (
@@ -78,9 +78,7 @@ const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
         />
       </div>
 
-      {selectedVehicle && (
-        <PropertiesPanel selectedVehicleOrGhost={selectedVehicle} />
-      )}
+      <RightPanel selectedVehicleOrGhost={selectedVehicle} />
     </div>
   )
 }

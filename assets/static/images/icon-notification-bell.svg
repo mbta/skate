@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+  viewBox="0 0 20 20"
+  version="1.1"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+>
+  <g transform="translate(2, 0)">
+    <path d="M8,20 C9.1,20 10,19.1 10,18 L6,18 C6,19.1 6.89,20 8,20 Z M14,14 L14,9 C14,5.93 12.36,3.36 9.5,2.68 L9.5,2 C9.5,1.17 8.83,0.5 8,0.5 C7.17,0.5 6.5,1.17 6.5,2 L6.5,2.68 C3.63,3.36 2,5.92 2,9 L2,14 L0,16 L0,17 L16,17 L16,16 L14,14 Z"></path>
+  </g>
+  <circle cx="15" cy="6" r="4"></circle>
+</svg>
