@@ -38,7 +38,11 @@ const usePersistedStateReducer = (): [State, Dispatch] => {
 
   useEffect(() => {
     if (firstLoadDone) {
-      putRouteSettings(state)
+      putRouteSettings({
+        selectedRouteIds: state.selectedRouteIds,
+        ladderDirections: state.ladderDirections,
+        ladderCrowdingToggles: state.ladderCrowdingToggles,
+      })
     } else {
       setFirstLoadDone(true)
     }
