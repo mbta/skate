@@ -4,6 +4,7 @@ defmodule Notifications.NotificationServer do
   alias Notifications.Notification
   alias Realtime.{BlockWaiver, Ghost, Vehicle}
   alias Schedule.Block
+  alias Skate.Settings.User
 
   require Logger
 
@@ -23,10 +24,10 @@ defmodule Notifications.NotificationServer do
     GenServer.cast(server, {:new_block_waivers, new_waivers_by_block_key})
   end
 
-  def subscribe(server \\ default_name()) do
+  def subscribe(username, server \\ default_name()) do
     registry_key = GenServer.call(server, :subscribe)
 
-    Registry.register(Notifications.Supervisor.registry_name(), registry_key, :dummy_value)
+    Registry.register(Notifications.Supervisor.registry_name(), registry_key, username)
     :ok
   end
 
@@ -146,8 +147,14 @@ defmodule Notifications.NotificationServer do
 
   defp broadcast(notifications, registry_key) do
     Registry.dispatch(Notifications.Supervisor.registry_name(), registry_key, fn entries ->
-      Enum.each(entries, fn {pid, _} ->
-        send(pid, {:notifications, notifications})
+      Enum.each(notifications, fn notification ->
+        usernames = User.usernames_for_route_ids(notification.route_ids)
+
+        Enum.each(entries, fn {pid, username} ->
+          if Enum.member?(usernames, username) do
+            send(pid, {:notifications, notifications})
+          end
+        end)
       end)
     end)
   end

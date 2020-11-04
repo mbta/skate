@@ -7,6 +7,7 @@ defmodule SkateWeb.NotificationsChannelTest do
 
   setup do
     reassign_env(:skate, :valid_token?, fn _socket -> true end)
+    reassign_env(:skate, :username_from_socket!, fn _socket -> "test_uid" end)
 
     socket = socket(UserSocket, "", %{guardian_default_resource: "test_uid"})
 
