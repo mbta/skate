@@ -34,5 +34,15 @@ exports[`NotificationDrawer renders 1`] = `
       />
     </button>
   </div>
+  <div
+    className="m-notification-drawer__content"
+  >
+    <p>
+      You have no notifications currently.
+    </p>
+    <p>
+      Here you'll be notified about events like accidents and ghost vehicles on any bus routes you have selected on the Route Ladders page.
+    </p>
+  </div>
 </div>
 `;
