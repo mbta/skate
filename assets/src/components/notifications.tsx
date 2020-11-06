@@ -1,16 +1,14 @@
 import React, { useContext, useEffect, useState } from "react"
 import { NotificationsContext } from "../contexts/notificationsContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import useInterval from "../hooks/useInterval"
+import useCurrentTime from "../hooks/useCurrentTime"
 import { Notification, NotificationId } from "../realtime.d"
 import { setNotification } from "../state"
-import { now } from "../util/dateTime"
 import { NotificationContent } from "./notificationContent"
 
 export const Notifications = () => {
   const { notifications, removeNotification } = useContext(NotificationsContext)
-  const [currentTime, setCurrentTime] = useState(now())
-  useInterval(() => setCurrentTime(now()), 1000)
+  const currentTime = useCurrentTime()
 
   const [, dispatch] = useContext(StateDispatchContext)
 
