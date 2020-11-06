@@ -94,7 +94,7 @@ const wrapper = ({ children }: { children: ReactElement<HTMLElement> }) => (
 
 describe("useVehicleForNotification", () => {
   const notification = {
-    id: 123,
+    id: "123",
     createdAt: new Date(),
     tripIds: ["123", "456", "789"],
     reason: "other" as NotificationReason,

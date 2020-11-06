@@ -152,7 +152,7 @@ defmodule Notifications.NotificationServer do
 
         Enum.each(entries, fn {pid, username} ->
           if Enum.member?(usernames, username) do
-            send(pid, {:notifications, notifications})
+            send(pid, {:notification, notification})
           end
         end)
       end)

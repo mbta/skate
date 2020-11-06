@@ -1,7 +1,6 @@
 import {
   BlockId,
   DirectionId,
-  Route,
   RouteId,
   StopId,
   TimepointId,
@@ -48,7 +47,7 @@ export interface Ghost {
   blockWaivers: BlockWaiver[]
 }
 
-export type NotificationId = number
+export type NotificationId = string
 
 export interface Notification {
   id: NotificationId

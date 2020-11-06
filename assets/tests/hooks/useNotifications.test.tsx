@@ -52,7 +52,7 @@ describe("useNotifications", () => {
 
     mockChannel.on.mockImplementation((_event, dataHandler) => {
       dataHandler({
-        data: [notificationData],
+        data: notificationData,
       })
     })
 
@@ -66,36 +66,6 @@ describe("useNotifications", () => {
     expect(handler).toHaveBeenCalledTimes(1)
     const notification = handler.mock.calls[0][0]
     expect(notification.tripIds).toEqual(notificationData.trip_ids)
-  })
-
-  test("can receive multiple notifications at once", () => {
-    const handler = jest.fn()
-    const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel()
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
-
-    mockChannel.on.mockImplementation((_event, dataHandler) => {
-      dataHandler({
-        data: [
-          { ...notificationData, trip_ids: ["trip0"] },
-          { ...notificationData, trip_ids: ["trip1"] },
-        ],
-      })
-    })
-
-    renderHook(
-      () => {
-        useNotifications(handler)
-      },
-      { wrapper: wrapper(mockSocket, ["route"]) }
-    )
-
-    expect(handler).toHaveBeenCalledTimes(2)
-    const notification0 = handler.mock.calls[0][0]
-    const notification1 = handler.mock.calls[1][0]
-    expect(notification0.tripIds).toEqual(["trip0"])
-    expect(notification1.tripIds).toEqual(["trip1"])
-    expect(notification0.id).not.toEqual(notification1.id)
   })
 
   test("leaves the channel on unmount", () => {

@@ -3,7 +3,7 @@ import { useContext, useEffect } from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { reload } from "../models/browser"
-import { notificationsFromData } from "../models/notificationData"
+import { notificationFromData } from "../models/notificationData"
 import { Notification } from "../realtime.d"
 
 export const useNotifications = (
@@ -11,7 +11,7 @@ export const useNotifications = (
 ): void => {
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const topic: string = "notifications"
-  const event: string = "notifications"
+  const event: string = "notification"
   const [{ selectedRouteIds }] = useContext(StateDispatchContext)
 
   useEffect(() => {
@@ -20,8 +20,8 @@ export const useNotifications = (
     if (socket !== undefined) {
       channel = socket.channel(topic)
       channel.on(event, ({ data: data }) => {
-        const notifications: Notification[] = notificationsFromData(data)
-        notifications.forEach(handleNewNotification)
+        const notification: Notification = notificationFromData(data)
+        handleNewNotification(notification)
       })
       channel
         .join()

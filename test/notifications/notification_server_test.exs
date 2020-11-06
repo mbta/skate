@@ -129,20 +129,18 @@ defmodule Notifications.NotificationServerTest do
     start_time = @midnight + 100
 
     assert_receive(
-      {:notifications,
-       [
-         %Notifications.Notification{
-           created_at: _,
-           reason: ^cause_atom,
-           route_ids: ["39", "2"],
-           run_ids: ["run1", "run2"],
-           trip_ids: ["trip1", "trip2"],
-           operator_name: ^operator_name,
-           operator_id: ^operator_id,
-           route_id_at_creation: ^route_id_at_creation,
-           start_time: ^start_time
-         }
-       ]},
+      {:notification,
+       %Notifications.Notification{
+         created_at: _,
+         reason: ^cause_atom,
+         route_ids: ["39", "2"],
+         run_ids: ["run1", "run2"],
+         trip_ids: ["trip1", "trip2"],
+         operator_name: ^operator_name,
+         operator_id: ^operator_id,
+         route_id_at_creation: ^route_id_at_creation,
+         start_time: ^start_time
+       }},
       5000
     )
   end

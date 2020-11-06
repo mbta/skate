@@ -35,11 +35,11 @@ defmodule SkateWeb.NotificationsChannelTest do
 
       assert {:noreply, socket} =
                NotificationsChannel.handle_info(
-                 {:notifications, ["bad thing happen on bus"]},
+                 {:notification, "bad thing happen on bus"},
                  socket
                )
 
-      assert_push("notifications", %{data: ["bad thing happen on bus"]})
+      assert_push("notification", %{data: "bad thing happen on bus"})
     end
 
     test "rejects sending vehicle data when socket is not authenticated", %{socket: socket} do
@@ -49,7 +49,7 @@ defmodule SkateWeb.NotificationsChannelTest do
 
       assert {:stop, :normal, _socket} =
                NotificationsChannel.handle_info(
-                 {:notifications, ["bad thing happen on bus"]},
+                 {:notification, "bad thing happen on bus"},
                  socket
                )
 
