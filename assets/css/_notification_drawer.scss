@@ -42,3 +42,18 @@
 .m-notification-drawer__content {
   padding: 1rem;
 }
+
+.m-notification-drawer__card {
+  background-color: $color-secondary-light;
+  border: 1px solid $color-secondary-dark;
+  border-radius: 4px;
+  box-shadow: $box-shadow-secondary;
+  margin-bottom: 0.5rem;
+  text-align: left;
+  width: 100%;
+
+  &:focus,
+  &:hover {
+    background-color: $color-secondary-medium;
+  }
+}

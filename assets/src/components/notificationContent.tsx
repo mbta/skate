@@ -11,16 +11,16 @@ export const NotificationContent = ({
   currentTime: Date
 }) => {
   return (
-    <>
-      <div className="m-notification__title-row">
-        <div className="m-notification__title">
+    <div className="m-notification-content">
+      <div className="m-notification-content__title-row">
+        <div className="m-notification-content__title">
           {title(notification.reason)}
         </div>
-        <div className="m-notification__age">
+        <div className="m-notification-content__age">
           {formattedTimeDiff(currentTime, notification.createdAt)}
         </div>
       </div>
-      <div className="m-notification__description">
+      <div className="m-notification-content__description">
         {description(notification)}
       </div>
       <PropertiesList
@@ -39,7 +39,7 @@ export const NotificationContent = ({
           },
         ]}
       />
-    </>
+    </div>
   )
 }
 

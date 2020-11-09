@@ -1,9 +1,12 @@
 import React, { useContext } from "react"
 import { NotificationsContext } from "../contexts/notificationsContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { closeNotificationDrawer } from "../state"
+import useCurrentTime from "../hooks/useCurrentTime"
+import { Notification } from "../realtime.d"
+import { closeNotificationDrawer, setNotification } from "../state"
 import CloseButton from "./closeButton"
 import NotificationBellIcon from "./notificationBellIcon"
+import { NotificationContent } from "./notificationContent"
 
 const NotificationDrawer = () => {
   return (
@@ -33,13 +36,25 @@ const TitleBar = () => {
 
 const Content = () => {
   const { notifications } = useContext(NotificationsContext)
+  const currentTime = useCurrentTime()
+
+  const [, dispatch] = useContext(StateDispatchContext)
+
+  const openVPPForCurrentVehicle = (notification: Notification) => {
+    dispatch(setNotification(notification))
+  }
 
   if (notifications.length === 0) return <EmptyMessage />
 
   return (
     <div className="m-notification-drawer__cards">
       {notifications.map((notification) => (
-        <div key={notification.id}>{notification.reason}</div>
+        <NotificationCard
+          key={notification.id}
+          notification={notification}
+          currentTime={currentTime}
+          openVPPForCurrentVehicle={openVPPForCurrentVehicle}
+        />
       ))}
     </div>
   )
@@ -54,5 +69,27 @@ const EmptyMessage = () => (
     </p>
   </>
 )
+
+const NotificationCard = ({
+  notification,
+  currentTime,
+  openVPPForCurrentVehicle,
+}: {
+  notification: Notification
+  currentTime: Date
+  openVPPForCurrentVehicle: (notification: Notification) => void
+}) => {
+  return (
+    <button
+      className="m-notification-drawer__card"
+      onClick={() => openVPPForCurrentVehicle(notification)}
+    >
+      <NotificationContent
+        notification={notification}
+        currentTime={currentTime}
+      />
+    </button>
+  )
+}
 
 export default NotificationDrawer
