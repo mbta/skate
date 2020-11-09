@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react"
 import { NotificationsContext } from "../contexts/notificationsContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useInterval from "../hooks/useInterval"
-import { Notification, NotificationReason } from "../realtime.d"
+import { Notification, NotificationId, NotificationReason } from "../realtime.d"
 import { setNotification } from "../state"
 import { formattedTimeDiff, now } from "../util/dateTime"
 import PropertiesList from "./propertiesList"
@@ -40,7 +40,7 @@ export const NotificationCard = ({
   openVPPForCurrentVehicle,
 }: {
   notification: Notification
-  remove: (id: number) => void
+  remove: (id: NotificationId) => void
   currentTime: Date
   openVPPForCurrentVehicle: (notification: Notification) => void
 }) => {

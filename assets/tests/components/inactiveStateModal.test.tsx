@@ -6,7 +6,7 @@ import { Notification } from "../../src/realtime.d"
 
 describe("InactiveNotificationModal", () => {
   const notification: Notification = {
-    id: 123,
+    id: "123",
     createdAt: new Date(),
     reason: "other",
     routeIds: [],

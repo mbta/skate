@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { closeIcon } from "../helpers/icon"
-import { Notification } from "../realtime.d"
+import { Notification, NotificationId } from "../realtime.d"
 import { setNotification } from "../state"
 import { title } from "./notifications"
 
@@ -10,7 +10,7 @@ const InactiveNotificationModal = ({
   removeNotification,
 }: {
   notification: Notification
-  removeNotification: (id: number) => void
+  removeNotification: (id: NotificationId) => void
 }) => {
   const [, dispatch] = useContext(StateDispatchContext)
 

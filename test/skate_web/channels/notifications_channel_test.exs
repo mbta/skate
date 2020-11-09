@@ -7,6 +7,7 @@ defmodule SkateWeb.NotificationsChannelTest do
 
   setup do
     reassign_env(:skate, :valid_token?, fn _socket -> true end)
+    reassign_env(:skate, :username_from_socket!, fn _socket -> "test_uid" end)
 
     socket = socket(UserSocket, "", %{guardian_default_resource: "test_uid"})
 
@@ -34,11 +35,11 @@ defmodule SkateWeb.NotificationsChannelTest do
 
       assert {:noreply, socket} =
                NotificationsChannel.handle_info(
-                 {:notifications, ["bad thing happen on bus"]},
+                 {:notification, "bad thing happen on bus"},
                  socket
                )
 
-      assert_push("notifications", %{data: ["bad thing happen on bus"]})
+      assert_push("notification", %{data: "bad thing happen on bus"})
     end
 
     test "rejects sending vehicle data when socket is not authenticated", %{socket: socket} do
@@ -48,7 +49,7 @@ defmodule SkateWeb.NotificationsChannelTest do
 
       assert {:stop, :normal, _socket} =
                NotificationsChannel.handle_info(
-                 {:notifications, ["bad thing happen on bus"]},
+                 {:notification, "bad thing happen on bus"},
                  socket
                )
 

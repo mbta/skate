@@ -1,4 +1,9 @@
-import { Notification, NotificationReason, RunId } from "../realtime.d"
+import {
+  Notification,
+  NotificationId,
+  NotificationReason,
+  RunId,
+} from "../realtime.d"
 import { RouteId, TripId } from "../schedule.d"
 import { dateFromEpochSeconds } from "../util/dateTime"
 
@@ -14,17 +19,10 @@ export interface NotificationData {
   start_time: number
 }
 
-export const notificationsFromData = (
-  notificationsData: NotificationData[]
-): Notification[] => notificationsData.map(notificationFromData)
-
-const notificationFromData = (
-  notificationData: NotificationData,
-  index: number
+export const notificationFromData = (
+  notificationData: NotificationData
 ): Notification => ({
-  // Add the index so the id is unique between notifications received at the same time.
-  // Batches only come every few seconds, so it won't overlap with future notifications.
-  id: Date.now() + index,
+  id: generateId(notificationData),
   createdAt: dateFromEpochSeconds(notificationData.created_at),
   reason: notificationData.reason,
   routeIds: notificationData.route_ids,
@@ -35,3 +33,14 @@ const notificationFromData = (
   routeIdAtCreation: notificationData.route_id_at_creation,
   startTime: new Date(notificationData.start_time),
 })
+
+const generateId = (notificationData: NotificationData): NotificationId => {
+  const stringifiedFields = [
+    notificationData.created_at,
+    notificationData.start_time,
+    notificationData.trip_ids,
+    notificationData.reason,
+  ].map((field) => field.toString())
+
+  return stringifiedFields.join("_")
+}

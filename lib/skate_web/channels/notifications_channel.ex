@@ -2,12 +2,12 @@ defmodule SkateWeb.NotificationsChannel do
   use SkateWeb, :channel
 
   @impl Phoenix.Channel
-  def handle_info({:notifications, notifications}, socket) do
+  def handle_info({:notification, notification}, socket) do
     valid_token? =
       Application.get_env(:skate, :valid_token?, &SkateWeb.ChannelAuth.valid_token?/1)
 
     if valid_token?.(socket) do
-      :ok = push(socket, "notifications", %{data: notifications})
+      :ok = push(socket, "notification", %{data: notification})
       {:noreply, socket}
     else
       :ok = push(socket, "auth_expired", %{})
@@ -17,7 +17,15 @@ defmodule SkateWeb.NotificationsChannel do
 
   @impl true
   def join("notifications", _message, socket) do
-    Notifications.NotificationServer.subscribe()
+    username_from_socket! =
+      Application.get_env(
+        :skate,
+        :username_from_socket!,
+        &SkateWeb.AuthManager.username_from_socket!/1
+      )
+
+    username = username_from_socket!.(socket)
+    Notifications.NotificationServer.subscribe(username)
     {:ok, socket}
   end
 end

@@ -1,5 +1,5 @@
 defmodule Notifications.NotificationServerTest do
-  use ExUnit.Case, async: false
+  use Skate.DataCase
 
   alias Notifications.NotificationServer
   alias Realtime.BlockWaiver
@@ -7,7 +7,11 @@ defmodule Notifications.NotificationServerTest do
   alias Realtime.Vehicle
   alias Schedule.Block
   alias Schedule.Trip
+  alias Skate.Repo
+  alias Skate.Settings.Db.User, as: DbUser
+  alias Skate.Settings.RouteSettings
 
+  import Ecto.Query
   import ExUnit.CaptureLog, only: [capture_log: 1]
   import Test.Support.Helpers, only: [reassign_env: 3]
 
@@ -23,7 +27,7 @@ defmodule Notifications.NotificationServerTest do
         id: "trip1",
         block_id: "block1",
         run_id: "run1",
-        route_id: "1",
+        route_id: "39",
         start_time: 50,
         end_time: 200
       },
@@ -115,51 +119,53 @@ defmodule Notifications.NotificationServerTest do
   }
 
   def assert_notification(cause_atom, cause_description, cause_id, server, opts \\ []) do
+    start_time = @midnight + 100
+
     log =
       capture_log(fn ->
         waiver_map(cause_id, cause_description)
         |> NotificationServer.new_block_waivers(server)
 
-        Process.sleep(50)
+        operator_name = Keyword.get(opts, :operator_name)
+        operator_id = Keyword.get(opts, :operator_id)
+        route_id_at_creation = Keyword.get(opts, :route_id_at_creation)
+
+        assert_receive(
+          {:notification,
+           %Notifications.Notification{
+             created_at: _,
+             reason: ^cause_atom,
+             route_ids: ["39", "2"],
+             run_ids: ["run1", "run2"],
+             trip_ids: ["trip1", "trip2"],
+             operator_name: ^operator_name,
+             operator_id: ^operator_id,
+             route_id_at_creation: ^route_id_at_creation,
+             start_time: ^start_time
+           }},
+          5000
+        )
       end)
 
-    operator_name = Keyword.get(opts, :operator_name)
-    operator_id = Keyword.get(opts, :operator_id)
-    route_id_at_creation = Keyword.get(opts, :route_id_at_creation)
+    assert_notification_logged(log, cause_atom, start_time)
+  end
 
-    start_time = @midnight + 100
-
-    assert_received(
-      {:notifications,
-       [
-         %Notifications.Notification{
-           created_at: _,
-           reason: ^cause_atom,
-           route_ids: ["1", "2"],
-           run_ids: ["run1", "run2"],
-           trip_ids: ["trip1", "trip2"],
-           operator_name: ^operator_name,
-           operator_id: ^operator_id,
-           route_id_at_creation: ^route_id_at_creation,
-           start_time: ^start_time
-         }
-       ]}
-    )
-
+  def assert_notification_logged(log, cause_atom, start_time) do
     assert String.contains?(log, "reason: :#{cause_atom}")
-    assert String.contains?(log, "route_ids: [\"1\", \"2\"]")
+    assert String.contains?(log, "route_ids: [\"39\", \"2\"]")
     assert String.contains?(log, "run_ids: [\"run1\", \"run2\"]")
     assert String.contains?(log, "trip_ids: [\"trip1\", \"trip2\"]")
     assert String.contains?(log, "start_time: #{start_time}")
   end
 
-  def setup_server do
+  def setup_server(username \\ "fake_uid") do
     registry_name = :new_notifications_registry
     start_supervised({Registry, keys: :duplicate, name: registry_name})
     reassign_env(:notifications, :registry, registry_name)
 
     {:ok, server} = NotificationServer.start_link(name: :new_notifications)
-    NotificationServer.subscribe(server)
+
+    NotificationServer.subscribe(username, server)
     {:ok, server}
   end
 
@@ -201,6 +207,9 @@ defmodule Notifications.NotificationServerTest do
       reassign_env(:realtime, :active_blocks_fn, fn _, _ ->
         %{~D[2020-08-17] => [@block]}
       end)
+
+      RouteSettings.get_or_create("fake_uid")
+      RouteSettings.set("fake_uid", [{:selected_route_ids, ["39"]}])
     end
 
     test "broadcasts and logs nothing if no new block waivers are received" do
@@ -214,7 +223,7 @@ defmodule Notifications.NotificationServerTest do
       assert log == ""
     end
 
-    test "broadcasts and logs new notifications for waivers with recognized reason for vehicles" do
+    test "broadcasts and logs new notifications for waivers with recognized reason for vehicles on selected routes" do
       reassign_env(:realtime, :peek_at_vehicles_fn, fn _ ->
         [@vehicle]
       end)
@@ -230,7 +239,7 @@ defmodule Notifications.NotificationServerTest do
       end
     end
 
-    test "broadcasts and logs new notifications for waivers with recognized reason for ghosts" do
+    test "broadcasts and logs new notifications for waivers with recognized reason for ghosts on selected routes" do
       reassign_env(:realtime, :peek_at_vehicles_fn, fn _ ->
         [@ghost]
       end)
@@ -244,7 +253,7 @@ defmodule Notifications.NotificationServerTest do
       end
     end
 
-    test "broadcasts and logs new notifications for waivers with recognized reason when no vehicle or ghost is associated" do
+    test "broadcasts and logs new notifications for waivers with recognized reason when no vehicle or ghost is associated on selected routes" do
       reassign_env(:realtime, :peek_at_vehicles_fn, fn _ ->
         []
       end)
@@ -253,6 +262,30 @@ defmodule Notifications.NotificationServerTest do
 
       for {cause_id, {cause_description, cause_atom}} <- @reasons_map do
         assert_notification(cause_atom, cause_description, cause_id, server)
+      end
+    end
+
+    test "doesn't send notifications to a user not looking at the route in question" do
+      Repo.delete_all(from(DbUser))
+      RouteSettings.get_or_create("fake_uid")
+      RouteSettings.set("fake_uid", [{:selected_route_ids, ["1,83,77"]}])
+
+      reassign_env(:realtime, :peek_at_vehicles_fn, fn _ ->
+        [@vehicle]
+      end)
+
+      {:ok, server} = setup_server()
+
+      for {cause_id, {cause_description, cause_atom}} <- @reasons_map do
+        log =
+          capture_log(fn ->
+            waiver_map(cause_id, cause_description)
+            |> NotificationServer.new_block_waivers(server)
+
+            refute_receive(_, 500)
+          end)
+
+        assert_notification_logged(log, cause_atom, @midnight + 100)
       end
     end
   end

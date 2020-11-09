@@ -9,7 +9,7 @@ import { initialState, State } from "../../src/state"
 describe("Modal", () => {
   test("renders inactive notification modal when appropriate", () => {
     const notification: Notification = {
-      id: 123,
+      id: "123",
       createdAt: new Date(),
       reason: "other" as NotificationReason,
       routeIds: [],
@@ -37,7 +37,7 @@ describe("Modal", () => {
 
   test("renders loading modal when appropriate", () => {
     const notification: Notification = {
-      id: 123,
+      id: "123",
       createdAt: new Date(),
       reason: "other" as NotificationReason,
       routeIds: [],

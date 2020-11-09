@@ -22,7 +22,7 @@ jest.mock("../../src/laboratoryFeatures", () => ({
 }))
 
 const notification: Notification = {
-  id: 0,
+  id: "0",
   createdAt: now(),
   reason: "manpower",
   routeIds: ["route1", "route2"],

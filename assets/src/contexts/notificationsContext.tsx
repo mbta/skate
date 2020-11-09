@@ -34,7 +34,7 @@ export const NotificationsProvider = ({
       return newNotifications
     })
   }
-  const removeNotification = (id: number): void => {
+  const removeNotification = (id: NotificationId): void => {
     setNotifications((previous) => previous.filter((n) => n.id !== id))
   }
 

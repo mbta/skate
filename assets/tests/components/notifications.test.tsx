@@ -27,7 +27,7 @@ jest.mock("../../src/laboratoryFeatures", () => ({
 }))
 
 const notification: Notification = {
-  id: 0,
+  id: "0",
   createdAt: now(),
   reason: "manpower",
   routeIds: ["route1", "route2"],
@@ -54,8 +54,8 @@ describe("Notification", () => {
 
   test("renders notifications", () => {
     const notifications = [
-      { ...notification, id: 0 },
-      { ...notification, id: 1 },
+      { ...notification, id: "0" },
+      { ...notification, id: "1" },
     ]
     const tree = renderer
       .create(
