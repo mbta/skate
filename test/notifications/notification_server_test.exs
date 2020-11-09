@@ -1,5 +1,5 @@
 defmodule Notifications.NotificationServerTest do
-  use ExUnit.Case, async: true
+  use Skate.DataCase
 
   alias Notifications.NotificationServer
   alias Realtime.BlockWaiver
@@ -210,10 +210,6 @@ defmodule Notifications.NotificationServerTest do
 
       RouteSettings.get_or_create("fake_uid")
       RouteSettings.set("fake_uid", [{:selected_route_ids, ["39"]}])
-
-      on_exit(fn ->
-        Repo.delete_all(from(DbUser))
-      end)
     end
 
     test "broadcasts and logs nothing if no new block waivers are received" do
