@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useState } from "react"
 import { NotificationsContext } from "../contexts/notificationsContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useInterval from "../hooks/useInterval"
-import { Notification, NotificationId, NotificationReason } from "../realtime.d"
+import { Notification, NotificationId } from "../realtime.d"
 import { setNotification } from "../state"
-import { formattedTimeDiff, now } from "../util/dateTime"
-import PropertiesList from "./propertiesList"
+import { now } from "../util/dateTime"
+import { NotificationContent } from "./notificationContent"
 
 export const Notifications = () => {
   const { notifications, removeNotification } = useContext(NotificationsContext)
@@ -60,32 +60,9 @@ export const NotificationCard = ({
         className="m-notifications__card-info"
         onClick={() => openVPPForCurrentVehicle(notification)}
       >
-        <div className="m-notification__title-row">
-          <div className="m-notification__title">
-            {title(notification.reason)}
-          </div>
-          <div className="m-notification__age">
-            {formattedTimeDiff(currentTime, notification.createdAt)}
-          </div>
-        </div>
-        <div className="m-notification__description">
-          {description(notification)}
-        </div>
-        <PropertiesList
-          properties={[
-            {
-              label: "Run",
-              value: notification.runIds.join(", "),
-            },
-            {
-              label: "Operator",
-              value:
-                notification.operatorName !== null &&
-                notification.operatorId !== null
-                  ? `${notification.operatorName} #${notification.operatorId}`
-                  : null,
-            },
-          ]}
+        <NotificationContent
+          notification={notification}
+          currentTime={currentTime}
         />
       </button>
       <button
@@ -96,46 +73,4 @@ export const NotificationCard = ({
       </button>
     </div>
   )
-}
-
-export const title = (reason: NotificationReason): string => {
-  switch (reason) {
-    case "manpower":
-      return "NO OPERATOR"
-    case "diverted":
-      return "DIVERSION"
-    default:
-      return reason.toUpperCase().replace("_", " ")
-  }
-}
-
-const description = (notification: Notification): string => {
-  const routeIds = notification.routeIds.join(", ")
-  switch (notification.reason) {
-    case "manpower":
-      return `OCC reported that an operator is not available on the ${routeIds}.`
-    case "disabled":
-      return `OCC reported that a vehicle is disabled on the ${
-        notification.routeIdAtCreation || routeIds
-      }.`
-    case "diverted":
-      return `OCC reported that an operator has been diverted from the ${routeIds}.`
-    case "accident":
-      return `OCC reported that an operator has been in an accident on the ${
-        notification.routeIdAtCreation || routeIds
-      }.`
-    case "adjusted":
-      return `OCC reported an adjustment on the ${routeIds}.`
-    case "operator_error":
-      return `OCC reported an operator error on the ${
-        notification.routeIdAtCreation || routeIds
-      }.`
-    case "traffic":
-      return `OCC created a dispatcher note due to traffic on the ${
-        notification.routeIdAtCreation || routeIds
-      }.`
-    case "other":
-    default:
-      return `OCC created a dispatcher note for the ${routeIds}.`
-  }
 }

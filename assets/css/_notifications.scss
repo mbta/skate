@@ -35,30 +35,6 @@
   }
 }
 
-.m-notification__title-row {
-  display: flex;
-  justify-content: space-between;
-}
-
-.m-notification__title {
-  @include font-emph;
-  font-weight: 700;
-}
-
-.m-notification__age {
-  color: $color-font-grey;
-  @include font-small;
-}
-
-.m-notification__description {
-  margin-bottom: 0.5rem;
-  margin-top: 0.25rem;
-}
-
-.m-notifications .m-properties-list {
-  padding: 0;
-}
-
 .m-notifications__close {
   border-left: 1px solid $color-secondary-dark;
   color: $color-font-grey;
