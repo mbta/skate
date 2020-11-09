@@ -119,30 +119,39 @@ defmodule Notifications.NotificationServerTest do
   }
 
   def assert_notification(cause_atom, cause_description, cause_id, server, opts \\ []) do
-    waiver_map(cause_id, cause_description)
-    |> NotificationServer.new_block_waivers(server)
-
-    operator_name = Keyword.get(opts, :operator_name)
-    operator_id = Keyword.get(opts, :operator_id)
-    route_id_at_creation = Keyword.get(opts, :route_id_at_creation)
-
     start_time = @midnight + 100
 
-    assert_receive(
-      {:notification,
-       %Notifications.Notification{
-         created_at: _,
-         reason: ^cause_atom,
-         route_ids: ["39", "2"],
-         run_ids: ["run1", "run2"],
-         trip_ids: ["trip1", "trip2"],
-         operator_name: ^operator_name,
-         operator_id: ^operator_id,
-         route_id_at_creation: ^route_id_at_creation,
-         start_time: ^start_time
-       }},
-      5000
-    )
+    log =
+      capture_log(fn ->
+        waiver_map(cause_id, cause_description)
+        |> NotificationServer.new_block_waivers(server)
+
+        operator_name = Keyword.get(opts, :operator_name)
+        operator_id = Keyword.get(opts, :operator_id)
+        route_id_at_creation = Keyword.get(opts, :route_id_at_creation)
+
+        assert_receive(
+          {:notification,
+           %Notifications.Notification{
+             created_at: _,
+             reason: ^cause_atom,
+             route_ids: ["39", "2"],
+             run_ids: ["run1", "run2"],
+             trip_ids: ["trip1", "trip2"],
+             operator_name: ^operator_name,
+             operator_id: ^operator_id,
+             route_id_at_creation: ^route_id_at_creation,
+             start_time: ^start_time
+           }},
+          5000
+        )
+      end)
+
+    assert String.contains?(log, "reason: :#{cause_atom}")
+    assert String.contains?(log, "route_ids: [\"39\", \"2\"]")
+    assert String.contains?(log, "run_ids: [\"run1\", \"run2\"]")
+    assert String.contains?(log, "trip_ids: [\"trip1\", \"trip2\"]")
+    assert String.contains?(log, "start_time: #{start_time}")
   end
 
   def setup_server(username \\ "fake_uid") do
