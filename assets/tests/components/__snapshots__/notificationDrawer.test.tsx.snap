@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`NotificationDrawer renders 1`] = `
+exports[`NotificationDrawer renders empty state 1`] = `
 <div
   className="m-notification-drawer"
 >
@@ -43,6 +43,103 @@ exports[`NotificationDrawer renders 1`] = `
     <p>
       Here you'll be notified about events like accidents and ghost vehicles on any bus routes you have selected on the Route Ladders page.
     </p>
+  </div>
+</div>
+`;
+
+exports[`NotificationDrawer renders notifications 1`] = `
+<div
+  className="m-notification-drawer"
+>
+  <div
+    className="m-notification-drawer__title-bar"
+  >
+    <span
+      className="m-notification-bell-icon m-notification-bell-icon--closed m-notification-bell-icon--read"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "SVG",
+        }
+      }
+    />
+    <div
+      className="m-notification-drawer__title"
+    >
+      Notifications
+    </div>
+    <button
+      className="m-close-button"
+      onClick={[Function]}
+    >
+      <span
+        className=""
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "SVG",
+          }
+        }
+      />
+    </button>
+  </div>
+  <div
+    className="m-notification-drawer__content"
+  >
+    <div
+      className="m-notification-drawer__cards"
+    >
+      <button
+        className="m-notification-drawer__card"
+        onClick={[Function]}
+      >
+        <div
+          className="m-notification-content"
+        >
+          <div
+            className="m-notification-content__title-row"
+          >
+            <div
+              className="m-notification-content__title"
+            >
+              NO OPERATOR
+            </div>
+            <div
+              className="m-notification-content__age"
+            >
+              0 min
+            </div>
+          </div>
+          <div
+            className="m-notification-content__description"
+          >
+            OCC reported that an operator is not available on the route1, route2.
+          </div>
+          <div
+            className="m-properties-list"
+          >
+            <table
+              className="m-properties-list__table"
+            >
+              <tbody>
+                <tr
+                  className="m-properties-list__property "
+                >
+                  <td
+                    className="m-properties-list__property-label"
+                  >
+                    Run
+                  </td>
+                  <td
+                    className="m-properties-list__property-value"
+                  >
+                    run1, run2
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </button>
+    </div>
   </div>
 </div>
 `;
