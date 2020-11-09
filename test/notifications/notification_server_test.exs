@@ -147,6 +147,10 @@ defmodule Notifications.NotificationServerTest do
         )
       end)
 
+    assert_notification_logged(log, cause_atom, start_time)
+  end
+
+  def assert_notification_logged(log, cause_atom, start_time) do
     assert String.contains?(log, "reason: :#{cause_atom}")
     assert String.contains?(log, "route_ids: [\"39\", \"2\"]")
     assert String.contains?(log, "run_ids: [\"run1\", \"run2\"]")
@@ -262,6 +266,30 @@ defmodule Notifications.NotificationServerTest do
 
       for {cause_id, {cause_description, cause_atom}} <- @reasons_map do
         assert_notification(cause_atom, cause_description, cause_id, server)
+      end
+    end
+
+    test "doesn't send notifications to a user not looking at the route in question" do
+      Repo.delete_all(from(DbUser))
+      RouteSettings.get_or_create("fake_uid")
+      RouteSettings.set("fake_uid", [{:selected_route_ids, ["1,83,77"]}])
+
+      reassign_env(:realtime, :peek_at_vehicles_fn, fn _ ->
+        [@vehicle]
+      end)
+
+      {:ok, server} = setup_server()
+
+      for {cause_id, {cause_description, cause_atom}} <- @reasons_map do
+        log =
+          capture_log(fn ->
+            waiver_map(cause_id, cause_description)
+            |> NotificationServer.new_block_waivers(server)
+
+            refute_receive(_, 500)
+          end)
+
+        assert_notification_logged(log, cause_atom, @midnight + 100)
       end
     end
   end
