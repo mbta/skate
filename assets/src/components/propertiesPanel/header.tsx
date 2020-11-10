@@ -127,11 +127,11 @@ const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
   const [{ ladderDirections, userSettings }, dispatch] = useContext(
     StateDispatchContext
   )
-  const epocNowInSeconds = useCurrentTimeSeconds()
+  const epochNowInSeconds = useCurrentTimeSeconds()
   const route = useRoute(vehicle.routeId)
 
-  const secondsAgo = (epocTime: number): string =>
-    `${epocNowInSeconds - epocTime}s ago`
+  const secondsAgo = (epochTime: number): string =>
+    `${epochNowInSeconds - epochTime}s ago`
 
   const hideMe = () => dispatch(deselectVehicle())
 
