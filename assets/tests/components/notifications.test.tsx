@@ -52,7 +52,7 @@ describe("Notification", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("renders notifications", () => {
+  test("renders latest notification", () => {
     const notifications = [
       { ...notification, id: "0" },
       { ...notification, id: "1" },
@@ -62,7 +62,8 @@ describe("Notification", () => {
         <NotificationsContext.Provider
           value={{
             notifications,
-            removeNotification: jest.fn(),
+            showLatestNotification: true,
+            hide: jest.fn(),
           }}
         >
           <Notifications />
@@ -72,13 +73,14 @@ describe("Notification", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("can close notification", () => {
-    const removeNotification = jest.fn()
+  test("can hide notification", () => {
+    const hide = jest.fn()
     const wrapper = mount(
       <NotificationsContext.Provider
         value={{
           notifications: [notification],
-          removeNotification,
+          showLatestNotification: true,
+          hide,
         }}
       >
         <Notifications />
@@ -86,7 +88,7 @@ describe("Notification", () => {
     )
     expect(wrapper.find(".m-notifications__card")).toHaveLength(1)
     wrapper.find(".m-notifications__close").simulate("click")
-    expect(removeNotification).toHaveBeenCalledWith(notification.id)
+    expect(hide).toHaveBeenCalled()
   })
 })
 
@@ -96,7 +98,7 @@ describe("NotificationCard", () => {
       .create(
         <NotificationCard
           notification={notificationWithMatchedVehicle}
-          remove={jest.fn()}
+          hide={jest.fn()}
           currentTime={now()}
           openVPPForCurrentVehicle={jest.fn()}
         />
@@ -110,7 +112,7 @@ describe("NotificationCard", () => {
     const wrapper = mount(
       <NotificationCard
         notification={n}
-        remove={jest.fn()}
+        hide={jest.fn()}
         currentTime={now()}
         openVPPForCurrentVehicle={jest.fn()}
       />
@@ -123,7 +125,7 @@ describe("NotificationCard", () => {
     const wrapper = mount(
       <NotificationCard
         notification={n}
-        remove={jest.fn()}
+        hide={jest.fn()}
         currentTime={now()}
         openVPPForCurrentVehicle={jest.fn()}
       />
@@ -137,7 +139,7 @@ describe("NotificationCard", () => {
       .create(
         <NotificationCard
           notification={n}
-          remove={jest.fn()}
+          hide={jest.fn()}
           currentTime={now()}
           openVPPForCurrentVehicle={jest.fn()}
         />
@@ -156,7 +158,7 @@ describe("NotificationCard", () => {
     const wrapper = mount(
       <NotificationCard
         notification={n}
-        remove={jest.fn()}
+        hide={jest.fn()}
         currentTime={now()}
         openVPPForCurrentVehicle={jest.fn()}
       />
@@ -174,7 +176,7 @@ describe("NotificationCard", () => {
     const wrapper = mount(
       <NotificationCard
         notification={n}
-        remove={jest.fn()}
+        hide={jest.fn()}
         currentTime={now()}
         openVPPForCurrentVehicle={jest.fn()}
       />
@@ -192,7 +194,7 @@ describe("NotificationCard", () => {
     const wrapper = mount(
       <NotificationCard
         notification={n}
-        remove={jest.fn()}
+        hide={jest.fn()}
         currentTime={now()}
         openVPPForCurrentVehicle={jest.fn()}
       />
@@ -215,7 +217,7 @@ describe("NotificationCard", () => {
     mount(
       <NotificationCard
         notification={n}
-        remove={jest.fn()}
+        hide={jest.fn()}
         currentTime={now()}
         openVPPForCurrentVehicle={jest.fn()}
       />
@@ -227,7 +229,7 @@ describe("NotificationCard", () => {
     const wrapper = mount(
       <NotificationCard
         notification={notification}
-        remove={jest.fn()}
+        hide={jest.fn()}
         currentTime={now()}
         openVPPForCurrentVehicle={jest.fn()}
       />
@@ -246,6 +248,7 @@ describe("NotificationCard", () => {
       tripIds: ["123", "456", "789"],
     }
     mockUseStateOnce([updatedNotification])
+    mockUseStateOnce(true)
     const mockDispatch: Dispatch = jest.fn()
 
     const wrapper = mount(
