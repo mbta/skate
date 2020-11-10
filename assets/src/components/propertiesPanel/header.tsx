@@ -1,8 +1,8 @@
-import React, { Dispatch, SetStateAction, useContext, useState } from "react"
+import React, { Dispatch, SetStateAction, useContext } from "react"
 import { useRoute } from "../../contexts/routesContext"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import vehicleLabel from "../../helpers/vehicleLabel"
-import useInterval from "../../hooks/useInterval"
+import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
 import {
   directionOnLadder,
   getLadderDirectionForRoute,
@@ -123,18 +123,15 @@ const directionName = (
   route: Route | null
 ): string => (route ? route.directionNames[directionId] : "")
 
-const nowInSeconds = (): number => Math.floor(Date.now() / 1000)
-
 const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
   const [{ ladderDirections, userSettings }, dispatch] = useContext(
     StateDispatchContext
   )
-  const [epocNowInSeconds, setEpocNowInSeconds] = useState(nowInSeconds())
-  useInterval(() => setEpocNowInSeconds(nowInSeconds()), 1000)
+  const epochNowInSeconds = useCurrentTimeSeconds()
   const route = useRoute(vehicle.routeId)
 
-  const secondsAgo = (epocTime: number): string =>
-    `${epocNowInSeconds - epocTime}s ago`
+  const secondsAgo = (epochTime: number): string =>
+    `${epochNowInSeconds - epochTime}s ago`
 
   const hideMe = () => dispatch(deselectVehicle())
 

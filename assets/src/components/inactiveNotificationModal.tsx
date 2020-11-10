@@ -3,7 +3,7 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { closeIcon } from "../helpers/icon"
 import { Notification, NotificationId } from "../realtime.d"
 import { setNotification } from "../state"
-import { title } from "./notifications"
+import { title } from "./notificationContent"
 
 const InactiveNotificationModal = ({
   notification,
