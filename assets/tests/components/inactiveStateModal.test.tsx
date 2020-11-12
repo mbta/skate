@@ -98,21 +98,6 @@ describe("InactiveNotificationModal", () => {
     expect(hideNotification).toHaveBeenCalled()
   })
 
-  test("allows removing the modal", () => {
-    const wrapper = mount(
-      <InactiveNotificationModal
-        notification={notification}
-        hideNotification={hideNotification}
-      />
-    )
-
-    wrapper
-      .find(".m-inactive-notification-modal__discard-button")
-      .first()
-      .simulate("click")
-    expect(hideNotification).toHaveBeenCalled()
-  })
-
   test("allows closing the modal", () => {
     const wrapper = mount(
       <InactiveNotificationModal
