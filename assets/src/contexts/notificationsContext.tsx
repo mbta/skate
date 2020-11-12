@@ -1,19 +1,24 @@
 import React, { createContext, ReactElement, useState } from "react"
 import { useNotifications } from "../hooks/useNotifications"
-import { Notification, NotificationId } from "../realtime.d"
+import { Notification } from "../realtime.d"
 
 export interface NotificationsStatus {
   notifications: Notification[]
-  removeNotification: (notificationId: NotificationId) => void
+  showLatestNotification: boolean
+  hideNotification: () => void
 }
+
+// Codecov gets in a snit about not covering the "hide" no-op below.
+/* istanbul ignore next */
 
 export const NotificationsContext = createContext<NotificationsStatus>({
   notifications: [],
+  showLatestNotification: false,
   // tslint:disable-next-line: no-empty
-  removeNotification: () => {},
+  hideNotification: () => {},
 })
 
-const deliveryFullstoryEvent = (numStacked: number): void => {
+const deliverFullstoryEvent = (numStacked: number): void => {
   if (window.FS && window.username) {
     window.FS.event("Notification delivered", {
       num_stacked_int: numStacked,
@@ -27,16 +32,20 @@ export const NotificationsProvider = ({
   children: ReactElement<HTMLElement>
 }) => {
   const [notifications, setNotifications] = useState<Notification[]>([])
+  const [showLatestNotification, setShowLatestNotification] = useState<boolean>(
+    false
+  )
   const addNotification = (notification: Notification): void => {
     setNotifications((previous) => {
       const newNotifications = [...previous, notification]
-      deliveryFullstoryEvent(newNotifications.length)
+      deliverFullstoryEvent(newNotifications.length)
       return newNotifications
     })
+
+    setShowLatestNotification(true)
   }
-  const removeNotification = (id: NotificationId): void => {
-    setNotifications((previous) => previous.filter((n) => n.id !== id))
-  }
+
+  const hideNotification = () => setShowLatestNotification(false)
 
   useNotifications(addNotification)
 
@@ -44,7 +53,8 @@ export const NotificationsProvider = ({
     <NotificationsContext.Provider
       value={{
         notifications,
-        removeNotification,
+        showLatestNotification,
+        hideNotification,
       }}
     >
       {children}

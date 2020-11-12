@@ -1,16 +1,16 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { closeIcon } from "../helpers/icon"
-import { Notification, NotificationId } from "../realtime.d"
+import { Notification } from "../realtime.d"
 import { setNotification } from "../state"
 import { title } from "./notificationContent"
 
 const InactiveNotificationModal = ({
   notification,
-  removeNotification,
+  hideNotification,
 }: {
   notification: Notification
-  removeNotification: (id: NotificationId) => void
+  hideNotification: () => void
 }) => {
   const [, dispatch] = useContext(StateDispatchContext)
 
@@ -18,8 +18,8 @@ const InactiveNotificationModal = ({
     dispatch(setNotification(undefined))
   }
 
-  const removeNotificationAndClose = () => {
-    removeNotification(notification.id)
+  const hideAndClose = () => {
+    hideNotification()
     closeModal()
   }
 
@@ -44,7 +44,7 @@ const InactiveNotificationModal = ({
           </button>
           <button
             className="m-inactive-notification-modal__discard-button"
-            onClick={removeNotificationAndClose}
+            onClick={hideAndClose}
           >
             Remove
           </button>

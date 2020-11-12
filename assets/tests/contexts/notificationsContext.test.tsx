@@ -79,15 +79,16 @@ describe("Notification", () => {
     window.username = originalUsername
   })
 
-  test("can close notification", () => {
+  test("can hide notification", () => {
     mockUseStateOnce([notification])
+    mockUseStateOnce(true)
     const { result } = renderHook(() => useContext(NotificationsContext), {
       wrapper: NotificationsProvider,
     })
-    expect(result.current.notifications).toHaveLength(1)
+    expect(result.current.showLatestNotification).toEqual(true)
     hooksAct(() => {
-      result.current.removeNotification(notification.id)
+      result.current.hideNotification()
     })
-    expect(result.current.notifications).toHaveLength(0)
+    expect(result.current.showLatestNotification).toEqual(false)
   })
 })

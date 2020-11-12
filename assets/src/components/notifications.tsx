@@ -2,12 +2,16 @@ import React, { useContext, useEffect, useState } from "react"
 import { NotificationsContext } from "../contexts/notificationsContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useCurrentTime from "../hooks/useCurrentTime"
-import { Notification, NotificationId } from "../realtime.d"
+import { Notification } from "../realtime.d"
 import { setNotification } from "../state"
 import { NotificationContent } from "./notificationContent"
 
 export const Notifications = () => {
-  const { notifications, removeNotification } = useContext(NotificationsContext)
+  const {
+    notifications,
+    showLatestNotification,
+    hideNotification,
+  } = useContext(NotificationsContext)
   const currentTime = useCurrentTime()
 
   const [, dispatch] = useContext(StateDispatchContext)
@@ -16,29 +20,30 @@ export const Notifications = () => {
     dispatch(setNotification(notification))
   }
 
+  const latestNotificationIndex = notifications.length - 1
+
   return (
     <div className="m-notifications">
-      {notifications.map((notification) => (
+      {showLatestNotification && latestNotificationIndex >= 0 && (
         <NotificationCard
-          key={notification.id}
-          notification={notification}
-          remove={removeNotification}
+          notification={notifications[latestNotificationIndex]}
+          hideNotification={hideNotification}
           currentTime={currentTime}
           openVPPForCurrentVehicle={openVPPForCurrentVehicle}
         />
-      ))}
+      )}
     </div>
   )
 }
 
 export const NotificationCard = ({
   notification,
-  remove,
+  hideNotification,
   currentTime,
   openVPPForCurrentVehicle,
 }: {
   notification: Notification
-  remove: (id: NotificationId) => void
+  hideNotification: () => void
   currentTime: Date
   openVPPForCurrentVehicle: (notification: Notification) => void
 }) => {
@@ -65,9 +70,9 @@ export const NotificationCard = ({
       </button>
       <button
         className="m-notifications__close"
-        onClick={() => remove(notification.id)}
+        onClick={() => hideNotification()}
       >
-        Close
+        Hide
       </button>
     </div>
   )

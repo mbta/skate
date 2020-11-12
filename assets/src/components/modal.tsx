@@ -12,7 +12,7 @@ const Modal = (): ReactElement | null => {
   const { connectionStatus } = useContext(SocketContext)
   const [{ selectedNotification }] = useContext(StateDispatchContext)
   const vehicleForNotification = useContext(VehicleForNotificationContext)
-  const { removeNotification } = useContext(NotificationsContext)
+  const { hideNotification } = useContext(NotificationsContext)
 
   if (connectionStatus === ConnectionStatus.Disconnected) {
     return <DisconnectedModal />
@@ -22,7 +22,7 @@ const Modal = (): ReactElement | null => {
     return (
       <InactiveNotificationModal
         notification={selectedNotification}
-        removeNotification={removeNotification}
+        hideNotification={hideNotification}
       />
     )
   }

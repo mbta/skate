@@ -3,8 +3,8 @@ import React from "react"
 import renderer from "react-test-renderer"
 import NotificationDrawer from "../../src/components/notificationDrawer"
 import { NotificationsContext } from "../../src/contexts/notificationsContext"
-import { Notification } from "../../src/realtime.d"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
+import { Notification } from "../../src/realtime.d"
 import {
   closeNotificationDrawer,
   initialState,
@@ -36,7 +36,8 @@ describe("NotificationDrawer", () => {
         <NotificationsContext.Provider
           value={{
             notifications: [notification],
-            removeNotification: jest.fn(),
+            showLatestNotification: true,
+            hideNotification: jest.fn(),
           }}
         >
           <NotificationDrawer />
@@ -53,7 +54,8 @@ describe("NotificationDrawer", () => {
         <NotificationsContext.Provider
           value={{
             notifications: [notification],
-            removeNotification: jest.fn(),
+            showLatestNotification: true,
+            hideNotification: jest.fn(),
           }}
         >
           <NotificationDrawer />
