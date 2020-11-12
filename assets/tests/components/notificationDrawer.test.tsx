@@ -30,7 +30,7 @@ describe("NotificationDrawer", () => {
     expect(dispatch).toHaveBeenCalledWith(closeNotificationDrawer())
   })
 
-  test("renders latest notification", () => {
+  test("renders notifications", () => {
     const tree = renderer
       .create(
         <NotificationsContext.Provider
