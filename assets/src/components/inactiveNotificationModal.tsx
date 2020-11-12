@@ -7,10 +7,10 @@ import { title } from "./notificationContent"
 
 const InactiveNotificationModal = ({
   notification,
-  hide,
+  hideNotification,
 }: {
   notification: Notification
-  hide: () => void
+  hideNotification: () => void
 }) => {
   const [, dispatch] = useContext(StateDispatchContext)
 
@@ -19,7 +19,7 @@ const InactiveNotificationModal = ({
   }
 
   const hideAndClose = () => {
-    hide()
+    hideNotification()
     closeModal()
   }
 

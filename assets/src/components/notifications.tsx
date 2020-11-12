@@ -7,9 +7,11 @@ import { setNotification } from "../state"
 import { NotificationContent } from "./notificationContent"
 
 export const Notifications = () => {
-  const { notifications, showLatestNotification, hide } = useContext(
-    NotificationsContext
-  )
+  const {
+    notifications,
+    showLatestNotification,
+    hideNotification,
+  } = useContext(NotificationsContext)
   const currentTime = useCurrentTime()
 
   const [, dispatch] = useContext(StateDispatchContext)
@@ -26,7 +28,7 @@ export const Notifications = () => {
         <NotificationCard
           key={notifications[latestNotificationIndex].id}
           notification={notifications[latestNotificationIndex]}
-          hide={hide}
+          hideNotification={hideNotification}
           currentTime={currentTime}
           openVPPForCurrentVehicle={openVPPForCurrentVehicle}
         />
@@ -37,12 +39,12 @@ export const Notifications = () => {
 
 export const NotificationCard = ({
   notification,
-  hide,
+  hideNotification,
   currentTime,
   openVPPForCurrentVehicle,
 }: {
   notification: Notification
-  hide: () => void
+  hideNotification: () => void
   currentTime: Date
   openVPPForCurrentVehicle: (notification: Notification) => void
 }) => {
@@ -67,7 +69,10 @@ export const NotificationCard = ({
           currentTime={currentTime}
         />
       </button>
-      <button className="m-notifications__close" onClick={() => hide()}>
+      <button
+        className="m-notifications__close"
+        onClick={() => hideNotification()}
+      >
         Hide
       </button>
     </div>

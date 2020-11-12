@@ -87,7 +87,7 @@ describe("Notification", () => {
     })
     expect(result.current.showLatestNotification).toEqual(true)
     hooksAct(() => {
-      result.current.hide()
+      result.current.hideNotification()
     })
     expect(result.current.showLatestNotification).toEqual(false)
   })

@@ -5,7 +5,7 @@ import { Notification } from "../realtime.d"
 export interface NotificationsStatus {
   notifications: Notification[]
   showLatestNotification: boolean
-  hide: () => void
+  hideNotification: () => void
 }
 
 // Codecov gets in a snit about not covering the "hide" no-op below.
@@ -15,7 +15,7 @@ export const NotificationsContext = createContext<NotificationsStatus>({
   notifications: [],
   showLatestNotification: false,
   // tslint:disable-next-line: no-empty
-  hide: () => {},
+  hideNotification: () => {},
 })
 
 const deliverFullstoryEvent = (numStacked: number): void => {
@@ -45,7 +45,7 @@ export const NotificationsProvider = ({
     setShowLatestNotification(true)
   }
 
-  const hide = () => setShowLatestNotification(false)
+  const hideNotification = () => setShowLatestNotification(false)
 
   useNotifications(addNotification)
 
@@ -54,7 +54,7 @@ export const NotificationsProvider = ({
       value={{
         notifications,
         showLatestNotification,
-        hide,
+        hideNotification,
       }}
     >
       {children}

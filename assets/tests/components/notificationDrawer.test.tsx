@@ -37,7 +37,7 @@ describe("NotificationDrawer", () => {
           value={{
             notifications: [notification],
             showLatestNotification: true,
-            hide: jest.fn(),
+            hideNotification: jest.fn(),
           }}
         >
           <NotificationDrawer />
@@ -55,7 +55,7 @@ describe("NotificationDrawer", () => {
           value={{
             notifications: [notification],
             showLatestNotification: true,
-            hide: jest.fn(),
+            hideNotification: jest.fn(),
           }}
         >
           <NotificationDrawer />

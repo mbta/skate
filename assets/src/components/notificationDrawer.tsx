@@ -44,7 +44,9 @@ const Content = () => {
     dispatch(setNotification(notification))
   }
 
-  if (notifications.length === 0) return <EmptyMessage />
+  if (notifications.length === 0) {
+    return <EmptyMessage />
+  }
 
   return (
     <div className="m-notification-drawer__cards">

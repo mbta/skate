@@ -63,7 +63,7 @@ describe("Notification", () => {
           value={{
             notifications,
             showLatestNotification: true,
-            hide: jest.fn(),
+            hideNotification: jest.fn(),
           }}
         >
           <Notifications />
@@ -74,13 +74,13 @@ describe("Notification", () => {
   })
 
   test("can hide notification", () => {
-    const hide = jest.fn()
+    const hideNotification = jest.fn()
     const wrapper = mount(
       <NotificationsContext.Provider
         value={{
           notifications: [notification],
           showLatestNotification: true,
-          hide,
+          hideNotification,
         }}
       >
         <Notifications />
@@ -88,7 +88,7 @@ describe("Notification", () => {
     )
     expect(wrapper.find(".m-notifications__card")).toHaveLength(1)
     wrapper.find(".m-notifications__close").simulate("click")
-    expect(hide).toHaveBeenCalled()
+    expect(hideNotification).toHaveBeenCalled()
   })
 })
 
@@ -98,7 +98,7 @@ describe("NotificationCard", () => {
       .create(
         <NotificationCard
           notification={notificationWithMatchedVehicle}
-          hide={jest.fn()}
+          hideNotification={jest.fn()}
           currentTime={now()}
           openVPPForCurrentVehicle={jest.fn()}
         />
@@ -112,7 +112,7 @@ describe("NotificationCard", () => {
     const wrapper = mount(
       <NotificationCard
         notification={n}
-        hide={jest.fn()}
+        hideNotification={jest.fn()}
         currentTime={now()}
         openVPPForCurrentVehicle={jest.fn()}
       />
@@ -125,7 +125,7 @@ describe("NotificationCard", () => {
     const wrapper = mount(
       <NotificationCard
         notification={n}
-        hide={jest.fn()}
+        hideNotification={jest.fn()}
         currentTime={now()}
         openVPPForCurrentVehicle={jest.fn()}
       />
@@ -139,7 +139,7 @@ describe("NotificationCard", () => {
       .create(
         <NotificationCard
           notification={n}
-          hide={jest.fn()}
+          hideNotification={jest.fn()}
           currentTime={now()}
           openVPPForCurrentVehicle={jest.fn()}
         />
@@ -158,7 +158,7 @@ describe("NotificationCard", () => {
     const wrapper = mount(
       <NotificationCard
         notification={n}
-        hide={jest.fn()}
+        hideNotification={jest.fn()}
         currentTime={now()}
         openVPPForCurrentVehicle={jest.fn()}
       />
@@ -176,7 +176,7 @@ describe("NotificationCard", () => {
     const wrapper = mount(
       <NotificationCard
         notification={n}
-        hide={jest.fn()}
+        hideNotification={jest.fn()}
         currentTime={now()}
         openVPPForCurrentVehicle={jest.fn()}
       />
@@ -194,7 +194,7 @@ describe("NotificationCard", () => {
     const wrapper = mount(
       <NotificationCard
         notification={n}
-        hide={jest.fn()}
+        hideNotification={jest.fn()}
         currentTime={now()}
         openVPPForCurrentVehicle={jest.fn()}
       />
@@ -217,7 +217,7 @@ describe("NotificationCard", () => {
     mount(
       <NotificationCard
         notification={n}
-        hide={jest.fn()}
+        hideNotification={jest.fn()}
         currentTime={now()}
         openVPPForCurrentVehicle={jest.fn()}
       />
@@ -229,7 +229,7 @@ describe("NotificationCard", () => {
     const wrapper = mount(
       <NotificationCard
         notification={notification}
-        hide={jest.fn()}
+        hideNotification={jest.fn()}
         currentTime={now()}
         openVPPForCurrentVehicle={jest.fn()}
       />
