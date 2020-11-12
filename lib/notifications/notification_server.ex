@@ -43,6 +43,7 @@ defmodule Notifications.NotificationServer do
     new_notifications =
       new_block_waivers_by_block_key
       |> convert_new_block_waivers_to_notifications()
+      |> Enum.map(&Notification.create/1)
 
     if !Enum.empty?(new_notifications) do
       Logger.warn(
