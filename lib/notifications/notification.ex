@@ -1,6 +1,7 @@
 defmodule Notifications.Notification do
   alias Schedule.Route
   alias Schedule.Trip
+  alias Schedule.Hastus.Run
 
   @type notification_reason :: :manpower | :disabled | :diverted | :accident
 
@@ -8,7 +9,7 @@ defmodule Notifications.Notification do
           created_at: Util.Time.timestamp(),
           reason: notification_reason(),
           route_ids: [Route.id()],
-          run_ids: [String.t()],
+          run_ids: [Run.id()],
           trip_ids: [Trip.id()],
           operator_id: String.t() | nil,
           operator_name: String.t() | nil,
