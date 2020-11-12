@@ -26,7 +26,6 @@ export const Notifications = () => {
     <div className="m-notifications">
       {showLatestNotification && latestNotificationIndex >= 0 && (
         <NotificationCard
-          key={notifications[latestNotificationIndex].id}
           notification={notifications[latestNotificationIndex]}
           hideNotification={hideNotification}
           currentTime={currentTime}
