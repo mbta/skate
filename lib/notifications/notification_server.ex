@@ -40,6 +40,7 @@ defmodule Notifications.NotificationServer do
 
   @impl true
   def handle_cast({:new_block_waivers, new_block_waivers_by_block_key}, state) do
+    IO.inspect(new_block_waivers_by_block_key)
     new_notifications =
       new_block_waivers_by_block_key
       |> convert_new_block_waivers_to_notifications()
