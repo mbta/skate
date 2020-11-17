@@ -82,15 +82,6 @@ defmodule Realtime.BlockWaiverStore do
       new_block_waivers =
         waiver_diff(state.block_waivers_by_block_key, new_block_waivers_by_block_key)
 
-      fake_block_key = {"C01-8", "abc40ns1"}
-      fake_block_waiver = %BlockWaiver{
-          start_time: 1605186000,
-          end_time: 1605225540,
-          cause_id: 23,
-          cause_description: "Manpower",
-          remark: "testing"
-      }
-
       notification_server_new_block_waivers_fn =
         Application.get_env(
           :notifications,
@@ -98,7 +89,7 @@ defmodule Realtime.BlockWaiverStore do
           &Notifications.NotificationServer.new_block_waivers/1
         )
 
-      notification_server_new_block_waivers_fn.(Map.put(new_block_waivers, fake_block_key, fake_block_waiver))
+      notification_server_new_block_waivers_fn.(new_block_waivers)
     end
 
     {:noreply,
