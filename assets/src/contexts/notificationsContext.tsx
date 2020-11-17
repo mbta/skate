@@ -1,4 +1,6 @@
 import React, { createContext, ReactElement, useState } from "react"
+import useCurrentTime from "../hooks/useCurrentTime"
+import useInterval from "../hooks/useInterval"
 import { useNotifications } from "../hooks/useNotifications"
 import { Notification } from "../realtime.d"
 
@@ -47,7 +49,20 @@ export const NotificationsProvider = ({
 
   const hideNotification = () => setShowLatestNotification(false)
 
+  const now = useCurrentTime()
+
+  const expireOldNotifications = () => {
+    const maxAgeInMs = 8 * 60 * 60 * 1000
+    setNotifications((previous) => {
+      return previous.filter((notification) => {
+        const ageInMs = now.valueOf() - notification.createdAt.valueOf()
+        return ageInMs < maxAgeInMs
+      })
+    })
+  }
+
   useNotifications(addNotification)
+  useInterval(expireOldNotifications, 10000)
 
   return (
     <NotificationsContext.Provider

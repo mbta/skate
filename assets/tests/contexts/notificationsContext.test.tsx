@@ -6,10 +6,15 @@ import {
   NotificationsContext,
   NotificationsProvider,
 } from "../../src/contexts/notificationsContext"
+import useCurrentTime from "../../src/hooks/useCurrentTime"
 import { useNotifications } from "../../src/hooks/useNotifications"
 import { Notification } from "../../src/realtime.d"
-import { now } from "../../src/util/dateTime"
 import { mockUseStateOnce } from "../testHelpers/mockHelpers"
+
+jest.mock("../../src/hooks/useCurrentTime", () => ({
+  __esModule: true,
+  default: jest.fn(() => new Date(0)),
+}))
 
 jest.mock("../../src/hooks/useNotifications", () => ({
   __esModule: true,
@@ -23,7 +28,7 @@ jest.mock("../../src/laboratoryFeatures", () => ({
 
 const notification: Notification = {
   id: "0",
-  createdAt: now(),
+  createdAt: new Date(0),
   reason: "manpower",
   routeIds: ["route1", "route2"],
   runIds: ["run1", "run2"],
@@ -31,7 +36,7 @@ const notification: Notification = {
   operatorName: null,
   operatorId: null,
   routeIdAtCreation: null,
-  startTime: now(),
+  startTime: new Date(0),
 }
 
 // tslint:disable: react-hooks-nesting
@@ -90,5 +95,38 @@ describe("Notification", () => {
       result.current.hideNotification()
     })
     expect(result.current.showLatestNotification).toEqual(false)
+  })
+
+  test("expires notifications after 8 hours", () => {
+    const maxAge = 8 * 60 * 60 * 1000
+
+    jest.useFakeTimers()
+
+    let handler: (notification: Notification) => void
+    ;(useNotifications as jest.Mock).mockImplementationOnce((h) => {
+      handler = h
+    })
+    const { result } = renderHook(() => useContext(NotificationsContext), {
+      wrapper: NotificationsProvider,
+    })
+    ;(useCurrentTime as jest.Mock).mockImplementationOnce(() => {
+      return new Date(0)
+    })
+    hooksAct(() => {
+      handler!(notification)
+    })
+    hooksAct(() => {
+      jest.runOnlyPendingTimers()
+      // This seems like it should work if we put the mock outside the
+      // hooksAct block, but it doesn't.
+      ;(useCurrentTime as jest.Mock).mockImplementationOnce(() => {
+        return new Date(maxAge)
+      })
+    })
+    expect(result.current.notifications).toHaveLength(1)
+    hooksAct(() => {
+      jest.runOnlyPendingTimers()
+    })
+    expect(result.current.notifications).toHaveLength(0)
   })
 })
