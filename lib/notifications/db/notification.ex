@@ -50,5 +50,15 @@ defmodule Notifications.Db.Notification do
       :start_time,
       :end_time
     ])
+    |> unique_constraint(
+      [
+        :start_time,
+        :end_time,
+        :block_id,
+        :service_id,
+        :reason
+      ],
+      name: "notifications_unique_index"
+    )
   end
 end
