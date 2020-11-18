@@ -15,6 +15,8 @@ defmodule Notifications.Db.Notification do
     field(:operator_id, :string)
     field(:operator_name, :string)
     field(:route_id_at_creation, :string)
+    field(:block_id, :string)
+    field(:service_id, :string)
     field(:start_time, :integer)
     field(:end_time, :integer)
     timestamps()
@@ -32,6 +34,8 @@ defmodule Notifications.Db.Notification do
       :operator_id,
       :operator_name,
       :route_id_at_creation,
+      :block_id,
+      :service_id,
       :start_time,
       :end_time
     ])
@@ -41,6 +45,8 @@ defmodule Notifications.Db.Notification do
       :route_ids,
       :run_ids,
       :trip_ids,
+      :block_id,
+      :service_id,
       :start_time,
       :end_time
     ])

@@ -1,6 +1,8 @@
 defmodule Notifications.Notification do
   import Skate.Repo
 
+  alias Schedule.Block
+  alias Schedule.Gtfs.Service
   alias Schedule.Route
   alias Schedule.Trip
   alias Schedule.Hastus.Run
@@ -12,6 +14,8 @@ defmodule Notifications.Notification do
   @type t() :: %__MODULE__{
           id: id() | nil,
           created_at: Util.Time.timestamp(),
+          block_id: Block.id(),
+          service_id: Service.id(),
           reason: NotificationReason.t(),
           route_ids: [Route.id()],
           run_ids: [Run.id()],
@@ -26,6 +30,8 @@ defmodule Notifications.Notification do
   @derive Jason.Encoder
 
   @enforce_keys [
+    :block_id,
+    :service_id,
     :created_at,
     :reason,
     :route_ids,
@@ -37,6 +43,8 @@ defmodule Notifications.Notification do
 
   defstruct [
     :id,
+    :block_id,
+    :service_id,
     :created_at,
     :reason,
     :route_ids,
@@ -57,8 +65,9 @@ defmodule Notifications.Notification do
         Map.from_struct(notification_without_id)
       )
 
-    id = insert!(changeset, returning: [:id])
+    _id = insert!(changeset)
 
-    %{notification_without_id | id: id}
+    # %{notification_without_id | id: id}
+    notification_without_id
   end
 end

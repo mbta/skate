@@ -116,6 +116,8 @@ defmodule Notifications.NotificationServer do
         end
 
       %Notification{
+        block_id: block_id,
+        service_id: service_id,
         reason: reason,
         created_at: created_at,
         route_ids: route_ids,
