@@ -1,28 +1,56 @@
 defmodule Notifications.NotificationReason do
   use Ecto.Type
 
-  @type t :: :manpower | :disabled | :diverted | :accident
+  @type t ::
+          :manpower
+          | :disabled
+          | :diverted
+          | :accident
+          | :other
+          | :adjusted
+          | :operator_error
+          | :traffic
+
+  @valid_reasons [
+    :manpower,
+    :disabled,
+    :diverted,
+    :accident,
+    :other,
+    :adjusted,
+    :operator_error,
+    :traffic
+  ]
 
   @impl true
   def type, do: :string
 
   @impl true
-  def cast(:manpower), do: {:ok, :manpower}
-  def cast(:disabled), do: {:ok, :disabled}
-  def cast(:diverted), do: {:ok, :diverted}
-  def cast(:accident), do: {:ok, :accident}
-  def cast(_), do: :error
+  def cast(reason) do
+    if reason in @valid_reasons do
+      {:ok, reason}
+    else
+      :error
+    end
+  end
 
   @impl true
-  def load("manpower"), do: {:ok, :manpower}
-  def load("disabled"), do: {:ok, :disabled}
-  def load("diverted"), do: {:ok, :diverted}
-  def load("accident"), do: {:ok, :accident}
-  def load(_), do: :error
+  def load(reason) do
+    reason_as_atom = String.to_atom(reason)
+
+    if reason_as_atom in @valid_reasons do
+      {:ok, reason_as_atom}
+    else
+      :error
+    end
+  end
 
   @impl true
-  def dump(:manpower), do: {:ok, "manpower"}
-  def dump(:disabled), do: {:ok, "disabled"}
-  def dump(:diverted), do: {:ok, "diverted"}
-  def dump(:accident), do: {:ok, "accident"}
+  def dump(reason) do
+    if reason in @valid_reasons do
+      {:ok, Atom.to_string(reason)}
+    else
+      :error
+    end
+  end
 end

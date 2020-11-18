@@ -12,6 +12,7 @@ defmodule Skate.Repo.Migrations.StoreNotifications do
       add(:operator_name, :string)
       add(:route_id_at_creation, :string)
       add(:start_time, :bigint, null: false)
+      add(:end_time, :bigint, null: false)
       timestamps()
     end
   end

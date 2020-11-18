@@ -19,7 +19,8 @@ defmodule Notifications.Notification do
           operator_id: String.t() | nil,
           operator_name: String.t() | nil,
           route_id_at_creation: Route.id() | nil,
-          start_time: Util.Time.timestamp()
+          start_time: Util.Time.timestamp(),
+          end_time: Util.Time.timestamp()
         }
 
   @derive Jason.Encoder
@@ -30,7 +31,8 @@ defmodule Notifications.Notification do
     :route_ids,
     :run_ids,
     :trip_ids,
-    :start_time
+    :start_time,
+    :end_time
   ]
 
   defstruct [
@@ -43,15 +45,20 @@ defmodule Notifications.Notification do
     :operator_id,
     :operator_name,
     :route_id_at_creation,
-    :start_time
+    :start_time,
+    :end_time
   ]
 
   @spec create([t()]) :: [t()]
   def create(notification_without_id) do
-    id = insert!(
-      DbNotification.changeset(%DbNotification{}, notification_without_id),
-      returning: :id
-    )
+    changeset =
+      DbNotification.changeset(
+        %DbNotification{},
+        Map.from_struct(notification_without_id)
+      )
+
+    id = insert!(changeset, returning: [:id])
+
     %{notification_without_id | id: id}
   end
 end

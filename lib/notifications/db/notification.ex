@@ -16,6 +16,7 @@ defmodule Notifications.Db.Notification do
     field(:operator_name, :string)
     field(:route_id_at_creation, :string)
     field(:start_time, :integer)
+    field(:end_time, :integer)
     timestamps()
   end
 
@@ -31,7 +32,8 @@ defmodule Notifications.Db.Notification do
       :operator_id,
       :operator_name,
       :route_id_at_creation,
-      :start_time
+      :start_time,
+      :end_time
     ])
     |> validate_required([
       :created_at,
@@ -39,7 +41,8 @@ defmodule Notifications.Db.Notification do
       :route_ids,
       :run_ids,
       :trip_ids,
-      :start_time
+      :start_time,
+      :end_time
     ])
   end
 end
