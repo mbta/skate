@@ -2,6 +2,7 @@ defmodule Notifications.NotificationServer do
   use GenServer
 
   alias Notifications.Notification
+  alias Notifications.NotificationReason
   alias Realtime.{BlockWaiver, Ghost, Vehicle}
   alias Schedule.Block
   alias Skate.Settings.User
@@ -136,7 +137,7 @@ defmodule Notifications.NotificationServer do
 
   # See Realtime.BlockWaiver for the full mapping between numeric
   # `cause_id`s and textual `cause_description`s.
-  @spec get_notification_reason(BlockWaiver.t()) :: Notification.notification_reason() | nil
+  @spec get_notification_reason(BlockWaiver.t()) :: NotificationReason.t() | nil
   defp get_notification_reason(block_waiver) do
     case block_waiver.cause_id do
       1 -> :other

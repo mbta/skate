@@ -57,7 +57,7 @@ defmodule Notifications.Notification do
     :end_time
   ]
 
-  @spec create([t()]) :: [t()]
+  @spec create(t(), (DbNotification.t() -> t())) :: t()
   def create(notification_without_id, insertion_callback \\ fn _ -> nil end) do
     changeset =
       DbNotification.changeset(
@@ -76,6 +76,6 @@ defmodule Notifications.Notification do
           nil
       end
 
-    %{notification_without_id | id: id}
+    %__MODULE__{notification_without_id | id: id}
   end
 end
