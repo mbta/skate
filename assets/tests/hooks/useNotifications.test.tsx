@@ -14,6 +14,7 @@ import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 // tslint:disable: react-hooks-nesting
 
 const notificationData: NotificationData = {
+  id: "12345",
   created_at: 0,
   reason: "manpower",
   route_ids: ["route"],
