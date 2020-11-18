@@ -43,17 +43,19 @@ defmodule Notifications.NotificationServer do
     new_notifications =
       new_block_waivers_by_block_key
       |> convert_new_block_waivers_to_notifications()
-      |> Enum.map(&Notification.create/1)
 
-    if !Enum.empty?(new_notifications) do
-      Logger.warn(
-        "NotificationServer created new notifications new_notifications=#{
-          inspect(new_notifications)
-        }"
-      )
+    Enum.each(new_notifications, fn new_notification ->
+      Notification.create(new_notification, fn new_notification ->
+        Logger.warn(
+          "NotificationServer created new notification new_notification=#{
+            inspect(new_notification)
+          }"
+        )
 
-      broadcast(new_notifications, self())
-    end
+        broadcast(new_notification, self())
+        nil
+      end)
+    end)
 
     {:noreply, state}
   end
@@ -149,16 +151,14 @@ defmodule Notifications.NotificationServer do
     end
   end
 
-  defp broadcast(notifications, registry_key) do
+  defp broadcast(notification, registry_key) do
     Registry.dispatch(Notifications.Supervisor.registry_name(), registry_key, fn entries ->
-      Enum.each(notifications, fn notification ->
-        usernames = User.usernames_for_route_ids(notification.route_ids)
+      usernames = User.usernames_for_route_ids(notification.route_ids)
 
-        Enum.each(entries, fn {pid, username} ->
-          if Enum.member?(usernames, username) do
-            send(pid, {:notification, notification})
-          end
-        end)
+      Enum.each(entries, fn {pid, username} ->
+        if Enum.member?(usernames, username) do
+          send(pid, {:notification, notification})
+        end
       end)
     end)
   end

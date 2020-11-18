@@ -58,16 +58,24 @@ defmodule Notifications.Notification do
   ]
 
   @spec create([t()]) :: [t()]
-  def create(notification_without_id) do
+  def create(notification_without_id, insertion_callback \\ fn _ -> nil end) do
     changeset =
       DbNotification.changeset(
         %DbNotification{},
         Map.from_struct(notification_without_id)
       )
 
-    _id = insert!(changeset)
+    id =
+      case insert(changeset) do
+        {:ok, db_notification} ->
+          notification_with_id = %{notification_without_id | id: db_notification.id}
+          insertion_callback.(notification_with_id)
+          db_notification.id
 
-    # %{notification_without_id | id: id}
-    notification_without_id
+        {:error, _changeset} ->
+          nil
+      end
+
+    %{notification_without_id | id: id}
   end
 end
