@@ -190,6 +190,10 @@ defmodule Notifications.NotificationServerTest do
     }
   end
 
+  def assert_n_notifications_in_db(expected_n) do
+    assert expected_n == Skate.Repo.aggregate(Notifications.Db.Notification, :count)
+  end
+
   describe "start_link/1" do
     test "starts up and lives" do
       {:ok, server} = NotificationServer.start_link(name: :start_link)
@@ -212,7 +216,7 @@ defmodule Notifications.NotificationServerTest do
       RouteSettings.set("fake_uid", [{:selected_route_ids, ["39"]}])
     end
 
-    test "broadcasts and logs nothing if no new block waivers are received" do
+    test "broadcasts, saves, and logs nothing if no new block waivers are received" do
       {:ok, _server} = setup_server()
 
       log =
@@ -221,9 +225,11 @@ defmodule Notifications.NotificationServerTest do
         end)
 
       assert log == ""
+
+      assert_n_notifications_in_db(0)
     end
 
-    test "broadcasts and logs new notifications for waivers with recognized reason for vehicles on selected routes" do
+    test "broadcasts, saves to the DB, and logs new notifications for waivers with recognized reason for vehicles on selected routes" do
       reassign_env(:realtime, :peek_at_vehicles_fn, fn _ ->
         [@vehicle]
       end)
@@ -237,9 +243,11 @@ defmodule Notifications.NotificationServerTest do
           route_id_at_creation: "SL9001"
         )
       end
+
+      assert_n_notifications_in_db(map_size(@reasons_map))
     end
 
-    test "broadcasts and logs new notifications for waivers with recognized reason for ghosts on selected routes" do
+    test "broadcasts, saves to the DB, and logs new notifications for waivers with recognized reason for ghosts on selected routes" do
       reassign_env(:realtime, :peek_at_vehicles_fn, fn _ ->
         [@ghost]
       end)
@@ -251,9 +259,11 @@ defmodule Notifications.NotificationServerTest do
           route_id_at_creation: "SL9001"
         )
       end
+
+      assert_n_notifications_in_db(map_size(@reasons_map))
     end
 
-    test "broadcasts and logs new notifications for waivers with recognized reason when no vehicle or ghost is associated on selected routes" do
+    test "broadcasts, saves to the DB, and logs new notifications for waivers with recognized reason when no vehicle or ghost is associated on selected routes" do
       reassign_env(:realtime, :peek_at_vehicles_fn, fn _ ->
         []
       end)
@@ -263,6 +273,8 @@ defmodule Notifications.NotificationServerTest do
       for {cause_id, {cause_description, cause_atom}} <- @reasons_map do
         assert_notification(cause_atom, cause_description, cause_id, server)
       end
+
+      assert_n_notifications_in_db(map_size(@reasons_map))
     end
 
     test "doesn't send notifications to a user not looking at the route in question" do
@@ -287,6 +299,40 @@ defmodule Notifications.NotificationServerTest do
 
         assert_notification_logged(log, cause_atom, @midnight + 100)
       end
+    end
+
+    test "doesn't log, save, or broadcast a duplicate notification" do
+      reassign_env(:realtime, :peek_at_vehicles_fn, fn _ ->
+        [@vehicle]
+      end)
+
+      {:ok, server} = setup_server()
+
+      NotificationServer.new_block_waivers(
+        waiver_map(1, "J - Other"),
+        server
+      )
+
+      Process.sleep(100)
+      assert_n_notifications_in_db(1)
+
+      # Throw away message from first go-round
+      receive do
+        _ -> nil
+      end
+
+      log =
+        capture_log(fn ->
+          NotificationServer.new_block_waivers(
+            waiver_map(1, "J - Other"),
+            server
+          )
+
+          refute_receive(_, 500)
+        end)
+
+      assert_n_notifications_in_db(1)
+      assert log == ""
     end
   end
 end
