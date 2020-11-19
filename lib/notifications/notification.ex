@@ -9,6 +9,8 @@ defmodule Notifications.Notification do
   alias Notifications.NotificationReason
   alias Notifications.Db.Notification, as: DbNotification
 
+  require Logger
+
   @type id :: integer()
 
   @type t() :: %__MODULE__{
@@ -69,6 +71,7 @@ defmodule Notifications.Notification do
       case insert(changeset) do
         {:ok, db_notification} ->
           notification_with_id = %{notification_without_id | id: db_notification.id}
+          log_creation(notification_with_id)
           insertion_callback.(notification_with_id)
           db_notification.id
 
@@ -77,5 +80,9 @@ defmodule Notifications.Notification do
       end
 
     %__MODULE__{notification_without_id | id: id}
+  end
+
+  defp log_creation(notification) do
+    Logger.warn("Notification created new notification new_notification=#{inspect(notification)}")
   end
 end

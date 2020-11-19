@@ -7,8 +7,6 @@ defmodule Notifications.NotificationServer do
   alias Schedule.Block
   alias Skate.Settings.User
 
-  require Logger
-
   # Client
 
   @spec default_name() :: GenServer.name()
@@ -47,12 +45,6 @@ defmodule Notifications.NotificationServer do
 
     Enum.each(new_notifications, fn new_notification ->
       Notification.create(new_notification, fn new_notification ->
-        Logger.warn(
-          "NotificationServer created new notification new_notification=#{
-            inspect(new_notification)
-          }"
-        )
-
         broadcast(new_notification, self())
         nil
       end)
