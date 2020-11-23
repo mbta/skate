@@ -44,10 +44,8 @@ defmodule Notifications.NotificationServer do
       |> convert_new_block_waivers_to_notifications()
 
     Enum.each(new_notifications, fn new_notification ->
-      Notification.create(new_notification, fn new_notification ->
-        broadcast(new_notification, self())
-        nil
-      end)
+      notification_with_id = Notification.get_or_create(new_notification)
+      broadcast(notification_with_id, self())
     end)
 
     {:noreply, state}

@@ -1,6 +1,7 @@
 defmodule Notifications.NotificationServerTest do
   use Skate.DataCase
 
+  alias Notifications.Db.Notification, as: DbNotification
   alias Notifications.NotificationServer
   alias Realtime.BlockWaiver
   alias Realtime.Ghost
@@ -129,25 +130,46 @@ defmodule Notifications.NotificationServerTest do
         operator_name = Keyword.get(opts, :operator_name)
         operator_id = Keyword.get(opts, :operator_id)
         route_id_at_creation = Keyword.get(opts, :route_id_at_creation)
+        notification_id = Keyword.get(opts, :notification_id)
 
-        assert_receive(
-          {:notification,
-           %Notifications.Notification{
-             created_at: _,
-             reason: ^cause_atom,
-             route_ids: ["39", "2"],
-             run_ids: ["run1", "run2"],
-             trip_ids: ["trip1", "trip2"],
-             operator_name: ^operator_name,
-             operator_id: ^operator_id,
-             route_id_at_creation: ^route_id_at_creation,
-             start_time: ^start_time
-           }},
-          5000
-        )
+        if notification_id do
+          assert_receive(
+            {:notification,
+             %Notifications.Notification{
+               created_at: _,
+               reason: ^cause_atom,
+               route_ids: ["39", "2"],
+               run_ids: ["run1", "run2"],
+               trip_ids: ["trip1", "trip2"],
+               operator_name: ^operator_name,
+               operator_id: ^operator_id,
+               route_id_at_creation: ^route_id_at_creation,
+               start_time: ^start_time
+             }},
+            5000
+          )
+        else
+          assert_receive(
+            {:notification,
+             %Notifications.Notification{
+               id: notification_id,
+               created_at: _,
+               reason: ^cause_atom,
+               route_ids: ["39", "2"],
+               run_ids: ["run1", "run2"],
+               trip_ids: ["trip1", "trip2"],
+               operator_name: ^operator_name,
+               operator_id: ^operator_id,
+               route_id_at_creation: ^route_id_at_creation,
+               start_time: ^start_time
+             }},
+            5000
+          )
+        end
       end)
 
-    assert_notification_logged(log, cause_atom, start_time)
+    log_expected = Keyword.get(opts, :log_expected, true)
+    if log_expected, do: assert_notification_logged(log, cause_atom, start_time)
   end
 
   def assert_notification_logged(log, cause_atom, start_time) do
@@ -301,7 +323,7 @@ defmodule Notifications.NotificationServerTest do
       end
     end
 
-    test "doesn't log, save, or broadcast a duplicate notification" do
+    test "doesn't log or save a duplicate notification, but does broadcast" do
       reassign_env(:realtime, :peek_at_vehicles_fn, fn _ ->
         [@vehicle]
       end)
@@ -315,6 +337,7 @@ defmodule Notifications.NotificationServerTest do
 
       Process.sleep(100)
       assert_n_notifications_in_db(1)
+      existing_record = Skate.Repo.one(from(DbNotification))
 
       # Throw away message from first go-round
       receive do
@@ -328,7 +351,13 @@ defmodule Notifications.NotificationServerTest do
             server
           )
 
-          refute_receive(_, 500)
+          assert_notification(:other, "Other", 1, server,
+            operator_name: "CHARLIE",
+            operator_id: "56785678",
+            route_id_at_creation: "SL9001",
+            log_expected: false,
+            notification_id: existing_record.id
+          )
         end)
 
       assert_n_notifications_in_db(1)
