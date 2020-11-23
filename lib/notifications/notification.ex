@@ -60,8 +60,8 @@ defmodule Notifications.Notification do
     :end_time
   ]
 
-  @spec get_or_create(t(), (DbNotification.t() -> t())) :: t()
-  def get_or_create(notification_without_id, insertion_callback \\ fn _ -> nil end) do
+  @spec get_or_create(t()) :: t()
+  def get_or_create(notification_without_id) do
     identifying_fields =
       Map.take(notification_without_id, [:start_time, :end_time, :block_id, :service_id, :reason])
       |> Map.to_list()
@@ -82,7 +82,6 @@ defmodule Notifications.Notification do
           db_notification = insert!(changeset)
           notification_with_id = %{notification_without_id | id: db_notification.id}
           log_creation(notification_with_id)
-          insertion_callback.(notification_with_id)
           db_notification
         end
       end)
