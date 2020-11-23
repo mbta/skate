@@ -16,7 +16,8 @@ defmodule Realtime.TrainVehiclesStore do
 
   @spec reset(t(), [TrainVehicle.t()]) :: t()
   def reset(store, train_vehicles) do
-    train_vehicles_by_route_id = Enum.group_by(train_vehicles, &route_id_merging_green_lines/1)
+    train_vehicles_by_route_id =
+      Enum.group_by(train_vehicles, &route_id_merging_green_lines(&1.route_id))
 
     Map.put(store, :train_vehicles_by_route_id, train_vehicles_by_route_id)
   end
@@ -31,8 +32,9 @@ defmodule Realtime.TrainVehiclesStore do
         new_train_vehicles,
         train_vehicles_by_route_id,
         fn new_train_vehicle, acc ->
-          vehicles = Map.get(acc, new_train_vehicle.route_id, [])
-          Map.put(acc, new_train_vehicle.route_id, [new_train_vehicle | vehicles])
+          route_id = route_id_merging_green_lines(new_train_vehicle.route_id)
+          vehicles = Map.get(acc, route_id, [])
+          Map.put(acc, route_id, [new_train_vehicle | vehicles])
         end
       )
 
@@ -49,12 +51,14 @@ defmodule Realtime.TrainVehiclesStore do
         updated_train_vehicles,
         train_vehicles_by_route_id,
         fn updated_train_vehicle, acc ->
+          route_id = route_id_merging_green_lines(updated_train_vehicle.route_id)
+
           vehicles_sans_old =
             acc
-            |> Map.get(updated_train_vehicle.route_id, [])
+            |> Map.get(route_id, [])
             |> Enum.reject(&(&1.id == updated_train_vehicle.id))
 
-          Map.put(acc, updated_train_vehicle.route_id, [updated_train_vehicle | vehicles_sans_old])
+          Map.put(acc, route_id, [updated_train_vehicle | vehicles_sans_old])
         end
       )
 
@@ -75,10 +79,10 @@ defmodule Realtime.TrainVehiclesStore do
     Map.put(store, :train_vehicles_by_route_id, new_train_vehicles_by_route_id)
   end
 
-  @spec route_id_merging_green_lines(TrainVehicle.t()) :: String.t()
-  defp route_id_merging_green_lines(%TrainVehicle{route_id: "Green-B"}), do: "Green"
-  defp route_id_merging_green_lines(%TrainVehicle{route_id: "Green-C"}), do: "Green"
-  defp route_id_merging_green_lines(%TrainVehicle{route_id: "Green-D"}), do: "Green"
-  defp route_id_merging_green_lines(%TrainVehicle{route_id: "Green-E"}), do: "Green"
-  defp route_id_merging_green_lines(%TrainVehicle{route_id: route_id}), do: route_id
+  @spec route_id_merging_green_lines(String.t()) :: String.t()
+  defp route_id_merging_green_lines("Green-B"), do: "Green"
+  defp route_id_merging_green_lines("Green-C"), do: "Green"
+  defp route_id_merging_green_lines("Green-D"), do: "Green"
+  defp route_id_merging_green_lines("Green-E"), do: "Green"
+  defp route_id_merging_green_lines(route_id), do: route_id
 end
