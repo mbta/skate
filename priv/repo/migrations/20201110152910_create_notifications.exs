@@ -33,7 +33,7 @@ defmodule Skate.Repo.Migrations.StoreNotifications do
   end
 
   def down do
-    execute("DROP TYPE notification_reason")
     drop(table(:notifications))
+    execute("DROP TYPE notification_reason")
   end
 end
