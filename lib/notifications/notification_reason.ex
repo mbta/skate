@@ -36,7 +36,7 @@ defmodule Notifications.NotificationReason do
 
   @impl true
   def load(reason) do
-    reason_as_atom = String.to_atom(reason)
+    reason_as_atom = String.to_existing_atom(reason)
 
     if reason_as_atom in @valid_reasons do
       {:ok, reason_as_atom}
