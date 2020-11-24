@@ -2,9 +2,13 @@ defmodule Skate.Repo.Migrations.StoreNotifications do
   use Ecto.Migration
 
   def up do
+    execute(
+      "CREATE TYPE notification_reason AS ENUM ('manpower', 'disabled', 'diverted', 'accident', 'other', 'adjusted', 'operator_error', 'traffic')"
+    )
+
     create table(:notifications) do
       add(:created_at, :bigint, null: false)
-      add(:reason, :string, null: false)
+      add(:reason, :notification_reason, null: false)
       add(:route_ids, {:array, :string}, null: false)
       add(:run_ids, {:array, :string}, null: false)
       add(:trip_ids, {:array, :string}, null: false)
@@ -29,6 +33,7 @@ defmodule Skate.Repo.Migrations.StoreNotifications do
   end
 
   def down do
+    execute("DROP TYPE notification_reason")
     drop(table(:notifications))
   end
 end
