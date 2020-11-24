@@ -136,6 +136,7 @@ defmodule Notifications.NotificationServerTest do
           assert_receive(
             {:notification,
              %Notifications.Notification{
+               id: ^notification_id,
                created_at: _,
                reason: ^cause_atom,
                route_ids: ["39", "2"],
@@ -152,7 +153,6 @@ defmodule Notifications.NotificationServerTest do
           assert_receive(
             {:notification,
              %Notifications.Notification{
-               id: notification_id,
                created_at: _,
                reason: ^cause_atom,
                route_ids: ["39", "2"],
@@ -338,6 +338,14 @@ defmodule Notifications.NotificationServerTest do
       Process.sleep(100)
       assert_n_notifications_in_db(1)
       existing_record = Skate.Repo.one(from(DbNotification))
+
+      assert_notification(:other, "Other", 1, server,
+        operator_name: "CHARLIE",
+        operator_id: "56785678",
+        route_id_at_creation: "SL9001",
+        log_expected: false,
+        notification_id: existing_record.id
+      )
 
       # Throw away message from first go-round
       receive do

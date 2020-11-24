@@ -1,5 +1,6 @@
 defmodule Notifications.Notification do
   import Skate.Repo
+
   import Ecto.Query
 
   alias Schedule.Block
@@ -62,29 +63,24 @@ defmodule Notifications.Notification do
 
   @spec get_or_create(t()) :: t()
   def get_or_create(notification_without_id) do
-    identifying_fields =
-      Map.take(notification_without_id, [:start_time, :end_time, :block_id, :service_id, :reason])
-      |> Map.to_list()
+    changeset =
+      DbNotification.changeset(%DbNotification{}, Map.from_struct(notification_without_id))
 
-    {:ok, db_record} =
-      Skate.Repo.transaction(fn ->
-        existing_record = Skate.Repo.one(from(DbNotification, where: ^identifying_fields))
+    db_record = insert!(changeset, on_conflict: :nothing)
 
-        if existing_record do
-          existing_record
-        else
-          changeset =
-            DbNotification.changeset(
-              %DbNotification{},
-              Map.from_struct(notification_without_id)
-            )
+    db_record =
+      if db_record.id do
+        notification_with_id = %__MODULE__{notification_without_id | id: db_record.id}
+        log_creation(notification_with_id)
+        db_record
+      else
+        identifying_fields =
+          notification_without_id
+          |> Map.take([:start_time, :end_time, :block_id, :service_id, :reason])
+          |> Map.to_list()
 
-          db_notification = insert!(changeset)
-          notification_with_id = %{notification_without_id | id: db_notification.id}
-          log_creation(notification_with_id)
-          db_notification
-        end
-      end)
+        Skate.Repo.one(from(DbNotification, where: ^identifying_fields))
+      end
 
     %__MODULE__{notification_without_id | id: db_record.id}
   end
