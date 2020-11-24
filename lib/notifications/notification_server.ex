@@ -2,11 +2,10 @@ defmodule Notifications.NotificationServer do
   use GenServer
 
   alias Notifications.Notification
+  alias Notifications.NotificationReason
   alias Realtime.{BlockWaiver, Ghost, Vehicle}
   alias Schedule.Block
   alias Skate.Settings.User
-
-  require Logger
 
   # Client
 
@@ -44,15 +43,10 @@ defmodule Notifications.NotificationServer do
       new_block_waivers_by_block_key
       |> convert_new_block_waivers_to_notifications()
 
-    if !Enum.empty?(new_notifications) do
-      Logger.warn(
-        "NotificationServer created new notifications new_notifications=#{
-          inspect(new_notifications)
-        }"
-      )
-
-      broadcast(new_notifications, self())
-    end
+    Enum.each(new_notifications, fn new_notification ->
+      notification_with_id = Notification.get_or_create(new_notification)
+      broadcast(notification_with_id, self())
+    end)
 
     {:noreply, state}
   end
@@ -115,6 +109,8 @@ defmodule Notifications.NotificationServer do
         end
 
       %Notification{
+        block_id: block_id,
+        service_id: service_id,
         reason: reason,
         created_at: created_at,
         route_ids: route_ids,
@@ -123,14 +119,15 @@ defmodule Notifications.NotificationServer do
         operator_id: operator_id,
         operator_name: operator_name,
         route_id_at_creation: route_id,
-        start_time: block_waiver.start_time
+        start_time: block_waiver.start_time,
+        end_time: block_waiver.end_time
       }
     end
   end
 
   # See Realtime.BlockWaiver for the full mapping between numeric
   # `cause_id`s and textual `cause_description`s.
-  @spec get_notification_reason(BlockWaiver.t()) :: Notification.notification_reason() | nil
+  @spec get_notification_reason(BlockWaiver.t()) :: NotificationReason.t() | nil
   defp get_notification_reason(block_waiver) do
     case block_waiver.cause_id do
       1 -> :other
@@ -145,16 +142,14 @@ defmodule Notifications.NotificationServer do
     end
   end
 
-  defp broadcast(notifications, registry_key) do
+  defp broadcast(notification, registry_key) do
     Registry.dispatch(Notifications.Supervisor.registry_name(), registry_key, fn entries ->
-      Enum.each(notifications, fn notification ->
-        usernames = User.usernames_for_route_ids(notification.route_ids)
+      usernames = User.usernames_for_route_ids(notification.route_ids)
 
-        Enum.each(entries, fn {pid, username} ->
-          if Enum.member?(usernames, username) do
-            send(pid, {:notification, notification})
-          end
-        end)
+      Enum.each(entries, fn {pid, username} ->
+        if Enum.member?(usernames, username) do
+          send(pid, {:notification, notification})
+        end
       end)
     end)
   end

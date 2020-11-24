@@ -8,6 +8,7 @@ import { RouteId, TripId } from "../schedule.d"
 import { dateFromEpochSeconds } from "../util/dateTime"
 
 export interface NotificationData {
+  id: NotificationId
   created_at: number
   reason: NotificationReason
   route_ids: RouteId[]
@@ -22,7 +23,7 @@ export interface NotificationData {
 export const notificationFromData = (
   notificationData: NotificationData
 ): Notification => ({
-  id: generateId(notificationData),
+  id: notificationData.id,
   createdAt: dateFromEpochSeconds(notificationData.created_at),
   reason: notificationData.reason,
   routeIds: notificationData.route_ids,
@@ -33,14 +34,3 @@ export const notificationFromData = (
   routeIdAtCreation: notificationData.route_id_at_creation,
   startTime: new Date(notificationData.start_time),
 })
-
-const generateId = (notificationData: NotificationData): NotificationId => {
-  const stringifiedFields = [
-    notificationData.created_at,
-    notificationData.start_time,
-    notificationData.trip_ids,
-    notificationData.reason,
-  ].map((field) => field.toString())
-
-  return stringifiedFields.join("_")
-}
