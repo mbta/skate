@@ -54,6 +54,16 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
 
   return (
     <div className="m-ladder-page">
+      <button
+        onClick={() => {
+          throw {
+            message: "TEST EXCEPTION, IGNORE",
+            name: "HarmlessTestException",
+          }
+        }}
+      >
+        Click me for an error
+      </button>
       <Notifications />
       <RoutePicker selectedRouteIds={selectedRouteIds} />
 
