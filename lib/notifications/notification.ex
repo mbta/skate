@@ -86,6 +86,6 @@ defmodule Notifications.Notification do
   end
 
   defp log_creation(notification) do
-    Logger.warn("Notification created new notification new_notification=#{inspect(notification)}")
+    Logger.warn("Notification created new_notification=#{inspect(notification)}")
   end
 end
