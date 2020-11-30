@@ -12,7 +12,8 @@ defmodule SkateWeb.ChannelAuth do
     token = Guardian.Phoenix.Socket.current_token(socket)
 
     case AuthManager.decode_and_verify(token) do
-      {:ok, _claims} ->
+      {:ok, claims} ->
+        {:ok, _username} = AuthManager.resource_from_claims(claims)
         # Refresh a token before it expires
         case AuthManager.refresh(token) do
           {:ok, _old_claims, {_new_token, _new_claims}} ->

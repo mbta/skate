@@ -6,6 +6,7 @@ defmodule SkateWeb.AuthManager do
   end
 
   def resource_from_claims(%{"sub" => username}) do
+    Sentry.Context.set_user_context(%{username: username})
     {:ok, username}
   end
 
