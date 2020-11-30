@@ -57,6 +57,7 @@ defmodule SkateWeb.Router do
     get "/shuttle-map", PageController, :index
     get "/search", PageController, :index
     get "/settings", PageController, :index
+    get "/boom", DeliberateErrorController, :index
   end
 
   scope "/api", SkateWeb do

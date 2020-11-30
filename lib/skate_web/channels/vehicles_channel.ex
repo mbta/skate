@@ -60,6 +60,7 @@ defmodule SkateWeb.VehiclesChannel do
       event_name = event_name(lookup_args)
       data = Server.lookup(lookup_args)
       :ok = push(socket, event_name, %{data: data})
+      raise "This is a deliberate error to test Sentry in a channel."
       {:noreply, socket}
     else
       :ok = push(socket, "auth_expired", %{})
