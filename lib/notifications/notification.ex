@@ -8,8 +8,10 @@ defmodule Notifications.Notification do
   alias Schedule.Route
   alias Schedule.Trip
   alias Schedule.Hastus.Run
+  alias Skate.Settings.User
   alias Notifications.NotificationReason
   alias Notifications.Db.Notification, as: DbNotification
+  alias Notifications.Db.NotificationUser, as: DbNotificationUser
 
   require Logger
 
@@ -72,6 +74,7 @@ defmodule Notifications.Notification do
       if db_record.id do
         notification_with_id = %__MODULE__{notification_without_id | id: db_record.id}
         log_creation(notification_with_id)
+        link_notification_to_users(notification_with_id)
         db_record
       else
         identifying_fields =
@@ -87,5 +90,26 @@ defmodule Notifications.Notification do
 
   defp log_creation(notification) do
     Logger.warn("Notification created new_notification=#{inspect(notification)}")
+  end
+
+  defp link_notification_to_users(notification) do
+    now = NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
+    user_ids = User.user_ids_for_route_ids(notification.route_ids)
+
+    notification_user_maps =
+      Enum.map(user_ids, fn user_id ->
+        %{
+          notification_id: notification.id,
+          user_id: user_id,
+          state: :unread,
+          inserted_at: now,
+          updated_at: now
+        }
+      end)
+
+    Skate.Repo.insert_all(
+      DbNotificationUser,
+      notification_user_maps
+    )
   end
 end

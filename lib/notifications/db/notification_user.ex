@@ -10,6 +10,7 @@ defmodule Notifications.Db.NotificationUser do
     field(:notification_id, :integer)
     field(:user_id, :integer)
     field(:state, NotificationState)
+    timestamps()
   end
 
   def changeset(notification_user, attrs \\ %{}) do
