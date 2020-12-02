@@ -94,6 +94,7 @@ defmodule Notifications.Notification do
 
   defp link_notification_to_users(notification) do
     now = NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
+
     user_ids = User.user_ids_for_route_ids(notification.route_ids)
 
     notification_user_maps =
