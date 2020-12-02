@@ -68,24 +68,29 @@ defmodule Notifications.Notification do
     changeset =
       DbNotification.changeset(%DbNotification{}, Map.from_struct(notification_without_id))
 
-    db_record = insert!(changeset, on_conflict: :nothing)
+    {:ok, notification_with_id} =
+      Skate.Repo.transaction(fn ->
+        db_record = insert!(changeset, on_conflict: :nothing)
 
-    db_record =
-      if db_record.id do
-        notification_with_id = %__MODULE__{notification_without_id | id: db_record.id}
-        log_creation(notification_with_id)
-        link_notification_to_users(notification_with_id)
-        db_record
-      else
-        identifying_fields =
-          notification_without_id
-          |> Map.take([:start_time, :end_time, :block_id, :service_id, :reason])
-          |> Map.to_list()
+        db_record =
+          if db_record.id do
+            notification_with_id = %__MODULE__{notification_without_id | id: db_record.id}
+            log_creation(notification_with_id)
+            link_notification_to_users(notification_with_id)
+            db_record
+          else
+            identifying_fields =
+              notification_without_id
+              |> Map.take([:start_time, :end_time, :block_id, :service_id, :reason])
+              |> Map.to_list()
 
-        Skate.Repo.one(from(DbNotification, where: ^identifying_fields))
-      end
+            Skate.Repo.one(from(DbNotification, where: ^identifying_fields))
+          end
 
-    %__MODULE__{notification_without_id | id: db_record.id}
+        %__MODULE__{notification_without_id | id: db_record.id}
+      end)
+
+    notification_with_id
   end
 
   defp log_creation(notification) do
