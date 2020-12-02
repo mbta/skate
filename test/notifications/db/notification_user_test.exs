@@ -25,11 +25,17 @@ defmodule Notifications.Db.NotificationUserTest do
         DbUser.changeset(%DbUser{}, %{username: "charlie"})
         |> Skate.Repo.insert()
 
-      Skate.Repo.insert!(%DbNotificationUser{
-        notification_id: notification.id,
-        user_id: user.id,
-        state: :deleted
-      })
+      notification_user =
+        Skate.Repo.insert!(%DbNotificationUser{
+          notification_id: notification.id,
+          user_id: user.id,
+          state: :deleted
+        })
+
+      assert Skate.Repo.one(DbNotificationUser,
+               notification_id: notification.id,
+               user_id: user.id
+             ).state == :deleted
     end
   end
 end
