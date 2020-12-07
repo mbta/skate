@@ -2,6 +2,15 @@ defmodule Skate.ApplicationTest do
   use ExUnit.Case, async: true
   import Test.Support.Helpers
 
+  # TODO: some of these tests sometimes hit live AWS servers, causing
+  # errors such as the following:
+  #
+  #   1) test load_runtime_config replaces {:secret, var_name} with secret from AWS SecretsManager (Skate.ApplicationTest)
+  #    test/skate/application_test.exs:15
+  #    ** (ExAws.Error) ExAws Request Error!
+  #
+  #    {:error, {:http_error, 400, %{body: "{\"__type\":\"AccessDeniedException\",\"Message\":\"User: arn:aws:iam::[REDACTED]:user/pdarnowsky is not authorized to perform: secretsmanager:GetSecretValue on resource: arn:aws:secretsmanager:us-east-1:[REDACTED]:secret:TEST-test-variable-REDACTED\"}", headers: [{"Date", "Mon, 07 Dec 2020 12:03:39 GMT"}, {"Content-Type", "application/x-amz-json-1.1"}, {"Content-Length", "246"}, {"Connection", "keep-alive"}, {"x-amzn-RequestId", "d2ed6c3d-c632-4eb8-9d88-439b30188920"}], status_code: 400}}}
+
   describe "load_runtime_config" do
     test "replaces {:system, \"VAR\"} with environment variable" do
       Application.put_env(:skate, :gtfs_url, {:system, "TEST_VARIABLE"})
