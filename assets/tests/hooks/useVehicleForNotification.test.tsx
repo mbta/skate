@@ -3,7 +3,7 @@ import React, { ReactElement } from "react"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useVehicleForNotification from "../../src/hooks/useVehicleForNotification"
 import { GhostData, VehicleData } from "../../src/models/vehicleData"
-import { NotificationReason } from "../../src/realtime"
+import { NotificationReason, NotificationState } from "../../src/realtime"
 import { initialState } from "../../src/state"
 import { dateFromEpochSeconds } from "../../src/util/dateTime"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
@@ -104,6 +104,7 @@ describe("useVehicleForNotification", () => {
     operatorId: null,
     routeIdAtCreation: null,
     startTime: new Date(),
+    state: "unread" as NotificationState,
   }
 
   test("parses vehicle data from channel", () => {

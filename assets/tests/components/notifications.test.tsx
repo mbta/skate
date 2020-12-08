@@ -37,6 +37,7 @@ const notification: Notification = {
   operatorId: null,
   routeIdAtCreation: null,
   startTime: now(),
+  state: "unread",
 }
 
 const notificationWithMatchedVehicle: Notification = {

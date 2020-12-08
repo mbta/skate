@@ -7,6 +7,7 @@ import { useNotifications } from "../../src/hooks/useNotifications"
 import { ConnectionStatus } from "../../src/hooks/useSocket"
 import * as browser from "../../src/models/browser"
 import { NotificationData } from "../../src/models/notificationData"
+import { NotificationState } from "../../src/realtime.d"
 import { RouteId } from "../../src/schedule"
 import { initialState } from "../../src/state"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
@@ -24,6 +25,7 @@ const notificationData: NotificationData = {
   operator_id: null,
   route_id_at_creation: null,
   start_time: 123_456,
+  state: "unread" as NotificationState,
 }
 
 describe("useNotifications", () => {

@@ -4,7 +4,7 @@ import renderer from "react-test-renderer"
 import NotificationDrawer from "../../src/components/notificationDrawer"
 import { NotificationsContext } from "../../src/contexts/notificationsContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import { Notification } from "../../src/realtime.d"
+import { Notification, NotificationState } from "../../src/realtime.d"
 import {
   closeNotificationDrawer,
   initialState,
@@ -79,4 +79,5 @@ const notification: Notification = {
   operatorId: null,
   routeIdAtCreation: null,
   startTime: now(),
+  state: "unread" as NotificationState,
 }

@@ -21,6 +21,7 @@ defmodule Notifications.Db.Notification do
     field(:service_id, :string)
     field(:start_time, :integer)
     field(:end_time, :integer)
+    field(:state, :string, virtual: true)
     timestamps()
 
     has_many(:notification_users, DbNotificationUser)

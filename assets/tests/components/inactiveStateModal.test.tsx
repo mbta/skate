@@ -2,7 +2,7 @@ import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import InactiveNotificationModal from "../../src/components/inactiveNotificationModal"
-import { Notification } from "../../src/realtime.d"
+import { Notification, NotificationState } from "../../src/realtime.d"
 
 describe("InactiveNotificationModal", () => {
   const notification: Notification = {
@@ -16,6 +16,7 @@ describe("InactiveNotificationModal", () => {
     operatorId: null,
     routeIdAtCreation: null,
     startTime: new Date("2020-10-05"),
+    state: "unread" as NotificationState,
   }
   const futureNotification = {
     ...notification,

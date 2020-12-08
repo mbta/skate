@@ -8,7 +8,7 @@ import {
 } from "../../src/contexts/notificationsContext"
 import useCurrentTime from "../../src/hooks/useCurrentTime"
 import { useNotifications } from "../../src/hooks/useNotifications"
-import { Notification } from "../../src/realtime.d"
+import { Notification, NotificationState } from "../../src/realtime.d"
 import { mockUseStateOnce } from "../testHelpers/mockHelpers"
 
 jest.mock("../../src/hooks/useCurrentTime", () => ({
@@ -37,6 +37,7 @@ const notification: Notification = {
   operatorId: null,
   routeIdAtCreation: null,
   startTime: new Date(0),
+  state: "unread" as NotificationState,
 }
 
 // tslint:disable: react-hooks-nesting

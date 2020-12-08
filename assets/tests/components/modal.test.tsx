@@ -3,7 +3,11 @@ import renderer from "react-test-renderer"
 import Modal from "../../src/components/modal"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { VehicleForNotificationProvider } from "../../src/contexts/vehicleForNotificationContext"
-import { Notification, NotificationReason } from "../../src/realtime"
+import {
+  Notification,
+  NotificationReason,
+  NotificationState,
+} from "../../src/realtime"
 import { initialState, State } from "../../src/state"
 
 describe("Modal", () => {
@@ -19,6 +23,7 @@ describe("Modal", () => {
       operatorId: null,
       routeIdAtCreation: null,
       startTime: new Date(),
+      state: "unread" as NotificationState,
     }
 
     const state: State = {
@@ -47,6 +52,7 @@ describe("Modal", () => {
       operatorId: null,
       routeIdAtCreation: null,
       startTime: new Date(),
+      state: "unread" as NotificationState,
     }
 
     const state: State = {

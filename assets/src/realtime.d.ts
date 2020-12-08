@@ -60,6 +60,7 @@ export interface Notification {
   operatorId: string | null
   routeIdAtCreation: string | null
   startTime: Date
+  state: NotificationState
 }
 
 export type NotificationReason =
@@ -71,6 +72,8 @@ export type NotificationReason =
   | "adjusted"
   | "operator_error"
   | "traffic"
+
+export type NotificationState = "unread" | "read" | "deleted"
 
 export type SourceId = string
 

@@ -10,6 +10,7 @@ defmodule Notifications.Notification do
   alias Schedule.Hastus.Run
   alias Skate.Settings.User
   alias Notifications.NotificationReason
+  alias Notifications.NotificationState
   alias Notifications.Db.Notification, as: DbNotification
   alias Notifications.Db.NotificationUser, as: DbNotificationUser
 
@@ -32,7 +33,8 @@ defmodule Notifications.Notification do
           operator_name: String.t() | nil,
           route_id_at_creation: Route.id() | nil,
           start_time: Util.Time.timestamp(),
-          end_time: Util.Time.timestamp()
+          end_time: Util.Time.timestamp(),
+          state: NotificationState.t() | nil
         }
 
   @derive Jason.Encoder
@@ -62,7 +64,8 @@ defmodule Notifications.Notification do
     :operator_name,
     :route_id_at_creation,
     :start_time,
-    :end_time
+    :end_time,
+    :state
   ]
 
   @spec get_or_create(t()) :: t()
@@ -100,7 +103,9 @@ defmodule Notifications.Notification do
 
     query =
       from(n in DbNotification,
-        join: u in assoc(n, :users),
+        join: nu in assoc(n, :notification_users),
+        join: u in assoc(nu, :user),
+        select_merge: %{state: nu.state},
         where: n.end_time > ^cutoff_time and u.username == ^username,
         order_by: [asc: n.created_at]
       )
