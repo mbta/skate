@@ -27,11 +27,12 @@ const notificationData: NotificationData = {
 }
 
 describe("useNotifications", () => {
-  test("opens a channel", () => {
+  test("opens a channel and processes any initial notifications", () => {
     const handler = jest.fn()
     const mockSocket = makeMockSocket()
-    // We don't return data on join, so it defaults to {}
-    const mockChannel = makeMockChannel("ok", {})
+    const mockChannel = makeMockChannel("ok", {
+      initial_notifications: ["notification1", "notification2"],
+    })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     renderHook(
@@ -42,7 +43,7 @@ describe("useNotifications", () => {
     )
 
     expect(mockChannel.join).toHaveBeenCalled()
-    expect(handler).not.toHaveBeenCalled()
+    expect(handler).toHaveBeenCalledTimes(2)
   })
 
   test("applies the callback on new notifications", () => {
