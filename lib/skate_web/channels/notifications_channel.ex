@@ -24,8 +24,18 @@ defmodule SkateWeb.NotificationsChannel do
         &SkateWeb.AuthManager.username_from_socket!/1
       )
 
+    notification_fetch =
+      Application.get_env(
+        :skate,
+        :unexpired_notifications_for_user,
+        &Notifications.Notification.unexpired_notifications_for_user/1
+      )
+
     username = username_from_socket!.(socket)
     Notifications.NotificationServer.subscribe(username)
-    {:ok, socket}
+
+    initial_notifications = notification_fetch.(username)
+
+    {:ok, %{initial_notifications: initial_notifications}, socket}
   end
 end

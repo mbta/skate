@@ -15,6 +15,8 @@ defmodule Notifications.Notification do
 
   require Logger
 
+  @notification_expiration_threshold 8 * 60 * 60
+
   @type id :: integer()
 
   @type t() :: %__MODULE__{
@@ -93,13 +95,26 @@ defmodule Notifications.Notification do
     notification_with_id
   end
 
+  def unexpired_notifications_for_user(username, now_fn \\ &Util.Time.now/0) do
+    cutoff_time = now_fn.() - @notification_expiration_threshold
+
+    query =
+      from(n in DbNotification,
+        join: u in assoc(n, :users),
+        where: n.end_time > ^cutoff_time and u.username == ^username,
+        order_by: [asc: n.created_at]
+      )
+
+    Skate.Repo.all(query) |> Enum.map(&from_db_notification/1)
+  end
+
   defp log_creation(notification) do
     Logger.warn("Notification created new_notification=#{inspect(notification)}")
   end
 
   defp link_notification_to_users(notification) do
-    now = NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
-
+    naive_now_fn = Application.get_env(:skate, :naive_now_fn, &Util.Time.naive_now/0)
+    now = naive_now_fn.()
     user_ids = User.user_ids_for_route_ids(notification.route_ids)
 
     notification_user_maps =
@@ -117,5 +132,9 @@ defmodule Notifications.Notification do
       DbNotificationUser,
       notification_user_maps
     )
+  end
+
+  defp from_db_notification(db_notification) do
+    struct(__MODULE__, Map.from_struct(db_notification))
   end
 end
