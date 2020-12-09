@@ -369,7 +369,7 @@ defmodule Notifications.NotificationServerTest do
         end)
 
       assert_n_notifications_in_db(1)
-      assert String.contains?(log, "new_notification") == false
+      refute log =~ "new_notification"
     end
   end
 end
