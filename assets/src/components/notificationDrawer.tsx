@@ -1,6 +1,10 @@
-import React, { useContext } from "react"
-import { NotificationsContext } from "../contexts/notificationsContext"
+import React, { useContext, useState } from "react"
+import {
+  NotificationsContext,
+  otherNotificationReadState,
+} from "../contexts/notificationsContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import { ellipsisIcon } from "../helpers/icon"
 import useCurrentTime from "../hooks/useCurrentTime"
 import { Notification } from "../realtime.d"
 import { closeNotificationDrawer, setNotification } from "../state"
@@ -35,7 +39,7 @@ const TitleBar = () => {
 }
 
 const Content = () => {
-  const { notifications } = useContext(NotificationsContext)
+  const { notifications, markAllAsRead } = useContext(NotificationsContext)
   const currentTime = useCurrentTime()
 
   const [, dispatch] = useContext(StateDispatchContext)
@@ -48,16 +52,31 @@ const Content = () => {
     return <EmptyMessage />
   }
 
+  const newNotifications = notifications.filter(
+    (notification) => notification.state === "unread"
+  )
+
+  const readNotifications = notifications.filter(
+    (notification) => notification.state === "read"
+  )
+
   return (
     <div className="m-notification-drawer__cards">
-      {notifications.map((notification) => (
-        <NotificationCard
-          key={notification.id}
-          notification={notification}
+      {newNotifications.length > 0 && (
+        <NewNotifications
+          notifications={newNotifications}
+          currentTime={currentTime}
+          openVPPForCurrentVehicle={openVPPForCurrentVehicle}
+          markAllAsRead={markAllAsRead}
+        />
+      )}
+      {readNotifications.length > 0 && (
+        <ReadNotifications
+          notifications={readNotifications}
           currentTime={currentTime}
           openVPPForCurrentVehicle={openVPPForCurrentVehicle}
         />
-      ))}
+      )}
     </div>
   )
 }
@@ -72,6 +91,79 @@ const EmptyMessage = () => (
   </>
 )
 
+const NewNotifications = ({
+  notifications,
+  currentTime,
+  openVPPForCurrentVehicle,
+  markAllAsRead,
+}: {
+  notifications: Notification[]
+  currentTime: Date
+  openVPPForCurrentVehicle: (notification: Notification) => void
+  markAllAsRead: () => void
+}) => (
+  <div className="m-notification-drawer__unread-section">
+    <div className="m-notification-drawer__read-section-header">
+      <span className="m-notification-drawer__n-unread">
+        {notifications.length} new
+      </span>
+      <a
+        className="m-notification-drawer__mark-all-read-link"
+        onClick={markAllAsRead}
+      >
+        Mark as read
+      </a>
+    </div>
+    {notifications.map((notification) => (
+      <NotificationCard
+        key={notification.id}
+        notification={notification}
+        currentTime={currentTime}
+        openVPPForCurrentVehicle={openVPPForCurrentVehicle}
+      />
+    ))}
+  </div>
+)
+
+const ReadNotifications = ({
+  notifications,
+  currentTime,
+  openVPPForCurrentVehicle,
+}: {
+  notifications: Notification[]
+  currentTime: Date
+  openVPPForCurrentVehicle: (notification: Notification) => void
+}) => (
+  <div className="m-notification-drawer__read-section">
+    <div className="m-notification-drawer__unread-section-header">Read</div>
+    {notifications.map((notification) => (
+      <NotificationCard
+        key={notification.id}
+        notification={notification}
+        currentTime={currentTime}
+        openVPPForCurrentVehicle={openVPPForCurrentVehicle}
+      />
+    ))}
+  </div>
+)
+
+const EllipsisSubmenu = ({ notification }: { notification: Notification }) => {
+  const { toggleNotificationState } = useContext(NotificationsContext)
+  const otherReadState = otherNotificationReadState(notification.state)
+  return (
+    <div className="m-notification-drawer__submenu">
+      <a
+        onClick={(event) => {
+          event.stopPropagation()
+          toggleNotificationState(notification)
+        }}
+      >
+        mark as {otherReadState}
+      </a>
+    </div>
+  )
+}
+
 const NotificationCard = ({
   notification,
   currentTime,
@@ -81,15 +173,27 @@ const NotificationCard = ({
   currentTime: Date
   openVPPForCurrentVehicle: (notification: Notification) => void
 }) => {
+  const [showSubmenu, setShowSubmenu] = useState<boolean>(false)
+  const toggleShowSubmenu = () => setShowSubmenu(!showSubmenu)
+
   return (
     <button
-      className="m-notification-drawer__card"
+      className={`m-notification-drawer__card m-notification-drawer__card--${notification.state}`}
       onClick={() => openVPPForCurrentVehicle(notification)}
     >
       <NotificationContent
         notification={notification}
         currentTime={currentTime}
       />
+      {showSubmenu && <EllipsisSubmenu notification={notification} />}
+      <a
+        onClick={(event) => {
+          event.stopPropagation()
+          toggleShowSubmenu()
+        }}
+      >
+        {ellipsisIcon("m-notification-drawer__submenu-icon")}
+      </a>
     </button>
   )
 }

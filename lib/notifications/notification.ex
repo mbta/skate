@@ -107,7 +107,7 @@ defmodule Notifications.Notification do
         join: u in assoc(nu, :user),
         select_merge: %{state: nu.state},
         where: n.end_time > ^cutoff_time and u.username == ^username,
-        order_by: [asc: n.created_at]
+        order_by: [desc: n.created_at]
       )
 
     Skate.Repo.all(query) |> Enum.map(&from_db_notification/1)

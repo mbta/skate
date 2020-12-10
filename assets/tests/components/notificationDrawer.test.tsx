@@ -38,6 +38,8 @@ describe("NotificationDrawer", () => {
             notifications: [notification],
             showLatestNotification: true,
             hideNotification: jest.fn(),
+            markAllAsRead: jest.fn(),
+            toggleNotificationState: jest.fn(),
           }}
         >
           <NotificationDrawer />
@@ -56,6 +58,8 @@ describe("NotificationDrawer", () => {
             notifications: [notification],
             showLatestNotification: true,
             hideNotification: jest.fn(),
+            markAllAsRead: jest.fn(),
+            toggleNotificationState: jest.fn(),
           }}
         >
           <NotificationDrawer />

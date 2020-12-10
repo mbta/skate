@@ -2,15 +2,17 @@ import React, { createContext, ReactElement, useState } from "react"
 import useCurrentTime from "../hooks/useCurrentTime"
 import useInterval from "../hooks/useInterval"
 import { useNotifications } from "../hooks/useNotifications"
-import { Notification } from "../realtime.d"
+import { Notification, NotificationState } from "../realtime.d"
 
 export interface NotificationsStatus {
   notifications: Notification[]
   showLatestNotification: boolean
   hideNotification: () => void
+  markAllAsRead: () => void
+  toggleNotificationState: (notification: Notification) => void
 }
 
-// Codecov gets in a snit about not covering the "hide" no-op below.
+// Codecov gets in a snit about not covering the no-ops below.
 /* istanbul ignore next */
 
 export const NotificationsContext = createContext<NotificationsStatus>({
@@ -18,6 +20,10 @@ export const NotificationsContext = createContext<NotificationsStatus>({
   showLatestNotification: false,
   // tslint:disable-next-line: no-empty
   hideNotification: () => {},
+  // tslint:disable-next-line: no-empty
+  markAllAsRead: () => {},
+  // tslint:disable-next-line: no-empty
+  toggleNotificationState: () => {},
 })
 
 const deliverFullstoryEvent = (numStacked: number): void => {
@@ -26,6 +32,16 @@ const deliverFullstoryEvent = (numStacked: number): void => {
       num_stacked_int: numStacked,
     })
   }
+}
+
+export const otherNotificationReadState = (state: NotificationState) => {
+  if (state === "unread") {
+    return "read"
+  }
+  if (state === "read") {
+    return "unread"
+  }
+  return state
 }
 
 export const NotificationsProvider = ({
@@ -49,6 +65,23 @@ export const NotificationsProvider = ({
 
   const hideNotification = () => setShowLatestNotification(false)
 
+  const markAllAsRead = () =>
+    setNotifications((previous) =>
+      previous.map((notification) => ({ ...notification, state: "read" }))
+    )
+
+  const toggleNotificationState = (notificationToToggle: Notification) =>
+    setNotifications((previous) =>
+      previous.map((notification) =>
+        notification.id === notificationToToggle.id
+          ? {
+              ...notificationToToggle,
+              state: otherNotificationReadState(notification.state),
+            }
+          : notification
+      )
+    )
+
   const now = useCurrentTime()
 
   const expireOldNotifications = () => {
@@ -70,6 +103,8 @@ export const NotificationsProvider = ({
         notifications,
         showLatestNotification,
         hideNotification,
+        markAllAsRead,
+        toggleNotificationState,
       }}
     >
       {children}

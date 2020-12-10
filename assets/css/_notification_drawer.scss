@@ -44,11 +44,9 @@
 }
 
 .m-notification-drawer__card {
-  background-color: $color-secondary-light;
-  border: 1px solid $color-secondary-dark;
   border-radius: 4px;
-  box-shadow: $box-shadow-secondary;
   margin-bottom: 0.5rem;
+  position: relative;
   text-align: left;
   width: 100%;
 
@@ -56,4 +54,65 @@
   &:hover {
     background-color: $color-secondary-medium;
   }
+}
+
+.m-notification-drawer__card--read {
+  background-color: $white;
+  box-shadow: $subtle-box-shadow;
+}
+
+.m-notification-drawer__card--unread {
+  background-color: $color-secondary-light;
+  border: 1px solid $color-secondary-dark;
+  box-shadow: $box-shadow-secondary;
+}
+
+.m-notification-drawer__mark-all-read-link {
+  color: $color-secondary-dark;
+  position: absolute;
+  right: 0;
+}
+
+.m-notification-drawer__n-unread {
+  color: $color-component-medium;
+  text-transform: uppercase;
+}
+
+.m-notification-drawer__read-section-header {
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.m-notification-drawer__submenu {
+  background-color: $white;
+  border-radius: 4px;
+  bottom: 1.5rem;
+  box-shadow: 0 2px 4px 0 rgba(126, 126, 126, 0.5);
+  padding: 1rem 2rem 1rem 1rem;
+  position: absolute;
+  right: 1rem;
+  text-align: left;
+
+  a {
+    color: $color-secondary-dark;
+  }
+}
+
+.m-notification-drawer__submenu-icon {
+  bottom: 0.5rem;
+  position: absolute;
+  right: 1rem;
+
+  svg {
+    fill: $color-component-medium;
+    height: 1rem;
+    width: 1rem;
+  }
+}
+
+.m-notification-drawer__unread-section-header {
+  color: $color-component-medium;
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+  text-transform: uppercase;
 }

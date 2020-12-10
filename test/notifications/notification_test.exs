@@ -198,15 +198,15 @@ defmodule Notifications.NotificationTest do
         Notification.unexpired_notifications_for_user("user2", now_fn) |> Enum.map(& &1.id)
 
       assert user1_notification_ids == [
-               route_2_unexpired.id,
+               route_1_unexpired.id,
                multiroute_unexpired.id,
-               route_1_unexpired.id
+               route_2_unexpired.id
              ]
 
       assert user2_notification_ids == [
-               multiroute_unexpired.id,
+               route_1_unexpired.id,
                route_3_unexpired.id,
-               route_1_unexpired.id
+               multiroute_unexpired.id
              ]
     end
   end

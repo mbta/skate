@@ -20,13 +20,11 @@ export const Notifications = () => {
     dispatch(setNotification(notification))
   }
 
-  const latestNotificationIndex = notifications.length - 1
-
   return (
     <div className="m-notifications">
-      {showLatestNotification && latestNotificationIndex >= 0 && (
+      {showLatestNotification && notifications.length > 0 && (
         <NotificationCard
-          notification={notifications[latestNotificationIndex]}
+          notification={notifications[0]}
           hideNotification={hideNotification}
           currentTime={currentTime}
           openVPPForCurrentVehicle={openVPPForCurrentVehicle}

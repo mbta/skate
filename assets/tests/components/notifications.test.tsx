@@ -65,6 +65,8 @@ describe("Notification", () => {
             notifications,
             showLatestNotification: true,
             hideNotification: jest.fn(),
+            markAllAsRead: jest.fn(),
+            toggleNotificationState: jest.fn(),
           }}
         >
           <Notifications />
@@ -82,6 +84,8 @@ describe("Notification", () => {
           notifications: [notification],
           showLatestNotification: true,
           hideNotification,
+          markAllAsRead: jest.fn(),
+          toggleNotificationState: jest.fn(),
         }}
       >
         <Notifications />
