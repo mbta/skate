@@ -101,7 +101,7 @@ exports[`NotificationDrawer renders notifications 1`] = `
           </span>
           <a
             className="m-notification-drawer__mark-all-read-link"
-            onClick={[MockFunction]}
+            onClick={[Function]}
           >
             Mark as read
           </a>

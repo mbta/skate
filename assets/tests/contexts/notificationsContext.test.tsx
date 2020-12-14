@@ -9,7 +9,6 @@ import {
 import useCurrentTime from "../../src/hooks/useCurrentTime"
 import { useNotifications } from "../../src/hooks/useNotifications"
 import { Notification, NotificationState } from "../../src/realtime.d"
-import { mockUseStateOnce } from "../testHelpers/mockHelpers"
 
 jest.mock("../../src/hooks/useCurrentTime", () => ({
   __esModule: true,
@@ -83,19 +82,6 @@ describe("Notification", () => {
     })
     window.FS = originalFS
     window.username = originalUsername
-  })
-
-  test("can hide notification", () => {
-    mockUseStateOnce([notification])
-    mockUseStateOnce(true)
-    const { result } = renderHook(() => useContext(NotificationsContext), {
-      wrapper: NotificationsProvider,
-    })
-    expect(result.current.showLatestNotification).toEqual(true)
-    hooksAct(() => {
-      result.current.hideNotification()
-    })
-    expect(result.current.showLatestNotification).toEqual(false)
   })
 
   test("expires notifications after 8 hours", () => {
