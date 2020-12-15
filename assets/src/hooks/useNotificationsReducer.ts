@@ -1,5 +1,9 @@
 import { Dispatch as ReactDispatch, useReducer } from "react"
 import { otherNotificationReadState } from "../contexts/notificationsContext"
+import {
+  NotificationData,
+  notificationFromData,
+} from "../models/notificationData"
 import { Notification, NotificationId } from "../realtime.d"
 
 export interface State {
@@ -50,6 +54,18 @@ export const markAllAsRead = (): MarkAllAsReadAction => ({
   type: "MARK_ALL_AS_READ",
 })
 
+interface SetNotificationsAction {
+  type: "SET_NOTIFICATIONS"
+  payload: { notificationsData: NotificationData[] }
+}
+
+export const setNotifications = (
+  notificationsData: NotificationData[]
+): SetNotificationsAction => ({
+  type: "SET_NOTIFICATIONS",
+  payload: { notificationsData },
+})
+
 interface ToggleReadStateAction {
   type: "TOGGLE_READ_STATE"
   payload: { notificationId: NotificationId }
@@ -67,6 +83,7 @@ export type Action =
   | ExpireNotificationsAction
   | HideLatestNotificationAction
   | MarkAllAsReadAction
+  | SetNotificationsAction
   | ToggleReadStateAction
 
 export type Dispatch = ReactDispatch<Action>
@@ -81,7 +98,7 @@ export const notificationsReducer = (
     case "ADD_NOTIFICATION":
       const newNotification = (action as AddNotificationAction).payload
         .notification
-      return [...notifications, newNotification]
+      return [newNotification, ...notifications]
     case "EXPIRE_NOTIFICATIONS":
       return notifications.filter((notification) => {
         const maxAgeInMs = 8 * 60 * 60 * 1000
@@ -94,6 +111,10 @@ export const notificationsReducer = (
         ...notification,
         state: "read",
       }))
+    case "SET_NOTIFICATIONS":
+      const notificationsData = (action as SetNotificationsAction).payload
+        .notificationsData
+      return notificationsData.map(notificationFromData)
     case "TOGGLE_READ_STATE":
       const notificationIdToToggle = (action as ToggleReadStateAction).payload
         .notificationId
@@ -120,6 +141,8 @@ const showLatestNotificationReducer = (
       return true
     case "HIDE_LATEST_NOTIFICATION":
       return false
+    case "SET_NOTIFICATIONS":
+      return true
     default:
       return showLatestNotification
   }

@@ -120,7 +120,8 @@ defmodule Notifications.NotificationServer do
         operator_name: operator_name,
         route_id_at_creation: route_id,
         start_time: block_waiver.start_time,
-        end_time: block_waiver.end_time
+        end_time: block_waiver.end_time,
+        state: :unread
       }
     end
   end

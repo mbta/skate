@@ -6,6 +6,7 @@ import useNotificationsReducer, {
   Action,
   addNotification,
   expireNotifications,
+  setNotifications,
   State as ReducerState,
 } from "../hooks/useNotificationsReducer"
 import { NotificationState } from "../realtime.d"
@@ -43,7 +44,14 @@ export const NotificationsProvider = ({
 
   const now = useCurrentTime()
 
-  useNotifications((notification) => dispatch(addNotification(notification)))
+  useNotifications(
+    (notification) => {
+      dispatch(addNotification(notification))
+    },
+    (notificationsData) => {
+      dispatch(setNotifications(notificationsData))
+    }
+  )
   useInterval(() => dispatch(expireNotifications(now)), 10000)
 
   return (

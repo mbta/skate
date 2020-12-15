@@ -10,7 +10,8 @@ import {
 import { Notification } from "../realtime.d"
 
 export const useNotifications = (
-  handleNewNotification: (notification: Notification) => void
+  handleNewNotification: (notification: Notification) => void,
+  handleInitialNotifications: (notificationsData: NotificationData[]) => void
 ): void => {
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const topic: string = "notifications"
@@ -32,10 +33,7 @@ export const useNotifications = (
           "ok",
           (data) =>
             data.initial_notifications &&
-            data.initial_notifications.forEach(
-              (notificationData: NotificationData) =>
-                handleNewNotification(notificationFromData(notificationData))
-            )
+            handleInitialNotifications(data.initial_notifications)
         )
         .receive("error", ({ reason }) =>
           // tslint:disable-next-line: no-console
