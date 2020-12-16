@@ -30,7 +30,6 @@ defmodule Concentrate.VehiclePosition do
     :direction_id,
     :headsign,
     :headway_secs,
-    :is_nonrevenue,
     :layover_departure_time,
     :previous_vehicle_id,
     :previous_vehicle_schedule_adherence_secs,
@@ -42,6 +41,7 @@ defmodule Concentrate.VehiclePosition do
     :sources,
     :data_discrepancies,
     :crowding,
+    :revenue,
     current_status: :IN_TRANSIT_TO
   ])
 
@@ -140,13 +140,6 @@ defmodule Concentrate.VehiclePosition do
             first_value(second.scheduled_headway_secs, first.scheduled_headway_secs),
           sources: merge_sources(first, second),
           data_discrepancies: discrepancies(first, second),
-          is_nonrevenue:
-            swiftly_priority(
-              second.sources,
-              second.is_nonrevenue,
-              first.sources,
-              first.is_nonrevenue
-            ),
           layover_departure_time:
             swiftly_priority(
               second.sources,
