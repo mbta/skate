@@ -182,7 +182,9 @@ const useVehicles = (
   useEffect(() => {
     const newInvalidVehicles = flatten(Object.values(vehiclesByRouteId)).filter(
       (vehicleOrGhost) =>
-        isVehicle(vehicleOrGhost) && vehicleOrGhost.isOffCourse
+        isVehicle(vehicleOrGhost) &&
+        vehicleOrGhost.isOffCourse &&
+        vehicleOrGhost.isRevenue
     )
 
     const oldInvalidVehicleIds = new Set(invalidVehicleIds)

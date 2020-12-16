@@ -324,6 +324,43 @@ describe("routeLadder", () => {
     expect(tree).toMatchSnapshot()
   })
 
+  test("doesn't render a bus that's off-course but nonrevenue", () => {
+    const route: Route = {
+      id: "28",
+      directionNames: { 0: "Outbound", 1: "Inbound" },
+      name: "28",
+    }
+
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    const [v1, v2] = vehicles
+    const tree = renderer
+      .create(
+        <RouteLadder
+          route={route}
+          selectedVehicleId={undefined}
+          timepoints={timepoints}
+          vehiclesAndGhosts={[
+            {
+              ...v1,
+            },
+            {
+              ...v2,
+              isOffCourse: true,
+              isRevenue: false,
+            },
+          ]}
+        />
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
   test("displays no crowding data for a bus coming off a route with no crowding data onto a route with crowding data", () => {
     const mockDispatch = jest.fn()
     const ladderCrowdingToggles: LadderCrowdingToggles = { "28": true }

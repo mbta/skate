@@ -147,7 +147,8 @@ defmodule Concentrate.VehiclePosition do
               first.sources,
               first.layover_departure_time
             ),
-          crowding: first_value(first.crowding, second.crowding)
+          crowding: first_value(first.crowding, second.crowding),
+          revenue: first_value(first.revenue, second.revenue)
       }
     end
 

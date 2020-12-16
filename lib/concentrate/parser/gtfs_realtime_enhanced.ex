@@ -85,7 +85,8 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
             operator_logon_time: Map.get(operator, "logon_time"),
             sources: MapSet.new(["busloc"]),
             data_discrepancies: [],
-            crowding: decode_crowding(vp)
+            crowding: decode_crowding(vp),
+            revenue: Map.get(vp, "revenue", true)
           )
         ]
 
