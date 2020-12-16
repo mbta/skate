@@ -49,6 +49,7 @@ const vehicles: Vehicle[] = [
     isShuttle: false,
     isOverload: false,
     isOffCourse: false,
+    isRevenue: true,
     layoverDepartureTime: null,
     dataDiscrepancies: [],
     stopStatus: {
@@ -90,6 +91,7 @@ const vehicles: Vehicle[] = [
     isShuttle: false,
     isOverload: false,
     isOffCourse: false,
+    isRevenue: true,
     layoverDepartureTime: null,
     dataDiscrepancies: [],
     stopStatus: {
@@ -584,6 +586,7 @@ describe("routeLadder", () => {
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,
+      isRevenue: true,
       layoverDepartureTime: null,
       dataDiscrepancies: [],
       stopStatus: {

@@ -61,6 +61,7 @@ const shuttle: Vehicle = {
   isShuttle: true,
   isOverload: false,
   isOffCourse: false,
+  isRevenue: true,
   layoverDepartureTime: null,
   dataDiscrepancies: [],
   stopStatus: {

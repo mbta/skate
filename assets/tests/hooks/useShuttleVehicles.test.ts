@@ -45,6 +45,7 @@ const shuttlesData = [
     is_shuttle: true,
     is_overload: false,
     is_off_course: false,
+    is_revenue: true,
     layover_departure_time: null,
     label: "v1-label",
     latitude: 0,
@@ -102,6 +103,7 @@ const shuttles: Vehicle[] = [
     isShuttle: true,
     isOverload: false,
     isOffCourse: false,
+    isRevenue: true,
     layoverDepartureTime: null,
     dataDiscrepancies: [
       {

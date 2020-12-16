@@ -30,6 +30,7 @@ const vehicle: Vehicle = {
   isShuttle: false,
   isOverload: false,
   isOffCourse: false,
+  isRevenue: true,
   layoverDepartureTime: null,
   dataDiscrepancies: [
     {
