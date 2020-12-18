@@ -1,10 +1,11 @@
 import { Dispatch as ReactDispatch, useReducer } from "react"
+import { putNotificationReadState } from "../api"
 import { otherNotificationReadState } from "../contexts/notificationsContext"
 import {
   NotificationData,
   notificationFromData,
 } from "../models/notificationData"
-import { Notification, NotificationId } from "../realtime.d"
+import { Notification } from "../realtime.d"
 
 export interface State {
   notifications: Notification[]
@@ -68,14 +69,14 @@ export const setNotifications = (
 
 interface ToggleReadStateAction {
   type: "TOGGLE_READ_STATE"
-  payload: { notificationId: NotificationId }
+  payload: { notification: Notification }
 }
 
 export const toggleReadState = (
-  notificationId: NotificationId
+  notification: Notification
 ): ToggleReadStateAction => ({
   type: "TOGGLE_READ_STATE",
-  payload: { notificationId },
+  payload: { notification },
 })
 
 export type Action =
@@ -116,10 +117,10 @@ export const notificationsReducer = (
         .notificationsData
       return notificationsData.map(notificationFromData)
     case "TOGGLE_READ_STATE":
-      const notificationIdToToggle = (action as ToggleReadStateAction).payload
-        .notificationId
+      const notificationToToggle = (action as ToggleReadStateAction).payload
+        .notification
       return notifications.map((notification) =>
-        notification.id === notificationIdToToggle
+        notification.id === notificationToToggle.id
           ? {
               ...notification,
               state: otherNotificationReadState(notification.state),
@@ -164,6 +165,19 @@ const deliverFullstoryEvent = (numStacked: number): void => {
   }
 }
 
+const persistMarkAllAsRead = (notifications: Notification[]): void => {
+  const notificationIds = notifications.map((notification) => notification.id)
+  putNotificationReadState("read", notificationIds)
+}
+
+const persistToggledNotificationReadState = (
+  notification: Notification
+): void => {
+  putNotificationReadState(otherNotificationReadState(notification.state), [
+    notification.id,
+  ])
+}
+
 export const useNotificationsReducer = (): [State, Dispatch] => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
@@ -171,6 +185,15 @@ export const useNotificationsReducer = (): [State, Dispatch] => {
     switch (action.type) {
       case "ADD_NOTIFICATION":
         deliverFullstoryEvent(state.notifications.length + 1)
+        break
+      case "MARK_ALL_AS_READ":
+        persistMarkAllAsRead(state.notifications)
+        break
+      case "TOGGLE_READ_STATE":
+        const notificationToToggle = (action as ToggleReadStateAction).payload
+          .notification
+        persistToggledNotificationReadState(notificationToToggle!)
+        break
     }
 
     dispatch(action)

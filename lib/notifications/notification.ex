@@ -113,6 +113,18 @@ defmodule Notifications.Notification do
     Skate.Repo.all(query) |> Enum.map(&from_db_notification/1)
   end
 
+  def update_read_states(username, notification_ids, read_state)
+      when read_state in [:read, :unread, :deleted] do
+    query =
+      from(nu in DbNotificationUser,
+        join: u in assoc(nu, :user),
+        where: u.username == ^username,
+        where: nu.notification_id in ^notification_ids
+      )
+
+    Skate.Repo.update_all(query, set: [state: read_state])
+  end
+
   defp log_creation(notification) do
     Logger.warn("Notification created new_notification=#{inspect(notification)}")
   end

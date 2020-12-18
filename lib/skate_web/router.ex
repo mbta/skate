@@ -72,6 +72,7 @@ defmodule SkateWeb.Router do
     get "/intersection", IntersectionController, :intersection
     put "/user_settings", UserSettingsController, :update
     put "/route_settings", RouteSettingsController, :update
+    put "/notification_read_state", NotificationReadStatesController, :update
   end
 
   scope "/_flags" do

@@ -160,7 +160,7 @@ const EllipsisSubmenu = ({ notification }: { notification: Notification }) => {
       <a
         onClick={(event) => {
           event.stopPropagation()
-          dispatch(toggleReadState(notification.id))
+          dispatch(toggleReadState(notification))
         }}
       >
         mark as {otherReadState}

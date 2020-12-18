@@ -3,6 +3,7 @@ import appData from "./appData"
 import { Block, Run } from "./minischedule"
 import { reload } from "./models/browser"
 import { blockFromData, runFromData } from "./models/minischeduleData"
+import { NotificationId, NotificationState } from "./realtime.d"
 import { RouteSettings } from "./routeSettings"
 import {
   DirectionName,
@@ -131,6 +132,22 @@ export const fetchNearestIntersection = (
     parser: nullableParser((intersection: string) => intersection),
     defaultResult: null,
   })
+
+export const putNotificationReadState = (
+  newReadState: NotificationState,
+  notificationIds: NotificationId[]
+): void => {
+  const url = `/api/notification_read_state?new_state=${newReadState}&notification_ids=${notificationIds.join(
+    ","
+  )}`
+  fetch(url, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "x-csrf-token": getCsrfToken(),
+    },
+  })
+}
 
 export const putUserSetting = (field: string, value: string): void => {
   const url = `/api/user_settings?field=${field}&value=${value}`
