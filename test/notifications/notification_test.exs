@@ -69,9 +69,9 @@ defmodule Notifications.NotificationTest do
           run_ids: [],
           trip_ids: [],
           start_time: 0,
-          created_at: 10000,
+          created_at: baseline_time - eight_hours + 10,
           route_ids: ["1"],
-          end_time: baseline_time - eight_hours + 10
+          end_time: 10000
         })
 
       _route_1_expired =
@@ -82,9 +82,9 @@ defmodule Notifications.NotificationTest do
           run_ids: [],
           trip_ids: [],
           start_time: 1,
-          created_at: 2,
+          created_at: baseline_time - eight_hours,
           route_ids: ["1"],
-          end_time: baseline_time - eight_hours
+          end_time: 2
         })
 
       route_2_unexpired =
@@ -95,9 +95,9 @@ defmodule Notifications.NotificationTest do
           run_ids: [],
           trip_ids: [],
           start_time: 4,
-          created_at: 5000,
+          created_at: baseline_time - eight_hours + 1,
           route_ids: ["2"],
-          end_time: baseline_time - eight_hours + 1
+          end_time: 5000
         })
 
       _route_2_expired =
@@ -108,9 +108,9 @@ defmodule Notifications.NotificationTest do
           run_ids: [],
           trip_ids: [],
           start_time: 6,
-          created_at: 7,
+          created_at: baseline_time - eight_hours,
           route_ids: ["2"],
-          end_time: baseline_time - eight_hours
+          end_time: 7
         })
 
       route_3_unexpired =
@@ -121,9 +121,9 @@ defmodule Notifications.NotificationTest do
           run_ids: [],
           trip_ids: [],
           start_time: 8,
-          created_at: 9000,
+          created_at: baseline_time - eight_hours + 5,
           route_ids: ["3"],
-          end_time: baseline_time - eight_hours + 5
+          end_time: 9000
         })
 
       _route_3_expired =
@@ -134,9 +134,9 @@ defmodule Notifications.NotificationTest do
           run_ids: [],
           trip_ids: [],
           start_time: 10,
-          created_at: 11,
+          created_at: baseline_time - eight_hours,
           route_ids: ["3"],
-          end_time: baseline_time - eight_hours
+          end_time: 11
         })
 
       multiroute_unexpired =
@@ -147,9 +147,9 @@ defmodule Notifications.NotificationTest do
           run_ids: [],
           trip_ids: [],
           start_time: 12,
-          created_at: 8000,
+          created_at: baseline_time - eight_hours + 3,
           route_ids: ["2", "3"],
-          end_time: baseline_time - eight_hours + 3
+          end_time: 8000
         })
 
       _multiroute_expired =
@@ -160,9 +160,9 @@ defmodule Notifications.NotificationTest do
           run_ids: [],
           trip_ids: [],
           start_time: 14,
-          created_at: 15,
+          created_at: baseline_time - eight_hours,
           route_ids: ["2", "3"],
-          end_time: baseline_time - eight_hours
+          end_time: 15
         })
 
       _route_4_unexpired =
@@ -173,9 +173,9 @@ defmodule Notifications.NotificationTest do
           run_ids: [],
           trip_ids: [],
           start_time: 16,
-          created_at: 17,
+          created_at: baseline_time - eight_hours + 3,
           route_ids: ["4"],
-          end_time: baseline_time - eight_hours + 3
+          end_time: 17
         })
 
       _route_4_expired =
@@ -186,9 +186,9 @@ defmodule Notifications.NotificationTest do
           run_ids: [],
           trip_ids: [],
           start_time: 18,
-          created_at: 19,
+          created_at: baseline_time - eight_hours,
           route_ids: ["4"],
-          end_time: baseline_time - eight_hours
+          end_time: 19
         })
 
       user1_notification_ids =

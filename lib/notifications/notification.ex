@@ -106,7 +106,7 @@ defmodule Notifications.Notification do
         join: nu in assoc(n, :notification_users),
         join: u in assoc(nu, :user),
         select_merge: %{state: nu.state},
-        where: n.end_time > ^cutoff_time and u.username == ^username,
+        where: n.created_at > ^cutoff_time and u.username == ^username,
         order_by: [desc: n.created_at]
       )
 
