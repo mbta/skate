@@ -24,13 +24,7 @@ export const mockUseStateOnce = <T>(mockInitialState: T): void => {
 
 /*
  * Like mockUseStateOnce, but for useReducer
-/*
-export const mockUseReducerOnce = <StateT, ActionT>(
-  reducer: (state: StateT, action: ActionT) => StateT,
-  mockInitialState: StateT
-): void =>
-*/
-
+ */
 export const mockUseReducerOnce = <StateT, ActionT>(
   reducer: (state: StateT, action: ActionT) => StateT,
   mockInitialState: StateT
