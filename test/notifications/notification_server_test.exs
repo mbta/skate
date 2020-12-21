@@ -369,7 +369,7 @@ defmodule Notifications.NotificationServerTest do
         end)
 
       assert_n_notifications_in_db(1)
-      refute log =~ "new_notification"
+      assert log == ""
     end
   end
 end

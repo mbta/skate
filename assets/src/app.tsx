@@ -25,10 +25,6 @@ if (window.sentry) {
   Sentry.init({
     dsn: window.sentry.dsn,
   })
-
-  if (window.username) {
-    Sentry.setUser({ username: window.username })
-  }
 }
 
 if (window.FS && window.username) {

@@ -3,8 +3,6 @@ defmodule Notifications.Db.Notification do
   import Ecto.Changeset
 
   alias Notifications.NotificationReason
-  alias Notifications.Db.NotificationUser, as: DbNotificationUser
-  alias Skate.Settings.Db.User, as: DbUser
 
   @type t() :: %__MODULE__{}
 
@@ -22,9 +20,6 @@ defmodule Notifications.Db.Notification do
     field(:start_time, :integer)
     field(:end_time, :integer)
     timestamps()
-
-    has_many(:notification_users, DbNotificationUser)
-    many_to_many(:users, DbUser, join_through: DbNotificationUser)
   end
 
   def changeset(notification, attrs \\ %{}) do

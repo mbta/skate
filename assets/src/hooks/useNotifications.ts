@@ -3,10 +3,7 @@ import { useContext, useEffect } from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { reload } from "../models/browser"
-import {
-  NotificationData,
-  notificationFromData,
-} from "../models/notificationData"
+import { notificationFromData } from "../models/notificationData"
 import { Notification } from "../realtime.d"
 
 export const useNotifications = (
@@ -28,15 +25,6 @@ export const useNotifications = (
       })
       channel
         .join()
-        .receive(
-          "ok",
-          (data) =>
-            data.initial_notifications &&
-            data.initial_notifications.forEach(
-              (notificationData: NotificationData) =>
-                handleNewNotification(notificationFromData(notificationData))
-            )
-        )
         .receive("error", ({ reason }) =>
           // tslint:disable-next-line: no-console
           console.error(`joining topic ${topic} failed`, reason)
