@@ -57,14 +57,18 @@ export const markAllAsRead = (): MarkAllAsReadAction => ({
 
 interface SetNotificationsAction {
   type: "SET_NOTIFICATIONS"
-  payload: { notificationsData: NotificationData[] }
+  payload: {
+    notificationsData: NotificationData[]
+    isInitialLoad: boolean
+  }
 }
 
 export const setNotifications = (
-  notificationsData: NotificationData[]
+  notificationsData: NotificationData[],
+  isInitialLoad: boolean
 ): SetNotificationsAction => ({
   type: "SET_NOTIFICATIONS",
-  payload: { notificationsData },
+  payload: { notificationsData, isInitialLoad },
 })
 
 interface ToggleReadStateAction {
@@ -143,7 +147,7 @@ const showLatestNotificationReducer = (
     case "HIDE_LATEST_NOTIFICATION":
       return false
     case "SET_NOTIFICATIONS":
-      return true
+      return (action as SetNotificationsAction).payload.isInitialLoad
     default:
       return showLatestNotification
   }

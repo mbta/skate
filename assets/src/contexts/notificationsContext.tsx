@@ -1,4 +1,4 @@
-import React, { createContext, ReactElement } from "react"
+import React, { createContext, ReactElement, useEffect, useState } from "react"
 import useCurrentTime from "../hooks/useCurrentTime"
 import useInterval from "../hooks/useInterval"
 import { useNotifications } from "../hooks/useNotifications"
@@ -44,14 +44,17 @@ export const NotificationsProvider = ({
 
   const now = useCurrentTime()
 
+  const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
   useNotifications(
     (notification) => {
       dispatch(addNotification(notification))
     },
     (notificationsData) => {
-      dispatch(setNotifications(notificationsData))
+      dispatch(setNotifications(notificationsData, isInitialLoad))
     }
   )
+  useEffect(() => setIsInitialLoad(false))
+
   useInterval(() => dispatch(expireNotifications(now)), 10000)
 
   return (
