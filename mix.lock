@@ -1,6 +1,6 @@
 %{
   "bypass": {:hex, :bypass, "1.0.0", "b78b3dcb832a71aca5259c1a704b2e14b55fd4e1327ff942598b4e7d1a7ad83d", [:mix], [{:plug, "~> 1.7", [hex: :plug, repo: "hexpm", optional: false]}, {:plug_cowboy, "~> 1.0 or ~> 2.0", [hex: :plug_cowboy, repo: "hexpm", optional: false]}], "hexpm", "5a1dc855dfcc86160458c7a70d25f65d498bd8012bd4c06a8d3baa368dda3c45"},
-  "castore": {:hex, :castore, "0.1.7", "1ca19eee705cde48c9e809e37fdd0730510752cc397745e550f6065a56a701e9", [:mix], [], "hexpm", "a2ae2c13d40e9c308387f1aceb14786dca019ebc2a11484fb2a9f797ea0aa0d8"},
+  "castore": {:hex, :castore, "0.1.8", "1b61eaba71bb755b756ac42d4741f4122f8beddb92456a84126d6177ec0af1fc", [:mix], [], "hexpm", "23ab8305baadb057bc689adc0088309f808cb2247dc9a48b87849bb1d242bb6c"},
   "certifi": {:hex, :certifi, "2.5.3", "70bdd7e7188c804f3a30ee0e7c99655bc35d8ac41c23e12325f36ab449b70651", [:rebar3], [{:parse_trans, "~>3.3", [hex: :parse_trans, repo: "hexpm", optional: false]}], "hexpm", "ed516acb3929b101208a9d700062d520f3953da3b6b918d866106ffa980e1c10"},
   "combine": {:hex, :combine, "0.10.0", "eff8224eeb56498a2af13011d142c5e7997a80c8f5b97c499f84c841032e429f", [:mix], [], "hexpm", "1b1dbc1790073076580d0d1d64e42eae2366583e7aecd455d1215b0d16f2451b"},
   "connection": {:hex, :connection, "1.0.4", "a1cae72211f0eef17705aaededacac3eb30e6625b04a6117c1b2db6ace7d5976", [:mix], [], "hexpm", "4a0850c9be22a43af9920a71ab17c051f5f7d45c209e40269a1938832510e4d9"},
