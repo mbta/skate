@@ -1,17 +1,15 @@
 defmodule Notifications.Db.NotificationUser do
   use Ecto.Schema
 
-  alias Notifications.Db.Notification, as: DbNotification
   alias Notifications.NotificationState
-  alias Skate.Settings.Db.User, as: DbUser
 
   @primary_key false
 
   @type t() :: %__MODULE__{}
 
   schema "notifications_users" do
-    belongs_to(:notification, DbNotification)
-    belongs_to(:user, DbUser)
+    field(:notification_id, :integer, primary_key: true)
+    field(:user_id, :integer, primary_key: true)
     field(:state, NotificationState)
     timestamps()
   end

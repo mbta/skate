@@ -24,11 +24,6 @@ defmodule Util.Time do
     |> date_of_timestamp()
   end
 
-  @spec naive_now() :: NaiveDateTime.t()
-  def naive_now do
-    NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
-  end
-
   @doc """
   Times greater than 24:00:00 are allowed.
 
