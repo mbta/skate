@@ -1,12 +1,18 @@
+// tslint:disable: react-hooks-nesting
+
+import { act, renderHook } from "@testing-library/react-hooks"
+
 import {
   hideLatestNotification,
   markAllAsRead,
   reducer,
   setNotifications,
   toggleReadState,
+  useNotificationsReducer,
 } from "../../src/hooks/useNotificationsReducer"
 import { NotificationData } from "../../src/models/notificationData"
 import { Notification, NotificationState } from "../../src/realtime"
+import { mockUseReducerOnce } from "../testHelpers/mockHelpers"
 
 const notification1: Notification = {
   id: "0",
@@ -49,6 +55,12 @@ const notification2: Notification = {
   startTime: new Date(1),
   state: "unread" as NotificationState,
 }
+
+const expectPut = (url: string) =>
+  expect(window.fetch).toHaveBeenCalledWith(url, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json", "x-csrf-token": "" },
+  })
 
 describe("notificationsReducer", () => {
   test("mark all as read sets all notification states and leaves show-latest alone", () => {
@@ -112,5 +124,49 @@ describe("notificationsReducer", () => {
       notifications: [notification1, notification2],
       showLatestNotification: false,
     })
+  })
+})
+
+describe("useNotificationsReducer", () => {
+  test("persists to server when mark all as read", () => {
+    window.fetch = jest.fn()
+
+    const initialState = {
+      notifications: [notification1, notification2],
+      showLatestNotification: true,
+    }
+    mockUseReducerOnce(reducer, initialState)
+
+    const { result } = renderHook(() => useNotificationsReducer())
+
+    const [, dispatch] = result.current
+
+    act(() => {
+      dispatch(markAllAsRead())
+    })
+
+    expectPut(
+      "/api/notification_read_state?new_state=read&notification_ids=0,1"
+    )
+  })
+
+  test("persists state toggle", () => {
+    window.fetch = jest.fn()
+
+    const initialState = {
+      notifications: [notification1, notification2],
+      showLatestNotification: true,
+    }
+    mockUseReducerOnce(reducer, initialState)
+
+    const { result } = renderHook(() => useNotificationsReducer())
+
+    const [, dispatch] = result.current
+
+    act(() => {
+      dispatch(toggleReadState(notification2))
+    })
+
+    expectPut("/api/notification_read_state?new_state=read&notification_ids=1")
   })
 })
