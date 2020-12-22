@@ -147,7 +147,12 @@ const showLatestNotificationReducer = (
     case "HIDE_LATEST_NOTIFICATION":
       return false
     case "SET_NOTIFICATIONS":
-      return (action as SetNotificationsAction).payload.isInitialLoad
+      const isInitialLoad = (action as SetNotificationsAction).payload
+        .isInitialLoad
+      if (isInitialLoad) {
+        return true
+      }
+      return showLatestNotification
     default:
       return showLatestNotification
   }
