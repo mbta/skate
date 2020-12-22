@@ -4,6 +4,10 @@ import renderer from "react-test-renderer"
 import NotificationDrawer from "../../src/components/notificationDrawer"
 import { NotificationsContext } from "../../src/contexts/notificationsContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
+import {
+  markAllAsRead,
+  toggleReadState,
+} from "../../src/hooks/useNotificationsReducer"
 import { Notification, NotificationState } from "../../src/realtime.d"
 import {
   closeNotificationDrawer,
@@ -66,6 +70,80 @@ describe("NotificationDrawer", () => {
     wrapper.find(".m-notification-drawer__card").first().simulate("click")
     expect(dispatch).toHaveBeenCalledWith(setNotification(notification))
   })
+
+  test("can make all read", () => {
+    const stateDispatch = jest.fn()
+    const notificationsDispatch = jest.fn()
+
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={stateDispatch}>
+        <NotificationsContext.Provider
+          value={{
+            notifications: [notification],
+            showLatestNotification: true,
+            dispatch: notificationsDispatch,
+          }}
+        >
+          <NotificationDrawer />
+        </NotificationsContext.Provider>
+      </StateDispatchProvider>
+    )
+
+    wrapper
+      .find(".m-notification-drawer__mark-all-read-link")
+      .first()
+      .simulate("click")
+    expect(notificationsDispatch).toHaveBeenCalledWith(markAllAsRead())
+  })
+
+  test("can make unread to read and vice versa", () => {
+    const stateDispatch = jest.fn()
+    const notificationsDispatch = jest.fn()
+
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={stateDispatch}>
+        <NotificationsContext.Provider
+          value={{
+            notifications: [notification, readNotification],
+            showLatestNotification: true,
+            dispatch: notificationsDispatch,
+          }}
+        >
+          <NotificationDrawer />
+        </NotificationsContext.Provider>
+      </StateDispatchProvider>
+    )
+
+    wrapper
+      .find(
+        ".m-notification-drawer__card--unread .m-notification-drawer__submenu-icon-anchor"
+      )
+      .simulate("click")
+    wrapper
+      .find(
+        ".m-notification-drawer__card--unread .m-notification-drawer__submenu a"
+      )
+      .first()
+      .simulate("click")
+    expect(notificationsDispatch).toHaveBeenCalledWith(
+      toggleReadState(notification)
+    )
+
+    wrapper
+      .find(
+        ".m-notification-drawer__card--read .m-notification-drawer__submenu-icon-anchor"
+      )
+      .simulate("click")
+    wrapper
+      .find(
+        ".m-notification-drawer__card--read .m-notification-drawer__submenu a"
+      )
+      .first()
+      .simulate("click")
+    expect(notificationsDispatch).toHaveBeenCalledWith(
+      toggleReadState(readNotification)
+    )
+  })
 })
 
 const notification: Notification = {
@@ -80,4 +158,10 @@ const notification: Notification = {
   routeIdAtCreation: null,
   startTime: now(),
   state: "unread" as NotificationState,
+}
+
+const readNotification: Notification = {
+  ...notification,
+  id: "1",
+  state: "read" as NotificationState,
 }

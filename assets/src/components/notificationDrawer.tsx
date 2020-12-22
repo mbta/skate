@@ -192,6 +192,7 @@ const NotificationCard = ({
       />
       {showSubmenu && <EllipsisSubmenu notification={notification} />}
       <a
+        className="m-notification-drawer__submenu-icon-anchor"
         onClick={(event) => {
           event.stopPropagation()
           toggleShowSubmenu()

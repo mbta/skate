@@ -158,6 +158,7 @@ exports[`NotificationDrawer renders notifications 1`] = `
             </div>
           </div>
           <a
+            className="m-notification-drawer__submenu-icon-anchor"
             onClick={[Function]}
           >
             <span
