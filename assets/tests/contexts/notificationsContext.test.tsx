@@ -5,6 +5,7 @@ import { act as testUtilsAct } from "react-dom/test-utils"
 import {
   NotificationsContext,
   NotificationsProvider,
+  otherNotificationReadState,
 } from "../../src/contexts/notificationsContext"
 import useCurrentTime from "../../src/hooks/useCurrentTime"
 import { useNotifications } from "../../src/hooks/useNotifications"
@@ -115,5 +116,11 @@ describe("Notification", () => {
       jest.runOnlyPendingTimers()
     })
     expect(result.current.notifications).toHaveLength(0)
+  })
+})
+
+describe("otherNotificationReadState", () => {
+  test("handles delete sensibly", () => {
+    expect(otherNotificationReadState("deleted")).toEqual("deleted")
   })
 })

@@ -23,7 +23,10 @@ const Modal = (): ReactElement | null => {
     return (
       <InactiveNotificationModal
         notification={selectedNotification}
-        hideNotification={() => dispatch(hideLatestNotification())}
+        hideNotification={() => {
+          /* istanbul ignore next */
+          dispatch(hideLatestNotification())
+        }}
       />
     )
   }

@@ -45,6 +45,7 @@ export const NotificationsProvider = ({
   const now = useCurrentTime()
 
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
+  /* istanbul ignore next */
   useNotifications(
     (notification) => {
       dispatch(addNotification(notification))
