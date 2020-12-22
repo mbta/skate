@@ -72,6 +72,10 @@
   cursor: pointer;
   position: absolute;
   right: 0;
+
+  &:hover {
+    font-weight: 700;
+  }
 }
 
 .m-notification-drawer__n-unread {
@@ -96,6 +100,10 @@
 
   a {
     color: $color-secondary-dark;
+
+    &:hover {
+      font-weight: 700;
+    }
   }
 }
 
