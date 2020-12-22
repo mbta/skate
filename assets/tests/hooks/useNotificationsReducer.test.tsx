@@ -1,4 +1,5 @@
 import {
+  hideLatestNotification,
   markAllAsRead,
   reducer,
   setNotifications,
@@ -99,5 +100,17 @@ describe("notificationsReducer", () => {
       { ...notification1, state: "read" },
       notification2,
     ])
+  })
+
+  test("hiding read notification leaves notifications alone", () => {
+    const initialState = {
+      notifications: [notification1, notification2],
+      showLatestNotification: true,
+    }
+    const resultState = reducer(initialState, hideLatestNotification())
+    expect(resultState).toEqual({
+      notifications: [notification1, notification2],
+      showLatestNotification: false,
+    })
   })
 })
