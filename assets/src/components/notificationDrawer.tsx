@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { Dispatch, SetStateAction, useContext, useState } from "react"
 import {
   NotificationsContext,
   otherNotificationReadState,
@@ -48,6 +48,8 @@ const Content = () => {
 
   const [, stateDispatch] = useContext(StateDispatchContext)
 
+  const notificationsDispatch = useContext(NotificationsContext).dispatch
+
   const openVPPForCurrentVehicle = (notification: Notification) => {
     stateDispatch(setNotification(notification))
   }
@@ -56,66 +58,21 @@ const Content = () => {
     return <EmptyMessage />
   }
 
-  const newNotifications = notifications.filter(
+  const nUnreadNotifications = notifications.filter(
     (notification) => notification.state === "unread"
-  )
-
-  const readNotifications = notifications.filter(
-    (notification) => notification.state === "read"
-  )
+  ).length
 
   return (
     <div className="m-notification-drawer__cards">
-      {newNotifications.length > 0 && (
-        <NewNotifications
-          notifications={newNotifications}
-          currentTime={currentTime}
-          openVPPForCurrentVehicle={openVPPForCurrentVehicle}
-        />
-      )}
-      {readNotifications.length > 0 && (
-        <ReadNotifications
-          notifications={readNotifications}
-          currentTime={currentTime}
-          openVPPForCurrentVehicle={openVPPForCurrentVehicle}
-        />
-      )}
-    </div>
-  )
-}
-
-const EmptyMessage = () => (
-  <>
-    <p>You have no notifications currently.</p>
-    <p>
-      Here you'll be notified about events like accidents and ghost vehicles on
-      any bus routes you have selected on the Route Ladders page.
-    </p>
-  </>
-)
-
-const NewNotifications = ({
-  notifications,
-  currentTime,
-  openVPPForCurrentVehicle,
-}: {
-  notifications: Notification[]
-  currentTime: Date
-  openVPPForCurrentVehicle: (notification: Notification) => void
-}) => {
-  const { dispatch } = useContext(NotificationsContext)
-
-  return (
-    <div className="m-notification-drawer__unread-section">
-      <div className="m-notification-drawer__read-section-header">
+      <div className="m-notification-drawer__header">
         <span className="m-notification-drawer__n-unread">
-          {notifications.length} new
+          {nUnreadNotifications} new
         </span>
         <a
           className="m-notification-drawer__mark-all-read-link"
-          onClick={() => dispatch(markAllAsRead())}
+          onClick={() => notificationsDispatch(markAllAsRead())}
         >
-          Mark as read
+          Mark all as read
         </a>
       </div>
       {notifications.map((notification) => (
@@ -130,37 +87,35 @@ const NewNotifications = ({
   )
 }
 
-const ReadNotifications = ({
-  notifications,
-  currentTime,
-  openVPPForCurrentVehicle,
-}: {
-  notifications: Notification[]
-  currentTime: Date
-  openVPPForCurrentVehicle: (notification: Notification) => void
-}) => (
-  <div className="m-notification-drawer__read-section">
-    <div className="m-notification-drawer__unread-section-header">Read</div>
-    {notifications.map((notification) => (
-      <NotificationCard
-        key={notification.id}
-        notification={notification}
-        currentTime={currentTime}
-        openVPPForCurrentVehicle={openVPPForCurrentVehicle}
-      />
-    ))}
-  </div>
+const EmptyMessage = () => (
+  <>
+    <p>You have no notifications currently.</p>
+    <p>
+      Here you'll be notified about events like accidents and ghost vehicles on
+      any bus routes you have selected on the Route Ladders page.
+    </p>
+  </>
 )
 
-const EllipsisSubmenu = ({ notification }: { notification: Notification }) => {
+const EllipsisSubmenu = ({
+  notification,
+  setShowSubmenu,
+}: {
+  notification: Notification
+  setShowSubmenu: Dispatch<SetStateAction<boolean>>
+}) => {
   const { dispatch } = useContext(NotificationsContext)
   const otherReadState = otherNotificationReadState(notification.state)
   return (
-    <div className="m-notification-drawer__submenu">
+    <div
+      className="m-notification-drawer__submenu"
+      onClick={(event) => event.stopPropagation()}
+    >
       <a
         onClick={(event) => {
           event.stopPropagation()
           dispatch(toggleReadState(notification))
+          setShowSubmenu(false)
         }}
       >
         mark as {otherReadState}
@@ -190,7 +145,12 @@ const NotificationCard = ({
         notification={notification}
         currentTime={currentTime}
       />
-      {showSubmenu && <EllipsisSubmenu notification={notification} />}
+      {showSubmenu && (
+        <EllipsisSubmenu
+          notification={notification}
+          setShowSubmenu={setShowSubmenu}
+        />
+      )}
       <a
         className="m-notification-drawer__submenu-icon-anchor"
         onClick={(event) => {

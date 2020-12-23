@@ -88,90 +88,86 @@ exports[`NotificationDrawer renders notifications 1`] = `
       className="m-notification-drawer__cards"
     >
       <div
-        className="m-notification-drawer__unread-section"
+        className="m-notification-drawer__header"
       >
-        <div
-          className="m-notification-drawer__read-section-header"
+        <span
+          className="m-notification-drawer__n-unread"
         >
-          <span
-            className="m-notification-drawer__n-unread"
-          >
-            1
-             new
-          </span>
-          <a
-            className="m-notification-drawer__mark-all-read-link"
-            onClick={[Function]}
-          >
-            Mark as read
-          </a>
-        </div>
-        <button
-          className="m-notification-drawer__card m-notification-drawer__card--unread"
+          1
+           new
+        </span>
+        <a
+          className="m-notification-drawer__mark-all-read-link"
           onClick={[Function]}
         >
+          Mark all as read
+        </a>
+      </div>
+      <button
+        className="m-notification-drawer__card m-notification-drawer__card--unread"
+        onClick={[Function]}
+      >
+        <div
+          className="m-notification-content"
+        >
           <div
-            className="m-notification-content"
+            className="m-notification-content__title-row"
           >
             <div
-              className="m-notification-content__title-row"
+              className="m-notification-content__title"
             >
-              <div
-                className="m-notification-content__title"
-              >
-                NO OPERATOR
-              </div>
-              <div
-                className="m-notification-content__age"
-              >
-                0 min
-              </div>
+              NO OPERATOR
             </div>
             <div
-              className="m-notification-content__description"
+              className="m-notification-content__age"
             >
-              OCC reported that an operator is not available on the route1, route2.
-            </div>
-            <div
-              className="m-properties-list"
-            >
-              <table
-                className="m-properties-list__table"
-              >
-                <tbody>
-                  <tr
-                    className="m-properties-list__property "
-                  >
-                    <td
-                      className="m-properties-list__property-label"
-                    >
-                      Run
-                    </td>
-                    <td
-                      className="m-properties-list__property-value"
-                    >
-                      run1, run2
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              0 min
             </div>
           </div>
-          <a
-            className="m-notification-drawer__submenu-icon-anchor"
-            onClick={[Function]}
+          <div
+            className="m-notification-content__description"
           >
-            <span
-              className="m-notification-drawer__submenu-icon"
-              dangerouslySetInnerHTML={
-                Object {
-                  "__html": "SVG",
-                }
+            OCC reported that an operator is not available on the route1, route2.
+          </div>
+          <div
+            className="m-properties-list"
+          >
+            <table
+              className="m-properties-list__table"
+            >
+              <tbody>
+                <tr
+                  className="m-properties-list__property "
+                >
+                  <td
+                    className="m-properties-list__property-label"
+                  >
+                    Run
+                  </td>
+                  <td
+                    className="m-properties-list__property-value"
+                  >
+                    run1, run2
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <a
+          className="m-notification-drawer__submenu-icon-anchor"
+          onClick={[Function]}
+        >
+          <span
+            className="m-notification-drawer__submenu-icon"
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "SVG",
               }
-            />
-          </a>
-        </button>
-      </div>
+            }
+          />
+        </a>
+      </button>
     </div>
   </div>
 </div>

@@ -50,7 +50,6 @@
   text-align: left;
   width: 100%;
 
-  &:focus,
   &:hover {
     background-color: $color-secondary-medium;
   }
@@ -83,7 +82,7 @@
   text-transform: uppercase;
 }
 
-.m-notification-drawer__read-section-header {
+.m-notification-drawer__header {
   margin-bottom: 0.5rem;
   position: relative;
 }
@@ -97,6 +96,7 @@
   position: absolute;
   right: 1rem;
   text-align: left;
+  z-index: 1000;
 
   a {
     color: $color-secondary-dark;
@@ -117,11 +117,4 @@
     height: 1rem;
     width: 1rem;
   }
-}
-
-.m-notification-drawer__unread-section-header {
-  color: $color-component-medium;
-  margin-bottom: 0.5rem;
-  margin-top: 0.5rem;
-  text-transform: uppercase;
 }
