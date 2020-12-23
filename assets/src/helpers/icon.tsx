@@ -17,6 +17,8 @@ import commuterRailIconSvg from "../../static/images/icon-commuter-rail.svg"
 // @ts-ignore
 import crowdingIconSvg from "../../static/images/icon-crowding.svg"
 // @ts-ignore
+import ellipsisIconSvg from "../../static/images/icon-ellipsis.svg"
+// @ts-ignore
 import filledCircleIconSvg from "../../static/images/icon-filled-circle.svg"
 // @ts-ignore
 import greenLineBIconSvg from "../../static/images/icon-green-line-b.svg"
@@ -87,6 +89,9 @@ export const commuterRailIcon = (className: string = ""): JSX.Element =>
 
 export const crowdingIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, crowdingIconSvg)
+
+export const ellipsisIcon = (className: string = ""): JSX.Element =>
+  renderSvg(className, ellipsisIconSvg)
 
 export const expandIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, expandIconSvg)

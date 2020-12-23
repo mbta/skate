@@ -2,6 +2,7 @@ import {
   Notification,
   NotificationId,
   NotificationReason,
+  NotificationState,
   RunId,
 } from "../realtime.d"
 import { RouteId, TripId } from "../schedule.d"
@@ -18,6 +19,7 @@ export interface NotificationData {
   operator_id: string | null
   route_id_at_creation: string | null
   start_time: number
+  state: NotificationState
 }
 
 export const notificationFromData = (
@@ -33,4 +35,5 @@ export const notificationFromData = (
   operatorId: notificationData.operator_id,
   routeIdAtCreation: notificationData.route_id_at_creation,
   startTime: new Date(notificationData.start_time),
+  state: notificationData.state,
 })

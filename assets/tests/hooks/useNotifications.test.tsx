@@ -7,6 +7,7 @@ import { useNotifications } from "../../src/hooks/useNotifications"
 import { ConnectionStatus } from "../../src/hooks/useSocket"
 import * as browser from "../../src/models/browser"
 import { NotificationData } from "../../src/models/notificationData"
+import { NotificationState } from "../../src/realtime.d"
 import { RouteId } from "../../src/schedule"
 import { initialState } from "../../src/state"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
@@ -24,29 +25,34 @@ const notificationData: NotificationData = {
   operator_id: null,
   route_id_at_creation: null,
   start_time: 123_456,
+  state: "unread" as NotificationState,
 }
 
 describe("useNotifications", () => {
-  test("opens a channel", () => {
-    const handler = jest.fn()
+  test("opens a channel and processes any initial notifications", () => {
+    const mockAddNotification = jest.fn()
+    const mockSetNotifications = jest.fn()
     const mockSocket = makeMockSocket()
-    // We don't return data on join, so it defaults to {}
-    const mockChannel = makeMockChannel("ok", {})
+    const mockChannel = makeMockChannel("ok", {
+      initial_notifications: ["notification1", "notification2"],
+    })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     renderHook(
       () => {
-        useNotifications(handler)
+        useNotifications(mockAddNotification, mockSetNotifications)
       },
       { wrapper: wrapper(mockSocket, ["route"]) }
     )
 
     expect(mockChannel.join).toHaveBeenCalled()
-    expect(handler).not.toHaveBeenCalled()
+    expect(mockAddNotification).toHaveBeenCalledTimes(0)
+    expect(mockSetNotifications).toHaveBeenCalledTimes(1)
   })
 
   test("applies the callback on new notifications", () => {
-    const handler = jest.fn()
+    const mockAddNotification = jest.fn()
+    const mockSetNotifications = jest.fn()
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel()
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
@@ -59,25 +65,26 @@ describe("useNotifications", () => {
 
     renderHook(
       () => {
-        useNotifications(handler)
+        useNotifications(mockAddNotification, mockSetNotifications)
       },
       { wrapper: wrapper(mockSocket, ["route"]) }
     )
 
-    expect(handler).toHaveBeenCalledTimes(1)
-    const notification = handler.mock.calls[0][0]
+    expect(mockAddNotification).toHaveBeenCalledTimes(1)
+    const notification = mockAddNotification.mock.calls[0][0]
     expect(notification.tripIds).toEqual(notificationData.trip_ids)
   })
 
   test("leaves the channel on unmount", () => {
-    const handler = jest.fn()
+    const mockAddNotification = jest.fn()
+    const mockSetNotifications = jest.fn()
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel()
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     const { unmount } = renderHook(
       () => {
-        useNotifications(handler)
+        useNotifications(mockAddNotification, mockSetNotifications)
       },
       { wrapper: wrapper(mockSocket, []) }
     )
@@ -92,14 +99,15 @@ describe("useNotifications", () => {
   test("console.error on join error", async () => {
     const spyConsoleError = jest.spyOn(console, "error")
     spyConsoleError.mockImplementationOnce((msg) => msg)
-    const handler = jest.fn()
+    const mockAddNotification = jest.fn()
+    const mockSetNotifications = jest.fn()
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("error")
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     renderHook(
       () => {
-        useNotifications(handler)
+        useNotifications(mockAddNotification, mockSetNotifications)
       },
       { wrapper: wrapper(mockSocket, []) }
     )
@@ -111,14 +119,15 @@ describe("useNotifications", () => {
   test("reloads the window on channel timeout", async () => {
     const reloadSpy = jest.spyOn(browser, "reload")
     reloadSpy.mockImplementationOnce(() => ({}))
-    const handler = jest.fn()
+    const mockAddNotification = jest.fn()
+    const mockSetNotifications = jest.fn()
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("timeout")
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     renderHook(
       () => {
-        useNotifications(handler)
+        useNotifications(mockAddNotification, mockSetNotifications)
       },
       { wrapper: wrapper(mockSocket, []) }
     )

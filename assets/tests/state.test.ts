@@ -1,5 +1,9 @@
 import { LadderDirection } from "../src/models/ladderDirection"
-import { NotificationReason, VehicleId } from "../src/realtime.d"
+import {
+  NotificationReason,
+  NotificationState,
+  VehicleId,
+} from "../src/realtime.d"
 import * as State from "../src/state"
 import { VehicleLabelSetting } from "../src/userSettings"
 
@@ -317,6 +321,7 @@ describe("reducer", () => {
       operatorId: null,
       routeIdAtCreation: null,
       startTime: new Date(),
+      state: "unread" as NotificationState,
     }
     const newState = reducer(initialState, State.setNotification(notification))
     const expectedState = {

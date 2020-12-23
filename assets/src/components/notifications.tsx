@@ -2,32 +2,32 @@ import React, { useContext, useEffect, useState } from "react"
 import { NotificationsContext } from "../contexts/notificationsContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useCurrentTime from "../hooks/useCurrentTime"
+import {
+  Dispatch,
+  hideLatestNotification,
+} from "../hooks/useNotificationsReducer"
 import { Notification } from "../realtime.d"
 import { setNotification } from "../state"
 import { NotificationContent } from "./notificationContent"
 
 export const Notifications = () => {
-  const {
-    notifications,
-    showLatestNotification,
-    hideNotification,
-  } = useContext(NotificationsContext)
+  const { notifications, showLatestNotification, dispatch } = useContext(
+    NotificationsContext
+  )
   const currentTime = useCurrentTime()
 
-  const [, dispatch] = useContext(StateDispatchContext)
+  const [, stateDispatch] = useContext(StateDispatchContext)
 
   const openVPPForCurrentVehicle = (notification: Notification) => {
-    dispatch(setNotification(notification))
+    stateDispatch(setNotification(notification))
   }
-
-  const latestNotificationIndex = notifications.length - 1
 
   return (
     <div className="m-notifications">
-      {showLatestNotification && latestNotificationIndex >= 0 && (
+      {showLatestNotification && notifications.length > 0 && (
         <NotificationCard
-          notification={notifications[latestNotificationIndex]}
-          hideNotification={hideNotification}
+          notification={notifications[0]}
+          dispatch={dispatch}
           currentTime={currentTime}
           openVPPForCurrentVehicle={openVPPForCurrentVehicle}
         />
@@ -38,12 +38,12 @@ export const Notifications = () => {
 
 export const NotificationCard = ({
   notification,
-  hideNotification,
+  dispatch,
   currentTime,
   openVPPForCurrentVehicle,
 }: {
   notification: Notification
-  hideNotification: () => void
+  dispatch: Dispatch
   currentTime: Date
   openVPPForCurrentVehicle: (notification: Notification) => void
 }) => {
@@ -70,7 +70,7 @@ export const NotificationCard = ({
       </button>
       <button
         className="m-notifications__close"
-        onClick={() => hideNotification()}
+        onClick={() => dispatch(hideLatestNotification())}
       >
         Hide
       </button>

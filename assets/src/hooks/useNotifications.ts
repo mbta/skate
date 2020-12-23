@@ -3,11 +3,15 @@ import { useContext, useEffect } from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { reload } from "../models/browser"
-import { notificationFromData } from "../models/notificationData"
+import {
+  NotificationData,
+  notificationFromData,
+} from "../models/notificationData"
 import { Notification } from "../realtime.d"
 
 export const useNotifications = (
-  handleNewNotification: (notification: Notification) => void
+  handleNewNotification: (notification: Notification) => void,
+  handleInitialNotifications: (notificationsData: NotificationData[]) => void
 ): void => {
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const topic: string = "notifications"
@@ -25,6 +29,12 @@ export const useNotifications = (
       })
       channel
         .join()
+        .receive(
+          "ok",
+          (data) =>
+            data.initial_notifications &&
+            handleInitialNotifications(data.initial_notifications)
+        )
         .receive("error", ({ reason }) =>
           // tslint:disable-next-line: no-console
           console.error(`joining topic ${topic} failed`, reason)

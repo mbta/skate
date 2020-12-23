@@ -5,11 +5,11 @@ import { act as testUtilsAct } from "react-dom/test-utils"
 import {
   NotificationsContext,
   NotificationsProvider,
+  otherNotificationReadState,
 } from "../../src/contexts/notificationsContext"
 import useCurrentTime from "../../src/hooks/useCurrentTime"
 import { useNotifications } from "../../src/hooks/useNotifications"
-import { Notification } from "../../src/realtime.d"
-import { mockUseStateOnce } from "../testHelpers/mockHelpers"
+import { Notification, NotificationState } from "../../src/realtime.d"
 
 jest.mock("../../src/hooks/useCurrentTime", () => ({
   __esModule: true,
@@ -37,6 +37,7 @@ const notification: Notification = {
   operatorId: null,
   routeIdAtCreation: null,
   startTime: new Date(0),
+  state: "unread" as NotificationState,
 }
 
 // tslint:disable: react-hooks-nesting
@@ -84,19 +85,6 @@ describe("Notification", () => {
     window.username = originalUsername
   })
 
-  test("can hide notification", () => {
-    mockUseStateOnce([notification])
-    mockUseStateOnce(true)
-    const { result } = renderHook(() => useContext(NotificationsContext), {
-      wrapper: NotificationsProvider,
-    })
-    expect(result.current.showLatestNotification).toEqual(true)
-    hooksAct(() => {
-      result.current.hideNotification()
-    })
-    expect(result.current.showLatestNotification).toEqual(false)
-  })
-
   test("expires notifications after 8 hours", () => {
     const maxAge = 8 * 60 * 60 * 1000
 
@@ -128,5 +116,11 @@ describe("Notification", () => {
       jest.runOnlyPendingTimers()
     })
     expect(result.current.notifications).toHaveLength(0)
+  })
+})
+
+describe("otherNotificationReadState", () => {
+  test("handles delete sensibly", () => {
+    expect(otherNotificationReadState("deleted")).toEqual("deleted")
   })
 })

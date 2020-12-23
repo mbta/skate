@@ -1,75 +1,69 @@
-import React, { createContext, ReactElement, useState } from "react"
+import React, { createContext, ReactElement, useEffect, useState } from "react"
 import useCurrentTime from "../hooks/useCurrentTime"
 import useInterval from "../hooks/useInterval"
 import { useNotifications } from "../hooks/useNotifications"
-import { Notification } from "../realtime.d"
+import useNotificationsReducer, {
+  Action,
+  addNotification,
+  expireNotifications,
+  setNotifications,
+  State as ReducerState,
+} from "../hooks/useNotificationsReducer"
+import { NotificationState } from "../realtime.d"
 
-export interface NotificationsStatus {
-  notifications: Notification[]
-  showLatestNotification: boolean
-  hideNotification: () => void
+export const otherNotificationReadState = (state: NotificationState) => {
+  if (state === "unread") {
+    return "read"
+  }
+  if (state === "read") {
+    return "unread"
+  }
+  return state
 }
 
-// Codecov gets in a snit about not covering the "hide" no-op below.
-/* istanbul ignore next */
+interface State extends ReducerState {
+  dispatch: (action: Action) => void
+}
 
-export const NotificationsContext = createContext<NotificationsStatus>({
+// Don't worry about covering the no-op below
+/* istanbul ignore next */
+export const NotificationsContext = createContext<State>({
   notifications: [],
   showLatestNotification: false,
   // tslint:disable-next-line: no-empty
-  hideNotification: () => {},
+  dispatch: () => {},
 })
-
-const deliverFullstoryEvent = (numStacked: number): void => {
-  if (window.FS && window.username) {
-    window.FS.event("Notification delivered", {
-      num_stacked_int: numStacked,
-    })
-  }
-}
 
 export const NotificationsProvider = ({
   children,
 }: {
   children: ReactElement<HTMLElement>
 }) => {
-  const [notifications, setNotifications] = useState<Notification[]>([])
-  const [showLatestNotification, setShowLatestNotification] = useState<boolean>(
-    false
-  )
-  const addNotification = (notification: Notification): void => {
-    setNotifications((previous) => {
-      const newNotifications = [...previous, notification]
-      deliverFullstoryEvent(newNotifications.length)
-      return newNotifications
-    })
-
-    setShowLatestNotification(true)
-  }
-
-  const hideNotification = () => setShowLatestNotification(false)
+  const [state, dispatch] = useNotificationsReducer()
+  const { notifications, showLatestNotification } = state
 
   const now = useCurrentTime()
 
-  const expireOldNotifications = () => {
-    const maxAgeInMs = 8 * 60 * 60 * 1000
-    setNotifications((previous) => {
-      return previous.filter((notification) => {
-        const ageInMs = now.valueOf() - notification.createdAt.valueOf()
-        return ageInMs < maxAgeInMs
-      })
-    })
-  }
+  const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
+  /* istanbul ignore next */
+  useNotifications(
+    (notification) => {
+      dispatch(addNotification(notification))
+    },
+    (notificationsData) => {
+      dispatch(setNotifications(notificationsData, isInitialLoad))
+    }
+  )
+  useEffect(() => setIsInitialLoad(false))
 
-  useNotifications(addNotification)
-  useInterval(expireOldNotifications, 10000)
+  useInterval(() => dispatch(expireNotifications(now)), 10000)
 
   return (
     <NotificationsContext.Provider
       value={{
         notifications,
         showLatestNotification,
-        hideNotification,
+        dispatch,
       }}
     >
       {children}

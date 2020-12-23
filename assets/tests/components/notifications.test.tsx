@@ -11,10 +11,14 @@ import {
   NotificationsProvider,
 } from "../../src/contexts/notificationsContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
+import {
+  hideLatestNotification,
+  reducer as notificationsReducer,
+} from "../../src/hooks/useNotificationsReducer"
 import { Notification, NotificationReason } from "../../src/realtime.d"
 import { Dispatch, initialState, setNotification } from "../../src/state"
 import { now } from "../../src/util/dateTime"
-import { mockUseStateOnce } from "../testHelpers/mockHelpers"
+import { mockUseReducerOnce } from "../testHelpers/mockHelpers"
 
 jest.mock("../../src/hooks/useNotifications", () => ({
   __esModule: true,
@@ -37,6 +41,7 @@ const notification: Notification = {
   operatorId: null,
   routeIdAtCreation: null,
   startTime: now(),
+  state: "unread",
 }
 
 const notificationWithMatchedVehicle: Notification = {
@@ -57,13 +62,14 @@ describe("Notification", () => {
       { ...notification, id: "0" },
       { ...notification, id: "1" },
     ]
+
     const tree = renderer
       .create(
         <NotificationsContext.Provider
           value={{
             notifications,
             showLatestNotification: true,
-            hideNotification: jest.fn(),
+            dispatch: jest.fn(),
           }}
         >
           <Notifications />
@@ -74,13 +80,13 @@ describe("Notification", () => {
   })
 
   test("can hide notification", () => {
-    const hideNotification = jest.fn()
+    const dispatch = jest.fn()
     const wrapper = mount(
       <NotificationsContext.Provider
         value={{
           notifications: [notification],
           showLatestNotification: true,
-          hideNotification,
+          dispatch,
         }}
       >
         <Notifications />
@@ -88,7 +94,7 @@ describe("Notification", () => {
     )
     expect(wrapper.find(".m-notifications__card")).toHaveLength(1)
     wrapper.find(".m-notifications__close").simulate("click")
-    expect(hideNotification).toHaveBeenCalled()
+    expect(dispatch).toHaveBeenCalledWith(hideLatestNotification())
   })
 })
 
@@ -98,8 +104,8 @@ describe("NotificationCard", () => {
       .create(
         <NotificationCard
           notification={notificationWithMatchedVehicle}
-          hideNotification={jest.fn()}
           currentTime={now()}
+          dispatch={jest.fn()}
           openVPPForCurrentVehicle={jest.fn()}
         />
       )
@@ -112,8 +118,8 @@ describe("NotificationCard", () => {
     const wrapper = mount(
       <NotificationCard
         notification={n}
-        hideNotification={jest.fn()}
         currentTime={now()}
+        dispatch={jest.fn()}
         openVPPForCurrentVehicle={jest.fn()}
       />
     )
@@ -125,7 +131,7 @@ describe("NotificationCard", () => {
     const wrapper = mount(
       <NotificationCard
         notification={n}
-        hideNotification={jest.fn()}
+        dispatch={jest.fn()}
         currentTime={now()}
         openVPPForCurrentVehicle={jest.fn()}
       />
@@ -139,7 +145,7 @@ describe("NotificationCard", () => {
       .create(
         <NotificationCard
           notification={n}
-          hideNotification={jest.fn()}
+          dispatch={jest.fn()}
           currentTime={now()}
           openVPPForCurrentVehicle={jest.fn()}
         />
@@ -158,7 +164,7 @@ describe("NotificationCard", () => {
     const wrapper = mount(
       <NotificationCard
         notification={n}
-        hideNotification={jest.fn()}
+        dispatch={jest.fn()}
         currentTime={now()}
         openVPPForCurrentVehicle={jest.fn()}
       />
@@ -176,7 +182,7 @@ describe("NotificationCard", () => {
     const wrapper = mount(
       <NotificationCard
         notification={n}
-        hideNotification={jest.fn()}
+        dispatch={jest.fn()}
         currentTime={now()}
         openVPPForCurrentVehicle={jest.fn()}
       />
@@ -194,7 +200,7 @@ describe("NotificationCard", () => {
     const wrapper = mount(
       <NotificationCard
         notification={n}
-        hideNotification={jest.fn()}
+        dispatch={jest.fn()}
         currentTime={now()}
         openVPPForCurrentVehicle={jest.fn()}
       />
@@ -217,7 +223,7 @@ describe("NotificationCard", () => {
     mount(
       <NotificationCard
         notification={n}
-        hideNotification={jest.fn()}
+        dispatch={jest.fn()}
         currentTime={now()}
         openVPPForCurrentVehicle={jest.fn()}
       />
@@ -229,7 +235,7 @@ describe("NotificationCard", () => {
     const wrapper = mount(
       <NotificationCard
         notification={notification}
-        hideNotification={jest.fn()}
+        dispatch={jest.fn()}
         currentTime={now()}
         openVPPForCurrentVehicle={jest.fn()}
       />
@@ -247,8 +253,10 @@ describe("NotificationCard", () => {
       ...notification,
       tripIds: ["123", "456", "789"],
     }
-    mockUseStateOnce([updatedNotification])
-    mockUseStateOnce(true)
+    mockUseReducerOnce(notificationsReducer, {
+      notifications: [updatedNotification],
+      showLatestNotification: true,
+    })
     const mockDispatch: Dispatch = jest.fn()
 
     const wrapper = mount(

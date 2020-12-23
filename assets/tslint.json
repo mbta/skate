@@ -10,7 +10,7 @@
   "rules": {
     "interface-name": [true, "never-prefix"],
     "jsx-no-lambda": false,
-    "object-literal-sort-keys": { "options": "match-declaration-order-only" },
+    "object-literal-sort-keys": false,
     "react-hooks-nesting": "error",
     "variable-name": [
       true,
