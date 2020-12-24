@@ -71,6 +71,34 @@ describe("NotificationDrawer", () => {
     expect(dispatch).toHaveBeenCalledWith(setNotification(notification))
   })
 
+  test("clicking through an unread notification makes it read", () => {
+    const updatedNotification = {
+      ...notification,
+      tripIds: ["123", "456", "789"],
+    }
+
+    const mockNotificationsDispatch = jest.fn()
+
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={jest.fn}>
+        <NotificationsContext.Provider
+          value={{
+            notifications: [updatedNotification],
+            showLatestNotification: true,
+            dispatch: mockNotificationsDispatch,
+          }}
+        >
+          <NotificationDrawer />
+        </NotificationsContext.Provider>
+      </StateDispatchProvider>
+    )
+
+    wrapper.find(".m-notification-drawer__card--unread").simulate("click")
+    expect(mockNotificationsDispatch).toHaveBeenCalledWith(
+      toggleReadState(updatedNotification)
+    )
+  })
+
   test("can make all read", () => {
     const stateDispatch = jest.fn()
     const notificationsDispatch = jest.fn()

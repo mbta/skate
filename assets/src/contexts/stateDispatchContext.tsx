@@ -1,4 +1,8 @@
 import React, { createContext, ReactElement } from "react"
+import {
+  Dispatch as NotificationsDispatch,
+  toggleReadState,
+} from "../hooks/useNotificationsReducer"
 import { Notification } from "../realtime"
 import { Dispatch, initialState, setNotification, State } from "../state"
 
@@ -29,7 +33,11 @@ export const StateDispatchProvider = ({
 
 export const openVPPForNotification = (
   notification: Notification,
-  stateDispatch: Dispatch
+  stateDispatch: Dispatch,
+  notificationsDispatch: NotificationsDispatch
 ): void => {
+  if (notification.state === "unread") {
+    notificationsDispatch(toggleReadState(notification))
+  }
   stateDispatch(setNotification(notification))
 }

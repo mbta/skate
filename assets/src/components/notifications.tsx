@@ -21,7 +21,7 @@ export const Notifications = () => {
   const [, stateDispatch] = useContext(StateDispatchContext)
 
   const openVPPForCurrentVehicle = (notification: Notification) => {
-    openVPPForNotification(notification, stateDispatch)
+    openVPPForNotification(notification, stateDispatch, dispatch)
   }
 
   return (

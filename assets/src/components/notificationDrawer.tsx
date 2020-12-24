@@ -46,7 +46,7 @@ const TitleBar = () => {
 }
 
 const Content = () => {
-  const { notifications } = useContext(NotificationsContext)
+  const { dispatch, notifications } = useContext(NotificationsContext)
   const currentTime = useCurrentTime()
 
   const [, stateDispatch] = useContext(StateDispatchContext)
@@ -54,7 +54,7 @@ const Content = () => {
   const notificationsDispatch = useContext(NotificationsContext).dispatch
 
   const openVPPForCurrentVehicle = (notification: Notification) => {
-    openVPPForNotification(notification, stateDispatch)
+    openVPPForNotification(notification, stateDispatch, dispatch)
   }
 
   if (notifications.length === 0) {

@@ -14,6 +14,7 @@ import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import {
   hideLatestNotification,
   reducer as notificationsReducer,
+  toggleReadState,
 } from "../../src/hooks/useNotificationsReducer"
 import { Notification, NotificationReason } from "../../src/realtime.d"
 import { Dispatch, initialState, setNotification } from "../../src/state"
@@ -271,6 +272,34 @@ describe("NotificationCard", () => {
     wrapper.find(".m-notifications__card-info").simulate("click")
     expect(mockDispatch).toHaveBeenCalledWith(
       setNotification(updatedNotification)
+    )
+  })
+
+  test("clicking through an unread notification makes it read", () => {
+    const updatedNotification = {
+      ...notification,
+      tripIds: ["123", "456", "789"],
+    }
+
+    const mockNotificationsDispatch = jest.fn()
+
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={jest.fn}>
+        <NotificationsContext.Provider
+          value={{
+            notifications: [updatedNotification],
+            showLatestNotification: true,
+            dispatch: mockNotificationsDispatch,
+          }}
+        >
+          <Notifications />
+        </NotificationsContext.Provider>
+      </StateDispatchProvider>
+    )
+
+    wrapper.find(".m-notifications__card-info").simulate("click")
+    expect(mockNotificationsDispatch).toHaveBeenCalledWith(
+      toggleReadState(updatedNotification)
     )
   })
 })
