@@ -109,7 +109,10 @@ const EllipsisSubmenu = ({
   return (
     <div
       className="m-notification-drawer__submenu"
-      onClick={(event) => event.stopPropagation()}
+      onClick={
+        /* istanbul ignore next */
+        (event) => event.stopPropagation()
+      }
     >
       <a
         onClick={(event) => {
