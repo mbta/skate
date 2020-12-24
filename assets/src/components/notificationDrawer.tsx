@@ -3,7 +3,10 @@ import {
   NotificationsContext,
   otherNotificationReadState,
 } from "../contexts/notificationsContext"
-import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import {
+  openVPPForNotification,
+  StateDispatchContext,
+} from "../contexts/stateDispatchContext"
 import { ellipsisIcon } from "../helpers/icon"
 import useCurrentTime from "../hooks/useCurrentTime"
 import {
@@ -11,7 +14,7 @@ import {
   toggleReadState,
 } from "../hooks/useNotificationsReducer"
 import { Notification } from "../realtime.d"
-import { closeNotificationDrawer, setNotification } from "../state"
+import { closeNotificationDrawer } from "../state"
 import CloseButton from "./closeButton"
 import NotificationBellIcon from "./notificationBellIcon"
 import { NotificationContent } from "./notificationContent"
@@ -51,7 +54,7 @@ const Content = () => {
   const notificationsDispatch = useContext(NotificationsContext).dispatch
 
   const openVPPForCurrentVehicle = (notification: Notification) => {
-    stateDispatch(setNotification(notification))
+    openVPPForNotification(notification, stateDispatch)
   }
 
   if (notifications.length === 0) {

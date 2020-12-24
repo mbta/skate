@@ -1,13 +1,15 @@
 import React, { useContext, useEffect, useState } from "react"
 import { NotificationsContext } from "../contexts/notificationsContext"
-import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import {
+  openVPPForNotification,
+  StateDispatchContext,
+} from "../contexts/stateDispatchContext"
 import useCurrentTime from "../hooks/useCurrentTime"
 import {
   Dispatch,
   hideLatestNotification,
 } from "../hooks/useNotificationsReducer"
 import { Notification } from "../realtime.d"
-import { setNotification } from "../state"
 import { NotificationContent } from "./notificationContent"
 
 export const Notifications = () => {
@@ -19,7 +21,7 @@ export const Notifications = () => {
   const [, stateDispatch] = useContext(StateDispatchContext)
 
   const openVPPForCurrentVehicle = (notification: Notification) => {
-    stateDispatch(setNotification(notification))
+    openVPPForNotification(notification, stateDispatch)
   }
 
   return (

@@ -1,5 +1,6 @@
 import React, { createContext, ReactElement } from "react"
-import { Dispatch, initialState, State } from "../state"
+import { Notification } from "../realtime"
+import { Dispatch, initialState, setNotification, State } from "../state"
 
 type StateDispatchContextData = [State, Dispatch]
 
@@ -24,4 +25,11 @@ export const StateDispatchProvider = ({
       {children}
     </StateDispatchContext.Provider>
   )
+}
+
+export const openVPPForNotification = (
+  notification: Notification,
+  stateDispatch: Dispatch
+): void => {
+  stateDispatch(setNotification(notification))
 }
