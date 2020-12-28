@@ -144,6 +144,40 @@ describe("NotificationDrawer", () => {
       toggleReadState(readNotification)
     )
   })
+
+  test("clicking any part of the submenu besides the link doesn't cause the VPP to open", () => {
+    const stateDispatch = jest.fn()
+    const notificationsDispatch = jest.fn()
+
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={stateDispatch}>
+        <NotificationsContext.Provider
+          value={{
+            notifications: [notification],
+            showLatestNotification: true,
+            dispatch: notificationsDispatch,
+          }}
+        >
+          <NotificationDrawer />
+        </NotificationsContext.Provider>
+      </StateDispatchProvider>
+    )
+
+    wrapper
+      .find(
+        ".m-notification-drawer__card--unread .m-notification-drawer__submenu-icon-anchor"
+      )
+      .simulate("click")
+    wrapper
+      .find(
+        ".m-notification-drawer__card--unread .m-notification-drawer__submenu"
+      )
+      .first()
+      .simulate("click")
+
+    expect(notificationsDispatch).not.toHaveBeenCalled()
+    expect(stateDispatch).not.toHaveBeenCalled()
+  })
 })
 
 const notification: Notification = {

@@ -58,7 +58,7 @@ const Content = () => {
     return <EmptyMessage />
   }
 
-  const nUnreadNotifications = notifications.filter(
+  const unreadNotificationsCount = notifications.filter(
     (notification) => notification.state === "unread"
   ).length
 
@@ -66,7 +66,7 @@ const Content = () => {
     <div className="m-notification-drawer__cards">
       <div className="m-notification-drawer__header">
         <span className="m-notification-drawer__n-unread">
-          {nUnreadNotifications} new
+          {unreadNotificationsCount} new
         </span>
         <a
           className="m-notification-drawer__mark-all-read-link"
@@ -109,10 +109,7 @@ const EllipsisSubmenu = ({
   return (
     <div
       className="m-notification-drawer__submenu"
-      onClick={
-        /* istanbul ignore next */
-        (event) => event.stopPropagation()
-      }
+      onClick={(event) => event.stopPropagation()}
     >
       <a
         onClick={(event) => {
