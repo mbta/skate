@@ -42,6 +42,8 @@ describe("NotificationDrawer", () => {
             notifications: [notification],
             showLatestNotification: true,
             dispatch: jest.fn(),
+            rememberScrollPosition: jest.fn(),
+            scrollPosition: 0,
           }}
         >
           <NotificationDrawer />
@@ -60,6 +62,8 @@ describe("NotificationDrawer", () => {
             notifications: [notification],
             showLatestNotification: true,
             dispatch: jest.fn(),
+            rememberScrollPosition: jest.fn(),
+            scrollPosition: 0,
           }}
         >
           <NotificationDrawer />
@@ -86,6 +90,8 @@ describe("NotificationDrawer", () => {
             notifications: [updatedNotification],
             showLatestNotification: true,
             dispatch: mockNotificationsDispatch,
+            rememberScrollPosition: jest.fn(),
+            scrollPosition: 0,
           }}
         >
           <NotificationDrawer />
@@ -110,6 +116,8 @@ describe("NotificationDrawer", () => {
             notifications: [notification],
             showLatestNotification: true,
             dispatch: notificationsDispatch,
+            rememberScrollPosition: jest.fn(),
+            scrollPosition: 0,
           }}
         >
           <NotificationDrawer />
@@ -135,6 +143,8 @@ describe("NotificationDrawer", () => {
             notifications: [notification, readNotification],
             showLatestNotification: true,
             dispatch: notificationsDispatch,
+            rememberScrollPosition: jest.fn(),
+            scrollPosition: 0,
           }}
         >
           <NotificationDrawer />
@@ -184,6 +194,8 @@ describe("NotificationDrawer", () => {
             notifications: [notification],
             showLatestNotification: true,
             dispatch: notificationsDispatch,
+            rememberScrollPosition: jest.fn(),
+            scrollPosition: 0,
           }}
         >
           <NotificationDrawer />
