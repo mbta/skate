@@ -71,6 +71,8 @@ describe("Notification", () => {
             notifications,
             showLatestNotification: true,
             dispatch: jest.fn(),
+            rememberScrollPosition: jest.fn(),
+            scrollPosition: 0,
           }}
         >
           <Notifications />
@@ -88,6 +90,8 @@ describe("Notification", () => {
           notifications: [notification],
           showLatestNotification: true,
           dispatch,
+          rememberScrollPosition: jest.fn(),
+          scrollPosition: 0,
         }}
       >
         <Notifications />
@@ -290,6 +294,8 @@ describe("NotificationCard", () => {
             notifications: [updatedNotification],
             showLatestNotification: true,
             dispatch: mockNotificationsDispatch,
+            rememberScrollPosition: jest.fn(),
+            scrollPosition: 0,
           }}
         >
           <Notifications />

@@ -42,6 +42,8 @@ describe("NotificationDrawer", () => {
             notifications: [notification],
             showLatestNotification: true,
             dispatch: jest.fn(),
+            rememberScrollPosition: jest.fn(),
+            scrollPosition: 0,
           }}
         >
           <NotificationDrawer />
@@ -60,6 +62,8 @@ describe("NotificationDrawer", () => {
             notifications: [notification],
             showLatestNotification: true,
             dispatch: jest.fn(),
+            rememberScrollPosition: jest.fn(),
+            scrollPosition: 0,
           }}
         >
           <NotificationDrawer />
@@ -86,6 +90,8 @@ describe("NotificationDrawer", () => {
             notifications: [updatedNotification],
             showLatestNotification: true,
             dispatch: mockNotificationsDispatch,
+            rememberScrollPosition: jest.fn(),
+            scrollPosition: 0,
           }}
         >
           <NotificationDrawer />
@@ -110,6 +116,8 @@ describe("NotificationDrawer", () => {
             notifications: [notification],
             showLatestNotification: true,
             dispatch: notificationsDispatch,
+            rememberScrollPosition: jest.fn(),
+            scrollPosition: 0,
           }}
         >
           <NotificationDrawer />
@@ -135,6 +143,8 @@ describe("NotificationDrawer", () => {
             notifications: [notification, readNotification],
             showLatestNotification: true,
             dispatch: notificationsDispatch,
+            rememberScrollPosition: jest.fn(),
+            scrollPosition: 0,
           }}
         >
           <NotificationDrawer />
@@ -188,6 +198,8 @@ describe("NotificationDrawer", () => {
             notifications: [notification],
             showLatestNotification: true,
             dispatch: notificationsDispatch,
+            rememberScrollPosition: jest.fn(),
+            scrollPosition: 0,
           }}
         >
           <NotificationDrawer />
@@ -209,6 +221,29 @@ describe("NotificationDrawer", () => {
 
     expect(notificationsDispatch).not.toHaveBeenCalled()
     expect(stateDispatch).not.toHaveBeenCalled()
+  })
+
+  test("remembers the scroll position when the component is unmounted", () => {
+    const rememberScrollPosition = jest.fn()
+
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+        <NotificationsContext.Provider
+          value={{
+            notifications: [notification],
+            showLatestNotification: true,
+            dispatch: jest.fn(),
+            rememberScrollPosition,
+            scrollPosition: 123,
+          }}
+        >
+          <NotificationDrawer />
+        </NotificationsContext.Provider>
+      </StateDispatchProvider>
+    )
+    expect(rememberScrollPosition).not.toHaveBeenCalled()
+    wrapper.unmount()
+    expect(rememberScrollPosition).toHaveBeenCalledWith(123)
   })
 })
 

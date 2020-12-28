@@ -29,6 +29,8 @@ const unreadNotificationState: NotificationsState = {
   notifications: [unreadNotification],
   showLatestNotification: true,
   dispatch: jest.fn(),
+  rememberScrollPosition: jest.fn(),
+  scrollPosition: 0,
 }
 
 const readNotificationState: NotificationsState = {
