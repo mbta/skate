@@ -21,7 +21,7 @@ export const otherNotificationReadState = (state: NotificationState) => {
   return state
 }
 
-interface State extends ReducerState {
+export interface State extends ReducerState {
   dispatch: (action: Action) => void
 }
 

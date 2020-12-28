@@ -55,7 +55,7 @@ exports[`NotificationDrawer renders notifications 1`] = `
     className="m-notification-drawer__title-bar"
   >
     <span
-      className="m-notification-bell-icon m-notification-bell-icon--closed m-notification-bell-icon--read"
+      className="m-notification-bell-icon m-notification-bell-icon--closed m-notification-bell-icon--unread"
       dangerouslySetInnerHTML={
         Object {
           "__html": "SVG",

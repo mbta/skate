@@ -1,6 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`NotificationBellIcon renders when the drawer is closed 1`] = `
+exports[`NotificationBellIcon renders when the drawer is closed and there are new notifications 1`] = `
+<span
+  className="m-notification-bell-icon m-notification-bell-icon--closed m-notification-bell-icon--unread"
+  dangerouslySetInnerHTML={
+    Object {
+      "__html": "SVG",
+    }
+  }
+/>
+`;
+
+exports[`NotificationBellIcon renders when the drawer is closed and there are not new notifications 1`] = `
 <span
   className="m-notification-bell-icon m-notification-bell-icon--closed m-notification-bell-icon--read"
   dangerouslySetInnerHTML={
@@ -11,7 +22,18 @@ exports[`NotificationBellIcon renders when the drawer is closed 1`] = `
 />
 `;
 
-exports[`NotificationBellIcon renders when the drawer is open 1`] = `
+exports[`NotificationBellIcon renders when the drawer is open and there are new notifications 1`] = `
+<span
+  className="m-notification-bell-icon m-notification-bell-icon--open m-notification-bell-icon--unread"
+  dangerouslySetInnerHTML={
+    Object {
+      "__html": "SVG",
+    }
+  }
+/>
+`;
+
+exports[`NotificationBellIcon renders when the drawer is open and there are not new notifications 1`] = `
 <span
   className="m-notification-bell-icon m-notification-bell-icon--open m-notification-bell-icon--read"
   dangerouslySetInnerHTML={
