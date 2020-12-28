@@ -46,7 +46,7 @@ export const NotificationsProvider = ({
 }) => {
   const [state, dispatch] = useNotificationsReducer()
   const { notifications, showLatestNotification } = state
-  const [scrollPosition, setScrollPosition] = useState<number>(200)
+  const [scrollPosition, setScrollPosition] = useState<number>(0)
   const now = useCurrentTime()
 
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
