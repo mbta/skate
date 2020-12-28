@@ -149,7 +149,9 @@ describe("NotificationDrawer", () => {
       .simulate("click")
     wrapper
       .find(
-        ".m-notification-drawer__card--unread .m-notification-drawer__submenu a"
+        ".m-notification-drawer__card--unread " +
+          ".m-notification-drawer__submenu " +
+          ".m-notification-drawer__submenu-mark-read"
       )
       .first()
       .simulate("click")
@@ -164,7 +166,9 @@ describe("NotificationDrawer", () => {
       .simulate("click")
     wrapper
       .find(
-        ".m-notification-drawer__card--read .m-notification-drawer__submenu a"
+        ".m-notification-drawer__card--read " +
+          ".m-notification-drawer__submenu " +
+          ".m-notification-drawer__submenu-mark-unread"
       )
       .first()
       .simulate("click")

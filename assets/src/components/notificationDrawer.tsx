@@ -120,6 +120,7 @@ const EllipsisSubmenu = ({
           dispatch(toggleReadState(notification))
           setShowSubmenu(false)
         }}
+        className={`m-notification-drawer__submenu-mark-${otherReadState}`}
       >
         mark as {otherReadState}
       </a>
