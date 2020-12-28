@@ -23,15 +23,20 @@ export const otherNotificationReadState = (state: NotificationState) => {
 
 export interface State extends ReducerState {
   dispatch: (action: Action) => void
+  rememberScrollPosition: (scrollPosition: number) => void
+  scrollPosition: number
 }
 
-// Don't worry about covering the no-op below
+// Don't worry about covering the no-ops below
 /* istanbul ignore next */
 export const NotificationsContext = createContext<State>({
   notifications: [],
   showLatestNotification: false,
   // tslint:disable-next-line: no-empty
   dispatch: () => {},
+  // tslint:disable-next-line: no-empty
+  rememberScrollPosition: () => {},
+  scrollPosition: 0,
 })
 
 export const NotificationsProvider = ({
@@ -41,7 +46,7 @@ export const NotificationsProvider = ({
 }) => {
   const [state, dispatch] = useNotificationsReducer()
   const { notifications, showLatestNotification } = state
-
+  const [scrollPosition, setScrollPosition] = useState<number>(200)
   const now = useCurrentTime()
 
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
@@ -64,6 +69,8 @@ export const NotificationsProvider = ({
         notifications,
         showLatestNotification,
         dispatch,
+        rememberScrollPosition: setScrollPosition,
+        scrollPosition,
       }}
     >
       {children}

@@ -1,4 +1,11 @@
-import React, { Dispatch, SetStateAction, useContext, useState } from "react"
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react"
 import {
   NotificationsContext,
   otherNotificationReadState,
@@ -20,8 +27,31 @@ import NotificationBellIcon from "./notificationBellIcon"
 import { NotificationContent } from "./notificationContent"
 
 const NotificationDrawer = () => {
+  const elementRef = useRef<HTMLDivElement | null>(null)
+  const { rememberScrollPosition, scrollPosition } = useContext(
+    NotificationsContext
+  )
+
+  const [isInitialRender, setIsInitialRender] = useState<boolean>(true)
+
+  useLayoutEffect(() => {
+    const restoreScrollPosition = isInitialRender
+    setIsInitialRender(false)
+
+    if (restoreScrollPosition && elementRef) {
+      const element = elementRef.current
+      if (element) {
+        element.scrollTop = scrollPosition
+      }
+    }
+
+    return () => {
+      rememberScrollPosition(elementRef.current!.scrollTop)
+    }
+  }, [])
+
   return (
-    <div className="m-notification-drawer">
+    <div className="m-notification-drawer" ref={elementRef}>
       <TitleBar />
       <div className="m-notification-drawer__content">
         <Content />
