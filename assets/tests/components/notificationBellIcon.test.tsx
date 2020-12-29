@@ -31,6 +31,8 @@ const unreadNotificationState: NotificationsState = {
   dispatch: jest.fn(),
   rememberScrollPosition: jest.fn(),
   scrollPosition: 0,
+  notificationWithOpenSubmenuId: null,
+  setNotificationWithOpenSubmenuId: jest.fn(),
 }
 
 const readNotificationState: NotificationsState = {

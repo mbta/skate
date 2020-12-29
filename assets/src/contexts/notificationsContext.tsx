@@ -1,4 +1,11 @@
-import React, { createContext, ReactElement, useEffect, useState } from "react"
+import React, {
+  createContext,
+  Dispatch,
+  ReactElement,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react"
 import useCurrentTime from "../hooks/useCurrentTime"
 import useInterval from "../hooks/useInterval"
 import { useNotifications } from "../hooks/useNotifications"
@@ -9,7 +16,7 @@ import useNotificationsReducer, {
   setNotifications,
   State as ReducerState,
 } from "../hooks/useNotificationsReducer"
-import { NotificationState } from "../realtime.d"
+import { NotificationId, NotificationState } from "../realtime.d"
 
 export const otherNotificationReadState = (state: NotificationState) => {
   if (state === "unread") {
@@ -25,19 +32,25 @@ export interface State extends ReducerState {
   dispatch: (action: Action) => void
   rememberScrollPosition: (scrollPosition: number) => void
   scrollPosition: number
+  notificationWithOpenSubmenuId: NotificationId | null
+  setNotificationWithOpenSubmenuId: Dispatch<
+    SetStateAction<NotificationId | null>
+  >
 }
 
 // Don't worry about covering the no-ops below
 /* istanbul ignore next */
+// tslint:disable: no-empty
 export const NotificationsContext = createContext<State>({
   notifications: [],
   showLatestNotification: false,
-  // tslint:disable-next-line: no-empty
   dispatch: () => {},
-  // tslint:disable-next-line: no-empty
   rememberScrollPosition: () => {},
   scrollPosition: 0,
+  notificationWithOpenSubmenuId: null,
+  setNotificationWithOpenSubmenuId: () => {},
 })
+// tslint:enable: no-empty
 
 export const NotificationsProvider = ({
   children,
@@ -63,6 +76,11 @@ export const NotificationsProvider = ({
 
   useInterval(() => dispatch(expireNotifications(now)), 10000)
 
+  const [
+    notificationWithOpenSubmenuId,
+    setNotificationWithOpenSubmenuId,
+  ] = useState<NotificationId | null>(null)
+
   return (
     <NotificationsContext.Provider
       value={{
@@ -71,6 +89,8 @@ export const NotificationsProvider = ({
         dispatch,
         rememberScrollPosition: setScrollPosition,
         scrollPosition,
+        notificationWithOpenSubmenuId,
+        setNotificationWithOpenSubmenuId,
       }}
     >
       {children}
