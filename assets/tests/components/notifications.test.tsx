@@ -73,6 +73,8 @@ describe("Notification", () => {
             dispatch: jest.fn(),
             rememberScrollPosition: jest.fn(),
             scrollPosition: 0,
+            notificationWithOpenSubmenuId: null,
+            setNotificationWithOpenSubmenuId: jest.fn(),
           }}
         >
           <Notifications />
@@ -92,6 +94,8 @@ describe("Notification", () => {
           dispatch,
           rememberScrollPosition: jest.fn(),
           scrollPosition: 0,
+          notificationWithOpenSubmenuId: null,
+          setNotificationWithOpenSubmenuId: jest.fn(),
         }}
       >
         <Notifications />
@@ -296,6 +300,8 @@ describe("NotificationCard", () => {
             dispatch: mockNotificationsDispatch,
             rememberScrollPosition: jest.fn(),
             scrollPosition: 0,
+            notificationWithOpenSubmenuId: null,
+            setNotificationWithOpenSubmenuId: jest.fn(),
           }}
         >
           <Notifications />

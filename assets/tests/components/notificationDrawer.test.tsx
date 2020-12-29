@@ -44,6 +44,8 @@ describe("NotificationDrawer", () => {
             dispatch: jest.fn(),
             rememberScrollPosition: jest.fn(),
             scrollPosition: 0,
+            notificationWithOpenSubmenuId: null,
+            setNotificationWithOpenSubmenuId: jest.fn(),
           }}
         >
           <NotificationDrawer />
@@ -64,6 +66,8 @@ describe("NotificationDrawer", () => {
             dispatch: jest.fn(),
             rememberScrollPosition: jest.fn(),
             scrollPosition: 0,
+            notificationWithOpenSubmenuId: null,
+            setNotificationWithOpenSubmenuId: jest.fn(),
           }}
         >
           <NotificationDrawer />
@@ -92,6 +96,8 @@ describe("NotificationDrawer", () => {
             dispatch: mockNotificationsDispatch,
             rememberScrollPosition: jest.fn(),
             scrollPosition: 0,
+            notificationWithOpenSubmenuId: null,
+            setNotificationWithOpenSubmenuId: jest.fn(),
           }}
         >
           <NotificationDrawer />
@@ -118,6 +124,8 @@ describe("NotificationDrawer", () => {
             dispatch: notificationsDispatch,
             rememberScrollPosition: jest.fn(),
             scrollPosition: 0,
+            notificationWithOpenSubmenuId: null,
+            setNotificationWithOpenSubmenuId: jest.fn(),
           }}
         >
           <NotificationDrawer />
@@ -133,31 +141,31 @@ describe("NotificationDrawer", () => {
   })
 
   test("can make unread to read and vice versa", () => {
-    const stateDispatch = jest.fn()
     const notificationsDispatch = jest.fn()
 
-    const wrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={stateDispatch}>
-        <NotificationsContext.Provider
-          value={{
-            notifications: [notification, readNotification],
-            showLatestNotification: true,
-            dispatch: notificationsDispatch,
-            rememberScrollPosition: jest.fn(),
-            scrollPosition: 0,
-          }}
-        >
+    const unreadProviderValue = {
+      notifications: [notification, readNotification],
+      showLatestNotification: true,
+      dispatch: notificationsDispatch,
+      rememberScrollPosition: jest.fn(),
+      scrollPosition: 0,
+      notificationWithOpenSubmenuId: notification.id,
+      setNotificationWithOpenSubmenuId: jest.fn(),
+    }
+    const readProviderValue = {
+      ...unreadProviderValue,
+      notificationWithOpenSubmenuId: readNotification.id,
+    }
+
+    const unreadWrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+        <NotificationsContext.Provider value={unreadProviderValue}>
           <NotificationDrawer />
         </NotificationsContext.Provider>
       </StateDispatchProvider>
     )
 
-    wrapper
-      .find(
-        ".m-notification-drawer__card--unread .m-notification-drawer__submenu-icon-anchor"
-      )
-      .simulate("click")
-    wrapper
+    unreadWrapper
       .find(
         ".m-notification-drawer__card--unread " +
           ".m-notification-drawer__submenu " +
@@ -169,12 +177,20 @@ describe("NotificationDrawer", () => {
       toggleReadState(notification)
     )
 
-    wrapper
+    const readWrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+        <NotificationsContext.Provider value={readProviderValue}>
+          <NotificationDrawer />
+        </NotificationsContext.Provider>
+      </StateDispatchProvider>
+    )
+
+    readWrapper
       .find(
         ".m-notification-drawer__card--read .m-notification-drawer__submenu-icon-anchor"
       )
       .simulate("click")
-    wrapper
+    readWrapper
       .find(
         ".m-notification-drawer__card--read " +
           ".m-notification-drawer__submenu " +
@@ -200,6 +216,8 @@ describe("NotificationDrawer", () => {
             dispatch: notificationsDispatch,
             rememberScrollPosition: jest.fn(),
             scrollPosition: 0,
+            notificationWithOpenSubmenuId: notification.id,
+            setNotificationWithOpenSubmenuId: jest.fn(),
           }}
         >
           <NotificationDrawer />
@@ -235,6 +253,8 @@ describe("NotificationDrawer", () => {
             dispatch: jest.fn(),
             rememberScrollPosition,
             scrollPosition: 123,
+            notificationWithOpenSubmenuId: null,
+            setNotificationWithOpenSubmenuId: jest.fn(),
           }}
         >
           <NotificationDrawer />
@@ -244,6 +264,68 @@ describe("NotificationDrawer", () => {
     expect(rememberScrollPosition).not.toHaveBeenCalled()
     wrapper.unmount()
     expect(rememberScrollPosition).toHaveBeenCalledWith(123)
+  })
+
+  test("opening one submenu closes any other open one", () => {
+    const setNotificationWithOpenSubmenuId = jest.fn()
+
+    const unreadProviderValue = {
+      notifications: [notification, readNotification],
+      showLatestNotification: true,
+      dispatch: jest.fn(),
+      rememberScrollPosition: jest.fn(),
+      scrollPosition: 0,
+      notificationWithOpenSubmenuId: notification.id,
+      setNotificationWithOpenSubmenuId,
+    }
+
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+        <NotificationsContext.Provider value={unreadProviderValue}>
+          <NotificationDrawer />
+        </NotificationsContext.Provider>
+      </StateDispatchProvider>
+    )
+
+    wrapper
+      .find(
+        ".m-notification-drawer__card--read .m-notification-drawer__submenu-icon"
+      )
+      .first()
+      .simulate("click")
+    expect(setNotificationWithOpenSubmenuId).toHaveBeenCalledWith(
+      readNotification.id
+    )
+  })
+
+  test("submenu can be closed", () => {
+    const setNotificationWithOpenSubmenuId = jest.fn()
+
+    const unreadProviderValue = {
+      notifications: [notification],
+      showLatestNotification: true,
+      dispatch: jest.fn(),
+      rememberScrollPosition: jest.fn(),
+      scrollPosition: 0,
+      notificationWithOpenSubmenuId: notification.id,
+      setNotificationWithOpenSubmenuId,
+    }
+
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+        <NotificationsContext.Provider value={unreadProviderValue}>
+          <NotificationDrawer />
+        </NotificationsContext.Provider>
+      </StateDispatchProvider>
+    )
+
+    wrapper
+      .find(
+        ".m-notification-drawer__card--unread .m-notification-drawer__submenu-icon"
+      )
+      .first()
+      .simulate("click")
+    expect(setNotificationWithOpenSubmenuId).toHaveBeenCalledWith(null)
   })
 })
 
