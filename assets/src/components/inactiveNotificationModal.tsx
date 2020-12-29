@@ -7,20 +7,13 @@ import { title } from "./notificationContent"
 
 const InactiveNotificationModal = ({
   notification,
-  hideNotification,
 }: {
   notification: Notification
-  hideNotification: () => void
 }) => {
   const [, dispatch] = useContext(StateDispatchContext)
 
   const closeModal = () => {
     dispatch(setNotification(undefined))
-  }
-
-  const hideAndClose = () => {
-    hideNotification()
-    closeModal()
   }
 
   return (
@@ -34,20 +27,6 @@ const InactiveNotificationModal = ({
         </div>
         <div className="m-inactive-notification-modal__body">
           {bodyCopy(notification)}
-        </div>
-        <div className="m-inactive-notification-modal__buttons">
-          <button
-            className="m-inactive-notification-modal__keep-button"
-            onClick={closeModal}
-          >
-            Keep
-          </button>
-          <button
-            className="m-inactive-notification-modal__discard-button"
-            onClick={hideAndClose}
-          >
-            Remove
-          </button>
         </div>
       </div>
       <div className="c-modal-overlay" />

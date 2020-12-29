@@ -32,22 +32,6 @@ Array [
     >
       Runs 111, 222 are not currently active in Skate. This notification may no longer be relevant.
     </div>
-    <div
-      className="m-inactive-notification-modal__buttons"
-    >
-      <button
-        className="m-inactive-notification-modal__keep-button"
-        onClick={[Function]}
-      >
-        Keep
-      </button>
-      <button
-        className="m-inactive-notification-modal__discard-button"
-        onClick={[Function]}
-      >
-        Remove
-      </button>
-    </div>
   </div>,
   <div
     className="c-modal-overlay"
@@ -86,22 +70,6 @@ Array [
       className="m-inactive-notification-modal__body"
     >
       Runs 111, 222 are upcoming and not yet active in Skate. Please check back later to see details for these runs.
-    </div>
-    <div
-      className="m-inactive-notification-modal__buttons"
-    >
-      <button
-        className="m-inactive-notification-modal__keep-button"
-        onClick={[Function]}
-      >
-        Keep
-      </button>
-      <button
-        className="m-inactive-notification-modal__discard-button"
-        onClick={[Function]}
-      >
-        Remove
-      </button>
     </div>
   </div>,
   <div
@@ -142,22 +110,6 @@ Array [
     >
       No runs associated with this notification are currently active in Skate. This notification may no longer be relevant.
     </div>
-    <div
-      className="m-inactive-notification-modal__buttons"
-    >
-      <button
-        className="m-inactive-notification-modal__keep-button"
-        onClick={[Function]}
-      >
-        Keep
-      </button>
-      <button
-        className="m-inactive-notification-modal__discard-button"
-        onClick={[Function]}
-      >
-        Remove
-      </button>
-    </div>
   </div>,
   <div
     className="c-modal-overlay"
@@ -197,22 +149,6 @@ Array [
     >
       Run 111 is not currently active in Skate. This notification may no longer be relevant.
     </div>
-    <div
-      className="m-inactive-notification-modal__buttons"
-    >
-      <button
-        className="m-inactive-notification-modal__keep-button"
-        onClick={[Function]}
-      >
-        Keep
-      </button>
-      <button
-        className="m-inactive-notification-modal__discard-button"
-        onClick={[Function]}
-      >
-        Remove
-      </button>
-    </div>
   </div>,
   <div
     className="c-modal-overlay"
@@ -251,22 +187,6 @@ Array [
       className="m-inactive-notification-modal__body"
     >
       Run 111 is upcoming and not yet active in Skate. Please check back later to see details for this run.
-    </div>
-    <div
-      className="m-inactive-notification-modal__buttons"
-    >
-      <button
-        className="m-inactive-notification-modal__keep-button"
-        onClick={[Function]}
-      >
-        Keep
-      </button>
-      <button
-        className="m-inactive-notification-modal__discard-button"
-        onClick={[Function]}
-      >
-        Remove
-      </button>
     </div>
   </div>,
   <div
