@@ -8,7 +8,6 @@ import {
   refreshIcon,
   searchIcon,
 } from "../helpers/icon"
-import featureIsEnabled from "../laboratoryFeatures"
 import { reload } from "../models/browser"
 import { toggleNotificationDrawer } from "../state"
 import NotificationBellIcon from "./notificationBellIcon"
@@ -95,16 +94,14 @@ const TabBar = ({
       </ul>
 
       <div className="m-tab-bar__bottom-buttons">
-        {featureIsEnabled("notifications_drawer") ? (
-          <button
-            className="m-tab-bar__notifications"
-            onClick={() => {
-              dispatch(toggleNotificationDrawer())
-            }}
-          >
-            <NotificationBellIcon extraClasses={["m-tab-bar__icon"]} />
-          </button>
-        ) : null}
+        <button
+          className="m-tab-bar__notifications"
+          onClick={() => {
+            dispatch(toggleNotificationDrawer())
+          }}
+        >
+          <NotificationBellIcon extraClasses={["m-tab-bar__icon"]} />
+        </button>
         <button className="m-tab-bar__drift" onClick={openDrift}>
           {driftIcon}
         </button>
