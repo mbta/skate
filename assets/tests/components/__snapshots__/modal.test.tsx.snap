@@ -32,22 +32,6 @@ Array [
     >
       No runs associated with this notification are currently active in Skate. This notification may no longer be relevant.
     </div>
-    <div
-      className="m-inactive-notification-modal__buttons"
-    >
-      <button
-        className="m-inactive-notification-modal__keep-button"
-        onClick={[Function]}
-      >
-        Keep
-      </button>
-      <button
-        className="m-inactive-notification-modal__discard-button"
-        onClick={[Function]}
-      >
-        Remove
-      </button>
-    </div>
   </div>,
   <div
     className="c-modal-overlay"

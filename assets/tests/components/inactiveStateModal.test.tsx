@@ -1,4 +1,3 @@
-import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import InactiveNotificationModal from "../../src/components/inactiveNotificationModal"
@@ -22,16 +21,10 @@ describe("InactiveNotificationModal", () => {
     ...notification,
     startTime: new Date("20200-10-05"),
   }
-  const hideNotification = jest.fn()
 
   test("renders for a notification with no runs", () => {
     const tree = renderer
-      .create(
-        <InactiveNotificationModal
-          notification={notification}
-          hideNotification={hideNotification}
-        />
-      )
+      .create(<InactiveNotificationModal notification={notification} />)
       .toJSON()
     expect(tree).toMatchSnapshot()
   })
@@ -41,7 +34,6 @@ describe("InactiveNotificationModal", () => {
       .create(
         <InactiveNotificationModal
           notification={{ ...notification, runIds: ["111"] }}
-          hideNotification={hideNotification}
         />
       )
       .toJSON()
@@ -53,7 +45,6 @@ describe("InactiveNotificationModal", () => {
       .create(
         <InactiveNotificationModal
           notification={{ ...notification, runIds: ["111", "222"] }}
-          hideNotification={hideNotification}
         />
       )
       .toJSON()
@@ -65,7 +56,6 @@ describe("InactiveNotificationModal", () => {
       .create(
         <InactiveNotificationModal
           notification={{ ...futureNotification, runIds: ["111"] }}
-          hideNotification={hideNotification}
         />
       )
       .toJSON()
@@ -77,40 +67,9 @@ describe("InactiveNotificationModal", () => {
       .create(
         <InactiveNotificationModal
           notification={{ ...futureNotification, runIds: ["111", "222"] }}
-          hideNotification={hideNotification}
         />
       )
       .toJSON()
     expect(tree).toMatchSnapshot()
-  })
-
-  test("allows removing the modal", () => {
-    const wrapper = mount(
-      <InactiveNotificationModal
-        notification={notification}
-        hideNotification={hideNotification}
-      />
-    )
-
-    wrapper
-      .find(".m-inactive-notification-modal__discard-button")
-      .first()
-      .simulate("click")
-    expect(hideNotification).toHaveBeenCalled()
-  })
-
-  test("allows closing the modal", () => {
-    const wrapper = mount(
-      <InactiveNotificationModal
-        notification={notification}
-        hideNotification={hideNotification}
-      />
-    )
-
-    wrapper
-      .find(".m-inactive-notification-modal__keep-button")
-      .first()
-      .simulate("click")
-    expect(hideNotification).not.toHaveBeenCalled()
   })
 })
