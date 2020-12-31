@@ -1,11 +1,4 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react"
+import React, { useContext, useLayoutEffect, useRef, useState } from "react"
 import {
   NotificationsContext,
   otherNotificationReadState,
@@ -130,14 +123,10 @@ const EmptyMessage = () => (
   </>
 )
 
-const EllipsisSubmenu = ({
-  notification,
-  setShowSubmenu,
-}: {
-  notification: Notification
-  setShowSubmenu: Dispatch<SetStateAction<boolean>>
-}) => {
-  const { dispatch } = useContext(NotificationsContext)
+const EllipsisSubmenu = ({ notification }: { notification: Notification }) => {
+  const { dispatch, setNotificationWithOpenSubmenuId } = useContext(
+    NotificationsContext
+  )
   const otherReadState = otherNotificationReadState(notification.state)
   return (
     <div
@@ -148,7 +137,7 @@ const EllipsisSubmenu = ({
         onClick={(event) => {
           event.stopPropagation()
           dispatch(toggleReadState(notification))
-          setShowSubmenu(false)
+          setNotificationWithOpenSubmenuId(null)
         }}
         className={`m-notification-drawer__submenu-mark-${otherReadState}`}
       >
@@ -167,8 +156,18 @@ const NotificationCard = ({
   currentTime: Date
   openVPPForCurrentVehicle: (notification: Notification) => void
 }) => {
-  const [showSubmenu, setShowSubmenu] = useState<boolean>(false)
-  const toggleShowSubmenu = () => setShowSubmenu(!showSubmenu)
+  const {
+    notificationWithOpenSubmenuId,
+    setNotificationWithOpenSubmenuId,
+  } = useContext(NotificationsContext)
+  const showSubmenu = notification.id === notificationWithOpenSubmenuId
+  const toggleShowSubmenu = () => {
+    if (showSubmenu) {
+      setNotificationWithOpenSubmenuId(null)
+    } else {
+      setNotificationWithOpenSubmenuId(notification.id)
+    }
+  }
 
   return (
     <button
@@ -179,12 +178,7 @@ const NotificationCard = ({
         notification={notification}
         currentTime={currentTime}
       />
-      {showSubmenu && (
-        <EllipsisSubmenu
-          notification={notification}
-          setShowSubmenu={setShowSubmenu}
-        />
-      )}
+      {showSubmenu && <EllipsisSubmenu notification={notification} />}
       <a
         className="m-notification-drawer__submenu-icon-anchor"
         onClick={(event) => {
