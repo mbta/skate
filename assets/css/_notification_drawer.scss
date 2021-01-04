@@ -112,6 +112,16 @@
   position: absolute;
   right: 1rem;
 
+  // expand the clickable area of the ellipsis icon
+  &::after {
+    content: "";
+    position: absolute;
+    top: -0.5rem;
+    bottom: -0.5rem;
+    left: -1rem;
+    right: -1rem;
+  }
+
   svg {
     fill: $color-component-medium;
     height: 1rem;
