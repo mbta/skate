@@ -94,12 +94,14 @@ const Content = () => {
         <span className="m-notification-drawer__n-unread">
           {unreadNotificationsCount} new
         </span>
-        <a
-          className="m-notification-drawer__mark-all-read-link"
-          onClick={() => notificationsDispatch(markAllAsRead())}
-        >
-          Mark all as read
-        </a>
+        {unreadNotificationsCount > 0 ? (
+          <a
+            className="m-notification-drawer__mark-all-read-link"
+            onClick={() => notificationsDispatch(markAllAsRead())}
+          >
+            Mark all as read
+          </a>
+        ) : null}
       </div>
       {notifications.map((notification) => (
         <NotificationCard

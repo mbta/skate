@@ -140,6 +140,33 @@ describe("NotificationDrawer", () => {
     expect(notificationsDispatch).toHaveBeenCalledWith(markAllAsRead())
   })
 
+  test("no make all read link when there are no unread notifications", () => {
+    const stateDispatch = jest.fn()
+    const notificationsDispatch = jest.fn()
+
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={stateDispatch}>
+        <NotificationsContext.Provider
+          value={{
+            notifications: [readNotification],
+            showLatestNotification: true,
+            dispatch: notificationsDispatch,
+            rememberScrollPosition: jest.fn(),
+            scrollPosition: 0,
+            notificationWithOpenSubmenuId: null,
+            setNotificationWithOpenSubmenuId: jest.fn(),
+          }}
+        >
+          <NotificationDrawer />
+        </NotificationsContext.Provider>
+      </StateDispatchProvider>
+    )
+
+    expect(
+      wrapper.exists(".m-notification-drawer__mark-all-read-link")
+    ).toBeFalsy()
+  })
+
   test("can make unread to read and vice versa", () => {
     const notificationsDispatch = jest.fn()
 
