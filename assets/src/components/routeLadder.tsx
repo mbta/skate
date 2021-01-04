@@ -130,7 +130,14 @@ const RouteLadder = ({
   }
 
   const byPosition: VehiclesByPosition = groupByPosition(
-    vehiclesAndGhosts,
+    vehiclesAndGhosts?.filter((vehicleOrGhost) => {
+      const nonRevenueOffCourse =
+        isVehicle(vehicleOrGhost) &&
+        vehicleOrGhost.isOffCourse &&
+        !vehicleOrGhost.isRevenue
+
+      return !nonRevenueOffCourse
+    }),
     route.id,
     ladderDirection
   )

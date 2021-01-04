@@ -22,7 +22,6 @@ defmodule Realtime.VehicleTest do
     operator_logon_time: 1_558_364_010,
     run_id: "138-1038",
     headway_secs: 900,
-    is_nonrevenue: false,
     layover_departure_time: nil,
     speed: 0.0,
     current_status: :IN_TRANSIT_TO,
@@ -47,7 +46,8 @@ defmodule Realtime.VehicleTest do
           %{id: "busloc", value: "busloc-route-id"}
         ]
       }
-    ]
+    ],
+    revenue: true
   }
 
   describe "from_vehicle_position" do
@@ -134,6 +134,7 @@ defmodule Realtime.VehicleTest do
                is_shuttle: false,
                is_overload: false,
                is_off_course: false,
+               is_revenue: true,
                layover_departure_time: nil,
                block_is_active: true,
                sources: %MapSet{},
@@ -604,6 +605,7 @@ defmodule Realtime.VehicleTest do
         is_shuttle: false,
         is_overload: false,
         is_off_course: false,
+        is_revenue: true,
         layover_departure_time: nil,
         block_is_active: true,
         sources: MapSet.new(["swiftly", "busloc"]),

@@ -122,7 +122,8 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
           "id" => "G-10098",
           "label" => "3823-3605",
           "license_plate" => nil
-        }
+        },
+        "revenue" => false
       }
 
       assert [tu, vp] = GTFSRealtimeEnhanced.decode_vehicle(input)
@@ -162,7 +163,8 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
                    capacity: 18,
                    occupancy_percentage: 0.67,
                    occupancy_status: "FEW_SEATS_AVAILABLE"
-                 }
+                 },
+                 revenue: false
                )
     end
   end

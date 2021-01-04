@@ -51,6 +51,7 @@ describe("useVehicles", () => {
       is_shuttle: false,
       is_overload: false,
       is_off_course: false,
+      is_revenue: true,
       layover_departure_time: null,
       label: "v1-label",
       latitude: 0,
@@ -128,6 +129,7 @@ describe("useVehicles", () => {
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,
+      isRevenue: true,
       layoverDepartureTime: null,
       dataDiscrepancies: [
         {
@@ -232,6 +234,7 @@ describe("useVehicles", () => {
       is_shuttle: false,
       is_overload: false,
       is_off_course: true,
+      is_revenue: true,
       layover_departure_time: null,
       label: "v1-label",
       latitude: 0,

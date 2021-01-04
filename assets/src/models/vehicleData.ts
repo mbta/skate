@@ -49,6 +49,7 @@ export interface VehicleData {
   is_shuttle: boolean
   is_overload: boolean
   is_off_course: boolean
+  is_revenue: boolean
   layover_departure_time: number | null
   sources: string[]
   data_discrepancies: DataDiscrepancyData[]
@@ -149,6 +150,7 @@ export const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
   isShuttle: vehicleData.is_shuttle,
   isOverload: vehicleData.is_overload,
   isOffCourse: vehicleData.is_off_course,
+  isRevenue: vehicleData.is_revenue,
   layoverDepartureTime: vehicleData.layover_departure_time,
   dataDiscrepancies: dataDiscrepanciesFromData(vehicleData.data_discrepancies),
   stopStatus: vehicleStopStatusFromData(vehicleData.stop_status),

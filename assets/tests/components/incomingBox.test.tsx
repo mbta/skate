@@ -49,6 +49,7 @@ describe("IncomingBox", () => {
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,
+      isRevenue: true,
       layoverDepartureTime: 1576091880,
       dataDiscrepancies: [],
       stopStatus: {
@@ -149,6 +150,7 @@ describe("IncomingBox", () => {
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,
+      isRevenue: true,
       layoverDepartureTime: 1576091880,
       dataDiscrepancies: [],
       stopStatus: {
@@ -223,6 +225,7 @@ describe("IncomingBox", () => {
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,
+      isRevenue: true,
       layoverDepartureTime: 1576091880,
       dataDiscrepancies: [],
       stopStatus: {
@@ -294,6 +297,7 @@ describe("IncomingBox", () => {
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,
+      isRevenue: true,
       layoverDepartureTime: null,
       dataDiscrepancies: [],
       stopStatus: {

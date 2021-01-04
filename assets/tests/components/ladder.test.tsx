@@ -54,6 +54,7 @@ describe("ladder", () => {
         isShuttle: false,
         isOverload: false,
         isOffCourse: false,
+        isRevenue: true,
         layoverDepartureTime: null,
         dataDiscrepancies: [],
         stopStatus: {
@@ -95,6 +96,7 @@ describe("ladder", () => {
         isShuttle: false,
         isOverload: false,
         isOffCourse: false,
+        isRevenue: true,
         layoverDepartureTime: null,
         dataDiscrepancies: [],
         stopStatus: {
@@ -148,6 +150,7 @@ describe("ladder", () => {
         isShuttle: false,
         isOverload: false,
         isOffCourse: false,
+        isRevenue: true,
         layoverDepartureTime: null,
         dataDiscrepancies: [],
         stopStatus: {
@@ -251,6 +254,7 @@ describe("ladder", () => {
         isShuttle: false,
         isOverload: false,
         isOffCourse: false,
+        isRevenue: true,
         layoverDepartureTime: null,
         dataDiscrepancies: [],
         stopStatus: {
@@ -327,6 +331,7 @@ describe("ladder", () => {
         isShuttle: false,
         isOverload: false,
         isOffCourse: false,
+        isRevenue: true,
         layoverDepartureTime: null,
         dataDiscrepancies: [],
         stopStatus: {
@@ -368,6 +373,7 @@ describe("ladder", () => {
         isShuttle: false,
         isOverload: false,
         isOffCourse: false,
+        isRevenue: true,
         layoverDepartureTime: null,
         dataDiscrepancies: [],
         stopStatus: {
@@ -472,6 +478,7 @@ describe("ladder", () => {
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,
+      isRevenue: true,
       layoverDepartureTime: null,
       dataDiscrepancies: [],
       stopStatus: {
@@ -579,6 +586,7 @@ describe("ladder", () => {
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,
+      isRevenue: true,
       layoverDepartureTime: null,
       dataDiscrepancies: [],
       stopStatus: {
@@ -682,6 +690,7 @@ describe("ladder", () => {
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,
+      isRevenue: true,
       layoverDepartureTime: null,
       dataDiscrepancies: [],
       stopStatus: {
@@ -753,6 +762,7 @@ describe("ladder", () => {
         isShuttle: false,
         isOverload: false,
         isOffCourse: false,
+        isRevenue: true,
         layoverDepartureTime: null,
         dataDiscrepancies: [],
         stopStatus: {
@@ -818,6 +828,7 @@ describe("ladder", () => {
         isShuttle: false,
         isOverload: false,
         isOffCourse: false,
+        isRevenue: true,
         layoverDepartureTime: null,
         dataDiscrepancies: [],
         stopStatus: {
@@ -889,6 +900,7 @@ describe("ladder", () => {
       isShuttle: false,
       isOverload: false,
       isOffCourse: true,
+      isRevenue: true,
       layoverDepartureTime: null,
       dataDiscrepancies: [
         {
@@ -985,6 +997,7 @@ describe("ladder", () => {
         isShuttle: false,
         isOverload: true,
         isOffCourse: false,
+        isRevenue: true,
         layoverDepartureTime: null,
         dataDiscrepancies: [],
         stopStatus: {
@@ -1050,6 +1063,7 @@ describe("ladder", () => {
         isShuttle: false,
         isOverload: true,
         isOffCourse: false,
+        isRevenue: true,
         layoverDepartureTime: 1,
         dataDiscrepancies: [],
         stopStatus: {
@@ -1118,6 +1132,7 @@ describe("ladder", () => {
         isShuttle: false,
         isOverload: false,
         isOffCourse: false,
+        isRevenue: true,
         layoverDepartureTime: 1,
         dataDiscrepancies: [],
         stopStatus: {

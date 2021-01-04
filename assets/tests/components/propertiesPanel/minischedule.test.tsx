@@ -187,6 +187,7 @@ const vehicle: Vehicle = {
   isShuttle: false,
   isOverload: false,
   isOffCourse: false,
+  isRevenue: true,
   layoverDepartureTime: null,
   dataDiscrepancies: [],
   stopStatus: { stopId: "93", stopName: "Massachusetts Ave @ Newbury St" },

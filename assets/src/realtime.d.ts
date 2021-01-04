@@ -115,6 +115,7 @@ export interface Vehicle {
   isShuttle: boolean
   isOverload: boolean
   isOffCourse: boolean
+  isRevenue: boolean
   layoverDepartureTime: number | null
   dataDiscrepancies: DataDiscrepancy[]
   stopStatus: VehicleStopStatus

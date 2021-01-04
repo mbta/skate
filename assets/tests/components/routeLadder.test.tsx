@@ -49,6 +49,7 @@ const vehicles: Vehicle[] = [
     isShuttle: false,
     isOverload: false,
     isOffCourse: false,
+    isRevenue: true,
     layoverDepartureTime: null,
     dataDiscrepancies: [],
     stopStatus: {
@@ -90,6 +91,7 @@ const vehicles: Vehicle[] = [
     isShuttle: false,
     isOverload: false,
     isOffCourse: false,
+    isRevenue: true,
     layoverDepartureTime: null,
     dataDiscrepancies: [],
     stopStatus: {
@@ -316,6 +318,43 @@ describe("routeLadder", () => {
             ]}
           />
         </StateDispatchProvider>
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("doesn't render a bus that's off-course but nonrevenue", () => {
+    const route: Route = {
+      id: "28",
+      directionNames: { 0: "Outbound", 1: "Inbound" },
+      name: "28",
+    }
+
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    const [v1, v2] = vehicles
+    const tree = renderer
+      .create(
+        <RouteLadder
+          route={route}
+          selectedVehicleId={undefined}
+          timepoints={timepoints}
+          vehiclesAndGhosts={[
+            {
+              ...v1,
+            },
+            {
+              ...v2,
+              isOffCourse: true,
+              isRevenue: false,
+            },
+          ]}
+        />
       )
       .toJSON()
 
@@ -584,6 +623,7 @@ describe("routeLadder", () => {
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,
+      isRevenue: true,
       layoverDepartureTime: null,
       dataDiscrepancies: [],
       stopStatus: {

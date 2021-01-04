@@ -23,6 +23,7 @@ defmodule Realtime.ServerTest do
     is_shuttle: false,
     is_overload: false,
     is_off_course: false,
+    is_revenue: true,
     layover_departure_time: nil,
     block_is_active: true,
     sources: MapSet.new(["swiftly"]),
