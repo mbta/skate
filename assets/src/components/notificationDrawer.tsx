@@ -1,4 +1,10 @@
-import React, { useContext, useLayoutEffect, useRef, useState } from "react"
+import React, {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react"
 import {
   NotificationsContext,
   otherNotificationReadState,
@@ -127,10 +133,31 @@ const EllipsisSubmenu = ({ notification }: { notification: Notification }) => {
   const { dispatch, setNotificationWithOpenSubmenuId } = useContext(
     NotificationsContext
   )
+  const submenuRef = useRef<HTMLDivElement | null>(null)
   const otherReadState = otherNotificationReadState(notification.state)
+
+  useEffect(() => {
+    const closeOnClickOutside = (event: MouseEvent) => {
+      if (
+        submenuRef &&
+        submenuRef.current &&
+        !event.composedPath().includes(submenuRef.current)
+      ) {
+        setNotificationWithOpenSubmenuId(null)
+      }
+    }
+
+    document.addEventListener("mousedown", closeOnClickOutside)
+
+    return () => {
+      document.removeEventListener("mousedown", closeOnClickOutside)
+    }
+  }, [submenuRef])
+
   return (
     <div
       className="m-notification-drawer__submenu"
+      ref={submenuRef}
       onClick={(event) => event.stopPropagation()}
     >
       <a
