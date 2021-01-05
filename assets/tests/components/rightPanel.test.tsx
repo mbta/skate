@@ -3,9 +3,8 @@ import React from "react"
 import renderer from "react-test-renderer"
 import RightPanel from "../../src/components/rightPanel"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import { VehicleForNotificationProvider } from "../../src/contexts/vehicleForNotificationContext"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { Ghost, Notification, Vehicle } from "../../src/realtime"
+import { Ghost, Vehicle } from "../../src/realtime"
 import { initialState, State } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
 
@@ -44,49 +43,6 @@ describe("rightPanel", () => {
       </StateDispatchProvider>
     )
     expect(wrapper.html()).toContain(ghost.runId)
-  })
-
-  test("shows a vehicle from a selected notification", () => {
-    const notification: Notification = { runIds: ["run_id"] } as Notification
-    const state: State = { ...initialState, selectedNotification: notification }
-    const wrapper = mount(
-      <StateDispatchProvider state={state} dispatch={jest.fn()}>
-        <VehicleForNotificationProvider vehicleForNotification={vehicle}>
-          <RightPanel />
-        </VehicleForNotificationProvider>
-      </StateDispatchProvider>
-    )
-    expect(wrapper.html()).toContain(vehicle.runId)
-  })
-
-  test("if a vehicle from a notification is loading, show nothing", () => {
-    const notification: Notification = { runIds: ["run_id"] } as Notification
-    const state: State = { ...initialState, selectedNotification: notification }
-    const tree = renderer
-      .create(
-        <StateDispatchProvider state={state} dispatch={jest.fn()}>
-          <VehicleForNotificationProvider vehicleForNotification={undefined}>
-            <RightPanel />
-          </VehicleForNotificationProvider>
-        </StateDispatchProvider>
-      )
-      .toJSON()
-    expect(tree).toEqual(null)
-  })
-
-  test("if a vehicle from a notification failed to load, show nothing", () => {
-    const notification: Notification = { runIds: ["run_id"] } as Notification
-    const state: State = { ...initialState, selectedNotification: notification }
-    const tree = renderer
-      .create(
-        <StateDispatchProvider state={state} dispatch={jest.fn()}>
-          <VehicleForNotificationProvider vehicleForNotification={null}>
-            <RightPanel />
-          </VehicleForNotificationProvider>
-        </StateDispatchProvider>
-      )
-      .toJSON()
-    expect(tree).toEqual(null)
   })
 
   test("shows notification drawer", () => {
