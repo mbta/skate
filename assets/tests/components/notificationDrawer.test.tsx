@@ -327,6 +327,64 @@ describe("NotificationDrawer", () => {
       .simulate("click")
     expect(setNotificationWithOpenSubmenuId).toHaveBeenCalledWith(null)
   })
+
+  test("clicking away from submenu closes it", () => {
+    const eventMap: { [key: string]: (args: object) => void } = {}
+    const mockAddEventListener = jest.fn(
+      (event, callback) => (eventMap[event] = callback)
+    )
+    jest
+      .spyOn(document, "addEventListener")
+      .mockImplementation(mockAddEventListener)
+
+    const setNotificationWithOpenSubmenuId = jest.fn()
+    const unreadProviderValue = {
+      notifications: [notification],
+      showLatestNotification: true,
+      dispatch: jest.fn(),
+      rememberScrollPosition: jest.fn(),
+      scrollPosition: 0,
+      notificationWithOpenSubmenuId: notification.id,
+      setNotificationWithOpenSubmenuId,
+    }
+
+    mount(
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+        <NotificationsContext.Provider value={unreadProviderValue}>
+          <NotificationDrawer />
+        </NotificationsContext.Provider>
+      </StateDispatchProvider>
+    )
+
+    const composedPath = () => ["fake-selector", "other-fake-selector"]
+    eventMap.mousedown({ composedPath })
+    expect(setNotificationWithOpenSubmenuId).toHaveBeenCalledWith(null)
+  })
+
+  test("remove event listener on unmount", () => {
+    jest.spyOn(document, "removeEventListener")
+    const setNotificationWithOpenSubmenuId = jest.fn()
+    const unreadProviderValue = {
+      notifications: [notification],
+      showLatestNotification: true,
+      dispatch: jest.fn(),
+      rememberScrollPosition: jest.fn(),
+      scrollPosition: 0,
+      notificationWithOpenSubmenuId: notification.id,
+      setNotificationWithOpenSubmenuId,
+    }
+
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+        <NotificationsContext.Provider value={unreadProviderValue}>
+          <NotificationDrawer />
+        </NotificationsContext.Provider>
+      </StateDispatchProvider>
+    )
+    expect(document.removeEventListener).not.toHaveBeenCalled()
+    wrapper.unmount()
+    expect(document.removeEventListener).toHaveBeenCalled()
+  })
 })
 
 const notification: Notification = {
