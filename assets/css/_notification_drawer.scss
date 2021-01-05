@@ -20,6 +20,12 @@
   color: $color-font-light;
   display: flex;
   justify-content: space-between;
+  position: sticky;
+  position: -webkit-sticky;
+  // top: -1px prevents a visual glitch in Chrome desktop, where a sliver of
+  // the content that should be obscured by the title bar is visible above it
+  top: -1px;
+  z-index: 1002;
 
   .m-notification-bell-icon {
     flex: 0 1 auto;
