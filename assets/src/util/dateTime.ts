@@ -28,7 +28,9 @@ export const formattedTimeDiffUnderThreshold = (
   thresholdMinutes60: number
 ): string => {
   const diffSeconds = a.valueOf() / 1000 - b.valueOf() / 1000
-  return diffSeconds <= (thresholdMinutes60 * 60) ? formattedDuration(diffSeconds) : formattedTime(b)
+  return diffSeconds <= thresholdMinutes60 * 60
+    ? formattedDuration(diffSeconds)
+    : formattedTime(b)
 }
 
 /** Takes a time of day in seconds since midnight

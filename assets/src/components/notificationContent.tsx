@@ -17,7 +17,11 @@ export const NotificationContent = ({
           {title(notification.reason)}
         </div>
         <div className="m-notification-content__age">
-          {formattedTimeDiffUnderThreshold(currentTime, notification.createdAt, 60)}
+          {formattedTimeDiffUnderThreshold(
+            currentTime,
+            notification.createdAt,
+            60
+          )}
         </div>
       </div>
       <div className="m-notification-content__description">
