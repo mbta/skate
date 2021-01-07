@@ -3,6 +3,7 @@ import {
   formattedHoursMinutes,
   formattedTime,
   formattedTimeDiff,
+  formattedTimeDiffUnderThreshold,
   now,
   formattedScheduledTime,
 } from "../../src/util/dateTime"
@@ -56,6 +57,35 @@ describe("formattedTimeDiff", () => {
     const expected: string = "59 min"
 
     expect(formattedTimeDiff(a, b)).toEqual(expected)
+  })
+})
+
+describe("formattedTimeDiffUnderThreshold", () => {
+  test("returns formattedTime (absolute) if diff is greater than the threshold", () => {
+    const a: Date = new Date("Februrary 18, 2020 14:42")
+    const b: Date = new Date("Februrary 18, 2020 9:38")
+
+    const expected: string = "9:38 AM"
+
+    expect(formattedTimeDiffUnderThreshold(a, b, 60)).toEqual(expected)
+  })
+
+  test("returns a diff if diff is less than the threshold", () => {
+    const a: Date = new Date("Februrary 18, 2020 2:00")
+    const b: Date = new Date("Februrary 18, 2020 1:01")
+
+    const expected: string = "59 min"
+
+    expect(formattedTimeDiffUnderThreshold(a, b, 60)).toEqual(expected)
+  })
+
+  test("returns a diff if diff is equal to the threshold", () => {
+    const a: Date = new Date("Februrary 18, 2020 2:01")
+    const b: Date = new Date("Februrary 18, 2020 1:01")
+
+    const expected: string = "1 hr 0 min"
+
+    expect(formattedTimeDiffUnderThreshold(a, b, 60)).toEqual(expected)
   })
 })
 

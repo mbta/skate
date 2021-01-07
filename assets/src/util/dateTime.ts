@@ -19,6 +19,18 @@ export const formattedDuration = (duration: number): string => {
 export const formattedTimeDiff = (a: Date, b: Date): string =>
   formattedDuration(a.valueOf() / 1000 - b.valueOf() / 1000)
 
+/** Returns the difference if it's less than or equal to the threshold.
+    Returns b (formatted) if the difference is greater than the threshold.
+*/
+export const formattedTimeDiffUnderThreshold = (
+  a: Date,
+  b: Date,
+  thresholdMinutes60: number
+): string => {
+  const diffSeconds = a.valueOf() / 1000 - b.valueOf() / 1000
+  return diffSeconds <= (thresholdMinutes60 * 60) ? formattedDuration(diffSeconds) : formattedTime(b)
+}
+
 /** Takes a time of day in seconds since midnight
  */
 export const formattedScheduledTime = (time: number): string => {
