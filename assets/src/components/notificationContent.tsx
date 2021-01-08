@@ -1,6 +1,6 @@
 import React from "react"
 import { Notification, NotificationReason } from "../realtime.d"
-import { formattedTimeDiff } from "../util/dateTime"
+import { formattedTimeDiffUnderThreshold } from "../util/dateTime"
 import PropertiesList from "./propertiesList"
 
 export const NotificationContent = ({
@@ -17,7 +17,11 @@ export const NotificationContent = ({
           {title(notification.reason)}
         </div>
         <div className="m-notification-content__age">
-          {formattedTimeDiff(currentTime, notification.createdAt)}
+          {formattedTimeDiffUnderThreshold(
+            currentTime,
+            notification.createdAt,
+            60
+          )}
         </div>
       </div>
       <div className="m-notification-content__description">
