@@ -14,9 +14,7 @@ defmodule Notifications.Supervisor do
   def init(:ok) do
     children = [
       {Registry, keys: :duplicate, name: registry_name()},
-      {Notifications.NotificationServer, name: Notifications.NotificationServer.default_name()},
-      {Notifications.BlockWaiverBackfiller,
-       name: Notifications.BlockWaiverBackfiller.default_name()}
+      {Notifications.NotificationServer, name: Notifications.NotificationServer.default_name()}
     ]
 
     Supervisor.init(children, strategy: :one_for_all)
