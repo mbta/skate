@@ -9,7 +9,7 @@ defmodule Notifications.BlockWaiverBackfiller do
   @batch_size 5
 
   @spec default_name() :: GenServer.name()
-  def default_name(), do: Notifications.NotificationServer
+  def default_name(), do: Notifications.BlockWaiverBackfiller
 
   @spec start_link(Keyword.t()) :: GenServer.on_start()
   def start_link(_opts \\ []) do
