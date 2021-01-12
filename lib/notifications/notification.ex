@@ -11,6 +11,7 @@ defmodule Notifications.Notification do
   alias Skate.Settings.User
   alias Notifications.NotificationReason
   alias Notifications.NotificationState
+  alias Notifications.Db.BlockWaiver, as: DbBlockWaiver
   alias Notifications.Db.Notification, as: DbNotification
   alias Notifications.Db.NotificationUser, as: DbNotificationUser
 
@@ -80,6 +81,7 @@ defmodule Notifications.Notification do
         db_record =
           if db_record.id do
             notification_with_id = %__MODULE__{notification_without_id | id: db_record.id}
+            duplicate_to_block_waiver(db_record)
             log_creation(notification_with_id)
             link_notification_to_users(notification_with_id)
             db_record
@@ -123,6 +125,20 @@ defmodule Notifications.Notification do
       )
 
     Skate.Repo.update_all(query, set: [state: read_state])
+  end
+
+  def duplicate_to_block_waiver(db_notification) do
+    new_waiver_params =
+      Map.from_struct(db_notification)
+      |> Map.put(:id, nil)
+
+    waiver =
+      DbBlockWaiver.changeset(%DbBlockWaiver{}, new_waiver_params)
+      |> Skate.Repo.insert!()
+
+    db_notification
+    |> DbNotification.changeset(%{block_waiver_id: waiver.id})
+    |> Skate.Repo.update()
   end
 
   defp log_creation(notification) do

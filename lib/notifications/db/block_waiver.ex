@@ -1,15 +1,11 @@
-defmodule Notifications.Db.Notification do
+defmodule Notifications.Db.BlockWaiver do
   use Ecto.Schema
   import Ecto.Changeset
-
   alias Notifications.NotificationReason
-  alias Notifications.Db.BlockWaiver, as: DbBlockWaiver
-  alias Notifications.Db.NotificationUser, as: DbNotificationUser
-  alias Skate.Settings.Db.User, as: DbUser
 
   @type t() :: %__MODULE__{}
 
-  schema "notifications" do
+  schema "block_waivers" do
     field(:created_at, :integer)
     field(:reason, NotificationReason)
     field(:route_ids, {:array, :string})
@@ -22,17 +18,11 @@ defmodule Notifications.Db.Notification do
     field(:service_id, :string)
     field(:start_time, :integer)
     field(:end_time, :integer)
-    field(:state, :string, virtual: true)
     timestamps()
-
-    has_many(:notification_users, DbNotificationUser)
-    many_to_many(:users, DbUser, join_through: DbNotificationUser)
-
-    belongs_to(:block_waiver, DbBlockWaiver)
   end
 
-  def changeset(notification, attrs \\ %{}) do
-    notification
+  def changeset(block_waiver, attrs \\ %{}) do
+    block_waiver
     |> cast(attrs, [
       :id,
       :created_at,
@@ -46,8 +36,7 @@ defmodule Notifications.Db.Notification do
       :block_id,
       :service_id,
       :start_time,
-      :end_time,
-      :block_waiver_id
+      :end_time
     ])
     |> validate_required([
       :created_at,
@@ -68,7 +57,7 @@ defmodule Notifications.Db.Notification do
         :service_id,
         :reason
       ],
-      name: "notifications_unique_index"
+      name: "block_waivers_unique_index"
     )
   end
 end
