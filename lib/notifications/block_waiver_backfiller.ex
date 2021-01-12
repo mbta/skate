@@ -9,16 +9,16 @@ defmodule Notifications.BlockWaiverBackfiller do
   @batch_size 5
 
   @spec default_name() :: GenServer.name()
-  def default_name(), do: Notifications.NotificationServer
+  def default_name(), do: Notifications.BlockWaiverBackfiller
 
   @spec start_link(Keyword.t()) :: GenServer.on_start()
-  def start_link(_opts \\ []) do
-    GenServer.start_link(__MODULE__, nil)
+  def start_link(opts \\ []) do
+    name = Keyword.get(opts, :name, default_name())
+    GenServer.start_link(__MODULE__, nil, name: name)
   end
 
   @impl true
   def init(_) do
-    Process.send_after(self(), :backfill_batch, 0)
     {:ok, nil}
   end
 

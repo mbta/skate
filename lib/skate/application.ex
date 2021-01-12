@@ -34,6 +34,10 @@ defmodule Skate.Application do
 
     Migrate.up()
 
+    if Application.get_env(:skate, :start_data_processes) do
+      send(Notifications.BlockWaiverBackfiller.default_name(), :backfill_batch)
+    end
+
     link
   end
 
