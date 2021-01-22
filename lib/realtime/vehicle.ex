@@ -16,6 +16,7 @@ defmodule Realtime.Vehicle do
           id: String.t(),
           label: String.t(),
           timestamp: Util.Time.timestamp(),
+          timestamp_by_source: %{String.t() => Util.Time.timestamp()},
           latitude: float(),
           longitude: float(),
           direction_id: Direction.id(),
@@ -55,6 +56,7 @@ defmodule Realtime.Vehicle do
     :id,
     :label,
     :timestamp,
+    :timestamp_by_source,
     :latitude,
     :longitude,
     :direction_id,
@@ -76,12 +78,13 @@ defmodule Realtime.Vehicle do
     :end_of_trip_type
   ]
 
-  @derive Jason.Encoder
+  @derive {Jason.Encoder, except: [:last_updated_by_source]}
 
   defstruct [
     :id,
     :label,
     :timestamp,
+    :timestamp_by_source,
     :latitude,
     :longitude,
     :direction_id,
@@ -196,6 +199,7 @@ defmodule Realtime.Vehicle do
       id: VehiclePosition.id(vehicle_position),
       label: VehiclePosition.label(vehicle_position),
       timestamp: VehiclePosition.last_updated(vehicle_position),
+      timestamp_by_source: VehiclePosition.last_updated_by_source(vehicle_position),
       latitude: VehiclePosition.latitude(vehicle_position),
       longitude: VehiclePosition.longitude(vehicle_position),
       direction_id: direction_id,

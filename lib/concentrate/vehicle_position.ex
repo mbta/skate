@@ -25,6 +25,7 @@ defmodule Concentrate.VehiclePosition do
     :operator_logon_time,
     :run_id,
     :last_updated,
+    :last_updated_by_source,
     :stop_name,
     :operator,
     :direction_id,
@@ -148,7 +149,8 @@ defmodule Concentrate.VehiclePosition do
               first.layover_departure_time
             ),
           crowding: first_value(first.crowding, second.crowding),
-          revenue: first_value(first.revenue, second.revenue)
+          revenue: first_value(first.revenue, second.revenue),
+          last_updated_by_source: merge_last_updated_by_source(first, second)
       }
     end
 
@@ -199,6 +201,12 @@ defmodule Concentrate.VehiclePosition do
       [first, second]
       |> Enum.flat_map(&(VehiclePosition.sources(&1) || MapSet.new()))
       |> MapSet.new()
+    end
+
+    defp merge_last_updated_by_source(first, second) do
+      first_map = Map.get(first, :last_updated_by_source) || %{}
+      second_map = Map.get(second, :last_updated_by_source) || %{}
+      Map.merge(first_map, second_map)
     end
 
     defp discrepancies(first, second) do

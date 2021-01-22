@@ -28,13 +28,16 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehicles do
     loc = Map.get(vehicle_data, "loc", %{})
     {operator_name, operator_id} = vehicle_data |> Map.get("driver") |> operator_details()
 
+    last_updated = Map.get(loc, "time")
+
     VehiclePosition.new(
       id: Map.get(vehicle_data, "id"),
       trip_id: Map.get(vehicle_data, "tripId"),
       stop_id: Map.get(vehicle_data, "nextStopId"),
       latitude: Map.get(loc, "lat"),
       longitude: Map.get(loc, "lon"),
-      last_updated: Map.get(loc, "time"),
+      last_updated: last_updated,
+      last_updated_by_source: %{"swiftly" => last_updated},
       speed: Map.get(loc, "speed"),
       bearing: Map.get(loc, "heading"),
       block_id: Map.get(vehicle_data, "blockId"),

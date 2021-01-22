@@ -73,6 +73,7 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehiclesTest do
           operator_id: "71924",
           operator_name: "PAUL",
           last_updated: 1_559_672_827,
+          last_updated_by_source: %{"swiftly" => 1_559_672_827},
           stop_name: "Back Bay",
           direction_id: 0,
           headsign: "Forest Hills",

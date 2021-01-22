@@ -12,6 +12,7 @@ defmodule SkateWeb.VehicleChannelTest do
     id: "y0507",
     label: "0507",
     timestamp: 123,
+    timestamp_by_source: %{"swiftly" => 123},
     latitude: 0.0,
     longitude: 0.0,
     direction_id: "234",
