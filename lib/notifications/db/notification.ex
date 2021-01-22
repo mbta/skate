@@ -32,43 +32,37 @@ defmodule Notifications.Db.Notification do
   end
 
   def changeset(notification, attrs \\ %{}) do
+    block_waiver =
+      notification
+      |> Map.from_struct()
+      |> Map.merge(attrs)
+      |> Map.take([
+        :created_at,
+        :reason,
+        :route_ids,
+        :run_ids,
+        :trip_ids,
+        :operator_id,
+        :operator_name,
+        :route_id_at_creation,
+        :block_id,
+        :service_id,
+        :start_time,
+        :end_time
+      ])
+
     notification
     |> cast(attrs, [
       :id,
       :created_at,
-      :reason,
-      :route_ids,
-      :run_ids,
-      :trip_ids,
-      :operator_id,
-      :operator_name,
-      :route_id_at_creation,
-      :block_id,
-      :service_id,
-      :start_time,
-      :end_time,
       :block_waiver_id
     ])
-    |> validate_required([
-      :created_at,
-      :reason,
-      :route_ids,
-      :run_ids,
-      :trip_ids,
-      :block_id,
-      :service_id,
-      :start_time,
-      :end_time
-    ])
-    |> unique_constraint(
-      [
-        :start_time,
-        :end_time,
-        :block_id,
-        :service_id,
-        :reason
-      ],
-      name: "notifications_unique_index"
+    |> put_assoc(
+      :block_waiver,
+      DbBlockWaiver.changeset(%DbBlockWaiver{}, block_waiver)
     )
+    |> validate_required([
+      :created_at
+    ])
   end
 end

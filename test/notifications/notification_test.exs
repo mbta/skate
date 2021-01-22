@@ -49,7 +49,7 @@ defmodule Notifications.NotificationTest do
       )
     end
 
-    test "duplicates the block waiver data to the block_waivers table" do
+    test "duplicates the block waiver data to the notifications table" do
       notification_without_id = %Notification{
         created_at: 12345,
         block_id: "Z1-1",
@@ -78,36 +78,6 @@ defmodule Notifications.NotificationTest do
       assert db_notification.trip_ids == db_block_waiver.trip_ids
       assert db_notification.start_time == db_block_waiver.start_time
       assert db_notification.end_time == db_block_waiver.end_time
-    end
-
-    test "correctly handles conflict on block_waivers table" do
-      Skate.Repo.insert!(%DbBlockWaiver{
-        created_at: 12345,
-        block_id: "Z1-1",
-        service_id: "FallWeekday",
-        reason: :other,
-        route_ids: ["1", "2", "3"],
-        run_ids: ["56785678", "101010"],
-        trip_ids: ["250624", "250625"],
-        start_time: 1_000_000_000,
-        end_time: 1_000_086_400
-      })
-
-      notification_without_id = %Notification{
-        created_at: 12345,
-        block_id: "Z1-1",
-        service_id: "FallWeekday",
-        reason: :other,
-        route_ids: ["1", "2", "3"],
-        run_ids: ["56785678", "101010"],
-        trip_ids: ["250624", "250625"],
-        start_time: 1_000_000_000,
-        end_time: 1_000_086_400
-      }
-
-      assert_raise Ecto.NoResultsError, fn ->
-        Notification.get_or_create(notification_without_id)
-      end
     end
   end
 
