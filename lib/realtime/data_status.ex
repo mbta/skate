@@ -32,9 +32,15 @@ defmodule Realtime.DataStatus do
 
   @spec vehicle_is_good(Vehicle.t(), Util.Time.timestamp()) :: boolean()
   defp vehicle_is_good(vehicle, now) do
-    age_seconds = now - vehicle.timestamp
-    # 2 and a half minutes ago.
-    age_seconds < 150
+    if Map.get(vehicle.timestamp_by_source, "busloc") == nil ||
+         Map.get(vehicle.timestamp_by_source, "swiftly") == nil do
+      false
+    else
+      stalest_timestamp = vehicle.timestamp_by_source |> Map.values() |> Enum.min()
+      age_seconds = now - stalest_timestamp
+      # 2 and a half minutes ago.
+      age_seconds < 150
+    end
   end
 
   @spec count_partition([element], (element -> boolean())) ::

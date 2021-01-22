@@ -9,15 +9,24 @@ defmodule Realtime.DataStatusTest do
   @stale @now - 3600
 
   @good %{
-    timestamp: @fresh,
-    route_id: "route"
+    route_id: "route",
+    timestamp_by_source: %{"busloc" => @fresh, "swiftly" => @fresh}
   }
   @bad %{
-    timestamp: @stale,
-    route_id: "route"
+    route_id: "route",
+    timestamp_by_source: %{"busloc" => @stale, "swiftly" => @stale}
   }
+  @swiftly_stale %{
+    route_id: "route",
+    timestamp_by_source: %{"busloc" => @fresh, "swiftly" => @stale}
+  }
+  @swiftly_missing %{route_id: "route", timestamp_by_source: %{"busloc" => @fresh}}
+  @busloc_stale %{
+    route_id: "route",
+    timestamp_by_source: %{"busloc" => @stale, "swiftly" => @fresh}
+  }
+  @busloc_missing %{route_id: "route", timestamp_by_source: %{"swiftly" => @fresh}}
   @irrelevant %{
-    timestamp: @stale,
     route_id: nil
   }
 
@@ -32,6 +41,16 @@ defmodule Realtime.DataStatusTest do
 
     test "if many vehicles are bad, status is outage" do
       assert DataStatus.data_status([@bad, @bad, @good, @good]) == :outage
+    end
+
+    test "considers vehicles bad if either source is stale or missing" do
+      [
+        [@swiftly_missing, @swiftly_missing, @good, @good],
+        [@swiftly_stale, @swiftly_stale, @good, @good],
+        [@busloc_missing, @busloc_missing, @good, @good],
+        [@busloc_stale, @busloc_stale, @good, @good]
+      ]
+      |> Enum.each(&assert DataStatus.data_status(&1) == :outage)
     end
 
     test "doesn't consider irrelevant vehicles" do
