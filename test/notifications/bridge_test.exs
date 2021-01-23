@@ -17,8 +17,20 @@ defmodule Notifications.BridgeTest do
     end
   end
 
+  describe "update" do
+    setup do
+      reassign_env(:skate, :bridge_url, "http://example.com")
+      {:ok, pid} = Notifications.Bridge.start_link([])
+
+      %{pid: pid}
+    end
+
+    test "can call update", %{pid: pid} do
+      assert Notifications.Bridge.update(pid) == :update
+    end
+  end
+
   describe "handle_info/1" do
-    #  , %{bypass: bypass} do
     test "parses valid response with bridge lowered" do
       bypass = Bypass.open()
       reassign_env(:skate, :bridge_url, "http://localhost:#{bypass.port}/")
@@ -91,6 +103,15 @@ defmodule Notifications.BridgeTest do
       expected_time = Timex.to_datetime(naive_date, "America/New_York")
 
       assert handle_info(:update, state) == {:noreply, {"Raised", expected_time}}
+    end
+
+    test "Logs warning on bad message" do
+      log =
+        capture_log([level: :warn], fn ->
+          {:noreply, _state} = handle_info(:bad_message, nil)
+        end)
+
+      assert log =~ "unknown message"
     end
   end
 
