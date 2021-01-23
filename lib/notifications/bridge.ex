@@ -38,9 +38,15 @@ defmodule Notifications.Bridge do
 
   @spec init(Keyword.t()) :: {:ok, any()}
   def init(_opts) do
-    schedule_update(self())
+    case Application.get_env(:skate, :bridge_url) do
+      nil ->
+        Logger.warn("not starting Bridge: no url configured")
+        :ignore
+      _ ->
+        schedule_update(self())
+        {:ok, %__MODULE__{}}
+    end
 
-    {:ok, %__MODULE__{}}
   end
 
   def handle_info(:update, _state) do

@@ -4,16 +4,19 @@ defmodule Notifications.BridgeTest do
   import Notifications.Bridge
   import ExUnit.CaptureLog
 
-  describe "handle_info/1" do
-    # setup do
-    #  bypass = Bypass.open()
-    #  reassign_env(:skate, :bridge_url, "http://localhost:#{bypass.port}")
-    #  reassign_env(:skate, :bridge_api_username, "user")
-    #  reassign_env(:skate, :bridge_api_password, "123")
-    #
-    #      {:ok, %{bypass: bypass}}
-    #    end
+  describe "init/1" do
+    test "issues warning and doesn't start without a host" do
+      reassign_env(:skate, :bridge_url, nil)
+      log =
+        capture_log(fn ->
+          :ignore = Notifications.Bridge.init([])
+        end)
 
+      assert log =~ "no url configured"
+    end
+  end
+
+  describe "handle_info/1" do
     #  , %{bypass: bypass} do
     test "parses valid response with bridge lowered" do
       bypass = Bypass.open()
