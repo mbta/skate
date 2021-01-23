@@ -7,6 +7,7 @@ defmodule Notifications.BridgeTest do
   describe "init/1" do
     test "issues warning and doesn't start without a host" do
       reassign_env(:skate, :bridge_url, nil)
+
       log =
         capture_log(fn ->
           :ignore = Notifications.Bridge.init([])

@@ -42,11 +42,11 @@ defmodule Notifications.Bridge do
       nil ->
         Logger.warn("not starting Bridge: no url configured")
         :ignore
+
       _ ->
         schedule_update(self())
         {:ok, %__MODULE__{}}
     end
-
   end
 
   def handle_info(:update, _state) do
