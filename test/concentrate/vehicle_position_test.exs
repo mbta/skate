@@ -333,6 +333,7 @@ defmodule Concentrate.VehiclePositionTest do
       first =
         new(
           last_updated: 1,
+          last_updated_by_source: %{"first" => 1},
           latitude: 1,
           longitude: 1,
           trip_id: "trip",
@@ -343,6 +344,7 @@ defmodule Concentrate.VehiclePositionTest do
       second =
         new(
           last_updated: 2,
+          last_updated_by_source: %{"second" => 2},
           latitude: 1,
           longitude: 1,
           trip_id: "trip",
@@ -353,7 +355,7 @@ defmodule Concentrate.VehiclePositionTest do
       expected =
         new(
           last_updated: 2,
-          last_updated_by_source: %{},
+          last_updated_by_source: %{"first" => 1, "second" => 2},
           latitude: 1,
           longitude: 1,
           trip_id: "trip",
