@@ -2,6 +2,8 @@ use Mix.Config
 
 config :skate,
   api_key: {:secret, "ENV-api-key"},
+  bridge_api_username: {:secret, "ENV-bridge-api-username"},
+  bridge_api_password: {:secret, "ENV-bridge-api-password"},
   geonames_url_base: "https://ba-secure.geonames.net",
   geonames_token: {:secret, "geonames-token"},
   redirect_http?: true,

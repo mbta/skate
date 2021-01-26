@@ -56,7 +56,6 @@ defmodule Notifications.BridgeTest do
       assert handle_info(:update, state) == {:noreply, {"Lowered", nil}}
     end
 
-    # , %{bypass: bypass} do
     test "parses valid response with bridge raised" do
       bypass = Bypass.open()
       reassign_env(:skate, :bridge_url, "http://localhost:#{bypass.port}/")

@@ -19,7 +19,6 @@ defmodule Notifications.Bridge do
   @spec default_name() :: GenServer.name()
   def default_name(), do: Notifications.Bridge
 
-  @spec start_link() :: GenServer.on_start()
   @spec start_link(Keyword.t()) :: GenServer.on_start()
   def start_link(opts \\ []) do
     name = Keyword.get(opts, :name, default_name())
@@ -106,7 +105,8 @@ defmodule Notifications.Bridge do
     status = get_in(response, ["bridge", "bridgeStatusId", "status"])
 
     lowering_time =
-      get_in(response, ["lift_estimate", "estimate_time"])
+      response
+      |> get_in(["lift_estimate", "estimate_time"])
       |> Timex.parse("{ISO:Extended}")
       |> do_get_datetime()
 
