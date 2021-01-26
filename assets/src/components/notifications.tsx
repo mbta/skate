@@ -63,7 +63,10 @@ export const NotificationCard = ({
     >
       <button
         className="m-notifications__card-info"
-        onClick={() => openVPPForCurrentVehicle(notification)}
+        onClick={() => {
+          openVPPForCurrentVehicle(notification)
+          dispatch(hideLatestNotification())
+        }}
       >
         <NotificationContent
           notification={notification}
