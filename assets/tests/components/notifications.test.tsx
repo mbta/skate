@@ -274,25 +274,6 @@ describe("NotificationCard", () => {
     wrapper.find(".m-notifications__card-info").simulate("click")
     expect(openVPPForCurrentVehicle).toHaveBeenCalled()
     expect(dispatch).toHaveBeenCalledWith({ type: "HIDE_LATEST_NOTIFICATION" })
-    /*    mockUseReducerOnce(notificationsReducer, {
-      notifications: [updatedNotification],
-      showLatestNotification: true,
-    })
-    const mockDispatch: Dispatch = jest.fn()
-
-    const wrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <NotificationsProvider>
-          <Notifications />
-        </NotificationsProvider>
-      </StateDispatchProvider>
-    )
-
-    expect(mockDispatch).not.toHaveBeenCalled()
-    wrapper.find(".m-notifications__card-info").simulate("click")
-    expect(mockDispatch).toHaveBeenCalledWith(
-      setNotification(updatedNotification)
-    )*/
   })
 
   test("clicking through an unread notification makes it read", () => {
