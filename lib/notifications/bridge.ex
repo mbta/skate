@@ -128,7 +128,6 @@ defmodule Notifications.Bridge do
 
   defp get_auth_header() do
     username = Application.get_env(:skate, :bridge_api_username)
-    Logger.info("bridge_api_username=#{inspect(username)}")
     password = Application.get_env(:skate, :bridge_api_password)
     auth_string = "#{username}:#{password}"
     encoded_auth_string = Base.encode64(auth_string)
