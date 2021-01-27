@@ -52,6 +52,8 @@ There are a number of configuration details defined in environment variables. Th
 - **POSTGRES_USERNAME**, **POSTGRES_HOSTNAME**: Postgres username and hostname (optional in dev, default to system username and "localhost" respectively. Required in production.)
 - **POSTGRES_PASSWORD**: Postgres password (optional in dev, defaults to blank string. Not used in production.)
 - **POSTGRES_PORT**: Port to connect to Postgres (optional, defaults to 5432, the standard Postgres server port)
+- **BRIDGE_URL**: URL of the API for retrieving drawbridge status
+- **BRIDGE_API_USERNAME**, **BRIDGE_API_PASSWORD**: credentials for the API that gets drawbridge status. for dev only, see below for prod
 
 Additionally, there a number of secret variables (only required in production) defined in [AWS SecretsManager](https://console.aws.amazon.com/secretsmanager):
 
@@ -60,3 +62,4 @@ Additionally, there a number of secret variables (only required in production) d
 - **GUARDIAN_SECRET_KEY**: Authentication/authorization secret
 - **SECRET_KEY_BASE**: Used for writing encrypted cookies. Generate a value using `mix phx.gen.secret` (only required in production)
 - **SWIFTLY_AUTHORIZATION_KEY**: Authorization key for Swiftly
+- **BRIDGE_API_USERNAME**, **BRIDGE_API_PASSWORD**: credentials for the API that gets drawbridge status
