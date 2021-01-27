@@ -2,6 +2,8 @@ defmodule Notifications.NotificationTest do
   use Skate.DataCase
 
   alias Notifications.Notification
+  alias Notifications.Db.BlockWaiver, as: DbBlockWaiver
+  alias Notifications.Db.Notification, as: DbNotification
   alias Notifications.Db.NotificationUser, as: DbNotificationUser
   alias Skate.Settings.RouteSettings
   alias Skate.Settings.User
@@ -45,6 +47,67 @@ defmodule Notifications.NotificationTest do
         notification_users |> Enum.map(& &1.user_id) |> Enum.sort() ==
           [user1.id, user2.id] |> Enum.sort()
       )
+    end
+
+    test "duplicates the block waiver data to the block_waivers table" do
+      notification_without_id = %Notification{
+        created_at: 12345,
+        block_id: "Z1-1",
+        service_id: "FallWeekday",
+        reason: :other,
+        route_ids: ["1", "2", "3"],
+        run_ids: ["56785678", "101010"],
+        trip_ids: ["250624", "250625"],
+        start_time: 1_000_000_000,
+        end_time: 1_000_086_400
+      }
+
+      Notification.get_or_create(notification_without_id)
+
+      db_notification = Skate.Repo.one!(from(DbNotification))
+      db_block_waiver = Skate.Repo.one!(from(DbBlockWaiver))
+
+      assert db_notification.block_waiver_id == db_block_waiver.id
+
+      assert db_notification.created_at == db_block_waiver.created_at
+      assert db_notification.block_id == db_block_waiver.block_id
+      assert db_notification.service_id == db_block_waiver.service_id
+      assert db_notification.reason == db_block_waiver.reason
+      assert db_notification.route_ids == db_block_waiver.route_ids
+      assert db_notification.run_ids == db_block_waiver.run_ids
+      assert db_notification.trip_ids == db_block_waiver.trip_ids
+      assert db_notification.start_time == db_block_waiver.start_time
+      assert db_notification.end_time == db_block_waiver.end_time
+    end
+
+    test "correctly handles conflict on block_waivers table" do
+      Skate.Repo.insert!(%DbBlockWaiver{
+        created_at: 12345,
+        block_id: "Z1-1",
+        service_id: "FallWeekday",
+        reason: :other,
+        route_ids: ["1", "2", "3"],
+        run_ids: ["56785678", "101010"],
+        trip_ids: ["250624", "250625"],
+        start_time: 1_000_000_000,
+        end_time: 1_000_086_400
+      })
+
+      notification_without_id = %Notification{
+        created_at: 12345,
+        block_id: "Z1-1",
+        service_id: "FallWeekday",
+        reason: :other,
+        route_ids: ["1", "2", "3"],
+        run_ids: ["56785678", "101010"],
+        trip_ids: ["250624", "250625"],
+        start_time: 1_000_000_000,
+        end_time: 1_000_086_400
+      }
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Notification.get_or_create(notification_without_id)
+      end
     end
   end
 

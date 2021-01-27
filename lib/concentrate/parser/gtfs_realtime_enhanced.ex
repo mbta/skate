@@ -59,6 +59,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
     operator = Map.get(vp, "operator", %{})
     position = Map.get(vp, "position", %{})
     vehicle = Map.get(vp, "vehicle", %{})
+    last_updated = Map.get(vp, "timestamp")
 
     case decode_trip_descriptor(Map.get(vp, "trip")) do
       [trip] ->
@@ -77,7 +78,8 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
             odometer: Map.get(position, "odometer"),
             current_status: current_status(Map.get(vp, "current_status")),
             stop_sequence: Map.get(vp, "current_stop_sequence"),
-            last_updated: Map.get(vp, "timestamp"),
+            last_updated: last_updated,
+            last_updated_by_source: %{"busloc" => last_updated},
             block_id: Map.get(vp, "block_id"),
             run_id: Map.get(vp, "run_id"),
             operator_id: Map.get(operator, "id"),

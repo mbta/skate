@@ -156,6 +156,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
                  run_id: "128-1007",
                  current_status: :STOPPED_AT,
                  last_updated: 1_534_340_406,
+                 last_updated_by_source: %{"busloc" => 1_534_340_406},
                  sources: MapSet.new(["busloc"]),
                  data_discrepancies: [],
                  crowding: %Crowding{

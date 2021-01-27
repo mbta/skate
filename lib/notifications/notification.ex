@@ -11,6 +11,7 @@ defmodule Notifications.Notification do
   alias Skate.Settings.User
   alias Notifications.NotificationReason
   alias Notifications.NotificationState
+  alias Notifications.Db.BlockWaiver, as: DbBlockWaiver
   alias Notifications.Db.Notification, as: DbNotification
   alias Notifications.Db.NotificationUser, as: DbNotificationUser
 
@@ -73,29 +74,32 @@ defmodule Notifications.Notification do
     changeset =
       DbNotification.changeset(%DbNotification{}, Map.from_struct(notification_without_id))
 
-    {:ok, notification_with_id} =
-      Skate.Repo.transaction(fn ->
-        db_record = insert!(changeset, on_conflict: :nothing)
+    db_record =
+      case Skate.Repo.transaction(fn ->
+             with db_record <- insert!(changeset, on_conflict: :nothing),
+                  false <- is_nil(db_record.id),
+                  notification_with_id <- %__MODULE__{notification_without_id | id: db_record.id},
+                  false <- is_nil(duplicate_to_block_waiver(db_record)) do
+               log_creation(notification_with_id)
+               link_notification_to_users(notification_with_id)
+               db_record
+             else
+               _ -> Skate.Repo.rollback(nil)
+             end
+           end) do
+        {:ok, db_record} when not is_nil(db_record) ->
+          db_record
 
-        db_record =
-          if db_record.id do
-            notification_with_id = %__MODULE__{notification_without_id | id: db_record.id}
-            log_creation(notification_with_id)
-            link_notification_to_users(notification_with_id)
-            db_record
-          else
-            identifying_fields =
-              notification_without_id
-              |> Map.take([:start_time, :end_time, :block_id, :service_id, :reason])
-              |> Map.to_list()
+        {:error, _} ->
+          identifying_fields =
+            notification_without_id
+            |> Map.take([:start_time, :end_time, :block_id, :service_id, :reason])
+            |> Map.to_list()
 
-            Skate.Repo.one(from(DbNotification, where: ^identifying_fields))
-          end
+          Skate.Repo.one!(from(DbNotification, where: ^identifying_fields))
+      end
 
-        %__MODULE__{notification_without_id | id: db_record.id}
-      end)
-
-    notification_with_id
+    %__MODULE__{notification_without_id | id: db_record.id}
   end
 
   def unexpired_notifications_for_user(username, now_fn \\ &Util.Time.now/0) do
@@ -123,6 +127,25 @@ defmodule Notifications.Notification do
       )
 
     Skate.Repo.update_all(query, set: [state: read_state])
+  end
+
+  @spec duplicate_to_block_waiver(DbNotification.t()) :: DbNotification.t() | nil
+  def duplicate_to_block_waiver(db_notification) do
+    new_waiver_params =
+      Map.from_struct(db_notification)
+      |> Map.put(:id, nil)
+
+    case %DbBlockWaiver{}
+         |> DbBlockWaiver.changeset(new_waiver_params)
+         |> Skate.Repo.insert() do
+      {:ok, waiver} ->
+        db_notification
+        |> DbNotification.changeset(%{block_waiver_id: waiver.id})
+        |> Skate.Repo.update()
+
+      {:error, _} ->
+        nil
+    end
   end
 
   defp log_creation(notification) do

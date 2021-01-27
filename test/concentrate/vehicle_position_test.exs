@@ -28,6 +28,7 @@ defmodule Concentrate.VehiclePositionTest do
       expected =
         new(
           last_updated: 2,
+          last_updated_by_source: %{},
           latitude: 2,
           longitude: 2,
           trip_id: "trip",
@@ -99,6 +100,7 @@ defmodule Concentrate.VehiclePositionTest do
       expected =
         new(
           last_updated: 2,
+          last_updated_by_source: %{},
           latitude: 2,
           longitude: 2,
           trip_id: "swiftly_trip",
@@ -118,6 +120,7 @@ defmodule Concentrate.VehiclePositionTest do
       expected_later =
         new(
           last_updated: 3,
+          last_updated_by_source: %{},
           latitude: 3,
           longitude: 3,
           trip_id: "swiftly_trip",
@@ -164,6 +167,7 @@ defmodule Concentrate.VehiclePositionTest do
       expected =
         new(
           last_updated: 2,
+          last_updated_by_source: %{},
           latitude: 2,
           longitude: 2,
           trip_id: "busloc_trip",
@@ -215,6 +219,7 @@ defmodule Concentrate.VehiclePositionTest do
       assert Mergeable.merge(non_overloaded, overloaded) ==
                new(
                  last_updated: 1,
+                 last_updated_by_source: %{},
                  block_id: "G89-5-OL1",
                  latitude: 1,
                  longitude: 1,
@@ -233,6 +238,7 @@ defmodule Concentrate.VehiclePositionTest do
       assert Mergeable.merge(overloaded, non_overloaded) ==
                new(
                  last_updated: 1,
+                 last_updated_by_source: %{},
                  block_id: "G89-5-OL1",
                  latitude: 1,
                  longitude: 1,
@@ -251,6 +257,7 @@ defmodule Concentrate.VehiclePositionTest do
       assert Mergeable.merge(nil_block_id, overloaded) ==
                new(
                  last_updated: 1,
+                 last_updated_by_source: %{},
                  block_id: "G89-5-OL1",
                  latitude: 1,
                  longitude: 1,
@@ -269,6 +276,7 @@ defmodule Concentrate.VehiclePositionTest do
       assert Mergeable.merge(overloaded, nil_block_id) ==
                new(
                  last_updated: 1,
+                 last_updated_by_source: %{},
                  block_id: "G89-5-OL1",
                  latitude: 1,
                  longitude: 1,
@@ -309,8 +317,47 @@ defmodule Concentrate.VehiclePositionTest do
       expected =
         new(
           last_updated: 2,
+          last_updated_by_source: %{},
           latitude: 2,
           longitude: 2,
+          trip_id: "trip",
+          route_id: "route",
+          sources: MapSet.new(["first", "second"]),
+          data_discrepancies: []
+        )
+
+      assert Mergeable.merge(first, second) == expected
+    end
+
+    test "merge/2 retains all timestamps" do
+      first =
+        new(
+          last_updated: 1,
+          last_updated_by_source: %{"first" => 1},
+          latitude: 1,
+          longitude: 1,
+          trip_id: "trip",
+          route_id: "route",
+          sources: MapSet.new(["first"])
+        )
+
+      second =
+        new(
+          last_updated: 2,
+          last_updated_by_source: %{"second" => 2},
+          latitude: 1,
+          longitude: 1,
+          trip_id: "trip",
+          route_id: "route",
+          sources: MapSet.new(["second"])
+        )
+
+      expected =
+        new(
+          last_updated: 2,
+          last_updated_by_source: %{"first" => 1, "second" => 2},
+          latitude: 1,
+          longitude: 1,
           trip_id: "trip",
           route_id: "route",
           sources: MapSet.new(["first", "second"]),

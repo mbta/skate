@@ -6,20 +6,15 @@ import {
   NotificationCard,
   Notifications,
 } from "../../src/components/notifications"
-import {
-  NotificationsContext,
-  NotificationsProvider,
-} from "../../src/contexts/notificationsContext"
+import { NotificationsContext } from "../../src/contexts/notificationsContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import {
   hideLatestNotification,
-  reducer as notificationsReducer,
   toggleReadState,
 } from "../../src/hooks/useNotificationsReducer"
 import { Notification, NotificationReason } from "../../src/realtime.d"
-import { Dispatch, initialState, setNotification } from "../../src/state"
+import { initialState } from "../../src/state"
 import { now } from "../../src/util/dateTime"
-import { mockUseReducerOnce } from "../testHelpers/mockHelpers"
 
 jest.mock("../../src/hooks/useNotifications", () => ({
   __esModule: true,
@@ -257,30 +252,28 @@ describe("NotificationCard", () => {
     expect(wrapper.find(".m-notifications__card--new")).toHaveLength(0)
   })
 
-  test("clicking through opens VPP", () => {
+  test("clicking through opens VPP and hides notification", () => {
     const updatedNotification = {
       ...notification,
       tripIds: ["123", "456", "789"],
     }
-    mockUseReducerOnce(notificationsReducer, {
-      notifications: [updatedNotification],
-      showLatestNotification: true,
-    })
-    const mockDispatch: Dispatch = jest.fn()
+    const dispatch = jest.fn()
+    const currentTime = new Date()
+    const openVPPForCurrentVehicle = jest.fn()
 
     const wrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <NotificationsProvider>
-          <Notifications />
-        </NotificationsProvider>
-      </StateDispatchProvider>
+      <NotificationCard
+        notification={updatedNotification}
+        dispatch={dispatch}
+        currentTime={currentTime}
+        openVPPForCurrentVehicle={openVPPForCurrentVehicle}
+      />
     )
-
-    expect(mockDispatch).not.toHaveBeenCalled()
+    expect(openVPPForCurrentVehicle).not.toHaveBeenCalled()
+    expect(dispatch).not.toHaveBeenCalled()
     wrapper.find(".m-notifications__card-info").simulate("click")
-    expect(mockDispatch).toHaveBeenCalledWith(
-      setNotification(updatedNotification)
-    )
+    expect(openVPPForCurrentVehicle).toHaveBeenCalled()
+    expect(dispatch).toHaveBeenCalledWith({ type: "HIDE_LATEST_NOTIFICATION" })
   })
 
   test("clicking through an unread notification makes it read", () => {

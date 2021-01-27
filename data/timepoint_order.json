@@ -35,9 +35,18 @@
     "comment": "all round trips loop boham-cnhlm-botul-boham, but some layovers are at cnhlm, and some at botul",
     "1": ["cnhlm", "botul", "boham"]
   },
+  "100": {
+    "0": ["feriv", "fells", "felwy"]
+  },
   "101": {
     "comment": "mnhen is a short turn terminal between tufts and whill. show school branch to west medford (mngrg,wnbrk) before main brain (medfd)",
     "0": ["whill", "mnhen", "tufts", "mngrg", "wnbrk", "medfd"]
+  },
+  "108": {
+    "0": ["plsmn", "saspr", "mwood"]
+  },
+  "134": {
+    "0": ["welst", "mdlsc", "feriv"]
   },
   "426": {
     "comment": "wlynn is terminal for trips to/from boston. osbrn and holyk are terminals for trips to/from lynn. no trips go to wondw and hayms so force hayms to be later",

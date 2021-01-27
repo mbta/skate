@@ -7,6 +7,7 @@ defmodule Realtime.VehicleOrGhostTest do
     id: "vehicle1",
     label: "v1-label",
     timestamp: 1_558_121_727,
+    timestamp_by_source: %{"swiftly" => 1_558_121_727},
     latitude: 42.3408556,
     longitude: -71.0642766,
     direction_id: 0,
