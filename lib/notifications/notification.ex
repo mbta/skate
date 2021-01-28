@@ -11,7 +11,6 @@ defmodule Notifications.Notification do
   alias Skate.Settings.User
   alias Notifications.NotificationReason
   alias Notifications.NotificationState
-  alias Notifications.Db.BlockWaiver, as: DbBlockWaiver
   alias Notifications.Db.Notification, as: DbNotification
   alias Notifications.Db.NotificationUser, as: DbNotificationUser
 
@@ -76,10 +75,10 @@ defmodule Notifications.Notification do
 
     db_record =
       case Skate.Repo.transaction(fn ->
-             with db_record <- insert!(changeset, on_conflict: :nothing),
+             with {:ok, db_record} <- insert(changeset, on_conflict: :nothing),
                   false <- is_nil(db_record.id),
                   notification_with_id <- %__MODULE__{notification_without_id | id: db_record.id},
-                  false <- is_nil(duplicate_to_block_waiver(db_record)) do
+                  false <- is_nil(duplicate_to_notification(db_record)) do
                log_creation(notification_with_id)
                link_notification_to_users(notification_with_id)
                db_record
@@ -91,12 +90,31 @@ defmodule Notifications.Notification do
           db_record
 
         {:error, _} ->
-          identifying_fields =
-            notification_without_id
-            |> Map.take([:start_time, :end_time, :block_id, :service_id, :reason])
-            |> Map.to_list()
-
-          Skate.Repo.one!(from(DbNotification, where: ^identifying_fields))
+          Skate.Repo.one!(
+            from(n in DbNotification,
+              join: bw in assoc(n, :block_waiver),
+              select: %{id: n.id, created_at: n.created_at},
+              select_merge: %{
+                reason: bw.reason,
+                route_ids: bw.route_ids,
+                run_ids: bw.run_ids,
+                trip_ids: bw.trip_ids,
+                operator_id: bw.operator_id,
+                operator_name: bw.operator_name,
+                route_id_at_creation: bw.route_id_at_creation,
+                block_id: bw.block_id,
+                service_id: bw.service_id,
+                start_time: bw.start_time,
+                end_time: bw.end_time
+              },
+              where:
+                bw.start_time == ^notification_without_id.start_time and
+                  bw.end_time == ^notification_without_id.end_time and
+                  bw.block_id == ^notification_without_id.block_id and
+                  bw.service_id == ^notification_without_id.service_id and
+                  bw.reason == ^notification_without_id.reason
+            )
+          )
       end
 
     %__MODULE__{notification_without_id | id: db_record.id}
@@ -107,14 +125,29 @@ defmodule Notifications.Notification do
 
     query =
       from(n in DbNotification,
+        select: %{id: n.id, created_at: n.created_at},
         join: nu in assoc(n, :notification_users),
         join: u in assoc(nu, :user),
-        select_merge: %{state: nu.state},
+        join: bw in assoc(n, :block_waiver),
+        select_merge: %{
+          state: nu.state,
+          reason: bw.reason,
+          route_ids: bw.route_ids,
+          run_ids: bw.run_ids,
+          trip_ids: bw.trip_ids,
+          operator_id: bw.operator_id,
+          operator_name: bw.operator_name,
+          route_id_at_creation: bw.route_id_at_creation,
+          block_id: bw.block_id,
+          service_id: bw.service_id,
+          start_time: bw.start_time,
+          end_time: bw.end_time
+        },
         where: n.created_at > ^cutoff_time and u.username == ^username,
         order_by: [desc: n.created_at]
       )
 
-    Skate.Repo.all(query) |> Enum.map(&from_db_notification/1)
+    query |> Skate.Repo.all() |> Enum.map(&struct(__MODULE__, &1))
   end
 
   def update_read_states(username, notification_ids, read_state)
@@ -129,23 +162,33 @@ defmodule Notifications.Notification do
     Skate.Repo.update_all(query, set: [state: read_state])
   end
 
-  @spec duplicate_to_block_waiver(DbNotification.t()) :: DbNotification.t() | nil
-  def duplicate_to_block_waiver(db_notification) do
-    new_waiver_params =
-      Map.from_struct(db_notification)
-      |> Map.put(:id, nil)
+  @spec duplicate_to_notification(DbNotification.t()) :: DbNotification.t() | nil
+  def duplicate_to_notification(db_notification) do
+    block_waiver = db_notification.block_waiver
 
-    case %DbBlockWaiver{}
-         |> DbBlockWaiver.changeset(new_waiver_params)
-         |> Skate.Repo.insert() do
-      {:ok, waiver} ->
-        db_notification
-        |> DbNotification.changeset(%{block_waiver_id: waiver.id})
-        |> Skate.Repo.update()
+    {1, [db_notification]} =
+      from(n in DbNotification,
+        update: [
+          set: [
+            reason: ^block_waiver.reason,
+            route_ids: ^block_waiver.route_ids,
+            run_ids: ^block_waiver.run_ids,
+            trip_ids: ^block_waiver.trip_ids,
+            operator_id: ^block_waiver.operator_id,
+            operator_name: ^block_waiver.operator_name,
+            route_id_at_creation: ^block_waiver.route_id_at_creation,
+            block_id: ^block_waiver.block_id,
+            service_id: ^block_waiver.service_id,
+            start_time: ^block_waiver.start_time,
+            end_time: ^block_waiver.end_time
+          ]
+        ],
+        where: n.id == ^db_notification.id,
+        select: n
+      )
+      |> Skate.Repo.update_all([])
 
-      {:error, _} ->
-        nil
-    end
+    db_notification
   end
 
   defp log_creation(notification) do
@@ -172,9 +215,5 @@ defmodule Notifications.Notification do
       DbNotificationUser,
       notification_user_maps
     )
-  end
-
-  defp from_db_notification(db_notification) do
-    struct(__MODULE__, Map.from_struct(db_notification))
   end
 end
