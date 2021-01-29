@@ -4,7 +4,6 @@ defmodule Realtime.DataStatusAlerter do
 
   def default_name, do: __MODULE__
 
-  @spec start_link() :: GenServer.on_start()
   @spec start_link(Keyword.t()) :: GenServer.on_start()
   def start_link(opts \\ []) do
     name = Keyword.get(opts, :name, default_name())

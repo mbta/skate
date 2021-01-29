@@ -1,6 +1,6 @@
 defmodule Realtime.DataStatusAlerterTest do
   use ExUnit.Case
-  import(ExUnit.CaptureLog)
+  import ExUnit.CaptureLog
 
   alias Realtime.DataStatusAlerter
 
@@ -39,7 +39,7 @@ defmodule Realtime.DataStatusAlerterTest do
           DataStatusAlerter.handle_info({:new_data_status, :good}, nil)
         end)
 
-      assert log == ""
+      refute String.contains?(log, "data_outage_detected")
     end
   end
 end
