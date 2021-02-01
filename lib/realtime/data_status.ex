@@ -15,7 +15,7 @@ defmodule Realtime.DataStatus do
 
     total_count = good_count + bad_count
 
-    if bad_count >= 2 and bad_count / total_count > 0.20 do
+    if total_count >= 10 and bad_count / total_count >= 0.20 do
       :outage
     else
       :good
