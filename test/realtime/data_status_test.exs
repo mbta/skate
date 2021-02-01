@@ -35,26 +35,33 @@ defmodule Realtime.DataStatusTest do
       reassign_env(:skate, :now_fn, fn -> @now end)
     end
 
+    test "if there are fewer than 10 revenue vehicles, status is good" do
+      bads = List.duplicate(@bad, 9)
+      irrelevants = List.duplicate(@irrelevant, 20)
+      vehicles = bads ++ irrelevants
+      assert DataStatus.data_status(vehicles) == :good
+    end
+
     test "if most vehicles are good, status is good" do
-      assert DataStatus.data_status([@good, @good, @bad, @good]) == :good
+      goods = List.duplicate(@good, 9)
+      assert DataStatus.data_status([@bad | goods]) == :good
     end
 
     test "if many vehicles are bad, status is outage" do
-      assert DataStatus.data_status([@bad, @bad, @good, @good]) == :outage
+      goods = List.duplicate(@good, 8)
+      assert DataStatus.data_status([@bad, @bad | goods]) == :outage
     end
 
     test "considers vehicles bad if either source is stale or missing" do
+      goods = List.duplicate(@good, 8)
+
       [
-        [@swiftly_missing, @swiftly_missing, @good, @good],
-        [@swiftly_stale, @swiftly_stale, @good, @good],
-        [@busloc_missing, @busloc_missing, @good, @good],
-        [@busloc_stale, @busloc_stale, @good, @good]
+        [@swiftly_missing, @swiftly_missing | goods],
+        [@swiftly_stale, @swiftly_stale | goods],
+        [@busloc_missing, @busloc_missing | goods],
+        [@busloc_stale, @busloc_stale | goods]
       ]
       |> Enum.each(&assert DataStatus.data_status(&1) == :outage)
-    end
-
-    test "doesn't consider irrelevant vehicles" do
-      assert DataStatus.data_status([@irrelevant, @irrelevant, @good, @good]) == :good
     end
 
     test "when there are no vehicles overnight, that's okay" do
