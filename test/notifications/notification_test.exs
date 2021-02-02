@@ -2,8 +2,6 @@ defmodule Notifications.NotificationTest do
   use Skate.DataCase
 
   alias Notifications.Notification
-  alias Notifications.Db.BlockWaiver, as: DbBlockWaiver
-  alias Notifications.Db.Notification, as: DbNotification
   alias Notifications.Db.NotificationUser, as: DbNotificationUser
   alias Skate.Settings.RouteSettings
   alias Skate.Settings.User

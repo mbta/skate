@@ -22,7 +22,8 @@ defmodule Skate.Settings.UserSettingsTest do
           user_id: user.id,
           ladder_page_vehicle_label: :vehicle_id,
           shuttle_page_vehicle_label: :run_id,
-          vehicle_adherence_colors: :early_blue
+          vehicle_adherence_colors: :early_blue,
+          minischedules_trip_label: :origin
         }),
         returning: true
       )
@@ -32,7 +33,8 @@ defmodule Skate.Settings.UserSettingsTest do
       assert result == %UserSettings{
                ladder_page_vehicle_label: :vehicle_id,
                shuttle_page_vehicle_label: :run_id,
-               vehicle_adherence_colors: :early_blue
+               vehicle_adherence_colors: :early_blue,
+               minischedules_trip_label: :origin
              }
     end
 
@@ -43,7 +45,8 @@ defmodule Skate.Settings.UserSettingsTest do
       assert result == %UserSettings{
                ladder_page_vehicle_label: :run_id,
                shuttle_page_vehicle_label: :vehicle_id,
-               vehicle_adherence_colors: :early_red
+               vehicle_adherence_colors: :early_red,
+               minischedules_trip_label: :destination
              }
 
       # created data for the new user

@@ -5,19 +5,22 @@ defmodule Skate.Settings.UserSettings do
   alias Skate.Settings.User
   alias Skate.Settings.Db.User, as: DbUser
   alias Skate.Settings.Db.UserSettings, as: DbUserSettings
+  alias Skate.Settings.TripLabel
   alias Skate.Settings.VehicleLabel
   alias Skate.Settings.VehicleAdherenceColor
 
   @type t :: %__MODULE__{
           ladder_page_vehicle_label: VehicleLabel.t(),
           shuttle_page_vehicle_label: VehicleLabel.t(),
-          vehicle_adherence_colors: VehicleAdherenceColor.t()
+          vehicle_adherence_colors: VehicleAdherenceColor.t(),
+          minischedules_trip_label: TripLabel.t()
         }
 
   @enforce_keys [
     :ladder_page_vehicle_label,
     :shuttle_page_vehicle_label,
-    :vehicle_adherence_colors
+    :vehicle_adherence_colors,
+    :minischedules_trip_label
   ]
 
   @derive Jason.Encoder
@@ -25,7 +28,8 @@ defmodule Skate.Settings.UserSettings do
   defstruct [
     :ladder_page_vehicle_label,
     :shuttle_page_vehicle_label,
-    :vehicle_adherence_colors
+    :vehicle_adherence_colors,
+    :minischedules_trip_label
   ]
 
   @spec get_or_create(String.t()) :: t()
@@ -39,7 +43,8 @@ defmodule Skate.Settings.UserSettings do
           # defaults, which won't get written if it exists
           ladder_page_vehicle_label: :run_id,
           shuttle_page_vehicle_label: :vehicle_id,
-          vehicle_adherence_colors: :early_red
+          vehicle_adherence_colors: :early_red,
+          minischedules_trip_label: :destination
         }),
         returning: true,
         conflict_target: [:user_id],
@@ -49,7 +54,8 @@ defmodule Skate.Settings.UserSettings do
     %__MODULE__{
       ladder_page_vehicle_label: user_settings.ladder_page_vehicle_label,
       shuttle_page_vehicle_label: user_settings.shuttle_page_vehicle_label,
-      vehicle_adherence_colors: user_settings.vehicle_adherence_colors
+      vehicle_adherence_colors: user_settings.vehicle_adherence_colors,
+      minischedules_trip_label: user_settings.minischedules_trip_label
     }
   end
 
