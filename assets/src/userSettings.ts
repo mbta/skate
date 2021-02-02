@@ -12,16 +12,23 @@ export enum VehicleAdherenceColorsSetting {
   EarlyBlue,
 }
 
+export enum TripLabelSetting {
+  Origin = 1,
+  Destination,
+}
+
 export interface UserSettings {
   ladderVehicleLabel: VehicleLabelSetting
   shuttleVehicleLabel: VehicleLabelSetting
   vehicleAdherenceColors: VehicleAdherenceColorsSetting
+  minischedulesTripLabel: TripLabelSetting
 }
 
 export const defaultUserSettings: UserSettings = {
   ladderVehicleLabel: VehicleLabelSetting.RunNumber,
   shuttleVehicleLabel: VehicleLabelSetting.VehicleNumber,
   vehicleAdherenceColors: VehicleAdherenceColorsSetting.EarlyRed,
+  minischedulesTripLabel: TripLabelSetting.Destination,
 }
 
 export const vehicleLabelSetting = (
@@ -35,10 +42,16 @@ export const vehicleLabelSetting = (
 export type VehicleLabelData = "run_id" | "vehicle_id"
 export type VehicleAdherenceColorsData = "early_red" | "early_blue"
 
+type TripLabelData = "origin" | "destination"
+
 interface SettingsData {
   ladder_page_vehicle_label: VehicleLabelData
   shuttle_page_vehicle_label: VehicleLabelData
   vehicle_adherence_colors?: VehicleAdherenceColorsData
+  // We allow minischedules_trip_label to be undefined to handle the
+  // hybrid code problem, we can disallow undefined after the first
+  // deploy of the corresponding backend code.
+  minischedules_trip_label?: TripLabelData
 }
 
 const vehicleLabelFromData = (data: VehicleLabelData): VehicleLabelSetting => {
@@ -63,6 +76,18 @@ const vehicleAdherenceColorsFromData = (
   }
 }
 
+const tripLabelFromData = (data?: TripLabelData): TripLabelSetting => {
+  switch (data) {
+    case "origin":
+      return TripLabelSetting.Origin
+    case "destination":
+      return TripLabelSetting.Destination
+    // See comment in SettingsData re undefined
+    case undefined:
+      return TripLabelSetting.Destination
+  }
+}
+
 export const userSettingsFromData = (data: SettingsData): UserSettings => {
   return {
     ladderVehicleLabel: vehicleLabelFromData(data.ladder_page_vehicle_label),
@@ -70,6 +95,7 @@ export const userSettingsFromData = (data: SettingsData): UserSettings => {
     vehicleAdherenceColors: vehicleAdherenceColorsFromData(
       data.vehicle_adherence_colors
     ),
+    minischedulesTripLabel: tripLabelFromData(data.minischedules_trip_label),
   }
 }
 
