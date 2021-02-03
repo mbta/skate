@@ -6,11 +6,36 @@ import {
   formattedTimeDiffUnderThreshold,
   now,
   formattedScheduledTime,
+  serviceDaySeconds,
 } from "../../src/util/dateTime"
 
 describe("now", () => {
   test("returns a Date for the current date-time", () => {
     expect(now() instanceof Date).toBeTruthy()
+  })
+})
+
+describe("serviceDaySeconds", () => {
+  test("returns number for a time before midnight", () => {
+    expect(serviceDaySeconds(new Date("February 10, 2021 08:12"))).toEqual(
+      29_520
+    )
+  })
+
+  test("returns number for a time after midnight", () => {
+    expect(serviceDaySeconds(new Date("February 11, 2021 01:05"))).toEqual(
+      90_300
+    )
+  })
+
+  test("correctly handles transition to DST", () => {
+    expect(serviceDaySeconds(new Date("March 8, 2020 08:12"))).toEqual(29_520)
+  })
+
+  test("correctly handles transition from DST", () => {
+    expect(serviceDaySeconds(new Date("November 1, 2020 08:12"))).toEqual(
+      29_520
+    )
   })
 })
 

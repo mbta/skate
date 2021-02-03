@@ -3,6 +3,7 @@ import renderer from "react-test-renderer"
 import Modal from "../../src/components/modal"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { VehicleForNotificationProvider } from "../../src/contexts/vehicleForNotificationContext"
+import { useMinischeduleRuns } from "../../src/hooks/useMinischedule"
 import {
   Notification,
   NotificationReason,
@@ -10,8 +11,14 @@ import {
 } from "../../src/realtime"
 import { initialState, State } from "../../src/state"
 
+jest.mock("../../src/hooks/useMinischedule", () => ({
+  __esModule: true,
+  useMinischeduleRuns: jest.fn(),
+}))
+
 describe("Modal", () => {
   test("renders inactive notification modal when appropriate", () => {
+    ;(useMinischeduleRuns as jest.Mock).mockImplementationOnce(() => [])
     const notification: Notification = {
       id: "123",
       createdAt: new Date(),

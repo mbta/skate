@@ -7,6 +7,7 @@ import {
 } from "../../src/hooks/useMinischedule"
 import { Block, Run } from "../../src/minischedule"
 import { instantPromise, neverPromise } from "../testHelpers/mockHelpers"
+import { TripId } from "../../src/schedule"
 
 // tslint:disable: react-hooks-nesting
 
@@ -78,6 +79,18 @@ describe("useMinischeduleRuns", () => {
     })
     rerender()
     expect(mockFetchMinischeduleRun).toHaveBeenCalledTimes(1)
+  })
+
+  test("does refetch when trip IDs changed", () => {
+    const mockFetchMinischeduleRun: jest.Mock = Api.fetchMinischeduleRun as jest.Mock
+    const { rerender } = renderHook(
+      (tripIds: TripId[]) => {
+        return useMinischeduleRuns(tripIds)
+      },
+      { initialProps: ["trip1"] }
+    )
+    rerender(["trip2"])
+    expect(mockFetchMinischeduleRun).toHaveBeenCalledTimes(2)
   })
 })
 

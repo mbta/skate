@@ -30,7 +30,7 @@ Array [
     <div
       className="m-inactive-notification-modal__body"
     >
-      No runs associated with this notification are currently active in Skate. This notification may no longer be relevant.
+      Sorry, there's no additional information that we can provide you about this notification.
     </div>
   </div>,
   <div
