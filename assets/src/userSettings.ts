@@ -108,6 +108,15 @@ const vehicleLabelToString = (setting: VehicleLabelSetting): string => {
   }
 }
 
+const tripLabelToString = (setting: TripLabelSetting): string => {
+  switch (setting) {
+    case TripLabelSetting.Origin:
+      return "origin"
+    case TripLabelSetting.Destination:
+      return "destination"
+  }
+}
+
 export const putLadderVehicleLabel = (
   vehicleLabel: VehicleLabelSetting
 ): void => {
@@ -144,4 +153,10 @@ export const putVehicleAdherenceColors = (
     "vehicle_adherence_colors",
     vehicleAdherenceColorsToString(vehicleAdherenceColors)
   )
+}
+
+export const putMinischedulesTripLabel = (
+  tripLabel: TripLabelSetting
+): void => {
+  putUserSetting("minischedules_trip_label", tripLabelToString(tripLabel))
 }

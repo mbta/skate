@@ -269,6 +269,7 @@ defmodule Schedule.Data do
     gtfs_trips = Gtfs.Trip.parse(gtfs_files["trips.txt"], bus_route_ids)
     gtfs_trip_ids = MapSet.new(gtfs_trips, & &1.id)
     stop_times_by_id = StopTime.parse(gtfs_files["stop_times.txt"], gtfs_trip_ids)
+
     trips_by_id = Trip.merge_trips(gtfs_trips, hastus_trips, stop_times_by_id)
 
     %__MODULE__{

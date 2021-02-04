@@ -79,4 +79,5 @@ defmodule Skate.Settings.UserSettings do
   defp db_value(:ladder_page_vehicle_label, value), do: VehicleLabel.dump(value)
   defp db_value(:shuttle_page_vehicle_label, value), do: VehicleLabel.dump(value)
   defp db_value(:vehicle_adherence_colors, value), do: VehicleAdherenceColor.dump(value)
+  defp db_value(:minischedules_trip_label, value), do: TripLabel.dump(value)
 end

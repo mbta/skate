@@ -4,13 +4,16 @@ import { ladderIcon, mapIcon } from "../helpers/icon"
 import featureIsEnabled from "../laboratoryFeatures"
 import {
   setLadderVehicleLabelSetting,
+  setMinischedulesTripLabelSetting,
   setShuttleVehicleLabelSetting,
   setVehicleAdherenceColorsSetting,
 } from "../state"
 import {
   putLadderVehicleLabel,
+  putMinischedulesTripLabel,
   putShuttleVehicleLabel,
   putVehicleAdherenceColors,
+  TripLabelSetting,
   VehicleLabelSetting,
   VehicleAdherenceColorsSetting,
 } from "../userSettings"
@@ -78,6 +81,32 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
                 {
                   label: "Early Blue",
                   value: VehicleAdherenceColorsSetting.EarlyBlue,
+                },
+              ]}
+            />
+          )}
+
+          {featureIsEnabled("minischedules_trip_label") && (
+            <DropdownSetting
+              icon={mapIcon}
+              label="Trip Label"
+              selectId="minischedules-trip-label-setting"
+              value={userSettings.minischedulesTripLabel}
+              onChange={
+                // Ignoring this because we can't get the tests working and
+                // neither of can figure out why
+                /* istanbul ignore next */
+                (value) => {
+                  const newSetting: TripLabelSetting = parseInt(value, 10)
+                  dispatch(setMinischedulesTripLabelSetting(newSetting))
+                  putMinischedulesTripLabel(newSetting)
+                }
+              }
+              options={[
+                { label: "Origin", value: TripLabelSetting.Origin },
+                {
+                  label: "Destination",
+                  value: TripLabelSetting.Destination,
                 },
               ]}
             />

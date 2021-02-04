@@ -147,6 +147,21 @@ describe("SettingsPage", () => {
     expect(tree).toMatchSnapshot()
   })
 
+  test("renders with the minischedule-trip-label feature flag on", () => {
+    ;(featureIsEnabled as jest.Mock).mockImplementation(
+      (feature) => feature === "minischedules_trip_label"
+    )
+    const tree = renderer
+      .create(
+        <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+          <SettingsPage />
+        </StateDispatchProvider>
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
   test("selecting a vehicle adherence colors setting sets that value", () => {
     ;(featureIsEnabled as jest.Mock).mockImplementationOnce(
       (feature) => feature === "vehicle_adherence_colors_setting"
