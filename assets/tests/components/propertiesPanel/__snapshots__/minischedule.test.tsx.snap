@@ -2278,7 +2278,7 @@ exports[`MinischeduleRun renders a run using destination trip label mode 1`] = `
         <div
           className="m-minischedule__left-text"
         >
-          R_X Blue Triangle
+          R_X Revenue
         </div>
         <div
           className="m-minischedule__right-text"

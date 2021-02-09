@@ -586,11 +586,11 @@ const RevenueTrip = ({
   const [{ userSettings }] = useContext(StateDispatchContext)
   const tripLabelMode = userSettings.minischedulesTripLabel
 
-  const placeName = featureIsEnabled("minischedules_trip_label")
-    ? tripLabelMode === TripLabelSetting.Origin
+  const placeName =
+    featureIsEnabled("minischedules_trip_label") &&
+    tripLabelMode === TripLabelSetting.Origin
       ? trip.startPlace
-      : trip.endPlace
-    : trip.headsign
+      : trip.headsign
 
   const formattedRouteAndPlaceName: string = [
     route?.name || trip.routeId,
