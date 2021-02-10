@@ -41,8 +41,7 @@ export const vehicleLabelSetting = (
 
 export type VehicleLabelData = "run_id" | "vehicle_id"
 export type VehicleAdherenceColorsData = "early_red" | "early_blue"
-
-type TripLabelData = "origin" | "destination"
+export type TripLabelData = "origin" | "destination"
 
 interface SettingsData {
   ladder_page_vehicle_label: VehicleLabelData
