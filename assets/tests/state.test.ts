@@ -6,6 +6,7 @@ import {
 } from "../src/realtime.d"
 import * as State from "../src/state"
 import {
+  TripLabelSetting,
   VehicleLabelSetting,
   VehicleAdherenceColorsSetting,
 } from "../src/userSettings"
@@ -350,6 +351,21 @@ describe("reducer", () => {
     const expectedState = {
       ...initialState,
       selectedNotification: notification,
+    }
+    expect(newState).toEqual(expectedState)
+  })
+
+  test("setMinischedulesTripLabelSetting", () => {
+    const newState = reducer(
+      initialState,
+      State.setMinischedulesTripLabelSetting(TripLabelSetting.Origin)
+    )
+    const expectedState = {
+      ...initialState,
+      userSettings: {
+        ...initialState.userSettings,
+        minischedulesTripLabel: TripLabelSetting.Origin,
+      },
     }
     expect(newState).toEqual(expectedState)
   })
