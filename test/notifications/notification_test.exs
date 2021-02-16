@@ -8,7 +8,7 @@ defmodule Notifications.NotificationTest do
 
   import Ecto.Query
 
-  describe "get_or_create/1" do
+  describe "get_or_create_from_block_waiver/1" do
     test "associates a new notification with users subscribed to an affected route" do
       user1 = User.get_or_create("user1")
       user2 = User.get_or_create("user2")
@@ -22,7 +22,7 @@ defmodule Notifications.NotificationTest do
       RouteSettings.set("user2", selected_route_ids: ["2"])
       RouteSettings.set("user3", selected_route_ids: ["4", "5", "6", "7"])
 
-      notification_without_id = %Notification{
+      notification_values = %{
         created_at: 12345,
         block_id: "Z1-1",
         service_id: "FallWeekday",
@@ -34,7 +34,7 @@ defmodule Notifications.NotificationTest do
         end_time: 1_000_086_400
       }
 
-      notification_with_id = Notification.get_or_create(notification_without_id)
+      notification_with_id = Notification.get_or_create_from_block_waiver(notification_values)
 
       notification_users = Skate.Repo.all(from(DbNotificationUser))
       assert(length(notification_users) == 2)
@@ -62,7 +62,7 @@ defmodule Notifications.NotificationTest do
       RouteSettings.set("user2", selected_route_ids: ["1", "3"])
 
       route_1_unexpired =
-        Notification.get_or_create(%Notification{
+        Notification.get_or_create_from_block_waiver(%{
           block_id: "block",
           service_id: "service",
           reason: :other,
@@ -75,7 +75,7 @@ defmodule Notifications.NotificationTest do
         })
 
       _route_1_expired =
-        Notification.get_or_create(%Notification{
+        Notification.get_or_create_from_block_waiver(%{
           block_id: "block",
           service_id: "service",
           reason: :other,
@@ -88,7 +88,7 @@ defmodule Notifications.NotificationTest do
         })
 
       route_2_unexpired =
-        Notification.get_or_create(%Notification{
+        Notification.get_or_create_from_block_waiver(%{
           block_id: "block",
           service_id: "service",
           reason: :other,
@@ -101,7 +101,7 @@ defmodule Notifications.NotificationTest do
         })
 
       _route_2_expired =
-        Notification.get_or_create(%Notification{
+        Notification.get_or_create_from_block_waiver(%{
           block_id: "block",
           service_id: "service",
           reason: :other,
@@ -114,7 +114,7 @@ defmodule Notifications.NotificationTest do
         })
 
       route_3_unexpired =
-        Notification.get_or_create(%Notification{
+        Notification.get_or_create_from_block_waiver(%{
           block_id: "block",
           service_id: "service",
           reason: :other,
@@ -127,7 +127,7 @@ defmodule Notifications.NotificationTest do
         })
 
       _route_3_expired =
-        Notification.get_or_create(%Notification{
+        Notification.get_or_create_from_block_waiver(%{
           block_id: "block",
           service_id: "service",
           reason: :other,
@@ -140,7 +140,7 @@ defmodule Notifications.NotificationTest do
         })
 
       multiroute_unexpired =
-        Notification.get_or_create(%Notification{
+        Notification.get_or_create_from_block_waiver(%{
           block_id: "block",
           service_id: "service",
           reason: :other,
@@ -153,7 +153,7 @@ defmodule Notifications.NotificationTest do
         })
 
       _multiroute_expired =
-        Notification.get_or_create(%Notification{
+        Notification.get_or_create_from_block_waiver(%{
           block_id: "block",
           service_id: "service",
           reason: :other,
@@ -166,7 +166,7 @@ defmodule Notifications.NotificationTest do
         })
 
       _route_4_unexpired =
-        Notification.get_or_create(%Notification{
+        Notification.get_or_create_from_block_waiver(%{
           block_id: "block",
           service_id: "service",
           reason: :other,
@@ -179,7 +179,7 @@ defmodule Notifications.NotificationTest do
         })
 
       _route_4_expired =
-        Notification.get_or_create(%Notification{
+        Notification.get_or_create_from_block_waiver(%{
           block_id: "block",
           service_id: "service",
           reason: :other,
@@ -191,23 +191,24 @@ defmodule Notifications.NotificationTest do
           end_time: 19
         })
 
-      user1_notification_ids =
-        Notification.unexpired_notifications_for_user("user1", now_fn) |> Enum.map(& &1.id)
+      user1_notifications = Notification.unexpired_notifications_for_user("user1", now_fn)
+      user2_notifications = Notification.unexpired_notifications_for_user("user2", now_fn)
 
-      user2_notification_ids =
-        Notification.unexpired_notifications_for_user("user2", now_fn) |> Enum.map(& &1.id)
+      assert user1_notifications ==
+               [
+                 route_1_unexpired,
+                 multiroute_unexpired,
+                 route_2_unexpired
+               ]
+               |> Enum.map(&%Notification{&1 | state: :unread})
 
-      assert user1_notification_ids == [
-               route_1_unexpired.id,
-               multiroute_unexpired.id,
-               route_2_unexpired.id
-             ]
-
-      assert user2_notification_ids == [
-               route_1_unexpired.id,
-               route_3_unexpired.id,
-               multiroute_unexpired.id
-             ]
+      assert user2_notifications ==
+               [
+                 route_1_unexpired,
+                 route_3_unexpired,
+                 multiroute_unexpired
+               ]
+               |> Enum.map(&%Notification{&1 | state: :unread})
     end
   end
 end

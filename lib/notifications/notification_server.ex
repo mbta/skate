@@ -39,13 +39,10 @@ defmodule Notifications.NotificationServer do
 
   @impl true
   def handle_cast({:new_block_waivers, new_block_waivers_by_block_key}, state) do
-    new_notifications =
-      new_block_waivers_by_block_key
-      |> convert_new_block_waivers_to_notifications()
-
-    Enum.each(new_notifications, fn new_notification ->
-      notification_with_id = Notification.get_or_create(new_notification)
-      broadcast(notification_with_id, self())
+    new_block_waivers_by_block_key
+    |> convert_new_block_waivers_to_notifications()
+    |> Enum.each(fn new_notification ->
+      broadcast(new_notification, self())
     end)
 
     {:noreply, state}
@@ -59,15 +56,16 @@ defmodule Notifications.NotificationServer do
     |> Enum.flat_map(fn {block_key, block_waivers} ->
       Enum.map(
         block_waivers,
-        &convert_block_waiver_to_notification(block_key, &1)
+        &get_db_values_from_block_waiver(block_key, &1)
       )
     end)
     |> Enum.filter(& &1)
+    |> Enum.map(&Notification.get_or_create_from_block_waiver/1)
   end
 
-  @spec convert_block_waiver_to_notification(Block.key(), BlockWaiver.t()) ::
+  @spec get_db_values_from_block_waiver(Block.key(), BlockWaiver.t()) ::
           Notification.t() | nil
-  defp convert_block_waiver_to_notification(
+  defp get_db_values_from_block_waiver(
          {block_id, service_id},
          block_waiver
        ) do
@@ -108,7 +106,7 @@ defmodule Notifications.NotificationServer do
           nil -> {nil, nil, nil}
         end
 
-      %Notification{
+      %{
         block_id: block_id,
         service_id: service_id,
         reason: reason,

@@ -31,7 +31,7 @@ defmodule Notifications.Db.Notification do
     belongs_to(:block_waiver, DbBlockWaiver)
   end
 
-  def changeset(notification, attrs \\ %{}) do
+  def block_waiver_changeset(notification, attrs \\ %{}) do
     block_waiver =
       notification
       |> Map.from_struct()

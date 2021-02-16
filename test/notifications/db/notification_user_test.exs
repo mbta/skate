@@ -8,7 +8,7 @@ defmodule Notifications.Db.NotificationUserTest do
   describe "NotificationUser" do
     test "can be saved to the database" do
       {:ok, notification} =
-        DbNotification.changeset(%DbNotification{}, %{
+        DbNotification.block_waiver_changeset(%DbNotification{}, %{
           created_at: 1,
           block_id: "blk",
           service_id: "srv",
