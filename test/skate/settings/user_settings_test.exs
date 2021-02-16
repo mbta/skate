@@ -21,7 +21,8 @@ defmodule Skate.Settings.UserSettingsTest do
         DbUserSettings.changeset(%DbUserSettings{}, %{
           user_id: user.id,
           ladder_page_vehicle_label: :vehicle_id,
-          shuttle_page_vehicle_label: :run_id
+          shuttle_page_vehicle_label: :run_id,
+          vehicle_adherence_colors: :early_blue
         }),
         returning: true
       )
@@ -30,7 +31,8 @@ defmodule Skate.Settings.UserSettingsTest do
 
       assert result == %UserSettings{
                ladder_page_vehicle_label: :vehicle_id,
-               shuttle_page_vehicle_label: :run_id
+               shuttle_page_vehicle_label: :run_id,
+               vehicle_adherence_colors: :early_blue
              }
     end
 
@@ -40,7 +42,8 @@ defmodule Skate.Settings.UserSettingsTest do
 
       assert result == %UserSettings{
                ladder_page_vehicle_label: :run_id,
-               shuttle_page_vehicle_label: :vehicle_id
+               shuttle_page_vehicle_label: :vehicle_id,
+               vehicle_adherence_colors: :early_red
              }
 
       # created data for the new user

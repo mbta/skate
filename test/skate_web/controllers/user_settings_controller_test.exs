@@ -41,6 +41,20 @@ defmodule SkateWeb.UserSettingsControllerTest do
       assert result.shuttle_page_vehicle_label == :run_id
     end
 
+    test "can set vehicle_adherence_colors", %{conn: conn} do
+      conn =
+        conn
+        |> login()
+        |> put("/api/user_settings", %{
+          "field" => "vehicle_adherence_colors",
+          "value" => "early_blue"
+        })
+
+      response(conn, 200)
+      result = UserSettings.get_or_create(@username)
+      assert result.vehicle_adherence_colors == :early_blue
+    end
+
     test "gives 400 for invalid field", %{conn: conn} do
       conn =
         conn
