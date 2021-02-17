@@ -23,6 +23,10 @@ defmodule Notifications.NotificationServer do
     GenServer.cast(server, {:new_block_waivers, new_waivers_by_block_key})
   end
 
+  def bridge_movement(_new_bridge_status) do
+    nil
+  end
+
   def subscribe(username, server \\ default_name()) do
     registry_key = GenServer.call(server, :subscribe)
 

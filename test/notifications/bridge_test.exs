@@ -104,6 +104,85 @@ defmodule Notifications.BridgeTest do
       assert handle_info(:update, state) == {:noreply, {"Raised", expected_time}}
     end
 
+    test "notifies notification server when state changes" do
+      test_pid = self()
+
+      reassign_env(
+        :notifications,
+        :notifications_server_bridge_movement_fn,
+        fn message -> send(test_pid, message) end
+      )
+
+      bypass = Bypass.open()
+      reassign_env(:skate, :bridge_api_username, "user")
+      reassign_env(:skate, :bridge_api_password, "123")
+
+      raise_json = %{
+        "id" => "4321",
+        "bridge" => %{
+          "id" => "1",
+          "name" => "Main St Bridge",
+          "bridgeStatusId" => %{
+            "id" => "2",
+            "status" => "Raised"
+          }
+        },
+        "start_time" => "2020-01-01 01:01:01.0",
+        "last_update_time" => "2020-01-01 01:01:01.0",
+        "is_test_lift" => "false",
+        "lift_estimate" => %{
+          "id" => "4296",
+          "estimate_time" => "2020-01-01 01:06:01.0",
+          "duration" => "300",
+          "lift_estimate_vessel_array" => [
+            %{
+              "vessel_type" => "Motorship",
+              "vessel_direction" => "Upstream",
+              "vessel_count" => 1
+            },
+            %{
+              "vessel_type" => "Tugboat",
+              "vessel_direction" => "Upstream",
+              "vessel_count" => 1
+            }
+          ]
+        }
+      }
+
+      lower_json = %{
+        "id" => "4321",
+        "bridge" => %{
+          "id" => "1",
+          "name" => "Main St Bridge",
+          "bridgeStatusId" => %{
+            "id" => "2",
+            "status" => "Lowered"
+          }
+        }
+      }
+
+      Bypass.stub(bypass, "GET", "/raise", fn conn ->
+        Plug.Conn.resp(conn, 200, Jason.encode!(raise_json))
+      end)
+
+      Bypass.stub(bypass, "GET", "/lower", fn conn ->
+        Plug.Conn.resp(conn, 200, Jason.encode!(lower_json))
+      end)
+
+      # No messages to the notification server if the original state is nil,
+      # or the new state is identical to the original state.
+      reassign_env(:skate, :bridge_url, "http://localhost:#{bypass.port}/raise")
+      {:noreply, raised_state} = handle_info(:update, nil)
+      {:noreply, ^raised_state} = handle_info(:update, raised_state)
+      refute_received({"Raised", _})
+
+      # But transitioning to the lowered state ought to send a message
+
+      reassign_env(:skate, :bridge_url, "http://localhost:#{bypass.port}/lower")
+      {:noreply, _lowered_state} = handle_info(:update, raised_state)
+      assert_received({"Lowered", nil})
+    end
+
     test "Logs warning on bad message" do
       log =
         capture_log([level: :warn], fn ->

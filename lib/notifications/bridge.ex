@@ -6,14 +6,6 @@ defmodule Notifications.Bridge do
   use GenServer
   require Logger
 
-  defstruct bridge1_status: nil,
-            bridge1_lowering_time: []
-
-  @type t :: %__MODULE__{
-          bridge1_status: String.t() | nil,
-          bridge1_lowering_time: DateTime.t() | nil
-        }
-
   @fetch_ms 60 * 1_000
 
   @spec default_name() :: GenServer.name()
@@ -44,15 +36,30 @@ defmodule Notifications.Bridge do
 
       _ ->
         schedule_update(self())
-        {:ok, %__MODULE__{}}
+        {:ok, nil}
     end
   end
 
-  def handle_info(:update, _state) do
+  def handle_info(:update, state) do
     schedule_update(self())
     new_state = fetch_status()
 
-    {:noreply, new_state}
+    if new_state do
+      if state && state != new_state do
+        bridge_movement_fn =
+          Application.get_env(
+            :notifications,
+            :notifications_server_bridge_movement_fn,
+            &Notifications.NotificationServer.bridge_movement/1
+          )
+
+        bridge_movement_fn.(new_state)
+      end
+
+      {:noreply, new_state}
+    else
+      {:noreply, state}
+    end
   end
 
   def handle_info(msg, state) do
@@ -64,7 +71,6 @@ defmodule Notifications.Bridge do
     Process.send_after(pid, :update, @fetch_ms)
   end
 
-  @spec fetch_status() :: __MODULE__ | nil
   defp fetch_status() do
     headers = [{"Authorization", get_auth_header()}]
 
@@ -73,8 +79,6 @@ defmodule Notifications.Bridge do
     |> parse_response()
   end
 
-  @spec parse_response({:ok | :error, HTTPoison.Response.t()}) ::
-          __MODULE__ | nil
   def parse_response({:ok, %HTTPoison.Response{status_code: status, body: body}})
       when status >= 200 and status < 300 do
     case Jason.decode(body) do
