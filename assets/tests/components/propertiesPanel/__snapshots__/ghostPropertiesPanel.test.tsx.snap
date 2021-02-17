@@ -23,7 +23,7 @@ exports[`GhostPropertiesPanel renders 1`] = `
           viewBox="-32 -20 64 64"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--large ghost"
+            className="m-vehicle-icon m-vehicle-icon--large ghost early-red"
           >
             <rect
               className="m-vehicle-icon__label-background"
@@ -286,7 +286,7 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
           viewBox="-32 -20 64 64"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--large ghost"
+            className="m-vehicle-icon m-vehicle-icon--large ghost early-red"
           >
             <rect
               className="m-vehicle-icon__label-background"
@@ -595,7 +595,7 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
           viewBox="-32 -20 64 64"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--large ghost"
+            className="m-vehicle-icon m-vehicle-icon--large ghost early-red"
           >
             <rect
               className="m-vehicle-icon__label-background"

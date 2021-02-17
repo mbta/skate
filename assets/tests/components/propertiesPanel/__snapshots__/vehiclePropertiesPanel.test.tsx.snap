@@ -23,7 +23,7 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
           viewBox="-32 -20 64 64"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--large on-time"
+            className="m-vehicle-icon m-vehicle-icon--large on-time early-red"
           >
             <rect
               className="m-vehicle-icon__label-background"
@@ -79,7 +79,7 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
            Forest Hills
         </div>
         <div
-          className="m-properties-panel__schedule-adherence on-time"
+          className="m-properties-panel__schedule-adherence on-time early-red"
         >
           <div
             className="m-properties-panel__schedule-adherence-status-icon"
@@ -348,7 +348,7 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
           viewBox="-32 -20 64 64"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--large on-time"
+            className="m-vehicle-icon m-vehicle-icon--large on-time early-red"
           >
             <rect
               className="m-vehicle-icon__label-background"
@@ -404,7 +404,7 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
            Forest Hills
         </div>
         <div
-          className="m-properties-panel__schedule-adherence on-time"
+          className="m-properties-panel__schedule-adherence on-time early-red"
         >
           <div
             className="m-properties-panel__schedule-adherence-status-icon"
@@ -673,7 +673,7 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
           viewBox="-32 -20 64 64"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--large late"
+            className="m-vehicle-icon m-vehicle-icon--large late early-red"
           >
             <rect
               className="m-vehicle-icon__label-background"
@@ -729,7 +729,7 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
            Forest Hills
         </div>
         <div
-          className="m-properties-panel__schedule-adherence late"
+          className="m-properties-panel__schedule-adherence late early-red"
         >
           <div
             className="m-properties-panel__schedule-adherence-status-icon"
@@ -1214,7 +1214,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
           viewBox="-32 -20 64 64"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--large on-time"
+            className="m-vehicle-icon m-vehicle-icon--large on-time early-red"
           >
             <rect
               className="m-vehicle-icon__label-background"
@@ -1270,7 +1270,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
            Forest Hills
         </div>
         <div
-          className="m-properties-panel__schedule-adherence on-time"
+          className="m-properties-panel__schedule-adherence on-time early-red"
         >
           <div
             className="m-properties-panel__schedule-adherence-status-icon"
@@ -1634,7 +1634,7 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
           viewBox="-32 -20 64 64"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--large early"
+            className="m-vehicle-icon m-vehicle-icon--large early early-red"
           >
             <rect
               className="m-vehicle-icon__label-background"
@@ -1690,7 +1690,7 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
            Forest Hills
         </div>
         <div
-          className="m-properties-panel__schedule-adherence early"
+          className="m-properties-panel__schedule-adherence early early-red"
         >
           <div
             className="m-properties-panel__schedule-adherence-status-icon"
@@ -1959,7 +1959,7 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
           viewBox="-32 -20 64 64"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--large off-course"
+            className="m-vehicle-icon m-vehicle-icon--large off-course early-red"
           >
             <rect
               className="m-vehicle-icon__label-background"
@@ -2015,7 +2015,7 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
            Forest Hills
         </div>
         <div
-          className="m-properties-panel__schedule-adherence off-course"
+          className="m-properties-panel__schedule-adherence off-course early-red"
         >
           <div
             className="m-properties-panel__schedule-adherence-status-icon"
@@ -2298,7 +2298,7 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
           viewBox="-32 -20 64 64"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--large on-time"
+            className="m-vehicle-icon m-vehicle-icon--large on-time early-red"
           >
             <rect
               className="m-vehicle-icon__label-background"
@@ -2354,7 +2354,7 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
            Forest Hills
         </div>
         <div
-          className="m-properties-panel__schedule-adherence on-time"
+          className="m-properties-panel__schedule-adherence on-time early-red"
         >
           <div
             className="m-properties-panel__schedule-adherence-status-icon"

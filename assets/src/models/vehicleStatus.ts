@@ -1,6 +1,7 @@
 import featureIsEnabled from "../laboratoryFeatures"
 import { Vehicle, VehicleOrGhost } from "../realtime.d"
 import { isGhost, isVehicle } from "./vehicle"
+import { VehicleAdherenceColorsSetting } from "../userSettings"
 
 /** Where a vehicle is relative to its schedule.
  * Swiftly assigns this to all vehicles.
@@ -119,12 +120,18 @@ export const headwaySpacingToString = (spacing: HeadwaySpacing): string => {
   }
 }
 
-export const statusClass = (status: DrawnStatus): string => {
-  switch (status) {
-    case "plain":
-      return ""
-
-    default:
-      return status
+export const statusClasses = (
+  status: DrawnStatus,
+  vehicleAdherenceColors: VehicleAdherenceColorsSetting
+): string[] => {
+  if (status === "plain") {
+    return [""]
+  } else {
+    switch (vehicleAdherenceColors) {
+      case VehicleAdherenceColorsSetting.EarlyRed:
+        return [status, "early-red"]
+      case VehicleAdherenceColorsSetting.EarlyBlue:
+        return [status, "early-blue"]
+    }
   }
 }

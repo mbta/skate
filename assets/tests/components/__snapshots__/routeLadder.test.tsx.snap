@@ -401,7 +401,7 @@ Array [
         transform="translate(63,-27.5)"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium on-time"
+          className="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -545,7 +545,7 @@ Array [
           viewBox="-8.36 -7.6 16.72 15.2"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--small on-time"
+            className="m-vehicle-icon m-vehicle-icon--small on-time early-red"
           >
             <path
               className="m-vehicle-icon__triangle"
@@ -627,7 +627,7 @@ Array [
         transform="translate(63,-27.5)"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium on-time"
+          className="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -1261,7 +1261,7 @@ Array [
         transform="translate(0,-35)"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--small on-time"
+          className="m-vehicle-icon m-vehicle-icon--small on-time early-red"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -1294,7 +1294,7 @@ Array [
         transform="translate(0,-85)"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--small on-time"
+          className="m-vehicle-icon m-vehicle-icon--small on-time early-red"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -1481,7 +1481,7 @@ Array [
       width={184}
     >
       <line
-        className="m-ladder__scheduled-line on-time"
+        className="m-ladder__scheduled-line on-time early-red"
         x1={-63}
         x2={-40}
         y1={-110}
@@ -1493,7 +1493,7 @@ Array [
         transform="translate(63,-27.5)"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium on-time"
+          className="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -1535,7 +1535,7 @@ Array [
         transform="translate(63,-110)"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium ghost m-vehicle-icon--highlighted"
+          className="m-vehicle-icon m-vehicle-icon--medium m-vehicle-icon--highlighted ghost early-red"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -1621,7 +1621,7 @@ Array [
         transform="translate(-63,-110)"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--medium on-time"
+          className="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
         >
           <rect
             className="m-vehicle-icon__label-background"
@@ -1906,7 +1906,7 @@ Array [
           viewBox="-8.36 -7.6 16.72 15.2"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--small on-time"
+            className="m-vehicle-icon m-vehicle-icon--small on-time early-red"
           >
             <path
               className="m-vehicle-icon__triangle"
@@ -1948,7 +1948,7 @@ Array [
           viewBox="-8.36 -7.6 16.72 15.2"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--small on-time"
+            className="m-vehicle-icon m-vehicle-icon--small on-time early-red"
           >
             <path
               className="m-vehicle-icon__triangle"

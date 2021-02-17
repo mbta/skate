@@ -10,6 +10,7 @@ import {
   putShuttleVehicleLabel,
   UserSettings,
   userSettingsFromData,
+  putVehicleAdherenceColors,
 } from "../userSettings"
 
 const APP_STATE_KEY = "mbta-skate-state"
@@ -72,6 +73,7 @@ const getUserSettings = (loadedState: object | undefined): UserSettings => {
     }).settings
     putLadderVehicleLabel(localStorageSettings.ladderVehicleLabel)
     putShuttleVehicleLabel(localStorageSettings.shuttleVehicleLabel)
+    putVehicleAdherenceColors(localStorageSettings.vehicleAdherenceColors)
     // settings will be removed from localStorage when they're next saved
     // prefer these settings to the ones that came from the backend
     userSettings = localStorageSettings

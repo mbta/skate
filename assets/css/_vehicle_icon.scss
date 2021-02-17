@@ -6,11 +6,17 @@
   .on-time & {
     fill: $color-vehicle-ontime;
   }
-  .early & {
-    fill: $color-vehicle-early;
+  .early.early-red & {
+    fill: $color-vehicle-red;
   }
-  .late & {
-    fill: $color-vehicle-late;
+  .early.early-blue & {
+    fill: $color-vehicle-blue;
+  }
+  .late.early-red & {
+    fill: $color-vehicle-blue;
+  }
+  .late.early-blue & {
+    fill: $color-vehicle-red;
   }
   .off-course & {
     fill: $color-vehicle-off-course;

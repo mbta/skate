@@ -163,7 +163,7 @@ exports[`IncomingBox renders a ghost 1`] = `
         viewBox="-8.36 -7.6 16.72 15.2"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--small ghost"
+          className="m-vehicle-icon m-vehicle-icon--small ghost early-red"
         >
           <g
             transform="scale(0.26599999999999996) translate(-24,-23)"
@@ -252,7 +252,7 @@ exports[`IncomingBox renders a vehicle 1`] = `
         viewBox="-8.36 -7.6 16.72 15.2"
       >
         <g
-          className="m-vehicle-icon m-vehicle-icon--small on-time"
+          className="m-vehicle-icon m-vehicle-icon--small on-time early-red"
         >
           <path
             className="m-vehicle-icon__triangle"

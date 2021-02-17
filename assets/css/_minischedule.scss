@@ -195,12 +195,20 @@
     stroke-width: 0.25rem;
   }
 
-  &.early {
-    background-color: $color-vehicle-early-light;
-    border-left-color: $color-vehicle-early;
+  &.early.early-red {
+    background-color: $color-vehicle-red-light;
+    border-left-color: $color-vehicle-red;
 
     svg {
-      fill: $color-vehicle-early;
+      fill: $color-vehicle-red;
+    }
+  }
+  &.early.early-blue {
+    background-color: $color-vehicle-blue-light;
+    border-left-color: $color-vehicle-blue;
+
+    svg {
+      fill: $color-vehicle-blue;
     }
   }
 
@@ -213,12 +221,20 @@
     }
   }
 
-  &.late {
-    background-color: $color-vehicle-late-light;
-    border-left-color: $color-vehicle-late;
+  &.late.early-red {
+    background-color: $color-vehicle-blue-light;
+    border-left-color: $color-vehicle-blue;
 
     svg {
-      fill: $color-vehicle-late;
+      fill: $color-vehicle-blue;
+    }
+  }
+  &.late.early-blue {
+    background-color: $color-vehicle-red-light;
+    border-left-color: $color-vehicle-red;
+
+    svg {
+      fill: $color-vehicle-red;
     }
   }
 

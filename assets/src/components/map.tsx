@@ -23,7 +23,7 @@ import FullscreenControl from "react-leaflet-fullscreen"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"
-import { drawnStatus, statusClass } from "../models/vehicleStatus"
+import { drawnStatus, statusClasses } from "../models/vehicleStatus"
 import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
 import { Shape } from "../schedule"
 import { selectVehicle } from "../state"
@@ -46,7 +46,8 @@ export const defaultCenter: LatLngExpression = {
 
 const makeVehicleIcon = (
   vehicle: Vehicle,
-  isPrimary: boolean
+  isPrimary: boolean,
+  userSettings: UserSettings
 ): Leaflet.DivIcon => {
   const centerX = 12
   const centerY = 12
@@ -58,7 +59,12 @@ const makeVehicleIcon = (
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          class="${statusClass(drawnStatus(vehicle))}"
+          class="${className(
+            statusClasses(
+              drawnStatus(vehicle),
+              userSettings.vehicleAdherenceColors
+            )
+          )}"
           d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
           transform="scale(${isPrimary ? 1.0 : 0.8}) rotate(${
       vehicle.bearing
@@ -114,7 +120,11 @@ const Vehicle = ({
     : // tslint:disable-next-line: no-empty
       () => {}
   const position: LatLngExpression = [vehicle.latitude, vehicle.longitude]
-  const vehicleIcon: Leaflet.DivIcon = makeVehicleIcon(vehicle, isPrimary)
+  const vehicleIcon: Leaflet.DivIcon = makeVehicleIcon(
+    vehicle,
+    isPrimary,
+    appState.userSettings
+  )
   const labelIcon: Leaflet.DivIcon = makeLabelIcon(
     vehicle,
     isPrimary,

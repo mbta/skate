@@ -88,12 +88,18 @@
   stroke: $color-vehicle-normal-line;
   stroke-width: 2;
 
-  &.early {
-    stroke: $color-vehicle-early;
+  &.early.early-red {
+    stroke: $color-vehicle-red;
+  }
+  &.early.early-blue {
+    stroke: $color-vehicle-blue;
   }
 
-  &.late {
-    stroke: $color-vehicle-late;
+  &.late.early-red {
+    stroke: $color-vehicle-blue;
+  }
+  &.late.early-blue {
+    stroke: $color-vehicle-red;
   }
 }
 

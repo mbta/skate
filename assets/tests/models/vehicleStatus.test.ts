@@ -6,9 +6,13 @@ import {
   humanReadableHeadwaySpacing,
   humanReadableScheduleAdherence,
   onTimeStatus,
-  statusClass,
+  statusClasses,
 } from "../../src/models/vehicleStatus"
 import { Vehicle } from "../../src/realtime.d"
+import {
+  defaultUserSettings,
+  VehicleAdherenceColorsSetting,
+} from "../../src/userSettings"
 
 jest.mock("../../src/laboratoryFeatures", () => ({
   __esModule: true,
@@ -178,12 +182,22 @@ describe("headwaySpacingToString", () => {
   })
 })
 
-describe("status class", () => {
+describe("statusClasses", () => {
   test("no class for plain", () => {
-    expect(statusClass("plain")).toEqual("")
+    expect(
+      statusClasses("plain", defaultUserSettings.vehicleAdherenceColors)
+    ).toEqual([""])
   })
 
   test("other statuses have a class", () => {
-    expect(statusClass("off-course")).toEqual("off-course")
+    expect(
+      statusClasses("off-course", defaultUserSettings.vehicleAdherenceColors)
+    ).toEqual(["off-course", "early-red"])
+  })
+
+  test("other statuses have a class", () => {
+    expect(
+      statusClasses("off-course", VehicleAdherenceColorsSetting.EarlyBlue)
+    ).toEqual(["off-course", "early-blue"])
   })
 })

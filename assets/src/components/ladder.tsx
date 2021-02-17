@@ -3,6 +3,7 @@ import React, { useContext, useRef } from "react"
 import ReactTooltip from "react-tooltip"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { flatten, partition } from "../helpers/array"
+import { className } from "../helpers/dom"
 import vehicleLabel from "../helpers/vehicleLabel"
 import featureIsEnabled from "../laboratoryFeatures"
 import { blockWaiverAlertStyle } from "../models/blockWaiver"
@@ -22,7 +23,7 @@ import {
 } from "../models/layoverVehicle"
 import { isGhost, isVehicle } from "../models/vehicle"
 import { VehiclesByPosition } from "../models/vehiclesByPosition"
-import { drawnStatus, statusClass } from "../models/vehicleStatus"
+import { drawnStatus, statusClasses } from "../models/vehicleStatus"
 import { Vehicle, VehicleId, VehicleTimepointStatus } from "../realtime.d"
 import { Timepoint } from "../schedule.d"
 import { selectVehicle } from "../state"
@@ -337,6 +338,8 @@ const ScheduledLine = ({
 }: {
   ladderVehicle: LadderVehicle
 }) => {
+  const [{ userSettings }] = useContext(StateDispatchContext)
+
   const status = drawnStatus(vehicle)
   if (
     scheduledY === undefined ||
@@ -353,7 +356,11 @@ const ScheduledLine = ({
 
   return (
     <line
-      className={`m-ladder__scheduled-line ${statusClass(status)}`}
+      className={className(
+        ["m-ladder__scheduled-line"].concat(
+          statusClasses(status, userSettings.vehicleAdherenceColors)
+        )
+      )}
       x1={x}
       y1={y}
       x2={roadLineX}

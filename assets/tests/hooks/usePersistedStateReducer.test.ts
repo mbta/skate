@@ -15,7 +15,10 @@ import {
   State,
   toggleLadderCrowding,
 } from "../../src/state"
-import { VehicleLabelSetting } from "../../src/userSettings"
+import {
+  VehicleLabelSetting,
+  VehicleAdherenceColorsSetting,
+} from "../../src/userSettings"
 
 // tslint:disable: react-hooks-nesting
 
@@ -36,6 +39,7 @@ jest.mock("../../src/appData", () => ({
     userSettings: JSON.stringify({
       ladder_page_vehicle_label: "run_id",
       shuttle_page_vehicle_label: "vehicle_id",
+      vehicle_adherence_colors: "early_red",
     }),
   })),
 }))
@@ -109,6 +113,7 @@ describe("usePersistedStateReducer", () => {
       userSettings: JSON.stringify({
         ladder_page_vehicle_label: "run_id",
         shuttle_page_vehicle_label: "run_id",
+        vehicle_adherence_colors: "early_blue",
       }),
       routeSettings: JSON.stringify({
         selected_route_ids: ["39"],
@@ -123,6 +128,9 @@ describe("usePersistedStateReducer", () => {
     expect(state.userSettings.shuttleVehicleLabel).toEqual(
       VehicleLabelSetting.RunNumber
     )
+    expect(state.userSettings.vehicleAdherenceColors).toEqual(
+      VehicleAdherenceColorsSetting.EarlyBlue
+    )
     expect(state.selectedRouteIds).toEqual(["39"])
     expect(state.ladderDirections).toEqual({ "77": 1 })
     expect(state.ladderCrowdingToggles).toEqual({ "83": true })
@@ -133,7 +141,7 @@ describe("usePersistedStateReducer", () => {
       .spyOn(window.localStorage, "getItem")
       .mockImplementation(
         (_stateKey: string) =>
-          '{"settings":{"ladderVehicleLabel":1,"shuttleVehicleLabel":1},"selectedRouteIds":["39"],"ladderDirections":{"77":1},"ladderCrowdingToggles":{"83":true}}'
+          '{"settings":{"ladderVehicleLabel":1,"shuttleVehicleLabel":1,"vehicleAdherenceColors":2},"selectedRouteIds":["39"],"ladderDirections":{"77":1},"ladderCrowdingToggles":{"83":true}}'
       )
 
     const { result } = renderHook(() => usePersistedStateReducer())
@@ -142,6 +150,7 @@ describe("usePersistedStateReducer", () => {
     expect(state.userSettings).toEqual({
       ladderVehicleLabel: VehicleLabelSetting.RunNumber,
       shuttleVehicleLabel: VehicleLabelSetting.RunNumber,
+      vehicleAdherenceColors: VehicleAdherenceColorsSetting.EarlyBlue,
     })
     expect(state.selectedRouteIds).toEqual(["39"])
     expect(state.ladderDirections).toEqual({ "77": 1 })
@@ -156,6 +165,30 @@ describe("usePersistedStateReducer", () => {
     expect(setItemParam).not.toContain("selectedRouteIds")
     expect(setItemParam).not.toContain("ladderDirections")
     expect(setItemParam).not.toContain("ladderCrowdingToggles")
+  })
+
+  test("if settings are in localstorage with vehicleAdherenceColors set to early_red, copies them to the backend and uses them", () => {
+    jest
+      .spyOn(window.localStorage, "getItem")
+      .mockImplementation(
+        (_stateKey: string) =>
+          '{"settings":{"ladderVehicleLabel":1,"shuttleVehicleLabel":1,"vehicleAdherenceColors":1}}'
+      )
+
+    const { result } = renderHook(() => usePersistedStateReducer())
+    const [state] = result.current
+
+    expect(state.userSettings).toEqual({
+      ladderVehicleLabel: VehicleLabelSetting.RunNumber,
+      shuttleVehicleLabel: VehicleLabelSetting.RunNumber,
+      vehicleAdherenceColors: VehicleAdherenceColorsSetting.EarlyRed,
+    })
+    // settings were saved to the database
+    expect(putUserSetting).toHaveBeenCalled()
+    // settings were removed from local storage
+    const setItemParam = (window.localStorage.setItem as jest.Mock).mock
+      .calls[0][1]
+    expect(setItemParam).not.toContain("settings")
   })
 
   test("sends updated route settings to backend when one changes", () => {
