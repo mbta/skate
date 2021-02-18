@@ -53,7 +53,7 @@ defmodule Notifications.BridgeTest do
 
       Bypass.expect(bypass, fn conn -> Plug.Conn.resp(conn, 200, Jason.encode!(json)) end)
 
-      assert handle_info(:update, state) == {:noreply, {"Lowered", nil}}
+      assert handle_info(:update, state) == {:noreply, {:lowered, nil}}
     end
 
     test "parses valid response with bridge raised" do
@@ -99,9 +99,9 @@ defmodule Notifications.BridgeTest do
       Bypass.expect(bypass, fn conn -> Plug.Conn.resp(conn, 200, Jason.encode!(json)) end)
 
       naive_date = ~N[2020-01-01 01:06:01.0]
-      expected_time = Timex.to_datetime(naive_date, "America/New_York")
+      expected_time = Timex.to_datetime(naive_date, "America/New_York") |> DateTime.to_unix()
 
-      assert handle_info(:update, state) == {:noreply, {"Raised", expected_time}}
+      assert handle_info(:update, state) == {:noreply, {:raised, expected_time}}
     end
 
     test "notifies notification server when state changes" do
@@ -174,13 +174,13 @@ defmodule Notifications.BridgeTest do
       reassign_env(:skate, :bridge_url, "http://localhost:#{bypass.port}/raise")
       {:noreply, raised_state} = handle_info(:update, nil)
       {:noreply, ^raised_state} = handle_info(:update, raised_state)
-      refute_received({"Raised", _})
+      refute_received({:raised, _})
 
       # But transitioning to the lowered state ought to send a message
 
       reassign_env(:skate, :bridge_url, "http://localhost:#{bypass.port}/lower")
       {:noreply, _lowered_state} = handle_info(:update, raised_state)
-      assert_received({"Lowered", nil})
+      assert_received({:lowered, nil})
     end
 
     test "Logs warning on bad message" do

@@ -2,11 +2,14 @@ defmodule Notifications.NotificationTest do
   use Skate.DataCase
 
   alias Notifications.Notification
+  alias Notifications.Db.Notification, as: DbNotification
   alias Notifications.Db.NotificationUser, as: DbNotificationUser
   alias Skate.Settings.RouteSettings
   alias Skate.Settings.User
 
   import Ecto.Query
+
+  @chelsea_st_bridge_route_ids ["112", "743"]
 
   describe "get_or_create_from_block_waiver/1" do
     test "associates a new notification with users subscribed to an affected route" do
@@ -58,8 +61,8 @@ defmodule Notifications.NotificationTest do
 
       RouteSettings.get_or_create("user1")
       RouteSettings.get_or_create("user2")
-      RouteSettings.set("user1", selected_route_ids: ["1", "2"])
-      RouteSettings.set("user2", selected_route_ids: ["1", "3"])
+      RouteSettings.set("user1", selected_route_ids: ["1", "2", "112"])
+      RouteSettings.set("user2", selected_route_ids: ["1", "3", "743"])
 
       route_1_unexpired =
         Notification.get_or_create_from_block_waiver(%{
@@ -191,24 +194,99 @@ defmodule Notifications.NotificationTest do
           end_time: 19
         })
 
-      user1_notifications = Notification.unexpired_notifications_for_user("user1", now_fn)
-      user2_notifications = Notification.unexpired_notifications_for_user("user2", now_fn)
+      # Due to the blackout logic in get_or_create_from_bridge_movement, we
+      # have to rig the inserted_at timestamps of these bridge movements for
+      # the test to work the way we would expect.
+
+      bridge_lowered_unexpired =
+        Notification.get_or_create_from_bridge_movement(%{
+          status: :lowered,
+          lowering_time: nil,
+          created_at: baseline_time - eight_hours + 1234
+        })
+
+      Skate.Repo.query!(
+        "UPDATE bridge_movements SET inserted_at = inserted_at - interval '1 hour'"
+      )
+
+      filled_in_bridge_lowered_unexpired = %Notification{
+        bridge_lowered_unexpired
+        | start_time: baseline_time - eight_hours + 1234,
+          end_time: baseline_time + 1234,
+          reason: :chelsea_st_bridge_lowered,
+          route_ids: @chelsea_st_bridge_route_ids,
+          run_ids: [],
+          trip_ids: []
+      }
+
+      _bridge_lowered_expired =
+        Notification.get_or_create_from_bridge_movement(%{
+          status: :lowered,
+          lowering_time: nil,
+          created_at: baseline_time - eight_hours
+        })
+
+      Skate.Repo.query!(
+        "UPDATE bridge_movements SET inserted_at = inserted_at - interval '1 hour'"
+      )
+
+      bridge_raised_unexpired =
+        Notification.get_or_create_from_bridge_movement(%{
+          status: :raised,
+          lowering_time: baseline_time - eight_hours + 999,
+          created_at: baseline_time - eight_hours + 2
+        })
+
+      Skate.Repo.query!(
+        "UPDATE bridge_movements SET inserted_at = inserted_at - interval '1 hour'"
+      )
+
+      filled_in_bridge_raised_unexpired = %Notification{
+        bridge_raised_unexpired
+        | start_time: baseline_time - eight_hours + 2,
+          end_time: baseline_time - eight_hours + 999,
+          reason: :chelsea_st_bridge_raised,
+          route_ids: @chelsea_st_bridge_route_ids,
+          run_ids: [],
+          trip_ids: []
+      }
+
+      _bridge_raised_expired =
+        Notification.get_or_create_from_bridge_movement(%{
+          status: :raised,
+          lowering_time: nil,
+          created_at: baseline_time - eight_hours
+        })
+
+      assert Skate.Repo.aggregate(DbNotification, :count) == 14
+
+      user1_notifications =
+        Notification.unexpired_notifications_for_user("user1", now_fn) |> Enum.sort_by(& &1.id)
+
+      user2_notifications =
+        Notification.unexpired_notifications_for_user("user2", now_fn) |> Enum.sort_by(& &1.id)
 
       assert user1_notifications ==
                [
                  route_1_unexpired,
                  multiroute_unexpired,
-                 route_2_unexpired
+                 route_2_unexpired,
+                 filled_in_bridge_lowered_unexpired,
+                 filled_in_bridge_raised_unexpired
                ]
                |> Enum.map(&%Notification{&1 | state: :unread})
+               |> Enum.sort_by(& &1.id)
 
       assert user2_notifications ==
                [
                  route_1_unexpired,
                  route_3_unexpired,
-                 multiroute_unexpired
+                 multiroute_unexpired,
+                 filled_in_bridge_lowered_unexpired,
+                 filled_in_bridge_raised_unexpired
                ]
                |> Enum.map(&%Notification{&1 | state: :unread})
+               |> Enum.sort_by(& &1.id)
     end
   end
 end

@@ -106,7 +106,7 @@ defmodule Notifications.Bridge do
     #   or
     # {"bridge":{"id":1,"name":"Chelsea St Bridge","bridgeStatusId":{"id":2,"status":"Raised","lift_estimate":{"estimate_time":"2019-09-26 06:47:05.0"}}}}
 
-    status = get_in(response, ["bridge", "bridgeStatusId", "status"])
+    raw_status = get_in(response, ["bridge", "bridgeStatusId", "status"])
 
     lowering_time =
       response
@@ -115,10 +115,16 @@ defmodule Notifications.Bridge do
       |> do_get_datetime()
 
     Logger.info(
-      "bridge_response status=#{inspect(status)}, lowering_time=#{inspect(lowering_time)}"
+      "bridge_response status=#{inspect(raw_status)}, lowering_time=#{inspect(lowering_time)}"
     )
 
-    {status, lowering_time}
+    status =
+      case raw_status do
+        "Lowered" -> :lowered
+        "Raised" -> :raised
+      end
+
+    {status, lowering_time && DateTime.to_unix(lowering_time)}
   end
 
   defp do_get_datetime({:ok, estimate_time}) do

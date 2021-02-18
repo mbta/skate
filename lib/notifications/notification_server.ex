@@ -23,8 +23,8 @@ defmodule Notifications.NotificationServer do
     GenServer.cast(server, {:new_block_waivers, new_waivers_by_block_key})
   end
 
-  def bridge_movement(_new_bridge_status) do
-    nil
+  def bridge_movement(bridge_movement, server \\ default_name()) do
+    GenServer.cast(server, {:bridge_movement, bridge_movement})
   end
 
   def subscribe(username, server \\ default_name()) do
@@ -48,6 +48,15 @@ defmodule Notifications.NotificationServer do
     |> Enum.each(fn new_notification ->
       broadcast(new_notification, self())
     end)
+
+    {:noreply, state}
+  end
+
+  @impl true
+  def handle_cast({:bridge_movement, bridge_movement}, state) do
+    bridge_movement
+    |> convert_bridge_movement_to_notification
+    |> broadcast(self())
 
     {:noreply, state}
   end
@@ -143,6 +152,16 @@ defmodule Notifications.NotificationServer do
       31 -> :adjusted
       _ -> nil
     end
+  end
+
+  defp convert_bridge_movement_to_notification(bridge_movement) do
+    bridge_movement
+    |> get_db_values_from_bridge_movement
+    |> Notification.get_or_create_from_bridge_movement()
+  end
+
+  defp get_db_values_from_bridge_movement({bridge_status, lowering_time}) do
+    %{status: bridge_status, lowering_time: lowering_time}
   end
 
   defp broadcast(notification, registry_key) do
