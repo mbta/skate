@@ -19,6 +19,22 @@ export const useMinischeduleRun = (tripId: TripId): Run | null | undefined => {
  * undefined means loading
  * null means loaded, but there was no run found
  */
+export const useMinischeduleRuns = (
+  tripIds: TripId[]
+): (Run | null)[] | undefined => {
+  const [runs, setRuns] = useState<(Run | null)[] | undefined>(undefined)
+  useEffect(() => {
+    Promise.all(tripIds.map((tripId) => fetchMinischeduleRun(tripId))).then(
+      setRuns
+    )
+  }, [JSON.stringify(tripIds)])
+  return runs
+}
+
+/**
+ * undefined means loading
+ * null means loaded, but there was no run found
+ */
 export const useMinischeduleBlock = (
   tripId: TripId
 ): Block | null | undefined => {

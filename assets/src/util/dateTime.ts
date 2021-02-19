@@ -1,5 +1,21 @@
 export const now = (): Date => new Date()
 
+export const serviceDaySeconds = (currentTime: Date): number => {
+  const serviceDateStart = new Date(currentTime.getTime())
+
+  if (serviceDateStart.getHours() < 3) {
+    serviceDateStart.setDate(serviceDateStart.getDate() - 1)
+  }
+
+  serviceDateStart.setHours(12)
+  serviceDateStart.setMinutes(0)
+  serviceDateStart.setSeconds(0)
+  serviceDateStart.setMilliseconds(0)
+  serviceDateStart.setTime(serviceDateStart.getTime() - 12 * 60 * 60 * 1000)
+
+  return currentTime.getTime() / 1000 - serviceDateStart.getTime() / 1000
+}
+
 export const dateFromEpochSeconds = (time: number): Date =>
   new Date(time * 1_000)
 

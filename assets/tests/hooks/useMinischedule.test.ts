@@ -3,9 +3,11 @@ import * as Api from "../../src/api"
 import {
   useMinischeduleBlock,
   useMinischeduleRun,
+  useMinischeduleRuns,
 } from "../../src/hooks/useMinischedule"
 import { Block, Run } from "../../src/minischedule"
 import { instantPromise, neverPromise } from "../testHelpers/mockHelpers"
+import { TripId } from "../../src/schedule"
 
 // tslint:disable: react-hooks-nesting
 
@@ -42,6 +44,53 @@ describe("useMinischeduleRun", () => {
     })
     rerender()
     expect(mockFetchShuttles).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe("useMinischeduleRuns", () => {
+  test("returns undefined while loading", () => {
+    const mockFetchMinischeduleRun: jest.Mock = Api.fetchMinischeduleRun as jest.Mock
+    const { result } = renderHook(() => {
+      return useMinischeduleRuns(["trip"])
+    })
+    expect(mockFetchMinischeduleRun).toHaveBeenCalledTimes(1)
+    expect(result.current).toEqual(undefined)
+  })
+
+  test("returns runs", async () => {
+    const run1: Run = ("run1" as any) as Run
+    const run2: Run = ("run2" as any) as Run
+    const mockFetchMinischeduleRun: jest.Mock = Api.fetchMinischeduleRun as jest.Mock
+    mockFetchMinischeduleRun
+      .mockImplementationOnce(() => instantPromise(run1))
+      .mockImplementationOnce(() => instantPromise(run2))
+    const { result, waitForNextUpdate } = renderHook(() => {
+      return useMinischeduleRuns(["trip1", "trip2"])
+    })
+    await waitForNextUpdate()
+
+    expect(result.current).toEqual([run1, run2])
+  })
+
+  test("doesn't refetch on every render", () => {
+    const mockFetchMinischeduleRun: jest.Mock = Api.fetchMinischeduleRun as jest.Mock
+    const { rerender } = renderHook(() => {
+      return useMinischeduleRuns(["trip"])
+    })
+    rerender()
+    expect(mockFetchMinischeduleRun).toHaveBeenCalledTimes(1)
+  })
+
+  test("does refetch when trip IDs changed", () => {
+    const mockFetchMinischeduleRun: jest.Mock = Api.fetchMinischeduleRun as jest.Mock
+    const { rerender } = renderHook(
+      (tripIds: TripId[]) => {
+        return useMinischeduleRuns(tripIds)
+      },
+      { initialProps: ["trip1"] }
+    )
+    rerender(["trip2"])
+    expect(mockFetchMinischeduleRun).toHaveBeenCalledTimes(2)
   })
 })
 
