@@ -7,11 +7,13 @@ import featureIsEnabled from "../../src/laboratoryFeatures"
 import {
   initialState,
   setLadderVehicleLabelSetting,
+  setMinischedulesTripLabelSetting,
   setShuttleVehicleLabelSetting,
   setVehicleAdherenceColorsSetting,
 } from "../../src/state"
 import {
   defaultUserSettings,
+  TripLabelSetting,
   VehicleLabelSetting,
   VehicleAdherenceColorsSetting,
 } from "../../src/userSettings"
@@ -190,6 +192,36 @@ describe("SettingsPage", () => {
     // Updates the backend database
     expect((window.fetch as jest.Mock).mock.calls[0][0]).toEqual(
       "/api/user_settings?field=vehicle_adherence_colors&value=early_blue"
+    )
+  })
+
+  test("selecting a minischedules trip label setting sets that value", () => {
+    const testDispatch = jest.fn()
+    window.fetch = jest.fn()
+    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
+
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={testDispatch}>
+        <SettingsPage />
+      </StateDispatchProvider>
+    )
+
+    const testEvent = {
+      currentTarget: {
+        value: `${TripLabelSetting.Origin}`,
+      },
+    } as React.FormEvent<HTMLSelectElement>
+
+    wrapper.find("#minischedules-trip-label-setting").prop("onChange")!(
+      testEvent
+    )
+
+    expect(testDispatch).toHaveBeenCalledWith(
+      setMinischedulesTripLabelSetting(TripLabelSetting.Origin)
+    )
+    // Updates the backend database
+    expect((window.fetch as jest.Mock).mock.calls[0][0]).toEqual(
+      "/api/user_settings?field=minischedules_trip_label&value=origin"
     )
   })
 })

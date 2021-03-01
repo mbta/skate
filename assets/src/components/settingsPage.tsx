@@ -92,16 +92,11 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
               label="Trip Label"
               selectId="minischedules-trip-label-setting"
               value={userSettings.minischedulesTripLabel}
-              onChange={
-                // Ignoring this because we can't get the tests working and
-                // neither of can figure out why
-                /* istanbul ignore next */
-                (value) => {
-                  const newSetting: TripLabelSetting = parseInt(value, 10)
-                  dispatch(setMinischedulesTripLabelSetting(newSetting))
-                  putMinischedulesTripLabel(newSetting)
-                }
-              }
+              onChange={(value) => {
+                const newSetting: TripLabelSetting = parseInt(value, 10)
+                dispatch(setMinischedulesTripLabelSetting(newSetting))
+                putMinischedulesTripLabel(newSetting)
+              }}
               options={[
                 { label: "Origin", value: TripLabelSetting.Origin },
                 {
