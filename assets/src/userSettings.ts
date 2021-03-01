@@ -32,13 +32,13 @@ export const vehicleLabelSetting = (
     ? settings.shuttleVehicleLabel
     : settings.ladderVehicleLabel
 
-type VehicleLabelData = "run_id" | "vehicle_id"
-type VehicleAdherenceColorsData = "early_red" | "early_blue"
+export type VehicleLabelData = "run_id" | "vehicle_id"
+export type VehicleAdherenceColorsData = "early_red" | "early_blue"
 
 interface SettingsData {
   ladder_page_vehicle_label: VehicleLabelData
   shuttle_page_vehicle_label: VehicleLabelData
-  vehicle_adherence_colors: VehicleAdherenceColorsData
+  vehicle_adherence_colors?: VehicleAdherenceColorsData
 }
 
 const vehicleLabelFromData = (data: VehicleLabelData): VehicleLabelSetting => {
@@ -51,13 +51,15 @@ const vehicleLabelFromData = (data: VehicleLabelData): VehicleLabelSetting => {
 }
 
 const vehicleAdherenceColorsFromData = (
-  data: VehicleAdherenceColorsData
+  data?: VehicleAdherenceColorsData
 ): VehicleAdherenceColorsSetting => {
   switch (data) {
     case "early_red":
       return VehicleAdherenceColorsSetting.EarlyRed
     case "early_blue":
       return VehicleAdherenceColorsSetting.EarlyBlue
+    default:
+      return VehicleAdherenceColorsSetting.EarlyRed
   }
 }
 
