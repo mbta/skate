@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction, useContext } from "react"
 import { useRoute } from "../../contexts/routesContext"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
+import { className } from "../../helpers/dom"
 import vehicleLabel from "../../helpers/vehicleLabel"
 import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
 import {
@@ -14,7 +15,7 @@ import { isVehicle, shouldShowHeadwayDiagram } from "../../models/vehicle"
 import {
   drawnStatus,
   humanReadableScheduleAdherence,
-  statusClass,
+  statusClasses,
 } from "../../models/vehicleStatus"
 import { Vehicle, VehicleOrGhost } from "../../realtime"
 import { Route } from "../../schedule"
@@ -91,17 +92,21 @@ const ScheduleAdherenceLabel = ({ vehicle }: { vehicle: Vehicle }) => (
   </div>
 )
 
-const ScheduleAdherence = ({ vehicle }: { vehicle: Vehicle }) => (
-  <div
-    className={`m-properties-panel__schedule-adherence ${statusClass(
-      drawnStatus(vehicle)
-    )}`}
-  >
-    <ScheduleAdherenceStatusIcon />
-    <ScheduleAdherenceStatusString vehicle={vehicle} />
-    <ScheduleAdherenceLabel vehicle={vehicle} />
-  </div>
-)
+const ScheduleAdherence = ({ vehicle }: { vehicle: Vehicle }) => {
+  const [{ userSettings }] = useContext(StateDispatchContext)
+
+  return (
+    <div
+      className={`m-properties-panel__schedule-adherence ${className(
+        statusClasses(drawnStatus(vehicle), userSettings.vehicleAdherenceColors)
+      )}`}
+    >
+      <ScheduleAdherenceStatusIcon />
+      <ScheduleAdherenceStatusString vehicle={vehicle} />
+      <ScheduleAdherenceLabel vehicle={vehicle} />
+    </div>
+  )
+}
 
 const HeadwayTarget = ({
   vehicle: { scheduledHeadwaySecs },

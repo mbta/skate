@@ -52,12 +52,18 @@
     fill: $color-vehicle-ontime;
   }
 
-  .early & {
-    fill: $color-vehicle-early;
+  .early.early-red & {
+    fill: $color-vehicle-red;
+  }
+  .early.early-blue & {
+    fill: $color-vehicle-blue;
   }
 
-  .late & {
-    fill: $color-vehicle-late;
+  .late.early-red & {
+    fill: $color-vehicle-blue;
+  }
+  .late.early-blue & {
+    fill: $color-vehicle-red;
   }
 
   .off-course & {

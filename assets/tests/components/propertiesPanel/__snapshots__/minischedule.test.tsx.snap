@@ -129,7 +129,7 @@ exports[`Minischedule highlights deadheads if they're active 1`] = `
         </div>
       </div>
       <div
-        className="m-minischedule__row m-minischedule__row--current on-time"
+        className="m-minischedule__row m-minischedule__row--current on-time early-red"
       >
         <div
           className="m-minischedule__icon"
@@ -317,7 +317,7 @@ exports[`Minischedule highlights pullouts if they're active 1`] = `
       className="m-minischedule__piece-rows"
     >
       <div
-        className="m-minischedule__row m-minischedule__row--current on-time"
+        className="m-minischedule__row m-minischedule__row--current on-time early-red"
       >
         <div
           className="m-minischedule__icon"
@@ -1418,7 +1418,7 @@ exports[`MinischeduleRun on a run with multiple layovers, marks the correct one 
         </div>
       </div>
       <div
-        className="m-minischedule__row m-minischedule__row--current on-time m-minischedule__layover-row"
+        className="m-minischedule__row m-minischedule__row--current on-time early-red m-minischedule__layover-row"
       >
         <div
           className="m-minischedule__icon"
@@ -2264,7 +2264,7 @@ exports[`MinischeduleRun renders a run with a current layover between trips 1`] 
         </div>
       </div>
       <div
-        className="m-minischedule__row m-minischedule__row--current on-time m-minischedule__layover-row"
+        className="m-minischedule__row m-minischedule__row--current on-time early-red m-minischedule__layover-row"
       >
         <div
           className="m-minischedule__icon"
@@ -2688,7 +2688,7 @@ exports[`MinischeduleRun renders a run with a non-current layover between trips 
         </div>
       </div>
       <div
-        className="m-minischedule__row m-minischedule__row--current on-time"
+        className="m-minischedule__row m-minischedule__row--current on-time early-red"
       >
         <div
           className="m-minischedule__icon"

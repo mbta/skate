@@ -2,6 +2,7 @@ defmodule SkateWeb.UserSettingsController do
   use SkateWeb, :controller
   alias Skate.Settings.UserSettings
   alias Skate.Settings.VehicleLabel
+  alias Skate.Settings.VehicleAdherenceColor
   alias SkateWeb.AuthManager
 
   def update(conn, %{"field" => field, "value" => value} = _params) do
@@ -22,11 +23,13 @@ defmodule SkateWeb.UserSettingsController do
   @spec field(String.t()) :: atom() | nil
   defp field("ladder_page_vehicle_label"), do: :ladder_page_vehicle_label
   defp field("shuttle_page_vehicle_label"), do: :shuttle_page_vehicle_label
+  defp field("vehicle_adherence_colors"), do: :vehicle_adherence_colors
   defp field(_), do: nil
 
   @spec value(atom() | nil, String.t()) :: {:ok, any()} | :error
   defp value(field, value)
   defp value(:ladder_page_vehicle_label, value), do: VehicleLabel.load(value)
   defp value(:shuttle_page_vehicle_label, value), do: VehicleLabel.load(value)
+  defp value(:vehicle_adherence_colors, value), do: VehicleAdherenceColor.load(value)
   defp value(_, _), do: :error
 end

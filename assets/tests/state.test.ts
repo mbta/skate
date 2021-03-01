@@ -5,7 +5,10 @@ import {
   VehicleId,
 } from "../src/realtime.d"
 import * as State from "../src/state"
-import { VehicleLabelSetting } from "../src/userSettings"
+import {
+  VehicleLabelSetting,
+  VehicleAdherenceColorsSetting,
+} from "../src/userSettings"
 
 const initialState = State.initialState
 const reducer = State.reducer
@@ -295,6 +298,26 @@ describe("reducer", () => {
     const newState = reducer(
       state,
       State.setShuttleVehicleLabelSetting(shuttleVehicleLabel)
+    )
+
+    expect(newState).toEqual(expectedState)
+  })
+
+  test("setVehicleAdherenceColorsSetting", () => {
+    const vehicleAdherenceColors: VehicleAdherenceColorsSetting =
+      VehicleAdherenceColorsSetting.EarlyBlue
+    const state = initialState
+    const expectedState = {
+      ...state,
+      userSettings: {
+        ...state.userSettings,
+        vehicleAdherenceColors,
+      },
+    }
+
+    const newState = reducer(
+      state,
+      State.setVehicleAdherenceColorsSetting(vehicleAdherenceColors)
     )
 
     expect(newState).toEqual(expectedState)

@@ -28,7 +28,7 @@ Array [
               viewBox="-32 -20 64 64"
             >
               <g
-                className="m-vehicle-icon m-vehicle-icon--large ghost"
+                className="m-vehicle-icon m-vehicle-icon--large ghost early-red"
               >
                 <rect
                   className="m-vehicle-icon__label-background"
@@ -302,7 +302,7 @@ Array [
               viewBox="-32 -20 64 64"
             >
               <g
-                className="m-vehicle-icon m-vehicle-icon--large on-time"
+                className="m-vehicle-icon m-vehicle-icon--large on-time early-red"
               >
                 <rect
                   className="m-vehicle-icon__label-background"
@@ -358,7 +358,7 @@ Array [
                Forest Hills
             </div>
             <div
-              className="m-properties-panel__schedule-adherence on-time"
+              className="m-properties-panel__schedule-adherence on-time early-red"
             >
               <div
                 className="m-properties-panel__schedule-adherence-status-icon"

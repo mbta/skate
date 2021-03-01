@@ -105,7 +105,9 @@ config :skate, Skate.Repo,
 config :laboratory,
   features: [
     {:headway_ladder_colors, "Headway Route Ladder Colors",
-     "Turns on colored headway spacing lines on key route route ladders showing when service is bunched or gapped."}
+     "Turns on colored headway spacing lines on key route route ladders showing when service is bunched or gapped."},
+    {:vehicle_adherence_colors_setting, "Vehicle Adherence Colors Setting (Temporary)",
+     "Turns on user setting to toggle vehicle adherence colors."}
   ],
   cookie: [
     # one month,

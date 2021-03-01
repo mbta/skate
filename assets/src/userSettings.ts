@@ -7,14 +7,21 @@ export enum VehicleLabelSetting {
   VehicleNumber,
 }
 
+export enum VehicleAdherenceColorsSetting {
+  EarlyRed = 1,
+  EarlyBlue,
+}
+
 export interface UserSettings {
   ladderVehicleLabel: VehicleLabelSetting
   shuttleVehicleLabel: VehicleLabelSetting
+  vehicleAdherenceColors: VehicleAdherenceColorsSetting
 }
 
 export const defaultUserSettings: UserSettings = {
   ladderVehicleLabel: VehicleLabelSetting.RunNumber,
   shuttleVehicleLabel: VehicleLabelSetting.VehicleNumber,
+  vehicleAdherenceColors: VehicleAdherenceColorsSetting.EarlyRed,
 }
 
 export const vehicleLabelSetting = (
@@ -25,11 +32,13 @@ export const vehicleLabelSetting = (
     ? settings.shuttleVehicleLabel
     : settings.ladderVehicleLabel
 
-type VehicleLabelData = "run_id" | "vehicle_id"
+export type VehicleLabelData = "run_id" | "vehicle_id"
+export type VehicleAdherenceColorsData = "early_red" | "early_blue"
 
 interface SettingsData {
   ladder_page_vehicle_label: VehicleLabelData
   shuttle_page_vehicle_label: VehicleLabelData
+  vehicle_adherence_colors?: VehicleAdherenceColorsData
 }
 
 const vehicleLabelFromData = (data: VehicleLabelData): VehicleLabelSetting => {
@@ -41,10 +50,26 @@ const vehicleLabelFromData = (data: VehicleLabelData): VehicleLabelSetting => {
   }
 }
 
+const vehicleAdherenceColorsFromData = (
+  data?: VehicleAdherenceColorsData
+): VehicleAdherenceColorsSetting => {
+  switch (data) {
+    case "early_red":
+      return VehicleAdherenceColorsSetting.EarlyRed
+    case "early_blue":
+      return VehicleAdherenceColorsSetting.EarlyBlue
+    default:
+      return VehicleAdherenceColorsSetting.EarlyRed
+  }
+}
+
 export const userSettingsFromData = (data: SettingsData): UserSettings => {
   return {
     ladderVehicleLabel: vehicleLabelFromData(data.ladder_page_vehicle_label),
     shuttleVehicleLabel: vehicleLabelFromData(data.shuttle_page_vehicle_label),
+    vehicleAdherenceColors: vehicleAdherenceColorsFromData(
+      data.vehicle_adherence_colors
+    ),
   }
 }
 
@@ -72,5 +97,25 @@ export const putShuttleVehicleLabel = (
   putUserSetting(
     "shuttle_page_vehicle_label",
     vehicleLabelToString(vehicleLabel)
+  )
+}
+
+const vehicleAdherenceColorsToString = (
+  setting: VehicleAdherenceColorsSetting
+): string => {
+  switch (setting) {
+    case VehicleAdherenceColorsSetting.EarlyRed:
+      return "early_red"
+    case VehicleAdherenceColorsSetting.EarlyBlue:
+      return "early_blue"
+  }
+}
+
+export const putVehicleAdherenceColors = (
+  vehicleAdherenceColors: VehicleAdherenceColorsSetting
+): void => {
+  putUserSetting(
+    "vehicle_adherence_colors",
+    vehicleAdherenceColorsToString(vehicleAdherenceColors)
   )
 }

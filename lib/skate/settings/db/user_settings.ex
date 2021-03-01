@@ -4,6 +4,7 @@ defmodule Skate.Settings.Db.UserSettings do
 
   alias Skate.Settings.Db.User
   alias Skate.Settings.VehicleLabel
+  alias Skate.Settings.VehicleAdherenceColor
 
   @primary_key false
 
@@ -13,6 +14,7 @@ defmodule Skate.Settings.Db.UserSettings do
     belongs_to(:user, User, primary_key: true)
     field(:ladder_page_vehicle_label, VehicleLabel)
     field(:shuttle_page_vehicle_label, VehicleLabel)
+    field(:vehicle_adherence_colors, VehicleAdherenceColor)
     timestamps()
   end
 
@@ -21,12 +23,14 @@ defmodule Skate.Settings.Db.UserSettings do
     |> cast(attrs, [
       :user_id,
       :ladder_page_vehicle_label,
-      :shuttle_page_vehicle_label
+      :shuttle_page_vehicle_label,
+      :vehicle_adherence_colors
     ])
     |> validate_required([
       :user_id,
       :ladder_page_vehicle_label,
-      :shuttle_page_vehicle_label
+      :shuttle_page_vehicle_label,
+      :vehicle_adherence_colors
     ])
   end
 end

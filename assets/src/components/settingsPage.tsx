@@ -1,14 +1,18 @@
 import React, { ReactElement, useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { ladderIcon, mapIcon } from "../helpers/icon"
+import featureIsEnabled from "../laboratoryFeatures"
 import {
   setLadderVehicleLabelSetting,
   setShuttleVehicleLabelSetting,
+  setVehicleAdherenceColorsSetting,
 } from "../state"
 import {
   putLadderVehicleLabel,
   putShuttleVehicleLabel,
+  putVehicleAdherenceColors,
   VehicleLabelSetting,
+  VehicleAdherenceColorsSetting,
 } from "../userSettings"
 import RightPanel from "./rightPanel"
 
@@ -22,7 +26,6 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
 
         <div className="c-page__section">
           <h2 className="c-page__header">Vehicle Label</h2>
-
           <DropdownSetting
             icon={ladderIcon}
             label="Route Ladders"
@@ -53,6 +56,32 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
               { label: "Vehicle #", value: VehicleLabelSetting.VehicleNumber },
             ]}
           />
+          {featureIsEnabled("vehicle_adherence_colors_setting") && (
+            <DropdownSetting
+              icon={mapIcon}
+              label="Map"
+              selectId="vehicle-adherence-colors-setting"
+              value={userSettings.vehicleAdherenceColors}
+              onChange={(value) => {
+                const newSetting: VehicleAdherenceColorsSetting = parseInt(
+                  value,
+                  10
+                )
+                dispatch(setVehicleAdherenceColorsSetting(newSetting))
+                putVehicleAdherenceColors(newSetting)
+              }}
+              options={[
+                {
+                  label: "Early Red",
+                  value: VehicleAdherenceColorsSetting.EarlyRed,
+                },
+                {
+                  label: "Early Blue",
+                  value: VehicleAdherenceColorsSetting.EarlyBlue,
+                },
+              ]}
+            />
+          )}
         </div>
       </div>
       <RightPanel />

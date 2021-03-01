@@ -1,6 +1,7 @@
-import React, { ReactElement } from "react"
+import React, { ReactElement, useContext } from "react"
+import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
-import { DrawnStatus, statusClass } from "../models/vehicleStatus"
+import { DrawnStatus, statusClasses } from "../models/vehicleStatus"
 import { AlertIconStyle, IconAlertCircleSvgNode } from "./iconAlertCircle"
 
 export enum Orientation {
@@ -125,6 +126,8 @@ export const VehicleIconSvgNode = ({
   status,
   alertIconStyle,
 }: Props): ReactElement<SVGElement> => {
+  const [{ userSettings }] = useContext(StateDispatchContext)
+
   status = status || "plain"
   variant = variant && variant !== "_" ? variant : undefined
   // ghosts can't be drawn sideways
@@ -137,11 +140,10 @@ export const VehicleIconSvgNode = ({
   const classes: string[] = [
     "m-vehicle-icon",
     `m-vehicle-icon${sizeClassSuffix(size)}`,
-    statusClass(status),
     alertIconStyle === AlertIconStyle.Highlighted
       ? "m-vehicle-icon--highlighted"
       : "",
-  ]
+  ].concat(statusClasses(status, userSettings.vehicleAdherenceColors))
   return (
     <g className={className(classes)}>
       {label ? (

@@ -16,7 +16,7 @@ exports[`ladder highlights a selected vehicle 1`] = `
     width={184}
   >
     <line
-      className="m-ladder__scheduled-line on-time"
+      className="m-ladder__scheduled-line on-time early-red"
       x1={-63}
       x2={40}
       y1={-68.75}
@@ -28,7 +28,7 @@ exports[`ladder highlights a selected vehicle 1`] = `
       transform="translate(-63,-68.75)"
     >
       <g
-        className="m-vehicle-icon m-vehicle-icon--medium on-time"
+        className="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
       >
         <rect
           className="m-vehicle-icon__label-background"
@@ -61,7 +61,7 @@ exports[`ladder highlights a selected vehicle 1`] = `
       transform="translate(63,-82.5)"
     >
       <g
-        className="m-vehicle-icon m-vehicle-icon--medium on-time"
+        className="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
       >
         <rect
           className="m-vehicle-icon__label-background"
@@ -199,7 +199,7 @@ exports[`ladder renders a ghost bus 1`] = `
       transform="translate(63,0)"
     >
       <g
-        className="m-vehicle-icon m-vehicle-icon--medium ghost m-vehicle-icon--highlighted"
+        className="m-vehicle-icon m-vehicle-icon--medium m-vehicle-icon--highlighted ghost early-red"
       >
         <rect
           className="m-vehicle-icon__label-background"
@@ -380,7 +380,7 @@ exports[`ladder renders a ladder 1`] = `
     width={184}
   >
     <line
-      className="m-ladder__scheduled-line on-time"
+      className="m-ladder__scheduled-line on-time early-red"
       x1={-63}
       x2={40}
       y1={-68.75}
@@ -392,7 +392,7 @@ exports[`ladder renders a ladder 1`] = `
       transform="translate(63,-82.5)"
     >
       <g
-        className="m-vehicle-icon m-vehicle-icon--medium on-time"
+        className="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
       >
         <rect
           className="m-vehicle-icon__label-background"
@@ -425,7 +425,7 @@ exports[`ladder renders a ladder 1`] = `
       transform="translate(-63,-68.75)"
     >
       <g
-        className="m-vehicle-icon m-vehicle-icon--medium on-time"
+        className="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
       >
         <rect
           className="m-vehicle-icon__label-background"
@@ -458,7 +458,7 @@ exports[`ladder renders a ladder 1`] = `
       transform="translate(-63,0)"
     >
       <g
-        className="m-vehicle-icon m-vehicle-icon--medium on-time"
+        className="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
       >
         <rect
           className="m-vehicle-icon__label-background"
@@ -596,7 +596,7 @@ exports[`ladder renders a ladder with no timepoints 1`] = `
       transform="translate(63,0)"
     >
       <g
-        className="m-vehicle-icon m-vehicle-icon--medium on-time"
+        className="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
       >
         <rect
           className="m-vehicle-icon__label-background"
@@ -665,7 +665,7 @@ exports[`ladder renders a laying over vehicle 1`] = `
       transform="translate(0,-35)"
     >
       <g
-        className="m-vehicle-icon m-vehicle-icon--small on-time"
+        className="m-vehicle-icon m-vehicle-icon--small on-time early-red"
       >
         <rect
           className="m-vehicle-icon__label-background"
@@ -798,7 +798,7 @@ exports[`ladder renders a laying over vehicle with a scheduled line 1`] = `
     width={184}
   >
     <line
-      className="m-ladder__scheduled-line on-time"
+      className="m-ladder__scheduled-line on-time early-red"
       x1={0}
       x2={-40}
       y1={-35}
@@ -810,7 +810,7 @@ exports[`ladder renders a laying over vehicle with a scheduled line 1`] = `
       transform="translate(0,-35)"
     >
       <g
-        className="m-vehicle-icon m-vehicle-icon--small on-time"
+        className="m-vehicle-icon m-vehicle-icon--small on-time early-red"
       >
         <rect
           className="m-vehicle-icon__label-background"
@@ -943,7 +943,7 @@ exports[`ladder renders a reversed ladder 1`] = `
     width={184}
   >
     <line
-      className="m-ladder__scheduled-line on-time"
+      className="m-ladder__scheduled-line on-time early-red"
       x1={63}
       x2={40}
       y1={-82.5}
@@ -955,7 +955,7 @@ exports[`ladder renders a reversed ladder 1`] = `
       transform="translate(63,-82.5)"
     >
       <g
-        className="m-vehicle-icon m-vehicle-icon--medium on-time"
+        className="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
       >
         <rect
           className="m-vehicle-icon__label-background"
@@ -1093,7 +1093,7 @@ exports[`ladder renders an off-course vehicle 1`] = `
       transform="translate(63,0)"
     >
       <g
-        className="m-vehicle-icon m-vehicle-icon--medium off-course"
+        className="m-vehicle-icon m-vehicle-icon--medium off-course early-red"
       >
         <rect
           className="m-vehicle-icon__label-background"
@@ -1240,7 +1240,7 @@ exports[`ladder renders an overload vehicle 1`] = `
       transform="translate(63,-82.5)"
     >
       <g
-        className="m-vehicle-icon m-vehicle-icon--medium on-time"
+        className="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
       >
         <rect
           className="m-vehicle-icon__label-background"
@@ -1373,7 +1373,7 @@ exports[`ladder shows schedule line in the other direction 1`] = `
     width={184}
   >
     <line
-      className="m-ladder__scheduled-line on-time"
+      className="m-ladder__scheduled-line on-time early-red"
       x1={-63}
       x2={40}
       y1={41.25}
@@ -1385,7 +1385,7 @@ exports[`ladder shows schedule line in the other direction 1`] = `
       transform="translate(-63,41.25)"
     >
       <g
-        className="m-vehicle-icon m-vehicle-icon--medium on-time"
+        className="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
       >
         <rect
           className="m-vehicle-icon__label-background"
@@ -1518,14 +1518,14 @@ exports[`ladder shows vehicles with current block waivers 1`] = `
     width={232}
   >
     <line
-      className="m-ladder__scheduled-line on-time"
+      className="m-ladder__scheduled-line on-time early-red"
       x1={-87}
       x2={40}
       y1={-68.75}
       y2={-151.25}
     />
     <line
-      className="m-ladder__scheduled-line on-time"
+      className="m-ladder__scheduled-line on-time early-red"
       x1={-63}
       x2={40}
       y1={-68.75}
@@ -1537,7 +1537,7 @@ exports[`ladder shows vehicles with current block waivers 1`] = `
       transform="translate(63,0)"
     >
       <g
-        className="m-vehicle-icon m-vehicle-icon--medium ghost"
+        className="m-vehicle-icon m-vehicle-icon--medium ghost early-red"
       >
         <rect
           className="m-vehicle-icon__label-background"
@@ -1618,7 +1618,7 @@ exports[`ladder shows vehicles with current block waivers 1`] = `
       transform="translate(-87,-68.75)"
     >
       <g
-        className="m-vehicle-icon m-vehicle-icon--medium on-time"
+        className="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
       >
         <rect
           className="m-vehicle-icon__label-background"
@@ -1681,7 +1681,7 @@ exports[`ladder shows vehicles with current block waivers 1`] = `
       transform="translate(-63,-68.75)"
     >
       <g
-        className="m-vehicle-icon m-vehicle-icon--medium on-time"
+        className="m-vehicle-icon m-vehicle-icon--medium on-time early-red"
       >
         <rect
           className="m-vehicle-icon__label-background"

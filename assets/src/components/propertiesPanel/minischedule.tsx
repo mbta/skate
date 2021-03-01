@@ -38,7 +38,11 @@ import {
   LadderDirections,
   VehicleDirection,
 } from "../../models/ladderDirection"
-import { drawnStatus, DrawnStatus } from "../../models/vehicleStatus"
+import {
+  drawnStatus,
+  DrawnStatus,
+  statusClasses,
+} from "../../models/vehicleStatus"
 import { RouteStatus, VehicleOrGhost } from "../../realtime"
 import { DirectionId, RouteId, TripId } from "../../schedule"
 import { formattedDuration, formattedScheduledTime } from "../../util/dateTime"
@@ -634,28 +638,35 @@ const Row = ({
   timeBasedStyle?: TimeBasedStyle
   activeStatus?: DrawnStatus | null
   extraClasses?: string[]
-}) => (
-  <div
-    className={className([
-      "m-minischedule__row",
-      timeBasedStyle && "m-minischedule__row--" + timeBasedStyle,
-      activeStatus,
-      ...(extraClasses || []),
-    ])}
-  >
-    <div className="m-minischedule__icon">{icon}</div>
-    <div className="m-minischedule__left-text">
-      {text}
-      {belowText && (
-        <>
-          <br />
-          <span className="m-minischedule__below-text">{belowText}</span>
-        </>
+}) => {
+  const [{ userSettings }] = useContext(StateDispatchContext)
+  return (
+    <div
+      className={className([
+        "m-minischedule__row",
+        timeBasedStyle && "m-minischedule__row--" + timeBasedStyle,
+        ...(activeStatus
+          ? statusClasses(activeStatus, userSettings.vehicleAdherenceColors)
+          : []),
+        ...(extraClasses || []),
+      ])}
+    >
+      <div className="m-minischedule__icon">{icon}</div>
+      <div className="m-minischedule__left-text">
+        {text}
+        {belowText && (
+          <>
+            <br />
+            <span className="m-minischedule__below-text">{belowText}</span>
+          </>
+        )}
+      </div>
+      {rightText && (
+        <div className="m-minischedule__right-text">{rightText}</div>
       )}
     </div>
-    {rightText && <div className="m-minischedule__right-text">{rightText}</div>}
-  </div>
-)
+  )
+}
 
 /** returns null if the active trip isn't found.
  * returns [activeActivityIndex, activeTripIndex] if it is

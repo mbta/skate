@@ -8,6 +8,7 @@ import {
   defaultUserSettings,
   putLadderVehicleLabel,
   putShuttleVehicleLabel,
+  putVehicleAdherenceColors,
   UserSettings,
   userSettingsFromData,
 } from "../userSettings"
@@ -72,6 +73,7 @@ const getUserSettings = (loadedState: object | undefined): UserSettings => {
     }).settings
     putLadderVehicleLabel(localStorageSettings.ladderVehicleLabel)
     putShuttleVehicleLabel(localStorageSettings.shuttleVehicleLabel)
+    putVehicleAdherenceColors(localStorageSettings.vehicleAdherenceColors)
     // settings will be removed from localStorage when they're next saved
     // prefer these settings to the ones that came from the backend
     userSettings = localStorageSettings
