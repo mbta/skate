@@ -8,9 +8,9 @@ import {
   defaultUserSettings,
   putLadderVehicleLabel,
   putShuttleVehicleLabel,
+  putVehicleAdherenceColors,
   UserSettings,
   userSettingsFromData,
-  putVehicleAdherenceColors,
 } from "../userSettings"
 
 const APP_STATE_KEY = "mbta-skate-state"

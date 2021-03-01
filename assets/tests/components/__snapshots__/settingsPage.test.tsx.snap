@@ -100,3 +100,142 @@ exports[`SettingsPage renders 1`] = `
   </div>
 </div>
 `;
+
+exports[`SettingsPage renders with the vehicle_adherence_colors feature flag on 1`] = `
+<div
+  className="c-page c-page--settings"
+>
+  <div
+    className="c-page__container"
+  >
+    <h1
+      className="c-page__title"
+    >
+      Settings
+    </h1>
+    <div
+      className="c-page__section"
+    >
+      <h2
+        className="c-page__header"
+      >
+        Vehicle Label
+      </h2>
+      <div
+        className="m-settings-page__row"
+      >
+        <div
+          className="m-settings-page__icon"
+        >
+          <span
+            className="m-settings-page__icon-path"
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "SVG",
+              }
+            }
+          />
+        </div>
+        <div
+          className="m-settings-page__label"
+        >
+          Route Ladders
+        </div>
+        <select
+          className="m-settings-page__select"
+          id="ladder-vehicle-label-setting"
+          onChange={[Function]}
+          value={1}
+        >
+          <option
+            value={1}
+          >
+            Run #
+          </option>
+          <option
+            value={2}
+          >
+            Vehicle #
+          </option>
+        </select>
+      </div>
+      <div
+        className="m-settings-page__row"
+      >
+        <div
+          className="m-settings-page__icon"
+        >
+          <span
+            className="m-settings-page__icon-path"
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "SVG",
+              }
+            }
+          />
+        </div>
+        <div
+          className="m-settings-page__label"
+        >
+          Map
+        </div>
+        <select
+          className="m-settings-page__select"
+          id="map-vehicle-label-setting"
+          onChange={[Function]}
+          value={2}
+        >
+          <option
+            value={1}
+          >
+            Run #
+          </option>
+          <option
+            value={2}
+          >
+            Vehicle #
+          </option>
+        </select>
+      </div>
+      <div
+        className="m-settings-page__row"
+      >
+        <div
+          className="m-settings-page__icon"
+        >
+          <span
+            className="m-settings-page__icon-path"
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "SVG",
+              }
+            }
+          />
+        </div>
+        <div
+          className="m-settings-page__label"
+        >
+          Map
+        </div>
+        <select
+          className="m-settings-page__select"
+          id="vehicle-adherence-colors-setting"
+          onChange={[Function]}
+          value={1}
+        >
+          <option
+            value={1}
+          >
+            Early Red
+          </option>
+          <option
+            value={2}
+          >
+            Early Blue
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+`;

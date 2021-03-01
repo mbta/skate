@@ -3,15 +3,23 @@ import React from "react"
 import renderer from "react-test-renderer"
 import SettingsPage from "../../src/components/settingsPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
+import featureIsEnabled from "../../src/laboratoryFeatures"
 import {
   initialState,
   setLadderVehicleLabelSetting,
   setShuttleVehicleLabelSetting,
+  setVehicleAdherenceColorsSetting,
 } from "../../src/state"
 import {
   defaultUserSettings,
   VehicleLabelSetting,
+  VehicleAdherenceColorsSetting,
 } from "../../src/userSettings"
+
+jest.mock("../../src/laboratoryFeatures", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}))
 
 const mockDispatch = jest.fn()
 
@@ -65,7 +73,7 @@ describe("SettingsPage", () => {
         value: `${VehicleLabelSetting.RunNumber}`,
       },
     } as React.FormEvent<HTMLSelectElement>
-    wrapper.find("#ladder-vehicle-label-setting").simulate("change", testEvent)
+    wrapper.find("#ladder-vehicle-label-setting").prop("onChange")!(testEvent)
 
     expect(testDispatch).toHaveBeenCalledWith(
       setLadderVehicleLabelSetting(VehicleLabelSetting.RunNumber)
@@ -113,7 +121,7 @@ describe("SettingsPage", () => {
         value: `${VehicleLabelSetting.VehicleNumber}`,
       },
     } as React.FormEvent<HTMLSelectElement>
-    wrapper.find("#map-vehicle-label-setting").simulate("change", testEvent)
+    wrapper.find("#map-vehicle-label-setting").prop("onChange")!(testEvent)
 
     expect(testDispatch).toHaveBeenCalledWith(
       setShuttleVehicleLabelSetting(VehicleLabelSetting.VehicleNumber)
@@ -121,6 +129,52 @@ describe("SettingsPage", () => {
     // Updates the backend database
     expect((window.fetch as jest.Mock).mock.calls[0][0]).toEqual(
       "/api/user_settings?field=shuttle_page_vehicle_label&value=vehicle_id"
+    )
+  })
+
+  test("renders with the vehicle_adherence_colors feature flag on", () => {
+    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(
+      (feature) => feature === "vehicle_adherence_colors_setting"
+    )
+    const tree = renderer
+      .create(
+        <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+          <SettingsPage />
+        </StateDispatchProvider>
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("selecting a vehicle adherence colors setting sets that value", () => {
+    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(
+      (feature) => feature === "vehicle_adherence_colors_setting"
+    )
+
+    const testDispatch = jest.fn()
+    window.fetch = jest.fn()
+
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={testDispatch}>
+        <SettingsPage />
+      </StateDispatchProvider>
+    )
+    const testEvent = {
+      currentTarget: {
+        value: `${VehicleAdherenceColorsSetting.EarlyBlue}`,
+      },
+    } as React.ChangeEvent<HTMLSelectElement>
+    wrapper.find("#vehicle-adherence-colors-setting").prop("onChange")!(
+      testEvent
+    )
+
+    expect(testDispatch).toHaveBeenCalledWith(
+      setVehicleAdherenceColorsSetting(VehicleAdherenceColorsSetting.EarlyBlue)
+    )
+    // Updates the backend database
+    expect((window.fetch as jest.Mock).mock.calls[0][0]).toEqual(
+      "/api/user_settings?field=vehicle_adherence_colors&value=early_blue"
     )
   })
 })

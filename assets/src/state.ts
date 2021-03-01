@@ -21,6 +21,7 @@ import {
   defaultUserSettings,
   UserSettings,
   VehicleLabelSetting,
+  VehicleAdherenceColorsSetting,
 } from "./userSettings"
 
 export interface State {
@@ -259,6 +260,22 @@ export const setShuttleVehicleLabelSetting = (
   },
 })
 
+interface SetVehicleAdherenceColorsSettingAction {
+  type: "SET_VEHICLE_ADHERENCE_COLORS_SETTING"
+  payload: {
+    vehicleAdherenceColors: VehicleAdherenceColorsSetting
+  }
+}
+
+export const setVehicleAdherenceColorsSetting = (
+  vehicleAdherenceColors: VehicleAdherenceColorsSetting
+): SetVehicleAdherenceColorsSettingAction => ({
+  type: "SET_VEHICLE_ADHERENCE_COLORS_SETTING",
+  payload: {
+    vehicleAdherenceColors,
+  },
+})
+
 interface SetNotificationAction {
   type: "SET_NOTIFICATION"
   payload: {
@@ -294,6 +311,7 @@ type Action =
   | ToggleNotificationDrawerAction
   | SetLadderVehicleLabelSettingAction
   | SetShuttleVehicleLabelSettingAction
+  | SetVehicleAdherenceColorsSettingAction
   | SearchAction
   | SetNotificationAction
 
@@ -432,6 +450,11 @@ const userSettingsReducer = (
       return {
         ...state,
         shuttleVehicleLabel: action.payload.shuttleVehicleLabel,
+      }
+    case "SET_VEHICLE_ADHERENCE_COLORS_SETTING":
+      return {
+        ...state,
+        vehicleAdherenceColors: action.payload.vehicleAdherenceColors,
       }
     default:
       return state
