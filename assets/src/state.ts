@@ -19,6 +19,7 @@ import {
 } from "./state/searchPageState"
 import {
   defaultUserSettings,
+  TripLabelSetting,
   UserSettings,
   VehicleLabelSetting,
   VehicleAdherenceColorsSetting,
@@ -292,6 +293,22 @@ export const setNotification = (
   },
 })
 
+interface SetMinischedulesTripLabelSettingAction {
+  type: "SET_MINISCHEDULES_TRIP_LABEL"
+  payload: {
+    minischedulesTripLabel: TripLabelSetting
+  }
+}
+
+export const setMinischedulesTripLabelSetting = (
+  minischedulesTripLabel: TripLabelSetting
+): SetMinischedulesTripLabelSettingAction => ({
+  type: "SET_MINISCHEDULES_TRIP_LABEL",
+  payload: {
+    minischedulesTripLabel,
+  },
+})
+
 type Action =
   | SelectRouteAction
   | DeselectRouteAction
@@ -314,6 +331,7 @@ type Action =
   | SetVehicleAdherenceColorsSettingAction
   | SearchAction
   | SetNotificationAction
+  | SetMinischedulesTripLabelSettingAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -455,6 +473,11 @@ const userSettingsReducer = (
       return {
         ...state,
         vehicleAdherenceColors: action.payload.vehicleAdherenceColors,
+      }
+    case "SET_MINISCHEDULES_TRIP_LABEL":
+      return {
+        ...state,
+        minischedulesTripLabel: action.payload.minischedulesTripLabel,
       }
     default:
       return state

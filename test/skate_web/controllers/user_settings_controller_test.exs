@@ -55,6 +55,20 @@ defmodule SkateWeb.UserSettingsControllerTest do
       assert result.vehicle_adherence_colors == :early_blue
     end
 
+    test "can set minischedules_trip_label", %{conn: conn} do
+      conn =
+        conn
+        |> login()
+        |> put("/api/user_settings", %{
+          "field" => "minischedules_trip_label",
+          "value" => "origin"
+        })
+
+      response(conn, 200)
+      result = UserSettings.get_or_create(@username)
+      assert result.minischedules_trip_label == :origin
+    end
+
     test "gives 400 for invalid field", %{conn: conn} do
       conn =
         conn

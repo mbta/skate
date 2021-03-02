@@ -23,6 +23,7 @@ import {
   useMinischeduleBlock,
   useMinischeduleRun,
 } from "../../hooks/useMinischedule"
+import featureIsEnabled from "../../laboratoryFeatures"
 import {
   AsDirected,
   Block,
@@ -47,6 +48,7 @@ import { RouteStatus, VehicleOrGhost } from "../../realtime"
 import { DirectionId, RouteId, TripId } from "../../schedule"
 import { formattedDuration, formattedScheduledTime } from "../../util/dateTime"
 import Loading from "../loading"
+import { TripLabelSetting } from "../../userSettings"
 
 export interface Props {
   vehicleOrGhost: VehicleOrGhost
@@ -580,12 +582,22 @@ const RevenueTrip = ({
 }) => {
   const startTime: string = formattedScheduledTime(trip.startTime)
   const route = useRoute(trip.routeId)
-  const formattedRouteAndHeadsign: string = [
+
+  const [{ userSettings }] = useContext(StateDispatchContext)
+  const tripLabelMode = userSettings.minischedulesTripLabel
+
+  const placeName =
+    featureIsEnabled("minischedules_trip_label") &&
+    tripLabelMode === TripLabelSetting.Origin
+      ? trip.startPlace
+      : trip.headsign
+
+  const formattedRouteAndPlaceName: string = [
     route?.name || trip.routeId,
     "_",
     trip.viaVariant !== null && trip.viaVariant !== "_" ? trip.viaVariant : "",
     " ",
-    trip.headsign || "",
+    placeName || "",
   ].join("")
   const [{ ladderDirections }] = useContext(StateDispatchContext)
 
@@ -597,7 +609,7 @@ const RevenueTrip = ({
   return (
     <Row
       icon={directionIcon}
-      text={formattedRouteAndHeadsign}
+      text={formattedRouteAndPlaceName}
       rightText={startTime}
       belowText={belowText}
       timeBasedStyle={timeBasedStyle}
