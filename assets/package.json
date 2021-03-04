@@ -17,6 +17,7 @@
   "dependencies": {
     "@rehooks/component-size": "^1.0.3",
     "@sentry/react": "^5.27.4",
+    "@tippyjs/react": "^4.2.3",
     "core-js": "^3.6.4",
     "leaflet": "^1.7.1",
     "leaflet-defaulticon-compatibility": "^0.1.1",
@@ -90,7 +91,8 @@
       "node"
     ],
     "moduleNameMapper": {
-      "\\.svg$": "<rootDir>/tests/testHelpers/svgStubber.js"
+      "\\.(svg)$": "<rootDir>/tests/testHelpers/svgStubber.js",
+      "\\.(css|less)$": "identity-obj-proxy"
     },
     "setupFilesAfterEnv": [
       "<rootDir>/tests/setup.tsx"
