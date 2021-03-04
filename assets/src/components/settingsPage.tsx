@@ -1,6 +1,11 @@
 import React, { ReactElement, useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { ladderIcon, mapIcon, triangleUpIcon } from "../helpers/icon"
+import {
+  ladderIcon,
+  mapIcon,
+  triangleUpIcon,
+  triangleUpLargeIcon,
+} from "../helpers/icon"
 import featureIsEnabled from "../laboratoryFeatures"
 import {
   setLadderVehicleLabelSetting,
@@ -76,7 +81,7 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
             ]}
           />
           <ToggleSetting
-            icon={triangleUpIcon}
+            icon={triangleUpLargeIcon}
             label="Adherence colors"
             settingName="vehicle-adherence-colors"
             value={userSettings.vehicleAdherenceColors}

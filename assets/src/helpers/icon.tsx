@@ -63,6 +63,8 @@ import triangleDownIconSvg from "../../static/images/icon-triangle-down.svg"
 // @ts-ignore
 import triangleUpIconSvg from "../../static/images/icon-triangle-up.svg"
 // @ts-ignore
+import triangleUpLargeIconSvg from "../../static/images/icon-triangle-up-large.svg"
+// @ts-ignore
 import upDownIconSvg from "../../static/images/icon-up-down-arrow.svg"
 import renderSvg from "./renderSvg"
 
@@ -161,6 +163,9 @@ export const triangleDownIcon = (className: string = ""): JSX.Element =>
 
 export const triangleUpIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, triangleUpIconSvg)
+
+export const triangleUpLargeIcon = (className: string = ""): JSX.Element =>
+  renderSvg(className, triangleUpLargeIconSvg)
 
 export const upDownIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, upDownIconSvg)
