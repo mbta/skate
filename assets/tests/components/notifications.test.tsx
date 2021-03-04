@@ -7,12 +7,14 @@ import {
   Notifications,
 } from "../../src/components/notifications"
 import { NotificationsContext } from "../../src/contexts/notificationsContext"
+import { RoutesProvider } from "../../src/contexts/routesContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import {
   hideLatestNotification,
   toggleReadState,
 } from "../../src/hooks/useNotificationsReducer"
 import { Notification, NotificationReason } from "../../src/realtime.d"
+import { Route } from "../../src/schedule"
 import { initialState } from "../../src/state"
 import { now } from "../../src/util/dateTime"
 
@@ -47,6 +49,33 @@ const notificationWithMatchedVehicle: Notification = {
   routeIdAtCreation: "route1",
 }
 
+const routes: Route[] = [
+  {
+    id: "route1",
+    directionNames: {
+      0: "Outbound",
+      1: "Inbound",
+    },
+    name: "r1",
+  },
+  {
+    id: "route2",
+    directionNames: {
+      0: "Outbound",
+      1: "Inbound",
+    },
+    name: "r2",
+  },
+  {
+    id: "route3",
+    directionNames: {
+      0: "Outbound",
+      1: "Inbound",
+    },
+    name: "r3",
+  },
+]
+
 describe("Notification", () => {
   test("renders empty state", () => {
     const tree = renderer.create(<Notifications />).toJSON()
@@ -61,19 +90,21 @@ describe("Notification", () => {
 
     const tree = renderer
       .create(
-        <NotificationsContext.Provider
-          value={{
-            notifications,
-            showLatestNotification: true,
-            dispatch: jest.fn(),
-            rememberScrollPosition: jest.fn(),
-            scrollPosition: 0,
-            notificationWithOpenSubmenuId: null,
-            setNotificationWithOpenSubmenuId: jest.fn(),
-          }}
-        >
-          <Notifications />
-        </NotificationsContext.Provider>
+        <RoutesProvider routes={routes}>
+          <NotificationsContext.Provider
+            value={{
+              notifications,
+              showLatestNotification: true,
+              dispatch: jest.fn(),
+              rememberScrollPosition: jest.fn(),
+              scrollPosition: 0,
+              notificationWithOpenSubmenuId: null,
+              setNotificationWithOpenSubmenuId: jest.fn(),
+            }}
+          >
+            <Notifications />
+          </NotificationsContext.Provider>
+        </RoutesProvider>
       )
       .toJSON()
     expect(tree).toMatchSnapshot()
@@ -106,12 +137,14 @@ describe("NotificationCard", () => {
   test("renders notification with matched vehicle", () => {
     const tree = renderer
       .create(
-        <NotificationCard
-          notification={notificationWithMatchedVehicle}
-          currentTime={now()}
-          dispatch={jest.fn()}
-          openVPPForCurrentVehicle={jest.fn()}
-        />
+        <RoutesProvider routes={routes}>
+          <NotificationCard
+            notification={notificationWithMatchedVehicle}
+            currentTime={now()}
+            dispatch={jest.fn()}
+            openVPPForCurrentVehicle={jest.fn()}
+          />
+        </RoutesProvider>
       )
       .toJSON()
     expect(tree).toMatchSnapshot()
@@ -120,12 +153,14 @@ describe("NotificationCard", () => {
   test("transforms reasons into human-readable titles", () => {
     const n: Notification = { ...notification, reason: "operator_error" }
     const wrapper = mount(
-      <NotificationCard
-        notification={n}
-        currentTime={now()}
-        dispatch={jest.fn()}
-        openVPPForCurrentVehicle={jest.fn()}
-      />
+      <RoutesProvider routes={routes}>
+        <NotificationCard
+          notification={n}
+          currentTime={now()}
+          dispatch={jest.fn()}
+          openVPPForCurrentVehicle={jest.fn()}
+        />
+      </RoutesProvider>
     )
     expect(wrapper.html()).toContain("OPERATOR ERROR")
   })
@@ -133,12 +168,14 @@ describe("NotificationCard", () => {
   test("uses custom titles if available", () => {
     const n: Notification = { ...notification, reason: "manpower" }
     const wrapper = mount(
-      <NotificationCard
-        notification={n}
-        dispatch={jest.fn()}
-        currentTime={now()}
-        openVPPForCurrentVehicle={jest.fn()}
-      />
+      <RoutesProvider routes={routes}>
+        <NotificationCard
+          notification={n}
+          dispatch={jest.fn()}
+          currentTime={now()}
+          openVPPForCurrentVehicle={jest.fn()}
+        />
+      </RoutesProvider>
     )
     expect(wrapper.html()).toContain("NO OPERATOR")
   })
@@ -147,12 +184,14 @@ describe("NotificationCard", () => {
     const n: Notification = { ...notification, reason: "other" }
     const tree = renderer
       .create(
-        <NotificationCard
-          notification={n}
-          dispatch={jest.fn()}
-          currentTime={now()}
-          openVPPForCurrentVehicle={jest.fn()}
-        />
+        <RoutesProvider routes={routes}>
+          <NotificationCard
+            notification={n}
+            dispatch={jest.fn()}
+            currentTime={now()}
+            openVPPForCurrentVehicle={jest.fn()}
+          />
+        </RoutesProvider>
       )
       .toJSON()
     expect(tree).toMatchSnapshot()
@@ -162,16 +201,18 @@ describe("NotificationCard", () => {
     const n: Notification = {
       ...notificationWithMatchedVehicle,
       reason: "accident",
-      routeIds: ["r2", "r3"],
-      routeIdAtCreation: "r1",
+      routeIds: ["route2", "route3"],
+      routeIdAtCreation: "route1",
     }
     const wrapper = mount(
-      <NotificationCard
-        notification={n}
-        dispatch={jest.fn()}
-        currentTime={now()}
-        openVPPForCurrentVehicle={jest.fn()}
-      />
+      <RoutesProvider routes={routes}>
+        <NotificationCard
+          notification={n}
+          dispatch={jest.fn()}
+          currentTime={now()}
+          openVPPForCurrentVehicle={jest.fn()}
+        />
+      </RoutesProvider>
     )
     expect(wrapper.html()).toContain("r1")
   })
@@ -180,16 +221,18 @@ describe("NotificationCard", () => {
     const n: Notification = {
       ...notification,
       reason: "accident",
-      routeIds: ["r2", "r3"],
+      routeIds: ["route2", "route3"],
       routeIdAtCreation: null,
     }
     const wrapper = mount(
-      <NotificationCard
-        notification={n}
-        dispatch={jest.fn()}
-        currentTime={now()}
-        openVPPForCurrentVehicle={jest.fn()}
-      />
+      <RoutesProvider routes={routes}>
+        <NotificationCard
+          notification={n}
+          dispatch={jest.fn()}
+          currentTime={now()}
+          openVPPForCurrentVehicle={jest.fn()}
+        />
+      </RoutesProvider>
     )
     expect(wrapper.html()).toContain("r2, r3")
   })
@@ -198,16 +241,18 @@ describe("NotificationCard", () => {
     const n: Notification = {
       ...notificationWithMatchedVehicle,
       reason: "diverted",
-      routeIds: ["r2", "r3"],
-      routeIdAtCreation: "r1",
+      routeIds: ["route2", "route3"],
+      routeIdAtCreation: "route1",
     }
     const wrapper = mount(
-      <NotificationCard
-        notification={n}
-        dispatch={jest.fn()}
-        currentTime={now()}
-        openVPPForCurrentVehicle={jest.fn()}
-      />
+      <RoutesProvider routes={routes}>
+        <NotificationCard
+          notification={n}
+          dispatch={jest.fn()}
+          currentTime={now()}
+          openVPPForCurrentVehicle={jest.fn()}
+        />
+      </RoutesProvider>
     )
     expect(wrapper.html()).toContain("r2, r3")
   })
@@ -225,24 +270,28 @@ describe("NotificationCard", () => {
   test.each(reasons)("renders notification with reason %s", (reason) => {
     const n: Notification = { ...notification, reason }
     mount(
-      <NotificationCard
-        notification={n}
-        dispatch={jest.fn()}
-        currentTime={now()}
-        openVPPForCurrentVehicle={jest.fn()}
-      />
+      <RoutesProvider routes={routes}>
+        <NotificationCard
+          notification={n}
+          dispatch={jest.fn()}
+          currentTime={now()}
+          openVPPForCurrentVehicle={jest.fn()}
+        />
+      </RoutesProvider>
     )
   })
 
   test("sets and removes class to animate pop-in", () => {
     jest.useFakeTimers()
     const wrapper = mount(
-      <NotificationCard
-        notification={notification}
-        dispatch={jest.fn()}
-        currentTime={now()}
-        openVPPForCurrentVehicle={jest.fn()}
-      />
+      <RoutesProvider routes={routes}>
+        <NotificationCard
+          notification={notification}
+          dispatch={jest.fn()}
+          currentTime={now()}
+          openVPPForCurrentVehicle={jest.fn()}
+        />
+      </RoutesProvider>
     )
     expect(wrapper.find(".m-notifications__card--new")).toHaveLength(1)
     act(() => {
@@ -262,12 +311,14 @@ describe("NotificationCard", () => {
     const openVPPForCurrentVehicle = jest.fn()
 
     const wrapper = mount(
-      <NotificationCard
-        notification={updatedNotification}
-        dispatch={dispatch}
-        currentTime={currentTime}
-        openVPPForCurrentVehicle={openVPPForCurrentVehicle}
-      />
+      <RoutesProvider routes={routes}>
+        <NotificationCard
+          notification={updatedNotification}
+          dispatch={dispatch}
+          currentTime={currentTime}
+          openVPPForCurrentVehicle={openVPPForCurrentVehicle}
+        />
+      </RoutesProvider>
     )
     expect(openVPPForCurrentVehicle).not.toHaveBeenCalled()
     expect(dispatch).not.toHaveBeenCalled()
@@ -286,19 +337,21 @@ describe("NotificationCard", () => {
 
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={jest.fn}>
-        <NotificationsContext.Provider
-          value={{
-            notifications: [updatedNotification],
-            showLatestNotification: true,
-            dispatch: mockNotificationsDispatch,
-            rememberScrollPosition: jest.fn(),
-            scrollPosition: 0,
-            notificationWithOpenSubmenuId: null,
-            setNotificationWithOpenSubmenuId: jest.fn(),
-          }}
-        >
-          <Notifications />
-        </NotificationsContext.Provider>
+        <RoutesProvider routes={routes}>
+          <NotificationsContext.Provider
+            value={{
+              notifications: [updatedNotification],
+              showLatestNotification: true,
+              dispatch: mockNotificationsDispatch,
+              rememberScrollPosition: jest.fn(),
+              scrollPosition: 0,
+              notificationWithOpenSubmenuId: null,
+              setNotificationWithOpenSubmenuId: jest.fn(),
+            }}
+          >
+            <Notifications />
+          </NotificationsContext.Provider>
+        </RoutesProvider>
       </StateDispatchProvider>
     )
 

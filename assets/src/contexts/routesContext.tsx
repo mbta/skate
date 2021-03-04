@@ -8,6 +8,11 @@ export const useRoute = (routeId: RouteId | null | undefined): Route | null => {
   return (routes || []).find((route) => route.id === routeId) || null
 }
 
+export const useRoutes = (routeIds: RouteId[]): Route[] => {
+  const routes: Route[] | null = useContext(RoutesContext)
+  return (routes || []).filter((route) => routeIds.includes(route.id))
+}
+
 export const RoutesProvider = ({
   routes,
   children,

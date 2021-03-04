@@ -3,18 +3,59 @@ import React from "react"
 import renderer from "react-test-renderer"
 import NotificationDrawer from "../../src/components/notificationDrawer"
 import { NotificationsContext } from "../../src/contexts/notificationsContext"
+import { RoutesProvider } from "../../src/contexts/routesContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import {
   markAllAsRead,
   toggleReadState,
 } from "../../src/hooks/useNotificationsReducer"
 import { Notification, NotificationState } from "../../src/realtime.d"
+import { Route } from "../../src/schedule"
 import {
   closeNotificationDrawer,
   initialState,
   setNotification,
 } from "../../src/state"
 import { now } from "../../src/util/dateTime"
+
+const notification: Notification = {
+  id: "0",
+  createdAt: now(),
+  reason: "manpower",
+  routeIds: ["route1", "route2"],
+  runIds: ["run1", "run2"],
+  tripIds: [],
+  operatorName: null,
+  operatorId: null,
+  routeIdAtCreation: null,
+  startTime: now(),
+  state: "unread" as NotificationState,
+}
+
+const readNotification: Notification = {
+  ...notification,
+  id: "1",
+  state: "read" as NotificationState,
+}
+
+const routes: Route[] = [
+  {
+    id: "route1",
+    directionNames: {
+      0: "Outbound",
+      1: "Inbound",
+    },
+    name: "r1",
+  },
+  {
+    id: "route2",
+    directionNames: {
+      0: "Outbound",
+      1: "Inbound",
+    },
+    name: "r2",
+  },
+]
 
 describe("NotificationDrawer", () => {
   test("renders empty state", () => {
@@ -26,7 +67,9 @@ describe("NotificationDrawer", () => {
     const dispatch = jest.fn()
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
-        <NotificationDrawer />
+        <RoutesProvider routes={routes}>
+          <NotificationDrawer />
+        </RoutesProvider>
       </StateDispatchProvider>
     )
 
@@ -37,19 +80,21 @@ describe("NotificationDrawer", () => {
   test("renders notifications", () => {
     const tree = renderer
       .create(
-        <NotificationsContext.Provider
-          value={{
-            notifications: [notification],
-            showLatestNotification: true,
-            dispatch: jest.fn(),
-            rememberScrollPosition: jest.fn(),
-            scrollPosition: 0,
-            notificationWithOpenSubmenuId: null,
-            setNotificationWithOpenSubmenuId: jest.fn(),
-          }}
-        >
-          <NotificationDrawer />
-        </NotificationsContext.Provider>
+        <RoutesProvider routes={routes}>
+          <NotificationsContext.Provider
+            value={{
+              notifications: [notification],
+              showLatestNotification: true,
+              dispatch: jest.fn(),
+              rememberScrollPosition: jest.fn(),
+              scrollPosition: 0,
+              notificationWithOpenSubmenuId: null,
+              setNotificationWithOpenSubmenuId: jest.fn(),
+            }}
+          >
+            <NotificationDrawer />
+          </NotificationsContext.Provider>
+        </RoutesProvider>
       )
       .toJSON()
     expect(tree).toMatchSnapshot()
@@ -59,19 +104,21 @@ describe("NotificationDrawer", () => {
     const dispatch = jest.fn()
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
-        <NotificationsContext.Provider
-          value={{
-            notifications: [notification],
-            showLatestNotification: true,
-            dispatch: jest.fn(),
-            rememberScrollPosition: jest.fn(),
-            scrollPosition: 0,
-            notificationWithOpenSubmenuId: null,
-            setNotificationWithOpenSubmenuId: jest.fn(),
-          }}
-        >
-          <NotificationDrawer />
-        </NotificationsContext.Provider>
+        <RoutesProvider routes={routes}>
+          <NotificationsContext.Provider
+            value={{
+              notifications: [notification],
+              showLatestNotification: true,
+              dispatch: jest.fn(),
+              rememberScrollPosition: jest.fn(),
+              scrollPosition: 0,
+              notificationWithOpenSubmenuId: null,
+              setNotificationWithOpenSubmenuId: jest.fn(),
+            }}
+          >
+            <NotificationDrawer />
+          </NotificationsContext.Provider>
+        </RoutesProvider>
       </StateDispatchProvider>
     )
 
@@ -89,19 +136,21 @@ describe("NotificationDrawer", () => {
 
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={jest.fn}>
-        <NotificationsContext.Provider
-          value={{
-            notifications: [updatedNotification],
-            showLatestNotification: true,
-            dispatch: mockNotificationsDispatch,
-            rememberScrollPosition: jest.fn(),
-            scrollPosition: 0,
-            notificationWithOpenSubmenuId: null,
-            setNotificationWithOpenSubmenuId: jest.fn(),
-          }}
-        >
-          <NotificationDrawer />
-        </NotificationsContext.Provider>
+        <RoutesProvider routes={routes}>
+          <NotificationsContext.Provider
+            value={{
+              notifications: [updatedNotification],
+              showLatestNotification: true,
+              dispatch: mockNotificationsDispatch,
+              rememberScrollPosition: jest.fn(),
+              scrollPosition: 0,
+              notificationWithOpenSubmenuId: null,
+              setNotificationWithOpenSubmenuId: jest.fn(),
+            }}
+          >
+            <NotificationDrawer />
+          </NotificationsContext.Provider>
+        </RoutesProvider>
       </StateDispatchProvider>
     )
 
@@ -117,19 +166,21 @@ describe("NotificationDrawer", () => {
 
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={stateDispatch}>
-        <NotificationsContext.Provider
-          value={{
-            notifications: [notification],
-            showLatestNotification: true,
-            dispatch: notificationsDispatch,
-            rememberScrollPosition: jest.fn(),
-            scrollPosition: 0,
-            notificationWithOpenSubmenuId: null,
-            setNotificationWithOpenSubmenuId: jest.fn(),
-          }}
-        >
-          <NotificationDrawer />
-        </NotificationsContext.Provider>
+        <RoutesProvider routes={routes}>
+          <NotificationsContext.Provider
+            value={{
+              notifications: [notification],
+              showLatestNotification: true,
+              dispatch: notificationsDispatch,
+              rememberScrollPosition: jest.fn(),
+              scrollPosition: 0,
+              notificationWithOpenSubmenuId: null,
+              setNotificationWithOpenSubmenuId: jest.fn(),
+            }}
+          >
+            <NotificationDrawer />
+          </NotificationsContext.Provider>
+        </RoutesProvider>
       </StateDispatchProvider>
     )
 
@@ -146,19 +197,21 @@ describe("NotificationDrawer", () => {
 
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={stateDispatch}>
-        <NotificationsContext.Provider
-          value={{
-            notifications: [readNotification],
-            showLatestNotification: true,
-            dispatch: notificationsDispatch,
-            rememberScrollPosition: jest.fn(),
-            scrollPosition: 0,
-            notificationWithOpenSubmenuId: null,
-            setNotificationWithOpenSubmenuId: jest.fn(),
-          }}
-        >
-          <NotificationDrawer />
-        </NotificationsContext.Provider>
+        <RoutesProvider routes={routes}>
+          <NotificationsContext.Provider
+            value={{
+              notifications: [readNotification],
+              showLatestNotification: true,
+              dispatch: notificationsDispatch,
+              rememberScrollPosition: jest.fn(),
+              scrollPosition: 0,
+              notificationWithOpenSubmenuId: null,
+              setNotificationWithOpenSubmenuId: jest.fn(),
+            }}
+          >
+            <NotificationDrawer />
+          </NotificationsContext.Provider>
+        </RoutesProvider>
       </StateDispatchProvider>
     )
 
@@ -186,9 +239,11 @@ describe("NotificationDrawer", () => {
 
     const unreadWrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
-        <NotificationsContext.Provider value={unreadProviderValue}>
-          <NotificationDrawer />
-        </NotificationsContext.Provider>
+        <RoutesProvider routes={routes}>
+          <NotificationsContext.Provider value={unreadProviderValue}>
+            <NotificationDrawer />
+          </NotificationsContext.Provider>
+        </RoutesProvider>
       </StateDispatchProvider>
     )
 
@@ -206,9 +261,11 @@ describe("NotificationDrawer", () => {
 
     const readWrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
-        <NotificationsContext.Provider value={readProviderValue}>
-          <NotificationDrawer />
-        </NotificationsContext.Provider>
+        <RoutesProvider routes={routes}>
+          <NotificationsContext.Provider value={readProviderValue}>
+            <NotificationDrawer />
+          </NotificationsContext.Provider>
+        </RoutesProvider>
       </StateDispatchProvider>
     )
 
@@ -236,19 +293,21 @@ describe("NotificationDrawer", () => {
 
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={stateDispatch}>
-        <NotificationsContext.Provider
-          value={{
-            notifications: [notification],
-            showLatestNotification: true,
-            dispatch: notificationsDispatch,
-            rememberScrollPosition: jest.fn(),
-            scrollPosition: 0,
-            notificationWithOpenSubmenuId: notification.id,
-            setNotificationWithOpenSubmenuId: jest.fn(),
-          }}
-        >
-          <NotificationDrawer />
-        </NotificationsContext.Provider>
+        <RoutesProvider routes={routes}>
+          <NotificationsContext.Provider
+            value={{
+              notifications: [notification],
+              showLatestNotification: true,
+              dispatch: notificationsDispatch,
+              rememberScrollPosition: jest.fn(),
+              scrollPosition: 0,
+              notificationWithOpenSubmenuId: notification.id,
+              setNotificationWithOpenSubmenuId: jest.fn(),
+            }}
+          >
+            <NotificationDrawer />
+          </NotificationsContext.Provider>
+        </RoutesProvider>
       </StateDispatchProvider>
     )
 
@@ -273,19 +332,21 @@ describe("NotificationDrawer", () => {
 
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
-        <NotificationsContext.Provider
-          value={{
-            notifications: [notification],
-            showLatestNotification: true,
-            dispatch: jest.fn(),
-            rememberScrollPosition,
-            scrollPosition: 123,
-            notificationWithOpenSubmenuId: null,
-            setNotificationWithOpenSubmenuId: jest.fn(),
-          }}
-        >
-          <NotificationDrawer />
-        </NotificationsContext.Provider>
+        <RoutesProvider routes={routes}>
+          <NotificationsContext.Provider
+            value={{
+              notifications: [notification],
+              showLatestNotification: true,
+              dispatch: jest.fn(),
+              rememberScrollPosition,
+              scrollPosition: 123,
+              notificationWithOpenSubmenuId: null,
+              setNotificationWithOpenSubmenuId: jest.fn(),
+            }}
+          >
+            <NotificationDrawer />
+          </NotificationsContext.Provider>
+        </RoutesProvider>
       </StateDispatchProvider>
     )
     expect(rememberScrollPosition).not.toHaveBeenCalled()
@@ -308,9 +369,11 @@ describe("NotificationDrawer", () => {
 
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
-        <NotificationsContext.Provider value={unreadProviderValue}>
-          <NotificationDrawer />
-        </NotificationsContext.Provider>
+        <RoutesProvider routes={routes}>
+          <NotificationsContext.Provider value={unreadProviderValue}>
+            <NotificationDrawer />
+          </NotificationsContext.Provider>
+        </RoutesProvider>
       </StateDispatchProvider>
     )
 
@@ -340,9 +403,11 @@ describe("NotificationDrawer", () => {
 
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
-        <NotificationsContext.Provider value={unreadProviderValue}>
-          <NotificationDrawer />
-        </NotificationsContext.Provider>
+        <RoutesProvider routes={routes}>
+          <NotificationsContext.Provider value={unreadProviderValue}>
+            <NotificationDrawer />
+          </NotificationsContext.Provider>
+        </RoutesProvider>
       </StateDispatchProvider>
     )
 
@@ -377,9 +442,11 @@ describe("NotificationDrawer", () => {
 
     mount(
       <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
-        <NotificationsContext.Provider value={unreadProviderValue}>
-          <NotificationDrawer />
-        </NotificationsContext.Provider>
+        <RoutesProvider routes={routes}>
+          <NotificationsContext.Provider value={unreadProviderValue}>
+            <NotificationDrawer />
+          </NotificationsContext.Provider>
+        </RoutesProvider>
       </StateDispatchProvider>
     )
 
@@ -403,9 +470,11 @@ describe("NotificationDrawer", () => {
 
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
-        <NotificationsContext.Provider value={unreadProviderValue}>
-          <NotificationDrawer />
-        </NotificationsContext.Provider>
+        <RoutesProvider routes={routes}>
+          <NotificationsContext.Provider value={unreadProviderValue}>
+            <NotificationDrawer />
+          </NotificationsContext.Provider>
+        </RoutesProvider>
       </StateDispatchProvider>
     )
     expect(document.removeEventListener).not.toHaveBeenCalled()
@@ -413,23 +482,3 @@ describe("NotificationDrawer", () => {
     expect(document.removeEventListener).toHaveBeenCalled()
   })
 })
-
-const notification: Notification = {
-  id: "0",
-  createdAt: now(),
-  reason: "manpower",
-  routeIds: ["route1", "route2"],
-  runIds: ["run1", "run2"],
-  tripIds: [],
-  operatorName: null,
-  operatorId: null,
-  routeIdAtCreation: null,
-  startTime: now(),
-  state: "unread" as NotificationState,
-}
-
-const readNotification: Notification = {
-  ...notification,
-  id: "1",
-  state: "read" as NotificationState,
-}
