@@ -1,7 +1,19 @@
-.m-settings-page__row {
-  align-items: baseline;
+.m-settings-page__section-header {
+  @include font-label;
+  padding: 0.5rem 0rem 0.625rem 1.25rem;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.m-settings-page__setting {
+  padding: 0 0 1rem 0;
+}
+
+.m-settings-page__setting_header {
+  align-items: center;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  padding: 0rem 0rem 0.5rem 0rem;
 }
 
 .m-settings-page__icon {
@@ -13,18 +25,47 @@
 .m-settings-page__icon-path {
   display: block;
   fill: $color-primary;
-  width: 24px;
+  width: 13px;
 }
 
-.m-settings-page__label {
+.m-settings-page__setting-label {
   @include font-body;
   flex: 1 1 6rem;
 }
 
-.m-settings-page__select {
-  background-color: $color-bg-base;
-  flex: 1 0 6.5rem;
-  height: 2rem;
-  margin-bottom: 0.7rem;
-  padding-left: 0.4rem;
+.m-settings-page__options-container {
+  margin-left: 1.3125rem;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.m-settings-page__input {
+  display: none;
+}
+
+.m-settings-page__option-label-selected {
+  @include toggle-selected;
+}
+
+.m-settings-page__option-label-unselected {
+  @include toggle-unselected;
+}
+
+.m-settings-page__vehicle-adherence-setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.m-settings-page__vehicle-adherence-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+
+  .red svg {
+    fill: $color-vehicle-red;
+  }
+
+  .blue svg {
+    fill: $color-vehicle-blue;
+  }
 }

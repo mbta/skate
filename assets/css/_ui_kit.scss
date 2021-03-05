@@ -29,6 +29,12 @@ $color-button-light: $color-bg-base;
 $color-button-light-focus: $color-secondary-medium;
 $color-button-disabled: #e6e8ec;
 
+$color-toggle-selected-border: $color-primary-dark;
+$color-toggle-selected-text: $color-primary-dark;
+$color-toggle-selected-fill: #ebf4ff;
+$color-toggle-unselected-border: #d6d6d6;
+$color-toggle-unselected-text: $color-component-medium;
+
 $color-font-dark: $color-component-dark;
 $color-font-grey: $color-component-medium;
 $color-font-link: $color-secondary-dark;
@@ -218,6 +224,41 @@ $color-stop-stroke: $black;
   &:hover {
     color: $color-primary;
   }
+}
+
+// toggle styles
+
+@mixin toggle-base {
+  @include font-small;
+  border: 1px solid;
+  padding: 0.375rem 0 0.3125rem 0;
+  width: 7.5rem;
+  display: flex;
+  justify-content: center;
+
+  &:first-child {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+  }
+
+  &:last-child {
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+  }
+}
+
+@mixin toggle-selected {
+  @include toggle-base;
+  color: $color-toggle-selected-text;
+  border-color: $color-toggle-selected-border;
+  background-color: $color-toggle-selected-fill;
+  font-weight: 600;
+}
+
+@mixin toggle-unselected {
+  @include toggle-base;
+  color: $color-toggle-unselected-text;
+  border-color: $color-toggle-unselected-border;
 }
 
 // input styles

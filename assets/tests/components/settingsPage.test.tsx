@@ -52,13 +52,11 @@ describe("SettingsPage", () => {
         <SettingsPage />
       </StateDispatchProvider>
     )
-    const ladderVehicleLabelSelectValue = wrapper
-      .find("#ladder-vehicle-label-setting")
-      .prop("value")
+    const vehicleNumberOptionChecked = wrapper
+      .find('[data-option-id="ladder-vehicle-label-vehicle-number"] input')
+      .prop("checked")
 
-    expect(ladderVehicleLabelSelectValue).toEqual(
-      VehicleLabelSetting.VehicleNumber
-    )
+    expect(vehicleNumberOptionChecked).toBeTruthy()
   })
 
   test("selecting a ladder vehicle label setting sets that value", () => {
@@ -75,7 +73,9 @@ describe("SettingsPage", () => {
         value: `${VehicleLabelSetting.RunNumber}`,
       },
     } as React.FormEvent<HTMLSelectElement>
-    wrapper.find("#ladder-vehicle-label-setting").prop("onChange")!(testEvent)
+    wrapper
+      .find('[data-option-id="ladder-vehicle-label-run-number"] input')
+      .prop("onChange")!(testEvent)
 
     expect(testDispatch).toHaveBeenCalledWith(
       setLadderVehicleLabelSetting(VehicleLabelSetting.RunNumber)
@@ -100,13 +100,11 @@ describe("SettingsPage", () => {
         <SettingsPage />
       </StateDispatchProvider>
     )
-    const shuttleVehicleLabelSelectValue = wrapper
-      .find("#map-vehicle-label-setting")
-      .prop("value")
+    const runNumberOptionChecked = wrapper
+      .find('[data-option-id="shuttle-vehicle-label-run-number"] input')
+      .prop("checked")
 
-    expect(shuttleVehicleLabelSelectValue).toEqual(
-      VehicleLabelSetting.RunNumber
-    )
+    expect(runNumberOptionChecked).toBeTruthy()
   })
 
   test("selecting a map vehicle label setting sets that value", () => {
@@ -123,7 +121,9 @@ describe("SettingsPage", () => {
         value: `${VehicleLabelSetting.VehicleNumber}`,
       },
     } as React.FormEvent<HTMLSelectElement>
-    wrapper.find("#map-vehicle-label-setting").prop("onChange")!(testEvent)
+    wrapper
+      .find('[data-option-id="shuttle-vehicle-label-vehicle-number"] input')
+      .prop("onChange")!(testEvent)
 
     expect(testDispatch).toHaveBeenCalledWith(
       setShuttleVehicleLabelSetting(VehicleLabelSetting.VehicleNumber)
@@ -132,21 +132,6 @@ describe("SettingsPage", () => {
     expect((window.fetch as jest.Mock).mock.calls[0][0]).toEqual(
       "/api/user_settings?field=shuttle_page_vehicle_label&value=vehicle_id"
     )
-  })
-
-  test("renders with the vehicle_adherence_colors feature flag on", () => {
-    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(
-      (feature) => feature === "vehicle_adherence_colors_setting"
-    )
-    const tree = renderer
-      .create(
-        <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-          <SettingsPage />
-        </StateDispatchProvider>
-      )
-      .toJSON()
-
-    expect(tree).toMatchSnapshot()
   })
 
   test("renders with the minischedule-trip-label feature flag on", () => {
@@ -182,9 +167,9 @@ describe("SettingsPage", () => {
         value: `${VehicleAdherenceColorsSetting.EarlyBlue}`,
       },
     } as React.ChangeEvent<HTMLSelectElement>
-    wrapper.find("#vehicle-adherence-colors-setting").prop("onChange")!(
-      testEvent
-    )
+    wrapper
+      .find('[data-option-id="vehicle-adherence-colors-early-blue"] input')
+      .prop("onChange")!(testEvent)
 
     expect(testDispatch).toHaveBeenCalledWith(
       setVehicleAdherenceColorsSetting(VehicleAdherenceColorsSetting.EarlyBlue)
@@ -212,9 +197,9 @@ describe("SettingsPage", () => {
       },
     } as React.FormEvent<HTMLSelectElement>
 
-    wrapper.find("#minischedules-trip-label-setting").prop("onChange")!(
-      testEvent
-    )
+    wrapper
+      .find('[data-option-id="minischedules-trip-label-origin"] input')
+      .prop("onChange")!(testEvent)
 
     expect(testDispatch).toHaveBeenCalledWith(
       setMinischedulesTripLabelSetting(TripLabelSetting.Origin)

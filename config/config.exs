@@ -106,8 +106,6 @@ config :laboratory,
   features: [
     {:headway_ladder_colors, "Headway Route Ladder Colors",
      "Turns on colored headway spacing lines on key route route ladders showing when service is bunched or gapped."},
-    {:vehicle_adherence_colors_setting, "Vehicle Adherence Colors Setting (Temporary)",
-     "Turns on user setting to toggle vehicle adherence colors."},
     {:minischedules_trip_label, "Choose Minischedules Trip Label",
      "User can, in minischedules, switch between showing origins and destinations of trips"}
   ],

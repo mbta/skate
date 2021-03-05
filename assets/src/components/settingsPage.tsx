@@ -1,6 +1,11 @@
 import React, { ReactElement, useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { ladderIcon, mapIcon } from "../helpers/icon"
+import {
+  ladderIcon,
+  mapIcon,
+  triangleUpIcon,
+  triangleUpLargeIcon,
+} from "../helpers/icon"
 import featureIsEnabled from "../laboratoryFeatures"
 import {
   setLadderVehicleLabelSetting,
@@ -28,26 +33,11 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
         <h1 className="c-page__title">Settings</h1>
 
         <div className="c-page__section">
-          <h2 className="c-page__header">Vehicle Label</h2>
-          <DropdownSetting
-            icon={ladderIcon}
-            label="Route Ladders"
-            selectId="ladder-vehicle-label-setting"
-            value={userSettings.ladderVehicleLabel}
-            onChange={(value) => {
-              const newSetting: VehicleLabelSetting = parseInt(value, 10)
-              dispatch(setLadderVehicleLabelSetting(newSetting))
-              putLadderVehicleLabel(newSetting)
-            }}
-            options={[
-              { label: "Run #", value: VehicleLabelSetting.RunNumber },
-              { label: "Vehicle #", value: VehicleLabelSetting.VehicleNumber },
-            ]}
-          />
-          <DropdownSetting
+          <h2 className="m-settings-page__section-header">Vehicle Settings</h2>
+          <ToggleSetting
             icon={mapIcon}
-            label="Map"
-            selectId="map-vehicle-label-setting"
+            label="Vehicle labels on map"
+            settingName="shuttle-vehicle-label"
             value={userSettings.shuttleVehicleLabel}
             onChange={(value) => {
               const newSetting: VehicleLabelSetting = parseInt(value, 10)
@@ -55,42 +45,103 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
               putShuttleVehicleLabel(newSetting)
             }}
             options={[
-              { label: "Run #", value: VehicleLabelSetting.RunNumber },
-              { label: "Vehicle #", value: VehicleLabelSetting.VehicleNumber },
+              {
+                label: "Run number",
+                value: VehicleLabelSetting.RunNumber,
+                optionId: "shuttle-vehicle-label-run-number",
+              },
+              {
+                label: "Vehicle number",
+                value: VehicleLabelSetting.VehicleNumber,
+                optionId: "shuttle-vehicle-label-vehicle-number",
+              },
             ]}
           />
-          {featureIsEnabled("vehicle_adherence_colors_setting") && (
-            <DropdownSetting
-              icon={mapIcon}
-              label="Map"
-              selectId="vehicle-adherence-colors-setting"
-              value={userSettings.vehicleAdherenceColors}
-              onChange={(value) => {
-                const newSetting: VehicleAdherenceColorsSetting = parseInt(
-                  value,
-                  10
-                )
-                dispatch(setVehicleAdherenceColorsSetting(newSetting))
-                putVehicleAdherenceColors(newSetting)
-              }}
-              options={[
-                {
-                  label: "Early Red",
-                  value: VehicleAdherenceColorsSetting.EarlyRed,
-                },
-                {
-                  label: "Early Blue",
-                  value: VehicleAdherenceColorsSetting.EarlyBlue,
-                },
-              ]}
-            />
-          )}
+          <ToggleSetting
+            icon={ladderIcon}
+            label="Vehicle labels on route ladder"
+            settingName="ladder-vehicle-label"
+            value={userSettings.ladderVehicleLabel}
+            onChange={(value) => {
+              const newSetting: VehicleLabelSetting = parseInt(value, 10)
+              dispatch(setLadderVehicleLabelSetting(newSetting))
+              putLadderVehicleLabel(newSetting)
+            }}
+            options={[
+              {
+                label: "Run number",
+                value: VehicleLabelSetting.RunNumber,
+                optionId: "ladder-vehicle-label-run-number",
+              },
+              {
+                label: "Vehicle number",
+                value: VehicleLabelSetting.VehicleNumber,
+                optionId: "ladder-vehicle-label-vehicle-number",
+              },
+            ]}
+          />
+          <ToggleSetting
+            icon={triangleUpLargeIcon}
+            label="Adherence colors"
+            settingName="vehicle-adherence-colors"
+            value={userSettings.vehicleAdherenceColors}
+            onChange={(value) => {
+              const newSetting: VehicleAdherenceColorsSetting = parseInt(
+                value,
+                10
+              )
+              dispatch(setVehicleAdherenceColorsSetting(newSetting))
+              putVehicleAdherenceColors(newSetting)
+            }}
+            options={[
+              {
+                label: (
+                  <div>
+                    <div className="m-settings-page__vehicle-adherence-setting-row">
+                      Early bus: Red
+                      <div className="m-settings-page__vehicle-adherence-icon">
+                        {triangleUpIcon("red")}
+                      </div>
+                    </div>
+                    <div className="m-settings-page__vehicle-adherence-setting-row">
+                      Late bus: Blue
+                      <div className="m-settings-page__vehicle-adherence-icon">
+                        {triangleUpIcon("blue")}
+                      </div>
+                    </div>
+                  </div>
+                ),
+                value: VehicleAdherenceColorsSetting.EarlyRed,
+                optionId: "vehicle-adherence-colors-early-red",
+              },
+              {
+                label: (
+                  <div>
+                    <div className="m-settings-page__vehicle-adherence-setting-row">
+                      Early bus: Blue
+                      <div className="m-settings-page__vehicle-adherence-icon">
+                        {triangleUpIcon("blue")}
+                      </div>
+                    </div>
+                    <div className="m-settings-page__vehicle-adherence-setting-row">
+                      Late bus: Red
+                      <div className="m-settings-page__vehicle-adherence-icon">
+                        {triangleUpIcon("red")}
+                      </div>
+                    </div>
+                  </div>
+                ),
+                value: VehicleAdherenceColorsSetting.EarlyBlue,
+                optionId: "vehicle-adherence-colors-early-blue",
+              },
+            ]}
+          />
 
           {featureIsEnabled("minischedules_trip_label") && (
-            <DropdownSetting
+            <ToggleSetting
               icon={mapIcon}
               label="Trip Label"
-              selectId="minischedules-trip-label-setting"
+              settingName="minischedules-trip-label"
               value={userSettings.minischedulesTripLabel}
               onChange={(value) => {
                 const newSetting: TripLabelSetting = parseInt(value, 10)
@@ -98,10 +149,15 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
                 putMinischedulesTripLabel(newSetting)
               }}
               options={[
-                { label: "Origin", value: TripLabelSetting.Origin },
+                {
+                  label: "Origin",
+                  value: TripLabelSetting.Origin,
+                  optionId: "minischedules-trip-label-origin",
+                },
                 {
                   label: "Destination",
                   value: TripLabelSetting.Destination,
+                  optionId: "minischedules-trip-label-destination",
                 },
               ]}
             />
@@ -113,38 +169,55 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
   )
 }
 
-const DropdownSetting = ({
+const ToggleSetting = ({
   icon,
   label,
-  selectId,
+  settingName,
   value,
   onChange,
   options,
 }: {
   icon: (className: string) => ReactElement
   label: string
-  selectId: string
+  settingName: string
   value: string | number
   onChange: (value: string) => void
-  options: { label: string; value: string | number }[]
+  options: {
+    label: string | JSX.Element
+    value: string | number
+    optionId: string
+  }[]
 }) => (
-  <div className="m-settings-page__row">
-    <div className="m-settings-page__icon">
-      {icon("m-settings-page__icon-path")}
+  <div className="m-settings-page__setting">
+    <div className="m-settings-page__setting_header">
+      <div className="m-settings-page__icon">
+        {icon("m-settings-page__icon-path")}
+      </div>
+      <div className="m-settings-page__setting-label">{label}</div>
     </div>
-    <div className="m-settings-page__label">{label}</div>
-    <select
-      id={selectId}
-      className="m-settings-page__select"
-      value={value}
-      onChange={(event) => onChange(event.currentTarget.value)}
-    >
+    <div className="m-settings-page__options-container">
       {options.map((option) => (
-        <option key={option.value} value={option.value}>
+        <label
+          className={
+            value === option.value
+              ? "m-settings-page__option-label-selected"
+              : "m-settings-page__option-label-unselected"
+          }
+          key={option.optionId}
+          data-option-id={option.optionId}
+        >
+          <input
+            type="radio"
+            className="m-settings-page__input"
+            name={settingName}
+            value={option.value}
+            checked={value === option.value}
+            onChange={(event) => onChange(event.currentTarget.value)}
+          />
           {option.label}
-        </option>
+        </label>
       ))}
-    </select>
+    </div>
   </div>
 )
 
