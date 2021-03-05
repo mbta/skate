@@ -153,7 +153,7 @@ defmodule Notifications.Notification do
       if bridge_movement_values.status == :raised do
         {:chelsea_st_bridge_raised, bridge_movement_values.lowering_time}
       else
-        {:chelsea_st_bridge_lowered, db_record.created_at + @notification_expiration_threshold}
+        {:chelsea_st_bridge_lowered, nil}
       end
 
     notification = %__MODULE__{
