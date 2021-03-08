@@ -1,5 +1,6 @@
 defmodule Realtime.DataStatus do
   alias Realtime.Vehicle
+  require Logger
 
   @type t :: :good | :outage
 
@@ -7,15 +8,31 @@ defmodule Realtime.DataStatus do
   def data_status(vehicles) do
     now_fn = Application.get_env(:skate, :now_fn, &Util.Time.now/0)
     now = now_fn.()
+    total_count = Enum.count(vehicles)
+    vehicles_to_consider = Enum.filter(vehicles, &should_consider?/1)
 
     {good_count, bad_count} =
-      vehicles
-      |> Enum.filter(&should_consider?/1)
-      |> count_partition(fn vehicle -> vehicle_is_good(vehicle, now) end)
+      count_partition(vehicles_to_consider, fn vehicle ->
+        vehicle_is_good_busloc(vehicle, now) and vehicle_is_good_swiftly(vehicle, now)
+      end)
 
-    total_count = good_count + bad_count
+    considered_count = good_count + bad_count
 
-    if total_count >= 10 and bad_count / total_count >= 0.20 do
+    good_busloc_count =
+      vehicles_to_consider |> Enum.filter(&vehicle_is_good_busloc(&1, now)) |> Enum.count()
+
+    good_swiftly_count =
+      vehicles_to_consider |> Enum.filter(&vehicle_is_good_swiftly(&1, now)) |> Enum.count()
+
+    Logger.info(
+      "data_status_calculation total_vehicles=#{total_count} considered_vehicles=#{
+        considered_count
+      } good_vehicles=#{good_count} good_busloc_vehicles=#{good_busloc_count} good_swiftly_vehicles=#{
+        good_swiftly_count
+      } bad_vehicles=#{bad_count}"
+    )
+
+    if considered_count >= 10 and bad_count / considered_count >= 0.20 do
       :outage
     else
       :good
@@ -30,14 +47,23 @@ defmodule Realtime.DataStatus do
     vehicle.route_id != nil
   end
 
-  @spec vehicle_is_good(Vehicle.t(), Util.Time.timestamp()) :: boolean()
-  defp vehicle_is_good(vehicle, now) do
-    if Map.get(vehicle.timestamp_by_source, "busloc") == nil ||
-         Map.get(vehicle.timestamp_by_source, "swiftly") == nil do
+  @spec vehicle_is_good_busloc(Vehicle.t(), Util.Time.timestamp()) :: boolean()
+  defp vehicle_is_good_busloc(vehicle, now) do
+    if Map.get(vehicle.timestamp_by_source, "busloc") == nil do
       false
     else
-      stalest_timestamp = vehicle.timestamp_by_source |> Map.values() |> Enum.min()
-      age_seconds = now - stalest_timestamp
+      age_seconds = now - vehicle.timestamp_by_source["busloc"]
+      # 2 and a half minutes ago.
+      age_seconds < 150
+    end
+  end
+
+  @spec vehicle_is_good_swiftly(Vehicle.t(), Util.Time.timestamp()) :: boolean()
+  defp vehicle_is_good_swiftly(vehicle, now) do
+    if Map.get(vehicle.timestamp_by_source, "swiftly") == nil do
+      false
+    else
+      age_seconds = now - vehicle.timestamp_by_source["swiftly"]
       # 2 and a half minutes ago.
       age_seconds < 150
     end

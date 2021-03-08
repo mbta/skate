@@ -1,6 +1,7 @@
 defmodule Realtime.DataStatusTest do
   use ExUnit.Case
   import Test.Support.Helpers
+  import ExUnit.CaptureLog
 
   alias Realtime.DataStatus
 
@@ -33,39 +34,95 @@ defmodule Realtime.DataStatusTest do
   describe "data_status" do
     setup do
       reassign_env(:skate, :now_fn, fn -> @now end)
+
+      log_level = Logger.level()
+
+      on_exit(fn ->
+        Logger.configure(level: log_level)
+      end)
+
+      Logger.configure(level: :info)
     end
 
     test "if there are fewer than 10 revenue vehicles, status is good" do
       bads = List.duplicate(@bad, 9)
       irrelevants = List.duplicate(@irrelevant, 20)
       vehicles = bads ++ irrelevants
-      assert DataStatus.data_status(vehicles) == :good
+
+      log =
+        capture_log([level: :info], fn -> assert DataStatus.data_status(vehicles) == :good end)
+
+      assert log =~ "total_vehicles=29"
+      assert log =~ "considered_vehicles=9"
+      assert log =~ "good_vehicles=0"
+      assert log =~ "good_busloc_vehicles=0"
+      assert log =~ "good_swiftly_vehicles=0"
+      assert log =~ "bad_vehicles=9"
     end
 
     test "if most vehicles are good, status is good" do
       goods = List.duplicate(@good, 9)
-      assert DataStatus.data_status([@bad | goods]) == :good
+
+      log =
+        capture_log([level: :info], fn ->
+          assert DataStatus.data_status([@bad | goods]) == :good
+        end)
+
+      assert log =~ "total_vehicles=10"
+      assert log =~ "considered_vehicles=10"
+      assert log =~ "good_vehicles=9"
+      assert log =~ "good_busloc_vehicles=9"
+      assert log =~ "good_swiftly_vehicles=9"
+      assert log =~ "bad_vehicles=1"
     end
 
     test "if many vehicles are bad, status is outage" do
       goods = List.duplicate(@good, 8)
-      assert DataStatus.data_status([@bad, @bad | goods]) == :outage
+
+      log =
+        capture_log([level: :info], fn ->
+          assert DataStatus.data_status([@bad, @bad | goods]) == :outage
+        end)
+
+      assert log =~ "total_vehicles=10"
+      assert log =~ "considered_vehicles=10"
+      assert log =~ "good_vehicles=8"
+      assert log =~ "good_busloc_vehicles=8"
+      assert log =~ "good_swiftly_vehicles=8"
+      assert log =~ "bad_vehicles=2"
     end
 
     test "considers vehicles bad if either source is stale or missing" do
       goods = List.duplicate(@good, 8)
 
       [
-        [@swiftly_missing, @swiftly_missing | goods],
-        [@swiftly_stale, @swiftly_stale | goods],
-        [@busloc_missing, @busloc_missing | goods],
-        [@busloc_stale, @busloc_stale | goods]
+        {[@swiftly_missing, @swiftly_missing | goods], 10, 8},
+        {[@swiftly_stale, @swiftly_stale | goods], 10, 8},
+        {[@busloc_missing, @busloc_missing | goods], 8, 10},
+        {[@busloc_stale, @busloc_stale | goods], 8, 10}
       ]
-      |> Enum.each(&assert DataStatus.data_status(&1) == :outage)
+      |> Enum.each(fn {vehicles, busloc_good, swiftly_good} ->
+        log =
+          capture_log([level: :info], fn -> assert DataStatus.data_status(vehicles) == :outage end)
+
+        assert log =~ "total_vehicles=10"
+        assert log =~ "considered_vehicles=10"
+        assert log =~ "good_vehicles=8"
+        assert log =~ "good_busloc_vehicles=#{busloc_good}"
+        assert log =~ "good_swiftly_vehicles=#{swiftly_good}"
+        assert log =~ "bad_vehicles=2"
+      end)
     end
 
     test "when there are no vehicles overnight, that's okay" do
-      assert DataStatus.data_status([]) == :good
+      log = capture_log([level: :info], fn -> assert DataStatus.data_status([]) == :good end)
+
+      assert log =~ "total_vehicles=0"
+      assert log =~ "considered_vehicles=0"
+      assert log =~ "good_vehicles=0"
+      assert log =~ "good_busloc_vehicles=0"
+      assert log =~ "good_swiftly_vehicles=0"
+      assert log =~ "bad_vehicles=0"
     end
   end
 end
