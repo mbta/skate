@@ -14,6 +14,7 @@ describe("userSettingsFromData", () => {
       ladder_page_vehicle_label: "run_id" as VehicleLabelData,
       shuttle_page_vehicle_label: "run_id" as VehicleLabelData,
       vehicle_adherence_colors: "early_red" as VehicleAdherenceColorsData,
+      minischedules_trip_label: "origin" as TripLabelData,
     }
 
     expect(userSettingsFromData(data).vehicleAdherenceColors).toEqual(
@@ -24,19 +25,13 @@ describe("userSettingsFromData", () => {
       userSettingsFromData({ ...data, vehicle_adherence_colors: "early_blue" })
         .vehicleAdherenceColors
     ).toEqual(VehicleAdherenceColorsSetting.EarlyBlue)
-
-    expect(
-      userSettingsFromData({ ...data, vehicle_adherence_colors: undefined })
-        .vehicleAdherenceColors
-    ).toEqual(VehicleAdherenceColorsSetting.EarlyRed)
   })
-})
 
-describe("userSettingsFromData", () => {
   test("parses minischedulesTripLabel", () => {
     const data = {
       ladder_page_vehicle_label: "run_id" as VehicleLabelData,
       shuttle_page_vehicle_label: "run_id" as VehicleLabelData,
+      vehicle_adherence_colors: "early_red" as VehicleAdherenceColorsData,
       minischedules_trip_label: "origin" as TripLabelData,
     }
 
@@ -46,11 +41,6 @@ describe("userSettingsFromData", () => {
 
     expect(
       userSettingsFromData({ ...data, minischedules_trip_label: "destination" })
-        .minischedulesTripLabel
-    ).toEqual(TripLabelSetting.Destination)
-
-    expect(
-      userSettingsFromData({ ...data, minischedules_trip_label: undefined })
         .minischedulesTripLabel
     ).toEqual(TripLabelSetting.Destination)
   })

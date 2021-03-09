@@ -46,11 +46,8 @@ export type TripLabelData = "origin" | "destination"
 interface SettingsData {
   ladder_page_vehicle_label: VehicleLabelData
   shuttle_page_vehicle_label: VehicleLabelData
-  vehicle_adherence_colors?: VehicleAdherenceColorsData
-  // We allow minischedules_trip_label to be undefined to handle the
-  // hybrid code problem, we can disallow undefined after the first
-  // deploy of the corresponding backend code.
-  minischedules_trip_label?: TripLabelData
+  vehicle_adherence_colors: VehicleAdherenceColorsData
+  minischedules_trip_label: TripLabelData
 }
 
 const vehicleLabelFromData = (data: VehicleLabelData): VehicleLabelSetting => {
