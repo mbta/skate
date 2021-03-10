@@ -12,10 +12,8 @@ exports[`CrowdingDiagram renders correctly for a crowded bus 1`] = `
     >
       Riders onboard
     </span>
-    <span
-      data-class="m-crowding-diagram__crowding-tooltip"
-      data-html="true"
-      data-tip="Riders are estimated using Automated <br/> Passenger Counters (APCs)."
+    <div
+      className="mock-tippy"
     >
       <span
         className="m-crowding-diagram__tooltip-anchor"
@@ -25,7 +23,7 @@ exports[`CrowdingDiagram renders correctly for a crowded bus 1`] = `
           }
         }
       />
-    </span>
+    </div>
     <br />
     45 riders
      / 
@@ -50,9 +48,6 @@ exports[`CrowdingDiagram renders correctly for a crowded bus 1`] = `
       }
     />
   </div>
-  <div
-    className="mock-react-tooltip"
-  />
 </div>
 `;
 
@@ -68,10 +63,8 @@ exports[`CrowdingDiagram renders correctly for a somewhat crowded bus 1`] = `
     >
       Riders onboard
     </span>
-    <span
-      data-class="m-crowding-diagram__crowding-tooltip"
-      data-html="true"
-      data-tip="Riders are estimated using Automated <br/> Passenger Counters (APCs)."
+    <div
+      className="mock-tippy"
     >
       <span
         className="m-crowding-diagram__tooltip-anchor"
@@ -81,7 +74,7 @@ exports[`CrowdingDiagram renders correctly for a somewhat crowded bus 1`] = `
           }
         }
       />
-    </span>
+    </div>
     <br />
     10 riders
      / 
@@ -106,9 +99,6 @@ exports[`CrowdingDiagram renders correctly for a somewhat crowded bus 1`] = `
       }
     />
   </div>
-  <div
-    className="mock-react-tooltip"
-  />
 </div>
 `;
 
@@ -124,10 +114,8 @@ exports[`CrowdingDiagram renders correctly for an empty bus 1`] = `
     >
       Riders onboard
     </span>
-    <span
-      data-class="m-crowding-diagram__crowding-tooltip"
-      data-html="true"
-      data-tip="Riders are estimated using Automated <br/> Passenger Counters (APCs)."
+    <div
+      className="mock-tippy"
     >
       <span
         className="m-crowding-diagram__tooltip-anchor"
@@ -137,7 +125,7 @@ exports[`CrowdingDiagram renders correctly for an empty bus 1`] = `
           }
         }
       />
-    </span>
+    </div>
     <br />
     0 riders
      / 
@@ -162,9 +150,6 @@ exports[`CrowdingDiagram renders correctly for an empty bus 1`] = `
       }
     />
   </div>
-  <div
-    className="mock-react-tooltip"
-  />
 </div>
 `;
 
@@ -180,10 +165,8 @@ exports[`CrowdingDiagram renders correctly for an uncrowded bus 1`] = `
     >
       Riders onboard
     </span>
-    <span
-      data-class="m-crowding-diagram__crowding-tooltip"
-      data-html="true"
-      data-tip="Riders are estimated using Automated <br/> Passenger Counters (APCs)."
+    <div
+      className="mock-tippy"
     >
       <span
         className="m-crowding-diagram__tooltip-anchor"
@@ -193,7 +176,7 @@ exports[`CrowdingDiagram renders correctly for an uncrowded bus 1`] = `
           }
         }
       />
-    </span>
+    </div>
     <br />
     1 rider
      / 
@@ -218,9 +201,6 @@ exports[`CrowdingDiagram renders correctly for an uncrowded bus 1`] = `
       }
     />
   </div>
-  <div
-    className="mock-react-tooltip"
-  />
 </div>
 `;
 
@@ -236,10 +216,8 @@ exports[`CrowdingDiagram renders correctly for an untrusted APC 1`] = `
     >
       Riders onboard
     </span>
-    <span
-      data-class="m-crowding-diagram__crowding-tooltip"
-      data-html="true"
-      data-tip="Riders are estimated using Automated <br/> Passenger Counters (APCs)."
+    <div
+      className="mock-tippy"
     >
       <span
         className="m-crowding-diagram__tooltip-anchor"
@@ -249,7 +227,7 @@ exports[`CrowdingDiagram renders correctly for an untrusted APC 1`] = `
           }
         }
       />
-    </span>
+    </div>
     <br />
     No data available
   </div>
@@ -265,9 +243,6 @@ exports[`CrowdingDiagram renders correctly for an untrusted APC 1`] = `
       }
     />
   </div>
-  <div
-    className="mock-react-tooltip"
-  />
 </div>
 `;
 

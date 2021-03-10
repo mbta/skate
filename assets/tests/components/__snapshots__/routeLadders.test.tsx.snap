@@ -84,17 +84,19 @@ exports[`renders a route ladder 1`] = `
         cy={-0}
         r="3"
       />
-      <text
-        className="m-ladder__timepoint-name"
-        data-event="click"
-        data-tip="WASMA Name"
-        dominantBaseline="middle"
-        textAnchor="middle"
-        x="0"
-        y={-0}
+      <div
+        className="mock-tippy"
       >
-        WASMA
-      </text>
+        <text
+          className="m-ladder__timepoint-name"
+          dominantBaseline="middle"
+          textAnchor="middle"
+          x="0"
+          y={-0}
+        >
+          WASMA
+        </text>
+      </div>
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
@@ -107,17 +109,19 @@ exports[`renders a route ladder 1`] = `
         cy={-55}
         r="3"
       />
-      <text
-        className="m-ladder__timepoint-name"
-        data-event="click"
-        data-tip="MELWA Name"
-        dominantBaseline="middle"
-        textAnchor="middle"
-        x="0"
-        y={-55}
+      <div
+        className="mock-tippy"
       >
-        MELWA
-      </text>
+        <text
+          className="m-ladder__timepoint-name"
+          dominantBaseline="middle"
+          textAnchor="middle"
+          x="0"
+          y={-55}
+        >
+          MELWA
+        </text>
+      </div>
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
@@ -130,21 +134,20 @@ exports[`renders a route ladder 1`] = `
         cy={-110}
         r="3"
       />
-      <text
-        className="m-ladder__timepoint-name"
-        data-event="click"
-        data-tip="HHGAT Name"
-        dominantBaseline="middle"
-        textAnchor="middle"
-        x="0"
-        y={-110}
+      <div
+        className="mock-tippy"
       >
-        HHGAT
-      </text>
+        <text
+          className="m-ladder__timepoint-name"
+          dominantBaseline="middle"
+          textAnchor="middle"
+          x="0"
+          y={-110}
+        >
+          HHGAT
+        </text>
+      </div>
     </svg>
-    <div
-      className="mock-react-tooltip"
-    />
   </div>
   <div
     className="m-incoming-box"
@@ -229,17 +232,19 @@ exports[`renders a route ladder 1`] = `
         cy={-0}
         r="3"
       />
-      <text
-        className="m-ladder__timepoint-name"
-        data-event="click"
-        data-tip="MATPN Name"
-        dominantBaseline="middle"
-        textAnchor="middle"
-        x="0"
-        y={-0}
+      <div
+        className="mock-tippy"
       >
-        MATPN
-      </text>
+        <text
+          className="m-ladder__timepoint-name"
+          dominantBaseline="middle"
+          textAnchor="middle"
+          x="0"
+          y={-0}
+        >
+          MATPN
+        </text>
+      </div>
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
@@ -252,17 +257,19 @@ exports[`renders a route ladder 1`] = `
         cy={-55}
         r="3"
       />
-      <text
-        className="m-ladder__timepoint-name"
-        data-event="click"
-        data-tip="WELLH Name"
-        dominantBaseline="middle"
-        textAnchor="middle"
-        x="0"
-        y={-55}
+      <div
+        className="mock-tippy"
       >
-        WELLH
-      </text>
+        <text
+          className="m-ladder__timepoint-name"
+          dominantBaseline="middle"
+          textAnchor="middle"
+          x="0"
+          y={-55}
+        >
+          WELLH
+        </text>
+      </div>
       <circle
         className="m-ladder__stop-circle"
         cx={-40}
@@ -275,21 +282,20 @@ exports[`renders a route ladder 1`] = `
         cy={-110}
         r="3"
       />
-      <text
-        className="m-ladder__timepoint-name"
-        data-event="click"
-        data-tip="MORTN Name"
-        dominantBaseline="middle"
-        textAnchor="middle"
-        x="0"
-        y={-110}
+      <div
+        className="mock-tippy"
       >
-        MORTN
-      </text>
+        <text
+          className="m-ladder__timepoint-name"
+          dominantBaseline="middle"
+          textAnchor="middle"
+          x="0"
+          y={-110}
+        >
+          MORTN
+        </text>
+      </div>
     </svg>
-    <div
-      className="mock-react-tooltip"
-    />
   </div>
   <div
     className="m-incoming-box"

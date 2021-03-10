@@ -11,12 +11,14 @@ jest.mock("react-leaflet-fullscreen", () => ({
   default: jest.fn(() => null),
 }))
 
-//jest.mock("react-tooltip", () => ({
-//  __esModule: true,
-//  default: jest
-//    .fn()
-//    .mockImplementation(() => <div className="mock-react-tooltip" />),
-//}))
+jest.mock("@tippyjs/react", () => ({
+  __esModule: true,
+  default: jest
+    .fn()
+    .mockImplementation((props) => (
+      <div className="mock-tippy">{props.children}</div>
+    )),
+}))
 
 // JSDOM doesn't support part of SVG that's needed for Leaflet to run in tests.
 // https://stackoverflow.com/questions/54382414/fixing-react-leaflet-testing-error-cannot-read-property-layeradd-of-null
