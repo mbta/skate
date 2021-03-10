@@ -1,6 +1,7 @@
 defmodule Notifications.NotificationServer do
   use GenServer
 
+  alias Notifications.Bridge
   alias Notifications.Notification
   alias Notifications.NotificationReason
   alias Realtime.{BlockWaiver, Ghost, Vehicle}
@@ -23,6 +24,7 @@ defmodule Notifications.NotificationServer do
     GenServer.cast(server, {:new_block_waivers, new_waivers_by_block_key})
   end
 
+  @spec bridge_movement(Bridge.bridge_movement(), GenServer.server()) :: :ok
   def bridge_movement(bridge_movement, server \\ default_name()) do
     GenServer.cast(server, {:bridge_movement, bridge_movement})
   end
@@ -154,12 +156,16 @@ defmodule Notifications.NotificationServer do
     end
   end
 
+  @spec convert_bridge_movement_to_notification(Bridge.bridge_movement()) ::
+          %Notifications.Notification{}
   defp convert_bridge_movement_to_notification(bridge_movement) do
     bridge_movement
     |> get_db_values_from_bridge_movement
     |> Notification.get_or_create_from_bridge_movement()
   end
 
+  @spec get_db_values_from_bridge_movement(Bridge.bridge_movement()) ::
+          %{status: :raised, lowering_time: integer()} | %{status: :lowered, lowering_time: nil}
   defp get_db_values_from_bridge_movement({bridge_status, lowering_time}) do
     %{status: bridge_status, lowering_time: lowering_time}
   end

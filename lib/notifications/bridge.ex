@@ -3,6 +3,8 @@ defmodule Notifications.Bridge do
   Queries and maintains the status of a bridge
   """
 
+  @type bridge_movement :: {:raised, integer()} | {:lowered, nil}
+
   use GenServer
   require Logger
 
@@ -71,6 +73,7 @@ defmodule Notifications.Bridge do
     Process.send_after(pid, :update, @fetch_ms)
   end
 
+  @spec fetch_status() :: bridge_movement() | nil
   defp fetch_status() do
     headers = [{"Authorization", get_auth_header()}]
 
@@ -79,6 +82,7 @@ defmodule Notifications.Bridge do
     |> parse_response()
   end
 
+  @spec parse_response({:ok | :error, HTTPoison.Response.t()}) :: bridge_movement() | nil
   def parse_response({:ok, %HTTPoison.Response{status_code: status, body: body}})
       when status >= 200 and status < 300 do
     case Jason.decode(body) do
