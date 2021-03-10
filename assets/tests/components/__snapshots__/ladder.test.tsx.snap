@@ -117,6 +117,11 @@ exports[`ladder highlights a selected vehicle 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t0 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -142,6 +147,11 @@ exports[`ladder highlights a selected vehicle 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t1 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -167,6 +177,11 @@ exports[`ladder highlights a selected vehicle 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t2 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -306,6 +321,11 @@ exports[`ladder renders a ghost bus 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t0 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -331,6 +351,11 @@ exports[`ladder renders a ghost bus 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t1 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -356,6 +381,11 @@ exports[`ladder renders a ghost bus 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t2 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -520,6 +550,11 @@ exports[`ladder renders a ladder 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t0 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -545,6 +580,11 @@ exports[`ladder renders a ladder 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t1 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -570,6 +610,11 @@ exports[`ladder renders a ladder 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t2 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -727,6 +772,11 @@ exports[`ladder renders a laying over vehicle 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t0 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -752,6 +802,11 @@ exports[`ladder renders a laying over vehicle 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t1 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -777,6 +832,11 @@ exports[`ladder renders a laying over vehicle 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t2 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -875,6 +935,11 @@ exports[`ladder renders a laying over vehicle with a scheduled line 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t0 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -900,6 +965,11 @@ exports[`ladder renders a laying over vehicle with a scheduled line 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t1 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -925,6 +995,11 @@ exports[`ladder renders a laying over vehicle with a scheduled line 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t2 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -1023,6 +1098,11 @@ exports[`ladder renders a reversed ladder 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t2 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -1048,6 +1128,11 @@ exports[`ladder renders a reversed ladder 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t1 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -1073,6 +1158,11 @@ exports[`ladder renders a reversed ladder 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t0 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -1173,6 +1263,11 @@ exports[`ladder renders an off-course vehicle 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t0 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -1198,6 +1293,11 @@ exports[`ladder renders an off-course vehicle 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t1 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -1223,6 +1323,11 @@ exports[`ladder renders an off-course vehicle 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t2 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -1314,6 +1419,11 @@ exports[`ladder renders an overload vehicle 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t0 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -1339,6 +1449,11 @@ exports[`ladder renders an overload vehicle 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t1 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -1364,6 +1479,11 @@ exports[`ladder renders an overload vehicle 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t2 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -1462,6 +1582,11 @@ exports[`ladder shows schedule line in the other direction 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t2 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -1487,6 +1612,11 @@ exports[`ladder shows schedule line in the other direction 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t1 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -1512,6 +1642,11 @@ exports[`ladder shows schedule line in the other direction 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t0 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -1761,6 +1896,11 @@ exports[`ladder shows vehicles with current block waivers 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t0 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -1786,6 +1926,11 @@ exports[`ladder shows vehicles with current block waivers 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t1 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"
@@ -1811,6 +1956,11 @@ exports[`ladder shows vehicles with current block waivers 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        t2 name
+      </div>
       <text
         className="m-ladder__timepoint-name"
         dominantBaseline="middle"

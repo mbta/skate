@@ -15,6 +15,15 @@ exports[`CrowdingDiagram renders correctly for a crowded bus 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        <div>
+          Riders are estimated using Automated 
+          <br />
+           Passenger Counters (APCs).
+        </div>
+      </div>
       <span
         className="m-crowding-diagram__tooltip-anchor"
         dangerouslySetInnerHTML={
@@ -66,6 +75,15 @@ exports[`CrowdingDiagram renders correctly for a somewhat crowded bus 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        <div>
+          Riders are estimated using Automated 
+          <br />
+           Passenger Counters (APCs).
+        </div>
+      </div>
       <span
         className="m-crowding-diagram__tooltip-anchor"
         dangerouslySetInnerHTML={
@@ -117,6 +135,15 @@ exports[`CrowdingDiagram renders correctly for an empty bus 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        <div>
+          Riders are estimated using Automated 
+          <br />
+           Passenger Counters (APCs).
+        </div>
+      </div>
       <span
         className="m-crowding-diagram__tooltip-anchor"
         dangerouslySetInnerHTML={
@@ -168,6 +195,15 @@ exports[`CrowdingDiagram renders correctly for an uncrowded bus 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        <div>
+          Riders are estimated using Automated 
+          <br />
+           Passenger Counters (APCs).
+        </div>
+      </div>
       <span
         className="m-crowding-diagram__tooltip-anchor"
         dangerouslySetInnerHTML={
@@ -219,6 +255,15 @@ exports[`CrowdingDiagram renders correctly for an untrusted APC 1`] = `
     <div
       className="mock-tippy"
     >
+      <div
+        className="mock-tippy-content"
+      >
+        <div>
+          Riders are estimated using Automated 
+          <br />
+           Passenger Counters (APCs).
+        </div>
+      </div>
       <span
         className="m-crowding-diagram__tooltip-anchor"
         dangerouslySetInnerHTML={

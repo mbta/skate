@@ -16,7 +16,10 @@ jest.mock("@tippyjs/react", () => ({
   default: jest
     .fn()
     .mockImplementation((props) => (
-      <div className="mock-tippy">{props.children}</div>
+      <div className="mock-tippy">
+        <div className="mock-tippy-content">{props.content}</div>
+        {props.children}
+      </div>
     )),
 }))
 

@@ -209,6 +209,11 @@ Array [
       <div
         className="mock-tippy"
       >
+        <div
+          className="mock-tippy-content"
+        >
+          MATPN Name
+        </div>
         <text
           className="m-ladder__timepoint-name"
           dominantBaseline="middle"
@@ -234,6 +239,11 @@ Array [
       <div
         className="mock-tippy"
       >
+        <div
+          className="mock-tippy-content"
+        >
+          WELLH Name
+        </div>
         <text
           className="m-ladder__timepoint-name"
           dominantBaseline="middle"
@@ -259,6 +269,11 @@ Array [
       <div
         className="mock-tippy"
       >
+        <div
+          className="mock-tippy-content"
+        >
+          MORTN Name
+        </div>
         <text
           className="m-ladder__timepoint-name"
           dominantBaseline="middle"
@@ -469,6 +484,11 @@ Array [
       <div
         className="mock-tippy"
       >
+        <div
+          className="mock-tippy-content"
+        >
+          MATPN Name
+        </div>
         <text
           className="m-ladder__timepoint-name"
           dominantBaseline="middle"
@@ -494,6 +514,11 @@ Array [
       <div
         className="mock-tippy"
       >
+        <div
+          className="mock-tippy-content"
+        >
+          WELLH Name
+        </div>
         <text
           className="m-ladder__timepoint-name"
           dominantBaseline="middle"
@@ -519,6 +544,11 @@ Array [
       <div
         className="mock-tippy"
       >
+        <div
+          className="mock-tippy-content"
+        >
+          MORTN Name
+        </div>
         <text
           className="m-ladder__timepoint-name"
           dominantBaseline="middle"
@@ -698,6 +728,11 @@ Array [
       <div
         className="mock-tippy"
       >
+        <div
+          className="mock-tippy-content"
+        >
+          MATPN Name
+        </div>
         <text
           className="m-ladder__timepoint-name"
           dominantBaseline="middle"
@@ -723,6 +758,11 @@ Array [
       <div
         className="mock-tippy"
       >
+        <div
+          className="mock-tippy-content"
+        >
+          WELLH Name
+        </div>
         <text
           className="m-ladder__timepoint-name"
           dominantBaseline="middle"
@@ -748,6 +788,11 @@ Array [
       <div
         className="mock-tippy"
       >
+        <div
+          className="mock-tippy-content"
+        >
+          MORTN Name
+        </div>
         <text
           className="m-ladder__timepoint-name"
           dominantBaseline="middle"
@@ -851,6 +896,11 @@ Array [
       <div
         className="mock-tippy"
       >
+        <div
+          className="mock-tippy-content"
+        >
+          MATPN Name
+        </div>
         <text
           className="m-ladder__timepoint-name"
           dominantBaseline="middle"
@@ -876,6 +926,11 @@ Array [
       <div
         className="mock-tippy"
       >
+        <div
+          className="mock-tippy-content"
+        >
+          WELLH Name
+        </div>
         <text
           className="m-ladder__timepoint-name"
           dominantBaseline="middle"
@@ -901,6 +956,11 @@ Array [
       <div
         className="mock-tippy"
       >
+        <div
+          className="mock-tippy-content"
+        >
+          MORTN Name
+        </div>
         <text
           className="m-ladder__timepoint-name"
           dominantBaseline="middle"
@@ -1146,6 +1206,11 @@ Array [
       <div
         className="mock-tippy"
       >
+        <div
+          className="mock-tippy-content"
+        >
+          MATPN Name
+        </div>
         <text
           className="m-ladder__timepoint-name"
           dominantBaseline="middle"
@@ -1171,6 +1236,11 @@ Array [
       <div
         className="mock-tippy"
       >
+        <div
+          className="mock-tippy-content"
+        >
+          WELLH Name
+        </div>
         <text
           className="m-ladder__timepoint-name"
           dominantBaseline="middle"
@@ -1196,6 +1266,11 @@ Array [
       <div
         className="mock-tippy"
       >
+        <div
+          className="mock-tippy-content"
+        >
+          MORTN Name
+        </div>
         <text
           className="m-ladder__timepoint-name"
           dominantBaseline="middle"
@@ -1374,6 +1449,11 @@ Array [
       <div
         className="mock-tippy"
       >
+        <div
+          className="mock-tippy-content"
+        >
+          MATPN Name
+        </div>
         <text
           className="m-ladder__timepoint-name"
           dominantBaseline="middle"
@@ -1399,6 +1479,11 @@ Array [
       <div
         className="mock-tippy"
       >
+        <div
+          className="mock-tippy-content"
+        >
+          WELLH Name
+        </div>
         <text
           className="m-ladder__timepoint-name"
           dominantBaseline="middle"
@@ -1424,6 +1509,11 @@ Array [
       <div
         className="mock-tippy"
       >
+        <div
+          className="mock-tippy-content"
+        >
+          MORTN Name
+        </div>
         <text
           className="m-ladder__timepoint-name"
           dominantBaseline="middle"
@@ -1695,6 +1785,11 @@ Array [
       <div
         className="mock-tippy"
       >
+        <div
+          className="mock-tippy-content"
+        >
+          MATPN Name
+        </div>
         <text
           className="m-ladder__timepoint-name"
           dominantBaseline="middle"
@@ -1720,6 +1815,11 @@ Array [
       <div
         className="mock-tippy"
       >
+        <div
+          className="mock-tippy-content"
+        >
+          WELLH Name
+        </div>
         <text
           className="m-ladder__timepoint-name"
           dominantBaseline="middle"
@@ -1745,6 +1845,11 @@ Array [
       <div
         className="mock-tippy"
       >
+        <div
+          className="mock-tippy-content"
+        >
+          MORTN Name
+        </div>
         <text
           className="m-ladder__timepoint-name"
           dominantBaseline="middle"
@@ -1848,6 +1953,11 @@ Array [
       <div
         className="mock-tippy"
       >
+        <div
+          className="mock-tippy-content"
+        >
+          MATPN Name
+        </div>
         <text
           className="m-ladder__timepoint-name"
           dominantBaseline="middle"
@@ -1873,6 +1983,11 @@ Array [
       <div
         className="mock-tippy"
       >
+        <div
+          className="mock-tippy-content"
+        >
+          WELLH Name
+        </div>
         <text
           className="m-ladder__timepoint-name"
           dominantBaseline="middle"
@@ -1898,6 +2013,11 @@ Array [
       <div
         className="mock-tippy"
       >
+        <div
+          className="mock-tippy-content"
+        >
+          MORTN Name
+        </div>
         <text
           className="m-ladder__timepoint-name"
           dominantBaseline="middle"

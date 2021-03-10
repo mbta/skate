@@ -629,6 +629,11 @@ exports[`LadderPage renders with timepoints 1`] = `
         <div
           className="mock-tippy"
         >
+          <div
+            className="mock-tippy-content"
+          >
+            MATPN Name
+          </div>
           <text
             className="m-ladder__timepoint-name"
             dominantBaseline="middle"
@@ -654,6 +659,11 @@ exports[`LadderPage renders with timepoints 1`] = `
         <div
           className="mock-tippy"
         >
+          <div
+            className="mock-tippy-content"
+          >
+            WELLH Name
+          </div>
           <text
             className="m-ladder__timepoint-name"
             dominantBaseline="middle"
@@ -679,6 +689,11 @@ exports[`LadderPage renders with timepoints 1`] = `
         <div
           className="mock-tippy"
         >
+          <div
+            className="mock-tippy-content"
+          >
+            MORTN Name
+          </div>
           <text
             className="m-ladder__timepoint-name"
             dominantBaseline="middle"
@@ -777,6 +792,11 @@ exports[`LadderPage renders with timepoints 1`] = `
         <div
           className="mock-tippy"
         >
+          <div
+            className="mock-tippy-content"
+          >
+            WASMA Name
+          </div>
           <text
             className="m-ladder__timepoint-name"
             dominantBaseline="middle"
@@ -802,6 +822,11 @@ exports[`LadderPage renders with timepoints 1`] = `
         <div
           className="mock-tippy"
         >
+          <div
+            className="mock-tippy-content"
+          >
+            MELWA Name
+          </div>
           <text
             className="m-ladder__timepoint-name"
             dominantBaseline="middle"
@@ -827,6 +852,11 @@ exports[`LadderPage renders with timepoints 1`] = `
         <div
           className="mock-tippy"
         >
+          <div
+            className="mock-tippy-content"
+          >
+            HHGAT Name
+          </div>
           <text
             className="m-ladder__timepoint-name"
             dominantBaseline="middle"
