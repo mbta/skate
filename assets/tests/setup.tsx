@@ -13,14 +13,12 @@ jest.mock("react-leaflet-fullscreen", () => ({
 
 jest.mock("@tippyjs/react", () => ({
   __esModule: true,
-  default: jest
-    .fn()
-    .mockImplementation((props) => (
-      <div className="mock-tippy">
-        <div className="mock-tippy-content">{props.content}</div>
-        {props.children}
-      </div>
-    )),
+  default: jest.fn().mockImplementation((props) => (
+    <div className="mock-tippy">
+      <div className="mock-tippy-content">{props.content}</div>
+      {props.children}
+    </div>
+  )),
 }))
 
 // JSDOM doesn't support part of SVG that's needed for Leaflet to run in tests.

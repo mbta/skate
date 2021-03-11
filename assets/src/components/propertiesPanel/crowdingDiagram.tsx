@@ -34,7 +34,11 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
           }
           trigger="click"
           className="m-crowding-diagram__crowding-tooltip"
-          onShow={() => {if (window.FS) {window.FS.event("Crowding data tooltip opened")}}}
+          onShow={() => {
+            if (window.FS) {
+              window.FS.event("Crowding data tooltip opened")
+            }
+          }}
         >
           {questionMarkIcon("m-crowding-diagram__tooltip-anchor")}
         </Tippy>
