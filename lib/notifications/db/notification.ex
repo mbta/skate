@@ -2,8 +2,8 @@ defmodule Notifications.Db.Notification do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias Notifications.NotificationReason
   alias Notifications.Db.BlockWaiver, as: DbBlockWaiver
+  alias Notifications.Db.BridgeMovement, as: DbBridgeMovement
   alias Notifications.Db.NotificationUser, as: DbNotificationUser
   alias Skate.Settings.Db.User, as: DbUser
 
@@ -11,17 +11,6 @@ defmodule Notifications.Db.Notification do
 
   schema "notifications" do
     field(:created_at, :integer)
-    field(:reason, NotificationReason)
-    field(:route_ids, {:array, :string})
-    field(:run_ids, {:array, :string})
-    field(:trip_ids, {:array, :string})
-    field(:operator_id, :string)
-    field(:operator_name, :string)
-    field(:route_id_at_creation, :string)
-    field(:block_id, :string)
-    field(:service_id, :string)
-    field(:start_time, :integer)
-    field(:end_time, :integer)
     field(:state, :string, virtual: true)
     timestamps()
 
@@ -29,10 +18,11 @@ defmodule Notifications.Db.Notification do
     many_to_many(:users, DbUser, join_through: DbNotificationUser)
 
     belongs_to(:block_waiver, DbBlockWaiver)
+    belongs_to(:bridge_movement, DbBridgeMovement)
   end
 
-  def changeset(notification, attrs \\ %{}) do
-    block_waiver =
+  def block_waiver_changeset(notification, attrs \\ %{}) do
+    block_waiver_values =
       notification
       |> Map.from_struct()
       |> Map.merge(attrs)
@@ -59,10 +49,20 @@ defmodule Notifications.Db.Notification do
     ])
     |> put_assoc(
       :block_waiver,
-      DbBlockWaiver.changeset(%DbBlockWaiver{}, block_waiver)
+      DbBlockWaiver.changeset(%DbBlockWaiver{}, block_waiver_values)
     )
     |> validate_required([
       :created_at
     ])
+  end
+
+  def bridge_movement_changeset(notification, attrs \\ %{}) do
+    notification
+    |> cast(attrs, [:id, :created_at, :bridge_movement_id])
+    |> put_assoc(
+      :bridge_movement,
+      DbBridgeMovement.changeset(%DbBridgeMovement{}, attrs)
+    )
+    |> validate_required(:created_at)
   end
 end

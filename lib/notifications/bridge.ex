@@ -3,16 +3,10 @@ defmodule Notifications.Bridge do
   Queries and maintains the status of a bridge
   """
 
+  @type bridge_movement :: {:raised, integer()} | {:lowered, nil}
+
   use GenServer
   require Logger
-
-  defstruct bridge1_status: nil,
-            bridge1_lowering_time: []
-
-  @type t :: %__MODULE__{
-          bridge1_status: String.t() | nil,
-          bridge1_lowering_time: DateTime.t() | nil
-        }
 
   @fetch_ms 60 * 1_000
 
@@ -44,15 +38,30 @@ defmodule Notifications.Bridge do
 
       _ ->
         schedule_update(self())
-        {:ok, %__MODULE__{}}
+        {:ok, nil}
     end
   end
 
-  def handle_info(:update, _state) do
+  def handle_info(:update, state) do
     schedule_update(self())
     new_state = fetch_status()
 
-    {:noreply, new_state}
+    if new_state do
+      if state && state != new_state do
+        bridge_movement_fn =
+          Application.get_env(
+            :notifications,
+            :notifications_server_bridge_movement_fn,
+            &Notifications.NotificationServer.bridge_movement/1
+          )
+
+        bridge_movement_fn.(new_state)
+      end
+
+      {:noreply, new_state}
+    else
+      {:noreply, state}
+    end
   end
 
   def handle_info(msg, state) do
@@ -64,7 +73,7 @@ defmodule Notifications.Bridge do
     Process.send_after(pid, :update, @fetch_ms)
   end
 
-  @spec fetch_status() :: __MODULE__ | nil
+  @spec fetch_status() :: bridge_movement() | nil
   defp fetch_status() do
     headers = [{"Authorization", get_auth_header()}]
 
@@ -73,8 +82,7 @@ defmodule Notifications.Bridge do
     |> parse_response()
   end
 
-  @spec parse_response({:ok | :error, HTTPoison.Response.t()}) ::
-          __MODULE__ | nil
+  @spec parse_response({:ok | :error, HTTPoison.Response.t()}) :: bridge_movement() | nil
   def parse_response({:ok, %HTTPoison.Response{status_code: status, body: body}})
       when status >= 200 and status < 300 do
     case Jason.decode(body) do
@@ -102,7 +110,7 @@ defmodule Notifications.Bridge do
     #   or
     # {"bridge":{"id":1,"name":"Chelsea St Bridge","bridgeStatusId":{"id":2,"status":"Raised","lift_estimate":{"estimate_time":"2019-09-26 06:47:05.0"}}}}
 
-    status = get_in(response, ["bridge", "bridgeStatusId", "status"])
+    raw_status = get_in(response, ["bridge", "bridgeStatusId", "status"])
 
     lowering_time =
       response
@@ -111,10 +119,16 @@ defmodule Notifications.Bridge do
       |> do_get_datetime()
 
     Logger.info(
-      "bridge_response status=#{inspect(status)}, lowering_time=#{inspect(lowering_time)}"
+      "bridge_response status=#{inspect(raw_status)}, lowering_time=#{inspect(lowering_time)}"
     )
 
-    {status, lowering_time}
+    status =
+      case raw_status do
+        "Lowered" -> :lowered
+        "Raised" -> :raised
+      end
+
+    {status, lowering_time && DateTime.to_unix(lowering_time)}
   end
 
   defp do_get_datetime({:ok, estimate_time}) do

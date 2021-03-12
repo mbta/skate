@@ -1,6 +1,7 @@
 defmodule Notifications.NotificationServer do
   use GenServer
 
+  alias Notifications.Bridge
   alias Notifications.Notification
   alias Notifications.NotificationReason
   alias Realtime.{BlockWaiver, Ghost, Vehicle}
@@ -23,6 +24,11 @@ defmodule Notifications.NotificationServer do
     GenServer.cast(server, {:new_block_waivers, new_waivers_by_block_key})
   end
 
+  @spec bridge_movement(Bridge.bridge_movement(), GenServer.server()) :: :ok
+  def bridge_movement(bridge_movement, server \\ default_name()) do
+    GenServer.cast(server, {:bridge_movement, bridge_movement})
+  end
+
   def subscribe(username, server \\ default_name()) do
     registry_key = GenServer.call(server, :subscribe)
 
@@ -39,14 +45,20 @@ defmodule Notifications.NotificationServer do
 
   @impl true
   def handle_cast({:new_block_waivers, new_block_waivers_by_block_key}, state) do
-    new_notifications =
-      new_block_waivers_by_block_key
-      |> convert_new_block_waivers_to_notifications()
-
-    Enum.each(new_notifications, fn new_notification ->
-      notification_with_id = Notification.get_or_create(new_notification)
-      broadcast(notification_with_id, self())
+    new_block_waivers_by_block_key
+    |> convert_new_block_waivers_to_notifications()
+    |> Enum.each(fn new_notification ->
+      broadcast(new_notification, self())
     end)
+
+    {:noreply, state}
+  end
+
+  @impl true
+  def handle_cast({:bridge_movement, bridge_movement}, state) do
+    bridge_movement
+    |> convert_bridge_movement_to_notification
+    |> broadcast(self())
 
     {:noreply, state}
   end
@@ -59,15 +71,16 @@ defmodule Notifications.NotificationServer do
     |> Enum.flat_map(fn {block_key, block_waivers} ->
       Enum.map(
         block_waivers,
-        &convert_block_waiver_to_notification(block_key, &1)
+        &get_db_values_from_block_waiver(block_key, &1)
       )
     end)
     |> Enum.filter(& &1)
+    |> Enum.map(&Notification.get_or_create_from_block_waiver/1)
   end
 
-  @spec convert_block_waiver_to_notification(Block.key(), BlockWaiver.t()) ::
+  @spec get_db_values_from_block_waiver(Block.key(), BlockWaiver.t()) ::
           Notification.t() | nil
-  defp convert_block_waiver_to_notification(
+  defp get_db_values_from_block_waiver(
          {block_id, service_id},
          block_waiver
        ) do
@@ -108,7 +121,7 @@ defmodule Notifications.NotificationServer do
           nil -> {nil, nil, nil}
         end
 
-      %Notification{
+      %{
         block_id: block_id,
         service_id: service_id,
         reason: reason,
@@ -141,6 +154,20 @@ defmodule Notifications.NotificationServer do
       31 -> :adjusted
       _ -> nil
     end
+  end
+
+  @spec convert_bridge_movement_to_notification(Bridge.bridge_movement()) ::
+          %Notifications.Notification{}
+  defp convert_bridge_movement_to_notification(bridge_movement) do
+    bridge_movement
+    |> get_db_values_from_bridge_movement
+    |> Notification.get_or_create_from_bridge_movement()
+  end
+
+  @spec get_db_values_from_bridge_movement(Bridge.bridge_movement()) ::
+          %{status: :raised, lowering_time: integer()} | %{status: :lowered, lowering_time: nil}
+  defp get_db_values_from_bridge_movement({bridge_status, lowering_time}) do
+    %{status: bridge_status, lowering_time: lowering_time}
   end
 
   defp broadcast(notification, registry_key) do
