@@ -285,6 +285,7 @@ const LadderTimepoint = ({
       trigger="click"
       className="m-ladder__timepoint-name-tooltip"
       onShow={() => {
+        /* istanbul ignore next */
         if (window.FS) {
           window.FS.event("Timepoint names tooltip opened")
         }

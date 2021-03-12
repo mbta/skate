@@ -35,6 +35,7 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
           trigger="click"
           className="m-crowding-diagram__crowding-tooltip"
           onShow={() => {
+            /* istanbul ignore next */
             if (window.FS) {
               window.FS.event("Crowding data tooltip opened")
             }
