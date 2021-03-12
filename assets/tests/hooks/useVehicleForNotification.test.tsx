@@ -105,6 +105,7 @@ describe("useVehicleForNotification", () => {
     operatorId: null,
     routeIdAtCreation: null,
     startTime: new Date(),
+    endTime: new Date(),
     state: "unread" as NotificationState,
   }
 

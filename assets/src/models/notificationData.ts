@@ -19,6 +19,7 @@ export interface NotificationData {
   operator_id: string | null
   route_id_at_creation: string | null
   start_time: number
+  end_time: number | null
   state: NotificationState
 }
 
@@ -34,6 +35,10 @@ export const notificationFromData = (
   operatorName: notificationData.operator_name,
   operatorId: notificationData.operator_id,
   routeIdAtCreation: notificationData.route_id_at_creation,
-  startTime: new Date(notificationData.start_time),
+  startTime: new Date(notificationData.start_time * 1000),
   state: notificationData.state,
+  endTime:
+    notificationData.end_time === null
+      ? null
+      : new Date(notificationData.end_time * 1000),
 })

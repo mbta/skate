@@ -25,6 +25,7 @@ const notification1: Notification = {
   operatorId: null,
   routeIdAtCreation: null,
   startTime: new Date(0),
+  endTime: new Date(100_000),
   state: "unread" as NotificationState,
 }
 
@@ -39,6 +40,7 @@ const notification1Data: NotificationData = {
   operator_id: null,
   route_id_at_creation: null,
   start_time: 0,
+  end_time: 100,
   state: "unread",
 }
 
@@ -53,6 +55,7 @@ const notification2: Notification = {
   operatorId: null,
   routeIdAtCreation: null,
   startTime: new Date(1),
+  endTime: new Date(100),
   state: "unread" as NotificationState,
 }
 

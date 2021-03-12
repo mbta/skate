@@ -22,6 +22,7 @@ import {
 import { Notification } from "../realtime.d"
 import { closeNotificationDrawer } from "../state"
 import CloseButton from "./closeButton"
+import { isChelseaBridgeReason } from "./notifications"
 import NotificationBellIcon from "./notificationBellIcon"
 import { NotificationContent } from "./notificationContent"
 
@@ -201,7 +202,14 @@ const NotificationCard = ({
   return (
     <button
       className={`m-notification-drawer__card m-notification-drawer__card--${notification.state}`}
-      onClick={() => openVPPForCurrentVehicle(notification)}
+      onClick={() => {
+        if (window && window.FS) {
+          if (isChelseaBridgeReason(notification.reason)) {
+            window.FS.event("Chelsea bridge notification clicked")
+          }
+        }
+        openVPPForCurrentVehicle(notification)
+      }}
     >
       <NotificationContent
         notification={notification}

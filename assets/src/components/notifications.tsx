@@ -9,7 +9,7 @@ import {
   Dispatch,
   hideLatestNotification,
 } from "../hooks/useNotificationsReducer"
-import { Notification } from "../realtime.d"
+import { Notification, NotificationReason } from "../realtime.d"
 import { NotificationContent } from "./notificationContent"
 
 export const Notifications = () => {
@@ -20,15 +20,26 @@ export const Notifications = () => {
 
   const [, stateDispatch] = useContext(StateDispatchContext)
 
+  const notificationToShow =
+    showLatestNotification && notifications.length > 0 ? notifications[0] : null
+
+  useEffect(() => {
+    if (notificationToShow && window.FS) {
+      if (isChelseaBridgeReason(notificationToShow.reason)) {
+        window.FS.event("Chelsea bridge notification delivered")
+      }
+    }
+  }, [notificationToShow])
+
   const openVPPForCurrentVehicle = (notification: Notification) => {
     openVPPForNotification(notification, stateDispatch, dispatch)
   }
 
   return (
     <div className="m-notifications">
-      {showLatestNotification && notifications.length > 0 && (
+      {notificationToShow && (
         <NotificationCard
-          notification={notifications[0]}
+          notification={notificationToShow}
           dispatch={dispatch}
           currentTime={currentTime}
           openVPPForCurrentVehicle={openVPPForCurrentVehicle}
@@ -55,6 +66,7 @@ export const NotificationCard = ({
       setIsNew(false)
     }, 20)
   }, [])
+
   return (
     <div
       className={
@@ -64,6 +76,11 @@ export const NotificationCard = ({
       <button
         className="m-notifications__card-info"
         onClick={() => {
+          if (window && window.FS) {
+            if (isChelseaBridgeReason(notification.reason)) {
+              window.FS.event("Chelsea bridge notification clicked")
+            }
+          }
           openVPPForCurrentVehicle(notification)
           dispatch(hideLatestNotification())
         }}
@@ -81,4 +98,12 @@ export const NotificationCard = ({
       </button>
     </div>
   )
+}
+
+export const isChelseaBridgeReason = (reason: NotificationReason): boolean => {
+  const bridgeReasons: NotificationReason[] = [
+    "chelsea_st_bridge_raised",
+    "chelsea_st_bridge_lowered",
+  ]
+  return bridgeReasons.some((chelseaReason) => chelseaReason === reason)
 }

@@ -11,6 +11,6 @@ defmodule Skate.Repo.Migrations.AddVehicleAdherenceColorToUserSetting do
       add(:vehicle_adherence_colors, :vehicle_adherence_colors, default: "early_red")
     end
 
-    execute("UPDATE user_settings SET vehicle_adherence_colors = 'early_red'", fn -> end)
+    execute("UPDATE user_settings SET vehicle_adherence_colors = 'early_red'", fn -> nil end)
   end
 end

@@ -30,6 +30,7 @@ describe("Modal", () => {
       operatorId: null,
       routeIdAtCreation: null,
       startTime: new Date(),
+      endTime: new Date(),
       state: "unread" as NotificationState,
     }
 
@@ -59,6 +60,7 @@ describe("Modal", () => {
       operatorId: null,
       routeIdAtCreation: null,
       startTime: new Date(),
+      endTime: new Date(),
       state: "unread" as NotificationState,
     }
 

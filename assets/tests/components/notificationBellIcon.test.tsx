@@ -17,6 +17,7 @@ const unreadNotification: Notification = {
   runIds: [],
   tripIds: [],
   startTime: new Date(0),
+  endTime: new Date(100),
   operatorName: null,
   operatorId: null,
   routeIdAtCreation: null,

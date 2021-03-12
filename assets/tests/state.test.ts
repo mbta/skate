@@ -345,6 +345,7 @@ describe("reducer", () => {
       operatorId: null,
       routeIdAtCreation: null,
       startTime: new Date(),
+      endTime: new Date(),
       state: "unread" as NotificationState,
     }
     const newState = reducer(initialState, State.setNotification(notification))
