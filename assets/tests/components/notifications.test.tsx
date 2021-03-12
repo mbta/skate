@@ -16,7 +16,6 @@ import {
 import { Notification, NotificationReason } from "../../src/realtime.d"
 import { Route } from "../../src/schedule"
 import { initialState } from "../../src/state"
-import { now } from "../../src/util/dateTime"
 
 jest.mock("../../src/hooks/useNotifications", () => ({
   __esModule: true,
@@ -28,9 +27,11 @@ jest.mock("../../src/laboratoryFeatures", () => ({
   default: () => true,
 }))
 
+const baselineTime = new Date(123_456_789)
+
 const notification: Notification = {
   id: "0",
-  createdAt: now(),
+  createdAt: new Date(baselineTime),
   reason: "manpower",
   routeIds: ["route1", "route2"],
   runIds: ["run1", "run2"],
@@ -38,7 +39,8 @@ const notification: Notification = {
   operatorName: null,
   operatorId: null,
   routeIdAtCreation: null,
-  startTime: now(),
+  startTime: baselineTime,
+  endTime: baselineTime,
   state: "unread",
 }
 
@@ -110,6 +112,74 @@ describe("Notification", () => {
     expect(tree).toMatchSnapshot()
   })
 
+  test("logs to Fullstory when delivering a bridge-lowered notification", () => {
+    const eventFn = jest.fn()
+    window.FS = { event: eventFn, identify: jest.fn() }
+
+    const notifications: Notification[] = [
+      {
+        ...notification,
+        reason: "chelsea_st_bridge_lowered" as NotificationReason,
+      },
+    ]
+
+    mount(
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+        <NotificationsContext.Provider
+          value={{
+            notifications,
+            showLatestNotification: true,
+            dispatch: jest.fn(),
+            rememberScrollPosition: jest.fn(),
+            scrollPosition: 0,
+            notificationWithOpenSubmenuId: null,
+            setNotificationWithOpenSubmenuId: jest.fn(),
+          }}
+        >
+          <Notifications />
+        </NotificationsContext.Provider>
+      </StateDispatchProvider>
+    )
+
+    expect(eventFn).toHaveBeenCalledWith(
+      "Chelsea bridge notification delivered"
+    )
+  })
+
+  test("logs to Fullstory when delivering a bridge-raised notification", () => {
+    const eventFn = jest.fn()
+    window.FS = { event: eventFn, identify: jest.fn() }
+
+    const notifications: Notification[] = [
+      {
+        ...notification,
+        reason: "chelsea_st_bridge_raised" as NotificationReason,
+      },
+    ]
+
+    mount(
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+        <NotificationsContext.Provider
+          value={{
+            notifications,
+            showLatestNotification: true,
+            dispatch: jest.fn(),
+            rememberScrollPosition: jest.fn(),
+            scrollPosition: 0,
+            notificationWithOpenSubmenuId: null,
+            setNotificationWithOpenSubmenuId: jest.fn(),
+          }}
+        >
+          <Notifications />
+        </NotificationsContext.Provider>
+      </StateDispatchProvider>
+    )
+
+    expect(eventFn).toHaveBeenCalledWith(
+      "Chelsea bridge notification delivered"
+    )
+  })
+
   test("can hide notification", () => {
     const dispatch = jest.fn()
     const wrapper = mount(
@@ -140,7 +210,7 @@ describe("NotificationCard", () => {
         <RoutesProvider routes={routes}>
           <NotificationCard
             notification={notificationWithMatchedVehicle}
-            currentTime={now()}
+            currentTime={baselineTime}
             dispatch={jest.fn()}
             openVPPForCurrentVehicle={jest.fn()}
           />
@@ -156,7 +226,7 @@ describe("NotificationCard", () => {
       <RoutesProvider routes={routes}>
         <NotificationCard
           notification={n}
-          currentTime={now()}
+          currentTime={baselineTime}
           dispatch={jest.fn()}
           openVPPForCurrentVehicle={jest.fn()}
         />
@@ -172,7 +242,7 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={n}
           dispatch={jest.fn()}
-          currentTime={now()}
+          currentTime={baselineTime}
           openVPPForCurrentVehicle={jest.fn()}
         />
       </RoutesProvider>
@@ -188,7 +258,7 @@ describe("NotificationCard", () => {
           <NotificationCard
             notification={n}
             dispatch={jest.fn()}
-            currentTime={now()}
+            currentTime={baselineTime}
             openVPPForCurrentVehicle={jest.fn()}
           />
         </RoutesProvider>
@@ -209,7 +279,7 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={n}
           dispatch={jest.fn()}
-          currentTime={now()}
+          currentTime={baselineTime}
           openVPPForCurrentVehicle={jest.fn()}
         />
       </RoutesProvider>
@@ -229,7 +299,7 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={n}
           dispatch={jest.fn()}
-          currentTime={now()}
+          currentTime={baselineTime}
           openVPPForCurrentVehicle={jest.fn()}
         />
       </RoutesProvider>
@@ -249,7 +319,7 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={n}
           dispatch={jest.fn()}
-          currentTime={now()}
+          currentTime={baselineTime}
           openVPPForCurrentVehicle={jest.fn()}
         />
       </RoutesProvider>
@@ -266,19 +336,31 @@ describe("NotificationCard", () => {
     "adjusted",
     "operator_error",
     "traffic",
+    "chelsea_st_bridge_raised",
+    "chelsea_st_bridge_lowered",
   ]
+
   test.each(reasons)("renders notification with reason %s", (reason) => {
-    const n: Notification = { ...notification, reason }
-    mount(
-      <RoutesProvider routes={routes}>
-        <NotificationCard
-          notification={n}
-          dispatch={jest.fn()}
-          currentTime={now()}
-          openVPPForCurrentVehicle={jest.fn()}
-        />
-      </RoutesProvider>
-    )
+    const runIds =
+      reason === "chelsea_st_bridge_raised" ||
+      reason === "chelsea_st_bridge_lowered"
+        ? []
+        : notification.runIds
+
+    const n: Notification = { ...notification, reason, runIds }
+    const tree = renderer
+      .create(
+        <RoutesProvider routes={routes}>
+          <NotificationCard
+            notification={n}
+            dispatch={jest.fn()}
+            currentTime={baselineTime}
+            openVPPForCurrentVehicle={jest.fn()}
+          />
+        </RoutesProvider>
+      )
+      .toJSON()
+    expect(tree).toMatchSnapshot()
   })
 
   test("sets and removes class to animate pop-in", () => {
@@ -288,7 +370,7 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={notification}
           dispatch={jest.fn()}
-          currentTime={now()}
+          currentTime={baselineTime}
           openVPPForCurrentVehicle={jest.fn()}
         />
       </RoutesProvider>
@@ -359,5 +441,69 @@ describe("NotificationCard", () => {
     expect(mockNotificationsDispatch).toHaveBeenCalledWith(
       toggleReadState(updatedNotification)
     )
+  })
+
+  test("clicking a bridge-lowered notification logs to Fullstory", () => {
+    const eventFn = jest.fn()
+    window.FS = { event: eventFn, identify: jest.fn() }
+
+    const loweringNotification = {
+      ...notification,
+      reason: "chelsea_st_bridge_lowered" as NotificationReason,
+    }
+
+    const dispatch = jest.fn()
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+        <NotificationsContext.Provider
+          value={{
+            notifications: [loweringNotification],
+            showLatestNotification: true,
+            dispatch: jest.fn(),
+            rememberScrollPosition: jest.fn(),
+            scrollPosition: 0,
+            notificationWithOpenSubmenuId: null,
+            setNotificationWithOpenSubmenuId: jest.fn(),
+          }}
+        >
+          <Notifications />
+        </NotificationsContext.Provider>
+      </StateDispatchProvider>
+    )
+
+    wrapper.find(".m-notifications__card-info").first().simulate("click")
+    expect(eventFn).toHaveBeenCalledWith("Chelsea bridge notification clicked")
+  })
+
+  test("clicking a bridge-raised notification logs to Fullstory", () => {
+    const eventFn = jest.fn()
+    window.FS = { event: eventFn, identify: jest.fn() }
+
+    const raisedNotification = {
+      ...notification,
+      reason: "chelsea_st_bridge_raised" as NotificationReason,
+    }
+
+    const dispatch = jest.fn()
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+        <NotificationsContext.Provider
+          value={{
+            notifications: [raisedNotification],
+            showLatestNotification: true,
+            dispatch: jest.fn(),
+            rememberScrollPosition: jest.fn(),
+            scrollPosition: 0,
+            notificationWithOpenSubmenuId: null,
+            setNotificationWithOpenSubmenuId: jest.fn(),
+          }}
+        >
+          <Notifications />
+        </NotificationsContext.Provider>
+      </StateDispatchProvider>
+    )
+
+    wrapper.find(".m-notifications__card-info").first().simulate("click")
+    expect(eventFn).toHaveBeenCalledWith("Chelsea bridge notification clicked")
   })
 })

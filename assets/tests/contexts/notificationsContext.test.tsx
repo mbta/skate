@@ -37,6 +37,7 @@ const notification: Notification = {
   operatorId: null,
   routeIdAtCreation: null,
   startTime: new Date(0),
+  endTime: new Date(100),
   state: "unread" as NotificationState,
 }
 

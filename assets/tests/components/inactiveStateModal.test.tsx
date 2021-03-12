@@ -25,6 +25,7 @@ describe("InactiveNotificationModal", () => {
     operatorId: null,
     routeIdAtCreation: null,
     startTime: new Date("2020-10-05"),
+    endTime: new Date("2020-10-06"),
     state: "unread" as NotificationState,
   }
   const futureNotification = {

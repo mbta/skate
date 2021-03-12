@@ -9,7 +9,11 @@ import {
   markAllAsRead,
   toggleReadState,
 } from "../../src/hooks/useNotificationsReducer"
-import { Notification, NotificationState } from "../../src/realtime.d"
+import {
+  Notification,
+  NotificationReason,
+  NotificationState,
+} from "../../src/realtime.d"
 import { Route } from "../../src/schedule"
 import {
   closeNotificationDrawer,
@@ -29,6 +33,7 @@ const notification: Notification = {
   operatorId: null,
   routeIdAtCreation: null,
   startTime: now(),
+  endTime: now(),
   state: "unread" as NotificationState,
 }
 
@@ -124,6 +129,70 @@ describe("NotificationDrawer", () => {
 
     wrapper.find(".m-notification-drawer__card").first().simulate("click")
     expect(dispatch).toHaveBeenCalledWith(setNotification(notification))
+  })
+
+  test("clicking a bridge-lowering notification logs to Fullstory", () => {
+    const eventFn = jest.fn()
+    window.FS = { event: eventFn, identify: jest.fn() }
+
+    const loweringNotification = {
+      ...notification,
+      reason: "chelsea_st_bridge_lowered" as NotificationReason,
+    }
+
+    const dispatch = jest.fn()
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+        <NotificationsContext.Provider
+          value={{
+            notifications: [loweringNotification],
+            showLatestNotification: true,
+            dispatch: jest.fn(),
+            rememberScrollPosition: jest.fn(),
+            scrollPosition: 0,
+            notificationWithOpenSubmenuId: null,
+            setNotificationWithOpenSubmenuId: jest.fn(),
+          }}
+        >
+          <NotificationDrawer />
+        </NotificationsContext.Provider>
+      </StateDispatchProvider>
+    )
+
+    wrapper.find(".m-notification-drawer__card").first().simulate("click")
+    expect(eventFn).toHaveBeenCalledWith("Chelsea bridge notification clicked")
+  })
+
+  test("clicking a bridge-raising notification logs to Fullstory", () => {
+    const eventFn = jest.fn()
+    window.FS = { event: eventFn, identify: jest.fn() }
+
+    const loweringNotification = {
+      ...notification,
+      reason: "chelsea_st_bridge_raised" as NotificationReason,
+    }
+
+    const dispatch = jest.fn()
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+        <NotificationsContext.Provider
+          value={{
+            notifications: [loweringNotification],
+            showLatestNotification: true,
+            dispatch: jest.fn(),
+            rememberScrollPosition: jest.fn(),
+            scrollPosition: 0,
+            notificationWithOpenSubmenuId: null,
+            setNotificationWithOpenSubmenuId: jest.fn(),
+          }}
+        >
+          <NotificationDrawer />
+        </NotificationsContext.Provider>
+      </StateDispatchProvider>
+    )
+
+    wrapper.find(".m-notification-drawer__card").first().simulate("click")
+    expect(eventFn).toHaveBeenCalledWith("Chelsea bridge notification clicked")
   })
 
   test("clicking through an unread notification makes it read", () => {

@@ -2,7 +2,10 @@ import React from "react"
 import { useRoute, useRoutes } from "../contexts/routesContext"
 import { Notification, NotificationReason } from "../realtime.d"
 import { Route } from "../schedule"
-import { formattedTimeDiffUnderThreshold } from "../util/dateTime"
+import {
+  formattedTime,
+  formattedTimeDiffUnderThreshold,
+} from "../util/dateTime"
 import PropertiesList from "./propertiesList"
 
 export const NotificationContent = ({
@@ -35,7 +38,10 @@ export const NotificationContent = ({
         properties={[
           {
             label: "Run",
-            value: notification.runIds.join(", "),
+            value:
+              notification.runIds.length > 0
+                ? notification.runIds.join(", ")
+                : null,
           },
           {
             label: "Operator",
@@ -57,6 +63,10 @@ export const title = (reason: NotificationReason): string => {
       return "NO OPERATOR"
     case "diverted":
       return "DIVERSION"
+    case "chelsea_st_bridge_raised":
+      return "CHELSEA ST BRIDGE RAISED"
+    case "chelsea_st_bridge_lowered":
+      return "CHELSEA ST BRIDGE LOWERED"
     default:
       return reason.toUpperCase().replace("_", " ")
   }
@@ -94,6 +104,12 @@ const description = (
       return `OCC created a dispatcher note due to traffic on the ${
         routeNameAtCreation || routeNames
       }.`
+    case "chelsea_st_bridge_raised":
+      return `OCC reported that the Chelsea St bridge will be raised until ${formattedTime(
+        notification.endTime!
+      )}.`
+    case "chelsea_st_bridge_lowered":
+      return "OCC reported that the Chelsea St bridge has been lowered."
     case "other":
     default:
       return `OCC created a dispatcher note for the ${routeNames}.`

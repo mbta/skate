@@ -25,6 +25,7 @@ const notificationData: NotificationData = {
   operator_id: null,
   route_id_at_creation: null,
   start_time: 123_456,
+  end_time: 234_567,
   state: "unread" as NotificationState,
 }
 

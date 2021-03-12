@@ -60,6 +60,7 @@ export interface Notification {
   operatorId: string | null
   routeIdAtCreation: string | null
   startTime: Date
+  endTime: Date | null
   state: NotificationState
 }
 
@@ -72,6 +73,8 @@ export type NotificationReason =
   | "adjusted"
   | "operator_error"
   | "traffic"
+  | "chelsea_st_bridge_raised"
+  | "chelsea_st_bridge_lowered"
 
 export type NotificationState = "unread" | "read" | "deleted"
 
