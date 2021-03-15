@@ -36,7 +36,9 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
           className="m-crowding-diagram__crowding-tooltip"
           /* istanbul ignore next */
           onShow={() => {
+            /* istanbul ignore next */
             if (window.FS) {
+              /* istanbul ignore next */
               window.FS.event("Crowding data tooltip opened")
             }
           }}
