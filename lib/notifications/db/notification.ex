@@ -2,6 +2,7 @@ defmodule Notifications.Db.Notification do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Notifications.Db.BlockOverload, as: DbBlockOverload
   alias Notifications.Db.BlockWaiver, as: DbBlockWaiver
   alias Notifications.Db.BridgeMovement, as: DbBridgeMovement
   alias Notifications.Db.NotificationUser, as: DbNotificationUser
@@ -19,6 +20,7 @@ defmodule Notifications.Db.Notification do
 
     belongs_to(:block_waiver, DbBlockWaiver)
     belongs_to(:bridge_movement, DbBridgeMovement)
+    belongs_to(:block_overload, DbBlockOverload)
   end
 
   def block_waiver_changeset(notification, attrs \\ %{}) do
@@ -62,6 +64,16 @@ defmodule Notifications.Db.Notification do
     |> put_assoc(
       :bridge_movement,
       DbBridgeMovement.changeset(%DbBridgeMovement{}, attrs)
+    )
+    |> validate_required(:created_at)
+  end
+
+  def block_overload_changeset(notification, attrs \\ %{}) do
+    notification
+    |> cast(attrs, [:id, :created_at, :block_overload_id])
+    |> put_assoc(
+      :block_overload,
+      DbBlockOverload.changeset(%DbBlockOverload{}, attrs)
     )
     |> validate_required(:created_at)
   end

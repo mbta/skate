@@ -49,7 +49,8 @@ defmodule Realtime.Vehicle do
           route_status: RouteStatus.route_status(),
           end_of_trip_type: end_of_trip_type(),
           block_waivers: [BlockWaiver.t()],
-          crowding: Crowding.t() | nil
+          crowding: Crowding.t() | nil,
+          trip_and_route_ids: [{Trip.id(), Route.id()}]
         }
 
   @enforce_keys [
@@ -117,7 +118,8 @@ defmodule Realtime.Vehicle do
     :end_of_trip_type,
     :crowding,
     block_waivers: [],
-    data_discrepancies: []
+    data_discrepancies: [],
+    trip_and_route_ids: []
   ]
 
   @spec from_vehicle_position(map()) :: t()
@@ -143,6 +145,7 @@ defmodule Realtime.Vehicle do
     route_id = VehiclePosition.route_id(vehicle_position) || (trip && trip.route_id)
     direction_id = VehiclePosition.direction_id(vehicle_position) || (trip && trip.direction_id)
     block = trip && trip.service_id && block_fn.(block_id, trip.service_id)
+    trip_and_route_ids = block && Enum.map(block.trips, &{&1.id, &1.route_id})
     headsign = trip && trip.headsign
     via_variant = trip && trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id)
     stop_times_on_trip = (trip && trip.stop_times) || []
@@ -235,7 +238,8 @@ defmodule Realtime.Vehicle do
       route_status: route_status(stop_id, trip, block),
       end_of_trip_type: end_of_trip_type(block, trip, run_id, stop_id),
       block_waivers: block_waivers,
-      crowding: vehicle_position.crowding
+      crowding: vehicle_position.crowding,
+      trip_and_route_ids: trip_and_route_ids
     }
   end
 

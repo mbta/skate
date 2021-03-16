@@ -44,7 +44,7 @@ defmodule Notifications.Notification do
     :route_ids,
     :run_ids,
     :trip_ids,
-    :start_time,
+    :start_time
   ]
 
   defstruct [
@@ -169,6 +169,83 @@ defmodule Notifications.Notification do
 
     if source == :new_record, do: log_creation(notification)
     notification
+  end
+
+  @spec get_or_create_from_block_overload(map()) :: t()
+  def get_or_create_from_block_overload(overload_values) do
+    route_ids = Map.fetch!(overload_values, :route_ids)
+    route_id_at_creation = Map.fetch!(overload_values, :route_id_at_creation)
+    created_at = Map.fetch!(overload_values, :created_at)
+    created_on = created_at |> DateTime.from_unix!() |> DateTime.to_date()
+
+    run_id = Map.fetch!(overload_values, :run_id)
+    trip_id = Map.fetch!(overload_values, :trip_id)
+    run_ids = if run_id, do: [run_id], else: []
+    trip_ids = if trip_id, do: [trip_id], else: []
+
+    notification_values = %{
+      created_at: created_at,
+      reason: :block_overload,
+      route_ids: route_ids,
+      run_ids: run_ids,
+      trip_ids: trip_ids,
+      operator_id: Map.fetch!(overload_values, :operator_id),
+      operator_name: Map.fetch!(overload_values, :operator_name),
+      route_id_at_creation: route_id_at_creation,
+      start_time: created_at
+    }
+
+    changeset_values =
+      Map.merge(
+        notification_values,
+        %{
+          vehicle_id: Map.fetch!(overload_values, :vehicle_id),
+          block_id: Map.fetch!(overload_values, :block_id),
+          created_on: created_on
+        }
+      )
+
+    changeset =
+      DbNotification.block_overload_changeset(
+        %DbNotification{},
+        changeset_values
+      )
+
+    db_record =
+      case Skate.Repo.transaction(fn ->
+             with {:ok, db_record} <- insert(changeset, on_conflict: :nothing),
+                  false <- is_nil(db_record.id),
+                  notification_with_id <-
+                    struct!(__MODULE__, notification_values |> Map.merge(%{id: db_record.id})) do
+               log_creation(notification_with_id)
+
+               link_notification_to_users(db_record.id, route_ids)
+
+               db_record
+             else
+               _ -> Skate.Repo.rollback(nil)
+             end
+           end) do
+        {:ok, db_record} when not is_nil(db_record) ->
+          db_record
+
+        {:error, _} ->
+          created_on = Map.fetch!(changeset_values, :created_on)
+          vehicle_id = Map.fetch!(changeset_values, :vehicle_id)
+          block_id = Map.fetch!(changeset_values, :block_id)
+
+          Skate.Repo.one!(
+            from(n in DbNotification,
+              join: bo in assoc(n, :block_overload),
+              where:
+                bo.created_on == ^created_on and
+                  bo.vehicle_id == ^vehicle_id and
+                  bo.block_id == ^block_id
+            )
+          )
+      end
+
+    struct!(__MODULE__, Map.merge(notification_values, %{id: db_record.id}))
   end
 
   def unexpired_notifications_for_user(username, now_fn \\ &Util.Time.now/0) do

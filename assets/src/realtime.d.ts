@@ -75,6 +75,7 @@ export type NotificationReason =
   | "traffic"
   | "chelsea_st_bridge_raised"
   | "chelsea_st_bridge_lowered"
+  | "block_overload"
 
 export type NotificationState = "unread" | "read" | "deleted"
 

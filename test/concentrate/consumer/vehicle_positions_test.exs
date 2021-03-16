@@ -24,7 +24,7 @@ defmodule Concentrate.Consumer.VehiclePositionsTest do
             [
               %Concentrate.VehiclePosition{
                 bearing: 0,
-                block_id: "A505-106",
+                block_id: "A505-106-OL123",
                 id: "y0562",
                 label: "0562",
                 last_updated: 1_558_121_727,
@@ -86,6 +86,20 @@ defmodule Concentrate.Consumer.VehiclePositionsTest do
       response = VehiclePositions.handle_events(events, nil, %{})
 
       assert response == {:noreply, [], %{}}
+    end
+
+    test "passes overloaded vehicles to the BlockOverloadStore", %{events: events} do
+      reassign_env(:skate, :block_overload_store_update_fn, &send(self(), &1))
+      VehiclePositions.handle_events(events, nil, %{})
+
+      message =
+        receive do
+          msg -> msg
+        end
+
+      assert length(message) == 1
+      overloaded_vehicle = List.first(message)
+      assert overloaded_vehicle.id == "y0562"
     end
   end
 

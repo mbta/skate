@@ -10,6 +10,7 @@ defmodule Notifications.NotificationReason do
           | :adjusted
           | :operator_error
           | :traffic
+          | :block_overload
 
   @valid_reasons [
     :manpower,

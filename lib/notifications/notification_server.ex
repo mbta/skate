@@ -29,6 +29,12 @@ defmodule Notifications.NotificationServer do
     GenServer.cast(server, {:bridge_movement, bridge_movement})
   end
 
+  @spec new_block_overloads([Vehicle.t()], GenServer.server()) :: :ok
+  def new_block_overloads(overloaded_vehicles, server \\ default_name()) do
+    GenServer.cast(server, {:new_block_overloads, overloaded_vehicles})
+    :ok
+  end
+
   def subscribe(username, server \\ default_name()) do
     registry_key = GenServer.call(server, :subscribe)
 
@@ -59,6 +65,15 @@ defmodule Notifications.NotificationServer do
     bridge_movement
     |> convert_bridge_movement_to_notification
     |> broadcast(self())
+
+    {:noreply, state}
+  end
+
+  @impl true
+  def handle_cast({:new_block_overloads, overloaded_vehicles}, state) do
+    overloaded_vehicles
+    |> Enum.map(&convert_block_overload_to_notification/1)
+    |> Enum.each(&broadcast(&1, self()))
 
     {:noreply, state}
   end
@@ -154,6 +169,33 @@ defmodule Notifications.NotificationServer do
       31 -> :adjusted
       _ -> nil
     end
+  end
+
+  @spec convert_block_overload_to_notification(Vehicle.t()) :: %Notifications.Notification{}
+  defp convert_block_overload_to_notification(overloaded_vehicle) do
+    overloaded_vehicle
+    |> get_db_values_from_overloaded_vehicle
+    |> Notification.get_or_create_from_block_overload()
+  end
+
+  defp get_db_values_from_overloaded_vehicle(overloaded_vehicle) do
+    route_ids =
+      overloaded_vehicle.trip_and_route_ids
+      |> Enum.drop_while(fn {trip_id, _} -> trip_id != overloaded_vehicle.trip_id end)
+      |> Enum.map(fn {_, route_id} -> route_id end)
+      |> Enum.uniq()
+
+    %{
+      block_id: overloaded_vehicle.block_id,
+      vehicle_id: overloaded_vehicle.id,
+      route_ids: route_ids,
+      route_id_at_creation: overloaded_vehicle.route_id,
+      run_id: overloaded_vehicle.run_id,
+      trip_id: overloaded_vehicle.trip_id,
+      operator_id: overloaded_vehicle.operator_id,
+      operator_name: overloaded_vehicle.operator_name,
+      created_at: overloaded_vehicle.timestamp
+    }
   end
 
   @spec convert_bridge_movement_to_notification(Bridge.bridge_movement()) ::

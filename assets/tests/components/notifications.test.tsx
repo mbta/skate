@@ -338,6 +338,7 @@ describe("NotificationCard", () => {
     "traffic",
     "chelsea_st_bridge_raised",
     "chelsea_st_bridge_lowered",
+    "block_overload",
   ]
 
   test.each(reasons)("renders notification with reason %s", (reason) => {

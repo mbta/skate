@@ -13,6 +13,7 @@ defmodule Notifications.NotificationServerTest do
   alias Skate.Repo
   alias Skate.Settings.Db.User, as: DbUser
   alias Skate.Settings.RouteSettings
+  alias Skate.Settings.UserSettings
 
   import Ecto.Query
   import ExUnit.CaptureLog, only: [capture_log: 1]
@@ -536,6 +537,190 @@ defmodule Notifications.NotificationServerTest do
       assert(length(db_notification_users) == length(@chelsea_bridge_route_ids))
 
       refute String.contains?(log, "new_notification")
+    end
+  end
+
+  describe "new_block_overloads/2" do
+    test "broadcasts, saves to the DB, and logs new notifications for users looking at routes affected by a block overload" do
+      {:ok, server} = setup_server()
+
+      Repo.delete_all(from(DbUser))
+
+      UserSettings.get_or_create("fake_uid1")
+      RouteSettings.get_or_create("fake_uid1")
+      RouteSettings.set("fake_uid1", selected_route_ids: ["1", "3"])
+      UserSettings.get_or_create("fake_uid2")
+      RouteSettings.get_or_create("fake_uid2")
+      RouteSettings.set("fake_uid2", selected_route_ids: ["2", "3"])
+      UserSettings.get_or_create("fake_uid3")
+      RouteSettings.get_or_create("fake_uid3")
+      RouteSettings.set("fake_uid3", selected_route_ids: ["5", "6", "7", "8"])
+      user1 = Skate.Repo.one!(from(u in DbUser, where: u.username == "fake_uid1"))
+      user2 = Skate.Repo.one!(from(u in DbUser, where: u.username == "fake_uid2"))
+
+      overloaded_vehicles = [
+        %Vehicle{
+          id: "y1234",
+          label: "1234",
+          timestamp: 0,
+          timestamp_by_source: %{},
+          latitude: 12.4,
+          longitude: 8.16,
+          direction_id: "0",
+          bearing: 180,
+          block_id: "block1",
+          operator_id: "12345",
+          operator_name: "CHARLIE",
+          operator_logon_time: 0,
+          run_id: "run1",
+          headway_spacing: nil,
+          is_shuttle: false,
+          is_overload: true,
+          is_off_course: false,
+          is_revenue: true,
+          block_is_active: true,
+          sources: MapSet.new(),
+          stop_status: %{stop_id: "stopst", stop_name: "Stop St"},
+          end_of_trip_type: :another_trip,
+          route_status: :on_route,
+          trip_id: "trip2",
+          trip_and_route_ids: [{"trip1", "3"}, {"trip2", "1"}, {"trip3", "2"}]
+        }
+      ]
+
+      NotificationServer.subscribe("fake_uid1", server)
+
+      log =
+        capture_log(fn ->
+          NotificationServer.new_block_overloads(overloaded_vehicles, server)
+
+          assert_receive(
+            {:notification,
+             %Notification{
+               created_at: 0,
+               end_time: nil,
+               operator_id: "12345",
+               operator_name: "CHARLIE",
+               reason: :block_overload,
+               route_id_at_creation: nil,
+               route_ids: ["1", "2"],
+               run_ids: ["run1"],
+               start_time: 0,
+               state: nil,
+               trip_ids: ["trip2"]
+             }},
+            1000
+          )
+        end)
+
+      db_notification_users = Skate.Repo.all(DbNotificationUser)
+
+      assert length(db_notification_users) == 2
+
+      actual_user_ids =
+        Skate.Repo.all(DbNotificationUser) |> Enum.map(& &1.user_id) |> Enum.sort()
+
+      expected_user_ids = Enum.sort([user1.id, user2.id])
+
+      assert actual_user_ids == expected_user_ids
+
+      assert String.contains?(log, "reason: :block_overload")
+      assert String.contains?(log, "route_ids: [\"1\", \"2\"]")
+      assert String.contains?(log, "run_ids: [\"run1\"]")
+      assert String.contains?(log, "trip_ids: [\"trip2\"]")
+    end
+
+    test "doesn't log or save a duplicate block overload notification, but does broadcast" do
+      {:ok, server} = setup_server()
+
+      Repo.delete_all(from(DbUser))
+
+      UserSettings.get_or_create("fake_uid1")
+      RouteSettings.get_or_create("fake_uid1")
+      RouteSettings.set("fake_uid1", selected_route_ids: ["1", "3"])
+      UserSettings.get_or_create("fake_uid2")
+      RouteSettings.get_or_create("fake_uid2")
+      RouteSettings.set("fake_uid2", selected_route_ids: ["2", "3"])
+      UserSettings.get_or_create("fake_uid3")
+      RouteSettings.get_or_create("fake_uid3")
+      RouteSettings.set("fake_uid3", selected_route_ids: ["5", "6", "7", "8"])
+
+      changeset =
+        DbNotification.block_overload_changeset(
+          %DbNotification{},
+          %{
+            created_at: 0,
+            created_on: DateTime.from_unix!(0) |> DateTime.to_date(),
+            vehicle_id: "y1234",
+            block_id: "block1"
+          }
+        )
+
+      Skate.Repo.insert!(changeset)
+
+      overloaded_vehicles = [
+        %Vehicle{
+          id: "y1234",
+          label: "1234",
+          timestamp: 0,
+          timestamp_by_source: %{},
+          latitude: 12.4,
+          longitude: 8.16,
+          direction_id: "0",
+          bearing: 180,
+          block_id: "block1",
+          operator_id: "12345",
+          operator_name: "CHARLIE",
+          operator_logon_time: 0,
+          run_id: "run1",
+          headway_spacing: nil,
+          is_shuttle: false,
+          is_overload: true,
+          is_off_course: false,
+          is_revenue: true,
+          block_is_active: true,
+          sources: MapSet.new(),
+          stop_status: %{stop_id: "stopst", stop_name: "Stop St"},
+          end_of_trip_type: :another_trip,
+          route_status: :on_route,
+          trip_id: "trip2",
+          trip_and_route_ids: [{"trip1", "3"}, {"trip2", "1"}, {"trip3", "2"}]
+        }
+      ]
+
+      NotificationServer.subscribe("fake_uid1", server)
+
+      log =
+        capture_log(fn ->
+          NotificationServer.new_block_overloads(overloaded_vehicles, server)
+
+          assert_receive(
+            {:notification,
+             %Notification{
+               created_at: 0,
+               end_time: nil,
+               operator_id: "12345",
+               operator_name: "CHARLIE",
+               reason: :block_overload,
+               route_id_at_creation: nil,
+               route_ids: ["1", "2"],
+               run_ids: ["run1"],
+               start_time: 0,
+               state: nil,
+               trip_ids: ["trip2"]
+             }},
+            1000
+          )
+        end)
+
+      db_notification_users = Skate.Repo.all(DbNotificationUser)
+
+      assert length(db_notification_users) == 0
+
+      refute String.contains?(log, "reason: :block_overload")
+      refute String.contains?(log, "route_ids: [\"1\", \"2\"]")
+      refute String.contains?(log, "run_ids: [\"run1\"]")
+      refute String.contains?(log, "trip_ids: [\"trip2\"]")
     end
   end
 end

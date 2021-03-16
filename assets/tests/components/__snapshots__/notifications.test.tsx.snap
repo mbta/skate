@@ -349,6 +349,71 @@ exports[`NotificationCard renders notification with reason adjusted 1`] = `
 </div>
 `;
 
+exports[`NotificationCard renders notification with reason block_overload 1`] = `
+<div
+  className="m-notifications__card m-notifications__card--new"
+>
+  <button
+    className="m-notifications__card-info"
+    onClick={[Function]}
+  >
+    <div
+      className="m-notification-content"
+    >
+      <div
+        className="m-notification-content__title-row"
+      >
+        <div
+          className="m-notification-content__title"
+        >
+          ADDED SERVICE
+        </div>
+        <div
+          className="m-notification-content__age"
+        >
+          0 min
+        </div>
+      </div>
+      <div
+        className="m-notification-content__description"
+      >
+        An extra bus has been added to the r1, r2.
+      </div>
+      <div
+        className="m-properties-list"
+      >
+        <table
+          className="m-properties-list__table"
+        >
+          <tbody>
+            <tr
+              className="m-properties-list__property "
+            >
+              <td
+                className="m-properties-list__property-label"
+              >
+                Run
+              </td>
+              <td
+                className="m-properties-list__property-value"
+              >
+                run1, run2
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </button>
+  <button
+    className="m-notifications__close"
+    onClick={[Function]}
+  >
+    Hide
+  </button>
+</div>
+`;
+
 exports[`NotificationCard renders notification with reason chelsea_st_bridge_lowered 1`] = `
 <div
   className="m-notifications__card m-notifications__card--new"

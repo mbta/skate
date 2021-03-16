@@ -180,7 +180,8 @@ defmodule Realtime.VehicleTest do
                  %BlockWaiver{
                    remark: "E:1106"
                  }
-               ]
+               ],
+               trip_and_route_ids: [{"39984755", "28"}]
              } = result
     end
 

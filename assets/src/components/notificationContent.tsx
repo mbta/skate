@@ -67,6 +67,8 @@ export const title = (reason: NotificationReason): string => {
       return "CHELSEA ST BRIDGE RAISED"
     case "chelsea_st_bridge_lowered":
       return "CHELSEA ST BRIDGE LOWERED"
+    case "block_overload":
+      return "ADDED SERVICE"
     default:
       return reason.toUpperCase().replace("_", " ")
   }
@@ -110,6 +112,10 @@ const description = (
       )}.`
     case "chelsea_st_bridge_lowered":
       return "OCC reported that the Chelsea St bridge has been lowered."
+    case "block_overload":
+      return `An extra bus has been added to the ${
+        routeNameAtCreation || routeNames
+      }.`
     case "other":
     default:
       return `OCC created a dispatcher note for the ${routeNames}.`
