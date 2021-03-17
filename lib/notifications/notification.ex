@@ -32,7 +32,7 @@ defmodule Notifications.Notification do
           operator_name: String.t() | nil,
           route_id_at_creation: Route.id() | nil,
           start_time: Util.Time.timestamp(),
-          end_time: Util.Time.timestamp(),
+          end_time: Util.Time.timestamp() | nil,
           state: NotificationState.t() | nil
         }
 
@@ -45,7 +45,6 @@ defmodule Notifications.Notification do
     :run_ids,
     :trip_ids,
     :start_time,
-    :end_time
   ]
 
   defstruct [
