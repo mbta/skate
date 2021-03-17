@@ -32,7 +32,7 @@ defmodule Realtime.DataStatus do
       } bad_vehicles=#{bad_count}"
     )
 
-    if considered_count >= 10 and bad_count / considered_count >= 0.20 do
+    if considered_count >= 20 and bad_count / considered_count >= 0.20 do
       :outage
     else
       :good
