@@ -114,17 +114,24 @@ exports[`ladder highlights a selected vehicle 1`] = `
       cy={-0}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t0 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-0}
+    <div
+      className="mock-tippy"
     >
-      t0
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t0 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-0}
+      >
+        t0
+      </text>
+    </div>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -137,17 +144,24 @@ exports[`ladder highlights a selected vehicle 1`] = `
       cy={-55}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t1 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-55}
+    <div
+      className="mock-tippy"
     >
-      t1
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t1 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-55}
+      >
+        t1
+      </text>
+    </div>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -160,21 +174,25 @@ exports[`ladder highlights a selected vehicle 1`] = `
       cy={-110}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t2 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-110}
+    <div
+      className="mock-tippy"
     >
-      t2
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t2 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-110}
+      >
+        t2
+      </text>
+    </div>
   </svg>
-  <div
-    className="mock-react-tooltip"
-  />
 </div>
 `;
 
@@ -300,17 +318,24 @@ exports[`ladder renders a ghost bus 1`] = `
       cy={-0}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t0 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-0}
+    <div
+      className="mock-tippy"
     >
-      t0
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t0 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-0}
+      >
+        t0
+      </text>
+    </div>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -323,17 +348,24 @@ exports[`ladder renders a ghost bus 1`] = `
       cy={-55}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t1 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-55}
+    <div
+      className="mock-tippy"
     >
-      t1
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t1 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-55}
+      >
+        t1
+      </text>
+    </div>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -346,21 +378,25 @@ exports[`ladder renders a ghost bus 1`] = `
       cy={-110}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t2 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-110}
+    <div
+      className="mock-tippy"
     >
-      t2
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t2 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-110}
+      >
+        t2
+      </text>
+    </div>
   </svg>
-  <div
-    className="mock-react-tooltip"
-  />
 </div>
 `;
 
@@ -511,17 +547,24 @@ exports[`ladder renders a ladder 1`] = `
       cy={-0}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t0 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-0}
+    <div
+      className="mock-tippy"
     >
-      t0
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t0 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-0}
+      >
+        t0
+      </text>
+    </div>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -534,17 +577,24 @@ exports[`ladder renders a ladder 1`] = `
       cy={-55}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t1 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-55}
+    <div
+      className="mock-tippy"
     >
-      t1
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t1 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-55}
+      >
+        t1
+      </text>
+    </div>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -557,21 +607,25 @@ exports[`ladder renders a ladder 1`] = `
       cy={-110}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t2 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-110}
+    <div
+      className="mock-tippy"
     >
-      t2
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t2 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-110}
+      >
+        t2
+      </text>
+    </div>
   </svg>
-  <div
-    className="mock-react-tooltip"
-  />
 </div>
 `;
 
@@ -638,9 +692,6 @@ exports[`ladder renders a ladder with no timepoints 1`] = `
       y2={-110}
     />
   </svg>
-  <div
-    className="mock-react-tooltip"
-  />
 </div>
 `;
 
@@ -718,17 +769,24 @@ exports[`ladder renders a laying over vehicle 1`] = `
       cy={-0}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t0 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-0}
+    <div
+      className="mock-tippy"
     >
-      t0
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t0 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-0}
+      >
+        t0
+      </text>
+    </div>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -741,17 +799,24 @@ exports[`ladder renders a laying over vehicle 1`] = `
       cy={-55}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t1 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-55}
+    <div
+      className="mock-tippy"
     >
-      t1
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t1 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-55}
+      >
+        t1
+      </text>
+    </div>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -764,21 +829,25 @@ exports[`ladder renders a laying over vehicle 1`] = `
       cy={-110}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t2 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-110}
+    <div
+      className="mock-tippy"
     >
-      t2
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t2 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-110}
+      >
+        t2
+      </text>
+    </div>
   </svg>
-  <div
-    className="mock-react-tooltip"
-  />
 </div>
 `;
 
@@ -863,17 +932,24 @@ exports[`ladder renders a laying over vehicle with a scheduled line 1`] = `
       cy={-0}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t0 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-0}
+    <div
+      className="mock-tippy"
     >
-      t0
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t0 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-0}
+      >
+        t0
+      </text>
+    </div>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -886,17 +962,24 @@ exports[`ladder renders a laying over vehicle with a scheduled line 1`] = `
       cy={-55}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t1 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-55}
+    <div
+      className="mock-tippy"
     >
-      t1
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t1 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-55}
+      >
+        t1
+      </text>
+    </div>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -909,21 +992,25 @@ exports[`ladder renders a laying over vehicle with a scheduled line 1`] = `
       cy={-110}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t2 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-110}
+    <div
+      className="mock-tippy"
     >
-      t2
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t2 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-110}
+      >
+        t2
+      </text>
+    </div>
   </svg>
-  <div
-    className="mock-react-tooltip"
-  />
 </div>
 `;
 
@@ -1008,17 +1095,24 @@ exports[`ladder renders a reversed ladder 1`] = `
       cy={-0}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t2 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-0}
+    <div
+      className="mock-tippy"
     >
-      t2
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t2 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-0}
+      >
+        t2
+      </text>
+    </div>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -1031,17 +1125,24 @@ exports[`ladder renders a reversed ladder 1`] = `
       cy={-55}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t1 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-55}
+    <div
+      className="mock-tippy"
     >
-      t1
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t1 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-55}
+      >
+        t1
+      </text>
+    </div>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -1054,21 +1155,25 @@ exports[`ladder renders a reversed ladder 1`] = `
       cy={-110}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t0 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-110}
+    <div
+      className="mock-tippy"
     >
-      t0
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t0 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-110}
+      >
+        t0
+      </text>
+    </div>
   </svg>
-  <div
-    className="mock-react-tooltip"
-  />
 </div>
 `;
 
@@ -1155,17 +1260,24 @@ exports[`ladder renders an off-course vehicle 1`] = `
       cy={-0}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t0 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-0}
+    <div
+      className="mock-tippy"
     >
-      t0
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t0 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-0}
+      >
+        t0
+      </text>
+    </div>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -1178,17 +1290,24 @@ exports[`ladder renders an off-course vehicle 1`] = `
       cy={-55}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t1 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-55}
+    <div
+      className="mock-tippy"
     >
-      t1
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t1 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-55}
+      >
+        t1
+      </text>
+    </div>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -1201,21 +1320,25 @@ exports[`ladder renders an off-course vehicle 1`] = `
       cy={-110}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t2 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-110}
+    <div
+      className="mock-tippy"
     >
-      t2
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t2 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-110}
+      >
+        t2
+      </text>
+    </div>
   </svg>
-  <div
-    className="mock-react-tooltip"
-  />
 </div>
 `;
 
@@ -1293,17 +1416,24 @@ exports[`ladder renders an overload vehicle 1`] = `
       cy={-0}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t0 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-0}
+    <div
+      className="mock-tippy"
     >
-      t0
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t0 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-0}
+      >
+        t0
+      </text>
+    </div>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -1316,17 +1446,24 @@ exports[`ladder renders an overload vehicle 1`] = `
       cy={-55}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t1 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-55}
+    <div
+      className="mock-tippy"
     >
-      t1
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t1 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-55}
+      >
+        t1
+      </text>
+    </div>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -1339,21 +1476,25 @@ exports[`ladder renders an overload vehicle 1`] = `
       cy={-110}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t2 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-110}
+    <div
+      className="mock-tippy"
     >
-      t2
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t2 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-110}
+      >
+        t2
+      </text>
+    </div>
   </svg>
-  <div
-    className="mock-react-tooltip"
-  />
 </div>
 `;
 
@@ -1438,17 +1579,24 @@ exports[`ladder shows schedule line in the other direction 1`] = `
       cy={-0}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t2 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-0}
+    <div
+      className="mock-tippy"
     >
-      t2
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t2 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-0}
+      >
+        t2
+      </text>
+    </div>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -1461,17 +1609,24 @@ exports[`ladder shows schedule line in the other direction 1`] = `
       cy={-55}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t1 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-55}
+    <div
+      className="mock-tippy"
     >
-      t1
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t1 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-55}
+      >
+        t1
+      </text>
+    </div>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -1484,21 +1639,25 @@ exports[`ladder shows schedule line in the other direction 1`] = `
       cy={-110}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t0 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-110}
+    <div
+      className="mock-tippy"
     >
-      t0
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t0 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-110}
+      >
+        t0
+      </text>
+    </div>
   </svg>
-  <div
-    className="mock-react-tooltip"
-  />
 </div>
 `;
 
@@ -1734,17 +1893,24 @@ exports[`ladder shows vehicles with current block waivers 1`] = `
       cy={-0}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t0 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-0}
+    <div
+      className="mock-tippy"
     >
-      t0
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t0 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-0}
+      >
+        t0
+      </text>
+    </div>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -1757,17 +1923,24 @@ exports[`ladder shows vehicles with current block waivers 1`] = `
       cy={-55}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t1 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-55}
+    <div
+      className="mock-tippy"
     >
-      t1
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t1 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-55}
+      >
+        t1
+      </text>
+    </div>
     <circle
       className="m-ladder__stop-circle"
       cx={-40}
@@ -1780,20 +1953,24 @@ exports[`ladder shows vehicles with current block waivers 1`] = `
       cy={-110}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      data-event="click"
-      data-tip="t2 name"
-      dominantBaseline="middle"
-      textAnchor="middle"
-      x="0"
-      y={-110}
+    <div
+      className="mock-tippy"
     >
-      t2
-    </text>
+      <div
+        className="mock-tippy-content"
+      >
+        t2 name
+      </div>
+      <text
+        className="m-ladder__timepoint-name"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="0"
+        y={-110}
+      >
+        t2
+      </text>
+    </div>
   </svg>
-  <div
-    className="mock-react-tooltip"
-  />
 </div>
 `;

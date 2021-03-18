@@ -1,6 +1,7 @@
 import useComponentSize from "@rehooks/component-size"
 import React, { useContext, useRef } from "react"
-import ReactTooltip from "react-tooltip"
+import Tippy from "@tippyjs/react"
+import "tippy.js/dist/tippy.css"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { flatten, partition } from "../helpers/array"
 import { className } from "../helpers/dom"
@@ -173,7 +174,6 @@ const Ladder = ({
           )
         })}
       </svg>
-      <ReactTooltip effect="solid" globalEventOff="click" />
     </div>
   )
 }
@@ -280,17 +280,29 @@ const LadderTimepoint = ({
       cy={y}
       r="3"
     />
-    <text
-      className="m-ladder__timepoint-name"
-      x="0"
-      y={y}
-      textAnchor="middle"
-      dominantBaseline="middle"
-      data-tip={timepoint.name}
-      data-event="click"
+    <Tippy
+      content={timepoint.name}
+      trigger="click"
+      className="m-ladder__timepoint-name-tooltip"
+      /* istanbul ignore next */
+      onShow={() => {
+        /* istanbul ignore next */
+        if (window.FS) {
+          /* istanbul ignore next */
+          window.FS.event("Timepoint names tooltip opened")
+        }
+      }}
     >
-      {timepoint.id}
-    </text>
+      <text
+        className="m-ladder__timepoint-name"
+        x="0"
+        y={y}
+        textAnchor="middle"
+        dominantBaseline="middle"
+      >
+        {timepoint.id}
+      </text>
+    </Tippy>
   </>
 )
 

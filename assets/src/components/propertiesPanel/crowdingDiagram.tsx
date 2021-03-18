@@ -1,5 +1,6 @@
 import React from "react"
-import ReactTooltip from "react-tooltip"
+import Tippy from "@tippyjs/react"
+import "tippy.js/dist/tippy.css"
 import { crowdingIcon, questionMarkIcon } from "../../helpers/icon"
 import {
   classModifierForStatus,
@@ -24,13 +25,26 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
         <span className="m-properties-list__property-label">
           Riders onboard
         </span>
-        <span
-          data-tip="Riders are estimated using Automated <br/> Passenger Counters (APCs)."
-          data-html="true"
-          data-class="m-crowding-diagram__crowding-tooltip"
+        <Tippy
+          content={
+            <div>
+              Riders are estimated using Automated <br /> Passenger Counters
+              (APCs).
+            </div>
+          }
+          trigger="click"
+          className="m-crowding-diagram__crowding-tooltip"
+          /* istanbul ignore next */
+          onShow={() => {
+            /* istanbul ignore next */
+            if (window.FS) {
+              /* istanbul ignore next */
+              window.FS.event("Crowding data tooltip opened")
+            }
+          }}
         >
           {questionMarkIcon("m-crowding-diagram__tooltip-anchor")}
-        </span>
+        </Tippy>
         <br />
         {crowding.load !== null ? (
           <>
@@ -51,7 +65,6 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
           `m-crowding-diagram__crowding-icon m-crowding-diagram__crowding-icon--${classModifier}`
         )}
       </div>
-      <ReactTooltip effect="solid" event="click" globalEventOff="click" />
     </div>
   )
 }
