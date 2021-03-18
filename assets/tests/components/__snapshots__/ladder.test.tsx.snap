@@ -114,7 +114,6 @@ exports[`ladder highlights a selected vehicle 1`] = `
       cy={-0}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -145,7 +144,6 @@ exports[`ladder highlights a selected vehicle 1`] = `
       cy={-55}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -176,7 +174,6 @@ exports[`ladder highlights a selected vehicle 1`] = `
       cy={-110}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -321,7 +318,6 @@ exports[`ladder renders a ghost bus 1`] = `
       cy={-0}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -352,7 +348,6 @@ exports[`ladder renders a ghost bus 1`] = `
       cy={-55}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -383,7 +378,6 @@ exports[`ladder renders a ghost bus 1`] = `
       cy={-110}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -553,7 +547,6 @@ exports[`ladder renders a ladder 1`] = `
       cy={-0}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -584,7 +577,6 @@ exports[`ladder renders a ladder 1`] = `
       cy={-55}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -615,7 +607,6 @@ exports[`ladder renders a ladder 1`] = `
       cy={-110}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -778,7 +769,6 @@ exports[`ladder renders a laying over vehicle 1`] = `
       cy={-0}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -809,7 +799,6 @@ exports[`ladder renders a laying over vehicle 1`] = `
       cy={-55}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -840,7 +829,6 @@ exports[`ladder renders a laying over vehicle 1`] = `
       cy={-110}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -944,7 +932,6 @@ exports[`ladder renders a laying over vehicle with a scheduled line 1`] = `
       cy={-0}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -975,7 +962,6 @@ exports[`ladder renders a laying over vehicle with a scheduled line 1`] = `
       cy={-55}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -1006,7 +992,6 @@ exports[`ladder renders a laying over vehicle with a scheduled line 1`] = `
       cy={-110}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -1110,7 +1095,6 @@ exports[`ladder renders a reversed ladder 1`] = `
       cy={-0}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -1141,7 +1125,6 @@ exports[`ladder renders a reversed ladder 1`] = `
       cy={-55}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -1172,7 +1155,6 @@ exports[`ladder renders a reversed ladder 1`] = `
       cy={-110}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -1278,7 +1260,6 @@ exports[`ladder renders an off-course vehicle 1`] = `
       cy={-0}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -1309,7 +1290,6 @@ exports[`ladder renders an off-course vehicle 1`] = `
       cy={-55}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -1340,7 +1320,6 @@ exports[`ladder renders an off-course vehicle 1`] = `
       cy={-110}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -1437,7 +1416,6 @@ exports[`ladder renders an overload vehicle 1`] = `
       cy={-0}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -1468,7 +1446,6 @@ exports[`ladder renders an overload vehicle 1`] = `
       cy={-55}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -1499,7 +1476,6 @@ exports[`ladder renders an overload vehicle 1`] = `
       cy={-110}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -1603,7 +1579,6 @@ exports[`ladder shows schedule line in the other direction 1`] = `
       cy={-0}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -1634,7 +1609,6 @@ exports[`ladder shows schedule line in the other direction 1`] = `
       cy={-55}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -1665,7 +1639,6 @@ exports[`ladder shows schedule line in the other direction 1`] = `
       cy={-110}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -1920,7 +1893,6 @@ exports[`ladder shows vehicles with current block waivers 1`] = `
       cy={-0}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -1951,7 +1923,6 @@ exports[`ladder shows vehicles with current block waivers 1`] = `
       cy={-55}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -1982,7 +1953,6 @@ exports[`ladder shows vehicles with current block waivers 1`] = `
       cy={-110}
       r="3"
     />
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >

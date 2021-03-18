@@ -280,7 +280,6 @@ const LadderTimepoint = ({
       cy={y}
       r="3"
     />
-    /* istanbul ignore next */
     <Tippy
       content={timepoint.name}
       trigger="click"

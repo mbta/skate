@@ -25,7 +25,6 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
         <span className="m-properties-list__property-label">
           Riders onboard
         </span>
-        /* istanbul ignore next */
         <Tippy
           content={
             <div>

@@ -206,7 +206,6 @@ Array [
         cy={-0}
         r="3"
       />
-      /* istanbul ignore next */
       <div
         className="mock-tippy"
       >
@@ -237,7 +236,6 @@ Array [
         cy={-55}
         r="3"
       />
-      /* istanbul ignore next */
       <div
         className="mock-tippy"
       >
@@ -268,7 +266,6 @@ Array [
         cy={-110}
         r="3"
       />
-      /* istanbul ignore next */
       <div
         className="mock-tippy"
       >
@@ -484,7 +481,6 @@ Array [
         cy={-0}
         r="3"
       />
-      /* istanbul ignore next */
       <div
         className="mock-tippy"
       >
@@ -515,7 +511,6 @@ Array [
         cy={-55}
         r="3"
       />
-      /* istanbul ignore next */
       <div
         className="mock-tippy"
       >
@@ -546,7 +541,6 @@ Array [
         cy={-110}
         r="3"
       />
-      /* istanbul ignore next */
       <div
         className="mock-tippy"
       >
@@ -731,7 +725,6 @@ Array [
         cy={-0}
         r="3"
       />
-      /* istanbul ignore next */
       <div
         className="mock-tippy"
       >
@@ -762,7 +755,6 @@ Array [
         cy={-55}
         r="3"
       />
-      /* istanbul ignore next */
       <div
         className="mock-tippy"
       >
@@ -793,7 +785,6 @@ Array [
         cy={-110}
         r="3"
       />
-      /* istanbul ignore next */
       <div
         className="mock-tippy"
       >
@@ -902,7 +893,6 @@ Array [
         cy={-0}
         r="3"
       />
-      /* istanbul ignore next */
       <div
         className="mock-tippy"
       >
@@ -933,7 +923,6 @@ Array [
         cy={-55}
         r="3"
       />
-      /* istanbul ignore next */
       <div
         className="mock-tippy"
       >
@@ -964,7 +953,6 @@ Array [
         cy={-110}
         r="3"
       />
-      /* istanbul ignore next */
       <div
         className="mock-tippy"
       >
@@ -1215,7 +1203,6 @@ Array [
         cy={-0}
         r="3"
       />
-      /* istanbul ignore next */
       <div
         className="mock-tippy"
       >
@@ -1246,7 +1233,6 @@ Array [
         cy={-55}
         r="3"
       />
-      /* istanbul ignore next */
       <div
         className="mock-tippy"
       >
@@ -1277,7 +1263,6 @@ Array [
         cy={-110}
         r="3"
       />
-      /* istanbul ignore next */
       <div
         className="mock-tippy"
       >
@@ -1461,7 +1446,6 @@ Array [
         cy={-0}
         r="3"
       />
-      /* istanbul ignore next */
       <div
         className="mock-tippy"
       >
@@ -1492,7 +1476,6 @@ Array [
         cy={-55}
         r="3"
       />
-      /* istanbul ignore next */
       <div
         className="mock-tippy"
       >
@@ -1523,7 +1506,6 @@ Array [
         cy={-110}
         r="3"
       />
-      /* istanbul ignore next */
       <div
         className="mock-tippy"
       >
@@ -1800,7 +1782,6 @@ Array [
         cy={-0}
         r="3"
       />
-      /* istanbul ignore next */
       <div
         className="mock-tippy"
       >
@@ -1831,7 +1812,6 @@ Array [
         cy={-55}
         r="3"
       />
-      /* istanbul ignore next */
       <div
         className="mock-tippy"
       >
@@ -1862,7 +1842,6 @@ Array [
         cy={-110}
         r="3"
       />
-      /* istanbul ignore next */
       <div
         className="mock-tippy"
       >
@@ -1971,7 +1950,6 @@ Array [
         cy={-0}
         r="3"
       />
-      /* istanbul ignore next */
       <div
         className="mock-tippy"
       >
@@ -2002,7 +1980,6 @@ Array [
         cy={-55}
         r="3"
       />
-      /* istanbul ignore next */
       <div
         className="mock-tippy"
       >
@@ -2033,7 +2010,6 @@ Array [
         cy={-110}
         r="3"
       />
-      /* istanbul ignore next */
       <div
         className="mock-tippy"
       >

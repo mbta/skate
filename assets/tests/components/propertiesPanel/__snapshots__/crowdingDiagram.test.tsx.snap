@@ -12,7 +12,6 @@ exports[`CrowdingDiagram renders correctly for a crowded bus 1`] = `
     >
       Riders onboard
     </span>
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -73,7 +72,6 @@ exports[`CrowdingDiagram renders correctly for a somewhat crowded bus 1`] = `
     >
       Riders onboard
     </span>
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -134,7 +132,6 @@ exports[`CrowdingDiagram renders correctly for an empty bus 1`] = `
     >
       Riders onboard
     </span>
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -195,7 +192,6 @@ exports[`CrowdingDiagram renders correctly for an uncrowded bus 1`] = `
     >
       Riders onboard
     </span>
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
@@ -256,7 +252,6 @@ exports[`CrowdingDiagram renders correctly for an untrusted APC 1`] = `
     >
       Riders onboard
     </span>
-    /* istanbul ignore next */
     <div
       className="mock-tippy"
     >
