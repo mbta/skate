@@ -626,6 +626,7 @@ exports[`LadderPage renders with timepoints 1`] = `
           cy={-0}
           r="3"
         />
+        /* istanbul ignore next */
         <div
           className="mock-tippy"
         >
@@ -656,6 +657,7 @@ exports[`LadderPage renders with timepoints 1`] = `
           cy={-55}
           r="3"
         />
+        /* istanbul ignore next */
         <div
           className="mock-tippy"
         >
@@ -686,6 +688,7 @@ exports[`LadderPage renders with timepoints 1`] = `
           cy={-110}
           r="3"
         />
+        /* istanbul ignore next */
         <div
           className="mock-tippy"
         >
@@ -789,6 +792,7 @@ exports[`LadderPage renders with timepoints 1`] = `
           cy={-0}
           r="3"
         />
+        /* istanbul ignore next */
         <div
           className="mock-tippy"
         >
@@ -819,6 +823,7 @@ exports[`LadderPage renders with timepoints 1`] = `
           cy={-55}
           r="3"
         />
+        /* istanbul ignore next */
         <div
           className="mock-tippy"
         >
@@ -849,6 +854,7 @@ exports[`LadderPage renders with timepoints 1`] = `
           cy={-110}
           r="3"
         />
+        /* istanbul ignore next */
         <div
           className="mock-tippy"
         >
