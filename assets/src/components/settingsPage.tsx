@@ -6,19 +6,15 @@ import {
   triangleUpIcon,
   triangleUpLargeIcon,
 } from "../helpers/icon"
-import featureIsEnabled from "../laboratoryFeatures"
 import {
   setLadderVehicleLabelSetting,
-  setMinischedulesTripLabelSetting,
   setShuttleVehicleLabelSetting,
   setVehicleAdherenceColorsSetting,
 } from "../state"
 import {
   putLadderVehicleLabel,
-  putMinischedulesTripLabel,
   putShuttleVehicleLabel,
   putVehicleAdherenceColors,
-  TripLabelSetting,
   VehicleLabelSetting,
   VehicleAdherenceColorsSetting,
 } from "../userSettings"
@@ -136,32 +132,6 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
               },
             ]}
           />
-
-          {featureIsEnabled("minischedules_trip_label") && (
-            <ToggleSetting
-              icon={mapIcon}
-              label="Trip Label"
-              settingName="minischedules-trip-label"
-              value={userSettings.minischedulesTripLabel}
-              onChange={(value) => {
-                const newSetting: TripLabelSetting = parseInt(value, 10)
-                dispatch(setMinischedulesTripLabelSetting(newSetting))
-                putMinischedulesTripLabel(newSetting)
-              }}
-              options={[
-                {
-                  label: "Origin",
-                  value: TripLabelSetting.Origin,
-                  optionId: "minischedules-trip-label-origin",
-                },
-                {
-                  label: "Destination",
-                  value: TripLabelSetting.Destination,
-                  optionId: "minischedules-trip-label-destination",
-                },
-              ]}
-            />
-          )}
         </div>
       </div>
       <RightPanel />

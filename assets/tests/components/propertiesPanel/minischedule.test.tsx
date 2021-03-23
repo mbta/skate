@@ -12,11 +12,9 @@ import {
   useMinischeduleBlock,
   useMinischeduleRun,
 } from "../../../src/hooks/useMinischedule"
-import featureIsEnabled from "../../../src/laboratoryFeatures"
 import { Break, Piece, Run, Trip } from "../../../src/minischedule"
 import { Vehicle } from "../../../src/realtime"
 import { initialState } from "../../../src/state"
-import { TripLabelSetting } from "../../../src/userSettings"
 import { mockUseStateOnce } from "../../testHelpers/mockHelpers"
 
 jest.mock("../../../src/hooks/useMinischedule", () => ({
@@ -281,44 +279,12 @@ describe("MinischeduleRun", () => {
       id: "run",
       activities: [breakk, multiTripPiece],
     }))
-    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
-
-    const userSettings = {
-      ...initialState.userSettings,
-      minischedulesTripLabel: TripLabelSetting.Origin,
-    }
-    const state = { ...initialState, userSettings }
     const tree = renderer
       .create(
-        <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
           <MinischeduleRun vehicleOrGhost={vehicle} />
         </StateDispatchProvider>
       )
-      .toJSON()
-
-    expect(tree).toMatchSnapshot()
-  })
-
-  test("renders a run using destination trip label mode", () => {
-    const multiTripPiece = {
-      ...piece,
-      trips: [revenueTrip, revenueTrip2],
-    }
-    const breakk: Break = {
-      breakType: "Paid meal before",
-      startTime: 10,
-      endTime: 1810,
-      endPlace: "Timepoint Bravo",
-    }
-
-    ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => ({
-      id: "run",
-      activities: [breakk, multiTripPiece],
-    }))
-    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
-
-    const tree = renderer
-      .create(<MinischeduleRun vehicleOrGhost={vehicle} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()

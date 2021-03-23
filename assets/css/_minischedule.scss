@@ -6,19 +6,25 @@
 }
 
 .m-minischedule__show-past {
-  @include font-link;
-  border-bottom: 1px solid $color-component-light;
-  padding: 1rem;
+  @include font-body;
+  color: $color-primary-dark;
+  padding-left: 1.875rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
   text-align: left;
   width: 100%;
 }
 
 .m-minischedule__show-past-icon {
   display: inline-block;
-  fill: $color-font-link;
   margin-right: 0.25rem;
   vertical-align: middle;
   width: 0.875rem;
+
+  svg {
+    fill: $color-primary-dark;
+    stroke: $color-primary-dark;
+  }
 }
 
 .m-minischedule__header {
@@ -41,6 +47,7 @@
   background-color: $color-secondary-light;
   font-size: 0.875rem;
   padding: 0.5rem 1rem;
+  border-bottom: 1px solid $color-primary-dark;
 
   .m-minischedule__header-label {
     display: inline-block;
@@ -50,11 +57,15 @@
 }
 
 .m-minischedule__row {
-  border-top: 1px solid $color-component-light;
+  @include font-body;
   display: flex;
   padding-bottom: 0.5rem;
   padding-left: 1rem;
   padding-top: 0.5rem;
+
+  &:not(:first-child) {
+    border-top: 1px solid $color-component-light;
+  }
 
   &.m-minischedule__layover-row {
     border-top-style: none;
@@ -85,7 +96,7 @@
 
 .m-minischedule__right-text {
   flex: 0 0 auto;
-  padding-right: 1rem;
+  padding-right: 0.5rem;
 }
 
 .m-minischedule__below-text {
@@ -182,13 +193,7 @@
   border-left-style: solid;
   border-left-width: 0.5rem;
   font-weight: bold;
-  padding-left: 0.25rem;
-
-  .m-minischedule__icon {
-    height: 1.5rem;
-    margin-right: 0.25rem;
-    width: 1.5rem;
-  }
+  padding-left: 0.5rem;
 
   .m-minischedule__svg--revenue svg {
     stroke: white;
@@ -259,5 +264,25 @@
     svg {
       fill: $color-component-medium;
     }
+  }
+}
+
+.m-minischedule__departure-point-header {
+  color: $color-primary-dark;
+  display: flex;
+  justify-content: space-between;
+  text-transform: uppercase;
+  font-size: 0.6875rem;
+  font-weight: bold;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid $color-component-light;
+
+  .m-minischedule__departure-point-label {
+    margin-left: 3rem;
+  }
+
+  .m-minischedule__scheduled-departure-label {
+    margin-right: 0.5rem;
   }
 }
