@@ -23,7 +23,6 @@ import {
   useMinischeduleBlock,
   useMinischeduleRun,
 } from "../../hooks/useMinischedule"
-import featureIsEnabled from "../../laboratoryFeatures"
 import {
   AsDirected,
   Block,
@@ -48,7 +47,6 @@ import { RouteStatus, VehicleOrGhost } from "../../realtime"
 import { DirectionId, RouteId, TripId } from "../../schedule"
 import { formattedDuration, formattedScheduledTime } from "../../util/dateTime"
 import Loading from "../loading"
-import { TripLabelSetting } from "../../userSettings"
 
 export interface Props {
   vehicleOrGhost: VehicleOrGhost
@@ -104,31 +102,34 @@ export const Minischedule = ({
           `m-minischedule--${showPast ? "show-past" : "hide-past"}`,
         ])}
       >
-        <PastToggle showPast={showPast} setShowPast={setShowPast} />
         <Header
           label={view === "run" ? "Run" : "Block"}
           value={runOrBlock.id}
         />
         {view === "run" ? <DutyDetails run={runOrBlock as Run} /> : null}
-        {activities.map((activity, index) =>
-          isPiece(activity) ? (
-            <Piece
-              piece={activity}
-              view={view}
-              vehicleOrGhost={vehicleOrGhost}
-              pieceIndex={index}
-              activeIndex={activeIndex}
-              key={activity.startTime}
-            />
-          ) : (
-            <BreakRow
-              key={activity.startTime}
-              break={activity}
-              index={index}
-              activeIndex={activeIndex}
-            />
-          )
-        )}
+        <DeparturePointHeader />
+        <PastToggle showPast={showPast} setShowPast={setShowPast} />
+        <div>
+          {activities.map((activity, index) =>
+            isPiece(activity) ? (
+              <Piece
+                piece={activity}
+                view={view}
+                vehicleOrGhost={vehicleOrGhost}
+                pieceIndex={index}
+                activeIndex={activeIndex}
+                key={activity.startTime}
+              />
+            ) : (
+              <BreakRow
+                key={activity.startTime}
+                break={activity}
+                index={index}
+                activeIndex={activeIndex}
+              />
+            )
+          )}
+        </div>
       </div>
     )
   }
@@ -184,6 +185,17 @@ const DutyDetails = ({ run }: { run: Run }) => {
     </div>
   )
 }
+
+const DeparturePointHeader = () => (
+  <div className="m-minischedule__departure-point-header">
+    <span className="m-minischedule__departure-point-label">
+      Departure point
+    </span>
+    <span className="m-minischedule__scheduled-departure-label">
+      Scheduled departure
+    </span>
+  </div>
+)
 
 const paidBreakTotalDuration = (run: Run): number => {
   const paidBreaks: Break[] = run.activities.filter(
@@ -583,21 +595,12 @@ const RevenueTrip = ({
   const startTime: string = formattedScheduledTime(trip.startTime)
   const route = useRoute(trip.routeId)
 
-  const [{ userSettings }] = useContext(StateDispatchContext)
-  const tripLabelMode = userSettings.minischedulesTripLabel
-
-  const placeName =
-    featureIsEnabled("minischedules_trip_label") &&
-    tripLabelMode === TripLabelSetting.Origin
-      ? trip.startPlace
-      : trip.headsign
-
   const formattedRouteAndPlaceName: string = [
     route?.name || trip.routeId,
     "_",
     trip.viaVariant !== null && trip.viaVariant !== "_" ? trip.viaVariant : "",
     " ",
-    placeName || "",
+    trip.startPlace || "",
   ].join("")
   const [{ ladderDirections }] = useContext(StateDispatchContext)
 
