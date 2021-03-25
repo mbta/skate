@@ -79,7 +79,7 @@ defmodule Realtime.Vehicle do
     :end_of_trip_type
   ]
 
-  @derive {Jason.Encoder, except: [:last_updated_by_source]}
+  @derive {Jason.Encoder, except: [:last_updated_by_source, :trip_and_route_ids]}
 
   defstruct [
     :id,
