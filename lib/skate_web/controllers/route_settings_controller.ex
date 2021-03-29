@@ -12,15 +12,15 @@ defmodule SkateWeb.RouteSettingsController do
     send_resp(conn, 200, "")
   end
 
-  defp format_settings_for_set(%{
-         "ladderCrowdingToggles" => ladder_crowding_toggles,
-         "ladderDirections" => ladder_directions,
-         "selectedRouteIds" => selected_route_ids
-       }) do
-    [
-      {:ladder_crowding_toggles, ladder_crowding_toggles},
-      {:ladder_directions, ladder_directions},
-      {:selected_route_ids, selected_route_ids}
-    ]
+  defp format_settings_for_set(settings) do
+    translations = %{
+      "ladderCrowdingToggles" => :ladder_crowding_toggles,
+      "ladderDirections" => :ladder_directions,
+      "selectedRouteIds" => :selected_route_ids
+    }
+
+    settings
+    |> Map.take(Map.keys(translations))
+    |> Enum.map(fn {key, value} -> {Map.fetch!(translations, key), value} end)
   end
 end
