@@ -34,5 +34,55 @@ defmodule SkateWeb.RouteSettingsControllerTest do
                selected_route_ids: ["39"]
              }
     end
+
+    test "tolerates missing values", %{conn: conn} do
+      RouteSettings.get_or_create(@username)
+
+      conn =
+        conn
+        |> login()
+        |> put("/api/route_settings", %{
+          "selectedRouteIds" => ["39"]
+        })
+
+      response(conn, 200)
+      result = RouteSettings.get_or_create(@username)
+
+      assert result == %Skate.Settings.RouteSettings{
+               ladder_directions: %{},
+               ladder_crowding_toggles: %{},
+               selected_route_ids: ["39"]
+             }
+
+      conn =
+        conn
+        |> put("/api/route_settings", %{
+          "ladderDirections" => %{"39" => "1"}
+        })
+
+      response(conn, 200)
+      result = RouteSettings.get_or_create(@username)
+
+      assert result == %Skate.Settings.RouteSettings{
+               ladder_directions: %{"39" => "1"},
+               ladder_crowding_toggles: %{},
+               selected_route_ids: ["39"]
+             }
+
+      conn =
+        conn
+        |> put("/api/route_settings", %{
+          "ladderCrowdingToggles" => %{"39" => "true"}
+        })
+
+      response(conn, 200)
+      result = RouteSettings.get_or_create(@username)
+
+      assert result == %Skate.Settings.RouteSettings{
+               ladder_directions: %{"39" => "1"},
+               ladder_crowding_toggles: %{"39" => "true"},
+               selected_route_ids: ["39"]
+             }
+    end
   end
 end
