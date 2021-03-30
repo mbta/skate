@@ -271,6 +271,49 @@ defmodule Schedule.Data do
     stop_times_by_id = StopTime.parse(gtfs_files["stop_times.txt"], gtfs_trip_ids)
     trips_by_id = Trip.merge_trips(gtfs_trips, hastus_trips, stop_times_by_id)
 
+    piece_pairs =
+      minischedule_blocks
+      |> Map.values()
+      |> Enum.map(& &1.pieces)
+      |> Enum.flat_map(fn pieces_for_block ->
+        Enum.chunk_every(pieces_for_block, 2, 1, :discard)
+        |> Enum.map(&List.to_tuple/1)
+      end)
+
+    trip_pairs_with_swing =
+      piece_pairs
+      |> Enum.map(fn {piece1, piece2} ->
+        trip1 = piece1.trips |> List.last()
+        trip2 = piece2.trips |> List.first()
+
+        trip1 =
+          if match?(%Minischedule.Trip{}, trip1) do
+            trip1
+          else
+            Map.fetch!(trips_by_id, trip1)
+          end
+
+        trip2 =
+          if match?(%Minischedule.Trip{}, trip2) do
+            trip2
+          else
+            Map.fetch!(trips_by_id, trip2)
+          end
+
+        {trip1, trip2}
+      end)
+      |> Enum.filter(fn {trip1, trip2} ->
+        trip1.route_id && trip2.route_id
+      end)
+
+    _swings =
+      Map.new(
+        trip_pairs_with_swing,
+        fn {swing_off_trip, _} = pair ->
+          {{swing_off_trip.schedule_id, swing_off_trip.route_id}, pair}
+        end
+      )
+
     %__MODULE__{
       routes: bus_routes,
       route_patterns: route_patterns,
