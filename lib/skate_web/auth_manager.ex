@@ -1,4 +1,6 @@
 defmodule SkateWeb.AuthManager do
+  require Logger
+
   use Guardian, otp_app: :skate
 
   def subject_for_token(resource, _claims) do
@@ -6,6 +8,7 @@ defmodule SkateWeb.AuthManager do
   end
 
   def resource_from_claims(%{"sub" => username}) do
+    Logger.info("username=#{username}")
     {:ok, username}
   end
 
