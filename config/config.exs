@@ -82,6 +82,12 @@ config :skate,
     ]
   }
 
+config :skate,
+       :swings_beta_usernames,
+       System.get_env("SWINGS_BETA_USERNAMES", "")
+       |> String.split(~r/,/)
+       |> Enum.map(&("ActiveDirectory_" <> &1))
+
 config :skate, Schedule.CacheFile, cache_filename: nil
 
 # Configures the endpoint

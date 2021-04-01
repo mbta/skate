@@ -54,6 +54,7 @@ There are a number of configuration details defined in environment variables. Th
 - **POSTGRES_PORT**: Port to connect to Postgres (optional, defaults to 5432, the standard Postgres server port)
 - **BRIDGE_URL**: URL of the API for retrieving drawbridge status
 - **BRIDGE_API_USERNAME**, **BRIDGE_API_PASSWORD**: credentials for the API that gets drawbridge status. for dev only, see below for prod
+- **SWINGS_BETA_USERNAMES**: comma separated list of usernames of users allowed to access the swings view beta test. Omit the `ActiveDirectory_` prefix from the usernames. Only needed in prod, set to `["fake_uid"]` in dev.
 
 Additionally, there a number of secret variables (only required in production) defined in [AWS SecretsManager](https://console.aws.amazon.com/secretsmanager):
 
