@@ -27,7 +27,8 @@ defmodule Skate.Ueberauth.Strategy.Fake do
       token: "fake_access_token",
       refresh_token: "fake_refresh_token",
       expires: true,
-      expires_at: expiration_time
+      expires_at: expiration_time,
+      other: %{groups: ["skate-admin"]}
     }
   end
 

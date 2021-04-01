@@ -3,22 +3,14 @@ defmodule SkateWeb.RouteSettingsControllerTest do
   use Skate.DataCase
 
   alias Skate.Settings.RouteSettings
-  alias SkateWeb.AuthManager
-
-  @username "FAKE_UID"
-
-  defp login(conn) do
-    {:ok, token, _} = AuthManager.encode_and_sign(@username)
-    put_req_header(conn, "authorization", "bearer: " <> token)
-  end
 
   describe "PUT /api/route_settings" do
-    test "can set route settings for logged-in user", %{conn: conn} do
-      RouteSettings.get_or_create(@username)
+    @tag :authenticated
+    test "can set route settings for logged-in user", %{conn: conn, user: username} do
+      RouteSettings.get_or_create(username)
 
       conn =
         conn
-        |> login()
         |> put("/api/route_settings", %{
           "selectedRouteIds" => ["39"],
           "ladderDirections" => %{"39" => 1, "77" => 0},
@@ -26,7 +18,7 @@ defmodule SkateWeb.RouteSettingsControllerTest do
         })
 
       response(conn, 200)
-      result = RouteSettings.get_or_create(@username)
+      result = RouteSettings.get_or_create(username)
 
       assert result == %Skate.Settings.RouteSettings{
                ladder_crowding_toggles: %{"66" => true},
@@ -35,18 +27,18 @@ defmodule SkateWeb.RouteSettingsControllerTest do
              }
     end
 
-    test "tolerates missing values", %{conn: conn} do
-      RouteSettings.get_or_create(@username)
+    @tag :authenticated
+    test "tolerates missing values", %{conn: conn, user: username} do
+      RouteSettings.get_or_create(username)
 
       conn =
         conn
-        |> login()
         |> put("/api/route_settings", %{
           "selectedRouteIds" => ["39"]
         })
 
       response(conn, 200)
-      result = RouteSettings.get_or_create(@username)
+      result = RouteSettings.get_or_create(username)
 
       assert result == %Skate.Settings.RouteSettings{
                ladder_directions: %{},
@@ -61,7 +53,7 @@ defmodule SkateWeb.RouteSettingsControllerTest do
         })
 
       response(conn, 200)
-      result = RouteSettings.get_or_create(@username)
+      result = RouteSettings.get_or_create(username)
 
       assert result == %Skate.Settings.RouteSettings{
                ladder_directions: %{"39" => "1"},
@@ -76,7 +68,7 @@ defmodule SkateWeb.RouteSettingsControllerTest do
         })
 
       response(conn, 200)
-      result = RouteSettings.get_or_create(@username)
+      result = RouteSettings.get_or_create(username)
 
       assert result == %Skate.Settings.RouteSettings{
                ladder_directions: %{"39" => "1"},

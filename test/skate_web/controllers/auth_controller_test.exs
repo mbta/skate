@@ -39,6 +39,7 @@ defmodule SkateWeb.AuthControllerTest do
             |> get("/auth/cognito/callback")
 
           assert redirected_to(conn) == "/"
+          assert Guardian.Plug.current_claims(conn)["groups"] == ["test1"]
         end)
 
       assert log =~ "stored_refresh_token username=test@mbta.com refresh_token=test_refresh_token"

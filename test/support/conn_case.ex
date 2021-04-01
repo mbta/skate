@@ -15,6 +15,7 @@ defmodule SkateWeb.ConnCase do
 
   use ExUnit.CaseTemplate
   import Test.Support.Helpers
+  import Plug.Test
 
   using do
     quote do
@@ -27,14 +28,40 @@ defmodule SkateWeb.ConnCase do
     end
   end
 
-  setup _tags do
+  setup tags do
     reassign_env(
       :skate,
       :refresh_token_store,
       SkateWeb.ConnCase.FakeRefreshTokenStore
     )
 
-    {:ok, conn: Phoenix.ConnTest.build_conn()}
+    {conn, user} =
+      cond do
+        tags[:authenticated] ->
+          user = "test_user"
+
+          conn =
+            Phoenix.ConnTest.build_conn()
+            |> init_test_session(%{})
+            |> Guardian.Plug.sign_in(SkateWeb.AuthManager, user, %{})
+
+          {conn, user}
+
+        tags[:authenticated_admin] ->
+          user = "test_user"
+
+          conn =
+            Phoenix.ConnTest.build_conn()
+            |> init_test_session(%{})
+            |> Guardian.Plug.sign_in(SkateWeb.AuthManager, user, %{"groups" => ["skate-admin"]})
+
+          {conn, user}
+
+        true ->
+          {Phoenix.ConnTest.build_conn(), nil}
+      end
+
+    {:ok, %{conn: conn, user: user}}
   end
 
   defmodule FakeRefreshTokenStore do
