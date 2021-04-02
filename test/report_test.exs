@@ -29,9 +29,9 @@ defmodule ReportTest do
     def description(), do: "Failure"
   end
 
-  describe "report_to_csv/1" do
+  describe "to_csv/1" do
     test "processes a succesful report" do
-      {:ok, csv} = Report.report_to_csv(ReportTest.SuccessfulReport)
+      {:ok, csv} = Report.to_csv(ReportTest.SuccessfulReport)
 
       decoded_csv =
         csv
@@ -45,13 +45,13 @@ defmodule ReportTest do
     end
 
     test "processes a failed report" do
-      assert Report.report_to_csv(ReportTest.FailedReport) == :error
+      assert Report.to_csv(ReportTest.FailedReport) == :error
     end
   end
 
   describe "all_reports/0" do
     test "returns full list of reports" do
-      assert Report.all_reports() == [Report.UserSettings]
+      assert Report.all_reports() == %{"user_settings" => Report.UserSettings}
     end
   end
 end
