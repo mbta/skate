@@ -80,7 +80,8 @@ defmodule Skate.MixProject do
       {:phoenix_ecto, "~> 4.0"},
       {:ecto_sql, "~> 3.4"},
       {:postgrex, "~> 0.15"},
-      {:ex_aws_rds, "~> 2.0.2"}
+      {:ex_aws_rds, "~> 2.0.2"},
+      {:fast_local_datetime, "~> 1.0"}
     ]
   end
 end

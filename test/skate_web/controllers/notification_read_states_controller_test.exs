@@ -4,24 +4,20 @@ defmodule SkateWeb.NotificationReadStatesControllerTest do
 
   alias Notifications.Notification
   alias Notifications.Db.NotificationUser, as: DbNotificationUser
-  alias SkateWeb.AuthManager
   alias Skate.Settings.RouteSettings
   alias Skate.Settings.User
 
   import Ecto.Query
 
-  @username "FAKE_UID"
-
-  defp login(conn) do
-    {:ok, token, _} = AuthManager.encode_and_sign(@username)
-    put_req_header(conn, "authorization", "bearer: " <> token)
-  end
-
   describe "PUT /api/notification_read_states" do
-    test "sets read state for a batch of notifications for the user", %{conn: conn} do
-      user = User.get_or_create(@username)
-      RouteSettings.get_or_create(@username)
-      RouteSettings.set(@username, selected_route_ids: ["1", "2"])
+    @tag :authenticated
+    test "sets read state for a batch of notifications for the user", %{
+      conn: conn,
+      user: username
+    } do
+      user = User.get_or_create(username)
+      RouteSettings.get_or_create(username)
+      RouteSettings.set(username, selected_route_ids: ["1", "2"])
 
       User.get_or_create("otherguy")
       RouteSettings.get_or_create("otherguy")
@@ -65,7 +61,6 @@ defmodule SkateWeb.NotificationReadStatesControllerTest do
 
       conn =
         conn
-        |> login
         |> put("/api/notification_read_state", %{
           "new_state" => "read",
           "notification_ids" => "#{user_notification1.id}"

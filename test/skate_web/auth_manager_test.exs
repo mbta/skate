@@ -16,4 +16,18 @@ defmodule SkateWeb.AuthManagerTest do
       assert(AuthManager.username_from_socket!(socket) == "charlie")
     end
   end
+
+  describe "claims_access_level/1" do
+    test "grants admin access if in the group" do
+      assert AuthManager.claims_access_level(%{"groups" => ["skate-admin"]}) == :admin
+    end
+
+    test "grants general access if not in the admin group" do
+      assert AuthManager.claims_access_level(%{"groups" => ["other-group"]}) == :general
+    end
+
+    test "grants general access if no group information present" do
+      assert AuthManager.claims_access_level(%{}) == :general
+    end
+  end
 end

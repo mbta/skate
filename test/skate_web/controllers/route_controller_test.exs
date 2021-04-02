@@ -3,7 +3,6 @@ defmodule SkateWeb.RouteControllerTest do
   import Test.Support.Helpers
 
   alias Schedule.Gtfs.Route
-  alias SkateWeb.AuthManager
 
   @routes [
     %Route{id: "1", name: "1", direction_names: %{}, description: ""},
@@ -29,11 +28,11 @@ defmodule SkateWeb.RouteControllerTest do
       assert redirected_to(conn) == "/auth/cognito"
     end
 
+    @tag :authenticated
     test "when logged in, returns all non-shuttle routes", %{conn: conn} do
       conn =
         conn
         |> api_headers()
-        |> logged_in()
         |> get("/api/routes")
 
       assert %{"data" => [%{"id" => "1"}]} = json_response(conn, 200)
@@ -54,11 +53,11 @@ defmodule SkateWeb.RouteControllerTest do
       assert redirected_to(conn) == "/auth/cognito"
     end
 
+    @tag :authenticated
     test "when logged in, returns the timepoints for this route", %{conn: conn} do
       conn =
         conn
         |> api_headers()
-        |> logged_in()
         |> get("/api/routes/1")
 
       assert json_response(conn, 200) == %{"data" => []}
@@ -69,11 +68,5 @@ defmodule SkateWeb.RouteControllerTest do
     conn
     |> put_req_header("accept", "application/json")
     |> put_req_header("content-type", "application/json")
-  end
-
-  defp logged_in(conn) do
-    {:ok, token, _} = AuthManager.encode_and_sign(%{})
-
-    put_req_header(conn, "authorization", "bearer: " <> token)
   end
 end

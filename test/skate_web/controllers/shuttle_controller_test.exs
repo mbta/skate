@@ -3,7 +3,6 @@ defmodule SkateWeb.ShuttleControllerTest do
   import Test.Support.Helpers
 
   alias Schedule.Gtfs.{Route, RoutePattern, Shape}
-  alias SkateWeb.AuthManager
 
   describe "GET /api/shuttles" do
     test "when logged out, redirects you to cognito auth", %{conn: conn} do
@@ -15,6 +14,7 @@ defmodule SkateWeb.ShuttleControllerTest do
       assert redirected_to(conn) == "/auth/cognito"
     end
 
+    @tag :authenticated
     test "when logged in, returns only shuttle routes", %{conn: conn} do
       reassign_env(:skate_web, :routes_fn, fn ->
         [
@@ -34,12 +34,12 @@ defmodule SkateWeb.ShuttleControllerTest do
       conn =
         conn
         |> api_headers()
-        |> logged_in()
         |> get("/api/shuttles")
 
       assert %{"data" => [%{"id" => "shuttle"}]} = json_response(conn, 200)
     end
 
+    @tag :authenticated
     test "only allows shuttle routes that have shapes", %{conn: conn} do
       reassign_env(:skate_web, :routes_fn, fn ->
         [
@@ -70,12 +70,12 @@ defmodule SkateWeb.ShuttleControllerTest do
       conn =
         conn
         |> api_headers()
-        |> logged_in()
         |> get("/api/shuttles")
 
       assert %{"data" => [%{"id" => "has_shape"}]} = json_response(conn, 200)
     end
 
+    @tag :authenticated
     test "replaces the name with the first 0-direction route pattern name", %{conn: conn} do
       reassign_env(:skate_web, :routes_fn, fn ->
         [
@@ -103,7 +103,6 @@ defmodule SkateWeb.ShuttleControllerTest do
       conn =
         conn
         |> api_headers()
-        |> logged_in()
         |> get("/api/shuttles")
 
       assert %{"data" => [%{"name" => "Pattern Name"}]} = json_response(conn, 200)
@@ -114,11 +113,5 @@ defmodule SkateWeb.ShuttleControllerTest do
     conn
     |> put_req_header("accept", "application/json")
     |> put_req_header("content-type", "application/json")
-  end
-
-  defp logged_in(conn) do
-    {:ok, token, _} = AuthManager.encode_and_sign(%{})
-
-    put_req_header(conn, "authorization", "bearer: " <> token)
   end
 end

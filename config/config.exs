@@ -32,6 +32,7 @@ config :skate,
   refresh_token_store: RefreshTokenStore,
   redirect_http?: false,
   static_href: {SkateWeb.Router.Helpers, :static_path},
+  timezone: "America/New_York",
   schedule_health_checks: %{
     routes: %{
       min_length: 100

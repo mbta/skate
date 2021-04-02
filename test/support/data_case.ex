@@ -32,6 +32,10 @@ defmodule Skate.DataCase do
       Ecto.Adapters.SQL.Sandbox.mode(Skate.Repo, {:shared, self()})
     end
 
+    on_exit(fn ->
+      Ecto.Adapters.SQL.Sandbox.checkin(Skate.Repo)
+    end)
+
     :ok
   end
 

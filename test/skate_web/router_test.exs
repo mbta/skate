@@ -2,42 +2,28 @@ defmodule SkateWeb.RouterTest do
   use SkateWeb.ConnCase
   use Skate.DataCase
 
-  alias SkateWeb.AuthManager
-
   describe "GET /" do
+    @tag :authenticated
     test "shows you the app", %{conn: conn} do
-      {:ok, token, _} = AuthManager.encode_and_sign("FAKE_UID")
-
-      conn =
-        conn
-        |> put_req_header("authorization", "bearer: " <> token)
-        |> get("/")
+      conn = get(conn, "/")
 
       assert html_response(conn, 200) =~ "div id=\"app\""
     end
   end
 
   describe "GET /search (client-side route)" do
+    @tag :authenticated
     test "shows you the app, letting the client handle routing", %{conn: conn} do
-      {:ok, token, _} = AuthManager.encode_and_sign("FAKE_UID")
-
-      conn =
-        conn
-        |> put_req_header("authorization", "bearer: " <> token)
-        |> get("/search")
+      conn = get(conn, "/search")
 
       assert html_response(conn, 200) =~ "div id=\"app\""
     end
   end
 
   describe "GET /settings (client-side route)" do
+    @tag :authenticated
     test "shows you the app, letting the client handle routing", %{conn: conn} do
-      {:ok, token, _} = AuthManager.encode_and_sign("FAKE_UID")
-
-      conn =
-        conn
-        |> put_req_header("authorization", "bearer: " <> token)
-        |> get("/settings")
+      conn = get(conn, "/settings")
 
       assert html_response(conn, 200) =~ "div id=\"app\""
     end
@@ -50,13 +36,9 @@ defmodule SkateWeb.RouterTest do
       assert redirected_to(conn) == "/auth/cognito"
     end
 
+    @tag :authenticated
     test "when logged in, forwards to Laboratory.Router", %{conn: conn} do
-      {:ok, token, _} = AuthManager.encode_and_sign(%{})
-
-      conn =
-        conn
-        |> put_req_header("authorization", "bearer: " <> token)
-        |> get("/_flags")
+      conn = get(conn, "/_flags")
 
       assert html_response(conn, 200) =~ "<div class=\"window-title\">Features</div>"
     end

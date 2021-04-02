@@ -17,6 +17,10 @@ defmodule SkateWeb.Router do
     plug(Guardian.Plug.EnsureAuthenticated)
   end
 
+  pipeline :ensure_admin_group do
+    plug(SkateWeb.EnsureAdminGroup)
+  end
+
   pipeline :accepts_html do
     plug :accepts, ["html"]
   end
@@ -57,6 +61,22 @@ defmodule SkateWeb.Router do
     get "/shuttle-map", PageController, :index
     get "/search", PageController, :index
     get "/settings", PageController, :index
+    get "/unauthorized", UnauthorizedController, :index
+  end
+
+  scope "/", SkateWeb do
+    pipe_through [
+      :redirect_prod_http,
+      :accepts_html,
+      :browser,
+      :auth,
+      :ensure_auth,
+      :put_user_token,
+      :ensure_admin_group
+    ]
+
+    get "/reports", ReportController, :index
+    get "/reports/:short_name", ReportController, :run
   end
 
   scope "/api", SkateWeb do
