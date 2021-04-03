@@ -79,16 +79,14 @@ const minutes = (seconds: number): number => Math.abs(Math.floor(seconds / 60))
 const earlyOrLate = (scheduleAdherenceSecs: number): string =>
   scheduleAdherenceSecs <= 0 ? "early" : "late"
 
-const scheduleAdherenceLabelString = ({
+export const scheduleAdherenceLabelString = ({
   scheduleAdherenceSecs,
 }: Vehicle): string =>
-  `(${minutes(scheduleAdherenceSecs)} min ${earlyOrLate(
-    scheduleAdherenceSecs
-  )})`
+  `${minutes(scheduleAdherenceSecs)} min ${earlyOrLate(scheduleAdherenceSecs)}`
 
 const ScheduleAdherenceLabel = ({ vehicle }: { vehicle: Vehicle }) => (
   <div className="m-properties-panel__schedule-adherence-label">
-    {vehicle.isOffCourse ? "" : scheduleAdherenceLabelString(vehicle)}
+    {vehicle.isOffCourse ? "" : `($scheduleAdherenceLabelString(vehicle))`}
   </div>
 )
 

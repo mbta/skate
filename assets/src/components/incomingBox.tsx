@@ -1,4 +1,6 @@
 import React, { useContext } from "react"
+import Tippy from "@tippyjs/react"
+import "tippy.js/dist/tippy.css"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import vehicleLabel from "../helpers/vehicleLabel"
 import { blockWaiverAlertStyle } from "../models/blockWaiver"
@@ -44,35 +46,49 @@ const IncomingBoxVehicle = ({
     : "NO_DATA"
 
   return (
-    <button
-      className={`m-incoming-box__vehicle ${selectedClass}`}
-      onClick={() => dispatch(selectVehicle(vehicleOrGhost.id))}
+    <Tippy
+      content="label"
+      trigger="mouseenter"
+      className="m--incoming-box__vehicle-tooltip"
+      /* istanbul ignore next */
+      onShow={() => {
+        /* istanbul ignore next */
+        if (window.FS) {
+          /* istanbul ignore next */
+          window.FS.event("Vehicle tooltip seen")
+        }
+      }}
     >
-      <div className="m-incoming-box__vehicle-icon">
-        {displayCrowding ? (
-          <CrowdingIcon
-            size={Size.Small}
-            orientation={orientation}
-            occupancyStatus={occupancyStatus}
-          />
-        ) : (
-          <VehicleIcon
-            size={Size.Small}
-            orientation={orientation}
-            variant={vehicleOrGhost.viaVariant}
-            status={drawnStatus(vehicleOrGhost)}
-          />
+      <button
+        className={`m-incoming-box__vehicle ${selectedClass}`}
+        onClick={() => dispatch(selectVehicle(vehicleOrGhost.id))}
+      >
+        <div className="m-incoming-box__vehicle-icon">
+          {displayCrowding ? (
+            <CrowdingIcon
+              size={Size.Small}
+              orientation={orientation}
+              occupancyStatus={occupancyStatus}
+            />
+          ) : (
+            <VehicleIcon
+              size={Size.Small}
+              orientation={orientation}
+              variant={vehicleOrGhost.viaVariant}
+              status={drawnStatus(vehicleOrGhost)}
+            />
+          )}
+        </div>
+        {displayCrowding || alertIconStyle === undefined ? null : (
+          <IconAlertCircle style={alertIconStyle} />
         )}
-      </div>
-      {displayCrowding || alertIconStyle === undefined ? null : (
-        <IconAlertCircle style={alertIconStyle} />
-      )}
-      <div className="m-incoming-box__vehicle-label">
-        {displayCrowding
-          ? crowdingLabel(vehicleOrGhost as Vehicle)
-          : vehicleLabel(vehicleOrGhost, userSettings)}
-      </div>
-    </button>
+        <div className="m-incoming-box__vehicle-label">
+          {displayCrowding
+            ? crowdingLabel(vehicleOrGhost as Vehicle)
+            : vehicleLabel(vehicleOrGhost, userSettings)}
+        </div>
+      </button>
+    </Tippy>
   )
 }
 

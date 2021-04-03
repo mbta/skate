@@ -5,7 +5,7 @@ import "tippy.js/dist/tippy.css"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { flatten, partition } from "../helpers/array"
 import { className } from "../helpers/dom"
-import vehicleLabel from "../helpers/vehicleLabel"
+import vehicleLabel, { runIdToLabel } from "../helpers/vehicleLabel"
 import featureIsEnabled from "../laboratoryFeatures"
 import { blockWaiverAlertStyle } from "../models/blockWaiver"
 import { crowdingLabel, OccupancyStatus } from "../models/crowding"
@@ -30,7 +30,13 @@ import { Timepoint } from "../schedule.d"
 import { selectVehicle } from "../state"
 import { CrowdingIconSvgNode } from "./crowdingIcon"
 import HeadwayLines from "./headwayLines"
-import { Orientation, Size, VehicleIconSvgNode } from "./vehicleIcon"
+import {
+  Orientation,
+  Size,
+  VehicleIconSvgNode,
+  VehicleTooltip,
+} from "./vehicleIcon"
+import { scheduleAdherenceLabelString } from "./propertiesPanel/header"
 
 export interface Props {
   timepoints: Timepoint[]
@@ -208,35 +214,50 @@ const VehicleSvg = ({
     : "NO_DATA"
 
   return (
-    <g
-      className={`m-ladder__vehicle ${selectedClass} `}
-      transform={`translate(${x},${y})`}
-      onClick={() => dispatch(selectVehicle(associatedVehicleId(vehicle.id)))}
+    <VehicleTooltip
+      block={vehicle.blockId}
+      run={runIdToLabel(vehicle.runId)}
+      vehicle={isVehicle(vehicle) ? vehicle.label : "N/A"}
+      variant={vehicle.viaVariant}
+      adherence={
+        isVehicle(vehicle) ? scheduleAdherenceLabelString(vehicle) : "N/A"
+      }
+      operator={
+        isVehicle(vehicle)
+          ? `${vehicle.operatorName} #${vehicle.operatorId}`
+          : "N/A"
+      }
     >
-      {displayCrowding ? (
-        <CrowdingIconSvgNode
-          size={Size.Small}
-          orientation={orientationMatchingVehicle(
-            isLayingOver,
-            vehicleDirection
-          )}
-          label={crowdingLabel(vehicle as Vehicle)}
-          occupancyStatus={occupancyStatus}
-        />
-      ) : (
-        <VehicleIconSvgNode
-          size={isLayingOver ? Size.Small : Size.Medium}
-          orientation={orientationMatchingVehicle(
-            isLayingOver,
-            vehicleDirection
-          )}
-          label={vehicleLabel(vehicle, userSettings)}
-          variant={vehicle.viaVariant}
-          status={drawnStatus(vehicle)}
-          alertIconStyle={alertIconStyle}
-        />
-      )}
-    </g>
+      <g
+        className={`m-ladder__vehicle ${selectedClass} `}
+        transform={`translate(${x},${y})`}
+        onClick={() => dispatch(selectVehicle(associatedVehicleId(vehicle.id)))}
+      >
+        {displayCrowding ? (
+          <CrowdingIconSvgNode
+            size={Size.Small}
+            orientation={orientationMatchingVehicle(
+              isLayingOver,
+              vehicleDirection
+            )}
+            label={crowdingLabel(vehicle as Vehicle)}
+            occupancyStatus={occupancyStatus}
+          />
+        ) : (
+          <VehicleIconSvgNode
+            size={isLayingOver ? Size.Small : Size.Medium}
+            orientation={orientationMatchingVehicle(
+              isLayingOver,
+              vehicleDirection
+            )}
+            label={vehicleLabel(vehicle, userSettings)}
+            variant={vehicle.viaVariant}
+            status={drawnStatus(vehicle)}
+            alertIconStyle={alertIconStyle}
+          />
+        )}
+      </g>
+    </VehicleTooltip>
   )
 }
 

@@ -1,4 +1,6 @@
 import React, { ReactElement, useContext } from "react"
+import Tippy from "@tippyjs/react"
+import "tippy.js/dist/tippy.css"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
 import { DrawnStatus, statusClasses } from "../models/vehicleStatus"
@@ -24,6 +26,16 @@ export interface Props {
   variant?: string | null
   status?: DrawnStatus
   alertIconStyle?: AlertIconStyle
+}
+
+export interface TooltipProps {
+  children: ReactElement<HTMLElement>
+  block: string
+  run: string
+  vehicle: string
+  variant: string | null
+  adherence: string
+  operator: string
 }
 
 /*
@@ -57,6 +69,32 @@ export const VehicleIcon = (props: Props): ReactElement<HTMLElement> => {
     >
       <VehicleIconSvgNode {...props} />
     </svg>
+  )
+}
+
+export const VehicleTooltip = (
+  props: TooltipProps
+): ReactElement<HTMLElement> => {
+  return (
+    <Tippy
+      content={
+        <>
+          <b>Block:</b> {props.block}
+          <br />
+          <b>Run:</b> {props.run}
+          <br />
+          <b>Vehicle:</b> {props.vehicle}
+          <br />
+          <b>Variant:</b> {props.variant}
+          <br />
+          <b>Adherence:</b> {props.adherence}
+          <br />
+          <b>Operator:</b> {props.operator}
+        </>
+      }
+    >
+      {props.children}
+    </Tippy>
   )
 }
 
