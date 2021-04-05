@@ -217,15 +217,17 @@ const VehicleSvg = ({
     <VehicleTooltip
       block={vehicle.blockId}
       run={runIdToLabel(vehicle.runId)}
-      vehicle={isVehicle(vehicle) ? vehicle.label : "N/A"}
+      vehicle={isGhost(vehicle) ? "N/A" : vehicle.label}
       variant={vehicle.viaVariant}
       adherence={
-        isVehicle(vehicle) ? scheduleAdherenceLabelString(vehicle) : "N/A"
+        isGhost(vehicle) || vehicle.isOffCourse
+          ? "N/A"
+          : scheduleAdherenceLabelString(vehicle)
       }
       operator={
-        isVehicle(vehicle)
-          ? `${vehicle.operatorName} #${vehicle.operatorId}`
-          : "N/A"
+        isGhost(vehicle)
+          ? "N/A"
+          : `${vehicle.operatorName} #${vehicle.operatorId}`
       }
     >
       <g
