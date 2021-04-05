@@ -26,6 +26,28 @@ defmodule Schedule.Hastus.ActivityTest do
              ]
     end
 
+    test "applies mapping to places" do
+      binary =
+        [
+          "schedule_id;area;run_id;start_time;end_time;start_place;end_place;activity_name;activity_type",
+          "abc11011;123;    1023;11:37;11:38;dudly;dudly;Sign-on;Sign-on"
+        ]
+        |> Enum.join("\n")
+
+      assert Activity.parse(binary) == [
+               %Activity{
+                 schedule_id: "abc11011",
+                 run_id: "123-1023",
+                 start_time: 41820,
+                 end_time: 41880,
+                 start_place: "nubn",
+                 end_place: "nubn",
+                 activity_type: "Sign-on",
+                 partial_block_id: nil
+               }
+             ]
+    end
+
     test "fills block id for Operator activities, without extra whitespace" do
       binary =
         [
