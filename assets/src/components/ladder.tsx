@@ -5,7 +5,7 @@ import "tippy.js/dist/tippy.css"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { flatten, partition } from "../helpers/array"
 import { className } from "../helpers/dom"
-import vehicleLabel, { runIdToLabel } from "../helpers/vehicleLabel"
+import vehicleLabel from "../helpers/vehicleLabel"
 import featureIsEnabled from "../laboratoryFeatures"
 import { blockWaiverAlertStyle } from "../models/blockWaiver"
 import { crowdingLabel, OccupancyStatus } from "../models/crowding"
@@ -36,7 +36,6 @@ import {
   VehicleIconSvgNode,
   VehicleTooltip,
 } from "./vehicleIcon"
-import { scheduleAdherenceLabelString } from "./propertiesPanel/header"
 
 export interface Props {
   timepoints: Timepoint[]
@@ -214,22 +213,7 @@ const VehicleSvg = ({
     : "NO_DATA"
 
   return (
-    <VehicleTooltip
-      block={vehicle.blockId}
-      run={runIdToLabel(vehicle.runId)}
-      vehicle={isGhost(vehicle) ? "N/A" : vehicle.label}
-      variant={vehicle.viaVariant}
-      adherence={
-        isGhost(vehicle) || vehicle.isOffCourse
-          ? "N/A"
-          : scheduleAdherenceLabelString(vehicle)
-      }
-      operator={
-        isGhost(vehicle)
-          ? "N/A"
-          : `${vehicle.operatorName} #${vehicle.operatorId}`
-      }
-    >
+    <VehicleTooltip vehicleOrGhost={vehicle}>
       <g
         className={`m-ladder__vehicle ${selectedClass} `}
         transform={`translate(${x},${y})`}

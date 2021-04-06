@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import vehicleLabel, { runIdToLabel } from "../helpers/vehicleLabel"
+import vehicleLabel from "../helpers/vehicleLabel"
 import { blockWaiverAlertStyle } from "../models/blockWaiver"
 import { crowdingLabel, OccupancyStatus } from "../models/crowding"
 import {
@@ -8,14 +8,13 @@ import {
   LadderDirection,
   VehicleDirection,
 } from "../models/ladderDirection"
-import { isGhost, isVehicle } from "../models/vehicle"
+import { isVehicle } from "../models/vehicle"
 import { drawnStatus } from "../models/vehicleStatus"
 import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime.d"
 import { selectVehicle } from "../state"
 import CrowdingIcon from "./crowdingIcon"
 import IconAlertCircle, { AlertIconStyle } from "./iconAlertCircle"
 import VehicleIcon, { Orientation, Size, VehicleTooltip } from "./vehicleIcon"
-import { scheduleAdherenceLabelString } from "./propertiesPanel/header"
 
 const IncomingBoxVehicle = ({
   displayCrowding,
@@ -45,22 +44,7 @@ const IncomingBoxVehicle = ({
     : "NO_DATA"
 
   return (
-    <VehicleTooltip
-      block={vehicleOrGhost.blockId}
-      run={runIdToLabel(vehicleOrGhost.runId)}
-      vehicle={isGhost(vehicleOrGhost) ? "N/A" : vehicleOrGhost.label}
-      variant={vehicleOrGhost.viaVariant}
-      adherence={
-        isGhost(vehicleOrGhost) || vehicleOrGhost.isOffCourse
-          ? "N/A"
-          : scheduleAdherenceLabelString(vehicleOrGhost)
-      }
-      operator={
-        isGhost(vehicleOrGhost)
-          ? "N/A"
-          : `${vehicleOrGhost.operatorName} #${vehicleOrGhost.operatorId}`
-      }
-    >
+    <VehicleTooltip vehicleOrGhost={vehicleOrGhost}>
       <button
         className={`m-incoming-box__vehicle ${selectedClass}`}
         onClick={() => dispatch(selectVehicle(vehicleOrGhost.id))}

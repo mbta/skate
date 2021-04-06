@@ -5,6 +5,10 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
 import { DrawnStatus, statusClasses } from "../models/vehicleStatus"
 import { AlertIconStyle, IconAlertCircleSvgNode } from "./iconAlertCircle"
+import { runIdToLabel } from "../helpers/vehicleLabel"
+import { isGhost } from "../models/vehicle"
+import { VehicleOrGhost } from "../realtime.d"
+import { scheduleAdherenceLabelString } from "./propertiesPanel/header"
 
 export enum Orientation {
   Up,
@@ -30,12 +34,7 @@ export interface Props {
 
 export interface TooltipProps {
   children: ReactElement<HTMLElement>
-  block: string
-  run: string
-  vehicle: string
-  variant: string | null
-  adherence: string
-  operator: string
+  vehicleOrGhost: VehicleOrGhost
 }
 
 /*
@@ -72,28 +71,45 @@ export const VehicleIcon = (props: Props): ReactElement<HTMLElement> => {
   )
 }
 
-export const VehicleTooltip = (
-  props: TooltipProps
-): ReactElement<HTMLElement> => {
+export const VehicleTooltip = ({
+  vehicleOrGhost,
+  children,
+}: TooltipProps): ReactElement<HTMLElement> => {
   return (
     <Tippy
+      delay={[250, 0]}
+      /* istanbul ignore next */
+      onShown={() => {
+        /* istanbul ignore next */
+        if (window.FS) {
+          /* istanbul ignore next */
+          window.FS.event("Vehicle tooltip seen")
+        }
+      }}
       content={
         <>
-          <b>Block:</b> {props.block}
+          <b>Block:</b> {vehicleOrGhost.blockId}
           <br />
-          <b>Run:</b> {props.run}
+          <b>Run:</b> {runIdToLabel(vehicleOrGhost.runId)}
           <br />
-          <b>Vehicle:</b> {props.vehicle}
+          <b>Vehicle:</b>{" "}
+          {isGhost(vehicleOrGhost) ? "N/A" : vehicleOrGhost.label}
           <br />
-          <b>Variant:</b> {props.variant}
+          <b>Variant:</b> {vehicleOrGhost.viaVariant}
           <br />
-          <b>Adherence:</b> {props.adherence}
+          <b>Adherence:</b>{" "}
+          {isGhost(vehicleOrGhost) || vehicleOrGhost.isOffCourse
+            ? "N/A"
+            : scheduleAdherenceLabelString(vehicleOrGhost)}
           <br />
-          <b>Operator:</b> {props.operator}
+          <b>Operator:</b>{" "}
+          {isGhost(vehicleOrGhost)
+            ? "N/A"
+            : `${vehicleOrGhost.operatorName} #${vehicleOrGhost.operatorId}`}
         </>
       }
     >
-      {props.children}
+      {children}
     </Tippy>
   )
 }
