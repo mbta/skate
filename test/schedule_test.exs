@@ -3,7 +3,7 @@ defmodule ScheduleTest do
 
   import Test.Support.Helpers
 
-  alias Schedule.{Block, Trip}
+  alias Schedule.{Block, Trip, Swing}
   alias Schedule.Gtfs.{Route, RoutePattern, Shape, Stop, StopTime, Timepoint}
   alias Schedule.Gtfs.Shape.Point
   alias Schedule.Minischedule
@@ -807,6 +807,69 @@ defmodule ScheduleTest do
                  id: "block",
                  pieces: [expected_piece]
                }
+    end
+  end
+
+  describe "swings_for_route/4" do
+    setup do
+      pid =
+        Schedule.start_mocked(%{
+          hastus: %{
+            "activities.csv" => [
+              "schedule_id;area;run_id;start_time;end_time;start_place;end_place;activity_type;activity_name",
+              "schedule;123;456;00:00;00:00;start;end;Operator;block",
+              "schedule;123;789;00:00;00:00;start;end;Operator;block"
+            ],
+            "trips.csv" => [
+              "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
+              "schedule;123;456;block;00:00;00:00;start;end;route;trip1",
+              "schedule;123;789;block;00:00;00:00;start;end;route;trip2"
+            ]
+          },
+          gtfs: %{
+            "calendar.txt" => [
+              "service_id,monday,tuesday,wednesday,thursday,friday,saturday,sunday,start_date,end_date",
+              "service,1,0,0,0,0,0,0,20210419,20210419"
+            ],
+            "routes.txt" => [
+              "route_id,route_long_name,route_type,route_desc,route_short_name",
+              "route,Some Place - Some Other Place,3,Key Bus,route"
+            ],
+            "trips.txt" => [
+              "route_id,service_id,trip_id,trip_headsign,direction_id,block_id",
+              "route,service,trip1,Headsign,0,block",
+              "route,service,trip2,Headsign,1,block"
+            ]
+          }
+        })
+
+      expected_swing = %Swing{
+        from_route_id: "route",
+        from_run_id: "123-0456",
+        from_trip_id: "trip1",
+        to_route_id: "route",
+        to_run_id: "123-0789",
+        to_trip_id: "trip2",
+        time: 0
+      }
+
+      %{
+        pid: pid,
+        expected_swing: expected_swing,
+        route_id: "route",
+        start_time: 1_618_848_000,
+        end_time: 1_618_848_000
+      }
+    end
+
+    test "can get swing", %{
+      pid: pid,
+      expected_swing: expected_swing,
+      route_id: route_id,
+      start_time: start_time,
+      end_time: end_time
+    } do
+      assert Schedule.swings_for_route(route_id, start_time, end_time, pid) == [expected_swing]
     end
   end
 

@@ -93,6 +93,7 @@ defmodule SkateWeb.Router do
     put "/user_settings", UserSettingsController, :update
     put "/route_settings", RouteSettingsController, :update
     put "/notification_read_state", NotificationReadStatesController, :update
+    get "/swings", SwingsController, :index
   end
 
   scope "/_flags" do
