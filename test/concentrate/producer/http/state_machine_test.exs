@@ -124,7 +124,7 @@ defmodule Concentrate.Producer.HTTP.StateMachineTest do
       assert log =~ ":unknown_error"
     end
 
-    test "logs a error if we have't gotten content since a timeout" do
+    test "logs a warning if we have't gotten content since a timeout" do
       opts = [content_warning_timeout: 1]
 
       messages = [
@@ -134,7 +134,7 @@ defmodule Concentrate.Producer.HTTP.StateMachineTest do
       ]
 
       log =
-        capture_log([level: :error], fn ->
+        capture_log([level: :warn], fn ->
           _ = run_machine("url", opts, messages)
         end)
 
@@ -142,7 +142,7 @@ defmodule Concentrate.Producer.HTTP.StateMachineTest do
       assert log =~ "feed has not been updated"
     end
 
-    test "logs an error if we haven't gotten records (post-parse) since a timeout" do
+    test "logs a warning if we haven't gotten records (post-parse) since a timeout" do
       opts = [content_warning_timeout: 1, parser: fn _ -> [] end]
 
       messages = [
@@ -152,7 +152,7 @@ defmodule Concentrate.Producer.HTTP.StateMachineTest do
       ]
 
       log =
-        capture_log([level: :error], fn ->
+        capture_log([level: :warn], fn ->
           _ = run_machine("url", opts, messages)
         end)
 
@@ -171,12 +171,12 @@ defmodule Concentrate.Producer.HTTP.StateMachineTest do
       ]
 
       log =
-        capture_log([level: :error], fn ->
+        capture_log([level: :warn], fn ->
           _ = run_machine("url", opts, messages)
         end)
 
       # only one message (some content before, some content after)
-      assert [_, _] = String.split(log, "[error]")
+      assert [_, _] = String.split(log, "[warn]")
     end
 
     test "logs a warning if we never receive content before the timeout" do
@@ -188,7 +188,7 @@ defmodule Concentrate.Producer.HTTP.StateMachineTest do
       ]
 
       log =
-        capture_log([level: :error], fn ->
+        capture_log([level: :warn], fn ->
           _ = run_machine("url", opts, messages)
         end)
 
