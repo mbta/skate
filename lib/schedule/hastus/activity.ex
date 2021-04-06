@@ -55,8 +55,8 @@ defmodule Schedule.Hastus.Activity do
       run_id: Run.from_parts(row["area"], row["run_id"]),
       start_time: Util.Time.parse_hhmm(row["start_time"]),
       end_time: Util.Time.parse_hhmm(row["end_time"]),
-      start_place: row["start_place"],
-      end_place: row["end_place"],
+      start_place: Place.map_input_place_id(row["start_place"]),
+      end_place: Place.map_input_place_id(row["end_place"]),
       activity_type: activity_type,
       partial_block_id: partial_block_id
     }

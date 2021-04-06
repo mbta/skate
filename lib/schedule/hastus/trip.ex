@@ -47,8 +47,8 @@ defmodule Schedule.Hastus.Trip do
       block_id: String.replace(row["block_id"], " ", ""),
       start_time: Util.Time.parse_hhmm(row["start_time"]),
       end_time: Util.Time.parse_hhmm(row["end_time"]),
-      start_place: row["start_place"],
-      end_place: row["end_place"],
+      start_place: Place.map_input_place_id(row["start_place"]),
+      end_place: Place.map_input_place_id(row["end_place"]),
       route_id: route_id(row["route_id"]),
       trip_id: row["trip_id"]
     }

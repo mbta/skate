@@ -27,6 +27,41 @@ defmodule Schedule.Hastus.TripTest do
              ]
     end
 
+    test "applies mapping to places" do
+      binary =
+        [
+          "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
+          "abb11011;122;    1002;B33-124;05:15;05:23;dudly;fhill;   42;   46654658",
+          "abb11011;122;    1002;B33-124;05:30;05:39;fhill;dudly;   42;   46654716"
+        ]
+        |> Enum.join("\n")
+
+      assert Trip.parse(binary) == [
+               %Trip{
+                 schedule_id: "abb11011",
+                 run_id: "122-1002",
+                 block_id: "B33-124",
+                 start_time: 18900,
+                 end_time: 19380,
+                 start_place: "nubn",
+                 end_place: "fhill",
+                 route_id: "42",
+                 trip_id: "46654658"
+               },
+               %Trip{
+                 schedule_id: "abb11011",
+                 run_id: "122-1002",
+                 block_id: "B33-124",
+                 start_time: 19800,
+                 end_time: 20340,
+                 start_place: "fhill",
+                 end_place: "nubn",
+                 route_id: "42",
+                 trip_id: "46654716"
+               }
+             ]
+    end
+
     test "filters out malformed rows" do
       binary =
         [
