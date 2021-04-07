@@ -21,7 +21,7 @@ module.exports = (env, options) => {
       })
     ] : basePlugins
 
-  const useMinimization = options.mode === "production";
+  const useMinimization = false
 
   return({
     optimization: {
@@ -83,6 +83,10 @@ module.exports = (env, options) => {
     resolve: {
       extensions: [".ts", ".tsx", ".js", ".jsx"],
       modules: ["deps", "node_modules"],
+      alias: {
+        'react-dom$': 'react-dom/profiling',
+        'scheduler/tracing': 'scheduler/tracing-profiling',
+      }
     },
     plugins: plugins
 ,
