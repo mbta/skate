@@ -14,7 +14,7 @@ import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime.d"
 import { selectVehicle } from "../state"
 import CrowdingIcon from "./crowdingIcon"
 import IconAlertCircle, { AlertIconStyle } from "./iconAlertCircle"
-import VehicleIcon, { Orientation, Size } from "./vehicleIcon"
+import VehicleIcon, { Orientation, Size, VehicleTooltip } from "./vehicleIcon"
 
 const IncomingBoxVehicle = ({
   displayCrowding,
@@ -44,35 +44,37 @@ const IncomingBoxVehicle = ({
     : "NO_DATA"
 
   return (
-    <button
-      className={`m-incoming-box__vehicle ${selectedClass}`}
-      onClick={() => dispatch(selectVehicle(vehicleOrGhost.id))}
-    >
-      <div className="m-incoming-box__vehicle-icon">
-        {displayCrowding ? (
-          <CrowdingIcon
-            size={Size.Small}
-            orientation={orientation}
-            occupancyStatus={occupancyStatus}
-          />
-        ) : (
-          <VehicleIcon
-            size={Size.Small}
-            orientation={orientation}
-            variant={vehicleOrGhost.viaVariant}
-            status={drawnStatus(vehicleOrGhost)}
-          />
+    <VehicleTooltip vehicleOrGhost={vehicleOrGhost}>
+      <button
+        className={`m-incoming-box__vehicle ${selectedClass}`}
+        onClick={() => dispatch(selectVehicle(vehicleOrGhost.id))}
+      >
+        <div className="m-incoming-box__vehicle-icon">
+          {displayCrowding ? (
+            <CrowdingIcon
+              size={Size.Small}
+              orientation={orientation}
+              occupancyStatus={occupancyStatus}
+            />
+          ) : (
+            <VehicleIcon
+              size={Size.Small}
+              orientation={orientation}
+              variant={vehicleOrGhost.viaVariant}
+              status={drawnStatus(vehicleOrGhost)}
+            />
+          )}
+        </div>
+        {displayCrowding || alertIconStyle === undefined ? null : (
+          <IconAlertCircle style={alertIconStyle} />
         )}
-      </div>
-      {displayCrowding || alertIconStyle === undefined ? null : (
-        <IconAlertCircle style={alertIconStyle} />
-      )}
-      <div className="m-incoming-box__vehicle-label">
-        {displayCrowding
-          ? crowdingLabel(vehicleOrGhost as Vehicle)
-          : vehicleLabel(vehicleOrGhost, userSettings)}
-      </div>
-    </button>
+        <div className="m-incoming-box__vehicle-label">
+          {displayCrowding
+            ? crowdingLabel(vehicleOrGhost as Vehicle)
+            : vehicleLabel(vehicleOrGhost, userSettings)}
+        </div>
+      </button>
+    </VehicleTooltip>
   )
 }
 

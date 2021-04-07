@@ -1,8 +1,14 @@
 import React, { ReactElement, useContext } from "react"
+import Tippy from "@tippyjs/react"
+import "tippy.js/dist/tippy.css"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
 import { DrawnStatus, statusClasses } from "../models/vehicleStatus"
 import { AlertIconStyle, IconAlertCircleSvgNode } from "./iconAlertCircle"
+import { runIdToLabel } from "../helpers/vehicleLabel"
+import { isGhost } from "../models/vehicle"
+import { VehicleOrGhost } from "../realtime.d"
+import { scheduleAdherenceLabelString } from "./propertiesPanel/header"
 
 export enum Orientation {
   Up,
@@ -24,6 +30,11 @@ export interface Props {
   variant?: string | null
   status?: DrawnStatus
   alertIconStyle?: AlertIconStyle
+}
+
+export interface TooltipProps {
+  children: ReactElement<HTMLElement>
+  vehicleOrGhost: VehicleOrGhost
 }
 
 /*
@@ -57,6 +68,49 @@ export const VehicleIcon = (props: Props): ReactElement<HTMLElement> => {
     >
       <VehicleIconSvgNode {...props} />
     </svg>
+  )
+}
+
+export const VehicleTooltip = ({
+  vehicleOrGhost,
+  children,
+}: TooltipProps): ReactElement<HTMLElement> => {
+  return (
+    <Tippy
+      delay={[250, 0]}
+      /* istanbul ignore next */
+      onShown={() => {
+        /* istanbul ignore next */
+        if (window.FS) {
+          /* istanbul ignore next */
+          window.FS.event("Vehicle tooltip seen")
+        }
+      }}
+      content={
+        <>
+          <b>Block:</b> {vehicleOrGhost.blockId}
+          <br />
+          <b>Run:</b> {runIdToLabel(vehicleOrGhost.runId)}
+          <br />
+          <b>Vehicle:</b>{" "}
+          {isGhost(vehicleOrGhost) ? "N/A" : vehicleOrGhost.label}
+          <br />
+          <b>Variant:</b> {vehicleOrGhost.viaVariant}
+          <br />
+          <b>Adherence:</b>{" "}
+          {isGhost(vehicleOrGhost) || vehicleOrGhost.isOffCourse
+            ? "N/A"
+            : scheduleAdherenceLabelString(vehicleOrGhost)}
+          <br />
+          <b>Operator:</b>{" "}
+          {isGhost(vehicleOrGhost)
+            ? "N/A"
+            : `${vehicleOrGhost.operatorName} #${vehicleOrGhost.operatorId}`}
+        </>
+      }
+    >
+      {children}
+    </Tippy>
   )
 }
 

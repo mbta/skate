@@ -30,7 +30,12 @@ import { Timepoint } from "../schedule.d"
 import { selectVehicle } from "../state"
 import { CrowdingIconSvgNode } from "./crowdingIcon"
 import HeadwayLines from "./headwayLines"
-import { Orientation, Size, VehicleIconSvgNode } from "./vehicleIcon"
+import {
+  Orientation,
+  Size,
+  VehicleIconSvgNode,
+  VehicleTooltip,
+} from "./vehicleIcon"
 
 export interface Props {
   timepoints: Timepoint[]
@@ -208,35 +213,37 @@ const VehicleSvg = ({
     : "NO_DATA"
 
   return (
-    <g
-      className={`m-ladder__vehicle ${selectedClass} `}
-      transform={`translate(${x},${y})`}
-      onClick={() => dispatch(selectVehicle(associatedVehicleId(vehicle.id)))}
-    >
-      {displayCrowding ? (
-        <CrowdingIconSvgNode
-          size={Size.Small}
-          orientation={orientationMatchingVehicle(
-            isLayingOver,
-            vehicleDirection
-          )}
-          label={crowdingLabel(vehicle as Vehicle)}
-          occupancyStatus={occupancyStatus}
-        />
-      ) : (
-        <VehicleIconSvgNode
-          size={isLayingOver ? Size.Small : Size.Medium}
-          orientation={orientationMatchingVehicle(
-            isLayingOver,
-            vehicleDirection
-          )}
-          label={vehicleLabel(vehicle, userSettings)}
-          variant={vehicle.viaVariant}
-          status={drawnStatus(vehicle)}
-          alertIconStyle={alertIconStyle}
-        />
-      )}
-    </g>
+    <VehicleTooltip vehicleOrGhost={vehicle}>
+      <g
+        className={`m-ladder__vehicle ${selectedClass} `}
+        transform={`translate(${x},${y})`}
+        onClick={() => dispatch(selectVehicle(associatedVehicleId(vehicle.id)))}
+      >
+        {displayCrowding ? (
+          <CrowdingIconSvgNode
+            size={Size.Small}
+            orientation={orientationMatchingVehicle(
+              isLayingOver,
+              vehicleDirection
+            )}
+            label={crowdingLabel(vehicle as Vehicle)}
+            occupancyStatus={occupancyStatus}
+          />
+        ) : (
+          <VehicleIconSvgNode
+            size={isLayingOver ? Size.Small : Size.Medium}
+            orientation={orientationMatchingVehicle(
+              isLayingOver,
+              vehicleDirection
+            )}
+            label={vehicleLabel(vehicle, userSettings)}
+            variant={vehicle.viaVariant}
+            status={drawnStatus(vehicle)}
+            alertIconStyle={alertIconStyle}
+          />
+        )}
+      </g>
+    </VehicleTooltip>
   )
 }
 
