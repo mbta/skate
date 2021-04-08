@@ -78,6 +78,7 @@ export const VehicleTooltip = ({
   return (
     <Tippy
       delay={[250, 0]}
+      touch={false}
       /* istanbul ignore next */
       onShown={() => {
         /* istanbul ignore next */
