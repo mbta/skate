@@ -37,7 +37,8 @@ export interface VehicleData {
   headsign: string | null
   via_variant: string | null
   operator_id: string
-  operator_name: string
+  operator_first_name: string
+  operator_last_name: string
   operator_logon_time: number | null
   bearing: number
   block_id: string
@@ -136,7 +137,8 @@ export const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
   headsign: vehicleData.headsign,
   viaVariant: vehicleData.via_variant,
   operatorId: vehicleData.operator_id,
-  operatorName: vehicleData.operator_name,
+  operatorFirstName: vehicleData.operator_first_name,
+  operatorLastName: vehicleData.operator_last_name,
   operatorLogonTime: vehicleData.operator_logon_time
     ? dateFromEpochSeconds(vehicleData.operator_logon_time)
     : null,

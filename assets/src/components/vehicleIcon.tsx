@@ -106,7 +106,7 @@ export const VehicleTooltip = ({
           <b>Operator:</b>{" "}
           {isGhost(vehicleOrGhost)
             ? "N/A"
-            : `${vehicleOrGhost.operatorName} #${vehicleOrGhost.operatorId}`}
+            : `${vehicleOrGhost.operatorFirstName} ${vehicleOrGhost.operatorLastName} #${vehicleOrGhost.operatorId}`}
         </>
       }
     >

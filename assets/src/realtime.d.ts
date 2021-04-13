@@ -106,7 +106,8 @@ export interface Vehicle {
   headsign: string | null
   viaVariant: ViaVariant | null
   operatorId: string
-  operatorName: string
+  operatorFirstName: string
+  operatorLastName: string
   operatorLogonTime: Date | null
   bearing: number
   blockId: BlockId

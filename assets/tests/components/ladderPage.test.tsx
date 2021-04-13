@@ -137,7 +137,7 @@ describe("LadderPage", () => {
       </StateDispatchProvider>
     )
     expect(wrapper.find("#m-properties-panel").html()).toContain(
-      notificationVehicle.operatorName
+      notificationVehicle.operatorLastName
     )
   })
 
@@ -285,7 +285,8 @@ const notificationVehicle: Vehicle = {
   headsign: "Forest Hills",
   viaVariant: "X",
   operatorId: "op1",
-  operatorName: "SMITH",
+  operatorFirstName: "PATTI",
+  operatorLastName: "SMITH",
   operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
   bearing: 33,
   blockId: "block-1",
