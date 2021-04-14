@@ -116,9 +116,14 @@ defmodule Notifications.NotificationServer do
 
       {operator_id, operator_name, route_id} =
         case vehicle_or_ghost do
-          %Vehicle{} = vehicle -> {vehicle.operator_id, vehicle.operator_name, vehicle.route_id}
-          %Ghost{} = ghost -> {nil, nil, ghost.route_id}
-          nil -> {nil, nil, nil}
+          %Vehicle{} = vehicle ->
+            {vehicle.operator_id, vehicle.operator_last_name, vehicle.route_id}
+
+          %Ghost{} = ghost ->
+            {nil, nil, ghost.route_id}
+
+          nil ->
+            {nil, nil, nil}
         end
 
       %{

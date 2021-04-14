@@ -16,7 +16,9 @@ defmodule Realtime.ServerTest do
     bearing: nil,
     block_id: "A505-106",
     operator_id: "71041",
-    operator_name: "FRANK",
+    operator_first_name: "FRANK",
+    operator_last_name: "FRANCIS",
+    operator_name: "FRANCIS",
     operator_logon_time: 1_558_121_726,
     run_id: "123-9048",
     headway_secs: 600,
@@ -289,7 +291,7 @@ defmodule Realtime.ServerTest do
       }
 
       operator_search_params = %{
-        text: "frank",
+        text: "franc",
         property: :all
       }
 
@@ -318,7 +320,7 @@ defmodule Realtime.ServerTest do
 
     test "searches all vehicles by operator name", %{ets: ets} do
       search_params = %{
-        text: "frank",
+        text: "franc",
         property: :operator
       }
 

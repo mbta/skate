@@ -16,7 +16,9 @@ defmodule Realtime.VehicleOrGhostTest do
     bearing: nil,
     block_id: "A505-106",
     operator_id: "71041",
-    operator_name: "FRANK",
+    operator_first_name: "FRANCES",
+    operator_last_name: "FRANKLIN",
+    operator_name: "FRANKLIN",
     operator_logon_time: 1_558_121_726,
     run_id: "vehicle-run-1",
     headway_secs: 600,
@@ -64,10 +66,31 @@ defmodule Realtime.VehicleOrGhostTest do
       assert VehicleOrGhost.find_by(@vehicles, %{text: "vehicle-run-1", property: :all}) ==
                [@vehicle]
 
+      assert VehicleOrGhost.find_by(@vehicles, %{text: "vehicle-run v1-la", property: :all}) ==
+               [@vehicle]
+
       assert VehicleOrGhost.find_by(@vehicles, %{text: "ghost", property: :all}) ==
                [@ghost]
 
+      assert VehicleOrGhost.find_by(@vehicles, %{text: "fran", property: :all}) ==
+               [@vehicle]
+
       assert VehicleOrGhost.find_by(@vehicles, %{text: "frank", property: :all}) ==
+               [@vehicle]
+
+      assert VehicleOrGhost.find_by(@vehicles, %{text: "franc", property: :all}) ==
+               [@vehicle]
+
+      assert VehicleOrGhost.find_by(@vehicles, %{text: "fran", property: :all}) ==
+               [@vehicle]
+
+      assert VehicleOrGhost.find_by(@vehicles, %{text: "frances", property: :all}) ==
+               [@vehicle]
+
+      assert VehicleOrGhost.find_by(@vehicles, %{text: "frances franklin", property: :all}) ==
+               [@vehicle]
+
+      assert VehicleOrGhost.find_by(@vehicles, %{text: "franklin, frances", property: :all}) ==
                [@vehicle]
 
       assert VehicleOrGhost.find_by(@vehicles, %{text: "710", property: :all}) ==
