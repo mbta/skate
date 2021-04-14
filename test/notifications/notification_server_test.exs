@@ -83,7 +83,9 @@ defmodule Notifications.NotificationServerTest do
     bearing: nil,
     block_id: nil,
     operator_id: "56785678",
-    operator_name: "CHARLIE",
+    operator_first_name: "CHARLIE",
+    operator_last_name: "ONTHEMTA",
+    operator_name: "ONTHEMTA",
     operator_logon_time: nil,
     run_id: "123-4567",
     headway_secs: 600,
@@ -276,7 +278,7 @@ defmodule Notifications.NotificationServerTest do
 
       for {cause_id, {cause_description, cause_atom}} <- @reasons_map do
         assert_block_waiver_notification(cause_atom, cause_description, cause_id, server,
-          operator_name: "CHARLIE",
+          operator_name: "ONTHEMTA",
           operator_id: "56785678",
           route_id_at_creation: "SL9001"
         )
@@ -356,7 +358,7 @@ defmodule Notifications.NotificationServerTest do
       existing_record = Skate.Repo.one(from(DbNotification))
 
       assert_block_waiver_notification(:other, "Other", 1, server,
-        operator_name: "CHARLIE",
+        operator_name: "ONTHEMTA",
         operator_id: "56785678",
         route_id_at_creation: "SL9001",
         log_expected: false,
@@ -376,7 +378,7 @@ defmodule Notifications.NotificationServerTest do
           )
 
           assert_block_waiver_notification(:other, "Other", 1, server,
-            operator_name: "CHARLIE",
+            operator_name: "ONTHEMTA",
             operator_id: "56785678",
             route_id_at_creation: "SL9001",
             log_expected: false,

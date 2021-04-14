@@ -99,7 +99,12 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
         "location_source" => "samsara",
         "occupancy_percentage" => 0.67,
         "occupancy_status" => "FEW_SEATS_AVAILABLE",
-        "operator" => %{"id" => "2841", "logon_time" => 1_534_340_301, "name" => "EVANS"},
+        "operator" => %{
+          "id" => "2841",
+          "logon_time" => 1_534_340_301,
+          "first_name" => "JIMMY",
+          "last_name" => "EVANS"
+        },
         "position" => %{
           "bearing" => 135,
           "latitude" => 42.32951,
@@ -151,7 +156,8 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
                  stop_sequence: 670,
                  block_id: "Q238-135",
                  operator_id: "2841",
-                 operator_name: "EVANS",
+                 operator_first_name: "JIMMY",
+                 operator_last_name: "EVANS",
                  operator_logon_time: 1_534_340_301,
                  run_id: "128-1007",
                  current_status: :STOPPED_AT,

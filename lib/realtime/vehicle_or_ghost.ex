@@ -8,7 +8,12 @@ defmodule Realtime.VehicleOrGhost do
         text: text,
         property: :all
       }),
-      do: filter_by_prop_matching(vehicles, [:run_id, :label, :operator_id, :operator_name], text)
+      do:
+        filter_by_prop_matching(
+          vehicles,
+          [:run_id, :label, :operator_id, :operator_first_name, :operator_last_name],
+          text
+        )
 
   def find_by(vehicles, %{
         text: text,
@@ -26,16 +31,25 @@ defmodule Realtime.VehicleOrGhost do
         text: text,
         property: :operator
       }),
-      do: filter_by_prop_matching(vehicles, [:operator_id, :operator_name], text)
+      do:
+        filter_by_prop_matching(
+          vehicles,
+          [:operator_id, :operator_first_name, :operator_last_name],
+          text
+        )
 
   @spec filter_by_prop_matching([t()], atom() | [atom()], String.t()) :: [t()]
   defp filter_by_prop_matching(vehicles, prop_names, text) when is_list(prop_names) do
-    if String.length(clean_for_matching(text)) < 2 do
+    search_terms = text |> clean_for_matching |> Enum.reject(&(String.length(&1) < 2))
+
+    if search_terms == [] do
       []
     else
       Enum.filter(vehicles, fn vehicle ->
-        Enum.any?(prop_names, fn prop_name ->
-          vehicle_matches?(vehicle, prop_name, text)
+        Enum.all?(search_terms, fn search_term ->
+          Enum.any?(prop_names, fn prop_name ->
+            vehicle_matches?(vehicle, prop_name, search_term)
+          end)
         end)
       end)
     end
@@ -61,14 +75,20 @@ defmodule Realtime.VehicleOrGhost do
   end
 
   defp matches?(prop, text) do
-    String.contains?(clean_for_matching(prop), clean_for_matching(text))
+    prop_values = clean_for_matching(prop)
+
+    text
+    |> clean_for_matching
+    |> Enum.all?(fn search_term ->
+      Enum.any?(prop_values, fn prop_value -> String.contains?(prop_value, search_term) end)
+    end)
   end
 
-  @spec clean_for_matching(String.t()) :: String.t()
+  @spec clean_for_matching(String.t()) :: [String.t()]
   defp clean_for_matching(str) do
     str
     |> String.downcase()
-    |> String.replace(" ", "")
     |> String.replace("-", "")
+    |> String.split(~r/[^\w]/)
   end
 end

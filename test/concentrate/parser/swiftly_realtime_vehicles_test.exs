@@ -71,7 +71,7 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehiclesTest do
           block_id: "B36-173",
           run_id: "122-1065",
           operator_id: "71924",
-          operator_name: "PAUL",
+          operator_last_name: "PAUL",
           last_updated: 1_559_672_827,
           last_updated_by_source: %{"swiftly" => 1_559_672_827},
           stop_name: "Back Bay",

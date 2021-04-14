@@ -26,7 +26,7 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehicles do
   @spec decode_vehicle(map()) :: VehiclePosition.t()
   def decode_vehicle(vehicle_data) do
     loc = Map.get(vehicle_data, "loc", %{})
-    {operator_name, operator_id} = vehicle_data |> Map.get("driver") |> operator_details()
+    {operator_last_name, operator_id} = vehicle_data |> Map.get("driver") |> operator_details()
 
     last_updated = Map.get(loc, "time")
 
@@ -43,7 +43,7 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehicles do
       block_id: Map.get(vehicle_data, "blockId"),
       run_id: Map.get(vehicle_data, "runId"),
       operator_id: operator_id,
-      operator_name: operator_name,
+      operator_last_name: operator_last_name,
       stop_name: Map.get(vehicle_data, "nextStopName"),
       direction_id: vehicle_data |> Map.get("directionId") |> direction_id_from_string(),
       headsign: Map.get(vehicle_data, "headsign"),
@@ -68,7 +68,7 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehicles do
 
   defp operator_details(operator_string) do
     case String.split(operator_string, " - ") do
-      [operator_name, operator_id] -> {operator_name, operator_id}
+      [operator_last_name, operator_id] -> {operator_last_name, operator_id}
       _ -> {nil, nil}
     end
   end
