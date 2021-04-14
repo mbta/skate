@@ -24,7 +24,14 @@ export const formattedLogonTime = (logonDate: Date): string => {
 }
 
 export const vehicleProperties = (vehicle: Vehicle): Property[] => {
-  const { runId, label, operatorId, operatorName, operatorLogonTime } = vehicle
+  const {
+    runId,
+    label,
+    operatorId,
+    operatorFirstName,
+    operatorLastName,
+    operatorLogonTime,
+  } = vehicle
 
   return [
     {
@@ -41,7 +48,7 @@ export const vehicleProperties = (vehicle: Vehicle): Property[] => {
     },
     {
       label: "Operator",
-      value: `${operatorName} #${operatorId}`,
+      value: `${operatorFirstName} ${operatorLastName} #${operatorId}`,
     },
     {
       label: "Last Login",

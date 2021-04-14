@@ -61,7 +61,7 @@ exports[`ladder highlights a selected vehicle 1`] = `
           Operator:
         </b>
          
-        JONES #op2
+        NORA JONES #op2
       </div>
       <g
         className="m-ladder__vehicle  "
@@ -136,7 +136,7 @@ exports[`ladder highlights a selected vehicle 1`] = `
           Operator:
         </b>
          
-        SMITH #op1
+        PATTI SMITH #op1
       </div>
       <g
         className="m-ladder__vehicle selected "
@@ -588,7 +588,7 @@ exports[`ladder renders a ladder 1`] = `
           Operator:
         </b>
          
-        SMITH #op1
+        PATTI SMITH #op1
       </div>
       <g
         className="m-ladder__vehicle  "
@@ -663,7 +663,7 @@ exports[`ladder renders a ladder 1`] = `
           Operator:
         </b>
          
-        JONES #op2
+        NORA JONES #op2
       </div>
       <g
         className="m-ladder__vehicle  "
@@ -738,7 +738,7 @@ exports[`ladder renders a ladder 1`] = `
           Operator:
         </b>
          
-        XI #op3
+        SHENGMMO XI #op3
       </div>
       <g
         className="m-ladder__vehicle  "
@@ -936,7 +936,7 @@ exports[`ladder renders a ladder with no timepoints 1`] = `
           Operator:
         </b>
          
-        SMITH #op1
+        PATTI SMITH #op1
       </div>
       <g
         className="m-ladder__vehicle  "
@@ -1044,7 +1044,7 @@ exports[`ladder renders a laying over vehicle 1`] = `
           Operator:
         </b>
          
-        SMITH #op1
+        PATTI SMITH #op1
       </div>
       <g
         className="m-ladder__vehicle  "
@@ -1249,7 +1249,7 @@ exports[`ladder renders a laying over vehicle with a scheduled line 1`] = `
           Operator:
         </b>
          
-        SMITH #op1
+        PATTI SMITH #op1
       </div>
       <g
         className="m-ladder__vehicle  "
@@ -1454,7 +1454,7 @@ exports[`ladder renders a reversed ladder 1`] = `
           Operator:
         </b>
          
-        SMITH #op1
+        PATTI SMITH #op1
       </div>
       <g
         className="m-ladder__vehicle  "
@@ -1653,7 +1653,7 @@ exports[`ladder renders an off-course vehicle 1`] = `
           Operator:
         </b>
          
-        SMITH #op1
+        PATTI SMITH #op1
       </div>
       <g
         className="m-ladder__vehicle  "
@@ -1860,7 +1860,7 @@ exports[`ladder renders an overload vehicle 1`] = `
           Operator:
         </b>
          
-        SMITH #op1
+        PATTI SMITH #op1
       </div>
       <g
         className="m-ladder__vehicle  "
@@ -2065,7 +2065,7 @@ exports[`ladder shows schedule line in the other direction 1`] = `
           Operator:
         </b>
          
-        JONES #op2
+        NORA JONES #op2
       </div>
       <g
         className="m-ladder__vehicle  "
@@ -2401,7 +2401,7 @@ exports[`ladder shows vehicles with current block waivers 1`] = `
           Operator:
         </b>
          
-        JONES #op
+        NORA JONES #op
       </div>
       <g
         className="m-ladder__vehicle  "
@@ -2506,7 +2506,7 @@ exports[`ladder shows vehicles with current block waivers 1`] = `
           Operator:
         </b>
          
-        JONES #op
+        NORA JONES #op
       </div>
       <g
         className="m-ladder__vehicle  "

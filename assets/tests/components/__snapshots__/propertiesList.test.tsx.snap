@@ -53,7 +53,7 @@ exports[`PropertiesList highlights requested text 1`] = `
         <td
           className="m-properties-list__property-value"
         >
-          SMITH #op1
+          PATTI SMITH #op1
         </td>
       </tr>
       <tr
@@ -149,7 +149,7 @@ exports[`PropertiesList renders a properties list for a vehicle 1`] = `
         <td
           className="m-properties-list__property-value"
         >
-          SMITH #op1
+          PATTI SMITH #op1
         </td>
       </tr>
       <tr

@@ -44,7 +44,7 @@ exports[`IncomingBox renders a crowding view missing crowding data 1`] = `
         Operator:
       </b>
        
-      OPERATOR #1
+      OPPIE OPERATOR #1
     </div>
     <button
       className="m-incoming-box__vehicle "
@@ -158,7 +158,7 @@ exports[`IncomingBox renders a crowding view of a vehicle 1`] = `
         Operator:
       </b>
        
-      OPERATOR #1
+      OPPIE OPERATOR #1
     </div>
     <button
       className="m-incoming-box__vehicle "
@@ -404,7 +404,7 @@ exports[`IncomingBox renders a vehicle 1`] = `
         Operator:
       </b>
        
-      OPERATOR #1
+      OPPIE OPERATOR #1
     </div>
     <button
       className="m-incoming-box__vehicle "
