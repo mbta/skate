@@ -21,13 +21,13 @@ export interface Props {
   style: AlertIconStyle
 }
 
-const IconAlertCircle = (props: Props) => (
+const IconAlertCircle = React.memo((props: Props) => (
   <svg viewBox="-3 -3 54 54" className="c-icon-alert-circle">
     <IconAlertCircleSvgNode {...props} />
   </svg>
-)
+))
 
-export const IconAlertCircleSvgNode = ({ style }: Props) => (
+export const IconAlertCircleSvgNode = React.memo(({ style }: Props) => (
   <g className={`c-icon-alert-circle${styleClass(style)}`}>
     <circle cx="24" cy="24" className="c-icon-alert-circle__outline" r="27" />
     <circle cx="24" cy="24" className="c-icon-alert-circle__fill" r="22.59" />
@@ -36,6 +36,6 @@ export const IconAlertCircleSvgNode = ({ style }: Props) => (
       <path d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93" />
     </g>
   </g>
-)
+))
 
 export default IconAlertCircle

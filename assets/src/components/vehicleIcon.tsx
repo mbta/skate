@@ -7,7 +7,8 @@ import { DrawnStatus, statusClasses } from "../models/vehicleStatus"
 import { AlertIconStyle, IconAlertCircleSvgNode } from "./iconAlertCircle"
 import { runIdToLabel } from "../helpers/vehicleLabel"
 import { isGhost } from "../models/vehicle"
-import { VehicleOrGhost } from "../realtime.d"
+import { RunId, VehicleOrGhost } from "../realtime.d"
+import { BlockId, ViaVariant } from "../schedule.d"
 import { scheduleAdherenceLabelString } from "./propertiesPanel/header"
 
 export enum Orientation {
@@ -46,35 +47,48 @@ const Y_CENTER_TO_POINT = 20
 const Y_CENTER_TO_BASE = 20
 const ALERT_ICON_RADIUS = 27
 
-export const VehicleIcon = (props: Props): ReactElement<HTMLElement> => {
-  if (
-    props.status === "ghost" &&
-    (props.orientation === Orientation.Left ||
-      props.orientation === Orientation.Right)
-  ) {
-    props = {
-      ...props,
-      // ghosts can't be drawn sideways
-      orientation:
-        props.status === "ghost" ? Orientation.Up : props.orientation,
+export const VehicleIcon = React.memo(
+  (props: Props): ReactElement<HTMLElement> => {
+    if (
+      props.status === "ghost" &&
+      (props.orientation === Orientation.Left ||
+        props.orientation === Orientation.Right)
+    ) {
+      props = {
+        ...props,
+        // ghosts can't be drawn sideways
+        orientation:
+          props.status === "ghost" ? Orientation.Up : props.orientation,
+      }
     }
-  }
 
-  const { left, top, width, height } = viewBox(props)
-  return (
-    <svg
-      style={{ width, height }}
-      viewBox={`${left} ${top} ${width} ${height}`}
-    >
-      <VehicleIconSvgNode {...props} />
-    </svg>
-  )
-}
+    const { left, top, width, height } = viewBox(props)
+    return (
+      <svg
+        style={{ width, height }}
+        viewBox={`${left} ${top} ${width} ${height}`}
+      >
+        <VehicleIconSvgNode {...props} />
+      </svg>
+    )
+  }
+)
 
 export const VehicleTooltip = ({
   vehicleOrGhost,
   children,
 }: TooltipProps): ReactElement<HTMLElement> => {
+  const runId = runIdToLabel(vehicleOrGhost.runId)
+  const label = isGhost(vehicleOrGhost) ? "N/A" : vehicleOrGhost.label
+  const scheduleAdherenceLabel =
+    isGhost(vehicleOrGhost) || vehicleOrGhost.isOffCourse
+      ? "N/A"
+      : scheduleAdherenceLabelString(vehicleOrGhost)
+
+  const operatorDetails = isGhost(vehicleOrGhost)
+    ? "N/A"
+    : `${vehicleOrGhost.operatorFirstName} ${vehicleOrGhost.operatorLastName} #${vehicleOrGhost.operatorId}`
+
   return (
     <Tippy
       delay={[250, 0]}
@@ -88,26 +102,14 @@ export const VehicleTooltip = ({
         }
       }}
       content={
-        <>
-          <b>Block:</b> {vehicleOrGhost.blockId}
-          <br />
-          <b>Run:</b> {runIdToLabel(vehicleOrGhost.runId)}
-          <br />
-          <b>Vehicle:</b>{" "}
-          {isGhost(vehicleOrGhost) ? "N/A" : vehicleOrGhost.label}
-          <br />
-          <b>Variant:</b> {vehicleOrGhost.viaVariant}
-          <br />
-          <b>Adherence:</b>{" "}
-          {isGhost(vehicleOrGhost) || vehicleOrGhost.isOffCourse
-            ? "N/A"
-            : scheduleAdherenceLabelString(vehicleOrGhost)}
-          <br />
-          <b>Operator:</b>{" "}
-          {isGhost(vehicleOrGhost)
-            ? "N/A"
-            : `${vehicleOrGhost.operatorFirstName} ${vehicleOrGhost.operatorLastName} #${vehicleOrGhost.operatorId}`}
-        </>
+        <TooltipContent
+          blockId={vehicleOrGhost.blockId}
+          runId={runId}
+          label={label}
+          viaVariant={vehicleOrGhost.viaVariant}
+          scheduleAdherenceLabel={scheduleAdherenceLabel}
+          operatorDetails={operatorDetails}
+        />
       }
     >
       {children}
@@ -115,6 +117,37 @@ export const VehicleTooltip = ({
   )
 }
 
+const TooltipContent = React.memo(
+  ({
+    blockId,
+    runId,
+    label,
+    viaVariant,
+    scheduleAdherenceLabel,
+    operatorDetails,
+  }: {
+    blockId: BlockId
+    runId: RunId
+    label: string
+    viaVariant: ViaVariant | null
+    scheduleAdherenceLabel: string
+    operatorDetails: string
+  }): ReactElement<HTMLElement> => (
+    <>
+      <b>Block:</b> {blockId}
+      <br />
+      <b>Run:</b> {runId}
+      <br />
+      <b>Vehicle:</b> {label}
+      <br />
+      <b>Variant:</b> {viaVariant}
+      <br />
+      <b>Adherence:</b> {scheduleAdherenceLabel}
+      <br />
+      <b>Operator:</b> {operatorDetails}
+    </>
+  )
+)
 export const viewBox = ({
   size,
   orientation,
@@ -173,251 +206,255 @@ export const viewBox = ({
   return { left, top, width, height }
 }
 
-export const VehicleIconSvgNode = ({
-  size,
-  orientation,
-  label,
-  variant,
-  status,
-  alertIconStyle,
-}: Props): ReactElement<SVGElement> => {
-  const [{ userSettings }] = useContext(StateDispatchContext)
+export const VehicleIconSvgNode = React.memo(
+  ({
+    size,
+    orientation,
+    label,
+    variant,
+    status,
+    alertIconStyle,
+  }: Props): ReactElement<SVGElement> => {
+    const [{ userSettings }] = useContext(StateDispatchContext)
 
-  status = status || "plain"
-  variant = variant && variant !== "_" ? variant : undefined
-  // ghosts can't be drawn sideways
-  if (
-    status === "ghost" &&
-    (orientation === Orientation.Left || orientation === Orientation.Right)
-  ) {
-    orientation = Orientation.Up
-  }
-  const classes: string[] = [
-    "m-vehicle-icon",
-    `m-vehicle-icon${sizeClassSuffix(size)}`,
-    alertIconStyle === AlertIconStyle.Highlighted
-      ? "m-vehicle-icon--highlighted"
-      : "",
-  ].concat(statusClasses(status, userSettings.vehicleAdherenceColors))
-  return (
-    <g className={className(classes)}>
-      {label ? (
-        <Label size={size} orientation={orientation} label={label} />
-      ) : null}
-      {status === "ghost" ? (
-        <Ghost size={size} variant={variant} />
-      ) : (
-        <Triangle size={size} orientation={orientation} />
-      )}
-      {variant ? (
-        <Variant
-          size={size}
-          orientation={orientation}
-          variant={variant}
-          status={status}
-        />
-      ) : null}
-
-      {alertIconStyle ? (
-        <AlertCircleIcon
-          size={size}
-          orientation={orientation}
-          status={status}
-          alertIconStyle={alertIconStyle}
-        />
-      ) : null}
-    </g>
-  )
-}
-
-const Triangle = ({
-  size,
-  orientation,
-}: {
-  size: Size
-  orientation: Orientation
-}) => {
-  const scale = scaleForSize(size)
-  const rotation = rotationForOrientation(orientation)
-  return (
-    <path
-      className="m-vehicle-icon__triangle"
-      d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-      // Move the center to 0,0
-      transform={`scale(${scale}) rotate(${rotation}) translate(-24,-22)`}
-    />
-  )
-}
-
-const Ghost = ({ size, variant }: { size: Size; variant?: string }) => {
-  // No orientation argument, because the ghost icon is always right side up.
-  const scale = scaleForSize(size)
-  return (
-    <g
-      // Move the center to 0,0
-      // The raw ghost icon is a little bigger than the raw triangle, so scale by an extra .7
-      transform={`scale(${0.7 * scale}) translate(-24,-23)`}
-    >
-      <path
-        // The outline that gets highlighted when it's selected
-        className="m-vehicle-icon__ghost-highlight"
-        d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-        stroke-join="round"
-      />
-      <path
-        className="m-vehicle-icon__ghost-body"
-        d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-        stroke-join="round"
-      />
-      {variant === undefined ? (
-        <>
-          <ellipse
-            className="m-vehicle-icon__ghost-eye"
-            cx="19.73"
-            cy="22.8"
-            rx="3.11"
-            ry="3.03"
+    status = status || "plain"
+    variant = variant && variant !== "_" ? variant : undefined
+    // ghosts can't be drawn sideways
+    if (
+      status === "ghost" &&
+      (orientation === Orientation.Left || orientation === Orientation.Right)
+    ) {
+      orientation = Orientation.Up
+    }
+    const classes: string[] = [
+      "m-vehicle-icon",
+      `m-vehicle-icon${sizeClassSuffix(size)}`,
+      alertIconStyle === AlertIconStyle.Highlighted
+        ? "m-vehicle-icon--highlighted"
+        : "",
+    ].concat(statusClasses(status, userSettings.vehicleAdherenceColors))
+    return (
+      <g className={className(classes)}>
+        {label ? (
+          <Label size={size} orientation={orientation} label={label} />
+        ) : null}
+        {status === "ghost" ? (
+          <Ghost size={size} variant={variant} />
+        ) : (
+          <Triangle size={size} orientation={orientation} />
+        )}
+        {variant ? (
+          <Variant
+            size={size}
+            orientation={orientation}
+            variant={variant}
+            status={status}
           />
-          <ellipse
-            className="m-vehicle-icon__ghost-eye"
-            cx="35.29"
-            cy="22.8"
-            rx="3.11"
-            ry="3.03"
+        ) : null}
+
+        {alertIconStyle ? (
+          <AlertCircleIcon
+            size={size}
+            orientation={orientation}
+            status={status}
+            alertIconStyle={alertIconStyle}
           />
-        </>
-      ) : null}
-    </g>
-  )
-}
-
-export const Label = ({
-  size,
-  orientation,
-  label,
-}: {
-  size: Size
-  orientation: Orientation
-  label: string
-}) => {
-  const scale = scaleForSize(size)
-  const labelBgWidth = labelBackgroundWidth(size, label)
-  const labelBgHeight = labelBackgroundHeight(size)
-  let labelBgTop = 0
-  switch (orientation) {
-    // adjust by 1 to cover any small gap between the triangle and the label
-    case Orientation.Up:
-      labelBgTop = scale * Y_CENTER_TO_BASE - 1
-      break
-    case Orientation.Down:
-      labelBgTop = -scale * Y_CENTER_TO_BASE - labelBgHeight + 1
-      break
-    case Orientation.Left:
-    case Orientation.Right:
-      labelBgTop = scale * X_CENTER_TO_SIDE - 1
-      break
+        ) : null}
+      </g>
+    )
   }
-  const labelY = labelBgTop + labelBgHeight / 2
+)
 
-  const labelClassWithModifier =
-    label.length > 4
-      ? "m-vehicle-icon__label--extended"
-      : "m-vehicle-icon__label--normal"
-  const labelClass = `m-vehicle-icon__label ${labelClassWithModifier}`
-
-  return (
-    <>
-      <rect
-        className="m-vehicle-icon__label-background"
-        x={-labelBgWidth / 2}
-        y={labelBgTop}
-        width={labelBgWidth}
-        height={labelBgHeight}
-        rx={labelBgHeight / 2}
-        ry={labelBgHeight / 2}
+const Triangle = React.memo(
+  ({ size, orientation }: { size: Size; orientation: Orientation }) => {
+    const scale = scaleForSize(size)
+    const rotation = rotationForOrientation(orientation)
+    return (
+      <path
+        className="m-vehicle-icon__triangle"
+        d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+        // Move the center to 0,0
+        transform={`scale(${scale}) rotate(${rotation}) translate(-24,-22)`}
       />
-      <text
-        className={labelClass}
-        x="0"
-        y={labelY}
-        textAnchor="middle"
-        dominantBaseline="central"
+    )
+  }
+)
+
+const Ghost = React.memo(
+  ({ size, variant }: { size: Size; variant?: string }) => {
+    // No orientation argument, because the ghost icon is always right side up.
+    const scale = scaleForSize(size)
+    return (
+      <g
+        // Move the center to 0,0
+        // The raw ghost icon is a little bigger than the raw triangle, so scale by an extra .7
+        transform={`scale(${0.7 * scale}) translate(-24,-23)`}
       >
-        {label}
+        <path
+          // The outline that gets highlighted when it's selected
+          className="m-vehicle-icon__ghost-highlight"
+          d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
+          stroke-join="round"
+        />
+        <path
+          className="m-vehicle-icon__ghost-body"
+          d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
+          stroke-join="round"
+        />
+        {variant === undefined ? (
+          <>
+            <ellipse
+              className="m-vehicle-icon__ghost-eye"
+              cx="19.73"
+              cy="22.8"
+              rx="3.11"
+              ry="3.03"
+            />
+            <ellipse
+              className="m-vehicle-icon__ghost-eye"
+              cx="35.29"
+              cy="22.8"
+              rx="3.11"
+              ry="3.03"
+            />
+          </>
+        ) : null}
+      </g>
+    )
+  }
+)
+
+export const Label = React.memo(
+  ({
+    size,
+    orientation,
+    label,
+  }: {
+    size: Size
+    orientation: Orientation
+    label: string
+  }) => {
+    const scale = scaleForSize(size)
+    const labelBgWidth = labelBackgroundWidth(size, label)
+    const labelBgHeight = labelBackgroundHeight(size)
+    let labelBgTop = 0
+    switch (orientation) {
+      // adjust by 1 to cover any small gap between the triangle and the label
+      case Orientation.Up:
+        labelBgTop = scale * Y_CENTER_TO_BASE - 1
+        break
+      case Orientation.Down:
+        labelBgTop = -scale * Y_CENTER_TO_BASE - labelBgHeight + 1
+        break
+      case Orientation.Left:
+      case Orientation.Right:
+        labelBgTop = scale * X_CENTER_TO_SIDE - 1
+        break
+    }
+    const labelY = labelBgTop + labelBgHeight / 2
+
+    const labelClassWithModifier =
+      label.length > 4
+        ? "m-vehicle-icon__label--extended"
+        : "m-vehicle-icon__label--normal"
+    const labelClass = `m-vehicle-icon__label ${labelClassWithModifier}`
+
+    return (
+      <>
+        <rect
+          className="m-vehicle-icon__label-background"
+          x={-labelBgWidth / 2}
+          y={labelBgTop}
+          width={labelBgWidth}
+          height={labelBgHeight}
+          rx={labelBgHeight / 2}
+          ry={labelBgHeight / 2}
+        />
+        <text
+          className={labelClass}
+          x="0"
+          y={labelY}
+          textAnchor="middle"
+          dominantBaseline="central"
+        >
+          {label}
+        </text>
+      </>
+    )
+  }
+)
+
+const Variant = React.memo(
+  ({
+    size,
+    orientation,
+    variant,
+    status,
+  }: {
+    size: Size
+    orientation: Orientation
+    variant: string
+    status: DrawnStatus
+  }) => {
+    const scale = scaleForSize(size)
+
+    // space between the triangle base and the variant letter
+    let margin = 0
+    switch (size) {
+      case Size.Small:
+        margin = status === "ghost" ? 4 : 2
+        break
+      case Size.Medium:
+        margin = status === "ghost" ? 8 : 4
+        break
+      case Size.Large:
+        margin = status === "ghost" ? 12 : 6
+        break
+    }
+
+    let variantPositionOpts = {}
+    switch (orientation) {
+      // anchor the variant to the center of the base (with a small margin)
+      case Orientation.Up:
+        variantPositionOpts = {
+          dominantBaseline: "alphabetic",
+          textAnchor: "middle",
+          x: 0,
+          y: scale * Y_CENTER_TO_BASE - margin,
+        }
+        break
+      case Orientation.Down:
+        variantPositionOpts = {
+          dominantBaseline: "hanging",
+          textAnchor: "middle",
+          x: 0,
+          y: -scale * Y_CENTER_TO_BASE + margin,
+        }
+        break
+      case Orientation.Left:
+        variantPositionOpts = {
+          dominantBaseline: "central",
+          textAnchor: "end",
+          x: scale * Y_CENTER_TO_BASE - margin,
+          y: 0,
+        }
+        break
+      case Orientation.Right:
+        variantPositionOpts = {
+          dominantBaseline: "central",
+          textAnchor: "start",
+          x: -scale * Y_CENTER_TO_BASE + margin,
+          y: 0,
+        }
+        break
+    }
+    return (
+      <text className="m-vehicle-icon__variant" {...variantPositionOpts}>
+        {variant}
       </text>
-    </>
-  )
-}
-
-const Variant = ({
-  size,
-  orientation,
-  variant,
-  status,
-}: {
-  size: Size
-  orientation: Orientation
-  variant: string
-  status: DrawnStatus
-}) => {
-  const scale = scaleForSize(size)
-
-  // space between the triangle base and the variant letter
-  let margin = 0
-  switch (size) {
-    case Size.Small:
-      margin = status === "ghost" ? 4 : 2
-      break
-    case Size.Medium:
-      margin = status === "ghost" ? 8 : 4
-      break
-    case Size.Large:
-      margin = status === "ghost" ? 12 : 6
-      break
+    )
   }
-
-  let variantPositionOpts = {}
-  switch (orientation) {
-    // anchor the variant to the center of the base (with a small margin)
-    case Orientation.Up:
-      variantPositionOpts = {
-        dominantBaseline: "alphabetic",
-        textAnchor: "middle",
-        x: 0,
-        y: scale * Y_CENTER_TO_BASE - margin,
-      }
-      break
-    case Orientation.Down:
-      variantPositionOpts = {
-        dominantBaseline: "hanging",
-        textAnchor: "middle",
-        x: 0,
-        y: -scale * Y_CENTER_TO_BASE + margin,
-      }
-      break
-    case Orientation.Left:
-      variantPositionOpts = {
-        dominantBaseline: "central",
-        textAnchor: "end",
-        x: scale * Y_CENTER_TO_BASE - margin,
-        y: 0,
-      }
-      break
-    case Orientation.Right:
-      variantPositionOpts = {
-        dominantBaseline: "central",
-        textAnchor: "start",
-        x: -scale * Y_CENTER_TO_BASE + margin,
-        y: 0,
-      }
-      break
-  }
-  return (
-    <text className="m-vehicle-icon__variant" {...variantPositionOpts}>
-      {variant}
-    </text>
-  )
-}
+)
 
 const alertIconXY = (
   size: Size,
@@ -453,25 +490,29 @@ const rotate = (
   }
 }
 
-const AlertCircleIcon = ({
-  size,
-  orientation,
-  status,
-  alertIconStyle,
-}: {
-  size: Size
-  orientation: Orientation
-  status: DrawnStatus
-  alertIconStyle: AlertIconStyle
-}) => {
-  const [x, y] = alertIconXY(size, orientation, status)
-  const scale = alertCircleIconScale(size)
-  return (
-    <g transform={`translate(${x}, ${y}) scale(${scale}) translate(-24, -24)`}>
-      <IconAlertCircleSvgNode style={alertIconStyle} />
-    </g>
-  )
-}
+const AlertCircleIcon = React.memo(
+  ({
+    size,
+    orientation,
+    status,
+    alertIconStyle,
+  }: {
+    size: Size
+    orientation: Orientation
+    status: DrawnStatus
+    alertIconStyle: AlertIconStyle
+  }) => {
+    const [x, y] = alertIconXY(size, orientation, status)
+    const scale = alertCircleIconScale(size)
+    return (
+      <g
+        transform={`translate(${x}, ${y}) scale(${scale}) translate(-24, -24)`}
+      >
+        <IconAlertCircleSvgNode style={alertIconStyle} />
+      </g>
+    )
+  }
+)
 
 const alertCircleIconScale = (size: Size): number => {
   switch (size) {
