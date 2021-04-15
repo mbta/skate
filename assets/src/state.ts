@@ -36,6 +36,7 @@ export interface State {
   notificationDrawerIsOpen: boolean
   userSettings: UserSettings
   selectedNotification?: Notification
+  swingsViewIsVisible: boolean
 }
 
 export const initialState: State = {
@@ -50,6 +51,7 @@ export const initialState: State = {
   notificationDrawerIsOpen: false,
   userSettings: defaultUserSettings,
   selectedNotification: undefined,
+  swingsViewIsVisible: false,
 }
 
 interface SelectRouteAction {
@@ -292,6 +294,14 @@ export const setNotification = (
   },
 })
 
+interface ToggleSwingsViewAction {
+  type: "TOGGLE_SWINGS_VIEW"
+}
+
+export const toggleSwingsView = (): ToggleSwingsViewAction => ({
+  type: "TOGGLE_SWINGS_VIEW",
+})
+
 type Action =
   | SelectRouteAction
   | DeselectRouteAction
@@ -314,6 +324,7 @@ type Action =
   | SetVehicleAdherenceColorsSettingAction
   | SearchAction
   | SetNotificationAction
+  | ToggleSwingsViewAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -476,6 +487,18 @@ const selectedNotificationReducer = (
   }
 }
 
+const swingsViewIsVisibleReducer = (
+  state: boolean,
+  action: Action
+): boolean => {
+  switch (action.type) {
+    case "TOGGLE_SWINGS_VIEW":
+      return !state
+    default:
+      return state
+  }
+}
+
 export const reducer = (state: State, action: Action): State => ({
   pickerContainerIsVisible: pickerContainerIsVisibleReducer(
     state.pickerContainerIsVisible,
@@ -504,6 +527,10 @@ export const reducer = (state: State, action: Action): State => ({
   userSettings: userSettingsReducer(state.userSettings, action),
   selectedNotification: selectedNotificationReducer(
     state.selectedNotification,
+    action
+  ),
+  swingsViewIsVisible: swingsViewIsVisibleReducer(
+    state.swingsViewIsVisible,
     action
   ),
 })

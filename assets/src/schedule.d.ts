@@ -1,3 +1,5 @@
+import { RunId } from "./realtime"
+
 export type BlockId = string
 
 export type DirectionId = 0 | 1
@@ -47,6 +49,16 @@ export type TimepointId = string
 export interface Timepoint {
   id: TimepointId
   name: string | null
+}
+
+export interface Swing {
+  fromRouteId: RouteId
+  fromRunId: RunId
+  fromTripId: TripId
+  toRouteId: RouteId
+  toRunId: RunId
+  toTripId: TripId
+  time: number
 }
 
 // An undefined value indicates that the timepoints need to be loaded

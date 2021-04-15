@@ -101,7 +101,7 @@ describe("useVehicleForNotification", () => {
     tripIds: ["123", "456", "789"],
     reason: "other" as NotificationReason,
     routeIds: [],
-    runIds: [],
+    runIds: ["123-456"],
     operatorName: null,
     operatorId: null,
     routeIdAtCreation: null,
@@ -117,7 +117,7 @@ describe("useVehicleForNotification", () => {
     window.username = "username"
 
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok", { data: vehicleData })
+    const mockChannel = makeMockChannel("ok", { data: [vehicleData] })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     // tslint:disable: react-hooks-nesting
@@ -200,7 +200,7 @@ describe("useVehicleForNotification", () => {
     window.username = "username"
 
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok", { data: ghostData })
+    const mockChannel = makeMockChannel("ok", { data: [ghostData] })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     // tslint:disable: react-hooks-nesting

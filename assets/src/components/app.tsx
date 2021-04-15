@@ -13,7 +13,9 @@ import TabBar from "./tabBar"
 const AppRoutes = () => {
   useAppcues()
 
-  const [{ pickerContainerIsVisible }] = useContext(StateDispatchContext)
+  const [{ pickerContainerIsVisible, swingsViewIsVisible }] = useContext(
+    StateDispatchContext
+  )
 
   return (
     <div className="m-app">
@@ -21,7 +23,10 @@ const AppRoutes = () => {
         <DataStatusBanner />
       </div>
       <div className="m-app__main">
-        <TabBar pickerContainerIsVisible={pickerContainerIsVisible} />
+        <TabBar
+          pickerContainerIsVisible={pickerContainerIsVisible}
+          swingsViewIsVisible={swingsViewIsVisible}
+        />
         <BrowserRoute exact={true} path="/" component={LadderPage} />
         <BrowserRoute
           exact={true}

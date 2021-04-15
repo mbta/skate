@@ -354,4 +354,15 @@ describe("reducer", () => {
     }
     expect(newState).toEqual(expectedState)
   })
+
+  test("toggleSwingsView", () => {
+    const expectedState: State.State = {
+      ...initialState,
+      swingsViewIsVisible: true,
+    }
+
+    const newState = reducer(initialState, State.toggleSwingsView())
+
+    expect(newState).toEqual(expectedState)
+  })
 })

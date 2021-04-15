@@ -7,6 +7,7 @@ import {
   fetchShapeForRoute,
   fetchShapeForTrip,
   fetchShuttleRoutes,
+  fetchSwings,
   fetchTimepointsForRoute,
   putRouteSettings,
   putUserSetting,
@@ -471,6 +472,39 @@ describe("fetchNearestIntersection", () => {
 
     fetchNearestIntersection(0, 0).then((intersection) => {
       expect(intersection).toEqual(null)
+      done()
+    })
+  })
+})
+
+describe("fetchSwings", () => {
+  test("parses swings", (done) => {
+    const swing = {
+      from_route_id: "1",
+      from_run_id: "123-456",
+      from_trip_id: "1234",
+      to_route_id: "1",
+      to_run_id: "123-789",
+      to_trip_id: "5678",
+      time: 100,
+    }
+
+    mockFetch(200, {
+      data: [swing],
+    })
+
+    fetchSwings().then((swings) => {
+      expect(swings).toEqual([
+        {
+          fromRouteId: "1",
+          fromRunId: "123-456",
+          fromTripId: "1234",
+          toRouteId: "1",
+          toRunId: "123-789",
+          toTripId: "5678",
+          time: 100,
+        },
+      ])
       done()
     })
   })

@@ -21,6 +21,8 @@ import ellipsisIconSvg from "../../static/images/icon-ellipsis.svg"
 // @ts-ignore
 import filledCircleIconSvg from "../../static/images/icon-filled-circle.svg"
 // @ts-ignore
+import ghostIconSvg from "../../static/images/icon-ghost.svg"
+// @ts-ignore
 import greenLineBIconSvg from "../../static/images/icon-green-line-b.svg"
 // @ts-ignore
 import greenLineCIconSvg from "../../static/images/icon-green-line-c.svg"
@@ -59,6 +61,8 @@ import reverseIconReversedSvg from "../../static/images/icon-reverse-reversed.sv
 // @ts-ignore
 import searchIconSvg from "../../static/images/icon-search.svg"
 // @ts-ignore
+import swingIconSvg from "../../static/images/icon-swing.svg"
+// @ts-ignore
 import triangleDownIconSvg from "../../static/images/icon-triangle-down.svg"
 // @ts-ignore
 import triangleUpIconSvg from "../../static/images/icon-triangle-up.svg"
@@ -66,6 +70,8 @@ import triangleUpIconSvg from "../../static/images/icon-triangle-up.svg"
 import triangleUpLargeIconSvg from "../../static/images/icon-triangle-up-large.svg"
 // @ts-ignore
 import upDownIconSvg from "../../static/images/icon-up-down-arrow.svg"
+// @ts-ignore
+import upRightIconSvg from "../../static/images/icon-up-right-arrow.svg"
 import renderSvg from "./renderSvg"
 
 export const blueLineIcon = (className: string = ""): JSX.Element =>
@@ -100,6 +106,9 @@ export const expandIcon = (className: string = ""): JSX.Element =>
 
 export const filledCircleIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, filledCircleIconSvg)
+
+export const ghostIcon = (className: string = ""): JSX.Element =>
+  renderSvg(className, ghostIconSvg)
 
 export const greenLineBIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, greenLineBIconSvg)
@@ -158,6 +167,9 @@ export const reverseIconReversed = (className: string = ""): JSX.Element =>
 export const searchIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, searchIconSvg)
 
+export const swingIcon = (className: string = ""): JSX.Element =>
+  renderSvg(className, swingIconSvg)
+
 export const triangleDownIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, triangleDownIconSvg)
 
@@ -169,3 +181,6 @@ export const triangleUpLargeIcon = (className: string = ""): JSX.Element =>
 
 export const upDownIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, upDownIconSvg)
+
+export const upRightIcon = (className: string = ""): JSX.Element =>
+  renderSvg(className, upRightIconSvg)

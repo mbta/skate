@@ -1,5 +1,6 @@
 import React, { ReactElement, useContext } from "react"
 import { NavLink, useLocation } from "react-router-dom"
+import appData from "../appData"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import {
   ladderIcon,
@@ -7,17 +8,20 @@ import {
   questionMarkIcon,
   refreshIcon,
   searchIcon,
+  swingIcon,
 } from "../helpers/icon"
 import { reload } from "../models/browser"
-import { toggleNotificationDrawer } from "../state"
+import { toggleNotificationDrawer, toggleSwingsView } from "../state"
 import NotificationBellIcon from "./notificationBellIcon"
 
 interface Props {
   pickerContainerIsVisible: boolean
+  swingsViewIsVisible: boolean
 }
 
 const TabBar = ({
   pickerContainerIsVisible,
+  swingsViewIsVisible,
 }: Props): ReactElement<HTMLDivElement> => {
   const location = useLocation()
   const [, dispatch] = useContext(StateDispatchContext)
@@ -39,6 +43,12 @@ const TabBar = ({
         // Show nothing, we shouldn't get here
         break
     }
+  }
+  let swingsBetaEnabled = false
+  const swingsBetaEnabledString: string | undefined = appData()
+    ?.enableSwingsBeta
+  if (swingsBetaEnabledString !== undefined) {
+    swingsBetaEnabled = JSON.parse(swingsBetaEnabledString)
   }
 
   return (
@@ -91,6 +101,21 @@ const TabBar = ({
             {searchIcon("m-tab-bar__icon")}
           </NavLink>
         </li>
+        {swingsBetaEnabled ? (
+          <li>
+            <a
+              className={
+                "m-tab-bar__swings m-tab-bar__link" +
+                (swingsViewIsVisible ? " m-tab-bar__link--active" : "")
+              }
+              onClick={() => {
+                dispatch(toggleSwingsView())
+              }}
+            >
+              {swingIcon("m-tab-bar__icon")}
+            </a>
+          </li>
+        ) : null}
       </ul>
 
       <div className="m-tab-bar__bottom-buttons">

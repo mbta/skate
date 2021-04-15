@@ -29,6 +29,7 @@ defmodule SkateWeb.PageController do
     |> assign(:csrf_token, Plug.CSRFProtection.get_csrf_token())
     |> assign(:user_settings, user_settings)
     |> assign(:route_settings, route_settings)
+    |> assign(:enable_swings_beta, enable_swings_beta)
     |> render("index.html")
   end
 

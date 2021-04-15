@@ -31,7 +31,7 @@ describe("tabBar", () => {
     const tree = renderer
       .create(
         <BrowserRouter>
-          <TabBar pickerContainerIsVisible={true} />
+          <TabBar pickerContainerIsVisible={true} swingsViewIsVisible={false} />
         </BrowserRouter>
       )
       .toJSON()
@@ -42,7 +42,7 @@ describe("tabBar", () => {
   it("sets class to visible when picker is visible", () => {
     const wrapper = mount(
       <BrowserRouter>
-        <TabBar pickerContainerIsVisible={true} />
+        <TabBar pickerContainerIsVisible={true} swingsViewIsVisible={false} />
       </BrowserRouter>
     )
     expect(wrapper.find(".m-tab-bar").hasClass("visible")).toBe(true)
@@ -52,7 +52,7 @@ describe("tabBar", () => {
   it("sets class to hidden when picker is hidden", () => {
     const wrapper = mount(
       <BrowserRouter>
-        <TabBar pickerContainerIsVisible={false} />
+        <TabBar pickerContainerIsVisible={false} swingsViewIsVisible={false} />
       </BrowserRouter>
     )
     expect(wrapper.find(".m-tab-bar").hasClass("hidden")).toBe(true)
@@ -66,7 +66,7 @@ describe("tabBar", () => {
 
     const wrapper = mount(
       <BrowserRouter>
-        <TabBar pickerContainerIsVisible={false} />
+        <TabBar pickerContainerIsVisible={false} swingsViewIsVisible={false} />
       </BrowserRouter>
     )
 
@@ -80,7 +80,7 @@ describe("tabBar", () => {
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
         <BrowserRouter>
-          <TabBar pickerContainerIsVisible={true} />
+          <TabBar pickerContainerIsVisible={true} swingsViewIsVisible={false} />
         </BrowserRouter>
       </StateDispatchProvider>
     )
@@ -92,7 +92,7 @@ describe("tabBar", () => {
   it("opens drift when you click on the chat icon", () => {
     const wrapper = mount(
       <BrowserRouter>
-        <TabBar pickerContainerIsVisible={false} />
+        <TabBar pickerContainerIsVisible={false} swingsViewIsVisible={false} />
       </BrowserRouter>
     )
 
@@ -104,7 +104,7 @@ describe("tabBar", () => {
   it("displays an appcue for the current page when you click on the help button", () => {
     const wrapper = mount(
       <BrowserRouter>
-        <TabBar pickerContainerIsVisible={false} />
+        <TabBar pickerContainerIsVisible={false} swingsViewIsVisible={false} />
       </BrowserRouter>
     )
 
@@ -120,7 +120,7 @@ describe("tabBar", () => {
 
     const wrapper = mount(
       <BrowserRouter>
-        <TabBar pickerContainerIsVisible={false} />
+        <TabBar pickerContainerIsVisible={false} swingsViewIsVisible={false} />
       </BrowserRouter>
     )
 
