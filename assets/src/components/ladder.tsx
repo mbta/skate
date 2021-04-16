@@ -240,6 +240,7 @@ const VehicleSvg = ({
             variant={vehicle.viaVariant}
             status={drawnStatus(vehicle)}
             alertIconStyle={alertIconStyle}
+            userSettings={userSettings}
           />
         )}
       </g>

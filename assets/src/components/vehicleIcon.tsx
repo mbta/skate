@@ -1,7 +1,6 @@
-import React, { ReactElement, useContext } from "react"
+import React, { ReactElement } from "react"
 import Tippy from "@tippyjs/react"
 import "tippy.js/dist/tippy.css"
-import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
 import { DrawnStatus, statusClasses } from "../models/vehicleStatus"
 import { AlertIconStyle, IconAlertCircleSvgNode } from "./iconAlertCircle"
@@ -10,6 +9,7 @@ import { isGhost } from "../models/vehicle"
 import { RunId, VehicleOrGhost } from "../realtime.d"
 import { BlockId, ViaVariant } from "../schedule.d"
 import { scheduleAdherenceLabelString } from "./propertiesPanel/header"
+import { UserSettings } from "../userSettings"
 
 export enum Orientation {
   Up,
@@ -24,13 +24,17 @@ export enum Size {
   Large,
 }
 
-export interface Props {
+export interface ViewBoxProps {
   size: Size
   orientation: Orientation
   label?: string
-  variant?: string | null
   status?: DrawnStatus
   alertIconStyle?: AlertIconStyle
+}
+
+export interface Props extends ViewBoxProps {
+  variant?: string | null
+  userSettings: UserSettings
 }
 
 export interface TooltipProps {
@@ -154,7 +158,12 @@ export const viewBox = ({
   label,
   status,
   alertIconStyle,
-}: Props): { left: number; top: number; width: number; height: number } => {
+}: ViewBoxProps): {
+  left: number
+  top: number
+  width: number
+  height: number
+} => {
   // shrink the viewbox to fit around the triangle and label
   const scale = scaleForSize(size)
   const labelBgWidth = label ? labelBackgroundWidth(size, label) : 0
@@ -214,9 +223,8 @@ export const VehicleIconSvgNode = React.memo(
     variant,
     status,
     alertIconStyle,
+    userSettings,
   }: Props): ReactElement<SVGElement> => {
-    const [{ userSettings }] = useContext(StateDispatchContext)
-
     status = status || "plain"
     variant = variant && variant !== "_" ? variant : undefined
     // ghosts can't be drawn sideways
