@@ -240,6 +240,7 @@ const VehicleSvg = ({
             variant={vehicle.viaVariant}
             status={drawnStatus(vehicle)}
             alertIconStyle={alertIconStyle}
+            userSettings={userSettings}
           />
         )}
       </g>
@@ -267,50 +268,46 @@ const RoadLines = ({ height }: { height: number }) => (
   </>
 )
 
-const LadderTimepoint = ({
-  timepoint,
-  y,
-}: {
-  timepoint: Timepoint
-  y: number
-}) => (
-  <>
-    <circle
-      className="m-ladder__stop-circle"
-      cx={-CENTER_TO_LINE}
-      cy={y}
-      r="3"
-    />
-    <circle
-      className="m-ladder__stop-circle"
-      cx={CENTER_TO_LINE}
-      cy={y}
-      r="3"
-    />
-    <Tippy
-      content={timepoint.name}
-      trigger="click"
-      className="m-ladder__timepoint-name-tooltip"
-      /* istanbul ignore next */
-      onShow={() => {
+const LadderTimepoint = React.memo(
+  ({ timepoint, y }: { timepoint: Timepoint; y: number }) => (
+    <>
+      <circle
+        className="m-ladder__stop-circle"
+        cx={-CENTER_TO_LINE}
+        cy={y}
+        r="3"
+      />
+      <circle
+        className="m-ladder__stop-circle"
+        cx={CENTER_TO_LINE}
+        cy={y}
+        r="3"
+      />
+      <Tippy
+        content={timepoint.name}
+        trigger="click"
+        className="m-ladder__timepoint-name-tooltip"
         /* istanbul ignore next */
-        if (window.FS) {
+        onShow={() => {
           /* istanbul ignore next */
-          window.FS.event("Timepoint names tooltip opened")
-        }
-      }}
-    >
-      <text
-        className="m-ladder__timepoint-name"
-        x="0"
-        y={y}
-        textAnchor="middle"
-        dominantBaseline="middle"
+          if (window.FS) {
+            /* istanbul ignore next */
+            window.FS.event("Timepoint names tooltip opened")
+          }
+        }}
       >
-        {timepoint.id}
-      </text>
-    </Tippy>
-  </>
+        <text
+          className="m-ladder__timepoint-name"
+          x="0"
+          y={y}
+          textAnchor="middle"
+          dominantBaseline="middle"
+        >
+          {timepoint.id}
+        </text>
+      </Tippy>
+    </>
+  )
 )
 
 /** timepoints should be ordered top to bottom */

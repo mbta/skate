@@ -47,6 +47,7 @@ const OtherVehicle = ({ vehicle }: { vehicle: Vehicle }) => {
         orientation={Orientation.Right}
         label={vehicleLabel(vehicle, userSettings)}
         variant={viaVariant}
+        userSettings={userSettings}
       />
     </div>
   )
@@ -110,6 +111,7 @@ const HeadwayDiagram = ({ vehicle }: { vehicle: Vehicle }) => {
             orientation={Orientation.Right}
             label={vehicleLabel(vehicle, userSettings)}
             variant={viaVariant}
+            userSettings={userSettings}
           />
         </div>
 

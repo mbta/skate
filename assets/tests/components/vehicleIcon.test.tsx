@@ -6,23 +6,72 @@ import VehicleIcon, {
   VehicleIconSvgNode,
 } from "../../src/components/vehicleIcon"
 import { AlertIconStyle } from "../../src/components/iconAlertCircle"
+import { defaultUserSettings } from "../../src/userSettings"
 
 test("renders in all directions and sizes", () => {
   const tree = renderer
     .create(
       <>
-        <VehicleIcon size={Size.Small} orientation={Orientation.Up} />
-        <VehicleIcon size={Size.Small} orientation={Orientation.Right} />
-        <VehicleIcon size={Size.Small} orientation={Orientation.Down} />
-        <VehicleIcon size={Size.Small} orientation={Orientation.Left} />
-        <VehicleIcon size={Size.Medium} orientation={Orientation.Up} />
-        <VehicleIcon size={Size.Medium} orientation={Orientation.Right} />
-        <VehicleIcon size={Size.Medium} orientation={Orientation.Down} />
-        <VehicleIcon size={Size.Medium} orientation={Orientation.Left} />
-        <VehicleIcon size={Size.Large} orientation={Orientation.Up} />
-        <VehicleIcon size={Size.Large} orientation={Orientation.Right} />
-        <VehicleIcon size={Size.Large} orientation={Orientation.Down} />
-        <VehicleIcon size={Size.Large} orientation={Orientation.Left} />
+        <VehicleIcon
+          size={Size.Small}
+          orientation={Orientation.Up}
+          userSettings={defaultUserSettings}
+        />
+        <VehicleIcon
+          size={Size.Small}
+          orientation={Orientation.Right}
+          userSettings={defaultUserSettings}
+        />
+        <VehicleIcon
+          size={Size.Small}
+          orientation={Orientation.Down}
+          userSettings={defaultUserSettings}
+        />
+        <VehicleIcon
+          size={Size.Small}
+          orientation={Orientation.Left}
+          userSettings={defaultUserSettings}
+        />
+        <VehicleIcon
+          size={Size.Medium}
+          orientation={Orientation.Up}
+          userSettings={defaultUserSettings}
+        />
+        <VehicleIcon
+          size={Size.Medium}
+          orientation={Orientation.Right}
+          userSettings={defaultUserSettings}
+        />
+        <VehicleIcon
+          size={Size.Medium}
+          orientation={Orientation.Down}
+          userSettings={defaultUserSettings}
+        />
+        <VehicleIcon
+          size={Size.Medium}
+          orientation={Orientation.Left}
+          userSettings={defaultUserSettings}
+        />
+        <VehicleIcon
+          size={Size.Large}
+          orientation={Orientation.Up}
+          userSettings={defaultUserSettings}
+        />
+        <VehicleIcon
+          size={Size.Large}
+          orientation={Orientation.Right}
+          userSettings={defaultUserSettings}
+        />
+        <VehicleIcon
+          size={Size.Large}
+          orientation={Orientation.Down}
+          userSettings={defaultUserSettings}
+        />
+        <VehicleIcon
+          size={Size.Large}
+          orientation={Orientation.Left}
+          userSettings={defaultUserSettings}
+        />
       </>
     )
     .toJSON()
@@ -40,6 +89,7 @@ test("renders with variants, labels, and alert icons", () => {
           label="0617"
           variant="X"
           alertIconStyle={AlertIconStyle.Black}
+          userSettings={defaultUserSettings}
         />
         <VehicleIcon
           size={Size.Small}
@@ -47,6 +97,7 @@ test("renders with variants, labels, and alert icons", () => {
           label="0617"
           variant="X"
           alertIconStyle={AlertIconStyle.Black}
+          userSettings={defaultUserSettings}
         />
         <VehicleIcon
           size={Size.Small}
@@ -54,6 +105,7 @@ test("renders with variants, labels, and alert icons", () => {
           label="0617"
           variant="X"
           alertIconStyle={AlertIconStyle.Black}
+          userSettings={defaultUserSettings}
         />
         <VehicleIcon
           size={Size.Small}
@@ -61,6 +113,7 @@ test("renders with variants, labels, and alert icons", () => {
           label="0617"
           variant="X"
           alertIconStyle={AlertIconStyle.Black}
+          userSettings={defaultUserSettings}
         />
         <VehicleIcon
           size={Size.Medium}
@@ -68,6 +121,7 @@ test("renders with variants, labels, and alert icons", () => {
           label="0617"
           variant="X"
           alertIconStyle={AlertIconStyle.Black}
+          userSettings={defaultUserSettings}
         />
         <VehicleIcon
           size={Size.Medium}
@@ -75,6 +129,7 @@ test("renders with variants, labels, and alert icons", () => {
           label="0617"
           variant="X"
           alertIconStyle={AlertIconStyle.Black}
+          userSettings={defaultUserSettings}
         />
         <VehicleIcon
           size={Size.Medium}
@@ -82,6 +137,7 @@ test("renders with variants, labels, and alert icons", () => {
           label="0617"
           variant="X"
           alertIconStyle={AlertIconStyle.Black}
+          userSettings={defaultUserSettings}
         />
         <VehicleIcon
           size={Size.Medium}
@@ -89,6 +145,7 @@ test("renders with variants, labels, and alert icons", () => {
           label="0617"
           variant="X"
           alertIconStyle={AlertIconStyle.Black}
+          userSettings={defaultUserSettings}
         />
         <VehicleIcon
           size={Size.Large}
@@ -96,6 +153,7 @@ test("renders with variants, labels, and alert icons", () => {
           label="0617"
           variant="X"
           alertIconStyle={AlertIconStyle.Black}
+          userSettings={defaultUserSettings}
         />
         <VehicleIcon
           size={Size.Large}
@@ -103,6 +161,7 @@ test("renders with variants, labels, and alert icons", () => {
           label="0617"
           variant="X"
           alertIconStyle={AlertIconStyle.Black}
+          userSettings={defaultUserSettings}
         />
         <VehicleIcon
           size={Size.Large}
@@ -110,6 +169,7 @@ test("renders with variants, labels, and alert icons", () => {
           label="0617"
           variant="X"
           alertIconStyle={AlertIconStyle.Black}
+          userSettings={defaultUserSettings}
         />
         <VehicleIcon
           size={Size.Large}
@@ -117,6 +177,7 @@ test("renders with variants, labels, and alert icons", () => {
           label="0617"
           variant="X"
           alertIconStyle={AlertIconStyle.Black}
+          userSettings={defaultUserSettings}
         />
       </>
     )
@@ -133,11 +194,13 @@ test("renders extended labels", () => {
           size={Size.Large}
           orientation={Orientation.Up}
           label="SW-OFF"
+          userSettings={defaultUserSettings}
         />
         <VehicleIcon
           size={Size.Large}
           orientation={Orientation.Up}
           label="PULL-B"
+          userSettings={defaultUserSettings}
         />
       </>
     )
@@ -154,33 +217,43 @@ test("renders with all statuses", () => {
           size={Size.Medium}
           orientation={Orientation.Up}
           status={"on-time"}
+          userSettings={defaultUserSettings}
         />
         <VehicleIcon
           size={Size.Medium}
           orientation={Orientation.Up}
           status={"early"}
+          userSettings={defaultUserSettings}
         />
         <VehicleIcon
           size={Size.Medium}
           orientation={Orientation.Up}
           status={"late"}
+          userSettings={defaultUserSettings}
         />
         <VehicleIcon
           size={Size.Medium}
           orientation={Orientation.Up}
           status={"off-course"}
+          userSettings={defaultUserSettings}
         />
         <VehicleIcon
           size={Size.Medium}
           orientation={Orientation.Up}
           status={"ghost"}
+          userSettings={defaultUserSettings}
         />
         <VehicleIcon
           size={Size.Medium}
           orientation={Orientation.Up}
           status={"plain"}
+          userSettings={defaultUserSettings}
         />
-        <VehicleIcon size={Size.Medium} orientation={Orientation.Up} />
+        <VehicleIcon
+          size={Size.Medium}
+          orientation={Orientation.Up}
+          userSettings={defaultUserSettings}
+        />
       </>
     )
     .toJSON()
@@ -196,6 +269,7 @@ test("ghost with variant doesn't have eyes", () => {
         orientation={Orientation.Up}
         status={"ghost"}
         variant={"X"}
+        userSettings={defaultUserSettings}
       />
     )
     .toJSON()
@@ -211,6 +285,7 @@ test("ghost doesn't flip on its side", () => {
         orientation={Orientation.Up}
         status={"ghost"}
         label={"ghost"}
+        userSettings={defaultUserSettings}
       />
     )
     .toJSON()
@@ -222,6 +297,7 @@ test("ghost doesn't flip on its side", () => {
         orientation={Orientation.Left}
         status={"ghost"}
         label={"ghost"}
+        userSettings={defaultUserSettings}
       />
     )
     .toJSON()
@@ -233,6 +309,7 @@ test("ghost doesn't flip on its side", () => {
         orientation={Orientation.Right}
         status={"ghost"}
         label={"ghost"}
+        userSettings={defaultUserSettings}
       />
     )
     .toJSON()
@@ -248,6 +325,7 @@ test("ghost doesn't flip upside down", () => {
         size={Size.Medium}
         orientation={Orientation.Up}
         status={"ghost"}
+        userSettings={defaultUserSettings}
       />
     )
     .toJSON()
@@ -258,6 +336,7 @@ test("ghost doesn't flip upside down", () => {
         size={Size.Medium}
         orientation={Orientation.Down}
         status={"ghost"}
+        userSettings={defaultUserSettings}
       />
     )
     .toJSON()
@@ -273,6 +352,7 @@ test("ghost going down puts label above it", () => {
         orientation={Orientation.Down}
         status={"ghost"}
         label={"ghost"}
+        userSettings={defaultUserSettings}
       />
     )
     .toJSON()
@@ -289,12 +369,14 @@ test("renders ghost with alert icon", () => {
           orientation={Orientation.Up}
           status={"ghost"}
           alertIconStyle={AlertIconStyle.Black}
+          userSettings={defaultUserSettings}
         />
         <VehicleIcon
           size={Size.Medium}
           orientation={Orientation.Down}
           status={"ghost"}
           alertIconStyle={AlertIconStyle.Highlighted}
+          userSettings={defaultUserSettings}
         />
       </>
     )
@@ -311,6 +393,7 @@ test("renders an unwrapped svg node", () => {
           size={Size.Medium}
           orientation={Orientation.Down}
           label="label"
+          userSettings={defaultUserSettings}
         />
       </svg>
     )

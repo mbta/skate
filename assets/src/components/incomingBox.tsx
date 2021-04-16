@@ -62,6 +62,7 @@ const IncomingBoxVehicle = ({
               orientation={orientation}
               variant={vehicleOrGhost.viaVariant}
               status={drawnStatus(vehicleOrGhost)}
+              userSettings={userSettings}
             />
           )}
         </div>

@@ -150,6 +150,7 @@ const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
             label={vehicleLabel(vehicle, userSettings)}
             variant={vehicle.viaVariant}
             status={drawnStatus(vehicle)}
+            userSettings={userSettings}
           />
         </div>
         <div className="m-properties-panel__variant">
