@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@rehooks/component-size": "^1.0.3",
-    "@sentry/react": "^5.27.4",
+    "@sentry/react": "^6.3.2",
     "@tippyjs/react": "^4.2.3",
     "core-js": "^3.6.4",
     "identity-obj-proxy": "^3.0.0",
