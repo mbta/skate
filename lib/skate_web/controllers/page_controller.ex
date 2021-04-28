@@ -14,6 +14,16 @@ defmodule SkateWeb.PageController do
     user_settings = UserSettings.get_or_create(username)
     route_settings = RouteSettings.get_or_create(username)
 
+    beta_username_prefix = Application.get_env(:skate, :beta_username_prefix)
+
+    swings_beta_usernames =
+      Application.get_env(:skate, :swings_beta_usernames)
+      |> String.split(~r/,/)
+      |> Enum.filter(&(String.length(&1) > 0))
+      |> Enum.map(&(beta_username_prefix <> &1))
+
+    enable_swings_beta = username in swings_beta_usernames
+
     conn
     |> assign(:username, username)
     |> assign(:csrf_token, Plug.CSRFProtection.get_csrf_token())
