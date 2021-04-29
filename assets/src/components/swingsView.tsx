@@ -26,7 +26,7 @@ const SwingsView = (): ReactElement<HTMLElement> => {
 
   const activeSwings = swings
     ? swings.filter((swing) => {
-        return swing.time > serviceDaySeconds(currentTime)
+        return swing.time + 60 > serviceDaySeconds(currentTime)
       })
     : []
 
