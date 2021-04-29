@@ -69,6 +69,31 @@ describe("rightPanel", () => {
     expect(wrapper.html()).toContain("m-vehicle-properties-panel")
     expect(wrapper.html()).not.toContain("m-notification-drawer")
   })
+
+  test("shows swings view", () => {
+    const state: State = { ...initialState, swingsViewIsVisible: true }
+    const wrapper = mount(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <RightPanel />
+      </StateDispatchProvider>
+    )
+    expect(wrapper.html()).toContain("Swings view")
+  })
+
+  test("prefers VPP to swings view", () => {
+    const state: State = {
+      ...initialState,
+      selectedVehicleId: "id",
+      swingsViewIsVisible: true,
+    }
+    const wrapper = mount(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <RightPanel selectedVehicleOrGhost={vehicle} />
+      </StateDispatchProvider>
+    )
+    expect(wrapper.html()).toContain("m-vehicle-properties-panel")
+    expect(wrapper.html()).not.toContain("Swings view")
+  })
 })
 
 const vehicle: Vehicle = {
