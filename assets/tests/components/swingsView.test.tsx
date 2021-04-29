@@ -1,10 +1,13 @@
+import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
 import SwingsView from "../../src/components/swingsView"
 import { RoutesProvider } from "../../src/contexts/routesContext"
+import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useSwings from "../../src/hooks/useSwings"
 import useVehiclesForRunIds from "../../src/hooks/useVehiclesForRunIds"
 import { Route, Swing } from "../../src/schedule"
+import { initialState, selectVehicle, toggleSwingsView } from "../../src/state"
 import { Vehicle, Ghost, VehicleOrGhost } from "../../src/realtime"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import * as dateTime from "../../src/util/dateTime"
@@ -216,5 +219,63 @@ describe("SwingsView", () => {
       )
       .toJSON()
     expect(tree).toMatchSnapshot()
+  })
+
+  test("opens VPP when clicking an active run", () => {
+    ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
+      {
+        fromRouteId: "1",
+        fromRunId: "123-456",
+        fromTripId: "1234",
+        toRouteId: "1",
+        toRunId: "123-789",
+        toTripId: "5678",
+        time: 19000,
+      },
+    ])
+    ;(useVehiclesForRunIds as jest.Mock).mockImplementationOnce(
+      (): VehicleOrGhost[] => [vehicle]
+    )
+
+    const dispatch = jest.fn()
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+        <RoutesProvider routes={routes}>
+          <SwingsView />
+        </RoutesProvider>
+      </StateDispatchProvider>
+    )
+
+    wrapper.find("a").first().simulate("click")
+    expect(dispatch).toHaveBeenCalledWith(selectVehicle("v1"))
+  })
+
+  test("can close the swings view", () => {
+    ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
+      {
+        fromRouteId: "1",
+        fromRunId: "123-456",
+        fromTripId: "1234",
+        toRouteId: "1",
+        toRunId: "123-789",
+        toTripId: "5678",
+        time: 19000,
+      },
+    ])
+    ;(useVehiclesForRunIds as jest.Mock).mockImplementationOnce(
+      (): VehicleOrGhost[] => [vehicle]
+    )
+
+    const dispatch = jest.fn()
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+        <RoutesProvider routes={routes}>
+          <SwingsView />
+        </RoutesProvider>
+      </StateDispatchProvider>
+    )
+
+    wrapper.find(".m-close-button").first().simulate("click")
+    expect(dispatch).toHaveBeenCalledWith(toggleSwingsView())
   })
 })
