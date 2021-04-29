@@ -1,6 +1,7 @@
 defmodule SkateWeb.PageControllerTest do
   use SkateWeb.ConnCase
   use Skate.DataCase
+  import Test.Support.Helpers
 
   describe "GET /" do
     test "when logged out, redirects you to cognito auth", %{conn: conn} do
@@ -21,6 +22,22 @@ defmodule SkateWeb.PageControllerTest do
       conn = get(conn, "/")
 
       assert conn.assigns.username == user
+    end
+
+    @tag :authenticated
+    test "swings beta defaults to disabled", %{conn: conn} do
+      conn = get(conn, "/")
+
+      assert html_response(conn, 200) =~ "data-enable-swings-beta=\"false\""
+    end
+
+    @tag :authenticated
+    test "sets the swings beta as enabled", %{conn: conn, user: user} do
+      reassign_env(:skate, :swings_beta_usernames, user)
+
+      conn = get(conn, "/")
+
+      assert html_response(conn, 200) =~ "data-enable-swings-beta=\"true\""
     end
 
     @tag :authenticated
