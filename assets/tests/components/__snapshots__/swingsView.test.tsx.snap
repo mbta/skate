@@ -1,5 +1,114 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`SwingsView ignores vehicles without run ID 1`] = `
+<div
+  className="m-swings-view"
+  id="m-swings-view"
+>
+  <button
+    className="m-close-button"
+    onClick={[Function]}
+  >
+    <span
+      className=""
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "SVG",
+        }
+      }
+    />
+  </button>
+  <div
+    className="m-swings-view__header"
+  >
+    Swings view
+  </div>
+  <div
+    className="m-swings-view__description"
+  >
+    Upcoming swings on your selected routes
+  </div>
+  <div
+    className="m-swings-view__table-container"
+  >
+    <table
+      className="m-swings-view__table"
+    >
+      <thead
+        className="m-swings-view__table-header"
+      >
+        <tr>
+          <th
+            className="m-swings-view__table-header-cell"
+          >
+            Swing On Time
+          </th>
+          <th
+            className="m-swings-view__table-header-cell"
+          >
+            Swing On
+            <div
+              className="run-subheader"
+            >
+              Run
+            </div>
+          </th>
+          <th
+            className="m-swings-view__table-header-cell swing-off"
+          >
+            Swing Off
+            <div
+              className="run-subheader"
+            >
+              Run
+            </div>
+            <div
+              className="route-subheader"
+            >
+              Route
+            </div>
+          </th>
+          <th
+            className="m-swings-view__table-header-cell"
+          >
+            Vehicle No.
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          className="m-swings-view__table-row-inactive"
+        >
+          <th
+            className="m-swings-view__table-cell"
+          >
+            5:16 AM
+          </th>
+          <th
+            className="m-swings-view__table-cell"
+          >
+            789
+          </th>
+          <th
+            className="m-swings-view__table-cell swing-off"
+          >
+            456
+            <div
+              className="m-swings-view__route"
+            >
+              Name 1
+            </div>
+          </th>
+          <th
+            className="m-swings-view__table-cell"
+          />
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;
+
 exports[`SwingsView omits past swings 1`] = `
 <div
   className="m-swings-view"
@@ -189,7 +298,7 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
             <div
               className="m-swings-view__route"
             >
-              1
+              Name 1
             </div>
           </th>
           <th
@@ -230,7 +339,7 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
             <div
               className="m-swings-view__route"
             >
-              2
+              Name 3
             </div>
           </th>
           <th
@@ -257,7 +366,7 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
             <div
               className="m-swings-view__route"
             >
-              3
+              Name 3
             </div>
           </th>
           <th

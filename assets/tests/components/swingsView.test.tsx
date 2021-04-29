@@ -1,9 +1,10 @@
 import React from "react"
 import renderer from "react-test-renderer"
 import SwingsView from "../../src/components/swingsView"
+import { RoutesProvider } from "../../src/contexts/routesContext"
 import useSwings from "../../src/hooks/useSwings"
 import useVehiclesForRunIds from "../../src/hooks/useVehiclesForRunIds"
-import { Swing } from "../../src/schedule"
+import { Route, Swing } from "../../src/schedule"
 import { Vehicle, Ghost, VehicleOrGhost } from "../../src/realtime"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import * as dateTime from "../../src/util/dateTime"
@@ -16,11 +17,6 @@ jest.mock("../../src/hooks/useSwings", () => ({
 jest.mock("../../src/hooks/useVehiclesForRunIds", () => ({
   __esModule: true,
   default: jest.fn(),
-}))
-
-jest.mock("../../src/hooks/useRoutes", () => ({
-  __esModule: true,
-  useRoutes: jest.fn(),
 }))
 
 jest.spyOn(dateTime, "now").mockImplementation(() => {
@@ -74,7 +70,7 @@ const vehicle: Vehicle = {
 const ghost: Ghost = {
   id: "ghost-trip",
   directionId: 0,
-  routeId: "39",
+  routeId: "2",
   tripId: "5678",
   headsign: "headsign",
   blockId: "block",
@@ -89,10 +85,43 @@ const ghost: Ghost = {
   blockWaivers: [],
 }
 
+const routes: Route[] = [
+  {
+    id: "1",
+    name: "Name 1",
+    directionNames: {
+      0: "Someplace",
+      1: "Some Otherplace",
+    },
+  },
+  {
+    id: "2",
+    name: "Name 3",
+    directionNames: {
+      0: "Someplace",
+      1: "Some Otherplace",
+    },
+  },
+  {
+    id: "3",
+    name: "Name 3",
+    directionNames: {
+      0: "Someplace",
+      1: "Some Otherplace",
+    },
+  },
+]
+
 describe("SwingsView", () => {
   test("renders loading message", () => {
     ;(useSwings as jest.Mock).mockImplementationOnce(() => null)
-    const tree = renderer.create(<SwingsView />).toJSON()
+    const tree = renderer
+      .create(
+        <RoutesProvider routes={routes}>
+          <SwingsView />
+        </RoutesProvider>
+      )
+      .toJSON()
     expect(tree).toMatchSnapshot()
   })
 
@@ -108,7 +137,14 @@ describe("SwingsView", () => {
         time: 1000,
       },
     ])
-    const tree = renderer.create(<SwingsView />).toJSON()
+
+    const tree = renderer
+      .create(
+        <RoutesProvider routes={routes}>
+          <SwingsView />
+        </RoutesProvider>
+      )
+      .toJSON()
     expect(tree).toMatchSnapshot()
   })
 
@@ -145,7 +181,40 @@ describe("SwingsView", () => {
     ;(useVehiclesForRunIds as jest.Mock).mockImplementationOnce(
       (): VehicleOrGhost[] => [vehicle, ghost]
     )
-    const tree = renderer.create(<SwingsView />).toJSON()
+
+    const tree = renderer
+      .create(
+        <RoutesProvider routes={routes}>
+          <SwingsView />
+        </RoutesProvider>
+      )
+      .toJSON()
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("ignores vehicles without run ID", () => {
+    ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
+      {
+        fromRouteId: "1",
+        fromRunId: "123-456",
+        fromTripId: "1234",
+        toRouteId: "1",
+        toRunId: "123-789",
+        toTripId: "5678",
+        time: 19000,
+      },
+    ])
+    ;(useVehiclesForRunIds as jest.Mock).mockImplementationOnce(
+      (): VehicleOrGhost[] => [{ ...vehicle, runId: null }]
+    )
+
+    const tree = renderer
+      .create(
+        <RoutesProvider routes={routes}>
+          <SwingsView />
+        </RoutesProvider>
+      )
+      .toJSON()
     expect(tree).toMatchSnapshot()
   })
 })
