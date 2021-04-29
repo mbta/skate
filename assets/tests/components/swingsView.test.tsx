@@ -221,7 +221,16 @@ describe("SwingsView", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("opens VPP when clicking an active run", () => {
+  test("opens VPP when clicking an active run and sends Fullstory event", () => {
+    const originalFS = window.FS
+    const originalUsername = window.username
+    window.FS = { event: jest.fn(), identify: jest.fn() }
+    window.username = "username"
+
+    afterEach(() => {
+      window.FS = originalFS
+      window.username = originalUsername
+    })
     ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
       {
         fromRouteId: "1",
@@ -248,6 +257,9 @@ describe("SwingsView", () => {
 
     wrapper.find("a").first().simulate("click")
     expect(dispatch).toHaveBeenCalledWith(selectVehicle("v1"))
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      "Clicked on run from swings view"
+    )
   })
 
   test("can close the swings view", () => {

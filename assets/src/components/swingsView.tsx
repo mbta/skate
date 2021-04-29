@@ -154,7 +154,14 @@ const SwingRow = ({
               ? upRightIcon("m-swings-view__run_icon")
               : ghostIcon("m-swings-view__run_icon")}
 
-            <a onClick={() => dispatch(selectVehicle(vehicleOrGhost.id))}>
+            <a
+              onClick={() => {
+                if (window.FS) {
+                  window.FS.event("Clicked on run from swings view")
+                }
+                dispatch(selectVehicle(vehicleOrGhost.id))
+              }}
+            >
               {runIdToLabel(swing.fromRunId)}
             </a>
           </>

@@ -116,11 +116,21 @@ describe("tabBar", () => {
     expect(dispatch).toHaveBeenCalledWith(toggleNotificationDrawer())
   })
 
-  test("clicking the swings icon toggles the swings view", () => {
+  test("clicking the swings icon toggles the swings view and sends Fullstory event", () => {
+    const originalFS = window.FS
+    const originalUsername = window.username
+    window.FS = { event: jest.fn(), identify: jest.fn() }
+    window.username = "username"
+
+    afterEach(() => {
+      window.FS = originalFS
+      window.username = originalUsername
+    })
     ;(appData as jest.Mock).mockImplementationOnce(() => ({
       enableSwingsBeta: JSON.stringify(true),
     }))
     const dispatch = jest.fn()
+
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
         <BrowserRouter>
@@ -131,6 +141,8 @@ describe("tabBar", () => {
 
     wrapper.find(".m-tab-bar__swings").first().simulate("click")
     expect(dispatch).toHaveBeenCalledWith(toggleSwingsView())
+
+    expect(window.FS!.event).toHaveBeenCalledWith("Swings view toggled")
   })
 
   it("opens drift when you click on the chat icon", () => {

@@ -109,6 +109,9 @@ const TabBar = ({
                 (swingsViewIsVisible ? " m-tab-bar__link--active" : "")
               }
               onClick={() => {
+                if (window.FS) {
+                  window.FS.event("Swings view toggled")
+                }
                 dispatch(toggleSwingsView())
               }}
             >
