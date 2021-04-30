@@ -33,6 +33,8 @@ config :skate,
   redirect_http?: false,
   static_href: {SkateWeb.Router.Helpers, :static_path},
   timezone: "America/New_York",
+  swings_beta_usernames: {:system, "SWINGS_BETA_USERNAMES"},
+  beta_username_prefix: {:system, "BETA_USERNAME_PREFIX"},
   schedule_health_checks: %{
     routes: %{
       min_length: 100
@@ -82,12 +84,6 @@ config :skate,
       }
     ]
   }
-
-config :skate,
-       :swings_beta_usernames,
-       System.get_env("SWINGS_BETA_USERNAMES", "")
-       |> String.split(~r/,/)
-       |> Enum.map(&("ActiveDirectory_" <> &1))
 
 config :skate, Schedule.CacheFile, cache_filename: nil
 

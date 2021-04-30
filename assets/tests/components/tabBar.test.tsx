@@ -2,10 +2,15 @@ import { mount } from "enzyme"
 import React from "react"
 import { BrowserRouter } from "react-router-dom"
 import renderer from "react-test-renderer"
+import appData from "../../src/appData"
 import TabBar from "../../src/components/tabBar"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import * as browser from "../../src/models/browser"
-import { initialState, toggleNotificationDrawer } from "../../src/state"
+import {
+  initialState,
+  toggleNotificationDrawer,
+  toggleSwingsView,
+} from "../../src/state"
 
 window.Appcues = {
   identify: jest.fn(),
@@ -21,6 +26,13 @@ window.drift = {
   },
 }
 
+jest.mock("../../src/appData", () => ({
+  __esModule: true,
+  default: jest.fn(() => ({
+    enableSwingsBeta: JSON.stringify(false),
+  })),
+}))
+
 jest.mock("../../src/laboratoryFeatures", () => ({
   __esModule: true,
   default: jest.fn(() => true),
@@ -31,7 +43,22 @@ describe("tabBar", () => {
     const tree = renderer
       .create(
         <BrowserRouter>
-          <TabBar pickerContainerIsVisible={true} />
+          <TabBar pickerContainerIsVisible={true} swingsViewIsVisible={false} />
+        </BrowserRouter>
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  it("renders with swings beta icon", () => {
+    ;(appData as jest.Mock).mockImplementationOnce(() => ({
+      enableSwingsBeta: JSON.stringify(true),
+    }))
+    const tree = renderer
+      .create(
+        <BrowserRouter>
+          <TabBar pickerContainerIsVisible={true} swingsViewIsVisible={false} />
         </BrowserRouter>
       )
       .toJSON()
@@ -42,7 +69,7 @@ describe("tabBar", () => {
   it("sets class to visible when picker is visible", () => {
     const wrapper = mount(
       <BrowserRouter>
-        <TabBar pickerContainerIsVisible={true} />
+        <TabBar pickerContainerIsVisible={true} swingsViewIsVisible={false} />
       </BrowserRouter>
     )
     expect(wrapper.find(".m-tab-bar").hasClass("visible")).toBe(true)
@@ -52,7 +79,7 @@ describe("tabBar", () => {
   it("sets class to hidden when picker is hidden", () => {
     const wrapper = mount(
       <BrowserRouter>
-        <TabBar pickerContainerIsVisible={false} />
+        <TabBar pickerContainerIsVisible={false} swingsViewIsVisible={false} />
       </BrowserRouter>
     )
     expect(wrapper.find(".m-tab-bar").hasClass("hidden")).toBe(true)
@@ -66,7 +93,7 @@ describe("tabBar", () => {
 
     const wrapper = mount(
       <BrowserRouter>
-        <TabBar pickerContainerIsVisible={false} />
+        <TabBar pickerContainerIsVisible={false} swingsViewIsVisible={false} />
       </BrowserRouter>
     )
 
@@ -80,7 +107,7 @@ describe("tabBar", () => {
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
         <BrowserRouter>
-          <TabBar pickerContainerIsVisible={true} />
+          <TabBar pickerContainerIsVisible={true} swingsViewIsVisible={false} />
         </BrowserRouter>
       </StateDispatchProvider>
     )
@@ -89,10 +116,39 @@ describe("tabBar", () => {
     expect(dispatch).toHaveBeenCalledWith(toggleNotificationDrawer())
   })
 
+  test("clicking the swings icon toggles the swings view and sends Fullstory event", () => {
+    const originalFS = window.FS
+    const originalUsername = window.username
+    window.FS = { event: jest.fn(), identify: jest.fn() }
+    window.username = "username"
+
+    afterEach(() => {
+      window.FS = originalFS
+      window.username = originalUsername
+    })
+    ;(appData as jest.Mock).mockImplementationOnce(() => ({
+      enableSwingsBeta: JSON.stringify(true),
+    }))
+    const dispatch = jest.fn()
+
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+        <BrowserRouter>
+          <TabBar pickerContainerIsVisible={true} swingsViewIsVisible={false} />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    wrapper.find(".m-tab-bar__swings").first().simulate("click")
+    expect(dispatch).toHaveBeenCalledWith(toggleSwingsView())
+
+    expect(window.FS!.event).toHaveBeenCalledWith("Swings view toggled")
+  })
+
   it("opens drift when you click on the chat icon", () => {
     const wrapper = mount(
       <BrowserRouter>
-        <TabBar pickerContainerIsVisible={false} />
+        <TabBar pickerContainerIsVisible={false} swingsViewIsVisible={false} />
       </BrowserRouter>
     )
 
@@ -104,7 +160,7 @@ describe("tabBar", () => {
   it("displays an appcue for the current page when you click on the help button", () => {
     const wrapper = mount(
       <BrowserRouter>
-        <TabBar pickerContainerIsVisible={false} />
+        <TabBar pickerContainerIsVisible={false} swingsViewIsVisible={false} />
       </BrowserRouter>
     )
 
@@ -120,7 +176,7 @@ describe("tabBar", () => {
 
     const wrapper = mount(
       <BrowserRouter>
-        <TabBar pickerContainerIsVisible={false} />
+        <TabBar pickerContainerIsVisible={false} swingsViewIsVisible={false} />
       </BrowserRouter>
     )
 

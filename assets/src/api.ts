@@ -3,6 +3,7 @@ import appData from "./appData"
 import { Block, Run } from "./minischedule"
 import { reload } from "./models/browser"
 import { blockFromData, runFromData } from "./models/minischeduleData"
+import { swingsFromData } from "./models/swingsData"
 import { NotificationId, NotificationState } from "./realtime.d"
 import { RouteSettings } from "./routeSettings"
 import {
@@ -10,6 +11,7 @@ import {
   Route,
   RouteId,
   Shape,
+  Swing,
   Timepoint,
   TripId,
 } from "./schedule.d"
@@ -130,6 +132,13 @@ export const fetchNearestIntersection = (
   apiCall({
     url: `/api/intersection?latitude=${latitude}&longitude=${longitude}`,
     parser: nullableParser((intersection: string) => intersection),
+    defaultResult: null,
+  })
+
+export const fetchSwings = (): Promise<Swing[] | null> =>
+  apiCall({
+    url: "/api/swings",
+    parser: nullableParser(swingsFromData),
     defaultResult: null,
   })
 

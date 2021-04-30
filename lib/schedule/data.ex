@@ -9,6 +9,7 @@ defmodule Schedule.Data do
   alias Schedule.TimepointOrder
   alias Schedule.Trip
   alias Schedule.Minischedule
+  alias Schedule.Swing
 
   alias Schedule.Gtfs
 
@@ -36,7 +37,8 @@ defmodule Schedule.Data do
           blocks: Block.by_id(),
           calendar: Calendar.t(),
           minischedule_runs: Minischedule.Run.by_id(),
-          minischedule_blocks: Minischedule.Block.by_id()
+          minischedule_blocks: Minischedule.Block.by_id(),
+          swings: Swing.by_schedule_id_and_route_id()
         }
 
   @type shapes_by_route_id :: %{Route.id() => [Shape.t()]}
@@ -55,7 +57,8 @@ defmodule Schedule.Data do
             blocks: %{},
             calendar: %{},
             minischedule_runs: %{},
-            minischedule_blocks: %{}
+            minischedule_blocks: %{},
+            swings: %{}
 
   @type files :: %{String.t() => binary()}
 
@@ -235,6 +238,24 @@ defmodule Schedule.Data do
     end
   end
 
+  @spec swings_for_route(t(), Route.id(), Util.Time.timestamp(), Util.Time.timestamp()) ::
+          [Swing.t()] | nil
+  def swings_for_route(
+        %__MODULE__{calendar: calendar, swings: swings},
+        route_id,
+        start_time,
+        end_time
+      ) do
+    dates = potentially_active_service_dates(start_time, end_time)
+    active_services = Map.take(calendar, dates)
+
+    Enum.flat_map(active_services, fn {_data, service_ids} ->
+      Enum.flat_map(service_ids, fn service_id ->
+        Map.get(swings, {service_id, route_id}, [])
+      end)
+    end)
+  end
+
   # Initialization
 
   @spec parse_files(all_files()) :: t()
@@ -287,7 +308,8 @@ defmodule Schedule.Data do
       blocks: Block.blocks_from_trips(Map.values(trips_by_id)),
       calendar: Calendar.from_files(gtfs_files["calendar.txt"], gtfs_files["calendar_dates.txt"]),
       minischedule_runs: minischedule_runs,
-      minischedule_blocks: minischedule_blocks
+      minischedule_blocks: minischedule_blocks,
+      swings: Swing.from_minischedule_blocks(minischedule_blocks, trips_by_id)
     }
   end
 

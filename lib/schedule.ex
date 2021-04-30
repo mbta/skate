@@ -8,7 +8,8 @@ defmodule Schedule do
     Data,
     Health,
     Minischedule,
-    Trip
+    Trip,
+    Swing
   }
 
   alias Schedule.Gtfs.{
@@ -143,6 +144,21 @@ defmodule Schedule do
     call_catch_timeout(server, {:minischedule_block, trip_id}, :minischedule_block, nil)
   end
 
+  @spec swings_for_route(
+          Route.id(),
+          Util.Time.timestamp(),
+          Util.Time.timestamp(),
+          GenServer.server()
+        ) :: [Swing.t()] | nil
+  def swings_for_route(route_id, start_time, end_time, server \\ __MODULE__) do
+    call_catch_timeout(
+      server,
+      {:swings_for_route, route_id, start_time, end_time},
+      :swings_for_route,
+      nil
+    )
+  end
+
   @doc """
   Handle Schedule server timeouts gracefully
   """
@@ -211,6 +227,14 @@ defmodule Schedule do
 
   def handle_call({:minischedule_block, trip_id}, _from, {:loaded, gtfs_data} = state) do
     {:reply, Data.minischedule_block(gtfs_data, trip_id), state}
+  end
+
+  def handle_call(
+        {:swings_for_route, route_id, start_time, end_time},
+        _from,
+        {:loaded, gtfs_data} = state
+      ) do
+    {:reply, Data.swings_for_route(gtfs_data, route_id, start_time, end_time), state}
   end
 
   # Initialization (Client)

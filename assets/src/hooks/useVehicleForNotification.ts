@@ -1,28 +1,22 @@
 import { Socket } from "phoenix"
 import { useEffect, useState } from "react"
-import { nullableParser } from "../api"
-import { useChannel } from "../hooks/useChannel"
+import useVehiclesForRunIds from "./useVehiclesForRunIds"
 import { isVehicle } from "../models/vehicle"
-import { vehicleOrGhostFromData } from "../models/vehicleData"
 import { Notification, VehicleOrGhost } from "../realtime.d"
 
 const useVehicleForNotification = (
   notification?: Notification,
   socket?: Socket
 ): VehicleOrGhost | undefined | null => {
-  const topic: string | null = notification
-    ? `vehicle:run_ids:${notification.runIds.join(",")}`
-    : null
-
   // undefined means we're still trying to load the vehicle,
   // null means we tried and failed
-  const newVehicleOrGhost = useChannel<VehicleOrGhost | undefined | null>({
+  const newVehiclesOrGhosts = useVehiclesForRunIds(
     socket,
-    topic,
-    event: "vehicle",
-    parser: nullableParser(vehicleOrGhostFromData),
-    loadingState: undefined,
-  })
+    notification?.runIds || []
+  )
+  const newVehicleOrGhost = Array.isArray(newVehiclesOrGhosts)
+    ? newVehiclesOrGhosts[0] || null
+    : newVehiclesOrGhosts
 
   const [clickthroughLogged, setClickthroughLogged] = useState<boolean>(false)
 

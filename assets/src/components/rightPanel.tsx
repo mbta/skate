@@ -5,6 +5,7 @@ import { VehicleOrGhost } from "../realtime.d"
 import { setNotification } from "../state"
 import NotificationDrawer from "./notificationDrawer"
 import PropertiesPanel from "./propertiesPanel"
+import SwingsView from "./swingsView"
 
 const RightPanel = ({
   selectedVehicleOrGhost,
@@ -23,6 +24,8 @@ const RightPanel = ({
 
   if (selectedVehicleOrGhost) {
     return <PropertiesPanel selectedVehicleOrGhost={selectedVehicleOrGhost} />
+  } else if (state.swingsViewIsVisible) {
+    return <SwingsView />
   } else if (state.notificationDrawerIsOpen) {
     return <NotificationDrawer />
   } else {

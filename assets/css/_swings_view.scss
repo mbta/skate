@@ -1,0 +1,137 @@
+.m-swings-view {
+  @include modal-content;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1001;
+
+  .m-close-button {
+    padding: 1.5rem;
+    position: absolute;
+    right: 0rem;
+    top: 0rem;
+  }
+}
+
+.m-swings-view__header {
+  @include font-header-big;
+  font-weight: 900;
+  padding-top: 1.875rem;
+  padding-left: 3rem;
+}
+
+.m-swings-view__description {
+  @include font-small;
+  padding-left: 3rem;
+  padding-bottom: 1.5rem;
+}
+
+.m-swings-view__table-container {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.m-swings-view__table {
+  border-collapse: collapse;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.m-swings-view__table-header {
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+
+.m-swings-view__table-header-cell {
+  position: relative;
+  padding-top: 0.6875rem;
+  padding-bottom: 1.3125rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  border-bottom: 1px solid #515459;
+
+  .run-subheader {
+    position: absolute;
+    top: calc(50% - 7px / 2 + 8px);
+    left: 1.5rem;
+    font-size: 0.5rem;
+    font-weight: 400;
+  }
+
+  &.swing-off {
+    padding-left: 2rem;
+    padding-right: 2rem;
+
+    .run-subheader {
+      left: 2rem;
+    }
+
+    .route-subheader {
+      position: absolute;
+      top: calc(50% - 7px / 2 + 8px);
+      left: 4.25rem;
+      font-size: 0.5rem;
+      font-weight: 400;
+    }
+  }
+}
+
+.m-swings-view__table-row-active {
+  background-color: $white;
+  font-weight: 700;
+}
+
+.m-swings-view__table-row-inactive {
+  color: #515459;
+  opacity: 0.84;
+  font-weight: 400;
+}
+
+.m-swings-view__table-cell {
+  position: relative;
+  border-bottom: 1px solid #dcdcdc;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 1.5rem;
+  padding-right: 3.5rem;
+  font-size: 0.6875rem;
+
+  &.swing-off {
+    padding-left: 2rem;
+  }
+
+  a {
+    text-decoration-line: underline;
+    cursor: pointer;
+  }
+}
+
+.m-swings-view__route {
+  position: absolute;
+  left: 4.25rem;
+  top: calc(50% - 13px / 2);
+  background: $color-primary-dark;
+  border-radius: 4px;
+  width: 1.625rem;
+  height: 0.8125rem;
+  color: $white;
+  text-align: center;
+}
+
+.m-swings-view__run_icon {
+  position: absolute;
+  bottom: 0.875rem;
+  right: 5.5rem;
+  fill: $color-primary-dark;
+  stroke: $color-primary-dark;
+
+  svg {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+}

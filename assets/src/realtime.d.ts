@@ -84,6 +84,10 @@ export type RouteStatus = "on_route" | "laying_over" | "pulling_out"
 
 export type RunId = string
 
+export interface ByRunId<T> {
+  [runId: string]: T
+}
+
 export type TrainVehicleId = string
 
 export interface TrainVehicle {

@@ -4,6 +4,7 @@ defmodule Schedule.DataTest do
   alias Schedule.Block
   alias Schedule.Data
   alias Schedule.Trip
+  alias Schedule.Swing
   alias Schedule.Gtfs.{Route, RoutePattern, Shape, Stop, StopTime, Timepoint}
   alias Schedule.Gtfs.Shape.Point
   alias Schedule.Minischedule
@@ -662,6 +663,31 @@ defmodule Schedule.DataTest do
       }
 
       assert Data.minischedule_block(data, trip.id) == nil
+    end
+  end
+
+  describe "swings_for_route/4" do
+    test "returns swings for currently-active service dates" do
+      swing = %Swing{
+        from_route_id: "1",
+        from_run_id: "123-456",
+        from_trip_id: "1234",
+        to_route_id: "1",
+        to_run_id: "123-789",
+        to_trip_id: "5678",
+        time: 1_000
+      }
+
+      data = %Data{
+        swings: %{{"today", "1"} => [swing]},
+        calendar: %{
+          ~D[2019-01-01] => ["today"]
+        }
+      }
+
+      # 2019-01-01 00:00:00 EST
+      time0 = 1_546_318_800
+      assert Data.swings_for_route(data, "1", time0 + 2, time0 + 5) == [swing]
     end
   end
 

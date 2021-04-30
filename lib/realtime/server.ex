@@ -93,6 +93,11 @@ defmodule Realtime.Server do
     )
   end
 
+  @spec subscribe_to_run_ids([Run.id()], GenServer.server()) :: [VehicleOrGhost.t()]
+  def subscribe_to_run_ids(run_ids, server \\ default_name()) do
+    subscribe(server, {:run_ids, run_ids})
+  end
+
   def peek_at_vehicles(run_ids, server \\ default_name()) do
     {_registry_key, ets} = GenServer.call(server, :subscription_info)
     lookup({ets, {:run_ids, run_ids}})
@@ -102,6 +107,7 @@ defmodule Realtime.Server do
   @spec subscribe(GenServer.server(), :all_shuttles) :: [Vehicle.t()]
   @spec subscribe(GenServer.server(), {:search, search_params()}) :: [VehicleOrGhost.t()]
   @spec subscribe(GenServer.server(), {:vehicle, String.t()}) :: [VehicleOrGhost.t()]
+  @spec subscribe(GenServer.server(), {:run_ids, [Run.id()]}) :: [VehicleOrGhost.t()]
   defp subscribe(server, subscription_key) do
     {registry_key, ets} = GenServer.call(server, :subscription_info)
     Registry.register(Realtime.Registry, registry_key, subscription_key)

@@ -71,6 +71,11 @@ defmodule SkateWeb.VehiclesChannelTest do
                subscribe_and_join(socket, VehiclesChannel, "vehicles:shuttle:all")
     end
 
+    test "subscribes to vehicles for a run ID", %{socket: socket} do
+      assert {:ok, %{data: []}, %Socket{} = socket} =
+               subscribe_and_join(socket, VehiclesChannel, "vehicles:run_ids:123-4567")
+    end
+
     test "subscribes to a vehicle search", %{socket: socket} do
       assert {:ok, %{data: []}, %Socket{}} =
                subscribe_and_join(socket, VehiclesChannel, "vehicles:search:run:123")

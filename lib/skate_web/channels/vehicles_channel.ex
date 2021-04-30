@@ -16,6 +16,12 @@ defmodule SkateWeb.VehiclesChannel do
     {:ok, %{data: vehicles_and_ghosts}, socket}
   end
 
+  def join("vehicles:run_ids:" <> run_ids, _message, socket) do
+    run_ids = String.split(run_ids, ",")
+    vehicles_and_ghosts = Duration.log_duration(Server, :subscribe_to_run_ids, [run_ids])
+    {:ok, %{data: vehicles_and_ghosts}, socket}
+  end
+
   def join(
         "vehicles:search:" <> search_params,
         _message,
