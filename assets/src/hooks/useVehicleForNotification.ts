@@ -15,7 +15,7 @@ const useVehicleForNotification = (
     notification?.runIds || []
   )
   const newVehicleOrGhost = Array.isArray(newVehiclesOrGhosts)
-    ? newVehiclesOrGhosts[0]
+    ? newVehiclesOrGhosts[0] || null
     : newVehiclesOrGhosts
 
   const [clickthroughLogged, setClickthroughLogged] = useState<boolean>(false)

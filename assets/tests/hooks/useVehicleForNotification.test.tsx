@@ -294,4 +294,33 @@ describe("useVehicleForNotification", () => {
     window.FS = originalFS
     window.username = originalUsername
   })
+
+  test("handles empty result from channel", () => {
+    const originalFS = window.FS
+    const originalUsername = window.username
+    window.FS = { event: jest.fn(), identify: jest.fn() }
+    window.username = "username"
+
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok", { data: [] })
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+
+    // tslint:disable: react-hooks-nesting
+    const { result } = renderHook(
+      () => {
+        return useVehicleForNotification(
+          {
+            ...notification,
+            startTime: new Date("2019-10-06"),
+          },
+          mockSocket
+        )
+      },
+      { wrapper }
+    )
+    expect(result.current).toBeNull()
+    expect(window.FS!.event).toHaveBeenCalledWith("Notification link failed")
+    window.FS = originalFS
+    window.username = originalUsername
+  })
 })
