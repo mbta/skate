@@ -65,6 +65,32 @@ defmodule Schedule.SwingTest do
               end_place: "place3",
               start_mid_route?: nil,
               end_mid_route?: false
+            },
+            %Minischedule.Piece{
+              schedule_id: "a",
+              run_id: "123-456",
+              block_id: "A12-34",
+              start_time: 400,
+              start_place: "place3",
+              trips: [
+                %Minischedule.Trip{
+                  id: "8901",
+                  block_id: "A12-34",
+                  route_id: "11",
+                  headsign: "Somewhere Else",
+                  direction_id: 0,
+                  via_variant: nil,
+                  run_id: "123-890",
+                  start_time: 400,
+                  end_time: 500,
+                  start_place: "place3",
+                  end_place: "place1"
+                }
+              ],
+              end_time: 500,
+              end_place: "place1",
+              start_mid_route?: nil,
+              end_mid_route?: false
             }
           ]
         }
@@ -117,6 +143,17 @@ defmodule Schedule.SwingTest do
                    to_run_id: "123-789",
                    to_trip_id: "5678",
                    time: 200
+                 }
+               ],
+               {"b", "11"} => [
+                 %Swing{
+                   from_route_id: "11",
+                   from_run_id: "123-789",
+                   from_trip_id: "5678",
+                   to_route_id: "11",
+                   to_run_id: "123-890",
+                   to_trip_id: "8901",
+                   time: 400
                  }
                ]
              }
