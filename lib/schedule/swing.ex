@@ -32,26 +32,8 @@ defmodule Schedule.Swing do
   @spec from_minischedule_blocks(Minischedule.Block.by_id(), Trip.by_id()) ::
           by_schedule_id_and_route_id()
   def from_minischedule_blocks(minischedule_blocks, trips_by_id) do
-    piece_pairs =
-      minischedule_blocks
-      |> Map.values()
-      |> Enum.map(& &1.pieces)
-      |> Enum.flat_map(fn pieces_for_block ->
-        Enum.chunk_every(pieces_for_block, 2, 1, :discard)
-        |> Enum.map(&List.to_tuple/1)
-      end)
-
     trip_pairs_with_swing =
-      piece_pairs
-      |> Enum.map(fn {piece1, piece2} ->
-        trip1 = piece1.trips |> List.last() |> trip_or_trip_id_to_trip(trips_by_id)
-        trip2 = piece2.trips |> List.first() |> trip_or_trip_id_to_trip(trips_by_id)
-
-        {trip1, trip2}
-      end)
-      |> Enum.filter(fn {trip1, trip2} ->
-        trip1.route_id || trip2.route_id
-      end)
+      minischedule_blocks_to_swing_trip_pairs(minischedule_blocks, trips_by_id)
 
     Enum.reduce(trip_pairs_with_swing, %{}, fn trip_pair, acc ->
       {swing_off_trip, swing_on_trip} = trip_pair
@@ -81,6 +63,29 @@ defmodule Schedule.Swing do
     end)
   end
 
+  @spec minischedule_blocks_to_swing_trip_pairs(Minischedule.Block.by_id(), Trip.by_id()) ::
+          [{Trip.id() | Minischedule.Trip.t(), Trip.id() | Minischedule.Trip.t()}]
+  defp minischedule_blocks_to_swing_trip_pairs(minischedule_blocks, trips_by_id) do
+    minischedule_blocks
+    |> Map.values()
+    |> Enum.map(& &1.pieces)
+    |> Enum.flat_map(fn pieces_for_block ->
+      Enum.chunk_every(pieces_for_block, 2, 1, :discard)
+      |> Enum.map(&List.to_tuple/1)
+    end)
+    |> Enum.map(fn {piece1, piece2} ->
+      trip1 = piece1.trips |> List.last() |> trip_or_trip_id_to_trip(trips_by_id)
+      trip2 = piece2.trips |> List.first() |> trip_or_trip_id_to_trip(trips_by_id)
+
+      {trip1, trip2}
+    end)
+    |> Enum.filter(fn {trip1, trip2} ->
+      trip1.route_id || trip2.route_id
+    end)
+  end
+
+  @spec trip_or_trip_id_to_trip(Trip.id() | Minischedule.Trip.t(), Trip.by_id()) ::
+          Minischedule.Trip.t() | Trip.t()
   defp trip_or_trip_id_to_trip(%Minischedule.Trip{} = trip, trips_by_id),
     do: Map.get(trips_by_id, trip.id, trip)
 
