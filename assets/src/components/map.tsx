@@ -28,6 +28,7 @@ import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
 import { Shape } from "../schedule"
 import { selectVehicle } from "../state"
 import { UserSettings } from "../userSettings"
+import { VehicleTooltip } from "./vehicleIcon"
 
 export interface Props {
   vehicles: Vehicle[]
@@ -134,12 +135,16 @@ const Vehicle = ({
   const zIndexOffset = isPrimary ? 2000 : 0
   return (
     <>
-      <Marker
-        position={position}
-        icon={vehicleIcon}
-        onClick={select}
-        zIndexOffset={zIndexOffset}
-      />
+      <VehicleTooltip vehicleOrGhost={vehicle}>
+        <span>
+          <Marker
+            position={position}
+            icon={vehicleIcon}
+            onClick={select}
+            zIndexOffset={zIndexOffset}
+          />
+        </span>
+      </VehicleTooltip>
       <Marker
         position={position}
         icon={labelIcon}
