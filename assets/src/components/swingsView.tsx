@@ -36,16 +36,16 @@ const SwingsView = (): ReactElement<HTMLElement> => {
 
   const { socket } = useContext(SocketContext)
   const swingVehicles = useVehiclesForRunIds(socket, swingRunIds)
-  let swingVehiclesByRunId: ByRunId<VehicleOrGhost> = {}
-  if (swingVehicles) {
-    swingVehiclesByRunId = swingVehicles.reduce((map, vehicle) => {
-      if (vehicle.runId) {
-        return { ...map, [vehicle.runId]: vehicle }
-      } else {
-        return map
-      }
-    }, swingVehiclesByRunId)
-  }
+
+  const swingVehiclesByRunId = swingVehicles
+    ? swingVehicles.reduce((map, vehicle) => {
+        if (vehicle.runId) {
+          return { ...map, [vehicle.runId]: vehicle }
+        } else {
+          return map
+        }
+      }, {})
+    : {}
 
   const swingRouteIds = uniq(activeSwings.map((swing) => swing.fromRouteId))
   const swingRoutes = useRoutes(swingRouteIds)
@@ -84,6 +84,10 @@ const SwingsTable = ({
   swingVehiclesByRunId: ByRunId<VehicleOrGhost>
   swingRoutesById: ByRouteId<Route>
 }): ReactElement<HTMLElement> => {
+  const sortedSwings = swings.sort((swing1, swing2) => {
+    return swing1.time - swing2.time
+  })
+
   return (
     <div className="m-swings-view__table-container">
       <table className="m-swings-view__table">
@@ -101,21 +105,17 @@ const SwingsTable = ({
           </tr>
         </thead>
         <tbody>
-          {swings
-            .sort((swing1, swing2) => {
-              return swing1.time - swing2.time
-            })
-            .map((swing) => (
-              <SwingRow
-                swing={swing}
-                vehicleOrGhost={
-                  swingVehiclesByRunId[swing.fromRunId] ||
-                  swingVehiclesByRunId[swing.toRunId]
-                }
-                route={swingRoutesById[swing.fromRouteId]}
-                key={`${swing.fromRunId}-${swing.toRunId}`}
-              />
-            ))}
+          {sortedSwings.map((swing) => (
+            <SwingRow
+              swing={swing}
+              vehicleOrGhost={
+                swingVehiclesByRunId[swing.fromRunId] ||
+                swingVehiclesByRunId[swing.toRunId]
+              }
+              route={swingRoutesById[swing.fromRouteId]}
+              key={`${swing.fromRunId}-${swing.toRunId}`}
+            />
+          ))}
         </tbody>
       </table>
     </div>

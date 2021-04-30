@@ -17,8 +17,7 @@ defmodule SkateWeb.SwingsController do
     swings =
       route_ids
       |> Enum.flat_map(fn route_id -> swings_fn.(route_id, now, now) end)
-      |> Enum.sort_by(fn swing -> {swing.from_run_id, swing.to_run_id} end)
-      |> Enum.dedup_by(fn swing -> {swing.from_run_id, swing.to_run_id} end)
+      |> Enum.uniq_by(fn swing -> {swing.from_run_id, swing.to_run_id} end)
 
     json(conn, %{data: swings})
   end

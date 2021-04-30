@@ -44,12 +44,11 @@ const TabBar = ({
         break
     }
   }
-  let swingsBetaEnabled = false
   const swingsBetaEnabledString: string | undefined = appData()
     ?.enableSwingsBeta
-  if (swingsBetaEnabledString !== undefined) {
-    swingsBetaEnabled = JSON.parse(swingsBetaEnabledString)
-  }
+  const swingsBetaEnabled = swingsBetaEnabledString
+    ? JSON.parse(swingsBetaEnabledString)
+    : false
 
   return (
     <div

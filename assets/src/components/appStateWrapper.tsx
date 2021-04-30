@@ -20,6 +20,8 @@ const AppStateWrapper = (): JSX.Element => {
     socketStatus.socket
   )
 
+  // TODO: Add extra VehicleForSwing provider, or better yet make a multi-purpose provider for all ad-hoc vehicle needs.
+
   return (
     <StateDispatchProvider state={state} dispatch={dispatch}>
       <SocketProvider socketStatus={socketStatus}>
