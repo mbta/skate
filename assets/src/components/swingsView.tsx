@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext, useState } from "react"
+import React, { ReactElement, useContext } from "react"
 import { useRoutes } from "../contexts/routesContext"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
@@ -8,25 +8,22 @@ import CloseButton from "./closeButton"
 import { flatten, uniq } from "../helpers/array"
 import { ghostIcon, upRightIcon } from "../helpers/icon"
 import { runIdToLabel } from "../helpers/vehicleLabel"
+import useCurrentTime from "../hooks/useCurrentTime"
 import useSwings from "../hooks/useSwings"
 import useVehiclesForRunIds from "../hooks/useVehiclesForRunIds"
 import { ByRunId, VehicleOrGhost } from "../realtime"
 import { ByRouteId, Route, Swing } from "../schedule"
 import { selectVehicle, toggleSwingsView } from "../state"
-import {
-  formattedScheduledTime,
-  now,
-  serviceDaySeconds,
-} from "../util/dateTime"
+import { formattedScheduledTime, serviceDaySeconds } from "../util/dateTime"
 
 const SwingsView = (): ReactElement<HTMLElement> => {
   const [, dispatch] = useContext(StateDispatchContext)
-  const [currentTime] = useState(now())
+  const currentTime = useCurrentTime()
   const swings = useSwings()
 
   const activeSwings = swings
     ? swings.filter((swing) => {
-        return swing.time + 60 > serviceDaySeconds(currentTime)
+        return swing.time + 600 > serviceDaySeconds(currentTime)
       })
     : []
 

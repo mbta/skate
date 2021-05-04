@@ -128,7 +128,7 @@ describe("SwingsView", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("omits past swings", () => {
+  test("omits swings more than 10 minutes in the past", () => {
     ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
       {
         fromRouteId: "1",
@@ -138,6 +138,29 @@ describe("SwingsView", () => {
         toRunId: "123-789",
         toTripId: "5678",
         time: 1000,
+      },
+    ])
+
+    const tree = renderer
+      .create(
+        <RoutesProvider routes={routes}>
+          <SwingsView />
+        </RoutesProvider>
+      )
+      .toJSON()
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("includes swings less than 10 minutes in the past", () => {
+    ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
+      {
+        fromRouteId: "1",
+        fromRunId: "123-456",
+        fromTripId: "1234",
+        toRouteId: "1",
+        toRunId: "123-789",
+        toTripId: "5678",
+        time: 17700,
       },
     ])
 
