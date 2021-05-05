@@ -90,15 +90,20 @@ const SwingsTable = ({
       <table className="m-swings-view__table">
         <thead className="m-swings-view__table-header">
           <tr>
-            <th className="m-swings-view__table-header-cell">Swing On Time</th>
             <th className="m-swings-view__table-header-cell">
-              Swing On<div className="run-subheader">Run</div>
+              Swing On <span className="swing-on-time">Time</span>
+            </th>
+            <th className="m-swings-view__table-header-cell">
+              <span className="swing-on">Swing On </span>
+              <div className="subheader">Run</div>
             </th>
             <th className="m-swings-view__table-header-cell swing-off">
-              Swing Off<div className="run-subheader">Run</div>
+              Swing Off<div className="subheader">Run</div>
               <div className="route-subheader">Route</div>
             </th>
-            <th className="m-swings-view__table-header-cell">Vehicle No.</th>
+            <th className="m-swings-view__table-header-cell">
+              Vehicle <span className="vehicle-no">No.</span>
+            </th>
           </tr>
         </thead>
         <tbody>

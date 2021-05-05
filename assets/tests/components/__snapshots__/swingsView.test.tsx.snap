@@ -41,14 +41,23 @@ exports[`SwingsView ignores vehicles without run ID 1`] = `
           <th
             className="m-swings-view__table-header-cell"
           >
-            Swing On Time
+            Swing On 
+            <span
+              className="swing-on-time"
+            >
+              Time
+            </span>
           </th>
           <th
             className="m-swings-view__table-header-cell"
           >
-            Swing On
+            <span
+              className="swing-on"
+            >
+              Swing On 
+            </span>
             <div
-              className="run-subheader"
+              className="subheader"
             >
               Run
             </div>
@@ -58,7 +67,7 @@ exports[`SwingsView ignores vehicles without run ID 1`] = `
           >
             Swing Off
             <div
-              className="run-subheader"
+              className="subheader"
             >
               Run
             </div>
@@ -71,7 +80,12 @@ exports[`SwingsView ignores vehicles without run ID 1`] = `
           <th
             className="m-swings-view__table-header-cell"
           >
-            Vehicle No.
+            Vehicle 
+            <span
+              className="vehicle-no"
+            >
+              No.
+            </span>
           </th>
         </tr>
       </thead>
@@ -150,14 +164,23 @@ exports[`SwingsView includes swings less than 10 minutes in the past 1`] = `
           <th
             className="m-swings-view__table-header-cell"
           >
-            Swing On Time
+            Swing On 
+            <span
+              className="swing-on-time"
+            >
+              Time
+            </span>
           </th>
           <th
             className="m-swings-view__table-header-cell"
           >
-            Swing On
+            <span
+              className="swing-on"
+            >
+              Swing On 
+            </span>
             <div
-              className="run-subheader"
+              className="subheader"
             >
               Run
             </div>
@@ -167,7 +190,7 @@ exports[`SwingsView includes swings less than 10 minutes in the past 1`] = `
           >
             Swing Off
             <div
-              className="run-subheader"
+              className="subheader"
             >
               Run
             </div>
@@ -180,7 +203,12 @@ exports[`SwingsView includes swings less than 10 minutes in the past 1`] = `
           <th
             className="m-swings-view__table-header-cell"
           >
-            Vehicle No.
+            Vehicle 
+            <span
+              className="vehicle-no"
+            >
+              No.
+            </span>
           </th>
         </tr>
       </thead>
@@ -259,14 +287,23 @@ exports[`SwingsView omits swings more than 10 minutes in the past 1`] = `
           <th
             className="m-swings-view__table-header-cell"
           >
-            Swing On Time
+            Swing On 
+            <span
+              className="swing-on-time"
+            >
+              Time
+            </span>
           </th>
           <th
             className="m-swings-view__table-header-cell"
           >
-            Swing On
+            <span
+              className="swing-on"
+            >
+              Swing On 
+            </span>
             <div
-              className="run-subheader"
+              className="subheader"
             >
               Run
             </div>
@@ -276,7 +313,7 @@ exports[`SwingsView omits swings more than 10 minutes in the past 1`] = `
           >
             Swing Off
             <div
-              className="run-subheader"
+              className="subheader"
             >
               Run
             </div>
@@ -289,7 +326,12 @@ exports[`SwingsView omits swings more than 10 minutes in the past 1`] = `
           <th
             className="m-swings-view__table-header-cell"
           >
-            Vehicle No.
+            Vehicle 
+            <span
+              className="vehicle-no"
+            >
+              No.
+            </span>
           </th>
         </tr>
       </thead>
@@ -340,14 +382,23 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
           <th
             className="m-swings-view__table-header-cell"
           >
-            Swing On Time
+            Swing On 
+            <span
+              className="swing-on-time"
+            >
+              Time
+            </span>
           </th>
           <th
             className="m-swings-view__table-header-cell"
           >
-            Swing On
+            <span
+              className="swing-on"
+            >
+              Swing On 
+            </span>
             <div
-              className="run-subheader"
+              className="subheader"
             >
               Run
             </div>
@@ -357,7 +408,7 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
           >
             Swing Off
             <div
-              className="run-subheader"
+              className="subheader"
             >
               Run
             </div>
@@ -370,7 +421,12 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
           <th
             className="m-swings-view__table-header-cell"
           >
-            Vehicle No.
+            Vehicle 
+            <span
+              className="vehicle-no"
+            >
+              No.
+            </span>
           </th>
         </tr>
       </thead>

@@ -55,9 +55,9 @@
   padding-right: 1.5rem;
   border-bottom: 1px solid #515459;
 
-  .run-subheader {
+  .subheader {
     position: absolute;
-    top: calc(50% - 7px / 2 + 8px);
+    top: calc(50% + 0.28125rem);
     left: 1.5rem;
     font-size: 0.5rem;
     font-weight: 400;
@@ -67,13 +67,13 @@
     padding-left: 2rem;
     padding-right: 2rem;
 
-    .run-subheader {
+    .subheader {
       left: 2rem;
     }
 
     .route-subheader {
       position: absolute;
-      top: calc(50% - 7px / 2 + 8px);
+      top: calc(50% + 0.28125rem);
       left: 4.25rem;
       font-size: 0.5rem;
       font-weight: 400;
@@ -114,7 +114,7 @@
 .m-swings-view__route {
   position: absolute;
   left: 4.25rem;
-  top: calc(50% - 13px / 2);
+  top: calc(50% - 0.8125rem / 2);
   background: $color-primary-dark;
   border-radius: 4px;
   width: 1.625rem;
@@ -133,5 +133,55 @@
   svg {
     width: 0.75rem;
     height: 0.75rem;
+  }
+}
+
+@media screen and (max-width: $mobile-max-width) {
+  .m-swings-view__table-header-cell {
+    padding-left: 1rem;
+    padding-right: 1.25rem;
+
+    .subheader {
+      left: 1rem;
+    }
+
+    &.swing-off {
+      padding-left: 1.5rem;
+      padding-right: 1rem;
+
+      .subheader {
+        left: 1.5rem;
+      }
+    }
+
+    .swing-on {
+      display: none;
+    }
+
+    .swing-on-time {
+      position: absolute;
+      top: calc(50% + 0.28125rem);
+      left: 1rem;
+      font-size: 0.5rem;
+      font-weight: 400;
+    }
+
+    .vehicle-no {
+      display: none;
+    }
+  }
+
+  .m-swings-view__table-cell {
+    padding-left: 1rem;
+    padding-right: 1.5rem;
+
+    &.swing-off {
+      padding-left: 1.5rem;
+    }
+  }
+
+  .m-swings-view__run_icon {
+    bottom: 0.875rem;
+    right: 4.25rem;
   }
 }
