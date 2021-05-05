@@ -57,7 +57,7 @@
 
   .subheader {
     position: absolute;
-    top: calc(50% - 7px / 2 + 8px);
+    top: calc(50% + 0.25rem);
     left: 1.5rem;
     font-size: 0.5rem;
     font-weight: 400;
@@ -73,7 +73,7 @@
 
     .route-subheader {
       position: absolute;
-      top: calc(50% - 7px / 2 + 8px);
+      top: calc(50% + 0.25rem);
       left: 4.25rem;
       font-size: 0.5rem;
       font-weight: 400;
@@ -114,7 +114,7 @@
 .m-swings-view__route {
   position: absolute;
   left: 4.25rem;
-  top: calc(50% - 13px / 2);
+  top: calc(50% - 0.8125rem / 2);
   background: $color-primary-dark;
   border-radius: 4px;
   width: 1.625rem;
@@ -160,7 +160,7 @@
 
     .swing-on-time {
       position: absolute;
-      top: calc(50% - 7px / 2 + 8px);
+      top: calc(50% + 0.25rem);
       left: 1rem;
       font-size: 0.5rem;
       font-weight: 400;
