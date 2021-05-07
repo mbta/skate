@@ -153,8 +153,8 @@ const SwingRow = ({
         {vehicleOrGhost ? (
           <>
             {isVehicle(vehicleOrGhost)
-              ? upRightIcon("m-swings-view__run_icon")
-              : ghostIcon("m-swings-view__run_icon")}
+              ? upRightIcon("m-swings-view__run_icon arrow")
+              : ghostIcon("m-swings-view__run_icon ghost")}
 
             <a
               onClick={() => {

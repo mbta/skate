@@ -448,7 +448,7 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
             className="m-swings-view__table-cell swing-off"
           >
             <span
-              className="m-swings-view__run_icon"
+              className="m-swings-view__run_icon arrow"
               dangerouslySetInnerHTML={
                 Object {
                   "__html": "SVG",
@@ -489,7 +489,7 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
             className="m-swings-view__table-cell swing-off"
           >
             <span
-              className="m-swings-view__run_icon"
+              className="m-swings-view__run_icon ghost"
               dangerouslySetInnerHTML={
                 Object {
                   "__html": "SVG",
