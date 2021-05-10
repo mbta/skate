@@ -1,6 +1,7 @@
 defmodule Realtime.VehiclesTest do
   use ExUnit.Case
   import Test.Support.Helpers
+  import Skate.Factory
 
   alias Schedule.{Block, Trip}
   alias Schedule.Gtfs.StopTime
@@ -22,50 +23,21 @@ defmodule Realtime.VehiclesTest do
     end
 
     test "groups on_route, laying_over, and pulling_out vehicles together by their route_id" do
-      on_route_vehicle = %Vehicle{
-        id: "on_route",
-        label: "on_route",
-        timestamp: 0,
-        timestamp_by_source: %{"swiftly" => 0},
-        latitude: 0,
-        longitude: 0,
-        direction_id: 1,
-        route_id: "route",
-        trip_id: "trip",
-        bearing: 0,
-        block_id: "block",
-        operator_id: "",
-        operator_first_name: "",
-        operator_last_name: "",
-        operator_name: "",
-        operator_logon_time: nil,
-        run_id: "",
-        headway_spacing: :ok,
-        is_shuttle: false,
-        is_overload: false,
-        is_off_course: false,
-        is_revenue: true,
-        layover_departure_time: nil,
-        block_is_active: true,
-        sources: "",
-        stop_status: "",
-        route_status: :on_route,
-        end_of_trip_type: :another_trip
-      }
+      on_route_vehicle = build(:vehicle)
 
-      pulling_out_vehicle = %{
-        on_route_vehicle
-        | id: "pulling_out",
+      pulling_out_vehicle =
+        build(:vehicle,
+          id: "pulling_out",
           label: "pulling_out",
           route_status: :pulling_out
-      }
+        )
 
-      laying_over_vehicle = %{
-        on_route_vehicle
-        | id: "laying_over",
+      laying_over_vehicle =
+        build(:vehicle,
+          id: "laying_over",
           label: "laying_over",
           route_status: :laying_over
-      }
+        )
 
       ungrouped_vehicles = [on_route_vehicle, laying_over_vehicle, pulling_out_vehicle]
       pulling_out_blocks_by_route = %{}
@@ -82,67 +54,22 @@ defmodule Realtime.VehiclesTest do
     end
 
     test "includes vehicles incoming onto a new route in their new route" do
-      vehicle = %Vehicle{
-        id: "on_route_1",
-        label: "on_route_1",
-        timestamp: 0,
-        timestamp_by_source: %{"swiftly" => 0},
-        latitude: 0,
-        longitude: 0,
-        direction_id: 1,
-        route_id: "route1",
-        trip_id: "trip",
-        bearing: 0,
-        block_id: "block1",
-        operator_id: "",
-        operator_first_name: "",
-        operator_last_name: "",
-        operator_name: "",
-        operator_logon_time: nil,
-        run_id: "",
-        headway_spacing: :ok,
-        is_shuttle: false,
-        is_overload: false,
-        is_off_course: false,
-        is_revenue: true,
-        layover_departure_time: nil,
-        block_is_active: true,
-        sources: "",
-        stop_status: "",
-        route_status: :on_route,
-        end_of_trip_type: :another_trip
-      }
+      vehicle =
+        build(:vehicle,
+          id: "on_route_1",
+          label: "on_route_1",
+          route_id: "route1",
+          block_id: "block1"
+        )
 
-      vehicle_2 = %Vehicle{
-        id: "on_route_2",
-        label: "on_route_2",
-        timestamp: 0,
-        timestamp_by_source: %{"swiftly" => 0},
-        latitude: 0,
-        longitude: 0,
-        direction_id: 1,
-        route_id: "route2",
-        trip_id: "trip",
-        bearing: 0,
-        block_id: "block2",
-        operator_id: "",
-        operator_first_name: "",
-        operator_last_name: "",
-        operator_name: "",
-        operator_logon_time: nil,
-        run_id: "",
-        headway_spacing: :ok,
-        is_shuttle: false,
-        is_overload: false,
-        is_off_course: false,
-        is_revenue: true,
-        layover_departure_time: nil,
-        block_is_active: true,
-        sources: "",
-        stop_status: "",
-        route_status: :on_route,
-        end_of_trip_type: :another_trip
-      }
+      vehicle_2 =
+        build(:vehicle,
+          id: "on_route_2",
+          label: "on_route_2",
+          route_id: "route2",
+          trip_id: "trip",
+          block_id: "block2"
+        )
 
       trip_1 = %Trip{
         id: "trip",
@@ -198,36 +125,11 @@ defmodule Realtime.VehiclesTest do
     end
 
     test "includes incoming vehicles that aren't currently assigned to a route" do
-      vehicle = %Vehicle{
-        id: "on_route",
-        label: "on_route",
-        timestamp: 0,
-        timestamp_by_source: %{"swiftly" => 0},
-        latitude: 0,
-        longitude: 0,
-        direction_id: nil,
-        route_id: nil,
-        trip_id: nil,
-        bearing: 0,
-        block_id: "block",
-        operator_id: "",
-        operator_first_name: "",
-        operator_last_name: "",
-        operator_name: "",
-        operator_logon_time: nil,
-        run_id: "",
-        headway_spacing: :ok,
-        is_shuttle: false,
-        is_overload: false,
-        is_off_course: false,
-        is_revenue: false,
-        layover_departure_time: nil,
-        block_is_active: true,
-        sources: "",
-        stop_status: "",
-        route_status: :on_route,
-        end_of_trip_type: :another_trip
-      }
+      vehicle =
+        build(:vehicle,
+          route_id: nil,
+          trip_id: nil
+        )
 
       trip = %Trip{
         id: "trip",
@@ -317,36 +219,7 @@ defmodule Realtime.VehiclesTest do
     end
 
     test "doesn't include block as ghost if it has a vehicle on that block" do
-      vehicle = %Vehicle{
-        id: "on_route",
-        label: "on_route",
-        timestamp: 0,
-        timestamp_by_source: %{"swiftly" => 0},
-        latitude: 0,
-        longitude: 0,
-        direction_id: nil,
-        route_id: "route",
-        trip_id: nil,
-        bearing: 0,
-        block_id: "block",
-        operator_id: "",
-        operator_first_name: "",
-        operator_last_name: "",
-        operator_name: "",
-        operator_logon_time: nil,
-        run_id: "",
-        headway_spacing: :ok,
-        is_shuttle: false,
-        is_overload: false,
-        is_off_course: false,
-        is_revenue: true,
-        layover_departure_time: nil,
-        block_is_active: true,
-        sources: "",
-        stop_status: "",
-        route_status: :on_route,
-        end_of_trip_type: :another_trip
-      }
+      vehicle = build(:vehicle)
 
       trip = %Trip{
         id: "trip",
@@ -536,129 +409,43 @@ defmodule Realtime.VehiclesTest do
       # 2019-12-20 00:00:00
       time0 = 1_576_818_000
 
-      vehicle_1 = %Vehicle{
-        id: "on_route_1",
-        label: "on_route_1",
-        timestamp: 0,
-        timestamp_by_source: %{"swiftly" => 0},
-        latitude: 0,
-        longitude: 0,
-        direction_id: 1,
-        route_id: "route1",
-        trip_id: "trip",
-        bearing: 0,
-        block_id: "block_1",
-        operator_id: "",
-        operator_first_name: "",
-        operator_last_name: "",
-        operator_name: "",
-        operator_logon_time: nil,
-        run_id: "",
-        headway_spacing: :ok,
-        is_shuttle: false,
-        is_overload: false,
-        is_off_course: false,
-        is_revenue: true,
-        layover_departure_time: nil,
-        block_is_active: true,
-        sources: "",
-        stop_status: "",
-        route_status: :on_route,
-        end_of_trip_type: :another_trip
-      }
+      vehicle_1 =
+        build(:vehicle,
+          id: "on_route_1",
+          label: "on_route_1",
+          route_id: "route1",
+          trip_id: "trip",
+          block_id: "block_1"
+        )
 
-      vehicle_2 = %Vehicle{
-        id: "on_route_2",
-        label: "on_route_2",
-        timestamp: 0,
-        timestamp_by_source: %{"swiftly" => 0},
-        latitude: 0,
-        longitude: 0,
-        direction_id: 1,
-        route_id: "route2",
-        trip_id: "trip",
-        bearing: 0,
-        block_id: "block_2",
-        operator_id: "",
-        operator_first_name: "",
-        operator_last_name: "",
-        operator_name: "",
-        operator_logon_time: nil,
-        run_id: "",
-        headway_spacing: :ok,
-        is_shuttle: false,
-        is_overload: false,
-        is_off_course: false,
-        is_revenue: true,
-        layover_departure_time: nil,
-        block_is_active: true,
-        sources: "",
-        stop_status: "",
-        route_status: :on_route,
-        end_of_trip_type: :another_trip
-      }
+      vehicle_2 =
+        build(:vehicle,
+          id: "on_route_2",
+          label: "on_route_2",
+          route_id: "route2",
+          trip_id: "trip",
+          block_id: "block_2"
+        )
 
-      vehicle_3 = %Vehicle{
-        id: "on_nil_route",
-        label: "on_nil_route",
-        timestamp: 0,
-        timestamp_by_source: %{"swiftly" => 0},
-        latitude: 0,
-        longitude: 0,
-        direction_id: 1,
-        route_id: nil,
-        trip_id: "trip",
-        bearing: 0,
-        block_id: "block_3",
-        operator_id: "",
-        operator_first_name: "",
-        operator_last_name: "",
-        operator_name: "",
-        operator_logon_time: nil,
-        run_id: "",
-        headway_spacing: :ok,
-        is_shuttle: false,
-        is_overload: false,
-        is_off_course: false,
-        is_revenue: true,
-        layover_departure_time: nil,
-        block_is_active: true,
-        sources: "",
-        stop_status: "",
-        route_status: :on_route,
-        end_of_trip_type: :another_trip
-      }
+      vehicle_3 =
+        build(:vehicle,
+          id: "on_nil_route",
+          label: "on_nil_route",
+          route_id: nil,
+          trip_id: "trip",
+          block_id: "block_3"
+        )
 
-      vehicle_4 = %Vehicle{
-        id: "pulling_out",
-        label: "pulling_out",
-        timestamp: 0,
-        timestamp_by_source: %{"swiftly" => 0},
-        latitude: 0,
-        longitude: 0,
-        direction_id: 1,
-        route_id: "route99",
-        trip_id: nil,
-        bearing: 0,
-        block_id: "",
-        operator_id: "",
-        operator_first_name: "",
-        operator_last_name: "",
-        operator_name: "",
-        operator_logon_time: nil,
-        run_id: "",
-        headway_spacing: :ok,
-        is_shuttle: false,
-        is_overload: false,
-        is_off_course: false,
-        is_revenue: true,
-        layover_departure_time: time0 + 5000,
-        block_is_active: true,
-        sources: "",
-        stop_status: "",
-        route_status: :pulling_out,
-        end_of_trip_type: :another_trip
-      }
+      vehicle_4 =
+        build(:vehicle,
+          id: "pulling_out",
+          label: "pulling_out",
+          route_id: "route99",
+          trip_id: nil,
+          block_id: "",
+          layover_departure_time: time0 + 5000,
+          route_status: :pulling_out
+        )
 
       trip_1 = %Trip{
         id: "trip_1",
