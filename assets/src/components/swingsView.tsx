@@ -153,8 +153,8 @@ const SwingRow = ({
         {vehicleOrGhost ? (
           <>
             {isVehicle(vehicleOrGhost)
-              ? upRightIcon("m-swings-view__run_icon")
-              : ghostIcon("m-swings-view__run_icon")}
+              ? upRightIcon("m-swings-view__run_icon arrow")
+              : ghostIcon("m-swings-view__run_icon ghost")}
 
             <a
               onClick={() => {
@@ -170,8 +170,10 @@ const SwingRow = ({
         ) : (
           runIdToLabel(swing.fromRunId)
         )}
-        <div className="m-swings-view__route">
-          {route ? route.name : swing.fromRouteId}
+        <div className="m-swings-view__route-pill">
+          <div className="m-swings-view__route">
+            {route ? route.name : swing.fromRouteId}
+          </div>
         </div>
       </th>
       <th className="m-swings-view__table-cell">

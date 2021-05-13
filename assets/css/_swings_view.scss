@@ -20,6 +20,7 @@
 
 .m-swings-view__header {
   @include font-header-big;
+  color: $black;
   font-weight: 900;
   padding-top: 1.875rem;
   padding-left: 3rem;
@@ -27,6 +28,7 @@
 
 .m-swings-view__description {
   @include font-small;
+  color: $color-font-dark;
   padding-left: 3rem;
   padding-bottom: 1.5rem;
 }
@@ -82,6 +84,7 @@
 }
 
 .m-swings-view__table-row-active {
+  color: $color-primary;
   background-color: $white;
   font-weight: 700;
 }
@@ -100,6 +103,7 @@
   padding-left: 1.5rem;
   padding-right: 3.5rem;
   font-size: 0.6875rem;
+  font-variant-numeric: tabular-nums;
 
   &.swing-off {
     padding-left: 2rem;
@@ -111,24 +115,44 @@
   }
 }
 
-.m-swings-view__route {
+.m-swings-view__route-pill {
   position: absolute;
   left: 4.25rem;
   top: calc(50% - 0.8125rem / 2);
   background: $color-primary-dark;
   border-radius: 4px;
+  font-family: $font-family-route-pill;
   width: 1.625rem;
-  height: 0.8125rem;
+  height: 0.9375rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.m-swings-view__route {
   color: $white;
   text-align: center;
 }
 
 .m-swings-view__run_icon {
   position: absolute;
-  bottom: 0.875rem;
-  right: 5.5rem;
   fill: $color-primary-dark;
   stroke: $color-primary-dark;
+
+  &.arrow {
+    bottom: 0.75rem;
+    right: 5.25rem;
+  }
+
+  &.ghost {
+    bottom: 0.875rem;
+    right: 5.35rem;
+
+    svg {
+      stroke-width: 0.2;
+    }
+  }
 
   svg {
     width: 0.75rem;
@@ -181,7 +205,14 @@
   }
 
   .m-swings-view__run_icon {
-    bottom: 0.875rem;
-    right: 4.25rem;
+    &.arrow {
+      bottom: 0.75rem;
+      right: 4.125rem;
+    }
+
+    &.ghost {
+      bottom: 0.875rem;
+      right: 4.25rem;
+    }
   }
 }
