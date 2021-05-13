@@ -170,8 +170,10 @@ const SwingRow = ({
         ) : (
           runIdToLabel(swing.fromRunId)
         )}
-        <div className="m-swings-view__route">
-          {route ? route.name : swing.fromRouteId}
+        <div className="m-swings-view__route-pill">
+          <div className="m-swings-view__route">
+            {route ? route.name : swing.fromRouteId}
+          </div>
         </div>
       </th>
       <th className="m-swings-view__table-cell">

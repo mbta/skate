@@ -108,9 +108,13 @@ exports[`SwingsView ignores vehicles without run ID 1`] = `
           >
             456
             <div
-              className="m-swings-view__route"
+              className="m-swings-view__route-pill"
             >
-              Name 1
+              <div
+                className="m-swings-view__route"
+              >
+                Name 1
+              </div>
             </div>
           </th>
           <th
@@ -231,9 +235,13 @@ exports[`SwingsView includes swings less than 10 minutes in the past 1`] = `
           >
             456
             <div
-              className="m-swings-view__route"
+              className="m-swings-view__route-pill"
             >
-              Name 1
+              <div
+                className="m-swings-view__route"
+              >
+                Name 1
+              </div>
             </div>
           </th>
           <th
@@ -461,9 +469,13 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
               456
             </a>
             <div
-              className="m-swings-view__route"
+              className="m-swings-view__route-pill"
             >
-              Name 1
+              <div
+                className="m-swings-view__route"
+              >
+                Name 1
+              </div>
             </div>
           </th>
           <th
@@ -502,9 +514,13 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
               456
             </a>
             <div
-              className="m-swings-view__route"
+              className="m-swings-view__route-pill"
             >
-              Name 3
+              <div
+                className="m-swings-view__route"
+              >
+                Name 3
+              </div>
             </div>
           </th>
           <th
@@ -529,9 +545,13 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
           >
             456
             <div
-              className="m-swings-view__route"
+              className="m-swings-view__route-pill"
             >
-              Name 3
+              <div
+                className="m-swings-view__route"
+              >
+                Name 3
+              </div>
             </div>
           </th>
           <th

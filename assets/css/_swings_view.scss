@@ -115,7 +115,7 @@
   }
 }
 
-.m-swings-view__route {
+.m-swings-view__route-pill {
   position: absolute;
   left: 4.25rem;
   top: calc(50% - 0.8125rem / 2);
@@ -124,6 +124,13 @@
   font-family: $font-family-route-pill;
   width: 1.625rem;
   height: 0.9375rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.m-swings-view__route {
   color: $white;
   text-align: center;
 }
