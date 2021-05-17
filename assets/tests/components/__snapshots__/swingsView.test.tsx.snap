@@ -107,6 +107,7 @@ exports[`SwingsView ignores vehicles without run ID 1`] = `
             className="m-swings-view__table-cell swing-off"
           >
             456
+             
             <div
               className="m-swings-view__route-pill"
             >
@@ -234,6 +235,7 @@ exports[`SwingsView includes swings less than 10 minutes in the past 1`] = `
             className="m-swings-view__table-cell swing-off"
           >
             456
+             
             <div
               className="m-swings-view__route-pill"
             >
@@ -468,6 +470,7 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
             >
               456
             </a>
+             
             <div
               className="m-swings-view__route-pill"
             >
@@ -513,6 +516,7 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
             >
               456
             </a>
+             
             <div
               className="m-swings-view__route-pill"
             >
@@ -544,6 +548,7 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
             className="m-swings-view__table-cell swing-off"
           >
             456
+             
             <div
               className="m-swings-view__route-pill"
             >
