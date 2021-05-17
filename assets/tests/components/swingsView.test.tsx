@@ -281,7 +281,7 @@ describe("SwingsView", () => {
     wrapper.find("a").first().simulate("click")
     expect(dispatch).toHaveBeenCalledWith(selectVehicle("v1"))
     expect(window.FS!.event).toHaveBeenCalledWith(
-      "Clicked on run from swings view"
+      "Clicked on swing-off from swings view"
     )
   })
 
