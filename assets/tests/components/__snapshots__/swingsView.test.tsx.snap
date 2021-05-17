@@ -102,6 +102,7 @@ exports[`SwingsView ignores vehicles without run ID 1`] = `
             className="m-swings-view__table-cell"
           >
             789
+             
           </th>
           <th
             className="m-swings-view__table-cell swing-off"
@@ -230,6 +231,7 @@ exports[`SwingsView includes swings less than 10 minutes in the past 1`] = `
             className="m-swings-view__table-cell"
           >
             789
+             
           </th>
           <th
             className="m-swings-view__table-cell swing-off"
@@ -453,6 +455,7 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
             className="m-swings-view__table-cell"
           >
             789
+             
           </th>
           <th
             className="m-swings-view__table-cell swing-off"
@@ -499,6 +502,7 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
             className="m-swings-view__table-cell"
           >
             789
+             
           </th>
           <th
             className="m-swings-view__table-cell swing-off"
@@ -543,6 +547,7 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
             className="m-swings-view__table-cell"
           >
             789
+             
           </th>
           <th
             className="m-swings-view__table-cell swing-off"

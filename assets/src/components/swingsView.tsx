@@ -146,7 +146,10 @@ const SwingRow = ({
         {formattedScheduledTime(swing.time)}
       </th>
       <th className="m-swings-view__table-cell">
-        {runIdToLabel(swing.toRunId)}
+        <SwingCellContent
+          vehicleOrGhost={swingOnVehicleOrGhost}
+          runId={swing.toRunId}
+        />
       </th>
       <th className="m-swings-view__table-cell swing-off">
         <SwingCellContent
