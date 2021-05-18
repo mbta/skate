@@ -110,10 +110,7 @@ const SwingsTable = ({
           {sortedSwings.map((swing) => (
             <SwingRow
               swing={swing}
-              vehicleOrGhost={
-                swingVehiclesByRunId[swing.fromRunId] ||
-                swingVehiclesByRunId[swing.toRunId]
-              }
+              swingVehiclesByRunId={swingVehiclesByRunId}
               route={swingRoutesById[swing.fromRouteId]}
               key={`${swing.fromRunId}-${swing.toRunId}`}
             />
@@ -126,14 +123,16 @@ const SwingsTable = ({
 
 const SwingRow = ({
   swing,
-  vehicleOrGhost,
+  swingVehiclesByRunId,
   route,
 }: {
   swing: Swing
-  vehicleOrGhost: VehicleOrGhost | null
+  swingVehiclesByRunId: ByRunId<VehicleOrGhost>
   route: Route | null
 }): ReactElement<HTMLElement> => {
-  const [, dispatch] = useContext(StateDispatchContext)
+  const swingOffVehicleOrGhost = swingVehiclesByRunId[swing.fromRunId]
+  const swingOnVehicleOrGhost = swingVehiclesByRunId[swing.toRunId]
+  const vehicleOrGhost = swingOffVehicleOrGhost || swingOnVehicleOrGhost
 
   return (
     <tr
@@ -147,29 +146,18 @@ const SwingRow = ({
         {formattedScheduledTime(swing.time)}
       </th>
       <th className="m-swings-view__table-cell">
-        {runIdToLabel(swing.toRunId)}
+        <SwingCellContent
+          vehicleOrGhost={swingOnVehicleOrGhost}
+          runId={swing.toRunId}
+          fsEventText={"Clicked on swing-on from swings view"}
+        />
       </th>
       <th className="m-swings-view__table-cell swing-off">
-        {vehicleOrGhost ? (
-          <>
-            {isVehicle(vehicleOrGhost)
-              ? upRightIcon("m-swings-view__run_icon arrow")
-              : ghostIcon("m-swings-view__run_icon ghost")}
-
-            <a
-              onClick={() => {
-                if (window.FS) {
-                  window.FS.event("Clicked on run from swings view")
-                }
-                dispatch(selectVehicle(vehicleOrGhost.id))
-              }}
-            >
-              {runIdToLabel(swing.fromRunId)}
-            </a>
-          </>
-        ) : (
-          runIdToLabel(swing.fromRunId)
-        )}
+        <SwingCellContent
+          vehicleOrGhost={swingOffVehicleOrGhost}
+          runId={swing.fromRunId}
+          fsEventText={"Clicked on swing-off from swings view"}
+        />
         <div className="m-swings-view__route-pill">
           <div className="m-swings-view__route">
             {route ? route.name : swing.fromRouteId}
@@ -182,6 +170,43 @@ const SwingRow = ({
           : null}
       </th>
     </tr>
+  )
+}
+
+const SwingCellContent = ({
+  vehicleOrGhost,
+  runId,
+  fsEventText,
+}: {
+  vehicleOrGhost?: VehicleOrGhost
+  runId: string
+  fsEventText: string
+}): ReactElement<HTMLElement> => {
+  const [, dispatch] = useContext(StateDispatchContext)
+
+  return (
+    <>
+      {vehicleOrGhost ? (
+        <>
+          {isVehicle(vehicleOrGhost)
+            ? upRightIcon("m-swings-view__run_icon arrow")
+            : ghostIcon("m-swings-view__run_icon ghost")}
+
+          <a
+            onClick={() => {
+              if (window.FS) {
+                window.FS.event(fsEventText)
+              }
+              dispatch(selectVehicle(vehicleOrGhost.id))
+            }}
+          >
+            {runIdToLabel(runId)}
+          </a>
+        </>
+      ) : (
+        runIdToLabel(runId)
+      )}
+    </>
   )
 }
 

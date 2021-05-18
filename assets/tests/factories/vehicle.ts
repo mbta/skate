@@ -1,24 +1,24 @@
 import { Factory } from "fishery"
 import { Vehicle, VehicleTimepointStatus } from "../../src/realtime"
 
-export default Factory.define<Vehicle>(() => ({
-  id: "v1",
-  label: "v1-label",
-  runId: "run-1",
+export default Factory.define<Vehicle>(({ sequence }) => ({
+  id: `v${sequence}`,
+  label: `v${sequence}-label`,
+  runId: `run-${sequence}`,
   timestamp: 123,
   latitude: 0,
   longitude: 0,
   directionId: 0,
   routeId: "39",
-  tripId: "t1",
+  tripId: `t${sequence}`,
   headsign: "Forest Hills",
   viaVariant: "X",
-  operatorId: "op1",
+  operatorId: `op${sequence}`,
   operatorFirstName: "WILL",
   operatorLastName: "SMITH",
   operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
   bearing: 33,
-  blockId: "block-1",
+  blockId: `block-${sequence}`,
   headwaySecs: 859.1,
   headwaySpacing: null,
   previousVehicleId: "v2",
