@@ -188,7 +188,7 @@ describe("SwingsView", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("opens VPP when clicking an active run and sends Fullstory event", () => {
+  test("opens VPP when clicking an active swing-off and sends Fullstory event", () => {
     const originalFS = window.FS
     const originalUsername = window.username
     window.FS = { event: jest.fn(), identify: jest.fn() }
@@ -227,6 +227,74 @@ describe("SwingsView", () => {
     expect(window.FS!.event).toHaveBeenCalledWith(
       "Clicked on swing-off from swings view"
     )
+  })
+
+  test("opens VPP when clicking an active swing-on and sends Fullstory event", () => {
+    const originalFS = window.FS
+    const originalUsername = window.username
+    window.FS = { event: jest.fn(), identify: jest.fn() }
+    window.username = "username"
+
+    afterEach(() => {
+      window.FS = originalFS
+      window.username = originalUsername
+    })
+    ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
+      {
+        fromRouteId: "1",
+        fromRunId: "123-789",
+        fromTripId: "1234",
+        toRouteId: "1",
+        toRunId: "123-456",
+        toTripId: "5678",
+        time: 19000,
+      },
+    ])
+    ;(useVehiclesForRunIds as jest.Mock).mockImplementationOnce(
+      (): VehicleOrGhost[] => [vehicle]
+    )
+
+    const dispatch = jest.fn()
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+        <RoutesProvider routes={routes}>
+          <SwingsView />
+        </RoutesProvider>
+      </StateDispatchProvider>
+    )
+
+    wrapper.find("a").first().simulate("click")
+    expect(dispatch).toHaveBeenCalledWith(selectVehicle("v1"))
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      "Clicked on swing-on from swings view"
+    )
+  })
+
+  test("links to both swing-on and swing-off if both are active", () => {
+    ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
+      {
+        fromRouteId: "1",
+        fromRunId: "123-456",
+        fromTripId: "1234",
+        toRouteId: "1",
+        toRunId: "123-789",
+        toTripId: "5678",
+        time: 19000,
+      },
+    ])
+
+    const vehicle2 = vehicleFactory.build({ runId: "123-789" })
+    ;(useVehiclesForRunIds as jest.Mock).mockImplementationOnce(
+      (): VehicleOrGhost[] => [vehicle, vehicle2]
+    )
+    const tree = renderer.create(
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+        <RoutesProvider routes={routes}>
+          <SwingsView />
+        </RoutesProvider>
+      </StateDispatchProvider>
+    )
+    expect(tree).toMatchSnapshot()
   })
 
   test("can close the swings view", () => {
