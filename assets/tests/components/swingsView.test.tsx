@@ -11,7 +11,6 @@ import useVehiclesForRunIds from "../../src/hooks/useVehiclesForRunIds"
 import { Route, Swing } from "../../src/schedule"
 import { initialState, selectVehicle, toggleSwingsView } from "../../src/state"
 import { Vehicle, Ghost, VehicleOrGhost } from "../../src/realtime"
-// import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import * as dateTime from "../../src/util/dateTime"
 
 jest.mock("../../src/hooks/useSwings", () => ({

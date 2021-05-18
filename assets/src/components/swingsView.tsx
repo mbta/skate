@@ -205,7 +205,7 @@ const SwingCellContent = ({
         </>
       ) : (
         runIdToLabel(runId)
-      )}{" "}
+      )}
     </>
   )
 }
