@@ -1,80 +1,38 @@
 defmodule Realtime.ServerTest do
   use ExUnit.Case, async: true
+  import Test.Support.Helpers
+  import Skate.Factory
 
-  alias Realtime.{Ghost, Server, Vehicle}
+  alias Realtime.Server
 
-  @vehicle %Vehicle{
-    id: "v1",
-    label: "v1-label",
-    timestamp: 1_558_121_727,
-    timestamp_by_source: %{"swiftly" => 1_558_121_727},
-    latitude: 42.3408556,
-    longitude: -71.0642766,
-    direction_id: 0,
-    route_id: "1",
-    trip_id: "t1",
-    bearing: nil,
-    block_id: "A505-106",
-    operator_id: "71041",
-    operator_first_name: "FRANK",
-    operator_last_name: "FRANCIS",
-    operator_name: "FRANCIS",
-    operator_logon_time: 1_558_121_726,
-    run_id: "123-9048",
-    headway_secs: 600,
-    headway_spacing: :ok,
-    is_shuttle: false,
-    is_overload: false,
-    is_off_course: false,
-    is_revenue: true,
-    layover_departure_time: nil,
-    block_is_active: true,
-    sources: MapSet.new(["swiftly"]),
-    data_discrepancies: [],
-    stop_status: %{
-      stop_id: "s1"
-    },
-    timepoint_status: %{
-      timepoint_id: "tp1",
-      fraction_until_timepoint: 0.2
-    },
-    route_status: :on_route,
-    end_of_trip_type: :another_trip
-  }
+  @vehicle build(:vehicle,
+             route_id: "1",
+             id: "v1",
+             label: "v1-label",
+             run_id: "123-9048",
+             operator_id: "71041",
+             operator_first_name: "FRANK",
+             operator_last_name: "FRANCIS",
+             operator_name: "FRANCIS"
+           )
 
-  @inactive_block %{
-    @vehicle
-    | block_is_active: false,
-      id: "v2",
-      label: "v2-label",
-      run_id: "456-7890"
-  }
+  @inactive_block build(:vehicle,
+                    route_id: "1",
+                    block_is_active: false,
+                    id: "v2",
+                    label: "v2-label",
+                    run_id: "456-7890"
+                  )
 
-  @ghost %Ghost{
-    id: "ghost-trip",
-    direction_id: 0,
-    route_id: "1",
-    trip_id: "t2",
-    headsign: "headsign",
-    block_id: "block",
-    run_id: "123-9049",
-    via_variant: "X",
-    layover_departure_time: nil,
-    scheduled_timepoint_status: %{
-      timepoint_id: "t2",
-      fraction_until_timepoint: 0.5
-    },
-    route_status: :on_route
-  }
+  @ghost build(:ghost)
 
-  @shuttle %{
-    @vehicle
-    | id: "shuttle",
-      label: "shuttle",
-      run_id: "9990555",
-      route_id: nil,
-      trip_id: "t3"
-  }
+  @shuttle build(:vehicle,
+             id: "shuttle",
+             label: "shuttle",
+             run_id: "9990555",
+             route_id: nil,
+             trip_id: "t3"
+           )
 
   @vehicles_by_route_id %{
     "1" => [@vehicle, @ghost]
@@ -348,6 +306,25 @@ defmodule Realtime.ServerTest do
       response = Server.handle_info({make_ref(), []}, state)
 
       assert response == {:noreply, state}
+    end
+
+    test "checks data status, filtering out ghosts" do
+      ets = :ets.new(__MODULE__, [:set, :protected, {:read_concurrency, true}])
+
+      :ets.insert(ets, {:all_vehicles, [@vehicle, @ghost]})
+
+      state = %Server{ets: ets}
+
+      pid = self()
+
+      reassign_env(:skate, :data_status_fn, fn vehicles ->
+        send(pid, vehicles)
+        :outage
+      end)
+
+      Server.handle_info(:check_data_status, state)
+
+      assert_received([%Realtime.Vehicle{}])
     end
   end
 

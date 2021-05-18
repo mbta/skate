@@ -12,6 +12,8 @@ defmodule Realtime.Server do
   alias Schedule.Route
 
   alias Realtime.{
+    DataStatus,
+    DataStatusPubSub,
     Ghost,
     Vehicle,
     VehicleOrGhost
@@ -171,6 +173,8 @@ defmodule Realtime.Server do
   def init(_opts) do
     ets = :ets.new(__MODULE__, [:set, :protected, {:read_concurrency, true}])
 
+    :timer.send_interval(30_000, self(), :check_data_status)
+
     {:ok, %__MODULE__{ets: ets}}
   end
 
@@ -178,6 +182,19 @@ defmodule Realtime.Server do
   @impl true
   def handle_info({reference, _}, %__MODULE__{} = state) when is_reference(reference),
     do: {:noreply, state}
+
+  def handle_info(:check_data_status, %__MODULE{ets: ets} = state) do
+    all_vehicles =
+      {ets, :all_vehicles}
+      |> lookup()
+      |> Enum.filter(fn vehicle_or_ghost -> match?(%Vehicle{}, vehicle_or_ghost) end)
+
+    data_status_fn = Application.get_env(:skate, :data_status_fn) || (&DataStatus.data_status/1)
+    data_status = data_status_fn.(all_vehicles)
+    _ = DataStatusPubSub.update(data_status)
+
+    {:noreply, state}
+  end
 
   @impl true
   def handle_call(:subscription_info, _from, %__MODULE__{} = state) do
