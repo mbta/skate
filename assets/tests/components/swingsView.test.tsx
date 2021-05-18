@@ -1,6 +1,8 @@
 import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
+import ghostFactory from "../factories/ghost"
+import vehicleFactory from "../factories/vehicle"
 import SwingsView from "../../src/components/swingsView"
 import { RoutesProvider } from "../../src/contexts/routesContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
@@ -9,7 +11,7 @@ import useVehiclesForRunIds from "../../src/hooks/useVehiclesForRunIds"
 import { Route, Swing } from "../../src/schedule"
 import { initialState, selectVehicle, toggleSwingsView } from "../../src/state"
 import { Vehicle, Ghost, VehicleOrGhost } from "../../src/realtime"
-import { HeadwaySpacing } from "../../src/models/vehicleStatus"
+// import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import * as dateTime from "../../src/util/dateTime"
 
 jest.mock("../../src/hooks/useSwings", () => ({
@@ -26,67 +28,9 @@ jest.spyOn(dateTime, "now").mockImplementation(() => {
   return new Date(18000 * 1000)
 })
 
-const vehicle: Vehicle = {
-  id: "v1",
-  label: "v1-label",
-  runId: "123-456",
-  timestamp: 123,
-  latitude: 0,
-  longitude: 0,
-  directionId: 0,
-  routeId: "1",
-  tripId: "1234",
-  headsign: "Forest Hills",
-  viaVariant: "X",
-  operatorId: "op1",
-  operatorFirstName: "PATTI",
-  operatorLastName: "SMITH",
-  operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
-  bearing: 33,
-  blockId: "block-1",
-  headwaySecs: 859.1,
-  headwaySpacing: HeadwaySpacing.Ok,
-  previousVehicleId: "v2",
-  scheduleAdherenceSecs: 0,
-  scheduledHeadwaySecs: 120,
-  isShuttle: false,
-  isOverload: false,
-  isOffCourse: false,
-  isRevenue: true,
-  layoverDepartureTime: null,
-  dataDiscrepancies: [],
-  stopStatus: {
-    stopId: "s1",
-    stopName: "Stop Name",
-  },
-  timepointStatus: {
-    fractionUntilTimepoint: 0.5,
-    timepointId: "tp1",
-  },
-  scheduledLocation: null,
-  routeStatus: "on_route",
-  endOfTripType: "another_trip",
-  blockWaivers: [],
-  crowding: null,
-}
+const vehicle: Vehicle = vehicleFactory.build({ runId: "123-456" })
 
-const ghost: Ghost = {
-  id: "ghost-trip",
-  directionId: 0,
-  routeId: "2",
-  tripId: "5678",
-  headsign: "headsign",
-  blockId: "block",
-  runId: "124-456",
-  viaVariant: "X",
-  layoverDepartureTime: null,
-  scheduledTimepointStatus: {
-    timepointId: "t0",
-    fractionUntilTimepoint: 0.0,
-  },
-  routeStatus: "on_route",
-  blockWaivers: [],
-}
+const ghost: Ghost = ghostFactory.build({ runId: "124-456" })
 
 const routes: Route[] = [
   {
