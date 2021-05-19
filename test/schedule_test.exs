@@ -844,6 +844,7 @@ defmodule ScheduleTest do
         })
 
       expected_swing = %Swing{
+        block_id: "block",
         from_route_id: "route",
         from_run_id: "123-0456",
         from_trip_id: "trip1",

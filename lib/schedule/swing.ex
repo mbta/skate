@@ -6,6 +6,7 @@ defmodule Schedule.Swing do
   alias Schedule.Minischedule
 
   @type t :: %__MODULE__{
+          block_id: Schedule.Block.id(),
           from_route_id: Route.id(),
           from_run_id: Hastus.Run.id(),
           from_trip_id: Trip.id(),
@@ -18,6 +19,7 @@ defmodule Schedule.Swing do
   @derive Jason.Encoder
 
   defstruct [
+    :block_id,
     :from_route_id,
     :from_run_id,
     :from_trip_id,
@@ -36,9 +38,10 @@ defmodule Schedule.Swing do
       minischedule_blocks_to_swing_trip_pairs(minischedule_blocks, trips_by_id)
 
     Enum.reduce(trip_pairs_with_swing, %{}, fn trip_pair_and_mid_route_swing, acc ->
-      {swing_off_trip, swing_on_trip, mid_route_swing} = trip_pair_and_mid_route_swing
+      {swing_off_trip, swing_on_trip, mid_route_swing, block_id} = trip_pair_and_mid_route_swing
 
       swing = %__MODULE__{
+        block_id: block_id,
         from_route_id: swing_off_trip.route_id,
         from_run_id: swing_off_trip.run_id,
         from_trip_id: swing_off_trip.id,
@@ -71,23 +74,23 @@ defmodule Schedule.Swing do
   @spec minischedule_blocks_to_swing_trip_pairs(Minischedule.Block.by_id(), Trip.by_id()) ::
           [
             {Trip.id() | Minischedule.Trip.t(), Trip.id() | Minischedule.Trip.t(),
-             Minischedule.Piece.mid_route_swing() | nil}
+             Minischedule.Piece.mid_route_swing() | nil, Schedule.Block.id()}
           ]
   defp minischedule_blocks_to_swing_trip_pairs(minischedule_blocks, trips_by_id) do
     minischedule_blocks
     |> Map.values()
-    |> Enum.map(& &1.pieces)
-    |> Enum.flat_map(fn pieces_for_block ->
+    |> Enum.map(&{&1.pieces, &1.id})
+    |> Enum.flat_map(fn {pieces_for_block, block_id} ->
       Enum.chunk_every(pieces_for_block, 2, 1, :discard)
-      |> Enum.map(&List.to_tuple/1)
+      |> Enum.map(fn [piece1, piece2] -> {piece1, piece2, block_id} end)
     end)
-    |> Enum.map(fn {piece1, piece2} ->
+    |> Enum.map(fn {piece1, piece2, block_id} ->
       trip1 = piece1.trips |> List.last() |> trip_or_trip_id_to_trip(trips_by_id)
       trip2 = piece2.trips |> List.first() |> trip_or_trip_id_to_trip(trips_by_id)
 
-      {trip1, trip2, piece2.start_mid_route?}
+      {trip1, trip2, piece2.start_mid_route?, block_id}
     end)
-    |> Enum.filter(fn {trip1, trip2, _start_mid_route} ->
+    |> Enum.filter(fn {trip1, trip2, _start_mid_route, _block_id} ->
       trip1.route_id || trip2.route_id
     end)
   end

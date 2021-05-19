@@ -136,6 +136,7 @@ defmodule Schedule.SwingTest do
       assert Swing.from_minischedule_blocks(minischedule_blocks, trips_by_id) == %{
                {"b", "12"} => [
                  %Swing{
+                   block_id: "A12-34",
                    from_route_id: "12",
                    from_run_id: "123-456",
                    from_trip_id: "1234",
@@ -147,6 +148,7 @@ defmodule Schedule.SwingTest do
                ],
                {"b", "11"} => [
                  %Swing{
+                   block_id: "A12-34",
                    from_route_id: "11",
                    from_run_id: "123-789",
                    from_trip_id: "5678",
@@ -308,6 +310,7 @@ defmodule Schedule.SwingTest do
       assert Swing.from_minischedule_blocks(minischedule_blocks, trips_by_id) == %{
                {"b", "12"} => [
                  %Swing{
+                   block_id: "A12-34",
                    from_route_id: "12",
                    from_run_id: "123-456",
                    from_trip_id: "1234",
