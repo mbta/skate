@@ -16,13 +16,13 @@ defmodule Realtime.ServerTest do
              operator_name: "FRANCIS"
            )
 
-  @inactive_block build(:vehicle,
-                    route_id: "1",
-                    block_is_active: false,
-                    id: "v2",
-                    label: "v2-label",
-                    run_id: "456-7890"
-                  )
+  @vehicle_on_inactive_block build(:vehicle,
+                               route_id: "1",
+                               block_is_active: false,
+                               id: "v2",
+                               label: "v2-label",
+                               run_id: "456-7890"
+                             )
 
   @ghost build(:ghost)
 
@@ -122,7 +122,7 @@ defmodule Realtime.ServerTest do
     test "vehicles on inactive blocks are removed", %{server_pid: server_pid} do
       Server.subscribe_to_route("1", server_pid)
 
-      Server.update({%{"1" => [@inactive_block]}, []}, server_pid)
+      Server.update({%{"1" => [@vehicle_on_inactive_block]}, []}, server_pid)
 
       assert_receive(
         {:new_realtime_data, lookup_args},
@@ -195,11 +195,11 @@ defmodule Realtime.ServerTest do
     test "vehicles on inactive blocks are included", %{server_pid: pid} do
       Server.subscribe_to_search("v2-label", :vehicle, pid)
 
-      Server.update({%{"1" => [@inactive_block]}, []}, pid)
+      Server.update({%{"1" => [@vehicle_on_inactive_block]}, []}, pid)
 
       assert_receive {:new_realtime_data, lookup_args}
 
-      assert Server.lookup(lookup_args) == [@inactive_block]
+      assert Server.lookup(lookup_args) == [@vehicle_on_inactive_block]
     end
   end
 

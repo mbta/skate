@@ -189,7 +189,7 @@ defmodule Realtime.Server do
       |> lookup()
       |> Enum.filter(fn vehicle_or_ghost -> match?(%Vehicle{}, vehicle_or_ghost) end)
 
-    data_status_fn = Application.get_env(:skate, :data_status_fn) || (&DataStatus.data_status/1)
+    data_status_fn = Application.get_env(:skate, :data_status_fn, &DataStatus.data_status/1)
     data_status = data_status_fn.(all_vehicles)
     _ = DataStatusPubSub.update(data_status)
 
