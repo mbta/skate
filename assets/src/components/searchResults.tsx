@@ -44,20 +44,20 @@ const SearchResultCard = ({
   const [
     {
       searchPageState: { query },
-      selectedVehicleId,
+      selectedVehicleOrGhost,
     },
     dispatch,
   ] = useContext(StateDispatchContext)
 
   const classes = [
     "m-search-results__card",
-    vehicleOrGhost.id === selectedVehicleId
+    vehicleOrGhost.id === selectedVehicleOrGhost?.id
       ? "m-search-results__card--selected"
       : "",
     isRecentlyLoggedOn(vehicleOrGhost) ? "m-search-results__card--new" : "",
   ]
 
-  const selectVehicleOrGhost = () => dispatch(selectVehicle(vehicleOrGhost.id))
+  const selectVehicleOrGhost = () => dispatch(selectVehicle(vehicleOrGhost))
 
   return (
     <div className={className(classes)} onClick={selectVehicleOrGhost}>

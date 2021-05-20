@@ -110,7 +110,7 @@ describe("LadderPage", () => {
     const mockState = {
       ...initialState,
       selectedRouteIds: ["1"],
-      selectedVehicleId: "ghost-id",
+      selectedVehicleOrGhost: vehicle,
     }
     const tree = renderer
       .create(

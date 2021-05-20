@@ -216,6 +216,6 @@ describe("HeadwayDiagram", () => {
     )
     wrapper.find(".m-headway-diagram__other-vehicle").first().simulate("click")
 
-    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle.id))
+    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
   })
 })

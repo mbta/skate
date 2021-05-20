@@ -8,6 +8,8 @@ import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../src/realtime"
 import { initialState, selectVehicle } from "../../src/state"
 
+import vehicleFactory from "../factories/vehicle"
+
 describe("IncomingBox", () => {
   test("renders empty state", () => {
     const tree = renderer
@@ -275,54 +277,7 @@ describe("IncomingBox", () => {
   test("clicking an incoming crowding icon selects the associated vehicle", () => {
     const mockDispatch = jest.fn()
 
-    const vehicle: Vehicle = {
-      id: "upward",
-      label: "upward",
-      runId: "run-1",
-      timestamp: 0,
-      latitude: 0,
-      longitude: 0,
-      directionId: 0,
-      routeId: "route",
-      tripId: "trip",
-      headsign: null,
-      viaVariant: null,
-      operatorId: "op1",
-      operatorFirstName: "JOHN",
-      operatorLastName: "SMITH",
-      operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
-      bearing: 33,
-      blockId: "block-1",
-      headwaySecs: 859.1,
-      headwaySpacing: HeadwaySpacing.Ok,
-      previousVehicleId: "v2",
-      scheduleAdherenceSecs: 0,
-      scheduledHeadwaySecs: 120,
-      isShuttle: false,
-      isOverload: false,
-      isOffCourse: false,
-      isRevenue: true,
-      layoverDepartureTime: null,
-      dataDiscrepancies: [],
-      stopStatus: {
-        stopId: "stop",
-        stopName: "stop",
-      },
-      timepointStatus: {
-        fractionUntilTimepoint: 0.5,
-        timepointId: "t1",
-      },
-      scheduledLocation: null,
-      routeStatus: "pulling_out",
-      endOfTripType: "another_trip",
-      blockWaivers: [],
-      crowding: {
-        load: 0,
-        occupancyStatus: "EMPTY",
-        capacity: 18,
-        occupancyPercentage: 0,
-      },
-    }
+    const vehicle: Vehicle = vehicleFactory.build()
 
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
@@ -336,6 +291,6 @@ describe("IncomingBox", () => {
     )
     wrapper.find(".m-incoming-box__vehicle").simulate("click")
 
-    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle.id))
+    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
   })
 })

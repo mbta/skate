@@ -116,7 +116,7 @@ const Vehicle = ({
 }) => {
   const [appState, dispatch] = useContext(StateDispatchContext)
   const select = isPrimary
-    ? () => dispatch(selectVehicle(vehicle.id))
+    ? () => dispatch(selectVehicle(vehicle))
     : // tslint:disable-next-line: no-empty
       () => {}
   const position: LatLngExpression = [vehicle.latitude, vehicle.longitude]
@@ -129,7 +129,7 @@ const Vehicle = ({
     vehicle,
     isPrimary,
     appState.userSettings,
-    appState.selectedVehicleId
+    appState.selectedVehicleOrGhost?.id || ""
   )
   const zIndexOffset = isPrimary ? 2000 : 0
   return (

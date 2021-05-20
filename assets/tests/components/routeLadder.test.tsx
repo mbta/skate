@@ -656,6 +656,6 @@ describe("routeLadder", () => {
     )
     wrapper.find(".m-incoming-box__vehicle").simulate("click")
 
-    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle.id))
+    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
   })
 })

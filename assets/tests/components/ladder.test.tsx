@@ -591,7 +591,7 @@ describe("ladder", () => {
     )
     wrapper.find(".m-ladder__vehicle").simulate("click")
 
-    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle.id))
+    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
   })
 
   test("clicking an incoming ghost selects the associated vehicle", () => {
@@ -624,7 +624,7 @@ describe("ladder", () => {
     )
     wrapper.find(".m-ladder__vehicle").simulate("click")
 
-    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle("y0622"))
+    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(incomingGhost))
   })
 
   test("clicking a crowding icon selects the associated vehicle", () => {
@@ -702,7 +702,7 @@ describe("ladder", () => {
     )
     wrapper.find(".m-ladder__vehicle").simulate("click")
 
-    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle.id))
+    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
   })
 
   test("renders a ladder with no timepoints", () => {

@@ -47,7 +47,7 @@ const IncomingBoxVehicle = ({
     <VehicleTooltip vehicleOrGhost={vehicleOrGhost}>
       <button
         className={`m-incoming-box__vehicle ${selectedClass}`}
-        onClick={() => dispatch(selectVehicle(vehicleOrGhost.id))}
+        onClick={() => dispatch(selectVehicle(vehicleOrGhost))}
       >
         <div className="m-incoming-box__vehicle-icon">
           {displayCrowding ? (

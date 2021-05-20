@@ -32,7 +32,7 @@ export const findSelectedVehicleOrGhost = (
 
 const LadderPage = (): ReactElement<HTMLDivElement> => {
   const [state] = useContext(StateDispatchContext)
-  const { selectedRouteIds, selectedVehicleId } = state
+  const { selectedRouteIds, selectedVehicleOrGhost } = state
 
   const routes: Route[] | null = useContext(RoutesContext)
   const timepointsByRouteId: TimepointsByRouteId = useTimepoints(
@@ -48,11 +48,6 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
   const selectedRoutes: Route[] = selectedRouteIds
     .map((routeId) => findRouteById(routes, routeId))
     .filter((route) => route) as Route[]
-
-  const selectedVehicleOrGhost = findSelectedVehicleOrGhost(
-    vehiclesByRouteId,
-    selectedVehicleId
-  )
 
   // undefined means loading. null means failed
   const vehicleForNotification: VehicleOrGhost | null | undefined = useContext(
@@ -76,7 +71,9 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
           <RouteLadders
             routes={selectedRoutes}
             timepointsByRouteId={timepointsByRouteId}
-            selectedVehicleId={selectedVehicleId || vehicleForNotification?.id}
+            selectedVehicleId={
+              selectedVehicleOrGhost?.id || vehicleForNotification?.id
+            }
           />
           <RightPanel
             selectedVehicleOrGhost={

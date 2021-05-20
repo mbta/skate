@@ -152,7 +152,7 @@ describe("Shuttle Map Page", () => {
     const state = {
       ...initialState,
       selectedShuttleRunIds: [shuttle.runId!],
-      selectedVehicleId: shuttle.id,
+      selectedVehicleOrGhost: shuttle,
     }
     ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
     const tree = renderer

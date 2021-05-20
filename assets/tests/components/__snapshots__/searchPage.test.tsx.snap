@@ -437,7 +437,7 @@ exports[`SearchPage renders a selected vehicle 1`] = `
                 <td
                   className="m-properties-list__property-value"
                 >
-                  PATTI SMITH #op1
+                  WILL SMITH #op1
                 </td>
               </tr>
               <tr

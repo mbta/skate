@@ -214,7 +214,7 @@ const SwingCellContent = ({
               if (window.FS) {
                 window.FS.event(fsEventText)
               }
-              dispatch(selectVehicle(vehicleOrGhost.id))
+              dispatch(selectVehicle(vehicleOrGhost))
             }}
           >
             {runIdToLabel(runId)}
