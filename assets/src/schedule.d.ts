@@ -21,6 +21,10 @@ export interface ByRouteId<T> {
   [routeId: string]: T
 }
 
+export interface ByBlockId<T> {
+  [blockId: string]: T
+}
+
 export interface Route {
   id: RouteId
   directionNames: {
@@ -52,6 +56,7 @@ export interface Timepoint {
 }
 
 export interface Swing {
+  blockId: BlockId
   fromRouteId: RouteId
   fromRunId: RunId
   fromTripId: TripId

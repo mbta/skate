@@ -11,8 +11,9 @@ import { runIdToLabel } from "../helpers/vehicleLabel"
 import useCurrentTime from "../hooks/useCurrentTime"
 import useSwings from "../hooks/useSwings"
 import useVehiclesForRunIds from "../hooks/useVehiclesForRunIds"
+import useVehiclesForBlockIds from "../hooks/useVehiclesForBlockIds"
 import { ByRunId, VehicleOrGhost } from "../realtime"
-import { ByRouteId, Route, Swing } from "../schedule"
+import { ByBlockId, ByRouteId, Route, Swing } from "../schedule"
 import { selectVehicle, toggleSwingsView } from "../state"
 import { formattedScheduledTime, serviceDaySeconds } from "../util/dateTime"
 
@@ -31,16 +32,26 @@ const SwingsView = (): ReactElement<HTMLElement> => {
     flatten(activeSwings.map((swing) => [swing.fromRunId, swing.toRunId]))
   )
 
-  const { socket } = useContext(SocketContext)
-  const swingVehicles = useVehiclesForRunIds(socket, swingRunIds)
+  const swingBlockIds = uniq(activeSwings.map((swing) => swing.blockId))
 
-  const swingVehiclesByRunId = swingVehicles
-    ? swingVehicles.reduce((map, vehicle) => {
+  const { socket } = useContext(SocketContext)
+  const swingRunVehicles = useVehiclesForRunIds(socket, swingRunIds)
+
+  const swingVehiclesByRunId = swingRunVehicles
+    ? swingRunVehicles.reduce((map, vehicle) => {
         if (vehicle.runId) {
           return { ...map, [vehicle.runId]: vehicle }
         } else {
           return map
         }
+      }, {})
+    : {}
+
+  const swingBlockVehicles = useVehiclesForBlockIds(socket, swingBlockIds)
+
+  const swingVehiclesByBlockId = swingBlockVehicles
+    ? swingBlockVehicles.reduce((map, vehicle) => {
+        return { ...map, [vehicle.blockId]: vehicle }
       }, {})
     : {}
 
@@ -63,6 +74,7 @@ const SwingsView = (): ReactElement<HTMLElement> => {
         <SwingsTable
           swings={activeSwings}
           swingVehiclesByRunId={swingVehiclesByRunId}
+          swingVehiclesByBlockId={swingVehiclesByBlockId}
           swingRoutesById={swingRoutesById}
         />
       ) : (
@@ -75,10 +87,12 @@ const SwingsView = (): ReactElement<HTMLElement> => {
 const SwingsTable = ({
   swings,
   swingVehiclesByRunId,
+  swingVehiclesByBlockId,
   swingRoutesById,
 }: {
   swings: Swing[]
   swingVehiclesByRunId: ByRunId<VehicleOrGhost>
+  swingVehiclesByBlockId: ByBlockId<VehicleOrGhost>
   swingRoutesById: ByRouteId<Route>
 }): ReactElement<HTMLElement> => {
   const sortedSwings = swings.sort((swing1, swing2) => {
@@ -111,6 +125,7 @@ const SwingsTable = ({
             <SwingRow
               swing={swing}
               swingVehiclesByRunId={swingVehiclesByRunId}
+              swingVehicleForBlockId={swingVehiclesByBlockId[swing.blockId]}
               route={swingRoutesById[swing.fromRouteId]}
               key={`${swing.fromRunId}-${swing.toRunId}`}
             />
@@ -124,10 +139,12 @@ const SwingsTable = ({
 const SwingRow = ({
   swing,
   swingVehiclesByRunId,
+  swingVehicleForBlockId,
   route,
 }: {
   swing: Swing
   swingVehiclesByRunId: ByRunId<VehicleOrGhost>
+  swingVehicleForBlockId: VehicleOrGhost
   route: Route | null
 }): ReactElement<HTMLElement> => {
   const swingOffVehicleOrGhost = swingVehiclesByRunId[swing.fromRunId]
@@ -165,8 +182,8 @@ const SwingRow = ({
         </div>
       </th>
       <th className="m-swings-view__table-cell">
-        {vehicleOrGhost && isVehicle(vehicleOrGhost)
-          ? vehicleOrGhost.label
+        {swingVehicleForBlockId && isVehicle(swingVehicleForBlockId)
+          ? swingVehicleForBlockId.label
           : null}
       </th>
     </tr>

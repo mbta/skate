@@ -3,11 +3,13 @@ import React from "react"
 import renderer from "react-test-renderer"
 import ghostFactory from "../factories/ghost"
 import vehicleFactory from "../factories/vehicle"
+import swingFactory from "../factories/swing"
 import SwingsView from "../../src/components/swingsView"
 import { RoutesProvider } from "../../src/contexts/routesContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useSwings from "../../src/hooks/useSwings"
 import useVehiclesForRunIds from "../../src/hooks/useVehiclesForRunIds"
+import useVehiclesForBlockIds from "../../src/hooks/useVehiclesForBlockIds"
 import { Route, Swing } from "../../src/schedule"
 import { initialState, selectVehicle, toggleSwingsView } from "../../src/state"
 import { Vehicle, Ghost, VehicleOrGhost } from "../../src/realtime"
@@ -23,11 +25,19 @@ jest.mock("../../src/hooks/useVehiclesForRunIds", () => ({
   default: jest.fn(),
 }))
 
+jest.mock("../../src/hooks/useVehiclesForBlockIds", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}))
+
 jest.spyOn(dateTime, "now").mockImplementation(() => {
   return new Date(18000 * 1000)
 })
 
-const vehicle: Vehicle = vehicleFactory.build({ runId: "123-456" })
+const vehicle: Vehicle = vehicleFactory.build({
+  runId: "123-456",
+  blockId: "A12-34",
+})
 
 const ghost: Ghost = ghostFactory.build({ runId: "124-456" })
 
@@ -73,15 +83,7 @@ describe("SwingsView", () => {
 
   test("omits swings more than 10 minutes in the past", () => {
     ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
-      {
-        fromRouteId: "1",
-        fromRunId: "123-456",
-        fromTripId: "1234",
-        toRouteId: "1",
-        toRunId: "123-789",
-        toTripId: "5678",
-        time: 1000,
-      },
+      swingFactory.build(),
     ])
 
     const tree = renderer
@@ -96,15 +98,7 @@ describe("SwingsView", () => {
 
   test("includes swings less than 10 minutes in the past", () => {
     ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
-      {
-        fromRouteId: "1",
-        fromRunId: "123-456",
-        fromTripId: "1234",
-        toRouteId: "1",
-        toRunId: "123-789",
-        toTripId: "5678",
-        time: 17700,
-      },
+      swingFactory.build({ time: 17700 }),
     ])
 
     const tree = renderer
@@ -119,16 +113,9 @@ describe("SwingsView", () => {
 
   test("renders future swings, active and inactive", () => {
     ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
-      {
-        fromRouteId: "1",
-        fromRunId: "123-456",
-        fromTripId: "1234",
-        toRouteId: "1",
-        toRunId: "123-789",
-        toTripId: "5678",
-        time: 19000,
-      },
-      {
+      swingFactory.build({ time: 19000 }),
+      swingFactory.build({
+        blockId: "B12-34",
         fromRouteId: "2",
         fromRunId: "124-456",
         fromTripId: "1235",
@@ -136,8 +123,9 @@ describe("SwingsView", () => {
         toRunId: "124-789",
         toTripId: "5679",
         time: 20000,
-      },
-      {
+      }),
+      swingFactory.build({
+        blockId: "C12-34",
         fromRouteId: "3",
         fromRunId: "125-456",
         fromTripId: "1236",
@@ -145,10 +133,13 @@ describe("SwingsView", () => {
         toRunId: "125-789",
         toTripId: "5680",
         time: 21000,
-      },
+      }),
     ])
     ;(useVehiclesForRunIds as jest.Mock).mockImplementationOnce(
       (): VehicleOrGhost[] => [vehicle, ghost]
+    )
+    ;(useVehiclesForBlockIds as jest.Mock).mockImplementationOnce(
+      (): VehicleOrGhost[] => [vehicle]
     )
 
     const tree = renderer
@@ -161,19 +152,14 @@ describe("SwingsView", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("ignores vehicles without run ID", () => {
+  test("ignores vehicles without run ID (for linking to VPP)", () => {
     ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
-      {
-        fromRouteId: "1",
-        fromRunId: "123-456",
-        fromTripId: "1234",
-        toRouteId: "1",
-        toRunId: "123-789",
-        toTripId: "5678",
-        time: 19000,
-      },
+      swingFactory.build({ time: 19000 }),
     ])
     ;(useVehiclesForRunIds as jest.Mock).mockImplementationOnce(
+      (): VehicleOrGhost[] => [{ ...vehicle, runId: null }]
+    )
+    ;(useVehiclesForBlockIds as jest.Mock).mockImplementationOnce(
       (): VehicleOrGhost[] => [{ ...vehicle, runId: null }]
     )
 
@@ -198,17 +184,12 @@ describe("SwingsView", () => {
       window.username = originalUsername
     })
     ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
-      {
-        fromRouteId: "1",
-        fromRunId: "123-456",
-        fromTripId: "1234",
-        toRouteId: "1",
-        toRunId: "123-789",
-        toTripId: "5678",
-        time: 19000,
-      },
+      swingFactory.build({ time: 19000 }),
     ])
     ;(useVehiclesForRunIds as jest.Mock).mockImplementationOnce(
+      (): VehicleOrGhost[] => [vehicle]
+    )
+    ;(useVehiclesForBlockIds as jest.Mock).mockImplementationOnce(
       (): VehicleOrGhost[] => [vehicle]
     )
 
@@ -239,17 +220,16 @@ describe("SwingsView", () => {
       window.username = originalUsername
     })
     ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
-      {
-        fromRouteId: "1",
+      swingFactory.build({
         fromRunId: "123-789",
-        fromTripId: "1234",
-        toRouteId: "1",
         toRunId: "123-456",
-        toTripId: "5678",
         time: 19000,
-      },
+      }),
     ])
     ;(useVehiclesForRunIds as jest.Mock).mockImplementationOnce(
+      (): VehicleOrGhost[] => [vehicle]
+    )
+    ;(useVehiclesForBlockIds as jest.Mock).mockImplementationOnce(
       (): VehicleOrGhost[] => [vehicle]
     )
 
@@ -271,21 +251,17 @@ describe("SwingsView", () => {
 
   test("links to both swing-on and swing-off if both are active", () => {
     ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
-      {
-        fromRouteId: "1",
-        fromRunId: "123-456",
-        fromTripId: "1234",
-        toRouteId: "1",
-        toRunId: "123-789",
-        toTripId: "5678",
-        time: 19000,
-      },
+      swingFactory.build({ time: 19000 }),
     ])
 
     const vehicle2 = vehicleFactory.build({ runId: "123-789" })
     ;(useVehiclesForRunIds as jest.Mock).mockImplementationOnce(
       (): VehicleOrGhost[] => [vehicle, vehicle2]
     )
+    ;(useVehiclesForBlockIds as jest.Mock).mockImplementationOnce(
+      (): VehicleOrGhost[] => [vehicle]
+    )
+
     const tree = renderer.create(
       <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <RoutesProvider routes={routes}>
@@ -298,17 +274,12 @@ describe("SwingsView", () => {
 
   test("can close the swings view", () => {
     ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
-      {
-        fromRouteId: "1",
-        fromRunId: "123-456",
-        fromTripId: "1234",
-        toRouteId: "1",
-        toRunId: "123-789",
-        toTripId: "5678",
-        time: 19000,
-      },
+      swingFactory.build({ time: 19000 }),
     ])
     ;(useVehiclesForRunIds as jest.Mock).mockImplementationOnce(
+      (): VehicleOrGhost[] => [vehicle]
+    )
+    ;(useVehiclesForBlockIds as jest.Mock).mockImplementationOnce(
       (): VehicleOrGhost[] => [vehicle]
     )
 
