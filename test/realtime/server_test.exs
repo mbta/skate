@@ -148,6 +148,13 @@ defmodule Realtime.ServerTest do
       assert vehicles_and_ghosts == [@vehicle]
     end
 
+    test "can subscribe to multiple block IDs", %{server_pid: server_pid} do
+      vehicles_and_ghosts =
+        Server.subscribe_to_block_ids([@vehicle.block_id, @ghost.block_id], server_pid)
+
+      assert vehicles_and_ghosts == [@vehicle, @ghost]
+    end
+
     test "clients subscribed to a route get data pushed to them", %{server_pid: server_pid} do
       Server.subscribe_to_block_ids([@vehicle.block_id], server_pid)
 
