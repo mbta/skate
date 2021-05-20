@@ -43,7 +43,7 @@ defmodule SkateWeb.VehiclesChannelTest do
                subscribe_and_join(
                  socket,
                  VehiclesChannel,
-                 "vehicles:block_ids:" <> @vehicle.block_id
+                 "vehicles:block_ids:" <> @vehicle.block_id <> ",some_other_block"
                )
     end
 
