@@ -10,6 +10,7 @@ defmodule Realtime.ServerTest do
              id: "v1",
              label: "v1-label",
              run_id: "123-9048",
+             block_id: "vehicle_block",
              operator_id: "71041",
              operator_first_name: "FRANK",
              operator_last_name: "FRANCIS",
@@ -19,17 +20,19 @@ defmodule Realtime.ServerTest do
   @vehicle_on_inactive_block build(:vehicle,
                                route_id: "1",
                                block_is_active: false,
+                               block_id: "inactive_block",
                                id: "v2",
                                label: "v2-label",
                                run_id: "456-7890"
                              )
 
-  @ghost build(:ghost)
+  @ghost build(:ghost, block_id: "ghost_block")
 
   @shuttle build(:vehicle,
              id: "shuttle",
              label: "shuttle",
              run_id: "9990555",
+             block_id: "shuttle_block",
              route_id: nil,
              trip_id: "t3"
            )
