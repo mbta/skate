@@ -33,4 +33,23 @@ defmodule Skate.Factory do
       end_of_trip_type: :another_trip
     }
   end
+
+  def ghost_factory do
+    %Realtime.Ghost{
+      id: "ghost-trip",
+      direction_id: 0,
+      route_id: "1",
+      trip_id: "t2",
+      headsign: "headsign",
+      block_id: "block",
+      run_id: "123-9049",
+      via_variant: "X",
+      layover_departure_time: nil,
+      scheduled_timepoint_status: %{
+        timepoint_id: "t2",
+        fraction_until_timepoint: 0.5
+      },
+      route_status: :on_route
+    }
+  end
 end
