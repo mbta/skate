@@ -10,6 +10,7 @@ defmodule Realtime.ServerTest do
              id: "v1",
              label: "v1-label",
              run_id: "123-9048",
+             block_id: "vehicle_block",
              operator_id: "71041",
              operator_first_name: "FRANK",
              operator_last_name: "FRANCIS",
@@ -19,17 +20,19 @@ defmodule Realtime.ServerTest do
   @vehicle_on_inactive_block build(:vehicle,
                                route_id: "1",
                                block_is_active: false,
+                               block_id: "inactive_block",
                                id: "v2",
                                label: "v2-label",
                                run_id: "456-7890"
                              )
 
-  @ghost build(:ghost)
+  @ghost build(:ghost, block_id: "ghost_block")
 
   @shuttle build(:vehicle,
              id: "shuttle",
              label: "shuttle",
              run_id: "9990555",
+             block_id: "shuttle_block",
              route_id: nil,
              trip_id: "t3"
            )
@@ -134,6 +137,78 @@ defmodule Realtime.ServerTest do
     end
   end
 
+  describe "subscribe_to_block_ids" do
+    setup do
+      {:ok, server_pid} = Server.start_link([])
+
+      Server.update({@vehicles_by_route_id, []}, server_pid)
+
+      %{server_pid: server_pid}
+    end
+
+    test "clients get vehicles when subscribing", %{server_pid: server_pid} do
+      vehicles_and_ghosts = Server.subscribe_to_block_ids([@vehicle.block_id], server_pid)
+      assert vehicles_and_ghosts == [@vehicle]
+    end
+
+    test "can subscribe to multiple block IDs", %{server_pid: server_pid} do
+      vehicles_and_ghosts =
+        Server.subscribe_to_block_ids([@vehicle.block_id, @ghost.block_id], server_pid)
+
+      assert vehicles_and_ghosts == [@vehicle, @ghost]
+    end
+
+    test "clients subscribed to a route get data pushed to them", %{server_pid: server_pid} do
+      Server.subscribe_to_block_ids([@vehicle.block_id], server_pid)
+
+      Server.update({@vehicles_by_route_id, []}, server_pid)
+
+      assert_receive(
+        {:new_realtime_data, lookup_args},
+        200,
+        "Client didn't receive vehicle positions"
+      )
+
+      assert Server.lookup(lookup_args) == [@vehicle]
+    end
+
+    test "clients subscribed to block IDs get repeated messages", %{server_pid: server_pid} do
+      Server.subscribe_to_block_ids([@vehicle.block_id], server_pid)
+
+      Server.update({@vehicles_by_route_id, []}, server_pid)
+
+      assert_receive(
+        {:new_realtime_data, _},
+        200,
+        "Client didn't receive vehicle positions the first time"
+      )
+
+      Server.update({@vehicles_by_route_id, []}, server_pid)
+
+      assert_receive(
+        {:new_realtime_data, lookup_args},
+        200,
+        "Client didn't receive vehicle positions the second time"
+      )
+
+      assert Server.lookup(lookup_args) == [@vehicle]
+    end
+
+    test "inactive blocks have all their vehicle data removed", %{server_pid: server_pid} do
+      Server.subscribe_to_block_ids([@vehicle.block_id], server_pid)
+
+      Server.update({%{}, []}, server_pid)
+
+      assert_receive(
+        {:new_realtime_data, lookup_args},
+        200,
+        "Client received vehicle positions"
+      )
+
+      assert Server.lookup(lookup_args) == []
+    end
+  end
+
   describe "subscribe_to_all_shuttles" do
     setup do
       {:ok, server_pid} = Server.start_link([])
@@ -212,6 +287,7 @@ defmodule Realtime.ServerTest do
       :ets.insert(ets, {{:trip_id, "t2"}, @ghost})
       :ets.insert(ets, {:all_vehicles, [@vehicle, @shuttle]})
       :ets.insert(ets, {:all_shuttles, [@shuttle]})
+      :ets.insert(ets, {{:block_id, @vehicle.block_id}, @vehicle})
 
       {:ok, %{ets: ets}}
     end
@@ -235,6 +311,10 @@ defmodule Realtime.ServerTest do
     test "fetches a vehicle by trip ID from the ets table", %{ets: ets} do
       assert Server.lookup({ets, {:trip_id, "t1"}}) == @vehicle
       assert Server.lookup({ets, {:trip_id, "t2"}}) == @ghost
+    end
+
+    test "fetches vehicles by block ID from the ets table", %{ets: ets} do
+      assert Server.lookup({ets, {:block_ids, [@vehicle.block_id]}}) == [@vehicle]
     end
 
     test "searches all vehicles by any of run, vehicle, or operator", %{ets: ets} do
