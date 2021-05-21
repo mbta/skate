@@ -64,3 +64,19 @@ Additionally, there a number of secret variables (only required in production) d
 - **SECRET_KEY_BASE**: Used for writing encrypted cookies. Generate a value using `mix phx.gen.secret` (only required in production)
 - **SWIFTLY_AUTHORIZATION_KEY**: Authorization key for Swiftly
 - **BRIDGE_API_USERNAME**, **BRIDGE_API_PASSWORD**: credentials for the API that gets drawbridge status
+
+## Production Deploys
+
+Prior to releasing a new version to prod, we create an annotated Git tag documenting what's being deployed. The tag name should be in the format `YYYY-MM-DD-N`, where `N` is used to differentiate between multiple releases in a given day and starts at 1. For the body of the description, run the following command:
+```
+git log --abbrev-commit --pretty=format:'%h:%s' [hash of previous prod version]..HEAD
+```
+Then run:
+```
+git tag -a [tag name]
+```
+which will prompt you to enter the annotation from the previous step via your editor. Once this is done, you can push using:
+```
+git push origin --tags
+```
+Once this is complete, initiate the deploy through AWS and post a link to the tag on GitHub in the `#ctd-deploys` Slack channel.
