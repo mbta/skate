@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SwingsView ignores vehicles without run ID 1`] = `
+exports[`SwingsView ignores vehicles without run ID (for linking to VPP) 1`] = `
 <div
   className="m-swings-view"
   id="m-swings-view"
@@ -119,7 +119,9 @@ exports[`SwingsView ignores vehicles without run ID 1`] = `
           </th>
           <th
             className="m-swings-view__table-cell"
-          />
+          >
+            v1-label
+          </th>
         </tr>
       </tbody>
     </table>
