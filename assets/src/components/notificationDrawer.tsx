@@ -9,10 +9,7 @@ import {
   NotificationsContext,
   otherNotificationReadState,
 } from "../contexts/notificationsContext"
-import {
-  openVPPForNotification,
-  StateDispatchContext,
-} from "../contexts/stateDispatchContext"
+import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { ellipsisIcon } from "../helpers/icon"
 import useCurrentTime from "../hooks/useCurrentTime"
 import {
@@ -22,7 +19,7 @@ import {
 import { Notification } from "../realtime.d"
 import { closeNotificationDrawer } from "../state"
 import CloseButton from "./closeButton"
-import { isChelseaBridgeReason } from "./notifications"
+import { isChelseaBridgeReason, openVPPForNotification } from "./notifications"
 import NotificationBellIcon from "./notificationBellIcon"
 import { NotificationContent } from "./notificationContent"
 

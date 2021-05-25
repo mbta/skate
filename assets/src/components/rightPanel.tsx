@@ -10,7 +10,7 @@ import SwingsView from "./swingsView"
 const RightPanel = ({
   selectedVehicleOrGhost,
 }: {
-  selectedVehicleOrGhost?: VehicleOrGhost
+  selectedVehicleOrGhost?: VehicleOrGhost | null
 }): ReactElement<HTMLElement> | null => {
   const [state, dispatch] = useContext(StateDispatchContext)
 

@@ -13,7 +13,8 @@ const parser = (data: VehicleOrGhostData[]): VehicleOrGhost[] =>
 
 const useVehiclesForRunIds = (
   socket: Socket | undefined,
-  runIds: RunId[]
+  runIds: RunId[],
+  closeAfterFirstRead?: boolean
 ): VehicleOrGhost[] | null | undefined => {
   const topic: string | null =
     runIds.length > 0 ? `vehicles:run_ids:${runIds.join(",")}` : null
@@ -24,6 +25,7 @@ const useVehiclesForRunIds = (
     event: "vehicles",
     parser: nullableParser(parser),
     loadingState: undefined,
+    closeAfterFirstRead,
   })
 }
 

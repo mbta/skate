@@ -32,7 +32,7 @@ export interface State {
   ladderCrowdingToggles: LadderCrowdingToggles
   selectedShuttleRouteIds: RouteId[]
   selectedShuttleRunIds: RunId[] | "all"
-  selectedVehicleOrGhost?: VehicleOrGhost
+  selectedVehicleOrGhost?: VehicleOrGhost | null
   notificationDrawerIsOpen: boolean
   userSettings: UserSettings
   selectedNotification?: Notification
@@ -181,12 +181,12 @@ export const deselectShuttleRoute = (
 export interface SelectVehicleAction {
   type: "SELECT_VEHICLE"
   payload: {
-    vehicle: VehicleOrGhost
+    vehicle: VehicleOrGhost | null | undefined
   }
 }
 
 export const selectVehicle = (
-  vehicle: VehicleOrGhost
+  vehicle: VehicleOrGhost | null | undefined
 ): SelectVehicleAction => ({
   type: "SELECT_VEHICLE",
   payload: { vehicle },
@@ -304,7 +304,19 @@ export const toggleSwingsView = (): ToggleSwingsViewAction => ({
   type: "TOGGLE_SWINGS_VIEW",
 })
 
-type Action =
+interface SelectVehicleFromNotificationAction {
+  type: "SELECT_VEHICLE_FROM_NOTIFICATION"
+  payload: { vehicle: VehicleOrGhost | null | undefined }
+}
+
+export const selectVehicleFromNotification = (
+  vehicle: VehicleOrGhost | null | undefined
+): SelectVehicleFromNotificationAction => ({
+  type: "SELECT_VEHICLE_FROM_NOTIFICATION",
+  payload: { vehicle },
+})
+
+export type Action =
   | SelectRouteAction
   | DeselectRouteAction
   | FlipLadderAction
@@ -327,6 +339,7 @@ type Action =
   | SearchAction
   | SetNotificationAction
   | ToggleSwingsViewAction
+  | SelectVehicleFromNotificationAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -422,11 +435,12 @@ const selectedShuttleRunIdsReducer = (
 }
 
 const selectedVehicleOrGhostReducer = (
-  state: VehicleOrGhost | undefined,
+  state: VehicleOrGhost | null | undefined,
   action: Action
-): VehicleOrGhost | undefined => {
+): VehicleOrGhost | null | undefined => {
   switch (action.type) {
     case "SELECT_VEHICLE":
+    case "SELECT_VEHICLE_FROM_NOTIFICATION":
       return action.payload.vehicle
     case "DESELECT_VEHICLE":
     case "SET_NOTIFICATION":

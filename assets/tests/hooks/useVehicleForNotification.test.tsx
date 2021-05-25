@@ -117,7 +117,9 @@ describe("useVehicleForNotification", () => {
     window.username = "username"
 
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok", { data: [vehicleData] })
+    const mockChannel = makeMockChannel("ok", null, true, {
+      data: [vehicleData],
+    })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     // tslint:disable: react-hooks-nesting
@@ -200,7 +202,7 @@ describe("useVehicleForNotification", () => {
     window.username = "username"
 
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok", { data: [ghostData] })
+    const mockChannel = makeMockChannel("ok", null, true, { data: [ghostData] })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     // tslint:disable: react-hooks-nesting
@@ -242,7 +244,7 @@ describe("useVehicleForNotification", () => {
     window.username = "username"
 
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok", { data: null })
+    const mockChannel = makeMockChannel("ok", null, true, { data: null })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     // tslint:disable: react-hooks-nesting
@@ -271,7 +273,7 @@ describe("useVehicleForNotification", () => {
     window.username = "username"
 
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok", { data: null })
+    const mockChannel = makeMockChannel("ok", null, true, { data: null })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     // tslint:disable: react-hooks-nesting
@@ -302,7 +304,7 @@ describe("useVehicleForNotification", () => {
     window.username = "username"
 
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok", { data: [] })
+    const mockChannel = makeMockChannel("ok", null, true, { data: [] })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     // tslint:disable: react-hooks-nesting

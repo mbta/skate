@@ -1,15 +1,20 @@
 import React, { useContext, useEffect, useState } from "react"
 import { NotificationsContext } from "../contexts/notificationsContext"
-import {
-  openVPPForNotification,
-  StateDispatchContext,
-} from "../contexts/stateDispatchContext"
+import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useCurrentTime from "../hooks/useCurrentTime"
 import {
-  Dispatch,
+  Dispatch as NotificationsDispatch,
   hideLatestNotification,
+  toggleReadState,
 } from "../hooks/useNotificationsReducer"
+import useSocket from "../hooks/useSocket"
+import useVehicleForNotification from "../hooks/useVehicleForNotification"
 import { Notification, NotificationReason } from "../realtime.d"
+import {
+  Dispatch as StateDispatch,
+  selectVehicleFromNotification,
+  setNotification,
+} from "../state"
 import { NotificationContent } from "./notificationContent"
 
 export const Notifications = () => {
@@ -18,7 +23,8 @@ export const Notifications = () => {
   )
   const currentTime = useCurrentTime()
 
-  const [, stateDispatch] = useContext(StateDispatchContext)
+  const [state, stateDispatch] = useContext(StateDispatchContext)
+  const { selectedNotification } = state
 
   const notificationToShow =
     showLatestNotification && notifications.length > 0 ? notifications[0] : null
@@ -31,9 +37,21 @@ export const Notifications = () => {
     }
   }, [notificationToShow])
 
+  const { socket } = useSocket()
+  const vehicleForNotification = useVehicleForNotification(
+    selectedNotification,
+    socket
+  )
+
   const openVPPForCurrentVehicle = (notification: Notification) => {
     openVPPForNotification(notification, stateDispatch, dispatch)
   }
+
+  useEffect(() => {
+    if (selectedNotification) {
+      stateDispatch(selectVehicleFromNotification(vehicleForNotification))
+    }
+  }, [selectedNotification, vehicleForNotification])
 
   return (
     <div className="m-notifications">
@@ -56,7 +74,7 @@ export const NotificationCard = ({
   openVPPForCurrentVehicle,
 }: {
   notification: Notification
-  dispatch: Dispatch
+  dispatch: NotificationsDispatch
   currentTime: Date
   openVPPForCurrentVehicle: (notification: Notification) => void
 }) => {
@@ -106,4 +124,15 @@ export const isChelseaBridgeReason = (reason: NotificationReason): boolean => {
     "chelsea_st_bridge_lowered",
   ]
   return bridgeReasons.some((chelseaReason) => chelseaReason === reason)
+}
+
+export const openVPPForNotification = (
+  notification: Notification,
+  stateDispatch: StateDispatch,
+  notificationsDispatch: NotificationsDispatch
+): void => {
+  if (notification.state === "unread") {
+    notificationsDispatch(toggleReadState(notification))
+  }
+  stateDispatch(setNotification(notification))
 }

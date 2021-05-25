@@ -10,10 +10,9 @@ const useVehicleForNotification = (
 ): VehicleOrGhost | undefined | null => {
   // undefined means we're still trying to load the vehicle,
   // null means we tried and failed
-  const newVehiclesOrGhosts = useVehiclesForRunIds(
-    socket,
-    notification?.runIds || []
-  )
+  const runIds = notification?.runIds || []
+
+  const newVehiclesOrGhosts = useVehiclesForRunIds(socket, runIds, true)
   const newVehicleOrGhost = Array.isArray(newVehiclesOrGhosts)
     ? newVehiclesOrGhosts[0] || null
     : newVehiclesOrGhosts
