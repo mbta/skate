@@ -45,8 +45,7 @@
 }
 
 .m-swings-view__table-header {
-  font-size: 0.6875rem;
-  font-weight: 700;
+  @include font-small font-weight: 700;
 }
 
 .m-swings-view__table-header-cell {
@@ -61,7 +60,7 @@
     position: absolute;
     top: calc(50% + 0.28125rem);
     left: 1.5rem;
-    font-size: 0.5rem;
+    font-size: 0.6875rem;
     font-weight: 400;
   }
 
@@ -77,14 +76,14 @@
       position: absolute;
       top: calc(50% + 0.28125rem);
       left: 4.25rem;
-      font-size: 0.5rem;
+      font-size: 0.6875rem;
       font-weight: 400;
     }
   }
 }
 
 .m-swings-view__table-row-active {
-  color: $color-primary;
+  color: $color-primary-dark;
   background-color: $white;
   font-weight: 700;
 }
