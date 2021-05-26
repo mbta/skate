@@ -6,7 +6,10 @@ import { GhostData, VehicleData } from "../../src/models/vehicleData"
 import { NotificationReason, NotificationState } from "../../src/realtime"
 import { initialState } from "../../src/state"
 import { dateFromEpochSeconds } from "../../src/util/dateTime"
-import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
+import {
+  makeMockOneShotChannel,
+  makeMockSocket,
+} from "../testHelpers/socketHelpers"
 
 const ghostData: GhostData = {
   id: "ghost-5678",
@@ -117,9 +120,7 @@ describe("useVehicleForNotification", () => {
     window.username = "username"
 
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok", null, true, {
-      data: [vehicleData],
-    })
+    const mockChannel = makeMockOneShotChannel([vehicleData])
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     // tslint:disable: react-hooks-nesting
@@ -202,7 +203,7 @@ describe("useVehicleForNotification", () => {
     window.username = "username"
 
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok", null, true, { data: [ghostData] })
+    const mockChannel = makeMockOneShotChannel([ghostData])
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     // tslint:disable: react-hooks-nesting
@@ -244,7 +245,7 @@ describe("useVehicleForNotification", () => {
     window.username = "username"
 
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok", null, true, { data: null })
+    const mockChannel = makeMockOneShotChannel(null)
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     // tslint:disable: react-hooks-nesting
@@ -273,7 +274,7 @@ describe("useVehicleForNotification", () => {
     window.username = "username"
 
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok", null, true, { data: null })
+    const mockChannel = makeMockOneShotChannel(null)
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     // tslint:disable: react-hooks-nesting
@@ -304,7 +305,7 @@ describe("useVehicleForNotification", () => {
     window.username = "username"
 
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok", null, true, { data: [] })
+    const mockChannel = makeMockOneShotChannel([])
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
     // tslint:disable: react-hooks-nesting

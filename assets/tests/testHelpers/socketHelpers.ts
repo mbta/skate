@@ -7,8 +7,6 @@ export const makeMockSocket = (): Socket & { channel: jest.Mock } =>
 
 export const makeMockChannel = (
   expectedJoinMessage?: "ok" | "error" | "timeout",
-  expectedFirstPush?: any,
-  closeAfterFirstRead?: boolean,
   expectedJoinData?: any
 ) => {
   const result = {
@@ -18,17 +16,12 @@ export const makeMockChannel = (
     receive: jest.fn(),
   }
   result.join.mockImplementation(() => result)
-  result.on.mockImplementation((event, handler) => {
-    if (event && expectedJoinData) {
-      handler(expectedJoinData)
-    }
-  })
   result.receive.mockImplementation((message, handler) => {
-    if (!closeAfterFirstRead && message === expectedJoinMessage) {
+    if (message === expectedJoinMessage) {
       switch (message) {
         case "ok":
-          if (expectedFirstPush !== undefined) {
-            handler(expectedFirstPush)
+          if (expectedJoinData !== undefined) {
+            handler(expectedJoinData)
           }
           return result
 
@@ -43,5 +36,17 @@ export const makeMockChannel = (
 
     return result
   })
+  return result
+}
+
+export const makeMockOneShotChannel = (dataOnJoin?: any) => {
+  const result: { join: any; on: any; leave: any } = {
+    join: jest.fn(),
+    on: (_: any, handler: ({ data }: { data: any }) => void) => {
+      result.join = () => handler({ data: dataOnJoin })
+    },
+    leave: jest.fn(),
+  }
+
   return result
 }

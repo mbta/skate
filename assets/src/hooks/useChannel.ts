@@ -29,7 +29,6 @@ export const useChannel = <T>({
   useEffect(() => {
     setState(loadingState)
     let channel: Channel | undefined
-
     if (socket !== undefined && topic !== null) {
       channel = socket.channel(topic)
       channel.on(event, ({ data: data }) => {
