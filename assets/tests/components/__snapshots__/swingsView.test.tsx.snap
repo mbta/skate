@@ -41,25 +41,35 @@ exports[`SwingsView ignores vehicles without run ID (for linking to VPP) 1`] = `
           <th
             className="m-swings-view__table-header-cell"
           >
-            Swing On 
-            <span
-              className="swing-on-time"
-            >
-              Time
-            </span>
+            <div>
+              Swing On
+              <div
+                className="subheaders"
+              >
+                <div
+                  className="subheader"
+                >
+                  Time
+                </div>
+              </div>
+            </div>
           </th>
           <th
-            className="m-swings-view__table-header-cell"
+            className="m-swings-view__table-header-cell swing-on"
           >
             <span
-              className="swing-on"
+              className="swing-on-text"
             >
               Swing On 
             </span>
             <div
-              className="subheader"
+              className="subheaders"
             >
-              Run
+              <div
+                className="subheader"
+              >
+                Run
+              </div>
             </div>
           </th>
           <th
@@ -67,25 +77,24 @@ exports[`SwingsView ignores vehicles without run ID (for linking to VPP) 1`] = `
           >
             Swing Off
             <div
-              className="subheader"
+              className="subheaders"
             >
-              Run
-            </div>
-            <div
-              className="route-subheader"
-            >
-              Route
+              <div
+                className="subheader"
+              >
+                Run
+              </div>
+              <div
+                className="route-subheader"
+              >
+                Route
+              </div>
             </div>
           </th>
           <th
             className="m-swings-view__table-header-cell"
           >
-            Vehicle 
-            <span
-              className="vehicle-no"
-            >
-              No.
-            </span>
+            Vehicle
           </th>
         </tr>
       </thead>
@@ -96,31 +105,47 @@ exports[`SwingsView ignores vehicles without run ID (for linking to VPP) 1`] = `
           <th
             className="m-swings-view__table-cell"
           >
-            5:16 AM
+            <div
+              className="m-swings-view__table-cell-contents"
+            >
+              5:16 AM
+            </div>
           </th>
           <th
-            className="m-swings-view__table-cell"
+            className="m-swings-view__table-cell swing-on"
           >
-            789
+            <div
+              className="m-swings-view__table-cell-contents"
+            >
+              789
+            </div>
           </th>
           <th
             className="m-swings-view__table-cell swing-off"
           >
-            456
             <div
-              className="m-swings-view__route-pill"
+              className="m-swings-view__table-cell-contents"
             >
+              456
               <div
-                className="m-swings-view__route"
+                className="m-swings-view__route-pill"
               >
-                Name 1
+                <div
+                  className="m-swings-view__route"
+                >
+                  Name 1
+                </div>
               </div>
             </div>
           </th>
           <th
             className="m-swings-view__table-cell"
           >
-            v1-label
+            <div
+              className="m-swings-view__table-cell-contents"
+            >
+              v1-label
+            </div>
           </th>
         </tr>
       </tbody>
@@ -170,25 +195,35 @@ exports[`SwingsView includes swings less than 10 minutes in the past 1`] = `
           <th
             className="m-swings-view__table-header-cell"
           >
-            Swing On 
-            <span
-              className="swing-on-time"
-            >
-              Time
-            </span>
+            <div>
+              Swing On
+              <div
+                className="subheaders"
+              >
+                <div
+                  className="subheader"
+                >
+                  Time
+                </div>
+              </div>
+            </div>
           </th>
           <th
-            className="m-swings-view__table-header-cell"
+            className="m-swings-view__table-header-cell swing-on"
           >
             <span
-              className="swing-on"
+              className="swing-on-text"
             >
               Swing On 
             </span>
             <div
-              className="subheader"
+              className="subheaders"
             >
-              Run
+              <div
+                className="subheader"
+              >
+                Run
+              </div>
             </div>
           </th>
           <th
@@ -196,25 +231,24 @@ exports[`SwingsView includes swings less than 10 minutes in the past 1`] = `
           >
             Swing Off
             <div
-              className="subheader"
+              className="subheaders"
             >
-              Run
-            </div>
-            <div
-              className="route-subheader"
-            >
-              Route
+              <div
+                className="subheader"
+              >
+                Run
+              </div>
+              <div
+                className="route-subheader"
+              >
+                Route
+              </div>
             </div>
           </th>
           <th
             className="m-swings-view__table-header-cell"
           >
-            Vehicle 
-            <span
-              className="vehicle-no"
-            >
-              No.
-            </span>
+            Vehicle
           </th>
         </tr>
       </thead>
@@ -225,30 +259,46 @@ exports[`SwingsView includes swings less than 10 minutes in the past 1`] = `
           <th
             className="m-swings-view__table-cell"
           >
-            4:55 AM
+            <div
+              className="m-swings-view__table-cell-contents"
+            >
+              4:55 AM
+            </div>
           </th>
           <th
-            className="m-swings-view__table-cell"
+            className="m-swings-view__table-cell swing-on"
           >
-            789
+            <div
+              className="m-swings-view__table-cell-contents"
+            >
+              789
+            </div>
           </th>
           <th
             className="m-swings-view__table-cell swing-off"
           >
-            456
             <div
-              className="m-swings-view__route-pill"
+              className="m-swings-view__table-cell-contents"
             >
+              456
               <div
-                className="m-swings-view__route"
+                className="m-swings-view__route-pill"
               >
-                Name 1
+                <div
+                  className="m-swings-view__route"
+                >
+                  Name 1
+                </div>
               </div>
             </div>
           </th>
           <th
             className="m-swings-view__table-cell"
-          />
+          >
+            <div
+              className="m-swings-view__table-cell-contents"
+            />
+          </th>
         </tr>
       </tbody>
     </table>
@@ -297,25 +347,35 @@ exports[`SwingsView links to both swing-on and swing-off if both are active 1`] 
           <th
             className="m-swings-view__table-header-cell"
           >
-            Swing On 
-            <span
-              className="swing-on-time"
-            >
-              Time
-            </span>
+            <div>
+              Swing On
+              <div
+                className="subheaders"
+              >
+                <div
+                  className="subheader"
+                >
+                  Time
+                </div>
+              </div>
+            </div>
           </th>
           <th
-            className="m-swings-view__table-header-cell"
+            className="m-swings-view__table-header-cell swing-on"
           >
             <span
-              className="swing-on"
+              className="swing-on-text"
             >
               Swing On 
             </span>
             <div
-              className="subheader"
+              className="subheaders"
             >
-              Run
+              <div
+                className="subheader"
+              >
+                Run
+              </div>
             </div>
           </th>
           <th
@@ -323,25 +383,24 @@ exports[`SwingsView links to both swing-on and swing-off if both are active 1`] 
           >
             Swing Off
             <div
-              className="subheader"
+              className="subheaders"
             >
-              Run
-            </div>
-            <div
-              className="route-subheader"
-            >
-              Route
+              <div
+                className="subheader"
+              >
+                Run
+              </div>
+              <div
+                className="route-subheader"
+              >
+                Route
+              </div>
             </div>
           </th>
           <th
             className="m-swings-view__table-header-cell"
           >
-            Vehicle 
-            <span
-              className="vehicle-no"
-            >
-              No.
-            </span>
+            Vehicle
           </th>
         </tr>
       </thead>
@@ -352,55 +411,71 @@ exports[`SwingsView links to both swing-on and swing-off if both are active 1`] 
           <th
             className="m-swings-view__table-cell"
           >
-            5:16 AM
+            <div
+              className="m-swings-view__table-cell-contents"
+            >
+              5:16 AM
+            </div>
           </th>
           <th
-            className="m-swings-view__table-cell"
+            className="m-swings-view__table-cell swing-on"
           >
-            <span
-              className="m-swings-view__run_icon arrow"
-              dangerouslySetInnerHTML={
-                Object {
-                  "__html": "SVG",
-                }
-              }
-            />
-            <a
-              onClick={[Function]}
+            <div
+              className="m-swings-view__table-cell-contents"
             >
-              789
-            </a>
+              <span
+                className="m-swings-view__run_icon arrow"
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
+              <a
+                onClick={[Function]}
+              >
+                789
+              </a>
+            </div>
           </th>
           <th
             className="m-swings-view__table-cell swing-off"
           >
-            <span
-              className="m-swings-view__run_icon arrow"
-              dangerouslySetInnerHTML={
-                Object {
-                  "__html": "SVG",
-                }
-              }
-            />
-            <a
-              onClick={[Function]}
-            >
-              456
-            </a>
             <div
-              className="m-swings-view__route-pill"
+              className="m-swings-view__table-cell-contents"
             >
-              <div
-                className="m-swings-view__route"
+              <span
+                className="m-swings-view__run_icon arrow"
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
+              <a
+                onClick={[Function]}
               >
-                Name 1
+                456
+              </a>
+              <div
+                className="m-swings-view__route-pill"
+              >
+                <div
+                  className="m-swings-view__route"
+                >
+                  Name 1
+                </div>
               </div>
             </div>
           </th>
           <th
             className="m-swings-view__table-cell"
           >
-            v1-label
+            <div
+              className="m-swings-view__table-cell-contents"
+            >
+              v1-label
+            </div>
           </th>
         </tr>
       </tbody>
@@ -450,25 +525,35 @@ exports[`SwingsView omits swings more than 10 minutes in the past 1`] = `
           <th
             className="m-swings-view__table-header-cell"
           >
-            Swing On 
-            <span
-              className="swing-on-time"
-            >
-              Time
-            </span>
+            <div>
+              Swing On
+              <div
+                className="subheaders"
+              >
+                <div
+                  className="subheader"
+                >
+                  Time
+                </div>
+              </div>
+            </div>
           </th>
           <th
-            className="m-swings-view__table-header-cell"
+            className="m-swings-view__table-header-cell swing-on"
           >
             <span
-              className="swing-on"
+              className="swing-on-text"
             >
               Swing On 
             </span>
             <div
-              className="subheader"
+              className="subheaders"
             >
-              Run
+              <div
+                className="subheader"
+              >
+                Run
+              </div>
             </div>
           </th>
           <th
@@ -476,25 +561,24 @@ exports[`SwingsView omits swings more than 10 minutes in the past 1`] = `
           >
             Swing Off
             <div
-              className="subheader"
+              className="subheaders"
             >
-              Run
-            </div>
-            <div
-              className="route-subheader"
-            >
-              Route
+              <div
+                className="subheader"
+              >
+                Run
+              </div>
+              <div
+                className="route-subheader"
+              >
+                Route
+              </div>
             </div>
           </th>
           <th
             className="m-swings-view__table-header-cell"
           >
-            Vehicle 
-            <span
-              className="vehicle-no"
-            >
-              No.
-            </span>
+            Vehicle
           </th>
         </tr>
       </thead>
@@ -545,25 +629,35 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
           <th
             className="m-swings-view__table-header-cell"
           >
-            Swing On 
-            <span
-              className="swing-on-time"
-            >
-              Time
-            </span>
+            <div>
+              Swing On
+              <div
+                className="subheaders"
+              >
+                <div
+                  className="subheader"
+                >
+                  Time
+                </div>
+              </div>
+            </div>
           </th>
           <th
-            className="m-swings-view__table-header-cell"
+            className="m-swings-view__table-header-cell swing-on"
           >
             <span
-              className="swing-on"
+              className="swing-on-text"
             >
               Swing On 
             </span>
             <div
-              className="subheader"
+              className="subheaders"
             >
-              Run
+              <div
+                className="subheader"
+              >
+                Run
+              </div>
             </div>
           </th>
           <th
@@ -571,25 +665,24 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
           >
             Swing Off
             <div
-              className="subheader"
+              className="subheaders"
             >
-              Run
-            </div>
-            <div
-              className="route-subheader"
-            >
-              Route
+              <div
+                className="subheader"
+              >
+                Run
+              </div>
+              <div
+                className="route-subheader"
+              >
+                Route
+              </div>
             </div>
           </th>
           <th
             className="m-swings-view__table-header-cell"
           >
-            Vehicle 
-            <span
-              className="vehicle-no"
-            >
-              No.
-            </span>
+            Vehicle
           </th>
         </tr>
       </thead>
@@ -600,43 +693,59 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
           <th
             className="m-swings-view__table-cell"
           >
-            5:16 AM
+            <div
+              className="m-swings-view__table-cell-contents"
+            >
+              5:16 AM
+            </div>
           </th>
           <th
-            className="m-swings-view__table-cell"
+            className="m-swings-view__table-cell swing-on"
           >
-            789
+            <div
+              className="m-swings-view__table-cell-contents"
+            >
+              789
+            </div>
           </th>
           <th
             className="m-swings-view__table-cell swing-off"
           >
-            <span
-              className="m-swings-view__run_icon arrow"
-              dangerouslySetInnerHTML={
-                Object {
-                  "__html": "SVG",
-                }
-              }
-            />
-            <a
-              onClick={[Function]}
-            >
-              456
-            </a>
             <div
-              className="m-swings-view__route-pill"
+              className="m-swings-view__table-cell-contents"
             >
-              <div
-                className="m-swings-view__route"
+              <span
+                className="m-swings-view__run_icon arrow"
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
+              <a
+                onClick={[Function]}
               >
-                Name 1
+                456
+              </a>
+              <div
+                className="m-swings-view__route-pill"
+              >
+                <div
+                  className="m-swings-view__route"
+                >
+                  Name 1
+                </div>
               </div>
             </div>
           </th>
           <th
             className="m-swings-view__table-cell"
           >
-            v1-label
+            <div
+              className="m-swings-view__table-cell-contents"
+            >
+              v1-label
+            </div>
           </th>
         </tr>
         <tr
@@ -645,42 +754,58 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
           <th
             className="m-swings-view__table-cell"
           >
-            5:33 AM
+            <div
+              className="m-swings-view__table-cell-contents"
+            >
+              5:33 AM
+            </div>
           </th>
           <th
-            className="m-swings-view__table-cell"
+            className="m-swings-view__table-cell swing-on"
           >
-            789
+            <div
+              className="m-swings-view__table-cell-contents"
+            >
+              789
+            </div>
           </th>
           <th
             className="m-swings-view__table-cell swing-off"
           >
-            <span
-              className="m-swings-view__run_icon ghost"
-              dangerouslySetInnerHTML={
-                Object {
-                  "__html": "SVG",
-                }
-              }
-            />
-            <a
-              onClick={[Function]}
-            >
-              456
-            </a>
             <div
-              className="m-swings-view__route-pill"
+              className="m-swings-view__table-cell-contents"
             >
-              <div
-                className="m-swings-view__route"
+              <span
+                className="m-swings-view__run_icon ghost"
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
+              <a
+                onClick={[Function]}
               >
-                Name 3
+                456
+              </a>
+              <div
+                className="m-swings-view__route-pill"
+              >
+                <div
+                  className="m-swings-view__route"
+                >
+                  Name 3
+                </div>
               </div>
             </div>
           </th>
           <th
             className="m-swings-view__table-cell"
-          />
+          >
+            <div
+              className="m-swings-view__table-cell-contents"
+            />
+          </th>
         </tr>
         <tr
           className="m-swings-view__table-row-inactive"
@@ -688,30 +813,46 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
           <th
             className="m-swings-view__table-cell"
           >
-            5:50 AM
+            <div
+              className="m-swings-view__table-cell-contents"
+            >
+              5:50 AM
+            </div>
           </th>
           <th
-            className="m-swings-view__table-cell"
+            className="m-swings-view__table-cell swing-on"
           >
-            789
+            <div
+              className="m-swings-view__table-cell-contents"
+            >
+              789
+            </div>
           </th>
           <th
             className="m-swings-view__table-cell swing-off"
           >
-            456
             <div
-              className="m-swings-view__route-pill"
+              className="m-swings-view__table-cell-contents"
             >
+              456
               <div
-                className="m-swings-view__route"
+                className="m-swings-view__route-pill"
               >
-                Name 3
+                <div
+                  className="m-swings-view__route"
+                >
+                  Name 3
+                </div>
               </div>
             </div>
           </th>
           <th
             className="m-swings-view__table-cell"
-          />
+          >
+            <div
+              className="m-swings-view__table-cell-contents"
+            />
+          </th>
         </tr>
       </tbody>
     </table>

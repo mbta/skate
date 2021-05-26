@@ -105,19 +105,27 @@ const SwingsTable = ({
         <thead className="m-swings-view__table-header">
           <tr>
             <th className="m-swings-view__table-header-cell">
-              Swing On <span className="swing-on-time">Time</span>
+              <div>
+                Swing On
+                <div className="subheaders">
+                  <div className="subheader">Time</div>
+                </div>
+              </div>
             </th>
-            <th className="m-swings-view__table-header-cell">
-              <span className="swing-on">Swing On </span>
-              <div className="subheader">Run</div>
+            <th className="m-swings-view__table-header-cell swing-on">
+              <span className="swing-on-text">Swing On </span>
+              <div className="subheaders">
+                <div className="subheader">Run</div>
+              </div>
             </th>
             <th className="m-swings-view__table-header-cell swing-off">
-              Swing Off<div className="subheader">Run</div>
-              <div className="route-subheader">Route</div>
+              Swing Off
+              <div className="subheaders">
+                <div className="subheader">Run</div>
+                <div className="route-subheader">Route</div>
+              </div>
             </th>
-            <th className="m-swings-view__table-header-cell">
-              Vehicle <span className="vehicle-no">No.</span>
-            </th>
+            <th className="m-swings-view__table-header-cell">Vehicle</th>
           </tr>
         </thead>
         <tbody>
@@ -160,31 +168,39 @@ const SwingRow = ({
       }
     >
       <th className="m-swings-view__table-cell">
-        {formattedScheduledTime(swing.time)}
+        <div className="m-swings-view__table-cell-contents">
+          {formattedScheduledTime(swing.time)}
+        </div>
       </th>
-      <th className="m-swings-view__table-cell">
-        <SwingCellContent
-          vehicleOrGhost={swingOnVehicleOrGhost}
-          runId={swing.toRunId}
-          fsEventText={"Clicked on swing-on from swings view"}
-        />
+      <th className="m-swings-view__table-cell swing-on">
+        <div className="m-swings-view__table-cell-contents">
+          <SwingCellContent
+            vehicleOrGhost={swingOnVehicleOrGhost}
+            runId={swing.toRunId}
+            fsEventText={"Clicked on swing-on from swings view"}
+          />
+        </div>
       </th>
       <th className="m-swings-view__table-cell swing-off">
-        <SwingCellContent
-          vehicleOrGhost={swingOffVehicleOrGhost}
-          runId={swing.fromRunId}
-          fsEventText={"Clicked on swing-off from swings view"}
-        />
-        <div className="m-swings-view__route-pill">
-          <div className="m-swings-view__route">
-            {route ? route.name : swing.fromRouteId}
+        <div className="m-swings-view__table-cell-contents">
+          <SwingCellContent
+            vehicleOrGhost={swingOffVehicleOrGhost}
+            runId={swing.fromRunId}
+            fsEventText={"Clicked on swing-off from swings view"}
+          />
+          <div className="m-swings-view__route-pill">
+            <div className="m-swings-view__route">
+              {route ? route.name : swing.fromRouteId}
+            </div>
           </div>
         </div>
       </th>
       <th className="m-swings-view__table-cell">
-        {swingVehicleForBlockId && isVehicle(swingVehicleForBlockId)
-          ? swingVehicleForBlockId.label
-          : null}
+        <div className="m-swings-view__table-cell-contents">
+          {swingVehicleForBlockId && isVehicle(swingVehicleForBlockId)
+            ? swingVehicleForBlockId.label
+            : null}
+        </div>
       </th>
     </tr>
   )
