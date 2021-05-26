@@ -122,8 +122,6 @@ describe("LadderPage", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test.todo("shows VPP from a selected notification")
-
   test("if a vehicle from a notification is loading, show nothing", () => {
     const notification: Notification = { runIds: ["run_id"] } as Notification
     const state: State = { ...initialState, selectedNotification: notification }
