@@ -14,7 +14,7 @@ defmodule SkateWeb.VehicleChannel do
   @impl Phoenix.Channel
   def join("vehicle:run_ids:" <> run_ids, _message, socket) do
     run_ids = String.split(run_ids, ",")
-    vehicle_or_ghost = Realtime.Server.peek_at_vehicles(run_ids) |> List.first()
+    vehicle_or_ghost = Realtime.Server.peek_at_vehicles_by_run_ids(run_ids) |> List.first()
 
     if vehicle_or_ghost do
       _ = Server.subscribe_to_vehicle(vehicle_or_ghost.id)

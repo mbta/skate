@@ -270,7 +270,7 @@ defmodule Notifications.NotificationServerTest do
     end
 
     test "broadcasts, saves to the DB, and logs new notifications for waivers with recognized reason for vehicles on selected routes" do
-      reassign_env(:realtime, :peek_at_vehicles_fn, fn _ ->
+      reassign_env(:realtime, :peek_at_vehicles_by_run_ids_fn, fn _ ->
         [@vehicle]
       end)
 
@@ -288,7 +288,7 @@ defmodule Notifications.NotificationServerTest do
     end
 
     test "broadcasts, saves to the DB, and logs new notifications for waivers with recognized reason for ghosts on selected routes" do
-      reassign_env(:realtime, :peek_at_vehicles_fn, fn _ ->
+      reassign_env(:realtime, :peek_at_vehicles_by_run_ids_fn, fn _ ->
         [@ghost]
       end)
 
@@ -304,7 +304,7 @@ defmodule Notifications.NotificationServerTest do
     end
 
     test "broadcasts, saves to the DB, and logs new notifications for waivers with recognized reason when no vehicle or ghost is associated on selected routes" do
-      reassign_env(:realtime, :peek_at_vehicles_fn, fn _ ->
+      reassign_env(:realtime, :peek_at_vehicles_by_run_ids_fn, fn _ ->
         []
       end)
 
@@ -322,7 +322,7 @@ defmodule Notifications.NotificationServerTest do
       RouteSettings.get_or_create("fake_uid")
       RouteSettings.set("fake_uid", [{:selected_route_ids, ["1,83,77"]}])
 
-      reassign_env(:realtime, :peek_at_vehicles_fn, fn _ ->
+      reassign_env(:realtime, :peek_at_vehicles_by_run_ids_fn, fn _ ->
         [@vehicle]
       end)
 
@@ -342,7 +342,7 @@ defmodule Notifications.NotificationServerTest do
     end
 
     test "doesn't log or save a duplicate notification, but does broadcast" do
-      reassign_env(:realtime, :peek_at_vehicles_fn, fn _ ->
+      reassign_env(:realtime, :peek_at_vehicles_by_run_ids_fn, fn _ ->
         [@vehicle]
       end)
 
