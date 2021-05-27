@@ -63,7 +63,7 @@ defmodule SkateWeb.VehicleChannelTest do
       socket: socket
     } do
       assert Realtime.Server.update({%{"1" => [@vehicle]}, []}) == :ok
-      assert Realtime.Server.peek_at_vehicles(["123-4567"]) == [@vehicle]
+      assert Realtime.Server.peek_at_vehicles_by_run_ids(["123-4567"]) == [@vehicle]
 
       expected_payload = %{data: @vehicle}
 

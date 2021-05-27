@@ -110,7 +110,7 @@ defmodule Realtime.Server do
     subscribe(server, {:block_ids, block_ids})
   end
 
-  def peek_at_vehicles(run_ids, server \\ default_name()) do
+  def peek_at_vehicles_by_run_ids(run_ids, server \\ default_name()) do
     {_registry_key, ets} = GenServer.call(server, :subscription_info)
     lookup({ets, {:run_ids, run_ids}})
   end
