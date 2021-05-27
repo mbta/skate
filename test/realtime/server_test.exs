@@ -26,7 +26,7 @@ defmodule Realtime.ServerTest do
                                run_id: "456-7890"
                              )
 
-  @ghost build(:ghost, block_id: "ghost_block")
+  @ghost build(:ghost, id: "g1", block_id: "ghost_block", route_id: "1")
 
   @shuttle build(:vehicle,
              id: "shuttle",
@@ -430,6 +430,17 @@ defmodule Realtime.ServerTest do
                @vehicle,
                @ghost
              ]
+    end
+  end
+
+  describe "peek_at_vehicles_by_id/2" do
+    test "looks up the vehicle or ghost with given ID" do
+      {:ok, server_pid} = Server.start_link([])
+      Server.update({@vehicles_by_route_id, [@shuttle]}, server_pid)
+
+      assert Server.peek_at_vehicle_by_id("no_such_vehicle", server_pid) == []
+      assert Server.peek_at_vehicle_by_id("v1", server_pid) == [@vehicle]
+      assert Server.peek_at_vehicle_by_id("g1", server_pid) == [@ghost]
     end
   end
 end
