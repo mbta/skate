@@ -11,6 +11,7 @@ import {
   flipLadder,
   initialState,
   selectRoute,
+  selectShuttleRun,
   State,
   toggleLadderCrowding,
 } from "../../src/state"
@@ -86,6 +87,25 @@ describe("usePersistedStateReducer", () => {
     const [state] = result.current
 
     expect(state).toEqual(expectedState)
+  })
+
+  test("stores persisted keys in localstorage when they change", () => {
+    const { result } = renderHook(() => usePersistedStateReducer())
+    const dispatch = result.current[1]
+
+    act(() => {
+      dispatch(selectShuttleRun("123"))
+    })
+
+    const state = result.current[0]
+
+    expect(state.selectedShuttleRunIds).toEqual(["123"])
+
+    // last call is persisting the edit we're testing
+    const calls = (window.localStorage.setItem as jest.Mock).mock.calls
+    const lastCallIndex = calls.length - 1
+    const persistedState = JSON.parse(calls[lastCallIndex][1])
+    expect(persistedState.selectedShuttleRunIds).toEqual(["123"])
   })
 
   test("loads settings from the backend", () => {
