@@ -81,9 +81,9 @@ describe("SwingsView", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("omits swings more than 10 minutes in the past", () => {
+  test("omits swings more than 15 minutes in the past", () => {
     ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
-      swingFactory.build(),
+      swingFactory.build({ time: 18000 - 900 }),
     ])
 
     const tree = renderer
@@ -96,9 +96,9 @@ describe("SwingsView", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("includes swings less than 10 minutes in the past", () => {
+  test("includes swings less than 15 minutes in the past", () => {
     ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
-      swingFactory.build({ time: 17700 }),
+      swingFactory.build({ time: 18000 - 900 + 1 }),
     ])
 
     const tree = renderer
