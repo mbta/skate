@@ -37,7 +37,7 @@ exports[`CrowdingDiagram renders correctly for a crowded bus 1`] = `
     45 riders
      / 
     30
-     maximum
+     seats
     <br />
     <span
       className="m-crowding-diagram__status-description m-crowding-diagram__status-description--crowded"
@@ -97,7 +97,7 @@ exports[`CrowdingDiagram renders correctly for a somewhat crowded bus 1`] = `
     10 riders
      / 
     20
-     maximum
+     seats
     <br />
     <span
       className="m-crowding-diagram__status-description m-crowding-diagram__status-description--some-crowding"
@@ -157,7 +157,7 @@ exports[`CrowdingDiagram renders correctly for an empty bus 1`] = `
     0 riders
      / 
     18
-     maximum
+     seats
     <br />
     <span
       className="m-crowding-diagram__status-description m-crowding-diagram__status-description--empty"
@@ -217,7 +217,7 @@ exports[`CrowdingDiagram renders correctly for an uncrowded bus 1`] = `
     1 rider
      / 
     20
-     maximum
+     seats
     <br />
     <span
       className="m-crowding-diagram__status-description m-crowding-diagram__status-description--not-crowded"
