@@ -48,7 +48,7 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
         <br />
         {crowding.load !== null ? (
           <>
-            {loadPhrase} / {crowding.capacity} maximum
+            {loadPhrase} / {crowding.capacity} seats
             <br />
             <span
               className={`m-crowding-diagram__status-description m-crowding-diagram__status-description--${classModifier}`}
