@@ -169,7 +169,26 @@
 }
 
 @media screen and (max-width: $mobile-max-width) {
-  .m-swings-view__table-header-cell-swing-on-text {
-    display: none;
+  .m-swings-view__header {
+    padding-left: 1.75rem;
+  }
+
+  .m-swings-view__description {
+    padding-left: 1.75rem;
+  }
+
+  .m-swings-view__table-container {
+    padding-left: 0rem;
+    padding-right: 0rem;
+  }
+
+  .m-swings-view__table-header-cell {
+    &.m-swings-view__table-header-cell-swing-off {
+      padding-left: 3rem;
+    }
+
+    &.m-swings-view__table-header-cell-swing-on {
+      padding-left: 1.5625rem;
+    }
   }
 }

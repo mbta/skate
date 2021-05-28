@@ -115,9 +115,7 @@ const SwingsTable = ({
               </div>
             </th>
             <th className="m-swings-view__table-header-cell m-swings-view__table-header-cell-swing-on">
-              <span className="m-swings-view__table-header-cell-swing-on-text">
-                Swing On
-              </span>
+              Swing On
               <div className="m-swings-view__table-header-cell-subheaders">
                 <div className="m-swings-view__table-header-cell-subheader">
                   Run

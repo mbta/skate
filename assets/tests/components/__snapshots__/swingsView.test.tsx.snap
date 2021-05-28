@@ -57,11 +57,7 @@ exports[`SwingsView ignores vehicles without run ID (for linking to VPP) 1`] = `
           <th
             className="m-swings-view__table-header-cell m-swings-view__table-header-cell-swing-on"
           >
-            <span
-              className="m-swings-view__table-header-cell-swing-on-text"
-            >
-              Swing On
-            </span>
+            Swing On
             <div
               className="m-swings-view__table-header-cell-subheaders"
             >
@@ -211,11 +207,7 @@ exports[`SwingsView includes swings less than 10 minutes in the past 1`] = `
           <th
             className="m-swings-view__table-header-cell m-swings-view__table-header-cell-swing-on"
           >
-            <span
-              className="m-swings-view__table-header-cell-swing-on-text"
-            >
-              Swing On
-            </span>
+            Swing On
             <div
               className="m-swings-view__table-header-cell-subheaders"
             >
@@ -363,11 +355,7 @@ exports[`SwingsView links to both swing-on and swing-off if both are active 1`] 
           <th
             className="m-swings-view__table-header-cell m-swings-view__table-header-cell-swing-on"
           >
-            <span
-              className="m-swings-view__table-header-cell-swing-on-text"
-            >
-              Swing On
-            </span>
+            Swing On
             <div
               className="m-swings-view__table-header-cell-subheaders"
             >
@@ -541,11 +529,7 @@ exports[`SwingsView omits swings more than 10 minutes in the past 1`] = `
           <th
             className="m-swings-view__table-header-cell m-swings-view__table-header-cell-swing-on"
           >
-            <span
-              className="m-swings-view__table-header-cell-swing-on-text"
-            >
-              Swing On
-            </span>
+            Swing On
             <div
               className="m-swings-view__table-header-cell-subheaders"
             >
@@ -645,11 +629,7 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
           <th
             className="m-swings-view__table-header-cell m-swings-view__table-header-cell-swing-on"
           >
-            <span
-              className="m-swings-view__table-header-cell-swing-on-text"
-            >
-              Swing On
-            </span>
+            Swing On
             <div
               className="m-swings-view__table-header-cell-subheaders"
             >
