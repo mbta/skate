@@ -107,22 +107,32 @@ const SwingsTable = ({
             <th className="m-swings-view__table-header-cell">
               <div>
                 Swing On
-                <div className="subheaders">
-                  <div className="subheader">Time</div>
+                <div className="m-swings-view__table-header-cell-subheaders">
+                  <div className="m-swings-view__table-header-cell-subheader">
+                    Time
+                  </div>
                 </div>
               </div>
             </th>
-            <th className="m-swings-view__table-header-cell swing-on">
-              <span className="swing-on-text">Swing On </span>
-              <div className="subheaders">
-                <div className="subheader">Run</div>
+            <th className="m-swings-view__table-header-cell m-swings-view__table-header-cell-swing-on">
+              <span className="m-swings-view__table-header-cell-swing-on-text">
+                Swing On
+              </span>
+              <div className="m-swings-view__table-header-cell-subheaders">
+                <div className="m-swings-view__table-header-cell-subheader">
+                  Run
+                </div>
               </div>
             </th>
-            <th className="m-swings-view__table-header-cell swing-off">
+            <th className="m-swings-view__table-header-cell m-swings-view__table-header-cell-swing-off">
               Swing Off
-              <div className="subheaders">
-                <div className="subheader">Run</div>
-                <div className="route-subheader">Route</div>
+              <div className="m-swings-view__table-header-cell-subheaders">
+                <div className="m-swings-view__table-header-cell-subheader">
+                  Run
+                </div>
+                <div className="m-swings-view__table-header-cell-route-subheader">
+                  Route
+                </div>
               </div>
             </th>
             <th className="m-swings-view__table-header-cell">Vehicle</th>
@@ -172,7 +182,7 @@ const SwingRow = ({
           {formattedScheduledTime(swing.time)}
         </div>
       </th>
-      <th className="m-swings-view__table-cell swing-on">
+      <th className="m-swings-view__table-cell">
         <div className="m-swings-view__table-cell-contents">
           <SwingCellContent
             vehicleOrGhost={swingOnVehicleOrGhost}
@@ -181,7 +191,7 @@ const SwingRow = ({
           />
         </div>
       </th>
-      <th className="m-swings-view__table-cell swing-off">
+      <th className="m-swings-view__table-cell">
         <div className="m-swings-view__table-cell-contents">
           <SwingCellContent
             vehicleOrGhost={swingOffVehicleOrGhost}
@@ -222,8 +232,12 @@ const SwingCellContent = ({
       {vehicleOrGhost ? (
         <>
           {isVehicle(vehicleOrGhost)
-            ? upRightIcon("m-swings-view__run_icon arrow")
-            : ghostIcon("m-swings-view__run_icon ghost")}
+            ? upRightIcon(
+                "m-swings-view__run-icon m-swings-view__run-icon-arrow"
+              )
+            : ghostIcon(
+                "m-swings-view__run-icon m-swings-view__run-icon-ghost"
+              )}
 
           <a
             onClick={() => {

@@ -57,17 +57,17 @@
   vertical-align: top;
   text-align: right;
 
-  .subheaders {
+  .m-swings-view__table-header-cell-subheaders {
     display: flex;
     justify-content: flex-end;
 
-    .subheader {
+    .m-swings-view__table-header-cell-subheader {
       padding-top: 0.125rem;
       font-size: 0.6875rem;
       font-weight: 400;
     }
 
-    .route-subheader {
+    .m-swings-view__table-header-cell-route-subheader {
       display: inline-block;
       padding-top: 0.125rem;
       padding-left: 1rem;
@@ -76,11 +76,11 @@
     }
   }
 
-  &.swing-on {
+  &.m-swings-view__table-header-cell-swing-on {
     vertical-align: bottom;
   }
 
-  &.swing-off {
+  &.m-swings-view__table-header-cell-swing-off {
     padding-left: 3.0625rem;
   }
 
@@ -144,11 +144,11 @@
   text-align: center;
 }
 
-.m-swings-view__run_icon {
+.m-swings-view__run-icon {
   fill: $color-primary-dark;
   stroke: $color-primary-dark;
 
-  &.arrow {
+  &.m-swings-view__run-icon-arrow {
     padding-right: 0.375rem;
 
     svg {
@@ -157,7 +157,7 @@
     }
   }
 
-  &.ghost {
+  &.m-swings-view__run-icon-ghost {
     padding-right: 0.5rem;
 
     svg {
@@ -169,54 +169,7 @@
 }
 
 @media screen and (max-width: $mobile-max-width) {
-  .m-swings-view__table-header-cell {
-    padding-left: 1rem;
-    padding-right: 1.25rem;
-
-    .subheader {
-      left: 1rem;
-    }
-
-    &.swing-off {
-      padding-left: 1.5rem;
-      padding-right: 1rem;
-
-      .subheader {
-        left: 1.5rem;
-      }
-    }
-
-    .swing-on-text {
-      display: none;
-    }
-
-    .swing-on-time {
-      position: absolute;
-      top: calc(50% + 0.28125rem);
-      left: 1rem;
-      font-size: 0.5rem;
-      font-weight: 400;
-    }
-  }
-
-  .m-swings-view__table-cell {
-    padding-left: 1rem;
-    padding-right: 1.5rem;
-
-    &.swing-off {
-      padding-left: 1.5rem;
-    }
-  }
-
-  .m-swings-view__run_icon {
-    &.arrow {
-      bottom: 0.75rem;
-      right: 4.125rem;
-    }
-
-    &.ghost {
-      bottom: 0.875rem;
-      right: 4.25rem;
-    }
+  .m-swings-view__table-header-cell-swing-on-text {
+    display: none;
   }
 }
