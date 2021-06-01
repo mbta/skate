@@ -11,7 +11,7 @@ import {
   flipLadder,
   initialState,
   selectRoute,
-  selectVehicle,
+  selectShuttleRun,
   State,
   toggleLadderCrowding,
 } from "../../src/state"
@@ -94,18 +94,18 @@ describe("usePersistedStateReducer", () => {
     const dispatch = result.current[1]
 
     act(() => {
-      dispatch(selectVehicle("vehicle_id"))
+      dispatch(selectShuttleRun("123"))
     })
 
     const state = result.current[0]
 
-    expect(state.selectedVehicleId).toEqual("vehicle_id")
+    expect(state.selectedShuttleRunIds).toEqual(["123"])
 
     // last call is persisting the edit we're testing
     const calls = (window.localStorage.setItem as jest.Mock).mock.calls
     const lastCallIndex = calls.length - 1
     const persistedState = JSON.parse(calls[lastCallIndex][1])
-    expect(persistedState.selectedVehicleId).toEqual("vehicle_id")
+    expect(persistedState.selectedShuttleRunIds).toEqual(["123"])
   })
 
   test("loads settings from the backend", () => {

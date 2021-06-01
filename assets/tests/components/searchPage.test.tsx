@@ -4,10 +4,11 @@ import renderer from "react-test-renderer"
 import SearchPage from "../../src/components/searchPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useSearchResults from "../../src/hooks/useSearchResults"
-import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle, VehicleOrGhost } from "../../src/realtime"
 import { initialState, State } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
+
+import vehicleFactory from "../factories/vehicle"
 
 jest
   .spyOn(dateTime, "now")
@@ -15,63 +16,8 @@ jest
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
-const vehicle: Vehicle = {
-  id: "v1",
-  label: "v1-label",
-  runId: "run-1",
-  timestamp: 123,
-  latitude: 0,
-  longitude: 0,
-  directionId: 0,
-  routeId: "39",
-  tripId: "t1",
-  headsign: "Forest Hills",
-  viaVariant: "X",
-  operatorId: "op1",
-  operatorFirstName: "PATTI",
-  operatorLastName: "SMITH",
-  operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
-  bearing: 33,
-  blockId: "block-1",
-  headwaySecs: 859.1,
-  headwaySpacing: HeadwaySpacing.Ok,
-  previousVehicleId: "v2",
-  scheduleAdherenceSecs: 0,
-  scheduledHeadwaySecs: 120,
-  isShuttle: false,
-  isOverload: false,
-  isOffCourse: false,
-  isRevenue: true,
-  layoverDepartureTime: null,
-  dataDiscrepancies: [
-    {
-      attribute: "trip_id",
-      sources: [
-        {
-          id: "swiftly",
-          value: "swiftly-trip-id",
-        },
-        {
-          id: "busloc",
-          value: "busloc-trip-id",
-        },
-      ],
-    },
-  ],
-  stopStatus: {
-    stopId: "s1",
-    stopName: "Stop Name",
-  },
-  timepointStatus: {
-    timepointId: "tp1",
-    fractionUntilTimepoint: 0.5,
-  },
-  scheduledLocation: null,
-  routeStatus: "on_route",
-  endOfTripType: "another_trip",
-  blockWaivers: [],
-  crowding: null,
-}
+const vehicle: Vehicle = vehicleFactory.build()
+
 const ghost: Ghost = {
   id: "ghost-trip",
   directionId: 0,
@@ -125,7 +71,7 @@ describe("SearchPage", () => {
   test("renders a selected vehicle", () => {
     const selectedVehicleState: State = {
       ...initialState,
-      selectedVehicleId: "v1",
+      selectedVehicleOrGhost: vehicle,
     }
 
     const tree = renderer

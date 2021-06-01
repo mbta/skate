@@ -15,36 +15,44 @@ export const useChannel = <T>({
   event,
   parser,
   loadingState,
+  closeAfterFirstRead,
 }: {
   socket: Socket | undefined
   topic: string | null
   event: string
   parser: (data: any) => T
   loadingState: T
+  closeAfterFirstRead?: boolean
 }): T => {
   const [state, setState] = useState<T>(loadingState)
 
   useEffect(() => {
     setState(loadingState)
     let channel: Channel | undefined
-
     if (socket !== undefined && topic !== null) {
       channel = socket.channel(topic)
       channel.on(event, ({ data: data }) => {
         setState(parser(data))
+        if (closeAfterFirstRead) {
+          channel!.leave()
+          channel = undefined
+        }
       })
-      channel
-        .join()
-        .receive("ok", ({ data: data }) => {
-          setState(parser(data))
-        })
-        .receive("error", ({ reason }) =>
-          // tslint:disable-next-line: no-console
-          console.error(`joining topic ${topic} failed`, reason)
-        )
-        .receive("timeout", () => {
-          reload(true)
-        })
+
+      const push = channel.join()
+      if (!closeAfterFirstRead) {
+        push
+          .receive("ok", ({ data: data }) => {
+            setState(parser(data))
+          })
+          .receive("error", ({ reason }) =>
+            // tslint:disable-next-line: no-console
+            console.error(`joining topic ${topic} failed`, reason)
+          )
+          .receive("timeout", () => {
+            reload(true)
+          })
+      }
     }
 
     return () => {

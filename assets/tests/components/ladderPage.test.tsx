@@ -7,10 +7,8 @@ import LadderPage, {
 } from "../../src/components/ladderPage"
 import { RoutesProvider } from "../../src/contexts/routesContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import { VehicleForNotificationProvider } from "../../src/contexts/vehicleForNotificationContext"
 import useTimepoints from "../../src/hooks/useTimepoints"
 import useVehicles from "../../src/hooks/useVehicles"
-import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import {
   Ghost,
   Notification,
@@ -110,7 +108,7 @@ describe("LadderPage", () => {
     const mockState = {
       ...initialState,
       selectedRouteIds: ["1"],
-      selectedVehicleId: "ghost-id",
+      selectedVehicleOrGhost: vehicle,
     }
     const tree = renderer
       .create(
@@ -124,31 +122,12 @@ describe("LadderPage", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("shows VPP from a selected notification", () => {
-    const notification: Notification = { runIds: ["run_id"] } as Notification
-    const state: State = { ...initialState, selectedNotification: notification }
-    const wrapper = mount(
-      <StateDispatchProvider state={state} dispatch={jest.fn()}>
-        <VehicleForNotificationProvider
-          vehicleForNotification={notificationVehicle}
-        >
-          <LadderPage />
-        </VehicleForNotificationProvider>
-      </StateDispatchProvider>
-    )
-    expect(wrapper.find("#m-properties-panel").html()).toContain(
-      notificationVehicle.operatorLastName
-    )
-  })
-
   test("if a vehicle from a notification is loading, show nothing", () => {
     const notification: Notification = { runIds: ["run_id"] } as Notification
     const state: State = { ...initialState, selectedNotification: notification }
     const wrapper = mount(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
-        <VehicleForNotificationProvider vehicleForNotification={undefined}>
-          <LadderPage />
-        </VehicleForNotificationProvider>
+        <LadderPage />
       </StateDispatchProvider>
     )
     expect(wrapper.find("#m-properties-panel").exists()).toBeFalsy()
@@ -159,9 +138,7 @@ describe("LadderPage", () => {
     const state: State = { ...initialState, selectedNotification: notification }
     const wrapper = mount(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
-        <VehicleForNotificationProvider vehicleForNotification={null}>
-          <LadderPage />
-        </VehicleForNotificationProvider>
+        <LadderPage />
       </StateDispatchProvider>
     )
     expect(wrapper.find("#m-properties-panel").exists()).toBeFalsy()
@@ -270,62 +247,4 @@ const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = {
       id: "ghost-39",
     } as Ghost,
   ],
-}
-
-const notificationVehicle: Vehicle = {
-  id: "id",
-  label: "label",
-  runId: "run",
-  timestamp: 123,
-  latitude: 0,
-  longitude: 0,
-  directionId: 0,
-  routeId: "route",
-  tripId: "t1",
-  headsign: "Forest Hills",
-  viaVariant: "X",
-  operatorId: "op1",
-  operatorFirstName: "PATTI",
-  operatorLastName: "SMITH",
-  operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
-  bearing: 33,
-  blockId: "block-1",
-  headwaySecs: 859.1,
-  headwaySpacing: HeadwaySpacing.Ok,
-  previousVehicleId: "v2",
-  scheduleAdherenceSecs: 0,
-  scheduledHeadwaySecs: 120,
-  isShuttle: false,
-  isOverload: false,
-  isOffCourse: false,
-  isRevenue: true,
-  layoverDepartureTime: null,
-  dataDiscrepancies: [
-    {
-      attribute: "trip_id",
-      sources: [
-        {
-          id: "swiftly",
-          value: "swiftly-trip-id",
-        },
-        {
-          id: "busloc",
-          value: "busloc-trip-id",
-        },
-      ],
-    },
-  ],
-  stopStatus: {
-    stopId: "s1",
-    stopName: "Stop Name",
-  },
-  timepointStatus: {
-    fractionUntilTimepoint: 0.5,
-    timepointId: "tp1",
-  },
-  scheduledLocation: null,
-  routeStatus: "on_route",
-  endOfTripType: "another_trip",
-  blockWaivers: [],
-  crowding: null,
 }

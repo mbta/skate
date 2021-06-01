@@ -2,7 +2,6 @@ import React from "react"
 import renderer from "react-test-renderer"
 import Modal from "../../src/components/modal"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import { VehicleForNotificationProvider } from "../../src/contexts/vehicleForNotificationContext"
 import { useMinischeduleRuns } from "../../src/hooks/useMinischedule"
 import {
   Notification,
@@ -37,12 +36,11 @@ describe("Modal", () => {
     const state: State = {
       ...initialState,
       selectedNotification: notification,
+      selectedVehicleOrGhost: null,
     }
     const tree = renderer.create(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
-        <VehicleForNotificationProvider vehicleForNotification={null}>
-          <Modal />
-        </VehicleForNotificationProvider>
+        <Modal />
       </StateDispatchProvider>
     )
     expect(tree).toMatchSnapshot()
@@ -67,12 +65,11 @@ describe("Modal", () => {
     const state: State = {
       ...initialState,
       selectedNotification: notification,
+      selectedVehicleOrGhost: undefined,
     }
     const tree = renderer.create(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
-        <VehicleForNotificationProvider vehicleForNotification={undefined}>
-          <Modal />
-        </VehicleForNotificationProvider>
+        <Modal />
       </StateDispatchProvider>
     )
     expect(tree).toMatchSnapshot()

@@ -9,7 +9,7 @@ import {
   flipLadderDirectionForRoute,
   LadderDirections,
 } from "./models/ladderDirection"
-import { Notification, RunId, VehicleId } from "./realtime.d"
+import { Notification, RunId, VehicleOrGhost } from "./realtime.d"
 import { RouteId } from "./schedule.d"
 import {
   Action as SearchAction,
@@ -32,7 +32,7 @@ export interface State {
   ladderCrowdingToggles: LadderCrowdingToggles
   selectedShuttleRouteIds: RouteId[]
   selectedShuttleRunIds: RunId[] | "all"
-  selectedVehicleId?: VehicleId
+  selectedVehicleOrGhost?: VehicleOrGhost | null
   notificationDrawerIsOpen: boolean
   userSettings: UserSettings
   selectedNotification?: Notification
@@ -47,7 +47,7 @@ export const initialState: State = {
   ladderCrowdingToggles: emptyLadderCrowdingTogglesByRouteId,
   selectedShuttleRouteIds: [],
   selectedShuttleRunIds: "all",
-  selectedVehicleId: undefined,
+  selectedVehicleOrGhost: undefined,
   notificationDrawerIsOpen: false,
   userSettings: defaultUserSettings,
   selectedNotification: undefined,
@@ -181,13 +181,15 @@ export const deselectShuttleRoute = (
 export interface SelectVehicleAction {
   type: "SELECT_VEHICLE"
   payload: {
-    vehicleId: VehicleId
+    vehicle: VehicleOrGhost | null | undefined
   }
 }
 
-export const selectVehicle = (vehicleId: VehicleId): SelectVehicleAction => ({
+export const selectVehicle = (
+  vehicle: VehicleOrGhost | null | undefined
+): SelectVehicleAction => ({
   type: "SELECT_VEHICLE",
-  payload: { vehicleId },
+  payload: { vehicle },
 })
 
 export interface DeselectVehicleAction {
@@ -302,7 +304,19 @@ export const toggleSwingsView = (): ToggleSwingsViewAction => ({
   type: "TOGGLE_SWINGS_VIEW",
 })
 
-type Action =
+interface SelectVehicleFromNotificationAction {
+  type: "SELECT_VEHICLE_FROM_NOTIFICATION"
+  payload: { vehicle: VehicleOrGhost | null | undefined }
+}
+
+export const selectVehicleFromNotification = (
+  vehicle: VehicleOrGhost | null | undefined
+): SelectVehicleFromNotificationAction => ({
+  type: "SELECT_VEHICLE_FROM_NOTIFICATION",
+  payload: { vehicle },
+})
+
+export type Action =
   | SelectRouteAction
   | DeselectRouteAction
   | FlipLadderAction
@@ -325,6 +339,7 @@ type Action =
   | SearchAction
   | SetNotificationAction
   | ToggleSwingsViewAction
+  | SelectVehicleFromNotificationAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -419,13 +434,14 @@ const selectedShuttleRunIdsReducer = (
   }
 }
 
-const selectedVehicleIdReducer = (
-  state: VehicleId | undefined,
+const selectedVehicleOrGhostReducer = (
+  state: VehicleOrGhost | null | undefined,
   action: Action
-): VehicleId | undefined => {
+): VehicleOrGhost | null | undefined => {
   switch (action.type) {
     case "SELECT_VEHICLE":
-      return action.payload.vehicleId
+    case "SELECT_VEHICLE_FROM_NOTIFICATION":
+      return action.payload.vehicle
     case "DESELECT_VEHICLE":
     case "SET_NOTIFICATION":
       return undefined
@@ -519,7 +535,10 @@ export const reducer = (state: State, action: Action): State => ({
     state.selectedShuttleRunIds,
     action
   ),
-  selectedVehicleId: selectedVehicleIdReducer(state.selectedVehicleId, action),
+  selectedVehicleOrGhost: selectedVehicleOrGhostReducer(
+    state.selectedVehicleOrGhost,
+    action
+  ),
   notificationDrawerIsOpen: notificationDrawerReducer(
     state.notificationDrawerIsOpen,
     action

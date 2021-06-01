@@ -2,6 +2,7 @@ import { LadderDirection } from "../src/models/ladderDirection"
 import {
   NotificationReason,
   NotificationState,
+  Vehicle,
   VehicleId,
 } from "../src/realtime.d"
 import * as State from "../src/state"
@@ -9,6 +10,8 @@ import {
   VehicleLabelSetting,
   VehicleAdherenceColorsSetting,
 } from "../src/userSettings"
+
+import vehicleFactory from "./factories/vehicle"
 
 const initialState = State.initialState
 const reducer = State.reducer
@@ -158,14 +161,15 @@ describe("reducer", () => {
   })
 
   test("selectVehicle", () => {
-    const vehicleId: VehicleId = "v1"
+    const vehicle: Vehicle = vehicleFactory.build()
+
     const state = initialState
     const expectedState = {
       ...state,
-      selectedVehicleId: vehicleId,
+      selectedVehicleOrGhost: vehicle,
     }
 
-    const newState = reducer(state, State.selectVehicle(vehicleId))
+    const newState = reducer(state, State.selectVehicle(vehicle))
 
     expect(newState).toEqual(expectedState)
   })

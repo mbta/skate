@@ -4,7 +4,7 @@ import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useSearchResults from "../hooks/useSearchResults"
 import { isVehicle } from "../models/vehicle"
-import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime"
+import { Vehicle, VehicleOrGhost } from "../realtime"
 import { SearchPageState } from "../state/searchPageState"
 import Map from "./map"
 import RecentSearches from "./recentSearches"
@@ -30,12 +30,6 @@ const filterVehicles = (
     : (vehiclesOrGhosts.filter((vog) => isVehicle(vog)) as Vehicle[])
 }
 
-const findSelectedVehicle = (
-  vehicles: VehicleOrGhost[],
-  selectedVehicleId: VehicleId | undefined
-): VehicleOrGhost | undefined =>
-  vehicles.find((vehicle) => vehicle.id === selectedVehicleId)
-
 const ToggleMobileDisplayButton = ({
   mobileDisplay,
   onToggleMobileDisplay,
@@ -56,7 +50,7 @@ const ToggleMobileDisplayButton = ({
 }
 
 const SearchPage = (): ReactElement<HTMLDivElement> => {
-  const [{ searchPageState, selectedVehicleId }] = useContext(
+  const [{ searchPageState, selectedVehicleOrGhost }] = useContext(
     StateDispatchContext
   )
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
@@ -79,11 +73,6 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
     mobileDisplay === MobileDisplay.List
       ? "m-search-page--show-list"
       : "m-search-page--show-map"
-
-  const selectedVehicle: VehicleOrGhost | undefined = findSelectedVehicle(
-    vehicles || [],
-    selectedVehicleId
-  )
 
   return (
     <div className={`c-page m-search-page ${mobileDisplayClass}`}>
@@ -110,7 +99,7 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
         <Map vehicles={onlyVehicles} />
       </div>
 
-      <RightPanel selectedVehicleOrGhost={selectedVehicle} />
+      <RightPanel selectedVehicleOrGhost={selectedVehicleOrGhost} />
     </div>
   )
 }

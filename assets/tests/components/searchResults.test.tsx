@@ -11,6 +11,9 @@ import { initialState, selectVehicle, State } from "../../src/state"
 import { setSearchText } from "../../src/state/searchPageState"
 import * as dateTime from "../../src/util/dateTime"
 
+import ghostFactory from "../factories/ghost"
+import vehicleFactory from "../factories/vehicle"
+
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
@@ -339,84 +342,12 @@ describe("SearchResults", () => {
   })
 
   test("renders a selected result card", () => {
-    const vehicle: Vehicle = {
-      id: "v1",
-      label: "v1-label",
-      runId: "run-1",
-      timestamp: 123,
-      latitude: 0,
-      longitude: 0,
-      directionId: 0,
-      routeId: "39",
-      tripId: "t1",
-      headsign: "Forest Hills",
-      viaVariant: "X",
-      operatorId: "op1",
-      operatorFirstName: "PATTI",
-      operatorLastName: "SMITH",
-      operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
-      bearing: 33,
-      blockId: "block-1",
-      headwaySecs: 859.1,
-      headwaySpacing: HeadwaySpacing.Ok,
-      previousVehicleId: "v2",
-      scheduleAdherenceSecs: 0,
-      scheduledHeadwaySecs: 120,
-      isShuttle: false,
-      isOverload: false,
-      isOffCourse: false,
-      isRevenue: true,
-      layoverDepartureTime: null,
-      dataDiscrepancies: [
-        {
-          attribute: "trip_id",
-          sources: [
-            {
-              id: "swiftly",
-              value: "swiftly-trip-id",
-            },
-            {
-              id: "busloc",
-              value: "busloc-trip-id",
-            },
-          ],
-        },
-      ],
-      stopStatus: {
-        stopId: "s1",
-        stopName: "Stop Name",
-      },
-      timepointStatus: {
-        fractionUntilTimepoint: 0.5,
-        timepointId: "tp1",
-      },
-      scheduledLocation: null,
-      routeStatus: "on_route",
-      endOfTripType: "another_trip",
-      blockWaivers: [],
-      crowding: null,
-    }
-    const ghost: Ghost = {
-      id: "ghost-trip",
-      directionId: 0,
-      routeId: "39",
-      tripId: "trip",
-      headsign: "headsign",
-      blockId: "block",
-      runId: "123-0123",
-      viaVariant: "X",
-      layoverDepartureTime: null,
-      scheduledTimepointStatus: {
-        timepointId: "t0",
-        fractionUntilTimepoint: 0.0,
-      },
-      routeStatus: "on_route",
-      blockWaivers: [],
-    }
+    const vehicle: Vehicle = vehicleFactory.build()
+    const ghost: Ghost = ghostFactory.build({ runId: "123-0123" })
 
     const stateWithSelected = {
       ...state,
-      selectedVehicleId: vehicle.id,
+      selectedVehicleOrGhost: vehicle,
     }
 
     const tree = renderer
@@ -432,63 +363,7 @@ describe("SearchResults", () => {
 
   test("clicking a result card selects that vehicle", () => {
     const testDispatch = jest.fn()
-    const vehicle: Vehicle = {
-      id: "v1",
-      label: "v1-label",
-      runId: "run-1",
-      timestamp: 123,
-      latitude: 0,
-      longitude: 0,
-      directionId: 0,
-      routeId: "39",
-      tripId: "t1",
-      headsign: "Forest Hills",
-      viaVariant: "X",
-      operatorId: "op1",
-      operatorFirstName: "PATTI",
-      operatorLastName: "SMITH",
-      operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
-      bearing: 33,
-      blockId: "block-1",
-      headwaySecs: 859.1,
-      headwaySpacing: HeadwaySpacing.Ok,
-      previousVehicleId: "v2",
-      scheduleAdherenceSecs: 0,
-      scheduledHeadwaySecs: 120,
-      isShuttle: false,
-      isOverload: false,
-      isOffCourse: false,
-      isRevenue: true,
-      layoverDepartureTime: null,
-      dataDiscrepancies: [
-        {
-          attribute: "trip_id",
-          sources: [
-            {
-              id: "swiftly",
-              value: "swiftly-trip-id",
-            },
-            {
-              id: "busloc",
-              value: "busloc-trip-id",
-            },
-          ],
-        },
-      ],
-      stopStatus: {
-        stopId: "s1",
-        stopName: "Stop Name",
-      },
-      timepointStatus: {
-        timepointId: "tp1",
-        fractionUntilTimepoint: 0.5,
-      },
-      scheduledLocation: null,
-      routeStatus: "on_route",
-      endOfTripType: "another_trip",
-      blockWaivers: [],
-      crowding: null,
-    }
+    const vehicle: Vehicle = vehicleFactory.build()
     const wrapper = mount(
       <StateDispatchProvider state={state} dispatch={testDispatch}>
         <SearchResults vehicles={[vehicle]} />
@@ -497,7 +372,7 @@ describe("SearchResults", () => {
 
     wrapper.find(".m-search-results__card").simulate("click")
 
-    expect(testDispatch).toHaveBeenCalledWith(selectVehicle("v1"))
+    expect(testDispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
   })
 
   test("clicking the clear search button empties the search text", () => {

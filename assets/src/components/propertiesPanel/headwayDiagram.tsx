@@ -35,12 +35,12 @@ const minutes = (seconds: number): string => {
 
 const OtherVehicle = ({ vehicle }: { vehicle: Vehicle }) => {
   const [{ userSettings }, dispatch] = useContext(StateDispatchContext)
-  const { id, viaVariant } = vehicle
+  const { viaVariant } = vehicle
 
   return (
     <div
       className="m-headway-diagram__other-vehicle"
-      onClick={() => dispatch(selectVehicle(id))}
+      onClick={() => dispatch(selectVehicle(vehicle))}
     >
       <VehicleIcon
         size={Size.Small}

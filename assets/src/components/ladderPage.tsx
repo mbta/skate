@@ -1,11 +1,9 @@
-import * as Sentry from "@sentry/react"
 import { Socket } from "phoenix"
 import React, { ReactElement, useContext } from "react"
 import RoutesContext from "../contexts/routesContext"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { VehiclesByRouteIdProvider } from "../contexts/vehiclesByRouteIdContext"
-import VehicleForNotificationContext from "../contexts/vehicleForNotificationContext"
 import useTimepoints from "../hooks/useTimepoints"
 import useVehicles from "../hooks/useVehicles"
 import { allVehiclesAndGhosts } from "../models/vehiclesByRouteId"
@@ -32,7 +30,7 @@ export const findSelectedVehicleOrGhost = (
 
 const LadderPage = (): ReactElement<HTMLDivElement> => {
   const [state] = useContext(StateDispatchContext)
-  const { selectedRouteIds, selectedVehicleId } = state
+  const { selectedRouteIds, selectedVehicleOrGhost } = state
 
   const routes: Route[] | null = useContext(RoutesContext)
   const timepointsByRouteId: TimepointsByRouteId = useTimepoints(
@@ -49,23 +47,6 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
     .map((routeId) => findRouteById(routes, routeId))
     .filter((route) => route) as Route[]
 
-  const selectedVehicleOrGhost = findSelectedVehicleOrGhost(
-    vehiclesByRouteId,
-    selectedVehicleId
-  )
-
-  // undefined means loading. null means failed
-  const vehicleForNotification: VehicleOrGhost | null | undefined = useContext(
-    VehicleForNotificationContext
-  )
-
-  if (vehicleForNotification && selectedVehicleOrGhost) {
-    /* istanbul ignore next */
-    Sentry.captureMessage(
-      "vehicleForNotification and selectedVehicleOrGhost both set, which should be impossible"
-    )
-  }
-
   return (
     <div className="m-ladder-page">
       <Notifications />
@@ -76,13 +57,9 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
           <RouteLadders
             routes={selectedRoutes}
             timepointsByRouteId={timepointsByRouteId}
-            selectedVehicleId={selectedVehicleId || vehicleForNotification?.id}
+            selectedVehicleId={selectedVehicleOrGhost?.id}
           />
-          <RightPanel
-            selectedVehicleOrGhost={
-              vehicleForNotification || selectedVehicleOrGhost
-            }
-          />
+          <RightPanel selectedVehicleOrGhost={selectedVehicleOrGhost} />
         </>
       </VehiclesByRouteIdProvider>
     </div>

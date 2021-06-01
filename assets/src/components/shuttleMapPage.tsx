@@ -7,7 +7,7 @@ import { useRouteShapes } from "../hooks/useShapes"
 import useShuttleVehicles from "../hooks/useShuttleVehicles"
 import useTrainVehicles from "../hooks/useTrainVehicles"
 import { isASubwayRoute } from "../models/subwayRoute"
-import { RunId, TrainVehicle, Vehicle, VehicleId } from "../realtime"
+import { RunId, TrainVehicle, Vehicle } from "../realtime"
 import { ByRouteId, RouteId, Shape } from "../schedule"
 import Map from "./map"
 import RightPanel from "./rightPanel"
@@ -30,18 +30,12 @@ export const allTrainVehicles = (
   trainVehiclesByRouteId: ByRouteId<TrainVehicle[]>
 ): TrainVehicle[] => flatten(Object.values(trainVehiclesByRouteId))
 
-const findSelectedVehicle = (
-  vehicles: Vehicle[],
-  selectedVehicleId: VehicleId | undefined
-): Vehicle | undefined =>
-  vehicles.find((vehicle) => vehicle.id === selectedVehicleId)
-
 const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
   const [state] = useContext(StateDispatchContext)
   const {
     selectedShuttleRouteIds,
     selectedShuttleRunIds,
-    selectedVehicleId,
+    selectedVehicleOrGhost,
   } = state
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const shuttles: Vehicle[] | null = useShuttleVehicles(socket)
@@ -61,11 +55,6 @@ const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
     selectedShuttleRunIds
   )
 
-  const selectedVehicle = findSelectedVehicle(
-    selectedShuttles,
-    selectedVehicleId
-  )
-
   return (
     <div className="m-shuttle-map">
       <ShuttlePicker shuttles={shuttles} />
@@ -78,7 +67,7 @@ const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
         />
       </div>
 
-      <RightPanel selectedVehicleOrGhost={selectedVehicle} />
+      <RightPanel selectedVehicleOrGhost={selectedVehicleOrGhost} />
     </div>
   )
 }
