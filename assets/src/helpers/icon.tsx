@@ -23,6 +23,8 @@ import filledCircleIconSvg from "../../static/images/icon-filled-circle.svg"
 // @ts-ignore
 import ghostIconSvg from "../../static/images/icon-ghost.svg"
 // @ts-ignore
+import ghostSwingIconSvg from "../../static/images/icon-ghost-swing.svg"
+// @ts-ignore
 import greenLineBIconSvg from "../../static/images/icon-green-line-b.svg"
 // @ts-ignore
 import greenLineCIconSvg from "../../static/images/icon-green-line-c.svg"
@@ -109,6 +111,9 @@ export const filledCircleIcon = (className: string = ""): JSX.Element =>
 
 export const ghostIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, ghostIconSvg)
+
+export const ghostSwingIcon = (className: string = ""): JSX.Element =>
+  renderSvg(className, ghostSwingIconSvg)
 
 export const greenLineBIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, greenLineBIconSvg)

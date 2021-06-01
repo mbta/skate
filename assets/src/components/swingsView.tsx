@@ -6,7 +6,7 @@ import { isVehicle } from "../models/vehicle"
 import Loading from "./loading"
 import CloseButton from "./closeButton"
 import { partition, flatten, uniq } from "../helpers/array"
-import { ghostIcon, upDownIcon, upRightIcon } from "../helpers/icon"
+import { ghostSwingIcon, upDownIcon, upRightIcon } from "../helpers/icon"
 import { runIdToLabel } from "../helpers/vehicleLabel"
 import useCurrentTime from "../hooks/useCurrentTime"
 import useSwings from "../hooks/useSwings"
@@ -275,7 +275,7 @@ const SwingCellContent = ({
             ? upRightIcon(
                 "m-swings-view__run-icon m-swings-view__run-icon-arrow"
               )
-            : ghostIcon(
+            : ghostSwingIcon(
                 "m-swings-view__run-icon m-swings-view__run-icon-ghost"
               )}
 
