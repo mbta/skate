@@ -95,6 +95,23 @@ exports[`SwingsView ignores vehicles without run ID (for linking to VPP) 1`] = `
         </tr>
       </thead>
       <tbody>
+        <tr>
+          <th
+            className="m-swings-view__show-past m-swings-view__show-past-disabled"
+            colSpan={4}
+            onClick={[Function]}
+          >
+            <span
+              className="m-swings-view__show-past-icon"
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
+              }
+            />
+            Show past swings
+          </th>
+        </tr>
         <tr
           className="m-swings-view__table-row-inactive"
         >
@@ -245,6 +262,23 @@ exports[`SwingsView includes swings less than 10 minutes in the past 1`] = `
         </tr>
       </thead>
       <tbody>
+        <tr>
+          <th
+            className="m-swings-view__show-past m-swings-view__show-past-disabled"
+            colSpan={4}
+            onClick={[Function]}
+          >
+            <span
+              className="m-swings-view__show-past-icon"
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
+              }
+            />
+            Show past swings
+          </th>
+        </tr>
         <tr
           className="m-swings-view__table-row-inactive"
         >
@@ -393,6 +427,23 @@ exports[`SwingsView links to both swing-on and swing-off if both are active 1`] 
         </tr>
       </thead>
       <tbody>
+        <tr>
+          <th
+            className="m-swings-view__show-past m-swings-view__show-past-disabled"
+            colSpan={4}
+            onClick={[Function]}
+          >
+            <span
+              className="m-swings-view__show-past-icon"
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
+              }
+            />
+            Show past swings
+          </th>
+        </tr>
         <tr
           className="m-swings-view__table-row-active"
         >
@@ -566,7 +617,25 @@ exports[`SwingsView omits swings more than 10 minutes in the past 1`] = `
           </th>
         </tr>
       </thead>
-      <tbody />
+      <tbody>
+        <tr>
+          <th
+            className="m-swings-view__show-past m-swings-view__show-past-disabled"
+            colSpan={4}
+            onClick={[Function]}
+          >
+            <span
+              className="m-swings-view__show-past-icon"
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
+              }
+            />
+            Show past swings
+          </th>
+        </tr>
+      </tbody>
     </table>
   </div>
 </div>
@@ -667,6 +736,23 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
         </tr>
       </thead>
       <tbody>
+        <tr>
+          <th
+            className="m-swings-view__show-past m-swings-view__show-past-disabled"
+            colSpan={4}
+            onClick={[Function]}
+          >
+            <span
+              className="m-swings-view__show-past-icon"
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
+              }
+            />
+            Show past swings
+          </th>
+        </tr>
         <tr
           className="m-swings-view__table-row-active"
         >

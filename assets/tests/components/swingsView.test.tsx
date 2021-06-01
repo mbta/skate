@@ -111,6 +111,39 @@ describe("SwingsView", () => {
     expect(tree).toMatchSnapshot()
   })
 
+  test("can click to show past swings", () => {
+    ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
+      swingFactory.build(),
+    ])
+
+    const wrapper = mount(
+      <RoutesProvider routes={routes}>
+        <SwingsView />
+      </RoutesProvider>
+    )
+
+    wrapper.find(".m-swings-view__show-past").first().simulate("click")
+
+    expect(wrapper.find(".m-swings-view__table-row-inactive").length).toEqual(1)
+  })
+
+  test("can hide past swings after showing them", () => {
+    ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
+      swingFactory.build(),
+    ])
+
+    const wrapper = mount(
+      <RoutesProvider routes={routes}>
+        <SwingsView />
+      </RoutesProvider>
+    )
+
+    wrapper.find(".m-swings-view__show-past").first().simulate("click")
+    wrapper.find(".m-swings-view__show-past").first().simulate("click")
+
+    expect(wrapper.find(".m-swings-view__table-row-inactive").length).toEqual(0)
+  })
+
   test("renders future swings, active and inactive", () => {
     ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
       swingFactory.build({ time: 19000 }),
