@@ -26,7 +26,7 @@ defmodule Realtime.ServerTest do
                                run_id: "456-7890"
                              )
 
-  @ghost build(:ghost, block_id: "ghost_block")
+  @ghost build(:ghost, id: "g1", block_id: "ghost_block", route_id: "1")
 
   @shuttle build(:vehicle,
              id: "shuttle",
@@ -408,21 +408,39 @@ defmodule Realtime.ServerTest do
     end
   end
 
-  describe "peek_at_vehicles/2" do
+  describe "peek_at_vehicles_by_run_ids/2" do
     test "looks up vehicles active on the given trip IDs" do
       {:ok, server_pid} = Server.start_link([])
       Server.update({@vehicles_by_route_id, [@shuttle]}, server_pid)
 
-      assert Server.peek_at_vehicles([], server_pid) == []
-      assert Server.peek_at_vehicles(["no_such_run"], server_pid) == []
-      assert Server.peek_at_vehicles(["123-9048"], server_pid) == [@vehicle]
-      assert Server.peek_at_vehicles(["123-9049"], server_pid) == [@ghost]
-      assert Server.peek_at_vehicles(["123-9048", "123-9049"], server_pid) == [@vehicle, @ghost]
+      assert Server.peek_at_vehicles_by_run_ids([], server_pid) == []
+      assert Server.peek_at_vehicles_by_run_ids(["no_such_run"], server_pid) == []
+      assert Server.peek_at_vehicles_by_run_ids(["123-9048"], server_pid) == [@vehicle]
+      assert Server.peek_at_vehicles_by_run_ids(["123-9049"], server_pid) == [@ghost]
 
-      assert Server.peek_at_vehicles(["123-9048", "no_such_run", "123-9049"], server_pid) == [
+      assert Server.peek_at_vehicles_by_run_ids(["123-9048", "123-9049"], server_pid) == [
                @vehicle,
                @ghost
              ]
+
+      assert Server.peek_at_vehicles_by_run_ids(
+               ["123-9048", "no_such_run", "123-9049"],
+               server_pid
+             ) == [
+               @vehicle,
+               @ghost
+             ]
+    end
+  end
+
+  describe "peek_at_vehicles_by_id/2" do
+    test "looks up the vehicle or ghost with given ID" do
+      {:ok, server_pid} = Server.start_link([])
+      Server.update({@vehicles_by_route_id, [@shuttle]}, server_pid)
+
+      assert Server.peek_at_vehicle_by_id("no_such_vehicle", server_pid) == []
+      assert Server.peek_at_vehicle_by_id("v1", server_pid) == [@vehicle]
+      assert Server.peek_at_vehicle_by_id("g1", server_pid) == [@ghost]
     end
   end
 end
