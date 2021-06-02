@@ -167,7 +167,7 @@ exports[`SwingsView ignores vehicles without run ID (for linking to VPP) 1`] = `
 </div>
 `;
 
-exports[`SwingsView includes swings less than 10 minutes in the past 1`] = `
+exports[`SwingsView includes swings less than 15 minutes in the past 1`] = `
 <div
   className="m-swings-view"
   id="m-swings-view"
@@ -288,7 +288,7 @@ exports[`SwingsView includes swings less than 10 minutes in the past 1`] = `
             <div
               className="m-swings-view__table-cell-contents"
             >
-              4:55 AM
+              4:45 AM
             </div>
           </th>
           <th
@@ -523,7 +523,7 @@ exports[`SwingsView links to both swing-on and swing-off if both are active 1`] 
 </div>
 `;
 
-exports[`SwingsView omits swings more than 10 minutes in the past 1`] = `
+exports[`SwingsView omits swings more than 15 minutes in the past 1`] = `
 <div
   className="m-swings-view"
   id="m-swings-view"

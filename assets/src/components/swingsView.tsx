@@ -22,7 +22,7 @@ const SwingsView = (): ReactElement<HTMLElement> => {
   const currentTime = useCurrentTime()
   const swings = useSwings()
 
-  const pastSwingSecs = 600
+  const pastSwingSecs = 900
 
   const [activeSwings, pastSwings] = swings
     ? partition(
