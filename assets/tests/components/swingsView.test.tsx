@@ -81,9 +81,9 @@ describe("SwingsView", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("omits swings more than 10 minutes in the past", () => {
+  test("omits swings more than 15 minutes in the past", () => {
     ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
-      swingFactory.build(),
+      swingFactory.build({ time: 18000 - 900 }),
     ])
 
     const tree = renderer
@@ -96,9 +96,9 @@ describe("SwingsView", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("includes swings less than 10 minutes in the past", () => {
+  test("includes swings less than 15 minutes in the past", () => {
     ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
-      swingFactory.build({ time: 17700 }),
+      swingFactory.build({ time: 18000 - 900 + 1 }),
     ])
 
     const tree = renderer
@@ -109,6 +109,39 @@ describe("SwingsView", () => {
       )
       .toJSON()
     expect(tree).toMatchSnapshot()
+  })
+
+  test("can click to show past swings", () => {
+    ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
+      swingFactory.build(),
+    ])
+
+    const wrapper = mount(
+      <RoutesProvider routes={routes}>
+        <SwingsView />
+      </RoutesProvider>
+    )
+
+    wrapper.find(".m-swings-view__show-past").first().simulate("click")
+
+    expect(wrapper.find(".m-swings-view__table-row-inactive").length).toEqual(1)
+  })
+
+  test("can hide past swings after showing them", () => {
+    ;(useSwings as jest.Mock).mockImplementationOnce((): Swing[] => [
+      swingFactory.build(),
+    ])
+
+    const wrapper = mount(
+      <RoutesProvider routes={routes}>
+        <SwingsView />
+      </RoutesProvider>
+    )
+
+    wrapper.find(".m-swings-view__show-past").first().simulate("click")
+    wrapper.find(".m-swings-view__show-past").first().simulate("click")
+
+    expect(wrapper.find(".m-swings-view__table-row-inactive").length).toEqual(0)
   })
 
   test("renders future swings, active and inactive", () => {

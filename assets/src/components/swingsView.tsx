@@ -1,12 +1,12 @@
-import React, { ReactElement, useContext } from "react"
+import React, { ReactElement, useContext, useState } from "react"
 import { useRoutes } from "../contexts/routesContext"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { isVehicle } from "../models/vehicle"
 import Loading from "./loading"
 import CloseButton from "./closeButton"
-import { flatten, uniq } from "../helpers/array"
-import { ghostIcon, upRightIcon } from "../helpers/icon"
+import { partition, flatten, uniq } from "../helpers/array"
+import { ghostIcon, upDownIcon, upRightIcon } from "../helpers/icon"
 import { runIdToLabel } from "../helpers/vehicleLabel"
 import useCurrentTime from "../hooks/useCurrentTime"
 import useSwings from "../hooks/useSwings"
@@ -22,11 +22,18 @@ const SwingsView = (): ReactElement<HTMLElement> => {
   const currentTime = useCurrentTime()
   const swings = useSwings()
 
-  const activeSwings = swings
-    ? swings.filter((swing) => {
-        return swing.time + 600 > serviceDaySeconds(currentTime)
-      })
-    : []
+  const pastSwingSecs = 900
+
+  const [activeSwings, pastSwings] = swings
+    ? partition(
+        swings.sort((swing1, swing2) => {
+          return swing1.time - swing2.time
+        }),
+        (swing) => {
+          return swing.time + pastSwingSecs > serviceDaySeconds(currentTime)
+        }
+      )
+    : [[], []]
 
   const swingRunIds = uniq(
     flatten(activeSwings.map((swing) => [swing.fromRunId, swing.toRunId]))
@@ -72,7 +79,8 @@ const SwingsView = (): ReactElement<HTMLElement> => {
       </div>
       {swings ? (
         <SwingsTable
-          swings={activeSwings}
+          pastSwings={pastSwings}
+          activeSwings={activeSwings}
           swingVehiclesByRunId={swingVehiclesByRunId}
           swingVehiclesByBlockId={swingVehiclesByBlockId}
           swingRoutesById={swingRoutesById}
@@ -85,19 +93,19 @@ const SwingsView = (): ReactElement<HTMLElement> => {
 }
 
 const SwingsTable = ({
-  swings,
+  pastSwings,
+  activeSwings,
   swingVehiclesByRunId,
   swingVehiclesByBlockId,
   swingRoutesById,
 }: {
-  swings: Swing[]
+  pastSwings: Swing[]
+  activeSwings: Swing[]
   swingVehiclesByRunId: ByRunId<VehicleOrGhost>
   swingVehiclesByBlockId: ByBlockId<VehicleOrGhost>
   swingRoutesById: ByRouteId<Route>
 }): ReactElement<HTMLElement> => {
-  const sortedSwings = swings.sort((swing1, swing2) => {
-    return swing1.time - swing2.time
-  })
+  const [showPastSwings, setShowPastSwings] = useState<boolean>(false)
 
   return (
     <div className="m-swings-view__table-container">
@@ -137,9 +145,38 @@ const SwingsTable = ({
           </tr>
         </thead>
         <tbody>
-          {sortedSwings.map((swing) => (
+          <tr>
+            <th
+              className={
+                "m-swings-view__show-past" +
+                (showPastSwings
+                  ? " m-swings-view__show-past-enabled"
+                  : " m-swings-view__show-past-disabled")
+              }
+              colSpan={4}
+              onClick={() => setShowPastSwings(!showPastSwings)}
+            >
+              {upDownIcon("m-swings-view__show-past-icon")}
+              {`${showPastSwings ? "Hide" : "Show"} past swings`}
+            </th>
+          </tr>
+          {showPastSwings
+            ? pastSwings.map((swing, i, swings) => (
+                <SwingRow
+                  swing={swing}
+                  isPast={true}
+                  isLastPast={i === swings.length - 1}
+                  swingVehiclesByRunId={swingVehiclesByRunId}
+                  swingVehicleForBlockId={swingVehiclesByBlockId[swing.blockId]}
+                  route={swingRoutesById[swing.fromRouteId]}
+                  key={`${swing.fromRunId}-${swing.toRunId}`}
+                />
+              ))
+            : null}
+          {activeSwings.map((swing) => (
             <SwingRow
               swing={swing}
+              isPast={false}
               swingVehiclesByRunId={swingVehiclesByRunId}
               swingVehicleForBlockId={swingVehiclesByBlockId[swing.blockId]}
               route={swingRoutesById[swing.fromRouteId]}
@@ -154,11 +191,15 @@ const SwingsTable = ({
 
 const SwingRow = ({
   swing,
+  isPast,
+  isLastPast,
   swingVehiclesByRunId,
   swingVehicleForBlockId,
   route,
 }: {
   swing: Swing
+  isPast: boolean
+  isLastPast?: boolean
   swingVehiclesByRunId: ByRunId<VehicleOrGhost>
   swingVehicleForBlockId: VehicleOrGhost
   route: Route | null
@@ -170,9 +211,10 @@ const SwingRow = ({
   return (
     <tr
       className={
-        vehicleOrGhost
+        (vehicleOrGhost && !isPast
           ? "m-swings-view__table-row-active"
-          : "m-swings-view__table-row-inactive"
+          : "m-swings-view__table-row-inactive") +
+        (isLastPast ? " m-swings-view__table-row-last-past" : "")
       }
     >
       <th className="m-swings-view__table-cell">
