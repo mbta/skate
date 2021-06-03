@@ -1,7 +1,7 @@
 // from https://github.com/PaulLeCam/react-leaflet/blob/master/__mocks__/leaflet.js
 /* global jest, module, require */
 
-const L = require.requireActual("leaflet")
+const L = jest.requireActual("leaflet")
 const LeafletMock = jest.genMockFromModule("leaflet")
 
 class ControlMock extends LeafletMock.Control {
