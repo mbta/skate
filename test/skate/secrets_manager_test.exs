@@ -6,6 +6,7 @@ defmodule Skate.SecretsManagerTest do
 
   setup do
     System.put_env("ENVIRONMENT_NAME", "TEST")
+    System.put_env("USE_SECRETS_MANAGER", "true")
     reassign_env(:skate, :get_secret_value_fn, fn _ -> "mock aws operation" end)
     reassign_env(:skate, :aws_request_fn, fn _ -> %{"SecretString" => "mock secret value"} end)
   end
