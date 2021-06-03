@@ -3,7 +3,7 @@ name: Report Elixir Coverage
 on:
   workflow_run:
     workflows:
-      - Elixir CI
+      - Elixir and TypeScript CI
     types:
       - completed
 
