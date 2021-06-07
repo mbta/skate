@@ -109,6 +109,21 @@ exports[`App renders 1`] = `
             />
           </a>
         </li>
+        <li>
+          <a
+            className="m-tab-bar__swings m-tab-bar__link"
+            onClick={[Function]}
+          >
+            <span
+              className="m-tab-bar__icon"
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
+              }
+            />
+          </a>
+        </li>
       </ul>
       <div
         className="m-tab-bar__bottom-buttons"
@@ -365,6 +380,21 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
             href="/search"
             onClick={[Function]}
             title="Search"
+          >
+            <span
+              className="m-tab-bar__icon"
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
+              }
+            />
+          </a>
+        </li>
+        <li>
+          <a
+            className="m-tab-bar__swings m-tab-bar__link"
+            onClick={[Function]}
           >
             <span
               className="m-tab-bar__icon"

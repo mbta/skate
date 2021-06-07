@@ -2,7 +2,6 @@ import { mount } from "enzyme"
 import React from "react"
 import { BrowserRouter } from "react-router-dom"
 import renderer from "react-test-renderer"
-import appData from "../../src/appData"
 import TabBar from "../../src/components/tabBar"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import * as browser from "../../src/models/browser"
@@ -26,13 +25,6 @@ window.drift = {
   },
 }
 
-jest.mock("../../src/appData", () => ({
-  __esModule: true,
-  default: jest.fn(() => ({
-    enableSwingsBeta: JSON.stringify(false),
-  })),
-}))
-
 jest.mock("../../src/laboratoryFeatures", () => ({
   __esModule: true,
   default: jest.fn(() => true),
@@ -40,21 +32,6 @@ jest.mock("../../src/laboratoryFeatures", () => ({
 
 describe("tabBar", () => {
   it("renders", () => {
-    const tree = renderer
-      .create(
-        <BrowserRouter>
-          <TabBar pickerContainerIsVisible={true} swingsViewIsVisible={false} />
-        </BrowserRouter>
-      )
-      .toJSON()
-
-    expect(tree).toMatchSnapshot()
-  })
-
-  it("renders with swings beta icon", () => {
-    ;(appData as jest.Mock).mockImplementationOnce(() => ({
-      enableSwingsBeta: JSON.stringify(true),
-    }))
     const tree = renderer
       .create(
         <BrowserRouter>
@@ -126,9 +103,6 @@ describe("tabBar", () => {
       window.FS = originalFS
       window.username = originalUsername
     })
-    ;(appData as jest.Mock).mockImplementationOnce(() => ({
-      enableSwingsBeta: JSON.stringify(true),
-    }))
     const dispatch = jest.fn()
 
     const wrapper = mount(

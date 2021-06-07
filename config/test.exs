@@ -1,9 +1,6 @@
 use Mix.Config
 
-config :skate,
-  start_data_processes: false,
-  swings_beta_usernames: "",
-  beta_username_prefix: ""
+config :skate, start_data_processes: false
 
 config :skate, Schedule.CacheFile, cache_filename: "test_cache.terms"
 

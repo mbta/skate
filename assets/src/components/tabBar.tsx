@@ -1,6 +1,5 @@
 import React, { ReactElement, useContext } from "react"
 import { NavLink, useLocation } from "react-router-dom"
-import appData from "../appData"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import {
   ladderIcon,
@@ -44,11 +43,6 @@ const TabBar = ({
         break
     }
   }
-  const swingsBetaEnabledString: string | undefined = appData()
-    ?.enableSwingsBeta
-  const swingsBetaEnabled = swingsBetaEnabledString
-    ? JSON.parse(swingsBetaEnabledString)
-    : false
 
   return (
     <div
@@ -100,24 +94,22 @@ const TabBar = ({
             {searchIcon("m-tab-bar__icon")}
           </NavLink>
         </li>
-        {swingsBetaEnabled ? (
-          <li>
-            <a
-              className={
-                "m-tab-bar__swings m-tab-bar__link" +
-                (swingsViewIsVisible ? " m-tab-bar__link--active" : "")
+        <li>
+          <a
+            className={
+              "m-tab-bar__swings m-tab-bar__link" +
+              (swingsViewIsVisible ? " m-tab-bar__link--active" : "")
+            }
+            onClick={() => {
+              if (window.FS) {
+                window.FS.event("Swings view toggled")
               }
-              onClick={() => {
-                if (window.FS) {
-                  window.FS.event("Swings view toggled")
-                }
-                dispatch(toggleSwingsView())
-              }}
-            >
-              {swingIcon("m-tab-bar__icon")}
-            </a>
-          </li>
-        ) : null}
+              dispatch(toggleSwingsView())
+            }}
+          >
+            {swingIcon("m-tab-bar__icon")}
+          </a>
+        </li>
       </ul>
 
       <div className="m-tab-bar__bottom-buttons">

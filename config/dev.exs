@@ -74,10 +74,6 @@ config :skate, SkateWeb.Endpoint,
 
 config :skate, Skate.Repo, database: "skate_dev"
 
-config :skate,
-  swings_beta_usernames: "fake_uid",
-  beta_username_prefix: ""
-
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
 
