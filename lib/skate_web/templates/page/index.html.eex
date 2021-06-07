@@ -4,5 +4,4 @@
   data-user-settings="<%= Jason.encode!(@user_settings) %>"
   data-route-settings="<%= Jason.encode!(@route_settings) %>"
   data-laboratory-features="<%= Jason.encode!(@laboratory_features) %>"
-  data-enable-swings-beta="<%= Jason.encode!(@enable_swings_beta) %>"
 ></div>

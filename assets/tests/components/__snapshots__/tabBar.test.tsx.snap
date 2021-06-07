@@ -100,6 +100,21 @@ exports[`tabBar renders 1`] = `
         />
       </a>
     </li>
+    <li>
+      <a
+        className="m-tab-bar__swings m-tab-bar__link"
+        onClick={[Function]}
+      >
+        <span
+          className="m-tab-bar__icon"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </a>
+    </li>
   </ul>
   <div
     className="m-tab-bar__bottom-buttons"

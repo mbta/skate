@@ -60,13 +60,11 @@ defmodule Skate.Application do
     application_keys = [
       :api_url,
       :api_key,
-      :beta_username_prefix,
       :gtfs_url,
       :hastus_url,
       :busloc_url,
       :swiftly_authorization_key,
       :swiftly_realtime_vehicles_url,
-      :swings_beta_usernames,
       :trip_updates_url,
       :geonames_url_base,
       :geonames_token,
