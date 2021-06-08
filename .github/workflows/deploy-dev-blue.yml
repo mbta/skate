@@ -12,7 +12,9 @@ jobs:
     env:
       ECS_CLUSTER: skate
       ECS_SERVICE: skate-dev-blue
-
+      SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+      SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - uses: mbta/actions/build-push-ecr@v1
