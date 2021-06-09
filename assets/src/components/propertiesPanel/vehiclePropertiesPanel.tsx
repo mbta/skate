@@ -13,7 +13,7 @@ import {
   VehicleOrGhost,
 } from "../../realtime"
 import { RouteId, Shape } from "../../schedule"
-import Map from "../map"
+import OtherMap from "../../components/otherMap"
 import PropertiesList, { vehicleProperties } from "../propertiesList"
 import BlockWaiverList from "./blockWaiverList"
 import CrowdingDiagram from "./crowdingDiagram"
@@ -106,7 +106,7 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
         </div>
       </div>
       <div className="m-vehicle-properties-panel__map">
-        <Map
+        <OtherMap
           vehicles={[vehicle]}
           shapes={shapes}
           secondaryVehicles={routeVehicles}
