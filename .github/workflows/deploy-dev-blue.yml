@@ -19,7 +19,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
       - uses: actions/checkout@v2
-      - uses: mbta/actions/build-push-ecr@v1
+      - uses: mbta/actions/build-push-ecr@pwd-add-docker-args-to-build-push-ecr
         id: build-push
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
