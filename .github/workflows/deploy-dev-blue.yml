@@ -15,6 +15,8 @@ jobs:
       SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
       SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
       - uses: actions/checkout@v2
       - uses: mbta/actions/build-push-ecr@v1
@@ -23,7 +25,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           docker-repo: ${{ secrets.DOCKER_REPO }}
-          docker-additional-args: '--build-arg SENTRY_ORG --build-arg SENTRY_PROJECT --build-arg SENTRY_AUTH_TOKEN'
+          docker-additional-args: '--build-arg SENTRY_ORG --build-arg SENTRY_PROJECT --build-arg SENTRY_AUTH_TOKEN --build-arg AWS_ACCESS_KEY_ID --build-arg AWS_SECRET_ACCESS_KEY'
       - uses: mbta/actions/deploy-ecs@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
