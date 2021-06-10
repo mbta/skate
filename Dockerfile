@@ -30,3 +30,4 @@ RUN npm ci && npm run deploy
 
 WORKDIR /root
 RUN mix do phx.digest, release
+RUN upload_assets.sh
