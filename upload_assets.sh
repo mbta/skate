@@ -3,8 +3,6 @@ set -e -x
 
 VERSION=$(grep -o 'version: .*"' mix.exs  | grep -E -o '([0-9]+\.)+[0-9]+')
 APP=skate
-BUILD_ARTIFACT=$APP-build.zip
-TEMP_DIR=tmp_unzip
 CACHE_CONTROL="public,max-age=31536000"
 S3_DIR=s3://mbta-dotcom/$APP
 BUILD_TAG=${1}
@@ -14,8 +12,6 @@ STATIC_DIR=$TEMP_DIR/priv/static
 pushd "$TEMP_DIR" > /dev/null
 sh -c "docker run --rm ${BUILD_TAG} tar -c /root/priv/static" | tar -x --strip-components 1
 popd> /dev/null
-
-unzip $BUILD_ARTIFACT "lib/$APP-$VERSION/priv/static/*" -d $TEMP_DIR
 
 # sync the digested files with a cache control header
 aws s3 sync "${STATIC_DIR}/css" "${S3_DIR}/css" --size-only --exclude "*" --include "*-*" --cache-control=$CACHE_CONTROL
@@ -29,5 +25,3 @@ aws s3 sync "$STATIC_DIR/fonts" "$S3_DIR/fonts" --size-only --exclude "*" --incl
 
 # sync everything else normally
 aws s3 sync $STATIC_DIR $S3_DIR --size-only
-
-rm -rf $TEMP_DIR
