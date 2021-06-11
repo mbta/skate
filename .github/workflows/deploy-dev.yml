@@ -1,0 +1,17 @@
+name: Deploy Dev
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [$default-branch]
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: dev
+    concurrency: dev
+
+    steps:
+      - name: Hello World
+        run: echo "hello world"
