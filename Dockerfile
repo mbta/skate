@@ -18,8 +18,6 @@ RUN apk add --update nodejs nodejs-npm
 ARG SENTRY_ORG=$SENTRY_ORG
 ARG SENTRY_PROJECT=$SENTRY_PROJECT
 ARG SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
-ARG AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-ARG AWS_SECRET_ACCESS_KEY=AWS_SECRET_ACCESS_KEY
 
 ENV MIX_ENV=prod
 
@@ -32,4 +30,3 @@ RUN npm ci && npm run deploy
 
 WORKDIR /root
 RUN mix do phx.digest, release
-RUN upload_assets.sh
