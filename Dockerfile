@@ -30,3 +30,7 @@ RUN npm ci && npm run deploy
 
 WORKDIR /root
 RUN mix do phx.digest, release
+
+EXPOSE 4000
+
+CMD ["/root/_build/prod/rel/skate/bin/skate", "start"]
