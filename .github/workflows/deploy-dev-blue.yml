@@ -1,0 +1,15 @@
+name: Deploy to Dev-blue (ECS)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: dev
+    concurrency: dev
+
+    steps:
+      - name: Hello World
+        run: echo "hello world"
