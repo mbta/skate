@@ -37,6 +37,7 @@ export interface State {
   userSettings: UserSettings
   selectedNotification?: Notification
   swingsViewIsVisible: boolean
+  lateViewIsVisible: boolean
 }
 
 export const initialState: State = {
@@ -52,6 +53,7 @@ export const initialState: State = {
   userSettings: defaultUserSettings,
   selectedNotification: undefined,
   swingsViewIsVisible: false,
+  lateViewIsVisible: false,
 }
 
 interface SelectRouteAction {
@@ -304,6 +306,14 @@ export const toggleSwingsView = (): ToggleSwingsViewAction => ({
   type: "TOGGLE_SWINGS_VIEW",
 })
 
+interface ToggleLateViewAction {
+  type: "TOGGLE_LATE_VIEW"
+}
+
+export const toggleLateView = (): ToggleLateViewAction => ({
+  type: "TOGGLE_LATE_VIEW",
+})
+
 interface SelectVehicleFromNotificationAction {
   type: "SELECT_VEHICLE_FROM_NOTIFICATION"
   payload: { vehicle: VehicleOrGhost | null | undefined }
@@ -339,6 +349,7 @@ export type Action =
   | SearchAction
   | SetNotificationAction
   | ToggleSwingsViewAction
+  | ToggleLateViewAction
   | SelectVehicleFromNotificationAction
 
 export type Dispatch = ReactDispatch<Action>
@@ -515,6 +526,15 @@ const swingsViewIsVisibleReducer = (
   }
 }
 
+const lateViewIsVisibleReducer = (state: boolean, action: Action): boolean => {
+  switch (action.type) {
+    case "TOGGLE_LATE_VIEW":
+      return !state
+    default:
+      return state
+  }
+}
+
 export const reducer = (state: State, action: Action): State => ({
   pickerContainerIsVisible: pickerContainerIsVisibleReducer(
     state.pickerContainerIsVisible,
@@ -552,4 +572,5 @@ export const reducer = (state: State, action: Action): State => ({
     state.swingsViewIsVisible,
     action
   ),
+  lateViewIsVisible: lateViewIsVisibleReducer(state.lateViewIsVisible, action),
 })

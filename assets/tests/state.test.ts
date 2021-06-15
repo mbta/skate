@@ -369,4 +369,15 @@ describe("reducer", () => {
 
     expect(newState).toEqual(expectedState)
   })
+
+  test("toggleLateView", () => {
+    const expectedState: State.State = {
+      ...initialState,
+      lateViewIsVisible: true,
+    }
+
+    const newState = reducer(initialState, State.toggleLateView())
+
+    expect(newState).toEqual(expectedState)
+  })
 })

@@ -3,6 +3,7 @@ import { useRoute } from "../../contexts/routesContext"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { className } from "../../helpers/dom"
 import vehicleLabel from "../../helpers/vehicleLabel"
+import { secondsToMinutes } from "../../util/dateTime"
 import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
 import {
   directionOnLadder,
@@ -74,15 +75,15 @@ const ScheduleAdherenceStatusString = ({ vehicle }: { vehicle: Vehicle }) => (
   </div>
 )
 
-const minutes = (seconds: number): number => Math.abs(Math.floor(seconds / 60))
-
 const earlyOrLate = (scheduleAdherenceSecs: number): string =>
   scheduleAdherenceSecs <= 0 ? "early" : "late"
 
 export const scheduleAdherenceLabelString = ({
   scheduleAdherenceSecs,
 }: Vehicle): string =>
-  `${minutes(scheduleAdherenceSecs)} min ${earlyOrLate(scheduleAdherenceSecs)}`
+  `${secondsToMinutes(scheduleAdherenceSecs)} min ${earlyOrLate(
+    scheduleAdherenceSecs
+  )}`
 
 const ScheduleAdherenceLabel = ({ vehicle }: { vehicle: Vehicle }) => (
   <div className="m-properties-panel__schedule-adherence-label">
@@ -116,7 +117,7 @@ const HeadwayTarget = ({
       HEADWAY TARGET
     </span>
     <span className="m-properties-panel__headway-target-value">
-      {minutes(scheduledHeadwaySecs)} min
+      {secondsToMinutes(scheduledHeadwaySecs)} min
     </span>
   </div>
 )

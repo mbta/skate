@@ -9,7 +9,9 @@ import {
   initialState,
   toggleNotificationDrawer,
   toggleSwingsView,
+  toggleLateView,
 } from "../../src/state"
+import featureIsEnabled from "../../src/laboratoryFeatures"
 
 window.Appcues = {
   identify: jest.fn(),
@@ -35,7 +37,31 @@ describe("tabBar", () => {
     const tree = renderer
       .create(
         <BrowserRouter>
-          <TabBar pickerContainerIsVisible={true} swingsViewIsVisible={false} />
+          <TabBar
+            pickerContainerIsVisible={true}
+            swingsViewIsVisible={false}
+            lateViewIsVisible={false}
+          />
+        </BrowserRouter>
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  it("renders with late view icon", () => {
+    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(
+      (feature) => feature === "late_view"
+    )
+
+    const tree = renderer
+      .create(
+        <BrowserRouter>
+          <TabBar
+            pickerContainerIsVisible={true}
+            swingsViewIsVisible={false}
+            lateViewIsVisible={false}
+          />
         </BrowserRouter>
       )
       .toJSON()
@@ -46,7 +72,11 @@ describe("tabBar", () => {
   it("sets class to visible when picker is visible", () => {
     const wrapper = mount(
       <BrowserRouter>
-        <TabBar pickerContainerIsVisible={true} swingsViewIsVisible={false} />
+        <TabBar
+          pickerContainerIsVisible={true}
+          swingsViewIsVisible={false}
+          lateViewIsVisible={false}
+        />
       </BrowserRouter>
     )
     expect(wrapper.find(".m-tab-bar").hasClass("visible")).toBe(true)
@@ -56,7 +86,11 @@ describe("tabBar", () => {
   it("sets class to hidden when picker is hidden", () => {
     const wrapper = mount(
       <BrowserRouter>
-        <TabBar pickerContainerIsVisible={false} swingsViewIsVisible={false} />
+        <TabBar
+          pickerContainerIsVisible={false}
+          swingsViewIsVisible={false}
+          lateViewIsVisible={false}
+        />
       </BrowserRouter>
     )
     expect(wrapper.find(".m-tab-bar").hasClass("hidden")).toBe(true)
@@ -70,7 +104,11 @@ describe("tabBar", () => {
 
     const wrapper = mount(
       <BrowserRouter>
-        <TabBar pickerContainerIsVisible={false} swingsViewIsVisible={false} />
+        <TabBar
+          pickerContainerIsVisible={false}
+          swingsViewIsVisible={false}
+          lateViewIsVisible={false}
+        />
       </BrowserRouter>
     )
 
@@ -84,7 +122,11 @@ describe("tabBar", () => {
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
         <BrowserRouter>
-          <TabBar pickerContainerIsVisible={true} swingsViewIsVisible={false} />
+          <TabBar
+            pickerContainerIsVisible={true}
+            swingsViewIsVisible={false}
+            lateViewIsVisible={false}
+          />
         </BrowserRouter>
       </StateDispatchProvider>
     )
@@ -108,7 +150,11 @@ describe("tabBar", () => {
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
         <BrowserRouter>
-          <TabBar pickerContainerIsVisible={true} swingsViewIsVisible={false} />
+          <TabBar
+            pickerContainerIsVisible={true}
+            swingsViewIsVisible={false}
+            lateViewIsVisible={false}
+          />
         </BrowserRouter>
       </StateDispatchProvider>
     )
@@ -119,10 +165,37 @@ describe("tabBar", () => {
     expect(window.FS!.event).toHaveBeenCalledWith("Swings view toggled")
   })
 
+  test("clicking the late view icon toggles the late view", () => {
+    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(
+      (feature) => feature === "late_view"
+    )
+
+    const dispatch = jest.fn()
+
+    const wrapper = mount(
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+        <BrowserRouter>
+          <TabBar
+            pickerContainerIsVisible={true}
+            swingsViewIsVisible={false}
+            lateViewIsVisible={false}
+          />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    wrapper.find(".m-tab-bar__late_view").first().simulate("click")
+    expect(dispatch).toHaveBeenCalledWith(toggleLateView())
+  })
+
   it("opens drift when you click on the chat icon", () => {
     const wrapper = mount(
       <BrowserRouter>
-        <TabBar pickerContainerIsVisible={false} swingsViewIsVisible={false} />
+        <TabBar
+          pickerContainerIsVisible={false}
+          swingsViewIsVisible={false}
+          lateViewIsVisible={false}
+        />
       </BrowserRouter>
     )
 
@@ -134,7 +207,11 @@ describe("tabBar", () => {
   it("displays an appcue for the current page when you click on the help button", () => {
     const wrapper = mount(
       <BrowserRouter>
-        <TabBar pickerContainerIsVisible={false} swingsViewIsVisible={false} />
+        <TabBar
+          pickerContainerIsVisible={false}
+          swingsViewIsVisible={false}
+          lateViewIsVisible={false}
+        />
       </BrowserRouter>
     )
 
@@ -150,7 +227,11 @@ describe("tabBar", () => {
 
     const wrapper = mount(
       <BrowserRouter>
-        <TabBar pickerContainerIsVisible={false} swingsViewIsVisible={false} />
+        <TabBar
+          pickerContainerIsVisible={false}
+          swingsViewIsVisible={false}
+          lateViewIsVisible={false}
+        />
       </BrowserRouter>
     )
 
