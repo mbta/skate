@@ -18,7 +18,7 @@ defmodule SkateWeb.MinischeduleControllerTest do
 
   describe "GET /api/minischedule/run/:trip_id" do
     test "when logged out, redirects you to cognito auth", %{conn: conn} do
-      reassign_env(:skate_web, :run_fn, fn _trip_id -> @run end)
+      reassign_env(:skate, :run_fn, fn _trip_id -> @run end)
 
       conn =
         conn
@@ -30,7 +30,7 @@ defmodule SkateWeb.MinischeduleControllerTest do
 
     @tag :authenticated
     test "when logged in, returns the run for this trip", %{conn: conn} do
-      reassign_env(:skate_web, :run_fn, fn _trip_id -> @run end)
+      reassign_env(:skate, :run_fn, fn _trip_id -> @run end)
 
       conn =
         conn
@@ -48,7 +48,7 @@ defmodule SkateWeb.MinischeduleControllerTest do
 
     @tag :authenticated
     test "returns null if there's no minischedule for this trip", %{conn: conn} do
-      reassign_env(:skate_web, :run_fn, fn _trip_id -> nil end)
+      reassign_env(:skate, :run_fn, fn _trip_id -> nil end)
 
       conn =
         conn
@@ -61,7 +61,7 @@ defmodule SkateWeb.MinischeduleControllerTest do
 
   describe "GET /api/minischedule/block/:trip_id" do
     test "when logged out, redirects you to cognito auth", %{conn: conn} do
-      reassign_env(:skate_web, :block_fn, fn _trip_id -> @block end)
+      reassign_env(:skate, :block_fn, fn _trip_id -> @block end)
 
       conn =
         conn
@@ -73,7 +73,7 @@ defmodule SkateWeb.MinischeduleControllerTest do
 
     @tag :authenticated
     test "when logged in, returns the block for this trip", %{conn: conn} do
-      reassign_env(:skate_web, :block_fn, fn _trip_id -> @block end)
+      reassign_env(:skate, :block_fn, fn _trip_id -> @block end)
 
       conn =
         conn
@@ -91,7 +91,7 @@ defmodule SkateWeb.MinischeduleControllerTest do
 
     @tag :authenticated
     test "returns null if there's no minischedule for this trip", %{conn: conn} do
-      reassign_env(:skate_web, :block_fn, fn _trip_id -> nil end)
+      reassign_env(:skate, :block_fn, fn _trip_id -> nil end)
 
       conn =
         conn

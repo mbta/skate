@@ -290,6 +290,74 @@ defmodule Realtime.GhostTest do
                time0 + 2
              ) == nil
     end
+
+    test "includes scheduled logon time if available" do
+      reassign_env(:skate, :block_fn, fn trip_id ->
+        if trip_id == "trip" do
+          %Schedule.Minischedule.Block{
+            schedule_id: "schedule",
+            id: "block",
+            pieces: [
+              %Schedule.Minischedule.Piece{
+                schedule_id: "schedule",
+                run_id: "run",
+                start_time: 50,
+                start_place: "garage",
+                trips: ["trip"],
+                end_time: 200,
+                end_place: "station"
+              }
+            ]
+          }
+        else
+          nil
+        end
+      end)
+
+      trip = %Trip{
+        id: "trip",
+        block_id: "block",
+        route_id: "route",
+        service_id: "service",
+        headsign: "headsign",
+        direction_id: 0,
+        run_id: "run",
+        stop_times: [
+          %StopTime{
+            stop_id: "stop1",
+            time: 150,
+            timepoint_id: "t1"
+          }
+        ],
+        start_time: 100,
+        end_time: 200
+      }
+
+      block = Block.block_from_trips([trip])
+
+      assert %Ghost{
+               id: "ghost-trip",
+               direction_id: 0,
+               route_id: "route",
+               trip_id: "trip",
+               headsign: "headsign",
+               block_id: "block",
+               run_id: "run",
+               via_variant: nil,
+               layover_departure_time: 1_546_318_900,
+               scheduled_timepoint_status: %{
+                 timepoint_id: "t1",
+                 fraction_until_timepoint: 0.0
+               },
+               scheduled_logon: 1_546_318_850,
+               route_status: :pulling_out
+             } =
+               Ghost.ghost_for_block(
+                 block,
+                 ~D[2019-01-01],
+                 1_546_318_860
+               )
+    end
   end
 
   describe "current_trip" do

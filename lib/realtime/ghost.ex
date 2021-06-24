@@ -15,6 +15,7 @@ defmodule Realtime.Ghost do
           via_variant: RoutePattern.via_variant() | nil,
           layover_departure_time: Util.Time.timestamp() | nil,
           scheduled_timepoint_status: TimepointStatus.timepoint_status(),
+          scheduled_logon: Util.Time.timestamp() | nil,
           route_status: RouteStatus.route_status(),
           block_waivers: [BlockWaiver.t()]
         }
@@ -43,6 +44,7 @@ defmodule Realtime.Ghost do
     :via_variant,
     :layover_departure_time,
     :scheduled_timepoint_status,
+    :scheduled_logon,
     :route_status,
     block_waivers: []
   ]
@@ -93,6 +95,19 @@ defmodule Realtime.Ghost do
             timepoint_status =
               TimepointStatus.scheduled_timepoint_status(timepoints, now_time_of_day)
 
+            block_fn = Application.get_env(:skate, :block_fn, &Schedule.minischedule_block/1)
+
+            current_piece_start_time =
+              with %Schedule.Minischedule.Block{pieces: pieces} <- block_fn.(trip.id),
+                   [current_piece] <-
+                     Enum.filter(pieces, fn piece ->
+                       piece.start_time <= now_time_of_day && piece.end_time >= now_time_of_day
+                     end) do
+                current_piece.start_time
+              else
+                _ -> nil
+              end
+
             %__MODULE__{
               id: "ghost-#{trip.id}",
               direction_id: trip.direction_id,
@@ -113,6 +128,12 @@ defmodule Realtime.Ghost do
                   nil
                 end,
               scheduled_timepoint_status: timepoint_status,
+              scheduled_logon:
+                if current_piece_start_time do
+                  Util.Time.timestamp_for_time_of_day(current_piece_start_time, date)
+                else
+                  nil
+                end,
               route_status: route_status,
               block_waivers: block_waivers_for_block_and_service_fn.(block.id, block.service_id)
             }
