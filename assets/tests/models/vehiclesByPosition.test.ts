@@ -129,6 +129,7 @@ describe("groupByPosition", () => {
       viaVariant: "scheduled via variant",
       layoverDepartureTime: null,
       scheduledTimepointStatus: vehicle.scheduledLocation!.timepointStatus,
+      scheduledLogonTime: null,
       routeStatus: "on_route",
       blockWaivers: [],
     }
@@ -179,6 +180,7 @@ describe("groupByPosition", () => {
       viaVariant: "scheduled via variant",
       layoverDepartureTime: null,
       scheduledTimepointStatus: vehicle.scheduledLocation!.timepointStatus,
+      scheduledLogonTime: null,
       routeStatus: "on_route",
       blockWaivers: [],
     }

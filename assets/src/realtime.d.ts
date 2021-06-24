@@ -43,6 +43,7 @@ export interface Ghost {
   viaVariant: ViaVariant | null
   layoverDepartureTime: number | null
   scheduledTimepointStatus: VehicleTimepointStatus | null
+  scheduledLogonTime: number | null
   routeStatus: RouteStatus
   blockWaivers: BlockWaiver[]
 }

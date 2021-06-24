@@ -167,6 +167,7 @@ describe("ladder", () => {
         timepointId: "t0",
         fractionUntilTimepoint: 0.0,
       },
+      scheduledLogonTime: null,
       routeStatus: "on_route",
       blockWaivers: [],
     }
@@ -410,6 +411,7 @@ describe("ladder", () => {
         timepointId: "t0",
         fractionUntilTimepoint: 0.0,
       },
+      scheduledLogonTime: null,
       routeStatus: "on_route",
       blockWaivers: [
         {

@@ -79,6 +79,7 @@ export interface GhostData {
   via_variant: string | null
   layover_departure_time: number | null
   scheduled_timepoint_status: VehicleTimepointStatusData
+  scheduled_logon: number | null
   route_status: RouteStatus
   block_waivers: BlockWaiverData[]
 }
@@ -186,6 +187,7 @@ export const ghostFromData = (ghostData: GhostData): Ghost => ({
   scheduledTimepointStatus: vehicleTimepointStatusFromData(
     ghostData.scheduled_timepoint_status
   ),
+  scheduledLogonTime: ghostData.scheduled_logon,
   routeStatus: ghostData.route_status,
   blockWaivers: blockWaiversFromData(ghostData.block_waivers),
 })

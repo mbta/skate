@@ -3,10 +3,15 @@ import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useVehicles from "../hooks/useVehicles"
 import { flatten } from "../helpers/array"
-import { isVehicle } from "../models/vehicle"
-import { Vehicle } from "../realtime"
-import { secondsToMinutes } from "../util/dateTime"
+import { isVehicle, isGhost } from "../models/vehicle"
+import { Vehicle, Ghost } from "../realtime"
+import {
+  secondsToMinutes,
+  formattedTime,
+  dateFromEpochSeconds,
+} from "../util/dateTime"
 import { runIdToLabel } from "../helpers/vehicleLabel"
+import { now } from "../util/dateTime"
 
 const LateView = (): ReactElement<HTMLElement> => {
   const [{ selectedRouteIds }] = useContext(StateDispatchContext)
@@ -16,14 +21,23 @@ const LateView = (): ReactElement<HTMLElement> => {
 
   const vehiclesOrGhosts = flatten(Object.values(vehiclesByRouteId))
 
-  // find late logons by looking for ghosts (for now)
-  // how to determine when a ghost was supposed to log on?
-  // Will probably need to pass that information from the back-end in a new field on ghost. The backend function that generates ghosts already has the schedule data.
-
-  // const missingLogons = vehiclesOrGhosts
-  //    .Filter(isGhost)
-
   const latenessThreshold = 60 * 15
+
+  const currentTime = now()
+
+  const missingLogons = vehiclesOrGhosts
+    .filter(isGhost)
+    .filter((ghost) => ghost.scheduledLogonTime !== null)
+    .filter(
+      (ghost) =>
+        Math.floor(currentTime.getTime() / 1000) -
+          (ghost.scheduledLogonTime as number) <=
+        latenessThreshold
+    )
+    .sort(
+      (a, b) =>
+        (a.scheduledLogonTime as number) - (b.scheduledLogonTime as number)
+    )
 
   const lateBuses = vehiclesOrGhosts
     .filter(isVehicle)
@@ -33,8 +47,25 @@ const LateView = (): ReactElement<HTMLElement> => {
 
   return (
     <div className="m-late-view">
-      <div className="m-late-view__late_logons" />
+      <div className="m-late-view__missing_logons" />
+      <h2>Missing logons</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Scheduled Logon</th>
+            <th>Route</th>
+            <th>Run</th>
+            <th>Location</th>
+          </tr>
+        </thead>
+        <tbody>
+          {missingLogons.map((missingLogon) => (
+            <MissingLogonRow ghost={missingLogon} key={missingLogon.id} />
+          ))}
+        </tbody>
+      </table>
       <div className="m-late-view__late_buses">
+        <h2>Late buses</h2>
         <table>
           <thead>
             <tr>
@@ -73,6 +104,25 @@ const LateBusRow = ({
       <th>
         {vehicle.operatorLastName} - {vehicle.operatorId}
       </th>
+    </tr>
+  )
+}
+
+const MissingLogonRow = ({
+  ghost,
+}: {
+  ghost: Ghost
+}): ReactElement<HTMLElement> => {
+  return (
+    <tr>
+      <th>
+        {ghost.scheduledLogonTime
+          ? formattedTime(dateFromEpochSeconds(ghost.scheduledLogonTime))
+          : ""}
+      </th>
+      <th />
+      <th>{runIdToLabel(ghost.runId)}</th>
+      <th />
     </tr>
   )
 }

@@ -110,6 +110,7 @@ describe("IncomingBox", () => {
         timepointId: "TIMEP",
         fractionUntilTimepoint: 0.0,
       },
+      scheduledLogonTime: null,
       routeStatus: "pulling_out",
       blockWaivers: [],
     }

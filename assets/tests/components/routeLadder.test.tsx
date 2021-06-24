@@ -199,6 +199,7 @@ describe("routeLadder", () => {
         timepointId: "MORTN",
         fractionUntilTimepoint: 0.0,
       },
+      scheduledLogonTime: null,
       routeStatus: "on_route",
       blockWaivers: [],
     }

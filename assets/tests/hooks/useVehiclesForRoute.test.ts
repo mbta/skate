@@ -38,6 +38,7 @@ describe("useVehiclesForRoute", () => {
         timepoint_id: "timepoint",
         fraction_until_timepoint: 0,
       },
+      scheduled_logon: null,
       route_status: "on_route",
       block_waivers: [],
     }
@@ -55,6 +56,7 @@ describe("useVehiclesForRoute", () => {
         timepointId: "timepoint",
         fractionUntilTimepoint: 0,
       },
+      scheduledLogonTime: null,
       routeStatus: "on_route",
       blockWaivers: [],
     }

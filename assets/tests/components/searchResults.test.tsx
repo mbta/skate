@@ -112,6 +112,7 @@ describe("SearchResults", () => {
         timepointId: "t0",
         fractionUntilTimepoint: 0.0,
       },
+      scheduledLogonTime: null,
       routeStatus: "on_route",
       blockWaivers: [],
     }
@@ -326,6 +327,7 @@ describe("SearchResults", () => {
         timepointId: "t0",
         fractionUntilTimepoint: 0.0,
       },
+      scheduledLogonTime: null,
       routeStatus: "on_route",
       blockWaivers: [],
     }

@@ -25,6 +25,7 @@ const ghostData: GhostData = {
     timepoint_id: "shunt",
     fraction_until_timepoint: 0.3342478185618462,
   },
+  scheduled_logon: null,
   route_status: "on_route",
   block_waivers: [],
 }
@@ -228,6 +229,7 @@ describe("useVehicleForNotification", () => {
         fractionUntilTimepoint: 0.3342478185618462,
         timepointId: "shunt",
       },
+      scheduledLogonTime: null,
       tripId: "12345678",
       viaVariant: "3",
     })
