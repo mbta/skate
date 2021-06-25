@@ -138,4 +138,6 @@ const ghostFromVehicleScheduledLocation = (vehicle: Vehicle): Ghost => ({
   scheduledLogonTime: null,
   routeStatus: "on_route",
   blockWaivers: vehicle.blockWaivers,
+  currentPieceStartPlace: null,
+  currentPieceFirstRoute: null,
 })

@@ -17,6 +17,7 @@ import {
 } from "../../src/realtime"
 import { ByRouteId, Route, TimepointsByRouteId } from "../../src/schedule.d"
 import { initialState, State } from "../../src/state"
+import ghostFactory from "../factories/ghost"
 
 jest.mock("../../src/hooks/useTimepoints", () => ({
   __esModule: true,
@@ -85,7 +86,7 @@ describe("LadderPage", () => {
   })
 
   test("renders with vehicles and selected vehicles", () => {
-    const vehicle: VehicleOrGhost = {
+    const vehicle: VehicleOrGhost = ghostFactory.build({
       id: "ghost-id",
       directionId: 0,
       routeId: "1",
@@ -102,7 +103,7 @@ describe("LadderPage", () => {
       scheduledLogonTime: null,
       routeStatus: "on_route",
       blockWaivers: [],
-    }
+    })
     ;(useVehicles as jest.Mock).mockImplementationOnce(() => ({
       ["1"]: [vehicle],
     }))

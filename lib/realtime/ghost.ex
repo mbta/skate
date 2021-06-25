@@ -17,7 +17,9 @@ defmodule Realtime.Ghost do
           scheduled_timepoint_status: TimepointStatus.timepoint_status(),
           scheduled_logon: Util.Time.timestamp() | nil,
           route_status: RouteStatus.route_status(),
-          block_waivers: [BlockWaiver.t()]
+          block_waivers: [BlockWaiver.t()],
+          current_piece_start_place: Schedule.Hastus.Place.id() | nil,
+          current_piece_first_route: Route.id() | nil
         }
 
   @enforce_keys [
@@ -46,6 +48,8 @@ defmodule Realtime.Ghost do
     :scheduled_timepoint_status,
     :scheduled_logon,
     :route_status,
+    :current_piece_start_place,
+    :current_piece_first_route,
     block_waivers: []
   ]
 
@@ -97,13 +101,32 @@ defmodule Realtime.Ghost do
 
             block_fn = Application.get_env(:skate, :block_fn, &Schedule.minischedule_block/1)
 
-            current_piece_start_time =
+            current_piece =
               with %Schedule.Minischedule.Block{pieces: pieces} <- block_fn.(trip.id),
                    [current_piece] <-
                      Enum.filter(pieces, fn piece ->
                        piece.start_time <= now_time_of_day && piece.end_time >= now_time_of_day
                      end) do
-                current_piece.start_time
+                current_piece
+              else
+                _ -> nil
+              end
+
+            current_piece_start_place =
+              case current_piece do
+                nil -> nil
+                current_piece -> current_piece.start_place
+              end
+
+            current_piece_first_route =
+              with false <- is_nil(current_piece),
+                   trips <- current_piece.trips,
+                   first_revenue_trip <-
+                     Enum.find(trips, fn trip ->
+                       match?(%Schedule.Minischedule.Trip{}, trip) && !is_nil(trip.route_id)
+                     end),
+                   false <- is_nil(first_revenue_trip) do
+                first_revenue_trip.route_id
               else
                 _ -> nil
               end
@@ -129,13 +152,15 @@ defmodule Realtime.Ghost do
                 end,
               scheduled_timepoint_status: timepoint_status,
               scheduled_logon:
-                if current_piece_start_time do
-                  Util.Time.timestamp_for_time_of_day(current_piece_start_time, date)
+                if current_piece do
+                  Util.Time.timestamp_for_time_of_day(current_piece.start_time, date)
                 else
                   nil
                 end,
               route_status: route_status,
-              block_waivers: block_waivers_for_block_and_service_fn.(block.id, block.service_id)
+              block_waivers: block_waivers_for_block_and_service_fn.(block.id, block.service_id),
+              current_piece_start_place: current_piece_start_place,
+              current_piece_first_route: current_piece_first_route
             }
         end
     end

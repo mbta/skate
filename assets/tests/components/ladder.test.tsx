@@ -16,6 +16,7 @@ import { Timepoint } from "../../src/schedule.d"
 import { initialState, selectVehicle } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
 import vehicleFactory from "../factories/vehicle"
+import ghostFactory from "../factories/ghost"
 
 jest.mock("../../src/hooks/useVehicles", () => ({
   __esModule: true,
@@ -153,7 +154,7 @@ describe("ladder", () => {
       { id: "t2", name: "t2 name" },
     ]
 
-    const ghost: Ghost = {
+    const ghost: Ghost = ghostFactory.build({
       id: "ghost-trip",
       directionId: 0,
       routeId: "route",
@@ -170,7 +171,7 @@ describe("ladder", () => {
       scheduledLogonTime: null,
       routeStatus: "on_route",
       blockWaivers: [],
-    }
+    })
 
     const ladderDirection = LadderDirection.ZeroToOne
 
@@ -397,7 +398,7 @@ describe("ladder", () => {
       { id: "t1", name: "t1 name" },
       { id: "t2", name: "t2 name" },
     ]
-    const ghostWithBlockWaiver: Ghost = {
+    const ghostWithBlockWaiver: Ghost = ghostFactory.build({
       id: "ghost-trip",
       directionId: 0,
       routeId: "route",
@@ -422,7 +423,7 @@ describe("ladder", () => {
           remark: null,
         },
       ],
-    }
+    })
     const vehicleWithOldBlockWaiver: Vehicle = {
       id: "id",
       label: "label",

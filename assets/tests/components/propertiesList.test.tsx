@@ -11,6 +11,7 @@ import PropertiesList, {
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../src/realtime"
 import * as dateTime from "../../src/util/dateTime"
+import ghostFactory from "../factories/ghost"
 
 jest
   .spyOn(dateTime, "now")
@@ -74,7 +75,7 @@ const vehicle: Vehicle = {
   crowding: null,
 }
 
-const ghost: Ghost = {
+const ghost: Ghost = ghostFactory.build({
   id: "ghost-trip",
   directionId: 0,
   routeId: "39",
@@ -91,7 +92,7 @@ const ghost: Ghost = {
   scheduledLogonTime: null,
   routeStatus: "on_route",
   blockWaivers: [],
-}
+})
 
 describe("PropertiesList", () => {
   test("renders generic properties", () => {

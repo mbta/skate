@@ -5,12 +5,13 @@ import { RoutesProvider } from "../../../src/contexts/routesContext"
 import { BlockWaiver, Ghost } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
 import * as dateTime from "../../../src/util/dateTime"
+import ghostFactory from "../../factories/ghost"
 
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("1970-01-01T22:42:00.000Z"))
 
-const ghost: Ghost = {
+const ghost: Ghost = ghostFactory.build({
   id: "ghost-trip",
   directionId: 0,
   routeId: "39",
@@ -27,7 +28,7 @@ const ghost: Ghost = {
   scheduledLogonTime: null,
   routeStatus: "on_route",
   blockWaivers: [],
-}
+})
 
 const route: Route = {
   id: "39",

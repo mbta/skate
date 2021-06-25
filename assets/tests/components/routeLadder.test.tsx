@@ -20,6 +20,7 @@ import {
   State,
   toggleLadderCrowding,
 } from "../../src/state"
+import ghostFactory from "../factories/ghost"
 
 // tslint:disable: object-literal-sort-keys
 
@@ -185,7 +186,7 @@ describe("routeLadder", () => {
       { id: "MORTN", name: "MORTN Name" },
     ]
 
-    const ghost: Ghost = {
+    const ghost: Ghost = ghostFactory.build({
       id: "ghost-trip",
       directionId: 0,
       routeId: route.id,
@@ -202,7 +203,7 @@ describe("routeLadder", () => {
       scheduledLogonTime: null,
       routeStatus: "on_route",
       blockWaivers: [],
-    }
+    })
 
     const tree = renderer
       .create(

@@ -291,7 +291,7 @@ defmodule Realtime.GhostTest do
              ) == nil
     end
 
-    test "includes scheduled logon time if available" do
+    test "includes scheduled logon time, first route, and start place if available" do
       reassign_env(:skate, :block_fn, fn trip_id ->
         if trip_id == "trip" do
           %Schedule.Minischedule.Block{
@@ -303,7 +303,17 @@ defmodule Realtime.GhostTest do
                 run_id: "run",
                 start_time: 50,
                 start_place: "garage",
-                trips: ["trip"],
+                trips: [
+                  %Schedule.Minischedule.Trip{
+                    id: "trip",
+                    block_id: "block"
+                  },
+                  %Schedule.Minischedule.Trip{
+                    id: "trip2",
+                    block_id: "block",
+                    route_id: "route"
+                  }
+                ],
                 end_time: 200,
                 end_place: "station"
               }
@@ -350,7 +360,9 @@ defmodule Realtime.GhostTest do
                  fraction_until_timepoint: 0.0
                },
                scheduled_logon: 1_546_318_850,
-               route_status: :pulling_out
+               route_status: :pulling_out,
+               current_piece_start_place: "garage",
+               current_piece_first_route: "route"
              } =
                Ghost.ghost_for_block(
                  block,

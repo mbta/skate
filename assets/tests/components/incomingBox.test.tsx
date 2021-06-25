@@ -9,6 +9,7 @@ import { Ghost, Vehicle } from "../../src/realtime"
 import { initialState, selectVehicle } from "../../src/state"
 
 import vehicleFactory from "../factories/vehicle"
+import ghostFactory from "../factories/ghost"
 
 describe("IncomingBox", () => {
   test("renders empty state", () => {
@@ -96,7 +97,7 @@ describe("IncomingBox", () => {
   })
 
   test("renders a ghost", () => {
-    const ghost: Ghost = {
+    const ghost: Ghost = ghostFactory.build({
       id: "ghost",
       directionId: 0,
       routeId: "111",
@@ -113,7 +114,7 @@ describe("IncomingBox", () => {
       scheduledLogonTime: null,
       routeStatus: "pulling_out",
       blockWaivers: [],
-    }
+    })
 
     const tree = renderer
       .create(

@@ -13,6 +13,7 @@ import { HeadwaySpacing } from "../../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
 import { deselectVehicle, initialState } from "../../../src/state"
+import ghostFactory from "../../factories/ghost"
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
@@ -205,7 +206,7 @@ describe("Header", () => {
   })
 
   test("renders for a ghost", () => {
-    const ghost: Ghost = {
+    const ghost: Ghost = ghostFactory.build({
       id: "ghost-trip",
       directionId: 0,
       routeId: "39",
@@ -222,7 +223,7 @@ describe("Header", () => {
       scheduledLogonTime: null,
       routeStatus: "on_route",
       blockWaivers: [],
-    }
+    })
 
     const tree = renderer
       .create(

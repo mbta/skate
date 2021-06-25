@@ -3,6 +3,8 @@ import useVehiclesForRoute from "../../src/hooks/useVehiclesForRoute"
 import { VehicleOrGhostData } from "../../src/models/vehicleData"
 import { VehicleOrGhost } from "../../src/realtime"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
+import ghostFactory from "../factories/ghost"
+import ghostDataFactory from "../factories/ghost_data"
 
 // tslint:disable: react-hooks-nesting
 
@@ -24,42 +26,8 @@ describe("useVehiclesForRoute", () => {
   })
 
   test("subscribes to a channel and returns results", () => {
-    const vehicleData: VehicleOrGhostData = {
-      id: "id",
-      direction_id: 0,
-      route_id: "1",
-      trip_id: "trip",
-      headsign: "headsign",
-      block_id: "block",
-      run_id: null,
-      via_variant: null,
-      layover_departure_time: null,
-      scheduled_timepoint_status: {
-        timepoint_id: "timepoint",
-        fraction_until_timepoint: 0,
-      },
-      scheduled_logon: null,
-      route_status: "on_route",
-      block_waivers: [],
-    }
-    const vehicle: VehicleOrGhost = {
-      id: "id",
-      directionId: 0,
-      routeId: "1",
-      tripId: "trip",
-      headsign: "headsign",
-      blockId: "block",
-      runId: null,
-      viaVariant: null,
-      layoverDepartureTime: null,
-      scheduledTimepointStatus: {
-        timepointId: "timepoint",
-        fractionUntilTimepoint: 0,
-      },
-      scheduledLogonTime: null,
-      routeStatus: "on_route",
-      blockWaivers: [],
-    }
+    const vehicleData: VehicleOrGhostData = ghostDataFactory.build({ id: "id" })
+    const vehicle: VehicleOrGhost = ghostFactory.build({ id: "id" })
 
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok", { data: [vehicleData] })

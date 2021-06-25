@@ -46,6 +46,8 @@ export interface Ghost {
   scheduledLogonTime: number | null
   routeStatus: RouteStatus
   blockWaivers: BlockWaiver[]
+  currentPieceStartPlace: string | null
+  currentPieceFirstRoute: RouteId | null
 }
 
 export type NotificationId = string

@@ -1,6 +1,7 @@
 import React, { ReactElement, useContext } from "react"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
 import useVehicles from "../hooks/useVehicles"
 import { flatten } from "../helpers/array"
 import { isVehicle, isGhost } from "../models/vehicle"
@@ -11,7 +12,6 @@ import {
   dateFromEpochSeconds,
 } from "../util/dateTime"
 import { runIdToLabel } from "../helpers/vehicleLabel"
-import { now } from "../util/dateTime"
 
 const LateView = (): ReactElement<HTMLElement> => {
   const [{ selectedRouteIds }] = useContext(StateDispatchContext)
@@ -23,16 +23,14 @@ const LateView = (): ReactElement<HTMLElement> => {
 
   const latenessThreshold = 60 * 15
 
-  const currentTime = now()
+  const currentTime = useCurrentTimeSeconds()
 
   const missingLogons = vehiclesOrGhosts
     .filter(isGhost)
     .filter((ghost) => ghost.scheduledLogonTime !== null)
     .filter(
       (ghost) =>
-        Math.floor(currentTime.getTime() / 1000) -
-          (ghost.scheduledLogonTime as number) <=
-        latenessThreshold
+        currentTime - (ghost.scheduledLogonTime as number) <= latenessThreshold
     )
     .sort(
       (a, b) =>
@@ -120,9 +118,9 @@ const MissingLogonRow = ({
           ? formattedTime(dateFromEpochSeconds(ghost.scheduledLogonTime))
           : ""}
       </th>
-      <th />
+      <th>{ghost.currentPieceFirstRoute}</th>
       <th>{runIdToLabel(ghost.runId)}</th>
-      <th />
+      <th>{ghost.currentPieceStartPlace}</th>
     </tr>
   )
 }

@@ -1,7 +1,8 @@
 import vehicleLabel, { runIdToLabel } from "../../src/helpers/vehicleLabel"
 import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { Ghost, Vehicle } from "../../src/realtime"
+import { Vehicle } from "../../src/realtime"
 import { UserSettings, VehicleLabelSetting } from "../../src/userSettings"
+import ghostFactory from "../factories/ghost"
 
 const vehicle: Vehicle = {
   id: "y0479",
@@ -139,28 +140,9 @@ describe("vehicleLabel", () => {
     ).toEqual("0479")
   })
 
-  const ghost: Ghost = {
-    id: "ghost",
-    directionId: 0,
-    routeId: "route",
-    tripId: "trip",
-    headsign: "headsign",
-    blockId: "block",
-    runId: null,
-    viaVariant: null,
-    layoverDepartureTime: null,
-    scheduledTimepointStatus: {
-      timepointId: "timepoint",
-      fractionUntilTimepoint: 0.0,
-    },
-    scheduledLogonTime: null,
-    routeStatus: "on_route",
-    blockWaivers: [],
-  }
-
   test("shows ghost run id without area", () => {
     expect(
-      vehicleLabel({ ...ghost, runId: "123-1234" }, {
+      vehicleLabel(ghostFactory.build({ runId: "123-1234" }), {
         ladderVehicleLabel: VehicleLabelSetting.RunNumber,
       } as UserSettings)
     ).toEqual("1234")
@@ -168,7 +150,7 @@ describe("vehicleLabel", () => {
 
   test("shows N/A for ghost run id if it's missing", () => {
     expect(
-      vehicleLabel({ ...ghost, runId: null }, {
+      vehicleLabel(ghostFactory.build({ runId: null }), {
         ladderVehicleLabel: VehicleLabelSetting.RunNumber,
       } as UserSettings)
     ).toEqual("N/A")
@@ -176,7 +158,7 @@ describe("vehicleLabel", () => {
 
   test("shows N/A for ghost vehicle number", () => {
     expect(
-      vehicleLabel(ghost, {
+      vehicleLabel(ghostFactory.build(), {
         ladderVehicleLabel: VehicleLabelSetting.VehicleNumber,
       } as UserSettings)
     ).toEqual("N/A")

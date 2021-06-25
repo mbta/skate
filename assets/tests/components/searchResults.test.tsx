@@ -98,7 +98,7 @@ describe("SearchResults", () => {
       blockWaivers: [],
       crowding: null,
     }
-    const ghost: Ghost = {
+    const ghost: Ghost = ghostFactory.build({
       id: "ghost-trip",
       directionId: 0,
       routeId: "39",
@@ -115,7 +115,7 @@ describe("SearchResults", () => {
       scheduledLogonTime: null,
       routeStatus: "on_route",
       blockWaivers: [],
-    }
+    })
 
     const tree = renderer
       .create(
@@ -313,7 +313,7 @@ describe("SearchResults", () => {
       blockWaivers: [],
       crowding: null,
     }
-    const ghost: Ghost = {
+    const ghost: Ghost = ghostFactory.build({
       id: "ghost-trip",
       directionId: 0,
       routeId: "39",
@@ -330,7 +330,7 @@ describe("SearchResults", () => {
       scheduledLogonTime: null,
       routeStatus: "on_route",
       blockWaivers: [],
-    }
+    })
 
     const tree = renderer
       .create(

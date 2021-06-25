@@ -18,4 +18,6 @@ export default Factory.define<Ghost>(() => ({
   scheduledLogonTime: null,
   routeStatus: "on_route",
   blockWaivers: [],
+  currentPieceStartPlace: "garage",
+  currentPieceFirstRoute: "route",
 }))
