@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LateView renders missing logons and late buses 1`] = `
+<div
+  className="m-late-view"
+>
+  <div
+    className="m-late-view__missing_logons"
+  />
+  <h2>
+    Missing logons
+  </h2>
+  <table>
+    <thead>
+      <tr>
+        <th>
+          Scheduled Logon
+        </th>
+        <th>
+          Route
+        </th>
+        <th>
+          Run
+        </th>
+        <th>
+          Location
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th>
+          4:45 AM
+        </th>
+        <th>
+          route
+        </th>
+        <th>
+          N/A
+        </th>
+        <th>
+          station
+        </th>
+      </tr>
+    </tbody>
+  </table>
+  <div
+    className="m-late-view__late_buses"
+  >
+    <h2>
+      Late buses
+    </h2>
+    <table>
+      <thead>
+        <tr>
+          <th>
+            Adherence
+          </th>
+          <th>
+            Block waivers?
+          </th>
+          <th>
+            Route
+          </th>
+          <th>
+            Vehicle
+          </th>
+          <th>
+            Run
+          </th>
+          <th>
+            Driver
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>
+            -15
+          </th>
+          <th>
+            N
+          </th>
+          <th>
+            route
+          </th>
+          <th>
+            v2-label
+          </th>
+          <th>
+            2
+          </th>
+          <th>
+            SMITH
+             - 
+            op2
+          </th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;
