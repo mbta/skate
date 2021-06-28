@@ -14,6 +14,7 @@ defmodule Skate.ApplicationTest do
 
     test "replaces {:secret, var_name} with secret from AWS SecretsManager" do
       System.put_env("ENVIRONMENT_NAME", "TEST")
+      System.put_env("USE_SECRETS_MANAGER", "true")
 
       reassign_env(:skate, :get_secret_value_fn, fn "TEST-test-variable" ->
         "mock aws operation"
