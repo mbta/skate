@@ -13,7 +13,7 @@ RUN apk add --no-cache --update git
 RUN mix local.hex --force && \
   mix local.rebar --force
 
-RUN apk add --update nodejs nodejs-npm
+RUN apk add --update nodejs npm
 
 ARG SENTRY_ORG=$SENTRY_ORG
 ARG SENTRY_PROJECT=$SENTRY_PROJECT
