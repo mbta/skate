@@ -30,7 +30,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
     <tbody>
       <tr>
         <th>
-          4:45 AM
+          4:15 AM
         </th>
         <th>
           route

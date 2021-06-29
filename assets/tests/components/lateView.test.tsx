@@ -28,13 +28,13 @@ describe("LateView", () => {
           }),
           ghostFactory.build({
             routeId: "route",
-            scheduledLogonTime: 17099,
+            scheduledLogonTime: 15299,
             currentPieceFirstRoute: "route",
             currentPieceStartPlace: "garage",
           }),
           ghostFactory.build({
             routeId: "route",
-            scheduledLogonTime: 17101,
+            scheduledLogonTime: 15301,
             currentPieceFirstRoute: "route",
             currentPieceStartPlace: "station",
           }),

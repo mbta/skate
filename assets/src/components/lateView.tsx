@@ -21,7 +21,8 @@ const LateView = (): ReactElement<HTMLElement> => {
 
   const vehiclesOrGhosts = flatten(Object.values(vehiclesByRouteId))
 
-  const latenessThreshold = 60 * 15
+  const lateBusThreshold = 60 * 15
+  const missingLogonThreshold = 60 * 45
 
   const currentTime = useCurrentTimeSeconds()
 
@@ -30,7 +31,8 @@ const LateView = (): ReactElement<HTMLElement> => {
     .filter((ghost) => ghost.scheduledLogonTime !== null)
     .filter(
       (ghost) =>
-        currentTime - (ghost.scheduledLogonTime as number) <= latenessThreshold
+        currentTime - (ghost.scheduledLogonTime as number) <=
+        missingLogonThreshold
     )
     .sort(
       (a, b) =>
@@ -40,7 +42,7 @@ const LateView = (): ReactElement<HTMLElement> => {
   const lateBuses = vehiclesOrGhosts
     .filter(isVehicle)
     .filter((vehicle) => vehicle.routeStatus === "on_route")
-    .filter((vehicle) => vehicle.scheduleAdherenceSecs >= latenessThreshold)
+    .filter((vehicle) => vehicle.scheduleAdherenceSecs >= lateBusThreshold)
     .sort((a, b) => b.scheduleAdherenceSecs - a.scheduleAdherenceSecs)
 
   return (
