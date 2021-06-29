@@ -341,7 +341,7 @@ const Piece = ({
       ) : null}
       {isSwingOn ? null : (
         <Row
-          text="Start time"
+          text="Report time"
           rightText={formattedScheduledTime(piece.startTime)}
           belowText={piece.startPlace}
           timeBasedStyle={startTimeBasedStyle}
@@ -352,7 +352,7 @@ const Piece = ({
           <Row
             key="swing-on"
             icon={plusIcon()}
-            text={piece.startMidRoute ? "Swing on mid-route" : "Swing on"}
+            text={piece.startMidRoute ? "Mid-route report time" : "Report time"}
             rightText={formattedScheduledTime(piece.startTime)}
             belowText={piece.startPlace}
             timeBasedStyle={startTimeBasedStyle}

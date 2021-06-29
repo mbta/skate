@@ -103,7 +103,7 @@ exports[`Minischedule highlights deadheads if they're active 1`] = `
           <div
             className="m-minischedule__left-text"
           >
-            Swing on
+            Report time
             <br />
             <span
               className="m-minischedule__below-text"
@@ -330,7 +330,7 @@ exports[`Minischedule highlights pullouts if they're active 1`] = `
         <div
           className="m-minischedule__left-text"
         >
-          Start time
+          Report time
           <br />
           <span
             className="m-minischedule__below-text"
@@ -607,7 +607,7 @@ exports[`MinischeduleBlock renders a block 1`] = `
           <div
             className="m-minischedule__left-text"
           >
-            Swing on
+            Report time
             <br />
             <span
               className="m-minischedule__below-text"
@@ -757,7 +757,7 @@ exports[`MinischeduleBlock renders a mid route swing 1`] = `
           <div
             className="m-minischedule__left-text"
           >
-            Swing on
+            Report time
             <br />
             <span
               className="m-minischedule__below-text"
@@ -860,7 +860,7 @@ exports[`MinischeduleBlock renders a mid route swing 1`] = `
           <div
             className="m-minischedule__left-text"
           >
-            Swing on mid-route
+            Mid-route report time
             <br />
             <span
               className="m-minischedule__below-text"
@@ -1026,7 +1026,7 @@ exports[`MinischeduleBlock renders pulls and deadheads 1`] = `
         <div
           className="m-minischedule__left-text"
         >
-          Start time
+          Report time
           <br />
           <span
             className="m-minischedule__below-text"
@@ -1242,7 +1242,7 @@ exports[`MinischeduleBlock renders trips in both directions, or missing directio
           <div
             className="m-minischedule__left-text"
           >
-            Swing on
+            Report time
             <br />
             <span
               className="m-minischedule__below-text"
@@ -1475,7 +1475,7 @@ exports[`MinischeduleRun on a run with multiple layovers, marks the correct one 
           <div
             className="m-minischedule__left-text"
           >
-            Swing on
+            Report time
             <br />
             <span
               className="m-minischedule__below-text"
@@ -1742,7 +1742,7 @@ exports[`MinischeduleRun renders a mid route swing off 1`] = `
           <div
             className="m-minischedule__left-text"
           >
-            Swing on
+            Report time
             <br />
             <span
               className="m-minischedule__below-text"
@@ -1955,7 +1955,7 @@ exports[`MinischeduleRun renders a mid route swing on 1`] = `
           <div
             className="m-minischedule__left-text"
           >
-            Swing on mid-route
+            Mid-route report time
             <br />
             <span
               className="m-minischedule__below-text"
@@ -2204,7 +2204,7 @@ exports[`MinischeduleRun renders a run 1`] = `
           <div
             className="m-minischedule__left-text"
           >
-            Swing on
+            Report time
             <br />
             <span
               className="m-minischedule__below-text"
@@ -2451,7 +2451,7 @@ exports[`MinischeduleRun renders a run using origin trip label mode 1`] = `
           <div
             className="m-minischedule__left-text"
           >
-            Swing on
+            Report time
             <br />
             <span
               className="m-minischedule__below-text"
@@ -2675,7 +2675,7 @@ exports[`MinischeduleRun renders a run with a current layover between trips 1`] 
           <div
             className="m-minischedule__left-text"
           >
-            Swing on
+            Report time
             <br />
             <span
               className="m-minischedule__below-text"
@@ -2899,7 +2899,7 @@ exports[`MinischeduleRun renders a run with a layover before an as-directed 1`] 
           <div
             className="m-minischedule__left-text"
           >
-            Swing on
+            Report time
             <br />
             <span
               className="m-minischedule__below-text"
@@ -3114,7 +3114,7 @@ exports[`MinischeduleRun renders a run with a non-current layover between trips 
           <div
             className="m-minischedule__left-text"
           >
-            Swing on
+            Report time
             <br />
             <span
               className="m-minischedule__below-text"
@@ -3338,7 +3338,7 @@ exports[`MinischeduleRun renders a run with no layovers between trips 1`] = `
           <div
             className="m-minischedule__left-text"
           >
-            Swing on
+            Report time
             <br />
             <span
               className="m-minischedule__below-text"
@@ -3533,7 +3533,7 @@ exports[`MinischeduleRun renders as directed pieces 1`] = `
         <div
           className="m-minischedule__left-text"
         >
-          Start time
+          Report time
           <br />
           <span
             className="m-minischedule__below-text"
@@ -3696,7 +3696,7 @@ exports[`MinischeduleRun renders duty details of run 1`] = `
         <div
           className="m-minischedule__left-text"
         >
-          Start time
+          Report time
           <br />
           <span
             className="m-minischedule__below-text"
@@ -3772,7 +3772,7 @@ exports[`MinischeduleRun renders duty details of run 1`] = `
         <div
           className="m-minischedule__left-text"
         >
-          Start time
+          Report time
           <br />
           <span
             className="m-minischedule__below-text"
@@ -3848,7 +3848,7 @@ exports[`MinischeduleRun renders duty details of run 1`] = `
         <div
           className="m-minischedule__left-text"
         >
-          Start time
+          Report time
           <br />
           <span
             className="m-minischedule__below-text"
@@ -3924,7 +3924,7 @@ exports[`MinischeduleRun renders duty details of run 1`] = `
         <div
           className="m-minischedule__left-text"
         >
-          Start time
+          Report time
           <br />
           <span
             className="m-minischedule__below-text"
