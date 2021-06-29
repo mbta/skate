@@ -120,11 +120,14 @@ defmodule Realtime.Ghost do
 
             current_piece_first_route =
               with false <- is_nil(current_piece),
-                   trips <- current_piece.trips,
                    first_revenue_trip <-
-                     Enum.find(trips, fn trip ->
-                       match?(%Schedule.Minischedule.Trip{}, trip) && !is_nil(trip.route_id)
-                     end),
+                     if(current_piece.start_mid_route?,
+                       do: current_piece.start_mid_route?.trip,
+                       else:
+                         Enum.find(current_piece.trips, fn trip ->
+                           match?(%Schedule.Minischedule.Trip{}, trip) && !is_nil(trip.route_id)
+                         end)
+                     ),
                    false <- is_nil(first_revenue_trip) do
                 first_revenue_trip.route_id
               else

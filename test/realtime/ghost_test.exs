@@ -370,6 +370,90 @@ defmodule Realtime.GhostTest do
                  1_546_318_860
                )
     end
+
+    test "handles mid-route swing on for current piece logon and first route purposes" do
+      reassign_env(:skate, :block_fn, fn trip_id ->
+        if trip_id == "trip" do
+          %Schedule.Minischedule.Block{
+            schedule_id: "schedule",
+            id: "block",
+            pieces: [
+              %Schedule.Minischedule.Piece{
+                schedule_id: "schedule",
+                run_id: "run",
+                start_time: 50,
+                start_place: "station",
+                start_mid_route?: %{
+                  time: 40,
+                  trip: %Schedule.Minischedule.Trip{
+                    id: "trip2",
+                    block_id: "block",
+                    route_id: "route2"
+                  }
+                },
+                trips: [
+                  %Schedule.Minischedule.Trip{
+                    id: "trip",
+                    block_id: "block",
+                    route_id: "route"
+                  }
+                ],
+                end_time: 200,
+                end_place: "garage"
+              }
+            ]
+          }
+        else
+          nil
+        end
+      end)
+
+      trip = %Trip{
+        id: "trip",
+        block_id: "block",
+        route_id: "route",
+        service_id: "service",
+        headsign: "headsign",
+        direction_id: 0,
+        run_id: "run",
+        stop_times: [
+          %StopTime{
+            stop_id: "stop1",
+            time: 150,
+            timepoint_id: "t1"
+          }
+        ],
+        start_time: 100,
+        end_time: 200
+      }
+
+      block = Block.block_from_trips([trip])
+
+      assert %Ghost{
+               id: "ghost-trip",
+               direction_id: 0,
+               route_id: "route",
+               trip_id: "trip",
+               headsign: "headsign",
+               block_id: "block",
+               run_id: "run",
+               via_variant: nil,
+               layover_departure_time: 1_546_318_900,
+               scheduled_timepoint_status: %{
+                 timepoint_id: "t1",
+                 fraction_until_timepoint: 0.0
+               },
+               scheduled_logon: 1_546_318_850,
+               route_status: :pulling_out,
+               current_piece_start_place: "station",
+               current_piece_first_route: "route2"
+             } =
+               Ghost.ghost_for_block(
+                 block,
+                 ~D[2019-01-01],
+                 1_546_318_860
+               )
+    end
   end
 
   describe "current_trip" do
