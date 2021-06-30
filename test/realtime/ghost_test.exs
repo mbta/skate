@@ -1,6 +1,7 @@
 defmodule Realtime.GhostTest do
   use ExUnit.Case
   import Test.Support.Helpers
+  import Skate.Factory
 
   alias Schedule.{Block, Trip}
   alias Schedule.Gtfs.StopTime
@@ -294,54 +295,13 @@ defmodule Realtime.GhostTest do
     test "includes scheduled logon time, first route, and start place if available" do
       reassign_env(:skate, :block_fn, fn trip_id ->
         if trip_id == "trip" do
-          %Schedule.Minischedule.Block{
-            schedule_id: "schedule",
-            id: "block",
-            pieces: [
-              %Schedule.Minischedule.Piece{
-                schedule_id: "schedule",
-                run_id: "run",
-                start_time: 50,
-                start_place: "garage",
-                trips: [
-                  %Schedule.Minischedule.Trip{
-                    id: "trip",
-                    block_id: "block"
-                  },
-                  %Schedule.Minischedule.Trip{
-                    id: "trip2",
-                    block_id: "block",
-                    route_id: "route"
-                  }
-                ],
-                end_time: 200,
-                end_place: "station"
-              }
-            ]
-          }
+          build(:minischedule_block)
         else
           nil
         end
       end)
 
-      trip = %Trip{
-        id: "trip",
-        block_id: "block",
-        route_id: "route",
-        service_id: "service",
-        headsign: "headsign",
-        direction_id: 0,
-        run_id: "run",
-        stop_times: [
-          %StopTime{
-            stop_id: "stop1",
-            time: 150,
-            timepoint_id: "t1"
-          }
-        ],
-        start_time: 100,
-        end_time: 200
-      }
+      trip = build(:schedule_trip)
 
       block = Block.block_from_trips([trip])
 
@@ -374,58 +334,35 @@ defmodule Realtime.GhostTest do
     test "handles mid-route swing on for current piece logon and first route purposes" do
       reassign_env(:skate, :block_fn, fn trip_id ->
         if trip_id == "trip" do
-          %Schedule.Minischedule.Block{
-            schedule_id: "schedule",
-            id: "block",
+          build(:minischedule_block, %{
             pieces: [
-              %Schedule.Minischedule.Piece{
-                schedule_id: "schedule",
-                run_id: "run",
-                start_time: 50,
+              build(:minischedule_piece, %{
                 start_place: "station",
                 start_mid_route?: %{
                   time: 40,
-                  trip: %Schedule.Minischedule.Trip{
-                    id: "trip2",
-                    block_id: "block",
-                    route_id: "route2"
-                  }
+                  trip:
+                    build(:minischedule_trip, %{
+                      id: "trip2",
+                      route_id: "route2"
+                    })
                 },
                 trips: [
-                  %Schedule.Minischedule.Trip{
+                  build(:minischedule_trip, %{
                     id: "trip",
                     block_id: "block",
                     route_id: "route"
-                  }
+                  })
                 ],
-                end_time: 200,
                 end_place: "garage"
-              }
+              })
             ]
-          }
+          })
         else
           nil
         end
       end)
 
-      trip = %Trip{
-        id: "trip",
-        block_id: "block",
-        route_id: "route",
-        service_id: "service",
-        headsign: "headsign",
-        direction_id: 0,
-        run_id: "run",
-        stop_times: [
-          %StopTime{
-            stop_id: "stop1",
-            time: 150,
-            timepoint_id: "t1"
-          }
-        ],
-        start_time: 100,
-        end_time: 200
-      }
+      trip = build(:schedule_trip)
 
       block = Block.block_from_trips([trip])
 
