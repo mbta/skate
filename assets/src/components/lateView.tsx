@@ -93,7 +93,6 @@ const LateBusRow = ({
 }: {
   vehicle: Vehicle
 }): ReactElement<HTMLElement> => {
-  // TODO: what kind of dash to use in operator column?
   return (
     <tr>
       <th>{secondsToMinutes(vehicle.scheduleAdherenceSecs) * -1}</th>
@@ -102,7 +101,7 @@ const LateBusRow = ({
       <th>{vehicle.label}</th>
       <th>{runIdToLabel(vehicle.runId)}</th>
       <th>
-        {vehicle.operatorLastName} - {vehicle.operatorId}
+        {vehicle.operatorLastName} &ndash; {vehicle.operatorId}
       </th>
     </tr>
   )
