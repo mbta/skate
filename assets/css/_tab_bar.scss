@@ -51,7 +51,15 @@
     stroke: $color-secondary-light;
   }
 
+  .m-tab-bar__late_view & {
+    stroke: $color-secondary-light;
+  }
+
   .m-tab-bar__link--active.m-tab-bar__swings & {
+    stroke: $color-primary;
+  }
+
+  .m-tab-bar__link--active.m-tab-bar__late_view & {
     stroke: $color-primary;
   }
 

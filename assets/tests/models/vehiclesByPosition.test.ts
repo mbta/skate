@@ -1,6 +1,7 @@
 import { LadderDirection } from "../../src/models/ladderDirection"
 import { groupByPosition } from "../../src/models/vehiclesByPosition"
 import { BlockWaiver, Ghost, Vehicle } from "../../src/realtime.d"
+import ghostFactory from "../factories/ghost"
 
 // tslint:disable: object-literal-sort-keys
 
@@ -118,7 +119,7 @@ describe("groupByPosition", () => {
       blockWaivers: [] as BlockWaiver[],
     } as Vehicle
 
-    const expectedGhost: Ghost = {
+    const expectedGhost: Ghost = ghostFactory.build({
       id: "ghost-incoming-vehicleId",
       directionId: vehicle.scheduledLocation!.directionId,
       routeId: "1",
@@ -129,9 +130,12 @@ describe("groupByPosition", () => {
       viaVariant: "scheduled via variant",
       layoverDepartureTime: null,
       scheduledTimepointStatus: vehicle.scheduledLocation!.timepointStatus,
+      scheduledLogonTime: null,
       routeStatus: "on_route",
       blockWaivers: [],
-    }
+      currentPieceFirstRoute: null,
+      currentPieceStartPlace: null,
+    })
 
     expect(groupByPosition([vehicle], "1", LadderDirection.ZeroToOne)).toEqual({
       ...emptyByPosition,
@@ -168,7 +172,7 @@ describe("groupByPosition", () => {
       blockWaivers: [] as BlockWaiver[],
     } as Vehicle
 
-    const expectedGhost: Ghost = {
+    const expectedGhost: Ghost = ghostFactory.build({
       id: "ghost-incoming-vehicleId",
       directionId: vehicle.scheduledLocation!.directionId,
       routeId: "1",
@@ -179,9 +183,12 @@ describe("groupByPosition", () => {
       viaVariant: "scheduled via variant",
       layoverDepartureTime: null,
       scheduledTimepointStatus: vehicle.scheduledLocation!.timepointStatus,
+      scheduledLogonTime: null,
       routeStatus: "on_route",
       blockWaivers: [],
-    }
+      currentPieceFirstRoute: null,
+      currentPieceStartPlace: null,
+    })
 
     expect(groupByPosition([vehicle], "1", LadderDirection.ZeroToOne)).toEqual({
       ...emptyByPosition,

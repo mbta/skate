@@ -52,4 +52,61 @@ defmodule Skate.Factory do
       route_status: :on_route
     }
   end
+
+  def minischedule_trip_factory do
+    %Schedule.Minischedule.Trip{
+      id: "trip",
+      block_id: "block"
+    }
+  end
+
+  def minischedule_piece_factory do
+    %Schedule.Minischedule.Piece{
+      schedule_id: "schedule",
+      run_id: "run",
+      start_time: 50,
+      start_place: "garage",
+      trips: [
+        build(:minischedule_trip),
+        build(:minischedule_trip, %{id: "trip2", route_id: "route"})
+      ],
+      end_time: 200,
+      end_place: "station"
+    }
+  end
+
+  def minischedule_block_factory do
+    %Schedule.Minischedule.Block{
+      schedule_id: "schedule",
+      id: "block",
+      pieces: [
+        build(:minischedule_piece)
+      ]
+    }
+  end
+
+  def gtfs_stoptime_factory do
+    %Schedule.Gtfs.StopTime{
+      stop_id: "stop1",
+      time: 150,
+      timepoint_id: "t1"
+    }
+  end
+
+  def schedule_trip_factory do
+    %Schedule.Trip{
+      id: "trip",
+      block_id: "block",
+      route_id: "route",
+      service_id: "service",
+      headsign: "headsign",
+      direction_id: 0,
+      run_id: "run",
+      stop_times: [
+        build(:gtfs_stoptime)
+      ],
+      start_time: 100,
+      end_time: 200
+    }
+  end
 end

@@ -8,6 +8,7 @@ import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../src/realtime"
 import { Route } from "../../src/schedule"
 import * as dateTime from "../../src/util/dateTime"
+import ghostFactory from "../factories/ghost"
 
 jest
   .spyOn(dateTime, "now")
@@ -80,7 +81,7 @@ const vehicle: Vehicle = {
   blockWaivers: [],
   crowding: null,
 }
-const ghost: Ghost = {
+const ghost: Ghost = ghostFactory.build({
   id: "ghost-trip",
   directionId: 0,
   routeId: "39",
@@ -94,9 +95,10 @@ const ghost: Ghost = {
     timepointId: "t0",
     fractionUntilTimepoint: 0.0,
   },
+  scheduledLogonTime: null,
   routeStatus: "on_route",
   blockWaivers: [],
-}
+})
 
 describe("PropertiesPanel", () => {
   test("renders a vehicle", () => {

@@ -10,17 +10,24 @@ import {
   swingIcon,
 } from "../helpers/icon"
 import { reload } from "../models/browser"
-import { toggleNotificationDrawer, toggleSwingsView } from "../state"
+import {
+  toggleNotificationDrawer,
+  toggleSwingsView,
+  toggleLateView,
+} from "../state"
 import NotificationBellIcon from "./notificationBellIcon"
+import featureIsEnabled from "../laboratoryFeatures"
 
 interface Props {
   pickerContainerIsVisible: boolean
   swingsViewIsVisible: boolean
+  lateViewIsVisible: boolean
 }
 
 const TabBar = ({
   pickerContainerIsVisible,
   swingsViewIsVisible,
+  lateViewIsVisible,
 }: Props): ReactElement<HTMLDivElement> => {
   const location = useLocation()
   const [, dispatch] = useContext(StateDispatchContext)
@@ -110,6 +117,19 @@ const TabBar = ({
             {swingIcon("m-tab-bar__icon")}
           </a>
         </li>
+        {featureIsEnabled("late_view") ? (
+          <li>
+            <a
+              className={
+                "m-tab-bar__late_view m-tab-bar__link" +
+                (lateViewIsVisible ? " m-tab-bar__link--active" : "")
+              }
+              onClick={() => dispatch(toggleLateView())}
+            >
+              {swingIcon("m-tab-bar__icon")}
+            </a>
+          </li>
+        ) : null}
       </ul>
 
       <div className="m-tab-bar__bottom-buttons">

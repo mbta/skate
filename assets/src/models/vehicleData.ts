@@ -79,8 +79,11 @@ export interface GhostData {
   via_variant: string | null
   layover_departure_time: number | null
   scheduled_timepoint_status: VehicleTimepointStatusData
+  scheduled_logon: number | null
   route_status: RouteStatus
   block_waivers: BlockWaiverData[]
+  current_piece_start_place: string | null
+  current_piece_first_route: string | null
 }
 
 export type VehicleOrGhostData = VehicleData | GhostData
@@ -186,8 +189,11 @@ export const ghostFromData = (ghostData: GhostData): Ghost => ({
   scheduledTimepointStatus: vehicleTimepointStatusFromData(
     ghostData.scheduled_timepoint_status
   ),
+  scheduledLogonTime: ghostData.scheduled_logon,
   routeStatus: ghostData.route_status,
   blockWaivers: blockWaiversFromData(ghostData.block_waivers),
+  currentPieceFirstRoute: ghostData.current_piece_first_route,
+  currentPieceStartPlace: ghostData.current_piece_start_place,
 })
 
 const isGhost = (vehicleOrGhostData: VehicleOrGhostData): boolean =>

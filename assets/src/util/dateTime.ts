@@ -67,3 +67,6 @@ export const formattedHoursMinutes = (
   const ampm = hours25 >= 12 && hours25 < 24 ? "PM" : "AM"
   return `${hours12}:${zeroPaddedMinutes} ${ampm}`
 }
+
+export const secondsToMinutes = (seconds: number): number =>
+  Math.abs(Math.floor(seconds / 60))

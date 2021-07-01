@@ -9,6 +9,7 @@ import { initialState, State } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
 
 import vehicleFactory from "../factories/vehicle"
+import ghostFactory from "../factories/ghost"
 
 jest
   .spyOn(dateTime, "now")
@@ -18,7 +19,7 @@ jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
 const vehicle: Vehicle = vehicleFactory.build()
 
-const ghost: Ghost = {
+const ghost: Ghost = ghostFactory.build({
   id: "ghost-trip",
   directionId: 0,
   routeId: "39",
@@ -32,9 +33,10 @@ const ghost: Ghost = {
     timepointId: "t0",
     fractionUntilTimepoint: 0.0,
   },
+  scheduledLogonTime: null,
   routeStatus: "on_route",
   blockWaivers: [],
-}
+})
 jest.mock("../../src/hooks/useSearchResults", () => ({
   __esModule: true,
   default: jest.fn(),

@@ -6,6 +6,8 @@ import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle, VehicleTimepointStatus } from "../../src/realtime.d"
 import { RouteId } from "../../src/schedule.d"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
+import ghostFactory from "../factories/ghost"
+import ghostDataFactory from "../factories/ghost_data"
 
 // tslint:disable: react-hooks-nesting
 // tslint:disable: object-literal-sort-keys
@@ -344,21 +346,8 @@ describe("useVehicles", () => {
   })
 
   test("returns ghost vehicles", async () => {
-    const ghost: Ghost = {
+    const ghost: Ghost = ghostFactory.build({
       id: "ghost-trip",
-      directionId: 0,
-      routeId: "1",
-      tripId: "trip",
-      headsign: "headsign",
-      blockId: "block",
-      runId: null,
-      viaVariant: null,
-      layoverDepartureTime: null,
-      scheduledTimepointStatus: {
-        timepointId: "t0",
-        fractionUntilTimepoint: 0.0,
-      },
-      routeStatus: "on_route",
       blockWaivers: [
         {
           startTime: new Date("2018-08-15T13:38:21.000Z"),
@@ -368,23 +357,10 @@ describe("useVehicles", () => {
           remark: null,
         },
       ],
-    }
+    })
 
-    const ghostData = {
+    const ghostData = ghostDataFactory.build({
       id: "ghost-trip",
-      direction_id: 0,
-      route_id: "1",
-      trip_id: "trip",
-      headsign: "headsign",
-      block_id: "block",
-      run_id: null,
-      via_variant: null,
-      layover_departure_time: null,
-      scheduled_timepoint_status: {
-        timepoint_id: "t0",
-        fraction_until_timepoint: 0.0,
-      },
-      route_status: "on_route",
       block_waivers: [
         {
           start_time: 1_534_340_301,
@@ -394,7 +370,7 @@ describe("useVehicles", () => {
           remark: null,
         },
       ],
-    }
+    })
 
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel()

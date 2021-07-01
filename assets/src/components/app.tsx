@@ -9,13 +9,14 @@ import SearchPage from "./searchPage"
 import SettingsPage from "./settingsPage"
 import ShuttleMapPage from "./shuttleMapPage"
 import TabBar from "./tabBar"
+import LateView from "./lateView"
 
 const AppRoutes = () => {
   useAppcues()
 
-  const [{ pickerContainerIsVisible, swingsViewIsVisible }] = useContext(
-    StateDispatchContext
-  )
+  const [
+    { pickerContainerIsVisible, lateViewIsVisible, swingsViewIsVisible },
+  ] = useContext(StateDispatchContext)
 
   return (
     <div className="m-app">
@@ -26,7 +27,9 @@ const AppRoutes = () => {
         <TabBar
           pickerContainerIsVisible={pickerContainerIsVisible}
           swingsViewIsVisible={swingsViewIsVisible}
+          lateViewIsVisible={lateViewIsVisible}
         />
+        {lateViewIsVisible ? <LateView /> : null}
         <BrowserRoute exact={true} path="/" component={LadderPage} />
         <BrowserRoute
           exact={true}

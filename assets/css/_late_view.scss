@@ -1,0 +1,6 @@
+.m-late-view {
+  @include modal-content;
+  position: absolute;
+  left: $tab-bar-width;
+  z-index: 1001;
+}

@@ -10,8 +10,9 @@ import {
   makeMockOneShotChannel,
   makeMockSocket,
 } from "../testHelpers/socketHelpers"
+import ghostDataFactory from "../factories/ghost_data"
 
-const ghostData: GhostData = {
+const ghostData: GhostData = ghostDataFactory.build({
   id: "ghost-5678",
   direction_id: 0,
   route_id: "39",
@@ -25,9 +26,12 @@ const ghostData: GhostData = {
     timepoint_id: "shunt",
     fraction_until_timepoint: 0.3342478185618462,
   },
+  scheduled_logon: null,
   route_status: "on_route",
   block_waivers: [],
-}
+  current_piece_first_route: null,
+  current_piece_start_place: null,
+})
 
 const vehicleData: VehicleData = {
   id: "y1234",
@@ -228,8 +232,11 @@ describe("useVehicleForNotification", () => {
         fractionUntilTimepoint: 0.3342478185618462,
         timepointId: "shunt",
       },
+      scheduledLogonTime: null,
       tripId: "12345678",
       viaVariant: "3",
+      currentPieceFirstRoute: null,
+      currentPieceStartPlace: null,
     })
     expect(window.FS!.event).toHaveBeenCalledWith(
       "Notification linked to ghost"
