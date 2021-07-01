@@ -293,6 +293,7 @@ defmodule Schedule.Data do
     trips_by_id = Trip.merge_trips(gtfs_trips, hastus_trips, stop_times_by_id)
 
     %__MODULE__{
+      # These can stay the same
       routes: bus_routes,
       route_patterns: route_patterns,
       timepoints_by_route:
@@ -304,11 +305,17 @@ defmodule Schedule.Data do
       timepoint_names_by_id: timepoint_names_for_ids(timepoints_by_id),
       shapes: shapes_by_route_id(gtfs_files["shapes.txt"], gtfs_trips),
       stops: all_stops_by_id(gtfs_files["stops.txt"]),
+      # Should this also get nonrev trips?
       trips: trips_by_id,
+      # Merge this w/ minischedule blocks
       blocks: Block.blocks_from_trips(Map.values(trips_by_id)),
+      # Should stay the same
       calendar: Calendar.from_files(gtfs_files["calendar.txt"], gtfs_files["calendar_dates.txt"]),
+      # Merge in block data. Will still need separate runs
+      # Should change it so these can be looked up by run/block ID + service ID (from GTFS), rather than just trip ID
       minischedule_runs: minischedule_runs,
       minischedule_blocks: minischedule_blocks,
+      # Can stay the same
       swings: Swing.from_minischedule_blocks(minischedule_blocks, trips_by_id)
     }
   end
