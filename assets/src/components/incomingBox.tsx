@@ -35,9 +35,8 @@ const IncomingBoxVehicle = ({
     VehicleDirection.Down
       ? Orientation.Down
       : Orientation.Up
-  const alertIconStyle: AlertIconStyle | undefined = blockWaiverAlertStyle(
-    vehicleOrGhost
-  )
+  const alertIconStyle: AlertIconStyle | undefined =
+    blockWaiverAlertStyle(vehicleOrGhost)
   const crowding = isVehicle(vehicleOrGhost) ? vehicleOrGhost.crowding : null
   const occupancyStatus: OccupancyStatus = crowding
     ? crowding.occupancyStatus

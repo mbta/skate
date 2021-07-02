@@ -136,32 +136,32 @@ describe("areOverlapping", () => {
   })
 
   test("returns true if the vehicles overlap in the y-dimension", () => {
-    const a = ({
+    const a = {
       vehicleDirection: VehicleDirection.Down,
       y: 10,
-    } as unknown) as LadderVehicle
-    const b = ({
+    } as unknown as LadderVehicle
+    const b = {
       vehicleDirection: VehicleDirection.Down,
       y: 20,
-    } as unknown) as LadderVehicle
-    const c = ({
+    } as unknown as LadderVehicle
+    const c = {
       vehicleDirection: VehicleDirection.Down,
       y: 100,
-    } as unknown) as LadderVehicle
+    } as unknown as LadderVehicle
 
     expect(areOverlapping(a, b)).toBeTruthy()
     expect(areOverlapping(a, c)).toBeFalsy()
   })
 
   test("it doesn't matter what order the vehicles are passed in", () => {
-    const a = ({
+    const a = {
       vehicleDirection: VehicleDirection.Down,
       y: 10,
-    } as unknown) as LadderVehicle
-    const b = ({
+    } as unknown as LadderVehicle
+    const b = {
       vehicleDirection: VehicleDirection.Down,
       y: 20,
-    } as unknown) as LadderVehicle
+    } as unknown as LadderVehicle
 
     expect(areOverlapping(a, b)).toBeTruthy()
     expect(areOverlapping(b, a)).toBeTruthy()

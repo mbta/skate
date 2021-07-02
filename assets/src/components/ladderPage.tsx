@@ -33,9 +33,8 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
   const { selectedRouteIds, selectedVehicleOrGhost } = state
 
   const routes: Route[] | null = useContext(RoutesContext)
-  const timepointsByRouteId: TimepointsByRouteId = useTimepoints(
-    selectedRouteIds
-  )
+  const timepointsByRouteId: TimepointsByRouteId =
+    useTimepoints(selectedRouteIds)
 
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = useVehicles(

@@ -138,19 +138,18 @@ describe("useNotifications", () => {
   })
 })
 
-const wrapper = (socket: Socket | undefined, selectedRouteIds: RouteId[]) => ({
-  children,
-}: {
-  children: ReactElement<HTMLElement>
-}) => (
-  <SocketProvider
-    socketStatus={{ socket, connectionStatus: ConnectionStatus.Connected }}
-  >
-    <StateDispatchProvider
-      state={{ ...initialState, selectedRouteIds }}
-      dispatch={jest.fn()}
-    >
-      {children}
-    </StateDispatchProvider>
-  </SocketProvider>
-)
+const wrapper =
+  (socket: Socket | undefined, selectedRouteIds: RouteId[]) =>
+  ({ children }: { children: ReactElement<HTMLElement> }) =>
+    (
+      <SocketProvider
+        socketStatus={{ socket, connectionStatus: ConnectionStatus.Connected }}
+      >
+        <StateDispatchProvider
+          state={{ ...initialState, selectedRouteIds }}
+          dispatch={jest.fn()}
+        >
+          {children}
+        </StateDispatchProvider>
+      </SocketProvider>
+    )

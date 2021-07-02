@@ -62,12 +62,8 @@ const HeadwayDiagram = ({ vehicle }: { vehicle: Vehicle }) => {
     allVehiclesForRoute(vehiclesByRouteId, vehicle.routeId!),
     vehicle
   )
-  const {
-    headwaySecs,
-    headwaySpacing,
-    scheduledHeadwaySecs,
-    viaVariant,
-  } = vehicle
+  const { headwaySecs, headwaySpacing, scheduledHeadwaySecs, viaVariant } =
+    vehicle
 
   const headwaySpacingClass = headwaySpacingToString(
     headwaySpacing || HeadwaySpacing.Ok

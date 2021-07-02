@@ -128,9 +128,8 @@ const directionName = (
 ): string => (route ? route.directionNames[directionId] : "")
 
 const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
-  const [{ ladderDirections, userSettings }, dispatch] = useContext(
-    StateDispatchContext
-  )
+  const [{ ladderDirections, userSettings }, dispatch] =
+    useContext(StateDispatchContext)
   const epochNowInSeconds = useCurrentTimeSeconds()
   const route = useRoute(vehicle.routeId)
 

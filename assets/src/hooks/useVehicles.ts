@@ -98,10 +98,8 @@ const reducer = (state: State, action: Action): State => {
         },
       }
     case "REMOVE_ROUTE":
-      const {
-        [action.payload.routeId]: _channel,
-        ...channelsWithoutRouteId
-      } = state.channelsByRouteId
+      const { [action.payload.routeId]: _channel, ...channelsWithoutRouteId } =
+        state.channelsByRouteId
       const {
         [action.payload.routeId]: _vehiclesForRoute,
         ...vehiclesByRouteIdWithoutRouteId

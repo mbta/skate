@@ -18,9 +18,8 @@ import {
 import { NotificationContent } from "./notificationContent"
 
 export const Notifications = () => {
-  const { notifications, showLatestNotification, dispatch } = useContext(
-    NotificationsContext
-  )
+  const { notifications, showLatestNotification, dispatch } =
+    useContext(NotificationsContext)
   const currentTime = useCurrentTime()
 
   const [state, stateDispatch] = useContext(StateDispatchContext)

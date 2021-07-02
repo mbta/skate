@@ -113,9 +113,8 @@ const RouteLadder = ({
   vehiclesAndGhosts,
   selectedVehicleId,
 }: Props) => {
-  const [{ ladderDirections, ladderCrowdingToggles }, dispatch] = useContext(
-    StateDispatchContext
-  )
+  const [{ ladderDirections, ladderCrowdingToggles }, dispatch] =
+    useContext(StateDispatchContext)
   const ladderDirection = getLadderDirectionForRoute(ladderDirections, route.id)
   const reverseLadder = () => {
     dispatch(flipLadder(route.id))

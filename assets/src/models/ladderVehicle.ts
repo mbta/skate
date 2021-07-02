@@ -67,9 +67,8 @@ export const ladderVehiclesFromVehicles = (
   const vehiclesInLane: VehicleInLane[] = putIntoLanes(vehiclesOnLadder)
 
   const maxOccupiedLane: number = numOccupiedLanes(vehiclesInLane)
-  const ladderVehicleHorizontalOffset: number = horizontalOffsetForLanes(
-    maxOccupiedLane
-  )
+  const ladderVehicleHorizontalOffset: number =
+    horizontalOffsetForLanes(maxOccupiedLane)
   const xInLane = xInLaneWithOffset(ladderVehicleHorizontalOffset)
   const widthOfLanes =
     widthOfVehicleGroup + (maxOccupiedLane - 1) * ladderVehicleHorizontalOffset
@@ -212,15 +211,14 @@ const horizontalOffsetForLanes = (maxOccupiedLane: number): number => {
   return ((8 - cappedLanes) / 8) * widthOfVehicleGroup
 }
 
-const xInLaneWithOffset = (ladderVehicleHorizontalOffset: number) => (
-  { vehicleDirection, lane }: InLane,
-  baseX: number
-): number => {
-  const laneOffset = (lane || 0) * ladderVehicleHorizontalOffset
-  return vehicleDirection === VehicleDirection.Up
-    ? baseX + laneOffset
-    : baseX - laneOffset
-}
+const xInLaneWithOffset =
+  (ladderVehicleHorizontalOffset: number) =>
+  ({ vehicleDirection, lane }: InLane, baseX: number): number => {
+    const laneOffset = (lane || 0) * ladderVehicleHorizontalOffset
+    return vehicleDirection === VehicleDirection.Up
+      ? baseX + laneOffset
+      : baseX - laneOffset
+  }
 
 const addX = (
   vehicleInLane: VehicleInLane,

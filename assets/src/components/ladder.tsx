@@ -86,12 +86,13 @@ const Ladder = ({
     timepointStatusY,
     -MARGIN_LAYOVER_TOP
   )
-  const layoverBottomLadderVehicles: LadderVehicle[] = ladderVehiclesForLayovers(
-    vehiclesByPosition.layingOverBottom,
-    LayoverBoxPosition.Bottom,
-    timepointStatusY,
-    ladderHeight + MARGIN_LAYOVER_BOTTOM
-  )
+  const layoverBottomLadderVehicles: LadderVehicle[] =
+    ladderVehiclesForLayovers(
+      vehiclesByPosition.layingOverBottom,
+      LayoverBoxPosition.Bottom,
+      timepointStatusY,
+      ladderHeight + MARGIN_LAYOVER_BOTTOM
+    )
 
   const { ladderVehicles, widthOfLanes } = ladderVehiclesFromVehicles(
     vehiclesByPosition.onRoute,
@@ -304,28 +305,27 @@ const LadderTimepoint = React.memo(
 )
 
 /** timepoints should be ordered top to bottom */
-const timepointStatusYFromTimepoints = (
-  timepoints: Timepoint[],
-  timepointSpacingY: number
-) => (
-  timepointStatus: VehicleTimepointStatus | null,
-  direction: VehicleDirection
-): number => {
-  if (timepointStatus) {
-    const timepointIndex = timepoints.findIndex(
-      (timepoint) => timepoint.id === timepointStatus.timepointId
-    )
-    if (timepointIndex !== -1) {
-      const fractionDirection = direction === VehicleDirection.Up ? +1 : -1
-      return (
-        timepointSpacingY *
-        (timepointIndex +
-          timepointStatus.fractionUntilTimepoint * fractionDirection)
+const timepointStatusYFromTimepoints =
+  (timepoints: Timepoint[], timepointSpacingY: number) =>
+  (
+    timepointStatus: VehicleTimepointStatus | null,
+    direction: VehicleDirection
+  ): number => {
+    if (timepointStatus) {
+      const timepointIndex = timepoints.findIndex(
+        (timepoint) => timepoint.id === timepointStatus.timepointId
       )
+      if (timepointIndex !== -1) {
+        const fractionDirection = direction === VehicleDirection.Up ? +1 : -1
+        return (
+          timepointSpacingY *
+          (timepointIndex +
+            timepointStatus.fractionUntilTimepoint * fractionDirection)
+        )
+      }
     }
+    return 0
   }
-  return 0
-}
 
 const orientationMatchingVehicle = (
   isLayingOver: boolean,

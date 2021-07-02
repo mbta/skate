@@ -9,21 +9,20 @@ export enum LayoverBoxPosition {
   Bottom,
 }
 
-export const byLayoverDeparture = (isBottomLayoverBox: boolean) => (
-  a: VehicleOrGhost,
-  b: VehicleOrGhost
-): number => {
-  const [lt, gt] = isBottomLayoverBox ? [1, -1] : [-1, 1]
-  if (
-    !a.layoverDepartureTime ||
-    !b.layoverDepartureTime ||
-    a.layoverDepartureTime === b.layoverDepartureTime
-  ) {
-    return 0
-  }
+export const byLayoverDeparture =
+  (isBottomLayoverBox: boolean) =>
+  (a: VehicleOrGhost, b: VehicleOrGhost): number => {
+    const [lt, gt] = isBottomLayoverBox ? [1, -1] : [-1, 1]
+    if (
+      !a.layoverDepartureTime ||
+      !b.layoverDepartureTime ||
+      a.layoverDepartureTime === b.layoverDepartureTime
+    ) {
+      return 0
+    }
 
-  return a.layoverDepartureTime > b.layoverDepartureTime ? gt : lt
-}
+    return a.layoverDepartureTime > b.layoverDepartureTime ? gt : lt
+  }
 
 export const ladderVehiclesForLayovers = (
   vehiclesAndGhosts: VehicleOrGhost[],
