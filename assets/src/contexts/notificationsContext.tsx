@@ -76,10 +76,8 @@ export const NotificationsProvider = ({
 
   useInterval(() => dispatch(expireNotifications(now)), 10000)
 
-  const [
-    notificationWithOpenSubmenuId,
-    setNotificationWithOpenSubmenuId,
-  ] = useState<NotificationId | null>(null)
+  const [notificationWithOpenSubmenuId, setNotificationWithOpenSubmenuId] =
+    useState<NotificationId | null>(null)
 
   return (
     <NotificationsContext.Provider

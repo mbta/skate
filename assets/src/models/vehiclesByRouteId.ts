@@ -30,9 +30,8 @@ export const nextAndPreviousVehicle = (
   vehicles: Vehicle[],
   currentVehicle: Vehicle
 ): NextAndPreviousVehicle => {
-  const vehiclesGoingTheSameDirection = byDirection(vehicles)[
-    currentVehicle.directionId
-  ]
+  const vehiclesGoingTheSameDirection =
+    byDirection(vehicles)[currentVehicle.directionId]
 
   const nextVehicle = vehiclesGoingTheSameDirection.find(
     (vehicle) =>

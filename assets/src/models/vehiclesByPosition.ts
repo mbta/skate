@@ -78,18 +78,20 @@ export const groupByPosition = (
   }
 }
 
-const runNotSharedByAnotherVehicle = (vehiclesAndGhosts: VehicleOrGhost[]) => (
-  vehicle: Vehicle
-): boolean => {
-  if (vehicle.runId === null) {
-    return false
+const runNotSharedByAnotherVehicle =
+  (vehiclesAndGhosts: VehicleOrGhost[]) =>
+  (vehicle: Vehicle): boolean => {
+    if (vehicle.runId === null) {
+      return false
+    }
+
+    const otherVehicles = vehiclesAndGhosts.filter(
+      ({ id }) => id !== vehicle.id
+    )
+    const otherRunIds = runIds(otherVehicles)
+
+    return !otherRunIds.includes(vehicle.runId)
   }
-
-  const otherVehicles = vehiclesAndGhosts.filter(({ id }) => id !== vehicle.id)
-  const otherRunIds = runIds(otherVehicles)
-
-  return !otherRunIds.includes(vehicle.runId)
-}
 
 const runIds = (vehiclesAndGhosts: VehicleOrGhost[]): RunId[] =>
   vehiclesAndGhosts

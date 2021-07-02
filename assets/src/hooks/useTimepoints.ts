@@ -3,9 +3,8 @@ import { fetchTimepointsForRoute } from "../api"
 import { RouteId, Timepoint, TimepointsByRouteId } from "../schedule.d"
 
 const useTimepoints = (selectedRouteIds: RouteId[]): TimepointsByRouteId => {
-  const [timepointsByRouteId, setTimepointsByRouteId] = useState<
-    TimepointsByRouteId
-  >({})
+  const [timepointsByRouteId, setTimepointsByRouteId] =
+    useState<TimepointsByRouteId>({})
 
   const setLoadingTimepointsForRoute = (routeId: RouteId): void => {
     setTimepointsByRouteId((previousTimepointsByRouteId) => ({

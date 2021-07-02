@@ -19,7 +19,8 @@ jest.mock("../../src/api", () => ({
 
 describe("useMinischeduleRun", () => {
   test("returns undefined while loading", () => {
-    const mockFetchMinischeduleRun: jest.Mock = Api.fetchMinischeduleRun as jest.Mock
+    const mockFetchMinischeduleRun: jest.Mock =
+      Api.fetchMinischeduleRun as jest.Mock
     const { result } = renderHook(() => {
       return useMinischeduleRun("trip")
     })
@@ -28,8 +29,9 @@ describe("useMinischeduleRun", () => {
   })
 
   test("returns a run", () => {
-    const run: Run = ("run" as any) as Run
-    const mockFetchMinischeduleRun: jest.Mock = Api.fetchMinischeduleRun as jest.Mock
+    const run: Run = "run" as any as Run
+    const mockFetchMinischeduleRun: jest.Mock =
+      Api.fetchMinischeduleRun as jest.Mock
     mockFetchMinischeduleRun.mockImplementationOnce(() => instantPromise(run))
     const { result } = renderHook(() => {
       return useMinischeduleRun("trip")
@@ -49,7 +51,8 @@ describe("useMinischeduleRun", () => {
 
 describe("useMinischeduleRuns", () => {
   test("returns undefined while loading", () => {
-    const mockFetchMinischeduleRun: jest.Mock = Api.fetchMinischeduleRun as jest.Mock
+    const mockFetchMinischeduleRun: jest.Mock =
+      Api.fetchMinischeduleRun as jest.Mock
     const { result } = renderHook(() => {
       return useMinischeduleRuns(["trip"])
     })
@@ -58,9 +61,10 @@ describe("useMinischeduleRuns", () => {
   })
 
   test("returns runs", async () => {
-    const run1: Run = ("run1" as any) as Run
-    const run2: Run = ("run2" as any) as Run
-    const mockFetchMinischeduleRun: jest.Mock = Api.fetchMinischeduleRun as jest.Mock
+    const run1: Run = "run1" as any as Run
+    const run2: Run = "run2" as any as Run
+    const mockFetchMinischeduleRun: jest.Mock =
+      Api.fetchMinischeduleRun as jest.Mock
     mockFetchMinischeduleRun
       .mockImplementationOnce(() => instantPromise(run1))
       .mockImplementationOnce(() => instantPromise(run2))
@@ -73,7 +77,8 @@ describe("useMinischeduleRuns", () => {
   })
 
   test("doesn't refetch on every render", () => {
-    const mockFetchMinischeduleRun: jest.Mock = Api.fetchMinischeduleRun as jest.Mock
+    const mockFetchMinischeduleRun: jest.Mock =
+      Api.fetchMinischeduleRun as jest.Mock
     const { rerender } = renderHook(() => {
       return useMinischeduleRuns(["trip"])
     })
@@ -82,7 +87,8 @@ describe("useMinischeduleRuns", () => {
   })
 
   test("does refetch when trip IDs changed", () => {
-    const mockFetchMinischeduleRun: jest.Mock = Api.fetchMinischeduleRun as jest.Mock
+    const mockFetchMinischeduleRun: jest.Mock =
+      Api.fetchMinischeduleRun as jest.Mock
     const { rerender } = renderHook(
       (tripIds: TripId[]) => {
         return useMinischeduleRuns(tripIds)
@@ -96,7 +102,8 @@ describe("useMinischeduleRuns", () => {
 
 describe("useMinischeduleBlock", () => {
   test("returns undefined while loading", () => {
-    const mockFetchMinischeduleBlock: jest.Mock = Api.fetchMinischeduleBlock as jest.Mock
+    const mockFetchMinischeduleBlock: jest.Mock =
+      Api.fetchMinischeduleBlock as jest.Mock
     const { result } = renderHook(() => {
       return useMinischeduleBlock("trip")
     })
@@ -105,8 +112,9 @@ describe("useMinischeduleBlock", () => {
   })
 
   test("returns a block", () => {
-    const block: Block = ("block" as any) as Block
-    const mockFetchMinischeduleBlock: jest.Mock = Api.fetchMinischeduleBlock as jest.Mock
+    const block: Block = "block" as any as Block
+    const mockFetchMinischeduleBlock: jest.Mock =
+      Api.fetchMinischeduleBlock as jest.Mock
     mockFetchMinischeduleBlock.mockImplementationOnce(() =>
       instantPromise(block)
     )

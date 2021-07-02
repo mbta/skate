@@ -182,7 +182,7 @@ export const putRouteSettings = (routeSettings: RouteSettings): void => {
 
 const getCsrfToken = (): string => appData()?.csrfToken || ""
 
-export const nullableParser = <Data, T>(
-  parser: (data: Data) => T
-): ((data: Data | null) => T | null) => (data: Data | null) =>
-  data === null ? null : parser(data)
+export const nullableParser =
+  <Data, T>(parser: (data: Data) => T): ((data: Data | null) => T | null) =>
+  (data: Data | null) =>
+    data === null ? null : parser(data)

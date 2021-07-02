@@ -25,9 +25,8 @@ import { NotificationContent } from "./notificationContent"
 
 const NotificationDrawer = () => {
   const elementRef = useRef<HTMLDivElement | null>(null)
-  const { rememberScrollPosition, scrollPosition } = useContext(
-    NotificationsContext
-  )
+  const { rememberScrollPosition, scrollPosition } =
+    useContext(NotificationsContext)
 
   const [isInitialRender, setIsInitialRender] = useState<boolean>(true)
 
@@ -130,9 +129,8 @@ const EmptyMessage = () => (
 )
 
 const EllipsisSubmenu = ({ notification }: { notification: Notification }) => {
-  const { dispatch, setNotificationWithOpenSubmenuId } = useContext(
-    NotificationsContext
-  )
+  const { dispatch, setNotificationWithOpenSubmenuId } =
+    useContext(NotificationsContext)
   const submenuRef = useRef<HTMLDivElement | null>(null)
   const otherReadState = otherNotificationReadState(notification.state)
 
@@ -183,10 +181,8 @@ const NotificationCard = ({
   currentTime: Date
   openVPPForCurrentVehicle: (notification: Notification) => void
 }) => {
-  const {
-    notificationWithOpenSubmenuId,
-    setNotificationWithOpenSubmenuId,
-  } = useContext(NotificationsContext)
+  const { notificationWithOpenSubmenuId, setNotificationWithOpenSubmenuId } =
+    useContext(NotificationsContext)
   const showSubmenu = notification.id === notificationWithOpenSubmenuId
   const toggleShowSubmenu = () => {
     if (showSubmenu) {

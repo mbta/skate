@@ -50,9 +50,8 @@ const ToggleMobileDisplayButton = ({
 }
 
 const SearchPage = (): ReactElement<HTMLDivElement> => {
-  const [{ searchPageState, selectedVehicleOrGhost }] = useContext(
-    StateDispatchContext
-  )
+  const [{ searchPageState, selectedVehicleOrGhost }] =
+    useContext(StateDispatchContext)
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const vehicles: VehicleOrGhost[] | null = useSearchResults(
     socket,

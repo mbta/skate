@@ -41,9 +41,8 @@ const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
   const shuttles: Vehicle[] | null = useShuttleVehicles(socket)
   const shapes: Shape[] = useRouteShapes(selectedShuttleRouteIds)
 
-  const selectedSubwayRouteIds: RouteId[] = selectedShuttleRouteIds.filter(
-    isASubwayRoute
-  )
+  const selectedSubwayRouteIds: RouteId[] =
+    selectedShuttleRouteIds.filter(isASubwayRoute)
   const trainVehiclesByRouteId = useTrainVehicles(
     socket,
     selectedSubwayRouteIds

@@ -50,5 +50,7 @@ export const subwayRouteShapes = (routeId: RouteId): Shape[] => {
   return route ? route.shapes : []
 }
 
-const byId = (routeId: RouteId) => (subwayRoute: SubwayRoute): boolean =>
-  subwayRoute.id === routeId
+const byId =
+  (routeId: RouteId) =>
+  (subwayRoute: SubwayRoute): boolean =>
+    subwayRoute.id === routeId

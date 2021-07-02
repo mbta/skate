@@ -14,9 +14,8 @@ import LateView from "./lateView"
 const AppRoutes = () => {
   useAppcues()
 
-  const [
-    { pickerContainerIsVisible, lateViewIsVisible, swingsViewIsVisible },
-  ] = useContext(StateDispatchContext)
+  const [{ pickerContainerIsVisible, lateViewIsVisible, swingsViewIsVisible }] =
+    useContext(StateDispatchContext)
 
   return (
     <div className="m-app">

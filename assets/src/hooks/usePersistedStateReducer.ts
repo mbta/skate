@@ -67,9 +67,11 @@ const getUserSettings = (loadedState: object | undefined): UserSettings => {
   let userSettings: UserSettings
   if (loadedState !== undefined && loadedState.hasOwnProperty("settings")) {
     // migrating settings from localStorage to database
-    const localStorageSettings: UserSettings = (loadedState as {
-      settings: UserSettings
-    }).settings
+    const localStorageSettings: UserSettings = (
+      loadedState as {
+        settings: UserSettings
+      }
+    ).settings
     putLadderVehicleLabel(localStorageSettings.ladderVehicleLabel)
     putShuttleVehicleLabel(localStorageSettings.shuttleVehicleLabel)
     putVehicleAdherenceColors(localStorageSettings.vehicleAdherenceColors)
@@ -105,11 +107,8 @@ const getRouteSettings = (loadedState: object | undefined): RouteSettings => {
   } else {
     const backendSettingsString: string | undefined = appData()?.routeSettings
     if (backendSettingsString !== undefined) {
-      const {
-        selected_route_ids,
-        ladder_directions,
-        ladder_crowding_toggles,
-      } = JSON.parse(backendSettingsString)
+      const { selected_route_ids, ladder_directions, ladder_crowding_toggles } =
+        JSON.parse(backendSettingsString)
       routeSettings = {
         selectedRouteIds: selected_route_ids,
         ladderDirections: ladder_directions,
