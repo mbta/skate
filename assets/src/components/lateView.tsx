@@ -47,42 +47,46 @@ const LateView = (): ReactElement<HTMLElement> => {
 
   return (
     <div className="m-late-view">
-      <div className="m-late-view__missing_logons" />
-      <h2>Missing logons</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Scheduled Logon</th>
-            <th>Route</th>
-            <th>Run</th>
-            <th>Location</th>
-          </tr>
-        </thead>
-        <tbody>
-          {missingLogons.map((missingLogon) => (
-            <MissingLogonRow ghost={missingLogon} key={missingLogon.id} />
-          ))}
-        </tbody>
-      </table>
-      <div className="m-late-view__late_buses">
-        <h2>Late buses</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Adherence</th>
-              <th>Block waivers?</th>
-              <th>Route</th>
-              <th>Vehicle</th>
-              <th>Run</th>
-              <th>Driver</th>
-            </tr>
-          </thead>
-          <tbody>
-            {lateBuses.map((lateBus) => (
-              <LateBusRow vehicle={lateBus} key={lateBus.id} />
-            ))}
-          </tbody>
-        </table>
+      <div className="m-late-view__title">Late View</div>
+      <div className="m-late-view__panels">
+        <div className="m-late-view__missing_logons">
+          <h2 className="m-late-view__panel_header">Missing logons</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Scheduled Logon</th>
+                <th>Route</th>
+                <th>Run</th>
+                <th>Location</th>
+              </tr>
+            </thead>
+            <tbody>
+              {missingLogons.map((missingLogon) => (
+                <MissingLogonRow ghost={missingLogon} key={missingLogon.id} />
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="m-late-view__late_buses">
+          <h2>Late buses</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Adherence</th>
+                <th>Block waivers?</th>
+                <th>Route</th>
+                <th>Vehicle</th>
+                <th>Run</th>
+                <th>Driver</th>
+              </tr>
+            </thead>
+            <tbody>
+              {lateBuses.map((lateBus) => (
+                <LateBusRow vehicle={lateBus} key={lateBus.id} />
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   )
