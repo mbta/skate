@@ -8,10 +8,10 @@ exports[`Shuttle Map Page renders 1`] = `
     className="m-picker-container m-picker-container--wide visible"
   >
     <div
-      className="m-picker-container__tab"
+      className="c-drawer-tab"
     >
       <button
-        className="m-picker-container__tab-button"
+        className="c-drawer-tab__tab-button"
         onClick={[Function]}
       >
         <span
@@ -221,10 +221,10 @@ exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
     className="m-picker-container m-picker-container--wide visible"
   >
     <div
-      className="m-picker-container__tab"
+      className="c-drawer-tab"
     >
       <button
-        className="m-picker-container__tab-button"
+        className="c-drawer-tab__tab-button"
         onClick={[Function]}
       >
         <span
@@ -656,10 +656,10 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
     className="m-picker-container m-picker-container--wide visible"
   >
     <div
-      className="m-picker-container__tab"
+      className="c-drawer-tab"
     >
       <button
-        className="m-picker-container__tab-button"
+        className="c-drawer-tab__tab-button"
         onClick={[Function]}
       >
         <span
@@ -869,10 +869,10 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
     className="m-picker-container m-picker-container--wide visible"
   >
     <div
-      className="m-picker-container__tab"
+      className="c-drawer-tab"
     >
       <button
-        className="m-picker-container__tab-button"
+        className="c-drawer-tab__tab-button"
         onClick={[Function]}
       >
         <span
@@ -1082,10 +1082,10 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
     className="m-picker-container m-picker-container--wide visible"
   >
     <div
-      className="m-picker-container__tab"
+      className="c-drawer-tab"
     >
       <button
-        className="m-picker-container__tab-button"
+        className="c-drawer-tab__tab-button"
         onClick={[Function]}
       >
         <span
@@ -1126,10 +1126,10 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
     className="m-picker-container m-picker-container--wide visible"
   >
     <div
-      className="m-picker-container__tab"
+      className="c-drawer-tab"
     >
       <button
-        className="m-picker-container__tab-button"
+        className="c-drawer-tab__tab-button"
         onClick={[Function]}
       >
         <span

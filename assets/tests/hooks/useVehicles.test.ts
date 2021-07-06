@@ -348,6 +348,7 @@ describe("useVehicles", () => {
   test("returns ghost vehicles", async () => {
     const ghost: Ghost = ghostFactory.build({
       id: "ghost-trip",
+      tripId: "a_trip",
       blockWaivers: [
         {
           startTime: new Date("2018-08-15T13:38:21.000Z"),
@@ -361,6 +362,7 @@ describe("useVehicles", () => {
 
     const ghostData = ghostDataFactory.build({
       id: "ghost-trip",
+      trip_id: "a_trip",
       block_waivers: [
         {
           start_time: 1_534_340_301,

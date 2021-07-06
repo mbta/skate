@@ -1,5 +1,9 @@
 // @ts-ignore
+import bangIconSvg from "../../static/images/icon-bang.svg"
+// @ts-ignore
 import blueLineIconSvg from "../../static/images/icon-blue-line.svg"
+// @ts-ignore
+import busBangIconSvg from "../../static/images/icon-bus-bang.svg"
 // @ts-ignore
 import busFrontIconSvg from "../../static/images/icon-bus-front.svg"
 // @ts-ignore
@@ -36,6 +40,12 @@ import greenLineEIconSvg from "../../static/images/icon-green-line-e.svg"
 import greenLineIconSvg from "../../static/images/icon-green-line.svg"
 // @ts-ignore
 import ladderIconSvg from "../../static/images/icon-ladder.svg"
+// @ts-ignore
+import lateIconSvg from "../../static/images/icon-late.svg"
+// @ts-ignore
+import lateViewGhostIconSvg from "../../static/images/icon-late-view-ghost.svg"
+// @ts-ignore
+import lateViewGhostWithWaiverIconSvg from "../../static/images/icon-late-view-ghost-with-waiver.svg"
 // @ts-ignore
 import loadingIconSvg from "../../static/images/icon-loading.svg"
 // @ts-ignore
@@ -74,10 +84,18 @@ import triangleUpLargeIconSvg from "../../static/images/icon-triangle-up-large.s
 import upDownIconSvg from "../../static/images/icon-up-down-arrow.svg"
 // @ts-ignore
 import upRightIconSvg from "../../static/images/icon-up-right-arrow.svg"
+// @ts-ignore
+import userXIconSvg from "../../static/images/icon-user-x.svg"
 import renderSvg from "./renderSvg"
+
+export const bangIcon = (className: string = ""): JSX.Element =>
+  renderSvg(className, bangIconSvg)
 
 export const blueLineIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, blueLineIconSvg)
+
+export const busBangIcon = (className: string = ""): JSX.Element =>
+  renderSvg(className, busBangIconSvg)
 
 export const busFrontIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, busFrontIconSvg)
@@ -132,6 +150,16 @@ export const greenLineIcon = (className: string = ""): JSX.Element =>
 
 export const ladderIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, ladderIconSvg)
+
+export const lateIcon = (className: string = ""): JSX.Element =>
+  renderSvg(className, lateIconSvg)
+
+export const lateViewGhostIcon = (className: string = ""): JSX.Element =>
+  renderSvg(className, lateViewGhostIconSvg)
+
+export const lateViewGhostWithWaiverIcon = (
+  className: string = ""
+): JSX.Element => renderSvg(className, lateViewGhostWithWaiverIconSvg)
 
 export const loadingIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, loadingIconSvg)
@@ -189,3 +217,6 @@ export const upDownIcon = (className: string = ""): JSX.Element =>
 
 export const upRightIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, upRightIconSvg)
+
+export const userXIcon = (className: string = ""): JSX.Element =>
+  renderSvg(className, userXIconSvg)

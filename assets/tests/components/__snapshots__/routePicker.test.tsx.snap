@@ -5,10 +5,10 @@ exports[`RoutePicker renders a list of routes 1`] = `
   className="m-picker-container m-picker-container--narrow visible"
 >
   <div
-    className="m-picker-container__tab"
+    className="c-drawer-tab"
   >
     <button
-      className="m-picker-container__tab-button"
+      className="c-drawer-tab__tab-button"
       onClick={[Function]}
     >
       <span
@@ -144,10 +144,10 @@ exports[`RoutePicker renders a loading/empty state 1`] = `
   className="m-picker-container m-picker-container--narrow visible"
 >
   <div
-    className="m-picker-container__tab"
+    className="c-drawer-tab"
   >
     <button
-      className="m-picker-container__tab-button"
+      className="c-drawer-tab__tab-button"
       onClick={[Function]}
     >
       <span

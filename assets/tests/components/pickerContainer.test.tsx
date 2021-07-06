@@ -17,7 +17,10 @@ describe("PickerContainer", () => {
     expect(wrapper.find(".m-picker-container").hasClass("visible")).toBeTruthy()
     expect(wrapper.find(".m-picker-container").hasClass("hidden")).toBeFalsy()
 
-    wrapper.find(".m-picker-container__tab-button").first().simulate("click")
+    wrapper
+      .find(".m-picker-container .c-drawer-tab__tab-button")
+      .first()
+      .simulate("click")
 
     expect(mockDispatch).toHaveBeenCalledWith(togglePickerContainer())
   })

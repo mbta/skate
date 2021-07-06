@@ -26,8 +26,14 @@ describe("useVehiclesForRoute", () => {
   })
 
   test("subscribes to a channel and returns results", () => {
-    const vehicleData: VehicleOrGhostData = ghostDataFactory.build({ id: "id" })
-    const vehicle: VehicleOrGhost = ghostFactory.build({ id: "id" })
+    const vehicleData: VehicleOrGhostData = ghostDataFactory.build({
+      id: "id",
+      trip_id: "a_trip",
+    })
+    const vehicle: VehicleOrGhost = ghostFactory.build({
+      id: "id",
+      tripId: "a_trip",
+    })
 
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok", { data: [vehicleData] })
