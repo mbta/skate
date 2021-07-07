@@ -1,8 +1,18 @@
+$late-view-background-color: $color-bg-light;
+$late-view-width: 60rem;
+
 .m-late-view {
   @include modal-content;
+  background-color: $late-view-background-color;
   position: absolute;
   left: $tab-bar-width;
+  width: $late-view-width;
   z-index: 1001;
+}
+
+.m-late-view .c-drawer-tab {
+  background-color: $late-view-background-color;
+  left: $late-view-width;
 }
 
 .m-late-view__panels {

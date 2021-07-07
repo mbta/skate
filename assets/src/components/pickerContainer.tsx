@@ -1,6 +1,6 @@
 import React, { ReactElement, useContext } from "react"
+import DrawerTab from "../components/drawerTab"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { collapseIcon, expandIcon } from "../helpers/icon"
 import { togglePickerContainer } from "../state"
 
 interface Props {
@@ -31,7 +31,7 @@ const PickerContainer = ({
         state.pickerContainerIsVisible ? "visible" : "hidden"
       }`}
     >
-      <Tab
+      <DrawerTab
         isVisible={state.pickerContainerIsVisible}
         toggleVisibility={toggleVisibility}
       />
@@ -39,22 +39,5 @@ const PickerContainer = ({
     </div>
   )
 }
-
-const Tab = ({
-  isVisible,
-  toggleVisibility,
-}: {
-  isVisible: boolean
-  toggleVisibility: () => void
-}) => (
-  <div className="m-picker-container__tab">
-    <button
-      className="m-picker-container__tab-button"
-      onClick={toggleVisibility}
-    >
-      {isVisible ? collapseIcon() : expandIcon()}
-    </button>
-  </div>
-)
 
 export default PickerContainer

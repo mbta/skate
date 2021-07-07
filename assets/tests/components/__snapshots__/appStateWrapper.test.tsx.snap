@@ -195,10 +195,10 @@ exports[`renders 1`] = `
         className="m-picker-container m-picker-container--narrow visible"
       >
         <div
-          className="m-picker-container__tab"
+          className="c-drawer-tab"
         >
           <button
-            className="m-picker-container__tab-button"
+            className="c-drawer-tab__tab-button"
             onClick={[Function]}
           >
             <span

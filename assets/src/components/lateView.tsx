@@ -1,4 +1,5 @@
 import React, { ReactElement, useContext } from "react"
+import DrawerTab from "../components/drawerTab"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
@@ -6,6 +7,7 @@ import useVehicles from "../hooks/useVehicles"
 import { flatten } from "../helpers/array"
 import { isVehicle, isGhost } from "../models/vehicle"
 import { Vehicle, Ghost } from "../realtime"
+import { toggleLateView } from "../state"
 import {
   secondsToMinutes,
   formattedTime,
@@ -14,7 +16,7 @@ import {
 import { runIdToLabel } from "../helpers/vehicleLabel"
 
 const LateView = (): ReactElement<HTMLElement> => {
-  const [{ selectedRouteIds }] = useContext(StateDispatchContext)
+  const [{ selectedRouteIds }, dispatch] = useContext(StateDispatchContext)
   const { socket } = useContext(SocketContext)
 
   const vehiclesByRouteId = useVehicles(socket, selectedRouteIds)
@@ -88,6 +90,10 @@ const LateView = (): ReactElement<HTMLElement> => {
           </table>
         </div>
       </div>
+      <DrawerTab
+        isVisible={true}
+        toggleVisibility={() => dispatch(toggleLateView())}
+      />
     </div>
   )
 }

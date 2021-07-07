@@ -1,9 +1,14 @@
+import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
+
+import App from "../../src/components/app"
 import LateView from "../../src/components/lateView"
+import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useVehicles from "../../src/hooks/useVehicles"
 import { VehicleOrGhost } from "../../src/realtime"
 import { ByRouteId } from "../../src/schedule"
+import { initialState, toggleLateView } from "../../src/state"
 import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 
@@ -44,5 +49,27 @@ describe("LateView", () => {
 
     const tree = renderer.create(<LateView />)
     expect(tree).toMatchSnapshot()
+  })
+
+  test("clicking tab closes late view", () => {
+    ;(useVehicles as jest.Mock).mockImplementationOnce(() => {
+      return {}
+    })
+
+    const mockDispatch = jest.fn()
+    const state = { ...initialState, lateViewIsVisible: true }
+    const wrapper = mount(
+      <StateDispatchProvider state={state} dispatch={mockDispatch}>
+        <App />
+      </StateDispatchProvider>
+    )
+    expect(wrapper.find(".m-late-view"))
+
+    wrapper
+      .find(".m-late-view .c-drawer-tab__tab-button")
+      .first()
+      .simulate("click")
+
+    expect(mockDispatch).toHaveBeenCalledWith(toggleLateView())
   })
 })
