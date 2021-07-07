@@ -6,6 +6,7 @@ $late-view-width: 60rem;
   background-color: $late-view-background-color;
   position: absolute;
   left: $tab-bar-width;
+  top: 0;
   width: $late-view-width;
   z-index: 1001;
 }

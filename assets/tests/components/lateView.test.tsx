@@ -52,7 +52,7 @@ describe("LateView", () => {
   })
 
   test("clicking tab closes late view", () => {
-    ;(useVehicles as jest.Mock).mockImplementationOnce(() => {
+    ;(useVehicles as jest.Mock).mockImplementation(() => {
       return {}
     })
 

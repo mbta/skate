@@ -14,8 +14,9 @@ import LateView from "./lateView"
 const AppRoutes = () => {
   useAppcues()
 
-  const [{ pickerContainerIsVisible, lateViewIsVisible, swingsViewIsVisible }] =
-    useContext(StateDispatchContext)
+  const [
+    { pickerContainerIsVisible, lateViewIsVisible, swingsViewIsVisible },
+  ] = useContext(StateDispatchContext)
 
   return (
     <div className="m-app">
@@ -28,7 +29,6 @@ const AppRoutes = () => {
           swingsViewIsVisible={swingsViewIsVisible}
           lateViewIsVisible={lateViewIsVisible}
         />
-        {lateViewIsVisible ? <LateView /> : null}
         <BrowserRoute exact={true} path="/" component={LadderPage} />
         <BrowserRoute
           exact={true}
@@ -37,6 +37,7 @@ const AppRoutes = () => {
         />
         <BrowserRoute exact={true} path="/settings" component={SettingsPage} />
         <BrowserRoute exact={true} path="/search" component={SearchPage} />
+        {lateViewIsVisible ? <LateView /> : null}
         <Modal />
       </div>
     </div>
