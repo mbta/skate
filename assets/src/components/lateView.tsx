@@ -51,7 +51,7 @@ const LateView = (): ReactElement<HTMLElement> => {
     <div className="m-late-view">
       <div className="m-late-view__title">Late View</div>
       <div className="m-late-view__panels">
-        <div className="m-late-view__missing_logons">
+        <div className="m-late-view__missing-logons">
           <h2 className="m-late-view__panel_header">Missing logons</h2>
           <table>
             <thead>
@@ -69,7 +69,7 @@ const LateView = (): ReactElement<HTMLElement> => {
             </tbody>
           </table>
         </div>
-        <div className="m-late-view__late_buses">
+        <div className="m-late-view__late-buses">
           <h2>Late buses</h2>
           <table>
             <thead>

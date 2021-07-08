@@ -1,9 +1,11 @@
 $late-view-background-color: $color-bg-light;
+$late-view-horizontal-padding: 4rem;
 $late-view-width: 60rem;
 
 .m-late-view {
   @include modal-content;
   background-color: $late-view-background-color;
+  padding: 2rem $late-view-horizontal-padding;
   position: absolute;
   left: $tab-bar-width;
   top: 0;
@@ -13,9 +15,18 @@ $late-view-width: 60rem;
 
 .m-late-view .c-drawer-tab {
   background-color: $late-view-background-color;
-  left: $late-view-width;
+  left: $late-view-width + 2 * $late-view-horizontal-padding;
 }
 
 .m-late-view__panels {
   display: flex;
+}
+
+.m-late-view__missing-logons {
+  margin-right: $late-view-horizontal-padding;
+  width: 20rem;
+}
+
+.m-late-view__late-buses {
+  width: 28rem;
 }

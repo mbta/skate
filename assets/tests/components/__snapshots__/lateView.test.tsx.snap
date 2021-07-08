@@ -13,7 +13,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
     className="m-late-view__panels"
   >
     <div
-      className="m-late-view__missing_logons"
+      className="m-late-view__missing-logons"
     >
       <h2
         className="m-late-view__panel_header"
@@ -56,7 +56,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
       </table>
     </div>
     <div
-      className="m-late-view__late_buses"
+      className="m-late-view__late-buses"
     >
       <h2>
         Late buses
