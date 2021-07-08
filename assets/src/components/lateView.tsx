@@ -1,5 +1,6 @@
 import React, { Dispatch, ReactElement, useContext } from "react"
 import DrawerTab from "../components/drawerTab"
+import RoutesContext from "../contexts/routesContext"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { upRightIcon } from "../helpers/icon"
@@ -15,6 +16,7 @@ import {
   dateFromEpochSeconds,
 } from "../util/dateTime"
 import { runIdToLabel } from "../helpers/vehicleLabel"
+import { routeNameOrId } from "../util/route"
 
 const LateView = (): ReactElement<HTMLElement> => {
   const [{ selectedRouteIds }, dispatch] = useContext(StateDispatchContext)
@@ -52,7 +54,7 @@ const LateView = (): ReactElement<HTMLElement> => {
     <div className="m-late-view">
       <div className="m-late-view__title">Late View</div>
       <div className="m-late-view__panels">
-        <div className="m-late-view__missing-logons">
+        <div className="m-late-view__panel m-late-view__missing-logons">
           <h2 className="m-late-view__panel_header">Missing logons</h2>
           <table>
             <thead>
@@ -70,17 +72,16 @@ const LateView = (): ReactElement<HTMLElement> => {
             </tbody>
           </table>
         </div>
-        <div className="m-late-view__late-buses">
+        <div className="m-late-view__panel m-late-view__late-buses">
           <h2>Late buses</h2>
           <table>
             <thead>
               <tr>
-                <th>Adherence</th>
-                <th>Block waivers?</th>
-                <th>Route</th>
-                <th>Vehicle</th>
-                <th>Run</th>
-                <th>Driver</th>
+                <th className="m-late-view__adherence-header">Adherence</th>
+                <th className="m-late-view__route-header">Route</th>
+                <th className="m-late-view__vehicle-header">Vehicle</th>
+                <th className="m-late-view__run-number-header">Run</th>
+                <th className="m-late-view__operator-header">Driver</th>
               </tr>
             </thead>
             <tbody>
@@ -110,21 +111,28 @@ const LateBusRow = ({
   vehicle: Vehicle
   dispatch: Dispatch<Action>
 }): ReactElement<HTMLElement> => {
+  const routes = useContext(RoutesContext)
+
   return (
     <tr>
-      <th>{secondsToMinutes(vehicle.scheduleAdherenceSecs) * -1}</th>
-      <th>{vehicle.blockWaivers.length > 0 ? "Y" : "N"}</th>
-      <th>{vehicle.routeId}</th>
-      <th>{vehicle.label}</th>
-      <th className="m-late-view__run-number-cell">
+      <td className="m-late-view__adherence-cell">
+        {secondsToMinutes(vehicle.scheduleAdherenceSecs) * -1}
+      </td>
+      <td>
+        <span className="m-late-view__route-pill">
+          {routeNameOrId(vehicle.routeId, routes)}
+        </span>
+      </td>
+      <td>{vehicle.label}</td>
+      <td className="m-late-view__run-number-cell">
         <a onClick={() => dispatch(selectVehicle(vehicle))}>
           {upRightIcon("m-late-view__run-icon")}
           {runIdToLabel(vehicle.runId)}
         </a>
-      </th>
-      <th>
+      </td>
+      <td>
         {vehicle.operatorLastName} &ndash; {vehicle.operatorId}
-      </th>
+      </td>
     </tr>
   )
 }
@@ -136,14 +144,14 @@ const MissingLogonRow = ({
 }): ReactElement<HTMLElement> => {
   return (
     <tr>
-      <th>
+      <td>
         {ghost.scheduledLogonTime
           ? formattedTime(dateFromEpochSeconds(ghost.scheduledLogonTime))
           : ""}
-      </th>
-      <th>{ghost.currentPieceFirstRoute}</th>
-      <th>{runIdToLabel(ghost.runId)}</th>
-      <th>{ghost.currentPieceStartPlace}</th>
+      </td>
+      <td>{ghost.currentPieceFirstRoute}</td>
+      <td>{runIdToLabel(ghost.runId)}</td>
+      <td>{ghost.currentPieceStartPlace}</td>
     </tr>
   )
 }

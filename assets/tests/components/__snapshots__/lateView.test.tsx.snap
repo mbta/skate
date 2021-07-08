@@ -13,7 +13,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
     className="m-late-view__panels"
   >
     <div
-      className="m-late-view__missing-logons"
+      className="m-late-view__panel m-late-view__missing-logons"
     >
       <h2
         className="m-late-view__panel_header"
@@ -39,24 +39,24 @@ exports[`LateView renders missing logons and late buses 1`] = `
         </thead>
         <tbody>
           <tr>
-            <th>
+            <td>
               4:15 AM
-            </th>
-            <th>
+            </td>
+            <td>
               route
-            </th>
-            <th>
+            </td>
+            <td>
               N/A
-            </th>
-            <th>
+            </td>
+            <td>
               station
-            </th>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
     <div
-      className="m-late-view__late-buses"
+      className="m-late-view__panel m-late-view__late-buses"
     >
       <h2>
         Late buses
@@ -64,48 +64,72 @@ exports[`LateView renders missing logons and late buses 1`] = `
       <table>
         <thead>
           <tr>
-            <th>
+            <th
+              className="m-late-view__adherence-header"
+            >
               Adherence
             </th>
-            <th>
-              Block waivers?
-            </th>
-            <th>
+            <th
+              className="m-late-view__route-header"
+            >
               Route
             </th>
-            <th>
+            <th
+              className="m-late-view__vehicle-header"
+            >
               Vehicle
             </th>
-            <th>
+            <th
+              className="m-late-view__run-number-header"
+            >
               Run
             </th>
-            <th>
+            <th
+              className="m-late-view__operator-header"
+            >
               Driver
             </th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <th>
+            <td
+              className="m-late-view__adherence-cell"
+            >
               -15
-            </th>
-            <th>
-              N
-            </th>
-            <th>
-              route
-            </th>
-            <th>
+            </td>
+            <td>
+              <span
+                className="m-late-view__route-pill"
+              >
+                route
+              </span>
+            </td>
+            <td>
               v2-label
-            </th>
-            <th>
-              2
-            </th>
-            <th>
+            </td>
+            <td
+              className="m-late-view__run-number-cell"
+            >
+              <a
+                onClick={[Function]}
+              >
+                <span
+                  className="m-late-view__run-icon"
+                  dangerouslySetInnerHTML={
+                    Object {
+                      "__html": "SVG",
+                    }
+                  }
+                />
+                2
+              </a>
+            </td>
+            <td>
               SMITH
                – 
               op2
-            </th>
+            </td>
           </tr>
         </tbody>
       </table>
