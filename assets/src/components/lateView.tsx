@@ -1,13 +1,14 @@
-import React, { ReactElement, useContext } from "react"
+import React, { Dispatch, ReactElement, useContext } from "react"
 import DrawerTab from "../components/drawerTab"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import { upRightIcon } from "../helpers/icon"
 import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
 import useVehicles from "../hooks/useVehicles"
 import { flatten } from "../helpers/array"
 import { isVehicle, isGhost } from "../models/vehicle"
 import { Vehicle, Ghost } from "../realtime"
-import { toggleLateView } from "../state"
+import { Action, selectVehicle, toggleLateView } from "../state"
 import {
   secondsToMinutes,
   formattedTime,
@@ -84,7 +85,11 @@ const LateView = (): ReactElement<HTMLElement> => {
             </thead>
             <tbody>
               {lateBuses.map((lateBus) => (
-                <LateBusRow vehicle={lateBus} key={lateBus.id} />
+                <LateBusRow
+                  vehicle={lateBus}
+                  key={lateBus.id}
+                  dispatch={dispatch}
+                />
               ))}
             </tbody>
           </table>
@@ -100,8 +105,10 @@ const LateView = (): ReactElement<HTMLElement> => {
 
 const LateBusRow = ({
   vehicle,
+  dispatch,
 }: {
   vehicle: Vehicle
+  dispatch: Dispatch<Action>
 }): ReactElement<HTMLElement> => {
   return (
     <tr>
@@ -109,7 +116,12 @@ const LateBusRow = ({
       <th>{vehicle.blockWaivers.length > 0 ? "Y" : "N"}</th>
       <th>{vehicle.routeId}</th>
       <th>{vehicle.label}</th>
-      <th>{runIdToLabel(vehicle.runId)}</th>
+      <th className="m-late-view__run-number-cell">
+        <a onClick={() => dispatch(selectVehicle(vehicle))}>
+          {upRightIcon("m-late-view__run-icon")}
+          {runIdToLabel(vehicle.runId)}
+        </a>
+      </th>
       <th>
         {vehicle.operatorLastName} &ndash; {vehicle.operatorId}
       </th>

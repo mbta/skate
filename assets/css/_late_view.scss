@@ -30,3 +30,17 @@ $late-view-width: 60rem;
 .m-late-view__late-buses {
   width: 28rem;
 }
+
+.m-late-view__run-icon {
+  svg {
+    height: 0.5rem;
+    stroke: $color-primary-dark;
+    width: 0.5rem;
+  }
+}
+
+.m-late-view__run-number-cell a {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
