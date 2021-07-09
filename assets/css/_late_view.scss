@@ -32,6 +32,7 @@ $late-view-width: 60rem;
 
 .m-late-view__panel {
   background-color: $white;
+  height: fit-content;
 
   h2 {
     color: $color-primary;
