@@ -44,7 +44,7 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^16.9.8",
     "@types/react-leaflet": "^2.8.2",
-    "@types/react-router-dom": "^5.1.7",
+    "@types/react-router-dom": "^5.1.8",
     "@types/react-test-renderer": "^16.9.3",
     "copy-webpack-plugin": "^6.4.1",
     "css-loader": "^5.2.6",
