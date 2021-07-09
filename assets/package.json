@@ -38,7 +38,7 @@
     "@testing-library/react-hooks": "^7.0.1",
     "@types/enzyme": "^3.10.8",
     "@types/enzyme-adapter-react-16": "^1.0.6",
-    "@types/jest": "^26.0.20",
+    "@types/jest": "^26.0.24",
     "@types/leaflet": "^1.7.4",
     "@types/phoenix": "^1.5.1",
     "@types/react": "^17.0.0",
