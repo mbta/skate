@@ -23,16 +23,24 @@ exports[`LateView renders missing logons and late buses 1`] = `
       <table>
         <thead>
           <tr>
-            <th>
+            <th
+              className="m-late-view__scheduled-logon-header"
+            >
               Scheduled Logon
             </th>
-            <th>
+            <th
+              className="m-late-view__route-header"
+            >
               Route
             </th>
-            <th>
+            <th
+              className="m-late-view__run-number-header"
+            >
               Run
             </th>
-            <th>
+            <th
+              className="m-late-view__location-header"
+            >
               Location
             </th>
           </tr>
@@ -43,7 +51,11 @@ exports[`LateView renders missing logons and late buses 1`] = `
               4:15 AM
             </td>
             <td>
-              route
+              <span
+                className="m-late-view__route-pill"
+              >
+                route
+              </span>
             </td>
             <td>
               N/A

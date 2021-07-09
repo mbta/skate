@@ -59,10 +59,12 @@ const LateView = (): ReactElement<HTMLElement> => {
           <table>
             <thead>
               <tr>
-                <th>Scheduled Logon</th>
-                <th>Route</th>
-                <th>Run</th>
-                <th>Location</th>
+                <th className="m-late-view__scheduled-logon-header">
+                  Scheduled Logon
+                </th>
+                <th className="m-late-view__route-header">Route</th>
+                <th className="m-late-view__run-number-header">Run</th>
+                <th className="m-late-view__location-header">Location</th>
               </tr>
             </thead>
             <tbody>
@@ -142,6 +144,8 @@ const MissingLogonRow = ({
 }: {
   ghost: Ghost
 }): ReactElement<HTMLElement> => {
+  const routes = useContext(RoutesContext)
+
   return (
     <tr>
       <td>
@@ -149,7 +153,11 @@ const MissingLogonRow = ({
           ? formattedTime(dateFromEpochSeconds(ghost.scheduledLogonTime))
           : ""}
       </td>
-      <td>{ghost.currentPieceFirstRoute}</td>
+      <td>
+        <span className="m-late-view__route-pill">
+          {routeNameOrId(ghost.currentPieceFirstRoute, routes)}
+        </span>
+      </td>
       <td>{runIdToLabel(ghost.runId)}</td>
       <td>{ghost.currentPieceStartPlace}</td>
     </tr>
