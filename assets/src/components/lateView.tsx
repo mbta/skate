@@ -46,7 +46,11 @@ const LateView = (): ReactElement<HTMLElement> => {
 
   const lateBuses = vehiclesOrGhosts
     .filter(isVehicle)
-    .filter((vehicle) => vehicle.routeStatus === "on_route")
+    .filter(
+      (vehicle) =>
+        vehicle.routeStatus === "on_route" ||
+        vehicle.routeStatus === "laying_over"
+    )
     .filter((vehicle) => vehicle.scheduleAdherenceSecs >= lateBusThreshold)
     .sort((a, b) => b.scheduleAdherenceSecs - a.scheduleAdherenceSecs)
 

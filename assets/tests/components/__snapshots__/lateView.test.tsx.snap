@@ -143,6 +143,45 @@ exports[`LateView renders missing logons and late buses 1`] = `
               op2
             </td>
           </tr>
+          <tr>
+            <td
+              className="m-late-view__adherence-cell"
+            >
+              -15
+            </td>
+            <td>
+              <span
+                className="m-late-view__route-pill"
+              >
+                route
+              </span>
+            </td>
+            <td>
+              v3-label
+            </td>
+            <td
+              className="m-late-view__run-number-cell"
+            >
+              <a
+                onClick={[Function]}
+              >
+                <span
+                  className="m-late-view__run-icon"
+                  dangerouslySetInnerHTML={
+                    Object {
+                      "__html": "SVG",
+                    }
+                  }
+                />
+                3
+              </a>
+            </td>
+            <td>
+              SMITH
+               – 
+              op3
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>

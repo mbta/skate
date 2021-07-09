@@ -31,6 +31,11 @@ describe("LateView", () => {
             routeId: "route",
             scheduleAdherenceSecs: 901,
           }),
+          vehicleFactory.build({
+            routeId: "route",
+            scheduleAdherenceSecs: 901,
+            routeStatus: "laying_over",
+          }),
           ghostFactory.build({
             routeId: "route",
             scheduledLogonTime: 15299,
