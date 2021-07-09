@@ -55,7 +55,9 @@
   .m-tab-bar__late_view & {
     stroke: $color-secondary-light;
 
-    circle { fill: $color-primary; }
+    circle {
+      fill: $color-primary;
+    }
 
     .bang {
       fill: $color-secondary-light;

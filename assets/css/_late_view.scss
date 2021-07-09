@@ -68,7 +68,8 @@ $late-view-width: 60rem;
       padding-top: 1rem;
     }
 
-    th:first-child, td:first-child {
+    th:first-child,
+    td:first-child {
       padding-left: $late-view-panel-left-padding;
     }
   }
@@ -144,4 +145,3 @@ $late-view-width: 60rem;
   position: relative;
   left: -0.4rem;
 }
-
