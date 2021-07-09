@@ -19,6 +19,13 @@ $late-view-width: 60rem;
   left: $late-view-width + 2 * $late-view-horizontal-padding;
 }
 
+.m-late-view__title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 2.5rem;
+  padding-left: $late-view-panel-left-padding;
+}
+
 .m-late-view__panels {
   display: flex;
 }
