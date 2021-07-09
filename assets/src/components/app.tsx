@@ -28,7 +28,6 @@ const AppRoutes = () => {
           swingsViewIsVisible={swingsViewIsVisible}
           lateViewIsVisible={lateViewIsVisible}
         />
-        {lateViewIsVisible ? <LateView /> : null}
         <BrowserRoute exact={true} path="/" component={LadderPage} />
         <BrowserRoute
           exact={true}
@@ -37,6 +36,7 @@ const AppRoutes = () => {
         />
         <BrowserRoute exact={true} path="/settings" component={SettingsPage} />
         <BrowserRoute exact={true} path="/search" component={SearchPage} />
+        {lateViewIsVisible ? <LateView /> : null}
         <Modal />
       </div>
     </div>

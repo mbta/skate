@@ -1,6 +1,147 @@
+$late-view-background-color: $color-bg-light;
+$late-view-horizontal-padding: 4rem;
+$late-view-panel-left-padding: 1.5rem;
+$late-view-width: 60rem;
+
 .m-late-view {
   @include modal-content;
+  background-color: $late-view-background-color;
+  padding: 2rem $late-view-horizontal-padding;
   position: absolute;
   left: $tab-bar-width;
+  top: 0;
+  width: $late-view-width;
   z-index: 1001;
+}
+
+.m-late-view .c-drawer-tab {
+  background-color: $late-view-background-color;
+  left: $late-view-width + 2 * $late-view-horizontal-padding;
+}
+
+.m-late-view__title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 2.5rem;
+  padding-left: $late-view-panel-left-padding;
+}
+
+.m-late-view__panels {
+  display: flex;
+}
+
+.m-late-view__panel {
+  background-color: $white;
+  height: fit-content;
+
+  h2 {
+    color: $color-primary;
+    font-size: 1.5rem;
+    padding-left: $late-view-panel-left-padding;
+  }
+
+  table {
+    border-collapse: collapse;
+    font-size: 0.75rem;
+
+    thead {
+      border-bottom: solid $color-primary-dark 1px;
+      color: $color-component-dark;
+      font-weight: bold;
+      text-align: left;
+    }
+
+    tbody {
+      tr {
+        border-bottom: solid $color-secondary-light 1px;
+      }
+    }
+
+    th {
+      height: 3rem;
+      padding-top: 1.5rem;
+      vertical-align: top;
+    }
+
+    td {
+      padding-bottom: 1rem;
+      padding-top: 1rem;
+    }
+
+    th:first-child,
+    td:first-child {
+      padding-left: $late-view-panel-left-padding;
+    }
+  }
+}
+
+.m-late-view__missing-logons {
+  margin-right: $late-view-horizontal-padding;
+  width: 20rem;
+}
+
+.m-late-view__late-buses {
+  width: 28rem;
+}
+
+.m-late-view__run-icon {
+  padding-right: 0.25rem;
+
+  svg {
+    height: 0.5rem;
+    stroke: $color-primary-dark;
+    width: 0.5rem;
+  }
+}
+
+.m-late-view__adherence-header {
+  width: 5rem;
+}
+
+.m-late-view__route-header {
+  width: 5rem;
+}
+
+.m-late-view__vehicle-header {
+  width: 5rem;
+}
+
+.m-late-view__run-number-header {
+  width: 5rem;
+}
+
+.m-late-view__scheduled-logon-header {
+  width: 5rem;
+}
+
+.m-late-view__location-header {
+  width: 10rem;
+}
+
+.m-late-view__operator-header {
+  width: 14rem;
+}
+
+.m-late-view__run-number-cell {
+  text-decoration: underline;
+
+  a {
+    cursor: pointer;
+  }
+}
+
+.m-late-view__route-pill {
+  margin-left: 0.5rem;
+  background: $color-primary-dark;
+  border-radius: 0.25rem;
+  font-family: $font-family-route-pill;
+  width: 1.625rem;
+  height: 0.9375rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: $white;
+  position: relative;
+  left: -0.4rem;
 }

@@ -38,6 +38,7 @@
 }
 
 .m-tab-bar__icon {
+  cursor: pointer;
   display: block;
   fill: $color-secondary-light;
   margin: 0 auto;
@@ -53,6 +54,15 @@
 
   .m-tab-bar__late_view & {
     stroke: $color-secondary-light;
+
+    circle {
+      fill: $color-primary;
+    }
+
+    .bang {
+      fill: $color-secondary-light;
+      stroke: none;
+    }
   }
 
   .m-tab-bar__link--active.m-tab-bar__swings & {
