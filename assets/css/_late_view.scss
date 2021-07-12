@@ -130,6 +130,10 @@ $late-view-width: 60rem;
   }
 }
 
+.m-late-view__very-late-bus-row {
+  color: $color-component-red;
+}
+
 .m-late-view__route-pill {
   margin-left: 0.5rem;
   background: $color-primary-dark;

@@ -26,7 +26,7 @@ const LateView = (): ReactElement<HTMLElement> => {
 
   const vehiclesOrGhosts = flatten(Object.values(vehiclesByRouteId))
 
-  const lateBusThreshold = 60 * 15
+  const lateBusThreshold = 60 * 10
   const missingLogonThreshold = 60 * 45
 
   const currentTime = useCurrentTimeSeconds()
@@ -118,9 +118,16 @@ const LateBusRow = ({
   dispatch: Dispatch<Action>
 }): ReactElement<HTMLElement> => {
   const routes = useContext(RoutesContext)
+  const reallyLateBusThreshold = 60 * 15
 
   return (
-    <tr>
+    <tr
+      className={
+        vehicle.scheduleAdherenceSecs >= reallyLateBusThreshold
+          ? "m-late-view__very-late-bus-row"
+          : ""
+      }
+    >
       <td className="m-late-view__adherence-cell">
         {secondsToMinutes(vehicle.scheduleAdherenceSecs) * -1}
       </td>
