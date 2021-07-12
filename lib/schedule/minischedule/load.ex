@@ -10,9 +10,9 @@ defmodule Schedule.Minischedule.Load do
   alias Schedule.Hastus.Trip
   alias Schedule.Minischedule.{AsDirected, Block, Break, Piece, Run}
 
-  @spec from_hastus([Activity.t()], [Trip.t()]) ::
+  @spec from_hastus([Activity.t()], [Trip.t()], Schedule.Trip.by_id()) ::
           %{runs: Run.by_id(), blocks: Block.by_id()}
-  def from_hastus(activities, trips) do
+  def from_hastus(activities, trips, trips_by_id) do
     activities_by_run = Enum.group_by(activities, &Activity.run_key/1)
     trips_by_run = Enum.group_by(trips, &Trip.run_key/1)
     activities_and_trips_by_run = Helpers.zip_maps([activities_by_run, trips_by_run])
@@ -23,7 +23,7 @@ defmodule Schedule.Minischedule.Load do
       Enum.map(
         activities_and_trips_by_run,
         fn {run_key, [activities, trips]} ->
-          run(run_key, activities, trips, trips_by_block)
+          run(run_key, activities, trips, trips_by_block, trips_by_id)
         end
       )
 
@@ -37,12 +37,37 @@ defmodule Schedule.Minischedule.Load do
     }
   end
 
-  @spec run(Run.key(), [Activity.t()] | nil, [Trip.t()] | nil, %{Block.key() => [Trip.t()]}) ::
+  @spec run(
+          Run.key(),
+          [Activity.t()] | nil,
+          [Trip.t()] | nil,
+          %{Block.key() => [Trip.t()]},
+          Schedule.Trip.by_id()
+        ) ::
           Run.t()
-  def run(run_key, activities, trips, all_trips_by_block) do
+  def run(run_key, activities, trips, all_trips_by_block, trips_by_id) do
     {schedule_id, run_id} = run_key
     activities = activities || []
     trips = trips || []
+
+    service_ids =
+      trips
+      |> Enum.map(& &1.trip_id)
+      |> (&Map.take(trips_by_id, &1)).()
+      |> Map.values()
+      |> Enum.reject(&is_nil(&1))
+      |> Enum.map(& &1.service_id)
+      |> Enum.filter(&(!is_nil(&1)))
+      |> Enum.uniq()
+
+    service_id =
+      case service_ids do
+        [service_id] ->
+          service_id
+
+        _ ->
+          nil
+      end
 
     activities =
       activities
@@ -54,6 +79,7 @@ defmodule Schedule.Minischedule.Load do
 
     %Run{
       schedule_id: schedule_id,
+      service_id: service_id,
       id: run_id,
       activities: activities
     }
