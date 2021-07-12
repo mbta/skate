@@ -41,7 +41,8 @@ defmodule SkateWeb.MinischeduleControllerTest do
                "data" => %{
                  "schedule_id" => "schedule",
                  "id" => "run",
-                 "activities" => []
+                 "activities" => [],
+                 "service_id" => nil
                }
              }
     end

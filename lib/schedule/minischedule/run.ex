@@ -1,4 +1,5 @@
 defmodule Schedule.Minischedule.Run do
+  alias Schedule.Gtfs.Service
   alias Schedule.Gtfs.Timepoint
   alias Schedule.Trip
   alias Schedule.Minischedule.Break
@@ -12,6 +13,7 @@ defmodule Schedule.Minischedule.Run do
 
   @type t :: %__MODULE__{
           schedule_id: Schedule.id(),
+          service_id: Service.id() | nil,
           id: Run.id(),
           activities: [Piece.t() | Break.t()]
         }
@@ -26,6 +28,7 @@ defmodule Schedule.Minischedule.Run do
 
   defstruct [
     :schedule_id,
+    :service_id,
     :id,
     :activities
   ]
