@@ -3,7 +3,7 @@ defmodule Realtime.GhostTest do
   import Test.Support.Helpers
   import Skate.Factory
 
-  alias Schedule.{Block, Trip}
+  alias Schedule.Trip
   alias Schedule.Gtfs.StopTime
   alias Realtime.{BlockWaiver, Ghost}
 
@@ -23,32 +23,33 @@ defmodule Realtime.GhostTest do
 
   describe "ghosts" do
     test "makes a ghost bus for a block that doesn't have a vehicle" do
-      trip = %Trip{
-        id: "trip",
-        block_id: "block",
-        route_id: "route",
-        service_id: "service",
-        headsign: "headsign",
-        direction_id: 0,
-        route_pattern_id: "route-X-0",
-        run_id: "run",
-        stop_times: [
-          %StopTime{
-            stop_id: "stop1",
-            time: 1,
-            timepoint_id: "t1"
-          },
-          %StopTime{
-            stop_id: "stop2",
-            time: 3,
-            timepoint_id: "t2"
-          }
-        ],
-        start_time: 1,
-        end_time: 3
-      }
+      reassign_env(:skate, :trips_by_id_fn, fn _ ->
+        %{
+          "trip" =>
+            build(:schedule_trip, %{
+              route_pattern_id: "route-X-0",
+              stop_times: [
+                build(:gtfs_stoptime, %{
+                  stop_id: "stop1",
+                  time: 1,
+                  timepoint_id: "t1"
+                }),
+                build(:gtfs_stoptime, %{
+                  stop_id: "stop2",
+                  time: 3,
+                  timepoint_id: "t2"
+                })
+              ],
+              start_time: 1,
+              end_time: 3
+            })
+        }
+      end)
 
-      block = Block.block_from_trips([trip])
+      run =
+        build(:minischedule_run, %{
+          activities: [build(:minischedule_piece, %{start_time: 1, end_time: 3})]
+        })
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
@@ -63,7 +64,10 @@ defmodule Realtime.GhostTest do
           block_id: "block",
           run_id: "run",
           via_variant: "X",
+          current_piece_first_route: "route",
+          current_piece_start_place: "garage",
           layover_departure_time: nil,
+          scheduled_logon: 1_546_318_801,
           scheduled_timepoint_status: %{
             timepoint_id: "t2",
             fraction_until_timepoint: 0.5
@@ -82,46 +86,48 @@ defmodule Realtime.GhostTest do
       ]
 
       assert Ghost.ghosts(
-               %{~D[2019-01-01] => [block]},
+               %{~D[2019-01-01] => [run]},
                [],
                time0 + 2
              ) == expected
     end
 
-    test "does not make a ghost for a block if there's a vehicle on that block" do
-      trip = %Trip{
-        id: "trip1",
-        block_id: "block",
-        route_id: "route",
-        service_id: "service",
-        headsign: "headsign",
-        direction_id: 0,
-        run_id: "run",
-        stop_times: [
-          %StopTime{
-            stop_id: "stop1",
-            time: 1,
-            timepoint_id: "t1"
-          },
-          %StopTime{
-            stop_id: "stop2",
-            time: 3,
-            timepoint_id: "t2"
-          }
-        ],
-        start_time: 1,
-        end_time: 3
-      }
+    test "does not make a ghost for a run if there's a vehicle on that run" do
+      reassign_env(:skate, :trips_by_id_fn, fn _ ->
+        %{
+          "trip" =>
+            build(:schedule_trip, %{
+              route_pattern_id: "route-X-0",
+              stop_times: [
+                build(:gtfs_stoptime, %{
+                  stop_id: "stop1",
+                  time: 1,
+                  timepoint_id: "t1"
+                }),
+                build(:gtfs_stoptime, %{
+                  stop_id: "stop2",
+                  time: 3,
+                  timepoint_id: "t2"
+                })
+              ],
+              start_time: 1,
+              end_time: 3
+            })
+        }
+      end)
 
-      block = Block.block_from_trips([trip])
+      run =
+        build(:minischedule_run, %{
+          activities: [build(:minischedule_piece, %{start_time: 1, end_time: 3})]
+        })
 
-      vehicles = [%{block_id: "block"}]
+      vehicles = [%{run_id: "run"}]
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
 
       assert Ghost.ghosts(
-               %{~D[2019-01-01] => [block]},
+               %{~D[2019-01-01] => [run]},
                vehicles,
                time0 + 2
              ) == []
@@ -129,27 +135,34 @@ defmodule Realtime.GhostTest do
   end
 
   describe "ghost_for_block" do
-    test "makes a ghost for a block that should be pulling out" do
-      trip = %Trip{
-        id: "trip",
-        block_id: "block",
-        route_id: "route",
-        service_id: "service",
-        headsign: "headsign",
-        direction_id: 0,
-        run_id: "run",
-        stop_times: [
-          %StopTime{
-            stop_id: "stop1",
-            time: 2,
-            timepoint_id: "t1"
-          }
-        ],
-        start_time: 2,
-        end_time: 2
-      }
+    test "makes a ghost for a run that should be pulling out" do
+      reassign_env(:skate, :trips_by_id_fn, fn _ ->
+        %{
+          "trip1" => build(:schedule_trip, %{route_id: nil, start_time: 1, end_time: 5}),
+          "trip2" =>
+            build(:schedule_trip, %{
+              stop_times: [
+                build(:gtfs_stoptime, %{
+                  stop_id: "stop1",
+                  time: 6,
+                  timepoint_id: "t1"
+                }),
+                build(:gtfs_stoptime, %{
+                  stop_id: "stop2",
+                  time: 10,
+                  timepoint_id: "t2"
+                })
+              ],
+              start_time: 6,
+              end_time: 10
+            })
+        }
+      end)
 
-      block = Block.block_from_trips([trip])
+      run =
+        build(:minischedule_run, %{
+          activities: [build(:minischedule_piece, %{start_time: 1, end_time: 10})]
+        })
 
       assert %Ghost{
                id: "ghost-trip",
@@ -160,72 +173,72 @@ defmodule Realtime.GhostTest do
                block_id: "block",
                run_id: "run",
                via_variant: nil,
-               layover_departure_time: 1_546_318_802,
+               layover_departure_time: 1_546_318_806,
                scheduled_timepoint_status: %{
                  timepoint_id: "t1",
                  fraction_until_timepoint: 0.0
                },
                route_status: :pulling_out,
                block_waivers: [
-                 %BlockWaiver{
+                 %{
                    remark: "E:1106"
                  }
                ]
              } =
-               Ghost.ghost_for_block(
-                 block,
+               Ghost.ghost_for_run(
+                 run,
                  ~D[2019-01-01],
                  1_546_318_801
                )
     end
 
-    test "makes a ghost for a block that should be laying over" do
-      trips = [
-        %Trip{
-          id: "trip1",
-          block_id: "block",
-          route_id: "route",
-          service_id: "service",
-          headsign: "headsign1",
-          direction_id: 0,
-          run_id: "run",
-          stop_times: [
-            %StopTime{
-              stop_id: "stop1",
-              time: 10,
-              timepoint_id: "t1"
-            }
-          ],
-          start_time: 10,
-          end_time: 10
-        },
-        %Trip{
-          id: "trip2",
-          block_id: "block",
-          route_id: "route",
-          service_id: "service",
-          headsign: "headsign2",
-          direction_id: 1,
-          run_id: "run",
-          stop_times: [
-            %StopTime{
-              stop_id: "stop2",
-              time: 20,
-              timepoint_id: "t2"
-            }
-          ],
-          start_time: 20,
-          end_time: 20
+    test "makes a ghost for a run that should be laying over" do
+      reassign_env(:skate, :trips_by_id_fn, fn _ ->
+        %{
+          "trip1" =>
+            build(:schedule_trip, %{
+              id: "trip1",
+              headsign: "headsign1",
+              direction_id: 0,
+              stop_times: [
+                build(:gtfs_stoptime, %{
+                  stop_id: "stop1",
+                  time: 10,
+                  timepoint_id: "t1"
+                })
+              ],
+              start_time: 10,
+              end_time: 10
+            }),
+          "trip2" =>
+            build(:schedule_trip, %{
+              id: "trip2",
+              headsign: "headsign2",
+              direction_id: 1,
+              run_id: "run",
+              stop_times: [
+                build(:gtfs_stoptime, %{
+                  stop_id: "stop2",
+                  time: 20,
+                  timepoint_id: "t2"
+                })
+              ],
+              start_time: 20,
+              end_time: 20
+            })
         }
-      ]
+      end)
 
-      block = Block.block_from_trips(trips)
+      run =
+        build(:minischedule_run, %{
+          activities: [build(:minischedule_piece, %{start_time: 10, end_time: 20})]
+        })
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
 
-      assert Ghost.ghost_for_block(
-               block,
+      assert Ghost.ghost_for_run(
+               run,
                ~D[2019-01-01],
                time0 + 15
              ) == %Ghost{
@@ -237,7 +250,10 @@ defmodule Realtime.GhostTest do
                block_id: "block",
                run_id: "run",
                via_variant: nil,
+               current_piece_first_route: "route",
+               current_piece_start_place: "garage",
                layover_departure_time: time0 + 20,
+               scheduled_logon: 1_546_318_810,
                scheduled_timepoint_status: %{
                  timepoint_id: "t2",
                  fraction_until_timepoint: 0.0
@@ -256,54 +272,49 @@ defmodule Realtime.GhostTest do
     end
 
     test "no ghost for a trip without timepoints" do
-      trip = %Trip{
-        id: "trip1",
-        block_id: "block",
-        route_id: "route",
-        service_id: "service",
-        headsign: "headsign",
-        direction_id: 0,
-        run_id: "run",
-        stop_times: [
-          %StopTime{
-            stop_id: "stop1",
-            time: 1,
-            timepoint_id: nil
-          },
-          %StopTime{
-            stop_id: "stop2",
-            time: 3,
-            timepoint_id: nil
-          }
-        ],
-        start_time: 1,
-        end_time: 3
-      }
+      reassign_env(:skate, :trips_by_id_fn, fn _ ->
+        %{
+          "trip1" =>
+            build(:schedule_trip, %{
+              stop_times: [
+                build(:gtfs_stoptime, %{
+                  stop_id: "stop1",
+                  time: 1,
+                  timepoint_id: nil
+                }),
+                build(:gtfs_stoptime, %{
+                  stop_id: "stop2",
+                  time: 3,
+                  timepoint_id: nil
+                })
+              ],
+              start_time: 1,
+              end_time: 3
+            })
+        }
+      end)
 
-      block = Block.block_from_trips([trip])
+      run =
+        build(:minischedule_run, %{
+          activities: [build(:minischedule_piece, %{start_time: 1, end_time: 3})]
+        })
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
 
-      assert Ghost.ghost_for_block(
-               block,
+      assert Ghost.ghost_for_run(
+               run,
                ~D[2019-01-01],
                time0 + 2
              ) == nil
     end
 
     test "includes scheduled logon time, first route, and start place if available" do
-      reassign_env(:skate, :block_fn, fn trip_id ->
-        if trip_id == "trip" do
-          build(:minischedule_block)
-        else
-          nil
-        end
+      reassign_env(:skate, :trips_by_id_fn, fn _ ->
+        %{"trip" => build(:schedule_trip, %{id: "trip"})}
       end)
 
-      trip = build(:schedule_trip)
-
-      block = Block.block_from_trips([trip])
+      run = build(:minischedule_run)
 
       assert %Ghost{
                id: "ghost-trip",
@@ -324,47 +335,46 @@ defmodule Realtime.GhostTest do
                current_piece_start_place: "garage",
                current_piece_first_route: "route"
              } =
-               Ghost.ghost_for_block(
-                 block,
+               Ghost.ghost_for_run(
+                 run,
                  ~D[2019-01-01],
                  1_546_318_860
                )
     end
 
     test "handles mid-route swing on for current piece logon and first route purposes" do
-      reassign_env(:skate, :block_fn, fn trip_id ->
-        if trip_id == "trip" do
-          build(:minischedule_block, %{
-            pieces: [
-              build(:minischedule_piece, %{
-                start_place: "station",
-                start_mid_route?: %{
-                  time: 40,
-                  trip:
-                    build(:minischedule_trip, %{
-                      id: "trip2",
-                      route_id: "route2"
-                    })
-                },
-                trips: [
-                  build(:minischedule_trip, %{
-                    id: "trip",
-                    block_id: "block",
-                    route_id: "route"
-                  })
-                ],
-                end_place: "garage"
-              })
-            ]
-          })
-        else
-          nil
-        end
+      reassign_env(:skate, :trips_by_id_fn, fn _ ->
+        %{
+          "trip" => build(:schedule_trip, %{id: "trip", start_time: 40, end_time: 100}),
+          "trip2" =>
+            build(:schedule_trip, %{id: "trip2", route_id: "route2", start_time: 20, end_time: 40})
+        }
       end)
 
-      trip = build(:schedule_trip)
-
-      block = Block.block_from_trips([trip])
+      run =
+        build(:minischedule_run, %{
+          activities: [
+            build(:minischedule_piece, %{
+              start_place: "station",
+              start_mid_route?: %{
+                time: 40,
+                trip:
+                  build(:minischedule_trip, %{
+                    id: "trip2",
+                    route_id: "route2"
+                  })
+              },
+              trips: [
+                build(:minischedule_trip, %{
+                  id: "trip",
+                  block_id: "block",
+                  route_id: "route"
+                })
+              ],
+              end_place: "garage"
+            })
+          ]
+        })
 
       assert %Ghost{
                id: "ghost-trip",
@@ -375,18 +385,18 @@ defmodule Realtime.GhostTest do
                block_id: "block",
                run_id: "run",
                via_variant: nil,
-               layover_departure_time: 1_546_318_900,
+               layover_departure_time: nil,
                scheduled_timepoint_status: %{
                  timepoint_id: "t1",
                  fraction_until_timepoint: 0.0
                },
                scheduled_logon: 1_546_318_850,
-               route_status: :pulling_out,
+               route_status: :on_route,
                current_piece_start_place: "station",
                current_piece_first_route: "route2"
              } =
-               Ghost.ghost_for_block(
-                 block,
+               Ghost.ghost_for_run(
+                 run,
                  ~D[2019-01-01],
                  1_546_318_860
                )

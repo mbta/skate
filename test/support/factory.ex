@@ -85,6 +85,17 @@ defmodule Skate.Factory do
     }
   end
 
+  def minischedule_run_factory do
+    %Schedule.Minischedule.Run{
+      schedule_id: "schedule",
+      service_id: "service",
+      id: "run",
+      activities: [
+        build(:minischedule_piece)
+      ]
+    }
+  end
+
   def gtfs_stoptime_factory do
     %Schedule.Gtfs.StopTime{
       stop_id: "stop1",

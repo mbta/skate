@@ -1,5 +1,6 @@
 defmodule Schedule.Minischedule.RunTest do
   use ExUnit.Case, async: true
+  import Skate.Factory
 
   alias Schedule.Minischedule
   alias Schedule.Minischedule.Break
@@ -88,6 +89,32 @@ defmodule Schedule.Minischedule.RunTest do
 
       assert Run.hydrate(run, %{}, %{"start" => "Startpoint", "end" => "End Of The Line"}) ==
                expected_result
+    end
+  end
+
+  describe "is_active?/3" do
+    test "returns true when a piece overlaps with the range given" do
+      run =
+        build(:minischedule_run, %{
+          activities: [
+            build(:minischedule_piece, %{start_time: 0, end_time: 100}),
+            build(:minischedule_piece, %{start_time: 200, end_time: 300})
+          ]
+        })
+
+      assert Run.is_active?(run, 75, 125)
+    end
+
+    test "returns false when a piece does not overlap with the range given" do
+      run =
+        build(:minischedule_run, %{
+          activities: [
+            build(:minischedule_piece, %{start_time: 0, end_time: 100}),
+            build(:minischedule_piece, %{start_time: 200, end_time: 300})
+          ]
+        })
+
+      refute Run.is_active?(run, 125, 175)
     end
   end
 end

@@ -43,6 +43,15 @@ defmodule Schedule.Minischedule.Run do
     Enum.filter(run.activities, fn activity -> match?(%Piece{}, activity) end)
   end
 
+  @spec is_active?(t(), Util.Time.time_of_day(), Util.Time.time_of_day()) :: boolean()
+  def is_active?(run, start_time_of_day, end_time_of_day) do
+    run
+    |> pieces()
+    |> Enum.any?(fn piece ->
+      end_time_of_day > piece.start_time and start_time_of_day < piece.end_time
+    end)
+  end
+
   @spec hydrate(t(), Trip.by_id(), Timepoint.timepoint_names_by_id()) :: t()
   def hydrate(run, trips_by_id, timepoint_names_by_id) do
     %{

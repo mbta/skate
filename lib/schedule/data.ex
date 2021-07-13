@@ -86,6 +86,11 @@ defmodule Schedule.Data do
   @spec trip(t(), Trip.id()) :: Trip.t() | nil
   def trip(%__MODULE__{trips: trips}, trip_id), do: trips[trip_id]
 
+  @spec trips_by_id(t(), [Trip.id()]) :: %{Trip.id() => Trip.t()}
+  def trips_by_id(%__MODULE__{trips: trips}, trip_ids) do
+    Map.take(trips, trip_ids)
+  end
+
   @spec block(t(), Block.id(), Service.id()) :: Block.t() | nil
   def block(%__MODULE__{blocks: blocks}, block_id, service_id) do
     Block.get(blocks, block_id, service_id)
@@ -172,6 +177,37 @@ defmodule Schedule.Data do
       {date, active_blocks_on_date}
     end)
     |> Helpers.filter_values(fn blocks -> blocks != [] end)
+  end
+
+  @spec active_runs(t(), Util.Time.timestamp(), Util.Time.timestamp()) ::
+          %{Date.t() => [Minischedule.Run.t()]}
+  def active_runs(%__MODULE__{runs: runs, calendar: calendar}, start_time, end_time) do
+    dates = potentially_active_service_dates(start_time, end_time)
+    active_services = Map.take(calendar, dates)
+
+    runs_by_service =
+      runs
+      |> Map.values()
+      |> Enum.group_by(fn run -> run.service_id end)
+
+    active_services
+    |> Map.new(fn {date, service_ids} ->
+      start_time_of_day = Util.Time.time_of_day_for_timestamp(start_time, date)
+      end_time_of_day = Util.Time.time_of_day_for_timestamp(end_time, date)
+
+      runs_on_date =
+        Enum.flat_map(service_ids, fn service_id ->
+          Map.get(runs_by_service, service_id, [])
+        end)
+
+      active_runs_on_date =
+        Enum.filter(runs_on_date, fn run ->
+          Minischedule.Run.is_active?(run, start_time_of_day, end_time_of_day)
+        end)
+
+      {date, active_runs_on_date}
+    end)
+    |> Helpers.filter_values(fn runs -> runs != [] end)
   end
 
   @spec shapes(t(), Route.id()) :: [Shape.t()]
