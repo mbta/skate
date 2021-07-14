@@ -13,6 +13,20 @@ import {
 } from "../util/dateTime"
 import { runIdToLabel } from "../helpers/vehicleLabel"
 
+const compareGhosts = (a: Ghost, b: Ghost): number => {
+  if (a.runId === null && b.runId !== null) {
+    return 1
+  }
+  if (b.runId === null && a.runId !== null) {
+    return -1
+  }
+  if (a.runId === null && b.runId === null) {
+    return a.id.localeCompare(b.id)
+  }
+
+  return a.runId!.localeCompare(b.runId!)
+}
+
 const LateView = (): ReactElement<HTMLElement> => {
   const [{ selectedRouteIds }] = useContext(StateDispatchContext)
   const { socket } = useContext(SocketContext)
@@ -24,20 +38,28 @@ const LateView = (): ReactElement<HTMLElement> => {
   const lateBusThreshold = 60 * 15
   const missingLogonThreshold = 60 * 45
 
+  const withinMissingLogonThreshold = (ghost: Ghost) =>
+    currentTime - (ghost.scheduledLogonTime as number) <= missingLogonThreshold
+
   const currentTime = useCurrentTimeSeconds()
 
-  const missingLogons = vehiclesOrGhosts
+  const ghostsToDisplay = vehiclesOrGhosts
     .filter(isGhost)
     .filter((ghost) => ghost.scheduledLogonTime !== null)
-    .filter(
-      (ghost) =>
-        currentTime - (ghost.scheduledLogonTime as number) <=
-        missingLogonThreshold
-    )
-    .sort(
-      (a, b) =>
-        (a.scheduledLogonTime as number) - (b.scheduledLogonTime as number)
-    )
+
+  const unsortedMissingLogons = ghostsToDisplay.filter(
+    withinMissingLogonThreshold
+  )
+  const unsortedLateGhosts = ghostsToDisplay.filter(
+    (ghost) => !withinMissingLogonThreshold(ghost)
+  )
+
+  const missingLogons = unsortedMissingLogons.sort(
+    (a, b) =>
+      (a.scheduledLogonTime as number) - (b.scheduledLogonTime as number)
+  )
+
+  const lateGhosts = unsortedLateGhosts.sort(compareGhosts)
 
   const lateBuses = vehiclesOrGhosts
     .filter(isVehicle)
@@ -78,6 +100,9 @@ const LateView = (): ReactElement<HTMLElement> => {
             </tr>
           </thead>
           <tbody>
+            {lateGhosts.map((lateGhost) => (
+              <LateGhostRow ghost={lateGhost} key={lateGhost.id} />
+            ))}
             {lateBuses.map((lateBus) => (
               <LateBusRow vehicle={lateBus} key={lateBus.id} />
             ))}
@@ -85,6 +110,23 @@ const LateView = (): ReactElement<HTMLElement> => {
         </table>
       </div>
     </div>
+  )
+}
+
+const LateGhostRow = ({
+  ghost,
+}: {
+  ghost: Ghost
+}): ReactElement<HTMLElement> => {
+  return (
+    <tr>
+      <th>N/A</th>
+      <th>{ghost.blockWaivers.length > 0 ? "Y" : "N"}</th>
+      <th>{ghost.routeId}</th>
+      <th />
+      <th>{runIdToLabel(ghost.runId)}</th>
+      <th />
+    </tr>
   )
 }
 
