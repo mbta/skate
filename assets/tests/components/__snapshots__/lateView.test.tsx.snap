@@ -76,6 +76,22 @@ exports[`LateView renders missing logons and late buses 1`] = `
       <tbody>
         <tr>
           <th>
+            N/A
+          </th>
+          <th>
+            N
+          </th>
+          <th>
+            route
+          </th>
+          <th />
+          <th>
+            N/A
+          </th>
+          <th />
+        </tr>
+        <tr>
+          <th>
             -15
           </th>
           <th>
