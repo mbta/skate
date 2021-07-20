@@ -56,7 +56,7 @@ defmodule Schedule.Minischedule.Run do
           trip_id when is_binary(trip_id) ->
             Map.get(trips_by_id, trip_id)
 
-          %Schedule.Minischedule.Trip{} = trip ->
+          %Trip{} = trip ->
             Map.get(trips_by_id, trip.id)
 
           %AsDirected{} = as_directed ->

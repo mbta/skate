@@ -73,8 +73,8 @@ defmodule Schedule.Swing do
   @spec minischedule_blocks_to_swing_info(Minischedule.Block.by_id(), Trip.by_id()) ::
           [
             %{
-              swing_off_trip: Trip.id() | Minischedule.Trip.t(),
-              swing_on_trip: Trip.id() | Minischedule.Trip.t(),
+              swing_off_trip: Trip.id() | Trip.t(),
+              swing_on_trip: Trip.id() | Trip.t(),
               mid_route_swing: Minischedule.Piece.mid_route_swing() | nil,
               block_id: Schedule.Block.id()
             }
@@ -103,9 +103,9 @@ defmodule Schedule.Swing do
     end)
   end
 
-  @spec trip_or_trip_id_to_trip(Trip.id() | Minischedule.Trip.t(), Trip.by_id()) ::
-          Minischedule.Trip.t() | Trip.t()
-  defp trip_or_trip_id_to_trip(%Minischedule.Trip{} = trip, trips_by_id),
+  @spec trip_or_trip_id_to_trip(Trip.id() | Schedule.Trip.t(), Trip.by_id()) ::
+          Schedule.Trip.t() | Trip.t()
+  defp trip_or_trip_id_to_trip(%Schedule.Trip{} = trip, trips_by_id),
     do: Map.get(trips_by_id, trip.id, trip)
 
   defp trip_or_trip_id_to_trip(trip_id, trips_by_id), do: Map.fetch!(trips_by_id, trip_id)

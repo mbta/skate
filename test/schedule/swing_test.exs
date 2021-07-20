@@ -19,26 +19,24 @@ defmodule Schedule.SwingTest do
               start_time: 1,
               start_place: "place3",
               trips: [
-                %Minischedule.Trip{
+                %Schedule.Trip{
                   id: "0123",
                   block_id: "A12-34",
                   route_id: "11",
                   headsign: "Somewhere Else",
                   direction_id: 0,
-                  via_variant: nil,
                   run_id: "123-456",
                   start_time: 1,
                   end_time: 100,
                   start_place: "place3",
                   end_place: "place1"
                 },
-                %Minischedule.Trip{
+                %Schedule.Trip{
                   id: "1234",
                   block_id: "A12-34",
                   route_id: "12",
                   headsign: "Somewhere",
                   direction_id: 0,
-                  via_variant: nil,
                   run_id: "123-456",
                   start_time: 101,
                   end_time: 200,
@@ -73,13 +71,12 @@ defmodule Schedule.SwingTest do
               start_time: 400,
               start_place: "place3",
               trips: [
-                %Minischedule.Trip{
+                %Schedule.Trip{
                   id: "8901",
                   block_id: "A12-34",
                   route_id: "11",
                   headsign: "Somewhere Else",
                   direction_id: 0,
-                  via_variant: nil,
                   run_id: "123-890",
                   start_time: 400,
                   end_time: 500,
@@ -174,13 +171,12 @@ defmodule Schedule.SwingTest do
               start_time: 1,
               start_place: "place1",
               trips: [
-                %Minischedule.Trip{
+                %Schedule.Trip{
                   id: "1234",
                   block_id: "A12-34",
                   route_id: "12",
                   headsign: "Somewhere",
                   direction_id: 0,
-                  via_variant: nil,
                   run_id: "123-456",
                   start_time: 1,
                   end_time: 100,
@@ -247,13 +243,12 @@ defmodule Schedule.SwingTest do
               start_time: 101,
               start_place: "place1",
               trips: [
-                %Minischedule.Trip{
+                %Schedule.Trip{
                   id: "1234",
                   block_id: "A12-34",
                   route_id: "12",
                   headsign: "Somewhere",
                   direction_id: 0,
-                  via_variant: nil,
                   run_id: "123-456",
                   start_time: 101,
                   end_time: 200,

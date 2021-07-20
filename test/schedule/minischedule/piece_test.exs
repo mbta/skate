@@ -2,9 +2,11 @@ defmodule Schedule.Minischedule.PieceTest do
   use ExUnit.Case, async: true
 
   alias Schedule.Gtfs.StopTime
-  alias Schedule.Minischedule
   alias Schedule.Minischedule.AsDirected
   alias Schedule.Minischedule.Piece
+  alias Schedule.Trip
+
+  import Skate.Factory
 
   describe "hydrate" do
     test "replaces trip_ids with trips" do
@@ -39,11 +41,10 @@ defmodule Schedule.Minischedule.PieceTest do
         end_place: "off"
       }
 
-      expected_trip = %Minischedule.Trip{
-        id: trip_id,
-        block_id: "block",
-        start_place: "Abcde Heights",
-        end_place: "Qwerty Row"
+      expected_trip = %Schedule.Trip{
+        stored_trip
+        | pretty_start_place: "Abcde Heights",
+          pretty_end_place: "Qwerty Row"
       }
 
       expected_piece = %{stored_piece | trips: [expected_trip]}
@@ -52,14 +53,7 @@ defmodule Schedule.Minischedule.PieceTest do
                expected_piece
     end
 
-    test "doesn't replace non-ids" do
-      trip = %Minischedule.Trip{
-        id: "trip",
-        block_id: "block",
-        start_place: "Ruggles",
-        end_place: "Santa Cruz Boardwalk"
-      }
-
+    test "doesn't replace non-ids, but does prettify their place names" do
       as_directed = %AsDirected{
         kind: :wad,
         start_time: 0,
@@ -68,18 +62,41 @@ defmodule Schedule.Minischedule.PieceTest do
         end_place: "end"
       }
 
+      trip1 = build(:trip, start_place: "Ruggles", end_place: "Santa Cruz Boardwalk")
+      trip2 = build(:trip, start_place: "danehy", end_place: "davis")
+
+      expected_trip1 = %Trip{
+        trip1
+        | pretty_start_place: "Ruggles",
+          pretty_end_place: "Santa Cruz Boardwalk"
+      }
+
+      expected_trip2 = %Trip{
+        trip2
+        | pretty_start_place: "Danehy Park",
+          pretty_end_place: "Davis Square"
+      }
+
       piece = %Piece{
         schedule_id: "schedule",
         run_id: "run",
         block_id: "block",
         start_time: 0,
         start_place: "on",
-        trips: [trip, as_directed],
+        trips: [trip1, trip2, as_directed],
         end_time: 1,
         end_place: "off"
       }
 
-      assert Piece.hydrate(piece, %{}, %{}) == piece
+      expected_piece = %Piece{piece | trips: [expected_trip1, expected_trip2, as_directed]}
+
+      timepoint_names_by_id = %{
+        "danehy" => "Danehy Park",
+        "davis" => "Davis Square",
+        "other" => "Other Place"
+      }
+
+      assert Piece.hydrate(piece, %{}, timepoint_names_by_id) == expected_piece
     end
 
     test "hydrates start and end place" do
@@ -137,11 +154,10 @@ defmodule Schedule.Minischedule.PieceTest do
         end_mid_route?: true
       }
 
-      expected_trip = %Minischedule.Trip{
-        id: trip_id,
-        block_id: "block",
-        start_place: "Abcde Heights",
-        end_place: "Qwerty Row"
+      expected_trip = %Schedule.Trip{
+        stored_trip
+        | pretty_start_place: "Abcde Heights",
+          pretty_end_place: "Qwerty Row"
       }
 
       assert %Piece{
