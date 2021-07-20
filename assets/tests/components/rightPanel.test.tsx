@@ -3,7 +3,7 @@ import React from "react"
 import renderer from "react-test-renderer"
 import RightPanel from "../../src/components/rightPanel"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import { initialState, State } from "../../src/state"
+import { initialState, State, OpenView } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
 
 import ghostFactory from "../factories/ghost"
@@ -75,7 +75,7 @@ describe("rightPanel", () => {
   })
 
   test("shows swings view", () => {
-    const state: State = { ...initialState, swingsViewIsVisible: true }
+    const state: State = { ...initialState, openView: OpenView.Swings }
     const wrapper = mount(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <RightPanel />
@@ -88,7 +88,7 @@ describe("rightPanel", () => {
     const state: State = {
       ...initialState,
       selectedVehicleOrGhost: vehicle,
-      swingsViewIsVisible: true,
+      openView: OpenView.Swings,
     }
     const wrapper = mount(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>

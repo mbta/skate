@@ -24,6 +24,12 @@ import {
   VehicleAdherenceColorsSetting,
 } from "./userSettings"
 
+export enum OpenView {
+  None = 1,
+  Swings,
+  Late,
+}
+
 export interface State {
   pickerContainerIsVisible: boolean
   searchPageState: SearchPageState
@@ -36,8 +42,7 @@ export interface State {
   notificationDrawerIsOpen: boolean
   userSettings: UserSettings
   selectedNotification?: Notification
-  swingsViewIsVisible: boolean
-  lateViewIsVisible: boolean
+  openView: OpenView
 }
 
 export const initialState: State = {
@@ -52,8 +57,7 @@ export const initialState: State = {
   notificationDrawerIsOpen: false,
   userSettings: defaultUserSettings,
   selectedNotification: undefined,
-  swingsViewIsVisible: false,
-  lateViewIsVisible: false,
+  openView: OpenView.None,
 }
 
 interface SelectRouteAction {
@@ -514,22 +518,20 @@ const selectedNotificationReducer = (
   }
 }
 
-const swingsViewIsVisibleReducer = (
-  state: boolean,
-  action: Action
-): boolean => {
+const openViewReducer = (state: OpenView, action: Action): OpenView => {
   switch (action.type) {
     case "TOGGLE_SWINGS_VIEW":
-      return !state
-    default:
-      return state
-  }
-}
-
-const lateViewIsVisibleReducer = (state: boolean, action: Action): boolean => {
-  switch (action.type) {
+      if (state === OpenView.Swings) {
+        return OpenView.None
+      } else {
+        return OpenView.Swings
+      }
     case "TOGGLE_LATE_VIEW":
-      return !state
+      if (state === OpenView.Late) {
+        return OpenView.None
+      } else {
+        return OpenView.Late
+      }
     default:
       return state
   }
@@ -568,9 +570,5 @@ export const reducer = (state: State, action: Action): State => ({
     state.selectedNotification,
     action
   ),
-  swingsViewIsVisible: swingsViewIsVisibleReducer(
-    state.swingsViewIsVisible,
-    action
-  ),
-  lateViewIsVisible: lateViewIsVisibleReducer(state.lateViewIsVisible, action),
+  openView: openViewReducer(state.openView, action),
 })
