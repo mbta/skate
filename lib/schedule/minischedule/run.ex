@@ -4,15 +4,15 @@ defmodule Schedule.Minischedule.Run do
   alias Schedule.Trip
   alias Schedule.Minischedule.Break
   alias Schedule.Minischedule.Piece
+  alias Schedule.Minischedule.AsDirected
   alias Schedule.Hastus.Run
-  alias Schedule.Hastus.Schedule
 
-  @type key :: {Schedule.id(), Run.id()}
+  @type key :: {Schedule.Hastus.Schedule.id(), Run.id()}
 
   @type by_id :: %{key() => t()}
 
   @type t :: %__MODULE__{
-          schedule_id: Schedule.id(),
+          schedule_id: Schedule.Hastus.Schedule.id(),
           service_id: Service.id() | nil,
           id: Run.id(),
           activities: [Piece.t() | Break.t()]
@@ -43,12 +43,32 @@ defmodule Schedule.Minischedule.Run do
     Enum.filter(run.activities, fn activity -> match?(%Piece{}, activity) end)
   end
 
-  @spec is_active?(t(), Util.Time.time_of_day(), Util.Time.time_of_day()) :: boolean()
-  def is_active?(run, start_time_of_day, end_time_of_day) do
+  @spec is_active?(t(), Trip.by_id(), Util.Time.time_of_day(), Util.Time.time_of_day()) ::
+          boolean()
+  def is_active?(run, trips_by_id, start_time_of_day, end_time_of_day) do
     run
     |> pieces()
-    |> Enum.any?(fn piece ->
-      end_time_of_day > piece.start_time and start_time_of_day < piece.end_time
+    |> Enum.map(fn piece ->
+      trip_ids = piece.trips
+
+      trips =
+        Enum.map(trip_ids, fn
+          trip_id when is_binary(trip_id) ->
+            Map.get(trips_by_id, trip_id)
+
+          %Schedule.Minischedule.Trip{} = trip ->
+            Map.get(trips_by_id, trip.id)
+
+          %AsDirected{} = as_directed ->
+            as_directed
+        end)
+        |> Enum.reject(&is_nil(&1))
+
+      {trips |> Enum.map(& &1.start_time) |> Enum.min(),
+       trips |> Enum.map(& &1.end_time) |> Enum.max()}
+    end)
+    |> Enum.any?(fn {start_time, end_time} ->
+      end_time_of_day > start_time and start_time_of_day < end_time
     end)
   end
 

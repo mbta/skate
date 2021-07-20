@@ -96,6 +96,16 @@ defmodule Skate.Factory do
     }
   end
 
+  def as_directed_factory do
+    %Schedule.Minischedule.AsDirected{
+      kind: :wad,
+      start_time: 1,
+      end_time: 2,
+      start_place: "place1",
+      end_place: "place2"
+    }
+  end
+
   def gtfs_stoptime_factory do
     %Schedule.Gtfs.StopTime{
       stop_id: "stop1",
