@@ -2,7 +2,7 @@ import React, { ReactElement, useContext } from "react"
 import { useHistory } from "react-router-dom"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { VehicleOrGhost } from "../realtime.d"
-import { setNotification } from "../state"
+import { setNotification, OpenView } from "../state"
 import NotificationDrawer from "./notificationDrawer"
 import PropertiesPanel from "./propertiesPanel"
 import SwingsView from "./swingsView"
@@ -24,7 +24,7 @@ const RightPanel = ({
 
   if (selectedVehicleOrGhost) {
     return <PropertiesPanel selectedVehicleOrGhost={selectedVehicleOrGhost} />
-  } else if (state.swingsViewIsVisible) {
+  } else if (state.openView === OpenView.Swings) {
     return <SwingsView />
   } else if (state.notificationDrawerIsOpen) {
     return <NotificationDrawer />

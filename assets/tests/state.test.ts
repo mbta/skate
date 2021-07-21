@@ -359,10 +359,10 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
-  test("toggleSwingsView", () => {
+  test("toggleSwingsView enables swings view when other views are closed", () => {
     const expectedState: State.State = {
       ...initialState,
-      swingsViewIsVisible: true,
+      openView: State.OpenView.Swings,
     }
 
     const newState = reducer(initialState, State.toggleSwingsView())
@@ -370,14 +370,60 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
-  test("toggleLateView", () => {
+  test("toggleSwingsView enables swings view when late view is open", () => {
     const expectedState: State.State = {
       ...initialState,
-      lateViewIsVisible: true,
+      openView: State.OpenView.Swings,
+    }
+
+    const newState = reducer(
+      { ...initialState, openView: State.OpenView.Late },
+      State.toggleSwingsView()
+    )
+
+    expect(newState).toEqual(expectedState)
+  })
+
+  test("toggleSwingsView disables swings view when swings view is open", () => {
+    const newState = reducer(
+      { ...initialState, openView: State.OpenView.Swings },
+      State.toggleSwingsView()
+    )
+
+    expect(newState).toEqual(initialState)
+  })
+
+  test("toggleLateView enables late view when other views are closed", () => {
+    const expectedState: State.State = {
+      ...initialState,
+      openView: State.OpenView.Late,
     }
 
     const newState = reducer(initialState, State.toggleLateView())
 
     expect(newState).toEqual(expectedState)
+  })
+
+  test("toggleLateView enables late view when swings views is open", () => {
+    const expectedState: State.State = {
+      ...initialState,
+      openView: State.OpenView.Late,
+    }
+
+    const newState = reducer(
+      { ...initialState, openView: State.OpenView.Swings },
+      State.toggleLateView()
+    )
+
+    expect(newState).toEqual(expectedState)
+  })
+
+  test("toggleLateView disables late view when late view is open", () => {
+    const newState = reducer(
+      { ...initialState, openView: State.OpenView.Late },
+      State.toggleLateView()
+    )
+
+    expect(newState).toEqual(initialState)
   })
 })

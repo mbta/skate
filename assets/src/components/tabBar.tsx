@@ -14,20 +14,19 @@ import {
   toggleNotificationDrawer,
   toggleSwingsView,
   toggleLateView,
+  OpenView,
 } from "../state"
 import NotificationBellIcon from "./notificationBellIcon"
 import featureIsEnabled from "../laboratoryFeatures"
 
 interface Props {
   pickerContainerIsVisible: boolean
-  swingsViewIsVisible: boolean
-  lateViewIsVisible: boolean
+  openView: OpenView
 }
 
 const TabBar = ({
   pickerContainerIsVisible,
-  swingsViewIsVisible,
-  lateViewIsVisible,
+  openView,
 }: Props): ReactElement<HTMLDivElement> => {
   const location = useLocation()
   const [, dispatch] = useContext(StateDispatchContext)
@@ -105,7 +104,7 @@ const TabBar = ({
           <a
             className={
               "m-tab-bar__swings m-tab-bar__link" +
-              (swingsViewIsVisible ? " m-tab-bar__link--active" : "")
+              (openView === OpenView.Swings ? " m-tab-bar__link--active" : "")
             }
             onClick={() => {
               if (window.FS) {
@@ -122,7 +121,7 @@ const TabBar = ({
             <a
               className={
                 "m-tab-bar__late_view m-tab-bar__link" +
-                (lateViewIsVisible ? " m-tab-bar__link--active" : "")
+                (openView === OpenView.Late ? " m-tab-bar__link--active" : "")
               }
               onClick={() => dispatch(toggleLateView())}
             >
