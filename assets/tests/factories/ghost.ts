@@ -1,11 +1,11 @@
 import { Factory } from "fishery"
 import { Ghost } from "../../src/realtime"
 
-export default Factory.define<Ghost>(() => ({
-  id: "ghost-trip",
+export default Factory.define<Ghost>(({ sequence }) => ({
+  id: `ghost-trip-${sequence}`,
   directionId: 0,
   routeId: "1",
-  tripId: "trip",
+  tripId: `trip-${sequence}`,
   headsign: "headsign",
   blockId: "block",
   runId: null,

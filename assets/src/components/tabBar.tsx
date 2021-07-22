@@ -3,6 +3,7 @@ import { NavLink, useLocation } from "react-router-dom"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import {
   ladderIcon,
+  lateIcon,
   mapIcon,
   questionMarkIcon,
   refreshIcon,
@@ -125,7 +126,7 @@ const TabBar = ({
               }
               onClick={() => dispatch(toggleLateView())}
             >
-              {swingIcon("m-tab-bar__icon")}
+              {lateIcon("m-tab-bar__icon")}
             </a>
           </li>
         ) : null}

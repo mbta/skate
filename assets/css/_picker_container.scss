@@ -30,25 +30,10 @@
   }
 }
 
-.m-picker-container__tab {
-  background-color: $color-bg-medium;
-  border-top-right-radius: 1rem;
-  border-bottom-right-radius: 1rem;
+.m-picker-container--narrow .c-drawer-tab {
   left: $picker-width-narrow;
-  position: absolute;
-  top: 1.625rem;
-  width: fit-content;
-
-  .m-picker-container--wide & {
-    left: $picker-width-wide;
-  }
 }
 
-.m-picker-container__tab-button {
-  @include button-transparent;
-  @include button-icon(0.9rem);
-  font-size: 2rem;
-  line-height: 1.5rem;
-  margin: 0;
-  padding: 1.5rem 0.675rem 2rem;
+.m-picker-container--wide .c-drawer-tab {
+  left: $picker-width-wide;
 }
