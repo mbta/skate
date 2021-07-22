@@ -221,7 +221,7 @@ const readDispatcherFlag = (): boolean => {
     return false
   }
 
-  return (data.dispatcherFlag === "true")
+  return data.dispatcherFlag === "true"
 }
 
 export default TabBar

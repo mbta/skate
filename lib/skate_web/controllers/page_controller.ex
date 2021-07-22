@@ -13,7 +13,9 @@ defmodule SkateWeb.PageController do
 
     user_settings = UserSettings.get_or_create(username)
     route_settings = RouteSettings.get_or_create(username)
-    dispatcher_flag = conn |> Guardian.Plug.current_claims() |> AuthManager.claims_grant_dispatcher_access?()
+
+    dispatcher_flag =
+      conn |> Guardian.Plug.current_claims() |> AuthManager.claims_grant_dispatcher_access?()
 
     conn
     |> assign(:username, username)
