@@ -13,12 +13,14 @@ defmodule SkateWeb.PageController do
 
     user_settings = UserSettings.get_or_create(username)
     route_settings = RouteSettings.get_or_create(username)
+    dispatcher_flag = conn |> Guardian.Plug.current_claims() |> AuthManager.claims_grant_dispatcher_access?()
 
     conn
     |> assign(:username, username)
     |> assign(:csrf_token, Plug.CSRFProtection.get_csrf_token())
     |> assign(:user_settings, user_settings)
     |> assign(:route_settings, route_settings)
+    |> assign(:dispatcher_flag, dispatcher_flag)
     |> render("index.html")
   end
 

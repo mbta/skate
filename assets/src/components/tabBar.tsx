@@ -19,6 +19,7 @@ import {
 } from "../state"
 import NotificationBellIcon from "./notificationBellIcon"
 import featureIsEnabled from "../laboratoryFeatures"
+import appData from "../appData"
 
 interface Props {
   pickerContainerIsVisible: boolean
@@ -117,7 +118,7 @@ const TabBar = ({
             {swingIcon("m-tab-bar__icon")}
           </a>
         </li>
-        {featureIsEnabled("late_view") ? (
+        {featureIsEnabled("late_view") || readDispatcherFlag() ? (
           <li>
             <a
               className={
@@ -212,6 +213,15 @@ const showAppcue = (appcueId: string): void => {
   if (window.Appcues) {
     window.Appcues.show(appcueId)
   }
+}
+
+const readDispatcherFlag = (): boolean => {
+  const data = appData()
+  if (!data || data === undefined || data.dispatcherFlag === undefined) {
+    return false
+  }
+
+  return (data.dispatcherFlag === "true")
 }
 
 export default TabBar

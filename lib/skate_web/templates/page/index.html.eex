@@ -4,4 +4,5 @@
   data-user-settings="<%= Jason.encode!(@user_settings) %>"
   data-route-settings="<%= Jason.encode!(@route_settings) %>"
   data-laboratory-features="<%= Jason.encode!(@laboratory_features) %>"
+  data-dispatcher-flag="<%= Jason.encode!(@dispatcher_flag) %>"
 ></div>
