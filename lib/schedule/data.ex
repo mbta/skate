@@ -9,6 +9,7 @@ defmodule Schedule.Data do
   alias Schedule.TimepointOrder
   alias Schedule.Trip
   alias Schedule.Minischedule
+  alias Schedule.Hastus
   alias Schedule.Swing
 
   alias Schedule.Gtfs
@@ -35,6 +36,7 @@ defmodule Schedule.Data do
           stops: stops_by_id(),
           trips: Trip.by_id(),
           blocks: Block.by_id(),
+          runs: %{{Service.id(), Hastus.Run.id()} => Minischedule.Run.t()},
           calendar: Calendar.t(),
           minischedule_runs: Minischedule.Run.by_id(),
           minischedule_blocks: Minischedule.Block.by_id(),
@@ -55,6 +57,7 @@ defmodule Schedule.Data do
             stops: %{},
             trips: %{},
             blocks: %{},
+            runs: %{},
             calendar: %{},
             minischedule_runs: %{},
             minischedule_blocks: %{},
@@ -82,6 +85,11 @@ defmodule Schedule.Data do
 
   @spec trip(t(), Trip.id()) :: Trip.t() | nil
   def trip(%__MODULE__{trips: trips}, trip_id), do: trips[trip_id]
+
+  @spec trips_by_id(t(), [Trip.id()]) :: %{Trip.id() => Trip.t()}
+  def trips_by_id(%__MODULE__{trips: trips}, trip_ids) do
+    Map.take(trips, trip_ids)
+  end
 
   @spec block(t(), Block.id(), Service.id()) :: Block.t() | nil
   def block(%__MODULE__{blocks: blocks}, block_id, service_id) do
@@ -169,6 +177,37 @@ defmodule Schedule.Data do
       {date, active_blocks_on_date}
     end)
     |> Helpers.filter_values(fn blocks -> blocks != [] end)
+  end
+
+  @spec active_runs(t(), Util.Time.timestamp(), Util.Time.timestamp()) ::
+          %{Date.t() => [Minischedule.Run.t()]}
+  def active_runs(%__MODULE__{runs: runs, calendar: calendar, trips: trips}, start_time, end_time) do
+    dates = potentially_active_service_dates(start_time, end_time)
+    active_services = Map.take(calendar, dates)
+
+    runs_by_service =
+      runs
+      |> Map.values()
+      |> Enum.group_by(fn run -> run.service_id end)
+
+    active_services
+    |> Map.new(fn {date, service_ids} ->
+      start_time_of_day = Util.Time.time_of_day_for_timestamp(start_time, date)
+      end_time_of_day = Util.Time.time_of_day_for_timestamp(end_time, date)
+
+      runs_on_date =
+        Enum.flat_map(service_ids, fn service_id ->
+          Map.get(runs_by_service, service_id, [])
+        end)
+
+      active_runs_on_date =
+        Enum.filter(runs_on_date, fn run ->
+          Minischedule.Run.is_active?(run, trips, start_time_of_day, end_time_of_day)
+        end)
+
+      {date, active_runs_on_date}
+    end)
+    |> Helpers.filter_values(fn runs -> runs != [] end)
   end
 
   @spec shapes(t(), Route.id()) :: [Shape.t()]
@@ -260,13 +299,8 @@ defmodule Schedule.Data do
 
   @spec parse_files(all_files()) :: t()
   def parse_files(%{gtfs: gtfs_files, hastus: hastus_files}) do
-    hastus_activities = Schedule.Hastus.Activity.parse(hastus_files["activities.csv"])
-    hastus_trips = Schedule.Hastus.Trip.parse(hastus_files["trips.csv"])
-
-    %{
-      runs: minischedule_runs,
-      blocks: minischedule_blocks
-    } = Schedule.Minischedule.Load.from_hastus(hastus_activities, hastus_trips)
+    hastus_activities = Hastus.Activity.parse(hastus_files["activities.csv"])
+    hastus_trips = Hastus.Trip.parse(hastus_files["trips.csv"])
 
     gtfs_files["feed_info.txt"]
     |> FeedInfo.parse()
@@ -292,6 +326,17 @@ defmodule Schedule.Data do
     stop_times_by_id = StopTime.parse(gtfs_files["stop_times.txt"], gtfs_trip_ids)
     trips_by_id = Trip.merge_trips(gtfs_trips, hastus_trips, stop_times_by_id)
 
+    %{
+      runs: minischedule_runs,
+      blocks: minischedule_blocks
+    } = Schedule.Minischedule.Load.from_hastus(hastus_activities, hastus_trips, trips_by_id)
+
+    runs =
+      minischedule_runs
+      |> Map.values()
+      |> Enum.filter(fn run -> !is_nil(run.service_id) end)
+      |> Map.new(fn run -> {{run.service_id, run.id}, run} end)
+
     %__MODULE__{
       routes: bus_routes,
       route_patterns: route_patterns,
@@ -306,6 +351,7 @@ defmodule Schedule.Data do
       stops: all_stops_by_id(gtfs_files["stops.txt"]),
       trips: trips_by_id,
       blocks: Block.blocks_from_trips(Map.values(trips_by_id)),
+      runs: runs,
       calendar: Calendar.from_files(gtfs_files["calendar.txt"], gtfs_files["calendar_dates.txt"]),
       minischedule_runs: minischedule_runs,
       minischedule_blocks: minischedule_blocks,

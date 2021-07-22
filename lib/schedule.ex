@@ -22,6 +22,8 @@ defmodule Schedule do
     Timepoint
   }
 
+  alias Schedule.Minischedule.Run
+
   @type state :: :not_loaded | {:loaded, Data.t()}
 
   @type files_source :: :remote | {:mocked_files, mocked_files()}
@@ -75,6 +77,12 @@ defmodule Schedule do
     call_catch_timeout(server, {:trip, trip_id}, :trip, nil)
   end
 
+  @spec trips_by_id([Trip.id()]) :: %{Trip.id() => Trip.t()}
+  @spec trips_by_id([Trip.id()], GenServer.server()) :: %{Trip.id() => Trip.t()}
+  def trips_by_id(trip_ids, server \\ __MODULE__) do
+    call_catch_timeout(server, {:trips_by_id, trip_ids}, :trips_by_id, nil)
+  end
+
   @spec block(Block.id(), Service.id()) :: Block.t() | nil
   @spec block(Block.id(), Service.id(), GenServer.server()) :: Block.t() | nil
   def block(block_id, service_id, server \\ __MODULE__) do
@@ -102,6 +110,14 @@ defmodule Schedule do
           %{Date.t() => [Block.t()]}
   def active_blocks(start_time, end_time, server \\ __MODULE__) do
     call_catch_timeout(server, {:active_blocks, start_time, end_time}, :active_blocks, %{})
+  end
+
+  @spec active_runs(Util.Time.timestamp(), Util.Time.timestamp()) :: %{Date.t() => [Run.t()]}
+  @spec active_runs(Util.Time.timestamp(), Util.Time.timestamp(), GenServer.server()) :: %{
+          Date.t() => [Run.t()]
+        }
+  def active_runs(start_time, end_time, server \\ __MODULE__) do
+    call_catch_timeout(server, {:active_runs, start_time, end_time}, :active_runs, %{})
   end
 
   @spec shapes(Route.id()) :: [Shape.t()]
@@ -192,6 +208,10 @@ defmodule Schedule do
     {:reply, Data.trip(gtfs_data, trip_id), state}
   end
 
+  def handle_call({:trips_by_id, trip_ids}, _from, {:loaded, gtfs_data} = state) do
+    {:reply, Data.trips_by_id(gtfs_data, trip_ids), state}
+  end
+
   def handle_call({:block, block_id, service_id}, _from, {:loaded, gtfs_data} = state) do
     {:reply, Data.block(gtfs_data, block_id, service_id), state}
   end
@@ -202,6 +222,10 @@ defmodule Schedule do
 
   def handle_call({:active_blocks, start_time, end_time}, _from, {:loaded, gtfs_data} = state) do
     {:reply, Data.active_blocks(gtfs_data, start_time, end_time), state}
+  end
+
+  def handle_call({:active_runs, start_time, end_time}, _from, {:loaded, gtfs_data} = state) do
+    {:reply, Data.active_runs(gtfs_data, start_time, end_time), state}
   end
 
   def handle_call({:shapes, route_id}, _from, {:loaded, gtfs_data} = state) do

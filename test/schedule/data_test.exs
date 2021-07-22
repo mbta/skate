@@ -140,6 +140,34 @@ defmodule Schedule.DataTest do
     end
   end
 
+  describe "trips_by_id/2" do
+    test "returns trips specified by ID" do
+      data = %Data{
+        trips: %{
+          "t1" => %Trip{
+            id: "t1",
+            block_id: "b"
+          },
+          "t2" => %Trip{
+            id: "t2",
+            block_id: "b"
+          },
+          "t3" => %Trip{
+            id: "t3",
+            block_id: "b"
+          }
+        }
+      }
+
+      trips = Data.trips_by_id(data, ["t1", "t2"])
+      assert Enum.count(trips) == 2
+
+      trip_ids = Enum.map(trips, fn {_trip_id, trip} -> trip.id end)
+      assert "t1" in trip_ids
+      assert "t2" in trip_ids
+    end
+  end
+
   describe "block" do
     test "block returns the block" do
       block = %Block{
