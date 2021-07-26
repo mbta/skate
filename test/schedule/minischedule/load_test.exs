@@ -523,7 +523,7 @@ defmodule Schedule.Minischedule.LoadTest do
                  %Piece{
                    start_time: 101,
                    trips: [
-                     %Schedule.Minischedule.Trip{
+                     %Schedule.Trip{
                        block_id: "block",
                        direction_id: nil,
                        end_time: 102,
@@ -585,7 +585,7 @@ defmodule Schedule.Minischedule.LoadTest do
                    start_time: 101,
                    trips: [
                      "trip",
-                     %Schedule.Minischedule.Trip{
+                     %Schedule.Trip{
                        id: "following_deadhead_run_102",
                        block_id: "block",
                        direction_id: nil,
@@ -809,8 +809,8 @@ defmodule Schedule.Minischedule.LoadTest do
       ]
 
       trips_by_id = %{
-        "trip1" => build(:schedule_trip, %{id: "trip1"}),
-        "trip2" => build(:schedule_trip, %{id: "trip2"})
+        "trip1" => build(:trip, %{id: "trip1"}),
+        "trip2" => build(:trip, %{id: "trip2"})
       }
 
       expected_run = %Run{
@@ -856,8 +856,8 @@ defmodule Schedule.Minischedule.LoadTest do
       ]
 
       trips_by_id = %{
-        "trip1" => build(:schedule_trip, %{id: "trip1", service_id: "service1"}),
-        "trip2" => build(:schedule_trip, %{id: "trip2", service_id: "service2"})
+        "trip1" => build(:trip, %{id: "trip1", service_id: "service1"}),
+        "trip2" => build(:trip, %{id: "trip2", service_id: "service2"})
       }
 
       expected_run = %Run{

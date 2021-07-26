@@ -53,13 +53,6 @@ defmodule Skate.Factory do
     }
   end
 
-  def minischedule_trip_factory do
-    %Schedule.Minischedule.Trip{
-      id: "trip",
-      block_id: "block"
-    }
-  end
-
   def minischedule_piece_factory do
     %Schedule.Minischedule.Piece{
       schedule_id: "schedule",
@@ -67,8 +60,8 @@ defmodule Skate.Factory do
       start_time: 50,
       start_place: "garage",
       trips: [
-        build(:minischedule_trip),
-        build(:minischedule_trip, %{id: "trip2", route_id: "route"})
+        build(:trip),
+        build(:trip, %{id: "trip2", route_id: "route"})
       ],
       end_time: 200,
       end_place: "station"
@@ -114,7 +107,7 @@ defmodule Skate.Factory do
     }
   end
 
-  def schedule_trip_factory do
+  def trip_factory do
     %Schedule.Trip{
       id: "trip",
       block_id: "block",

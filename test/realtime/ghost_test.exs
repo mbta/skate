@@ -26,7 +26,7 @@ defmodule Realtime.GhostTest do
       reassign_env(:skate, :trips_by_id_fn, fn _ ->
         %{
           "trip" =>
-            build(:schedule_trip, %{
+            build(:trip, %{
               route_pattern_id: "route-X-0",
               stop_times: [
                 build(:gtfs_stoptime, %{
@@ -96,7 +96,7 @@ defmodule Realtime.GhostTest do
       reassign_env(:skate, :trips_by_id_fn, fn _ ->
         %{
           "trip" =>
-            build(:schedule_trip, %{
+            build(:trip, %{
               route_pattern_id: "route-X-0",
               stop_times: [
                 build(:gtfs_stoptime, %{
@@ -138,9 +138,9 @@ defmodule Realtime.GhostTest do
     test "makes a ghost for a run that should be pulling out" do
       reassign_env(:skate, :trips_by_id_fn, fn _ ->
         %{
-          "trip1" => build(:schedule_trip, %{route_id: nil, start_time: 1, end_time: 5}),
+          "trip1" => build(:trip, %{route_id: nil, start_time: 1, end_time: 5}),
           "trip2" =>
-            build(:schedule_trip, %{
+            build(:trip, %{
               stop_times: [
                 build(:gtfs_stoptime, %{
                   stop_id: "stop1",
@@ -196,7 +196,7 @@ defmodule Realtime.GhostTest do
       reassign_env(:skate, :trips_by_id_fn, fn _ ->
         %{
           "trip1" =>
-            build(:schedule_trip, %{
+            build(:trip, %{
               id: "trip1",
               headsign: "headsign1",
               direction_id: 0,
@@ -211,7 +211,7 @@ defmodule Realtime.GhostTest do
               end_time: 10
             }),
           "trip2" =>
-            build(:schedule_trip, %{
+            build(:trip, %{
               id: "trip2",
               headsign: "headsign2",
               direction_id: 1,
@@ -275,7 +275,7 @@ defmodule Realtime.GhostTest do
       reassign_env(:skate, :trips_by_id_fn, fn _ ->
         %{
           "trip1" =>
-            build(:schedule_trip, %{
+            build(:trip, %{
               stop_times: [
                 build(:gtfs_stoptime, %{
                   stop_id: "stop1",
@@ -311,7 +311,7 @@ defmodule Realtime.GhostTest do
 
     test "includes scheduled logon time, first route, and start place if available" do
       reassign_env(:skate, :trips_by_id_fn, fn _ ->
-        %{"trip" => build(:schedule_trip, %{id: "trip"})}
+        %{"trip" => build(:trip, %{id: "trip"})}
       end)
 
       run = build(:minischedule_run)
@@ -345,9 +345,9 @@ defmodule Realtime.GhostTest do
     test "handles mid-route swing on for current piece logon and first route purposes" do
       reassign_env(:skate, :trips_by_id_fn, fn _ ->
         %{
-          "trip" => build(:schedule_trip, %{id: "trip", start_time: 40, end_time: 100}),
+          "trip" => build(:trip, %{id: "trip", start_time: 40, end_time: 100}),
           "trip2" =>
-            build(:schedule_trip, %{id: "trip2", route_id: "route2", start_time: 20, end_time: 40})
+            build(:trip, %{id: "trip2", route_id: "route2", start_time: 20, end_time: 40})
         }
       end)
 
@@ -359,13 +359,13 @@ defmodule Realtime.GhostTest do
               start_mid_route?: %{
                 time: 40,
                 trip:
-                  build(:minischedule_trip, %{
+                  build(:trip, %{
                     id: "trip2",
                     route_id: "route2"
                   })
               },
               trips: [
-                build(:minischedule_trip, %{
+                build(:trip, %{
                   id: "trip",
                   block_id: "block",
                   route_id: "route"

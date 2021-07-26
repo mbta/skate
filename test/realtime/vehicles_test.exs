@@ -164,7 +164,7 @@ defmodule Realtime.VehiclesTest do
 
     test "includes trip without a vehicle as a ghost" do
       trip =
-        build(:schedule_trip, %{
+        build(:trip, %{
           stop_times: [
             build(:gtfs_stoptime, %{
               stop_id: "stop1",
@@ -228,7 +228,7 @@ defmodule Realtime.VehiclesTest do
       vehicle = build(:vehicle, %{run_id: "run"})
 
       trip =
-        build(:schedule_trip, %{
+        build(:trip, %{
           stop_times: [
             build(:gtfs_stoptime, %{
               stop_id: "stop1",
@@ -269,7 +269,7 @@ defmodule Realtime.VehiclesTest do
 
     test "includes scheduled pullout without a vehicle as a ghost" do
       trip =
-        build(:schedule_trip, %{
+        build(:trip, %{
           stop_times: [
             build(:gtfs_stoptime, %{
               stop_id: "stop1",
@@ -333,7 +333,7 @@ defmodule Realtime.VehiclesTest do
 
     test "includes ghosts that are incoming from another route" do
       trip1 =
-        build(:schedule_trip, %{
+        build(:trip, %{
           id: "trip1",
           headsign: "headsign1",
           route_id: "route1",
@@ -360,7 +360,7 @@ defmodule Realtime.VehiclesTest do
         })
 
       trip2 =
-        build(:schedule_trip, %{
+        build(:trip, %{
           id: "trip2",
           headsign: "headsign2",
           route_id: "route2",
@@ -482,7 +482,7 @@ defmodule Realtime.VehiclesTest do
         )
 
       trip_1 =
-        build(:schedule_trip, %{
+        build(:trip, %{
           id: "trip_1",
           block_id: "block_1",
           run_id: "run_1",
@@ -500,7 +500,7 @@ defmodule Realtime.VehiclesTest do
         })
 
       trip_2 =
-        build(:schedule_trip, %{
+        build(:trip, %{
           id: "trip_2",
           block_id: "block_2",
           run_id: "run_2",
@@ -518,7 +518,7 @@ defmodule Realtime.VehiclesTest do
         })
 
       trip_3 =
-        build(:schedule_trip, %{
+        build(:trip, %{
           id: "trip_3",
           block_id: "block_3",
           run_id: "run_3",

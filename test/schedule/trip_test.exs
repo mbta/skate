@@ -6,6 +6,8 @@ defmodule Schedule.TripTest do
   alias Schedule.Gtfs
   alias Schedule.Hastus
 
+  import Skate.Factory
+
   @gtfs_trip %Gtfs.Trip{
     id: "trip",
     route_id: "route",
@@ -46,22 +48,16 @@ defmodule Schedule.TripTest do
       timepoint_id: "timepoint3"
     }
   ]
-  @trip %Trip{
-    id: "trip",
-    route_id: "route",
-    block_id: "block",
-    service_id: "service",
-    headsign: "headsign",
-    direction_id: 0,
-    shape_id: "shape",
-    schedule_id: "schedule",
-    run_id: "run",
-    stop_times: @stop_times,
-    start_time: 3,
-    end_time: 9,
-    start_place: "start",
-    end_place: "end"
-  }
+
+  @trip build(:trip, %{
+          stop_times: @stop_times,
+          start_time: 3,
+          end_time: 9,
+          start_place: "start",
+          end_place: "end",
+          shape_id: "shape",
+          schedule_id: "schedule"
+        })
 
   describe "merge_trips" do
     test "matches up gtfs and hastus trips" do
@@ -164,6 +160,16 @@ defmodule Schedule.TripTest do
 
     test "returns nil when given nil" do
       assert Trip.id_sans_overload(nil) == nil
+    end
+  end
+
+  describe "JSON encoding" do
+    test "includes a via_variant value" do
+      trip_on_variant = %Trip{@trip | route_pattern_id: "111-Q-1"}
+      json_without_route_pattern = Jason.encode!(@trip)
+      json_with_route_pattern = Jason.encode!(trip_on_variant)
+      assert(String.contains?(json_without_route_pattern, ~s{"via_variant":null}))
+      assert(String.contains?(json_with_route_pattern, ~s{"via_variant":"Q"}))
     end
   end
 end

@@ -5,7 +5,7 @@ defmodule Schedule.Minischedule.Piece do
   alias Schedule.Hastus.Place
   alias Schedule.Hastus.Run
   alias Schedule.Minischedule.AsDirected
-  alias Schedule.Minischedule.Trip
+  alias Schedule.Trip
 
   @type key :: {Hastus.Schedule.id(), Run.id(), Block.id()}
 
@@ -53,16 +53,14 @@ defmodule Schedule.Minischedule.Piece do
     end_mid_route?: false
   ]
 
-  @spec hydrate(t(), Schedule.Trip.by_id(), Timepoint.timepoint_names_by_id()) :: t()
+  @spec hydrate(t(), Trip.by_id(), Timepoint.timepoint_names_by_id()) :: t()
   def hydrate(piece, trips_by_id, timepoint_names_by_id) do
     trip_ids = piece.trips
 
     trips =
       Enum.map(trip_ids, fn
         trip_id when is_binary(trip_id) ->
-          full_trip = trips_by_id[trip_id]
-
-          Trip.from_full_trip(full_trip, timepoint_names_by_id)
+          trips_by_id[trip_id]
 
         %Trip{} = trip ->
           trip
@@ -70,6 +68,7 @@ defmodule Schedule.Minischedule.Piece do
         %AsDirected{} = as_directed ->
           as_directed
       end)
+      |> Enum.map(&Trip.set_pretty_names(&1, timepoint_names_by_id))
 
     %{
       piece
@@ -89,8 +88,7 @@ defmodule Schedule.Minischedule.Piece do
         ) :: mid_route_swing()
   defp hydrate_mid_route_swing(mid_route_swing, trips_by_id, timepoint_names_by_id) do
     trip_id = mid_route_swing.trip
-    full_trip = trips_by_id[trip_id]
-    minischedule_trip = Trip.from_full_trip(full_trip, timepoint_names_by_id)
-    %{mid_route_swing | trip: minischedule_trip}
+    trip = trips_by_id |> Map.get(trip_id) |> Trip.set_pretty_names(timepoint_names_by_id)
+    %{mid_route_swing | trip: trip}
   end
 end

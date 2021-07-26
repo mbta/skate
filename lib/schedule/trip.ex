@@ -1,7 +1,7 @@
 defmodule Schedule.Trip do
   alias Schedule.Block
   alias Schedule.Gtfs
-  alias Schedule.Gtfs.{Direction, Route, RoutePattern, Service, Shape, StopTime}
+  alias Schedule.Gtfs.{Direction, Route, RoutePattern, Service, Shape, StopTime, Timepoint}
   alias Schedule.Hastus
   alias Schedule.Hastus.Run
 
@@ -25,15 +25,15 @@ defmodule Schedule.Trip do
           start_time: Util.Time.time_of_day(),
           end_time: Util.Time.time_of_day(),
           start_place: String.t() | nil,
-          end_place: String.t() | nil
+          end_place: String.t() | nil,
+          pretty_start_place: String.t() | nil,
+          pretty_end_place: String.t() | nil
         }
 
   @enforce_keys [
     :id,
     :block_id
   ]
-
-  @derive Jason.Encoder
 
   defstruct [
     :id,
@@ -50,8 +50,27 @@ defmodule Schedule.Trip do
     start_time: 0,
     end_time: 0,
     start_place: nil,
-    end_place: nil
+    end_place: nil,
+    pretty_start_place: nil,
+    pretty_end_place: nil
   ]
+
+  defimpl Jason.Encoder do
+    @spec encode(Schedule.Trip.t(), Jason.Encode.opts()) :: iodata()
+    def encode(trip, opts) do
+      via_variant = trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id)
+
+      trip
+      |> Map.from_struct()
+      |> Map.merge(%{
+        via_variant: via_variant,
+        start_place: trip.pretty_start_place,
+        end_place: trip.pretty_end_place
+      })
+      |> Map.drop([:pretty_start_place, :pretty_end_place])
+      |> Jason.Encode.map(opts)
+    end
+  end
 
   @spec merge_trips([Gtfs.Trip.t()], [Hastus.Trip.t()], StopTime.by_trip_id()) :: by_id()
   def merge_trips(gtfs_trips, hastus_trips, stop_times_by_id) do
@@ -118,4 +137,40 @@ defmodule Schedule.Trip do
   def id_sans_overload(nil), do: nil
 
   def id_sans_overload(id), do: String.replace(id, ~r/-OL.+$/, "")
+
+  def from_following_deadhead(deadhead, block_id) do
+    %__MODULE__{
+      id: "following_deadhead_#{deadhead.run_id}_#{deadhead.start_time}",
+      block_id: block_id,
+      route_id: nil,
+      run_id: deadhead.run_id,
+      start_time: deadhead.start_time,
+      end_time: deadhead.end_time
+    }
+  end
+
+  def from_leading_deadhead(deadhead, block_id) do
+    %__MODULE__{
+      id: "leading_deadhead_#{deadhead.run_id}_#{deadhead.start_time}",
+      block_id: block_id,
+      route_id: nil,
+      run_id: deadhead.run_id,
+      start_time: deadhead.start_time,
+      end_time: deadhead.end_time
+    }
+  end
+
+  @spec set_pretty_names(__MODULE__.t(), Timepoint.timepoint_names_by_id()) :: __MODULE__.t()
+  def set_pretty_names(
+        %__MODULE__{pretty_start_place: nil, pretty_end_place: nil} = trip,
+        timepoint_names_by_id
+      ) do
+    %__MODULE__{
+      trip
+      | pretty_start_place: Timepoint.pretty_name_for_id(timepoint_names_by_id, trip.start_place),
+        pretty_end_place: Timepoint.pretty_name_for_id(timepoint_names_by_id, trip.end_place)
+    }
+  end
+
+  def set_pretty_names(trip, _), do: trip
 end
