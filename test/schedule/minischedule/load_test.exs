@@ -8,7 +8,7 @@ defmodule Schedule.Minischedule.LoadTest do
   alias Schedule.Minischedule.Block
   alias Schedule.Minischedule.Break
   alias Schedule.Minischedule.Load
-  alias Schedule.Minischedule.Piece
+  alias Schedule.Piece
   alias Schedule.Minischedule.Run
 
   describe "from_hastus/3" do

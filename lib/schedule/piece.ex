@@ -1,4 +1,4 @@
-defmodule Schedule.Minischedule.Piece do
+defmodule Schedule.Piece do
   alias Schedule.Block
   alias Schedule.Gtfs.Timepoint
   alias Schedule.Hastus

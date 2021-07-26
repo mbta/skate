@@ -54,7 +54,7 @@ defmodule Skate.Factory do
   end
 
   def minischedule_piece_factory do
-    %Schedule.Minischedule.Piece{
+    %Schedule.Piece{
       schedule_id: "schedule",
       run_id: "run",
       start_time: 50,

@@ -3,6 +3,7 @@ defmodule Schedule.SwingTest do
 
   alias Schedule.Swing
   alias Schedule.Minischedule
+  alias Schedule.Piece
   alias Schedule.Trip
 
   describe "from_minischedule_blocks/2" do
@@ -12,7 +13,7 @@ defmodule Schedule.SwingTest do
           schedule_id: "a",
           id: "A12-34",
           pieces: [
-            %Minischedule.Piece{
+            %Piece{
               schedule_id: "a",
               run_id: "123-456",
               block_id: "A12-34",
@@ -49,7 +50,7 @@ defmodule Schedule.SwingTest do
               start_mid_route?: nil,
               end_mid_route?: false
             },
-            %Minischedule.Piece{
+            %Piece{
               schedule_id: "a",
               run_id: "123-789",
               block_id: "A12-34",
@@ -64,7 +65,7 @@ defmodule Schedule.SwingTest do
               start_mid_route?: nil,
               end_mid_route?: false
             },
-            %Minischedule.Piece{
+            %Piece{
               schedule_id: "a",
               run_id: "123-456",
               block_id: "A12-34",
@@ -164,7 +165,7 @@ defmodule Schedule.SwingTest do
           schedule_id: "a",
           id: "A12-34",
           pieces: [
-            %Minischedule.Piece{
+            %Piece{
               schedule_id: "a",
               run_id: "123-456",
               block_id: "A12-34",
@@ -189,7 +190,7 @@ defmodule Schedule.SwingTest do
               start_mid_route?: nil,
               end_mid_route?: false
             },
-            %Minischedule.Piece{
+            %Piece{
               schedule_id: "a",
               run_id: "123-789",
               block_id: "A12-34",
@@ -236,7 +237,7 @@ defmodule Schedule.SwingTest do
           schedule_id: "a",
           id: "A12-34",
           pieces: [
-            %Minischedule.Piece{
+            %Piece{
               schedule_id: "a",
               run_id: "123-456",
               block_id: "A12-34",
@@ -261,7 +262,7 @@ defmodule Schedule.SwingTest do
               start_mid_route?: nil,
               end_mid_route?: true
             },
-            %Minischedule.Piece{
+            %Piece{
               schedule_id: "a",
               run_id: "123-789",
               block_id: "A12-34",

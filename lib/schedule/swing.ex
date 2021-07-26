@@ -75,7 +75,7 @@ defmodule Schedule.Swing do
             %{
               swing_off_trip: Trip.id() | Trip.t(),
               swing_on_trip: Trip.id() | Trip.t(),
-              mid_route_swing: Minischedule.Piece.mid_route_swing() | nil,
+              mid_route_swing: Piece.mid_route_swing() | nil,
               block_id: Schedule.Block.id()
             }
           ]

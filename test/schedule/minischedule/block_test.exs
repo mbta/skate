@@ -1,7 +1,7 @@
 defmodule Schedule.Minischedule.BlockTest do
   use ExUnit.Case, async: true
 
-  alias Schedule.Minischedule.Piece
+  alias Schedule.Piece
   alias Schedule.Minischedule.Block
   alias Schedule.Trip
 

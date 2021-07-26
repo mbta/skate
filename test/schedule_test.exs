@@ -3,10 +3,10 @@ defmodule ScheduleTest do
 
   import Test.Support.Helpers
 
-  alias Schedule.{Block, Trip, Swing}
+  alias Schedule.{Block, Minischedule, Trip, Swing}
   alias Schedule.Gtfs.{Route, RoutePattern, Shape, Stop, StopTime, Timepoint}
   alias Schedule.Gtfs.Shape.Point
-  alias Schedule.Minischedule
+  alias Schedule.Piece
 
   describe "all_routes" do
     test "maps each row to a Route" do
@@ -764,7 +764,7 @@ defmodule ScheduleTest do
           }
         })
 
-      expected_piece = %Minischedule.Piece{
+      expected_piece = %Piece{
         schedule_id: "schedule",
         run_id: "123-4567",
         block_id: "block",

@@ -84,10 +84,10 @@ defmodule Realtime.Ghost do
         piece.start_time < now_time_of_day and piece.end_time > now_time_of_day
       end)
       |> case do
-        %Schedule.Minischedule.Piece{start_mid_route?: %{trip: trip}, trips: trips} ->
+        %Schedule.Piece{start_mid_route?: %{trip: trip}, trips: trips} ->
           [trip | trips]
 
-        %Schedule.Minischedule.Piece{trips: trips} ->
+        %Schedule.Piece{trips: trips} ->
           trips
 
         _ ->

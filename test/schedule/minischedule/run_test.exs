@@ -4,7 +4,7 @@ defmodule Schedule.Minischedule.RunTest do
 
   alias Schedule.Trip
   alias Schedule.Minischedule.Break
-  alias Schedule.Minischedule.Piece
+  alias Schedule.Piece
   alias Schedule.Minischedule.Run
 
   import Skate.Factory
