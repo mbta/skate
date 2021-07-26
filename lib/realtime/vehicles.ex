@@ -1,6 +1,7 @@
 defmodule Realtime.Vehicles do
   alias Realtime.{Ghost, Vehicle, VehicleOrGhost}
   alias Schedule.{Block, Route, Trip}
+  alias Schedule.Gtfs.Timepoint
   alias Schedule.Minischedule.Run
 
   @doc """
@@ -8,8 +9,9 @@ defmodule Realtime.Vehicles do
 
   Vehicles are incoming from another route if they're scheduled to run within 15 minutes but are currently on another route.
   """
-  @spec group_by_route([Vehicle.t()]) :: Route.by_id([VehicleOrGhost.t()])
-  def group_by_route(ungrouped_vehicles) do
+  @spec group_by_route([Vehicle.t()], Timepoint.timepoint_names_by_id()) ::
+          Route.by_id([VehicleOrGhost.t()])
+  def group_by_route(ungrouped_vehicles, timepoint_names_by_id) do
     now = Util.Time.now()
     in_fifteen_minutes = now + 15 * 60
 
@@ -25,7 +27,8 @@ defmodule Realtime.Vehicles do
       incoming_trips,
       active_runs_by_date,
       potential_interlining_blocks_by_date,
-      now
+      now,
+      timepoint_names_by_id
     )
   end
 
@@ -37,7 +40,8 @@ defmodule Realtime.Vehicles do
           [Trip.t()],
           %{Date.t() => [Run.t()]},
           %{Date.t() => [Block.t()]},
-          Util.Time.timestamp()
+          Util.Time.timestamp(),
+          Timepoint.timepoint_names_by_id()
         ) ::
           Route.by_id([VehicleOrGhost.t()])
   def group_by_route_with_blocks(
@@ -45,9 +49,10 @@ defmodule Realtime.Vehicles do
         incoming_trips,
         active_runs_by_date,
         potential_interlining_blocks_by_date,
-        now
+        now,
+        timepoint_names_by_id
       ) do
-    ghosts = Ghost.ghosts(active_runs_by_date, ungrouped_vehicles, now)
+    ghosts = Ghost.ghosts(active_runs_by_date, ungrouped_vehicles, now, timepoint_names_by_id)
     vehicles_and_ghosts = ghosts ++ ungrouped_vehicles
 
     incoming_from_another_route = incoming_from_another_route(incoming_trips, vehicles_and_ghosts)

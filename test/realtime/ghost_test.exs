@@ -7,6 +7,8 @@ defmodule Realtime.GhostTest do
   alias Schedule.Gtfs.StopTime
   alias Realtime.{BlockWaiver, Ghost}
 
+  @timepoint_names_by_id %{"garage" => "Somerville Garage", "other_garage" => "Other Garage"}
+
   setup do
     reassign_env(:realtime, :block_waivers_for_block_and_service_fn, fn _, _ ->
       [
@@ -65,7 +67,7 @@ defmodule Realtime.GhostTest do
           run_id: "run",
           via_variant: "X",
           current_piece_first_route: "route",
-          current_piece_start_place: "garage",
+          current_piece_start_place: "Somerville Garage",
           layover_departure_time: nil,
           scheduled_logon: 1_546_318_801,
           scheduled_timepoint_status: %{
@@ -88,7 +90,8 @@ defmodule Realtime.GhostTest do
       assert Ghost.ghosts(
                %{~D[2019-01-01] => [run]},
                [],
-               time0 + 2
+               time0 + 2,
+               @timepoint_names_by_id
              ) == expected
     end
 
@@ -129,7 +132,8 @@ defmodule Realtime.GhostTest do
       assert Ghost.ghosts(
                %{~D[2019-01-01] => [run]},
                vehicles,
-               time0 + 2
+               time0 + 2,
+               @timepoint_names_by_id
              ) == []
     end
   end
@@ -188,7 +192,8 @@ defmodule Realtime.GhostTest do
                Ghost.ghost_for_run(
                  run,
                  ~D[2019-01-01],
-                 1_546_318_801
+                 1_546_318_801,
+                 @timepoint_names_by_id
                )
     end
 
@@ -240,7 +245,8 @@ defmodule Realtime.GhostTest do
       assert Ghost.ghost_for_run(
                run,
                ~D[2019-01-01],
-               time0 + 15
+               time0 + 15,
+               @timepoint_names_by_id
              ) == %Ghost{
                id: "ghost-trip2",
                direction_id: 1,
@@ -251,7 +257,7 @@ defmodule Realtime.GhostTest do
                run_id: "run",
                via_variant: nil,
                current_piece_first_route: "route",
-               current_piece_start_place: "garage",
+               current_piece_start_place: "Somerville Garage",
                layover_departure_time: time0 + 20,
                scheduled_logon: 1_546_318_810,
                scheduled_timepoint_status: %{
@@ -305,7 +311,8 @@ defmodule Realtime.GhostTest do
       assert Ghost.ghost_for_run(
                run,
                ~D[2019-01-01],
-               time0 + 2
+               time0 + 2,
+               @timepoint_names_by_id
              ) == nil
     end
 
@@ -332,13 +339,14 @@ defmodule Realtime.GhostTest do
                },
                scheduled_logon: 1_546_318_850,
                route_status: :pulling_out,
-               current_piece_start_place: "garage",
+               current_piece_start_place: "Somerville Garage",
                current_piece_first_route: "route"
              } =
                Ghost.ghost_for_run(
                  run,
                  ~D[2019-01-01],
-                 1_546_318_860
+                 1_546_318_860,
+                 @timepoint_names_by_id
                )
     end
 
@@ -398,7 +406,8 @@ defmodule Realtime.GhostTest do
                Ghost.ghost_for_run(
                  run,
                  ~D[2019-01-01],
-                 1_546_318_860
+                 1_546_318_860,
+                 @timepoint_names_by_id
                )
     end
   end

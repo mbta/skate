@@ -7,6 +7,8 @@ defmodule Realtime.VehiclesTest do
   alias Schedule.Gtfs.StopTime
   alias Realtime.{BlockWaiver, Ghost, Vehicle, Vehicles}
 
+  @timepoint_names_by_id %{"garage" => "Somerville Garage", "other_garage" => "Other Garage"}
+
   describe "group_by_route_with_blocks" do
     setup do
       reassign_env(:realtime, :block_waivers_for_block_and_service_fn, fn _, _ ->
@@ -47,7 +49,8 @@ defmodule Realtime.VehiclesTest do
                pulling_out_blocks_by_route,
                %{},
                %{},
-               0
+               0,
+               @timepoint_names_by_id
              ) == %{
                "route" => [on_route_vehicle, laying_over_vehicle, pulling_out_vehicle]
              }
@@ -117,7 +120,8 @@ defmodule Realtime.VehiclesTest do
                [trip_1],
                %{},
                %{~D[2019-12-20] => [block_1, block_2]},
-               0
+               0,
+               @timepoint_names_by_id
              ) == %{
                "route1" => [vehicle],
                "route2" => [vehicle_2, vehicle]
@@ -156,7 +160,8 @@ defmodule Realtime.VehiclesTest do
                [trip],
                %{},
                %{},
-               0
+               0,
+               @timepoint_names_by_id
              ) == %{
                "route2" => [vehicle]
              }
@@ -220,7 +225,8 @@ defmodule Realtime.VehiclesTest do
                  [],
                  %{~D[2019-12-20] => [run]},
                  %{~D[2019-12-20] => [block]},
-                 time0
+                 time0,
+                 @timepoint_names_by_id
                )
     end
 
@@ -261,7 +267,8 @@ defmodule Realtime.VehiclesTest do
                %{},
                %{~D[2019-12-20] => [run]},
                %{~D[2019-12-20] => [block]},
-               time0
+               time0,
+               @timepoint_names_by_id
              ) == %{
                "route" => [vehicle]
              }
@@ -305,7 +312,8 @@ defmodule Realtime.VehiclesTest do
                  [trip],
                  %{~D[2019-12-20] => [run]},
                  %{~D[2019-12-20] => [block]},
-                 time0
+                 time0,
+                 @timepoint_names_by_id
                )
 
       assert %Ghost{
@@ -409,7 +417,7 @@ defmodule Realtime.VehiclesTest do
           fraction_until_timepoint: 0.5
         },
         current_piece_first_route: "route1",
-        current_piece_start_place: "garage",
+        current_piece_start_place: "Somerville Garage",
         run_id: "run",
         scheduled_logon: 1_576_818_001,
         route_status: :on_route,
@@ -429,7 +437,8 @@ defmodule Realtime.VehiclesTest do
                [trip1, trip2],
                %{~D[2019-12-20] => [run]},
                %{~D[2019-12-20] => [block]},
-               time0 + 2
+               time0 + 2,
+               @timepoint_names_by_id
              ) == %{
                "route1" => [ghost],
                "route2" => [ghost]
@@ -578,7 +587,8 @@ defmodule Realtime.VehiclesTest do
                  [trip_1, trip_2, trip_3],
                  %{~D[2019-12-20] => [run_1, run_2, run_3]},
                  %{~D[2019-12-20] => [block_1, block_2, block_3]},
-                 time0 + 2
+                 time0 + 2,
+                 @timepoint_names_by_id
                )
                |> Map.fetch!("route99")
     end
