@@ -124,7 +124,12 @@ const TabBar = ({
                 "m-tab-bar__late_view m-tab-bar__link" +
                 (openView === OpenView.Late ? " m-tab-bar__link--active" : "")
               }
-              onClick={() => dispatch(toggleLateView())}
+              onClick={() => {
+                if (window.FS) {
+                  window.FS.event("Late view toggled")
+                }
+                dispatch(toggleLateView())
+              }}
             >
               {lateIcon("m-tab-bar__icon")}
             </a>

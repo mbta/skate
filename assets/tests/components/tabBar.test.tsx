@@ -138,10 +138,19 @@ describe("tabBar", () => {
     expect(window.FS!.event).toHaveBeenCalledWith("Swings view toggled")
   })
 
-  test("clicking the late view icon toggles the late view", () => {
+  test("clicking the late view icon toggles the late view and sends Fullstory event", () => {
     ;(featureIsEnabled as jest.Mock).mockImplementationOnce(
       (feature) => feature === "late_view"
     )
+
+    const originalFS = window.FS
+    const originalUsername = window.username
+    window.FS = { event: jest.fn(), identify: jest.fn() }
+
+    afterEach(() => {
+      window.FS = originalFS
+      window.username = originalUsername
+    })
 
     const dispatch = jest.fn()
 
@@ -155,6 +164,8 @@ describe("tabBar", () => {
 
     wrapper.find(".m-tab-bar__late_view").first().simulate("click")
     expect(dispatch).toHaveBeenCalledWith(toggleLateView())
+
+    expect(window.FS!.event).toHaveBeenCalledWith("Late view toggled")
   })
 
   it("opens drift when you click on the chat icon", () => {
