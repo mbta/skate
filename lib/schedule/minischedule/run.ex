@@ -2,7 +2,7 @@ defmodule Schedule.Minischedule.Run do
   alias Schedule.Gtfs.Service
   alias Schedule.Gtfs.Timepoint
   alias Schedule.Trip
-  alias Schedule.Minischedule.Break
+  alias Schedule.Break
   alias Schedule.Piece
   alias Schedule.AsDirected
   alias Schedule.Hastus.Run

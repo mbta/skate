@@ -6,7 +6,7 @@ defmodule Schedule.Minischedule.LoadTest do
   alias Schedule.Hastus.Trip
   alias Schedule.AsDirected
   alias Schedule.Minischedule.Block
-  alias Schedule.Minischedule.Break
+  alias Schedule.Break
   alias Schedule.Minischedule.Load
   alias Schedule.Piece
   alias Schedule.Minischedule.Run
