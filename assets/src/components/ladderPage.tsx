@@ -1,11 +1,7 @@
-import { Socket } from "phoenix"
 import React, { ReactElement, useContext } from "react"
 import RoutesContext from "../contexts/routesContext"
-import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { VehiclesByRouteIdProvider } from "../contexts/vehiclesByRouteIdContext"
 import useTimepoints from "../hooks/useTimepoints"
-import useVehicles from "../hooks/useVehicles"
 import { allVehiclesAndGhosts } from "../models/vehiclesByRouteId"
 import { VehicleId, VehicleOrGhost } from "../realtime.d"
 import { ByRouteId, Route, RouteId, TimepointsByRouteId } from "../schedule.d"
@@ -36,12 +32,6 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
   const timepointsByRouteId: TimepointsByRouteId =
     useTimepoints(selectedRouteIds)
 
-  const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
-  const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = useVehicles(
-    socket,
-    selectedRouteIds
-  )
-
   const selectedRoutes: Route[] = selectedRouteIds
     .map((routeId) => findRouteById(routes, routeId))
     .filter((route) => route) as Route[]
@@ -51,16 +41,14 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
       <Notifications />
       <RoutePicker selectedRouteIds={selectedRouteIds} />
 
-      <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
-        <>
-          <RouteLadders
-            routes={selectedRoutes}
-            timepointsByRouteId={timepointsByRouteId}
-            selectedVehicleId={selectedVehicleOrGhost?.id}
-          />
-          <RightPanel selectedVehicleOrGhost={selectedVehicleOrGhost} />
-        </>
-      </VehiclesByRouteIdProvider>
+      <>
+        <RouteLadders
+          routes={selectedRoutes}
+          timepointsByRouteId={timepointsByRouteId}
+          selectedVehicleId={selectedVehicleOrGhost?.id}
+        />
+        <RightPanel selectedVehicleOrGhost={selectedVehicleOrGhost} />
+      </>
     </div>
   )
 }
