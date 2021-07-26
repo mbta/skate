@@ -4,7 +4,7 @@ defmodule Schedule.Minischedule.Run do
   alias Schedule.Trip
   alias Schedule.Minischedule.Break
   alias Schedule.Piece
-  alias Schedule.Minischedule.AsDirected
+  alias Schedule.AsDirected
   alias Schedule.Hastus.Run
 
   @type key :: {Schedule.Hastus.Schedule.id(), Run.id()}

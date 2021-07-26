@@ -93,7 +93,7 @@ defmodule Realtime.Ghost do
         _ ->
           []
       end
-      |> Enum.reject(&match?(%Schedule.Minischedule.AsDirected{}, &1))
+      |> Enum.reject(&match?(%Schedule.AsDirected{}, &1))
       |> Application.get_env(:skate, :trips_by_id_fn, &Schedule.trips_by_id/1).()
       |> Map.values()
       |> Enum.sort_by(fn trip -> trip.start_time end)

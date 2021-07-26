@@ -90,7 +90,7 @@ defmodule Skate.Factory do
   end
 
   def as_directed_factory do
-    %Schedule.Minischedule.AsDirected{
+    %Schedule.AsDirected{
       kind: :wad,
       start_time: 1,
       end_time: 2,

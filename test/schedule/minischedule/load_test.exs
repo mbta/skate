@@ -4,7 +4,7 @@ defmodule Schedule.Minischedule.LoadTest do
 
   alias Schedule.Hastus.Activity
   alias Schedule.Hastus.Trip
-  alias Schedule.Minischedule.AsDirected
+  alias Schedule.AsDirected
   alias Schedule.Minischedule.Block
   alias Schedule.Minischedule.Break
   alias Schedule.Minischedule.Load

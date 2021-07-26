@@ -5,10 +5,11 @@ defmodule Schedule.Minischedule.Load do
 
   require Logger
 
+  alias Schedule.AsDirected
   alias Schedule.Helpers
   alias Schedule.Hastus.Activity
   alias Schedule.Hastus.Trip
-  alias Schedule.Minischedule.{AsDirected, Block, Break, Run}
+  alias Schedule.Minischedule.{Block, Break, Run}
   alias Schedule.Piece
 
   @spec from_hastus([Activity.t()], [Trip.t()], Schedule.Trip.by_id()) ::

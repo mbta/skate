@@ -2,7 +2,7 @@ defmodule Schedule.PieceTest do
   use ExUnit.Case, async: true
 
   alias Schedule.Gtfs.StopTime
-  alias Schedule.Minischedule.AsDirected
+  alias Schedule.AsDirected
   alias Schedule.Piece
   alias Schedule.Trip
 

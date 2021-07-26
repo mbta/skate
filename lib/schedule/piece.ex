@@ -4,7 +4,7 @@ defmodule Schedule.Piece do
   alias Schedule.Hastus
   alias Schedule.Hastus.Place
   alias Schedule.Hastus.Run
-  alias Schedule.Minischedule.AsDirected
+  alias Schedule.AsDirected
   alias Schedule.Trip
 
   @type key :: {Hastus.Schedule.id(), Run.id(), Block.id()}
