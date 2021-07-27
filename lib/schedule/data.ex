@@ -80,6 +80,10 @@ defmodule Schedule.Data do
       ),
       do: Map.get(timepoints_by_route, route_id, [])
 
+  @spec timepoint_names_by_id(t()) :: Timepoint.timepoint_names_by_id()
+  def timepoint_names_by_id(%__MODULE__{timepoint_names_by_id: timepoint_names_by_id}),
+    do: timepoint_names_by_id
+
   @spec stop(t(), Stop.id()) :: Stop.t() | nil
   def stop(%__MODULE__{stops: stops}, stop_id), do: stops[stop_id]
 

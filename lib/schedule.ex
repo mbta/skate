@@ -65,6 +65,11 @@ defmodule Schedule do
     call_catch_timeout(server, {:timepoints_on_route, route_id}, :timepoints_on_route, [])
   end
 
+  @spec timepoint_names_by_id(GenServer.server()) :: Timepoint.timepoint_names_by_id()
+  def timepoint_names_by_id(server \\ __MODULE__) do
+    call_catch_timeout(server, {:timepoint_names_by_id}, :timepoint_names_by_id, %{})
+  end
+
   @spec stop(Stop.id()) :: Stop.t() | nil
   @spec stop(Stop.id(), GenServer.server()) :: Stop.t() | nil
   def stop(stop_id, server \\ __MODULE__) do
@@ -198,6 +203,10 @@ defmodule Schedule do
 
   def handle_call({:timepoints_on_route, route_id}, _from, {:loaded, gtfs_data} = state) do
     {:reply, Data.timepoints_on_route(gtfs_data, route_id), state}
+  end
+
+  def handle_call({:timepoint_names_by_id}, _from, {:loaded, gtfs_data} = state) do
+    {:reply, Data.timepoint_names_by_id(gtfs_data), state}
   end
 
   def handle_call({:stop, stop_id}, _from, {:loaded, gtfs_data} = state) do

@@ -1,6 +1,6 @@
 defmodule Realtime.Ghost do
   alias Schedule.{Block, Route, Trip}
-  alias Schedule.Gtfs.{Direction, RoutePattern, StopTime}
+  alias Schedule.Gtfs.{Direction, RoutePattern, StopTime, Timepoint}
   alias Schedule.Minischedule.Run
   alias Realtime.{BlockWaiver, BlockWaiverStore, RouteStatus, TimepointStatus, Vehicle}
 
@@ -18,7 +18,7 @@ defmodule Realtime.Ghost do
           scheduled_logon: Util.Time.timestamp() | nil,
           route_status: RouteStatus.route_status(),
           block_waivers: [BlockWaiver.t()],
-          current_piece_start_place: Schedule.Hastus.Place.id() | nil,
+          current_piece_start_place: String.t() | nil,
           current_piece_first_route: Route.id() | nil
         }
 
@@ -53,9 +53,14 @@ defmodule Realtime.Ghost do
     block_waivers: []
   ]
 
-  @spec ghosts(%{Date.t() => [Run.t()]}, [Vehicle.t()], Util.Time.timestamp()) ::
+  @spec ghosts(
+          %{Date.t() => [Run.t()]},
+          [Vehicle.t()],
+          Util.Time.timestamp(),
+          Timepoint.timepoint_names_by_id()
+        ) ::
           [t()]
-  def ghosts(runs_by_date, vehicles, now) do
+  def ghosts(runs_by_date, vehicles, now, timepoint_names_by_id) do
     runs_with_vehicles = MapSet.new(vehicles, fn vehicle -> vehicle.run_id end)
 
     runs_by_date
@@ -67,14 +72,15 @@ defmodule Realtime.Ghost do
     |> Enum.flat_map(fn {date, runs} ->
       runs
       |> Enum.map(fn run ->
-        ghost_for_run(run, date, now)
+        ghost_for_run(run, date, now, timepoint_names_by_id)
       end)
       |> Enum.filter(& &1)
     end)
   end
 
-  @spec ghost_for_run(Run.t(), Date.t(), Util.Time.timestamp()) :: t() | nil
-  def ghost_for_run(run, date, now) do
+  @spec ghost_for_run(Run.t(), Date.t(), Util.Time.timestamp(), Timepoint.timepoint_names_by_id()) ::
+          t() | nil
+  def ghost_for_run(run, date, now, timepoint_names_by_id) do
     now_time_of_day = Util.Time.time_of_day_for_timestamp(now, date)
 
     current_piece_trips =
@@ -133,8 +139,15 @@ defmodule Realtime.Ghost do
 
             current_piece_start_place =
               case current_piece do
-                nil -> nil
-                current_piece -> current_piece.start_place
+                nil ->
+                  nil
+
+                current_piece ->
+                  Map.get(
+                    timepoint_names_by_id,
+                    current_piece.start_place,
+                    current_piece.start_place
+                  )
               end
 
             current_piece_first_route =
