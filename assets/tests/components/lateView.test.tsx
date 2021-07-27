@@ -8,7 +8,13 @@ import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useVehicles from "../../src/hooks/useVehicles"
 import { VehicleOrGhost } from "../../src/realtime"
 import { ByRouteId } from "../../src/schedule"
-import { initialState, OpenView, State, toggleLateView } from "../../src/state"
+import {
+  initialState,
+  OpenView,
+  State,
+  toggleLateView,
+  selectVehicle,
+} from "../../src/state"
 import blockWaiverFactory from "../factories/blockWaiver"
 import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
@@ -89,5 +95,83 @@ describe("LateView", () => {
       .simulate("click")
 
     expect(mockDispatch).toHaveBeenCalledWith(toggleLateView())
+  })
+
+  test("clicking ghost run number opens ghost and sends Fullstory event", () => {
+    const ghost = ghostFactory.build({
+      routeId: "route",
+      scheduledLogonTime: 15299,
+      currentPieceFirstRoute: "route",
+      currentPieceStartPlace: "garage",
+    })
+
+    ;(useVehicles as jest.Mock).mockImplementationOnce(
+      (): ByRouteId<VehicleOrGhost[]> => ({
+        route: [ghost],
+      })
+    )
+
+    const originalFS = window.FS
+    const originalUsername = window.username
+    window.FS = { event: jest.fn(), identify: jest.fn() }
+
+    afterEach(() => {
+      window.FS = originalFS
+      window.username = originalUsername
+    })
+
+    const mockDispatch = jest.fn()
+    const state: State = { ...initialState, openView: OpenView.Late }
+    const wrapper = mount(
+      <StateDispatchProvider state={state} dispatch={mockDispatch}>
+        <LateView />
+      </StateDispatchProvider>
+    )
+
+    wrapper.find(".m-late-view__run-link").first().simulate("click")
+
+    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(ghost))
+
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      "User selected late view run number - ghost bus"
+    )
+  })
+
+  test("clicking vehicle run number opens vehicle and sends Fullstory event", () => {
+    const vehicle = vehicleFactory.build({
+      routeId: "route",
+      scheduleAdherenceSecs: 901,
+    })
+
+    ;(useVehicles as jest.Mock).mockImplementationOnce(
+      (): ByRouteId<VehicleOrGhost[]> => ({
+        route: [vehicle],
+      })
+    )
+
+    const originalFS = window.FS
+    const originalUsername = window.username
+    window.FS = { event: jest.fn(), identify: jest.fn() }
+
+    afterEach(() => {
+      window.FS = originalFS
+      window.username = originalUsername
+    })
+
+    const mockDispatch = jest.fn()
+    const state: State = { ...initialState, openView: OpenView.Late }
+    const wrapper = mount(
+      <StateDispatchProvider state={state} dispatch={mockDispatch}>
+        <LateView />
+      </StateDispatchProvider>
+    )
+
+    wrapper.find(".m-late-view__run-link").first().simulate("click")
+
+    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
+
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      "User selected late view run number"
+    )
   })
 })

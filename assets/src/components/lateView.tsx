@@ -172,7 +172,12 @@ const LateGhostRow = ({
       <td className="m-late-view__run-number-cell">
         <a
           className="m-late-view__run-link"
-          onClick={() => dispatch(selectVehicle(ghost))}
+          onClick={() => {
+            if (window.FS) {
+              window.FS.event("User selected late view run number - ghost bus")
+            }
+            dispatch(selectVehicle(ghost))
+          }}
         >
           {ghost.blockWaivers.length > 0
             ? lateViewGhostWithWaiverIcon(
@@ -212,7 +217,12 @@ const LateBusRow = ({
       <td className="m-late-view__run-number-cell">
         <a
           className="m-late-view__run-link"
-          onClick={() => dispatch(selectVehicle(vehicle))}
+          onClick={() => {
+            if (window.FS) {
+              window.FS.event("User selected late view run number")
+            }
+            dispatch(selectVehicle(vehicle))
+          }}
         >
           {vehicle.blockWaivers.length > 0
             ? bangIcon("m-late-view__run-icon m-late-view__block-waiver-icon")
