@@ -18,7 +18,7 @@ defmodule Schedule.Minischedule.RunTest do
       stored_run =
         build(:minischedule_run,
           activities: [
-            build(:minischedule_piece,
+            build(:piece,
               block_id: "block",
               start_time: 0,
               start_place: "place",
@@ -99,8 +99,8 @@ defmodule Schedule.Minischedule.RunTest do
       run =
         build(:minischedule_run, %{
           activities: [
-            build(:minischedule_piece, %{start_time: 0, end_time: 100, trips: ["trip1", "trip2"]}),
-            build(:minischedule_piece, %{
+            build(:piece, %{start_time: 0, end_time: 100, trips: ["trip1", "trip2"]}),
+            build(:piece, %{
               start_time: 200,
               end_time: 300,
               trips: [build(:trip, %{id: "trip3"})]
@@ -120,8 +120,8 @@ defmodule Schedule.Minischedule.RunTest do
       run =
         build(:minischedule_run, %{
           activities: [
-            build(:minischedule_piece, %{start_time: 0, end_time: 100, trips: ["trip1", "trip2"]}),
-            build(:minischedule_piece, %{
+            build(:piece, %{start_time: 0, end_time: 100, trips: ["trip1", "trip2"]}),
+            build(:piece, %{
               start_time: 200,
               end_time: 300,
               trips: [build(:as_directed, %{start_time: 210, end_time: 290})]

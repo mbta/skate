@@ -24,7 +24,7 @@ defmodule Schedule.Minischedule.BlockTest do
       }
 
       stored_piece =
-        build(:minischedule_piece,
+        build(:piece,
           schedule_id: "schedule",
           run_id: "run",
           block_id: "block",

@@ -186,7 +186,7 @@ defmodule Realtime.VehiclesTest do
 
       run =
         build(:minischedule_run, %{
-          activities: [build(:minischedule_piece, %{start_time: 0, end_time: 0})]
+          activities: [build(:piece, %{start_time: 0, end_time: 0})]
         })
 
       # 2019-12-20 00:00:00
@@ -250,7 +250,7 @@ defmodule Realtime.VehiclesTest do
 
       run =
         build(:minischedule_run, %{
-          activities: [build(:minischedule_piece, %{start_time: 0, end_time: 0})]
+          activities: [build(:piece, %{start_time: 0, end_time: 0})]
         })
 
       # 2019-12-20 00:00:00
@@ -291,7 +291,7 @@ defmodule Realtime.VehiclesTest do
 
       run =
         build(:minischedule_run, %{
-          activities: [build(:minischedule_piece, %{start_time: 0, end_time: 1})]
+          activities: [build(:piece, %{start_time: 0, end_time: 1})]
         })
 
       # 2019-12-20 00:00:00
@@ -389,7 +389,7 @@ defmodule Realtime.VehiclesTest do
 
       run =
         build(:minischedule_run, %{
-          activities: [build(:minischedule_piece, %{start_time: 1, end_time: 4})]
+          activities: [build(:piece, %{start_time: 1, end_time: 4})]
         })
 
       # 2019-12-20 00:00:00
@@ -542,19 +542,19 @@ defmodule Realtime.VehiclesTest do
       run_1 =
         build(:minischedule_run, %{
           id: "run_1",
-          activities: [build(:minischedule_piece, %{start_time: 4000, end_time: 4100})]
+          activities: [build(:piece, %{start_time: 4000, end_time: 4100})]
         })
 
       run_2 =
         build(:minischedule_run, %{
           id: "run_2",
-          activities: [build(:minischedule_piece, %{start_time: 2000, end_time: 2100})]
+          activities: [build(:piece, %{start_time: 2000, end_time: 2100})]
         })
 
       run_3 =
         build(:minischedule_run, %{
           id: "run_3",
-          activities: [build(:minischedule_piece, %{start_time: 6000, end_time: 6100})]
+          activities: [build(:piece, %{start_time: 6000, end_time: 6100})]
         })
 
       reassign_env(:skate, :trips_by_id_fn, fn _ ->

@@ -53,7 +53,7 @@ defmodule Skate.Factory do
     }
   end
 
-  def minischedule_piece_factory do
+  def piece_factory do
     %Schedule.Piece{
       schedule_id: "schedule",
       run_id: "run",
@@ -73,7 +73,7 @@ defmodule Skate.Factory do
       schedule_id: "schedule",
       id: "block",
       pieces: [
-        build(:minischedule_piece)
+        build(:piece)
       ]
     }
   end
@@ -84,7 +84,7 @@ defmodule Skate.Factory do
       service_id: "service",
       id: "run",
       activities: [
-        build(:minischedule_piece)
+        build(:piece)
       ]
     }
   end
