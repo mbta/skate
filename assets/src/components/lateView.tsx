@@ -120,7 +120,9 @@ const LateView = (): ReactElement<HTMLElement> => {
                 <th className="m-late-view__adherence-header">Adherence</th>
                 <th className="m-late-view__route-header">Route</th>
                 <th className="m-late-view__vehicle-header">Vehicle</th>
-                <th className="m-late-view__run-number-header">Run</th>
+                <th className="m-late-view__run-number-header m-late-view__run-number-header--late">
+                  Run
+                </th>
                 <th className="m-late-view__operator-header">Driver</th>
               </tr>
             </thead>
@@ -169,7 +171,7 @@ const LateGhostRow = ({
         </span>
       </td>
       <td />
-      <td className="m-late-view__run-number-cell">
+      <td className="m-late-view__run-number-cell m-late-view__run-number-cell--late">
         <a
           className="m-late-view__run-link"
           onClick={() => dispatch(selectVehicle(ghost))}
@@ -209,7 +211,7 @@ const LateBusRow = ({
         </span>
       </td>
       <td>{vehicle.label}</td>
-      <td className="m-late-view__run-number-cell">
+      <td className="m-late-view__run-number-cell m-late-view__run-number-cell--late">
         <a
           className="m-late-view__run-link"
           onClick={() => dispatch(selectVehicle(vehicle))}
