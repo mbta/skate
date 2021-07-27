@@ -1,6 +1,7 @@
 defmodule Schedule.Swing do
   alias Schedule.Hastus
   alias Schedule.Gtfs.Service
+  alias Schedule.Piece
   alias Schedule.Route
   alias Schedule.Trip
   alias Schedule.Minischedule
