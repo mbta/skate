@@ -217,7 +217,7 @@ const showAppcue = (appcueId: string): void => {
 
 const readDispatcherFlag = (): boolean => {
   const data = appData()
-  if (!data || data === undefined || data.dispatcherFlag === undefined) {
+  if (!data) {
     return false
   }
 
