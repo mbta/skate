@@ -24,6 +24,20 @@ defmodule SkateWeb.PageControllerTest do
     end
 
     @tag :authenticated
+    test "doesn't set dispatcher flag when not logged in as a dispatcher", %{conn: conn} do
+      conn = get(conn, "/")
+
+      refute conn.assigns.dispatcher_flag
+    end
+
+    @tag :authenticated_dispatcher
+    test "does set dispatcher flag when logged in as a dispatcher", %{conn: conn} do
+      conn = get(conn, "/")
+
+      assert conn.assigns.dispatcher_flag
+    end
+
+    @tag :authenticated
     test "/settings returns 200", %{conn: conn} do
       conn = get(conn, "/settings")
 
