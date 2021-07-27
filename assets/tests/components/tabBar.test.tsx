@@ -13,6 +13,7 @@ import {
   OpenView,
 } from "../../src/state"
 import featureIsEnabled from "../../src/laboratoryFeatures"
+import appData from "../../src/appData"
 
 window.Appcues = {
   identify: jest.fn(),
@@ -29,6 +30,11 @@ window.drift = {
 }
 
 jest.mock("../../src/laboratoryFeatures", () => ({
+  __esModule: true,
+  default: jest.fn(() => true),
+}))
+
+jest.mock("../../src/appData", () => ({
   __esModule: true,
   default: jest.fn(() => true),
 }))
@@ -50,6 +56,25 @@ describe("tabBar", () => {
     ;(featureIsEnabled as jest.Mock).mockImplementationOnce(
       (feature) => feature === "late_view"
     )
+
+    const tree = renderer
+      .create(
+        <BrowserRouter>
+          <TabBar pickerContainerIsVisible={true} openView={OpenView.None} />
+        </BrowserRouter>
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  it("renders with late view icon when dispatcher flag is set", () => {
+    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => false)
+    ;(appData as jest.Mock).mockImplementation(() => {
+      return {
+        dispatcherFlag: "true",
+      }
+    })
 
     const tree = renderer
       .create(
