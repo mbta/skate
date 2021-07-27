@@ -1,4 +1,4 @@
-defmodule Schedule.Minischedule.AsDirected do
+defmodule Schedule.AsDirected do
   alias Schedule.Hastus.Place
 
   @type t :: %__MODULE__{

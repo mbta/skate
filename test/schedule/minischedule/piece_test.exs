@@ -1,9 +1,9 @@
-defmodule Schedule.Minischedule.PieceTest do
+defmodule Schedule.PieceTest do
   use ExUnit.Case, async: true
 
   alias Schedule.Gtfs.StopTime
-  alias Schedule.Minischedule.AsDirected
-  alias Schedule.Minischedule.Piece
+  alias Schedule.AsDirected
+  alias Schedule.Piece
   alias Schedule.Trip
 
   import Skate.Factory

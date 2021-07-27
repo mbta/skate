@@ -1,7 +1,7 @@
 defmodule Schedule.Minischedule.BlockTest do
   use ExUnit.Case, async: true
 
-  alias Schedule.Minischedule.Piece
+  alias Schedule.Piece
   alias Schedule.Minischedule.Block
   alias Schedule.Trip
 
@@ -24,7 +24,7 @@ defmodule Schedule.Minischedule.BlockTest do
       }
 
       stored_piece =
-        build(:minischedule_piece,
+        build(:piece,
           schedule_id: "schedule",
           run_id: "run",
           block_id: "block",

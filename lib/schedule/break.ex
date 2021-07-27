@@ -1,4 +1,4 @@
-defmodule Schedule.Minischedule.Break do
+defmodule Schedule.Break do
   alias Schedule.Hastus.Activity
   alias Schedule.Hastus.Place
 

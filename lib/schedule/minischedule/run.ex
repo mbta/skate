@@ -2,9 +2,9 @@ defmodule Schedule.Minischedule.Run do
   alias Schedule.Gtfs.Service
   alias Schedule.Gtfs.Timepoint
   alias Schedule.Trip
-  alias Schedule.Minischedule.Break
-  alias Schedule.Minischedule.Piece
-  alias Schedule.Minischedule.AsDirected
+  alias Schedule.Break
+  alias Schedule.Piece
+  alias Schedule.AsDirected
   alias Schedule.Hastus.Run
 
   @type key :: {Schedule.Hastus.Schedule.id(), Run.id()}

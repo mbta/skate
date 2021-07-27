@@ -2,7 +2,7 @@ defmodule Schedule.Minischedule.Block do
   alias Schedule.Block
   alias Schedule.Gtfs.Timepoint
   alias Schedule.Trip
-  alias Schedule.Minischedule.Piece
+  alias Schedule.Piece
   alias Schedule.Hastus.Schedule
 
   @type id :: Block.id()

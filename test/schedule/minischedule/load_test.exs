@@ -4,11 +4,11 @@ defmodule Schedule.Minischedule.LoadTest do
 
   alias Schedule.Hastus.Activity
   alias Schedule.Hastus.Trip
-  alias Schedule.Minischedule.AsDirected
+  alias Schedule.AsDirected
   alias Schedule.Minischedule.Block
-  alias Schedule.Minischedule.Break
+  alias Schedule.Break
   alias Schedule.Minischedule.Load
-  alias Schedule.Minischedule.Piece
+  alias Schedule.Piece
   alias Schedule.Minischedule.Run
 
   describe "from_hastus/3" do

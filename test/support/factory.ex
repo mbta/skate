@@ -53,8 +53,8 @@ defmodule Skate.Factory do
     }
   end
 
-  def minischedule_piece_factory do
-    %Schedule.Minischedule.Piece{
+  def piece_factory do
+    %Schedule.Piece{
       schedule_id: "schedule",
       run_id: "run",
       start_time: 50,
@@ -73,7 +73,7 @@ defmodule Skate.Factory do
       schedule_id: "schedule",
       id: "block",
       pieces: [
-        build(:minischedule_piece)
+        build(:piece)
       ]
     }
   end
@@ -84,13 +84,13 @@ defmodule Skate.Factory do
       service_id: "service",
       id: "run",
       activities: [
-        build(:minischedule_piece)
+        build(:piece)
       ]
     }
   end
 
   def as_directed_factory do
-    %Schedule.Minischedule.AsDirected{
+    %Schedule.AsDirected{
       kind: :wad,
       start_time: 1,
       end_time: 2,

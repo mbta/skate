@@ -84,16 +84,16 @@ defmodule Realtime.Ghost do
         piece.start_time < now_time_of_day and piece.end_time > now_time_of_day
       end)
       |> case do
-        %Schedule.Minischedule.Piece{start_mid_route?: %{trip: trip}, trips: trips} ->
+        %Schedule.Piece{start_mid_route?: %{trip: trip}, trips: trips} ->
           [trip | trips]
 
-        %Schedule.Minischedule.Piece{trips: trips} ->
+        %Schedule.Piece{trips: trips} ->
           trips
 
         _ ->
           []
       end
-      |> Enum.reject(&match?(%Schedule.Minischedule.AsDirected{}, &1))
+      |> Enum.reject(&match?(%Schedule.AsDirected{}, &1))
       |> Application.get_env(:skate, :trips_by_id_fn, &Schedule.trips_by_id/1).()
       |> Map.values()
       |> Enum.sort_by(fn trip -> trip.start_time end)
