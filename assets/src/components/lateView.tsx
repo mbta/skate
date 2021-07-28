@@ -1,7 +1,7 @@
 import React, { Dispatch, ReactElement, useContext } from "react"
 import DrawerTab from "../components/drawerTab"
 import RoutesContext from "../contexts/routesContext"
-import { SocketContext } from "../contexts/socketContext"
+import { VehiclesByRouteIdContext } from "../contexts/vehiclesByRouteIdContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import {
   bangIcon,
@@ -12,10 +12,10 @@ import {
   userXIcon,
 } from "../helpers/icon"
 import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
-import useVehicles from "../hooks/useVehicles"
 import { flatten } from "../helpers/array"
 import { isVehicle, isGhost } from "../models/vehicle"
-import { Vehicle, Ghost } from "../realtime"
+import { Vehicle, Ghost, VehicleOrGhost } from "../realtime"
+import { ByRouteId } from "../schedule"
 import { Action, selectVehicle, toggleLateView } from "../state"
 import {
   secondsToMinutes,
@@ -39,10 +39,11 @@ const compareGhosts = (a: Ghost, b: Ghost): number => {
 }
 
 const LateView = (): ReactElement<HTMLElement> => {
-  const [{ selectedRouteIds }, dispatch] = useContext(StateDispatchContext)
-  const { socket } = useContext(SocketContext)
+  const [, dispatch] = useContext(StateDispatchContext)
 
-  const vehiclesByRouteId = useVehicles(socket, selectedRouteIds)
+  const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = useContext(
+    VehiclesByRouteIdContext
+  )
 
   const vehiclesOrGhosts = flatten(Object.values(vehiclesByRouteId))
 

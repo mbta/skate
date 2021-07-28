@@ -32,7 +32,7 @@ describe("App", () => {
   })
 
   test("shows data outage banner if there's a data outage", () => {
-    ;(useDataStatus as jest.Mock).mockImplementationOnce(() => "outage")
+    ;(useDataStatus as jest.Mock).mockImplementation(() => "outage")
     const tree = renderer.create(<App />).toJSON()
     expect(tree).toMatchSnapshot()
   })
