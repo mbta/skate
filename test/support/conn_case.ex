@@ -57,6 +57,18 @@ defmodule SkateWeb.ConnCase do
 
           {conn, user}
 
+        tags[:authenticated_dispatcher] ->
+          user = "test_user"
+
+          conn =
+            Phoenix.ConnTest.build_conn()
+            |> init_test_session(%{})
+            |> Guardian.Plug.sign_in(SkateWeb.AuthManager, user, %{
+              "groups" => ["skate-dispatcher"]
+            })
+
+          {conn, user}
+
         true ->
           {Phoenix.ConnTest.build_conn(), nil}
       end

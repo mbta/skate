@@ -30,4 +30,22 @@ defmodule SkateWeb.AuthManagerTest do
       assert AuthManager.claims_access_level(%{}) == :general
     end
   end
+
+  describe "claims_grant_dispatcher_access?/1" do
+    test "grants dispatcher access when in dispatcher group" do
+      assert AuthManager.claims_grant_dispatcher_access?(%{"groups" => ["skate-dispatcher"]})
+    end
+
+    test "doesn't grant access with nil groups" do
+      refute AuthManager.claims_grant_dispatcher_access?(%{"groups" => nil})
+    end
+
+    test "doesn't grant access with non-dispatcher groups" do
+      refute AuthManager.claims_grant_dispatcher_access?(%{"groups" => ["other-group"]})
+    end
+
+    test "doesn't grant access with no group information present" do
+      refute AuthManager.claims_grant_dispatcher_access?(%{})
+    end
+  end
 end

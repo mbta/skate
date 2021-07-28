@@ -4,6 +4,7 @@ defmodule SkateWeb.AuthManager do
   @type access_level :: :none | :general | :admin
 
   @skate_admin_group "skate-admin"
+  @skate_dispatcher_group "skate-dispatcher"
 
   def subject_for_token(resource, _claims) do
     {:ok, resource}
@@ -41,5 +42,14 @@ defmodule SkateWeb.AuthManager do
 
   def claims_access_level(_claims) do
     :general
+  end
+
+  @spec claims_grant_dispatcher_access?(Guardian.Token.claims()) :: boolean()
+  def claims_grant_dispatcher_access?(%{"groups" => groups}) do
+    not is_nil(groups) and @skate_dispatcher_group in groups
+  end
+
+  def claims_grant_dispatcher_access?(_claims) do
+    false
   end
 end
