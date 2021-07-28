@@ -21,9 +21,9 @@ const NoWaiverBanner = () => (
         Unknown Ghost Bus - No Dispatcher Note
       </div>
     </div>
-    A ghost bus or dropped trip has been automatically detected on this route.
-    Please follow up with dispatch as needed, if a Dispatcher Note is generated
-    - it will appear here.
+    A ghost bus or dropped trip has been automatically detected on this route
+    but no reason has been logged yet. Once a dispatcher generates a note, it
+    will appear here.
   </div>
 )
 
