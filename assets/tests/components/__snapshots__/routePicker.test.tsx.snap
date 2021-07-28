@@ -50,10 +50,10 @@ exports[`RoutePicker renders a list of routes 1`] = `
       <select
         className="m-route-filter__type"
         onChange={[Function]}
-        value="id"
+        value="name"
       >
         <option
-          value="id"
+          value="name"
         >
           Route ID
         </option>
@@ -172,10 +172,10 @@ exports[`RoutePicker renders a loading/empty state 1`] = `
       <select
         className="m-route-filter__type"
         onChange={[Function]}
-        value="id"
+        value="name"
       >
         <option
-          value="id"
+          value="name"
         >
           Route ID
         </option>

@@ -39,10 +39,10 @@ exports[`LadderPage renders the empty state 1`] = `
         <select
           className="m-route-filter__type"
           onChange={[Function]}
-          value="id"
+          value="name"
         >
           <option
-            value="id"
+            value="name"
           >
             Route ID
           </option>
@@ -129,10 +129,10 @@ exports[`LadderPage renders with routes 1`] = `
         <select
           className="m-route-filter__type"
           onChange={[Function]}
-          value="id"
+          value="name"
         >
           <option
-            value="id"
+            value="name"
           >
             Route ID
           </option>
@@ -288,10 +288,10 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
         <select
           className="m-route-filter__type"
           onChange={[Function]}
-          value="id"
+          value="name"
         >
           <option
-            value="id"
+            value="name"
           >
             Route ID
           </option>
@@ -488,10 +488,10 @@ exports[`LadderPage renders with timepoints 1`] = `
         <select
           className="m-route-filter__type"
           onChange={[Function]}
-          value="id"
+          value="name"
         >
           <option
-            value="id"
+            value="name"
           >
             Route ID
           </option>
@@ -924,10 +924,10 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
         <select
           className="m-route-filter__type"
           onChange={[Function]}
-          value="id"
+          value="name"
         >
           <option
-            value="id"
+            value="name"
           >
             Route ID
           </option>
