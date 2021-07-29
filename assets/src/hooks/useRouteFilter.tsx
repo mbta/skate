@@ -3,7 +3,7 @@ import { useState } from "react"
 import { circleXIcon } from "../helpers/icon"
 import { Route } from "../schedule.d"
 
-type FilterType = "id"
+type FilterType = "name"
 
 export interface RouteFilterData {
   filterType: FilterType
@@ -13,10 +13,9 @@ export interface RouteFilterData {
   clearTextInput: () => void
 }
 
-const isFilterType = (str: string): str is FilterType => str === "id"
+const isFilterType = (str: string): str is FilterType => str === "name"
 
-const byRouteIdOrName = (filterText: string) => (route: Route) =>
-  route.id.toLowerCase().includes(filterText.toLowerCase()) ||
+const byRouteName = (filterText: string) => (route: Route) =>
   route.name.toLowerCase().includes(filterText.toLowerCase())
 
 export const filterRoutes = (
@@ -24,13 +23,13 @@ export const filterRoutes = (
   { filterType, filterText }: { filterType: FilterType; filterText: string }
 ): Route[] => {
   switch (filterType) {
-    case "id":
-      return allRoutes.filter(byRouteIdOrName(filterText))
+    case "name":
+      return allRoutes.filter(byRouteName(filterText))
   }
 }
 
 export const useRouteFilter = (): RouteFilterData => {
-  const initialFilterType: FilterType = "id"
+  const initialFilterType: FilterType = "name"
   const [filterType, setFilterType] = useState(initialFilterType)
   const [filterText, setFilterText] = useState("")
 
@@ -76,7 +75,7 @@ export const RouteFilter = ({
         value={filterType}
         onChange={handleTypeChange}
       >
-        <option value="id">Route ID</option>
+        <option value="name">Route ID</option>
       </select>
       <div className="m-route-filter__text">
         <input

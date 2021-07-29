@@ -223,10 +223,10 @@ exports[`App renders 1`] = `
             <select
               className="m-route-filter__type"
               onChange={[Function]}
-              value="id"
+              value="name"
             >
               <option
-                value="id"
+                value="name"
               >
                 Route ID
               </option>
@@ -505,10 +505,10 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
             <select
               className="m-route-filter__type"
               onChange={[Function]}
-              value="id"
+              value="name"
             >
               <option
-                value="id"
+                value="name"
               >
                 Route ID
               </option>
