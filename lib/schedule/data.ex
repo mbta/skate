@@ -330,10 +330,10 @@ defmodule Schedule.Data do
     stop_times_by_id = StopTime.parse(gtfs_files["stop_times.txt"], gtfs_trip_ids)
     trips_by_id = Trip.merge_trips(gtfs_trips, hastus_trips, stop_times_by_id)
 
-    %{
-      runs: minischedule_runs,
-      blocks: minischedule_blocks
-    } = Schedule.Minischedule.Load.from_hastus(hastus_activities, hastus_trips, trips_by_id)
+    minischedule_runs =
+      Schedule.Minischedule.Load.runs_from_hastus(hastus_activities, hastus_trips, trips_by_id)
+
+    minischedule_blocks = Schedule.Minischedule.Load.blocks_from_runs(minischedule_runs)
 
     runs =
       minischedule_runs

@@ -147,7 +147,7 @@ defmodule Skate.Factory do
       start_place: "place1",
       end_place: "place2",
       activity_type: "Operator",
-      partial_block_id: "lock"
+      partial_block_id: "block"
     }
   end
 end

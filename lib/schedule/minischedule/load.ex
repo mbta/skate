@@ -13,9 +13,9 @@ defmodule Schedule.Minischedule.Load do
   alias Schedule.Minischedule.{Block, Run}
   alias Schedule.Piece
 
-  @spec from_hastus([Activity.t()], [Trip.t()], Schedule.Trip.by_id()) ::
-          %{runs: Run.by_id(), blocks: Block.by_id()}
-  def from_hastus(activities, trips, trips_by_id) do
+  @spec runs_from_hastus([Activity.t()], [Trip.t()], Schedule.Trip.by_id()) ::
+          Run.by_id()
+  def runs_from_hastus(activities, trips, trips_by_id) do
     activities_by_run = Enum.group_by(activities, &Activity.run_key/1)
     trips_by_run = Enum.group_by(trips, &Trip.run_key/1)
     activities_and_trips_by_run = Helpers.zip_maps([activities_by_run, trips_by_run])
@@ -30,14 +30,17 @@ defmodule Schedule.Minischedule.Load do
         end
       )
 
-    runs_by_id = Map.new(runs, fn run -> {Run.key(run), run} end)
-    pieces = Enum.flat_map(runs, &Run.pieces/1)
-    blocks_by_id = blocks_from_pieces(pieces)
+    Map.new(runs, fn run -> {Run.key(run), run} end)
+  end
 
-    %{
-      runs: runs_by_id,
-      blocks: blocks_by_id
-    }
+  @spec blocks_from_runs(Run.by_id()) :: Block.by_id()
+  def blocks_from_runs(runs_by_key) do
+    pieces =
+      runs_by_key
+      |> Map.values()
+      |> Enum.flat_map(&Run.pieces/1)
+
+    blocks_from_pieces(pieces)
   end
 
   @spec run(

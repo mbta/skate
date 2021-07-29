@@ -5,39 +5,32 @@ defmodule Schedule.Minischedule.LoadTest do
   alias Schedule.Hastus.Activity
   alias Schedule.Hastus.Trip
   alias Schedule.AsDirected
-  alias Schedule.Minischedule.Block
   alias Schedule.Break
   alias Schedule.Minischedule.Load
   alias Schedule.Piece
   alias Schedule.Minischedule.Run
 
-  describe "from_hastus/3" do
-    test "trips become pieces in run and block" do
+  describe "runs_from_hastus/3" do
+    test "trips become pieces in run" do
       activities = [
-        %Activity{
-          schedule_id: "schedule",
-          run_id: "run",
+        build(
+          :hastus_activity,
           start_time: 1,
           end_time: 2,
           start_place: "start_place",
-          end_place: "end_place",
-          activity_type: "Operator",
-          partial_block_id: "block"
-        }
+          end_place: "end_place"
+        )
       ]
 
       trips = [
-        %Trip{
-          schedule_id: "schedule",
-          run_id: "run",
-          block_id: "block",
+        build(
+          :hastus_trip,
           start_time: 1,
           end_time: 2,
           start_place: "start_place",
           end_place: "end_place",
-          route_id: nil,
           trip_id: "trip"
-        }
+        )
       ]
 
       expected_piece = %Piece{
@@ -51,61 +44,49 @@ defmodule Schedule.Minischedule.LoadTest do
         end_place: "end_place"
       }
 
-      assert Load.from_hastus(activities, trips, %{}) == %{
-               runs: %{
-                 {"schedule", "run"} => %Run{
-                   schedule_id: "schedule",
-                   id: "run",
-                   activities: [expected_piece]
-                 }
-               },
-               blocks: %{
-                 {"schedule", "block"} => %Block{
-                   schedule_id: "schedule",
-                   id: "block",
-                   pieces: [expected_piece]
-                 }
+      assert Load.runs_from_hastus(activities, trips, %{}) == %{
+               {"schedule", "run"} => %Run{
+                 schedule_id: "schedule",
+                 id: "run",
+                 activities: [expected_piece]
                }
              }
     end
 
     test "can have multiple pieces in run and block" do
       activities = [
-        %Activity{
-          schedule_id: "schedule",
+        build(
+          :hastus_activity,
           run_id: "run_1",
           start_time: 0,
           end_time: 0,
           start_place: "",
           end_place: "",
-          activity_type: "Operator",
           partial_block_id: "block_1"
-        },
-        %Activity{
-          schedule_id: "schedule",
+        ),
+        build(
+          :hastus_activity,
           run_id: "run_1",
           start_time: 0,
           end_time: 0,
           start_place: "",
           end_place: "",
-          activity_type: "Operator",
           partial_block_id: "block_2"
-        },
-        %Activity{
-          schedule_id: "schedule",
+        ),
+        build(
+          :hastus_activity,
           run_id: "run_2",
           start_time: 0,
           end_time: 0,
           start_place: "",
           end_place: "",
-          activity_type: "Operator",
           partial_block_id: "block_1"
-        }
+        )
       ]
 
       trips = [
-        %Trip{
-          schedule_id: "schedule",
+        build(
+          :hastus_trip,
           run_id: "run_1",
           block_id: "block_1",
           start_time: 0,
@@ -114,9 +95,9 @@ defmodule Schedule.Minischedule.LoadTest do
           end_place: "",
           route_id: nil,
           trip_id: "trip_11"
-        },
-        %Trip{
-          schedule_id: "schedule",
+        ),
+        build(
+          :hastus_trip,
           run_id: "run_1",
           block_id: "block_2",
           start_time: 0,
@@ -125,9 +106,9 @@ defmodule Schedule.Minischedule.LoadTest do
           end_place: "",
           route_id: nil,
           trip_id: "trip_12"
-        },
-        %Trip{
-          schedule_id: "schedule",
+        ),
+        build(
+          :hastus_trip,
           run_id: "run_2",
           block_id: "block_1",
           start_time: 0,
@@ -136,37 +117,22 @@ defmodule Schedule.Minischedule.LoadTest do
           end_place: "",
           route_id: nil,
           trip_id: "trip_21"
-        }
+        )
       ]
 
       assert %{
-               runs: %{
-                 {"schedule", "run_1"} => %Run{
-                   activities: [
-                     %Piece{trips: ["trip_11"]},
-                     %Piece{trips: ["trip_12"]}
-                   ]
-                 },
-                 {"schedule", "run_2"} => %Run{
-                   activities: [
-                     %Piece{trips: ["trip_21"]}
-                   ]
-                 }
+               {"schedule", "run_1"} => %Run{
+                 activities: [
+                   %Piece{trips: ["trip_11"]},
+                   %Piece{trips: ["trip_12"]}
+                 ]
                },
-               blocks: %{
-                 {"schedule", "block_1"} => %Block{
-                   pieces: [
-                     %Piece{trips: ["trip_11"]},
-                     %Piece{trips: ["trip_21"]}
-                   ]
-                 },
-                 {"schedule", "block_2"} => %Block{
-                   pieces: [
-                     %Piece{trips: ["trip_12"]}
-                   ]
-                 }
+               {"schedule", "run_2"} => %Run{
+                 activities: [
+                   %Piece{trips: ["trip_21"]}
+                 ]
                }
-             } = Load.from_hastus(activities, trips, %{})
+             } = Load.runs_from_hastus(activities, trips, %{})
     end
 
     test "a different schedule_id means a different run or block" do
@@ -219,19 +185,13 @@ defmodule Schedule.Minischedule.LoadTest do
       ]
 
       assert %{
-               runs: %{
-                 {"schedule_1", "run"} => %Run{
-                   activities: [%Piece{trips: ["trip_1"]}]
-                 },
-                 {"schedule_2", "run"} => %Run{
-                   activities: [%Piece{trips: ["trip_2"]}]
-                 }
+               {"schedule_1", "run"} => %Run{
+                 activities: [%Piece{trips: ["trip_1"]}]
                },
-               blocks: %{
-                 {"schedule_1", "block"} => %Block{pieces: [%Piece{trips: ["trip_1"]}]},
-                 {"schedule_2", "block"} => %Block{pieces: [%Piece{trips: ["trip_2"]}]}
+               {"schedule_2", "run"} => %Run{
+                 activities: [%Piece{trips: ["trip_2"]}]
                }
-             } = Load.from_hastus(activities, trips, %{})
+             } = Load.runs_from_hastus(activities, trips, %{})
     end
 
     test "labels mid route swings" do
@@ -321,28 +281,16 @@ defmodule Schedule.Minischedule.LoadTest do
         end_mid_route?: false
       }
 
-      assert Load.from_hastus(activities, trips, %{}) == %{
-               runs: %{
-                 {"schedule", "run1"} => %Run{
-                   schedule_id: "schedule",
-                   id: "run1",
-                   activities: [expected_piece1]
-                 },
-                 {"schedule", "run2"} => %Run{
-                   schedule_id: "schedule",
-                   id: "run2",
-                   activities: [expected_piece2]
-                 }
+      assert Load.runs_from_hastus(activities, trips, %{}) == %{
+               {"schedule", "run1"} => %Run{
+                 schedule_id: "schedule",
+                 id: "run1",
+                 activities: [expected_piece1]
                },
-               blocks: %{
-                 {"schedule", "block"} => %Block{
-                   schedule_id: "schedule",
-                   id: "block",
-                   pieces: [
-                     expected_piece1,
-                     expected_piece2
-                   ]
-                 }
+               {"schedule", "run2"} => %Run{
+                 schedule_id: "schedule",
+                 id: "run2",
+                 activities: [expected_piece2]
                }
              }
     end
@@ -799,13 +747,16 @@ defmodule Schedule.Minischedule.LoadTest do
 
       trips = [
         build(:hastus_trip),
-        build(:hastus_trip, %{
-          start_time: 103,
-          end_time: 105,
-          start_place: "place2",
-          end_place: "place3",
-          trip_id: "trip2"
-        })
+        build(
+          :hastus_trip,
+          %{
+            start_time: 103,
+            end_time: 105,
+            start_place: "place2",
+            end_place: "place3",
+            trip_id: "trip2"
+          }
+        )
       ]
 
       trips_by_id = %{
@@ -846,13 +797,16 @@ defmodule Schedule.Minischedule.LoadTest do
 
       trips = [
         build(:hastus_trip),
-        build(:hastus_trip, %{
-          start_time: 103,
-          end_time: 105,
-          start_place: "place2",
-          end_place: "place3",
-          trip_id: "trip2"
-        })
+        build(
+          :hastus_trip,
+          %{
+            start_time: 103,
+            end_time: 105,
+            start_place: "place2",
+            end_place: "place3",
+            trip_id: "trip2"
+          }
+        )
       ]
 
       trips_by_id = %{
