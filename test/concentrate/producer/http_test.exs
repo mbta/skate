@@ -146,7 +146,7 @@ defmodule Concentrate.Producer.HTTPTest do
       |> add_response(fn conn ->
         assert get_req_header(conn, "if-modified-since") == ["last mod"]
         assert get_req_header(conn, "if-none-match") == []
-        send_resp(conn, 304, "not modified")
+        send_resp(conn, 304, "")
       end)
       |> add_response(fn conn ->
         assert get_req_header(conn, "if-modified-since") == ["last mod"]
@@ -172,7 +172,7 @@ defmodule Concentrate.Producer.HTTPTest do
       end)
       |> add_response(fn conn ->
         assert get_req_header(conn, "if-none-match") == ["tag"]
-        send_resp(conn, 304, "not modified")
+        send_resp(conn, 304, "")
       end)
       |> add_response(fn conn ->
         assert get_req_header(conn, "if-none-match") == ["tag"]
