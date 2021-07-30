@@ -1,7 +1,6 @@
 defmodule SkateWeb.Router do
   use SkateWeb, :router
-  use Plug.ErrorHandler
-  use Sentry.Plug
+  use Sentry.PlugCapture
 
   pipeline :redirect_prod_http do
     if Application.get_env(:skate, :redirect_http?) do
@@ -34,6 +33,7 @@ defmodule SkateWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug(Sentry.PlugContext)
   end
 
   scope "/auth", SkateWeb do
