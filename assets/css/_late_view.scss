@@ -210,9 +210,9 @@ $late-view-width: 60rem;
   fill: $color-secondary-dark;
 }
 
-.m-late-view__run-number-header--late, .m-late-view__run-number-cell--late {
+.m-late-view__run-number-header--late,
+.m-late-view__run-number-cell--late {
   display: flex;
   justify-content: flex-end;
   padding-right: 1.5rem;
 }
-
