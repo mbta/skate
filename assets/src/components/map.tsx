@@ -20,6 +20,11 @@ import {
 import Control from "react-leaflet-control"
 // @ts-ignore
 import FullscreenControl from "react-leaflet-fullscreen"
+import {
+  Map as PigeonMap,
+  ZoomControl as PigeonZoomControl,
+  Overlay,
+} from "pigeon-maps"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
 import vehicleLabelString from "../helpers/vehicleLabel"
@@ -28,6 +33,7 @@ import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
 import { Shape } from "../schedule"
 import { selectVehicle } from "../state"
 import { UserSettings } from "../userSettings"
+import featureIsEnabled from "../laboratoryFeatures"
 
 export interface Props {
   vehicles: Vehicle[]
@@ -44,7 +50,7 @@ export const defaultCenter: LatLngExpression = {
   lng: -71.05891,
 }
 
-const makeVehicleIcon = (
+const makeLeafletVehicleIcon = (
   vehicle: Vehicle,
   isPrimary: boolean,
   userSettings: UserSettings
@@ -76,7 +82,47 @@ const makeVehicleIcon = (
   })
 }
 
-const makeLabelIcon = (
+const PigeonVehicleIcon = ({
+  vehicle,
+  isPrimary,
+  userSettings,
+  onClick,
+}: {
+  vehicle: Vehicle
+  isPrimary: boolean
+  userSettings: UserSettings
+  onClick: (e: React.MouseEvent<SVGSVGElement>) => void
+}): ReactElement<HTMLDivElement> => {
+  const centerX = 12
+  const centerY = 12
+
+  return (
+    <div className="m-vehicle-map__icon">
+      <svg
+        height="24"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+        onClick={onClick}
+      >
+        <path
+          className={className(
+            statusClasses(
+              drawnStatus(vehicle),
+              userSettings.vehicleAdherenceColors
+            )
+          )}
+          d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+          transform={`scale(${isPrimary ? 1.0 : 0.8}) rotate(${
+            vehicle.bearing
+          }) translate(${-centerX}, ${-centerY})`}
+        />
+      </svg>
+    </div>
+  )
+}
+
+const makeLeafletLabelIcon = (
   vehicle: Vehicle,
   isPrimary: boolean,
   settings: UserSettings,
@@ -107,7 +153,62 @@ const makeLabelIcon = (
   })
 }
 
-const Vehicle = ({
+const PigeonVehicleLabel = ({
+  vehicle,
+  isPrimary,
+  settings,
+  selectedVehicleId,
+}: {
+  vehicle: Vehicle
+  isPrimary: boolean
+  settings: UserSettings
+  selectedVehicleId?: VehicleId
+}): ReactElement<HTMLDivElement> => {
+  const labelString = vehicleLabelString(vehicle, settings)
+  const labelBackgroundHeight = isPrimary ? 16 : 12
+  const labelBackgroundWidth =
+    labelString.length <= 4 ? (isPrimary ? 40 : 30) : isPrimary ? 62 : 40
+  const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
+
+  return (
+    <div
+      className={className([
+        "m-vehicle-map__label",
+        isPrimary ? "primary" : "secondary",
+        selectedClass,
+      ])}
+    >
+      <svg
+        viewBox={`0 0 ${labelBackgroundWidth} ${labelBackgroundHeight}`}
+        width={labelBackgroundWidth}
+        height={labelBackgroundHeight}
+        transform={`translate(${-(labelBackgroundWidth / 2)}, ${
+          isPrimary ? -16 : -10
+        })`}
+      >
+        <rect
+          className="m-vehicle-icon__label-background"
+          width="100%"
+          height="100%"
+          rx="5.5px"
+          ry="5.5px"
+        />
+        <text
+          className="m-vehicle-icon__label"
+          x="50%"
+          y="50%"
+          textAnchor="middle"
+          dominantBaseline="central"
+        >
+          {labelString}
+        </text>
+      </svg>
+    </div>
+  )
+  // iconAnchor: [labelBackgroundWidth / 2, isPrimary ? -16 : -10],
+}
+
+const LeafletVehicle = ({
   vehicle,
   isPrimary,
 }: {
@@ -120,12 +221,12 @@ const Vehicle = ({
     : // tslint:disable-next-line: no-empty
       () => {}
   const position: LatLngExpression = [vehicle.latitude, vehicle.longitude]
-  const vehicleIcon: Leaflet.DivIcon = makeVehicleIcon(
+  const vehicleIcon: Leaflet.DivIcon = makeLeafletVehicleIcon(
     vehicle,
     isPrimary,
     appState.userSettings
   )
-  const labelIcon: Leaflet.DivIcon = makeLabelIcon(
+  const labelIcon: Leaflet.DivIcon = makeLeafletLabelIcon(
     vehicle,
     isPrimary,
     appState.userSettings,
@@ -150,7 +251,39 @@ const Vehicle = ({
   )
 }
 
-const makeTrainVehicleIcon = ({ bearing }: TrainVehicle): Leaflet.DivIcon => {
+const PigeonVehicle = ({
+  vehicle,
+  isPrimary,
+}: {
+  vehicle: Vehicle
+  isPrimary: boolean
+}): ReactElement<HTMLDivElement> => {
+  const [appState, dispatch] = useContext(StateDispatchContext)
+  const select = isPrimary
+    ? () => dispatch(selectVehicle(vehicle))
+    : // tslint:disable-next-line: no-empty
+      () => {}
+
+  return (
+    <>
+      <PigeonVehicleIcon
+        vehicle={vehicle}
+        isPrimary={isPrimary}
+        userSettings={appState.userSettings}
+        onClick={select}
+      />
+      <PigeonVehicleLabel
+        vehicle={vehicle}
+        isPrimary={isPrimary}
+        settings={appState.userSettings}
+      />
+    </>
+  )
+}
+
+const makeLeafletTrainVehicleIcon = ({
+  bearing,
+}: TrainVehicle): Leaflet.DivIcon => {
   const centerX = 24
   const centerY = 24
   return Leaflet.divIcon({
@@ -163,12 +296,37 @@ const makeTrainVehicleIcon = ({ bearing }: TrainVehicle): Leaflet.DivIcon => {
   })
 }
 
-const TrainVehicle = ({ trainVehicle }: { trainVehicle: TrainVehicle }) => {
+const PigeonTrainVehicleIcon = ({
+  vehicle,
+}: {
+  vehicle: TrainVehicle
+}): ReactElement<HTMLDivElement> => {
+  const centerX = 24
+  const centerY = 24
+  return (
+    <div className="m-vehicle-map__train-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 36 36">
+        <g transform={`rotate(${vehicle.bearing}, ${centerX}, ${centerY})`}>
+          <path
+            fill="#fff"
+            d="m42.88 45.83a2.1 2.1 0 0 1 -.87-.19l-15.92-7.17a5.23 5.23 0 0 0 -2.09-.47 5.14 5.14 0 0 0 -2.08.44l-15.92 7.2a2.1 2.1 0 0 1 -.87.19 2.14 2.14 0 0 1 -1.76-1 2 2 0 0 1 -.12-2l18.86-40.83a2.08 2.08 0 0 1 3.78 0l18.87 40.87a2 2 0 0 1 -.12 2 2.14 2.14 0 0 1 -1.76.96z"
+          />
+        </g>
+      </svg>
+    </div>
+  )
+}
+
+const LeafletTrainVehicle = ({
+  trainVehicle,
+}: {
+  trainVehicle: TrainVehicle
+}) => {
   const position: LatLngExpression = [
     trainVehicle.latitude,
     trainVehicle.longitude,
   ]
-  const icon: Leaflet.DivIcon = makeTrainVehicleIcon(trainVehicle)
+  const icon: Leaflet.DivIcon = makeLeafletTrainVehicleIcon(trainVehicle)
   return <Marker position={position} icon={icon} />
 }
 
@@ -185,7 +343,7 @@ export const strokeOptions = ({ color }: Shape): object =>
         weight: 6,
       }
 
-const Shape = ({ shape }: { shape: Shape }) => {
+const LeafletShape = ({ shape }: { shape: Shape }) => {
   const positions: LatLngExpression[] = shape.points.map((point) => [
     point.lat,
     point.lon,
@@ -286,6 +444,14 @@ const useAutoCenter = (
 }
 
 const Map = (props: Props): ReactElement<HTMLDivElement> => {
+  if (featureIsEnabled("pigeon_maps")) {
+    return <MapWithPigeon {...props} />
+  } else {
+    return <MapWithLeaflet {...props} />
+  }
+}
+
+const MapWithLeaflet = (props: Props): ReactElement<HTMLDivElement> => {
   const mapRef: MutableRefObject<ReactLeafletMap | null> =
     // this prop is only for tests, and is consistent between renders, so the hook call is consistent
     // tslint:disable-next-line: react-hooks-nesting
@@ -338,19 +504,70 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
         {props.vehicles.map((vehicle: Vehicle) => (
-          <Vehicle key={vehicle.id} vehicle={vehicle} isPrimary={true} />
+          <LeafletVehicle key={vehicle.id} vehicle={vehicle} isPrimary={true} />
         ))}
         {(props.secondaryVehicles || []).map((vehicle: Vehicle) => (
-          <Vehicle key={vehicle.id} vehicle={vehicle} isPrimary={false} />
+          <LeafletVehicle
+            key={vehicle.id}
+            vehicle={vehicle}
+            isPrimary={false}
+          />
         ))}
         {(props.trainVehicles || []).map((trainVehicle: TrainVehicle) => (
-          <TrainVehicle key={trainVehicle.id} trainVehicle={trainVehicle} />
+          <LeafletTrainVehicle
+            key={trainVehicle.id}
+            trainVehicle={trainVehicle}
+          />
         ))}
         {(props.shapes || []).map((shape) => (
-          <Shape key={shape.id} shape={shape} />
+          <LeafletShape key={shape.id} shape={shape} />
         ))}
       </ReactLeafletMap>
     </>
+  )
+}
+
+const mapTiler = (x: number, y: number, z: number): string =>
+  `https://mbta-map-tiles-dev.s3.amazonaws.com/osm_tiles/${z}/${x}/${y}.png`
+
+const MapWithPigeon = (props: Props): ReactElement<HTMLDivElement> => {
+  /* const latLngs: [number, number][] = props.vehicles.map(
+   *     ({ latitude, longitude }) => [latitude, longitude]
+   * )
+   */
+
+  return (
+    <PigeonMap
+      defaultCenter={[defaultCenter.lat, defaultCenter.lng]}
+      defaultZoom={13}
+      provider={mapTiler}
+    >
+      <PigeonZoomControl />
+      {props.vehicles.map((vehicle: Vehicle) => (
+        <Overlay
+          anchor={[vehicle.latitude, vehicle.longitude]}
+          key={vehicle.id}
+        >
+          <PigeonVehicle vehicle={vehicle} isPrimary={true} />
+        </Overlay>
+      ))}
+      {(props.secondaryVehicles || []).map((vehicle: Vehicle) => (
+        <Overlay
+          anchor={[vehicle.latitude, vehicle.longitude]}
+          key={vehicle.id}
+        >
+          <PigeonVehicle vehicle={vehicle} isPrimary={false} />
+        </Overlay>
+      ))}
+      {(props.trainVehicles || []).map((vehicle: TrainVehicle) => (
+        <Overlay
+          anchor={[vehicle.latitude, vehicle.longitude]}
+          key={vehicle.id}
+        >
+          <PigeonTrainVehicleIcon vehicle={vehicle} />
+        </Overlay>
+      ))}
+    </PigeonMap>
   )
 }
 
