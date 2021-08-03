@@ -128,7 +128,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
               Vehicle
             </th>
             <th
-              className="m-late-view__run-number-header"
+              className="m-late-view__run-number-header m-late-view__run-number-header--late"
             >
               Run
             </th>
@@ -155,7 +155,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
             </td>
             <td />
             <td
-              className="m-late-view__run-number-cell"
+              className="m-late-view__run-number-cell m-late-view__run-number-cell--late"
             >
               <a
                 className="m-late-view__run-link"
@@ -191,7 +191,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
               v2-label
             </td>
             <td
-              className="m-late-view__run-number-cell"
+              className="m-late-view__run-number-cell m-late-view__run-number-cell--late"
             >
               <a
                 className="m-late-view__run-link"
@@ -231,7 +231,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
               v3-label
             </td>
             <td
-              className="m-late-view__run-number-cell"
+              className="m-late-view__run-number-cell m-late-view__run-number-cell--late"
             >
               <a
                 className="m-late-view__run-link"
@@ -271,7 +271,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
               v4-label
             </td>
             <td
-              className="m-late-view__run-number-cell"
+              className="m-late-view__run-number-cell m-late-view__run-number-cell--late"
             >
               <a
                 className="m-late-view__run-link"

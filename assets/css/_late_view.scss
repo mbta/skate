@@ -48,6 +48,7 @@ $late-view-width: 60rem;
   }
 
   .m-late-view__panel-header-icon {
+    margin-right: 0.5rem;
     position: relative;
 
     svg {
@@ -76,8 +77,7 @@ $late-view-width: 60rem;
     }
 
     th {
-      height: 3rem;
-      padding-top: 1.5rem;
+      height: 2.5rem;
       vertical-align: top;
     }
 
@@ -107,7 +107,6 @@ $late-view-width: 60rem;
   display: flex;
   font-weight: 600;
   height: 100%;
-  margin-right: 0.25rem;
 
   .m-late-view__run-icon {
     display: inline-block;
@@ -209,4 +208,11 @@ $late-view-width: 60rem;
 .m-late-view__late-buses-panel-header {
   color: $color-secondary-dark;
   fill: $color-secondary-dark;
+}
+
+.m-late-view__run-number-header--late,
+.m-late-view__run-number-cell--late {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 1.5rem;
 }
