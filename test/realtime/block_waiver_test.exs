@@ -1,5 +1,7 @@
 defmodule Realtime.BlockWaiverTest do
   use ExUnit.Case
+
+  import Skate.Factory
   import Test.Support.Helpers
 
   alias Concentrate.StopTimeUpdate
@@ -7,16 +9,17 @@ defmodule Realtime.BlockWaiverTest do
   alias Schedule.Gtfs.StopTime
   alias Realtime.BlockWaiver
 
-  @trip1 %Trip{
-    id: "trip1",
-    block_id: "block",
-    service_id: "service",
-    stop_times: [
-      %StopTime{stop_id: "stop1", time: 1},
-      %StopTime{stop_id: "stop2", time: 2},
-      %StopTime{stop_id: "stop3", time: 3}
-    ]
-  }
+  @trip1 build(
+           :trip,
+           id: "trip1",
+           block_id: "block",
+           service_id: "service",
+           stop_times: [
+             %StopTime{stop_id: "stop1", time: 1},
+             %StopTime{stop_id: "stop2", time: 2},
+             %StopTime{stop_id: "stop3", time: 3}
+           ]
+         )
 
   @trip2 %Trip{
     id: "trip2",

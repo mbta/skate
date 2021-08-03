@@ -93,6 +93,9 @@ defmodule Schedule.Block do
     }
   end
 
+  @spec revenue_trips(t()) :: [Trip.t()]
+  def revenue_trips(%__MODULE__{trips: trips}), do: trips
+
   @spec get(by_id(), id(), Service.id()) :: t() | nil
   def get(by_id, block_id, service_id) do
     by_id[{block_id, service_id}]
@@ -114,7 +117,7 @@ defmodule Schedule.Block do
   """
   @spec next_trip(t(), Trip.id()) :: {:trip, Trip.t()} | :last | :err
   def next_trip(block, trip_id) do
-    trips = block.trips
+    trips = revenue_trips(block)
 
     case Enum.find_index(trips, &(&1.id == trip_id)) do
       nil ->
@@ -133,17 +136,17 @@ defmodule Schedule.Block do
     cond do
       now <= block.start_time ->
         # Block isn't scheduled to have started yet
-        List.first(block.trips)
+        block |> revenue_trips |> List.first()
 
       now >= block.end_time ->
         # Block is scheduled to have finished
-        List.last(block.trips)
+        block |> revenue_trips |> List.last()
 
       true ->
         # Either the current trip or the trip that is about to start
         # If it's between the end of the last trip and the end of the block, use the last trip
-        Enum.find(block.trips, fn trip -> trip.end_time > now end) ||
-          List.last(block.trips)
+        Enum.find(revenue_trips(block), fn trip -> trip.end_time > now end) ||
+          block |> revenue_trips |> List.last()
     end
   end
 

@@ -1,8 +1,9 @@
 defmodule Realtime.TimepointStatusTest do
   use ExUnit.Case
+
+  import Skate.Factory
   import Test.Support.Helpers
 
-  alias Schedule.{Block, Trip}
   alias Schedule.Gtfs.{Stop, StopTime}
   alias Realtime.TimepointStatus
 
@@ -231,56 +232,56 @@ defmodule Realtime.TimepointStatusTest do
       time0 = 1_546_362_000
       time_of_day0 = Util.Time.parse_hhmmss("12:00:00")
 
-      trip0 = %Trip{
-        id: "0",
-        block_id: "block",
-        route_id: "28",
-        service_id: "service",
-        headsign: "headsign0",
-        direction_id: 0,
-        route_pattern_id: "28-_-1",
-        run_id: "run",
-        stop_times: [
-          %StopTime{
-            stop_id: "3",
-            time: time_of_day0 + 3,
-            timepoint_id: "tp3"
-          },
-          %StopTime{
-            stop_id: "5",
-            time: time_of_day0 + 5,
-            timepoint_id: "tp5"
-          }
-        ],
-        start_time: time_of_day0 + 3,
-        end_time: time_of_day0 + 5
-      }
+      trip0 =
+        build(
+          :trip,
+          id: "0",
+          route_id: "28",
+          headsign: "headsign0",
+          route_pattern_id: "28-_-1",
+          stop_times: [
+            build(
+              :gtfs_stoptime,
+              stop_id: "3",
+              time: time_of_day0 + 3,
+              timepoint_id: "tp3"
+            ),
+            build(
+              :gtfs_stoptime,
+              stop_id: "5",
+              time: time_of_day0 + 5,
+              timepoint_id: "tp5"
+            )
+          ],
+          start_time: time_of_day0 + 3,
+          end_time: time_of_day0 + 5
+        )
 
-      trip1 = %Trip{
-        id: "1",
-        block_id: "S28-2",
-        route_id: "28",
-        service_id: "service",
-        headsign: "headsign1",
-        direction_id: 1,
-        route_pattern_id: "28-_-1",
-        run_id: "run",
-        stop_times: [
-          %StopTime{stop_id: "7", time: time_of_day0 + 7, timepoint_id: "tp7"},
-          %StopTime{stop_id: "9", time: time_of_day0 + 9, timepoint_id: nil},
-          %StopTime{stop_id: "11", time: time_of_day0 + 11, timepoint_id: "tp11"}
-        ],
-        start_time: time_of_day0 + 7,
-        end_time: time_of_day0 + 11
-      }
+      trip1 =
+        build(
+          :trip,
+          id: "1",
+          block_id: "S28-2",
+          route_id: "28",
+          headsign: "headsign1",
+          direction_id: 1,
+          route_pattern_id: "28-_-1",
+          stop_times: [
+            build(:gtfs_stoptime, stop_id: "7", time: time_of_day0 + 7, timepoint_id: "tp7"),
+            build(:gtfs_stoptime, stop_id: "9", time: time_of_day0 + 9, timepoint_id: nil),
+            build(:gtfs_stoptime, stop_id: "11", time: time_of_day0 + 11, timepoint_id: "tp11")
+          ],
+          start_time: time_of_day0 + 7,
+          end_time: time_of_day0 + 11
+        )
 
-      block = %Block{
-        id: "block",
-        service_id: "service",
-        start_time: time_of_day0 + 1,
-        end_time: time_of_day0 + 13,
-        trips: [trip0, trip1]
-      }
+      block =
+        build(
+          :block,
+          start_time: time_of_day0 + 1,
+          end_time: time_of_day0 + 13,
+          trips: [trip0, trip1]
+        )
 
       %{block: block, time0: time0}
     end

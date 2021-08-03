@@ -1,5 +1,7 @@
 defmodule Realtime.VehicleTest do
   use ExUnit.Case
+
+  import Skate.Factory
   import Test.Support.Helpers
 
   alias Concentrate.{DataDiscrepancy, VehiclePosition}
@@ -313,13 +315,13 @@ defmodule Realtime.VehicleTest do
 
   describe "active_block?" do
     setup do
-      block = %Block{
-        id: "block",
-        service_id: "service",
-        start_time: Util.Time.parse_hhmmss("11:01:00"),
-        end_time: Util.Time.parse_hhmmss("11:59:00"),
-        trips: []
-      }
+      block =
+        build(
+          :block,
+          start_time: Util.Time.parse_hhmmss("11:01:00"),
+          end_time: Util.Time.parse_hhmmss("11:59:00"),
+          trips: []
+        )
 
       {:ok, block: block}
     end

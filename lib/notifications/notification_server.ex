@@ -93,7 +93,9 @@ defmodule Notifications.NotificationServer do
       waiver_range = Range.new(block_waiver.start_time, block_waiver.end_time)
 
       trips =
-        Enum.reject(block.trips, fn trip ->
+        block
+        |> Block.revenue_trips()
+        |> Enum.reject(fn trip ->
           trip_start_timestamp = Util.Time.timestamp_for_time_of_day(trip.start_time, block_date)
           trip_end_timestamp = Util.Time.timestamp_for_time_of_day(trip.end_time, block_date)
           trip_range = Range.new(trip_start_timestamp, trip_end_timestamp)

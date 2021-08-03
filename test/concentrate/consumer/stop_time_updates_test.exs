@@ -1,10 +1,12 @@
 defmodule Concentrate.Consumer.StopTimeUpdatesTest do
   use ExUnit.Case
+
+  import Skate.Factory
   import Test.Support.Helpers
 
   alias Concentrate.{StopTimeUpdate, TripUpdate}
   alias Concentrate.Consumer.StopTimeUpdates
-  alias Schedule.{Block, Trip}
+  alias Schedule.Trip
 
   @trip %Trip{
     id: "t1",
@@ -12,13 +14,11 @@ defmodule Concentrate.Consumer.StopTimeUpdatesTest do
     service_id: "service"
   }
 
-  @block %Block{
-    id: "S28-2",
-    service_id: "service",
-    start_time: 0,
-    end_time: 0,
-    trips: [@trip]
-  }
+  @block build(:block,
+           id: "S28-2",
+           end_time: 0,
+           trips: [@trip]
+         )
 
   @stop_time_update %StopTimeUpdate{
     arrival_time: nil,

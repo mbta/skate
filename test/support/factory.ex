@@ -68,6 +68,16 @@ defmodule Skate.Factory do
     }
   end
 
+  def block_factory do
+    %Schedule.Block{
+      id: "block",
+      service_id: "service",
+      start_time: 0,
+      end_time: 1,
+      trips: [build(:trip)]
+    }
+  end
+
   def minischedule_block_factory do
     %Schedule.Minischedule.Block{
       schedule_id: "schedule",

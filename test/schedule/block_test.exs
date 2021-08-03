@@ -1,6 +1,8 @@
 defmodule Schedule.BlockTest do
   use ExUnit.Case, async: true
 
+  import Skate.Factory
+
   alias Schedule.Block
   alias Schedule.{Block, Trip}
   alias Schedule.Gtfs.StopTime
@@ -60,14 +62,14 @@ defmodule Schedule.BlockTest do
     end_time: 19
   }
 
-  @block %Block{
-    id: "b",
-    service_id: "service",
-    schedule_id: "schedule",
-    start_time: 1,
-    end_time: 19,
-    trips: [@trip1, @trip2]
-  }
+  @block build(
+           :block,
+           id: "b",
+           schedule_id: "schedule",
+           start_time: 1,
+           end_time: 19,
+           trips: [@trip1, @trip2]
+         )
 
   describe "blocks_from_trips/ and get/3 " do
     test "can create blocks and then get them" do

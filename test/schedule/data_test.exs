@@ -1,7 +1,8 @@
 defmodule Schedule.DataTest do
   use ExUnit.Case, async: true
 
-  alias Schedule.Block
+  import Skate.Factory
+
   alias Schedule.Data
   alias Schedule.Trip
   alias Schedule.Swing
@@ -170,13 +171,7 @@ defmodule Schedule.DataTest do
 
   describe "block" do
     test "block returns the block" do
-      block = %Block{
-        id: "block",
-        service_id: "service",
-        start_time: 0,
-        end_time: 0,
-        trips: []
-      }
+      block = build(:block)
 
       data = %Data{
         blocks: %{{"block", "service"} => block}
@@ -186,13 +181,7 @@ defmodule Schedule.DataTest do
     end
 
     test "block doesn't return blocks with the same block_id but a different date" do
-      block = %Block{
-        id: "block",
-        service_id: "service",
-        start_time: 0,
-        end_time: 0,
-        trips: []
-      }
+      block = build(:block)
 
       data = %Data{
         blocks: %{{"block", "service"} => block}
@@ -355,13 +344,13 @@ defmodule Schedule.DataTest do
 
   describe "active_blocks" do
     test "returns active blocks" do
-      block = %Block{
-        id: "block",
-        service_id: "today",
-        start_time: 3,
-        end_time: 4,
-        trips: []
-      }
+      block =
+        build(
+          :block,
+          service_id: "today",
+          start_time: 3,
+          end_time: 4
+        )
 
       data = %Data{
         blocks: %{
@@ -379,13 +368,13 @@ defmodule Schedule.DataTest do
     end
 
     test "doesn't return inactive blocks" do
-      block = %Block{
-        id: "block",
-        service_id: "today",
-        start_time: 3,
-        end_time: 4,
-        trips: []
-      }
+      block =
+        build(
+          :block,
+          service_id: "today",
+          start_time: 3,
+          end_time: 4
+        )
 
       data = %Data{
         blocks: %{
@@ -405,21 +394,21 @@ defmodule Schedule.DataTest do
     test "blocks can be active on two different dates" do
       just_before_midnight = 24 * 60 * 60 - 1
 
-      block1 = %Block{
-        id: "block",
-        service_id: "today",
-        start_time: just_before_midnight,
-        end_time: just_before_midnight,
-        trips: []
-      }
+      block1 =
+        build(
+          :block,
+          service_id: "today",
+          start_time: just_before_midnight,
+          end_time: just_before_midnight
+        )
 
-      block2 = %Block{
-        id: "block",
-        service_id: "tomorrow",
-        start_time: 1,
-        end_time: 1,
-        trips: []
-      }
+      block2 =
+        build(
+          :block,
+          service_id: "tomorrow",
+          start_time: 1,
+          end_time: 1
+        )
 
       data = %Data{
         blocks: %{
