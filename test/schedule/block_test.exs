@@ -112,17 +112,17 @@ defmodule Schedule.BlockTest do
     end
   end
 
-  describe "next_trip/2" do
+  describe "next_revenue_trip/2" do
     test "finds the trip in the block after the given trip" do
-      assert Block.next_trip(@block, @trip1.id) == {:trip, @trip2}
+      assert Block.next_revenue_trip(@block, @trip1.id) == {:trip, @trip2}
     end
 
     test "returns :last if given the last trip in the block" do
-      assert Block.next_trip(@block, @trip2.id) == :last
+      assert Block.next_revenue_trip(@block, @trip2.id) == :last
     end
 
     test "returns :err if the given trip isn't found" do
-      assert Block.next_trip(@block, "t3") == :err
+      assert Block.next_revenue_trip(@block, "t3") == :err
     end
   end
 

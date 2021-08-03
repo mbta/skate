@@ -115,8 +115,8 @@ defmodule Schedule.Block do
   If the trip_id is not in the block, then :err
   If the trip_id belongs to the last trip in the block, then :last
   """
-  @spec next_trip(t(), Trip.id()) :: {:trip, Trip.t()} | :last | :err
-  def next_trip(block, trip_id) do
+  @spec next_revenue_trip(t(), Trip.id()) :: {:trip, Trip.t()} | :last | :err
+  def next_revenue_trip(block, trip_id) do
     trips = revenue_trips(block)
 
     case Enum.find_index(trips, &(&1.id == trip_id)) do
@@ -126,7 +126,7 @@ defmodule Schedule.Block do
       index ->
         case Enum.at(trips, index + 1) do
           nil -> :last
-          next_trip -> {:trip, next_trip}
+          next_revenue_trip -> {:trip, next_revenue_trip}
         end
     end
   end

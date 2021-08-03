@@ -369,7 +369,7 @@ defmodule Realtime.Vehicle do
       if first_stop_on_trip?(stop_id, trip) do
         {:trip, trip}
       else
-        Block.next_trip(block, trip.id)
+        Block.next_revenue_trip(block, trip.id)
       end
 
     case next_trip do
