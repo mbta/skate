@@ -66,7 +66,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
               </span>
             </td>
             <td>
-              N/A
+              run6
             </td>
             <td>
               station
@@ -84,7 +84,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
               </span>
             </td>
             <td>
-              N/A
+              run7
             </td>
             <td>
               somewhere
@@ -169,7 +169,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
                     }
                   }
                 />
-                N/A
+                run5
               </a>
             </td>
             <td />
@@ -205,53 +205,13 @@ exports[`LateView renders missing logons and late buses 1`] = `
                     }
                   }
                 />
-                2
+                run2
               </a>
             </td>
             <td>
               SMITH
                – 
               op2
-            </td>
-          </tr>
-          <tr>
-            <td
-              className="m-late-view__adherence-cell"
-            >
-              -15
-            </td>
-            <td>
-              <span
-                className="m-late-view__route-pill"
-              >
-                route
-              </span>
-            </td>
-            <td>
-              v3-label
-            </td>
-            <td
-              className="m-late-view__run-number-cell m-late-view__run-number-cell--late"
-            >
-              <a
-                className="m-late-view__run-link"
-                onClick={[Function]}
-              >
-                <span
-                  className="m-late-view__run-icon m-late-view__up-right-icon"
-                  dangerouslySetInnerHTML={
-                    Object {
-                      "__html": "SVG",
-                    }
-                  }
-                />
-                3
-              </a>
-            </td>
-            <td>
-              SMITH
-               – 
-              op3
             </td>
           </tr>
           <tr>
@@ -278,6 +238,46 @@ exports[`LateView renders missing logons and late buses 1`] = `
                 onClick={[Function]}
               >
                 <span
+                  className="m-late-view__run-icon m-late-view__up-right-icon"
+                  dangerouslySetInnerHTML={
+                    Object {
+                      "__html": "SVG",
+                    }
+                  }
+                />
+                run3
+              </a>
+            </td>
+            <td>
+              SMITH
+               – 
+              op4
+            </td>
+          </tr>
+          <tr>
+            <td
+              className="m-late-view__adherence-cell"
+            >
+              -15
+            </td>
+            <td>
+              <span
+                className="m-late-view__route-pill"
+              >
+                route
+              </span>
+            </td>
+            <td>
+              v5-label
+            </td>
+            <td
+              className="m-late-view__run-number-cell m-late-view__run-number-cell--late"
+            >
+              <a
+                className="m-late-view__run-link"
+                onClick={[Function]}
+              >
+                <span
                   className="m-late-view__run-icon m-late-view__block-waiver-icon"
                   dangerouslySetInnerHTML={
                     Object {
@@ -285,13 +285,13 @@ exports[`LateView renders missing logons and late buses 1`] = `
                     }
                   }
                 />
-                4
+                run4
               </a>
             </td>
             <td>
               SMITH
                – 
-              op4
+              op5
             </td>
           </tr>
         </tbody>
