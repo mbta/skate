@@ -34,7 +34,7 @@
     "whatwg-fetch": "^3.6.2"
   },
   "devDependencies": {
-    "@sentry/webpack-plugin": "^1.16.0",
+    "@sentry/webpack-plugin": "^1.17.0",
     "@testing-library/react-hooks": "^7.0.1",
     "@types/enzyme": "^3.10.9",
     "@types/enzyme-adapter-react-16": "^1.0.6",
