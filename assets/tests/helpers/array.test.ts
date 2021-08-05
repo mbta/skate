@@ -3,6 +3,7 @@ import {
   intersperseString,
   partition,
   uniq,
+  uniqBy,
 } from "../../src/helpers/array"
 
 describe("partition", () => {
@@ -36,6 +37,16 @@ describe("uniq", () => {
 
   test("removes duplicate values even if they're not next to each other", () => {
     expect(uniq(["1", "3", "2", "3", "1", "1"])).toEqual(["1", "2", "3"])
+  })
+})
+
+describe("uniqBy", () => {
+  test("removes values with duplicated function results", () => {
+    expect(uniqBy([4, 6], (n) => n % 2 === 0)).toEqual([4])
+  })
+
+  test("keeps values with distinct function results", () => {
+    expect(uniqBy([4, 5], (n) => n % 2 === 0)).toEqual([4, 5])
   })
 })
 
