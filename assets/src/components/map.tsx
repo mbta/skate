@@ -205,7 +205,6 @@ const PigeonVehicleLabel = ({
       </svg>
     </div>
   )
-  // iconAnchor: [labelBackgroundWidth / 2, isPrimary ? -16 : -10],
 }
 
 const LeafletVehicle = ({
@@ -531,11 +530,6 @@ const mapTiler = (x: number, y: number, z: number): string =>
   `https://mbta-map-tiles-dev.s3.amazonaws.com/osm_tiles/${z}/${x}/${y}.png`
 
 const MapWithPigeon = (props: Props): ReactElement<HTMLDivElement> => {
-  /* const latLngs: [number, number][] = props.vehicles.map(
-   *     ({ latitude, longitude }) => [latitude, longitude]
-   * )
-   */
-
   return (
     <PigeonMap
       defaultCenter={[defaultCenter.lat, defaultCenter.lng]}
