@@ -270,6 +270,15 @@ defmodule Schedule do
     {:reply, Data.swings_for_route(gtfs_data, route_id, start_time, end_time), state}
   end
 
+  def handle_call(:peek, _from, {:loaded, gtfs_data} = state) do
+    {:reply, gtfs_data, state}
+  end
+
+  # You probably shouldn't use this in app code, but it is handy for debugging in the REPL
+  def peek(server \\ __MODULE__) do
+    call_catch_timeout(server, :peek, :peek, [])
+  end
+
   # Initialization (Client)
 
   @spec start_link([]) :: GenServer.on_start()
