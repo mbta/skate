@@ -12,7 +12,7 @@ import {
   userXIcon,
 } from "../helpers/icon"
 import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
-import { flatten } from "../helpers/array"
+import { flatten, uniqBy } from "../helpers/array"
 import { isVehicle, isGhost } from "../models/vehicle"
 import { Vehicle, Ghost, VehicleOrGhost } from "../realtime"
 import { ByRouteId } from "../schedule"
@@ -45,7 +45,10 @@ const LateView = (): ReactElement<HTMLElement> => {
     VehiclesByRouteIdContext
   )
 
-  const vehiclesOrGhosts = flatten(Object.values(vehiclesByRouteId))
+  const vehiclesOrGhosts = uniqBy(
+    flatten(Object.values(vehiclesByRouteId)),
+    (vehicleOrGhost) => vehicleOrGhost.runId
+  )
 
   const lateBusThreshold = 60 * 15
   const missingLogonThreshold = 60 * 45
@@ -75,11 +78,6 @@ const LateView = (): ReactElement<HTMLElement> => {
 
   const lateBuses = vehiclesOrGhosts
     .filter(isVehicle)
-    .filter(
-      (vehicle) =>
-        vehicle.routeStatus === "on_route" ||
-        vehicle.routeStatus === "laying_over"
-    )
     .filter((vehicle) => vehicle.scheduleAdherenceSecs >= lateBusThreshold)
     .sort((a, b) => b.scheduleAdherenceSecs - a.scheduleAdherenceSecs)
 

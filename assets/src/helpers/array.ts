@@ -20,6 +20,23 @@ export function partition<T>(
 
 export const uniq = <T>(array: T[]): T[] => Array.from(new Set(array)).sort()
 
+export const uniqBy = <T, U>(array: T[], fun: (value: T) => U): T[] => {
+  const [newArray] = array.reduce(
+    ([acc, seen], value) => {
+      const funValue = fun(value)
+
+      if (seen.has(funValue)) {
+        return [acc, seen]
+      } else {
+        return [acc.concat(value), seen.add(funValue)]
+      }
+    },
+    [[] as T[], new Set() as Set<U>]
+  )
+
+  return newArray
+}
+
 export const flatten = <T>(array: T[][]): T[] =>
   array.reduce((previous, current) => previous.concat(current), [])
 

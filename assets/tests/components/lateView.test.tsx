@@ -25,35 +25,50 @@ describe("LateView", () => {
   test("renders missing logons and late buses", () => {
     const vehiclesByRouteId = {
       route: [
-        vehicleFactory.build({ routeId: "route", scheduleAdherenceSecs: 0 }),
         vehicleFactory.build({
           routeId: "route",
+          runId: "run1",
+          scheduleAdherenceSecs: 0,
+        }),
+        vehicleFactory.build({
+          routeId: "route",
+          runId: "run2",
+          scheduleAdherenceSecs: 901,
+        }),
+        vehicleFactory.build({
+          routeId: "other_route",
+          runId: "run2",
           scheduleAdherenceSecs: 901,
         }),
         vehicleFactory.build({
           routeId: "route",
+          runId: "run3",
           scheduleAdherenceSecs: 901,
           routeStatus: "laying_over",
         }),
         vehicleFactory.build({
           routeId: "route",
+          runId: "run4",
           scheduleAdherenceSecs: 901,
           blockWaivers: [blockWaiverFactory.build()],
         }),
         ghostFactory.build({
           routeId: "route",
+          runId: "run5",
           scheduledLogonTime: 15299,
           currentPieceFirstRoute: "route",
           currentPieceStartPlace: "garage",
         }),
         ghostFactory.build({
           routeId: "route",
+          runId: "run6",
           scheduledLogonTime: 15301,
           currentPieceFirstRoute: "route",
           currentPieceStartPlace: "station",
         }),
         ghostFactory.build({
           routeId: "route",
+          runId: "run7",
           scheduledLogonTime: 15302,
           currentPieceFirstRoute: "route",
           currentPieceStartPlace: "somewhere",
