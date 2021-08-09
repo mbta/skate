@@ -482,6 +482,12 @@ defmodule ScheduleTest do
               "later,,00:00:04,stop,1,",
               "tomorrow,,00:00:02,stop,1,"
             ]
+          },
+          hastus: %{
+            "trips.csv" => [
+              "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
+              "schedule;123;456;now;12:00;12:01;someplace;otherplace;route;now"
+            ]
           }
         })
 

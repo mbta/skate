@@ -72,6 +72,7 @@ defmodule Skate.Factory do
     %Schedule.Block{
       id: "block",
       service_id: "service",
+      schedule_id: "schedule",
       start_time: 0,
       end_time: 1,
       trips: [build(:trip)]

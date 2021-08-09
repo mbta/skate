@@ -5,7 +5,7 @@ defmodule Realtime.BlockWaiverTest do
   import Test.Support.Helpers
 
   alias Concentrate.StopTimeUpdate
-  alias Schedule.{Block, Trip}
+  alias Schedule.Trip
   alias Schedule.Gtfs.StopTime
   alias Realtime.BlockWaiver
 
@@ -32,13 +32,12 @@ defmodule Realtime.BlockWaiverTest do
     ]
   }
 
-  @block %Block{
-    id: "block",
-    service_id: "service",
-    start_time: 1,
-    end_time: 6,
-    trips: [@trip1, @trip2]
-  }
+  @block build(
+           :block,
+           start_time: 1,
+           end_time: 6,
+           trips: [@trip1, @trip2]
+         )
 
   @trip1stop1Update %StopTimeUpdate{
     arrival_time: nil,

@@ -14,7 +14,7 @@ defmodule Schedule.Block do
   @type t :: %__MODULE__{
           id: id(),
           service_id: Service.id(),
-          schedule_id: Hastus.Schedule.id() | nil,
+          schedule_id: Hastus.Schedule.id(),
           start_time: Util.Time.time_of_day(),
           end_time: Util.Time.time_of_day(),
           # only revenue trips. always nonempty
@@ -24,6 +24,7 @@ defmodule Schedule.Block do
   @enforce_keys [
     :id,
     :service_id,
+    :schedule_id,
     :start_time,
     :end_time,
     :trips
@@ -48,6 +49,7 @@ defmodule Schedule.Block do
 
     revenue_trips
     |> Enum.filter(fn trip -> trip.stop_times != [] end)
+    |> Enum.filter(& &1.schedule_id)
     |> Enum.group_by(fn trip -> {trip.block_id, trip.service_id} end)
     |> Helpers.map_values(fn trips ->
       block_id = List.first(trips).block_id
