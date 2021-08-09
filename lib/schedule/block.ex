@@ -6,9 +6,9 @@ defmodule Schedule.Block do
   @type id :: String.t()
   @typedoc """
   Block ids are repeated between different services.
-  In order to uniquely identify a block, you need a Service.id() in addition to a Block.id()
+  In order to uniquely identify a block, you need a Schedule.id() in addition to a Block.id()
   """
-  @type key :: {id(), Service.id()}
+  @type key :: {Hastus.Schedule.id(), id()}
   @type by_id :: %{key() => t()}
 
   @type t :: %__MODULE__{
@@ -45,16 +45,16 @@ defmodule Schedule.Block do
       Enum.split_with(trips, fn trip -> trip.route_id != nil end)
 
     nonrevenue_trips =
-      Enum.group_by(nonrevenue_trips, fn trip -> {trip.block_id, trip.schedule_id} end)
+      Enum.group_by(nonrevenue_trips, fn trip -> {trip.schedule_id, trip.block_id} end)
 
     revenue_trips
     |> Enum.filter(fn trip -> trip.stop_times != [] end)
     |> Enum.filter(& &1.schedule_id)
-    |> Enum.group_by(fn trip -> {trip.block_id, trip.service_id} end)
+    |> Enum.group_by(fn trip -> {trip.schedule_id, trip.block_id} end)
     |> Helpers.map_values(fn trips ->
       block_id = List.first(trips).block_id
       schedule_id = List.first(trips).schedule_id
-      deadheads = Map.get(nonrevenue_trips, {block_id, schedule_id}, [])
+      deadheads = Map.get(nonrevenue_trips, {schedule_id, block_id}, [])
       block_from_trips(trips, deadheads)
     end)
   end
@@ -98,9 +98,9 @@ defmodule Schedule.Block do
   @spec revenue_trips(t()) :: [Trip.t()]
   def revenue_trips(%__MODULE__{trips: trips}), do: trips
 
-  @spec get(by_id(), id(), Service.id()) :: t() | nil
-  def get(by_id, block_id, service_id) do
-    by_id[{block_id, service_id}]
+  @spec get(by_id(), id(), Hastus.Schedule.id()) :: t() | nil
+  def get(by_id, schedule_id, block_idd) do
+    by_id[{schedule_id, block_idd}]
   end
 
   @doc """

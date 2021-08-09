@@ -56,23 +56,24 @@ defmodule Realtime.VehicleTest do
 
   describe "from_vehicle_position" do
     setup do
-      trip = %Trip{
-        id: "39984755",
-        block_id: "S28-2",
-        route_id: "28",
-        service_id: "service",
-        headsign: "headsign",
-        direction_id: 1,
-        route_pattern_id: "28-_-0",
-        run_id: "run1",
-        stop_times: [
-          %StopTime{stop_id: "18511", time: 0, timepoint_id: "tp1"},
-          %StopTime{stop_id: "18512", time: 1, timepoint_id: nil},
-          %StopTime{stop_id: "18513", time: 2, timepoint_id: "tp2"}
-        ],
-        start_time: 0,
-        end_time: 2
-      }
+      trip =
+        build(
+          :trip,
+          id: "39984755",
+          block_id: "S28-2",
+          route_id: "28",
+          schedule_id: "schedule",
+          direction_id: 1,
+          route_pattern_id: "28-_-0",
+          run_id: "run1",
+          stop_times: [
+            build(:gtfs_stoptime, stop_id: "18511", time: 0, timepoint_id: "tp1"),
+            build(:gtfs_stoptime, stop_id: "18512", time: 1, timepoint_id: nil),
+            build(:gtfs_stoptime, stop_id: "18513", time: 2, timepoint_id: "tp2")
+          ],
+          start_time: 0,
+          end_time: 2
+        )
 
       reassign_env(:realtime, :trip_fn, fn trip_id ->
         if trip_id == trip.id do
@@ -82,8 +83,8 @@ defmodule Realtime.VehicleTest do
         end
       end)
 
-      reassign_env(:realtime, :block_fn, fn block_id, service_id ->
-        if block_id == trip.block_id and service_id == trip.service_id do
+      reassign_env(:realtime, :block_fn, fn schedule_id, block_id ->
+        if block_id == trip.block_id and schedule_id == trip.schedule_id do
           Block.block_from_trips([trip])
         else
           nil

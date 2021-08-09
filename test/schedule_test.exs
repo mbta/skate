@@ -373,7 +373,7 @@ defmodule ScheduleTest do
           }
         })
 
-      assert Schedule.block("b", "service", pid) == %Block{
+      assert Schedule.block("schedule", "b", pid) == %Block{
                id: "b",
                service_id: "service",
                schedule_id: "schedule",

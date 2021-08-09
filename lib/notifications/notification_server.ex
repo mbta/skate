@@ -81,12 +81,12 @@ defmodule Notifications.NotificationServer do
   @spec get_db_values_from_block_waiver(Block.key(), BlockWaiver.t()) ::
           Notification.t() | nil
   defp get_db_values_from_block_waiver(
-         {block_id, service_id},
+         {schedule_id, block_id},
          block_waiver
        ) do
     if reason = get_notification_reason(block_waiver) do
       block_fn = Application.get_env(:realtime, :block_fn, &Schedule.block/2)
-      block = block_fn.(block_id, service_id)
+      block = block_fn.(schedule_id, block_id)
 
       block_date = Block.date_for_block(block)
 
@@ -134,7 +134,7 @@ defmodule Notifications.NotificationServer do
 
       %{
         block_id: block_id,
-        service_id: service_id,
+        service_id: block.service_id,
         reason: reason,
         created_at: created_at,
         route_ids: route_ids,

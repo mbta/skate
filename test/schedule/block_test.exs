@@ -75,7 +75,7 @@ defmodule Schedule.BlockTest do
     test "can create blocks and then get them" do
       by_id = Block.blocks_from_trips([@trip1])
 
-      assert Block.get(by_id, "b", "service") == %{
+      assert Block.get(by_id, "schedule", "b") == %{
                @block
                | start_time: @trip1.start_time,
                  end_time: @trip1.end_time,
@@ -85,13 +85,13 @@ defmodule Schedule.BlockTest do
 
     test "sets start_time and end_time based on pulls" do
       by_id = Block.blocks_from_trips([@pullout, @trip1, @trip2, @pullback])
-      assert Block.get(by_id, "b", "service") == @block
+      assert Block.get(by_id, "schedule", "b") == @block
     end
 
     test "ignores deadheads" do
       by_id = Block.blocks_from_trips([@trip1, @deadhead, @trip2])
 
-      assert Block.get(by_id, "b", "service") == %{
+      assert Block.get(by_id, "schedule", "b") == %{
                @block
                | start_time: @trip1.start_time,
                  end_time: @trip2.end_time
@@ -100,7 +100,7 @@ defmodule Schedule.BlockTest do
 
     test "sorts trips by time" do
       by_id = Block.blocks_from_trips([@trip2, @pullback, @trip1, @pullout])
-      assert Block.get(by_id, "b", "service") == @block
+      assert Block.get(by_id, "schedule", "b") == @block
     end
 
     test "ignores trips without stop times" do

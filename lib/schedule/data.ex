@@ -96,8 +96,8 @@ defmodule Schedule.Data do
   end
 
   @spec block(t(), Block.id(), Service.id()) :: Block.t() | nil
-  def block(%__MODULE__{blocks: blocks}, block_id, service_id) do
-    Block.get(blocks, block_id, service_id)
+  def block(%__MODULE__{blocks: blocks}, schedule_id, block_id) do
+    Block.get(blocks, schedule_id, block_id)
   end
 
   @doc """
