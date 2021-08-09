@@ -109,7 +109,8 @@ config :laboratory,
      "Turns on colored headway spacing lines on key route route ladders showing when service is bunched or gapped."},
     {:minischedules_trip_label, "Choose Minischedules Trip Label",
      "User can, in minischedules, switch between showing origins and destinations of trips"},
-    {:late_view, "Late View", "Grants access to experimental Late View"}
+    {:late_view, "Late View", "Grants access to experimental Late View"},
+    {:pigeon_maps, "Pigeon maps", "Replaces Leaflet-based maps with Pigeon"}
   ],
   cookie: [
     # one month,
