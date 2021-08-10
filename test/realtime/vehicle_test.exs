@@ -5,7 +5,7 @@ defmodule Realtime.VehicleTest do
   import Test.Support.Helpers
 
   alias Concentrate.{DataDiscrepancy, VehiclePosition}
-  alias Schedule.{Block, Trip}
+  alias Schedule.Trip
   alias Schedule.Gtfs.StopTime
   alias Realtime.{BlockWaiver, Vehicle}
 
@@ -85,7 +85,7 @@ defmodule Realtime.VehicleTest do
 
       reassign_env(:realtime, :block_fn, fn schedule_id, block_id ->
         if block_id == trip.block_id and schedule_id == trip.schedule_id do
-          Block.block_from_trips([trip])
+          build(:block, id: trip.block_id, trips: [trip])
         else
           nil
         end
@@ -404,7 +404,7 @@ defmodule Realtime.VehicleTest do
         ]
       }
 
-      block = Block.block_from_trips([trip1, trip2])
+      block = build(:block, id: trip1.block_id, trips: [trip1, trip2])
 
       {:ok, trip1: trip1, trip2: trip2, block: block}
     end
@@ -500,7 +500,11 @@ defmodule Realtime.VehicleTest do
         ]
       }
 
-      block = Block.block_from_trips([first_trip, last_trip_of_run, last_trip_of_block])
+      block =
+        build(:block,
+          id: first_trip.block_id,
+          trips: [first_trip, last_trip_of_run, last_trip_of_block]
+        )
 
       {:ok,
        first_trip: first_trip,

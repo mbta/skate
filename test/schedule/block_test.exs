@@ -62,18 +62,26 @@ defmodule Schedule.BlockTest do
     end_time: 19
   }
 
+  @piece build(:piece,
+           block_id: @pullout.block_id,
+           start_time: 1,
+           end_time: 19,
+           trips: [@pullout, @trip1, @deadhead, @trip2, @pullback]
+         )
+
   @block build(
            :block,
            id: "b",
            schedule_id: "schedule",
            start_time: 1,
            end_time: 19,
-           trips: [@trip1, @trip2]
+           trips: [@trip1, @trip2],
+           pieces: [@piece]
          )
 
   describe "blocks_from_trips/ and get/3 " do
     test "can create blocks and then get them" do
-      by_id = Block.blocks_from_trips([@trip1])
+      by_id = Block.blocks_from_trips([@trip1], [@piece])
 
       assert Block.get(by_id, "schedule", "b") == %{
                @block
@@ -84,12 +92,12 @@ defmodule Schedule.BlockTest do
     end
 
     test "sets start_time and end_time based on pulls" do
-      by_id = Block.blocks_from_trips([@pullout, @trip1, @trip2, @pullback])
+      by_id = Block.blocks_from_trips([@pullout, @trip1, @trip2, @pullback], [@piece])
       assert Block.get(by_id, "schedule", "b") == @block
     end
 
     test "ignores deadheads" do
-      by_id = Block.blocks_from_trips([@trip1, @deadhead, @trip2])
+      by_id = Block.blocks_from_trips([@trip1, @deadhead, @trip2], [@piece])
 
       assert Block.get(by_id, "schedule", "b") == %{
                @block
@@ -99,7 +107,7 @@ defmodule Schedule.BlockTest do
     end
 
     test "sorts trips by time" do
-      by_id = Block.blocks_from_trips([@trip2, @pullback, @trip1, @pullout])
+      by_id = Block.blocks_from_trips([@trip2, @pullback, @trip1, @pullout], [@piece])
       assert Block.get(by_id, "schedule", "b") == @block
     end
 
@@ -108,7 +116,7 @@ defmodule Schedule.BlockTest do
         %{@trip1 | stop_times: []}
       ]
 
-      assert Block.blocks_from_trips(trips) == %{}
+      assert Block.blocks_from_trips(trips, [@piece]) == %{}
     end
   end
 

@@ -3,7 +3,7 @@ defmodule Realtime.VehiclesTest do
   import Test.Support.Helpers
   import Skate.Factory
 
-  alias Schedule.{Block, Trip}
+  alias Schedule.Trip
   alias Schedule.Gtfs.StopTime
   alias Realtime.{BlockWaiver, Ghost, Vehicle, Vehicles}
 
@@ -110,8 +110,8 @@ defmodule Realtime.VehiclesTest do
         end_time: 4
       }
 
-      block_1 = Block.block_from_trips([trip_1])
-      block_2 = Block.block_from_trips([trip_2])
+      block_1 = build(:block, id: trip_1.block_id, trips: [trip_1])
+      block_2 = build(:block, id: trip_2.block_id, trips: [trip_2])
 
       ungrouped_vehicles = [vehicle, vehicle_2]
 
@@ -181,7 +181,7 @@ defmodule Realtime.VehiclesTest do
           end_time: 0
         })
 
-      block = Block.block_from_trips([trip])
+      block = build(:block, trips: [trip])
 
       reassign_env(:skate, :trips_by_id_fn, fn _ ->
         %{
@@ -246,7 +246,7 @@ defmodule Realtime.VehiclesTest do
           end_time: 0
         })
 
-      block = Block.block_from_trips([trip])
+      block = build(:block, id: trip.block_id, trips: [trip])
 
       reassign_env(:skate, :trips_by_id_fn, fn _ ->
         %{
@@ -288,7 +288,7 @@ defmodule Realtime.VehiclesTest do
           end_time: 1
         })
 
-      block = Block.block_from_trips([trip])
+      block = build(:block, id: trip.id, trips: [trip])
 
       reassign_env(:skate, :trips_by_id_fn, fn _ ->
         %{
@@ -393,7 +393,7 @@ defmodule Realtime.VehiclesTest do
         }
       end)
 
-      block = Block.block_from_trips([trip1, trip2])
+      block = build(:block, id: trip1.block_id, trips: [trip1, trip2])
 
       run =
         build(:minischedule_run, %{
@@ -544,9 +544,9 @@ defmodule Realtime.VehiclesTest do
           end_time: 6100
         })
 
-      block_1 = Block.block_from_trips([trip_1])
-      block_2 = Block.block_from_trips([trip_2])
-      block_3 = Block.block_from_trips([trip_3])
+      block_1 = build(:block, id: trip_1.block_id, trips: [trip_1])
+      block_2 = build(:block, id: trip_2.block_id, trips: [trip_2])
+      block_3 = build(:block, id: trip_3.block_id, trips: [trip_3])
 
       run_1 =
         build(:minischedule_run, %{

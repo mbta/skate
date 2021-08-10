@@ -346,7 +346,7 @@ defmodule Schedule.Data do
       |> Enum.filter(fn run -> !is_nil(run.service_id) end)
       |> Map.new(fn run -> {{run.service_id, run.id}, run} end)
 
-    blocks = Block.blocks_from_trips(Map.values(trips_by_id))
+    blocks = Block.blocks_from_trips(Map.values(trips_by_id), pieces)
 
     %__MODULE__{
       routes: bus_routes,

@@ -410,7 +410,8 @@ defmodule ScheduleTest do
                      }
                    ]
                  }
-               ]
+               ],
+               pieces: []
              }
     end
 

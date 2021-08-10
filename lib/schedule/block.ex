@@ -1,7 +1,10 @@
 defmodule Schedule.Block do
   alias Schedule.Gtfs.Service
   alias Schedule.Hastus
+  alias Schedule.Piece
   alias Schedule.Trip
+
+  require Logger
 
   @type id :: String.t()
   @typedoc """
@@ -18,7 +21,8 @@ defmodule Schedule.Block do
           start_time: Util.Time.time_of_day(),
           end_time: Util.Time.time_of_day(),
           # only revenue trips. always nonempty
-          trips: [Trip.t()]
+          trips: [Trip.t()],
+          pieces: [Piece.t()]
         }
 
   @enforce_keys [
@@ -27,7 +31,8 @@ defmodule Schedule.Block do
     :schedule_id,
     :start_time,
     :end_time,
-    :trips
+    :trips,
+    :pieces
   ]
 
   defstruct [
@@ -36,13 +41,16 @@ defmodule Schedule.Block do
     :schedule_id,
     :start_time,
     :end_time,
-    :trips
+    :trips,
+    :pieces
   ]
 
-  @spec blocks_from_trips([Trip.t()]) :: by_id()
-  def blocks_from_trips(trips) do
+  @spec blocks_from_trips([Trip.t()], [Piece.t()]) :: by_id()
+  def blocks_from_trips(trips, pieces) do
     {revenue_trips, nonrevenue_trips} =
       Enum.split_with(trips, fn trip -> trip.route_id != nil end)
+
+    pieces_by_block_id = Enum.group_by(pieces, &Piece.block_key/1)
 
     nonrevenue_trips =
       Enum.group_by(nonrevenue_trips, fn trip -> {trip.schedule_id, trip.block_id} end)
@@ -55,12 +63,12 @@ defmodule Schedule.Block do
       block_id = List.first(trips).block_id
       schedule_id = List.first(trips).schedule_id
       deadheads = Map.get(nonrevenue_trips, {schedule_id, block_id}, [])
-      block_from_trips(trips, deadheads)
+      block_from_trips(trips, deadheads, pieces_by_block_id)
     end)
   end
 
-  @spec block_from_trips([Trip.t()], [Trip.t()]) :: t()
-  def block_from_trips(revenue_trips, nonrevenue_trips \\ []) do
+  @spec block_from_trips([Trip.t()], [Trip.t()], Piece.by_id()) :: t()
+  def block_from_trips(revenue_trips, nonrevenue_trips, pieces_by_id) do
     revenue_trips = Enum.sort_by(revenue_trips, & &1.start_time)
     nonrevenue_trips = Enum.sort_by(nonrevenue_trips, & &1.start_time)
     first_trip = List.first(revenue_trips)
@@ -85,13 +93,28 @@ defmodule Schedule.Block do
         )
       end
 
+    schedule_id = first_trip.schedule_id
+    block_id = first_trip.block_id
+    block_key = {schedule_id, block_id}
+
+    pieces = Map.get(pieces_by_id, block_key)
+
+    pieces =
+      if pieces do
+        pieces
+      else
+        Logger.warn("no pieces found for block key #{inspect(block_key)}")
+        []
+      end
+
     %__MODULE__{
-      id: first_trip.block_id,
+      id: block_id,
       service_id: first_trip.service_id,
-      schedule_id: first_trip.schedule_id,
+      schedule_id: schedule_id,
       start_time: start_time,
       end_time: end_time,
-      trips: revenue_trips
+      trips: revenue_trips,
+      pieces: pieces
     }
   end
 

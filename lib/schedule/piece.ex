@@ -53,6 +53,11 @@ defmodule Schedule.Piece do
     end_mid_route?: false
   ]
 
+  @spec block_key(t()) :: Block.key()
+  def block_key(piece) do
+    {piece.schedule_id, piece.block_id}
+  end
+
   @spec hydrate(t(), Trip.by_id(), Timepoint.timepoint_names_by_id()) :: t()
   def hydrate(piece, trips_by_id, timepoint_names_by_id) do
     trip_ids = piece.trips
