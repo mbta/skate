@@ -333,13 +333,20 @@ defmodule Schedule.Data do
     minischedule_runs =
       Schedule.Minischedule.Load.runs_from_hastus(hastus_activities, hastus_trips, trips_by_id)
 
-    minischedule_blocks = Schedule.Minischedule.Load.blocks_from_runs(minischedule_runs)
+    pieces =
+      minischedule_runs
+      |> Map.values()
+      |> Enum.flat_map(&Schedule.Minischedule.Run.pieces/1)
+
+    minischedule_blocks = Schedule.Minischedule.Load.blocks_from_pieces(pieces)
 
     runs =
       minischedule_runs
       |> Map.values()
       |> Enum.filter(fn run -> !is_nil(run.service_id) end)
       |> Map.new(fn run -> {{run.service_id, run.id}, run} end)
+
+    blocks = Block.blocks_from_trips(Map.values(trips_by_id))
 
     %__MODULE__{
       routes: bus_routes,
@@ -354,7 +361,7 @@ defmodule Schedule.Data do
       shapes: shapes_by_route_id(gtfs_files["shapes.txt"], gtfs_trips),
       stops: all_stops_by_id(gtfs_files["stops.txt"]),
       trips: trips_by_id,
-      blocks: Block.blocks_from_trips(Map.values(trips_by_id)),
+      blocks: blocks,
       runs: runs,
       calendar: Calendar.from_files(gtfs_files["calendar.txt"], gtfs_files["calendar_dates.txt"]),
       minischedule_runs: minischedule_runs,

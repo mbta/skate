@@ -7,6 +7,7 @@ defmodule Schedule.Minischedule.Load do
 
   alias Schedule.AsDirected
   alias Schedule.Break
+  alias Schedule.Gtfs.Service
   alias Schedule.Helpers
   alias Schedule.Hastus.Activity
   alias Schedule.Hastus.Trip
@@ -33,16 +34,6 @@ defmodule Schedule.Minischedule.Load do
     Map.new(runs, fn run -> {Run.key(run), run} end)
   end
 
-  @spec blocks_from_runs(Run.by_id()) :: Block.by_id()
-  def blocks_from_runs(runs_by_key) do
-    pieces =
-      runs_by_key
-      |> Map.values()
-      |> Enum.flat_map(&Run.pieces/1)
-
-    blocks_from_pieces(pieces)
-  end
-
   @spec run(
           Run.key(),
           [Activity.t()] | nil,
@@ -51,32 +42,15 @@ defmodule Schedule.Minischedule.Load do
           Schedule.Trip.by_id()
         ) ::
           Run.t()
-  def run(run_key, activities, trips, all_trips_by_block, trips_by_id) do
+  def run(run_key, hastus_activities, trips, all_trips_by_block, trips_by_id) do
     {schedule_id, run_id} = run_key
-    activities = activities || []
+    hastus_activities = hastus_activities || []
     trips = trips || []
 
-    service_ids =
-      trips
-      |> Enum.map(& &1.trip_id)
-      |> (&Map.take(trips_by_id, &1)).()
-      |> Map.values()
-      |> Enum.reject(&is_nil(&1))
-      |> Enum.map(& &1.service_id)
-      |> Enum.filter(&(!is_nil(&1)))
-      |> Enum.uniq()
-
-    service_id =
-      case service_ids do
-        [service_id] ->
-          service_id
-
-        _ ->
-          nil
-      end
+    service_id = unique_service_id_for_trips(trips, trips_by_id)
 
     activities =
-      activities
+      hastus_activities
       |> operator_activities_to_pieces(trips, all_trips_by_block)
       |> as_directed_activities_to_pieces()
       |> add_deadheads_to_pieces()
@@ -343,7 +317,7 @@ defmodule Schedule.Minischedule.Load do
   end
 
   @spec blocks_from_pieces([Piece.t()]) :: Block.by_id()
-  defp blocks_from_pieces(pieces) do
+  def blocks_from_pieces(pieces) do
     pieces
     |> Enum.filter(fn piece -> piece.block_id != nil end)
     |> Enum.group_by(&block_key_for_piece/1)
@@ -360,5 +334,26 @@ defmodule Schedule.Minischedule.Load do
   @spec block_key_for_piece(Piece.t()) :: Block.key()
   defp block_key_for_piece(piece) do
     {piece.schedule_id, piece.block_id}
+  end
+
+  @spec unique_service_id_for_trips([Trip.t()], Schedule.Trip.by_id()) :: Service.id() | nil
+  defp unique_service_id_for_trips(trips, trips_by_id) do
+    service_ids =
+      trips
+      |> Enum.map(& &1.trip_id)
+      |> (&Map.take(trips_by_id, &1)).()
+      |> Map.values()
+      |> Enum.filter(& &1)
+      |> Enum.map(& &1.service_id)
+      |> Enum.filter(& &1)
+      |> Enum.uniq()
+
+    case service_ids do
+      [service_id] ->
+        service_id
+
+      _ ->
+        nil
+    end
   end
 end
