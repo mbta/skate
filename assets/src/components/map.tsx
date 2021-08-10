@@ -24,6 +24,7 @@ import {
   Map as PigeonMap,
   ZoomControl as PigeonZoomControl,
   Overlay,
+  MapProps as PigeonMapProps,
 } from "pigeon-maps"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { className } from "../helpers/dom"
@@ -384,7 +385,7 @@ export const autoCenter = (
   }
 }
 
-const RecenterControl = ({
+const LeafletRecenterControl = ({
   turnOnAutoCenter,
 }: {
   turnOnAutoCenter: () => void
@@ -416,6 +417,45 @@ const RecenterControl = ({
       </a>
     </div>
   </Control>
+)
+
+const PigeonRecenterControl = ({
+  turnOnAutoCentering,
+  autoCentering,
+}: {
+  turnOnAutoCentering: () => void
+  autoCentering: boolean
+}): ReactElement<HTMLDivElement> => (
+  <div
+    className={
+      "m-vehicle-map__pigeon-recenter-button" +
+      (autoCentering ? " m-vehicle-map--auto-centering-button" : "")
+    }
+  >
+    <a
+      href="#"
+      title="Recenter map"
+      role="button"
+      aria-label="Recenter map"
+      onClick={(e) => {
+        e.stopPropagation()
+        e.preventDefault()
+        turnOnAutoCentering()
+      }}
+    >
+      <svg
+        height="26"
+        viewBox="-5 -5 32 32"
+        width="26"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+          transform="rotate(60, 12, 12)"
+        />
+      </svg>
+    </a>
+  </div>
 )
 
 const useAutoCenter = (
@@ -497,7 +537,9 @@ const MapWithLeaflet = (props: Props): ReactElement<HTMLDivElement> => {
       >
         <ZoomControl position="topright" />
         <FullscreenControl position="topright" />
-        <RecenterControl turnOnAutoCenter={() => setShouldAutoCenter(true)} />
+        <LeafletRecenterControl
+          turnOnAutoCenter={() => setShouldAutoCenter(true)}
+        />
         <TileLayer
           url="https://mbta-map-tiles-dev.s3.amazonaws.com/osm_tiles/{z}/{x}/{y}.png"
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -529,14 +571,87 @@ const MapWithLeaflet = (props: Props): ReactElement<HTMLDivElement> => {
 const mapTiler = (x: number, y: number, z: number): string =>
   `https://mbta-map-tiles-dev.s3.amazonaws.com/osm_tiles/${z}/${x}/${y}.png`
 
+export const centerAndZoomForLocations = (
+  latLngs: [number, number][]
+): { center: [number, number]; zoom: number } => {
+  if (latLngs.length === 0) {
+    return { center: [defaultCenter.lat, defaultCenter.lng], zoom: 13 }
+  } else if (latLngs.length === 1) {
+    return { center: latLngs[0], zoom: 16 }
+  } else {
+    const corner1 = [
+      Math.min(...latLngs.map(([lat]) => lat)),
+      Math.min(...latLngs.map(([, lng]) => lng)),
+    ]
+    const corner2 = [
+      Math.max(...latLngs.map(([lat]) => lat)),
+      Math.max(...latLngs.map(([, lng]) => lng)),
+    ]
+    const center: [number, number] = [
+      centerLat(corner1[0], corner2[0]),
+      centerLon(corner1[1], corner2[1]),
+    ]
+    return { center, zoom: 13 }
+  }
+}
+
+const centerLat = (lat1: number, lat2: number): number => {
+  const dist1 = Math.abs(lat2 - lat1)
+  const dist2 = Math.abs(180 + lat2 - lat1)
+
+  if (dist1 < dist2) {
+    return Math.min(lat1, lat2) + dist1 / 2
+  } else {
+    return (Math.max(lat1, lat2) + dist2 / 2) % 180
+  }
+}
+
+const centerLon = (lat1: number, lat2: number): number => {
+  const dist1 = Math.abs(lat2 - lat1)
+  const dist2 = Math.abs(360 + lat2 - lat1)
+
+  if (dist1 < dist2) {
+    return Math.min(lat1, lat2) + dist1 / 2
+  } else {
+    return (Math.max(lat1, lat2) + dist2 / 2) % 360
+  }
+}
+
 const MapWithPigeon = (props: Props): ReactElement<HTMLDivElement> => {
+  const [autoCentering, setAutocentering] = useState<boolean>(true)
+  const latLngs: [number, number][] = props.vehicles.map(
+    ({ latitude, longitude }) => [latitude, longitude]
+  )
+
+  const [hasAutoCentered, setHasAutoCentered] = useState<boolean>(false)
+
+  useEffect(() => {
+    setHasAutoCentered(false)
+  }, [JSON.stringify(latLngs)])
+
+  const centerZoomProps: PigeonMapProps = autoCentering
+    ? {
+        ...centerAndZoomForLocations(latLngs),
+        onBoundsChanged: () => {
+          if (hasAutoCentered) {
+            setAutocentering(false)
+          } else {
+            setHasAutoCentered(true)
+          }
+        },
+      }
+    : {
+        defaultCenter: [defaultCenter.lat, defaultCenter.lng],
+        defaultZoom: 13,
+      }
+
   return (
-    <PigeonMap
-      defaultCenter={[defaultCenter.lat, defaultCenter.lng]}
-      defaultZoom={13}
-      provider={mapTiler}
-    >
+    <PigeonMap {...centerZoomProps} provider={mapTiler}>
       <PigeonZoomControl />
+      <PigeonRecenterControl
+        turnOnAutoCentering={() => setAutocentering(true)}
+        autoCentering={autoCentering}
+      />
       {props.vehicles.map((vehicle: Vehicle) => (
         <Overlay
           anchor={[vehicle.latitude, vehicle.longitude]}

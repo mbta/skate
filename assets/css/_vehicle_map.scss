@@ -86,3 +86,36 @@
     }
   }
 }
+
+.m-vehicle-map__pigeon-recenter-button {
+  position: absolute;
+  top: 78px;
+  right: 10px;
+  // properties kept the same as Pigeon inline styling for zoom buttons
+  width: 28px;
+  height: 28px;
+  border-radius: 2px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
+  background: white none repeat scroll 0% 0%;
+  color: rgb(102, 102, 102);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  path {
+    fill: none;
+    stroke: $color-button-secondary;
+    stroke-width: 2;
+  }
+
+  &.m-vehicle-map--auto-centering-button {
+    background-color: $color-button-disabled;
+    color: $color-font-grey;
+    cursor: default;
+
+    path {
+      stroke: $color-font-grey;
+    }
+  }
+}
