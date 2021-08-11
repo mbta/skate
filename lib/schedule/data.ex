@@ -6,6 +6,7 @@ defmodule Schedule.Data do
 
   alias Schedule.Block
   alias Schedule.Csv
+  alias Schedule.Piece
   alias Schedule.TimepointOrder
   alias Schedule.Trip
   alias Schedule.Minischedule
@@ -331,16 +332,19 @@ defmodule Schedule.Data do
     minischedule_runs =
       Schedule.Minischedule.Load.runs_from_hastus(hastus_activities, hastus_trips, trips_by_id)
 
-    pieces =
-      minischedule_runs
-      |> Map.values()
-      |> Enum.flat_map(&Schedule.Minischedule.Run.pieces/1)
-
     runs =
       minischedule_runs
       |> Map.values()
       |> Enum.filter(fn run -> !is_nil(run.service_id) end)
       |> Map.new(fn run -> {{run.service_id, run.id}, run} end)
+
+    timepoint_names = timepoint_names_for_ids(timepoints_by_id)
+
+    pieces =
+      minischedule_runs
+      |> Map.values()
+      |> Enum.flat_map(&Schedule.Minischedule.Run.pieces/1)
+      |> Enum.map(&Piece.hydrate(&1, trips_by_id, timepoint_names))
 
     blocks = Block.blocks_from_trips(Map.values(trips_by_id), pieces)
 
@@ -353,7 +357,7 @@ defmodule Schedule.Data do
           stop_times_by_id,
           timepoints_by_id
         ),
-      timepoint_names_by_id: timepoint_names_for_ids(timepoints_by_id),
+      timepoint_names_by_id: timepoint_names,
       shapes: shapes_by_route_id(gtfs_files["shapes.txt"], gtfs_trips),
       stops: all_stops_by_id(gtfs_files["stops.txt"]),
       trips: trips_by_id,
