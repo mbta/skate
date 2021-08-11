@@ -39,7 +39,6 @@ defmodule Schedule.Data do
           runs: %{{Service.id(), Hastus.Run.id()} => Minischedule.Run.t()},
           calendar: Calendar.t(),
           minischedule_runs: Minischedule.Run.by_id(),
-          minischedule_blocks: Minischedule.Block.by_id(),
           swings: Swing.by_schedule_id_and_route_id()
         }
 
@@ -60,7 +59,6 @@ defmodule Schedule.Data do
             runs: %{},
             calendar: %{},
             minischedule_runs: %{},
-            minischedule_blocks: %{},
             swings: %{}
 
   @type files :: %{String.t() => binary()}
@@ -261,11 +259,11 @@ defmodule Schedule.Data do
     end
   end
 
-  @spec minischedule_block(t(), Trip.id()) :: Minischedule.Block.t() | nil
-  def minischedule_block(
+  @spec block_for_trip(t(), Trip.id()) :: Block.t() | nil
+  def block_for_trip(
         %__MODULE__{
           trips: trips,
-          minischedule_blocks: blocks,
+          blocks: blocks,
           timepoint_names_by_id: timepoint_names_by_id
         },
         trip_id
@@ -275,7 +273,7 @@ defmodule Schedule.Data do
     if trip != nil && trip.schedule_id != nil do
       # we have HASTUS data for this trip
       block = blocks[{trip.schedule_id, trip.block_id}]
-      Minischedule.Block.hydrate(block, trips, timepoint_names_by_id)
+      Block.hydrate(block, trips, timepoint_names_by_id)
     else
       nil
     end
@@ -338,8 +336,6 @@ defmodule Schedule.Data do
       |> Map.values()
       |> Enum.flat_map(&Schedule.Minischedule.Run.pieces/1)
 
-    minischedule_blocks = Schedule.Minischedule.Load.blocks_from_pieces(pieces)
-
     runs =
       minischedule_runs
       |> Map.values()
@@ -365,8 +361,7 @@ defmodule Schedule.Data do
       runs: runs,
       calendar: Calendar.from_files(gtfs_files["calendar.txt"], gtfs_files["calendar_dates.txt"]),
       minischedule_runs: minischedule_runs,
-      minischedule_blocks: minischedule_blocks,
-      swings: Swing.from_minischedule_blocks(minischedule_blocks, trips_by_id)
+      swings: Swing.from_blocks(blocks, trips_by_id)
     }
   end
 

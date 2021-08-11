@@ -6,12 +6,13 @@ defmodule Schedule.Minischedule.Load do
   require Logger
 
   alias Schedule.AsDirected
+  alias Schedule.Block
   alias Schedule.Break
   alias Schedule.Gtfs.Service
   alias Schedule.Helpers
   alias Schedule.Hastus.Activity
   alias Schedule.Hastus.Trip
-  alias Schedule.Minischedule.{Block, Run}
+  alias Schedule.Minischedule.Run
   alias Schedule.Piece
 
   @spec runs_from_hastus([Activity.t()], [Trip.t()], Schedule.Trip.by_id()) ::
@@ -314,26 +315,6 @@ defmodule Schedule.Minischedule.Load do
       %Piece{} = piece -> piece
       %Activity{} = activity -> Break.from_activity(activity)
     end)
-  end
-
-  @spec blocks_from_pieces([Piece.t()]) :: Block.by_id()
-  def blocks_from_pieces(pieces) do
-    pieces
-    |> Enum.filter(fn piece -> piece.block_id != nil end)
-    |> Enum.group_by(&block_key_for_piece/1)
-    |> Map.new(fn {{schedule_id, block_id} = block_key, pieces} ->
-      {block_key,
-       %Block{
-         schedule_id: schedule_id,
-         id: block_id,
-         pieces: Enum.sort_by(pieces, fn piece -> piece.start_time end)
-       }}
-    end)
-  end
-
-  @spec block_key_for_piece(Piece.t()) :: Block.key()
-  defp block_key_for_piece(piece) do
-    {piece.schedule_id, piece.block_id}
   end
 
   @spec unique_service_id_for_trips([Trip.t()], Schedule.Trip.by_id()) :: Service.id() | nil

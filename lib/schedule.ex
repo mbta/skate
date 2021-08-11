@@ -159,10 +159,10 @@ defmodule Schedule do
     call_catch_timeout(server, {:minischedule_run, trip_id}, :minischedule_run, nil)
   end
 
-  @spec minischedule_block(Trip.id()) :: Minischedule.Block.t() | nil
-  @spec minischedule_block(Trip.id(), GenServer.server()) :: Minischedule.Block.t() | nil
-  def minischedule_block(trip_id, server \\ __MODULE__) do
-    call_catch_timeout(server, {:minischedule_block, trip_id}, :minischedule_block, nil)
+  @spec block_for_trip(Trip.id()) :: Block.t() | nil
+  @spec block_for_trip(Trip.id(), GenServer.server()) :: Block.t() | nil
+  def block_for_trip(trip_id, server \\ __MODULE__) do
+    call_catch_timeout(server, {:block_for_trip, trip_id}, :block_for_trip, nil)
   end
 
   @spec swings_for_route(
@@ -258,8 +258,8 @@ defmodule Schedule do
     {:reply, Data.minischedule_run(gtfs_data, trip_id), state}
   end
 
-  def handle_call({:minischedule_block, trip_id}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.minischedule_block(gtfs_data, trip_id), state}
+  def handle_call({:block_for_trip, trip_id}, _from, {:loaded, gtfs_data} = state) do
+    {:reply, Data.block_for_trip(gtfs_data, trip_id), state}
   end
 
   def handle_call(

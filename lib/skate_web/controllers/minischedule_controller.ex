@@ -12,7 +12,7 @@ defmodule SkateWeb.MinischeduleController do
 
   @spec block(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def block(conn, %{"trip_id" => trip_id}) do
-    block_fn = Application.get_env(:skate, :block_fn, &Schedule.minischedule_block/1)
+    block_fn = Application.get_env(:skate, :block_fn, &Schedule.block_for_trip/1)
 
     block = block_fn.(trip_id)
 

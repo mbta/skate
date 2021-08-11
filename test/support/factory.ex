@@ -80,16 +80,6 @@ defmodule Skate.Factory do
     }
   end
 
-  def minischedule_block_factory do
-    %Schedule.Minischedule.Block{
-      schedule_id: "schedule",
-      id: "block",
-      pieces: [
-        build(:piece)
-      ]
-    }
-  end
-
   def minischedule_run_factory do
     %Schedule.Minischedule.Run{
       schedule_id: "schedule",

@@ -1,13 +1,13 @@
 defmodule Schedule.Swing do
+  alias Schedule.Block
   alias Schedule.Hastus
   alias Schedule.Gtfs.Service
   alias Schedule.Piece
   alias Schedule.Route
   alias Schedule.Trip
-  alias Schedule.Minischedule
 
   @type t :: %__MODULE__{
-          block_id: Schedule.Block.id(),
+          block_id: Block.id(),
           from_route_id: Route.id(),
           from_run_id: Hastus.Run.id(),
           from_trip_id: Trip.id(),
@@ -32,10 +32,10 @@ defmodule Schedule.Swing do
 
   @type by_schedule_id_and_route_id :: %{{Service.id(), Route.id()} => [t()]}
 
-  @spec from_minischedule_blocks(Minischedule.Block.by_id(), Trip.by_id()) ::
+  @spec from_blocks(Block.by_id(), Trip.by_id()) ::
           by_schedule_id_and_route_id()
-  def from_minischedule_blocks(minischedule_blocks, trips_by_id) do
-    swings_info = minischedule_blocks_to_swing_info(minischedule_blocks, trips_by_id)
+  def from_blocks(blocks, trips_by_id) do
+    swings_info = blocks_to_swing_info(blocks, trips_by_id)
 
     Enum.reduce(swings_info, %{}, fn swing_info, acc ->
       swing = %__MODULE__{
@@ -71,7 +71,7 @@ defmodule Schedule.Swing do
     end)
   end
 
-  @spec minischedule_blocks_to_swing_info(Minischedule.Block.by_id(), Trip.by_id()) ::
+  @spec blocks_to_swing_info(Block.by_id(), Trip.by_id()) ::
           [
             %{
               swing_off_trip: Trip.id() | Trip.t(),
@@ -80,8 +80,8 @@ defmodule Schedule.Swing do
               block_id: Schedule.Block.id()
             }
           ]
-  defp minischedule_blocks_to_swing_info(minischedule_blocks, trips_by_id) do
-    minischedule_blocks
+  defp blocks_to_swing_info(blocks, trips_by_id) do
+    blocks
     |> Map.values()
     |> Enum.map(&{&1.pieces, &1.id})
     |> Enum.flat_map(fn {pieces_for_block, block_id} ->

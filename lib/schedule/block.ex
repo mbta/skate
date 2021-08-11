@@ -35,6 +35,8 @@ defmodule Schedule.Block do
     :pieces
   ]
 
+  @derive {Jason.Encoder, only: [:id, :schedule_id, :pieces]}
+
   defstruct [
     :id,
     :service_id,
@@ -44,6 +46,11 @@ defmodule Schedule.Block do
     :trips,
     :pieces
   ]
+
+  @spec key(t()) :: key()
+  def key(block) do
+    {block.schedule_id, block.id}
+  end
 
   @spec blocks_from_trips([Trip.t()], [Piece.t()]) :: by_id()
   def blocks_from_trips(trips, pieces) do
@@ -204,4 +211,12 @@ defmodule Schedule.Block do
   end
 
   defp overload_id_regex(), do: ~r/-OL.+$/
+
+  @spec hydrate(t(), Trip.by_id(), Timepoint.timepoint_names_by_id()) :: t()
+  def hydrate(block, trips_by_id, timepoint_names_by_id) do
+    %{
+      block
+      | pieces: Enum.map(block.pieces, &Piece.hydrate(&1, trips_by_id, timepoint_names_by_id))
+    }
+  end
 end

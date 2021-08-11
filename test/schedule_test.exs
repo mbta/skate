@@ -767,6 +767,20 @@ defmodule ScheduleTest do
               "checkpoint_id,checkpoint_name",
               "start,Starting Timepoint",
               "end,Ending Timepoint"
+            ],
+            "routes.txt" => [
+              "route_id,route_long_name,route_type,route_desc,route_short_name",
+              "route,Some Place - Some Other Place,3,Key Bus,route"
+            ],
+            "trips.txt" => [
+              "route_id,service_id,trip_id,trip_headsign,direction_id,block_id",
+              "route,service,trip,Headsign,0,block",
+              "route,service,trip,Headsign,1,block"
+            ],
+            "stop_times.txt" => [
+              "trip_id,arrival_time,departure_time,stop_sequence,checkpoint_id",
+              "trip,,00:00:00,1,start",
+              "trip,,00:00:00,2,"
             ]
           }
         })
@@ -788,8 +802,15 @@ defmodule ScheduleTest do
             start_place: "start",
             end_place: "end",
             schedule_id: "schedule",
+            service_id: "service",
             pretty_start_place: "Starting Timepoint",
-            pretty_end_place: "Ending Timepoint"
+            pretty_end_place: "Ending Timepoint",
+            direction_id: 1,
+            headsign: "Headsign",
+            stop_times: [
+              %Schedule.Gtfs.StopTime{stop_id: nil, time: 0, timepoint_id: "start"},
+              %Schedule.Gtfs.StopTime{stop_id: nil, time: 0, timepoint_id: nil}
+            ]
           }
         ],
         end_time: 0,
@@ -803,6 +824,7 @@ defmodule ScheduleTest do
       assert Schedule.minischedule_run("trip", pid) ==
                %Minischedule.Run{
                  schedule_id: "schedule",
+                 service_id: "service",
                  id: "123-4567",
                  activities: [
                    expected_piece
@@ -811,12 +833,11 @@ defmodule ScheduleTest do
     end
 
     test "can get block", %{pid: pid, expected_piece: expected_piece} do
-      assert Schedule.minischedule_block("trip", pid) ==
-               %Minischedule.Block{
-                 schedule_id: "schedule",
-                 id: "block",
-                 pieces: [expected_piece]
-               }
+      assert %Block{
+               schedule_id: "schedule",
+               id: "block",
+               pieces: [^expected_piece]
+             } = Schedule.block_for_trip("trip", pid)
     end
   end
 
@@ -841,9 +862,19 @@ defmodule ScheduleTest do
               "service_id,monday,tuesday,wednesday,thursday,friday,saturday,sunday,start_date,end_date",
               "service,1,0,0,0,0,0,0,20210419,20210419"
             ],
+            "checkpoints.txt" => [
+              "checkpoint_id,checkpoint_name",
+              "start,Starting Timepoint",
+              "end,Ending Timepoint"
+            ],
             "routes.txt" => [
               "route_id,route_long_name,route_type,route_desc,route_short_name",
               "route,Some Place - Some Other Place,3,Key Bus,route"
+            ],
+            "stop_times.txt" => [
+              "trip_id,arrival_time,departure_time,stop_sequence,checkpoint_id",
+              "trip1,,00:00:00,1,start",
+              "trip2,,00:00:00,2,"
             ],
             "trips.txt" => [
               "route_id,service_id,trip_id,trip_headsign,direction_id,block_id",

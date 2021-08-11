@@ -3,6 +3,7 @@ defmodule Schedule.DataTest do
 
   import Skate.Factory
 
+  alias Schedule.Block
   alias Schedule.Data
   alias Schedule.Trip
   alias Schedule.Swing
@@ -640,46 +641,36 @@ defmodule Schedule.DataTest do
     end
   end
 
-  describe "minischedule_block" do
+  describe "block_for_trip/1" do
     test "returns block for trip" do
-      trip = %Trip{
-        id: "trip",
-        block_id: "block",
-        schedule_id: "schedule"
-      }
-
-      block = %Minischedule.Block{
-        schedule_id: "schedule",
-        id: "block",
-        pieces: []
-      }
+      trip = build(:trip, schedule_id: "schedule_q", block_id: "some_block")
+      block = build(:block, id: "some_block", schedule_id: "schedule_q", trips: [trip])
 
       data = %Data{
         trips: %{trip.id => trip},
-        minischedule_blocks: %{Minischedule.Block.key(block) => block}
+        blocks: %{Block.key(block) => block}
       }
 
-      assert Data.minischedule_block(data, trip.id) == block
+      assert Data.block_for_trip(data, trip.id) == block
     end
 
     test "returns nil if the trip isn't known" do
       data = %Data{}
 
-      assert Data.minischedule_block(data, "trip") == nil
+      assert Data.block_for_trip(data, "trip") == nil
     end
 
     test "returns nil if the trip is in gtfs but not hastus" do
-      trip = %Trip{
-        id: "trip",
-        block_id: "block",
-        schedule_id: nil
-      }
+      trip =
+        build(:trip,
+          schedule_id: nil
+        )
 
       data = %Data{
         trips: %{trip.id => trip}
       }
 
-      assert Data.minischedule_block(data, trip.id) == nil
+      assert Data.block_for_trip(data, trip.id) == nil
     end
   end
 
