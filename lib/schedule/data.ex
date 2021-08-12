@@ -327,6 +327,7 @@ defmodule Schedule.Data do
     gtfs_trips = Gtfs.Trip.parse(gtfs_files["trips.txt"], bus_route_ids)
     gtfs_trip_ids = MapSet.new(gtfs_trips, & &1.id)
     stop_times_by_id = StopTime.parse(gtfs_files["stop_times.txt"], gtfs_trip_ids)
+
     trips_by_id = Trip.merge_trips(gtfs_trips, hastus_trips, stop_times_by_id)
 
     minischedule_runs =
@@ -346,7 +347,7 @@ defmodule Schedule.Data do
       |> Enum.flat_map(&Schedule.Minischedule.Run.pieces/1)
       |> Enum.map(&Piece.hydrate(&1, trips_by_id, timepoint_names))
 
-    blocks = Block.blocks_from_trips(Map.values(trips_by_id), pieces)
+    blocks = Block.blocks_from_pieces(pieces)
 
     %__MODULE__{
       routes: bus_routes,

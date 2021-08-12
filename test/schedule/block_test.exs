@@ -75,48 +75,47 @@ defmodule Schedule.BlockTest do
            schedule_id: "schedule",
            start_time: 1,
            end_time: 19,
-           trips: [@trip1, @trip2],
            pieces: [@piece]
          )
 
   describe "blocks_from_trips/ and get/3 " do
     test "can create blocks and then get them" do
-      by_id = Block.blocks_from_trips([@trip1], [@piece])
+      by_id = Block.blocks_from_pieces([@piece])
 
       assert Block.get(by_id, "schedule", "b") == %{
                @block
-               | start_time: @trip1.start_time,
-                 end_time: @trip1.end_time,
-                 trips: [@trip1]
+               | start_time: @piece.start_time,
+                 end_time: @piece.end_time,
+                 pieces: [@piece]
              }
     end
 
     test "sets start_time and end_time based on pulls" do
-      by_id = Block.blocks_from_trips([@pullout, @trip1, @trip2, @pullback], [@piece])
-      assert Block.get(by_id, "schedule", "b") == @block
-    end
+      earlier_piece =
+        build(:piece,
+          start_time: 100,
+          end_time: 130,
+          schedule_id: @block.schedule_id,
+          block_id: @block.id
+        )
 
-    test "ignores deadheads" do
-      by_id = Block.blocks_from_trips([@trip1, @deadhead, @trip2], [@piece])
+      later_piece =
+        build(:piece,
+          start_time: 140,
+          end_time: 200,
+          schedule_id: @block.schedule_id,
+          block_id: @block.id
+        )
 
-      assert Block.get(by_id, "schedule", "b") == %{
-               @block
-               | start_time: @trip1.start_time,
-                 end_time: @trip2.end_time
-             }
-    end
+      expected_block = %Block{
+        @block
+        | start_time: 100,
+          end_time: 200,
+          pieces: [earlier_piece, later_piece]
+      }
 
-    test "sorts trips by time" do
-      by_id = Block.blocks_from_trips([@trip2, @pullback, @trip1, @pullout], [@piece])
-      assert Block.get(by_id, "schedule", "b") == @block
-    end
-
-    test "ignores trips without stop times" do
-      trips = [
-        %{@trip1 | stop_times: []}
-      ]
-
-      assert Block.blocks_from_trips(trips, [@piece]) == %{}
+      by_id = Block.blocks_from_pieces([later_piece, earlier_piece])
+      assert Block.get(by_id, "schedule", "b") == expected_block
     end
   end
 
@@ -244,7 +243,6 @@ defmodule Schedule.BlockTest do
       stored_block =
         build(
           :block,
-          trips: [stored_trip],
           pieces: [
             stored_piece
           ]

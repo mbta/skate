@@ -366,6 +366,10 @@ defmodule ScheduleTest do
             ]
           },
           hastus: %{
+            "activities.csv" => [
+              "schedule_id;area;run_id;start_time;end_time;start_place;end_place;activity_type;activity_name",
+              "schedule;123;1501;04:20;05:15;start;end;Operator;b"
+            ],
             "trips.csv" => [
               "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
               "schedule;123;    1501;b;04:30;05:05;wtryd;hayms;route;t1"
@@ -373,46 +377,23 @@ defmodule ScheduleTest do
           }
         })
 
-      assert Schedule.block("schedule", "b", pid) == %Block{
+      assert %Block{
                id: "b",
                service_id: "service",
                schedule_id: "schedule",
-               start_time: 1,
-               end_time: 3,
-               trips: [
-                 %Trip{
-                   id: "t1",
-                   block_id: "b",
-                   route_id: "route",
-                   service_id: "service",
-                   # Shuttles do not have route_pattern_ids
-                   headsign: "h1",
-                   direction_id: 1,
-                   route_pattern_id: "route-_-0",
-                   shape_id: "shape1",
+               start_time: 15600,
+               end_time: 18900,
+               pieces: [
+                 %Piece{
                    schedule_id: "schedule",
                    run_id: "123-1501",
-                   start_time: 1,
-                   end_time: 3,
-                   start_place: "wtryd",
-                   end_place: "hayms",
-                   stop_times: [
-                     %StopTime{
-                       stop_id: "s4",
-                       time: 1,
-                       timepoint_id: "exurb"
-                     },
-                     %StopTime{stop_id: "s5", time: 2, timepoint_id: nil},
-                     %StopTime{
-                       stop_id: "s3",
-                       time: 3,
-                       timepoint_id: "suburb"
-                     }
+                   block_id: "b",
+                   trips: [
+                     %Trip{id: "t1"}
                    ]
                  }
-               ],
-               pieces: []
-             }
+               ]
+             } = Schedule.block("schedule", "b", pid)
     end
 
     test "returns nil if the block doesn't exist" do
@@ -485,9 +466,13 @@ defmodule ScheduleTest do
             ]
           },
           hastus: %{
+            "activities.csv" => [
+              "schedule_id;area;run_id;start_time;end_time;start_place;end_place;activity_type;activity_name",
+              "schedule;123;456;00:01;12:01;start;end;Operator;now"
+            ],
             "trips.csv" => [
               "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
-              "schedule;123;456;now;12:00;12:01;someplace;otherplace;route;now"
+              "schedule;123;456;now;00:01;12:01;someplace;otherplace;route;now"
             ]
           }
         })
@@ -496,7 +481,7 @@ defmodule ScheduleTest do
       time0 = 1_546_318_800
 
       assert %{~D[2019-01-01] => [%Block{id: "now"}]} =
-               Schedule.active_blocks(time0 + 1, time0 + 3, pid)
+               Schedule.active_blocks(time0 + 1, time0 + 90, pid)
     end
   end
 

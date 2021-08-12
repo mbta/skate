@@ -1,5 +1,6 @@
 defmodule Schedule.Block do
-  alias Schedule.Gtfs.Service
+  alias Schedule.AsDirected
+  alias Schedule.Gtfs.{Service, Timepoint}
   alias Schedule.Hastus
   alias Schedule.Piece
   alias Schedule.Trip
@@ -20,8 +21,6 @@ defmodule Schedule.Block do
           schedule_id: Hastus.Schedule.id(),
           start_time: Util.Time.time_of_day(),
           end_time: Util.Time.time_of_day(),
-          # only revenue trips. always nonempty
-          trips: [Trip.t()],
           pieces: [Piece.t()]
         }
 
@@ -31,7 +30,6 @@ defmodule Schedule.Block do
     :schedule_id,
     :start_time,
     :end_time,
-    :trips,
     :pieces
   ]
 
@@ -43,7 +41,6 @@ defmodule Schedule.Block do
     :schedule_id,
     :start_time,
     :end_time,
-    :trips,
     :pieces
   ]
 
@@ -52,81 +49,43 @@ defmodule Schedule.Block do
     {block.schedule_id, block.id}
   end
 
-  @spec blocks_from_trips([Trip.t()], [Piece.t()]) :: by_id()
-  def blocks_from_trips(trips, pieces) do
-    {revenue_trips, nonrevenue_trips} =
-      Enum.split_with(trips, fn trip -> trip.route_id != nil end)
-
-    pieces_by_block_id = Enum.group_by(pieces, &Piece.block_key/1)
-
-    nonrevenue_trips =
-      Enum.group_by(nonrevenue_trips, fn trip -> {trip.schedule_id, trip.block_id} end)
-
-    revenue_trips
-    |> Enum.filter(fn trip -> trip.stop_times != [] end)
-    |> Enum.filter(& &1.schedule_id)
-    |> Enum.group_by(fn trip -> {trip.schedule_id, trip.block_id} end)
-    |> Helpers.map_values(fn trips ->
-      block_id = List.first(trips).block_id
-      schedule_id = List.first(trips).schedule_id
-      deadheads = Map.get(nonrevenue_trips, {schedule_id, block_id}, [])
-      block_from_trips(trips, deadheads, pieces_by_block_id)
-    end)
+  @spec blocks_from_pieces([Piece.t()]) :: by_id()
+  def blocks_from_pieces(pieces) do
+    pieces
+    |> Enum.reject(&Piece.from_non_current_rating?/1)
+    |> Enum.group_by(&Piece.block_key/1)
+    |> Helpers.map_values(&block_from_pieces(&1))
   end
 
-  @spec block_from_trips([Trip.t()], [Trip.t()], Piece.by_id()) :: t()
-  def block_from_trips(revenue_trips, nonrevenue_trips, pieces_by_id) do
-    revenue_trips = Enum.sort_by(revenue_trips, & &1.start_time)
-    nonrevenue_trips = Enum.sort_by(nonrevenue_trips, & &1.start_time)
-    first_trip = List.first(revenue_trips)
+  @spec block_from_pieces([Piece.t()]) :: t()
+  def block_from_pieces(pieces) do
+    pieces = Enum.sort_by(pieces, & &1.start_time)
+    first_piece = List.first(pieces)
+    last_piece = List.last(pieces)
 
-    start_time =
-      if nonrevenue_trips == [] do
-        first_trip.start_time
-      else
-        min(
-          first_trip.start_time,
-          List.first(nonrevenue_trips).start_time
-        )
-      end
-
-    end_time =
-      if nonrevenue_trips == [] do
-        List.last(revenue_trips).end_time
-      else
-        max(
-          List.last(revenue_trips).end_time,
-          List.last(nonrevenue_trips).end_time
-        )
-      end
-
-    schedule_id = first_trip.schedule_id
-    block_id = first_trip.block_id
-    block_key = {schedule_id, block_id}
-
-    pieces = Map.get(pieces_by_id, block_key)
-
-    pieces =
-      if pieces do
-        pieces
-      else
-        Logger.warn("no pieces found for block key #{inspect(block_key)}")
-        []
-      end
+    first_revenue_trip =
+      pieces
+      |> Enum.flat_map(& &1.trips)
+      |> Enum.reject(&match?(%AsDirected{}, &1))
+      |> Enum.find(&Trip.is_revenue_trip?/1)
 
     %__MODULE__{
-      id: block_id,
-      service_id: first_trip.service_id,
-      schedule_id: schedule_id,
-      start_time: start_time,
-      end_time: end_time,
-      trips: revenue_trips,
+      id: first_piece.block_id,
+      service_id: first_revenue_trip.service_id,
+      schedule_id: first_piece.schedule_id,
+      start_time: first_piece.start_time,
+      end_time: last_piece.end_time,
       pieces: pieces
     }
   end
 
   @spec revenue_trips(t()) :: [Trip.t()]
-  def revenue_trips(%__MODULE__{trips: trips}), do: trips
+  def revenue_trips(%__MODULE__{pieces: pieces}) do
+    pieces
+    |> Enum.flat_map(& &1.trips)
+    |> Enum.reject(&match?(%AsDirected{}, &1))
+    |> Enum.filter(&Trip.is_revenue_trip?/1)
+  end
 
   @spec get(by_id(), id(), Hastus.Schedule.id()) :: t() | nil
   def get(by_id, schedule_id, block_idd) do

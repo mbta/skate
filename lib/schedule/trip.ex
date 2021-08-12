@@ -173,4 +173,9 @@ defmodule Schedule.Trip do
   end
 
   def set_pretty_names(trip, _), do: trip
+
+  @spec is_revenue_trip?(t()) :: boolean()
+  def is_revenue_trip?(trip) do
+    (trip.service_id && trip.route_id) != nil
+  end
 end

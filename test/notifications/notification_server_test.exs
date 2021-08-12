@@ -25,33 +25,37 @@ defmodule Notifications.NotificationServerTest do
            service_id: "service1",
            start_time: 1,
            end_time: 1000,
-           trips: [
-             build(
-               :trip,
-               id: "trip1",
-               block_id: "block1",
-               run_id: "run1",
-               route_id: "39",
-               start_time: 50,
-               end_time: 200
-             ),
-             build(
-               :trip,
-               id: "trip2",
-               block_id: "block1",
-               run_id: "run2",
-               route_id: "2",
-               start_time: 400,
-               end_time: 800
-             ),
-             build(
-               :trip,
-               id: "not_covered_by_waiver",
-               block_id: "block1",
-               run_id: "run3",
-               route_id: "3",
-               start_time: 501,
-               end_time: 800
+           pieces: [
+             build(:piece,
+               trips: [
+                 build(
+                   :trip,
+                   id: "trip1",
+                   block_id: "block1",
+                   run_id: "run1",
+                   route_id: "39",
+                   start_time: 50,
+                   end_time: 200
+                 ),
+                 build(
+                   :trip,
+                   id: "trip2",
+                   block_id: "block1",
+                   run_id: "run2",
+                   route_id: "2",
+                   start_time: 400,
+                   end_time: 800
+                 ),
+                 build(
+                   :trip,
+                   id: "not_covered_by_waiver",
+                   block_id: "block1",
+                   run_id: "run3",
+                   route_id: "3",
+                   start_time: 501,
+                   end_time: 800
+                 )
+               ]
              )
            ]
          )

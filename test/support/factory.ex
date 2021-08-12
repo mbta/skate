@@ -75,7 +75,6 @@ defmodule Skate.Factory do
       schedule_id: "schedule",
       start_time: 0,
       end_time: 1,
-      trips: [build(:trip)],
       pieces: [build(:piece)]
     }
   end

@@ -644,7 +644,13 @@ defmodule Schedule.DataTest do
   describe "block_for_trip/1" do
     test "returns block for trip" do
       trip = build(:trip, schedule_id: "schedule_q", block_id: "some_block")
-      block = build(:block, id: "some_block", schedule_id: "schedule_q", trips: [trip])
+
+      block =
+        build(:block,
+          id: "some_block",
+          schedule_id: "schedule_q",
+          pieces: [build(:piece, trips: [trip])]
+        )
 
       data = %Data{
         trips: %{trip.id => trip},

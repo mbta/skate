@@ -16,8 +16,8 @@ defmodule Concentrate.Consumer.StopTimeUpdatesTest do
 
   @block build(:block,
            id: "S28-2",
-           end_time: 0,
-           trips: [@trip]
+           end_time: 0
+           # trips: [@trip]
          )
 
   @stop_time_update %StopTimeUpdate{

@@ -280,7 +280,7 @@ defmodule Realtime.TimepointStatusTest do
           :block,
           start_time: time_of_day0 + 1,
           end_time: time_of_day0 + 13,
-          trips: [trip0, trip1]
+          pieces: [build(:piece, trips: [trip0, trip1])]
         )
 
       %{block: block, time0: time0}

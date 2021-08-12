@@ -58,6 +58,25 @@ defmodule Schedule.Piece do
     {piece.schedule_id, piece.block_id}
   end
 
+  # When we prepare a HASTUS export for a new rating for Skate, the export's
+  # data starts not with the start date of the new rating, but rather the
+  # current date. This allows us to import the new rating data as soon as it's
+  # ready, rather than having to try to import it at the moment the new rating
+  # is starting. But it also means that, at any given moment, Skate's HASTUS
+  # data contains a significant number of trips that belong to either a past
+  # or future rating.
+  #
+  # These trips will have a nil service_id. So do all non-revenue trips, but
+  # since a piece should always have at least one revenue trip, if all trips
+  # in a piece have a nil service_id, we can assume that all those trips are
+  # from a non-current rating.
+  @spec from_non_current_rating?(t()) :: boolean()
+  def from_non_current_rating?(piece) do
+    piece.trips
+    |> Enum.reject(&match?(%AsDirected{}, &1))
+    |> Enum.all?(&(&1.service_id == nil))
+  end
+
   @spec hydrate(t(), Trip.by_id(), Timepoint.timepoint_names_by_id()) :: t()
   def hydrate(piece, trips_by_id, timepoint_names_by_id) do
     trip_ids = piece.trips
