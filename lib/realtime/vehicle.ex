@@ -333,7 +333,7 @@ defmodule Realtime.Vehicle do
     if stop_id == List.first(trip.stop_times).stop_id do
       first_trip_from_block = block && block |> Block.revenue_trips() |> List.first()
       # hasn't started trip yet
-      if block != nil && trip.id == first_trip_from_block.id do
+      if first_trip_from_block && trip.id == first_trip_from_block.id do
         # starting the block, pulling out from garage
         :pulling_out
       else

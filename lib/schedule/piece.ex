@@ -74,7 +74,7 @@ defmodule Schedule.Piece do
   def from_non_current_rating?(piece) do
     piece.trips
     |> Enum.reject(&match?(%AsDirected{}, &1))
-    |> Enum.all?(&(&1.service_id == nil))
+    |> Enum.all?(&is_nil(&1.service_id))
   end
 
   @spec hydrate(t(), Trip.by_id(), Timepoint.timepoint_names_by_id()) :: t()

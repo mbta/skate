@@ -14,10 +14,10 @@ defmodule Concentrate.Consumer.StopTimeUpdatesTest do
     service_id: "service"
   }
 
-  @block build(:block,
+  @block build(
+           :block,
            id: "S28-2",
            end_time: 0
-           # trips: [@trip]
          )
 
   @stop_time_update %StopTimeUpdate{

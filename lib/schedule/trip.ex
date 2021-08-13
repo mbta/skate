@@ -176,6 +176,6 @@ defmodule Schedule.Trip do
 
   @spec is_revenue_trip?(t()) :: boolean()
   def is_revenue_trip?(trip) do
-    (trip.service_id && trip.route_id) != nil
+    !is_nil(trip.service_id) && !is_nil(trip.route_id)
   end
 end
