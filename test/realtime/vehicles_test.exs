@@ -190,7 +190,7 @@ defmodule Realtime.VehiclesTest do
       end)
 
       run =
-        build(:minischedule_run, %{
+        build(:run, %{
           activities: [build(:piece, %{start_time: 0, end_time: 0})]
         })
 
@@ -255,7 +255,7 @@ defmodule Realtime.VehiclesTest do
       end)
 
       run =
-        build(:minischedule_run, %{
+        build(:run, %{
           activities: [build(:piece, %{start_time: 0, end_time: 0})]
         })
 
@@ -297,7 +297,7 @@ defmodule Realtime.VehiclesTest do
       end)
 
       run =
-        build(:minischedule_run, %{
+        build(:run, %{
           activities: [build(:piece, %{start_time: 0, end_time: 1})]
         })
 
@@ -396,7 +396,7 @@ defmodule Realtime.VehiclesTest do
       block = build(:block, id: trip1.block_id, pieces: [build(:piece, trips: [trip1, trip2])])
 
       run =
-        build(:minischedule_run, %{
+        build(:run, %{
           activities: [build(:piece, %{start_time: 1, end_time: 4})]
         })
 
@@ -549,19 +549,19 @@ defmodule Realtime.VehiclesTest do
       block_3 = build(:block, id: trip_3.block_id, pieces: [build(:piece, trips: [trip_3])])
 
       run_1 =
-        build(:minischedule_run, %{
+        build(:run, %{
           id: "run_1",
           activities: [build(:piece, %{start_time: 4000, end_time: 4100})]
         })
 
       run_2 =
-        build(:minischedule_run, %{
+        build(:run, %{
           id: "run_2",
           activities: [build(:piece, %{start_time: 2000, end_time: 2100})]
         })
 
       run_3 =
-        build(:minischedule_run, %{
+        build(:run, %{
           id: "run_3",
           activities: [build(:piece, %{start_time: 6000, end_time: 6100})]
         })

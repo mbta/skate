@@ -12,7 +12,7 @@ defmodule Schedule.Minischedule.Load do
   alias Schedule.Helpers
   alias Schedule.Hastus.Activity
   alias Schedule.Hastus.Trip
-  alias Schedule.Minischedule.Run
+  alias Schedule.Run
   alias Schedule.Piece
 
   @spec runs_from_hastus([Activity.t()], [Trip.t()], Schedule.Trip.by_id()) ::

@@ -4,13 +4,12 @@ defmodule SkateWeb.MinischeduleControllerTest do
   import Skate.Factory
   import Test.Support.Helpers
 
-  alias Schedule.Minischedule
-
-  @run %Minischedule.Run{
-    schedule_id: "schedule",
-    id: "run",
-    activities: []
-  }
+  @run build(
+         :run,
+         schedule_id: "schedule",
+         id: "run",
+         activities: []
+       )
 
   @block build(
            :block,
@@ -43,7 +42,7 @@ defmodule SkateWeb.MinischeduleControllerTest do
                  "schedule_id" => "schedule",
                  "id" => "run",
                  "activities" => [],
-                 "service_id" => nil
+                 "service_id" => "service"
                }
              }
     end

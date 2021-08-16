@@ -1,11 +1,11 @@
-defmodule Schedule.Minischedule.RunTest do
+defmodule Schedule.RunTest do
   use ExUnit.Case, async: true
   import Skate.Factory
 
   alias Schedule.Trip
   alias Schedule.Break
   alias Schedule.Piece
-  alias Schedule.Minischedule.Run
+  alias Schedule.Run
 
   import Skate.Factory
 
@@ -16,7 +16,7 @@ defmodule Schedule.Minischedule.RunTest do
       stored_trip = build(:trip, id: trip_id, start_place: "start", end_place: "end")
 
       stored_run =
-        build(:minischedule_run,
+        build(:run,
           activities: [
             build(:piece,
               block_id: "block",
@@ -97,7 +97,7 @@ defmodule Schedule.Minischedule.RunTest do
       trips = %{"trip1" => trip1, "trip2" => trip2, "trip3" => trip3}
 
       run =
-        build(:minischedule_run, %{
+        build(:run, %{
           activities: [
             build(:piece, %{start_time: 0, end_time: 100, trips: ["trip1", "trip2"]}),
             build(:piece, %{
@@ -118,7 +118,7 @@ defmodule Schedule.Minischedule.RunTest do
       trips = %{"trip1" => trip1, "trip2" => trip2}
 
       run =
-        build(:minischedule_run, %{
+        build(:run, %{
           activities: [
             build(:piece, %{start_time: 0, end_time: 100, trips: ["trip1", "trip2"]}),
             build(:piece, %{

@@ -1,7 +1,7 @@
 defmodule Realtime.Ghost do
   alias Schedule.{Block, Route, Trip}
   alias Schedule.Gtfs.{Direction, RoutePattern, StopTime, Timepoint}
-  alias Schedule.Minischedule.Run
+  alias Schedule.Run
   alias Realtime.{BlockWaiver, BlockWaiverStore, RouteStatus, TimepointStatus, Vehicle}
 
   @type t :: %__MODULE__{

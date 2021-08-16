@@ -49,7 +49,7 @@ defmodule Realtime.GhostTest do
       end)
 
       run =
-        build(:minischedule_run, %{
+        build(:run, %{
           activities: [build(:piece, %{start_time: 1, end_time: 3})]
         })
 
@@ -120,7 +120,7 @@ defmodule Realtime.GhostTest do
       end)
 
       run =
-        build(:minischedule_run, %{
+        build(:run, %{
           activities: [build(:piece, %{start_time: 1, end_time: 3})]
         })
 
@@ -164,7 +164,7 @@ defmodule Realtime.GhostTest do
       end)
 
       run =
-        build(:minischedule_run, %{
+        build(:run, %{
           activities: [build(:piece, %{start_time: 1, end_time: 10})]
         })
 
@@ -235,7 +235,7 @@ defmodule Realtime.GhostTest do
       end)
 
       run =
-        build(:minischedule_run, %{
+        build(:run, %{
           activities: [build(:piece, %{start_time: 10, end_time: 20})]
         })
 
@@ -301,7 +301,7 @@ defmodule Realtime.GhostTest do
       end)
 
       run =
-        build(:minischedule_run, %{
+        build(:run, %{
           activities: [build(:piece, %{start_time: 1, end_time: 3})]
         })
 
@@ -321,7 +321,7 @@ defmodule Realtime.GhostTest do
         %{"trip" => build(:trip, %{id: "trip"})}
       end)
 
-      run = build(:minischedule_run)
+      run = build(:run)
 
       assert %Ghost{
                id: "ghost-trip",
@@ -360,7 +360,7 @@ defmodule Realtime.GhostTest do
       end)
 
       run =
-        build(:minischedule_run, %{
+        build(:run, %{
           activities: [
             build(:piece, %{
               start_place: "station",

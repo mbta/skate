@@ -3,10 +3,11 @@ defmodule ScheduleTest do
 
   import Test.Support.Helpers
 
-  alias Schedule.{Block, Minischedule, Trip, Swing}
+  alias Schedule.{Block, Trip, Swing}
   alias Schedule.Gtfs.{Route, RoutePattern, Shape, Stop, StopTime, Timepoint}
   alias Schedule.Gtfs.Shape.Point
   alias Schedule.Piece
+  alias Schedule.Run
 
   describe "all_routes" do
     test "maps each row to a Route" do
@@ -807,7 +808,7 @@ defmodule ScheduleTest do
 
     test "can get run", %{pid: pid, expected_piece: expected_piece} do
       assert Schedule.minischedule_run("trip", pid) ==
-               %Minischedule.Run{
+               %Run{
                  schedule_id: "schedule",
                  service_id: "service",
                  id: "123-4567",

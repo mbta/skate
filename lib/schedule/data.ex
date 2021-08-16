@@ -9,7 +9,7 @@ defmodule Schedule.Data do
   alias Schedule.Piece
   alias Schedule.TimepointOrder
   alias Schedule.Trip
-  alias Schedule.Minischedule
+  alias Schedule.Run
   alias Schedule.Hastus
   alias Schedule.Swing
 
@@ -37,9 +37,9 @@ defmodule Schedule.Data do
           stops: stops_by_id(),
           trips: Trip.by_id(),
           blocks: Block.by_id(),
-          runs: %{{Service.id(), Hastus.Run.id()} => Minischedule.Run.t()},
+          runs: %{{Service.id(), Hastus.Run.id()} => Run.t()},
           calendar: Calendar.t(),
-          minischedule_runs: Minischedule.Run.by_id(),
+          minischedule_runs: Run.by_id(),
           swings: Swing.by_schedule_id_and_route_id()
         }
 
@@ -183,7 +183,7 @@ defmodule Schedule.Data do
   end
 
   @spec active_runs(t(), Util.Time.timestamp(), Util.Time.timestamp()) ::
-          %{Date.t() => [Minischedule.Run.t()]}
+          %{Date.t() => [Run.t()]}
   def active_runs(%__MODULE__{runs: runs, calendar: calendar, trips: trips}, start_time, end_time) do
     dates = potentially_active_service_dates(start_time, end_time)
     active_services = Map.take(calendar, dates)
@@ -205,7 +205,7 @@ defmodule Schedule.Data do
 
       active_runs_on_date =
         Enum.filter(runs_on_date, fn run ->
-          Minischedule.Run.is_active?(run, trips, start_time_of_day, end_time_of_day)
+          Run.is_active?(run, trips, start_time_of_day, end_time_of_day)
         end)
 
       {date, active_runs_on_date}
@@ -240,7 +240,7 @@ defmodule Schedule.Data do
     end)
   end
 
-  @spec minischedule_run(t(), Trip.id()) :: Minischedule.Run.t() | nil
+  @spec minischedule_run(t(), Trip.id()) :: Run.t() | nil
   def minischedule_run(
         %__MODULE__{
           trips: trips,
@@ -254,7 +254,7 @@ defmodule Schedule.Data do
     if trip != nil && trip.schedule_id != nil do
       # we have HASTUS data for this trip
       run = runs[{trip.schedule_id, trip.run_id}]
-      Minischedule.Run.hydrate(run, trips, timepoint_names_by_id)
+      Run.hydrate(run, trips, timepoint_names_by_id)
     else
       nil
     end
@@ -344,7 +344,7 @@ defmodule Schedule.Data do
     pieces =
       minischedule_runs
       |> Map.values()
-      |> Enum.flat_map(&Schedule.Minischedule.Run.pieces/1)
+      |> Enum.flat_map(&Run.pieces/1)
       |> Enum.map(&Piece.hydrate(&1, trips_by_id, timepoint_names))
 
     blocks = Block.blocks_from_pieces(pieces)

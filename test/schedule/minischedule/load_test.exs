@@ -8,7 +8,7 @@ defmodule Schedule.Minischedule.LoadTest do
   alias Schedule.Break
   alias Schedule.Minischedule.Load
   alias Schedule.Piece
-  alias Schedule.Minischedule.Run
+  alias Schedule.Run
 
   describe "runs_from_hastus/3" do
     test "trips become pieces in run" do

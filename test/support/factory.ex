@@ -79,8 +79,8 @@ defmodule Skate.Factory do
     }
   end
 
-  def minischedule_run_factory do
-    %Schedule.Minischedule.Run{
+  def run_factory do
+    %Schedule.Run{
       schedule_id: "schedule",
       service_id: "service",
       id: "run",

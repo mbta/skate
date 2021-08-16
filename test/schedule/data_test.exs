@@ -9,7 +9,7 @@ defmodule Schedule.DataTest do
   alias Schedule.Swing
   alias Schedule.Gtfs.{Route, RoutePattern, Shape, Stop, StopTime, Timepoint}
   alias Schedule.Gtfs.Shape.Point
-  alias Schedule.Minischedule
+  alias Schedule.Run
 
   test "all_routes/1 returns all the routes" do
     routes = [
@@ -606,7 +606,7 @@ defmodule Schedule.DataTest do
         run_id: "run"
       }
 
-      run = %Minischedule.Run{
+      run = %Run{
         schedule_id: "schedule",
         id: "run",
         activities: []
@@ -614,7 +614,7 @@ defmodule Schedule.DataTest do
 
       data = %Data{
         trips: %{trip.id => trip},
-        minischedule_runs: %{Minischedule.Run.key(run) => run}
+        minischedule_runs: %{Run.key(run) => run}
       }
 
       assert Data.minischedule_run(data, trip.id) == run

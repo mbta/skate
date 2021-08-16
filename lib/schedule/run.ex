@@ -1,4 +1,4 @@
-defmodule Schedule.Minischedule.Run do
+defmodule Schedule.Run do
   alias Schedule.Gtfs.Service
   alias Schedule.Gtfs.Timepoint
   alias Schedule.Trip
