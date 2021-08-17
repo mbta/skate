@@ -10,40 +10,40 @@ defmodule Schedule.Minischedule.Load do
   alias Schedule.Break
   alias Schedule.Gtfs.Service
   alias Schedule.Helpers
+  alias Schedule.Hastus
   alias Schedule.Hastus.Activity
-  alias Schedule.Hastus.Trip
   alias Schedule.Run
   alias Schedule.Piece
 
-  @spec runs_from_hastus([Activity.t()], [Trip.t()], Schedule.Trip.by_id()) ::
+  @spec runs_from_hastus([Activity.t()], [Hastus.Trip.t()], Schedule.Trip.by_id()) ::
           Run.by_id()
   def runs_from_hastus(activities, trips, trips_by_id) do
     activities_by_run = Enum.group_by(activities, &Activity.run_key/1)
-    trips_by_run = Enum.group_by(trips, &Trip.run_key/1)
+    trips_by_run = Enum.group_by(trips, &Hastus.Trip.run_key/1)
     activities_and_trips_by_run = Helpers.zip_maps([activities_by_run, trips_by_run])
 
-    trips_by_block = Enum.group_by(trips, &Trip.block_key/1)
+    trips_by_block = Enum.group_by(trips, &Hastus.Trip.block_key/1)
 
     runs =
       Enum.map(
         activities_and_trips_by_run,
         fn {run_key, [activities, trips]} ->
-          run(run_key, activities, trips, trips_by_block, trips_by_id)
+          run_from_hastus(run_key, activities, trips, trips_by_block, trips_by_id)
         end
       )
 
     Map.new(runs, fn run -> {Run.key(run), run} end)
   end
 
-  @spec run(
+  @spec run_from_hastus(
           Run.key(),
           [Activity.t()] | nil,
-          [Trip.t()] | nil,
-          %{Block.key() => [Trip.t()]},
+          [Hastus.Trip.t()] | nil,
+          %{Block.key() => [Hastus.Trip.t()]},
           Schedule.Trip.by_id()
         ) ::
           Run.t()
-  def run(run_key, hastus_activities, trips, all_trips_by_block, trips_by_id) do
+  def run_from_hastus(run_key, hastus_activities, trips, all_trips_by_block, trips_by_id) do
     {schedule_id, run_id} = run_key
     hastus_activities = hastus_activities || []
     trips = trips || []
@@ -66,24 +66,19 @@ defmodule Schedule.Minischedule.Load do
     }
   end
 
-  @spec operator_activities_to_pieces([Activity.t()], [Trip.t()], %{Block.key() => [Trip.t()]}) ::
+  @spec operator_activities_to_pieces([Activity.t()], [Hastus.Trip.t()], %{
+          Block.key() => [Hastus.Trip.t()]
+        }) ::
           [Activity.t() | Piece.t()]
   defp operator_activities_to_pieces(activities, trips, all_trips_by_block) do
     Enum.map(activities, fn activity ->
-      if activity_is_operator?(activity) do
-        operator_activity_to_piece(activity, trips, all_trips_by_block)
-      else
-        activity
-      end
+      operator_activity_to_piece(activity, trips, all_trips_by_block)
     end)
   end
 
-  @spec activity_is_operator?(Activity.t()) :: boolean()
-  defp activity_is_operator?(activity) do
-    activity.activity_type == "Operator"
-  end
-
-  @spec operator_activity_to_piece(Activity.t(), [Trip.t()], %{Block.key() => [Trip.t()]}) ::
+  @spec operator_activity_to_piece(Activity.t(), [Hastus.Trip.t()], %{
+          Block.key() => [Hastus.Trip.t()]
+        }) ::
           Piece.t() | Activity.t()
   defp operator_activity_to_piece(
          %Activity{activity_type: "Operator"} = activity,
@@ -124,7 +119,9 @@ defmodule Schedule.Minischedule.Load do
     }
   end
 
-  @spec trip_in_operator(Activity.t(), Trip.t()) :: boolean()
+  defp operator_activity_to_piece(activity, _, _), do: activity
+
+  @spec trip_in_operator(Activity.t(), Hastus.Trip.t()) :: boolean()
   defp trip_in_operator(%Activity{activity_type: "Operator"} = activity, trip) do
     String.contains?(trip.block_id, activity.partial_block_id) and
       trip.start_time >= activity.start_time and
@@ -136,12 +133,12 @@ defmodule Schedule.Minischedule.Load do
     String.contains?(activity.partial_block_id, "ad")
   end
 
-  @spec as_directed_from_trips([Trip.t()]) :: AsDirected.t()
+  @spec as_directed_from_trips([Hastus.Trip.t()]) :: AsDirected.t()
   def as_directed_from_trips(trips_in_piece) do
     [
-      %Trip{route_id: nil} = _pullout,
+      %Hastus.Trip{route_id: nil} = _pullout,
       as_directed_trip,
-      %Trip{route_id: nil} = _pull_back
+      %Hastus.Trip{route_id: nil} = _pull_back
     ] = trips_in_piece
 
     kind =
@@ -159,7 +156,7 @@ defmodule Schedule.Minischedule.Load do
     }
   end
 
-  @spec start_mid_route?(Activity.t(), [Trip.t()], %{Block.key() => [Trip.t()]}) ::
+  @spec start_mid_route?(Activity.t(), [Hastus.Trip.t()], %{Block.key() => [Hastus.Trip.t()]}) ::
           Piece.mid_route_swing() | nil
   defp start_mid_route?(
          %Activity{activity_type: "Operator"} = activity,
@@ -188,12 +185,12 @@ defmodule Schedule.Minischedule.Load do
     end
   end
 
-  @spec end_mid_route?(Activity.t(), [Trip.t()]) :: boolean()
+  @spec end_mid_route?(Activity.t(), [Hastus.Trip.t()]) :: boolean()
   defp end_mid_route?(%Activity{activity_type: "Operator"} = activity, trips_in_piece) do
     trips_in_piece != [] and List.last(trips_in_piece).end_time > activity.end_time
   end
 
-  @spec block_id_from_trips([Trip.t()]) :: Block.id() | nil
+  @spec block_id_from_trips([Hastus.Trip.t()]) :: Block.id() | nil
   defp block_id_from_trips([]), do: nil
   defp block_id_from_trips([trip | _]), do: trip.block_id
 
@@ -317,7 +314,8 @@ defmodule Schedule.Minischedule.Load do
     end)
   end
 
-  @spec unique_service_id_for_trips([Trip.t()], Schedule.Trip.by_id()) :: Service.id() | nil
+  @spec unique_service_id_for_trips([Hastus.Trip.t()], Schedule.Trip.by_id()) ::
+          Service.id() | nil
   defp unique_service_id_for_trips(trips, trips_by_id) do
     service_ids =
       trips

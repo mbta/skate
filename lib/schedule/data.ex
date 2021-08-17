@@ -8,7 +8,6 @@ defmodule Schedule.Data do
   alias Schedule.Csv
   alias Schedule.Piece
   alias Schedule.TimepointOrder
-  alias Schedule.Trip
   alias Schedule.Run
   alias Schedule.Hastus
   alias Schedule.Swing
@@ -35,7 +34,7 @@ defmodule Schedule.Data do
           timepoint_names_by_id: Timepoint.timepoint_names_by_id(),
           shapes: shapes_by_route_id(),
           stops: stops_by_id(),
-          trips: Trip.by_id(),
+          trips: Schedule.Trip.by_id(),
           blocks: Block.by_id(),
           runs: %{{Service.id(), Hastus.Run.id()} => Run.t()},
           calendar: Calendar.t(),
@@ -86,10 +85,10 @@ defmodule Schedule.Data do
   @spec stop(t(), Stop.id()) :: Stop.t() | nil
   def stop(%__MODULE__{stops: stops}, stop_id), do: stops[stop_id]
 
-  @spec trip(t(), Trip.id()) :: Trip.t() | nil
+  @spec trip(t(), Schedule.Trip.id()) :: Schedule.Trip.t() | nil
   def trip(%__MODULE__{trips: trips}, trip_id), do: trips[trip_id]
 
-  @spec trips_by_id(t(), [Trip.id()]) :: %{Trip.id() => Trip.t()}
+  @spec trips_by_id(t(), [Schedule.Trip.id()]) :: %{Schedule.Trip.id() => Schedule.Trip.t()}
   def trips_by_id(%__MODULE__{trips: trips}, trip_ids) do
     Map.take(trips, trip_ids)
   end
@@ -123,7 +122,7 @@ defmodule Schedule.Data do
     Enum.to_list(date_range)
   end
 
-  @spec active_trips(t(), Util.Time.timestamp(), Util.Time.timestamp()) :: [Trip.t()]
+  @spec active_trips(t(), Util.Time.timestamp(), Util.Time.timestamp()) :: [Schedule.Trip.t()]
   def active_trips(%__MODULE__{calendar: calendar, trips: trips}, start_time, end_time) do
     dates = potentially_active_service_dates(start_time, end_time)
     active_services = Map.take(calendar, dates)
@@ -144,7 +143,7 @@ defmodule Schedule.Data do
 
       active_trips_on_date =
         Enum.filter(trips_on_date, fn trip ->
-          Trip.is_active(trip, start_time_of_day, end_time_of_day)
+          Schedule.Trip.is_active(trip, start_time_of_day, end_time_of_day)
         end)
 
       active_trips_on_date
@@ -216,7 +215,7 @@ defmodule Schedule.Data do
   @spec shapes(t(), Route.id()) :: [Shape.t()]
   def shapes(%__MODULE__{shapes: shapes}, route_id), do: Map.get(shapes, route_id, [])
 
-  @spec shape_for_trip(t(), Trip.id()) :: Shape.t() | nil
+  @spec shape_for_trip(t(), Schedule.Trip.id()) :: Shape.t() | nil
   def shape_for_trip(%__MODULE__{shapes: shapes, trips: trips}, trip_id) do
     trip = Map.get(trips, trip_id)
 
@@ -240,7 +239,7 @@ defmodule Schedule.Data do
     end)
   end
 
-  @spec minischedule_run(t(), Trip.id()) :: Run.t() | nil
+  @spec minischedule_run(t(), Schedule.Trip.id()) :: Run.t() | nil
   def minischedule_run(
         %__MODULE__{
           trips: trips,
@@ -260,7 +259,7 @@ defmodule Schedule.Data do
     end
   end
 
-  @spec block_for_trip(t(), Trip.id()) :: Block.t() | nil
+  @spec block_for_trip(t(), Schedule.Trip.id()) :: Block.t() | nil
   def block_for_trip(
         %__MODULE__{
           trips: trips,
@@ -328,7 +327,7 @@ defmodule Schedule.Data do
     gtfs_trip_ids = MapSet.new(gtfs_trips, & &1.id)
     stop_times_by_id = StopTime.parse(gtfs_files["stop_times.txt"], gtfs_trip_ids)
 
-    trips_by_id = Trip.merge_trips(gtfs_trips, hastus_trips, stop_times_by_id)
+    trips_by_id = Schedule.Trip.merge_trips(gtfs_trips, hastus_trips, stop_times_by_id)
 
     minischedule_runs =
       Schedule.Minischedule.Load.runs_from_hastus(hastus_activities, hastus_trips, trips_by_id)

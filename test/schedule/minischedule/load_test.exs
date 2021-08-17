@@ -296,7 +296,7 @@ defmodule Schedule.Minischedule.LoadTest do
     end
   end
 
-  describe "run/5" do
+  describe "run_from_hastus/5" do
     test "multiple trips are grouped into the same piece" do
       run_key = {"schedule", "run"}
 
@@ -357,7 +357,7 @@ defmodule Schedule.Minischedule.LoadTest do
         ]
       }
 
-      assert Load.run(run_key, activities, trips, %{}, %{}) == expected_run
+      assert Load.run_from_hastus(run_key, activities, trips, %{}, %{}) == expected_run
     end
 
     test "trips become multiple pieces if there are multiple Operator activities" do
@@ -424,7 +424,7 @@ defmodule Schedule.Minischedule.LoadTest do
                    end_time: 104
                  } = _
                ]
-             } = Load.run(run_key, activities, trips, %{}, %{})
+             } = Load.run_from_hastus(run_key, activities, trips, %{}, %{})
     end
 
     test "Deadhead from becomes part of following piece as a trip" do
@@ -485,7 +485,7 @@ defmodule Schedule.Minischedule.LoadTest do
                    run_id: "run"
                  }
                ]
-             } = Load.run(run_key, activities, trips, %{}, %{})
+             } = Load.run_from_hastus(run_key, activities, trips, %{}, %{})
     end
 
     test "Deadhead to becomes part of previous piece" do
@@ -547,7 +547,7 @@ defmodule Schedule.Minischedule.LoadTest do
                    schedule_id: "schedule"
                  }
                ]
-             } = Load.run(run_key, activities, trips, %{}, %{})
+             } = Load.run_from_hastus(run_key, activities, trips, %{}, %{})
     end
 
     test "piece start time is based on sign_on activity" do
@@ -584,7 +584,7 @@ defmodule Schedule.Minischedule.LoadTest do
                    end_time: 103
                  }
                ]
-             } = Load.run(run_key, activities, trips, %{}, %{})
+             } = Load.run_from_hastus(run_key, activities, trips, %{}, %{})
     end
 
     test "makes as directed pieces when given rad/wad activities" do
@@ -628,7 +628,7 @@ defmodule Schedule.Minischedule.LoadTest do
                    end_time: 44400
                  }
                ]
-             } = Load.run(run_key, activities, trips, %{}, %{})
+             } = Load.run_from_hastus(run_key, activities, trips, %{}, %{})
     end
 
     test "makes as directed pieces when given rad/wad trips" do
@@ -707,7 +707,7 @@ defmodule Schedule.Minischedule.LoadTest do
                    end_time: 32400
                  }
                ]
-             } = Load.run(run_key, activities, trips, %{}, %{})
+             } = Load.run_from_hastus(run_key, activities, trips, %{}, %{})
     end
 
     test "makes breaks" do
@@ -735,7 +735,9 @@ defmodule Schedule.Minischedule.LoadTest do
         end_place: "end place"
       }
 
-      assert Load.run(run_key, activities, trips, %{}, %{}).activities == [expected_break]
+      assert Load.run_from_hastus(run_key, activities, trips, %{}, %{}).activities == [
+               expected_break
+             ]
     end
 
     test "assigns service_id when there is a unique value" do
@@ -785,7 +787,7 @@ defmodule Schedule.Minischedule.LoadTest do
         ]
       }
 
-      assert Load.run(run_key, activities, trips, %{}, trips_by_id) == expected_run
+      assert Load.run_from_hastus(run_key, activities, trips, %{}, trips_by_id) == expected_run
     end
 
     test "leaves service_id nil whem multiple competing values are present" do
@@ -835,7 +837,7 @@ defmodule Schedule.Minischedule.LoadTest do
         ]
       }
 
-      assert Load.run(run_key, activities, trips, %{}, trips_by_id) == expected_run
+      assert Load.run_from_hastus(run_key, activities, trips, %{}, trips_by_id) == expected_run
     end
   end
 end
