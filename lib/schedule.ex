@@ -8,7 +8,6 @@ defmodule Schedule do
     Data,
     Hastus,
     Health,
-    Minischedule,
     Trip,
     Swing
   }
@@ -22,7 +21,7 @@ defmodule Schedule do
     Timepoint
   }
 
-  alias Schedule.Minischedule.Run
+  alias Schedule.Run
 
   @type state :: :not_loaded | {:loaded, Data.t()}
 
@@ -153,8 +152,8 @@ defmodule Schedule do
     )
   end
 
-  @spec minischedule_run(Trip.id()) :: Minischedule.Run.t() | nil
-  @spec minischedule_run(Trip.id(), GenServer.server()) :: Minischedule.Run.t() | nil
+  @spec minischedule_run(Trip.id()) :: Run.t() | nil
+  @spec minischedule_run(Trip.id(), GenServer.server()) :: Run.t() | nil
   def minischedule_run(trip_id, server \\ __MODULE__) do
     call_catch_timeout(server, {:minischedule_run, trip_id}, :minischedule_run, nil)
   end
