@@ -36,9 +36,8 @@ defmodule Schedule.Data do
           stops: stops_by_id(),
           trips: Schedule.Trip.by_id(),
           blocks: Block.by_id(),
-          runs: %{{Service.id(), Hastus.Run.id()} => Run.t()},
           calendar: Calendar.t(),
-          minischedule_runs: Run.by_id(),
+          runs: Run.by_id(),
           swings: Swing.by_schedule_id_and_route_id()
         }
 
@@ -56,9 +55,8 @@ defmodule Schedule.Data do
             stops: %{},
             trips: %{},
             blocks: %{},
-            runs: %{},
             calendar: %{},
-            minischedule_runs: %{},
+            runs: %{},
             swings: %{}
 
   @type files :: %{String.t() => binary()}
@@ -183,7 +181,11 @@ defmodule Schedule.Data do
 
   @spec active_runs(t(), Util.Time.timestamp(), Util.Time.timestamp()) ::
           %{Date.t() => [Run.t()]}
-  def active_runs(%__MODULE__{runs: runs, calendar: calendar, trips: trips}, start_time, end_time) do
+  def active_runs(
+        %__MODULE__{runs: runs, calendar: calendar, trips: trips},
+        start_time,
+        end_time
+      ) do
     dates = potentially_active_service_dates(start_time, end_time)
     active_services = Map.take(calendar, dates)
 
@@ -243,7 +245,7 @@ defmodule Schedule.Data do
   def minischedule_run(
         %__MODULE__{
           trips: trips,
-          minischedule_runs: runs,
+          runs: runs,
           timepoint_names_by_id: timepoint_names_by_id
         },
         trip_id
@@ -329,18 +331,12 @@ defmodule Schedule.Data do
 
     trips_by_id = Schedule.Trip.merge_trips(gtfs_trips, hastus_trips, stop_times_by_id)
 
-    minischedule_runs = runs_from_hastus(hastus_activities, hastus_trips, trips_by_id)
-
-    runs =
-      minischedule_runs
-      |> Map.values()
-      |> Enum.filter(fn run -> !is_nil(run.service_id) end)
-      |> Map.new(fn run -> {{run.service_id, run.id}, run} end)
+    runs = runs_from_hastus(hastus_activities, hastus_trips, trips_by_id)
 
     timepoint_names = timepoint_names_for_ids(timepoints_by_id)
 
     pieces =
-      minischedule_runs
+      runs
       |> Map.values()
       |> Enum.flat_map(&Run.pieces/1)
       |> Enum.map(&Piece.hydrate(&1, trips_by_id, timepoint_names))
@@ -361,9 +357,8 @@ defmodule Schedule.Data do
       stops: all_stops_by_id(gtfs_files["stops.txt"]),
       trips: trips_by_id,
       blocks: blocks,
-      runs: runs,
       calendar: Calendar.from_files(gtfs_files["calendar.txt"], gtfs_files["calendar_dates.txt"]),
-      minischedule_runs: minischedule_runs,
+      runs: runs,
       swings: Swing.from_blocks(blocks, trips_by_id)
     }
   end

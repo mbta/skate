@@ -618,7 +618,7 @@ defmodule Schedule.DataTest do
 
       data = %Data{
         trips: %{trip.id => trip},
-        minischedule_runs: %{Run.key(run) => run}
+        runs: %{Run.key(run) => run}
       }
 
       assert Data.minischedule_run(data, trip.id) == run
