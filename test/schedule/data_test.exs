@@ -1022,7 +1022,7 @@ defmodule Schedule.DataTest do
         end_place: "terminal1",
         start_mid_route?: %{
           time: 3,
-          trip: "trip1"
+          trip: schedule_trip1
         },
         end_mid_route?: false
       }

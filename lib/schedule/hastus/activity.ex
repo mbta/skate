@@ -158,7 +158,8 @@ defmodule Schedule.Hastus.Activity do
       trips: as_directeds_and_schedule_trips,
       end_time: activity.end_time,
       end_place: activity.end_place,
-      start_mid_route?: start_mid_route?(activity, trips_in_piece, all_trips_by_block),
+      start_mid_route?:
+        start_mid_route?(activity, trips_in_piece, all_trips_by_block, schedule_trips_by_id),
       end_mid_route?: end_mid_route?(activity, trips_in_piece)
     }
   end
@@ -322,26 +323,35 @@ defmodule Schedule.Hastus.Activity do
     String.contains?(activity.partial_block_id, "ad")
   end
 
-  @spec start_mid_route?(__MODULE__.t(), [Hastus.Trip.t()], %{Block.key() => [Hastus.Trip.t()]}) ::
+  @spec start_mid_route?(
+          __MODULE__.t(),
+          [Hastus.Trip.t()],
+          %{Block.key() => [Hastus.Trip.t()]},
+          Schedule.Trip.by_id()
+        ) ::
           Piece.mid_route_swing() | nil
   defp start_mid_route?(
          %__MODULE__{activity_type: "Operator"} = activity,
-         trips_in_piece,
-         all_trips_by_block
+         hastus_trips_in_piece,
+         all_hastus_trips_by_block,
+         schedule_trips_by_id
        ) do
-    if trips_in_piece != [] and List.first(trips_in_piece).start_time > activity.start_time do
-      block_id = block_id_from_trips(trips_in_piece)
-      trips_in_block = Map.get(all_trips_by_block, {activity.schedule_id, block_id}, [])
+    if hastus_trips_in_piece != [] and
+         List.first(hastus_trips_in_piece).start_time > activity.start_time do
+      block_id = block_id_from_trips(hastus_trips_in_piece)
 
-      trip_with_swing =
-        Enum.find(trips_in_block, fn trip ->
+      hastus_trips_in_block =
+        Map.get(all_hastus_trips_by_block, {activity.schedule_id, block_id}, [])
+
+      hastus_trip_with_swing =
+        Enum.find(hastus_trips_in_block, fn trip ->
           trip.start_time < activity.start_time && trip.end_time > activity.start_time
         end)
 
-      if trip_with_swing do
+      if hastus_trip_with_swing do
         %{
           time: activity.start_time,
-          trip: trip_with_swing.trip_id
+          trip: Map.fetch!(schedule_trips_by_id, hastus_trip_with_swing.trip_id)
         }
       else
         nil
