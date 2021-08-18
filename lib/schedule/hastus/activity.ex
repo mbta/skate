@@ -3,6 +3,7 @@ defmodule Schedule.Hastus.Activity do
   alias Schedule.Block
   alias Schedule.Break
   alias Schedule.Csv
+  alias Schedule.Gtfs.Timepoint
   alias Schedule.Hastus
   alias Schedule.Piece
   alias Schedule.Hastus.{Place, Run}
@@ -88,15 +89,23 @@ defmodule Schedule.Hastus.Activity do
           %{
             Block.key() => [Hastus.Trip.t()]
           },
-          Schedule.Trip.by_id()
+          Schedule.Trip.by_id(),
+          Timepoint.timepoint_names_by_id()
         ) :: [Piece.t() | Break.t()]
-  def to_pieces_and_breaks(activities, trips, all_trips_by_block, schedule_trips_by_id) do
+  def to_pieces_and_breaks(
+        activities,
+        trips,
+        all_trips_by_block,
+        schedule_trips_by_id,
+        timepoint_names_by_id
+      ) do
     activities
     |> operator_activities_to_pieces(trips, all_trips_by_block, schedule_trips_by_id)
     |> as_directed_activities_to_pieces()
     |> add_deadheads_to_pieces()
     |> add_sign_ons_to_pieces()
     |> activities_to_breaks()
+    |> set_pretty_names(timepoint_names_by_id)
   end
 
   @spec operator_activities_to_pieces(
@@ -369,4 +378,56 @@ defmodule Schedule.Hastus.Activity do
   @spec block_id_from_trips([Hastus.Trip.t()]) :: Block.id() | nil
   defp block_id_from_trips([]), do: nil
   defp block_id_from_trips([trip | _]), do: trip.block_id
+
+  @spec set_pretty_names([Break.t() | Piece.t()], Timepoint.timepoint_names_by_id()) :: [
+          Break.t() | Piece.t()
+        ]
+  defp set_pretty_names(pieces_and_breaks, timepoint_names_by_id) do
+    Enum.map(
+      pieces_and_breaks,
+      fn piece_or_break ->
+        case piece_or_break do
+          %Break{} -> set_pretty_names_for_break(piece_or_break, timepoint_names_by_id)
+          %Piece{} -> set_pretty_names_for_piece(piece_or_break, timepoint_names_by_id)
+        end
+      end
+    )
+  end
+
+  @spec set_pretty_names_for_break(Break.t(), Timepoint.timepoint_names_by_id()) :: Break.t()
+  defp set_pretty_names_for_break(break, timepoint_names_by_id) do
+    pretty_start_place = Timepoint.pretty_name_for_id(timepoint_names_by_id, break.start_place)
+    pretty_end_place = Timepoint.pretty_name_for_id(timepoint_names_by_id, break.end_place)
+
+    %Break{
+      break
+      | start_place: pretty_start_place,
+        end_place: pretty_end_place
+    }
+  end
+
+  @spec set_pretty_names_for_piece(Piece.t(), Timepoint.timepoint_names_by_id()) :: Piece.t()
+  defp set_pretty_names_for_piece(piece, timepoint_names_by_id) do
+    trips_with_pretty_names =
+      Enum.map(piece.trips, &Schedule.Trip.set_pretty_names(&1, timepoint_names_by_id))
+
+    pretty_start_place = Timepoint.pretty_name_for_id(timepoint_names_by_id, piece.start_place)
+    pretty_end_place = Timepoint.pretty_name_for_id(timepoint_names_by_id, piece.end_place)
+
+    pretty_start_mid_route? =
+      piece.start_mid_route? &&
+        %{
+          piece.start_mid_route?
+          | trip:
+              Schedule.Trip.set_pretty_names(piece.start_mid_route?.trip, timepoint_names_by_id)
+        }
+
+    %Piece{
+      piece
+      | trips: trips_with_pretty_names,
+        start_place: pretty_start_place,
+        end_place: pretty_end_place,
+        start_mid_route?: pretty_start_mid_route?
+    }
+  end
 end

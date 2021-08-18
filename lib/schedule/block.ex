@@ -1,6 +1,6 @@
 defmodule Schedule.Block do
   alias Schedule.AsDirected
-  alias Schedule.Gtfs.{Service, Timepoint}
+  alias Schedule.Gtfs.Service
   alias Schedule.Hastus
   alias Schedule.Piece
   alias Schedule.Trip
@@ -170,12 +170,4 @@ defmodule Schedule.Block do
   end
 
   defp overload_id_regex(), do: ~r/-OL.+$/
-
-  @spec hydrate(t(), Trip.by_id(), Timepoint.timepoint_names_by_id()) :: t()
-  def hydrate(block, trips_by_id, timepoint_names_by_id) do
-    %{
-      block
-      | pieces: Enum.map(block.pieces, &Piece.hydrate(&1, trips_by_id, timepoint_names_by_id))
-    }
-  end
 end

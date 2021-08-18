@@ -1,6 +1,5 @@
 defmodule Schedule.Run do
   alias Schedule.Gtfs.Service
-  alias Schedule.Gtfs.Timepoint
   alias Schedule.Trip
   alias Schedule.Break
   alias Schedule.Piece
@@ -70,28 +69,5 @@ defmodule Schedule.Run do
     |> Enum.any?(fn {start_time, end_time} ->
       end_time_of_day > start_time and start_time_of_day < end_time
     end)
-  end
-
-  @spec hydrate(t(), Trip.by_id(), Timepoint.timepoint_names_by_id()) :: t()
-  def hydrate(run, trips_by_id, timepoint_names_by_id) do
-    %{
-      run
-      | activities:
-          Enum.map(run.activities, &hydrate_activity(&1, trips_by_id, timepoint_names_by_id))
-    }
-  end
-
-  @spec hydrate_activity(Piece.t() | Break.t(), Trip.by_id(), Timepoint.timepoint_names_by_id()) ::
-          Piece.t() | Break.t()
-  def hydrate_activity(%Break{} = break, _trips_by_id, timepoint_names_by_id) do
-    %Break{
-      break
-      | start_place: Timepoint.pretty_name_for_id(timepoint_names_by_id, break.start_place),
-        end_place: Timepoint.pretty_name_for_id(timepoint_names_by_id, break.end_place)
-    }
-  end
-
-  def hydrate_activity(%Piece{} = piece, trips_by_id, timepoint_names_by_id) do
-    Piece.hydrate(piece, trips_by_id, timepoint_names_by_id)
   end
 end

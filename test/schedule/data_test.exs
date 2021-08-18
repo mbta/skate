@@ -721,7 +721,7 @@ defmodule Schedule.DataTest do
     end
   end
 
-  describe "runs_from_hastus/3" do
+  describe "runs_from_hastus/4" do
     test "trips become pieces in run" do
       activities = [
         build(
@@ -744,20 +744,37 @@ defmodule Schedule.DataTest do
         )
       ]
 
-      schedule_trip = build(:trip, id: "trip")
+      timepoint_names_by_id = %{
+        "start_place" => "Starting Line",
+        "end_place" => "Finish Line"
+      }
+
+      schedule_trip =
+        build(:trip,
+          id: "trip",
+          start_place: "start_place",
+          end_place: "end_place",
+          pretty_start_place: "Starting Line",
+          pretty_end_place: "Finish Line"
+        )
 
       expected_piece = %Piece{
         schedule_id: "schedule",
         run_id: "run",
         block_id: "block",
         start_time: 1,
-        start_place: "start_place",
+        start_place: "Starting Line",
         trips: [schedule_trip],
         end_time: 2,
-        end_place: "end_place"
+        end_place: "Finish Line"
       }
 
-      assert Data.runs_from_hastus(activities, trips, %{"trip" => schedule_trip}) == %{
+      assert Data.runs_from_hastus(
+               activities,
+               trips,
+               %{"trip" => schedule_trip},
+               timepoint_names_by_id
+             ) == %{
                {"schedule", "run"} => %Run{
                  schedule_id: "schedule",
                  id: "run",
@@ -870,7 +887,7 @@ defmodule Schedule.DataTest do
                    %Piece{trips: [trip_21]}
                  ]
                }
-             } = Data.runs_from_hastus(activities, trips, schedule_trips_by_id)
+             } = Data.runs_from_hastus(activities, trips, schedule_trips_by_id, %{})
     end
 
     test "a different schedule_id means a different run or block" do
@@ -933,7 +950,7 @@ defmodule Schedule.DataTest do
                {"schedule_2", "run"} => %Run{
                  activities: [%Piece{trips: [schedule_trip2]}]
                }
-             } = Data.runs_from_hastus(activities, trips, schedule_trips_by_id)
+             } = Data.runs_from_hastus(activities, trips, schedule_trips_by_id, %{})
     end
 
     test "labels mid route swings" do
@@ -994,9 +1011,24 @@ defmodule Schedule.DataTest do
         }
       ]
 
-      schedule_trip1 = build(:trip, id: "trip1")
+      schedule_trip1 =
+        build(:trip, id: "trip1", start_place: "swing_start", end_place: "swing_end")
+
       schedule_trip2 = build(:trip, id: "trip2")
       schedule_trips_by_id = %{"trip1" => schedule_trip1, "trip2" => schedule_trip2}
+
+      expected_trip1 = %Schedule.Trip{
+        schedule_trip1
+        | pretty_start_place: "Swing Start Street",
+          pretty_end_place: "Swing End Bend"
+      }
+
+      expected_trip2 = schedule_trip2
+
+      timepoint_names_by_id = %{
+        "swing_start" => "Swing Start Street",
+        "swing_end" => "Swing End Bend"
+      }
 
       expected_piece1 = %Piece{
         schedule_id: "schedule",
@@ -1004,7 +1036,7 @@ defmodule Schedule.DataTest do
         block_id: "block",
         start_time: 1,
         start_place: "terminal1",
-        trips: [schedule_trip1],
+        trips: [expected_trip1],
         end_time: 3,
         end_place: "swing",
         start_mid_route?: nil,
@@ -1017,34 +1049,35 @@ defmodule Schedule.DataTest do
         block_id: "block",
         start_time: 2,
         start_place: "swing",
-        trips: [schedule_trip2],
+        trips: [expected_trip2],
         end_time: 6,
         end_place: "terminal1",
         start_mid_route?: %{
           time: 3,
-          trip: schedule_trip1
+          trip: expected_trip1
         },
         end_mid_route?: false
       }
 
-      assert Data.runs_from_hastus(activities, trips, schedule_trips_by_id) == %{
-               {"schedule", "run1"} => %Run{
-                 schedule_id: "schedule",
-                 service_id: schedule_trip1.service_id,
-                 id: "run1",
-                 activities: [expected_piece1]
-               },
-               {"schedule", "run2"} => %Run{
-                 schedule_id: "schedule",
-                 service_id: schedule_trip1.service_id,
-                 id: "run2",
-                 activities: [expected_piece2]
+      assert Data.runs_from_hastus(activities, trips, schedule_trips_by_id, timepoint_names_by_id) ==
+               %{
+                 {"schedule", "run1"} => %Run{
+                   schedule_id: "schedule",
+                   service_id: schedule_trip1.service_id,
+                   id: "run1",
+                   activities: [expected_piece1]
+                 },
+                 {"schedule", "run2"} => %Run{
+                   schedule_id: "schedule",
+                   service_id: schedule_trip1.service_id,
+                   id: "run2",
+                   activities: [expected_piece2]
+                 }
                }
-             }
     end
   end
 
-  describe "run_from_hastus/5" do
+  describe "run_from_hastus/6" do
     test "multiple trips are grouped into the same piece" do
       run_key = {"schedule", "run"}
 
@@ -1085,9 +1118,27 @@ defmodule Schedule.DataTest do
         }
       ]
 
-      schedule_trip1 = build(:trip, id: "trip1")
-      schedule_trip2 = build(:trip, id: "trip2")
+      schedule_trip1 = build(:trip, id: "trip1", start_place: "place1", end_place: "place2")
+      schedule_trip2 = build(:trip, id: "trip2", start_place: "place2", end_place: "place3")
       schedule_trips_by_id = %{"trip1" => schedule_trip1, "trip2" => schedule_trip2}
+
+      timepoint_names_by_id = %{
+        "place1" => "The Good Place",
+        "place2" => "The Medium Place",
+        "place3" => "The Bad Place"
+      }
+
+      expected_trip1 = %Schedule.Trip{
+        schedule_trip1
+        | pretty_start_place: "The Good Place",
+          pretty_end_place: "The Medium Place"
+      }
+
+      expected_trip2 = %Schedule.Trip{
+        schedule_trip2
+        | pretty_start_place: "The Medium Place",
+          pretty_end_place: "The Bad Place"
+      }
 
       expected_run = %Run{
         id: "run",
@@ -1099,18 +1150,25 @@ defmodule Schedule.DataTest do
             run_id: "run",
             block_id: "block",
             start_time: 100,
-            start_place: "place1",
+            start_place: "The Good Place",
             trips: [
-              schedule_trip1,
-              schedule_trip2
+              expected_trip1,
+              expected_trip2
             ],
             end_time: 105,
-            end_place: "place3"
+            end_place: "The Bad Place"
           }
         ]
       }
 
-      assert Data.run_from_hastus(run_key, activities, trips, %{}, schedule_trips_by_id) ==
+      assert Data.run_from_hastus(
+               run_key,
+               activities,
+               trips,
+               %{},
+               schedule_trips_by_id,
+               timepoint_names_by_id
+             ) ==
                expected_run
     end
 
@@ -1182,7 +1240,7 @@ defmodule Schedule.DataTest do
                    end_time: 104
                  } = _
                ]
-             } = Data.run_from_hastus(run_key, activities, trips, %{}, schedule_trips_by_id)
+             } = Data.run_from_hastus(run_key, activities, trips, %{}, schedule_trips_by_id, %{})
     end
 
     test "Deadhead from becomes part of following piece as a trip" do
@@ -1245,7 +1303,15 @@ defmodule Schedule.DataTest do
                    run_id: "run"
                  }
                ]
-             } = Data.run_from_hastus(run_key, activities, trips, %{}, %{"trip" => schedule_trip})
+             } =
+               Data.run_from_hastus(
+                 run_key,
+                 activities,
+                 trips,
+                 %{},
+                 %{"trip" => schedule_trip},
+                 %{}
+               )
     end
 
     test "Deadhead to becomes part of previous piece" do
@@ -1309,7 +1375,15 @@ defmodule Schedule.DataTest do
                    schedule_id: "schedule"
                  }
                ]
-             } = Data.run_from_hastus(run_key, activities, trips, %{}, %{"trip" => schedule_trip})
+             } =
+               Data.run_from_hastus(
+                 run_key,
+                 activities,
+                 trips,
+                 %{},
+                 %{"trip" => schedule_trip},
+                 %{}
+               )
     end
 
     test "piece start time is based on sign_on activity" do
@@ -1346,7 +1420,7 @@ defmodule Schedule.DataTest do
                    end_time: 103
                  }
                ]
-             } = Data.run_from_hastus(run_key, activities, trips, %{}, %{})
+             } = Data.run_from_hastus(run_key, activities, trips, %{}, %{}, %{})
     end
 
     test "makes as directed pieces when given rad/wad activities" do
@@ -1390,7 +1464,7 @@ defmodule Schedule.DataTest do
                    end_time: 44400
                  }
                ]
-             } = Data.run_from_hastus(run_key, activities, trips, %{}, %{})
+             } = Data.run_from_hastus(run_key, activities, trips, %{}, %{}, %{})
     end
 
     test "makes as directed pieces when given rad/wad trips" do
@@ -1469,7 +1543,7 @@ defmodule Schedule.DataTest do
                    end_time: 32400
                  }
                ]
-             } = Data.run_from_hastus(run_key, activities, trips, %{}, %{})
+             } = Data.run_from_hastus(run_key, activities, trips, %{}, %{}, %{})
     end
 
     test "makes breaks" do
@@ -1497,7 +1571,7 @@ defmodule Schedule.DataTest do
         end_place: "end place"
       }
 
-      assert Data.run_from_hastus(run_key, activities, trips, %{}, %{}).activities == [
+      assert Data.run_from_hastus(run_key, activities, trips, %{}, %{}, %{}).activities == [
                expected_break
              ]
     end
@@ -1575,7 +1649,8 @@ defmodule Schedule.DataTest do
         ]
       }
 
-      assert Data.run_from_hastus(run_key, activities, trips, %{}, trips_by_id) == expected_run
+      assert Data.run_from_hastus(run_key, activities, trips, %{}, trips_by_id, %{}) ==
+               expected_run
     end
 
     test "leaves service_id nil whem multiple competing values are present" do
@@ -1654,7 +1729,8 @@ defmodule Schedule.DataTest do
         ]
       }
 
-      assert Data.run_from_hastus(run_key, activities, trips, %{}, trips_by_id) == expected_run
+      assert Data.run_from_hastus(run_key, activities, trips, %{}, trips_by_id, %{}) ==
+               expected_run
     end
   end
 end

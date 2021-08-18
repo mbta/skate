@@ -6,7 +6,6 @@ defmodule Schedule.Data do
 
   alias Schedule.Block
   alias Schedule.Csv
-  alias Schedule.Piece
   alias Schedule.TimepointOrder
   alias Schedule.Run
   alias Schedule.Hastus
@@ -245,8 +244,7 @@ defmodule Schedule.Data do
   def minischedule_run(
         %__MODULE__{
           trips: trips,
-          runs: runs,
-          timepoint_names_by_id: timepoint_names_by_id
+          runs: runs
         },
         trip_id
       ) do
@@ -254,8 +252,7 @@ defmodule Schedule.Data do
 
     if trip != nil && trip.schedule_id != nil do
       # we have HASTUS data for this trip
-      run = runs[{trip.schedule_id, trip.run_id}]
-      Run.hydrate(run, trips, timepoint_names_by_id)
+      runs[{trip.schedule_id, trip.run_id}]
     else
       nil
     end
@@ -265,8 +262,7 @@ defmodule Schedule.Data do
   def block_for_trip(
         %__MODULE__{
           trips: trips,
-          blocks: blocks,
-          timepoint_names_by_id: timepoint_names_by_id
+          blocks: blocks
         },
         trip_id
       ) do
@@ -274,8 +270,7 @@ defmodule Schedule.Data do
 
     if trip != nil && trip.schedule_id != nil do
       # we have HASTUS data for this trip
-      block = blocks[{trip.schedule_id, trip.block_id}]
-      Block.hydrate(block, trips, timepoint_names_by_id)
+      blocks[{trip.schedule_id, trip.block_id}]
     else
       nil
     end
@@ -324,7 +319,7 @@ defmodule Schedule.Data do
     route_patterns = bus_route_patterns(gtfs_files["route_patterns.txt"], bus_route_ids)
 
     timepoints_by_id = all_timepoints_by_id(gtfs_files["checkpoints.txt"])
-    timepoint_names = timepoint_names_for_ids(timepoints_by_id)
+    timepoint_names_by_id = timepoint_names_for_ids(timepoints_by_id)
 
     gtfs_trips = Gtfs.Trip.parse(gtfs_files["trips.txt"], bus_route_ids)
     gtfs_trip_ids = MapSet.new(gtfs_trips, & &1.id)
@@ -332,13 +327,18 @@ defmodule Schedule.Data do
 
     schedule_trips_by_id = Schedule.Trip.merge_trips(gtfs_trips, hastus_trips, stop_times_by_id)
 
-    runs = runs_from_hastus(hastus_activities, hastus_trips, schedule_trips_by_id)
+    runs =
+      runs_from_hastus(
+        hastus_activities,
+        hastus_trips,
+        schedule_trips_by_id,
+        timepoint_names_by_id
+      )
 
     pieces =
       runs
       |> Map.values()
       |> Enum.flat_map(&Run.pieces/1)
-      |> Enum.map(&Piece.hydrate(&1, schedule_trips_by_id, timepoint_names))
 
     blocks = Block.blocks_from_pieces(pieces)
 
@@ -351,7 +351,7 @@ defmodule Schedule.Data do
           stop_times_by_id,
           timepoints_by_id
         ),
-      timepoint_names_by_id: timepoint_names,
+      timepoint_names_by_id: timepoint_names_by_id,
       shapes: shapes_by_route_id(gtfs_files["shapes.txt"], gtfs_trips),
       stops: all_stops_by_id(gtfs_files["stops.txt"]),
       trips: schedule_trips_by_id,
@@ -362,9 +362,14 @@ defmodule Schedule.Data do
     }
   end
 
-  @spec runs_from_hastus([Hastus.Activity.t()], [Hastus.Trip.t()], Schedule.Trip.by_id()) ::
+  @spec runs_from_hastus(
+          [Hastus.Activity.t()],
+          [Hastus.Trip.t()],
+          Schedule.Trip.by_id(),
+          Timepoint.timepoint_names_by_id()
+        ) ::
           Run.by_id()
-  def runs_from_hastus(activities, hastus_trips, schedule_trips_by_id) do
+  def runs_from_hastus(activities, hastus_trips, schedule_trips_by_id, timepoint_names_by_id) do
     activities_by_run = Enum.group_by(activities, &Hastus.Activity.run_key/1)
     hastus_trips_by_run = Enum.group_by(hastus_trips, &Hastus.Trip.run_key/1)
 
@@ -382,7 +387,8 @@ defmodule Schedule.Data do
             activities,
             hastus_trips,
             hastus_trips_by_block,
-            schedule_trips_by_id
+            schedule_trips_by_id,
+            timepoint_names_by_id
           )
         end
       )
@@ -395,7 +401,8 @@ defmodule Schedule.Data do
           [Hastus.Activity.t()] | nil,
           [Hastus.Trip.t()] | nil,
           %{Block.key() => [Hastus.Trip.t()]},
-          Schedule.Trip.by_id()
+          Schedule.Trip.by_id(),
+          Timepoint.timepoint_names_by_id()
         ) ::
           Run.t()
   def run_from_hastus(
@@ -403,7 +410,8 @@ defmodule Schedule.Data do
         hastus_activities,
         hastus_trips,
         all_hastus_trips_by_block,
-        schedule_trips_by_id
+        schedule_trips_by_id,
+        timepoint_names_by_id
       ) do
     {schedule_id, run_id} = run_key
     hastus_activities = hastus_activities || []
@@ -416,7 +424,8 @@ defmodule Schedule.Data do
         hastus_activities,
         hastus_trips,
         all_hastus_trips_by_block,
-        schedule_trips_by_id
+        schedule_trips_by_id,
+        timepoint_names_by_id
       )
 
     %Run{
