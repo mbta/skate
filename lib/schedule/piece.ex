@@ -5,13 +5,12 @@ defmodule Schedule.Piece do
   alias Schedule.Hastus.Place
   alias Schedule.Hastus.Run
   alias Schedule.AsDirected
-  alias Schedule.Trip
 
   @type key :: {Hastus.Schedule.id(), Run.id(), Block.id()}
 
   @type mid_route_swing :: %{
           time: Util.Time.time_of_day(),
-          trip: Trip.id() | Trip.t()
+          trip: Schedule.Trip.id() | Schedule.Trip.t()
         }
 
   @type t :: %__MODULE__{
@@ -21,7 +20,7 @@ defmodule Schedule.Piece do
           start_time: Util.Time.time_of_day(),
           start_place: Place.id(),
           # stored with trip ids, but sent to the frontend as full objects
-          trips: [Trip.id() | Trip.t() | AsDirected.t()],
+          trips: [Schedule.Trip.id() | Schedule.Trip.t() | AsDirected.t()],
           end_time: Util.Time.time_of_day(),
           end_place: Place.id(),
           start_mid_route?: mid_route_swing() | nil,
@@ -77,7 +76,7 @@ defmodule Schedule.Piece do
     |> Enum.all?(&is_nil(&1.service_id))
   end
 
-  @spec hydrate(t(), Trip.by_id(), Timepoint.timepoint_names_by_id()) :: t()
+  @spec hydrate(t(), Schedule.Trip.by_id(), Timepoint.timepoint_names_by_id()) :: t()
   def hydrate(piece, trips_by_id, timepoint_names_by_id) do
     trip_ids = piece.trips
 
@@ -86,13 +85,13 @@ defmodule Schedule.Piece do
         trip_id when is_binary(trip_id) ->
           trips_by_id[trip_id]
 
-        %Trip{} = trip ->
+        %Schedule.Trip{} = trip ->
           trip
 
         %AsDirected{} = as_directed ->
           as_directed
       end)
-      |> Enum.map(&Trip.set_pretty_names(&1, timepoint_names_by_id))
+      |> Enum.map(&Schedule.Trip.set_pretty_names(&1, timepoint_names_by_id))
 
     %{
       piece
@@ -112,7 +111,10 @@ defmodule Schedule.Piece do
         ) :: mid_route_swing()
   defp hydrate_mid_route_swing(mid_route_swing, trips_by_id, timepoint_names_by_id) do
     trip_id = mid_route_swing.trip
-    trip = trips_by_id |> Map.get(trip_id) |> Trip.set_pretty_names(timepoint_names_by_id)
+
+    trip =
+      trips_by_id |> Map.get(trip_id) |> Schedule.Trip.set_pretty_names(timepoint_names_by_id)
+
     %{mid_route_swing | trip: trip}
   end
 end

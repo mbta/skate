@@ -324,22 +324,21 @@ defmodule Schedule.Data do
     route_patterns = bus_route_patterns(gtfs_files["route_patterns.txt"], bus_route_ids)
 
     timepoints_by_id = all_timepoints_by_id(gtfs_files["checkpoints.txt"])
+    timepoint_names = timepoint_names_for_ids(timepoints_by_id)
 
     gtfs_trips = Gtfs.Trip.parse(gtfs_files["trips.txt"], bus_route_ids)
     gtfs_trip_ids = MapSet.new(gtfs_trips, & &1.id)
     stop_times_by_id = StopTime.parse(gtfs_files["stop_times.txt"], gtfs_trip_ids)
 
-    trips_by_id = Schedule.Trip.merge_trips(gtfs_trips, hastus_trips, stop_times_by_id)
+    schedule_trips_by_id = Schedule.Trip.merge_trips(gtfs_trips, hastus_trips, stop_times_by_id)
 
-    runs = runs_from_hastus(hastus_activities, hastus_trips, trips_by_id)
-
-    timepoint_names = timepoint_names_for_ids(timepoints_by_id)
+    runs = runs_from_hastus(hastus_activities, hastus_trips, schedule_trips_by_id)
 
     pieces =
       runs
       |> Map.values()
       |> Enum.flat_map(&Run.pieces/1)
-      |> Enum.map(&Piece.hydrate(&1, trips_by_id, timepoint_names))
+      |> Enum.map(&Piece.hydrate(&1, schedule_trips_by_id, timepoint_names))
 
     blocks = Block.blocks_from_pieces(pieces)
 
@@ -355,28 +354,36 @@ defmodule Schedule.Data do
       timepoint_names_by_id: timepoint_names,
       shapes: shapes_by_route_id(gtfs_files["shapes.txt"], gtfs_trips),
       stops: all_stops_by_id(gtfs_files["stops.txt"]),
-      trips: trips_by_id,
+      trips: schedule_trips_by_id,
       blocks: blocks,
       calendar: Calendar.from_files(gtfs_files["calendar.txt"], gtfs_files["calendar_dates.txt"]),
       runs: runs,
-      swings: Swing.from_blocks(blocks, trips_by_id)
+      swings: Swing.from_blocks(blocks, schedule_trips_by_id)
     }
   end
 
   @spec runs_from_hastus([Hastus.Activity.t()], [Hastus.Trip.t()], Schedule.Trip.by_id()) ::
           Run.by_id()
-  def runs_from_hastus(activities, trips, trips_by_id) do
+  def runs_from_hastus(activities, hastus_trips, schedule_trips_by_id) do
     activities_by_run = Enum.group_by(activities, &Hastus.Activity.run_key/1)
-    trips_by_run = Enum.group_by(trips, &Hastus.Trip.run_key/1)
-    activities_and_trips_by_run = Schedule.Helpers.zip_maps([activities_by_run, trips_by_run])
+    hastus_trips_by_run = Enum.group_by(hastus_trips, &Hastus.Trip.run_key/1)
 
-    trips_by_block = Enum.group_by(trips, &Hastus.Trip.block_key/1)
+    activities_and_hastus_trips_by_run =
+      Schedule.Helpers.zip_maps([activities_by_run, hastus_trips_by_run])
+
+    hastus_trips_by_block = Enum.group_by(hastus_trips, &Hastus.Trip.block_key/1)
 
     runs =
       Enum.map(
-        activities_and_trips_by_run,
-        fn {run_key, [activities, trips]} ->
-          run_from_hastus(run_key, activities, trips, trips_by_block, trips_by_id)
+        activities_and_hastus_trips_by_run,
+        fn {run_key, [activities, hastus_trips]} ->
+          run_from_hastus(
+            run_key,
+            activities,
+            hastus_trips,
+            hastus_trips_by_block,
+            schedule_trips_by_id
+          )
         end
       )
 
@@ -391,15 +398,26 @@ defmodule Schedule.Data do
           Schedule.Trip.by_id()
         ) ::
           Run.t()
-  def run_from_hastus(run_key, hastus_activities, trips, all_trips_by_block, trips_by_id) do
+  def run_from_hastus(
+        run_key,
+        hastus_activities,
+        hastus_trips,
+        all_hastus_trips_by_block,
+        schedule_trips_by_id
+      ) do
     {schedule_id, run_id} = run_key
     hastus_activities = hastus_activities || []
-    trips = trips || []
+    hastus_trips = hastus_trips || []
 
-    service_id = unique_service_id_for_trips(trips, trips_by_id)
+    service_id = unique_service_id_for_trips(hastus_trips, schedule_trips_by_id)
 
     activities =
-      Hastus.Activity.to_pieces_and_breaks(hastus_activities, trips, all_trips_by_block)
+      Hastus.Activity.to_pieces_and_breaks(
+        hastus_activities,
+        hastus_trips,
+        all_hastus_trips_by_block,
+        schedule_trips_by_id
+      )
 
     %Run{
       schedule_id: schedule_id,

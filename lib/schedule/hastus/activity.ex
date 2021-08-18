@@ -82,36 +82,52 @@ defmodule Schedule.Hastus.Activity do
     {activity.schedule_id, activity.run_id}
   end
 
-  @spec to_pieces_and_breaks([__MODULE__.t()], [Hastus.Trip.t()], %{
-          Block.key() => [Hastus.Trip.t()]
-        }) :: [Piece.t() | Break.t()]
-  def to_pieces_and_breaks(activities, trips, all_trips_by_block) do
+  @spec to_pieces_and_breaks(
+          [__MODULE__.t()],
+          [Hastus.Trip.t()],
+          %{
+            Block.key() => [Hastus.Trip.t()]
+          },
+          Schedule.Trip.by_id()
+        ) :: [Piece.t() | Break.t()]
+  def to_pieces_and_breaks(activities, trips, all_trips_by_block, schedule_trips_by_id) do
     activities
-    |> operator_activities_to_pieces(trips, all_trips_by_block)
+    |> operator_activities_to_pieces(trips, all_trips_by_block, schedule_trips_by_id)
     |> as_directed_activities_to_pieces()
     |> add_deadheads_to_pieces()
     |> add_sign_ons_to_pieces()
     |> activities_to_breaks()
   end
 
-  @spec operator_activities_to_pieces([__MODULE__.t()], [Hastus.Trip.t()], %{
-          Block.key() => [Hastus.Trip.t()]
-        }) ::
+  @spec operator_activities_to_pieces(
+          [__MODULE__.t()],
+          [Hastus.Trip.t()],
+          %{
+            Block.key() => [Hastus.Trip.t()]
+          },
+          Schedule.Trip.by_id()
+        ) ::
           [__MODULE__.t() | Piece.t()]
-  defp operator_activities_to_pieces(activities, trips, all_trips_by_block) do
+  defp operator_activities_to_pieces(activities, trips, all_trips_by_block, schedule_trips_by_id) do
     Enum.map(activities, fn activity ->
-      operator_activity_to_piece(activity, trips, all_trips_by_block)
+      operator_activity_to_piece(activity, trips, all_trips_by_block, schedule_trips_by_id)
     end)
   end
 
-  @spec operator_activity_to_piece(__MODULE__.t(), [Hastus.Trip.t()], %{
-          Block.key() => [Hastus.Trip.t()]
-        }) ::
+  @spec operator_activity_to_piece(
+          __MODULE__.t(),
+          [Hastus.Trip.t()],
+          %{
+            Block.key() => [Hastus.Trip.t()]
+          },
+          Schedule.Trip.by_id()
+        ) ::
           Piece.t() | __MODULE__.t()
   defp operator_activity_to_piece(
          %__MODULE__{activity_type: "Operator"} = activity,
          trips_in_run,
-         all_trips_by_block
+         all_trips_by_block,
+         schedule_trips_by_id
        ) do
     trips_in_piece =
       Enum.filter(trips_in_run, fn trip ->
@@ -126,11 +142,11 @@ defmodule Schedule.Hastus.Activity do
       end)
     end
 
-    dehydrated_trips =
+    as_directeds_and_schedule_trips =
       if operator_is_as_directed?(activity) do
         [as_directed_from_trips(trips_in_piece)]
       else
-        Enum.map(trips_in_piece, fn trip -> trip.trip_id end)
+        Enum.map(trips_in_piece, &Map.fetch!(schedule_trips_by_id, &1.trip_id))
       end
 
     %Piece{
@@ -139,7 +155,7 @@ defmodule Schedule.Hastus.Activity do
       block_id: block_id_from_trips(trips_in_piece),
       start_time: activity.start_time,
       start_place: activity.start_place,
-      trips: dehydrated_trips,
+      trips: as_directeds_and_schedule_trips,
       end_time: activity.end_time,
       end_place: activity.end_place,
       start_mid_route?: start_mid_route?(activity, trips_in_piece, all_trips_by_block),
@@ -147,7 +163,7 @@ defmodule Schedule.Hastus.Activity do
     }
   end
 
-  defp operator_activity_to_piece(activity, _, _), do: activity
+  defp operator_activity_to_piece(activity, _, _, _), do: activity
 
   @spec as_directed_from_trips([Hastus.Trip.t()]) :: AsDirected.t()
   defp as_directed_from_trips(trips_in_piece) do
