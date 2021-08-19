@@ -87,9 +87,9 @@ defmodule Schedule.Block do
     |> Enum.filter(&Trip.is_revenue_trip?/1)
   end
 
-  @spec get(by_id(), id(), Hastus.Schedule.id()) :: t() | nil
-  def get(by_id, schedule_id, block_idd) do
-    by_id[{schedule_id, block_idd}]
+  @spec get(by_id(), Hastus.Schedule.id(), id()) :: t() | nil
+  def get(by_id, schedule_id, block_id) do
+    by_id[{schedule_id, block_id}]
   end
 
   @doc """
