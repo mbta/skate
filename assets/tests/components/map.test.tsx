@@ -1,4 +1,4 @@
-import { mount } from "enzyme"
+import { mount, shallow } from "enzyme"
 import { LatLng } from "leaflet"
 import React, { MutableRefObject } from "react"
 import { act } from "react-dom/test-utils"
@@ -20,6 +20,12 @@ jest.mock("../../src/laboratoryFeatures", () => ({
   __esModule: true,
   default: jest.fn(() => false),
 }))
+
+const animationFramePromise = (): Promise<null> => {
+  return new Promise((resolve) => {
+    window.requestAnimationFrame(() => resolve(null))
+  })
+}
 
 const vehicle: Vehicle = {
   id: "y1818",
@@ -106,7 +112,8 @@ describe("map", () => {
   test("draws vehicles with Pigeon", () => {
     ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
 
-    const wrapper = mount(<Map vehicles={[vehicle]} />)
+    const wrapper = shallow(<Map vehicles={[vehicle]} />)
+
     expect(wrapper.html()).toContain("m-vehicle-map__icon")
     expect(wrapper.html()).toContain("m-vehicle-map__label")
   })
@@ -114,7 +121,7 @@ describe("map", () => {
   test("draws secondary vehicles with Pigeon", () => {
     ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
 
-    const wrapper = mount(<Map vehicles={[]} secondaryVehicles={[vehicle]} />)
+    const wrapper = shallow(<Map vehicles={[]} secondaryVehicles={[vehicle]} />)
     expect(wrapper.html()).toContain("m-vehicle-map__icon")
     expect(wrapper.html()).toContain("m-vehicle-map__label")
   })
@@ -128,8 +135,27 @@ describe("map", () => {
       longitude: -71.00369,
       bearing: 15,
     }
-    const wrapper = mount(<Map vehicles={[]} trainVehicles={[trainVehicle]} />)
+    const wrapper = shallow(
+      <Map vehicles={[]} trainVehicles={[trainVehicle]} />
+    )
+
     expect(wrapper.html()).toContain("m-vehicle-map__train-icon")
+  })
+
+  test("dragging unsets autocentering with Pigeon", () => {
+    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
+
+    const wrapper = mount(<Map vehicles={[vehicle]} />)
+
+    console.log(wrapper.html())
+
+    act(() => {
+      wrapper.find(".pigeon-overlays").simulate("mousedown")
+      wrapper.find(".pigeon-overlays").simulate("mousemove")
+      wrapper.find(".pigeon-overlays").simulate("mouseup")
+    })
+
+    console.log(wrapper.html())
   })
 
   test("draws shapes", () => {
@@ -192,12 +218,6 @@ const getCenter = (
 ): LatLng | null =>
   reactLeafletMapRef.current &&
   reactLeafletMapRef.current.leafletElement.getCenter()
-
-const animationFramePromise = (): Promise<null> => {
-  return new Promise((resolve) => {
-    window.requestAnimationFrame(() => resolve(null))
-  })
-}
 
 describe("auto centering", () => {
   test("auto centers on a vehicle", async () => {
