@@ -329,7 +329,7 @@ defmodule Schedule.Hastus.Activity do
 
   @spec operator_is_as_directed?(__MODULE__.t()) :: boolean()
   defp operator_is_as_directed?(%__MODULE__{activity_type: "Operator"} = activity) do
-    String.contains?(activity.partial_block_id, "ad")
+    activity.partial_block_id =~ ~r/^[r|w]ad/i
   end
 
   @spec start_mid_route?(
