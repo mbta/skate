@@ -136,7 +136,7 @@ defmodule Schedule.Block do
       true ->
         # Either the current trip or the trip that is about to start
         # If it's between the end of the last trip and the end of the block, use the last trip
-        Enum.find(revenue_trips(block), fn trip -> trip.end_time > now end) ||
+        block |> revenue_trips |> Enum.find(fn trip -> trip.end_time > now end) ||
           block |> revenue_trips |> List.last()
     end
   end
