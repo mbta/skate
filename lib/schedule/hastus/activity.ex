@@ -140,7 +140,7 @@ defmodule Schedule.Hastus.Activity do
        ) do
     trips_in_piece =
       Enum.filter(trips_in_run, fn trip ->
-        trip_in_operator(activity, trip)
+        trip_in_operator?(activity, trip)
       end)
 
     if trips_in_piece == [] do
@@ -320,8 +320,8 @@ defmodule Schedule.Hastus.Activity do
     end)
   end
 
-  @spec trip_in_operator(__MODULE__.t(), Hastus.Trip.t()) :: boolean()
-  defp trip_in_operator(%__MODULE__{activity_type: "Operator"} = activity, trip) do
+  @spec trip_in_operator?(__MODULE__.t(), Hastus.Trip.t()) :: boolean()
+  defp trip_in_operator?(%__MODULE__{activity_type: "Operator"} = activity, trip) do
     String.contains?(trip.block_id, activity.partial_block_id) and
       trip.start_time >= activity.start_time and
       trip.start_time <= activity.end_time
