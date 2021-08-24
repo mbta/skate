@@ -18,8 +18,7 @@ defmodule Schedule.Piece do
           block_id: Block.id() | nil,
           start_time: Util.Time.time_of_day(),
           start_place: Place.id(),
-          # stored with trip ids, but sent to the frontend as full objects
-          trips: [Schedule.Trip.id() | Schedule.Trip.t() | AsDirected.t()],
+          trips: [Schedule.Trip.t() | AsDirected.t()],
           end_time: Util.Time.time_of_day(),
           end_place: Place.id(),
           start_mid_route?: mid_route_swing() | nil,
@@ -70,9 +69,7 @@ defmodule Schedule.Piece do
   # from a non-current rating.
   @spec from_non_current_rating?(t()) :: boolean()
   def from_non_current_rating?(piece) do
-    piece.trips
-    |> Enum.reject(&match?(%AsDirected{}, &1))
-    |> Enum.all?(&is_nil(&1.service_id))
+    Enum.all?(piece.trips, &match?(%Schedule.Trip{service_id: nil}, &1))
   end
 
   @spec is_for_now?(t(), Util.Time.time_of_day()) :: boolean()
