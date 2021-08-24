@@ -1,6 +1,7 @@
 defmodule Realtime.Ghost do
   alias Schedule.{Block, Route, Trip}
   alias Schedule.Gtfs.{Direction, RoutePattern, StopTime, Timepoint}
+  alias Schedule.Piece
   alias Schedule.Run
   alias Realtime.{BlockWaiver, BlockWaiverStore, RouteStatus, TimepointStatus, Vehicle}
 
@@ -86,22 +87,18 @@ defmodule Realtime.Ghost do
     current_piece_trips =
       run
       |> Run.pieces()
-      |> Enum.find(fn piece ->
-        piece.start_time < now_time_of_day and piece.end_time > now_time_of_day
-      end)
+      |> Enum.find(&Piece.is_for_now?(&1, now_time_of_day))
       |> case do
-        %Schedule.Piece{start_mid_route?: %{trip: trip}, trips: trips} ->
+        %Piece{start_mid_route?: %{trip: trip}, trips: trips} ->
           [trip | trips]
 
-        %Schedule.Piece{trips: trips} ->
+        %Piece{trips: trips} ->
           trips
 
         _ ->
           []
       end
       |> Enum.reject(&match?(%Schedule.AsDirected{}, &1))
-      |> Application.get_env(:skate, :trips_by_id_fn, &Schedule.trips_by_id/1).()
-      |> Map.values()
       |> Enum.sort_by(fn trip -> trip.start_time end)
 
     case current_trip(current_piece_trips, now_time_of_day) do
@@ -129,9 +126,7 @@ defmodule Realtime.Ghost do
             current_piece =
               with pieces <- Run.pieces(run),
                    [current_piece] <-
-                     Enum.filter(pieces, fn piece ->
-                       piece.start_time <= now_time_of_day && piece.end_time >= now_time_of_day
-                     end) do
+                     Enum.filter(pieces, &Piece.is_for_now?(&1, now_time_of_day)) do
                 current_piece
               else
                 _ -> nil

@@ -74,4 +74,9 @@ defmodule Schedule.Piece do
     |> Enum.reject(&match?(%AsDirected{}, &1))
     |> Enum.all?(&is_nil(&1.service_id))
   end
+
+  @spec is_for_now?(t(), Util.Time.time_of_day()) :: boolean()
+  def is_for_now?(piece, now_time_of_day) do
+    piece.start_time <= now_time_of_day and piece.end_time > now_time_of_day
+  end
 end

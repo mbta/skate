@@ -178,24 +178,25 @@ defmodule Realtime.VehiclesTest do
             })
           ],
           start_time: 0,
-          end_time: 0
+          end_time: 3
         })
 
-      block = build(:block, pieces: build(:piece, trips: [trip]))
-
-      reassign_env(:skate, :trips_by_id_fn, fn _ ->
-        %{
-          "trip" => trip
-        }
-      end)
-
-      run =
-        build(:run, %{
-          activities: [build(:piece, %{start_time: 0, end_time: 0})]
-        })
+      piece = build(:piece, trips: [trip], start_time: 0, end_time: 3)
+      block = build(:block, pieces: [piece])
+      run = build(:run, %{activities: [piece]})
 
       # 2019-12-20 00:00:00
       time0 = 1_576_818_000
+
+      actual =
+        Vehicles.group_by_route_with_blocks(
+          [],
+          [],
+          %{~D[2019-12-20] => [run]},
+          %{~D[2019-12-20] => [block]},
+          time0,
+          @timepoint_names_by_id
+        )
 
       assert %{
                "route" => [
@@ -219,15 +220,7 @@ defmodule Realtime.VehiclesTest do
                    ]
                  }
                ]
-             } =
-               Vehicles.group_by_route_with_blocks(
-                 [],
-                 [],
-                 %{~D[2019-12-20] => [run]},
-                 %{~D[2019-12-20] => [block]},
-                 time0,
-                 @timepoint_names_by_id
-               )
+             } = actual
     end
 
     test "doesn't include run as ghost if it has a vehicle on that run" do
@@ -288,18 +281,10 @@ defmodule Realtime.VehiclesTest do
           end_time: 1
         })
 
-      block = build(:block, id: trip.id, pieces: [build(:piece, trips: [trip])])
+      piece = build(:piece, trips: [trip], start_time: 0, end_time: 1)
+      block = build(:block, id: trip.id, pieces: [piece])
 
-      reassign_env(:skate, :trips_by_id_fn, fn _ ->
-        %{
-          "trip" => trip
-        }
-      end)
-
-      run =
-        build(:run, %{
-          activities: [build(:piece, %{start_time: 0, end_time: 1})]
-        })
+      run = build(:run, %{activities: [piece]})
 
       # 2019-12-20 00:00:00
       time0 = 1_576_818_000
@@ -386,20 +371,9 @@ defmodule Realtime.VehiclesTest do
           end_time: 4
         })
 
-      reassign_env(:skate, :trips_by_id_fn, fn _ ->
-        %{
-          "trip1" => trip1,
-          "trip2" => trip2
-        }
-      end)
-
+      piece = build(:piece, %{trips: [trip1, trip2], start_time: 1, end_time: 4})
       block = build(:block, id: trip1.block_id, pieces: [build(:piece, trips: [trip1, trip2])])
-
-      run =
-        build(:run, %{
-          activities: [build(:piece, %{start_time: 1, end_time: 4})]
-        })
-
+      run = build(:run, %{activities: [piece]})
       # 2019-12-20 00:00:00
       time0 = 1_576_818_000
 
