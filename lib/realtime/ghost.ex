@@ -98,7 +98,6 @@ defmodule Realtime.Ghost do
         _ ->
           []
       end
-      |> Enum.reject(&match?(%Schedule.AsDirected{}, &1))
       |> Enum.sort_by(fn trip -> trip.start_time end)
 
     case current_trip(current_piece_trips, now_time_of_day) do
@@ -199,7 +198,7 @@ defmodule Realtime.Ghost do
   If the run is scheduled to be between trips, it's laying_over and returns the next trip that will start
   If the run is scheduled to have finished, returns nil,
   """
-  @spec current_trip([Trip.t()], Util.Time.time_of_day()) ::
+  @spec current_trip([Trip.t() | Schedule.AsDirected.t()], Util.Time.time_of_day()) ::
           {RouteStatus.route_status(), Trip.t()} | nil
   def current_trip([], _now_time_of_day) do
     nil
@@ -210,7 +209,7 @@ defmodule Realtime.Ghost do
       now_time_of_day < trip.start_time ->
         {:pulling_out, trip}
 
-      is_nil(trip.route_id) and now_time_of_day < trip.end_time ->
+      match?(%Trip{route_id: nil}, trip) and now_time_of_day < trip.end_time ->
         case later_trips do
           [next_trip | _] -> {:pulling_out, next_trip}
           _ -> nil
