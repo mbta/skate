@@ -181,7 +181,7 @@ defmodule Schedule.Data do
   @spec active_runs(t(), Util.Time.timestamp(), Util.Time.timestamp()) ::
           %{Date.t() => [Run.t()]}
   def active_runs(
-        %__MODULE__{runs: runs, calendar: calendar, trips: trips},
+        %__MODULE__{runs: runs, calendar: calendar},
         start_time,
         end_time
       ) do
@@ -205,7 +205,7 @@ defmodule Schedule.Data do
 
       active_runs_on_date =
         Enum.filter(runs_on_date, fn run ->
-          Run.is_active?(run, trips, start_time_of_day, end_time_of_day)
+          Run.is_active?(run, start_time_of_day, end_time_of_day)
         end)
 
       {date, active_runs_on_date}
