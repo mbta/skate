@@ -379,6 +379,9 @@ defmodule Realtime.Vehicle do
       :last ->
         :pull_back
 
+      {:trip, %Schedule.AsDirected{}} ->
+        :another_trip
+
       {:trip, next_trip} ->
         if next_trip.run_id != nil and next_trip.run_id != run_id do
           :swing_off

@@ -79,7 +79,7 @@ defmodule Notifications.NotificationServer do
   end
 
   @spec get_db_values_from_block_waiver(Block.key(), BlockWaiver.t()) ::
-          Notification.t() | nil
+          map() | nil
   defp get_db_values_from_block_waiver(
          {schedule_id, block_id},
          block_waiver

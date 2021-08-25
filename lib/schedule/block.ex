@@ -17,7 +17,7 @@ defmodule Schedule.Block do
 
   @type t :: %__MODULE__{
           id: id(),
-          service_id: Service.id(),
+          service_id: Service.id() | nil,
           schedule_id: Hastus.Schedule.id(),
           start_time: Util.Time.time_of_day(),
           end_time: Util.Time.time_of_day(),
@@ -66,12 +66,17 @@ defmodule Schedule.Block do
     first_revenue_trip =
       pieces
       |> Enum.flat_map(& &1.trips)
-      |> Enum.reject(&match?(%AsDirected{}, &1))
       |> Enum.find(&Trip.is_revenue_trip?/1)
+
+    service_id =
+      case first_revenue_trip do
+        %Trip{service_id: service_id} -> service_id
+        _ -> nil
+      end
 
     %__MODULE__{
       id: first_piece.block_id,
-      service_id: first_revenue_trip.service_id,
+      service_id: service_id,
       schedule_id: first_piece.schedule_id,
       start_time: first_piece.start_time,
       end_time: last_piece.end_time,
@@ -83,7 +88,6 @@ defmodule Schedule.Block do
   def revenue_trips(%__MODULE__{pieces: pieces}) do
     pieces
     |> Enum.flat_map(& &1.trips)
-    |> Enum.reject(&match?(%AsDirected{}, &1))
     |> Enum.filter(&Trip.is_revenue_trip?/1)
   end
 
@@ -106,7 +110,7 @@ defmodule Schedule.Block do
   If the trip_id is not in the block, then :err
   If the trip_id belongs to the last trip in the block, then :last
   """
-  @spec next_revenue_trip(t(), Trip.id()) :: {:trip, Trip.t()} | :last | :err
+  @spec next_revenue_trip(t(), Trip.id()) :: {:trip, Trip.t() | AsDirected.t()} | :last | :err
   def next_revenue_trip(block, trip_id) do
     trips = revenue_trips(block)
 
