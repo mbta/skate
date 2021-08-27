@@ -3,6 +3,8 @@ defmodule Schedule.Hastus.TripTest do
 
   alias Schedule.Hastus.Trip
 
+  import Skate.Factory
+
   describe "parse" do
     test "parses data" do
       binary =
@@ -90,6 +92,25 @@ defmodule Schedule.Hastus.TripTest do
                  route_id: nil
                }
              ] = Trip.parse(binary)
+    end
+  end
+
+  describe "expand_school_trips/2" do
+    test "replaces a single consolidated school trip with multiple differentiated trips" do
+      hastus_trip1 = build(:hastus_trip, trip_id: "nonschool")
+      hastus_trip2 = build(:hastus_trip, trip_id: "school")
+      gtfs_trip_ids = ["nonschool", "school_1", "school_2"]
+
+      result =
+        [hastus_trip1, hastus_trip2]
+        |> Trip.expand_school_trips(gtfs_trip_ids)
+        |> Enum.sort_by(& &1.trip_id)
+
+      assert result == [
+               hastus_trip1,
+               %Trip{hastus_trip2 | trip_id: "school_1"},
+               %Trip{hastus_trip2 | trip_id: "school_2"}
+             ]
     end
   end
 end

@@ -298,9 +298,6 @@ defmodule Schedule.Data do
 
   @spec parse_files(all_files()) :: t()
   def parse_files(%{gtfs: gtfs_files, hastus: hastus_files}) do
-    hastus_activities = Hastus.Activity.parse(hastus_files["activities.csv"])
-    hastus_trips = Hastus.Trip.parse(hastus_files["trips.csv"])
-
     gtfs_files["feed_info.txt"]
     |> FeedInfo.parse()
     |> FeedInfo.log_gtfs_version()
@@ -316,13 +313,20 @@ defmodule Schedule.Data do
 
     bus_route_ids = bus_route_ids(bus_routes)
 
+    gtfs_trips = Gtfs.Trip.parse(gtfs_files["trips.txt"], bus_route_ids)
+    gtfs_trip_ids = MapSet.new(gtfs_trips, & &1.id)
+
+    hastus_activities = Hastus.Activity.parse(hastus_files["activities.csv"])
+
+    hastus_trips =
+      Hastus.Trip.parse(hastus_files["trips.csv"])
+      |> Hastus.Trip.expand_school_trips(gtfs_trip_ids)
+
     route_patterns = bus_route_patterns(gtfs_files["route_patterns.txt"], bus_route_ids)
 
     timepoints_by_id = all_timepoints_by_id(gtfs_files["checkpoints.txt"])
     timepoint_names_by_id = timepoint_names_for_ids(timepoints_by_id)
 
-    gtfs_trips = Gtfs.Trip.parse(gtfs_files["trips.txt"], bus_route_ids)
-    gtfs_trip_ids = MapSet.new(gtfs_trips, & &1.id)
     stop_times_by_id = StopTime.parse(gtfs_files["stop_times.txt"], gtfs_trip_ids)
 
     schedule_trips_by_id = Schedule.Trip.merge_trips(gtfs_trips, hastus_trips, stop_times_by_id)

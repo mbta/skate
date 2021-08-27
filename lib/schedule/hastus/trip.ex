@@ -86,4 +86,29 @@ defmodule Schedule.Hastus.Trip do
   def block_key(trip) do
     {trip.schedule_id, trip.block_id}
   end
+
+  @spec expand_school_trips([t()], [Schedule.Gtfs.Trip.id()]) :: [t()]
+  def expand_school_trips(trips, gtfs_trip_ids) do
+    school_trip_ids = Enum.filter(gtfs_trip_ids, &Regex.match?(~r/_\d+$/, &1))
+
+    original_id_to_school_trip_ids =
+      Enum.reduce(school_trip_ids, %{}, fn school_trip_id, result ->
+        original_id = String.replace(school_trip_id, ~r/_\d+$/, "")
+        school_trip_ids = Map.get(result, original_id, [])
+        new_school_trip_ids = [school_trip_id | school_trip_ids]
+        Map.put(result, original_id, new_school_trip_ids)
+      end)
+
+    trips
+    |> Enum.map(fn trip ->
+      school_trip_ids = Map.get(original_id_to_school_trip_ids, trip.trip_id)
+
+      if school_trip_ids do
+        Enum.map(school_trip_ids, &%__MODULE__{trip | trip_id: &1})
+      else
+        trip
+      end
+    end)
+    |> List.flatten()
+  end
 end
