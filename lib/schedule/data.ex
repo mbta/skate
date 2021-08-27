@@ -320,7 +320,7 @@ defmodule Schedule.Data do
 
     hastus_trips =
       Hastus.Trip.parse(hastus_files["trips.csv"])
-      |> Hastus.Trip.expand_school_trips(gtfs_trip_ids)
+      |> Hastus.Trip.expand_through_routed_trips(gtfs_trip_ids)
 
     route_patterns = bus_route_patterns(gtfs_files["route_patterns.txt"], bus_route_ids)
 

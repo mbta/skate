@@ -87,28 +87,36 @@ defmodule Schedule.Hastus.Trip do
     {trip.schedule_id, trip.block_id}
   end
 
-  @spec expand_school_trips([t()], MapSet.t()) :: [t()]
-  def expand_school_trips(trips, gtfs_trip_ids) do
-    school_trip_ids = Enum.filter(gtfs_trip_ids, &Regex.match?(~r/_\d+$/, &1))
+  # GTFS Creator creates multiple trips per HASTUS trip with a suffix added
+  # to the trip ID. It does this because Schedules has to merge these
+  # through-routed trips into continuous trips that change route number,
+  # because they can't depend on the HASTUS "fixed link" feature that kept
+  # the separate trips attached. But we wanted to keep presenting these to 
+  # passengers as separate trips with multiple route numbers. In theory the
+  # HASTUS problem will eventually get fixed, but it's been several years
+  # already.
 
-    original_id_to_school_trip_ids =
-      Enum.reduce(school_trip_ids, %{}, fn school_trip_id, result ->
-        original_id = String.replace(school_trip_id, ~r/_\d+$/, "")
-        school_trip_ids = Map.get(result, original_id, [])
-        new_school_trip_ids = [school_trip_id | school_trip_ids]
-        Map.put(result, original_id, new_school_trip_ids)
+  @spec expand_through_routed_trips([t()], MapSet.t()) :: [t()]
+  def expand_through_routed_trips(trips, gtfs_trip_ids) do
+    through_routed_trip_ids = Enum.filter(gtfs_trip_ids, &Regex.match?(~r/_\d+$/, &1))
+
+    original_id_to_through_routed_trip_ids =
+      Enum.reduce(through_routed_trip_ids, %{}, fn through_routed_trip_id, result ->
+        original_id = String.replace(through_routed_trip_id, ~r/_\d+$/, "")
+        through_routed_trip_ids = Map.get(result, original_id, [])
+        new_through_routed_trip_ids = [through_routed_trip_id | through_routed_trip_ids]
+        Map.put(result, original_id, new_through_routed_trip_ids)
       end)
 
     trips
-    |> Enum.map(fn trip ->
-      school_trip_ids = Map.get(original_id_to_school_trip_ids, trip.trip_id)
+    |> Enum.flat_map(fn trip ->
+      through_routed_trip_ids = Map.get(original_id_to_through_routed_trip_ids, trip.trip_id)
 
-      if school_trip_ids do
-        Enum.map(school_trip_ids, &%__MODULE__{trip | trip_id: &1})
+      if through_routed_trip_ids do
+        Enum.map(through_routed_trip_ids, &%__MODULE__{trip | trip_id: &1})
       else
-        trip
+        [trip]
       end
     end)
-    |> List.flatten()
   end
 end
