@@ -87,7 +87,7 @@ defmodule Schedule.Hastus.Trip do
     {trip.schedule_id, trip.block_id}
   end
 
-  @spec expand_school_trips([t()], [Schedule.Gtfs.Trip.id()]) :: [t()]
+  @spec expand_school_trips([t()], MapSet.t()) :: [t()]
   def expand_school_trips(trips, gtfs_trip_ids) do
     school_trip_ids = Enum.filter(gtfs_trip_ids, &Regex.match?(~r/_\d+$/, &1))
 
