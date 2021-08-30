@@ -18,7 +18,7 @@
     "@rehooks/component-size": "^1.0.3",
     "@sentry/react": "^6.10.0",
     "@tippyjs/react": "^4.2.5",
-    "core-js": "^3.15.2",
+    "core-js": "^3.16.4",
     "identity-obj-proxy": "^3.0.0",
     "leaflet": "^1.7.1",
     "leaflet-defaulticon-compatibility": "^0.1.1",
