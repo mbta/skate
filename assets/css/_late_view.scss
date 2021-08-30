@@ -1,7 +1,7 @@
 $late-view-background-color: $color-bg-light;
-$late-view-horizontal-padding: 4rem;
+$late-view-horizontal-padding: 1.5rem;
 $late-view-panel-left-padding: 1.5rem;
-$late-view-width: 60rem;
+$late-view-width: 58.5rem;
 
 .m-late-view {
   @include modal-content;
@@ -77,7 +77,8 @@ $late-view-width: 60rem;
     }
 
     th {
-      height: 2.5rem;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
       vertical-align: top;
     }
 
@@ -95,7 +96,7 @@ $late-view-width: 60rem;
 
 .m-late-view__missing-logons {
   margin-right: $late-view-horizontal-padding;
-  width: 20rem;
+  width: 28.5rem;
 }
 
 .m-late-view__late-buses {
@@ -164,7 +165,7 @@ $late-view-width: 60rem;
 }
 
 .m-late-view__scheduled-logon-header {
-  width: 5rem;
+  width: 9.5rem;
 }
 
 .m-late-view__location-header {
