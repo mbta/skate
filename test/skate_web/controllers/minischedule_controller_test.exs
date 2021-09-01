@@ -1,20 +1,20 @@
 defmodule SkateWeb.MinischeduleControllerTest do
   use SkateWeb.ConnCase
+
+  import Skate.Factory
   import Test.Support.Helpers
 
-  alias Schedule.Minischedule
+  @run build(
+         :run,
+         schedule_id: "schedule",
+         id: "run",
+         activities: []
+       )
 
-  @run %Minischedule.Run{
-    schedule_id: "schedule",
-    id: "run",
-    activities: []
-  }
-
-  @block %Minischedule.Block{
-    schedule_id: "schedule",
-    id: "block",
-    pieces: []
-  }
+  @block build(
+           :block,
+           pieces: []
+         )
 
   describe "GET /api/minischedule/run/:trip_id" do
     test "when logged out, redirects you to cognito auth", %{conn: conn} do
@@ -42,7 +42,7 @@ defmodule SkateWeb.MinischeduleControllerTest do
                  "schedule_id" => "schedule",
                  "id" => "run",
                  "activities" => [],
-                 "service_id" => nil
+                 "service_id" => "service"
                }
              }
     end

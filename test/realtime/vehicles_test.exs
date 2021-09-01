@@ -3,7 +3,7 @@ defmodule Realtime.VehiclesTest do
   import Test.Support.Helpers
   import Skate.Factory
 
-  alias Schedule.{Block, Trip}
+  alias Schedule.Trip
   alias Schedule.Gtfs.StopTime
   alias Realtime.{BlockWaiver, Ghost, Vehicle, Vehicles}
 
@@ -110,8 +110,8 @@ defmodule Realtime.VehiclesTest do
         end_time: 4
       }
 
-      block_1 = Block.block_from_trips([trip_1])
-      block_2 = Block.block_from_trips([trip_2])
+      block_1 = build(:block, id: trip_1.block_id, pieces: [build(:piece, trips: [trip_1])])
+      block_2 = build(:block, id: trip_2.block_id, pieces: [build(:piece, trips: [trip_2])])
 
       ungrouped_vehicles = [vehicle, vehicle_2]
 
@@ -178,24 +178,25 @@ defmodule Realtime.VehiclesTest do
             })
           ],
           start_time: 0,
-          end_time: 0
+          end_time: 3
         })
 
-      block = Block.block_from_trips([trip])
-
-      reassign_env(:skate, :trips_by_id_fn, fn _ ->
-        %{
-          "trip" => trip
-        }
-      end)
-
-      run =
-        build(:minischedule_run, %{
-          activities: [build(:piece, %{start_time: 0, end_time: 0})]
-        })
+      piece = build(:piece, trips: [trip], start_time: 0, end_time: 3)
+      block = build(:block, pieces: [piece])
+      run = build(:run, %{activities: [piece]})
 
       # 2019-12-20 00:00:00
       time0 = 1_576_818_000
+
+      actual =
+        Vehicles.group_by_route_with_blocks(
+          [],
+          [],
+          %{~D[2019-12-20] => [run]},
+          %{~D[2019-12-20] => [block]},
+          time0,
+          @timepoint_names_by_id
+        )
 
       assert %{
                "route" => [
@@ -219,15 +220,7 @@ defmodule Realtime.VehiclesTest do
                    ]
                  }
                ]
-             } =
-               Vehicles.group_by_route_with_blocks(
-                 [],
-                 [],
-                 %{~D[2019-12-20] => [run]},
-                 %{~D[2019-12-20] => [block]},
-                 time0,
-                 @timepoint_names_by_id
-               )
+             } = actual
     end
 
     test "doesn't include run as ghost if it has a vehicle on that run" do
@@ -246,7 +239,7 @@ defmodule Realtime.VehiclesTest do
           end_time: 0
         })
 
-      block = Block.block_from_trips([trip])
+      block = build(:block, id: trip.block_id, pieces: [build(:piece, trips: [trip])])
 
       reassign_env(:skate, :trips_by_id_fn, fn _ ->
         %{
@@ -255,7 +248,7 @@ defmodule Realtime.VehiclesTest do
       end)
 
       run =
-        build(:minischedule_run, %{
+        build(:run, %{
           activities: [build(:piece, %{start_time: 0, end_time: 0})]
         })
 
@@ -288,18 +281,10 @@ defmodule Realtime.VehiclesTest do
           end_time: 1
         })
 
-      block = Block.block_from_trips([trip])
+      piece = build(:piece, trips: [trip], start_time: 0, end_time: 1)
+      block = build(:block, id: trip.id, pieces: [piece])
 
-      reassign_env(:skate, :trips_by_id_fn, fn _ ->
-        %{
-          "trip" => trip
-        }
-      end)
-
-      run =
-        build(:minischedule_run, %{
-          activities: [build(:piece, %{start_time: 0, end_time: 1})]
-        })
+      run = build(:run, %{activities: [piece]})
 
       # 2019-12-20 00:00:00
       time0 = 1_576_818_000
@@ -386,20 +371,9 @@ defmodule Realtime.VehiclesTest do
           end_time: 4
         })
 
-      reassign_env(:skate, :trips_by_id_fn, fn _ ->
-        %{
-          "trip1" => trip1,
-          "trip2" => trip2
-        }
-      end)
-
-      block = Block.block_from_trips([trip1, trip2])
-
-      run =
-        build(:minischedule_run, %{
-          activities: [build(:piece, %{start_time: 1, end_time: 4})]
-        })
-
+      piece = build(:piece, %{trips: [trip1, trip2], start_time: 1, end_time: 4})
+      block = build(:block, id: trip1.block_id, pieces: [build(:piece, trips: [trip1, trip2])])
+      run = build(:run, %{activities: [piece]})
       # 2019-12-20 00:00:00
       time0 = 1_576_818_000
 
@@ -544,24 +518,24 @@ defmodule Realtime.VehiclesTest do
           end_time: 6100
         })
 
-      block_1 = Block.block_from_trips([trip_1])
-      block_2 = Block.block_from_trips([trip_2])
-      block_3 = Block.block_from_trips([trip_3])
+      block_1 = build(:block, id: trip_1.block_id, pieces: [build(:piece, trips: [trip_1])])
+      block_2 = build(:block, id: trip_2.block_id, pieces: [build(:piece, trips: [trip_2])])
+      block_3 = build(:block, id: trip_3.block_id, pieces: [build(:piece, trips: [trip_3])])
 
       run_1 =
-        build(:minischedule_run, %{
+        build(:run, %{
           id: "run_1",
           activities: [build(:piece, %{start_time: 4000, end_time: 4100})]
         })
 
       run_2 =
-        build(:minischedule_run, %{
+        build(:run, %{
           id: "run_2",
           activities: [build(:piece, %{start_time: 2000, end_time: 2100})]
         })
 
       run_3 =
-        build(:minischedule_run, %{
+        build(:run, %{
           id: "run_3",
           activities: [build(:piece, %{start_time: 6000, end_time: 6100})]
         })

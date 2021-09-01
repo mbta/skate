@@ -2,7 +2,7 @@ defmodule Realtime.Vehicles do
   alias Realtime.{Ghost, Vehicle, VehicleOrGhost}
   alias Schedule.{Block, Route, Trip}
   alias Schedule.Gtfs.Timepoint
-  alias Schedule.Minischedule.Run
+  alias Schedule.Run
 
   @doc """
   Also fills in ghost buses and checks for buses incoming from another route

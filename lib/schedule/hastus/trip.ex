@@ -86,4 +86,37 @@ defmodule Schedule.Hastus.Trip do
   def block_key(trip) do
     {trip.schedule_id, trip.block_id}
   end
+
+  # GTFS Creator creates multiple trips per HASTUS trip with a suffix added
+  # to the trip ID. It does this because Schedules has to merge these
+  # through-routed trips into continuous trips that change route number,
+  # because they can't depend on the HASTUS "fixed link" feature that kept
+  # the separate trips attached. But we wanted to keep presenting these to 
+  # passengers as separate trips with multiple route numbers. In theory the
+  # HASTUS problem will eventually get fixed, but it's been several years
+  # already.
+
+  @spec expand_through_routed_trips([t()], MapSet.t()) :: [t()]
+  def expand_through_routed_trips(trips, gtfs_trip_ids) do
+    through_routed_trip_ids = Enum.filter(gtfs_trip_ids, &Regex.match?(~r/_\d+$/, &1))
+
+    original_id_to_through_routed_trip_ids =
+      Enum.reduce(through_routed_trip_ids, %{}, fn through_routed_trip_id, result ->
+        original_id = String.replace(through_routed_trip_id, ~r/_\d+$/, "")
+        through_routed_trip_ids = Map.get(result, original_id, [])
+        new_through_routed_trip_ids = [through_routed_trip_id | through_routed_trip_ids]
+        Map.put(result, original_id, new_through_routed_trip_ids)
+      end)
+
+    trips
+    |> Enum.flat_map(fn trip ->
+      through_routed_trip_ids = Map.get(original_id_to_through_routed_trip_ids, trip.trip_id)
+
+      if through_routed_trip_ids do
+        Enum.map(through_routed_trip_ids, &%__MODULE__{trip | trip_id: &1})
+      else
+        [trip]
+      end
+    end)
+  end
 end

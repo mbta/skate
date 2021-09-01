@@ -1,33 +1,39 @@
 defmodule Schedule.Block do
+  alias Schedule.AsDirected
   alias Schedule.Gtfs.Service
   alias Schedule.Hastus
+  alias Schedule.Piece
   alias Schedule.Trip
+
+  require Logger
 
   @type id :: String.t()
   @typedoc """
   Block ids are repeated between different services.
-  In order to uniquely identify a block, you need a Service.id() in addition to a Block.id()
+  In order to uniquely identify a block, you need a Schedule.id() in addition to a Block.id()
   """
-  @type key :: {id(), Service.id()}
+  @type key :: {Hastus.Schedule.id(), id()}
   @type by_id :: %{key() => t()}
 
   @type t :: %__MODULE__{
           id: id(),
-          service_id: Service.id(),
-          schedule_id: Hastus.Schedule.id() | nil,
+          service_id: Service.id() | nil,
+          schedule_id: Hastus.Schedule.id(),
           start_time: Util.Time.time_of_day(),
           end_time: Util.Time.time_of_day(),
-          # only revenue trips. always nonempty
-          trips: [Trip.t()]
+          pieces: [Piece.t()]
         }
 
   @enforce_keys [
     :id,
     :service_id,
+    :schedule_id,
     :start_time,
     :end_time,
-    :trips
+    :pieces
   ]
+
+  @derive {Jason.Encoder, only: [:id, :schedule_id, :pieces]}
 
   defstruct [
     :id,
@@ -35,67 +41,59 @@ defmodule Schedule.Block do
     :schedule_id,
     :start_time,
     :end_time,
-    :trips
+    :pieces
   ]
 
-  @spec blocks_from_trips([Trip.t()]) :: by_id()
-  def blocks_from_trips(trips) do
-    {revenue_trips, nonrevenue_trips} =
-      Enum.split_with(trips, fn trip -> trip.route_id != nil end)
-
-    nonrevenue_trips =
-      Enum.group_by(nonrevenue_trips, fn trip -> {trip.block_id, trip.schedule_id} end)
-
-    revenue_trips
-    |> Enum.filter(fn trip -> trip.stop_times != [] end)
-    |> Enum.group_by(fn trip -> {trip.block_id, trip.service_id} end)
-    |> Helpers.map_values(fn trips ->
-      block_id = List.first(trips).block_id
-      schedule_id = List.first(trips).schedule_id
-      deadheads = Map.get(nonrevenue_trips, {block_id, schedule_id}, [])
-      block_from_trips(trips, deadheads)
-    end)
+  @spec key(t()) :: key()
+  def key(block) do
+    {block.schedule_id, block.id}
   end
 
-  @spec block_from_trips([Trip.t()], [Trip.t()]) :: t()
-  def block_from_trips(revenue_trips, nonrevenue_trips \\ []) do
-    revenue_trips = Enum.sort_by(revenue_trips, & &1.start_time)
-    nonrevenue_trips = Enum.sort_by(nonrevenue_trips, & &1.start_time)
-    first_trip = List.first(revenue_trips)
+  @spec blocks_from_pieces([Piece.t()]) :: by_id()
+  def blocks_from_pieces(pieces) do
+    pieces
+    |> Enum.reject(&Piece.from_non_current_rating?/1)
+    |> Enum.group_by(&Piece.block_key/1)
+    |> Helpers.map_values(&block_from_pieces(&1))
+  end
 
-    start_time =
-      if nonrevenue_trips == [] do
-        first_trip.start_time
-      else
-        min(
-          first_trip.start_time,
-          List.first(nonrevenue_trips).start_time
-        )
-      end
+  @spec block_from_pieces([Piece.t()]) :: t()
+  def block_from_pieces(pieces) do
+    pieces = Enum.sort_by(pieces, & &1.start_time)
+    first_piece = List.first(pieces)
+    last_piece = List.last(pieces)
 
-    end_time =
-      if nonrevenue_trips == [] do
-        List.last(revenue_trips).end_time
-      else
-        max(
-          List.last(revenue_trips).end_time,
-          List.last(nonrevenue_trips).end_time
-        )
+    first_revenue_trip =
+      pieces
+      |> Enum.flat_map(& &1.trips)
+      |> Enum.find(&Trip.is_revenue_trip?/1)
+
+    service_id =
+      case first_revenue_trip do
+        %Trip{service_id: service_id} -> service_id
+        _ -> nil
       end
 
     %__MODULE__{
-      id: first_trip.block_id,
-      service_id: first_trip.service_id,
-      schedule_id: first_trip.schedule_id,
-      start_time: start_time,
-      end_time: end_time,
-      trips: revenue_trips
+      id: first_piece.block_id,
+      service_id: service_id,
+      schedule_id: first_piece.schedule_id,
+      start_time: first_piece.start_time,
+      end_time: last_piece.end_time,
+      pieces: pieces
     }
   end
 
-  @spec get(by_id(), id(), Service.id()) :: t() | nil
-  def get(by_id, block_id, service_id) do
-    by_id[{block_id, service_id}]
+  @spec revenue_trips(t()) :: [Trip.t()]
+  def revenue_trips(%__MODULE__{pieces: pieces}) do
+    pieces
+    |> Enum.flat_map(& &1.trips)
+    |> Enum.filter(&Trip.is_revenue_trip?/1)
+  end
+
+  @spec get(by_id(), Hastus.Schedule.id(), id()) :: t() | nil
+  def get(by_id, schedule_id, block_id) do
+    by_id[{schedule_id, block_id}]
   end
 
   @doc """
@@ -112,9 +110,9 @@ defmodule Schedule.Block do
   If the trip_id is not in the block, then :err
   If the trip_id belongs to the last trip in the block, then :last
   """
-  @spec next_trip(t(), Trip.id()) :: {:trip, Trip.t()} | :last | :err
-  def next_trip(block, trip_id) do
-    trips = block.trips
+  @spec next_revenue_trip(t(), Trip.id()) :: {:trip, Trip.t() | AsDirected.t()} | :last | :err
+  def next_revenue_trip(block, trip_id) do
+    trips = revenue_trips(block)
 
     case Enum.find_index(trips, &(&1.id == trip_id)) do
       nil ->
@@ -123,7 +121,7 @@ defmodule Schedule.Block do
       index ->
         case Enum.at(trips, index + 1) do
           nil -> :last
-          next_trip -> {:trip, next_trip}
+          next_revenue_trip -> {:trip, next_revenue_trip}
         end
     end
   end
@@ -133,17 +131,17 @@ defmodule Schedule.Block do
     cond do
       now <= block.start_time ->
         # Block isn't scheduled to have started yet
-        List.first(block.trips)
+        block |> revenue_trips |> List.first()
 
       now >= block.end_time ->
         # Block is scheduled to have finished
-        List.last(block.trips)
+        block |> revenue_trips |> List.last()
 
       true ->
         # Either the current trip or the trip that is about to start
         # If it's between the end of the last trip and the end of the block, use the last trip
-        Enum.find(block.trips, fn trip -> trip.end_time > now end) ||
-          List.last(block.trips)
+        block |> revenue_trips |> Enum.find(fn trip -> trip.end_time > now end) ||
+          block |> revenue_trips |> List.last()
     end
   end
 

@@ -68,18 +68,19 @@ defmodule Skate.Factory do
     }
   end
 
-  def minischedule_block_factory do
-    %Schedule.Minischedule.Block{
-      schedule_id: "schedule",
+  def block_factory do
+    %Schedule.Block{
       id: "block",
-      pieces: [
-        build(:piece)
-      ]
+      service_id: "service",
+      schedule_id: "schedule",
+      start_time: 0,
+      end_time: 1,
+      pieces: [build(:piece)]
     }
   end
 
-  def minischedule_run_factory do
-    %Schedule.Minischedule.Run{
+  def run_factory do
+    %Schedule.Run{
       schedule_id: "schedule",
       service_id: "service",
       id: "run",
@@ -147,7 +148,7 @@ defmodule Skate.Factory do
       start_place: "place1",
       end_place: "place2",
       activity_type: "Operator",
-      partial_block_id: "lock"
+      partial_block_id: "block"
     }
   end
 end

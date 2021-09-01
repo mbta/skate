@@ -79,21 +79,23 @@ defmodule Notifications.NotificationServer do
   end
 
   @spec get_db_values_from_block_waiver(Block.key(), BlockWaiver.t()) ::
-          Notification.t() | nil
+          map() | nil
   defp get_db_values_from_block_waiver(
-         {block_id, service_id},
+         {schedule_id, block_id},
          block_waiver
        ) do
     if reason = get_notification_reason(block_waiver) do
       block_fn = Application.get_env(:realtime, :block_fn, &Schedule.block/2)
-      block = block_fn.(block_id, service_id)
+      block = block_fn.(schedule_id, block_id)
 
       block_date = Block.date_for_block(block)
 
       waiver_range = Range.new(block_waiver.start_time, block_waiver.end_time)
 
       trips =
-        Enum.reject(block.trips, fn trip ->
+        block
+        |> Block.revenue_trips()
+        |> Enum.reject(fn trip ->
           trip_start_timestamp = Util.Time.timestamp_for_time_of_day(trip.start_time, block_date)
           trip_end_timestamp = Util.Time.timestamp_for_time_of_day(trip.end_time, block_date)
           trip_range = Range.new(trip_start_timestamp, trip_end_timestamp)
@@ -132,7 +134,7 @@ defmodule Notifications.NotificationServer do
 
       %{
         block_id: block_id,
-        service_id: service_id,
+        service_id: block.service_id,
         reason: reason,
         created_at: created_at,
         route_ids: route_ids,

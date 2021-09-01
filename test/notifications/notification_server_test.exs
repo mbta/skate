@@ -8,50 +8,57 @@ defmodule Notifications.NotificationServerTest do
   alias Realtime.BlockWaiver
   alias Realtime.Ghost
   alias Realtime.Vehicle
-  alias Schedule.Block
-  alias Schedule.Trip
   alias Skate.Repo
   alias Skate.Settings.Db.User, as: DbUser
   alias Skate.Settings.RouteSettings
 
   import Ecto.Query
   import ExUnit.CaptureLog, only: [capture_log: 1]
+  import Skate.Factory
   import Test.Support.Helpers, only: [reassign_env: 3]
 
   require Logger
 
-  @block %Block{
-    id: "block1",
-    service_id: "service1",
-    start_time: 1,
-    end_time: 1000,
-    trips: [
-      %Trip{
-        id: "trip1",
-        block_id: "block1",
-        run_id: "run1",
-        route_id: "39",
-        start_time: 50,
-        end_time: 200
-      },
-      %Trip{
-        id: "trip2",
-        block_id: "block1",
-        run_id: "run2",
-        route_id: "2",
-        start_time: 400,
-        end_time: 800
-      },
-      %Trip{
-        id: "not_covered_by_waiver",
-        block_id: "block1",
-        run_id: "run3",
-        route_id: "3",
-        start_time: 501,
-        end_time: 800
-      }
-    ]
-  }
+  @block build(
+           :block,
+           id: "block1",
+           service_id: "service1",
+           start_time: 1,
+           end_time: 1000,
+           pieces: [
+             build(:piece,
+               trips: [
+                 build(
+                   :trip,
+                   id: "trip1",
+                   block_id: "block1",
+                   run_id: "run1",
+                   route_id: "39",
+                   start_time: 50,
+                   end_time: 200
+                 ),
+                 build(
+                   :trip,
+                   id: "trip2",
+                   block_id: "block1",
+                   run_id: "run2",
+                   route_id: "2",
+                   start_time: 400,
+                   end_time: 800
+                 ),
+                 build(
+                   :trip,
+                   id: "not_covered_by_waiver",
+                   block_id: "block1",
+                   run_id: "run3",
+                   route_id: "3",
+                   start_time: 501,
+                   end_time: 800
+                 )
+               ]
+             )
+           ]
+         )
 
   @ghost %Ghost{
     id: "ghost1",

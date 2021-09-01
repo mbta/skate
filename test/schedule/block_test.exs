@@ -1,6 +1,8 @@
 defmodule Schedule.BlockTest do
   use ExUnit.Case, async: true
 
+  import Skate.Factory
+
   alias Schedule.Block
   alias Schedule.{Block, Trip}
   alias Schedule.Gtfs.StopTime
@@ -60,67 +62,74 @@ defmodule Schedule.BlockTest do
     end_time: 19
   }
 
-  @block %Block{
-    id: "b",
-    service_id: "service",
-    schedule_id: "schedule",
-    start_time: 1,
-    end_time: 19,
-    trips: [@trip1, @trip2]
-  }
+  @piece build(:piece,
+           block_id: @pullout.block_id,
+           start_time: 1,
+           end_time: 19,
+           trips: [@pullout, @trip1, @deadhead, @trip2, @pullback]
+         )
+
+  @block build(
+           :block,
+           id: "b",
+           schedule_id: "schedule",
+           start_time: 1,
+           end_time: 19,
+           pieces: [@piece]
+         )
 
   describe "blocks_from_trips/ and get/3 " do
     test "can create blocks and then get them" do
-      by_id = Block.blocks_from_trips([@trip1])
+      by_id = Block.blocks_from_pieces([@piece])
 
-      assert Block.get(by_id, "b", "service") == %{
+      assert Block.get(by_id, "schedule", "b") == %{
                @block
-               | start_time: @trip1.start_time,
-                 end_time: @trip1.end_time,
-                 trips: [@trip1]
+               | start_time: @piece.start_time,
+                 end_time: @piece.end_time,
+                 pieces: [@piece]
              }
     end
 
     test "sets start_time and end_time based on pulls" do
-      by_id = Block.blocks_from_trips([@pullout, @trip1, @trip2, @pullback])
-      assert Block.get(by_id, "b", "service") == @block
-    end
+      earlier_piece =
+        build(:piece,
+          start_time: 100,
+          end_time: 130,
+          schedule_id: @block.schedule_id,
+          block_id: @block.id
+        )
 
-    test "ignores deadheads" do
-      by_id = Block.blocks_from_trips([@trip1, @deadhead, @trip2])
+      later_piece =
+        build(:piece,
+          start_time: 140,
+          end_time: 200,
+          schedule_id: @block.schedule_id,
+          block_id: @block.id
+        )
 
-      assert Block.get(by_id, "b", "service") == %{
-               @block
-               | start_time: @trip1.start_time,
-                 end_time: @trip2.end_time
-             }
-    end
+      expected_block = %Block{
+        @block
+        | start_time: 100,
+          end_time: 200,
+          pieces: [earlier_piece, later_piece]
+      }
 
-    test "sorts trips by time" do
-      by_id = Block.blocks_from_trips([@trip2, @pullback, @trip1, @pullout])
-      assert Block.get(by_id, "b", "service") == @block
-    end
-
-    test "ignores trips without stop times" do
-      trips = [
-        %{@trip1 | stop_times: []}
-      ]
-
-      assert Block.blocks_from_trips(trips) == %{}
+      by_id = Block.blocks_from_pieces([later_piece, earlier_piece])
+      assert Block.get(by_id, "schedule", "b") == expected_block
     end
   end
 
-  describe "next_trip/2" do
+  describe "next_revenue_trip/2" do
     test "finds the trip in the block after the given trip" do
-      assert Block.next_trip(@block, @trip1.id) == {:trip, @trip2}
+      assert Block.next_revenue_trip(@block, @trip1.id) == {:trip, @trip2}
     end
 
     test "returns :last if given the last trip in the block" do
-      assert Block.next_trip(@block, @trip2.id) == :last
+      assert Block.next_revenue_trip(@block, @trip2.id) == :last
     end
 
     test "returns :err if the given trip isn't found" do
-      assert Block.next_trip(@block, "t3") == :err
+      assert Block.next_revenue_trip(@block, "t3") == :err
     end
   end
 

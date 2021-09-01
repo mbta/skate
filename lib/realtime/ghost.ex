@@ -1,7 +1,8 @@
 defmodule Realtime.Ghost do
   alias Schedule.{Block, Route, Trip}
   alias Schedule.Gtfs.{Direction, RoutePattern, StopTime, Timepoint}
-  alias Schedule.Minischedule.Run
+  alias Schedule.Piece
+  alias Schedule.Run
   alias Realtime.{BlockWaiver, BlockWaiverStore, RouteStatus, TimepointStatus, Vehicle}
 
   @type t :: %__MODULE__{
@@ -86,22 +87,17 @@ defmodule Realtime.Ghost do
     current_piece_trips =
       run
       |> Run.pieces()
-      |> Enum.find(fn piece ->
-        piece.start_time < now_time_of_day and piece.end_time > now_time_of_day
-      end)
+      |> Enum.find(&Piece.is_for_now?(&1, now_time_of_day))
       |> case do
-        %Schedule.Piece{start_mid_route?: %{trip: trip}, trips: trips} ->
+        %Piece{start_mid_route?: %{trip: trip}, trips: trips} ->
           [trip | trips]
 
-        %Schedule.Piece{trips: trips} ->
+        %Piece{trips: trips} ->
           trips
 
         _ ->
           []
       end
-      |> Enum.reject(&match?(%Schedule.AsDirected{}, &1))
-      |> Application.get_env(:skate, :trips_by_id_fn, &Schedule.trips_by_id/1).()
-      |> Map.values()
       |> Enum.sort_by(fn trip -> trip.start_time end)
 
     case current_trip(current_piece_trips, now_time_of_day) do
@@ -129,9 +125,7 @@ defmodule Realtime.Ghost do
             current_piece =
               with pieces <- Run.pieces(run),
                    [current_piece] <-
-                     Enum.filter(pieces, fn piece ->
-                       piece.start_time <= now_time_of_day && piece.end_time >= now_time_of_day
-                     end) do
+                     Enum.filter(pieces, &Piece.is_for_now?(&1, now_time_of_day)) do
                 current_piece
               else
                 _ -> nil
@@ -204,7 +198,7 @@ defmodule Realtime.Ghost do
   If the run is scheduled to be between trips, it's laying_over and returns the next trip that will start
   If the run is scheduled to have finished, returns nil,
   """
-  @spec current_trip([Trip.t()], Util.Time.time_of_day()) ::
+  @spec current_trip([Trip.t() | Schedule.AsDirected.t()], Util.Time.time_of_day()) ::
           {RouteStatus.route_status(), Trip.t()} | nil
   def current_trip([], _now_time_of_day) do
     nil
@@ -215,7 +209,7 @@ defmodule Realtime.Ghost do
       now_time_of_day < trip.start_time ->
         {:pulling_out, trip}
 
-      is_nil(trip.route_id) and now_time_of_day < trip.end_time ->
+      match?(%Trip{route_id: nil}, trip) and now_time_of_day < trip.end_time ->
         case later_trips do
           [next_trip | _] -> {:pulling_out, next_trip}
           _ -> nil

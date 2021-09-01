@@ -148,7 +148,7 @@ defmodule Realtime.Vehicle do
     trip = trip_fn.(trip_id)
     route_id = VehiclePosition.route_id(vehicle_position) || (trip && trip.route_id)
     direction_id = VehiclePosition.direction_id(vehicle_position) || (trip && trip.direction_id)
-    block = trip && trip.service_id && block_fn.(block_id, trip.service_id)
+    block = trip && trip.schedule_id && block_fn.(trip.schedule_id, block_id)
     headsign = trip && trip.headsign
     via_variant = trip && trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id)
     stop_times_on_trip = (trip && trip.stop_times) || []
@@ -331,8 +331,9 @@ defmodule Realtime.Vehicle do
 
   def route_status(stop_id, trip, block) do
     if stop_id == List.first(trip.stop_times).stop_id do
+      first_trip_from_block = block && block |> Block.revenue_trips() |> List.first()
       # hasn't started trip yet
-      if block != nil && trip.id == List.first(block.trips).id do
+      if first_trip_from_block && trip.id == first_trip_from_block.id do
         # starting the block, pulling out from garage
         :pulling_out
       else
@@ -368,7 +369,7 @@ defmodule Realtime.Vehicle do
       if first_stop_on_trip?(stop_id, trip) do
         {:trip, trip}
       else
-        Block.next_trip(block, trip.id)
+        Block.next_revenue_trip(block, trip.id)
       end
 
     case next_trip do
@@ -377,6 +378,9 @@ defmodule Realtime.Vehicle do
 
       :last ->
         :pull_back
+
+      {:trip, %Schedule.AsDirected{}} ->
+        :another_trip
 
       {:trip, next_trip} ->
         if next_trip.run_id != nil and next_trip.run_id != run_id do

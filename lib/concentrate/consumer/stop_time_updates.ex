@@ -54,8 +54,8 @@ defmodule Concentrate.Consumer.StopTimeUpdates do
       trip_fn = Application.get_env(:realtime, :trip_fn, &Schedule.trip/1)
       trip = trip_fn.(trip_id)
 
-      if trip != nil and trip.service_id != nil do
-        MapSet.put(acc, {trip.block_id, trip.service_id})
+      if trip != nil and trip.schedule_id != nil do
+        MapSet.put(acc, {trip.schedule_id, trip.block_id})
       else
         acc
       end
@@ -71,26 +71,26 @@ defmodule Concentrate.Consumer.StopTimeUpdates do
          stop_time_updates_by_trip
        ) do
     block_keys_set
-    |> Enum.map(&block_waivers_for_block_id_and_service_id(&1, stop_time_updates_by_trip))
+    |> Enum.map(&block_waivers_for_schedule_id_and_block_id(&1, stop_time_updates_by_trip))
     |> Enum.filter(&has_block_waivers?/1)
     |> Map.new()
   end
 
-  @spec block_waivers_for_block_id_and_service_id(
+  @spec block_waivers_for_schedule_id_and_block_id(
           Block.key(),
           StopTimeUpdatesByTrip.t()
         ) ::
           {Block.key(), [BlockWaiver.t()]}
-  defp block_waivers_for_block_id_and_service_id(
-         {block_id, service_id},
+  defp block_waivers_for_schedule_id_and_block_id(
+         {schedule_id, block_id} = block_key,
          stop_time_updates_by_trip
        ) do
     block_fn = Application.get_env(:realtime, :block_fn, &Schedule.block/2)
-    block = block_fn.(block_id, service_id)
+    block = block_fn.(schedule_id, block_id)
 
     block_waivers = BlockWaiver.block_waivers_for_block(block, stop_time_updates_by_trip)
 
-    {{block_id, service_id}, block_waivers}
+    {block_key, block_waivers}
   end
 
   @spec has_block_waivers?({Block.key(), [BlockWaiver.t()]}) :: boolean

@@ -1,9 +1,11 @@
 defmodule Realtime.VehicleTest do
   use ExUnit.Case
+
+  import Skate.Factory
   import Test.Support.Helpers
 
   alias Concentrate.{DataDiscrepancy, VehiclePosition}
-  alias Schedule.{Block, Trip}
+  alias Schedule.Trip
   alias Schedule.Gtfs.StopTime
   alias Realtime.{BlockWaiver, Vehicle}
 
@@ -54,23 +56,24 @@ defmodule Realtime.VehicleTest do
 
   describe "from_vehicle_position" do
     setup do
-      trip = %Trip{
-        id: "39984755",
-        block_id: "S28-2",
-        route_id: "28",
-        service_id: "service",
-        headsign: "headsign",
-        direction_id: 1,
-        route_pattern_id: "28-_-0",
-        run_id: "run1",
-        stop_times: [
-          %StopTime{stop_id: "18511", time: 0, timepoint_id: "tp1"},
-          %StopTime{stop_id: "18512", time: 1, timepoint_id: nil},
-          %StopTime{stop_id: "18513", time: 2, timepoint_id: "tp2"}
-        ],
-        start_time: 0,
-        end_time: 2
-      }
+      trip =
+        build(
+          :trip,
+          id: "39984755",
+          block_id: "S28-2",
+          route_id: "28",
+          schedule_id: "schedule",
+          direction_id: 1,
+          route_pattern_id: "28-_-0",
+          run_id: "run1",
+          stop_times: [
+            build(:gtfs_stoptime, stop_id: "18511", time: 0, timepoint_id: "tp1"),
+            build(:gtfs_stoptime, stop_id: "18512", time: 1, timepoint_id: nil),
+            build(:gtfs_stoptime, stop_id: "18513", time: 2, timepoint_id: "tp2")
+          ],
+          start_time: 0,
+          end_time: 2
+        )
 
       reassign_env(:realtime, :trip_fn, fn trip_id ->
         if trip_id == trip.id do
@@ -80,9 +83,9 @@ defmodule Realtime.VehicleTest do
         end
       end)
 
-      reassign_env(:realtime, :block_fn, fn block_id, service_id ->
-        if block_id == trip.block_id and service_id == trip.service_id do
-          Block.block_from_trips([trip])
+      reassign_env(:realtime, :block_fn, fn schedule_id, block_id ->
+        if block_id == trip.block_id and schedule_id == trip.schedule_id do
+          build(:block, id: trip.block_id, pieces: [build(:piece, trips: [trip])])
         else
           nil
         end
@@ -313,13 +316,12 @@ defmodule Realtime.VehicleTest do
 
   describe "active_block?" do
     setup do
-      block = %Block{
-        id: "block",
-        service_id: "service",
-        start_time: Util.Time.parse_hhmmss("11:01:00"),
-        end_time: Util.Time.parse_hhmmss("11:59:00"),
-        trips: []
-      }
+      block =
+        build(
+          :block,
+          start_time: Util.Time.parse_hhmmss("11:01:00"),
+          end_time: Util.Time.parse_hhmmss("11:59:00")
+        )
 
       {:ok, block: block}
     end
@@ -367,41 +369,45 @@ defmodule Realtime.VehicleTest do
 
   describe "route_status/3" do
     setup do
-      trip1 = %Trip{
-        id: "t1",
-        block_id: "b",
-        stop_times: [
-          %StopTime{
-            stop_id: "s1",
-            time: 0,
-            timepoint_id: "s1"
-          },
-          %StopTime{
-            stop_id: "s2",
-            time: 0,
-            timepoint_id: nil
-          }
-        ]
-      }
+      trip1 =
+        build(
+          :trip,
+          id: "t1",
+          block_id: "b",
+          stop_times: [
+            %StopTime{
+              stop_id: "s1",
+              time: 0,
+              timepoint_id: "s1"
+            },
+            %StopTime{
+              stop_id: "s2",
+              time: 0,
+              timepoint_id: nil
+            }
+          ]
+        )
 
-      trip2 = %Trip{
-        id: "t2",
-        block_id: "b",
-        stop_times: [
-          %StopTime{
-            stop_id: "s2",
-            time: 0,
-            timepoint_id: "s2"
-          },
-          %StopTime{
-            stop_id: "s1",
-            time: 0,
-            timepoint_id: "s1"
-          }
-        ]
-      }
+      trip2 =
+        build(
+          :trip,
+          id: "t2",
+          block_id: "b",
+          stop_times: [
+            %StopTime{
+              stop_id: "s2",
+              time: 0,
+              timepoint_id: "s2"
+            },
+            %StopTime{
+              stop_id: "s1",
+              time: 0,
+              timepoint_id: "s1"
+            }
+          ]
+        )
 
-      block = Block.block_from_trips([trip1, trip2])
+      block = build(:block, id: trip1.block_id, pieces: [build(:piece, trips: [trip1, trip2])])
 
       {:ok, trip1: trip1, trip2: trip2, block: block}
     end
@@ -437,67 +443,83 @@ defmodule Realtime.VehicleTest do
 
   describe "end_of_trip_type/2" do
     setup do
-      first_trip = %Trip{
-        id: "t1",
-        block_id: "b",
-        run_id: "run1",
-        stop_times: [
-          %StopTime{
-            stop_id: "start",
-            time: 0
-          },
-          %StopTime{
-            stop_id: "middle",
-            time: 0
-          },
-          %StopTime{
-            stop_id: "end",
-            time: 0
-          }
-        ]
-      }
+      first_trip =
+        build(
+          :trip,
+          id: "t1",
+          block_id: "b",
+          run_id: "run1",
+          stop_times: [
+            %StopTime{
+              stop_id: "start",
+              time: 0
+            },
+            %StopTime{
+              stop_id: "middle",
+              time: 0
+            },
+            %StopTime{
+              stop_id: "end",
+              time: 0
+            }
+          ]
+        )
 
-      last_trip_of_run = %Trip{
-        id: "t2",
-        block_id: "b",
-        run_id: "run1",
-        stop_times: [
-          %StopTime{
-            stop_id: "start",
-            time: 0
-          },
-          %StopTime{
-            stop_id: "middle",
-            time: 0
-          },
-          %StopTime{
-            stop_id: "end",
-            time: 0
-          }
-        ]
-      }
+      last_trip_of_run =
+        build(
+          :trip,
+          id: "t2",
+          block_id: "b",
+          run_id: "run1",
+          stop_times: [
+            %StopTime{
+              stop_id: "start",
+              time: 0
+            },
+            %StopTime{
+              stop_id: "middle",
+              time: 0
+            },
+            %StopTime{
+              stop_id: "end",
+              time: 0
+            }
+          ]
+        )
 
-      last_trip_of_block = %Trip{
-        id: "t3",
-        block_id: "b",
-        run_id: "run2",
-        stop_times: [
-          %StopTime{
-            stop_id: "start",
-            time: 0
-          },
-          %StopTime{
-            stop_id: "middle",
-            time: 0
-          },
-          %StopTime{
-            stop_id: "end",
-            time: 0
-          }
-        ]
-      }
+      last_trip_of_block =
+        build(
+          :trip,
+          id: "t3",
+          block_id: "b",
+          run_id: "run2",
+          stop_times: [
+            %StopTime{
+              stop_id: "start",
+              time: 0
+            },
+            %StopTime{
+              stop_id: "middle",
+              time: 0
+            },
+            %StopTime{
+              stop_id: "end",
+              time: 0
+            }
+          ]
+        )
 
-      block = Block.block_from_trips([first_trip, last_trip_of_run, last_trip_of_block])
+      block =
+        build(
+          :block,
+          id: first_trip.block_id,
+          pieces: [
+            build(
+              :piece,
+              trips: [first_trip, last_trip_of_run, last_trip_of_block]
+            )
+          ]
+        )
 
       {:ok,
        first_trip: first_trip,

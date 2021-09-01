@@ -7,8 +7,7 @@ defmodule Schedule.Data do
   alias Schedule.Block
   alias Schedule.Csv
   alias Schedule.TimepointOrder
-  alias Schedule.Trip
-  alias Schedule.Minischedule
+  alias Schedule.Run
   alias Schedule.Hastus
   alias Schedule.Swing
 
@@ -34,12 +33,10 @@ defmodule Schedule.Data do
           timepoint_names_by_id: Timepoint.timepoint_names_by_id(),
           shapes: shapes_by_route_id(),
           stops: stops_by_id(),
-          trips: Trip.by_id(),
+          trips: Schedule.Trip.by_id(),
           blocks: Block.by_id(),
-          runs: %{{Service.id(), Hastus.Run.id()} => Minischedule.Run.t()},
           calendar: Calendar.t(),
-          minischedule_runs: Minischedule.Run.by_id(),
-          minischedule_blocks: Minischedule.Block.by_id(),
+          runs: Run.by_id(),
           swings: Swing.by_schedule_id_and_route_id()
         }
 
@@ -57,10 +54,8 @@ defmodule Schedule.Data do
             stops: %{},
             trips: %{},
             blocks: %{},
-            runs: %{},
             calendar: %{},
-            minischedule_runs: %{},
-            minischedule_blocks: %{},
+            runs: %{},
             swings: %{}
 
   @type files :: %{String.t() => binary()}
@@ -87,17 +82,17 @@ defmodule Schedule.Data do
   @spec stop(t(), Stop.id()) :: Stop.t() | nil
   def stop(%__MODULE__{stops: stops}, stop_id), do: stops[stop_id]
 
-  @spec trip(t(), Trip.id()) :: Trip.t() | nil
+  @spec trip(t(), Schedule.Trip.id()) :: Schedule.Trip.t() | nil
   def trip(%__MODULE__{trips: trips}, trip_id), do: trips[trip_id]
 
-  @spec trips_by_id(t(), [Trip.id()]) :: %{Trip.id() => Trip.t()}
+  @spec trips_by_id(t(), [Schedule.Trip.id()]) :: %{Schedule.Trip.id() => Schedule.Trip.t()}
   def trips_by_id(%__MODULE__{trips: trips}, trip_ids) do
     Map.take(trips, trip_ids)
   end
 
   @spec block(t(), Block.id(), Service.id()) :: Block.t() | nil
-  def block(%__MODULE__{blocks: blocks}, block_id, service_id) do
-    Block.get(blocks, block_id, service_id)
+  def block(%__MODULE__{blocks: blocks}, schedule_id, block_id) do
+    Block.get(blocks, schedule_id, block_id)
   end
 
   @doc """
@@ -124,7 +119,7 @@ defmodule Schedule.Data do
     Enum.to_list(date_range)
   end
 
-  @spec active_trips(t(), Util.Time.timestamp(), Util.Time.timestamp()) :: [Trip.t()]
+  @spec active_trips(t(), Util.Time.timestamp(), Util.Time.timestamp()) :: [Schedule.Trip.t()]
   def active_trips(%__MODULE__{calendar: calendar, trips: trips}, start_time, end_time) do
     dates = potentially_active_service_dates(start_time, end_time)
     active_services = Map.take(calendar, dates)
@@ -145,7 +140,7 @@ defmodule Schedule.Data do
 
       active_trips_on_date =
         Enum.filter(trips_on_date, fn trip ->
-          Trip.is_active(trip, start_time_of_day, end_time_of_day)
+          Schedule.Trip.is_active(trip, start_time_of_day, end_time_of_day)
         end)
 
       active_trips_on_date
@@ -184,8 +179,12 @@ defmodule Schedule.Data do
   end
 
   @spec active_runs(t(), Util.Time.timestamp(), Util.Time.timestamp()) ::
-          %{Date.t() => [Minischedule.Run.t()]}
-  def active_runs(%__MODULE__{runs: runs, calendar: calendar, trips: trips}, start_time, end_time) do
+          %{Date.t() => [Run.t()]}
+  def active_runs(
+        %__MODULE__{runs: runs, calendar: calendar},
+        start_time,
+        end_time
+      ) do
     dates = potentially_active_service_dates(start_time, end_time)
     active_services = Map.take(calendar, dates)
 
@@ -206,7 +205,7 @@ defmodule Schedule.Data do
 
       active_runs_on_date =
         Enum.filter(runs_on_date, fn run ->
-          Minischedule.Run.is_active?(run, trips, start_time_of_day, end_time_of_day)
+          Run.is_active?(run, start_time_of_day, end_time_of_day)
         end)
 
       {date, active_runs_on_date}
@@ -217,7 +216,7 @@ defmodule Schedule.Data do
   @spec shapes(t(), Route.id()) :: [Shape.t()]
   def shapes(%__MODULE__{shapes: shapes}, route_id), do: Map.get(shapes, route_id, [])
 
-  @spec shape_for_trip(t(), Trip.id()) :: Shape.t() | nil
+  @spec shape_for_trip(t(), Schedule.Trip.id()) :: Shape.t() | nil
   def shape_for_trip(%__MODULE__{shapes: shapes, trips: trips}, trip_id) do
     trip = Map.get(trips, trip_id)
 
@@ -241,12 +240,11 @@ defmodule Schedule.Data do
     end)
   end
 
-  @spec minischedule_run(t(), Trip.id()) :: Minischedule.Run.t() | nil
+  @spec minischedule_run(t(), Schedule.Trip.id()) :: Run.t() | nil
   def minischedule_run(
         %__MODULE__{
           trips: trips,
-          minischedule_runs: runs,
-          timepoint_names_by_id: timepoint_names_by_id
+          runs: runs
         },
         trip_id
       ) do
@@ -254,19 +252,17 @@ defmodule Schedule.Data do
 
     if trip != nil && trip.schedule_id != nil do
       # we have HASTUS data for this trip
-      run = runs[{trip.schedule_id, trip.run_id}]
-      Minischedule.Run.hydrate(run, trips, timepoint_names_by_id)
+      runs[{trip.schedule_id, trip.run_id}]
     else
       nil
     end
   end
 
-  @spec minischedule_block(t(), Trip.id()) :: Minischedule.Block.t() | nil
-  def minischedule_block(
+  @spec block_for_trip(t(), Schedule.Trip.id()) :: Block.t() | nil
+  def block_for_trip(
         %__MODULE__{
           trips: trips,
-          minischedule_blocks: blocks,
-          timepoint_names_by_id: timepoint_names_by_id
+          blocks: blocks
         },
         trip_id
       ) do
@@ -274,8 +270,7 @@ defmodule Schedule.Data do
 
     if trip != nil && trip.schedule_id != nil do
       # we have HASTUS data for this trip
-      block = blocks[{trip.schedule_id, trip.block_id}]
-      Minischedule.Block.hydrate(block, trips, timepoint_names_by_id)
+      blocks[{trip.schedule_id, trip.block_id}]
     else
       nil
     end
@@ -303,9 +298,6 @@ defmodule Schedule.Data do
 
   @spec parse_files(all_files()) :: t()
   def parse_files(%{gtfs: gtfs_files, hastus: hastus_files}) do
-    hastus_activities = Hastus.Activity.parse(hastus_files["activities.csv"])
-    hastus_trips = Hastus.Trip.parse(hastus_files["trips.csv"])
-
     gtfs_files["feed_info.txt"]
     |> FeedInfo.parse()
     |> FeedInfo.log_gtfs_version()
@@ -321,25 +313,38 @@ defmodule Schedule.Data do
 
     bus_route_ids = bus_route_ids(bus_routes)
 
+    gtfs_trips = Gtfs.Trip.parse(gtfs_files["trips.txt"], bus_route_ids)
+    gtfs_trip_ids = MapSet.new(gtfs_trips, & &1.id)
+
+    hastus_activities = Hastus.Activity.parse(hastus_files["activities.csv"])
+
+    hastus_trips =
+      Hastus.Trip.parse(hastus_files["trips.csv"])
+      |> Hastus.Trip.expand_through_routed_trips(gtfs_trip_ids)
+
     route_patterns = bus_route_patterns(gtfs_files["route_patterns.txt"], bus_route_ids)
 
     timepoints_by_id = all_timepoints_by_id(gtfs_files["checkpoints.txt"])
+    timepoint_names_by_id = timepoint_names_for_ids(timepoints_by_id)
 
-    gtfs_trips = Gtfs.Trip.parse(gtfs_files["trips.txt"], bus_route_ids)
-    gtfs_trip_ids = MapSet.new(gtfs_trips, & &1.id)
     stop_times_by_id = StopTime.parse(gtfs_files["stop_times.txt"], gtfs_trip_ids)
-    trips_by_id = Trip.merge_trips(gtfs_trips, hastus_trips, stop_times_by_id)
 
-    %{
-      runs: minischedule_runs,
-      blocks: minischedule_blocks
-    } = Schedule.Minischedule.Load.from_hastus(hastus_activities, hastus_trips, trips_by_id)
+    schedule_trips_by_id = Schedule.Trip.merge_trips(gtfs_trips, hastus_trips, stop_times_by_id)
 
     runs =
-      minischedule_runs
+      runs_from_hastus(
+        hastus_activities,
+        hastus_trips,
+        schedule_trips_by_id,
+        timepoint_names_by_id
+      )
+
+    pieces =
+      runs
       |> Map.values()
-      |> Enum.filter(fn run -> !is_nil(run.service_id) end)
-      |> Map.new(fn run -> {{run.service_id, run.id}, run} end)
+      |> Enum.flat_map(&Run.pieces/1)
+
+    blocks = Block.blocks_from_pieces(pieces)
 
     %__MODULE__{
       routes: bus_routes,
@@ -350,17 +355,111 @@ defmodule Schedule.Data do
           stop_times_by_id,
           timepoints_by_id
         ),
-      timepoint_names_by_id: timepoint_names_for_ids(timepoints_by_id),
+      timepoint_names_by_id: timepoint_names_by_id,
       shapes: shapes_by_route_id(gtfs_files["shapes.txt"], gtfs_trips),
       stops: all_stops_by_id(gtfs_files["stops.txt"]),
-      trips: trips_by_id,
-      blocks: Block.blocks_from_trips(Map.values(trips_by_id)),
-      runs: runs,
+      trips: schedule_trips_by_id,
+      blocks: blocks,
       calendar: Calendar.from_files(gtfs_files["calendar.txt"], gtfs_files["calendar_dates.txt"]),
-      minischedule_runs: minischedule_runs,
-      minischedule_blocks: minischedule_blocks,
-      swings: Swing.from_minischedule_blocks(minischedule_blocks, trips_by_id)
+      runs: runs,
+      swings: Swing.from_blocks(blocks, schedule_trips_by_id)
     }
+  end
+
+  @spec runs_from_hastus(
+          [Hastus.Activity.t()],
+          [Hastus.Trip.t()],
+          Schedule.Trip.by_id(),
+          Timepoint.timepoint_names_by_id()
+        ) ::
+          Run.by_id()
+  def runs_from_hastus(activities, hastus_trips, schedule_trips_by_id, timepoint_names_by_id) do
+    activities_by_run = Enum.group_by(activities, &Hastus.Activity.run_key/1)
+    hastus_trips_by_run = Enum.group_by(hastus_trips, &Hastus.Trip.run_key/1)
+
+    activities_and_hastus_trips_by_run =
+      Schedule.Helpers.zip_maps([activities_by_run, hastus_trips_by_run])
+
+    hastus_trips_by_block = Enum.group_by(hastus_trips, &Hastus.Trip.block_key/1)
+
+    runs =
+      Enum.map(
+        activities_and_hastus_trips_by_run,
+        fn {run_key, [activities, hastus_trips]} ->
+          run_from_hastus(
+            run_key,
+            activities,
+            hastus_trips,
+            hastus_trips_by_block,
+            schedule_trips_by_id,
+            timepoint_names_by_id
+          )
+        end
+      )
+
+    Map.new(runs, fn run -> {Run.key(run), run} end)
+  end
+
+  @spec run_from_hastus(
+          Run.key(),
+          [Hastus.Activity.t()] | nil,
+          [Hastus.Trip.t()] | nil,
+          %{Block.key() => [Hastus.Trip.t()]},
+          Schedule.Trip.by_id(),
+          Timepoint.timepoint_names_by_id()
+        ) ::
+          Run.t()
+  def run_from_hastus(
+        run_key,
+        hastus_activities,
+        hastus_trips,
+        all_hastus_trips_by_block,
+        schedule_trips_by_id,
+        timepoint_names_by_id
+      ) do
+    {schedule_id, run_id} = run_key
+    hastus_activities = hastus_activities || []
+    hastus_trips = hastus_trips || []
+
+    service_id = unique_service_id_for_trips(hastus_trips, schedule_trips_by_id)
+
+    activities =
+      Hastus.Activity.to_pieces_and_breaks(
+        hastus_activities,
+        hastus_trips,
+        all_hastus_trips_by_block,
+        schedule_trips_by_id,
+        timepoint_names_by_id
+      )
+
+    %Run{
+      schedule_id: schedule_id,
+      service_id: service_id,
+      id: run_id,
+      activities: activities
+    }
+  end
+
+  @spec unique_service_id_for_trips([Hastus.Trip.t()], Schedule.Trip.by_id()) ::
+          Service.id() | nil
+  defp unique_service_id_for_trips(trips, trips_by_id) do
+    service_ids =
+      trips
+      |> Enum.map(& &1.trip_id)
+      |> (&Map.take(trips_by_id, &1)).()
+      |> Map.values()
+      |> Enum.filter(& &1)
+      |> Enum.map(& &1.service_id)
+      |> Enum.filter(& &1)
+      |> Enum.uniq()
+
+    case service_ids do
+      [service_id] ->
+        service_id
+
+      _ ->
+        nil
+    end
   end
 
   @spec directions_by_route_id(binary()) :: directions_by_route_and_id()

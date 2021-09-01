@@ -1,4 +1,5 @@
 defmodule Schedule.Trip do
+  alias Schedule.AsDirected
   alias Schedule.Block
   alias Schedule.Gtfs
   alias Schedule.Gtfs.{Direction, Route, RoutePattern, Service, Shape, StopTime, Timepoint}
@@ -173,4 +174,11 @@ defmodule Schedule.Trip do
   end
 
   def set_pretty_names(trip, _), do: trip
+
+  @spec is_revenue_trip?(t() | AsDirected.t()) :: boolean()
+  def is_revenue_trip?(%AsDirected{}), do: true
+
+  def is_revenue_trip?(%__MODULE__{service_id: service_id, route_id: route_id}) do
+    !is_nil(service_id) && !is_nil(route_id)
+  end
 end
