@@ -202,7 +202,7 @@ defmodule Realtime.Ghost do
   If the run is scheduled to have finished, returns nil,
   """
   @spec current_trip([Trip.t() | Schedule.AsDirected.t()], Util.Time.time_of_day()) ::
-          {RouteStatus.route_status(), Trip.t()} | nil
+          {RouteStatus.route_status(), Trip.t() | Schedule.AsDirected.t()} | nil
   def current_trip([], _now_time_of_day) do
     nil
   end
