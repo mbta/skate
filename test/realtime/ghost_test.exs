@@ -9,6 +9,9 @@ defmodule Realtime.GhostTest do
 
   @timepoint_names_by_id %{"garage" => "Somerville Garage", "other_garage" => "Other Garage"}
 
+  # 2019-01-01 00:00:00 EST
+  @time0 1_546_318_800
+
   setup do
     reassign_env(:realtime, :block_waivers_for_block_and_service_fn, fn _, _ ->
       [
@@ -49,9 +52,6 @@ defmodule Realtime.GhostTest do
           activities: [build(:piece, %{trips: [trip], start_time: 1, end_time: 3})]
         })
 
-      # 2019-01-01 00:00:00 EST
-      time0 = 1_546_318_800
-
       expected = [
         %Ghost{
           id: "ghost-trip",
@@ -86,7 +86,7 @@ defmodule Realtime.GhostTest do
       assert Ghost.ghosts(
                %{~D[2019-01-01] => [run]},
                [],
-               time0 + 2,
+               @time0 + 2,
                @timepoint_names_by_id
              ) == expected
     end
@@ -122,13 +122,10 @@ defmodule Realtime.GhostTest do
 
       vehicles = [%{run_id: "run"}]
 
-      # 2019-01-01 00:00:00 EST
-      time0 = 1_546_318_800
-
       assert Ghost.ghosts(
                %{~D[2019-01-01] => [run]},
                vehicles,
-               time0 + 2,
+               @time0 + 2,
                @timepoint_names_by_id
              ) == []
     end
@@ -230,13 +227,10 @@ defmodule Realtime.GhostTest do
           activities: [build(:piece, %{trips: [trip1, trip2], start_time: 10, end_time: 20})]
         })
 
-      # 2019-01-01 00:00:00 EST
-      time0 = 1_546_318_800
-
       assert Ghost.ghost_for_run(
                run,
                ~D[2019-01-01],
-               time0 + 15,
+               @time0 + 15,
                @timepoint_names_by_id
              ) == %Ghost{
                id: "ghost-trip2",
@@ -249,7 +243,7 @@ defmodule Realtime.GhostTest do
                via_variant: nil,
                current_piece_first_route: "route",
                current_piece_start_place: "Somerville Garage",
-               layover_departure_time: time0 + 20,
+               layover_departure_time: @time0 + 20,
                scheduled_logon: 1_546_318_810,
                scheduled_timepoint_status: %{
                  timepoint_id: "t2",
@@ -292,13 +286,30 @@ defmodule Realtime.GhostTest do
           activities: [build(:piece, %{trips: [trip], start_time: 1, end_time: 3})]
         })
 
-      # 2019-01-01 00:00:00 EST
-      time0 = 1_546_318_800
+      assert Ghost.ghost_for_run(
+               run,
+               ~D[2019-01-01],
+               @time0 + 2,
+               @timepoint_names_by_id
+             ) == nil
+    end
+
+    test "no ghost for an as-directed" do
+      as_directed =
+        build(:as_directed, %{
+          start_time: 1,
+          end_time: 3
+        })
+
+      run =
+        build(:run, %{
+          activities: [build(:piece, %{trips: [as_directed], start_time: 1, end_time: 3})]
+        })
 
       assert Ghost.ghost_for_run(
                run,
                ~D[2019-01-01],
-               time0 + 2,
+               @time0 + 2,
                @timepoint_names_by_id
              ) == nil
     end

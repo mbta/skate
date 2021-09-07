@@ -1,5 +1,5 @@
 defmodule Realtime.Ghost do
-  alias Schedule.{Block, Route, Trip}
+  alias Schedule.{AsDirected, Block, Route, Trip}
   alias Schedule.Gtfs.{Direction, RoutePattern, StopTime, Timepoint}
   alias Schedule.Piece
   alias Schedule.Run
@@ -104,6 +104,9 @@ defmodule Realtime.Ghost do
       nil ->
         nil
 
+      {_route_status, %AsDirected{}} ->
+        nil
+
       {route_status, trip} ->
         timepoints = Enum.filter(trip.stop_times, &StopTime.is_timepoint?/1)
 
@@ -199,7 +202,7 @@ defmodule Realtime.Ghost do
   If the run is scheduled to have finished, returns nil,
   """
   @spec current_trip([Trip.t() | Schedule.AsDirected.t()], Util.Time.time_of_day()) ::
-          {RouteStatus.route_status(), Trip.t()} | nil
+          {RouteStatus.route_status(), Trip.t() | Schedule.AsDirected.t()} | nil
   def current_trip([], _now_time_of_day) do
     nil
   end
