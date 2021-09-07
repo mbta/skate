@@ -1,5 +1,5 @@
 defmodule Realtime.Ghost do
-  alias Schedule.{Block, Route, Trip}
+  alias Schedule.{AsDirected, Block, Route, Trip}
   alias Schedule.Gtfs.{Direction, RoutePattern, StopTime, Timepoint}
   alias Schedule.Piece
   alias Schedule.Run
@@ -102,6 +102,9 @@ defmodule Realtime.Ghost do
 
     case current_trip(current_piece_trips, now_time_of_day) do
       nil ->
+        nil
+
+      {_route_status, %AsDirected{}} ->
         nil
 
       {route_status, trip} ->
