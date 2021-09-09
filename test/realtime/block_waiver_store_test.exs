@@ -1,6 +1,8 @@
 defmodule Realtime.BlockWaiverStoreTest do
   use ExUnit.Case, async: true
 
+  import ExUnit.CaptureLog
+
   alias Realtime.{BlockWaiver, BlockWaiverStore}
 
   import Test.Support.Helpers
@@ -72,11 +74,28 @@ defmodule Realtime.BlockWaiverStoreTest do
     setup do
       {:ok, server} = BlockWaiverStore.start_link(name: :set)
 
+      log_level = Logger.level()
+
+      on_exit(fn ->
+        Logger.configure(level: log_level)
+      end)
+
+      Logger.configure(level: :info)
+
       {:ok, server: server}
     end
 
-    test "stores the StopTimeUpdates by trip ID", %{server: server} do
-      assert BlockWaiverStore.set(@block_waivers_by_block_key, server) == :ok
+    test "stores the block waivers by block key and logs", %{server: server} do
+      log =
+        capture_log(
+          [level: :info],
+          fn ->
+            assert BlockWaiverStore.set(@block_waivers_by_block_key, server) == :ok
+            Process.sleep(100)
+          end
+        )
+
+      assert log =~ "block_keys_with_waivers=block1-service1"
 
       assert %{block_waivers_by_block_key: @block_waivers_by_block_key} = :sys.get_state(server)
     end
