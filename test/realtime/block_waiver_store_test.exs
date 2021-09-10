@@ -17,7 +17,7 @@ defmodule Realtime.BlockWaiverStoreTest do
     }
   ]
   @block_waivers_by_block_key %{
-    {"block1", "service1"} => @block_waivers
+    {"service1", "block1"} => @block_waivers
   }
 
   describe "start_link/1" do
@@ -132,14 +132,14 @@ defmodule Realtime.BlockWaiverStoreTest do
       }
 
       block_waivers_by_block_key = %{
-        {"block1", "service1"} => [new_waiver_1 | @block_waivers]
+        {"service1", "block1"} => [new_waiver_1 | @block_waivers]
       }
 
       BlockWaiverStore.set(block_waivers_by_block_key, server)
       Process.sleep(10)
 
       assert_received %{
-        {"block1", "service1"} => [new_waiver_1]
+        {"service1", "block1"} => [new_waiver_1]
       }
 
       # Two existing waivers continue on, and are not passed to the
@@ -163,17 +163,17 @@ defmodule Realtime.BlockWaiverStoreTest do
       }
 
       block_waivers_by_block_key = %{
-        {"block1", "service1"} => [new_waiver_1 | @block_waivers],
-        {"block2", "service2"} => [new_waiver_2],
-        {"block3", "service3"} => [new_waiver_3]
+        {"service1", "block1"} => [new_waiver_1 | @block_waivers],
+        {"service2", "block2"} => [new_waiver_2],
+        {"service3", "block3"} => [new_waiver_3]
       }
 
       BlockWaiverStore.set(block_waivers_by_block_key, server)
       Process.sleep(10)
 
       assert_received %{
-        {"block2", "service2"} => [new_waiver_2],
-        {"block3", "service3"} => [new_waiver_3]
+        {"service2", "block2"} => [new_waiver_2],
+        {"service3", "block3"} => [new_waiver_3]
       }
     end
   end

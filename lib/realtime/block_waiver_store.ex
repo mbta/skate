@@ -61,7 +61,7 @@ defmodule Realtime.BlockWaiverStore do
           block_waivers_by_block_key: block_waivers_by_block_key
         } = state
       ) do
-    block_waivers = Map.get(block_waivers_by_block_key, {block_id, service_id}, [])
+    block_waivers = Map.get(block_waivers_by_block_key, {service_id, block_id}, [])
 
     {:reply, block_waivers, state}
   end
@@ -135,7 +135,7 @@ defmodule Realtime.BlockWaiverStore do
     block_keys_with_waivers =
       block_waivers
       |> Map.keys()
-      |> Enum.map(fn {block_id, service_id} -> "#{block_id}-#{service_id}" end)
+      |> Enum.map(fn {service_id, block_id} -> "#{block_id}-#{service_id}" end)
       |> Enum.join(",")
 
     Logger.info("block_keys_with_waivers=#{block_keys_with_waivers}")

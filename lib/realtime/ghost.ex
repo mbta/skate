@@ -186,7 +186,7 @@ defmodule Realtime.Ghost do
                 end,
               route_status: route_status,
               block_waivers:
-                block_waivers_for_block_and_service_fn.(trip.block_id, trip.service_id),
+                block_waivers_for_block_and_service_fn.(trip.block_id, trip.schedule_id),
               current_piece_start_place: current_piece_start_place,
               current_piece_first_route: current_piece_first_route
             }
