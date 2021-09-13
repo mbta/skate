@@ -197,8 +197,8 @@ defmodule Realtime.Vehicle do
     is_off_course = off_course?(is_overload, is_shuttle, data_discrepancies)
 
     block_waivers =
-      if trip && trip.service_id,
-        do: block_waivers_for_block_and_service_fn.(block_id, trip.service_id),
+      if trip && trip.schedule_id,
+        do: block_waivers_for_block_and_service_fn.(block_id, trip.schedule_id),
         else: []
 
     %__MODULE__{

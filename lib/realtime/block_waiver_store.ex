@@ -5,8 +5,6 @@ defmodule Realtime.BlockWaiverStore do
 
   use GenServer
 
-  require Logger
-
   alias Schedule.Block
   alias Schedule.Gtfs.Service
   alias Realtime.BlockWaiver
@@ -61,7 +59,7 @@ defmodule Realtime.BlockWaiverStore do
           block_waivers_by_block_key: block_waivers_by_block_key
         } = state
       ) do
-    block_waivers = Map.get(block_waivers_by_block_key, {block_id, service_id}, [])
+    block_waivers = Map.get(block_waivers_by_block_key, {service_id, block_id}, [])
 
     {:reply, block_waivers, state}
   end
@@ -71,8 +69,6 @@ defmodule Realtime.BlockWaiverStore do
         {:set, new_block_waivers_by_block_key},
         %__MODULE__{} = state
       ) do
-    :ok = log_new_block_waivers(new_block_waivers_by_block_key)
-
     # We have this never_set flag to detect if this is the first time this
     # particular instance of BlockWaiverStore has had set called on it.
     # Consider what happens if we don't do this check: the first time
@@ -128,16 +124,5 @@ defmodule Realtime.BlockWaiverStore do
         end
       end
     )
-  end
-
-  @spec log_new_block_waivers(BlockWaiver.block_waivers_by_block_key()) :: :ok
-  defp log_new_block_waivers(block_waivers) do
-    block_keys_with_waivers =
-      block_waivers
-      |> Map.keys()
-      |> Enum.map(fn {block_id, service_id} -> "#{block_id}-#{service_id}" end)
-      |> Enum.join(",")
-
-    Logger.info("block_keys_with_waivers=#{block_keys_with_waivers}")
   end
 end
