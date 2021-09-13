@@ -1,13 +1,11 @@
 $late-view-background-color: $color-bg-light;
-$late-view-horizontal-padding: 1.5rem;
-$late-view-panel-left-padding: 1.5rem;
-$late-view-width: 58.5rem;
+$late-view-width: 31rem;
 
 .m-late-view {
   @include modal-content;
   background-color: $late-view-background-color;
   height: 100%;
-  padding: 0 $late-view-horizontal-padding;
+  overflow-y: scroll;
   position: absolute;
   left: $tab-bar-width;
   top: 0;
@@ -20,43 +18,34 @@ $late-view-width: 58.5rem;
   box-shadow: $modal-box-shadow;
   clip-path: inset(-2rem -2rem -2rem 0);
   -webkit-clip-path: inset(-2rem -2rem -2rem 0);
-  left: $late-view-width + 2 * $late-view-horizontal-padding;
+  left: $late-view-width;
 }
 
 .m-late-view__title {
-  font-size: 2.5rem;
+  font-size: 1.5rem;
   font-weight: 900;
-  margin-bottom: 2.5rem;
-  margin-top: 2rem;
-  padding-left: $late-view-panel-left-padding;
+  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
+  padding-left: 3rem;
 }
 
 .m-late-view__panels {
   display: flex;
+  flex-direction: column;
+  padding-left: 1.5rem;
 }
 
 .m-late-view__panel {
   background-color: $white;
   border-radius: 0.5rem;
-  filter: drop-shadow(0px 8px 16px rgba(0, 0, 0, 0.16))
-    drop-shadow(0px 16px 24px rgba(176, 181, 192, 0.24));
+  filter: drop-shadow(0px 8px 25px 0px rgba(23, 31, 38, 0.14))
+    drop-shadow(0px 4px 10px 0px rgba(0, 0, 0, 0.11))
+    drop-shadow(0px 2px 4px 0px rgba(0, 0, 0, 0.06));
+
   height: fit-content;
 
   .m-late-view__panel-header {
-    font-size: 1.5rem;
-    padding-left: $late-view-panel-left-padding;
-  }
-
-  .m-late-view__panel-header-icon {
-    margin-right: 0.5rem;
-    position: relative;
-
-    svg {
-      height: 1.5rem;
-      position: relative;
-      top: 0.3rem;
-      width: 1.5rem;
-    }
+    padding: 1rem 0 1rem 1.5rem;
   }
 
   table {
@@ -64,7 +53,9 @@ $late-view-width: 58.5rem;
     font-size: 0.75rem;
 
     thead {
+      background-color: $color-bg-light;
       border-bottom: solid $color-primary-dark 1px;
+      border-top: solid $color-bg-medium 1px;
       color: $color-component-dark;
       font-weight: bold;
       text-align: left;
@@ -89,14 +80,14 @@ $late-view-width: 58.5rem;
 
     th:first-child,
     td:first-child {
-      padding-left: $late-view-panel-left-padding;
+      padding-left: 1.5rem;
     }
   }
 }
 
 .m-late-view__missing-logons {
-  margin-right: $late-view-horizontal-padding;
-  width: 28.5rem;
+  margin-bottom: 2.25rem;
+  width: 28rem;
 }
 
 .m-late-view__late-buses {
@@ -199,16 +190,6 @@ $late-view-width: 58.5rem;
   color: $white;
   position: relative;
   left: -0.4rem;
-}
-
-.m-late-view__missing-logons-panel-header {
-  color: $color-primary;
-  fill: $color-primary;
-}
-
-.m-late-view__late-buses-panel-header {
-  color: $color-secondary-dark;
-  fill: $color-secondary-dark;
 }
 
 .m-late-view__run-number-header--late,

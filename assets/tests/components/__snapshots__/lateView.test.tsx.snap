@@ -15,19 +15,11 @@ exports[`LateView renders missing logons and late buses 1`] = `
     <div
       className="m-late-view__panel m-late-view__missing-logons"
     >
-      <h2
+      <div
         className="m-late-view__panel-header m-late-view__missing-logons-panel-header"
       >
-        <span
-          className="m-late-view__panel-header-icon"
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
         Missing logons
-      </h2>
+      </div>
       <table>
         <thead>
           <tr>
@@ -96,19 +88,11 @@ exports[`LateView renders missing logons and late buses 1`] = `
     <div
       className="m-late-view__panel m-late-view__late-buses"
     >
-      <h2
+      <div
         className="m-late-view__panel-header m-late-view__late-buses-panel-header"
       >
-        <span
-          className="m-late-view__panel-header-icon"
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
         Late buses
-      </h2>
+      </div>
       <table>
         <thead>
           <tr>

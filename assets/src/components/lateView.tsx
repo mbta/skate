@@ -5,11 +5,9 @@ import { VehiclesByRouteIdContext } from "../contexts/vehiclesByRouteIdContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import {
   bangIcon,
-  busBangIcon,
   lateViewGhostIcon,
   lateViewGhostWithWaiverIcon,
   upRightIcon,
-  userXIcon,
 } from "../helpers/icon"
 import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
 import { flatten, uniqBy } from "../helpers/array"
@@ -86,10 +84,9 @@ const LateView = (): ReactElement<HTMLElement> => {
       <div className="m-late-view__title">Late View</div>
       <div className="m-late-view__panels">
         <div className="m-late-view__panel m-late-view__missing-logons">
-          <h2 className="m-late-view__panel-header m-late-view__missing-logons-panel-header">
-            {userXIcon("m-late-view__panel-header-icon")}
+          <div className="m-late-view__panel-header m-late-view__missing-logons-panel-header">
             Missing logons
-          </h2>
+          </div>
           <table>
             <thead>
               <tr>
@@ -109,10 +106,9 @@ const LateView = (): ReactElement<HTMLElement> => {
           </table>
         </div>
         <div className="m-late-view__panel m-late-view__late-buses">
-          <h2 className="m-late-view__panel-header m-late-view__late-buses-panel-header">
-            {busBangIcon("m-late-view__panel-header-icon")}
+          <div className="m-late-view__panel-header m-late-view__late-buses-panel-header">
             Late buses
-          </h2>
+          </div>
           <table>
             <thead>
               <tr>
