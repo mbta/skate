@@ -3,8 +3,6 @@ import bangIconSvg from "../../static/images/icon-bang.svg"
 // @ts-ignore
 import blueLineIconSvg from "../../static/images/icon-blue-line.svg"
 // @ts-ignore
-import busBangIconSvg from "../../static/images/icon-bus-bang.svg"
-// @ts-ignore
 import busFrontIconSvg from "../../static/images/icon-bus-front.svg"
 // @ts-ignore
 import busRearIconSvg from "../../static/images/icon-bus-rear.svg"
@@ -84,8 +82,6 @@ import triangleUpLargeIconSvg from "../../static/images/icon-triangle-up-large.s
 import upDownIconSvg from "../../static/images/icon-up-down-arrow.svg"
 // @ts-ignore
 import upRightIconSvg from "../../static/images/icon-up-right-arrow.svg"
-// @ts-ignore
-import userXIconSvg from "../../static/images/icon-user-x.svg"
 import renderSvg from "./renderSvg"
 
 export const bangIcon = (className: string = ""): JSX.Element =>
@@ -93,9 +89,6 @@ export const bangIcon = (className: string = ""): JSX.Element =>
 
 export const blueLineIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, blueLineIconSvg)
-
-export const busBangIcon = (className: string = ""): JSX.Element =>
-  renderSvg(className, busBangIconSvg)
 
 export const busFrontIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, busFrontIconSvg)
@@ -217,6 +210,3 @@ export const upDownIcon = (className: string = ""): JSX.Element =>
 
 export const upRightIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, upRightIconSvg)
-
-export const userXIcon = (className: string = ""): JSX.Element =>
-  renderSvg(className, userXIconSvg)
