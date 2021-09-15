@@ -5,299 +5,303 @@ exports[`LateView renders missing logons and late buses 1`] = `
   className="m-late-view"
 >
   <div
-    className="m-late-view__title"
-  >
-    Late View
-  </div>
-  <div
-    className="m-late-view__panels"
+    className="m-late-view__content-wrapper"
   >
     <div
-      className="m-late-view__panel m-late-view__missing-logons"
+      className="m-late-view__title"
     >
-      <h2
-        className="m-late-view__panel-header m-late-view__missing-logons-panel-header"
-      >
-        Missing logons
-      </h2>
-      <table>
-        <thead>
-          <tr>
-            <th
-              className="m-late-view__scheduled-logon-header"
-            >
-              Scheduled Logon
-            </th>
-            <th
-              className="m-late-view__route-header"
-            >
-              Route
-            </th>
-            <th
-              className="m-late-view__run-number-header"
-            >
-              Run
-            </th>
-            <th
-              className="m-late-view__location-header"
-            >
-              Location
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              4:15 AM
-            </td>
-            <td>
-              <span
-                className="m-late-view__route-pill"
-              >
-                route
-              </span>
-            </td>
-            <td>
-              run6
-            </td>
-            <td>
-              station
-            </td>
-          </tr>
-          <tr>
-            <td>
-              4:15 AM
-            </td>
-            <td>
-              <span
-                className="m-late-view__route-pill"
-              >
-                route
-              </span>
-            </td>
-            <td>
-              run7
-            </td>
-            <td>
-              somewhere
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      Late View
     </div>
     <div
-      className="m-late-view__panel m-late-view__late-buses"
+      className="m-late-view__panels"
     >
-      <h2
-        className="m-late-view__panel-header m-late-view__late-buses-panel-header"
+      <div
+        className="m-late-view__panel m-late-view__missing-logons"
       >
-        Late buses
-      </h2>
-      <table>
-        <thead>
-          <tr>
-            <th
-              className="m-late-view__adherence-header"
-            >
-              Adherence
-            </th>
-            <th
-              className="m-late-view__route-header"
-            >
-              Route
-            </th>
-            <th
-              className="m-late-view__vehicle-header"
-            >
-              Vehicle
-            </th>
-            <th
-              className="m-late-view__run-number-header m-late-view__run-number-header--late"
-            >
-              Run
-            </th>
-            <th
-              className="m-late-view__operator-header"
-            >
-              Driver
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td
-              className="m-late-view__adherence-cell"
-            >
-              N/A
-            </td>
-            <td>
-              <span
-                className="m-late-view__route-pill"
+        <h2
+          className="m-late-view__panel-header m-late-view__missing-logons-panel-header"
+        >
+          Missing logons
+        </h2>
+        <table>
+          <thead>
+            <tr>
+              <th
+                className="m-late-view__scheduled-logon-header"
               >
-                route
-              </span>
-            </td>
-            <td />
-            <td
-              className="m-late-view__run-number-cell m-late-view__run-number-cell--late"
-            >
-              <a
-                className="m-late-view__run-link"
-                onClick={[Function]}
+                Scheduled Logon
+              </th>
+              <th
+                className="m-late-view__route-header"
               >
+                Route
+              </th>
+              <th
+                className="m-late-view__run-number-header"
+              >
+                Run
+              </th>
+              <th
+                className="m-late-view__location-header"
+              >
+                Location
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                4:15 AM
+              </td>
+              <td>
                 <span
-                  className="m-late-view__run-icon m-late-view__ghost-icon"
-                  dangerouslySetInnerHTML={
-                    Object {
-                      "__html": "SVG",
-                    }
-                  }
-                />
-                run5
-              </a>
-            </td>
-            <td />
-          </tr>
-          <tr>
-            <td
-              className="m-late-view__adherence-cell"
-            >
-              -15
-            </td>
-            <td>
-              <span
-                className="m-late-view__route-pill"
-              >
-                route
-              </span>
-            </td>
-            <td>
-              v2-label
-            </td>
-            <td
-              className="m-late-view__run-number-cell m-late-view__run-number-cell--late"
-            >
-              <a
-                className="m-late-view__run-link"
-                onClick={[Function]}
-              >
+                  className="m-late-view__route-pill"
+                >
+                  route
+                </span>
+              </td>
+              <td>
+                run6
+              </td>
+              <td>
+                station
+              </td>
+            </tr>
+            <tr>
+              <td>
+                4:15 AM
+              </td>
+              <td>
                 <span
-                  className="m-late-view__run-icon m-late-view__up-right-icon"
-                  dangerouslySetInnerHTML={
-                    Object {
-                      "__html": "SVG",
-                    }
-                  }
-                />
-                run2
-              </a>
-            </td>
-            <td>
-              SMITH
-               – 
-              op2
-            </td>
-          </tr>
-          <tr>
-            <td
-              className="m-late-view__adherence-cell"
-            >
-              -15
-            </td>
-            <td>
-              <span
-                className="m-late-view__route-pill"
+                  className="m-late-view__route-pill"
+                >
+                  route
+                </span>
+              </td>
+              <td>
+                run7
+              </td>
+              <td>
+                somewhere
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div
+        className="m-late-view__panel m-late-view__late-buses"
+      >
+        <h2
+          className="m-late-view__panel-header m-late-view__late-buses-panel-header"
+        >
+          Late buses
+        </h2>
+        <table>
+          <thead>
+            <tr>
+              <th
+                className="m-late-view__adherence-header"
               >
-                route
-              </span>
-            </td>
-            <td>
-              v4-label
-            </td>
-            <td
-              className="m-late-view__run-number-cell m-late-view__run-number-cell--late"
-            >
-              <a
-                className="m-late-view__run-link"
-                onClick={[Function]}
+                Adherence
+              </th>
+              <th
+                className="m-late-view__route-header"
               >
+                Route
+              </th>
+              <th
+                className="m-late-view__vehicle-header"
+              >
+                Vehicle
+              </th>
+              <th
+                className="m-late-view__run-number-header m-late-view__run-number-header--late"
+              >
+                Run
+              </th>
+              <th
+                className="m-late-view__operator-header"
+              >
+                Driver
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td
+                className="m-late-view__adherence-cell"
+              >
+                N/A
+              </td>
+              <td>
                 <span
-                  className="m-late-view__run-icon m-late-view__up-right-icon"
-                  dangerouslySetInnerHTML={
-                    Object {
-                      "__html": "SVG",
+                  className="m-late-view__route-pill"
+                >
+                  route
+                </span>
+              </td>
+              <td />
+              <td
+                className="m-late-view__run-number-cell m-late-view__run-number-cell--late"
+              >
+                <a
+                  className="m-late-view__run-link"
+                  onClick={[Function]}
+                >
+                  <span
+                    className="m-late-view__run-icon m-late-view__ghost-icon"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "SVG",
+                      }
                     }
-                  }
-                />
-                run3
-              </a>
-            </td>
-            <td>
-              SMITH
-               – 
-              op4
-            </td>
-          </tr>
-          <tr>
-            <td
-              className="m-late-view__adherence-cell"
-            >
-              -15
-            </td>
-            <td>
-              <span
-                className="m-late-view__route-pill"
+                  />
+                  run5
+                </a>
+              </td>
+              <td />
+            </tr>
+            <tr>
+              <td
+                className="m-late-view__adherence-cell"
               >
-                route
-              </span>
-            </td>
-            <td>
-              v5-label
-            </td>
-            <td
-              className="m-late-view__run-number-cell m-late-view__run-number-cell--late"
-            >
-              <a
-                className="m-late-view__run-link"
-                onClick={[Function]}
-              >
+                -15
+              </td>
+              <td>
                 <span
-                  className="m-late-view__run-icon m-late-view__block-waiver-icon"
-                  dangerouslySetInnerHTML={
-                    Object {
-                      "__html": "SVG",
+                  className="m-late-view__route-pill"
+                >
+                  route
+                </span>
+              </td>
+              <td>
+                v2-label
+              </td>
+              <td
+                className="m-late-view__run-number-cell m-late-view__run-number-cell--late"
+              >
+                <a
+                  className="m-late-view__run-link"
+                  onClick={[Function]}
+                >
+                  <span
+                    className="m-late-view__run-icon m-late-view__up-right-icon"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "SVG",
+                      }
                     }
-                  }
-                />
-                run4
-              </a>
-            </td>
-            <td>
-              SMITH
-               – 
-              op5
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                  />
+                  run2
+                </a>
+              </td>
+              <td>
+                SMITH
+                 – 
+                op2
+              </td>
+            </tr>
+            <tr>
+              <td
+                className="m-late-view__adherence-cell"
+              >
+                -15
+              </td>
+              <td>
+                <span
+                  className="m-late-view__route-pill"
+                >
+                  route
+                </span>
+              </td>
+              <td>
+                v4-label
+              </td>
+              <td
+                className="m-late-view__run-number-cell m-late-view__run-number-cell--late"
+              >
+                <a
+                  className="m-late-view__run-link"
+                  onClick={[Function]}
+                >
+                  <span
+                    className="m-late-view__run-icon m-late-view__up-right-icon"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "SVG",
+                      }
+                    }
+                  />
+                  run3
+                </a>
+              </td>
+              <td>
+                SMITH
+                 – 
+                op4
+              </td>
+            </tr>
+            <tr>
+              <td
+                className="m-late-view__adherence-cell"
+              >
+                -15
+              </td>
+              <td>
+                <span
+                  className="m-late-view__route-pill"
+                >
+                  route
+                </span>
+              </td>
+              <td>
+                v5-label
+              </td>
+              <td
+                className="m-late-view__run-number-cell m-late-view__run-number-cell--late"
+              >
+                <a
+                  className="m-late-view__run-link"
+                  onClick={[Function]}
+                >
+                  <span
+                    className="m-late-view__run-icon m-late-view__block-waiver-icon"
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "SVG",
+                      }
+                    }
+                  />
+                  run4
+                </a>
+              </td>
+              <td>
+                SMITH
+                 – 
+                op5
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
-  <div
-    className="c-drawer-tab"
-  >
-    <button
-      className="c-drawer-tab__tab-button"
-      onClick={[Function]}
+    <div
+      className="c-drawer-tab"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <button
+        className="c-drawer-tab__tab-button"
+        onClick={[Function]}
+      >
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
           }
-        }
-      />
-    </button>
+        />
+      </button>
+    </div>
   </div>
 </div>
 `;
