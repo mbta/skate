@@ -48,6 +48,8 @@ $late-view-width: 31rem;
 
   height: fit-content;
 
+  margin-bottom: 2.25rem;
+
   .m-late-view__panel-header {
     font: inherit;
     margin: 0;
@@ -92,7 +94,6 @@ $late-view-width: 31rem;
 }
 
 .m-late-view__missing-logons {
-  margin-bottom: 2.25rem;
   width: 28rem;
 }
 
