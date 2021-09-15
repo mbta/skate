@@ -70,7 +70,7 @@ $late-view-width: 31rem;
     }
 
     tbody {
-      tr {
+      tr:not(:last-child) {
         border-bottom: solid $color-secondary-light 1px;
       }
     }
