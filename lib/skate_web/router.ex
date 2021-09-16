@@ -89,6 +89,8 @@ defmodule SkateWeb.Router do
     get "/shuttles", ShuttleController, :index
     get "/minischedule/run/:trip_id", MinischeduleController, :run
     get "/minischedule/block/:trip_id", MinischeduleController, :block
+    get "/schedule/run", ScheduleController, :run
+    get "/schedule/block", ScheduleController, :block
     get "/intersection", IntersectionController, :intersection
     put "/user_settings", UserSettingsController, :update
     put "/route_settings", RouteSettingsController, :update
