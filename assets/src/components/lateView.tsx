@@ -5,11 +5,9 @@ import { VehiclesByRouteIdContext } from "../contexts/vehiclesByRouteIdContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import {
   bangIcon,
-  busBangIcon,
   lateViewGhostIcon,
   lateViewGhostWithWaiverIcon,
   upRightIcon,
-  userXIcon,
 } from "../helpers/icon"
 import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
 import { flatten, uniqBy } from "../helpers/array"
@@ -83,71 +81,71 @@ const LateView = (): ReactElement<HTMLElement> => {
 
   return (
     <div className="m-late-view">
-      <div className="m-late-view__title">Late View</div>
-      <div className="m-late-view__panels">
-        <div className="m-late-view__panel m-late-view__missing-logons">
-          <h2 className="m-late-view__panel-header m-late-view__missing-logons-panel-header">
-            {userXIcon("m-late-view__panel-header-icon")}
-            Missing logons
-          </h2>
-          <table>
-            <thead>
-              <tr>
-                <th className="m-late-view__scheduled-logon-header">
-                  Scheduled Logon
-                </th>
-                <th className="m-late-view__route-header">Route</th>
-                <th className="m-late-view__run-number-header">Run</th>
-                <th className="m-late-view__location-header">Location</th>
-              </tr>
-            </thead>
-            <tbody>
-              {missingLogons.map((missingLogon) => (
-                <MissingLogonRow ghost={missingLogon} key={missingLogon.id} />
-              ))}
-            </tbody>
-          </table>
+      <div className="m-late-view__content-wrapper">
+        <div className="m-late-view__title">Late View</div>
+        <div className="m-late-view__panels">
+          <div className="m-late-view__panel m-late-view__missing-logons">
+            <h2 className="m-late-view__panel-header m-late-view__missing-logons-panel-header">
+              Missing logons
+            </h2>
+            <table>
+              <thead>
+                <tr>
+                  <th className="m-late-view__scheduled-logon-header">
+                    Scheduled Logon
+                  </th>
+                  <th className="m-late-view__route-header">Route</th>
+                  <th className="m-late-view__run-number-header">Run</th>
+                  <th className="m-late-view__location-header">Location</th>
+                </tr>
+              </thead>
+              <tbody>
+                {missingLogons.map((missingLogon) => (
+                  <MissingLogonRow ghost={missingLogon} key={missingLogon.id} />
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="m-late-view__panel m-late-view__late-buses">
+            <h2 className="m-late-view__panel-header m-late-view__late-buses-panel-header">
+              Late buses
+            </h2>
+            <table>
+              <thead>
+                <tr>
+                  <th className="m-late-view__adherence-header">Adherence</th>
+                  <th className="m-late-view__route-header">Route</th>
+                  <th className="m-late-view__vehicle-header">Vehicle</th>
+                  <th className="m-late-view__run-number-header m-late-view__run-number-header--late">
+                    Run
+                  </th>
+                  <th className="m-late-view__operator-header">Driver</th>
+                </tr>
+              </thead>
+              <tbody>
+                {lateGhosts.map((lateGhost) => (
+                  <LateGhostRow
+                    ghost={lateGhost}
+                    key={lateGhost.id}
+                    dispatch={dispatch}
+                  />
+                ))}
+                {lateBuses.map((lateBus) => (
+                  <LateBusRow
+                    vehicle={lateBus}
+                    key={lateBus.id}
+                    dispatch={dispatch}
+                  />
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div className="m-late-view__panel m-late-view__late-buses">
-          <h2 className="m-late-view__panel-header m-late-view__late-buses-panel-header">
-            {busBangIcon("m-late-view__panel-header-icon")}
-            Late buses
-          </h2>
-          <table>
-            <thead>
-              <tr>
-                <th className="m-late-view__adherence-header">Adherence</th>
-                <th className="m-late-view__route-header">Route</th>
-                <th className="m-late-view__vehicle-header">Vehicle</th>
-                <th className="m-late-view__run-number-header m-late-view__run-number-header--late">
-                  Run
-                </th>
-                <th className="m-late-view__operator-header">Driver</th>
-              </tr>
-            </thead>
-            <tbody>
-              {lateGhosts.map((lateGhost) => (
-                <LateGhostRow
-                  ghost={lateGhost}
-                  key={lateGhost.id}
-                  dispatch={dispatch}
-                />
-              ))}
-              {lateBuses.map((lateBus) => (
-                <LateBusRow
-                  vehicle={lateBus}
-                  key={lateBus.id}
-                  dispatch={dispatch}
-                />
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <DrawerTab
+          isVisible={true}
+          toggleVisibility={() => dispatch(toggleLateView())}
+        />
       </div>
-      <DrawerTab
-        isVisible={true}
-        toggleVisibility={() => dispatch(toggleLateView())}
-      />
     </div>
   )
 }
