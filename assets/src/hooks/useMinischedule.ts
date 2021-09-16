@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react"
-import { fetchMinischeduleBlock, fetchMinischeduleRun } from "../api"
+import { fetchScheduleBlock, fetchScheduleRun } from "../api"
 import { Block, Run } from "../minischedule"
 import { TripId } from "../schedule"
+import { RunId } from "../realtime"
 
 /**
  * undefined means loading
  * null means loaded, but there was no run found
  */
-export const useMinischeduleRun = (tripId: TripId): Run | null | undefined => {
+export const useMinischeduleRun = (
+  tripId: TripId,
+  runId: RunId
+): Run | null | undefined => {
   const [run, setRun] = useState<Run | null | undefined>(undefined)
   useEffect(() => {
-    fetchMinischeduleRun(tripId).then(setRun)
+    fetchScheduleRun(tripId, runId).then(setRun)
   }, [tripId])
   return run
 }
@@ -24,7 +28,7 @@ export const useMinischeduleRuns = (
 ): (Run | null)[] | undefined => {
   const [runs, setRuns] = useState<(Run | null)[] | undefined>(undefined)
   useEffect(() => {
-    Promise.all(tripIds.map((tripId) => fetchMinischeduleRun(tripId))).then(
+    Promise.all(tripIds.map((tripId) => fetchScheduleRun(tripId, null))).then(
       setRuns
     )
   }, [JSON.stringify(tripIds)])
@@ -40,7 +44,7 @@ export const useMinischeduleBlock = (
 ): Block | null | undefined => {
   const [block, setBlock] = useState<Block | null | undefined>(undefined)
   useEffect(() => {
-    fetchMinischeduleBlock(tripId).then(setBlock)
+    fetchScheduleBlock(tripId).then(setBlock)
   }, [tripId])
   return block
 }

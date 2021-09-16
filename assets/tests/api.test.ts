@@ -1,7 +1,7 @@
 import {
   apiCall,
-  fetchMinischeduleBlock,
-  fetchMinischeduleRun,
+  fetchScheduleBlock,
+  fetchScheduleRun,
   fetchNearestIntersection,
   fetchRoutes,
   fetchShapeForRoute,
@@ -325,7 +325,7 @@ describe("fetchTimepointsForRoute", () => {
   })
 })
 
-describe("minischedulesRun", () => {
+describe("fetchScheduleRun", () => {
   test("fetches a run with a break", (done) => {
     mockFetch(200, {
       data: {
@@ -340,7 +340,7 @@ describe("minischedulesRun", () => {
       },
     })
 
-    fetchMinischeduleRun("trip").then((result) => {
+    fetchScheduleRun("trip", "run").then((result) => {
       expect(result).toEqual({
         id: "run",
         activities: [
@@ -357,14 +357,14 @@ describe("minischedulesRun", () => {
 
   test("can return null", (done) => {
     mockFetch(200, { data: null })
-    fetchMinischeduleRun("trip").then((result) => {
+    fetchScheduleRun("trip", "run").then((result) => {
       expect(result).toEqual(null)
       done()
     })
   })
 })
 
-describe("minischedulesBlock", () => {
+describe("fetchScheduleBlock", () => {
   test("fetches a block with a piece", (done) => {
     mockFetch(200, {
       data: {
@@ -404,7 +404,7 @@ describe("minischedulesBlock", () => {
       },
     })
 
-    fetchMinischeduleBlock("trip").then((result) => {
+    fetchScheduleBlock("trip").then((result) => {
       expect(result).toEqual({
         id: "block",
         pieces: [
@@ -446,7 +446,7 @@ describe("minischedulesBlock", () => {
 
   test("can return null", (done) => {
     mockFetch(200, { data: null })
-    fetchMinischeduleBlock("trip").then((result) => {
+    fetchScheduleBlock("trip").then((result) => {
       expect(result).toEqual(null)
       done()
     })
