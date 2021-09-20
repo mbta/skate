@@ -9,7 +9,8 @@ defmodule Schedule.Supervisor do
   def init(:ok) do
     children = [
       Schedule,
-      Schedule.Health.Server
+      Schedule.Health.Server,
+      Supervisor.child_spec(Schedule.Gtfs.Fetcher, restart: :transient)
     ]
 
     Supervisor.init(children, strategy: :one_for_all)
