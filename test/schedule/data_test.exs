@@ -647,18 +647,20 @@ defmodule Schedule.DataTest do
 
   describe "run_for_trip/3" do
     test "returns run with ID for trip" do
-      trip = %Schedule.Trip{
-        id: "trip",
-        block_id: "block",
-        schedule_id: "schedule",
-        run_id: "run"
-      }
+      trip =
+        build(:trip, %{
+          id: "trip",
+          block_id: "block",
+          schedule_id: "schedule",
+          run_id: "run"
+        })
 
-      run = %Run{
-        schedule_id: "schedule",
-        id: "run",
-        activities: []
-      }
+      run =
+        build(:run, %{
+          schedule_id: "schedule",
+          id: "run",
+          activities: []
+        })
 
       data = %Data{
         trips: %{trip.id => trip},
@@ -669,18 +671,20 @@ defmodule Schedule.DataTest do
     end
 
     test "returns run from trip without specific run ID" do
-      trip = %Schedule.Trip{
-        id: "trip",
-        block_id: "block",
-        schedule_id: "schedule",
-        run_id: "run"
-      }
+      trip =
+        build(:trip, %{
+          id: "trip",
+          block_id: "block",
+          schedule_id: "schedule",
+          run_id: "run"
+        })
 
-      run = %Run{
-        schedule_id: "schedule",
-        id: "run",
-        activities: []
-      }
+      run =
+        build(:run, %{
+          schedule_id: "schedule",
+          id: "run",
+          activities: []
+        })
 
       data = %Data{
         trips: %{trip.id => trip},
@@ -697,12 +701,13 @@ defmodule Schedule.DataTest do
     end
 
     test "returns nil if the trip is in GTFS but not HASTUS (no schedule_id)" do
-      trip = %Schedule.Trip{
-        id: "trip",
-        block_id: "block",
-        schedule_id: nil,
-        run_id: "run"
-      }
+      trip =
+        build(:trip, %{
+          id: "trip",
+          block_id: "block",
+          schedule_id: nil,
+          run_id: "run"
+        })
 
       data = %Data{
         trips: %{trip.id => trip}
