@@ -2,6 +2,7 @@ import React, {
   Dispatch,
   ReactElement,
   createContext,
+  SetStateAction,
   useContext,
   useState,
 } from "react"
@@ -42,11 +43,36 @@ const compareGhosts = (a: Ghost, b: Ghost): number => {
   return runIdToLabel(a.runId!).localeCompare(runIdToLabel(b.runId!))
 }
 
-// JS does have a Set type, but its API uses mutable state in a way
-// that makes it inconvenient for us to use here.
+// JS does have a Set type, but its API uses mutable state in an inconvenient
+// way.
 interface VehicleIdSet {
   [id: string]: boolean
 }
+
+const toggleVehicleIdInSet = (
+  vehicleId: VehicleId,
+  vehicleIdSet: VehicleIdSet,
+  updateFunction: Dispatch<SetStateAction<VehicleIdSet>>
+): void => {
+  if (vehicleIdSet[vehicleId]) {
+    updateFunction({ ...vehicleIdSet, [vehicleId]: false })
+  } else {
+    updateFunction({ ...vehicleIdSet, [vehicleId]: true })
+  }
+}
+
+const nItems = (vehicleIdSet: VehicleIdSet): number =>
+  Object.values(vehicleIdSet).filter((flag) => flag).length
+
+const difference = (
+  removeFrom: VehicleIdSet,
+  toRemove: VehicleIdSet
+): VehicleIdSet =>
+  Object.entries(toRemove).reduce(
+    (accumulator, entry) =>
+      entry[1] ? { ...accumulator, [entry[0]]: false } : accumulator,
+    removeFrom
+  )
 
 // tslint:disable: no-empty
 const LateViewContext = createContext<{
@@ -62,14 +88,36 @@ const LateViewContext = createContext<{
 const LateView = (): ReactElement<HTMLElement> => {
   const [, dispatch] = useContext(StateDispatchContext)
 
+  // This is getting to be a lot of state and a lot of interactions. In the
+  // likely case that we add more functionality to this view, we might
+  // want to refactor to use a reducer.
+
   const [selectedIds, setSelectedIds] = useState<VehicleIdSet>({})
-  const toggleCheckedState = (checkedId: VehicleId): void => {
-    if (selectedIds[checkedId]) {
-      setSelectedIds({ ...selectedIds, [checkedId]: false })
-    } else {
-      setSelectedIds({ ...selectedIds, [checkedId]: true })
-    }
+  const [hiddenIds, setHiddenIds] = useState<VehicleIdSet>({})
+  const [recentlyHiddenIds, setRecentlyHiddenIds] = useState<VehicleIdSet>({})
+
+  const toggleCheckedState = (id: VehicleId): void => {
+    toggleVehicleIdInSet(id, selectedIds, setSelectedIds)
   }
+
+  const hideSelectedRows: () => void = () => {
+    setHiddenIds({
+      ...hiddenIds,
+      ...selectedIds,
+    })
+    setRecentlyHiddenIds(selectedIds)
+    setSelectedIds({})
+  }
+  const unhideRecentlyHidden: () => void = () => {
+    setHiddenIds(difference(hiddenIds, recentlyHiddenIds))
+    setRecentlyHiddenIds({})
+  }
+
+  const nRowsSelected = nItems(selectedIds)
+  const anyRowsSelected = nRowsSelected > 0
+
+  const nRecentlyHidden = nItems(recentlyHiddenIds)
+  const anyRecentlyHidden = nRecentlyHidden > 0
 
   const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = useContext(
     VehiclesByRouteIdContext
@@ -78,7 +126,7 @@ const LateView = (): ReactElement<HTMLElement> => {
   const vehiclesOrGhosts = uniqBy(
     flatten(Object.values(vehiclesByRouteId)),
     (vehicleOrGhost) => vehicleOrGhost.runId
-  )
+  ).filter((vehicleOrGhost) => !hiddenIds[vehicleOrGhost.id])
 
   const lateBusThreshold = 60 * 15
   const missingLogonThreshold = 60 * 45
@@ -183,6 +231,18 @@ const LateView = (): ReactElement<HTMLElement> => {
             toggleVisibility={() => dispatch(toggleLateView())}
           />
         </div>
+        {anyRowsSelected && (
+          <HidePopup
+            nRowsSelected={nRowsSelected}
+            hideSelectedRows={hideSelectedRows}
+          />
+        )}
+        {!anyRowsSelected && anyRecentlyHidden && (
+          <UnhidePopup
+            nRecentlyHidden={nRecentlyHidden}
+            unhideRecentlyHidden={unhideRecentlyHidden}
+          />
+        )}
       </div>
     </LateViewContext.Provider>
   )
@@ -324,5 +384,31 @@ const HideCheckbox = ({
     />
   )
 }
+
+const HidePopup = ({
+  nRowsSelected,
+  hideSelectedRows,
+}: {
+  nRowsSelected: number
+  hideSelectedRows: () => void
+}) => (
+  <div>
+    {nRowsSelected} selected
+    <button onClick={hideSelectedRows}>Hide</button>
+  </div>
+)
+
+const UnhidePopup = ({
+  nRecentlyHidden,
+  unhideRecentlyHidden,
+}: {
+  nRecentlyHidden: number
+  unhideRecentlyHidden: () => void
+}): ReactElement<HTMLElement> => (
+  <div>
+    {nRecentlyHidden} hidden
+    <button onClick={unhideRecentlyHidden}>Undo</button>
+  </div>
+)
 
 export default LateView
