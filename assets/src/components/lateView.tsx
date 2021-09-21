@@ -4,6 +4,8 @@ import React, {
   createContext,
   SetStateAction,
   useContext,
+  useEffect,
+  useRef,
   useState,
 } from "react"
 import DrawerTab from "../components/drawerTab"
@@ -108,10 +110,13 @@ const LateView = (): ReactElement<HTMLElement> => {
     setRecentlyHiddenIds(selectedIds)
     setSelectedIds({})
   }
+
   const unhideRecentlyHidden: () => void = () => {
     setHiddenIds(difference(hiddenIds, recentlyHiddenIds))
     setRecentlyHiddenIds({})
   }
+
+  const clearRecentlyHidden: () => void = () => setRecentlyHiddenIds({})
 
   const nRowsSelected = nItems(selectedIds)
   const anyRowsSelected = nRowsSelected > 0
@@ -241,6 +246,7 @@ const LateView = (): ReactElement<HTMLElement> => {
           <UnhidePopup
             nRecentlyHidden={nRecentlyHidden}
             unhideRecentlyHidden={unhideRecentlyHidden}
+            clearRecentlyHidden={clearRecentlyHidden}
           />
         )}
       </div>
@@ -401,14 +407,30 @@ const HidePopup = ({
 const UnhidePopup = ({
   nRecentlyHidden,
   unhideRecentlyHidden,
+  clearRecentlyHidden,
 }: {
   nRecentlyHidden: number
   unhideRecentlyHidden: () => void
-}): ReactElement<HTMLElement> => (
-  <div>
-    {nRecentlyHidden} hidden
-    <button onClick={unhideRecentlyHidden}>Undo</button>
-  </div>
-)
+  clearRecentlyHidden: () => void
+}): ReactElement<HTMLElement> => {
+  const ref = useRef<HTMLDivElement>(null)
+  const handleClickOutside = (event: MouseEvent) => {
+    if (ref.current && !event.composedPath().includes(ref.current)) {
+      clearRecentlyHidden()
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [ref])
+
+  return (
+    <div ref={ref}>
+      {nRecentlyHidden} hidden
+      <button onClick={unhideRecentlyHidden}>Undo</button>
+    </div>
+  )
+}
 
 export default LateView
