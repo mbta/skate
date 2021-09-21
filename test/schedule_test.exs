@@ -818,6 +818,18 @@ defmodule ScheduleTest do
                }
     end
 
+    test "can get run via run_for_trip", %{pid: pid, expected_piece: expected_piece} do
+      assert Schedule.run_for_trip("123-4567", "trip", pid) ==
+               %Run{
+                 schedule_id: "schedule",
+                 service_id: "service",
+                 id: "123-4567",
+                 activities: [
+                   expected_piece
+                 ]
+               }
+    end
+
     test "can get block", %{pid: pid, expected_piece: expected_piece} do
       assert %Block{
                schedule_id: "schedule",

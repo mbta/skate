@@ -645,7 +645,79 @@ defmodule Schedule.DataTest do
     end
   end
 
-  describe "block_for_trip/1" do
+  describe "run_for_trip/3" do
+    test "returns run with ID for trip" do
+      trip =
+        build(:trip, %{
+          id: "trip",
+          block_id: "block",
+          schedule_id: "schedule",
+          run_id: "run"
+        })
+
+      run =
+        build(:run, %{
+          schedule_id: "schedule",
+          id: "run",
+          activities: []
+        })
+
+      data = %Data{
+        trips: %{trip.id => trip},
+        runs: %{Run.key(run) => run}
+      }
+
+      assert Data.run_for_trip(data, trip.run_id, trip.id) == run
+    end
+
+    test "returns run from trip without specific run ID" do
+      trip =
+        build(:trip, %{
+          id: "trip",
+          block_id: "block",
+          schedule_id: "schedule",
+          run_id: "run"
+        })
+
+      run =
+        build(:run, %{
+          schedule_id: "schedule",
+          id: "run",
+          activities: []
+        })
+
+      data = %Data{
+        trips: %{trip.id => trip},
+        runs: %{Run.key(run) => run}
+      }
+
+      assert Data.run_for_trip(data, nil, trip.id) == run
+    end
+
+    test "returns nil if the trip isn't known" do
+      data = %Data{}
+
+      assert Data.run_for_trip(data, "run", "trip") == nil
+    end
+
+    test "returns nil if the trip is in GTFS but not HASTUS (no schedule_id)" do
+      trip =
+        build(:trip, %{
+          id: "trip",
+          block_id: "block",
+          schedule_id: nil,
+          run_id: "run"
+        })
+
+      data = %Data{
+        trips: %{trip.id => trip}
+      }
+
+      assert Data.run_for_trip(data, trip.run_id, trip.id) == nil
+    end
+  end
+
+  describe "block_for_trip/2" do
     test "returns block for trip" do
       trip = build(:trip, schedule_id: "schedule_q", block_id: "some_block")
 

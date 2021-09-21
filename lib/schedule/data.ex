@@ -258,6 +258,22 @@ defmodule Schedule.Data do
     end
   end
 
+  @spec run_for_trip(t(), Hastus.Run.id() | nil, Schedule.Trip.id()) :: Run.t() | nil
+  def run_for_trip(%__MODULE__{runs: runs, trips: trips}, run_id, trip_id) do
+    trip = trips[trip_id]
+
+    cond do
+      trip != nil and run_id != nil and trip.schedule_id != nil ->
+        runs[{trip.schedule_id, run_id}]
+
+      trip != nil and trip.schedule_id != nil ->
+        runs[{trip.schedule_id, trip.run_id}]
+
+      true ->
+        nil
+    end
+  end
+
   @spec block_for_trip(t(), Schedule.Trip.id()) :: Block.t() | nil
   def block_for_trip(
         %__MODULE__{
