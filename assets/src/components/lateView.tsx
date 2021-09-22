@@ -434,15 +434,15 @@ const UnhidePopup = ({
   clearRecentlyHidden: () => void
 }): ReactElement<HTMLElement> => {
   const ref = useRef<HTMLDivElement>(null)
-  const handleClickOutside = (event: MouseEvent) => {
-    if (ref.current && !event.composedPath().includes(ref.current)) {
-      clearRecentlyHidden()
-    }
-  }
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
+    const closeOnClickOutside = (event: MouseEvent) => {
+      if (ref && ref.current && !event.composedPath().includes(ref.current)) {
+        clearRecentlyHidden()
+      }
+    }
+    document.addEventListener("mousedown", closeOnClickOutside)
+    return () => document.removeEventListener("mousedown", closeOnClickOutside)
   }, [ref])
 
   return (
