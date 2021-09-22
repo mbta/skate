@@ -21,7 +21,7 @@ import {
 import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
 import { flatten, uniqBy } from "../helpers/array"
 import { isVehicle, isGhost } from "../models/vehicle"
-import { Vehicle, Ghost, VehicleOrGhost, VehicleId } from "../realtime"
+import { Vehicle, Ghost, RunId, VehicleOrGhost } from "../realtime"
 import { ByRouteId } from "../schedule"
 import { Action, selectVehicle, toggleLateView } from "../state"
 import {
@@ -47,32 +47,29 @@ const compareGhosts = (a: Ghost, b: Ghost): number => {
 
 // JS does have a Set type, but its API uses mutable state in an inconvenient
 // way.
-interface VehicleIdSet {
+interface RunIdSet {
   [id: string]: boolean
 }
 
-const toggleVehicleIdInSet = (
-  vehicleId: VehicleId,
-  vehicleIdSet: VehicleIdSet,
-  updateFunction: Dispatch<SetStateAction<VehicleIdSet>>
+const toggleRunIdInSet = (
+  runId: RunId,
+  runIdSet: RunIdSet,
+  updateFunction: Dispatch<SetStateAction<RunIdSet>>
 ): void => {
-  if (vehicleIdSet[vehicleId]) {
-    updateFunction({ ...vehicleIdSet, [vehicleId]: false })
+  if (runIdSet[runId]) {
+    updateFunction({ ...runIdSet, [runId]: false })
   } else {
-    updateFunction({ ...vehicleIdSet, [vehicleId]: true })
+    updateFunction({ ...runIdSet, [runId]: true })
   }
 }
 
-const nItems = (vehicleIdSet: VehicleIdSet): number =>
-  Object.values(vehicleIdSet).filter((flag) => flag).length
+const nItems = (runIdSet: RunIdSet): number =>
+  Object.values(runIdSet).filter((flag) => flag).length
 
-const isNonempty = (vehicleIdSet: VehicleIdSet): boolean =>
-  !!Object.values(vehicleIdSet).find((flag) => flag)
+const isNonempty = (runIdSet: RunIdSet): boolean =>
+  !!Object.values(runIdSet).find((flag) => flag)
 
-const difference = (
-  removeFrom: VehicleIdSet,
-  toRemove: VehicleIdSet
-): VehicleIdSet =>
+const difference = (removeFrom: RunIdSet, toRemove: RunIdSet): RunIdSet =>
   Object.entries(toRemove).reduce(
     (accumulator, entry) =>
       entry[1] ? { ...accumulator, [entry[0]]: false } : accumulator,
@@ -81,8 +78,8 @@ const difference = (
 
 // tslint:disable: no-empty
 const LateViewContext = createContext<{
-  selectedIds: VehicleIdSet
-  toggleCheckedState: (selectedId: VehicleId) => void
+  selectedIds: RunIdSet
+  toggleCheckedState: (selectedId: RunId) => void
 }>({
   selectedIds: {},
   toggleCheckedState: () => {},
@@ -97,13 +94,13 @@ const LateView = (): ReactElement<HTMLElement> => {
   // likely case that we add more functionality to this view, we might
   // want to refactor to use a reducer.
 
-  const [selectedIds, setSelectedIds] = useState<VehicleIdSet>({})
-  const [hiddenIds, setHiddenIds] = useState<VehicleIdSet>({})
-  const [recentlyHiddenIds, setRecentlyHiddenIds] = useState<VehicleIdSet>({})
+  const [selectedIds, setSelectedIds] = useState<RunIdSet>({})
+  const [hiddenIds, setHiddenIds] = useState<RunIdSet>({})
+  const [recentlyHiddenIds, setRecentlyHiddenIds] = useState<RunIdSet>({})
   const [viewHidden, setViewHidden] = useState<boolean>(false)
 
-  const toggleCheckedState = (id: VehicleId): void => {
-    toggleVehicleIdInSet(id, selectedIds, setSelectedIds)
+  const toggleCheckedState = (id: RunId): void => {
+    toggleRunIdInSet(id, selectedIds, setSelectedIds)
   }
 
   const hideSelectedRows: () => void = () => {
@@ -139,7 +136,10 @@ const LateView = (): ReactElement<HTMLElement> => {
   const vehiclesOrGhosts = uniqBy(
     flatten(Object.values(vehiclesByRouteId)),
     (vehicleOrGhost) => vehicleOrGhost.runId
-  ).filter((vehicleOrGhost) => viewHidden || !hiddenIds[vehicleOrGhost.id])
+  ).filter(
+    (vehicleOrGhost) =>
+      viewHidden || (vehicleOrGhost.runId && !hiddenIds[vehicleOrGhost.runId])
+  )
 
   const lateBusThreshold = 60 * 15
   const missingLogonThreshold = 60 * 45
@@ -398,17 +398,17 @@ const HideCheckbox = ({
   vehicleOrGhost,
 }: {
   vehicleOrGhost: VehicleOrGhost
-}): ReactElement<HTMLElement> => {
+}): ReactElement<HTMLElement> | null => {
   const { selectedIds, toggleCheckedState } = useContext(LateViewContext)
   const isChecked = !!selectedIds[vehicleOrGhost.id]
 
-  return (
+  return vehicleOrGhost.runId ? (
     <input
       type="checkbox"
       defaultChecked={isChecked}
-      onClick={() => toggleCheckedState(vehicleOrGhost.id)}
+      onClick={() => toggleCheckedState(vehicleOrGhost.runId!)}
     />
-  )
+  ) : null
 }
 
 const HidePopup = ({
