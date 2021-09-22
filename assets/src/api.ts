@@ -4,7 +4,7 @@ import { Block, Run } from "./minischedule"
 import { reload } from "./models/browser"
 import { blockFromData, runFromData } from "./models/minischeduleData"
 import { swingsFromData } from "./models/swingsData"
-import { NotificationId, NotificationState } from "./realtime.d"
+import { NotificationId, NotificationState, RunId } from "./realtime.d"
 import { RouteSettings } from "./routeSettings"
 import {
   DirectionName,
@@ -111,16 +111,28 @@ export const fetchTimepointsForRoute = (
     defaultResult: [],
   })
 
-export const fetchMinischeduleRun = (tripId: TripId): Promise<Run | null> =>
-  apiCall({
-    url: `/api/minischedule/run/${tripId}`,
-    parser: nullableParser(runFromData),
-    defaultResult: null,
-  })
+export const fetchScheduleRun = (
+  tripId: TripId,
+  runId: RunId | null
+): Promise<Run | null> => {
+  if (runId) {
+    return apiCall({
+      url: `/api/schedule/run?trip_id=${tripId}&run_id=${runId}`,
+      parser: nullableParser(runFromData),
+      defaultResult: null,
+    })
+  } else {
+    return apiCall({
+      url: `/api/schedule/run?trip_id=${tripId}`,
+      parser: nullableParser(runFromData),
+      defaultResult: null,
+    })
+  }
+}
 
-export const fetchMinischeduleBlock = (tripId: TripId): Promise<Block | null> =>
+export const fetchScheduleBlock = (tripId: TripId): Promise<Block | null> =>
   apiCall({
-    url: `/api/minischedule/block/${tripId}`,
+    url: `/api/schedule/block?trip_id=${tripId}`,
     parser: nullableParser(blockFromData),
     defaultResult: null,
   })

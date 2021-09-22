@@ -53,7 +53,10 @@ export interface Props {
 }
 
 export const MinischeduleRun = ({ vehicleOrGhost }: Props): ReactElement => {
-  const run: Run | null | undefined = useMinischeduleRun(vehicleOrGhost.tripId!)
+  const run: Run | null | undefined = useMinischeduleRun(
+    vehicleOrGhost.tripId!,
+    vehicleOrGhost.runId!
+  )
   return (
     <Minischedule runOrBlock={run} vehicleOrGhost={vehicleOrGhost} view="run" />
   )
