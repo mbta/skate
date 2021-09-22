@@ -66,6 +66,9 @@ const toggleVehicleIdInSet = (
 const nItems = (vehicleIdSet: VehicleIdSet): number =>
   Object.values(vehicleIdSet).filter((flag) => flag).length
 
+const isNonempty = (vehicleIdSet: VehicleIdSet): boolean =>
+  !!Object.values(vehicleIdSet).find((flag) => flag)
+
 const difference = (
   removeFrom: VehicleIdSet,
   toRemove: VehicleIdSet
@@ -97,6 +100,7 @@ const LateView = (): ReactElement<HTMLElement> => {
   const [selectedIds, setSelectedIds] = useState<VehicleIdSet>({})
   const [hiddenIds, setHiddenIds] = useState<VehicleIdSet>({})
   const [recentlyHiddenIds, setRecentlyHiddenIds] = useState<VehicleIdSet>({})
+  const [viewHidden, setViewHidden] = useState<boolean>(false)
 
   const toggleCheckedState = (id: VehicleId): void => {
     toggleVehicleIdInSet(id, selectedIds, setSelectedIds)
@@ -118,11 +122,15 @@ const LateView = (): ReactElement<HTMLElement> => {
 
   const clearRecentlyHidden: () => void = () => setRecentlyHiddenIds({})
 
+  const toggleViewHidden: () => void = () => setViewHidden(!viewHidden)
+
   const nRowsSelected = nItems(selectedIds)
   const anyRowsSelected = nRowsSelected > 0
 
   const nRecentlyHidden = nItems(recentlyHiddenIds)
   const anyRecentlyHidden = nRecentlyHidden > 0
+
+  const anyRowsHidden = isNonempty(hiddenIds)
 
   const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = useContext(
     VehiclesByRouteIdContext
@@ -131,7 +139,7 @@ const LateView = (): ReactElement<HTMLElement> => {
   const vehiclesOrGhosts = uniqBy(
     flatten(Object.values(vehiclesByRouteId)),
     (vehicleOrGhost) => vehicleOrGhost.runId
-  ).filter((vehicleOrGhost) => !hiddenIds[vehicleOrGhost.id])
+  ).filter((vehicleOrGhost) => viewHidden || !hiddenIds[vehicleOrGhost.id])
 
   const lateBusThreshold = 60 * 15
   const missingLogonThreshold = 60 * 45
@@ -172,7 +180,13 @@ const LateView = (): ReactElement<HTMLElement> => {
           <div className="m-late-view__panels">
             <div className="m-late-view__panel m-late-view__missing-logons">
               <h2 className="m-late-view__panel-header m-late-view__missing-logons-panel-header">
-                Missing logons
+                Missing logons{" "}
+                {anyRowsHidden && (
+                  <UnhideToggle
+                    viewHidden={viewHidden}
+                    toggleViewHidden={toggleViewHidden}
+                  />
+                )}
               </h2>
               <table>
                 <thead>
@@ -198,7 +212,13 @@ const LateView = (): ReactElement<HTMLElement> => {
             </div>
             <div className="m-late-view__panel m-late-view__late-buses">
               <h2 className="m-late-view__panel-header m-late-view__late-buses-panel-header">
-                Late buses
+                Late buses{" "}
+                {anyRowsHidden && (
+                  <UnhideToggle
+                    viewHidden={viewHidden}
+                    toggleViewHidden={toggleViewHidden}
+                  />
+                )}
               </h2>
               <table>
                 <thead>
@@ -433,4 +453,13 @@ const UnhidePopup = ({
   )
 }
 
+const UnhideToggle = ({
+  viewHidden,
+  toggleViewHidden,
+}: {
+  viewHidden: boolean
+  toggleViewHidden: () => void
+}): ReactElement<HTMLElement> => (
+  <button onClick={toggleViewHidden}>{viewHidden ? "Hide" : "Show"}</button>
+)
 export default LateView
