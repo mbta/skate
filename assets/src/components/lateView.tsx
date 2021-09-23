@@ -45,44 +45,34 @@ const compareGhosts = (a: Ghost, b: Ghost): number => {
   return runIdToLabel(a.runId!).localeCompare(runIdToLabel(b.runId!))
 }
 
-// JS does have a Set type, but its API uses mutable state in an inconvenient
-// way.
-interface RunIdSet {
-  [id: string]: boolean
-}
+const idIn = (runId: RunId, runIds: RunId[]): boolean =>
+  runIds.some((idInList) => idInList === runId)
+
+const remove = (removeFrom: RunId[], toRemove: RunId): RunId[] =>
+  removeFrom.filter((idInList) => idInList === toRemove)
+
+const difference = (removeFrom: RunId[], toRemove: RunId[]): RunId[] =>
+  removeFrom.filter((id) => !idIn(id, toRemove))
 
 const toggleRunIdInSet = (
   runId: RunId,
-  runIdSet: RunIdSet,
-  updateFunction: Dispatch<SetStateAction<RunIdSet>>
+  runIdSet: RunId[],
+  updateFunction: Dispatch<SetStateAction<RunId[]>>
 ): void => {
-  if (runIdSet[runId]) {
-    updateFunction({ ...runIdSet, [runId]: false })
+  if (idIn(runId, runIdSet)) {
+    updateFunction(remove(runIdSet, runId))
   } else {
-    updateFunction({ ...runIdSet, [runId]: true })
+    updateFunction([...runIdSet, runId])
   }
 }
 
-const nItems = (runIdSet: RunIdSet): number =>
-  Object.values(runIdSet).filter((flag) => flag).length
-
-const isNonempty = (runIdSet: RunIdSet): boolean =>
-  !!Object.values(runIdSet).find((flag) => flag)
-
-const difference = (removeFrom: RunIdSet, toRemove: RunIdSet): RunIdSet =>
-  Object.entries(toRemove).reduce(
-    (accumulator, entry) =>
-      entry[1] ? { ...accumulator, [entry[0]]: false } : accumulator,
-    removeFrom
-  )
-
 // tslint:disable: no-empty
 const LateViewContext = createContext<{
-  selectedIds: RunIdSet
+  selectedIds: RunId[]
   toggleCheckedState: (selectedId: RunId) => void
 }>({
-  selectedIds: {},
-  toggleCheckedState: () => {},
+  selectedIds: [],
+  toggleCheckedState: () => [],
 })
 
 // tslint:enable: no-empty
@@ -94,9 +84,9 @@ const LateView = (): ReactElement<HTMLElement> => {
   // likely case that we add more functionality to this view, we might
   // want to refactor to use a reducer.
 
-  const [selectedIds, setSelectedIds] = useState<RunIdSet>({})
-  const [hiddenIds, setHiddenIds] = useState<RunIdSet>({})
-  const [recentlyHiddenIds, setRecentlyHiddenIds] = useState<RunIdSet>({})
+  const [selectedIds, setSelectedIds] = useState<RunId[]>([])
+  const [hiddenIds, setHiddenIds] = useState<RunId[]>([])
+  const [recentlyHiddenIds, setRecentlyHiddenIds] = useState<RunId[]>([])
   const [viewHidden, setViewHidden] = useState<boolean>(false)
 
   const toggleCheckedState = (id: RunId): void => {
@@ -109,25 +99,25 @@ const LateView = (): ReactElement<HTMLElement> => {
       ...selectedIds,
     })
     setRecentlyHiddenIds(selectedIds)
-    setSelectedIds({})
+    setSelectedIds([])
   }
 
   const unhideRecentlyHidden: () => void = () => {
     setHiddenIds(difference(hiddenIds, recentlyHiddenIds))
-    setRecentlyHiddenIds({})
+    setRecentlyHiddenIds([])
   }
 
-  const clearRecentlyHidden: () => void = () => setRecentlyHiddenIds({})
+  const clearRecentlyHidden: () => void = () => setRecentlyHiddenIds([])
 
   const toggleViewHidden: () => void = () => setViewHidden(!viewHidden)
 
-  const nRowsSelected = nItems(selectedIds)
+  const nRowsSelected = selectedIds.length
   const anyRowsSelected = nRowsSelected > 0
 
-  const nRecentlyHidden = nItems(recentlyHiddenIds)
+  const nRecentlyHidden = recentlyHiddenIds.length
   const anyRecentlyHidden = nRecentlyHidden > 0
 
-  const anyRowsHidden = isNonempty(hiddenIds)
+  const anyRowsHidden = hiddenIds.length > 0
 
   const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = useContext(
     VehiclesByRouteIdContext
@@ -138,7 +128,8 @@ const LateView = (): ReactElement<HTMLElement> => {
     (vehicleOrGhost) => vehicleOrGhost.runId
   ).filter(
     (vehicleOrGhost) =>
-      viewHidden || (vehicleOrGhost.runId && !hiddenIds[vehicleOrGhost.runId])
+      viewHidden ||
+      (vehicleOrGhost.runId && !idIn(vehicleOrGhost.runId, hiddenIds))
   )
 
   const lateBusThreshold = 60 * 15
@@ -400,7 +391,7 @@ const HideCheckbox = ({
   vehicleOrGhost: VehicleOrGhost
 }): ReactElement<HTMLElement> | null => {
   const { selectedIds, toggleCheckedState } = useContext(LateViewContext)
-  const isChecked = !!selectedIds[vehicleOrGhost.id]
+  const isChecked = idIn(vehicleOrGhost.id, selectedIds)
 
   return vehicleOrGhost.runId ? (
     <input
