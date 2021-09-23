@@ -19,6 +19,7 @@ import {
   upRightIcon,
 } from "../helpers/icon"
 import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
+import useInterval from "../hooks/useInterval"
 import { flatten, uniqBy } from "../helpers/array"
 import { isVehicle, isGhost } from "../models/vehicle"
 import { Vehicle, Ghost, RunId, VehicleOrGhost } from "../realtime"
@@ -31,6 +32,14 @@ import {
 } from "../util/dateTime"
 import { runIdToLabel } from "../helpers/vehicleLabel"
 import { routeNameOrId } from "../util/route"
+
+// 15 minutes
+const lateBusThreshold = 60 * 15
+// 45 minutes
+const missingLogonThreshold = 60 * 45
+const permanentlyHideThreshold = 60 * 45
+// 8 hours
+const permanentlyHiddenCleanupThreshold = 8 * 60 * 60
 
 const compareGhosts = (a: Ghost, b: Ghost): number => {
   if (a.runId === null && b.runId !== null) {
@@ -49,20 +58,24 @@ const idIn = (runId: RunId, runIds: RunId[]): boolean =>
   runIds.some((idInList) => idInList === runId)
 
 const remove = (removeFrom: RunId[], toRemove: RunId): RunId[] =>
-  removeFrom.filter((idInList) => idInList === toRemove)
+  removeFrom.filter((idInList) => idInList !== toRemove)
 
 const difference = (removeFrom: RunId[], toRemove: RunId[]): RunId[] =>
   removeFrom.filter((id) => !idIn(id, toRemove))
 
+interface HidingTimestamps {
+  [id: string]: number
+}
+
 const toggleRunIdInSet = (
   runId: RunId,
-  runIdSet: RunId[],
+  runIds: RunId[],
   updateFunction: Dispatch<SetStateAction<RunId[]>>
 ): void => {
-  if (idIn(runId, runIdSet)) {
-    updateFunction(remove(runIdSet, runId))
+  if (idIn(runId, runIds)) {
+    updateFunction(remove(runIds, runId))
   } else {
-    updateFunction([...runIdSet, runId])
+    updateFunction([...runIds, runId])
   }
 }
 
@@ -79,6 +92,7 @@ const LateViewContext = createContext<{
 
 const LateView = (): ReactElement<HTMLElement> => {
   const [, dispatch] = useContext(StateDispatchContext)
+  const currentTime = useCurrentTimeSeconds()
 
   // This is getting to be a lot of state and a lot of interactions. In the
   // likely case that we add more functionality to this view, we might
@@ -87,6 +101,10 @@ const LateView = (): ReactElement<HTMLElement> => {
   const [selectedIds, setSelectedIds] = useState<RunId[]>([])
   const [hiddenIds, setHiddenIds] = useState<RunId[]>([])
   const [recentlyHiddenIds, setRecentlyHiddenIds] = useState<RunId[]>([])
+  const [hidingTimestamps, setHidingTimestamps] = useState<HidingTimestamps>({})
+  const [permanentHidingTimestamps, setPermanentHidingTimestamps] =
+    useState<HidingTimestamps>({})
+
   const [viewHidden, setViewHidden] = useState<boolean>(false)
 
   const toggleCheckedState = (id: RunId): void => {
@@ -94,12 +112,15 @@ const LateView = (): ReactElement<HTMLElement> => {
   }
 
   const hideSelectedRows: () => void = () => {
-    setHiddenIds({
-      ...hiddenIds,
-      ...selectedIds,
-    })
+    setHiddenIds([...hiddenIds, ...selectedIds])
     setRecentlyHiddenIds(selectedIds)
     setSelectedIds([])
+    setHidingTimestamps(
+      selectedIds.reduce(
+        (result, id) => ({ ...result, [id]: currentTime }),
+        hidingTimestamps
+      )
+    )
   }
 
   const unhideRecentlyHidden: () => void = () => {
@@ -110,6 +131,46 @@ const LateView = (): ReactElement<HTMLElement> => {
   const clearRecentlyHidden: () => void = () => setRecentlyHiddenIds([])
 
   const toggleViewHidden: () => void = () => setViewHidden(!viewHidden)
+
+  const permanentlyHideOldHiddenIds: () => void = () => {
+    const oldHiddenIds = Object.keys(hidingTimestamps).filter(
+      (runId) =>
+        (hidingTimestamps[runId] + permanentlyHideThreshold) * 1000 < Date.now()
+    )
+    const newHidingTimestamps = oldHiddenIds.reduce((result, id) => {
+      const { [id]: _, ...rest } = result
+      return rest
+    }, hidingTimestamps)
+    const newPermanentHidingTimestamps = oldHiddenIds.reduce(
+      (result, id) => ({ ...result, [id]: Date.now() / 1000 }),
+      permanentHidingTimestamps
+    )
+    setHidingTimestamps(newHidingTimestamps)
+    setPermanentHidingTimestamps(newPermanentHidingTimestamps)
+  }
+
+  const cleanUpPermanentlyHiddenIds: () => void = () => {
+    const oldPermanentlyHiddenIds = Object.keys(
+      permanentHidingTimestamps
+    ).filter(
+      (runId) =>
+        (permanentHidingTimestamps[runId] + permanentlyHiddenCleanupThreshold) *
+          1000 <
+        Date.now()
+    )
+    const newPermanentHidingTimestamps = oldPermanentlyHiddenIds.reduce(
+      (result, id) => {
+        const { [id]: _, ...rest } = result
+        return rest
+      },
+      hidingTimestamps
+    )
+    setPermanentHidingTimestamps(newPermanentHidingTimestamps)
+  }
+  useInterval(() => {
+    permanentlyHideOldHiddenIds()
+    cleanUpPermanentlyHiddenIds()
+  }, 10000)
 
   const nRowsSelected = selectedIds.length
   const anyRowsSelected = nRowsSelected > 0
@@ -126,19 +187,17 @@ const LateView = (): ReactElement<HTMLElement> => {
   const vehiclesOrGhosts = uniqBy(
     flatten(Object.values(vehiclesByRouteId)),
     (vehicleOrGhost) => vehicleOrGhost.runId
-  ).filter(
-    (vehicleOrGhost) =>
+  ).filter((vehicleOrGhost) => {
+    return (
       viewHidden ||
-      (vehicleOrGhost.runId && !idIn(vehicleOrGhost.runId, hiddenIds))
-  )
-
-  const lateBusThreshold = 60 * 15
-  const missingLogonThreshold = 60 * 45
+      (vehicleOrGhost.runId &&
+        (!idIn(vehicleOrGhost.runId, hiddenIds) ||
+          permanentHidingTimestamps[vehicleOrGhost.runId]))
+    )
+  })
 
   const withinMissingLogonThreshold = (ghost: Ghost) =>
     currentTime - (ghost.scheduledLogonTime as number) <= missingLogonThreshold
-
-  const currentTime = useCurrentTimeSeconds()
 
   const ghostsToDisplay = vehiclesOrGhosts
     .filter(isGhost)
