@@ -31,8 +31,9 @@ import {
 import { runIdToLabel } from "../helpers/vehicleLabel"
 import { routeNameOrId } from "../util/route"
 
-// 5 seconds
+// all these times are in seconds
 const unhidePopupVisibilityPeriod = 5
+const cleanupInterval = 10
 // 15 minutes
 const lateBusThreshold = 60 * 15
 // 45 minutes
@@ -88,7 +89,8 @@ const LateViewContext = createContext<{
 
 const LateView = (): ReactElement<HTMLElement> => {
   const [, dispatch] = useContext(StateDispatchContext)
-  const currentTime = useCurrentTimeSeconds()
+  const currentTimeSeconds = useCurrentTimeSeconds()
+  const currentTimeMillis = currentTimeSeconds * 1000
 
   // This is getting to be a lot of state and a lot of interactions. In the
   // likely case that we add more functionality to this view, we might
@@ -114,7 +116,7 @@ const LateView = (): ReactElement<HTMLElement> => {
     setSelectedIds([])
     setHidingTimestamps(
       selectedIds.reduce(
-        (result, id) => ({ ...result, [id]: currentTime }),
+        (result, id) => ({ ...result, [id]: currentTimeMillis }),
         hidingTimestamps
       )
     )
@@ -149,14 +151,14 @@ const LateView = (): ReactElement<HTMLElement> => {
   const permanentlyHideOldHiddenIds: () => void = () => {
     const oldHiddenIds = Object.keys(hidingTimestamps).filter(
       (runId) =>
-        (hidingTimestamps[runId] + permanentlyHideThreshold) * 1000 < Date.now()
+        hidingTimestamps[runId] + permanentlyHideThreshold * 1000 < Date.now()
     )
     const newHidingTimestamps = oldHiddenIds.reduce((result, id) => {
       const { [id]: _, ...rest } = result
       return rest
     }, hidingTimestamps)
     const newPermanentHidingTimestamps = oldHiddenIds.reduce(
-      (result, id) => ({ ...result, [id]: Date.now() / 1000 }),
+      (result, id) => ({ ...result, [id]: Date.now() }),
       permanentHidingTimestamps
     )
     setHidingTimestamps(newHidingTimestamps)
@@ -168,8 +170,8 @@ const LateView = (): ReactElement<HTMLElement> => {
       permanentHidingTimestamps
     ).filter(
       (runId) =>
-        (permanentHidingTimestamps[runId] + permanentlyHiddenCleanupThreshold) *
-          1000 <
+        permanentHidingTimestamps[runId] +
+          permanentlyHiddenCleanupThreshold * 1000 <
         Date.now()
     )
     const newPermanentHidingTimestamps = oldPermanentlyHiddenIds.reduce(
@@ -181,10 +183,11 @@ const LateView = (): ReactElement<HTMLElement> => {
     )
     setPermanentHidingTimestamps(newPermanentHidingTimestamps)
   }
+
   useInterval(() => {
     permanentlyHideOldHiddenIds()
     cleanUpPermanentlyHiddenIds()
-  }, 10000)
+  }, cleanupInterval * 1000)
 
   const nRowsSelected = selectedIds.length
   const anyRowsSelected = nRowsSelected > 0
@@ -211,7 +214,8 @@ const LateView = (): ReactElement<HTMLElement> => {
   })
 
   const withinMissingLogonThreshold = (ghost: Ghost) =>
-    currentTime - (ghost.scheduledLogonTime as number) <= missingLogonThreshold
+    currentTimeSeconds - (ghost.scheduledLogonTime as number) <=
+    missingLogonThreshold
 
   const ghostsToDisplay = vehiclesOrGhosts
     .filter(isGhost)
