@@ -10,9 +10,10 @@ defmodule Schedule.Gtfs.FetcherTest do
                 poll_interval_ms: 100,
                 health_server: Server,
                 latest_gtfs_timestamp: nil,
-                latest_hastus_timestamp: nil
+                latest_hastus_timestamp: nil,
+                files_source: :remote
               },
-              {:continue, {:initial_poll, :remote}}} =
+              {:continue, :initial_poll}} =
                Schedule.Gtfs.Fetcher.init(
                  poll_interval_ms: 100,
                  health_server: Server,
@@ -35,14 +36,17 @@ defmodule Schedule.Gtfs.FetcherTest do
         |> Base.decode64!()
 
       Bypass.expect(bypass, fn conn ->
-        Plug.Conn.resp(conn, 200, zip_binary)
+        conn
+        |> Plug.Conn.put_resp_header("last-modified", "foo")
+        |> Plug.Conn.resp(200, zip_binary)
       end)
 
-      assert {:files, _all_files} = Schedule.Gtfs.Fetcher.fetch_remote_files(nil, nil)
+      assert {:files, _all_files, "foo", "foo"} =
+               Schedule.Gtfs.Fetcher.fetch_remote_files(nil, nil)
     end
   end
 
-  describe "fetch_zip/2" do
+  describe "fetch_zip/3" do
     test "fetches and unzips zip file" do
       bypass = Bypass.open()
       url = "http://localhost:#{bypass.port}/test.zip"
@@ -52,10 +56,12 @@ defmodule Schedule.Gtfs.FetcherTest do
         |> Base.decode64!()
 
       Bypass.expect(bypass, fn conn ->
-        Plug.Conn.resp(conn, 200, zip_binary)
+        conn
+        |> Plug.Conn.put_resp_header("last-modified", "foo")
+        |> Plug.Conn.resp(200, zip_binary)
       end)
 
-      assert Schedule.Gtfs.Fetcher.fetch_zip(url, ["f"]) == {:ok, %{"f" => "x"}}
+      assert Schedule.Gtfs.Fetcher.fetch_zip(url, ["f"], nil) == {:ok, %{"f" => "x"}, "foo"}
     end
   end
 end

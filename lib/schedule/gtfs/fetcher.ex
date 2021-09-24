@@ -9,18 +9,21 @@ defmodule Schedule.Gtfs.Fetcher do
   }
 
   @default_opts [
-    poll_interval_ms: 60 * 60 * 1_000,
+    poll_interval_ms: 5 * 60 * 1_000,
     health_server: Health.Server.default_server(),
     updater_function: &Schedule.update_state/1,
     files_source: :remote
   ]
+
+  @type files_source :: :remote | {:mocked_files, Schedule.mocked_files()}
 
   @type state :: %{
           poll_interval_ms: integer(),
           health_server: GenServer.server(),
           updater_function: (Schedule.Data.t() -> :ok),
           latest_gtfs_timestamp: String.t() | nil,
-          latest_hastus_timestamp: String.t() | nil
+          latest_hastus_timestamp: String.t() | nil,
+          files_source: files_source()
         }
 
   @spec start_link(Keyword.t()) :: GenServer.on_start()
@@ -36,19 +39,32 @@ defmodule Schedule.Gtfs.Fetcher do
       health_server: opts[:health_server],
       updater_function: opts[:updater_function],
       latest_gtfs_timestamp: nil,
-      latest_hastus_timestamp: nil
+      latest_hastus_timestamp: nil,
+      files_source: opts[:files_source]
     }
 
-    {:ok, initial_state, {:continue, {:initial_poll, opts[:files_source]}}}
+    {:ok, initial_state, {:continue, :initial_poll}}
   end
 
   @impl true
-  def handle_continue({:initial_poll, files_source}, state) do
+  def handle_continue(:initial_poll, state) do
+    do_poll(state, true)
+  end
+
+  @impl true
+  def handle_info(:check_gtfs, state) do
+    do_poll(state, false)
+  end
+
+  @spec do_poll(state(), boolean()) :: {:noreply, state()} | {:stop, :normal, state()}
+  def do_poll(state, notify_health_server?) do
     start_time = Time.utc_now()
+
+    Logger.info("#{__MODULE__}: Polling for new GTFS")
 
     with {:ok, data, gtfs_timestamp, hastus_timestamp, continue_polling?} <-
            fetch_gtfs(
-             files_source,
+             state[:files_source],
              state[:latest_gtfs_timestamp],
              state[:latest_hastus_timestamp]
            ) do
@@ -57,12 +73,12 @@ defmodule Schedule.Gtfs.Fetcher do
       :ok = state[:updater_function].(schedule_state)
 
       Logger.info(
-        "Successfully loaded gtfs, time_in_ms=#{
+        "#{__MODULE__}: Successfully loaded GTFS, time_in_ms=#{
           Time.diff(Time.utc_now(), start_time, :millisecond)
         }"
       )
 
-      if state[:health_server] do
+      if notify_health_server? && state[:health_server] do
         Health.Server.loaded(state[:health_server])
       end
 
@@ -72,28 +88,31 @@ defmodule Schedule.Gtfs.Fetcher do
         {:noreply,
          Map.merge(state, %{
            latest_gtfs_timestamp: gtfs_timestamp,
-           lastest_hastus_timestamp: hastus_timestamp
+           latest_hastus_timestamp: hastus_timestamp
          })}
       else
         {:stop, :normal, state}
       end
     else
+      :no_update ->
+        Process.send_after(self(), :check_gtfs, state[:poll_interval_ms])
+        {:noreply, state}
+
       {:error, error} ->
         Logger.error(fn ->
-          "Error loading gtfs, time_in_ms=#{Time.diff(Time.utc_now(), start_time, :millisecond)}"
+          "#{__MODULE__}: Error loading gtfs, time_in_ms=#{
+            Time.diff(Time.utc_now(), start_time, :millisecond)
+          } error=#{inspect(error)}"
         end)
 
-        {:stop, error, []}
+        {:noreply, state}
     end
   end
 
-  @impl true
-  def handle_cast(:check_gtfs, state) do
-    {:noreply, state}
-  end
-
-  @spec fetch_gtfs(Schedule.files_source(), String.t() | nil, String.t() | nil) ::
-          {:ok, Data.t(), String.t() | nil, String.t() | nil, boolean()} | {:error, any()}
+  @spec fetch_gtfs(files_source(), String.t() | nil, String.t() | nil) ::
+          {:ok, Data.t(), String.t() | nil, String.t() | nil, boolean()}
+          | :no_update
+          | {:error, any()}
   defp fetch_gtfs({:mocked_files, mocked_files}, _latest_gtfs_timestamp, _latest_hastus_timestamp) do
     data =
       mocked_files
@@ -105,7 +124,7 @@ defmodule Schedule.Gtfs.Fetcher do
 
   defp fetch_gtfs(:remote, latest_gtfs_timestamp, latest_hastus_timestamp) do
     if CacheFile.should_use_file?() do
-      Logger.info("Loading gfts data from cached file")
+      Logger.info("#{__MODULE__}: Loading gfts data from cached file")
 
       with {:ok, data} <- CacheFile.load_gtfs() do
         {:ok, data, nil, false}
@@ -114,8 +133,12 @@ defmodule Schedule.Gtfs.Fetcher do
           with {:ok, data, gtfs_timestamp, hastus_timestamp, continue_polling?} <-
                  gtfs_from_url(latest_gtfs_timestamp, latest_hastus_timestamp) do
             CacheFile.save_gtfs(data)
+
             {:ok, data, gtfs_timestamp, hastus_timestamp, continue_polling?}
           else
+            :no_update ->
+              :no_update
+
             {:error, error} ->
               {:error, error}
           end
@@ -126,22 +149,31 @@ defmodule Schedule.Gtfs.Fetcher do
   end
 
   @spec gtfs_from_url(String.t() | nil, String.t() | nil) ::
-          {:ok, Data.t(), String.t() | nil, String.t() | nil, boolean()} | {:error, any()}
+          {:ok, Data.t(), String.t() | nil, String.t() | nil, boolean()}
+          | :no_update
+          | {:error, any()}
   defp gtfs_from_url(latest_gtfs_timestamp, latest_hastus_timestamp) do
-    Logger.info("Loading gtfs data remote files")
+    Logger.info("#{__MODULE__}: Querying GTFS data remote files")
 
-    with {:files, files} <- fetch_remote_files(latest_gtfs_timestamp, latest_hastus_timestamp) do
+    with {:files, files, gtfs_timestamp, hastus_timestamp} <-
+           fetch_remote_files(latest_gtfs_timestamp, latest_hastus_timestamp) do
+      Logger.info("#{__MODULE__}: Updated GTFS data found, parsing")
       data = Data.parse_files(files)
-      {:ok, data, nil, nil, true}
+      {:ok, data, gtfs_timestamp, hastus_timestamp, true}
     else
+      :no_update ->
+        :no_update
+
       {:error, error} ->
         {:error, error}
     end
   end
 
   @spec fetch_remote_files(String.t() | nil, String.t() | nil) ::
-          {:files, Data.all_files()} | {:error, any()}
-  def fetch_remote_files(_latest_gtfs_timestamp, _latest_hastus_timestamp) do
+          {:files, Data.all_files(), String.t() | nil, String.t() | nil}
+          | :no_update
+          | {:error, any()}
+  def fetch_remote_files(latest_gtfs_timestamp, latest_hastus_timestamp) do
     gtfs_url = Application.get_env(:skate, :gtfs_url)
     hastus_url = Application.get_env(:skate, :hastus_url)
 
@@ -164,28 +196,72 @@ defmodule Schedule.Gtfs.Fetcher do
       "trips.csv"
     ]
 
-    with {:ok, hastus_files} <- fetch_zip(hastus_url, hastus_file_names),
-         {:ok, gtfs_files} <- fetch_zip(gtfs_url, gtfs_file_names) do
-      {:files,
-       %{
-         gtfs: gtfs_files,
-         hastus: hastus_files
-       }}
+    with {:ok, hastus_files, hastus_timestamp} <-
+           fetch_zip(hastus_url, hastus_file_names, latest_hastus_timestamp),
+         {:ok, gtfs_files, gtfs_timestamp} <-
+           fetch_zip(gtfs_url, gtfs_file_names, latest_gtfs_timestamp) do
+      if hastus_files || gtfs_files do
+        with {:ok, hastus_files, hastus_timestamp} <-
+               (if hastus_files do
+                  {:ok, hastus_files, hastus_timestamp}
+                else
+                  fetch_zip(hastus_url, hastus_file_names, nil)
+                end),
+             {:ok, gtfs_files, gtfs_timestamp} <-
+               (if gtfs_files do
+                  {:ok, gtfs_files, gtfs_timestamp}
+                else
+                  fetch_zip(gtfs_url, gtfs_file_names, nil)
+                end) do
+          {:files,
+           %{
+             gtfs: gtfs_files,
+             hastus: hastus_files
+           }, gtfs_timestamp, hastus_timestamp}
+        else
+          {:error, error} -> {:error, error}
+        end
+      else
+        :no_update
+      end
     else
       {:error, error} ->
         {:error, error}
     end
   end
 
-  @spec fetch_zip(String.t(), [String.t()]) :: {:ok, Data.files()} | {:error, any()}
-  def fetch_zip(url, file_names) do
-    case HTTPoison.get(url) do
-      {:ok, %HTTPoison.Response{status_code: 200, body: zip_binary}} ->
+  @spec fetch_zip(String.t(), [String.t()], String.t() | nil) ::
+          {:ok, Data.files() | nil, String.t() | nil} | {:error, any()}
+  def fetch_zip(url, file_names, latest_timestamp) do
+    case HTTPoison.get(
+           url,
+           if !is_nil(latest_timestamp) do
+             [{"if-modified-since", latest_timestamp}]
+           else
+             []
+           end
+         ) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: zip_binary, headers: headers}} ->
+        last_modified =
+          Enum.reduce(headers, fn {header, value}, acc ->
+            if String.downcase(header) == "last-modified" do
+              value
+            else
+              acc
+            end
+          end)
+
         unzipped_files = unzip_files(zip_binary, file_names)
-        {:ok, unzipped_files}
+        {:ok, unzipped_files, last_modified}
+
+      {:ok, %HTTPoison.Response{status_code: 304}} ->
+        {:ok, nil, latest_timestamp}
 
       response ->
-        Logger.warn(fn -> "Unexpected response from #{url} : #{inspect(response)}" end)
+        Logger.warn(fn ->
+          "#{__MODULE__}: Unexpected response from #{url} : #{inspect(response)}"
+        end)
+
         {:error, response}
     end
   end

@@ -24,8 +24,6 @@ defmodule Schedule do
 
   @type state :: :not_loaded | {:loaded, Data.t()}
 
-  @type files_source :: :remote | {:mocked_files, mocked_files()}
-
   @typedoc """
   For mocking tests
   E.g.
