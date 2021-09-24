@@ -4,8 +4,6 @@ import React, {
   createContext,
   SetStateAction,
   useContext,
-  useEffect,
-  useRef,
   useState,
 } from "react"
 import DrawerTab from "../components/drawerTab"
@@ -33,6 +31,8 @@ import {
 import { runIdToLabel } from "../helpers/vehicleLabel"
 import { routeNameOrId } from "../util/route"
 
+// 5 seconds
+const unhidePopupVisibilityPeriod = 5
 // 15 minutes
 const lateBusThreshold = 60 * 15
 // 45 minutes
@@ -84,7 +84,6 @@ const LateViewContext = createContext<{
   selectedIds: [],
   toggleCheckedState: () => [],
 })
-
 // tslint:enable: no-empty
 
 const LateView = (): ReactElement<HTMLElement> => {
@@ -102,6 +101,9 @@ const LateView = (): ReactElement<HTMLElement> => {
     useState<HidingTimestamps>({})
 
   const [viewHidden, setViewHidden] = useState<boolean>(false)
+  const [unhideTimeout, setUnhideTimeout] = useState<number | undefined>(
+    undefined
+  )
 
   const toggleCheckedState = (id: RunId): void => {
     toggleRunIdInSet(id, selectedIds, setSelectedIds)
@@ -116,6 +118,16 @@ const LateView = (): ReactElement<HTMLElement> => {
         hidingTimestamps
       )
     )
+
+    if (unhideTimeout) {
+      window.clearTimeout(unhideTimeout)
+    }
+    const newUnhideTimeout = window.setTimeout(() => {
+      setRecentlyHiddenIds([])
+      setUnhideTimeout(undefined)
+    }, unhidePopupVisibilityPeriod * 1000)
+
+    setUnhideTimeout(newUnhideTimeout)
   }
 
   const unhideRecentlyHidden: () => void = () => {
@@ -126,9 +138,11 @@ const LateView = (): ReactElement<HTMLElement> => {
       }, hidingTimestamps)
     )
     setRecentlyHiddenIds([])
+    if (unhideTimeout) {
+      window.clearTimeout(unhideTimeout)
+      setUnhideTimeout(undefined)
+    }
   }
-
-  const clearRecentlyHidden: () => void = () => setRecentlyHiddenIds([])
 
   const toggleViewHidden: () => void = () => setViewHidden(!viewHidden)
 
@@ -316,7 +330,6 @@ const LateView = (): ReactElement<HTMLElement> => {
           <UnhidePopup
             nRecentlyHidden={nRecentlyHidden}
             unhideRecentlyHidden={unhideRecentlyHidden}
-            clearRecentlyHidden={clearRecentlyHidden}
           />
         )}
       </div>
@@ -477,31 +490,15 @@ const HidePopup = ({
 const UnhidePopup = ({
   nRecentlyHidden,
   unhideRecentlyHidden,
-  clearRecentlyHidden,
 }: {
   nRecentlyHidden: number
   unhideRecentlyHidden: () => void
-  clearRecentlyHidden: () => void
-}): ReactElement<HTMLElement> => {
-  const ref = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const closeOnClickOutside = (event: MouseEvent) => {
-      if (ref && ref.current && !event.composedPath().includes(ref.current)) {
-        clearRecentlyHidden()
-      }
-    }
-    document.addEventListener("mousedown", closeOnClickOutside)
-    return () => document.removeEventListener("mousedown", closeOnClickOutside)
-  }, [ref])
-
-  return (
-    <div ref={ref}>
-      {nRecentlyHidden} hidden
-      <button onClick={unhideRecentlyHidden}>Undo</button>
-    </div>
-  )
-}
+}): ReactElement<HTMLElement> => (
+  <div>
+    {nRecentlyHidden} hidden
+    <button onClick={unhideRecentlyHidden}>Undo</button>
+  </div>
+)
 
 const UnhideToggle = ({
   viewHidden,
