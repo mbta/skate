@@ -60,9 +60,6 @@ const idIn = (runId: RunId, runIds: RunId[]): boolean =>
 const remove = (removeFrom: RunId[], toRemove: RunId): RunId[] =>
   removeFrom.filter((idInList) => idInList !== toRemove)
 
-const difference = (removeFrom: RunId[], toRemove: RunId[]): RunId[] =>
-  removeFrom.filter((id) => !idIn(id, toRemove))
-
 interface HidingTimestamps {
   [id: string]: number
 }
@@ -99,7 +96,6 @@ const LateView = (): ReactElement<HTMLElement> => {
   // want to refactor to use a reducer.
 
   const [selectedIds, setSelectedIds] = useState<RunId[]>([])
-  const [hiddenIds, setHiddenIds] = useState<RunId[]>([])
   const [recentlyHiddenIds, setRecentlyHiddenIds] = useState<RunId[]>([])
   const [hidingTimestamps, setHidingTimestamps] = useState<HidingTimestamps>({})
   const [permanentHidingTimestamps, setPermanentHidingTimestamps] =
@@ -112,7 +108,6 @@ const LateView = (): ReactElement<HTMLElement> => {
   }
 
   const hideSelectedRows: () => void = () => {
-    setHiddenIds([...hiddenIds, ...selectedIds])
     setRecentlyHiddenIds(selectedIds)
     setSelectedIds([])
     setHidingTimestamps(
@@ -124,7 +119,12 @@ const LateView = (): ReactElement<HTMLElement> => {
   }
 
   const unhideRecentlyHidden: () => void = () => {
-    setHiddenIds(difference(hiddenIds, recentlyHiddenIds))
+    setHidingTimestamps(
+      recentlyHiddenIds.reduce((result, id) => {
+        const { [id]: _, ...rest } = result
+        return rest
+      }, hidingTimestamps)
+    )
     setRecentlyHiddenIds([])
   }
 
@@ -178,7 +178,7 @@ const LateView = (): ReactElement<HTMLElement> => {
   const nRecentlyHidden = recentlyHiddenIds.length
   const anyRecentlyHidden = nRecentlyHidden > 0
 
-  const anyRowsHidden = hiddenIds.length > 0
+  const anyRowsHidden = Object.keys(hidingTimestamps).length > 0
 
   const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = useContext(
     VehiclesByRouteIdContext
@@ -191,8 +191,8 @@ const LateView = (): ReactElement<HTMLElement> => {
     return (
       viewHidden ||
       (vehicleOrGhost.runId &&
-        (!idIn(vehicleOrGhost.runId, hiddenIds) ||
-          permanentHidingTimestamps[vehicleOrGhost.runId]))
+        !hidingTimestamps[vehicleOrGhost.runId] &&
+        !permanentHidingTimestamps[vehicleOrGhost.runId])
     )
   })
 
