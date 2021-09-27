@@ -19,6 +19,7 @@ import {
 import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
 import useInterval from "../hooks/useInterval"
 import { flatten, uniqBy } from "../helpers/array"
+import { saveState, loadState } from "../localStorage"
 import { isVehicle, isGhost } from "../models/vehicle"
 import { Vehicle, Ghost, RunId, VehicleOrGhost } from "../realtime"
 import { ByRouteId } from "../schedule"
@@ -42,6 +43,8 @@ const permanentlyHideThreshold = 60 * 45
 // 8 hours
 const permanentlyHiddenCleanupThreshold = 8 * 60 * 60
 
+const storedStateKey = "mbta-skate-lateview-state"
+
 const compareGhosts = (a: Ghost, b: Ghost): number => {
   if (a.runId === null && b.runId !== null) {
     return 1
@@ -61,7 +64,7 @@ const idIn = (runId: RunId, runIds: RunId[]): boolean =>
 const remove = (removeFrom: RunId[], toRemove: RunId): RunId[] =>
   removeFrom.filter((idInList) => idInList !== toRemove)
 
-interface HidingTimestamps {
+type HidingTimestamps = {
   [id: string]: number
 }
 
@@ -87,6 +90,25 @@ const LateViewContext = createContext<{
 })
 // tslint:enable: no-empty
 
+const readTimestampsFromLocalStorage = (): {
+  hidingTimestamps: HidingTimestamps
+  permanentHidingTimestamps: HidingTimestamps
+} => {
+  const storedTimestamps: {
+    hidingTimestamps?: HidingTimestamps
+    permanentHidingTimestamps?: HidingTimestamps
+  } = loadState(storedStateKey) || {}
+  const hidingTimestamps = storedTimestamps.hidingTimestamps || {}
+  const permanentHidingTimestamps =
+    storedTimestamps.permanentHidingTimestamps || {}
+  return { hidingTimestamps, permanentHidingTimestamps }
+}
+
+const saveTimestampsToLocalStorage = (timestamps: {
+  hidingTimestamps: HidingTimestamps
+  permanentHidingTimestamps: HidingTimestamps
+}): void => saveState(storedStateKey, timestamps)
+
 const LateView = (): ReactElement<HTMLElement> => {
   const [, dispatch] = useContext(StateDispatchContext)
   const currentTimeSeconds = useCurrentTimeSeconds()
@@ -96,12 +118,15 @@ const LateView = (): ReactElement<HTMLElement> => {
   // likely case that we add more functionality to this view, we might
   // want to refactor to use a reducer.
 
-  const [selectedIds, setSelectedIds] = useState<RunId[]>([])
   const [recentlyHiddenIds, setRecentlyHiddenIds] = useState<RunId[]>([])
-  const [hidingTimestamps, setHidingTimestamps] = useState<HidingTimestamps>({})
+  const loadedTimestamps = readTimestampsFromLocalStorage()
+  const [hidingTimestamps, setHidingTimestamps] = useState<HidingTimestamps>(
+    loadedTimestamps.hidingTimestamps
+  )
   const [permanentHidingTimestamps, setPermanentHidingTimestamps] =
-    useState<HidingTimestamps>({})
+    useState<HidingTimestamps>(loadedTimestamps.permanentHidingTimestamps)
 
+  const [selectedIds, setSelectedIds] = useState<RunId[]>([])
   const [viewHidden, setViewHidden] = useState<boolean>(false)
   const [unhideTimeout, setUnhideTimeout] = useState<number | undefined>(
     undefined
@@ -114,12 +139,16 @@ const LateView = (): ReactElement<HTMLElement> => {
   const hideSelectedRows: () => void = () => {
     setRecentlyHiddenIds(selectedIds)
     setSelectedIds([])
-    setHidingTimestamps(
-      selectedIds.reduce(
-        (result, id) => ({ ...result, [id]: currentTimeMillis }),
-        hidingTimestamps
-      )
+    const newHidingTimestamps = selectedIds.reduce(
+      (result, id) => ({ ...result, [id]: currentTimeMillis }),
+      hidingTimestamps
     )
+    setHidingTimestamps(newHidingTimestamps)
+
+    saveTimestampsToLocalStorage({
+      hidingTimestamps: newHidingTimestamps,
+      permanentHidingTimestamps,
+    })
 
     if (unhideTimeout) {
       window.clearTimeout(unhideTimeout)
@@ -163,6 +192,10 @@ const LateView = (): ReactElement<HTMLElement> => {
     )
     setHidingTimestamps(newHidingTimestamps)
     setPermanentHidingTimestamps(newPermanentHidingTimestamps)
+    saveTimestampsToLocalStorage({
+      hidingTimestamps: newHidingTimestamps,
+      permanentHidingTimestamps: newPermanentHidingTimestamps,
+    })
   }
 
   const cleanUpPermanentlyHiddenIds: () => void = () => {
@@ -182,6 +215,10 @@ const LateView = (): ReactElement<HTMLElement> => {
       hidingTimestamps
     )
     setPermanentHidingTimestamps(newPermanentHidingTimestamps)
+    saveTimestampsToLocalStorage({
+      hidingTimestamps,
+      permanentHidingTimestamps: newPermanentHidingTimestamps,
+    })
   }
 
   useInterval(() => {
