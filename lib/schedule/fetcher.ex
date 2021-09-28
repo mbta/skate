@@ -96,9 +96,12 @@ defmodule Schedule.Fetcher do
     else
       :no_update ->
         Process.send_after(self(), :check_gtfs, state[:poll_interval_ms])
+
         {:noreply, state}
 
       {:error, error} ->
+        Process.send_after(self(), :check_gtfs, state[:poll_interval_ms])
+
         Logger.error(fn ->
           "#{__MODULE__}: Error loading schedule data, time_in_ms=#{
             Time.diff(Time.utc_now(), start_time, :millisecond)
