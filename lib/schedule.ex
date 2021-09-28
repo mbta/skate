@@ -305,7 +305,7 @@ defmodule Schedule do
     {:ok, pid} = GenServer.start_link(__MODULE__, [])
 
     {:ok, _pid} =
-      GenServer.start_link(Schedule.Gtfs.Fetcher,
+      GenServer.start_link(Schedule.Fetcher,
         files_source: {:mocked_files, mocked_files},
         health_server: health_server_pid,
         updater_function: fn state ->

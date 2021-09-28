@@ -1,4 +1,4 @@
-defmodule Schedule.Gtfs.Fetcher do
+defmodule Schedule.Fetcher do
   use GenServer
   require Logger
 
@@ -60,7 +60,7 @@ defmodule Schedule.Gtfs.Fetcher do
   def do_poll(state, notify_health_server?) do
     start_time = Time.utc_now()
 
-    Logger.info("#{__MODULE__}: Polling for new GTFS")
+    Logger.info("#{__MODULE__}: Polling for new schedule data")
 
     with {:ok, data, gtfs_timestamp, hastus_timestamp, continue_polling?} <-
            fetch_gtfs(
@@ -73,7 +73,7 @@ defmodule Schedule.Gtfs.Fetcher do
       :ok = state[:updater_function].(schedule_state)
 
       Logger.info(
-        "#{__MODULE__}: Successfully loaded GTFS, time_in_ms=#{
+        "#{__MODULE__}: Successfully loaded schedule data, time_in_ms=#{
           Time.diff(Time.utc_now(), start_time, :millisecond)
         }"
       )
@@ -100,7 +100,7 @@ defmodule Schedule.Gtfs.Fetcher do
 
       {:error, error} ->
         Logger.error(fn ->
-          "#{__MODULE__}: Error loading gtfs, time_in_ms=#{
+          "#{__MODULE__}: Error loading schedule data, time_in_ms=#{
             Time.diff(Time.utc_now(), start_time, :millisecond)
           } error=#{inspect(error)}"
         end)
@@ -124,7 +124,7 @@ defmodule Schedule.Gtfs.Fetcher do
 
   defp fetch_gtfs(:remote, latest_gtfs_timestamp, latest_hastus_timestamp) do
     if CacheFile.should_use_file?() do
-      Logger.info("#{__MODULE__}: Loading gfts data from cached file")
+      Logger.info("#{__MODULE__}: Loading schedule data data from cached file")
 
       with {:ok, data} <- CacheFile.load_gtfs() do
         {:ok, data, nil, false}
@@ -153,11 +153,11 @@ defmodule Schedule.Gtfs.Fetcher do
           | :no_update
           | {:error, any()}
   defp gtfs_from_url(latest_gtfs_timestamp, latest_hastus_timestamp) do
-    Logger.info("#{__MODULE__}: Querying GTFS data remote files")
+    Logger.info("#{__MODULE__}: Querying schedule data remote files")
 
     with {:files, files, gtfs_timestamp, hastus_timestamp} <-
            fetch_remote_files(latest_gtfs_timestamp, latest_hastus_timestamp) do
-      Logger.info("#{__MODULE__}: Updated GTFS data found, parsing")
+      Logger.info("#{__MODULE__}: Updated schedule data found, parsing")
       data = Data.parse_files(files)
       {:ok, data, gtfs_timestamp, hastus_timestamp, true}
     else

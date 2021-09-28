@@ -1,4 +1,4 @@
-defmodule Schedule.Gtfs.FetcherTest do
+defmodule Schedule.FetcherTest do
   use ExUnit.Case
 
   import Test.Support.Helpers
@@ -14,7 +14,7 @@ defmodule Schedule.Gtfs.FetcherTest do
                 files_source: :remote
               },
               {:continue, :initial_poll}} =
-               Schedule.Gtfs.Fetcher.init(
+               Schedule.Fetcher.init(
                  poll_interval_ms: 100,
                  health_server: Server,
                  files_source: :remote
@@ -42,7 +42,7 @@ defmodule Schedule.Gtfs.FetcherTest do
       end)
 
       assert {:files, _all_files, "foo", "foo"} =
-               Schedule.Gtfs.Fetcher.fetch_remote_files(nil, nil)
+               Schedule.Fetcher.fetch_remote_files(nil, nil)
     end
   end
 
@@ -61,7 +61,7 @@ defmodule Schedule.Gtfs.FetcherTest do
         |> Plug.Conn.resp(200, zip_binary)
       end)
 
-      assert Schedule.Gtfs.Fetcher.fetch_zip(url, ["f"], nil) == {:ok, %{"f" => "x"}, "foo"}
+      assert Schedule.Fetcher.fetch_zip(url, ["f"], nil) == {:ok, %{"f" => "x"}, "foo"}
     end
   end
 end
