@@ -28,8 +28,8 @@ defmodule Schedule.Fetcher do
 
   @spec start_link(Keyword.t()) :: GenServer.on_start()
   def start_link(opts \\ []) do
-    opts = Keyword.merge(opts, @default_opts)
-    GenServer.start_link(__MODULE__, opts, name: __MODULE__)
+    opts = Keyword.merge(@default_opts, opts)
+    GenServer.start_link(__MODULE__, opts, name: opts[:name] || __MODULE__)
   end
 
   @impl true
@@ -130,7 +130,7 @@ defmodule Schedule.Fetcher do
       Logger.info("#{__MODULE__}: Loading schedule data data from cached file")
 
       with {:ok, data} <- CacheFile.load_gtfs() do
-        {:ok, data, nil, false}
+        {:ok, data, nil, nil, false}
       else
         _ ->
           with {:ok, data, gtfs_timestamp, hastus_timestamp, continue_polling?} <-
@@ -161,8 +161,13 @@ defmodule Schedule.Fetcher do
     with {:files, files, gtfs_timestamp, hastus_timestamp} <-
            fetch_remote_files(latest_gtfs_timestamp, latest_hastus_timestamp) do
       Logger.info("#{__MODULE__}: Updated schedule data found, parsing")
-      data = Data.parse_files(files)
-      {:ok, data, gtfs_timestamp, hastus_timestamp, true}
+
+      try do
+        data = Data.parse_files(files)
+        {:ok, data, gtfs_timestamp, hastus_timestamp, true}
+      rescue
+        error -> {:error, error}
+      end
     else
       :no_update ->
         :no_update
@@ -245,20 +250,15 @@ defmodule Schedule.Fetcher do
            end
          ) do
       {:ok, %HTTPoison.Response{status_code: 200, body: zip_binary, headers: headers}} ->
-        last_modified =
-          Enum.reduce(headers, fn {header, value}, acc ->
-            if String.downcase(header) == "last-modified" do
-              value
-            else
-              acc
-            end
-          end)
+        last_modified = last_modified_from_headers(headers)
 
         unzipped_files = unzip_files(zip_binary, file_names)
         {:ok, unzipped_files, last_modified}
 
-      {:ok, %HTTPoison.Response{status_code: 304}} ->
-        {:ok, nil, latest_timestamp}
+      {:ok, %HTTPoison.Response{status_code: 304, headers: headers}} ->
+        last_modified = last_modified_from_headers(headers)
+
+        {:ok, nil, last_modified}
 
       response ->
         Logger.warn(fn ->
@@ -283,6 +283,17 @@ defmodule Schedule.Fetcher do
            end
        end}
     end
+  end
+
+  @spec last_modified_from_headers(HTTPoison.headers()) :: String.t() | nil
+  defp last_modified_from_headers(headers) do
+    Enum.reduce(headers, fn {header, value}, acc ->
+      if String.downcase(header) == "last-modified" do
+        value
+      else
+        acc
+      end
+    end)
   end
 
   # Takes in the binary data of a zip file, and a list of files to extract
