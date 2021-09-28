@@ -41,8 +41,7 @@ defmodule Schedule.FetcherTest do
         |> Plug.Conn.resp(200, zip_binary)
       end)
 
-      assert {:files, _all_files, "foo", "foo"} =
-               Schedule.Fetcher.fetch_remote_files(nil, nil)
+      assert {:files, _all_files, "foo", "foo"} = Schedule.Fetcher.fetch_remote_files(nil, nil)
     end
   end
 
