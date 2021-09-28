@@ -241,13 +241,16 @@ defmodule Schedule.Fetcher do
   @spec fetch_zip(String.t(), [String.t()], String.t() | nil) ::
           {:ok, Data.files() | nil, String.t() | nil} | {:error, any()}
   def fetch_zip(url, file_names, latest_timestamp) do
+    request_headers =
+      if !is_nil(latest_timestamp) do
+        [{"if-modified-since", latest_timestamp}]
+      else
+        []
+      end
+
     case HTTPoison.get(
            url,
-           if !is_nil(latest_timestamp) do
-             [{"if-modified-since", latest_timestamp}]
-           else
-             []
-           end
+           request_headers
          ) do
       {:ok, %HTTPoison.Response{status_code: 200, body: zip_binary, headers: headers}} ->
         last_modified = last_modified_from_headers(headers)
@@ -287,11 +290,9 @@ defmodule Schedule.Fetcher do
 
   @spec last_modified_from_headers(HTTPoison.headers()) :: String.t() | nil
   defp last_modified_from_headers(headers) do
-    Enum.reduce(headers, fn {header, value}, acc ->
+    Enum.find_value(headers, fn {header, value} ->
       if String.downcase(header) == "last-modified" do
         value
-      else
-        acc
       end
     end)
   end
