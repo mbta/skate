@@ -127,7 +127,7 @@ defmodule Schedule.Fetcher do
 
   defp fetch_gtfs(:remote, latest_gtfs_timestamp, latest_hastus_timestamp) do
     if CacheFile.should_use_file?() do
-      Logger.info("#{__MODULE__}: Loading schedule data data from cached file")
+      Logger.info("#{__MODULE__}: Loading schedule data from cached file")
 
       with {:ok, data} <- CacheFile.load_gtfs() do
         {:ok, data, nil, nil, false}

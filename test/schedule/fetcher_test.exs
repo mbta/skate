@@ -131,6 +131,143 @@ defmodule Schedule.FetcherTest do
 
       assert log =~ "Error loading schedule data"
     end
+
+    test "successfully loads schedule data from local cache" do
+      filepath = Schedule.CacheFile.generate_filepath("fetcher_successful_test.terms")
+
+      on_exit(fn -> File.rm!(filepath) end)
+
+      data = %Schedule.Data{
+        routes: [],
+        route_patterns: [],
+        timepoints_by_route: %{},
+        shapes: %{},
+        stops: %{},
+        trips: %{},
+        blocks: %{},
+        calendar: %{}
+      }
+
+      :ok = Schedule.CacheFile.save_gtfs(data, filepath)
+
+      reassign_env(:skate, Schedule.CacheFile, cache_filename: "fetcher_successful_test.terms")
+
+      set_log_level(:info)
+
+      log =
+        capture_log([level: :info], fn ->
+          assert {:stop, :normal, %{latest_gtfs_timestamp: nil, latest_hastus_timestamp: nil}} =
+                   Schedule.Fetcher.do_poll(
+                     %{
+                       poll_interval_ms: 50,
+                       health_server: self(),
+                       updater_function: fn _data -> :ok end,
+                       latest_gtfs_timestamp: nil,
+                       latest_hastus_timestamp: nil,
+                       files_source: :remote
+                     },
+                     true
+                   )
+        end)
+
+      assert log =~ "Loading schedule data from cached file"
+    end
+
+    test "handles successful fetch after failed attempt at reading cache" do
+      bypass = Bypass.open()
+      gtfs_url = "http://localhost:#{bypass.port}/MBTA_GTFS.zip"
+      hastus_url = "http://localhost:#{bypass.port}/hastus_skate_dev.zip"
+      reassign_env(:skate, :gtfs_url, gtfs_url)
+      reassign_env(:skate, :hastus_url, hastus_url)
+      reassign_env(:skate, Schedule.CacheFile, cache_filename: "non_existent_cache.terms")
+
+      filepath = Schedule.CacheFile.generate_filepath("non_existent_cache.terms")
+
+      on_exit(fn -> File.rm(filepath) end)
+
+      set_log_level(:info)
+
+      # empty zip file
+      zip_binary =
+        "UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA=="
+        |> Base.decode64!()
+
+      Bypass.expect(bypass, fn conn ->
+        conn
+        |> Plug.Conn.put_resp_header("last-modified", "foo")
+        |> Plug.Conn.resp(200, zip_binary)
+      end)
+
+      log =
+        capture_log(
+          [level: :info],
+          fn ->
+            assert {:noreply, %{latest_gtfs_timestamp: "foo", latest_hastus_timestamp: "foo"}} =
+                     Schedule.Fetcher.do_poll(
+                       %{
+                         poll_interval_ms: 50,
+                         health_server: self(),
+                         updater_function: fn _data -> :ok end,
+                         latest_gtfs_timestamp: nil,
+                         latest_hastus_timestamp: nil,
+                         files_source: :remote
+                       },
+                       true
+                     )
+
+            assert_receive({:"$gen_cast", :loaded}, 5000)
+          end
+        )
+
+      assert log =~ "Successfully loaded schedule data"
+      assert log =~ "Saving gtfs cache"
+    end
+  end
+
+  describe "handle_info/2" do
+    test "handles :check_gtfs message" do
+      bypass = Bypass.open()
+      gtfs_url = "http://localhost:#{bypass.port}/MBTA_GTFS.zip"
+      hastus_url = "http://localhost:#{bypass.port}/hastus_skate_dev.zip"
+      reassign_env(:skate, :gtfs_url, gtfs_url)
+      reassign_env(:skate, :hastus_url, hastus_url)
+      reassign_env(:skate, Schedule.CacheFile, cache_filename: nil)
+      set_log_level(:info)
+
+      # empty zip file
+      zip_binary =
+        "UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA=="
+        |> Base.decode64!()
+
+      Bypass.expect(bypass, fn conn ->
+        conn
+        |> Plug.Conn.put_resp_header("last-modified", "foo")
+        |> Plug.Conn.resp(200, zip_binary)
+      end)
+
+      log =
+        capture_log(
+          [level: :info],
+          fn ->
+            assert {:noreply, %{latest_gtfs_timestamp: "foo", latest_hastus_timestamp: "foo"}} =
+                     Schedule.Fetcher.handle_info(
+                       :check_gtfs,
+                       %{
+                         poll_interval_ms: 50,
+                         health_server: self(),
+                         updater_function: fn _data -> :ok end,
+                         latest_gtfs_timestamp: nil,
+                         latest_hastus_timestamp: nil,
+                         files_source: :remote
+                       }
+                     )
+
+            refute_receive({:"$gen_cast", :loaded}, 50)
+          end
+        )
+
+      assert log =~ "Successfully loaded schedule data"
+    end
   end
 
   describe "init/1" do
