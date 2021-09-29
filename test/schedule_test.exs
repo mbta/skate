@@ -1,8 +1,6 @@
 defmodule ScheduleTest do
   use ExUnit.Case
 
-  import Test.Support.Helpers
-
   alias Schedule.{Block, Trip, Swing}
   alias Schedule.Gtfs.{Route, RoutePattern, Shape, Stop, StopTime, Timepoint}
   alias Schedule.Gtfs.Shape.Point
@@ -910,44 +908,6 @@ defmodule ScheduleTest do
       end_time: end_time
     } do
       assert Schedule.swings_for_route(route_id, start_time, end_time, pid) == [expected_swing]
-    end
-  end
-
-  describe "fetch_remote_files" do
-    test "successfully loads empty data" do
-      bypass = Bypass.open()
-      gtfs_url = "http://localhost:#{bypass.port}/MBTA_GTFS.zip"
-      hastus_url = "http://localhost:#{bypass.port}/hastus_skate_dev.zip"
-      reassign_env(:skate, :gtfs_url, gtfs_url)
-      reassign_env(:skate, :hastus_url, hastus_url)
-
-      # empty zip file
-      zip_binary =
-        "UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA=="
-        |> Base.decode64!()
-
-      Bypass.expect(bypass, fn conn ->
-        Plug.Conn.resp(conn, 200, zip_binary)
-      end)
-
-      assert {:files, _all_files} = Schedule.fetch_remote_files()
-    end
-  end
-
-  describe "fetch_zip" do
-    test "fetches and unzips zip file" do
-      bypass = Bypass.open()
-      url = "http://localhost:#{bypass.port}/test.zip"
-
-      zip_binary =
-        "UEsDBAoAAAAAAHJrSU+DFtyMAQAAAAEAAAABABwAZlVUCQADhxieXasYnl11eAsAAQT1AQAABBQAAAB4UEsBAh4DCgAAAAAAcmtJT4MW3IwBAAAAAQAAAAEAGAAAAAAAAQAAAKSBAAAAAGZVVAUAA4cYnl11eAsAAQT1AQAABBQAAABQSwUGAAAAAAEAAQBHAAAAPAAAAAAA"
-        |> Base.decode64!()
-
-      Bypass.expect(bypass, fn conn ->
-        Plug.Conn.resp(conn, 200, zip_binary)
-      end)
-
-      assert Schedule.fetch_zip(url, ["f"]) == {:ok, %{"f" => "x"}}
     end
   end
 end
