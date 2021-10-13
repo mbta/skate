@@ -212,7 +212,7 @@ const LateView = (): ReactElement<HTMLElement> => {
         const { [id]: _, ...rest } = result
         return rest
       },
-      hidingTimestamps
+      permanentHidingTimestamps
     )
     setPermanentHidingTimestamps(newPermanentHidingTimestamps)
     saveTimestampsToLocalStorage({
