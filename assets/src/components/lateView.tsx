@@ -574,7 +574,16 @@ const UnhideToggle = ({
   viewHidden: boolean
   toggleViewHidden: () => void
 }): ReactElement<HTMLElement> => (
-  <button onClick={toggleViewHidden}>{viewHidden ? "Hide" : "Show"}</button>
+  <button
+    onClick={() => {
+      if (window && window.FS) {
+        window.FS.event("User clicked eye toggle")
+      }
+      toggleViewHidden()
+    }}
+  >
+    {viewHidden ? "Hide" : "Show"}
+  </button>
 )
 
 const MasterCheckbox = ({
