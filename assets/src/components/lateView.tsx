@@ -245,10 +245,9 @@ const LateView = (): ReactElement<HTMLElement> => {
     (vehicleOrGhost) => vehicleOrGhost.runId
   ).filter((vehicleOrGhost) => {
     return (
-      viewHidden ||
-      (vehicleOrGhost.runId &&
-        !hidingTimestamps[vehicleOrGhost.runId] &&
-        !permanentHidingTimestamps[vehicleOrGhost.runId])
+      vehicleOrGhost.runId &&
+      !permanentHidingTimestamps[vehicleOrGhost.runId] &&
+      (viewHidden || !hidingTimestamps[vehicleOrGhost.runId])
     )
   })
 
