@@ -84,9 +84,11 @@ const toggleRunIdInSet = (
 const LateViewContext = createContext<{
   selectedIds: RunId[]
   toggleCheckedState: (selectedId: RunId) => void
+  setSelectedIds: Dispatch<SetStateAction<RunId[]>>
 }>({
   selectedIds: [],
-  toggleCheckedState: () => [],
+  toggleCheckedState: () => {},
+  setSelectedIds: () => {},
 })
 // tslint:enable: no-empty
 
@@ -97,7 +99,7 @@ const readTimestampsFromLocalStorage = (): {
   const storedTimestamps: {
     hidingTimestamps?: HidingTimestamps
     permanentHidingTimestamps?: HidingTimestamps
-  } = loadState(storedStateKey) || {}
+  } = loadState(storedStateKey) ? {} : {}
   const hidingTimestamps = storedTimestamps.hidingTimestamps || {}
   const permanentHidingTimestamps =
     storedTimestamps.permanentHidingTimestamps || {}
@@ -277,8 +279,14 @@ const LateView = (): ReactElement<HTMLElement> => {
     .filter((vehicle) => vehicle.scheduleAdherenceSecs >= lateBusThreshold)
     .sort((a, b) => b.scheduleAdherenceSecs - a.scheduleAdherenceSecs)
 
+  const lateVehiclesAndGhosts = (lateGhosts as VehicleOrGhost[]).concat(
+    lateBuses
+  )
+
   return (
-    <LateViewContext.Provider value={{ selectedIds, toggleCheckedState }}>
+    <LateViewContext.Provider
+      value={{ selectedIds, setSelectedIds, toggleCheckedState }}
+    >
       <div className="m-late-view">
         <div className="m-late-view__content-wrapper">
           <div className="m-late-view__title">Late View</div>
@@ -296,7 +304,15 @@ const LateView = (): ReactElement<HTMLElement> => {
               <table>
                 <thead>
                   <tr>
-                    <th className="m-late-view__hide-check-header" />
+                    <th className="m-late-view__hide-check-header">
+                      <MasterCheckbox
+                        attachedIds={
+                          missingLogons
+                            .map((x) => x.runId)
+                            .filter((x) => x) as RunId[]
+                        }
+                      />
+                    </th>
                     <th className="m-late-view__scheduled-logon-header">
                       Scheduled Logon
                     </th>
@@ -328,6 +344,15 @@ const LateView = (): ReactElement<HTMLElement> => {
               <table>
                 <thead>
                   <tr>
+                    <th className="m-late-view__hide-check-header">
+                      <MasterCheckbox
+                        attachedIds={
+                          lateVehiclesAndGhosts
+                            .map((x) => x.runId)
+                            .filter((x) => x) as RunId[]
+                        }
+                      />
+                    </th>
                     <th className="m-late-view__adherence-header">Adherence</th>
                     <th className="m-late-view__route-header">Route</th>
                     <th className="m-late-view__vehicle-header">Vehicle</th>
@@ -504,12 +529,14 @@ const HideCheckbox = ({
   vehicleOrGhost: VehicleOrGhost
 }): ReactElement<HTMLElement> | null => {
   const { selectedIds, toggleCheckedState } = useContext(LateViewContext)
-  const isChecked = idIn(vehicleOrGhost.id, selectedIds)
+  const isChecked = vehicleOrGhost.runId
+    ? idIn(vehicleOrGhost.runId, selectedIds)
+    : false
 
   return vehicleOrGhost.runId ? (
     <input
       type="checkbox"
-      defaultChecked={isChecked}
+      checked={isChecked}
       onClick={() => toggleCheckedState(vehicleOrGhost.runId!)}
     />
   ) : null
@@ -550,4 +577,41 @@ const UnhideToggle = ({
 }): ReactElement<HTMLElement> => (
   <button onClick={toggleViewHidden}>{viewHidden ? "Hide" : "Show"}</button>
 )
+
+const MasterCheckbox = ({
+  attachedIds,
+}: {
+  attachedIds: RunId[]
+}): ReactElement<HTMLElement> => {
+  const { selectedIds, setSelectedIds } = useContext(LateViewContext)
+
+  const selectedAttachedIds = selectedIds.filter((id) =>
+    attachedIds.includes(id)
+  )
+  const selectionState =
+    selectedAttachedIds.length === 0
+      ? "none"
+      : selectedAttachedIds.length === attachedIds.length
+      ? "all"
+      : "some"
+
+  const toggleRows =
+    selectionState === "all"
+      ? () =>
+          setSelectedIds(
+            selectedIds.filter((selectedId) => !idIn(selectedId, attachedIds))
+          )
+      : () =>
+          setSelectedIds(Array.from(new Set(attachedIds.concat(selectedIds))))
+
+  return (
+    <input
+      type="checkbox"
+      className={`m-late-view__master-checkbox m-late-view__master-checkbox--${selectionState}-selected`}
+      checked={selectionState === "all"}
+      onClick={toggleRows}
+    />
+  )
+}
+
 export default LateView
