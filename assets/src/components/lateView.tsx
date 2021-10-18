@@ -552,7 +552,7 @@ const HidePopup = ({
   nRowsSelected: number
   hideSelectedRows: () => void
 }) => (
-  <div>
+  <div className="m-late-view__popup">
     {nRowsSelected} selected
     <button onClick={hideSelectedRows}>Hide</button>
   </div>
@@ -565,7 +565,7 @@ const UnhidePopup = ({
   nRecentlyHidden: number
   unhideRecentlyHidden: () => void
 }): ReactElement<HTMLElement> => (
-  <div>
+  <div className="m-late-view__popup">
     {nRecentlyHidden} hidden
     <button onClick={unhideRecentlyHidden}>Undo</button>
   </div>

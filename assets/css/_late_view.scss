@@ -205,3 +205,9 @@ $late-view-width: 31rem;
   justify-content: flex-end;
   padding-right: 1.5rem;
 }
+
+.m-late-view__popup {
+  position: absolute;
+  bottom: 1em;
+  left: 3em;
+}
