@@ -4,6 +4,8 @@ import React, {
   createContext,
   SetStateAction,
   useContext,
+  useEffect,
+  useRef,
   useState,
 } from "react"
 import DrawerTab from "../components/drawerTab"
@@ -616,12 +618,20 @@ const MasterCheckbox = ({
       : () =>
           setSelectedIds(Array.from(new Set(attachedIds.concat(selectedIds))))
 
+  const checkRef = useRef<HTMLInputElement>(null)
+  useEffect(() => {
+    if (checkRef.current) {
+      checkRef.current.checked = selectionState === "all"
+      checkRef.current.indeterminate = selectionState === "some"
+    }
+  }, [selectionState])
+
   return (
     <input
       type="checkbox"
-      className={`m-late-view__master-checkbox m-late-view__master-checkbox--${selectionState}-selected`}
-      checked={selectionState === "all"}
+      className={`m-late-view__master-checkbox`}
       onClick={toggleRows}
+      ref={checkRef}
     />
   )
 }
