@@ -99,7 +99,7 @@ const readTimestampsFromLocalStorage = (): {
   const storedTimestamps: {
     hidingTimestamps?: HidingTimestamps
     permanentHidingTimestamps?: HidingTimestamps
-  } = loadState(storedStateKey) ? {} : {}
+  } = loadState(storedStateKey) || {}
   const hidingTimestamps = storedTimestamps.hidingTimestamps || {}
   const permanentHidingTimestamps =
     storedTimestamps.permanentHidingTimestamps || {}
