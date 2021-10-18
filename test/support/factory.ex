@@ -108,6 +108,16 @@ defmodule Skate.Factory do
     }
   end
 
+  def gtfs_route_factory do
+    %Schedule.Gtfs.Route{
+      id: "route",
+      description: "Key Bus",
+      direction_names: %{0 => "Outbound", 1 => "Inbound"},
+      name: "Point A - Point B",
+      garages: MapSet.new([])
+    }
+  end
+
   def trip_factory do
     %Schedule.Trip{
       id: "trip",
