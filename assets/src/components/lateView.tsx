@@ -139,6 +139,10 @@ const LateView = (): ReactElement<HTMLElement> => {
   }
 
   const hideSelectedRows: () => void = () => {
+    if (window && window.FS) {
+      window.FS.event("User hid row")
+    }
+
     setRecentlyHiddenIds(selectedIds)
     setSelectedIds([])
     const newHidingTimestamps = selectedIds.reduce(
