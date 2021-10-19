@@ -1,5 +1,5 @@
 defmodule Schedule.Gtfs.Route do
-  alias Schedule.{Csv, Data}
+  alias Schedule.{Csv, Data, Garage}
 
   @type id :: Schedule.Route.id()
 
@@ -7,7 +7,8 @@ defmodule Schedule.Gtfs.Route do
           id: id(),
           description: String.t(),
           direction_names: direction_names(),
-          name: String.t()
+          name: String.t(),
+          garages: MapSet.t(Garage.id())
         }
 
   @type direction_names :: %{
@@ -28,7 +29,8 @@ defmodule Schedule.Gtfs.Route do
     :id,
     :description,
     :direction_names,
-    :name
+    :name,
+    garages: MapSet.new([])
   ]
 
   @spec from_csv_row(Csv.row(), Data.directions_by_route_and_id()) :: t()

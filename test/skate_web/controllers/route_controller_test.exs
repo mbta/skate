@@ -1,17 +1,22 @@
 defmodule SkateWeb.RouteControllerTest do
   use SkateWeb.ConnCase
   import Test.Support.Helpers
-
-  alias Schedule.Gtfs.Route
+  import Skate.Factory
 
   @routes [
-    %Route{id: "1", name: "1", direction_names: %{}, description: ""},
-    %Route{
+    build(:gtfs_route, %{
+      id: "1",
+      name: "1",
+      direction_names: %{},
+      description: "",
+      garages: MapSet.new(["Garage A", "Garage B"])
+    }),
+    build(:gtfs_route, %{
       id: "shuttle",
       name: "Shuttle",
       direction_names: %{},
       description: "Rail Replacement Bus"
-    }
+    })
   ]
 
   describe "GET /api/routes" do
@@ -35,7 +40,11 @@ defmodule SkateWeb.RouteControllerTest do
         |> api_headers()
         |> get("/api/routes")
 
-      assert %{"data" => [%{"id" => "1"}]} = json_response(conn, 200)
+      assert %{"data" => [%{"id" => "1", "garages" => garages}]} = json_response(conn, 200)
+
+      assert Enum.count(garages) == 2
+      assert "Garage A" in garages
+      assert "Garage B" in garages
     end
   end
 

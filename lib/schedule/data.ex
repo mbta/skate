@@ -10,6 +10,7 @@ defmodule Schedule.Data do
   alias Schedule.Run
   alias Schedule.Hastus
   alias Schedule.Swing
+  alias Schedule.Garage
 
   alias Schedule.Gtfs
 
@@ -361,6 +362,8 @@ defmodule Schedule.Data do
       |> Enum.flat_map(&Run.pieces/1)
 
     blocks = Block.blocks_from_pieces(pieces)
+
+    bus_routes = Garage.add_garages_to_routes(bus_routes, schedule_trips_by_id)
 
     %__MODULE__{
       routes: bus_routes,
