@@ -40,19 +40,21 @@ defmodule Schedule.Garage do
   def add_garages_to_routes(routes, trips_by_id) do
     routes_by_id = Map.new(routes, fn route -> {route.id, route} end)
 
-    trips_by_id
-    |> Map.values()
-    |> Enum.reduce(routes_by_id, fn trip, acc ->
-      route = acc[trip.route_id]
+    updated_routes_by_id =
+      trips_by_id
+      |> Map.values()
+      |> Enum.reduce(routes_by_id, fn trip, acc ->
+        route = acc[trip.route_id]
 
-      with false <- is_nil(route),
-           garage <- trip.block_id |> String.at(0) |> garage_for_block_code(),
-           false <- is_nil(garage) do
-        Map.put(acc, route.id, %Route{route | garages: MapSet.put(route.garages, garage)})
-      else
-        _ -> acc
-      end
-    end)
-    |> Map.values()
+        with false <- is_nil(route),
+             garage <- trip.block_id |> String.at(0) |> garage_for_block_code(),
+             false <- is_nil(garage) do
+          Map.put(acc, route.id, %Route{route | garages: MapSet.put(route.garages, garage)})
+        else
+          _ -> acc
+        end
+      end)
+
+    Enum.map(routes, fn route -> updated_routes_by_id[route.id] end)
   end
 end
