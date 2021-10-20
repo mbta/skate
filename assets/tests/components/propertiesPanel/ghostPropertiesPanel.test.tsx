@@ -6,6 +6,7 @@ import { BlockWaiver, Ghost } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
 import * as dateTime from "../../../src/util/dateTime"
 import ghostFactory from "../../factories/ghost"
+import routeFactory from "../../factories/route"
 
 jest
   .spyOn(dateTime, "now")
@@ -30,14 +31,10 @@ const ghost: Ghost = ghostFactory.build({
   blockWaivers: [],
 })
 
-const route: Route = {
+const route: Route = routeFactory.build({
   id: "39",
-  directionNames: {
-    0: "Outbound",
-    1: "Inbound",
-  },
   name: "39",
-}
+})
 
 describe("GhostPropertiesPanel", () => {
   test("renders", () => {

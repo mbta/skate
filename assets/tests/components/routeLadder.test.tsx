@@ -21,6 +21,7 @@ import {
   toggleLadderCrowding,
 } from "../../src/state"
 import ghostFactory from "../factories/ghost"
+import routeFactory from "../factories/route"
 
 // tslint:disable: object-literal-sort-keys
 
@@ -149,11 +150,10 @@ describe("routeLadder", () => {
   })
 
   test("renders a route ladder", () => {
-    const route: Route = {
+    const route: Route = routeFactory.build({
       id: "28",
-      directionNames: { 0: "Outbound", 1: "Inbound" },
       name: "28",
-    }
+    })
     const timepoints = [
       { id: "MATPN", name: "MATPN Name" },
       { id: "WELLH", name: "WELLH Name" },
@@ -175,11 +175,10 @@ describe("routeLadder", () => {
   })
 
   test("renders a route ladder with vehicles", () => {
-    const route: Route = {
+    const route: Route = routeFactory.build({
       id: "28",
-      directionNames: { 0: "Outbound", 1: "Inbound" },
       name: "28",
-    }
+    })
     const timepoints = [
       { id: "MATPN", name: "MATPN Name" },
       { id: "WELLH", name: "WELLH Name" },
@@ -220,11 +219,10 @@ describe("routeLadder", () => {
   })
 
   test("renders a route ladder with vehicles in the incoming box", () => {
-    const route: Route = {
+    const route: Route = routeFactory.build({
       id: "28",
-      directionNames: { 0: "Outbound", 1: "Inbound" },
       name: "28",
-    }
+    })
     const timepoints = [
       { id: "MATPN", name: "MATPN Name" },
       { id: "WELLH", name: "WELLH Name" },
@@ -248,11 +246,10 @@ describe("routeLadder", () => {
   })
 
   test("renders a route ladder with laying over vehicles", () => {
-    const route: Route = {
+    const route: Route = routeFactory.build({
       id: "28",
-      directionNames: { 0: "Outbound", 1: "Inbound" },
       name: "28",
-    }
+    })
 
     const timepoints = [
       { id: "MATPN", name: "MATPN Name" },
@@ -285,11 +282,10 @@ describe("routeLadder", () => {
       ...initialState,
       ladderCrowdingToggles,
     }
-    const route: Route = {
+    const route: Route = routeFactory.build({
       id: "28",
-      directionNames: { 0: "Outbound", 1: "Inbound" },
       name: "28",
-    }
+    })
 
     const timepoints = [
       { id: "MATPN", name: "MATPN Name" },
@@ -329,11 +325,10 @@ describe("routeLadder", () => {
   })
 
   test("doesn't render a bus that's off-course but nonrevenue", () => {
-    const route: Route = {
+    const route: Route = routeFactory.build({
       id: "28",
-      directionNames: { 0: "Outbound", 1: "Inbound" },
       name: "28",
-    }
+    })
 
     const timepoints = [
       { id: "MATPN", name: "MATPN Name" },
@@ -372,11 +367,10 @@ describe("routeLadder", () => {
       ...initialState,
       ladderCrowdingToggles,
     }
-    const route: Route = {
+    const route: Route = routeFactory.build({
       id: "28",
-      directionNames: { 0: "Outbound", 1: "Inbound" },
       name: "28",
-    }
+    })
 
     const timepoints = [
       { id: "MATPN", name: "MATPN Name" },
@@ -423,11 +417,10 @@ describe("routeLadder", () => {
       ...initialState,
       ladderCrowdingToggles,
     }
-    const route: Route = {
+    const route: Route = routeFactory.build({
       id: "28",
-      directionNames: { 0: "Outbound", 1: "Inbound" },
       name: "28",
-    }
+    })
 
     const timepoints = [
       { id: "MATPN", name: "MATPN Name" },
@@ -468,11 +461,10 @@ describe("routeLadder", () => {
   })
 
   test("displays loading if we are fetching the timepoints", () => {
-    const route: Route = {
+    const route: Route = routeFactory.build({
       id: "28",
-      directionNames: { 0: "Outbound", 1: "Inbound" },
       name: "28",
-    }
+    })
     const timepoints = null
 
     const tree = renderer
@@ -491,11 +483,10 @@ describe("routeLadder", () => {
 
   test("clicking the close button deselects that route", () => {
     const mockDispatch = jest.fn()
-    const route: Route = {
+    const route: Route = routeFactory.build({
       id: "28",
-      directionNames: { 0: "Outbound", 1: "Inbound" },
       name: "28",
-    }
+    })
     const timepoints = [
       { id: "MATPN", name: "MATPN Name" },
       { id: "WELLH", name: "WELLH Name" },
@@ -519,11 +510,10 @@ describe("routeLadder", () => {
 
   test("clicking the reverse button reverses the order of the timepoints", () => {
     const mockDispatch = jest.fn()
-    const route: Route = {
+    const route: Route = routeFactory.build({
       id: "28",
-      directionNames: { 0: "Outbound", 1: "Inbound" },
       name: "28",
-    }
+    })
     const timepoints = [
       { id: "MATPN", name: "MATPN Name" },
       { id: "WELLH", name: "WELLH Name" },
@@ -549,11 +539,10 @@ describe("routeLadder", () => {
 
   test("clicking the crowding toggle toggles crowding", () => {
     const mockDispatch = jest.fn()
-    const route: Route = {
+    const route: Route = routeFactory.build({
       id: "28",
-      directionNames: { 0: "Outbound", 1: "Inbound" },
       name: "28",
-    }
+    })
     const timepoints = [
       { id: "MATPN", name: "MATPN Name" },
       { id: "WELLH", name: "WELLH Name" },
@@ -592,11 +581,10 @@ describe("routeLadder", () => {
   test("clicking an incoming vehicle selects that vehicle", () => {
     const mockDispatch = jest.fn()
 
-    const route: Route = {
+    const route: Route = routeFactory.build({
       id: "28",
-      directionNames: { 0: "Outbound", 1: "Inbound" },
       name: "28",
-    }
+    })
     const timepoints = [
       { id: "MATPN", name: "MATPN Name" },
       { id: "WELLH", name: "WELLH Name" },

@@ -18,6 +18,7 @@ import {
 import { ByRouteId, Route, TimepointsByRouteId } from "../../src/schedule.d"
 import { initialState, State } from "../../src/state"
 import ghostFactory from "../factories/ghost"
+import routeFactory from "../factories/route"
 
 jest.mock("../../src/hooks/useTimepoints", () => ({
   __esModule: true,
@@ -149,11 +150,12 @@ describe("LadderPage", () => {
 
 describe("findRouteById", () => {
   test("finds a route in a list by its id", () => {
-    expect(findRouteById(routes, "28")).toEqual({
-      directionNames: { 0: "Outbound", 1: "Inbound" },
-      id: "28",
-      name: "28",
-    })
+    expect(findRouteById(routes, "28")).toEqual(
+      routeFactory.build({
+        id: "28",
+        name: "28",
+      })
+    )
   })
 
   test("returns undefined if the route isn't found", () => {
@@ -204,8 +206,8 @@ describe("findSelectedVehicleOrGhost", () => {
 })
 
 const routes: Route[] = [
-  { id: "1", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "1" },
-  { id: "28", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "28" },
+  routeFactory.build({ id: "1", name: "1" }),
+  routeFactory.build({ id: "28", name: "28" }),
 ]
 const timepointsByRouteId: TimepointsByRouteId = {
   "1": [

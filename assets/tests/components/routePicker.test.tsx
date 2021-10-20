@@ -1,6 +1,7 @@
 import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
+import routeFactory from "../factories/route"
 import RoutePicker from "../../src/components/routePicker"
 import { RoutesProvider } from "../../src/contexts/routesContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
@@ -10,20 +11,12 @@ import { deselectRoute, initialState, selectRoute } from "../../src/state"
 describe("RoutePicker", () => {
   test("renders a list of routes", () => {
     const routes: Route[] = [
-      { id: "28", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "28" },
-      { id: "39", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "39" },
-      { id: "71", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "71" },
-      { id: "73", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "73" },
-      {
-        id: "111",
-        directionNames: { 0: "Outbound", 1: "Inbound" },
-        name: "111",
-      },
-      {
-        id: "741",
-        directionNames: { 0: "Outbound", 1: "Inbound" },
-        name: "SL1",
-      },
+      routeFactory.build({ id: "28", name: "28" }),
+      routeFactory.build({ id: "39", name: "39" }),
+      routeFactory.build({ id: "71", name: "71" }),
+      routeFactory.build({ id: "73", name: "73" }),
+      routeFactory.build({ id: "111", name: "111" }),
+      routeFactory.build({ id: "741", name: "SL1" }),
     ]
 
     const selectedRouteIds: RouteId[] = ["28", "39"]
@@ -48,9 +41,7 @@ describe("RoutePicker", () => {
   test("clicking a route selects it", () => {
     const mockDispatch = jest.fn()
 
-    const routes = [
-      { id: "id", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "id" },
-    ]
+    const routes = [routeFactory.build({ id: "id", name: "id" })]
 
     const routePicker = mount(
       <RoutesProvider routes={routes}>
@@ -71,9 +62,7 @@ describe("RoutePicker", () => {
   test("clicking a selected route deselects it", () => {
     const mockDispatch = jest.fn()
 
-    const routes = [
-      { id: "id", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "id" },
-    ]
+    const routes = [routeFactory.build({ id: "id", name: "id" })]
 
     const routePicker = mount(
       <RoutesProvider routes={routes}>

@@ -1,6 +1,7 @@
 import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
+import routeFactory from "../../factories/route"
 import * as map from "../../../src/components/map"
 import VehiclePropertiesPanel from "../../../src/components/propertiesPanel/vehiclePropertiesPanel"
 import { RoutesProvider } from "../../../src/contexts/routesContext"
@@ -98,14 +99,10 @@ describe("VehiclePropertiesPanel", () => {
   })
 
   test("renders with route data", () => {
-    const route: Route = {
+    const route: Route = routeFactory.build({
       id: "39",
-      directionNames: {
-        0: "Outbound",
-        1: "Inbound",
-      },
       name: "39",
-    }
+    })
     const tree = renderer
       .create(
         <RoutesProvider routes={[route]}>

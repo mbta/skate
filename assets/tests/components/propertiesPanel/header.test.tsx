@@ -14,6 +14,7 @@ import { Ghost, Vehicle } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
 import { deselectVehicle, initialState } from "../../../src/state"
 import ghostFactory from "../../factories/ghost"
+import routeFactory from "../../factories/route"
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
@@ -89,14 +90,10 @@ describe("Header", () => {
   })
 
   test("renders with route data", () => {
-    const route: Route = {
+    const route: Route = routeFactory.build({
       id: "39",
-      directionNames: {
-        0: "Outbound",
-        1: "Inbound",
-      },
       name: "39",
-    }
+    })
     const tree = renderer
       .create(
         <RoutesProvider routes={[route]}>

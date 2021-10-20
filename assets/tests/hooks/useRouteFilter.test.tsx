@@ -7,6 +7,7 @@ import {
   RouteFilterData,
   useRouteFilter,
 } from "../../src/hooks/useRouteFilter"
+import routeFactory from "../factories/route"
 import { Route } from "../../src/schedule.d"
 
 // tslint:disable: react-hooks-nesting no-empty
@@ -58,14 +59,10 @@ describe("useRouteFilter", () => {
 describe("filterRoutes", () => {
   test("when filter type is name, filters by route name, case insensitively", () => {
     const initialRoutes: Route[] = [
-      { id: "3", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "3" },
-      { id: "12", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "12" },
-      { id: "13", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "13" },
-      {
-        id: "743",
-        directionNames: { 0: "Outbound", 1: "Inbound" },
-        name: "SL3",
-      },
+      routeFactory.build({ id: "3", name: "3" }),
+      routeFactory.build({ id: "12", name: "12" }),
+      routeFactory.build({ id: "13", name: "13" }),
+      routeFactory.build({ id: "743", name: "SL3" }),
     ]
 
     const filteredRoutes1 = filterRoutes(initialRoutes, {
@@ -74,11 +71,7 @@ describe("filterRoutes", () => {
     })
 
     expect(filteredRoutes1).toEqual([
-      {
-        id: "743",
-        directionNames: { 0: "Outbound", 1: "Inbound" },
-        name: "SL3",
-      },
+      routeFactory.build({ id: "743", name: "SL3" }),
     ])
 
     const filteredRoutes2 = filterRoutes(initialRoutes, {

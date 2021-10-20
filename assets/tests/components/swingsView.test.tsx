@@ -3,6 +3,7 @@ import React from "react"
 import renderer from "react-test-renderer"
 import ghostFactory from "../factories/ghost"
 import vehicleFactory from "../factories/vehicle"
+import routeFactory from "../factories/route"
 import swingFactory from "../factories/swing"
 import SwingsView from "../../src/components/swingsView"
 import { RoutesProvider } from "../../src/contexts/routesContext"
@@ -42,30 +43,30 @@ const vehicle: Vehicle = vehicleFactory.build({
 const ghost: Ghost = ghostFactory.build({ runId: "124-456" })
 
 const routes: Route[] = [
-  {
+  routeFactory.build({
     id: "1",
     name: "Name 1",
     directionNames: {
       0: "Someplace",
       1: "Some Otherplace",
     },
-  },
-  {
+  }),
+  routeFactory.build({
     id: "2",
     name: "Name 3",
     directionNames: {
       0: "Someplace",
       1: "Some Otherplace",
     },
-  },
-  {
+  }),
+  routeFactory.build({
     id: "3",
     name: "Name 3",
     directionNames: {
       0: "Someplace",
       1: "Some Otherplace",
     },
-  },
+  }),
 ]
 
 describe("SwingsView", () => {
