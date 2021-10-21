@@ -413,15 +413,18 @@ const LateGhostRow = ({
   toggleCheckedState: (runId: RunId) => void
 }): ReactElement<HTMLElement> => {
   const routes = useContext(RoutesContext)
+  const isSelected = !!(ghost.runId && selectedIds.includes(ghost.runId))
 
   return (
     <tr>
       <td>
-        <HideCheckbox
-          vehicleOrGhost={ghost}
-          selectedIds={selectedIds}
-          toggleCheckedState={toggleCheckedState}
-        />
+        {ghost.runId && (
+          <HideCheckbox
+            runId={ghost.runId}
+            isChecked={isSelected}
+            toggleCheckedState={toggleCheckedState}
+          />
+        )}
       </td>
       <td className="m-late-view__adherence-cell">N/A</td>
       <td>
@@ -467,15 +470,18 @@ const LateBusRow = ({
   toggleCheckedState: (runId: RunId) => void
 }): ReactElement<HTMLElement> => {
   const routes = useContext(RoutesContext)
+  const isSelected = !!(vehicle.runId && selectedIds.includes(vehicle.runId))
 
   return (
     <tr>
       <td>
-        <HideCheckbox
-          vehicleOrGhost={vehicle}
-          selectedIds={selectedIds}
-          toggleCheckedState={toggleCheckedState}
-        />
+        {vehicle.runId && (
+          <HideCheckbox
+            runId={vehicle.runId}
+            isChecked={isSelected}
+            toggleCheckedState={toggleCheckedState}
+          />
+        )}
       </td>
       <td className="m-late-view__adherence-cell">
         {secondsToMinutes(vehicle.scheduleAdherenceSecs) * -1}
@@ -519,15 +525,18 @@ const MissingLogonRow = ({
   toggleCheckedState: (runId: RunId) => void
 }): ReactElement<HTMLElement> => {
   const routes = useContext(RoutesContext)
+  const isSelected = !!(ghost.runId && selectedIds.includes(ghost.runId))
 
   return (
     <tr>
       <td>
-        <HideCheckbox
-          vehicleOrGhost={ghost}
-          selectedIds={selectedIds}
-          toggleCheckedState={toggleCheckedState}
-        />
+        {ghost.runId && (
+          <HideCheckbox
+            runId={ghost.runId}
+            isChecked={isSelected}
+            toggleCheckedState={toggleCheckedState}
+          />
+        )}
       </td>
       <td>
         {ghost.scheduledLogonTime
@@ -546,27 +555,21 @@ const MissingLogonRow = ({
 }
 
 const HideCheckbox = ({
-  vehicleOrGhost,
-  selectedIds,
+  runId,
+  isChecked,
   toggleCheckedState,
 }: {
-  vehicleOrGhost: VehicleOrGhost
-  selectedIds: RunId[]
+  runId: RunId
+  isChecked: boolean
   toggleCheckedState: (runId: RunId) => void
-}): ReactElement<HTMLElement> | null => {
-  const isChecked = vehicleOrGhost.runId
-    ? idIn(vehicleOrGhost.runId, selectedIds)
-    : false
-
-  return vehicleOrGhost.runId ? (
-    <input
-      type="checkbox"
-      readOnly={true}
-      checked={isChecked}
-      onClick={() => toggleCheckedState(vehicleOrGhost.runId!)}
-    />
-  ) : null
-}
+}): ReactElement<HTMLElement> => (
+  <input
+    type="checkbox"
+    readOnly={true}
+    checked={isChecked}
+    onClick={() => toggleCheckedState(runId)}
+  />
+)
 
 const HidePopup = ({
   nRowsSelected,
