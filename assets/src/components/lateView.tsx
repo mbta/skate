@@ -541,6 +541,7 @@ const HideCheckbox = ({
   return vehicleOrGhost.runId ? (
     <input
       type="checkbox"
+      readOnly={true}
       checked={isChecked}
       onClick={() => toggleCheckedState(vehicleOrGhost.runId!)}
     />
@@ -630,6 +631,7 @@ const MasterCheckbox = ({
     <input
       type="checkbox"
       className={`m-late-view__master-checkbox`}
+      readOnly={true}
       onClick={toggleRows}
       ref={checkRef}
     />
