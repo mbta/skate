@@ -11,13 +11,13 @@ defmodule Schedule.Garage do
     "C" => "Cabot",
     "D" => "Cabot / Albany",
     "F" => "Fellsway",
-    "G" => "Charlestown @ Charlestown",
+    "G" => "Charlestown",
     "H" => "Charlestown / Fellsway",
     "L" => "Lynn",
     "N" => "North Cambridge",
     "Q" => "Quincy",
     "S" => "Southampton",
-    "T" => "Somerville / Bennett @ Charlestown"
+    "T" => "Somerville"
   }
 
   @spec garage_for_block_code(String.t()) :: id() | nil
