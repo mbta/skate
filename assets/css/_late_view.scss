@@ -70,8 +70,19 @@ $late-view-width: 32.125rem;
     }
 
     tbody {
+      tr {
+        border-right: solid transparent 1px;
+        border-left: solid transparent 1px;
+      }
+
       tr:not(:last-child) {
         border-bottom: solid $color-secondary-light 1px;
+      }
+
+      tr:hover {
+	border-right: solid $color-bg-medium 1px;
+	border-left: solid $color-bg-medium 1px;
+	box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2);
       }
     }
 
