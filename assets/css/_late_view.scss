@@ -227,6 +227,22 @@ $late-view-width: 32.125rem;
   left: 3em;
 }
 
+.m-late-view__data-row {
+  input:hover::before {
+    background-color: #beede2;
+    content: '\000A0';
+    opacity: 0.3;
+    display: block;
+    height: 200%;
+    width: 200%;
+    position: relative;
+    top: -50%;
+    left: -50%;
+    clip-path: circle(50%);
+    -webkit-clip-path: circle(50%);
+  }
+}
+
 .m-late-view__data-row--selected {
   background-color: #f1f8f3;
 }
