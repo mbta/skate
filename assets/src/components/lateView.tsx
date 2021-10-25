@@ -414,9 +414,10 @@ const LateGhostRow = ({
 }): ReactElement<HTMLElement> => {
   const routes = useContext(RoutesContext)
   const isSelected = !!(ghost.runId && selectedIds.includes(ghost.runId))
+  const className = isSelected ? "m-late-view__data-row--selected" : ""
 
   return (
-    <tr>
+    <tr className={className}>
       <td>
         {ghost.runId && (
           <HideCheckbox
@@ -471,9 +472,10 @@ const LateBusRow = ({
 }): ReactElement<HTMLElement> => {
   const routes = useContext(RoutesContext)
   const isSelected = !!(vehicle.runId && selectedIds.includes(vehicle.runId))
+  const className = isSelected ? "m-late-view__data-row--selected" : ""
 
   return (
-    <tr>
+    <tr className={className}>
       <td>
         {vehicle.runId && (
           <HideCheckbox
@@ -526,9 +528,10 @@ const MissingLogonRow = ({
 }): ReactElement<HTMLElement> => {
   const routes = useContext(RoutesContext)
   const isSelected = !!(ghost.runId && selectedIds.includes(ghost.runId))
+  const className = isSelected ? "m-late-view__data-row--selected" : ""
 
   return (
-    <tr>
+    <tr className={className}>
       <td>
         {ghost.runId && (
           <HideCheckbox
