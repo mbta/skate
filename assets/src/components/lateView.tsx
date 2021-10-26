@@ -13,6 +13,7 @@ import { VehiclesByRouteIdContext } from "../contexts/vehiclesByRouteIdContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import {
   bangIcon,
+  hideIcon,
   lateViewGhostIcon,
   lateViewGhostWithWaiverIcon,
   upRightIcon,
@@ -587,9 +588,9 @@ const HidePopup = ({
   nRowsSelected: number
   hideSelectedRows: () => void
 }) => (
-  <div className="m-late-view__popup">
+  <div className="m-late-view__popup m-late-view__hide-popup">
     {nRowsSelected} selected
-    <button onClick={hideSelectedRows}>Hide</button>
+    <button onClick={hideSelectedRows}>{hideIcon()} Hide</button>
   </div>
 )
 
@@ -600,7 +601,7 @@ const UnhidePopup = ({
   nRecentlyHidden: number
   unhideRecentlyHidden: () => void
 }): ReactElement<HTMLElement> => (
-  <div className="m-late-view__popup">
+  <div className="m-late-view__popup m-late-view__unhide-popup">
     {nRecentlyHidden} hidden
     <button onClick={unhideRecentlyHidden}>Undo</button>
   </div>

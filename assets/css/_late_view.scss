@@ -1,5 +1,5 @@
 $late-view-background-color: $color-bg-light;
-$late-view-width: 32.125rem;
+$late-view-width: 33rem;
 
 .m-late-view {
   @include modal-content;
@@ -222,9 +222,55 @@ $late-view-width: 32.125rem;
 }
 
 .m-late-view__popup {
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  border: 1px solid #e5e7eb;
   position: absolute;
-  bottom: 1em;
-  left: 3em;
+  bottom: 1rem;
+  left: 3rem;
+  width: 28rem;
+  background-color: #fafafa;
+  border-radius: 0.25rem;
+  padding: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+
+  button {
+    padding: 0.25rem;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+    border-radius: 0.25rem;
+
+    svg {
+      height: 0.75rem;
+      width: 0.75rem;
+      position: relative;
+      top: 0.125rem;
+      padding-right: 0.25rem;
+    }
+  }
+}
+
+.m-late-view__hide-popup {
+  button {
+    background-color: #055c66;
+    color: #fafafa;
+
+    &:hover {
+      background-color: #118d86;
+    }
+
+    svg path {
+      stroke: #fafafa;
+    }
+  }
+}
+
+.m-late-view__unhide-popup {
+  button {
+    background-color: #fafafa;
+    color: #055c66;
+  }
 }
 
 .m-late-view__data-row {
