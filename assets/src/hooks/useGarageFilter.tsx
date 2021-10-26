@@ -6,7 +6,7 @@ import { flatten, uniq } from "../helpers/array"
 export interface GarageFilterData {
   filteredGarages: GarageName[]
   allGarages: GarageName[]
-  handleGarageToggle: (event: React.FormEvent<HTMLInputElement>) => void
+  toggleGarage: (event: React.FormEvent<HTMLInputElement>) => void
 }
 
 export const filterRoutesByGarage = (
@@ -27,9 +27,7 @@ export const filterRoutesByGarage = (
 export const useGarageFilter = (routes: Route[] | null): GarageFilterData => {
   const [filteredGarages, setFilteredGarages] = useState<GarageName[]>([])
 
-  const handleGarageToggle = (
-    event: React.FormEvent<HTMLInputElement>
-  ): void => {
+  const toggleGarage = (event: React.FormEvent<HTMLInputElement>): void => {
     const garage: GarageName = event.currentTarget.value
 
     if (filteredGarages.includes(garage)) {
@@ -48,14 +46,14 @@ export const useGarageFilter = (routes: Route[] | null): GarageFilterData => {
   return {
     filteredGarages,
     allGarages,
-    handleGarageToggle,
+    toggleGarage,
   }
 }
 
 export const GarageFilter = ({
   filteredGarages,
   allGarages,
-  handleGarageToggle,
+  toggleGarage,
 }: GarageFilterData) => {
   const sortedGarages = allGarages.sort((a, b) => a.localeCompare(b))
 
@@ -67,7 +65,7 @@ export const GarageFilter = ({
             className="m-garage-filter__input"
             type="checkbox"
             value={garage}
-            onChange={handleGarageToggle}
+            onChange={toggleGarage}
             checked={filteredGarages.includes(garage)}
           />
           <label>{garage}</label>

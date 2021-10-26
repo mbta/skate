@@ -9,12 +9,11 @@ import {
   GarageFilterData,
 } from "../../src/hooks/useGarageFilter"
 
-// tslint:disable: react-hooks-nesting no-empty
-
 describe("useGarageFilter", () => {
   test("defaults to no garages selected", () => {
     const routes = [routeFactory.build()]
 
+    // tslint:disable-next-line: react-hooks-nesting no-empty
     const { result } = renderHook(() => useGarageFilter(routes))
 
     expect(result.current.filteredGarages).toEqual([])
@@ -23,14 +22,16 @@ describe("useGarageFilter", () => {
   test("includes list of garages in data", () => {
     const routes = [routeFactory.build({ garages: ["Garage A"] })]
 
+    // tslint:disable-next-line: react-hooks-nesting no-empty
     const { result } = renderHook(() => useGarageFilter(routes))
 
     expect(result.current.allGarages).toEqual(["Garage A"])
   })
 
-  test("handleGarageToggle selects and deselects garage", () => {
+  test("toggleGarage selects and deselects garage", () => {
     const routes = [routeFactory.build({ garages: ["Garage A"] })]
 
+    // tslint:disable-next-line: react-hooks-nesting no-empty
     const { result } = renderHook(() => useGarageFilter(routes))
 
     const testEvent = {
@@ -39,11 +40,11 @@ describe("useGarageFilter", () => {
       },
     } as React.ChangeEvent<HTMLInputElement>
 
-    act(() => result.current.handleGarageToggle(testEvent))
+    act(() => result.current.toggleGarage(testEvent))
 
     expect(result.current.filteredGarages).toEqual(["Garage A"])
 
-    act(() => result.current.handleGarageToggle(testEvent))
+    act(() => result.current.toggleGarage(testEvent))
 
     expect(result.current.filteredGarages).toEqual([])
   })
@@ -54,6 +55,7 @@ describe("filterRoutesByGarage", () => {
     const route1 = routeFactory.build({ garages: ["Garage A"] })
     const route2 = routeFactory.build({ garages: ["Garage B"] })
 
+    // tslint:disable-next-line: react-hooks-nesting no-empty
     const { result } = renderHook(() => useGarageFilter([route1, route2]))
 
     const filteredRoutes = filterRoutesByGarage(
@@ -70,6 +72,7 @@ describe("filterRoutesByGarage", () => {
     const route1 = routeFactory.build({ garages: ["Garage A"] })
     const route2 = routeFactory.build({ garages: ["Garage B"] })
 
+    // tslint:disable-next-line: react-hooks-nesting no-empty
     const { result } = renderHook(() => useGarageFilter([route1, route2]))
 
     const testEvent = {
@@ -78,7 +81,7 @@ describe("filterRoutesByGarage", () => {
       },
     } as React.ChangeEvent<HTMLInputElement>
 
-    act(() => result.current.handleGarageToggle(testEvent))
+    act(() => result.current.toggleGarage(testEvent))
 
     const filteredRoutes = filterRoutesByGarage(
       [route1, route2],
@@ -95,7 +98,7 @@ describe("GarageFilter", () => {
     const mockGarageFilter: GarageFilterData = {
       filteredGarages: [],
       allGarages: ["Garage A", "Garage B"],
-      handleGarageToggle: jest.fn(),
+      toggleGarage: jest.fn(),
     }
 
     const garageFilter = mount(<GarageFilter {...mockGarageFilter} />)
@@ -111,6 +114,6 @@ describe("GarageFilter", () => {
       .first()
       .simulate("change", testEvent)
 
-    expect(mockGarageFilter.handleGarageToggle).toHaveBeenCalled()
+    expect(mockGarageFilter.toggleGarage).toHaveBeenCalled()
   })
 })
