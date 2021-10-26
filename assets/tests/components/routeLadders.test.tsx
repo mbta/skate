@@ -1,12 +1,13 @@
 import React from "react"
 import renderer from "react-test-renderer"
+import routeFactory from "../factories/route"
 import RouteLadders from "../../src/components/routeLadders"
 import { Route, TimepointsByRouteId } from "../../src/schedule.d"
 
 test("renders a route ladder", () => {
   const routes: Route[] = [
-    { id: "1", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "1" },
-    { id: "28", directionNames: { 0: "Outbound", 1: "Inbound" }, name: "28" },
+    routeFactory.build({ id: "1", name: "1" }),
+    routeFactory.build({ id: "28", name: "28" }),
   ]
   const timepointsByRouteId: TimepointsByRouteId = {
     "1": [

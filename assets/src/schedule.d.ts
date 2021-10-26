@@ -25,6 +25,8 @@ export interface ByBlockId<T> {
   [blockId: string]: T
 }
 
+export type GarageName = string
+
 export interface Route {
   id: RouteId
   directionNames: {
@@ -32,6 +34,7 @@ export interface Route {
     1: DirectionName
   }
   name: string
+  garages: GarageName[]
 }
 
 export interface Shape {

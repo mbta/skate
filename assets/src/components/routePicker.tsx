@@ -12,6 +12,13 @@ import { deselectRoute, DeselectRouteAction, selectRoute } from "../state"
 import { routeNameOrId } from "../util/route"
 import Loading from "./loading"
 import PickerContainer from "./pickerContainer"
+import {
+  GarageFilterData,
+  useGarageFilter,
+  GarageFilter,
+  filterRoutesByGarage,
+} from "../hooks/useGarageFilter"
+import featureIsEnabled from "../laboratoryFeatures"
 
 interface Props {
   selectedRouteIds: RouteId[]
@@ -20,8 +27,12 @@ interface Props {
 const RoutePicker = ({ selectedRouteIds }: Props) => {
   const routes = useContext(RoutesContext)
   const routeFilterData: RouteFilterData = useRouteFilter()
+  const garageFilterData: GarageFilterData = useGarageFilter(routes)
 
-  const filteredRoutes = filterRoutes(routes || [], routeFilterData)
+  const filteredRoutes = filterRoutesByGarage(
+    filterRoutes(routes || [], routeFilterData),
+    garageFilterData
+  )
 
   return (
     <PickerContainer>
@@ -32,6 +43,10 @@ const RoutePicker = ({ selectedRouteIds }: Props) => {
         />
 
         <RouteFilter {...routeFilterData} />
+
+        {featureIsEnabled("presets_workspaces") ? (
+          <GarageFilter {...garageFilterData} />
+        ) : null}
 
         {routes === null ? (
           <Loading />

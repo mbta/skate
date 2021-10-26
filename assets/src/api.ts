@@ -8,6 +8,7 @@ import { NotificationId, NotificationState, RunId } from "./realtime.d"
 import { RouteSettings } from "./routeSettings"
 import {
   DirectionName,
+  GarageName,
   Route,
   RouteId,
   Shape,
@@ -23,6 +24,7 @@ export interface RouteData {
     "1": DirectionName
   }
   name: string
+  garages: GarageName[]
 }
 
 const checkResponseStatus = (response: Response) => {
@@ -66,10 +68,12 @@ export const parseRouteData = ({
   id,
   direction_names,
   name,
+  garages,
 }: RouteData): Route => ({
   id,
   directionNames: direction_names,
   name,
+  garages,
 })
 
 const parseRoutesData = (routesData: RouteData[]): Route[] =>

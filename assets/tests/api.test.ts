@@ -12,6 +12,7 @@ import {
   putRouteSettings,
   putUserSetting,
 } from "../src/api"
+import routeFactory from "./factories/route"
 import * as browser from "../src/models/browser"
 
 // tslint:disable no-empty
@@ -124,6 +125,7 @@ describe("fetchRoutes", () => {
             1: "Inbound",
           },
           id: "28",
+          garages: ["Southampton"],
         },
         {
           direction_names: {
@@ -131,6 +133,7 @@ describe("fetchRoutes", () => {
             1: "Inbound",
           },
           id: "39",
+          garages: ["Southampton"],
         },
         {
           direction_names: {
@@ -138,33 +141,28 @@ describe("fetchRoutes", () => {
             1: "Inbound",
           },
           id: "71",
+          garages: ["North Cambridge"],
         },
       ],
     })
 
     fetchRoutes().then((routes) => {
       expect(routes).toEqual([
-        {
-          directionNames: {
-            "0": "Outbound",
-            "1": "Inbound",
-          },
+        routeFactory.build({
           id: "28",
-        },
-        {
-          directionNames: {
-            "0": "Outbound",
-            "1": "Inbound",
-          },
+          garages: ["Southampton"],
+          name: undefined,
+        }),
+        routeFactory.build({
           id: "39",
-        },
-        {
-          directionNames: {
-            "0": "Outbound",
-            "1": "Inbound",
-          },
+          garages: ["Southampton"],
+          name: undefined,
+        }),
+        routeFactory.build({
           id: "71",
-        },
+          garages: ["North Cambridge"],
+          name: undefined,
+        }),
       ])
       done()
     })

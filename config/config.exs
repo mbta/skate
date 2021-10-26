@@ -110,7 +110,9 @@ config :laboratory,
     {:minischedules_trip_label, "Choose Minischedules Trip Label",
      "User can, in minischedules, switch between showing origins and destinations of trips"},
     {:late_view, "Late View", "Grants access to experimental Late View"},
-    {:pigeon_maps, "Pigeon maps", "Replaces Leaflet-based maps with Pigeon"}
+    {:pigeon_maps, "Pigeon maps", "Replaces Leaflet-based maps with Pigeon"},
+    {:presets_workspaces, "Presets and workspaces",
+     "Advanced features for managing large amounts of route ladders"}
   ],
   cookie: [
     # one month,

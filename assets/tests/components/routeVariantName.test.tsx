@@ -1,5 +1,6 @@
 import { mount, shallow } from "enzyme"
 import React from "react"
+import routeFactory from "../factories/route"
 import { RouteVariantName } from "../../src/components/routeVariantName"
 import { RoutesProvider } from "../../src/contexts/routesContext"
 import { Vehicle } from "../../src/realtime"
@@ -106,11 +107,10 @@ describe("RouteVariantName", () => {
   })
 
   test("uses route name if available", () => {
-    const route: Route = {
+    const route: Route = routeFactory.build({
       id: "39",
-      directionNames: { "0": "Outbound", "1": "Inbound" },
       name: "ThirtyNine",
-    }
+    })
 
     const wrapper = mount(
       <RoutesProvider routes={[route]}>

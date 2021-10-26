@@ -1,6 +1,7 @@
 import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
+import routeFactory from "../factories/route"
 import NotificationDrawer from "../../src/components/notificationDrawer"
 import { NotificationsContext } from "../../src/contexts/notificationsContext"
 import { RoutesProvider } from "../../src/contexts/routesContext"
@@ -44,22 +45,14 @@ const readNotification: Notification = {
 }
 
 const routes: Route[] = [
-  {
+  routeFactory.build({
     id: "route1",
-    directionNames: {
-      0: "Outbound",
-      1: "Inbound",
-    },
     name: "r1",
-  },
-  {
+  }),
+  routeFactory.build({
     id: "route2",
-    directionNames: {
-      0: "Outbound",
-      1: "Inbound",
-    },
     name: "r2",
-  },
+  }),
 ]
 
 describe("NotificationDrawer", () => {

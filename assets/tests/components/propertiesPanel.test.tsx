@@ -9,6 +9,7 @@ import { Ghost, Vehicle } from "../../src/realtime"
 import { Route } from "../../src/schedule"
 import * as dateTime from "../../src/util/dateTime"
 import ghostFactory from "../factories/ghost"
+import routeFactory from "../factories/route"
 
 jest
   .spyOn(dateTime, "now")
@@ -16,14 +17,10 @@ jest
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
-const route: Route = {
+const route: Route = routeFactory.build({
   id: "39",
-  directionNames: {
-    0: "Outbound",
-    1: "Inbound",
-  },
   name: "39",
-}
+})
 const vehicle: Vehicle = {
   id: "v1",
   label: "v1-label",

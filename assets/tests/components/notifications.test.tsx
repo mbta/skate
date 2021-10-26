@@ -2,6 +2,7 @@ import { mount } from "enzyme"
 import React from "react"
 import { act } from "react-dom/test-utils"
 import renderer from "react-test-renderer"
+import routeFactory from "../factories/route"
 import {
   NotificationCard,
   Notifications,
@@ -52,30 +53,18 @@ const notificationWithMatchedVehicle: Notification = {
 }
 
 const routes: Route[] = [
-  {
+  routeFactory.build({
     id: "route1",
-    directionNames: {
-      0: "Outbound",
-      1: "Inbound",
-    },
     name: "r1",
-  },
-  {
+  }),
+  routeFactory.build({
     id: "route2",
-    directionNames: {
-      0: "Outbound",
-      1: "Inbound",
-    },
     name: "r2",
-  },
-  {
+  }),
+  routeFactory.build({
     id: "route3",
-    directionNames: {
-      0: "Outbound",
-      1: "Inbound",
-    },
     name: "r3",
-  },
+  }),
 ]
 
 describe("Notification", () => {

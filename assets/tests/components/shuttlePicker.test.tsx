@@ -1,6 +1,7 @@
 import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
+import routeFactory from "../factories/route"
 import ShuttlePicker, {
   activeRunCounts,
   formatRunId,
@@ -64,21 +65,18 @@ const vehicle: Vehicle = {
 }
 
 const shuttleRoutes: Route[] = [
-  {
+  routeFactory.build({
     id: "Shuttle-AshmontMattapan",
-    directionNames: { "0": "Outbound", "1": "Inbound" },
     name: "Mattapan Line Shuttle",
-  },
-  {
+  }),
+  routeFactory.build({
     id: "Shuttle-BabcockBostonCollege",
-    directionNames: { "0": "West", "1": "East" },
     name: "Green Line B Shuttle",
-  },
-  {
+  }),
+  routeFactory.build({
     id: "Shuttle-BallardvaleMaldenCenter",
-    directionNames: { "0": "Outbound", "1": "Inbound" },
     name: "Haverhill Line Shuttle",
-  },
+  }),
 ]
 
 jest.mock("../../src/hooks/useShuttleRoutes", () => ({
