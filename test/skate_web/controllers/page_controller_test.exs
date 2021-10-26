@@ -38,6 +38,20 @@ defmodule SkateWeb.PageControllerTest do
     end
 
     @tag :authenticated
+    test "includes route tabs in HTML", %{conn: conn, user: user} do
+      user
+      |> Skate.Settings.RouteTab.create()
+      |> Skate.Settings.RouteTab.set(%{selected_route_ids: ["1"]})
+
+      conn = get(conn, "/")
+
+      html = html_response(conn, 200)
+
+      assert html =~ "data-route-tabs"
+      assert html =~ "selected_route_ids&quot;:[&quot;1&quot;]"
+    end
+
+    @tag :authenticated
     test "/settings returns 200", %{conn: conn} do
       conn = get(conn, "/settings")
 

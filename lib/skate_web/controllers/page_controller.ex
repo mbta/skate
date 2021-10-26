@@ -3,6 +3,7 @@ defmodule SkateWeb.PageController do
   use SkateWeb, :controller
   alias Skate.Settings.RouteSettings
   alias Skate.Settings.UserSettings
+  alias Skate.Settings.RouteTab
   alias SkateWeb.AuthManager
 
   plug(:laboratory_features)
@@ -13,6 +14,7 @@ defmodule SkateWeb.PageController do
 
     user_settings = UserSettings.get_or_create(username)
     route_settings = RouteSettings.get_or_create(username)
+    route_tabs = RouteTab.get_all_for_user(username)
 
     dispatcher_flag =
       conn |> Guardian.Plug.current_claims() |> AuthManager.claims_grant_dispatcher_access?()
@@ -22,6 +24,7 @@ defmodule SkateWeb.PageController do
     |> assign(:csrf_token, Plug.CSRFProtection.get_csrf_token())
     |> assign(:user_settings, user_settings)
     |> assign(:route_settings, route_settings)
+    |> assign(:route_tabs, route_tabs)
     |> assign(:dispatcher_flag, dispatcher_flag)
     |> render("index.html")
   end
