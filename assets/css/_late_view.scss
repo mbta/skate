@@ -53,7 +53,9 @@ $late-view-width: 33rem;
   .m-late-view__panel-header {
     font: inherit;
     margin: 0;
-    padding: 1rem 0 1rem 1.5rem;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
   }
 
   table {
@@ -291,4 +293,61 @@ $late-view-width: 33rem;
 
 .m-late-view__data-row--selected {
   background-color: #f1f8f3;
+}
+
+.m-late-view__hide-toggle {
+  svg {
+    height: 1rem;
+    width: 1rem;
+  }
+}
+
+.m-late-view__toggle-exterior {
+  display: inline-block;
+  width: 2rem;
+  margin-left: 0.5rem;
+  position: relative;
+  border-width: 1px;
+}
+
+.m-late-view__toggle-interior {
+  width: 1rem;
+  position: absolute;
+  border-width: 1px;
+  top: -1px;
+}
+
+.m-late-view__toggle-exterior, .m-late-view__toggle-interior {
+  height: 1rem;
+  border-radius: 0.5rem;
+  border-style: solid;
+}
+
+.m-late-view__hide-toggle--hide {
+  svg path {
+    stroke: #6e717d;
+  }
+
+  .m-late-view__toggle-interior {
+    left: -1px;
+  }
+
+  .m-late-view__toggle-exterior, .m-late-view__toggle-interior {
+    border-color: #6e717d;
+  }
+}
+
+.m-late-view__hide-toggle--unhide {
+  svg path {
+    stroke: #222534;
+  }
+
+  .m-late-view__toggle-interior {
+    right: -1px;
+    background-color: #222534;
+  }
+
+  .m-late-view__toggle-exterior, .m-late-view__toggle-interior {
+    border-color: #222534;
+  }
 }

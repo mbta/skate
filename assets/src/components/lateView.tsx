@@ -16,6 +16,7 @@ import {
   hideIcon,
   lateViewGhostIcon,
   lateViewGhostWithWaiverIcon,
+  unhideIcon,
   upRightIcon,
 } from "../helpers/icon"
 import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
@@ -615,6 +616,9 @@ const UnhideToggle = ({
   toggleViewHidden: () => void
 }): ReactElement<HTMLElement> => (
   <button
+    className={`m-late-view__hide-toggle m-late-view__hide-toggle--${
+      viewHidden ? "hide" : "unhide"
+    }`}
     onClick={() => {
       if (window && window.FS) {
         window.FS.event("User clicked eye toggle")
@@ -622,7 +626,10 @@ const UnhideToggle = ({
       toggleViewHidden()
     }}
   >
-    {viewHidden ? "Hide" : "Show"}
+    {viewHidden ? hideIcon() : unhideIcon()}
+    <div className="m-late-view__toggle-exterior">
+      <div className="m-late-view__toggle-interior" />
+    </div>
   </button>
 )
 
