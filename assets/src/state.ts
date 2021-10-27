@@ -23,6 +23,7 @@ import {
   VehicleLabelSetting,
   VehicleAdherenceColorsSetting,
 } from "./userSettings"
+import { RouteTab } from "./models/routeTab"
 
 export enum OpenView {
   None = 1,
@@ -36,6 +37,7 @@ export interface State {
   selectedRouteIds: RouteId[]
   ladderDirections: LadderDirections
   ladderCrowdingToggles: LadderCrowdingToggles
+  routeTabs: RouteTab[]
   selectedShuttleRouteIds: RouteId[]
   selectedShuttleRunIds: RunId[] | "all"
   selectedVehicleOrGhost?: VehicleOrGhost | null
@@ -51,6 +53,7 @@ export const initialState: State = {
   selectedRouteIds: [],
   ladderDirections: emptyLadderDirectionsByRouteId,
   ladderCrowdingToggles: emptyLadderCrowdingTogglesByRouteId,
+  routeTabs: [],
   selectedShuttleRouteIds: [],
   selectedShuttleRunIds: "all",
   selectedVehicleOrGhost: undefined,
@@ -549,6 +552,7 @@ export const reducer = (state: State, action: Action): State => ({
     state.ladderCrowdingToggles,
     action
   ),
+  routeTabs: [],
   selectedShuttleRouteIds: selectedShuttleRouteIdsReducer(
     state.selectedShuttleRouteIds,
     action
