@@ -1,6 +1,5 @@
-import React, { Dispatch, useContext } from "react"
+import React, { useContext } from "react"
 import RoutesContext from "../contexts/routesContext"
-import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import {
   filterRoutes,
   RouteFilter,
@@ -8,7 +7,6 @@ import {
   useRouteFilter,
 } from "../hooks/useRouteFilter"
 import { Route, RouteId } from "../schedule.d"
-import { deselectRoute, DeselectRouteAction, selectRoute } from "../state"
 import { routeNameOrId } from "../util/route"
 import Loading from "./loading"
 import PickerContainer from "./pickerContainer"
@@ -22,9 +20,15 @@ import featureIsEnabled from "../laboratoryFeatures"
 
 interface Props {
   selectedRouteIds: RouteId[]
+  selectRoute: (routeId: RouteId) => void
+  deselectRoute: (routeId: RouteId) => void
 }
 
-const RoutePicker = ({ selectedRouteIds }: Props) => {
+const RoutePicker = ({
+  selectedRouteIds,
+  selectRoute,
+  deselectRoute,
+}: Props) => {
   const routes = useContext(RoutesContext)
   const routeFilterData: RouteFilterData = useRouteFilter()
   const garageFilterData: GarageFilterData = useGarageFilter(routes)
@@ -40,6 +44,7 @@ const RoutePicker = ({ selectedRouteIds }: Props) => {
         <SelectedRoutesList
           routes={routes}
           selectedRouteIds={selectedRouteIds}
+          deselectRoute={deselectRoute}
         />
 
         <RouteFilter {...routeFilterData} />
@@ -54,6 +59,8 @@ const RoutePicker = ({ selectedRouteIds }: Props) => {
           <RoutesList
             routes={filteredRoutes}
             selectedRouteIds={selectedRouteIds}
+            selectRoute={selectRoute}
+            deselectRoute={deselectRoute}
           />
         )}
       </div>
@@ -64,12 +71,12 @@ const RoutePicker = ({ selectedRouteIds }: Props) => {
 const SelectedRoutesList = ({
   routes,
   selectedRouteIds,
+  deselectRoute,
 }: {
   routes: Route[] | null
   selectedRouteIds: RouteId[]
+  deselectRoute: (routeId: RouteId) => void
 }) => {
-  const [, dispatch] = useContext(StateDispatchContext)
-
   return (
     <ul className="m-route-picker__selected-routes">
       {selectedRouteIds.map((routeId) => (
@@ -77,7 +84,7 @@ const SelectedRoutesList = ({
           key={routeId}
           routeId={routeId}
           routes={routes}
-          dispatch={dispatch}
+          deselectRoute={deselectRoute}
         />
       ))}
     </ul>
@@ -87,17 +94,17 @@ const SelectedRoutesList = ({
 const SelectedRouteButton = ({
   routeId,
   routes,
-  dispatch,
+  deselectRoute,
 }: {
   routeId: RouteId
   routes: Route[] | null
-  dispatch: Dispatch<DeselectRouteAction>
+  deselectRoute: (routeId: RouteId) => void
 }) => {
   return (
     <li>
       <button
         className="m-route-picker__selected-routes-button"
-        onClick={() => dispatch(deselectRoute(routeId))}
+        onClick={() => deselectRoute(routeId)}
       >
         {routeNameOrId(routeId, routes)}
       </button>
@@ -108,9 +115,13 @@ const SelectedRouteButton = ({
 const RoutesList = ({
   routes,
   selectedRouteIds,
+  selectRoute,
+  deselectRoute,
 }: {
   routes: Route[]
   selectedRouteIds: RouteId[]
+  selectRoute: (routeId: RouteId) => void
+  deselectRoute: (routeId: RouteId) => void
 }) => (
   <ul className="m-route-picker__route-list">
     {routes.map((route) => (
@@ -118,6 +129,8 @@ const RoutesList = ({
         <RouteListButton
           route={route}
           isSelected={selectedRouteIds.includes(route.id)}
+          selectRoute={selectRoute}
+          deselectRoute={deselectRoute}
         />
       </li>
     ))}
@@ -127,17 +140,20 @@ const RoutesList = ({
 const RouteListButton = ({
   route,
   isSelected,
+  selectRoute,
+  deselectRoute,
 }: {
   route: Route
   isSelected: boolean
+  selectRoute: (routeId: RouteId) => void
+  deselectRoute: (routeId: RouteId) => void
 }) => {
-  const [, dispatch] = useContext(StateDispatchContext)
   const selectedClass = isSelected
     ? "m-route-picker__route-list-button--selected"
     : "m-route-picker__route-list-button--unselected"
   const clickHandler = isSelected
-    ? () => dispatch(deselectRoute(route.id))
-    : () => dispatch(selectRoute(route.id))
+    ? () => deselectRoute(route.id)
+    : () => selectRoute(route.id)
 
   return (
     <button

@@ -30,6 +30,14 @@ test("renders a route ladder", () => {
         routes={routes}
         timepointsByRouteId={timepointsByRouteId}
         selectedVehicleId={undefined}
+        // tslint:disable-next-line: no-empty
+        deselectRoute={() => {}}
+        // tslint:disable-next-line: no-empty
+        reverseLadder={() => {}}
+        // tslint:disable-next-line: no-empty
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
       />
     )
     .toJSON()

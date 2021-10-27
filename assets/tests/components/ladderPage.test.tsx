@@ -19,6 +19,8 @@ import { ByRouteId, Route, TimepointsByRouteId } from "../../src/schedule.d"
 import { initialState, State } from "../../src/state"
 import ghostFactory from "../factories/ghost"
 import routeFactory from "../factories/route"
+import routeTabFactory from "../factories/routeTab"
+import featureIsEnabled from "../../src/laboratoryFeatures"
 
 jest.mock("../../src/hooks/useTimepoints", () => ({
   __esModule: true,
@@ -32,6 +34,10 @@ jest.mock("../../src/hooks/useVehicleForNotification", () => ({
   __esModule: true,
   default: jest.fn(() => undefined),
 }))
+jest.mock("../../src/laboratoryFeatures", () => ({
+  __esModule: true,
+  default: jest.fn(() => false),
+}))
 
 const mockDispatch = jest.fn()
 
@@ -43,6 +49,26 @@ describe("LadderPage", () => {
 
   test("renders with routes", () => {
     const mockState = { ...initialState, selectedRouteIds: ["1"] }
+    const tree = renderer
+      .create(
+        <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+          <RoutesProvider routes={routes}>
+            <LadderPage />
+          </RoutesProvider>
+        </StateDispatchProvider>
+      )
+      .toJSON()
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders with route tabs", () => {
+    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
+    const mockState = {
+      ...initialState,
+      routeTabs: [
+        routeTabFactory.build({ isCurrentTab: true, selectedRouteIds: ["1"] }),
+      ],
+    }
     const tree = renderer
       .create(
         <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
