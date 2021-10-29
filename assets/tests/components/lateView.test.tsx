@@ -1,6 +1,6 @@
-import { mount } from "enzyme"
+import { mount, ReactWrapper } from "enzyme"
 import React from "react"
-import renderer from "react-test-renderer"
+import renderer, { act } from "react-test-renderer"
 
 import App from "../../src/components/app"
 import LateView from "../../src/components/lateView"
@@ -21,7 +21,17 @@ jest.spyOn(Date, "now").mockImplementation(() => {
   return 18000 * 1000
 })
 
+const state: State = { ...initialState, openView: OpenView.Late }
+const lateMasterCheckboxSelector =
+  ".m-late-view__late-buses .m-late-view__master-checkbox"
+const missingMasterCheckboxSelector =
+  ".m-late-view__missing-logons .m-late-view__master-checkbox"
+
 describe("LateView", () => {
+  afterEach(() => {
+    window.localStorage.clear()
+  })
+
   test("renders missing logons and late buses", () => {
     const vehiclesByRouteId = {
       route: [
@@ -87,7 +97,6 @@ describe("LateView", () => {
 
   test("clicking tab closes late view", () => {
     const mockDispatch = jest.fn()
-    const state: State = { ...initialState, openView: OpenView.Late }
     const wrapper = mount(
       <StateDispatchProvider state={state} dispatch={mockDispatch}>
         <VehiclesByRouteIdProvider vehiclesByRouteId={{}}>
@@ -124,7 +133,6 @@ describe("LateView", () => {
     })
 
     const mockDispatch = jest.fn()
-    const state: State = { ...initialState, openView: OpenView.Late }
     const wrapper = mount(
       <StateDispatchProvider state={state} dispatch={mockDispatch}>
         <VehiclesByRouteIdProvider vehiclesByRouteId={{ route: [ghost] }}>
@@ -158,7 +166,6 @@ describe("LateView", () => {
     })
 
     const mockDispatch = jest.fn()
-    const state: State = { ...initialState, openView: OpenView.Late }
     const wrapper = mount(
       <StateDispatchProvider state={state} dispatch={mockDispatch}>
         <VehiclesByRouteIdProvider vehiclesByRouteId={{ route: [vehicle] }}>
@@ -174,5 +181,603 @@ describe("LateView", () => {
     expect(window.FS!.event).toHaveBeenCalledWith(
       "User selected late view run number"
     )
+  })
+
+  test("clicking hide checkbox toggles row selection state", () => {
+    const lateVehicle = vehicleFactory.build({
+      routeId: "route",
+      runId: "run1",
+      scheduleAdherenceSecs: 901,
+    })
+    const lateGhost = ghostFactory.build({
+      routeId: "route",
+      runId: "run3",
+      scheduledLogonTime: 15301,
+    })
+    const missingLogonGhost = ghostFactory.build({
+      routeId: "route",
+      runId: "run2",
+      scheduledLogonTime: 15299,
+    })
+
+    const vehiclesByRouteId = {
+      route: [lateVehicle, missingLogonGhost, lateGhost],
+    }
+
+    const wrapper = mount(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
+          <LateView />
+        </VehiclesByRouteIdProvider>
+      </StateDispatchProvider>
+    )
+    expect(
+      wrapper.find('.m-late-view__data-row input[type="checkbox"]')
+    ).toHaveLength(3)
+    expect(
+      wrapper.find('.m-late-view__data-row--selected input[type="checkbox"]')
+    ).toHaveLength(0)
+    expect(
+      wrapper.find('.m-late-view__data-row--unselected input[type="checkbox"]')
+    ).toHaveLength(3)
+
+    act(() => {
+      wrapper
+        .find('.m-late-view__data-row--unselected input[type="checkbox"]')
+        .first()
+        .simulate("click")
+    })
+    expect(
+      wrapper.find('.m-late-view__data-row--unselected input[type="checkbox"]')
+    ).toHaveLength(2)
+    expect(
+      wrapper.find('.m-late-view__data-row--selected input[type="checkbox"]')
+    ).toHaveLength(1)
+
+    act(() => {
+      wrapper
+        .find('.m-late-view__data-row--selected input[type="checkbox"]')
+        .first()
+        .simulate("click")
+    })
+    expect(
+      wrapper.find('.m-late-view__data-row--unselected input[type="checkbox"]')
+    ).toHaveLength(3)
+    expect(
+      wrapper.find('.m-late-view__data-row--selected input[type="checkbox"]')
+    ).toHaveLength(0)
+  })
+
+  test("master checkbox state responds to individual checkbox states", () => {
+    const isIndeterminate = (
+      mountedWrapper: ReactWrapper,
+      selector: string
+    ): boolean =>
+      (mountedWrapper.find(selector).first().getDOMNode() as HTMLInputElement)
+        .indeterminate
+
+    const isChecked = (
+      mountedWrapper: ReactWrapper,
+      selector: string
+    ): boolean =>
+      (mountedWrapper.find(selector).first().getDOMNode() as HTMLInputElement)
+        .checked
+
+    const lateVehicle1 = vehicleFactory.build({
+      routeId: "route",
+      runId: "run1",
+      scheduleAdherenceSecs: 901,
+    })
+    const lateVehicle2 = vehicleFactory.build({
+      routeId: "route",
+      runId: "run2",
+      scheduleAdherenceSecs: 901,
+    })
+    const missingLogonGhost1 = ghostFactory.build({
+      routeId: "route",
+      runId: "run3",
+      scheduledLogonTime: 15301,
+    })
+    const missingLogonGhost2 = ghostFactory.build({
+      routeId: "route",
+      runId: "run4",
+      scheduledLogonTime: 15301,
+    })
+
+    const vehiclesByRouteId = {
+      route: [
+        lateVehicle1,
+        lateVehicle2,
+        missingLogonGhost1,
+        missingLogonGhost2,
+      ],
+    }
+
+    const wrapper = mount(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
+          <LateView />
+        </VehiclesByRouteIdProvider>
+      </StateDispatchProvider>
+    )
+
+    expect(!isIndeterminate(wrapper, lateMasterCheckboxSelector))
+    expect(!isChecked(wrapper, lateMasterCheckboxSelector))
+
+    act(() => {
+      wrapper
+        .find(
+          '.m-late-view__late-buses .m-late-view__data-row--unselected input[type="checkbox"]'
+        )
+        .first()
+        .simulate("click")
+    })
+    expect(isIndeterminate(wrapper, lateMasterCheckboxSelector))
+    expect(!isChecked(wrapper, lateMasterCheckboxSelector))
+
+    act(() => {
+      wrapper
+        .find(
+          '.m-late-view__late-buses .m-late-view__data-row--unselected input[type="checkbox"]'
+        )
+        .last()
+        .simulate("click")
+    })
+    expect(!isIndeterminate(wrapper, lateMasterCheckboxSelector))
+    expect(isChecked(wrapper, lateMasterCheckboxSelector))
+
+    expect(!isIndeterminate(wrapper, lateMasterCheckboxSelector))
+    expect(!isChecked(wrapper, lateMasterCheckboxSelector))
+
+    act(() => {
+      wrapper
+        .find(
+          '.m-late-view__missing-logons .m-late-view__data-row--unselected input[type="checkbox"]'
+        )
+        .first()
+        .simulate("click")
+    })
+    expect(isIndeterminate(wrapper, missingMasterCheckboxSelector))
+    expect(!isChecked(wrapper, missingMasterCheckboxSelector))
+
+    act(() => {
+      wrapper
+        .find(
+          '.m-late-view__missing-logons .m-late-view__data-row--unselected input[type="checkbox"]'
+        )
+        .last()
+        .simulate("click")
+    })
+    expect(!isIndeterminate(wrapper, missingMasterCheckboxSelector))
+    expect(isChecked(wrapper, missingMasterCheckboxSelector))
+  })
+
+  test("master checkbox toggles multiple rows", () => {
+    const lateVehicle1 = vehicleFactory.build({
+      routeId: "route",
+      runId: "run1",
+      scheduleAdherenceSecs: 901,
+    })
+    const lateVehicle2 = vehicleFactory.build({
+      routeId: "route",
+      runId: "run2",
+      scheduleAdherenceSecs: 901,
+    })
+    const missingLogonGhost1 = ghostFactory.build({
+      routeId: "route",
+      runId: "run3",
+      scheduledLogonTime: 15301,
+    })
+    const missingLogonGhost2 = ghostFactory.build({
+      routeId: "route",
+      runId: "run4",
+      scheduledLogonTime: 15301,
+    })
+
+    const vehiclesByRouteId = {
+      route: [
+        lateVehicle1,
+        lateVehicle2,
+        missingLogonGhost1,
+        missingLogonGhost2,
+      ],
+    }
+
+    const wrapper = mount(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
+          <LateView />
+        </VehiclesByRouteIdProvider>
+      </StateDispatchProvider>
+    )
+
+    expect(
+      wrapper.find(
+        '.m-late-view__late-buses .m-late-view__data-row--selected input[type="checkbox"]'
+      )
+    ).toHaveLength(0)
+
+    act(() => {
+      wrapper.find(lateMasterCheckboxSelector).first().simulate("click")
+    })
+    expect(
+      wrapper.find(
+        '.m-late-view__late-buses .m-late-view__data-row--selected input[type="checkbox"]'
+      )
+    ).toHaveLength(2)
+
+    act(() => {
+      wrapper
+        .find('.m-late-view__data-row--selected input[type="checkbox"]')
+        .first()
+        .simulate("click")
+    })
+    expect(
+      wrapper.find(
+        '.m-late-view__late-buses .m-late-view__data-row--selected input[type="checkbox"]'
+      )
+    ).toHaveLength(1)
+    act(() => {
+      wrapper.find(lateMasterCheckboxSelector).first().simulate("click")
+    })
+    expect(
+      wrapper.find(
+        '.m-late-view__late-buses .m-late-view__data-row--selected input[type="checkbox"]'
+      )
+    ).toHaveLength(2)
+
+    act(() => {
+      wrapper.find(lateMasterCheckboxSelector).first().simulate("click")
+    })
+    expect(
+      wrapper.find(
+        '.m-late-view__late-buses .m-late-view__data-row--selected input[type="checkbox"]'
+      )
+    ).toHaveLength(0)
+
+    expect(
+      wrapper.find(
+        '.m-late-view__missing-logons .m-late-view__data-row--selected input[type="checkbox"]'
+      )
+    ).toHaveLength(0)
+
+    act(() => {
+      wrapper.find(missingMasterCheckboxSelector).first().simulate("click")
+    })
+    expect(
+      wrapper.find(
+        ".m-late-view__missing-logons .m-late-view__data-row--selected"
+      )
+    ).toHaveLength(2)
+
+    act(() => {
+      wrapper
+        .find('.m-late-view__data-row--selected input[type="checkbox"]')
+        .first()
+        .simulate("click")
+    })
+    expect(
+      wrapper.find(
+        ".m-late-view__missing-logons .m-late-view__data-row--selected"
+      )
+    ).toHaveLength(1)
+    act(() => {
+      wrapper.find(missingMasterCheckboxSelector).first().simulate("click")
+    })
+    expect(
+      wrapper.find(
+        ".m-late-view__missing-logons .m-late-view__data-row--selected"
+      )
+    ).toHaveLength(2)
+
+    act(() => {
+      wrapper.find(missingMasterCheckboxSelector).first().simulate("click")
+    })
+    expect(
+      wrapper.find(
+        ".m-late-view__missing-logons .m-late-view__data-row--selected"
+      )
+    ).toHaveLength(0)
+  })
+
+  test("select rows and clicking hide button hides rows", () => {
+    const lateVehicle1 = vehicleFactory.build({
+      routeId: "route",
+      runId: "run1",
+      scheduleAdherenceSecs: 901,
+    })
+    const lateVehicle2 = vehicleFactory.build({
+      routeId: "route",
+      runId: "run2",
+      scheduleAdherenceSecs: 901,
+    })
+    const missingLogonGhost1 = ghostFactory.build({
+      routeId: "route",
+      runId: "run3",
+      scheduledLogonTime: 15301,
+    })
+    const missingLogonGhost2 = ghostFactory.build({
+      routeId: "route",
+      runId: "run4",
+      scheduledLogonTime: 15301,
+    })
+
+    const vehiclesByRouteId = {
+      route: [
+        lateVehicle1,
+        lateVehicle2,
+        missingLogonGhost1,
+        missingLogonGhost2,
+      ],
+    }
+
+    const wrapper = mount(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
+          <LateView />
+        </VehiclesByRouteIdProvider>
+      </StateDispatchProvider>
+    )
+    act(() => {
+      wrapper
+        .find(
+          '.m-late-view__missing-logons .m-late-view__data-row input[type="checkbox"]'
+        )
+        .first()
+        .simulate("click")
+
+      wrapper
+        .find(
+          '.m-late-view__late-buses .m-late-view__data-row input[type="checkbox"]'
+        )
+        .first()
+        .simulate("click")
+
+      wrapper.find(".m-late-view__hide-popup button").first().simulate("click")
+    })
+
+    expect(wrapper.find(".m-late-view__data-row--selected")).toHaveLength(0)
+
+    expect(wrapper.find(".m-late-view__data-row--unselected")).toHaveLength(2)
+  })
+
+  test("can undo hiding, but only for a limited time", () => {
+    const lateVehicle1 = vehicleFactory.build({
+      routeId: "route",
+      runId: "run1",
+      scheduleAdherenceSecs: 901,
+    })
+    const lateVehicle2 = vehicleFactory.build({
+      routeId: "route",
+      runId: "run2",
+      scheduleAdherenceSecs: 901,
+    })
+    const missingLogonGhost1 = ghostFactory.build({
+      routeId: "route",
+      runId: "run3",
+      scheduledLogonTime: 15301,
+    })
+    const missingLogonGhost2 = ghostFactory.build({
+      routeId: "route",
+      runId: "run4",
+      scheduledLogonTime: 15301,
+    })
+
+    const vehiclesByRouteId = {
+      route: [
+        lateVehicle1,
+        lateVehicle2,
+        missingLogonGhost1,
+        missingLogonGhost2,
+      ],
+    }
+
+    const wrapper = mount(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
+          <LateView />
+        </VehiclesByRouteIdProvider>
+      </StateDispatchProvider>
+    )
+    act(() => {
+      wrapper
+        .find(
+          '.m-late-view__missing-logons .m-late-view__data-row input[type="checkbox"]'
+        )
+        .first()
+        .simulate("click")
+
+      wrapper
+        .find(
+          '.m-late-view__late-buses .m-late-view__data-row input[type="checkbox"]'
+        )
+        .first()
+        .simulate("click")
+
+      wrapper.find(".m-late-view__hide-popup button").first().simulate("click")
+    })
+
+    expect(wrapper.find(".m-late-view__data-row--selected")).toHaveLength(0)
+
+    expect(wrapper.find(".m-late-view__data-row--unselected")).toHaveLength(2)
+
+    act(() => {
+      wrapper
+        .find(".m-late-view__unhide-popup button")
+        .first()
+        .simulate("click")
+    })
+    expect(wrapper.find(".m-late-view__unhide-popup button")).toHaveLength(0)
+    expect(wrapper.find(".m-late-view__data-row--selected")).toHaveLength(0)
+  })
+
+  test("eye toggle toggles visibility of non-permanently-hidden rows", () => {
+    const lateVehicle1 = vehicleFactory.build({
+      routeId: "route",
+      runId: "run1",
+      scheduleAdherenceSecs: 901,
+    })
+    const lateVehicle2 = vehicleFactory.build({
+      routeId: "route",
+      runId: "run2",
+      scheduleAdherenceSecs: 901,
+    })
+    const missingLogonGhost1 = ghostFactory.build({
+      routeId: "route",
+      runId: "run3",
+      scheduledLogonTime: 15301,
+    })
+    const missingLogonGhost2 = ghostFactory.build({
+      routeId: "route",
+      runId: "run4",
+      scheduledLogonTime: 15301,
+    })
+
+    const vehiclesByRouteId = {
+      route: [
+        lateVehicle1,
+        lateVehicle2,
+        missingLogonGhost1,
+        missingLogonGhost2,
+      ],
+    }
+
+    const wrapper = mount(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
+          <LateView />
+        </VehiclesByRouteIdProvider>
+      </StateDispatchProvider>
+    )
+
+    expect(wrapper.find(".m-late-view__hide-toggle--hide")).toHaveLength(0)
+    expect(wrapper.find(".m-late-view__hide-toggle--unhide")).toHaveLength(0)
+
+    act(() => {
+      wrapper
+        .find(
+          '.m-late-view__missing-logons .m-late-view__data-row input[type="checkbox"]'
+        )
+        .first()
+        .simulate("click")
+
+      wrapper
+        .find(
+          '.m-late-view__late-buses .m-late-view__data-row input[type="checkbox"]'
+        )
+        .first()
+        .simulate("click")
+
+      wrapper.find(".m-late-view__hide-popup button").first().simulate("click")
+    })
+
+    expect(wrapper.find(".m-late-view__data-row--selected")).toHaveLength(0)
+
+    expect(wrapper.find(".m-late-view__data-row--unselected")).toHaveLength(2)
+
+    expect(wrapper.find(".m-late-view__hide-toggle--hide")).toHaveLength(0)
+    expect(wrapper.find(".m-late-view__hide-toggle--unhide")).toHaveLength(2)
+
+    act(() => {
+      wrapper
+        .find(".m-late-view__hide-toggle--unhide")
+        .first()
+        .simulate("click")
+    })
+
+    expect(wrapper.find(".m-late-view__hide-toggle--hide")).toHaveLength(2)
+    expect(wrapper.find(".m-late-view__hide-toggle--unhide")).toHaveLength(0)
+    expect(wrapper.find(".m-late-view__data-row")).toHaveLength(4)
+
+    act(() => {
+      wrapper.find(".m-late-view__hide-toggle--hide").first().simulate("click")
+    })
+
+    expect(wrapper.find(".m-late-view__hide-toggle--hide")).toHaveLength(0)
+    expect(wrapper.find(".m-late-view__hide-toggle--unhide")).toHaveLength(2)
+    expect(wrapper.find(".m-late-view__data-row")).toHaveLength(2)
+  })
+
+  test("persist hidden rows between page loads", () => {
+    const lateVehicle1 = vehicleFactory.build({
+      routeId: "route",
+      runId: "run1",
+      scheduleAdherenceSecs: 901,
+    })
+    const lateVehicle2 = vehicleFactory.build({
+      routeId: "route",
+      runId: "run2",
+      scheduleAdherenceSecs: 901,
+    })
+    const missingLogonGhost1 = ghostFactory.build({
+      routeId: "route",
+      runId: "run3",
+      scheduledLogonTime: 15301,
+    })
+    const missingLogonGhost2 = ghostFactory.build({
+      routeId: "route",
+      runId: "run4",
+      scheduledLogonTime: 15301,
+    })
+
+    const vehiclesByRouteId = {
+      route: [
+        lateVehicle1,
+        lateVehicle2,
+        missingLogonGhost1,
+        missingLogonGhost2,
+      ],
+    }
+
+    const firstLoadWrapper = mount(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
+          <LateView />
+        </VehiclesByRouteIdProvider>
+      </StateDispatchProvider>
+    )
+
+    act(() => {
+      firstLoadWrapper
+        .find(
+          '.m-late-view__missing-logons .m-late-view__data-row input[type="checkbox"]'
+        )
+        .first()
+        .simulate("click")
+
+      firstLoadWrapper
+        .find(
+          '.m-late-view__late-buses .m-late-view__data-row input[type="checkbox"]'
+        )
+        .first()
+        .simulate("click")
+
+      firstLoadWrapper
+        .find(".m-late-view__hide-popup button")
+        .first()
+        .simulate("click")
+    })
+    expect(
+      firstLoadWrapper.find(".m-late-view__data-row--selected")
+    ).toHaveLength(0)
+
+    expect(
+      firstLoadWrapper.find(".m-late-view__data-row--unselected")
+    ).toHaveLength(2)
+
+    const reloadWrapper = mount(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
+          <LateView />
+        </VehiclesByRouteIdProvider>
+      </StateDispatchProvider>
+    )
+    expect(reloadWrapper.find(".m-late-view__data-row--selected")).toHaveLength(
+      0
+    )
+
+    expect(
+      reloadWrapper.find(".m-late-view__data-row--unselected")
+    ).toHaveLength(2)
   })
 })
