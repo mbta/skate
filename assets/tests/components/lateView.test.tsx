@@ -108,6 +108,7 @@ describe("LateView", () => {
   test("clicking ghost run number opens ghost and sends Fullstory event", () => {
     const ghost = ghostFactory.build({
       routeId: "route",
+      runId: "12345",
       scheduledLogonTime: 15299,
       currentPieceFirstRoute: "route",
       currentPieceStartPlace: "garage",

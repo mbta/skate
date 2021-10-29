@@ -22,10 +22,21 @@ exports[`LateView renders missing logons and late buses 1`] = `
           className="m-late-view__panel-header m-late-view__missing-logons-panel-header"
         >
           Missing logons
+           
         </h2>
         <table>
           <thead>
             <tr>
+              <th
+                className="m-late-view__hide-check-header"
+              >
+                <input
+                  className="m-late-view__master-checkbox"
+                  onClick={[Function]}
+                  readOnly={true}
+                  type="checkbox"
+                />
+              </th>
               <th
                 className="m-late-view__scheduled-logon-header"
               >
@@ -49,7 +60,17 @@ exports[`LateView renders missing logons and late buses 1`] = `
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr
+              className="m-late-view__data-row m-late-view__data-row--unselected"
+            >
+              <td>
+                <input
+                  checked={false}
+                  onClick={[Function]}
+                  readOnly={true}
+                  type="checkbox"
+                />
+              </td>
               <td>
                 4:15 AM
               </td>
@@ -67,7 +88,17 @@ exports[`LateView renders missing logons and late buses 1`] = `
                 station
               </td>
             </tr>
-            <tr>
+            <tr
+              className="m-late-view__data-row m-late-view__data-row--unselected"
+            >
+              <td>
+                <input
+                  checked={false}
+                  onClick={[Function]}
+                  readOnly={true}
+                  type="checkbox"
+                />
+              </td>
               <td>
                 4:15 AM
               </td>
@@ -95,10 +126,21 @@ exports[`LateView renders missing logons and late buses 1`] = `
           className="m-late-view__panel-header m-late-view__late-buses-panel-header"
         >
           Late buses
+           
         </h2>
         <table>
           <thead>
             <tr>
+              <th
+                className="m-late-view__hide-check-header"
+              >
+                <input
+                  className="m-late-view__master-checkbox"
+                  onClick={[Function]}
+                  readOnly={true}
+                  type="checkbox"
+                />
+              </th>
               <th
                 className="m-late-view__adherence-header"
               >
@@ -127,7 +169,17 @@ exports[`LateView renders missing logons and late buses 1`] = `
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr
+              className="m-late-view__data-row m-late-view__data-row--unselected"
+            >
+              <td>
+                <input
+                  checked={false}
+                  onClick={[Function]}
+                  readOnly={true}
+                  type="checkbox"
+                />
+              </td>
               <td
                 className="m-late-view__adherence-cell"
               >
@@ -161,7 +213,17 @@ exports[`LateView renders missing logons and late buses 1`] = `
               </td>
               <td />
             </tr>
-            <tr>
+            <tr
+              className="m-late-view__data-row m-late-view__data-row--unselected"
+            >
+              <td>
+                <input
+                  checked={false}
+                  onClick={[Function]}
+                  readOnly={true}
+                  type="checkbox"
+                />
+              </td>
               <td
                 className="m-late-view__adherence-cell"
               >
@@ -201,7 +263,17 @@ exports[`LateView renders missing logons and late buses 1`] = `
                 op2
               </td>
             </tr>
-            <tr>
+            <tr
+              className="m-late-view__data-row m-late-view__data-row--unselected"
+            >
+              <td>
+                <input
+                  checked={false}
+                  onClick={[Function]}
+                  readOnly={true}
+                  type="checkbox"
+                />
+              </td>
               <td
                 className="m-late-view__adherence-cell"
               >
@@ -241,7 +313,17 @@ exports[`LateView renders missing logons and late buses 1`] = `
                 op4
               </td>
             </tr>
-            <tr>
+            <tr
+              className="m-late-view__data-row m-late-view__data-row--unselected"
+            >
+              <td>
+                <input
+                  checked={false}
+                  onClick={[Function]}
+                  readOnly={true}
+                  type="checkbox"
+                />
+              </td>
               <td
                 className="m-late-view__adherence-cell"
               >
