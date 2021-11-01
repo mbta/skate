@@ -1,5 +1,5 @@
 $late-view-background-color: $color-bg-light;
-$late-view-width: 33rem;
+$late-view-width: 34.5rem;
 
 .m-late-view {
   @include modal-content;
@@ -107,11 +107,11 @@ $late-view-width: 33rem;
 }
 
 .m-late-view__missing-logons {
-  width: 28rem;
+  width: 29.5rem;
 }
 
 .m-late-view__late-buses {
-  width: 28rem;
+  width: 29.5rem;
 }
 
 .m-late-view__run-link {
