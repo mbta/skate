@@ -6,4 +6,5 @@ export default Factory.define<RouteTab>(() => ({
   selectedRouteIds: [],
   ladderDirections: {},
   ladderCrowdingToggles: {},
+  ordering: 0,
 }))

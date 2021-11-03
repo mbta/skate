@@ -9,14 +9,16 @@ export interface RouteTab {
   selectedRouteIds: RouteId[]
   ladderDirections: LadderDirections
   ladderCrowdingToggles: LadderCrowdingToggles
+  ordering: number
 }
 
-export const newRouteTab = (): RouteTab => ({
+export const newRouteTab = (ordering: number): RouteTab => ({
   isCurrentTab: true,
   selectedRouteIds: [],
   ladderDirections: {},
   ladderCrowdingToggles: {},
+  ordering,
 })
 
 export const currentRouteTab = (routeTabs: RouteTab[]): RouteTab =>
-  routeTabs.find((routeTab) => routeTab.isCurrentTab) || newRouteTab()
+  routeTabs.find((routeTab) => routeTab.isCurrentTab) || newRouteTab(0)

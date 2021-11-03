@@ -507,14 +507,16 @@ const routeTabsReducer = (state: RouteTab[], action: Action): RouteTab[] => {
         ...state.map((existingRouteTab) => {
           return { ...existingRouteTab, isCurrentTab: false }
         }),
-        newRouteTab(),
+        newRouteTab(state.length),
       ]
     case "SELECT_ROUTE_TAB":
-      const routeTabs = state.map((existingRouteTab) => {
-        return { ...existingRouteTab, isCurrentTab: false }
+      const routeTabs = state.map((existingRouteTab, i) => {
+        if (i === action.payload.index) {
+          return { ...existingRouteTab, isCurrentTab: true }
+        } else {
+          return { ...existingRouteTab, isCurrentTab: false }
+        }
       })
-
-      routeTabs[action.payload.index].isCurrentTab = true
 
       return routeTabs
     case "SELECT_ROUTE_IN_TAB":

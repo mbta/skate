@@ -441,7 +441,7 @@ describe("reducer", () => {
       ...initialState,
       routeTabs: [
         routeTabFactory.build(),
-        routeTabFactory.build({ isCurrentTab: true }),
+        routeTabFactory.build({ isCurrentTab: true, ordering: 1 }),
       ],
     }
 
