@@ -168,7 +168,8 @@ defmodule Skate.Factory do
       preset_name: "preset",
       selected_route_ids: [],
       ladder_directions: %{},
-      ladder_crowding_toggles: %{}
+      ladder_crowding_toggles: %{},
+      ordering: nil
     }
   end
 end

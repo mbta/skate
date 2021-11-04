@@ -12,6 +12,7 @@ defmodule Skate.Settings.Db.RouteTab do
     field(:selected_route_ids, {:array, :string})
     field(:ladder_directions, :map)
     field(:ladder_crowding_toggles, :map)
+    field(:ordering, :integer)
 
     belongs_to(:save_changes_to_tab, Skate.Settings.Db.RouteTab,
       foreign_key: :save_changes_to_tab_id
@@ -29,6 +30,7 @@ defmodule Skate.Settings.Db.RouteTab do
       :selected_route_ids,
       :ladder_directions,
       :ladder_crowding_toggles,
+      :ordering,
       :save_changes_to_tab_id
     ])
     |> validate_required([
