@@ -1,6 +1,7 @@
 defmodule SkateWeb.PageControllerTest do
   use SkateWeb.ConnCase
   use Skate.DataCase
+  import Skate.Factory
 
   describe "GET /" do
     test "when logged out, redirects you to cognito auth", %{conn: conn} do
@@ -39,9 +40,9 @@ defmodule SkateWeb.PageControllerTest do
 
     @tag :authenticated
     test "includes route tabs in HTML", %{conn: conn, user: user} do
-      user
-      |> Skate.Settings.RouteTab.create()
-      |> Skate.Settings.RouteTab.set(%{selected_route_ids: ["1"]})
+      Skate.Settings.RouteTab.update_all_for_user!(user, [
+        build(:route_tab, %{selected_route_ids: ["1"]})
+      ])
 
       conn = get(conn, "/")
 

@@ -32,7 +32,6 @@ defmodule Skate.Settings.Db.RouteTab do
       :save_changes_to_tab_id
     ])
     |> validate_required([
-      :user_id,
       :selected_route_ids,
       :ladder_directions,
       :ladder_crowding_toggles

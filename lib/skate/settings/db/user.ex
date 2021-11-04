@@ -6,6 +6,7 @@ defmodule Skate.Settings.Db.User do
   alias Notifications.Db.NotificationUser, as: DbNotificationUser
   alias Skate.Settings.Db.RouteSettings, as: DbRouteSettings
   alias Skate.Settings.Db.UserSettings, as: DbUserSettings
+  alias Skate.Settings.Db.RouteTab, as: DbRouteTab
 
   @type t :: %__MODULE__{}
 
@@ -17,6 +18,7 @@ defmodule Skate.Settings.Db.User do
 
     has_many(:notification_users, DbNotificationUser)
     many_to_many(:notifications, DbNotification, join_through: DbNotificationUser)
+    has_many(:route_tabs, DbRouteTab, on_replace: :delete)
   end
 
   def changeset(user, attrs \\ %{}) do
@@ -25,6 +27,7 @@ defmodule Skate.Settings.Db.User do
       :id,
       :username
     ])
+    |> cast_assoc(:route_tabs, with: &DbRouteTab.changeset/2)
     |> validate_required([
       :username
     ])
