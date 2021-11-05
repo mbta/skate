@@ -45,7 +45,7 @@ defmodule Skate.Settings.RouteTab do
     end)
   end
 
-  @spec update_all_for_user!(String.t(), t()) :: [t()]
+  @spec update_all_for_user!(String.t(), [t()]) :: [t()]
   def update_all_for_user!(username, route_tabs) do
     username
     |> User.get_or_create()
