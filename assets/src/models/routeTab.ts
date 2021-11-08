@@ -9,7 +9,7 @@ export interface RouteTab {
   selectedRouteIds: RouteId[]
   ladderDirections: LadderDirections
   ladderCrowdingToggles: LadderCrowdingToggles
-  ordering: number
+  ordering?: number
 }
 
 export const newRouteTab = (ordering: number): RouteTab => ({

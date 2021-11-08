@@ -439,7 +439,8 @@ describe("reducer", () => {
 
     const expectedState: State.State = {
       ...initialState,
-      routeTabs: [
+      routeTabs: [routeTabFactory.build({ isCurrentTab: true })],
+      pendingRouteTabs: [
         routeTabFactory.build(),
         routeTabFactory.build({ isCurrentTab: true, ordering: 1 }),
       ],
@@ -462,17 +463,20 @@ describe("reducer", () => {
 
     const expectedState: State.State = {
       ...initialState,
-      routeTabs: [expectedRouteTab1, expectedRouteTab2],
+      routeTabs: [routeTab1, routeTab2],
+      pendingRouteTabs: [expectedRouteTab1, expectedRouteTab2],
     }
 
     expect(newState).toEqual(expectedState)
   })
 
   test("selectRouteInTab", () => {
+    const routeTab = routeTabFactory.build({ isCurrentTab: true })
+
     const newState = reducer(
       {
         ...initialState,
-        routeTabs: [routeTabFactory.build({ isCurrentTab: true })],
+        routeTabs: [routeTab],
       },
       State.selectRouteInTab("1")
     )
@@ -482,46 +486,52 @@ describe("reducer", () => {
       selectedRouteIds: ["1"],
     })
 
-    expect(newState).toEqual({ ...initialState, routeTabs: [expectedRouteTab] })
+    expect(newState).toEqual({
+      ...initialState,
+      routeTabs: [routeTab],
+      pendingRouteTabs: [expectedRouteTab],
+    })
   })
 
   test("deselectRouteInTab", () => {
+    const routeTab = routeTabFactory.build({
+      isCurrentTab: true,
+      selectedRouteIds: ["1"],
+    })
+
     const newState = reducer(
       {
         ...initialState,
-        routeTabs: [
-          routeTabFactory.build({
-            isCurrentTab: true,
-            selectedRouteIds: ["1"],
-          }),
-        ],
+        routeTabs: [routeTab],
       },
       State.deselectRouteInTab("1")
     )
 
     expect(newState).toEqual({
       ...initialState,
-      routeTabs: [routeTabFactory.build({ isCurrentTab: true })],
+      routeTabs: [routeTab],
+      pendingRouteTabs: [routeTabFactory.build({ isCurrentTab: true })],
     })
   })
 
   test("flipLadderInTab", () => {
+    const routeTab = routeTabFactory.build({
+      isCurrentTab: true,
+      selectedRouteIds: ["1"],
+    })
+
     const newState = reducer(
       {
         ...initialState,
-        routeTabs: [
-          routeTabFactory.build({
-            isCurrentTab: true,
-            selectedRouteIds: ["1"],
-          }),
-        ],
+        routeTabs: [routeTab],
       },
       State.flipLadderInTab("1")
     )
 
     expect(newState).toEqual({
       ...initialState,
-      routeTabs: [
+      routeTabs: [routeTab],
+      pendingRouteTabs: [
         routeTabFactory.build({
           isCurrentTab: true,
           selectedRouteIds: ["1"],
@@ -532,22 +542,23 @@ describe("reducer", () => {
   })
 
   test("toggleLadderCrowdingInTab", () => {
+    const routeTab = routeTabFactory.build({
+      isCurrentTab: true,
+      selectedRouteIds: ["1"],
+    })
+
     const newState = reducer(
       {
         ...initialState,
-        routeTabs: [
-          routeTabFactory.build({
-            isCurrentTab: true,
-            selectedRouteIds: ["1"],
-          }),
-        ],
+        routeTabs: [routeTab],
       },
       State.toggleLadderCrowdingInTab("1")
     )
 
     expect(newState).toEqual({
       ...initialState,
-      routeTabs: [
+      routeTabs: [routeTab],
+      pendingRouteTabs: [
         routeTabFactory.build({
           isCurrentTab: true,
           selectedRouteIds: ["1"],

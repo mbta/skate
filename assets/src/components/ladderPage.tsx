@@ -147,7 +147,7 @@ const LadderPageWithTabs = (): ReactElement<HTMLDivElement> => {
       <div className="m-ladder-page__route-tab-bar">
         {routeTabs
           .filter((routeTab) => routeTab.ordering !== undefined)
-          .sort((a, b) => a.ordering - b.ordering)
+          .sort((a, b) => (a.ordering || 0) - (b.ordering || 0))
           .map((routeTab, i) => (
             <LadderTab
               tab={routeTab}
