@@ -13,7 +13,8 @@ defmodule Skate.Settings.RouteTab do
           selected_route_ids: [Route.id()],
           ladder_directions: map(),
           ladder_crowding_toggles: map(),
-          ordering: integer() | nil
+          ordering: integer() | nil,
+          is_current_tab: boolean() | nil
         }
 
   @enforce_keys [:selected_route_ids, :ladder_directions, :ladder_crowding_toggles]
@@ -26,6 +27,7 @@ defmodule Skate.Settings.RouteTab do
     :ladder_directions,
     :ladder_crowding_toggles,
     :ordering,
+    :is_current_tab,
     id: nil
   ]
 
@@ -40,7 +42,8 @@ defmodule Skate.Settings.RouteTab do
         selected_route_ids: db_route_tab.selected_route_ids,
         ladder_directions: db_route_tab.ladder_directions,
         ladder_crowding_toggles: db_route_tab.ladder_crowding_toggles,
-        ordering: db_route_tab.ordering
+        ordering: db_route_tab.ordering,
+        is_current_tab: db_route_tab.is_current_tab
       }
     end)
   end
@@ -60,7 +63,8 @@ defmodule Skate.Settings.RouteTab do
         selected_route_ids: db_route_tab.selected_route_ids,
         ladder_directions: db_route_tab.ladder_directions,
         ladder_crowding_toggles: db_route_tab.ladder_crowding_toggles,
-        ordering: db_route_tab.ordering
+        ordering: db_route_tab.ordering,
+        is_current_tab: db_route_tab.is_current_tab
       }
     end)
   end

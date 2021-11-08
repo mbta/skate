@@ -169,7 +169,8 @@ defmodule Skate.Factory do
       selected_route_ids: [],
       ladder_directions: %{},
       ladder_crowding_toggles: %{},
-      ordering: nil
+      ordering: nil,
+      is_current_tab: false
     }
   end
 end
