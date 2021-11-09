@@ -27,6 +27,21 @@ const lateMasterCheckboxSelector =
 const missingMasterCheckboxSelector =
   ".m-late-view__missing-logons .m-late-view__master-checkbox"
 
+const expectIsIndeterminate = (
+  mountedWrapper: ReactWrapper,
+  selector: string
+) =>
+  expect(
+    (mountedWrapper.find(selector).first().getDOMNode() as HTMLInputElement)
+      .indeterminate
+  )
+
+const expectIsChecked = (mountedWrapper: ReactWrapper, selector: string) =>
+  expect(
+    (mountedWrapper.find(selector).first().getDOMNode() as HTMLInputElement)
+      .checked
+  )
+
 describe("LateView", () => {
   afterEach(() => {
     window.localStorage.clear()
@@ -249,20 +264,6 @@ describe("LateView", () => {
   })
 
   test("master checkbox state responds to individual checkbox states", () => {
-    const isIndeterminate = (
-      mountedWrapper: ReactWrapper,
-      selector: string
-    ): boolean =>
-      (mountedWrapper.find(selector).first().getDOMNode() as HTMLInputElement)
-        .indeterminate
-
-    const isChecked = (
-      mountedWrapper: ReactWrapper,
-      selector: string
-    ): boolean =>
-      (mountedWrapper.find(selector).first().getDOMNode() as HTMLInputElement)
-        .checked
-
     const lateVehicle1 = vehicleFactory.build({
       routeId: "route",
       runId: "run1",
@@ -301,8 +302,8 @@ describe("LateView", () => {
       </StateDispatchProvider>
     )
 
-    expect(!isIndeterminate(wrapper, lateMasterCheckboxSelector))
-    expect(!isChecked(wrapper, lateMasterCheckboxSelector))
+    expectIsIndeterminate(wrapper, lateMasterCheckboxSelector).toEqual(false)
+    expectIsChecked(wrapper, lateMasterCheckboxSelector).toEqual(false)
 
     act(() => {
       wrapper
@@ -312,8 +313,8 @@ describe("LateView", () => {
         .first()
         .simulate("click")
     })
-    expect(isIndeterminate(wrapper, lateMasterCheckboxSelector))
-    expect(!isChecked(wrapper, lateMasterCheckboxSelector))
+    expectIsIndeterminate(wrapper, lateMasterCheckboxSelector).toEqual(true)
+    expectIsChecked(wrapper, lateMasterCheckboxSelector).toEqual(false)
 
     act(() => {
       wrapper
@@ -323,11 +324,11 @@ describe("LateView", () => {
         .last()
         .simulate("click")
     })
-    expect(!isIndeterminate(wrapper, lateMasterCheckboxSelector))
-    expect(isChecked(wrapper, lateMasterCheckboxSelector))
+    expectIsIndeterminate(wrapper, lateMasterCheckboxSelector).toEqual(false)
+    expectIsChecked(wrapper, lateMasterCheckboxSelector).toEqual(true)
 
-    expect(!isIndeterminate(wrapper, lateMasterCheckboxSelector))
-    expect(!isChecked(wrapper, lateMasterCheckboxSelector))
+    expectIsIndeterminate(wrapper, missingMasterCheckboxSelector).toEqual(false)
+    expectIsChecked(wrapper, missingMasterCheckboxSelector).toEqual(false)
 
     act(() => {
       wrapper
@@ -337,8 +338,8 @@ describe("LateView", () => {
         .first()
         .simulate("click")
     })
-    expect(isIndeterminate(wrapper, missingMasterCheckboxSelector))
-    expect(!isChecked(wrapper, missingMasterCheckboxSelector))
+    expectIsIndeterminate(wrapper, missingMasterCheckboxSelector).toEqual(true)
+    expectIsChecked(wrapper, missingMasterCheckboxSelector).toEqual(false)
 
     act(() => {
       wrapper
@@ -348,8 +349,8 @@ describe("LateView", () => {
         .last()
         .simulate("click")
     })
-    expect(!isIndeterminate(wrapper, missingMasterCheckboxSelector))
-    expect(isChecked(wrapper, missingMasterCheckboxSelector))
+    expectIsIndeterminate(wrapper, missingMasterCheckboxSelector).toEqual(false)
+    expectIsChecked(wrapper, missingMasterCheckboxSelector).toEqual(true)
   })
 
   test("master checkbox toggles multiple rows", () => {
@@ -478,6 +479,138 @@ describe("LateView", () => {
         ".m-late-view__missing-logons .m-late-view__data-row--selected"
       )
     ).toHaveLength(0)
+  })
+
+  test("master checkbox state doesn't count hidden rows", () => {
+    const lateVehicle1 = vehicleFactory.build({
+      routeId: "route",
+      runId: "run1",
+      scheduleAdherenceSecs: 901,
+    })
+    const lateVehicle2 = vehicleFactory.build({
+      routeId: "route",
+      runId: "run2",
+      scheduleAdherenceSecs: 901,
+    })
+    const lateVehicle3 = vehicleFactory.build({
+      routeId: "route",
+      runId: "run3",
+      scheduleAdherenceSecs: 901,
+    })
+    const missingLogonGhost1 = ghostFactory.build({
+      routeId: "route",
+      runId: "run4",
+      scheduledLogonTime: 15301,
+    })
+    const missingLogonGhost2 = ghostFactory.build({
+      routeId: "route",
+      runId: "run5",
+      scheduledLogonTime: 15301,
+    })
+    const missingLogonGhost3 = ghostFactory.build({
+      routeId: "route",
+      runId: "run6",
+      scheduledLogonTime: 15301,
+    })
+
+    const vehiclesByRouteId = {
+      route: [
+        lateVehicle1,
+        lateVehicle2,
+        lateVehicle3,
+        missingLogonGhost1,
+        missingLogonGhost2,
+        missingLogonGhost3,
+      ],
+    }
+
+    const wrapper = mount(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
+          <LateView />
+        </VehiclesByRouteIdProvider>
+      </StateDispatchProvider>
+    )
+
+    act(() => {
+      wrapper
+        .find(
+          '.m-late-view__missing-logons .m-late-view__data-row--unselected input[type="checkbox"]'
+        )
+        .first()
+        .simulate("click")
+
+      wrapper
+        .find(
+          '.m-late-view__late-buses .m-late-view__data-row--unselected input[type="checkbox"]'
+        )
+        .first()
+        .simulate("click")
+
+      wrapper.find(".m-late-view__hide-popup button").first().simulate("click")
+    })
+
+    expect(wrapper.find(".m-late-view__data-row")).toHaveLength(4)
+
+    expectIsIndeterminate(wrapper, lateMasterCheckboxSelector).toEqual(false)
+    expectIsChecked(wrapper, lateMasterCheckboxSelector).toEqual(false)
+    expectIsIndeterminate(wrapper, missingMasterCheckboxSelector).toEqual(false)
+    expectIsChecked(wrapper, missingMasterCheckboxSelector).toEqual(false)
+
+    act(() => {
+      wrapper
+        .find(".m-late-view__hide-toggle--unhide")
+        .first()
+        .simulate("click")
+    })
+
+    expect(wrapper.find(".m-late-view__data-row")).toHaveLength(6)
+
+    expectIsIndeterminate(wrapper, lateMasterCheckboxSelector).toEqual(false)
+    expectIsChecked(wrapper, lateMasterCheckboxSelector).toEqual(false)
+    expectIsIndeterminate(wrapper, missingMasterCheckboxSelector).toEqual(false)
+    expectIsChecked(wrapper, missingMasterCheckboxSelector).toEqual(false)
+
+    act(() => {
+      wrapper
+        .find(
+          '.m-late-view__missing-logons .m-late-view__data-row--unselected input[type="checkbox"]'
+        )
+        .first()
+        .simulate("click")
+
+      wrapper
+        .find(
+          '.m-late-view__late-buses .m-late-view__data-row--unselected input[type="checkbox"]'
+        )
+        .first()
+        .simulate("click")
+    })
+    expectIsIndeterminate(wrapper, lateMasterCheckboxSelector).toEqual(true)
+    expectIsChecked(wrapper, lateMasterCheckboxSelector).toEqual(false)
+    expectIsIndeterminate(wrapper, missingMasterCheckboxSelector).toEqual(true)
+    expectIsChecked(wrapper, missingMasterCheckboxSelector).toEqual(false)
+
+    act(() => {
+      wrapper
+        .find(
+          '.m-late-view__missing-logons .m-late-view__data-row--unselected input[type="checkbox"]'
+        )
+        .first()
+        .simulate("click")
+
+      wrapper
+        .find(
+          '.m-late-view__late-buses .m-late-view__data-row--unselected input[type="checkbox"]'
+        )
+        .first()
+        .simulate("click")
+    })
+
+    expectIsIndeterminate(wrapper, lateMasterCheckboxSelector).toEqual(false)
+    expectIsChecked(wrapper, lateMasterCheckboxSelector).toEqual(true)
+    expectIsIndeterminate(wrapper, missingMasterCheckboxSelector).toEqual(false)
+    expectIsChecked(wrapper, missingMasterCheckboxSelector).toEqual(true)
   })
 
   test("select rows and clicking hide button hides rows", () => {
@@ -688,6 +821,9 @@ describe("LateView", () => {
     expect(wrapper.find(".m-late-view__hide-toggle--hide")).toHaveLength(2)
     expect(wrapper.find(".m-late-view__hide-toggle--unhide")).toHaveLength(0)
     expect(wrapper.find(".m-late-view__data-row")).toHaveLength(4)
+    expect(
+      wrapper.find('.m-late-view__data-row input[type="checkbox"]')
+    ).toHaveLength(2)
 
     act(() => {
       wrapper.find(".m-late-view__hide-toggle--hide").first().simulate("click")
@@ -696,6 +832,9 @@ describe("LateView", () => {
     expect(wrapper.find(".m-late-view__hide-toggle--hide")).toHaveLength(0)
     expect(wrapper.find(".m-late-view__hide-toggle--unhide")).toHaveLength(2)
     expect(wrapper.find(".m-late-view__data-row")).toHaveLength(2)
+    expect(
+      wrapper.find('.m-late-view__data-row input[type="checkbox"]')
+    ).toHaveLength(2)
   })
 
   test("persist hidden rows between page loads", () => {
