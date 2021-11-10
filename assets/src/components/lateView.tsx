@@ -1,5 +1,4 @@
 import React, {
-  createContext,
   Dispatch,
   ReactElement,
   SetStateAction,
@@ -55,22 +54,10 @@ type HidingTimestamps = {
 
 type SelectionState = "none" | "some" | "all"
 
-interface LateViewContextProps {
-  selectedIds: RunId[]
-  toggleCheckedState: (id: RunId) => void
-  hidingTimestamps: HidingTimestamps
-}
-
-const LateViewContext = createContext<LateViewContextProps>({
-  selectedIds: [],
-  // tslint:disable: no-empty
-  toggleCheckedState: () => {},
-  // tslint:enable
-  hidingTimestamps: {},
-})
-
-const useIsSelected = (vehicleOrGhost: VehicleOrGhost): boolean => {
-  const { selectedIds } = useContext(LateViewContext)
+const isSelected = (
+  selectedIds: RunId[],
+  vehicleOrGhost: VehicleOrGhost
+): boolean => {
   return !!(vehicleOrGhost.runId && selectedIds.includes(vehicleOrGhost.runId))
 }
 
@@ -294,148 +281,163 @@ const LateView = (): ReactElement<HTMLElement> => {
   )
 
   return (
-    <LateViewContext.Provider
-      value={{ selectedIds, toggleCheckedState, hidingTimestamps }}
-    >
-      <div className="m-late-view">
-        <div className="m-late-view__content-wrapper">
-          <div className="m-late-view__title">Late View</div>
-          <div className="m-late-view__panels">
-            <div className="m-late-view__panel m-late-view__missing-logons">
-              <h2 className="m-late-view__panel-header m-late-view__missing-logons-panel-header">
-                Missing logons{" "}
-                {anyRowsHidden && (
-                  <UnhideToggle
-                    viewHidden={viewHidden}
-                    toggleViewHidden={toggleViewHidden}
+    <div className="m-late-view">
+      <div className="m-late-view__content-wrapper">
+        <div className="m-late-view__title">Late View</div>
+        <div className="m-late-view__panels">
+          <div className="m-late-view__panel m-late-view__missing-logons">
+            <h2 className="m-late-view__panel-header m-late-view__missing-logons-panel-header">
+              Missing logons{" "}
+              {anyRowsHidden && (
+                <UnhideToggle
+                  viewHidden={viewHidden}
+                  toggleViewHidden={toggleViewHidden}
+                />
+              )}
+            </h2>
+            <table>
+              <thead>
+                <tr>
+                  <th className="m-late-view__hide-check-header">
+                    <MasterCheckbox
+                      attachedIds={
+                        missingLogons
+                          .map((x) => x.runId)
+                          .filter((x) => x) as RunId[]
+                      }
+                      selectedIds={selectedIds}
+                      setSelectedIds={setSelectedIds}
+                      hidingTimestamps={hidingTimestamps}
+                    />
+                  </th>
+                  <th className="m-late-view__scheduled-logon-header">
+                    Scheduled Logon
+                  </th>
+                  <th className="m-late-view__route-header">Route</th>
+                  <th className="m-late-view__run-number-header">Run</th>
+                  <th className="m-late-view__location-header">Location</th>
+                </tr>
+              </thead>
+              <tbody>
+                {missingLogons.map((missingLogon) => (
+                  <MissingLogonRow
+                    ghost={missingLogon}
+                    key={missingLogon.id}
+                    selectedIds={selectedIds}
+                    hidingTimestamps={hidingTimestamps}
+                    toggleCheckedState={toggleCheckedState}
                   />
-                )}
-              </h2>
-              <table>
-                <thead>
-                  <tr>
-                    <th className="m-late-view__hide-check-header">
-                      <MasterCheckbox
-                        attachedIds={
-                          missingLogons
-                            .map((x) => x.runId)
-                            .filter((x) => x) as RunId[]
-                        }
-                        selectedIds={selectedIds}
-                        setSelectedIds={setSelectedIds}
-                        hidingTimestamps={hidingTimestamps}
-                      />
-                    </th>
-                    <th className="m-late-view__scheduled-logon-header">
-                      Scheduled Logon
-                    </th>
-                    <th className="m-late-view__route-header">Route</th>
-                    <th className="m-late-view__run-number-header">Run</th>
-                    <th className="m-late-view__location-header">Location</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {missingLogons.map((missingLogon) => (
-                    <MissingLogonRow
-                      ghost={missingLogon}
-                      key={missingLogon.id}
-                    />
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <div className="m-late-view__panel m-late-view__late-buses">
-              <h2 className="m-late-view__panel-header m-late-view__late-buses-panel-header">
-                Late buses{" "}
-                {anyRowsHidden && (
-                  <UnhideToggle
-                    viewHidden={viewHidden}
-                    toggleViewHidden={toggleViewHidden}
-                  />
-                )}
-              </h2>
-              <table>
-                <thead>
-                  <tr>
-                    <th className="m-late-view__hide-check-header">
-                      <MasterCheckbox
-                        attachedIds={
-                          lateVehiclesAndGhosts
-                            .map((x) => x.runId)
-                            .filter((x) => x) as RunId[]
-                        }
-                        selectedIds={selectedIds}
-                        setSelectedIds={setSelectedIds}
-                        hidingTimestamps={hidingTimestamps}
-                      />
-                    </th>
-                    <th className="m-late-view__adherence-header">Adherence</th>
-                    <th className="m-late-view__route-header">Route</th>
-                    <th className="m-late-view__vehicle-header">Vehicle</th>
-                    <th className="m-late-view__run-number-header m-late-view__run-number-header--late">
-                      Run
-                    </th>
-                    <th className="m-late-view__operator-header">Driver</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {lateGhosts.map((lateGhost) => (
-                    <LateGhostRow
-                      ghost={lateGhost}
-                      key={lateGhost.id}
-                      dispatch={dispatch}
-                    />
-                  ))}
-                  {lateBuses.map((lateBus) => (
-                    <LateBusRow
-                      vehicle={lateBus}
-                      key={lateBus.id}
-                      dispatch={dispatch}
-                    />
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                ))}
+              </tbody>
+            </table>
           </div>
-          <DrawerTab
-            isVisible={true}
-            toggleVisibility={() => dispatch(toggleLateView())}
-          />
+          <div className="m-late-view__panel m-late-view__late-buses">
+            <h2 className="m-late-view__panel-header m-late-view__late-buses-panel-header">
+              Late buses{" "}
+              {anyRowsHidden && (
+                <UnhideToggle
+                  viewHidden={viewHidden}
+                  toggleViewHidden={toggleViewHidden}
+                />
+              )}
+            </h2>
+            <table>
+              <thead>
+                <tr>
+                  <th className="m-late-view__hide-check-header">
+                    <MasterCheckbox
+                      attachedIds={
+                        lateVehiclesAndGhosts
+                          .map((x) => x.runId)
+                          .filter((x) => x) as RunId[]
+                      }
+                      selectedIds={selectedIds}
+                      setSelectedIds={setSelectedIds}
+                      hidingTimestamps={hidingTimestamps}
+                    />
+                  </th>
+                  <th className="m-late-view__adherence-header">Adherence</th>
+                  <th className="m-late-view__route-header">Route</th>
+                  <th className="m-late-view__vehicle-header">Vehicle</th>
+                  <th className="m-late-view__run-number-header m-late-view__run-number-header--late">
+                    Run
+                  </th>
+                  <th className="m-late-view__operator-header">Driver</th>
+                </tr>
+              </thead>
+              <tbody>
+                {lateGhosts.map((lateGhost) => (
+                  <LateGhostRow
+                    ghost={lateGhost}
+                    key={lateGhost.id}
+                    selectedIds={selectedIds}
+                    hidingTimestamps={hidingTimestamps}
+                    toggleCheckedState={toggleCheckedState}
+                    dispatch={dispatch}
+                  />
+                ))}
+                {lateBuses.map((lateBus) => (
+                  <LateBusRow
+                    vehicle={lateBus}
+                    key={lateBus.id}
+                    selectedIds={selectedIds}
+                    hidingTimestamps={hidingTimestamps}
+                    toggleCheckedState={toggleCheckedState}
+                    dispatch={dispatch}
+                  />
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-        {anyRowsSelected && (
-          <HidePopup
-            nRowsSelected={nRowsSelected}
-            hideSelectedRows={hideSelectedRows}
-          />
-        )}
-        {!anyRowsSelected && anyRecentlyHidden && (
-          <UnhidePopup
-            nRecentlyHidden={nRecentlyHidden}
-            unhideRecentlyHidden={unhideRecentlyHidden}
-          />
-        )}
+        <DrawerTab
+          isVisible={true}
+          toggleVisibility={() => dispatch(toggleLateView())}
+        />
       </div>
-    </LateViewContext.Provider>
+      {anyRowsSelected && (
+        <HidePopup
+          nRowsSelected={nRowsSelected}
+          hideSelectedRows={hideSelectedRows}
+        />
+      )}
+      {!anyRowsSelected && anyRecentlyHidden && (
+        <UnhidePopup
+          nRecentlyHidden={nRecentlyHidden}
+          unhideRecentlyHidden={unhideRecentlyHidden}
+        />
+      )}
+    </div>
   )
 }
 
 const LateGhostRow = ({
   ghost,
   dispatch,
+  selectedIds,
+  hidingTimestamps,
+  toggleCheckedState,
 }: {
   ghost: Ghost
   dispatch: Dispatch<Action>
+  hidingTimestamps: HidingTimestamps
+  selectedIds: RunId[]
+  toggleCheckedState: (runId: RunId) => void
 }): ReactElement<HTMLElement> => {
   const routes = useContext(RoutesContext)
-  const isSelected = useIsSelected(ghost)
-  const className = isSelected
+  const className = isSelected(selectedIds, ghost)
     ? "m-late-view__data-row--selected"
     : "m-late-view__data-row--unselected"
 
   return (
     <tr className={`m-late-view__data-row ${className}`}>
       <td>
-        <HideCheckbox vehicleOrGhost={ghost} />
+        <HideCheckbox
+          hidingTimestamps={hidingTimestamps}
+          selectedIds={selectedIds}
+          vehicleOrGhost={ghost}
+          toggleCheckedState={toggleCheckedState}
+        />
       </td>
       <td className="m-late-view__adherence-cell">N/A</td>
       <td>
@@ -472,21 +474,31 @@ const LateGhostRow = ({
 const LateBusRow = ({
   vehicle,
   dispatch,
+  selectedIds,
+  hidingTimestamps,
+  toggleCheckedState,
 }: {
   vehicle: Vehicle
   dispatch: Dispatch<Action>
+  selectedIds: RunId[]
+  hidingTimestamps: HidingTimestamps
+  toggleCheckedState: (runId: RunId) => void
 }): ReactElement<HTMLElement> => {
   const routes = useContext(RoutesContext)
-  const isSelected = useIsSelected(vehicle)
 
-  const className = isSelected
+  const className = isSelected(selectedIds, vehicle)
     ? "m-late-view__data-row--selected"
     : "m-late-view__data-row--unselected"
 
   return (
     <tr className={`m-late-view__data-row ${className}`}>
       <td>
-        <HideCheckbox vehicleOrGhost={vehicle} />
+        <HideCheckbox
+          vehicleOrGhost={vehicle}
+          selectedIds={selectedIds}
+          hidingTimestamps={hidingTimestamps}
+          toggleCheckedState={toggleCheckedState}
+        />
       </td>
       <td className="m-late-view__adherence-cell">
         {secondsToMinutes(vehicle.scheduleAdherenceSecs) * -1}
@@ -522,20 +534,30 @@ const LateBusRow = ({
 
 const MissingLogonRow = ({
   ghost,
+  selectedIds,
+  hidingTimestamps,
+  toggleCheckedState,
 }: {
   ghost: Ghost
+  selectedIds: RunId[]
+  hidingTimestamps: HidingTimestamps
+  toggleCheckedState: (runId: RunId) => void
 }): ReactElement<HTMLElement> => {
   const routes = useContext(RoutesContext)
-  const isSelected = useIsSelected(ghost)
 
-  const className = isSelected
+  const className = isSelected(selectedIds, ghost)
     ? "m-late-view__data-row--selected"
     : "m-late-view__data-row--unselected"
 
   return (
     <tr className={`m-late-view__data-row ${className}`}>
       <td>
-        <HideCheckbox vehicleOrGhost={ghost} />
+        <HideCheckbox
+          vehicleOrGhost={ghost}
+          selectedIds={selectedIds}
+          hidingTimestamps={hidingTimestamps}
+          toggleCheckedState={toggleCheckedState}
+        />
       </td>
       <td>
         {ghost.scheduledLogonTime
@@ -554,13 +576,17 @@ const MissingLogonRow = ({
 }
 
 const HideCheckbox = ({
+  hidingTimestamps,
+  selectedIds,
+  toggleCheckedState,
   vehicleOrGhost,
 }: {
+  hidingTimestamps: HidingTimestamps
+  selectedIds: RunId[]
+  toggleCheckedState: (runId: RunId) => void
   vehicleOrGhost: VehicleOrGhost
 }): ReactElement<HTMLElement> | null => {
   const runId = vehicleOrGhost.runId
-  const isChecked = useIsSelected(vehicleOrGhost)
-  const { toggleCheckedState, hidingTimestamps } = useContext(LateViewContext)
 
   if (!runId) {
     return null
@@ -574,7 +600,7 @@ const HideCheckbox = ({
     <input
       type="checkbox"
       readOnly={true}
-      checked={isChecked}
+      checked={isSelected(selectedIds, vehicleOrGhost)}
       onClick={() => toggleCheckedState(runId)}
     />
   )
