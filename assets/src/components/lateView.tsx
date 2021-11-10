@@ -87,16 +87,13 @@ const compareGhosts = (a: Ghost, b: Ghost): number => {
   return runIdToLabel(a.runId!).localeCompare(runIdToLabel(b.runId!))
 }
 
-const remove = (removeFrom: RunId[], toRemove: RunId): RunId[] =>
-  removeFrom.filter((idInList) => idInList !== toRemove)
-
 const toggleRunIdInSet = (
   runId: RunId,
   runIds: RunId[],
   updateFunction: Dispatch<SetStateAction<RunId[]>>
 ): void => {
   if (runIds.includes(runId)) {
-    updateFunction(remove(runIds, runId))
+    updateFunction(runIds.filter((runIdToCompare) => runIdToCompare !== runId))
   } else {
     updateFunction([...runIds, runId])
   }
