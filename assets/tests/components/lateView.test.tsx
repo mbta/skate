@@ -418,6 +418,10 @@ describe("LateView", () => {
         '.m-late-view__late-buses .m-late-view__data-row--selected input[type="checkbox"]'
       )
     ).toHaveLength(1)
+
+    expectIsIndeterminate(wrapper, lateMasterCheckboxSelector).toEqual(true)
+    expectIsChecked(wrapper, lateMasterCheckboxSelector).toEqual(false)
+
     act(() => {
       wrapper.find(lateMasterCheckboxSelector).first().simulate("click")
     })
@@ -426,6 +430,8 @@ describe("LateView", () => {
         '.m-late-view__late-buses .m-late-view__data-row--selected input[type="checkbox"]'
       )
     ).toHaveLength(2)
+    expectIsIndeterminate(wrapper, lateMasterCheckboxSelector).toEqual(false)
+    expectIsChecked(wrapper, lateMasterCheckboxSelector).toEqual(true)
 
     act(() => {
       wrapper.find(lateMasterCheckboxSelector).first().simulate("click")
@@ -435,6 +441,8 @@ describe("LateView", () => {
         '.m-late-view__late-buses .m-late-view__data-row--selected input[type="checkbox"]'
       )
     ).toHaveLength(0)
+    expectIsIndeterminate(wrapper, lateMasterCheckboxSelector).toEqual(false)
+    expectIsChecked(wrapper, lateMasterCheckboxSelector).toEqual(false)
 
     expect(
       wrapper.find(
@@ -462,6 +470,8 @@ describe("LateView", () => {
         ".m-late-view__missing-logons .m-late-view__data-row--selected"
       )
     ).toHaveLength(1)
+    expectIsIndeterminate(wrapper, missingMasterCheckboxSelector).toEqual(true)
+    expectIsChecked(wrapper, missingMasterCheckboxSelector).toEqual(false)
     act(() => {
       wrapper.find(missingMasterCheckboxSelector).first().simulate("click")
     })
@@ -470,6 +480,8 @@ describe("LateView", () => {
         ".m-late-view__missing-logons .m-late-view__data-row--selected"
       )
     ).toHaveLength(2)
+    expectIsIndeterminate(wrapper, missingMasterCheckboxSelector).toEqual(false)
+    expectIsChecked(wrapper, missingMasterCheckboxSelector).toEqual(true)
 
     act(() => {
       wrapper.find(missingMasterCheckboxSelector).first().simulate("click")
