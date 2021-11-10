@@ -584,6 +584,14 @@ describe("LateView", () => {
     expectIsChecked(wrapper, missingMasterCheckboxSelector).toEqual(false)
 
     act(() => {
+      wrapper.find(lateMasterCheckboxSelector).simulate("click")
+    })
+    expect(wrapper.text()).toContain("2 selected")
+    act(() => {
+      wrapper.find(lateMasterCheckboxSelector).simulate("click")
+    })
+
+    act(() => {
       wrapper
         .find(
           '.m-late-view__missing-logons .m-late-view__data-row--unselected input[type="checkbox"]'

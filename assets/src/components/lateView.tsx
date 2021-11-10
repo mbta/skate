@@ -300,11 +300,7 @@ const LateView = (): ReactElement<HTMLElement> => {
                 <tr>
                   <th className="m-late-view__hide-check-header">
                     <MasterCheckbox
-                      attachedIds={
-                        missingLogons
-                          .map((x) => x.runId)
-                          .filter((x) => x) as RunId[]
-                      }
+                      attachedVehiclesOrGhosts={missingLogons}
                       selectedIds={selectedIds}
                       setSelectedIds={setSelectedIds}
                       hidingTimestamps={hidingTimestamps}
@@ -346,11 +342,7 @@ const LateView = (): ReactElement<HTMLElement> => {
                 <tr>
                   <th className="m-late-view__hide-check-header">
                     <MasterCheckbox
-                      attachedIds={
-                        lateVehiclesAndGhosts
-                          .map((x) => x.runId)
-                          .filter((x) => x) as RunId[]
-                      }
+                      attachedVehiclesOrGhosts={lateVehiclesAndGhosts}
                       selectedIds={selectedIds}
                       setSelectedIds={setSelectedIds}
                       hidingTimestamps={hidingTimestamps}
@@ -668,16 +660,20 @@ const UnhideToggle = ({
 )
 
 const MasterCheckbox = ({
-  attachedIds,
+  attachedVehiclesOrGhosts,
   selectedIds,
   setSelectedIds,
   hidingTimestamps,
 }: {
-  attachedIds: RunId[]
+  attachedVehiclesOrGhosts: VehicleOrGhost[]
   selectedIds: RunId[]
   setSelectedIds: Dispatch<SetStateAction<RunId[]>>
   hidingTimestamps: HidingTimestamps
 }): ReactElement<HTMLElement> => {
+  const attachedIds = attachedVehiclesOrGhosts
+    .map((attachedVehicleOrGhost) => attachedVehicleOrGhost.runId)
+    .filter((id) => id && !hidingTimestamps[id]) as RunId[]
+
   const hiddenAttachedIds = attachedIds.filter((id) => hidingTimestamps[id])
   const selectedAttachedIds = selectedIds.filter(
     (id) => attachedIds.includes(id) && !hiddenAttachedIds.includes(id)
