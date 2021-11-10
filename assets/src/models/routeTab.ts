@@ -18,12 +18,5 @@ export const newRouteTab = (): RouteTab => ({
   ladderCrowdingToggles: {},
 })
 
-export const currentRouteTab = (routeTabs: RouteTab[]): RouteTab => {
-  const currentTab = routeTabs.find((routeTab) => routeTab.isCurrentTab)
-
-  if (currentTab === undefined) {
-    return newRouteTab()
-  } else {
-    return currentTab
-  }
-}
+export const currentRouteTab = (routeTabs: RouteTab[]): RouteTab =>
+  routeTabs.find((routeTab) => routeTab.isCurrentTab) || newRouteTab()

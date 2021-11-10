@@ -30,12 +30,9 @@ test("renders a route ladder", () => {
         routes={routes}
         timepointsByRouteId={timepointsByRouteId}
         selectedVehicleId={undefined}
-        // tslint:disable-next-line: no-empty
-        deselectRoute={() => {}}
-        // tslint:disable-next-line: no-empty
-        reverseLadder={() => {}}
-        // tslint:disable-next-line: no-empty
-        toggleCrowding={() => {}}
+        deselectRoute={jest.fn()}
+        reverseLadder={jest.fn()}
+        toggleCrowding={jest.fn()}
         ladderDirections={{}}
         ladderCrowdingToggles={{}}
       />

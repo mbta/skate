@@ -24,10 +24,8 @@ describe("RoutePicker", () => {
         <RoutesProvider routes={routes}>
           <RoutePicker
             selectedRouteIds={selectedRouteIds}
-            // tslint:disable-next-line: no-empty
-            selectRoute={() => {}}
-            // tslint:disable-next-line: no-empty
-            deselectRoute={() => {}}
+            selectRoute={jest.fn()}
+            deselectRoute={jest.fn()}
           />
         </RoutesProvider>
       )
@@ -41,10 +39,8 @@ describe("RoutePicker", () => {
       .create(
         <RoutePicker
           selectedRouteIds={[]}
-          // tslint:disable-next-line: no-empty
-          selectRoute={() => {}}
-          // tslint:disable-next-line: no-empty
-          deselectRoute={() => {}}
+          selectRoute={jest.fn()}
+          deselectRoute={jest.fn()}
         />
       )
       .toJSON()
@@ -62,8 +58,7 @@ describe("RoutePicker", () => {
         <RoutePicker
           selectedRouteIds={[]}
           selectRoute={mockSelect}
-          // tslint:disable-next-line: no-empty
-          deselectRoute={() => {}}
+          deselectRoute={jest.fn()}
         />
       </RoutesProvider>
     )
@@ -85,8 +80,7 @@ describe("RoutePicker", () => {
       <RoutesProvider routes={routes}>
         <RoutePicker
           selectedRouteIds={["id"]}
-          // tslint:disable-next-line: no-empty
-          selectRoute={() => {}}
+          selectRoute={jest.fn()}
           deselectRoute={mockDeselect}
         />
       </RoutesProvider>
@@ -106,8 +100,7 @@ describe("RoutePicker", () => {
     const routePicker = mount(
       <RoutePicker
         selectedRouteIds={["id"]}
-        // tslint:disable-next-line: no-empty
-        selectRoute={() => {}}
+        selectRoute={jest.fn()}
         deselectRoute={mockDeselect}
       />
     )

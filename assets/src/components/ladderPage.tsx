@@ -58,13 +58,13 @@ const LadderTab = ({
   )
 }
 
-const AddLadderButton = ({
-  addLadder,
+const AddTabButton = ({
+  addTab,
 }: {
-  addLadder: () => void
+  addTab: () => void
 }): ReactElement<HTMLDivElement> => {
   return (
-    <div className="m-ladder-page__add-tab-button" onClick={addLadder}>
+    <div className="m-ladder-page__add-tab-button" onClick={addTab}>
       +
     </div>
   )
@@ -153,7 +153,7 @@ const LadderPageWithTabs = (): ReactElement<HTMLDivElement> => {
           />
         ))}
 
-        <AddLadderButton addLadder={() => dispatch(createRouteTab())} />
+        <AddTabButton addTab={() => dispatch(createRouteTab())} />
       </div>
 
       <RouteLadders
