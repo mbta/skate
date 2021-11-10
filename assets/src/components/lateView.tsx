@@ -287,7 +287,7 @@ const LateView = (): ReactElement<HTMLElement> => {
         <div className="m-late-view__panels">
           <div className="m-late-view__panel m-late-view__missing-logons">
             <h2 className="m-late-view__panel-header m-late-view__missing-logons-panel-header">
-              Missing logons{" "}
+              Missing logons
               {anyRowsHidden && (
                 <UnhideToggle
                   viewHidden={viewHidden}
@@ -333,7 +333,7 @@ const LateView = (): ReactElement<HTMLElement> => {
           </div>
           <div className="m-late-view__panel m-late-view__late-buses">
             <h2 className="m-late-view__panel-header m-late-view__late-buses-panel-header">
-              Late buses{" "}
+              Late buses
               {anyRowsHidden && (
                 <UnhideToggle
                   viewHidden={viewHidden}
@@ -399,6 +399,7 @@ const LateView = (): ReactElement<HTMLElement> => {
         <HidePopup
           nRowsSelected={nRowsSelected}
           hideSelectedRows={hideSelectedRows}
+          clearViewHidden={() => setViewHidden(false)}
         />
       )}
       {!anyRowsSelected && anyRecentlyHidden && (
@@ -609,15 +610,24 @@ const HideCheckbox = ({
 const HidePopup = ({
   nRowsSelected,
   hideSelectedRows,
+  clearViewHidden,
 }: {
   nRowsSelected: number
   hideSelectedRows: () => void
-}) => (
-  <div className="m-late-view__popup m-late-view__hide-popup">
-    {nRowsSelected} selected
-    <button onClick={hideSelectedRows}>{hiddenIcon()} Hide</button>
-  </div>
-)
+  clearViewHidden: () => void
+}) => {
+  const onclickCallback = () => {
+    hideSelectedRows()
+    clearViewHidden()
+  }
+
+  return (
+    <div className="m-late-view__popup m-late-view__hide-popup">
+      {nRowsSelected} selected
+      <button onClick={onclickCallback}>{hiddenIcon()} Hide</button>
+    </div>
+  )
+}
 
 const UnhidePopup = ({
   nRecentlyHidden,

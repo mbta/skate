@@ -934,4 +934,56 @@ describe("LateView", () => {
       reloadWrapper.find(".m-late-view__data-row--unselected")
     ).toHaveLength(2)
   })
+
+  test("if viewing hidden rows, and we hide a row, turn off eye toggle", () => {
+    const lateVehicle1 = vehicleFactory.build({
+      routeId: "route",
+      runId: "run1",
+      scheduleAdherenceSecs: 901,
+    })
+    const lateVehicle2 = vehicleFactory.build({
+      routeId: "route",
+      runId: "run2",
+      scheduleAdherenceSecs: 901,
+    })
+
+    const vehiclesByRouteId = {
+      route: [lateVehicle1, lateVehicle2],
+    }
+
+    const wrapper = mount(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
+          <LateView />
+        </VehiclesByRouteIdProvider>
+      </StateDispatchProvider>
+    )
+
+    act(() => {
+      wrapper
+        .find('.m-late-view__data-row--unselected input[type="checkbox"]')
+        .first()
+        .simulate("click")
+
+      wrapper.find(".m-late-view__hide-popup button").first().simulate("click")
+
+      wrapper.find(".m-late-view__hide-toggle").first().simulate("click")
+    })
+
+    expect(wrapper.find(".m-late-view__hide-toggle--unhidden")).toHaveLength(2)
+    expect(wrapper.find(".m-late-view__hide-toggle--hidden")).toHaveLength(0)
+    expect(wrapper.find(".m-late-view__data-row--unselected")).toHaveLength(2)
+
+    act(() => {
+      wrapper
+        .find('.m-late-view__data-row--unselected input[type="checkbox"]')
+        .simulate("click")
+
+      wrapper.find(".m-late-view__hide-popup button").first().simulate("click")
+    })
+
+    expect(wrapper.find(".m-late-view__data-row--unselected")).toHaveLength(0)
+    expect(wrapper.find(".m-late-view__hide-toggle--unhidden")).toHaveLength(0)
+    expect(wrapper.find(".m-late-view__hide-toggle--hidden")).toHaveLength(2)
+  })
 })

@@ -22,7 +22,6 @@ exports[`LateView renders missing logons and late buses 1`] = `
           className="m-late-view__panel-header m-late-view__missing-logons-panel-header"
         >
           Missing logons
-           
         </h2>
         <table>
           <thead>
@@ -126,7 +125,6 @@ exports[`LateView renders missing logons and late buses 1`] = `
           className="m-late-view__panel-header m-late-view__late-buses-panel-header"
         >
           Late buses
-           
         </h2>
         <table>
           <thead>
