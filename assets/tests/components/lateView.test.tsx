@@ -571,7 +571,7 @@ describe("LateView", () => {
 
     act(() => {
       wrapper
-        .find(".m-late-view__hide-toggle--unhide")
+        .find(".m-late-view__hide-toggle--hidden")
         .first()
         .simulate("click")
     })
@@ -795,8 +795,8 @@ describe("LateView", () => {
       </StateDispatchProvider>
     )
 
-    expect(wrapper.find(".m-late-view__hide-toggle--hide")).toHaveLength(0)
-    expect(wrapper.find(".m-late-view__hide-toggle--unhide")).toHaveLength(0)
+    expect(wrapper.find(".m-late-view__hide-toggle--unhidden")).toHaveLength(0)
+    expect(wrapper.find(".m-late-view__hide-toggle--hidden")).toHaveLength(0)
 
     act(() => {
       wrapper
@@ -820,29 +820,32 @@ describe("LateView", () => {
 
     expect(wrapper.find(".m-late-view__data-row--unselected")).toHaveLength(2)
 
-    expect(wrapper.find(".m-late-view__hide-toggle--hide")).toHaveLength(0)
-    expect(wrapper.find(".m-late-view__hide-toggle--unhide")).toHaveLength(2)
+    expect(wrapper.find(".m-late-view__hide-toggle--unhidden")).toHaveLength(0)
+    expect(wrapper.find(".m-late-view__hide-toggle--hidden")).toHaveLength(2)
 
     act(() => {
       wrapper
-        .find(".m-late-view__hide-toggle--unhide")
+        .find(".m-late-view__hide-toggle--hidden")
         .first()
         .simulate("click")
     })
 
-    expect(wrapper.find(".m-late-view__hide-toggle--hide")).toHaveLength(2)
-    expect(wrapper.find(".m-late-view__hide-toggle--unhide")).toHaveLength(0)
+    expect(wrapper.find(".m-late-view__hide-toggle--unhidden")).toHaveLength(2)
+    expect(wrapper.find(".m-late-view__hide-toggle--hidden")).toHaveLength(0)
     expect(wrapper.find(".m-late-view__data-row")).toHaveLength(4)
     expect(
       wrapper.find('.m-late-view__data-row input[type="checkbox"]')
     ).toHaveLength(2)
 
     act(() => {
-      wrapper.find(".m-late-view__hide-toggle--hide").first().simulate("click")
+      wrapper
+        .find(".m-late-view__hide-toggle--unhidden")
+        .first()
+        .simulate("click")
     })
 
-    expect(wrapper.find(".m-late-view__hide-toggle--hide")).toHaveLength(0)
-    expect(wrapper.find(".m-late-view__hide-toggle--unhide")).toHaveLength(2)
+    expect(wrapper.find(".m-late-view__hide-toggle--unhidden")).toHaveLength(0)
+    expect(wrapper.find(".m-late-view__hide-toggle--hidden")).toHaveLength(2)
     expect(wrapper.find(".m-late-view__data-row")).toHaveLength(2)
     expect(
       wrapper.find('.m-late-view__data-row input[type="checkbox"]')

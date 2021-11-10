@@ -13,10 +13,10 @@ import { VehiclesByRouteIdContext } from "../contexts/vehiclesByRouteIdContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import {
   bangIcon,
-  hideIcon,
+  hiddenIcon,
   lateViewGhostIcon,
   lateViewGhostWithWaiverIcon,
-  unhideIcon,
+  unhiddenIcon,
   upRightIcon,
 } from "../helpers/icon"
 import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
@@ -615,7 +615,7 @@ const HidePopup = ({
 }) => (
   <div className="m-late-view__popup m-late-view__hide-popup">
     {nRowsSelected} selected
-    <button onClick={hideSelectedRows}>{hideIcon()} Hide</button>
+    <button onClick={hideSelectedRows}>{hiddenIcon()} Hide</button>
   </div>
 )
 
@@ -641,7 +641,7 @@ const UnhideToggle = ({
 }): ReactElement<HTMLElement> => (
   <button
     className={`m-late-view__hide-toggle m-late-view__hide-toggle--${
-      viewHidden ? "hide" : "unhide"
+      viewHidden ? "unhidden" : "hidden"
     }`}
     onClick={() => {
       if (window && window.FS) {
@@ -650,7 +650,7 @@ const UnhideToggle = ({
       toggleViewHidden()
     }}
   >
-    {viewHidden ? hideIcon() : unhideIcon()}
+    {viewHidden ? unhiddenIcon() : hiddenIcon()}
     <div className="m-late-view__toggle-exterior">
       <div className="m-late-view__toggle-interior" />
     </div>

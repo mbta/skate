@@ -324,7 +324,7 @@ $late-view-width: 34.5rem;
   border-style: solid;
 }
 
-.m-late-view__hide-toggle--hide {
+.m-late-view__hide-toggle--hidden {
   svg path {
     stroke: #6e717d;
   }
@@ -339,7 +339,7 @@ $late-view-width: 34.5rem;
   }
 }
 
-.m-late-view__hide-toggle--unhide {
+.m-late-view__hide-toggle--unhidden {
   svg path {
     stroke: #222534;
   }
