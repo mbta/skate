@@ -37,6 +37,8 @@ import greenLineEIconSvg from "../../static/images/icon-green-line-e.svg"
 // @ts-ignore
 import greenLineIconSvg from "../../static/images/icon-green-line.svg"
 // @ts-ignore
+import hiddenIconSvg from "../../static/images/icon-hidden.svg"
+// @ts-ignore
 import ladderIconSvg from "../../static/images/icon-ladder.svg"
 // @ts-ignore
 import lateIconSvg from "../../static/images/icon-late.svg"
@@ -78,6 +80,8 @@ import triangleDownIconSvg from "../../static/images/icon-triangle-down.svg"
 import triangleUpIconSvg from "../../static/images/icon-triangle-up.svg"
 // @ts-ignore
 import triangleUpLargeIconSvg from "../../static/images/icon-triangle-up-large.svg"
+// @ts-ignore
+import unhiddenIconSvg from "../../static/images/icon-unhidden.svg"
 // @ts-ignore
 import upDownIconSvg from "../../static/images/icon-up-down-arrow.svg"
 // @ts-ignore
@@ -140,6 +144,9 @@ export const greenLineEIcon = (className: string = ""): JSX.Element =>
 
 export const greenLineIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, greenLineIconSvg)
+
+export const hiddenIcon = (className: string = ""): JSX.Element =>
+  renderSvg(className, hiddenIconSvg)
 
 export const ladderIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, ladderIconSvg)
@@ -204,6 +211,9 @@ export const triangleUpIcon = (className: string = ""): JSX.Element =>
 
 export const triangleUpLargeIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, triangleUpLargeIconSvg)
+
+export const unhiddenIcon = (className: string = ""): JSX.Element =>
+  renderSvg(className, unhiddenIconSvg)
 
 export const upDownIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, upDownIconSvg)
