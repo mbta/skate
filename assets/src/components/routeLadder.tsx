@@ -1,13 +1,14 @@
-import React, { useContext } from "react"
-import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import React from "react"
 import { crowdingIcon, reverseIcon, reverseIconReversed } from "../helpers/icon"
 import {
   getLadderCrowdingToggleForRoute,
   LadderCrowdingToggle,
+  LadderCrowdingToggles,
 } from "../models/ladderCrowdingToggle"
 import {
   getLadderDirectionForRoute,
   LadderDirection,
+  LadderDirections,
 } from "../models/ladderDirection"
 import { isVehicle } from "../models/vehicle"
 import {
@@ -16,7 +17,6 @@ import {
 } from "../models/vehiclesByPosition"
 import { VehicleId, VehicleOrGhost } from "../realtime.d"
 import { LoadableTimepoints, Route, RouteId } from "../schedule.d"
-import { deselectRoute, flipLadder, toggleLadderCrowding } from "../state"
 import CloseButton from "./closeButton"
 import IncomingBox from "./incomingBox"
 import Ladder from "./ladder"
@@ -27,14 +27,23 @@ interface Props {
   timepoints: LoadableTimepoints
   vehiclesAndGhosts?: VehicleOrGhost[]
   selectedVehicleId: VehicleId | undefined
+  deselectRoute: (routeId: RouteId) => void
+  reverseLadder: (routeId: RouteId) => void
+  toggleCrowding: (routeId: RouteId) => void
+  ladderDirections: LadderDirections
+  ladderCrowdingToggles: LadderCrowdingToggles
 }
 
-const Header = ({ route }: { route: Route }) => {
-  const [, dispatch] = useContext(StateDispatchContext)
-
+const Header = ({
+  route,
+  deselectRoute,
+}: {
+  route: Route
+  deselectRoute: (routeId: RouteId) => void
+}) => {
   return (
     <div className="m-route-ladder__header">
-      <CloseButton onClick={() => dispatch(deselectRoute(route.id))} />
+      <CloseButton onClick={() => deselectRoute(route.id)} />
 
       <div className="m-route-ladder__route-name">{route.name}</div>
     </div>
@@ -112,21 +121,18 @@ const RouteLadder = ({
   timepoints,
   vehiclesAndGhosts,
   selectedVehicleId,
+  deselectRoute,
+  reverseLadder,
+  toggleCrowding,
+  ladderDirections,
+  ladderCrowdingToggles,
 }: Props) => {
-  const [{ ladderDirections, ladderCrowdingToggles }, dispatch] =
-    useContext(StateDispatchContext)
   const ladderDirection = getLadderDirectionForRoute(ladderDirections, route.id)
-  const reverseLadder = () => {
-    dispatch(flipLadder(route.id))
-  }
 
   const ladderCrowdingToggle = getLadderCrowdingToggleForRoute(
     ladderCrowdingToggles,
     route.id
   )
-  const toggleCrowding = () => {
-    dispatch(toggleLadderCrowding(route.id))
-  }
 
   const byPosition: VehiclesByPosition = groupByPosition(
     vehiclesAndGhosts?.filter((vehicleOrGhost) => {
@@ -145,13 +151,13 @@ const RouteLadder = ({
 
   return (
     <>
-      <Header route={route} />
+      <Header route={route} deselectRoute={deselectRoute} />
       <Controls
         displayCrowdingToggleIcon={displayCrowding}
         ladderDirection={ladderDirection}
         ladderCrowdingToggle={ladderCrowdingToggle}
-        reverseLadder={reverseLadder}
-        toggleCrowding={toggleCrowding}
+        reverseLadder={() => reverseLadder(route.id)}
+        toggleCrowding={() => toggleCrowding(route.id)}
       />
 
       {timepoints ? (

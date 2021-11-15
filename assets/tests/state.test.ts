@@ -12,6 +12,7 @@ import {
 } from "../src/userSettings"
 
 import vehicleFactory from "./factories/vehicle"
+import routeTabFactory from "./factories/routeTab"
 
 const initialState = State.initialState
 const reducer = State.reducer
@@ -425,5 +426,134 @@ describe("reducer", () => {
     )
 
     expect(newState).toEqual(initialState)
+  })
+
+  test("createRouteTab", () => {
+    const newState = reducer(
+      {
+        ...initialState,
+        routeTabs: [routeTabFactory.build({ isCurrentTab: true })],
+      },
+      State.createRouteTab()
+    )
+
+    const expectedState: State.State = {
+      ...initialState,
+      routeTabs: [
+        routeTabFactory.build(),
+        routeTabFactory.build({ isCurrentTab: true }),
+      ],
+    }
+
+    expect(newState).toEqual(expectedState)
+  })
+
+  test("selectRouteTab", () => {
+    const routeTab1 = routeTabFactory.build()
+    const routeTab2 = routeTabFactory.build({ isCurrentTab: true })
+
+    const newState = reducer(
+      { ...initialState, routeTabs: [routeTab1, routeTab2] },
+      State.selectRouteTab(0)
+    )
+
+    const expectedRouteTab1 = routeTabFactory.build({ isCurrentTab: true })
+    const expectedRouteTab2 = routeTabFactory.build()
+
+    const expectedState: State.State = {
+      ...initialState,
+      routeTabs: [expectedRouteTab1, expectedRouteTab2],
+    }
+
+    expect(newState).toEqual(expectedState)
+  })
+
+  test("selectRouteInTab", () => {
+    const newState = reducer(
+      {
+        ...initialState,
+        routeTabs: [routeTabFactory.build({ isCurrentTab: true })],
+      },
+      State.selectRouteInTab("1")
+    )
+
+    const expectedRouteTab = routeTabFactory.build({
+      isCurrentTab: true,
+      selectedRouteIds: ["1"],
+    })
+
+    expect(newState).toEqual({ ...initialState, routeTabs: [expectedRouteTab] })
+  })
+
+  test("deselectRouteInTab", () => {
+    const newState = reducer(
+      {
+        ...initialState,
+        routeTabs: [
+          routeTabFactory.build({
+            isCurrentTab: true,
+            selectedRouteIds: ["1"],
+          }),
+        ],
+      },
+      State.deselectRouteInTab("1")
+    )
+
+    expect(newState).toEqual({
+      ...initialState,
+      routeTabs: [routeTabFactory.build({ isCurrentTab: true })],
+    })
+  })
+
+  test("flipLadderInTab", () => {
+    const newState = reducer(
+      {
+        ...initialState,
+        routeTabs: [
+          routeTabFactory.build({
+            isCurrentTab: true,
+            selectedRouteIds: ["1"],
+          }),
+        ],
+      },
+      State.flipLadderInTab("1")
+    )
+
+    expect(newState).toEqual({
+      ...initialState,
+      routeTabs: [
+        routeTabFactory.build({
+          isCurrentTab: true,
+          selectedRouteIds: ["1"],
+          ladderDirections: { "1": 1 },
+        }),
+      ],
+    })
+  })
+
+  test("toggleLadderCrowdingInTab", () => {
+    const newState = reducer(
+      {
+        ...initialState,
+        routeTabs: [
+          routeTabFactory.build({
+            isCurrentTab: true,
+            selectedRouteIds: ["1"],
+          }),
+        ],
+      },
+      State.toggleLadderCrowdingInTab("1")
+    )
+
+    expect(newState).toEqual({
+      ...initialState,
+      routeTabs: [
+        routeTabFactory.build({
+          isCurrentTab: true,
+          selectedRouteIds: ["1"],
+          ladderCrowdingToggles: { "1": true },
+        }),
+      ],
+    })
   })
 })

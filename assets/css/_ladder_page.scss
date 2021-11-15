@@ -16,3 +16,12 @@
     width: calc(100% - #{$tab-bar-width});
   }
 }
+
+.m-ladder-page__route-tab-bar {
+  display: flex;
+  align-content: flex-start;
+}
+
+.m-ladder-page__tab-current {
+  color: $color-component-red;
+}

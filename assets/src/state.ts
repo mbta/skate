@@ -23,6 +23,7 @@ import {
   VehicleLabelSetting,
   VehicleAdherenceColorsSetting,
 } from "./userSettings"
+import { RouteTab, newRouteTab } from "./models/routeTab"
 
 export enum OpenView {
   None = 1,
@@ -36,6 +37,7 @@ export interface State {
   selectedRouteIds: RouteId[]
   ladderDirections: LadderDirections
   ladderCrowdingToggles: LadderCrowdingToggles
+  routeTabs: RouteTab[]
   selectedShuttleRouteIds: RouteId[]
   selectedShuttleRunIds: RunId[] | "all"
   selectedVehicleOrGhost?: VehicleOrGhost | null
@@ -51,6 +53,7 @@ export const initialState: State = {
   selectedRouteIds: [],
   ladderDirections: emptyLadderDirectionsByRouteId,
   ladderCrowdingToggles: emptyLadderCrowdingTogglesByRouteId,
+  routeTabs: [],
   selectedShuttleRouteIds: [],
   selectedShuttleRunIds: "all",
   selectedVehicleOrGhost: undefined,
@@ -105,6 +108,80 @@ export const toggleLadderCrowding = (
   routeId: RouteId
 ): ToggleLadderCrowdingAction => ({
   type: "TOGGLE_LADDER_CROWDING",
+  payload: { routeId },
+})
+
+interface CreateRouteTabAction {
+  type: "CREATE_ROUTE_TAB"
+}
+
+export const createRouteTab = (): CreateRouteTabAction => ({
+  type: "CREATE_ROUTE_TAB",
+})
+
+interface SelectRouteTabAction {
+  type: "SELECT_ROUTE_TAB"
+  payload: {
+    index: number
+  }
+}
+
+export const selectRouteTab = (index: number): SelectRouteTabAction => ({
+  type: "SELECT_ROUTE_TAB",
+  payload: {
+    index,
+  },
+})
+
+interface SelectRouteInTabAction {
+  type: "SELECT_ROUTE_IN_TAB"
+  payload: {
+    routeId: RouteId
+  }
+}
+
+export const selectRouteInTab = (routeId: RouteId): SelectRouteInTabAction => ({
+  type: "SELECT_ROUTE_IN_TAB",
+  payload: { routeId },
+})
+
+export interface DeselectRouteInTabAction {
+  type: "DESELECT_ROUTE_IN_TAB"
+  payload: {
+    routeId: RouteId
+  }
+}
+
+export const deselectRouteInTab = (
+  routeId: RouteId
+): DeselectRouteInTabAction => ({
+  type: "DESELECT_ROUTE_IN_TAB",
+  payload: { routeId },
+})
+
+export interface FlipLadderInTabAction {
+  type: "FLIP_LADDER_IN_TAB"
+  payload: {
+    routeId: RouteId
+  }
+}
+
+export const flipLadderInTab = (routeId: RouteId): FlipLadderInTabAction => ({
+  type: "FLIP_LADDER_IN_TAB",
+  payload: { routeId },
+})
+
+export interface ToggleLadderCrowdingInTabAction {
+  type: "TOGGLE_LADDER_CROWDING_IN_TAB"
+  payload: {
+    routeId: RouteId
+  }
+}
+
+export const toggleLadderCrowdingInTab = (
+  routeId: RouteId
+): ToggleLadderCrowdingInTabAction => ({
+  type: "TOGGLE_LADDER_CROWDING_IN_TAB",
   payload: { routeId },
 })
 
@@ -335,6 +412,12 @@ export type Action =
   | DeselectRouteAction
   | FlipLadderAction
   | ToggleLadderCrowdingAction
+  | CreateRouteTabAction
+  | SelectRouteTabAction
+  | SelectRouteInTabAction
+  | DeselectRouteInTabAction
+  | FlipLadderInTabAction
+  | ToggleLadderCrowdingInTabAction
   | SelectShuttleRunAction
   | DeselectShuttleRunAction
   | SelectAllShuttleRunsAction
@@ -410,6 +493,65 @@ const ladderCrowdingTogglesReducer = (
     case "TOGGLE_LADDER_CROWDING":
       const routeId = action.payload.routeId
       return toggleLadderCrowdingForRoute(state, routeId)
+    default:
+      return state
+  }
+}
+
+const routeTabsReducer = (state: RouteTab[], action: Action): RouteTab[] => {
+  const selectedTab = state.find((routeTab) => routeTab.isCurrentTab)
+
+  switch (action.type) {
+    case "CREATE_ROUTE_TAB":
+      return [
+        ...state.map((existingRouteTab) => {
+          return { ...existingRouteTab, isCurrentTab: false }
+        }),
+        newRouteTab(),
+      ]
+    case "SELECT_ROUTE_TAB":
+      const routeTabs = state.map((existingRouteTab) => {
+        return { ...existingRouteTab, isCurrentTab: false }
+      })
+
+      routeTabs[action.payload.index].isCurrentTab = true
+
+      return routeTabs
+    case "SELECT_ROUTE_IN_TAB":
+      if (selectedTab) {
+        selectedTab.selectedRouteIds = [
+          ...selectedTab.selectedRouteIds,
+          action.payload.routeId,
+        ]
+      }
+
+      return state
+    case "DESELECT_ROUTE_IN_TAB":
+      if (selectedTab) {
+        selectedTab.selectedRouteIds = selectedTab.selectedRouteIds.filter(
+          (routeId) => routeId !== action.payload.routeId
+        )
+      }
+
+      return state
+    case "FLIP_LADDER_IN_TAB":
+      if (selectedTab) {
+        selectedTab.ladderDirections = flipLadderDirectionForRoute(
+          selectedTab.ladderDirections,
+          action.payload.routeId
+        )
+      }
+
+      return state
+    case "TOGGLE_LADDER_CROWDING_IN_TAB":
+      if (selectedTab) {
+        selectedTab.ladderCrowdingToggles = toggleLadderCrowdingForRoute(
+          selectedTab.ladderCrowdingToggles,
+          action.payload.routeId
+        )
+      }
+
+      return state
     default:
       return state
   }
@@ -549,6 +691,7 @@ export const reducer = (state: State, action: Action): State => ({
     state.ladderCrowdingToggles,
     action
   ),
+  routeTabs: routeTabsReducer(state.routeTabs, action),
   selectedShuttleRouteIds: selectedShuttleRouteIdsReducer(
     state.selectedShuttleRouteIds,
     action
