@@ -66,7 +66,16 @@ describe("LadderPage", () => {
     const mockState = {
       ...initialState,
       routeTabs: [
-        routeTabFactory.build({ isCurrentTab: true, selectedRouteIds: ["1"] }),
+        routeTabFactory.build({
+          ordering: 0,
+          isCurrentTab: true,
+          selectedRouteIds: ["1"],
+        }),
+        routeTabFactory.build({
+          ordering: undefined,
+          isCurrentTab: false,
+          selectedRouteIds: ["28"],
+        }),
       ],
     }
     const tree = renderer

@@ -11,7 +11,8 @@ defmodule Skate.Settings.RouteTabTest do
       RouteTab.update_all_for_user!("user1", [route_tab])
       RouteTab.update_all_for_user!("user2", [route_tab])
 
-      assert [%RouteTab{}] = RouteTab.get_all_for_user("user1")
+      assert [%RouteTab{preset_name: "some routes", selected_route_ids: ["1", "28"]}] =
+               RouteTab.get_all_for_user("user1")
     end
   end
 
@@ -20,7 +21,8 @@ defmodule Skate.Settings.RouteTabTest do
       route_tab =
         build(:route_tab, %{preset_name: "some routes", selected_route_ids: ["1", "28"]})
 
-      [_new_route_tab] = RouteTab.update_all_for_user!("charlie", [route_tab])
+      assert [%RouteTab{preset_name: "some routes", selected_route_ids: ["1", "28"]}] =
+               RouteTab.update_all_for_user!("charlie", [route_tab])
 
       [route_tab_from_db] = RouteTab.get_all_for_user("charlie")
 
@@ -36,10 +38,10 @@ defmodule Skate.Settings.RouteTabTest do
 
       [persisted_route_tab] = RouteTab.update_all_for_user!("charlie", [route_tab])
 
-      [_updated_route_tab] =
-        RouteTab.update_all_for_user!("charlie", [
-          %{persisted_route_tab | preset_name: "some other name"}
-        ])
+      assert [%RouteTab{preset_name: "some other name", selected_route_ids: ["1", "28"]}] =
+               RouteTab.update_all_for_user!("charlie", [
+                 %{persisted_route_tab | preset_name: "some other name"}
+               ])
 
       persisted_route_tab_id = persisted_route_tab.id
 

@@ -35,17 +35,7 @@ defmodule Skate.Settings.RouteTab do
   def get_all_for_user(username) do
     from(rt in DbRouteTab, join: u in assoc(rt, :user), where: u.username == ^username)
     |> Repo.all()
-    |> Enum.map(fn db_route_tab ->
-      %__MODULE__{
-        id: db_route_tab.id,
-        preset_name: db_route_tab.preset_name,
-        selected_route_ids: db_route_tab.selected_route_ids,
-        ladder_directions: db_route_tab.ladder_directions,
-        ladder_crowding_toggles: db_route_tab.ladder_crowding_toggles,
-        ordering: db_route_tab.ordering,
-        is_current_tab: db_route_tab.is_current_tab
-      }
-    end)
+    |> Enum.map(&db_route_tab_to_route_tab(&1))
   end
 
   @spec update_all_for_user!(String.t(), [t()]) :: [t()]
@@ -56,16 +46,19 @@ defmodule Skate.Settings.RouteTab do
     |> DbUser.changeset(%{route_tabs: Enum.map(route_tabs, &Map.from_struct/1)})
     |> Repo.update!()
     |> Map.get(:route_tabs)
-    |> Enum.map(fn db_route_tab ->
-      %__MODULE__{
-        id: db_route_tab.id,
-        preset_name: db_route_tab.preset_name,
-        selected_route_ids: db_route_tab.selected_route_ids,
-        ladder_directions: db_route_tab.ladder_directions,
-        ladder_crowding_toggles: db_route_tab.ladder_crowding_toggles,
-        ordering: db_route_tab.ordering,
-        is_current_tab: db_route_tab.is_current_tab
-      }
-    end)
+    |> Enum.map(&db_route_tab_to_route_tab(&1))
+  end
+
+  @spec db_route_tab_to_route_tab(%DbRouteTab{}) :: t()
+  defp db_route_tab_to_route_tab(db_route_tab) do
+    %__MODULE__{
+      id: db_route_tab.id,
+      preset_name: db_route_tab.preset_name,
+      selected_route_ids: db_route_tab.selected_route_ids,
+      ladder_directions: db_route_tab.ladder_directions,
+      ladder_crowding_toggles: db_route_tab.ladder_crowding_toggles,
+      ordering: db_route_tab.ordering,
+      is_current_tab: db_route_tab.is_current_tab
+    }
   end
 end
