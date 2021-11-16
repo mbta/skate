@@ -161,4 +161,16 @@ defmodule Skate.Factory do
       partial_block_id: "block"
     }
   end
+
+  def route_tab_factory do
+    %Skate.Settings.RouteTab{
+      id: nil,
+      preset_name: "preset",
+      selected_route_ids: [],
+      ladder_directions: %{},
+      ladder_crowding_toggles: %{},
+      ordering: nil,
+      is_current_tab: false
+    }
+  end
 end

@@ -1,53 +1,68 @@
 defmodule Skate.Settings.RouteTabTest do
   use Skate.DataCase
+  import Skate.Factory
   alias Skate.Settings.RouteTab
-  alias Skate.Settings.Db.RouteTab, as: DbRouteTab
-  alias Skate.Settings.Db.User, as: DbUser
-
-  describe "create/1" do
-    test "creates and returns new record" do
-      route_tab = RouteTab.create("charlie")
-
-      assert %RouteTab{
-               preset_name: nil,
-               ladder_crowding_toggles: %{},
-               ladder_directions: %{},
-               selected_route_ids: []
-             } = route_tab
-
-      n_route_tabs = Skate.Repo.aggregate(DbRouteTab, :count)
-      assert n_route_tabs == 1
-      [sole_record] = Skate.Repo.all(DbRouteTab)
-
-      assert %{
-               preset_name: nil,
-               ladder_crowding_toggles: %{},
-               ladder_directions: %{},
-               selected_route_ids: []
-             } = sole_record
-
-      [sole_user] = Skate.Repo.all(DbUser)
-      assert %{username: "charlie"} = sole_user
-      assert sole_user.id == sole_record.user_id
-    end
-  end
 
   describe "get_all_for_user/1" do
     test "retrieves route tabs by username" do
-      RouteTab.create("user1")
-      RouteTab.create("user2")
+      route_tab =
+        build(:route_tab, %{preset_name: "some routes", selected_route_ids: ["1", "28"]})
 
-      assert [%RouteTab{}] = RouteTab.get_all_for_user("user1")
+      RouteTab.update_all_for_user!("user1", [route_tab])
+      RouteTab.update_all_for_user!("user2", [route_tab])
+
+      assert [%RouteTab{preset_name: "some routes", selected_route_ids: ["1", "28"]}] =
+               RouteTab.get_all_for_user("user1")
     end
   end
 
-  describe "set/2" do
-    test "updates existing route_tab" do
-      route_tab = RouteTab.create("charlie")
+  describe "update_all_for_user!/2" do
+    test "adds a new tab entry" do
+      route_tab =
+        build(:route_tab, %{preset_name: "some routes", selected_route_ids: ["1", "28"]})
 
-      new_route_tab = RouteTab.set(route_tab, %{selected_route_ids: ["1"]})
+      assert [%RouteTab{preset_name: "some routes", selected_route_ids: ["1", "28"]}] =
+               RouteTab.update_all_for_user!("charlie", [route_tab])
 
-      assert %{selected_route_ids: ["1"]} = new_route_tab
+      [route_tab_from_db] = RouteTab.get_all_for_user("charlie")
+
+      refute is_nil(route_tab_from_db.id)
+
+      assert %RouteTab{preset_name: "some routes", selected_route_ids: ["1", "28"]} =
+               route_tab_from_db
+    end
+
+    test "updates an existing tab entry" do
+      route_tab =
+        build(:route_tab, %{preset_name: "some routes", selected_route_ids: ["1", "28"]})
+
+      [persisted_route_tab] = RouteTab.update_all_for_user!("charlie", [route_tab])
+
+      assert [%RouteTab{preset_name: "some other name", selected_route_ids: ["1", "28"]}] =
+               RouteTab.update_all_for_user!("charlie", [
+                 %{persisted_route_tab | preset_name: "some other name"}
+               ])
+
+      persisted_route_tab_id = persisted_route_tab.id
+
+      assert [
+               %RouteTab{
+                 id: ^persisted_route_tab_id,
+                 preset_name: "some other name",
+                 selected_route_ids: ["1", "28"]
+               }
+             ] = RouteTab.get_all_for_user("charlie")
+    end
+
+    test "deletes a removed tab entry" do
+      route_tab =
+        build(:route_tab, %{preset_name: "some routes", selected_route_ids: ["1", "28"]})
+
+      [_persisted_route_tab] = RouteTab.update_all_for_user!("charlie", [route_tab])
+
+      RouteTab.update_all_for_user!("charlie", [])
+
+      assert [] == RouteTab.get_all_for_user("charlie")
     end
   end
 end

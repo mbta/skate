@@ -194,6 +194,12 @@ exports[`LadderPage renders with route tabs 1`] = `
       Untitled
     </div>
     <div
+      className="m-ladder-page__tab"
+      onClick={[Function]}
+    >
+      Untitled
+    </div>
+    <div
       className="m-ladder-page__add-tab-button"
       onClick={[Function]}
     >

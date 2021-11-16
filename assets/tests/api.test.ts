@@ -11,8 +11,10 @@ import {
   fetchTimepointsForRoute,
   putRouteSettings,
   putUserSetting,
+  putRouteTabs,
 } from "../src/api"
 import routeFactory from "./factories/route"
+import routeTabFactory from "./factories/routeTab"
 import * as browser from "../src/models/browser"
 
 // tslint:disable no-empty
@@ -531,5 +533,59 @@ describe("putRouteSettings", () => {
     const args = (window.fetch as jest.Mock).mock.calls[0][1]
     expect(args.method).toEqual("PUT")
     expect(args.headers).toHaveProperty("x-csrf-token")
+  })
+})
+
+describe("putRouteTabs", () => {
+  test("uses PUT and returns updated tabs", (done) => {
+    mockFetch(200, {
+      data: [
+        {
+          id: "1",
+          preset_name: "some name",
+          selected_route_ids: ["1", "28"],
+          ordering: 0,
+          ladder_directions: {},
+          ladder_crowding_toggles: {},
+          is_current_tab: false,
+        },
+      ],
+    })
+
+    const routeTabs = [
+      routeTabFactory.build({
+        presetName: "some name",
+        selectedRouteIds: ["1", "28"],
+        ordering: 0,
+        ladderDirections: {},
+        ladderCrowdingToggles: {},
+        isCurrentTab: false,
+      }),
+    ]
+
+    const result = putRouteTabs(routeTabs)
+
+    expect(window.fetch).toHaveBeenCalledTimes(1)
+    const args = (window.fetch as jest.Mock).mock.calls[0][1]
+    expect(args.method).toEqual("PUT")
+    expect(args.headers).toHaveProperty("x-csrf-token")
+    expect(args.body).toEqual(JSON.stringify({ route_tabs: routeTabs }))
+
+    const expectedRouteTabs = [
+      routeTabFactory.build({
+        id: "1",
+        presetName: "some name",
+        selectedRouteIds: ["1", "28"],
+        ordering: 0,
+        ladderDirections: {},
+        ladderCrowdingToggles: {},
+        isCurrentTab: false,
+      }),
+    ]
+
+    result.then((returnedRouteTabs) => {
+      expect(returnedRouteTabs).toEqual(expectedRouteTabs)
+      done()
+    })
   })
 })

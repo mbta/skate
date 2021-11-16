@@ -38,6 +38,7 @@ export interface State {
   ladderDirections: LadderDirections
   ladderCrowdingToggles: LadderCrowdingToggles
   routeTabs: RouteTab[]
+  pendingRouteTabs?: RouteTab[]
   selectedShuttleRouteIds: RouteId[]
   selectedShuttleRunIds: RunId[] | "all"
   selectedVehicleOrGhost?: VehicleOrGhost | null
@@ -54,6 +55,7 @@ export const initialState: State = {
   ladderDirections: emptyLadderDirectionsByRouteId,
   ladderCrowdingToggles: emptyLadderCrowdingTogglesByRouteId,
   routeTabs: [],
+  pendingRouteTabs: undefined,
   selectedShuttleRouteIds: [],
   selectedShuttleRunIds: "all",
   selectedVehicleOrGhost: undefined,
@@ -183,6 +185,22 @@ export const toggleLadderCrowdingInTab = (
 ): ToggleLadderCrowdingInTabAction => ({
   type: "TOGGLE_LADDER_CROWDING_IN_TAB",
   payload: { routeId },
+})
+
+export interface UpdateRouteTabsAction {
+  type: "UPDATE_ROUTE_TABS"
+  payload: {
+    routeTabs: RouteTab[]
+  }
+}
+
+export const updateRouteTabs = (
+  routeTabs: RouteTab[]
+): UpdateRouteTabsAction => ({
+  type: "UPDATE_ROUTE_TABS",
+  payload: {
+    routeTabs,
+  },
 })
 
 interface SelectShuttleRunAction {
@@ -418,6 +436,7 @@ export type Action =
   | DeselectRouteInTabAction
   | FlipLadderInTabAction
   | ToggleLadderCrowdingInTabAction
+  | UpdateRouteTabsAction
   | SelectShuttleRunAction
   | DeselectShuttleRunAction
   | SelectAllShuttleRunsAction
@@ -498,62 +517,102 @@ const ladderCrowdingTogglesReducer = (
   }
 }
 
-const routeTabsReducer = (state: RouteTab[], action: Action): RouteTab[] => {
-  const selectedTab = state.find((routeTab) => routeTab.isCurrentTab)
-
+const routeTabsReducer = (
+  state: RouteTab[],
+  action: Action
+): [RouteTab[], RouteTab[] | undefined] => {
   switch (action.type) {
     case "CREATE_ROUTE_TAB":
       return [
-        ...state.map((existingRouteTab) => {
-          return { ...existingRouteTab, isCurrentTab: false }
-        }),
-        newRouteTab(),
+        state,
+        [
+          ...state.map((existingRouteTab) => {
+            return { ...existingRouteTab, isCurrentTab: false }
+          }),
+          newRouteTab(state.length),
+        ],
       ]
     case "SELECT_ROUTE_TAB":
-      const routeTabs = state.map((existingRouteTab) => {
-        return { ...existingRouteTab, isCurrentTab: false }
+      const routeTabs = state.map((existingRouteTab, i) => {
+        if (i === action.payload.index) {
+          return { ...existingRouteTab, isCurrentTab: true }
+        } else {
+          return { ...existingRouteTab, isCurrentTab: false }
+        }
       })
 
-      routeTabs[action.payload.index].isCurrentTab = true
-
-      return routeTabs
+      return [state, routeTabs]
     case "SELECT_ROUTE_IN_TAB":
-      if (selectedTab) {
-        selectedTab.selectedRouteIds = [
-          ...selectedTab.selectedRouteIds,
-          action.payload.routeId,
-        ]
-      }
-
-      return state
+      return [
+        state,
+        state.map((routeTab) => {
+          if (routeTab.isCurrentTab) {
+            return {
+              ...routeTab,
+              selectedRouteIds: [
+                ...routeTab.selectedRouteIds,
+                action.payload.routeId,
+              ],
+            }
+          } else {
+            return routeTab
+          }
+        }),
+      ]
     case "DESELECT_ROUTE_IN_TAB":
-      if (selectedTab) {
-        selectedTab.selectedRouteIds = selectedTab.selectedRouteIds.filter(
-          (routeId) => routeId !== action.payload.routeId
-        )
-      }
-
-      return state
+      return [
+        state,
+        state.map((routeTab) => {
+          if (routeTab.isCurrentTab) {
+            return {
+              ...routeTab,
+              selectedRouteIds: routeTab.selectedRouteIds.filter(
+                (routeId) => routeId !== action.payload.routeId
+              ),
+            }
+          } else {
+            return routeTab
+          }
+        }),
+      ]
     case "FLIP_LADDER_IN_TAB":
-      if (selectedTab) {
-        selectedTab.ladderDirections = flipLadderDirectionForRoute(
-          selectedTab.ladderDirections,
-          action.payload.routeId
-        )
-      }
-
-      return state
+      return [
+        state,
+        state.map((routeTab) => {
+          if (routeTab.isCurrentTab) {
+            return {
+              ...routeTab,
+              ladderDirections: flipLadderDirectionForRoute(
+                routeTab.ladderDirections,
+                action.payload.routeId
+              ),
+            }
+          } else {
+            return routeTab
+          }
+        }),
+      ]
     case "TOGGLE_LADDER_CROWDING_IN_TAB":
-      if (selectedTab) {
-        selectedTab.ladderCrowdingToggles = toggleLadderCrowdingForRoute(
-          selectedTab.ladderCrowdingToggles,
-          action.payload.routeId
-        )
-      }
-
-      return state
+      return [
+        state,
+        state.map((routeTab) => {
+          if (routeTab.isCurrentTab) {
+            return {
+              ...routeTab,
+              ladderCrowdingToggles: toggleLadderCrowdingForRoute(
+                routeTab.ladderCrowdingToggles,
+                action.payload.routeId
+              ),
+            }
+          } else {
+            return routeTab
+          }
+        }),
+      ]
+    case "UPDATE_ROUTE_TABS":
+      return [action.payload.routeTabs, undefined]
     default:
-      return state
+      return [state, undefined]
   }
 }
 
@@ -679,39 +738,50 @@ const openViewReducer = (state: OpenView, action: Action): OpenView => {
   }
 }
 
-export const reducer = (state: State, action: Action): State => ({
-  pickerContainerIsVisible: pickerContainerIsVisibleReducer(
-    state.pickerContainerIsVisible,
+export const reducer = (state: State, action: Action): State => {
+  const [routeTabs, pendingRouteTabs] = routeTabsReducer(
+    state.routeTabs,
     action
-  ),
-  searchPageState: searchReducer(state.searchPageState, action as SearchAction),
-  selectedRouteIds: selectedRouteIdsReducer(state.selectedRouteIds, action),
-  ladderDirections: ladderDirectionsReducer(state.ladderDirections, action),
-  ladderCrowdingToggles: ladderCrowdingTogglesReducer(
-    state.ladderCrowdingToggles,
-    action
-  ),
-  routeTabs: routeTabsReducer(state.routeTabs, action),
-  selectedShuttleRouteIds: selectedShuttleRouteIdsReducer(
-    state.selectedShuttleRouteIds,
-    action
-  ),
-  selectedShuttleRunIds: selectedShuttleRunIdsReducer(
-    state.selectedShuttleRunIds,
-    action
-  ),
-  selectedVehicleOrGhost: selectedVehicleOrGhostReducer(
-    state.selectedVehicleOrGhost,
-    action
-  ),
-  notificationDrawerIsOpen: notificationDrawerReducer(
-    state.notificationDrawerIsOpen,
-    action
-  ),
-  userSettings: userSettingsReducer(state.userSettings, action),
-  selectedNotification: selectedNotificationReducer(
-    state.selectedNotification,
-    action
-  ),
-  openView: openViewReducer(state.openView, action),
-})
+  )
+
+  return {
+    pickerContainerIsVisible: pickerContainerIsVisibleReducer(
+      state.pickerContainerIsVisible,
+      action
+    ),
+    searchPageState: searchReducer(
+      state.searchPageState,
+      action as SearchAction
+    ),
+    selectedRouteIds: selectedRouteIdsReducer(state.selectedRouteIds, action),
+    ladderDirections: ladderDirectionsReducer(state.ladderDirections, action),
+    ladderCrowdingToggles: ladderCrowdingTogglesReducer(
+      state.ladderCrowdingToggles,
+      action
+    ),
+    routeTabs,
+    pendingRouteTabs,
+    selectedShuttleRouteIds: selectedShuttleRouteIdsReducer(
+      state.selectedShuttleRouteIds,
+      action
+    ),
+    selectedShuttleRunIds: selectedShuttleRunIdsReducer(
+      state.selectedShuttleRunIds,
+      action
+    ),
+    selectedVehicleOrGhost: selectedVehicleOrGhostReducer(
+      state.selectedVehicleOrGhost,
+      action
+    ),
+    notificationDrawerIsOpen: notificationDrawerReducer(
+      state.notificationDrawerIsOpen,
+      action
+    ),
+    userSettings: userSettingsReducer(state.userSettings, action),
+    selectedNotification: selectedNotificationReducer(
+      state.selectedNotification,
+      action
+    ),
+    openView: openViewReducer(state.openView, action),
+  }
+}

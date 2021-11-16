@@ -16,7 +16,12 @@ import {
   VehicleOrGhost,
 } from "../../src/realtime"
 import { ByRouteId, Route, TimepointsByRouteId } from "../../src/schedule.d"
-import { initialState, State } from "../../src/state"
+import {
+  initialState,
+  State,
+  selectRouteTab,
+  createRouteTab,
+} from "../../src/state"
 import ghostFactory from "../factories/ghost"
 import routeFactory from "../factories/route"
 import routeTabFactory from "../factories/routeTab"
@@ -66,7 +71,21 @@ describe("LadderPage", () => {
     const mockState = {
       ...initialState,
       routeTabs: [
-        routeTabFactory.build({ isCurrentTab: true, selectedRouteIds: ["1"] }),
+        routeTabFactory.build({
+          ordering: 0,
+          isCurrentTab: true,
+          selectedRouteIds: ["1"],
+        }),
+        routeTabFactory.build({
+          ordering: undefined,
+          isCurrentTab: false,
+          selectedRouteIds: ["28"],
+        }),
+        routeTabFactory.build({
+          ordering: 1,
+          isCurrentTab: false,
+          selectedRouteIds: ["39"],
+        }),
       ],
     }
     const tree = renderer
@@ -79,6 +98,61 @@ describe("LadderPage", () => {
       )
       .toJSON()
     expect(tree).toMatchSnapshot()
+  })
+
+  test("can select a different route tab", () => {
+    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
+    const mockState = {
+      ...initialState,
+      routeTabs: [
+        routeTabFactory.build({
+          ordering: 0,
+          isCurrentTab: true,
+          selectedRouteIds: ["1"],
+        }),
+        routeTabFactory.build({
+          ordering: 1,
+          isCurrentTab: false,
+          selectedRouteIds: ["39"],
+        }),
+      ],
+    }
+    const wrapper = mount(
+      <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+        <RoutesProvider routes={routes}>
+          <LadderPage />
+        </RoutesProvider>
+      </StateDispatchProvider>
+    )
+
+    wrapper.find(".m-ladder-page__tab").simulate("click")
+
+    expect(mockDispatch).toHaveBeenCalledWith(selectRouteTab(1))
+  })
+
+  test("can add a new route tab", () => {
+    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
+    const mockState = {
+      ...initialState,
+      routeTabs: [
+        routeTabFactory.build({
+          ordering: 0,
+          isCurrentTab: true,
+          selectedRouteIds: ["1"],
+        }),
+      ],
+    }
+    const wrapper = mount(
+      <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+        <RoutesProvider routes={routes}>
+          <LadderPage />
+        </RoutesProvider>
+      </StateDispatchProvider>
+    )
+
+    wrapper.find(".m-ladder-page__add-tab-button").simulate("click")
+
+    expect(mockDispatch).toHaveBeenCalledWith(createRouteTab())
   })
 
   test("renders with selectedRoutes in different order than routes data", () => {

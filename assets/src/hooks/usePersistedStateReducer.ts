@@ -1,9 +1,15 @@
 import { useEffect, useReducer, useState } from "react"
-import { putRouteSettings } from "../api"
+import { putRouteSettings, putRouteTabs } from "../api"
 import appData from "../appData"
 import { loadState, saveState } from "../localStorage"
 import { defaultRouteSettings, RouteSettings } from "../routeSettings"
-import { Dispatch, initialState, reducer, State } from "../state"
+import {
+  Dispatch,
+  initialState,
+  reducer,
+  State,
+  updateRouteTabs,
+} from "../state"
 import {
   defaultUserSettings,
   putLadderVehicleLabel,
@@ -32,7 +38,12 @@ const usePersistedStateReducer = (): [State, Dispatch] => {
     saveState(APP_STATE_KEY, locallyPersistableState)
   }, [locallyPersistableState])
 
-  const { selectedRouteIds, ladderDirections, ladderCrowdingToggles } = state
+  const {
+    selectedRouteIds,
+    ladderDirections,
+    ladderCrowdingToggles,
+    pendingRouteTabs,
+  } = state
 
   const [firstLoadDone, setFirstLoadDone] = useState(false)
 
@@ -47,6 +58,16 @@ const usePersistedStateReducer = (): [State, Dispatch] => {
       setFirstLoadDone(true)
     }
   }, [selectedRouteIds, ladderDirections, ladderCrowdingToggles])
+
+  useEffect(() => {
+    if (firstLoadDone && pendingRouteTabs !== undefined) {
+      putRouteTabs(pendingRouteTabs).then((routeTabs) => {
+        dispatch(updateRouteTabs(routeTabs))
+      })
+    } else {
+      setFirstLoadDone(true)
+    }
+  }, [JSON.stringify(pendingRouteTabs)])
 
   return [state, dispatch]
 }

@@ -1,5 +1,5 @@
 import { act, renderHook } from "@testing-library/react-hooks"
-import { putRouteSettings, putUserSetting } from "../../src/api"
+import { putRouteSettings, putUserSetting, putRouteTabs } from "../../src/api"
 import appData from "../../src/appData"
 import usePersistedStateReducer, {
   filter,
@@ -14,11 +14,14 @@ import {
   selectShuttleRun,
   State,
   toggleLadderCrowding,
+  createRouteTab,
 } from "../../src/state"
 import {
   VehicleLabelSetting,
   VehicleAdherenceColorsSetting,
 } from "../../src/userSettings"
+import { instantPromise } from "../testHelpers/mockHelpers"
+import routeTabFactory from "../factories/routeTab"
 
 // tslint:disable: react-hooks-nesting
 
@@ -30,6 +33,7 @@ const mockLocalStorage = {
 jest.mock("../../src/api", () => ({
   __esModule: true,
   putRouteSettings: jest.fn(),
+  putRouteTabs: jest.fn(),
   putUserSetting: jest.fn(),
 }))
 
@@ -206,6 +210,37 @@ describe("usePersistedStateReducer", () => {
       ladderDirections: { "39": 1 },
       ladderCrowdingToggles: { "83": true },
     })
+  })
+
+  test("sends updated route tabs to backend on changes", () => {
+    const routeTab = routeTabFactory.build({
+      id: "1",
+      isCurrentTab: true,
+      selectedRouteIds: [],
+      ladderDirections: {},
+      ladderCrowdingToggles: {},
+      ordering: 0,
+    })
+    ;(putRouteTabs as jest.Mock).mockImplementationOnce(() =>
+      instantPromise([routeTab])
+    )
+    const { result } = renderHook(() => usePersistedStateReducer())
+    const [, dispatch] = result.current
+
+    act(() => {
+      dispatch(createRouteTab())
+    })
+    expect(putRouteTabs).toHaveBeenCalledWith([
+      {
+        isCurrentTab: true,
+        selectedRouteIds: [],
+        ladderDirections: {},
+        ladderCrowdingToggles: {},
+        ordering: 0,
+      },
+    ])
+    const [state] = result.current
+    expect(state.routeTabs).toEqual([routeTab])
   })
 })
 
