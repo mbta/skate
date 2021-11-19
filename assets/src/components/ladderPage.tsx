@@ -1,12 +1,14 @@
-import React, { ReactElement, useContext } from "react"
+import React, { ReactElement, useContext, useState } from "react"
 import RoutesContext from "../contexts/routesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useTimepoints from "../hooks/useTimepoints"
 import { RouteTab, currentRouteTab } from "../models/routeTab"
 import { allVehiclesAndGhosts } from "../models/vehiclesByRouteId"
+import PickerContainer from "./pickerContainer"
 import { VehicleId, VehicleOrGhost } from "../realtime.d"
 import { ByRouteId, Route, RouteId, TimepointsByRouteId } from "../schedule.d"
 import { Notifications } from "./notifications"
+import Presets from "./presets"
 import RightPanel from "./rightPanel"
 import RouteLadders from "./routeLadders"
 import RoutePicker from "./routePicker"
@@ -23,6 +25,8 @@ import {
   flipLadder,
   toggleLadderCrowding,
 } from "../state"
+
+type DrawerContent = "route_picker" | "presets"
 
 export const findRouteById = (
   routes: Route[] | null,
@@ -97,11 +101,13 @@ const LadderPageWithoutTabs = (): ReactElement<HTMLDivElement> => {
   return (
     <div className="m-ladder-page">
       <Notifications />
-      <RoutePicker
-        selectedRouteIds={selectedRouteIds}
-        selectRoute={(routeId) => dispatch(selectRoute(routeId))}
-        deselectRoute={(routeId) => dispatch(deselectRoute(routeId))}
-      />
+      <PickerContainer>
+        <RoutePicker
+          selectedRouteIds={selectedRouteIds}
+          selectRoute={(routeId) => dispatch(selectRoute(routeId))}
+          deselectRoute={(routeId) => dispatch(deselectRoute(routeId))}
+        />
+      </PickerContainer>
 
       <>
         <RouteLadders
@@ -131,6 +137,9 @@ const LadderPageWithTabs = (): ReactElement<HTMLDivElement> => {
   const timepointsByRouteId: TimepointsByRouteId =
     useTimepoints(selectedRouteIds)
 
+  const [currentDrawerContent, setCurrentDrawerContent] =
+    useState<DrawerContent>("route_picker")
+
   const selectedRoutes: Route[] = selectedRouteIds
     .map((routeId) => findRouteById(routes, routeId))
     .filter((route) => route) as Route[]
@@ -138,12 +147,26 @@ const LadderPageWithTabs = (): ReactElement<HTMLDivElement> => {
   return (
     <div className="m-ladder-page">
       <Notifications />
-      <RoutePicker
-        selectedRouteIds={selectedRouteIds}
-        selectRoute={(routeId) => dispatch(selectRouteInTab(routeId))}
-        deselectRoute={(routeId) => dispatch(deselectRouteInTab(routeId))}
-      />
 
+      <PickerContainer>
+        <>
+          <button onClick={() => setCurrentDrawerContent("route_picker")}>
+            Routes
+          </button>
+          <button onClick={() => setCurrentDrawerContent("presets")}>
+            Presets
+          </button>
+          {currentDrawerContent === "route_picker" ? (
+            <RoutePicker
+              selectedRouteIds={selectedRouteIds}
+              selectRoute={(routeId) => dispatch(selectRouteInTab(routeId))}
+              deselectRoute={(routeId) => dispatch(deselectRouteInTab(routeId))}
+            />
+          ) : (
+            <Presets />
+          )}
+        </>
+      </PickerContainer>
       <div className="m-ladder-page__route-tab-bar">
         {routeTabs
           .filter((routeTab) => routeTab.ordering !== undefined)

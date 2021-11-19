@@ -98,6 +98,16 @@ exports[`LadderPage renders with route tabs 1`] = `
         />
       </button>
     </div>
+    <button
+      onClick={[Function]}
+    >
+      Routes
+    </button>
+    <button
+      onClick={[Function]}
+    >
+      Presets
+    </button>
     <div
       className="m-route-picker"
     >
