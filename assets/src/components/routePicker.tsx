@@ -9,7 +9,6 @@ import {
 import { Route, RouteId } from "../schedule.d"
 import { routeNameOrId } from "../util/route"
 import Loading from "./loading"
-import PickerContainer from "./pickerContainer"
 import {
   GarageFilterData,
   useGarageFilter,
@@ -39,32 +38,30 @@ const RoutePicker = ({
   )
 
   return (
-    <PickerContainer>
-      <div className="m-route-picker">
-        <SelectedRoutesList
-          routes={routes}
+    <div className="m-route-picker">
+      <SelectedRoutesList
+        routes={routes}
+        selectedRouteIds={selectedRouteIds}
+        deselectRoute={deselectRoute}
+      />
+
+      <RouteFilter {...routeFilterData} />
+
+      {featureIsEnabled("presets_workspaces") ? (
+        <GarageFilter {...garageFilterData} />
+      ) : null}
+
+      {routes === null ? (
+        <Loading />
+      ) : (
+        <RoutesList
+          routes={filteredRoutes}
           selectedRouteIds={selectedRouteIds}
+          selectRoute={selectRoute}
           deselectRoute={deselectRoute}
         />
-
-        <RouteFilter {...routeFilterData} />
-
-        {featureIsEnabled("presets_workspaces") ? (
-          <GarageFilter {...garageFilterData} />
-        ) : null}
-
-        {routes === null ? (
-          <Loading />
-        ) : (
-          <RoutesList
-            routes={filteredRoutes}
-            selectedRouteIds={selectedRouteIds}
-            selectRoute={selectRoute}
-            deselectRoute={deselectRoute}
-          />
-        )}
-      </div>
-    </PickerContainer>
+      )}
+    </div>
   )
 }
 
