@@ -75,6 +75,10 @@ import searchIconSvg from "../../static/images/icon-search.svg"
 // @ts-ignore
 import swingIconSvg from "../../static/images/icon-swing.svg"
 // @ts-ignore
+import toggleOffIconSvg from "../../static/images/icon-toggle-off.svg"
+// @ts-ignore
+import toggleOnIconSvg from "../../static/images/icon-toggle-on.svg"
+// @ts-ignore
 import triangleDownIconSvg from "../../static/images/icon-triangle-down.svg"
 // @ts-ignore
 import triangleUpIconSvg from "../../static/images/icon-triangle-up.svg"
@@ -202,6 +206,12 @@ export const searchIcon = (className: string = ""): JSX.Element =>
 
 export const swingIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, swingIconSvg)
+
+export const toggleOffIcon = (className: string = ""): JSX.Element =>
+  renderSvg(className, toggleOffIconSvg)
+
+export const toggleOnIcon = (className: string = ""): JSX.Element =>
+  renderSvg(className, toggleOnIconSvg)
 
 export const triangleDownIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, triangleDownIconSvg)

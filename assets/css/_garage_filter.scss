@@ -23,3 +23,20 @@
     }
   }
 }
+
+.m-garage-filter__garage {
+  display: flex;
+  justify-content: space-between;
+  padding: 0rem 0.5rem 0.5rem;
+
+  &:first-child {
+    padding: 0.75rem 0.5rem 0.5rem;
+  }
+}
+
+.m-garage-filter__button {
+  span {
+    display: inline-block;
+    width: 1.6875rem;
+  }
+}
