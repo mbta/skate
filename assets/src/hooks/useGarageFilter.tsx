@@ -2,6 +2,7 @@ import React from "react"
 import { useState } from "react"
 import { Route, GarageName } from "../schedule.d"
 import { flatten, uniq } from "../helpers/array"
+import { collapseIcon, expandIcon } from "../helpers/icon"
 
 export interface GarageFilterData {
   filteredGarages: GarageName[]
@@ -55,22 +56,34 @@ export const GarageFilter = ({
   allGarages,
   toggleGarage,
 }: GarageFilterData) => {
+  const [showGaragesFilter, setShowGaragesFilter] = useState<boolean>(true)
   const sortedGarages = allGarages.sort((a, b) => a.localeCompare(b))
 
   return (
     <div className="m-garage-filter">
-      {sortedGarages.map((garage) => (
-        <div key={garage}>
-          <input
-            className="m-garage-filter__input"
-            type="checkbox"
-            value={garage}
-            onChange={toggleGarage}
-            checked={filteredGarages.includes(garage)}
-          />
-          <label>{garage}</label>
-        </div>
-      ))}
+      <div className="m-garage-filter__header">
+        Filter garages
+        <button
+          className="m-garage-filter__show-hide-button"
+          onClick={() => setShowGaragesFilter(!showGaragesFilter)}
+        >
+          {showGaragesFilter ? collapseIcon() : expandIcon()}
+        </button>
+      </div>
+      {showGaragesFilter
+        ? sortedGarages.map((garage) => (
+            <div key={garage}>
+              <input
+                className="m-garage-filter__input"
+                type="checkbox"
+                value={garage}
+                onChange={toggleGarage}
+                checked={filteredGarages.includes(garage)}
+              />
+              <label>{garage}</label>
+            </div>
+          ))
+        : null}
     </div>
   )
 }

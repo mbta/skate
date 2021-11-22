@@ -116,4 +116,30 @@ describe("GarageFilter", () => {
 
     expect(mockGarageFilter.toggleGarage).toHaveBeenCalled()
   })
+
+  test("can hide / show the filters", () => {
+    const mockGarageFilter: GarageFilterData = {
+      filteredGarages: [],
+      allGarages: ["Garage A", "Garage B"],
+      toggleGarage: jest.fn(),
+    }
+
+    const garageFilter = mount(<GarageFilter {...mockGarageFilter} />)
+
+    expect(garageFilter.text().includes("Garage A")).toBeTruthy()
+
+    garageFilter
+      .find(".m-garage-filter__show-hide-button")
+      .first()
+      .simulate("click")
+
+    expect(garageFilter.text().includes("Garage A")).toBeFalsy()
+
+    garageFilter
+      .find(".m-garage-filter__show-hide-button")
+      .first()
+      .simulate("click")
+
+    expect(garageFilter.text().includes("Garage A")).toBeTruthy()
+  })
 })
