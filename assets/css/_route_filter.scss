@@ -1,9 +1,5 @@
-.m-route-filter__type {
-  @include font-emph;
-  border-bottom: solid 1px $white;
-  margin-bottom: 0.5rem;
-  padding: 0.5rem;
-  width: 100%;
+.m-route-filter {
+  padding-bottom: 1.5rem;
 }
 
 .m-route-filter__text {
@@ -12,6 +8,19 @@
 
 .m-route-filter__input {
   width: 100%;
+  border: 1px solid #9fa2ac;
+  border-radius: 4px;
+  margin: 1px 0;
+
+  &:hover {
+    border: 2px solid $color-secondary-light;
+    margin: 0;
+  }
+
+  &:focus {
+    border: 2px solid $color-secondary-medium;
+    margin: 0;
+  }
 }
 
 .m-route-filter__clear {
@@ -21,4 +30,13 @@
   padding: 0 0.375rem;
   position: absolute;
   top: 0.6rem;
+}
+
+.m-route-filter__search {
+  @include button-transparent;
+  @include button-icon(1rem);
+  right: 0;
+  padding: 0 0.375rem;
+  position: absolute;
+  top: 0.7rem;
 }

@@ -1,45 +1,26 @@
 import React from "react"
 import { useState } from "react"
-import { circleXIcon } from "../helpers/icon"
+import { circleXIcon, searchIcon } from "../helpers/icon"
 import { Route } from "../schedule.d"
 
-type FilterType = "name"
-
 export interface RouteFilterData {
-  filterType: FilterType
   filterText: string
-  handleTypeChange: (event: React.FormEvent<HTMLSelectElement>) => void
   handleTextInput: (event: React.FormEvent<HTMLInputElement>) => void
   clearTextInput: () => void
 }
-
-const isFilterType = (str: string): str is FilterType => str === "name"
 
 const byRouteName = (filterText: string) => (route: Route) =>
   route.name.toLowerCase().includes(filterText.toLowerCase())
 
 export const filterRoutes = (
   allRoutes: Route[],
-  { filterType, filterText }: { filterType: FilterType; filterText: string }
+  { filterText }: { filterText: string }
 ): Route[] => {
-  switch (filterType) {
-    case "name":
-      return allRoutes.filter(byRouteName(filterText))
-  }
+  return allRoutes.filter(byRouteName(filterText))
 }
 
 export const useRouteFilter = (): RouteFilterData => {
-  const initialFilterType: FilterType = "name"
-  const [filterType, setFilterType] = useState(initialFilterType)
   const [filterText, setFilterText] = useState("")
-
-  const handleTypeChange = (
-    event: React.FormEvent<HTMLSelectElement>
-  ): void => {
-    if (isFilterType(event.currentTarget.value)) {
-      setFilterType(event.currentTarget.value)
-    }
-  }
 
   const handleTextInput = (event: React.FormEvent<HTMLInputElement>): void =>
     setFilterText(event.currentTarget.value)
@@ -47,21 +28,19 @@ export const useRouteFilter = (): RouteFilterData => {
   const clearTextInput = (): void => setFilterText("")
 
   return {
-    filterType,
     filterText,
-    handleTypeChange,
     handleTextInput,
     clearTextInput,
   }
 }
 
 export const RouteFilter = ({
-  filterType,
   filterText,
-  handleTypeChange,
   handleTextInput,
   clearTextInput,
 }: RouteFilterData) => {
+  const [inputHasFocus, setInputHasFocus] = useState<boolean>(false)
+  const [inputHasText, setInputHasText] = useState<boolean>(false)
   const blurOnEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       event.currentTarget.blur()
@@ -70,24 +49,42 @@ export const RouteFilter = ({
 
   return (
     <div className="m-route-filter">
-      <select
-        className="m-route-filter__type"
-        value={filterType}
-        onChange={handleTypeChange}
-      >
-        <option value="name">Route ID</option>
-      </select>
-      <div className="m-route-filter__text">
+      <div className="m-route-filter__text" id="route-filter-text">
         <input
           className="m-route-filter__input"
           type="text"
           value={filterText}
-          onChange={handleTextInput}
+          placeholder="Search routes"
+          onChange={(event) => {
+            if (event.currentTarget.value.length > 0) {
+              setInputHasText(true)
+            } else {
+              setInputHasText(false)
+            }
+            handleTextInput(event)
+          }}
           onKeyDown={blurOnEnter}
+          onFocus={() => setInputHasFocus(true)}
+          onBlur={(e) => {
+            const input = document.getElementById("route-filter-text")
+            if (!input?.contains(e.relatedTarget)) {
+              setInputHasFocus(false)
+            }
+          }}
         />
-        <button className="m-route-filter__clear" onClick={clearTextInput}>
-          {circleXIcon()}
-        </button>
+        {inputHasFocus && inputHasText ? (
+          <button
+            className="m-route-filter__clear"
+            onClick={() => {
+              setInputHasText(false)
+              clearTextInput()
+            }}
+          >
+            {circleXIcon()}
+          </button>
+        ) : (
+          <button className="m-route-filter__search">{searchIcon()}</button>
+        )}
       </div>
     </div>
   )

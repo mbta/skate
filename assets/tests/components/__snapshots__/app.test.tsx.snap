@@ -220,30 +220,22 @@ exports[`App renders 1`] = `
           <div
             className="m-route-filter"
           >
-            <select
-              className="m-route-filter__type"
-              onChange={[Function]}
-              value="name"
-            >
-              <option
-                value="name"
-              >
-                Route ID
-              </option>
-            </select>
             <div
               className="m-route-filter__text"
+              id="route-filter-text"
             >
               <input
                 className="m-route-filter__input"
+                onBlur={[Function]}
                 onChange={[Function]}
+                onFocus={[Function]}
                 onKeyDown={[Function]}
+                placeholder="Search routes"
                 type="text"
                 value=""
               />
               <button
-                className="m-route-filter__clear"
-                onClick={[Function]}
+                className="m-route-filter__search"
               >
                 <span
                   className=""
@@ -502,30 +494,22 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
           <div
             className="m-route-filter"
           >
-            <select
-              className="m-route-filter__type"
-              onChange={[Function]}
-              value="name"
-            >
-              <option
-                value="name"
-              >
-                Route ID
-              </option>
-            </select>
             <div
               className="m-route-filter__text"
+              id="route-filter-text"
             >
               <input
                 className="m-route-filter__input"
+                onBlur={[Function]}
                 onChange={[Function]}
+                onFocus={[Function]}
                 onKeyDown={[Function]}
+                placeholder="Search routes"
                 type="text"
                 value=""
               />
               <button
-                className="m-route-filter__clear"
-                onClick={[Function]}
+                className="m-route-filter__search"
               >
                 <span
                   className=""
