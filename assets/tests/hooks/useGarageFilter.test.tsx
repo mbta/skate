@@ -83,6 +83,12 @@ describe("filterRoutesByGarage", () => {
 
 describe("GarageFilter", () => {
   test("clicking a button updates the garage filter", () => {
+    const originalFS = window.FS
+    window.FS = { event: jest.fn(), identify: jest.fn() }
+    afterEach(() => {
+      window.FS = originalFS
+    })
+
     const mockGarageFilter: GarageFilterData = {
       filteredGarages: [],
       allGarages: ["Garage A", "Garage B"],
@@ -97,6 +103,9 @@ describe("GarageFilter", () => {
       .simulate("click")
 
     expect(mockGarageFilter.toggleGarage).toHaveBeenCalled()
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      "User filtered routes by garage"
+    )
   })
 
   test("can hide / show the filters", () => {

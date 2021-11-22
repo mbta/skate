@@ -79,7 +79,12 @@ export const GarageFilter = ({
               <div key={garage} className="m-garage-filter__garage">
                 {garage}
                 <button
-                  onClick={() => toggleGarage(garage)}
+                  onClick={() => {
+                    if (!filteredGarages.includes(garage) && window.FS) {
+                      window.FS.event("User filtered routes by garage")
+                    }
+                    toggleGarage(garage)
+                  }}
                   className="m-garage-filter__button"
                 >
                   {filteredGarages.includes(garage)
