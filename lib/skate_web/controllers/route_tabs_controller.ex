@@ -13,16 +13,19 @@ defmodule SkateWeb.RouteTabsController do
 
   @spec format_tabs_for_update([map()]) :: [RouteTab.t()]
   defp format_tabs_for_update(route_tabs) do
-    Enum.map(route_tabs, fn route_tab ->
-      %RouteTab{
-        id: Map.get(route_tab, "id"),
-        preset_name: Map.get(route_tab, "presetName"),
-        selected_route_ids: Map.get(route_tab, "selectedRouteIds", []),
-        ladder_directions: Map.get(route_tab, "ladderDirections", %{}),
-        ladder_crowding_toggles: Map.get(route_tab, "ladderCrowdingToggles", %{}),
-        ordering: Map.get(route_tab, "ordering"),
-        is_current_tab: Map.get(route_tab, "isCurrentTab")
-      }
-    end)
+    Enum.map(route_tabs, &format_tab/1)
+  end
+
+  @spec format_tab(map()) :: RouteTab.t()
+  defp format_tab(route_tab) do
+    %RouteTab{
+      id: Map.get(route_tab, "id"),
+      preset_name: Map.get(route_tab, "presetName"),
+      selected_route_ids: Map.get(route_tab, "selectedRouteIds", []),
+      ladder_directions: Map.get(route_tab, "ladderDirections", %{}),
+      ladder_crowding_toggles: Map.get(route_tab, "ladderCrowdingToggles", %{}),
+      ordering: Map.get(route_tab, "ordering"),
+      is_current_tab: Map.get(route_tab, "isCurrentTab")
+    }
   end
 end

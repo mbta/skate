@@ -23,7 +23,12 @@ import {
   VehicleLabelSetting,
   VehicleAdherenceColorsSetting,
 } from "./userSettings"
-import { RouteTab, newRouteTab } from "./models/routeTab"
+import {
+  RouteTab,
+  newRouteTab,
+  newPreset,
+  tabFromPreset,
+} from "./models/routeTab"
 
 export enum OpenView {
   None = 1,
@@ -124,14 +129,14 @@ export const createRouteTab = (): CreateRouteTabAction => ({
 interface SelectRouteTabAction {
   type: "SELECT_ROUTE_TAB"
   payload: {
-    index: number
+    ordering: number
   }
 }
 
-export const selectRouteTab = (index: number): SelectRouteTabAction => ({
+export const selectRouteTab = (ordering: number): SelectRouteTabAction => ({
   type: "SELECT_ROUTE_TAB",
   payload: {
-    index,
+    ordering,
   },
 })
 
@@ -425,6 +430,28 @@ export const selectVehicleFromNotification = (
   payload: { vehicle },
 })
 
+interface CreatePresetAction {
+  type: "CREATE_PRESET"
+  payload: { sourceTab: RouteTab }
+}
+
+export const createPreset = (sourceTab: RouteTab): CreatePresetAction => ({
+  type: "CREATE_PRESET",
+  payload: { sourceTab },
+})
+
+interface InstantiatePresetAction {
+  type: "INSTANTIATE_PRESET"
+  payload: { preset: RouteTab }
+}
+
+export const instantiatePreset = (
+  preset: RouteTab
+): InstantiatePresetAction => ({
+  type: "INSTANTIATE_PRESET",
+  payload: { preset },
+})
+
 export type Action =
   | SelectRouteAction
   | DeselectRouteAction
@@ -457,6 +484,8 @@ export type Action =
   | ToggleSwingsViewAction
   | ToggleLateViewAction
   | SelectVehicleFromNotificationAction
+  | CreatePresetAction
+  | InstantiatePresetAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -532,9 +561,21 @@ const routeTabsReducer = (
           newRouteTab(state.length),
         ],
       ]
+    case "CREATE_PRESET":
+      return [state, [...state, newPreset(action.payload.sourceTab)]]
+    case "INSTANTIATE_PRESET":
+      return [
+        state,
+        [
+          ...state.map((existingRouteTab) => {
+            return { ...existingRouteTab, isCurrentTab: false }
+          }),
+          tabFromPreset(action.payload.preset, state.length),
+        ],
+      ]
     case "SELECT_ROUTE_TAB":
-      const routeTabs = state.map((existingRouteTab, i) => {
-        if (i === action.payload.index) {
+      const routeTabs = state.map((existingRouteTab) => {
+        if (existingRouteTab.ordering === action.payload.ordering) {
           return { ...existingRouteTab, isCurrentTab: true }
         } else {
           return { ...existingRouteTab, isCurrentTab: false }

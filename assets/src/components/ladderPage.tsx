@@ -2,7 +2,7 @@ import React, { ReactElement, useContext, useState } from "react"
 import RoutesContext from "../contexts/routesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useTimepoints from "../hooks/useTimepoints"
-import { RouteTab, currentRouteTab } from "../models/routeTab"
+import { RouteTab, currentRouteTab, isNotPreset } from "../models/routeTab"
 import { allVehiclesAndGhosts } from "../models/vehiclesByRouteId"
 import PickerContainer from "./pickerContainer"
 import { VehicleId, VehicleOrGhost } from "../realtime.d"
@@ -169,13 +169,13 @@ const LadderPageWithTabs = (): ReactElement<HTMLDivElement> => {
       </PickerContainer>
       <div className="m-ladder-page__route-tab-bar">
         {routeTabs
-          .filter((routeTab) => routeTab.ordering !== undefined)
+          .filter(isNotPreset)
           .sort((a, b) => (a.ordering || 0) - (b.ordering || 0))
-          .map((routeTab, i) => (
+          .map((routeTab) => (
             <LadderTab
               tab={routeTab}
-              selectTab={() => dispatch(selectRouteTab(i))}
-              key={i}
+              selectTab={() => dispatch(selectRouteTab(routeTab.ordering!))}
+              key={routeTab.ordering!}
             />
           ))}
 

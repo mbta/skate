@@ -30,6 +30,24 @@ export const newRouteTab = (ordering: number): RouteTab => ({
   ordering,
 })
 
+export const newPreset = (sourceTab: RouteTab): RouteTab => ({
+  ...sourceTab,
+  isCurrentTab: false,
+  presetName: `Preset ${Math.floor(Math.random() * 10000)}`,
+  id: undefined,
+  ordering: undefined,
+})
+
+export const tabFromPreset = (
+  preset: RouteTab,
+  ordering: number
+): RouteTab => ({
+  ...preset,
+  isCurrentTab: true,
+  id: undefined,
+  ordering,
+})
+
 export const currentRouteTab = (routeTabs: RouteTab[]): RouteTab =>
   routeTabs.find((routeTab) => routeTab.isCurrentTab) || newRouteTab(0)
 
@@ -38,11 +56,18 @@ export const parseRouteTabData = (
 ): RouteTab[] => {
   return routeTabsData.map((routeTabData) => ({
     id: routeTabData.id,
-    ordering: routeTabData.ordering,
-    presetName: routeTabData.preset_name,
+    ordering: nullToUndefined(routeTabData.ordering),
+    presetName: nullToUndefined(routeTabData.preset_name),
     isCurrentTab: routeTabData.is_current_tab || false,
     selectedRouteIds: routeTabData.selected_route_ids,
     ladderDirections: routeTabData.ladder_directions,
     ladderCrowdingToggles: routeTabData.ladder_crowding_toggles,
   }))
 }
+
+export const isPreset = (routeTab: RouteTab): boolean =>
+  routeTab.ordering === undefined
+export const isNotPreset = (routeTab: RouteTab): boolean => !isPreset(routeTab)
+
+const nullToUndefined = <T>(data: T | null): T | undefined =>
+  data === null ? undefined : data
