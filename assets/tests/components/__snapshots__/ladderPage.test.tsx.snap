@@ -42,16 +42,15 @@ exports[`LadderPage renders the empty state 1`] = `
         >
           <input
             className="m-route-filter__input"
-            onBlur={[Function]}
             onChange={[Function]}
-            onFocus={[Function]}
             onKeyDown={[Function]}
             placeholder="Search routes"
             type="text"
             value=""
           />
           <button
-            className="m-route-filter__search"
+            className="m-route-filter__clear"
+            onClick={[Function]}
           >
             <span
               className=""
@@ -124,16 +123,15 @@ exports[`LadderPage renders with route tabs 1`] = `
         >
           <input
             className="m-route-filter__input"
-            onBlur={[Function]}
             onChange={[Function]}
-            onFocus={[Function]}
             onKeyDown={[Function]}
             placeholder="Search routes"
             type="text"
             value=""
           />
           <button
-            className="m-route-filter__search"
+            className="m-route-filter__clear"
+            onClick={[Function]}
           >
             <span
               className=""
@@ -289,16 +287,15 @@ exports[`LadderPage renders with routes 1`] = `
         >
           <input
             className="m-route-filter__input"
-            onBlur={[Function]}
             onChange={[Function]}
-            onFocus={[Function]}
             onKeyDown={[Function]}
             placeholder="Search routes"
             type="text"
             value=""
           />
           <button
-            className="m-route-filter__search"
+            className="m-route-filter__clear"
+            onClick={[Function]}
           >
             <span
               className=""
@@ -440,16 +437,15 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
         >
           <input
             className="m-route-filter__input"
-            onBlur={[Function]}
             onChange={[Function]}
-            onFocus={[Function]}
             onKeyDown={[Function]}
             placeholder="Search routes"
             type="text"
             value=""
           />
           <button
-            className="m-route-filter__search"
+            className="m-route-filter__clear"
+            onClick={[Function]}
           >
             <span
               className=""
@@ -632,16 +628,15 @@ exports[`LadderPage renders with timepoints 1`] = `
         >
           <input
             className="m-route-filter__input"
-            onBlur={[Function]}
             onChange={[Function]}
-            onFocus={[Function]}
             onKeyDown={[Function]}
             placeholder="Search routes"
             type="text"
             value=""
           />
           <button
-            className="m-route-filter__search"
+            className="m-route-filter__clear"
+            onClick={[Function]}
           >
             <span
               className=""
@@ -1060,16 +1055,15 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
         >
           <input
             className="m-route-filter__input"
-            onBlur={[Function]}
             onChange={[Function]}
-            onFocus={[Function]}
             onKeyDown={[Function]}
             placeholder="Search routes"
             type="text"
             value=""
           />
           <button
-            className="m-route-filter__search"
+            className="m-route-filter__clear"
+            onClick={[Function]}
           >
             <span
               className=""

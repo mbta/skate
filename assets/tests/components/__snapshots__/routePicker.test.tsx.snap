@@ -53,16 +53,15 @@ exports[`RoutePicker renders a list of routes 1`] = `
       >
         <input
           className="m-route-filter__input"
-          onBlur={[Function]}
           onChange={[Function]}
-          onFocus={[Function]}
           onKeyDown={[Function]}
           placeholder="Search routes"
           type="text"
           value=""
         />
         <button
-          className="m-route-filter__search"
+          className="m-route-filter__clear"
+          onClick={[Function]}
         >
           <span
             className=""
@@ -167,16 +166,15 @@ exports[`RoutePicker renders a loading/empty state 1`] = `
       >
         <input
           className="m-route-filter__input"
-          onBlur={[Function]}
           onChange={[Function]}
-          onFocus={[Function]}
           onKeyDown={[Function]}
           placeholder="Search routes"
           type="text"
           value=""
         />
         <button
-          className="m-route-filter__search"
+          className="m-route-filter__clear"
+          onClick={[Function]}
         >
           <span
             className=""

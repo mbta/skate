@@ -1,7 +1,6 @@
 import { act, renderHook } from "@testing-library/react-hooks"
 import { mount } from "enzyme"
 import React from "react"
-import ReactTestUtils from "react-dom/test-utils"
 import {
   filterRoutes,
   RouteFilter,
@@ -102,20 +101,6 @@ describe("RouteFilter", () => {
       clearTextInput: jest.fn(),
     }
     const routePicker = mount(<RouteFilter {...mockRouteFilter} />)
-
-    routePicker.find(".m-route-filter__input").simulate("focus")
-
-    const testEvent = {
-      currentTarget: {
-        value: "test input",
-      },
-    } as React.ChangeEvent<HTMLInputElement>
-    const onChange = routePicker.find(".m-route-filter__input").prop("onChange")
-    if (onChange) {
-      ReactTestUtils.act(() => onChange(testEvent))
-    }
-
-    routePicker.update()
 
     routePicker.find(".m-route-filter__clear").simulate("click")
 

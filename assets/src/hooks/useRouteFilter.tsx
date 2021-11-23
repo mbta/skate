@@ -1,6 +1,6 @@
 import React from "react"
 import { useState } from "react"
-import { circleXIcon, searchIcon } from "../helpers/icon"
+import { circleXIcon } from "../helpers/icon"
 import { Route } from "../schedule.d"
 
 export interface RouteFilterData {
@@ -39,8 +39,6 @@ export const RouteFilter = ({
   handleTextInput,
   clearTextInput,
 }: RouteFilterData) => {
-  const [inputHasFocus, setInputHasFocus] = useState<boolean>(false)
-  const [inputHasText, setInputHasText] = useState<boolean>(false)
   const blurOnEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       event.currentTarget.blur()
@@ -55,36 +53,13 @@ export const RouteFilter = ({
           type="text"
           value={filterText}
           placeholder="Search routes"
-          onChange={(event) => {
-            if (event.currentTarget.value.length > 0) {
-              setInputHasText(true)
-            } else {
-              setInputHasText(false)
-            }
-            handleTextInput(event)
-          }}
+          onChange={(event) => handleTextInput(event)}
           onKeyDown={blurOnEnter}
-          onFocus={() => setInputHasFocus(true)}
-          onBlur={(e) => {
-            const input = document.getElementById("route-filter-text")
-            if (!input?.contains(e.relatedTarget)) {
-              setInputHasFocus(false)
-            }
-          }}
         />
-        {inputHasFocus && inputHasText ? (
-          <button
-            className="m-route-filter__clear"
-            onClick={() => {
-              setInputHasText(false)
-              clearTextInput()
-            }}
-          >
-            {circleXIcon()}
-          </button>
-        ) : (
-          <button className="m-route-filter__search">{searchIcon()}</button>
-        )}
+
+        <button className="m-route-filter__clear" onClick={clearTextInput}>
+          {circleXIcon()}
+        </button>
       </div>
     </div>
   )
