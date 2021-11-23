@@ -23,7 +23,12 @@ import {
   VehicleLabelSetting,
   VehicleAdherenceColorsSetting,
 } from "./userSettings"
-import { RouteTab, newRouteTab } from "./models/routeTab"
+import {
+  RouteTab,
+  newRouteTab,
+  newPreset,
+  tabFromPreset,
+} from "./models/routeTab"
 
 export enum OpenView {
   None = 1,
@@ -439,6 +444,28 @@ export const selectVehicleFromNotification = (
   payload: { vehicle },
 })
 
+interface CreatePresetAction {
+  type: "CREATE_PRESET"
+  payload: { sourceTab: RouteTab }
+}
+
+export const createPreset = (sourceTab: RouteTab): CreatePresetAction => ({
+  type: "CREATE_PRESET",
+  payload: { sourceTab },
+})
+
+interface InstantiatePresetAction {
+  type: "INSTANTIATE_PRESET"
+  payload: { preset: RouteTab }
+}
+
+export const instantiatePreset = (
+  preset: RouteTab
+): InstantiatePresetAction => ({
+  type: "INSTANTIATE_PRESET",
+  payload: { preset },
+})
+
 export type Action =
   | SelectRouteAction
   | DeselectRouteAction
@@ -473,6 +500,8 @@ export type Action =
   | ToggleSwingsViewAction
   | ToggleLateViewAction
   | SelectVehicleFromNotificationAction
+  | CreatePresetAction
+  | InstantiatePresetAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -544,7 +573,7 @@ const routeTabsReducer = (
     case "CREATE_ROUTE_TAB":
       const highestExistingOrdering = Math.max(
         -1,
-        ...routeTabs.map((existingRouteTab) => existingRouteTab.ordering)
+        ...routeTabs.map((existingRouteTab) => existingRouteTab.ordering || 0)
       )
 
       return {
@@ -556,6 +585,21 @@ const routeTabsReducer = (
             }
           }),
           newRouteTab(highestExistingOrdering + 1),
+        ],
+        routeTabsUpdated: true,
+      }
+    case "CREATE_PRESET":
+      return {
+        newRouteTabs: [...routeTabs, newPreset(action.payload.sourceTab)],
+        routeTabsUpdated: true,
+      }
+    case "INSTANTIATE_PRESET":
+      return {
+        newRouteTabs: [
+          ...routeTabs.map((existingRouteTab) => {
+            return { ...existingRouteTab, isCurrentTab: false }
+          }),
+          tabFromPreset(action.payload.preset, routeTabs.length),
         ],
         routeTabsUpdated: true,
       }
