@@ -222,7 +222,6 @@ exports[`App renders 1`] = `
           >
             <div
               className="m-route-filter__text"
-              id="route-filter-text"
             >
               <input
                 className="m-route-filter__input"
@@ -495,7 +494,6 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
           >
             <div
               className="m-route-filter__text"
-              id="route-filter-text"
             >
               <input
                 className="m-route-filter__input"

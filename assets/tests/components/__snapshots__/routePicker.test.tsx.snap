@@ -49,7 +49,6 @@ exports[`RoutePicker renders a list of routes 1`] = `
     >
       <div
         className="m-route-filter__text"
-        id="route-filter-text"
       >
         <input
           className="m-route-filter__input"
@@ -162,7 +161,6 @@ exports[`RoutePicker renders a loading/empty state 1`] = `
     >
       <div
         className="m-route-filter__text"
-        id="route-filter-text"
       >
         <input
           className="m-route-filter__input"

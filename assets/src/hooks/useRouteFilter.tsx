@@ -47,7 +47,7 @@ export const RouteFilter = ({
 
   return (
     <div className="m-route-filter">
-      <div className="m-route-filter__text" id="route-filter-text">
+      <div className="m-route-filter__text">
         <input
           className="m-route-filter__input"
           type="text"

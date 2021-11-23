@@ -38,7 +38,6 @@ exports[`LadderPage renders the empty state 1`] = `
       >
         <div
           className="m-route-filter__text"
-          id="route-filter-text"
         >
           <input
             className="m-route-filter__input"
@@ -119,7 +118,6 @@ exports[`LadderPage renders with route tabs 1`] = `
       >
         <div
           className="m-route-filter__text"
-          id="route-filter-text"
         >
           <input
             className="m-route-filter__input"
@@ -283,7 +281,6 @@ exports[`LadderPage renders with routes 1`] = `
       >
         <div
           className="m-route-filter__text"
-          id="route-filter-text"
         >
           <input
             className="m-route-filter__input"
@@ -433,7 +430,6 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
       >
         <div
           className="m-route-filter__text"
-          id="route-filter-text"
         >
           <input
             className="m-route-filter__input"
@@ -624,7 +620,6 @@ exports[`LadderPage renders with timepoints 1`] = `
       >
         <div
           className="m-route-filter__text"
-          id="route-filter-text"
         >
           <input
             className="m-route-filter__input"
@@ -1051,7 +1046,6 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
       >
         <div
           className="m-route-filter__text"
-          id="route-filter-text"
         >
           <input
             className="m-route-filter__input"

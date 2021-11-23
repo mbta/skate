@@ -222,7 +222,6 @@ exports[`renders 1`] = `
           >
             <div
               className="m-route-filter__text"
-              id="route-filter-text"
             >
               <input
                 className="m-route-filter__input"
