@@ -2,11 +2,17 @@ import React from "react"
 import { useState } from "react"
 import { Route, GarageName } from "../schedule.d"
 import { flatten, uniq } from "../helpers/array"
+import {
+  collapseIcon,
+  expandIcon,
+  toggleOnIcon,
+  toggleOffIcon,
+} from "../helpers/icon"
 
 export interface GarageFilterData {
   filteredGarages: GarageName[]
   allGarages: GarageName[]
-  toggleGarage: (event: React.FormEvent<HTMLInputElement>) => void
+  toggleGarage: (garage: GarageName) => void
 }
 
 export const filterRoutesByGarage = (
@@ -27,9 +33,7 @@ export const filterRoutesByGarage = (
 export const useGarageFilter = (routes: Route[] | null): GarageFilterData => {
   const [filteredGarages, setFilteredGarages] = useState<GarageName[]>([])
 
-  const toggleGarage = (event: React.FormEvent<HTMLInputElement>): void => {
-    const garage: GarageName = event.currentTarget.value
-
+  const toggleGarage = (garage: GarageName): void => {
     if (filteredGarages.includes(garage)) {
       setFilteredGarages(
         filteredGarages.filter((filteredGarage) => filteredGarage !== garage)
@@ -55,22 +59,42 @@ export const GarageFilter = ({
   allGarages,
   toggleGarage,
 }: GarageFilterData) => {
+  const [showGaragesFilter, setShowGaragesFilter] = useState<boolean>(true)
   const sortedGarages = allGarages.sort((a, b) => a.localeCompare(b))
 
   return (
     <div className="m-garage-filter">
-      {sortedGarages.map((garage) => (
-        <div key={garage}>
-          <input
-            className="m-garage-filter__input"
-            type="checkbox"
-            value={garage}
-            onChange={toggleGarage}
-            checked={filteredGarages.includes(garage)}
-          />
-          <label>{garage}</label>
-        </div>
-      ))}
+      <div className="m-garage-filter__header">
+        Filter garages
+        <button
+          className="m-garage-filter__show-hide-button"
+          onClick={() => setShowGaragesFilter(!showGaragesFilter)}
+        >
+          {showGaragesFilter ? collapseIcon() : expandIcon()}
+        </button>
+      </div>
+      <div>
+        {showGaragesFilter
+          ? sortedGarages.map((garage) => (
+              <div key={garage} className="m-garage-filter__garage">
+                {garage}
+                <button
+                  onClick={() => {
+                    if (!filteredGarages.includes(garage) && window.FS) {
+                      window.FS.event("User filtered routes by garage")
+                    }
+                    toggleGarage(garage)
+                  }}
+                  className="m-garage-filter__button"
+                >
+                  {filteredGarages.includes(garage)
+                    ? toggleOnIcon()
+                    : toggleOffIcon()}
+                </button>
+              </div>
+            ))
+          : null}
+      </div>
     </div>
   )
 }

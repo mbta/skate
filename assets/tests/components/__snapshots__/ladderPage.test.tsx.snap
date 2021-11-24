@@ -36,17 +36,6 @@ exports[`LadderPage renders the empty state 1`] = `
       <div
         className="m-route-filter"
       >
-        <select
-          className="m-route-filter__type"
-          onChange={[Function]}
-          value="name"
-        >
-          <option
-            value="name"
-          >
-            Route ID
-          </option>
-        </select>
         <div
           className="m-route-filter__text"
         >
@@ -54,6 +43,7 @@ exports[`LadderPage renders the empty state 1`] = `
             className="m-route-filter__input"
             onChange={[Function]}
             onKeyDown={[Function]}
+            placeholder="Search routes"
             type="text"
             value=""
           />
@@ -126,17 +116,6 @@ exports[`LadderPage renders with route tabs 1`] = `
       <div
         className="m-route-filter"
       >
-        <select
-          className="m-route-filter__type"
-          onChange={[Function]}
-          value="name"
-        >
-          <option
-            value="name"
-          >
-            Route ID
-          </option>
-        </select>
         <div
           className="m-route-filter__text"
         >
@@ -144,6 +123,7 @@ exports[`LadderPage renders with route tabs 1`] = `
             className="m-route-filter__input"
             onChange={[Function]}
             onKeyDown={[Function]}
+            placeholder="Search routes"
             type="text"
             value=""
           />
@@ -299,17 +279,6 @@ exports[`LadderPage renders with routes 1`] = `
       <div
         className="m-route-filter"
       >
-        <select
-          className="m-route-filter__type"
-          onChange={[Function]}
-          value="name"
-        >
-          <option
-            value="name"
-          >
-            Route ID
-          </option>
-        </select>
         <div
           className="m-route-filter__text"
         >
@@ -317,6 +286,7 @@ exports[`LadderPage renders with routes 1`] = `
             className="m-route-filter__input"
             onChange={[Function]}
             onKeyDown={[Function]}
+            placeholder="Search routes"
             type="text"
             value=""
           />
@@ -458,17 +428,6 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
       <div
         className="m-route-filter"
       >
-        <select
-          className="m-route-filter__type"
-          onChange={[Function]}
-          value="name"
-        >
-          <option
-            value="name"
-          >
-            Route ID
-          </option>
-        </select>
         <div
           className="m-route-filter__text"
         >
@@ -476,6 +435,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
             className="m-route-filter__input"
             onChange={[Function]}
             onKeyDown={[Function]}
+            placeholder="Search routes"
             type="text"
             value=""
           />
@@ -658,17 +618,6 @@ exports[`LadderPage renders with timepoints 1`] = `
       <div
         className="m-route-filter"
       >
-        <select
-          className="m-route-filter__type"
-          onChange={[Function]}
-          value="name"
-        >
-          <option
-            value="name"
-          >
-            Route ID
-          </option>
-        </select>
         <div
           className="m-route-filter__text"
         >
@@ -676,6 +625,7 @@ exports[`LadderPage renders with timepoints 1`] = `
             className="m-route-filter__input"
             onChange={[Function]}
             onKeyDown={[Function]}
+            placeholder="Search routes"
             type="text"
             value=""
           />
@@ -1094,17 +1044,6 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
       <div
         className="m-route-filter"
       >
-        <select
-          className="m-route-filter__type"
-          onChange={[Function]}
-          value="name"
-        >
-          <option
-            value="name"
-          >
-            Route ID
-          </option>
-        </select>
         <div
           className="m-route-filter__text"
         >
@@ -1112,6 +1051,7 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
             className="m-route-filter__input"
             onChange={[Function]}
             onKeyDown={[Function]}
+            placeholder="Search routes"
             type="text"
             value=""
           />

@@ -220,17 +220,6 @@ exports[`renders 1`] = `
           <div
             className="m-route-filter"
           >
-            <select
-              className="m-route-filter__type"
-              onChange={[Function]}
-              value="name"
-            >
-              <option
-                value="name"
-              >
-                Route ID
-              </option>
-            </select>
             <div
               className="m-route-filter__text"
             >
@@ -238,6 +227,7 @@ exports[`renders 1`] = `
                 className="m-route-filter__input"
                 onChange={[Function]}
                 onKeyDown={[Function]}
+                placeholder="Search routes"
                 type="text"
                 value=""
               />

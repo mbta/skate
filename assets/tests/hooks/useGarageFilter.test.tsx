@@ -34,17 +34,11 @@ describe("useGarageFilter", () => {
     // tslint:disable-next-line: react-hooks-nesting no-empty
     const { result } = renderHook(() => useGarageFilter(routes))
 
-    const testEvent = {
-      currentTarget: {
-        value: "Garage A",
-      },
-    } as React.ChangeEvent<HTMLInputElement>
-
-    act(() => result.current.toggleGarage(testEvent))
+    act(() => result.current.toggleGarage("Garage A"))
 
     expect(result.current.filteredGarages).toEqual(["Garage A"])
 
-    act(() => result.current.toggleGarage(testEvent))
+    act(() => result.current.toggleGarage("Garage A"))
 
     expect(result.current.filteredGarages).toEqual([])
   })
@@ -75,13 +69,7 @@ describe("filterRoutesByGarage", () => {
     // tslint:disable-next-line: react-hooks-nesting no-empty
     const { result } = renderHook(() => useGarageFilter([route1, route2]))
 
-    const testEvent = {
-      currentTarget: {
-        value: "Garage A",
-      },
-    } as React.ChangeEvent<HTMLInputElement>
-
-    act(() => result.current.toggleGarage(testEvent))
+    act(() => result.current.toggleGarage("Garage A"))
 
     const filteredRoutes = filterRoutesByGarage(
       [route1, route2],
@@ -94,7 +82,13 @@ describe("filterRoutesByGarage", () => {
 })
 
 describe("GarageFilter", () => {
-  test("clicking a checkbox updates the garage filter", () => {
+  test("clicking a button updates the garage filter", () => {
+    const originalFS = window.FS
+    window.FS = { event: jest.fn(), identify: jest.fn() }
+    afterEach(() => {
+      window.FS = originalFS
+    })
+
     const mockGarageFilter: GarageFilterData = {
       filteredGarages: [],
       allGarages: ["Garage A", "Garage B"],
@@ -103,17 +97,40 @@ describe("GarageFilter", () => {
 
     const garageFilter = mount(<GarageFilter {...mockGarageFilter} />)
 
-    const testEvent = {
-      currentTarget: {
-        value: "Garage A",
-      },
-    } as React.ChangeEvent<HTMLSelectElement>
-
     garageFilter
-      .find(".m-garage-filter__input")
+      .find(".m-garage-filter__garage > button")
       .first()
-      .simulate("change", testEvent)
+      .simulate("click")
 
     expect(mockGarageFilter.toggleGarage).toHaveBeenCalled()
+    expect(window.FS!.event).toHaveBeenCalledWith(
+      "User filtered routes by garage"
+    )
+  })
+
+  test("can hide / show the filters", () => {
+    const mockGarageFilter: GarageFilterData = {
+      filteredGarages: [],
+      allGarages: ["Garage A", "Garage B"],
+      toggleGarage: jest.fn(),
+    }
+
+    const garageFilter = mount(<GarageFilter {...mockGarageFilter} />)
+
+    expect(garageFilter.text().includes("Garage A")).toBeTruthy()
+
+    garageFilter
+      .find(".m-garage-filter__show-hide-button")
+      .first()
+      .simulate("click")
+
+    expect(garageFilter.text().includes("Garage A")).toBeFalsy()
+
+    garageFilter
+      .find(".m-garage-filter__show-hide-button")
+      .first()
+      .simulate("click")
+
+    expect(garageFilter.text().includes("Garage A")).toBeTruthy()
   })
 })
