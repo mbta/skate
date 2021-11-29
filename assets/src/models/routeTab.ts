@@ -12,6 +12,16 @@ export interface RouteTab {
   ordering?: number
 }
 
+export interface RouteTabData {
+  id: string
+  preset_name?: string
+  selected_route_ids: RouteId[]
+  ordering?: number
+  ladder_directions: LadderDirections
+  ladder_crowding_toggles: LadderCrowdingToggles
+  is_current_tab?: boolean
+}
+
 export const newRouteTab = (ordering: number): RouteTab => ({
   isCurrentTab: true,
   selectedRouteIds: [],
@@ -22,3 +32,17 @@ export const newRouteTab = (ordering: number): RouteTab => ({
 
 export const currentRouteTab = (routeTabs: RouteTab[]): RouteTab =>
   routeTabs.find((routeTab) => routeTab.isCurrentTab) || newRouteTab(0)
+
+export const parseRouteTabData = (
+  routeTabsData: RouteTabData[]
+): RouteTab[] => {
+  return routeTabsData.map((routeTabData) => ({
+    id: routeTabData.id,
+    ordering: routeTabData.ordering,
+    presetName: routeTabData.preset_name,
+    isCurrentTab: routeTabData.is_current_tab || false,
+    selectedRouteIds: routeTabData.selected_route_ids,
+    ladderDirections: routeTabData.ladder_directions,
+    ladderCrowdingToggles: routeTabData.ladder_crowding_toggles,
+  }))
+}

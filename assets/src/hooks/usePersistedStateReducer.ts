@@ -18,6 +18,7 @@ import {
   UserSettings,
   userSettingsFromData,
 } from "../userSettings"
+import { RouteTab, parseRouteTabData } from "../models/routeTab"
 
 const APP_STATE_KEY = "mbta-skate-state"
 
@@ -76,8 +77,9 @@ const init = (): State => {
   const loadedState: object | undefined = loadState(APP_STATE_KEY)
   const userSettings = getUserSettings(loadedState)
   const routeSettings = getRouteSettings(loadedState)
+  const routeTabs = getRouteTabs()
   const result = merge<State>(
-    { ...initialState, ...routeSettings, userSettings },
+    { ...initialState, ...routeSettings, routeTabs, userSettings },
     loadedState || {},
     LOCALLY_PERSISTED_KEYS
   )
@@ -141,6 +143,17 @@ const getRouteSettings = (loadedState: object | undefined): RouteSettings => {
   }
 
   return routeSettings
+}
+
+const getRouteTabs = (): RouteTab[] => {
+  let routeTabs: RouteTab[] = []
+
+  const backendSettingsString: string | undefined = appData()?.routeTabs
+  if (backendSettingsString !== undefined) {
+    routeTabs = parseRouteTabData(JSON.parse(backendSettingsString))
+  }
+
+  return routeTabs
 }
 
 export const get = (obj: object, key: Key): any | undefined =>

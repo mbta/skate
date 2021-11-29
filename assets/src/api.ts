@@ -16,9 +16,7 @@ import {
   Timepoint,
   TripId,
 } from "./schedule.d"
-import { RouteTab } from "./models/routeTab"
-import { LadderDirections } from "./models/ladderDirection"
-import { LadderCrowdingToggles } from "./models/ladderCrowdingToggle"
+import { RouteTab, parseRouteTabData } from "./models/routeTab"
 
 export interface RouteData {
   id: string
@@ -28,16 +26,6 @@ export interface RouteData {
   }
   name: string
   garages: GarageName[]
-}
-
-export interface RouteTabData {
-  id: string
-  preset_name?: string
-  selected_route_ids: RouteId[]
-  ordering?: number
-  ladder_directions: LadderDirections
-  ladder_crowding_toggles: LadderCrowdingToggles
-  is_current_tab?: boolean
 }
 
 const checkResponseStatus = (response: Response) => {
@@ -209,20 +197,6 @@ export const putRouteSettings = (routeSettings: RouteSettings): void => {
     },
     body: JSON.stringify(routeSettings),
   })
-}
-
-export const parseRouteTabData = (
-  routeTabsData: RouteTabData[]
-): RouteTab[] => {
-  return routeTabsData.map((routeTabData) => ({
-    id: routeTabData.id,
-    ordering: routeTabData.ordering,
-    presetName: routeTabData.preset_name,
-    isCurrentTab: routeTabData.is_current_tab || false,
-    selectedRouteIds: routeTabData.selected_route_ids,
-    ladderDirections: routeTabData.ladder_directions,
-    ladderCrowdingToggles: routeTabData.ladder_crowding_toggles,
-  }))
 }
 
 export const putRouteTabs = (routeTabs: RouteTab[]): Promise<RouteTab[]> =>
