@@ -124,7 +124,19 @@ describe("usePersistedStateReducer", () => {
         ladder_directions: { "77": 1 },
         ladder_crowding_toggles: { "83": true },
       }),
+      routeTabs: JSON.stringify([
+        {
+          id: "1",
+          ordering: 0,
+          preset_name: "some name",
+          is_current_tab: true,
+          selected_route_ids: ["1"],
+          ladder_directions: {},
+          ladder_crowding_toggles: {},
+        },
+      ]),
     }
+    ;(appData as jest.Mock).mockImplementationOnce(() => mockSettings)
     ;(appData as jest.Mock).mockImplementationOnce(() => mockSettings)
     ;(appData as jest.Mock).mockImplementationOnce(() => mockSettings)
     const { result } = renderHook(() => usePersistedStateReducer())
@@ -138,6 +150,17 @@ describe("usePersistedStateReducer", () => {
     expect(state.selectedRouteIds).toEqual(["39"])
     expect(state.ladderDirections).toEqual({ "77": 1 })
     expect(state.ladderCrowdingToggles).toEqual({ "83": true })
+    expect(state.routeTabs).toEqual([
+      routeTabFactory.build({
+        id: "1",
+        ordering: 0,
+        presetName: "some name",
+        isCurrentTab: true,
+        selectedRouteIds: ["1"],
+        ladderDirections: {},
+        ladderCrowdingToggles: {},
+      }),
+    ])
   })
 
   test("if settings are in localstorage, copies them to the backend and uses them", () => {
