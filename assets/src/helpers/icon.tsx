@@ -61,6 +61,8 @@ import orangeLineIconSvg from "../../static/images/icon-orange-line.svg"
 // @ts-ignore
 import plusIconSvg from "../../static/images/icon-plus.svg"
 // @ts-ignore
+import plusThinIconSvg from "../../static/images/icon-plus-thin.svg"
+// @ts-ignore
 import questionMarkIconSvg from "../../static/images/icon-question-mark.svg"
 // @ts-ignore
 import redLineIconSvg from "../../static/images/icon-red-line.svg"
@@ -70,6 +72,8 @@ import refreshIconSvg from "../../static/images/icon-refresh.svg"
 import reverseIconSvg from "../../static/images/icon-reverse-normal.svg"
 // @ts-ignore
 import reverseIconReversedSvg from "../../static/images/icon-reverse-reversed.svg"
+// @ts-ignore
+import saveIconSvg from "../../static/images/icon-save.svg"
 // @ts-ignore
 import searchIconSvg from "../../static/images/icon-search.svg"
 // @ts-ignore
@@ -186,6 +190,9 @@ export const orangeLineIcon = (className: string = ""): JSX.Element =>
 export const plusIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, plusIconSvg)
 
+export const plusThinIcon = (className: string = ""): JSX.Element =>
+  renderSvg(className, plusThinIconSvg)
+
 export const questionMarkIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, questionMarkIconSvg)
 
@@ -200,6 +207,9 @@ export const reverseIcon = (className: string = ""): JSX.Element =>
 
 export const reverseIconReversed = (className: string = ""): JSX.Element =>
   renderSvg(className, reverseIconReversedSvg)
+
+export const saveIcon = (className: string = ""): JSX.Element =>
+  renderSvg(className, saveIconSvg)
 
 export const searchIcon = (className: string = ""): JSX.Element =>
   renderSvg(className, searchIconSvg)

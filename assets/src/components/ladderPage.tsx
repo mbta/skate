@@ -23,6 +23,8 @@ import {
   flipLadder,
   toggleLadderCrowding,
 } from "../state"
+import CloseButton from "./closeButton"
+import { saveIcon, plusThinIcon } from "../helpers/icon"
 
 export const findRouteById = (
   routes: Route[] | null,
@@ -49,11 +51,21 @@ const LadderTab = ({
   return (
     <div
       className={
-        tab.isCurrentTab ? "m-ladder-page__tab-current" : "m-ladder-page__tab"
+        "m-ladder-page__tab" +
+        (tab.isCurrentTab ? " m-ladder-page__tab-current" : "")
       }
       onClick={() => selectTab()}
     >
-      {title}
+      <div className="m-ladder-page__tab-contents">
+        <div className="m-ladder-page__tab-title">{title}</div>
+        {tab.isCurrentTab ? saveIcon("m-ladder-page__tab-save-icon") : null}
+        <CloseButton
+          onClick={
+            // tslint:disable-next-line: no-empty
+            () => {}
+          }
+        />
+      </div>
     </div>
   )
 }
@@ -65,7 +77,7 @@ const AddTabButton = ({
 }): ReactElement<HTMLDivElement> => {
   return (
     <div className="m-ladder-page__add-tab-button" onClick={addTab}>
-      +
+      {plusThinIcon("m-ladder-page__add-tab-icon")}
     </div>
   )
 }
