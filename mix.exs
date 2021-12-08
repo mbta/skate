@@ -54,7 +54,7 @@ defmodule Skate.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:gen_stage, "~> 1.1.0"},
-      {:ueberauth, "~> 0.6.1"},
+      {:ueberauth, "~> 0.7.0"},
       {:ueberauth_cognito, "~> 0.2.0"},
       {:guardian, "~> 2.0"},
       {:guardian_phoenix, "~> 2.0"},
