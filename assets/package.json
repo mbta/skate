@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@sentry/webpack-plugin": "^1.17.2",
-    "@testing-library/react-hooks": "^7.0.1",
+    "@testing-library/react-hooks": "^7.0.2",
     "@types/enzyme": "^3.10.9",
     "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jest": "^26.0.24",
@@ -61,7 +61,7 @@
     "react-test-renderer": "^16.13.1",
     "sass-loader": "^10.2.0",
     "svg-inline-loader": "^0.8.2",
-    "svgo": "^2.7.0",
+    "svgo": "^2.8.0",
     "svgo-loader": "^3.0.0",
     "terser-webpack-plugin": "^4.2.3",
     "ts-jest": "^26.5.6",
