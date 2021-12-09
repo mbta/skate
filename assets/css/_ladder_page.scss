@@ -1,3 +1,6 @@
+$color-route-tabs-bg: #e5e7eb;
+$color-route-tabs-separator: #9fa2ac;
+
 .m-ladder-page {
   box-sizing: border-box;
   height: 100%;
@@ -20,9 +23,96 @@
 
 .m-ladder-page__route-tab-bar {
   display: flex;
-  align-content: flex-start;
+  background-color: $color-route-tabs-bg;
+}
+
+.m-ladder-page__tab {
+  @include font-small;
+  color: #6e717d;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-top: 0.375rem;
+  flex-basis: 10rem;
+  min-width: 0;
+
+  &:not(:first-child) .m-ladder-page__tab-contents {
+    border-left: 1px solid $color-route-tabs-separator;
+  }
+
+  &:nth-last-child(2) .m-ladder-page__tab-contents {
+    border-right: 1px solid $color-route-tabs-separator;
+  }
 }
 
 .m-ladder-page__tab-current {
-  color: $color-component-red;
+  font-weight: 600;
+  color: #3c3f4c;
+  background-color: #fafafb;
+  border-radius: 0.25rem 0.25rem 0 0;
+
+  &:first-child {
+    border-radius: 0 0.25rem 0 0;
+  }
+
+  &:not(:first-child) .m-ladder-page__tab-contents {
+    border-left: none;
+  }
+
+  &:nth-last-child(2) .m-ladder-page__tab-contents {
+    border-right: none;
+  }
+
+  &:not(:nth-last-child(2)) .m-ladder-page__tab-contents {
+    position: relative;
+    z-index: 900;
+    box-shadow: 1px 0px $color-route-tabs-bg;
+  }
+}
+
+.m-ladder-page__tab-contents {
+  display: flex;
+  align-items: center;
+  padding-left: 0.75rem;
+  min-width: 0;
+
+  .m-ladder-page__tab-title {
+    flex-grow: 1;
+    min-width: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .m-close-button {
+    @include button-icon(0.5rem);
+    font-size: unset;
+    padding-right: 0.625rem;
+  }
+
+  .m-ladder-page__tab-save-icon {
+    padding-right: 0.625rem;
+    svg {
+      width: 0.625rem;
+      height: 0.625rem;
+    }
+  }
+}
+
+.m-ladder-page__add-tab-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 0.65625rem;
+
+  .m-ladder-page__add-tab-icon {
+    padding-top: 0.375rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    svg {
+      width: 0.625rem;
+      height: 0.625rem;
+    }
+  }
 }

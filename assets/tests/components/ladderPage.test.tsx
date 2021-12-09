@@ -125,7 +125,9 @@ describe("LadderPage", () => {
       </StateDispatchProvider>
     )
 
-    wrapper.find(".m-ladder-page__tab").simulate("click")
+    wrapper
+      .find(".m-ladder-page__tab:not(.m-ladder-page__tab-current)")
+      .simulate("click")
 
     expect(mockDispatch).toHaveBeenCalledWith(selectRouteTab(1))
   })
