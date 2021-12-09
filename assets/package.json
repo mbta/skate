@@ -35,7 +35,7 @@
     "whatwg-fetch": "^3.6.2"
   },
   "devDependencies": {
-    "@sentry/webpack-plugin": "^1.17.2",
+    "@sentry/webpack-plugin": "^1.18.3",
     "@testing-library/react-hooks": "^7.0.2",
     "@types/enzyme": "^3.10.9",
     "@types/enzyme-adapter-react-16": "^1.0.6",
@@ -57,8 +57,8 @@
     "mini-css-extract-plugin": "^1.6.2",
     "node-sass": "^6.0.1",
     "optimize-css-assets-webpack-plugin": "^6.0.1",
-    "prettier": "^2.4.1",
-    "react-test-renderer": "^16.13.1",
+    "prettier": "^2.5.1",
+    "react-test-renderer": "^16.14.0",
     "sass-loader": "^10.2.0",
     "svg-inline-loader": "^0.8.2",
     "svgo": "^2.8.0",
