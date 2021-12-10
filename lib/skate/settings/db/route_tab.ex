@@ -2,16 +2,14 @@ defmodule Skate.Settings.Db.RouteTab do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias Skate.Settings.Db.User
+  alias Skate.Settings.Db.{TabSettings, User}
 
   @type t :: %__MODULE__{}
 
   schema "route_tabs" do
     belongs_to(:user, User)
+    has_one(:tab_settings, TabSettings, on_replace: :update)
     field(:preset_name, :string)
-    field(:selected_route_ids, {:array, :string})
-    field(:ladder_directions, :map)
-    field(:ladder_crowding_toggles, :map)
     field(:ordering, :integer)
     field(:is_current_tab, :boolean)
 
@@ -28,17 +26,13 @@ defmodule Skate.Settings.Db.RouteTab do
       :id,
       :user_id,
       :preset_name,
-      :selected_route_ids,
-      :ladder_directions,
-      :ladder_crowding_toggles,
       :ordering,
       :save_changes_to_tab_id,
       :is_current_tab
     ])
-    |> validate_required([
-      :selected_route_ids,
-      :ladder_directions,
-      :ladder_crowding_toggles
-    ])
+    |> put_assoc(
+      :tab_settings,
+      Map.take(attrs, [:ladder_directions, :ladder_crowding_toggles, :selected_route_ids])
+    )
   end
 end
