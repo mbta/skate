@@ -89,7 +89,7 @@ defmodule Schedule.Fetcher do
          Map.merge(state, %{
            latest_gtfs_timestamp: gtfs_timestamp,
            latest_hastus_timestamp: hastus_timestamp
-         })}
+         }), :hibernate}
       else
         {:stop, :normal, state}
       end
