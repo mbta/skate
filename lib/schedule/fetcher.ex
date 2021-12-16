@@ -164,7 +164,7 @@ defmodule Schedule.Fetcher do
 
       try do
         data = Data.parse_files(files)
-        {:ok, data, gtfs_timestamp, hastus_timestamp, true}
+        {:ok, data, gtfs_timestamp, hastus_timestamp, false}
       rescue
         error -> {:error, error}
       end
