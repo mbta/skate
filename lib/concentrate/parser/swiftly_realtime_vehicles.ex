@@ -47,7 +47,6 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehicles do
       stop_name: Map.get(vehicle_data, "nextStopName"),
       direction_id: vehicle_data |> Map.get("directionId") |> direction_id_from_string(),
       headsign: Map.get(vehicle_data, "headsign"),
-      headway_secs: Map.get(vehicle_data, "headwaySecs"),
       layover_departure_time: Map.get(vehicle_data, "layoverDepTime"),
       previous_vehicle_id: Map.get(vehicle_data, "previousVehicleId"),
       previous_vehicle_schedule_adherence_secs:
@@ -57,7 +56,6 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehicles do
       route_id: Map.get(vehicle_data, "routeId"),
       schedule_adherence_secs: Map.get(vehicle_data, "schAdhSecs"),
       schedule_adherence_string: Map.get(vehicle_data, "schAdhStr"),
-      scheduled_headway_secs: Map.get(vehicle_data, "scheduledHeadwaySecs"),
       sources: MapSet.new(["swiftly"]),
       data_discrepancies: []
     )

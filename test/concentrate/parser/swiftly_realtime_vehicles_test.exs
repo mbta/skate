@@ -29,8 +29,6 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehiclesTest do
         "vehicleType" => "3",
         "schAdhSecs" => 0,
         "schAdhStr" => "0.0 sec (ontime)",
-        "headwaySecs" => 859.1,
-        "scheduledHeadwaySecs" => 120,
         "previousVehicleId" => "y1272",
         "previousVehicleSchAdhSecs" => 59,
         "previousVehicleSchAdhStr" => "59.0 sec (late)",
@@ -77,7 +75,6 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehiclesTest do
           stop_name: "Back Bay",
           direction_id: 0,
           headsign: "Forest Hills",
-          headway_secs: 859.1,
           layover_departure_time: 1_559_673_780,
           previous_vehicle_id: "y1272",
           previous_vehicle_schedule_adherence_secs: 59,
@@ -85,7 +82,6 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehiclesTest do
           route_id: "39",
           schedule_adherence_secs: 0,
           schedule_adherence_string: "0.0 sec (ontime)",
-          scheduled_headway_secs: 120,
           sources: MapSet.new(["swiftly"]),
           data_discrepancies: []
         )

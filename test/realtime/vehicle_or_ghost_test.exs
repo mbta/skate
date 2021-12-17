@@ -21,8 +21,6 @@ defmodule Realtime.VehicleOrGhostTest do
     operator_name: "FRANKLIN",
     operator_logon_time: 1_558_121_726,
     run_id: "vehicle-run-1",
-    headway_secs: 600,
-    headway_spacing: :ok,
     is_shuttle: false,
     is_overload: false,
     is_off_course: false,

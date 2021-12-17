@@ -1,9 +1,5 @@
-import featureIsEnabled from "../../src/laboratoryFeatures"
 import {
   drawnStatus,
-  HeadwaySpacing,
-  headwaySpacingToString,
-  humanReadableHeadwaySpacing,
   humanReadableScheduleAdherence,
   onTimeStatus,
   statusClasses,
@@ -13,21 +9,6 @@ import {
   defaultUserSettings,
   VehicleAdherenceColorsSetting,
 } from "../../src/userSettings"
-
-jest.mock("../../src/laboratoryFeatures", () => ({
-  __esModule: true,
-  default: jest.fn(),
-}))
-
-const mockHeadwaysOn = () => {
-  const mockFeatureIsEnabled: jest.Mock = featureIsEnabled as jest.Mock
-  mockFeatureIsEnabled.mockReturnValue(true)
-}
-
-const mockHeadwaysOff = () => {
-  const mockFeatureIsEnabled: jest.Mock = featureIsEnabled as jest.Mock
-  mockFeatureIsEnabled.mockReturnValue(false)
-}
 
 describe("onTimeStatus", () => {
   test("returns on-time", () => {
@@ -45,21 +26,8 @@ describe("onTimeStatus", () => {
 
 describe("drawnStatus", () => {
   test("returns 'off-course' if isOffCourse", () => {
-    mockHeadwaysOff()
     const vehicle: Vehicle = {
       id: "y0001",
-      headwaySpacing: null,
-      scheduleAdherenceSecs: 0,
-      isOffCourse: true,
-    } as Vehicle
-    expect(drawnStatus(vehicle)).toEqual("off-course")
-  })
-
-  test("returns 'off-course' in headways mode", () => {
-    mockHeadwaysOn()
-    const vehicle: Vehicle = {
-      id: "y0001",
-      headwaySpacing: HeadwaySpacing.Bunched,
       scheduleAdherenceSecs: 0,
       isOffCourse: true,
     } as Vehicle
@@ -67,10 +35,8 @@ describe("drawnStatus", () => {
   })
 
   test("returns 'plain' for a shuttle, even if off-course", () => {
-    mockHeadwaysOff()
     const shuttle: Vehicle = {
       id: "y0001",
-      headwaySpacing: null,
       scheduleAdherenceSecs: 0,
       isShuttle: true,
       isOffCourse: true,
@@ -79,43 +45,8 @@ describe("drawnStatus", () => {
   })
 
   test("return scheduled status", () => {
-    mockHeadwaysOff()
     const vehicle: Vehicle = {
       id: "y0001",
-      headwaySpacing: null,
-      scheduleAdherenceSecs: 500,
-      isOffCourse: false,
-    } as Vehicle
-    expect(drawnStatus(vehicle)).toEqual("late")
-  })
-
-  test("prefers scheduled status to headway status if headway mode is off", () => {
-    mockHeadwaysOff()
-    const vehicle: Vehicle = {
-      id: "y0001",
-      headwaySpacing: HeadwaySpacing.Bunched,
-      scheduleAdherenceSecs: 500,
-      isOffCourse: false,
-    } as Vehicle
-    expect(drawnStatus(vehicle)).toEqual("late")
-  })
-
-  test("in headway mode, returns plain", () => {
-    mockHeadwaysOn()
-    const vehicle: Vehicle = {
-      id: "y0001",
-      headwaySpacing: HeadwaySpacing.Bunched,
-      scheduleAdherenceSecs: 500,
-      isOffCourse: false,
-    } as Vehicle
-    expect(drawnStatus(vehicle)).toEqual("plain")
-  })
-
-  test("in headway mode, returns schedule time if there is no headway", () => {
-    mockHeadwaysOn()
-    const vehicle: Vehicle = {
-      id: "y0001",
-      headwaySpacing: null,
       scheduleAdherenceSecs: 500,
       isOffCourse: false,
     } as Vehicle
@@ -145,40 +76,6 @@ describe("humanReadableScheduleAdherence", () => {
       scheduleAdherenceSecs: 500,
     } as Vehicle
     expect(humanReadableScheduleAdherence(late)).toEqual("late")
-  })
-})
-
-describe("humanReadableHeadwaySpacing", () => {
-  test("when given null, returns good", () => {
-    expect(humanReadableHeadwaySpacing(null)).toEqual("good")
-  })
-
-  test("converts enum to string", () => {
-    expect(humanReadableHeadwaySpacing(HeadwaySpacing.VeryBunched)).toEqual(
-      "very bunched"
-    )
-    expect(humanReadableHeadwaySpacing(HeadwaySpacing.Bunched)).toEqual(
-      "bunched"
-    )
-    expect(humanReadableHeadwaySpacing(HeadwaySpacing.Ok)).toEqual("good")
-    expect(humanReadableHeadwaySpacing(HeadwaySpacing.Gapped)).toEqual("gapped")
-    expect(humanReadableHeadwaySpacing(HeadwaySpacing.VeryGapped)).toEqual(
-      "very gapped"
-    )
-  })
-})
-
-describe("headwaySpacingToString", () => {
-  test("converts enum to string", () => {
-    expect(headwaySpacingToString(HeadwaySpacing.VeryBunched)).toEqual(
-      "very-bunched"
-    )
-    expect(headwaySpacingToString(HeadwaySpacing.Bunched)).toEqual("bunched")
-    expect(headwaySpacingToString(HeadwaySpacing.Ok)).toEqual("ok")
-    expect(headwaySpacingToString(HeadwaySpacing.Gapped)).toEqual("gapped")
-    expect(headwaySpacingToString(HeadwaySpacing.VeryGapped)).toEqual(
-      "very-gapped"
-    )
   })
 })
 

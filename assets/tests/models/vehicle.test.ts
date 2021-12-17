@@ -3,9 +3,7 @@ import {
   isLateVehicleIndicator,
   isRecentlyLoggedOn,
   isVehicle,
-  shouldShowHeadwayDiagram,
 } from "../../src/models/vehicle"
-import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../src/realtime"
 import * as dateTime from "../../src/util/dateTime"
 import vehicleFactory from "../factories/vehicle"
@@ -88,33 +86,5 @@ describe("isRecentlyLoggedOn", () => {
 
   test("false if given a ghost", () => {
     expect(isRecentlyLoggedOn(ghostFactory.build())).toBeFalsy()
-  })
-})
-
-describe("shouldShowHeadwayDiagram", () => {
-  test("returns false if vehicle headwaySpacing is null", () => {
-    const nullHeadwaySpacingVehicle = {
-      headwaySpacing: null,
-    } as Vehicle
-
-    expect(shouldShowHeadwayDiagram(nullHeadwaySpacingVehicle)).toBeFalsy()
-  })
-
-  test("returns false if not on route", () => {
-    const notOnRouteVehicle = {
-      headwaySpacing: HeadwaySpacing.Ok,
-      routeStatus: "pulling_out",
-    } as Vehicle
-
-    expect(shouldShowHeadwayDiagram(notOnRouteVehicle)).toBeFalsy()
-  })
-
-  test("returns true if measuring headway spacing and is on route", () => {
-    const onRouteHeadwaySpacingVehicle = {
-      headwaySpacing: HeadwaySpacing.Ok,
-      routeStatus: "on_route",
-    } as Vehicle
-
-    expect(shouldShowHeadwayDiagram(onRouteHeadwaySpacingVehicle)).toBeTruthy()
   })
 })

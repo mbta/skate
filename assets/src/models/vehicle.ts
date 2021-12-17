@@ -1,4 +1,3 @@
-import featureIsEnabled from "../laboratoryFeatures"
 import { Ghost, Vehicle, VehicleOrGhost } from "../realtime"
 import { now } from "../util/dateTime"
 
@@ -24,11 +23,3 @@ export const isRecentlyLoggedOn = (vehicleOrGhost: VehicleOrGhost): boolean => {
 
   return timeDiffInMs <= thirtyMinutesInMs
 }
-
-export const shouldShowHeadwayDiagram = ({
-  headwaySpacing,
-  routeStatus,
-}: Vehicle): boolean =>
-  featureIsEnabled("headway_ladder_colors") &&
-  headwaySpacing !== null &&
-  routeStatus === "on_route"

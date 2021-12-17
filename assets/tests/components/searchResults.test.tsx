@@ -5,7 +5,6 @@ import SearchResults, {
   byOperatorLogonTime,
 } from "../../src/components/searchResults"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../src/realtime"
 import { initialState, selectVehicle, State } from "../../src/state"
 import { setSearchText } from "../../src/state/searchPageState"
@@ -59,11 +58,8 @@ describe("SearchResults", () => {
       operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
       bearing: 33,
       blockId: "block-1",
-      headwaySecs: 859.1,
-      headwaySpacing: HeadwaySpacing.Ok,
       previousVehicleId: "v2",
       scheduleAdherenceSecs: 0,
-      scheduledHeadwaySecs: 120,
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,
@@ -147,11 +143,8 @@ describe("SearchResults", () => {
       operatorLogonTime: new Date("2018-08-15T17:40:21.000Z"),
       bearing: 33,
       blockId: "block-1",
-      headwaySecs: 859.1,
-      headwaySpacing: HeadwaySpacing.Ok,
       previousVehicleId: "v2",
       scheduleAdherenceSecs: 0,
-      scheduledHeadwaySecs: 120,
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,
@@ -217,11 +210,8 @@ describe("SearchResults", () => {
       operatorLogonTime: new Date("2018-08-15T13:30:00.000Z"),
       bearing: 33,
       blockId: "block-1",
-      headwaySecs: 859.1,
-      headwaySpacing: HeadwaySpacing.Ok,
       previousVehicleId: "v2",
       scheduleAdherenceSecs: 0,
-      scheduledHeadwaySecs: 120,
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,
@@ -274,11 +264,8 @@ describe("SearchResults", () => {
       operatorLogonTime: new Date("2018-08-15T13:40:00.000Z"),
       bearing: 33,
       blockId: "block-1",
-      headwaySecs: 859.1,
-      headwaySpacing: HeadwaySpacing.Ok,
       previousVehicleId: "v2",
       scheduleAdherenceSecs: 0,
-      scheduledHeadwaySecs: 120,
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,

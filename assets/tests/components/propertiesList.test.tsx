@@ -8,7 +8,6 @@ import PropertiesList, {
   vehicleOrGhostProperties,
   vehicleProperties,
 } from "../../src/components/propertiesList"
-import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../src/realtime"
 import * as dateTime from "../../src/util/dateTime"
 import ghostFactory from "../factories/ghost"
@@ -35,11 +34,8 @@ const vehicle: Vehicle = {
   operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
   bearing: 33,
   blockId: "block-1",
-  headwaySecs: 859.1,
-  headwaySpacing: HeadwaySpacing.Ok,
   previousVehicleId: "v2",
   scheduleAdherenceSecs: 0,
-  scheduledHeadwaySecs: 120,
   isShuttle: false,
   isOverload: false,
   isOffCourse: false,

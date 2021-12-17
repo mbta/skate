@@ -12,7 +12,7 @@ import {
   LadderDirections,
   VehicleDirection,
 } from "../../models/ladderDirection"
-import { isVehicle, shouldShowHeadwayDiagram } from "../../models/vehicle"
+import { isVehicle } from "../../models/vehicle"
 import {
   drawnStatus,
   humanReadableScheduleAdherence,
@@ -107,21 +107,6 @@ const ScheduleAdherence = ({ vehicle }: { vehicle: Vehicle }) => {
   )
 }
 
-const HeadwayTarget = ({
-  vehicle: { scheduledHeadwaySecs },
-}: {
-  vehicle: Vehicle
-}) => (
-  <div className="m-properties-panel__headway-target">
-    <span className="m-properties-panel__headway-target-label">
-      HEADWAY TARGET
-    </span>
-    <span className="m-properties-panel__headway-target-value">
-      {secondsToMinutes(scheduledHeadwaySecs)} min
-    </span>
-  </div>
-)
-
 const directionName = (
   { directionId }: VehicleOrGhost,
   route: Route | null
@@ -160,11 +145,8 @@ const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
 
           <RouteVariantName vehicle={vehicle} />
 
-          {isVehicle(vehicle) && shouldShowHeadwayDiagram(vehicle) ? (
-            <HeadwayTarget vehicle={vehicle} />
-          ) : (
-            isVehicle(vehicle) &&
-            !vehicle.isShuttle && <ScheduleAdherence vehicle={vehicle} />
+          {isVehicle(vehicle) && !vehicle.isShuttle && (
+            <ScheduleAdherence vehicle={vehicle} />
           )}
         </div>
         <div className="m-properties-panel__close-ping">

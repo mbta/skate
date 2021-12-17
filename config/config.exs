@@ -105,8 +105,6 @@ config :skate, Skate.Repo,
 
 config :laboratory,
   features: [
-    {:headway_ladder_colors, "Headway Route Ladder Colors",
-     "Turns on colored headway spacing lines on key route route ladders showing when service is bunched or gapped."},
     {:minischedules_trip_label, "Choose Minischedules Trip Label",
      "User can, in minischedules, switch between showing origins and destinations of trips"},
     {:late_view, "Late View", "Grants access to experimental Late View"},

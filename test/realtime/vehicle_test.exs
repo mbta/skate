@@ -25,7 +25,6 @@ defmodule Realtime.VehicleTest do
     operator_last_name: "MAUPIN",
     operator_logon_time: 1_558_364_010,
     run_id: "138-1038",
-    headway_secs: 900,
     layover_departure_time: nil,
     speed: 0.0,
     current_status: :IN_TRANSIT_TO,
@@ -137,8 +136,6 @@ defmodule Realtime.VehicleTest do
                operator_name: "MAUPIN",
                operator_logon_time: 1_558_364_010,
                run_id: "138-1038",
-               headway_secs: 900,
-               headway_spacing: :ok,
                is_shuttle: false,
                is_overload: false,
                is_off_course: false,
@@ -188,13 +185,6 @@ defmodule Realtime.VehicleTest do
                  }
                ]
              } = result
-    end
-
-    test "missing headway_secs results in missing headway_spacing" do
-      vehicle_position = %{@vehicle_position | headway_secs: nil}
-      result = Vehicle.from_vehicle_position(vehicle_position)
-      assert result.headway_secs == nil
-      assert result.headway_spacing == nil
     end
 
     test "handles unknown trips" do
@@ -630,8 +620,6 @@ defmodule Realtime.VehicleTest do
         operator_name: "MAUPIN",
         operator_logon_time: 1_558_364_010,
         run_id: "138-1038",
-        headway_secs: 600,
-        headway_spacing: :ok,
         is_shuttle: false,
         is_overload: false,
         is_off_course: false,

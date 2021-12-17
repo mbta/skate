@@ -8,7 +8,6 @@ import { RoutesProvider } from "../../../src/contexts/routesContext"
 import { VehiclesByRouteIdProvider } from "../../../src/contexts/vehiclesByRouteIdContext"
 import { useNearestIntersection } from "../../../src/hooks/useNearestIntersection"
 import useVehiclesForRoute from "../../../src/hooks/useVehiclesForRoute"
-import { HeadwaySpacing } from "../../../src/models/vehicleStatus"
 import { BlockWaiver, Ghost, Vehicle } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
 import * as dateTime from "../../../src/util/dateTime"
@@ -49,11 +48,8 @@ const vehicle: Vehicle = {
   operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
   bearing: 33,
   blockId: "block-1",
-  headwaySecs: 859.1,
-  headwaySpacing: HeadwaySpacing.Ok,
   previousVehicleId: "v2",
   scheduleAdherenceSecs: 0,
-  scheduledHeadwaySecs: 120,
   isShuttle: false,
   isOverload: false,
   isOffCourse: false,
@@ -142,19 +138,6 @@ describe("VehiclePropertiesPanel", () => {
     const offCourseVehicle: Vehicle = {
       ...vehicle,
       isOffCourse: true,
-    }
-
-    const tree = renderer
-      .create(<VehiclePropertiesPanel selectedVehicle={offCourseVehicle} />)
-      .toJSON()
-
-    expect(tree).toMatchSnapshot()
-  })
-
-  test("renders for a headway-based vehicle", () => {
-    const offCourseVehicle: Vehicle = {
-      ...vehicle,
-      headwaySpacing: HeadwaySpacing.Ok,
     }
 
     const tree = renderer
