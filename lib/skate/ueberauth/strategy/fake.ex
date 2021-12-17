@@ -1,5 +1,5 @@
 defmodule Skate.Ueberauth.Strategy.Fake do
-  use Ueberauth.Strategy
+  use Ueberauth.Strategy, ignores_csrf_attack: true
 
   @impl Ueberauth.Strategy
   def handle_request!(conn) do
