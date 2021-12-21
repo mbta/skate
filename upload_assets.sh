@@ -10,7 +10,7 @@ TEMP_DIR=$(mktemp -d)
 STATIC_DIR=$TEMP_DIR/priv/static
 
 pushd "$TEMP_DIR" > /dev/null
-sh -c "docker run --rm ${BUILD_TAG} tar -c /root/priv/static" | tar -x --strip-components 1
+sh -c "docker run --rm ${BUILD_TAG} tar -c /home/skate/priv/static" | tar -x --strip-components 2
 popd> /dev/null
 
 # sync the digested files with a cache control header
