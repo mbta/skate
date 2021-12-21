@@ -257,7 +257,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
               </td>
               <td>
                 SMITH
-                 –
+                 – 
                 op2
               </td>
             </tr>
@@ -307,7 +307,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
               </td>
               <td>
                 SMITH
-                 –
+                 – 
                 op4
               </td>
             </tr>
@@ -357,7 +357,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
               </td>
               <td>
                 SMITH
-                 –
+                 – 
                 op5
               </td>
             </tr>
