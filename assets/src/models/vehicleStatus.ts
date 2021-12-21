@@ -1,4 +1,3 @@
-import featureIsEnabled from "../laboratoryFeatures"
 import { Vehicle, VehicleOrGhost } from "../realtime.d"
 import { isGhost, isVehicle } from "./vehicle"
 import { VehicleAdherenceColorsSetting } from "../userSettings"
@@ -7,14 +6,6 @@ import { VehicleAdherenceColorsSetting } from "../userSettings"
  * Swiftly assigns this to all vehicles.
  */
 export type OnTimeStatus = "on-time" | "early" | "late"
-
-export enum HeadwaySpacing {
-  VeryBunched = "very-bunched",
-  Bunched = "bunched",
-  Ok = "ok",
-  Gapped = "gapped",
-  VeryGapped = "very-gapped",
-}
 
 /** How the vehicle triangle should be drawn,
  * taking into account the vehicle's state and the settings
@@ -48,14 +39,6 @@ export const drawnStatus = (vehicleOrGhost: VehicleOrGhost): DrawnStatus => {
     return "off-course"
   }
 
-  if (
-    featureIsEnabled("headway_ladder_colors") &&
-    vehicle.headwaySpacing !== null
-  ) {
-    // Headway lines give the status instead of the vehicles
-    return "plain"
-  }
-
   return onTimeStatus(vehicle.scheduleAdherenceSecs)
 }
 
@@ -74,49 +57,6 @@ const humanReadableOnTimeStatus = (status: OnTimeStatus): string => {
 
     case "late":
       return "late"
-  }
-}
-
-export const humanReadableHeadwaySpacing = (
-  spacing: HeadwaySpacing | null
-): string => {
-  switch (spacing) {
-    case null:
-      return "good"
-
-    case HeadwaySpacing.VeryGapped:
-      return "very gapped"
-
-    case HeadwaySpacing.Gapped:
-      return "gapped"
-
-    case HeadwaySpacing.Ok:
-      return "good"
-
-    case HeadwaySpacing.Bunched:
-      return "bunched"
-
-    case HeadwaySpacing.VeryBunched:
-      return "very bunched"
-  }
-}
-
-export const headwaySpacingToString = (spacing: HeadwaySpacing): string => {
-  switch (spacing) {
-    case HeadwaySpacing.VeryGapped:
-      return "very-gapped"
-
-    case HeadwaySpacing.Gapped:
-      return "gapped"
-
-    case HeadwaySpacing.Ok:
-      return "ok"
-
-    case HeadwaySpacing.Bunched:
-      return "bunched"
-
-    case HeadwaySpacing.VeryBunched:
-      return "very-bunched"
   }
 }
 

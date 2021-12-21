@@ -5,7 +5,7 @@ import { useNearestIntersection } from "../../hooks/useNearestIntersection"
 import { useTripShape } from "../../hooks/useShapes"
 import useVehiclesForRoute from "../../hooks/useVehiclesForRoute"
 import { hasBlockWaiver } from "../../models/blockWaiver"
-import { isVehicle, shouldShowHeadwayDiagram } from "../../models/vehicle"
+import { isVehicle } from "../../models/vehicle"
 import {
   DataDiscrepancy,
   Vehicle,
@@ -18,7 +18,6 @@ import PropertiesList, { vehicleProperties } from "../propertiesList"
 import BlockWaiverList from "./blockWaiverList"
 import CrowdingDiagram from "./crowdingDiagram"
 import Header from "./header"
-import HeadwayDiagram from "./headwayDiagram"
 import TabPanels, { TabMode } from "./tabPanels"
 
 interface Props {
@@ -190,13 +189,6 @@ const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
       />
 
       {selectedVehicle.isOffCourse && <InvalidBanner />}
-
-      {
-        /* istanbul ignore next */
-        shouldShowHeadwayDiagram(selectedVehicle) && (
-          <HeadwayDiagram vehicle={selectedVehicle} />
-        )
-      }
 
       {selectedVehicle.isShuttle ? (
         <StatusContent selectedVehicle={selectedVehicle} />

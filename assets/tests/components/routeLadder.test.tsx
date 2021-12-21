@@ -4,7 +4,6 @@ import renderer, { act } from "react-test-renderer"
 import RouteLadder from "../../src/components/routeLadder"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { LadderCrowdingToggles } from "../../src/models/ladderCrowdingToggle"
-import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import {
   Ghost,
   RouteStatus,
@@ -37,11 +36,8 @@ const vehicles: Vehicle[] = [
     blockId: "block-1",
     headsign: "h1",
     viaVariant: "4",
-    headwaySecs: 859.1,
-    headwaySpacing: HeadwaySpacing.Ok,
     previousVehicleId: "v2",
     scheduleAdherenceSecs: 0,
-    scheduledHeadwaySecs: 120,
     isShuttle: false,
     isOverload: false,
     isOffCourse: false,
@@ -80,11 +76,8 @@ const vehicles: Vehicle[] = [
     blockId: "block-1",
     headsign: null,
     viaVariant: null,
-    headwaySecs: 859.1,
-    headwaySpacing: HeadwaySpacing.Ok,
     previousVehicleId: "v2",
     scheduleAdherenceSecs: 0,
-    scheduledHeadwaySecs: 120,
     isShuttle: false,
     isOverload: false,
     isOffCourse: false,
@@ -667,11 +660,8 @@ describe("routeLadder", () => {
       operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
       bearing: 33,
       blockId: "block-1",
-      headwaySecs: 859.1,
-      headwaySpacing: HeadwaySpacing.Ok,
       previousVehicleId: "v2",
       scheduleAdherenceSecs: 0,
-      scheduledHeadwaySecs: 120,
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,

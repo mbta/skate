@@ -10,8 +10,6 @@ import {
 
 import { Crowding } from "./models/crowding"
 
-import { HeadwaySpacing } from "./models/vehicleStatus"
-
 export interface BlockWaiver {
   startTime: Date
   endTime: Date
@@ -118,11 +116,8 @@ export interface Vehicle {
   operatorLogonTime: Date | null
   bearing: number
   blockId: BlockId
-  headwaySecs: number | null
-  headwaySpacing: HeadwaySpacing | null
   previousVehicleId: string
   scheduleAdherenceSecs: number
-  scheduledHeadwaySecs: number
   isShuttle: boolean
   isOverload: boolean
   isOffCourse: boolean

@@ -95,8 +95,6 @@ defmodule Notifications.NotificationServerTest do
     operator_name: "ONTHEMTA",
     operator_logon_time: nil,
     run_id: "123-4567",
-    headway_secs: 600,
-    headway_spacing: :ok,
     is_shuttle: false,
     is_overload: false,
     is_off_course: false,

@@ -14,15 +14,6 @@ import {
 import { DirectionId, RouteId } from "../schedule.d"
 import { dateFromEpochSeconds } from "../util/dateTime"
 import { OccupancyStatus } from "./crowding"
-import { HeadwaySpacing } from "./vehicleStatus"
-
-type RawHeadwaySpacing =
-  | "very_bunched"
-  | "bunched"
-  | "ok"
-  | "gapped"
-  | "very_gapped"
-  | null
 
 export interface VehicleData {
   id: string
@@ -42,11 +33,8 @@ export interface VehicleData {
   operator_logon_time: number | null
   bearing: number
   block_id: string
-  headway_secs: number
-  headway_spacing: RawHeadwaySpacing
   previous_vehicle_id: string
   schedule_adherence_secs: number
-  scheduled_headway_secs: number
   is_shuttle: boolean
   is_overload: boolean
   is_off_course: boolean
@@ -147,11 +135,8 @@ export const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
     : null,
   bearing: vehicleData.bearing,
   blockId: vehicleData.block_id,
-  headwaySecs: vehicleData.headway_secs,
-  headwaySpacing: headwaySpacing(vehicleData.headway_spacing),
   previousVehicleId: vehicleData.previous_vehicle_id,
   scheduleAdherenceSecs: vehicleData.schedule_adherence_secs,
-  scheduledHeadwaySecs: vehicleData.scheduled_headway_secs,
   isShuttle: vehicleData.is_shuttle,
   isOverload: vehicleData.is_overload,
   isOffCourse: vehicleData.is_off_course,
@@ -205,28 +190,6 @@ export const vehicleOrGhostFromData = (
   isGhost(vehicleOrGhostData)
     ? ghostFromData(vehicleOrGhostData as GhostData)
     : vehicleFromData(vehicleOrGhostData as VehicleData)
-
-const headwaySpacing = (raw: RawHeadwaySpacing): HeadwaySpacing | null => {
-  switch (raw) {
-    case null:
-      return null
-
-    case "very_bunched":
-      return HeadwaySpacing.VeryBunched
-
-    case "bunched":
-      return HeadwaySpacing.Bunched
-
-    case "ok":
-      return HeadwaySpacing.Ok
-
-    case "gapped":
-      return HeadwaySpacing.Gapped
-
-    case "very_gapped":
-      return HeadwaySpacing.VeryGapped
-  }
-}
 
 const dataDiscrepanciesFromData = (
   dataDiscrepancies: DataDiscrepancyData[]

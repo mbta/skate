@@ -20,7 +20,6 @@ defmodule Skate.Factory do
       operator_name: "",
       operator_logon_time: nil,
       run_id: "",
-      headway_spacing: :ok,
       is_shuttle: false,
       is_overload: false,
       is_off_course: false,

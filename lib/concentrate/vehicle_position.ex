@@ -31,7 +31,6 @@ defmodule Concentrate.VehiclePosition do
     :operator,
     :direction_id,
     :headsign,
-    :headway_secs,
     :layover_departure_time,
     :previous_vehicle_id,
     :previous_vehicle_schedule_adherence_secs,
@@ -39,7 +38,6 @@ defmodule Concentrate.VehiclePosition do
     :route_id,
     :schedule_adherence_secs,
     :schedule_adherence_string,
-    :scheduled_headway_secs,
     :sources,
     :data_discrepancies,
     :crowding,
@@ -116,7 +114,6 @@ defmodule Concentrate.VehiclePosition do
               first.sources,
               first.headsign
             ),
-          headway_secs: first_value(second.headway_secs, first.headway_secs),
           previous_vehicle_id: first_value(second.previous_vehicle_id, first.previous_vehicle_id),
           previous_vehicle_schedule_adherence_secs:
             first_value(
@@ -139,8 +136,6 @@ defmodule Concentrate.VehiclePosition do
             first_value(second.schedule_adherence_secs, first.schedule_adherence_secs),
           schedule_adherence_string:
             first_value(second.schedule_adherence_string, first.schedule_adherence_string),
-          scheduled_headway_secs:
-            first_value(second.scheduled_headway_secs, first.scheduled_headway_secs),
           sources: merge_sources(first, second),
           data_discrepancies: discrepancies(first, second),
           layover_departure_time:

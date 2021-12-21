@@ -6,7 +6,6 @@ import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { flatten, partition } from "../helpers/array"
 import { className } from "../helpers/dom"
 import vehicleLabel from "../helpers/vehicleLabel"
-import featureIsEnabled from "../laboratoryFeatures"
 import { blockWaiverAlertStyle } from "../models/blockWaiver"
 import { crowdingLabel, OccupancyStatus } from "../models/crowding"
 import {
@@ -29,7 +28,6 @@ import { Vehicle, VehicleId, VehicleTimepointStatus } from "../realtime.d"
 import { Timepoint } from "../schedule.d"
 import { selectVehicle } from "../state"
 import { CrowdingIconSvgNode } from "./crowdingIcon"
-import HeadwayLines from "./headwayLines"
 import {
   Orientation,
   Size,
@@ -167,12 +165,6 @@ const Ladder = ({
           />
         ))}
         <RoadLines height={height} />
-        {featureIsEnabled("headway_ladder_colors") && (
-          <HeadwayLines
-            height={height - MARGIN_TOP_BOTTOM * 2}
-            ladderVehicles={ladderVehicles}
-          />
-        )}
         {orderedTimepoints.map((timepoint: Timepoint, index: number) => {
           const y = timepointSpacingY * index
           return (

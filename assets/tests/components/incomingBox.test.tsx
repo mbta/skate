@@ -4,7 +4,6 @@ import renderer from "react-test-renderer"
 import IncomingBox from "../../src/components/incomingBox"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { LadderDirection } from "../../src/models/ladderDirection"
-import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle } from "../../src/realtime"
 import { initialState, selectVehicle } from "../../src/state"
 
@@ -45,11 +44,8 @@ describe("IncomingBox", () => {
       operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
       bearing: 137.5,
       blockId: "G111-165",
-      headwaySecs: 396.3,
-      headwaySpacing: HeadwaySpacing.Ok,
       previousVehicleId: "y0620",
       scheduleAdherenceSecs: 0,
-      scheduledHeadwaySecs: 420,
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,
@@ -148,11 +144,8 @@ describe("IncomingBox", () => {
       operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
       bearing: 137.5,
       blockId: "G111-165",
-      headwaySecs: 396.3,
-      headwaySpacing: HeadwaySpacing.Ok,
       previousVehicleId: "y0620",
       scheduleAdherenceSecs: 0,
-      scheduledHeadwaySecs: 420,
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,
@@ -224,11 +217,8 @@ describe("IncomingBox", () => {
       operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
       bearing: 137.5,
       blockId: "G111-165",
-      headwaySecs: 396.3,
-      headwaySpacing: HeadwaySpacing.Ok,
       previousVehicleId: "y0620",
       scheduleAdherenceSecs: 0,
-      scheduledHeadwaySecs: 420,
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,

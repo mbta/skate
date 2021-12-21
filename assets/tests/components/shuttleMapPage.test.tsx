@@ -7,7 +7,6 @@ import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { useRouteShapes, useTripShape } from "../../src/hooks/useShapes"
 import useShuttleVehicles from "../../src/hooks/useShuttleVehicles"
 import useTrainVehicles from "../../src/hooks/useTrainVehicles"
-import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { TrainVehicle, Vehicle } from "../../src/realtime"
 import { ByRouteId, Shape } from "../../src/schedule"
 import { initialState } from "../../src/state"
@@ -54,11 +53,8 @@ const shuttle: Vehicle = {
   operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
   bearing: 33,
   blockId: "block-1",
-  headwaySecs: 859.1,
-  headwaySpacing: HeadwaySpacing.Ok,
   previousVehicleId: "v2",
   scheduleAdherenceSecs: 0,
-  scheduledHeadwaySecs: 120,
   isShuttle: true,
   isOverload: false,
   isOffCourse: false,

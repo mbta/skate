@@ -3,7 +3,7 @@ defmodule Realtime.Vehicle do
   alias Schedule.{Block, Route, Trip}
   alias Schedule.Gtfs.{Direction, RoutePattern, Stop}
   alias Schedule.Hastus.Run
-  alias Realtime.{BlockWaiver, BlockWaiverStore, Crowding, Headway, RouteStatus, TimepointStatus}
+  alias Realtime.{BlockWaiver, BlockWaiverStore, Crowding, RouteStatus, TimepointStatus}
 
   @type stop_status :: %{
           stop_id: Stop.id(),
@@ -32,11 +32,8 @@ defmodule Realtime.Vehicle do
           operator_last_name: String.t() | nil,
           operator_logon_time: Util.Time.timestamp() | nil,
           run_id: Run.id() | nil,
-          headway_secs: non_neg_integer() | nil,
-          headway_spacing: Headway.headway_spacing() | nil,
           previous_vehicle_id: String.t() | nil,
           schedule_adherence_secs: float() | nil,
-          scheduled_headway_secs: float() | nil,
           is_shuttle: boolean,
           is_overload: boolean(),
           is_off_course: boolean(),
@@ -70,7 +67,6 @@ defmodule Realtime.Vehicle do
     :operator_last_name,
     :operator_logon_time,
     :run_id,
-    :headway_spacing,
     :is_shuttle,
     :is_overload,
     :is_off_course,
@@ -104,11 +100,8 @@ defmodule Realtime.Vehicle do
     :operator_last_name,
     :operator_logon_time,
     :run_id,
-    :headway_secs,
-    :headway_spacing,
     :previous_vehicle_id,
     :schedule_adherence_secs,
-    :scheduled_headway_secs,
     :is_shuttle,
     :is_overload,
     :is_off_course,
@@ -171,26 +164,6 @@ defmodule Realtime.Vehicle do
         nil
       end
 
-    headway_secs = VehiclePosition.headway_secs(vehicle_position)
-    origin_stop_id = List.first(stop_times_on_trip) && List.first(stop_times_on_trip).stop_id
-
-    date_time_now_fn = Application.get_env(:realtime, :date_time_now_fn, &Timex.now/0)
-
-    headway_spacing =
-      if headway_secs == nil do
-        nil
-      else
-        case Headway.current_expected_headway_seconds(
-               route_id,
-               direction_id,
-               origin_stop_id,
-               date_time_now_fn.()
-             ) do
-          nil -> nil
-          expected_seconds -> Headway.current_headway_spacing(expected_seconds, headway_secs)
-        end
-      end
-
     data_discrepancies = VehiclePosition.data_discrepancies(vehicle_position)
     is_shuttle = shuttle?(run_id)
     is_overload = block_id_with_overload != nil && Block.overload?(block_id_with_overload)
@@ -221,11 +194,8 @@ defmodule Realtime.Vehicle do
       operator_name: VehiclePosition.operator_last_name(vehicle_position),
       operator_logon_time: VehiclePosition.operator_logon_time(vehicle_position),
       run_id: run_id,
-      headway_secs: headway_secs,
-      headway_spacing: headway_spacing,
       previous_vehicle_id: VehiclePosition.previous_vehicle_id(vehicle_position),
       schedule_adherence_secs: VehiclePosition.schedule_adherence_secs(vehicle_position),
-      scheduled_headway_secs: VehiclePosition.scheduled_headway_secs(vehicle_position),
       is_shuttle: is_shuttle,
       is_overload: is_overload,
       is_off_course: is_off_course,

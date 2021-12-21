@@ -2,7 +2,6 @@ import { renderHook } from "@testing-library/react-hooks"
 import useVehicles from "../../src/hooks/useVehicles"
 import * as browser from "../../src/models/browser"
 import { VehicleData } from "../../src/models/vehicleData"
-import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import { Ghost, Vehicle, VehicleTimepointStatus } from "../../src/realtime.d"
 import { RouteId } from "../../src/schedule.d"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
@@ -47,8 +46,6 @@ describe("useVehicles", () => {
       ],
       direction_id: 0,
       headsign: "Forest Hills",
-      headway_secs: 859.1,
-      headway_spacing: null,
       id: "v1",
       is_shuttle: false,
       is_overload: false,
@@ -66,7 +63,6 @@ describe("useVehicles", () => {
       route_id: "39",
       run_id: "run-1",
       schedule_adherence_secs: 0,
-      scheduled_headway_secs: 120,
       scheduled_location: {
         route_id: "39",
         direction_id: 0,
@@ -125,11 +121,8 @@ describe("useVehicles", () => {
       operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
       bearing: 33,
       blockId: "block-1",
-      headwaySecs: 859.1,
-      headwaySpacing: null,
       previousVehicleId: "v2",
       scheduleAdherenceSecs: 0,
-      scheduledHeadwaySecs: 120,
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,
@@ -232,8 +225,6 @@ describe("useVehicles", () => {
       ],
       direction_id: 0,
       headsign: "Forest Hills",
-      headway_secs: 859.1,
-      headway_spacing: null,
       id: "v1",
       is_shuttle: false,
       is_overload: false,
@@ -251,7 +242,6 @@ describe("useVehicles", () => {
       route_id: "39",
       run_id: "run-1",
       schedule_adherence_secs: 0,
-      scheduled_headway_secs: 120,
       scheduled_location: {
         route_id: "39",
         direction_id: 0,
@@ -417,38 +407,6 @@ describe("useVehicles", () => {
 
     expect(result.current).toEqual({
       "1": vehicles,
-    })
-  })
-
-  test("parses headwaySpacing", async () => {
-    const vehiclesDataVaryingHeadway = [
-      vehiclesData[0],
-      { ...vehiclesData[0], headway_spacing: "very_gapped" },
-      { ...vehiclesData[0], headway_spacing: "gapped" },
-      { ...vehiclesData[0], headway_spacing: "ok" },
-      { ...vehiclesData[0], headway_spacing: "bunched" },
-      { ...vehiclesData[0], headway_spacing: "very_bunched" },
-    ]
-
-    const expectedVehicles: Vehicle[] = [
-      vehicles[0],
-      { ...vehicles[0], headwaySpacing: HeadwaySpacing.VeryGapped },
-      { ...vehicles[0], headwaySpacing: HeadwaySpacing.Gapped },
-      { ...vehicles[0], headwaySpacing: HeadwaySpacing.Ok },
-      { ...vehicles[0], headwaySpacing: HeadwaySpacing.Bunched },
-      { ...vehicles[0], headwaySpacing: HeadwaySpacing.VeryBunched },
-    ]
-
-    const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok", {
-      data: vehiclesDataVaryingHeadway,
-    })
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
-
-    const { result } = renderHook(() => useVehicles(mockSocket, ["1"]))
-
-    expect(result.current).toEqual({
-      "1": expectedVehicles,
     })
   })
 
