@@ -38,7 +38,8 @@ export interface State {
   ladderDirections: LadderDirections
   ladderCrowdingToggles: LadderCrowdingToggles
   routeTabs: RouteTab[]
-  pendingRouteTabs?: RouteTab[]
+  routeTabsToPush: RouteTab[] | null
+  routeTabsPushInProgress: boolean
   selectedShuttleRouteIds: RouteId[]
   selectedShuttleRunIds: RunId[] | "all"
   selectedVehicleOrGhost?: VehicleOrGhost | null
@@ -55,7 +56,8 @@ export const initialState: State = {
   ladderDirections: emptyLadderDirectionsByRouteId,
   ladderCrowdingToggles: emptyLadderCrowdingTogglesByRouteId,
   routeTabs: [],
-  pendingRouteTabs: undefined,
+  routeTabsToPush: null,
+  routeTabsPushInProgress: false,
   selectedShuttleRouteIds: [],
   selectedShuttleRunIds: "all",
   selectedVehicleOrGhost: undefined,
@@ -124,14 +126,14 @@ export const createRouteTab = (): CreateRouteTabAction => ({
 interface SelectRouteTabAction {
   type: "SELECT_ROUTE_TAB"
   payload: {
-    index: number
+    ordering: number
   }
 }
 
-export const selectRouteTab = (index: number): SelectRouteTabAction => ({
+export const selectRouteTab = (ordering: number): SelectRouteTabAction => ({
   type: "SELECT_ROUTE_TAB",
   payload: {
-    index,
+    ordering,
   },
 })
 
@@ -187,20 +189,32 @@ export const toggleLadderCrowdingInTab = (
   payload: { routeId },
 })
 
-export interface UpdateRouteTabsAction {
-  type: "UPDATE_ROUTE_TABS"
-  payload: {
-    routeTabs: RouteTab[]
-  }
+export interface StartingRouteTabsPushAction {
+  type: "STARTING_ROUTE_TABS_PUSH"
 }
 
-export const updateRouteTabs = (
-  routeTabs: RouteTab[]
-): UpdateRouteTabsAction => ({
-  type: "UPDATE_ROUTE_TABS",
-  payload: {
-    routeTabs,
-  },
+export const startingRouteTabsPush = (): StartingRouteTabsPushAction => ({
+  type: "STARTING_ROUTE_TABS_PUSH",
+})
+
+export interface RouteTabsPushCompleteAction {
+  type: "ROUTE_TABS_PUSH_COMPLETE"
+}
+
+export const routeTabsPushComplete = (): RouteTabsPushCompleteAction => ({
+  type: "ROUTE_TABS_PUSH_COMPLETE",
+})
+
+export interface RetryRouteTabsPushIfNotOutdatedAction {
+  type: "RETRY_ROUTE_TABS_PUSH_IF_NOT_OUTDATED"
+  payload: { routeTabsToRetry: RouteTab[] }
+}
+
+export const retryRouteTabsPushIfNotOutdated = (
+  routeTabsToRetry: RouteTab[]
+): RetryRouteTabsPushIfNotOutdatedAction => ({
+  type: "RETRY_ROUTE_TABS_PUSH_IF_NOT_OUTDATED",
+  payload: { routeTabsToRetry },
 })
 
 interface SelectShuttleRunAction {
@@ -436,7 +450,9 @@ export type Action =
   | DeselectRouteInTabAction
   | FlipLadderInTabAction
   | ToggleLadderCrowdingInTabAction
-  | UpdateRouteTabsAction
+  | StartingRouteTabsPushAction
+  | RouteTabsPushCompleteAction
+  | RetryRouteTabsPushIfNotOutdatedAction
   | SelectShuttleRunAction
   | DeselectShuttleRunAction
   | SelectAllShuttleRunsAction
@@ -518,34 +534,45 @@ const ladderCrowdingTogglesReducer = (
 }
 
 const routeTabsReducer = (
-  state: RouteTab[],
+  routeTabs: RouteTab[],
   action: Action
-): [RouteTab[], RouteTab[] | undefined] => {
+): {
+  newRouteTabs: RouteTab[]
+  routeTabsUpdated: boolean
+} => {
   switch (action.type) {
     case "CREATE_ROUTE_TAB":
-      return [
-        state,
-        [
-          ...state.map((existingRouteTab) => {
-            return { ...existingRouteTab, isCurrentTab: false }
-          }),
-          newRouteTab(state.length),
-        ],
-      ]
-    case "SELECT_ROUTE_TAB":
-      const routeTabs = state.map((existingRouteTab, i) => {
-        if (i === action.payload.index) {
-          return { ...existingRouteTab, isCurrentTab: true }
-        } else {
-          return { ...existingRouteTab, isCurrentTab: false }
-        }
-      })
+      const highestExistingOrdering = Math.max(
+        -1,
+        ...routeTabs.map((existingRouteTab) => existingRouteTab.ordering)
+      )
 
-      return [state, routeTabs]
+      return {
+        newRouteTabs: [
+          ...routeTabs.map((existingRouteTab) => {
+            return {
+              ...existingRouteTab,
+              isCurrentTab: false,
+            }
+          }),
+          newRouteTab(highestExistingOrdering + 1),
+        ],
+        routeTabsUpdated: true,
+      }
+    case "SELECT_ROUTE_TAB":
+      return {
+        newRouteTabs: routeTabs.map((existingRouteTab) => {
+          if (existingRouteTab.ordering === action.payload.ordering) {
+            return { ...existingRouteTab, isCurrentTab: true }
+          } else {
+            return { ...existingRouteTab, isCurrentTab: false }
+          }
+        }),
+        routeTabsUpdated: true,
+      }
     case "SELECT_ROUTE_IN_TAB":
-      return [
-        state,
-        state.map((routeTab) => {
+      return {
+        newRouteTabs: routeTabs.map((routeTab) => {
           if (routeTab.isCurrentTab) {
             return {
               ...routeTab,
@@ -558,11 +585,11 @@ const routeTabsReducer = (
             return routeTab
           }
         }),
-      ]
+        routeTabsUpdated: true,
+      }
     case "DESELECT_ROUTE_IN_TAB":
-      return [
-        state,
-        state.map((routeTab) => {
+      return {
+        newRouteTabs: routeTabs.map((routeTab) => {
           if (routeTab.isCurrentTab) {
             return {
               ...routeTab,
@@ -574,11 +601,11 @@ const routeTabsReducer = (
             return routeTab
           }
         }),
-      ]
+        routeTabsUpdated: true,
+      }
     case "FLIP_LADDER_IN_TAB":
-      return [
-        state,
-        state.map((routeTab) => {
+      return {
+        newRouteTabs: routeTabs.map((routeTab) => {
           if (routeTab.isCurrentTab) {
             return {
               ...routeTab,
@@ -591,11 +618,11 @@ const routeTabsReducer = (
             return routeTab
           }
         }),
-      ]
+        routeTabsUpdated: true,
+      }
     case "TOGGLE_LADDER_CROWDING_IN_TAB":
-      return [
-        state,
-        state.map((routeTab) => {
+      return {
+        newRouteTabs: routeTabs.map((routeTab) => {
           if (routeTab.isCurrentTab) {
             return {
               ...routeTab,
@@ -608,11 +635,79 @@ const routeTabsReducer = (
             return routeTab
           }
         }),
-      ]
-    case "UPDATE_ROUTE_TABS":
-      return [action.payload.routeTabs, undefined]
+        routeTabsUpdated: true,
+      }
     default:
-      return [state, undefined]
+      return { newRouteTabs: routeTabs, routeTabsUpdated: false }
+  }
+}
+
+const routeTabsPushInProgressReducer = (
+  routeTabsPushInProgress: boolean,
+  action: Action
+): boolean => {
+  switch (action.type) {
+    case "STARTING_ROUTE_TABS_PUSH":
+      return true
+    case "ROUTE_TABS_PUSH_COMPLETE":
+      return false
+    case "RETRY_ROUTE_TABS_PUSH_IF_NOT_OUTDATED":
+      return false
+    default:
+      return routeTabsPushInProgress
+  }
+}
+
+const routeTabsToPushReducer = (
+  routeTabsToPush: RouteTab[] | null,
+  newRouteTabs: RouteTab[] | null,
+  routeTabsUpdated: boolean,
+  action: Action
+): RouteTab[] | null => {
+  switch (action.type) {
+    case "STARTING_ROUTE_TABS_PUSH":
+      return null
+    case "RETRY_ROUTE_TABS_PUSH_IF_NOT_OUTDATED":
+      return routeTabsToPush || action.payload.routeTabsToRetry
+    default:
+      return routeTabsUpdated ? newRouteTabs : routeTabsToPush
+  }
+}
+
+const routeTabsAndPushReducer = (
+  {
+    routeTabs,
+    routeTabsToPush,
+    routeTabsPushInProgress,
+  }: {
+    routeTabs: RouteTab[]
+    routeTabsToPush: RouteTab[] | null
+    routeTabsPushInProgress: boolean
+  },
+  action: Action
+): {
+  routeTabs: RouteTab[]
+  routeTabsToPush: RouteTab[] | null
+  routeTabsPushInProgress: boolean
+} => {
+  const { newRouteTabs, routeTabsUpdated } = routeTabsReducer(routeTabs, action)
+
+  const newRouteTabsPushInProgress = routeTabsPushInProgressReducer(
+    routeTabsPushInProgress,
+    action
+  )
+
+  const newRouteTabsToPush = routeTabsToPushReducer(
+    routeTabsToPush,
+    newRouteTabs,
+    routeTabsUpdated,
+    action
+  )
+
+  return {
+    routeTabs: newRouteTabs,
+    routeTabsToPush: newRouteTabsToPush,
+    routeTabsPushInProgress: newRouteTabsPushInProgress,
   }
 }
 
@@ -739,10 +834,8 @@ const openViewReducer = (state: OpenView, action: Action): OpenView => {
 }
 
 export const reducer = (state: State, action: Action): State => {
-  const [routeTabs, pendingRouteTabs] = routeTabsReducer(
-    state.routeTabs,
-    action
-  )
+  const { routeTabs, routeTabsToPush, routeTabsPushInProgress } =
+    routeTabsAndPushReducer(state, action)
 
   return {
     pickerContainerIsVisible: pickerContainerIsVisibleReducer(
@@ -760,7 +853,8 @@ export const reducer = (state: State, action: Action): State => {
       action
     ),
     routeTabs,
-    pendingRouteTabs,
+    routeTabsToPush,
+    routeTabsPushInProgress,
     selectedShuttleRouteIds: selectedShuttleRouteIdsReducer(
       state.selectedShuttleRouteIds,
       action

@@ -5,18 +5,16 @@ import { LadderCrowdingToggles } from "./ladderCrowdingToggle"
 export interface RouteTab {
   isCurrentTab: boolean
   presetName?: string
-  id?: string
   selectedRouteIds: RouteId[]
   ladderDirections: LadderDirections
   ladderCrowdingToggles: LadderCrowdingToggles
-  ordering?: number
+  ordering: number
 }
 
 export interface RouteTabData {
-  id: string
   preset_name?: string
   selected_route_ids: RouteId[]
-  ordering?: number
+  ordering: number
   ladder_directions: LadderDirections
   ladder_crowding_toggles: LadderCrowdingToggles
   is_current_tab?: boolean
@@ -37,7 +35,6 @@ export const parseRouteTabData = (
   routeTabsData: RouteTabData[]
 ): RouteTab[] => {
   return routeTabsData.map((routeTabData) => ({
-    id: routeTabData.id,
     ordering: routeTabData.ordering,
     presetName: routeTabData.preset_name,
     isCurrentTab: routeTabData.is_current_tab || false,

@@ -8,7 +8,6 @@ defmodule Skate.Settings.RouteTab do
   alias Skate.Settings.Db.User, as: DbUser
 
   @type t :: %__MODULE__{
-          id: integer() | nil,
           preset_name: String.t() | nil,
           selected_route_ids: [Route.id()],
           ladder_directions: map(),
@@ -27,8 +26,7 @@ defmodule Skate.Settings.RouteTab do
     :ladder_directions,
     :ladder_crowding_toggles,
     :ordering,
-    :is_current_tab,
-    id: nil
+    :is_current_tab
   ]
 
   @spec get_all_for_user(String.t()) :: [t()]
@@ -54,7 +52,6 @@ defmodule Skate.Settings.RouteTab do
     tab = Repo.preload(db_route_tab, :tab_settings)
 
     %__MODULE__{
-      id: tab.id,
       preset_name: tab.preset_name,
       selected_route_ids: tab.tab_settings.selected_route_ids,
       ladder_directions: tab.tab_settings.ladder_directions,

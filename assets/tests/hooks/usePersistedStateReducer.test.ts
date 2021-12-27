@@ -152,7 +152,6 @@ describe("usePersistedStateReducer", () => {
     expect(state.ladderCrowdingToggles).toEqual({ "83": true })
     expect(state.routeTabs).toEqual([
       routeTabFactory.build({
-        id: "1",
         ordering: 0,
         presetName: "some name",
         isCurrentTab: true,
@@ -237,7 +236,6 @@ describe("usePersistedStateReducer", () => {
 
   test("sends updated route tabs to backend on changes", () => {
     const routeTab = routeTabFactory.build({
-      id: "1",
       isCurrentTab: true,
       selectedRouteIds: [],
       ladderDirections: {},

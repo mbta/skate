@@ -16,7 +16,7 @@ import {
   Timepoint,
   TripId,
 } from "./schedule.d"
-import { RouteTab, parseRouteTabData } from "./models/routeTab"
+import { RouteTab } from "./models/routeTab"
 
 export interface RouteData {
   id: string
@@ -199,19 +199,14 @@ export const putRouteSettings = (routeSettings: RouteSettings): void => {
   })
 }
 
-export const putRouteTabs = (routeTabs: RouteTab[]): Promise<RouteTab[]> =>
-  apiCall({
-    url: "/api/route_tabs",
-    parser: parseRouteTabData,
-    defaultResult: [],
-    fetchArgs: {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "x-csrf-token": getCsrfToken(),
-      },
-      body: JSON.stringify({ route_tabs: routeTabs }),
+export const putRouteTabs = (routeTabs: RouteTab[]): Promise<Response> =>
+  fetch("/api/route_tabs", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "x-csrf-token": getCsrfToken(),
     },
+    body: JSON.stringify({ route_tabs: routeTabs }),
   })
 
 const getCsrfToken = (): string => appData()?.csrfToken || ""

@@ -160,11 +160,11 @@ const LadderPageWithTabs = (): ReactElement<HTMLDivElement> => {
         {routeTabs
           .filter((routeTab) => routeTab.ordering !== undefined)
           .sort((a, b) => (a.ordering || 0) - (b.ordering || 0))
-          .map((routeTab, i) => (
+          .map((routeTab) => (
             <LadderTab
               tab={routeTab}
-              selectTab={() => dispatch(selectRouteTab(i))}
-              key={i}
+              selectTab={() => dispatch(selectRouteTab(routeTab.ordering))}
+              key={routeTab.ordering}
             />
           ))}
 
