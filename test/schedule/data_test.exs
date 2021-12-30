@@ -601,50 +601,6 @@ defmodule Schedule.DataTest do
     end
   end
 
-  describe "minischedule_run" do
-    test "returns run for the trip" do
-      trip = %Schedule.Trip{
-        id: "trip",
-        block_id: "block",
-        schedule_id: "schedule",
-        run_id: "run"
-      }
-
-      run = %Run{
-        schedule_id: "schedule",
-        id: "run",
-        activities: []
-      }
-
-      data = %Data{
-        trips: %{trip.id => trip},
-        runs: %{Run.key(run) => run}
-      }
-
-      assert Data.minischedule_run(data, trip.id) == run
-    end
-
-    test "returns nil if the trip isn't known" do
-      data = %Data{}
-
-      assert Data.minischedule_run(data, "trip") == nil
-    end
-
-    test "returns nil if the trip is in gtfs but not hastus" do
-      trip = %Schedule.Trip{
-        id: "trip",
-        block_id: "block",
-        schedule_id: nil
-      }
-
-      data = %Data{
-        trips: %{trip.id => trip}
-      }
-
-      assert Data.minischedule_run(data, trip.id) == nil
-    end
-  end
-
   describe "run_for_trip/3" do
     test "returns run with ID for trip" do
       trip =

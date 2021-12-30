@@ -149,12 +149,6 @@ defmodule Schedule do
     )
   end
 
-  @spec minischedule_run(Trip.id()) :: Run.t() | nil
-  @spec minischedule_run(Trip.id(), GenServer.server()) :: Run.t() | nil
-  def minischedule_run(trip_id, server \\ __MODULE__) do
-    call_catch_timeout(server, {:minischedule_run, trip_id}, :minischedule_run, nil)
-  end
-
   @spec run_for_trip(Hastus.Run.id(), Trip.id()) :: Run.t() | nil
   @spec run_for_trip(Hastus.Run.id(), Trip.id(), GenServer.server()) :: Run.t() | nil
   def run_for_trip(run_id, trip_id, server \\ __MODULE__) do
@@ -262,10 +256,6 @@ defmodule Schedule do
       ) do
     {:reply, Data.first_route_pattern_for_route_and_direction(gtfs_data, route_id, direction_id),
      state}
-  end
-
-  def handle_call({:minischedule_run, trip_id}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.minischedule_run(gtfs_data, trip_id), state}
   end
 
   def handle_call({:run_for_trip, run_id, trip_id}, _from, {:loaded, gtfs_data} = state) do
