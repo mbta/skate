@@ -241,24 +241,6 @@ defmodule Schedule.Data do
     end)
   end
 
-  @spec minischedule_run(t(), Schedule.Trip.id()) :: Run.t() | nil
-  def minischedule_run(
-        %__MODULE__{
-          trips: trips,
-          runs: runs
-        },
-        trip_id
-      ) do
-    trip = trips[trip_id]
-
-    if trip != nil && trip.schedule_id != nil do
-      # we have HASTUS data for this trip
-      runs[{trip.schedule_id, trip.run_id}]
-    else
-      nil
-    end
-  end
-
   @spec run_for_trip(t(), Hastus.Run.id() | nil, Schedule.Trip.id()) :: Run.t() | nil
   def run_for_trip(%__MODULE__{runs: runs, trips: trips}, run_id, trip_id) do
     trip = trips[trip_id]

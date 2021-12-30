@@ -732,7 +732,7 @@ defmodule ScheduleTest do
     end
   end
 
-  describe "minischedule" do
+  describe "blocks and runs by trip" do
     setup do
       pid =
         Schedule.start_mocked(%{
@@ -802,18 +802,6 @@ defmodule ScheduleTest do
       }
 
       %{pid: pid, expected_piece: expected_piece}
-    end
-
-    test "can get run", %{pid: pid, expected_piece: expected_piece} do
-      assert Schedule.minischedule_run("trip", pid) ==
-               %Run{
-                 schedule_id: "schedule",
-                 service_id: "service",
-                 id: "123-4567",
-                 activities: [
-                   expected_piece
-                 ]
-               }
     end
 
     test "can get run via run_for_trip", %{pid: pid, expected_piece: expected_piece} do
