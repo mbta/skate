@@ -57,6 +57,7 @@ defmodule Schedule.FetcherTest do
           end
         )
 
+      assert log =~ ~r/Sent updated schedule data to receiving process, time_in_ms=\d+/
       assert log =~ "Successfully loaded schedule data"
     end
 
@@ -219,6 +220,7 @@ defmodule Schedule.FetcherTest do
           end
         )
 
+      assert log =~ ~r/Sent updated schedule data to receiving process, time_in_ms=\d+/
       assert log =~ "Successfully loaded schedule data"
       assert log =~ "Saving gtfs cache"
     end
@@ -266,6 +268,7 @@ defmodule Schedule.FetcherTest do
           end
         )
 
+      assert log =~ ~r/Sent updated schedule data to receiving process, time_in_ms=\d+/
       assert log =~ "Successfully loaded schedule data"
     end
   end

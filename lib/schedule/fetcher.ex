@@ -70,7 +70,14 @@ defmodule Schedule.Fetcher do
            ) do
       schedule_state = {:loaded, data}
 
+      update_start_time = Time.utc_now()
       :ok = state[:updater_function].(schedule_state)
+
+      Logger.info(
+        "#{__MODULE__}: Sent updated schedule data to receiving process, time_in_ms=#{
+          Time.diff(Time.utc_now(), update_start_time, :millisecond)
+        }"
+      )
 
       Logger.info(
         "#{__MODULE__}: Successfully loaded schedule data, time_in_ms=#{
