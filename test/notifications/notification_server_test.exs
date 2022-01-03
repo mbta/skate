@@ -13,9 +13,9 @@ defmodule Notifications.NotificationServerTest do
   alias Skate.Settings.RouteSettings
 
   import Ecto.Query
-  import ExUnit.CaptureLog, only: [capture_log: 1]
+  import ExUnit.CaptureLog, only: [capture_log: 2]
   import Skate.Factory
-  import Test.Support.Helpers, only: [reassign_env: 3]
+  import Test.Support.Helpers, only: [reassign_env: 3, set_log_level: 1]
 
   require Logger
 
@@ -145,8 +145,10 @@ defmodule Notifications.NotificationServerTest do
       ) do
     start_time = @midnight + 100
 
+    set_log_level(:info)
+
     log =
-      capture_log(fn ->
+      capture_log([level: :info], fn ->
         waiver_map(cause_id, cause_description)
         |> NotificationServer.new_block_waivers(server)
 
@@ -264,8 +266,10 @@ defmodule Notifications.NotificationServerTest do
     test "broadcasts, saves, and logs nothing if no new block waivers are received" do
       {:ok, _server} = setup_server()
 
+      set_log_level(:info)
+
       log =
-        capture_log(fn ->
+        capture_log([level: :info], fn ->
           NotificationServer.handle_cast({:new_block_waivers, %{}}, nil)
         end)
 
@@ -327,6 +331,8 @@ defmodule Notifications.NotificationServerTest do
       RouteSettings.get_or_create("fake_uid")
       RouteSettings.set("fake_uid", [{:selected_route_ids, ["1,83,77"]}])
 
+      set_log_level(:info)
+
       reassign_env(:realtime, :peek_at_vehicles_by_run_ids_fn, fn _ ->
         [@vehicle]
       end)
@@ -335,7 +341,7 @@ defmodule Notifications.NotificationServerTest do
 
       for {cause_id, {cause_description, cause_atom}} <- @reasons_map do
         log =
-          capture_log(fn ->
+          capture_log([level: :info], fn ->
             waiver_map(cause_id, cause_description)
             |> NotificationServer.new_block_waivers(server)
 
@@ -352,6 +358,8 @@ defmodule Notifications.NotificationServerTest do
       end)
 
       {:ok, server} = setup_server()
+
+      set_log_level(:info)
 
       NotificationServer.new_block_waivers(
         waiver_map(1, "J - Other"),
@@ -376,7 +384,7 @@ defmodule Notifications.NotificationServerTest do
       end
 
       log =
-        capture_log(fn ->
+        capture_log([level: :info], fn ->
           NotificationServer.new_block_waivers(
             waiver_map(1, "J - Other"),
             server
@@ -402,6 +410,8 @@ defmodule Notifications.NotificationServerTest do
 
       Repo.delete_all(from(DbUser))
 
+      set_log_level(:info)
+
       for i <- Range.new(0, length(@chelsea_bridge_route_ids) - 1) do
         uid = "fake_uid#{i}"
         route_id = Enum.at(@chelsea_bridge_route_ids, i)
@@ -412,7 +422,7 @@ defmodule Notifications.NotificationServerTest do
       start_time = DateTime.utc_now() |> DateTime.to_unix()
 
       log =
-        capture_log(fn ->
+        capture_log([level: :info], fn ->
           NotificationServer.bridge_movement({:lowered, nil}, server)
           Process.sleep(1000)
         end)
@@ -436,6 +446,8 @@ defmodule Notifications.NotificationServerTest do
 
       Repo.delete_all(from(DbUser))
 
+      set_log_level(:info)
+
       for i <- Range.new(0, length(@chelsea_bridge_route_ids) - 1) do
         uid = "fake_uid#{i}"
         route_id = Enum.at(@chelsea_bridge_route_ids, i)
@@ -448,7 +460,7 @@ defmodule Notifications.NotificationServerTest do
       start_time = DateTime.utc_now() |> DateTime.to_unix()
 
       log =
-        capture_log(fn ->
+        capture_log([level: :info], fn ->
           NotificationServer.bridge_movement({:raised, start_time}, server)
           Process.sleep(1000)
         end)
@@ -483,10 +495,12 @@ defmodule Notifications.NotificationServerTest do
       RouteSettings.get_or_create("fake_uid")
       RouteSettings.set("fake_uid", [{:selected_route_ids, ["1,83,77"]}])
 
+      set_log_level(:info)
+
       start_time = DateTime.utc_now() |> DateTime.to_unix()
 
       log =
-        capture_log(fn ->
+        capture_log([level: :info], fn ->
           NotificationServer.bridge_movement({:raised, start_time}, server)
           Process.sleep(1000)
         end)
@@ -512,6 +526,8 @@ defmodule Notifications.NotificationServerTest do
 
       Repo.delete_all(from(DbUser))
 
+      set_log_level(:info)
+
       for i <- Range.new(0, length(@chelsea_bridge_route_ids) - 1) do
         uid = "fake_uid#{i}"
         route_id = Enum.at(@chelsea_bridge_route_ids, i)
@@ -528,7 +544,7 @@ defmodule Notifications.NotificationServerTest do
       )
 
       log =
-        capture_log(fn ->
+        capture_log([level: :info], fn ->
           nil
           NotificationServer.bridge_movement({:lowered, nil}, server)
         end)
