@@ -210,7 +210,7 @@ defmodule Notifications.Notification do
   end
 
   defp log_creation(notification) do
-    Logger.warn("Notification created new_notification=#{inspect(notification)}")
+    Logger.info("Notification created new_notification=#{inspect(notification)}")
   end
 
   defp link_notification_to_users(notification_id, notification_route_ids) do
