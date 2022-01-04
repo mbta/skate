@@ -447,13 +447,16 @@ describe("reducer", () => {
       State.createRouteTab()
     )
 
+    const expectedNewTabs = [
+      { ...originalRouteTab1 },
+      { ...originalRouteTab2, isCurrentTab: false },
+      routeTabFactory.build({ isCurrentTab: true, ordering: 5 }),
+    ]
+
     const expectedState: State.State = {
       ...initialState,
-      routeTabs: [
-        { ...originalRouteTab1 },
-        { ...originalRouteTab2, isCurrentTab: false },
-        routeTabFactory.build({ isCurrentTab: true, ordering: 5 }),
-      ],
+      routeTabs: expectedNewTabs,
+      routeTabsToPush: expectedNewTabs,
     }
 
     expect(newState).toEqual(expectedState)
@@ -468,12 +471,14 @@ describe("reducer", () => {
       State.selectRouteTab(routeTab1.ordering)
     )
 
+    const expectedNewTabs = [
+      { ...routeTab1, isCurrentTab: true },
+      { ...routeTab2, isCurrentTab: false },
+    ]
     const expectedState: State.State = {
       ...initialState,
-      routeTabs: [
-        { ...routeTab1, isCurrentTab: true },
-        { ...routeTab2, isCurrentTab: false },
-      ],
+      routeTabs: expectedNewTabs,
+      routeTabsToPush: expectedNewTabs,
     }
 
     expect(newState).toEqual(expectedState)
@@ -491,9 +496,14 @@ describe("reducer", () => {
       State.selectRouteInTab("1")
     )
 
+    const expectedNewTabs = [
+      { ...routeTab1, selectedRouteIds: ["1"] },
+      routeTab2,
+    ]
     expect(newState).toEqual({
       ...initialState,
-      routeTabs: [{ ...routeTab1, selectedRouteIds: ["1"] }, routeTab2],
+      routeTabs: expectedNewTabs,
+      routeTabsToPush: expectedNewTabs,
     })
   })
 
@@ -512,9 +522,12 @@ describe("reducer", () => {
       State.deselectRouteInTab("1")
     )
 
+    const expectedNewTabs = [{ ...routeTab1, selectedRouteIds: [] }, routeTab2]
+
     expect(newState).toEqual({
       ...initialState,
-      routeTabs: [{ ...routeTab1, selectedRouteIds: [] }, routeTab2],
+      routeTabs: expectedNewTabs,
+      routeTabsToPush: expectedNewTabs,
     })
   })
 
@@ -533,9 +546,14 @@ describe("reducer", () => {
       State.flipLadderInTab("1")
     )
 
+    const expectedNewTabs = [
+      { ...routeTab1, ladderDirections: { "1": 1 } },
+      routeTab2,
+    ]
     expect(newState).toEqual({
       ...initialState,
-      routeTabs: [{ ...routeTab1, ladderDirections: { "1": 1 } }, routeTab2],
+      routeTabs: expectedNewTabs,
+      routeTabsToPush: expectedNewTabs,
     })
   })
 
@@ -554,12 +572,15 @@ describe("reducer", () => {
       State.toggleLadderCrowdingInTab("1")
     )
 
+    const expectedNewTabs = [
+      { ...routeTab1, ladderCrowdingToggles: { "1": true } },
+      routeTab2,
+    ]
+
     expect(newState).toEqual({
       ...initialState,
-      routeTabs: [
-        { ...routeTab1, ladderCrowdingToggles: { "1": true } },
-        routeTab2,
-      ],
+      routeTabs: expectedNewTabs,
+      routeTabsToPush: expectedNewTabs,
     })
   })
 })

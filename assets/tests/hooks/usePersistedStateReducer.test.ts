@@ -20,7 +20,6 @@ import {
   VehicleLabelSetting,
   VehicleAdherenceColorsSetting,
 } from "../../src/userSettings"
-import { instantPromise } from "../testHelpers/mockHelpers"
 import routeTabFactory from "../factories/routeTab"
 
 // tslint:disable: react-hooks-nesting
@@ -242,8 +241,8 @@ describe("usePersistedStateReducer", () => {
       ladderCrowdingToggles: {},
       ordering: 0,
     })
-    ;(putRouteTabs as jest.Mock).mockImplementationOnce(() =>
-      instantPromise([routeTab])
+    ;(putRouteTabs as jest.Mock).mockImplementationOnce(
+      () => new Promise(() => [routeTab])
     )
     const { result } = renderHook(() => usePersistedStateReducer())
     const [, dispatch] = result.current
