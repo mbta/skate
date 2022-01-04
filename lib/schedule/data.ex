@@ -41,6 +41,20 @@ defmodule Schedule.Data do
           swings: Swing.by_schedule_id_and_route_id()
         }
 
+  @type tables :: %{
+          routes: atom(),
+          route_patterns: atom(),
+          timepoints_by_route: atom(),
+          timepoint_names_by_id: atom(),
+          shapes: atom(),
+          stops: atom(),
+          trips: atom(),
+          blocks: atom(),
+          calendar: atom(),
+          runs: atom(),
+          swings: atom()
+        }
+
   @type shapes_by_route_id :: %{Route.id() => [Shape.t()]}
 
   @type stops_by_id :: %{Stop.id() => Stop.t()}
@@ -65,6 +79,34 @@ defmodule Schedule.Data do
           gtfs: %{String.t() => binary()},
           hastus: %{String.t() => binary()}
         }
+
+  @table_schema [
+    {:routes, [:id, :route], []},
+    {:route_patterns, [:id, :route_pattern], []},
+    {:timepoints_by_route, [:route_id, :timepoints], []},
+    {:timepoint_names_by_id, [:id, :timepoint_name], []},
+    {:shapes, [:route_id, :shapes], []},
+    {:stops, [:id, :stop], []},
+    {:trips, [:id, :service_id, :trip], [:service_id]},
+    {:blocks, [:id, :service_id, :block], [:service_id]},
+    {:calendar, [:date, :service_ids], []},
+    {:runs, [:id, :service_id, :run], [:service_id]},
+    {:swings, [:service_id_and_route_id, :swings], []}
+  ]
+
+  @default_tables %{
+    routes: :routes,
+    route_patterns: :route_patterns,
+    timepoints_by_route: :timepoints_by_route,
+    timepoint_names_by_id: :timepoint_names_by_id,
+    shapes: :shapes,
+    stops: :stops,
+    trips: :trips,
+    blocks: :blocks,
+    calendar: :calendar,
+    runs: :run,
+    swings: :swings
+  }
 
   @spec all_routes(t()) :: [Route.t()]
   def all_routes(%__MODULE__{routes: routes}), do: routes
@@ -295,8 +337,27 @@ defmodule Schedule.Data do
 
   # Initialization
 
-  @spec parse_files(all_files()) :: t()
-  def parse_files(%{gtfs: gtfs_files, hastus: hastus_files}) do
+  @spec initialize_tables(tables()) :: :ok
+  def initialize_tables(tables) do
+    Enum.each(@table_schema, fn {table_key, columns, extra_indices} ->
+      {:atomic, :ok} =
+        :mnesia.create_table(tables[table_key],
+          attributes: columns,
+          index: extra_indices,
+          storage_properties: [ets: [{:read_concurrency, true}]],
+          local_content: true
+        )
+
+      :mnesia.wait_for_tables([tables[table_key]], 5_000)
+    end)
+
+    :ok
+  end
+
+  @spec parse_files(all_files(), tables()) :: t()
+  def parse_files(%{gtfs: gtfs_files, hastus: hastus_files}, tables \\ @default_tables) do
+    initialize_tables(tables)
+
     gtfs_files["feed_info.txt"]
     |> FeedInfo.parse()
     |> FeedInfo.log_gtfs_version()
@@ -347,7 +408,7 @@ defmodule Schedule.Data do
 
     bus_routes = Garage.add_garages_to_routes(bus_routes, schedule_trips_by_id)
 
-    %__MODULE__{
+    schedule_data = %__MODULE__{
       routes: bus_routes,
       route_patterns: route_patterns,
       timepoints_by_route:
@@ -365,6 +426,54 @@ defmodule Schedule.Data do
       runs: runs,
       swings: Swing.from_blocks(blocks, schedule_trips_by_id)
     }
+
+    write_data = fn ->
+      Enum.each(schedule_data.routes, fn route ->
+        :mnesia.write({tables.routes, route.id, route})
+      end)
+
+      Enum.each(schedule_data.route_patterns, fn route_pattern ->
+        :mnesia.write({tables.route_patterns, route_pattern.id, route_pattern})
+      end)
+
+      Enum.each(schedule_data.timepoints_by_route, fn {route_id, timepoints} ->
+        :mnesia.write({tables.timepoints_by_route, route_id, timepoints})
+      end)
+
+      Enum.each(schedule_data.timepoint_names_by_id, fn {id, timepoint_name} ->
+        :mnesia.write({tables.timepoint_names_by_id, id, timepoint_name})
+      end)
+
+      Enum.each(schedule_data.shapes, fn {route_id, shapes} ->
+        :mnesia.write({tables.shapes, route_id, shapes})
+      end)
+
+      Enum.each(schedule_data.stops, fn {id, stop} -> :mnesia.write({tables.stops, id, stop}) end)
+
+      Enum.each(schedule_data.trips, fn {id, trip} ->
+        :mnesia.write({tables.trips, id, trip.service_id, trip})
+      end)
+
+      Enum.each(schedule_data.blocks, fn {id, block} ->
+        :mnesia.write({tables.blocks, id, block.service_id, block})
+      end)
+
+      Enum.each(schedule_data.calendar, fn {date, service_ids} ->
+        :mnesia.write({tables.calendar, date, service_ids})
+      end)
+
+      Enum.each(schedule_data.runs, fn {id, run} ->
+        :mnesia.write({tables.runs, id, run.service_id, run})
+      end)
+
+      Enum.each(schedule_data.swings, fn {{service_id, route_id}, swings} ->
+        :mnesia.write({tables.swings, service_id <> "-" <> (route_id || "none"), swings})
+      end)
+    end
+
+    {:atomic, :ok} = :mnesia.transaction(write_data)
+
+    schedule_data
   end
 
   @spec runs_from_hastus(

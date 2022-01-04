@@ -20,7 +20,7 @@ defmodule Skate.MixProject do
   #
   # Type `mix help compile.app` for more information.
   def application do
-    apps = [:logger, :runtime_tools]
+    apps = [:logger, :runtime_tools, :mnesia]
 
     apps =
       if Mix.env() == :prod do
