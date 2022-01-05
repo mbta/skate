@@ -94,48 +94,61 @@ defmodule Schedule.Data do
     {:swings, [:service_id_and_route_id, :swings], []}
   ]
 
-  @default_tables %{
-    routes: :routes,
-    route_patterns: :route_patterns,
-    timepoints_by_route: :timepoints_by_route,
-    timepoint_names_by_id: :timepoint_names_by_id,
-    shapes: :shapes,
-    stops: :stops,
-    trips: :trips,
-    blocks: :blocks,
-    calendar: :calendar,
-    runs: :run,
-    swings: :swings
-  }
-
-  @spec all_routes(t()) :: [Route.t()]
-  def all_routes(%__MODULE__{routes: routes}), do: routes
-
-  @spec timepoints_on_route(t(), Route.id()) :: [Timepoint.t()]
-  def timepoints_on_route(
-        %__MODULE__{timepoints_by_route: timepoints_by_route},
-        route_id
-      ),
-      do: Map.get(timepoints_by_route, route_id, [])
-
-  @spec timepoint_names_by_id(t()) :: Timepoint.timepoint_names_by_id()
-  def timepoint_names_by_id(%__MODULE__{timepoint_names_by_id: timepoint_names_by_id}),
-    do: timepoint_names_by_id
-
-  @spec stop(t(), Stop.id()) :: Stop.t() | nil
-  def stop(%__MODULE__{stops: stops}, stop_id), do: stops[stop_id]
-
-  @spec trip(t(), Schedule.Trip.id()) :: Schedule.Trip.t() | nil
-  def trip(%__MODULE__{trips: trips}, trip_id), do: trips[trip_id]
-
-  @spec trips_by_id(t(), [Schedule.Trip.id()]) :: %{Schedule.Trip.id() => Schedule.Trip.t()}
-  def trips_by_id(%__MODULE__{trips: trips}, trip_ids) do
-    Map.take(trips, trip_ids)
+  @spec all_routes(tables()) :: [Route.t()]
+  def all_routes(%{routes: routes_table}) do
+    :mnesia.ets(fn ->
+      routes_table
+      |> :ets.tab2list()
+      |> Enum.map(fn {_route_id, route} -> route end)
+    end)
   end
 
-  @spec block(t(), Block.id(), Service.id()) :: Block.t() | nil
-  def block(%__MODULE__{blocks: blocks}, schedule_id, block_id) do
-    Block.get(blocks, schedule_id, block_id)
+  @spec timepoints_on_route(tables(), Route.id()) :: [Timepoint.t()]
+  def timepoints_on_route(%{timepoints_on_route: timepoints_on_route_table}, route_id) do
+    case :mnesia.dirty_read(timepoints_on_route_table, route_id) do
+      [{^timepoints_on_route_table, _, timepoints}] -> timepoints
+      _ -> []
+    end
+  end
+
+  @spec timepoint_names_by_id(tables()) :: Timepoint.timepoint_names_by_id()
+  def timepoint_names_by_id(%{timepoint_names_by_id: timepoint_names_by_id_table}) do
+    :mnesia.ets(fn ->
+      timepoint_names_by_id_table
+      |> :ets.tab2list()
+      |> Map.new()
+    end)
+  end
+
+  @spec stop(tables(), Stop.id()) :: Stop.t() | nil
+  def stop(%{stops: stops_table}, stop_id) do
+    case :mnesia.dirty_read(stops_table, stop_id) do
+      [{^stops_table, _, stop}] -> stop
+      _ -> nil
+    end
+  end
+
+  @spec trip(tables(), Schedule.Trip.id()) :: Schedule.Trip.t() | nil
+  def trip(%{trips: trips_table}, trip_id) do
+    case :mnesia.dirty_read(trips_table, trip_id) do
+      [{^trips_table, _, trip}] -> trip
+      _ -> nil
+    end
+  end
+
+  # TODO: can this be done in a more performant way?
+  @spec trips_by_id(tables(), [Schedule.Trip.id()]) :: %{Schedule.Trip.id() => Schedule.Trip.t()}
+  def trips_by_id(tables, trip_ids) do
+    trip_ids
+    |> Enum.map(&trip(tables, &1))
+    |> Enum.filter(&(!is_nil(&1)))
+  end
+
+  @spec block(tables(), Block.id(), Service.id()) :: Block.t() | nil
+  def block(%{blocks: blocks_table}, schedule_id, block_id) do
+    {blocks_table, {block_id, schedule_id}, :_, :_}
+    |> :mnesia.dirty_match_object()
+    |> Enum.map(&elem(&1, 3))
   end
 
   @doc """
@@ -162,23 +175,24 @@ defmodule Schedule.Data do
     Enum.to_list(date_range)
   end
 
-  @spec active_trips(t(), Util.Time.timestamp(), Util.Time.timestamp()) :: [Schedule.Trip.t()]
-  def active_trips(%__MODULE__{calendar: calendar, trips: trips}, start_time, end_time) do
+  @spec active_trips(tables(), Util.Time.timestamp(), Util.Time.timestamp()) :: [
+          Schedule.Trip.t()
+        ]
+  def active_trips(%{calendar: calendar_table, trips: trips_table}, start_time, end_time) do
     dates = potentially_active_service_dates(start_time, end_time)
-    active_services = Map.take(calendar, dates)
 
-    trips_by_service =
-      trips
-      |> Map.values()
-      |> Enum.group_by(fn trip -> trip.service_id end)
-
-    Enum.flat_map(active_services, fn {date, service_ids} ->
+    dates
+    |> active_services_on_dates(calendar_table)
+    |> Enum.flat_map(fn {date, service_ids} ->
       start_time_of_day = Util.Time.time_of_day_for_timestamp(start_time, date)
       end_time_of_day = Util.Time.time_of_day_for_timestamp(end_time, date)
 
       trips_on_date =
         Enum.flat_map(service_ids, fn service_id ->
-          Map.get(trips_by_service, service_id, [])
+          case :mnesia.dirty_match_object({trips_table, :_, service_id, :_}) do
+            trip_records when is_list(trip_records) -> Enum.map(trip_records, &elem(&1, 3))
+            _ -> []
+          end
         end)
 
       active_trips_on_date =
@@ -190,25 +204,23 @@ defmodule Schedule.Data do
     end)
   end
 
-  @spec active_blocks(t(), Util.Time.timestamp(), Util.Time.timestamp()) ::
+  @spec active_blocks(tables(), Util.Time.timestamp(), Util.Time.timestamp()) ::
           %{Date.t() => [Block.t()]}
-  def active_blocks(%__MODULE__{blocks: blocks, calendar: calendar}, start_time, end_time) do
+  def active_blocks(%{blocks: blocks_table, calendar: calendar_table}, start_time, end_time) do
     dates = potentially_active_service_dates(start_time, end_time)
-    active_services = Map.take(calendar, dates)
 
-    blocks_by_service =
-      blocks
-      |> Map.values()
-      |> Enum.group_by(fn block -> block.service_id end)
-
-    active_services
+    dates
+    |> active_services_on_dates(calendar_table)
     |> Map.new(fn {date, service_ids} ->
       start_time_of_day = Util.Time.time_of_day_for_timestamp(start_time, date)
       end_time_of_day = Util.Time.time_of_day_for_timestamp(end_time, date)
 
       blocks_on_date =
         Enum.flat_map(service_ids, fn service_id ->
-          Map.get(blocks_by_service, service_id, [])
+          case :mnesia.dirty_match_object({blocks_table, :_, service_id, :_}) do
+            block_records when is_list(block_records) -> Enum.map(block_records, &elem(&1, 3))
+            _ -> []
+          end
         end)
 
       active_blocks_on_date =
@@ -221,29 +233,27 @@ defmodule Schedule.Data do
     |> Helpers.filter_values(fn blocks -> blocks != [] end)
   end
 
-  @spec active_runs(t(), Util.Time.timestamp(), Util.Time.timestamp()) ::
+  @spec active_runs(tables(), Util.Time.timestamp(), Util.Time.timestamp()) ::
           %{Date.t() => [Run.t()]}
   def active_runs(
-        %__MODULE__{runs: runs, calendar: calendar},
+        %__MODULE__{runs: runs_table, calendar: calendar_table},
         start_time,
         end_time
       ) do
     dates = potentially_active_service_dates(start_time, end_time)
-    active_services = Map.take(calendar, dates)
 
-    runs_by_service =
-      runs
-      |> Map.values()
-      |> Enum.group_by(fn run -> run.service_id end)
-
-    active_services
+    dates
+    |> active_services_on_dates(calendar_table)
     |> Map.new(fn {date, service_ids} ->
       start_time_of_day = Util.Time.time_of_day_for_timestamp(start_time, date)
       end_time_of_day = Util.Time.time_of_day_for_timestamp(end_time, date)
 
       runs_on_date =
         Enum.flat_map(service_ids, fn service_id ->
-          Map.get(runs_by_service, service_id, [])
+          case :mnesia.dirty_match_object({runs_table, :_, service_id, :_}) do
+            run_records when is_list(run_records) -> Enum.map(run_records, &elem(&1, 3))
+            _ -> []
+          end
         end)
 
       active_runs_on_date =
@@ -256,81 +266,107 @@ defmodule Schedule.Data do
     |> Helpers.filter_values(fn runs -> runs != [] end)
   end
 
-  @spec shapes(t(), Route.id()) :: [Shape.t()]
-  def shapes(%__MODULE__{shapes: shapes}, route_id), do: Map.get(shapes, route_id, [])
+  @spec shapes(tables(), Route.id()) :: [Shape.t()]
+  def shapes(%__MODULE__{shapes: shapes_table}, route_id) do
+    case :mnesia.dirty_read(shapes_table, route_id) do
+      [{^shapes_table, _, shapes}] -> shapes
+      _ -> []
+    end
+  end
 
-  @spec shape_for_trip(t(), Schedule.Trip.id()) :: Shape.t() | nil
-  def shape_for_trip(%__MODULE__{shapes: shapes, trips: trips}, trip_id) do
-    trip = Map.get(trips, trip_id)
+  @spec shape_for_trip(tables(), Schedule.Trip.id()) :: Shape.t() | nil
+  def shape_for_trip(tables, trip_id) do
+    trip = trip(tables, trip_id)
 
     if trip != nil do
-      route_shapes = Map.get(shapes, trip.route_id, [])
+      route_shapes = shapes(tables, trip.route_id)
       Enum.find(route_shapes, fn shape -> shape.id == trip.shape_id end)
     else
       nil
     end
   end
 
-  @spec first_route_pattern_for_route_and_direction(t(), Route.id(), Direction.id()) ::
+  @spec first_route_pattern_for_route_and_direction(tables(), Route.id(), Direction.id()) ::
           RoutePattern.t() | nil
   def first_route_pattern_for_route_and_direction(
-        %__MODULE__{route_patterns: route_patterns},
+        %{route_patterns: route_patterns_table},
         route_id,
         direction_id
       ) do
+    route_patterns =
+      :mnesia.ets(fn ->
+        route_patterns_table
+        |> :ets.tab2list()
+        |> Enum.map(fn {_route_pattern_id, route_pattern} -> route_pattern end)
+      end)
+
     Enum.find(route_patterns, fn route_pattern ->
       route_pattern.route_id == route_id && route_pattern.direction_id == direction_id
     end)
   end
 
-  @spec run_for_trip(t(), Hastus.Run.id() | nil, Schedule.Trip.id()) :: Run.t() | nil
-  def run_for_trip(%__MODULE__{runs: runs, trips: trips}, run_id, trip_id) do
-    trip = trips[trip_id]
+  @spec run_for_trip(tables(), Hastus.Run.id() | nil, Schedule.Trip.id()) :: Run.t() | nil
+  def run_for_trip(%{runs: runs_table} = tables, run_id, trip_id) do
+    trip = trip(tables, trip_id)
 
-    cond do
-      trip != nil and run_id != nil and trip.schedule_id != nil ->
-        runs[{trip.schedule_id, run_id}]
+    run_key =
+      cond do
+        trip != nil and run_id != nil and trip.schedule_id != nil ->
+          {trip.schedule_id, run_id}
 
-      trip != nil and trip.schedule_id != nil ->
-        runs[{trip.schedule_id, trip.run_id}]
+        trip != nil and trip.schedule_id != nil ->
+          {trip.schedule_id, trip.run_id}
 
-      true ->
-        nil
+        true ->
+          nil
+      end
+
+    if is_nil(run_key) do
+      nil
+    else
+      case :mnesia.dirty_read(runs_table, run_key) do
+        [{^runs_table, _, run}] -> run
+        _ -> nil
+      end
     end
   end
 
-  @spec block_for_trip(t(), Schedule.Trip.id()) :: Block.t() | nil
+  @spec block_for_trip(tables(), Schedule.Trip.id()) :: Block.t() | nil
   def block_for_trip(
-        %__MODULE__{
-          trips: trips,
-          blocks: blocks
-        },
+        %{blocks: blocks_table} = tables,
         trip_id
       ) do
-    trip = trips[trip_id]
+    trip = trip(tables, trip_id)
 
     if trip != nil && trip.schedule_id != nil do
       # we have HASTUS data for this trip
-      blocks[{trip.schedule_id, trip.block_id}]
+      case :mnesia.dirty_read(blocks_table, {trip.schedule_id, trip.block_id}) do
+        [{^blocks_table, _, block}] -> block
+        _ -> nil
+      end
     else
       nil
     end
   end
 
-  @spec swings_for_route(t(), Route.id(), Util.Time.timestamp(), Util.Time.timestamp()) ::
+  @spec swings_for_route(tables(), Route.id(), Util.Time.timestamp(), Util.Time.timestamp()) ::
           [Swing.t()] | nil
   def swings_for_route(
-        %__MODULE__{calendar: calendar, swings: swings},
+        %{swings: swings_table} = tables,
         route_id,
         start_time,
         end_time
       ) do
     dates = potentially_active_service_dates(start_time, end_time)
-    active_services = Map.take(calendar, dates)
 
-    Enum.flat_map(active_services, fn {_data, service_ids} ->
+    dates
+    |> active_services_on_dates(tables)
+    |> Enum.flat_map(fn {_data, service_ids} ->
       Enum.flat_map(service_ids, fn service_id ->
-        Map.get(swings, {service_id, route_id}, [])
+        case :mnesia.dirty_match_object({swings_table, {service_id, route_id}, :_}) do
+          swing_records when is_list(swing_records) -> Enum.map(swing_records, &elem(&1, 2))
+          _ -> []
+        end
       end)
     end)
   end
@@ -340,6 +376,7 @@ defmodule Schedule.Data do
   @spec initialize_tables(tables()) :: :ok
   def initialize_tables(tables) do
     Enum.each(@table_schema, fn {table_key, columns, extra_indices} ->
+      # TODO: drop table if it already exists before attempting to create
       {:atomic, :ok} =
         :mnesia.create_table(tables[table_key],
           attributes: columns,
@@ -354,10 +391,59 @@ defmodule Schedule.Data do
     :ok
   end
 
-  @spec parse_files(all_files(), tables()) :: t()
-  def parse_files(%{gtfs: gtfs_files, hastus: hastus_files}, tables \\ @default_tables) do
-    initialize_tables(tables)
+  @spec save_schedule_data_to_tables(tables(), t()) :: :ok
+  def save_schedule_data_to_tables(tables, schedule_data) do
+    write_data = fn ->
+      Enum.each(schedule_data.routes, fn route ->
+        :mnesia.write({tables.routes, route.id, route})
+      end)
 
+      Enum.each(schedule_data.route_patterns, fn route_pattern ->
+        :mnesia.write({tables.route_patterns, route_pattern.id, route_pattern})
+      end)
+
+      Enum.each(schedule_data.timepoints_by_route, fn {route_id, timepoints} ->
+        :mnesia.write({tables.timepoints_by_route, route_id, timepoints})
+      end)
+
+      Enum.each(schedule_data.timepoint_names_by_id, fn {id, timepoint_name} ->
+        :mnesia.write({tables.timepoint_names_by_id, id, timepoint_name})
+      end)
+
+      Enum.each(schedule_data.shapes, fn {route_id, shapes} ->
+        :mnesia.write({tables.shapes, route_id, shapes})
+      end)
+
+      Enum.each(schedule_data.stops, fn {id, stop} -> :mnesia.write({tables.stops, id, stop}) end)
+
+      Enum.each(schedule_data.trips, fn {id, trip} ->
+        :mnesia.write({tables.trips, id, trip.service_id, trip})
+      end)
+
+      Enum.each(schedule_data.blocks, fn {id, block} ->
+        :mnesia.write({tables.blocks, id, block.service_id, block})
+      end)
+
+      Enum.each(schedule_data.calendar, fn {date, service_ids} ->
+        :mnesia.write({tables.calendar, date, service_ids})
+      end)
+
+      Enum.each(schedule_data.runs, fn {key, run} ->
+        :mnesia.write({tables.runs, key, run.service_id, run})
+      end)
+
+      Enum.each(schedule_data.swings, fn {{service_id, route_id}, swings} ->
+        :mnesia.write({tables.swings, {service_id, route_id}, swings})
+      end)
+    end
+
+    {:atomic, :ok} = :mnesia.transaction(write_data)
+
+    :ok
+  end
+
+  @spec parse_files(all_files()) :: t()
+  def parse_files(%{gtfs: gtfs_files, hastus: hastus_files}) do
     gtfs_files["feed_info.txt"]
     |> FeedInfo.parse()
     |> FeedInfo.log_gtfs_version()
@@ -408,7 +494,7 @@ defmodule Schedule.Data do
 
     bus_routes = Garage.add_garages_to_routes(bus_routes, schedule_trips_by_id)
 
-    schedule_data = %__MODULE__{
+    %__MODULE__{
       routes: bus_routes,
       route_patterns: route_patterns,
       timepoints_by_route:
@@ -426,54 +512,6 @@ defmodule Schedule.Data do
       runs: runs,
       swings: Swing.from_blocks(blocks, schedule_trips_by_id)
     }
-
-    write_data = fn ->
-      Enum.each(schedule_data.routes, fn route ->
-        :mnesia.write({tables.routes, route.id, route})
-      end)
-
-      Enum.each(schedule_data.route_patterns, fn route_pattern ->
-        :mnesia.write({tables.route_patterns, route_pattern.id, route_pattern})
-      end)
-
-      Enum.each(schedule_data.timepoints_by_route, fn {route_id, timepoints} ->
-        :mnesia.write({tables.timepoints_by_route, route_id, timepoints})
-      end)
-
-      Enum.each(schedule_data.timepoint_names_by_id, fn {id, timepoint_name} ->
-        :mnesia.write({tables.timepoint_names_by_id, id, timepoint_name})
-      end)
-
-      Enum.each(schedule_data.shapes, fn {route_id, shapes} ->
-        :mnesia.write({tables.shapes, route_id, shapes})
-      end)
-
-      Enum.each(schedule_data.stops, fn {id, stop} -> :mnesia.write({tables.stops, id, stop}) end)
-
-      Enum.each(schedule_data.trips, fn {id, trip} ->
-        :mnesia.write({tables.trips, id, trip.service_id, trip})
-      end)
-
-      Enum.each(schedule_data.blocks, fn {id, block} ->
-        :mnesia.write({tables.blocks, id, block.service_id, block})
-      end)
-
-      Enum.each(schedule_data.calendar, fn {date, service_ids} ->
-        :mnesia.write({tables.calendar, date, service_ids})
-      end)
-
-      Enum.each(schedule_data.runs, fn {id, run} ->
-        :mnesia.write({tables.runs, id, run.service_id, run})
-      end)
-
-      Enum.each(schedule_data.swings, fn {{service_id, route_id}, swings} ->
-        :mnesia.write({tables.swings, service_id <> "-" <> (route_id || "none"), swings})
-      end)
-    end
-
-    {:atomic, :ok} = :mnesia.transaction(write_data)
-
-    schedule_data
   end
 
   @spec runs_from_hastus(
@@ -548,6 +586,19 @@ defmodule Schedule.Data do
       id: run_id,
       activities: activities
     }
+  end
+
+  @spec active_services_on_dates([Date.t()], tables()) :: %{Date.t() => [Service.id()]}
+  defp active_services_on_dates(dates, %{calendar: calendar_table}) do
+    dates
+    |> Enum.map(fn date ->
+      case :mnesia.dirty_read(calendar_table, date) do
+        [{^calendar_table, _, service_ids}] -> {date, service_ids}
+        _ -> nil
+      end
+    end)
+    |> Enum.filter(&(!is_nil(&1)))
+    |> Map.new()
   end
 
   @spec unique_service_id_for_trips([Hastus.Trip.t()], Schedule.Trip.by_id()) ::

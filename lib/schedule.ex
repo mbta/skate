@@ -22,7 +22,7 @@ defmodule Schedule do
 
   alias Schedule.Run
 
-  @type state :: :not_loaded | {:loaded, Data.t()}
+  @type state :: :not_loaded | {:loaded, Data.tables()}
 
   @typedoc """
   For mocking tests
@@ -201,8 +201,8 @@ defmodule Schedule do
     {:reply, nil, state}
   end
 
-  def handle_call(:all_routes, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.all_routes(gtfs_data), state}
+  def handle_call(:all_routes, _from, {:loaded, tables} = state) do
+    {:reply, Data.all_routes(tables), state}
   end
 
   def handle_call({:timepoints_on_route, route_id}, _from, {:loaded, gtfs_data} = state) do

@@ -26,6 +26,20 @@ defmodule Schedule.Fetcher do
           files_source: files_source()
         }
 
+  @default_tables %{
+    routes: :routes,
+    route_patterns: :route_patterns,
+    timepoints_by_route: :timepoints_by_route,
+    timepoint_names_by_id: :timepoint_names_by_id,
+    shapes: :shapes,
+    stops: :stops,
+    trips: :trips,
+    blocks: :blocks,
+    calendar: :calendar,
+    runs: :run,
+    swings: :swings
+  }
+
   @spec start_link(Keyword.t()) :: GenServer.on_start()
   def start_link(opts \\ []) do
     opts = Keyword.merge(@default_opts, opts)
@@ -68,10 +82,11 @@ defmodule Schedule.Fetcher do
              state[:latest_gtfs_timestamp],
              state[:latest_hastus_timestamp]
            ) do
-      schedule_state = {:loaded, data}
+      :ok = Data.initialize_tables(@default_tables)
+      :ok = Data.save_schedule_data_to_tables(@default_tables, data)
 
       update_start_time = Time.utc_now()
-      :ok = state[:updater_function].(schedule_state)
+      :ok = state[:updater_function].({:loaded, @default_tables})
 
       Logger.info(
         "#{__MODULE__}: Sent updated schedule data to receiving process, time_in_ms=#{
