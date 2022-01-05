@@ -15,6 +15,7 @@ import {
   State,
   toggleLadderCrowding,
   createRouteTab,
+  startingRouteTabsPush,
 } from "../../src/state"
 import {
   VehicleLabelSetting,
@@ -242,7 +243,7 @@ describe("usePersistedStateReducer", () => {
       ordering: 0,
     })
     ;(putRouteTabs as jest.Mock).mockImplementationOnce(
-      () => new Promise(() => [routeTab])
+      () => new Promise(jest.fn())
     )
     const { result } = renderHook(() => usePersistedStateReducer())
     const [, dispatch] = result.current
@@ -261,6 +262,87 @@ describe("usePersistedStateReducer", () => {
     ])
     const [state] = result.current
     expect(state.routeTabs).toEqual([routeTab])
+  })
+
+  test("saves updated route tabs to push later if a push is currently in progress", () => {
+    const { result } = renderHook(() => usePersistedStateReducer())
+    const [, dispatch] = result.current
+
+    act(() => {
+      dispatch(startingRouteTabsPush())
+      dispatch(createRouteTab())
+    })
+
+    const [state] = result.current
+
+    expect(state.routeTabs).toEqual([
+      routeTabFactory.build({
+        ordering: 0,
+        isCurrentTab: true,
+      }),
+    ])
+    expect(state.routeTabsToPush).toEqual(state.routeTabs)
+    expect(state.routeTabsPushInProgress).toEqual(true)
+  })
+
+  test("retries on HTTP error if not outdated", () => {
+    const badResponse = { ok: false }
+    const fakePromise = {
+      then: (callback: (data: any) => void) => {
+        callback(badResponse)
+        return { catch: jest.fn() }
+      },
+    }
+
+    const { result } = renderHook(() => usePersistedStateReducer())
+    const [, dispatch] = result.current
+
+    ;(putRouteTabs as jest.Mock).mockImplementationOnce(() => fakePromise)
+
+    act(() => {
+      dispatch(createRouteTab())
+    })
+
+    const [state] = result.current
+
+    expect(state.routeTabs).toEqual([
+      routeTabFactory.build({
+        ordering: 0,
+        isCurrentTab: true,
+      }),
+    ])
+    expect(state.routeTabsToPush).toEqual(state.routeTabs)
+    expect(state.routeTabsPushInProgress).toEqual(false)
+  })
+
+  test("retries on client error if not outdated", () => {
+    const fakePromise = {
+      then: () => ({
+        catch: (callback: () => void) => {
+          callback()
+        },
+      }),
+    }
+
+    const { result } = renderHook(() => usePersistedStateReducer())
+    const [, dispatch] = result.current
+
+    ;(putRouteTabs as jest.Mock).mockImplementationOnce(() => fakePromise)
+
+    act(() => {
+      dispatch(createRouteTab())
+    })
+
+    const [state] = result.current
+
+    expect(state.routeTabs).toEqual([
+      routeTabFactory.build({
+        ordering: 0,
+        isCurrentTab: true,
+      }),
+    ])
+    expect(state.routeTabsToPush).toEqual(state.routeTabs)
+    expect(state.routeTabsPushInProgress).toEqual(false)
   })
 })
 

@@ -8,6 +8,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:update": "jest -u",
+    "test:debugger": "node --inspect-brk node_modules/.bin/jest --runInBand",
     "check": "tsc --noEmit && npm run lint:check && npm run format:check",
     "lint": "tslint --fix -p .",
     "lint:check": "tslint -p .",

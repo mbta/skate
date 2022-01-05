@@ -583,4 +583,58 @@ describe("reducer", () => {
       routeTabsToPush: expectedNewTabs,
     })
   })
+
+  test("startingRouteTabsPush", () => {
+    const newState = reducer(initialState, State.startingRouteTabsPush())
+    expect(newState).toEqual({
+      ...initialState,
+      routeTabsPushInProgress: true,
+    })
+  })
+
+  test("routeTabsPushComplete", () => {
+    const newState = reducer(
+      { ...initialState, routeTabsPushInProgress: true },
+      State.routeTabsPushComplete()
+    )
+    expect(newState).toEqual({
+      ...initialState,
+      routeTabsPushInProgress: false,
+    })
+  })
+
+  test("retryRouteTabsPushIfNotOutdated", () => {
+    const firstPushRouteTabs = [routeTabFactory.build()]
+    const secondPushRouteTabs = [...firstPushRouteTabs, routeTabFactory.build()]
+
+    const stateWithoutQueuedTabs = {
+      ...initialState,
+      routeTabsPushInProgress: true,
+      routeTabs: firstPushRouteTabs,
+    }
+    const stateWithQueuedTabs = {
+      ...stateWithoutQueuedTabs,
+      routeTabsToPush: secondPushRouteTabs,
+      routeTabs: secondPushRouteTabs,
+    }
+
+    const newStateWithoutQueuedTabs = reducer(
+      stateWithoutQueuedTabs,
+      State.retryRouteTabsPushIfNotOutdated(firstPushRouteTabs)
+    )
+    const newStateWithQueuedTabs = reducer(
+      stateWithQueuedTabs,
+      State.retryRouteTabsPushIfNotOutdated(firstPushRouteTabs)
+    )
+
+    expect(newStateWithoutQueuedTabs).toEqual({
+      ...stateWithoutQueuedTabs,
+      routeTabsPushInProgress: false,
+      routeTabsToPush: firstPushRouteTabs,
+    })
+    expect(newStateWithQueuedTabs).toEqual({
+      ...stateWithQueuedTabs,
+      routeTabsPushInProgress: false,
+    })
+  })
 })
