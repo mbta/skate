@@ -43,16 +43,14 @@ defmodule Skate.Settings.RouteTabTest do
                }
              ] = RouteTab.update_all_for_user!("charlie", [route_tab])
 
-      [route_tab_from_db] = RouteTab.get_all_for_user("charlie")
-
-      refute is_nil(route_tab_from_db.id)
-
-      assert %RouteTab{
-               preset_name: "some routes",
-               selected_route_ids: ["1", "28"],
-               ladder_directions: %{"28" => "1"},
-               ladder_crowding_toggles: %{"1" => true}
-             } = route_tab_from_db
+      assert [
+               %RouteTab{
+                 preset_name: "some routes",
+                 selected_route_ids: ["1", "28"],
+                 ladder_directions: %{"28" => "1"},
+                 ladder_crowding_toggles: %{"1" => true}
+               }
+             ] = RouteTab.get_all_for_user("charlie")
     end
 
     test "updates an existing tab entry" do
@@ -72,11 +70,8 @@ defmodule Skate.Settings.RouteTabTest do
                  %{persisted_route_tab | preset_name: "some other name"}
                ])
 
-      persisted_route_tab_id = persisted_route_tab.id
-
       assert [
                %RouteTab{
-                 id: ^persisted_route_tab_id,
                  preset_name: "some other name",
                  selected_route_ids: ["1", "28"],
                  ladder_directions: %{"28" => "1"},

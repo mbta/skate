@@ -3,6 +3,7 @@ defmodule Skate.Repo.Migrations.ExtractTabSettingsFromRouteTabs do
 
   def change do
     execute("DELETE FROM route_tabs")
+    create index("route_tabs", [:user_id, :ordering], unique: true)
 
     create table(:tab_settings) do
       add(:selected_route_ids, {:array, :string}, null: false)

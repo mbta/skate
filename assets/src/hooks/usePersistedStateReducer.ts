@@ -8,7 +8,9 @@ import {
   initialState,
   reducer,
   State,
-  updateRouteTabs,
+  startingRouteTabsPush,
+  routeTabsPushComplete,
+  retryRouteTabsPushIfNotOutdated,
 } from "../state"
 import {
   defaultUserSettings,
@@ -43,7 +45,8 @@ const usePersistedStateReducer = (): [State, Dispatch] => {
     selectedRouteIds,
     ladderDirections,
     ladderCrowdingToggles,
-    pendingRouteTabs,
+    routeTabsToPush,
+    routeTabsPushInProgress,
   } = state
 
   const [firstLoadDone, setFirstLoadDone] = useState(false)
@@ -61,14 +64,19 @@ const usePersistedStateReducer = (): [State, Dispatch] => {
   }, [selectedRouteIds, ladderDirections, ladderCrowdingToggles])
 
   useEffect(() => {
-    if (firstLoadDone && pendingRouteTabs !== undefined) {
-      putRouteTabs(pendingRouteTabs).then((routeTabs) => {
-        dispatch(updateRouteTabs(routeTabs))
-      })
-    } else {
-      setFirstLoadDone(true)
+    if (routeTabsToPush && !routeTabsPushInProgress) {
+      dispatch(startingRouteTabsPush())
+      putRouteTabs(routeTabsToPush)
+        .then((response) => {
+          if (response.ok) {
+            dispatch(routeTabsPushComplete())
+          } else {
+            dispatch(retryRouteTabsPushIfNotOutdated(routeTabsToPush))
+          }
+        })
+        .catch(() => dispatch(retryRouteTabsPushIfNotOutdated(routeTabsToPush)))
     }
-  }, [JSON.stringify(pendingRouteTabs)])
+  }, [JSON.stringify(routeTabsToPush), routeTabsPushInProgress])
 
   return [state, dispatch]
 }

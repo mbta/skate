@@ -15,7 +15,6 @@ defmodule SkateWeb.RouteTabsController do
   defp format_tabs_for_update(route_tabs) do
     Enum.map(route_tabs, fn route_tab ->
       %RouteTab{
-        id: Map.get(route_tab, "id"),
         preset_name: Map.get(route_tab, "presetName"),
         selected_route_ids: Map.get(route_tab, "selectedRouteIds", []),
         ladder_directions: Map.get(route_tab, "ladderDirections", %{}),

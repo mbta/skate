@@ -163,12 +163,11 @@ defmodule Skate.Factory do
 
   def route_tab_factory do
     %Skate.Settings.RouteTab{
-      id: nil,
       preset_name: "preset",
       selected_route_ids: [],
       ladder_directions: %{},
       ladder_crowding_toggles: %{},
-      ordering: nil,
+      ordering: sequence(""),
       is_current_tab: false
     }
   end
