@@ -242,9 +242,12 @@ describe("usePersistedStateReducer", () => {
       ladderCrowdingToggles: {},
       ordering: 0,
     })
-    ;(putRouteTabs as jest.Mock).mockImplementationOnce(
-      () => new Promise(jest.fn())
-    )
+    ;(putRouteTabs as jest.Mock).mockImplementationOnce(() => ({
+      then: (callback: (data: any) => void) => {
+        callback({ ok: true })
+        return { catch: jest.fn() }
+      },
+    }))
     const { result } = renderHook(() => usePersistedStateReducer())
     const [, dispatch] = result.current
 
@@ -260,8 +263,11 @@ describe("usePersistedStateReducer", () => {
         ordering: 0,
       },
     ])
-    const [state] = result.current
-    expect(state.routeTabs).toEqual([routeTab])
+    const [{ routeTabs, routeTabsToPush, routeTabsPushInProgress }] =
+      result.current
+    expect(routeTabs).toEqual([routeTab])
+    expect(routeTabsToPush).toEqual(null)
+    expect(routeTabsPushInProgress).toEqual(false)
   })
 
   test("saves updated route tabs to push later if a push is currently in progress", () => {
