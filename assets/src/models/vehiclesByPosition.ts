@@ -68,6 +68,7 @@ export const groupByPosition = (
     realVehicles.incoming,
     routeId
   ).filter(runNotSharedByAnotherVehicle(vehiclesAndGhosts || []))
+
   const incomingGhosts: Ghost[] = vehiclesNeedingVirtualGhosts.map((vehicle) =>
     ghostFromVehicleScheduledLocation(vehicle)
   )
@@ -105,7 +106,10 @@ const lateStartingIncomingVehicles = (
   incomingVehiclesOrGhosts.filter(
     (vehicleOrGhost) =>
       isAVehicleThatIsLateStartingScheduledTrip(vehicleOrGhost) &&
-      isScheduledForCurrentRoute(vehicleOrGhost as Vehicle, currentRouteId)
+      isScheduledForCurrentRoute(vehicleOrGhost as Vehicle, currentRouteId) &&
+      isLessThanOneHourLate(
+        vehicleOrGhost as Vehicle
+      ) /* virtually all trips are less than an hour, so trip should have ended if more than an hour after start time */
   ) as Vehicle[]
 
 const isAVehicleThatIsLateStartingScheduledTrip = (
@@ -125,6 +129,11 @@ const hasAScheduleLocation = (vehicle: Vehicle): boolean =>
 
 const isLateStartingScheduledTrip = (vehicle: Vehicle): boolean =>
   onTimeStatus(vehicle.scheduledLocation!.timeSinceTripStartTime) === "late"
+
+const isLessThanOneHourLate = (vehicle: Vehicle): boolean => {
+  const oneHourInSeconds = 3600
+  return vehicle.scheduledLocation!.timeSinceTripStartTime < oneHourInSeconds
+}
 
 const ghostFromVehicleScheduledLocation = (vehicle: Vehicle): Ghost => ({
   id: `ghost-incoming-${vehicle.id}`,
