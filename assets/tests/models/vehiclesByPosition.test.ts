@@ -197,7 +197,7 @@ describe("groupByPosition", () => {
     })
   })
 
-  test("does not generate a virtual ghost for incoming buses that are late on their previous trip", () => {
+  test("does not generate a virtual ghost for incoming buses whose scheduled location isn't on the ladder route", () => {
     const vehicle: Vehicle = {
       id: "y0001",
       routeId: "2",
@@ -331,6 +331,43 @@ describe("groupByPosition", () => {
     ).toEqual({
       ...emptyByPosition,
       layingOverBottom: [lateVehicle],
+    })
+  })
+
+  test("does not generate a virtual ghost if the vehicle is more than an hour late", () => {
+    const veryLateVehicle: Vehicle = {
+      id: "vehicleId",
+      directionId: 0,
+      routeId: "2",
+      tripId: "tripId",
+      headsign: "test headsign",
+      blockId: "blockId",
+      routeStatus: "on_route",
+      runId: "runId",
+      viaVariant: "viaVariant",
+      scheduleAdherenceSecs: 3601,
+      scheduledLocation: {
+        routeId: "1",
+        directionId: 0,
+        tripId: "scheduled trip",
+        runId: "scheduled run",
+        timeSinceTripStartTime: 3601,
+        headsign: "scheduled headsign",
+        viaVariant: "scheduled via variant",
+        timepointStatus: {
+          timepointId: "timepointId",
+          fractionUntilTimepoint: 0.2,
+        },
+      },
+      blockWaivers: [] as BlockWaiver[],
+    } as Vehicle
+
+    expect(
+      groupByPosition([veryLateVehicle], "1", LadderDirection.ZeroToOne)
+    ).toEqual({
+      ...emptyByPosition,
+      onRoute: [],
+      incoming: [veryLateVehicle],
     })
   })
 })
