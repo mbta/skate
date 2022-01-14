@@ -24,7 +24,8 @@ defmodule SkateWeb.Endpoint do
   end
 
   plug Plug.RequestId
-  plug Plug.Logger
+
+  plug Logster.Plugs.Logger
 
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
