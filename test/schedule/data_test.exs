@@ -15,7 +15,31 @@ defmodule Schedule.DataTest do
   alias Schedule.Piece
   alias Schedule.Run
 
-  test "all_routes/1 returns all the routes" do
+  @default_tables %{
+    routes: :routes_test,
+    route_patterns: :route_patterns_test,
+    timepoints_by_route: :timepoints_by_route_test,
+    timepoint_names_by_id: :timepoint_names_by_id_test,
+    shapes: :shapes_test,
+    stops: :stops_test,
+    trips: :trips_test,
+    blocks: :blocks_test,
+    calendar: :calendar_test,
+    runs: :run_test,
+    swings: :swings_test
+  }
+
+  setup do
+    :ok = Data.initialize_tables(@default_tables)
+
+    on_exit(fn ->
+      :ok = Data.drop_tables(@default_tables)
+    end)
+
+    {:ok, tables: @default_tables}
+  end
+
+  test "all_routes/1 returns all the routes", %{tables: tables} do
     routes = [
       %Route{
         id: "39",
@@ -41,7 +65,9 @@ defmodule Schedule.DataTest do
       routes: routes
     }
 
-    assert Data.all_routes(data) == routes
+    Data.save_schedule_data_to_tables(tables, data)
+
+    assert Data.all_routes(tables) == routes
   end
 
   describe "timepoints_on_route/2" do

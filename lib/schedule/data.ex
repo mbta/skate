@@ -96,10 +96,8 @@ defmodule Schedule.Data do
 
   @spec all_routes(tables()) :: [Route.t()]
   def all_routes(%{routes: routes_table}) do
-    :mnesia.ets(fn ->
-      routes_table
-      |> :ets.tab2list()
-      |> Enum.map(fn {_route_id, route} -> route end)
+    transaction!(fn ->
+      :mnesia.select(routes_table, [{{:_, :_, :"$1"}, [], [:"$1"]}])
     end)
   end
 
@@ -387,8 +385,13 @@ defmodule Schedule.Data do
 
       :mnesia.wait_for_tables([tables[table_key]], 5_000)
     end)
+  end
 
-    :ok
+  @spec drop_tables(tables()) :: :ok
+  def drop_tables(tables) do
+    Enum.each(tables, fn {_table_key, table} ->
+      :mnesia.delete_table(table)
+    end)
   end
 
   @spec save_schedule_data_to_tables(tables(), t()) :: :ok
@@ -437,9 +440,7 @@ defmodule Schedule.Data do
       end)
     end
 
-    {:atomic, :ok} = :mnesia.transaction(write_data)
-
-    :ok
+    transaction!(write_data)
   end
 
   @spec parse_files(all_files()) :: t()
@@ -512,6 +513,12 @@ defmodule Schedule.Data do
       runs: runs,
       swings: Swing.from_blocks(blocks, schedule_trips_by_id)
     }
+  end
+
+  @spec transaction!((() -> term)) :: term | no_return
+  defp transaction!(fun) do
+    {:atomic, result} = :mnesia.transaction(fun)
+    result
   end
 
   @spec runs_from_hastus(
