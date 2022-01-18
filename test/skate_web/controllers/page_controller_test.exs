@@ -39,7 +39,7 @@ defmodule SkateWeb.PageControllerTest do
     end
 
     @tag :authenticated
-    test "includes route tabs in HTML", %{conn: conn, user: user} do
+    test "includes route tabs in HTML, empty for now", %{conn: conn, user: user} do
       Skate.Settings.RouteTab.update_all_for_user!(user, [
         build(:route_tab, %{selected_route_ids: ["1"]})
       ])
@@ -49,7 +49,7 @@ defmodule SkateWeb.PageControllerTest do
       html = html_response(conn, 200)
 
       assert html =~ "data-route-tabs"
-      assert html =~ "selected_route_ids&quot;:[&quot;1&quot;]"
+      assert html =~ "selected_route_ids&quot;:[]"
     end
 
     @tag :authenticated
