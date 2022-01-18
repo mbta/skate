@@ -19,6 +19,7 @@
     "@rehooks/component-size": "^1.0.3",
     "@sentry/react": "^6.10.0",
     "@tippyjs/react": "^4.2.5",
+    "@types/uuid": "^8.3.4",
     "core-js": "^3.18.2",
     "identity-obj-proxy": "^3.0.0",
     "leaflet": "^1.7.1",
@@ -33,6 +34,7 @@
     "react-leaflet-fullscreen": "^1.0.1",
     "react-router-dom": "^5.2.0",
     "resize-observer-polyfill": "^1.5.1",
+    "uuid": "^8.3.2",
     "whatwg-fetch": "^3.6.2"
   },
   "devDependencies": {

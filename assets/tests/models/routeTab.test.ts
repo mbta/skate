@@ -10,8 +10,9 @@ describe("currentRouteTab", () => {
   })
 
   test("creates new route tab if no current tab found", () => {
-    expect(currentRouteTab([])).toEqual(
-      routeTabFactory.build({ isCurrentTab: true, ordering: 0 })
-    )
+    const routeTab = routeTabFactory.build({ isCurrentTab: true, ordering: 0 })
+    delete routeTab.uuid
+
+    expect(currentRouteTab([])).toMatchObject(routeTab)
   })
 })

@@ -1,8 +1,10 @@
 import { RouteId } from "../schedule.d"
 import { LadderDirections } from "./ladderDirection"
 import { LadderCrowdingToggles } from "./ladderCrowdingToggle"
+import { v4 as uuidv4 } from "uuid"
 
 export interface RouteTab {
+  uuid: string
   isCurrentTab: boolean
   presetName?: string
   selectedRouteIds: RouteId[]
@@ -12,6 +14,7 @@ export interface RouteTab {
 }
 
 export interface RouteTabData {
+  uuid: string
   preset_name?: string
   selected_route_ids: RouteId[]
   ordering: number
@@ -21,6 +24,7 @@ export interface RouteTabData {
 }
 
 export const newRouteTab = (ordering: number): RouteTab => ({
+  uuid: uuidv4(),
   isCurrentTab: true,
   selectedRouteIds: [],
   ladderDirections: {},
@@ -35,6 +39,7 @@ export const parseRouteTabData = (
   routeTabsData: RouteTabData[]
 ): RouteTab[] => {
   return routeTabsData.map((routeTabData) => ({
+    uuid: routeTabData.uuid,
     ordering: routeTabData.ordering,
     presetName: routeTabData.preset_name,
     isCurrentTab: routeTabData.is_current_tab || false,
