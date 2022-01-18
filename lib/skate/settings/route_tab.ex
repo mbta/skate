@@ -8,6 +8,7 @@ defmodule Skate.Settings.RouteTab do
   alias Skate.Settings.Db.User, as: DbUser
 
   @type t :: %__MODULE__{
+          uuid: Ecto.UUID.t(),
           preset_name: String.t() | nil,
           selected_route_ids: [Route.id()],
           ladder_directions: map(),
@@ -16,11 +17,12 @@ defmodule Skate.Settings.RouteTab do
           is_current_tab: boolean() | nil
         }
 
-  @enforce_keys [:selected_route_ids, :ladder_directions, :ladder_crowding_toggles]
+  @enforce_keys [:uuid, :selected_route_ids, :ladder_directions, :ladder_crowding_toggles]
 
   @derive Jason.Encoder
 
   defstruct [
+    :uuid,
     :preset_name,
     :selected_route_ids,
     :ladder_directions,
@@ -40,7 +42,7 @@ defmodule Skate.Settings.RouteTab do
   def update_all_for_user!(username, route_tabs) do
     username
     |> User.get_or_create()
-    |> Repo.preload(route_tabs: :tab_settings)
+    |> Repo.preload(:route_tabs)
     |> DbUser.changeset(%{route_tabs: Enum.map(route_tabs, &Map.from_struct/1)})
     |> Repo.update!()
     |> Map.get(:route_tabs)
@@ -49,15 +51,14 @@ defmodule Skate.Settings.RouteTab do
 
   @spec db_route_tab_to_route_tab(%DbRouteTab{}) :: t()
   defp db_route_tab_to_route_tab(db_route_tab) do
-    tab = Repo.preload(db_route_tab, :tab_settings)
-
     %__MODULE__{
-      preset_name: tab.preset_name,
-      selected_route_ids: tab.tab_settings.selected_route_ids,
-      ladder_directions: tab.tab_settings.ladder_directions,
-      ladder_crowding_toggles: tab.tab_settings.ladder_crowding_toggles,
-      ordering: tab.ordering,
-      is_current_tab: tab.is_current_tab
+      uuid: db_route_tab.uuid,
+      preset_name: db_route_tab.preset_name,
+      selected_route_ids: db_route_tab.selected_route_ids,
+      ladder_directions: db_route_tab.ladder_directions,
+      ladder_crowding_toggles: db_route_tab.ladder_crowding_toggles,
+      ordering: db_route_tab.ordering,
+      is_current_tab: db_route_tab.is_current_tab
     }
   end
 end

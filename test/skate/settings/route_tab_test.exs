@@ -14,10 +14,11 @@ defmodule Skate.Settings.RouteTabTest do
 
   describe "get_all_for_user/1" do
     test "retrieves route tabs by username" do
-      route_tab = build_test_tab()
+      route_tab1 = build_test_tab()
+      route_tab2 = build_test_tab()
 
-      RouteTab.update_all_for_user!("user1", [route_tab])
-      RouteTab.update_all_for_user!("user2", [route_tab])
+      RouteTab.update_all_for_user!("user1", [route_tab1])
+      RouteTab.update_all_for_user!("user2", [route_tab2])
 
       assert [
                %RouteTab{
@@ -55,11 +56,13 @@ defmodule Skate.Settings.RouteTabTest do
 
     test "updates an existing tab entry" do
       route_tab = build_test_tab()
+      route_tab_uuid = route_tab.uuid
 
       [persisted_route_tab] = RouteTab.update_all_for_user!("charlie", [route_tab])
 
       assert [
                %RouteTab{
+                 uuid: ^route_tab_uuid,
                  preset_name: "some other name",
                  selected_route_ids: ["1", "28"],
                  ladder_directions: %{"28" => "1"},
@@ -72,6 +75,7 @@ defmodule Skate.Settings.RouteTabTest do
 
       assert [
                %RouteTab{
+                 uuid: ^route_tab_uuid,
                  preset_name: "some other name",
                  selected_route_ids: ["1", "28"],
                  ladder_directions: %{"28" => "1"},

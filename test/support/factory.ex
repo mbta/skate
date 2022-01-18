@@ -163,6 +163,7 @@ defmodule Skate.Factory do
 
   def route_tab_factory do
     %Skate.Settings.RouteTab{
+      uuid: Ecto.UUID.generate(),
       preset_name: "preset",
       selected_route_ids: [],
       ladder_directions: %{},
