@@ -96,27 +96,21 @@ defmodule Schedule.Data do
 
   @spec all_routes(tables()) :: [Route.t()]
   def all_routes(%{routes: routes_table}) do
-    transaction!(fn ->
-      :mnesia.select(routes_table, [{{:_, :_, :"$1"}, [], [:"$1"]}])
-    end)
+    :mnesia.dirty_select(routes_table, [{{:_, :_, :"$1"}, [], [:"$1"]}])
   end
 
   @spec timepoints_on_route(tables(), Route.id()) :: [Timepoint.t()]
   def timepoints_on_route(%{timepoints_by_route: timepoints_by_route_table}, route_id) do
-    fn ->
-      :mnesia.select(timepoints_by_route_table, [{{:_, route_id, :"$1"}, [], [:"$1"]}])
-    end
-    |> transaction!()
+    timepoints_by_route_table
+    |> :mnesia.dirty_select([{{:_, route_id, :"$1"}, [], [:"$1"]}])
     |> List.flatten()
   end
 
   @spec timepoint_names_by_id(tables()) :: Timepoint.timepoint_names_by_id()
   def timepoint_names_by_id(%{timepoint_names_by_id: timepoint_names_by_id_table}) do
-    :mnesia.ets(fn ->
-      timepoint_names_by_id_table
-      |> :ets.tab2list()
-      |> Map.new()
-    end)
+    timepoint_names_by_id_table
+    |> :mnesia.dirty_select([{{:_, :"$1", :"$2"}, [], [{:"$1", :"$2"}]}])
+    |> Map.new()
   end
 
   @spec stop(tables(), Stop.id()) :: Stop.t() | nil

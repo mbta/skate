@@ -112,7 +112,7 @@ defmodule Schedule.DataTest do
   end
 
   describe "stop/2" do
-    test "returns the stop for the given stop ID" do
+    test "returns the stop for the given stop ID", %{tables: tables} do
       data = %Data{
         stops: %{
           "1" => %Stop{
@@ -128,14 +128,16 @@ defmodule Schedule.DataTest do
         }
       }
 
-      assert Data.stop(data, "2") == %Stop{
+      Data.save_schedule_data_to_tables(tables, data)
+
+      assert Data.stop(tables, "2") == %Stop{
                id: "2",
                name: "Two",
                parent_station_id: "3"
              }
     end
 
-    test "returns nil if the given stop ID is not found" do
+    test "returns nil if the given stop ID is not found", %{tables: tables} do
       data = %Data{
         stops: %{
           "1" => %Stop{
@@ -151,7 +153,9 @@ defmodule Schedule.DataTest do
         }
       }
 
-      assert Data.stop(data, "4") == nil
+      Data.save_schedule_data_to_tables(tables, data)
+
+      assert Data.stop(tables, "4") == nil
     end
   end
 
