@@ -129,7 +129,6 @@ defmodule Schedule.Data do
     end
   end
 
-  # TODO: can this be done in a more performant way?
   @spec trips_by_id(tables(), [Schedule.Trip.id()]) :: %{Schedule.Trip.id() => Schedule.Trip.t()}
   def trips_by_id(tables, trip_ids) do
     selectors =
@@ -143,10 +142,10 @@ defmodule Schedule.Data do
   end
 
   @spec block(tables(), Block.id(), Service.id()) :: Block.t() | nil
-  def block(%{blocks: blocks_table}, schedule_id, block_id) do
-    {blocks_table, {block_id, schedule_id}, :_, :_}
-    |> :mnesia.dirty_match_object()
-    |> Enum.map(&elem(&1, 3))
+  def block(%{blocks: blocks_table}, block_id, schedule_id) do
+    blocks_table
+    |> :mnesia.dirty_select([{{:_, block_id, schedule_id, :"$1"}, [], [:"$1"]}])
+    |> List.first()
   end
 
   @doc """
@@ -423,8 +422,8 @@ defmodule Schedule.Data do
         :mnesia.write({tables.trips, id, trip.service_id, trip})
       end)
 
-      Enum.each(schedule_data.blocks, fn {id, block} ->
-        :mnesia.write({tables.blocks, id, block.service_id, block})
+      Enum.each(schedule_data.blocks, fn {_, block} ->
+        :mnesia.write({tables.blocks, block.id, block.service_id, block})
       end)
 
       Enum.each(schedule_data.calendar, fn {date, service_ids} ->

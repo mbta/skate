@@ -211,33 +211,35 @@ defmodule Schedule.DataTest do
   end
 
   describe "block" do
-    @tag skip: "not yet migrated"
-    test "block returns the block" do
+    test "block returns the block", %{tables: tables} do
       block = build(:block)
 
       data = %Data{
         blocks: %{{"block", "service"} => block}
       }
 
-      assert Data.block(data, "block", "service") == block
+      Data.save_schedule_data_to_tables(tables, data)
+
+      assert Data.block(tables, "block", "service") == block
     end
 
-    @tag skip: "not yet migrated"
-    test "block doesn't return blocks with the same block_id but a different date" do
+    test "block doesn't return blocks with the same block_id but a different date", %{
+      tables: tables
+    } do
       block = build(:block)
 
       data = %Data{
         blocks: %{{"block", "service"} => block}
       }
 
-      assert Data.block(data, "b", "other_service") == nil
+      Data.save_schedule_data_to_tables(tables, data)
+
+      assert Data.block(tables, "b", "other_service") == nil
     end
 
     @tag skip: "not yet migrated"
-    test "block returns nil if the block doesn't exist" do
-      data = %Data{}
-
-      assert Data.block(data, "block", "service") == nil
+    test "block returns nil if the block doesn't exist", %{tables: tables} do
+      assert Data.block(tables, "block", "service") == nil
     end
   end
 
