@@ -71,7 +71,7 @@ defmodule Schedule.DataTest do
   end
 
   describe "timepoints_on_route/2" do
-    test "returns the timepoints for the given route ID" do
+    test "returns the timepoints for the given route ID", %{tables: tables} do
       data = %Data{
         timepoints_by_route: %{
           "1" => [
@@ -83,7 +83,9 @@ defmodule Schedule.DataTest do
         }
       }
 
-      assert Data.timepoints_on_route(data, "1") == [
+      Data.save_schedule_data_to_tables(tables, data)
+
+      assert Data.timepoints_on_route(tables, "1") == [
                %Timepoint{id: "t1", name: "t1 name"},
                %Timepoint{id: "t2", name: "t2 name"},
                %Timepoint{id: "t3", name: "t3 name"},
@@ -91,7 +93,7 @@ defmodule Schedule.DataTest do
              ]
     end
 
-    test "returns an empty list if the route ID isn't found" do
+    test "returns an empty list if the route ID isn't found", %{tables: tables} do
       data = %Data{
         timepoints_by_route: %{
           "1" => [
@@ -103,7 +105,9 @@ defmodule Schedule.DataTest do
         }
       }
 
-      assert Data.timepoints_on_route(data, "2") == []
+      Data.save_schedule_data_to_tables(tables, data)
+
+      assert Data.timepoints_on_route(tables, "2") == []
     end
   end
 

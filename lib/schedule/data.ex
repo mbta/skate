@@ -102,11 +102,12 @@ defmodule Schedule.Data do
   end
 
   @spec timepoints_on_route(tables(), Route.id()) :: [Timepoint.t()]
-  def timepoints_on_route(%{timepoints_on_route: timepoints_on_route_table}, route_id) do
-    case :mnesia.dirty_read(timepoints_on_route_table, route_id) do
-      [{^timepoints_on_route_table, _, timepoints}] -> timepoints
-      _ -> []
+  def timepoints_on_route(%{timepoints_by_route: timepoints_by_route_table}, route_id) do
+    fn ->
+      :mnesia.select(timepoints_by_route_table, [{{:_, route_id, :"$1"}, [], [:"$1"]}])
     end
+    |> transaction!()
+    |> List.flatten()
   end
 
   @spec timepoint_names_by_id(tables()) :: Timepoint.timepoint_names_by_id()
