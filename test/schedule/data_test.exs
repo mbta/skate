@@ -160,8 +160,7 @@ defmodule Schedule.DataTest do
   end
 
   describe "trip" do
-    @tag skip: "not yet migrated"
-    test "trip/1 returns the trip" do
+    test "trip/1 returns the trip", %{tables: tables} do
       data = %Data{
         trips: %{
           "t1" => %Schedule.Trip{
@@ -171,14 +170,13 @@ defmodule Schedule.DataTest do
         }
       }
 
-      assert %Schedule.Trip{id: "t1"} = Data.trip(data, "t1")
+      Data.save_schedule_data_to_tables(tables, data)
+
+      assert %Schedule.Trip{id: "t1"} = Data.trip(tables, "t1")
     end
 
-    @tag skip: "not yet migrated"
-    test "trip/1 returns nil if the trip doesn't exist" do
-      data = %Data{}
-
-      assert Data.trip(data, "t1") == nil
+    test "trip/1 returns nil if the trip doesn't exist", %{tables: tables} do
+      assert Data.trip(tables, "t1") == nil
     end
   end
 

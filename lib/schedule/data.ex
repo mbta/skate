@@ -124,7 +124,7 @@ defmodule Schedule.Data do
   @spec trip(tables(), Schedule.Trip.id()) :: Schedule.Trip.t() | nil
   def trip(%{trips: trips_table}, trip_id) do
     case :mnesia.dirty_read(trips_table, trip_id) do
-      [{^trips_table, _, trip}] -> trip
+      [{^trips_table, _, _, trip}] -> trip
       _ -> nil
     end
   end
