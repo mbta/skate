@@ -129,7 +129,9 @@ describe("LadderPage", () => {
       .find(".m-ladder-page__tab:not(.m-ladder-page__tab-current)")
       .simulate("click")
 
-    expect(mockDispatch).toHaveBeenCalledWith(selectRouteTab(1))
+    expect(mockDispatch).toHaveBeenCalledWith(
+      selectRouteTab(mockState.routeTabs[1].uuid)
+    )
   })
 
   test("can add a new route tab", () => {

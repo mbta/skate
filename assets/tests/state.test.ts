@@ -474,7 +474,7 @@ describe("reducer", () => {
 
     const newState = reducer(
       { ...initialState, routeTabs: [routeTab1, routeTab2] },
-      State.selectRouteTab(routeTab1.ordering)
+      State.selectRouteTab(routeTab1.uuid)
     )
 
     const expectedNewTabs = [
