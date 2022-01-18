@@ -132,9 +132,14 @@ defmodule Schedule.Data do
   # TODO: can this be done in a more performant way?
   @spec trips_by_id(tables(), [Schedule.Trip.id()]) :: %{Schedule.Trip.id() => Schedule.Trip.t()}
   def trips_by_id(tables, trip_ids) do
-    trip_ids
-    |> Enum.map(&trip(tables, &1))
-    |> Enum.filter(&(!is_nil(&1)))
+    selectors =
+      for trip_id <- trip_ids do
+        {{:_, trip_id, :_, :"$1"}, [], [:"$1"]}
+      end
+
+    tables.trips
+    |> :mnesia.dirty_select(selectors)
+    |> Map.new(fn trip -> {trip.id, trip} end)
   end
 
   @spec block(tables(), Block.id(), Service.id()) :: Block.t() | nil

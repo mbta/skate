@@ -181,8 +181,7 @@ defmodule Schedule.DataTest do
   end
 
   describe "trips_by_id/2" do
-    @tag skip: "not yet migrated"
-    test "returns trips specified by ID" do
+    test "returns trips specified by ID", %{tables: tables} do
       data = %Data{
         trips: %{
           "t1" => %Schedule.Trip{
@@ -200,10 +199,12 @@ defmodule Schedule.DataTest do
         }
       }
 
-      trips = Data.trips_by_id(data, ["t1", "t2"])
+      Data.save_schedule_data_to_tables(tables, data)
+
+      trips = Data.trips_by_id(tables, ["t1", "t2"])
       assert Enum.count(trips) == 2
 
-      trip_ids = Enum.map(trips, fn {_trip_id, trip} -> trip.id end)
+      trip_ids = Map.keys(trips)
       assert "t1" in trip_ids
       assert "t2" in trip_ids
     end
