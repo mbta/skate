@@ -82,7 +82,7 @@ defmodule Schedule.Data do
 
   @table_schema [
     {:routes, :set, [:id, :route], []},
-    {:route_patterns, :set, [:id, :route_pattern], []},
+    {:route_patterns, :set, [:id, :route_id, :direction_id, :route_pattern], [:route_id]},
     {:timepoints_by_route, :set, [:route_id, :timepoints], []},
     {:timepoint_names_by_id, :set, [:id, :timepoint_name], []},
     {:shapes, :set, [:shape_id, :route_id, :shapes], [:route_id]},
@@ -284,16 +284,9 @@ defmodule Schedule.Data do
         route_id,
         direction_id
       ) do
-    route_patterns =
-      :mnesia.ets(fn ->
-        route_patterns_table
-        |> :ets.tab2list()
-        |> Enum.map(fn {_route_pattern_id, route_pattern} -> route_pattern end)
-      end)
-
-    Enum.find(route_patterns, fn route_pattern ->
-      route_pattern.route_id == route_id && route_pattern.direction_id == direction_id
-    end)
+    route_patterns_table
+    |> :mnesia.dirty_select([{{:_, :_, route_id, direction_id, :"$1"}, [], [:"$1"]}])
+    |> List.first()
   end
 
   @spec run_for_trip(tables(), Hastus.Run.id() | nil, Schedule.Trip.id()) :: Run.t() | nil
@@ -396,7 +389,10 @@ defmodule Schedule.Data do
       end)
 
       Enum.each(schedule_data.route_patterns, fn route_pattern ->
-        :mnesia.write({tables.route_patterns, route_pattern.id, route_pattern})
+        :mnesia.write(
+          {tables.route_patterns, route_pattern.id, route_pattern.route_id,
+           route_pattern.direction_id, route_pattern}
+        )
       end)
 
       Enum.each(schedule_data.timepoints_by_route, fn {route_id, timepoints} ->

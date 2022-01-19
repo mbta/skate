@@ -608,7 +608,7 @@ defmodule Schedule.DataTest do
   end
 
   describe "first_route_pattern_for_route_and_direction/3" do
-    setup do
+    setup %{tables: tables} do
       route_patterns = [
         %RoutePattern{
           id: "1",
@@ -644,12 +644,13 @@ defmodule Schedule.DataTest do
         route_patterns: route_patterns
       }
 
-      {:ok, data: data}
+      Data.save_schedule_data_to_tables(tables, data)
+
+      {:ok, tables: tables}
     end
 
-    @tag skip: "not yet migrated"
-    test "returns the first route pattern matching the route and direction", %{data: data} do
-      assert Data.first_route_pattern_for_route_and_direction(data, "r1", 0) == %RoutePattern{
+    test "returns the first route pattern matching the route and direction", %{tables: tables} do
+      assert Data.first_route_pattern_for_route_and_direction(tables, "r1", 0) == %RoutePattern{
                id: "1",
                name: "Route Pattern 1",
                route_id: "r1",
@@ -658,9 +659,8 @@ defmodule Schedule.DataTest do
              }
     end
 
-    @tag skip: "not yet migrated"
-    test "returns nil if no route patterns match", %{data: data} do
-      assert Data.first_route_pattern_for_route_and_direction(data, "r2", 1) == nil
+    test "returns nil if no route patterns match", %{tables: tables} do
+      assert Data.first_route_pattern_for_route_and_direction(tables, "r2", 1) == nil
     end
   end
 
