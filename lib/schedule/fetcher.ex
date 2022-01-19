@@ -57,6 +57,8 @@ defmodule Schedule.Fetcher do
       files_source: opts[:files_source]
     }
 
+    :ok = Data.initialize_tables(@default_tables)
+
     {:ok, initial_state, {:continue, :initial_poll}}
   end
 
@@ -82,7 +84,6 @@ defmodule Schedule.Fetcher do
              state[:latest_gtfs_timestamp],
              state[:latest_hastus_timestamp]
            ) do
-      :ok = Data.initialize_tables(@default_tables)
       :ok = Data.save_schedule_data_to_tables(@default_tables, data)
 
       update_start_time = Time.utc_now()

@@ -32,9 +32,9 @@ defmodule Schedule.DataTest do
   setup do
     :ok = Data.initialize_tables(@default_tables)
 
-    on_exit(fn ->
-      :ok = Data.drop_tables(@default_tables)
-    end)
+    for {_, table} <- @default_tables do
+      :mnesia.clear_table(table)
+    end
 
     {:ok, tables: @default_tables}
   end

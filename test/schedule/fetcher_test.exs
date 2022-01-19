@@ -4,6 +4,17 @@ defmodule Schedule.FetcherTest do
 
   import Test.Support.Helpers
 
+  def setup_state(_) do
+    {:ok, state, _} =
+      Schedule.Fetcher.init(
+        health_server: nil,
+        updater_function: fn _ -> :ok end,
+        files_source: {:mocked_files, %{}}
+      )
+
+    {:ok, %{state: state}}
+  end
+
   describe "start_link/1" do
     test "starts GenServer" do
       assert {:ok, _pid} =
@@ -16,7 +27,9 @@ defmodule Schedule.FetcherTest do
   end
 
   describe "do_poll/2" do
-    test "handles successful fetch" do
+    setup :setup_state
+
+    test "handles successful fetch", %{state: state} do
       bypass = Bypass.open()
       gtfs_url = "http://localhost:#{bypass.port}/MBTA_GTFS.zip"
       hastus_url = "http://localhost:#{bypass.port}/hastus_skate_dev.zip"
@@ -43,12 +56,13 @@ defmodule Schedule.FetcherTest do
             assert {:stop, :normal, %{latest_gtfs_timestamp: nil, latest_hastus_timestamp: nil}} =
                      Schedule.Fetcher.do_poll(
                        %{
-                         poll_interval_ms: 50,
-                         health_server: self(),
-                         updater_function: fn _data -> :ok end,
-                         latest_gtfs_timestamp: nil,
-                         latest_hastus_timestamp: nil,
-                         files_source: :remote
+                         state
+                         | poll_interval_ms: 50,
+                           health_server: self(),
+                           updater_function: fn _data -> :ok end,
+                           latest_gtfs_timestamp: nil,
+                           latest_hastus_timestamp: nil,
+                           files_source: :remote
                        },
                        true
                      )
@@ -61,7 +75,7 @@ defmodule Schedule.FetcherTest do
       assert log =~ "Successfully loaded schedule data"
     end
 
-    test "handles case with no updates" do
+    test "handles case with no updates", %{state: state} do
       bypass = Bypass.open()
       gtfs_url = "http://localhost:#{bypass.port}/MBTA_GTFS.zip"
       hastus_url = "http://localhost:#{bypass.port}/hastus_skate_dev.zip"
@@ -79,18 +93,19 @@ defmodule Schedule.FetcherTest do
       assert {:noreply, %{latest_gtfs_timestamp: "foo", latest_hastus_timestamp: "foo"}} =
                Schedule.Fetcher.do_poll(
                  %{
-                   poll_interval_ms: 50,
-                   health_server: self(),
-                   updater_function: fn _data -> :ok end,
-                   latest_gtfs_timestamp: "foo",
-                   latest_hastus_timestamp: "foo",
-                   files_source: :remote
+                   state
+                   | poll_interval_ms: 50,
+                     health_server: self(),
+                     updater_function: fn _data -> :ok end,
+                     latest_gtfs_timestamp: "foo",
+                     latest_hastus_timestamp: "foo",
+                     files_source: :remote
                  },
                  true
                )
     end
 
-    test "handles errors with fetching / parsing" do
+    test "handles errors with fetching / parsing", %{state: state} do
       bypass = Bypass.open()
       gtfs_url = "http://localhost:#{bypass.port}/MBTA_GTFS.zip"
       hastus_url = "http://localhost:#{bypass.port}/hastus_skate_dev.zip"
@@ -116,12 +131,13 @@ defmodule Schedule.FetcherTest do
             assert {:noreply, %{latest_gtfs_timestamp: nil, latest_hastus_timestamp: nil}} =
                      Schedule.Fetcher.do_poll(
                        %{
-                         poll_interval_ms: 50,
-                         health_server: self(),
-                         updater_function: fn _data -> :ok end,
-                         latest_gtfs_timestamp: nil,
-                         latest_hastus_timestamp: nil,
-                         files_source: :remote
+                         state
+                         | poll_interval_ms: 50,
+                           health_server: self(),
+                           updater_function: fn _data -> :ok end,
+                           latest_gtfs_timestamp: nil,
+                           latest_hastus_timestamp: nil,
+                           files_source: :remote
                        },
                        true
                      )
@@ -133,7 +149,7 @@ defmodule Schedule.FetcherTest do
       assert log =~ "Error loading schedule data"
     end
 
-    test "successfully loads schedule data from local cache" do
+    test "successfully loads schedule data from local cache", %{state: state} do
       filepath = Schedule.CacheFile.generate_filepath("fetcher_successful_test.terms")
 
       on_exit(fn -> File.rm!(filepath) end)
@@ -160,12 +176,13 @@ defmodule Schedule.FetcherTest do
           assert {:stop, :normal, %{latest_gtfs_timestamp: nil, latest_hastus_timestamp: nil}} =
                    Schedule.Fetcher.do_poll(
                      %{
-                       poll_interval_ms: 50,
-                       health_server: self(),
-                       updater_function: fn _data -> :ok end,
-                       latest_gtfs_timestamp: nil,
-                       latest_hastus_timestamp: nil,
-                       files_source: :remote
+                       state
+                       | poll_interval_ms: 50,
+                         health_server: self(),
+                         updater_function: fn _data -> :ok end,
+                         latest_gtfs_timestamp: nil,
+                         latest_hastus_timestamp: nil,
+                         files_source: :remote
                      },
                      true
                    )
@@ -174,7 +191,7 @@ defmodule Schedule.FetcherTest do
       assert log =~ "Loading schedule data from cached file"
     end
 
-    test "handles successful fetch after failed attempt at reading cache" do
+    test "handles successful fetch after failed attempt at reading cache", %{state: state} do
       bypass = Bypass.open()
       gtfs_url = "http://localhost:#{bypass.port}/MBTA_GTFS.zip"
       hastus_url = "http://localhost:#{bypass.port}/hastus_skate_dev.zip"
@@ -206,12 +223,13 @@ defmodule Schedule.FetcherTest do
             assert {:stop, :normal, %{latest_gtfs_timestamp: nil, latest_hastus_timestamp: nil}} =
                      Schedule.Fetcher.do_poll(
                        %{
-                         poll_interval_ms: 50,
-                         health_server: self(),
-                         updater_function: fn _data -> :ok end,
-                         latest_gtfs_timestamp: nil,
-                         latest_hastus_timestamp: nil,
-                         files_source: :remote
+                         state
+                         | poll_interval_ms: 50,
+                           health_server: self(),
+                           updater_function: fn _data -> :ok end,
+                           latest_gtfs_timestamp: nil,
+                           latest_hastus_timestamp: nil,
+                           files_source: :remote
                        },
                        true
                      )
@@ -227,7 +245,9 @@ defmodule Schedule.FetcherTest do
   end
 
   describe "handle_info/2" do
-    test "handles :check_gtfs message" do
+    setup :setup_state
+
+    test "handles :check_gtfs message", %{state: state} do
       bypass = Bypass.open()
       gtfs_url = "http://localhost:#{bypass.port}/MBTA_GTFS.zip"
       hastus_url = "http://localhost:#{bypass.port}/hastus_skate_dev.zip"
@@ -255,12 +275,13 @@ defmodule Schedule.FetcherTest do
                      Schedule.Fetcher.handle_info(
                        :check_gtfs,
                        %{
-                         poll_interval_ms: 50,
-                         health_server: self(),
-                         updater_function: fn _data -> :ok end,
-                         latest_gtfs_timestamp: nil,
-                         latest_hastus_timestamp: nil,
-                         files_source: :remote
+                         state
+                         | poll_interval_ms: 50,
+                           health_server: self(),
+                           updater_function: fn _data -> :ok end,
+                           latest_gtfs_timestamp: nil,
+                           latest_hastus_timestamp: nil,
+                           files_source: :remote
                        }
                      )
 

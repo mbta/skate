@@ -348,7 +348,8 @@ defmodule Schedule.Data do
   def initialize_tables(tables) do
     Enum.each(@table_schema, fn {table_key, type, columns, extra_indices} ->
       # TODO: drop table if it already exists before attempting to create
-      {:atomic, :ok} =
+      # {:atomic, :ok} =
+      _ =
         :mnesia.create_table(tables[table_key],
           type: type,
           attributes: columns,
@@ -359,18 +360,15 @@ defmodule Schedule.Data do
 
       :mnesia.wait_for_tables([tables[table_key]], 5_000)
     end)
-  end
 
-  @spec drop_tables(tables()) :: :ok
-  def drop_tables(tables) do
-    Enum.each(tables, fn {_table_key, table} ->
-      :mnesia.delete_table(table)
-    end)
+    :ok
   end
 
   @spec save_schedule_data_to_tables(tables(), t()) :: :ok
   def save_schedule_data_to_tables(tables, schedule_data) do
     write_data = fn ->
+      clear_tables(tables)
+
       Enum.each(schedule_data.routes, fn route ->
         :mnesia.write({tables.routes, route.id, route})
       end)
@@ -498,6 +496,17 @@ defmodule Schedule.Data do
   defp transaction!(fun) do
     {:atomic, result} = :mnesia.transaction(fun)
     result
+  end
+
+  @spec clear_tables(tables()) :: :ok
+  def clear_tables(tables) do
+    # this does not use :mnesia.clear_table/1 as that results in a :nested_transaction exception
+    for {_, table} <- tables,
+        key <- :mnesia.all_keys(table) do
+      :mnesia.delete(table, key, :write)
+    end
+
+    :ok
   end
 
   @spec runs_from_hastus(
