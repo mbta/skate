@@ -148,14 +148,14 @@ defmodule Schedule do
 
   @spec run_for_trip(Hastus.Run.id(), Trip.id()) :: Run.t() | nil
   @spec run_for_trip(Hastus.Run.id(), Trip.id(), GenServer.server()) :: Run.t() | nil
-  def run_for_trip(run_id, trip_id, server \\ __MODULE__) do
-    call_catch_timeout(server, {:run_for_trip, run_id, trip_id}, :run_for_trip, nil)
+  def run_for_trip(run_id, trip_id, _server \\ __MODULE__) do
+    Data.run_for_trip(default_tables(), run_id, trip_id)
   end
 
   @spec block_for_trip(Trip.id()) :: Block.t() | nil
   @spec block_for_trip(Trip.id(), GenServer.server()) :: Block.t() | nil
-  def block_for_trip(trip_id, server \\ __MODULE__) do
-    call_catch_timeout(server, {:block_for_trip, trip_id}, :block_for_trip, nil)
+  def block_for_trip(trip_id, _server \\ __MODULE__) do
+    Data.block_for_trip(default_tables(), trip_id)
   end
 
   @spec swings_for_route(
@@ -164,13 +164,8 @@ defmodule Schedule do
           Util.Time.timestamp(),
           GenServer.server()
         ) :: [Swing.t()] | nil
-  def swings_for_route(route_id, start_time, end_time, server \\ __MODULE__) do
-    call_catch_timeout(
-      server,
-      {:swings_for_route, route_id, start_time, end_time},
-      :swings_for_route,
-      nil
-    )
+  def swings_for_route(route_id, start_time, end_time, _server \\ __MODULE__) do
+    Data.swings_for_route(default_tables(), route_id, start_time, end_time)
   end
 
   @doc """
