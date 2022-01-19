@@ -26,8 +26,7 @@ import {
 import {
   RouteTab,
   newRouteTab,
-  newPreset,
-  tabFromPreset,
+  highestExistingOrdering,
 } from "./models/routeTab"
 
 export enum OpenView {
@@ -446,24 +445,25 @@ export const selectVehicleFromNotification = (
 
 interface CreatePresetAction {
   type: "CREATE_PRESET"
-  payload: { sourceTab: RouteTab }
+  payload: { uuid: string; presetName: string }
 }
 
-export const createPreset = (sourceTab: RouteTab): CreatePresetAction => ({
+export const createPreset = (
+  uuid: string,
+  presetName: string
+): CreatePresetAction => ({
   type: "CREATE_PRESET",
-  payload: { sourceTab },
+  payload: { uuid, presetName },
 })
 
 interface InstantiatePresetAction {
   type: "INSTANTIATE_PRESET"
-  payload: { preset: RouteTab }
+  payload: { uuid: string }
 }
 
-export const instantiatePreset = (
-  preset: RouteTab
-): InstantiatePresetAction => ({
+export const instantiatePreset = (uuid: string): InstantiatePresetAction => ({
   type: "INSTANTIATE_PRESET",
-  payload: { preset },
+  payload: { uuid },
 })
 
 export type Action =
@@ -571,11 +571,6 @@ const routeTabsReducer = (
 } => {
   switch (action.type) {
     case "CREATE_ROUTE_TAB":
-      const highestExistingOrdering = Math.max(
-        -1,
-        ...routeTabs.map((existingRouteTab) => existingRouteTab.ordering || 0)
-      )
-
       return {
         newRouteTabs: [
           ...routeTabs.map((existingRouteTab) => {
@@ -584,22 +579,41 @@ const routeTabsReducer = (
               isCurrentTab: false,
             }
           }),
-          newRouteTab(highestExistingOrdering + 1),
+          newRouteTab(highestExistingOrdering(routeTabs) + 1),
         ],
         routeTabsUpdated: true,
       }
     case "CREATE_PRESET":
       return {
-        newRouteTabs: [...routeTabs, newPreset(action.payload.sourceTab)],
+        newRouteTabs: routeTabs.map((existingRouteTab) => {
+          if (existingRouteTab.uuid === action.payload.uuid) {
+            return {
+              ...existingRouteTab,
+              presetName: action.payload.presetName,
+            }
+          } else {
+            return existingRouteTab
+          }
+        }),
         routeTabsUpdated: true,
       }
     case "INSTANTIATE_PRESET":
       return {
         newRouteTabs: [
           ...routeTabs.map((existingRouteTab) => {
-            return { ...existingRouteTab, isCurrentTab: false }
+            if (existingRouteTab.uuid === action.payload.uuid) {
+              return {
+                ...existingRouteTab,
+                isCurrentTab: true,
+                ordering:
+                  existingRouteTab.ordering !== undefined
+                    ? existingRouteTab.ordering
+                    : highestExistingOrdering(routeTabs) + 1,
+              }
+            } else {
+              return { ...existingRouteTab, isCurrentTab: false }
+            }
           }),
-          tabFromPreset(action.payload.preset, routeTabs.length),
         ],
         routeTabsUpdated: true,
       }

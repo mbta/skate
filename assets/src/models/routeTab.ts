@@ -32,23 +32,11 @@ export const newRouteTab = (ordering: number): RouteTab => ({
   ordering,
 })
 
-export const newPreset = (sourceTab: RouteTab): RouteTab => ({
-  ...sourceTab,
-  isCurrentTab: false,
-  presetName: `Preset ${Math.floor(Math.random() * 10000)}`,
-  uuid: uuidv4(),
-  ordering: undefined,
-})
-
-export const tabFromPreset = (
-  preset: RouteTab,
-  ordering: number
-): RouteTab => ({
-  ...preset,
-  isCurrentTab: true,
-  uuid: uuidv4(),
-  ordering,
-})
+export const highestExistingOrdering = (routeTabs: RouteTab[]): number =>
+  Math.max(
+    -1,
+    ...routeTabs.map((existingRouteTab) => existingRouteTab.ordering || 0)
+  )
 
 export const currentRouteTab = (routeTabs: RouteTab[]): RouteTab =>
   routeTabs.find((routeTab) => routeTab.isCurrentTab) || newRouteTab(0)
@@ -68,8 +56,9 @@ export const parseRouteTabData = (
 }
 
 export const isPreset = (routeTab: RouteTab): boolean =>
-  routeTab.ordering === undefined
-export const isNotPreset = (routeTab: RouteTab): boolean => !isPreset(routeTab)
+  routeTab.presetName !== undefined
+export const isOpenTab = (routeTab: RouteTab): boolean =>
+  routeTab.ordering !== undefined
 
 const nullToUndefined = <T>(data: T | null): T | undefined =>
   data === null ? undefined : data

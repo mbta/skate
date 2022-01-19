@@ -10,7 +10,14 @@ const Presets = () => {
   return (
     <div>
       <button
-        onClick={() => dispatch(createPreset(currentRouteTab(routeTabs)))}
+        onClick={() =>
+          dispatch(
+            createPreset(
+              currentRouteTab(routeTabs).uuid,
+              `Preset ${Math.floor(Math.random() * 10000)}`
+            )
+          )
+        }
       >
         Save as preset
       </button>
@@ -20,7 +27,7 @@ const Presets = () => {
           {presets.map((preset) => (
             <button
               key={preset.uuid}
-              onClick={() => dispatch(instantiatePreset(preset))}
+              onClick={() => dispatch(instantiatePreset(preset.uuid))}
             >
               {preset.presetName}
             </button>
