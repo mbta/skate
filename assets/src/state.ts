@@ -27,6 +27,7 @@ import {
   RouteTab,
   newRouteTab,
   highestExistingOrdering,
+  instantiatePresetFromTabs,
 } from "./models/routeTab"
 
 export enum OpenView {
@@ -599,22 +600,7 @@ const routeTabsReducer = (
       }
     case "INSTANTIATE_PRESET":
       return {
-        newRouteTabs: [
-          ...routeTabs.map((existingRouteTab) => {
-            if (existingRouteTab.uuid === action.payload.uuid) {
-              return {
-                ...existingRouteTab,
-                isCurrentTab: true,
-                ordering:
-                  existingRouteTab.ordering !== undefined
-                    ? existingRouteTab.ordering
-                    : highestExistingOrdering(routeTabs) + 1,
-              }
-            } else {
-              return { ...existingRouteTab, isCurrentTab: false }
-            }
-          }),
-        ],
+        newRouteTabs: instantiatePresetFromTabs(routeTabs, action.payload.uuid),
         routeTabsUpdated: true,
       }
     case "SELECT_ROUTE_TAB":

@@ -60,5 +60,46 @@ export const isPreset = (routeTab: RouteTab): boolean =>
 export const isOpenTab = (routeTab: RouteTab): boolean =>
   routeTab.ordering !== undefined
 
+export const instantiatePresetFromTabs = (
+  routeTabs: RouteTab[],
+  uuid: string
+): RouteTab[] => {
+  const preset = routeTabs.find((routeTab) => routeTab.uuid === uuid)
+
+  if (preset === undefined) {
+    throw new Error(`No preset found for UUID ${uuid}`)
+  } else if (preset.ordering !== undefined) {
+    return routeTabs.map((routeTab) => {
+      if (routeTab.uuid === uuid) {
+        return { ...routeTab, isCurrentTab: true }
+      } else {
+        return { ...routeTab, isCurrentTab: false }
+      }
+    })
+  } else if (currentRouteTab(routeTabs).selectedRouteIds.length === 0) {
+    return routeTabs
+      .filter((routeTab) => routeTab.uuid !== uuid)
+      .map((routeTab) => {
+        if (routeTab.isCurrentTab) {
+          return { ...preset, ordering: routeTab.ordering, isCurrentTab: true }
+        } else {
+          return routeTab
+        }
+      })
+  } else {
+    return routeTabs.map((routeTab) => {
+      if (routeTab.uuid === uuid) {
+        return {
+          ...routeTab,
+          isCurrentTab: true,
+          ordering: highestExistingOrdering(routeTabs) + 1,
+        }
+      } else {
+        return { ...routeTab, isCurrentTab: false }
+      }
+    })
+  }
+}
+
 const nullToUndefined = <T>(data: T | null): T | undefined =>
   data === null ? undefined : data
