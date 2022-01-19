@@ -1,5 +1,5 @@
 defmodule Schedule.Fetcher do
-  use GenServer
+  use GenServer, restart: :transient
   require Logger
 
   alias Schedule.{
@@ -11,7 +11,6 @@ defmodule Schedule.Fetcher do
   @default_opts [
     poll_interval_ms: 5 * 60 * 1_000,
     health_server: Health.Server.default_server(),
-    updater_function: &Schedule.update_state/1,
     files_source: :remote
   ]
 
@@ -20,7 +19,6 @@ defmodule Schedule.Fetcher do
   @type state :: %{
           poll_interval_ms: integer(),
           health_server: GenServer.server(),
-          updater_function: (Schedule.Data.t() -> :ok),
           latest_gtfs_timestamp: String.t() | nil,
           latest_hastus_timestamp: String.t() | nil,
           files_source: files_source()
@@ -56,7 +54,6 @@ defmodule Schedule.Fetcher do
     initial_state = %{
       poll_interval_ms: opts[:poll_interval_ms],
       health_server: opts[:health_server],
-      updater_function: opts[:updater_function],
       latest_gtfs_timestamp: nil,
       latest_hastus_timestamp: nil,
       files_source: opts[:files_source]
@@ -89,13 +86,11 @@ defmodule Schedule.Fetcher do
              state[:latest_gtfs_timestamp],
              state[:latest_hastus_timestamp]
            ) do
+      update_start_time = Time.utc_now()
       :ok = Data.save_schedule_data_to_tables(@default_tables, data)
 
-      update_start_time = Time.utc_now()
-      :ok = state[:updater_function].({:loaded, @default_tables})
-
       Logger.info(
-        "#{__MODULE__}: Sent updated schedule data to receiving process, time_in_ms=#{
+        "#{__MODULE__}: Updated tables, time_in_ms=#{
           Time.diff(Time.utc_now(), update_start_time, :millisecond)
         }"
       )

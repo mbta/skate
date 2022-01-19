@@ -20,7 +20,6 @@ defmodule Schedule.FetcherTest do
       assert {:ok, _pid} =
                Schedule.Fetcher.start_link(
                  health_server: nil,
-                 updater_function: fn _ -> :ok end,
                  files_source: {:mocked_files, %{}}
                )
     end
@@ -59,7 +58,6 @@ defmodule Schedule.FetcherTest do
                          state
                          | poll_interval_ms: 50,
                            health_server: self(),
-                           updater_function: fn _data -> :ok end,
                            latest_gtfs_timestamp: nil,
                            latest_hastus_timestamp: nil,
                            files_source: :remote
@@ -71,7 +69,7 @@ defmodule Schedule.FetcherTest do
           end
         )
 
-      assert log =~ ~r/Sent updated schedule data to receiving process, time_in_ms=\d+/
+      assert log =~ ~r/Updated tables, time_in_ms=\d+/
       assert log =~ "Successfully loaded schedule data"
     end
 
@@ -96,7 +94,6 @@ defmodule Schedule.FetcherTest do
                    state
                    | poll_interval_ms: 50,
                      health_server: self(),
-                     updater_function: fn _data -> :ok end,
                      latest_gtfs_timestamp: "foo",
                      latest_hastus_timestamp: "foo",
                      files_source: :remote
@@ -134,7 +131,6 @@ defmodule Schedule.FetcherTest do
                          state
                          | poll_interval_ms: 50,
                            health_server: self(),
-                           updater_function: fn _data -> :ok end,
                            latest_gtfs_timestamp: nil,
                            latest_hastus_timestamp: nil,
                            files_source: :remote
@@ -179,7 +175,6 @@ defmodule Schedule.FetcherTest do
                        state
                        | poll_interval_ms: 50,
                          health_server: self(),
-                         updater_function: fn _data -> :ok end,
                          latest_gtfs_timestamp: nil,
                          latest_hastus_timestamp: nil,
                          files_source: :remote
@@ -226,7 +221,6 @@ defmodule Schedule.FetcherTest do
                          state
                          | poll_interval_ms: 50,
                            health_server: self(),
-                           updater_function: fn _data -> :ok end,
                            latest_gtfs_timestamp: nil,
                            latest_hastus_timestamp: nil,
                            files_source: :remote
@@ -238,7 +232,7 @@ defmodule Schedule.FetcherTest do
           end
         )
 
-      assert log =~ ~r/Sent updated schedule data to receiving process, time_in_ms=\d+/
+      assert log =~ ~r/Updated tables, time_in_ms=\d+/
       assert log =~ "Successfully loaded schedule data"
       assert log =~ "Saving gtfs cache"
     end
@@ -278,7 +272,6 @@ defmodule Schedule.FetcherTest do
                          state
                          | poll_interval_ms: 50,
                            health_server: self(),
-                           updater_function: fn _data -> :ok end,
                            latest_gtfs_timestamp: nil,
                            latest_hastus_timestamp: nil,
                            files_source: :remote
@@ -289,7 +282,7 @@ defmodule Schedule.FetcherTest do
           end
         )
 
-      assert log =~ ~r/Sent updated schedule data to receiving process, time_in_ms=\d+/
+      assert log =~ ~r/Updated tables, time_in_ms=\d+/
       assert log =~ "Successfully loaded schedule data"
     end
   end

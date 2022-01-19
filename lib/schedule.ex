@@ -1,12 +1,8 @@
 defmodule Schedule do
-  use GenServer
-  require Logger
-
   alias Schedule.{
     Block,
     Data,
     Hastus,
-    Health,
     Trip,
     Swing
   }
@@ -168,131 +164,14 @@ defmodule Schedule do
     Data.swings_for_route(default_tables(), route_id, start_time, end_time)
   end
 
-  @doc """
-  Handle Schedule server timeouts gracefully
-  """
-  @spec call_catch_timeout(GenServer.server(), any(), atom(), any()) :: any()
-  def call_catch_timeout(server, arg, function_name, default_result) do
-    try do
-      GenServer.call(server, arg) || default_result
-    catch
-      :exit, _ ->
-        Logger.warn("module=#{__MODULE__} function=#{function_name} error=timeout")
-        default_result
-    end
-  end
-
-  # Queries (Server)
-
-  @impl true
-  def handle_call({:new_schedule_state, new_state}, _from, _state) do
-    {:reply, :ok, new_state}
-  end
-
-  def handle_call(_message, _from, :not_loaded = state) do
-    {:reply, nil, state}
-  end
-
-  def handle_call(:all_routes, _from, {:loaded, tables} = state) do
-    {:reply, Data.all_routes(tables), state}
-  end
-
-  def handle_call({:timepoints_on_route, route_id}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.timepoints_on_route(gtfs_data, route_id), state}
-  end
-
-  def handle_call({:timepoint_names_by_id}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.timepoint_names_by_id(gtfs_data), state}
-  end
-
-  def handle_call({:stop, stop_id}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.stop(gtfs_data, stop_id), state}
-  end
-
-  def handle_call({:trip, trip_id}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.trip(gtfs_data, trip_id), state}
-  end
-
-  def handle_call({:trips_by_id, trip_ids}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.trips_by_id(gtfs_data, trip_ids), state}
-  end
-
-  def handle_call({:block, schedule_id, block_id}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.block(gtfs_data, schedule_id, block_id), state}
-  end
-
-  def handle_call({:active_trips, start_time, end_time}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.active_trips(gtfs_data, start_time, end_time), state}
-  end
-
-  def handle_call({:active_blocks, start_time, end_time}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.active_blocks(gtfs_data, start_time, end_time), state}
-  end
-
-  def handle_call({:active_runs, start_time, end_time}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.active_runs(gtfs_data, start_time, end_time), state}
-  end
-
-  def handle_call({:shapes, route_id}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.shapes(gtfs_data, route_id), state}
-  end
-
-  def handle_call({:shape_for_trip, trip_id}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.shape_for_trip(gtfs_data, trip_id), state}
-  end
-
-  def handle_call(
-        {:first_route_pattern_for_route_and_direction, route_id, direction_id},
-        _from,
-        {:loaded, gtfs_data} = state
-      ) do
-    {:reply, Data.first_route_pattern_for_route_and_direction(gtfs_data, route_id, direction_id),
-     state}
-  end
-
-  def handle_call({:run_for_trip, run_id, trip_id}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.run_for_trip(gtfs_data, run_id, trip_id), state}
-  end
-
-  def handle_call({:block_for_trip, trip_id}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.block_for_trip(gtfs_data, trip_id), state}
-  end
-
-  def handle_call(
-        {:swings_for_route, route_id, start_time, end_time},
-        _from,
-        {:loaded, gtfs_data} = state
-      ) do
-    {:reply, Data.swings_for_route(gtfs_data, route_id, start_time, end_time), state}
-  end
-
-  @spec update_state(state(), GenServer.server()) :: :ok
-  def update_state(state, pid \\ __MODULE__) do
-    GenServer.call(pid, {:new_schedule_state, state})
-  end
-
-  # Initialization (Client)
-
-  @spec start_link([]) :: GenServer.on_start()
-  def start_link([]) do
-    GenServer.start_link(
-      __MODULE__,
-      {:remote, Health.Server.default_server()},
-      name: __MODULE__
-    )
-  end
-
-  @spec start_mocked(mocked_files(), pid() | nil) :: pid()
+  # Test Initialization (Client)
+  @spec start_mocked(mocked_files(), pid() | nil) :: GenServer.on_start()
   def start_mocked(mocked_files, health_server_pid \\ nil) do
-    {:ok, pid} = GenServer.start_link(__MODULE__, [])
-
     {:ok, fetcher_pid} =
       Schedule.Fetcher.start_link(
         files_source: {:mocked_files, mocked_files},
         health_server: health_server_pid,
-        updater_function: fn state ->
-          update_state(state, pid)
-        end
+        updater_function: fn _ -> :ok end
       )
 
     ref = Process.monitor(fetcher_pid)
@@ -304,13 +183,6 @@ defmodule Schedule do
         raise "Schedule.Fetcher did not terminate"
     end
 
-    pid
-  end
-
-  # Initialization (Server)
-
-  @impl true
-  def init(_opts) do
-    {:ok, :not_loaded}
+    :ignore
   end
 end
