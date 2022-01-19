@@ -782,8 +782,7 @@ defmodule Schedule.DataTest do
   end
 
   describe "swings_for_route/4" do
-    @tag skip: "not yet migrated"
-    test "returns swings for currently-active service dates" do
+    test "returns swings for currently-active service dates", %{tables: tables} do
       swing = %Swing{
         from_route_id: "1",
         from_run_id: "123-456",
@@ -801,9 +800,11 @@ defmodule Schedule.DataTest do
         }
       }
 
+      Data.save_schedule_data_to_tables(tables, data)
+
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-      assert Data.swings_for_route(data, "1", time0 + 2, time0 + 5) == [swing]
+      assert Data.swings_for_route(tables, "1", time0 + 2, time0 + 5) == [swing]
     end
   end
 

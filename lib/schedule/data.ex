@@ -327,16 +327,19 @@ defmodule Schedule.Data do
       ) do
     dates = potentially_active_service_dates(start_time, end_time)
 
-    dates
-    |> active_services_on_dates(tables)
-    |> Enum.flat_map(fn {_data, service_ids} ->
-      Enum.flat_map(service_ids, fn service_id ->
-        case :mnesia.dirty_match_object({swings_table, {service_id, route_id}, :_}) do
-          swing_records when is_list(swing_records) -> Enum.map(swing_records, &elem(&1, 2))
-          _ -> []
-        end
-      end)
-    end)
+    service_ids =
+      dates
+      |> active_services_on_dates(tables)
+      |> Enum.flat_map(fn {_date, service_ids} -> service_ids end)
+
+    selectors =
+      for service_id <- service_ids do
+        {{:_, {service_id, route_id}, :"$1"}, [], [:"$1"]}
+      end
+
+    swings_table
+    |> :mnesia.dirty_select(selectors)
+    |> List.flatten()
   end
 
   # Initialization
