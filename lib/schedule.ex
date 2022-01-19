@@ -22,6 +22,8 @@ defmodule Schedule do
 
   alias Schedule.Run
 
+  defdelegate default_tables(), to: Schedule.Fetcher
+
   @type state :: :not_loaded | {:loaded, Data.tables()}
 
   @typedoc """
@@ -45,13 +47,13 @@ defmodule Schedule do
 
   @spec all_routes() :: [Route.t()]
   @spec all_routes(GenServer.server()) :: [Route.t()]
-  def all_routes(server \\ __MODULE__) do
-    call_catch_timeout(server, :all_routes, :all_routes, [])
+  def all_routes(_server \\ __MODULE__) do
+    Data.all_routes(default_tables())
   end
 
   @spec route_by_id(Route.id(), GenServer.server()) :: Route.t() | nil
-  def route_by_id(route_id, server \\ __MODULE__) do
-    all_routes(server) |> Enum.find(&(&1.id == route_id))
+  def route_by_id(route_id, _server \\ __MODULE__) do
+    Data.route_by_id(default_tables(), route_id)
   end
 
   # Timepoint IDs on a route, sorted in order of stop sequence
@@ -294,8 +296,8 @@ defmodule Schedule do
   def start_mocked(mocked_files, health_server_pid \\ nil) do
     {:ok, pid} = GenServer.start_link(__MODULE__, [])
 
-    {:ok, _pid} =
-      GenServer.start_link(Schedule.Fetcher,
+    {:ok, fetcher_pid} =
+      Schedule.Fetcher.start_link(
         files_source: {:mocked_files, mocked_files},
         health_server: health_server_pid,
         updater_function: fn state ->
@@ -303,7 +305,14 @@ defmodule Schedule do
         end
       )
 
-    Process.sleep(50)
+    ref = Process.monitor(fetcher_pid)
+
+    receive do
+      {:DOWN, ^ref, :process, ^fetcher_pid, :normal} -> :ok
+    after
+      5_000 ->
+        raise "Schedule.Fetcher did not terminate"
+    end
 
     pid
   end

@@ -99,6 +99,14 @@ defmodule Schedule.Data do
     :mnesia.dirty_select(routes_table, [{{:_, :_, :"$1"}, [], [:"$1"]}])
   end
 
+  @spec route_by_id(tables(), Route.id()) :: Route.t() | nil
+  def route_by_id(%{routes: routes_table}, route_id) do
+    case :mnesia.dirty_read(routes_table, route_id) do
+      [{_, _, route}] -> route
+      _ -> nil
+    end
+  end
+
   @spec timepoints_on_route(tables(), Route.id()) :: [Timepoint.t()]
   def timepoints_on_route(%{timepoints_by_route: timepoints_by_route_table}, route_id) do
     timepoints_by_route_table
@@ -141,10 +149,10 @@ defmodule Schedule.Data do
     |> Map.new(fn trip -> {trip.id, trip} end)
   end
 
-  @spec block(tables(), Block.id(), Service.id()) :: Block.t() | nil
-  def block(%{blocks: blocks_table}, block_id, service_id) do
+  @spec block(tables(), Hastus.Schedule.id(), Block.id()) :: Block.t() | nil
+  def block(%{blocks: blocks_table}, schedule_id, block_id) do
     blocks_table
-    |> :mnesia.dirty_select([{{:_, block_id, :_, service_id, :"$1"}, [], [:"$1"]}])
+    |> :mnesia.dirty_select([{{:_, block_id, schedule_id, :_, :"$1"}, [], [:"$1"]}])
     |> List.first()
   end
 

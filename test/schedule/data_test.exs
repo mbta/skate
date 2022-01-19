@@ -39,35 +39,52 @@ defmodule Schedule.DataTest do
     {:ok, tables: @default_tables}
   end
 
-  test "all_routes/1 returns all the routes", %{tables: tables} do
-    routes = [
-      %Route{
-        id: "39",
-        description: "Key Bus",
-        direction_names: %{
-          0 => "Outbound",
-          1 => "Inbound"
+  describe "routes_by_id/all_routes" do
+    setup %{tables: tables} do
+      routes = [
+        %Route{
+          id: "39",
+          description: "Key Bus",
+          direction_names: %{
+            0 => "Outbound",
+            1 => "Inbound"
+          },
+          name: "39"
         },
-        name: "39"
-      },
-      %Route{
-        id: "66",
-        description: "Key Bus",
-        direction_names: %{
-          0 => "Outbound",
-          1 => "Inbound"
-        },
-        name: "66"
+        %Route{
+          id: "66",
+          description: "Key Bus",
+          direction_names: %{
+            0 => "Outbound",
+            1 => "Inbound"
+          },
+          name: "66"
+        }
+      ]
+
+      data = %Data{
+        routes: routes
       }
-    ]
 
-    data = %Data{
-      routes: routes
-    }
+      Data.save_schedule_data_to_tables(tables, data)
+      {:ok, routes: routes, tables: tables}
+    end
 
-    Data.save_schedule_data_to_tables(tables, data)
+    test "all_routes/1 returns all the routes", %{tables: tables, routes: routes} do
+      assert Data.all_routes(tables) == routes
+    end
 
-    assert Data.all_routes(tables) == routes
+    test "routes_by_id/2 returns a given route", %{tables: tables, routes: routes} do
+      route = List.first(routes)
+
+      assert Data.route_by_id(tables, route.id) == route
+    end
+
+    test "routes_by_id/2 returns nil for an invalid route", %{tables: tables} do
+      invalid_route = inspect(make_ref())
+
+      assert Data.route_by_id(tables, invalid_route) == nil
+    end
   end
 
   describe "timepoints_on_route/2" do
@@ -215,12 +232,12 @@ defmodule Schedule.DataTest do
       block = build(:block)
 
       data = %Data{
-        blocks: %{{"block", "service"} => block}
+        blocks: %{{"schedule", "block"} => block}
       }
 
       Data.save_schedule_data_to_tables(tables, data)
 
-      assert Data.block(tables, "block", "service") == block
+      assert Data.block(tables, "schedule", "block") == block
     end
 
     test "block doesn't return blocks with the same block_id but a different date", %{
@@ -229,16 +246,16 @@ defmodule Schedule.DataTest do
       block = build(:block)
 
       data = %Data{
-        blocks: %{{"block", "service"} => block}
+        blocks: %{{"schedule", "block"} => block}
       }
 
       Data.save_schedule_data_to_tables(tables, data)
 
-      assert Data.block(tables, "b", "other_service") == nil
+      assert Data.block(tables, "b", "other_schedule") == nil
     end
 
     test "block returns nil if the block doesn't exist", %{tables: tables} do
-      assert Data.block(tables, "block", "service") == nil
+      assert Data.block(tables, "block", "schedule") == nil
     end
   end
 

@@ -40,6 +40,11 @@ defmodule Schedule.Fetcher do
     swings: :swings
   }
 
+  @spec default_tables() :: map
+  def default_tables do
+    @default_tables
+  end
+
   @spec start_link(Keyword.t()) :: GenServer.on_start()
   def start_link(opts \\ []) do
     opts = Keyword.merge(@default_opts, opts)
