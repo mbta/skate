@@ -3,6 +3,7 @@ defmodule SkateWeb.PageController do
   use SkateWeb, :controller
   alias Skate.Settings.RouteSettings
   alias Skate.Settings.UserSettings
+  alias Skate.Settings.RouteTab
   alias SkateWeb.AuthManager
 
   plug(:laboratory_features)
@@ -13,7 +14,7 @@ defmodule SkateWeb.PageController do
 
     user_settings = UserSettings.get_or_create(username)
     route_settings = RouteSettings.get_or_create(username)
-    route_tabs = []
+    route_tabs = RouteTab.get_all_for_user(username)
 
     dispatcher_flag =
       conn |> Guardian.Plug.current_claims() |> AuthManager.claims_grant_dispatcher_access?()
