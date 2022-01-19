@@ -126,14 +126,14 @@ export const createRouteTab = (): CreateRouteTabAction => ({
 interface SelectRouteTabAction {
   type: "SELECT_ROUTE_TAB"
   payload: {
-    ordering: number
+    uuid: string
   }
 }
 
-export const selectRouteTab = (ordering: number): SelectRouteTabAction => ({
+export const selectRouteTab = (uuid: string): SelectRouteTabAction => ({
   type: "SELECT_ROUTE_TAB",
   payload: {
-    ordering,
+    uuid,
   },
 })
 
@@ -562,7 +562,7 @@ const routeTabsReducer = (
     case "SELECT_ROUTE_TAB":
       return {
         newRouteTabs: routeTabs.map((existingRouteTab) => {
-          if (existingRouteTab.ordering === action.payload.ordering) {
+          if (existingRouteTab.uuid === action.payload.uuid) {
             return { ...existingRouteTab, isCurrentTab: true }
           } else {
             return { ...existingRouteTab, isCurrentTab: false }

@@ -126,7 +126,7 @@ describe("usePersistedStateReducer", () => {
       }),
       routeTabs: JSON.stringify([
         {
-          id: "1",
+          uuid: "1",
           ordering: 0,
           preset_name: "some name",
           is_current_tab: true,
@@ -152,6 +152,7 @@ describe("usePersistedStateReducer", () => {
     expect(state.ladderCrowdingToggles).toEqual({ "83": true })
     expect(state.routeTabs).toEqual([
       routeTabFactory.build({
+        uuid: "1",
         ordering: 0,
         presetName: "some name",
         isCurrentTab: true,
@@ -235,13 +236,6 @@ describe("usePersistedStateReducer", () => {
   })
 
   test("sends updated route tabs to backend on changes", () => {
-    const routeTab = routeTabFactory.build({
-      isCurrentTab: true,
-      selectedRouteIds: [],
-      ladderDirections: {},
-      ladderCrowdingToggles: {},
-      ordering: 0,
-    })
     ;(putRouteTabs as jest.Mock).mockImplementationOnce(() => ({
       then: (callback: (data: any) => void) => {
         callback({ ok: true })
@@ -254,15 +248,9 @@ describe("usePersistedStateReducer", () => {
     act(() => {
       dispatch(createRouteTab())
     })
-    expect(putRouteTabs).toHaveBeenCalledWith([
-      {
-        isCurrentTab: true,
-        selectedRouteIds: [],
-        ladderDirections: {},
-        ladderCrowdingToggles: {},
-        ordering: 0,
-      },
-    ])
+    const [state] = result.current
+    const routeTab = state.routeTabs[0]
+    expect(putRouteTabs).toHaveBeenCalledWith([routeTab])
     const [{ routeTabs, routeTabsToPush, routeTabsPushInProgress }] =
       result.current
     expect(routeTabs).toEqual([routeTab])
@@ -281,11 +269,11 @@ describe("usePersistedStateReducer", () => {
 
     const [state] = result.current
 
-    expect(state.routeTabs).toEqual([
-      routeTabFactory.build({
+    expect(state.routeTabs).toMatchObject([
+      {
         ordering: 0,
         isCurrentTab: true,
-      }),
+      },
     ])
     expect(state.routeTabsToPush).toEqual(state.routeTabs)
     expect(state.routeTabsPushInProgress).toEqual(true)
@@ -311,11 +299,11 @@ describe("usePersistedStateReducer", () => {
 
     const [state] = result.current
 
-    expect(state.routeTabs).toEqual([
-      routeTabFactory.build({
+    expect(state.routeTabs).toMatchObject([
+      {
         ordering: 0,
         isCurrentTab: true,
-      }),
+      },
     ])
     expect(state.routeTabsToPush).toEqual(state.routeTabs)
     expect(state.routeTabsPushInProgress).toEqual(false)
@@ -341,11 +329,11 @@ describe("usePersistedStateReducer", () => {
 
     const [state] = result.current
 
-    expect(state.routeTabs).toEqual([
-      routeTabFactory.build({
+    expect(state.routeTabs).toMatchObject([
+      {
         ordering: 0,
         isCurrentTab: true,
-      }),
+      },
     ])
     expect(state.routeTabsToPush).toEqual(state.routeTabs)
     expect(state.routeTabsPushInProgress).toEqual(false)

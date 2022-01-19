@@ -447,10 +447,16 @@ describe("reducer", () => {
       State.createRouteTab()
     )
 
+    const expectedNewTab = routeTabFactory.build({
+      isCurrentTab: true,
+      ordering: 5,
+    })
+    delete expectedNewTab.uuid
+
     const expectedNewTabs = [
       { ...originalRouteTab1 },
       { ...originalRouteTab2, isCurrentTab: false },
-      routeTabFactory.build({ isCurrentTab: true, ordering: 5 }),
+      expectedNewTab,
     ]
 
     const expectedState: State.State = {
@@ -459,7 +465,7 @@ describe("reducer", () => {
       routeTabsToPush: expectedNewTabs,
     }
 
-    expect(newState).toEqual(expectedState)
+    expect(newState).toMatchObject(expectedState)
   })
 
   test("selectRouteTab", () => {
@@ -468,7 +474,7 @@ describe("reducer", () => {
 
     const newState = reducer(
       { ...initialState, routeTabs: [routeTab1, routeTab2] },
-      State.selectRouteTab(routeTab1.ordering)
+      State.selectRouteTab(routeTab1.uuid)
     )
 
     const expectedNewTabs = [
