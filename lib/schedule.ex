@@ -142,13 +142,8 @@ defmodule Schedule do
           Direction.id(),
           GenServer.server()
         ) :: RoutePattern.t() | nil
-  def first_route_pattern_for_route_and_direction(route_id, direction_id, server \\ __MODULE__) do
-    call_catch_timeout(
-      server,
-      {:first_route_pattern_for_route_and_direction, route_id, direction_id},
-      :first_route_pattern_for_route_and_direction,
-      nil
-    )
+  def first_route_pattern_for_route_and_direction(route_id, direction_id, _server \\ __MODULE__) do
+    Data.first_route_pattern_for_route_and_direction(default_tables(), route_id, direction_id)
   end
 
   @spec run_for_trip(Hastus.Run.id(), Trip.id()) :: Run.t() | nil
