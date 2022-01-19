@@ -85,7 +85,7 @@ defmodule Schedule.Data do
     {:route_patterns, :set, [:id, :route_pattern], []},
     {:timepoints_by_route, :set, [:route_id, :timepoints], []},
     {:timepoint_names_by_id, :set, [:id, :timepoint_name], []},
-    {:shapes, :set, [:route_id, :shapes], []},
+    {:shapes, :set, [:shape_id, :route_id, :shapes], [:route_id]},
     {:stops, :set, [:id, :stop], []},
     {:trips, :set, [:id, :service_id, :trip], [:service_id]},
     {:blocks, :bag, [:id, :service_id, :block], [:service_id]},
@@ -261,10 +261,9 @@ defmodule Schedule.Data do
 
   @spec shapes(tables(), Route.id()) :: [Shape.t()]
   def shapes(%{shapes: shapes_table}, route_id) do
-    case :mnesia.dirty_read(shapes_table, route_id) do
-      [{^shapes_table, _, shapes}] -> shapes
-      _ -> []
-    end
+    :mnesia.dirty_select(shapes_table, [
+      {{:_, :_, route_id, :"$1"}, [], [:"$1"]}
+    ])
   end
 
   @spec shape_for_trip(tables(), Schedule.Trip.id()) :: Shape.t() | nil
@@ -410,7 +409,9 @@ defmodule Schedule.Data do
       end)
 
       Enum.each(schedule_data.shapes, fn {route_id, shapes} ->
-        :mnesia.write({tables.shapes, route_id, shapes})
+        for shape <- shapes do
+          :mnesia.write({tables.shapes, shape.id, route_id, shape})
+        end
       end)
 
       Enum.each(schedule_data.stops, fn {id, stop} -> :mnesia.write({tables.stops, id, stop}) end)
