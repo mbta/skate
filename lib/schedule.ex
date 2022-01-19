@@ -88,8 +88,8 @@ defmodule Schedule do
 
   @spec block(Hastus.Schedule.id(), Block.id()) :: Block.t() | nil
   @spec block(Hastus.Schedule.id(), Block.id(), GenServer.server()) :: Block.t() | nil
-  def block(schedule_id, block_id, server \\ __MODULE__) do
-    call_catch_timeout(server, {:block, schedule_id, block_id}, :block, nil)
+  def block(schedule_id, block_id, _server \\ __MODULE__) do
+    Data.block(default_tables(), schedule_id, block_id)
   end
 
   @doc """
