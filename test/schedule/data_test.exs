@@ -492,8 +492,7 @@ defmodule Schedule.DataTest do
   end
 
   describe "shapes" do
-    @tag skip: "not yet migrated"
-    test "returns the shapes for the given route" do
+    test "returns the shapes for the given route", %{tables: tables} do
       shapes = [
         %Shape{
           id: "shape1",
@@ -525,11 +524,12 @@ defmodule Schedule.DataTest do
         }
       }
 
-      assert Data.shapes(data, "route1") == shapes
+      Data.save_schedule_data_to_tables(tables, data)
+
+      assert Data.shapes(tables, "route1") == shapes
     end
 
-    @tag skip: "not yet migrated"
-    test "returns [] if there are no shapes for the given route" do
+    test "returns [] if there are no shapes for the given route", %{tables: tables} do
       data = %Data{
         shapes: %{
           "route1" => [
@@ -548,7 +548,9 @@ defmodule Schedule.DataTest do
         }
       }
 
-      assert Data.shapes(data, "shapelessRoute") == []
+      Data.save_schedule_data_to_tables(tables, data)
+
+      assert Data.shapes(tables, "shapelessRoute") == []
     end
   end
 

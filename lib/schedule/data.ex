@@ -260,7 +260,7 @@ defmodule Schedule.Data do
   end
 
   @spec shapes(tables(), Route.id()) :: [Shape.t()]
-  def shapes(%__MODULE__{shapes: shapes_table}, route_id) do
+  def shapes(%{shapes: shapes_table}, route_id) do
     case :mnesia.dirty_read(shapes_table, route_id) do
       [{^shapes_table, _, shapes}] -> shapes
       _ -> []
