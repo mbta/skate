@@ -70,20 +70,20 @@ defmodule Schedule do
 
   @spec stop(Stop.id()) :: Stop.t() | nil
   @spec stop(Stop.id(), GenServer.server()) :: Stop.t() | nil
-  def stop(stop_id, server \\ __MODULE__) do
-    call_catch_timeout(server, {:stop, stop_id}, :stop, nil)
+  def stop(stop_id, _server \\ __MODULE__) do
+    Data.stop(default_tables(), stop_id)
   end
 
   @spec trip(Trip.id()) :: Trip.t() | nil
   @spec trip(Trip.id(), GenServer.server()) :: Trip.t() | nil
-  def trip(trip_id, server \\ __MODULE__) do
-    call_catch_timeout(server, {:trip, trip_id}, :trip, nil)
+  def trip(trip_id, _server \\ __MODULE__) do
+    Data.trip(default_tables(), trip_id)
   end
 
   @spec trips_by_id([Trip.id()]) :: %{Trip.id() => Trip.t()}
   @spec trips_by_id([Trip.id()], GenServer.server()) :: %{Trip.id() => Trip.t()}
-  def trips_by_id(trip_ids, server \\ __MODULE__) do
-    call_catch_timeout(server, {:trips_by_id, trip_ids}, :trips_by_id, nil)
+  def trips_by_id(trip_ids, _server \\ __MODULE__) do
+    Data.trips_by_id(default_tables(), trip_ids)
   end
 
   @spec block(Hastus.Schedule.id(), Block.id()) :: Block.t() | nil
