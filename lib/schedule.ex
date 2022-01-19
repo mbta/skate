@@ -125,14 +125,14 @@ defmodule Schedule do
 
   @spec shapes(Route.id()) :: [Shape.t()]
   @spec shapes(Route.id(), GenServer.server()) :: [Shape.t()]
-  def shapes(route_id, server \\ __MODULE__) do
-    call_catch_timeout(server, {:shapes, route_id}, :shapes, [])
+  def shapes(route_id, _server \\ __MODULE__) do
+    Data.shapes(default_tables(), route_id)
   end
 
   @spec shape_for_trip(Trip.id()) :: Shape.t() | nil
   @spec shape_for_trip(Trip.id(), GenServer.server()) :: Shape.t() | nil
-  def shape_for_trip(trip_id, server \\ __MODULE__) do
-    call_catch_timeout(server, {:shape_for_trip, trip_id}, :shapes, nil)
+  def shape_for_trip(trip_id, _server \\ __MODULE__) do
+    Data.shape_for_trip(default_tables(), trip_id)
   end
 
   @spec first_route_pattern_for_route_and_direction(Route.id(), Direction.id()) ::
