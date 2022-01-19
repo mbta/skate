@@ -305,8 +305,7 @@ defmodule Schedule.DataTest do
       assert Data.active_trips(tables, time0 + 2, time0 + 5) == [trip]
     end
 
-    @tag skip: "not yet migrated"
-    test "doesn't return a trip active at a different time today" do
+    test "doesn't return a trip active at a different time today", %{tables: tables} do
       trip = %Schedule.Trip{
         id: "trip",
         block_id: "block",
@@ -328,13 +327,14 @@ defmodule Schedule.DataTest do
         }
       }
 
+      Data.save_schedule_data_to_tables(tables, data)
+
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-      assert Data.active_trips(data, time0 + 1, time0 + 2) == []
+      assert Data.active_trips(tables, time0 + 1, time0 + 2) == []
     end
 
-    @tag skip: "not yet migrated"
-    test "doesn't return a trip active at this time on a different day" do
+    test "doesn't return a trip active at this time on a different day", %{tables: tables} do
       trip = %Schedule.Trip{
         id: "trip",
         block_id: "block",
@@ -356,13 +356,14 @@ defmodule Schedule.DataTest do
         }
       }
 
+      Data.save_schedule_data_to_tables(tables, data)
+
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-      assert Data.active_trips(data, time0 + 1, time0 + 3) == []
+      assert Data.active_trips(tables, time0 + 1, time0 + 3) == []
     end
 
-    @tag skip: "not yet migrated"
-    test "returns late-night trips that are still active from yesterday" do
+    test "returns late-night trips that are still active from yesterday", %{tables: tables} do
       trip = %Schedule.Trip{
         id: "trip",
         block_id: "block",
@@ -387,15 +388,16 @@ defmodule Schedule.DataTest do
         }
       }
 
+      Data.save_schedule_data_to_tables(tables, data)
+
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-      assert Data.active_trips(data, time0 + 1, time0 + 3) == [trip]
+      assert Data.active_trips(tables, time0 + 1, time0 + 3) == [trip]
     end
   end
 
   describe "active_blocks" do
-    @tag skip: "not yet migrated"
-    test "returns active blocks" do
+    test "returns active blocks", %{tables: tables} do
       block =
         build(
           :block,
@@ -413,14 +415,15 @@ defmodule Schedule.DataTest do
         }
       }
 
+      Data.save_schedule_data_to_tables(tables, data)
+
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
 
-      assert Data.active_blocks(data, time0 + 2, time0 + 5) == %{~D[2019-01-01] => [block]}
+      assert Data.active_blocks(tables, time0 + 2, time0 + 5) == %{~D[2019-01-01] => [block]}
     end
 
-    @tag skip: "not yet migrated"
-    test "doesn't return inactive blocks" do
+    test "doesn't return inactive blocks", %{tables: tables} do
       block =
         build(
           :block,
@@ -438,14 +441,15 @@ defmodule Schedule.DataTest do
         }
       }
 
+      Data.save_schedule_data_to_tables(tables, data)
+
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
 
-      assert Data.active_blocks(data, time0 + 5, time0 + 5) == %{}
+      assert Data.active_blocks(tables, time0 + 5, time0 + 5) == %{}
     end
 
-    @tag skip: "not yet migrated"
-    test "blocks can be active on two different dates" do
+    test "blocks can be active on two different dates", %{tables: tables} do
       just_before_midnight = 24 * 60 * 60 - 1
 
       block1 =
@@ -475,10 +479,12 @@ defmodule Schedule.DataTest do
         }
       }
 
+      Data.save_schedule_data_to_tables(tables, data)
+
       # 2019-01-02 00:00:00 EST
       time0 = 1_546_405_200
 
-      assert Data.active_blocks(data, time0 - 2, time0 + 2) == %{
+      assert Data.active_blocks(tables, time0 - 2, time0 + 2) == %{
                ~D[2019-01-01] => [block1],
                ~D[2019-01-02] => [block2]
              }

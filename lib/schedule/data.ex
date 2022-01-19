@@ -81,17 +81,17 @@ defmodule Schedule.Data do
         }
 
   @table_schema [
-    {:routes, [:id, :route], []},
-    {:route_patterns, [:id, :route_pattern], []},
-    {:timepoints_by_route, [:route_id, :timepoints], []},
-    {:timepoint_names_by_id, [:id, :timepoint_name], []},
-    {:shapes, [:route_id, :shapes], []},
-    {:stops, [:id, :stop], []},
-    {:trips, [:id, :service_id, :trip], [:service_id]},
-    {:blocks, [:id, :service_id, :block], [:service_id]},
-    {:calendar, [:date, :service_ids], []},
-    {:runs, [:id, :service_id, :run], [:service_id]},
-    {:swings, [:service_id_and_route_id, :swings], []}
+    {:routes, :set, [:id, :route], []},
+    {:route_patterns, :set, [:id, :route_pattern], []},
+    {:timepoints_by_route, :set, [:route_id, :timepoints], []},
+    {:timepoint_names_by_id, :set, [:id, :timepoint_name], []},
+    {:shapes, :set, [:route_id, :shapes], []},
+    {:stops, :set, [:id, :stop], []},
+    {:trips, :set, [:id, :service_id, :trip], [:service_id]},
+    {:blocks, :bag, [:id, :service_id, :block], [:service_id]},
+    {:calendar, :set, [:date, :service_ids], []},
+    {:runs, :set, [:id, :service_id, :run], [:service_id]},
+    {:swings, :set, [:service_id_and_route_id, :swings], []}
   ]
 
   @spec all_routes(tables()) :: [Route.t()]
@@ -197,31 +197,33 @@ defmodule Schedule.Data do
 
   @spec active_blocks(tables(), Util.Time.timestamp(), Util.Time.timestamp()) ::
           %{Date.t() => [Block.t()]}
-  def active_blocks(%{blocks: blocks_table, calendar: calendar_table}, start_time, end_time) do
+  def active_blocks(%{blocks: blocks_table} = tables, start_time, end_time) do
     dates = potentially_active_service_dates(start_time, end_time)
 
     dates
-    |> active_services_on_dates(calendar_table)
+    |> active_services_on_dates(tables)
     |> Map.new(fn {date, service_ids} ->
       start_time_of_day = Util.Time.time_of_day_for_timestamp(start_time, date)
       end_time_of_day = Util.Time.time_of_day_for_timestamp(end_time, date)
 
-      blocks_on_date =
-        Enum.flat_map(service_ids, fn service_id ->
-          case :mnesia.dirty_match_object({blocks_table, :_, service_id, :_}) do
-            block_records when is_list(block_records) -> Enum.map(block_records, &elem(&1, 3))
-            _ -> []
-          end
-        end)
+      selectors =
+        for service_id <- service_ids do
+          {{:_, :_, service_id, :"$1"}, [], [:"$1"]}
+        end
 
-      active_blocks_on_date =
-        Enum.filter(blocks_on_date, fn block ->
-          Block.is_active(block, start_time_of_day, end_time_of_day)
-        end)
+      active_blocks =
+        blocks_table
+        |> :mnesia.dirty_select(selectors)
+        |> Enum.filter(&Block.is_active(&1, start_time_of_day, end_time_of_day))
 
-      {date, active_blocks_on_date}
+      if active_blocks == [] do
+        # will be deleted later
+        {nil, []}
+      else
+        {date, active_blocks}
+      end
     end)
-    |> Helpers.filter_values(fn blocks -> blocks != [] end)
+    |> Map.delete(nil)
   end
 
   @spec active_runs(tables(), Util.Time.timestamp(), Util.Time.timestamp()) ::
@@ -366,10 +368,11 @@ defmodule Schedule.Data do
 
   @spec initialize_tables(tables()) :: :ok
   def initialize_tables(tables) do
-    Enum.each(@table_schema, fn {table_key, columns, extra_indices} ->
+    Enum.each(@table_schema, fn {table_key, type, columns, extra_indices} ->
       # TODO: drop table if it already exists before attempting to create
       {:atomic, :ok} =
         :mnesia.create_table(tables[table_key],
+          type: type,
           attributes: columns,
           index: extra_indices,
           storage_properties: [ets: [{:read_concurrency, true}]],
