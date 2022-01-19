@@ -88,7 +88,7 @@ defmodule Schedule.Data do
     {:shapes, :set, [:shape_id, :route_id, :shapes], [:route_id]},
     {:stops, :set, [:id, :stop], []},
     {:trips, :set, [:id, :service_id, :trip], [:service_id]},
-    {:blocks, :bag, [:id, :service_id, :block], [:service_id]},
+    {:blocks, :bag, [:id, :schedule_id, :service_id, :block], [:schedule_id, :service_id]},
     {:calendar, :set, [:date, :service_ids], []},
     {:runs, :set, [:id, :service_id, :run], [:service_id]},
     {:swings, :set, [:service_id_and_route_id, :swings], []}
@@ -142,9 +142,9 @@ defmodule Schedule.Data do
   end
 
   @spec block(tables(), Block.id(), Service.id()) :: Block.t() | nil
-  def block(%{blocks: blocks_table}, block_id, schedule_id) do
+  def block(%{blocks: blocks_table}, block_id, service_id) do
     blocks_table
-    |> :mnesia.dirty_select([{{:_, block_id, schedule_id, :"$1"}, [], [:"$1"]}])
+    |> :mnesia.dirty_select([{{:_, block_id, :_, service_id, :"$1"}, [], [:"$1"]}])
     |> List.first()
   end
 
@@ -208,7 +208,7 @@ defmodule Schedule.Data do
 
       selectors =
         for service_id <- service_ids do
-          {{:_, :_, service_id, :"$1"}, [], [:"$1"]}
+          {{:_, :_, :_, service_id, :"$1"}, [], [:"$1"]}
         end
 
       active_blocks =
@@ -307,16 +307,13 @@ defmodule Schedule.Data do
         %{blocks: blocks_table} = tables,
         trip_id
       ) do
-    trip = trip(tables, trip_id)
-
-    if trip != nil && trip.schedule_id != nil do
-      # we have HASTUS data for this trip
-      case :mnesia.dirty_read(blocks_table, {trip.schedule_id, trip.block_id}) do
-        [{^blocks_table, _, block}] -> block
-        _ -> nil
-      end
+    with %{schedule_id: schedule_id, block_id: block_id}
+         when is_binary(schedule_id) <- trip(tables, trip_id),
+         [{_, _, _, _, block}] <-
+           :mnesia.dirty_match_object(blocks_table, {:_, block_id, schedule_id, :_, :_}) do
+      block
     else
-      nil
+      _ -> nil
     end
   end
 
@@ -402,8 +399,8 @@ defmodule Schedule.Data do
         :mnesia.write({tables.trips, id, trip.service_id, trip})
       end)
 
-      Enum.each(schedule_data.blocks, fn {_, block} ->
-        :mnesia.write({tables.blocks, block.id, block.service_id, block})
+      Enum.each(schedule_data.blocks, fn {_key, block} ->
+        :mnesia.write({tables.blocks, block.id, block.schedule_id, block.service_id, block})
       end)
 
       Enum.each(schedule_data.calendar, fn {date, service_ids} ->

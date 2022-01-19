@@ -408,7 +408,7 @@ defmodule Schedule.DataTest do
 
       data = %Data{
         blocks: %{
-          "block" => block
+          {"block", "today"} => block
         },
         calendar: %{
           ~D[2019-01-01] => ["today"]
@@ -434,7 +434,7 @@ defmodule Schedule.DataTest do
 
       data = %Data{
         blocks: %{
-          "block" => block
+          {"block", "today"} => block
         },
         calendar: %{
           ~D[2019-01-01] => ["today"]
@@ -470,8 +470,8 @@ defmodule Schedule.DataTest do
 
       data = %Data{
         blocks: %{
-          "block1" => block1,
-          "block2" => block2
+          {block1.id, "today"} => block1,
+          {block2.id, "tomorrow"} => block2
         },
         calendar: %{
           ~D[2019-01-01] => ["today"],
@@ -741,8 +741,7 @@ defmodule Schedule.DataTest do
   end
 
   describe "block_for_trip/2" do
-    @tag skip: "not yet migrated"
-    test "returns block for trip" do
+    test "returns block for trip", %{tables: tables} do
       trip = build(:trip, schedule_id: "schedule_q", block_id: "some_block")
 
       block =
@@ -757,18 +756,16 @@ defmodule Schedule.DataTest do
         blocks: %{Block.key(block) => block}
       }
 
-      assert Data.block_for_trip(data, trip.id) == block
+      Data.save_schedule_data_to_tables(tables, data)
+
+      assert Data.block_for_trip(tables, trip.id) == block
     end
 
-    @tag skip: "not yet migrated"
-    test "returns nil if the trip isn't known" do
-      data = %Data{}
-
-      assert Data.block_for_trip(data, "trip") == nil
+    test "returns nil if the trip isn't known", %{tables: tables} do
+      assert Data.block_for_trip(tables, "trip") == nil
     end
 
-    @tag skip: "not yet migrated"
-    test "returns nil if the trip is in gtfs but not hastus" do
+    test "returns nil if the trip is in gtfs but not hastus", %{tables: tables} do
       trip =
         build(:trip,
           schedule_id: nil
@@ -778,7 +775,9 @@ defmodule Schedule.DataTest do
         trips: %{trip.id => trip}
       }
 
-      assert Data.block_for_trip(data, trip.id) == nil
+      Data.save_schedule_data_to_tables(tables, data)
+
+      assert Data.block_for_trip(tables, trip.id) == nil
     end
   end
 
