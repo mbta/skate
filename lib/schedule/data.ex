@@ -175,29 +175,23 @@ defmodule Schedule.Data do
   @spec active_trips(tables(), Util.Time.timestamp(), Util.Time.timestamp()) :: [
           Schedule.Trip.t()
         ]
-  def active_trips(%{calendar: calendar_table, trips: trips_table}, start_time, end_time) do
+  def active_trips(%{trips: trips_table} = tables, start_time, end_time) do
     dates = potentially_active_service_dates(start_time, end_time)
 
     dates
-    |> active_services_on_dates(calendar_table)
+    |> active_services_on_dates(tables)
     |> Enum.flat_map(fn {date, service_ids} ->
       start_time_of_day = Util.Time.time_of_day_for_timestamp(start_time, date)
       end_time_of_day = Util.Time.time_of_day_for_timestamp(end_time, date)
 
-      trips_on_date =
-        Enum.flat_map(service_ids, fn service_id ->
-          case :mnesia.dirty_match_object({trips_table, :_, service_id, :_}) do
-            trip_records when is_list(trip_records) -> Enum.map(trip_records, &elem(&1, 3))
-            _ -> []
-          end
-        end)
+      selectors =
+        for service_id <- service_ids do
+          {{:_, :_, service_id, :"$1"}, [], [:"$1"]}
+        end
 
-      active_trips_on_date =
-        Enum.filter(trips_on_date, fn trip ->
-          Schedule.Trip.is_active(trip, start_time_of_day, end_time_of_day)
-        end)
-
-      active_trips_on_date
+      trips_table
+      |> :mnesia.dirty_select(selectors)
+      |> Enum.filter(&Schedule.Trip.is_active(&1, start_time_of_day, end_time_of_day))
     end)
   end
 
@@ -596,15 +590,14 @@ defmodule Schedule.Data do
 
   @spec active_services_on_dates([Date.t()], tables()) :: %{Date.t() => [Service.id()]}
   defp active_services_on_dates(dates, %{calendar: calendar_table}) do
-    dates
-    |> Enum.map(fn date ->
-      case :mnesia.dirty_read(calendar_table, date) do
-        [{^calendar_table, _, service_ids}] -> {date, service_ids}
-        _ -> nil
+    selectors =
+      for date <- dates do
+        {{:_, date, :_}, [], [:"$_"]}
       end
-    end)
-    |> Enum.filter(&(!is_nil(&1)))
-    |> Map.new()
+
+    calendar_table
+    |> :mnesia.dirty_select(selectors)
+    |> Map.new(fn {_, date, service_ids} -> {date, service_ids} end)
   end
 
   @spec unique_service_id_for_trips([Hastus.Trip.t()], Schedule.Trip.by_id()) ::

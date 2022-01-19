@@ -244,21 +244,18 @@ defmodule Schedule.DataTest do
   end
 
   describe "potentially_active_service_dates" do
-    @tag skip: "not yet migrated"
     test "returns a day" do
       # 2019-12-17 12:00:00 EST
       time = 1_576_598_400
       assert Data.potentially_active_service_dates(time, time) == [~D[2019-12-17]]
     end
 
-    @tag skip: "not yet migrated"
     test "returns yesterday and today for early morning times" do
       # 2019-12-17 01:00:00 EST
       time = 1_576_558_800
       assert Data.potentially_active_service_dates(time, time) == [~D[2019-12-16], ~D[2019-12-17]]
     end
 
-    @tag skip: "not yet migrated"
     test "returns multiple dates for a time range" do
       # 2019-12-17 01:00:00 EST
       start_time = 1_576_558_800
@@ -274,10 +271,8 @@ defmodule Schedule.DataTest do
     end
   end
 
-  @tag skip: "not yet migrated"
   describe "active_trips" do
-    @tag skip: "not yet migrated"
-    test "returns an active trip" do
+    test "returns an active trip", %{tables: tables} do
       trip = %Schedule.Trip{
         id: "active",
         block_id: "active",
@@ -303,9 +298,11 @@ defmodule Schedule.DataTest do
         }
       }
 
+      Data.save_schedule_data_to_tables(tables, data)
+
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-      assert Data.active_trips(data, time0 + 2, time0 + 5) == [trip]
+      assert Data.active_trips(tables, time0 + 2, time0 + 5) == [trip]
     end
 
     @tag skip: "not yet migrated"
