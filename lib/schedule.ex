@@ -59,13 +59,13 @@ defmodule Schedule do
   # Timepoint IDs on a route, sorted in order of stop sequence
   @spec timepoints_on_route(Route.id()) :: [Timepoint.t()]
   @spec timepoints_on_route(Route.id(), GenServer.server()) :: [Timepoint.t()]
-  def timepoints_on_route(route_id, server \\ __MODULE__) do
-    call_catch_timeout(server, {:timepoints_on_route, route_id}, :timepoints_on_route, [])
+  def timepoints_on_route(route_id, _server \\ __MODULE__) do
+    Data.timepoints_on_route(default_tables(), route_id)
   end
 
   @spec timepoint_names_by_id(GenServer.server()) :: Timepoint.timepoint_names_by_id()
-  def timepoint_names_by_id(server \\ __MODULE__) do
-    call_catch_timeout(server, {:timepoint_names_by_id}, :timepoint_names_by_id, %{})
+  def timepoint_names_by_id(_server \\ __MODULE__) do
+    Data.timepoint_names_by_id(default_tables())
   end
 
   @spec stop(Stop.id()) :: Stop.t() | nil
