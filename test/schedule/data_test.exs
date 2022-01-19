@@ -237,7 +237,6 @@ defmodule Schedule.DataTest do
       assert Data.block(tables, "b", "other_service") == nil
     end
 
-    @tag skip: "not yet migrated"
     test "block returns nil if the block doesn't exist", %{tables: tables} do
       assert Data.block(tables, "block", "service") == nil
     end
@@ -808,9 +807,7 @@ defmodule Schedule.DataTest do
     end
   end
 
-  @tag skip: "not yet migrated"
   describe "parse_files/1" do
-    @tag skip: "not yet migrated"
     test "includes certain hardcoded garage IDs as checkpoints" do
       hardcoded_garage_ids =
         Data.parse_files(%{gtfs: %{}, hastus: %{}})
@@ -822,9 +819,7 @@ defmodule Schedule.DataTest do
     end
   end
 
-  @tag skip: "not yet migrated"
   describe "runs_from_hastus/4" do
-    @tag skip: "not yet migrated"
     test "trips become pieces in run" do
       activities = [
         build(
@@ -993,7 +988,6 @@ defmodule Schedule.DataTest do
              } = Data.runs_from_hastus(activities, trips, schedule_trips_by_id, %{})
     end
 
-    @tag skip: "not yet migrated"
     test "a different schedule_id means a different run or block" do
       activities = [
         %Activity{
@@ -1057,7 +1051,6 @@ defmodule Schedule.DataTest do
              } = Data.runs_from_hastus(activities, trips, schedule_trips_by_id, %{})
     end
 
-    @tag skip: "not yet migrated"
     test "labels mid route swings" do
       activities = [
         %Activity{
@@ -1182,9 +1175,7 @@ defmodule Schedule.DataTest do
     end
   end
 
-  @tag skip: "not yet migrated"
   describe "run_from_hastus/6" do
-    @tag skip: "not yet migrated"
     test "multiple trips are grouped into the same piece" do
       run_key = {"schedule", "run"}
 
@@ -1279,7 +1270,6 @@ defmodule Schedule.DataTest do
                expected_run
     end
 
-    @tag skip: "not yet migrated"
     test "trips become multiple pieces if there are multiple Operator activities" do
       run_key = {"schedule", "run"}
 
@@ -1351,7 +1341,6 @@ defmodule Schedule.DataTest do
              } = Data.run_from_hastus(run_key, activities, trips, %{}, schedule_trips_by_id, %{})
     end
 
-    @tag skip: "not yet migrated"
     test "Deadhead from becomes part of following piece as a trip" do
       run_key = {"schedule", "run"}
 
@@ -1423,7 +1412,6 @@ defmodule Schedule.DataTest do
                )
     end
 
-    @tag skip: "not yet migrated"
     test "Deadhead to becomes part of previous piece" do
       run_key = {"schedule", "run"}
 
@@ -1496,7 +1484,6 @@ defmodule Schedule.DataTest do
                )
     end
 
-    @tag skip: "not yet migrated"
     test "piece start time is based on sign_on activity" do
       run_key = {"schedule", "run"}
 
@@ -1534,7 +1521,6 @@ defmodule Schedule.DataTest do
              } = Data.run_from_hastus(run_key, activities, trips, %{}, %{}, %{})
     end
 
-    @tag skip: "not yet migrated"
     test "makes as directed pieces when given rad/wad activities" do
       run_key = {"aba20l31", "123-1502"}
 
@@ -1579,7 +1565,6 @@ defmodule Schedule.DataTest do
              } = Data.run_from_hastus(run_key, activities, trips, %{}, %{}, %{})
     end
 
-    @tag skip: "not yet migrated"
     test "makes as directed pieces when given rad/wad trips" do
       run_key = {"abc20011", "123-9073"}
 
@@ -1659,7 +1644,6 @@ defmodule Schedule.DataTest do
              } = Data.run_from_hastus(run_key, activities, trips, %{}, %{}, %{})
     end
 
-    @tag skip: "not yet migrated"
     test "makes breaks" do
       run_key = {"schedule", "run"}
 
@@ -1690,7 +1674,6 @@ defmodule Schedule.DataTest do
              ]
     end
 
-    @tag skip: "not yet migrated"
     test "assigns service_id when there is a unique value" do
       run_key = {"schedule", "run"}
 
@@ -1768,7 +1751,6 @@ defmodule Schedule.DataTest do
                expected_run
     end
 
-    @tag skip: "not yet migrated"
     test "leaves service_id nil whem multiple competing values are present" do
       run_key = {"schedule", "run"}
 
