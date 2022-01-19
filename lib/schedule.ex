@@ -98,8 +98,8 @@ defmodule Schedule do
   @spec active_trips(Util.Time.timestamp(), Util.Time.timestamp()) :: [Trip.t()]
   @spec active_trips(Util.Time.timestamp(), Util.Time.timestamp(), GenServer.server()) ::
           [Trip.t()]
-  def active_trips(start_time, end_time, server \\ __MODULE__) do
-    call_catch_timeout(server, {:active_trips, start_time, end_time}, :active_trips, [])
+  def active_trips(start_time, end_time, _server \\ __MODULE__) do
+    Data.active_trips(default_tables(), start_time, end_time)
   end
 
   @doc """
@@ -111,16 +111,16 @@ defmodule Schedule do
   @spec active_blocks(Util.Time.timestamp(), Util.Time.timestamp()) :: %{Date.t() => [Block.t()]}
   @spec active_blocks(Util.Time.timestamp(), Util.Time.timestamp(), GenServer.server()) ::
           %{Date.t() => [Block.t()]}
-  def active_blocks(start_time, end_time, server \\ __MODULE__) do
-    call_catch_timeout(server, {:active_blocks, start_time, end_time}, :active_blocks, %{})
+  def active_blocks(start_time, end_time, _server \\ __MODULE__) do
+    Data.active_blocks(default_tables(), start_time, end_time)
   end
 
   @spec active_runs(Util.Time.timestamp(), Util.Time.timestamp()) :: %{Date.t() => [Run.t()]}
   @spec active_runs(Util.Time.timestamp(), Util.Time.timestamp(), GenServer.server()) :: %{
           Date.t() => [Run.t()]
         }
-  def active_runs(start_time, end_time, server \\ __MODULE__) do
-    call_catch_timeout(server, {:active_runs, start_time, end_time}, :active_runs, %{})
+  def active_runs(start_time, end_time, _server \\ __MODULE__) do
+    Data.active_runs(default_tables(), start_time, end_time)
   end
 
   @spec shapes(Route.id()) :: [Shape.t()]
