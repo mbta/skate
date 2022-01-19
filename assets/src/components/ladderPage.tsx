@@ -24,6 +24,7 @@ import {
   toggleLadderCrowdingInTab,
   flipLadder,
   toggleLadderCrowding,
+  closeRouteTab,
 } from "../state"
 import CloseButton from "./closeButton"
 import { saveIcon, plusThinIcon } from "../helpers/icon"
@@ -47,9 +48,11 @@ export const findSelectedVehicleOrGhost = (
 const LadderTab = ({
   tab,
   selectTab,
+  closeTab,
 }: {
   tab: RouteTab
   selectTab: () => void
+  closeTab: () => void
 }): ReactElement<HTMLDivElement> => {
   const title = tab.presetName || "Untitled"
   return (
@@ -63,12 +66,7 @@ const LadderTab = ({
       <div className="m-ladder-page__tab-contents">
         <div className="m-ladder-page__tab-title">{title}</div>
         {tab.isCurrentTab ? saveIcon("m-ladder-page__tab-save-icon") : null}
-        <CloseButton
-          onClick={
-            // tslint:disable-next-line: no-empty
-            () => {}
-          }
-        />
+        <CloseButton onClick={() => closeTab()} />
       </div>
     </div>
   )
@@ -187,6 +185,7 @@ const LadderPageWithTabs = (): ReactElement<HTMLDivElement> => {
             <LadderTab
               tab={routeTab}
               selectTab={() => dispatch(selectRouteTab(routeTab.uuid))}
+              closeTab={() => dispatch(closeRouteTab(routeTab.uuid))}
               key={routeTab.uuid}
             />
           ))}

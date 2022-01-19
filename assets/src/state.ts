@@ -27,7 +27,8 @@ import {
   RouteTab,
   newRouteTab,
   highestExistingOrdering,
-  instantiatePresetFromTabs,
+  instantiatePresetByUUID,
+  closeTabByUUID,
 } from "./models/routeTab"
 
 export enum OpenView {
@@ -126,6 +127,16 @@ interface CreateRouteTabAction {
 
 export const createRouteTab = (): CreateRouteTabAction => ({
   type: "CREATE_ROUTE_TAB",
+})
+
+interface CloseRouteTabAction {
+  type: "CLOSE_ROUTE_TAB"
+  payload: { uuid: string }
+}
+
+export const closeRouteTab = (uuid: string): CloseRouteTabAction => ({
+  type: "CLOSE_ROUTE_TAB",
+  payload: { uuid },
 })
 
 interface SelectRouteTabAction {
@@ -473,6 +484,7 @@ export type Action =
   | FlipLadderAction
   | ToggleLadderCrowdingAction
   | CreateRouteTabAction
+  | CloseRouteTabAction
   | SelectRouteTabAction
   | SelectRouteInTabAction
   | DeselectRouteInTabAction
@@ -584,6 +596,11 @@ const routeTabsReducer = (
         ],
         routeTabsUpdated: true,
       }
+    case "CLOSE_ROUTE_TAB":
+      return {
+        newRouteTabs: closeTabByUUID(routeTabs, action.payload.uuid),
+        routeTabsUpdated: true,
+      }
     case "CREATE_PRESET":
       return {
         newRouteTabs: routeTabs.map((existingRouteTab) => {
@@ -600,7 +617,7 @@ const routeTabsReducer = (
       }
     case "INSTANTIATE_PRESET":
       return {
-        newRouteTabs: instantiatePresetFromTabs(routeTabs, action.payload.uuid),
+        newRouteTabs: instantiatePresetByUUID(routeTabs, action.payload.uuid),
         routeTabsUpdated: true,
       }
     case "SELECT_ROUTE_TAB":

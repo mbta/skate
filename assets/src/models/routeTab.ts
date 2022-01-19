@@ -60,7 +60,7 @@ export const isPreset = (routeTab: RouteTab): boolean =>
 export const isOpenTab = (routeTab: RouteTab): boolean =>
   routeTab.ordering !== undefined
 
-export const instantiatePresetFromTabs = (
+export const instantiatePresetByUUID = (
   routeTabs: RouteTab[],
   uuid: string
 ): RouteTab[] => {
@@ -99,6 +99,54 @@ export const instantiatePresetFromTabs = (
       }
     })
   }
+}
+
+export const closeTabByUUID = (
+  routeTabs: RouteTab[],
+  uuid: string
+): RouteTab[] => {
+  const tabToClose = routeTabs.find((routeTab) => routeTab.uuid === uuid)
+
+  if (tabToClose === undefined) {
+    throw new Error(`No preset found for UUID ${uuid}`)
+  }
+
+  const newRouteTabs =
+    tabToClose.presetName === undefined
+      ? routeTabs.filter((routeTab) => routeTab.uuid !== uuid)
+      : routeTabs.map((routeTab) => {
+          if (routeTab.uuid === uuid) {
+            return { ...routeTab, ordering: undefined, isCurrentTab: false }
+          } else {
+            return routeTab
+          }
+        })
+
+  if (tabToClose.isCurrentTab) {
+    const nextTabToRight = newRouteTabs
+      .filter(
+        (routeTab) =>
+          routeTab.ordering && routeTab.ordering > (tabToClose.ordering || 0)
+      )
+      .sort((a, b) => a.ordering || 0 - (b.ordering || 0))[0]
+
+    if (nextTabToRight) {
+      nextTabToRight.isCurrentTab = true
+    } else {
+      const nextTabToLeft = newRouteTabs
+        .filter(
+          (routeTab) =>
+            routeTab.ordering && routeTab.ordering < (tabToClose.ordering || 0)
+        )
+        .sort((a, b) => b.ordering || 0 - (a.ordering || 0))[0]
+
+      if (nextTabToLeft) {
+        nextTabToLeft.isCurrentTab = true
+      }
+    }
+  }
+
+  return newRouteTabs
 }
 
 const nullToUndefined = <T>(data: T | null): T | undefined =>
