@@ -267,14 +267,13 @@ defmodule Schedule.Data do
   end
 
   @spec shape_for_trip(tables(), Schedule.Trip.id()) :: Shape.t() | nil
-  def shape_for_trip(tables, trip_id) do
-    trip = trip(tables, trip_id)
-
-    if trip != nil do
-      route_shapes = shapes(tables, trip.route_id)
-      Enum.find(route_shapes, fn shape -> shape.id == trip.shape_id end)
+  def shape_for_trip(%{shapes: shapes_table} = tables, trip_id) do
+    with trip when not is_nil(trip) <- trip(tables, trip_id),
+         [{_, _, _, shape}] <- :mnesia.dirty_index_read(shapes_table, trip.route_id, :route_id) do
+      shape
     else
-      nil
+      _ ->
+        nil
     end
   end
 

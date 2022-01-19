@@ -555,7 +555,6 @@ defmodule Schedule.DataTest do
   end
 
   describe "shape_for_trip" do
-    @tag :skip
     test "returns the shape for the given trip_id", %{tables: tables} do
       trip = %Schedule.Trip{
         id: "trip",
@@ -583,11 +582,10 @@ defmodule Schedule.DataTest do
 
       Data.save_schedule_data_to_tables(tables, data)
 
-      assert Data.shape_for_trip(data, "trip") == shape
+      assert Data.shape_for_trip(tables, "trip") == shape
     end
 
-    @tag skip: "not yet migrated"
-    test "returns nil if there is no shape" do
+    test "returns nil if there is no shape", %{tables: tables} do
       trip = %Schedule.Trip{
         id: "trip",
         block_id: "block",
@@ -599,14 +597,13 @@ defmodule Schedule.DataTest do
         trips: %{"trip" => trip}
       }
 
-      assert Data.shape_for_trip(data, "trip") == nil
+      Data.save_schedule_data_to_tables(tables, data)
+
+      assert Data.shape_for_trip(tables, "trip") == nil
     end
 
-    @tag skip: "not yet migrated"
-    test "returns nil if there is no trip" do
-      data = %Data{}
-
-      assert Data.shape_for_trip(data, "trip") == nil
+    test "returns nil if there is no trip", %{tables: tables} do
+      assert Data.shape_for_trip(tables, "trip") == nil
     end
   end
 
