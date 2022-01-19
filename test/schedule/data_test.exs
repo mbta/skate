@@ -665,8 +665,7 @@ defmodule Schedule.DataTest do
   end
 
   describe "run_for_trip/3" do
-    @tag skip: "not yet migrated"
-    test "returns run with ID for trip" do
+    test "returns run with ID for trip", %{tables: tables} do
       trip =
         build(:trip, %{
           id: "trip",
@@ -687,11 +686,12 @@ defmodule Schedule.DataTest do
         runs: %{Run.key(run) => run}
       }
 
-      assert Data.run_for_trip(data, trip.run_id, trip.id) == run
+      Data.save_schedule_data_to_tables(tables, data)
+
+      assert Data.run_for_trip(tables, trip.run_id, trip.id) == run
     end
 
-    @tag skip: "not yet migrated"
-    test "returns run from trip without specific run ID" do
+    test "returns run from trip without specific run ID", %{tables: tables} do
       trip =
         build(:trip, %{
           id: "trip",
@@ -712,18 +712,16 @@ defmodule Schedule.DataTest do
         runs: %{Run.key(run) => run}
       }
 
-      assert Data.run_for_trip(data, nil, trip.id) == run
+      Data.save_schedule_data_to_tables(tables, data)
+
+      assert Data.run_for_trip(tables, nil, trip.id) == run
     end
 
-    @tag skip: "not yet migrated"
-    test "returns nil if the trip isn't known" do
-      data = %Data{}
-
-      assert Data.run_for_trip(data, "run", "trip") == nil
+    test "returns nil if the trip isn't known", %{tables: tables} do
+      assert Data.run_for_trip(tables, "run", "trip") == nil
     end
 
-    @tag skip: "not yet migrated"
-    test "returns nil if the trip is in GTFS but not HASTUS (no schedule_id)" do
+    test "returns nil if the trip is in GTFS but not HASTUS (no schedule_id)", %{tables: tables} do
       trip =
         build(:trip, %{
           id: "trip",
@@ -736,7 +734,9 @@ defmodule Schedule.DataTest do
         trips: %{trip.id => trip}
       }
 
-      assert Data.run_for_trip(data, trip.run_id, trip.id) == nil
+      Data.save_schedule_data_to_tables(tables, data)
+
+      assert Data.run_for_trip(tables, trip.run_id, trip.id) == nil
     end
   end
 

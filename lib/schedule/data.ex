@@ -268,8 +268,8 @@ defmodule Schedule.Data do
 
   @spec shape_for_trip(tables(), Schedule.Trip.id()) :: Shape.t() | nil
   def shape_for_trip(%{shapes: shapes_table} = tables, trip_id) do
-    with trip when not is_nil(trip) <- trip(tables, trip_id),
-         [{_, _, _, shape}] <- :mnesia.dirty_index_read(shapes_table, trip.route_id, :route_id) do
+    with %{route_id: route_id} <- trip(tables, trip_id),
+         [{_, _, _, shape}] <- :mnesia.dirty_index_read(shapes_table, route_id, :route_id) do
       shape
     else
       _ ->
@@ -291,27 +291,14 @@ defmodule Schedule.Data do
 
   @spec run_for_trip(tables(), Hastus.Run.id() | nil, Schedule.Trip.id()) :: Run.t() | nil
   def run_for_trip(%{runs: runs_table} = tables, run_id, trip_id) do
-    trip = trip(tables, trip_id)
-
-    run_key =
-      cond do
-        trip != nil and run_id != nil and trip.schedule_id != nil ->
-          {trip.schedule_id, run_id}
-
-        trip != nil and trip.schedule_id != nil ->
-          {trip.schedule_id, trip.run_id}
-
-        true ->
-          nil
-      end
-
-    if is_nil(run_key) do
-      nil
+    with %{schedule_id: schedule_id, run_id: trip_run_id} <- trip(tables, trip_id),
+         true <- is_binary(schedule_id),
+         true <- is_binary(run_id) or is_binary(trip_run_id),
+         run_key = {schedule_id, run_id || trip_run_id},
+         [{^runs_table, _, _, run}] <- :mnesia.dirty_read(runs_table, run_key) do
+      run
     else
-      case :mnesia.dirty_read(runs_table, run_key) do
-        [{^runs_table, _, run}] -> run
-        _ -> nil
-      end
+      _ -> nil
     end
   end
 
