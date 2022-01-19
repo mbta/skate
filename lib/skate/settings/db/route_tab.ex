@@ -2,19 +2,26 @@ defmodule Skate.Settings.Db.RouteTab do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias Skate.Settings.Db.{TabSettings, User}
+  alias Skate.Settings.Db.User
 
   @type t :: %__MODULE__{}
 
+  @primary_key {:uuid, :binary_id, autogenerate: false}
+
   schema "route_tabs" do
     belongs_to(:user, User)
-    has_one(:tab_settings, TabSettings, on_replace: :update)
     field(:preset_name, :string)
+    field(:selected_route_ids, {:array, :string})
+    field(:ladder_directions, :map)
+    field(:ladder_crowding_toggles, :map)
     field(:ordering, :integer)
     field(:is_current_tab, :boolean)
 
-    belongs_to(:save_changes_to_tab, Skate.Settings.Db.RouteTab,
-      foreign_key: :save_changes_to_tab_id
+    belongs_to(
+      :save_changes_to_tab,
+      Skate.Settings.Db.RouteTab,
+      foreign_key: :save_changes_to_tab_uuid,
+      references: :uuid
     )
 
     timestamps()
@@ -23,16 +30,22 @@ defmodule Skate.Settings.Db.RouteTab do
   def changeset(route_tab, attrs \\ %{}) do
     route_tab
     |> cast(attrs, [
-      :id,
+      :uuid,
       :user_id,
       :preset_name,
+      :selected_route_ids,
+      :ladder_directions,
+      :ladder_crowding_toggles,
       :ordering,
-      :save_changes_to_tab_id,
       :is_current_tab
     ])
-    |> put_assoc(
-      :tab_settings,
-      Map.take(attrs, [:ladder_directions, :ladder_crowding_toggles, :selected_route_ids])
-    )
+    |> cast_assoc(:save_changes_to_tab)
+    |> validate_required([
+      :selected_route_ids,
+      :ladder_directions,
+      :ladder_crowding_toggles
+    ])
+    |> foreign_key_constraint(:user_id)
+    |> foreign_key_constraint(:save_changes_to_tab_uuid)
   end
 end
