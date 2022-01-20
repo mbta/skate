@@ -160,10 +160,16 @@ const LadderPageWithTabs = (): ReactElement<HTMLDivElement> => {
 
       <PickerContainer>
         <>
-          <button onClick={() => setCurrentDrawerContent("route_picker")}>
+          <button
+            id="m-ladder-page__routes_picker_button"
+            onClick={() => setCurrentDrawerContent("route_picker")}
+          >
             Routes
           </button>
-          <button onClick={() => setCurrentDrawerContent("presets")}>
+          <button
+            id="m-ladder-page__presets_picker_button"
+            onClick={() => setCurrentDrawerContent("presets")}
+          >
             Presets
           </button>
           {currentDrawerContent === "route_picker" ? (

@@ -159,6 +159,36 @@ describe("LadderPage", () => {
     expect(mockDispatch).toHaveBeenCalledWith(createRouteTab())
   })
 
+  test("can toggle to presets view in picker and back", () => {
+    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
+    const mockState = {
+      ...initialState,
+      routeTabs: [
+        routeTabFactory.build({
+          ordering: 0,
+          isCurrentTab: true,
+          selectedRouteIds: ["1"],
+          presetName: "My Preset",
+        }),
+      ],
+    }
+    const wrapper = mount(
+      <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+        <RoutesProvider routes={routes}>
+          <LadderPage />
+        </RoutesProvider>
+      </StateDispatchProvider>
+    )
+
+    wrapper.find("#m-ladder-page__presets_picker_button").simulate("click")
+
+    expect(wrapper.find(".m-presets-panel").length).toBe(1)
+
+    wrapper.find("#m-ladder-page__routes_picker_button").simulate("click")
+
+    expect(wrapper.find(".m-presets-panel").length).toBe(0)
+  })
+
   test("renders with selectedRoutes in different order than routes data", () => {
     const mockState = { ...initialState, selectedRouteIds: ["28", "1"] }
     const tree = renderer

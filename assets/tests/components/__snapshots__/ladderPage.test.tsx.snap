@@ -99,11 +99,13 @@ exports[`LadderPage renders with route tabs 1`] = `
       </button>
     </div>
     <button
+      id="m-ladder-page__routes_picker_button"
       onClick={[Function]}
     >
       Routes
     </button>
     <button
+      id="m-ladder-page__presets_picker_button"
       onClick={[Function]}
     >
       Presets

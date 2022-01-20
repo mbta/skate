@@ -8,7 +8,7 @@ const Presets = () => {
   const presets = routeTabs.filter(isPreset)
 
   return (
-    <div>
+    <div className="m-presets-panel">
       <button
         onClick={() =>
           dispatch(
