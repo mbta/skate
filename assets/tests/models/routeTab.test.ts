@@ -2,8 +2,31 @@ import {
   currentRouteTab,
   instantiatePresetByUUID,
   closeTabByUUID,
+  highestExistingOrdering,
+  isPreset,
+  isOpenTab,
 } from "../../src/models/routeTab"
 import routeTabFactory from "../factories/routeTab"
+
+describe("highestExistingOrdering", () => {
+  test("returns highest ordering", () => {
+    const routeTab1 = routeTabFactory.build({ ordering: 0 })
+    const routeTab2 = routeTabFactory.build({ ordering: 1 })
+    const routeTab3 = routeTabFactory.build({ ordering: undefined })
+
+    expect(highestExistingOrdering([routeTab1, routeTab2, routeTab3])).toBe(1)
+  })
+
+  test("defaults to 0 when no tabs have ordering", () => {
+    const routeTab = routeTabFactory.build({ ordering: undefined })
+
+    expect(highestExistingOrdering([routeTab])).toBe(0)
+  })
+
+  test("defaults to -1 when no tabs are present", () => {
+    expect(highestExistingOrdering([])).toBe(-1)
+  })
+})
 
 describe("currentRouteTab", () => {
   test("finds route tab flagged as current if present", () => {
@@ -18,6 +41,46 @@ describe("currentRouteTab", () => {
     delete routeTab.uuid
 
     expect(currentRouteTab([])).toMatchObject(routeTab)
+  })
+})
+
+describe("isPreset", () => {
+  test("returns true for a saved preset", () => {
+    const routeTab = routeTabFactory.build({
+      presetName: "My Preset",
+      ordering: undefined,
+    })
+
+    expect(isPreset(routeTab)).toBeTruthy()
+  })
+
+  test("returns false for an open tab that is not a saved preset", () => {
+    const routeTab = routeTabFactory.build({
+      presetName: undefined,
+      ordering: 1,
+    })
+
+    expect(isPreset(routeTab)).toBeFalsy()
+  })
+})
+
+describe("isOpenTab", () => {
+  test("returns false for a saved preset that isn't open", () => {
+    const routeTab = routeTabFactory.build({
+      presetName: "My Preset",
+      ordering: undefined,
+    })
+
+    expect(isOpenTab(routeTab)).toBeFalsy()
+  })
+
+  test("returns true for an open tab that is not a saved preset", () => {
+    const routeTab = routeTabFactory.build({
+      presetName: undefined,
+      ordering: 1,
+    })
+
+    expect(isOpenTab(routeTab)).toBeTruthy()
   })
 })
 
