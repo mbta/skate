@@ -82,13 +82,13 @@ defmodule Schedule.Data do
 
   @table_schema [
     {:routes, :set, [:id, :route], []},
-    {:route_patterns, :set, [:id, :route_id, :direction_id, :route_pattern], [:route_id]},
+    {:route_patterns, :set, [:route_id_direction_id, :route_pattern], []},
     {:timepoints_by_route, :set, [:route_id, :timepoints], []},
     {:timepoint_names_by_id, :set, [:id, :timepoint_name], []},
     {:shapes, :set, [:shape_id, :route_id, :shapes], [:route_id]},
     {:stops, :set, [:id, :stop], []},
     {:trips, :set, [:id, :service_id, :trip], [:service_id]},
-    {:blocks, :bag, [:id, :schedule_id, :service_id, :block], [:schedule_id, :service_id]},
+    {:blocks, :set, [:id, :service_id, :block], [:service_id]},
     {:calendar, :set, [:date, :service_ids], []},
     {:runs, :set, [:id, :service_id, :run], [:service_id]},
     {:swings, :set, [:service_id_and_route_id, :swings], []}
@@ -117,8 +117,14 @@ defmodule Schedule.Data do
   @spec timepoint_names_by_id(tables()) :: Timepoint.timepoint_names_by_id()
   def timepoint_names_by_id(%{timepoint_names_by_id: timepoint_names_by_id_table}) do
     timepoint_names_by_id_table
-    |> :mnesia.dirty_select([{{:_, :"$1", :"$2"}, [], [{:"$1", :"$2"}]}])
-    |> Map.new()
+    |> :mnesia.dirty_select([
+      {
+        {:_, :"$1", :"$2"},
+        [],
+        [[:"$1", :"$2"]]
+      }
+    ])
+    |> Map.new(fn [id, name] -> {id, name} end)
   end
 
   @spec stop(tables(), Stop.id()) :: Stop.t() | nil
@@ -151,9 +157,10 @@ defmodule Schedule.Data do
 
   @spec block(tables(), Hastus.Schedule.id(), Block.id()) :: Block.t() | nil
   def block(%{blocks: blocks_table}, schedule_id, block_id) do
-    blocks_table
-    |> :mnesia.dirty_select([{{:_, block_id, schedule_id, :_, :"$1"}, [], [:"$1"]}])
-    |> List.first()
+    case :mnesia.dirty_read(blocks_table, {schedule_id, block_id}) do
+      [{_, _, _, block}] -> block
+      _ -> nil
+    end
   end
 
   @doc """
@@ -216,7 +223,7 @@ defmodule Schedule.Data do
 
       selectors =
         for service_id <- service_ids do
-          {{:_, :_, :_, service_id, :"$1"}, [], [:"$1"]}
+          {{:_, :_, service_id, :"$1"}, [], [:"$1"]}
         end
 
       active_blocks =
@@ -237,34 +244,35 @@ defmodule Schedule.Data do
   @spec active_runs(tables(), Util.Time.timestamp(), Util.Time.timestamp()) ::
           %{Date.t() => [Run.t()]}
   def active_runs(
-        %__MODULE__{runs: runs_table, calendar: calendar_table},
+        %{runs: runs_table} = tables,
         start_time,
         end_time
       ) do
     dates = potentially_active_service_dates(start_time, end_time)
 
     dates
-    |> active_services_on_dates(calendar_table)
+    |> active_services_on_dates(tables)
     |> Map.new(fn {date, service_ids} ->
       start_time_of_day = Util.Time.time_of_day_for_timestamp(start_time, date)
       end_time_of_day = Util.Time.time_of_day_for_timestamp(end_time, date)
 
-      runs_on_date =
-        Enum.flat_map(service_ids, fn service_id ->
-          case :mnesia.dirty_match_object({runs_table, :_, service_id, :_}) do
-            run_records when is_list(run_records) -> Enum.map(run_records, &elem(&1, 3))
-            _ -> []
-          end
-        end)
+      selectors =
+        for service_id <- service_ids do
+          {{:_, :_, service_id, :"$1"}, [], [:"$1"]}
+        end
 
-      active_runs_on_date =
-        Enum.filter(runs_on_date, fn run ->
-          Run.is_active?(run, start_time_of_day, end_time_of_day)
-        end)
+      active_runs =
+        runs_table
+        |> :mnesia.dirty_select(selectors)
+        |> Enum.filter(&Run.is_active?(&1, start_time_of_day, end_time_of_day))
 
-      {date, active_runs_on_date}
+      if active_runs == [] do
+        {nil, []}
+      else
+        {date, active_runs}
+      end
     end)
-    |> Helpers.filter_values(fn runs -> runs != [] end)
+    |> Map.delete(nil)
   end
 
   @spec shapes(tables(), Route.id()) :: [Shape.t()]
@@ -292,9 +300,13 @@ defmodule Schedule.Data do
         route_id,
         direction_id
       ) do
-    route_patterns_table
-    |> :mnesia.dirty_select([{{:_, :_, route_id, direction_id, :"$1"}, [], [:"$1"]}])
-    |> List.first()
+    case :mnesia.dirty_read(
+           route_patterns_table,
+           {route_id, direction_id}
+         ) do
+      [{_, _, route_pattern}] -> route_pattern
+      _ -> nil
+    end
   end
 
   @spec run_for_trip(tables(), Hastus.Run.id() | nil, Schedule.Trip.id()) :: Run.t() | nil
@@ -317,8 +329,8 @@ defmodule Schedule.Data do
       ) do
     with %{schedule_id: schedule_id, block_id: block_id}
          when is_binary(schedule_id) <- trip(tables, trip_id),
-         [{_, _, _, _, block}] <-
-           :mnesia.dirty_match_object(blocks_table, {:_, block_id, schedule_id, :_, :_}) do
+         [{_, _, _, block}] <-
+           :mnesia.dirty_match_object(blocks_table, {:_, {schedule_id, block_id}, :_, :_}) do
       block
     else
       _ -> nil
@@ -381,10 +393,13 @@ defmodule Schedule.Data do
         :mnesia.write({tables.routes, route.id, route})
       end)
 
-      Enum.each(schedule_data.route_patterns, fn route_pattern ->
+      # reverse the order so that the first route_pattern for the route/direction is persisted last and kept
+      schedule_data.route_patterns
+      |> Enum.reverse()
+      |> Enum.each(fn route_pattern ->
         :mnesia.write(
-          {tables.route_patterns, route_pattern.id, route_pattern.route_id,
-           route_pattern.direction_id, route_pattern}
+          {tables.route_patterns, {route_pattern.route_id, route_pattern.direction_id},
+           route_pattern}
         )
       end)
 
@@ -408,8 +423,8 @@ defmodule Schedule.Data do
         :mnesia.write({tables.trips, id, trip.service_id, trip})
       end)
 
-      Enum.each(schedule_data.blocks, fn {_key, block} ->
-        :mnesia.write({tables.blocks, block.id, block.schedule_id, block.service_id, block})
+      Enum.each(schedule_data.blocks, fn {key, block} ->
+        :mnesia.write({tables.blocks, key, block.service_id, block})
       end)
 
       Enum.each(schedule_data.calendar, fn {date, service_ids} ->

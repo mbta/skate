@@ -128,6 +128,20 @@ defmodule Schedule.DataTest do
     end
   end
 
+  describe "timepoint_names_by_id/1" do
+    test "returns a map of timepoint ID to names", %{tables: tables} do
+      data = %Data{
+        timepoint_names_by_id: %{
+          "timepoint" => "name"
+        }
+      }
+
+      Data.save_schedule_data_to_tables(tables, data)
+
+      assert Data.timepoint_names_by_id(tables) == %{"timepoint" => "name"}
+    end
+  end
+
   describe "stop/2" do
     test "returns the stop for the given stop ID", %{tables: tables} do
       data = %Data{
@@ -503,6 +517,129 @@ defmodule Schedule.DataTest do
       assert Data.active_blocks(tables, time0 - 2, time0 + 2) == %{
                ~D[2019-01-01] => [block1],
                ~D[2019-01-02] => [block2]
+             }
+    end
+  end
+
+  describe "active_runs" do
+    test "returns active runs", %{tables: tables} do
+      trip =
+        build(:trip, %{
+          service_id: "today",
+          start_time: 3,
+          end_time: 4
+        })
+
+      run =
+        build(:run, %{
+          id: trip.run_id,
+          schedule_id: trip.schedule_id,
+          service_id: "today",
+          activities: [build(:piece, %{trips: [trip]})]
+        })
+
+      data = %Data{
+        trips: %{trip.id => trip},
+        runs: %{Run.key(run) => run},
+        calendar: %{
+          ~D[2019-01-01] => ["today"]
+        }
+      }
+
+      Data.save_schedule_data_to_tables(tables, data)
+
+      # 2019-01-01 00:00:00 EST
+      time0 = 1_546_318_800
+
+      assert Data.active_runs(tables, time0 + 2, time0 + 5) == %{~D[2019-01-01] => [run]}
+    end
+
+    test "doesn't return inactive runs", %{tables: tables} do
+      trip =
+        build(:trip, %{
+          service_id: "today",
+          start_time: 3,
+          end_time: 4
+        })
+
+      run =
+        build(:run, %{
+          id: trip.run_id,
+          schedule_id: trip.schedule_id,
+          service_id: "today",
+          activities: [build(:piece, %{trips: [trip]})]
+        })
+
+      data = %Data{
+        trips: %{trip.id => trip},
+        runs: %{Run.key(run) => run},
+        calendar: %{
+          ~D[2019-01-01] => ["today"]
+        }
+      }
+
+      Data.save_schedule_data_to_tables(tables, data)
+
+      # 2019-01-01 00:00:00 EST
+      time0 = 1_546_318_800
+
+      assert Data.active_runs(tables, time0 + 5, time0 + 5) == %{}
+    end
+
+    test "runs can be active on two different dates", %{tables: tables} do
+      just_before_midnight = 24 * 60 * 60 - 1
+
+      trip1 =
+        build(:trip, %{
+          id: "trip1",
+          service_id: "today",
+          schedule_id: "today",
+          start_time: just_before_midnight,
+          end_time: just_before_midnight
+        })
+
+      trip2 =
+        build(:trip, %{
+          id: "trip2",
+          service_id: "tomorrow",
+          schedule_id: "tomorrow",
+          start_time: 1,
+          end_time: 1
+        })
+
+      run1 =
+        build(:run, %{
+          id: trip1.run_id,
+          schedule_id: trip1.schedule_id,
+          service_id: trip1.service_id,
+          activities: [build(:piece, %{trips: [trip1]})]
+        })
+
+      run2 =
+        build(:run, %{
+          id: trip2.run_id,
+          schedule_id: trip2.schedule_id,
+          service_id: trip2.service_id,
+          activities: [build(:piece, %{trips: [trip2]})]
+        })
+
+      data = %Data{
+        trips: %{trip1.id => trip1, trip2.id => trip2},
+        runs: %{Run.key(run1) => run1, Run.key(run2) => run2},
+        calendar: %{
+          ~D[2019-01-01] => ["today"],
+          ~D[2019-01-02] => ["tomorrow"]
+        }
+      }
+
+      Data.save_schedule_data_to_tables(tables, data)
+
+      # 2019-01-02 00:00:00 EST
+      time0 = 1_546_405_200
+
+      assert Data.active_runs(tables, time0 - 2, time0 + 2) == %{
+               ~D[2019-01-01] => [run1],
+               ~D[2019-01-02] => [run2]
              }
     end
   end
