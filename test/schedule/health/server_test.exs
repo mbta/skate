@@ -26,9 +26,7 @@ defmodule Schedule.Health.ServerTest do
     reassign_env(:skate, :checker_healthy_fn, fn -> true end)
     health_server_pid = HealthServer.start_mocked()
     refute HealthServer.ready?(health_server_pid)
-    gtfs_pid = Schedule.start_mocked(%{}, health_server_pid)
-    # Make a synchronous call to make sure the data is loaded
-    Schedule.all_routes(gtfs_pid)
+    Schedule.start_mocked(%{}, health_server_pid)
     assert HealthServer.ready?(health_server_pid)
   end
 

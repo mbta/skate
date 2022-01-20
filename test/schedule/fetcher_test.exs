@@ -8,7 +8,6 @@ defmodule Schedule.FetcherTest do
     {:ok, state, _} =
       Schedule.Fetcher.init(
         health_server: nil,
-        updater_function: fn _ -> :ok end,
         files_source: {:mocked_files, %{}}
       )
 

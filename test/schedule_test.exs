@@ -9,22 +9,21 @@ defmodule ScheduleTest do
 
   describe "all_routes" do
     test "maps each row to a Route" do
-      pid =
-        Schedule.start_mocked(%{
-          gtfs: %{
-            "directions.txt" => [
-              "route_id,direction_id,direction,direction_destination",
-              "39,0,Outbound,Forest Hills",
-              "39,1,Inbound,Back Bay Station"
-            ],
-            "routes.txt" => [
-              "route_id,route_long_name,route_type,route_desc,route_short_name",
-              "39,Forest Hills - Back Bay Station,3,Key Bus,39"
-            ]
-          }
-        })
+      Schedule.start_mocked(%{
+        gtfs: %{
+          "directions.txt" => [
+            "route_id,direction_id,direction,direction_destination",
+            "39,0,Outbound,Forest Hills",
+            "39,1,Inbound,Back Bay Station"
+          ],
+          "routes.txt" => [
+            "route_id,route_long_name,route_type,route_desc,route_short_name",
+            "39,Forest Hills - Back Bay Station,3,Key Bus,39"
+          ]
+        }
+      })
 
-      assert Schedule.all_routes(pid) == [
+      assert Schedule.all_routes() == [
                %Route{
                  id: "39",
                  description: "Key Bus",
@@ -38,141 +37,137 @@ defmodule ScheduleTest do
     end
 
     test "filters out non-bus routes" do
-      pid =
-        Schedule.start_mocked(%{
-          gtfs: %{
-            "routes.txt" => [
-              "route_id,route_long_name,route_type,route_short_name",
-              "Red,Red Line,1,",
-              "39,Forest Hills - Back Bay Station,3,39"
-            ]
-          }
-        })
+      Schedule.start_mocked(%{
+        gtfs: %{
+          "routes.txt" => [
+            "route_id,route_long_name,route_type,route_short_name",
+            "Red,Red Line,1,",
+            "39,Forest Hills - Back Bay Station,3,39"
+          ]
+        }
+      })
 
-      refute Enum.any?(Schedule.all_routes(pid), &(&1.id == "Red"))
+      refute Schedule.route_by_id("Red")
     end
   end
 
   describe "timepoints_on_route" do
     test "returns all of the timepoints for route patterns on this route" do
-      pid =
-        Schedule.start_mocked(%{
-          gtfs: %{
-            "checkpoints.txt" => [
-              "checkpoint_id,checkpoint_name",
-              "check,Check Name",
-              "other,Other Name"
-            ],
-            "routes.txt" => [
-              "route_id,route_type,route_short_name",
-              "39,3,39"
-            ],
-            "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,representative_trip_id",
-              "39-pattern,39,1,39-trip",
-              "blue-pattern,Blue,1,blue-trip"
-            ],
-            "trips.txt" => [
-              "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id",
-              "39,service,39-trip,headsign,0,block,39-_-0"
-            ],
-            "stop_times.txt" => [
-              "trip_id,arrival_time,departure_time,stop_sequence,checkpoint_id",
-              "39-trip,,00:00:00,1,check",
-              "39-trip,,00:00:00,2,",
-              "blue-trip,,00:00:00,1,other"
-            ]
-          }
-        })
+      Schedule.start_mocked(%{
+        gtfs: %{
+          "checkpoints.txt" => [
+            "checkpoint_id,checkpoint_name",
+            "check,Check Name",
+            "other,Other Name"
+          ],
+          "routes.txt" => [
+            "route_id,route_type,route_short_name",
+            "39,3,39"
+          ],
+          "route_patterns.txt" => [
+            "route_pattern_id,route_id,direction_id,representative_trip_id",
+            "39-pattern,39,1,39-trip",
+            "blue-pattern,Blue,1,blue-trip"
+          ],
+          "trips.txt" => [
+            "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id",
+            "39,service,39-trip,headsign,0,block,39-_-0"
+          ],
+          "stop_times.txt" => [
+            "trip_id,arrival_time,departure_time,stop_sequence,checkpoint_id",
+            "39-trip,,00:00:00,1,check",
+            "39-trip,,00:00:00,2,",
+            "blue-trip,,00:00:00,1,other"
+          ]
+        }
+      })
 
-      assert Schedule.timepoints_on_route("39", pid) == [
+      assert Schedule.timepoints_on_route("39") == [
                %Timepoint{id: "check", name: "Check Name"}
              ]
     end
 
     test "filters out non-bus trips, route patterns, and timepoints" do
-      pid =
-        Schedule.start_mocked(%{
-          gtfs: %{
-            "checkpoints.txt" => [
-              "checkpoint_id,checkpoint_name",
-              "check,Check Name"
-            ],
-            "routes.txt" => [
-              "route_id,route_type,route_short_name",
-              "39,3,39",
-              "Blue,1,Blue"
-            ],
-            "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,representative_trip_id",
-              "39-pattern,39,1,39-trip",
-              "blue-pattern,Blue,1,blue-trip"
-            ],
-            "trips.txt" => [
-              "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id",
-              "39,service,39-trip,headsign,0,block,39-_-0"
-            ],
-            "stop_times.txt" => [
-              "trip_id,arrival_time,departure_time,stop_sequence,checkpoint_id",
-              "39-trip,,00:00:00,1,check",
-              "39-trip,,00:00:00,2,",
-              "blue-trip,,00:00:00,1,check"
-            ]
-          }
-        })
+      Schedule.start_mocked(%{
+        gtfs: %{
+          "checkpoints.txt" => [
+            "checkpoint_id,checkpoint_name",
+            "check,Check Name"
+          ],
+          "routes.txt" => [
+            "route_id,route_type,route_short_name",
+            "39,3,39",
+            "Blue,1,Blue"
+          ],
+          "route_patterns.txt" => [
+            "route_pattern_id,route_id,direction_id,representative_trip_id",
+            "39-pattern,39,1,39-trip",
+            "blue-pattern,Blue,1,blue-trip"
+          ],
+          "trips.txt" => [
+            "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id",
+            "39,service,39-trip,headsign,0,block,39-_-0"
+          ],
+          "stop_times.txt" => [
+            "trip_id,arrival_time,departure_time,stop_sequence,checkpoint_id",
+            "39-trip,,00:00:00,1,check",
+            "39-trip,,00:00:00,2,",
+            "blue-trip,,00:00:00,1,check"
+          ]
+        }
+      })
 
-      assert Schedule.timepoints_on_route("39", pid) == [
+      assert Schedule.timepoints_on_route("39") == [
                %Timepoint{id: "check", name: "Check Name"}
              ]
 
-      assert Schedule.timepoints_on_route("Blue", pid) == []
+      assert Schedule.timepoints_on_route("Blue") == []
     end
 
     test "merges multiple trips into a coherent order" do
-      pid =
-        Schedule.start_mocked(%{
-          gtfs: %{
-            "checkpoints.txt" => [
-              "checkpoint_id,checkpoint_name",
-              "check,Check Name",
-              "c1,c1 name",
-              "c2,c2 name",
-              "c4,c4 name",
-              "c5,c5 name",
-              "c2,c2 name",
-              "c3,c3 name",
-              "c4,c4 name"
-            ],
-            "routes.txt" => [
-              "route_id,route_type,route_short_name",
-              "route,3,39"
-            ],
-            "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,representative_trip_id",
-              "p1,route,1,t1",
-              "p2,route,1,t2",
-              "p3,route,1,t3"
-            ],
-            "trips.txt" => [
-              "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id",
-              "route,service,t1,h1,0,b1,route-_-0",
-              "route,service,t2,h2,0,b2,route-_-0",
-              "route,service,t3,h2,0,b2,route-_-0"
-            ],
-            "stop_times.txt" => [
-              "trip_id,arrival_time,departure_time,stop_sequence,checkpoint_id",
-              "t1,,00:00:00,11,c1",
-              "t1,,00:00:00,12,c2",
-              "t3,,00:00:00,31,c4",
-              "t3,,00:00:00,32,c5",
-              "t2,,00:00:00,21,c2",
-              "t2,,00:00:00,22,c3",
-              "t2,,00:00:00,23,c4"
-            ]
-          }
-        })
+      Schedule.start_mocked(%{
+        gtfs: %{
+          "checkpoints.txt" => [
+            "checkpoint_id,checkpoint_name",
+            "check,Check Name",
+            "c1,c1 name",
+            "c2,c2 name",
+            "c4,c4 name",
+            "c5,c5 name",
+            "c2,c2 name",
+            "c3,c3 name",
+            "c4,c4 name"
+          ],
+          "routes.txt" => [
+            "route_id,route_type,route_short_name",
+            "route,3,39"
+          ],
+          "route_patterns.txt" => [
+            "route_pattern_id,route_id,direction_id,representative_trip_id",
+            "p1,route,1,t1",
+            "p2,route,1,t2",
+            "p3,route,1,t3"
+          ],
+          "trips.txt" => [
+            "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id",
+            "route,service,t1,h1,0,b1,route-_-0",
+            "route,service,t2,h2,0,b2,route-_-0",
+            "route,service,t3,h2,0,b2,route-_-0"
+          ],
+          "stop_times.txt" => [
+            "trip_id,arrival_time,departure_time,stop_sequence,checkpoint_id",
+            "t1,,00:00:00,11,c1",
+            "t1,,00:00:00,12,c2",
+            "t3,,00:00:00,31,c4",
+            "t3,,00:00:00,32,c5",
+            "t2,,00:00:00,21,c2",
+            "t2,,00:00:00,22,c3",
+            "t2,,00:00:00,23,c4"
+          ]
+        }
+      })
 
-      assert Schedule.timepoints_on_route("route", pid) == [
+      assert Schedule.timepoints_on_route("route") == [
                %Timepoint{id: "c1", name: "c1 name"},
                %Timepoint{id: "c2", name: "c2 name"},
                %Timepoint{id: "c3", name: "c3 name"},
@@ -182,41 +177,40 @@ defmodule ScheduleTest do
     end
 
     test "merges stops from both directions, flipping direction 0" do
-      pid =
-        Schedule.start_mocked(%{
-          gtfs: %{
-            "checkpoints.txt" => [
-              "checkpoint_id,checkpoint_name",
-              "downtown,downtown name",
-              "suburb,suburb name",
-              "exurb,exurb name",
-              "suburb,suburb name"
-            ],
-            "routes.txt" => [
-              "route_id,route_type,route_short_name",
-              "route,3,route"
-            ],
-            "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,representative_trip_id",
-              "p0,route,0,t0",
-              "p1,route,1,t1"
-            ],
-            "trips.txt" => [
-              "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id",
-              "route,service,t0,h0,0,b0,route-_-0",
-              "route,service,t1,h1,0,b1,route-_-0"
-            ],
-            "stop_times.txt" => [
-              "trip_id,arrival_time,departure_time,stop_sequence,checkpoint_id",
-              "t0,,00:00:00,1,downtown",
-              "t0,,00:00:00,2,suburb",
-              "t1,,00:00:00,1,exurb",
-              "t1,,00:00:00,2,suburb"
-            ]
-          }
-        })
+      Schedule.start_mocked(%{
+        gtfs: %{
+          "checkpoints.txt" => [
+            "checkpoint_id,checkpoint_name",
+            "downtown,downtown name",
+            "suburb,suburb name",
+            "exurb,exurb name",
+            "suburb,suburb name"
+          ],
+          "routes.txt" => [
+            "route_id,route_type,route_short_name",
+            "route,3,route"
+          ],
+          "route_patterns.txt" => [
+            "route_pattern_id,route_id,direction_id,representative_trip_id",
+            "p0,route,0,t0",
+            "p1,route,1,t1"
+          ],
+          "trips.txt" => [
+            "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id",
+            "route,service,t0,h0,0,b0,route-_-0",
+            "route,service,t1,h1,0,b1,route-_-0"
+          ],
+          "stop_times.txt" => [
+            "trip_id,arrival_time,departure_time,stop_sequence,checkpoint_id",
+            "t0,,00:00:00,1,downtown",
+            "t0,,00:00:00,2,suburb",
+            "t1,,00:00:00,1,exurb",
+            "t1,,00:00:00,2,suburb"
+          ]
+        }
+      })
 
-      assert Schedule.timepoints_on_route("route", pid) == [
+      assert Schedule.timepoints_on_route("route") == [
                %Timepoint{id: "exurb", name: "exurb name"},
                %Timepoint{id: "suburb", name: "suburb name"},
                %Timepoint{id: "downtown", name: "downtown name"}
@@ -224,38 +218,36 @@ defmodule ScheduleTest do
     end
 
     test "gracefully returns [] for route without timepoints" do
-      pid =
-        Schedule.start_mocked(%{
-          gtfs: %{
-            "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,representative_trip_id",
-              "pattern,route,0,trip"
-            ],
-            "stop_times.txt" => [
-              "trip_id,arrival_time,departure_time,stop_sequence,checkpoint_id",
-              "trip,,00:00:01,0,"
-            ]
-          }
-        })
+      Schedule.start_mocked(%{
+        gtfs: %{
+          "route_patterns.txt" => [
+            "route_pattern_id,route_id,direction_id,representative_trip_id",
+            "pattern,route,0,trip"
+          ],
+          "stop_times.txt" => [
+            "trip_id,arrival_time,departure_time,stop_sequence,checkpoint_id",
+            "trip,,00:00:01,0,"
+          ]
+        }
+      })
 
-      assert Schedule.timepoints_on_route("route", pid) == []
+      assert Schedule.timepoints_on_route("route") == []
     end
   end
 
   describe "stop/2" do
     test "returns the stop for this stop ID" do
-      pid =
-        Schedule.start_mocked(%{
-          gtfs: %{
-            "stops.txt" => [
-              "stop_id,stop_name,stop_lat,stop_lon,parent_station",
-              "1,One,1.0,1.5,",
-              "2,Two,2.0,2.5,3"
-            ]
-          }
-        })
+      Schedule.start_mocked(%{
+        gtfs: %{
+          "stops.txt" => [
+            "stop_id,stop_name,stop_lat,stop_lon,parent_station",
+            "1,One,1.0,1.5,",
+            "2,Two,2.0,2.5,3"
+          ]
+        }
+      })
 
-      assert Schedule.stop("2", pid) == %Stop{
+      assert Schedule.stop("2") == %Stop{
                id: "2",
                name: "Two",
                parent_station_id: "3",
@@ -265,44 +257,43 @@ defmodule ScheduleTest do
     end
 
     test "returns nil if stop doesn't exist" do
-      pid = Schedule.start_mocked(%{})
-      assert Schedule.stop("id", pid) == nil
+      Schedule.start_mocked(%{})
+      refute Schedule.stop("id")
     end
   end
 
   describe "trip" do
     test "returns the trip, including stop_times" do
-      pid =
-        Schedule.start_mocked(%{
-          gtfs: %{
-            "routes.txt" => [
-              "route_id,route_type,route_short_name",
-              "route,3,route"
-            ],
-            "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,representative_trip_id",
-              "p1,route,1,t1"
-            ],
-            "trips.txt" => [
-              "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
-              "route,service,t1,h1,1,b,route-_-0,shape1"
-            ],
-            "stop_times.txt" => [
-              "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
-              "t1,,00:00:01,s4,1,exurb",
-              "t1,,00:00:02,s5,2,",
-              "t1,,00:00:03,s3,3,suburb"
-            ]
-          },
-          hastus: %{
-            "trips.csv" => [
-              "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
-              "schedule;123;    1501;b;04:30;05:05;wtryd;hayms;route;t1"
-            ]
-          }
-        })
+      Schedule.start_mocked(%{
+        gtfs: %{
+          "routes.txt" => [
+            "route_id,route_type,route_short_name",
+            "route,3,route"
+          ],
+          "route_patterns.txt" => [
+            "route_pattern_id,route_id,direction_id,representative_trip_id",
+            "p1,route,1,t1"
+          ],
+          "trips.txt" => [
+            "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
+            "route,service,t1,h1,1,b,route-_-0,shape1"
+          ],
+          "stop_times.txt" => [
+            "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
+            "t1,,00:00:01,s4,1,exurb",
+            "t1,,00:00:02,s5,2,",
+            "t1,,00:00:03,s3,3,suburb"
+          ]
+        },
+        hastus: %{
+          "trips.csv" => [
+            "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
+            "schedule;123;    1501;b;04:30;05:05;wtryd;hayms;route;t1"
+          ]
+        }
+      })
 
-      assert Schedule.trip("t1", pid) ==
+      assert Schedule.trip("t1") ==
                %Trip{
                  id: "t1",
                  block_id: "b",
@@ -335,46 +326,45 @@ defmodule ScheduleTest do
     end
 
     test "returns nil if the trip doesn't exist" do
-      pid = Schedule.start_mocked(%{})
-      assert Schedule.trip("t1", pid) == nil
+      Schedule.start_mocked(%{})
+      refute Schedule.trip("t1")
     end
   end
 
   describe "block" do
     test "returns the list of trips on the block" do
-      pid =
-        Schedule.start_mocked(%{
-          gtfs: %{
-            "routes.txt" => [
-              "route_id,route_type,route_short_name",
-              "route,3,route"
-            ],
-            "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,representative_trip_id",
-              "p1,route,1,t1"
-            ],
-            "trips.txt" => [
-              "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
-              "route,service,t1,h1,1,b,route-_-0,shape1"
-            ],
-            "stop_times.txt" => [
-              "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
-              "t1,,00:00:01,s4,1,exurb",
-              "t1,,00:00:02,s5,2,",
-              "t1,,00:00:03,s3,3,suburb"
-            ]
-          },
-          hastus: %{
-            "activities.csv" => [
-              "schedule_id;area;run_id;start_time;end_time;start_place;end_place;activity_type;activity_name",
-              "schedule;123;1501;04:20;05:15;start;end;Operator;b"
-            ],
-            "trips.csv" => [
-              "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
-              "schedule;123;    1501;b;04:30;05:05;wtryd;hayms;route;t1"
-            ]
-          }
-        })
+      Schedule.start_mocked(%{
+        gtfs: %{
+          "routes.txt" => [
+            "route_id,route_type,route_short_name",
+            "route,3,route"
+          ],
+          "route_patterns.txt" => [
+            "route_pattern_id,route_id,direction_id,representative_trip_id",
+            "p1,route,1,t1"
+          ],
+          "trips.txt" => [
+            "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
+            "route,service,t1,h1,1,b,route-_-0,shape1"
+          ],
+          "stop_times.txt" => [
+            "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
+            "t1,,00:00:01,s4,1,exurb",
+            "t1,,00:00:02,s5,2,",
+            "t1,,00:00:03,s3,3,suburb"
+          ]
+        },
+        hastus: %{
+          "activities.csv" => [
+            "schedule_id;area;run_id;start_time;end_time;start_place;end_place;activity_type;activity_name",
+            "schedule;123;1501;04:20;05:15;start;end;Operator;b"
+          ],
+          "trips.csv" => [
+            "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
+            "schedule;123;    1501;b;04:30;05:05;wtryd;hayms;route;t1"
+          ]
+        }
+      })
 
       assert %Block{
                id: "b",
@@ -392,130 +382,127 @@ defmodule ScheduleTest do
                    ]
                  }
                ]
-             } = Schedule.block("schedule", "b", pid)
+             } = Schedule.block("schedule", "b")
     end
 
     test "returns nil if the block doesn't exist" do
-      pid = Schedule.start_mocked(%{})
-      assert Schedule.block("b", "service", pid) == nil
+      Schedule.start_mocked(%{})
+      refute Schedule.block("b", "service")
     end
   end
 
   describe "active_trips" do
     test "returns trips that are active right now" do
-      pid =
-        Schedule.start_mocked(%{
-          gtfs: %{
-            "calendar.txt" => [
-              "service_id,monday,tuesday,wednesday,thursday,friday,saturday,sunday,start_date,end_date",
-              "today,1,1,1,1,1,1,1,20190101,20190101",
-              "tomorrow,1,1,1,1,1,1,1,20190102,20190102"
-            ],
-            "routes.txt" => [
-              "route_id,route_type,route_short_name",
-              "route,3,route",
-              "other_route,3,other_route"
-            ],
-            "trips.txt" => [
-              "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id",
-              "route,today,now,headsign,0,now,",
-              "route,today,later,headsign,0,later,"
-            ],
-            "stop_times.txt" => [
-              "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
-              "now,,00:00:01,stop1,1,",
-              "now,,00:00:03,stop2,2,",
-              "later,,00:00:04,stop1,1,"
-            ]
-          }
-        })
+      Schedule.start_mocked(%{
+        gtfs: %{
+          "calendar.txt" => [
+            "service_id,monday,tuesday,wednesday,thursday,friday,saturday,sunday,start_date,end_date",
+            "today,1,1,1,1,1,1,1,20190101,20190101",
+            "tomorrow,1,1,1,1,1,1,1,20190102,20190102"
+          ],
+          "routes.txt" => [
+            "route_id,route_type,route_short_name",
+            "route,3,route",
+            "other_route,3,other_route"
+          ],
+          "trips.txt" => [
+            "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id",
+            "route,today,now,headsign,0,now,",
+            "route,today,later,headsign,0,later,"
+          ],
+          "stop_times.txt" => [
+            "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
+            "now,,00:00:01,stop1,1,",
+            "now,,00:00:03,stop2,2,",
+            "later,,00:00:04,stop1,1,"
+          ]
+        }
+      })
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
 
-      assert [%Trip{id: "now"}] = Schedule.active_trips(time0 + 2, time0 + 2, pid)
+      assert [%Trip{id: "now"}] = Schedule.active_trips(time0 + 2, time0 + 2)
     end
   end
 
   describe "active_blocks" do
     test "returns only blocks that are active" do
-      pid =
-        Schedule.start_mocked(%{
-          gtfs: %{
-            "calendar.txt" => [
-              "service_id,monday,tuesday,wednesday,thursday,friday,saturday,sunday,start_date,end_date",
-              "today,1,1,1,1,1,1,1,20190101,20190101",
-              "tomorrow,1,1,1,1,1,1,1,20190102,20190102"
-            ],
-            "routes.txt" => [
-              "route_id,route_type,route_short_name",
-              "route,3,route"
-            ],
-            "trips.txt" => [
-              "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id",
-              "route,today,now,headsign,0,now,",
-              "route,today,later,headsign,0,later,",
-              "route,tomorrow,tomorrow,headsign,0,tomorrow,"
-            ],
-            "stop_times.txt" => [
-              "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
-              "now,,00:00:02,stop,1,",
-              "later,,00:00:04,stop,1,",
-              "tomorrow,,00:00:02,stop,1,"
-            ]
-          },
-          hastus: %{
-            "activities.csv" => [
-              "schedule_id;area;run_id;start_time;end_time;start_place;end_place;activity_type;activity_name",
-              "schedule;123;456;00:01;12:01;start;end;Operator;now"
-            ],
-            "trips.csv" => [
-              "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
-              "schedule;123;456;now;00:01;12:01;someplace;otherplace;route;now"
-            ]
-          }
-        })
+      Schedule.start_mocked(%{
+        gtfs: %{
+          "calendar.txt" => [
+            "service_id,monday,tuesday,wednesday,thursday,friday,saturday,sunday,start_date,end_date",
+            "today,1,1,1,1,1,1,1,20190101,20190101",
+            "tomorrow,1,1,1,1,1,1,1,20190102,20190102"
+          ],
+          "routes.txt" => [
+            "route_id,route_type,route_short_name",
+            "route,3,route"
+          ],
+          "trips.txt" => [
+            "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id",
+            "route,today,now,headsign,0,now,",
+            "route,today,later,headsign,0,later,",
+            "route,tomorrow,tomorrow,headsign,0,tomorrow,"
+          ],
+          "stop_times.txt" => [
+            "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
+            "now,,00:00:02,stop,1,",
+            "later,,00:00:04,stop,1,",
+            "tomorrow,,00:00:02,stop,1,"
+          ]
+        },
+        hastus: %{
+          "activities.csv" => [
+            "schedule_id;area;run_id;start_time;end_time;start_place;end_place;activity_type;activity_name",
+            "schedule;123;456;00:01;12:01;start;end;Operator;now"
+          ],
+          "trips.csv" => [
+            "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
+            "schedule;123;456;now;00:01;12:01;someplace;otherplace;route;now"
+          ]
+        }
+      })
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
 
       assert %{~D[2019-01-01] => [%Block{id: "now"}]} =
-               Schedule.active_blocks(time0 + 1, time0 + 90, pid)
+               Schedule.active_blocks(time0 + 1, time0 + 90)
     end
   end
 
   describe "shapes" do
     test "returns the shapes for all trips corresponding to the requested route" do
-      pid =
-        Schedule.start_mocked(%{
-          gtfs: %{
-            "routes.txt" => [
-              "route_id,route_type,route_short_name,route_desc",
-              "route,3,route,\"Key Bus\""
-            ],
-            "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,representative_trip_id",
-              "p1,route,1,t1"
-            ],
-            "trips.txt" => [
-              "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
-              "route,service,t1,h1,1,b,route-_-0,shape1",
-              "route,service,t2,h2,1,b,route-_-0,shape2"
-            ],
-            "stop_times.txt" => [
-              "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
-              "t1,,00:00:01,s4,1,exurb",
-              "t2,,00:00:01,s4,1,exurb"
-            ],
-            "shapes.txt" => [
-              "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled",
-              "shape1,42.373178,-71.118170,0,",
-              "shape2,43.373178,-72.118170,0,"
-            ]
-          }
-        })
+      Schedule.start_mocked(%{
+        gtfs: %{
+          "routes.txt" => [
+            "route_id,route_type,route_short_name,route_desc",
+            "route,3,route,\"Key Bus\""
+          ],
+          "route_patterns.txt" => [
+            "route_pattern_id,route_id,direction_id,representative_trip_id",
+            "p1,route,1,t1"
+          ],
+          "trips.txt" => [
+            "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
+            "route,service,t1,h1,1,b,route-_-0,shape1",
+            "route,service,t2,h2,1,b,route-_-0,shape2"
+          ],
+          "stop_times.txt" => [
+            "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
+            "t1,,00:00:01,s4,1,exurb",
+            "t2,,00:00:01,s4,1,exurb"
+          ],
+          "shapes.txt" => [
+            "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled",
+            "shape1,42.373178,-71.118170,0,",
+            "shape2,43.373178,-72.118170,0,"
+          ]
+        }
+      })
 
-      assert Schedule.shapes("route", pid) == [
+      assert Schedule.shapes("route") == [
                %Shape{
                  id: "shape1",
                  points: [
@@ -542,35 +529,34 @@ defmodule ScheduleTest do
     end
 
     test "dedupes shapes that are reused between trips" do
-      pid =
-        Schedule.start_mocked(%{
-          gtfs: %{
-            "routes.txt" => [
-              "route_id,route_type,route_short_name,route_desc",
-              "route,3,route,\"Rail Replacement Bus\""
-            ],
-            "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,representative_trip_id",
-              "p1,route,1,t1"
-            ],
-            "trips.txt" => [
-              "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
-              "route,service,t1,h1,1,b,route-_-0,shape1",
-              "route,service,t2,h2,1,b,route-_-0,shape1"
-            ],
-            "stop_times.txt" => [
-              "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
-              "t1,,00:00:01,s4,1,exurb",
-              "t2,,00:00:01,s4,1,exurb"
-            ],
-            "shapes.txt" => [
-              "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled",
-              "shape1,42.373178,-71.118170,0,"
-            ]
-          }
-        })
+      Schedule.start_mocked(%{
+        gtfs: %{
+          "routes.txt" => [
+            "route_id,route_type,route_short_name,route_desc",
+            "route,3,route,\"Rail Replacement Bus\""
+          ],
+          "route_patterns.txt" => [
+            "route_pattern_id,route_id,direction_id,representative_trip_id",
+            "p1,route,1,t1"
+          ],
+          "trips.txt" => [
+            "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
+            "route,service,t1,h1,1,b,route-_-0,shape1",
+            "route,service,t2,h2,1,b,route-_-0,shape1"
+          ],
+          "stop_times.txt" => [
+            "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
+            "t1,,00:00:01,s4,1,exurb",
+            "t2,,00:00:01,s4,1,exurb"
+          ],
+          "shapes.txt" => [
+            "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled",
+            "shape1,42.373178,-71.118170,0,"
+          ]
+        }
+      })
 
-      assert Schedule.shapes("route", pid) == [
+      assert Schedule.shapes("route") == [
                %Shape{
                  id: "shape1",
                  points: [
@@ -586,35 +572,34 @@ defmodule ScheduleTest do
     end
 
     test "sorts the shape points" do
-      pid =
-        Schedule.start_mocked(%{
-          gtfs: %{
-            "routes.txt" => [
-              "route_id,route_type,route_short_name,route_desc",
-              "route,3,route,\"Rail Replacement Bus\""
-            ],
-            "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,representative_trip_id",
-              "p1,route,1,t1"
-            ],
-            "trips.txt" => [
-              "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
-              "route,service,t1,h1,1,b,route-_-0,shape"
-            ],
-            "stop_times.txt" => [
-              "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
-              "t1,,00:00:01,s4,1,exurb"
-            ],
-            "shapes.txt" => [
-              "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled",
-              "shape,43.373178,-73.118170,2,",
-              "shape,42.373178,-72.118170,1,",
-              "shape,41.373178,-71.118170,0,"
-            ]
-          }
-        })
+      Schedule.start_mocked(%{
+        gtfs: %{
+          "routes.txt" => [
+            "route_id,route_type,route_short_name,route_desc",
+            "route,3,route,\"Rail Replacement Bus\""
+          ],
+          "route_patterns.txt" => [
+            "route_pattern_id,route_id,direction_id,representative_trip_id",
+            "p1,route,1,t1"
+          ],
+          "trips.txt" => [
+            "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
+            "route,service,t1,h1,1,b,route-_-0,shape"
+          ],
+          "stop_times.txt" => [
+            "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
+            "t1,,00:00:01,s4,1,exurb"
+          ],
+          "shapes.txt" => [
+            "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled",
+            "shape,43.373178,-73.118170,2,",
+            "shape,42.373178,-72.118170,1,",
+            "shape,41.373178,-71.118170,0,"
+          ]
+        }
+      })
 
-      assert Schedule.shapes("route", pid) == [
+      assert Schedule.shapes("route") == [
                %Shape{
                  id: "shape",
                  points: [
@@ -644,33 +629,32 @@ defmodule ScheduleTest do
 
   describe "shape_for_trip" do
     test "returns the shape for the trip" do
-      pid =
-        Schedule.start_mocked(%{
-          gtfs: %{
-            "routes.txt" => [
-              "route_id,route_type,route_short_name,route_desc",
-              "route,3,route,\"Key Bus\""
-            ],
-            "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,representative_trip_id",
-              "p1,route,1,trip"
-            ],
-            "trips.txt" => [
-              "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
-              "route,service,trip,headsign,1,block,route-_-0,shape"
-            ],
-            "stop_times.txt" => [
-              "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
-              "trip,,00:00:01,stop,1,"
-            ],
-            "shapes.txt" => [
-              "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled",
-              "shape,42.373178,-71.118170,0,"
-            ]
-          }
-        })
+      Schedule.start_mocked(%{
+        gtfs: %{
+          "routes.txt" => [
+            "route_id,route_type,route_short_name,route_desc",
+            "route,3,route,\"Key Bus\""
+          ],
+          "route_patterns.txt" => [
+            "route_pattern_id,route_id,direction_id,representative_trip_id",
+            "p1,route,1,trip"
+          ],
+          "trips.txt" => [
+            "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,route_pattern_id,shape_id",
+            "route,service,trip,headsign,1,block,route-_-0,shape"
+          ],
+          "stop_times.txt" => [
+            "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
+            "trip,,00:00:01,stop,1,"
+          ],
+          "shapes.txt" => [
+            "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled",
+            "shape,42.373178,-71.118170,0,"
+          ]
+        }
+      })
 
-      assert Schedule.shape_for_trip("trip", pid) ==
+      assert Schedule.shape_for_trip("trip") ==
                %Shape{
                  id: "shape",
                  points: [
@@ -687,40 +671,38 @@ defmodule ScheduleTest do
 
   describe "first_route_pattern_for_route_and_direction" do
     test "returns the first route pattern matching the route and direction" do
-      pid =
-        Schedule.start_mocked(%{
-          gtfs: %{
-            "directions.txt" => [
-              "route_id,direction_id,direction,direction_destination",
-              "Shuttle-BabcockBostonCollege,0,West,Boston College",
-              "Shuttle-BabcockBostonCollege,1,East,Park Street"
-            ],
-            "routes.txt" => [
-              "route_id,route_long_name,route_type,route_desc,route_short_name",
-              "Shuttle-BabcockBostonCollege,Green Line B Shuttle,3,Rail Replacement Bus,"
-            ],
-            "route_patterns.txt" => [
-              "route_pattern_id,route_id,direction_id,route_pattern_name,representative_trip_id",
-              "Shuttle-BabcockBostonCollege-0-0,Shuttle-BabcockBostonCollege,0,Babcock Street - Boston College,41836966-20:45-BabcockBCNewtonHighlandsKenmore1",
-              "Shuttle-BabcockBostonCollege-0-1,Shuttle-BabcockBostonCollege,1,Boston College - Babcock Street,41836965-20:45-BabcockBCNewtonHighlandsKenmore1"
-            ],
-            "trips.txt" => [
-              "route_id,service_id,trip_id,trip_headsign,trip_short_name,direction_id,block_id,shape_id,wheelchair_accessible,trip_route_type,route_pattern_id,bikes_allowed",
-              "Shuttle-BabcockBostonCollege,LRV419-1-Wdy-01-BbkBCNwnHgsKnr,41836966-20:45-BabcockBCNewtonHighlandsKenmore1,Boston College (Shuttle),,0,B813_-5-0-BabcockBC1,BabcockStreetToBostonCollege-S,1,3,Shuttle-BabcockBostonCollege-0-0,0",
-              "Shuttle-BabcockBostonCollege,LRV419-1-Wdy-01-BbkBCNwnHgsKnr,41836965-20:45-BabcockBCNewtonHighlandsKenmore1,Babcock Street (Shuttle),,1,B813_-5-1-BabcockBC1,BostonCollegeToBabcockStreet-S,1,3,Shuttle-BabcockBostonCollege-0-1,0"
-            ],
-            "stop_times.txt" => [
-              "trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_type,timepoint,checkpoint_id",
-              "41836966-20:45-BabcockBCNewtonHighlandsKenmore1,25:16:00,25:16:00,958,0,,0,1,,",
-              "41836965-20:45-BabcockBCNewtonHighlandsKenmore1,24:11:00,24:11:00,9070107,0,,0,1,,"
-            ]
-          }
-        })
+      Schedule.start_mocked(%{
+        gtfs: %{
+          "directions.txt" => [
+            "route_id,direction_id,direction,direction_destination",
+            "Shuttle-BabcockBostonCollege,0,West,Boston College",
+            "Shuttle-BabcockBostonCollege,1,East,Park Street"
+          ],
+          "routes.txt" => [
+            "route_id,route_long_name,route_type,route_desc,route_short_name",
+            "Shuttle-BabcockBostonCollege,Green Line B Shuttle,3,Rail Replacement Bus,"
+          ],
+          "route_patterns.txt" => [
+            "route_pattern_id,route_id,direction_id,route_pattern_name,representative_trip_id",
+            "Shuttle-BabcockBostonCollege-0-0,Shuttle-BabcockBostonCollege,0,Babcock Street - Boston College,41836966-20:45-BabcockBCNewtonHighlandsKenmore1",
+            "Shuttle-BabcockBostonCollege-0-1,Shuttle-BabcockBostonCollege,1,Boston College - Babcock Street,41836965-20:45-BabcockBCNewtonHighlandsKenmore1"
+          ],
+          "trips.txt" => [
+            "route_id,service_id,trip_id,trip_headsign,trip_short_name,direction_id,block_id,shape_id,wheelchair_accessible,trip_route_type,route_pattern_id,bikes_allowed",
+            "Shuttle-BabcockBostonCollege,LRV419-1-Wdy-01-BbkBCNwnHgsKnr,41836966-20:45-BabcockBCNewtonHighlandsKenmore1,Boston College (Shuttle),,0,B813_-5-0-BabcockBC1,BabcockStreetToBostonCollege-S,1,3,Shuttle-BabcockBostonCollege-0-0,0",
+            "Shuttle-BabcockBostonCollege,LRV419-1-Wdy-01-BbkBCNwnHgsKnr,41836965-20:45-BabcockBCNewtonHighlandsKenmore1,Babcock Street (Shuttle),,1,B813_-5-1-BabcockBC1,BostonCollegeToBabcockStreet-S,1,3,Shuttle-BabcockBostonCollege-0-1,0"
+          ],
+          "stop_times.txt" => [
+            "trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_type,timepoint,checkpoint_id",
+            "41836966-20:45-BabcockBCNewtonHighlandsKenmore1,25:16:00,25:16:00,958,0,,0,1,,",
+            "41836965-20:45-BabcockBCNewtonHighlandsKenmore1,24:11:00,24:11:00,9070107,0,,0,1,,"
+          ]
+        }
+      })
 
       assert Schedule.first_route_pattern_for_route_and_direction(
                "Shuttle-BabcockBostonCollege",
-               0,
-               pid
+               0
              ) ==
                %RoutePattern{
                  id: "Shuttle-BabcockBostonCollege-0-0",
@@ -734,40 +716,39 @@ defmodule ScheduleTest do
 
   describe "blocks and runs by trip" do
     setup do
-      pid =
-        Schedule.start_mocked(%{
-          hastus: %{
-            "activities.csv" => [
-              "schedule_id;area;run_id;start_time;end_time;start_place;end_place;activity_type;activity_name",
-              "schedule;123;4567;00:00;00:00;start;end;Operator;block"
-            ],
-            "trips.csv" => [
-              "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
-              "schedule;123;4567;block;00:00;00:00;start;end;route;trip"
-            ]
-          },
-          gtfs: %{
-            "checkpoints.txt" => [
-              "checkpoint_id,checkpoint_name",
-              "start,Starting Timepoint",
-              "end,Ending Timepoint"
-            ],
-            "routes.txt" => [
-              "route_id,route_long_name,route_type,route_desc,route_short_name",
-              "route,Some Place - Some Other Place,3,Key Bus,route"
-            ],
-            "trips.txt" => [
-              "route_id,service_id,trip_id,trip_headsign,direction_id,block_id",
-              "route,service,trip,Headsign,0,block",
-              "route,service,trip,Headsign,1,block"
-            ],
-            "stop_times.txt" => [
-              "trip_id,arrival_time,departure_time,stop_sequence,checkpoint_id",
-              "trip,,00:00:00,1,start",
-              "trip,,00:00:00,2,"
-            ]
-          }
-        })
+      Schedule.start_mocked(%{
+        hastus: %{
+          "activities.csv" => [
+            "schedule_id;area;run_id;start_time;end_time;start_place;end_place;activity_type;activity_name",
+            "schedule;123;4567;00:00;00:00;start;end;Operator;block"
+          ],
+          "trips.csv" => [
+            "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
+            "schedule;123;4567;block;00:00;00:00;start;end;route;trip"
+          ]
+        },
+        gtfs: %{
+          "checkpoints.txt" => [
+            "checkpoint_id,checkpoint_name",
+            "start,Starting Timepoint",
+            "end,Ending Timepoint"
+          ],
+          "routes.txt" => [
+            "route_id,route_long_name,route_type,route_desc,route_short_name",
+            "route,Some Place - Some Other Place,3,Key Bus,route"
+          ],
+          "trips.txt" => [
+            "route_id,service_id,trip_id,trip_headsign,direction_id,block_id",
+            "route,service,trip,Headsign,0,block",
+            "route,service,trip,Headsign,1,block"
+          ],
+          "stop_times.txt" => [
+            "trip_id,arrival_time,departure_time,stop_sequence,checkpoint_id",
+            "trip,,00:00:00,1,start",
+            "trip,,00:00:00,2,"
+          ]
+        }
+      })
 
       expected_piece = %Piece{
         schedule_id: "schedule",
@@ -801,11 +782,11 @@ defmodule ScheduleTest do
         end_place: "Ending Timepoint"
       }
 
-      %{pid: pid, expected_piece: expected_piece}
+      %{expected_piece: expected_piece}
     end
 
-    test "can get run via run_for_trip", %{pid: pid, expected_piece: expected_piece} do
-      assert Schedule.run_for_trip("123-4567", "trip", pid) ==
+    test "can get run via run_for_trip", %{expected_piece: expected_piece} do
+      assert Schedule.run_for_trip("123-4567", "trip") ==
                %Run{
                  schedule_id: "schedule",
                  service_id: "service",
@@ -816,57 +797,56 @@ defmodule ScheduleTest do
                }
     end
 
-    test "can get block", %{pid: pid, expected_piece: expected_piece} do
+    test "can get block", %{expected_piece: expected_piece} do
       assert %Block{
                schedule_id: "schedule",
                id: "block",
                pieces: [^expected_piece]
-             } = Schedule.block_for_trip("trip", pid)
+             } = Schedule.block_for_trip("trip")
     end
   end
 
   describe "swings_for_route/4" do
     setup do
-      pid =
-        Schedule.start_mocked(%{
-          hastus: %{
-            "activities.csv" => [
-              "schedule_id;area;run_id;start_time;end_time;start_place;end_place;activity_type;activity_name",
-              "schedule;123;456;00:00;00:00;start;end;Operator;block",
-              "schedule;123;789;00:00;00:00;start;end;Operator;block"
-            ],
-            "trips.csv" => [
-              "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
-              "schedule;123;456;block;00:00;00:00;start;end;route;trip1",
-              "schedule;123;789;block;00:00;00:00;start;end;route;trip2"
-            ]
-          },
-          gtfs: %{
-            "calendar.txt" => [
-              "service_id,monday,tuesday,wednesday,thursday,friday,saturday,sunday,start_date,end_date",
-              "service,1,0,0,0,0,0,0,20210419,20210419"
-            ],
-            "checkpoints.txt" => [
-              "checkpoint_id,checkpoint_name",
-              "start,Starting Timepoint",
-              "end,Ending Timepoint"
-            ],
-            "routes.txt" => [
-              "route_id,route_long_name,route_type,route_desc,route_short_name",
-              "route,Some Place - Some Other Place,3,Key Bus,route"
-            ],
-            "stop_times.txt" => [
-              "trip_id,arrival_time,departure_time,stop_sequence,checkpoint_id",
-              "trip1,,00:00:00,1,start",
-              "trip2,,00:00:00,2,"
-            ],
-            "trips.txt" => [
-              "route_id,service_id,trip_id,trip_headsign,direction_id,block_id",
-              "route,service,trip1,Headsign,0,block",
-              "route,service,trip2,Headsign,1,block"
-            ]
-          }
-        })
+      Schedule.start_mocked(%{
+        hastus: %{
+          "activities.csv" => [
+            "schedule_id;area;run_id;start_time;end_time;start_place;end_place;activity_type;activity_name",
+            "schedule;123;456;00:00;00:00;start;end;Operator;block",
+            "schedule;123;789;00:00;00:00;start;end;Operator;block"
+          ],
+          "trips.csv" => [
+            "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
+            "schedule;123;456;block;00:00;00:00;start;end;route;trip1",
+            "schedule;123;789;block;00:00;00:00;start;end;route;trip2"
+          ]
+        },
+        gtfs: %{
+          "calendar.txt" => [
+            "service_id,monday,tuesday,wednesday,thursday,friday,saturday,sunday,start_date,end_date",
+            "service,1,0,0,0,0,0,0,20210419,20210419"
+          ],
+          "checkpoints.txt" => [
+            "checkpoint_id,checkpoint_name",
+            "start,Starting Timepoint",
+            "end,Ending Timepoint"
+          ],
+          "routes.txt" => [
+            "route_id,route_long_name,route_type,route_desc,route_short_name",
+            "route,Some Place - Some Other Place,3,Key Bus,route"
+          ],
+          "stop_times.txt" => [
+            "trip_id,arrival_time,departure_time,stop_sequence,checkpoint_id",
+            "trip1,,00:00:00,1,start",
+            "trip2,,00:00:00,2,"
+          ],
+          "trips.txt" => [
+            "route_id,service_id,trip_id,trip_headsign,direction_id,block_id",
+            "route,service,trip1,Headsign,0,block",
+            "route,service,trip2,Headsign,1,block"
+          ]
+        }
+      })
 
       expected_swing = %Swing{
         block_id: "block",
@@ -880,7 +860,6 @@ defmodule ScheduleTest do
       }
 
       %{
-        pid: pid,
         expected_swing: expected_swing,
         route_id: "route",
         start_time: 1_618_848_000,
@@ -889,13 +868,12 @@ defmodule ScheduleTest do
     end
 
     test "can get swing", %{
-      pid: pid,
       expected_swing: expected_swing,
       route_id: route_id,
       start_time: start_time,
       end_time: end_time
     } do
-      assert Schedule.swings_for_route(route_id, start_time, end_time, pid) == [expected_swing]
+      assert Schedule.swings_for_route(route_id, start_time, end_time) == [expected_swing]
     end
   end
 end
