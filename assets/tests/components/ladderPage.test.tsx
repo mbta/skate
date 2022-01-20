@@ -21,6 +21,7 @@ import {
   State,
   selectRouteTab,
   createRouteTab,
+  closeRouteTab,
 } from "../../src/state"
 import ghostFactory from "../factories/ghost"
 import routeFactory from "../factories/route"
@@ -131,6 +132,33 @@ describe("LadderPage", () => {
 
     expect(mockDispatch).toHaveBeenCalledWith(
       selectRouteTab(mockState.routeTabs[1].uuid)
+    )
+  })
+
+  test("can close a route tab", () => {
+    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
+    const mockState = {
+      ...initialState,
+      routeTabs: [
+        routeTabFactory.build({
+          ordering: 0,
+          isCurrentTab: true,
+          selectedRouteIds: ["1"],
+        }),
+      ],
+    }
+    const wrapper = mount(
+      <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+        <RoutesProvider routes={routes}>
+          <LadderPage />
+        </RoutesProvider>
+      </StateDispatchProvider>
+    )
+
+    wrapper.find(".m-ladder-page__tab-contents button").simulate("click")
+
+    expect(mockDispatch).toHaveBeenCalledWith(
+      closeRouteTab(mockState.routeTabs[0].uuid)
     )
   })
 
