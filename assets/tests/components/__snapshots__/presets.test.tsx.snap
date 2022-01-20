@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Presets renders current presets 1`] = `
+<div
+  className="m-presets-panel"
+>
+  <button
+    onClick={[Function]}
+  >
+    Save as preset
+  </button>
+  <div>
+    Existing presets:
+    <ul>
+      <button
+        onClick={[Function]}
+      >
+        My Preset
+      </button>
+    </ul>
+  </div>
+</div>
+`;
