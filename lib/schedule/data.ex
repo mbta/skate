@@ -367,8 +367,8 @@ defmodule Schedule.Data do
   @spec initialize_tables(tables()) :: :ok
   def initialize_tables(tables) do
     Enum.each(@table_schema, fn {table_key, type, columns, extra_indices} ->
-      # TODO: drop table if it already exists before attempting to create
-      # {:atomic, :ok} =
+      # if the table already exists, any data will be deleted when
+      # save_schedule_data_to_tables/2 is called.
       _ =
         :mnesia.create_table(tables[table_key],
           type: type,
