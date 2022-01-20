@@ -130,7 +130,7 @@ defmodule Schedule.Data do
   @spec stop(tables(), Stop.id()) :: Stop.t() | nil
   def stop(%{stops: stops_table}, stop_id) do
     case :mnesia.dirty_read(stops_table, stop_id) do
-      [{^stops_table, _, stop}] -> stop
+      [{_, _, stop}] -> stop
       _ -> nil
     end
   end
@@ -138,7 +138,7 @@ defmodule Schedule.Data do
   @spec trip(tables(), Schedule.Trip.id()) :: Schedule.Trip.t() | nil
   def trip(%{trips: trips_table}, trip_id) do
     case :mnesia.dirty_read(trips_table, trip_id) do
-      [{^trips_table, _, _, trip}] -> trip
+      [{_, _, _, trip}] -> trip
       _ -> nil
     end
   end
@@ -315,7 +315,7 @@ defmodule Schedule.Data do
          true <- is_binary(schedule_id),
          true <- is_binary(run_id) or is_binary(trip_run_id),
          run_key = {schedule_id, run_id || trip_run_id},
-         [{^runs_table, _, _, run}] <- :mnesia.dirty_read(runs_table, run_key) do
+         [{_, _, _, run}] <- :mnesia.dirty_read(runs_table, run_key) do
       run
     else
       _ -> nil
