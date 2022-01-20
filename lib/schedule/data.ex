@@ -377,9 +377,11 @@ defmodule Schedule.Data do
           storage_properties: [ets: [{:read_concurrency, true}]],
           local_content: true
         )
-
-      :mnesia.wait_for_tables([tables[table_key]], 5_000)
     end)
+
+    tables
+    |> Map.values()
+    |> :mnesia.wait_for_tables(5_000)
 
     :ok
   end
