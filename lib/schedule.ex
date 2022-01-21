@@ -154,7 +154,9 @@ defmodule Schedule do
       {:DOWN, ^ref, :process, ^fetcher_pid, :normal} -> :ok
     after
       5_000 ->
-        raise "Schedule.Fetcher did not terminate"
+        if Process.alive?(fetcher_pid) do
+          raise "Schedule.Fetcher did not terminate"
+        end
     end
 
     :ignore
