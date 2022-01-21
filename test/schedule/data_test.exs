@@ -278,13 +278,17 @@ defmodule Schedule.DataTest do
     test "returns a day" do
       # 2019-12-17 12:00:00 EST
       time = 1_576_598_400
-      assert Data.potentially_active_service_dates(time, time) == [~D[2019-12-17]]
+      assert Enum.to_list(Data.potentially_active_service_dates(time, time)) == [~D[2019-12-17]]
     end
 
     test "returns yesterday and today for early morning times" do
       # 2019-12-17 01:00:00 EST
       time = 1_576_558_800
-      assert Data.potentially_active_service_dates(time, time) == [~D[2019-12-16], ~D[2019-12-17]]
+
+      assert Enum.to_list(Data.potentially_active_service_dates(time, time)) == [
+               ~D[2019-12-16],
+               ~D[2019-12-17]
+             ]
     end
 
     test "returns multiple dates for a time range" do
@@ -293,7 +297,7 @@ defmodule Schedule.DataTest do
       # 2019-12-19 22:00:00 EST
       end_time = 1_576_807_200
 
-      assert Data.potentially_active_service_dates(start_time, end_time) == [
+      assert Enum.to_list(Data.potentially_active_service_dates(start_time, end_time)) == [
                ~D[2019-12-16],
                ~D[2019-12-17],
                ~D[2019-12-18],

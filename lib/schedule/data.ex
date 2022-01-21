@@ -182,8 +182,7 @@ defmodule Schedule.Data do
       end_time
       |> Util.Time.date_of_timestamp()
 
-    date_range = Date.range(first_possible_service_date, last_possible_service_date)
-    Enum.to_list(date_range)
+    Date.range(first_possible_service_date, last_possible_service_date)
   end
 
   @spec active_trips(tables(), Util.Time.timestamp(), Util.Time.timestamp()) :: [
