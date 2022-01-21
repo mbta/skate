@@ -123,7 +123,7 @@ defmodule Util.Time do
     # typically, this value will be 0 or -1
     days_to_move_forward = Integer.floor_div(on_same_date - day_start, 24 * 60 * 60)
 
-    date_to_use = Timex.shift(date_of_timestamp, days: days_to_move_forward)
+    date_to_use = Date.add(date_of_timestamp, days_to_move_forward)
 
     time_of_day_for_timestamp(timestamp, date_to_use)
   end
@@ -197,19 +197,16 @@ defmodule Util.Time do
   """
   @spec date_of_timestamp(timestamp()) :: Date.t()
   def date_of_timestamp(timestamp) do
-    timestamp
-    |> DateTime.from_unix!(:second)
-    |> Timex.Timezone.convert("America/New_York")
-    |> DateTime.to_date()
+    {:ok, dt} = FastLocalDatetime.unix_to_datetime(timestamp, "America/New_York")
+    DateTime.to_date(dt)
   end
 
   @spec noon_on_date(Date.t()) :: timestamp()
   defp noon_on_date(date) do
-    # Convert to datetime on the next date and shift back to ignore daylight saving time jumps.
     date
-    |> Timex.shift(days: 1)
-    |> Timex.to_datetime("America/New_York")
-    |> Timex.shift(hours: -12)
-    |> Timex.to_unix()
+    |> NaiveDateTime.new(~T[12:00:00])
+    |> (fn {:ok, ndt} -> ndt end).()
+    |> DateTime.from_naive!("America/New_York")
+    |> DateTime.to_unix()
   end
 end
