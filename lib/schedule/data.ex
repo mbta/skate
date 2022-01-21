@@ -84,10 +84,10 @@ defmodule Schedule.Data do
     {:routes, :set, [:id, :route], []},
     {:route_patterns, :set, [:route_id_direction_id, :route_pattern], []},
     {:timepoints_by_route, :set, [:route_id, :timepoints], []},
-    {:timepoint_names_by_id, :set, [:id, :timepoint_name], []},
+    {:timepoint_names_by_id, :set, [:ignored, :timepoint_names_by_id], []},
     {:shapes, :set, [:shape_id, :route_id, :shapes], [:route_id]},
     {:stops, :set, [:id, :stop], []},
-    {:trips, :set, [:id, :service_id, :trip], [:service_id]},
+    {:trips, :set, [:id, :service_id, :start_time, :end_time, :trip], [:service_id]},
     {:blocks, :set, [:id, :service_id, :block], [:service_id]},
     {:calendar, :set, [:date, :service_ids], []},
     {:runs, :set, [:id, :service_id, :run], [:service_id]},
@@ -116,15 +116,10 @@ defmodule Schedule.Data do
 
   @spec timepoint_names_by_id(tables()) :: Timepoint.timepoint_names_by_id()
   def timepoint_names_by_id(%{timepoint_names_by_id: timepoint_names_by_id_table}) do
-    timepoint_names_by_id_table
-    |> :mnesia.dirty_select([
-      {
-        {:_, :"$1", :"$2"},
-        [],
-        [[:"$1", :"$2"]]
-      }
-    ])
-    |> Map.new(fn [id, name] -> {id, name} end)
+    case :mnesia.dirty_read(timepoint_names_by_id_table, nil) do
+      [{_, _, timepoint_names_by_id}] -> timepoint_names_by_id
+      _ -> %{}
+    end
   end
 
   @spec stop(tables(), Stop.id()) :: Stop.t() | nil
@@ -138,19 +133,19 @@ defmodule Schedule.Data do
   @spec trip(tables(), Schedule.Trip.id()) :: Schedule.Trip.t() | nil
   def trip(%{trips: trips_table}, trip_id) do
     case :mnesia.dirty_read(trips_table, trip_id) do
-      [{_, _, _, trip}] -> trip
+      [{_, _, _, _, _, trip}] -> trip
       _ -> nil
     end
   end
 
   @spec trips_by_id(tables(), [Schedule.Trip.id()]) :: %{Schedule.Trip.id() => Schedule.Trip.t()}
-  def trips_by_id(tables, trip_ids) do
+  def trips_by_id(%{trips: trips_table}, trip_ids) do
     selectors =
       for trip_id <- trip_ids do
-        {{:_, trip_id, :_, :"$1"}, [], [:"$1"]}
+        {{:_, trip_id, :_, :_, :_, :"$1"}, [], [:"$1"]}
       end
 
-    tables.trips
+    trips_table
     |> :mnesia.dirty_select(selectors)
     |> Map.new(fn trip -> {trip.id, trip} end)
   end
@@ -201,12 +196,11 @@ defmodule Schedule.Data do
 
       selectors =
         for service_id <- service_ids do
-          {{:_, :_, service_id, :"$1"}, [], [:"$1"]}
+          {{:_, :_, service_id, :"$2", :"$3", :"$1"},
+           [{:<, :"$2", end_time_of_day}, {:<, start_time_of_day, :"$3"}], [:"$1"]}
         end
 
-      trips_table
-      |> :mnesia.dirty_select(selectors)
-      |> Enum.filter(&Schedule.Trip.is_active(&1, start_time_of_day, end_time_of_day))
+      :mnesia.dirty_select(trips_table, selectors)
     end)
   end
 
@@ -409,9 +403,7 @@ defmodule Schedule.Data do
         :mnesia.write({tables.timepoints_by_route, route_id, timepoints})
       end)
 
-      Enum.each(schedule_data.timepoint_names_by_id, fn {id, timepoint_name} ->
-        :mnesia.write({tables.timepoint_names_by_id, id, timepoint_name})
-      end)
+      :mnesia.write({tables.timepoint_names_by_id, nil, schedule_data.timepoint_names_by_id})
 
       Enum.each(schedule_data.shapes, fn {route_id, shapes} ->
         for shape <- shapes do
@@ -422,7 +414,7 @@ defmodule Schedule.Data do
       Enum.each(schedule_data.stops, fn {id, stop} -> :mnesia.write({tables.stops, id, stop}) end)
 
       Enum.each(schedule_data.trips, fn {id, trip} ->
-        :mnesia.write({tables.trips, id, trip.service_id, trip})
+        :mnesia.write({tables.trips, id, trip.service_id, trip.start_time, trip.end_time, trip})
       end)
 
       Enum.each(schedule_data.blocks, fn {key, block} ->

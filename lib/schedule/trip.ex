@@ -125,15 +125,6 @@ defmodule Schedule.Trip do
     }
   end
 
-  @doc """
-  Whether the trip is active at any time during the time_of_day range.
-  """
-  @spec is_active(t(), Util.Time.time_of_day(), Util.Time.time_of_day()) :: boolean()
-  def is_active(trip, start_time_of_day, end_time_of_day) do
-    end_time_of_day > trip.start_time and
-      start_time_of_day < trip.end_time
-  end
-
   @spec id_sans_overload(id() | nil) :: id() | nil
   def id_sans_overload(nil), do: nil
 
