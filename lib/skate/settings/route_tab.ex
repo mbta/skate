@@ -49,14 +49,6 @@ defmodule Skate.Settings.RouteTab do
     |> Enum.map(&db_route_tab_to_route_tab(&1))
   end
 
-  @spec create_for_user!(String.t(), t()) :: t()
-  def create_for_user!(username, route_tab) do
-    User.get_or_create(username)
-    |> Ecto.build_assoc(:route_tabs, Map.delete(route_tab, :id))
-    |> DbRouteTab.changeset()
-    |> Repo.insert!()
-  end
-
   @spec db_route_tab_to_route_tab(%DbRouteTab{}) :: t()
   defp db_route_tab_to_route_tab(db_route_tab) do
     %__MODULE__{
