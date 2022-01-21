@@ -97,15 +97,6 @@ defmodule Schedule.Block do
   end
 
   @doc """
-  Whether the block is active at any time during the time_of_day range.
-  """
-  @spec is_active(t(), Util.Time.time_of_day(), Util.Time.time_of_day()) :: boolean()
-  def is_active(block, start_time_of_day, end_time_of_day) do
-    end_time_of_day > block.start_time and
-      start_time_of_day < block.end_time
-  end
-
-  @doc """
   The trip that happens after the given trip_id in the given block.
   If the trip_id is not in the block, then :err
   If the trip_id belongs to the last trip in the block, then :last
