@@ -119,7 +119,7 @@ defmodule Realtime.VehiclesTest do
                ungrouped_vehicles,
                [trip_1],
                %{},
-               %{~D[2019-12-20] => [block_1, block_2]},
+               [{block_1.id, ~D[2019-12-20]}, {block_2.id, ~D[2019-12-20]}],
                0,
                @timepoint_names_by_id
              ) == %{
@@ -522,6 +522,8 @@ defmodule Realtime.VehiclesTest do
       block_2 = build(:block, id: trip_2.block_id, pieces: [build(:piece, trips: [trip_2])])
       block_3 = build(:block, id: trip_3.block_id, pieces: [build(:piece, trips: [trip_3])])
 
+      date_by_block_id = for block <- [block_1, block_2, block_3], do: {block.id, ~D[2019-12-20]}
+
       run_1 =
         build(:run, %{
           id: "run_1",
@@ -560,7 +562,7 @@ defmodule Realtime.VehiclesTest do
                  ungrouped_vehicles,
                  [trip_1, trip_2, trip_3],
                  %{~D[2019-12-20] => [run_1, run_2, run_3]},
-                 %{~D[2019-12-20] => [block_1, block_2, block_3]},
+                 date_by_block_id,
                  time0 + 2,
                  @timepoint_names_by_id
                )

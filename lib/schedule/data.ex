@@ -197,24 +197,22 @@ defmodule Schedule.Data do
       start_time_of_day = Util.Time.time_of_day_for_timestamp(start_time, date)
       end_time_of_day = Util.Time.time_of_day_for_timestamp(end_time, date)
 
-      selectors =
-        for service_id <- service_ids do
-          {{:_, :_, service_id, :"$2", :"$3", :"$1"},
-           [{:<, :"$2", end_time_of_day}, {:<, start_time_of_day, :"$3"}], [:"$1"]}
-        end
-
-      :mnesia.dirty_select(trips_table, selectors)
+      for service_id <- service_ids do
+        {{:_, :_, service_id, :"$2", :"$3", :"$1"},
+         [{:<, :"$2", end_time_of_day}, {:<, start_time_of_day, :"$3"}], [:"$1"]}
+      end
     end)
+    |> (fn selectors -> :mnesia.dirty_select(trips_table, selectors) end).()
   end
 
   @spec active_blocks(tables(), Util.Time.timestamp(), Util.Time.timestamp()) ::
-          %{Date.t() => [Block.t()]}
+          [{Date.t(), [Block.t()]}]
   def active_blocks(%{blocks: blocks_table} = tables, start_time, end_time) do
     dates = potentially_active_service_dates(start_time, end_time)
 
     dates
     |> active_services_on_dates(tables)
-    |> Map.new(fn {date, service_ids} ->
+    |> Enum.flat_map(fn {date, service_ids} ->
       start_time_of_day = Util.Time.time_of_day_for_timestamp(start_time, date)
       end_time_of_day = Util.Time.time_of_day_for_timestamp(end_time, date)
 
@@ -227,13 +225,41 @@ defmodule Schedule.Data do
       active_blocks = :mnesia.dirty_select(blocks_table, selectors)
 
       if active_blocks == [] do
-        # will be deleted later
-        {nil, []}
+        []
       else
-        {date, active_blocks}
+        [{date, active_blocks}]
       end
     end)
-    |> Map.delete(nil)
+    |> Map.new()
+  end
+
+  @spec active_block_ids(tables(), Util.Time.timestamp(), Util.Time.timestamp()) ::
+          [{Block.id(), Date.t()}]
+  def active_block_ids(%{blocks: blocks_table} = tables, start_time, end_time) do
+    dates = potentially_active_service_dates(start_time, end_time)
+
+    dates
+    |> active_services_on_dates(tables)
+    |> Enum.flat_map(fn {date, service_ids} ->
+      start_time_of_day = Util.Time.time_of_day_for_timestamp(start_time, date)
+      end_time_of_day = Util.Time.time_of_day_for_timestamp(end_time, date)
+
+      selectors =
+        for service_id <- service_ids do
+          {{:_, :"$1", service_id, :"$2", :"$3", :_},
+           [{:<, :"$2", end_time_of_day}, {:<, start_time_of_day, :"$3"}], [:"$1"]}
+        end
+
+      active_block_keys = :mnesia.dirty_select(blocks_table, selectors)
+
+      if active_block_keys == [] do
+        []
+      else
+        for {_schedule_id, block_id} <- active_block_keys do
+          {block_id, date}
+        end
+      end
+    end)
   end
 
   @spec active_runs(tables(), Util.Time.timestamp(), Util.Time.timestamp()) ::
@@ -618,7 +644,7 @@ defmodule Schedule.Data do
     }
   end
 
-  @spec active_services_on_dates([Date.t()], tables()) :: %{Date.t() => [Service.id()]}
+  @spec active_services_on_dates([Date.t()], tables()) :: [{Date.t(), [Service.id()]}]
   defp active_services_on_dates(dates, %{calendar: calendar_table}) do
     selectors =
       for date <- dates do
@@ -627,7 +653,7 @@ defmodule Schedule.Data do
 
     calendar_table
     |> :mnesia.dirty_select(selectors)
-    |> Map.new(fn {_, date, service_ids} -> {date, service_ids} end)
+    |> Enum.map(fn {_, date, service_ids} -> {date, service_ids} end)
   end
 
   @spec unique_service_id_for_trips([Hastus.Trip.t()], Schedule.Trip.by_id()) ::

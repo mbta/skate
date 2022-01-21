@@ -94,9 +94,17 @@ defmodule Schedule do
   The result is grouped by date.
   If a block is scheduled to be active on two dates during that time, it wil be in both dates' lists.
   """
-  @spec active_blocks(Util.Time.timestamp(), Util.Time.timestamp()) :: %{Date.t() => [Block.t()]}
+  @spec active_blocks(Util.Time.timestamp(), Util.Time.timestamp()) :: [{Date.t(), [Block.t()]}]
   def active_blocks(start_time, end_time) do
     Data.active_blocks(default_tables(), start_time, end_time)
+  end
+
+  @doc """
+  A slight reverse of active_blocks: return the block IDs and their date, given a time range.
+  """
+  @spec active_block_ids(Util.Time.timestamp(), Util.Time.timestamp()) :: [{Block.id(), Date.t()}]
+  def active_block_ids(start_time, end_time) do
+    Data.active_block_ids(default_tables(), start_time, end_time)
   end
 
   @spec active_runs(Util.Time.timestamp(), Util.Time.timestamp()) :: %{Date.t() => [Run.t()]}

@@ -17,16 +17,17 @@ defmodule Realtime.Vehicles do
 
     # We show vehicles incoming from another route if they'll start the new route within 15 minutes
     incoming_trips = Schedule.active_trips(now, in_fifteen_minutes)
+
     # Includes runs that are scheduled to be pulling out
     active_runs_by_date = Schedule.active_runs(now, now)
 
-    potential_interlining_blocks_by_date = Schedule.active_blocks(now, in_fifteen_minutes)
+    date_by_block_id = Schedule.active_block_ids(now, in_fifteen_minutes)
 
     group_by_route_with_blocks(
       ungrouped_vehicles,
       incoming_trips,
       active_runs_by_date,
-      potential_interlining_blocks_by_date,
+      date_by_block_id,
       now,
       timepoint_names_by_id
     )
@@ -39,7 +40,7 @@ defmodule Realtime.Vehicles do
           [Vehicle.t()],
           [Trip.t()],
           %{Date.t() => [Run.t()]},
-          %{Date.t() => [Block.t()]},
+          [{Block.id(), Date.t()}],
           Util.Time.timestamp(),
           Timepoint.timepoint_names_by_id()
         ) ::
@@ -48,7 +49,7 @@ defmodule Realtime.Vehicles do
         ungrouped_vehicles,
         incoming_trips,
         active_runs_by_date,
-        potential_interlining_blocks_by_date,
+        date_by_block_id,
         now,
         timepoint_names_by_id
       ) do
@@ -64,12 +65,7 @@ defmodule Realtime.Vehicles do
       {pulling_out, not_pulling_out} =
         Enum.split_with(on_route, &(&1.route_status == :pulling_out))
 
-      date_by_block_id =
-        potential_interlining_blocks_by_date
-        |> Enum.flat_map(fn {date, blocks} ->
-          Enum.map(blocks, &{&1.id, date})
-        end)
-        |> Map.new()
+      date_by_block_id = Map.new(date_by_block_id)
 
       not_pulling_out ++
         sort_incoming_vehicles_and_ghosts(
