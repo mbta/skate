@@ -8,24 +8,27 @@ defmodule Concentrate.Consumer.VehiclePositions do
   alias Concentrate.{Merge, VehiclePosition}
   alias Realtime.{Vehicles, Server, Vehicle}
 
+  @send_interval 1_000
+
   def start_link(opts) do
     GenStage.start_link(__MODULE__, opts)
   end
 
   @impl GenStage
   def init(opts) do
-    {:consumer, :the_state_does_not_matter, opts}
+    _ = :timer.send_interval(@send_interval, :send)
+    {:consumer, [], opts}
   end
 
-  # If we get a reply after we've already timed out, ignore it
   @impl GenStage
-  def handle_info({reference, _}, state) when is_reference(reference),
-    do: {:noreply, [], state}
-
-  @impl GenStage
-  def handle_events(events, _from, state) do
+  def handle_events(events, _from, _state) do
     groups = List.last(events)
 
+    {:noreply, [], groups}
+  end
+
+  @impl GenStage
+  def handle_info(:send, groups) do
     all_vehicles =
       groups
       |> vehicle_positions_from_groups()
@@ -38,7 +41,7 @@ defmodule Concentrate.Consumer.VehiclePositions do
 
     _ = Server.update({by_route, shuttles})
 
-    {:noreply, [], state}
+    {:noreply, [], groups}
   end
 
   @spec vehicle_positions_from_groups([Merge.trip_group()]) :: [VehiclePosition.t()]
