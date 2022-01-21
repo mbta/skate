@@ -7,7 +7,9 @@ defmodule Schedule.Data do
   alias Schedule.Block
   alias Schedule.Csv
   alias Schedule.TimepointOrder
+  alias Schedule.Trip
   alias Schedule.Run
+  alias Schedule.Piece
   alias Schedule.Hastus
   alias Schedule.Swing
   alias Schedule.Garage
@@ -52,6 +54,7 @@ defmodule Schedule.Data do
           blocks: atom(),
           calendar: atom(),
           runs: atom(),
+          pieces: atom(),
           swings: atom()
         }
 
@@ -91,6 +94,7 @@ defmodule Schedule.Data do
     {:blocks, :set, [:id, :service_id, :start_time, :end_time, :block], [:service_id]},
     {:calendar, :set, [:date, :service_ids], []},
     {:runs, :set, [:id, :service_id, :run], [:service_id]},
+    {:pieces, :bag, [:service_id, :start_time, :end_time, :run_key], []},
     {:swings, :set, [:service_id_and_route_id, :swings], []}
   ]
 
@@ -236,7 +240,7 @@ defmodule Schedule.Data do
   @spec active_runs(tables(), Util.Time.timestamp(), Util.Time.timestamp()) ::
           %{Date.t() => [Run.t()]}
   def active_runs(
-        %{runs: runs_table} = tables,
+        %{runs: runs_table, pieces: pieces_table} = tables,
         start_time,
         end_time
       ) do
@@ -248,20 +252,20 @@ defmodule Schedule.Data do
       start_time_of_day = Util.Time.time_of_day_for_timestamp(start_time, date)
       end_time_of_day = Util.Time.time_of_day_for_timestamp(end_time, date)
 
-      selectors =
+      piece_selectors =
         for service_id <- service_ids do
-          {{:_, :_, service_id, :"$1"}, [], [:"$1"]}
+          {{:_, service_id, :"$2", :"$3", :"$1"},
+           [{:<, :"$2", end_time_of_day}, {:<, start_time_of_day, :"$3"}], [:"$1"]}
         end
 
-      active_runs =
-        runs_table
-        |> :mnesia.dirty_select(selectors)
-        |> Enum.filter(&Run.is_active?(&1, start_time_of_day, end_time_of_day))
-
-      if active_runs == [] do
-        {nil, []}
-      else
+      with [_ | _] = active_run_keys <-
+             :mnesia.dirty_select(pieces_table, piece_selectors),
+           run_selectors = Enum.map(active_run_keys, &{{:_, &1, :_, :"$1"}, [], [:"$1"]}),
+           [_ | _] = active_runs <- :mnesia.dirty_select(runs_table, run_selectors) do
         {date, active_runs}
+      else
+        _ ->
+          {nil, []}
       end
     end)
     |> Map.delete(nil)
@@ -427,6 +431,21 @@ defmodule Schedule.Data do
 
       Enum.each(schedule_data.runs, fn {key, run} ->
         :mnesia.write({tables.runs, key, run.service_id, run})
+
+        for %Piece{} = piece <- run.activities do
+          trips = for %Trip{} = trip <- piece.trips, do: trip
+
+          if trips != [] do
+            start_time =
+              Enum.min(for %Trip{start_time: start_time} <- piece.trips, do: start_time)
+
+            end_time = Enum.max(for %Trip{end_time: end_time} <- piece.trips, do: end_time)
+
+            :mnesia.write(
+              {tables.pieces, run.service_id, start_time, end_time, {run.schedule_id, run.id}}
+            )
+          end
+        end
       end)
 
       Enum.each(schedule_data.swings, fn {{service_id, route_id}, swings} ->

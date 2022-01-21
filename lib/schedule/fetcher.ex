@@ -34,7 +34,8 @@ defmodule Schedule.Fetcher do
     trips: :trips,
     blocks: :blocks,
     calendar: :calendar,
-    runs: :run,
+    runs: :runs,
+    pieces: :pieces,
     swings: :swings
   }
 

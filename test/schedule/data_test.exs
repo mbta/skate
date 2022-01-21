@@ -25,7 +25,8 @@ defmodule Schedule.DataTest do
     trips: :trips_test,
     blocks: :blocks_test,
     calendar: :calendar_test,
-    runs: :run_test,
+    runs: :runs_test,
+    pieces: :pieces_test,
     swings: :swings_test
   }
 
@@ -641,6 +642,28 @@ defmodule Schedule.DataTest do
                ~D[2019-01-01] => [run1],
                ~D[2019-01-02] => [run2]
              }
+    end
+
+    test "does not return runs without trips", %{tables: tables} do
+      run =
+        build(:run, %{
+          service_id: "today",
+          activities: [build(:piece, %{trips: []})]
+        })
+
+      data = %Data{
+        runs: %{Run.key(run) => run},
+        calendar: %{
+          ~D[2019-01-01] => ["today"]
+        }
+      }
+
+      Data.save_schedule_data_to_tables(tables, data)
+
+      # 2019-01-01 00:00:00 EST
+      time0 = 1_546_318_800
+
+      assert Data.active_runs(tables, time0 + 2, time0 + 5) == %{}
     end
   end
 
