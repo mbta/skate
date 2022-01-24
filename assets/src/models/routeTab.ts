@@ -111,16 +111,15 @@ export const closeTabByUUID = (
     throw new Error(`No preset found for UUID ${uuid}`)
   }
 
-  const newRouteTabs =
-    tabToClose.presetName === undefined
-      ? routeTabs.filter((routeTab) => routeTab.uuid !== uuid)
-      : routeTabs.map((routeTab) => {
-          if (routeTab.uuid === uuid) {
-            return { ...routeTab, ordering: undefined, isCurrentTab: false }
-          } else {
-            return routeTab
-          }
-        })
+  const newRouteTabs = !isPreset(tabToClose)
+    ? routeTabs.filter((routeTab) => routeTab.uuid !== uuid)
+    : routeTabs.map((routeTab) => {
+        if (routeTab.uuid === uuid) {
+          return { ...routeTab, ordering: undefined, isCurrentTab: false }
+        } else {
+          return routeTab
+        }
+      })
 
   if (tabToClose.isCurrentTab) {
     const nextTabToRight = newRouteTabs
