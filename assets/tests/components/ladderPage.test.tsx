@@ -21,6 +21,7 @@ import {
   State,
   selectRouteTab,
   createRouteTab,
+  closeRouteTab,
 } from "../../src/state"
 import ghostFactory from "../factories/ghost"
 import routeFactory from "../factories/route"
@@ -134,6 +135,33 @@ describe("LadderPage", () => {
     )
   })
 
+  test("can close a route tab", () => {
+    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
+    const mockState = {
+      ...initialState,
+      routeTabs: [
+        routeTabFactory.build({
+          ordering: 0,
+          isCurrentTab: true,
+          selectedRouteIds: ["1"],
+        }),
+      ],
+    }
+    const wrapper = mount(
+      <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+        <RoutesProvider routes={routes}>
+          <LadderPage />
+        </RoutesProvider>
+      </StateDispatchProvider>
+    )
+
+    wrapper.find(".m-ladder-page__tab-contents button").simulate("click")
+
+    expect(mockDispatch).toHaveBeenCalledWith(
+      closeRouteTab(mockState.routeTabs[0].uuid)
+    )
+  })
+
   test("can add a new route tab", () => {
     ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
     const mockState = {
@@ -157,6 +185,36 @@ describe("LadderPage", () => {
     wrapper.find(".m-ladder-page__add-tab-button").simulate("click")
 
     expect(mockDispatch).toHaveBeenCalledWith(createRouteTab())
+  })
+
+  test("can toggle to presets view in picker and back", () => {
+    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
+    const mockState = {
+      ...initialState,
+      routeTabs: [
+        routeTabFactory.build({
+          ordering: 0,
+          isCurrentTab: true,
+          selectedRouteIds: ["1"],
+          presetName: "My Preset",
+        }),
+      ],
+    }
+    const wrapper = mount(
+      <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+        <RoutesProvider routes={routes}>
+          <LadderPage />
+        </RoutesProvider>
+      </StateDispatchProvider>
+    )
+
+    wrapper.find("#m-ladder-page__presets_picker_button").simulate("click")
+
+    expect(wrapper.find(".m-presets-panel").length).toBe(1)
+
+    wrapper.find("#m-ladder-page__routes_picker_button").simulate("click")
+
+    expect(wrapper.find(".m-presets-panel").length).toBe(0)
   })
 
   test("renders with selectedRoutes in different order than routes data", () => {

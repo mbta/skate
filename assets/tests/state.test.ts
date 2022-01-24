@@ -468,6 +468,92 @@ describe("reducer", () => {
     expect(newState).toMatchObject(expectedState)
   })
 
+  test("closeRouteTab", () => {
+    const routeTab1 = routeTabFactory.build({
+      ordering: 0,
+      presetName: undefined,
+      isCurrentTab: true,
+    })
+    const routeTab2 = routeTabFactory.build({
+      uuid: "uuid2",
+      ordering: 1,
+      presetName: undefined,
+      isCurrentTab: false,
+    })
+
+    const newState = reducer(
+      { ...initialState, routeTabs: [routeTab1, routeTab2] },
+      State.closeRouteTab("uuid2")
+    )
+
+    const expectedNewTabs = [routeTab1]
+    const expectedState: State.State = {
+      ...initialState,
+      routeTabs: expectedNewTabs,
+      routeTabsToPush: expectedNewTabs,
+    }
+
+    expect(newState).toEqual(expectedState)
+  })
+
+  test("createPreset", () => {
+    const routeTab = routeTabFactory.build({
+      uuid: "uuid",
+      ordering: 0,
+      presetName: undefined,
+      isCurrentTab: true,
+    })
+
+    const newState = reducer(
+      { ...initialState, routeTabs: [routeTab] },
+      State.createPreset("uuid", "My Preset")
+    )
+
+    const expectedNewTabs = [{ ...routeTab, presetName: "My Preset" }]
+    const expectedState: State.State = {
+      ...initialState,
+      routeTabs: expectedNewTabs,
+      routeTabsToPush: expectedNewTabs,
+    }
+
+    expect(newState).toEqual(expectedState)
+  })
+
+  test("instantiatePreset", () => {
+    const routeTab1 = routeTabFactory.build({
+      uuid: "uuid1",
+      ordering: 0,
+      presetName: undefined,
+      isCurrentTab: true,
+      selectedRouteIds: ["1"],
+    })
+
+    const routeTab2 = routeTabFactory.build({
+      uuid: "uuid2",
+      ordering: undefined,
+      presetName: "My Preset",
+      isCurrentTab: false,
+      selectedRouteIds: ["39"],
+    })
+
+    const newState = reducer(
+      { ...initialState, routeTabs: [routeTab1, routeTab2] },
+      State.instantiatePreset("uuid2")
+    )
+
+    const expectedNewTabs = [
+      { ...routeTab1, isCurrentTab: false },
+      { ...routeTab2, ordering: 1, isCurrentTab: true },
+    ]
+    const expectedState: State.State = {
+      ...initialState,
+      routeTabs: expectedNewTabs,
+      routeTabsToPush: expectedNewTabs,
+    }
+
+    expect(newState).toEqual(expectedState)
+  })
+
   test("selectRouteTab", () => {
     const routeTab1 = routeTabFactory.build()
     const routeTab2 = routeTabFactory.build({ isCurrentTab: true })

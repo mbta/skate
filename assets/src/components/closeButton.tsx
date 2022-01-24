@@ -6,7 +6,13 @@ interface Props {
 }
 
 const CloseButton = ({ onClick }: Props) => (
-  <button className="m-close-button" onClick={onClick}>
+  <button
+    className="m-close-button"
+    onClick={(e) => {
+      e.stopPropagation()
+      onClick()
+    }}
+  >
     {closeIcon()}
   </button>
 )

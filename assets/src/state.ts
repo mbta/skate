@@ -23,7 +23,13 @@ import {
   VehicleLabelSetting,
   VehicleAdherenceColorsSetting,
 } from "./userSettings"
-import { RouteTab, newRouteTab } from "./models/routeTab"
+import {
+  RouteTab,
+  newRouteTab,
+  highestExistingOrdering,
+  instantiatePresetByUUID,
+  closeTabByUUID,
+} from "./models/routeTab"
 
 export enum OpenView {
   None = 1,
@@ -121,6 +127,16 @@ interface CreateRouteTabAction {
 
 export const createRouteTab = (): CreateRouteTabAction => ({
   type: "CREATE_ROUTE_TAB",
+})
+
+interface CloseRouteTabAction {
+  type: "CLOSE_ROUTE_TAB"
+  payload: { uuid: string }
+}
+
+export const closeRouteTab = (uuid: string): CloseRouteTabAction => ({
+  type: "CLOSE_ROUTE_TAB",
+  payload: { uuid },
 })
 
 interface SelectRouteTabAction {
@@ -439,12 +455,36 @@ export const selectVehicleFromNotification = (
   payload: { vehicle },
 })
 
+interface CreatePresetAction {
+  type: "CREATE_PRESET"
+  payload: { uuid: string; presetName: string }
+}
+
+export const createPreset = (
+  uuid: string,
+  presetName: string
+): CreatePresetAction => ({
+  type: "CREATE_PRESET",
+  payload: { uuid, presetName },
+})
+
+interface InstantiatePresetAction {
+  type: "INSTANTIATE_PRESET"
+  payload: { uuid: string }
+}
+
+export const instantiatePreset = (uuid: string): InstantiatePresetAction => ({
+  type: "INSTANTIATE_PRESET",
+  payload: { uuid },
+})
+
 export type Action =
   | SelectRouteAction
   | DeselectRouteAction
   | FlipLadderAction
   | ToggleLadderCrowdingAction
   | CreateRouteTabAction
+  | CloseRouteTabAction
   | SelectRouteTabAction
   | SelectRouteInTabAction
   | DeselectRouteInTabAction
@@ -473,6 +513,8 @@ export type Action =
   | ToggleSwingsViewAction
   | ToggleLateViewAction
   | SelectVehicleFromNotificationAction
+  | CreatePresetAction
+  | InstantiatePresetAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -542,11 +584,6 @@ const routeTabsReducer = (
 } => {
   switch (action.type) {
     case "CREATE_ROUTE_TAB":
-      const highestExistingOrdering = Math.max(
-        -1,
-        ...routeTabs.map((existingRouteTab) => existingRouteTab.ordering)
-      )
-
       return {
         newRouteTabs: [
           ...routeTabs.map((existingRouteTab) => {
@@ -555,8 +592,32 @@ const routeTabsReducer = (
               isCurrentTab: false,
             }
           }),
-          newRouteTab(highestExistingOrdering + 1),
+          newRouteTab(highestExistingOrdering(routeTabs) + 1),
         ],
+        routeTabsUpdated: true,
+      }
+    case "CLOSE_ROUTE_TAB":
+      return {
+        newRouteTabs: closeTabByUUID(routeTabs, action.payload.uuid),
+        routeTabsUpdated: true,
+      }
+    case "CREATE_PRESET":
+      return {
+        newRouteTabs: routeTabs.map((existingRouteTab) => {
+          if (existingRouteTab.uuid === action.payload.uuid) {
+            return {
+              ...existingRouteTab,
+              presetName: action.payload.presetName,
+            }
+          } else {
+            return existingRouteTab
+          }
+        }),
+        routeTabsUpdated: true,
+      }
+    case "INSTANTIATE_PRESET":
+      return {
+        newRouteTabs: instantiatePresetByUUID(routeTabs, action.payload.uuid),
         routeTabsUpdated: true,
       }
     case "SELECT_ROUTE_TAB":
