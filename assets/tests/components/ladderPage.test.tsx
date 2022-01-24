@@ -217,6 +217,31 @@ describe("LadderPage", () => {
     expect(wrapper.find(".m-presets-panel").length).toBe(0)
   })
 
+  test("creates a blank route tab if no route tabs are present", () => {
+    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
+    const mockState = {
+      ...initialState,
+      routeTabs: [
+        routeTabFactory.build({
+          ordering: undefined,
+          isCurrentTab: false,
+          selectedRouteIds: ["1"],
+          presetName: "My Preset",
+        }),
+      ],
+    }
+
+    mount(
+      <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+        <RoutesProvider routes={routes}>
+          <LadderPage />
+        </RoutesProvider>
+      </StateDispatchProvider>
+    )
+
+    expect(mockDispatch).toHaveBeenCalledWith(createRouteTab())
+  })
+
   test("renders with selectedRoutes in different order than routes data", () => {
     const mockState = { ...initialState, selectedRouteIds: ["28", "1"] }
     const tree = renderer
