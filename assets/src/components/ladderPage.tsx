@@ -166,18 +166,30 @@ const LadderPageWithTabs = (): ReactElement<HTMLDivElement> => {
 
       <PickerContainer>
         <>
-          <button
-            id="m-ladder-page__routes_picker_button"
-            onClick={() => setCurrentDrawerContent("route_picker")}
-          >
-            Routes
-          </button>
-          <button
-            id="m-ladder-page__presets_picker_button"
-            onClick={() => setCurrentDrawerContent("presets")}
-          >
-            Presets
-          </button>
+          <div className="m-ladder-page__routes-presets-toggle">
+            <button
+              id="m-ladder-page__routes_picker_button"
+              className={
+                currentDrawerContent === "route_picker"
+                  ? "m-ladder-page__routes_picker_button_selected"
+                  : "m-ladder-page__routes_picker_button_unselected"
+              }
+              onClick={() => setCurrentDrawerContent("route_picker")}
+            >
+              Routes
+            </button>
+            <button
+              id="m-ladder-page__presets_picker_button"
+              className={
+                currentDrawerContent === "presets"
+                  ? "m-ladder-page__routes_picker_button_selected"
+                  : "m-ladder-page__routes_picker_button_unselected"
+              }
+              onClick={() => setCurrentDrawerContent("presets")}
+            >
+              Presets
+            </button>
+          </div>
           {currentDrawerContent === "route_picker" ? (
             <RoutePicker
               selectedRouteIds={selectedRouteIds}

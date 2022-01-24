@@ -5,9 +5,44 @@ import routeFactory from "../factories/route"
 import RoutePicker from "../../src/components/routePicker"
 import { RoutesProvider } from "../../src/contexts/routesContext"
 import { Route, RouteId } from "../../src/schedule.d"
+import featureIsEnabled from "../../src/laboratoryFeatures"
+
+jest.mock("../../src/laboratoryFeatures", () => ({
+  __esModule: true,
+  default: jest.fn(() => false),
+}))
 
 describe("RoutePicker", () => {
   test("renders a list of routes", () => {
+    const routes: Route[] = [
+      routeFactory.build({ id: "28", name: "28" }),
+      routeFactory.build({ id: "39", name: "39" }),
+      routeFactory.build({ id: "71", name: "71" }),
+      routeFactory.build({ id: "73", name: "73" }),
+      routeFactory.build({ id: "111", name: "111" }),
+      routeFactory.build({ id: "741", name: "SL1" }),
+    ]
+
+    const selectedRouteIds: RouteId[] = ["28", "39"]
+
+    const tree = renderer
+      .create(
+        <RoutesProvider routes={routes}>
+          <RoutePicker
+            selectedRouteIds={selectedRouteIds}
+            selectRoute={jest.fn()}
+            deselectRoute={jest.fn()}
+          />
+        </RoutesProvider>
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders a list of routes with tabs / presets enabled", () => {
+    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
+
     const routes: Route[] = [
       routeFactory.build({ id: "28", name: "28" }),
       routeFactory.build({ id: "39", name: "39" }),

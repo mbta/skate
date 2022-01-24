@@ -117,3 +117,26 @@ $color-route-tabs-separator: #9fa2ac;
     }
   }
 }
+
+.m-ladder-page__routes-presets-toggle {
+  @include font-small;
+  display: flex;
+  border-bottom: 1px solid #141524;
+  margin-bottom: 1.5rem;
+
+  button {
+    margin-right: 1rem;
+    padding-bottom: 0.375rem;
+  }
+
+  .m-ladder-page__routes_picker_button_selected {
+    border-bottom: 2px inset #141524;
+    color: #141524;
+    font-weight: 700;
+  }
+
+  .m-ladder-page__routes_picker_button_unselected {
+    color: #4f535f;
+    font-weight: 400;
+  }
+}
