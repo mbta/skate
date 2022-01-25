@@ -40,7 +40,8 @@ defmodule Schedule.FetcherTest do
         capture_log(
           [level: :info],
           fn ->
-            assert {:stop, :normal, %{latest_gtfs_timestamp: nil, latest_hastus_timestamp: nil}} =
+            assert {:noreply, %{latest_gtfs_timestamp: "foo", latest_hastus_timestamp: "foo"},
+                    :hibernate} =
                      Schedule.Fetcher.do_poll(
                        %{
                          poll_interval_ms: 50,
@@ -203,7 +204,8 @@ defmodule Schedule.FetcherTest do
         capture_log(
           [level: :info],
           fn ->
-            assert {:stop, :normal, %{latest_gtfs_timestamp: nil, latest_hastus_timestamp: nil}} =
+            assert {:noreply, %{latest_gtfs_timestamp: "foo", latest_hastus_timestamp: "foo"},
+                    :hibernate} =
                      Schedule.Fetcher.do_poll(
                        %{
                          poll_interval_ms: 50,
@@ -251,7 +253,8 @@ defmodule Schedule.FetcherTest do
         capture_log(
           [level: :info],
           fn ->
-            assert {:stop, :normal, %{latest_gtfs_timestamp: nil, latest_hastus_timestamp: nil}} =
+            assert {:noreply, %{latest_gtfs_timestamp: "foo", latest_hastus_timestamp: "foo"},
+                    :hibernate} =
                      Schedule.Fetcher.handle_info(
                        :check_gtfs,
                        %{
