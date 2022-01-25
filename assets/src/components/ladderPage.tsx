@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext, useState } from "react"
+import React, { ReactElement, useContext, useState, useEffect } from "react"
 import RoutesContext from "../contexts/routesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useTimepoints from "../hooks/useTimepoints"
@@ -139,6 +139,12 @@ const LadderPageWithoutTabs = (): ReactElement<HTMLDivElement> => {
 const LadderPageWithTabs = (): ReactElement<HTMLDivElement> => {
   const [state, dispatch] = useContext(StateDispatchContext)
   const { routeTabs, selectedVehicleOrGhost } = state
+
+  useEffect(() => {
+    if (routeTabs.filter((routeTab) => isOpenTab(routeTab)).length === 0) {
+      dispatch(createRouteTab())
+    }
+  }, [JSON.stringify(routeTabs)])
 
   const { selectedRouteIds, ladderDirections, ladderCrowdingToggles } =
     currentRouteTab(routeTabs)
