@@ -37,7 +37,30 @@ const RoutePicker = ({
     garageFilterData
   )
 
-  return (
+  return featureIsEnabled("presets_workspaces") ? (
+    <div className="m-route-picker">
+      <RouteFilter {...routeFilterData} />
+
+      <GarageFilter {...garageFilterData} />
+
+      <SelectedRoutesList
+        routes={routes}
+        selectedRouteIds={selectedRouteIds}
+        deselectRoute={deselectRoute}
+      />
+
+      {routes === null ? (
+        <Loading />
+      ) : (
+        <RoutesList
+          routes={filteredRoutes}
+          selectedRouteIds={selectedRouteIds}
+          selectRoute={selectRoute}
+          deselectRoute={deselectRoute}
+        />
+      )}
+    </div>
+  ) : (
     <div className="m-route-picker">
       <SelectedRoutesList
         routes={routes}
@@ -46,10 +69,6 @@ const RoutePicker = ({
       />
 
       <RouteFilter {...routeFilterData} />
-
-      {featureIsEnabled("presets_workspaces") ? (
-        <GarageFilter {...garageFilterData} />
-      ) : null}
 
       {routes === null ? (
         <Loading />
