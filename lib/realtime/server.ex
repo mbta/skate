@@ -225,7 +225,8 @@ defmodule Realtime.Server do
     data_status = data_status_fn.(all_vehicles)
     _ = DataStatusPubSub.update(data_status)
 
-    {:noreply, state}
+    # hibernate periodically to clean up garbage from previous states.
+    {:noreply, state, :hibernate}
   end
 
   @impl true

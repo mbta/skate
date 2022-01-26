@@ -9,7 +9,13 @@ defmodule Concentrate.Consumer.VehiclePositions do
   alias Realtime.{Vehicles, Server, Vehicle}
 
   def start_link(opts) do
-    GenStage.start_link(__MODULE__, opts)
+    # set fullsweep to periodically garbabe collect the fetched schedule data
+    # without having to hibernate after every event. 20 isn't a magic number:
+    # the Erlang documentation
+    # [https://erlang.org/doc/man/erlang.html#spawn_opt-4] says that processes
+    # which mostly have short-lived data can set this to a "suitable value" such
+    # as 10 or 20, and 20 appears to address the garbage being kept in memory.
+    GenStage.start_link(__MODULE__, opts, spawn_opt: [fullsweep_after: 20])
   end
 
   @impl GenStage
