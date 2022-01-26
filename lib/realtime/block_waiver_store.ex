@@ -27,7 +27,15 @@ defmodule Realtime.BlockWaiverStore do
   def start_link(opts \\ []) do
     name = Keyword.get(opts, :name, default_name())
 
-    GenServer.start_link(__MODULE__, %__MODULE__{}, name: name)
+    # set fullsweep to periodically garbabe collect the fetched schedule data
+    # without having to hibernate after every event. The Erlang documentation
+    # [https://erlang.org/doc/man/erlang.html#spawn_opt-4] says that processes
+    # which mostly have short-lived data can set this to a "suitable value" such
+    # as 10 or 20. However, this process was not being garbage-collected
+    # frequently enough for a full sweep every 10 or 20 garbage collections to
+    # reduce the memory usage, so we do a full sweep after every garbage
+    # collection.
+    GenServer.start_link(__MODULE__, %__MODULE__{}, name: name, spawn_opt: [fullsweep_after: 0])
   end
 
   @spec block_waivers_for_block_and_service(Block.id(), Service.id()) :: [BlockWaiver.t()]
