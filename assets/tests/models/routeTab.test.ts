@@ -5,7 +5,9 @@ import {
   highestExistingOrdering,
   isPreset,
   isOpenTab,
+  applyRouteTabEdit,
 } from "../../src/models/routeTab"
+import { v4 as uuidv4 } from "uuid"
 import routeTabFactory from "../factories/routeTab"
 
 describe("highestExistingOrdering", () => {
@@ -58,6 +60,16 @@ describe("isPreset", () => {
     const routeTab = routeTabFactory.build({
       presetName: undefined,
       ordering: 1,
+    })
+
+    expect(isPreset(routeTab)).toBeFalsy()
+  })
+
+  test("returns false for the edited version of a saved preset", () => {
+    const routeTab = routeTabFactory.build({
+      presetName: "My Preset",
+      ordering: undefined,
+      saveChangesToTabUuid: uuidv4(),
     })
 
     expect(isPreset(routeTab)).toBeFalsy()
@@ -232,6 +244,110 @@ describe("closeTabByUUID", () => {
       fail("did not raise an error")
     } catch (error) {
       expect(error).toEqual(new Error("No preset found for UUID uuid1"))
+    }
+  })
+})
+
+describe("applyRouteTabEdit", () => {
+  test("applies changes to an unsaved open tab", () => {
+    const routeTab = routeTabFactory.build({
+      ordering: 0,
+      isCurrentTab: true,
+      presetName: undefined,
+      selectedRouteIds: [],
+      saveChangesToTabUuid: undefined,
+    })
+
+    expect(
+      applyRouteTabEdit([routeTab], routeTab.uuid, (tabToEdit) => {
+        return { ...tabToEdit, selectedRouteIds: ["1"] }
+      })
+    ).toEqual([{ ...routeTab, selectedRouteIds: ["1"] }])
+  })
+
+  test("applies changes to an already-edited preset", () => {
+    const routeTab1 = routeTabFactory.build({
+      ordering: undefined,
+      isCurrentTab: false,
+      presetName: "My Preset",
+      selectedRouteIds: [],
+      saveChangesToTabUuid: undefined,
+    })
+    const routeTab2 = routeTabFactory.build({
+      ordering: 0,
+      isCurrentTab: true,
+      presetName: "My Preset",
+      selectedRouteIds: [],
+      saveChangesToTabUuid: routeTab1.uuid,
+    })
+
+    const newRouteTabs = applyRouteTabEdit(
+      [routeTab1, routeTab2],
+      routeTab2.uuid,
+      (routeTab) => {
+        return { ...routeTab, selectedRouteIds: ["1"] }
+      }
+    )
+
+    expect(newRouteTabs.length).toBe(2)
+    expect(newRouteTabs).toContainEqual({
+      ...routeTab2,
+      selectedRouteIds: ["1"],
+    })
+    expect(newRouteTabs).toContainEqual(routeTab1)
+  })
+
+  test("creates a new edited version of a preset", () => {
+    const routeTab = routeTabFactory.build({
+      ordering: 0,
+      isCurrentTab: true,
+      presetName: "My Preset",
+      selectedRouteIds: [],
+      saveChangesToTabUuid: undefined,
+    })
+    const extraneousRouteTab = routeTabFactory.build({
+      ordering: 1,
+      isCurrentTab: false,
+      presetName: undefined,
+      selectedRouteIds: [],
+      saveChangesToTabUuid: undefined,
+    })
+
+    const newRouteTabs = applyRouteTabEdit(
+      [routeTab, extraneousRouteTab],
+      routeTab.uuid,
+      (tabToEdit) => {
+        return { ...tabToEdit, selectedRouteIds: ["1"] }
+      }
+    )
+
+    expect(newRouteTabs.length).toBe(3)
+    expect(
+      newRouteTabs.find(
+        (newRouteTab) =>
+          newRouteTab.uuid !== routeTab.uuid &&
+          newRouteTab.uuid !== extraneousRouteTab.uuid
+      )
+    ).toMatchObject({
+      ordering: 0,
+      isCurrentTab: true,
+      selectedRouteIds: ["1"],
+      saveChangesToTabUuid: routeTab.uuid,
+    })
+    expect(newRouteTabs).toContainEqual({
+      ...routeTab,
+      ordering: undefined,
+      isCurrentTab: false,
+    })
+    expect(newRouteTabs).toContainEqual(extraneousRouteTab)
+  })
+
+  test("raises an error when no matching tab is found", () => {
+    try {
+      applyRouteTabEdit([], "uuid1", (routeTab) => routeTab)
+      fail("did not raise an error")
+    } catch (error) {
+      expect(error).toEqual(new Error("No tab found for UUID uuid1"))
     }
   })
 })
