@@ -55,33 +55,54 @@ defmodule Skate.Settings.RouteTabTest do
     end
 
     test "updates an existing tab entry" do
-      route_tab = build_test_tab()
-      route_tab_uuid = route_tab.uuid
+      route_tab1 = build_test_tab()
+      route_tab1_uuid = route_tab1.uuid
+      route_tab2 = build_test_tab()
+      route_tab2_uuid = route_tab2.uuid
 
-      [persisted_route_tab] = RouteTab.update_all_for_user!("charlie", [route_tab])
+      [persisted_route_tab1] = RouteTab.update_all_for_user!("charlie", [route_tab1])
 
-      assert [
-               %RouteTab{
-                 uuid: ^route_tab_uuid,
-                 preset_name: "some other name",
-                 selected_route_ids: ["1", "28"],
-                 ladder_directions: %{"28" => "1"},
-                 ladder_crowding_toggles: %{"1" => true}
-               }
-             ] =
-               RouteTab.update_all_for_user!("charlie", [
-                 %{persisted_route_tab | preset_name: "some other name"}
-               ])
+      update_results =
+        RouteTab.update_all_for_user!("charlie", [
+          %{
+            persisted_route_tab1
+            | preset_name: "some other name",
+              save_changes_to_tab_uuid: route_tab2_uuid
+          },
+          route_tab2
+        ])
 
-      assert [
-               %RouteTab{
-                 uuid: ^route_tab_uuid,
-                 preset_name: "some other name",
-                 selected_route_ids: ["1", "28"],
-                 ladder_directions: %{"28" => "1"},
-                 ladder_crowding_toggles: %{"1" => true}
-               }
-             ] = RouteTab.get_all_for_user("charlie")
+      assert Enum.count(update_results) == 2
+
+      assert %RouteTab{
+               uuid: ^route_tab1_uuid,
+               preset_name: "some other name",
+               selected_route_ids: ["1", "28"],
+               ladder_directions: %{"28" => "1"},
+               ladder_crowding_toggles: %{"1" => true},
+               save_changes_to_tab_uuid: ^route_tab2_uuid
+             } = Enum.find(update_results, fn route_tab -> route_tab.uuid == route_tab1_uuid end)
+
+      assert %RouteTab{
+               uuid: ^route_tab2_uuid
+             } = Enum.find(update_results, fn route_tab -> route_tab.uuid == route_tab2_uuid end)
+
+      get_all_results = RouteTab.get_all_for_user("charlie")
+
+      assert Enum.count(get_all_results) == 2
+
+      assert %RouteTab{
+               uuid: ^route_tab1_uuid,
+               preset_name: "some other name",
+               selected_route_ids: ["1", "28"],
+               ladder_directions: %{"28" => "1"},
+               ladder_crowding_toggles: %{"1" => true},
+               save_changes_to_tab_uuid: ^route_tab2_uuid
+             } = Enum.find(get_all_results, fn route_tab -> route_tab.uuid == route_tab1_uuid end)
+
+      assert %RouteTab{
+               uuid: ^route_tab2_uuid
+             } = Enum.find(get_all_results, fn route_tab -> route_tab.uuid == route_tab2_uuid end)
     end
 
     test "deletes a removed tab entry" do

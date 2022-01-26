@@ -14,7 +14,8 @@ defmodule Skate.Settings.RouteTab do
           ladder_directions: map(),
           ladder_crowding_toggles: map(),
           ordering: integer() | nil,
-          is_current_tab: boolean() | nil
+          is_current_tab: boolean() | nil,
+          save_changes_to_tab_uuid: Ecto.UUID.t() | nil
         }
 
   @enforce_keys [:uuid, :selected_route_ids, :ladder_directions, :ladder_crowding_toggles]
@@ -28,7 +29,8 @@ defmodule Skate.Settings.RouteTab do
     :ladder_directions,
     :ladder_crowding_toggles,
     :ordering,
-    :is_current_tab
+    :is_current_tab,
+    :save_changes_to_tab_uuid
   ]
 
   @spec get_all_for_user(String.t()) :: [t()]
@@ -40,9 +42,19 @@ defmodule Skate.Settings.RouteTab do
 
   @spec update_all_for_user!(String.t(), [t()]) :: [t()]
   def update_all_for_user!(username, route_tabs) do
+    # Do update in two stages to prevent foreign key constaint problem. A route_tabs entry
+    # with unsaved modifications will have a save_changes_to_tab_uuid value pointing to the
+    # original, unmodified entry (which itself will always be a preset as of currently). An
+    # entry with unsaved modifications will point directly to a saved entry, that is with
+    # save_changes_to_tab_uuid null, so there are no multiple levels of recursion or cycles.
+    unmodified_route_tabs =
+      Enum.filter(route_tabs, fn route_tab -> is_nil(route_tab.save_changes_to_tab_uuid) end)
+
     username
     |> User.get_or_create()
     |> Repo.preload(:route_tabs)
+    |> DbUser.changeset(%{route_tabs: Enum.map(unmodified_route_tabs, &Map.from_struct/1)})
+    |> Repo.update!()
     |> DbUser.changeset(%{route_tabs: Enum.map(route_tabs, &Map.from_struct/1)})
     |> Repo.update!()
     |> Map.get(:route_tabs)
@@ -58,7 +70,8 @@ defmodule Skate.Settings.RouteTab do
       ladder_directions: db_route_tab.ladder_directions,
       ladder_crowding_toggles: db_route_tab.ladder_crowding_toggles,
       ordering: db_route_tab.ordering,
-      is_current_tab: db_route_tab.is_current_tab
+      is_current_tab: db_route_tab.is_current_tab,
+      save_changes_to_tab_uuid: db_route_tab.save_changes_to_tab_uuid
     }
   end
 end
