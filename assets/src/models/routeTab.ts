@@ -210,5 +210,34 @@ export const applyRouteTabEdit = (
   }
 }
 
+export const saveEditedPreset = (
+  routeTabs: RouteTab[],
+  uuid: string
+): RouteTab[] => {
+  const tabToSave = routeTabs.find((routeTab) => routeTab.uuid === uuid)
+
+  if (tabToSave === undefined) {
+    throw new Error(`No tab found for UUID ${uuid}`)
+  }
+
+  if (tabToSave.saveChangesToTabUuid === undefined) {
+    throw new Error(`Cannot save tab UUID ${uuid}: no saveChangesToTabUuid`)
+  }
+
+  return routeTabs
+    .filter((routeTab) => routeTab.uuid !== tabToSave.saveChangesToTabUuid)
+    .map((routeTab) => {
+      if (routeTab.uuid === uuid) {
+        return {
+          ...routeTab,
+          uuid: tabToSave.saveChangesToTabUuid as string,
+          saveChangesToTabUuid: undefined,
+        }
+      } else {
+        return routeTab
+      }
+    })
+}
+
 const nullToUndefined = <T>(data: T | null): T | undefined =>
   data === null ? undefined : data

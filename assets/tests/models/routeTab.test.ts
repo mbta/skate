@@ -6,6 +6,7 @@ import {
   isPreset,
   isOpenTab,
   applyRouteTabEdit,
+  saveEditedPreset,
 } from "../../src/models/routeTab"
 import { v4 as uuidv4 } from "uuid"
 import routeTabFactory from "../factories/routeTab"
@@ -372,6 +373,66 @@ describe("applyRouteTabEdit", () => {
       fail("did not raise an error")
     } catch (error) {
       expect(error).toEqual(new Error("No tab found for UUID uuid1"))
+    }
+  })
+})
+
+describe("saveEditedPreset", () => {
+  test("removes edited version of preset and overwrites original", () => {
+    const routeTab1 = routeTabFactory.build({
+      ordering: undefined,
+      isCurrentTab: false,
+      presetName: "My Preset",
+      selectedRouteIds: ["1"],
+    })
+    const routeTab2 = routeTabFactory.build({
+      uuid: "uuid2",
+      ordering: 0,
+      isCurrentTab: true,
+      presetName: "My Preset",
+      selectedRouteIds: ["1", "39"],
+      saveChangesToTabUuid: routeTab1.uuid,
+    })
+    const routeTab3 = routeTabFactory.build()
+
+    const newRouteTabs = saveEditedPreset(
+      [routeTab1, routeTab2, routeTab3],
+      "uuid2"
+    )
+
+    expect(newRouteTabs.length).toBe(2)
+
+    expect(newRouteTabs).toContainEqual({
+      ...routeTab1,
+      ordering: 0,
+      isCurrentTab: true,
+      selectedRouteIds: ["1", "39"],
+    })
+
+    expect(newRouteTabs).toContainEqual(routeTab3)
+  })
+
+  test("raises an error when no matching tab is found", () => {
+    try {
+      saveEditedPreset([], "uuid1")
+      fail("did not raise an error")
+    } catch (error) {
+      expect(error).toEqual(new Error("No tab found for UUID uuid1"))
+    }
+  })
+
+  test("raises an error when tab by given UUID is not edited", () => {
+    try {
+      const routeTab = routeTabFactory.build({
+        uuid: "uuid1",
+        saveChangesToTabUuid: undefined,
+      })
+      saveEditedPreset([routeTab], routeTab.uuid)
+      fail("did not raise an error")
+    } catch (error) {
+      expect(error).toEqual(
+        new Error("Cannot save tab UUID uuid1: no saveChangesToTabUuid")
+      )
     }
   })
 })
