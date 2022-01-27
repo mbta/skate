@@ -64,7 +64,14 @@ const LadderTab = ({
       onClick={() => selectTab()}
     >
       <div className="m-ladder-page__tab-contents">
-        <div className="m-ladder-page__tab-title">{title}</div>
+        <div
+          className={
+            "m-ladder-page__tab-title" +
+            (tab.saveChangesToTabUuid ? " m-ladder-page__tab-title-edited" : "")
+          }
+        >
+          {title}
+        </div>
         {tab.isCurrentTab ? saveIcon("m-ladder-page__tab-save-icon") : null}
         <CloseButton onClick={() => closeTab()} />
       </div>
