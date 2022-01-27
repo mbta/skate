@@ -38,11 +38,8 @@ describe("currentRouteTab", () => {
     expect(currentRouteTab([routeTab1, routeTab2])).toBe(routeTab2)
   })
 
-  test("creates new route tab if no current tab found", () => {
-    const routeTab = routeTabFactory.build({ isCurrentTab: true, ordering: 0 })
-    delete routeTab.uuid
-
-    expect(currentRouteTab([])).toMatchObject(routeTab)
+  test("returns undefined if no current tab found", () => {
+    expect(currentRouteTab([])).toBeUndefined()
   })
 })
 

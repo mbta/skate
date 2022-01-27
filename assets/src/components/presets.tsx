@@ -10,14 +10,18 @@ const Presets = () => {
   return (
     <div className="m-presets-panel">
       <button
-        onClick={() =>
-          dispatch(
-            createPreset(
-              currentRouteTab(routeTabs).uuid,
-              `Preset ${Math.floor(Math.random() * 10000)}`
+        onClick={() => {
+          const currentTab = currentRouteTab(routeTabs)
+
+          if (currentTab) {
+            dispatch(
+              createPreset(
+                currentTab.uuid,
+                `Preset ${Math.floor(Math.random() * 10000)}`
+              )
             )
-          )
-        }
+          }
+        }}
       >
         Save as preset
       </button>

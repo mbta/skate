@@ -147,7 +147,11 @@ const LadderPageWithTabs = (): ReactElement<HTMLDivElement> => {
   }, [JSON.stringify(routeTabs)])
 
   const { selectedRouteIds, ladderDirections, ladderCrowdingToggles } =
-    currentRouteTab(routeTabs)
+    currentRouteTab(routeTabs) || {
+      selectedRouteIds: [] as string[],
+      ladderDirections: {},
+      ladderCrowdingToggles: {},
+    }
 
   const routes: Route[] | null = useContext(RoutesContext)
   const timepointsByRouteId: TimepointsByRouteId =

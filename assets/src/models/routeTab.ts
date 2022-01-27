@@ -40,8 +40,8 @@ export const highestExistingOrdering = (routeTabs: RouteTab[]): number =>
     ...routeTabs.map((existingRouteTab) => existingRouteTab.ordering || 0)
   )
 
-export const currentRouteTab = (routeTabs: RouteTab[]): RouteTab =>
-  routeTabs.find((routeTab) => routeTab.isCurrentTab) || newRouteTab(0)
+export const currentRouteTab = (routeTabs: RouteTab[]): RouteTab | undefined =>
+  routeTabs.find((routeTab) => routeTab.isCurrentTab)
 
 export const parseRouteTabData = (
   routeTabsData: RouteTabData[]
@@ -82,7 +82,9 @@ export const instantiatePresetByUUID = (
         return { ...routeTab, isCurrentTab: false }
       }
     })
-  } else if (currentRouteTab(routeTabs).selectedRouteIds.length === 0) {
+  } else if (
+    (currentRouteTab(routeTabs)?.selectedRouteIds || []).length === 0
+  ) {
     return routeTabs
       .filter((routeTab) => routeTab.uuid !== uuid)
       .map((routeTab) => {

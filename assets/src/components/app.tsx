@@ -38,7 +38,7 @@ const AppRoutes = () => {
     openView === OpenView.Late || location.pathname === "/"
 
   const routesForVehicles = featureIsEnabled("presets_workspaces")
-    ? currentRouteTab(routeTabs).selectedRouteIds
+    ? currentRouteTab(routeTabs)?.selectedRouteIds || []
     : selectedRouteIds
 
   const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = useVehicles(
