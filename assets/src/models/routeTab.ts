@@ -71,12 +71,24 @@ export const instantiatePresetByUUID = (
   uuid: string
 ): RouteTab[] => {
   const preset = routeTabs.find((routeTab) => routeTab.uuid === uuid)
+  const openEditedPreset = routeTabs.find(
+    (routeTab) =>
+      routeTab.saveChangesToTabUuid === uuid && routeTab.ordering !== undefined
+  )
 
   if (preset === undefined) {
     throw new Error(`No preset found for UUID ${uuid}`)
   } else if (preset.ordering !== undefined) {
     return routeTabs.map((routeTab) => {
       if (routeTab.uuid === uuid) {
+        return { ...routeTab, isCurrentTab: true }
+      } else {
+        return { ...routeTab, isCurrentTab: false }
+      }
+    })
+  } else if (openEditedPreset !== undefined) {
+    return routeTabs.map((routeTab) => {
+      if (routeTab.uuid === openEditedPreset.uuid) {
         return { ...routeTab, isCurrentTab: true }
       } else {
         return { ...routeTab, isCurrentTab: false }

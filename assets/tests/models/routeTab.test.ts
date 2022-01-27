@@ -154,6 +154,33 @@ describe("instantiatePresetByUUID", () => {
     ])
   })
 
+  test("when an edited version of the preset is already open, makes it the current tab", () => {
+    const routeTab1 = routeTabFactory.build({
+      uuid: "uuid1",
+      ordering: undefined,
+      isCurrentTab: false,
+      selectedRouteIds: [],
+    })
+    const routeTab2 = routeTabFactory.build({
+      ordering: 0,
+      presetName: "Foo",
+      isCurrentTab: false,
+      saveChangesToTabUuid: routeTab1.uuid,
+    })
+    const routeTab3 = routeTabFactory.build({
+      ordering: 1,
+      isCurrentTab: true,
+    })
+
+    expect(
+      instantiatePresetByUUID([routeTab1, routeTab2, routeTab3], "uuid1")
+    ).toEqual([
+      { ...routeTab1, isCurrentTab: false },
+      { ...routeTab2, isCurrentTab: true },
+      { ...routeTab3, isCurrentTab: false },
+    ])
+  })
+
   test("raises an error when no matching preset is found", () => {
     try {
       instantiatePresetByUUID([], "uuid1")
