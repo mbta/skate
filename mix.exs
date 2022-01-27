@@ -12,7 +12,10 @@ defmodule Skate.MixProject do
       deps: deps(),
       test_coverage: [tool: LcovEx],
       elixirc_options: [warnings_as_errors: true],
-      dialyzer: [plt_add_apps: [:mix, :laboratory], ignore_warnings: ".dialyzer.ignore-warnings"]
+      dialyzer: [
+        plt_add_apps: [:mix, :laboratory],
+        ignore_warnings: ".dialyzer.ignore-warnings.exs"
+      ]
     ]
   end
 
