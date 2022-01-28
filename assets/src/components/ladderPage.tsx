@@ -25,6 +25,8 @@ import {
   flipLadder,
   toggleLadderCrowding,
   closeRouteTab,
+  createPreset,
+  savePreset,
 } from "../state"
 import CloseButton from "./closeButton"
 import { saveIcon, plusThinIcon } from "../helpers/icon"
@@ -49,10 +51,12 @@ const LadderTab = ({
   tab,
   selectTab,
   closeTab,
+  saveTab,
 }: {
   tab: RouteTab
   selectTab: () => void
   closeTab: () => void
+  saveTab: () => void
 }): ReactElement<HTMLDivElement> => {
   const title = tab.presetName || "Untitled"
   return (
@@ -72,7 +76,16 @@ const LadderTab = ({
         >
           {title}
         </div>
-        {tab.isCurrentTab ? saveIcon("m-ladder-page__tab-save-icon") : null}
+        {tab.isCurrentTab ? (
+          <div
+            onClick={(e) => {
+              e.stopPropagation()
+              saveTab()
+            }}
+          >
+            {saveIcon("m-ladder-page__tab-save-icon")}
+          </div>
+        ) : null}
         <CloseButton onClick={() => closeTab()} />
       </div>
     </div>
@@ -221,6 +234,13 @@ const LadderPageWithTabs = (): ReactElement<HTMLDivElement> => {
               tab={routeTab}
               selectTab={() => dispatch(selectRouteTab(routeTab.uuid))}
               closeTab={() => dispatch(closeRouteTab(routeTab.uuid))}
+              saveTab={() => {
+                if (routeTab.presetName && routeTab.saveChangesToTabUuid) {
+                  dispatch(savePreset(routeTab.uuid))
+                } else if (routeTab.presetName === undefined) {
+                  dispatch(createPreset(routeTab.uuid, "Preset name"))
+                }
+              }}
               key={routeTab.uuid}
             />
           ))}

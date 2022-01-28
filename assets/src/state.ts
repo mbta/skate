@@ -31,6 +31,7 @@ import {
   instantiatePresetByUUID,
   closeTabByUUID,
   applyRouteTabEdit,
+  saveEditedPreset,
 } from "./models/routeTab"
 
 export enum OpenView {
@@ -480,6 +481,16 @@ export const instantiatePreset = (uuid: string): InstantiatePresetAction => ({
   payload: { uuid },
 })
 
+interface SavePresetAction {
+  type: "SAVE_PRESET"
+  payload: { uuid: string }
+}
+
+export const savePreset = (uuid: string): SavePresetAction => ({
+  type: "SAVE_PRESET",
+  payload: { uuid },
+})
+
 export type Action =
   | SelectRouteAction
   | DeselectRouteAction
@@ -517,6 +528,7 @@ export type Action =
   | SelectVehicleFromNotificationAction
   | CreatePresetAction
   | InstantiatePresetAction
+  | SavePresetAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -622,6 +634,11 @@ const routeTabsReducer = (
     case "INSTANTIATE_PRESET":
       return {
         newRouteTabs: instantiatePresetByUUID(routeTabs, action.payload.uuid),
+        routeTabsUpdated: true,
+      }
+    case "SAVE_PRESET":
+      return {
+        newRouteTabs: saveEditedPreset(routeTabs, action.payload.uuid),
         routeTabsUpdated: true,
       }
     case "SELECT_ROUTE_TAB":
