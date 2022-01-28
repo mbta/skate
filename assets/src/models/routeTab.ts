@@ -145,7 +145,8 @@ export const closeTabByUUID = (
     const nextTabToRight = newRouteTabs
       .filter(
         (routeTab) =>
-          routeTab.ordering && routeTab.ordering > (tabToClose.ordering || 0)
+          routeTab.ordering !== undefined &&
+          routeTab.ordering > (tabToClose.ordering || 0)
       )
       .sort((a, b) => a.ordering || 0 - (b.ordering || 0))[0]
 
@@ -155,7 +156,8 @@ export const closeTabByUUID = (
       const nextTabToLeft = newRouteTabs
         .filter(
           (routeTab) =>
-            routeTab.ordering && routeTab.ordering < (tabToClose.ordering || 0)
+            routeTab.ordering !== undefined &&
+            routeTab.ordering < (tabToClose.ordering || 0)
         )
         .sort((a, b) => b.ordering || 0 - (a.ordering || 0))[0]
 
