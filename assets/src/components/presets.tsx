@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
-import { createPreset, instantiatePreset } from "../state"
+import { createPreset, instantiatePreset, savePreset } from "../state"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { currentRouteTab, isPreset } from "../models/routeTab"
+import { currentRouteTab, isPreset, isEditedPreset } from "../models/routeTab"
 
 const Presets = () => {
   const [{ routeTabs }, dispatch] = useContext(StateDispatchContext)
@@ -14,12 +14,16 @@ const Presets = () => {
           const currentTab = currentRouteTab(routeTabs)
 
           if (currentTab) {
-            dispatch(
-              createPreset(
-                currentTab.uuid,
-                `Preset ${Math.floor(Math.random() * 10000)}`
+            if (isEditedPreset(currentTab)) {
+              dispatch(savePreset(currentTab.uuid))
+            } else if (!isPreset(currentTab)) {
+              dispatch(
+                createPreset(
+                  currentTab.uuid,
+                  `Preset ${Math.floor(Math.random() * 10000)}`
+                )
               )
-            )
+            }
           }
         }}
       >
