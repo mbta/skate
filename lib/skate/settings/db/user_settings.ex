@@ -3,7 +3,6 @@ defmodule Skate.Settings.Db.UserSettings do
   import Ecto.Changeset
 
   alias Skate.Settings.Db.User
-  alias Skate.Settings.TripLabel
   alias Skate.Settings.VehicleLabel
   alias Skate.Settings.VehicleAdherenceColor
 
@@ -16,7 +15,6 @@ defmodule Skate.Settings.Db.UserSettings do
     field(:ladder_page_vehicle_label, VehicleLabel)
     field(:shuttle_page_vehicle_label, VehicleLabel)
     field(:vehicle_adherence_colors, VehicleAdherenceColor)
-    field(:minischedules_trip_label, TripLabel)
     timestamps()
   end
 
@@ -26,15 +24,13 @@ defmodule Skate.Settings.Db.UserSettings do
       :user_id,
       :ladder_page_vehicle_label,
       :shuttle_page_vehicle_label,
-      :vehicle_adherence_colors,
-      :minischedules_trip_label
+      :vehicle_adherence_colors
     ])
     |> validate_required([
       :user_id,
       :ladder_page_vehicle_label,
       :shuttle_page_vehicle_label,
-      :vehicle_adherence_colors,
-      :minischedules_trip_label
+      :vehicle_adherence_colors
     ])
   end
 end

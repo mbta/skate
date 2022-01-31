@@ -53,20 +53,6 @@ defmodule SkateWeb.UserSettingsControllerTest do
     end
 
     @tag :authenticated
-    test "can set minischedules_trip_label", %{conn: conn, user: username} do
-      conn =
-        conn
-        |> put("/api/user_settings", %{
-          "field" => "minischedules_trip_label",
-          "value" => "origin"
-        })
-
-      response(conn, 200)
-      result = UserSettings.get_or_create(username)
-      assert result.minischedules_trip_label == :origin
-    end
-
-    @tag :authenticated
     test "gives 400 for invalid field", %{conn: conn} do
       conn =
         conn
