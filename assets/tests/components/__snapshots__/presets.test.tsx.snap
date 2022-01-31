@@ -4,11 +4,6 @@ exports[`Presets renders current presets 1`] = `
 <div
   className="m-presets-panel"
 >
-  <button
-    onClick={[Function]}
-  >
-    Save as preset
-  </button>
   <div>
     Existing presets:
     <ul>
@@ -19,5 +14,10 @@ exports[`Presets renders current presets 1`] = `
       </button>
     </ul>
   </div>
+  <button
+    onClick={[Function]}
+  >
+    Save as preset
+  </button>
 </div>
 `;

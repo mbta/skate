@@ -9,6 +9,19 @@ const Presets = () => {
 
   return (
     <div className="m-presets-panel">
+      <div>
+        Existing presets:
+        <ul>
+          {presets.map((preset) => (
+            <button
+              key={preset.uuid}
+              onClick={() => dispatch(instantiatePreset(preset.uuid))}
+            >
+              {preset.presetName}
+            </button>
+          ))}
+        </ul>
+      </div>
       <button
         onClick={() => {
           const currentTab = currentRouteTab(routeTabs)
@@ -29,19 +42,6 @@ const Presets = () => {
       >
         Save as preset
       </button>
-      <div>
-        Existing presets:
-        <ul>
-          {presets.map((preset) => (
-            <button
-              key={preset.uuid}
-              onClick={() => dispatch(instantiatePreset(preset.uuid))}
-            >
-              {preset.presetName}
-            </button>
-          ))}
-        </ul>
-      </div>
     </div>
   )
 }
