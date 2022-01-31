@@ -4,19 +4,44 @@ exports[`Presets renders current presets 1`] = `
 <div
   className="m-presets-panel"
 >
-  <div>
-    Existing presets:
-    <ul>
+  <ul>
+    <li>
+      <div
+        className="m-presets-panel__preset-button-container"
+      >
+        <button
+          onClick={[Function]}
+        >
+          My Preset
+        </button>
+      </div>
       <button
+        className="m-close-button"
         onClick={[Function]}
       >
-        My Preset
+        <span
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
       </button>
-    </ul>
-  </div>
+    </li>
+  </ul>
   <button
+    className="m-presets-panel__save-as-preset-button"
     onClick={[Function]}
   >
+    <span
+      className="m-presets-panel__save-as-preset-button-icon"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "SVG",
+        }
+      }
+    />
     Save as preset
   </button>
 </div>

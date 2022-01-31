@@ -1,0 +1,50 @@
+.m-presets-panel {
+  ul {
+    margin-top: 0rem;
+    margin-bottom: 0.5rem;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 1rem;
+      line-height: 0.75rem;
+
+      .m-presets-panel__preset-button-container {
+        button {
+          @include font-small;
+          color: #0041ea;
+          text-decoration-line: underline;
+        }
+      }
+
+      .m-close-button {
+        @include button-icon(0.625rem);
+        font-size: unset;
+      }
+    }
+  }
+
+  .m-presets-panel__save-as-preset-button {
+    @include font-small;
+    font-weight: 700;
+    color: #fafafb;
+    background: $color-primary;
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+    display: flex;
+    align-items: center;
+
+    .m-presets-panel__save-as-preset-button-icon {
+      padding-right: 0.25rem;
+      width: 0.75rem;
+      height: 0.75rem;
+
+      svg {
+        path {
+          stroke: #fafafb;
+        }
+      }
+    }
+  }
+}
