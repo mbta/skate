@@ -225,6 +225,31 @@ describe("LadderPage", () => {
     expect(mockDispatch).toHaveBeenCalledWith(savePreset("uuid2"))
   })
 
+  test("omits save icon for unedited preset", () => {
+    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
+    const mockState = {
+      ...initialState,
+      routeTabs: [
+        routeTabFactory.build({
+          ordering: 0,
+          isCurrentTab: true,
+          selectedRouteIds: ["1"],
+          presetName: "My Preset",
+          saveChangesToTabUuid: undefined,
+        }),
+      ],
+    }
+    const wrapper = mount(
+      <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+        <RoutesProvider routes={routes}>
+          <LadderPage />
+        </RoutesProvider>
+      </StateDispatchProvider>
+    )
+
+    expect(wrapper.find(".m-ladder-page__tab-save-icon").length).toBe(0)
+  })
+
   test("can add a new route tab", () => {
     ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
     const mockState = {

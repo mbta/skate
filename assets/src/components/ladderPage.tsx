@@ -57,11 +57,13 @@ const LadderTab = ({
   tab,
   selectTab,
   closeTab,
+  showSaveIcon,
   saveTab,
 }: {
   tab: RouteTab
   selectTab: () => void
   closeTab: () => void
+  showSaveIcon: boolean
   saveTab: () => void
 }): ReactElement<HTMLDivElement> => {
   const title = tab.presetName || "Untitled"
@@ -82,7 +84,7 @@ const LadderTab = ({
         >
           {title}
         </div>
-        {tab.isCurrentTab ? (
+        {tab.isCurrentTab && showSaveIcon ? (
           <div
             onClick={(e) => {
               e.stopPropagation()
@@ -240,6 +242,7 @@ const LadderPageWithTabs = (): ReactElement<HTMLDivElement> => {
               tab={routeTab}
               selectTab={() => dispatch(selectRouteTab(routeTab.uuid))}
               closeTab={() => dispatch(closeRouteTab(routeTab.uuid))}
+              showSaveIcon={!isPreset(routeTab) || isEditedPreset(routeTab)}
               saveTab={() => {
                 if (isEditedPreset(routeTab)) {
                   dispatch(savePreset(routeTab.uuid))
