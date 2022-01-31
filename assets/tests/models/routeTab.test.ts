@@ -4,6 +4,7 @@ import {
   closeTabByUUID,
   highestExistingOrdering,
   isPreset,
+  isEditedPreset,
   isOpenTab,
   applyRouteTabEdit,
   saveEditedPreset,
@@ -71,6 +72,28 @@ describe("isPreset", () => {
     })
 
     expect(isPreset(routeTab)).toBeFalsy()
+  })
+})
+
+describe("isEditedPreset", () => {
+  test("returns true for an edited preset", () => {
+    const routeTab = routeTabFactory.build({
+      presetName: "My Preset",
+      ordering: 0,
+      saveChangesToTabUuid: uuidv4(),
+    })
+
+    expect(isEditedPreset(routeTab)).toBeTruthy()
+  })
+
+  test("returns false for an open tab that is not a saved preset", () => {
+    const routeTab = routeTabFactory.build({
+      ordering: 0,
+      presetName: "My Preset",
+      saveChangesToTabUuid: undefined,
+    })
+
+    expect(isEditedPreset(routeTab)).toBeFalsy()
   })
 })
 

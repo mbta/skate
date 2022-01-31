@@ -63,6 +63,8 @@ export const parseRouteTabData = (
 export const isPreset = (routeTab: RouteTab): boolean =>
   routeTab.presetName !== undefined &&
   routeTab.saveChangesToTabUuid === undefined
+export const isEditedPreset = (routeTab: RouteTab): boolean =>
+  routeTab.saveChangesToTabUuid !== undefined
 export const isOpenTab = (routeTab: RouteTab): boolean =>
   routeTab.ordering !== undefined
 
@@ -181,10 +183,7 @@ export const applyRouteTabEdit = (
     throw new Error(`No tab found for UUID ${uuid}`)
   }
 
-  if (
-    tabToEdit.presetName === undefined ||
-    tabToEdit.saveChangesToTabUuid !== undefined
-  ) {
+  if (!isPreset(tabToEdit) || isEditedPreset(tabToEdit)) {
     return routeTabs.map((routeTab) => {
       if (routeTab.uuid === uuid) {
         return updateFn(routeTab)
@@ -222,7 +221,7 @@ export const saveEditedPreset = (
     throw new Error(`No tab found for UUID ${uuid}`)
   }
 
-  if (tabToSave.saveChangesToTabUuid === undefined) {
+  if (!isEditedPreset(tabToSave)) {
     throw new Error(`Cannot save tab UUID ${uuid}: no saveChangesToTabUuid`)
   }
 

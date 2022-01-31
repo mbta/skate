@@ -2,7 +2,13 @@ import React, { ReactElement, useContext, useState, useEffect } from "react"
 import RoutesContext from "../contexts/routesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useTimepoints from "../hooks/useTimepoints"
-import { RouteTab, currentRouteTab, isOpenTab } from "../models/routeTab"
+import {
+  RouteTab,
+  currentRouteTab,
+  isOpenTab,
+  isEditedPreset,
+  isPreset,
+} from "../models/routeTab"
 import { allVehiclesAndGhosts } from "../models/vehiclesByRouteId"
 import PickerContainer from "./pickerContainer"
 import { VehicleId, VehicleOrGhost } from "../realtime.d"
@@ -235,9 +241,9 @@ const LadderPageWithTabs = (): ReactElement<HTMLDivElement> => {
               selectTab={() => dispatch(selectRouteTab(routeTab.uuid))}
               closeTab={() => dispatch(closeRouteTab(routeTab.uuid))}
               saveTab={() => {
-                if (routeTab.presetName && routeTab.saveChangesToTabUuid) {
+                if (isEditedPreset(routeTab)) {
                   dispatch(savePreset(routeTab.uuid))
-                } else if (routeTab.presetName === undefined) {
+                } else if (!isPreset(routeTab)) {
                   dispatch(createPreset(routeTab.uuid, "Preset name"))
                 }
               }}
