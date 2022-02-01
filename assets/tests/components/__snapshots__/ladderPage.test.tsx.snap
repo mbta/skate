@@ -197,14 +197,18 @@ exports[`LadderPage renders with route tabs 1`] = `
         >
           Untitled
         </div>
-        <span
-          className="m-ladder-page__tab-save-icon"
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
+        <div
+          onClick={[Function]}
+        >
+          <span
+            className="m-ladder-page__tab-save-icon"
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "SVG",
+              }
             }
-          }
-        />
+          />
+        </div>
         <button
           className="m-close-button"
           onClick={[Function]}

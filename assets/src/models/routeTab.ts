@@ -11,6 +11,7 @@ export interface RouteTab {
   ladderDirections: LadderDirections
   ladderCrowdingToggles: LadderCrowdingToggles
   ordering?: number
+  saveChangesToTabUuid?: string
 }
 
 export interface RouteTabData {
@@ -21,6 +22,7 @@ export interface RouteTabData {
   ladder_directions: LadderDirections
   ladder_crowding_toggles: LadderCrowdingToggles
   is_current_tab?: boolean
+  save_changes_to_tab_uuid?: string
 }
 
 export const newRouteTab = (ordering: number): RouteTab => ({
@@ -38,8 +40,8 @@ export const highestExistingOrdering = (routeTabs: RouteTab[]): number =>
     ...routeTabs.map((existingRouteTab) => existingRouteTab.ordering || 0)
   )
 
-export const currentRouteTab = (routeTabs: RouteTab[]): RouteTab =>
-  routeTabs.find((routeTab) => routeTab.isCurrentTab) || newRouteTab(0)
+export const currentRouteTab = (routeTabs: RouteTab[]): RouteTab | undefined =>
+  routeTabs.find((routeTab) => routeTab.isCurrentTab)
 
 export const parseRouteTabData = (
   routeTabsData: RouteTabData[]
@@ -52,11 +54,17 @@ export const parseRouteTabData = (
     selectedRouteIds: routeTabData.selected_route_ids,
     ladderDirections: routeTabData.ladder_directions,
     ladderCrowdingToggles: routeTabData.ladder_crowding_toggles,
+    saveChangesToTabUuid: nullToUndefined(
+      routeTabData.save_changes_to_tab_uuid
+    ),
   }))
 }
 
 export const isPreset = (routeTab: RouteTab): boolean =>
-  routeTab.presetName !== undefined
+  routeTab.presetName !== undefined &&
+  routeTab.saveChangesToTabUuid === undefined
+export const isEditedPreset = (routeTab: RouteTab): boolean =>
+  routeTab.saveChangesToTabUuid !== undefined
 export const isOpenTab = (routeTab: RouteTab): boolean =>
   routeTab.ordering !== undefined
 
@@ -65,6 +73,10 @@ export const instantiatePresetByUUID = (
   uuid: string
 ): RouteTab[] => {
   const preset = routeTabs.find((routeTab) => routeTab.uuid === uuid)
+  const openEditedPreset = routeTabs.find(
+    (routeTab) =>
+      routeTab.saveChangesToTabUuid === uuid && routeTab.ordering !== undefined
+  )
 
   if (preset === undefined) {
     throw new Error(`No preset found for UUID ${uuid}`)
@@ -76,7 +88,17 @@ export const instantiatePresetByUUID = (
         return { ...routeTab, isCurrentTab: false }
       }
     })
-  } else if (currentRouteTab(routeTabs).selectedRouteIds.length === 0) {
+  } else if (openEditedPreset !== undefined) {
+    return routeTabs.map((routeTab) => {
+      if (routeTab.uuid === openEditedPreset.uuid) {
+        return { ...routeTab, isCurrentTab: true }
+      } else {
+        return { ...routeTab, isCurrentTab: false }
+      }
+    })
+  } else if (
+    (currentRouteTab(routeTabs)?.selectedRouteIds || []).length === 0
+  ) {
     return routeTabs
       .filter((routeTab) => routeTab.uuid !== uuid)
       .map((routeTab) => {
@@ -125,7 +147,8 @@ export const closeTabByUUID = (
     const nextTabToRight = newRouteTabs
       .filter(
         (routeTab) =>
-          routeTab.ordering && routeTab.ordering > (tabToClose.ordering || 0)
+          routeTab.ordering !== undefined &&
+          routeTab.ordering > (tabToClose.ordering || 0)
       )
       .sort((a, b) => a.ordering || 0 - (b.ordering || 0))[0]
 
@@ -135,7 +158,8 @@ export const closeTabByUUID = (
       const nextTabToLeft = newRouteTabs
         .filter(
           (routeTab) =>
-            routeTab.ordering && routeTab.ordering < (tabToClose.ordering || 0)
+            routeTab.ordering !== undefined &&
+            routeTab.ordering < (tabToClose.ordering || 0)
         )
         .sort((a, b) => b.ordering || 0 - (a.ordering || 0))[0]
 
@@ -146,6 +170,74 @@ export const closeTabByUUID = (
   }
 
   return newRouteTabs
+}
+
+export const applyRouteTabEdit = (
+  routeTabs: RouteTab[],
+  uuid: string,
+  updateFn: (arg0: RouteTab) => RouteTab
+): RouteTab[] => {
+  const tabToEdit = routeTabs.find((routeTab) => routeTab.uuid === uuid)
+
+  if (tabToEdit === undefined) {
+    throw new Error(`No tab found for UUID ${uuid}`)
+  }
+
+  if (!isPreset(tabToEdit) || isEditedPreset(tabToEdit)) {
+    return routeTabs.map((routeTab) => {
+      if (routeTab.uuid === uuid) {
+        return updateFn(routeTab)
+      } else {
+        return routeTab
+      }
+    })
+  } else {
+    const editedRouteTab = {
+      ...updateFn(tabToEdit),
+      uuid: uuidv4(),
+      saveChangesToTabUuid: tabToEdit.uuid,
+    }
+
+    return [
+      ...routeTabs.map((routeTab) => {
+        if (routeTab.uuid === uuid) {
+          return { ...routeTab, isCurrentTab: false, ordering: undefined }
+        } else {
+          return routeTab
+        }
+      }),
+      editedRouteTab,
+    ]
+  }
+}
+
+export const saveEditedPreset = (
+  routeTabs: RouteTab[],
+  uuid: string
+): RouteTab[] => {
+  const tabToSave = routeTabs.find((routeTab) => routeTab.uuid === uuid)
+
+  if (tabToSave === undefined) {
+    throw new Error(`No tab found for UUID ${uuid}`)
+  }
+
+  if (!isEditedPreset(tabToSave)) {
+    throw new Error(`Cannot save tab UUID ${uuid}: no saveChangesToTabUuid`)
+  }
+
+  return routeTabs
+    .filter((routeTab) => routeTab.uuid !== tabToSave.saveChangesToTabUuid)
+    .map((routeTab) => {
+      if (routeTab.uuid === uuid) {
+        return {
+          ...routeTab,
+          uuid: tabToSave.saveChangesToTabUuid as string,
+          saveChangesToTabUuid: undefined,
+        }
+      } else {
+        return routeTab
+      }
+    })
 }
 
 const nullToUndefined = <T>(data: T | null): T | undefined =>

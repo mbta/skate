@@ -2,7 +2,13 @@ import React, { ReactElement, useContext, useState, useEffect } from "react"
 import RoutesContext from "../contexts/routesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import useTimepoints from "../hooks/useTimepoints"
-import { RouteTab, currentRouteTab, isOpenTab } from "../models/routeTab"
+import {
+  RouteTab,
+  currentRouteTab,
+  isOpenTab,
+  isEditedPreset,
+  isPreset,
+} from "../models/routeTab"
 import { allVehiclesAndGhosts } from "../models/vehiclesByRouteId"
 import PickerContainer from "./pickerContainer"
 import { VehicleId, VehicleOrGhost } from "../realtime.d"
@@ -25,6 +31,8 @@ import {
   flipLadder,
   toggleLadderCrowding,
   closeRouteTab,
+  createPreset,
+  savePreset,
 } from "../state"
 import CloseButton from "./closeButton"
 import { saveIcon, plusThinIcon } from "../helpers/icon"
@@ -49,10 +57,14 @@ const LadderTab = ({
   tab,
   selectTab,
   closeTab,
+  showSaveIcon,
+  saveTab,
 }: {
   tab: RouteTab
   selectTab: () => void
   closeTab: () => void
+  showSaveIcon: boolean
+  saveTab: () => void
 }): ReactElement<HTMLDivElement> => {
   const title = tab.presetName || "Untitled"
   return (
@@ -64,8 +76,26 @@ const LadderTab = ({
       onClick={() => selectTab()}
     >
       <div className="m-ladder-page__tab-contents">
-        <div className="m-ladder-page__tab-title">{title}</div>
-        {tab.isCurrentTab ? saveIcon("m-ladder-page__tab-save-icon") : null}
+        <div
+          className={
+            "m-ladder-page__tab-title" +
+            (tab.saveChangesToTabUuid
+              ? " m-ladder-page__tab-title--edited"
+              : "")
+          }
+        >
+          {title}
+        </div>
+        {tab.isCurrentTab && showSaveIcon ? (
+          <div
+            onClick={(e) => {
+              e.stopPropagation()
+              saveTab()
+            }}
+          >
+            {saveIcon("m-ladder-page__tab-save-icon")}
+          </div>
+        ) : null}
         <CloseButton onClick={() => closeTab()} />
       </div>
     </div>
@@ -147,7 +177,11 @@ const LadderPageWithTabs = (): ReactElement<HTMLDivElement> => {
   }, [JSON.stringify(routeTabs)])
 
   const { selectedRouteIds, ladderDirections, ladderCrowdingToggles } =
-    currentRouteTab(routeTabs)
+    currentRouteTab(routeTabs) || {
+      selectedRouteIds: [] as string[],
+      ladderDirections: {},
+      ladderCrowdingToggles: {},
+    }
 
   const routes: Route[] | null = useContext(RoutesContext)
   const timepointsByRouteId: TimepointsByRouteId =
@@ -210,6 +244,14 @@ const LadderPageWithTabs = (): ReactElement<HTMLDivElement> => {
               tab={routeTab}
               selectTab={() => dispatch(selectRouteTab(routeTab.uuid))}
               closeTab={() => dispatch(closeRouteTab(routeTab.uuid))}
+              showSaveIcon={!isPreset(routeTab) || isEditedPreset(routeTab)}
+              saveTab={() => {
+                if (isEditedPreset(routeTab)) {
+                  dispatch(savePreset(routeTab.uuid))
+                } else if (!isPreset(routeTab)) {
+                  dispatch(createPreset(routeTab.uuid, "Preset name"))
+                }
+              }}
               key={routeTab.uuid}
             />
           ))}

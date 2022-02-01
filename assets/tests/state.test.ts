@@ -554,6 +554,46 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
+  test("savePreset", () => {
+    const routeTab1 = routeTabFactory.build({
+      uuid: "uuid1",
+      ordering: undefined,
+      presetName: "My Preset",
+      isCurrentTab: false,
+      selectedRouteIds: ["1"],
+    })
+
+    const routeTab2 = routeTabFactory.build({
+      uuid: "uuid2",
+      ordering: 0,
+      presetName: "My Preset",
+      isCurrentTab: true,
+      selectedRouteIds: ["1", "39"],
+      saveChangesToTabUuid: "uuid1",
+    })
+
+    const newState = reducer(
+      { ...initialState, routeTabs: [routeTab1, routeTab2] },
+      State.savePreset("uuid2")
+    )
+
+    const expectedNewTabs = [
+      {
+        ...routeTab1,
+        ordering: 0,
+        isCurrentTab: true,
+        selectedRouteIds: ["1", "39"],
+      },
+    ]
+    const expectedState: State.State = {
+      ...initialState,
+      routeTabs: expectedNewTabs,
+      routeTabsToPush: expectedNewTabs,
+    }
+
+    expect(newState).toEqual(expectedState)
+  })
+
   test("selectRouteTab", () => {
     const routeTab1 = routeTabFactory.build()
     const routeTab2 = routeTabFactory.build({ isCurrentTab: true })

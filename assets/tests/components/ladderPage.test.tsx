@@ -22,6 +22,8 @@ import {
   selectRouteTab,
   createRouteTab,
   closeRouteTab,
+  createPreset,
+  savePreset,
 } from "../../src/state"
 import ghostFactory from "../factories/ghost"
 import routeFactory from "../factories/route"
@@ -160,6 +162,92 @@ describe("LadderPage", () => {
     expect(mockDispatch).toHaveBeenCalledWith(
       closeRouteTab(mockState.routeTabs[0].uuid)
     )
+  })
+
+  test("can save a route tab as a preset from the save icon", () => {
+    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
+    const mockState = {
+      ...initialState,
+      routeTabs: [
+        routeTabFactory.build({
+          ordering: 0,
+          isCurrentTab: true,
+          selectedRouteIds: ["1"],
+        }),
+      ],
+    }
+    const wrapper = mount(
+      <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+        <RoutesProvider routes={routes}>
+          <LadderPage />
+        </RoutesProvider>
+      </StateDispatchProvider>
+    )
+
+    wrapper.find(".m-ladder-page__tab-save-icon").simulate("click")
+
+    expect(mockDispatch).toHaveBeenCalledWith(
+      createPreset(mockState.routeTabs[0].uuid, "Preset name")
+    )
+  })
+
+  test("can save an edited preset from the save icon", () => {
+    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
+    const mockState = {
+      ...initialState,
+      routeTabs: [
+        routeTabFactory.build({
+          uuid: "uuid1",
+          ordering: undefined,
+          isCurrentTab: false,
+          selectedRouteIds: ["1"],
+        }),
+        routeTabFactory.build({
+          uuid: "uuid2",
+          ordering: 0,
+          isCurrentTab: true,
+          presetName: "My Preset",
+          selectedRouteIds: ["1", "7"],
+          saveChangesToTabUuid: "uuid1",
+        }),
+      ],
+    }
+    const wrapper = mount(
+      <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+        <RoutesProvider routes={routes}>
+          <LadderPage />
+        </RoutesProvider>
+      </StateDispatchProvider>
+    )
+
+    wrapper.find(".m-ladder-page__tab-save-icon").simulate("click")
+
+    expect(mockDispatch).toHaveBeenCalledWith(savePreset("uuid2"))
+  })
+
+  test("omits save icon for unedited preset", () => {
+    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
+    const mockState = {
+      ...initialState,
+      routeTabs: [
+        routeTabFactory.build({
+          ordering: 0,
+          isCurrentTab: true,
+          selectedRouteIds: ["1"],
+          presetName: "My Preset",
+          saveChangesToTabUuid: undefined,
+        }),
+      ],
+    }
+    const wrapper = mount(
+      <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+        <RoutesProvider routes={routes}>
+          <LadderPage />
+        </RoutesProvider>
+      </StateDispatchProvider>
+    )
+
+    expect(wrapper.find(".m-ladder-page__tab-save-icon").length).toBe(0)
   })
 
   test("can add a new route tab", () => {

@@ -25,10 +25,13 @@ import {
 } from "./userSettings"
 import {
   RouteTab,
+  currentRouteTab,
   newRouteTab,
   highestExistingOrdering,
   instantiatePresetByUUID,
   closeTabByUUID,
+  applyRouteTabEdit,
+  saveEditedPreset,
 } from "./models/routeTab"
 
 export enum OpenView {
@@ -478,6 +481,16 @@ export const instantiatePreset = (uuid: string): InstantiatePresetAction => ({
   payload: { uuid },
 })
 
+interface SavePresetAction {
+  type: "SAVE_PRESET"
+  payload: { uuid: string }
+}
+
+export const savePreset = (uuid: string): SavePresetAction => ({
+  type: "SAVE_PRESET",
+  payload: { uuid },
+})
+
 export type Action =
   | SelectRouteAction
   | DeselectRouteAction
@@ -515,6 +528,7 @@ export type Action =
   | SelectVehicleFromNotificationAction
   | CreatePresetAction
   | InstantiatePresetAction
+  | SavePresetAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -582,6 +596,8 @@ const routeTabsReducer = (
   newRouteTabs: RouteTab[]
   routeTabsUpdated: boolean
 } => {
+  const currentTab = currentRouteTab(routeTabs)
+
   switch (action.type) {
     case "CREATE_ROUTE_TAB":
       return {
@@ -620,6 +636,11 @@ const routeTabsReducer = (
         newRouteTabs: instantiatePresetByUUID(routeTabs, action.payload.uuid),
         routeTabsUpdated: true,
       }
+    case "SAVE_PRESET":
+      return {
+        newRouteTabs: saveEditedPreset(routeTabs, action.payload.uuid),
+        routeTabsUpdated: true,
+      }
     case "SELECT_ROUTE_TAB":
       return {
         newRouteTabs: routeTabs.map((existingRouteTab) => {
@@ -633,69 +654,61 @@ const routeTabsReducer = (
       }
     case "SELECT_ROUTE_IN_TAB":
       return {
-        newRouteTabs: routeTabs.map((routeTab) => {
-          if (routeTab.isCurrentTab) {
-            return {
-              ...routeTab,
-              selectedRouteIds: [
-                ...routeTab.selectedRouteIds,
-                action.payload.routeId,
-              ],
-            }
-          } else {
-            return routeTab
-          }
-        }),
+        newRouteTabs: currentTab
+          ? applyRouteTabEdit(routeTabs, currentTab.uuid, (editTab) => {
+              return {
+                ...editTab,
+                selectedRouteIds: [
+                  ...editTab.selectedRouteIds,
+                  action.payload.routeId,
+                ],
+              }
+            })
+          : routeTabs,
         routeTabsUpdated: true,
       }
     case "DESELECT_ROUTE_IN_TAB":
       return {
-        newRouteTabs: routeTabs.map((routeTab) => {
-          if (routeTab.isCurrentTab) {
-            return {
-              ...routeTab,
-              selectedRouteIds: routeTab.selectedRouteIds.filter(
-                (routeId) => routeId !== action.payload.routeId
-              ),
-            }
-          } else {
-            return routeTab
-          }
-        }),
+        newRouteTabs: currentTab
+          ? applyRouteTabEdit(routeTabs, currentTab.uuid, (editTab) => {
+              return {
+                ...editTab,
+                selectedRouteIds: editTab.selectedRouteIds.filter(
+                  (routeId) => routeId !== action.payload.routeId
+                ),
+              }
+            })
+          : routeTabs,
         routeTabsUpdated: true,
       }
     case "FLIP_LADDER_IN_TAB":
       return {
-        newRouteTabs: routeTabs.map((routeTab) => {
-          if (routeTab.isCurrentTab) {
-            return {
-              ...routeTab,
-              ladderDirections: flipLadderDirectionForRoute(
-                routeTab.ladderDirections,
-                action.payload.routeId
-              ),
-            }
-          } else {
-            return routeTab
-          }
-        }),
+        newRouteTabs: currentTab
+          ? applyRouteTabEdit(routeTabs, currentTab.uuid, (editTab) => {
+              return {
+                ...editTab,
+                ladderDirections: flipLadderDirectionForRoute(
+                  editTab.ladderDirections,
+                  action.payload.routeId
+                ),
+              }
+            })
+          : routeTabs,
         routeTabsUpdated: true,
       }
     case "TOGGLE_LADDER_CROWDING_IN_TAB":
       return {
-        newRouteTabs: routeTabs.map((routeTab) => {
-          if (routeTab.isCurrentTab) {
-            return {
-              ...routeTab,
-              ladderCrowdingToggles: toggleLadderCrowdingForRoute(
-                routeTab.ladderCrowdingToggles,
-                action.payload.routeId
-              ),
-            }
-          } else {
-            return routeTab
-          }
-        }),
+        newRouteTabs: currentTab
+          ? applyRouteTabEdit(routeTabs, currentTab.uuid, (editTab) => {
+              return {
+                ...editTab,
+                ladderCrowdingToggles: toggleLadderCrowdingForRoute(
+                  editTab.ladderCrowdingToggles,
+                  action.payload.routeId
+                ),
+              }
+            })
+          : routeTabs,
         routeTabsUpdated: true,
       }
     default:

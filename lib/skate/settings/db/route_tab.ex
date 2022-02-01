@@ -21,7 +21,8 @@ defmodule Skate.Settings.Db.RouteTab do
       :save_changes_to_tab,
       Skate.Settings.Db.RouteTab,
       foreign_key: :save_changes_to_tab_uuid,
-      references: :uuid
+      references: :uuid,
+      type: :binary_id
     )
 
     timestamps()
@@ -37,7 +38,8 @@ defmodule Skate.Settings.Db.RouteTab do
       :ladder_directions,
       :ladder_crowding_toggles,
       :ordering,
-      :is_current_tab
+      :is_current_tab,
+      :save_changes_to_tab_uuid
     ])
     |> cast_assoc(:save_changes_to_tab)
     |> validate_required([

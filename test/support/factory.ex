@@ -169,7 +169,8 @@ defmodule Skate.Factory do
       ladder_directions: %{},
       ladder_crowding_toggles: %{},
       ordering: sequence(""),
-      is_current_tab: false
+      is_current_tab: false,
+      save_changes_to_tab_uuid: nil
     }
   end
 end

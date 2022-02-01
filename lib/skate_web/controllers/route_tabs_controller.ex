@@ -25,7 +25,8 @@ defmodule SkateWeb.RouteTabsController do
       ladder_directions: Map.get(route_tab, "ladderDirections", %{}),
       ladder_crowding_toggles: Map.get(route_tab, "ladderCrowdingToggles", %{}),
       ordering: Map.get(route_tab, "ordering"),
-      is_current_tab: Map.get(route_tab, "isCurrentTab")
+      is_current_tab: Map.get(route_tab, "isCurrentTab"),
+      save_changes_to_tab_uuid: Map.get(route_tab, "saveChangesToTabUuid")
     }
   end
 end

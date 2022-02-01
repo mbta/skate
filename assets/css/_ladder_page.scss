@@ -84,6 +84,10 @@ $color-route-tabs-separator: #9fa2ac;
     overflow: hidden;
   }
 
+  .m-ladder-page__tab-title--edited::after {
+    content: "*";
+  }
+
   .m-close-button {
     @include button-icon(0.5rem);
     font-size: unset;

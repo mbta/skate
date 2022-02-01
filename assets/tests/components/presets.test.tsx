@@ -2,7 +2,12 @@ import React from "react"
 import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import renderer from "react-test-renderer"
-import { initialState, createPreset, instantiatePreset } from "../../src/state"
+import {
+  initialState,
+  createPreset,
+  instantiatePreset,
+  savePreset,
+} from "../../src/state"
 import Presets from "../../src/components/presets"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import routeTabFactory from "../factories/routeTab"
@@ -66,6 +71,40 @@ describe("Presets", () => {
     expect(mockDispatch).toHaveBeenCalledWith(
       createPreset("uuid1", "Preset 100")
     )
+  })
+
+  test("saves changes to current tab if it's edited", () => {
+    const mockDispatch = jest.fn()
+    const mockState = {
+      ...initialState,
+      routeTabs: [
+        routeTabFactory.build({
+          uuid: "uuid1",
+          ordering: undefined,
+          presetName: "My Preset",
+          isCurrentTab: false,
+          selectedRouteIds: ["1"],
+        }),
+        routeTabFactory.build({
+          uuid: "uuid2",
+          ordering: 0,
+          presetName: "My Preset",
+          isCurrentTab: true,
+          selectedRouteIds: ["1", "7"],
+          saveChangesToTabUuid: "uuid1",
+        }),
+      ],
+    }
+
+    const result = render(
+      <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+        <Presets />
+      </StateDispatchProvider>
+    )
+
+    userEvent.click(result.getByText("Save as preset"))
+
+    expect(mockDispatch).toHaveBeenCalledWith(savePreset("uuid2"))
   })
 
   test("opens a preset", () => {

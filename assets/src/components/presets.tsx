@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
-import { createPreset, instantiatePreset } from "../state"
+import { createPreset, instantiatePreset, savePreset } from "../state"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { currentRouteTab, isPreset } from "../models/routeTab"
+import { currentRouteTab, isPreset, isEditedPreset } from "../models/routeTab"
 
 const Presets = () => {
   const [{ routeTabs }, dispatch] = useContext(StateDispatchContext)
@@ -10,14 +10,22 @@ const Presets = () => {
   return (
     <div className="m-presets-panel">
       <button
-        onClick={() =>
-          dispatch(
-            createPreset(
-              currentRouteTab(routeTabs).uuid,
-              `Preset ${Math.floor(Math.random() * 10000)}`
-            )
-          )
-        }
+        onClick={() => {
+          const currentTab = currentRouteTab(routeTabs)
+
+          if (currentTab) {
+            if (isEditedPreset(currentTab)) {
+              dispatch(savePreset(currentTab.uuid))
+            } else if (!isPreset(currentTab)) {
+              dispatch(
+                createPreset(
+                  currentTab.uuid,
+                  `Preset ${Math.floor(Math.random() * 10000)}`
+                )
+              )
+            }
+          }
+        }}
       >
         Save as preset
       </button>
