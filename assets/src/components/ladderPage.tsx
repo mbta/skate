@@ -79,7 +79,9 @@ const LadderTab = ({
         <div
           className={
             "m-ladder-page__tab-title" +
-            (tab.saveChangesToTabUuid ? " m-ladder-page__tab-title-edited" : "")
+            (tab.saveChangesToTabUuid
+              ? " m-ladder-page__tab-title--edited"
+              : "")
           }
         >
           {title}

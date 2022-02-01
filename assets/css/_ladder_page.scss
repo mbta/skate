@@ -84,7 +84,7 @@ $color-route-tabs-separator: #9fa2ac;
     overflow: hidden;
   }
 
-  .m-ladder-page__tab-title-edited::after {
+  .m-ladder-page__tab-title--edited::after {
     content: "*";
   }
 
