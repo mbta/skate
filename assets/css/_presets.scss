@@ -6,7 +6,7 @@
     li {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
       padding-bottom: 1rem;
       line-height: 0.75rem;
 
@@ -15,6 +15,7 @@
           @include font-small;
           color: #0041ea;
           text-decoration-line: underline;
+          text-align: start;
         }
       }
 
