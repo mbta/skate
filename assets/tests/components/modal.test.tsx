@@ -74,4 +74,43 @@ describe("Modal", () => {
     )
     expect(tree).toMatchSnapshot()
   })
+
+  test("renders create preset modal", () => {
+    const createCallback = jest.fn()
+
+    const state: State = {
+      ...initialState,
+      openInputModal: {
+        type: "CREATE_PRESET",
+        createCallback,
+      },
+    }
+
+    const tree = renderer.create(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <Modal />
+      </StateDispatchProvider>
+    )
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders save preset modal", () => {
+    const saveCallback = jest.fn()
+
+    const state: State = {
+      ...initialState,
+      openInputModal: {
+        type: "SAVE_PRESET",
+        presetName: "My Preset",
+        saveCallback,
+      },
+    }
+
+    const tree = renderer.create(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <Modal />
+      </StateDispatchProvider>
+    )
+    expect(tree).toMatchSnapshot()
+  })
 })

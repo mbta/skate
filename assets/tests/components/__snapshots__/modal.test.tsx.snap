@@ -1,5 +1,39 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Modal renders create preset modal 1`] = `
+<div
+  className="c-modal m-input-modal"
+>
+  <div
+    className="m-input-modal__title"
+  >
+    Save open routes as preset
+  </div>
+  <div
+    className="m-input-modal__input"
+  >
+    <input
+      onChange={[Function]}
+      placeholder="Name your preset…"
+    />
+  </div>
+  <div
+    className="m-input-modal__buttons"
+  >
+    <button
+      onClick={[Function]}
+    >
+      Cancel
+    </button>
+    <button
+      onClick={[Function]}
+    >
+      Save
+    </button>
+  </div>
+</div>
+`;
+
 exports[`Modal renders inactive notification modal when appropriate 1`] = `
 Array [
   <div
@@ -66,4 +100,31 @@ Array [
     className="c-modal-overlay"
   />,
 ]
+`;
+
+exports[`Modal renders save preset modal 1`] = `
+<div
+  className="c-modal m-input-modal"
+>
+  <div
+    className="m-input-modal__title"
+  >
+    Overwrite 
+    My Preset
+  </div>
+  <div
+    className="m-input-modal__buttons"
+  >
+    <button
+      onClick={[Function]}
+    >
+      Cancel
+    </button>
+    <button
+      onClick={[Function]}
+    >
+      Save
+    </button>
+  </div>
+</div>
 `;

@@ -4,9 +4,8 @@ import userEvent from "@testing-library/user-event"
 import renderer from "react-test-renderer"
 import {
   initialState,
-  createPreset,
   instantiatePreset,
-  savePreset,
+  promptToSaveOrCreatePreset,
 } from "../../src/state"
 import Presets from "../../src/components/presets"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
@@ -49,9 +48,6 @@ describe("Presets", () => {
   })
 
   test("saves current tab as preset", () => {
-    jest.spyOn(Math, "random").mockImplementationOnce(() => {
-      return 0.01
-    })
     const mockDispatch = jest.fn()
     const mockState = {
       ...initialState,
@@ -75,7 +71,7 @@ describe("Presets", () => {
     userEvent.click(result.getByText("Save as preset"))
 
     expect(mockDispatch).toHaveBeenCalledWith(
-      createPreset("uuid1", "Preset 100")
+      promptToSaveOrCreatePreset(mockState.routeTabs[0])
     )
   })
 
@@ -110,7 +106,9 @@ describe("Presets", () => {
 
     userEvent.click(result.getByText("Save as preset"))
 
-    expect(mockDispatch).toHaveBeenCalledWith(savePreset("uuid2"))
+    expect(mockDispatch).toHaveBeenCalledWith(
+      promptToSaveOrCreatePreset(mockState.routeTabs[1])
+    )
   })
 
   test("opens a preset", () => {

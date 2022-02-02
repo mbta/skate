@@ -22,8 +22,7 @@ import {
   selectRouteTab,
   createRouteTab,
   closeRouteTab,
-  createPreset,
-  savePreset,
+  promptToSaveOrCreatePreset,
 } from "../../src/state"
 import ghostFactory from "../factories/ghost"
 import routeFactory from "../factories/route"
@@ -187,7 +186,7 @@ describe("LadderPage", () => {
     wrapper.find(".m-ladder-page__tab-save-icon").simulate("click")
 
     expect(mockDispatch).toHaveBeenCalledWith(
-      createPreset(mockState.routeTabs[0].uuid, "Preset name")
+      promptToSaveOrCreatePreset(mockState.routeTabs[0])
     )
   })
 
@@ -222,7 +221,9 @@ describe("LadderPage", () => {
 
     wrapper.find(".m-ladder-page__tab-save-icon").simulate("click")
 
-    expect(mockDispatch).toHaveBeenCalledWith(savePreset("uuid2"))
+    expect(mockDispatch).toHaveBeenCalledWith(
+      promptToSaveOrCreatePreset(mockState.routeTabs[1])
+    )
   })
 
   test("omits save icon for unedited preset", () => {
