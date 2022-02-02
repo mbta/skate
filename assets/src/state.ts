@@ -32,6 +32,8 @@ import {
   closeTabByUUID,
   applyRouteTabEdit,
   saveEditedPreset,
+  isEditedPreset,
+  isPreset,
 } from "./models/routeTab"
 
 export enum OpenView {
@@ -39,6 +41,27 @@ export enum OpenView {
   Swings,
   Late,
 }
+
+interface CreatePresetModal {
+  type: "CREATE_PRESET"
+  createCallback: (arg0: string, arg1: React.Dispatch<Action>) => void
+}
+
+interface SavePresetModal {
+  type: "SAVE_PRESET"
+  saveCallback: (arg0: React.Dispatch<Action>) => void
+  presetName: string
+}
+
+interface DeletePresetModal {
+  type: "DELETE_PRESET"
+  deleteCallback: (arg0: string, arg1: React.Dispatch<Action>) => void
+}
+
+export type OpenInputModal =
+  | CreatePresetModal
+  | SavePresetModal
+  | DeletePresetModal
 
 export interface State {
   pickerContainerIsVisible: boolean
@@ -56,6 +79,7 @@ export interface State {
   userSettings: UserSettings
   selectedNotification?: Notification
   openView: OpenView
+  openInputModal: OpenInputModal | null
 }
 
 export const initialState: State = {
@@ -74,6 +98,7 @@ export const initialState: State = {
   userSettings: defaultUserSettings,
   selectedNotification: undefined,
   openView: OpenView.None,
+  openInputModal: null,
 }
 
 interface SelectRouteAction {
@@ -491,6 +516,26 @@ export const savePreset = (uuid: string): SavePresetAction => ({
   payload: { uuid },
 })
 
+interface PromptToSaveOrCreatePresetAction {
+  type: "PROMPT_TO_SAVE_OR_CREATE_PRESET"
+  payload: { routeTab: RouteTab }
+}
+
+export const promptToSaveOrCreatePreset = (
+  routeTab: RouteTab
+): PromptToSaveOrCreatePresetAction => ({
+  type: "PROMPT_TO_SAVE_OR_CREATE_PRESET",
+  payload: { routeTab },
+})
+
+interface CloseInputModalAction {
+  type: "CLOSE_INPUT_MODAL"
+}
+
+export const closeInputModal = (): CloseInputModalAction => ({
+  type: "CLOSE_INPUT_MODAL",
+})
+
 export type Action =
   | SelectRouteAction
   | DeselectRouteAction
@@ -529,6 +574,8 @@ export type Action =
   | CreatePresetAction
   | InstantiatePresetAction
   | SavePresetAction
+  | PromptToSaveOrCreatePresetAction
+  | CloseInputModalAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -907,6 +954,40 @@ const openViewReducer = (state: OpenView, action: Action): OpenView => {
   }
 }
 
+const openInputModalReducer = (
+  state: OpenInputModal | null,
+  action: Action
+): OpenInputModal | null => {
+  switch (action.type) {
+    case "CLOSE_INPUT_MODAL":
+      return null
+    case "PROMPT_TO_SAVE_OR_CREATE_PRESET":
+      if (isEditedPreset(action.payload.routeTab)) {
+        return {
+          type: "SAVE_PRESET",
+          saveCallback: (dispatch: React.Dispatch<Action>) => {
+            dispatch(savePreset(action.payload.routeTab.uuid))
+          },
+          presetName: action.payload.routeTab.presetName || "",
+        }
+      } else if (!isPreset(action.payload.routeTab)) {
+        return {
+          type: "CREATE_PRESET",
+          createCallback: (
+            presetName: string,
+            dispatch: React.Dispatch<Action>
+          ) => {
+            dispatch(createPreset(action.payload.routeTab.uuid, presetName))
+          },
+        }
+      } else {
+        return state
+      }
+    default:
+      return state
+  }
+}
+
 export const reducer = (state: State, action: Action): State => {
   const { routeTabs, routeTabsToPush, routeTabsPushInProgress } =
     routeTabsAndPushReducer(state, action)
@@ -951,5 +1032,6 @@ export const reducer = (state: State, action: Action): State => {
       action
     ),
     openView: openViewReducer(state.openView, action),
+    openInputModal: openInputModalReducer(state.openInputModal, action),
   }
 }

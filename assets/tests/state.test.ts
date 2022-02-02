@@ -769,4 +769,79 @@ describe("reducer", () => {
       routeTabsPushInProgress: false,
     })
   })
+
+  test("closeInputModal", () => {
+    const mockCallback = jest.fn() as (arg0: string) => void
+    const stateWithInputModal = {
+      ...initialState,
+      openInputModal: {
+        type: "DELETE_PRESET" as "DELETE_PRESET",
+        deleteCallback: mockCallback,
+      },
+    }
+
+    const newState = reducer(stateWithInputModal, State.closeInputModal())
+
+    expect(newState.openInputModal).toBeNull()
+  })
+
+  test("promptToSaveOrCreatePreset when creating", () => {
+    const mockDispatch = jest.fn()
+    const routeTab = routeTabFactory.build({ presetName: undefined })
+
+    const newState = reducer(
+      initialState,
+      State.promptToSaveOrCreatePreset(routeTab)
+    )
+
+    switch (newState.openInputModal?.type) {
+      case "CREATE_PRESET":
+        newState.openInputModal.createCallback("Preset name", mockDispatch)
+        expect(mockDispatch).toHaveBeenCalledWith(
+          State.createPreset(routeTab.uuid, "Preset name")
+        )
+        return
+      default:
+        fail("did not receive correct openInputModal type")
+    }
+  })
+
+  test("promptToSaveOrCreatePreset when saving", () => {
+    const mockDispatch = jest.fn()
+    const routeTab = routeTabFactory.build({
+      presetName: "My preset",
+      saveChangesToTabUuid: "uuid2",
+    })
+
+    const newState = reducer(
+      initialState,
+      State.promptToSaveOrCreatePreset(routeTab)
+    )
+
+    switch (newState.openInputModal?.type) {
+      case "SAVE_PRESET":
+        newState.openInputModal.saveCallback(mockDispatch)
+        expect(newState.openInputModal.presetName).toBe("My preset")
+        expect(mockDispatch).toHaveBeenCalledWith(
+          State.savePreset(routeTab.uuid)
+        )
+        return
+      default:
+        fail("did not receive correct openInputModal type")
+    }
+  })
+
+  test("promptToSaveOrCreatePreset when there are no changes", () => {
+    const routeTab = routeTabFactory.build({
+      presetName: "My preset",
+      saveChangesToTabUuid: undefined,
+    })
+
+    const newState = reducer(
+      initialState,
+      State.promptToSaveOrCreatePreset(routeTab)
+    )
+
+    expect(newState.openInputModal).toBeNull()
+  })
 })
