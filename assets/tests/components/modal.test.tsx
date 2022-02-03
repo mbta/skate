@@ -113,4 +113,24 @@ describe("Modal", () => {
     )
     expect(tree).toMatchSnapshot()
   })
+
+  test("renders delete preset modal", () => {
+    const deleteCallback = jest.fn()
+
+    const state: State = {
+      ...initialState,
+      openInputModal: {
+        type: "DELETE_PRESET",
+        presetName: "My Preset",
+        deleteCallback,
+      },
+    }
+
+    const tree = renderer.create(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <Modal />
+      </StateDispatchProvider>
+    )
+    expect(tree).toMatchSnapshot()
+  })
 })

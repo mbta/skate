@@ -34,6 +34,37 @@ exports[`Modal renders create preset modal 1`] = `
 </div>
 `;
 
+exports[`Modal renders delete preset modal 1`] = `
+<div
+  className="c-modal m-input-modal"
+>
+  <div
+    className="m-input-modal__title"
+  >
+    Delete preset?
+  </div>
+  <div
+    className="m-input-modal__text"
+  >
+    My Preset
+  </div>
+  <div
+    className="m-input-modal__buttons"
+  >
+    <button
+      onClick={[Function]}
+    >
+      Cancel
+    </button>
+    <button
+      onClick={[Function]}
+    >
+      Confirm
+    </button>
+  </div>
+</div>
+`;
+
 exports[`Modal renders inactive notification modal when appropriate 1`] = `
 Array [
   <div

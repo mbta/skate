@@ -7,6 +7,7 @@ import InactiveNotificationModal from "./inactiveNotificationModal"
 import NotificationLoadingModal from "./notificationLoadingModal"
 import CreatePresetModal from "./inputModals/createPresetModal"
 import SavePresetModal from "./inputModals/savePresetModal"
+import DeletePresetModal from "./inputModals/deletePresetModal"
 
 const Modal = (): ReactElement | null => {
   const { connectionStatus } = useContext(SocketContext)
@@ -36,6 +37,13 @@ const Modal = (): ReactElement | null => {
           <SavePresetModal
             presetName={openInputModal.presetName}
             saveCallback={openInputModal.saveCallback}
+          />
+        )
+      case "DELETE_PRESET":
+        return (
+          <DeletePresetModal
+            presetName={openInputModal.presetName}
+            deleteCallback={openInputModal.deleteCallback}
           />
         )
     }
