@@ -32,6 +32,7 @@ import {
   closeTabByUUID,
   applyRouteTabEdit,
   saveEditedPreset,
+  deletePresetByUUID,
   isEditedPreset,
   isPreset,
 } from "./models/routeTab"
@@ -55,7 +56,8 @@ interface SavePresetModal {
 
 interface DeletePresetModal {
   type: "DELETE_PRESET"
-  deleteCallback: (arg0: string, arg1: React.Dispatch<Action>) => void
+  deleteCallback: (arg1: React.Dispatch<Action>) => void
+  presetName: string
 }
 
 export type OpenInputModal =
@@ -516,6 +518,16 @@ export const savePreset = (uuid: string): SavePresetAction => ({
   payload: { uuid },
 })
 
+interface DeletePresetAction {
+  type: "DELETE_PRESET"
+  payload: { uuid: string }
+}
+
+export const deletePreset = (uuid: string): DeletePresetAction => ({
+  type: "DELETE_PRESET",
+  payload: { uuid },
+})
+
 interface PromptToSaveOrCreatePresetAction {
   type: "PROMPT_TO_SAVE_OR_CREATE_PRESET"
   payload: { routeTab: RouteTab }
@@ -525,6 +537,18 @@ export const promptToSaveOrCreatePreset = (
   routeTab: RouteTab
 ): PromptToSaveOrCreatePresetAction => ({
   type: "PROMPT_TO_SAVE_OR_CREATE_PRESET",
+  payload: { routeTab },
+})
+
+interface PromptToDeletePresetAction {
+  type: "PROMPT_TO_DELETE_PRESET"
+  payload: { routeTab: RouteTab }
+}
+
+export const promptToDeletePreset = (
+  routeTab: RouteTab
+): PromptToDeletePresetAction => ({
+  type: "PROMPT_TO_DELETE_PRESET",
   payload: { routeTab },
 })
 
@@ -574,7 +598,9 @@ export type Action =
   | CreatePresetAction
   | InstantiatePresetAction
   | SavePresetAction
+  | DeletePresetAction
   | PromptToSaveOrCreatePresetAction
+  | PromptToDeletePresetAction
   | CloseInputModalAction
 
 export type Dispatch = ReactDispatch<Action>
@@ -686,6 +712,11 @@ const routeTabsReducer = (
     case "SAVE_PRESET":
       return {
         newRouteTabs: saveEditedPreset(routeTabs, action.payload.uuid),
+        routeTabsUpdated: true,
+      }
+    case "DELETE_PRESET":
+      return {
+        newRouteTabs: deletePresetByUUID(routeTabs, action.payload.uuid),
         routeTabsUpdated: true,
       }
     case "SELECT_ROUTE_TAB":
@@ -982,6 +1013,14 @@ const openInputModalReducer = (
         }
       } else {
         return state
+      }
+    case "PROMPT_TO_DELETE_PRESET":
+      return {
+        type: "DELETE_PRESET",
+        deleteCallback: (dispatch: React.Dispatch<Action>) => {
+          dispatch(deletePreset(action.payload.routeTab.uuid))
+        },
+        presetName: action.payload.routeTab.presetName || "",
       }
     default:
       return state

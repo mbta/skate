@@ -10,6 +10,7 @@ import {
   VehicleLabelSetting,
   VehicleAdherenceColorsSetting,
 } from "../src/userSettings"
+import { RouteTab } from "../src/models/routeTab"
 
 import vehicleFactory from "./factories/vehicle"
 import routeTabFactory from "./factories/routeTab"
@@ -594,6 +595,28 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
+  test("deletePreset", () => {
+    const routeTab = routeTabFactory.build({
+      ordering: 0,
+      presetName: "My Preset",
+      isCurrentTab: true,
+    })
+
+    const newState = reducer(
+      { ...initialState, routeTabs: [routeTab] },
+      State.deletePreset(routeTab.uuid)
+    )
+
+    const expectedNewTabs = [] as RouteTab[]
+    const expectedState: State.State = {
+      ...initialState,
+      routeTabs: expectedNewTabs,
+      routeTabsToPush: expectedNewTabs,
+    }
+
+    expect(newState).toEqual(expectedState)
+  })
+
   test("selectRouteTab", () => {
     const routeTab1 = routeTabFactory.build()
     const routeTab2 = routeTabFactory.build({ isCurrentTab: true })
@@ -771,12 +794,13 @@ describe("reducer", () => {
   })
 
   test("closeInputModal", () => {
-    const mockCallback = jest.fn() as (arg0: string) => void
+    const mockCallback = jest.fn()
     const stateWithInputModal = {
       ...initialState,
       openInputModal: {
         type: "DELETE_PRESET" as "DELETE_PRESET",
         deleteCallback: mockCallback,
+        presetName: "My Preset",
       },
     }
 
@@ -843,5 +867,26 @@ describe("reducer", () => {
     )
 
     expect(newState.openInputModal).toBeNull()
+  })
+
+  test("promptToDeletePreset", () => {
+    const mockDispatch = jest.fn()
+    const routeTab = routeTabFactory.build({
+      presetName: "My preset",
+    })
+
+    const newState = reducer(initialState, State.promptToDeletePreset(routeTab))
+
+    switch (newState.openInputModal?.type) {
+      case "DELETE_PRESET":
+        newState.openInputModal.deleteCallback(mockDispatch)
+        expect(newState.openInputModal.presetName).toBe("My preset")
+        expect(mockDispatch).toHaveBeenCalledWith(
+          State.deletePreset(routeTab.uuid)
+        )
+        return
+      default:
+        fail("did not receive correct openInputModal type")
+    }
   })
 })
