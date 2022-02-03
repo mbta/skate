@@ -7,7 +7,9 @@ import { plusThinIcon } from "../helpers/icon"
 
 const Presets = () => {
   const [{ routeTabs }, dispatch] = useContext(StateDispatchContext)
-  const presets = routeTabs.filter(isPreset)
+  const presets = routeTabs
+    .filter(isPreset)
+    .sort((a, b) => (a.presetName || "").localeCompare(b.presetName || ""))
 
   return (
     <div className="m-presets-panel">

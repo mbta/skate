@@ -25,6 +25,12 @@ describe("Presets", () => {
           selectedRouteIds: ["1"],
         }),
         routeTabFactory.build({
+          ordering: 1,
+          presetName: "Another Preset",
+          isCurrentTab: false,
+          selectedRouteIds: ["77"],
+        }),
+        routeTabFactory.build({
           ordering: undefined,
           isCurrentTab: false,
           selectedRouteIds: ["28"],
