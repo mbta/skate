@@ -211,6 +211,7 @@ exports[`LadderPage renders with route tabs 1`] = `
         </div>
         <button
           className="m-close-button"
+          data-testid="close-button"
           onClick={[Function]}
         >
           <span
@@ -238,6 +239,7 @@ exports[`LadderPage renders with route tabs 1`] = `
         </div>
         <button
           className="m-close-button"
+          data-testid="close-button"
           onClick={[Function]}
         >
           <span
@@ -273,6 +275,7 @@ exports[`LadderPage renders with route tabs 1`] = `
     >
       <button
         className="m-close-button"
+        data-testid="close-button"
         onClick={[Function]}
       >
         <span
@@ -414,6 +417,7 @@ exports[`LadderPage renders with routes 1`] = `
     >
       <button
         className="m-close-button"
+        data-testid="close-button"
         onClick={[Function]}
       >
         <span
@@ -563,6 +567,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
     >
       <button
         className="m-close-button"
+        data-testid="close-button"
         onClick={[Function]}
       >
         <span
@@ -604,6 +609,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
     >
       <button
         className="m-close-button"
+        data-testid="close-button"
         onClick={[Function]}
       >
         <span
@@ -753,6 +759,7 @@ exports[`LadderPage renders with timepoints 1`] = `
     >
       <button
         className="m-close-button"
+        data-testid="close-button"
         onClick={[Function]}
       >
         <span
@@ -916,6 +923,7 @@ exports[`LadderPage renders with timepoints 1`] = `
     >
       <button
         className="m-close-button"
+        data-testid="close-button"
         onClick={[Function]}
       >
         <span
@@ -1179,6 +1187,7 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
     >
       <button
         className="m-close-button"
+        data-testid="close-button"
         onClick={[Function]}
       >
         <span
@@ -1317,6 +1326,7 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
           >
             <button
               className="m-close-button"
+              data-testid="close-button"
               onClick={[Function]}
             >
               <span

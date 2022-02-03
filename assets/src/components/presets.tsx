@@ -1,5 +1,9 @@
 import React, { useContext } from "react"
-import { instantiatePreset, promptToSaveOrCreatePreset } from "../state"
+import {
+  instantiatePreset,
+  promptToSaveOrCreatePreset,
+  promptToDeletePreset,
+} from "../state"
 import CloseButton from "./closeButton"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { currentRouteTab, isPreset } from "../models/routeTab"
@@ -23,7 +27,7 @@ const Presets = () => {
             </div>
             <CloseButton
               onClick={() => {
-                return
+                dispatch(promptToDeletePreset(preset))
               }}
             />
           </li>

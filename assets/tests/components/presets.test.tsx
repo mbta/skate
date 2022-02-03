@@ -6,6 +6,7 @@ import {
   initialState,
   instantiatePreset,
   promptToSaveOrCreatePreset,
+  promptToDeletePreset,
 } from "../../src/state"
 import Presets from "../../src/components/presets"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
@@ -135,5 +136,33 @@ describe("Presets", () => {
     userEvent.click(result.getByText("My Preset"))
 
     expect(mockDispatch).toHaveBeenCalledWith(instantiatePreset("uuid1"))
+  })
+
+  test("deletes a preset", () => {
+    const mockDispatch = jest.fn()
+    const mockState = {
+      ...initialState,
+      routeTabs: [
+        routeTabFactory.build({
+          uuid: "uuid1",
+          ordering: 0,
+          presetName: "My Preset",
+          isCurrentTab: true,
+          selectedRouteIds: ["1"],
+        }),
+      ],
+    }
+
+    const result = render(
+      <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+        <Presets />
+      </StateDispatchProvider>
+    )
+
+    userEvent.click(result.getByTestId("close-button"))
+
+    expect(mockDispatch).toHaveBeenCalledWith(
+      promptToDeletePreset(mockState.routeTabs[0])
+    )
   })
 })
