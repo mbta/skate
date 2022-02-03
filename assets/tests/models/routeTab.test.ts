@@ -8,6 +8,7 @@ import {
   isOpenTab,
   applyRouteTabEdit,
   saveEditedPreset,
+  deletePresetByUUID,
 } from "../../src/models/routeTab"
 import { v4 as uuidv4 } from "uuid"
 import routeTabFactory from "../factories/routeTab"
@@ -457,5 +458,64 @@ describe("saveEditedPreset", () => {
         new Error("Cannot save tab UUID uuid1: no saveChangesToTabUuid")
       )
     }
+  })
+})
+
+describe("deletePresetByUUID", () => {
+  test("deletes preset", () => {
+    const routeTab1 = routeTabFactory.build({
+      presetName: "My Preset",
+      ordering: undefined,
+      isCurrentTab: false,
+    })
+    const routeTab2 = routeTabFactory.build({
+      presetName: "My Other Preset",
+      ordering: 0,
+      isCurrentTab: true,
+    })
+
+    expect(deletePresetByUUID([routeTab1, routeTab2], routeTab1.uuid)).toEqual([
+      routeTab2,
+    ])
+  })
+
+  test("also closes open tab of preset", () => {
+    const routeTab1 = routeTabFactory.build({
+      presetName: "My Preset",
+      ordering: 0,
+      isCurrentTab: true,
+    })
+    const routeTab2 = routeTabFactory.build({
+      presetName: "My Other Preset",
+      ordering: 1,
+      isCurrentTab: false,
+    })
+
+    expect(deletePresetByUUID([routeTab1, routeTab2], routeTab1.uuid)).toEqual([
+      { ...routeTab2, isCurrentTab: true },
+    ])
+  })
+
+  test("also closes open, edited tab of preset", () => {
+    const routeTab1 = routeTabFactory.build({
+      presetName: "My Preset",
+      ordering: undefined,
+      isCurrentTab: false,
+    })
+    const routeTab2 = routeTabFactory.build({
+      presetName: "My Preset",
+      ordering: 0,
+      isCurrentTab: true,
+      saveChangesToTabUuid: routeTab1.uuid,
+    })
+    const routeTab3 = routeTabFactory.build({
+      presetName: "My Other Preset",
+      ordering: 1,
+      isCurrentTab: false,
+    })
+
+    expect(
+      deletePresetByUUID([routeTab1, routeTab2, routeTab3], routeTab1.uuid)
+    ).toEqual([{ ...routeTab3, isCurrentTab: true }])
   })
 })
