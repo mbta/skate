@@ -32,6 +32,7 @@ $picker-width-wide: $picker-width-narrow + 1.1;
 @import "notification_drawer";
 @import "page";
 @import "picker_container";
+@import "presets";
 @import "properties_list";
 @import "properties_panel";
 @import "properties_panel/block_waiver_banner";
