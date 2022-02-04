@@ -1,0 +1,90 @@
+.m-input-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2001;
+  padding: 1.5rem;
+  background: #f4f4f5;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.25);
+  border-radius: 0.25rem;
+  line-height: 1.125rem;
+}
+
+.m-input-modal__title {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #141524;
+}
+
+.m-input-modal__text {
+  font-size: 1.125rem;
+  font-weight: 400;
+}
+
+.m-input-modal__name-text {
+  color: #0041ea;
+}
+
+.m-input-modal__input {
+  input {
+    @include font-body;
+    background: inherit;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0px;
+    border-bottom: 1px solid #9fa2ac;
+    padding: 0.25rem;
+    color: #141524;
+    font-weight: 400;
+
+    ::placeholder {
+      color: #9fa2ac;
+    }
+  }
+}
+
+.m-input-modal__buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+@mixin input-modal-button {
+  @include font-body;
+  font-weight: 500;
+  flex-grow: 1;
+  border: 1px solid #d3d5d9;
+  border-radius: 0.25rem;
+  box-sizing: border-box;
+  padding: 0.5rem 2.25rem;
+}
+
+.m-input-modal__button {
+  @include input-modal-button;
+  color: $color-component-dark;
+  background: #e5e7eb;
+}
+
+.m-input-modal__button-disabled {
+  @include input-modal-button;
+  cursor: default;
+  color: #4f535f;
+  background: #e5e7eb;
+}
+
+.m-input-modal__button-confirm {
+  @include input-modal-button;
+  color: #fafafa;
+  background: #118d86;
+}
+
+.m-input-modal__button-danger {
+  @include input-modal-button;
+  color: #fafafa;
+  background: #f00d55;
+}

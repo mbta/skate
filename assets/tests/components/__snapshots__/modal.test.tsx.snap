@@ -2,7 +2,7 @@
 
 exports[`Modal renders create preset modal 1`] = `
 <div
-  className="c-modal m-input-modal"
+  className="m-input-modal"
 >
   <div
     className="m-input-modal__title"
@@ -13,6 +13,7 @@ exports[`Modal renders create preset modal 1`] = `
     className="m-input-modal__input"
   >
     <input
+      autoFocus={true}
       onChange={[Function]}
       placeholder="Name your preset…"
     />
@@ -21,11 +22,14 @@ exports[`Modal renders create preset modal 1`] = `
     className="m-input-modal__buttons"
   >
     <button
+      className="m-input-modal__button"
       onClick={[Function]}
     >
       Cancel
     </button>
     <button
+      className="m-input-modal__button-disabled"
+      disabled={true}
       onClick={[Function]}
     >
       Save
@@ -36,7 +40,7 @@ exports[`Modal renders create preset modal 1`] = `
 
 exports[`Modal renders delete preset modal 1`] = `
 <div
-  className="c-modal m-input-modal"
+  className="m-input-modal"
 >
   <div
     className="m-input-modal__title"
@@ -46,17 +50,23 @@ exports[`Modal renders delete preset modal 1`] = `
   <div
     className="m-input-modal__text"
   >
-    My Preset
+    <span
+      className="m-input-modal__name-text"
+    >
+      My Preset
+    </span>
   </div>
   <div
     className="m-input-modal__buttons"
   >
     <button
+      className="m-input-modal__button"
       onClick={[Function]}
     >
       Cancel
     </button>
     <button
+      className="m-input-modal__button-danger"
       onClick={[Function]}
     >
       Confirm
@@ -135,23 +145,30 @@ Array [
 
 exports[`Modal renders save preset modal 1`] = `
 <div
-  className="c-modal m-input-modal"
+  className="m-input-modal"
 >
   <div
     className="m-input-modal__title"
   >
     Overwrite 
-    My Preset
+    <span
+      className="m-input-modal__name-text"
+    >
+      My Preset
+    </span>
+    ?
   </div>
   <div
     className="m-input-modal__buttons"
   >
     <button
+      className="m-input-modal__button"
       onClick={[Function]}
     >
       Cancel
     </button>
     <button
+      className="m-input-modal__button-confirm"
       onClick={[Function]}
     >
       Save
