@@ -11,29 +11,32 @@ const DeletePresetModal = ({
 }) => {
   const [, dispatch] = useContext(StateDispatchContext)
   return (
-    <div className="m-input-modal">
-      <div className="m-input-modal__title">Delete preset?</div>
-      <div className="m-input-modal__text">
-        <span className="m-input-modal__name-text">{presetName}</span>
+    <>
+      <div className="m-input-modal">
+        <div className="m-input-modal__title">Delete preset?</div>
+        <div className="m-input-modal__text">
+          <span className="m-input-modal__name-text">{presetName}</span>
+        </div>
+        <div className="m-input-modal__buttons">
+          <button
+            className="m-input-modal__button"
+            onClick={() => dispatch(closeInputModal())}
+          >
+            Cancel
+          </button>
+          <button
+            className="m-input-modal__button-danger"
+            onClick={() => {
+              deleteCallback(dispatch)
+              dispatch(closeInputModal())
+            }}
+          >
+            Confirm
+          </button>
+        </div>
       </div>
-      <div className="m-input-modal__buttons">
-        <button
-          className="m-input-modal__button"
-          onClick={() => dispatch(closeInputModal())}
-        >
-          Cancel
-        </button>
-        <button
-          className="m-input-modal__button-danger"
-          onClick={() => {
-            deleteCallback(dispatch)
-            dispatch(closeInputModal())
-          }}
-        >
-          Confirm
-        </button>
-      </div>
-    </div>
+      <div className="m-input-modal__overlay" />
+    </>
   )
 }
 

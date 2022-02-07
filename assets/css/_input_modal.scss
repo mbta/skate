@@ -15,6 +15,11 @@
   line-height: 1.125rem;
 }
 
+.m-input-modal__overlay {
+  @include modal-overlay;
+  z-index: 2000;
+}
+
 .m-input-modal__title {
   font-size: 1.125rem;
   font-weight: 500;
