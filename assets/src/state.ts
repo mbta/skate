@@ -561,10 +561,12 @@ export const closeInputModal = (): CloseInputModalAction => ({
 })
 
 export type Action =
+  // Route ladder management
   | SelectRouteAction
   | DeselectRouteAction
   | FlipLadderAction
   | ToggleLadderCrowdingAction
+  // Route tabs and ladder management in tabs
   | CreateRouteTabAction
   | CloseRouteTabAction
   | SelectRouteTabAction
@@ -572,35 +574,47 @@ export type Action =
   | DeselectRouteInTabAction
   | FlipLadderInTabAction
   | ToggleLadderCrowdingInTabAction
+  // Route tab API push
   | StartingRouteTabsPushAction
   | RouteTabsPushCompleteAction
   | RetryRouteTabsPushIfNotOutdatedAction
+  // Shuttles page
   | SelectShuttleRunAction
   | DeselectShuttleRunAction
   | SelectAllShuttleRunsAction
   | DeselectAllShuttleRunsAction
   | SelectShuttleRouteAction
   | DeselectShuttleRouteAction
+  // Vehicle selection
   | SelectVehicleAction
   | DeselectVehicleAction
+  // Opening / closing picker drawer
   | TogglePickerContainerAction
+  // Notifications
   | OpenNotificationDrawerAction
   | CloseNotificationDrawerAction
   | ToggleNotificationDrawerAction
+  // Settings
   | SetLadderVehicleLabelSettingAction
   | SetShuttleVehicleLabelSettingAction
   | SetVehicleAdherenceColorsSettingAction
+  // Search
   | SearchAction
+  // Notification selection
   | SetNotificationAction
+  | SelectVehicleFromNotificationAction
+  // Views
   | ToggleSwingsViewAction
   | ToggleLateViewAction
-  | SelectVehicleFromNotificationAction
+  // Presets
   | CreatePresetAction
   | InstantiatePresetAction
   | SavePresetAction
   | DeletePresetAction
+  // Preset modals
   | PromptToSaveOrCreatePresetAction
   | PromptToDeletePresetAction
+  // Input modals
   | CloseInputModalAction
 
 export type Dispatch = ReactDispatch<Action>

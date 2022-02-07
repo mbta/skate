@@ -855,7 +855,7 @@ describe("reducer", () => {
     }
   })
 
-  test("promptToSaveOrCreatePreset when there are no changes", () => {
+  test("promptToSaveOrCreatePreset doesn't open a modal when there are no changes", () => {
     const routeTab = routeTabFactory.build({
       presetName: "My preset",
       saveChangesToTabUuid: undefined,
