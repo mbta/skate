@@ -10,6 +10,7 @@ import {
   VehicleLabelSetting,
   VehicleAdherenceColorsSetting,
 } from "../src/userSettings"
+import { RouteTab } from "../src/models/routeTab"
 
 import vehicleFactory from "./factories/vehicle"
 import routeTabFactory from "./factories/routeTab"
@@ -594,6 +595,28 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
+  test("deletePreset", () => {
+    const routeTab = routeTabFactory.build({
+      ordering: 0,
+      presetName: "My Preset",
+      isCurrentTab: true,
+    })
+
+    const newState = reducer(
+      { ...initialState, routeTabs: [routeTab] },
+      State.deletePreset(routeTab.uuid)
+    )
+
+    const expectedNewTabs = [] as RouteTab[]
+    const expectedState: State.State = {
+      ...initialState,
+      routeTabs: expectedNewTabs,
+      routeTabsToPush: expectedNewTabs,
+    }
+
+    expect(newState).toEqual(expectedState)
+  })
+
   test("selectRouteTab", () => {
     const routeTab1 = routeTabFactory.build()
     const routeTab2 = routeTabFactory.build({ isCurrentTab: true })
@@ -768,5 +791,102 @@ describe("reducer", () => {
       ...stateWithQueuedTabs,
       routeTabsPushInProgress: false,
     })
+  })
+
+  test("closeInputModal", () => {
+    const mockCallback = jest.fn()
+    const stateWithInputModal = {
+      ...initialState,
+      openInputModal: {
+        type: "DELETE_PRESET" as "DELETE_PRESET",
+        deleteCallback: mockCallback,
+        presetName: "My Preset",
+      },
+    }
+
+    const newState = reducer(stateWithInputModal, State.closeInputModal())
+
+    expect(newState.openInputModal).toBeNull()
+  })
+
+  test("promptToSaveOrCreatePreset when creating", () => {
+    const mockDispatch = jest.fn()
+    const routeTab = routeTabFactory.build({ presetName: undefined })
+
+    const newState = reducer(
+      initialState,
+      State.promptToSaveOrCreatePreset(routeTab)
+    )
+
+    switch (newState.openInputModal?.type) {
+      case "CREATE_PRESET":
+        newState.openInputModal.createCallback("Preset name", mockDispatch)
+        expect(mockDispatch).toHaveBeenCalledWith(
+          State.createPreset(routeTab.uuid, "Preset name")
+        )
+        return
+      default:
+        fail("did not receive correct openInputModal type")
+    }
+  })
+
+  test("promptToSaveOrCreatePreset when saving", () => {
+    const mockDispatch = jest.fn()
+    const routeTab = routeTabFactory.build({
+      presetName: "My preset",
+      saveChangesToTabUuid: "uuid2",
+    })
+
+    const newState = reducer(
+      initialState,
+      State.promptToSaveOrCreatePreset(routeTab)
+    )
+
+    switch (newState.openInputModal?.type) {
+      case "SAVE_PRESET":
+        newState.openInputModal.saveCallback(mockDispatch)
+        expect(newState.openInputModal.presetName).toBe("My preset")
+        expect(mockDispatch).toHaveBeenCalledWith(
+          State.savePreset(routeTab.uuid)
+        )
+        return
+      default:
+        fail("did not receive correct openInputModal type")
+    }
+  })
+
+  test("promptToSaveOrCreatePreset doesn't open a modal when there are no changes", () => {
+    const routeTab = routeTabFactory.build({
+      presetName: "My preset",
+      saveChangesToTabUuid: undefined,
+    })
+
+    const newState = reducer(
+      initialState,
+      State.promptToSaveOrCreatePreset(routeTab)
+    )
+
+    expect(newState.openInputModal).toBeNull()
+  })
+
+  test("promptToDeletePreset", () => {
+    const mockDispatch = jest.fn()
+    const routeTab = routeTabFactory.build({
+      presetName: "My preset",
+    })
+
+    const newState = reducer(initialState, State.promptToDeletePreset(routeTab))
+
+    switch (newState.openInputModal?.type) {
+      case "DELETE_PRESET":
+        newState.openInputModal.deleteCallback(mockDispatch)
+        expect(newState.openInputModal.presetName).toBe("My preset")
+        expect(mockDispatch).toHaveBeenCalledWith(
+          State.deletePreset(routeTab.uuid)
+        )
+        return
+      default:
+        fail("did not receive correct openInputModal type")
+    }
   })
 })

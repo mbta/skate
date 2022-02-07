@@ -9,6 +9,7 @@ exports[`renders a route ladder 1`] = `
   >
     <button
       className="m-close-button"
+      data-testid="close-button"
       onClick={[Function]}
     >
       <span
@@ -172,6 +173,7 @@ exports[`renders a route ladder 1`] = `
   >
     <button
       className="m-close-button"
+      data-testid="close-button"
       onClick={[Function]}
     >
       <span

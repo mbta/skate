@@ -1,8 +1,12 @@
 import React, { useContext } from "react"
-import { createPreset, instantiatePreset, savePreset } from "../state"
+import {
+  instantiatePreset,
+  promptToSaveOrCreatePreset,
+  promptToDeletePreset,
+} from "../state"
 import CloseButton from "./closeButton"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { currentRouteTab, isPreset, isEditedPreset } from "../models/routeTab"
+import { currentRouteTab, isPreset } from "../models/routeTab"
 import { plusThinIcon } from "../helpers/icon"
 
 const Presets = () => {
@@ -23,7 +27,7 @@ const Presets = () => {
             </div>
             <CloseButton
               onClick={() => {
-                return
+                dispatch(promptToDeletePreset(preset))
               }}
             />
           </li>
@@ -33,18 +37,8 @@ const Presets = () => {
         className="m-presets-panel__save-as-preset-button"
         onClick={() => {
           const currentTab = currentRouteTab(routeTabs)
-
           if (currentTab) {
-            if (isEditedPreset(currentTab)) {
-              dispatch(savePreset(currentTab.uuid))
-            } else if (!isPreset(currentTab)) {
-              dispatch(
-                createPreset(
-                  currentTab.uuid,
-                  `Preset ${Math.floor(Math.random() * 10000)}`
-                )
-              )
-            }
+            dispatch(promptToSaveOrCreatePreset(currentTab))
           }
         }}
       >

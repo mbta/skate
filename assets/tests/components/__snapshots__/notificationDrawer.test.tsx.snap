@@ -22,6 +22,7 @@ exports[`NotificationDrawer renders empty state 1`] = `
     </div>
     <button
       className="m-close-button"
+      data-testid="close-button"
       onClick={[Function]}
     >
       <span
@@ -69,6 +70,7 @@ exports[`NotificationDrawer renders notifications 1`] = `
     </div>
     <button
       className="m-close-button"
+      data-testid="close-button"
       onClick={[Function]}
     >
       <span

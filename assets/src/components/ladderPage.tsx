@@ -31,8 +31,7 @@ import {
   flipLadder,
   toggleLadderCrowding,
   closeRouteTab,
-  createPreset,
-  savePreset,
+  promptToSaveOrCreatePreset,
 } from "../state"
 import CloseButton from "./closeButton"
 import { saveIcon, plusThinIcon } from "../helpers/icon"
@@ -246,11 +245,7 @@ const LadderPageWithTabs = (): ReactElement<HTMLDivElement> => {
               closeTab={() => dispatch(closeRouteTab(routeTab.uuid))}
               showSaveIcon={!isPreset(routeTab) || isEditedPreset(routeTab)}
               saveTab={() => {
-                if (isEditedPreset(routeTab)) {
-                  dispatch(savePreset(routeTab.uuid))
-                } else if (!isPreset(routeTab)) {
-                  dispatch(createPreset(routeTab.uuid, "Preset name"))
-                }
+                dispatch(promptToSaveOrCreatePreset(routeTab))
               }}
               key={routeTab.uuid}
             />

@@ -98,6 +98,7 @@ Array [
           >
             <button
               className="m-close-button"
+              data-testid="close-button"
               onClick={[Function]}
             >
               <span
@@ -391,6 +392,7 @@ Array [
           >
             <button
               className="m-close-button"
+              data-testid="close-button"
               onClick={[Function]}
             >
               <span

@@ -240,5 +240,30 @@ export const saveEditedPreset = (
     })
 }
 
+export const deletePresetByUUID = (
+  routeTabs: RouteTab[],
+  uuid: string
+): RouteTab[] => {
+  // Assumes there's at most one edited version of the tab, and if
+  // there is an edited version it's currently open. Both true in
+  // the current model but something to keep in mind.
+  const existingTabToClose = routeTabs.find(
+    (routeTab) =>
+      (routeTab.uuid === uuid && routeTab.ordering !== undefined) ||
+      routeTab.saveChangesToTabUuid === uuid
+  )
+
+  // Call closeTabbyUUID to handle marking the correct other tab
+  // as open
+  const routeTabsAfterClose = existingTabToClose
+    ? closeTabByUUID(routeTabs, existingTabToClose.uuid)
+    : routeTabs
+
+  return routeTabsAfterClose.filter(
+    (routeTab) =>
+      routeTab.uuid !== uuid && routeTab.saveChangesToTabUuid !== uuid
+  )
+}
+
 const nullToUndefined = <T>(data: T | null): T | undefined =>
   data === null ? undefined : data

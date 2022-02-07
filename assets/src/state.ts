@@ -32,6 +32,9 @@ import {
   closeTabByUUID,
   applyRouteTabEdit,
   saveEditedPreset,
+  deletePresetByUUID,
+  isEditedPreset,
+  isPreset,
 } from "./models/routeTab"
 
 export enum OpenView {
@@ -39,6 +42,28 @@ export enum OpenView {
   Swings,
   Late,
 }
+
+interface CreatePresetModal {
+  type: "CREATE_PRESET"
+  createCallback: (arg0: string, arg1: React.Dispatch<Action>) => void
+}
+
+interface SavePresetModal {
+  type: "SAVE_PRESET"
+  saveCallback: (arg0: React.Dispatch<Action>) => void
+  presetName: string
+}
+
+interface DeletePresetModal {
+  type: "DELETE_PRESET"
+  deleteCallback: (arg1: React.Dispatch<Action>) => void
+  presetName: string
+}
+
+export type OpenInputModal =
+  | CreatePresetModal
+  | SavePresetModal
+  | DeletePresetModal
 
 export interface State {
   pickerContainerIsVisible: boolean
@@ -56,6 +81,7 @@ export interface State {
   userSettings: UserSettings
   selectedNotification?: Notification
   openView: OpenView
+  openInputModal: OpenInputModal | null
 }
 
 export const initialState: State = {
@@ -74,6 +100,7 @@ export const initialState: State = {
   userSettings: defaultUserSettings,
   selectedNotification: undefined,
   openView: OpenView.None,
+  openInputModal: null,
 }
 
 interface SelectRouteAction {
@@ -491,11 +518,55 @@ export const savePreset = (uuid: string): SavePresetAction => ({
   payload: { uuid },
 })
 
+interface DeletePresetAction {
+  type: "DELETE_PRESET"
+  payload: { uuid: string }
+}
+
+export const deletePreset = (uuid: string): DeletePresetAction => ({
+  type: "DELETE_PRESET",
+  payload: { uuid },
+})
+
+interface PromptToSaveOrCreatePresetAction {
+  type: "PROMPT_TO_SAVE_OR_CREATE_PRESET"
+  payload: { routeTab: RouteTab }
+}
+
+export const promptToSaveOrCreatePreset = (
+  routeTab: RouteTab
+): PromptToSaveOrCreatePresetAction => ({
+  type: "PROMPT_TO_SAVE_OR_CREATE_PRESET",
+  payload: { routeTab },
+})
+
+interface PromptToDeletePresetAction {
+  type: "PROMPT_TO_DELETE_PRESET"
+  payload: { routeTab: RouteTab }
+}
+
+export const promptToDeletePreset = (
+  routeTab: RouteTab
+): PromptToDeletePresetAction => ({
+  type: "PROMPT_TO_DELETE_PRESET",
+  payload: { routeTab },
+})
+
+interface CloseInputModalAction {
+  type: "CLOSE_INPUT_MODAL"
+}
+
+export const closeInputModal = (): CloseInputModalAction => ({
+  type: "CLOSE_INPUT_MODAL",
+})
+
 export type Action =
+  // Route ladder management
   | SelectRouteAction
   | DeselectRouteAction
   | FlipLadderAction
   | ToggleLadderCrowdingAction
+  // Route tabs and ladder management in tabs
   | CreateRouteTabAction
   | CloseRouteTabAction
   | SelectRouteTabAction
@@ -503,32 +574,48 @@ export type Action =
   | DeselectRouteInTabAction
   | FlipLadderInTabAction
   | ToggleLadderCrowdingInTabAction
+  // Route tab API push
   | StartingRouteTabsPushAction
   | RouteTabsPushCompleteAction
   | RetryRouteTabsPushIfNotOutdatedAction
+  // Shuttles page
   | SelectShuttleRunAction
   | DeselectShuttleRunAction
   | SelectAllShuttleRunsAction
   | DeselectAllShuttleRunsAction
   | SelectShuttleRouteAction
   | DeselectShuttleRouteAction
+  // Vehicle selection
   | SelectVehicleAction
   | DeselectVehicleAction
+  // Opening / closing picker drawer
   | TogglePickerContainerAction
+  // Notifications
   | OpenNotificationDrawerAction
   | CloseNotificationDrawerAction
   | ToggleNotificationDrawerAction
+  // Settings
   | SetLadderVehicleLabelSettingAction
   | SetShuttleVehicleLabelSettingAction
   | SetVehicleAdherenceColorsSettingAction
+  // Search
   | SearchAction
+  // Notification selection
   | SetNotificationAction
+  | SelectVehicleFromNotificationAction
+  // Views
   | ToggleSwingsViewAction
   | ToggleLateViewAction
-  | SelectVehicleFromNotificationAction
+  // Presets
   | CreatePresetAction
   | InstantiatePresetAction
   | SavePresetAction
+  | DeletePresetAction
+  // Preset modals
+  | PromptToSaveOrCreatePresetAction
+  | PromptToDeletePresetAction
+  // Input modals
+  | CloseInputModalAction
 
 export type Dispatch = ReactDispatch<Action>
 
@@ -639,6 +726,11 @@ const routeTabsReducer = (
     case "SAVE_PRESET":
       return {
         newRouteTabs: saveEditedPreset(routeTabs, action.payload.uuid),
+        routeTabsUpdated: true,
+      }
+    case "DELETE_PRESET":
+      return {
+        newRouteTabs: deletePresetByUUID(routeTabs, action.payload.uuid),
         routeTabsUpdated: true,
       }
     case "SELECT_ROUTE_TAB":
@@ -907,6 +999,48 @@ const openViewReducer = (state: OpenView, action: Action): OpenView => {
   }
 }
 
+const openInputModalReducer = (
+  state: OpenInputModal | null,
+  action: Action
+): OpenInputModal | null => {
+  switch (action.type) {
+    case "CLOSE_INPUT_MODAL":
+      return null
+    case "PROMPT_TO_SAVE_OR_CREATE_PRESET":
+      if (isEditedPreset(action.payload.routeTab)) {
+        return {
+          type: "SAVE_PRESET",
+          saveCallback: (dispatch: React.Dispatch<Action>) => {
+            dispatch(savePreset(action.payload.routeTab.uuid))
+          },
+          presetName: action.payload.routeTab.presetName || "",
+        }
+      } else if (!isPreset(action.payload.routeTab)) {
+        return {
+          type: "CREATE_PRESET",
+          createCallback: (
+            presetName: string,
+            dispatch: React.Dispatch<Action>
+          ) => {
+            dispatch(createPreset(action.payload.routeTab.uuid, presetName))
+          },
+        }
+      } else {
+        return state
+      }
+    case "PROMPT_TO_DELETE_PRESET":
+      return {
+        type: "DELETE_PRESET",
+        deleteCallback: (dispatch: React.Dispatch<Action>) => {
+          dispatch(deletePreset(action.payload.routeTab.uuid))
+        },
+        presetName: action.payload.routeTab.presetName || "",
+      }
+    default:
+      return state
+  }
+}
+
 export const reducer = (state: State, action: Action): State => {
   const { routeTabs, routeTabsToPush, routeTabsPushInProgress } =
     routeTabsAndPushReducer(state, action)
@@ -951,5 +1085,6 @@ export const reducer = (state: State, action: Action): State => {
       action
     ),
     openView: openViewReducer(state.openView, action),
+    openInputModal: openInputModalReducer(state.openInputModal, action),
   }
 }
