@@ -72,7 +72,7 @@ export interface State {
   ladderDirections: LadderDirections
   ladderCrowdingToggles: LadderCrowdingToggles
   routeTabs: RouteTab[]
-  routeTabsToPush: RouteTab[] | null
+  routeTabsToPush: RouteTab[][]
   routeTabsPushInProgress: boolean
   selectedShuttleRouteIds: RouteId[]
   selectedShuttleRunIds: RunId[] | "all"
@@ -91,7 +91,7 @@ export const initialState: State = {
   ladderDirections: emptyLadderDirectionsByRouteId,
   ladderCrowdingToggles: emptyLadderCrowdingTogglesByRouteId,
   routeTabs: [],
-  routeTabsToPush: null,
+  routeTabsToPush: [],
   routeTabsPushInProgress: false,
   selectedShuttleRouteIds: [],
   selectedShuttleRunIds: "all",
@@ -825,18 +825,22 @@ const routeTabsPushInProgressReducer = (
 }
 
 const routeTabsToPushReducer = (
-  routeTabsToPush: RouteTab[] | null,
-  newRouteTabs: RouteTab[] | null,
+  routeTabsToPush: RouteTab[][],
+  newRouteTabs: RouteTab[],
   routeTabsUpdated: boolean,
   action: Action
-): RouteTab[] | null => {
+): RouteTab[][] => {
   switch (action.type) {
     case "STARTING_ROUTE_TABS_PUSH":
-      return null
+      return routeTabsToPush.slice(1)
     case "RETRY_ROUTE_TABS_PUSH_IF_NOT_OUTDATED":
-      return routeTabsToPush || action.payload.routeTabsToRetry
+      return routeTabsToPush.length > 0
+        ? routeTabsToPush
+        : [action.payload.routeTabsToRetry]
     default:
-      return routeTabsUpdated ? newRouteTabs : routeTabsToPush
+      return routeTabsUpdated
+        ? [...routeTabsToPush, newRouteTabs]
+        : routeTabsToPush
   }
 }
 
@@ -847,13 +851,13 @@ const routeTabsAndPushReducer = (
     routeTabsPushInProgress,
   }: {
     routeTabs: RouteTab[]
-    routeTabsToPush: RouteTab[] | null
+    routeTabsToPush: RouteTab[][]
     routeTabsPushInProgress: boolean
   },
   action: Action
 ): {
   routeTabs: RouteTab[]
-  routeTabsToPush: RouteTab[] | null
+  routeTabsToPush: RouteTab[][]
   routeTabsPushInProgress: boolean
 } => {
   const { newRouteTabs, routeTabsUpdated } = routeTabsReducer(routeTabs, action)

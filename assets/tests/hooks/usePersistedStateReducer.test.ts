@@ -254,7 +254,7 @@ describe("usePersistedStateReducer", () => {
     const [{ routeTabs, routeTabsToPush, routeTabsPushInProgress }] =
       result.current
     expect(routeTabs).toEqual([routeTab])
-    expect(routeTabsToPush).toEqual(null)
+    expect(routeTabsToPush).toEqual([])
     expect(routeTabsPushInProgress).toEqual(false)
   })
 
@@ -275,7 +275,7 @@ describe("usePersistedStateReducer", () => {
         isCurrentTab: true,
       },
     ])
-    expect(state.routeTabsToPush).toEqual(state.routeTabs)
+    expect(state.routeTabsToPush).toEqual([state.routeTabs])
     expect(state.routeTabsPushInProgress).toEqual(true)
   })
 
@@ -305,7 +305,7 @@ describe("usePersistedStateReducer", () => {
         isCurrentTab: true,
       },
     ])
-    expect(state.routeTabsToPush).toEqual(state.routeTabs)
+    expect(state.routeTabsToPush).toEqual([state.routeTabs])
     expect(state.routeTabsPushInProgress).toEqual(false)
   })
 
@@ -335,7 +335,7 @@ describe("usePersistedStateReducer", () => {
         isCurrentTab: true,
       },
     ])
-    expect(state.routeTabsToPush).toEqual(state.routeTabs)
+    expect(state.routeTabsToPush).toEqual([state.routeTabs])
     expect(state.routeTabsPushInProgress).toEqual(false)
   })
 })

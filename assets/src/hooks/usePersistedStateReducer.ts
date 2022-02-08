@@ -64,17 +64,19 @@ const usePersistedStateReducer = (): [State, Dispatch] => {
   }, [selectedRouteIds, ladderDirections, ladderCrowdingToggles])
 
   useEffect(() => {
-    if (routeTabsToPush && !routeTabsPushInProgress) {
+    if (routeTabsToPush[0] && !routeTabsPushInProgress) {
       dispatch(startingRouteTabsPush())
-      putRouteTabs(routeTabsToPush)
+      putRouteTabs(routeTabsToPush[0])
         .then((response) => {
           if (response.ok) {
             dispatch(routeTabsPushComplete())
           } else {
-            dispatch(retryRouteTabsPushIfNotOutdated(routeTabsToPush))
+            dispatch(retryRouteTabsPushIfNotOutdated(routeTabsToPush[0]))
           }
         })
-        .catch(() => dispatch(retryRouteTabsPushIfNotOutdated(routeTabsToPush)))
+        .catch(() =>
+          dispatch(retryRouteTabsPushIfNotOutdated(routeTabsToPush[0]))
+        )
     }
   }, [JSON.stringify(routeTabsToPush), routeTabsPushInProgress])
 
