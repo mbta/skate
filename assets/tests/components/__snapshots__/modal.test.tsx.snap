@@ -1,68 +1,88 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Modal renders create preset modal 1`] = `
-<div
-  className="c-modal m-input-modal"
->
+Array [
   <div
-    className="m-input-modal__title"
+    className="m-input-modal"
   >
-    Save open routes as preset
-  </div>
-  <div
-    className="m-input-modal__input"
-  >
-    <input
-      onChange={[Function]}
-      placeholder="Name your preset…"
-    />
-  </div>
-  <div
-    className="m-input-modal__buttons"
-  >
-    <button
-      onClick={[Function]}
+    <div
+      className="m-input-modal__title"
     >
-      Cancel
-    </button>
-    <button
-      onClick={[Function]}
+      Save open routes as preset
+    </div>
+    <div
+      className="m-input-modal__input"
     >
-      Save
-    </button>
-  </div>
-</div>
+      <input
+        autoFocus={true}
+        onChange={[Function]}
+        placeholder="Name your preset…"
+      />
+    </div>
+    <div
+      className="m-input-modal__buttons"
+    >
+      <button
+        className="m-input-modal__button"
+        onClick={[Function]}
+      >
+        Cancel
+      </button>
+      <button
+        className="m-input-modal__button-disabled"
+        disabled={true}
+        onClick={[Function]}
+      >
+        Save
+      </button>
+    </div>
+  </div>,
+  <div
+    className="m-input-modal__overlay"
+  />,
+]
 `;
 
 exports[`Modal renders delete preset modal 1`] = `
-<div
-  className="c-modal m-input-modal"
->
+Array [
   <div
-    className="m-input-modal__title"
+    className="m-input-modal"
   >
-    Delete preset?
-  </div>
-  <div
-    className="m-input-modal__text"
-  >
-    My Preset
-  </div>
-  <div
-    className="m-input-modal__buttons"
-  >
-    <button
-      onClick={[Function]}
+    <div
+      className="m-input-modal__title"
     >
-      Cancel
-    </button>
-    <button
-      onClick={[Function]}
+      Delete preset?
+    </div>
+    <div
+      className="m-input-modal__text"
     >
-      Confirm
-    </button>
-  </div>
-</div>
+      <span
+        className="m-input-modal__name-text"
+      >
+        My Preset
+      </span>
+    </div>
+    <div
+      className="m-input-modal__buttons"
+    >
+      <button
+        className="m-input-modal__button"
+        onClick={[Function]}
+      >
+        Cancel
+      </button>
+      <button
+        className="m-input-modal__button-danger"
+        onClick={[Function]}
+      >
+        Confirm
+      </button>
+    </div>
+  </div>,
+  <div
+    className="m-input-modal__overlay"
+  />,
+]
 `;
 
 exports[`Modal renders inactive notification modal when appropriate 1`] = `
@@ -134,28 +154,41 @@ Array [
 `;
 
 exports[`Modal renders save preset modal 1`] = `
-<div
-  className="c-modal m-input-modal"
->
+Array [
   <div
-    className="m-input-modal__title"
+    className="m-input-modal"
   >
-    Overwrite 
-    My Preset
-  </div>
+    <div
+      className="m-input-modal__title"
+    >
+      Overwrite
+       
+      <span
+        className="m-input-modal__name-text"
+      >
+        My Preset
+      </span>
+      ?
+    </div>
+    <div
+      className="m-input-modal__buttons"
+    >
+      <button
+        className="m-input-modal__button"
+        onClick={[Function]}
+      >
+        Cancel
+      </button>
+      <button
+        className="m-input-modal__button-confirm"
+        onClick={[Function]}
+      >
+        Save
+      </button>
+    </div>
+  </div>,
   <div
-    className="m-input-modal__buttons"
-  >
-    <button
-      onClick={[Function]}
-    >
-      Cancel
-    </button>
-    <button
-      onClick={[Function]}
-    >
-      Save
-    </button>
-  </div>
-</div>
+    className="m-input-modal__overlay"
+  />,
+]
 `;
