@@ -826,6 +826,9 @@ const routeTabsPushInProgressReducer = (
   }
 }
 
+/**
+ * @returns tuple of routeTabsToPush, routeTabsToPushNext
+ */
 const routeTabsToPushReducer = (
   routeTabsToPush: RouteTab[] | null,
   routeTabsToPushNext: RouteTab[] | null,
