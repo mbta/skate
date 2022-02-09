@@ -463,7 +463,7 @@ describe("reducer", () => {
     const expectedState: State.State = {
       ...initialState,
       routeTabs: expectedNewTabs,
-      routeTabsToPush: [expectedNewTabs],
+      routeTabsToPush: expectedNewTabs,
     }
 
     expect(newState).toMatchObject(expectedState)
@@ -491,7 +491,7 @@ describe("reducer", () => {
     const expectedState: State.State = {
       ...initialState,
       routeTabs: expectedNewTabs,
-      routeTabsToPush: [expectedNewTabs],
+      routeTabsToPush: expectedNewTabs,
     }
 
     expect(newState).toEqual(expectedState)
@@ -514,7 +514,7 @@ describe("reducer", () => {
     const expectedState: State.State = {
       ...initialState,
       routeTabs: expectedNewTabs,
-      routeTabsToPush: [expectedNewTabs],
+      routeTabsToPush: expectedNewTabs,
     }
 
     expect(newState).toEqual(expectedState)
@@ -549,7 +549,7 @@ describe("reducer", () => {
     const expectedState: State.State = {
       ...initialState,
       routeTabs: expectedNewTabs,
-      routeTabsToPush: [expectedNewTabs],
+      routeTabsToPush: expectedNewTabs,
     }
 
     expect(newState).toEqual(expectedState)
@@ -589,7 +589,7 @@ describe("reducer", () => {
     const expectedState: State.State = {
       ...initialState,
       routeTabs: expectedNewTabs,
-      routeTabsToPush: [expectedNewTabs],
+      routeTabsToPush: expectedNewTabs,
     }
 
     expect(newState).toEqual(expectedState)
@@ -611,7 +611,7 @@ describe("reducer", () => {
     const expectedState: State.State = {
       ...initialState,
       routeTabs: expectedNewTabs,
-      routeTabsToPush: [expectedNewTabs],
+      routeTabsToPush: expectedNewTabs,
     }
 
     expect(newState).toEqual(expectedState)
@@ -633,7 +633,7 @@ describe("reducer", () => {
     const expectedState: State.State = {
       ...initialState,
       routeTabs: expectedNewTabs,
-      routeTabsToPush: [expectedNewTabs],
+      routeTabsToPush: expectedNewTabs,
     }
 
     expect(newState).toEqual(expectedState)
@@ -658,7 +658,7 @@ describe("reducer", () => {
     expect(newState).toEqual({
       ...initialState,
       routeTabs: expectedNewTabs,
-      routeTabsToPush: [expectedNewTabs],
+      routeTabsToPush: expectedNewTabs,
     })
   })
 
@@ -682,7 +682,7 @@ describe("reducer", () => {
     expect(newState).toEqual({
       ...initialState,
       routeTabs: expectedNewTabs,
-      routeTabsToPush: [expectedNewTabs],
+      routeTabsToPush: expectedNewTabs,
     })
   })
 
@@ -708,7 +708,7 @@ describe("reducer", () => {
     expect(newState).toEqual({
       ...initialState,
       routeTabs: expectedNewTabs,
-      routeTabsToPush: [expectedNewTabs],
+      routeTabsToPush: expectedNewTabs,
     })
   })
 
@@ -735,7 +735,7 @@ describe("reducer", () => {
     expect(newState).toEqual({
       ...initialState,
       routeTabs: expectedNewTabs,
-      routeTabsToPush: [expectedNewTabs],
+      routeTabsToPush: expectedNewTabs,
     })
   })
 
@@ -769,7 +769,7 @@ describe("reducer", () => {
     }
     const stateWithQueuedTabs = {
       ...stateWithoutQueuedTabs,
-      routeTabsToPush: [secondPushRouteTabs],
+      routeTabsToPush: secondPushRouteTabs,
       routeTabs: secondPushRouteTabs,
     }
 
@@ -785,7 +785,7 @@ describe("reducer", () => {
     expect(newStateWithoutQueuedTabs).toEqual({
       ...stateWithoutQueuedTabs,
       routeTabsPushInProgress: false,
-      routeTabsToPush: [firstPushRouteTabs],
+      routeTabsToPush: firstPushRouteTabs,
     })
     expect(newStateWithQueuedTabs).toEqual({
       ...stateWithQueuedTabs,

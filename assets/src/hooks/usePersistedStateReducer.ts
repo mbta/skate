@@ -68,16 +68,16 @@ const usePersistedStateReducer = (): [State, Dispatch] => {
   }, [selectedRouteIds, ladderDirections, ladderCrowdingToggles])
 
   useEffect(() => {
-    if (routeTabsToPush[0] && !routeTabsPushInProgress) {
+    if (routeTabsToPush && !routeTabsPushInProgress) {
       dispatch(startingRouteTabsPush())
-      putRouteTabs(routeTabsToPush[0])
+      putRouteTabs(routeTabsToPush)
         .then((response) => {
           if (response.ok) {
             setRouteTabsPushRetriesLeft(routeTabsPushRetries)
             dispatch(routeTabsPushComplete())
           } else if (routeTabsPushRetriesLeft > 0) {
             setRouteTabsPushRetriesLeft(routeTabsPushRetriesLeft - 1)
-            dispatch(retryRouteTabsPushIfNotOutdated(routeTabsToPush[0]))
+            dispatch(retryRouteTabsPushIfNotOutdated(routeTabsToPush))
           } else {
             setRouteTabsPushRetriesLeft(routeTabsPushRetries)
             dispatch(routeTabsPushComplete())
@@ -86,7 +86,7 @@ const usePersistedStateReducer = (): [State, Dispatch] => {
         .catch(() => {
           if (routeTabsPushRetriesLeft > 0) {
             setRouteTabsPushRetriesLeft(routeTabsPushRetriesLeft - 1)
-            dispatch(retryRouteTabsPushIfNotOutdated(routeTabsToPush[0]))
+            dispatch(retryRouteTabsPushIfNotOutdated(routeTabsToPush))
           } else {
             setRouteTabsPushRetriesLeft(routeTabsPushRetries)
             dispatch(routeTabsPushComplete())
