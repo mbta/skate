@@ -28,6 +28,7 @@ defmodule Skate.Settings.Db.User do
       :username
     ])
     |> cast_assoc(:route_tabs, with: &DbRouteTab.changeset/2)
+    |> cast_assoc(:route_settings, with: &DbRouteSettings.changeset/2)
     |> validate_required([
       :username
     ])
