@@ -6,32 +6,41 @@ ENV ELIXIR_VERSION="v1.10.2" \
   MIX_ENV=prod
 
 WORKDIR /root
-ADD . .
-
 # Install git so we can install dependencies from GitHub
 RUN apk add --no-cache --update git
 
-# Install Hex+Rebar+deps
+# Install Hex+Rebar
 RUN mix local.hex --force && \
-  mix local.rebar --force && \
-  mix do deps.get --only prod
+  mix local.rebar --force
+
+COPY mix.exs mix.exs
+COPY mix.lock mix.lock
+COPY config/config.exs config/
+COPY config/prod.exs config/
+
+RUN mix do deps.get --only $MIX_ENV && mix deps.compile
 
 FROM node:14-alpine3.13 as assets-builder
 
 WORKDIR /root
-ADD . .
-
-# Needed for uploading source maps during front-end build
-ARG SENTRY_ORG=$SENTRY_ORG
-ARG SENTRY_PROJECT=$SENTRY_PROJECT
-ARG SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
-ARG AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-ARG AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 
 # Copy in elixir deps required to build node modules for phoenix
 COPY --from=elixir-builder /root/deps ./deps
 
+COPY assets/package.json assets/
+COPY assets/package-lock.json assets/
+
 RUN npm --prefix assets ci
+
+COPY assets/ assets/
+
+# Needed for uploading source maps during front-end build
+ARG SENTRY_ORG
+ARG SENTRY_PROJECT
+ARG SENTRY_AUTH_TOKEN
+ARG AWS_ACCESS_KEY_ID
+ARG AWS_SECRET_ACCESS_KEY
+
 RUN npm --prefix assets run deploy
 
 FROM elixir-builder as app-builder
@@ -40,10 +49,20 @@ ENV LANG="C.UTF-8" MIX_ENV=prod
 
 WORKDIR /root
 
+COPY lib lib
+COPY data data
+
+RUN mix do compile --force
+
 # Add frontend assets compiled in node container, required by phx.digest
 COPY --from=assets-builder /root/priv/static ./priv/static
 
-RUN mix do compile --force, phx.digest, release
+RUN mix phx.digest
+
+COPY rel rel
+COPY config/releases.exs config/
+
+RUN mix release
 
 FROM alpine:3.13.6
 
