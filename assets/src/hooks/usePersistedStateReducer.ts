@@ -32,6 +32,8 @@ const LOCALLY_PERSISTED_KEYS: Key[] = [
   ["searchPageState", "savedQueries"],
 ]
 
+const routeTabsPushRetries = 2
+
 const usePersistedStateReducer = (): [State, Dispatch] => {
   const [state, dispatch] = useReducer(reducer, undefined, init)
 
@@ -50,6 +52,8 @@ const usePersistedStateReducer = (): [State, Dispatch] => {
   } = state
 
   const [firstLoadDone, setFirstLoadDone] = useState(false)
+  const [routeTabsPushRetriesLeft, setRouteTabsPushRetriesLeft] =
+    useState(routeTabsPushRetries)
 
   useEffect(() => {
     if (firstLoadDone) {
@@ -69,12 +73,25 @@ const usePersistedStateReducer = (): [State, Dispatch] => {
       putRouteTabs(routeTabsToPush)
         .then((response) => {
           if (response.ok) {
+            setRouteTabsPushRetriesLeft(routeTabsPushRetries)
             dispatch(routeTabsPushComplete())
-          } else {
+          } else if (routeTabsPushRetriesLeft > 0) {
+            setRouteTabsPushRetriesLeft(routeTabsPushRetriesLeft - 1)
             dispatch(retryRouteTabsPushIfNotOutdated(routeTabsToPush))
+          } else {
+            setRouteTabsPushRetriesLeft(routeTabsPushRetries)
+            dispatch(routeTabsPushComplete())
           }
         })
-        .catch(() => dispatch(retryRouteTabsPushIfNotOutdated(routeTabsToPush)))
+        .catch(() => {
+          if (routeTabsPushRetriesLeft > 0) {
+            setRouteTabsPushRetriesLeft(routeTabsPushRetriesLeft - 1)
+            dispatch(retryRouteTabsPushIfNotOutdated(routeTabsToPush))
+          } else {
+            setRouteTabsPushRetriesLeft(routeTabsPushRetries)
+            dispatch(routeTabsPushComplete())
+          }
+        })
     }
   }, [JSON.stringify(routeTabsToPush), routeTabsPushInProgress])
 

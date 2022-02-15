@@ -251,10 +251,17 @@ describe("usePersistedStateReducer", () => {
     const [state] = result.current
     const routeTab = state.routeTabs[0]
     expect(putRouteTabs).toHaveBeenCalledWith([routeTab])
-    const [{ routeTabs, routeTabsToPush, routeTabsPushInProgress }] =
-      result.current
+    const [
+      {
+        routeTabs,
+        routeTabsToPush,
+        routeTabsToPushNext,
+        routeTabsPushInProgress,
+      },
+    ] = result.current
     expect(routeTabs).toEqual([routeTab])
-    expect(routeTabsToPush).toEqual(null)
+    expect(routeTabsToPush).toBeNull()
+    expect(routeTabsToPushNext).toBeNull()
     expect(routeTabsPushInProgress).toEqual(false)
   })
 
@@ -276,6 +283,7 @@ describe("usePersistedStateReducer", () => {
       },
     ])
     expect(state.routeTabsToPush).toEqual(state.routeTabs)
+    expect(state.routeTabsToPushNext).toBeNull()
     expect(state.routeTabsPushInProgress).toEqual(true)
   })
 
@@ -306,6 +314,7 @@ describe("usePersistedStateReducer", () => {
       },
     ])
     expect(state.routeTabsToPush).toEqual(state.routeTabs)
+    expect(state.routeTabsToPushNext).toBeNull()
     expect(state.routeTabsPushInProgress).toEqual(false)
   })
 
@@ -336,7 +345,78 @@ describe("usePersistedStateReducer", () => {
       },
     ])
     expect(state.routeTabsToPush).toEqual(state.routeTabs)
+    expect(state.routeTabsToPushNext).toBeNull()
     expect(state.routeTabsPushInProgress).toEqual(false)
+  })
+
+  test("retries at most two more times, with final failure being a bad status code", async () => {
+    const badResponse = { ok: false }
+
+    const fakePromise = new Promise((resolve) => {
+      resolve(badResponse)
+    })
+
+    const { result, waitForNextUpdate } = renderHook(() =>
+      usePersistedStateReducer()
+    )
+    const [, dispatch] = result.current
+
+    ;(putRouteTabs as jest.Mock)
+      .mockImplementationOnce(() => fakePromise)
+      .mockImplementationOnce(() => fakePromise)
+      .mockImplementationOnce(() => fakePromise)
+
+    act(() => {
+      dispatch(createRouteTab())
+    })
+    await waitForNextUpdate()
+
+    const [state] = result.current
+
+    expect(state.routeTabs).toMatchObject([
+      {
+        ordering: 0,
+        isCurrentTab: true,
+      },
+    ])
+    expect(state.routeTabsToPush).toBeNull()
+    expect(state.routeTabsToPushNext).toBeNull()
+    expect(state.routeTabsPushInProgress).toEqual(false)
+    expect(putRouteTabs).toHaveBeenCalledTimes(3)
+  })
+
+  test("retries at most two more times, with final failure being a client error", async () => {
+    const fakePromise = new Promise((_resolve, reject) => {
+      reject()
+    })
+
+    const { result, waitForNextUpdate } = renderHook(() =>
+      usePersistedStateReducer()
+    )
+    const [, dispatch] = result.current
+
+    ;(putRouteTabs as jest.Mock)
+      .mockImplementationOnce(() => fakePromise)
+      .mockImplementationOnce(() => fakePromise)
+      .mockImplementationOnce(() => fakePromise)
+
+    act(() => {
+      dispatch(createRouteTab())
+    })
+    await waitForNextUpdate()
+
+    const [state] = result.current
+
+    expect(state.routeTabs).toMatchObject([
+      {
+        ordering: 0,
+        isCurrentTab: true,
+      },
+    ])
+    expect(state.routeTabsToPush).toBeNull()
+    expect(state.routeTabsToPushNext).toBeNull()
+    expect(state.routeTabsPushInProgress).toEqual(false)
+    expect(putRouteTabs).toHaveBeenCalledTimes(3)
   })
 })
 
