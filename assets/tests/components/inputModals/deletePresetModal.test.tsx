@@ -6,7 +6,13 @@ import { initialState, closeInputModal } from "../../../src/state"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 
 describe("DeletePresetModal", () => {
-  test("can enter a name and save", () => {
+  test("can confirm deletion", () => {
+    const originalFS = window.FS
+    window.FS = { event: jest.fn(), identify: jest.fn() }
+    afterEach(() => {
+      window.FS = originalFS
+    })
+
     const mockCallback = jest.fn()
     const mockDispatch = jest.fn()
 
@@ -23,6 +29,7 @@ describe("DeletePresetModal", () => {
 
     expect(mockCallback).toHaveBeenCalledWith(mockDispatch)
     expect(mockDispatch).toHaveBeenCalledWith(closeInputModal())
+    expect(window.FS!.event).toHaveBeenCalledWith("Preset deleted")
   })
 
   test("can cancel", () => {

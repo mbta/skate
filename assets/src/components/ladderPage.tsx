@@ -89,6 +89,11 @@ const LadderTab = ({
           <div
             onClick={(e) => {
               e.stopPropagation()
+
+              if (window.FS) {
+                window.FS.event("Preset saved")
+              }
+
               saveTab()
             }}
           >
@@ -107,7 +112,15 @@ const AddTabButton = ({
   addTab: () => void
 }): ReactElement<HTMLDivElement> => {
   return (
-    <div className="m-ladder-page__add-tab-button" onClick={addTab}>
+    <div
+      className="m-ladder-page__add-tab-button"
+      onClick={() => {
+        if (window.FS) {
+          window.FS.event("New tab added")
+        }
+        addTab()
+      }}
+    >
       {plusThinIcon("m-ladder-page__add-tab-icon")}
     </div>
   )
