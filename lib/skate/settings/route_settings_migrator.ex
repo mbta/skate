@@ -34,7 +34,8 @@ defmodule Skate.Settings.RouteSettingsMigrator do
           |> Enum.map(fn route_tab -> route_tab.updated_at || route_tab.inserted_at end)
           |> Enum.max(fn -> nil end)
 
-        is_nil(route_tabs_time) || route_settings_time >= route_tabs_time
+        is_nil(route_tabs_time) ||
+          NaiveDateTime.compare(route_settings_time, route_tabs_time) in [:gt, :eq]
       end)
       |> Enum.map(fn db_user ->
         route_settings = db_user.route_settings
@@ -77,7 +78,8 @@ defmodule Skate.Settings.RouteSettingsMigrator do
           |> Enum.map(fn route_tab -> route_tab.updated_at || route_tab.inserted_at end)
           |> Enum.max(fn -> nil end)
 
-        !is_nil(route_tabs_time) && route_tabs_time >= route_settings_time
+        !is_nil(route_tabs_time) &&
+          NaiveDateTime.compare(route_tabs_time, route_settings_time) in [:gt, :eq]
       end)
       |> Enum.map(fn db_user ->
         ordered_open_route_tabs =
