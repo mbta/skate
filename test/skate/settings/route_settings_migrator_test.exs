@@ -47,6 +47,8 @@ defmodule Skate.Settings.RouteSettingsMigratorTest do
 
       assert [
                %{
+                 ordering: 0,
+                 is_current_tab: true,
                  selected_route_ids: ["1", "77"],
                  ladder_directions: %{"77" => 1},
                  ladder_crowding_toggles: %{"1" => true}

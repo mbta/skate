@@ -24,6 +24,7 @@ defmodule Skate.Settings.RouteSettingsMigrator do
       from(u in DbUser)
       |> Repo.all()
       |> Repo.preload([:route_settings, :route_tabs])
+      |> Enum.filter(fn db_user -> !is_nil(db_user.route_settings) end)
       |> Enum.filter(fn db_user ->
         route_settings_time =
           db_user.route_settings.updated_at || db_user.route_settings.inserted_at
@@ -42,6 +43,8 @@ defmodule Skate.Settings.RouteSettingsMigrator do
           route_tabs: [
             %{
               uuid: Ecto.UUID.generate(),
+              ordering: 0,
+              is_current_tab: true,
               selected_route_ids: route_settings.selected_route_ids,
               ladder_directions: route_settings.ladder_directions,
               ladder_crowding_toggles: route_settings.ladder_crowding_toggles
@@ -64,6 +67,7 @@ defmodule Skate.Settings.RouteSettingsMigrator do
       from(u in DbUser)
       |> Repo.all()
       |> Repo.preload([:route_settings, :route_tabs])
+      |> Enum.filter(fn db_user -> !is_nil(db_user.route_settings) end)
       |> Enum.filter(fn db_user ->
         route_settings_time =
           db_user.route_settings.updated_at || db_user.route_settings.inserted_at
