@@ -165,6 +165,12 @@ describe("LadderPage", () => {
 
   test("can save a route tab as a preset from the save icon", () => {
     ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
+    const originalFS = window.FS
+    window.FS = { event: jest.fn(), identify: jest.fn() }
+    afterEach(() => {
+      window.FS = originalFS
+    })
+
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -188,6 +194,7 @@ describe("LadderPage", () => {
     expect(mockDispatch).toHaveBeenCalledWith(
       promptToSaveOrCreatePreset(mockState.routeTabs[0])
     )
+    expect(window.FS!.event).toHaveBeenCalledWith("Preset saved")
   })
 
   test("can save an edited preset from the save icon", () => {
@@ -253,6 +260,11 @@ describe("LadderPage", () => {
 
   test("can add a new route tab", () => {
     ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
+    const originalFS = window.FS
+    window.FS = { event: jest.fn(), identify: jest.fn() }
+    afterEach(() => {
+      window.FS = originalFS
+    })
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -274,6 +286,7 @@ describe("LadderPage", () => {
     wrapper.find(".m-ladder-page__add-tab-button").simulate("click")
 
     expect(mockDispatch).toHaveBeenCalledWith(createRouteTab())
+    expect(window.FS!.event).toHaveBeenCalledWith("New tab added")
   })
 
   test("can toggle to presets view in picker and back", () => {

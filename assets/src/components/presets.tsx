@@ -38,6 +38,9 @@ const Presets = () => {
         onClick={() => {
           const currentTab = currentRouteTab(routeTabs)
           if (currentTab) {
+            if (window.FS) {
+              window.FS.event("Preset saved from presets panel")
+            }
             dispatch(promptToSaveOrCreatePreset(currentTab))
           }
         }}
