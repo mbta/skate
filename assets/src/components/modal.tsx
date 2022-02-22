@@ -8,6 +8,7 @@ import NotificationLoadingModal from "./notificationLoadingModal"
 import CreatePresetModal from "./inputModals/createPresetModal"
 import SavePresetModal from "./inputModals/savePresetModal"
 import DeletePresetModal from "./inputModals/deletePresetModal"
+import OverwritePresetModal from "./inputModals/overwritePresetModal"
 
 const Modal = (): ReactElement | null => {
   const { connectionStatus } = useContext(SocketContext)
@@ -47,6 +48,13 @@ const Modal = (): ReactElement | null => {
           <DeletePresetModal
             presetName={openInputModal.presetName}
             deleteCallback={openInputModal.deleteCallback}
+          />
+        )
+      case "OVERWRITE_PRESET":
+        return (
+          <OverwritePresetModal
+            presetName={openInputModal.presetName}
+            confirmCallback={openInputModal.confirmCallback}
           />
         )
     }
