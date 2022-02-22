@@ -1,13 +1,20 @@
 import React, { useContext, useState } from "react"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { Action, closeInputModal } from "../../state"
+import { findPresetByName } from "../../models/routeTab"
 
 const CreatePresetModal = ({
   createCallback,
+  confirmOverwriteCallback,
 }: {
   createCallback: (arg0: string, arg1: React.Dispatch<Action>) => void
+  confirmOverwriteCallback: (
+    arg0: string,
+    arg1: string,
+    arg2: React.Dispatch<Action>
+  ) => void
 }) => {
-  const [, dispatch] = useContext(StateDispatchContext)
+  const [{ routeTabs }, dispatch] = useContext(StateDispatchContext)
   const [presetName, setPresetName] = useState<string>("")
   return (
     <>
@@ -36,8 +43,17 @@ const CreatePresetModal = ({
               (presetName.length === 0 ? "-disabled" : "-confirm")
             }
             onClick={() => {
-              createCallback(presetName, dispatch)
-              dispatch(closeInputModal())
+              const existingPreset = findPresetByName(routeTabs, presetName)
+              if (existingPreset) {
+                confirmOverwriteCallback(
+                  presetName,
+                  existingPreset.uuid,
+                  dispatch
+                )
+              } else {
+                createCallback(presetName, dispatch)
+                dispatch(closeInputModal())
+              }
             }}
           >
             Save

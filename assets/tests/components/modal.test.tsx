@@ -77,12 +77,14 @@ describe("Modal", () => {
 
   test("renders create preset modal", () => {
     const createCallback = jest.fn()
+    const confirmOverwriteCallback = jest.fn()
 
     const state: State = {
       ...initialState,
       openInputModal: {
         type: "CREATE_PRESET",
         createCallback,
+        confirmOverwriteCallback,
       },
     }
 

@@ -30,7 +30,10 @@ const Modal = (): ReactElement | null => {
     switch (openInputModal.type) {
       case "CREATE_PRESET":
         return (
-          <CreatePresetModal createCallback={openInputModal.createCallback} />
+          <CreatePresetModal
+            createCallback={openInputModal.createCallback}
+            confirmOverwriteCallback={openInputModal.confirmOverwriteCallback}
+          />
         )
       case "SAVE_PRESET":
         return (

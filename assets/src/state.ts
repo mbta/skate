@@ -45,18 +45,29 @@ export enum OpenView {
 
 interface CreatePresetModal {
   type: "CREATE_PRESET"
-  createCallback: (arg0: string, arg1: React.Dispatch<Action>) => void
+  createCallback: (presetName: string, dispatch: React.Dispatch<Action>) => void
+  confirmOverwriteCallback: (
+    existingPresetName: string,
+    uuid: string,
+    dispatch: React.Dispatch<Action>
+  ) => void
 }
 
 interface SavePresetModal {
   type: "SAVE_PRESET"
-  saveCallback: (arg0: React.Dispatch<Action>) => void
+  saveCallback: (dispatch: React.Dispatch<Action>) => void
   presetName: string
 }
 
 interface DeletePresetModal {
   type: "DELETE_PRESET"
-  deleteCallback: (arg1: React.Dispatch<Action>) => void
+  deleteCallback: (dispatch: React.Dispatch<Action>) => void
+  presetName: string
+}
+
+interface OverwritePresetModal {
+  type: "OVERWRITE_PRESET"
+  confirmCallback: (dispatch: React.Dispatch<Action>) => void
   presetName: string
 }
 
@@ -64,6 +75,7 @@ export type OpenInputModal =
   | CreatePresetModal
   | SavePresetModal
   | DeletePresetModal
+  | OverwritePresetModal
 
 export interface State {
   pickerContainerIsVisible: boolean
@@ -554,6 +566,24 @@ export const promptToDeletePreset = (
   payload: { routeTab },
 })
 
+interface PromptToOverwritePresetAction {
+  type: "PROMPT_TO_OVERWRITE_PRESET"
+  payload: {
+    presetName: string
+    routeTabToSave: RouteTab
+    uuidToOverwrite: string
+  }
+}
+
+export const promptToOverwritePreset = (
+  presetName: string,
+  routeTabToSave: RouteTab,
+  uuidToOverwrite: string
+): PromptToOverwritePresetAction => ({
+  type: "PROMPT_TO_OVERWRITE_PRESET",
+  payload: { presetName, routeTabToSave, uuidToOverwrite },
+})
+
 interface CloseInputModalAction {
   type: "CLOSE_INPUT_MODAL"
 }
@@ -616,6 +646,7 @@ export type Action =
   // Preset modals
   | PromptToSaveOrCreatePresetAction
   | PromptToDeletePresetAction
+  | PromptToOverwritePresetAction
   // Input modals
   | CloseInputModalAction
 
@@ -1041,6 +1072,19 @@ const openInputModalReducer = (
           ) => {
             dispatch(createPreset(action.payload.routeTab.uuid, presetName))
           },
+          confirmOverwriteCallback: (
+            presetName: string,
+            existingPresetUuid: string,
+            dispatch: React.Dispatch<Action>
+          ) => {
+            dispatch(
+              promptToOverwritePreset(
+                presetName,
+                action.payload.routeTab,
+                existingPresetUuid
+              )
+            )
+          },
         }
       } else {
         return state
@@ -1052,6 +1096,20 @@ const openInputModalReducer = (
           dispatch(deletePreset(action.payload.routeTab.uuid))
         },
         presetName: action.payload.routeTab.presetName || "",
+      }
+    case "PROMPT_TO_OVERWRITE_PRESET":
+      return {
+        type: "OVERWRITE_PRESET",
+        confirmCallback: (dispatch: React.Dispatch<Action>) => {
+          dispatch(deletePreset(action.payload.uuidToOverwrite))
+          dispatch(
+            createPreset(
+              action.payload.routeTabToSave.uuid,
+              action.payload.presetName
+            )
+          )
+        },
+        presetName: action.payload.presetName,
       }
     default:
       return state
