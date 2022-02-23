@@ -106,9 +106,7 @@ config :skate, Skate.Repo,
 config :laboratory,
   features: [
     {:late_view, "Late View", "Grants access to experimental Late View"},
-    {:pigeon_maps, "Pigeon maps", "Replaces Leaflet-based maps with Pigeon"},
-    {:presets_workspaces, "Presets and workspaces",
-     "Advanced features for managing large amounts of route ladders"}
+    {:pigeon_maps, "Pigeon maps", "Replaces Leaflet-based maps with Pigeon"}
   ],
   cookie: [
     # one month,
