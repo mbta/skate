@@ -24,6 +24,7 @@ config :skate,
   bridge_api_username: {:system, "BRIDGE_API_USERNAME"},
   bridge_api_password: {:system, "BRIDGE_API_PASSWORD"},
   start_data_processes: true,
+  start_routes_migrator: true,
   record_fullstory: false,
   record_appcues: false,
   record_sentry: false,
@@ -106,9 +107,7 @@ config :skate, Skate.Repo,
 config :laboratory,
   features: [
     {:late_view, "Late View", "Grants access to experimental Late View"},
-    {:pigeon_maps, "Pigeon maps", "Replaces Leaflet-based maps with Pigeon"},
-    {:presets_workspaces, "Presets and workspaces",
-     "Advanced features for managing large amounts of route ladders"}
+    {:pigeon_maps, "Pigeon maps", "Replaces Leaflet-based maps with Pigeon"}
   ],
   cookie: [
     # one month,

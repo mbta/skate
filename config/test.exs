@@ -1,6 +1,8 @@
 use Mix.Config
 
-config :skate, start_data_processes: false
+config :skate,
+  start_data_processes: false,
+  start_routes_migrator: false
 
 config :skate, Schedule.CacheFile, cache_filename: "test_cache.terms"
 

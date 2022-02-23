@@ -212,11 +212,26 @@ exports[`renders 1`] = `
           </button>
         </div>
         <div
+          className="m-ladder-page__routes-presets-toggle"
+        >
+          <button
+            className="m-ladder-page__routes_picker_button_selected"
+            id="m-ladder-page__routes_picker_button"
+            onClick={[Function]}
+          >
+            Routes
+          </button>
+          <button
+            className="m-ladder-page__routes_picker_button_unselected"
+            id="m-ladder-page__presets_picker_button"
+            onClick={[Function]}
+          >
+            Presets
+          </button>
+        </div>
+        <div
           className="m-route-picker"
         >
-          <ul
-            className="m-route-picker__selected-routes"
-          />
           <div
             className="m-route-filter"
           >
@@ -246,7 +261,50 @@ exports[`renders 1`] = `
               </button>
             </div>
           </div>
+          <div
+            className="m-garage-filter"
+          >
+            <div
+              className="m-garage-filter__header"
+            >
+              Filter garages
+              <button
+                className="m-garage-filter__show-hide-button"
+                onClick={[Function]}
+              >
+                <span
+                  className=""
+                  dangerouslySetInnerHTML={
+                    Object {
+                      "__html": "SVG",
+                    }
+                  }
+                />
+              </button>
+            </div>
+            <div />
+          </div>
+          <ul
+            className="m-route-picker__selected-routes"
+          />
           loading...
+        </div>
+      </div>
+      <div
+        className="m-ladder-page__route-tab-bar"
+      >
+        <div
+          className="m-ladder-page__add-tab-button"
+          onClick={[Function]}
+        >
+          <span
+            className="m-ladder-page__add-tab-icon"
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "SVG",
+              }
+            }
+          />
         </div>
       </div>
       <div

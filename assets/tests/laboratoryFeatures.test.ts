@@ -18,6 +18,9 @@ jest.mock("../src/appData", () => ({
     .mockImplementationOnce(() => ({
       laboratoryFeatures: JSON.stringify(testFeatures),
     }))
+    .mockImplementationOnce(() => ({
+      laboratoryFeatures: JSON.stringify({ presets_tabs: false }),
+    }))
     .mockImplementation(() => ({
       laboratoryFeatures: undefined,
     })),
@@ -31,6 +34,10 @@ describe("featureIsEnabled", () => {
 
   test("returns false if the key isn't found", () => {
     expect(featureIsEnabled("undefinedKey")).toEqual(false)
+  })
+
+  test("returns true for tabs and presets even if feature is otherwise disabled", () => {
+    expect(featureIsEnabled("presets_tabs")).toEqual(false)
   })
 
   test("returns false if the laboratory features data isn't found", () => {
