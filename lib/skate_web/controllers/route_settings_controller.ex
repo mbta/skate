@@ -21,6 +21,6 @@ defmodule SkateWeb.RouteSettingsController do
 
     settings
     |> Map.take(Map.keys(translations))
-    |> Enum.map(fn {key, value} -> {Map.fetch!(translations, key), value} end)
+    |> Map.new(fn {key, value} -> {Map.fetch!(translations, key), value} end)
   end
 end

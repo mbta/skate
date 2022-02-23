@@ -1,6 +1,5 @@
 defmodule Skate.Settings.RouteSettings do
-  import Ecto.Query
-  import Skate.Repo
+  alias Skate.Repo
 
   alias Schedule.Route
   alias Skate.Settings.Db.RouteSettings, as: DbRouteSettings
@@ -22,7 +21,7 @@ defmodule Skate.Settings.RouteSettings do
     user = User.get_or_create(username)
 
     route_settings =
-      insert!(
+      Repo.insert!(
         DbRouteSettings.changeset(%DbRouteSettings{}, %{
           user_id: user.id,
           selected_route_ids: [],
@@ -41,16 +40,14 @@ defmodule Skate.Settings.RouteSettings do
     }
   end
 
-  @spec set(String.t(), [{atom(), any()}]) :: :ok
+  @spec set(String.t(), map()) :: :ok
   def set(username, new_values) do
-    update_all(
-      from(route_settings in "route_settings",
-        join: user in DbUser,
-        on: user.id == route_settings.user_id,
-        where: user.username == ^username
-      ),
-      set: new_values
-    )
+    user = User.get_or_create(username)
+
+    user
+    |> Repo.preload(:route_settings)
+    |> DbUser.changeset(%{route_settings: Map.merge(new_values, %{user_id: user.id})})
+    |> Repo.update!()
 
     :ok
   end

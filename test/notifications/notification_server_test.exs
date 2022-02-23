@@ -260,7 +260,7 @@ defmodule Notifications.NotificationServerTest do
       end)
 
       RouteSettings.get_or_create("fake_uid")
-      RouteSettings.set("fake_uid", [{:selected_route_ids, ["39"]}])
+      RouteSettings.set("fake_uid", %{selected_route_ids: ["39"]})
     end
 
     test "broadcasts, saves, and logs nothing if no new block waivers are received" do
@@ -329,7 +329,7 @@ defmodule Notifications.NotificationServerTest do
     test "doesn't send notifications to a user not looking at the route in question" do
       Repo.delete_all(from(DbUser))
       RouteSettings.get_or_create("fake_uid")
-      RouteSettings.set("fake_uid", [{:selected_route_ids, ["1,83,77"]}])
+      RouteSettings.set("fake_uid", %{selected_route_ids: ["1", "83", "77"]})
 
       set_log_level(:info)
 
@@ -416,7 +416,7 @@ defmodule Notifications.NotificationServerTest do
         uid = "fake_uid#{i}"
         route_id = Enum.at(@chelsea_bridge_route_ids, i)
         RouteSettings.get_or_create(uid)
-        RouteSettings.set(uid, [{:selected_route_ids, ["#{route_id}"]}])
+        RouteSettings.set(uid, %{selected_route_ids: [route_id]})
       end
 
       start_time = DateTime.utc_now() |> DateTime.to_unix()
@@ -452,7 +452,7 @@ defmodule Notifications.NotificationServerTest do
         uid = "fake_uid#{i}"
         route_id = Enum.at(@chelsea_bridge_route_ids, i)
         RouteSettings.get_or_create(uid)
-        RouteSettings.set(uid, [{:selected_route_ids, ["#{route_id}"]}])
+        RouteSettings.set(uid, %{selected_route_ids: [route_id]})
       end
 
       NotificationServer.subscribe("fake_uid0", server)
@@ -493,7 +493,7 @@ defmodule Notifications.NotificationServerTest do
 
       Repo.delete_all(from(DbUser))
       RouteSettings.get_or_create("fake_uid")
-      RouteSettings.set("fake_uid", [{:selected_route_ids, ["1,83,77"]}])
+      RouteSettings.set("fake_uid", %{selected_route_ids: ["1", "83", "77"]})
 
       set_log_level(:info)
 
@@ -532,7 +532,7 @@ defmodule Notifications.NotificationServerTest do
         uid = "fake_uid#{i}"
         route_id = Enum.at(@chelsea_bridge_route_ids, i)
         RouteSettings.get_or_create(uid)
-        RouteSettings.set(uid, [{:selected_route_ids, ["#{route_id}"]}])
+        RouteSettings.set(uid, %{selected_route_ids: [route_id]})
       end
 
       NotificationServer.subscribe("fake_uid0", server)

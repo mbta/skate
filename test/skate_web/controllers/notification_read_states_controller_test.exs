@@ -17,11 +17,11 @@ defmodule SkateWeb.NotificationReadStatesControllerTest do
     } do
       user = User.get_or_create(username)
       RouteSettings.get_or_create(username)
-      RouteSettings.set(username, selected_route_ids: ["1", "2"])
+      RouteSettings.set(username, %{selected_route_ids: ["1", "2"]})
 
       User.get_or_create("otherguy")
       RouteSettings.get_or_create("otherguy")
-      RouteSettings.set("otherguy", selected_route_ids: ["1", "2"])
+      RouteSettings.set("otherguy", %{selected_route_ids: ["1", "2"]})
 
       user_notification1 =
         Notification.get_or_create_from_block_waiver(%{

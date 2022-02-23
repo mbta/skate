@@ -21,9 +21,9 @@ defmodule Notifications.NotificationTest do
       RouteSettings.get_or_create("user2")
       RouteSettings.get_or_create("user3")
 
-      RouteSettings.set("user1", selected_route_ids: ["4", "1"])
-      RouteSettings.set("user2", selected_route_ids: ["2"])
-      RouteSettings.set("user3", selected_route_ids: ["4", "5", "6", "7"])
+      RouteSettings.set("user1", %{selected_route_ids: ["4", "1"]})
+      RouteSettings.set("user2", %{selected_route_ids: ["2"]})
+      RouteSettings.set("user3", %{selected_route_ids: ["4", "5", "6", "7"]})
 
       notification_values = %{
         created_at: 12345,
@@ -61,8 +61,8 @@ defmodule Notifications.NotificationTest do
 
       RouteSettings.get_or_create("user1")
       RouteSettings.get_or_create("user2")
-      RouteSettings.set("user1", selected_route_ids: ["1", "2", "112"])
-      RouteSettings.set("user2", selected_route_ids: ["1", "3", "743"])
+      RouteSettings.set("user1", %{selected_route_ids: ["1", "2", "112"]})
+      RouteSettings.set("user2", %{selected_route_ids: ["1", "3", "743"]})
 
       route_1_unexpired =
         Notification.get_or_create_from_block_waiver(%{
