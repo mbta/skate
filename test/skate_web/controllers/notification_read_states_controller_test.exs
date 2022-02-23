@@ -1,13 +1,20 @@
 defmodule SkateWeb.NotificationReadStatesControllerTest do
   use SkateWeb.ConnCase
   use Skate.DataCase
-
+  import Skate.Factory
   alias Notifications.Notification
   alias Notifications.Db.NotificationUser, as: DbNotificationUser
-  alias Skate.Settings.RouteSettings
+  alias Skate.Settings.RouteTab
   alias Skate.Settings.User
 
   import Ecto.Query
+
+  def build_test_tab() do
+    build(:route_tab, %{
+      preset_name: "some routes",
+      selected_route_ids: ["1", "2"]
+    })
+  end
 
   describe "PUT /api/notification_read_states" do
     @tag :authenticated
@@ -16,12 +23,12 @@ defmodule SkateWeb.NotificationReadStatesControllerTest do
       user: username
     } do
       user = User.get_or_create(username)
-      RouteSettings.get_or_create(username)
-      RouteSettings.set(username, %{selected_route_ids: ["1", "2"]})
+      route_tab1 = build_test_tab()
+      RouteTab.update_all_for_user!(username, [route_tab1])
 
-      User.get_or_create("otherguy")
-      RouteSettings.get_or_create("otherguy")
-      RouteSettings.set("otherguy", %{selected_route_ids: ["1", "2"]})
+      User.get_or_create("otheruser")
+      route_tab2 = build_test_tab()
+      RouteTab.update_all_for_user!("otheruser", [route_tab2])
 
       user_notification1 =
         Notification.get_or_create_from_block_waiver(%{

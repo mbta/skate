@@ -1,5 +1,6 @@
 defmodule Notifications.NotificationServerTest do
   use Skate.DataCase
+  import Skate.Factory
 
   alias Notifications.Db.Notification, as: DbNotification
   alias Notifications.Db.NotificationUser, as: DbNotificationUser
@@ -10,7 +11,7 @@ defmodule Notifications.NotificationServerTest do
   alias Realtime.Vehicle
   alias Skate.Repo
   alias Skate.Settings.Db.User, as: DbUser
-  alias Skate.Settings.RouteSettings
+  alias Skate.Settings.RouteTab
 
   import Ecto.Query
   import ExUnit.CaptureLog, only: [capture_log: 2]
@@ -259,8 +260,14 @@ defmodule Notifications.NotificationServerTest do
         %{~D[2020-08-17] => [@block]}
       end)
 
-      RouteSettings.get_or_create("fake_uid")
-      RouteSettings.set("fake_uid", %{selected_route_ids: ["39"]})
+      route_tab1 =
+        build(:route_tab, %{
+          preset_name: "some routes",
+          selected_route_ids: ["39"]
+        })
+
+      RouteTab.update_all_for_user!("fake_uid", [route_tab1])
+      :ok
     end
 
     test "broadcasts, saves, and logs nothing if no new block waivers are received" do
@@ -328,8 +335,14 @@ defmodule Notifications.NotificationServerTest do
 
     test "doesn't send notifications to a user not looking at the route in question" do
       Repo.delete_all(from(DbUser))
-      RouteSettings.get_or_create("fake_uid")
-      RouteSettings.set("fake_uid", %{selected_route_ids: ["1", "83", "77"]})
+
+      route_tab1 =
+        build(:route_tab, %{
+          preset_name: "some routes",
+          selected_route_ids: ["1", "83", "77"]
+        })
+
+      RouteTab.update_all_for_user!("fake_uid", [route_tab1])
 
       set_log_level(:info)
 
@@ -415,8 +428,14 @@ defmodule Notifications.NotificationServerTest do
       for i <- Range.new(0, length(@chelsea_bridge_route_ids) - 1) do
         uid = "fake_uid#{i}"
         route_id = Enum.at(@chelsea_bridge_route_ids, i)
-        RouteSettings.get_or_create(uid)
-        RouteSettings.set(uid, %{selected_route_ids: [route_id]})
+
+        route_tab1 =
+          build(:route_tab, %{
+            preset_name: "some routes",
+            selected_route_ids: ["#{route_id}"]
+          })
+
+        RouteTab.update_all_for_user!(uid, [route_tab1])
       end
 
       start_time = DateTime.utc_now() |> DateTime.to_unix()
@@ -451,8 +470,14 @@ defmodule Notifications.NotificationServerTest do
       for i <- Range.new(0, length(@chelsea_bridge_route_ids) - 1) do
         uid = "fake_uid#{i}"
         route_id = Enum.at(@chelsea_bridge_route_ids, i)
-        RouteSettings.get_or_create(uid)
-        RouteSettings.set(uid, %{selected_route_ids: [route_id]})
+
+        route_tab1 =
+          build(:route_tab, %{
+            preset_name: "some routes",
+            selected_route_ids: ["#{route_id}"]
+          })
+
+        RouteTab.update_all_for_user!(uid, [route_tab1])
       end
 
       NotificationServer.subscribe("fake_uid0", server)
@@ -492,8 +517,14 @@ defmodule Notifications.NotificationServerTest do
       {:ok, server} = setup_server()
 
       Repo.delete_all(from(DbUser))
-      RouteSettings.get_or_create("fake_uid")
-      RouteSettings.set("fake_uid", %{selected_route_ids: ["1", "83", "77"]})
+
+      route_tab1 =
+        build(:route_tab, %{
+          preset_name: "some routes",
+          selected_route_ids: ["1", "83", "77"]
+        })
+
+      RouteTab.update_all_for_user!("fake_uid", [route_tab1])
 
       set_log_level(:info)
 
@@ -531,8 +562,14 @@ defmodule Notifications.NotificationServerTest do
       for i <- Range.new(0, length(@chelsea_bridge_route_ids) - 1) do
         uid = "fake_uid#{i}"
         route_id = Enum.at(@chelsea_bridge_route_ids, i)
-        RouteSettings.get_or_create(uid)
-        RouteSettings.set(uid, %{selected_route_ids: [route_id]})
+
+        route_tab1 =
+          build(:route_tab, %{
+            preset_name: "some routes",
+            selected_route_ids: ["#{route_id}"]
+          })
+
+        RouteTab.update_all_for_user!(uid, [route_tab1])
       end
 
       NotificationServer.subscribe("fake_uid0", server)

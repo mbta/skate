@@ -1,10 +1,11 @@
 defmodule Notifications.NotificationTest do
   use Skate.DataCase
+  import Skate.Factory
 
   alias Notifications.Notification
   alias Notifications.Db.Notification, as: DbNotification
   alias Notifications.Db.NotificationUser, as: DbNotificationUser
-  alias Skate.Settings.RouteSettings
+  alias Skate.Settings.RouteTab
   alias Skate.Settings.User
 
   import Ecto.Query
@@ -17,13 +18,29 @@ defmodule Notifications.NotificationTest do
       user2 = User.get_or_create("user2")
       User.get_or_create("user3")
 
-      RouteSettings.get_or_create("user1")
-      RouteSettings.get_or_create("user2")
-      RouteSettings.get_or_create("user3")
+      route_tab1 =
+        build(:route_tab, %{
+          preset_name: "some routes",
+          selected_route_ids: ["4", "1"]
+        })
 
-      RouteSettings.set("user1", %{selected_route_ids: ["4", "1"]})
-      RouteSettings.set("user2", %{selected_route_ids: ["2"]})
-      RouteSettings.set("user3", %{selected_route_ids: ["4", "5", "6", "7"]})
+      RouteTab.update_all_for_user!("user1", [route_tab1])
+
+      route_tab2 =
+        build(:route_tab, %{
+          preset_name: "some routes",
+          selected_route_ids: ["2"]
+        })
+
+      RouteTab.update_all_for_user!("user2", [route_tab2])
+
+      route_tab3 =
+        build(:route_tab, %{
+          preset_name: "some routes",
+          selected_route_ids: ["4", "5", "6", "7"]
+        })
+
+      RouteTab.update_all_for_user!("user3", [route_tab3])
 
       notification_values = %{
         created_at: 12345,
@@ -59,10 +76,21 @@ defmodule Notifications.NotificationTest do
       Application.put_env(:skate, :naive_now_fn, naive_now_fn)
       eight_hours = 8 * 60 * 60
 
-      RouteSettings.get_or_create("user1")
-      RouteSettings.get_or_create("user2")
-      RouteSettings.set("user1", %{selected_route_ids: ["1", "2", "112"]})
-      RouteSettings.set("user2", %{selected_route_ids: ["1", "3", "743"]})
+      route_tab1 =
+        build(:route_tab, %{
+          preset_name: "some routes",
+          selected_route_ids: ["1", "2", "112"]
+        })
+
+      RouteTab.update_all_for_user!("user1", [route_tab1])
+
+      route_tab2 =
+        build(:route_tab, %{
+          preset_name: "some routes",
+          selected_route_ids: ["1", "3", "743"]
+        })
+
+      RouteTab.update_all_for_user!("user2", [route_tab2])
 
       route_1_unexpired =
         Notification.get_or_create_from_block_waiver(%{

@@ -23,8 +23,11 @@ defmodule Skate.Settings.User do
 
   defp users_for_route_ids_query(route_ids) do
     from(u in DbUser,
-      join: rs in assoc(u, :route_settings),
-      where: fragment("?::varchar[] && ?", ^route_ids, rs.selected_route_ids)
+      join: rt in assoc(u, :route_tabs),
+      # non-nil ordering means tab is open
+      where:
+        not is_nil(rt.ordering) and
+          fragment("?::varchar[] && ?", ^route_ids, rt.selected_route_ids)
     )
   end
 end
