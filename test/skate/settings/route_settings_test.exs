@@ -67,11 +67,11 @@ defmodule Skate.Settings.RouteSettingsTest do
 
       RouteSettings.set(
         "charlie",
-        [
-          {:selected_route_ids, ["12", "34", "56"]},
-          {:ladder_directions, %{"39" => 1, "77" => 0}},
-          {:ladder_crowding_toggles, %{"741" => true}}
-        ]
+        %{
+          selected_route_ids: ["12", "34", "56"],
+          ladder_directions: %{"39" => 1, "77" => 0},
+          ladder_crowding_toggles: %{"741" => true}
+        }
       )
 
       [sole_record] = Skate.Repo.all(DbRouteSettings)

@@ -30,11 +30,11 @@ defmodule Skate.Settings.RouteSettingsMigratorTest do
       _user = RouteSettings.get_or_create("charlie")
 
       :ok =
-        RouteSettings.set("charlie", [
-          {:selected_route_ids, ["1", "77"]},
-          {:ladder_directions, %{"77" => 1}},
-          {:ladder_crowding_toggles, %{"1" => true}}
-        ])
+        RouteSettings.set("charlie", %{
+          selected_route_ids: ["1", "77"],
+          ladder_directions: %{"77" => 1},
+          ladder_crowding_toggles: %{"1" => true}
+        })
 
       log =
         capture_log([level: :info], fn ->
@@ -60,7 +60,7 @@ defmodule Skate.Settings.RouteSettingsMigratorTest do
 
     test "doesn't migrate for users who have route_tabs more recent than route_settings" do
       _user = RouteSettings.get_or_create("charlie")
-      :ok = RouteSettings.set("charlie", [{:selected_route_ids, ["1", "77"]}])
+      :ok = RouteSettings.set("charlie", %{selected_route_ids: ["1", "77"]})
 
       from(rs in DbRouteSettings)
       |> Repo.update_all(set: [updated_at: DateTime.utc_now() |> DateTime.add(-60, :second)])
@@ -121,7 +121,7 @@ defmodule Skate.Settings.RouteSettingsMigratorTest do
 
     test "doesn't migrate for users who have route_settings more recent than route_tabs" do
       _user = RouteSettings.get_or_create("charlie")
-      :ok = RouteSettings.set("charlie", [{:selected_route_ids, ["1", "77"]}])
+      :ok = RouteSettings.set("charlie", %{selected_route_ids: ["1", "77"]})
 
       _route_tabs =
         RouteTab.update_all_for_user!("charlie", [
