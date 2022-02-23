@@ -1,18 +1,21 @@
 import React from "react"
 import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import SavePresetModal from "../../../src/components/inputModals/savePresetModal"
+import OverwritePresetModal from "../../../src/components/inputModals/overwritePresetModal"
 import { initialState, closeInputModal } from "../../../src/state"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 
-describe("SavePresetModal", () => {
-  test("can save", () => {
+describe("OverwritePresetModal", () => {
+  test("can confirm", () => {
     const mockCallback = jest.fn()
     const mockDispatch = jest.fn()
 
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <SavePresetModal presetName="My Preset" saveCallback={mockCallback} />
+        <OverwritePresetModal
+          presetName="My Preset"
+          confirmCallback={mockCallback}
+        />
       </StateDispatchProvider>
     )
 
@@ -28,7 +31,10 @@ describe("SavePresetModal", () => {
 
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <SavePresetModal presetName="My Preset" saveCallback={mockCallback} />
+        <OverwritePresetModal
+          presetName="My Preset"
+          confirmCallback={mockCallback}
+        />
       </StateDispatchProvider>
     )
 

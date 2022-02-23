@@ -77,12 +77,14 @@ describe("Modal", () => {
 
   test("renders create preset modal", () => {
     const createCallback = jest.fn()
+    const confirmOverwriteCallback = jest.fn()
 
     const state: State = {
       ...initialState,
       openInputModal: {
         type: "CREATE_PRESET",
         createCallback,
+        confirmOverwriteCallback,
       },
     }
 
@@ -123,6 +125,26 @@ describe("Modal", () => {
         type: "DELETE_PRESET",
         presetName: "My Preset",
         deleteCallback,
+      },
+    }
+
+    const tree = renderer.create(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <Modal />
+      </StateDispatchProvider>
+    )
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders overwrite preset modal", () => {
+    const confirmCallback = jest.fn()
+
+    const state: State = {
+      ...initialState,
+      openInputModal: {
+        type: "OVERWRITE_PRESET",
+        presetName: "My Preset",
+        confirmCallback,
       },
     }
 

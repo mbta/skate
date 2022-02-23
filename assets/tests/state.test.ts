@@ -824,6 +824,14 @@ describe("reducer", () => {
         expect(mockDispatch).toHaveBeenCalledWith(
           State.createPreset(routeTab.uuid, "Preset name")
         )
+        newState.openInputModal.confirmOverwriteCallback(
+          "Preset name",
+          "uuid",
+          mockDispatch
+        )
+        expect(mockDispatch).toHaveBeenCalledWith(
+          State.promptToOverwritePreset("Preset name", routeTab, "uuid")
+        )
         return
       default:
         fail("did not receive correct openInputModal type")
@@ -883,6 +891,31 @@ describe("reducer", () => {
         expect(newState.openInputModal.presetName).toBe("My preset")
         expect(mockDispatch).toHaveBeenCalledWith(
           State.deletePreset(routeTab.uuid)
+        )
+        return
+      default:
+        fail("did not receive correct openInputModal type")
+    }
+  })
+
+  test("promptToOverwritePreset", () => {
+    const mockDispatch = jest.fn()
+    const routeTab = routeTabFactory.build({ presetName: "My Preset" })
+
+    const newState = reducer(
+      initialState,
+      State.promptToOverwritePreset("My Preset", routeTab, routeTab.uuid)
+    )
+
+    switch (newState.openInputModal?.type) {
+      case "OVERWRITE_PRESET":
+        newState.openInputModal.confirmCallback(mockDispatch)
+        expect(newState.openInputModal.presetName).toBe("My Preset")
+        expect(mockDispatch).toHaveBeenCalledWith(
+          State.deletePreset(routeTab.uuid)
+        )
+        expect(mockDispatch).toHaveBeenCalledWith(
+          State.createPreset(routeTab.uuid, "My Preset")
         )
         return
       default:

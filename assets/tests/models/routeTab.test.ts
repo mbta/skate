@@ -9,6 +9,7 @@ import {
   applyRouteTabEdit,
   saveEditedPreset,
   deletePresetByUUID,
+  findPresetByName,
 } from "../../src/models/routeTab"
 import { v4 as uuidv4 } from "uuid"
 import routeTabFactory from "../factories/routeTab"
@@ -517,5 +518,25 @@ describe("deletePresetByUUID", () => {
     expect(
       deletePresetByUUID([routeTab1, routeTab2, routeTab3], routeTab1.uuid)
     ).toEqual([{ ...routeTab3, isCurrentTab: true }])
+  })
+})
+
+describe("findPresetByName", () => {
+  test("returns match if found", () => {
+    const routeTab2 = routeTabFactory.build({ presetName: "My Preset" })
+    const routeTab1 = routeTabFactory.build({
+      presetName: "My Preset",
+      saveChangesToTabUuid: routeTab2.uuid,
+    })
+
+    expect(findPresetByName([routeTab1, routeTab2], "My Preset")).toBe(
+      routeTab2
+    )
+  })
+
+  test("returns undefined when name is not found", () => {
+    const routeTab = routeTabFactory.build({ presetName: "Some Other Name" })
+
+    expect(findPresetByName([routeTab], "My Preset")).toBeUndefined()
   })
 })

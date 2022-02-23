@@ -153,6 +153,58 @@ Array [
 ]
 `;
 
+exports[`Modal renders overwrite preset modal 1`] = `
+Array [
+  <div
+    className="m-input-modal"
+  >
+    <div
+      className="m-input-modal__title"
+    >
+      A preset named
+       
+      <span
+        className="m-input-modal__name-text"
+      >
+        My Preset
+      </span>
+       already exists.
+    </div>
+    <div
+      className="m-input-modal__title"
+    >
+      Overwrite
+       
+      <span
+        className="m-input-modal__name-text"
+      >
+        My Preset
+      </span>
+      ?
+    </div>
+    <div
+      className="m-input-modal__buttons"
+    >
+      <button
+        className="m-input-modal__button"
+        onClick={[Function]}
+      >
+        Cancel
+      </button>
+      <button
+        className="m-input-modal__button-confirm"
+        onClick={[Function]}
+      >
+        Save
+      </button>
+    </div>
+  </div>,
+  <div
+    className="m-input-modal__overlay"
+  />,
+]
+`;
+
 exports[`Modal renders save preset modal 1`] = `
 Array [
   <div

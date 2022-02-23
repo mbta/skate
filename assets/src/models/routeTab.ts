@@ -265,5 +265,15 @@ export const deletePresetByUUID = (
   )
 }
 
+export const findPresetByName = (
+  routeTabs: RouteTab[],
+  presetName: string
+): RouteTab | undefined =>
+  routeTabs.find(
+    (routeTab) =>
+      routeTab.presetName === presetName &&
+      routeTab.saveChangesToTabUuid === undefined
+  )
+
 const nullToUndefined = <T>(data: T | null): T | undefined =>
   data === null ? undefined : data
