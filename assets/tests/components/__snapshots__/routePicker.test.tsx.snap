@@ -162,26 +162,7 @@ exports[`RoutePicker renders a list of routes with tabs / presets enabled 1`] = 
         />
       </button>
     </div>
-    <div>
-      <div
-        className="m-garage-filter__garage"
-      >
-        Garage A
-        <button
-          className="m-garage-filter__button"
-          onClick={[Function]}
-        >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
-        </button>
-      </div>
-    </div>
+    <div />
   </div>
   <ul
     className="m-route-picker__selected-routes"

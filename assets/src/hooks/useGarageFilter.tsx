@@ -59,7 +59,7 @@ export const GarageFilter = ({
   allGarages,
   toggleGarage,
 }: GarageFilterData) => {
-  const [showGaragesFilter, setShowGaragesFilter] = useState<boolean>(true)
+  const [showGaragesFilter, setShowGaragesFilter] = useState<boolean>(false)
   const sortedGarages = allGarages.sort((a, b) => a.localeCompare(b))
 
   return (
