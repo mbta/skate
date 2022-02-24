@@ -98,6 +98,11 @@ describe("GarageFilter", () => {
     const garageFilter = mount(<GarageFilter {...mockGarageFilter} />)
 
     garageFilter
+      .find(".m-garage-filter__show-hide-button")
+      .first()
+      .simulate("click")
+
+    garageFilter
       .find(".m-garage-filter__garage > button")
       .first()
       .simulate("click")
@@ -117,13 +122,6 @@ describe("GarageFilter", () => {
 
     const garageFilter = mount(<GarageFilter {...mockGarageFilter} />)
 
-    expect(garageFilter.text().includes("Garage A")).toBeTruthy()
-
-    garageFilter
-      .find(".m-garage-filter__show-hide-button")
-      .first()
-      .simulate("click")
-
     expect(garageFilter.text().includes("Garage A")).toBeFalsy()
 
     garageFilter
@@ -132,5 +130,12 @@ describe("GarageFilter", () => {
       .simulate("click")
 
     expect(garageFilter.text().includes("Garage A")).toBeTruthy()
+
+    garageFilter
+      .find(".m-garage-filter__show-hide-button")
+      .first()
+      .simulate("click")
+
+    expect(garageFilter.text().includes("Garage A")).toBeFalsy()
   })
 })
