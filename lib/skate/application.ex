@@ -19,11 +19,6 @@ defmodule Skate.Application do
         RefreshTokenStore,
         {Skate.Repo, []}
       ] ++
-        if Application.get_env(:skate, :start_routes_migrator) do
-          [{Skate.Settings.RouteSettingsMigrator, [direction: :route_settings_to_route_tabs]}]
-        else
-          []
-        end ++
         if Application.get_env(:skate, :start_data_processes) do
           [
             Schedule.Supervisor,
