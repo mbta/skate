@@ -115,4 +115,31 @@ defmodule Skate.Settings.RouteTabTest do
       assert [] == RouteTab.get_all_for_user("charlie")
     end
   end
+
+  describe "tab_open?/1" do
+    test "returns true for an open tab" do
+      route_tab =
+        build(:route_tab, %{
+          ordering: 0,
+          selected_route_ids: ["1", "28"],
+          ladder_directions: %{"28" => "1"},
+          ladder_crowding_toggles: %{"1" => true}
+        })
+
+      assert RouteTab.tab_open?(route_tab)
+    end
+
+    test "returns false for a closed tab" do
+      route_tab =
+        build(:route_tab, %{
+          preset_name: "My Preset",
+          ordering: nil,
+          selected_route_ids: ["1", "28"],
+          ladder_directions: %{"28" => "1"},
+          ladder_crowding_toggles: %{"1" => true}
+        })
+
+      refute RouteTab.tab_open?(route_tab)
+    end
+  end
 end

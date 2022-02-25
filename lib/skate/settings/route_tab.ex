@@ -61,6 +61,9 @@ defmodule Skate.Settings.RouteTab do
     |> Enum.map(&db_route_tab_to_route_tab(&1))
   end
 
+  @spec tab_open?(t()) :: boolean()
+  def tab_open?(route_tab), do: !is_nil(route_tab.ordering)
+
   @spec db_route_tab_to_route_tab(%DbRouteTab{}) :: t()
   defp db_route_tab_to_route_tab(db_route_tab) do
     %__MODULE__{

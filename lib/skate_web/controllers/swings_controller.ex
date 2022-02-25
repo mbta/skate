@@ -2,12 +2,16 @@ defmodule SkateWeb.SwingsController do
   use SkateWeb, :controller
 
   alias SkateWeb.AuthManager
-  alias Skate.Settings.RouteSettings
+  alias Skate.Settings.RouteTab
 
   def index(conn, _params) do
     username = AuthManager.Plug.current_resource(conn)
 
-    route_ids = username |> RouteSettings.get_or_create() |> Map.get(:selected_route_ids)
+    route_ids =
+      username
+      |> RouteTab.get_all_for_user()
+      |> Enum.filter(fn route_tab -> RouteTab.tab_open?(route_tab) end)
+      |> Enum.flat_map(fn route_tab -> route_tab.selected_route_ids end)
 
     swings_fn = Application.get_env(:skate_web, :swings_fn, &Schedule.swings_for_route/3)
     now_fn = Application.get_env(:skate_web, :now_fn, &Util.Time.now/0)
