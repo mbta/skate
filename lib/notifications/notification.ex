@@ -231,7 +231,8 @@ defmodule Notifications.Notification do
 
     Skate.Repo.insert_all(
       DbNotificationUser,
-      notification_user_maps
+      notification_user_maps,
+      on_conflict: :nothing
     )
   end
 
