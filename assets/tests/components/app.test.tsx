@@ -51,10 +51,10 @@ describe("App", () => {
       routeTabs: [
         routeTabFactory.build({
           ordering: 0,
-          selectedRouteIds: ["1"],
+          selectedRouteIds: ["1", "15"],
           isCurrentTab: true,
         }),
-        routeTabFactory.build({ ordering: 1, selectedRouteIds: ["15"] }),
+        routeTabFactory.build({ ordering: 1, selectedRouteIds: ["15", "22"] }),
       ],
     }
     const mockDispatch = jest.fn()
@@ -66,6 +66,6 @@ describe("App", () => {
 
     const routeIds = (useVehicles as jest.Mock).mock.calls[0][1]
 
-    expect(routeIds).toEqual(["1", "15"])
+    expect(routeIds).toEqual(["1", "15", "22"])
   })
 })

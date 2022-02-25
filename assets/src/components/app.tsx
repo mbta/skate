@@ -23,7 +23,7 @@ import LateView from "./lateView"
 import { OpenView } from "../state"
 import featureIsEnabled from "../laboratoryFeatures"
 import { isOpenTab } from "../models/routeTab"
-import { flatten } from "../helpers/array"
+import { flatten, uniq } from "../helpers/array"
 
 const AppRoutes = () => {
   useAppcues()
@@ -39,8 +39,12 @@ const AppRoutes = () => {
     openView === OpenView.Late || location.pathname === "/"
 
   const routesForVehicles = featureIsEnabled("presets_workspaces")
-    ? flatten(
-        routeTabs.filter(isOpenTab).map((routeTab) => routeTab.selectedRouteIds)
+    ? uniq(
+        flatten(
+          routeTabs
+            .filter(isOpenTab)
+            .map((routeTab) => routeTab.selectedRouteIds)
+        )
       )
     : selectedRouteIds
 
