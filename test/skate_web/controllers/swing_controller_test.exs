@@ -90,6 +90,28 @@ defmodule SkateWeb.SwingsControllerTest do
                ]
              } = json_response(conn, 200)
     end
+
+    @tag :authenticated
+    test "when logged in, can provide specific routes as an argument", %{conn: conn} do
+      conn =
+        conn
+        |> api_headers()
+        |> get("/api/swings?route_ids=1,2")
+
+      assert %{
+               "data" => [
+                 %{
+                   "from_route_id" => "1",
+                   "from_run_id" => "123-456",
+                   "from_trip_id" => "1234",
+                   "time" => 100,
+                   "to_route_id" => "2",
+                   "to_run_id" => "123-789",
+                   "to_trip_id" => "5678"
+                 }
+               ]
+             } = json_response(conn, 200)
+    end
   end
 
   defp api_headers(conn) do
