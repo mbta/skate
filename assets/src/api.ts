@@ -154,9 +154,9 @@ export const fetchNearestIntersection = (
     defaultResult: null,
   })
 
-export const fetchSwings = (): Promise<Swing[] | null> =>
+export const fetchSwings = (routeIds: RouteId[]): Promise<Swing[] | null> =>
   apiCall({
-    url: "/api/swings",
+    url: `/api/swings?route_ids=${routeIds.join(",")}`,
     parser: nullableParser(swingsFromData),
     defaultResult: null,
   })

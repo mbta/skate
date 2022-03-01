@@ -2,6 +2,7 @@ import { RouteId } from "../schedule.d"
 import { LadderDirections } from "./ladderDirection"
 import { LadderCrowdingToggles } from "./ladderCrowdingToggle"
 import { v4 as uuidv4 } from "uuid"
+import { uniq, flatten } from "../helpers/array"
 
 export interface RouteTab {
   uuid: string
@@ -253,7 +254,7 @@ export const deletePresetByUUID = (
       routeTab.saveChangesToTabUuid === uuid
   )
 
-  // Call closeTabbyUUID to handle marking the correct other tab
+  // Call closeTabByUUID to handle marking the correct other tab
   // as open
   const routeTabsAfterClose = existingTabToClose
     ? closeTabByUUID(routeTabs, existingTabToClose.uuid)
@@ -273,6 +274,13 @@ export const findPresetByName = (
     (routeTab) =>
       routeTab.presetName === presetName &&
       routeTab.saveChangesToTabUuid === undefined
+  )
+
+export const allOpenRouteIds = (routeTabs: RouteTab[]): RouteId[] =>
+  uniq(
+    flatten(
+      routeTabs.filter(isOpenTab).map((routeTab) => routeTab.selectedRouteIds)
+    )
   )
 
 const nullToUndefined = <T>(data: T | null): T | undefined =>

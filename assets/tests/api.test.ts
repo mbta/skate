@@ -493,7 +493,7 @@ describe("fetchSwings", () => {
       data: [swing],
     })
 
-    fetchSwings().then((swings) => {
+    fetchSwings(["1"]).then((swings) => {
       expect(swings).toEqual([
         {
           fromRouteId: "1",
