@@ -4,22 +4,12 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const TerserPlugin = require("terser-webpack-plugin")
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin")
 const CopyWebpackPlugin = require("copy-webpack-plugin")
-const SentryCliPlugin = require('@sentry/webpack-plugin');
 
 module.exports = (env, options) => {
-  const uploadSourceMapToSentry = options.mode === "production";
-
-  const basePlugins = [
+  const plugins = [
     new MiniCssExtractPlugin({ filename: "../css/app.css" }),
     new CopyWebpackPlugin({ patterns: [{ from: "static/", to: "../" }] })
   ]
-  const plugins = uploadSourceMapToSentry ? 
-    [
-      ...basePlugins, 
-      new SentryCliPlugin({
-        include: '../priv/static/js'
-      })
-    ] : basePlugins
 
   const useMinimization = options.mode === "production";
 

@@ -21,13 +21,6 @@ FROM node:14-alpine3.13 as assets-builder
 WORKDIR /root
 ADD . .
 
-# Needed for uploading source maps during front-end build
-ARG SENTRY_ORG=$SENTRY_ORG
-ARG SENTRY_PROJECT=$SENTRY_PROJECT
-ARG SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
-ARG AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-ARG AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-
 # Copy in elixir deps required to build node modules for phoenix
 COPY --from=elixir-builder /root/deps ./deps
 

@@ -8,6 +8,7 @@ S3_DIR=s3://mbta-dotcom/$APP
 BUILD_TAG=${1}
 TEMP_DIR=$(mktemp -d)
 STATIC_DIR=$TEMP_DIR/priv/static
+PATH=$(npm bin):$PATH
 
 pushd "$TEMP_DIR" > /dev/null
 sh -c "docker run --rm ${BUILD_TAG} tar -c /home/skate/priv/static" | tar -x --strip-components 2
@@ -25,3 +26,7 @@ aws s3 sync "$STATIC_DIR/fonts" "$S3_DIR/fonts" --size-only --exclude "*" --incl
 
 # sync everything else normally
 aws s3 sync $STATIC_DIR $S3_DIR --size-only
+
+# upload source maps to Sentry
+SENTRY_RELEASE=$(sentry-cli releases propose-version)
+sentry-cli releases files "$SENTRY_RELEASE" upload-sourcemaps "$STATIC_DIR/js"
