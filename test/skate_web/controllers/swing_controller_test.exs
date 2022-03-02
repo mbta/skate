@@ -48,51 +48,7 @@ defmodule SkateWeb.SwingsControllerTest do
     end
 
     @tag :authenticated
-    test "when logged in, returns all swings for selected routes", %{conn: conn} do
-      conn =
-        conn
-        |> api_headers()
-        |> put("/api/route_tabs", %{
-          "route_tabs" => [
-            %{
-              uuid: Ecto.UUID.generate(),
-              ordering: 0,
-              selectedRouteIds: ["1"],
-              isCurrentTab: true
-            },
-            %{
-              uuid: Ecto.UUID.generate(),
-              ordering: 1,
-              selectedRouteIds: ["2"],
-              isCurrentTab: false
-            },
-            %{
-              uuid: Ecto.UUID.generate(),
-              ordering: nil,
-              selectedRouteIds: ["3"],
-              isCurrentTab: false
-            }
-          ]
-        })
-        |> get("/api/swings")
-
-      assert %{
-               "data" => [
-                 %{
-                   "from_route_id" => "1",
-                   "from_run_id" => "123-456",
-                   "from_trip_id" => "1234",
-                   "time" => 100,
-                   "to_route_id" => "2",
-                   "to_run_id" => "123-789",
-                   "to_trip_id" => "5678"
-                 }
-               ]
-             } = json_response(conn, 200)
-    end
-
-    @tag :authenticated
-    test "when logged in, can provide specific routes as an argument", %{conn: conn} do
+    test "when logged in, returns swings for routes given in argument", %{conn: conn} do
       conn =
         conn
         |> api_headers()
