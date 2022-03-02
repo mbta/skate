@@ -35,6 +35,8 @@ import {
   deletePresetByUUID,
   isEditedPreset,
   isPreset,
+  findFirstOpenTabWith,
+  selectTabByUUID,
 } from "./models/routeTab"
 
 export enum OpenView {
@@ -768,15 +770,30 @@ const routeTabsReducer = (
       }
     case "SELECT_ROUTE_TAB":
       return {
-        newRouteTabs: routeTabs.map((existingRouteTab) => {
-          if (existingRouteTab.uuid === action.payload.uuid) {
-            return { ...existingRouteTab, isCurrentTab: true }
-          } else {
-            return { ...existingRouteTab, isCurrentTab: false }
-          }
-        }),
+        newRouteTabs: selectTabByUUID(routeTabs, action.payload.uuid),
         routeTabsUpdated: true,
       }
+    case "SELECT_VEHICLE_FROM_NOTIFICATION": {
+      const routeId = action.payload.vehicle?.routeId
+
+      if (routeId) {
+        if (currentRouteTab(routeTabs)?.selectedRouteIds.includes(routeId)) {
+          return { newRouteTabs: routeTabs, routeTabsUpdated: false }
+        }
+
+        const tabToOpen = findFirstOpenTabWith(routeTabs, (routeTab) =>
+          routeTab.selectedRouteIds.includes(routeId)
+        )
+
+        if (tabToOpen) {
+          return {
+            newRouteTabs: selectTabByUUID(routeTabs, tabToOpen.uuid),
+            routeTabsUpdated: true,
+          }
+        }
+      }
+      return { newRouteTabs: routeTabs, routeTabsUpdated: false }
+    }
     case "SELECT_ROUTE_IN_TAB":
       return {
         newRouteTabs: currentTab

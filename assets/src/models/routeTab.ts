@@ -69,6 +69,18 @@ export const isEditedPreset = (routeTab: RouteTab): boolean =>
 export const isOpenTab = (routeTab: RouteTab): boolean =>
   routeTab.ordering !== undefined
 
+export const selectTabByUUID = (
+  routeTabs: RouteTab[],
+  uuid: string
+): RouteTab[] =>
+  routeTabs.map((routeTab) => {
+    if (routeTab.uuid === uuid) {
+      return { ...routeTab, isCurrentTab: true }
+    } else {
+      return { ...routeTab, isCurrentTab: false }
+    }
+  })
+
 export const instantiatePresetByUUID = (
   routeTabs: RouteTab[],
   uuid: string
@@ -282,6 +294,17 @@ export const allOpenRouteIds = (routeTabs: RouteTab[]): RouteId[] =>
       routeTabs.filter(isOpenTab).map((routeTab) => routeTab.selectedRouteIds)
     )
   )
+
+export const findFirstOpenTabWith = (
+  routeTabs: RouteTab[],
+  predicate: (routeTab: RouteTab) => boolean
+): RouteTab | null => {
+  const matchingTabs = routeTabs
+    .filter((routeTab) => isOpenTab(routeTab) && predicate(routeTab))
+    .sort((a, b) => (a.ordering as number) - (b.ordering as number))
+
+  return matchingTabs[0] || null
+}
 
 const nullToUndefined = <T>(data: T | null): T | undefined =>
   data === null ? undefined : data

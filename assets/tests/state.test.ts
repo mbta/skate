@@ -429,6 +429,123 @@ describe("reducer", () => {
     expect(newState).toEqual(initialState)
   })
 
+  test("selectVehicleFromNotification switches to appropriate route tab", () => {
+    const originalRouteTab1 = routeTabFactory.build({
+      isCurrentTab: false,
+      ordering: 4,
+      selectedRouteIds: ["87", "88"],
+    })
+    const originalRouteTab2 = routeTabFactory.build({
+      isCurrentTab: false,
+      ordering: 2,
+      selectedRouteIds: ["88", "89"],
+    })
+    const originalRouteTab3 = routeTabFactory.build({
+      isCurrentTab: true,
+      ordering: 3,
+      selectedRouteIds: ["1"],
+    })
+    const originalRouteTabs = [
+      originalRouteTab1,
+      originalRouteTab2,
+      originalRouteTab3,
+    ]
+
+    const vehicle = vehicleFactory.build({ routeId: "88" })
+
+    const newState = reducer(
+      {
+        ...initialState,
+        routeTabs: originalRouteTabs,
+      },
+      State.selectVehicleFromNotification(vehicle)
+    )
+
+    const expectedNewTabs = [
+      originalRouteTab1,
+      { ...originalRouteTab2, isCurrentTab: true },
+      { ...originalRouteTab3, isCurrentTab: false },
+    ]
+
+    const expectedState: State.State = {
+      ...initialState,
+      routeTabs: expectedNewTabs,
+      routeTabsToPush: expectedNewTabs,
+      selectedVehicleOrGhost: vehicle,
+    }
+
+    expect(newState).toMatchObject(expectedState)
+  })
+
+  test("selectVehicleFromNotification doesn't switch tabs is route is open in current tab", () => {
+    const originalRouteTab1 = routeTabFactory.build({
+      isCurrentTab: true,
+      ordering: 4,
+      selectedRouteIds: ["87", "88"],
+    })
+    const originalRouteTab2 = routeTabFactory.build({
+      isCurrentTab: false,
+      ordering: 2,
+      selectedRouteIds: ["88", "89"],
+    })
+    const originalRouteTab3 = routeTabFactory.build({
+      isCurrentTab: false,
+      ordering: 3,
+      selectedRouteIds: ["1"],
+    })
+    const originalRouteTabs = [
+      originalRouteTab1,
+      originalRouteTab2,
+      originalRouteTab3,
+    ]
+
+    const vehicle = vehicleFactory.build({ routeId: "88" })
+
+    const newState = reducer(
+      {
+        ...initialState,
+        routeTabs: originalRouteTabs,
+      },
+      State.selectVehicleFromNotification(vehicle)
+    )
+
+    const expectedState: State.State = {
+      ...initialState,
+      routeTabs: originalRouteTabs,
+      routeTabsToPush: null,
+      selectedVehicleOrGhost: vehicle,
+    }
+
+    expect(newState).toMatchObject(expectedState)
+  })
+
+  test("selectVehicleFromNotification does nothing to route tabs if route isn't open", () => {
+    const routeTab = routeTabFactory.build({
+      isCurrentTab: true,
+      ordering: 0,
+      selectedRouteIds: ["87", "88"],
+    })
+
+    const vehicle = vehicleFactory.build({ routeId: "89" })
+
+    const newState = reducer(
+      {
+        ...initialState,
+        routeTabs: [routeTab],
+      },
+      State.selectVehicleFromNotification(vehicle)
+    )
+
+    const expectedState: State.State = {
+      ...initialState,
+      routeTabs: [routeTab],
+      routeTabsToPush: null,
+      selectedVehicleOrGhost: vehicle,
+    }
+
+    expect(newState).toMatchObject(expectedState)
+  })
+
   test("createRouteTab", () => {
     const originalRouteTab1 = routeTabFactory.build({
       isCurrentTab: false,
