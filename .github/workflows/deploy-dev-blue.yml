@@ -21,8 +21,6 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           docker-repo: ${{ secrets.DOCKER_REPO }}
-      - name: Install sentry-cli
-        run: npm install @sentry/cli
       - name: Upload static assets to S3
         run: bash upload_assets.sh ${{ steps.build-push.outputs.docker-tag }}
         env:
