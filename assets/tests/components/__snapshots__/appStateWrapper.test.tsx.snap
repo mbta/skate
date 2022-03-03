@@ -291,25 +291,29 @@ exports[`renders 1`] = `
         </div>
       </div>
       <div
-        className="m-ladder-page__route-tab-bar"
+        className="m-ladder-page__tab-bar-and-ladders"
       >
         <div
-          className="m-ladder-page__add-tab-button"
-          onClick={[Function]}
+          className="m-ladder-page__route-tab-bar"
         >
-          <span
-            className="m-ladder-page__add-tab-icon"
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
+          <div
+            className="m-ladder-page__add-tab-button"
+            onClick={[Function]}
+          >
+            <span
+              className="m-ladder-page__add-tab-icon"
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
               }
-            }
-          />
+            />
+          </div>
         </div>
+        <div
+          className="m-route-ladders"
+        />
       </div>
-      <div
-        className="m-route-ladders"
-      />
     </div>
   </div>
 </div>

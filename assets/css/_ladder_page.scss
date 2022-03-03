@@ -21,6 +21,12 @@ $color-route-tabs-separator: #9fa2ac;
   }
 }
 
+.m-ladder-page__tab-bar-and-ladders {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 .m-ladder-page__route-tab-bar {
   display: flex;
   background-color: $color-route-tabs-bg;

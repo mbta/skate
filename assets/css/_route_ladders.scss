@@ -7,7 +7,7 @@
     [m-route-ladder__controls] minmax(auto, max-content)
     [m-ladder] auto
     [m-incoming-box] max-content;
-  height: 100%;
+  flex-grow: 1;
   max-width: 100%;
   overflow-x: auto;
   padding: 1rem;
