@@ -12,7 +12,14 @@ const SavePresetModal = ({
   const [, dispatch] = useContext(StateDispatchContext)
   return (
     <>
-      <div className="m-input-modal">
+      <div
+        className="m-input-modal"
+        onKeyDown={(event) => {
+          if (event.key === "Escape") {
+            dispatch(closeInputModal())
+          }
+        }}
+      >
         <div className="m-input-modal__title">
           Overwrite{" "}
           <span className="m-input-modal__name-text">{presetName}</span>?

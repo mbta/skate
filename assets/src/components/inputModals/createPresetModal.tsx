@@ -18,7 +18,14 @@ const CreatePresetModal = ({
   const [presetName, setPresetName] = useState<string>("")
   return (
     <>
-      <div className="m-input-modal">
+      <div
+        className="m-input-modal"
+        onKeyDown={(event) => {
+          if (event.key === "Escape") {
+            dispatch(closeInputModal())
+          }
+        }}
+      >
         <form
           onSubmit={(event) => {
             event.preventDefault()
