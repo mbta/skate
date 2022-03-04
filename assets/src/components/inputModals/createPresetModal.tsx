@@ -19,46 +19,53 @@ const CreatePresetModal = ({
   return (
     <>
       <div className="m-input-modal">
-        <div className="m-input-modal__title">Save open routes as preset</div>
-        <div className="m-input-modal__input">
-          <input
-            autoFocus={true}
-            placeholder="Name your preset&hellip;"
-            onChange={(event) => {
-              setPresetName(event.currentTarget.value)
-            }}
-          />
-        </div>
-        <div className="m-input-modal__buttons">
-          <button
-            className="m-input-modal__button"
-            onClick={() => dispatch(closeInputModal())}
-          >
-            Cancel
-          </button>
-          <button
-            disabled={presetName.length === 0}
-            className={
-              "m-input-modal__button" +
-              (presetName.length === 0 ? "-disabled" : "-confirm")
+        <form
+          onSubmit={(event) => {
+            event.preventDefault()
+            const existingPreset = findPresetByName(routeTabs, presetName)
+            if (existingPreset) {
+              confirmOverwriteCallback(
+                presetName,
+                existingPreset.uuid,
+                dispatch
+              )
+            } else {
+              createCallback(presetName, dispatch)
+              dispatch(closeInputModal())
             }
-            onClick={() => {
-              const existingPreset = findPresetByName(routeTabs, presetName)
-              if (existingPreset) {
-                confirmOverwriteCallback(
-                  presetName,
-                  existingPreset.uuid,
-                  dispatch
-                )
-              } else {
-                createCallback(presetName, dispatch)
-                dispatch(closeInputModal())
+          }}
+        >
+          <div className="m-input-modal__title">Save open routes as preset</div>
+          <div className="m-input-modal__input">
+            <input
+              autoFocus={true}
+              placeholder="Name your preset&hellip;"
+              required={true}
+              onChange={(event) => {
+                setPresetName(event.currentTarget.value)
+              }}
+            />
+          </div>
+          <div className="m-input-modal__buttons">
+            <button
+              type="button"
+              className="m-input-modal__button"
+              onClick={() => dispatch(closeInputModal())}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={presetName.length === 0}
+              className={
+                "m-input-modal__button" +
+                (presetName.length === 0 ? "-disabled" : "-confirm")
               }
-            }}
-          >
-            Save
-          </button>
-        </div>
+            >
+              Save
+            </button>
+          </div>
+        </form>
       </div>
       <div className="m-input-modal__overlay" />
     </>
