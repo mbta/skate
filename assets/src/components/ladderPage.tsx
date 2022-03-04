@@ -247,38 +247,40 @@ const LadderPageWithTabs = (): ReactElement<HTMLDivElement> => {
           )}
         </>
       </PickerContainer>
-      <div className="m-ladder-page__route-tab-bar">
-        {routeTabs
-          .filter(isOpenTab)
-          .sort((a, b) => (a.ordering || 0) - (b.ordering || 0))
-          .map((routeTab) => (
-            <LadderTab
-              tab={routeTab}
-              selectTab={() => dispatch(selectRouteTab(routeTab.uuid))}
-              closeTab={() => dispatch(closeRouteTab(routeTab.uuid))}
-              showSaveIcon={!isPreset(routeTab) || isEditedPreset(routeTab)}
-              saveTab={() => {
-                dispatch(promptToSaveOrCreatePreset(routeTab))
-              }}
-              key={routeTab.uuid}
-            />
-          ))}
+      <div className="m-ladder-page__tab-bar-and-ladders">
+        <div className="m-ladder-page__route-tab-bar">
+          {routeTabs
+            .filter(isOpenTab)
+            .sort((a, b) => (a.ordering || 0) - (b.ordering || 0))
+            .map((routeTab) => (
+              <LadderTab
+                tab={routeTab}
+                selectTab={() => dispatch(selectRouteTab(routeTab.uuid))}
+                closeTab={() => dispatch(closeRouteTab(routeTab.uuid))}
+                showSaveIcon={!isPreset(routeTab) || isEditedPreset(routeTab)}
+                saveTab={() => {
+                  dispatch(promptToSaveOrCreatePreset(routeTab))
+                }}
+                key={routeTab.uuid}
+              />
+            ))}
 
-        <AddTabButton addTab={() => dispatch(createRouteTab())} />
+          <AddTabButton addTab={() => dispatch(createRouteTab())} />
+        </div>
+
+        <RouteLadders
+          routes={selectedRoutes}
+          timepointsByRouteId={timepointsByRouteId}
+          selectedVehicleId={selectedVehicleOrGhost?.id}
+          deselectRoute={(routeId) => dispatch(deselectRouteInTab(routeId))}
+          reverseLadder={(routeId) => dispatch(flipLadderInTab(routeId))}
+          toggleCrowding={(routeId) =>
+            dispatch(toggleLadderCrowdingInTab(routeId))
+          }
+          ladderDirections={ladderDirections}
+          ladderCrowdingToggles={ladderCrowdingToggles}
+        />
       </div>
-
-      <RouteLadders
-        routes={selectedRoutes}
-        timepointsByRouteId={timepointsByRouteId}
-        selectedVehicleId={selectedVehicleOrGhost?.id}
-        deselectRoute={(routeId) => dispatch(deselectRouteInTab(routeId))}
-        reverseLadder={(routeId) => dispatch(flipLadderInTab(routeId))}
-        toggleCrowding={(routeId) =>
-          dispatch(toggleLadderCrowdingInTab(routeId))
-        }
-        ladderDirections={ladderDirections}
-        ladderCrowdingToggles={ladderCrowdingToggles}
-      />
       <RightPanel selectedVehicleOrGhost={selectedVehicleOrGhost} />
     </div>
   )

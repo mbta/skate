@@ -183,32 +183,99 @@ exports[`LadderPage renders with route tabs 1`] = `
     </div>
   </div>
   <div
-    className="m-ladder-page__route-tab-bar"
+    className="m-ladder-page__tab-bar-and-ladders"
   >
     <div
-      className="m-ladder-page__tab m-ladder-page__tab-current"
-      onClick={[Function]}
+      className="m-ladder-page__route-tab-bar"
     >
       <div
-        className="m-ladder-page__tab-contents"
+        className="m-ladder-page__tab m-ladder-page__tab-current"
+        onClick={[Function]}
       >
         <div
-          className="m-ladder-page__tab-title"
+          className="m-ladder-page__tab-contents"
         >
-          Untitled
-        </div>
-        <div
-          onClick={[Function]}
-        >
-          <span
-            className="m-ladder-page__tab-save-icon"
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
+          <div
+            className="m-ladder-page__tab-title"
+          >
+            Untitled
+          </div>
+          <div
+            onClick={[Function]}
+          >
+            <span
+              className="m-ladder-page__tab-save-icon"
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
               }
-            }
-          />
+            />
+          </div>
+          <button
+            className="m-close-button"
+            data-testid="close-button"
+            onClick={[Function]}
+          >
+            <span
+              className=""
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
+              }
+            />
+          </button>
         </div>
+      </div>
+      <div
+        className="m-ladder-page__tab"
+        onClick={[Function]}
+      >
+        <div
+          className="m-ladder-page__tab-contents"
+        >
+          <div
+            className="m-ladder-page__tab-title"
+          >
+            Untitled
+          </div>
+          <button
+            className="m-close-button"
+            data-testid="close-button"
+            onClick={[Function]}
+          >
+            <span
+              className=""
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
+              }
+            />
+          </button>
+        </div>
+      </div>
+      <div
+        className="m-ladder-page__add-tab-button"
+        onClick={[Function]}
+      >
+        <span
+          className="m-ladder-page__add-tab-icon"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "SVG",
+            }
+          }
+        />
+      </div>
+    </div>
+    <div
+      className="m-route-ladders"
+    >
+      <div
+        className="m-route-ladder__header"
+      >
         <button
           className="m-close-button"
           data-testid="close-button"
@@ -223,95 +290,32 @@ exports[`LadderPage renders with route tabs 1`] = `
             }
           />
         </button>
-      </div>
-    </div>
-    <div
-      className="m-ladder-page__tab"
-      onClick={[Function]}
-    >
-      <div
-        className="m-ladder-page__tab-contents"
-      >
         <div
-          className="m-ladder-page__tab-title"
+          className="m-route-ladder__route-name"
         >
-          Untitled
+          1
         </div>
+      </div>
+      <div
+        className="m-route-ladder__controls"
+      >
         <button
-          className="m-close-button"
-          data-testid="close-button"
+          className="m-route-ladder__reverse"
           onClick={[Function]}
         >
           <span
-            className=""
+            className="m-route-ladder__reverse-icon"
             dangerouslySetInnerHTML={
               Object {
                 "__html": "SVG",
               }
             }
           />
+          Reverse
         </button>
       </div>
+      loading...
     </div>
-    <div
-      className="m-ladder-page__add-tab-button"
-      onClick={[Function]}
-    >
-      <span
-        className="m-ladder-page__add-tab-icon"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
-          }
-        }
-      />
-    </div>
-  </div>
-  <div
-    className="m-route-ladders"
-  >
-    <div
-      className="m-route-ladder__header"
-    >
-      <button
-        className="m-close-button"
-        data-testid="close-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </button>
-      <div
-        className="m-route-ladder__route-name"
-      >
-        1
-      </div>
-    </div>
-    <div
-      className="m-route-ladder__controls"
-    >
-      <button
-        className="m-route-ladder__reverse"
-        onClick={[Function]}
-      >
-        <span
-          className="m-route-ladder__reverse-icon"
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-        Reverse
-      </button>
-    </div>
-    loading...
   </div>
 </div>
 `;
