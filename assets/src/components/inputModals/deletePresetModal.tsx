@@ -25,6 +25,7 @@ const DeletePresetModal = ({
             Cancel
           </button>
           <button
+            autoFocus={true}
             className="m-input-modal__button-danger"
             onClick={() => {
               if (window.FS) {

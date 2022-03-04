@@ -78,6 +78,7 @@ Array [
         Cancel
       </button>
       <button
+        autoFocus={true}
         className="m-input-modal__button-danger"
         onClick={[Function]}
       >
@@ -198,6 +199,7 @@ Array [
         Cancel
       </button>
       <button
+        autoFocus={true}
         className="m-input-modal__button-confirm"
         onClick={[Function]}
       >
@@ -238,6 +240,7 @@ Array [
         Cancel
       </button>
       <button
+        autoFocus={true}
         className="m-input-modal__button-confirm"
         onClick={[Function]}
       >

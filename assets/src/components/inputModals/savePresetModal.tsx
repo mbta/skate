@@ -25,6 +25,7 @@ const SavePresetModal = ({
             Cancel
           </button>
           <button
+            autoFocus={true}
             className="m-input-modal__button-confirm"
             onClick={() => {
               saveCallback(dispatch)

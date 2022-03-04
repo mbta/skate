@@ -30,6 +30,7 @@ const OverwritePresetModal = ({
             Cancel
           </button>
           <button
+            autoFocus={true}
             className="m-input-modal__button-confirm"
             onClick={() => {
               confirmCallback(dispatch)
