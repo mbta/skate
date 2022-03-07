@@ -11,6 +11,8 @@ import {
   deletePresetByUUID,
   findPresetByName,
   allOpenRouteIds,
+  findFirstOpenTabWith,
+  selectTabByUUID,
 } from "../../src/models/routeTab"
 import { v4 as uuidv4 } from "uuid"
 import routeTabFactory from "../factories/routeTab"
@@ -117,6 +119,21 @@ describe("isOpenTab", () => {
     })
 
     expect(isOpenTab(routeTab)).toBeTruthy()
+  })
+})
+
+describe("selectTabByUUID", () => {
+  test("selects the given tab and deselects others", () => {
+    const routeTab1 = routeTabFactory.build()
+    const routeTab2 = routeTabFactory.build({ isCurrentTab: true })
+
+    const expectedNewTabs = [
+      { ...routeTab1, isCurrentTab: true },
+      { ...routeTab2, isCurrentTab: false },
+    ]
+    expect(selectTabByUUID([routeTab1, routeTab2], routeTab1.uuid)).toEqual(
+      expectedNewTabs
+    )
   })
 })
 
@@ -565,5 +582,45 @@ describe("allOpenRouteIds", () => {
       "2",
       "3",
     ])
+  })
+})
+
+describe("findFirstOpenTabWith", () => {
+  test("returns leftmost tab matching predicate", () => {
+    const routeTab1 = routeTabFactory.build({
+      ordering: 1,
+      isCurrentTab: true,
+      selectedRouteIds: ["1", "2"],
+    })
+    const routeTab2 = routeTabFactory.build({
+      ordering: undefined,
+      isCurrentTab: false,
+      selectedRouteIds: ["2"],
+    })
+    const routeTab3 = routeTabFactory.build({
+      ordering: 0,
+      isCurrentTab: false,
+      selectedRouteIds: ["2", "3"],
+    })
+
+    expect(
+      findFirstOpenTabWith([routeTab1, routeTab2, routeTab3], (routeTab) =>
+        routeTab.selectedRouteIds.includes("2")
+      )
+    ).toEqual(routeTab3)
+  })
+
+  test("returns null when no open route tab matching predicate is found", () => {
+    const routeTab = routeTabFactory.build({
+      ordering: undefined,
+      isCurrentTab: false,
+      selectedRouteIds: ["2"],
+    })
+
+    expect(
+      findFirstOpenTabWith([routeTab], (rt) =>
+        rt.selectedRouteIds.includes("2")
+      )
+    ).toBeNull()
   })
 })
