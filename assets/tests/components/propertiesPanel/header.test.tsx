@@ -14,6 +14,7 @@ import { Route } from "../../../src/schedule"
 import { deselectVehicle, initialState } from "../../../src/state"
 import ghostFactory from "../../factories/ghost"
 import routeFactory from "../../factories/route"
+import routeTabFactory from "../../factories/routeTab"
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
@@ -247,7 +248,12 @@ describe("Header", () => {
 
     const wrapper = mount(
       <StateDispatchProvider
-        state={{ ...initialState, ladderDirections }}
+        state={{
+          ...initialState,
+          routeTabs: [
+            routeTabFactory.build({ isCurrentTab: true, ladderDirections }),
+          ],
+        }}
         dispatch={jest.fn()}
       >
         <Header vehicle={vehicle} tabMode={"status"} setTabMode={setTabMode} />

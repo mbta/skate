@@ -27,7 +27,6 @@ import {
 import ghostFactory from "../factories/ghost"
 import routeFactory from "../factories/route"
 import routeTabFactory from "../factories/routeTab"
-import featureIsEnabled from "../../src/laboratoryFeatures"
 
 jest.mock("../../src/hooks/useTimepoints", () => ({
   __esModule: true,
@@ -41,10 +40,6 @@ jest.mock("../../src/hooks/useVehicleForNotification", () => ({
   __esModule: true,
   default: jest.fn(() => undefined),
 }))
-jest.mock("../../src/laboratoryFeatures", () => ({
-  __esModule: true,
-  default: jest.fn(() => false),
-}))
 
 const mockDispatch = jest.fn()
 
@@ -54,22 +49,7 @@ describe("LadderPage", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("renders with routes", () => {
-    const mockState = { ...initialState, selectedRouteIds: ["1"] }
-    const tree = renderer
-      .create(
-        <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-          <RoutesProvider routes={routes}>
-            <LadderPage />
-          </RoutesProvider>
-        </StateDispatchProvider>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
-  })
-
   test("renders with route tabs", () => {
-    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -103,7 +83,6 @@ describe("LadderPage", () => {
   })
 
   test("can select a different route tab", () => {
-    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -137,7 +116,6 @@ describe("LadderPage", () => {
   })
 
   test("can close a route tab", () => {
-    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -164,7 +142,6 @@ describe("LadderPage", () => {
   })
 
   test("can save a route tab as a preset from the save icon", () => {
-    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
     const originalFS = window.FS
     window.FS = { event: jest.fn(), identify: jest.fn() }
     afterEach(() => {
@@ -198,7 +175,6 @@ describe("LadderPage", () => {
   })
 
   test("can save an edited preset from the save icon", () => {
-    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -234,7 +210,6 @@ describe("LadderPage", () => {
   })
 
   test("omits save icon for unedited preset", () => {
-    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -259,7 +234,6 @@ describe("LadderPage", () => {
   })
 
   test("can add a new route tab", () => {
-    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
     const originalFS = window.FS
     window.FS = { event: jest.fn(), identify: jest.fn() }
     afterEach(() => {
@@ -290,7 +264,6 @@ describe("LadderPage", () => {
   })
 
   test("can toggle to presets view in picker and back", () => {
-    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -320,7 +293,6 @@ describe("LadderPage", () => {
   })
 
   test("creates a blank route tab if no route tabs are present", () => {
-    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -345,7 +317,16 @@ describe("LadderPage", () => {
   })
 
   test("renders with selectedRoutes in different order than routes data", () => {
-    const mockState = { ...initialState, selectedRouteIds: ["28", "1"] }
+    const mockState = {
+      ...initialState,
+      routeTabs: [
+        routeTabFactory.build({
+          selectedRouteIds: ["28", "1"],
+          ordering: 0,
+          isCurrentTab: true,
+        }),
+      ],
+    }
     const tree = renderer
       .create(
         <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
@@ -359,7 +340,16 @@ describe("LadderPage", () => {
   })
 
   test("renders with timepoints", () => {
-    const mockState = { ...initialState, selectedRouteIds: ["28", "1"] }
+    const mockState = {
+      ...initialState,
+      routeTabs: [
+        routeTabFactory.build({
+          selectedRouteIds: ["28", "1"],
+          ordering: 0,
+          isCurrentTab: true,
+        }),
+      ],
+    }
     ;(useTimepoints as jest.Mock).mockImplementationOnce(
       () => timepointsByRouteId
     )
@@ -399,7 +389,13 @@ describe("LadderPage", () => {
     }))
     const mockState = {
       ...initialState,
-      selectedRouteIds: ["1"],
+      routeTabs: [
+        routeTabFactory.build({
+          selectedRouteIds: ["1"],
+          ordering: 0,
+          isCurrentTab: true,
+        }),
+      ],
       selectedVehicleOrGhost: vehicle,
     }
     const tree = renderer

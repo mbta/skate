@@ -11,6 +11,7 @@ import { NotificationState } from "../../src/realtime.d"
 import { RouteId } from "../../src/schedule"
 import { initialState } from "../../src/state"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
+import routeTabFactory from "../factories/routeTab"
 
 // tslint:disable: react-hooks-nesting
 
@@ -146,7 +147,10 @@ const wrapper =
         socketStatus={{ socket, connectionStatus: ConnectionStatus.Connected }}
       >
         <StateDispatchProvider
-          state={{ ...initialState, selectedRouteIds }}
+          state={{
+            ...initialState,
+            routeTabs: [routeTabFactory.build({ selectedRouteIds })],
+          }}
           dispatch={jest.fn()}
         >
           {children}

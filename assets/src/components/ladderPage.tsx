@@ -18,18 +18,13 @@ import Presets from "./presets"
 import RightPanel from "./rightPanel"
 import RouteLadders from "./routeLadders"
 import RoutePicker from "./routePicker"
-import featureIsEnabled from "../laboratoryFeatures"
 import {
   createRouteTab,
   selectRouteTab,
-  selectRoute,
-  deselectRoute,
   selectRouteInTab,
   deselectRouteInTab,
   flipLadderInTab,
   toggleLadderCrowdingInTab,
-  flipLadder,
-  toggleLadderCrowding,
   closeRouteTab,
   promptToSaveOrCreatePreset,
 } from "../state"
@@ -126,59 +121,7 @@ const AddTabButton = ({
   )
 }
 
-const LadderPage = (): ReactElement<HTMLDivElement> =>
-  featureIsEnabled("presets_workspaces") ? (
-    <LadderPageWithTabs />
-  ) : (
-    <LadderPageWithoutTabs />
-  )
-
-const LadderPageWithoutTabs = (): ReactElement<HTMLDivElement> => {
-  const [state, dispatch] = useContext(StateDispatchContext)
-  const {
-    selectedRouteIds,
-    ladderDirections,
-    ladderCrowdingToggles,
-    selectedVehicleOrGhost,
-  } = state
-
-  const routes: Route[] | null = useContext(RoutesContext)
-  const timepointsByRouteId: TimepointsByRouteId =
-    useTimepoints(selectedRouteIds)
-
-  const selectedRoutes: Route[] = selectedRouteIds
-    .map((routeId) => findRouteById(routes, routeId))
-    .filter((route) => route) as Route[]
-
-  return (
-    <div className="m-ladder-page">
-      <Notifications />
-      <PickerContainer>
-        <RoutePicker
-          selectedRouteIds={selectedRouteIds}
-          selectRoute={(routeId) => dispatch(selectRoute(routeId))}
-          deselectRoute={(routeId) => dispatch(deselectRoute(routeId))}
-        />
-      </PickerContainer>
-
-      <>
-        <RouteLadders
-          routes={selectedRoutes}
-          timepointsByRouteId={timepointsByRouteId}
-          selectedVehicleId={selectedVehicleOrGhost?.id}
-          deselectRoute={(routeId) => dispatch(deselectRoute(routeId))}
-          reverseLadder={(routeId) => dispatch(flipLadder(routeId))}
-          toggleCrowding={(routeId) => dispatch(toggleLadderCrowding(routeId))}
-          ladderDirections={ladderDirections}
-          ladderCrowdingToggles={ladderCrowdingToggles}
-        />
-        <RightPanel selectedVehicleOrGhost={selectedVehicleOrGhost} />
-      </>
-    </div>
-  )
-}
-
-const LadderPageWithTabs = (): ReactElement<HTMLDivElement> => {
+const LadderPage = (): ReactElement<HTMLDivElement> => {
   const [state, dispatch] = useContext(StateDispatchContext)
   const { routeTabs, selectedVehicleOrGhost } = state
 

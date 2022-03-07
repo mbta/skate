@@ -11,6 +11,7 @@ import {
   LadderDirection,
   LadderDirections,
   VehicleDirection,
+  emptyLadderDirectionsByRouteId,
 } from "../../models/ladderDirection"
 import { isVehicle } from "../../models/vehicle"
 import {
@@ -26,6 +27,7 @@ import { RouteVariantName } from "../routeVariantName"
 import VehicleIcon, { Orientation, Size } from "../vehicleIcon"
 import TabList from "./tabList"
 import { TabMode } from "./tabPanels"
+import { currentRouteTab } from "../../models/routeTab"
 
 interface Props {
   vehicle: VehicleOrGhost
@@ -113,7 +115,7 @@ const directionName = (
 ): string => (route ? route.directionNames[directionId] : "")
 
 const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
-  const [{ ladderDirections, userSettings }, dispatch] =
+  const [{ routeTabs, userSettings }, dispatch] =
     useContext(StateDispatchContext)
   const epochNowInSeconds = useCurrentTimeSeconds()
   const route = useRoute(vehicle.routeId)
@@ -124,6 +126,11 @@ const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
   const hideMe = () => dispatch(deselectVehicle())
 
   const vehicleIsShuttle = isVehicle(vehicle) && vehicle.isShuttle
+
+  const currentTab = currentRouteTab(routeTabs)
+  const ladderDirections = currentTab
+    ? currentTab.ladderDirections
+    : emptyLadderDirectionsByRouteId
 
   return (
     <div className="m-properties-panel__header-wrapper">

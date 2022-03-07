@@ -23,11 +23,6 @@ jest.mock("../../../src/hooks/useMinischedule", () => ({
   useMinischeduleBlock: jest.fn(),
 }))
 
-jest.mock("../../../src/laboratoryFeatures", () => ({
-  __esModule: true,
-  default: jest.fn(),
-}))
-
 const nonrevenueTrip: Trip = {
   id: "nonrevenue",
   blockId: "block",

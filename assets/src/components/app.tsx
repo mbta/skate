@@ -21,13 +21,12 @@ import ShuttleMapPage from "./shuttleMapPage"
 import TabBar from "./tabBar"
 import LateView from "./lateView"
 import { OpenView } from "../state"
-import featureIsEnabled from "../laboratoryFeatures"
 import { allOpenRouteIds } from "../models/routeTab"
 
 const AppRoutes = () => {
   useAppcues()
 
-  const [{ pickerContainerIsVisible, openView, selectedRouteIds, routeTabs }] =
+  const [{ pickerContainerIsVisible, openView, routeTabs }] =
     useContext(StateDispatchContext)
 
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
@@ -37,13 +36,9 @@ const AppRoutes = () => {
   const vehiclesByRouteIdNeeded =
     openView === OpenView.Late || location.pathname === "/"
 
-  const routesForVehicles = featureIsEnabled("presets_workspaces")
-    ? allOpenRouteIds(routeTabs)
-    : selectedRouteIds
-
   const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = useVehicles(
     socket,
-    vehiclesByRouteIdNeeded ? routesForVehicles : []
+    vehiclesByRouteIdNeeded ? allOpenRouteIds(routeTabs) : []
   )
 
   return (

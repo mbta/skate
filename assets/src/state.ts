@@ -1,14 +1,6 @@
 import { Dispatch as ReactDispatch } from "react"
-import {
-  emptyLadderCrowdingTogglesByRouteId,
-  LadderCrowdingToggles,
-  toggleLadderCrowdingForRoute,
-} from "./models/ladderCrowdingToggle"
-import {
-  emptyLadderDirectionsByRouteId,
-  flipLadderDirectionForRoute,
-  LadderDirections,
-} from "./models/ladderDirection"
+import { toggleLadderCrowdingForRoute } from "./models/ladderCrowdingToggle"
+import { flipLadderDirectionForRoute } from "./models/ladderDirection"
 import { Notification, RunId, VehicleOrGhost } from "./realtime.d"
 import { RouteId } from "./schedule.d"
 import {
@@ -82,9 +74,6 @@ export type OpenInputModal =
 export interface State {
   pickerContainerIsVisible: boolean
   searchPageState: SearchPageState
-  selectedRouteIds: RouteId[]
-  ladderDirections: LadderDirections
-  ladderCrowdingToggles: LadderCrowdingToggles
   routeTabs: RouteTab[]
   routeTabsToPush: RouteTab[] | null
   routeTabsToPushNext: RouteTab[] | null
@@ -102,9 +91,6 @@ export interface State {
 export const initialState: State = {
   pickerContainerIsVisible: true,
   searchPageState: initialSearchPageState,
-  selectedRouteIds: [],
-  ladderDirections: emptyLadderDirectionsByRouteId,
-  ladderCrowdingToggles: emptyLadderCrowdingTogglesByRouteId,
   routeTabs: [],
   routeTabsToPush: null,
   routeTabsToPushNext: null,
@@ -118,54 +104,6 @@ export const initialState: State = {
   openView: OpenView.None,
   openInputModal: null,
 }
-
-interface SelectRouteAction {
-  type: "SELECT_ROUTE"
-  payload: {
-    routeId: RouteId
-  }
-}
-
-export const selectRoute = (routeId: RouteId): SelectRouteAction => ({
-  type: "SELECT_ROUTE",
-  payload: { routeId },
-})
-
-export interface DeselectRouteAction {
-  type: "DESELECT_ROUTE"
-  payload: {
-    routeId: RouteId
-  }
-}
-
-export const deselectRoute = (routeId: RouteId): DeselectRouteAction => ({
-  type: "DESELECT_ROUTE",
-  payload: { routeId },
-})
-
-interface FlipLadderAction {
-  type: "FLIP_LADDER"
-  payload: {
-    routeId: RouteId
-  }
-}
-
-export const flipLadder = (routeId: RouteId): FlipLadderAction => ({
-  type: "FLIP_LADDER",
-  payload: { routeId },
-})
-
-interface ToggleLadderCrowdingAction {
-  type: "TOGGLE_LADDER_CROWDING"
-  payload: { routeId: RouteId }
-}
-
-export const toggleLadderCrowding = (
-  routeId: RouteId
-): ToggleLadderCrowdingAction => ({
-  type: "TOGGLE_LADDER_CROWDING",
-  payload: { routeId },
-})
 
 interface CreateRouteTabAction {
   type: "CREATE_ROUTE_TAB"
@@ -595,11 +533,6 @@ export const closeInputModal = (): CloseInputModalAction => ({
 })
 
 export type Action =
-  // Route ladder management
-  | SelectRouteAction
-  | DeselectRouteAction
-  | FlipLadderAction
-  | ToggleLadderCrowdingAction
   // Route tabs and ladder management in tabs
   | CreateRouteTabAction
   | CloseRouteTabAction
@@ -666,46 +599,6 @@ const pickerContainerIsVisibleReducer = (
   switch (action.type) {
     case "TOGGLE_PICKER_CONTAINER":
       return !state
-    default:
-      return state
-  }
-}
-
-const selectedRouteIdsReducer = (
-  state: RouteId[],
-  action: Action
-): RouteId[] => {
-  switch (action.type) {
-    case "SELECT_ROUTE":
-      return [...state, action.payload.routeId]
-    case "DESELECT_ROUTE":
-      return state.filter((id) => id !== action.payload.routeId)
-    default:
-      return state
-  }
-}
-
-const ladderDirectionsReducer = (
-  state: LadderDirections,
-  action: Action
-): LadderDirections => {
-  switch (action.type) {
-    case "FLIP_LADDER":
-      const routeId = action.payload.routeId
-      return flipLadderDirectionForRoute(state, routeId)
-    default:
-      return state
-  }
-}
-
-const ladderCrowdingTogglesReducer = (
-  state: LadderCrowdingToggles,
-  action: Action
-): LadderCrowdingToggles => {
-  switch (action.type) {
-    case "TOGGLE_LADDER_CROWDING":
-      const routeId = action.payload.routeId
-      return toggleLadderCrowdingForRoute(state, routeId)
     default:
       return state
   }
@@ -1149,12 +1042,6 @@ export const reducer = (state: State, action: Action): State => {
     searchPageState: searchReducer(
       state.searchPageState,
       action as SearchAction
-    ),
-    selectedRouteIds: selectedRouteIdsReducer(state.selectedRouteIds, action),
-    ladderDirections: ladderDirectionsReducer(state.ladderDirections, action),
-    ladderCrowdingToggles: ladderCrowdingTogglesReducer(
-      state.ladderCrowdingToggles,
-      action
     ),
     routeTabs,
     routeTabsToPush,

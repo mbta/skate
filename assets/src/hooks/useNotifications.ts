@@ -8,6 +8,7 @@ import {
   notificationFromData,
 } from "../models/notificationData"
 import { Notification } from "../realtime.d"
+import { allOpenRouteIds } from "../models/routeTab"
 
 export const useNotifications = (
   handleNewNotification: (notification: Notification) => void,
@@ -16,7 +17,7 @@ export const useNotifications = (
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const topic: string = "notifications"
   const event: string = "notification"
-  const [{ selectedRouteIds }] = useContext(StateDispatchContext)
+  const [{ routeTabs }] = useContext(StateDispatchContext)
 
   useEffect(() => {
     let channel: Channel | undefined
@@ -50,5 +51,5 @@ export const useNotifications = (
         channel = undefined
       }
     }
-  }, [socket, selectedRouteIds])
+  }, [socket, allOpenRouteIds(routeTabs)])
 }

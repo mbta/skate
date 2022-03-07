@@ -1,6 +1,12 @@
 import { RouteId } from "../schedule.d"
-import { LadderDirections } from "./ladderDirection"
-import { LadderCrowdingToggles } from "./ladderCrowdingToggle"
+import {
+  LadderDirections,
+  emptyLadderDirectionsByRouteId,
+} from "./ladderDirection"
+import {
+  LadderCrowdingToggles,
+  emptyLadderCrowdingTogglesByRouteId,
+} from "./ladderCrowdingToggle"
 import { v4 as uuidv4 } from "uuid"
 import { uniq, flatten } from "../helpers/array"
 
@@ -30,8 +36,8 @@ export const newRouteTab = (ordering: number): RouteTab => ({
   uuid: uuidv4(),
   isCurrentTab: true,
   selectedRouteIds: [],
-  ladderDirections: {},
-  ladderCrowdingToggles: {},
+  ladderDirections: emptyLadderDirectionsByRouteId,
+  ladderCrowdingToggles: emptyLadderCrowdingTogglesByRouteId,
   ordering,
 })
 
