@@ -4,6 +4,7 @@ exports[`Modal renders create preset modal 1`] = `
 Array [
   <div
     className="m-input-modal"
+    onKeyDown={[Function]}
   >
     <form
       onSubmit={[Function]}
@@ -53,6 +54,7 @@ exports[`Modal renders delete preset modal 1`] = `
 Array [
   <div
     className="m-input-modal"
+    onKeyDown={[Function]}
   >
     <div
       className="m-input-modal__title"
@@ -164,6 +166,7 @@ exports[`Modal renders overwrite preset modal 1`] = `
 Array [
   <div
     className="m-input-modal"
+    onKeyDown={[Function]}
   >
     <div
       className="m-input-modal__title"
@@ -180,8 +183,7 @@ Array [
     <div
       className="m-input-modal__title"
     >
-      Overwrite
-       
+      Overwrite 
       <span
         className="m-input-modal__name-text"
       >
@@ -217,12 +219,12 @@ exports[`Modal renders save preset modal 1`] = `
 Array [
   <div
     className="m-input-modal"
+    onKeyDown={[Function]}
   >
     <div
       className="m-input-modal__title"
     >
-      Overwrite
-       
+      Overwrite 
       <span
         className="m-input-modal__name-text"
       >
