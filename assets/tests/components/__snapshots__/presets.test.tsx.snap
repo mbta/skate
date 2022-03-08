@@ -58,6 +58,7 @@ exports[`Presets renders current presets 1`] = `
   </ul>
   <button
     className="m-presets-panel__save-as-preset-button"
+    disabled={true}
     onClick={[Function]}
   >
     <span
