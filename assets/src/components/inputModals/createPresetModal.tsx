@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react"
+import InputModal from "../inputModal"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { Action, closeInputModal } from "../../state"
 import { findPresetByName } from "../../models/routeTab"
@@ -17,13 +18,25 @@ const CreatePresetModal = ({
   const [{ routeTabs }, dispatch] = useContext(StateDispatchContext)
   const [presetName, setPresetName] = useState<string>("")
   return (
-    <>
-      <div className="m-input-modal">
+    <InputModal>
+      <form
+        onSubmit={(event) => {
+          event.preventDefault()
+          const existingPreset = findPresetByName(routeTabs, presetName)
+          if (existingPreset) {
+            confirmOverwriteCallback(presetName, existingPreset.uuid, dispatch)
+          } else {
+            createCallback(presetName, dispatch)
+            dispatch(closeInputModal())
+          }
+        }}
+      >
         <div className="m-input-modal__title">Save open routes as preset</div>
         <div className="m-input-modal__input">
           <input
             autoFocus={true}
             placeholder="Name your preset&hellip;"
+            required={true}
             onChange={(event) => {
               setPresetName(event.currentTarget.value)
             }}
@@ -31,37 +44,25 @@ const CreatePresetModal = ({
         </div>
         <div className="m-input-modal__buttons">
           <button
+            type="button"
             className="m-input-modal__button"
             onClick={() => dispatch(closeInputModal())}
           >
             Cancel
           </button>
           <button
+            type="submit"
             disabled={presetName.length === 0}
             className={
               "m-input-modal__button" +
               (presetName.length === 0 ? "-disabled" : "-confirm")
             }
-            onClick={() => {
-              const existingPreset = findPresetByName(routeTabs, presetName)
-              if (existingPreset) {
-                confirmOverwriteCallback(
-                  presetName,
-                  existingPreset.uuid,
-                  dispatch
-                )
-              } else {
-                createCallback(presetName, dispatch)
-                dispatch(closeInputModal())
-              }
-            }}
           >
             Save
           </button>
         </div>
-      </div>
-      <div className="m-input-modal__overlay" />
-    </>
+      </form>
+    </InputModal>
   )
 }
 

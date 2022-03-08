@@ -4,38 +4,45 @@ exports[`Modal renders create preset modal 1`] = `
 Array [
   <div
     className="m-input-modal"
+    onKeyDown={[Function]}
   >
-    <div
-      className="m-input-modal__title"
+    <form
+      onSubmit={[Function]}
     >
-      Save open routes as preset
-    </div>
-    <div
-      className="m-input-modal__input"
-    >
-      <input
-        autoFocus={true}
-        onChange={[Function]}
-        placeholder="Name your preset…"
-      />
-    </div>
-    <div
-      className="m-input-modal__buttons"
-    >
-      <button
-        className="m-input-modal__button"
-        onClick={[Function]}
+      <div
+        className="m-input-modal__title"
       >
-        Cancel
-      </button>
-      <button
-        className="m-input-modal__button-disabled"
-        disabled={true}
-        onClick={[Function]}
+        Save open routes as preset
+      </div>
+      <div
+        className="m-input-modal__input"
       >
-        Save
-      </button>
-    </div>
+        <input
+          autoFocus={true}
+          onChange={[Function]}
+          placeholder="Name your preset…"
+          required={true}
+        />
+      </div>
+      <div
+        className="m-input-modal__buttons"
+      >
+        <button
+          className="m-input-modal__button"
+          onClick={[Function]}
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          className="m-input-modal__button-disabled"
+          disabled={true}
+          type="submit"
+        >
+          Save
+        </button>
+      </div>
+    </form>
   </div>,
   <div
     className="m-input-modal__overlay"
@@ -47,6 +54,7 @@ exports[`Modal renders delete preset modal 1`] = `
 Array [
   <div
     className="m-input-modal"
+    onKeyDown={[Function]}
   >
     <div
       className="m-input-modal__title"
@@ -72,6 +80,7 @@ Array [
         Cancel
       </button>
       <button
+        autoFocus={true}
         className="m-input-modal__button-danger"
         onClick={[Function]}
       >
@@ -157,6 +166,7 @@ exports[`Modal renders overwrite preset modal 1`] = `
 Array [
   <div
     className="m-input-modal"
+    onKeyDown={[Function]}
   >
     <div
       className="m-input-modal__title"
@@ -173,8 +183,7 @@ Array [
     <div
       className="m-input-modal__title"
     >
-      Overwrite
-       
+      Overwrite 
       <span
         className="m-input-modal__name-text"
       >
@@ -192,6 +201,7 @@ Array [
         Cancel
       </button>
       <button
+        autoFocus={true}
         className="m-input-modal__button-confirm"
         onClick={[Function]}
       >
@@ -209,12 +219,12 @@ exports[`Modal renders save preset modal 1`] = `
 Array [
   <div
     className="m-input-modal"
+    onKeyDown={[Function]}
   >
     <div
       className="m-input-modal__title"
     >
-      Overwrite
-       
+      Overwrite 
       <span
         className="m-input-modal__name-text"
       >
@@ -232,6 +242,7 @@ Array [
         Cancel
       </button>
       <button
+        autoFocus={true}
         className="m-input-modal__button-confirm"
         onClick={[Function]}
       >
