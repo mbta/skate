@@ -66,7 +66,7 @@ module.exports = (env, options) => {
         },
         {
           test: /\.png$/,
-          use: [{ loader: "file-loader" }],
+          type: "asset/resource",
         },
       ],
     },
