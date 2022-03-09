@@ -17,7 +17,7 @@ module.exports = (env, options) => {
     optimization: {
       minimize: useMinimization,
       minimizer: [
-        new TerserPlugin({ parallel: true, sourceMap: true }),
+        new TerserPlugin({ parallel: true }),
         new OptimizeCSSAssetsPlugin({}),
       ],
     },
