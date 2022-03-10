@@ -37,6 +37,7 @@ import {
   getLadderDirectionForRoute,
   LadderDirections,
   VehicleDirection,
+  emptyLadderDirectionsByRouteId,
 } from "../../models/ladderDirection"
 import {
   drawnStatus,
@@ -47,6 +48,7 @@ import { RouteStatus, VehicleOrGhost } from "../../realtime"
 import { DirectionId, RouteId, TripId } from "../../schedule"
 import { formattedDuration, formattedScheduledTime } from "../../util/dateTime"
 import Loading from "../loading"
+import { currentRouteTab } from "../../models/routeTab"
 
 export interface Props {
   vehicleOrGhost: VehicleOrGhost
@@ -605,7 +607,12 @@ const RevenueTrip = ({
     " ",
     trip.startPlace || "",
   ].join("")
-  const [{ ladderDirections }] = useContext(StateDispatchContext)
+  const [{ routeTabs }] = useContext(StateDispatchContext)
+
+  const currentTab = currentRouteTab(routeTabs)
+  const ladderDirections = currentTab
+    ? currentTab.ladderDirections
+    : emptyLadderDirectionsByRouteId
 
   const directionIcon =
     // Safe to assume routeId is not null, since if it were, we'd be

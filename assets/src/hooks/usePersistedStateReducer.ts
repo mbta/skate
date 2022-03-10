@@ -1,8 +1,7 @@
 import { useEffect, useReducer, useState } from "react"
-import { putRouteSettings, putRouteTabs } from "../api"
+import { putRouteTabs } from "../api"
 import appData from "../appData"
 import { loadState, saveState } from "../localStorage"
-import { defaultRouteSettings, RouteSettings } from "../routeSettings"
 import {
   Dispatch,
   initialState,
@@ -43,29 +42,10 @@ const usePersistedStateReducer = (): [State, Dispatch] => {
     saveState(APP_STATE_KEY, locallyPersistableState)
   }, [locallyPersistableState])
 
-  const {
-    selectedRouteIds,
-    ladderDirections,
-    ladderCrowdingToggles,
-    routeTabsToPush,
-    routeTabsPushInProgress,
-  } = state
+  const { routeTabsToPush, routeTabsPushInProgress } = state
 
-  const [firstLoadDone, setFirstLoadDone] = useState(false)
   const [routeTabsPushRetriesLeft, setRouteTabsPushRetriesLeft] =
     useState(routeTabsPushRetries)
-
-  useEffect(() => {
-    if (firstLoadDone) {
-      putRouteSettings({
-        selectedRouteIds: state.selectedRouteIds,
-        ladderDirections: state.ladderDirections,
-        ladderCrowdingToggles: state.ladderCrowdingToggles,
-      })
-    } else {
-      setFirstLoadDone(true)
-    }
-  }, [selectedRouteIds, ladderDirections, ladderCrowdingToggles])
 
   useEffect(() => {
     if (routeTabsToPush && !routeTabsPushInProgress) {
@@ -101,10 +81,9 @@ const usePersistedStateReducer = (): [State, Dispatch] => {
 const init = (): State => {
   const loadedState: object | undefined = loadState(APP_STATE_KEY)
   const userSettings = getUserSettings(loadedState)
-  const routeSettings = getRouteSettings(loadedState)
   const routeTabs = getRouteTabs()
   const result = merge<State>(
-    { ...initialState, ...routeSettings, routeTabs, userSettings },
+    { ...initialState, routeTabs, userSettings },
     loadedState || {},
     LOCALLY_PERSISTED_KEYS
   )
@@ -136,38 +115,6 @@ const getUserSettings = (loadedState: object | undefined): UserSettings => {
   }
 
   return userSettings
-}
-
-const getRouteSettings = (loadedState: object | undefined): RouteSettings => {
-  let routeSettings: RouteSettings
-  if (
-    loadedState !== undefined &&
-    loadedState.hasOwnProperty("selectedRouteIds")
-  ) {
-    // migrating settings from localStorage to database
-    const localStorageData = loadedState as RouteSettings
-    routeSettings = {
-      selectedRouteIds: localStorageData.selectedRouteIds,
-      ladderDirections: localStorageData.ladderDirections,
-      ladderCrowdingToggles: localStorageData.ladderCrowdingToggles,
-    }
-    putRouteSettings(routeSettings)
-  } else {
-    const backendSettingsString: string | undefined = appData()?.routeSettings
-    if (backendSettingsString !== undefined) {
-      const { selected_route_ids, ladder_directions, ladder_crowding_toggles } =
-        JSON.parse(backendSettingsString)
-      routeSettings = {
-        selectedRouteIds: selected_route_ids,
-        ladderDirections: ladder_directions,
-        ladderCrowdingToggles: ladder_crowding_toggles,
-      }
-    } else {
-      routeSettings = defaultRouteSettings
-    }
-  }
-
-  return routeSettings
 }
 
 const getRouteTabs = (): RouteTab[] => {

@@ -9,7 +9,6 @@ import {
   fetchShuttleRoutes,
   fetchSwings,
   fetchTimepointsForRoute,
-  putRouteSettings,
   putUserSetting,
   putRouteTabs,
 } from "../src/api"
@@ -514,21 +513,6 @@ describe("putUserSetting", () => {
   test("uses PUT and CSRF token", () => {
     mockFetch(200, "")
     putUserSetting("name", "value")
-    expect(window.fetch).toHaveBeenCalledTimes(1)
-    const args = (window.fetch as jest.Mock).mock.calls[0][1]
-    expect(args.method).toEqual("PUT")
-    expect(args.headers).toHaveProperty("x-csrf-token")
-  })
-})
-
-describe("putRouteSettings", () => {
-  test("uses PUT and CSRF token", () => {
-    mockFetch(200, "")
-    putRouteSettings({
-      selectedRouteIds: [],
-      ladderDirections: {},
-      ladderCrowdingToggles: {},
-    })
     expect(window.fetch).toHaveBeenCalledTimes(1)
     const args = (window.fetch as jest.Mock).mock.calls[0][1]
     expect(args.method).toEqual("PUT")

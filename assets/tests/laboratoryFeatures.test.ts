@@ -36,10 +36,6 @@ describe("featureIsEnabled", () => {
     expect(featureIsEnabled("undefinedKey")).toEqual(false)
   })
 
-  test("returns true for tabs and presets even if feature is otherwise disabled", () => {
-    expect(featureIsEnabled("presets_tabs")).toEqual(false)
-  })
-
   test("returns false if the laboratory features data isn't found", () => {
     expect(featureIsEnabled("trueKey")).toEqual(false)
   })

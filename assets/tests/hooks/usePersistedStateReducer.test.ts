@@ -1,5 +1,5 @@
 import { act, renderHook } from "@testing-library/react-hooks"
-import { putRouteSettings, putUserSetting, putRouteTabs } from "../../src/api"
+import { putUserSetting, putRouteTabs } from "../../src/api"
 import appData from "../../src/appData"
 import usePersistedStateReducer, {
   filter,
@@ -8,12 +8,8 @@ import usePersistedStateReducer, {
   merge,
 } from "../../src/hooks/usePersistedStateReducer"
 import {
-  flipLadder,
   initialState,
-  selectRoute,
   selectShuttleRun,
-  State,
-  toggleLadderCrowding,
   createRouteTab,
   startingRouteTabsPush,
 } from "../../src/state"
@@ -32,7 +28,6 @@ const mockLocalStorage = {
 
 jest.mock("../../src/api", () => ({
   __esModule: true,
-  putRouteSettings: jest.fn(),
   putRouteTabs: jest.fn(),
   putUserSetting: jest.fn(),
 }))
@@ -72,27 +67,6 @@ describe("usePersistedStateReducer", () => {
     expect(typeof dispatch).toEqual("function")
   })
 
-  test("loads initial state from local storage", () => {
-    jest
-      .spyOn(window.localStorage, "getItem")
-      .mockImplementationOnce(
-        (_stateKey: string) =>
-          '{"selectedRouteIds":["28","39"],"ladderDirections":{"39":0},"ladderCrowdingToggles":{"77":true}}'
-      )
-
-    const expectedState: State = {
-      ...initialState,
-      selectedRouteIds: ["28", "39"],
-      ladderDirections: { "39": 0 },
-      ladderCrowdingToggles: { "77": true },
-    }
-
-    const { result } = renderHook(() => usePersistedStateReducer())
-    const [state] = result.current
-
-    expect(state).toEqual(expectedState)
-  })
-
   test("stores persisted keys in localstorage when they change", () => {
     const { result } = renderHook(() => usePersistedStateReducer())
     const dispatch = result.current[1]
@@ -119,11 +93,6 @@ describe("usePersistedStateReducer", () => {
         shuttle_page_vehicle_label: "run_id",
         vehicle_adherence_colors: "early_blue",
       }),
-      routeSettings: JSON.stringify({
-        selected_route_ids: ["39"],
-        ladder_directions: { "77": 1 },
-        ladder_crowding_toggles: { "83": true },
-      }),
       routeTabs: JSON.stringify([
         {
           uuid: "1",
@@ -147,9 +116,6 @@ describe("usePersistedStateReducer", () => {
     expect(state.userSettings.vehicleAdherenceColors).toEqual(
       VehicleAdherenceColorsSetting.EarlyBlue
     )
-    expect(state.selectedRouteIds).toEqual(["39"])
-    expect(state.ladderDirections).toEqual({ "77": 1 })
-    expect(state.ladderCrowdingToggles).toEqual({ "83": true })
     expect(state.routeTabs).toEqual([
       routeTabFactory.build({
         uuid: "1",
@@ -168,7 +134,7 @@ describe("usePersistedStateReducer", () => {
       .spyOn(window.localStorage, "getItem")
       .mockImplementation(
         (_stateKey: string) =>
-          '{"settings":{"ladderVehicleLabel":1,"shuttleVehicleLabel":1,"vehicleAdherenceColors":2},"selectedRouteIds":["39"],"ladderDirections":{"77":1},"ladderCrowdingToggles":{"83":true}}'
+          '{"settings":{"ladderVehicleLabel":1,"shuttleVehicleLabel":1,"vehicleAdherenceColors":2}}'
       )
 
     const { result } = renderHook(() => usePersistedStateReducer())
@@ -179,12 +145,8 @@ describe("usePersistedStateReducer", () => {
       shuttleVehicleLabel: VehicleLabelSetting.RunNumber,
       vehicleAdherenceColors: VehicleAdherenceColorsSetting.EarlyBlue,
     })
-    expect(state.selectedRouteIds).toEqual(["39"])
-    expect(state.ladderDirections).toEqual({ "77": 1 })
-    expect(state.ladderCrowdingToggles).toEqual({ "83": true })
     // settings were saved to the database
     expect(putUserSetting).toHaveBeenCalled()
-    expect(putRouteSettings).toHaveBeenCalled()
     // settings were removed from local storage
     const setItemParam = (window.localStorage.setItem as jest.Mock).mock
       .calls[0][1]
@@ -216,23 +178,6 @@ describe("usePersistedStateReducer", () => {
     const setItemParam = (window.localStorage.setItem as jest.Mock).mock
       .calls[0][1]
     expect(setItemParam).not.toContain("settings")
-  })
-
-  test("sends updated route settings to backend when one changes", () => {
-    const { result } = renderHook(() => usePersistedStateReducer())
-    const [, dispatch] = result.current
-
-    act(() => {
-      dispatch(selectRoute("39"))
-      dispatch(flipLadder("39"))
-      dispatch(selectRoute("83"))
-      dispatch(toggleLadderCrowding("83"))
-    })
-    expect(putRouteSettings).toHaveBeenCalledWith({
-      selectedRouteIds: ["39", "83"],
-      ladderDirections: { "39": 1 },
-      ladderCrowdingToggles: { "83": true },
-    })
   })
 
   test("sends updated route tabs to backend on changes", () => {

@@ -15,7 +15,6 @@ import {
   GarageFilter,
   filterRoutesByGarage,
 } from "../hooks/useGarageFilter"
-import featureIsEnabled from "../laboratoryFeatures"
 
 interface Props {
   selectedRouteIds: RouteId[]
@@ -37,7 +36,7 @@ const RoutePicker = ({
     garageFilterData
   )
 
-  return featureIsEnabled("presets_workspaces") ? (
+  return (
     <div className="m-route-picker">
       <RouteFilter {...routeFilterData} />
 
@@ -48,27 +47,6 @@ const RoutePicker = ({
         selectedRouteIds={selectedRouteIds}
         deselectRoute={deselectRoute}
       />
-
-      {routes === null ? (
-        <Loading />
-      ) : (
-        <RoutesList
-          routes={filteredRoutes}
-          selectedRouteIds={selectedRouteIds}
-          selectRoute={selectRoute}
-          deselectRoute={deselectRoute}
-        />
-      )}
-    </div>
-  ) : (
-    <div className="m-route-picker">
-      <SelectedRoutesList
-        routes={routes}
-        selectedRouteIds={selectedRouteIds}
-        deselectRoute={deselectRoute}
-      />
-
-      <RouteFilter {...routeFilterData} />
 
       {routes === null ? (
         <Loading />

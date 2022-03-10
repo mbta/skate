@@ -1,4 +1,3 @@
-import { LadderDirection } from "../src/models/ladderDirection"
 import {
   NotificationReason,
   NotificationState,
@@ -19,45 +18,6 @@ const initialState = State.initialState
 const reducer = State.reducer
 
 describe("reducer", () => {
-  test("selectRoute", () => {
-    const state = {
-      ...initialState,
-      selectedRouteIds: ["28"],
-    }
-    const expectedState = {
-      ...state,
-      selectedRouteIds: ["28", "39"],
-    }
-    const newState = reducer(state, State.selectRoute("39"))
-    expect(newState).toEqual(expectedState)
-  })
-
-  test("deselectRoute", () => {
-    const state = {
-      ...initialState,
-      selectedRouteIds: ["28", "39"],
-    }
-    const expectedState = {
-      ...state,
-      selectedRouteIds: ["28"],
-    }
-    const newState = reducer(state, State.deselectRoute("39"))
-    expect(newState).toEqual(expectedState)
-  })
-
-  test("flipLadder", () => {
-    const state = {
-      ...initialState,
-      ladderDirections: { route: LadderDirection.ZeroToOne },
-    }
-    const expectedState = {
-      ...initialState,
-      ladderDirections: { route: LadderDirection.OneToZero },
-    }
-    const newState = reducer(state, State.flipLadder("route"))
-    expect(newState).toEqual(expectedState)
-  })
-
   test("selectShuttleRun", () => {
     const state: State.State = {
       ...initialState,
@@ -325,15 +285,6 @@ describe("reducer", () => {
       state,
       State.setVehicleAdherenceColorsSetting(vehicleAdherenceColors)
     )
-
-    expect(newState).toEqual(expectedState)
-  })
-
-  test("toggleLadderCrowdingForRoute", () => {
-    const state = initialState
-
-    const newState = reducer(state, State.toggleLadderCrowding("77"))
-    const expectedState = { ...state, ladderCrowdingToggles: { "77": true } }
 
     expect(newState).toEqual(expectedState)
   })

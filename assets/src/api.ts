@@ -5,7 +5,6 @@ import { reload } from "./models/browser"
 import { blockFromData, runFromData } from "./models/minischeduleData"
 import { swingsFromData } from "./models/swingsData"
 import { NotificationId, NotificationState, RunId } from "./realtime.d"
-import { RouteSettings } from "./routeSettings"
 import {
   DirectionName,
   GarageName,
@@ -185,17 +184,6 @@ export const putUserSetting = (field: string, value: string): void => {
       "Content-Type": "application/json",
       "x-csrf-token": getCsrfToken(),
     },
-  })
-}
-
-export const putRouteSettings = (routeSettings: RouteSettings): void => {
-  fetch("/api/route_settings", {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      "x-csrf-token": getCsrfToken(),
-    },
-    body: JSON.stringify(routeSettings),
   })
 }
 
