@@ -6,7 +6,7 @@ import {
 } from "../state"
 import CloseButton from "./closeButton"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { currentRouteTab, isPreset } from "../models/routeTab"
+import { currentRouteTab, isPreset, isEditedPreset } from "../models/routeTab"
 import { plusThinIcon } from "../helpers/icon"
 
 const Presets = () => {
@@ -14,6 +14,8 @@ const Presets = () => {
   const presets = routeTabs
     .filter(isPreset)
     .sort((a, b) => (a.presetName || "").localeCompare(b.presetName || ""))
+
+  const currentTab = currentRouteTab(routeTabs)
 
   return (
     <div className="m-presets-panel">
@@ -36,7 +38,6 @@ const Presets = () => {
       <button
         className="m-presets-panel__save-as-preset-button"
         onClick={() => {
-          const currentTab = currentRouteTab(routeTabs)
           if (currentTab) {
             if (window.FS) {
               window.FS.event("Preset saved from presets panel")
@@ -44,6 +45,9 @@ const Presets = () => {
             dispatch(promptToSaveOrCreatePreset(currentTab))
           }
         }}
+        disabled={
+          !currentTab || (isPreset(currentTab) && !isEditedPreset(currentTab))
+        }
       >
         {plusThinIcon("m-presets-panel__save-as-preset-button-icon")}
         Save as preset

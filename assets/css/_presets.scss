@@ -50,5 +50,18 @@
         }
       }
     }
+
+    &:disabled {
+      cursor: default;
+      font-weight: 500;
+      color: #e5e7eb;
+      background: #9fa2ac;
+
+      svg {
+        path {
+          stroke: #e5e7eb;
+        }
+      }
+    }
   }
 }
