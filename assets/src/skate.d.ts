@@ -1,5 +1,3 @@
-import ResizeObserver from "resize-observer-polyfill"
-
 declare global {
   interface Window {
     Appcues?: {
@@ -19,7 +17,6 @@ declare global {
       ): void
       event(event: string, properties?: object): void
     }
-    ResizeObserver: typeof ResizeObserver
     drift: {
       api: {
         sidebar: {

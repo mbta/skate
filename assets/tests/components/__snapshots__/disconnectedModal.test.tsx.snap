@@ -10,7 +10,7 @@ Array [
     </div>
     <button
       className="m-disconnected-modal__refresh-button"
-      onClick={[Function]}
+      onClick={[MockFunction]}
     >
       Refresh
     </button>

@@ -134,18 +134,14 @@ const subscribe = (
   channel.on("vehicles", handleVehicles)
 
   // Reload our session if the auth has expired
-  channel.on("auth_expired", () => {
-    reload(true)
-  })
+  channel.on("auth_expired", reload)
 
   channel
     .join()
     .receive("ok", handleVehicles)
     // tslint:disable-next-line: no-console
     .receive("error", ({ reason }) => console.error("join failed", reason))
-    .receive("timeout", () => {
-      reload(true)
-    })
+    .receive("timeout", reload)
   return channel
 }
 

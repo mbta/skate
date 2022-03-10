@@ -40,9 +40,7 @@ export const useNotifications = (
           // tslint:disable-next-line: no-console
           console.error(`joining topic ${topic} failed`, reason)
         )
-        .receive("timeout", () => {
-          reload(true)
-        })
+        .receive("timeout", reload)
     }
 
     return () => {

@@ -139,9 +139,7 @@ const subscribe = (
   channel.on("train_vehicles", handleTrainVehicles)
 
   // Reload our session if the auth has expired
-  channel.on("auth_expired", () => {
-    reload(true)
-  })
+  channel.on("auth_expired", reload)
 
   channel
     .join()
@@ -150,9 +148,7 @@ const subscribe = (
       // tslint:disable-next-line: no-console
       console.error("Train vehicles join failed", reason)
     )
-    .receive("timeout", () => {
-      reload(true)
-    })
+    .receive("timeout", reload)
   return channel
 }
 
