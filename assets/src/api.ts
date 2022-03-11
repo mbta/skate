@@ -35,7 +35,7 @@ const checkResponseStatus = (response: Response) => {
   if (Math.floor(response.status / 100) === 3 || response.status === 403) {
     // If the API sends us a redirect or forbidden, the user needs to
     // re-authenticate. Reload to go through the auth flow again.
-    reload(true)
+    reload()
   }
 
   throw new Error(`Response error: ${response.status}`)

@@ -516,19 +516,16 @@ describe("reducer", () => {
       State.createRouteTab()
     )
 
-    const expectedNewTab = routeTabFactory.build({
-      isCurrentTab: true,
-      ordering: 5,
-    })
-    delete expectedNewTab.uuid
-
     const expectedNewTabs = [
       { ...originalRouteTab1 },
       { ...originalRouteTab2, isCurrentTab: false },
-      expectedNewTab,
+      {
+        isCurrentTab: true,
+        ordering: 5,
+      },
     ]
 
-    const expectedState: State.State = {
+    const expectedState = {
       ...initialState,
       routeTabs: expectedNewTabs,
       routeTabsToPush: expectedNewTabs,

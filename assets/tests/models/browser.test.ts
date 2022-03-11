@@ -24,10 +24,4 @@ describe("reload", () => {
 
     expect(reloadSpy).toHaveBeenCalled()
   })
-
-  test("passes on an optional forceGet argument", () => {
-    reload(true)
-
-    expect(reloadSpy).toHaveBeenCalledWith(true)
-  })
 })
