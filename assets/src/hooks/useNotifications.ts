@@ -49,5 +49,5 @@ export const useNotifications = (
         channel = undefined
       }
     }
-  }, [socket, allOpenRouteIds(routeTabs)])
+  }, [socket, JSON.stringify(allOpenRouteIds(routeTabs))])
 }
