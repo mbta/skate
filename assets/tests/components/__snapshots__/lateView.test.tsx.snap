@@ -370,6 +370,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
     >
       <button
         className="c-drawer-tab__tab-button"
+        data-testid="drawer-tab-button"
         onClick={[Function]}
       >
         <span

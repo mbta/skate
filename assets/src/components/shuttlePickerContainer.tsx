@@ -7,15 +7,18 @@ interface Props {
   children: ReactElement<HTMLElement>
 }
 
-const PickerContainer = ({ children }: Props): ReactElement<HTMLDivElement> => {
+const ShuttlePickerContainer = ({
+  children,
+}: Props): ReactElement<HTMLDivElement> => {
   const [state, dispatch] = useContext(StateDispatchContext)
   const toggleVisibility = () => dispatch(togglePickerContainer())
 
   return (
     <div
-      className={`m-picker-container ${
+      className={`m-shuttle-picker-container ${
         state.pickerContainerIsVisible ? "visible" : "hidden"
       }`}
+      data-testid="shuttle-picker-container"
     >
       <DrawerTab
         isVisible={state.pickerContainerIsVisible}
@@ -26,4 +29,4 @@ const PickerContainer = ({ children }: Props): ReactElement<HTMLDivElement> => {
   )
 }
 
-export default PickerContainer
+export default ShuttlePickerContainer

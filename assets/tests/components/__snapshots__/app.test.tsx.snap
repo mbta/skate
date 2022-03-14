@@ -192,13 +192,14 @@ exports[`App renders 1`] = `
         className="m-notifications"
       />
       <div
-        className="m-picker-container m-picker-container--narrow visible"
+        className="m-picker-container visible"
       >
         <div
           className="c-drawer-tab"
         >
           <button
             className="c-drawer-tab__tab-button"
+            data-testid="drawer-tab-button"
             onClick={[Function]}
           >
             <span
@@ -526,13 +527,14 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
         className="m-notifications"
       />
       <div
-        className="m-picker-container m-picker-container--narrow visible"
+        className="m-picker-container visible"
       >
         <div
           className="c-drawer-tab"
         >
           <button
             className="c-drawer-tab__tab-button"
+            data-testid="drawer-tab-button"
             onClick={[Function]}
           >
             <span

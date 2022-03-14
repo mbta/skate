@@ -8,13 +8,14 @@ exports[`LadderPage renders the empty state 1`] = `
     className="m-notifications"
   />
   <div
-    className="m-picker-container m-picker-container--narrow visible"
+    className="m-picker-container visible"
   >
     <div
       className="c-drawer-tab"
     >
       <button
         className="c-drawer-tab__tab-button"
+        data-testid="drawer-tab-button"
         onClick={[Function]}
       >
         <span
@@ -141,13 +142,14 @@ exports[`LadderPage renders with route tabs 1`] = `
     className="m-notifications"
   />
   <div
-    className="m-picker-container m-picker-container--narrow visible"
+    className="m-picker-container visible"
   >
     <div
       className="c-drawer-tab"
     >
       <button
         className="c-drawer-tab__tab-button"
+        data-testid="drawer-tab-button"
         onClick={[Function]}
       >
         <span
@@ -413,13 +415,14 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
     className="m-notifications"
   />
   <div
-    className="m-picker-container m-picker-container--narrow visible"
+    className="m-picker-container visible"
   >
     <div
       className="c-drawer-tab"
     >
       <button
         className="c-drawer-tab__tab-button"
+        data-testid="drawer-tab-button"
         onClick={[Function]}
       >
         <span
@@ -707,13 +710,14 @@ exports[`LadderPage renders with timepoints 1`] = `
     className="m-notifications"
   />
   <div
-    className="m-picker-container m-picker-container--narrow visible"
+    className="m-picker-container visible"
   >
     <div
       className="c-drawer-tab"
     >
       <button
         className="c-drawer-tab__tab-button"
+        data-testid="drawer-tab-button"
         onClick={[Function]}
       >
         <span
@@ -1245,13 +1249,14 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
     className="m-notifications"
   />
   <div
-    className="m-picker-container m-picker-container--narrow visible"
+    className="m-picker-container visible"
   >
     <div
       className="c-drawer-tab"
     >
       <button
         className="c-drawer-tab__tab-button"
+        data-testid="drawer-tab-button"
         onClick={[Function]}
       >
         <span

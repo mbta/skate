@@ -20,7 +20,7 @@ import {
   selectShuttleRun,
 } from "../state"
 import Loading from "./loading"
-import PickerContainer, { Width } from "./pickerContainer"
+import ShuttlePickerContainer from "./shuttlePickerContainer"
 
 interface Props {
   shuttles: Vehicle[] | null
@@ -72,7 +72,7 @@ const ShuttlePicker = ({ shuttles }: Props): ReactElement<HTMLDivElement> => {
   const shuttleRoutes: Route[] | null = useShuttleRoutes()
 
   return (
-    <PickerContainer width={Width.Wide}>
+    <ShuttlePickerContainer>
       <div className="m-route-picker">
         {shuttles === null ? (
           <Loading />
@@ -83,7 +83,7 @@ const ShuttlePicker = ({ shuttles }: Props): ReactElement<HTMLDivElement> => {
           </>
         )}
       </div>
-    </PickerContainer>
+    </ShuttlePickerContainer>
   )
 }
 

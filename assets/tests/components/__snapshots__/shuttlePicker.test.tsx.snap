@@ -2,13 +2,15 @@
 
 exports[`ShuttlePicker renders 1`] = `
 <div
-  className="m-picker-container m-picker-container--wide visible"
+  className="m-shuttle-picker-container visible"
+  data-testid="shuttle-picker-container"
 >
   <div
     className="c-drawer-tab"
   >
     <button
       className="c-drawer-tab__tab-button"
+      data-testid="drawer-tab-button"
       onClick={[Function]}
     >
       <span
@@ -306,13 +308,15 @@ exports[`ShuttlePicker renders 1`] = `
 
 exports[`ShuttlePicker renders loaded state with no shuttles 1`] = `
 <div
-  className="m-picker-container m-picker-container--wide visible"
+  className="m-shuttle-picker-container visible"
+  data-testid="shuttle-picker-container"
 >
   <div
     className="c-drawer-tab"
   >
     <button
       className="c-drawer-tab__tab-button"
+      data-testid="drawer-tab-button"
       onClick={[Function]}
     >
       <span
@@ -568,13 +572,15 @@ exports[`ShuttlePicker renders loaded state with no shuttles 1`] = `
 
 exports[`ShuttlePicker renders loading state 1`] = `
 <div
-  className="m-picker-container m-picker-container--wide visible"
+  className="m-shuttle-picker-container visible"
+  data-testid="shuttle-picker-container"
 >
   <div
     className="c-drawer-tab"
   >
     <button
       className="c-drawer-tab__tab-button"
+      data-testid="drawer-tab-button"
       onClick={[Function]}
     >
       <span

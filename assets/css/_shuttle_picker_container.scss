@@ -1,4 +1,4 @@
-.m-picker-container {
+.m-shuttle-picker-container {
   background-color: $color-bg-medium;
   box-sizing: border-box;
   display: flex;
@@ -10,7 +10,7 @@
   position: absolute;
   top: inherit;
   transition: $transition-slide;
-  width: $picker-width-narrow;
+  width: $picker-width-wide;
   z-index: 1;
 
   &.visible {
@@ -18,10 +18,10 @@
   }
 
   &.hidden {
-    left: -$picker-width-narrow;
+    left: -$picker-width-wide;
   }
 }
 
-.m-picker-container .c-drawer-tab {
-  left: $picker-width-narrow;
+.m-shuttle-picker-container .c-drawer-tab {
+  left: $picker-width-wide;
 }
