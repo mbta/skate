@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react-hooks"
 import { Socket } from "phoenix"
-import React, { ReactElement } from "react"
+import React, { ReactNode } from "react"
 import { SocketProvider } from "../../src/contexts/socketContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { useNotifications } from "../../src/hooks/useNotifications"
@@ -44,7 +44,10 @@ describe("useNotifications", () => {
       () => {
         useNotifications(mockAddNotification, mockSetNotifications)
       },
-      { wrapper: wrapper(mockSocket, ["route"]) }
+      {
+        wrapper,
+        initialProps: { socket: mockSocket, selectedRouteIds: ["route"] },
+      }
     )
 
     expect(mockChannel.join).toHaveBeenCalled()
@@ -69,7 +72,10 @@ describe("useNotifications", () => {
       () => {
         useNotifications(mockAddNotification, mockSetNotifications)
       },
-      { wrapper: wrapper(mockSocket, ["route"]) }
+      {
+        wrapper,
+        initialProps: { socket: mockSocket, selectedRouteIds: ["route"] },
+      }
     )
 
     expect(mockAddNotification).toHaveBeenCalledTimes(1)
@@ -88,7 +94,7 @@ describe("useNotifications", () => {
       () => {
         useNotifications(mockAddNotification, mockSetNotifications)
       },
-      { wrapper: wrapper(mockSocket, []) }
+      { wrapper, initialProps: { socket: mockSocket, selectedRouteIds: [] } }
     )
 
     expect(mockChannel.join).toHaveBeenCalled()
@@ -111,7 +117,7 @@ describe("useNotifications", () => {
       () => {
         useNotifications(mockAddNotification, mockSetNotifications)
       },
-      { wrapper: wrapper(mockSocket, []) }
+      { wrapper, initialProps: { socket: mockSocket, selectedRouteIds: [] } }
     )
 
     expect(spyConsoleError).toHaveBeenCalled()
@@ -131,29 +137,80 @@ describe("useNotifications", () => {
       () => {
         useNotifications(mockAddNotification, mockSetNotifications)
       },
-      { wrapper: wrapper(mockSocket, []) }
+      { wrapper, initialProps: { socket: mockSocket, selectedRouteIds: [] } }
     )
 
     expect(reloadSpy).toHaveBeenCalled()
     reloadSpy.mockRestore()
   })
+
+  test("doesn't rejoin channel on every render", () => {
+    const mockAddNotification = jest.fn()
+    const mockSetNotifications = jest.fn()
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok", {
+      initial_notifications: [],
+    })
+    mockSocket.channel.mockImplementation(() => mockChannel)
+
+    const { rerender } = renderHook(
+      () => {
+        useNotifications(mockAddNotification, mockSetNotifications)
+      },
+      {
+        wrapper,
+        initialProps: { socket: mockSocket, selectedRouteIds: ["route"] },
+      }
+    )
+    rerender({ socket: mockSocket, selectedRouteIds: ["route"] })
+
+    expect(mockChannel.join).toHaveBeenCalledTimes(1)
+  })
+
+  test("rejoins channel if selected routes change", () => {
+    const mockAddNotification = jest.fn()
+    const mockSetNotifications = jest.fn()
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok", {
+      initial_notifications: [],
+    })
+    mockSocket.channel.mockImplementation(() => mockChannel)
+
+    const { rerender } = renderHook(
+      () => {
+        useNotifications(mockAddNotification, mockSetNotifications)
+      },
+      {
+        wrapper,
+        initialProps: { socket: mockSocket, selectedRouteIds: ["route1"] },
+      }
+    )
+    rerender({ socket: mockSocket, selectedRouteIds: ["route1", "route2"] })
+
+    expect(mockChannel.join).toHaveBeenCalledTimes(2)
+  })
 })
 
-const wrapper =
-  (socket: Socket | undefined, selectedRouteIds: RouteId[]) =>
-  ({ children }: { children: ReactElement<HTMLElement> }) =>
-    (
-      <SocketProvider
-        socketStatus={{ socket, connectionStatus: ConnectionStatus.Connected }}
-      >
-        <StateDispatchProvider
-          state={{
-            ...initialState,
-            routeTabs: [routeTabFactory.build({ selectedRouteIds })],
-          }}
-          dispatch={jest.fn()}
-        >
-          {children}
-        </StateDispatchProvider>
-      </SocketProvider>
-    )
+const wrapper = ({
+  children,
+  socket,
+  selectedRouteIds,
+}: {
+  children?: ReactNode
+  socket: Socket | undefined
+  selectedRouteIds: RouteId[]
+}) => (
+  <SocketProvider
+    socketStatus={{ socket, connectionStatus: ConnectionStatus.Connected }}
+  >
+    <StateDispatchProvider
+      state={{
+        ...initialState,
+        routeTabs: [routeTabFactory.build({ selectedRouteIds })],
+      }}
+      dispatch={jest.fn()}
+    >
+      <> {children} </>
+    </StateDispatchProvider>
+  </SocketProvider>
+)
