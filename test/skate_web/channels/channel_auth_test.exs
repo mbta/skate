@@ -1,6 +1,5 @@
 defmodule SkateWeb.ChannelAuthTest do
   use SkateWeb.ChannelCase
-  import Test.Support.Helpers
 
   alias SkateWeb.{AuthManager, ChannelAuth, UserSocket}
 
@@ -10,15 +9,7 @@ defmodule SkateWeb.ChannelAuthTest do
     {:ok, socket: socket}
   end
 
-  describe "handle_info/2" do
-    setup do
-      reassign_env(
-        :skate,
-        :refresh_token_store,
-        __MODULE__.FakeRefreshTokenStore
-      )
-    end
-
+  describe "valid_token?/1" do
     test "returns true when socket is authenticated", %{
       socket: socket
     } do
@@ -28,19 +19,6 @@ defmodule SkateWeb.ChannelAuthTest do
         })
 
       socket = Guardian.Phoenix.Socket.assign_rtc(socket, "test-authed@mbta.com", token, claims)
-
-      assert ChannelAuth.valid_token?(socket) == true
-    end
-
-    test "refreshes the authentication using the refresh token if we have one", %{
-      socket: socket
-    } do
-      {:ok, token, claims} =
-        AuthManager.encode_and_sign("test-expired@mbta.com", %{
-          "exp" => System.system_time(:second) - 100
-        })
-
-      socket = Guardian.Phoenix.Socket.assign_rtc(socket, "test-expired@mbta.com", token, claims)
 
       assert ChannelAuth.valid_token?(socket) == true
     end
@@ -58,22 +36,5 @@ defmodule SkateWeb.ChannelAuthTest do
 
       assert ChannelAuth.valid_token?(socket) == false
     end
-  end
-
-  defmodule FakeRefreshTokenStore do
-    def get_refresh_token("test-expired@mbta.com") do
-      {:ok, token, _claims} =
-        AuthManager.encode_and_sign(
-          "test-expired@mbta.com",
-          %{
-            "exp" => System.system_time(:second) + 500
-          },
-          token_type: "refresh"
-        )
-
-      token
-    end
-
-    def get_refresh_token(_), do: nil
   end
 end
