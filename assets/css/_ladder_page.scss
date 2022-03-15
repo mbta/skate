@@ -16,8 +16,14 @@ $color-route-tabs-separator: #9fa2ac;
 
   .m-tab-bar.visible + & {
     margin-left: $tab-bar-width;
-    padding-left: $picker-width-narrow;
+    padding-left: $route-picker-width;
     width: calc(100% - #{$tab-bar-width});
+  }
+
+  @media screen and (max-width: $mobile-max-width) {
+    .m-tab-bar.visible + & {
+      padding-left: $mobile-route-picker-width;
+    }
   }
 }
 

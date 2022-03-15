@@ -10,7 +10,7 @@
   position: absolute;
   top: inherit;
   transition: $transition-slide;
-  width: $picker-width-narrow;
+  width: $route-picker-width;
   z-index: 1;
 
   &.visible {
@@ -18,10 +18,20 @@
   }
 
   &.hidden {
-    left: -$picker-width-narrow;
+    left: -$route-picker-width;
   }
 }
 
 .m-picker-container .c-drawer-tab {
-  left: $picker-width-narrow;
+  left: $route-picker-width;
+}
+
+@media screen and (max-width: $mobile-max-width) {
+  .m-picker-container {
+    width: $mobile-route-picker-width;
+  }
+
+  .m-picker-container .c-drawer-tab {
+    left: $mobile-route-picker-width;
+  }
 }

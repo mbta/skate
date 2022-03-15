@@ -10,7 +10,7 @@
   position: absolute;
   top: inherit;
   transition: $transition-slide;
-  width: $picker-width-wide;
+  width: $shuttle-picker-width;
   z-index: 1;
 
   &.visible {
@@ -18,10 +18,10 @@
   }
 
   &.hidden {
-    left: -$picker-width-wide;
+    left: -$shuttle-picker-width;
   }
 }
 
 .m-shuttle-picker-container .c-drawer-tab {
-  left: $picker-width-wide;
+  left: $shuttle-picker-width;
 }
