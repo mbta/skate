@@ -123,7 +123,7 @@ const AddTabButton = ({
 
 const LadderPage = (): ReactElement<HTMLDivElement> => {
   const [state, dispatch] = useContext(StateDispatchContext)
-  const { routeTabs, selectedVehicleOrGhost } = state
+  const { routeTabs, selectedVehicleOrGhost, pickerContainerIsVisible } = state
 
   useEffect(() => {
     if (routeTabs.filter((routeTab) => isOpenTab(routeTab)).length === 0) {
@@ -148,6 +148,10 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
   const selectedRoutes: Route[] = selectedRouteIds
     .map((routeId) => findRouteById(routes, routeId))
     .filter((route) => route) as Route[]
+
+  const pickerContainerVisibleClass = pickerContainerIsVisible
+    ? "m-ladder-page__tab-bar-and-ladders--picker_container_visible"
+    : ""
 
   return (
     <div className="m-ladder-page">
@@ -190,7 +194,9 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
           )}
         </>
       </PickerContainer>
-      <div className="m-ladder-page__tab-bar-and-ladders">
+      <div
+        className={`m-ladder-page__tab-bar-and-ladders ${pickerContainerVisibleClass}`}
+      >
         <div className="m-ladder-page__route-tab-bar">
           {routeTabs
             .filter(isOpenTab)

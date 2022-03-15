@@ -27,6 +27,12 @@ $color-route-tabs-separator: #9fa2ac;
   }
 }
 
+@media screen and (max-width: $mobile-max-width) {
+  .m-ladder-page__tab-bar-and-ladders--picker_container_visible {
+    filter: blur(5px);
+  }
+}
+
 .m-ladder-page__tab-bar-and-ladders {
   height: 100%;
   display: flex;

@@ -295,7 +295,7 @@ exports[`renders 1`] = `
         className="m-picker-container-overlay"
       />
       <div
-        className="m-ladder-page__tab-bar-and-ladders"
+        className="m-ladder-page__tab-bar-and-ladders m-ladder-page__tab-bar-and-ladders--picker_container_visible"
       >
         <div
           className="m-ladder-page__route-tab-bar"
