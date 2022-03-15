@@ -1,5 +1,5 @@
 .m-picker-container {
-  background-color: $color-bg-medium;
+  background-color: #ecedee;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -24,6 +24,7 @@
 
 .m-picker-container .c-drawer-tab {
   left: $route-picker-width;
+  background-color: #ecedee;
 }
 
 .m-picker-container-overlay {
