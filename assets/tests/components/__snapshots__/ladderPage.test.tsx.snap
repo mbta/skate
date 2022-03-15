@@ -108,6 +108,9 @@ exports[`LadderPage renders the empty state 1`] = `
     </div>
   </div>
   <div
+    className="m-picker-container-overlay"
+  />
+  <div
     className="m-ladder-page__tab-bar-and-ladders"
   >
     <div
@@ -269,6 +272,9 @@ exports[`LadderPage renders with route tabs 1`] = `
       </ul>
     </div>
   </div>
+  <div
+    className="m-picker-container-overlay"
+  />
   <div
     className="m-ladder-page__tab-bar-and-ladders"
   >
@@ -550,6 +556,9 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
       </ul>
     </div>
   </div>
+  <div
+    className="m-picker-container-overlay"
+  />
   <div
     className="m-ladder-page__tab-bar-and-ladders"
   >
@@ -845,6 +854,9 @@ exports[`LadderPage renders with timepoints 1`] = `
       </ul>
     </div>
   </div>
+  <div
+    className="m-picker-container-overlay"
+  />
   <div
     className="m-ladder-page__tab-bar-and-ladders"
   >
@@ -1376,6 +1388,9 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
       </ul>
     </div>
   </div>
+  <div
+    className="m-picker-container-overlay"
+  />
   <div
     className="m-ladder-page__tab-bar-and-ladders"
   >

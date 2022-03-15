@@ -11,7 +11,7 @@
   top: inherit;
   transition: $transition-slide;
   width: $route-picker-width;
-  z-index: 1;
+  z-index: 100;
 
   &.visible {
     left: 0;
@@ -26,12 +26,32 @@
   left: $route-picker-width;
 }
 
+.m-picker-container-overlay {
+  display: none;
+}
+
 @media screen and (max-width: $mobile-max-width) {
   .m-picker-container {
     width: $mobile-route-picker-width;
+
+    &.hidden {
+      left: -$mobile-route-picker-width;
+    }
   }
 
   .m-picker-container .c-drawer-tab {
     left: $mobile-route-picker-width;
+  }
+
+  .m-picker-container-overlay {
+    display: initial;
+    z-index: 90;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: rgba(88, 88, 88, 0.23);
+    filter: hue-rotate(90deg);
   }
 }

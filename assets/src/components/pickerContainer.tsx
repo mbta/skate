@@ -12,17 +12,22 @@ const PickerContainer = ({ children }: Props): ReactElement<HTMLDivElement> => {
   const toggleVisibility = () => dispatch(togglePickerContainer())
 
   return (
-    <div
-      className={`m-picker-container ${
-        state.pickerContainerIsVisible ? "visible" : "hidden"
-      }`}
-    >
-      <DrawerTab
-        isVisible={state.pickerContainerIsVisible}
-        toggleVisibility={toggleVisibility}
-      />
-      {children}
-    </div>
+    <>
+      <div
+        className={`m-picker-container ${
+          state.pickerContainerIsVisible ? "visible" : "hidden"
+        }`}
+      >
+        <DrawerTab
+          isVisible={state.pickerContainerIsVisible}
+          toggleVisibility={toggleVisibility}
+        />
+        {children}
+      </div>
+      {state.pickerContainerIsVisible ? (
+        <div className="m-picker-container-overlay" />
+      ) : null}
+    </>
   )
 }
 

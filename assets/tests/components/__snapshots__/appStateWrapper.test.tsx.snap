@@ -292,6 +292,9 @@ exports[`renders 1`] = `
         </div>
       </div>
       <div
+        className="m-picker-container-overlay"
+      />
+      <div
         className="m-ladder-page__tab-bar-and-ladders"
       >
         <div
