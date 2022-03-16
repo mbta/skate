@@ -73,28 +73,28 @@ export const GarageFilter = ({
           {showGaragesFilter ? collapseIcon() : expandIcon()}
         </button>
       </div>
-      <div>
-        {showGaragesFilter
-          ? sortedGarages.map((garage) => (
-              <div key={garage} className="m-garage-filter__garage">
-                {garage}
-                <button
-                  onClick={() => {
-                    if (!filteredGarages.includes(garage) && window.FS) {
-                      window.FS.event("User filtered routes by garage")
-                    }
-                    toggleGarage(garage)
-                  }}
-                  className="m-garage-filter__button"
-                >
-                  {filteredGarages.includes(garage)
-                    ? toggleOnIcon()
-                    : toggleOffIcon()}
-                </button>
-              </div>
-            ))
-          : null}
-      </div>
+      {showGaragesFilter ? (
+        <ul className="m-garage-filter__garages">
+          {sortedGarages.map((garage) => (
+            <li key={garage} className="m-garage-filter__garage">
+              {garage}
+              <button
+                onClick={() => {
+                  if (!filteredGarages.includes(garage) && window.FS) {
+                    window.FS.event("User filtered routes by garage")
+                  }
+                  toggleGarage(garage)
+                }}
+                className="m-garage-filter__button"
+              >
+                {filteredGarages.includes(garage)
+                  ? toggleOnIcon()
+                  : toggleOffIcon()}
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : null}
     </div>
   )
 }
