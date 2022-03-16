@@ -7,6 +7,7 @@
   // Required for pinning to the left side of the screen on the tablets
   left: 0;
   padding: 1rem;
+  row-gap: 1rem;
   position: absolute;
   top: inherit;
   transition: $transition-slide;
