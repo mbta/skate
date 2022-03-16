@@ -81,4 +81,4 @@ which will prompt you to enter the annotation from the previous step via your ed
 ```
 git push origin --tags
 ```
-Once this is complete, initiate the deploy through AWS and post a link to the tag on GitHub in the `#ctd-deploys` Slack channel.
+Once this is complete, initiate the deploy through GitHub Actions.
