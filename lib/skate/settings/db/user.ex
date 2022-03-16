@@ -4,7 +4,6 @@ defmodule Skate.Settings.Db.User do
 
   alias Notifications.Db.Notification, as: DbNotification
   alias Notifications.Db.NotificationUser, as: DbNotificationUser
-  alias Skate.Settings.Db.RouteSettings, as: DbRouteSettings
   alias Skate.Settings.Db.UserSettings, as: DbUserSettings
   alias Skate.Settings.Db.RouteTab, as: DbRouteTab
 
@@ -13,7 +12,6 @@ defmodule Skate.Settings.Db.User do
   schema "users" do
     field(:username, :string)
     has_one(:user_settings, DbUserSettings)
-    has_one(:route_settings, DbRouteSettings)
     timestamps()
 
     has_many(:notification_users, DbNotificationUser)
@@ -28,7 +26,6 @@ defmodule Skate.Settings.Db.User do
       :username
     ])
     |> cast_assoc(:route_tabs, with: &DbRouteTab.changeset/2)
-    |> cast_assoc(:route_settings, with: &DbRouteSettings.changeset/2)
     |> validate_required([
       :username
     ])

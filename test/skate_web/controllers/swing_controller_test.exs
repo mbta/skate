@@ -4,7 +4,6 @@ defmodule SkateWeb.SwingsControllerTest do
   import Test.Support.Helpers
 
   alias Schedule.Swing
-  alias Skate.Settings.RouteSettings
 
   @swings [
     %Swing{
@@ -28,9 +27,7 @@ defmodule SkateWeb.SwingsControllerTest do
   ]
 
   describe "GET /api/swings" do
-    setup %{user: username} do
-      if username, do: RouteSettings.get_or_create(username)
-
+    setup do
       reassign_env(:skate_web, :swings_fn, fn route_id, _start_time, _end_time ->
         Enum.filter(@swings, fn swing ->
           swing.from_route_id == route_id or swing.to_route_id == route_id

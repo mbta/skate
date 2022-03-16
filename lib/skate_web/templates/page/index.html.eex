@@ -2,7 +2,6 @@
   data-user-token="<%= @user_token %>"
   data-csrf-token="<%= @csrf_token %>"
   data-user-settings="<%= Jason.encode!(@user_settings) %>"
-  data-route-settings="<%= Jason.encode!(@route_settings) %>"
   data-route-tabs="<%= Jason.encode!(@route_tabs) %>"
   data-laboratory-features="<%= Jason.encode!(@laboratory_features) %>"
   data-dispatcher-flag="<%= Jason.encode!(@dispatcher_flag) %>"
