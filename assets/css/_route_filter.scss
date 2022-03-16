@@ -35,9 +35,26 @@
 
 .m-route-filter__clear {
   @include button-transparent;
-  @include button-icon(0.75rem);
-  right: 0;
-  padding: 0 0.375rem;
+  @include button-icon(0.875rem);
   position: absolute;
-  top: 0.5rem;
+  display: flex;
+  right: 1rem;
+  top: 0.6875rem;
+  width: 0.875rem;
+  height: 0.875rem;
+  color: #525560;
+
+  &:hover {
+    color: #8c909b;
+  }
+
+  &:focus-within {
+    color: #3c3f4c;
+  }
+
+  span {
+    // inline-block causes weird vertical alignment issues involving line-height
+    // created a tech debt ticket to come back and refactor the button-icon mixin
+    display: flex;
+  }
 }
