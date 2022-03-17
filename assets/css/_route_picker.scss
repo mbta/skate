@@ -33,13 +33,25 @@
   }
 }
 
+@mixin route-picker-button {
+  width: 100%;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding-top: 0.6875rem;
+  padding-bottom: 0.6875rem;
+  border-radius: 4px;
+  line-height: 1;
+}
+
 .m-route-picker__route-list {
   grid-area: all;
 }
 
 .m-route-picker__route-list-button {
-  @include button-light;
-  width: 100%;
+  @include route-picker-button;
+  color: #3c3f4c;
+  background-color: #ecedee;
+  border: 1px solid #dbdde1;
 }
 
 .m-route-picker__selected-routes {
@@ -47,6 +59,7 @@
 }
 
 .m-route-picker__selected-routes-button {
-  @include button-primary;
-  width: 100%;
+  @include route-picker-button;
+  color: #fafafa;
+  background-color: #465863;
 }
