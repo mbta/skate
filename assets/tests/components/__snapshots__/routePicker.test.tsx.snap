@@ -18,19 +18,6 @@ exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
         type="text"
         value=""
       />
-      <button
-        className="m-route-filter__clear"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </button>
     </div>
   </div>
   <div
@@ -136,19 +123,6 @@ exports[`RoutePicker renders a loading/empty state 1`] = `
         type="text"
         value=""
       />
-      <button
-        className="m-route-filter__clear"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </button>
     </div>
   </div>
   <div

@@ -57,9 +57,11 @@ export const RouteFilter = ({
           onKeyDown={blurOnEnter}
         />
 
-        <button className="m-route-filter__clear" onClick={clearTextInput}>
-          {circleXIcon()}
-        </button>
+        {filterText.length > 0 ? (
+          <button className="m-route-filter__clear" onClick={clearTextInput}>
+            {circleXIcon()}
+          </button>
+        ) : null}
       </div>
     </div>
   )

@@ -247,19 +247,6 @@ exports[`renders 1`] = `
                 type="text"
                 value=""
               />
-              <button
-                className="m-route-filter__clear"
-                onClick={[Function]}
-              >
-                <span
-                  className=""
-                  dangerouslySetInnerHTML={
-                    Object {
-                      "__html": "SVG",
-                    }
-                  }
-                />
-              </button>
             </div>
           </div>
           <div

@@ -247,19 +247,6 @@ exports[`App renders 1`] = `
                 type="text"
                 value=""
               />
-              <button
-                className="m-route-filter__clear"
-                onClick={[Function]}
-              >
-                <span
-                  className=""
-                  dangerouslySetInnerHTML={
-                    Object {
-                      "__html": "SVG",
-                    }
-                  }
-                />
-              </button>
             </div>
           </div>
           <div
@@ -588,19 +575,6 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
                 type="text"
                 value=""
               />
-              <button
-                className="m-route-filter__clear"
-                onClick={[Function]}
-              >
-                <span
-                  className=""
-                  dangerouslySetInnerHTML={
-                    Object {
-                      "__html": "SVG",
-                    }
-                  }
-                />
-              </button>
             </div>
           </div>
           <div

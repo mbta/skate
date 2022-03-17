@@ -63,19 +63,6 @@ exports[`LadderPage renders the empty state 1`] = `
             type="text"
             value=""
           />
-          <button
-            className="m-route-filter__clear"
-            onClick={[Function]}
-          >
-            <span
-              className=""
-              dangerouslySetInnerHTML={
-                Object {
-                  "__html": "SVG",
-                }
-              }
-            />
-          </button>
         </div>
       </div>
       <div
@@ -203,19 +190,6 @@ exports[`LadderPage renders with route tabs 1`] = `
             type="text"
             value=""
           />
-          <button
-            className="m-route-filter__clear"
-            onClick={[Function]}
-          >
-            <span
-              className=""
-              dangerouslySetInnerHTML={
-                Object {
-                  "__html": "SVG",
-                }
-              }
-            />
-          </button>
         </div>
       </div>
       <div
@@ -474,19 +448,6 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
             type="text"
             value=""
           />
-          <button
-            className="m-route-filter__clear"
-            onClick={[Function]}
-          >
-            <span
-              className=""
-              dangerouslySetInnerHTML={
-                Object {
-                  "__html": "SVG",
-                }
-              }
-            />
-          </button>
         </div>
       </div>
       <div
@@ -758,19 +719,6 @@ exports[`LadderPage renders with timepoints 1`] = `
             type="text"
             value=""
           />
-          <button
-            className="m-route-filter__clear"
-            onClick={[Function]}
-          >
-            <span
-              className=""
-              dangerouslySetInnerHTML={
-                Object {
-                  "__html": "SVG",
-                }
-              }
-            />
-          </button>
         </div>
       </div>
       <div
@@ -1286,19 +1234,6 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
             type="text"
             value=""
           />
-          <button
-            className="m-route-filter__clear"
-            onClick={[Function]}
-          >
-            <span
-              className=""
-              dangerouslySetInnerHTML={
-                Object {
-                  "__html": "SVG",
-                }
-              }
-            />
-          </button>
         </div>
       </div>
       <div
