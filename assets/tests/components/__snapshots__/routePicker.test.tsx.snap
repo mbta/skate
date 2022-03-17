@@ -63,23 +63,7 @@ exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
     >
       <li>
         <button
-          className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
-          onClick={[Function]}
-        >
-          28
-        </button>
-      </li>
-      <li>
-        <button
-          className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
-          onClick={[Function]}
-        >
-          39
-        </button>
-      </li>
-      <li>
-        <button
-          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+          className="m-route-picker__route-list-button"
           onClick={[Function]}
         >
           71
@@ -87,7 +71,7 @@ exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
       </li>
       <li>
         <button
-          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+          className="m-route-picker__route-list-button"
           onClick={[Function]}
         >
           73
@@ -95,7 +79,7 @@ exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
       </li>
       <li>
         <button
-          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+          className="m-route-picker__route-list-button"
           onClick={[Function]}
         >
           111
@@ -103,7 +87,7 @@ exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
       </li>
       <li>
         <button
-          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+          className="m-route-picker__route-list-button"
           onClick={[Function]}
         >
           SL1

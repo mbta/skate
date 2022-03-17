@@ -31,10 +31,10 @@ const RoutePicker = ({
   const routeFilterData: RouteFilterData = useRouteFilter()
   const garageFilterData: GarageFilterData = useGarageFilter(routes)
 
-  const filteredRoutes = filterRoutesByGarage(
+  const selectableRoutes = filterRoutesByGarage(
     filterRoutes(routes || [], routeFilterData),
     garageFilterData
-  )
+  ).filter((route) => !selectedRouteIds.includes(route.id))
 
   return (
     <div className="m-route-picker">
@@ -47,8 +47,7 @@ const RoutePicker = ({
           <Loading />
         ) : (
           <RoutesList
-            routes={filteredRoutes}
-            selectedRouteIds={selectedRouteIds}
+            routes={selectableRoutes}
             selectRoute={selectRoute}
             deselectRoute={deselectRoute}
           />
@@ -110,24 +109,16 @@ const SelectedRouteButton = ({
 
 const RoutesList = ({
   routes,
-  selectedRouteIds,
   selectRoute,
-  deselectRoute,
 }: {
   routes: Route[]
-  selectedRouteIds: RouteId[]
   selectRoute: (routeId: RouteId) => void
   deselectRoute: (routeId: RouteId) => void
 }) => (
   <ul className="m-route-picker__route-list">
     {routes.map((route) => (
       <li key={route.id}>
-        <RouteListButton
-          route={route}
-          isSelected={selectedRouteIds.includes(route.id)}
-          selectRoute={selectRoute}
-          deselectRoute={deselectRoute}
-        />
+        <RouteListButton route={route} selectRoute={selectRoute} />
       </li>
     ))}
   </ul>
@@ -135,26 +126,15 @@ const RoutesList = ({
 
 const RouteListButton = ({
   route,
-  isSelected,
   selectRoute,
-  deselectRoute,
 }: {
   route: Route
-  isSelected: boolean
   selectRoute: (routeId: RouteId) => void
-  deselectRoute: (routeId: RouteId) => void
 }) => {
-  const selectedClass = isSelected
-    ? "m-route-picker__route-list-button--selected"
-    : "m-route-picker__route-list-button--unselected"
-  const clickHandler = isSelected
-    ? () => deselectRoute(route.id)
-    : () => selectRoute(route.id)
-
   return (
     <button
-      className={`m-route-picker__route-list-button ${selectedClass}`}
-      onClick={clickHandler}
+      className="m-route-picker__route-list-button"
+      onClick={() => selectRoute(route.id)}
     >
       {route.name}
     </button>

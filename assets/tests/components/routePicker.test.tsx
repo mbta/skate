@@ -71,29 +71,6 @@ describe("RoutePicker", () => {
     expect(mockSelect).toHaveBeenCalledWith("id")
   })
 
-  test("clicking a selected route deselects it", () => {
-    const mockDeselect = jest.fn()
-
-    const routes = [routeFactory.build({ id: "id", name: "id" })]
-
-    const routePicker = mount(
-      <RoutesProvider routes={routes}>
-        <RoutePicker
-          selectedRouteIds={["id"]}
-          selectRoute={jest.fn()}
-          deselectRoute={mockDeselect}
-        />
-      </RoutesProvider>
-    )
-
-    routePicker
-      .find(".m-route-picker__route-list-button--selected")
-      .first()
-      .simulate("click")
-
-    expect(mockDeselect).toHaveBeenCalledWith("id")
-  })
-
   test("clicking in the list of selected routes deselects a route", () => {
     const mockDeselect = jest.fn()
 
