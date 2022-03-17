@@ -31,6 +31,17 @@
     flex-direction: column;
     gap: 0.5rem;
   }
+
+  p {
+    @include font-small;
+    background-color: $white;
+    border: 1px solid #b3b5bd;
+    border-radius: 6px;
+    margin: 0;
+    padding: 0.5rem 0.59375rem 0 0.84375rem;
+    color: #525560;
+    line-height: calc(4 / 3);
+  }
 }
 
 @mixin route-picker-button {

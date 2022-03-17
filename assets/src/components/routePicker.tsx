@@ -72,18 +72,22 @@ const SelectedRoutesList = ({
   selectedRouteIds: RouteId[]
   deselectRoute: (routeId: RouteId) => void
 }) => {
-  return (
-    <ul className="m-route-picker__selected-routes">
-      {selectedRouteIds.map((routeId) => (
-        <SelectedRouteButton
-          key={routeId}
-          routeId={routeId}
-          routes={routes}
-          deselectRoute={deselectRoute}
-        />
-      ))}
-    </ul>
-  )
+  if (selectedRouteIds.length > 0) {
+    return (
+      <ul className="m-route-picker__selected-routes">
+        {selectedRouteIds.map((routeId) => (
+          <SelectedRouteButton
+            key={routeId}
+            routeId={routeId}
+            routes={routes}
+            deselectRoute={deselectRoute}
+          />
+        ))}
+      </ul>
+    )
+  } else {
+    return <p>Selected routes will show up here&hellip;</p>
+  }
 }
 
 const SelectedRouteButton = ({

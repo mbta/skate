@@ -275,9 +275,9 @@ exports[`App renders 1`] = `
             className="m-route-picker__routes-container"
           >
             loading...
-            <ul
-              className="m-route-picker__selected-routes"
-            />
+            <p>
+              Selected routes will show up here…
+            </p>
           </div>
         </div>
       </div>
@@ -603,9 +603,9 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
             className="m-route-picker__routes-container"
           >
             loading...
-            <ul
-              className="m-route-picker__selected-routes"
-            />
+            <p>
+              Selected routes will show up here…
+            </p>
           </div>
         </div>
       </div>
