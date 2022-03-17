@@ -1,4 +1,5 @@
 .m-route-picker {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   row-gap: 1rem;
@@ -10,8 +11,10 @@
 }
 
 .m-route-picker__routes-container {
+  flex-grow: 1;
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-auto-rows: 1fr;
   grid-template-areas: "all selected";
   gap: 1rem;
   min-height: 0;
