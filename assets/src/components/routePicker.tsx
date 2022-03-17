@@ -42,22 +42,24 @@ const RoutePicker = ({
 
       <GarageFilter {...garageFilterData} />
 
-      <SelectedRoutesList
-        routes={routes}
-        selectedRouteIds={selectedRouteIds}
-        deselectRoute={deselectRoute}
-      />
+      <div className="m-route-picker__routes-container">
+        {routes === null ? (
+          <Loading />
+        ) : (
+          <RoutesList
+            routes={filteredRoutes}
+            selectedRouteIds={selectedRouteIds}
+            selectRoute={selectRoute}
+            deselectRoute={deselectRoute}
+          />
+        )}
 
-      {routes === null ? (
-        <Loading />
-      ) : (
-        <RoutesList
-          routes={filteredRoutes}
+        <SelectedRoutesList
+          routes={routes}
           selectedRouteIds={selectedRouteIds}
-          selectRoute={selectRoute}
           deselectRoute={deselectRoute}
         />
-      )}
+      </div>
     </div>
   )
 }

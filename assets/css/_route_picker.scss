@@ -2,41 +2,49 @@
   display: flex;
   flex-direction: column;
   row-gap: 1rem;
-  height: 100%;
+  min-height: 0;
 }
 
 .m-route-picker__label {
   @include font-label();
 }
 
-.m-route-picker__selected-routes {
-  display: flex;
-  flex: 0 0 auto;
-  flex-shrink: 0;
-  flex-wrap: wrap;
-  margin-bottom: 1.5rem;
-  margin-top: 1.5rem;
+.m-route-picker__routes-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-areas: "all selected";
+  gap: 1rem;
+  min-height: 0;
 
-  &:empty {
-    margin-bottom: 0rem;
+  ul {
+    min-height: 0;
+    background-color: $white;
+    border: 1px solid #b3b5bd;
+    border-radius: 6px;
+    margin: 0;
+    padding: 0.5rem;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
   }
+}
+
+.m-route-picker__selected-routes {
+  grid-area: selected;
 }
 
 .m-route-picker__selected-routes-button {
   @include button-primary;
-  margin-bottom: 0.25rem;
-  margin-right: 0.25rem;
-  min-width: 2rem;
+  width: 100%;
 }
 
 .m-route-picker__route-list {
-  flex: 1 1 0;
-  overflow-y: scroll;
-  margin-top: 0rem;
+  grid-area: all;
 }
 
 .m-route-picker__route-list-button {
-  margin-bottom: 0.25rem;
   width: 100%;
   word-break: break-word;
 
@@ -50,13 +58,6 @@
 
   &--disabled {
     @include button-disabled;
-  }
-
-  &--with-count {
-    align-items: stretch;
-    display: flex;
-    justify-content: start;
-    padding: 0;
   }
 }
 

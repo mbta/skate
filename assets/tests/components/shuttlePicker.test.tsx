@@ -131,7 +131,7 @@ describe("ShuttlePicker", () => {
     )
     wrapper
       .find(
-        ".m-route-picker__shuttle-run-list .m-route-picker__route-list-button--unselected"
+        ".m-shuttle-picker__shuttle-run-list .m-shuttle-picker__route-list-button--unselected"
       )
       .first()
       .simulate("click")
@@ -151,7 +151,7 @@ describe("ShuttlePicker", () => {
     )
     wrapper
       .find(
-        ".m-route-picker__shuttle-run-list .m-route-picker__route-list-button--selected"
+        ".m-shuttle-picker__shuttle-run-list .m-shuttle-picker__route-list-button--selected"
       )
       .first()
       .simulate("click")
@@ -171,7 +171,7 @@ describe("ShuttlePicker", () => {
     )
     const allSpecialsButton = wrapper
       .find(
-        ".m-route-picker__shuttle-run-list .m-route-picker__route-list-button"
+        ".m-shuttle-picker__shuttle-run-list .m-shuttle-picker__route-list-button"
       )
       .first()
 
@@ -194,7 +194,7 @@ describe("ShuttlePicker", () => {
     )
     const allSpecialsButton = wrapper
       .find(
-        ".m-route-picker__shuttle-run-list .m-route-picker__route-list-button"
+        ".m-shuttle-picker__shuttle-run-list .m-shuttle-picker__route-list-button"
       )
       .first()
 
@@ -214,7 +214,7 @@ describe("ShuttlePicker", () => {
     )
     wrapper
       .find(
-        ".m-route-picker__shuttle-route-list .m-route-picker__route-list-button--unselected"
+        ".m-shuttle-picker__shuttle-route-list .m-shuttle-picker__route-list-button--unselected"
       )
       .first()
       .simulate("click")
@@ -235,7 +235,7 @@ describe("ShuttlePicker", () => {
     )
     wrapper
       .find(
-        ".m-route-picker__shuttle-route-list .m-route-picker__route-list-button--selected"
+        ".m-shuttle-picker__shuttle-route-list .m-shuttle-picker__route-list-button--selected"
       )
       .first()
       .simulate("click")

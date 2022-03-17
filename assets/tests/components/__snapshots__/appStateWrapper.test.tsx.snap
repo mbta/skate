@@ -284,10 +284,14 @@ exports[`renders 1`] = `
               </button>
             </div>
           </div>
-          <ul
-            className="m-route-picker__selected-routes"
-          />
-          loading...
+          <div
+            className="m-route-picker__routes-container"
+          >
+            loading...
+            <ul
+              className="m-route-picker__selected-routes"
+            />
+          </div>
         </div>
       </div>
       <div

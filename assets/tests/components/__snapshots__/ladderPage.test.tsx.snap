@@ -100,10 +100,14 @@ exports[`LadderPage renders the empty state 1`] = `
           </button>
         </div>
       </div>
-      <ul
-        className="m-route-picker__selected-routes"
-      />
-      loading...
+      <div
+        className="m-route-picker__routes-container"
+      >
+        loading...
+        <ul
+          className="m-route-picker__selected-routes"
+        />
+      </div>
     </div>
   </div>
   <div
@@ -236,38 +240,42 @@ exports[`LadderPage renders with route tabs 1`] = `
           </button>
         </div>
       </div>
-      <ul
-        className="m-route-picker__selected-routes"
+      <div
+        className="m-route-picker__routes-container"
       >
-        <li>
-          <button
-            className="m-route-picker__selected-routes-button"
-            onClick={[Function]}
-          >
-            1
-          </button>
-        </li>
-      </ul>
-      <ul
-        className="m-route-picker__route-list"
-      >
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
-            onClick={[Function]}
-          >
-            1
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
-            onClick={[Function]}
-          >
-            28
-          </button>
-        </li>
-      </ul>
+        <ul
+          className="m-route-picker__route-list"
+        >
+          <li>
+            <button
+              className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
+              onClick={[Function]}
+            >
+              1
+            </button>
+          </li>
+          <li>
+            <button
+              className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+              onClick={[Function]}
+            >
+              28
+            </button>
+          </li>
+        </ul>
+        <ul
+          className="m-route-picker__selected-routes"
+        >
+          <li>
+            <button
+              className="m-route-picker__selected-routes-button"
+              onClick={[Function]}
+            >
+              1
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
   <div
@@ -511,46 +519,50 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
           </button>
         </div>
       </div>
-      <ul
-        className="m-route-picker__selected-routes"
+      <div
+        className="m-route-picker__routes-container"
       >
-        <li>
-          <button
-            className="m-route-picker__selected-routes-button"
-            onClick={[Function]}
-          >
-            28
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__selected-routes-button"
-            onClick={[Function]}
-          >
-            1
-          </button>
-        </li>
-      </ul>
-      <ul
-        className="m-route-picker__route-list"
-      >
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
-            onClick={[Function]}
-          >
-            1
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
-            onClick={[Function]}
-          >
-            28
-          </button>
-        </li>
-      </ul>
+        <ul
+          className="m-route-picker__route-list"
+        >
+          <li>
+            <button
+              className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
+              onClick={[Function]}
+            >
+              1
+            </button>
+          </li>
+          <li>
+            <button
+              className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
+              onClick={[Function]}
+            >
+              28
+            </button>
+          </li>
+        </ul>
+        <ul
+          className="m-route-picker__selected-routes"
+        >
+          <li>
+            <button
+              className="m-route-picker__selected-routes-button"
+              onClick={[Function]}
+            >
+              28
+            </button>
+          </li>
+          <li>
+            <button
+              className="m-route-picker__selected-routes-button"
+              onClick={[Function]}
+            >
+              1
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
   <div
@@ -808,46 +820,50 @@ exports[`LadderPage renders with timepoints 1`] = `
           </button>
         </div>
       </div>
-      <ul
-        className="m-route-picker__selected-routes"
+      <div
+        className="m-route-picker__routes-container"
       >
-        <li>
-          <button
-            className="m-route-picker__selected-routes-button"
-            onClick={[Function]}
-          >
-            28
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__selected-routes-button"
-            onClick={[Function]}
-          >
-            1
-          </button>
-        </li>
-      </ul>
-      <ul
-        className="m-route-picker__route-list"
-      >
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
-            onClick={[Function]}
-          >
-            1
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
-            onClick={[Function]}
-          >
-            28
-          </button>
-        </li>
-      </ul>
+        <ul
+          className="m-route-picker__route-list"
+        >
+          <li>
+            <button
+              className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
+              onClick={[Function]}
+            >
+              1
+            </button>
+          </li>
+          <li>
+            <button
+              className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
+              onClick={[Function]}
+            >
+              28
+            </button>
+          </li>
+        </ul>
+        <ul
+          className="m-route-picker__selected-routes"
+        >
+          <li>
+            <button
+              className="m-route-picker__selected-routes-button"
+              onClick={[Function]}
+            >
+              28
+            </button>
+          </li>
+          <li>
+            <button
+              className="m-route-picker__selected-routes-button"
+              onClick={[Function]}
+            >
+              1
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
   <div
@@ -1349,38 +1365,42 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
           </button>
         </div>
       </div>
-      <ul
-        className="m-route-picker__selected-routes"
+      <div
+        className="m-route-picker__routes-container"
       >
-        <li>
-          <button
-            className="m-route-picker__selected-routes-button"
-            onClick={[Function]}
-          >
-            1
-          </button>
-        </li>
-      </ul>
-      <ul
-        className="m-route-picker__route-list"
-      >
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
-            onClick={[Function]}
-          >
-            1
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
-            onClick={[Function]}
-          >
-            28
-          </button>
-        </li>
-      </ul>
+        <ul
+          className="m-route-picker__route-list"
+        >
+          <li>
+            <button
+              className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
+              onClick={[Function]}
+            >
+              1
+            </button>
+          </li>
+          <li>
+            <button
+              className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+              onClick={[Function]}
+            >
+              28
+            </button>
+          </li>
+        </ul>
+        <ul
+          className="m-route-picker__selected-routes"
+        >
+          <li>
+            <button
+              className="m-route-picker__selected-routes-button"
+              onClick={[Function]}
+            >
+              1
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
   <div
