@@ -193,6 +193,7 @@ exports[`App renders 1`] = `
       />
       <div
         className="m-picker-container visible"
+        data-testid="picker-container"
       >
         <div
           className="c-drawer-tab"
@@ -283,6 +284,8 @@ exports[`App renders 1`] = `
       </div>
       <div
         className="m-picker-container-overlay"
+        data-testid="picker-container-overlay"
+        onClick={[Function]}
       />
       <div
         className="m-ladder-page__tab-bar-and-ladders m-ladder-page__tab-bar-and-ladders--picker_container_visible"
@@ -521,6 +524,7 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
       />
       <div
         className="m-picker-container visible"
+        data-testid="picker-container"
       >
         <div
           className="c-drawer-tab"
@@ -611,6 +615,8 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
       </div>
       <div
         className="m-picker-container-overlay"
+        data-testid="picker-container-overlay"
+        onClick={[Function]}
       />
       <div
         className="m-ladder-page__tab-bar-and-ladders m-ladder-page__tab-bar-and-ladders--picker_container_visible"

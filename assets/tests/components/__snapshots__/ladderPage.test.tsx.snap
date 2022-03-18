@@ -9,6 +9,7 @@ exports[`LadderPage renders the empty state 1`] = `
   />
   <div
     className="m-picker-container visible"
+    data-testid="picker-container"
   >
     <div
       className="c-drawer-tab"
@@ -99,6 +100,8 @@ exports[`LadderPage renders the empty state 1`] = `
   </div>
   <div
     className="m-picker-container-overlay"
+    data-testid="picker-container-overlay"
+    onClick={[Function]}
   />
   <div
     className="m-ladder-page__tab-bar-and-ladders m-ladder-page__tab-bar-and-ladders--picker_container_visible"
@@ -136,6 +139,7 @@ exports[`LadderPage renders with route tabs 1`] = `
   />
   <div
     className="m-picker-container visible"
+    data-testid="picker-container"
   >
     <div
       className="c-drawer-tab"
@@ -246,6 +250,8 @@ exports[`LadderPage renders with route tabs 1`] = `
   </div>
   <div
     className="m-picker-container-overlay"
+    data-testid="picker-container-overlay"
+    onClick={[Function]}
   />
   <div
     className="m-ladder-page__tab-bar-and-ladders m-ladder-page__tab-bar-and-ladders--picker_container_visible"
@@ -394,6 +400,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
   />
   <div
     className="m-picker-container visible"
+    data-testid="picker-container"
   >
     <div
       className="c-drawer-tab"
@@ -503,6 +510,8 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
   </div>
   <div
     className="m-picker-container-overlay"
+    data-testid="picker-container-overlay"
+    onClick={[Function]}
   />
   <div
     className="m-ladder-page__tab-bar-and-ladders m-ladder-page__tab-bar-and-ladders--picker_container_visible"
@@ -665,6 +674,7 @@ exports[`LadderPage renders with timepoints 1`] = `
   />
   <div
     className="m-picker-container visible"
+    data-testid="picker-container"
   >
     <div
       className="c-drawer-tab"
@@ -774,6 +784,8 @@ exports[`LadderPage renders with timepoints 1`] = `
   </div>
   <div
     className="m-picker-container-overlay"
+    data-testid="picker-container-overlay"
+    onClick={[Function]}
   />
   <div
     className="m-ladder-page__tab-bar-and-ladders m-ladder-page__tab-bar-and-ladders--picker_container_visible"
@@ -1180,6 +1192,7 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
   />
   <div
     className="m-picker-container visible"
+    data-testid="picker-container"
   >
     <div
       className="c-drawer-tab"
@@ -1290,6 +1303,8 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
   </div>
   <div
     className="m-picker-container-overlay"
+    data-testid="picker-container-overlay"
+    onClick={[Function]}
   />
   <div
     className="m-ladder-page__tab-bar-and-ladders m-ladder-page__tab-bar-and-ladders--picker_container_visible"
