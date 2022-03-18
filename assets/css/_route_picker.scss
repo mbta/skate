@@ -30,6 +30,10 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+
+    li {
+      position: relative;
+    }
   }
 
   p {
@@ -48,10 +52,17 @@
   width: 100%;
   font-size: 0.875rem;
   font-weight: 500;
-  padding-top: 0.6875rem;
-  padding-bottom: 0.6875rem;
+  height: 2.25rem;
   border-radius: 4px;
   line-height: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover,
+  &:focus {
+    font-weight: 600;
+  }
 }
 
 .m-route-picker__route-list {
@@ -67,13 +78,11 @@
   &:hover {
     color: #141524;
     background-color: #dbdde1;
-    font-weight: 600;
   }
 
   &:focus {
     color: #141524;
     background-color: #dbdde1;
-    font-weight: 600;
     border: 1px solid #b3b5bd;
   }
 }
@@ -84,6 +93,41 @@
 
 .m-route-picker__selected-routes-button {
   @include route-picker-button;
-  color: #fafafa;
+  @include button-icon(0.75rem);
+  color: #f4f4f5;
   background-color: #465863;
+
+  span {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+
+    svg {
+      stroke: #f4f4f5;
+      fill: #f4f4f5;
+    }
+  }
+
+  &:hover {
+    background-color: #586f7c;
+
+    span {
+      svg {
+        stroke: #fafafa;
+        fill: #fafafa;
+      }
+    }
+  }
+
+  &:focus-within {
+    background-color: #324450;
+    border: 1px solid #586f7c;
+
+    span {
+      svg {
+        stroke: #fafafa;
+        fill: #fafafa;
+      }
+    }
+  }
 }

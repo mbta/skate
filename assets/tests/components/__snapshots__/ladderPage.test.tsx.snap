@@ -242,6 +242,14 @@ exports[`LadderPage renders with route tabs 1`] = `
               onClick={[Function]}
             >
               1
+              <span
+                className="m-route-picker__selected-routes-button-icon"
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
             </button>
           </li>
         </ul>
@@ -494,6 +502,14 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
               onClick={[Function]}
             >
               28
+              <span
+                className="m-route-picker__selected-routes-button-icon"
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
             </button>
           </li>
           <li>
@@ -502,6 +518,14 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
               onClick={[Function]}
             >
               1
+              <span
+                className="m-route-picker__selected-routes-button-icon"
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
             </button>
           </li>
         </ul>
@@ -768,6 +792,14 @@ exports[`LadderPage renders with timepoints 1`] = `
               onClick={[Function]}
             >
               28
+              <span
+                className="m-route-picker__selected-routes-button-icon"
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
             </button>
           </li>
           <li>
@@ -776,6 +808,14 @@ exports[`LadderPage renders with timepoints 1`] = `
               onClick={[Function]}
             >
               1
+              <span
+                className="m-route-picker__selected-routes-button-icon"
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
             </button>
           </li>
         </ul>
@@ -1295,6 +1335,14 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
               onClick={[Function]}
             >
               1
+              <span
+                className="m-route-picker__selected-routes-button-icon"
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
             </button>
           </li>
         </ul>

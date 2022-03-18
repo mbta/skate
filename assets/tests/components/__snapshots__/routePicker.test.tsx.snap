@@ -90,6 +90,14 @@ exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
           onClick={[Function]}
         >
           28
+          <span
+            className="m-route-picker__selected-routes-button-icon"
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "SVG",
+              }
+            }
+          />
         </button>
       </li>
       <li>
@@ -98,6 +106,14 @@ exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
           onClick={[Function]}
         >
           39
+          <span
+            className="m-route-picker__selected-routes-button-icon"
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "SVG",
+              }
+            }
+          />
         </button>
       </li>
     </ul>

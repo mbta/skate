@@ -15,6 +15,7 @@ import {
   GarageFilter,
   filterRoutesByGarage,
 } from "../hooks/useGarageFilter"
+import { closeIcon } from "../helpers/icon"
 
 interface Props {
   selectedRouteIds: RouteId[]
@@ -106,6 +107,7 @@ const SelectedRouteButton = ({
         onClick={() => deselectRoute(routeId)}
       >
         {routeNameOrId(routeId, routes)}
+        {closeIcon("m-route-picker__selected-routes-button-icon")}
       </button>
     </li>
   )
