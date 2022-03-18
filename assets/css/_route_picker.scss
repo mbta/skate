@@ -63,6 +63,19 @@
   color: #3c3f4c;
   background-color: #ecedee;
   border: 1px solid #dbdde1;
+
+  &:hover {
+    color: #141524;
+    background-color: #dbdde1;
+    font-weight: 600;
+  }
+
+  &:focus {
+    color: #141524;
+    background-color: #dbdde1;
+    font-weight: 600;
+    border: 1px solid #b3b5bd;
+  }
 }
 
 .m-route-picker__selected-routes {
