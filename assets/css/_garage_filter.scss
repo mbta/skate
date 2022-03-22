@@ -17,7 +17,6 @@
 }
 
 .m-garage-filter__header {
-  border-bottom: 1px solid #d8dde1;
   height: 2.25rem;
   padding: 0 0.5rem 0 1rem;
   line-height: 1;
@@ -26,6 +25,10 @@
   align-items: center;
   cursor: pointer;
   user-select: none;
+
+  &:not(:only-child) {
+    border-bottom: 1px solid #d8dde1;
+  }
 }
 
 .m-garage-filter__show-hide-button {
