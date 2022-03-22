@@ -1,8 +1,9 @@
 $non-mobile-min-width: 768px;
 $mobile-max-width: $non-mobile-min-width - 1;
 $tab-bar-width: 3rem;
+$drawer-tab-width: 2rem;
 $route-picker-width: 21.875rem;
-$mobile-route-picker-width: 18.625rem;
+$mobile-route-picker-width: 18.125rem;
 $shuttle-picker-width: 12.6rem;
 
 @import "base";

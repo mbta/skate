@@ -24,7 +24,7 @@
 }
 
 .m-picker-container .c-drawer-tab {
-  left: $route-picker-width;
+  left: 100%;
   background-color: #ecedee;
 }
 
@@ -34,15 +34,15 @@
 
 @media screen and (max-width: $mobile-max-width) {
   .m-picker-container {
-    width: $mobile-route-picker-width;
+    --picker-container-width: min(
+      #{$mobile-route-picker-width},
+      calc(100% - #{$drawer-tab-width})
+    );
+    width: var(--picker-container-width);
 
     &.hidden {
-      left: -$mobile-route-picker-width;
+      left: calc(-1 * var(--picker-container-width));
     }
-  }
-
-  .m-picker-container .c-drawer-tab {
-    left: $mobile-route-picker-width;
   }
 
   .m-picker-container-overlay {
