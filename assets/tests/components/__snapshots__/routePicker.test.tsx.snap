@@ -25,11 +25,11 @@ exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
   >
     <div
       className="m-garage-filter__header"
+      onClick={[Function]}
     >
       Filter garages
       <button
         className="m-garage-filter__show-hide-button"
-        onClick={[Function]}
       >
         <span
           className=""
@@ -146,11 +146,11 @@ exports[`RoutePicker renders a loading/empty state 1`] = `
   >
     <div
       className="m-garage-filter__header"
+      onClick={[Function]}
     >
       Filter garages
       <button
         className="m-garage-filter__show-hide-button"
-        onClick={[Function]}
       >
         <span
           className=""

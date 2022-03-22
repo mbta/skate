@@ -255,11 +255,11 @@ exports[`renders 1`] = `
           >
             <div
               className="m-garage-filter__header"
+              onClick={[Function]}
             >
               Filter garages
               <button
                 className="m-garage-filter__show-hide-button"
-                onClick={[Function]}
               >
                 <span
                   className=""

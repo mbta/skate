@@ -64,12 +64,12 @@ export const GarageFilter = ({
 
   return (
     <div className="m-garage-filter">
-      <div className="m-garage-filter__header">
+      <div
+        className="m-garage-filter__header"
+        onClick={() => setShowGaragesFilter(!showGaragesFilter)}
+      >
         Filter garages
-        <button
-          className="m-garage-filter__show-hide-button"
-          onClick={() => setShowGaragesFilter(!showGaragesFilter)}
-        >
+        <button className="m-garage-filter__show-hide-button">
           {showGaragesFilter ? collapseIcon() : expandIcon()}
         </button>
       </div>

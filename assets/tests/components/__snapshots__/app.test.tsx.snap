@@ -255,11 +255,11 @@ exports[`App renders 1`] = `
           >
             <div
               className="m-garage-filter__header"
+              onClick={[Function]}
             >
               Filter garages
               <button
                 className="m-garage-filter__show-hide-button"
-                onClick={[Function]}
               >
                 <span
                   className=""
@@ -586,11 +586,11 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
           >
             <div
               className="m-garage-filter__header"
+              onClick={[Function]}
             >
               Filter garages
               <button
                 className="m-garage-filter__show-hide-button"
-                onClick={[Function]}
               >
                 <span
                   className=""
