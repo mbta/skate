@@ -78,7 +78,7 @@ config :skate,
       },
       %{
         route_id: "742",
-        min_length: 10
+        min_length: 5
       }
     ]
   }
