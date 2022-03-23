@@ -64,15 +64,15 @@ export const GarageFilter = ({
 
   return (
     <div className="m-garage-filter">
-      <div
+      <button
         className="m-garage-filter__header"
         onClick={() => setShowGaragesFilter(!showGaragesFilter)}
       >
         Filter garages
-        <button className="m-garage-filter__show-hide-button">
+        <div className="m-garage-filter__show-hide-button">
           {showGaragesFilter ? collapseIcon() : expandIcon()}
-        </button>
-      </div>
+        </div>
+      </button>
       {showGaragesFilter ? (
         <ul className="m-garage-filter__garages">
           {sortedGarages.map((garage) => (

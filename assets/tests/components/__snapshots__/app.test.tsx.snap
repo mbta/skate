@@ -253,12 +253,12 @@ exports[`App renders 1`] = `
           <div
             className="m-garage-filter"
           >
-            <div
+            <button
               className="m-garage-filter__header"
               onClick={[Function]}
             >
               Filter garages
-              <button
+              <div
                 className="m-garage-filter__show-hide-button"
               >
                 <span
@@ -269,8 +269,8 @@ exports[`App renders 1`] = `
                     }
                   }
                 />
-              </button>
-            </div>
+              </div>
+            </button>
           </div>
           <div
             className="m-route-picker__routes-container"
@@ -584,12 +584,12 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
           <div
             className="m-garage-filter"
           >
-            <div
+            <button
               className="m-garage-filter__header"
               onClick={[Function]}
             >
               Filter garages
-              <button
+              <div
                 className="m-garage-filter__show-hide-button"
               >
                 <span
@@ -600,8 +600,8 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
                     }
                   }
                 />
-              </button>
-            </div>
+              </div>
+            </button>
           </div>
           <div
             className="m-route-picker__routes-container"
