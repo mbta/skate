@@ -23,7 +23,8 @@
     min-height: 0;
     background-color: $white;
     border: 1px solid #b3b5bd;
-    border-radius: 6px;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
     margin: 0;
     padding: 0.5rem;
     overflow-y: scroll;
@@ -40,7 +41,8 @@
     @include font-small;
     background-color: $white;
     border: 1px solid #b3b5bd;
-    border-radius: 6px;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
     margin: 0;
     padding: 0.5rem 0.59375rem 0 0.84375rem;
     color: #525560;
