@@ -32,7 +32,7 @@
 }
 
 .m-garage-filter__show-hide-button {
-  @include button-icon(0.68rem);
+  @include button-icon(0.5625rem);
   transform: rotate(-90deg);
   width: 1.5rem;
   height: 1.5rem;
@@ -41,6 +41,10 @@
   align-items: center;
 
   span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     svg {
       fill: #525560;
     }
