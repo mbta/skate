@@ -39,7 +39,7 @@
 
 .m-garage-filter__show-hide-button {
   @include button-icon(0.5625rem);
-  transform: rotate(-90deg);
+  transform: rotate(90deg);
   width: 1.5rem;
   height: 1.5rem;
   display: flex;
