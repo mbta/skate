@@ -36,7 +36,7 @@ defmodule SkateWeb.DataStatusChannelTest do
     test "pushes new data onto the socket", %{socket: socket} do
       {:ok, _, socket} = subscribe_and_join(socket, DataStatusChannel, "data_status")
 
-      assert {:noreply, socket} =
+      assert {:noreply, _socket} =
                DataStatusChannel.handle_info(
                  {:new_data_status, :good},
                  socket

@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :skate,
   hastus_url: "https://cdn.mbta.com/hastus_export/skate/hastus_skate_dev.zip",

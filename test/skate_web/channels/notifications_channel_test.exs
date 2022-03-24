@@ -37,7 +37,7 @@ defmodule SkateWeb.NotificationsChannelTest do
     test "pushes new data onto the socket", %{socket: socket} do
       {:ok, _, socket} = subscribe_and_join(socket, NotificationsChannel, "notifications")
 
-      assert {:noreply, socket} =
+      assert {:noreply, _socket} =
                NotificationsChannel.handle_info(
                  {:notification, "bad thing happen on bus"},
                  socket

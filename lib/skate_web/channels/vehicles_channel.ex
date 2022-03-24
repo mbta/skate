@@ -49,9 +49,7 @@ defmodule SkateWeb.VehiclesChannel do
       end
 
     Logger.info(fn ->
-      "User=#{username} searched for property=#{Enum.at(subscribe_args, 1)}, text=#{
-        Enum.at(subscribe_args, 0)
-      }"
+      "User=#{username} searched for property=#{Enum.at(subscribe_args, 1)}, text=#{Enum.at(subscribe_args, 0)}"
     end)
 
     vehicles = Duration.log_duration(Server, :subscribe_to_search, subscribe_args)

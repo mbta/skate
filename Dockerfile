@@ -1,8 +1,7 @@
-FROM hexpm/elixir:1.10.2-erlang-22.3.4.23-alpine-3.13.6 AS elixir-builder
+FROM hexpm/elixir:1.13.3-erlang-24.3.2-alpine-3.15.0 AS elixir-builder
 
 # elixir expects utf8.
-ENV ELIXIR_VERSION="v1.10.2" \
-  LANG=C.UTF-8 \
+ENV LANG=C.UTF-8 \
   MIX_ENV=prod
 
 WORKDIR /root
@@ -16,7 +15,7 @@ RUN mix local.hex --force && \
   mix local.rebar --force && \
   mix do deps.get --only prod
 
-FROM node:14-alpine3.13 as assets-builder
+FROM node:14-alpine3.15 as assets-builder
 
 WORKDIR /root
 ADD . .
@@ -38,10 +37,11 @@ COPY --from=assets-builder /root/priv/static ./priv/static
 
 RUN mix do compile --force, phx.digest, release
 
-FROM alpine:3.13.6
+FROM alpine:3.15.0
 
-RUN apk add --update libssl1.1 ncurses-libs bash curl dumb-init \
-  && rm -rf /var/cache/apk
+RUN apk add --update libssl1.1 libstdc++ libgcc \
+    ncurses-libs bash curl dumb-init \
+    && rm -rf /var/cache/apk
 
 # Create non-root user
 RUN addgroup -S skate && adduser -S -G skate skate

@@ -176,7 +176,7 @@ defmodule Concentrate.Producer.HTTP.StateMachineTest do
         end)
 
       # only one message (some content before, some content after)
-      assert [_, _] = String.split(log, "[warn]")
+      assert [_, _] = String.split(log, "[warning]")
     end
 
     test "logs a warning if we never receive content before the timeout" do

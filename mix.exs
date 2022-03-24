@@ -5,7 +5,7 @@ defmodule Skate.MixProject do
     [
       app: :skate,
       version: "0.1.0",
-      elixir: "~> 1.7",
+      elixir: "~> 1.13",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -13,8 +13,7 @@ defmodule Skate.MixProject do
       test_coverage: [tool: LcovEx],
       elixirc_options: [warnings_as_errors: true],
       dialyzer: [
-        plt_add_apps: [:mix, :laboratory],
-        ignore_warnings: ".dialyzer.ignore-warnings.exs"
+        plt_add_apps: [:mix, :laboratory]
       ]
     ]
   end
@@ -51,7 +50,7 @@ defmodule Skate.MixProject do
       {:phoenix, "~> 1.5.0"},
       {:phoenix_pubsub, "~> 2.0"},
       {:phoenix_html, "~> 2.11"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:phoenix_live_reload, "~> 1.3", only: :dev},
       {:ex_aws, "~> 2.1"},
       {:ex_aws_secretsmanager, "~> 2.0"},
       {:jason, "~> 1.0"},
@@ -70,7 +69,7 @@ defmodule Skate.MixProject do
       {:csv, "~> 2.4.1"},
       {:timex, "~> 3.7.5"},
       {:stream_data, "~> 0.5.0", only: :test},
-      {:server_sent_event_stage, "~> 1.0.2"},
+      {:server_sent_event_stage, "~> 1.1.0"},
       {:castore, "~> 0.1.5"},
       {:laboratory, github: "paulswartz/laboratory", ref: "cookie_opts"},
       {:sentry, "~> 7.0"},

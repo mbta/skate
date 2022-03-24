@@ -74,15 +74,11 @@ defmodule Schedule.Fetcher do
       :ok = state[:updater_function].(schedule_state)
 
       Logger.info(
-        "#{__MODULE__}: Sent updated schedule data to receiving process, time_in_ms=#{
-          Time.diff(Time.utc_now(), update_start_time, :millisecond)
-        }"
+        "#{__MODULE__}: Sent updated schedule data to receiving process, time_in_ms=#{Time.diff(Time.utc_now(), update_start_time, :millisecond)}"
       )
 
       Logger.info(
-        "#{__MODULE__}: Successfully loaded schedule data, time_in_ms=#{
-          Time.diff(Time.utc_now(), start_time, :millisecond)
-        }"
+        "#{__MODULE__}: Successfully loaded schedule data, time_in_ms=#{Time.diff(Time.utc_now(), start_time, :millisecond)}"
       )
 
       if notify_health_server? && state[:health_server] do
@@ -110,9 +106,7 @@ defmodule Schedule.Fetcher do
         Process.send_after(self(), :check_gtfs, state[:poll_interval_ms])
 
         Logger.error(fn ->
-          "#{__MODULE__}: Error loading schedule data, time_in_ms=#{
-            Time.diff(Time.utc_now(), start_time, :millisecond)
-          } error=#{inspect(error)}"
+          "#{__MODULE__}: Error loading schedule data, time_in_ms=#{Time.diff(Time.utc_now(), start_time, :millisecond)} error=#{inspect(error)}"
         end)
 
         {:noreply, state}

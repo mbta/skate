@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :skate,
   api_key: {:secret, "ENV-api-key"},
