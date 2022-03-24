@@ -15,6 +15,7 @@ defmodule Skate.Application do
     # List all child processes to be supervised
     children =
       [
+        {Phoenix.PubSub, name: Skate.PubSub},
         SkateWeb.Endpoint,
         RefreshTokenStore,
         {Skate.Repo, []}

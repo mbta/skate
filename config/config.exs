@@ -89,7 +89,7 @@ config :skate, Schedule.CacheFile, cache_filename: nil
 config :skate, SkateWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [view: SkateWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Skate.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub_server: Skate.PubSub
 
 config :skate, SkateWeb.AuthManager,
   issuer: "skate",

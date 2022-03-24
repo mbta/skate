@@ -18,7 +18,7 @@ defmodule TrainVehicles.Supervisor do
 
   defp children() do
     [
-      supervisor(Phoenix.PubSub.PG2, [TrainVehicles.PubSub, []])
+      {Phoenix.PubSub, name: TrainVehicles.PubSub}
       | stream_children()
     ]
   end

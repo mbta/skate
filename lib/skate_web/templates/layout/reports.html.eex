@@ -21,7 +21,7 @@
 
     <body>
         <main role="main" class="container">
-            <%= render view_module(@conn), view_template(@conn), assigns %>
+            <%= @inner_content %>
         </main>
     </body>
 </html>
