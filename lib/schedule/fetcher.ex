@@ -1,5 +1,5 @@
 defmodule Schedule.Fetcher do
-  use GenServer
+  use GenServer, restart: :transient
   require Logger
 
   alias Schedule.{
