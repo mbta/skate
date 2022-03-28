@@ -125,6 +125,8 @@ exports[`LadderPage renders the empty state 1`] = `
     </div>
     <div
       className="m-route-ladders"
+      data-testid="route-ladders-div"
+      onWheel={[Function]}
     />
   </div>
 </div>
@@ -351,6 +353,8 @@ exports[`LadderPage renders with route tabs 1`] = `
     </div>
     <div
       className="m-route-ladders"
+      data-testid="route-ladders-div"
+      onWheel={[Function]}
     >
       <div
         className="m-route-ladder__header"
@@ -599,6 +603,8 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
     </div>
     <div
       className="m-route-ladders"
+      data-testid="route-ladders-div"
+      onWheel={[Function]}
     >
       <div
         className="m-route-ladder__header"
@@ -889,6 +895,8 @@ exports[`LadderPage renders with timepoints 1`] = `
     </div>
     <div
       className="m-route-ladders"
+      data-testid="route-ladders-div"
+      onWheel={[Function]}
     >
       <div
         className="m-route-ladder__header"
@@ -1416,6 +1424,8 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
     </div>
     <div
       className="m-route-ladders"
+      data-testid="route-ladders-div"
+      onWheel={[Function]}
     >
       <div
         className="m-route-ladder__header"

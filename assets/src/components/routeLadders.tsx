@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useRef, WheelEventHandler } from "react"
 import { VehiclesByRouteIdContext } from "../contexts/vehiclesByRouteIdContext"
 import { VehicleId, VehicleOrGhost } from "../realtime.d"
 import { ByRouteId, Route, TimepointsByRouteId, RouteId } from "../schedule.d"
@@ -30,9 +30,23 @@ const RouteLadders = ({
   const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = useContext(
     VehiclesByRouteIdContext
   )
+  const laddersRef = useRef<HTMLDivElement | null>(null)
+  const onWheel: WheelEventHandler<HTMLDivElement> = (e) => {
+    if (laddersRef.current !== null) {
+      laddersRef.current.scrollTo({
+        top: 0,
+        left: laddersRef.current.scrollLeft + e.deltaY,
+      })
+    }
+  }
 
   return (
-    <div className="m-route-ladders">
+    <div
+      className="m-route-ladders"
+      ref={laddersRef}
+      onWheel={onWheel}
+      data-testid="route-ladders-div"
+    >
       {routes.map((route) => (
         <RouteLadder
           key={route.id}
