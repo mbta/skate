@@ -16,8 +16,20 @@ $color-route-tabs-separator: #9fa2ac;
 
   .m-tab-bar.visible + & {
     margin-left: $tab-bar-width;
-    padding-left: $picker-width-narrow;
+    padding-left: $route-picker-width;
     width: calc(100% - #{$tab-bar-width});
+  }
+
+  @media screen and (max-width: $mobile-max-width) {
+    .m-tab-bar.visible + & {
+      padding-left: $mobile-route-picker-width;
+    }
+  }
+}
+
+@media screen and (max-width: $mobile-max-width) {
+  .m-ladder-page__tab-bar-and-ladders--picker_container_visible {
+    filter: blur(5px);
   }
 }
 
@@ -132,7 +144,6 @@ $color-route-tabs-separator: #9fa2ac;
   @include font-small;
   display: flex;
   border-bottom: 1px solid #141524;
-  margin-bottom: 1.5rem;
 
   button {
     margin-right: 1rem;

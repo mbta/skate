@@ -15,6 +15,7 @@ import {
   GarageFilter,
   filterRoutesByGarage,
 } from "../hooks/useGarageFilter"
+import { closeIcon } from "../helpers/icon"
 
 interface Props {
   selectedRouteIds: RouteId[]
@@ -31,10 +32,10 @@ const RoutePicker = ({
   const routeFilterData: RouteFilterData = useRouteFilter()
   const garageFilterData: GarageFilterData = useGarageFilter(routes)
 
-  const filteredRoutes = filterRoutesByGarage(
+  const selectableRoutes = filterRoutesByGarage(
     filterRoutes(routes || [], routeFilterData),
     garageFilterData
-  )
+  ).filter((route) => !selectedRouteIds.includes(route.id))
 
   return (
     <div className="m-route-picker">
@@ -42,22 +43,23 @@ const RoutePicker = ({
 
       <GarageFilter {...garageFilterData} />
 
-      <SelectedRoutesList
-        routes={routes}
-        selectedRouteIds={selectedRouteIds}
-        deselectRoute={deselectRoute}
-      />
+      <div className="m-route-picker__routes-container">
+        {routes === null ? (
+          <Loading />
+        ) : (
+          <RoutesList
+            routes={selectableRoutes}
+            selectRoute={selectRoute}
+            deselectRoute={deselectRoute}
+          />
+        )}
 
-      {routes === null ? (
-        <Loading />
-      ) : (
-        <RoutesList
-          routes={filteredRoutes}
+        <SelectedRoutesList
+          routes={routes}
           selectedRouteIds={selectedRouteIds}
-          selectRoute={selectRoute}
           deselectRoute={deselectRoute}
         />
-      )}
+      </div>
     </div>
   )
 }
@@ -71,18 +73,22 @@ const SelectedRoutesList = ({
   selectedRouteIds: RouteId[]
   deselectRoute: (routeId: RouteId) => void
 }) => {
-  return (
-    <ul className="m-route-picker__selected-routes">
-      {selectedRouteIds.map((routeId) => (
-        <SelectedRouteButton
-          key={routeId}
-          routeId={routeId}
-          routes={routes}
-          deselectRoute={deselectRoute}
-        />
-      ))}
-    </ul>
-  )
+  if (selectedRouteIds.length > 0) {
+    return (
+      <ul className="m-route-picker__selected-routes">
+        {selectedRouteIds.map((routeId) => (
+          <SelectedRouteButton
+            key={routeId}
+            routeId={routeId}
+            routes={routes}
+            deselectRoute={deselectRoute}
+          />
+        ))}
+      </ul>
+    )
+  } else {
+    return <p>Selected routes will show up here&hellip;</p>
+  }
 }
 
 const SelectedRouteButton = ({
@@ -101,6 +107,7 @@ const SelectedRouteButton = ({
         onClick={() => deselectRoute(routeId)}
       >
         {routeNameOrId(routeId, routes)}
+        {closeIcon("m-route-picker__selected-routes-button-icon")}
       </button>
     </li>
   )
@@ -108,24 +115,16 @@ const SelectedRouteButton = ({
 
 const RoutesList = ({
   routes,
-  selectedRouteIds,
   selectRoute,
-  deselectRoute,
 }: {
   routes: Route[]
-  selectedRouteIds: RouteId[]
   selectRoute: (routeId: RouteId) => void
   deselectRoute: (routeId: RouteId) => void
 }) => (
   <ul className="m-route-picker__route-list">
     {routes.map((route) => (
       <li key={route.id}>
-        <RouteListButton
-          route={route}
-          isSelected={selectedRouteIds.includes(route.id)}
-          selectRoute={selectRoute}
-          deselectRoute={deselectRoute}
-        />
+        <RouteListButton route={route} selectRoute={selectRoute} />
       </li>
     ))}
   </ul>
@@ -133,26 +132,15 @@ const RoutesList = ({
 
 const RouteListButton = ({
   route,
-  isSelected,
   selectRoute,
-  deselectRoute,
 }: {
   route: Route
-  isSelected: boolean
   selectRoute: (routeId: RouteId) => void
-  deselectRoute: (routeId: RouteId) => void
 }) => {
-  const selectedClass = isSelected
-    ? "m-route-picker__route-list-button--selected"
-    : "m-route-picker__route-list-button--unselected"
-  const clickHandler = isSelected
-    ? () => deselectRoute(route.id)
-    : () => selectRoute(route.id)
-
   return (
     <button
-      className={`m-route-picker__route-list-button ${selectedClass}`}
-      onClick={clickHandler}
+      className="m-route-picker__route-list-button"
+      onClick={() => selectRoute(route.id)}
     >
       {route.name}
     </button>

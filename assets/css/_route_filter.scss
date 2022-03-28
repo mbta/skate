@@ -1,34 +1,60 @@
-.m-route-filter {
-  padding-bottom: 1.5rem;
-}
-
 .m-route-filter__text {
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .m-route-filter__input {
-  width: 100%;
-  font-size: 0.75rem;
-  border: 1px solid #9fa2ac;
-  border-radius: 4px;
-  margin: 1px 0;
+  @include font-small;
+  line-height: 1;
+  border: 1px solid #b3b5bd;
+  border-radius: 6px;
+  padding: 0.625rem 1rem;
+  color: #3c3f4c;
+  font-weight: 400;
+
+  &::placeholder {
+    opacity: 1;
+    color: #525560;
+  }
 
   &:hover {
-    border: 2px solid $color-secondary-light;
-    margin: 0;
+    border: 1px solid #b58de2;
   }
 
   &:focus {
-    border: 2px solid $color-secondary-medium;
-    margin: 0;
+    border: 1px solid #7c47ae;
+    box-shadow: 0px 0px 0px 2px rgba(170, 78, 242, 0.17);
+    color: #222534;
+
+    &::placeholder {
+      color: #3c3f4c;
+    }
   }
 }
 
 .m-route-filter__clear {
   @include button-transparent;
-  @include button-icon(0.75rem);
-  right: 0;
-  padding: 0 0.375rem;
+  @include button-icon(0.875rem);
   position: absolute;
-  top: 0.5rem;
+  display: flex;
+  right: 1rem;
+  top: 0.6875rem;
+  width: 0.875rem;
+  height: 0.875rem;
+  color: #525560;
+
+  &:hover {
+    color: #8c909b;
+  }
+
+  &:focus-within {
+    color: #3c3f4c;
+  }
+
+  span {
+    // inline-block causes weird vertical alignment issues involving line-height
+    // created a tech debt ticket to come back and refactor the button-icon mixin
+    display: flex;
+  }
 }

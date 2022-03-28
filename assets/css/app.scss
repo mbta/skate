@@ -1,8 +1,10 @@
 $non-mobile-min-width: 768px;
 $mobile-max-width: $non-mobile-min-width - 1;
 $tab-bar-width: 3rem;
-$picker-width-narrow: 11.5rem;
-$picker-width-wide: $picker-width-narrow + 1.1;
+$drawer-tab-width: 2rem;
+$route-picker-width: 21.875rem;
+$mobile-route-picker-width: 18.125rem;
+$shuttle-picker-width: 12.6rem;
 
 @import "base";
 @import "inter";
@@ -52,6 +54,8 @@ $picker-width-wide: $picker-width-narrow + 1.1;
 @import "search_results";
 @import "settings_page";
 @import "shuttle_map";
+@import "shuttle_picker";
+@import "shuttle_picker_container";
 @import "swings_view";
 @import "tab_bar";
 @import "vehicle_icon";

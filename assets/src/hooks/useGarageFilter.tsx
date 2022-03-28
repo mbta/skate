@@ -64,37 +64,37 @@ export const GarageFilter = ({
 
   return (
     <div className="m-garage-filter">
-      <div className="m-garage-filter__header">
+      <button
+        className="m-garage-filter__header"
+        onClick={() => setShowGaragesFilter(!showGaragesFilter)}
+      >
         Filter garages
-        <button
-          className="m-garage-filter__show-hide-button"
-          onClick={() => setShowGaragesFilter(!showGaragesFilter)}
-        >
+        <div className="m-garage-filter__show-hide-button">
           {showGaragesFilter ? collapseIcon() : expandIcon()}
-        </button>
-      </div>
-      <div>
-        {showGaragesFilter
-          ? sortedGarages.map((garage) => (
-              <div key={garage} className="m-garage-filter__garage">
-                {garage}
-                <button
-                  onClick={() => {
-                    if (!filteredGarages.includes(garage) && window.FS) {
-                      window.FS.event("User filtered routes by garage")
-                    }
-                    toggleGarage(garage)
-                  }}
-                  className="m-garage-filter__button"
-                >
-                  {filteredGarages.includes(garage)
-                    ? toggleOnIcon()
-                    : toggleOffIcon()}
-                </button>
-              </div>
-            ))
-          : null}
-      </div>
+        </div>
+      </button>
+      {showGaragesFilter ? (
+        <ul className="m-garage-filter__garages">
+          {sortedGarages.map((garage) => (
+            <li key={garage} className="m-garage-filter__garage">
+              {garage}
+              <button
+                onClick={() => {
+                  if (!filteredGarages.includes(garage) && window.FS) {
+                    window.FS.event("User filtered routes by garage")
+                  }
+                  toggleGarage(garage)
+                }}
+                className="m-garage-filter__button"
+              >
+                {filteredGarages.includes(garage)
+                  ? toggleOnIcon()
+                  : toggleOffIcon()}
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : null}
     </div>
   )
 }

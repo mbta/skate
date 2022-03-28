@@ -192,13 +192,15 @@ exports[`App renders 1`] = `
         className="m-notifications"
       />
       <div
-        className="m-picker-container m-picker-container--narrow visible"
+        className="m-picker-container visible"
+        data-testid="picker-container"
       >
         <div
           className="c-drawer-tab"
         >
           <button
             className="c-drawer-tab__tab-button"
+            data-testid="drawer-tab-button"
             onClick={[Function]}
           >
             <span
@@ -246,31 +248,18 @@ exports[`App renders 1`] = `
                 type="text"
                 value=""
               />
-              <button
-                className="m-route-filter__clear"
-                onClick={[Function]}
-              >
-                <span
-                  className=""
-                  dangerouslySetInnerHTML={
-                    Object {
-                      "__html": "SVG",
-                    }
-                  }
-                />
-              </button>
             </div>
           </div>
           <div
             className="m-garage-filter"
           >
-            <div
+            <button
               className="m-garage-filter__header"
+              onClick={[Function]}
             >
               Filter garages
-              <button
+              <div
                 className="m-garage-filter__show-hide-button"
-                onClick={[Function]}
               >
                 <span
                   className=""
@@ -280,18 +269,26 @@ exports[`App renders 1`] = `
                     }
                   }
                 />
-              </button>
-            </div>
-            <div />
+              </div>
+            </button>
           </div>
-          <ul
-            className="m-route-picker__selected-routes"
-          />
-          loading...
+          <div
+            className="m-route-picker__routes-container"
+          >
+            loading...
+            <p>
+              Selected routes will show up here…
+            </p>
+          </div>
         </div>
       </div>
       <div
-        className="m-ladder-page__tab-bar-and-ladders"
+        className="m-picker-container-overlay"
+        data-testid="picker-container-overlay"
+        onClick={[Function]}
+      />
+      <div
+        className="m-ladder-page__tab-bar-and-ladders m-ladder-page__tab-bar-and-ladders--picker_container_visible"
       >
         <div
           className="m-ladder-page__route-tab-bar"
@@ -526,13 +523,15 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
         className="m-notifications"
       />
       <div
-        className="m-picker-container m-picker-container--narrow visible"
+        className="m-picker-container visible"
+        data-testid="picker-container"
       >
         <div
           className="c-drawer-tab"
         >
           <button
             className="c-drawer-tab__tab-button"
+            data-testid="drawer-tab-button"
             onClick={[Function]}
           >
             <span
@@ -580,31 +579,18 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
                 type="text"
                 value=""
               />
-              <button
-                className="m-route-filter__clear"
-                onClick={[Function]}
-              >
-                <span
-                  className=""
-                  dangerouslySetInnerHTML={
-                    Object {
-                      "__html": "SVG",
-                    }
-                  }
-                />
-              </button>
             </div>
           </div>
           <div
             className="m-garage-filter"
           >
-            <div
+            <button
               className="m-garage-filter__header"
+              onClick={[Function]}
             >
               Filter garages
-              <button
+              <div
                 className="m-garage-filter__show-hide-button"
-                onClick={[Function]}
               >
                 <span
                   className=""
@@ -614,18 +600,26 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
                     }
                   }
                 />
-              </button>
-            </div>
-            <div />
+              </div>
+            </button>
           </div>
-          <ul
-            className="m-route-picker__selected-routes"
-          />
-          loading...
+          <div
+            className="m-route-picker__routes-container"
+          >
+            loading...
+            <p>
+              Selected routes will show up here…
+            </p>
+          </div>
         </div>
       </div>
       <div
-        className="m-ladder-page__tab-bar-and-ladders"
+        className="m-picker-container-overlay"
+        data-testid="picker-container-overlay"
+        onClick={[Function]}
+      />
+      <div
+        className="m-ladder-page__tab-bar-and-ladders m-ladder-page__tab-bar-and-ladders--picker_container_visible"
       >
         <div
           className="m-ladder-page__route-tab-bar"

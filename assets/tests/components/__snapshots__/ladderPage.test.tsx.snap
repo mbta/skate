@@ -8,13 +8,15 @@ exports[`LadderPage renders the empty state 1`] = `
     className="m-notifications"
   />
   <div
-    className="m-picker-container m-picker-container--narrow visible"
+    className="m-picker-container visible"
+    data-testid="picker-container"
   >
     <div
       className="c-drawer-tab"
     >
       <button
         className="c-drawer-tab__tab-button"
+        data-testid="drawer-tab-button"
         onClick={[Function]}
       >
         <span
@@ -62,31 +64,18 @@ exports[`LadderPage renders the empty state 1`] = `
             type="text"
             value=""
           />
-          <button
-            className="m-route-filter__clear"
-            onClick={[Function]}
-          >
-            <span
-              className=""
-              dangerouslySetInnerHTML={
-                Object {
-                  "__html": "SVG",
-                }
-              }
-            />
-          </button>
         </div>
       </div>
       <div
         className="m-garage-filter"
       >
-        <div
+        <button
           className="m-garage-filter__header"
+          onClick={[Function]}
         >
           Filter garages
-          <button
+          <div
             className="m-garage-filter__show-hide-button"
-            onClick={[Function]}
           >
             <span
               className=""
@@ -96,18 +85,26 @@ exports[`LadderPage renders the empty state 1`] = `
                 }
               }
             />
-          </button>
-        </div>
-        <div />
+          </div>
+        </button>
       </div>
-      <ul
-        className="m-route-picker__selected-routes"
-      />
-      loading...
+      <div
+        className="m-route-picker__routes-container"
+      >
+        loading...
+        <p>
+          Selected routes will show up here…
+        </p>
+      </div>
     </div>
   </div>
   <div
-    className="m-ladder-page__tab-bar-and-ladders"
+    className="m-picker-container-overlay"
+    data-testid="picker-container-overlay"
+    onClick={[Function]}
+  />
+  <div
+    className="m-ladder-page__tab-bar-and-ladders m-ladder-page__tab-bar-and-ladders--picker_container_visible"
   >
     <div
       className="m-ladder-page__route-tab-bar"
@@ -141,13 +138,15 @@ exports[`LadderPage renders with route tabs 1`] = `
     className="m-notifications"
   />
   <div
-    className="m-picker-container m-picker-container--narrow visible"
+    className="m-picker-container visible"
+    data-testid="picker-container"
   >
     <div
       className="c-drawer-tab"
     >
       <button
         className="c-drawer-tab__tab-button"
+        data-testid="drawer-tab-button"
         onClick={[Function]}
       >
         <span
@@ -195,31 +194,18 @@ exports[`LadderPage renders with route tabs 1`] = `
             type="text"
             value=""
           />
-          <button
-            className="m-route-filter__clear"
-            onClick={[Function]}
-          >
-            <span
-              className=""
-              dangerouslySetInnerHTML={
-                Object {
-                  "__html": "SVG",
-                }
-              }
-            />
-          </button>
         </div>
       </div>
       <div
         className="m-garage-filter"
       >
-        <div
+        <button
           className="m-garage-filter__header"
+          onClick={[Function]}
         >
           Filter garages
-          <button
+          <div
             className="m-garage-filter__show-hide-button"
-            onClick={[Function]}
           >
             <span
               className=""
@@ -229,46 +215,54 @@ exports[`LadderPage renders with route tabs 1`] = `
                 }
               }
             />
-          </button>
-        </div>
-        <div />
+          </div>
+        </button>
       </div>
-      <ul
-        className="m-route-picker__selected-routes"
+      <div
+        className="m-route-picker__routes-container"
       >
-        <li>
-          <button
-            className="m-route-picker__selected-routes-button"
-            onClick={[Function]}
-          >
-            1
-          </button>
-        </li>
-      </ul>
-      <ul
-        className="m-route-picker__route-list"
-      >
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
-            onClick={[Function]}
-          >
-            1
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
-            onClick={[Function]}
-          >
-            28
-          </button>
-        </li>
-      </ul>
+        <ul
+          className="m-route-picker__route-list"
+        >
+          <li>
+            <button
+              className="m-route-picker__route-list-button"
+              onClick={[Function]}
+            >
+              28
+            </button>
+          </li>
+        </ul>
+        <ul
+          className="m-route-picker__selected-routes"
+        >
+          <li>
+            <button
+              className="m-route-picker__selected-routes-button"
+              onClick={[Function]}
+            >
+              1
+              <span
+                className="m-route-picker__selected-routes-button-icon"
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
   <div
-    className="m-ladder-page__tab-bar-and-ladders"
+    className="m-picker-container-overlay"
+    data-testid="picker-container-overlay"
+    onClick={[Function]}
+  />
+  <div
+    className="m-ladder-page__tab-bar-and-ladders m-ladder-page__tab-bar-and-ladders--picker_container_visible"
   >
     <div
       className="m-ladder-page__route-tab-bar"
@@ -413,13 +407,15 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
     className="m-notifications"
   />
   <div
-    className="m-picker-container m-picker-container--narrow visible"
+    className="m-picker-container visible"
+    data-testid="picker-container"
   >
     <div
       className="c-drawer-tab"
     >
       <button
         className="c-drawer-tab__tab-button"
+        data-testid="drawer-tab-button"
         onClick={[Function]}
       >
         <span
@@ -467,31 +463,18 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
             type="text"
             value=""
           />
-          <button
-            className="m-route-filter__clear"
-            onClick={[Function]}
-          >
-            <span
-              className=""
-              dangerouslySetInnerHTML={
-                Object {
-                  "__html": "SVG",
-                }
-              }
-            />
-          </button>
         </div>
       </div>
       <div
         className="m-garage-filter"
       >
-        <div
+        <button
           className="m-garage-filter__header"
+          onClick={[Function]}
         >
           Filter garages
-          <button
+          <div
             className="m-garage-filter__show-hide-button"
-            onClick={[Function]}
           >
             <span
               className=""
@@ -501,54 +484,61 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
                 }
               }
             />
-          </button>
-        </div>
-        <div />
+          </div>
+        </button>
       </div>
-      <ul
-        className="m-route-picker__selected-routes"
+      <div
+        className="m-route-picker__routes-container"
       >
-        <li>
-          <button
-            className="m-route-picker__selected-routes-button"
-            onClick={[Function]}
-          >
-            28
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__selected-routes-button"
-            onClick={[Function]}
-          >
-            1
-          </button>
-        </li>
-      </ul>
-      <ul
-        className="m-route-picker__route-list"
-      >
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
-            onClick={[Function]}
-          >
-            1
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
-            onClick={[Function]}
-          >
-            28
-          </button>
-        </li>
-      </ul>
+        <ul
+          className="m-route-picker__route-list"
+        />
+        <ul
+          className="m-route-picker__selected-routes"
+        >
+          <li>
+            <button
+              className="m-route-picker__selected-routes-button"
+              onClick={[Function]}
+            >
+              28
+              <span
+                className="m-route-picker__selected-routes-button-icon"
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
+            </button>
+          </li>
+          <li>
+            <button
+              className="m-route-picker__selected-routes-button"
+              onClick={[Function]}
+            >
+              1
+              <span
+                className="m-route-picker__selected-routes-button-icon"
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
   <div
-    className="m-ladder-page__tab-bar-and-ladders"
+    className="m-picker-container-overlay"
+    data-testid="picker-container-overlay"
+    onClick={[Function]}
+  />
+  <div
+    className="m-ladder-page__tab-bar-and-ladders m-ladder-page__tab-bar-and-ladders--picker_container_visible"
   >
     <div
       className="m-ladder-page__route-tab-bar"
@@ -707,13 +697,15 @@ exports[`LadderPage renders with timepoints 1`] = `
     className="m-notifications"
   />
   <div
-    className="m-picker-container m-picker-container--narrow visible"
+    className="m-picker-container visible"
+    data-testid="picker-container"
   >
     <div
       className="c-drawer-tab"
     >
       <button
         className="c-drawer-tab__tab-button"
+        data-testid="drawer-tab-button"
         onClick={[Function]}
       >
         <span
@@ -761,31 +753,18 @@ exports[`LadderPage renders with timepoints 1`] = `
             type="text"
             value=""
           />
-          <button
-            className="m-route-filter__clear"
-            onClick={[Function]}
-          >
-            <span
-              className=""
-              dangerouslySetInnerHTML={
-                Object {
-                  "__html": "SVG",
-                }
-              }
-            />
-          </button>
         </div>
       </div>
       <div
         className="m-garage-filter"
       >
-        <div
+        <button
           className="m-garage-filter__header"
+          onClick={[Function]}
         >
           Filter garages
-          <button
+          <div
             className="m-garage-filter__show-hide-button"
-            onClick={[Function]}
           >
             <span
               className=""
@@ -795,54 +774,61 @@ exports[`LadderPage renders with timepoints 1`] = `
                 }
               }
             />
-          </button>
-        </div>
-        <div />
+          </div>
+        </button>
       </div>
-      <ul
-        className="m-route-picker__selected-routes"
+      <div
+        className="m-route-picker__routes-container"
       >
-        <li>
-          <button
-            className="m-route-picker__selected-routes-button"
-            onClick={[Function]}
-          >
-            28
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__selected-routes-button"
-            onClick={[Function]}
-          >
-            1
-          </button>
-        </li>
-      </ul>
-      <ul
-        className="m-route-picker__route-list"
-      >
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
-            onClick={[Function]}
-          >
-            1
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
-            onClick={[Function]}
-          >
-            28
-          </button>
-        </li>
-      </ul>
+        <ul
+          className="m-route-picker__route-list"
+        />
+        <ul
+          className="m-route-picker__selected-routes"
+        >
+          <li>
+            <button
+              className="m-route-picker__selected-routes-button"
+              onClick={[Function]}
+            >
+              28
+              <span
+                className="m-route-picker__selected-routes-button-icon"
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
+            </button>
+          </li>
+          <li>
+            <button
+              className="m-route-picker__selected-routes-button"
+              onClick={[Function]}
+            >
+              1
+              <span
+                className="m-route-picker__selected-routes-button-icon"
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
   <div
-    className="m-ladder-page__tab-bar-and-ladders"
+    className="m-picker-container-overlay"
+    data-testid="picker-container-overlay"
+    onClick={[Function]}
+  />
+  <div
+    className="m-ladder-page__tab-bar-and-ladders m-ladder-page__tab-bar-and-ladders--picker_container_visible"
   >
     <div
       className="m-ladder-page__route-tab-bar"
@@ -1245,13 +1231,15 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
     className="m-notifications"
   />
   <div
-    className="m-picker-container m-picker-container--narrow visible"
+    className="m-picker-container visible"
+    data-testid="picker-container"
   >
     <div
       className="c-drawer-tab"
     >
       <button
         className="c-drawer-tab__tab-button"
+        data-testid="drawer-tab-button"
         onClick={[Function]}
       >
         <span
@@ -1299,31 +1287,18 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
             type="text"
             value=""
           />
-          <button
-            className="m-route-filter__clear"
-            onClick={[Function]}
-          >
-            <span
-              className=""
-              dangerouslySetInnerHTML={
-                Object {
-                  "__html": "SVG",
-                }
-              }
-            />
-          </button>
         </div>
       </div>
       <div
         className="m-garage-filter"
       >
-        <div
+        <button
           className="m-garage-filter__header"
+          onClick={[Function]}
         >
           Filter garages
-          <button
+          <div
             className="m-garage-filter__show-hide-button"
-            onClick={[Function]}
           >
             <span
               className=""
@@ -1333,46 +1308,54 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
                 }
               }
             />
-          </button>
-        </div>
-        <div />
+          </div>
+        </button>
       </div>
-      <ul
-        className="m-route-picker__selected-routes"
+      <div
+        className="m-route-picker__routes-container"
       >
-        <li>
-          <button
-            className="m-route-picker__selected-routes-button"
-            onClick={[Function]}
-          >
-            1
-          </button>
-        </li>
-      </ul>
-      <ul
-        className="m-route-picker__route-list"
-      >
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
-            onClick={[Function]}
-          >
-            1
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
-            onClick={[Function]}
-          >
-            28
-          </button>
-        </li>
-      </ul>
+        <ul
+          className="m-route-picker__route-list"
+        >
+          <li>
+            <button
+              className="m-route-picker__route-list-button"
+              onClick={[Function]}
+            >
+              28
+            </button>
+          </li>
+        </ul>
+        <ul
+          className="m-route-picker__selected-routes"
+        >
+          <li>
+            <button
+              className="m-route-picker__selected-routes-button"
+              onClick={[Function]}
+            >
+              1
+              <span
+                className="m-route-picker__selected-routes-button-icon"
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "SVG",
+                  }
+                }
+              />
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
   <div
-    className="m-ladder-page__tab-bar-and-ladders"
+    className="m-picker-container-overlay"
+    data-testid="picker-container-overlay"
+    onClick={[Function]}
+  />
+  <div
+    className="m-ladder-page__tab-bar-and-ladders m-ladder-page__tab-bar-and-ladders--picker_container_visible"
   >
     <div
       className="m-ladder-page__route-tab-bar"

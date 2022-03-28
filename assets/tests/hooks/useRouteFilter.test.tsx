@@ -96,7 +96,7 @@ describe("RouteFilter", () => {
 
   test("the clear button clears the filter text", () => {
     const mockRouteFilter: RouteFilterData = {
-      filterText: "",
+      filterText: "28",
       handleTextInput: jest.fn(),
       clearTextInput: jest.fn(),
     }

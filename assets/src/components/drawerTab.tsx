@@ -10,7 +10,11 @@ const DrawerTab = ({
   toggleVisibility: () => void
 }) => (
   <div className="c-drawer-tab">
-    <button className="c-drawer-tab__tab-button" onClick={toggleVisibility}>
+    <button
+      className="c-drawer-tab__tab-button"
+      data-testid="drawer-tab-button"
+      onClick={toggleVisibility}
+    >
       {isVisible ? collapseIcon() : expandIcon()}
     </button>
   </div>

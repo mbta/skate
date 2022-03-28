@@ -7,7 +7,7 @@
   top: inherit;
   transition: $transition-slide;
   width: $tab-bar-width;
-  z-index: 2;
+  z-index: 100;
 
   &.visible {
     left: 0;
