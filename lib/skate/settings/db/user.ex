@@ -16,7 +16,7 @@ defmodule Skate.Settings.Db.User do
 
     has_many(:notification_users, DbNotificationUser)
     many_to_many(:notifications, DbNotification, join_through: DbNotificationUser)
-    has_many(:route_tabs, DbRouteTab, on_replace: :delete)
+    has_many(:route_tabs, DbRouteTab, on_replace: :delete_if_exists)
   end
 
   def changeset(user, attrs \\ %{}) do
