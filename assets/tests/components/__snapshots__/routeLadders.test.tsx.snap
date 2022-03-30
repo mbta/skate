@@ -1,8 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders a route ladder 1`] = `
+exports[`RouteLadders renders a route ladder 1`] = `
 <div
   className="m-route-ladders"
+  data-testid="route-ladders-div"
+  onWheel={[Function]}
 >
   <div
     className="m-route-ladder__header"

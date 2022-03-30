@@ -309,6 +309,8 @@ exports[`App renders 1`] = `
         </div>
         <div
           className="m-route-ladders"
+          data-testid="route-ladders-div"
+          onWheel={[Function]}
         />
       </div>
     </div>
@@ -640,6 +642,8 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
         </div>
         <div
           className="m-route-ladders"
+          data-testid="route-ladders-div"
+          onWheel={[Function]}
         />
       </div>
     </div>
