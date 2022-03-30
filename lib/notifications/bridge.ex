@@ -78,7 +78,7 @@ defmodule Notifications.Bridge do
     headers = [{"Authorization", get_auth_header()}]
 
     Application.get_env(:skate, :bridge_url)
-    |> HTTPoison.get(headers, timeout: 2000, recv_timeout: 2000, ssl: [versions: [:"tlsv1.2"]])
+    |> HTTPoison.get(headers, timeout: 2000, recv_timeout: 2000)
     |> parse_response()
   end
 
