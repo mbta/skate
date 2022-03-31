@@ -79,7 +79,8 @@ defmodule Skate.MixProject do
       {:ex_aws_rds, "~> 2.0.2"},
       {:fast_local_datetime, "~> 1.0"},
       {:ex_machina, "~> 2.7.0", only: :test},
-      {:logster, "~> 1.0"}
+      {:logster, "~> 1.0"},
+      {:ssl_verify_fun, "~> 1.1"}
     ]
   end
 end

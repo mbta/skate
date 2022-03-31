@@ -30,7 +30,12 @@ FROM elixir-builder as app-builder
 
 ENV LANG="C.UTF-8" MIX_ENV=prod
 
+RUN apk add --no-cache --update curl
+
 WORKDIR /root
+
+RUN curl https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem \
+    -o aws-cert-bundle.pem
 
 # Add frontend assets compiled in node container, required by phx.digest
 COPY --from=assets-builder /root/priv/static ./priv/static
@@ -39,14 +44,13 @@ RUN mix do compile --force, phx.digest, release
 
 FROM alpine:3.15.0
 
-RUN apk add --update libssl1.1 libstdc++ libgcc \
-    ncurses-libs bash curl dumb-init \
-    && rm -rf /var/cache/apk
+RUN apk add --no-cache --update libssl1.1 libstdc++ \
+    libgcc ncurses-libs bash curl dumb-init
 
 # Create non-root user
 RUN addgroup -S skate && adduser -S -G skate skate
-USER skate
 WORKDIR /home/skate
+USER skate
 
 # Set environment
 ENV MIX_ENV=prod TERM=xterm LANG="C.UTF-8" PORT=4000 REPLACE_OS_VARS=true
@@ -56,6 +60,8 @@ COPY --from=app-builder --chown=skate:skate /root/priv/static ./priv/static
 
 # Add application artifact compiled in app-builder container
 COPY --from=app-builder --chown=skate:skate /root/_build/prod/rel/skate .
+
+COPY --from=app-builder --chown=skate:skate /root/aws-cert-bundle.pem ./priv/aws-cert-bundle.pem
 
 EXPOSE 4000
 
