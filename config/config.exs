@@ -122,8 +122,6 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-config :ssl, protocol_version: :"tlsv1.2"
-
 # Fake Cognito authentication
 config :ueberauth, Ueberauth,
   providers: [
