@@ -22,7 +22,14 @@ defmodule Skate.Repo do
       hostname: hostname,
       username: username,
       port: port,
-      password: token
+      password: token,
+      ssl_opts: [
+        cacertfile: "priv/aws-cert-bundle.pem",
+        verify: :verify_peer,
+        server_name_indication: String.to_charlist(hostname),
+        verify_fun:
+          {&:ssl_verify_hostname.verify_fun/3, [check_hostname: String.to_charlist(hostname)]}
+      ]
     )
   end
 end

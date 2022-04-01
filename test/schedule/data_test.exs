@@ -906,13 +906,13 @@ defmodule Schedule.DataTest do
       assert %{
                {"schedule", "run_1"} => %Run{
                  activities: [
-                   %Piece{trips: [trip_11]},
-                   %Piece{trips: [trip_12]}
+                   %Piece{trips: [_trip_11]},
+                   %Piece{trips: [_trip_12]}
                  ]
                },
                {"schedule", "run_2"} => %Run{
                  activities: [
-                   %Piece{trips: [trip_21]}
+                   %Piece{trips: [_trip_21]}
                  ]
                }
              } = Data.runs_from_hastus(activities, trips, schedule_trips_by_id, %{})
@@ -973,10 +973,10 @@ defmodule Schedule.DataTest do
 
       assert %{
                {"schedule_1", "run"} => %Run{
-                 activities: [%Piece{trips: [schedule_trip1]}]
+                 activities: [%Piece{trips: [_schedule_trip1]}]
                },
                {"schedule_2", "run"} => %Run{
-                 activities: [%Piece{trips: [schedule_trip2]}]
+                 activities: [%Piece{trips: [_schedule_trip2]}]
                }
              } = Data.runs_from_hastus(activities, trips, schedule_trips_by_id, %{})
     end
@@ -1258,13 +1258,13 @@ defmodule Schedule.DataTest do
                  %Piece{
                    block_id: "block",
                    start_time: 101,
-                   trips: [schedule_trip1],
+                   trips: [_schedule_trip1],
                    end_time: 102
                  } = _,
                  %Piece{
                    block_id: "block",
                    start_time: 103,
-                   trips: [schedule_trip2],
+                   trips: [_schedule_trip2],
                    end_time: 104
                  } = _
                ]
@@ -1324,7 +1324,7 @@ defmodule Schedule.DataTest do
                        headsign: nil,
                        id: "leading_deadhead_run_101"
                      },
-                     schedule_trip
+                     _schedule_trip
                    ],
                    end_time: 103,
                    schedule_id: "schedule",
@@ -1388,7 +1388,7 @@ defmodule Schedule.DataTest do
                  %Piece{
                    start_time: 101,
                    trips: [
-                     schedule_trip,
+                     _schedule_trip,
                      %Schedule.Trip{
                        id: "following_deadhead_run_102",
                        block_id: "block",

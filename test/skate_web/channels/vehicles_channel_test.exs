@@ -24,7 +24,7 @@ defmodule SkateWeb.VehiclesChannelTest do
     test "subscribes to vehicles for a route ID and returns the current list of vehicles", %{
       socket: socket
     } do
-      assert {:ok, %{data: []}, %Socket{} = socket} =
+      assert {:ok, %{data: []}, %Socket{}} =
                subscribe_and_join(socket, VehiclesChannel, "vehicles:route:" <> @vehicle.route_id)
     end
 
@@ -34,12 +34,12 @@ defmodule SkateWeb.VehiclesChannelTest do
     end
 
     test "subscribes to vehicles for a run ID", %{socket: socket} do
-      assert {:ok, %{data: []}, %Socket{} = socket} =
+      assert {:ok, %{data: []}, %Socket{}} =
                subscribe_and_join(socket, VehiclesChannel, "vehicles:run_ids:" <> @vehicle.run_id)
     end
 
     test "subscribes to vehicles for a block ID", %{socket: socket} do
-      assert {:ok, %{data: []}, %Socket{} = socket} =
+      assert {:ok, %{data: []}, %Socket{}} =
                subscribe_and_join(
                  socket,
                  VehiclesChannel,
@@ -96,7 +96,7 @@ defmodule SkateWeb.VehiclesChannelTest do
 
       {:ok, _, socket} = subscribe_and_join(socket, VehiclesChannel, "vehicles:route:1")
 
-      assert {:noreply, socket} =
+      assert {:noreply, _socket} =
                VehiclesChannel.handle_info(
                  {:new_realtime_data, {ets, {:route_id, "1"}}},
                  socket
@@ -114,7 +114,7 @@ defmodule SkateWeb.VehiclesChannelTest do
 
       {:ok, _, socket} = subscribe_and_join(socket, VehiclesChannel, "vehicles:shuttle:all")
 
-      assert {:noreply, socket} =
+      assert {:noreply, _socket} =
                VehiclesChannel.handle_info(
                  {:new_realtime_data, {ets, :all_shuttles}},
                  socket
@@ -133,7 +133,7 @@ defmodule SkateWeb.VehiclesChannelTest do
       {:ok, _, socket} =
         subscribe_and_join(socket, VehiclesChannel, "vehicles:search:all:" <> @vehicle.label)
 
-      assert {:noreply, socket} =
+      assert {:noreply, _socket} =
                VehiclesChannel.handle_info(
                  {:new_realtime_data, {ets, {:search, %{text: @vehicle.label, property: :all}}}},
                  socket

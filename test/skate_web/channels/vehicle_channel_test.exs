@@ -65,7 +65,7 @@ defmodule SkateWeb.VehicleChannelTest do
 
       expected_payload = %{data: @vehicle}
 
-      assert {:ok, ^expected_payload, %Socket{} = socket} =
+      assert {:ok, ^expected_payload, %Socket{} = _socket} =
                subscribe_and_join(socket, VehicleChannel, "vehicle:run_ids:123-4567")
     end
   end
@@ -79,7 +79,7 @@ defmodule SkateWeb.VehicleChannelTest do
 
       {:ok, _, socket} = subscribe_and_join(socket, VehicleChannel, "vehicle:run_ids:123-4567")
 
-      assert {:noreply, socket} =
+      assert {:noreply, _socket} =
                VehicleChannel.handle_info(
                  {:new_realtime_data, {ets, {:route_id, "1"}}},
                  socket

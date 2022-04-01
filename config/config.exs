@@ -1,11 +1,11 @@
 # This file is responsible for configuring your application
-# and its dependencies with the aid of the Mix.Config module.
+# and its dependencies with the aid of the Config module.
 #
 # This configuration file is loaded before any dependency and
 # is restricted to this project.
 
 # General application configuration
-use Mix.Config
+import Config
 
 config :skate, ecto_repos: [Skate.Repo]
 
@@ -89,7 +89,7 @@ config :skate, Schedule.CacheFile, cache_filename: nil
 config :skate, SkateWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [view: SkateWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Skate.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub_server: Skate.PubSub
 
 config :skate, SkateWeb.AuthManager,
   issuer: "skate",
@@ -121,8 +121,6 @@ config :logger, :console,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
-
-config :ssl, protocol_version: :"tlsv1.2"
 
 # Fake Cognito authentication
 config :ueberauth, Ueberauth,

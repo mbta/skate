@@ -49,7 +49,7 @@ defmodule SkateWeb.TrainVehiclesChannelTest do
     test "pushes new data onto the socket", %{socket: socket} do
       {:ok, _, socket} = subscribe_and_join(socket, TrainVehiclesChannel, "train_vehicles:Red")
 
-      assert {:noreply, socket} =
+      assert {:noreply, _socket} =
                TrainVehiclesChannel.handle_info(
                  {:new_train_vehicles, @red_train_vehicles},
                  socket

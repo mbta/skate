@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :skate, start_data_processes: false
 

@@ -19,9 +19,7 @@ defmodule Geonames do
     token_param = if geonames_token, do: "&token=#{geonames_token}", else: ""
 
     url =
-      "#{geonames_url_base}/findNearestIntersectionOSMJSON?lat=#{latitude}&lng=#{longitude}&username=mbta_busloc#{
-        token_param
-      }"
+      "#{geonames_url_base}/findNearestIntersectionOSMJSON?lat=#{latitude}&lng=#{longitude}&username=mbta_busloc#{token_param}"
 
     case HTTPoison.get(url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->

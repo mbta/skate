@@ -1,6 +1,5 @@
 defmodule SkateWeb.AuthManager.ErrorHandlerTest do
   use SkateWeb.ConnCase
-  use Plug.Test
 
   describe "auth_error/3" do
     test "redirects to Cognito login", %{conn: conn} do

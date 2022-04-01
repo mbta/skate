@@ -216,9 +216,7 @@ defmodule Concentrate.Producer.HTTP.StateMachine do
   defp handle_message(machine, unknown) do
     _ =
       Logger.error(fn ->
-        "#{__MODULE__}: got unexpected message url=#{inspect(machine.url)} message=#{
-          inspect(unknown)
-        }"
+        "#{__MODULE__}: got unexpected message url=#{inspect(machine.url)} message=#{inspect(unknown)}"
       end)
 
     {machine, [], []}
@@ -292,9 +290,7 @@ defmodule Concentrate.Producer.HTTP.StateMachine do
 
     _ =
       Logger.info(fn ->
-        "#{__MODULE__} updated: url=#{inspect(url(machine))} records=#{length(parsed)} time=#{
-          time / 1000
-        }"
+        "#{__MODULE__} updated: url=#{inspect(url(machine))} records=#{length(parsed)} time=#{time / 1000}"
       end)
 
     machine =
@@ -319,9 +315,7 @@ defmodule Concentrate.Producer.HTTP.StateMachine do
   defp log_parse_error(error, machine, trace) do
     _ =
       Logger.error(fn ->
-        "#{__MODULE__}: parse error url=#{inspect(machine.url)} error=#{inspect(error)}\n#{
-          Exception.format_stacktrace(trace)
-        }"
+        "#{__MODULE__}: parse error url=#{inspect(machine.url)} error=#{inspect(error)}\n#{Exception.format_stacktrace(trace)}"
       end)
 
     []
@@ -346,9 +340,7 @@ defmodule Concentrate.Producer.HTTP.StateMachine do
   defp activate_fallback(%{fallback: {:not_active, url}} = machine) do
     _ =
       Logger.error(fn ->
-        "#{__MODULE__} activating fallback url=#{inspect(machine.url)} fallback_url=#{
-          inspect(url)
-        }"
+        "#{__MODULE__} activating fallback url=#{inspect(machine.url)} fallback_url=#{inspect(url)}"
       end)
 
     fallback_machine =

@@ -154,8 +154,8 @@ defmodule Realtime.BlockWaiverStoreTest do
       Process.sleep(10)
 
       assert_received %{
-        {"service2", "block2"} => [new_waiver_2],
-        {"service3", "block3"} => [new_waiver_3]
+        {"service2", "block2"} => [_new_waiver_2],
+        {"service3", "block3"} => [_new_waiver_3]
       }
     end
   end
