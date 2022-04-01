@@ -202,13 +202,19 @@ $color-stop-stroke: $black;
   // Typical HTML: <button><span><svg/></span>optional text</button>
   // @include alongside other button mixins styles
   span {
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     height: $size;
     width: $size;
 
     svg {
       stroke: currentColor;
       fill: currentColor;
+
+      height: $size;
+      width: $size;
     }
   }
 }

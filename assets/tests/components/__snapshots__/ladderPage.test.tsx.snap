@@ -281,18 +281,19 @@ exports[`LadderPage renders with route tabs 1`] = `
           >
             Untitled
           </div>
-          <div
+          <button
+            className="m-ladder-page__tab-save-button"
             onClick={[Function]}
           >
             <span
-              className="m-ladder-page__tab-save-icon"
+              className=""
               dangerouslySetInnerHTML={
                 Object {
                   "__html": "SVG",
                 }
               }
             />
-          </div>
+          </button>
           <button
             className="m-close-button"
             data-testid="close-button"
@@ -559,18 +560,19 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
           >
             Untitled
           </div>
-          <div
+          <button
+            className="m-ladder-page__tab-save-button"
             onClick={[Function]}
           >
             <span
-              className="m-ladder-page__tab-save-icon"
+              className=""
               dangerouslySetInnerHTML={
                 Object {
                   "__html": "SVG",
                 }
               }
             />
-          </div>
+          </button>
           <button
             className="m-close-button"
             data-testid="close-button"
@@ -851,18 +853,19 @@ exports[`LadderPage renders with timepoints 1`] = `
           >
             Untitled
           </div>
-          <div
+          <button
+            className="m-ladder-page__tab-save-button"
             onClick={[Function]}
           >
             <span
-              className="m-ladder-page__tab-save-icon"
+              className=""
               dangerouslySetInnerHTML={
                 Object {
                   "__html": "SVG",
                 }
               }
             />
-          </div>
+          </button>
           <button
             className="m-close-button"
             data-testid="close-button"
@@ -1380,18 +1383,19 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
           >
             Untitled
           </div>
-          <div
+          <button
+            className="m-ladder-page__tab-save-button"
             onClick={[Function]}
           >
             <span
-              className="m-ladder-page__tab-save-icon"
+              className=""
               dangerouslySetInnerHTML={
                 Object {
                   "__html": "SVG",
                 }
               }
             />
-          </div>
+          </button>
           <button
             className="m-close-button"
             data-testid="close-button"

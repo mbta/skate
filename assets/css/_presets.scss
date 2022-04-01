@@ -6,7 +6,7 @@
     li {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: flex-end;
       padding-bottom: 1rem;
       line-height: 0.75rem;
 
@@ -24,7 +24,6 @@
 
       .m-close-button {
         @include button-icon(0.625rem);
-        font-size: unset;
       }
     }
   }

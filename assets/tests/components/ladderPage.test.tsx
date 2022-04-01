@@ -134,7 +134,9 @@ describe("LadderPage", () => {
       </StateDispatchProvider>
     )
 
-    wrapper.find(".m-ladder-page__tab-contents button").simulate("click")
+    wrapper
+      .find(".m-ladder-page__tab-contents .m-close-button")
+      .simulate("click")
 
     expect(mockDispatch).toHaveBeenCalledWith(
       closeRouteTab(mockState.routeTabs[0].uuid)
@@ -166,7 +168,7 @@ describe("LadderPage", () => {
       </StateDispatchProvider>
     )
 
-    wrapper.find(".m-ladder-page__tab-save-icon").simulate("click")
+    wrapper.find(".m-ladder-page__tab-save-button").simulate("click")
 
     expect(mockDispatch).toHaveBeenCalledWith(
       promptToSaveOrCreatePreset(mockState.routeTabs[0])
@@ -202,7 +204,7 @@ describe("LadderPage", () => {
       </StateDispatchProvider>
     )
 
-    wrapper.find(".m-ladder-page__tab-save-icon").simulate("click")
+    wrapper.find(".m-ladder-page__tab-save-button").simulate("click")
 
     expect(mockDispatch).toHaveBeenCalledWith(
       promptToSaveOrCreatePreset(mockState.routeTabs[1])
@@ -230,7 +232,7 @@ describe("LadderPage", () => {
       </StateDispatchProvider>
     )
 
-    expect(wrapper.find(".m-ladder-page__tab-save-icon").length).toBe(0)
+    expect(wrapper.find(".m-ladder-page__tab-save-button").length).toBe(0)
   })
 
   test("can add a new route tab", () => {

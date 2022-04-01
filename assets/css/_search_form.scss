@@ -4,7 +4,7 @@
 
 .m-search-form__text {
   position: relative;
-  flex: 1 0 auto;
+  flex: 1 1 auto;
 }
 
 .m-search-form__input {
@@ -17,19 +17,22 @@
   right: 0;
   padding: 0 0.375rem;
   position: absolute;
-  top: 0.6rem;
+  top: 0.875rem;
 }
 
 .m-search-form__submit {
   @include button-primary;
   @include button-icon(1.3125rem);
+  flex: 1 0 auto;
   margin-left: 0.5rem;
-  padding: 0.375rem 0.5625rem;
-  vertical-align: -0.25rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &:disabled {
     @include button-disabled;
-    padding: 0.375rem 0.5625rem;
   }
 }
 

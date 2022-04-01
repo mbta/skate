@@ -81,7 +81,8 @@ const LadderTab = ({
           {title}
         </div>
         {tab.isCurrentTab && showSaveIcon ? (
-          <div
+          <button
+            className="m-ladder-page__tab-save-button"
             onClick={(e) => {
               e.stopPropagation()
 
@@ -92,8 +93,8 @@ const LadderTab = ({
               saveTab()
             }}
           >
-            {saveIcon("m-ladder-page__tab-save-icon")}
-          </div>
+            {saveIcon()}
+          </button>
         ) : null}
         <CloseButton onClick={() => closeTab()} />
       </div>

@@ -91,6 +91,7 @@ $color-route-tabs-separator: #9fa2ac;
   display: flex;
   align-items: center;
   padding-left: 0.75rem;
+  padding-right: 0.40625rem;
   min-width: 0;
   cursor: default;
 
@@ -108,15 +109,25 @@ $color-route-tabs-separator: #9fa2ac;
 
   .m-close-button {
     @include button-icon(0.5rem);
-    font-size: unset;
-    padding-right: 0.625rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 0.9375rem;
+    height: 0.9375rem;
   }
 
-  .m-ladder-page__tab-save-icon {
-    padding-right: 0.625rem;
-    svg {
-      width: 0.625rem;
-      height: 0.625rem;
+  .m-ladder-page__tab-save-button {
+    @include button-icon(0.625rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 0.9375rem;
+    height: 0.9375rem;
+    margin-right: 0.25rem;
+
+    span svg {
+      stroke: initial;
+      fill: initial;
     }
   }
 }

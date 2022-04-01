@@ -51,10 +51,4 @@
   &:focus-within {
     color: #3c3f4c;
   }
-
-  span {
-    // inline-block causes weird vertical alignment issues involving line-height
-    // created a tech debt ticket to come back and refactor the button-icon mixin
-    display: flex;
-  }
 }
