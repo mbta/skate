@@ -112,19 +112,13 @@ defmodule Concentrate.Producer.HTTPTest do
     @tag timeout: 2_000
     @tag :capture_log
     test "schedules a fetch again if there's a disconnection", %{bypass: bypass} do
-      {:ok, agent} = response_agent()
-
-      agent
-      |> add_response(fn conn ->
-        Bypass.down(bypass)
-        Bypass.up(bypass)
+      Bypass.expect(bypass, fn conn ->
+        :ok = Bypass.down(bypass)
+        :ok = Bypass.up(bypass)
         send_resp(conn, 200, "first")
       end)
-      |> add_response(fn conn ->
-        send_resp(conn, 200, "reconnect")
-      end)
 
-      Bypass.expect(bypass, fn conn -> agent_response(agent, conn) end)
+      Bypass.expect(bypass, fn conn -> send_resp(conn, 200, "reconnect") end)
 
       {:ok, producer} =
         start_producer(bypass, fetch_after: 50, get_opts: [timeout: 100, recv_timeout: 100])
