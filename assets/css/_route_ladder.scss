@@ -35,6 +35,10 @@
   @include button-icon(0.625rem);
   flex: 0 1 auto;
   margin-top: 0.5rem;
+
+  span {
+    display: inline-flex;
+  }
 }
 
 .m-route-ladder__reverse-icon,
