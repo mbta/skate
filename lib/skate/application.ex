@@ -14,12 +14,7 @@ defmodule Skate.Application do
 
     # List all child processes to be supervised
     children =
-      [
-        {Phoenix.PubSub, name: Skate.PubSub},
-        SkateWeb.Endpoint,
-        RefreshTokenStore,
-        {Skate.Repo, []}
-      ] ++
+      [RefreshTokenStore, {Skate.Repo, []}] ++
         if Application.get_env(:skate, :start_data_processes) do
           [
             Schedule.Supervisor,
@@ -29,7 +24,11 @@ defmodule Skate.Application do
           ]
         else
           []
-        end
+        end ++
+        [
+          {Phoenix.PubSub, name: Skate.PubSub},
+          SkateWeb.Endpoint
+        ]
 
     link = Supervisor.start_link(children, strategy: :one_for_all, name: Skate.Supervisor)
 
