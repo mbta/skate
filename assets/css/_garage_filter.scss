@@ -1,17 +1,17 @@
 .m-garage-filter {
   @include font-small;
   font-weight: 400;
-  color: #525560;
+  color: $color-gray-600;
   background: $white;
   border: 1px solid #b3b5bd;
   border-radius: 6px;
 
   &:hover {
-    border: 1px solid #b58de2;
+    border: 1px solid $color-eggplant-400;
   }
 
   &:focus-within {
-    border: 1px solid #7c47ae;
+    border: 1px solid $color-eggplant-500;
     box-shadow: 0px 0px 0px 2px rgba(170, 78, 242, 0.17);
   }
 }
@@ -31,7 +31,7 @@
   }
 
   &:focus .m-garage-filter__show-hide-button {
-    background-color: #ecedee;
+    background-color: $color-gray-200;
     border-radius: 4px;
   }
 }
@@ -46,7 +46,7 @@
   align-items: center;
 
   span svg {
-    fill: #525560;
+    fill: $color-gray-600;
   }
 }
 
@@ -56,7 +56,7 @@
   display: flex;
   flex-direction: column;
   row-gap: 0.5rem;
-  color: #3c3f4c;
+  color: $color-gray-700;
 }
 
 .m-garage-filter__garage {

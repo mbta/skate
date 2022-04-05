@@ -31,7 +31,7 @@
   .m-presets-panel__save-as-preset-button {
     @include font-small;
     font-weight: 700;
-    color: #fafafb;
+    color: $color-gray-50;
     background: $color-primary;
     border-radius: 4px;
     padding: 0.25rem 0.5rem;
@@ -45,7 +45,7 @@
 
       svg {
         path {
-          stroke: #fafafb;
+          stroke: $color-gray-50;
         }
       }
     }
