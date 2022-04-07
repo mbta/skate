@@ -7,7 +7,7 @@
 .m-route-filter__input {
   @include font-small;
   line-height: 1;
-  border: 1px solid #b3b5bd;
+  border: 1px solid $color-gray-400;
   border-radius: 6px;
   padding: 0.625rem 1rem;
   color: $color-gray-700;
@@ -45,7 +45,7 @@
   color: $color-gray-600;
 
   &:hover {
-    color: #8c909b;
+    color: $color-gray-400;
   }
 
   &:focus-within {

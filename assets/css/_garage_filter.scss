@@ -3,7 +3,7 @@
   font-weight: 400;
   color: $color-gray-600;
   background: $white;
-  border: 1px solid #b3b5bd;
+  border: 1px solid $color-gray-400;
   border-radius: 6px;
 
   &:hover {
@@ -27,7 +27,7 @@
   user-select: none;
 
   &:not(:only-child) {
-    border-bottom: 1px solid #d8dde1;
+    border-bottom: 1px solid $color-gray-300;
   }
 
   &:focus .m-garage-filter__show-hide-button {

@@ -22,7 +22,7 @@
   ul {
     min-height: 0;
     background-color: $white;
-    border: 1px solid #b3b5bd;
+    border: 1px solid $color-gray-400;
     border-top-left-radius: 6px;
     border-bottom-left-radius: 6px;
     margin: 0;
@@ -40,7 +40,7 @@
   p {
     @include font-small;
     background-color: $white;
-    border: 1px solid #b3b5bd;
+    border: 1px solid $color-gray-400;
     border-top-left-radius: 6px;
     border-bottom-left-radius: 6px;
     margin: 0;
@@ -75,17 +75,17 @@
   @include route-picker-button;
   color: $color-gray-700;
   background-color: $color-gray-200;
-  border: 1px solid #dbdde1;
+  border: 1px solid $color-gray-400;
 
   &:hover {
     color: $color-gray-900;
-    background-color: #dbdde1;
+    background-color: $color-gray-300;
   }
 
   &:focus {
     color: $color-gray-900;
-    background-color: #dbdde1;
-    border: 1px solid #b3b5bd;
+    background-color: $color-gray-300;
+    border: 1px solid $color-gray-500;
   }
 }
 
@@ -98,6 +98,7 @@
   @include button-icon(0.75rem);
   color: $color-gray-100;
   background-color: $color-primary-dark;
+  border: 1px solid $color-gray-400;
 
   span {
     position: absolute;
@@ -111,6 +112,7 @@
   }
 
   &:hover {
+    color: $color-gray-50;
     background-color: $color-primary;
 
     span {
@@ -123,6 +125,7 @@
 
   &:focus-within {
     background-color: #324450;
+    color: $color-gray-50;
     border: 1px solid $color-primary;
 
     span {
