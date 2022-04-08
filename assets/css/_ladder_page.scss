@@ -6,7 +6,7 @@ $color-route-tabs-separator: #9fa2ac;
   height: 100%;
   position: relative;
   transition: $transition-slide;
-  background-color: #fafafa;
+  background-color: $color-gray-50;
 
   .m-tab-bar.hidden + & {
     margin-left: 0;
@@ -46,7 +46,7 @@ $color-route-tabs-separator: #9fa2ac;
 
 .m-ladder-page__tab {
   @include font-small;
-  color: #6e717d;
+  color: $color-gray-700;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   margin-top: 0.375rem;
@@ -64,8 +64,7 @@ $color-route-tabs-separator: #9fa2ac;
 
 .m-ladder-page__tab-current {
   font-weight: 600;
-  color: #3c3f4c;
-  background-color: #fafafb;
+  background-color: $color-gray-50;
   border-radius: 0.25rem 0.25rem 0 0;
 
   &:first-child {
@@ -154,7 +153,7 @@ $color-route-tabs-separator: #9fa2ac;
 .m-ladder-page__routes-presets-toggle {
   @include font-small;
   display: flex;
-  border-bottom: 1px solid #141524;
+  border-bottom: 1px solid $color-gray-900;
 
   button {
     margin: 0 1rem 0 0;
@@ -162,13 +161,13 @@ $color-route-tabs-separator: #9fa2ac;
   }
 
   .m-ladder-page__routes_picker_button_selected {
-    border-bottom: 2px inset #141524;
-    color: #141524;
+    border-bottom: 2px inset $color-gray-900;
+    color: $color-gray-900;
     font-weight: 700;
   }
 
   .m-ladder-page__routes_picker_button_unselected {
-    color: #4f535f;
+    color: $color-gray-600;
     font-weight: 400;
   }
 }

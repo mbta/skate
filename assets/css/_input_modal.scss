@@ -9,7 +9,7 @@
   transform: translate(-50%, -50%);
   z-index: 2001;
   padding: 1.5rem;
-  background: #f4f4f5;
+  background: $color-gray-100;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.25);
   border-radius: 0.25rem;
   line-height: 1.125rem;
@@ -31,7 +31,7 @@
   font-size: 1.125rem;
   font-weight: 500;
   text-align: center;
-  color: #141524;
+  color: $color-gray-900;
 }
 
 .m-input-modal__text {
@@ -53,7 +53,7 @@
     border-radius: 0px;
     border-bottom: 1px solid #9fa2ac;
     padding: 0.25rem;
-    color: #141524;
+    color: $color-gray-900;
     font-weight: 400;
 
     ::placeholder {
@@ -92,12 +92,12 @@
 
 .m-input-modal__button-confirm {
   @include input-modal-button;
-  color: #fafafa;
+  color: $color-gray-50;
   background: #118d86;
 }
 
 .m-input-modal__button-danger {
   @include input-modal-button;
-  color: #fafafa;
+  color: $color-gray-50;
   background: #f00d55;
 }

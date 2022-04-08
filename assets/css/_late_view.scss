@@ -230,7 +230,7 @@ $late-view-width: 34.5rem;
   bottom: 1rem;
   left: 3rem;
   width: 28rem;
-  background-color: #fafafa;
+  background-color: $color-gray-50;
   border-radius: 0.25rem;
   padding: 0.75rem;
   font-size: 0.75rem;
@@ -256,21 +256,21 @@ $late-view-width: 34.5rem;
 .m-late-view__hide-popup {
   button {
     background-color: #055c66;
-    color: #fafafa;
+    color: $color-gray-50;
 
     &:hover {
       background-color: #118d86;
     }
 
     svg path {
-      stroke: #fafafa;
+      stroke: $color-gray-50;
     }
   }
 }
 
 .m-late-view__unhide-popup {
   button {
-    background-color: #fafafa;
+    background-color: $color-gray-50;
     color: #055c66;
   }
 }
@@ -341,16 +341,16 @@ $late-view-width: 34.5rem;
 
 .m-late-view__hide-toggle--unhidden {
   svg path {
-    stroke: #222534;
+    stroke: $color-gray-800;
   }
 
   .m-late-view__toggle-interior {
     right: -1px;
-    background-color: #222534;
+    background-color: $color-gray-800;
   }
 
   .m-late-view__toggle-exterior,
   .m-late-view__toggle-interior {
-    border-color: #222534;
+    border-color: $color-gray-800;
   }
 }
