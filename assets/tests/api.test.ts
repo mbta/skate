@@ -20,7 +20,6 @@ import * as browser from "../src/models/browser"
 
 declare global {
   interface Window {
-    /* eslint-disable typescript/no-explicit-any */
     fetch: (uri: string) => Promise<any>
   }
 }
@@ -40,6 +39,7 @@ describe("apiCall", () => {
   beforeEach(() => {
     browserReloadSpy = jest
       .spyOn(browser, "reload")
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       .mockImplementation(() => {})
   })
 

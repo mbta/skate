@@ -105,9 +105,11 @@ const description = (
         routeNameAtCreation || routeNames
       }.`
     case "chelsea_st_bridge_raised":
+      /* eslint-disable @typescript-eslint/no-non-null-assertion */
       return `OCC reported that the Chelsea St bridge will be raised until ${formattedTime(
         notification.endTime!
       )}.`
+    /* eslint-enable @typescript-eslint/no-non-null-assertion */
     case "chelsea_st_bridge_lowered":
       return "OCC reported that the Chelsea St bridge has been lowered."
     case "other":

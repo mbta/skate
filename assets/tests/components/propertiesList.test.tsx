@@ -188,8 +188,8 @@ describe("vehicleProperties", () => {
 
 describe("Highlighted", () => {
   test("renders the content, wrapping the matching text in a span", () => {
-    const content: string = "SMITH #20138713820"
-    const highlightText: string = "138"
+    const content = "SMITH #20138713820"
+    const highlightText = "138"
 
     const expected =
       'SMITH #20<span class="highlighted">138</span>7<span class="highlighted">138</span>20'
@@ -202,8 +202,8 @@ describe("Highlighted", () => {
   })
 
   test("is insensitive in its matching", () => {
-    const content: string = "SMITH #201387 tmits"
-    const highlightText: string = "mit"
+    const content = "SMITH #201387 tmits"
+    const highlightText = "mit"
 
     const expected =
       'S<span class="highlighted">MIT</span>H #201387 t<span class="highlighted">mit</span>s'
@@ -216,8 +216,8 @@ describe("Highlighted", () => {
   })
 
   test("ignores spaces and hyphens", () => {
-    const content: string = "abcde-f gh"
-    const highlightText: string = "b c-defg"
+    const content = "abcde-f gh"
+    const highlightText = "b c-defg"
     const expected = 'a<span class="highlighted">bcde-f g</span>h'
     const wrapper = shallow(
       <Highlighted content={content} highlightText={highlightText} />
@@ -226,8 +226,8 @@ describe("Highlighted", () => {
   })
 
   test("can highlight the whole string", () => {
-    const content: string = "abc"
-    const highlightText: string = "abc"
+    const content = "abc"
+    const highlightText = "abc"
     const expected = '<span class="highlighted">abc</span>'
     const wrapper = shallow(
       <Highlighted content={content} highlightText={highlightText} />
@@ -236,7 +236,7 @@ describe("Highlighted", () => {
   })
 
   test("renders the original content if no highlight text is specified", () => {
-    const content: string = "SMITH #201387"
+    const content = "SMITH #201387"
 
     const wrapper = shallow(<Highlighted content={content} />)
 

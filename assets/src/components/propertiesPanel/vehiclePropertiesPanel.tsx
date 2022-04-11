@@ -24,6 +24,7 @@ interface Props {
   selectedVehicle: Vehicle
 }
 
+/* eslint-disable no-irregular-whitespace */
 const InvalidBanner = () => (
   <div className="m-vehicle-properties-panel__invalid-banner">
     <span className="m-vehicle-properties-panel__invalid-banner-title">
@@ -33,6 +34,7 @@ const InvalidBanner = () => (
     vehicle may be off-route or severely off-schedule.
   </div>
 )
+/* eslint-enable no-irregular-whitespace */
 
 const NotAvailable = () => (
   <span className="m-vehicle-properties-panel__not-available">

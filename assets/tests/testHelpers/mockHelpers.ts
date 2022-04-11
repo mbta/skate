@@ -10,7 +10,7 @@ export const instantPromise = <T>(value: T): Promise<T> =>
  * A promise that never resolves.
  */
 export const neverPromise = (): Promise<any> =>
-  // tslint:disable: no-empty
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   new Promise(() => {})
 
 /**

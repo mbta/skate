@@ -229,7 +229,7 @@ describe("byLayoverDeparture", () => {
   } as Vehicle
 
   test("orders in descending order for the bottom layover box, so that vehicles leaving sooner are to the right", () => {
-    const isBottomLayoverBox: boolean = true
+    const isBottomLayoverBox = true
 
     expect(
       byLayoverDeparture(isBottomLayoverBox)(
@@ -246,7 +246,7 @@ describe("byLayoverDeparture", () => {
   })
 
   test("orders in ascending order for the bottom layover box, so that vehicles leaving sooner are to the left", () => {
-    const isBottomLayoverBox: boolean = false
+    const isBottomLayoverBox = false
 
     expect(
       byLayoverDeparture(isBottomLayoverBox)(
@@ -263,7 +263,7 @@ describe("byLayoverDeparture", () => {
   })
 
   test("returns 0 if either vehicle is missing the layoverDepartureTime", () => {
-    const isBottomLayoverBox: boolean = true
+    const isBottomLayoverBox = true
     const vehicleMissingLayoverDepartureTime: Vehicle = {
       layoverDepartureTime: null,
     } as Vehicle

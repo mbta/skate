@@ -8,7 +8,6 @@ export {}
 
 declare global {
   interface Window {
-    /* eslint-disable typescript/no-explicit-any */
     Appcues?: {
       identify: (shortUsername: string) => void
       page: () => void

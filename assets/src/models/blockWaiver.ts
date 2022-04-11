@@ -11,7 +11,7 @@ export enum CurrentFuturePastType {
 
 export const currentFuturePastType = (
   { startTime, endTime }: BlockWaiver,
-  startThresholdInMinutes: number = 0
+  startThresholdInMinutes = 0
 ): CurrentFuturePastType => {
   const nowDate: Date = now()
   const startThresholdInMilliseconds = startThresholdInMinutes * 60_000

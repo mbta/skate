@@ -109,7 +109,7 @@ const someVehicleHasCrowding = (
     (vehicleOrGhost) =>
       isVehicle(vehicleOrGhost) &&
       vehicleOrGhost.routeId === routeId &&
-      vehicleOrGhost.hasOwnProperty("crowding") &&
+      Object.prototype.hasOwnProperty.call(vehicleOrGhost, "crowding") &&
       vehicleOrGhost.crowding !== null
   )
 

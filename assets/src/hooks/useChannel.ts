@@ -34,6 +34,7 @@ export const useChannel = <T>({
       channel.on(event, ({ data: data }) => {
         setState(parser(data))
         if (closeAfterFirstRead) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           channel!.leave()
           channel = undefined
         }

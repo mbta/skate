@@ -86,10 +86,12 @@ const reducer = (state: State, action: Action): State => {
           [action.payload.routeId]: action.payload.trainVehiclesForRoute,
         },
       }
-    case "REMOVE_ROUTE":
+    case "REMOVE_ROUTE": {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { [action.payload.routeId]: _channel, ...channelsWithoutRouteId } =
         state.channelsByRouteId
       const {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         [action.payload.routeId]: _trainVehiclesForRoute,
         ...trainVehiclesByRouteIdWithoutRouteId
       } = state.trainVehiclesByRouteId
@@ -98,6 +100,7 @@ const reducer = (state: State, action: Action): State => {
         channelsByRouteId: channelsWithoutRouteId,
         trainVehiclesByRouteId: trainVehiclesByRouteIdWithoutRouteId,
       }
+    }
     default:
       return state
   }

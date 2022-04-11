@@ -63,7 +63,8 @@ interface TripData {
 
 const isBreakData = (
   activityData: BreakData | PieceData
-): activityData is BreakData => activityData.hasOwnProperty("break_type")
+): activityData is BreakData =>
+  Object.prototype.hasOwnProperty.call(activityData, "break_type")
 
 export const runFromData = (runData: RunData): Run => ({
   id: runData.id,
@@ -127,4 +128,4 @@ const asDirectedFromData = (asDirectedData: AsDirectedData): AsDirected => ({
 })
 
 const isTripData = (data: TripData | AsDirectedData): data is TripData =>
-  data.hasOwnProperty("id")
+  Object.prototype.hasOwnProperty.call(data, "id")

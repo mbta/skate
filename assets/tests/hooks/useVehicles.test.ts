@@ -430,7 +430,9 @@ describe("useVehicles", () => {
     window.username = "username"
 
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok", { data: vehiclesDataWithInvalid })
+    const mockChannel = makeMockChannel("ok", {
+      data: vehiclesDataWithInvalid,
+    })
     mockSocket.channel.mockImplementation(() => mockChannel)
 
     renderHook(() => useVehicles(mockSocket, ["39"]))

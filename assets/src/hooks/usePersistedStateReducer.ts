@@ -92,7 +92,10 @@ const init = (): State => {
 
 const getUserSettings = (loadedState: object | undefined): UserSettings => {
   let userSettings: UserSettings
-  if (loadedState !== undefined && loadedState.hasOwnProperty("settings")) {
+  if (
+    loadedState !== undefined &&
+    Object.prototype.hasOwnProperty.call(loadedState, "settings")
+  ) {
     // migrating settings from localStorage to database
     const localStorageSettings: UserSettings = (
       loadedState as {
@@ -143,7 +146,9 @@ export const insert = (base: object, key: Key, value: any): object => {
     return {
       ...base,
       [field]: insert(
-        base.hasOwnProperty(field) ? (base as any)[field] : {},
+        Object.prototype.hasOwnProperty.call(base, field)
+          ? (base as any)[field]
+          : {},
         key.slice(1),
         value
       ),

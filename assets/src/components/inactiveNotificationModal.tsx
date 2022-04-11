@@ -76,7 +76,7 @@ const runScheduleRelationshipForRuns = (
       currentLastPieceWithRunId: [Piece | null, RunId | null],
       activityWithRunId
     ) => {
-      if (activityWithRunId[0].hasOwnProperty("trips")) {
+      if (Object.prototype.hasOwnProperty.call(activityWithRunId[0], "trips")) {
         return [activityWithRunId[0] as Piece, activityWithRunId[1]]
       } else {
         return currentLastPieceWithRunId
@@ -88,7 +88,10 @@ const runScheduleRelationshipForRuns = (
   if (lastPiece && lastPiece.trips.length > 0) {
     const lastRevenueTrip = lastPiece.trips.reduce(
       (currentLastRevenueTrip: Trip | null, trip) => {
-        if (trip.hasOwnProperty("routeId") && (trip as Trip).routeId !== null) {
+        if (
+          Object.prototype.hasOwnProperty.call(trip, "routeId") &&
+          (trip as Trip).routeId !== null
+        ) {
           return trip as Trip
         } else {
           return currentLastRevenueTrip
@@ -108,7 +111,7 @@ const runScheduleRelationshipForRuns = (
 
   for (const a of activitiesWithRunIds) {
     if (
-      a[0].hasOwnProperty("breakType") &&
+      Object.prototype.hasOwnProperty.call(a[0], "breakType") &&
       a[0].startTime < currentTime &&
       currentTime < a[0].endTime
     ) {

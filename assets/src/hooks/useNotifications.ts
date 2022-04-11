@@ -15,8 +15,8 @@ export const useNotifications = (
   handleInitialNotifications: (notificationsData: NotificationData[]) => void
 ): void => {
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
-  const topic: string = "notifications"
-  const event: string = "notification"
+  const topic = "notifications"
+  const event = "notification"
   const [{ routeTabs }] = useContext(StateDispatchContext)
 
   useEffect(() => {

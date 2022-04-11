@@ -16,8 +16,10 @@ import {
   TileLayer,
   ZoomControl,
 } from "react-leaflet"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import Control from "react-leaflet-control"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import FullscreenControl from "react-leaflet-fullscreen"
 import {
@@ -217,7 +219,7 @@ const LeafletVehicle = ({
   const [appState, dispatch] = useContext(StateDispatchContext)
   const select = isPrimary
     ? () => dispatch(selectVehicle(vehicle))
-    : // tslint:disable-next-line: no-empty
+    : // eslint-disable-next-line @typescript-eslint/no-empty-function
       () => {}
   const position: LatLngExpression = [vehicle.latitude, vehicle.longitude]
   const vehicleIcon: Leaflet.DivIcon = makeLeafletVehicleIcon(
@@ -260,7 +262,7 @@ const PigeonVehicle = ({
   const [appState, dispatch] = useContext(StateDispatchContext)
   const select = isPrimary
     ? () => dispatch(selectVehicle(vehicle))
-    : // tslint:disable-next-line: no-empty
+    : // eslint-disable-next-line @typescript-eslint/no-empty-function
       () => {}
 
   return (

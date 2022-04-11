@@ -71,6 +71,7 @@ const compareGhosts = (a: Ghost, b: Ghost): number => {
   if (a.runId === null && b.runId === null) {
     return a.id.localeCompare(b.id)
   }
+  //eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return runIdToLabel(a.runId!).localeCompare(runIdToLabel(b.runId!))
 }
 
@@ -164,6 +165,7 @@ const LateView = (): ReactElement<HTMLElement> => {
   const unhideRecentlyHidden: () => void = () => {
     setHidingTimestamps(
       recentlyHiddenIds.reduce((result, id) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { [id]: _, ...rest } = result
         return rest
       }, hidingTimestamps)
@@ -183,6 +185,7 @@ const LateView = (): ReactElement<HTMLElement> => {
         hidingTimestamps[runId] + permanentlyHideThreshold * 1000 < Date.now()
     )
     const newHidingTimestamps = oldHiddenIds.reduce((result, id) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { [id]: _, ...rest } = result
       return rest
     }, hidingTimestamps)
@@ -209,6 +212,7 @@ const LateView = (): ReactElement<HTMLElement> => {
     )
     const newPermanentHidingTimestamps = oldPermanentlyHiddenIds.reduce(
       (result, id) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { [id]: _, ...rest } = result
         return rest
       },

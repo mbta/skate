@@ -42,6 +42,7 @@ const NotificationDrawer = () => {
     }
 
     return () => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       rememberScrollPosition(elementRef.current!.scrollTop)
     }
   }, [])

@@ -66,7 +66,7 @@ const testMap: { [index: string]: (className?: string) => JSX.Element } = {
 }
 
 for (const key in testMap) {
-  if (testMap.hasOwnProperty(key)) {
+  if (Object.prototype.hasOwnProperty.call(testMap, key)) {
     const functionToTest = testMap[key]
 
     describe(key, () => {
