@@ -92,6 +92,7 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
           className="m-vehicle-properties-panel__link"
           href={directionsUrl(latitude, longitude)}
           target="_blank"
+          rel="noreferrer"
         >
           Directions
         </a>

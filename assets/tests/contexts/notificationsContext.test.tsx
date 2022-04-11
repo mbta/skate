@@ -71,7 +71,11 @@ describe("Notification", () => {
     ;(useNotifications as jest.Mock).mockImplementationOnce((h) => {
       handler = h
     })
-    mount(<NotificationsProvider children={<></>} />)
+    mount(
+      <NotificationsProvider>
+        <></>
+      </NotificationsProvider>
+    )
     const originalFS = window.FS
     const originalUsername = window.username
     window.FS = { event: jest.fn(), identify: jest.fn() }

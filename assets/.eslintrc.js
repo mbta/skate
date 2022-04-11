@@ -7,11 +7,18 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:react/recommended',
     'prettier',
   ],
+  "settings": {
+    "react": {
+      "version": "detect",
+    },
+  },
   "reportUnusedDisableDirectives": true,
   "rules": {
     "@typescript-eslint/no-explicit-any": "off",
+    "react/display-name": "off",
   },
   "overrides": [
     {
