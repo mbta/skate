@@ -19,6 +19,15 @@ module.exports = {
   "rules": {
     "@typescript-eslint/no-explicit-any": "off",
     "react/display-name": "off",
+    "react/function-component-definition": [
+      "error",
+      {
+        "namedComponents": "arrow-function",
+        "unnamedComponents": "arrow-function",
+      },
+    ],
+    "react/hook-use-state": "error",
+    "react/no-danger": "error",
   },
   "overrides": [
     {

@@ -5,6 +5,7 @@ test("renders the given svg content in a span element with a class name", () => 
   const className = "test-class-name"
   const svgText = "svg text"
 
+  /* eslint-disable react/no-danger */
   const expected = (
     <span
       className={className}
@@ -13,6 +14,7 @@ test("renders the given svg content in a span element with a class name", () => 
       }}
     />
   )
+  /* eslint-enable react/no-danger */
 
   const result = renderSvg(className, svgText)
 
