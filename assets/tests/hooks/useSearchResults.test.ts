@@ -6,9 +6,6 @@ import { Vehicle, VehicleOrGhost } from "../../src/realtime"
 import { mockUseStateOnce } from "../testHelpers/mockHelpers"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 
-// tslint:disable: react-hooks-nesting
-// tslint:disable: object-literal-sort-keys
-
 describe("useSearchResults", () => {
   test("returns null initially", () => {
     const { result } = renderHook(() =>

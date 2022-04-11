@@ -148,7 +148,7 @@ const subscribe = (
     .join()
     .receive("ok", handleTrainVehicles)
     .receive("error", ({ reason }) =>
-      // tslint:disable-next-line: no-console
+      // eslint-disable-next-line no-console
       console.error("Train vehicles join failed", reason)
     )
     .receive("timeout", reload)

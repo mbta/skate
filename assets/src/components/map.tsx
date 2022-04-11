@@ -455,7 +455,6 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
 const MapWithLeaflet = (props: Props): ReactElement<HTMLDivElement> => {
   const mapRef: MutableRefObject<ReactLeafletMap | null> =
     // this prop is only for tests, and is consistent between renders, so the hook call is consistent
-    // tslint:disable-next-line: react-hooks-nesting
     props.reactLeafletRef || useRef(null)
   const [shouldAutoCenter, setShouldAutoCenter] = useState<boolean>(true)
   const isAutoCentering: MutableRefObject<boolean> = useRef(false)

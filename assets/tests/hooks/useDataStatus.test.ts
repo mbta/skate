@@ -2,8 +2,6 @@ import { renderHook } from "@testing-library/react-hooks"
 import useDataStatus from "../../src/hooks/useDataStatus"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 
-// tslint:disable: react-hooks-nesting
-
 describe("useDataStatus", () => {
   test("returns good while loading", () => {
     const { result } = renderHook(() => useDataStatus(undefined))

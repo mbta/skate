@@ -2,7 +2,6 @@
 // The MiniCssExtractPlugin is used to separate it out into
 // its own CSS file.
 declare function require(name: string): string
-// tslint:disable-next-line
 require("../css/app.scss")
 
 // webpack automatically bundles all modules in your

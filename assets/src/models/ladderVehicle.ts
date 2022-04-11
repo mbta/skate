@@ -38,8 +38,6 @@ interface VehicleInLane extends WithVehicle, InLane {}
 const widthOfVehicleGroup = 32
 const heightOfVehicleGroup = 34
 
-// tslint:disable:object-literal-sort-keys
-
 /**
  * The LadderVehicle data has some order dependency in how the properties are calculated.
  * E.g. In order to calculate x we need to know what lane the vehicle is in.
@@ -136,7 +134,6 @@ const vehicleOnLadder = (
       : timepointStatusYFunc(vehicle.timepointStatus, vehicleDirection)
 
   return {
-    // tslint:disable-next-line:object-literal-sort-keys
     vehicle,
     vehicleDirection,
     y,
@@ -191,7 +188,6 @@ const ghostOnLadder = (
     vehicleDirection
   )
   return {
-    // tslint:disable-next-line:object-literal-sort-keys
     vehicle: ghost,
     vehicleDirection,
     y,

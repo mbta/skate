@@ -17,6 +17,7 @@ module.exports = {
   },
   "reportUnusedDisableDirectives": true,
   "rules": {
+    "no-console": "error",
     "@typescript-eslint/no-explicit-any": "off",
     "react/display-name": "off",
     "react/function-component-definition": [

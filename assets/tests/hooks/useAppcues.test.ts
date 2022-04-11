@@ -4,8 +4,6 @@ import useAppcues, { cleanUsername } from "../../src/hooks/useAppcues"
 // Indicate that the file is a module so we can declare global
 export {}
 
-// tslint:disable: react-hooks-nesting
-
 declare global {
   interface Window {
     Appcues?: {

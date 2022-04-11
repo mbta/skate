@@ -13,7 +13,6 @@ describe("useGarageFilter", () => {
   test("defaults to no garages selected", () => {
     const routes = [routeFactory.build()]
 
-    // tslint:disable-next-line: react-hooks-nesting no-empty
     const { result } = renderHook(() => useGarageFilter(routes))
 
     expect(result.current.filteredGarages).toEqual([])
@@ -22,7 +21,6 @@ describe("useGarageFilter", () => {
   test("includes list of garages in data", () => {
     const routes = [routeFactory.build({ garages: ["Garage A"] })]
 
-    // tslint:disable-next-line: react-hooks-nesting no-empty
     const { result } = renderHook(() => useGarageFilter(routes))
 
     expect(result.current.allGarages).toEqual(["Garage A"])
@@ -31,7 +29,6 @@ describe("useGarageFilter", () => {
   test("toggleGarage selects and deselects garage", () => {
     const routes = [routeFactory.build({ garages: ["Garage A"] })]
 
-    // tslint:disable-next-line: react-hooks-nesting no-empty
     const { result } = renderHook(() => useGarageFilter(routes))
 
     act(() => result.current.toggleGarage("Garage A"))
@@ -49,7 +46,6 @@ describe("filterRoutesByGarage", () => {
     const route1 = routeFactory.build({ garages: ["Garage A"] })
     const route2 = routeFactory.build({ garages: ["Garage B"] })
 
-    // tslint:disable-next-line: react-hooks-nesting no-empty
     const { result } = renderHook(() => useGarageFilter([route1, route2]))
 
     const filteredRoutes = filterRoutesByGarage(
@@ -66,7 +62,6 @@ describe("filterRoutesByGarage", () => {
     const route1 = routeFactory.build({ garages: ["Garage A"] })
     const route2 = routeFactory.build({ garages: ["Garage B"] })
 
-    // tslint:disable-next-line: react-hooks-nesting no-empty
     const { result } = renderHook(() => useGarageFilter([route1, route2]))
 
     act(() => result.current.toggleGarage("Garage A"))

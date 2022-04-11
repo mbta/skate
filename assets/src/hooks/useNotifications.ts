@@ -37,7 +37,7 @@ export const useNotifications = (
             handleInitialNotifications(data.initial_notifications)
         )
         .receive("error", ({ reason }) =>
-          // tslint:disable-next-line: no-console
+          // eslint-disable-next-line no-console
           console.error(`joining topic ${topic} failed`, reason)
         )
         .receive("timeout", reload)

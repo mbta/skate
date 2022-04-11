@@ -9,8 +9,6 @@ import { Block, Run } from "../../src/minischedule"
 import { instantPromise, neverPromise } from "../testHelpers/mockHelpers"
 import { TripId } from "../../src/schedule"
 
-// tslint:disable: react-hooks-nesting
-
 jest.mock("../../src/api", () => ({
   __esModule: true,
   fetchScheduleRun: jest.fn(() => neverPromise()),

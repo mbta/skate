@@ -16,8 +16,6 @@ import routeFactory from "./factories/route"
 import routeTabFactory from "./factories/routeTab"
 import * as browser from "../src/models/browser"
 
-// tslint:disable no-empty
-
 declare global {
   interface Window {
     fetch: (uri: string) => Promise<any>

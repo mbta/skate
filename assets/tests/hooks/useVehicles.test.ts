@@ -8,9 +8,6 @@ import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 import ghostFactory from "../factories/ghost"
 import ghostDataFactory from "../factories/ghost_data"
 
-// tslint:disable: react-hooks-nesting
-// tslint:disable: object-literal-sort-keys
-
 describe("useVehicles", () => {
   const vehiclesData: VehicleData[] = [
     {

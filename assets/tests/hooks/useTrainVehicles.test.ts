@@ -7,8 +7,6 @@ import { TrainVehicle } from "../../src/realtime"
 import { RouteId } from "../../src/schedule"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 
-// tslint:disable: react-hooks-nesting
-
 describe("useTrainVehicles", () => {
   const trainVehiclesData: TrainVehicleData[] = [
     {

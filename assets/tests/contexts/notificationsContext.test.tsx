@@ -41,8 +41,6 @@ const notification: Notification = {
   state: "unread" as NotificationState,
 }
 
-// tslint:disable: react-hooks-nesting
-
 describe("Notification", () => {
   test("starts empty", () => {
     const { result } = renderHook(() => useContext(NotificationsContext), {

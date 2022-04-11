@@ -19,8 +19,6 @@ import {
 } from "../../src/userSettings"
 import routeTabFactory from "../factories/routeTab"
 
-// tslint:disable: react-hooks-nesting
-
 const mockLocalStorage = {
   getItem: jest.fn(),
   setItem: jest.fn(),

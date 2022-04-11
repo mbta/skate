@@ -47,7 +47,7 @@ export const useChannel = <T>({
             setState(parser(data))
           })
           .receive("error", ({ reason }) =>
-            // tslint:disable-next-line: no-console
+            // eslint-disable-next-line no-console
             console.error(`joining topic ${topic} failed`, reason)
           )
           .receive("timeout", reload)

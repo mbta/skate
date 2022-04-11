@@ -8,8 +8,6 @@ import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { RouteTab } from "../../src/models/routeTab"
 import routeTabFactory from "../factories/routeTab"
 
-// tslint:disable: react-hooks-nesting no-empty
-
 jest.mock("../../src/api", () => ({
   __esModule: true,
   // eslint-disable-next-line @typescript-eslint/no-empty-function

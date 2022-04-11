@@ -4,8 +4,6 @@ import useShuttleRoutes, { sortByName } from "../../src/hooks/useShuttleRoutes"
 import { Route } from "../../src/schedule"
 import { instantPromise } from "../testHelpers/mockHelpers"
 
-// tslint:disable: react-hooks-nesting no-empty
-
 jest.mock("../../src/api", () => ({
   __esModule: true,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
