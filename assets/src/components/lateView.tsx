@@ -165,7 +165,6 @@ const LateView = (): ReactElement<HTMLElement> => {
   const unhideRecentlyHidden: () => void = () => {
     setHidingTimestamps(
       recentlyHiddenIds.reduce((result, id) => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { [id]: _, ...rest } = result
         return rest
       }, hidingTimestamps)
@@ -185,7 +184,6 @@ const LateView = (): ReactElement<HTMLElement> => {
         hidingTimestamps[runId] + permanentlyHideThreshold * 1000 < Date.now()
     )
     const newHidingTimestamps = oldHiddenIds.reduce((result, id) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { [id]: _, ...rest } = result
       return rest
     }, hidingTimestamps)
@@ -212,7 +210,6 @@ const LateView = (): ReactElement<HTMLElement> => {
     )
     const newPermanentHidingTimestamps = oldPermanentlyHiddenIds.reduce(
       (result, id) => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { [id]: _, ...rest } = result
         return rest
       },

@@ -1,14 +1,14 @@
 module.exports = {
   root: true,
-  parser: '@typescript-eslint/parser',
+  parser: "@typescript-eslint/parser",
   plugins: [
-    '@typescript-eslint',
+    "@typescript-eslint",
   ],
   extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:react/recommended',
-    'prettier',
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "prettier",
   ],
   "settings": {
     "react": {
@@ -18,7 +18,16 @@ module.exports = {
   "reportUnusedDisableDirectives": true,
   "rules": {
     "no-console": "error",
+    "prefer-rest-params": "off",
     "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_.*",
+        "varsIgnorePattern": "^_.*",
+        "destructuredArrayIgnorePattern": "^_.*",
+      }
+    ],
     "react/display-name": "off",
     "react/function-component-definition": [
       "error",
@@ -39,16 +48,7 @@ module.exports = {
         "*.test.tsx",
       ],
       "rules": {
-        "prefer-rest-params": "off",
         "@typescript-eslint/ban-ts-comment": "off",
-        "@typescript-eslint/no-unused-vars": [
-          "error",
-          {
-            "argsIgnorePattern": "^_.*",
-            "varsIgnorePattern": "^_.*",
-            "destructuredArrayIgnorePattern": "^_.*",
-          }
-        ],
       },
     },
     {
