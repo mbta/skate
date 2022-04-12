@@ -3,6 +3,7 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   plugins: [
     "@typescript-eslint",
+    "react",
   ],
   extends: [
     "eslint:recommended",
@@ -13,6 +14,11 @@ module.exports = {
   "settings": {
     "react": {
       "version": "detect",
+    },
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true,
     },
   },
   "reportUnusedDisableDirectives": true,
