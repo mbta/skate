@@ -8,8 +8,6 @@ import {
 } from "../../src/models/ladderVehicle"
 import { Vehicle } from "../../src/realtime"
 
-// tslint:disable:object-literal-sort-keys
-
 describe("putIntoLanes", () => {
   test("adds lane properties", () => {
     const original: LadderVehicle[] = [

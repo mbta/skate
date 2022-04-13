@@ -4,8 +4,6 @@ import useSocket, {
   readUserToken,
 } from "../../src/hooks/useSocket"
 
-// tslint:disable: react-hooks-nesting
-
 jest.mock("phoenix", () => ({
   Socket: jest.fn(() => ({
     connect: jest.fn(),

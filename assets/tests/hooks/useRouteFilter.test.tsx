@@ -10,8 +10,6 @@ import {
 import routeFactory from "../factories/route"
 import { Route } from "../../src/schedule.d"
 
-// tslint:disable: react-hooks-nesting no-empty
-
 describe("useRouteFilter", () => {
   test("defaults filter text to empty string", () => {
     const { result } = renderHook(() => useRouteFilter())

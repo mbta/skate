@@ -5,11 +5,11 @@ import { useRouteShapes, useTripShape } from "../../src/hooks/useShapes"
 import { Shape } from "../../src/schedule.d"
 import { instantPromise, mockUseStateOnce } from "../testHelpers/mockHelpers"
 
-// tslint:disable: react-hooks-nesting no-empty
-
 jest.mock("../../src/api", () => ({
   __esModule: true,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   fetchShapeForRoute: jest.fn(() => new Promise<Shape[]>(() => {})),
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   fetchShapeForTrip: jest.fn(() => new Promise<Shape[]>(() => {})),
 }))
 

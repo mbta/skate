@@ -41,8 +41,6 @@ const notification: Notification = {
   state: "unread" as NotificationState,
 }
 
-// tslint:disable: react-hooks-nesting
-
 describe("Notification", () => {
   test("starts empty", () => {
     const { result } = renderHook(() => useContext(NotificationsContext), {
@@ -71,7 +69,11 @@ describe("Notification", () => {
     ;(useNotifications as jest.Mock).mockImplementationOnce((h) => {
       handler = h
     })
-    mount(<NotificationsProvider children={<></>} />)
+    mount(
+      <NotificationsProvider>
+        <></>
+      </NotificationsProvider>
+    )
     const originalFS = window.FS
     const originalUsername = window.username
     window.FS = { event: jest.fn(), identify: jest.fn() }

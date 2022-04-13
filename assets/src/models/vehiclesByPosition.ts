@@ -122,29 +122,39 @@ const isAVehicleThatIsLateStartingScheduledTrip = (
 const isScheduledForCurrentRoute = (
   vehicle: Vehicle,
   currentRouteId: RouteId
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 ): boolean => vehicle.scheduledLocation!.routeId === currentRouteId
 
 const hasAScheduleLocation = (vehicle: Vehicle): boolean =>
   vehicle.scheduledLocation != null
 
 const isLateStartingScheduledTrip = (vehicle: Vehicle): boolean =>
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   onTimeStatus(vehicle.scheduledLocation!.timeSinceTripStartTime) === "late"
 
 const isLessThanOneHourLate = (vehicle: Vehicle): boolean => {
   const oneHourInSeconds = 3600
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return vehicle.scheduledLocation!.timeSinceTripStartTime < oneHourInSeconds
 }
 
 const ghostFromVehicleScheduledLocation = (vehicle: Vehicle): Ghost => ({
   id: `ghost-incoming-${vehicle.id}`,
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   directionId: vehicle.scheduledLocation!.directionId,
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   routeId: vehicle.scheduledLocation!.routeId,
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   tripId: vehicle.scheduledLocation!.tripId,
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   headsign: vehicle.scheduledLocation!.headsign || "",
   blockId: vehicle.blockId,
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   runId: vehicle.scheduledLocation!.runId,
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   viaVariant: vehicle.scheduledLocation!.viaVariant,
   layoverDepartureTime: null,
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   scheduledTimepointStatus: vehicle.scheduledLocation!.timepointStatus,
   scheduledLogonTime: null,
   routeStatus: "on_route",

@@ -40,17 +40,18 @@ export interface State extends ReducerState {
 
 // Don't worry about covering the no-ops below
 /* istanbul ignore next */
-// tslint:disable: no-empty
 export const NotificationsContext = createContext<State>({
   notifications: [],
   showLatestNotification: false,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   dispatch: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   rememberScrollPosition: () => {},
   scrollPosition: 0,
   notificationWithOpenSubmenuId: null,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setNotificationWithOpenSubmenuId: () => {},
 })
-// tslint:enable: no-empty
 
 export const NotificationsProvider = ({
   children,

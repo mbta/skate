@@ -472,6 +472,7 @@ exports[`SearchPage renders a selected vehicle 1`] = `
             <a
               className="m-vehicle-properties-panel__link"
               href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+              rel="noreferrer"
               target="_blank"
             >
               Directions

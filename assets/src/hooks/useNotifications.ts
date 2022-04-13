@@ -15,8 +15,8 @@ export const useNotifications = (
   handleInitialNotifications: (notificationsData: NotificationData[]) => void
 ): void => {
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
-  const topic: string = "notifications"
-  const event: string = "notification"
+  const topic = "notifications"
+  const event = "notification"
   const [{ routeTabs }] = useContext(StateDispatchContext)
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export const useNotifications = (
             handleInitialNotifications(data.initial_notifications)
         )
         .receive("error", ({ reason }) =>
-          // tslint:disable-next-line: no-console
+          // eslint-disable-next-line no-console
           console.error(`joining topic ${topic} failed`, reason)
         )
         .receive("timeout", reload)

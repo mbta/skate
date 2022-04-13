@@ -3,8 +3,6 @@ import * as Api from "../../src/api"
 import { useNearestIntersection } from "../../src/hooks/useNearestIntersection"
 import { neverPromise } from "../../tests/testHelpers/mockHelpers"
 
-// tslint:disable: react-hooks-nesting
-
 jest.mock("../../src/api", () => ({
   __esModule: true,
   fetchNearestIntersection: jest.fn(() => neverPromise()),

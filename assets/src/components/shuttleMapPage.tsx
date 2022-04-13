@@ -22,6 +22,7 @@ const filterShuttles = (
   }
 
   return shuttles.filter((shuttle) =>
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     selectedShuttleRunIds.includes(shuttle.runId!)
   )
 }
@@ -30,7 +31,7 @@ export const allTrainVehicles = (
   trainVehiclesByRouteId: ByRouteId<TrainVehicle[]>
 ): TrainVehicle[] => flatten(Object.values(trainVehiclesByRouteId))
 
-const ShuttleMapPage = ({}): ReactElement<HTMLDivElement> => {
+const ShuttleMapPage = (): ReactElement<HTMLDivElement> => {
   const [state] = useContext(StateDispatchContext)
   const {
     selectedShuttleRouteIds,

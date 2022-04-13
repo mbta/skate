@@ -1,8 +1,6 @@
 import { renderHook } from "@testing-library/react-hooks"
 import useInterval from "../../src/hooks/useInterval"
 
-// tslint:disable: react-hooks-nesting
-
 jest.useFakeTimers()
 
 describe("useInterval", () => {

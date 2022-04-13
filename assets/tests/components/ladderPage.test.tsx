@@ -414,7 +414,10 @@ describe("LadderPage", () => {
 
   test("if a vehicle from a notification is loading, show nothing", () => {
     const notification: Notification = { runIds: ["run_id"] } as Notification
-    const state: State = { ...initialState, selectedNotification: notification }
+    const state: State = {
+      ...initialState,
+      selectedNotification: notification,
+    }
     const wrapper = mount(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <LadderPage />
@@ -425,7 +428,10 @@ describe("LadderPage", () => {
 
   test("if a vehicle from a notification failed to load, show nothing", () => {
     const notification: Notification = { runIds: ["run_id"] } as Notification
-    const state: State = { ...initialState, selectedNotification: notification }
+    const state: State = {
+      ...initialState,
+      selectedNotification: notification,
+    }
     const wrapper = mount(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <LadderPage />

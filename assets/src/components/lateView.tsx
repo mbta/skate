@@ -71,6 +71,7 @@ const compareGhosts = (a: Ghost, b: Ghost): number => {
   if (a.runId === null && b.runId === null) {
     return a.id.localeCompare(b.id)
   }
+  //eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return runIdToLabel(a.runId!).localeCompare(runIdToLabel(b.runId!))
 }
 

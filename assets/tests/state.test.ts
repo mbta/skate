@@ -863,7 +863,7 @@ describe("reducer", () => {
     const stateWithInputModal = {
       ...initialState,
       openInputModal: {
-        type: "DELETE_PRESET" as "DELETE_PRESET",
+        type: "DELETE_PRESET" as const,
         deleteCallback: mockCallback,
         presetName: "My Preset",
       },

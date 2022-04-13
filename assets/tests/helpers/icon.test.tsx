@@ -66,13 +66,14 @@ const testMap: { [index: string]: (className?: string) => JSX.Element } = {
 }
 
 for (const key in testMap) {
-  if (testMap.hasOwnProperty(key)) {
+  if (Object.prototype.hasOwnProperty.call(testMap, key)) {
     const functionToTest = testMap[key]
 
     describe(key, () => {
       it("renders an icon with a class name", () => {
         const className = "test-class-name"
 
+        /* eslint-disable react/no-danger */
         const expected = (
           <span
             className={className}
@@ -81,6 +82,7 @@ for (const key in testMap) {
             }}
           />
         )
+        /* eslint-enable react/no-danger */
 
         const result = functionToTest(className)
 
@@ -88,6 +90,7 @@ for (const key in testMap) {
       })
 
       it("renders without a class name", () => {
+        /* eslint-disable react/no-danger */
         const expected = (
           <span
             className=""
@@ -96,6 +99,7 @@ for (const key in testMap) {
             }}
           />
         )
+        /* eslint-enable react/no-danger */
 
         const result = functionToTest()
 

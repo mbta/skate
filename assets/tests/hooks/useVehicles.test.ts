@@ -8,9 +8,6 @@ import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 import ghostFactory from "../factories/ghost"
 import ghostDataFactory from "../factories/ghost_data"
 
-// tslint:disable: react-hooks-nesting
-// tslint:disable: object-literal-sort-keys
-
 describe("useVehicles", () => {
   const vehiclesData: VehicleData[] = [
     {
@@ -430,7 +427,9 @@ describe("useVehicles", () => {
     window.username = "username"
 
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok", { data: vehiclesDataWithInvalid })
+    const mockChannel = makeMockChannel("ok", {
+      data: vehiclesDataWithInvalid,
+    })
     mockSocket.channel.mockImplementation(() => mockChannel)
 
     renderHook(() => useVehicles(mockSocket, ["39"]))

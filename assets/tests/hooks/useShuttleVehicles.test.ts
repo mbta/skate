@@ -3,8 +3,6 @@ import useShuttleVehicles from "../../src/hooks/useShuttleVehicles"
 import { Vehicle, VehicleTimepointStatus } from "../../src/realtime.d"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 
-// tslint:disable: react-hooks-nesting
-
 const shuttlesData = [
   {
     bearing: 33,

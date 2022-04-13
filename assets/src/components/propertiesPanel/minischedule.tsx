@@ -56,7 +56,9 @@ export interface Props {
 
 export const MinischeduleRun = ({ vehicleOrGhost }: Props): ReactElement => {
   const run: Run | null | undefined = useMinischeduleRun(
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     vehicleOrGhost.tripId!,
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     vehicleOrGhost.runId!
   )
   return (
@@ -66,6 +68,7 @@ export const MinischeduleRun = ({ vehicleOrGhost }: Props): ReactElement => {
 
 export const MinischeduleBlock = ({ vehicleOrGhost }: Props): ReactElement => {
   const block: Block | null | undefined = useMinischeduleBlock(
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     vehicleOrGhost.tripId!
   )
   return (
@@ -617,6 +620,7 @@ const RevenueTrip = ({
   const directionIcon =
     // Safe to assume routeId is not null, since if it were, we'd be
     // rendering a deadhead row instead.
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     iconForDirectionOnLadder(trip.directionId, ladderDirections, trip.routeId!)
 
   return (
@@ -763,13 +767,13 @@ const getTimeBasedStyle = (
 }
 
 const isPiece = (activity: Piece | Break): activity is Piece =>
-  activity.hasOwnProperty("trips")
+  Object.prototype.hasOwnProperty.call(activity, "trips")
 
 const isBreak = (activity: Piece | Break): activity is Break =>
-  activity.hasOwnProperty("breakType")
+  Object.prototype.hasOwnProperty.call(activity, "breakType")
 
 const isTrip = (trip: Trip | AsDirected): trip is Trip =>
-  trip.hasOwnProperty("id")
+  Object.prototype.hasOwnProperty.call(trip, "id")
 
 const isDeadhead = (trip: Trip | AsDirected): boolean =>
   isTrip(trip) && trip.routeId == null

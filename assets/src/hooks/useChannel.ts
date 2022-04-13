@@ -34,6 +34,7 @@ export const useChannel = <T>({
       channel.on(event, ({ data: data }) => {
         setState(parser(data))
         if (closeAfterFirstRead) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           channel!.leave()
           channel = undefined
         }
@@ -46,7 +47,7 @@ export const useChannel = <T>({
             setState(parser(data))
           })
           .receive("error", ({ reason }) =>
-            // tslint:disable-next-line: no-console
+            // eslint-disable-next-line no-console
             console.error(`joining topic ${topic} failed`, reason)
           )
           .receive("timeout", reload)

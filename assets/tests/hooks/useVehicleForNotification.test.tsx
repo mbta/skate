@@ -124,7 +124,6 @@ describe("useVehicleForNotification", () => {
     const mockChannel = makeMockOneShotChannel([vehicleData])
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    // tslint:disable: react-hooks-nesting
     const { result } = renderHook(
       () => {
         return useVehicleForNotification(notification, mockSocket)
@@ -204,7 +203,6 @@ describe("useVehicleForNotification", () => {
     const mockChannel = makeMockOneShotChannel([ghostData])
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    // tslint:disable: react-hooks-nesting
     const { result } = renderHook(
       () => {
         return useVehicleForNotification(notification, mockSocket)
@@ -249,7 +247,6 @@ describe("useVehicleForNotification", () => {
     const mockChannel = makeMockOneShotChannel(null)
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    // tslint:disable: react-hooks-nesting
     const { result } = renderHook(
       () => {
         return useVehicleForNotification(
@@ -278,7 +275,6 @@ describe("useVehicleForNotification", () => {
     const mockChannel = makeMockOneShotChannel(null)
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    // tslint:disable: react-hooks-nesting
     const { result } = renderHook(
       () => {
         return useVehicleForNotification(
@@ -309,7 +305,6 @@ describe("useVehicleForNotification", () => {
     const mockChannel = makeMockOneShotChannel([])
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    // tslint:disable: react-hooks-nesting
     const { result } = renderHook(
       () => {
         return useVehicleForNotification(

@@ -4,8 +4,6 @@ import renderer from "react-test-renderer"
 import DisconnectedModal from "../../src/components/disconnectedModal"
 import { reload } from "../../src/models/browser"
 
-// tslint:disable no-empty
-
 jest.mock("../../src/models/browser", () => ({
   __esModule: true,
   reload: jest.fn(),

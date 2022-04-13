@@ -13,8 +13,6 @@ import { initialState } from "../../src/state"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 import routeTabFactory from "../factories/routeTab"
 
-// tslint:disable: react-hooks-nesting
-
 const notificationData: NotificationData = {
   id: "12345",
   created_at: 0,

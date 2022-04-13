@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-ignore
 import bangIconSvg from "../../static/images/icon-bang.svg"
 // @ts-ignore
@@ -94,149 +95,149 @@ import unhiddenIconSvg from "../../static/images/icon-unhidden.svg"
 import upDownIconSvg from "../../static/images/icon-up-down-arrow.svg"
 // @ts-ignore
 import upRightIconSvg from "../../static/images/icon-up-right-arrow.svg"
+/* eslint-enable @typescript-eslint/ban-ts-comment */
 import renderSvg from "./renderSvg"
 
-export const bangIcon = (className: string = ""): JSX.Element =>
+export const bangIcon = (className = ""): JSX.Element =>
   renderSvg(className, bangIconSvg)
 
-export const blueLineIcon = (className: string = ""): JSX.Element =>
+export const blueLineIcon = (className = ""): JSX.Element =>
   renderSvg(className, blueLineIconSvg)
 
-export const busFrontIcon = (className: string = ""): JSX.Element =>
+export const busFrontIcon = (className = ""): JSX.Element =>
   renderSvg(className, busFrontIconSvg)
 
-export const busRearIcon = (className: string = ""): JSX.Element =>
+export const busRearIcon = (className = ""): JSX.Element =>
   renderSvg(className, busRearIconSvg)
 
-export const circleXIcon = (className: string = ""): JSX.Element =>
+export const circleXIcon = (className = ""): JSX.Element =>
   renderSvg(className, circleXIconSvg)
 
-export const closeIcon = (className: string = ""): JSX.Element =>
+export const closeIcon = (className = ""): JSX.Element =>
   renderSvg(className, closeIconSvg)
 
-export const collapseIcon = (className: string = ""): JSX.Element =>
+export const collapseIcon = (className = ""): JSX.Element =>
   renderSvg(className, collapseIconSvg)
 
-export const commuterRailIcon = (className: string = ""): JSX.Element =>
+export const commuterRailIcon = (className = ""): JSX.Element =>
   renderSvg(className, commuterRailIconSvg)
 
-export const crowdingIcon = (className: string = ""): JSX.Element =>
+export const crowdingIcon = (className = ""): JSX.Element =>
   renderSvg(className, crowdingIconSvg)
 
-export const ellipsisIcon = (className: string = ""): JSX.Element =>
+export const ellipsisIcon = (className = ""): JSX.Element =>
   renderSvg(className, ellipsisIconSvg)
 
-export const expandIcon = (className: string = ""): JSX.Element =>
+export const expandIcon = (className = ""): JSX.Element =>
   renderSvg(className, expandIconSvg)
 
-export const filledCircleIcon = (className: string = ""): JSX.Element =>
+export const filledCircleIcon = (className = ""): JSX.Element =>
   renderSvg(className, filledCircleIconSvg)
 
-export const ghostIcon = (className: string = ""): JSX.Element =>
+export const ghostIcon = (className = ""): JSX.Element =>
   renderSvg(className, ghostIconSvg)
 
-export const ghostSwingIcon = (className: string = ""): JSX.Element =>
+export const ghostSwingIcon = (className = ""): JSX.Element =>
   renderSvg(className, ghostSwingIconSvg)
 
-export const greenLineBIcon = (className: string = ""): JSX.Element =>
+export const greenLineBIcon = (className = ""): JSX.Element =>
   renderSvg(className, greenLineBIconSvg)
 
-export const greenLineCIcon = (className: string = ""): JSX.Element =>
+export const greenLineCIcon = (className = ""): JSX.Element =>
   renderSvg(className, greenLineCIconSvg)
 
-export const greenLineDIcon = (className: string = ""): JSX.Element =>
+export const greenLineDIcon = (className = ""): JSX.Element =>
   renderSvg(className, greenLineDIconSvg)
 
-export const greenLineEIcon = (className: string = ""): JSX.Element =>
+export const greenLineEIcon = (className = ""): JSX.Element =>
   renderSvg(className, greenLineEIconSvg)
 
-export const greenLineIcon = (className: string = ""): JSX.Element =>
+export const greenLineIcon = (className = ""): JSX.Element =>
   renderSvg(className, greenLineIconSvg)
 
-export const hiddenIcon = (className: string = ""): JSX.Element =>
+export const hiddenIcon = (className = ""): JSX.Element =>
   renderSvg(className, hiddenIconSvg)
 
-export const ladderIcon = (className: string = ""): JSX.Element =>
+export const ladderIcon = (className = ""): JSX.Element =>
   renderSvg(className, ladderIconSvg)
 
-export const lateIcon = (className: string = ""): JSX.Element =>
+export const lateIcon = (className = ""): JSX.Element =>
   renderSvg(className, lateIconSvg)
 
-export const lateViewGhostIcon = (className: string = ""): JSX.Element =>
+export const lateViewGhostIcon = (className = ""): JSX.Element =>
   renderSvg(className, lateViewGhostIconSvg)
 
-export const lateViewGhostWithWaiverIcon = (
-  className: string = ""
-): JSX.Element => renderSvg(className, lateViewGhostWithWaiverIconSvg)
+export const lateViewGhostWithWaiverIcon = (className = ""): JSX.Element =>
+  renderSvg(className, lateViewGhostWithWaiverIconSvg)
 
-export const loadingIcon = (className: string = ""): JSX.Element =>
+export const loadingIcon = (className = ""): JSX.Element =>
   renderSvg(className, loadingIconSvg)
 
-export const mapIcon = (className: string = ""): JSX.Element =>
+export const mapIcon = (className = ""): JSX.Element =>
   renderSvg(className, mapIconSvg)
 
-export const mattapanLineIcon = (className: string = ""): JSX.Element =>
+export const mattapanLineIcon = (className = ""): JSX.Element =>
   renderSvg(className, mattapanLineIconSvg)
 
-export const minusIcon = (className: string = ""): JSX.Element =>
+export const minusIcon = (className = ""): JSX.Element =>
   renderSvg(className, minusIconSvg)
 
-export const notificationBellIcon = (className: string = ""): JSX.Element =>
+export const notificationBellIcon = (className = ""): JSX.Element =>
   renderSvg(className, notificationBellIconSvg)
 
-export const orangeLineIcon = (className: string = ""): JSX.Element =>
+export const orangeLineIcon = (className = ""): JSX.Element =>
   renderSvg(className, orangeLineIconSvg)
 
-export const plusIcon = (className: string = ""): JSX.Element =>
+export const plusIcon = (className = ""): JSX.Element =>
   renderSvg(className, plusIconSvg)
 
-export const plusThinIcon = (className: string = ""): JSX.Element =>
+export const plusThinIcon = (className = ""): JSX.Element =>
   renderSvg(className, plusThinIconSvg)
 
-export const questionMarkIcon = (className: string = ""): JSX.Element =>
+export const questionMarkIcon = (className = ""): JSX.Element =>
   renderSvg(className, questionMarkIconSvg)
 
-export const redLineIcon = (className: string = ""): JSX.Element =>
+export const redLineIcon = (className = ""): JSX.Element =>
   renderSvg(className, redLineIconSvg)
 
-export const refreshIcon = (className: string = ""): JSX.Element =>
+export const refreshIcon = (className = ""): JSX.Element =>
   renderSvg(className, refreshIconSvg)
 
-export const reverseIcon = (className: string = ""): JSX.Element =>
+export const reverseIcon = (className = ""): JSX.Element =>
   renderSvg(className, reverseIconSvg)
 
-export const reverseIconReversed = (className: string = ""): JSX.Element =>
+export const reverseIconReversed = (className = ""): JSX.Element =>
   renderSvg(className, reverseIconReversedSvg)
 
-export const saveIcon = (className: string = ""): JSX.Element =>
+export const saveIcon = (className = ""): JSX.Element =>
   renderSvg(className, saveIconSvg)
 
-export const searchIcon = (className: string = ""): JSX.Element =>
+export const searchIcon = (className = ""): JSX.Element =>
   renderSvg(className, searchIconSvg)
 
-export const swingIcon = (className: string = ""): JSX.Element =>
+export const swingIcon = (className = ""): JSX.Element =>
   renderSvg(className, swingIconSvg)
 
-export const toggleOffIcon = (className: string = ""): JSX.Element =>
+export const toggleOffIcon = (className = ""): JSX.Element =>
   renderSvg(className, toggleOffIconSvg)
 
-export const toggleOnIcon = (className: string = ""): JSX.Element =>
+export const toggleOnIcon = (className = ""): JSX.Element =>
   renderSvg(className, toggleOnIconSvg)
 
-export const triangleDownIcon = (className: string = ""): JSX.Element =>
+export const triangleDownIcon = (className = ""): JSX.Element =>
   renderSvg(className, triangleDownIconSvg)
 
-export const triangleUpIcon = (className: string = ""): JSX.Element =>
+export const triangleUpIcon = (className = ""): JSX.Element =>
   renderSvg(className, triangleUpIconSvg)
 
-export const triangleUpLargeIcon = (className: string = ""): JSX.Element =>
+export const triangleUpLargeIcon = (className = ""): JSX.Element =>
   renderSvg(className, triangleUpLargeIconSvg)
 
-export const unhiddenIcon = (className: string = ""): JSX.Element =>
+export const unhiddenIcon = (className = ""): JSX.Element =>
   renderSvg(className, unhiddenIconSvg)
 
-export const upDownIcon = (className: string = ""): JSX.Element =>
+export const upDownIcon = (className = ""): JSX.Element =>
   renderSvg(className, upDownIconSvg)
 
-export const upRightIcon = (className: string = ""): JSX.Element =>
+export const upRightIcon = (className = ""): JSX.Element =>
   renderSvg(className, upRightIconSvg)

@@ -3,10 +3,9 @@ import * as Api from "../../src/api"
 import useRoutes from "../../src/hooks/useRoutes"
 import { instantPromise } from "../testHelpers/mockHelpers"
 
-// tslint:disable: react-hooks-nesting no-empty
-
 jest.mock("../../src/api", () => ({
   __esModule: true,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   fetchRoutes: jest.fn(() => new Promise(() => {})),
 }))
 

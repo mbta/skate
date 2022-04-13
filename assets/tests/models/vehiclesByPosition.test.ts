@@ -3,8 +3,6 @@ import { groupByPosition } from "../../src/models/vehiclesByPosition"
 import { BlockWaiver, Ghost, Vehicle } from "../../src/realtime.d"
 import ghostFactory from "../factories/ghost"
 
-// tslint:disable: object-literal-sort-keys
-
 describe("groupByPosition", () => {
   const emptyByPosition = {
     onRoute: [],

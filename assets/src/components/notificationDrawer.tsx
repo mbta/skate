@@ -42,6 +42,7 @@ const NotificationDrawer = () => {
     }
 
     return () => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       rememberScrollPosition(elementRef.current!.scrollTop)
     }
   }, [])
@@ -122,8 +123,8 @@ const EmptyMessage = () => (
   <>
     <p>You have no notifications currently.</p>
     <p>
-      Here you'll be notified about events like accidents and ghost vehicles on
-      any bus routes you have selected on the Route Ladders page.
+      Here you&apos;ll be notified about events like accidents and ghost
+      vehicles on any bus routes you have selected on the Route Ladders page.
     </p>
   </>
 )

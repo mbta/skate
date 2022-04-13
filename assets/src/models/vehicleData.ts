@@ -182,7 +182,7 @@ export const ghostFromData = (ghostData: GhostData): Ghost => ({
 })
 
 const isGhost = (vehicleOrGhostData: VehicleOrGhostData): boolean =>
-  !vehicleOrGhostData.hasOwnProperty("operator_id")
+  !Object.prototype.hasOwnProperty.call(vehicleOrGhostData, "operator_id")
 
 export const vehicleOrGhostFromData = (
   vehicleOrGhostData: VehicleOrGhostData

@@ -69,7 +69,6 @@ describe("useVehiclesForRunIds", () => {
     const mockChannel = makeMockChannel("ok", { data: [vehicleData] })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    // tslint:disable: react-hooks-nesting
     const { result } = renderHook(() => {
       return useVehicleForRunIds(mockSocket, ["123-456"])
     })

@@ -3,8 +3,6 @@ import { useChannel } from "../../src/hooks/useChannel"
 import * as browser from "../../src/models/browser"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 
-// tslint:disable: react-hooks-nesting
-
 describe("useChannel", () => {
   test("returns loadingState initially", () => {
     const { result } = renderHook(() =>

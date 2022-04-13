@@ -152,7 +152,7 @@ describe("map", () => {
 
 describe("autoCenter", () => {
   const Leaflet = jest.requireActual("leaflet")
-  const pickerContainerIsVisible: boolean = false
+  const pickerContainerIsVisible = false
 
   test("centers the map on a single vehicle", () => {
     document.body.innerHTML = "<div id='map'></div>"

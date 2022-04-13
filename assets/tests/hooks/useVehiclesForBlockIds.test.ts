@@ -11,7 +11,6 @@ describe("useVehiclesForBlockIds", () => {
     const mockChannel = makeMockChannel("ok", { data: [vehicleData] })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    // tslint:disable: react-hooks-nesting
     const { result } = renderHook(() => {
       return useVehicleForBlockIds(mockSocket, ["S12-34"])
     })

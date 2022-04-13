@@ -70,7 +70,7 @@ describe("formattedTimeDiff", () => {
     const a: Date = new Date("Februrary 18, 2020 14:42")
     const b: Date = new Date("Februrary 18, 2020 9:38")
 
-    const expected: string = "5 hr 4 min"
+    const expected = "5 hr 4 min"
 
     expect(formattedTimeDiff(a, b)).toEqual(expected)
   })
@@ -79,7 +79,7 @@ describe("formattedTimeDiff", () => {
     const a: Date = new Date("Februrary 18, 2020 2:00")
     const b: Date = new Date("Februrary 18, 2020 1:01")
 
-    const expected: string = "59 min"
+    const expected = "59 min"
 
     expect(formattedTimeDiff(a, b)).toEqual(expected)
   })
@@ -90,7 +90,7 @@ describe("formattedTimeDiffUnderThreshold", () => {
     const a: Date = new Date("Februrary 18, 2020 14:42")
     const b: Date = new Date("Februrary 18, 2020 9:38")
 
-    const expected: string = "9:38 AM"
+    const expected = "9:38 AM"
 
     expect(formattedTimeDiffUnderThreshold(a, b, 60)).toEqual(expected)
   })
@@ -99,7 +99,7 @@ describe("formattedTimeDiffUnderThreshold", () => {
     const a: Date = new Date("Februrary 18, 2020 2:00")
     const b: Date = new Date("Februrary 18, 2020 1:01")
 
-    const expected: string = "59 min"
+    const expected = "59 min"
 
     expect(formattedTimeDiffUnderThreshold(a, b, 60)).toEqual(expected)
   })
@@ -108,7 +108,7 @@ describe("formattedTimeDiffUnderThreshold", () => {
     const a: Date = new Date("Februrary 18, 2020 2:01")
     const b: Date = new Date("Februrary 18, 2020 1:01")
 
-    const expected: string = "1 hr 0 min"
+    const expected = "1 hr 0 min"
 
     expect(formattedTimeDiffUnderThreshold(a, b, 60)).toEqual(expected)
   })

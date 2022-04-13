@@ -86,7 +86,7 @@ const reducer = (state: State, action: Action): State => {
           [action.payload.routeId]: action.payload.trainVehiclesForRoute,
         },
       }
-    case "REMOVE_ROUTE":
+    case "REMOVE_ROUTE": {
       const { [action.payload.routeId]: _channel, ...channelsWithoutRouteId } =
         state.channelsByRouteId
       const {
@@ -98,6 +98,7 @@ const reducer = (state: State, action: Action): State => {
         channelsByRouteId: channelsWithoutRouteId,
         trainVehiclesByRouteId: trainVehiclesByRouteIdWithoutRouteId,
       }
+    }
     default:
       return state
   }
@@ -145,7 +146,7 @@ const subscribe = (
     .join()
     .receive("ok", handleTrainVehicles)
     .receive("error", ({ reason }) =>
-      // tslint:disable-next-line: no-console
+      // eslint-disable-next-line no-console
       console.error("Train vehicles join failed", reason)
     )
     .receive("timeout", reload)

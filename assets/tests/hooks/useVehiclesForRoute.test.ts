@@ -6,8 +6,6 @@ import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 import ghostFactory from "../factories/ghost"
 import ghostDataFactory from "../factories/ghost_data"
 
-// tslint:disable: react-hooks-nesting
-
 describe("useVehiclesForRoute", () => {
   test("returns null initially", () => {
     const { result } = renderHook(() => useVehiclesForRoute(undefined, "1"))

@@ -100,10 +100,11 @@ export const notificationsReducer = (
   action: Action
 ): Notification[] => {
   switch (action.type) {
-    case "ADD_NOTIFICATION":
+    case "ADD_NOTIFICATION": {
       const newNotification = (action as AddNotificationAction).payload
         .notification
       return [newNotification, ...notifications]
+    }
     case "EXPIRE_NOTIFICATIONS":
       return notifications.filter((notification) => {
         const maxAgeInMs = 8 * 60 * 60 * 1000
@@ -116,11 +117,12 @@ export const notificationsReducer = (
         ...notification,
         state: "read",
       }))
-    case "SET_NOTIFICATIONS":
+    case "SET_NOTIFICATIONS": {
       const notificationsData = (action as SetNotificationsAction).payload
         .notificationsData
       return notificationsData.map(notificationFromData)
-    case "TOGGLE_READ_STATE":
+    }
+    case "TOGGLE_READ_STATE": {
       const notificationToToggle = (action as ToggleReadStateAction).payload
         .notification
       return notifications.map((notification) =>
@@ -131,6 +133,7 @@ export const notificationsReducer = (
             }
           : notification
       )
+    }
 
     default:
       return notifications
@@ -146,13 +149,14 @@ const showLatestNotificationReducer = (
       return true
     case "HIDE_LATEST_NOTIFICATION":
       return false
-    case "SET_NOTIFICATIONS":
+    case "SET_NOTIFICATIONS": {
       const isInitialLoad = (action as SetNotificationsAction).payload
         .isInitialLoad
       if (isInitialLoad) {
         return true
       }
       return showLatestNotification
+    }
     default:
       return showLatestNotification
   }
@@ -198,11 +202,13 @@ export const useNotificationsReducer = (): [State, Dispatch] => {
       case "MARK_ALL_AS_READ":
         persistMarkAllAsRead(state.notifications)
         break
-      case "TOGGLE_READ_STATE":
+      case "TOGGLE_READ_STATE": {
         const notificationToToggle = (action as ToggleReadStateAction).payload
           .notification
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         persistToggledNotificationReadState(notificationToToggle!)
         break
+      }
     }
 
     dispatch(action)
