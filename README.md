@@ -14,7 +14,7 @@ Doing development on Skate requires Elixir, Erlang, and node, as dsecribed in [.
 
 Skate also requires Postgres. If you don't already have Postgres installed, and you're on a Mac, [Postgres.app](https://postgresapp.com/downloads.html) is an easy way to get started. However, any Postgres instance to which you can connect and in which you have sufficient privileges should work.
 
-This guide assumes secrets and other application settings will be stored and passed in via a `.env` file. A blank `.env.example` file is included to use as a base. You can avoid having to prefix each command with an invocation of `env` by installing [direnv](https://direnv.net/).
+Secrets and other application settings are passed in via environment variables. To avoid having to set these manually in your local development environment, [direnv](https://direnv.net/) is strongly recommended. A `.envrc.example` file is provided to fill out; simply copy it over to `.envrc` and fill in the values, then follow the direnv documentation to load it.
 
 Quick setup:
 
