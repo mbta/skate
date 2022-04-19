@@ -14,7 +14,7 @@ Doing development on Skate requires Elixir, Erlang, and node, as dsecribed in [.
 
 Skate also requires Postgres. If you don't already have Postgres installed, and you're on a Mac, [Postgres.app](https://postgresapp.com/downloads.html) is an easy way to get started. However, any Postgres instance to which you can connect and in which you have sufficient privileges should work.
 
-This guide assumes secrets and other application settings will be stored and passed in via a `.env` file. A blank `.env.example` file is included to use as a base. You can avoid having to prefix each command with an invocation of `env` by installing [direnv](https://direnv.net/).
+Secrets and other application settings are passed in via environment variables. To avoid having to set these manually in your local development environment, [direnv](https://direnv.net/) is strongly recommended. A `.envrc.example` file is provided to fill out; simply copy it over to `.envrc` and fill in the values, then follow the direnv documentation to load it.
 
 Quick setup:
 
@@ -22,50 +22,41 @@ Quick setup:
 1. Install Elixir dependencies with `mix deps.get`
 1. Install Node.js dependencies with `cd assets && npm install`
 1. Install Postgres by your favorite method, possibly by downloading the latest install image from the [Postgres.app download page](https://postgresapp.com/downloads.html), opening it, and copying the Postgres.app application into Applications.
-1. To create the database, back in the Terminal, `` env `cat .env` mix ecto.create && env `cat .env` mix ecto.migrate ``
+1. To create the database, back in the Terminal, `` mix ecto.create && mix ecto.migrate ``
 
 ## Running the application
 
-- Start Phoenix endpoint with `` env `cat .env` mix phx.server `` (for bash. For fish use: `env (cat .env) mix phx.server`)
+- Start Phoenix endpoint with `` mix phx.server ``
 - Visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 ## Running tests
 
-- Run Elixir tests with `` env `cat .env` mix test `` (for bash. For fish use: `env (cat .env) mix test`)
+- Run Elixir tests with `` mix test ``
 - Run Javascript tests with `cd assets && npm test`
 
 ## Configuring to run in a new environment
 
-There are a number of configuration details defined in environment variables. These define where data sources live, as well as authentication and CDN details. See `.env.example` for naming and syntax.
+There are a number of configuration details defined in environment variables. These define where data sources live, as well as authentication and CDN details. In our AWS environments these are all set and managed via Terraform.
 
+- **API_URL**: URL of the API for retrieving live train positions
+- **API_KEY**: Access key for the API
 - **GTFS_URL**: Location of the GTFS zip file
 - **BUSLOC_URL**: Source of GTFS-realtime enhanced VehiclePositions json data file
-- **SWIFTLY_REALTIME_VEHICLES_URL**: Source of Swiftly vehicle data
+- **POSTGRES_USERNAME**, **POSTGRESS_PASSWORD**, **POSTGRES_HOSTNAME**: Postgres username, password, and hostname
 - **SWIFTLY_AUTHORIZATION_KEY**: for dev only, see below for prod
-- **SKATE_HASTUS_URL**: Source of extended schedule data
+- **SWIFTLY_REALTIME_VEHICLES_URL**: Source of Swiftly vehicle data
 - **TRIP_UPDATES_URL**: Source of GTFS-realtime enhanced TripUpdates json data file (optional)
-- **API_URL**: URL of the API for retrieving live train positions
-- **API_KEY**: Access key for the API (For dev only, see below for prod. We want API_KEY to come from SecretsManager in prod, but that doesn't work for dev. So the env var lets you continue setting the value locally for development.)
+- **ERL_FLAGS**: Erlang/OTP settings, pass "+MIscs 2048" to allocate enough memory for literals in your local dev environment
+- **SKATE_HASTUS_URL**: Source of extended schedule data
 - **ENVIRONMENT_NAME**: The first part of the key names in SecretsManager (only required in production)
 - **RELEASE_COOKIE**: Used by Erlang (only required in production)
 - **COGNITO_DOMAIN**, **COGNITO_CLIENT_ID**, **COGNITO_CLIENT_SECRET**, **COGNITO_USER_POOL_ID**, **COGNITO_AWS_REGION**, and **GUARDIAN_SECRET_KEY**: Authentication/authorization details (only required in production)
 - **STATIC_SCHEME**, **STATIC_HOST**, **STATIC_PATH**, and **STATIC_PORT**: CDN details (only required in production)
 - **SENTRY_BACKEND_DSN**, **SENTRY_FRONTEND_DSN**: Endpoints for logging errors to Sentry (optional, only used in production)
-- **POSTGRES_USERNAME**, **POSTGRES_HOSTNAME**: Postgres username and hostname (optional in dev, default to system username and "localhost" respectively. Required in production.)
-- **POSTGRES_PASSWORD**: Postgres password (optional in dev, defaults to blank string. Not used in production.)
-- **POSTGRES_PORT**: Port to connect to Postgres (optional, defaults to 5432, the standard Postgres server port)
 - **BRIDGE_URL**: URL of the API for retrieving drawbridge status
-- **BRIDGE_API_USERNAME**, **BRIDGE_API_PASSWORD**: credentials for the API that gets drawbridge status. for dev only, see below for prod
-- **SWINGS_BETA_USERNAMES**: comma separated list of usernames of users allowed to access the swings view beta test. Omit the `ActiveDirectory_` prefix from the usernames. Only needed in prod, set to `["fake_uid"]` in dev.
-
-Additionally, there a number of secret variables (only required in production) defined in [AWS SecretsManager](https://console.aws.amazon.com/secretsmanager):
-
-- **API_KEY**: Access key for the API
-- **COGNITO_CLIENT_SECRET**: Authentication/authorization secret
+- **BRIDGE_API_USERNAME**, **BRIDGE_API_PASSWORD**: credentials for the API that gets drawbridge status
 - **GUARDIAN_SECRET_KEY**: Authentication/authorization secret
 - **SECRET_KEY_BASE**: Used for writing encrypted cookies. Generate a value using `mix phx.gen.secret` (only required in production)
-- **SWIFTLY_AUTHORIZATION_KEY**: Authorization key for Swiftly
-- **BRIDGE_API_USERNAME**, **BRIDGE_API_PASSWORD**: credentials for the API that gets drawbridge status
 
 ## Production Deploys
 
