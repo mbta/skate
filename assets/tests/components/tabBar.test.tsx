@@ -13,7 +13,6 @@ import {
   OpenView,
 } from "../../src/state"
 import featureIsEnabled from "../../src/laboratoryFeatures"
-import appData from "../../src/appData"
 
 window.Appcues = {
   identify: jest.fn(),
@@ -34,17 +33,16 @@ jest.mock("../../src/laboratoryFeatures", () => ({
   default: jest.fn(() => true),
 }))
 
-jest.mock("../../src/appData", () => ({
-  __esModule: true,
-  default: jest.fn(() => true),
-}))
-
 describe("tabBar", () => {
   it("renders", () => {
     const tree = renderer
       .create(
         <BrowserRouter>
-          <TabBar pickerContainerIsVisible={true} openView={OpenView.None} />
+          <TabBar
+            pickerContainerIsVisible={true}
+            openView={OpenView.None}
+            dispatcherFlag={false}
+          />
         </BrowserRouter>
       )
       .toJSON()
@@ -60,7 +58,11 @@ describe("tabBar", () => {
     const tree = renderer
       .create(
         <BrowserRouter>
-          <TabBar pickerContainerIsVisible={true} openView={OpenView.None} />
+          <TabBar
+            pickerContainerIsVisible={true}
+            openView={OpenView.None}
+            dispatcherFlag={false}
+          />
         </BrowserRouter>
       )
       .toJSON()
@@ -69,17 +71,14 @@ describe("tabBar", () => {
   })
 
   it("renders with late view icon when dispatcher flag is set", () => {
-    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => false)
-    ;(appData as jest.Mock).mockImplementation(() => {
-      return {
-        dispatcherFlag: "true",
-      }
-    })
-
     const tree = renderer
       .create(
         <BrowserRouter>
-          <TabBar pickerContainerIsVisible={true} openView={OpenView.None} />
+          <TabBar
+            pickerContainerIsVisible={true}
+            openView={OpenView.None}
+            dispatcherFlag={true}
+          />
         </BrowserRouter>
       )
       .toJSON()
@@ -90,7 +89,11 @@ describe("tabBar", () => {
   it("sets class to visible when picker is visible", () => {
     const wrapper = mount(
       <BrowserRouter>
-        <TabBar pickerContainerIsVisible={true} openView={OpenView.None} />
+        <TabBar
+          pickerContainerIsVisible={true}
+          openView={OpenView.None}
+          dispatcherFlag={false}
+        />
       </BrowserRouter>
     )
     expect(wrapper.find(".m-tab-bar").hasClass("visible")).toBe(true)
@@ -100,7 +103,11 @@ describe("tabBar", () => {
   it("sets class to hidden when picker is hidden", () => {
     const wrapper = mount(
       <BrowserRouter>
-        <TabBar pickerContainerIsVisible={false} openView={OpenView.None} />
+        <TabBar
+          pickerContainerIsVisible={false}
+          openView={OpenView.None}
+          dispatcherFlag={false}
+        />
       </BrowserRouter>
     )
     expect(wrapper.find(".m-tab-bar").hasClass("hidden")).toBe(true)
@@ -114,7 +121,11 @@ describe("tabBar", () => {
 
     const wrapper = mount(
       <BrowserRouter>
-        <TabBar pickerContainerIsVisible={false} openView={OpenView.None} />
+        <TabBar
+          pickerContainerIsVisible={false}
+          openView={OpenView.None}
+          dispatcherFlag={false}
+        />
       </BrowserRouter>
     )
 
@@ -128,7 +139,11 @@ describe("tabBar", () => {
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
         <BrowserRouter>
-          <TabBar pickerContainerIsVisible={true} openView={OpenView.None} />
+          <TabBar
+            pickerContainerIsVisible={true}
+            openView={OpenView.None}
+            dispatcherFlag={false}
+          />
         </BrowserRouter>
       </StateDispatchProvider>
     )
@@ -152,7 +167,11 @@ describe("tabBar", () => {
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
         <BrowserRouter>
-          <TabBar pickerContainerIsVisible={true} openView={OpenView.None} />
+          <TabBar
+            pickerContainerIsVisible={true}
+            openView={OpenView.None}
+            dispatcherFlag={false}
+          />
         </BrowserRouter>
       </StateDispatchProvider>
     )
@@ -182,7 +201,11 @@ describe("tabBar", () => {
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
         <BrowserRouter>
-          <TabBar pickerContainerIsVisible={true} openView={OpenView.None} />
+          <TabBar
+            pickerContainerIsVisible={true}
+            openView={OpenView.None}
+            dispatcherFlag={false}
+          />
         </BrowserRouter>
       </StateDispatchProvider>
     )
@@ -196,7 +219,11 @@ describe("tabBar", () => {
   it("opens drift when you click on the chat icon", () => {
     const wrapper = mount(
       <BrowserRouter>
-        <TabBar pickerContainerIsVisible={false} openView={OpenView.None} />
+        <TabBar
+          pickerContainerIsVisible={false}
+          openView={OpenView.None}
+          dispatcherFlag={false}
+        />
       </BrowserRouter>
     )
 
@@ -208,7 +235,11 @@ describe("tabBar", () => {
   it("displays an appcue for the current page when you click on the help button", () => {
     const wrapper = mount(
       <BrowserRouter>
-        <TabBar pickerContainerIsVisible={false} openView={OpenView.None} />
+        <TabBar
+          pickerContainerIsVisible={false}
+          openView={OpenView.None}
+          dispatcherFlag={false}
+        />
       </BrowserRouter>
     )
 
@@ -224,7 +255,11 @@ describe("tabBar", () => {
 
     const wrapper = mount(
       <BrowserRouter>
-        <TabBar pickerContainerIsVisible={false} openView={OpenView.None} />
+        <TabBar
+          pickerContainerIsVisible={false}
+          openView={OpenView.None}
+          dispatcherFlag={false}
+        />
       </BrowserRouter>
     )
 

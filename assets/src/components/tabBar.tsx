@@ -19,16 +19,17 @@ import {
 } from "../state"
 import NotificationBellIcon from "./notificationBellIcon"
 import featureIsEnabled from "../laboratoryFeatures"
-import appData from "../appData"
 
 interface Props {
   pickerContainerIsVisible: boolean
   openView: OpenView
+  dispatcherFlag: boolean
 }
 
 const TabBar = ({
   pickerContainerIsVisible,
   openView,
+  dispatcherFlag,
 }: Props): ReactElement<HTMLDivElement> => {
   const location = useLocation()
   const [, dispatch] = useContext(StateDispatchContext)
@@ -118,7 +119,7 @@ const TabBar = ({
             {swingIcon("m-tab-bar__icon")}
           </a>
         </li>
-        {featureIsEnabled("late_view") || readDispatcherFlag() ? (
+        {featureIsEnabled("late_view") || dispatcherFlag ? (
           <li>
             <a
               className={
@@ -220,15 +221,6 @@ const showAppcue = (appcueId: string): void => {
   if (window.Appcues) {
     window.Appcues.show(appcueId)
   }
-}
-
-const readDispatcherFlag = (): boolean => {
-  const data = appData()
-  if (!data) {
-    return false
-  }
-
-  return data.dispatcherFlag === "true"
 }
 
 export default TabBar
