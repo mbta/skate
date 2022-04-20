@@ -22,7 +22,7 @@ config :skate, Skate.Repo,
 
 config :ueberauth, Ueberauth,
   providers: [
-    cognito: {Skate.Ueberauth.Strategy.Fake, []}
+    cognito: {Skate.Ueberauth.Strategy.Fake, [groups: ["skate-dispatcher", "skate-nav-beta"]]}
   ]
 
 config :logger, level: :warn

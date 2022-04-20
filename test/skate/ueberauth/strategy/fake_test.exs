@@ -1,16 +1,17 @@
 defmodule Skate.Ueberauth.Strategy.FakeTest do
-  use ExUnit.Case, async: true
+  use SkateWeb.ConnCase
 
   alias Skate.Ueberauth.Strategy.Fake
   alias Ueberauth.Auth.{Credentials, Extra, Info}
 
-  test "credentials returns a credentials struct" do
-    assert Fake.credentials(%{}) == %Credentials{
+  @tag :authenticated
+  test "credentials returns a credentials struct with groups specified in config", %{conn: conn} do
+    assert conn |> get("/auth/cognito") |> Fake.credentials() == %Credentials{
              token: "fake_access_token",
              refresh_token: "fake_refresh_token",
              expires: true,
              expires_at: System.system_time(:second) + 9 * 60 * 60,
-             other: %{groups: ["skate-admin"]}
+             other: %{groups: ["skate-dispatcher", "skate-nav-beta"]}
            }
   end
 
