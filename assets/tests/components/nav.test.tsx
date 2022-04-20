@@ -48,4 +48,24 @@ describe("Nav", () => {
 
     expect(result.queryByTestId("late-view-icon")).not.toBeNull()
   })
+
+  test("renders placeholder for new nav content", () => {
+    ;(appData as jest.Mock).mockImplementation(() => {
+      return {
+        navBetaFlag: "true",
+      }
+    })
+
+    const result = render(
+      <BrowserRouter>
+        <Nav pickerContainerIsVisible={true} openView={OpenView.None}>
+          Hello, world!
+        </Nav>
+      </BrowserRouter>
+    )
+
+    expect(
+      result.queryByText("New and improved navigation coming soon!")
+    ).not.toBeNull()
+  })
 })

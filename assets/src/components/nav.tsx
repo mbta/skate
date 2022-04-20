@@ -13,7 +13,9 @@ export const Nav: React.FC<Props> = ({
   pickerContainerIsVisible,
   openView,
 }) => {
-  return (
+  return readNavBetaFlag() ? (
+    <div>New and improved navigation coming soon!</div>
+  ) : (
     <>
       <TabBar
         pickerContainerIsVisible={pickerContainerIsVisible}
@@ -32,4 +34,13 @@ const readDispatcherFlag = (): boolean => {
   }
 
   return data.dispatcherFlag === "true"
+}
+
+const readNavBetaFlag = (): boolean => {
+  const data = appData()
+  if (!data) {
+    return false
+  }
+
+  return data.navBetaFlag === "true"
 }
