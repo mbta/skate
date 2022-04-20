@@ -1,6 +1,6 @@
 import React from "react"
 import { BrowserRouter } from "react-router-dom"
-import renderer from "react-test-renderer"
+import { render } from "@testing-library/react"
 import appData from "../../src/appData"
 import { Nav } from "../../src/components/nav"
 import featureIsEnabled from "../../src/laboratoryFeatures"
@@ -18,16 +18,16 @@ jest.mock("../../src/appData", () => ({
 
 describe("Nav", () => {
   test("renders children with TabBar", () => {
-    const tree = renderer
-      .create(
-        <BrowserRouter>
-          <Nav pickerContainerIsVisible={true} openView={OpenView.None}>
-            Hello, world!
-          </Nav>
-        </BrowserRouter>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const result = render(
+      <BrowserRouter>
+        <Nav pickerContainerIsVisible={true} openView={OpenView.None}>
+          Hello, world!
+        </Nav>
+      </BrowserRouter>
+    )
+
+    expect(result.queryByText("Hello, world!")).not.toBeNull()
+    expect(result.queryByTitle("Routes")).not.toBeNull()
   })
 
   test("renders with late view icon when dispatcher flag is set", () => {
@@ -38,15 +38,14 @@ describe("Nav", () => {
       }
     })
 
-    const tree = renderer
-      .create(
-        <BrowserRouter>
-          <Nav pickerContainerIsVisible={true} openView={OpenView.None}>
-            Hello, world!
-          </Nav>
-        </BrowserRouter>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const result = render(
+      <BrowserRouter>
+        <Nav pickerContainerIsVisible={true} openView={OpenView.None}>
+          Hello, world!
+        </Nav>
+      </BrowserRouter>
+    )
+
+    expect(result.queryByTestId("late-view-icon")).not.toBeNull()
   })
 })

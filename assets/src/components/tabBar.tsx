@@ -132,6 +132,7 @@ const TabBar = ({
                 }
                 dispatch(toggleLateView())
               }}
+              data-testid="late-view-icon"
             >
               {lateIcon("m-tab-bar__icon")}
             </a>
