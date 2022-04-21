@@ -118,6 +118,7 @@ exports[`tabBar renders 1`] = `
     <li>
       <a
         className="m-tab-bar__late_view m-tab-bar__link"
+        data-testid="late-view-icon"
         onClick={[Function]}
       >
         <span
@@ -311,6 +312,7 @@ exports[`tabBar renders with late view icon 1`] = `
     <li>
       <a
         className="m-tab-bar__late_view m-tab-bar__link"
+        data-testid="late-view-icon"
         onClick={[Function]}
       >
         <span
@@ -504,6 +506,7 @@ exports[`tabBar renders with late view icon when dispatcher flag is set 1`] = `
     <li>
       <a
         className="m-tab-bar__late_view m-tab-bar__link"
+        data-testid="late-view-icon"
         onClick={[Function]}
       >
         <span

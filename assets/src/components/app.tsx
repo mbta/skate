@@ -18,10 +18,10 @@ import Modal from "./modal"
 import SearchPage from "./searchPage"
 import SettingsPage from "./settingsPage"
 import ShuttleMapPage from "./shuttleMapPage"
-import TabBar from "./tabBar"
 import LateView from "./lateView"
 import { OpenView } from "../state"
 import { allOpenRouteIds } from "../models/routeTab"
+import { Nav } from "./nav"
 
 const AppRoutes = () => {
   useAppcues()
@@ -48,23 +48,24 @@ const AppRoutes = () => {
       </div>
       <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
         <div className="m-app__main">
-          <TabBar
+          <Nav
             pickerContainerIsVisible={pickerContainerIsVisible}
             openView={openView}
-          />
-          <BrowserRoute exact={true} path="/" component={LadderPage} />
-          <BrowserRoute
-            exact={true}
-            path="/shuttle-map"
-            component={ShuttleMapPage}
-          />
-          <BrowserRoute
-            exact={true}
-            path="/settings"
-            component={SettingsPage}
-          />
-          <BrowserRoute exact={true} path="/search" component={SearchPage} />
-          {openView === OpenView.Late ? <LateView /> : null}
+          >
+            <BrowserRoute exact={true} path="/" component={LadderPage} />
+            <BrowserRoute
+              exact={true}
+              path="/shuttle-map"
+              component={ShuttleMapPage}
+            />
+            <BrowserRoute
+              exact={true}
+              path="/settings"
+              component={SettingsPage}
+            />
+            <BrowserRoute exact={true} path="/search" component={SearchPage} />
+            {openView === OpenView.Late ? <LateView /> : null}
+          </Nav>
           <Modal />
         </div>
       </VehiclesByRouteIdProvider>
