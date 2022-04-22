@@ -17,12 +17,16 @@ defmodule SkateWeb.PageController do
     dispatcher_flag =
       conn |> Guardian.Plug.current_claims() |> AuthManager.claims_grant_dispatcher_access?()
 
+    nav_beta_flag =
+      conn |> Guardian.Plug.current_claims() |> AuthManager.claims_grant_nav_beta_access?()
+
     conn
     |> assign(:username, username)
     |> assign(:csrf_token, Plug.CSRFProtection.get_csrf_token())
     |> assign(:user_settings, user_settings)
     |> assign(:route_tabs, route_tabs)
     |> assign(:dispatcher_flag, dispatcher_flag)
+    |> assign(:nav_beta_flag, nav_beta_flag)
     |> render("index.html")
   end
 
