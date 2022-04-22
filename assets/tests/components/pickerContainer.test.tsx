@@ -7,8 +7,9 @@ import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { initialState, togglePickerContainer } from "../../src/state"
 
 describe("PickerContainer", () => {
-  test("clicking the collapse button hides the route picker", () => {
+  test("clicking the collapse button hides the route picker", async () => {
     const mockDispatch = jest.fn()
+    const user = userEvent.setup()
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <PickerContainer>
@@ -19,13 +20,14 @@ describe("PickerContainer", () => {
     expect(result.getByTestId("picker-container")).toHaveClass("visible")
     expect(result.getByTestId("picker-container")).not.toHaveClass("hidden")
 
-    userEvent.click(result.getByTestId("drawer-tab-button"))
+    await user.click(result.getByTestId("drawer-tab-button"))
 
     expect(mockDispatch).toHaveBeenCalledWith(togglePickerContainer())
   })
 
-  test("clicking the overlay hides the route picker", () => {
+  test("clicking the overlay hides the route picker", async () => {
     const mockDispatch = jest.fn()
+    const user = userEvent.setup()
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <PickerContainer>
@@ -34,7 +36,7 @@ describe("PickerContainer", () => {
       </StateDispatchProvider>
     )
 
-    userEvent.click(result.getByTestId("picker-container-overlay"))
+    await user.click(result.getByTestId("picker-container-overlay"))
 
     expect(mockDispatch).toHaveBeenCalledWith(togglePickerContainer())
   })

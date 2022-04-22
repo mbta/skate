@@ -6,10 +6,11 @@ import { initialState, closeInputModal } from "../../../src/state"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 
 describe("OverwritePresetModal", () => {
-  test("can confirm", () => {
+  test("can confirm", async () => {
     const mockCallback = jest.fn()
     const mockDispatch = jest.fn()
 
+    const user = userEvent.setup()
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <OverwritePresetModal
@@ -19,16 +20,17 @@ describe("OverwritePresetModal", () => {
       </StateDispatchProvider>
     )
 
-    userEvent.click(result.getByText("Save"))
+    await user.click(result.getByText("Save"))
 
     expect(mockCallback).toHaveBeenCalledWith(mockDispatch)
     expect(mockDispatch).toHaveBeenCalledWith(closeInputModal())
   })
 
-  test("can cancel", () => {
+  test("can cancel", async () => {
     const mockCallback = jest.fn()
     const mockDispatch = jest.fn()
 
+    const user = userEvent.setup()
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <OverwritePresetModal
@@ -38,7 +40,7 @@ describe("OverwritePresetModal", () => {
       </StateDispatchProvider>
     )
 
-    userEvent.click(result.getByText("Cancel"))
+    await user.click(result.getByText("Cancel"))
 
     expect(mockCallback).not.toHaveBeenCalled()
     expect(mockDispatch).toHaveBeenCalledWith(closeInputModal())

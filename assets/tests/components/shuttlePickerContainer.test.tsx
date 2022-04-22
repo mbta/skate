@@ -7,8 +7,9 @@ import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { initialState, togglePickerContainer } from "../../src/state"
 
 describe("ShuttlePickerContainer", () => {
-  test("clicking the collapse button hides the route picker", () => {
+  test("clicking the collapse button hides the route picker", async () => {
     const mockDispatch = jest.fn()
+    const user = userEvent.setup()
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <ShuttlePickerContainer>
@@ -20,7 +21,7 @@ describe("ShuttlePickerContainer", () => {
       "visible"
     )
 
-    userEvent.click(result.getByTestId("drawer-tab-button"))
+    await user.click(result.getByTestId("drawer-tab-button"))
 
     expect(mockDispatch).toHaveBeenCalledWith(togglePickerContainer())
   })

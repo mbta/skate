@@ -6,7 +6,7 @@ import { initialState, closeInputModal } from "../../../src/state"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 
 describe("DeletePresetModal", () => {
-  test("can confirm deletion", () => {
+  test("can confirm deletion", async () => {
     const originalFS = window.FS
     window.FS = { event: jest.fn(), identify: jest.fn() }
     afterEach(() => {
@@ -16,6 +16,7 @@ describe("DeletePresetModal", () => {
     const mockCallback = jest.fn()
     const mockDispatch = jest.fn()
 
+    const user = userEvent.setup()
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <DeletePresetModal
@@ -25,17 +26,18 @@ describe("DeletePresetModal", () => {
       </StateDispatchProvider>
     )
 
-    userEvent.click(result.getByText("Confirm"))
+    await user.click(result.getByText("Confirm"))
 
     expect(mockCallback).toHaveBeenCalledWith(mockDispatch)
     expect(mockDispatch).toHaveBeenCalledWith(closeInputModal())
     expect(window.FS!.event).toHaveBeenCalledWith("Preset deleted")
   })
 
-  test("can cancel", () => {
+  test("can cancel", async () => {
     const mockCallback = jest.fn()
     const mockDispatch = jest.fn()
 
+    const user = userEvent.setup()
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <DeletePresetModal
@@ -45,7 +47,7 @@ describe("DeletePresetModal", () => {
       </StateDispatchProvider>
     )
 
-    userEvent.click(result.getByText("Cancel"))
+    await user.click(result.getByText("Cancel"))
 
     expect(mockCallback).not.toHaveBeenCalled()
     expect(mockDispatch).toHaveBeenCalledWith(closeInputModal())
