@@ -34,7 +34,7 @@ config :skate, SkateWeb.AuthManager, secret_key: "dev key"
 
 config :ueberauth, Ueberauth,
   providers: [
-    cognito: {Skate.Ueberauth.Strategy.Fake, [groups: ["skate-dispathcer"]]}
+    cognito: {Skate.Ueberauth.Strategy.Fake, [groups: ["skate-dispatcher"]]}
   ]
 
 config :logger, level: :notice
