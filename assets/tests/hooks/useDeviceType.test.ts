@@ -1,5 +1,7 @@
 import { useMediaQueries } from "@react-hook/media-query"
-import useDeviceType from "../../src/hooks/useDeviceType"
+const useDeviceType = jest.requireActual(
+  "../../src/hooks/useDeviceType"
+).default
 
 jest.mock("@react-hook/media-query", () => ({
   __esModule: true,
