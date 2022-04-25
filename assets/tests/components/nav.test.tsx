@@ -116,4 +116,23 @@ describe("Nav", () => {
     expect(result.queryByText("Tablet nav placeholder.")).toBeNull()
     expect(result.queryByText("Desktop nav placeholder.")).not.toBeNull()
   })
+
+  test("renders beta version with feature flag", () => {
+    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
+    ;(appData as jest.Mock).mockImplementation(() => {
+      return {
+        navBetaFlag: "false",
+      }
+    })
+
+    const result = render(
+      <BrowserRouter>
+        <Nav pickerContainerIsVisible={true} openView={OpenView.None}>
+          Hello, world!
+        </Nav>
+      </BrowserRouter>
+    )
+
+    expect(result.queryByText("Desktop nav placeholder.")).not.toBeNull()
+  })
 })

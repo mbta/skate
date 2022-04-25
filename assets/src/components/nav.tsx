@@ -3,6 +3,7 @@ import { OpenView } from "../state"
 import TabBar from "./tabBar"
 import appData from "../appData"
 import useDeviceType from "../hooks/useDeviceType"
+import featureIsEnabled from "../laboratoryFeatures"
 
 interface Props {
   pickerContainerIsVisible: boolean
@@ -16,7 +17,7 @@ export const Nav: React.FC<Props> = ({
 }) => {
   const deviceType = useDeviceType()
 
-  if (readNavBetaFlag()) {
+  if (readNavBetaFlag() || featureIsEnabled("nav_beta")) {
     switch (deviceType) {
       case "mobile":
         return <div>Mobile nav placeholder.</div>
