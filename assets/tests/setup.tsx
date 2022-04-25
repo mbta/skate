@@ -30,7 +30,6 @@ document.createElementNS = function (namespaceURI, qualifiedName) {
     namespaceURI === "http://www.w3.org/2000/svg" &&
     qualifiedName === "svg"
   ) {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     element.createSVGRect = () => {}
   }
   return element

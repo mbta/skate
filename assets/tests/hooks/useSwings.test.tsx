@@ -10,7 +10,7 @@ import routeTabFactory from "../factories/routeTab"
 
 jest.mock("../../src/api", () => ({
   __esModule: true,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+
   fetchSwings: jest.fn(() => new Promise(() => {})),
 }))
 
