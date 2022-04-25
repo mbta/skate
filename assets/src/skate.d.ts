@@ -32,3 +32,5 @@ declare global {
 }
 
 export type UserToken = string
+
+export type DeviceType = "mobile" | "tablet" | "desktop"

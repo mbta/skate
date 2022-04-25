@@ -16,6 +16,7 @@
     "format:check": "prettier --check \"{.,**}/*.{js,json,ts,tsx,css,scss}\""
   },
   "dependencies": {
+    "@react-hook/media-query": "^1.1.1",
     "@rehooks/component-size": "^1.0.3",
     "@sentry/react": "^6.18.2",
     "@tippyjs/react": "^4.2.6",
