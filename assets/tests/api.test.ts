@@ -37,7 +37,6 @@ describe("apiCall", () => {
   beforeEach(() => {
     browserReloadSpy = jest
       .spyOn(browser, "reload")
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
       .mockImplementation(() => {})
   })
 

@@ -151,11 +151,8 @@ describe("routeLadder", () => {
           timepoints={timepoints}
           vehiclesAndGhosts={undefined}
           selectedVehicleId={undefined}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           deselectRoute={() => {}}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           reverseLadder={() => {}}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           toggleCrowding={() => {}}
           ladderDirections={{}}
           ladderCrowdingToggles={{}}
@@ -203,11 +200,8 @@ describe("routeLadder", () => {
           timepoints={timepoints}
           vehiclesAndGhosts={(vehicles as VehicleOrGhost[]).concat([ghost])}
           selectedVehicleId={undefined}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           deselectRoute={() => {}}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           reverseLadder={() => {}}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           toggleCrowding={() => {}}
           ladderDirections={{}}
           ladderCrowdingToggles={{}}
@@ -238,11 +232,8 @@ describe("routeLadder", () => {
             routeStatus: "pulling_out" as RouteStatus,
           }))}
           selectedVehicleId={undefined}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           deselectRoute={() => {}}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           reverseLadder={() => {}}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           toggleCrowding={() => {}}
           ladderDirections={{}}
           ladderCrowdingToggles={{}}
@@ -276,11 +267,8 @@ describe("routeLadder", () => {
             { ...v1, routeStatus: "laying_over" },
             { ...v2, routeStatus: "laying_over" },
           ]}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           deselectRoute={() => {}}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           reverseLadder={() => {}}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           toggleCrowding={() => {}}
           ladderDirections={{}}
           ladderCrowdingToggles={{}}
@@ -326,11 +314,8 @@ describe("routeLadder", () => {
               crowding: null,
             },
           ]}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           deselectRoute={() => {}}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           reverseLadder={() => {}}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           toggleCrowding={() => {}}
           ladderDirections={{}}
           ladderCrowdingToggles={ladderCrowdingToggles}
@@ -370,11 +355,8 @@ describe("routeLadder", () => {
               isRevenue: false,
             },
           ]}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           deselectRoute={() => {}}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           reverseLadder={() => {}}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           toggleCrowding={() => {}}
           ladderDirections={{}}
           ladderCrowdingToggles={{}}
@@ -421,11 +403,8 @@ describe("routeLadder", () => {
               crowding: null,
             },
           ]}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           deselectRoute={() => {}}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           reverseLadder={() => {}}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           toggleCrowding={() => {}}
           ladderDirections={{}}
           ladderCrowdingToggles={ladderCrowdingToggles}
@@ -472,11 +451,8 @@ describe("routeLadder", () => {
               },
             },
           ]}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           deselectRoute={() => {}}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           reverseLadder={() => {}}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           toggleCrowding={() => {}}
           ladderDirections={{}}
           ladderCrowdingToggles={ladderCrowdingToggles}
@@ -501,11 +477,8 @@ describe("routeLadder", () => {
           timepoints={timepoints}
           vehiclesAndGhosts={undefined}
           selectedVehicleId={undefined}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           deselectRoute={() => {}}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           reverseLadder={() => {}}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           toggleCrowding={() => {}}
           ladderDirections={{}}
           ladderCrowdingToggles={{}}
@@ -535,9 +508,7 @@ describe("routeLadder", () => {
         vehiclesAndGhosts={undefined}
         selectedVehicleId={undefined}
         deselectRoute={mockDeselect}
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
         reverseLadder={() => {}}
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
         toggleCrowding={() => {}}
         ladderDirections={{}}
         ladderCrowdingToggles={{}}
@@ -566,10 +537,8 @@ describe("routeLadder", () => {
         timepoints={timepoints}
         vehiclesAndGhosts={undefined}
         selectedVehicleId={undefined}
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
         deselectRoute={() => {}}
         reverseLadder={mockReverse}
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
         toggleCrowding={() => {}}
         ladderDirections={{}}
         ladderCrowdingToggles={{}}
@@ -612,9 +581,7 @@ describe("routeLadder", () => {
           },
         ]}
         selectedVehicleId={undefined}
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
         deselectRoute={() => {}}
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
         reverseLadder={() => {}}
         toggleCrowding={mockToggle}
         ladderDirections={{}}
@@ -688,11 +655,8 @@ describe("routeLadder", () => {
           timepoints={timepoints}
           vehiclesAndGhosts={[vehicle]}
           selectedVehicleId={undefined}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           deselectRoute={() => {}}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           reverseLadder={() => {}}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           toggleCrowding={() => {}}
           ladderDirections={{}}
           ladderCrowdingToggles={{}}

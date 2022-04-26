@@ -5,7 +5,7 @@ import { instantPromise } from "../testHelpers/mockHelpers"
 
 jest.mock("../../src/api", () => ({
   __esModule: true,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+
   fetchRoutes: jest.fn(() => new Promise(() => {})),
 }))
 

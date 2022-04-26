@@ -2,6 +2,8 @@ import React from "react"
 import { OpenView } from "../state"
 import TabBar from "./tabBar"
 import appData from "../appData"
+import useDeviceType from "../hooks/useDeviceType"
+import featureIsEnabled from "../laboratoryFeatures"
 
 interface Props {
   pickerContainerIsVisible: boolean
@@ -13,18 +15,29 @@ export const Nav: React.FC<Props> = ({
   pickerContainerIsVisible,
   openView,
 }) => {
-  return readNavBetaFlag() ? (
-    <div>New and improved navigation coming soon!</div>
-  ) : (
-    <>
-      <TabBar
-        pickerContainerIsVisible={pickerContainerIsVisible}
-        openView={openView}
-        dispatcherFlag={readDispatcherFlag()}
-      />
-      {children}
-    </>
-  )
+  const deviceType = useDeviceType()
+
+  if (readNavBetaFlag() || featureIsEnabled("nav_beta")) {
+    switch (deviceType) {
+      case "mobile":
+        return <div>Mobile nav placeholder.</div>
+      case "tablet":
+        return <div>Tablet nav placeholder.</div>
+      default:
+        return <div>Desktop nav placeholder.</div>
+    }
+  } else {
+    return (
+      <>
+        <TabBar
+          pickerContainerIsVisible={pickerContainerIsVisible}
+          openView={openView}
+          dispatcherFlag={readDispatcherFlag()}
+        />
+        {children}
+      </>
+    )
+  }
 }
 
 const readDispatcherFlag = (): boolean => {
