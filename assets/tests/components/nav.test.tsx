@@ -2,7 +2,7 @@ import React from "react"
 import { BrowserRouter } from "react-router-dom"
 import { render } from "@testing-library/react"
 import appData from "../../src/appData"
-import { Nav } from "../../src/components/nav"
+import Nav from "../../src/components/nav"
 import featureIsEnabled from "../../src/laboratoryFeatures"
 import { OpenView } from "../../src/state"
 import useDeviceType from "../../src/hooks/useDeviceType"
@@ -72,8 +72,10 @@ describe("Nav", () => {
     )
 
     expect(result.queryByText("Mobile nav placeholder.")).not.toBeNull()
-    expect(result.queryByText("Tablet nav placeholder.")).toBeNull()
-    expect(result.queryByText("Desktop nav placeholder.")).toBeNull()
+    expect(result.queryByText("Left nav goes here. Collapsed: true")).toBeNull()
+    expect(
+      result.queryByText("Left nav goes here. Collapsed: false")
+    ).toBeNull()
   })
 
   test("renders tablet placeholder for new nav content", () => {
@@ -93,8 +95,12 @@ describe("Nav", () => {
     )
 
     expect(result.queryByText("Mobile nav placeholder.")).toBeNull()
-    expect(result.queryByText("Tablet nav placeholder.")).not.toBeNull()
-    expect(result.queryByText("Desktop nav placeholder.")).toBeNull()
+    expect(
+      result.queryByText("Left nav goes here. Collapsed: true")
+    ).not.toBeNull()
+    expect(
+      result.queryByText("Left nav goes here. Collapsed: false")
+    ).toBeNull()
   })
 
   test("renders desktop placeholder for new nav content", () => {
@@ -113,8 +119,10 @@ describe("Nav", () => {
     )
 
     expect(result.queryByText("Mobile nav placeholder.")).toBeNull()
-    expect(result.queryByText("Tablet nav placeholder.")).toBeNull()
-    expect(result.queryByText("Desktop nav placeholder.")).not.toBeNull()
+    expect(result.queryByText("Left nav goes here. Collapsed: true")).toBeNull()
+    expect(
+      result.queryByText("Left nav goes here. Collapsed: false")
+    ).not.toBeNull()
   })
 
   test("renders beta version with feature flag", () => {
@@ -133,6 +141,8 @@ describe("Nav", () => {
       </BrowserRouter>
     )
 
-    expect(result.queryByText("Desktop nav placeholder.")).not.toBeNull()
+    expect(
+      result.queryByText("Left nav goes here. Collapsed: false")
+    ).not.toBeNull()
   })
 })

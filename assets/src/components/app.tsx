@@ -21,7 +21,7 @@ import ShuttleMapPage from "./shuttleMapPage"
 import LateView from "./lateView"
 import { OpenView } from "../state"
 import { allOpenRouteIds } from "../models/routeTab"
-import { Nav } from "./nav"
+import Nav from "./nav"
 
 const AppRoutes = () => {
   useAppcues()

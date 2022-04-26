@@ -1,0 +1,13 @@
+.m-nav--wide {
+  display: grid;
+  gap: 0;
+  grid-template-columns: max-content 1fr;
+  grid-template-rows: 1fr;
+  width: 100%;
+  height: 100%;
+}
+
+.m-nav__nav-bar {
+  z-index: 200;
+  position: relative;
+}
