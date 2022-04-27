@@ -26,7 +26,10 @@ const Nav: React.FC<Props> = ({
         return (
           <div className="m-nav--wide">
             <div className="m-nav__nav-bar m-nav__nav-bar--left">
-              <LeftNav defaultToCollapsed={true} />
+              <LeftNav
+                defaultToCollapsed={true}
+                dispatcherFlag={readDispatcherFlag()}
+              />
             </div>
             <div className="m-nav__app-content">{children}</div>
           </div>
@@ -35,7 +38,10 @@ const Nav: React.FC<Props> = ({
         return (
           <div className="m-nav--wide">
             <div className="m-nav__nav-bar m-nav__nav-bar--left">
-              <LeftNav defaultToCollapsed={false} />
+              <LeftNav
+                defaultToCollapsed={false}
+                dispatcherFlag={readDispatcherFlag()}
+              />
             </div>
             <div className="m-nav__app-content">{children}</div>
           </div>
