@@ -25,7 +25,7 @@ defmodule Schedule.Health.Checkers.TripStopTimesChecker do
 
       if !pass? do
         Logger.warning(
-          "Trip Stop Times Checker failed on trip #{id} of route #{route_id}. min_length=#{min_length} length=#{length}"
+          "Trip Stop Times Checker failed on trip_id=#{id} of route_id=#{route_id}. min_length=#{min_length} length=#{length}"
         )
       end
 
