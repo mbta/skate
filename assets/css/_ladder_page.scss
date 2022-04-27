@@ -10,13 +10,11 @@ $color-route-tabs-separator: #9fa2ac;
 
   .m-tab-bar.hidden + & {
     margin-left: 0;
-    padding-left: 0;
     width: 100%;
   }
 
   .m-tab-bar.visible + & {
     margin-left: $tab-bar-width;
-    padding-left: $route-picker-width;
     width: calc(100% - #{$tab-bar-width});
   }
 
@@ -27,9 +25,19 @@ $color-route-tabs-separator: #9fa2ac;
   }
 }
 
+.m-ladder-page--picker-container-hidden {
+  padding-left: 0;
+}
+
+.m-ladder-page--picker-container-visible {
+  padding-left: $route-picker-width;
+}
+
 @media screen and (max-width: $mobile-max-width) {
-  .m-ladder-page__tab-bar-and-ladders--picker_container_visible {
-    filter: blur(5px);
+  .m-ladder-page--picker-container-visible {
+    .m-ladder-page__tab-bar-and-ladders {
+      filter: blur(5px);
+    }
   }
 }
 

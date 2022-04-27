@@ -151,11 +151,11 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
     .filter((route) => route) as Route[]
 
   const pickerContainerVisibleClass = pickerContainerIsVisible
-    ? "m-ladder-page__tab-bar-and-ladders--picker_container_visible"
-    : ""
+    ? "m-ladder-page--picker-container-visible"
+    : "m-ladder-page--picker-container-hidden"
 
   return (
-    <div className="m-ladder-page">
+    <div className={`m-ladder-page ${pickerContainerVisibleClass}`}>
       <Notifications />
 
       <PickerContainer>
@@ -195,9 +195,7 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
           )}
         </>
       </PickerContainer>
-      <div
-        className={`m-ladder-page__tab-bar-and-ladders ${pickerContainerVisibleClass}`}
-      >
+      <div className="m-ladder-page__tab-bar-and-ladders">
         <div className="m-ladder-page__route-tab-bar">
           {routeTabs
             .filter(isOpenTab)
