@@ -2,6 +2,9 @@ defmodule Schedule.Health.Checkers.TimepointsCheckerTest do
   use ExUnit.Case
   import Test.Support.Helpers
 
+  import ExUnit.CaptureLog
+  require Logger
+
   alias Schedule.Health.Checkers.TimepointsChecker
 
   describe "healthy?/1" do
@@ -20,5 +23,15 @@ defmodule Schedule.Health.Checkers.TimepointsCheckerTest do
                %{route_id: "2", min_length: 4}
              ])
     end
+
+    test "verify logging when health checker fails" do
+      assert capture_log(fn -> 
+        TimepointsChecker.healthy?([
+               %{route_id: "1", min_length: 3},
+               %{route_id: "2", min_length: 4}
+             ])
+      end) =~ "Timepoints Checker failed on route 2. min_legth=4 length=3"
+    end
+
   end
 end

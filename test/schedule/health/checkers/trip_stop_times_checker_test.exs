@@ -2,6 +2,9 @@ defmodule Schedule.Health.Checkers.TripStopTimesCheckerTest do
   use ExUnit.Case
   import Test.Support.Helpers
 
+  import ExUnit.CaptureLog
+  require Logger
+
   alias Schedule.Gtfs.{RoutePattern, StopTime}
   alias Schedule.Health.Checkers.TripStopTimesChecker
   alias Schedule.Trip
@@ -44,5 +47,15 @@ defmodule Schedule.Health.Checkers.TripStopTimesCheckerTest do
                %{route_id: "2", min_length: 4}
              ])
     end
+
+    test "verify logging when health checker fails" do
+      assert capture_log(fn -> 
+        TripStopTimesChecker.healthy?([
+               %{route_id: "1", min_length: 3},
+               %{route_id: "2", min_length: 4}
+             ])
+      end) =~ "Trip Stop Times Checker failed on route 2. min_legth=4 length=3"
+    end
+
   end
 end
