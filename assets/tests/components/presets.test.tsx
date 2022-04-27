@@ -48,7 +48,7 @@ describe("Presets", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("saves current tab as preset", () => {
+  test("saves current tab as preset", async () => {
     const originalFS = window.FS
     window.FS = { event: jest.fn(), identify: jest.fn() }
     afterEach(() => {
@@ -69,13 +69,14 @@ describe("Presets", () => {
       ],
     }
 
+    const user = userEvent.setup()
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
         <Presets />
       </StateDispatchProvider>
     )
 
-    userEvent.click(result.getByText("Save as preset"))
+    await user.click(result.getByText("Save as preset"))
 
     expect(mockDispatch).toHaveBeenCalledWith(
       promptToSaveOrCreatePreset(mockState.routeTabs[0])
@@ -85,7 +86,7 @@ describe("Presets", () => {
     )
   })
 
-  test("saves changes to current tab if it's edited", () => {
+  test("saves changes to current tab if it's edited", async () => {
     const originalFS = window.FS
     window.FS = { event: jest.fn(), identify: jest.fn() }
     afterEach(() => {
@@ -114,13 +115,14 @@ describe("Presets", () => {
       ],
     }
 
+    const user = userEvent.setup()
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
         <Presets />
       </StateDispatchProvider>
     )
 
-    userEvent.click(result.getByText("Save as preset"))
+    await user.click(result.getByText("Save as preset"))
 
     expect(mockDispatch).toHaveBeenCalledWith(
       promptToSaveOrCreatePreset(mockState.routeTabs[1])
@@ -130,7 +132,7 @@ describe("Presets", () => {
     )
   })
 
-  test("opens a preset", () => {
+  test("opens a preset", async () => {
     const mockDispatch = jest.fn()
     const mockState = {
       ...initialState,
@@ -145,18 +147,19 @@ describe("Presets", () => {
       ],
     }
 
+    const user = userEvent.setup()
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
         <Presets />
       </StateDispatchProvider>
     )
 
-    userEvent.click(result.getByText("My Preset"))
+    await user.click(result.getByText("My Preset"))
 
     expect(mockDispatch).toHaveBeenCalledWith(instantiatePreset("uuid1"))
   })
 
-  test("deletes a preset", () => {
+  test("deletes a preset", async () => {
     const mockDispatch = jest.fn()
     const mockState = {
       ...initialState,
@@ -171,13 +174,14 @@ describe("Presets", () => {
       ],
     }
 
+    const user = userEvent.setup()
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
         <Presets />
       </StateDispatchProvider>
     )
 
-    userEvent.click(result.getByTestId("close-button"))
+    await user.click(result.getByTestId("close-button"))
 
     expect(mockDispatch).toHaveBeenCalledWith(
       promptToDeletePreset(mockState.routeTabs[0])

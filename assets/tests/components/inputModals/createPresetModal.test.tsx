@@ -7,11 +7,12 @@ import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContex
 import routeTabFactory from "../../factories/routeTab"
 
 describe("CreatePresetModal", () => {
-  test("can enter a name and save", () => {
+  test("can enter a name and save", async () => {
     const mockCreateCallback = jest.fn()
     const mockOverwriteCallback = jest.fn()
     const mockDispatch = jest.fn()
 
+    const user = userEvent.setup()
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <CreatePresetModal
@@ -21,19 +22,19 @@ describe("CreatePresetModal", () => {
       </StateDispatchProvider>
     )
 
-    userEvent.type(
+    await user.type(
       result.getByPlaceholderText("Name your preset", { exact: false }),
       "My Preset"
     )
 
-    userEvent.click(result.getByText("Save"))
+    await user.click(result.getByText("Save"))
 
     expect(mockCreateCallback).toHaveBeenCalledWith("My Preset", mockDispatch)
     expect(mockOverwriteCallback).not.toHaveBeenCalled()
     expect(mockDispatch).toHaveBeenCalledWith(closeInputModal())
   })
 
-  test("trying to save under an existing name invokes overwrite callback", () => {
+  test("trying to save under an existing name invokes overwrite callback", async () => {
     const mockCreateCallback = jest.fn()
     const mockOverwriteCallback = jest.fn()
     const mockDispatch = jest.fn()
@@ -45,6 +46,7 @@ describe("CreatePresetModal", () => {
       routeTabs: [routeTab],
     }
 
+    const user = userEvent.setup()
     const result = render(
       <StateDispatchProvider state={state} dispatch={mockDispatch}>
         <CreatePresetModal
@@ -54,12 +56,12 @@ describe("CreatePresetModal", () => {
       </StateDispatchProvider>
     )
 
-    userEvent.type(
+    await user.type(
       result.getByPlaceholderText("Name your preset", { exact: false }),
       "My Preset"
     )
 
-    userEvent.click(result.getByText("Save"))
+    await user.click(result.getByText("Save"))
 
     expect(mockCreateCallback).not.toHaveBeenCalled()
     expect(mockOverwriteCallback).toHaveBeenCalledWith(
@@ -69,11 +71,12 @@ describe("CreatePresetModal", () => {
     )
   })
 
-  test("can cancel", () => {
+  test("can cancel", async () => {
     const mockCreateCallback = jest.fn()
     const mockOverwriteCallback = jest.fn()
     const mockDispatch = jest.fn()
 
+    const user = userEvent.setup()
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
         <CreatePresetModal
@@ -83,7 +86,7 @@ describe("CreatePresetModal", () => {
       </StateDispatchProvider>
     )
 
-    userEvent.click(result.getByText("Cancel"))
+    await user.click(result.getByText("Cancel"))
 
     expect(mockCreateCallback).not.toHaveBeenCalled()
     expect(mockOverwriteCallback).not.toHaveBeenCalled()
