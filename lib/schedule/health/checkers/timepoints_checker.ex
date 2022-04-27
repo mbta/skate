@@ -24,7 +24,7 @@ defmodule Schedule.Health.Checkers.TimepointsChecker do
 
     if !pass? do
       Logger.warning(
-        "Timepoints Checker failed on route_id=#{route_id}. min_length=#{min_length} length=#{length}"
+        "#{__MODULE__} failed on route_id=#{route_id}. min_length=#{min_length} length=#{length}"
       )
     end
 
