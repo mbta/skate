@@ -2,6 +2,7 @@ defmodule Schedule.Health.Checkers.TripStopTimesChecker do
   @moduledoc """
   Check that Schedules returns at least a minimum number of stop times for a representative trip of each configured route.
   """
+  require Logger
 
   alias Schedule.Gtfs.{Route, RoutePattern}
   alias Schedule.Trip
@@ -18,8 +19,17 @@ defmodule Schedule.Health.Checkers.TripStopTimesChecker do
 
   @spec healthy_route?(timepoint_config()) :: boolean
   defp healthy_route?(%{route_id: route_id, min_length: min_length}) do
-    with {:trip, %Trip{stop_times: stop_times}} <- trip(route_id) do
-      length(stop_times) >= min_length
+    with {:trip, %Trip{stop_times: stop_times, id: id}} <- trip(route_id) do
+      length = length(stop_times)
+      pass? = length >= min_length
+
+      if !pass? do
+        Logger.warning(
+          "#{__MODULE__} failed on trip_id=#{id} of route_id=#{route_id}. min_length=#{min_length} length=#{length}"
+        )
+      end
+
+      pass?
     else
       _ ->
         false
