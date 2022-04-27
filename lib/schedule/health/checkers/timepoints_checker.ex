@@ -20,14 +20,14 @@ defmodule Schedule.Health.Checkers.TimepointsChecker do
       Application.get_env(:skate_web, :timepoints_on_route_fn, &Schedule.timepoints_on_route/1)
 
     length = timepoints_on_route_fn.(route_id) |> length()
-    passfail = length >= min_length
+    pass? = length >= min_length
 
-    if(!passfail) do
+    if !pass? do
       Logger.warning(
-        "Timepoints Checker failed on route #{route_id}. min_legth=#{min_length} length=#{length}"
+        "Timepoints Checker failed on route #{route_id}. min_length=#{min_length} length=#{length}"
       )
     end
 
-    passfail
+    pass?
   end
 end

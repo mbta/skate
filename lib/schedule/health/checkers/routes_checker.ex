@@ -13,12 +13,12 @@ defmodule Schedule.Health.Checkers.RoutesChecker do
     routes_fn = Application.get_env(:skate_web, :routes_fn, &Schedule.all_routes/0)
 
     length = routes_fn.() |> length()
-    passfail = length >= min_length
+    pass? = length >= min_length
 
-    if(!passfail) do
-      Logger.warning("Routes Checker failed. min_legth=#{min_length} length=#{length}")
+    if !pass? do
+      Logger.warning("Routes Checker failed. min_length=#{min_length} length=#{length}")
     end
 
-    passfail
+    pass?
   end
 end
