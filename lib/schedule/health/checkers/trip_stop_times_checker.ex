@@ -20,11 +20,13 @@ defmodule Schedule.Health.Checkers.TripStopTimesChecker do
   @spec healthy_route?(timepoint_config()) :: boolean
   defp healthy_route?(%{route_id: route_id, min_length: min_length}) do
     with {:trip, %Trip{stop_times: stop_times}} <- trip(route_id) do
-      length = length(stop_times) 
+      length = length(stop_times)
       passfail = length >= min_length
 
       if(!passfail) do
-        Logger.warning("Trip Stop Times Checker failed on route #{route_id}. min_legth=#{min_length} length=#{length}")
+        Logger.warning(
+          "Trip Stop Times Checker failed on route #{route_id}. min_legth=#{min_length} length=#{length}"
+        )
       end
 
       passfail

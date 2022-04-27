@@ -25,13 +25,12 @@ defmodule Schedule.Health.Checkers.TimepointsCheckerTest do
     end
 
     test "verify logging when health checker fails" do
-      assert capture_log(fn -> 
-        TimepointsChecker.healthy?([
-               %{route_id: "1", min_length: 3},
-               %{route_id: "2", min_length: 4}
-             ])
-      end) =~ "Timepoints Checker failed on route 2. min_legth=4 length=3"
+      assert capture_log(fn ->
+               TimepointsChecker.healthy?([
+                 %{route_id: "1", min_length: 3},
+                 %{route_id: "2", min_length: 4}
+               ])
+             end) =~ "Timepoints Checker failed on route 2. min_legth=4 length=3"
     end
-
   end
 end

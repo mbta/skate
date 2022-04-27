@@ -23,10 +23,11 @@ defmodule Schedule.Health.Checkers.TimepointsChecker do
     passfail = length >= min_length
 
     if(!passfail) do
-      Logger.warning("Timepoints Checker failed on route #{route_id}. min_legth=#{min_length} length=#{length}")
+      Logger.warning(
+        "Timepoints Checker failed on route #{route_id}. min_legth=#{min_length} length=#{length}"
+      )
     end
 
     passfail
-
   end
 end

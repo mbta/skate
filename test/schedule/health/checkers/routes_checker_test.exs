@@ -18,10 +18,9 @@ defmodule Schedule.Health.Checkers.RoutesCheckerTest do
     end
 
     test "verify logging when health checker fails" do
-      assert capture_log(fn -> 
-        RoutesChecker.healthy?(%{min_length: 4})
-      end) =~ "Routes Checker failed. min_legth=4 length=3"
+      assert capture_log(fn ->
+               RoutesChecker.healthy?(%{min_length: 4})
+             end) =~ "Routes Checker failed. min_legth=4 length=3"
     end
-
   end
 end
