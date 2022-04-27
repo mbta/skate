@@ -8,6 +8,7 @@
 }
 
 .m-nav__nav-bar {
-  z-index: 200;
-  position: relative;
+  z-index: 700;
+  justify-self: stretch;
+  align-self: stretch;
 }

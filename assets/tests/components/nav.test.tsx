@@ -72,10 +72,8 @@ describe("Nav", () => {
     )
 
     expect(result.queryByText("Mobile nav placeholder.")).not.toBeNull()
-    expect(result.queryByText("Left nav goes here. Collapsed: true")).toBeNull()
-    expect(
-      result.queryByText("Left nav goes here. Collapsed: false")
-    ).toBeNull()
+    expect(result.queryByTitle("Route Ladders")).toBeNull()
+    expect(result.queryByText("Route Ladders")).toBeNull()
   })
 
   test("renders tablet placeholder for new nav content", () => {
@@ -95,12 +93,8 @@ describe("Nav", () => {
     )
 
     expect(result.queryByText("Mobile nav placeholder.")).toBeNull()
-    expect(
-      result.queryByText("Left nav goes here. Collapsed: true")
-    ).not.toBeNull()
-    expect(
-      result.queryByText("Left nav goes here. Collapsed: false")
-    ).toBeNull()
+    expect(result.queryByTitle("Route Ladders")).not.toBeNull()
+    expect(result.queryByText("Route Ladders")).toBeNull()
   })
 
   test("renders desktop placeholder for new nav content", () => {
@@ -119,10 +113,8 @@ describe("Nav", () => {
     )
 
     expect(result.queryByText("Mobile nav placeholder.")).toBeNull()
-    expect(result.queryByText("Left nav goes here. Collapsed: true")).toBeNull()
-    expect(
-      result.queryByText("Left nav goes here. Collapsed: false")
-    ).not.toBeNull()
+    expect(result.queryByTitle("Route Ladders")).not.toBeNull()
+    expect(result.queryByText("Route Ladders")).not.toBeNull()
   })
 
   test("renders beta version with feature flag", () => {
@@ -141,8 +133,6 @@ describe("Nav", () => {
       </BrowserRouter>
     )
 
-    expect(
-      result.queryByText("Left nav goes here. Collapsed: false")
-    ).not.toBeNull()
+    expect(result.queryByText("C")).not.toBeNull()
   })
 })
