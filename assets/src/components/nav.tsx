@@ -25,19 +25,19 @@ const Nav: React.FC<Props> = ({
       case "tablet":
         return (
           <div className="m-nav--wide">
-            <div className="m-nav__nav-bar">
+            <div className="m-nav__nav-bar m-nav__nav-bar--left">
               <LeftNav defaultToCollapsed={true} />
             </div>
-            <div>{children}</div>
+            <div className="m-nav__app-content">{children}</div>
           </div>
         )
       default:
         return (
           <div className="m-nav--wide">
-            <div className="m-nav__nav-bar">
+            <div className="m-nav__nav-bar m-nav__nav-bar--left">
               <LeftNav defaultToCollapsed={false} />
             </div>
-            <div>{children}</div>
+            <div className="m-nav__app-content">{children}</div>
           </div>
         )
     }

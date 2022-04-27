@@ -5,6 +5,7 @@ $color-route-tabs-separator: #9fa2ac;
   box-sizing: border-box;
   height: 100%;
   position: relative;
+  max-width: 100%;
   transition: $transition-slide;
   background-color: $color-gray-50;
 
@@ -17,12 +18,6 @@ $color-route-tabs-separator: #9fa2ac;
     margin-left: $tab-bar-width;
     width: calc(100% - #{$tab-bar-width});
   }
-
-  @media screen and (max-width: $mobile-max-width) {
-    .m-tab-bar.visible + & {
-      padding-left: $mobile-route-picker-width;
-    }
-  }
 }
 
 .m-ladder-page--picker-container-hidden {
@@ -31,6 +26,12 @@ $color-route-tabs-separator: #9fa2ac;
 
 .m-ladder-page--picker-container-visible {
   padding-left: $route-picker-width;
+}
+
+@media screen and (max-width: $mobile-max-width) {
+  .m-ladder-page--picker-container-visible {
+    padding-left: $mobile-route-picker-width;
+  }
 }
 
 @media screen and (max-width: $mobile-max-width) {
