@@ -11,6 +11,12 @@ import {
   toggleLateView,
   toggleSwingsView,
 } from "../../../src/state"
+import { displayHelp } from "../../../src/helpers/appCue"
+
+jest.mock("../../../src/helpers/appCue", () => ({
+  __esModule: true,
+  displayHelp: jest.fn(),
+}))
 
 describe("LeftNav", () => {
   test("renders non-collapsed state", () => {
@@ -112,5 +118,18 @@ describe("LeftNav", () => {
     expect(result.getByTitle("Late View")).toHaveClass(
       "m-left-nav__link--active"
     )
+  })
+
+  test("clicking About Skate button displays help", async () => {
+    const user = userEvent.setup()
+    const result = render(
+      <BrowserRouter>
+        <LeftNav defaultToCollapsed={false} dispatcherFlag={false} />
+      </BrowserRouter>
+    )
+
+    await user.click(result.getByTitle("About Skate"))
+
+    expect(displayHelp).toHaveBeenCalled()
   })
 })

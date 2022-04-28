@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react"
-import { NavLink } from "react-router-dom"
+import { NavLink, useLocation } from "react-router-dom"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
+import { displayHelp } from "../../helpers/appCue"
 import {
   ladderIcon,
   mapIcon,
@@ -9,6 +10,7 @@ import {
   swingIcon,
   doubleChevronRightIcon,
   doubleChevronLeftIcon,
+  questionMarkIcon,
 } from "../../helpers/icon"
 import featureIsEnabled from "../../laboratoryFeatures"
 import { OpenView, toggleLateView, toggleSwingsView } from "../../state"
@@ -24,6 +26,7 @@ const LeftNav = ({
 }: Props): JSX.Element => {
   const [{ openView }, dispatch] = useContext(StateDispatchContext)
   const [collapsed, setCollapsed] = useState<boolean>(defaultToCollapsed)
+  const location = useLocation()
 
   return (
     <div className={"m-left-nav" + (collapsed ? " m-left-nav--collapsed" : "")}>
@@ -86,6 +89,16 @@ const LeftNav = ({
         </li>
       </ul>
       <ul className="m-left-nav__links">
+        <li>
+          <button
+            className="m-left-nav__link"
+            onClick={() => displayHelp(location)}
+            title="About Skate"
+          >
+            {questionMarkIcon("m-left-nav__icon")}
+            {collapsed ? null : "About Skate"}
+          </button>
+        </li>
         <li>
           <button
             className="m-left-nav__link"
