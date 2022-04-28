@@ -20,6 +20,7 @@ import {
 import NotificationBellIcon from "./notificationBellIcon"
 import featureIsEnabled from "../laboratoryFeatures"
 import { displayHelp } from "../helpers/appCue"
+import { openDrift } from "../helpers/drift"
 
 interface Props {
   pickerContainerIsVisible: boolean
@@ -190,17 +191,5 @@ const driftIcon = (
     />
   </svg>
 )
-
-const openDrift = (): void => {
-  // drift is set by scripts loaded by _drift.html.eex
-  // but we don't have types for it
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  if (drift !== undefined && drift.api !== undefined) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    drift.api.sidebar.toggle()
-  }
-}
 
 export default TabBar

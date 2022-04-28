@@ -82,6 +82,8 @@ import saveIconSvg from "../../static/images/icon-save.svg"
 // @ts-ignore
 import searchIconSvg from "../../static/images/icon-search.svg"
 // @ts-ignore
+import speechBubbleIconSvg from "../../static/images/icon-speech-bubble.svg"
+// @ts-ignore
 import swingIconSvg from "../../static/images/icon-swing.svg"
 // @ts-ignore
 import toggleOffIconSvg from "../../static/images/icon-toggle-off.svg"
@@ -224,6 +226,9 @@ export const saveIcon = (className = ""): JSX.Element =>
 
 export const searchIcon = (className = ""): JSX.Element =>
   renderSvg(className, searchIconSvg)
+
+export const speechBubbleIcon = (className = ""): JSX.Element =>
+  renderSvg(className, speechBubbleIconSvg)
 
 export const swingIcon = (className = ""): JSX.Element =>
   renderSvg(className, swingIconSvg)

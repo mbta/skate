@@ -11,7 +11,13 @@ import {
   toggleLateView,
   toggleSwingsView,
 } from "../../../src/state"
+import { openDrift } from "../../../src/helpers/drift"
 import { displayHelp } from "../../../src/helpers/appCue"
+
+jest.mock("../../../src/helpers/drift", () => ({
+  __esModule: true,
+  openDrift: jest.fn(),
+}))
 
 jest.mock("../../../src/helpers/appCue", () => ({
   __esModule: true,
@@ -118,6 +124,19 @@ describe("LeftNav", () => {
     expect(result.getByTitle("Late View")).toHaveClass(
       "m-left-nav__link--active"
     )
+  })
+
+  test("clicking Support button opens Drift", async () => {
+    const user = userEvent.setup()
+    const result = render(
+      <BrowserRouter>
+        <LeftNav defaultToCollapsed={false} dispatcherFlag={false} />
+      </BrowserRouter>
+    )
+
+    await user.click(result.getByTitle("Support"))
+
+    expect(openDrift).toHaveBeenCalled()
   })
 
   test("clicking About Skate button displays help", async () => {

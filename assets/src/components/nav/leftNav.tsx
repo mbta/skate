@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react"
 import { NavLink, useLocation } from "react-router-dom"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { displayHelp } from "../../helpers/appCue"
+import { openDrift } from "../../helpers/drift"
 import {
   ladderIcon,
   mapIcon,
@@ -11,6 +12,7 @@ import {
   doubleChevronRightIcon,
   doubleChevronLeftIcon,
   questionMarkIcon,
+  speechBubbleIcon,
 } from "../../helpers/icon"
 import featureIsEnabled from "../../laboratoryFeatures"
 import { OpenView, toggleLateView, toggleSwingsView } from "../../state"
@@ -89,6 +91,16 @@ const LeftNav = ({
         </li>
       </ul>
       <ul className="m-left-nav__links">
+        <li>
+          <button
+            className="m-left-nav__link"
+            onClick={openDrift}
+            title="Support"
+          >
+            {speechBubbleIcon("m-left-nav__icon")}
+            {collapsed ? null : "Support"}
+          </button>
+        </li>
         <li>
           <button
             className="m-left-nav__link"
