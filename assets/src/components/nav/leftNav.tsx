@@ -1,9 +1,15 @@
 import React, { useState, useContext } from "react"
 import { NavLink } from "react-router-dom"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
-import { ladderIcon, mapIcon, searchIcon, lateIcon } from "../../helpers/icon"
+import {
+  ladderIcon,
+  mapIcon,
+  searchIcon,
+  lateIcon,
+  swingIcon,
+} from "../../helpers/icon"
 import featureIsEnabled from "../../laboratoryFeatures"
-import { OpenView, toggleLateView } from "../../state"
+import { OpenView, toggleLateView, toggleSwingsView } from "../../state"
 
 interface Props {
   defaultToCollapsed: boolean
@@ -43,6 +49,15 @@ const LeftNav = ({
             />
           </li>
         ) : null}
+        <li>
+          <ViewToggle
+            icon={swingIcon("m-left-nav__icon")}
+            name="Swings View"
+            viewIsOpen={openView === OpenView.Swings}
+            toggleView={() => dispatch(toggleSwingsView())}
+            collapsed={collapsed}
+          />
+        </li>
         <li>
           <NavLink
             activeClassName="m-left-nav__link--active"

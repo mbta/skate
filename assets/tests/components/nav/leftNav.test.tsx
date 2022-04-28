@@ -5,7 +5,12 @@ import LeftNav from "../../../src/components/nav/leftNav"
 import userEvent from "@testing-library/user-event"
 import { BrowserRouter } from "react-router-dom"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
-import { initialState, OpenView, toggleLateView } from "../../../src/state"
+import {
+  initialState,
+  OpenView,
+  toggleLateView,
+  toggleSwingsView,
+} from "../../../src/state"
 
 describe("LeftNav", () => {
   test("renders non-collapsed state", () => {
@@ -73,6 +78,22 @@ describe("LeftNav", () => {
     await user.click(result.getByTitle("Late View"))
 
     expect(dispatch).toHaveBeenCalledWith(toggleLateView())
+  })
+
+  test("clicking swings view button toggles swing view", async () => {
+    const dispatch = jest.fn()
+    const user = userEvent.setup()
+    const result = render(
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+        <BrowserRouter>
+          <LeftNav defaultToCollapsed={false} dispatcherFlag={false} />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    await user.click(result.getByTitle("Swings View"))
+
+    expect(dispatch).toHaveBeenCalledWith(toggleSwingsView())
   })
 
   test("view button displays selected state when that view is enabled", async () => {
