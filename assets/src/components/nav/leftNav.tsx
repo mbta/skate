@@ -7,6 +7,8 @@ import {
   searchIcon,
   lateIcon,
   swingIcon,
+  doubleChevronRightIcon,
+  doubleChevronLeftIcon,
 } from "../../helpers/icon"
 import featureIsEnabled from "../../laboratoryFeatures"
 import { OpenView, toggleLateView, toggleSwingsView } from "../../state"
@@ -85,7 +87,16 @@ const LeftNav = ({
       </ul>
       <ul className="m-left-nav__links">
         <li>
-          <button onClick={() => setCollapsed(!collapsed)}>C</button>
+          <button
+            className="m-left-nav__link"
+            onClick={() => setCollapsed(!collapsed)}
+            title={collapsed ? "Expand" : "Collapse"}
+          >
+            {collapsed
+              ? doubleChevronRightIcon("m-left-nav__icon")
+              : doubleChevronLeftIcon("m-left-nav__icon")}
+            {collapsed ? null : "Collapse"}
+          </button>
         </li>
       </ul>
     </div>

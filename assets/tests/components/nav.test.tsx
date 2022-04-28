@@ -133,6 +133,6 @@ describe("Nav", () => {
       </BrowserRouter>
     )
 
-    expect(result.queryByText("C")).not.toBeNull()
+    expect(result.queryByTitle("Collapse")).not.toBeNull()
   })
 })

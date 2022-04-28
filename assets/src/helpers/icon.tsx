@@ -10,6 +10,10 @@ import busRearIconSvg from "../../static/images/icon-bus-rear.svg"
 // @ts-ignore
 import collapseIconSvg from "../../static/images/icon-caret-left.svg"
 // @ts-ignore
+import doubleChevronLeftIconSvg from "../../static/images/icon-double-chevron-left.svg"
+// @ts-ignore
+import doubleChevronRightIconSvg from "../../static/images/icon-double-chevron-right.svg"
+// @ts-ignore
 import expandIconSvg from "../../static/images/icon-caret-right.svg"
 // @ts-ignore
 import circleXIconSvg from "../../static/images/icon-circle-x.svg"
@@ -118,6 +122,12 @@ export const closeIcon = (className = ""): JSX.Element =>
 
 export const collapseIcon = (className = ""): JSX.Element =>
   renderSvg(className, collapseIconSvg)
+
+export const doubleChevronLeftIcon = (className = ""): JSX.Element =>
+  renderSvg(className, doubleChevronLeftIconSvg)
+
+export const doubleChevronRightIcon = (className = ""): JSX.Element =>
+  renderSvg(className, doubleChevronRightIconSvg)
 
 export const commuterRailIcon = (className = ""): JSX.Element =>
   renderSvg(className, commuterRailIconSvg)

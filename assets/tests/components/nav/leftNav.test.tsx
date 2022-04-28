@@ -45,11 +45,11 @@ describe("LeftNav", () => {
       </BrowserRouter>
     )
 
-    await user.click(result.getByText("C"))
+    await user.click(result.getByTitle("Collapse"))
 
     expect(result.queryByText("Route Ladders")).toBeNull()
 
-    await user.click(result.getByText("C"))
+    await user.click(result.getByTitle("Expand"))
 
     expect(result.queryByText("Route Ladders")).not.toBeNull()
   })
