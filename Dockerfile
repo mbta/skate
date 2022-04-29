@@ -45,6 +45,8 @@ RUN mix do compile --force, phx.digest, release
 
 FROM alpine:3.15.4
 
+RUN apk upgrade --no-cache --update
+
 RUN apk add --no-cache --update libssl1.1 libstdc++ \
     libgcc ncurses-libs bash curl dumb-init
 
