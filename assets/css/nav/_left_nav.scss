@@ -54,3 +54,29 @@
     color: $color-eggplant-800;
   }
 }
+
+.m-left-nav__icon {
+  &.m-left-nav__icon--late-view svg {
+    fill: $color-gray-50;
+    stroke: $color-gray-600;
+
+    circle {
+      fill: $color-gray-600;
+    }
+
+    .clock {
+      stroke-width: 2;
+    }
+
+    .bang {
+      fill: $color-gray-50;
+      stroke: none;
+    }
+  }
+
+  &.m-left-nav__icon--swings-view svg {
+    transform: scaleX(-1);
+    fill: $color-gray-50;
+    stroke: $color-gray-600;
+  }
+}

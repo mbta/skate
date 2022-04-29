@@ -48,7 +48,7 @@ const LeftNav = ({
         {featureIsEnabled("late_view") || dispatcherFlag ? (
           <li>
             <ViewToggle
-              icon={lateIcon("m-left-nav__icon")}
+              icon={lateIcon("m-left-nav__icon m-left-nav__icon--late-view")}
               name="Late View"
               viewIsOpen={openView === OpenView.Late}
               toggleView={() => dispatch(toggleLateView())}
@@ -58,7 +58,7 @@ const LeftNav = ({
         ) : null}
         <li>
           <ViewToggle
-            icon={swingIcon("m-left-nav__icon")}
+            icon={swingIcon("m-left-nav__icon m-left-nav__icon--swings-view")}
             name="Swings View"
             viewIsOpen={openView === OpenView.Swings}
             toggleView={() => dispatch(toggleSwingsView())}
