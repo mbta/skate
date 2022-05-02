@@ -5,6 +5,7 @@ import appData from "../appData"
 import useDeviceType from "../hooks/useDeviceType"
 import featureIsEnabled from "../laboratoryFeatures"
 import LeftNav from "./nav/leftNav"
+import TopNav from "./nav/topNav"
 
 interface Props {
   pickerContainerIsVisible: boolean
@@ -25,6 +26,9 @@ const Nav: React.FC<Props> = ({
       case "tablet":
         return (
           <div className="m-nav--wide">
+            <div className="m-nav__nav-bar m-nav__nav-bar--top">
+              <TopNav />
+            </div>
             <div className="m-nav__nav-bar m-nav__nav-bar--left">
               <LeftNav
                 defaultToCollapsed={true}
@@ -37,6 +41,9 @@ const Nav: React.FC<Props> = ({
       default:
         return (
           <div className="m-nav--wide">
+            <div className="m-nav__nav-bar m-nav__nav-bar--top">
+              <TopNav />
+            </div>
             <div className="m-nav__nav-bar m-nav__nav-bar--left">
               <LeftNav
                 defaultToCollapsed={false}

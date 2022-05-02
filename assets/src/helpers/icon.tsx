@@ -54,6 +54,8 @@ import lateViewGhostWithWaiverIconSvg from "../../static/images/icon-late-view-g
 // @ts-ignore
 import loadingIconSvg from "../../static/images/icon-loading.svg"
 // @ts-ignore
+import logoIconSvg from "../../static/images/icon-logo.svg"
+// @ts-ignore
 import mapIconSvg from "../../static/images/icon-map.svg"
 // @ts-ignore
 import mattapanLineIconSvg from "../../static/images/icon-mattapan-line.svg"
@@ -184,6 +186,9 @@ export const lateViewGhostWithWaiverIcon = (className = ""): JSX.Element =>
 
 export const loadingIcon = (className = ""): JSX.Element =>
   renderSvg(className, loadingIconSvg)
+
+export const logoIcon = (className = ""): JSX.Element =>
+  renderSvg(className, logoIconSvg)
 
 export const mapIcon = (className = ""): JSX.Element =>
   renderSvg(className, mapIconSvg)
