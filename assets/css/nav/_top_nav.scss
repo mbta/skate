@@ -3,6 +3,7 @@
   height: 3rem;
   box-sizing: border-box;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   padding: 0.75rem 1.5rem;
 
@@ -18,5 +19,51 @@
   svg {
     fill: $color-eggplant-900;
     stroke: $color-eggplant-900;
+  }
+}
+
+.m-top-nav__right-items {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.m-top-nav__right-item {
+  @include button-icon(1.5rem);
+}
+
+.m-top-nav__notifications-icon {
+  svg {
+    path {
+      fill: $color-eggplant-500;
+      stroke: none;
+    }
+
+    circle {
+      fill: $color-strawberry-500;
+      stroke: $color-strawberry-500;
+    }
+  }
+
+  &.m-top-nav__notifications-icon--active {
+    svg {
+      path {
+        fill: $color-eggplant-700;
+        stroke: none;
+      }
+    }
+  }
+
+  &:hover {
+    svg {
+      path {
+        fill: $color-eggplant-400;
+        stroke: none;
+      }
+
+      circle {
+        fill: $color-strawberry-400;
+        stroke: $color-strawberry-400;
+      }
+    }
   }
 }
