@@ -72,6 +72,7 @@ defmodule Skate.Application do
       :bridge_api_username,
       :bridge_api_password,
       :sentry_frontend_dsn,
+      :sentry_environment,
       SkateWeb.Endpoint,
       Skate.Repo
     ]

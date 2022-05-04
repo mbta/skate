@@ -1,5 +1,6 @@
 <script>
   window.sentry = {
-    dsn: "<%= Application.get_env(:skate, :sentry_frontend_dsn) %>"
+    dsn: "<%= Application.get_env(:skate, :sentry_frontend_dsn) %>",
+    environment: "<%= Application.get_env(:skate, :sentry_environment) %>"
   }
 </script>
