@@ -22,6 +22,7 @@ import AppStateWrapper from "./components/appStateWrapper"
 if (window.sentry) {
   Sentry.init({
     dsn: window.sentry.dsn,
+    environment: window.sentry.environment
   })
 
   if (window.username) {
