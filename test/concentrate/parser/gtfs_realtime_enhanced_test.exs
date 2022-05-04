@@ -117,6 +117,8 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
         "timestamp" => 1_534_340_406,
         "trip" => %{
           "direction_id" => 0,
+          "overload_id" => 1,
+          "overload_offset" => -6,
           "route_id" => "Green-E",
           "schedule_relationship" => "SCHEDULED",
           "start_date" => "20180815",
@@ -138,6 +140,8 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
                  trip_id: "37165437-X",
                  route_id: "Green-E",
                  direction_id: 0,
+                 overload_id: 1,
+                 overload_offset: -6,
                  start_date: {2018, 8, 15},
                  schedule_relationship: :SCHEDULED
                )
@@ -159,6 +163,8 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
                  operator_first_name: "JIMMY",
                  operator_last_name: "EVANS",
                  operator_logon_time: 1_534_340_301,
+                 overload_id: 1,
+                 overload_offset: -6,
                  run_id: "128-1007",
                  current_status: :STOPPED_AT,
                  last_updated: 1_534_340_406,
