@@ -6,10 +6,14 @@ $late-view-width: 34.5rem;
   background-color: $late-view-background-color;
   height: 100%;
   position: absolute;
-  left: $tab-bar-width;
+  left: 0;
   top: 0;
   width: $late-view-width;
   z-index: 1001;
+
+  .m-tab-bar ~ & {
+    left: $tab-bar-width;
+  }
 }
 
 .m-late-view__content-wrapper {

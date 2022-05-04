@@ -4,13 +4,14 @@ import TabBar from "./tabBar"
 import appData from "../appData"
 import useDeviceType from "../hooks/useDeviceType"
 import featureIsEnabled from "../laboratoryFeatures"
+import LeftNav from "./nav/leftNav"
 
 interface Props {
   pickerContainerIsVisible: boolean
   openView: OpenView
 }
 
-export const Nav: React.FC<Props> = ({
+const Nav: React.FC<Props> = ({
   children,
   pickerContainerIsVisible,
   openView,
@@ -20,11 +21,31 @@ export const Nav: React.FC<Props> = ({
   if (readNavBetaFlag() || featureIsEnabled("nav_beta")) {
     switch (deviceType) {
       case "mobile":
-        return <div>Mobile nav placeholder.</div>
+        return <div className="m-nav--narrow">Mobile nav placeholder.</div>
       case "tablet":
-        return <div>Tablet nav placeholder.</div>
+        return (
+          <div className="m-nav--wide">
+            <div className="m-nav__nav-bar m-nav__nav-bar--left">
+              <LeftNav
+                defaultToCollapsed={true}
+                dispatcherFlag={readDispatcherFlag()}
+              />
+            </div>
+            <div className="m-nav__app-content">{children}</div>
+          </div>
+        )
       default:
-        return <div>Desktop nav placeholder.</div>
+        return (
+          <div className="m-nav--wide">
+            <div className="m-nav__nav-bar m-nav__nav-bar--left">
+              <LeftNav
+                defaultToCollapsed={false}
+                dispatcherFlag={readDispatcherFlag()}
+              />
+            </div>
+            <div className="m-nav__app-content">{children}</div>
+          </div>
+        )
     }
   } else {
     return (
@@ -57,3 +78,5 @@ const readNavBetaFlag = (): boolean => {
 
   return data.navBetaFlag === "true"
 }
+
+export default Nav

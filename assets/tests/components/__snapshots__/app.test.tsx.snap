@@ -186,7 +186,7 @@ exports[`App renders 1`] = `
       </div>
     </div>
     <div
-      className="m-ladder-page"
+      className="m-ladder-page m-ladder-page--picker-container-visible"
     >
       <div
         className="m-notifications"
@@ -288,7 +288,7 @@ exports[`App renders 1`] = `
         onClick={[Function]}
       />
       <div
-        className="m-ladder-page__tab-bar-and-ladders m-ladder-page__tab-bar-and-ladders--picker_container_visible"
+        className="m-ladder-page__tab-bar-and-ladders"
       >
         <div
           className="m-ladder-page__route-tab-bar"
@@ -519,7 +519,7 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
       </div>
     </div>
     <div
-      className="m-ladder-page"
+      className="m-ladder-page m-ladder-page--picker-container-visible"
     >
       <div
         className="m-notifications"
@@ -621,7 +621,7 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
         onClick={[Function]}
       />
       <div
-        className="m-ladder-page__tab-bar-and-ladders m-ladder-page__tab-bar-and-ladders--picker_container_visible"
+        className="m-ladder-page__tab-bar-and-ladders"
       >
         <div
           className="m-ladder-page__route-tab-bar"

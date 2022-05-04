@@ -2,7 +2,7 @@
 
 exports[`LadderPage renders the empty state 1`] = `
 <div
-  className="m-ladder-page"
+  className="m-ladder-page m-ladder-page--picker-container-visible"
 >
   <div
     className="m-notifications"
@@ -104,7 +104,7 @@ exports[`LadderPage renders the empty state 1`] = `
     onClick={[Function]}
   />
   <div
-    className="m-ladder-page__tab-bar-and-ladders m-ladder-page__tab-bar-and-ladders--picker_container_visible"
+    className="m-ladder-page__tab-bar-and-ladders"
   >
     <div
       className="m-ladder-page__route-tab-bar"
@@ -134,7 +134,7 @@ exports[`LadderPage renders the empty state 1`] = `
 
 exports[`LadderPage renders with route tabs 1`] = `
 <div
-  className="m-ladder-page"
+  className="m-ladder-page m-ladder-page--picker-container-visible"
 >
   <div
     className="m-notifications"
@@ -264,7 +264,7 @@ exports[`LadderPage renders with route tabs 1`] = `
     onClick={[Function]}
   />
   <div
-    className="m-ladder-page__tab-bar-and-ladders m-ladder-page__tab-bar-and-ladders--picker_container_visible"
+    className="m-ladder-page__tab-bar-and-ladders"
   >
     <div
       className="m-ladder-page__route-tab-bar"
@@ -406,7 +406,7 @@ exports[`LadderPage renders with route tabs 1`] = `
 
 exports[`LadderPage renders with selectedRoutes in different order than routes data 1`] = `
 <div
-  className="m-ladder-page"
+  className="m-ladder-page m-ladder-page--picker-container-visible"
 >
   <div
     className="m-notifications"
@@ -543,7 +543,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
     onClick={[Function]}
   />
   <div
-    className="m-ladder-page__tab-bar-and-ladders m-ladder-page__tab-bar-and-ladders--picker_container_visible"
+    className="m-ladder-page__tab-bar-and-ladders"
   >
     <div
       className="m-ladder-page__route-tab-bar"
@@ -699,7 +699,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
 
 exports[`LadderPage renders with timepoints 1`] = `
 <div
-  className="m-ladder-page"
+  className="m-ladder-page m-ladder-page--picker-container-visible"
 >
   <div
     className="m-notifications"
@@ -836,7 +836,7 @@ exports[`LadderPage renders with timepoints 1`] = `
     onClick={[Function]}
   />
   <div
-    className="m-ladder-page__tab-bar-and-ladders m-ladder-page__tab-bar-and-ladders--picker_container_visible"
+    className="m-ladder-page__tab-bar-and-ladders"
   >
     <div
       className="m-ladder-page__route-tab-bar"
@@ -1236,7 +1236,7 @@ exports[`LadderPage renders with timepoints 1`] = `
 
 exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
 <div
-  className="m-ladder-page"
+  className="m-ladder-page m-ladder-page--picker-container-visible"
 >
   <div
     className="m-notifications"
@@ -1366,7 +1366,7 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
     onClick={[Function]}
   />
   <div
-    className="m-ladder-page__tab-bar-and-ladders m-ladder-page__tab-bar-and-ladders--picker_container_visible"
+    className="m-ladder-page__tab-bar-and-ladders"
   >
     <div
       className="m-ladder-page__route-tab-bar"

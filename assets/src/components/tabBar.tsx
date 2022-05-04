@@ -19,6 +19,8 @@ import {
 } from "../state"
 import NotificationBellIcon from "./notificationBellIcon"
 import featureIsEnabled from "../laboratoryFeatures"
+import { displayHelp } from "../helpers/appCue"
+import { openDrift } from "../helpers/drift"
 
 interface Props {
   pickerContainerIsVisible: boolean
@@ -33,25 +35,6 @@ const TabBar = ({
 }: Props): ReactElement<HTMLDivElement> => {
   const location = useLocation()
   const [, dispatch] = useContext(StateDispatchContext)
-  const displayHelp = (): void => {
-    switch (location.pathname) {
-      case "/":
-        showAppcue("-M2dVpHSaOJ4PddV1K9i")
-        break
-      case "/shuttle-map":
-        showAppcue("-M2i04n1MzdepApShKRj")
-        break
-      case "/settings":
-        showAppcue("-M3lWY6d4P9iQqah5Qjz")
-        break
-      case "/search":
-        showAppcue("-M2iXlrreUJAdmvj29GV")
-        break
-      default:
-        // Show nothing, we shouldn't get here
-        break
-    }
-  }
 
   return (
     <div
@@ -152,7 +135,10 @@ const TabBar = ({
         <button className="m-tab-bar__drift" onClick={openDrift}>
           {driftIcon}
         </button>
-        <button className="m-tab-bar__help" onClick={displayHelp}>
+        <button
+          className="m-tab-bar__help"
+          onClick={() => displayHelp(location)}
+        >
           {questionMarkIcon("m-tab-bar__icon")}
         </button>
         <button className="m-tab-bar__refresh" onClick={() => reload()}>
@@ -205,23 +191,5 @@ const driftIcon = (
     />
   </svg>
 )
-
-const openDrift = (): void => {
-  // drift is set by scripts loaded by _drift.html.eex
-  // but we don't have types for it
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  if (drift !== undefined && drift.api !== undefined) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    drift.api.sidebar.toggle()
-  }
-}
-
-const showAppcue = (appcueId: string): void => {
-  if (window.Appcues) {
-    window.Appcues.show(appcueId)
-  }
-}
 
 export default TabBar
