@@ -2,6 +2,7 @@ defmodule SkateWeb.PageControllerTest do
   use SkateWeb.ConnCase
   use Skate.DataCase
   import Skate.Factory
+  import Test.Support.Helpers
 
   describe "GET /" do
     test "when logged out, redirects you to cognito auth", %{conn: conn} do
@@ -78,6 +79,19 @@ defmodule SkateWeb.PageControllerTest do
       conn = get(conn, "/shuttle-map")
 
       assert html_response(conn, 200) =~ "div id=\"app\""
+    end
+
+    @tag :authenticated
+    setup do
+      reassign_env(:skate, :record_sentry, true)
+      reassign_env(:skate, :sentry_environment, "test_env")
+    end
+
+    test "correct sentry environment set", %{conn: conn} do
+      conn = get(conn, "/")
+      
+      assert html_response(conn, 200) =~ "environment: \"test_env\""
+
     end
   end
 end
