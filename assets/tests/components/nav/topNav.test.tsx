@@ -5,6 +5,7 @@ import userEvent from "@testing-library/user-event"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import { initialState, toggleNotificationDrawer } from "../../../src/state"
 import { BrowserRouter } from "react-router-dom"
+import "@testing-library/jest-dom"
 
 describe("TopNav", () => {
   test("clicking notifications icon toggles notifications drawer", async () => {
@@ -21,5 +22,41 @@ describe("TopNav", () => {
     await user.click(result.getByTitle("Notifications"))
 
     expect(dispatch).toHaveBeenCalledWith(toggleNotificationDrawer())
+  })
+
+  test("notifications icon gets active class when notifications drawer is open", () => {
+    const dispatch = jest.fn()
+    const result = render(
+      <StateDispatchProvider
+        state={{ ...initialState, notificationDrawerIsOpen: true }}
+        dispatch={dispatch}
+      >
+        <BrowserRouter>
+          <TopNav />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    expect(result.getByTitle("Notifications").children[0]).toHaveClass(
+      "m-top-nav__notifications-icon--active"
+    )
+  })
+
+  test("notifications icon doesn't get active class when notifications drawer is close", () => {
+    const dispatch = jest.fn()
+    const result = render(
+      <StateDispatchProvider
+        state={{ ...initialState, notificationDrawerIsOpen: false }}
+        dispatch={dispatch}
+      >
+        <BrowserRouter>
+          <TopNav />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    expect(result.getByTitle("Notifications").children[0]).not.toHaveClass(
+      "m-top-nav__notifications-icon--active"
+    )
   })
 })
