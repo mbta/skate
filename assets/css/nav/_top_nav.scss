@@ -24,7 +24,10 @@
 
 .m-top-nav__right-items {
   display: flex;
-  gap: 1.5rem;
+
+  :not(:last-child) {
+    padding-right: 1.5rem;
+  }
 }
 
 .m-top-nav__right-item {

@@ -6,6 +6,7 @@ import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContex
 import { initialState, toggleNotificationDrawer } from "../../../src/state"
 import { BrowserRouter } from "react-router-dom"
 import "@testing-library/jest-dom"
+import * as browser from "../../../src/models/browser"
 
 describe("TopNav", () => {
   test("clicking notifications icon toggles notifications drawer", async () => {
@@ -58,5 +59,25 @@ describe("TopNav", () => {
     expect(result.getByTitle("Notifications").children[0]).not.toHaveClass(
       "m-top-nav__notifications-icon--active"
     )
+  })
+
+  test("refresh button reloads the page", async () => {
+    const reloadSpy = jest
+      .spyOn(browser, "reload")
+      .mockImplementationOnce(() => ({}))
+
+    const dispatch = jest.fn()
+    const user = userEvent.setup()
+    const result = render(
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+        <BrowserRouter>
+          <TopNav />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    await user.click(result.getByTitle("Refresh"))
+
+    expect(reloadSpy).toHaveBeenCalled()
   })
 })
