@@ -4,6 +4,7 @@ import TopNav from "../../../src/components/nav/topNav"
 import userEvent from "@testing-library/user-event"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import { initialState, toggleNotificationDrawer } from "../../../src/state"
+import { BrowserRouter } from "react-router-dom"
 
 describe("TopNav", () => {
   test("clicking notifications icon toggles notifications drawer", async () => {
@@ -11,7 +12,9 @@ describe("TopNav", () => {
     const user = userEvent.setup()
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
-        <TopNav />
+        <BrowserRouter>
+          <TopNav />
+        </BrowserRouter>
       </StateDispatchProvider>
     )
 

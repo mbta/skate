@@ -29,6 +29,15 @@
 
 .m-top-nav__right-item {
   @include button-icon(1.5rem);
+  color: $color-gray-600;
+
+  &:hover {
+    color: $color-gray-500;
+  }
+}
+
+.m-top-nav__right-item--active {
+  color: $color-eggplant-700;
 }
 
 .m-top-nav__notifications-icon {

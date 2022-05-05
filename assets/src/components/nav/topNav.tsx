@@ -1,6 +1,7 @@
 import React, { useContext } from "react"
+import { NavLink } from "react-router-dom"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
-import { logoIcon } from "../../helpers/icon"
+import { logoIcon, settingsIcon } from "../../helpers/icon"
 import { toggleNotificationDrawer } from "../../state"
 import NotificationBellIcon from "../notificationBellIcon"
 
@@ -23,6 +24,15 @@ const TopNav = (): JSX.Element => {
         >
           <NotificationBellIcon extraClasses={bellIconClasses} />
         </button>
+        <NavLink
+          activeClassName="m-top-nav__right-item--active"
+          className="m-top-nav__right-item"
+          exact={true}
+          title="Settings"
+          to="/settings"
+        >
+          {settingsIcon("m-top-nav__icon")}
+        </NavLink>
       </div>
     </div>
   )
