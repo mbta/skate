@@ -10,25 +10,16 @@ require("../css/app.scss")
 //
 // Import dependencies
 //
-import * as Sentry from "@sentry/react"
 import "core-js/stable"
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
 import "leaflet/dist/leaflet.css"
 import "phoenix_html"
 import * as React from "react"
 import ReactDOM from "react-dom"
+import sentryInit from "./helpers/sentryInit"
 import AppStateWrapper from "./components/appStateWrapper"
 
-if (window.sentry) {
-  Sentry.init({
-    dsn: window.sentry.dsn,
-    environment: window.sentry.environment
-  })
-
-  if (window.username) {
-    Sentry.setUser({ username: window.username })
-  }
-}
+sentryInit(window.sentry)
 
 if (window.FS && window.username) {
   window.FS.identify(window.username, { displayName: window.username })
