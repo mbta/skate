@@ -17,7 +17,7 @@ const sentryInit = (opts: sentryOptions | undefined) => {
 	  }
 	}
 
-	return Sentry
+	return opts
 }
 
 export default sentryInit
