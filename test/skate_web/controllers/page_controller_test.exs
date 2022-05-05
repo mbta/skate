@@ -89,9 +89,8 @@ defmodule SkateWeb.PageControllerTest do
 
     test "correct sentry environment set", %{conn: conn} do
       conn = get(conn, "/")
-      
-      assert html_response(conn, 200) =~ "environment: \"test_env\""
 
+      assert html_response(conn, 200) =~ "environment: \"test_env\""
     end
   end
 end
