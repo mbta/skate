@@ -82,14 +82,11 @@ defmodule SkateWeb.PageControllerTest do
     end
 
     @tag :authenticated
-    setup do
+    test "correct sentry environment set", %{conn: conn} do
       reassign_env(:skate, :record_sentry, true)
       reassign_env(:skate, :sentry_environment, "test_env")
-    end
-
-    test "correct sentry environment set", %{conn: conn} do
+      
       conn = get(conn, "/")
-
       assert html_response(conn, 200) =~ "environment: \"test_env\""
     end
   end
