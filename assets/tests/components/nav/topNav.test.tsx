@@ -80,4 +80,24 @@ describe("TopNav", () => {
 
     expect(reloadSpy).toHaveBeenCalled()
   })
+
+  test("logo icon button reloads the page", async () => {
+    const reloadSpy = jest
+      .spyOn(browser, "reload")
+      .mockImplementationOnce(() => ({}))
+
+    const dispatch = jest.fn()
+    const user = userEvent.setup()
+    const result = render(
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+        <BrowserRouter>
+          <TopNav />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    await user.click(result.getByTitle("Home"))
+
+    expect(reloadSpy).toHaveBeenCalled()
+  })
 })

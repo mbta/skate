@@ -16,7 +16,9 @@ const TopNav = (): JSX.Element => {
 
   return (
     <div className="m-top-nav">
-      {logoIcon("m-top-nav__logo")}
+      <button className="m-top-nav__logo" onClick={() => reload()} title="Home">
+        {logoIcon("m-top-nav__logo-icon")}
+      </button>
       <div className="m-top-nav__right-items">
         <button
           className="m-top-nav__right-item"
