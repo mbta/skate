@@ -19,31 +19,37 @@ const TopNav = (): JSX.Element => {
       <button className="m-top-nav__logo" onClick={() => reload()} title="Home">
         {logoIcon("m-top-nav__logo-icon")}
       </button>
-      <div className="m-top-nav__right-items">
-        <button
-          className="m-top-nav__right-item"
-          onClick={() => dispatch(toggleNotificationDrawer())}
-          title="Notifications"
-        >
-          <NotificationBellIcon extraClasses={bellIconClasses} />
-        </button>
-        <button
-          className="m-top-nav__right-item"
-          onClick={() => reload()}
-          title="Refresh"
-        >
-          {refreshIcon("m-top-nav__icon")}
-        </button>
-        <NavLink
-          activeClassName="m-top-nav__right-item--active"
-          className="m-top-nav__right-item"
-          exact={true}
-          title="Settings"
-          to="/settings"
-        >
-          {settingsIcon("m-top-nav__icon")}
-        </NavLink>
-      </div>
+      <ul className="m-top-nav__right-items">
+        <li>
+          <button
+            className="m-top-nav__right-item"
+            onClick={() => dispatch(toggleNotificationDrawer())}
+            title="Notifications"
+          >
+            <NotificationBellIcon extraClasses={bellIconClasses} />
+          </button>
+        </li>
+        <li>
+          <button
+            className="m-top-nav__right-item"
+            onClick={() => reload()}
+            title="Refresh"
+          >
+            {refreshIcon("m-top-nav__icon")}
+          </button>
+        </li>
+        <li>
+          <NavLink
+            activeClassName="m-top-nav__right-item--active"
+            className="m-top-nav__right-item"
+            exact={true}
+            title="Settings"
+            to="/settings"
+          >
+            {settingsIcon("m-top-nav__icon")}
+          </NavLink>
+        </li>
+      </ul>
     </div>
   )
 }
