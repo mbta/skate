@@ -34,6 +34,10 @@
   @include button-icon(1.5rem);
   color: $color-gray-600;
 
+  & span svg {
+    stroke: none;
+  }
+
   &:hover {
     color: $color-gray-500;
   }
@@ -46,7 +50,7 @@
 .m-top-nav__notifications-icon {
   svg {
     path {
-      fill: $color-eggplant-500;
+      fill: $color-gray-600;
       stroke: none;
     }
 
@@ -68,7 +72,7 @@
   &:hover {
     svg {
       path {
-        fill: $color-eggplant-400;
+        fill: $color-gray-500;
         stroke: none;
       }
 
