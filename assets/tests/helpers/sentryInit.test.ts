@@ -1,9 +1,16 @@
 import sentryInit from "../../src/helpers/sentryInit"
+import * as Sentry from "@sentry/react"
+
+jest.mock("@sentry/react", () => ({
+  __esModule: true,
+  init: jest.fn(),
+}))
 
 const opts = {
   environment: "test_env",
 }
 
 test("Sentry Init runs", () => {
-  expect(sentryInit(opts)).toHaveProperty("environment", "test_env")
+  sentryInit(opts)
+  expect(Sentry.init).toHaveBeenCalledWith(opts)
 })
