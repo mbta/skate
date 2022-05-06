@@ -19,7 +19,7 @@ import ReactDOM from "react-dom"
 import sentryInit from "./helpers/sentryInit"
 import AppStateWrapper from "./components/appStateWrapper"
 
-sentryInit(window.sentry)
+sentryInit(window.sentry, window.username)
 
 if (window.FS && window.username) {
   window.FS.identify(window.username, { displayName: window.username })

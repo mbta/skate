@@ -5,16 +5,17 @@ interface sentryOptions {
   environment?: string
 }
 
-const sentryInit = (opts: sentryOptions | undefined) => {
+const sentryInit = (
+  opts: sentryOptions | undefined,
+  username: string | undefined
+) => {
   if (opts) {
     Sentry.init(opts)
 
-    if (window.username) {
-      Sentry.setUser({ username: window.username })
+    if (username) {
+      Sentry.setUser({ username: username })
     }
   }
-
-  return opts
 }
 
 export default sentryInit
