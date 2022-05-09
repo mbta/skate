@@ -1,6 +1,7 @@
 import { mount } from "enzyme"
 import React from "react"
 import renderer from "react-test-renderer"
+import { render, fireEvent } from "@testing-library/react"
 import LadderPage, {
   findRouteById,
   findSelectedVehicleOrGhost,
@@ -82,7 +83,7 @@ describe("LadderPage", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("can select a different route tab", () => {
+  test("can select a different route tab by clicking", () => {
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -109,6 +110,38 @@ describe("LadderPage", () => {
     wrapper
       .find(".m-ladder-page__tab:not(.m-ladder-page__tab-current)")
       .simulate("click")
+
+    expect(mockDispatch).toHaveBeenCalledWith(
+      selectRouteTab(mockState.routeTabs[1].uuid)
+    )
+  })
+
+  test("can select a different route tab by key press", () => {
+    const mockState = {
+      ...initialState,
+      routeTabs: [
+        routeTabFactory.build({
+          ordering: 0,
+          isCurrentTab: true,
+          selectedRouteIds: ["1"],
+        }),
+        routeTabFactory.build({
+          ordering: 1,
+          isCurrentTab: false,
+          selectedRouteIds: ["39"],
+          presetName: "My Preset",
+        }),
+      ],
+    }
+    const result = render(
+      <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+        <RoutesProvider routes={routes}>
+          <LadderPage />
+        </RoutesProvider>
+      </StateDispatchProvider>
+    )
+
+    fireEvent.keyDown(result.getByText("My Preset"), { key: "Enter" })
 
     expect(mockDispatch).toHaveBeenCalledWith(
       selectRouteTab(mockState.routeTabs[1].uuid)

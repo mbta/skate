@@ -293,8 +293,9 @@ exports[`App renders 1`] = `
       >
         <div
           className="m-ladder-page__route-tab-bar"
+          role="tablist"
         >
-          <div
+          <button
             className="m-ladder-page__add-tab-button"
             onClick={[Function]}
           >
@@ -306,7 +307,7 @@ exports[`App renders 1`] = `
                 }
               }
             />
-          </div>
+          </button>
         </div>
         <div
           className="m-route-ladders"
@@ -627,8 +628,9 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
       >
         <div
           className="m-ladder-page__route-tab-bar"
+          role="tablist"
         >
-          <div
+          <button
             className="m-ladder-page__add-tab-button"
             onClick={[Function]}
           >
@@ -640,7 +642,7 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
                 }
               }
             />
-          </div>
+          </button>
         </div>
         <div
           className="m-route-ladders"

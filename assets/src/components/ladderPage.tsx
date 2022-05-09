@@ -68,6 +68,13 @@ const LadderTab = ({
         (tab.isCurrentTab ? " m-ladder-page__tab-current" : "")
       }
       onClick={() => selectTab()}
+      onKeyDown={(event) => {
+        if (event.key === "Enter") {
+          selectTab()
+        }
+      }}
+      role="tab"
+      tabIndex={tab.isCurrentTab ? 0 : -1}
     >
       <div className="m-ladder-page__tab-contents">
         <div
@@ -108,7 +115,7 @@ const AddTabButton = ({
   addTab: () => void
 }): ReactElement<HTMLDivElement> => {
   return (
-    <div
+    <button
       className="m-ladder-page__add-tab-button"
       onClick={() => {
         if (window.FS) {
@@ -118,7 +125,7 @@ const AddTabButton = ({
       }}
     >
       {plusThinIcon("m-ladder-page__add-tab-icon")}
-    </div>
+    </button>
   )
 }
 
@@ -196,7 +203,7 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
         </>
       </PickerContainer>
       <div className="m-ladder-page__tab-bar-and-ladders">
-        <div className="m-ladder-page__route-tab-bar">
+        <div className="m-ladder-page__route-tab-bar" role="tablist">
           {routeTabs
             .filter(isOpenTab)
             .sort((a, b) => (a.ordering || 0) - (b.ordering || 0))
