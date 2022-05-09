@@ -441,7 +441,7 @@ const LateGhostRow = ({
       </td>
       <td />
       <td className="m-late-view__run-number-cell m-late-view__run-number-cell--late">
-        <a
+        <button
           className="m-late-view__run-link"
           onClick={() => {
             if (window.FS) {
@@ -458,7 +458,7 @@ const LateGhostRow = ({
                 "m-late-view__run-icon m-late-view__ghost-icon"
               )}
           {runIdToLabel(ghost.runId)}
-        </a>
+        </button>
       </td>
       <td />
     </tr>
@@ -504,7 +504,7 @@ const LateBusRow = ({
       </td>
       <td>{vehicle.label}</td>
       <td className="m-late-view__run-number-cell m-late-view__run-number-cell--late">
-        <a
+        <button
           className="m-late-view__run-link"
           onClick={() => {
             if (window.FS) {
@@ -517,7 +517,7 @@ const LateBusRow = ({
             ? bangIcon("m-late-view__run-icon m-late-view__block-waiver-icon")
             : upRightIcon("m-late-view__run-icon m-late-view__up-right-icon")}
           {runIdToLabel(vehicle.runId)}
-        </a>
+        </button>
       </td>
       <td>
         {vehicle.operatorLastName} &ndash; {vehicle.operatorId}

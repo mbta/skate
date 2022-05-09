@@ -194,7 +194,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
               <td
                 className="m-late-view__run-number-cell m-late-view__run-number-cell--late"
               >
-                <a
+                <button
                   className="m-late-view__run-link"
                   onClick={[Function]}
                 >
@@ -207,7 +207,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
                     }
                   />
                   run5
-                </a>
+                </button>
               </td>
               <td />
             </tr>
@@ -240,7 +240,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
               <td
                 className="m-late-view__run-number-cell m-late-view__run-number-cell--late"
               >
-                <a
+                <button
                   className="m-late-view__run-link"
                   onClick={[Function]}
                 >
@@ -253,7 +253,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
                     }
                   />
                   run2
-                </a>
+                </button>
               </td>
               <td>
                 SMITH
@@ -290,7 +290,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
               <td
                 className="m-late-view__run-number-cell m-late-view__run-number-cell--late"
               >
-                <a
+                <button
                   className="m-late-view__run-link"
                   onClick={[Function]}
                 >
@@ -303,7 +303,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
                     }
                   />
                   run3
-                </a>
+                </button>
               </td>
               <td>
                 SMITH
@@ -340,7 +340,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
               <td
                 className="m-late-view__run-number-cell m-late-view__run-number-cell--late"
               >
-                <a
+                <button
                   className="m-late-view__run-link"
                   onClick={[Function]}
                 >
@@ -353,7 +353,7 @@ exports[`LateView renders missing logons and late buses 1`] = `
                     }
                   />
                   run4
-                </a>
+                </button>
               </td>
               <td>
                 SMITH
