@@ -1,5 +1,6 @@
 import { mount } from "enzyme"
 import React from "react"
+import { render } from "@testing-library/react"
 import renderer from "react-test-renderer"
 import routeFactory from "../factories/route"
 import NotificationDrawer from "../../src/components/notificationDrawer"
@@ -22,6 +23,7 @@ import {
   setNotification,
 } from "../../src/state"
 import { now } from "../../src/util/dateTime"
+import userEvent from "@testing-library/user-event"
 
 const notification: Notification = {
   id: "0",
@@ -222,11 +224,12 @@ describe("NotificationDrawer", () => {
     )
   })
 
-  test("can make all read", () => {
+  test("can make all read", async () => {
     const stateDispatch = jest.fn()
     const notificationsDispatch = jest.fn()
 
-    const wrapper = mount(
+    const user = userEvent.setup()
+    const result = render(
       <StateDispatchProvider state={initialState} dispatch={stateDispatch}>
         <RoutesProvider routes={routes}>
           <NotificationsContext.Provider
@@ -246,10 +249,7 @@ describe("NotificationDrawer", () => {
       </StateDispatchProvider>
     )
 
-    wrapper
-      .find(".m-notification-drawer__mark-all-read-link")
-      .first()
-      .simulate("click")
+    await user.click(result.getByText("Mark all as read"))
     expect(notificationsDispatch).toHaveBeenCalledWith(markAllAsRead())
   })
 

@@ -98,12 +98,12 @@ exports[`NotificationDrawer renders notifications 1`] = `
           1
            new
         </span>
-        <a
-          className="m-notification-drawer__mark-all-read-link"
+        <button
+          className="m-notification-drawer__mark-all-read-button"
           onClick={[Function]}
         >
           Mark all as read
-        </a>
+        </button>
       </div>
       <button
         className="m-notification-drawer__card m-notification-drawer__card--unread"

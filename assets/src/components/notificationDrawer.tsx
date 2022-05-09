@@ -99,12 +99,12 @@ const Content = () => {
           {unreadNotificationsCount} new
         </span>
         {unreadNotificationsCount > 0 ? (
-          <a
-            className="m-notification-drawer__mark-all-read-link"
+          <button
+            className="m-notification-drawer__mark-all-read-button"
             onClick={() => notificationsDispatch(markAllAsRead())}
           >
             Mark all as read
-          </a>
+          </button>
         ) : null}
       </div>
       {notifications.map((notification) => (
@@ -154,22 +154,32 @@ const EllipsisSubmenu = ({ notification }: { notification: Notification }) => {
   }, [submenuRef])
 
   return (
-    <div
-      className="m-notification-drawer__submenu"
-      ref={submenuRef}
-      onClick={(event) => event.stopPropagation()}
-    >
-      <a
-        onClick={(event) => {
-          event.stopPropagation()
-          dispatch(toggleReadState(notification))
-          setNotificationWithOpenSubmenuId(null)
-        }}
-        className={`m-notification-drawer__submenu-mark-${otherReadState}`}
+    <>
+      {/* eslint-disable jsx-a11y/click-events-have-key-events */}
+      <div
+        className="m-notification-drawer__submenu"
+        ref={submenuRef}
+        onClick={(event) => event.stopPropagation()}
+        role="menu"
+        tabIndex={0}
       >
-        mark as {otherReadState}
-      </a>
-    </div>
+        {/* eslint-enable jsx-a11y/click-events-have-key-events */}
+        {/* eslint-disable jsx-a11y/anchor-is-valid, jsx-a11y/click-events-have-key-events */}
+        <a
+          onClick={(event) => {
+            event.stopPropagation()
+            dispatch(toggleReadState(notification))
+            setNotificationWithOpenSubmenuId(null)
+          }}
+          className={`m-notification-drawer__submenu-mark-${otherReadState}`}
+          role="menuitem"
+          tabIndex={-1}
+        >
+          mark as {otherReadState}
+        </a>
+        {/* eslint-enable jsx-a11y/anchor-is-valid, jsx-a11y/click-events-have-key-events */}
+      </div>
+    </>
   )
 }
 
@@ -210,6 +220,7 @@ const NotificationCard = ({
         currentTime={currentTime}
       />
       {showSubmenu && <EllipsisSubmenu notification={notification} />}
+      {/* eslint-disable jsx-a11y/anchor-is-valid, jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
       <a
         className="m-notification-drawer__submenu-icon-anchor"
         onClick={(event) => {
@@ -219,6 +230,7 @@ const NotificationCard = ({
       >
         {ellipsisIcon("m-notification-drawer__submenu-icon")}
       </a>
+      {/* eslint-enable jsx-a11y/anchor-is-valid, jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
     </button>
   )
 }
