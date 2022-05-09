@@ -10,15 +10,18 @@ const InputModal = ({
   const [, dispatch] = useContext(StateDispatchContext)
   return (
     <>
-      <div
-        className="m-input-modal"
-        onKeyDown={(event) => {
-          if (event.key === "Escape") {
-            dispatch(closeInputModal())
-          }
-        }}
-      >
-        {children}
+      <div role="dialog">
+        <div
+          className="m-input-modal"
+          role="presentation"
+          onKeyDown={(event) => {
+            if (event.key === "Escape") {
+              dispatch(closeInputModal())
+            }
+          }}
+        >
+          {children}
+        </div>
       </div>
       <div className="m-input-modal__overlay" />
     </>
