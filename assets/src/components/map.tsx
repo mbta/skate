@@ -393,6 +393,7 @@ const RecenterControl = ({
 }) => (
   <Control position="topright">
     <div className="leaflet-bar m-vehicle-map__recenter-button">
+      {/* eslint-disable jsx-a11y/anchor-is-valid */}
       <a
         href="#"
         title="Recenter map"
@@ -416,6 +417,7 @@ const RecenterControl = ({
           />
         </svg>
       </a>
+      {/* eslint-enable jsx-a11y/anchor-is-valid */}
     </div>
   </Control>
 )
