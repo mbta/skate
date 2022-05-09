@@ -508,6 +508,7 @@ exports[`SearchPage renders a selected vehicle 1`] = `
     </div>
   </div>
   <div
+    aria-hidden={true}
     className="m-properties-panel__modal-overlay"
     onClick={[Function]}
   />

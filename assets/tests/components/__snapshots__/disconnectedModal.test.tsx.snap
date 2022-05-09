@@ -16,6 +16,7 @@ Array [
     </button>
   </div>,
   <div
+    aria-hidden={true}
     className="c-modal-overlay"
   />,
 ]

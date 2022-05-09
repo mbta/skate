@@ -34,6 +34,7 @@ Array [
     </div>
   </div>,
   <div
+    aria-hidden={true}
     className="c-modal-overlay"
   />,
 ]
@@ -63,6 +64,7 @@ Array [
     </div>
   </div>,
   <div
+    aria-hidden={true}
     className="c-modal-overlay"
   />,
 ]

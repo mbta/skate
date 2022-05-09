@@ -99,6 +99,7 @@ exports[`LadderPage renders the empty state 1`] = `
     </div>
   </div>
   <div
+    aria-hidden={true}
     className="m-picker-container-overlay"
     data-testid="picker-container-overlay"
     onClick={[Function]}
@@ -259,6 +260,7 @@ exports[`LadderPage renders with route tabs 1`] = `
     </div>
   </div>
   <div
+    aria-hidden={true}
     className="m-picker-container-overlay"
     data-testid="picker-container-overlay"
     onClick={[Function]}
@@ -538,6 +540,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
     </div>
   </div>
   <div
+    aria-hidden={true}
     className="m-picker-container-overlay"
     data-testid="picker-container-overlay"
     onClick={[Function]}
@@ -831,6 +834,7 @@ exports[`LadderPage renders with timepoints 1`] = `
     </div>
   </div>
   <div
+    aria-hidden={true}
     className="m-picker-container-overlay"
     data-testid="picker-container-overlay"
     onClick={[Function]}
@@ -1361,6 +1365,7 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
     </div>
   </div>
   <div
+    aria-hidden={true}
     className="m-picker-container-overlay"
     data-testid="picker-container-overlay"
     onClick={[Function]}
@@ -1747,6 +1752,7 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
     </div>
   </div>
   <div
+    aria-hidden={true}
     className="m-properties-panel__modal-overlay"
     onClick={[Function]}
   />

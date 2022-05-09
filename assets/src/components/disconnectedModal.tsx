@@ -11,7 +11,7 @@ const DisconnectedModal = () => (
         Refresh
       </button>
     </div>
-    <div className="c-modal-overlay" />
+    <div className="c-modal-overlay" aria-hidden={true} />
   </>
 )
 

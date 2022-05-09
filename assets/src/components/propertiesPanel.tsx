@@ -51,6 +51,7 @@ const PropertiesPanel = ({ selectedVehicleOrGhost }: Props) => {
           /* istanbul ignore next */
           () => hideMeIfNoCrowdingTooltip(hideMe)
         }
+        aria-hidden={true}
       />
     </>
   )

@@ -283,6 +283,7 @@ exports[`App renders 1`] = `
         </div>
       </div>
       <div
+        aria-hidden={true}
         className="m-picker-container-overlay"
         data-testid="picker-container-overlay"
         onClick={[Function]}
@@ -616,6 +617,7 @@ exports[`App shows data outage banner if there's a data outage 1`] = `
         </div>
       </div>
       <div
+        aria-hidden={true}
         className="m-picker-container-overlay"
         data-testid="picker-container-overlay"
         onClick={[Function]}
