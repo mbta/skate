@@ -4,129 +4,133 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
 <div
   className="m-search-results"
 >
-  <div
+  <ul
     className="m-search-results__list"
   >
-    <div
-      className="m-search-results__card"
-      onClick={[Function]}
-    >
-      <div
-        className="m-properties-list"
-      >
-        <table
-          className="m-properties-list__table"
-        >
-          <tbody>
-            <tr
-              className="m-properties-list__property "
-            >
-              <td
-                className="m-properties-list__property-label"
-              >
-                Run
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                123-0123
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div
-      className="m-search-results__card"
-      onClick={[Function]}
-    >
-      <div
-        className="m-properties-list"
-      >
-        <table
-          className="m-properties-list__table"
-        >
-          <tbody>
-            <tr
-              className="m-properties-list__property "
-            >
-              <td
-                className="m-properties-list__property-label"
-              >
-                Run
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                run-1
-              </td>
-            </tr>
-            <tr
-              className="m-properties-list__property "
-            >
-              <td
-                className="m-properties-list__property-label"
-              >
-                Vehicle
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                v1-label
-              </td>
-            </tr>
-            <tr
-              className="m-properties-list__property "
-            >
-              <td
-                className="m-properties-list__property-label"
-              >
-                Operator
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                PATTI SMITH #op1
-              </td>
-            </tr>
-            <tr
-              className="m-properties-list__property m-properties-list__property--last-login"
-            >
-              <td
-                className="m-properties-list__property-label"
-              >
-                Last Login
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                4 hr 3 min; 1:38 PM
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div
-        className="m-search-results__card-route-label"
+    <li>
+      <button
+        className="m-search-results__card"
+        onClick={[Function]}
       >
         <div
-          className="m-route-variant-name"
+          className="m-properties-list"
         >
-          <span
-            className="m-route-variant-name__route-id"
+          <table
+            className="m-properties-list__table"
           >
-            39_X
-          </span>
-           Forest Hills
+            <tbody>
+              <tr
+                className="m-properties-list__property "
+              >
+                <td
+                  className="m-properties-list__property-label"
+                >
+                  Run
+                </td>
+                <td
+                  className="m-properties-list__property-value"
+                >
+                  123-0123
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-      </div>
-    </div>
-    <p
-      className="m-search-results__note"
-    >
-      Please note that at this time search is limited to active vehicles and logged-in personnel.
-    </p>
-  </div>
+      </button>
+    </li>
+    <li>
+      <button
+        className="m-search-results__card"
+        onClick={[Function]}
+      >
+        <div
+          className="m-properties-list"
+        >
+          <table
+            className="m-properties-list__table"
+          >
+            <tbody>
+              <tr
+                className="m-properties-list__property "
+              >
+                <td
+                  className="m-properties-list__property-label"
+                >
+                  Run
+                </td>
+                <td
+                  className="m-properties-list__property-value"
+                >
+                  run-1
+                </td>
+              </tr>
+              <tr
+                className="m-properties-list__property "
+              >
+                <td
+                  className="m-properties-list__property-label"
+                >
+                  Vehicle
+                </td>
+                <td
+                  className="m-properties-list__property-value"
+                >
+                  v1-label
+                </td>
+              </tr>
+              <tr
+                className="m-properties-list__property "
+              >
+                <td
+                  className="m-properties-list__property-label"
+                >
+                  Operator
+                </td>
+                <td
+                  className="m-properties-list__property-value"
+                >
+                  PATTI SMITH #op1
+                </td>
+              </tr>
+              <tr
+                className="m-properties-list__property m-properties-list__property--last-login"
+              >
+                <td
+                  className="m-properties-list__property-label"
+                >
+                  Last Login
+                </td>
+                <td
+                  className="m-properties-list__property-value"
+                >
+                  4 hr 3 min; 1:38 PM
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div
+          className="m-search-results__card-route-label"
+        >
+          <div
+            className="m-route-variant-name"
+          >
+            <span
+              className="m-route-variant-name__route-id"
+            >
+              39_X
+            </span>
+             Forest Hills
+          </div>
+        </div>
+      </button>
+    </li>
+  </ul>
+  <p
+    className="m-search-results__note"
+  >
+    Please note that at this time search is limited to active vehicles and logged-in personnel.
+  </p>
 </div>
 `;
 
@@ -134,129 +138,133 @@ exports[`SearchResults renders a selected result card 1`] = `
 <div
   className="m-search-results"
 >
-  <div
+  <ul
     className="m-search-results__list"
   >
-    <div
-      className="m-search-results__card"
-      onClick={[Function]}
-    >
-      <div
-        className="m-properties-list"
-      >
-        <table
-          className="m-properties-list__table"
-        >
-          <tbody>
-            <tr
-              className="m-properties-list__property "
-            >
-              <td
-                className="m-properties-list__property-label"
-              >
-                Run
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                123-0123
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div
-      className="m-search-results__card m-search-results__card--selected"
-      onClick={[Function]}
-    >
-      <div
-        className="m-properties-list"
-      >
-        <table
-          className="m-properties-list__table"
-        >
-          <tbody>
-            <tr
-              className="m-properties-list__property "
-            >
-              <td
-                className="m-properties-list__property-label"
-              >
-                Run
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                run-1
-              </td>
-            </tr>
-            <tr
-              className="m-properties-list__property "
-            >
-              <td
-                className="m-properties-list__property-label"
-              >
-                Vehicle
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                v1-label
-              </td>
-            </tr>
-            <tr
-              className="m-properties-list__property "
-            >
-              <td
-                className="m-properties-list__property-label"
-              >
-                Operator
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                WILL SMITH #op1
-              </td>
-            </tr>
-            <tr
-              className="m-properties-list__property m-properties-list__property--last-login"
-            >
-              <td
-                className="m-properties-list__property-label"
-              >
-                Last Login
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                4 hr 3 min; 1:38 PM
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div
-        className="m-search-results__card-route-label"
+    <li>
+      <button
+        className="m-search-results__card"
+        onClick={[Function]}
       >
         <div
-          className="m-route-variant-name"
+          className="m-properties-list"
         >
-          <span
-            className="m-route-variant-name__route-id"
+          <table
+            className="m-properties-list__table"
           >
-            39_X
-          </span>
-           Forest Hills
+            <tbody>
+              <tr
+                className="m-properties-list__property "
+              >
+                <td
+                  className="m-properties-list__property-label"
+                >
+                  Run
+                </td>
+                <td
+                  className="m-properties-list__property-value"
+                >
+                  123-0123
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-      </div>
-    </div>
-    <p
-      className="m-search-results__note"
-    >
-      Please note that at this time search is limited to active vehicles and logged-in personnel.
-    </p>
-  </div>
+      </button>
+    </li>
+    <li>
+      <button
+        className="m-search-results__card m-search-results__card--selected"
+        onClick={[Function]}
+      >
+        <div
+          className="m-properties-list"
+        >
+          <table
+            className="m-properties-list__table"
+          >
+            <tbody>
+              <tr
+                className="m-properties-list__property "
+              >
+                <td
+                  className="m-properties-list__property-label"
+                >
+                  Run
+                </td>
+                <td
+                  className="m-properties-list__property-value"
+                >
+                  run-1
+                </td>
+              </tr>
+              <tr
+                className="m-properties-list__property "
+              >
+                <td
+                  className="m-properties-list__property-label"
+                >
+                  Vehicle
+                </td>
+                <td
+                  className="m-properties-list__property-value"
+                >
+                  v1-label
+                </td>
+              </tr>
+              <tr
+                className="m-properties-list__property "
+              >
+                <td
+                  className="m-properties-list__property-label"
+                >
+                  Operator
+                </td>
+                <td
+                  className="m-properties-list__property-value"
+                >
+                  WILL SMITH #op1
+                </td>
+              </tr>
+              <tr
+                className="m-properties-list__property m-properties-list__property--last-login"
+              >
+                <td
+                  className="m-properties-list__property-label"
+                >
+                  Last Login
+                </td>
+                <td
+                  className="m-properties-list__property-value"
+                >
+                  4 hr 3 min; 1:38 PM
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div
+          className="m-search-results__card-route-label"
+        >
+          <div
+            className="m-route-variant-name"
+          >
+            <span
+              className="m-route-variant-name__route-id"
+            >
+              39_X
+            </span>
+             Forest Hills
+          </div>
+        </div>
+      </button>
+    </li>
+  </ul>
+  <p
+    className="m-search-results__note"
+  >
+    Please note that at this time search is limited to active vehicles and logged-in personnel.
+  </p>
 </div>
 `;
 
@@ -296,122 +304,124 @@ exports[`SearchResults shows the new badge for vehicle that have logged in withi
 <div
   className="m-search-results"
 >
-  <div
+  <ul
     className="m-search-results__list"
   >
-    <div
-      className="m-search-results__card m-search-results__card--new"
-      onClick={[Function]}
-    >
-      <div
-        className="m-search-results__card-new-badge"
-      >
-        <span
-          className="m-search-results__card-new-badge-label"
-        >
-          New
-        </span>
-        <span
-          className="m-search-results__card-new-badge-icon"
-        >
-          <svg
-            viewBox="0 0 9 9"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle
-              cx="4.5"
-              cy="4.5"
-              r="4.5"
-            />
-          </svg>
-        </span>
-      </div>
-      <div
-        className="m-properties-list"
-      >
-        <table
-          className="m-properties-list__table"
-        >
-          <tbody>
-            <tr
-              className="m-properties-list__property "
-            >
-              <td
-                className="m-properties-list__property-label"
-              >
-                Run
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                run-1
-              </td>
-            </tr>
-            <tr
-              className="m-properties-list__property "
-            >
-              <td
-                className="m-properties-list__property-label"
-              >
-                Vehicle
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                v1-label
-              </td>
-            </tr>
-            <tr
-              className="m-properties-list__property "
-            >
-              <td
-                className="m-properties-list__property-label"
-              >
-                Operator
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                PATTI SMITH #op1
-              </td>
-            </tr>
-            <tr
-              className="m-properties-list__property m-properties-list__property--last-login"
-            >
-              <td
-                className="m-properties-list__property-label"
-              >
-                Last Login
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                1 min; 5:40 PM
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div
-        className="m-search-results__card-route-label"
+    <li>
+      <button
+        className="m-search-results__card m-search-results__card--new"
+        onClick={[Function]}
       >
         <div
-          className="m-route-variant-name"
+          className="m-search-results__card-new-badge"
         >
           <span
-            className="m-route-variant-name__route-id"
+            className="m-search-results__card-new-badge-label"
           >
-            39_X
+            New
           </span>
-           Forest Hills
+          <span
+            className="m-search-results__card-new-badge-icon"
+          >
+            <svg
+              viewBox="0 0 9 9"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="4.5"
+                cy="4.5"
+                r="4.5"
+              />
+            </svg>
+          </span>
         </div>
-      </div>
-    </div>
-    <p
-      className="m-search-results__note"
-    >
-      Please note that at this time search is limited to active vehicles and logged-in personnel.
-    </p>
-  </div>
+        <div
+          className="m-properties-list"
+        >
+          <table
+            className="m-properties-list__table"
+          >
+            <tbody>
+              <tr
+                className="m-properties-list__property "
+              >
+                <td
+                  className="m-properties-list__property-label"
+                >
+                  Run
+                </td>
+                <td
+                  className="m-properties-list__property-value"
+                >
+                  run-1
+                </td>
+              </tr>
+              <tr
+                className="m-properties-list__property "
+              >
+                <td
+                  className="m-properties-list__property-label"
+                >
+                  Vehicle
+                </td>
+                <td
+                  className="m-properties-list__property-value"
+                >
+                  v1-label
+                </td>
+              </tr>
+              <tr
+                className="m-properties-list__property "
+              >
+                <td
+                  className="m-properties-list__property-label"
+                >
+                  Operator
+                </td>
+                <td
+                  className="m-properties-list__property-value"
+                >
+                  PATTI SMITH #op1
+                </td>
+              </tr>
+              <tr
+                className="m-properties-list__property m-properties-list__property--last-login"
+              >
+                <td
+                  className="m-properties-list__property-label"
+                >
+                  Last Login
+                </td>
+                <td
+                  className="m-properties-list__property-value"
+                >
+                  1 min; 5:40 PM
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div
+          className="m-search-results__card-route-label"
+        >
+          <div
+            className="m-route-variant-name"
+          >
+            <span
+              className="m-route-variant-name__route-id"
+            >
+              39_X
+            </span>
+             Forest Hills
+          </div>
+        </div>
+      </button>
+    </li>
+  </ul>
+  <p
+    className="m-search-results__note"
+  >
+    Please note that at this time search is limited to active vehicles and logged-in personnel.
+  </p>
 </div>
 `;

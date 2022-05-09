@@ -15,9 +15,14 @@
   border-radius: 4px;
   box-shadow: $subtle-box-shadow;
   cursor: pointer;
-  margin-bottom: 1rem;
   padding: 1rem 1rem 0.5rem;
   position: relative;
+  text-align: start;
+  width: 100%;
+
+  li:not(:last-child) & {
+    margin-bottom: 1rem;
+  }
 
   &--selected,
   &:hover {
@@ -72,6 +77,11 @@
   }
 }
 
-.m-search-results__list .m-search-results__note {
+.m-search-results__list {
+  margin: 0;
+  position: relative;
+}
+
+.m-search-results__note {
   color: $color-font-grey;
 }
