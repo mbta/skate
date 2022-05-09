@@ -1,5 +1,6 @@
 import { mount } from "enzyme"
 import React from "react"
+import { render } from "@testing-library/react"
 import renderer from "react-test-renderer"
 import ghostFactory from "../factories/ghost"
 import vehicleFactory from "../factories/vehicle"
@@ -15,6 +16,8 @@ import { Route, Swing } from "../../src/schedule"
 import { initialState, selectVehicle, toggleSwingsView } from "../../src/state"
 import { Vehicle, Ghost, VehicleOrGhost } from "../../src/realtime"
 import * as dateTime from "../../src/util/dateTime"
+import { runIdToLabel } from "../../src/helpers/vehicleLabel"
+import userEvent from "@testing-library/user-event"
 
 jest.mock("../../src/hooks/useSwings", () => ({
   __esModule: true,
@@ -207,7 +210,7 @@ describe("SwingsView", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("opens VPP when clicking an active swing-off and sends Fullstory event", () => {
+  test("opens VPP when clicking an active swing-off and sends Fullstory event", async () => {
     const originalFS = window.FS
     const originalUsername = window.username
     window.FS = { event: jest.fn(), identify: jest.fn() }
@@ -228,7 +231,8 @@ describe("SwingsView", () => {
     )
 
     const dispatch = jest.fn()
-    const wrapper = mount(
+    const user = userEvent.setup()
+    const result = render(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
         <RoutesProvider routes={routes}>
           <SwingsView />
@@ -236,14 +240,14 @@ describe("SwingsView", () => {
       </StateDispatchProvider>
     )
 
-    wrapper.find("a").first().simulate("click")
+    await user.click(result.getByText(runIdToLabel(vehicle.runId)))
     expect(dispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
     expect(window.FS!.event).toHaveBeenCalledWith(
       "Clicked on swing-off from swings view"
     )
   })
 
-  test("opens VPP when clicking an active swing-on and sends Fullstory event", () => {
+  test("opens VPP when clicking an active swing-on and sends Fullstory event", async () => {
     const originalFS = window.FS
     const originalUsername = window.username
     window.FS = { event: jest.fn(), identify: jest.fn() }
@@ -268,7 +272,8 @@ describe("SwingsView", () => {
     )
 
     const dispatch = jest.fn()
-    const wrapper = mount(
+    const user = userEvent.setup()
+    const result = render(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
         <RoutesProvider routes={routes}>
           <SwingsView />
@@ -276,7 +281,7 @@ describe("SwingsView", () => {
       </StateDispatchProvider>
     )
 
-    wrapper.find("a").first().simulate("click")
+    await user.click(result.getByText(runIdToLabel(vehicle.runId)))
     expect(dispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
     expect(window.FS!.event).toHaveBeenCalledWith(
       "Clicked on swing-on from swings view"

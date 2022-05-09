@@ -279,7 +279,7 @@ const SwingCellContent = ({
                 "m-swings-view__run-icon m-swings-view__run-icon-ghost"
               )}
 
-          <a
+          <button
             onClick={() => {
               if (window.FS) {
                 window.FS.event(fsEventText)
@@ -288,7 +288,7 @@ const SwingCellContent = ({
             }}
           >
             {runIdToLabel(runId)}
-          </a>
+          </button>
         </>
       ) : (
         runIdToLabel(runId)
