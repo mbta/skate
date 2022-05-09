@@ -87,6 +87,7 @@ const TabBar = ({
           </NavLink>
         </li>
         <li>
+          {/* eslint-disable jsx-a11y/anchor-is-valid, jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
           <a
             className={
               "m-tab-bar__swings m-tab-bar__link" +
@@ -101,9 +102,11 @@ const TabBar = ({
           >
             {swingIcon("m-tab-bar__icon")}
           </a>
+          {/* eslint-enable jsx-a11y/anchor-is-valid, jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
         </li>
         {featureIsEnabled("late_view") || dispatcherFlag ? (
           <li>
+            {/* eslint-disable jsx-a11y/anchor-is-valid, jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
             <a
               className={
                 "m-tab-bar__late_view m-tab-bar__link" +
@@ -119,6 +122,7 @@ const TabBar = ({
             >
               {lateIcon("m-tab-bar__icon")}
             </a>
+            {/* eslint-enable jsx-a11y/anchor-is-valid, jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
           </li>
         ) : null}
       </ul>
