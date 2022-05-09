@@ -133,10 +133,13 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
     </div>
     <ul
       className="m-tabs__tab-list"
+      role="tablist"
     >
       <li
+        aria-selected={true}
         className="m-tabs__tab m-tabs__tab--selected"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -159,8 +162,10 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
         Status
       </li>
       <li
+        aria-selected={false}
         className="m-tabs__tab"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -183,8 +188,10 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
         Run
       </li>
       <li
+        aria-selected={false}
         className="m-tabs__tab"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -460,10 +467,13 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
     </div>
     <ul
       className="m-tabs__tab-list"
+      role="tablist"
     >
       <li
+        aria-selected={true}
         className="m-tabs__tab m-tabs__tab--selected"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -486,8 +496,10 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
         Status
       </li>
       <li
+        aria-selected={false}
         className="m-tabs__tab"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -510,8 +522,10 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
         Run
       </li>
       <li
+        aria-selected={false}
         className="m-tabs__tab"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -1005,10 +1019,13 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
     </div>
     <ul
       className="m-tabs__tab-list"
+      role="tablist"
     >
       <li
+        aria-selected={true}
         className="m-tabs__tab m-tabs__tab--selected"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -1031,8 +1048,10 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
         Status
       </li>
       <li
+        aria-selected={false}
         className="m-tabs__tab"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -1055,8 +1074,10 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
         Run
       </li>
       <li
+        aria-selected={false}
         className="m-tabs__tab"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -1427,10 +1448,13 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
     </div>
     <ul
       className="m-tabs__tab-list"
+      role="tablist"
     >
       <li
+        aria-selected={true}
         className="m-tabs__tab m-tabs__tab--selected"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -1453,8 +1477,10 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
         Status
       </li>
       <li
+        aria-selected={false}
         className="m-tabs__tab"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -1477,8 +1503,10 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
         Run
       </li>
       <li
+        aria-selected={false}
         className="m-tabs__tab"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -1754,10 +1782,13 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
     </div>
     <ul
       className="m-tabs__tab-list"
+      role="tablist"
     >
       <li
+        aria-selected={true}
         className="m-tabs__tab m-tabs__tab--selected"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -1780,8 +1811,10 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
         Status
       </li>
       <li
+        aria-selected={false}
         className="m-tabs__tab"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -1804,8 +1837,10 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
         Run
       </li>
       <li
+        aria-selected={false}
         className="m-tabs__tab"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -2095,10 +2130,13 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
     </div>
     <ul
       className="m-tabs__tab-list"
+      role="tablist"
     >
       <li
+        aria-selected={true}
         className="m-tabs__tab m-tabs__tab--selected"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -2121,8 +2159,10 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
         Status
       </li>
       <li
+        aria-selected={false}
         className="m-tabs__tab"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -2145,8 +2185,10 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
         Run
       </li>
       <li
+        aria-selected={false}
         className="m-tabs__tab"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"

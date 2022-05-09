@@ -114,10 +114,13 @@ Array [
         </div>
         <ul
           className="m-tabs__tab-list"
+          role="tablist"
         >
           <li
+            aria-selected={true}
             className="m-tabs__tab m-tabs__tab--selected"
             onClick={[Function]}
+            role="tab"
           >
             <svg
               className="m-tabs__tab-status-icon"
@@ -140,8 +143,10 @@ Array [
             Status
           </li>
           <li
+            aria-selected={false}
             className="m-tabs__tab"
             onClick={[Function]}
+            role="tab"
           >
             <svg
               className="m-tabs__tab-status-icon"
@@ -164,8 +169,10 @@ Array [
             Run
           </li>
           <li
+            aria-selected={false}
             className="m-tabs__tab"
             onClick={[Function]}
+            role="tab"
           >
             <svg
               className="m-tabs__tab-status-icon"
@@ -414,10 +421,13 @@ Array [
         </div>
         <ul
           className="m-tabs__tab-list"
+          role="tablist"
         >
           <li
+            aria-selected={true}
             className="m-tabs__tab m-tabs__tab--selected"
             onClick={[Function]}
+            role="tab"
           >
             <svg
               className="m-tabs__tab-status-icon"
@@ -440,8 +450,10 @@ Array [
             Status
           </li>
           <li
+            aria-selected={false}
             className="m-tabs__tab"
             onClick={[Function]}
+            role="tab"
           >
             <svg
               className="m-tabs__tab-status-icon"
@@ -464,8 +476,10 @@ Array [
             Run
           </li>
           <li
+            aria-selected={false}
             className="m-tabs__tab"
             onClick={[Function]}
+            role="tab"
           >
             <svg
               className="m-tabs__tab-status-icon"
