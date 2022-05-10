@@ -13,6 +13,7 @@ import {
   doubleChevronLeftIcon,
   questionMarkIcon,
   speechBubbleIcon,
+  settingsIcon,
 } from "../../helpers/icon"
 import featureIsEnabled from "../../laboratoryFeatures"
 import { OpenView, toggleLateView, toggleSwingsView } from "../../state"
@@ -110,6 +111,18 @@ const LeftNav = ({
             {questionMarkIcon("m-left-nav__icon")}
             {collapsed ? null : "About Skate"}
           </button>
+        </li>
+        <li>
+          <NavLink
+            activeClassName="m-left-nav__link--active"
+            className="m-left-nav__link"
+            exact={true}
+            title="Settings"
+            to="/settings"
+          >
+            {settingsIcon("m-left-nav__icon")}
+            {collapsed ? null : "Settings"}
+          </NavLink>
         </li>
         <li>
           <button

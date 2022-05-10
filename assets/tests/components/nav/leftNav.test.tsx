@@ -34,6 +34,13 @@ describe("LeftNav", () => {
 
     expect(result.queryByText("Route Ladders")).not.toBeNull()
     expect(result.queryByText("Late View")).not.toBeNull()
+    expect(result.queryByText("Swings View")).not.toBeNull()
+    expect(result.queryByText("Maps")).not.toBeNull()
+    expect(result.queryByText("Search")).not.toBeNull()
+    expect(result.queryByText("Support")).not.toBeNull()
+    expect(result.queryByText("About Skate")).not.toBeNull()
+    expect(result.queryByText("Settings")).not.toBeNull()
+    expect(result.queryByText("Collapse")).not.toBeNull()
   })
 
   test("renders collapsed state", () => {
@@ -47,6 +54,20 @@ describe("LeftNav", () => {
     expect(result.queryByTitle("Route Ladders")).not.toBeNull()
     expect(result.queryByText("Late View")).toBeNull()
     expect(result.queryByTitle("Late View")).not.toBeNull()
+    expect(result.queryByText("Swings View")).toBeNull()
+    expect(result.queryByTitle("Swings View")).not.toBeNull()
+    expect(result.queryByText("Maps")).toBeNull()
+    expect(result.queryByTitle("Maps")).not.toBeNull()
+    expect(result.queryByText("Search")).toBeNull()
+    expect(result.queryByTitle("Search")).not.toBeNull()
+    expect(result.queryByText("Support")).toBeNull()
+    expect(result.queryByTitle("Support")).not.toBeNull()
+    expect(result.queryByText("About Skate")).toBeNull()
+    expect(result.queryByTitle("About Skate")).not.toBeNull()
+    expect(result.queryByText("Settings")).toBeNull()
+    expect(result.queryByTitle("Settings")).not.toBeNull()
+    expect(result.queryByText("Expand")).toBeNull()
+    expect(result.queryByTitle("Expand")).not.toBeNull()
   })
 
   test("can toggle collapsed", async () => {

@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
-import { Link, NavLink } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
-import { logoIcon, refreshIcon, settingsIcon } from "../../helpers/icon"
+import { logoIcon, refreshIcon } from "../../helpers/icon"
 import { reload } from "../../models/browser"
 import { toggleNotificationDrawer } from "../../state"
 import NotificationBellIcon from "../notificationBellIcon"
@@ -37,17 +37,6 @@ const TopNav = (): JSX.Element => {
           >
             {refreshIcon("m-top-nav__icon")}
           </button>
-        </li>
-        <li>
-          <NavLink
-            activeClassName="m-top-nav__right-item--active"
-            className="m-top-nav__right-item"
-            exact={true}
-            title="Settings"
-            to="/settings"
-          >
-            {settingsIcon("m-top-nav__icon")}
-          </NavLink>
         </li>
       </ul>
     </div>
