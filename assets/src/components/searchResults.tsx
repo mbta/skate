@@ -60,16 +60,18 @@ const SearchResultCard = ({
   const selectVehicleOrGhost = () => dispatch(selectVehicle(vehicleOrGhost))
 
   return (
-    <div className={className(classes)} onClick={selectVehicleOrGhost}>
-      {isRecentlyLoggedOn(vehicleOrGhost) && <NewBadge />}
+    <li>
+      <button className={className(classes)} onClick={selectVehicleOrGhost}>
+        {isRecentlyLoggedOn(vehicleOrGhost) && <NewBadge />}
 
-      <PropertiesList
-        properties={vehicleOrGhostProperties(vehicleOrGhost)}
-        highlightText={query.text}
-      />
+        <PropertiesList
+          properties={vehicleOrGhostProperties(vehicleOrGhost)}
+          highlightText={query.text}
+        />
 
-      {isVehicle(vehicleOrGhost) && <RouteLabel vehicle={vehicleOrGhost} />}
-    </div>
+        {isVehicle(vehicleOrGhost) && <RouteLabel vehicle={vehicleOrGhost} />}
+      </button>
+    </li>
   )
 }
 
@@ -108,15 +110,17 @@ export const byOperatorLogonTime = (
 }
 
 const ResultsList = ({ vehicles }: { vehicles: VehicleOrGhost[] }) => (
-  <div className="m-search-results__list">
-    {vehicles.sort(byOperatorLogonTime).map((vehicleOrGhost) => (
-      <SearchResultCard
-        vehicleOrGhost={vehicleOrGhost}
-        key={`search-result-card-${vehicleOrGhost.id}`}
-      />
-    ))}
+  <>
+    <ul className="m-search-results__list">
+      {vehicles.sort(byOperatorLogonTime).map((vehicleOrGhost) => (
+        <SearchResultCard
+          vehicleOrGhost={vehicleOrGhost}
+          key={`search-result-card-${vehicleOrGhost.id}`}
+        />
+      ))}
+    </ul>
     <SearchResultsNote />
-  </div>
+  </>
 )
 
 const NoResults = () => {

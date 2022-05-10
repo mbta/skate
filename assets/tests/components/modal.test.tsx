@@ -1,5 +1,6 @@
 import React from "react"
 import renderer from "react-test-renderer"
+import { render } from "@testing-library/react"
 import Modal from "../../src/components/modal"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { useMinischeduleRuns } from "../../src/hooks/useMinischedule"
@@ -88,12 +89,12 @@ describe("Modal", () => {
       },
     }
 
-    const tree = renderer.create(
+    const result = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <Modal />
       </StateDispatchProvider>
     )
-    expect(tree).toMatchSnapshot()
+    expect(result.getByText("Save open routes as preset")).not.toBeNull()
   })
 
   test("renders save preset modal", () => {
@@ -108,12 +109,12 @@ describe("Modal", () => {
       },
     }
 
-    const tree = renderer.create(
+    const result = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <Modal />
       </StateDispatchProvider>
     )
-    expect(tree).toMatchSnapshot()
+    expect(result.getByText(/Overwrite/)).not.toBeNull()
   })
 
   test("renders delete preset modal", () => {
@@ -128,12 +129,12 @@ describe("Modal", () => {
       },
     }
 
-    const tree = renderer.create(
+    const result = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <Modal />
       </StateDispatchProvider>
     )
-    expect(tree).toMatchSnapshot()
+    expect(result.getByText(/Delete/)).not.toBeNull()
   })
 
   test("renders overwrite preset modal", () => {
@@ -148,11 +149,11 @@ describe("Modal", () => {
       },
     }
 
-    const tree = renderer.create(
+    const result = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
         <Modal />
       </StateDispatchProvider>
     )
-    expect(tree).toMatchSnapshot()
+    expect(result.getByText(/A preset named/)).not.toBeNull()
   })
 })

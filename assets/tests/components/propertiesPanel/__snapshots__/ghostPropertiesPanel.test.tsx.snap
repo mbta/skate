@@ -109,10 +109,13 @@ exports[`GhostPropertiesPanel renders 1`] = `
     </div>
     <ul
       className="m-tabs__tab-list"
+      role="tablist"
     >
       <li
+        aria-selected={true}
         className="m-tabs__tab m-tabs__tab--selected"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -135,8 +138,10 @@ exports[`GhostPropertiesPanel renders 1`] = `
         Status
       </li>
       <li
+        aria-selected={false}
         className="m-tabs__tab"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -159,8 +164,10 @@ exports[`GhostPropertiesPanel renders 1`] = `
         Run
       </li>
       <li
+        aria-selected={false}
         className="m-tabs__tab"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -373,10 +380,13 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
     </div>
     <ul
       className="m-tabs__tab-list"
+      role="tablist"
     >
       <li
+        aria-selected={true}
         className="m-tabs__tab m-tabs__tab--selected"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -399,8 +409,10 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
         Status
       </li>
       <li
+        aria-selected={false}
         className="m-tabs__tab"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -423,8 +435,10 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
         Run
       </li>
       <li
+        aria-selected={false}
         className="m-tabs__tab"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -683,10 +697,13 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
     </div>
     <ul
       className="m-tabs__tab-list"
+      role="tablist"
     >
       <li
+        aria-selected={true}
         className="m-tabs__tab m-tabs__tab--selected"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -709,8 +726,10 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
         Status
       </li>
       <li
+        aria-selected={false}
         className="m-tabs__tab"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"
@@ -733,8 +752,10 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
         Run
       </li>
       <li
+        aria-selected={false}
         className="m-tabs__tab"
         onClick={[Function]}
+        role="tab"
       >
         <svg
           className="m-tabs__tab-status-icon"

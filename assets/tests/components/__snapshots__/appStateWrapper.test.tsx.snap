@@ -283,6 +283,7 @@ exports[`renders 1`] = `
         </div>
       </div>
       <div
+        aria-hidden={true}
         className="m-picker-container-overlay"
         data-testid="picker-container-overlay"
         onClick={[Function]}
@@ -292,8 +293,9 @@ exports[`renders 1`] = `
       >
         <div
           className="m-ladder-page__route-tab-bar"
+          role="tablist"
         >
-          <div
+          <button
             className="m-ladder-page__add-tab-button"
             onClick={[Function]}
           >
@@ -305,7 +307,7 @@ exports[`renders 1`] = `
                 }
               }
             />
-          </div>
+          </button>
         </div>
         <div
           className="m-route-ladders"

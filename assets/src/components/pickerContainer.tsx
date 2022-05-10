@@ -30,6 +30,7 @@ const PickerContainer = ({ children }: Props): ReactElement<HTMLDivElement> => {
           className="m-picker-container-overlay"
           onClick={toggleVisibility}
           data-testid="picker-container-overlay"
+          aria-hidden={true}
         />
       ) : null}
     </>

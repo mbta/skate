@@ -473,11 +473,11 @@ exports[`SwingsView links to both swing-on and swing-off if both are active 1`] 
                   }
                 }
               />
-              <a
+              <button
                 onClick={[Function]}
               >
                 789
-              </a>
+              </button>
             </div>
           </th>
           <th
@@ -494,11 +494,11 @@ exports[`SwingsView links to both swing-on and swing-off if both are active 1`] 
                   }
                 }
               />
-              <a
+              <button
                 onClick={[Function]}
               >
                 456
-              </a>
+              </button>
               <div
                 className="m-swings-view__route-pill"
               >
@@ -793,11 +793,11 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
                   }
                 }
               />
-              <a
+              <button
                 onClick={[Function]}
               >
                 456
-              </a>
+              </button>
               <div
                 className="m-swings-view__route-pill"
               >
@@ -854,11 +854,11 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
                   }
                 }
               />
-              <a
+              <button
                 onClick={[Function]}
               >
                 456
-              </a>
+              </button>
               <div
                 className="m-swings-view__route-pill"
               >

@@ -60,6 +60,7 @@
     "enzyme-adapter-react-16": "^1.15.6",
     "eslint": "^8.13.0",
     "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.29.4",
     "file-loader": "^6.2.0",
     "fishery": "^2.2.2",

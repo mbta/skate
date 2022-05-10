@@ -1,99 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Modal renders create preset modal 1`] = `
-Array [
-  <div
-    className="m-input-modal"
-    onKeyDown={[Function]}
-  >
-    <form
-      onSubmit={[Function]}
-    >
-      <div
-        className="m-input-modal__title"
-      >
-        Save open routes as preset
-      </div>
-      <div
-        className="m-input-modal__input"
-      >
-        <input
-          autoFocus={true}
-          onChange={[Function]}
-          placeholder="Name your preset…"
-          required={true}
-        />
-      </div>
-      <div
-        className="m-input-modal__buttons"
-      >
-        <button
-          className="m-input-modal__button"
-          onClick={[Function]}
-          type="button"
-        >
-          Cancel
-        </button>
-        <button
-          className="m-input-modal__button-disabled"
-          disabled={true}
-          type="submit"
-        >
-          Save
-        </button>
-      </div>
-    </form>
-  </div>,
-  <div
-    className="m-input-modal__overlay"
-  />,
-]
-`;
-
-exports[`Modal renders delete preset modal 1`] = `
-Array [
-  <div
-    className="m-input-modal"
-    onKeyDown={[Function]}
-  >
-    <div
-      className="m-input-modal__title"
-    >
-      Delete preset?
-    </div>
-    <div
-      className="m-input-modal__text"
-    >
-      <span
-        className="m-input-modal__name-text"
-      >
-        My Preset
-      </span>
-    </div>
-    <div
-      className="m-input-modal__buttons"
-    >
-      <button
-        className="m-input-modal__button"
-        onClick={[Function]}
-      >
-        Cancel
-      </button>
-      <button
-        autoFocus={true}
-        className="m-input-modal__button-danger"
-        onClick={[Function]}
-      >
-        Confirm
-      </button>
-    </div>
-  </div>,
-  <div
-    className="m-input-modal__overlay"
-  />,
-]
-`;
-
 exports[`Modal renders inactive notification modal when appropriate 1`] = `
 Array [
   <div
@@ -128,6 +34,7 @@ Array [
     </div>
   </div>,
   <div
+    aria-hidden={true}
     className="c-modal-overlay"
   />,
 ]
@@ -157,101 +64,8 @@ Array [
     </div>
   </div>,
   <div
+    aria-hidden={true}
     className="c-modal-overlay"
-  />,
-]
-`;
-
-exports[`Modal renders overwrite preset modal 1`] = `
-Array [
-  <div
-    className="m-input-modal"
-    onKeyDown={[Function]}
-  >
-    <div
-      className="m-input-modal__title"
-    >
-      A preset named
-       
-      <span
-        className="m-input-modal__name-text"
-      >
-        My Preset
-      </span>
-       already exists.
-    </div>
-    <div
-      className="m-input-modal__title"
-    >
-      Overwrite 
-      <span
-        className="m-input-modal__name-text"
-      >
-        My Preset
-      </span>
-      ?
-    </div>
-    <div
-      className="m-input-modal__buttons"
-    >
-      <button
-        className="m-input-modal__button"
-        onClick={[Function]}
-      >
-        Cancel
-      </button>
-      <button
-        autoFocus={true}
-        className="m-input-modal__button-confirm"
-        onClick={[Function]}
-      >
-        Save
-      </button>
-    </div>
-  </div>,
-  <div
-    className="m-input-modal__overlay"
-  />,
-]
-`;
-
-exports[`Modal renders save preset modal 1`] = `
-Array [
-  <div
-    className="m-input-modal"
-    onKeyDown={[Function]}
-  >
-    <div
-      className="m-input-modal__title"
-    >
-      Overwrite 
-      <span
-        className="m-input-modal__name-text"
-      >
-        My Preset
-      </span>
-      ?
-    </div>
-    <div
-      className="m-input-modal__buttons"
-    >
-      <button
-        className="m-input-modal__button"
-        onClick={[Function]}
-      >
-        Cancel
-      </button>
-      <button
-        autoFocus={true}
-        className="m-input-modal__button-confirm"
-        onClick={[Function]}
-      >
-        Save
-      </button>
-    </div>
-  </div>,
-  <div
-    className="m-input-modal__overlay"
   />,
 ]
 `;

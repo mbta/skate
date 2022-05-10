@@ -29,6 +29,7 @@ const OverwritePresetModal = ({
         >
           Cancel
         </button>
+        {/* eslint-disable jsx-a11y/no-autofocus */}
         <button
           autoFocus={true}
           className="m-input-modal__button-confirm"
@@ -39,6 +40,7 @@ const OverwritePresetModal = ({
         >
           Save
         </button>
+        {/* eslint-enable jsx-a11y/no-autofocus */}
       </div>
     </InputModal>
   )

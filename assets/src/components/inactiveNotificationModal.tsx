@@ -50,7 +50,7 @@ const InactiveNotificationModal = ({
             {bodyCopy(notification, uniqueRuns)}
           </div>
         </div>
-        <div className="c-modal-overlay" />
+        <div className="c-modal-overlay" aria-hidden={true} />
       </>
     )
   }

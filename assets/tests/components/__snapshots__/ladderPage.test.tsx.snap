@@ -99,6 +99,7 @@ exports[`LadderPage renders the empty state 1`] = `
     </div>
   </div>
   <div
+    aria-hidden={true}
     className="m-picker-container-overlay"
     data-testid="picker-container-overlay"
     onClick={[Function]}
@@ -108,8 +109,9 @@ exports[`LadderPage renders the empty state 1`] = `
   >
     <div
       className="m-ladder-page__route-tab-bar"
+      role="tablist"
     >
-      <div
+      <button
         className="m-ladder-page__add-tab-button"
         onClick={[Function]}
       >
@@ -121,7 +123,7 @@ exports[`LadderPage renders the empty state 1`] = `
             }
           }
         />
-      </div>
+      </button>
     </div>
     <div
       className="m-route-ladders"
@@ -259,6 +261,7 @@ exports[`LadderPage renders with route tabs 1`] = `
     </div>
   </div>
   <div
+    aria-hidden={true}
     className="m-picker-container-overlay"
     data-testid="picker-container-overlay"
     onClick={[Function]}
@@ -268,10 +271,14 @@ exports[`LadderPage renders with route tabs 1`] = `
   >
     <div
       className="m-ladder-page__route-tab-bar"
+      role="tablist"
     >
       <div
         className="m-ladder-page__tab m-ladder-page__tab-current"
         onClick={[Function]}
+        onKeyDown={[Function]}
+        role="tab"
+        tabIndex={0}
       >
         <div
           className="m-ladder-page__tab-contents"
@@ -313,6 +320,9 @@ exports[`LadderPage renders with route tabs 1`] = `
       <div
         className="m-ladder-page__tab"
         onClick={[Function]}
+        onKeyDown={[Function]}
+        role="tab"
+        tabIndex={-1}
       >
         <div
           className="m-ladder-page__tab-contents"
@@ -338,7 +348,7 @@ exports[`LadderPage renders with route tabs 1`] = `
           </button>
         </div>
       </div>
-      <div
+      <button
         className="m-ladder-page__add-tab-button"
         onClick={[Function]}
       >
@@ -350,7 +360,7 @@ exports[`LadderPage renders with route tabs 1`] = `
             }
           }
         />
-      </div>
+      </button>
     </div>
     <div
       className="m-route-ladders"
@@ -538,6 +548,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
     </div>
   </div>
   <div
+    aria-hidden={true}
     className="m-picker-container-overlay"
     data-testid="picker-container-overlay"
     onClick={[Function]}
@@ -547,10 +558,14 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
   >
     <div
       className="m-ladder-page__route-tab-bar"
+      role="tablist"
     >
       <div
         className="m-ladder-page__tab m-ladder-page__tab-current"
         onClick={[Function]}
+        onKeyDown={[Function]}
+        role="tab"
+        tabIndex={0}
       >
         <div
           className="m-ladder-page__tab-contents"
@@ -589,7 +604,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
           </button>
         </div>
       </div>
-      <div
+      <button
         className="m-ladder-page__add-tab-button"
         onClick={[Function]}
       >
@@ -601,7 +616,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
             }
           }
         />
-      </div>
+      </button>
     </div>
     <div
       className="m-route-ladders"
@@ -831,6 +846,7 @@ exports[`LadderPage renders with timepoints 1`] = `
     </div>
   </div>
   <div
+    aria-hidden={true}
     className="m-picker-container-overlay"
     data-testid="picker-container-overlay"
     onClick={[Function]}
@@ -840,10 +856,14 @@ exports[`LadderPage renders with timepoints 1`] = `
   >
     <div
       className="m-ladder-page__route-tab-bar"
+      role="tablist"
     >
       <div
         className="m-ladder-page__tab m-ladder-page__tab-current"
         onClick={[Function]}
+        onKeyDown={[Function]}
+        role="tab"
+        tabIndex={0}
       >
         <div
           className="m-ladder-page__tab-contents"
@@ -882,7 +902,7 @@ exports[`LadderPage renders with timepoints 1`] = `
           </button>
         </div>
       </div>
-      <div
+      <button
         className="m-ladder-page__add-tab-button"
         onClick={[Function]}
       >
@@ -894,7 +914,7 @@ exports[`LadderPage renders with timepoints 1`] = `
             }
           }
         />
-      </div>
+      </button>
     </div>
     <div
       className="m-route-ladders"
@@ -1361,6 +1381,7 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
     </div>
   </div>
   <div
+    aria-hidden={true}
     className="m-picker-container-overlay"
     data-testid="picker-container-overlay"
     onClick={[Function]}
@@ -1370,10 +1391,14 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
   >
     <div
       className="m-ladder-page__route-tab-bar"
+      role="tablist"
     >
       <div
         className="m-ladder-page__tab m-ladder-page__tab-current"
         onClick={[Function]}
+        onKeyDown={[Function]}
+        role="tab"
+        tabIndex={0}
       >
         <div
           className="m-ladder-page__tab-contents"
@@ -1412,7 +1437,7 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
           </button>
         </div>
       </div>
-      <div
+      <button
         className="m-ladder-page__add-tab-button"
         onClick={[Function]}
       >
@@ -1424,7 +1449,7 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
             }
           }
         />
-      </div>
+      </button>
     </div>
     <div
       className="m-route-ladders"
@@ -1592,10 +1617,13 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
         </div>
         <ul
           className="m-tabs__tab-list"
+          role="tablist"
         >
           <li
+            aria-selected={true}
             className="m-tabs__tab m-tabs__tab--selected"
             onClick={[Function]}
+            role="tab"
           >
             <svg
               className="m-tabs__tab-status-icon"
@@ -1618,8 +1646,10 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
             Status
           </li>
           <li
+            aria-selected={false}
             className="m-tabs__tab"
             onClick={[Function]}
+            role="tab"
           >
             <svg
               className="m-tabs__tab-status-icon"
@@ -1642,8 +1672,10 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
             Run
           </li>
           <li
+            aria-selected={false}
             className="m-tabs__tab"
             onClick={[Function]}
+            role="tab"
           >
             <svg
               className="m-tabs__tab-status-icon"
@@ -1747,6 +1779,7 @@ exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
     </div>
   </div>
   <div
+    aria-hidden={true}
     className="m-properties-panel__modal-overlay"
     onClick={[Function]}
   />

@@ -24,6 +24,7 @@ const DeletePresetModal = ({
         >
           Cancel
         </button>
+        {/* eslint-disable jsx-a11y/no-autofocus */}
         <button
           autoFocus={true}
           className="m-input-modal__button-danger"
@@ -38,6 +39,7 @@ const DeletePresetModal = ({
         >
           Confirm
         </button>
+        {/* eslint-enable jsx-a11y/no-autofocus */}
       </div>
     </InputModal>
   )

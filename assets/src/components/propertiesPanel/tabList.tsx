@@ -40,15 +40,24 @@ const Tab = ({
   const clickCallback = () => setActiveTab(tabName)
 
   return (
-    <li className={classes} onClick={clickCallback}>
-      <TabStatusIcon />
-      {tabTitle}
-    </li>
+    <>
+      {/* eslint-disable jsx-a11y/click-events-have-key-events */}
+      <li
+        className={classes}
+        onClick={clickCallback}
+        role="tab"
+        aria-selected={tabName === activeTab}
+      >
+        <TabStatusIcon />
+        {tabTitle}
+      </li>
+      {/* eslint-enable jsx-a11y/click-events-have-key-events */}
+    </>
   )
 }
 
 const TabList = ({ activeTab, setActiveTab }: Props) => (
-  <ul className="m-tabs__tab-list">
+  <ul className="m-tabs__tab-list" role="tablist">
     <Tab tabName="status" activeTab={activeTab} setActiveTab={setActiveTab} />
     <Tab tabName="run" activeTab={activeTab} setActiveTab={setActiveTab} />
     <Tab tabName="block" activeTab={activeTab} setActiveTab={setActiveTab} />

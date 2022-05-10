@@ -33,6 +33,7 @@ const CreatePresetModal = ({
       >
         <div className="m-input-modal__title">Save open routes as preset</div>
         <div className="m-input-modal__input">
+          {/* eslint-disable jsx-a11y/no-autofocus */}
           <input
             autoFocus={true}
             placeholder="Name your preset&hellip;"
@@ -41,6 +42,7 @@ const CreatePresetModal = ({
               setPresetName(event.currentTarget.value)
             }}
           />
+          {/* eslint-enable jsx-a11y/no-autofocus */}
         </div>
         <div className="m-input-modal__buttons">
           <button
