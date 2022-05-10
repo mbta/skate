@@ -43,10 +43,10 @@
   &:hover {
     color: $color-gray-500;
   }
-}
 
-.m-top-nav__right-item--active {
-  color: $color-eggplant-700;
+  &.m-top-nav__right-item--active {
+    color: $color-eggplant-700;
+  }
 }
 
 .m-top-nav__notifications-icon {
@@ -62,15 +62,6 @@
     }
   }
 
-  &.m-top-nav__notifications-icon--active {
-    svg {
-      path {
-        fill: $color-eggplant-700;
-        stroke: none;
-      }
-    }
-  }
-
   &:hover {
     svg {
       path {
@@ -81,6 +72,15 @@
       circle {
         fill: $color-strawberry-400;
         stroke: $color-strawberry-400;
+      }
+    }
+  }
+
+  &.m-top-nav__notifications-icon--active {
+    svg {
+      path {
+        fill: $color-eggplant-700;
+        stroke: none;
       }
     }
   }
