@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import { NavLink } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { logoIcon, refreshIcon, settingsIcon } from "../../helpers/icon"
 import { reload } from "../../models/browser"
@@ -16,9 +16,9 @@ const TopNav = (): JSX.Element => {
 
   return (
     <div className="m-top-nav">
-      <button className="m-top-nav__logo" onClick={() => reload()} title="Home">
+      <Link className="m-top-nav__logo" to="/" title="Skate">
         {logoIcon("m-top-nav__logo-icon")}
-      </button>
+      </Link>
       <ul className="m-top-nav__right-items">
         <li>
           <button
