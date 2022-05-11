@@ -219,7 +219,12 @@ const SwingRow = ({
     >
       <th className="m-swings-view__table-cell">
         <div className="m-swings-view__table-cell-contents">
-          {formattedScheduledTime(swing.time)}
+          {formattedScheduledTime(
+            swing.time,
+            isVehicle(vehicleOrGhost)
+              ? vehicleOrGhost.overloadOffset
+              : undefined
+          )}
         </div>
       </th>
       <th className="m-swings-view__table-cell">

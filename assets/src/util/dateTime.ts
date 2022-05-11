@@ -51,8 +51,11 @@ export const formattedTimeDiffUnderThreshold = (
 
 /** Takes a time of day in seconds since midnight
  */
-export const formattedScheduledTime = (time: number): string => {
-  const minutes = Math.floor(time / 60)
+export const formattedScheduledTime = (
+  time: number,
+  offset?: number | undefined
+): string => {
+  const minutes = Math.floor(time / 60) + (offset ? offset : 0)
   const hours25 = Math.floor(minutes / 60)
   const minutes60 = minutes - hours25 * 60
   return formattedHoursMinutes(hours25, minutes60)

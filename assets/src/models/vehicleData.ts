@@ -31,6 +31,7 @@ export interface VehicleData {
   operator_first_name: string
   operator_last_name: string
   operator_logon_time: number | null
+  overload_offset?: number
   bearing: number
   block_id: string
   previous_vehicle_id: string
@@ -133,6 +134,7 @@ export const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
   operatorLogonTime: vehicleData.operator_logon_time
     ? dateFromEpochSeconds(vehicleData.operator_logon_time)
     : null,
+  overloadOffset: vehicleData.overload_offset,
   bearing: vehicleData.bearing,
   blockId: vehicleData.block_id,
   previousVehicleId: vehicleData.previous_vehicle_id,
