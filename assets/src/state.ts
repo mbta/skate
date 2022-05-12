@@ -885,16 +885,35 @@ const selectedVehicleOrGhostReducer = (
   }
 }
 
-const notificationDrawerReducer = (state: boolean, action: Action): boolean => {
+const openViewAndNotificationDrawerReducer = (
+  openView: OpenView,
+  notificationDrawerIsOpen: boolean,
+  action: Action
+): [OpenView, boolean] => {
   switch (action.type) {
     case "OPEN_NOTIFICATION_DRAWER":
-      return true
+      return [openView === OpenView.Late ? OpenView.Late : OpenView.None, true]
     case "CLOSE_NOTIFICATION_DRAWER":
-      return false
+      return [openView, false]
     case "TOGGLE_NOTIFICATION_DRAWER":
-      return !state
+      return [
+        openView === OpenView.Late ? OpenView.Late : OpenView.None,
+        !notificationDrawerIsOpen,
+      ]
+    case "TOGGLE_SWINGS_VIEW":
+      if (openView === OpenView.Swings) {
+        return [OpenView.None, notificationDrawerIsOpen]
+      } else {
+        return [OpenView.Swings, false]
+      }
+    case "TOGGLE_LATE_VIEW":
+      if (openView === OpenView.Late) {
+        return [OpenView.None, notificationDrawerIsOpen]
+      } else {
+        return [OpenView.Late, notificationDrawerIsOpen]
+      }
     default:
-      return state
+      return [openView, notificationDrawerIsOpen]
   }
 }
 
@@ -933,25 +952,6 @@ const selectedNotificationReducer = (
       return undefined
     case "SET_NOTIFICATION":
       return action.payload.selectedNotification
-    default:
-      return state
-  }
-}
-
-const openViewReducer = (state: OpenView, action: Action): OpenView => {
-  switch (action.type) {
-    case "TOGGLE_SWINGS_VIEW":
-      if (state === OpenView.Swings) {
-        return OpenView.None
-      } else {
-        return OpenView.Swings
-      }
-    case "TOGGLE_LATE_VIEW":
-      if (state === OpenView.Late) {
-        return OpenView.None
-      } else {
-        return OpenView.Late
-      }
     default:
       return state
   }
@@ -1034,6 +1034,13 @@ export const reducer = (state: State, action: Action): State => {
     routeTabsPushInProgress,
   } = routeTabsAndPushReducer(state, action)
 
+  const [openView, notificationDrawerIsOpen] =
+    openViewAndNotificationDrawerReducer(
+      state.openView,
+      state.notificationDrawerIsOpen,
+      action
+    )
+
   return {
     pickerContainerIsVisible: pickerContainerIsVisibleReducer(
       state.pickerContainerIsVisible,
@@ -1059,16 +1066,13 @@ export const reducer = (state: State, action: Action): State => {
       state.selectedVehicleOrGhost,
       action
     ),
-    notificationDrawerIsOpen: notificationDrawerReducer(
-      state.notificationDrawerIsOpen,
-      action
-    ),
+    notificationDrawerIsOpen,
     userSettings: userSettingsReducer(state.userSettings, action),
     selectedNotification: selectedNotificationReducer(
       state.selectedNotification,
       action
     ),
-    openView: openViewReducer(state.openView, action),
+    openView,
     openInputModal: openInputModalReducer(state.openInputModal, action),
   }
 }
