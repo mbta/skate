@@ -7,12 +7,15 @@
   // Required for pinning to the left side of the screen on the tablets
   left: 0;
   padding: 1rem;
-  row-gap: 1rem;
   position: absolute;
   top: inherit;
   transition: $transition-slide;
   width: $route-picker-width;
   z-index: 100;
+
+  & > :not(:last-child) {
+    margin-bottom: 1rem;
+  }
 
   &.visible {
     left: 0;
