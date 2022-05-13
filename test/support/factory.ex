@@ -19,7 +19,6 @@ defmodule Skate.Factory do
       operator_last_name: "",
       operator_name: "",
       operator_logon_time: nil,
-      overload_id: nil,
       overload_offset: nil,
       run_id: "",
       is_shuttle: false,
