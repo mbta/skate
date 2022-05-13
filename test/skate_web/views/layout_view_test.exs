@@ -23,4 +23,24 @@ defmodule SkateWeb.LayoutViewTest do
       refute LayoutView.record_fullstory?()
     end
   end
+
+  describe "record_clarity?/0" do
+    test "returns true if the :record_clarity env is true" do
+      reassign_env(:skate, :record_clarity, true)
+
+      assert LayoutView.record_clarity?()
+    end
+
+    test "returns false if the :record_clarity env is false" do
+      reassign_env(:skate, :record_clarity, false)
+
+      refute LayoutView.record_clarity?()
+    end
+
+    test "returns false if the :record_clarity env is missing" do
+      reassign_env(:skate, :record_clarity, nil)
+
+      refute LayoutView.record_clarity?()
+    end
+  end
 end
