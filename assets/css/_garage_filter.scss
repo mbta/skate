@@ -55,13 +55,16 @@
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  row-gap: 0.5rem;
   color: $color-gray-700;
 }
 
 .m-garage-filter__garage {
   display: flex;
   justify-content: space-between;
+
+  &:not(:last-child) {
+    margin-bottom: 0.5rem;
+  }
 }
 
 .m-garage-filter__button {
