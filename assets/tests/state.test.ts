@@ -178,6 +178,38 @@ describe("reducer", () => {
       )
     })
 
+    test("openNotificationDrawer closes swings view", () => {
+      const state = {
+        ...initialState,
+        notificationDrawerIsOpen: false,
+        openView: State.OpenView.Swings,
+      }
+      const expectedState = {
+        ...initialState,
+        notificationDrawerIsOpen: true,
+        openView: State.OpenView.None,
+      }
+      expect(reducer(state, State.openNotificationDrawer())).toEqual(
+        expectedState
+      )
+    })
+
+    test("openNotificationDrawer leaves late view open", () => {
+      const state = {
+        ...initialState,
+        notificationDrawerIsOpen: false,
+        openView: State.OpenView.Late,
+      }
+      const expectedState = {
+        ...initialState,
+        notificationDrawerIsOpen: true,
+        openView: State.OpenView.Late,
+      }
+      expect(reducer(state, State.openNotificationDrawer())).toEqual(
+        expectedState
+      )
+    })
+
     test("openNotificationDrawer does nothing if the drawer is already open", () => {
       const state = {
         ...initialState,
@@ -222,6 +254,38 @@ describe("reducer", () => {
       const expectedState = {
         ...initialState,
         notificationDrawerIsOpen: false,
+      }
+      expect(reducer(state, State.toggleNotificationDrawer())).toEqual(
+        expectedState
+      )
+    })
+
+    test("toggleNotificationDrawer closes swings view when opening notifications drawer", () => {
+      const state = {
+        ...initialState,
+        notificationDrawerIsOpen: false,
+        openView: State.OpenView.Swings,
+      }
+      const expectedState = {
+        ...initialState,
+        notificationDrawerIsOpen: true,
+        openView: State.OpenView.None,
+      }
+      expect(reducer(state, State.toggleNotificationDrawer())).toEqual(
+        expectedState
+      )
+    })
+
+    test("toggleNotificationDrawer leaves late view open when opening notifications drawer", () => {
+      const state = {
+        ...initialState,
+        notificationDrawerIsOpen: false,
+        openView: State.OpenView.Late,
+      }
+      const expectedState = {
+        ...initialState,
+        notificationDrawerIsOpen: true,
+        openView: State.OpenView.Late,
       }
       expect(reducer(state, State.toggleNotificationDrawer())).toEqual(
         expectedState

@@ -54,6 +54,8 @@ import lateViewGhostWithWaiverIconSvg from "../../static/images/icon-late-view-g
 // @ts-ignore
 import loadingIconSvg from "../../static/images/icon-loading.svg"
 // @ts-ignore
+import logoIconSvg from "../../static/images/icon-logo.svg"
+// @ts-ignore
 import mapIconSvg from "../../static/images/icon-map.svg"
 // @ts-ignore
 import mattapanLineIconSvg from "../../static/images/icon-mattapan-line.svg"
@@ -81,6 +83,8 @@ import reverseIconReversedSvg from "../../static/images/icon-reverse-reversed.sv
 import saveIconSvg from "../../static/images/icon-save.svg"
 // @ts-ignore
 import searchIconSvg from "../../static/images/icon-search.svg"
+// @ts-ignore
+import settingsIconSvg from "../../static/images/icon-settings.svg"
 // @ts-ignore
 import speechBubbleIconSvg from "../../static/images/icon-speech-bubble.svg"
 // @ts-ignore
@@ -185,6 +189,9 @@ export const lateViewGhostWithWaiverIcon = (className = ""): JSX.Element =>
 export const loadingIcon = (className = ""): JSX.Element =>
   renderSvg(className, loadingIconSvg)
 
+export const logoIcon = (className = ""): JSX.Element =>
+  renderSvg(className, logoIconSvg)
+
 export const mapIcon = (className = ""): JSX.Element =>
   renderSvg(className, mapIconSvg)
 
@@ -226,6 +233,9 @@ export const saveIcon = (className = ""): JSX.Element =>
 
 export const searchIcon = (className = ""): JSX.Element =>
   renderSvg(className, searchIconSvg)
+
+export const settingsIcon = (className = ""): JSX.Element =>
+  renderSvg(className, settingsIconSvg)
 
 export const speechBubbleIcon = (className = ""): JSX.Element =>
   renderSvg(className, speechBubbleIconSvg)
