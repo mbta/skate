@@ -1,4 +1,4 @@
-.m-nav--wide {
+.m-nav--wide, .m-nav--narrow {
   display: grid;
   gap: 0;
   grid-template-columns: max-content minmax(0, 1fr);
@@ -6,6 +6,11 @@
   grid-template-areas:
     "top top"
     "left content";
+  width: 100%;
+  height: 100%;
+}
+
+.m-nav--narrow {
   width: 100%;
   height: 100%;
 }
