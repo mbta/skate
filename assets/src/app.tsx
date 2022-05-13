@@ -18,8 +18,11 @@ import * as React from "react"
 import ReactDOM from "react-dom"
 import sentryInit from "./helpers/sentryInit"
 import AppStateWrapper from "./components/appStateWrapper"
+import clarityInit from "./helpers/clarityInit"
 
 sentryInit(window.sentry, window.username)
+
+clarityInit(window.clarity, window.username)
 
 if (window.FS && window.username) {
   window.FS.identify(window.username, { displayName: window.username })

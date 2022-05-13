@@ -17,6 +17,8 @@ declare global {
       ): void
       event(event: string, properties?: object): void
     }
+    // we only need this for providing username
+    clarity?(action: "identify", username: string): void
     drift: {
       api: {
         sidebar: {
