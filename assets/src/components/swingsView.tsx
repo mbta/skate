@@ -221,7 +221,7 @@ const SwingRow = ({
         <div className="m-swings-view__table-cell-contents">
           {formattedScheduledTime(
             swing.time,
-            isVehicle(vehicleOrGhost)
+            vehicleOrGhost && isVehicle(vehicleOrGhost)
               ? vehicleOrGhost.overloadOffset
               : undefined
           )}
