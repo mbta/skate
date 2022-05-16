@@ -1,25 +1,28 @@
-import React, { useState, useContext } from "react"
+import React, { useContext } from "react"
 import { useLocation } from "react-router-dom"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
-import { displayHelp } from "../../helpers/appCue"
-import { openDrift } from "../../helpers/drift"
-import {
-  hamburgerIcon
-} from "../../helpers/icon"
+import { hamburgerIcon } from "../../helpers/icon"
 import { toggleNotificationDrawer } from "../../state"
 import NotificationBellIcon from "../notificationBellIcon"
-import featureIsEnabled from "../../laboratoryFeatures"
-import { OpenView, toggleLateView, toggleSwingsView } from "../../state"
+import { currentRouteTab } from "../../models/routeTab"
+
 
 const topNavMobile = (): JSX.Element => {
   const location = useLocation()
 
-  const [{ notificationDrawerIsOpen }, dispatch] =
+  const [state, dispatch] =
     useContext(StateDispatchContext)
+
+  const { routeTabs, notificationDrawerIsOpen } = state
 
   const bellIconClasses = notificationDrawerIsOpen
     ? ["m-top-nav__notifications-icon", "m-top-nav__notifications-icon--active"]
     : ["m-top-nav__notifications-icon"]
+
+  let tabName = "";
+  const showTabName = location.pathname === "/"
+  const currentTab = currentRouteTab(routeTabs)
+  if(showTabName) tabName = currentTab.presetName || "Untitled"
 
   return (
     <div className="m-top-nav-mobile">
@@ -29,7 +32,7 @@ const topNavMobile = (): JSX.Element => {
       </div>
 
       <div>
-          Mobile Nav Test!
+          {tabName}
       </div>
 
       <div className="m-top-nav__right-items">
