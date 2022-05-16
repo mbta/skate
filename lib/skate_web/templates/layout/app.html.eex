@@ -12,6 +12,14 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
 
+    <%= if @clarity_tag do %>
+        <meta name="clarity-tag" content="<%= @clarity_tag %>">
+    <% end %>
+
+    <%= if @username do %>
+        <meta name="username" content="<%= @username %>">
+    <% end %>
+
     <title>Skate</title>
 
     <link rel="apple-touch-icon" href="<%= static_href.(@conn, "/images/mbta-logo-t-180.png") %>" type="image/png">
@@ -22,9 +30,6 @@
 
     <%= if record_fullstory?() do %>
       <%= render "_fullstory.html", assigns %>
-    <% end %>
-    <%= if record_clarity?() do %>
-      <%= render "_clarity.html", assigns %>
     <% end %>
     <%= if record_appcues?() do %>
       <%= render "_appcues.html", assigns %>

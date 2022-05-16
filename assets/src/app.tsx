@@ -18,11 +18,26 @@ import * as React from "react"
 import ReactDOM from "react-dom"
 import sentryInit from "./helpers/sentryInit"
 import AppStateWrapper from "./components/appStateWrapper"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import clarityInit from "./helpers/clarityInit"
+import clarityIdentify from "./helpers/clarityIdentify"
 
 sentryInit(window.sentry, window.username)
 
-clarityInit(window.clarity, window.username)
+const clarityTag = document
+  .querySelector("meta[name=clarity-tag]")
+  ?.getAttribute("content")
+
+if (clarityTag) {
+  clarityInit(clarityTag)
+}
+
+const username = document
+  .querySelector("meta[name=username]")
+  ?.getAttribute("content")
+
+clarityIdentify(window.clarity, username)
 
 if (window.FS && window.username) {
   window.FS.identify(window.username, { displayName: window.username })

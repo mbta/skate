@@ -1,10 +1,10 @@
-const clarityInit = (
+const clarityIdentify = (
   clarity?: (action: "identify", username: string) => void,
-  username?: string
+  username?: string | null
 ) => {
   if (clarity && username) {
     clarity("identify", username)
   }
 }
 
-export default clarityInit
+export default clarityIdentify

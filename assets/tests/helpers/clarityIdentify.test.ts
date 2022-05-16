@@ -1,10 +1,10 @@
-import clarityInit from "../../src/helpers/clarityInit"
+import clarityIdentify from "../../src/helpers/clarityIdentify"
 
-describe("clarityInit", () => {
+describe("clarityIdentify", () => {
   test("calls window.clarity with appropriate arguments", () => {
     const clarity = jest.fn()
 
-    clarityInit(clarity, "username")
+    clarityIdentify(clarity, "username")
 
     expect(clarity).toHaveBeenCalledWith("identify", "username")
   })
@@ -13,7 +13,7 @@ describe("clarityInit", () => {
     const clarity = undefined
 
     try {
-      clarityInit(clarity, "username")
+      clarityIdentify(clarity, "username")
     } catch {
       fail()
     }
@@ -22,7 +22,7 @@ describe("clarityInit", () => {
   test("does nothing when username not present", () => {
     const clarity = jest.fn()
 
-    clarityInit(clarity, undefined)
+    clarityIdentify(clarity, undefined)
 
     expect(clarity).not.toHaveBeenCalled()
   })

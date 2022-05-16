@@ -27,6 +27,7 @@ defmodule SkateWeb.PageController do
     |> assign(:route_tabs, route_tabs)
     |> assign(:dispatcher_flag, dispatcher_flag)
     |> assign(:nav_beta_flag, nav_beta_flag)
+    |> assign(:clarity_tag, Application.get_env(:skate, :clarity_tag))
     |> render("index.html")
   end
 
