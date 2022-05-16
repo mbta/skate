@@ -745,7 +745,7 @@ defmodule Schedule.DataTest do
         |> Map.keys()
         |> Enum.sort()
 
-      assert hardcoded_garage_ids == ~w[cabot charl fell lynn ncamb prwb somvl]
+      assert hardcoded_garage_ids == ~w[albny arbor cabot charl fell lynn ncamb prwb soham somvl]
     end
   end
 
