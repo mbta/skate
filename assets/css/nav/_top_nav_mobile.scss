@@ -1,12 +1,29 @@
-.m-top-nav-mobile {
-  width: 100%;
-  height: 3rem;
-  box-sizing: border-box;
+.m-top-nav-mobile-content {
   display: flex;
+  box-sizing: border-box;
+  padding: 0.75rem 1.5rem 0.5rem 1.5rem;
   justify-content: space-between;
-  padding: 0.75rem 1.5rem;
   background-color: $color-gray-50;
-  border-bottom: 1px solid $color-gray-300;  
+  border-bottom: 1px solid $color-gray-300; 
+  z-index: 108; 
+}
+
+.blurred {
+  filter: blur(5px);
+}
+
+.m-top-nav-mobile-overlay {
+    position: fixed;
+    padding: 0px;
+    margin: 0px; 
+    display: none;
+}
+.m-top-nav-mobile-overlay__open {
+    display: block;
+    width: 100%;
+    height: 100%;
+    z-index: 109;
+    background: rgba(88, 88, 88, 0.23);
 }
 
 .m-top-nav-mobile__icon svg, .m-top-nav-mobile__menu-icon svg {
@@ -20,24 +37,13 @@
   fill: $color-eggplant-500;
 }
 
-.m-top-nav-mobile__close {
-  width: 1rem;
-  height: 1rem;
-  position: absolute;
-  top: 0;
-  right: 1.5rem;
-  svg {
-    fill: $color-gray-600;
-  }
-}
-
 .m-top-nav-mobile__menu {
   width: 18.125rem;
   max-width: 100%;
   height: 100%;
   position: absolute;
   left: 0;
-  z-index: 99;
+  z-index: 110;
   padding: 0px;
   background-color: $color-gray-50;
 }
@@ -47,15 +53,29 @@
 }
 
 .m-top-nav-mobile__menu-header {
-  width: 100%;
-  height: 2rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  padding-top: 0px;
-  padding-bottom: 0px;
+  max-height: 3rem;
   margin-bottom: 0.5rem;
+  padding: 0.75rem 1.5rem 0.5rem 1.5rem;
   background-color: $color-gray-100;
+  display: flex;
+  justify-content: space-between;
 }
+
+.m-top-nav-mobile__close {
+  width: 1rem;
+  height: 1rem;
+  svg {
+    fill: $color-gray-600;
+  }
+}
+
+.m-top-nav-mobile__logo-icon {
+  svg {
+    fill: $color-eggplant-900;
+    max-width: 100%;
+  }
+}
+
 
 .m-top-nav-mobile__header-text {
   color: $color-gray-900;
@@ -71,12 +91,8 @@
   &:hover, &:active, &:focus {
     color: $color-gray-500;
   }  
-  width: 100%;
   height: 3rem;
-  line-height: 3rem;
-  display: table-cell;
-  text-align: left;
-  vertical-align: middle;
+  display: flex;
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
 }

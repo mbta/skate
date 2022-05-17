@@ -38,38 +38,18 @@ const topNavMobile = (): JSX.Element => {
   if(showTabName) tabName = currentTab.presetName || "Untitled"
 
   return (
-    <div id="topNavMobile" className="m-top-nav-mobile">
+    <div className="m-top-nav-mobile">
 
-      <div className="m-top-nav__left-items">
-          <button
-            className="m-top-nav__left-item"
-            onClick={ () => setCollapsed(false) }
-            title="Menu"
-            >
-            {hamburgerIcon("m-top-nav-mobile__icon")}
-          </button>
-      </div>
-
-      <div class="m-top-nav-mobile__header-text">
-          {tabName}
-      </div>
-
-      <div className="m-top-nav__right-items">
-        <button
-          className="m-top-nav__right-item"
-          onClick={() => dispatch(toggleNotificationDrawer())}
-          title="Notifications"
-        >
-          <NotificationBellIcon extraClasses={bellIconClasses} />
-        </button>
-      </div>
-
-
-      <div className={"m-top-nav-mobile__menu" + (collapsed ? " m-top-nav-mobile__menu--collapsed" : "")}>
+       <div className={"m-top-nav-mobile__menu" + (collapsed ? " m-top-nav-mobile__menu--collapsed" : "")}>
         <div className="m-top-nav-mobile__menu-header">
           
-          <Link className="m-top-nav__logo" to="/" title="Skate">
-            {logoIcon("m-top-nav__logo-icon")}
+          <Link 
+            className="m-top-nav__logo"
+            onClick={ () => setCollapsed(true) } 
+            to="/" 
+            title="Skate"
+          >
+            {logoIcon("m-top-nav-mobile__logo-icon")}
           </Link>
 
          <button
@@ -108,7 +88,7 @@ const topNavMobile = (): JSX.Element => {
           <li>
             <button
               className="m-top-nav-mobile__menu-button"
-              onClick={() => displayHelp(location)}
+              onClick={ () => displayHelp(location) }
               title="About Skate"
             >
               {questionMarkIcon("m-top-nav-mobile__menu-icon")}
@@ -129,7 +109,42 @@ const topNavMobile = (): JSX.Element => {
             </NavLink>
           </li>
         </ul>
-      </div>
+
+      </div>   
+
+      <div 
+        className={"m-top-nav-mobile-overlay" + (!collapsed ? " m-top-nav-mobile-overlay__open" : "")}
+        onClick={ () => setCollapsed(true) }
+      >
+        </div>
+
+      <div className={"m-top-nav-mobile-content" + (!collapsed ? " blurred" : "")}>
+
+          <div className="m-top-nav__left-items">
+              <button
+                className="m-top-nav__left-item"
+                onClick={ () => { setCollapsed(false) }
+                title="Menu"
+                >
+                {hamburgerIcon("m-top-nav-mobile__icon")}
+              </button>
+          </div>
+
+          <div className="m-top-nav-mobile__header-text">
+              {tabName}
+          </div>
+
+          <div className="m-top-nav__right-items">
+            <button
+              className="m-top-nav__right-item"
+              onClick={() => dispatch(toggleNotificationDrawer())}
+              title="Notifications"
+            >
+              <NotificationBellIcon extraClasses={bellIconClasses} />
+            </button>
+          </div>
+
+        </div>
 
     </div>
   )
