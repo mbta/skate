@@ -36,6 +36,10 @@
   background-color: $color-gray-50;
 }
 
+.m-top-nav-mobile__menu--collapsed {
+  display: none;
+}
+
 .m-top-nav-mobile__menu-header {
   width: 100%;
   height: 2rem;

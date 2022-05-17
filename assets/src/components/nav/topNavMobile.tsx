@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import { useLocation, Link, NavLink } from "react-router-dom"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import {
@@ -17,6 +17,9 @@ import { openDrift } from "../../helpers/drift"
 import { reload } from "../../models/browser"
 
 const topNavMobile = (): JSX.Element => {
+
+  const [collapsed, setCollapsed] = useState(true)
+
   const location = useLocation()
 
   const [state, dispatch] =
@@ -39,7 +42,7 @@ const topNavMobile = (): JSX.Element => {
       <div className="m-top-nav__left-items">
           <button
             className="m-top-nav__left-item"
-            onClick={()=>console.log("clicked")}
+            onClick={ () => setCollapsed(false) }
             title="Menu"
             >
             {hamburgerIcon("m-top-nav__icon")}
@@ -60,7 +63,8 @@ const topNavMobile = (): JSX.Element => {
         </button>
       </div>
 
-      <div className="m-top-nav-mobile__menu">
+
+      <div className={"m-top-nav-mobile__menu" + (collapsed ? " m-top-nav-mobile__menu--collapsed" : "")}>
         <div className="m-top-nav-mobile__menu-header">
           
           <Link className="m-top-nav__logo" to="/" title="Skate">
@@ -69,7 +73,7 @@ const topNavMobile = (): JSX.Element => {
 
          <button
           className="m-top-nav-mobile__close"
-          onClick={() => console.log("close")}
+          onClick={ () => setCollapsed(true) }
           title="Close"
           >
             { closeIcon("m-top-nav-mobile__close-icon") }
