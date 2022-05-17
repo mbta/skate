@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react"
 import { useLocation, Link, NavLink } from "react-router-dom"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
+import { displayHelp } from "../../helpers/appCue"
 import {
   closeIcon,
   hamburgerIcon,
@@ -45,11 +46,11 @@ const topNavMobile = (): JSX.Element => {
             onClick={ () => setCollapsed(false) }
             title="Menu"
             >
-            {hamburgerIcon("m-top-nav__icon")}
+            {hamburgerIcon("m-top-nav-mobile__icon")}
           </button>
       </div>
 
-      <div>
+      <div class="m-top-nav-mobile__header-text">
           {tabName}
       </div>
 
@@ -121,6 +122,7 @@ const topNavMobile = (): JSX.Element => {
               exact={true}
               title="Settings"
               to="/settings"
+              onClick={ () => setCollapsed(true) }
             >
               {settingsIcon("m-top-nav-mobile__menu-icon")}
               Settings

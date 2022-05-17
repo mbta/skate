@@ -9,8 +9,15 @@
   border-bottom: 1px solid $color-gray-300;  
 }
 
-.m-top-nav__right-items, .m-top-nav__left-items {
-  max-width: 20px;
+.m-top-nav-mobile__icon svg, .m-top-nav-mobile__menu-icon svg {
+    fill: $color-gray-600;
+  &:hover, &:active, &:focus {
+    fill: $color-gray-500;
+  }
+}
+
+.m-top-nav-mobile__notifications-icon svg {
+  fill: $color-eggplant-500;
 }
 
 .m-top-nav-mobile__close {
@@ -25,8 +32,7 @@
 }
 
 .m-top-nav-mobile__menu {
-  width: 80%;
-  min-width: 292px;
+  width: 18.125rem;
   max-width: 100%;
   height: 100%;
   position: absolute;
@@ -51,6 +57,10 @@
   background-color: $color-gray-100;
 }
 
+.m-top-nav-mobile__header-text {
+  color: $color-gray-900;
+}
+
 .m-top-nav-mobile__menu-link {
   text-decoration: none;
   width: 100%;
@@ -58,6 +68,9 @@
 
 .m-top-nav-mobile__menu-button, .m-top-nav-mobile__menu-link {
   color: $color-gray-600;
+  &:hover, &:active, &:focus {
+    color: $color-gray-500;
+  }  
   width: 100%;
   height: 3rem;
   line-height: 3rem;
@@ -72,7 +85,6 @@
   padding-left: 1.5rem;
   padding-right: 1.5rem;
   svg {
-    fill: $color-gray-600;
     width: 1.5rem;
     height: 1.5rem;
   }  
