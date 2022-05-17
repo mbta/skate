@@ -1,11 +1,20 @@
 import React, { useContext } from "react"
-import { useLocation } from "react-router-dom"
+import { useLocation, Link, NavLink } from "react-router-dom"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
-import { hamburgerIcon } from "../../helpers/icon"
+import {
+  closeIcon,
+  hamburgerIcon,
+  logoIcon,
+  questionMarkIcon,
+  refreshIcon,
+  settingsIcon,
+  speechBubbleIcon 
+} from "../../helpers/icon"
 import { toggleNotificationDrawer } from "../../state"
 import NotificationBellIcon from "../notificationBellIcon"
 import { currentRouteTab } from "../../models/routeTab"
-
+import { openDrift } from "../../helpers/drift"
+import { reload } from "../../models/browser"
 
 const topNavMobile = (): JSX.Element => {
   const location = useLocation()
@@ -25,10 +34,16 @@ const topNavMobile = (): JSX.Element => {
   if(showTabName) tabName = currentTab.presetName || "Untitled"
 
   return (
-    <div className="m-top-nav-mobile">
+    <div id="topNavMobile" className="m-top-nav-mobile">
 
       <div className="m-top-nav__left-items">
-          {hamburgerIcon("m-top-nav__icon")}
+          <button
+            className="m-top-nav__left-item"
+            onClick={()=>console.log("clicked")}
+            title="Menu"
+            >
+            {hamburgerIcon("m-top-nav__icon")}
+          </button>
       </div>
 
       <div>
@@ -45,6 +60,70 @@ const topNavMobile = (): JSX.Element => {
         </button>
       </div>
 
+      <div className="m-top-nav-mobile__menu">
+        <div className="m-top-nav-mobile__menu-header">
+          
+          <Link className="m-top-nav__logo" to="/" title="Skate">
+            {logoIcon("m-top-nav__logo-icon")}
+          </Link>
+
+         <button
+          className="m-top-nav-mobile__close"
+          onClick={() => console.log("close")}
+          title="Close"
+          >
+            { closeIcon("m-top-nav-mobile__close-icon") }
+          </button>
+
+        </div>
+        <ul className="m-top-nav-mobile__links">
+
+          <li>
+            <button
+              className="m-top-nav-mobile__menu-button"
+              onClick={() => reload()}
+              title="Refresh"
+            >
+              {refreshIcon("m-top-nav-mobile__menu-icon")}
+              Refresh
+            </button>
+          </li>
+
+          <li>
+            <button
+              className="m-top-nav-mobile__menu-button"
+              onClick={openDrift}
+              title="Support"
+            >
+              {speechBubbleIcon("m-top-nav-mobile__menu-icon")}
+              Support
+            </button>
+          </li>
+
+          <li>
+            <button
+              className="m-top-nav-mobile__menu-button"
+              onClick={() => displayHelp(location)}
+              title="About Skate"
+            >
+              {questionMarkIcon("m-top-nav-mobile__menu-icon")}
+              About Skate
+            </button>
+          </li>
+
+          <li>
+            <NavLink
+              className="m-top-nav-mobile__menu-link"
+              exact={true}
+              title="Settings"
+              to="/settings"
+            >
+              {settingsIcon("m-top-nav-mobile__menu-icon")}
+              Settings
+            </NavLink>
+          </li>
+        </ul>
+      </div>
 
     </div>
   )
