@@ -52,7 +52,7 @@
     "@types/react-leaflet": "^2.8.2",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-test-renderer": "^17.0.1",
-    "@typescript-eslint/eslint-plugin": "^5.18.0",
+    "@typescript-eslint/eslint-plugin": "^5.24.0",
     "@typescript-eslint/parser": "^5.18.0",
     "copy-webpack-plugin": "^10.2.4",
     "css-loader": "^6.7.1",
