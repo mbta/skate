@@ -50,6 +50,7 @@ export const NotificationContent = ({
               notification.operatorId !== null
                 ? `${notification.operatorName} #${notification.operatorId}`
                 : null,
+            classNameModifier: "operator",
           },
         ]}
       />

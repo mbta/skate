@@ -542,7 +542,7 @@ Array [
                 </td>
               </tr>
               <tr
-                className="m-properties-list__property "
+                className="m-properties-list__property m-properties-list__property--operator"
               >
                 <td
                   className="m-properties-list__property-label"
