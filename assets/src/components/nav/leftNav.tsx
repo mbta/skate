@@ -71,11 +71,11 @@ const LeftNav = ({
             activeClassName="m-left-nav__link--active"
             className="m-left-nav__link"
             exact={true}
-            title="Maps"
+            title="Shuttle Map"
             to="/shuttle-map"
           >
             {mapIcon("m-left-nav__icon")}
-            {collapsed ? null : "Maps"}
+            {collapsed ? null : "Shuttle Map"}
           </NavLink>
         </li>
         <li>
