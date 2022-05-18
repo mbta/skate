@@ -25,7 +25,7 @@ defmodule SkateWeb.VehicleChannelTest do
     operator_last_name: nil,
     operator_name: nil,
     operator_logon_time: nil,
-    overload_offset: nil,
+    overload_offset: 12,
     run_id: "123-4567",
     is_shuttle: false,
     is_overload: false,
