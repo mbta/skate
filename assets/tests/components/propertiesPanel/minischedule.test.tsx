@@ -214,6 +214,57 @@ const vehicle: Vehicle = {
   crowding: null,
 }
 
+const vehicleWithOffset: Vehicle = {
+  id: "vehicleId",
+  label: "",
+  runId: "123-4567",
+  timestamp: 1590828502,
+  latitude: 42.38274,
+  longitude: -71.86523,
+  directionId: 0,
+  routeId: "1",
+  tripId: "44444444",
+  headsign: "Harvard",
+  viaVariant: "_",
+  operatorId: "99999",
+  operatorFirstName: "CHARLIE",
+  operatorLastName: "ONTHEMTA",
+  operatorLogonTime: null,
+  overloadOffset: 8,
+  bearing: 143.7,
+  blockId: "C12-34",
+  previousVehicleId: "y4321",
+  scheduleAdherenceSecs: 35,
+  isShuttle: false,
+  isOverload: true,
+  isOffCourse: false,
+  isRevenue: true,
+  layoverDepartureTime: null,
+  dataDiscrepancies: [],
+  stopStatus: { stopId: "93", stopName: "Massachusetts Ave @ Newbury St" },
+  timepointStatus: {
+    timepointId: "hynes",
+    fractionUntilTimepoint: 0.13316513898674723,
+  },
+  scheduledLocation: {
+    routeId: "1",
+    directionId: 0,
+    tripId: "44444444",
+    runId: "123-1408",
+    timeSinceTripStartTime: 940,
+    headsign: "Harvard",
+    viaVariant: "_",
+    timepointStatus: {
+      timepointId: "hynes",
+      fractionUntilTimepoint: 0.6666666666666666,
+    },
+  },
+  routeStatus: "on_route",
+  endOfTripType: "another_trip",
+  blockWaivers: [],
+  crowding: null,
+}
+
 describe("MinischeduleRun", () => {
   test("renders the loading state", () => {
     ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => undefined)
@@ -251,6 +302,29 @@ describe("MinischeduleRun", () => {
     }))
     const tree = renderer
       .create(<MinischeduleRun vehicleOrGhost={vehicle} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders a run with a schedule offset", () => {
+    const multiTripPiece = {
+      ...piece,
+      trips: [revenueTrip, revenueTrip2],
+    }
+    const breakk: Break = {
+      breakType: "Paid meal before",
+      startTime: 10,
+      endTime: 1810,
+      endPlace: "Timepoint Bravo",
+    }
+
+    ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => ({
+      id: "run",
+      activities: [breakk, multiTripPiece],
+    }))
+    const tree = renderer
+      .create(<MinischeduleRun vehicleOrGhost={vehicleWithOffset} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()
