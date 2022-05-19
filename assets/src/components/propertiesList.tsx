@@ -49,6 +49,7 @@ export const vehicleProperties = (vehicle: Vehicle): Property[] => {
     {
       label: "Operator",
       value: `${operatorFirstName} ${operatorLastName} #${operatorId}`,
+      classNameModifier: "operator",
     },
     {
       label: "Last Login",

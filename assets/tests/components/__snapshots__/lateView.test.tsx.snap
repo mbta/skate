@@ -255,7 +255,9 @@ exports[`LateView renders missing logons and late buses 1`] = `
                   run2
                 </button>
               </td>
-              <td>
+              <td
+                className="m-late-view__operator-name"
+              >
                 SMITH
                  – 
                 op2
@@ -305,7 +307,9 @@ exports[`LateView renders missing logons and late buses 1`] = `
                   run3
                 </button>
               </td>
-              <td>
+              <td
+                className="m-late-view__operator-name"
+              >
                 SMITH
                  – 
                 op4
@@ -355,7 +359,9 @@ exports[`LateView renders missing logons and late buses 1`] = `
                   run4
                 </button>
               </td>
-              <td>
+              <td
+                className="m-late-view__operator-name"
+              >
                 SMITH
                  – 
                 op5
