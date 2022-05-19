@@ -107,7 +107,7 @@ const saveTimestampsToLocalStorage = (timestamps: {
 }): void => saveState(storedStateKey, timestamps)
 
 const LateView = (): ReactElement<HTMLElement> => {
-  const [, dispatch] = useContext(StateDispatchContext)
+  const [{ mobileMenuIsOpen }, dispatch] = useContext(StateDispatchContext)
   const currentTimeSeconds = useCurrentTimeSeconds()
   const currentTimeMillis = currentTimeSeconds * 1000
 
@@ -280,9 +280,14 @@ const LateView = (): ReactElement<HTMLElement> => {
   const lateVehiclesAndGhosts = (lateGhosts as VehicleOrGhost[]).concat(
     lateBuses
   )
+  
+  const mobileMenuClass = mobileMenuIsOpen
+    ? "blurred-mobile"
+    : "" 
+
 
   return (
-    <div className="m-late-view">
+    <div className={`m-late-view ${mobileMenuClass}`}>
       <div className="m-late-view__content-wrapper">
         <div className="m-late-view__title">Late View</div>
         <div className="m-late-view__panels">

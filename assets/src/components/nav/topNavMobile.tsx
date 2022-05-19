@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext } from "react"
 import { useLocation, Link, NavLink } from "react-router-dom"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { displayHelp } from "../../helpers/appCue"
@@ -11,7 +11,10 @@ import {
   settingsIcon,
   speechBubbleIcon 
 } from "../../helpers/icon"
-import { toggleNotificationDrawer } from "../../state"
+import {
+  toggleMobileMenu,
+  toggleNotificationDrawer
+} from "../../state"
 import NotificationBellIcon from "../notificationBellIcon"
 import { currentRouteTab } from "../../models/routeTab"
 import { openDrift } from "../../helpers/drift"
@@ -19,33 +22,31 @@ import { reload } from "../../models/browser"
 
 const topNavMobile = (): JSX.Element => {
 
-  const [collapsed, setCollapsed] = useState(true)
-
   const location = useLocation()
 
   const [state, dispatch] =
     useContext(StateDispatchContext)
 
-  const { routeTabs, notificationDrawerIsOpen } = state
+  const { routeTabs, notificationDrawerIsOpen, mobileMenuIsOpen } = state
 
   const bellIconClasses = notificationDrawerIsOpen
     ? ["m-top-nav__notifications-icon", "m-top-nav__notifications-icon--active"]
     : ["m-top-nav__notifications-icon"]
 
-  let tabName = "";
+  let tabName = "Untitled";
   const showTabName = location.pathname === "/"
   const currentTab = currentRouteTab(routeTabs)
-  if(showTabName) tabName = currentTab.presetName || "Untitled"
+  if(showTabName && currentTab) tabName = currentTab.presetName || "Untitled"
 
   return (
     <div className="m-top-nav-mobile">
 
-       <div className={"m-top-nav-mobile__menu" + (collapsed ? " m-top-nav-mobile__menu--collapsed" : "")}>
+       <div className={"m-top-nav-mobile__menu" + (mobileMenuIsOpen ? " m-top-nav-mobile__menu-open" : " m-top-nav-mobile__menu-closed")}>
         <div className="m-top-nav-mobile__menu-header">
           
           <Link 
             className="m-top-nav__logo"
-            onClick={ () => setCollapsed(true) } 
+            onClick={ () => dispatch(toggleMobileMenu()) } 
             to="/" 
             title="Skate"
           >
@@ -54,7 +55,7 @@ const topNavMobile = (): JSX.Element => {
 
          <button
           className="m-top-nav-mobile__close"
-          onClick={ () => setCollapsed(true) }
+          onClick={ () => dispatch(toggleMobileMenu()) }
           title="Close"
           >
             { closeIcon("m-top-nav-mobile__close-icon") }
@@ -102,7 +103,7 @@ const topNavMobile = (): JSX.Element => {
               exact={true}
               title="Settings"
               to="/settings"
-              onClick={ () => setCollapsed(true) }
+              onClick={ () => dispatch(toggleMobileMenu()) }
             >
               {settingsIcon("m-top-nav-mobile__menu-icon")}
               Settings
@@ -113,17 +114,17 @@ const topNavMobile = (): JSX.Element => {
       </div>   
 
       <div 
-        className={"m-top-nav-mobile-overlay" + (!collapsed ? " m-top-nav-mobile-overlay__open" : "")}
-        onClick={ () => setCollapsed(true) }
+        className={"m-top-nav-mobile-overlay" + (mobileMenuIsOpen ? " m-top-nav-mobile-overlay__open" : "")}
+        onClick={ () => dispatch(toggleMobileMenu()) }
       >
         </div>
 
-      <div className={"m-top-nav-mobile-content" + (!collapsed ? " blurred" : "")}>
+      <div className={"m-top-nav-mobile-content" + (mobileMenuIsOpen ? " blurred" : "")}>
 
           <div className="m-top-nav__left-items">
               <button
                 className="m-top-nav__left-item"
-                onClick={ () => { setCollapsed(false) }
+                onClick={ () => dispatch(toggleMobileMenu()) }
                 title="Menu"
                 >
                 {hamburgerIcon("m-top-nav-mobile__icon")}

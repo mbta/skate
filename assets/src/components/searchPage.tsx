@@ -50,7 +50,7 @@ const ToggleMobileDisplayButton = ({
 }
 
 const SearchPage = (): ReactElement<HTMLDivElement> => {
-  const [{ searchPageState, selectedVehicleOrGhost }] =
+  const [{ searchPageState, selectedVehicleOrGhost, mobileMenuIsOpen }] =
     useContext(StateDispatchContext)
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const vehicles: VehicleOrGhost[] | null = useSearchResults(
@@ -73,8 +73,12 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
       ? "m-search-page--show-list"
       : "m-search-page--show-map"
 
+  const mobileMenuClass = mobileMenuIsOpen
+    ? "blurred-mobile"
+    : ""    
+
   return (
-    <div className={`c-page m-search-page ${mobileDisplayClass}`}>
+    <div className={`c-page m-search-page ${mobileDisplayClass} ${mobileMenuClass}`}>
       <div className="m-search-page__input-and-results">
         <div className="m-search-page__input">
           <SearchForm />

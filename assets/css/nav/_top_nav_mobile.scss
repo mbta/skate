@@ -8,10 +8,6 @@
   z-index: 108; 
 }
 
-.blurred {
-  filter: blur(5px);
-}
-
 .m-top-nav-mobile-overlay {
     position: fixed;
     padding: 0px;
@@ -37,7 +33,7 @@
   fill: $color-eggplant-500;
 }
 
-.m-top-nav-mobile__menu {
+.m-top-nav-mobile__menu-open {
   width: 18.125rem;
   max-width: 100%;
   height: 100%;
@@ -48,7 +44,7 @@
   background-color: $color-gray-50;
 }
 
-.m-top-nav-mobile__menu--collapsed {
+.m-top-nav-mobile__menu-closed {
   display: none;
 }
 

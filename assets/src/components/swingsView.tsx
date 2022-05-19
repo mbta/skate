@@ -18,7 +18,7 @@ import { selectVehicle, toggleSwingsView } from "../state"
 import { formattedScheduledTime, serviceDaySeconds } from "../util/dateTime"
 
 const SwingsView = (): ReactElement<HTMLElement> => {
-  const [, dispatch] = useContext(StateDispatchContext)
+  const [{ mobileMenuIsOpen }, dispatch] = useContext(StateDispatchContext)
   const currentTime = useCurrentTime()
   const swings = useSwings()
 
@@ -70,8 +70,13 @@ const SwingsView = (): ReactElement<HTMLElement> => {
 
   const hideMe = () => dispatch(toggleSwingsView())
 
+  const mobileMenuClass = mobileMenuIsOpen
+    ? "blurred-mobile"
+    : "" 
+
+
   return (
-    <div id="m-swings-view" className="m-swings-view">
+    <div id="m-swings-view" className={`m-swings-view ${mobileMenuClass}`}>
       <CloseButton onClick={hideMe} />
       <div className="m-swings-view__header">Swings view</div>
       <div className="m-swings-view__description">

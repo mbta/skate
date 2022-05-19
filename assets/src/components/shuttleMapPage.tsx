@@ -37,6 +37,7 @@ const ShuttleMapPage = (): ReactElement<HTMLDivElement> => {
     selectedShuttleRouteIds,
     selectedShuttleRunIds,
     selectedVehicleOrGhost,
+    mobileMenuIsOpen
   } = state
   const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
   const shuttles: Vehicle[] | null = useShuttleVehicles(socket)
@@ -55,8 +56,12 @@ const ShuttleMapPage = (): ReactElement<HTMLDivElement> => {
     selectedShuttleRunIds
   )
 
+  const mobileMenuClass = mobileMenuIsOpen
+    ? "blurred-mobile"
+    : "" 
+
   return (
-    <div className="m-shuttle-map">
+    <div className={`m-shuttle-map ${mobileMenuClass}`}>
       <ShuttlePicker shuttles={shuttles} />
 
       <div className="m-shuttle-map__map">
