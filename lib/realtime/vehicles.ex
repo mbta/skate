@@ -1,7 +1,7 @@
 defmodule Realtime.Vehicles do
   alias Realtime.{Ghost, Vehicle, VehicleOrGhost}
   alias Schedule.{Block, Route, Trip}
-  alias Schedule.Gtfs.Timepoint
+  alias Schedule.Gtfs.{Direction, Timepoint}
   alias Schedule.Run
 
   @doc """
@@ -113,13 +113,13 @@ defmodule Realtime.Vehicles do
           incoming_trip_start_timestamp =
             Util.Time.timestamp_for_time_of_day(incoming_trip.start_time, block_date)
 
-          {vehicle_or_ghost, incoming_trip_start_timestamp}
+          {vehicle_or_ghost.id, incoming_trip_start_timestamp}
         end
       )
 
     pulling_out_start_timestamps =
       Map.new(pulling_out_vehicles_and_ghosts, fn vehicle_or_ghost ->
-        {vehicle_or_ghost, vehicle_or_ghost.layover_departure_time}
+        {vehicle_or_ghost.id, vehicle_or_ghost.layover_departure_time}
       end)
 
     incoming_start_timestamps =
@@ -127,18 +127,20 @@ defmodule Realtime.Vehicles do
 
     Enum.sort_by(
       interlining_vehicles_and_ghosts ++ pulling_out_vehicles_and_ghosts,
-      &Map.fetch!(incoming_start_timestamps, &1)
+      &Map.fetch!(incoming_start_timestamps, &1.id)
     )
   end
 
-  @spec incoming_blocks_by_route([Trip.t()]) :: Route.by_id(Block.id())
-  def incoming_blocks_by_route(incoming_trips) do
+  @spec incoming_blocks_and_directions_by_route([Trip.t()]) ::
+          Route.by_id({Block.id(), Direction.id()})
+  def incoming_blocks_and_directions_by_route(incoming_trips) do
     incoming_trips
+    |> Enum.sort_by(& &1.start_time)
     |> Enum.group_by(fn trip -> trip.route_id end)
     |> Helpers.map_values(fn trips ->
       trips
-      |> Enum.map(fn trip -> trip.block_id end)
-      |> Enum.uniq()
+      |> Enum.map(fn trip -> {trip.block_id, trip.direction_id} end)
+      |> Enum.uniq_by(fn {block_id, _direction_id} -> block_id end)
     end)
   end
 
@@ -149,14 +151,17 @@ defmodule Realtime.Vehicles do
       Enum.group_by(vehicles_and_ghosts, fn vehicle_or_ghost -> vehicle_or_ghost.block_id end)
 
     incoming_trips
-    |> incoming_blocks_by_route
-    |> Map.new(fn {route_id, block_ids} ->
+    |> incoming_blocks_and_directions_by_route
+    |> Map.new(fn {route_id, block_ids_and_directions} ->
       incoming_vehicles_and_ghosts =
-        Enum.flat_map(block_ids, fn block_id ->
+        Enum.flat_map(block_ids_and_directions, fn {block_id, direction_id} ->
           vehicles_and_ghosts_by_block
           |> Map.get(block_id, [])
           # Only include vehicles who aren't currently on this route
           |> Enum.filter(fn vehicle_or_ghost -> vehicle_or_ghost.route_id != route_id end)
+          |> Enum.map(fn vehicle_or_ghost ->
+            %{vehicle_or_ghost | incoming_trip_direction_id: direction_id}
+          end)
         end)
 
       {route_id, incoming_vehicles_and_ghosts}
