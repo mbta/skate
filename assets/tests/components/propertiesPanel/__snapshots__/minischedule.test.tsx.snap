@@ -964,7 +964,514 @@ exports[`MinischeduleBlock renders a mid route swing 1`] = `
 </div>
 `;
 
+exports[`MinischeduleBlock renders a mid route swing with offset 1`] = `
+<div
+  className="m-minischedule m-minischedule--hide-past"
+>
+  <div
+    className="m-minischedule__header"
+  >
+    <span
+      className="m-minischedule__header-label"
+    >
+      Block
+    </span>
+    block
+  </div>
+  <div
+    className="m-minischedule__departure-point-header"
+  >
+    <span
+      className="m-minischedule__departure-point-label"
+    >
+      Departure point
+    </span>
+    <span
+      className="m-minischedule__scheduled-departure-label"
+    >
+      Scheduled departure
+    </span>
+  </div>
+  <button
+    className="m-minischedule__show-past"
+    onClick={[Function]}
+  >
+    <span
+      className="m-minischedule__show-past-icon"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "SVG",
+        }
+      }
+    />
+    Show past trips
+  </button>
+  <div>
+    <div
+      className="m-minischedule__piece--unknown"
+    >
+      <div
+        className="m-minischedule__run-header"
+      >
+        run1
+      </div>
+      <div
+        className="m-minischedule__piece-rows"
+      >
+        <div
+          className="m-minischedule__row m-minischedule__row--unknown"
+        >
+          <div
+            className="m-minischedule__icon"
+          >
+            <span
+              className=""
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
+              }
+            />
+          </div>
+          <div
+            className="m-minischedule__left-text"
+          >
+            Report time
+            <br />
+            <span
+              className="m-minischedule__below-text"
+            >
+              terminal1
+            </span>
+          </div>
+          <div
+            className="m-minischedule__right-text"
+          >
+            12:08 AM
+          </div>
+        </div>
+        <div
+          className="m-minischedule__row m-minischedule__row--unknown"
+        >
+          <div
+            className="m-minischedule__icon"
+          >
+            <span
+              className="m-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
+              }
+            />
+          </div>
+          <div
+            className="m-minischedule__left-text"
+          >
+            R_ terminal1
+          </div>
+          <div
+            className="m-minischedule__right-text"
+          >
+            12:09 AM
+          </div>
+        </div>
+        <div
+          className="m-minischedule__row m-minischedule__row--unknown"
+        >
+          <div
+            className="m-minischedule__icon"
+          >
+            <span
+              className=""
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
+              }
+            />
+          </div>
+          <div
+            className="m-minischedule__left-text"
+          >
+            Swing off mid-route
+            <br />
+            <span
+              className="m-minischedule__below-text"
+            >
+              swingplace
+            </span>
+          </div>
+          <div
+            className="m-minischedule__right-text"
+          >
+            12:11 AM
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="m-minischedule__piece--unknown"
+    >
+      <div
+        className="m-minischedule__run-header"
+      >
+        run2
+      </div>
+      <div
+        className="m-minischedule__piece-rows"
+      >
+        <div
+          className="m-minischedule__row m-minischedule__row--unknown"
+        >
+          <div
+            className="m-minischedule__icon"
+          >
+            <span
+              className=""
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
+              }
+            />
+          </div>
+          <div
+            className="m-minischedule__left-text"
+          >
+            Mid-route report time
+            <br />
+            <span
+              className="m-minischedule__below-text"
+            >
+              swingplace
+            </span>
+          </div>
+          <div
+            className="m-minischedule__right-text"
+          >
+            12:10 AM
+          </div>
+        </div>
+        <div
+          className="m-minischedule__row m-minischedule__row--unknown"
+        >
+          <div
+            className="m-minischedule__icon"
+          >
+            <span
+              className="m-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
+              }
+            />
+          </div>
+          <div
+            className="m-minischedule__left-text"
+          >
+            R_ terminal1
+          </div>
+          <div
+            className="m-minischedule__right-text"
+          >
+            12:11 AM
+          </div>
+        </div>
+        <div
+          className="m-minischedule__row m-minischedule__row--unknown"
+        >
+          <div
+            className="m-minischedule__icon"
+          >
+            <span
+              className="m-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
+              }
+            />
+          </div>
+          <div
+            className="m-minischedule__left-text"
+          >
+            R_ terminal2
+          </div>
+          <div
+            className="m-minischedule__right-text"
+          >
+            12:13 AM
+          </div>
+        </div>
+        <div
+          className="m-minischedule__row m-minischedule__row--unknown"
+        >
+          <div
+            className="m-minischedule__icon"
+          >
+            <span
+              className=""
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
+              }
+            />
+          </div>
+          <div
+            className="m-minischedule__left-text"
+          >
+            Swing off
+            <br />
+            <span
+              className="m-minischedule__below-text"
+            >
+              terminal1
+            </span>
+          </div>
+          <div
+            className="m-minischedule__right-text"
+          >
+            12:16 AM
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`MinischeduleBlock renders a not found state 1`] = `"No block found"`;
+
+exports[`MinischeduleBlock renders block with revenue trip, pulls, and deadhead with offset 1`] = `
+<div
+  className="m-minischedule m-minischedule--hide-past"
+>
+  <div
+    className="m-minischedule__header"
+  >
+    <span
+      className="m-minischedule__header-label"
+    >
+      Block
+    </span>
+    block
+  </div>
+  <div
+    className="m-minischedule__departure-point-header"
+  >
+    <span
+      className="m-minischedule__departure-point-label"
+    >
+      Departure point
+    </span>
+    <span
+      className="m-minischedule__scheduled-departure-label"
+    >
+      Scheduled departure
+    </span>
+  </div>
+  <button
+    className="m-minischedule__show-past"
+    onClick={[Function]}
+  >
+    <span
+      className="m-minischedule__show-past-icon"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "SVG",
+        }
+      }
+    />
+    Show past trips
+  </button>
+  <div>
+    <div
+      className="m-minischedule__piece--unknown"
+    >
+      <div
+        className="m-minischedule__run-header"
+      >
+        run
+      </div>
+      <div
+        className="m-minischedule__row m-minischedule__row--unknown"
+      >
+        <div
+          className="m-minischedule__icon"
+        />
+        <div
+          className="m-minischedule__left-text"
+        >
+          Report time
+          <br />
+          <span
+            className="m-minischedule__below-text"
+          >
+            start
+          </span>
+        </div>
+        <div
+          className="m-minischedule__right-text"
+        >
+          12:38 AM
+        </div>
+      </div>
+      <div
+        className="m-minischedule__piece-rows"
+      >
+        <div
+          className="m-minischedule__row m-minischedule__row--unknown"
+        >
+          <div
+            className="m-minischedule__icon"
+          >
+            <span
+              className=""
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
+              }
+            />
+          </div>
+          <div
+            className="m-minischedule__left-text"
+          >
+            Pull out
+            <br />
+            <span
+              className="m-minischedule__below-text"
+            >
+              1st Street and A Ave
+            </span>
+          </div>
+          <div
+            className="m-minischedule__right-text"
+          >
+            12:08 AM
+          </div>
+        </div>
+        <div
+          className="m-minischedule__row m-minischedule__row--unknown"
+        >
+          <div
+            className="m-minischedule__icon"
+          >
+            <span
+              className="m-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
+              }
+            />
+          </div>
+          <div
+            className="m-minischedule__left-text"
+          >
+            R_X Red Square
+          </div>
+          <div
+            className="m-minischedule__right-text"
+          >
+            12:08 AM
+          </div>
+        </div>
+        <div
+          className="m-minischedule__row m-minischedule__row--unknown"
+        >
+          <div
+            className="m-minischedule__icon"
+          >
+            <span
+              className=""
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
+              }
+            />
+          </div>
+          <div
+            className="m-minischedule__left-text"
+          >
+            Deadhead
+            <br />
+            <span
+              className="m-minischedule__below-text"
+            >
+              999th Street and ZZZ Ave
+            </span>
+          </div>
+          <div
+            className="m-minischedule__right-text"
+          >
+            12:11 AM
+          </div>
+        </div>
+        <div
+          className="m-minischedule__row m-minischedule__row--unknown"
+        >
+          <div
+            className="m-minischedule__icon"
+          >
+            <span
+              className=""
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "SVG",
+                }
+              }
+            />
+          </div>
+          <div
+            className="m-minischedule__left-text"
+          >
+            Pull back
+            <br />
+            <span
+              className="m-minischedule__below-text"
+            >
+              999th Street and ZZZ Ave
+            </span>
+          </div>
+          <div
+            className="m-minischedule__right-text"
+          >
+            12:22 AM
+          </div>
+        </div>
+      </div>
+      <div
+        className="m-minischedule__row m-minischedule__row--unknown"
+      >
+        <div
+          className="m-minischedule__icon"
+        />
+        <div
+          className="m-minischedule__left-text"
+        >
+          Done
+          <br />
+          <span
+            className="m-minischedule__below-text"
+          >
+            end
+          </span>
+        </div>
+        <div
+          className="m-minischedule__right-text"
+        >
+          12:38 AM
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
 
 exports[`MinischeduleBlock renders pulls and deadheads 1`] = `
 <div
@@ -3864,7 +4371,7 @@ exports[`MinischeduleRun renders duty details of run 1`] = `
     >
       Run
     </span>
-    run
+    multiPieceRun
   </div>
   <div
     className="m-minischedule__duty-details"
@@ -4209,6 +4716,393 @@ exports[`MinischeduleRun renders duty details of run 1`] = `
           className="m-minischedule__right-text"
         >
           9:40 PM
+        </div>
+      </div>
+    </div>
+    <div
+      className="m-minischedule__row m-minischedule__row--unknown"
+    >
+      <div
+        className="m-minischedule__icon"
+      />
+      <div
+        className="m-minischedule__left-text"
+      >
+        Break (Unpaid)
+        <br />
+        <span
+          className="m-minischedule__below-text"
+        >
+          cabot
+        </span>
+      </div>
+      <div
+        className="m-minischedule__right-text"
+      >
+        1 hr 23 min
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MinischeduleRun renders duty details of run with overload offset 1`] = `
+<div
+  className="m-minischedule m-minischedule--hide-past"
+>
+  <div
+    className="m-minischedule__header"
+  >
+    <span
+      className="m-minischedule__header-label"
+    >
+      Run
+    </span>
+    multiPieceRun
+  </div>
+  <div
+    className="m-minischedule__duty-details"
+  >
+    <span
+      className="m-minischedule__header-label"
+    >
+      Paid break
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      3 hr 24 min
+    </span>
+    <br />
+    <span
+      className="m-minischedule__header-label"
+    >
+      Working hours
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      11 hr 18 min
+    </span>
+    <br />
+    <span
+      className="m-minischedule__header-label"
+    >
+      Total hours
+    </span>
+    <span
+      className="m-minischedule__duty-details-data"
+    >
+      16 hr 46 min
+    </span>
+  </div>
+  <div
+    className="m-minischedule__departure-point-header"
+  >
+    <span
+      className="m-minischedule__departure-point-label"
+    >
+      Departure point
+    </span>
+    <span
+      className="m-minischedule__scheduled-departure-label"
+    >
+      Scheduled departure
+    </span>
+  </div>
+  <button
+    className="m-minischedule__show-past"
+    onClick={[Function]}
+  >
+    <span
+      className="m-minischedule__show-past-icon"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "SVG",
+        }
+      }
+    />
+    Show past trips
+  </button>
+  <div>
+    <div
+      className="m-minischedule__piece--unknown"
+    >
+      <div
+        className="m-minischedule__row m-minischedule__row--unknown"
+      >
+        <div
+          className="m-minischedule__icon"
+        />
+        <div
+          className="m-minischedule__left-text"
+        >
+          Report time
+          <br />
+          <span
+            className="m-minischedule__below-text"
+          >
+            cabot
+          </span>
+        </div>
+        <div
+          className="m-minischedule__right-text"
+        >
+          6:14 AM
+        </div>
+      </div>
+      <div
+        className="m-minischedule__piece-rows"
+      />
+      <div
+        className="m-minischedule__row m-minischedule__row--unknown"
+      >
+        <div
+          className="m-minischedule__icon"
+        />
+        <div
+          className="m-minischedule__left-text"
+        >
+          Done
+          <br />
+          <span
+            className="m-minischedule__below-text"
+          >
+            cabot
+          </span>
+        </div>
+        <div
+          className="m-minischedule__right-text"
+        >
+          10:15 AM
+        </div>
+      </div>
+    </div>
+    <div
+      className="m-minischedule__row m-minischedule__row--unknown"
+    >
+      <div
+        className="m-minischedule__icon"
+      />
+      <div
+        className="m-minischedule__left-text"
+      >
+        Break (Paid)
+        <br />
+        <span
+          className="m-minischedule__below-text"
+        >
+          cabot
+        </span>
+      </div>
+      <div
+        className="m-minischedule__right-text"
+      >
+        27 min
+      </div>
+    </div>
+    <div
+      className="m-minischedule__piece--unknown"
+    >
+      <div
+        className="m-minischedule__row m-minischedule__row--unknown"
+      >
+        <div
+          className="m-minischedule__icon"
+        />
+        <div
+          className="m-minischedule__left-text"
+        >
+          Report time
+          <br />
+          <span
+            className="m-minischedule__below-text"
+          >
+            cabot
+          </span>
+        </div>
+        <div
+          className="m-minischedule__right-text"
+        >
+          10:42 AM
+        </div>
+      </div>
+      <div
+        className="m-minischedule__piece-rows"
+      />
+      <div
+        className="m-minischedule__row m-minischedule__row--unknown"
+      >
+        <div
+          className="m-minischedule__icon"
+        />
+        <div
+          className="m-minischedule__left-text"
+        >
+          Done
+          <br />
+          <span
+            className="m-minischedule__below-text"
+          >
+            cabot
+          </span>
+        </div>
+        <div
+          className="m-minischedule__right-text"
+        >
+          11:27 AM
+        </div>
+      </div>
+    </div>
+    <div
+      className="m-minischedule__row m-minischedule__row--unknown"
+    >
+      <div
+        className="m-minischedule__icon"
+      />
+      <div
+        className="m-minischedule__left-text"
+      >
+        Break (Unpaid)
+        <br />
+        <span
+          className="m-minischedule__below-text"
+        >
+          cabot
+        </span>
+      </div>
+      <div
+        className="m-minischedule__right-text"
+      >
+        50 min
+      </div>
+    </div>
+    <div
+      className="m-minischedule__piece--unknown"
+    >
+      <div
+        className="m-minischedule__row m-minischedule__row--unknown"
+      >
+        <div
+          className="m-minischedule__icon"
+        />
+        <div
+          className="m-minischedule__left-text"
+        >
+          Report time
+          <br />
+          <span
+            className="m-minischedule__below-text"
+          >
+            cabot
+          </span>
+        </div>
+        <div
+          className="m-minischedule__right-text"
+        >
+          12:17 PM
+        </div>
+      </div>
+      <div
+        className="m-minischedule__piece-rows"
+      />
+      <div
+        className="m-minischedule__row m-minischedule__row--unknown"
+      >
+        <div
+          className="m-minischedule__icon"
+        />
+        <div
+          className="m-minischedule__left-text"
+        >
+          Done
+          <br />
+          <span
+            className="m-minischedule__below-text"
+          >
+            cabot
+          </span>
+        </div>
+        <div
+          className="m-minischedule__right-text"
+        >
+          2:44 PM
+        </div>
+      </div>
+    </div>
+    <div
+      className="m-minischedule__row m-minischedule__row--unknown"
+    >
+      <div
+        className="m-minischedule__icon"
+      />
+      <div
+        className="m-minischedule__left-text"
+      >
+        Technical break (Paid)
+        <br />
+        <span
+          className="m-minischedule__below-text"
+        >
+          cabot
+        </span>
+      </div>
+      <div
+        className="m-minischedule__right-text"
+      >
+        2 hr 57 min
+      </div>
+    </div>
+    <div
+      className="m-minischedule__piece--unknown"
+    >
+      <div
+        className="m-minischedule__row m-minischedule__row--unknown"
+      >
+        <div
+          className="m-minischedule__icon"
+        />
+        <div
+          className="m-minischedule__left-text"
+        >
+          Report time
+          <br />
+          <span
+            className="m-minischedule__below-text"
+          >
+            cabot
+          </span>
+        </div>
+        <div
+          className="m-minischedule__right-text"
+        >
+          5:42 PM
+        </div>
+      </div>
+      <div
+        className="m-minischedule__piece-rows"
+      />
+      <div
+        className="m-minischedule__row m-minischedule__row--unknown"
+      >
+        <div
+          className="m-minischedule__icon"
+        />
+        <div
+          className="m-minischedule__left-text"
+        >
+          Done
+          <br />
+          <span
+            className="m-minischedule__below-text"
+          >
+            cabot
+          </span>
+        </div>
+        <div
+          className="m-minischedule__right-text"
+        >
+          9:48 PM
         </div>
       </div>
     </div>

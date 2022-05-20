@@ -91,6 +91,17 @@ const piece: Piece = {
   endMidRoute: false,
 }
 
+const multiTripPiece = {
+  ...piece,
+  trips: [revenueTrip, revenueTrip2],
+}
+const breakk: Break = {
+  breakType: "Paid meal before",
+  startTime: 10,
+  endTime: 1810,
+  endPlace: "Timepoint Bravo",
+}
+
 const asDirectedPiece: Piece = {
   runId: "run",
   blockId: null,
@@ -164,6 +175,79 @@ const midRouteSwingPiece2: Piece = {
   endMidRoute: false,
 }
 
+const piece1: Piece = {
+  runId: "multiPieceRun",
+  blockId: "block",
+  startTime: 22000,
+  startPlace: "cabot",
+  trips: [],
+  endTime: 36450,
+  endPlace: "cabot",
+  startMidRoute: null,
+  endMidRoute: false,
+}
+const break1: Break = {
+  breakType: "Paid meal before",
+  startTime: 36450,
+  endTime: 38070,
+  endPlace: "cabot",
+}
+const piece2: Piece = {
+  runId: "multiPieceRun",
+  blockId: "block",
+  startTime: 38070,
+  startPlace: "cabot",
+  trips: [],
+  endTime: 40760,
+  endPlace: "cabot",
+  startMidRoute: null,
+  endMidRoute: false,
+}
+const break2: Break = {
+  breakType: "Split break",
+  startTime: 40760,
+  endTime: 43760,
+  endPlace: "cabot",
+}
+const piece3: Piece = {
+  runId: "multiPieceRun",
+  blockId: "block",
+  startTime: 43760,
+  startPlace: "cabot",
+  trips: [],
+  endTime: 52590,
+  endPlace: "cabot",
+  startMidRoute: null,
+  endMidRoute: false,
+}
+const break3: Break = {
+  breakType: "Technical break",
+  startTime: 52590,
+  endTime: 63240,
+  endPlace: "cabot",
+}
+const piece4: Piece = {
+  runId: "multiPieceRun",
+  blockId: "block",
+  startTime: 63240,
+  startPlace: "cabot",
+  trips: [],
+  endTime: 78000,
+  endPlace: "cabot",
+  startMidRoute: null,
+  endMidRoute: false,
+}
+const break4: Break = {
+  breakType: "Split break",
+  startTime: 78000,
+  endTime: 83000,
+  endPlace: "cabot",
+}
+const multiPieceRun: Run = {
+  id: "multiPieceRun",
+  activities: [piece1, break1, piece2, break2, piece3, break3, piece4, break4],
+}
+
 const vehicle: Vehicle = {
   id: "vehicleId",
   label: "",
@@ -215,54 +299,9 @@ const vehicle: Vehicle = {
 }
 
 const vehicleWithOffset: Vehicle = {
-  id: "vehicleId",
-  label: "",
-  runId: "123-4567",
-  timestamp: 1590828502,
-  latitude: 42.38274,
-  longitude: -71.86523,
-  directionId: 0,
-  routeId: "1",
-  tripId: "44444444",
-  headsign: "Harvard",
-  viaVariant: "_",
-  operatorId: "99999",
-  operatorFirstName: "CHARLIE",
-  operatorLastName: "ONTHEMTA",
-  operatorLogonTime: null,
+  ...vehicle,
   overloadOffset: 8,
-  bearing: 143.7,
-  blockId: "C12-34",
-  previousVehicleId: "y4321",
-  scheduleAdherenceSecs: 35,
-  isShuttle: false,
   isOverload: true,
-  isOffCourse: false,
-  isRevenue: true,
-  layoverDepartureTime: null,
-  dataDiscrepancies: [],
-  stopStatus: { stopId: "93", stopName: "Massachusetts Ave @ Newbury St" },
-  timepointStatus: {
-    timepointId: "hynes",
-    fractionUntilTimepoint: 0.13316513898674723,
-  },
-  scheduledLocation: {
-    routeId: "1",
-    directionId: 0,
-    tripId: "44444444",
-    runId: "123-1408",
-    timeSinceTripStartTime: 940,
-    headsign: "Harvard",
-    viaVariant: "_",
-    timepointStatus: {
-      timepointId: "hynes",
-      fractionUntilTimepoint: 0.6666666666666666,
-    },
-  },
-  routeStatus: "on_route",
-  endOfTripType: "another_trip",
-  blockWaivers: [],
-  crowding: null,
 }
 
 describe("MinischeduleRun", () => {
@@ -285,17 +324,6 @@ describe("MinischeduleRun", () => {
   })
 
   test("renders a run", () => {
-    const multiTripPiece = {
-      ...piece,
-      trips: [revenueTrip, revenueTrip2],
-    }
-    const breakk: Break = {
-      breakType: "Paid meal before",
-      startTime: 10,
-      endTime: 1810,
-      endPlace: "Timepoint Bravo",
-    }
-
     ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => ({
       id: "run",
       activities: [breakk, multiTripPiece],
@@ -308,17 +336,6 @@ describe("MinischeduleRun", () => {
   })
 
   test("renders a run with a schedule offset", () => {
-    const multiTripPiece = {
-      ...piece,
-      trips: [revenueTrip, revenueTrip2],
-    }
-    const breakk: Break = {
-      breakType: "Paid meal before",
-      startTime: 10,
-      endTime: 1810,
-      endPlace: "Timepoint Bravo",
-    }
-
     ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => ({
       id: "run",
       activities: [breakk, multiTripPiece],
@@ -331,17 +348,6 @@ describe("MinischeduleRun", () => {
   })
 
   test("renders a run using origin trip label mode", () => {
-    const multiTripPiece = {
-      ...piece,
-      trips: [revenueTrip, revenueTrip2],
-    }
-    const breakk: Break = {
-      breakType: "Paid meal before",
-      startTime: 10,
-      endTime: 1810,
-      endPlace: "Timepoint Bravo",
-    }
-
     ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => ({
       id: "run",
       activities: [breakk, multiTripPiece],
@@ -363,14 +369,14 @@ describe("MinischeduleRun", () => {
       startTime: 1,
     }
 
-    const multiTripPiece = {
+    const noLayoverPiece = {
       ...piece,
       trips: [revenueTrip, immediatelyFollowingTrip],
     }
 
     ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => ({
       id: "run",
-      activities: [multiTripPiece],
+      activities: [noLayoverPiece],
     }))
     const tree = renderer
       .create(<MinischeduleRun vehicleOrGhost={vehicle} />)
@@ -380,11 +386,6 @@ describe("MinischeduleRun", () => {
   })
 
   test("renders a run with a current layover between trips", () => {
-    const multiTripPiece = {
-      ...piece,
-      trips: [revenueTrip, revenueTrip2],
-    }
-
     const vehicleOnLayover: Vehicle = {
       ...vehicle,
       tripId: "trip2",
@@ -403,11 +404,6 @@ describe("MinischeduleRun", () => {
   })
 
   test("renders a run with a non-current layover between trips", () => {
-    const multiTripPiece = {
-      ...piece,
-      trips: [revenueTrip, revenueTrip2],
-    }
-
     const vehicleNotOnLayover: Vehicle = {
       ...vehicle,
       tripId: "trip2",
@@ -440,7 +436,7 @@ describe("MinischeduleRun", () => {
       endPlace: "Prominent Landmark",
     }
 
-    const multiTripPiece = {
+    const threeTripPiece = {
       ...piece,
       trips: [revenueTrip, revenueTrip2, revenueTrip3],
     }
@@ -453,7 +449,7 @@ describe("MinischeduleRun", () => {
 
     ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => ({
       id: "run",
-      activities: [multiTripPiece],
+      activities: [threeTripPiece],
     }))
     const tree = renderer
       .create(<MinischeduleRun vehicleOrGhost={vehicleOnAParticularLayover} />)
@@ -526,91 +522,22 @@ describe("MinischeduleRun", () => {
   })
 
   test("renders duty details of run", () => {
-    const piece1: Piece = {
-      runId: "run",
-      blockId: "block",
-      startTime: 22000,
-      startPlace: "cabot",
-      trips: [],
-      endTime: 36450,
-      endPlace: "cabot",
-      startMidRoute: null,
-      endMidRoute: false,
-    }
-    const break1: Break = {
-      breakType: "Paid meal before",
-      startTime: 36450,
-      endTime: 38070,
-      endPlace: "cabot",
-    }
-    const piece2: Piece = {
-      runId: "run",
-      blockId: "block",
-      startTime: 38070,
-      startPlace: "cabot",
-      trips: [],
-      endTime: 40760,
-      endPlace: "cabot",
-      startMidRoute: null,
-      endMidRoute: false,
-    }
-    const break2: Break = {
-      breakType: "Split break",
-      startTime: 40760,
-      endTime: 43760,
-      endPlace: "cabot",
-    }
-    const piece3: Piece = {
-      runId: "run",
-      blockId: "block",
-      startTime: 43760,
-      startPlace: "cabot",
-      trips: [],
-      endTime: 52590,
-      endPlace: "cabot",
-      startMidRoute: null,
-      endMidRoute: false,
-    }
-    const break3: Break = {
-      breakType: "Technical break",
-      startTime: 52590,
-      endTime: 63240,
-      endPlace: "cabot",
-    }
-    const piece4: Piece = {
-      runId: "run",
-      blockId: "block",
-      startTime: 63240,
-      startPlace: "cabot",
-      trips: [],
-      endTime: 78000,
-      endPlace: "cabot",
-      startMidRoute: null,
-      endMidRoute: false,
-    }
-    const break4: Break = {
-      breakType: "Split break",
-      startTime: 78000,
-      endTime: 83000,
-      endPlace: "cabot",
-    }
-
-    const run: Run = {
-      id: "run",
-      activities: [
-        piece1,
-        break1,
-        piece2,
-        break2,
-        piece3,
-        break3,
-        piece4,
-        break4,
-      ],
-    }
-    ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => run)
+    ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(
+      () => multiPieceRun
+    )
     const tree = renderer
       .create(<MinischeduleRun vehicleOrGhost={vehicle} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders duty details of run with overload offset", () => {
+    ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(
+      () => multiPieceRun
+    )
+    const tree = renderer
+      .create(<MinischeduleRun vehicleOrGhost={vehicleWithOffset} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -668,6 +595,27 @@ describe("MinischeduleBlock", () => {
     expect(tree).toMatchSnapshot()
   })
 
+  test("renders block with revenue trip, pulls, and deadhead with offset", () => {
+    const deadheadPiece: Piece = {
+      ...piece,
+      trips: [
+        { ...nonrevenueTrip, id: "pullout" },
+        { ...revenueTrip, startTime: 30, endTime: 150 },
+        { ...nonrevenueTrip, id: "deadhead", startTime: 180, endTime: 360 },
+        { ...nonrevenueTrip, id: "pullback", startTime: 840, endTime: 960 },
+      ],
+    }
+    ;(useMinischeduleBlock as jest.Mock).mockImplementationOnce(() => ({
+      id: "block",
+      pieces: [deadheadPiece],
+    }))
+    const tree = renderer
+      .create(<MinischeduleBlock vehicleOrGhost={vehicleWithOffset} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
   test("renders trips in both directions, or missing direction", () => {
     const multiDirectionPiece: Piece = {
       ...piece,
@@ -693,6 +641,19 @@ describe("MinischeduleBlock", () => {
 
     const tree = renderer
       .create(<MinischeduleBlock vehicleOrGhost={vehicle} />)
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders a mid route swing with offset", () => {
+    ;(useMinischeduleBlock as jest.Mock).mockImplementationOnce(() => ({
+      id: "block",
+      pieces: [midRouteSwingPiece1, midRouteSwingPiece2],
+    }))
+
+    const tree = renderer
+      .create(<MinischeduleBlock vehicleOrGhost={vehicleWithOffset} />)
       .toJSON()
 
     expect(tree).toMatchSnapshot()
