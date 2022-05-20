@@ -95,7 +95,7 @@ const multiTripPiece = {
   ...piece,
   trips: [revenueTrip, revenueTrip2],
 }
-const breakk: Break = {
+const paidBreakBefore: Break = {
   breakType: "Paid meal before",
   startTime: 10,
   endTime: 1810,
@@ -326,7 +326,7 @@ describe("MinischeduleRun", () => {
   test("renders a run", () => {
     ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => ({
       id: "run",
-      activities: [breakk, multiTripPiece],
+      activities: [paidBreakBefore, multiTripPiece],
     }))
     const tree = renderer
       .create(<MinischeduleRun vehicleOrGhost={vehicle} />)
@@ -338,7 +338,7 @@ describe("MinischeduleRun", () => {
   test("renders a run with a schedule offset", () => {
     ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => ({
       id: "run",
-      activities: [breakk, multiTripPiece],
+      activities: [paidBreakBefore, multiTripPiece],
     }))
     const tree = renderer
       .create(<MinischeduleRun vehicleOrGhost={vehicleWithOffset} />)
@@ -350,7 +350,7 @@ describe("MinischeduleRun", () => {
   test("renders a run using origin trip label mode", () => {
     ;(useMinischeduleRun as jest.Mock).mockImplementationOnce(() => ({
       id: "run",
-      activities: [breakk, multiTripPiece],
+      activities: [paidBreakBefore, multiTripPiece],
     }))
     const tree = renderer
       .create(
@@ -767,7 +767,7 @@ describe("Minischedule", () => {
 
 describe("BreakRow", () => {
   test("Split breaks show as unpaid, with place", () => {
-    const breakk: Break = {
+    const splitBreak: Break = {
       breakType: "Split break",
       startTime: 0,
       endTime: 0,
@@ -775,14 +775,14 @@ describe("BreakRow", () => {
     }
 
     const wrapper = mount(
-      <BreakRow break={breakk} index={0} activeIndex={null} />
+      <BreakRow break={splitBreak} index={0} activeIndex={null} />
     )
     expect(wrapper.html()).toContain("Break (Unpaid)")
     expect(wrapper.html()).toContain("Charlie Circle")
   })
 
   test("Paid breaks show as paid, with place", () => {
-    const breakk: Break = {
+    const paidBreak: Break = {
       breakType: "Paid meal after",
       startTime: 0,
       endTime: 0,
@@ -790,14 +790,14 @@ describe("BreakRow", () => {
     }
 
     const wrapper = mount(
-      <BreakRow break={breakk} index={0} activeIndex={null} />
+      <BreakRow break={paidBreak} index={0} activeIndex={null} />
     )
     expect(wrapper.html()).toContain("Break (Paid)")
     expect(wrapper.html()).toContain("Delta Drive")
   })
 
   test("Travel times show as paid, with destination", () => {
-    const breakk: Break = {
+    const travelBreak: Break = {
       breakType: "Travel from",
       startTime: 0,
       endTime: 0,
@@ -805,13 +805,13 @@ describe("BreakRow", () => {
     }
 
     const wrapper = mount(
-      <BreakRow break={breakk} index={0} activeIndex={null} />
+      <BreakRow break={travelBreak} index={0} activeIndex={null} />
     )
     expect(wrapper.html()).toContain("Travel to Echo Avenue (Paid)")
   })
 
   test("Unrecognized types show their name and place", () => {
-    const breakk: Break = {
+    const unrecognizedBreak: Break = {
       breakType: "Unrecognized break type",
       startTime: 0,
       endTime: 0,
@@ -819,7 +819,7 @@ describe("BreakRow", () => {
     }
 
     const wrapper = mount(
-      <BreakRow break={breakk} index={0} activeIndex={null} />
+      <BreakRow break={unrecognizedBreak} index={0} activeIndex={null} />
     )
     expect(wrapper.html()).toContain("Unrecognized break type")
     expect(wrapper.html()).toContain("Foxtrot Village")
