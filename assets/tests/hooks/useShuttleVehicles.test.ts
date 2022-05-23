@@ -2,6 +2,7 @@ import { renderHook } from "@testing-library/react-hooks"
 import useShuttleVehicles from "../../src/hooks/useShuttleVehicles"
 import { Vehicle, VehicleTimepointStatus } from "../../src/realtime.d"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
+import vehicleFactory from "../factories/vehicle"
 
 const shuttlesData = [
   {
@@ -38,6 +39,7 @@ const shuttlesData = [
     direction_id: 0,
     headsign: "Forest Hills",
     id: "v1",
+    incoming_trip_direction_id: null,
     is_shuttle: true,
     is_overload: false,
     is_off_course: false,
@@ -74,7 +76,7 @@ const shuttlesData = [
   },
 ]
 const shuttles: Vehicle[] = [
-  {
+  vehicleFactory.build({
     id: "v1",
     label: "v1-label",
     runId: "run-1",
@@ -99,6 +101,7 @@ const shuttles: Vehicle[] = [
     isOffCourse: false,
     isRevenue: true,
     layoverDepartureTime: null,
+    overloadOffset: undefined,
     dataDiscrepancies: [
       {
         attribute: "trip_id",
@@ -140,7 +143,7 @@ const shuttles: Vehicle[] = [
     endOfTripType: "another_trip",
     blockWaivers: [],
     crowding: null,
-  },
+  }),
 ]
 
 describe("useShuttleVehicles", () => {

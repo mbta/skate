@@ -32,7 +32,7 @@ const IncomingBoxVehicle = ({
     vehicleOrGhost.id === selectedVehicleId ? "selected" : ""
   const orientation =
     directionOnLadder(
-      vehicleOrGhost.incomingTripDirectionId !== undefined
+      vehicleOrGhost.incomingTripDirectionId !== null
         ? vehicleOrGhost.incomingTripDirectionId
         : vehicleOrGhost.directionId,
       ladderDirection

@@ -466,19 +466,19 @@ exports[`IncomingBox renders a vehicle with the opposite incoming direction ID 1
         Block:
       </b>
        
-      block-1
+      block
       <br />
       <b>
         Run:
       </b>
        
-      1
+      run
       <br />
       <b>
         Vehicle:
       </b>
        
-      v1-label
+      vehicle
       <br />
       <b>
         Variant:
@@ -496,7 +496,7 @@ exports[`IncomingBox renders a vehicle with the opposite incoming direction ID 1
         Operator:
       </b>
        
-      WILL SMITH #op1
+      Fake Operator #1234
     </div>
     <button
       className="m-incoming-box__vehicle "
@@ -537,7 +537,7 @@ exports[`IncomingBox renders a vehicle with the opposite incoming direction ID 1
       <div
         className="m-incoming-box__vehicle-label"
       >
-        1
+        run
       </div>
     </button>
   </div>

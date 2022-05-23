@@ -5,6 +5,8 @@ import { VehicleData, VehicleOrGhostData } from "../../src/models/vehicleData"
 import { Vehicle, VehicleOrGhost } from "../../src/realtime"
 import { mockUseStateOnce } from "../testHelpers/mockHelpers"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
+import vehicleFactory from "../factories/vehicle"
+import vehicleDataFactory from "../factories/vehicle_data"
 
 describe("useSearchResults", () => {
   test("returns null initially", () => {
@@ -43,7 +45,7 @@ describe("useSearchResults", () => {
   })
 
   test("returns results pushed to the channel", () => {
-    const vehicleData: VehicleData = {
+    const vehicleData: VehicleData = vehicleDataFactory.build({
       bearing: 33,
       block_id: "block-1",
       data_discrepancies: [
@@ -122,9 +124,9 @@ describe("useSearchResults", () => {
       end_of_trip_type: "another_trip",
       block_waivers: [],
       crowding: null,
-    }
+    })
     const searchResultsData: VehicleOrGhostData[] = [vehicleData]
-    const vehicle: Vehicle = {
+    const vehicle: Vehicle = vehicleFactory.build({
       id: "v1",
       label: "v1-label",
       runId: "run-1",
@@ -202,7 +204,7 @@ describe("useSearchResults", () => {
       endOfTripType: "another_trip",
       blockWaivers: [],
       crowding: null,
-    }
+    })
     const vehicles: VehicleOrGhost[] = [vehicle]
 
     const mockSocket = makeMockSocket()

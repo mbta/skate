@@ -1,6 +1,7 @@
 import { LadderDirection } from "../../src/models/ladderDirection"
 import { groupByPosition } from "../../src/models/vehiclesByPosition"
 import { BlockWaiver, Ghost, Vehicle } from "../../src/realtime.d"
+import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 
 describe("groupByPosition", () => {
@@ -90,7 +91,7 @@ describe("groupByPosition", () => {
   })
 
   test("generates virtual ghosts for incoming buses that are late", () => {
-    const vehicle: Vehicle = {
+    const vehicle: Vehicle = vehicleFactory.build({
       id: "vehicleId",
       directionId: 0,
       routeId: "2",
@@ -115,7 +116,7 @@ describe("groupByPosition", () => {
         },
       },
       blockWaivers: [] as BlockWaiver[],
-    } as Vehicle
+    })
 
     const expectedGhost: Ghost = ghostFactory.build({
       id: "ghost-incoming-vehicleId",
@@ -143,7 +144,7 @@ describe("groupByPosition", () => {
   })
 
   test("generates virtual ghosts for pulling out buses that are late", () => {
-    const vehicle: Vehicle = {
+    const vehicle: Vehicle = vehicleFactory.build({
       id: "vehicleId",
       directionId: 0,
       routeId: "1",
@@ -168,7 +169,7 @@ describe("groupByPosition", () => {
         },
       },
       blockWaivers: [] as BlockWaiver[],
-    } as Vehicle
+    })
 
     const expectedGhost: Ghost = ghostFactory.build({
       id: "ghost-incoming-vehicleId",

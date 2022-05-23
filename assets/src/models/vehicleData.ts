@@ -36,7 +36,7 @@ export interface VehicleData {
   block_id: string
   previous_vehicle_id: string
   schedule_adherence_secs: number
-  incoming_trip_direction_id?: DirectionId
+  incoming_trip_direction_id: DirectionId | null
   is_shuttle: boolean
   is_overload: boolean
   is_off_course: boolean
@@ -74,7 +74,7 @@ export interface GhostData {
   block_waivers: BlockWaiverData[]
   current_piece_start_place: string | null
   current_piece_first_route: string | null
-  incoming_trip_direction_id?: DirectionId
+  incoming_trip_direction_id: DirectionId | null
 }
 
 export type VehicleOrGhostData = VehicleData | GhostData

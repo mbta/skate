@@ -3,8 +3,9 @@ import useVehicleForRunIds from "../../src/hooks/useVehiclesForRunIds"
 import { VehicleData } from "../../src/models/vehicleData"
 import { dateFromEpochSeconds } from "../../src/util/dateTime"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
+import vehicleDataFactory from "../factories/vehicle_data"
 
-const vehicleData: VehicleData = {
+const vehicleData: VehicleData = vehicleDataFactory.build({
   id: "y1234",
   label: "1234",
   run_id: "123-4567",
@@ -61,7 +62,7 @@ const vehicleData: VehicleData = {
     occupancy_status: "MANY_SEATS_AVAILABLE",
     occupancy_percentage: 0.018,
   },
-}
+})
 
 describe("useVehiclesForRunIds", () => {
   test("returns data", () => {
@@ -88,6 +89,7 @@ describe("useVehiclesForRunIds", () => {
         endOfTripType: "another_trip",
         headsign: "Forest Hills",
         id: "y1234",
+        incomingTripDirectionId: null,
         isOffCourse: false,
         isOverload: false,
         isShuttle: false,
@@ -102,6 +104,7 @@ describe("useVehiclesForRunIds", () => {
         ),
         operatorFirstName: "CHARLIE",
         operatorLastName: "ONTHEMTA",
+        overloadOffset: undefined,
         previousVehicleId: "123",
         routeId: "39",
         routeStatus: "on_route",

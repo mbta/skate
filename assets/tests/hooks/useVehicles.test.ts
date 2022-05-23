@@ -6,11 +6,12 @@ import { Ghost, Vehicle, VehicleTimepointStatus } from "../../src/realtime.d"
 import { RouteId } from "../../src/schedule.d"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 import ghostFactory from "../factories/ghost"
+import vehicleDataFactory from "../factories/vehicle_data"
 import ghostDataFactory from "../factories/ghost_data"
 
 describe("useVehicles", () => {
   const vehiclesData: VehicleData[] = [
-    {
+    vehicleDataFactory.build({
       bearing: 33,
       block_id: "block-1",
       data_discrepancies: [
@@ -98,7 +99,7 @@ describe("useVehicles", () => {
         },
       ],
       crowding: null,
-    },
+    }),
   ]
   const vehicles: Vehicle[] = [
     {
@@ -191,7 +192,7 @@ describe("useVehicles", () => {
     },
   ]
   const vehiclesDataWithInvalid: VehicleData[] = [
-    {
+    vehicleDataFactory.build({
       bearing: 33,
       block_id: "block-1",
       data_discrepancies: [
@@ -278,7 +279,7 @@ describe("useVehicles", () => {
         },
       ],
       crowding: null,
-    },
+    }),
   ]
 
   test("vehicles is empty to start with", () => {

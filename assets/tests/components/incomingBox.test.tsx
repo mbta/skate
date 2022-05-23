@@ -26,7 +26,7 @@ describe("IncomingBox", () => {
   })
 
   test("renders a vehicle", () => {
-    const vehicle: Vehicle = {
+    const vehicle: Vehicle = vehicleFactory.build({
       id: "y0654",
       label: "0654",
       runId: "126-1056",
@@ -77,7 +77,7 @@ describe("IncomingBox", () => {
       endOfTripType: "another_trip",
       blockWaivers: [],
       crowding: null,
-    }
+    })
 
     const tree = renderer
       .create(
@@ -96,6 +96,12 @@ describe("IncomingBox", () => {
     const vehicle = vehicleFactory.build({
       directionId: 0,
       incomingTripDirectionId: 1,
+      label: "vehicle",
+      blockId: "block",
+      runId: "run",
+      operatorFirstName: "Fake",
+      operatorLastName: "Operator",
+      operatorId: "1234",
     })
     const tree = renderer
       .create(
@@ -144,7 +150,7 @@ describe("IncomingBox", () => {
   })
 
   test("renders a crowding view of a vehicle", () => {
-    const vehicle: Vehicle = {
+    const vehicle: Vehicle = vehicleFactory.build({
       id: "y0654",
       label: "0654",
       runId: "126-1056",
@@ -200,7 +206,7 @@ describe("IncomingBox", () => {
         occupancyPercentage: 0.0,
         capacity: 18,
       },
-    }
+    })
 
     const tree = renderer
       .create(
@@ -217,7 +223,7 @@ describe("IncomingBox", () => {
   })
 
   test("renders a crowding view missing crowding data", () => {
-    const vehicle: Vehicle = {
+    const vehicle: Vehicle = vehicleFactory.build({
       id: "y0654",
       label: "0654",
       runId: "126-1056",
@@ -268,7 +274,7 @@ describe("IncomingBox", () => {
       endOfTripType: "another_trip",
       blockWaivers: [],
       crowding: null,
-    }
+    })
 
     const tree = renderer
       .create(

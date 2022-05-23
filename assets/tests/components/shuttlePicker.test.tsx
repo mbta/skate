@@ -18,8 +18,9 @@ import {
   selectShuttleRoute,
   selectShuttleRun,
 } from "../../src/state"
+import vehicleFactory from "../factories/vehicle"
 
-const vehicle: Vehicle = {
+const vehicle: Vehicle = vehicleFactory.build({
   id: "y1818",
   label: "1818",
   runId: "999-0555",
@@ -58,7 +59,7 @@ const vehicle: Vehicle = {
   endOfTripType: "another_trip",
   blockWaivers: [],
   crowding: null,
-}
+})
 
 const shuttleRoutes: Route[] = [
   routeFactory.build({

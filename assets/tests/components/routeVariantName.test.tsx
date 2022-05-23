@@ -5,8 +5,9 @@ import { RouteVariantName } from "../../src/components/routeVariantName"
 import { RoutesProvider } from "../../src/contexts/routesContext"
 import { Vehicle } from "../../src/realtime"
 import { Route } from "../../src/schedule"
+import vehicleFactory from "../factories/vehicle"
 
-const vehicle: Vehicle = {
+const vehicle: Vehicle = vehicleFactory.build({
   id: "v1",
   label: "v1-label",
   runId: "run-1",
@@ -59,7 +60,7 @@ const vehicle: Vehicle = {
   endOfTripType: "another_trip",
   blockWaivers: [],
   crowding: null,
-}
+})
 
 describe("RouteVariantName", () => {
   test("renders for a vehicle with variant and headsign", () => {

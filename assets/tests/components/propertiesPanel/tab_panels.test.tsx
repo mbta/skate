@@ -2,8 +2,9 @@ import React from "react"
 import renderer from "react-test-renderer"
 import TabPanels from "../../../src/components/propertiesPanel/tabPanels"
 import { Vehicle } from "../../../src/realtime"
+import vehicleFactory from "../../factories/vehicle"
 
-const vehicle: Vehicle = {
+const vehicle: Vehicle = vehicleFactory.build({
   id: "vehicleId",
   label: "",
   runId: "123-4567",
@@ -51,7 +52,7 @@ const vehicle: Vehicle = {
   endOfTripType: "another_trip",
   blockWaivers: [],
   crowding: null,
-}
+})
 
 describe("TabPanels", () => {
   test("renders the status tab", () => {

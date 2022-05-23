@@ -23,6 +23,7 @@ export default Factory.define<VehicleData>(({ sequence }) => ({
   block_id: `block-${sequence}`,
   previous_vehicle_id: `v${sequence + 1}`,
   schedule_adherence_secs: 0,
+  incoming_trip_direction_id: null,
   is_shuttle: false,
   is_overload: false,
   is_off_course: false,

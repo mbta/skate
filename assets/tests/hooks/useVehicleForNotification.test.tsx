@@ -10,6 +10,7 @@ import {
   makeMockOneShotChannel,
   makeMockSocket,
 } from "../testHelpers/socketHelpers"
+import vehicleDataFactory from "../factories/vehicle_data"
 import ghostDataFactory from "../factories/ghost_data"
 
 const ghostData: GhostData = ghostDataFactory.build({
@@ -33,7 +34,7 @@ const ghostData: GhostData = ghostDataFactory.build({
   current_piece_start_place: null,
 })
 
-const vehicleData: VehicleData = {
+const vehicleData: VehicleData = vehicleDataFactory.build({
   id: "y1234",
   label: "1234",
   run_id: "123-4567",
@@ -90,7 +91,7 @@ const vehicleData: VehicleData = {
     occupancy_status: "MANY_SEATS_AVAILABLE",
     occupancy_percentage: 0.018,
   },
-}
+})
 
 const wrapper = ({ children }: { children: ReactElement<HTMLElement> }) => (
   <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
@@ -146,6 +147,7 @@ describe("useVehicleForNotification", () => {
       endOfTripType: "another_trip",
       headsign: "Forest Hills",
       id: "y1234",
+      incomingTripDirectionId: null,
       isOffCourse: false,
       isOverload: false,
       isShuttle: false,
@@ -229,6 +231,7 @@ describe("useVehicleForNotification", () => {
       viaVariant: "3",
       currentPieceFirstRoute: null,
       currentPieceStartPlace: null,
+      incomingTripDirectionId: null,
     })
     expect(window.FS!.event).toHaveBeenCalledWith(
       "Notification linked to ghost"
