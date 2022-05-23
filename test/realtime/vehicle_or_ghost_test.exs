@@ -20,6 +20,7 @@ defmodule Realtime.VehicleOrGhostTest do
     operator_last_name: "FRANKLIN",
     operator_name: "FRANKLIN",
     operator_logon_time: 1_558_121_726,
+    overload_offset: nil,
     run_id: "vehicle-run-1",
     is_shuttle: false,
     is_overload: false,

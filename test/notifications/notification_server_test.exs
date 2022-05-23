@@ -95,6 +95,7 @@ defmodule Notifications.NotificationServerTest do
     operator_last_name: "ONTHEMTA",
     operator_name: "ONTHEMTA",
     operator_logon_time: nil,
+    overload_offset: nil,
     run_id: "123-4567",
     is_shuttle: false,
     is_overload: false,

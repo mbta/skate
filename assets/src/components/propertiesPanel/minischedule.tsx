@@ -49,6 +49,7 @@ import { DirectionId, RouteId, TripId } from "../../schedule"
 import { formattedDuration, formattedScheduledTime } from "../../util/dateTime"
 import Loading from "../loading"
 import { currentRouteTab } from "../../models/routeTab"
+import { isVehicle } from "../../models/vehicle"
 
 export interface Props {
   vehicleOrGhost: VehicleOrGhost
@@ -338,6 +339,9 @@ const Piece = ({
     pieceTimeBasedStyle === "current" ? "past" : pieceTimeBasedStyle
   const doneTimeBasedStyle: TimeBasedStyle =
     pieceTimeBasedStyle === "current" ? "future" : pieceTimeBasedStyle
+  const overloadOffset: number | undefined = isVehicle(vehicleOrGhost)
+    ? vehicleOrGhost.overloadOffset
+    : undefined
 
   return (
     <div className={`m-minischedule__piece--${pieceTimeBasedStyle}`}>
@@ -345,12 +349,15 @@ const Piece = ({
         <div className="m-minischedule__run-header">{piece.runId}</div>
       ) : null}
       {view === "run" && piece.startMidRoute ? (
-        <MidRouteSwingOnFirstHalf trip={piece.startMidRoute.trip} />
+        <MidRouteSwingOnFirstHalf
+          trip={piece.startMidRoute.trip}
+          overloadOffset={overloadOffset}
+        />
       ) : null}
       {isSwingOn ? null : (
         <Row
           text="Report time"
-          rightText={formattedScheduledTime(piece.startTime)}
+          rightText={formattedScheduledTime(piece.startTime, overloadOffset)}
           belowText={piece.startPlace}
           timeBasedStyle={startTimeBasedStyle}
         />
@@ -361,7 +368,7 @@ const Piece = ({
             key="swing-on"
             icon={plusIcon()}
             text={piece.startMidRoute ? "Mid-route report time" : "Report time"}
-            rightText={formattedScheduledTime(piece.startTime)}
+            rightText={formattedScheduledTime(piece.startTime, overloadOffset)}
             belowText={piece.startPlace}
             timeBasedStyle={startTimeBasedStyle}
           />
@@ -371,6 +378,7 @@ const Piece = ({
             key="mid-route-swing-on"
             time={piece.startMidRoute.time}
             trip={piece.startMidRoute.trip}
+            overloadOffset={overloadOffset}
           />
         ) : null}
         {piece.trips.map((trip, tripIndex) => {
@@ -401,7 +409,7 @@ const Piece = ({
             key="swing-off"
             icon={minusIcon()}
             text={piece.endMidRoute ? "Swing off mid-route" : "Swing off"}
-            rightText={formattedScheduledTime(piece.endTime)}
+            rightText={formattedScheduledTime(piece.endTime, overloadOffset)}
             belowText={piece.endPlace}
             timeBasedStyle={doneTimeBasedStyle}
           />
@@ -410,7 +418,7 @@ const Piece = ({
       {isSwingOff ? null : (
         <Row
           text="Done"
-          rightText={formattedScheduledTime(piece.endTime)}
+          rightText={formattedScheduledTime(piece.endTime, overloadOffset)}
           belowText={piece.endPlace}
           timeBasedStyle={doneTimeBasedStyle}
         />
@@ -419,11 +427,18 @@ const Piece = ({
   )
 }
 
-const MidRouteSwingOnFirstHalf = ({ trip }: { trip: Trip }) => (
+const MidRouteSwingOnFirstHalf = ({
+  trip,
+  overloadOffset,
+}: {
+  trip: Trip
+  overloadOffset: number | undefined
+}) => (
   <RevenueTrip
     trip={trip}
     timeBasedStyle={"unknown"}
     activeStatus={null}
+    overloadOffset={overloadOffset}
     belowText={`Run ${trip.runId}`}
     extraClasses={["m-minischedule__row--mid-route-first-half"]}
   />
@@ -432,14 +447,17 @@ const MidRouteSwingOnFirstHalf = ({ trip }: { trip: Trip }) => (
 const MidRouteSwingOnSecondHalf = ({
   time,
   trip,
+  overloadOffset,
 }: {
   time: Time
   trip: Trip
+  overloadOffset: number | undefined
 }) => (
   <RevenueTrip
     trip={{ ...trip, startTime: time }}
     timeBasedStyle={"unknown"}
     activeStatus={null}
+    overloadOffset={overloadOffset}
   />
 )
 
@@ -487,6 +505,9 @@ const Trip = ({
     onRouteTimeBasedStyle === "current" ? drawnStatus(vehicleOrGhost) : null
   const deadheadActiveStatus: DrawnStatus | null =
     deadheadTimeBasedStyle === "current" ? drawnStatus(vehicleOrGhost) : null
+  const overloadOffset: number | undefined = isVehicle(vehicleOrGhost)
+    ? vehicleOrGhost.overloadOffset
+    : undefined
 
   return (
     <>
@@ -505,16 +526,22 @@ const Trip = ({
             sequence={sequence}
             timeBasedStyle={deadheadTimeBasedStyle}
             activeStatus={deadheadActiveStatus}
+            overloadOffset={overloadOffset}
           />
         ) : (
           <RevenueTrip
             trip={trip}
             timeBasedStyle={onRouteTimeBasedStyle}
             activeStatus={onRouteActiveStatus}
+            overloadOffset={overloadOffset}
           />
         )
       ) : (
-        <AsDirected asDirected={trip} timeBasedStyle={onRouteTimeBasedStyle} />
+        <AsDirected
+          asDirected={trip}
+          timeBasedStyle={onRouteTimeBasedStyle}
+          overloadOffset={overloadOffset}
+        />
       )}
     </>
   )
@@ -525,13 +552,18 @@ const DeadheadTrip = ({
   sequence,
   timeBasedStyle,
   activeStatus,
+  overloadOffset,
 }: {
   trip: Trip
   sequence: "first" | "middle" | "last"
   timeBasedStyle: TimeBasedStyle
   activeStatus: DrawnStatus | null
+  overloadOffset: number | undefined
 }) => {
-  const startTime: string = formattedScheduledTime(trip.startTime)
+  const startTime: string = formattedScheduledTime(
+    trip.startTime,
+    overloadOffset
+  )
   if (sequence === "first") {
     return (
       <Row
@@ -591,16 +623,21 @@ const RevenueTrip = ({
   trip,
   timeBasedStyle,
   activeStatus,
+  overloadOffset,
   belowText,
   extraClasses,
 }: {
   trip: Trip
   timeBasedStyle: TimeBasedStyle
   activeStatus: DrawnStatus | null
+  overloadOffset: number | undefined
   belowText?: string
   extraClasses?: string[]
 }) => {
-  const startTime: string = formattedScheduledTime(trip.startTime)
+  const startTime: string = formattedScheduledTime(
+    trip.startTime,
+    overloadOffset
+  )
   const route = useRoute(trip.routeId)
 
   const formattedRouteAndPlaceName: string = [
@@ -639,14 +676,16 @@ const RevenueTrip = ({
 const AsDirected = ({
   asDirected,
   timeBasedStyle,
+  overloadOffset,
 }: {
   asDirected: AsDirected
   timeBasedStyle: TimeBasedStyle
+  overloadOffset: number | undefined
 }) => (
   <Row
     icon={busFrontIcon()}
     text={asDirected.kind === "rad" ? "Run as directed" : "Work as directed"}
-    rightText={formattedScheduledTime(asDirected.startTime)}
+    rightText={formattedScheduledTime(asDirected.startTime, overloadOffset)}
     timeBasedStyle={timeBasedStyle}
   />
 )
