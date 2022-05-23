@@ -92,6 +92,24 @@ describe("IncomingBox", () => {
     expect(tree).toMatchSnapshot()
   })
 
+  test("renders a vehicle with the opposite incoming direction ID", () => {
+    const vehicle = vehicleFactory.build({
+      directionId: 0,
+      incomingTripDirectionId: 1,
+    })
+    const tree = renderer
+      .create(
+        <IncomingBox
+          vehiclesAndGhosts={[vehicle]}
+          ladderDirection={LadderDirection.ZeroToOne}
+          selectedVehicleId={undefined}
+        />
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
   test("renders a ghost", () => {
     const ghost: Ghost = ghostFactory.build({
       id: "ghost",
