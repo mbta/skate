@@ -2,7 +2,7 @@
 
 exports[`SwingsView ignores vehicles without run ID (for linking to VPP) 1`] = `
 <div
-  className="m-swings-view"
+  className="m-swings-view "
   id="m-swings-view"
 >
   <button
@@ -170,7 +170,7 @@ exports[`SwingsView ignores vehicles without run ID (for linking to VPP) 1`] = `
 
 exports[`SwingsView includes swings less than 15 minutes in the past 1`] = `
 <div
-  className="m-swings-view"
+  className="m-swings-view "
   id="m-swings-view"
 >
   <button
@@ -336,7 +336,7 @@ exports[`SwingsView includes swings less than 15 minutes in the past 1`] = `
 
 exports[`SwingsView links to both swing-on and swing-off if both are active 1`] = `
 <div
-  className="m-swings-view"
+  className="m-swings-view "
   id="m-swings-view"
 >
   <button
@@ -528,7 +528,7 @@ exports[`SwingsView links to both swing-on and swing-off if both are active 1`] 
 
 exports[`SwingsView omits swings more than 15 minutes in the past 1`] = `
 <div
-  className="m-swings-view"
+  className="m-swings-view "
   id="m-swings-view"
 >
   <button
@@ -647,7 +647,7 @@ exports[`SwingsView omits swings more than 15 minutes in the past 1`] = `
 
 exports[`SwingsView renders future swings, active and inactive 1`] = `
 <div
-  className="m-swings-view"
+  className="m-swings-view "
   id="m-swings-view"
 >
   <button
@@ -933,7 +933,7 @@ exports[`SwingsView renders future swings, active and inactive 1`] = `
 
 exports[`SwingsView renders loading message 1`] = `
 <div
-  className="m-swings-view"
+  className="m-swings-view "
   id="m-swings-view"
 >
   <button

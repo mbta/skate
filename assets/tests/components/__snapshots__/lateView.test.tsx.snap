@@ -2,7 +2,7 @@
 
 exports[`LateView renders missing logons and late buses 1`] = `
 <div
-  className="m-late-view"
+  className="m-late-view "
 >
   <div
     className="m-late-view__content-wrapper"
