@@ -14,7 +14,7 @@ defmodule Skate.Application do
 
     # List all child processes to be supervised
     children =
-      [RefreshTokenStore, {Skate.Repo, []}] ++
+      [{Skate.Repo, []}] ++
         if Application.get_env(:skate, :start_data_processes) do
           [
             Schedule.Supervisor,
