@@ -280,11 +280,8 @@ const LateView = (): ReactElement<HTMLElement> => {
   const lateVehiclesAndGhosts = (lateGhosts as VehicleOrGhost[]).concat(
     lateBuses
   )
-  
-  const mobileMenuClass = mobileMenuIsOpen
-    ? "blurred-mobile"
-    : "" 
 
+  const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
 
   return (
     <div className={`m-late-view ${mobileMenuClass}`}>

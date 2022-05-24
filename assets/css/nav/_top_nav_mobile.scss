@@ -4,27 +4,30 @@
   padding: 0.75rem 1.5rem 0.5rem 1.5rem;
   justify-content: space-between;
   background-color: $color-gray-50;
-  border-bottom: 1px solid $color-gray-300; 
-  z-index: 108; 
+  border-bottom: 1px solid $color-gray-300;
+  z-index: 108;
 }
 
 .m-top-nav-mobile-overlay {
-    position: fixed;
-    padding: 0px;
-    margin: 0px; 
-    display: none;
+  position: fixed;
+  padding: 0px;
+  margin: 0px;
+  display: none;
 }
 .m-top-nav-mobile-overlay__open {
-    display: block;
-    width: 100%;
-    height: 100%;
-    z-index: 109;
-    background: rgba(88, 88, 88, 0.23);
+  display: block;
+  width: 100%;
+  height: 100%;
+  z-index: 109;
+  background: rgba(88, 88, 88, 0.23);
 }
 
-.m-top-nav-mobile__icon svg, .m-top-nav-mobile__menu-icon svg {
-    fill: $color-gray-600;
-  &:hover, &:active, &:focus {
+.m-top-nav-mobile__icon svg,
+.m-top-nav-mobile__menu-icon svg {
+  fill: $color-gray-600;
+  &:hover,
+  &:active,
+  &:focus {
     fill: $color-gray-500;
   }
 }
@@ -72,7 +75,6 @@
   }
 }
 
-
 .m-top-nav-mobile__header-text {
   color: $color-gray-900;
 }
@@ -82,11 +84,14 @@
   width: 100%;
 }
 
-.m-top-nav-mobile__menu-button, .m-top-nav-mobile__menu-link {
+.m-top-nav-mobile__menu-button,
+.m-top-nav-mobile__menu-link {
   color: $color-gray-600;
-  &:hover, &:active, &:focus {
+  &:hover,
+  &:active,
+  &:focus {
     color: $color-gray-500;
-  }  
+  }
   height: 3rem;
   display: flex;
   padding-top: 0.25rem;
@@ -99,5 +104,5 @@
   svg {
     width: 1.5rem;
     height: 1.5rem;
-  }  
+  }
 }

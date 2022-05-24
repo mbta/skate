@@ -73,12 +73,12 @@ const SearchPage = (): ReactElement<HTMLDivElement> => {
       ? "m-search-page--show-list"
       : "m-search-page--show-map"
 
-  const mobileMenuClass = mobileMenuIsOpen
-    ? "blurred-mobile"
-    : ""    
+  const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
 
   return (
-    <div className={`c-page m-search-page ${mobileDisplayClass} ${mobileMenuClass}`}>
+    <div
+      className={`c-page m-search-page ${mobileDisplayClass} ${mobileMenuClass}`}
+    >
       <div className="m-search-page__input-and-results">
         <div className="m-search-page__input">
           <SearchForm />

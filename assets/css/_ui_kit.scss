@@ -377,7 +377,7 @@ $submenu-box-shadow: 0 2px 4px 0 rgba(126, 126, 126, 0.5);
 
 $font-family-route-pill: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-// blur state 
+// blur state
 @mixin blur {
   filter: blur(5px);
 }

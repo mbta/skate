@@ -28,7 +28,8 @@
   }
 }
 
-.m-top-nav__right-items, .m-top-nav__left-items {
+.m-top-nav__right-items,
+.m-top-nav__left-items {
   display: flex;
 
   :not(:last-child) {
@@ -36,7 +37,8 @@
   }
 }
 
-.m-top-nav__right-item, .m-top-nav__left-item {
+.m-top-nav__right-item,
+.m-top-nav__left-item {
   @include button-icon(1.5rem);
   color: $color-gray-600;
 

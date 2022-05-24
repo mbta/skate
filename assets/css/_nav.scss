@@ -1,4 +1,5 @@
-.m-nav--wide, .m-nav--narrow {
+.m-nav--wide,
+.m-nav--narrow {
   display: grid;
   gap: 0;
   grid-template-columns: max-content minmax(0, 1fr);

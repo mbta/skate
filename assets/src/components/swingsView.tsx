@@ -70,10 +70,7 @@ const SwingsView = (): ReactElement<HTMLElement> => {
 
   const hideMe = () => dispatch(toggleSwingsView())
 
-  const mobileMenuClass = mobileMenuIsOpen
-    ? "blurred-mobile"
-    : "" 
-
+  const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
 
   return (
     <div id="m-swings-view" className={`m-swings-view ${mobileMenuClass}`}>

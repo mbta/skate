@@ -104,7 +104,7 @@ export const initialState: State = {
   selectedNotification: undefined,
   openView: OpenView.None,
   openInputModal: null,
-  mobileMenuIsOpen: false
+  mobileMenuIsOpen: false,
 }
 
 interface CreateRouteTabAction {
@@ -929,10 +929,7 @@ const openViewAndNotificationDrawerReducer = (
   }
 }
 
-const mobileMenuReducer = (
-  state: boolean,
-  action: Action
-): boolean => {
+const mobileMenuReducer = (state: boolean, action: Action): boolean => {
   switch (action.type) {
     case "TOGGLE_MOBILE_MENU":
       return !state
