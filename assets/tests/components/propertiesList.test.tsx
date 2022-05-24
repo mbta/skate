@@ -10,13 +10,14 @@ import PropertiesList, {
 } from "../../src/components/propertiesList"
 import { Ghost, Vehicle } from "../../src/realtime"
 import * as dateTime from "../../src/util/dateTime"
+import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
 
-const vehicle: Vehicle = {
+const vehicle: Vehicle = vehicleFactory.build({
   id: "v1",
   label: "v1-label",
   runId: "run-1",
@@ -69,7 +70,7 @@ const vehicle: Vehicle = {
   endOfTripType: "another_trip",
   blockWaivers: [],
   crowding: null,
-}
+})
 
 const ghost: Ghost = ghostFactory.build({
   id: "ghost-trip",

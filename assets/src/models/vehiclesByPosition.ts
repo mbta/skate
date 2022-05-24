@@ -153,6 +153,7 @@ const ghostFromVehicleScheduledLocation = (vehicle: Vehicle): Ghost => ({
   runId: vehicle.scheduledLocation!.runId,
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   viaVariant: vehicle.scheduledLocation!.viaVariant,
+  incomingTripDirectionId: vehicle.incomingTripDirectionId,
   layoverDepartureTime: null,
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   scheduledTimepointStatus: vehicle.scheduledLocation!.timepointStatus,

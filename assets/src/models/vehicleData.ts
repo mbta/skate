@@ -36,6 +36,7 @@ export interface VehicleData {
   block_id: string
   previous_vehicle_id: string
   schedule_adherence_secs: number
+  incoming_trip_direction_id: DirectionId | null
   is_shuttle: boolean
   is_overload: boolean
   is_off_course: boolean
@@ -73,6 +74,7 @@ export interface GhostData {
   block_waivers: BlockWaiverData[]
   current_piece_start_place: string | null
   current_piece_first_route: string | null
+  incoming_trip_direction_id: DirectionId | null
 }
 
 export type VehicleOrGhostData = VehicleData | GhostData
@@ -139,6 +141,7 @@ export const vehicleFromData = (vehicleData: VehicleData): Vehicle => ({
   blockId: vehicleData.block_id,
   previousVehicleId: vehicleData.previous_vehicle_id,
   scheduleAdherenceSecs: vehicleData.schedule_adherence_secs,
+  incomingTripDirectionId: vehicleData.incoming_trip_direction_id,
   isShuttle: vehicleData.is_shuttle,
   isOverload: vehicleData.is_overload,
   isOffCourse: vehicleData.is_off_course,
@@ -172,6 +175,7 @@ export const ghostFromData = (ghostData: GhostData): Ghost => ({
   blockId: ghostData.block_id,
   runId: ghostData.run_id,
   viaVariant: ghostData.via_variant,
+  incomingTripDirectionId: ghostData.incoming_trip_direction_id,
   layoverDepartureTime: ghostData.layover_departure_time,
   scheduledTimepointStatus: vehicleTimepointStatusFromData(
     ghostData.scheduled_timepoint_status

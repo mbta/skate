@@ -62,7 +62,8 @@ defmodule Realtime.VehiclesTest do
           id: "on_route_1",
           label: "on_route_1",
           route_id: "route1",
-          block_id: "block1"
+          block_id: "block1",
+          direction_id: 1
         )
 
       vehicle_2 =
@@ -124,7 +125,10 @@ defmodule Realtime.VehiclesTest do
                @timepoint_names_by_id
              ) == %{
                "route1" => [vehicle],
-               "route2" => [vehicle_2, vehicle]
+               "route2" => [
+                 vehicle_2,
+                 %{vehicle | incoming_trip_direction_id: trip_1.direction_id}
+               ]
              }
     end
 
@@ -163,7 +167,7 @@ defmodule Realtime.VehiclesTest do
                0,
                @timepoint_names_by_id
              ) == %{
-               "route2" => [vehicle]
+               "route2" => [%{vehicle | incoming_trip_direction_id: 0}]
              }
     end
 
@@ -349,7 +353,8 @@ defmodule Realtime.VehiclesTest do
             )
           ],
           start_time: 1,
-          end_time: 2
+          end_time: 2,
+          direction_id: 0
         })
 
       trip2 =
@@ -368,7 +373,8 @@ defmodule Realtime.VehiclesTest do
             )
           ],
           start_time: 4,
-          end_time: 4
+          end_time: 4,
+          direction_id: 1
         })
 
       piece = build(:piece, %{trips: [trip1, trip2], start_time: 1, end_time: 4})
@@ -415,7 +421,7 @@ defmodule Realtime.VehiclesTest do
                @timepoint_names_by_id
              ) == %{
                "route1" => [ghost],
-               "route2" => [ghost]
+               "route2" => [%{ghost | incoming_trip_direction_id: 1}]
              }
     end
 
@@ -568,42 +574,52 @@ defmodule Realtime.VehiclesTest do
     end
   end
 
-  describe "incoming_blocks_by_route" do
+  describe "incoming_blocks_and_directions_by_route/1" do
     test "returns a block in multiple routes if it's active in both" do
       incoming_trips = [
         %Trip{
           id: "first",
           block_id: "block",
-          route_id: "first"
+          route_id: "first",
+          start_time: 0,
+          direction_id: 0
         },
         %Trip{
           id: "second",
           block_id: "block",
-          route_id: "second"
+          route_id: "second",
+          start_time: 10,
+          direction_id: 1
         }
       ]
 
-      assert Vehicles.incoming_blocks_by_route(incoming_trips) == %{
-               "first" => ["block"],
-               "second" => ["block"]
+      assert Vehicles.incoming_blocks_and_directions_by_route(incoming_trips) == %{
+               "first" => [{"block", 0}],
+               "second" => [{"block", 1}]
              }
     end
 
     test "returns a block only once per route if it has multiple active trips" do
       incoming_trips = [
         %Trip{
-          id: "first",
-          block_id: "block",
-          route_id: "route"
-        },
-        %Trip{
           id: "second",
           block_id: "block",
-          route_id: "route"
+          route_id: "route",
+          start_time: 10,
+          direction_id: 1
+        },
+        %Trip{
+          id: "first",
+          block_id: "block",
+          route_id: "route",
+          start_time: 0,
+          direction_id: 0
         }
       ]
 
-      assert Vehicles.incoming_blocks_by_route(incoming_trips) == %{"route" => ["block"]}
+      assert Vehicles.incoming_blocks_and_directions_by_route(incoming_trips) == %{
+               "route" => [{"block", 0}]
+             }
     end
   end
 end

@@ -20,4 +20,5 @@ export default Factory.define<GhostData>(({ sequence }) => ({
   block_waivers: [],
   current_piece_first_route: "route",
   current_piece_start_place: "garage",
+  incoming_trip_direction_id: null,
 }))

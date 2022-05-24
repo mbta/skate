@@ -12,6 +12,7 @@ import {
 import { Ghost, Vehicle } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
 import { deselectVehicle, initialState } from "../../../src/state"
+import vehicleFactory from "../../factories/vehicle"
 import ghostFactory from "../../factories/ghost"
 import routeFactory from "../../factories/route"
 import routeTabFactory from "../../factories/routeTab"
@@ -20,7 +21,7 @@ jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
 const setTabMode = jest.fn()
 
-const vehicle: Vehicle = {
+const vehicle: Vehicle = vehicleFactory.build({
   id: "v1",
   label: "v1-label",
   runId: "run-1",
@@ -73,7 +74,7 @@ const vehicle: Vehicle = {
   endOfTripType: "another_trip",
   blockWaivers: [],
   crowding: null,
-}
+})
 
 describe("Header", () => {
   test("renders a header", () => {

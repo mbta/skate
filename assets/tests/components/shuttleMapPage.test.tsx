@@ -11,6 +11,7 @@ import { TrainVehicle, Vehicle } from "../../src/realtime"
 import { ByRouteId, Shape } from "../../src/schedule"
 import { initialState } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
+import vehicleFactory from "../factories/vehicle"
 
 jest
   .spyOn(dateTime, "now")
@@ -35,7 +36,7 @@ jest.mock("../../src/hooks/useTrainVehicles", () => ({
   default: jest.fn(() => ({})),
 }))
 
-const shuttle: Vehicle = {
+const shuttle: Vehicle = vehicleFactory.build({
   id: "y1818",
   label: "1818",
   runId: "999-0555",
@@ -74,7 +75,7 @@ const shuttle: Vehicle = {
   endOfTripType: "another_trip",
   blockWaivers: [],
   crowding: null,
-}
+})
 
 const shape: Shape = {
   id: "shape",

@@ -1,9 +1,10 @@
 import vehicleLabel, { runIdToLabel } from "../../src/helpers/vehicleLabel"
 import { Vehicle } from "../../src/realtime"
 import { UserSettings, VehicleLabelSetting } from "../../src/userSettings"
+import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 
-const vehicle: Vehicle = {
+const vehicle: Vehicle = vehicleFactory.build({
   id: "y0479",
   label: "0479",
   runId: "133-2000",
@@ -54,7 +55,7 @@ const vehicle: Vehicle = {
   endOfTripType: "another_trip",
   blockWaivers: [],
   crowding: null,
-}
+})
 
 describe("vehicleLabel", () => {
   test("displays 'SW-OFF' for a swinging off vehicle, regardless of settings", () => {

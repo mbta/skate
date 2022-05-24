@@ -10,6 +10,7 @@ export default Factory.define<Ghost>(({ sequence }) => ({
   blockId: "block",
   runId: null,
   viaVariant: null,
+  incomingTripDirectionId: null,
   layoverDepartureTime: null,
   scheduledTimepointStatus: {
     timepointId: "t0",

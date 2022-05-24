@@ -40,7 +40,7 @@ describe("SearchResults", () => {
   })
 
   test("renders a list of results including vehicles and ghosts", () => {
-    const vehicle: Vehicle = {
+    const vehicle: Vehicle = vehicleFactory.build({
       id: "v1",
       label: "v1-label",
       runId: "run-1",
@@ -93,7 +93,7 @@ describe("SearchResults", () => {
       endOfTripType: "another_trip",
       blockWaivers: [],
       crowding: null,
-    }
+    })
     const ghost: Ghost = ghostFactory.build({
       id: "ghost-trip",
       directionId: 0,
@@ -125,7 +125,7 @@ describe("SearchResults", () => {
   })
 
   test("shows the new badge for vehicle that have logged in within the past 30 minutes", () => {
-    const vehicle: Vehicle = {
+    const vehicle: Vehicle = vehicleFactory.build({
       id: "v1",
       label: "v1-label",
       runId: "run-1",
@@ -178,7 +178,7 @@ describe("SearchResults", () => {
       endOfTripType: "another_trip",
       blockWaivers: [],
       crowding: null,
-    }
+    })
 
     const tree = renderer
       .create(
@@ -192,7 +192,7 @@ describe("SearchResults", () => {
   })
 
   test("sorts vehicles by most recent operator logon time, ghosts at the top", () => {
-    const oldVehicle: Vehicle = {
+    const oldVehicle: Vehicle = vehicleFactory.build({
       id: "old",
       label: "old-label",
       runId: "run-1",
@@ -245,8 +245,8 @@ describe("SearchResults", () => {
       endOfTripType: "another_trip",
       blockWaivers: [],
       crowding: null,
-    }
-    const newVehicle: Vehicle = {
+    })
+    const newVehicle: Vehicle = vehicleFactory.build({
       id: "new",
       label: "new-label",
       runId: "run-1",
@@ -299,7 +299,7 @@ describe("SearchResults", () => {
       endOfTripType: "another_trip",
       blockWaivers: [],
       crowding: null,
-    }
+    })
     const ghost: Ghost = ghostFactory.build({
       id: "ghost-trip",
       directionId: 0,
@@ -331,7 +331,11 @@ describe("SearchResults", () => {
   })
 
   test("renders a selected result card", () => {
-    const vehicle: Vehicle = vehicleFactory.build()
+    const vehicle: Vehicle = vehicleFactory.build({
+      runId: "run-1",
+      label: "v1-label",
+      operatorId: "op1",
+    })
     const ghost: Ghost = ghostFactory.build({ runId: "123-0123" })
 
     const stateWithSelected = {

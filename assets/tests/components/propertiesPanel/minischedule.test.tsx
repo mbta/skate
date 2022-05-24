@@ -16,6 +16,7 @@ import { Break, Piece, Run, Trip } from "../../../src/minischedule"
 import { Vehicle } from "../../../src/realtime"
 import { initialState } from "../../../src/state"
 import { mockUseStateOnce } from "../../testHelpers/mockHelpers"
+import vehicleFactory from "../../factories/vehicle"
 
 jest.mock("../../../src/hooks/useMinischedule", () => ({
   __esModule: true,
@@ -248,7 +249,7 @@ const multiPieceRun: Run = {
   activities: [piece1, break1, piece2, break2, piece3, break3, piece4, break4],
 }
 
-const vehicle: Vehicle = {
+const vehicle: Vehicle = vehicleFactory.build({
   id: "vehicleId",
   label: "",
   runId: "123-4567",
@@ -296,7 +297,7 @@ const vehicle: Vehicle = {
   endOfTripType: "another_trip",
   blockWaivers: [],
   crowding: null,
-}
+})
 
 const vehicleWithOffset: Vehicle = {
   ...vehicle,

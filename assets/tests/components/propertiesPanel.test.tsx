@@ -7,6 +7,7 @@ import { RoutesProvider } from "../../src/contexts/routesContext"
 import { Ghost, Vehicle } from "../../src/realtime"
 import { Route } from "../../src/schedule"
 import * as dateTime from "../../src/util/dateTime"
+import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 import routeFactory from "../factories/route"
 
@@ -20,7 +21,7 @@ const route: Route = routeFactory.build({
   id: "39",
   name: "39",
 })
-const vehicle: Vehicle = {
+const vehicle: Vehicle = vehicleFactory.build({
   id: "v1",
   label: "v1-label",
   runId: "run-1",
@@ -73,7 +74,7 @@ const vehicle: Vehicle = {
   endOfTripType: "another_trip",
   blockWaivers: [],
   crowding: null,
-}
+})
 const ghost: Ghost = ghostFactory.build({
   id: "ghost-trip",
   directionId: 0,

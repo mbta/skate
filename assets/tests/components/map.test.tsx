@@ -11,6 +11,7 @@ import Map, {
 import { TrainVehicle, Vehicle } from "../../src/realtime"
 import { Shape } from "../../src/schedule"
 import featureIsEnabled from "../../src/laboratoryFeatures"
+import vehicleFactory from "../factories/vehicle"
 
 jest.unmock("leaflet")
 jest.unmock("react-leaflet-control")
@@ -20,7 +21,7 @@ jest.mock("../../src/laboratoryFeatures", () => ({
   default: jest.fn(() => false),
 }))
 
-const vehicle: Vehicle = {
+const vehicle: Vehicle = vehicleFactory.build({
   id: "y1818",
   label: "1818",
   runId: "run-1",
@@ -73,7 +74,7 @@ const vehicle: Vehicle = {
   endOfTripType: "another_trip",
   blockWaivers: [],
   crowding: null,
-}
+})
 
 describe("map", () => {
   test("draws vehicles", () => {

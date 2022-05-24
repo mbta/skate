@@ -11,6 +11,7 @@ import useVehiclesForRoute from "../../../src/hooks/useVehiclesForRoute"
 import { BlockWaiver, Ghost, Vehicle } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
 import * as dateTime from "../../../src/util/dateTime"
+import vehicleFactory from "../../factories/vehicle"
 
 jest
   .spyOn(dateTime, "now")
@@ -30,7 +31,7 @@ jest.mock("../../../src/hooks/useNearestIntersection", () => ({
   useNearestIntersection: jest.fn(() => null),
 }))
 
-const vehicle: Vehicle = {
+const vehicle: Vehicle = vehicleFactory.build({
   id: "v1",
   label: "v1-label",
   runId: "run-1",
@@ -83,7 +84,7 @@ const vehicle: Vehicle = {
   endOfTripType: "another_trip",
   blockWaivers: [],
   crowding: null,
-}
+})
 
 describe("VehiclePropertiesPanel", () => {
   test("renders a vehicle properties panel", () => {

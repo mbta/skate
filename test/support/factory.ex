@@ -21,6 +21,7 @@ defmodule Skate.Factory do
       operator_logon_time: nil,
       overload_offset: nil,
       run_id: "",
+      incoming_trip_direction_id: nil,
       is_shuttle: false,
       is_overload: false,
       is_off_course: false,
@@ -44,6 +45,7 @@ defmodule Skate.Factory do
       block_id: "block",
       run_id: "123-9049",
       via_variant: "X",
+      incoming_trip_direction_id: nil,
       layover_departure_time: nil,
       scheduled_timepoint_status: %{
         timepoint_id: "t2",

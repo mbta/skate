@@ -31,8 +31,12 @@ const IncomingBoxVehicle = ({
   const selectedClass =
     vehicleOrGhost.id === selectedVehicleId ? "selected" : ""
   const orientation =
-    directionOnLadder(vehicleOrGhost.directionId, ladderDirection) ===
-    VehicleDirection.Down
+    directionOnLadder(
+      vehicleOrGhost.incomingTripDirectionId !== null
+        ? vehicleOrGhost.incomingTripDirectionId
+        : vehicleOrGhost.directionId,
+      ladderDirection
+    ) === VehicleDirection.Down
       ? Orientation.Down
       : Orientation.Up
   const alertIconStyle: AlertIconStyle | undefined =

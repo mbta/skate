@@ -21,6 +21,7 @@ export default Factory.define<Vehicle>(({ sequence }) => ({
   blockId: `block-${sequence}`,
   previousVehicleId: "v2",
   scheduleAdherenceSecs: 0,
+  incomingTripDirectionId: null,
   isShuttle: false,
   isOverload: false,
   isOffCourse: false,

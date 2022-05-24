@@ -39,6 +39,7 @@ export interface Ghost {
   blockId: BlockId
   runId: RunId | null
   viaVariant: ViaVariant | null
+  incomingTripDirectionId: DirectionId | null
   layoverDepartureTime: number | null
   scheduledTimepointStatus: VehicleTimepointStatus | null
   scheduledLogonTime: number | null
@@ -119,6 +120,7 @@ export interface Vehicle {
   blockId: BlockId
   previousVehicleId: string
   scheduleAdherenceSecs: number
+  incomingTripDirectionId: DirectionId | null
   isShuttle: boolean
   isOverload: boolean
   isOffCourse: boolean

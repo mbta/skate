@@ -186,7 +186,7 @@ describe("ladder", () => {
       { id: "t2", name: "t2 name" },
     ]
     const vehicles: Vehicle[] = [
-      {
+      vehicleFactory.build({
         id: "downward",
         label: "downward",
         runId: "run-2",
@@ -237,7 +237,7 @@ describe("ladder", () => {
         endOfTripType: "another_trip",
         blockWaivers: [],
         crowding: null,
-      },
+      }),
     ]
     const ladderDirection = LadderDirection.OneToZero
     const tree = renderer
@@ -261,7 +261,7 @@ describe("ladder", () => {
       { id: "t2", name: "t2 name" },
     ]
     const vehicles: Vehicle[] = [
-      {
+      vehicleFactory.build({
         id: "upward",
         label: "upward",
         runId: "run-1",
@@ -300,8 +300,8 @@ describe("ladder", () => {
         endOfTripType: "another_trip",
         blockWaivers: [],
         crowding: null,
-      },
-      {
+      }),
+      vehicleFactory.build({
         id: "downward",
         label: "downward",
         runId: "run-2",
@@ -352,7 +352,7 @@ describe("ladder", () => {
         endOfTripType: "another_trip",
         blockWaivers: [],
         crowding: null,
-      },
+      }),
     ]
     const ladderDirection = LadderDirection.ZeroToOne
 
@@ -405,7 +405,7 @@ describe("ladder", () => {
         },
       ],
     })
-    const vehicleWithOldBlockWaiver: Vehicle = {
+    const vehicleWithOldBlockWaiver: Vehicle = vehicleFactory.build({
       id: "id",
       label: "label",
       runId: "run",
@@ -464,7 +464,7 @@ describe("ladder", () => {
         },
       ],
       crowding: null,
-    }
+    })
 
     const vehicleWithCurrentBlockWaiver: Vehicle = {
       ...vehicleWithOldBlockWaiver,
@@ -511,7 +511,7 @@ describe("ladder", () => {
       { id: "t1", name: "t1 name" },
       { id: "t2", name: "t2 name" },
     ]
-    const vehicle: Vehicle = {
+    const vehicle: Vehicle = vehicleFactory.build({
       id: "upward",
       label: "upward",
       runId: "run-1",
@@ -550,7 +550,7 @@ describe("ladder", () => {
       endOfTripType: "another_trip",
       blockWaivers: [],
       crowding: null,
-    }
+    })
 
     const ladderDirection = LadderDirection.ZeroToOne
 
@@ -613,7 +613,7 @@ describe("ladder", () => {
       { id: "t1", name: "t1 name" },
       { id: "t2", name: "t2 name" },
     ]
-    const vehicle: Vehicle = {
+    const vehicle: Vehicle = vehicleFactory.build({
       id: "upward",
       label: "upward",
       runId: "run-1",
@@ -657,7 +657,7 @@ describe("ladder", () => {
         capacity: 18,
         occupancyPercentage: 0,
       },
-    }
+    })
 
     const ladderDirection = LadderDirection.ZeroToOne
 
@@ -683,7 +683,7 @@ describe("ladder", () => {
   test("renders a ladder with no timepoints", () => {
     const timepoints: Timepoint[] = []
     const vehicles: Vehicle[] = [
-      {
+      vehicleFactory.build({
         id: "upward",
         label: "upward",
         runId: "run-1",
@@ -722,7 +722,7 @@ describe("ladder", () => {
         endOfTripType: "another_trip",
         blockWaivers: [],
         crowding: null,
-      },
+      }),
     ]
     const ladderDirection = LadderDirection.ZeroToOne
 
@@ -747,7 +747,7 @@ describe("ladder", () => {
       { id: "t2", name: "t2 name" },
     ]
     const vehicles: Vehicle[] = [
-      {
+      vehicleFactory.build({
         id: "upward",
         label: "upward",
         runId: "run-1",
@@ -798,7 +798,7 @@ describe("ladder", () => {
         endOfTripType: "another_trip",
         blockWaivers: [],
         crowding: null,
-      },
+      }),
     ]
     const ladderDirection = LadderDirection.OneToZero
 
@@ -817,7 +817,7 @@ describe("ladder", () => {
   })
 
   test("renders an off-course vehicle", () => {
-    const vehicle: Vehicle = {
+    const vehicle: Vehicle = vehicleFactory.build({
       id: "y1439",
       label: "1439",
       runId: "run-1",
@@ -879,7 +879,7 @@ describe("ladder", () => {
       endOfTripType: "another_trip",
       blockWaivers: [],
       crowding: null,
-    }
+    })
 
     const timepoints: Timepoint[] = [
       { id: "t0", name: "t0 name" },
@@ -912,7 +912,7 @@ describe("ladder", () => {
       { id: "t2", name: "t2 name" },
     ]
     const vehicles: Vehicle[] = [
-      {
+      vehicleFactory.build({
         id: "upward",
         label: "upward",
         runId: "run-1",
@@ -951,7 +951,7 @@ describe("ladder", () => {
         endOfTripType: "another_trip",
         blockWaivers: [],
         crowding: null,
-      },
+      }),
     ]
     const ladderDirection = LadderDirection.ZeroToOne
 
@@ -976,7 +976,7 @@ describe("ladder", () => {
       { id: "t2", name: "t2 name" },
     ]
     const vehicles: Vehicle[] = [
-      {
+      vehicleFactory.build({
         id: "laying-over",
         label: "laying-over",
         runId: "laying-over",
@@ -1015,7 +1015,7 @@ describe("ladder", () => {
         endOfTripType: "another_trip",
         blockWaivers: [],
         crowding: null,
-      },
+      }),
     ]
     const ladderDirection = LadderDirection.ZeroToOne
 
@@ -1043,7 +1043,7 @@ describe("ladder", () => {
       { id: "t2", name: "t2 name" },
     ]
     const vehicles: Vehicle[] = [
-      {
+      vehicleFactory.build({
         id: "laying-over",
         label: "laying-over",
         runId: "laying-over",
@@ -1094,7 +1094,7 @@ describe("ladder", () => {
         endOfTripType: "another_trip",
         blockWaivers: [],
         crowding: null,
-      },
+      }),
     ]
     const ladderDirection = LadderDirection.ZeroToOne
 

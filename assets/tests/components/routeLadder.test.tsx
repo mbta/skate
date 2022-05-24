@@ -12,11 +12,12 @@ import {
 } from "../../src/realtime.d"
 import { Route } from "../../src/schedule.d"
 import { initialState, selectVehicle } from "../../src/state"
+import vehicleFactory from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 import routeFactory from "../factories/route"
 
 const vehicles: Vehicle[] = [
-  {
+  vehicleFactory.build({
     id: "y1818",
     label: "1818",
     runId: "run-1",
@@ -55,8 +56,8 @@ const vehicles: Vehicle[] = [
     endOfTripType: "another_trip",
     blockWaivers: [],
     crowding: null,
-  },
-  {
+  }),
+  vehicleFactory.build({
     id: "y0479",
     label: "0479",
     runId: "run-2",
@@ -107,7 +108,7 @@ const vehicles: Vehicle[] = [
     endOfTripType: "another_trip",
     blockWaivers: [],
     crowding: null,
-  },
+  }),
 ]
 
 describe("routeLadder", () => {
@@ -607,7 +608,7 @@ describe("routeLadder", () => {
       { id: "WELLH", name: "WELLH Name" },
       { id: "MORTN", name: "MORTN Name" },
     ]
-    const vehicle: Vehicle = {
+    const vehicle: Vehicle = vehicleFactory.build({
       id: "v1",
       label: "v1",
       runId: "run1",
@@ -646,7 +647,7 @@ describe("routeLadder", () => {
       endOfTripType: "another_trip",
       blockWaivers: [],
       crowding: null,
-    }
+    })
 
     const wrapper = mount(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>

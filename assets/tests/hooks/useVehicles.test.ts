@@ -6,11 +6,12 @@ import { Ghost, Vehicle, VehicleTimepointStatus } from "../../src/realtime.d"
 import { RouteId } from "../../src/schedule.d"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 import ghostFactory from "../factories/ghost"
+import vehicleDataFactory from "../factories/vehicle_data"
 import ghostDataFactory from "../factories/ghost_data"
 
 describe("useVehicles", () => {
   const vehiclesData: VehicleData[] = [
-    {
+    vehicleDataFactory.build({
       bearing: 33,
       block_id: "block-1",
       data_discrepancies: [
@@ -44,6 +45,7 @@ describe("useVehicles", () => {
       direction_id: 0,
       headsign: "Forest Hills",
       id: "v1",
+      incoming_trip_direction_id: 1,
       is_shuttle: false,
       is_overload: false,
       is_off_course: false,
@@ -97,7 +99,7 @@ describe("useVehicles", () => {
         },
       ],
       crowding: null,
-    },
+    }),
   ]
   const vehicles: Vehicle[] = [
     {
@@ -120,6 +122,7 @@ describe("useVehicles", () => {
       blockId: "block-1",
       previousVehicleId: "v2",
       scheduleAdherenceSecs: 0,
+      incomingTripDirectionId: 1,
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,
@@ -189,7 +192,7 @@ describe("useVehicles", () => {
     },
   ]
   const vehiclesDataWithInvalid: VehicleData[] = [
-    {
+    vehicleDataFactory.build({
       bearing: 33,
       block_id: "block-1",
       data_discrepancies: [
@@ -276,7 +279,7 @@ describe("useVehicles", () => {
         },
       ],
       crowding: null,
-    },
+    }),
   ]
 
   test("vehicles is empty to start with", () => {
@@ -345,6 +348,7 @@ describe("useVehicles", () => {
           remark: null,
         },
       ],
+      incomingTripDirectionId: 1,
     })
 
     const ghostData = ghostDataFactory.build({
@@ -359,6 +363,7 @@ describe("useVehicles", () => {
           remark: null,
         },
       ],
+      incoming_trip_direction_id: 1,
     })
 
     const mockSocket = makeMockSocket()
