@@ -18,7 +18,7 @@
 }
 
 .m-left-nav--collapsed {
-  width: 4.25rem;
+  width: min-content;
 
   .m-left-nav__icon {
     padding-right: 0;
@@ -37,10 +37,10 @@
 }
 
 .m-left-nav__link {
-  @include button-icon(1rem);
+  @include button-icon(1.25rem);
   display: flex;
   align-items: center;
-  padding: 0.5rem 0.625rem;
+  padding: 0.25rem 0.5rem;
   box-sizing: border-box;
   width: 100%;
   height: 2.25rem;
