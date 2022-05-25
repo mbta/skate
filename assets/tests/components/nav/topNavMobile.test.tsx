@@ -71,7 +71,7 @@ describe("TopNavMobile", () => {
     )
 
     expect(result.getByTestId("top-nav-mobile").children[0]).toHaveClass(
-      "m-top-nav-mobile__menu-open"
+      "m-top-nav-mobile__menu--open"
     )
   })
 
@@ -89,7 +89,7 @@ describe("TopNavMobile", () => {
     )
 
     expect(result.getByTestId("top-nav-mobile").children[0]).not.toHaveClass(
-      "m-top-nav-mobile__menu-open"
+      "m-top-nav-mobile__menu--open"
     )
   })
 

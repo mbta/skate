@@ -41,8 +41,8 @@ const topNavMobile = (): JSX.Element => {
         className={
           "m-top-nav-mobile__menu" +
           (mobileMenuIsOpen
-            ? " m-top-nav-mobile__menu-open"
-            : " m-top-nav-mobile__menu-closed")
+            ? " m-top-nav-mobile__menu--open"
+            : " m-top-nav-mobile__menu--closed")
         }
       >
         <div className="m-top-nav-mobile__menu-header">
@@ -115,8 +115,8 @@ const topNavMobile = (): JSX.Element => {
       <div
         data-testid="mobile-overlay"
         className={
-          "m-top-nav-mobile-overlay" +
-          (mobileMenuIsOpen ? " m-top-nav-mobile-overlay__open" : "")
+          "m-top-nav-mobile__overlay" +
+          (mobileMenuIsOpen ? " m-top-nav-mobile__overlay--open" : "")
         }
         onClick={toggleVisibility}
         onKeyDown={toggleVisibility}
@@ -125,7 +125,7 @@ const topNavMobile = (): JSX.Element => {
 
       <div
         className={
-          "m-top-nav-mobile-content" + (mobileMenuIsOpen ? " blurred" : "")
+          "m-top-nav-mobile__content" + (mobileMenuIsOpen ? " blurred" : "")
         }
       >
         <div className="m-top-nav__left-items">

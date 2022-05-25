@@ -1,4 +1,4 @@
-.m-top-nav-mobile-content {
+.m-top-nav-mobile__content {
   display: flex;
   box-sizing: border-box;
   padding: 0.75rem 1.5rem 0.5rem 1.5rem;
@@ -8,13 +8,13 @@
   z-index: 108;
 }
 
-.m-top-nav-mobile-overlay {
+.m-top-nav-mobile__overlay {
   position: fixed;
   padding: 0px;
   margin: 0px;
   display: none;
 }
-.m-top-nav-mobile-overlay__open {
+.m-top-nav-mobile__overlay--open {
   display: block;
   width: 100%;
   height: 100%;
@@ -36,7 +36,7 @@
   fill: $color-eggplant-500;
 }
 
-.m-top-nav-mobile__menu-open {
+.m-top-nav-mobile__menu--open {
   width: 18.125rem;
   max-width: 100%;
   height: 100%;
@@ -47,7 +47,7 @@
   background-color: $color-gray-50;
 }
 
-.m-top-nav-mobile__menu-closed {
+.m-top-nav-mobile__menu--closed {
   display: none;
 }
 
