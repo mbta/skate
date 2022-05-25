@@ -122,7 +122,7 @@ const topNavMobile = (): JSX.Element => {
         onClick={toggleVisibility}
         onKeyDown={toggleVisibility}
         aria-hidden={true}
-      ></div>
+      />
 
       <div
         className={
