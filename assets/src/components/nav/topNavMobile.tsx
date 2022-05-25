@@ -22,6 +22,8 @@ const topNavMobile = (): JSX.Element => {
 
   const [state, dispatch] = useContext(StateDispatchContext)
 
+  const toggleVisibility = () => dispatch(toggleMobileMenu())
+
   const { routeTabs, notificationDrawerIsOpen, mobileMenuIsOpen } = state
 
   const bellIconClasses = notificationDrawerIsOpen
@@ -46,7 +48,7 @@ const topNavMobile = (): JSX.Element => {
         <div className="m-top-nav-mobile__menu-header">
           <Link
             className="m-top-nav__logo"
-            onClick={() => dispatch(toggleMobileMenu())}
+            onClick={toggleVisibility}
             to="/"
             title="Skate"
           >
@@ -55,7 +57,7 @@ const topNavMobile = (): JSX.Element => {
 
           <button
             className="m-top-nav-mobile__close"
-            onClick={() => dispatch(toggleMobileMenu())}
+            onClick={toggleVisibility}
             title="Close"
           >
             {closeIcon("m-top-nav-mobile__close-icon")}
@@ -101,7 +103,7 @@ const topNavMobile = (): JSX.Element => {
               exact={true}
               title="Settings"
               to="/settings"
-              onClick={() => dispatch(toggleMobileMenu())}
+              onClick={toggleVisibility}
             >
               {settingsIcon("m-top-nav-mobile__menu-icon")}
               Settings
@@ -116,7 +118,8 @@ const topNavMobile = (): JSX.Element => {
           "m-top-nav-mobile-overlay" +
           (mobileMenuIsOpen ? " m-top-nav-mobile-overlay__open" : "")
         }
-        onClick={() => dispatch(toggleMobileMenu())}
+        onClick={toggleVisibility}
+        aria-hidden={!mobileMenuIsOpen}
       ></div>
 
       <div
@@ -127,7 +130,7 @@ const topNavMobile = (): JSX.Element => {
         <div className="m-top-nav__left-items">
           <button
             className="m-top-nav__left-item"
-            onClick={() => dispatch(toggleMobileMenu())}
+            onClick={toggleVisibility}
             title="Menu"
           >
             {hamburgerIcon("m-top-nav-mobile__icon")}
