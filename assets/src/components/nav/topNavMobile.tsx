@@ -31,8 +31,8 @@ const topNavMobile = (): JSX.Element => {
     : ["m-top-nav__notifications-icon"]
 
   let tabName = "Untitled"
-  const showTabName = location.pathname === "/" 
-  if(showTabName) tabName = currentTabName
+  const showTabName = location.pathname === "/"
+  if (showTabName) tabName = currentTabName
 
   let tabName = "Untitled"
   const showTabName = location.pathname === "/"
