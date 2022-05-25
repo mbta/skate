@@ -14,7 +14,6 @@ defmodule SkateWeb.ConnCase do
   """
 
   use ExUnit.CaseTemplate
-  import Test.Support.Helpers
   import Plug.Test
 
   using do
@@ -30,12 +29,6 @@ defmodule SkateWeb.ConnCase do
   end
 
   setup tags do
-    reassign_env(
-      :skate,
-      :refresh_token_store,
-      SkateWeb.ConnCase.FakeRefreshTokenStore
-    )
-
     {conn, user} =
       cond do
         tags[:authenticated] ->
@@ -87,9 +80,5 @@ defmodule SkateWeb.ConnCase do
       end
 
     {:ok, %{conn: conn, user: user}}
-  end
-
-  defmodule FakeRefreshTokenStore do
-    def get_refresh_token(_), do: nil
   end
 end
