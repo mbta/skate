@@ -100,6 +100,7 @@ const topNavMobile = (): JSX.Element => {
           <li>
             <NavLink
               className="m-top-nav-mobile__menu-link"
+              activeClassName="m-top-nav-mobile__menu-link--active"
               exact={true}
               title="Settings"
               to="/settings"
