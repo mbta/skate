@@ -50,6 +50,9 @@ export const highestExistingOrdering = (routeTabs: RouteTab[]): number =>
 export const currentRouteTab = (routeTabs: RouteTab[]): RouteTab | undefined =>
   routeTabs.find((routeTab) => routeTab.isCurrentTab)
 
+export const currentTabName = (routeTabs: RouteTab[]): string => 
+  currentRouteTab(routeTabs).presetName || "Untitled"
+
 export const parseRouteTabData = (
   routeTabsData: RouteTabData[]
 ): RouteTab[] => {

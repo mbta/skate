@@ -13,7 +13,7 @@ import {
 } from "../../helpers/icon"
 import { toggleMobileMenu, toggleNotificationDrawer } from "../../state"
 import NotificationBellIcon from "../notificationBellIcon"
-import { currentRouteTab } from "../../models/routeTab"
+import { currentTabName } from "../../models/routeTab"
 import { openDrift } from "../../helpers/drift"
 import { reload } from "../../models/browser"
 
@@ -31,9 +31,12 @@ const topNavMobile = (): JSX.Element => {
     : ["m-top-nav__notifications-icon"]
 
   let tabName = "Untitled"
+  const showTabName = location.pathname === "/" 
+  if(showTabName) tabName = currentTabName
+
+  let tabName = "Untitled"
   const showTabName = location.pathname === "/"
-  const currentTab = currentRouteTab(routeTabs)
-  if (showTabName && currentTab) tabName = currentTab.presetName || "Untitled"
+  if (showTabName && currentTabName) tabName = currentTabName(routeTabs)
 
   return (
     <div className="m-top-nav-mobile" data-testid="top-nav-mobile">
