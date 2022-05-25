@@ -32,10 +32,6 @@ const topNavMobile = (): JSX.Element => {
 
   let tabName = "Untitled"
   const showTabName = location.pathname === "/"
-  if (showTabName) tabName = currentTabName
-
-  let tabName = "Untitled"
-  const showTabName = location.pathname === "/"
   if (showTabName && currentTabName) tabName = currentTabName(routeTabs)
 
   return (
