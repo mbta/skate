@@ -111,7 +111,7 @@ const topNavMobile = (): JSX.Element => {
       </div>
 
       <div
-        data-testid="mobile-overlay" 
+        data-testid="mobile-overlay"
         className={
           "m-top-nav-mobile-overlay" +
           (mobileMenuIsOpen ? " m-top-nav-mobile-overlay__open" : "")
