@@ -119,6 +119,7 @@ const topNavMobile = (): JSX.Element => {
           (mobileMenuIsOpen ? " m-top-nav-mobile-overlay__open" : "")
         }
         onClick={toggleVisibility}
+        onKeyDown={toggleVisibility}
         aria-hidden={!mobileMenuIsOpen}
       ></div>
 
