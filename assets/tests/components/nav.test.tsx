@@ -71,7 +71,6 @@ describe("Nav", () => {
       </BrowserRouter>
     )
 
-    expect(result.queryByText("Mobile nav placeholder.")).not.toBeNull()
     expect(result.queryByTitle("Route Ladders")).toBeNull()
     expect(result.queryByText("Route Ladders")).toBeNull()
   })
@@ -92,7 +91,6 @@ describe("Nav", () => {
       </BrowserRouter>
     )
 
-    expect(result.queryByText("Mobile nav placeholder.")).toBeNull()
     expect(result.queryByTitle("Route Ladders")).not.toBeNull()
     expect(result.queryByText("Route Ladders")).toBeNull()
   })
@@ -112,7 +110,6 @@ describe("Nav", () => {
       </BrowserRouter>
     )
 
-    expect(result.queryByText("Mobile nav placeholder.")).toBeNull()
     expect(result.queryByTitle("Route Ladders")).not.toBeNull()
     expect(result.queryByText("Route Ladders")).not.toBeNull()
   })

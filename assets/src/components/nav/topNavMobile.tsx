@@ -34,7 +34,7 @@ const topNavMobile = (): JSX.Element => {
   if (showTabName && currentTab) tabName = currentTab.presetName || "Untitled"
 
   return (
-    <div className="m-top-nav-mobile">
+    <div className="m-top-nav-mobile" data-testid="top-nav-mobile">
       <div
         className={
           "m-top-nav-mobile__menu" +
@@ -111,6 +111,7 @@ const topNavMobile = (): JSX.Element => {
       </div>
 
       <div
+        data-testid="mobile-overlay" 
         className={
           "m-top-nav-mobile-overlay" +
           (mobileMenuIsOpen ? " m-top-nav-mobile-overlay__open" : "")
