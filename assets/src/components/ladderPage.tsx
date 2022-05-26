@@ -8,6 +8,7 @@ import {
   isOpenTab,
   isEditedPreset,
   isPreset,
+  tabName,
 } from "../models/routeTab"
 import { allVehiclesAndGhosts } from "../models/vehiclesByRouteId"
 import PickerContainer from "./pickerContainer"
@@ -60,7 +61,7 @@ const LadderTab = ({
   showSaveIcon: boolean
   saveTab: () => void
 }): ReactElement<HTMLDivElement> => {
-  const title = tab.presetName || "Untitled"
+  const title = tabName(tab)
   return (
     <div
       className={

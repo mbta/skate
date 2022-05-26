@@ -50,16 +50,6 @@ export const highestExistingOrdering = (routeTabs: RouteTab[]): number =>
 export const currentRouteTab = (routeTabs: RouteTab[]): RouteTab | undefined =>
   routeTabs.find((routeTab) => routeTab.isCurrentTab)
 
-export const currentTabName = (routeTabs: RouteTab[]): string => {
-  if (
-    currentRouteTab(routeTabs) !== undefined &&
-    currentRouteTab(routeTabs)?.presetName !== undefined
-  ) {
-    return currentRouteTab(routeTabs)?.presetName || "Untitled"
-  }
-  return "Untitled"
-}
-
 export const parseRouteTabData = (
   routeTabsData: RouteTabData[]
 ): RouteTab[] => {
@@ -84,6 +74,30 @@ export const isEditedPreset = (routeTab: RouteTab): boolean =>
   routeTab.saveChangesToTabUuid !== undefined
 export const isOpenTab = (routeTab: RouteTab): boolean =>
   routeTab.ordering !== undefined
+
+export const tabName = (routeTab: RouteTab): string =>
+  routeTab?.presetName || "Untitled"
+
+export const currentTabName = (routeTabs: RouteTab[]): string => {
+  const currentTab = currentRouteTab(routeTabs)
+  if(currentTab !== undefined) return tabName(currentTab)
+  return "Untitled"
+}
+
+const toTitleCase = (str: string): string => {
+  return str.replace(
+    /\w\S*/g,
+    (txt: string): string =>
+      txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+  )
+}
+
+export const pageOrTabName = (routeTabs: RouteTab[]): string => {
+  let tabName = "Skate";
+  if(location.pathname === "/") tabName = currentTabName(routeTabs)
+  else tabName = toTitleCase(location.pathname.replace("/","").replace("-"," "))
+  return tabName
+}
 
 export const selectTabByUUID = (
   routeTabs: RouteTab[],
