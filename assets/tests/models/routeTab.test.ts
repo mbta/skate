@@ -7,8 +7,6 @@ import {
   isEditedPreset,
   tabName,
   currentTabName,
-  toTitleCase,
-  pageOrTabName,
   isOpenTab,
   applyRouteTabEdit,
   saveEditedPreset,
@@ -129,25 +127,6 @@ describe("currentTabName", () => {
     })
 
     expect(currentTabName([routeTab1, routeTab2])).toEqual("This One")
-  })
-})
-
-describe("toTitleCase", () => {
-  test("capitalizes first letter of each word in string", () => {
-    const pageName = "shuttle map"
-    expect(toTitleCase(pageName)).toEqual("Shuttle Map")
-  })
-})
-
-describe("pageOrTabName", () => {
-  test("returns Untitled for route ladder page without tabs", () => {
-    window.history.pushState({}, "Page Title", "/")
-    expect(pageOrTabName([])).toEqual("Untitled")
-  })
-
-  test("returns page name for shuttle map", () => {
-    window.history.pushState({}, "Page Title", "/shuttle-map")
-    expect(pageOrTabName([])).toEqual("Shuttle Map")
   })
 })
 

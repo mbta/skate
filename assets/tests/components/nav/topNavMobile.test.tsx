@@ -1,6 +1,10 @@
 import React from "react"
 import { render } from "@testing-library/react"
 import TopNavMobile from "../../../src/components/nav/topNavMobile"
+import {
+  toTitleCase,
+  pageOrTabName,
+} from "../../../src/components/nav/topNavMobile"
 import userEvent from "@testing-library/user-event"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import {
@@ -237,5 +241,24 @@ describe("TopNavMobile", () => {
     await user.click(result.getByTitle("Close"))
 
     expect(dispatch).toHaveBeenCalledWith(toggleMobileMenu())
+  })
+})
+
+describe("toTitleCase", () => {
+  test("capitalizes first letter of each word in string", () => {
+    const pageName = "shuttle map"
+    expect(toTitleCase(pageName)).toEqual("Shuttle Map")
+  })
+})
+
+describe("pageOrTabName", () => {
+  test("returns Untitled for route ladder page without tabs", () => {
+    const location = { pathname: "/" }
+    expect(pageOrTabName(location, [])).toEqual("Untitled")
+  })
+
+  test("returns page name for shuttle map", () => {
+    const location = { pathname: "/shuttle-map" }
+    expect(pageOrTabName(location, [])).toEqual("Shuttle Map")
   })
 })

@@ -13,9 +13,27 @@ import {
 } from "../../helpers/icon"
 import { toggleMobileMenu, toggleNotificationDrawer } from "../../state"
 import NotificationBellIcon from "../notificationBellIcon"
-import { pageOrTabName } from "../../models/routeTab"
+import { currentTabName, RouteTab } from "../../models/routeTab"
 import { openDrift } from "../../helpers/drift"
 import { reload } from "../../models/browser"
+
+export const toTitleCase = (str: string): string => {
+  return str.replace(
+    /\w\S*/g,
+    (txt: string): string =>
+      txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+  )
+}
+
+export const pageOrTabName = (location: any, routeTabs: RouteTab[]): string => {
+  let tabName = "Skate"
+
+  if (location.pathname === "/") tabName = currentTabName(routeTabs)
+  else
+    tabName = toTitleCase(location.pathname.replace("/", "").replace("-", " "))
+
+  return tabName
+}
 
 const topNavMobile = (): JSX.Element => {
   const location = useLocation()
@@ -135,7 +153,7 @@ const topNavMobile = (): JSX.Element => {
         </div>
 
         <div className="m-top-nav-mobile__header-text">
-          {pageOrTabName(routeTabs)}
+          {pageOrTabName(location, routeTabs)}
         </div>
 
         <div className="m-top-nav__right-items">

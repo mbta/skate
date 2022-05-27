@@ -84,22 +84,6 @@ export const currentTabName = (routeTabs: RouteTab[]): string => {
   return "Untitled"
 }
 
-export const toTitleCase = (str: string): string => {
-  return str.replace(
-    /\w\S*/g,
-    (txt: string): string =>
-      txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
-  )
-}
-
-export const pageOrTabName = (routeTabs: RouteTab[]): string => {
-  let tabName = "Skate"
-  if (location.pathname === "/") tabName = currentTabName(routeTabs)
-  else
-    tabName = toTitleCase(location.pathname.replace("/", "").replace("-", " "))
-  return tabName
-}
-
 export const selectTabByUUID = (
   routeTabs: RouteTab[],
   uuid: string
