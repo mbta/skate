@@ -55,7 +55,7 @@ describe("Nav", () => {
     expect(result.queryByTestId("late-view-icon")).not.toBeNull()
   })
 
-  test("renders mobile placeholder for new nav content", () => {
+  test("renders mobile nav content", () => {
     ;(appData as jest.Mock).mockImplementation(() => {
       return {
         navBetaFlag: "true",
@@ -71,6 +71,7 @@ describe("Nav", () => {
       </BrowserRouter>
     )
 
+    expect(result.getByTestId("top-nav-mobile")).not.toBeNull()
     expect(result.queryByTitle("Route Ladders")).toBeNull()
     expect(result.queryByText("Route Ladders")).toBeNull()
   })
