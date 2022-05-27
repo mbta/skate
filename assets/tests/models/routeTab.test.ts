@@ -123,7 +123,10 @@ describe("tabName", () => {
 describe("currentTabName", () => {
   test("currentTabName returns preset name of current tab", () => {
     const routeTab1 = routeTabFactory.build({ presetName: "Not This One" })
-    const routeTab2 = routeTabFactory.build({ isCurrentTab: true, presetName: "This One" })
+    const routeTab2 = routeTabFactory.build({
+      isCurrentTab: true,
+      presetName: "This One",
+    })
 
     expect(currentTabName([routeTab1, routeTab2])).toEqual("This One")
   })
@@ -138,15 +141,14 @@ describe("toTitleCase", () => {
 
 describe("pageOrTabName", () => {
   test("returns Untitled for route ladder page without tabs", () => {
-    window.history.pushState({}, 'Page Title', '/');
+    window.history.pushState({}, "Page Title", "/")
     expect(pageOrTabName([])).toEqual("Untitled")
   })
 
   test("returns page name for shuttle map", () => {
-    window.history.pushState({}, 'Page Title', '/shuttle-map');
+    window.history.pushState({}, "Page Title", "/shuttle-map")
     expect(pageOrTabName([])).toEqual("Shuttle Map")
   })
-
 })
 
 describe("isOpenTab", () => {

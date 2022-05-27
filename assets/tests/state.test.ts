@@ -163,6 +163,17 @@ describe("reducer", () => {
     expect(newState).toEqual(expectedState)
   })
 
+  test("toggleMobileMenu", () => {
+    const expectedState: State.State = {
+      ...initialState,
+      mobileMenuIsOpen: true,
+    }
+
+    const newState = reducer(initialState, State.toggleMobileMenu())
+
+    expect(newState).toEqual(expectedState)
+  })
+
   describe("notification drawer", () => {
     test("openNotificationDrawer opens the drawer", () => {
       const state = {
