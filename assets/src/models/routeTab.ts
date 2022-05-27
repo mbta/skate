@@ -80,11 +80,11 @@ export const tabName = (routeTab: RouteTab): string =>
 
 export const currentTabName = (routeTabs: RouteTab[]): string => {
   const currentTab = currentRouteTab(routeTabs)
-  if(currentTab !== undefined) return tabName(currentTab)
+  if (currentTab !== undefined) return tabName(currentTab)
   return "Untitled"
 }
 
-const toTitleCase = (str: string): string => {
+export const toTitleCase = (str: string): string => {
   return str.replace(
     /\w\S*/g,
     (txt: string): string =>
@@ -93,9 +93,10 @@ const toTitleCase = (str: string): string => {
 }
 
 export const pageOrTabName = (routeTabs: RouteTab[]): string => {
-  let tabName = "Skate";
-  if(location.pathname === "/") tabName = currentTabName(routeTabs)
-  else tabName = toTitleCase(location.pathname.replace("/","").replace("-"," "))
+  let tabName = "Skate"
+  if (location.pathname === "/") tabName = currentTabName(routeTabs)
+  else
+    tabName = toTitleCase(location.pathname.replace("/", "").replace("-", " "))
   return tabName
 }
 

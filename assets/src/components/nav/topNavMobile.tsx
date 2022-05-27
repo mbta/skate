@@ -30,7 +30,6 @@ const topNavMobile = (): JSX.Element => {
     ? ["m-top-nav__notifications-icon", "m-top-nav__notifications-icon--active"]
     : ["m-top-nav__notifications-icon"]
 
-
   return (
     <div className="m-top-nav-mobile" data-testid="top-nav-mobile">
       <div
@@ -135,7 +134,9 @@ const topNavMobile = (): JSX.Element => {
           </button>
         </div>
 
-        <div className="m-top-nav-mobile__header-text">{ pageOrTabName(routeTabs) }</div>
+        <div className="m-top-nav-mobile__header-text">
+          {pageOrTabName(routeTabs)}
+        </div>
 
         <div className="m-top-nav__right-items">
           <button

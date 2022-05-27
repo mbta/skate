@@ -5,6 +5,10 @@ import {
   highestExistingOrdering,
   isPreset,
   isEditedPreset,
+  tabName,
+  currentTabName,
+  toTitleCase,
+  pageOrTabName,
   isOpenTab,
   applyRouteTabEdit,
   saveEditedPreset,
@@ -100,6 +104,49 @@ describe("isEditedPreset", () => {
 
     expect(isEditedPreset(routeTab)).toBeFalsy()
   })
+})
+
+describe("tabName", () => {
+  test("tabName returns preset name of tab", () => {
+    const routeTab = routeTabFactory.build({
+      presetName: "My Preset",
+    })
+    expect(tabName(routeTab)).toEqual("My Preset")
+  })
+
+  test("tabName returns untitled if tab doesn't have a preset name", () => {
+    const routeTab2 = routeTabFactory.build({})
+    expect(tabName(routeTab2)).toEqual("Untitled")
+  })
+})
+
+describe("currentTabName", () => {
+  test("currentTabName returns preset name of current tab", () => {
+    const routeTab1 = routeTabFactory.build({ presetName: "Not This One" })
+    const routeTab2 = routeTabFactory.build({ isCurrentTab: true, presetName: "This One" })
+
+    expect(currentTabName([routeTab1, routeTab2])).toEqual("This One")
+  })
+})
+
+describe("toTitleCase", () => {
+  test("capitalizes first letter of each word in string", () => {
+    const pageName = "shuttle map"
+    expect(toTitleCase(pageName)).toEqual("Shuttle Map")
+  })
+})
+
+describe("pageOrTabName", () => {
+  test("returns Untitled for route ladder page without tabs", () => {
+    window.history.pushState({}, 'Page Title', '/');
+    expect(pageOrTabName([])).toEqual("Untitled")
+  })
+
+  test("returns page name for shuttle map", () => {
+    window.history.pushState({}, 'Page Title', '/shuttle-map');
+    expect(pageOrTabName([])).toEqual("Shuttle Map")
+  })
+
 })
 
 describe("isOpenTab", () => {
