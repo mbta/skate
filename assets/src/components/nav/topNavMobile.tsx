@@ -1,4 +1,5 @@
 import React, { useContext } from "react"
+import { Location } from "history"
 import { useLocation, Link, NavLink } from "react-router-dom"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { displayHelp } from "../../helpers/appCue"
@@ -25,7 +26,10 @@ export const toTitleCase = (str: string): string => {
   )
 }
 
-export const pageOrTabName = (location: any, routeTabs: RouteTab[]): string => {
+export const pageOrTabName = (
+  location: Location<unknown>,
+  routeTabs: RouteTab[]
+): string => {
   let tabName = "Skate"
 
   if (location.pathname === "/") tabName = currentTabName(routeTabs)
