@@ -1,5 +1,5 @@
 import { displayHelp } from "../../src/helpers/appCue"
-import { Location } from "history"
+import { locationForPath } from "../testHelpers/locationHelpers"
 
 window.Appcues = {
   identify: jest.fn(),
@@ -38,12 +38,3 @@ describe("displayHelp", () => {
     expect(window.Appcues!.show).not.toHaveBeenCalled()
   })
 })
-
-const locationForPath = (path: string): Location<unknown> => {
-  return {
-    pathname: path,
-    search: "",
-    state: null,
-    hash: "",
-  }
-}
