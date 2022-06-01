@@ -18,16 +18,18 @@ import {
   VehicleLabelSetting,
   VehicleAdherenceColorsSetting,
 } from "../userSettings"
+import { Notifications } from "./notifications"
 import RightPanel from "./rightPanel"
 
 const SettingsPage = (): ReactElement<HTMLDivElement> => {
-  const [{ userSettings, mobileMenuIsOpen }, dispatch] =
+  const [{ userSettings, mobileMenuIsOpen, selectedVehicleOrGhost }, dispatch] =
     useContext(StateDispatchContext)
 
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
 
   return (
     <div className={`c-page c-page--settings ${mobileMenuClass}`}>
+      <Notifications />
       <div className="c-page__container">
         <h1 className="c-page__title">Settings</h1>
 
@@ -137,7 +139,7 @@ const SettingsPage = (): ReactElement<HTMLDivElement> => {
           />
         </div>
       </div>
-      <RightPanel />
+      <RightPanel selectedVehicleOrGhost={selectedVehicleOrGhost} />
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import { mount } from "enzyme"
 import React from "react"
+import { render } from "@testing-library/react"
 import renderer from "react-test-renderer"
 import SettingsPage from "../../src/components/settingsPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
@@ -15,10 +16,21 @@ import {
   VehicleLabelSetting,
   VehicleAdherenceColorsSetting,
 } from "../../src/userSettings"
+import vehicleFactory from "../factories/vehicle"
 
 jest.mock("../../src/laboratoryFeatures", () => ({
   __esModule: true,
   default: jest.fn(),
+}))
+
+jest.mock("../../src/hooks/useNearestIntersection", () => ({
+  __esModule: true,
+  useNearestIntersection: jest.fn(() => null),
+}))
+
+jest.mock("../../src/hooks/useShapes", () => ({
+  __esModule: true,
+  useTripShape: jest.fn(() => null),
 }))
 
 const mockDispatch = jest.fn()
@@ -161,5 +173,20 @@ describe("SettingsPage", () => {
     expect((window.fetch as jest.Mock).mock.calls[0][0]).toEqual(
       "/api/user_settings?field=vehicle_adherence_colors&value=early_blue"
     )
+  })
+
+  test("renders vehicle properties panel if a vehicle is selected", () => {
+    const vehicle = vehicleFactory.build({ operatorLastName: "Smith" })
+
+    const result = render(
+      <StateDispatchProvider
+        state={{ ...initialState, selectedVehicleOrGhost: vehicle }}
+        dispatch={mockDispatch}
+      >
+        <SettingsPage />
+      </StateDispatchProvider>
+    )
+
+    expect(result.getByText(/Smith/)).not.toBeNull()
   })
 })
